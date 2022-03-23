@@ -1,0 +1,3 @@
+# dev- and test dependencies go here ...
+
+pytest == 7.1.1
