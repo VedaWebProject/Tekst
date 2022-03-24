@@ -7,10 +7,11 @@ virtualenv=~/.virtualenvs/textrig
 pip=$(virtualenv)/bin/pip
 syspython=python3.8
 python=$(virtualenv)/bin/python
+version=$(shell $(python) setup.py --version)
 
 
 help:
-	@echo "Help will arrive shortly."
+	@echo "This is TextRig-$(version) speaking. Help will arrive shortly."
 .PHONY: help
 
 
