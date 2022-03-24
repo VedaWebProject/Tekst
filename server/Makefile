@@ -1,14 +1,15 @@
 SHELL = /bin/sh
 ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
-.DEFAULT_GOAL := hello
 
 
-.PHONY: hello
-hello:
-	@echo "TextRig says HELLO!"
+help:
+	@echo "Help will arrive shortly."
+.PHONY: help
 
-.PHONY: venv
+
 venv: .venv/touchfile
+.PHONY: venv
+
 
 .venv/touchfile: requirements.txt
 	@test -d .venv || python3 -m venv .venv --prompt textrig-dev
@@ -16,19 +17,25 @@ venv: .venv/touchfile
 	@touch .venv/touchfile
 	@printf "\n\n"
 
-.PHONY: test
+
 test: venv
 	@. .venv/bin/activate ; \
-		pytest tests/
+		python -m pytest \
+			--cov=textrig \
+			--cov-config=.coveragerc \
+			tests/
+.PHONY: test
 
-.PHONY: run
+
 run: venv
 	@. .venv/bin/activate ; \
 		python -m textrig
+.PHONY: run
 
-.PHONY: clean
+
 clean:
 	@rm -rf \
 		.venv \
-		.pytest_cache \
-		__pycache__ **/__pycache__ \
+		.pytest_cache .coverage htmlcov \
+		__pycache__ **/__pycache__
+.PHONY: clean
