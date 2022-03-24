@@ -2,25 +2,32 @@ SHELL = /bin/sh
 ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
 
+# preps
+virtualenv=~/.virtualenvs/textrig
+pip=$(virtualenv)/bin/pip
+syspython=python3.8
+python=$(virtualenv)/bin/python
+
+
 help:
 	@echo "Help will arrive shortly."
 .PHONY: help
 
 
-venv: .venv/touchfile
+venv: $(virtualenv)/touchfile
 .PHONY: venv
 
 
-.venv/touchfile: requirements.txt
-	@test -d .venv || python3 -m venv .venv --prompt textrig-dev
-	@. .venv/bin/activate; pip install -Ur requirements.txt
-	@touch .venv/touchfile
+$(virtualenv)/touchfile: requirements.txt
+	@test -d $(virtualenv) || $(syspython) -m venv $(virtualenv) --prompt textrig-dev
+	@. $(virtualenv)/bin/activate; $(pip) install -U pip; $(pip) install -Ur requirements.txt
+	@touch $(virtualenv)/touchfile
 	@printf "\n\n"
 
 
 test: venv
-	@. .venv/bin/activate ; \
-		python -m pytest \
+	@. $(virtualenv)/bin/activate ; \
+		$(python) -m pytest \
 			--cov=textrig \
 			--cov-config=.coveragerc \
 			tests/
@@ -28,14 +35,16 @@ test: venv
 
 
 run: venv
-	@. .venv/bin/activate ; \
-		python -m textrig
+	@. $(virtualenv)/bin/activate ; \
+		$(python) -m textrig
 .PHONY: run
 
 
 clean:
 	@rm -rf \
-		.venv \
-		.pytest_cache .coverage htmlcov \
-		__pycache__ **/__pycache__
+		.pytest_cache \
+		.coverage \
+		htmlcov \
+		__pycache__ \
+		**/__pycache__
 .PHONY: clean
