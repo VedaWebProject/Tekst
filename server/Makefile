@@ -3,10 +3,12 @@ ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
 
 # preps
-virtualenv=~/.virtualenvs/textrig
+virtualenv=$(ROOT_DIR)/.venv
 pip=$(virtualenv)/bin/pip
 syspython=python3.8
 python=$(virtualenv)/bin/python
+src=$(ROOT_DIR)/textrig
+tests=$(ROOT_DIR)/tests
 version=$(shell $(python) setup.py --version)
 
 
@@ -26,12 +28,20 @@ $(virtualenv)/touchfile: requirements.txt
 	@printf "\n\n"
 
 
-test: venv
+pretty: venv
 	@. $(virtualenv)/bin/activate ; \
-		$(python) -m pytest \
-			--cov=textrig \
+		isort $(src) $(tests) ; \
+		black $(src) $(tests) -q
+.PHONY: pretty
+
+
+test: venv pretty
+	@. $(virtualenv)/bin/activate ; \
+		flake8 $(src) $(tests) && \
+		pytest \
+			--cov=$(src) \
 			--cov-config=.coveragerc \
-			tests/
+			$(tests)/
 .PHONY: test
 
 
