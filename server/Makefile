@@ -5,7 +5,7 @@ ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 # preps
 virtualenv=$(ROOT_DIR)/.venv
 pip=$(virtualenv)/bin/pip
-syspython=python3.8
+syspython=python3
 python=$(virtualenv)/bin/python
 src=$(ROOT_DIR)/textrig
 tests=$(ROOT_DIR)/tests
