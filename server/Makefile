@@ -7,7 +7,7 @@ virtualenv=$(ROOT_DIR)/.venv
 pip=$(virtualenv)/bin/pip
 syspython=python3
 python=$(virtualenv)/bin/python
-src=$(ROOT_DIR)/textrig
+src=$(ROOT_DIR)/src
 tests=$(ROOT_DIR)/tests
 version=$(shell $(python) setup.py --version)
 
