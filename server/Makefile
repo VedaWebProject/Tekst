@@ -47,6 +47,7 @@ test: venv pretty
 
 run: venv
 	@. $(virtualenv)/bin/activate ; \
+		cd src ; \
 		$(python) -m textrig
 .PHONY: run
 
