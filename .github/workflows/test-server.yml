@@ -8,7 +8,7 @@ on:
       - 'server/src/**'
       - 'server/tests/**'
       - 'server/setup.cfg'
-  repository_dispatch:
+  workflow_dispatch:
       
 jobs:
   tests:
