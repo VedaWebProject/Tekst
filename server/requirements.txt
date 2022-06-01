@@ -1,7 +1,8 @@
-# dev- and test dependencies go here ...
+# dev- and test dependencies
+# using pinned versions for effective dependency caching
 
-isort
-flake8
-black
-pytest
-pytest-cov
+isort == 5.10.1
+flake8 == 4.0.1
+black == 22.3.0
+pytest == 7.1.2
+pytest-cov == 3.0.0
