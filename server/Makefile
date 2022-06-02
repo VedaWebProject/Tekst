@@ -1,4 +1,4 @@
-SHELL = /bin/sh
+SHELL = /bin/bash
 ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
 
@@ -55,7 +55,7 @@ run: venv
 
 
 clean:
-	@setopt -s globstar ; \
+	@shopt -s globstar ; \
 	rm -rf \
 		**/__pycache__ \
 		.pytest_cache \
