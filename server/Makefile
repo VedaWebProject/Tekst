@@ -23,40 +23,42 @@ venv: $(virtualenv)/touchfile
 
 $(virtualenv)/touchfile: requirements.txt
 	@test -d $(virtualenv) || $(syspython) -m venv $(virtualenv) --prompt textrig-dev
-	@. $(virtualenv)/bin/activate; $(pip) install -U pip; $(pip) install -Ur requirements.txt
+	@. $(virtualenv)/bin/activate ; \
+	$(pip) install -U pip ; \
+	$(pip) install -Ur requirements.txt
 	@touch $(virtualenv)/touchfile
 	@printf "\n\n"
 
 
 pretty: venv
 	@. $(virtualenv)/bin/activate ; \
-		isort $(src) $(tests) ; \
-		black $(src) $(tests) -q
+	isort . --quiet ; \
+	black .
 .PHONY: pretty
 
 
-test: venv pretty
+test: venv
 	@. $(virtualenv)/bin/activate ; \
-		flake8 $(src) $(tests) && \
-		pytest \
-			--cov=$(src) \
-			--cov-config=.coveragerc \
-			$(tests)/
+	flake8 . && \
+	pytest \
+		--cov=$(src) \
+		--cov-config=.coveragerc \
+		$(tests)/
 .PHONY: test
 
 
 run: venv
 	@. $(virtualenv)/bin/activate ; \
-		cd src ; \
-		$(python) -m textrig
+	cd $(src) ; \
+	$(python) -m textrig
 .PHONY: run
 
 
 clean:
-	@rm -rf \
+	@setopt -s globstar ; \
+	rm -rf \
+		**/__pycache__ \
 		.pytest_cache \
 		.coverage \
 		htmlcov \
-		__pycache__ \
-		**/__pycache__
 .PHONY: clean
