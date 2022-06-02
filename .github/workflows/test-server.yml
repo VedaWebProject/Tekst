@@ -28,16 +28,16 @@ jobs:
         cache-dependency-path: 'server/requirements.txt'
     - name: Install dependencies
       run: pip install -r requirements.txt
-    - name: Cancel workflow on dependency installation error
+    - name: Cancel on setup error
       if: failure()
       uses: andymckay/cancel-action@0.2
     - name: Check imports order
       if: always()
       run: isort --check .
-    - name: Run style checks
+    - name: Check for code errors
       if: always()
       run: flake8 .
-    - name: Run formatting checks
+    - name: Check code formatting
       if: always()
       run: black --check .
     - name: Run tests
