@@ -8,6 +8,9 @@ on:
       - 'server/src/**'
       - 'server/tests/**'
       - 'server/setup.cfg'
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
@@ -23,12 +26,20 @@ jobs:
         python-version: '3.8'
         cache: 'pip'
         cache-dependency-path: 'server/requirements.txt'
-    - id: install-deps
-      name: Install dependencies
+    - name: Install dependencies
       run: pip install -r requirements.txt
-    - id: check-style
-      name: Run style checks
-      run: flake8 src tests
-    - id: run-tests
-      name: Run tests
+    - name: Cancel workflow on dependency installation error
+      if: ! success()
+      uses: andymckay/cancel-action@0.2
+    - name: Check imports order
+      if: always()
+      run: isort --check .
+    - name: Run style checks
+      if: always()
+      run: flake8 .
+    - name: Run formatting checks
+      if: always()
+      run: black --check .
+    - name: Run tests
+      if: always()
       run: pytest --cov=src --cov-config=.coveragerc tests/
