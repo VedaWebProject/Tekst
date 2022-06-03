@@ -33,12 +33,14 @@ $(virtualenv)/touchfile: requirements.txt
 pretty: venv
 	@. $(virtualenv)/bin/activate ; \
 	isort . --quiet ; \
-	black .
+	black . --quiet
 .PHONY: pretty
 
 
 test: venv
 	@. $(virtualenv)/bin/activate ; \
+	isort --check --quiet . && \
+	black --check --quiet . && \
 	flake8 . && \
 	pytest \
 		--cov=$(src) \
