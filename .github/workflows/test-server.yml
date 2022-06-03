@@ -34,12 +34,12 @@ jobs:
     - name: Check imports order
       if: always()
       run: isort --check .
-    - name: Check for code errors
-      if: always()
-      run: flake8 .
     - name: Check code formatting
       if: always()
       run: black --check .
+    - name: Check for code errors
+      if: always()
+      run: flake8 .
     - name: Run tests
       if: always()
       run: pytest --cov=src --cov-config=.coveragerc tests/
