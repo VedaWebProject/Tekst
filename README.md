@@ -8,4 +8,3 @@ TextRig is a collaborative, web-based research platform for displaying, linking,
 ## State of development
 
 Development on this software is in an early conceptual phase. At this point, there is no usable release or public instance.
-
