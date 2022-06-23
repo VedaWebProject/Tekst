@@ -4,5 +4,4 @@ htmlcov/
 .env/
 .venv/
 .vscode/
-
 .coverage
