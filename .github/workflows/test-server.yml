@@ -39,7 +39,7 @@ jobs:
       run: black --check .
     - name: Check for code errors
       if: always()
-      run: flake8 .
+      run: pflake8 .
     - name: Run tests
       if: always()
       run: pytest --cov=src --cov-config=.coveragerc tests/
