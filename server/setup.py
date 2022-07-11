@@ -1,3 +1,4 @@
 from setuptools import setup
 
-setup()
+if __name == "__main__":
+    setup()
