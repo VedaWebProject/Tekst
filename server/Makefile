@@ -41,11 +41,8 @@ test: venv
 	@. $(virtualenv)/bin/activate ; \
 	isort --check --quiet . && \
 	black --check --quiet . && \
-	flake8 . && \
-	pytest \
-		--cov=$(src) \
-		--cov-config=.coveragerc \
-		$(tests)/
+	pflake8 . && \
+	pytest
 .PHONY: test
 
 

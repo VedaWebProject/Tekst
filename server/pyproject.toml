@@ -1,3 +1,67 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=59.0"]
 build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "textrig"
+description = "An open and collaborative text research platform"
+keywords = ["text", "research", "annotation", "collaboration"]
+license = {file = "LICENSE"}
+requires-python = ">=3.10"
+dynamic = ["version", "readme"]
+classifiers = [
+    "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Development Status :: 1 - Planning",
+]
+dependencies = [
+#    "requests",
+#    'importlib-metadata; python_version<"3.8"',
+]
+
+
+[project.urls]
+Repository = "https://github.com/VedaWebPlatform/TextRig"
+Homepage = "https://vedaweb.uni-koeln.de"
+
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["textrig*"]
+#namespaces = false  # to disable scanning PEP 420 namespaces (true by default)
+
+
+[tool.setuptools.dynamic]
+version = {attr = "textrig.__version__"}
+readme = {file = "README.md"}
+
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = ["E203", "E501"]
+select = ["C", "E", "F", "W", "B", "B950"]
+extend-exclude = [
+    ".pytest_cache",
+    "docs/",
+    "build/",
+    "dist/",
+    ".venv",
+]
+
+
+[tool.isort]
+profile = "black"
+line_length = 88
+src_paths = ["src", "tests"]
+
+
+[tool.black]
+line-length = 88
+target-version = ["py310"]
+
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--cov=src --cov-config=.coveragerc"
