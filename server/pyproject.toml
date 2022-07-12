@@ -17,8 +17,7 @@ classifiers = [
     "Development Status :: 1 - Planning",
 ]
 dependencies = [
-#    "requests",
-#    'importlib-metadata; python_version<"3.8"',
+#    "fastapi >= 0.78.0, < 1.0.0"
 ]
 
 
