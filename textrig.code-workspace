@@ -1,0 +1,27 @@
+/*
+*
+*   A workspace configuration for VSCode
+*   that helps taming the TextRig monorepo   
+*
+*/
+
+{
+    "folders": [
+        {
+            "name": "root",
+            "path": ".",
+        },
+        {
+            "path": "server",
+        },
+        {
+            "path": "client",
+        },
+    ],
+    "settings": {
+        "files.exclude": {
+            "client": true,
+            "server": true,
+        },
+    },
+}
