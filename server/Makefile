@@ -13,7 +13,7 @@ version=$(shell $(python) setup.py --version)
 
 
 help:
-	@echo "This is TextRig-$(version) speaking. Help will arrive shortly."
+	@echo "This is TextRig server v$(version) speaking. Help will arrive shortly."
 .PHONY: help
 
 
@@ -31,18 +31,24 @@ $(virtualenv)/touchfile: requirements.txt
 
 
 pretty: venv
-	@. $(virtualenv)/bin/activate ; \
-	isort . --quiet ; \
-	black . --quiet
+	@printf "\n"
+	$(virtualenv)/bin/isort .
+	@printf "\n"
+	$(virtualenv)/bin/black .
+	@printf "\n"
 .PHONY: pretty
 
 
 test: venv
-	@. $(virtualenv)/bin/activate ; \
-	isort --check --quiet . && \
-	black --check --quiet . && \
-	pflake8 . && \
-	pytest
+	@printf "\n"
+	$(virtualenv)/bin/isort --check .
+	@printf "\n"
+	$(virtualenv)/bin/black --check .
+	@printf "\n"
+	$(virtualenv)/bin/pflake8 .
+	@printf "\n"
+	$(virtualenv)/bin/pytest
+	@printf "\n"
 .PHONY: test
 
 
@@ -59,5 +65,5 @@ clean:
 		**/__pycache__ \
 		.pytest_cache \
 		.coverage \
-		htmlcov \
+		htmlcov
 .PHONY: clean
