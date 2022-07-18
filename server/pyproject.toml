@@ -1,41 +1,31 @@
-[build-system]
-requires = ["setuptools>=59.0"]
-build-backend = "setuptools.build_meta"
-
-
-[project]
+[tool.poetry]
 name = "textrig"
+version = "0.0.1"
 description = "An open and collaborative text research platform"
-keywords = ["text", "research", "annotation", "collaboration"]
-license = {file = "LICENSE"}
-requires-python = ">=3.10"
-dynamic = ["version", "readme"]
+readme = "README.md"
+repository = "https://github.com/VedaWebProject/TextRig"
+documentation = "https://github.com/VedaWebProject/TextRig"
+keywords = ["text", "research", "platform", "collaboration"]
+authors = ["Börge Kiss <bkis@bkis.github.io>"]
+license = "AGPL-3.0-or-later"
 classifiers = [
     "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
-    "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.10",
     "Development Status :: 1 - Planning",
 ]
-dependencies = [
-#    "fastapi >= 0.78.0, < 1.0.0"
-]
 
+[tool.poetry.urls]
+"Research Project Website" = "https://vedaweb.uni-koeln.de"
 
-[project.urls]
-Repository = "https://github.com/VedaWebPlatform/TextRig"
-Homepage = "https://vedaweb.uni-koeln.de"
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.78"
 
-
-[tool.setuptools.packages.find]
-where = ["src"]
-include = ["textrig*"]
-#namespaces = false  # to disable scanning PEP 420 namespaces (true by default)
-
-
-[tool.setuptools.dynamic]
-version = {attr = "textrig.__version__"}
-readme = {file = "README.md"}
-
+[tool.poetry.dev-dependencies]
+pytest = "^7.1"
+isort = "^5.10"
+black = "^22.3"
+pytest_cov = "^3.0"
+pyproject_flake8 = "0.0.1a4"
 
 [tool.flake8]
 max-line-length = 88
@@ -49,18 +39,49 @@ extend-exclude = [
     ".venv",
 ]
 
-
 [tool.isort]
 profile = "black"
 line_length = 88
 src_paths = ["src", "tests"]
 
-
 [tool.black]
 line-length = 88
 target-version = ["py310"]
 
-
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "--cov=src --cov-config=.coveragerc"
+addopts = "--cov=textrig --cov-config=.coveragerc"
+
+[tool.poe.tasks]
+format = "black ."
+style = "black . --check --diff"
+isort = "isort ."
+isort-check = "isort . --check --diff"
+lint = "pflake8 ."
+test = "pytest"
+run = "poetry run python textrig"
+
+[tool.poe.tasks.pretty]
+help = "Format code and sort imports"
+sequence = ["format", "isort"]
+
+[tool.poe.tasks.check]
+help = "Run all checks on code base: tests, code style, import order"
+sequence = ["test", "style", "isort-check"]
+
+[tool.poe.tasks.clean]
+help = "Cleanup of generated files"
+interpreter = ["bash", "zsh"]
+shell = """
+    shopt -s globstar
+	rm -rf \
+        **/__pycache__ \
+        .pytest_cache \
+        .coverage \
+        dist \
+        htmlcov \
+"""
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
