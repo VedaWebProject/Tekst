@@ -53,34 +53,55 @@ testpaths = ["tests"]
 addopts = "--cov=textrig --cov-config=.coveragerc"
 
 [tool.poe.tasks]
-format = "black ."
-style = "black . --check --diff"
-isort = "isort ."
-isort-check = "isort . --check --diff"
-lint = "pflake8 ."
-test = "pytest"
-run = "poetry run python textrig"
 
-[tool.poe.tasks.pretty]
-help = "Format code and sort imports"
-sequence = ["format", "isort"]
+    [tool.poe.tasks.format]
+    help = "Run black to format code base"
+    cmd = "black ."
 
-[tool.poe.tasks.check]
-help = "Run all checks on code base: tests, code style, import order"
-sequence = ["test", "style", "isort-check"]
+    [tool.poe.tasks.style]
+    help = "Check code style using black"
+    cmd = "black . --check --diff"
 
-[tool.poe.tasks.clean]
-help = "Cleanup of generated files"
-interpreter = ["bash", "zsh"]
-shell = """
-    shopt -s globstar
-	rm -rf \
-        **/__pycache__ \
-        .pytest_cache \
-        .coverage \
-        dist \
-        htmlcov \
-"""
+    [tool.poe.tasks.isort]
+    help = "Run isort to sort imports"
+    cmd = "isort ."
+
+    [tool.poe.tasks.isort-check]
+    help = "Check import order using isort"
+    cmd = "isort . --check --diff"
+
+    [tool.poe.tasks.lint]
+    help = "Run flake8 linter"
+    cmd = "pflake8 ."
+
+    [tool.poe.tasks.test]
+    help = "Run test suite with pytest"
+    cmd = "pytest"
+
+    [tool.poe.tasks.run]
+    help = "Run the application"
+    cmd = "poetry run python textrig"
+
+    [tool.poe.tasks.pretty]
+    help = "Format code and sort imports in one go"
+    sequence = ["format", "isort"]
+
+    [tool.poe.tasks.check]
+    help = "Run all checks on code base: tests, code style, import order"
+    sequence = ["test", "style", "isort-check"]
+
+    [tool.poe.tasks.clean]
+    help = "Cleanup of generated files (won't work on Windows)"
+    interpreter = ["bash", "zsh"]
+    shell = """
+        shopt -s globstar
+        rm -rf \
+            **/__pycache__ \
+            .pytest_cache \
+            .coverage \
+            dist \
+            htmlcov \
+    """
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
