@@ -27,7 +27,7 @@ jobs:
       with:
         python-version: '3.10'
         cache: 'poetry'
-        cache-dependency-path: 'server/poetry.lock'
+        cache-dependency-path: 'poetry.lock'
     - name: Install dependencies
       run: poetry install
     - name: Cancel on setup error
