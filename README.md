@@ -1,10 +1,8 @@
-<img width="72" height="72" align="right" style="position: absolute;  top: 0; right: 0; padding: 12px;" src="resources/logo.png" alt="TextRig logo"/>
+# TextRig Server
 
-# TextRig
-
-TextRig is a collaborative, web-based research platform for displaying, linking, exploring, and enriching natural language texts. It is developed within the scope of the [VedaWeb 2.0](https://vedaweb.uni-koeln.de/) research project on Old Indic texts, where it constitutes the technical basis of the research platforms spawned as part of the project's efforts.
+This is the code repository for the server part of the TextRig platform. For general information on TextRig, please visit the main [TextRig repository](https://github.com/VedaWebProject/TextRig).
 
 
-## State of development
+## Development
 
-Development on this software is in an early conceptual phase. At this point, there is no usable release or public instance.
+> TODO
