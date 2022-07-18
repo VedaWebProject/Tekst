@@ -1,0 +1,11 @@
+[run]
+branch = True
+omit =
+    */**/__main__.py
+    */**/__init__.py
+
+[report]
+precision = 2
+
+[html]
+title = TextRig - Test Coverage Report
