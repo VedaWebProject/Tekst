@@ -1,3 +1,0 @@
-FROM python:3.10-alpine
-
-# ... just a reminder/placeholder ...
