@@ -7,7 +7,7 @@ TextRig is a collaborative, web-based research platform for displaying, linking,
 This is the "main" TextRig repository. While certain parts of the apllication code have their own repositories (namely the client and server projects), this repository is meant as the go-to place for general information, documentation and the resources needed to deploy an instance of the TextRig platform. For an overview of the repositories, see [TextRig Repositories](#textrig-repositories).
 
 
-## Contents <!-- omit in toc -->
+**Contents:**
 
 - [State of development](#state-of-development)
 - [TextRig Repositories](#textrig-repositories)
