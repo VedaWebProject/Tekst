@@ -20,6 +20,9 @@ classifiers = [
 python = "^3.10"
 fastapi = "^0.78"
 
+[tool.poetry.extras]
+prod = ["mysqlclient"]
+
 [tool.poetry.dev-dependencies]
 pytest = "^7.1"
 isort = "^5.10"
