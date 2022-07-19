@@ -19,9 +19,7 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.10"
 fastapi = "^0.78"
-
-[tool.poetry.extras]
-prod = ["mysqlclient"]
+uvicorn = "^0.18"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.1"
@@ -81,9 +79,9 @@ addopts = "--cov=textrig --cov-config=.coveragerc"
     help = "Run test suite with pytest"
     cmd = "pytest"
 
-    [tool.poe.tasks.run]
-    help = "Run the application"
-    cmd = "poetry run python textrig"
+    [tool.poe.tasks.run-dev]
+    help = "Run the application in development mode"
+    cmd = "poetry run uvicorn textrig.main:app --reload --reload-dir textrig"
 
     [tool.poe.tasks.pretty]
     help = "Format code and sort imports in one go"
@@ -92,6 +90,7 @@ addopts = "--cov=textrig --cov-config=.coveragerc"
     [tool.poe.tasks.check]
     help = "Run all checks on code base: tests, code style, import order"
     sequence = ["test", "style", "isort-check"]
+    ignore_fail = "return_non_zero"
 
     [tool.poe.tasks.clean]
     help = "Cleanup of generated files (won't work on Windows)"

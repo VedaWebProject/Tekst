@@ -1,4 +1,4 @@
-from textrig import app
+from textrig import __version__, main
 
 
 def test_holy_hand_grenade_of_antioch():
@@ -9,5 +9,4 @@ def test_holy_hand_grenade_of_antioch():
 
 
 def test_app_ref():
-    app.run()
-    assert True
+    assert main.hello_world()["version"] == __version__
