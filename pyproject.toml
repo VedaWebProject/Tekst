@@ -88,8 +88,8 @@ addopts = "--cov=textrig --cov-config=.coveragerc"
     sequence = ["format", "isort"]
 
     [tool.poe.tasks.check]
-    help = "Run all checks on code base: tests, code style, import order"
-    sequence = ["test", "style", "isort-check"]
+    help = "Run all checks on code base: tests, linting, code style, import order"
+    sequence = ["test", "lint", "style", "isort-check"]
     ignore_fail = "return_non_zero"
 
     [tool.poe.tasks.clean]
