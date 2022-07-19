@@ -4,6 +4,6 @@ from textrig import __version__
 app = FastAPI()
 
 
-@app.get("/")
-def hello_world():
-    return {"app": "TextRig Server", "version": __version__}
+@app.get("/version")
+def version():
+    return {"version": __version__}
