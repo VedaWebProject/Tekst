@@ -25,8 +25,8 @@ uvicorn = "^0.18"
 pytest = "^7.1"
 isort = "^5.10"
 black = "^22.3"
-pytest_cov = "^3.0"
 pyproject_flake8 = "0.0.1a4"
+coverage = {extras = ["toml"], version = "^6.4"}
 
 [tool.flake8]
 max-line-length = 88
@@ -51,7 +51,22 @@ target-version = ["py310"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "--cov=textrig --cov-config=.coveragerc"
+
+[tool.coverage.run]
+source = ["textrig"]
+branch = true
+omit = [
+    "*/**/__main__.py",
+    "*/**/__init__.py"
+]
+
+[tool.coverage.report]
+precision = 2
+skip_empty = true
+
+[tool.coverage.html]
+title = "TextRig - Test Coverage Report"
+
 
 [tool.poe.tasks]
 
@@ -77,7 +92,10 @@ addopts = "--cov=textrig --cov-config=.coveragerc"
 
     [tool.poe.tasks.test]
     help = "Run test suite with pytest"
-    cmd = "pytest"
+    interpreter = ["bash", "zsh"]
+    shell = """
+        coverage run -m pytest && coverage report
+    """
 
     [tool.poe.tasks.run-dev]
     help = "Run the application in development mode"
@@ -104,6 +122,7 @@ addopts = "--cov=textrig --cov-config=.coveragerc"
             dist \
             htmlcov \
     """
+
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
