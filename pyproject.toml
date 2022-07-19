@@ -99,8 +99,8 @@ title = "TextRig - Test Coverage Report"
         coverage run -m pytest && coverage report
     """
 
-    [tool.poe.tasks.run-dev]
-    help = "Run the application in development mode"
+    [tool.poe.tasks.run]
+    help = "Run the application (only for development!)"
     cmd = "poetry run uvicorn textrig.main:app --reload --reload-dir textrig"
 
     [tool.poe.tasks.pretty]
