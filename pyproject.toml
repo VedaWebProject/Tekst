@@ -83,8 +83,7 @@ title = "TextRig - Test Coverage Report"
     """
 
     [tool.poe.tasks.format-check]
-    help = "Check code style using black"
-    cmd = "black . --check --diff"
+    help = "Check code formatting using isort and black"
     interpreter = ["bash", "zsh"]
     shell = """
         isort . --check --diff
