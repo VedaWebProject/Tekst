@@ -4,12 +4,16 @@ from pydantic import BaseSettings
 
 
 class Config(BaseSettings):
+
     app_name: str = "TextRig"
     db_host: str = "127.0.0.1"
     db_port: str = "27017"
     db_uri: str = f"mongodb://{db_host}:{db_port}"
     db_user: str = "root"
     db_pass: str = "root"
+
+    class Config:
+        env_file = ".env"
 
 
 @lru_cache()
