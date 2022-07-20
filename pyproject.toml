@@ -120,6 +120,8 @@ title = "TextRig - Test Coverage Report"
             **/__pycache__ \
             .pytest_cache \
             .coverage \
+            .venv/ \
+            .env/ \
             dist \
             htmlcov \
     """
