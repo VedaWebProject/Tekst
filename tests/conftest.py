@@ -3,10 +3,12 @@ from functools import lru_cache
 import pytest
 from fastapi.testclient import TestClient
 from textrig.config import Config, get_config
-from textrig.main import app
+from textrig.main import app as app_instance
 
 
-# pytest fixtures go here ...
+"""
+pytest fixtures go in here...
+"""
 
 
 @lru_cache()
@@ -15,22 +17,21 @@ def get_config_override():
     return Config(app_name="suppe")
 
 
-@lru_cache()
 @pytest.fixture
-def test_app():
+def app():
     """
     Provides an app instance with overridden
     config according to get_config_override()
     """
-    app.dependency_overrides[get_config] = get_config_override
-    return app
+    app_instance.dependency_overrides[get_config] = get_config_override
+    return app_instance
 
 
 @lru_cache()
 @pytest.fixture
-def test_client(test_app):
+def client(app):
     """
     Provides a TestClient instance configured with an app instance
     with overridden config according to get_config_override()
     """
-    return TestClient(test_app)
+    return TestClient(app)
