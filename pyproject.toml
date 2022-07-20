@@ -44,8 +44,9 @@ extend-exclude = [
 
 [tool.isort]
 profile = "black"
-line_length = 88
 src_paths = ["src", "tests"]
+line_length = 88
+lines_after_imports = 2
 
 [tool.black]
 line-length = 88
