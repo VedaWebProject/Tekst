@@ -74,20 +74,21 @@ title = "TextRig - Test Coverage Report"
 [tool.poe.tasks]
 
     [tool.poe.tasks.format]
-    help = "Run black to format code base"
-    cmd = "black ."
+    help = "Run isort and black to format code base"
+    interpreter = ["bash", "zsh"]
+    shell = """
+        isort .
+        black .
+    """
 
-    [tool.poe.tasks.style]
+    [tool.poe.tasks.format-check]
     help = "Check code style using black"
     cmd = "black . --check --diff"
-
-    [tool.poe.tasks.isort]
-    help = "Run isort to sort imports"
-    cmd = "isort ."
-
-    [tool.poe.tasks.isort-check]
-    help = "Check import order using isort"
-    cmd = "isort . --check --diff"
+    interpreter = ["bash", "zsh"]
+    shell = """
+        isort . --check --diff
+        black . --check --diff
+    """
 
     [tool.poe.tasks.lint]
     help = "Run flake8 linter"
@@ -104,13 +105,9 @@ title = "TextRig - Test Coverage Report"
     help = "Run the application (only for development!)"
     cmd = "poetry run uvicorn textrig.main:app --reload --reload-dir textrig"
 
-    [tool.poe.tasks.pretty]
-    help = "Format code and sort imports in one go"
-    sequence = ["format", "isort"]
-
     [tool.poe.tasks.check]
     help = "Run all checks on code base: tests, linting, code style, import order"
-    sequence = ["test", "lint", "style", "isort-check"]
+    sequence = ["test", "lint", "format-check"]
     ignore_fail = "return_non_zero"
 
     [tool.poe.tasks.clean]
