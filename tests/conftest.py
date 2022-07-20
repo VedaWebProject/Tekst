@@ -14,7 +14,7 @@ pytest fixtures go in here...
 @lru_cache()
 def get_config_override():
     """config overrides for tests"""
-    return Config(app_name="suppe")
+    return Config(app_name="TextRig Test Instance")
 
 
 @pytest.fixture
