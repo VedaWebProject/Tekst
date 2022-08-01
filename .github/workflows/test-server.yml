@@ -41,7 +41,7 @@ jobs:
       run: poetry run black --check --diff .
     - name: Check for code errors
       if: always()
-      run: poetry run pflake8 .
+      run: poetry run flake8 .
     - name: Run tests
       if: always()
       run: poetry run pytest
