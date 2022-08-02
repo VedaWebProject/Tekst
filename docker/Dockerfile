@@ -48,8 +48,8 @@ FROM base AS prod
 ENV FASTAPI_ENV=production
 
 COPY --from=builder "$VENV_PATH" "$VENV_PATH"
-#COPY ./docker/gunicorn_conf.py /gunicorn_conf.py
 
+COPY ./docker/gunicorn_conf.py /gunicorn_conf.py
 COPY ./docker/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
@@ -63,4 +63,4 @@ USER textrig
 EXPOSE 8000
 
 ENTRYPOINT /entrypoint.sh $0 $@
-CMD ["gunicorn", "textrig.main:app", "--bind=0.0.0.0:8000", "-w", "4", "-k", "uvicorn.workers.UvicornWorker"]
+CMD ["gunicorn", "textrig.main:app", "--config", "/gunicorn_conf.py"]
