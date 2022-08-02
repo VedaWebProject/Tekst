@@ -116,19 +116,19 @@ title = "TextRig - Test Coverage Report"
 
     [tool.poe.tasks.stack-up]
     help = "Create and start development service stack with docker compose"
-    cmd = "docker compose -f stack.dev.yml up --detach"
+    cmd = "docker compose -f docker/stack.dev.yml up --detach"
 
     [tool.poe.tasks.stack-down]
     help = "Stop and delete development service stack with docker compose"
-    cmd = "docker compose -f stack.dev.yml down --volumes"
+    cmd = "docker compose -f docker/stack.dev.yml down --volumes"
 
     [tool.poe.tasks.stack-start]
     help = "Start existing development service stack with docker compose"
-    cmd = "docker compose -f stack.dev.yml start --detach"
+    cmd = "docker compose -f docker/stack.dev.yml start --detach"
 
     [tool.poe.tasks.stack-stop]
     help = "Stop running development service stack with docker compose"
-    cmd = "docker compose -f stack.dev.yml stop"
+    cmd = "docker compose -f docker/stack.dev.yml stop"
 
 
 [build-system]
