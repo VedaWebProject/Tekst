@@ -56,11 +56,9 @@ RUN chmod +x /entrypoint.sh
 RUN groupadd -g 1337 textrig && \
     useradd -m -u 1337 -g textrig textrig
 
-#COPY --chown=textrig:textrig ./textrig /app
 USER textrig
-#WORKDIR /app
 
 EXPOSE 8000
 
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["gunicorn", "textrig.main:app", "--config", "/gunicorn_conf.py"]
+CMD ["textrig.main:app", "--config", "/gunicorn_conf.py"]
