@@ -1,24 +1,22 @@
 from functools import lru_cache
 from urllib.parse import quote as q
 
-from pydantic import BaseSettings, validator
+from pydantic import BaseSettings
 
 
 class Config(BaseSettings):
 
     app_name: str = "TextRig"
     db_host: str = "127.0.0.1"
-    db_port: str = "27017"
+    db_port: int = 27017
     db_user: str = "root"
     db_pass: str = "root"
-    db_uri: str = f"mongodb://{db_user}:{q(db_pass.encode('utf8'))}@{db_host}:{db_port}"
 
-    @validator("db_uri", pre=True)
-    def val_db_uri(cls, _, values):
+    def get_db_uri(self):
         return (
-            f"mongodb://{values['db_user']}:"
-            f"{q(values['db_pass'].encode('utf8'))}@"
-            f"{values['db_host']}:{values['db_port']}"
+            f"mongodb://{self.db_user}:"
+            f"{q(self.db_pass.encode('utf8'), safe='')}@"
+            f"{q(self.db_host.encode('utf8'), safe='')}:{str(self.db_port)}"
         )
 
     class Config:
