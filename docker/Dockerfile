@@ -34,7 +34,7 @@ RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-
 WORKDIR "$PYSETUP_PATH"
 COPY ./poetry.lock* ./pyproject.toml ./
 RUN poetry run pip install --upgrade pip setuptools wheel && \
-    poetry install --no-dev && \
+    poetry install --no-dev --no-root && \
     poetry run pip install "uvicorn[standard]>=0.18,<1.0" "gunicorn>=20.1,<21.0"
 
 COPY . .
