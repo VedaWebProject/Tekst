@@ -62,5 +62,5 @@ USER textrig
 
 EXPOSE 8000
 
-ENTRYPOINT /entrypoint.sh $0 $@
+ENTRYPOINT ["/entrypoint.sh"]
 CMD ["gunicorn", "textrig.main:app", "--config", "/gunicorn_conf.py"]
