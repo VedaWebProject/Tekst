@@ -1,0 +1,20 @@
+version: '3.1'
+
+services:
+
+  textrig-server:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    restart: always
+    ports:
+      - 127.0.0.1:8000:8000
+    env_file:
+    - .env.prod
+
+  mongo:
+    image: mongo:5.0.9
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
