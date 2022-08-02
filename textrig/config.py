@@ -1,6 +1,6 @@
 from functools import lru_cache
 
-from pydantic import BaseSettings
+from pydantic import BaseSettings, validator
 
 
 class Config(BaseSettings):
@@ -11,6 +11,10 @@ class Config(BaseSettings):
     db_uri: str = f"mongodb://{db_host}:{db_port}"
     db_user: str = "root"
     db_pass: str = "root"
+
+    @validator('db_uri', pre=True)
+    def val_db_uri(cls, _, values):
+        return f"mongodb://{values['db_host']}:{values['db_port']}"
 
     class Config:
         env_file = ".env"
