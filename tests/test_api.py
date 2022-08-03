@@ -1,10 +1,10 @@
-from textrig import __version__
+from textrig import pkg_meta
 
 
 def test_version(client):
     response = client.get("/version")
     assert response.status_code == 200
-    assert response.json() == {"version": __version__}
+    assert response.json() == {"version": pkg_meta["version"]}
 
 
 def test_config(client):

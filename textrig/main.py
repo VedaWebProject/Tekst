@@ -1,5 +1,5 @@
 from fastapi import Depends, FastAPI
-from textrig import __version__
+from textrig import pkg_meta
 from textrig.config import Config, get_config
 
 from .routers import users, meta
@@ -17,5 +17,6 @@ def root(config: Config = Depends(get_config)):
     return {
         "platform": config.app_name,
         "system": "TextRig Server",
-        "version": __version__
+        "version": pkg_meta["version"],
+        "description": pkg_meta["summary"],
     }
