@@ -1,8 +1,19 @@
 from importlib import metadata
 
-pkg_meta = {
-    e[0].lower(): str(e[1]) for e in metadata.metadata(__package__).items()
-    if e[0] in ("Version", "Summary", "Description", "License")
-}
+data = metadata.metadata(__package__)
 
-del metadata
+# whyyyyy
+license_url = [
+    e for e in data.get_all("Project-URL", failobj="") if e.startswith("License")
+][0].split(", ")[1]
+
+pkg_meta = dict(
+    version=data["Version"],
+    description=data["Summary"],
+    long_description=data["Description"],
+    license=data["License"],
+    license_url=license_url,
+    website=data["Home-page"],
+)
+
+del metadata, data

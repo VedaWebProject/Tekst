@@ -14,7 +14,8 @@ classifiers = [
 ]
 
 [tool.poetry.urls]
-"Research Project Website" = "https://vedaweb.uni-koeln.de"
+"VedaWeb Project Website" = "https://vedaweb.uni-koeln.de"
+"License" = "https://www.gnu.org/licenses/agpl-3.0.txt"
 
 [tool.poetry.dependencies]
 python = "^3.10"

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from textrig.dependencies import get_token_header
-from textrig import pkg_meta
+from textrig.config import Config, get_config
 
 router = APIRouter(
     prefix="/meta",
@@ -9,6 +9,15 @@ router = APIRouter(
 )
 
 
-@router.get("/version")
-def read_users():
-    return {"version": pkg_meta["version"]}
+@router.get("/")
+def meta(config: Config = Depends(get_config)):
+    return {
+        "title": config.app_name,
+        "description": config.description,
+        "website": config.website,
+        "platform": config.platform,
+        "platform_website": config.platform_website,
+        "version": config.version,
+        "license": config.license,
+        "license_url": config.license_url,
+    }

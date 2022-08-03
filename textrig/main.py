@@ -1,22 +1,26 @@
 from fastapi import Depends, FastAPI
-from textrig import pkg_meta
 from textrig.config import Config, get_config
 
-from .routers import users, meta
+from textrig.routers import users, meta
 
+__cfg: Config = get_config()
 
-# app = FastAPI(root_path="/api")
-app = FastAPI()
+app = FastAPI(
+    root_path="",
+    title=__cfg.app_name,
+    description=__cfg.description,
+    version=__cfg.version,
+    terms_of_service=__cfg.terms,
+    contact={
+        "name": __cfg.contact_name,
+        "url": __cfg.contact_url,
+        "email": __cfg.contact_email,
+    },
+    license_info={
+        "name": __cfg.license,
+        "url": __cfg.license_url,
+    }
+)
 
 app.include_router(users.router)
 app.include_router(meta.router)
-
-
-@app.get("/")
-def root(config: Config = Depends(get_config)):
-    return {
-        "platform": config.app_name,
-        "system": "TextRig Server",
-        "version": pkg_meta["version"],
-        "description": pkg_meta["summary"],
-    }
