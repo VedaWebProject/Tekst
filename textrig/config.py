@@ -8,6 +8,7 @@ from textrig import pkg_meta
 class Config(BaseSettings):
 
     app_name: str = "TextRig"
+    root_path: str = ""
     version: str = pkg_meta["version"]
     description: str = pkg_meta["description"]
     long_description: str = pkg_meta["long_description"]

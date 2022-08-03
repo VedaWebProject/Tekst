@@ -6,7 +6,7 @@ from textrig.routers import meta, users
 __cfg: Config = get_config()
 
 app = FastAPI(
-    root_path="",
+    root_path=__cfg.root_path,
     title=__cfg.app_name,
     description=__cfg.description,
     version=__cfg.version,
