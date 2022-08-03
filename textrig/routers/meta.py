@@ -16,7 +16,7 @@ def meta(config: Config = Depends(get_config)):
     Returns platform metadata, possibly customized for this platform instance.
     """
     return {
-        "title": config.app_name,
+        "title": f"{config.app_name}{' (dev mode)' if config.dev_mode else ''}",
         "description": config.description,
         "website": config.website,
         "platform": config.platform,

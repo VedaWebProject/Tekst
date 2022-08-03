@@ -93,7 +93,10 @@ title = "TextRig - Test Coverage Report"
 
     [tool.poe.tasks.run]
     help = "Run the application (only for development!)"
-    cmd = "poetry run uvicorn textrig.main:app --reload --reload-dir textrig"
+    interpreter = ["bash", "zsh"]
+    shell = """
+        DEV_MODE=true poetry run uvicorn --reload --reload-dir textrig textrig.main:app
+    """
 
     [tool.poe.tasks.check]
     help = "Run all checks on code base: tests, linting, code style, import order"

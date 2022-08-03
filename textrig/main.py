@@ -4,7 +4,7 @@ from textrig.routers import meta, users
 
 
 # get (possibly cached) config data
-__cfg: Config = get_config()
+_cfg: Config = get_config()
 
 # define tags metadata for API documentation
 # TODO: This should go elsewhere...
@@ -21,24 +21,24 @@ tags_metadata = [
 
 # create app instance
 app = FastAPI(
-    root_path=__cfg.root_path,
-    title=__cfg.app_name,
-    description=__cfg.description,
-    version=__cfg.version,
-    terms_of_service=__cfg.terms,
+    root_path="" if _cfg.dev_mode else _cfg.root_path,
+    title=_cfg.app_name,
+    description=_cfg.description,
+    version=_cfg.version,
+    terms_of_service=_cfg.terms,
     contact={
-        "name": __cfg.contact_name,
-        "url": __cfg.contact_url,
-        "email": __cfg.contact_email,
+        "name": _cfg.contact_name,
+        "url": _cfg.contact_url,
+        "email": _cfg.contact_email,
     },
     license_info={
-        "name": __cfg.license,
-        "url": __cfg.license_url,
+        "name": _cfg.license,
+        "url": _cfg.license_url,
     },
     openapi_tags=tags_metadata,
-    openapi_url=__cfg.openapi_url,
-    docs_url=__cfg.swaggerui_url,
-    redoc_url=__cfg.redoc_url,
+    openapi_url=_cfg.openapi_url,
+    docs_url=_cfg.swaggerui_url,
+    redoc_url=_cfg.redoc_url,
 )
 
 # register routers
