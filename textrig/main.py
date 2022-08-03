@@ -36,6 +36,7 @@ app = FastAPI(
         "url": __cfg.license_url,
     },
     openapi_tags=tags_metadata,
+    openapi_url=__cfg.openapi_url,
     docs_url=__cfg.swaggerui_url,
     redoc_url=__cfg.redoc_url,
 )

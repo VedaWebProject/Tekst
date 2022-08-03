@@ -18,6 +18,7 @@ class Config(BaseSettings):
     contact_url: str = pkg_meta["website"]
     contact_email: str = ""
 
+    openapi_url: str = "/openapi.json"
     swaggerui_url: str = "/docs"
     redoc_url: str = "/redoc"
 
