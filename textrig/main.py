@@ -1,7 +1,7 @@
 from fastapi import Depends, FastAPI
 from textrig.config import Config, get_config
+from textrig.routers import meta, users
 
-from textrig.routers import users, meta
 
 __cfg: Config = get_config()
 
@@ -19,7 +19,7 @@ app = FastAPI(
     license_info={
         "name": __cfg.license,
         "url": __cfg.license_url,
-    }
+    },
 )
 
 app.include_router(users.router)

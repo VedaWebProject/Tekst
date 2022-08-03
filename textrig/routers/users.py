@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends
 from textrig.dependencies import get_token_header
 
+
 router = APIRouter(
     prefix="/users",
     tags=["users"],

@@ -2,7 +2,6 @@ from functools import lru_cache
 from urllib.parse import quote as q
 
 from pydantic import BaseSettings, Field
-
 from textrig import pkg_meta
 
 
@@ -22,7 +21,7 @@ class Config(BaseSettings):
     platform_website: str = Field(pkg_meta["website"], const=True)
     license: str = Field(pkg_meta["license"], const=True)
     license_url: str = Field(pkg_meta["license_url"], const=True)
-    
+
     db_host: str = "127.0.0.1"
     db_port: int = 27017
     db_user: str = "root"

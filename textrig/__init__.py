@@ -1,5 +1,6 @@
 from importlib import metadata
 
+
 data = metadata.metadata(__package__)
 
 # whyyyyy
