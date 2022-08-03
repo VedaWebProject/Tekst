@@ -18,6 +18,9 @@ class Config(BaseSettings):
     contact_url: str = pkg_meta["website"]
     contact_email: str = ""
 
+    swaggerui_url: str = "/docs"
+    redoc_url: str = "/redoc"
+
     platform: str = Field("TextRig", const=True)
     platform_website: str = Field(pkg_meta["website"], const=True)
     license: str = Field(pkg_meta["license"], const=True)

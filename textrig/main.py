@@ -35,7 +35,9 @@ app = FastAPI(
         "name": __cfg.license,
         "url": __cfg.license_url,
     },
-    openapi_tags=tags_metadata
+    openapi_tags=tags_metadata,
+    docs_url=__cfg.swaggerui_url,
+    redoc_url=__cfg.redoc_url,
 )
 
 # register routers
