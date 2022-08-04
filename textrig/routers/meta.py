@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Depends
 from textrig.config import Config, get_config
-from textrig.dependencies import get_token_header
 
 
 router = APIRouter(
