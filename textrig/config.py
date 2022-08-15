@@ -15,7 +15,7 @@ class DbConfig(BaseModel):
     user: str = "root"
     password: str = "root"
 
-    def get_db_uri(self):
+    def get_uri(self):
         return (
             f"{self.protocol}://{self.user}:"
             f"{q(self.password.encode('utf8'), safe='')}@"
