@@ -4,6 +4,7 @@ import pytest
 from fastapi.testclient import TestClient
 from textrig.config import TextRigConfig, get_config
 from textrig.main import app as app_instance
+from textrig.models.text import Text, TextLevel, TextUnit
 
 
 """
@@ -40,3 +41,31 @@ def client(app):
     with overridden config according to get_config_override()
     """
     return TestClient(app)
+
+
+@pytest.fixture
+def dummy_data_text():
+    return Text(
+        title="Rigveda",
+        subtitle="An ancient Indian collection of Vedic Sanskrit hymns",
+        levels=[
+            TextLevel(label="Book"),
+            TextLevel(label="Hymn"),
+            TextLevel(label="Stanza"),
+        ],
+    )
+
+
+@pytest.fixture
+def dummy_data_units():
+    return [
+        TextUnit(location="1.1.1"),
+        TextUnit(location="1.1.2"),
+        TextUnit(location="1.2.1"),
+        TextUnit(location="1.2.2"),
+        TextUnit(location="1.2.3"),
+        TextUnit(location="2.2.4"),
+        TextUnit(location="2.2.1"),
+        TextUnit(location="2.2.2"),
+        TextUnit(location="2.3.1"),
+    ]
