@@ -9,7 +9,7 @@ router = APIRouter(
 )
 
 
-@router.get("/", summary="Platform metadata")
+@router.get("", summary="Platform metadata")
 def meta(config: Config = Depends(get_config)):
     """
     Returns platform metadata, possibly customized for this platform instance.

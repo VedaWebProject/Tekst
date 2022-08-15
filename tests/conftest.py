@@ -14,16 +14,24 @@ pytest fixtures go in here...
 @lru_cache()
 def get_config_override():
     """config overrides for tests"""
-    return Config(app_name="TextRig Test Instance")
+    return Config(
+        app_name="TextRig Test Instance",
+        dev_mode=True
+    )
 
 
 @pytest.fixture
-def app():
+def testing_config():
+    return get_config_override()
+
+
+@pytest.fixture
+def app(testing_config):
     """
     Provides an app instance with overridden
     config according to get_config_override()
     """
-    app_instance.dependency_overrides[get_config] = get_config_override
+    app_instance.dependency_overrides[get_config] = testing_config
     return app_instance
 
 
