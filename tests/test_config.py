@@ -1,7 +1,15 @@
-from textrig.config import Config
+from textrig.config import TextRigConfig, DbConfig
 
 
 def test_config(app):
-    config = Config(app_name="a", db_host="b", db_port=1, db_user="c", db_pass="d")
+    config = TextRigConfig(
+        app_name="a",
+        db=DbConfig(
+            host="b",
+            port=1,
+            user="c",
+            password="d"
+        )
+    )
     assert config.app_name == "a"
-    assert config.get_db_uri() == "mongodb://c:d@b:1"
+    assert config.db.get_db_uri() == "mongodb://c:d@b:1"

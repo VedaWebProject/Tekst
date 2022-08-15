@@ -1,10 +1,10 @@
 from fastapi import Depends, FastAPI
-from textrig.config import Config, get_config
+from textrig.config import TextRigConfig, get_config
 from textrig.routers import meta, users
 
 
 # get (possibly cached) config data
-_cfg: Config = get_config()
+_cfg: TextRigConfig = get_config()
 
 # define tags metadata for API documentation
 # TODO: This should go elsewhere...
@@ -23,22 +23,22 @@ tags_metadata = [
 app = FastAPI(
     root_path="" if _cfg.dev_mode else _cfg.root_path,
     title=_cfg.app_name,
-    description=_cfg.description,
-    version=_cfg.version,
-    terms_of_service=_cfg.terms,
+    description=_cfg.info.description,
+    version=_cfg.info.version,
+    terms_of_service=_cfg.info.terms,
     contact={
-        "name": _cfg.contact_name,
-        "url": _cfg.contact_url,
-        "email": _cfg.contact_email,
+        "name": _cfg.info.contact_name,
+        "url": _cfg.info.contact_url,
+        "email": _cfg.info.contact_email,
     },
     license_info={
-        "name": _cfg.license,
-        "url": _cfg.license_url,
+        "name": _cfg.info.license,
+        "url": _cfg.info.license_url,
     },
     openapi_tags=tags_metadata,
-    openapi_url=_cfg.openapi_url,
-    docs_url=_cfg.swaggerui_url,
-    redoc_url=_cfg.redoc_url,
+    openapi_url=_cfg.doc.openapi_url,
+    docs_url=_cfg.doc.swaggerui_url,
+    redoc_url=_cfg.doc.redoc_url,
 )
 
 # register routers

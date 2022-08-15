@@ -2,7 +2,7 @@ from functools import lru_cache
 
 import pytest
 from fastapi.testclient import TestClient
-from textrig.config import Config, get_config
+from textrig.config import TextRigConfig, get_config
 from textrig.main import app as app_instance
 
 
@@ -14,7 +14,7 @@ pytest fixtures go in here...
 @lru_cache()
 def get_config_override():
     """config overrides for tests"""
-    return Config(
+    return TextRigConfig(
         app_name="TextRig Test Instance",
         dev_mode=True
     )
@@ -22,7 +22,7 @@ def get_config_override():
 
 @pytest.fixture
 def testing_config():
-    return get_config_override()
+    return get_config_override
 
 
 @pytest.fixture
