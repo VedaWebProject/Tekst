@@ -1,8 +1,8 @@
 import os
 from functools import lru_cache
-from urllib.parse import quote as q
+from urllib.parse import quote
 
-from pydantic import BaseModel, BaseSettings, Field
+from pydantic import BaseModel, BaseSettings, Field, validator
 from textrig import pkg_meta
 
 
@@ -15,12 +15,13 @@ class DbConfig(BaseModel):
     user: str = "root"
     password: str = "root"
 
+    @validator("host", "password", pre=True)
+    def url_quote(cls, v):
+        return quote(str(v).encode("utf8"), safe="")
+
     def get_uri(self):
-        return (
-            f"{self.protocol}://{self.user}:"
-            f"{q(self.password.encode('utf8'), safe='')}@"
-            f"{q(self.host.encode('utf8'), safe='')}:{str(self.port)}"
-        )
+        creds = f"{self.user}:{self.password}@" if self.user and self.password else ""
+        return f"{self.protocol}://{creds}{self.host}:{str(self.port)}"
 
 
 class DocConfig(BaseModel):

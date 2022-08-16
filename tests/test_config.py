@@ -7,3 +7,5 @@ def test_config(app, testing_config):
     assert config.app_name == "a"
     config.db = DbConfig(host="b", port=1, user="c", password="d")
     assert config.db.get_uri() == "mongodb://c:d@b:1"
+    config.db.user = ""
+    assert config.db.get_uri() == "mongodb://b:1"
