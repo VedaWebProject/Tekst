@@ -4,6 +4,7 @@ from urllib.parse import quote
 
 from pydantic import BaseModel, BaseSettings, Field, validator
 from textrig import pkg_meta
+from textrig.utils.strings import safe_name
 
 
 class DbConfig(BaseModel):
@@ -14,10 +15,15 @@ class DbConfig(BaseModel):
     port: int = 27017
     user: str = "root"
     password: str = "root"
+    db_name: str = "textrig"
 
     @validator("host", "password", pre=True)
     def url_quote(cls, v):
         return quote(str(v).encode("utf8"), safe="")
+
+    @validator("db_name", always=True)
+    def generate_db_name(cls, v):
+        return safe_name(v)
 
     def get_uri(self):
         creds = f"{self.user}:{self.password}@" if self.user and self.password else ""
