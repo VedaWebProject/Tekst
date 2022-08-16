@@ -2,7 +2,7 @@ import os
 from functools import lru_cache
 from urllib.parse import quote
 
-from pydantic import BaseModel, BaseSettings, Field, validator
+from pydantic import BaseModel, BaseSettings, Field, validator, HttpUrl, EmailStr
 from textrig import pkg_meta
 from textrig.utils.strings import safe_name
 
@@ -48,11 +48,11 @@ class InfoConfig(BaseModel):
     version: str = Field(pkg_meta["version"], const=True)
     description: str = pkg_meta["description"]
     long_description: str = pkg_meta["long_description"]
-    website: str = pkg_meta["website"]
-    terms: str = pkg_meta["website"]
+    website: HttpUrl = pkg_meta["website"]
+    terms: HttpUrl = pkg_meta["website"]
     contact_name: str = ""
-    contact_url: str = ""
-    contact_email: str = ""
+    contact_url: HttpUrl = ""
+    contact_email: EmailStr = ""
 
 
 class TextRigConfig(BaseSettings):
