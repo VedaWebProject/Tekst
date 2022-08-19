@@ -1,10 +1,3 @@
 [flake8]
 max-line-length = 88
-extend-ignore = "E203", "E501"
-select = "C", "E", "F", "W", "B", "B950"
-extend-exclude =
-    ".pytest_cache",
-    "docs/",
-    "build/",
-    "dist/",
-    ".venv",
+extend-ignore = E203
