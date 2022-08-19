@@ -3,7 +3,7 @@ from typing import Optional
 
 from bson.objectid import ObjectId
 from pydantic import BaseModel as PydanticBaseModel
-from pydantic import Field, validator
+from pydantic import Field
 from pydantic.main import ModelMetaclass
 
 
@@ -36,22 +36,11 @@ class PyObjectId(ObjectId):
 
 class BaseModel(PydanticBaseModel):
     class Config:
-        allow_population_by_field_name = True
-        json_encoders = {datetime.datetime: convert_datetime_to_realworld}
         alias_generator = convert_field_to_camel_case
 
 
-class DateTimeModelMixin(BaseModel):
-    created_at: datetime.datetime = None
-    updated_at: datetime.datetime = None
-
-    @validator("created_at", "updated_at", pre=True)
-    def default_datetime(cls, value: datetime.datetime) -> datetime.datetime:
-        return value or datetime.datetime.now()
-
-
-class IDModelMixin(BaseModel):
-    id: PyObjectId | None = Field(default_factory=PyObjectId, alias="_id")
+class IDModelMixin(PydanticBaseModel):
+    id: PyObjectId | None = Field(alias="_id")
 
     class Config:
         arbitrary_types_allowed = True

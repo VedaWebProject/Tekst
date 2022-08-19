@@ -10,14 +10,24 @@ router = APIRouter(
 )
 
 
-@router.post("/create", response_model=User | dict, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/create",
+    response_model=User | dict,
+    status_code=status.HTTP_201_CREATED,
+    summary="Creates a new user",
+)
 async def create_user(user: UserCreate):
-    if await db.get("users", user.username, fiel="username"):
+    if await db.get("users", user.username, field="username"):
         return {"error": "exists"}
     return User(**await db.insert("users", user))
 
 
-@router.patch("/update/{user_id}", response_model=User, status_code=status.HTTP_200_OK)
+@router.patch(
+    "/update/{user_id}",
+    response_model=User,
+    status_code=status.HTTP_200_OK,
+    summary="Updates an existing user",
+)
 async def update_user(user_id: str, user_update: UserUpdate):
     if not await db.update("users", user_id, user_update):
         raise HTTPException(

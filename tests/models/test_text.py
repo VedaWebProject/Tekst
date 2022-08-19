@@ -1,6 +1,5 @@
 import pytest
 from pydantic.error_wrappers import ValidationError
-from textrig.models.common import PyObjectId
 from textrig.models.text import Text, TextLevel
 
 
@@ -14,7 +13,6 @@ def test_validation():
 
 def test_composition(dummy_data_text):
     text = dummy_data_text
-    assert type(text.id) == PyObjectId
     assert text.title == "Rigveda"
     assert len(text.levels) == 3
     assert text.levels[1].label == "Hymn"

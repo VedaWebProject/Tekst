@@ -17,7 +17,7 @@ async def create_text(text: TextCreate):
             status_code=status.HTTP_409_CONFLICT,
             detail="A text with an equal name already exists",
         )
-    return Text(**await db.insert("texts", text))
+    return Text(**await db.insert("texts", Text(**text.dict(exclude_unset=True))))
 
 
 @router.patch("/update/{text_id}", response_model=Text, status_code=status.HTTP_200_OK)
@@ -28,6 +28,7 @@ async def update_text(text_id: str, text_update: TextUpdate):
             detail=f"Could not update text {text_id}",
         )
     text_data = await db.get("texts", text_id)
+    print(text_data)
     if not text_data:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

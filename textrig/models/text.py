@@ -23,7 +23,7 @@ class TextLevel(TextLevelCreate):
 
 class TextCreate(BaseModel):
     title: str
-    subtitle: str | None
+    subtitle: str = None
     levels: list[TextLevel] = Field(..., min_items=1, allow_mutation=False)
     label: str | None = Field(None, description="will be populated automatically")
 
