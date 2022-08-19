@@ -1,8 +1,11 @@
+from typing import Any
+
 from bson import ObjectId
 from bson.errors import InvalidId
 from fastapi import HTTPException, status
 from motor.motor_asyncio import AsyncIOMotorClient as DatabaseClient
 from motor.motor_asyncio import AsyncIOMotorDatabase as Database
+from pymongo.results import InsertOneResult, UpdateResult
 from textrig.config import TextRigConfig, get_config
 from textrig.models.common import BaseModel
 
@@ -40,12 +43,26 @@ def _obj_to_dict(obj: BaseModel | dict, exclude_unset: bool = False) -> dict:
 async def update(
     collection: str, doc_id: ObjectId | str, updates: BaseModel | dict
 ) -> bool:
-    result = await _db[collection].update_one(
+    result: UpdateResult = await _db[collection].update_one(
         filter={"_id": _to_obj_id(doc_id)},
         update={"$set": _obj_to_dict(updates, exclude_unset=True)},
     )
     return result.acknowledged
 
 
-async def get(collection: str, doc_id: ObjectId | str) -> dict | None:
-    return await _db[collection].find_one({"_id": _to_obj_id(doc_id)})
+async def get(collection: str, val: Any, field: str = "_id") -> dict | None:
+    if field == "_id" and type(val) is not ObjectId:
+        val = _to_obj_id(val)
+    return await _db[collection].find_one({field: val})
+
+
+async def insert(collection: str, doc: BaseModel) -> dict:
+    result: InsertOneResult = await _db[collection].insert_one(
+        doc.dict(exclude_none=True)
+    )
+    if not result.acknowledged:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Could not create text",
+        )
+    return await get(collection, result.inserted_id)
