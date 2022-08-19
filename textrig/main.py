@@ -1,6 +1,6 @@
-from fastapi import Depends, FastAPI
+from fastapi import FastAPI
 from textrig.config import TextRigConfig, get_config
-from textrig.routers import meta, users
+from textrig.routers import meta, user
 
 
 # get (possibly cached) config data
@@ -42,5 +42,5 @@ app = FastAPI(
 )
 
 # register routers
-app.include_router(users.router)
+app.include_router(user.router)
 app.include_router(meta.router)
