@@ -29,6 +29,8 @@ class TextCreate(BaseModel):
 
     @validator("label", always=True)
     def populate_label(cls, value, values) -> str:
+        if not values.get("title"):
+            return None
         return safe_name(values["title"])
 
     def get_label(self) -> str:

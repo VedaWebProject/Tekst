@@ -8,6 +8,8 @@ def test_validation():
     with pytest.raises(ValidationError) as error:
         Text()
         assert "missing" in error.value
+    t = Text(title="agním īḷe puróhitaṁ", levels=[TextLevel(label="Dummy Level")])
+    assert t.label == "agnim_ile_purohitam"
 
 
 def test_composition(dummy_data_text):
@@ -16,7 +18,6 @@ def test_composition(dummy_data_text):
     assert text.title == "Rigveda"
     assert len(text.levels) == 3
     assert text.levels[1].label == "Hymn"
-    assert type(text.levels[1].id) == PyObjectId
 
 
 def test_mutability(dummy_data_text):
