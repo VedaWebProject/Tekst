@@ -1,23 +1,12 @@
 from fastapi import FastAPI
 from textrig.config import TextRigConfig, get_config
-from textrig.routers import meta, user
+from textrig.routers import meta, texts, users
+from textrig.tags import tags_metadata
 
 
 # get (possibly cached) config data
 _cfg: TextRigConfig = get_config()
 
-# define tags metadata for API documentation
-# TODO: This should go elsewhere...
-tags_metadata = [
-    {
-        "name": "users",
-        "description": "Operations with users.",
-        "externalDocs": {
-            "description": "Users external docs",
-            "url": "https://vedaweb.uni-koeln.de",
-        },
-    },
-]
 
 # create app instance
 app = FastAPI(
@@ -42,5 +31,6 @@ app = FastAPI(
 )
 
 # register routers
-app.include_router(user.router)
+app.include_router(users.router)
 app.include_router(meta.router)
+app.include_router(texts.router)

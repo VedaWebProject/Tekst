@@ -1,27 +1,20 @@
 import textrig.database as db
 from fastapi import APIRouter, HTTPException, status
-from pymongo.results import InsertOneResult
 from textrig.models.user import User, UserCreate, UserUpdate
 
 
 router = APIRouter(
-    prefix="/user",
-    tags=["user"],
+    prefix="/users",
+    tags=["users"],
     responses={status.HTTP_404_NOT_FOUND: {"description": "Not found"}},
 )
 
 
 @router.post("/create", response_model=User | dict, status_code=status.HTTP_201_CREATED)
 async def create_user(user: UserCreate):
-    if await db.users.find_one({"username": user.username}):
-        return {"foo": "bar"}
-    result: InsertOneResult = await db.users.insert_one(user.dict())
-    if not result.acknowledged:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Could not create user",
-        )
-    return User(**await db.users.find_one({"_id": result.inserted_id}))
+    if await db.get("users", user.username, fiel="username"):
+        return {"error": "exists"}
+    return User(**await db.insert("users", user))
 
 
 @router.patch("/update/{user_id}", response_model=User, status_code=status.HTTP_200_OK)
