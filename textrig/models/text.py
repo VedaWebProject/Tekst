@@ -1,25 +1,52 @@
-from typing import List
-
 from pydantic import Field
-from textrig.models.common import DbModel
-from textrig.utils.strings import safe_name
+from textrig.models.common import AllOptional, BaseModel, IDModelMixin
 
 
-class TextLevel(DbModel):
+# === TEXT LEVEL ===
 
+
+class TextLevelCreate(BaseModel):
     label: str
 
 
-class Text(DbModel):
+class TextLevelUpdate(BaseModel):
+    label: str | None
 
+
+class TextLevel(TextLevelCreate, IDModelMixin):
+    pass
+
+
+# === TEXT ===
+
+
+class TextCreate(BaseModel):
     title: str
-    subtitle: str | None = None
-    levels: List[TextLevel] = Field(..., min_items=1, allow_mutation=False)
+    subtitle: str | None
+    levels: list[TextLevel] = Field(..., min_items=1, allow_mutation=False)
 
     class Config:
         validate_assignment = True
 
 
-class TextUnit(DbModel):
+class TextUpdate(TextCreate, metaclass=AllOptional):
+    pass
 
+
+class Text(TextCreate, IDModelMixin):
+    pass
+
+
+# === TEXT UNIT ===
+
+
+class TextUnitCreate(BaseModel):
     location: str
+
+
+class TextUnitUpdate(TextUnitCreate, metaclass=AllOptional):
+    pass
+
+
+class TextUnit(TextUnitCreate, IDModelMixin):
+    pass
