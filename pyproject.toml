@@ -22,8 +22,8 @@ python = "^3.10"
 fastapi = "^0.78"
 ujson = "^5.4"
 python-dotenv = "^0.20"
-motor = "^3.0.0"
 email-validator = "^1.2.1"
+motor = "^3.0.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.1"
@@ -69,16 +69,16 @@ title = "TextRig - Test Coverage Report"
     help = "Run isort and black to format code base"
     interpreter = ["bash", "zsh"]
     shell = """
-        isort .
-        black .
+        poetry run isort .
+        poetry run black .
     """
 
     [tool.poe.tasks.format-check]
     help = "Check code formatting using isort and black"
     interpreter = ["bash", "zsh"]
     shell = """
-        isort . --check --diff
-        black . --check --diff
+        poetry run isort . --check --diff
+        poetry run black . --check --diff
     """
 
     [tool.poe.tasks.lint]
@@ -89,7 +89,7 @@ title = "TextRig - Test Coverage Report"
     help = "Run test suite with pytest"
     interpreter = ["bash", "zsh"]
     shell = """
-        coverage run -m pytest && coverage report
+        poetry run coverage run -m pytest && poetry run coverage report
     """
 
     [tool.poe.tasks.run]
