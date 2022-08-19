@@ -60,12 +60,13 @@ class IDModelMixin(BaseModel):
 
 class AllOptional(ModelMetaclass):
     """
-    Metaclass to render all fields of a pydantic model optional.
+    Metaclass to render all fields of a pydantic model optional (on root level).
     This approach was taken from here:
     https://stackoverflow.com/a/67733889/7399631
     Alternative ones are discussed here:
     https://github.com/pydantic/pydantic/issues/1223#issuecomment-998160737
     """
+
     def __new__(self, name, bases, namespaces, **kwargs):
         annotations = namespaces.get("__annotations__", {})
         for base in bases:
