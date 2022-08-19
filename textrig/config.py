@@ -2,7 +2,7 @@ import os
 from functools import lru_cache
 from urllib.parse import quote
 
-from pydantic import BaseModel, BaseSettings, Field, validator, HttpUrl, EmailStr
+from pydantic import BaseModel, BaseSettings, EmailStr, Field, HttpUrl, validator
 from textrig import pkg_meta
 from textrig.utils.strings import safe_name
 
