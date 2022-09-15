@@ -19,6 +19,8 @@ def convert_field_to_camel_case(string: str) -> str:
 
 
 class PyObjectId(ObjectId):
+    """A pydantic representation of MongoDB's object ID"""
+
     @classmethod
     def __get_validators__(cls):
         yield cls.validate
@@ -35,11 +37,15 @@ class PyObjectId(ObjectId):
 
 
 class BaseModel(PydanticBaseModel):
+    """Base class for all TextRig models"""
+
     class Config:
         alias_generator = convert_field_to_camel_case
 
 
 class ObjectInDB(PydanticBaseModel):
+    """Data model mixin for objects from the DB (which have an ID)"""
+
     id: PyObjectId | None = Field(alias="_id")
 
     class Config:

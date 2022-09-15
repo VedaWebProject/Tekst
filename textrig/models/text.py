@@ -7,10 +7,13 @@ from textrig.utils.strings import safe_name
 
 
 class Unit(BaseModel):
+
+    level: str
     label: str
 
 
 class UnitUpdate(Unit, metaclass=AllOptional):
+
     pass
 
 
@@ -18,10 +21,12 @@ class UnitUpdate(Unit, metaclass=AllOptional):
 
 
 class Level(BaseModel):
+
     label: str
 
 
 class LevelUpdate(Level, metaclass=AllOptional):
+
     pass
 
 
@@ -29,6 +34,8 @@ class LevelUpdate(Level, metaclass=AllOptional):
 
 
 class Text(BaseModel):
+    """A text represented in TextRig"""
+
     title: str = Field(
         ..., min_length=1, max_length=64, description="Title of this text"
     )
@@ -62,8 +69,11 @@ class Text(BaseModel):
 
 
 class TextUpdate(Text, metaclass=AllOptional):
+    """Updates to an existing text"""
+
     pass
 
 
 class TextInDB(Text, ObjectInDB):
+
     pass
