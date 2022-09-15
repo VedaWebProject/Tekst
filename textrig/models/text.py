@@ -1,5 +1,5 @@
 from pydantic import Field, validator
-from textrig.models.common import AllOptional, BaseModel, IDModelMixin
+from textrig.models.common import AllOptional, BaseModel, ObjectInDB
 from textrig.utils.strings import safe_name
 
 
@@ -43,8 +43,7 @@ class Text(BaseModel):
     )
     structure: list[Level] = Field(..., min_items=1)
 
-    loc_delim: str = Field(
-        ", ",
+    loc_delim: str | None = Field(
         description="Location delimiter for displaying location of text units",
     )
 
@@ -66,5 +65,5 @@ class TextUpdate(Text, metaclass=AllOptional):
     pass
 
 
-class TextInDB(Text, IDModelMixin):
+class TextInDB(Text, ObjectInDB):
     pass

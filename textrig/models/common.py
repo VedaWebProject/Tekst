@@ -39,7 +39,7 @@ class BaseModel(PydanticBaseModel):
         alias_generator = convert_field_to_camel_case
 
 
-class IDModelMixin(PydanticBaseModel):
+class ObjectInDB(PydanticBaseModel):
     id: PyObjectId | None = Field(alias="_id")
 
     class Config:
