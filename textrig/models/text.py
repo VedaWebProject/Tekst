@@ -25,16 +25,15 @@ class TextCreate(BaseModel):
     title: str
     subtitle: str = None
     levels: list[TextLevel] = Field(..., min_items=1, allow_mutation=False)
-    label: str | None = Field(None, description="will be populated automatically")
+    safe_title: str | None = Field(
+        None, description="Will be ignored and populated automatically"
+    )
 
-    @validator("label", always=True)
-    def populate_label(cls, value, values) -> str:
+    @validator("safe_title", always=True)
+    def populate_safe_title(cls, value, values) -> str:
         if not values.get("title"):
             return None
         return safe_name(values["title"])
-
-    def get_label(self) -> str:
-        return safe_name(self.title)
 
     class Config:
         validate_assignment = True

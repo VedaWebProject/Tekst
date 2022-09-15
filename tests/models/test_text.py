@@ -8,7 +8,7 @@ def test_validation():
         Text()
         assert "missing" in error.value
     t = Text(title="agním īḷe puróhitaṁ", levels=[TextLevel(label="Dummy Level")])
-    assert t.label == "agnim_ile_purohitam"
+    assert t.safe_title == "agnim_ile_purohitam"
 
 
 def test_composition(dummy_data_text):

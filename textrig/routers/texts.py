@@ -12,10 +12,10 @@ router = APIRouter(
 
 @router.post("/create", response_model=Text, status_code=status.HTTP_201_CREATED)
 async def create_text(text: TextCreate):
-    if await db.get("texts", text.label, "label"):
+    if await db.get("texts", text.safe_title, "safe_title"):
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail="A text with an equal name already exists",
+            detail="A text with an equal title already exists",
         )
     return Text(**await db.insert("texts", Text(**text.dict(exclude_unset=True))))
 
