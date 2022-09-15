@@ -6,37 +6,29 @@ from textrig.utils.strings import safe_name
 # === TEXT UNIT ===
 
 
-class UnitCreate(BaseModel):
+class Unit(BaseModel):
     label: str
 
 
-class UnitUpdate(UnitCreate, metaclass=AllOptional):
-    pass
-
-
-class Unit(UnitCreate):
+class UnitUpdate(Unit, metaclass=AllOptional):
     pass
 
 
 # === TEXT LEVEL ===
 
 
-class LevelCreate(BaseModel):
+class Level(BaseModel):
     label: str
 
 
-class LevelUpdate(LevelCreate, metaclass=AllOptional):
-    pass
-
-
-class Level(LevelCreate):
+class LevelUpdate(Level, metaclass=AllOptional):
     pass
 
 
 # === TEXT ===
 
 
-class TextCreate(BaseModel):
+class Text(BaseModel):
     title: str = Field(
         ..., min_length=1, max_length=64, description="Title of this text"
     )
@@ -70,9 +62,9 @@ class TextCreate(BaseModel):
         )
 
 
-class TextUpdate(TextCreate, metaclass=AllOptional):
+class TextUpdate(Text, metaclass=AllOptional):
     pass
 
 
-class Text(TextCreate, IDModelMixin):
+class TextInDB(Text, IDModelMixin):
     pass
