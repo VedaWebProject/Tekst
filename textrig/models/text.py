@@ -1,5 +1,6 @@
+from bson.objectid import ObjectId
 from pydantic import Field, validator
-from textrig.models.common import AllOptional, BaseModel, ObjectInDB
+from textrig.models.common import AllOptional, BaseModel, ObjectInDB, PyObjectId
 from textrig.utils.strings import safe_name
 
 
@@ -7,9 +8,17 @@ from textrig.utils.strings import safe_name
 
 
 class Unit(BaseModel):
+    """A unit of text (e.g. chapter, paragraph, ...)"""
 
-    level: str
-    label: str
+    text: PyObjectId = Field(..., description="ID of text this unit belongs to")
+    level: int = Field(..., description="Index of structure level this unit is on")
+    index: int = Field(..., description="Position among all text units on this level")
+    label: str = Field(..., description="Label for identifying this text unit")
+    parent: PyObjectId | None = Field(None, description="ID of parent unit")
+
+    class Config:
+        arbitrary_types_allowed = True
+        json_encoders = {ObjectId: str}
 
 
 class UnitUpdate(Unit, metaclass=AllOptional):
@@ -17,15 +26,7 @@ class UnitUpdate(Unit, metaclass=AllOptional):
     pass
 
 
-# === TEXT LEVEL ===
-
-
-class Level(BaseModel):
-
-    label: str
-
-
-class LevelUpdate(Level, metaclass=AllOptional):
+class UnitInDB(Unit, ObjectInDB):
 
     pass
 
@@ -48,10 +49,12 @@ class Text(BaseModel):
     subtitle: str | None = Field(
         None, min_length=1, max_length=128, description="Subtitle of this text"
     )
-    structure: list[Level] = Field(..., min_items=1)
+
+    levels: list[str] = Field(list(), min_items=1)
 
     loc_delim: str | None = Field(
-        description="Location delimiter for displaying location of text units",
+        None,
+        description="Delimiter for displaying text locations",
     )
 
     @validator("safe_title", always=True)
@@ -69,7 +72,6 @@ class Text(BaseModel):
 
 
 class TextUpdate(Text, metaclass=AllOptional):
-    """Updates to an existing text"""
 
     pass
 

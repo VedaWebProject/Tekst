@@ -4,7 +4,7 @@ import pytest
 from fastapi.testclient import TestClient
 from textrig.config import TextRigConfig, get_config
 from textrig.main import app as app_instance
-from textrig.models.text import Level, Text, Unit
+from textrig.models.text import Text
 
 
 """
@@ -48,24 +48,5 @@ def dummy_data_text():
     return Text(
         title="Rigveda",
         subtitle="An ancient Indian collection of Vedic Sanskrit hymns",
-        structure=[
-            Level(label="Book"),
-            Level(label="Hymn"),
-            Level(label="Stanza"),
-        ],
+        levels=["Book", "Hymn", "Stanza"],
     )
-
-
-@pytest.fixture
-def dummy_data_units():
-    return [
-        Unit(location="1.1.1"),
-        Unit(location="1.1.2"),
-        Unit(location="1.2.1"),
-        Unit(location="1.2.2"),
-        Unit(location="1.2.3"),
-        Unit(location="2.2.4"),
-        Unit(location="2.2.1"),
-        Unit(location="2.2.2"),
-        Unit(location="2.3.1"),
-    ]
