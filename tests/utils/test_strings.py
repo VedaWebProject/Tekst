@@ -18,6 +18,8 @@ def test_safe_name():
     assert strings.safe_name(b"fo", min_len=3) == "fo_"
     assert strings.safe_name(b"This is a test!", max_len=8) == "this_is"
     assert strings.safe_name(b"foo barrrr", max_len=8) == "foo_barr"
+    assert strings.safe_name("foo bar", delim="+") == "foo+bar"
+    assert strings.safe_name("f$o$o b$a$r", swallow_chars="$") == "foo_bar"
 
 
 def test_remove_diacritics():

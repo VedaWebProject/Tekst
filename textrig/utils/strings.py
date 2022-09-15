@@ -2,7 +2,13 @@ import re
 import unicodedata as ucdata
 
 
-def safe_name(string: str, min_len: int = 0, max_len: int = 32) -> str:
+def safe_name(
+    string: str,
+    min_len: int = 0,
+    max_len: int = 32,
+    delim: str = "_",
+    swallow_chars: str = None,
+) -> str:
     """Creates a safe name (e.g. for use as an identifier) from the input string.
 
     Removes diacritics, lowercases, replaces spaces with underscores and
@@ -13,15 +19,19 @@ def safe_name(string: str, min_len: int = 0, max_len: int = 32) -> str:
     # support byte strings
     if isinstance(string, bytes):
         string = string.decode()
+    # remove certain characters according to swallow_chars parameter
+    if swallow_chars:
+        for c in swallow_chars:
+            string = string.replace(c, "")
     # remove diacritics
     string = remove_diacritics(string)
     # lowercase and delimit using underscores
-    string = re.sub(r"[^a-z0-9]+", "_", string.lower()).strip("_")
+    string = re.sub(r"[^a-z0-9]+", delim, string.lower()).strip(delim)
     # apply length constraints
     if min_len > 0 and len(string) < min_len:
-        string = string.ljust(min_len, "_")
+        string = string.ljust(min_len, delim)
     elif len(string) > max_len:
-        string = string[:max_len].strip("_")
+        string = string[:max_len].strip(delim)
 
     return string
 
