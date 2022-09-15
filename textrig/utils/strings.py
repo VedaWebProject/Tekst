@@ -8,6 +8,7 @@ def safe_name(
     max_len: int = 32,
     delim: str = "_",
     swallow_chars: str = None,
+    remove_prefix: str = None,
 ) -> str:
     """Creates a safe name (e.g. for use as an identifier) from the input string.
 
@@ -19,14 +20,19 @@ def safe_name(
     # support byte strings
     if isinstance(string, bytes):
         string = string.decode()
-    # remove certain characters according to swallow_chars parameter
+
+    if remove_prefix:
+        string = string.removeprefix(remove_prefix)
+
     if swallow_chars:
         for c in swallow_chars:
             string = string.replace(c, "")
-    # remove diacritics
+
     string = remove_diacritics(string)
+
     # lowercase and delimit using underscores
     string = re.sub(r"[^a-z0-9]+", delim, string.lower()).strip(delim)
+
     # apply length constraints
     if min_len > 0 and len(string) < min_len:
         string = string.ljust(min_len, delim)
