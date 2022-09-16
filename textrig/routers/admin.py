@@ -1,6 +1,6 @@
 import textrig.database as db
 from fastapi import APIRouter, HTTPException, status
-from textrig.models.text import Text, TextInDB, TextUpdate
+from textrig.models.text import Text, TextInDB, TextUpdate, Unit, UnitInDB
 
 
 router = APIRouter(
@@ -21,6 +21,31 @@ async def create_text(text: Text) -> TextInDB:
         )
     return TextInDB(
         **await db.insert("texts", TextInDB(**text.dict(exclude_unset=True)))
+    )
+
+
+@router.post(
+    "/unit/create", response_model=UnitInDB, status_code=status.HTTP_201_CREATED
+)
+async def create_unit(unit: Unit) -> UnitInDB:
+    # find text the unit belongs to
+    text = await db.get("texts", unit.text)
+    if not text:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="The corresponding text does not exist",
+        )
+    # use all fields but "label" in the example to check for duplicate
+    example = {k: v for k, v in unit.dict(exclude_unset=True).items() if k != "label"}
+    if await db.get_by_example("texts", example):
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="The unit conflicts with an existing one",
+        )
+    return UnitInDB(
+        **await db.insert(
+            f"{text['safe_title']}_units", UnitInDB(**unit.dict(exclude_unset=True))
+        )
     )
 
 

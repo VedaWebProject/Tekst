@@ -34,26 +34,24 @@ def _to_obj_id(obj_id: str | ObjectId) -> ObjectId:
     return obj_id
 
 
-def _obj_to_dict(obj: BaseModel | dict, exclude_unset: bool = False) -> dict:
-    if isinstance(obj, BaseModel):
-        return obj.dict(exclude_unset=exclude_unset)
-    return obj
-
-
 async def update(
     collection: str, doc_id: ObjectId | str, updates: BaseModel | dict
 ) -> bool:
     result: UpdateResult = await _db[collection].update_one(
         filter={"_id": _to_obj_id(doc_id)},
-        update={"$set": _obj_to_dict(updates, exclude_unset=True)},
+        update={"$set": updates.dict(exclude_unset=True)},
     )
     return result.acknowledged
 
 
-async def get(collection: str, val: Any, field: str = "_id") -> dict | None:
-    if field == "_id" and type(val) is not ObjectId:
-        val = _to_obj_id(val)
-    return await _db[collection].find_one({field: val})
+async def get(collection: str, value: Any, field: str = "_id") -> dict | None:
+    if field == "_id" and type(value) is not ObjectId:
+        value = _to_obj_id(value)
+    return await _db[collection].find_one({field: value})
+
+
+async def get_by_example(collection: str, example: dict) -> dict | None:
+    return await _db[collection].find_one(example)
 
 
 async def get_all(
