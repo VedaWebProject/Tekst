@@ -34,7 +34,6 @@ async def update_text(text_id: str, text_update: TextUpdate):
             detail=f"Could not update text {text_id}",
         )
     text_data = await db.get("texts", text_id)
-    print(text_data)
     if not text_data:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
