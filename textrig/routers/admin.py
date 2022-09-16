@@ -4,29 +4,15 @@ from textrig.models.text import Text, TextInDB, TextUpdate
 
 
 router = APIRouter(
-    prefix="/texts",
-    tags=["texts"],
+    prefix="/admin",
+    tags=["admin"],
     responses={status.HTTP_404_NOT_FOUND: {"description": "Not found"}},
 )
 
 
-@router.get("/all", response_model=list[TextInDB], status_code=status.HTTP_200_OK)
-async def get_all_texts(limit: int = 100) -> list[TextInDB]:
-    return await db.get_all("texts", limit=limit)
-
-
-@router.get("/get/{text_id}", response_model=TextInDB, status_code=status.HTTP_200_OK)
-async def get_text_by_id(text_id: str) -> TextInDB:
-    text = await db.get("texts", text_id)
-    if not text:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="A text with the given ID cannot be found",
-        )
-    return text
-
-
-@router.post("/create", response_model=TextInDB, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/text/create", response_model=TextInDB, status_code=status.HTTP_201_CREATED
+)
 async def create_text(text: Text) -> TextInDB:
     if await db.get("texts", text.safe_title, "safe_title"):
         raise HTTPException(
@@ -39,7 +25,7 @@ async def create_text(text: Text) -> TextInDB:
 
 
 @router.patch(
-    "/update/{text_id}", response_model=TextInDB, status_code=status.HTTP_200_OK
+    "/text/update/{text_id}", response_model=TextInDB, status_code=status.HTTP_200_OK
 )
 async def update_text(text_id: str, text_update: TextUpdate):
     if not await db.update("texts", text_id, text_update):

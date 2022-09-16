@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from textrig.config import TextRigConfig, get_config
-from textrig.routers import meta, texts
+from textrig.routers import admin, meta, text
 from textrig.tags import tags_metadata
 
 
@@ -31,5 +31,6 @@ app = FastAPI(
 )
 
 # register routers
+app.include_router(admin.router)
 app.include_router(meta.router)
-app.include_router(texts.router)
+app.include_router(text.router)
