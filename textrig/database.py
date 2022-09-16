@@ -56,6 +56,13 @@ async def get(collection: str, val: Any, field: str = "_id") -> dict | None:
     return await _db[collection].find_one({field: val})
 
 
+async def get_all(
+    collection: str, example: dict = {}, limit: int = 10
+) -> list[BaseModel]:
+    cursor = _db[collection].find(example)
+    return await cursor.to_list(length=min([limit, 1000]))
+
+
 async def insert(collection: str, doc: BaseModel) -> dict:
     result: InsertOneResult = await _db[collection].insert_one(
         doc.dict(exclude_none=True)
