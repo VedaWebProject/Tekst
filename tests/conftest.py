@@ -1,6 +1,7 @@
 from functools import lru_cache
 
 import pytest
+import requests
 from fastapi.testclient import TestClient
 from textrig.config import TextRigConfig, get_config
 from textrig.main import app as app_instance
@@ -50,3 +51,11 @@ def dummy_data_text():
         subtitle="An ancient Indian collection of Vedic Sanskrit hymns",
         levels=["Book", "Hymn", "Stanza"],
     )
+
+
+@pytest.fixture(autouse=True)
+def disable_network_calls(monkeypatch):
+    def stunted_get():
+        raise RuntimeError("Network access not allowed during testing!")
+
+    monkeypatch.setattr(requests, "get", lambda *args, **kwargs: stunted_get())
