@@ -1,3 +1,4 @@
+import json
 from functools import lru_cache
 
 import pytest
@@ -25,6 +26,11 @@ def testing_config():
 
 
 @pytest.fixture
+def sample_data(shared_datadir) -> dict:
+    return json.loads((shared_datadir / "sample-data.json").read_text())
+
+
+@pytest.fixture
 def app(testing_config):
     """
     Provides an app instance with overridden
@@ -45,12 +51,13 @@ def client(app):
 
 
 @pytest.fixture
-def dummy_data_text():
-    return Text(
-        title="Rigveda",
-        subtitle="An ancient Indian collection of Vedic Sanskrit hymns",
-        levels=["Book", "Hymn", "Stanza"],
-    )
+def dummy_data_text(sample_data) -> Text:
+    return Text(**sample_data["texts"][0])
+
+
+@pytest.fixture
+def dummy_data_texts(sample_data) -> Text:
+    return [Text(**t) for t in sample_data["texts"]]
 
 
 @pytest.fixture(autouse=True)

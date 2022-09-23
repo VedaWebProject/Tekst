@@ -1,0 +1,9 @@
+{
+    "texts": [
+        {
+            "title": "Rigveda",
+            "subtitle": "An ancient Indian collection of Vedic Sanskrit hymns",
+            "levels": ["Book", "Hymn", "Stanza"]
+        }
+    ]
+}

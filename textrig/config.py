@@ -62,6 +62,7 @@ class TextRigConfig(BaseSettings):
     app_name: str = "TextRig"
     dev_mode: bool = False
     root_path: str = ""
+    snippets_dir: str = "/snippets"
 
     # special domain
     db: DbConfig = DbConfig()  # db cfg (MongoDB)
