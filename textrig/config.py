@@ -61,7 +61,6 @@ class TextRigConfig(BaseSettings):
     # basic
     app_name: str = "TextRig"
     dev_mode: bool = False
-    test_mode: bool = False
     root_path: str = ""
 
     # special domain
