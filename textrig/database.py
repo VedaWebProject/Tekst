@@ -14,7 +14,7 @@ _cfg: TextRigConfig = get_config()
 
 # init db connection
 _client: DatabaseClient = DatabaseClient(_cfg.db.get_uri())
-_db: Database = _client[_cfg.db.db_name]
+_db: Database = _client[_cfg.db.name]
 
 
 # database object getter for use as a dependency

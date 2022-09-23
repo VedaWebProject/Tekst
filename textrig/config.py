@@ -15,13 +15,13 @@ class DbConfig(BaseModel):
     port: int = 27017
     user: str = "root"
     password: str = "root"
-    db_name: str = "textrig"
+    name: str = "textrig"
 
     @validator("host", "password", pre=True)
     def url_quote(cls, v):
         return quote(str(v).encode("utf8"), safe="")
 
-    @validator("db_name", always=True)
+    @validator("name", always=True)
     def generate_db_name(cls, v):
         return safe_name(v)
 
