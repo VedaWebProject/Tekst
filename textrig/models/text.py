@@ -62,13 +62,7 @@ class Text(BaseModel):
         if not values.get("title"):
             return value
         # swallow_chars and strip_prefix for MongoDB collection naming constraints
-        return safe_name(
-            values["title"],
-            min_len=3,
-            max_len=32,
-            swallow_chars="$",
-            remove_prefix="system.",
-        )
+        return safe_name(values["title"], min_len=3, max_len=32)
 
 
 class TextUpdate(Text, metaclass=AllOptional):
