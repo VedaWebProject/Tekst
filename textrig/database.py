@@ -61,10 +61,10 @@ async def get_all(
     return await cursor.to_list(length=min([limit, 1000]))
 
 
-async def insert(collection: str, doc: BaseModel) -> dict:
-    result: InsertOneResult = await _db[collection].insert_one(
-        doc.dict(exclude_none=True)
-    )
+async def insert(collection: str, doc: BaseModel | dict) -> dict:
+    if type(doc) is not dict:
+        doc = doc.dict(exclude_none=True)
+    result: InsertOneResult = await _db[collection].insert_one(doc)
     if not result.acknowledged:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
