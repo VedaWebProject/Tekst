@@ -2,7 +2,11 @@ import json
 
 import textrig.database as db
 from fastapi import APIRouter, HTTPException, UploadFile, status
+from textrig.config import TextRigConfig, get_config
 from textrig.models.text import Text, TextInDB, TextUpdate, Unit, UnitInDB
+
+
+_cfg: TextRigConfig = get_config()
 
 
 router = APIRouter(
@@ -15,29 +19,37 @@ router = APIRouter(
 @router.post(
     "/text/create", response_model=TextInDB, status_code=status.HTTP_201_CREATED
 )
-async def create_text(text: Text) -> TextInDB:
+async def create_text(text: Text | TextInDB) -> TextInDB:
     if await db.get("texts", text.slug, "slug"):
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="A text with an equal title already exists",
         )
     return TextInDB(
-        **await db.insert("texts", TextInDB(**text.dict(exclude_unset=True)))
+        **await db.insert("texts", TextInDB(**text.mongo(exclude_unset=True)))
     )
 
 
 @router.post(
-    "/text/import-sample-data", response_model=dict, status_code=status.HTTP_201_CREATED
+    "/text/import-sample-data",
+    response_model=dict,
+    status_code=status.HTTP_201_CREATED,
+    include_in_schema=False,
 )
 async def import_text(file: UploadFile) -> dict:
+    if not _cfg.dev_mode:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Endpoint not available in production system",
+        )
     try:
         # parse data
         data = json.loads(await file.read())
         # import data
-        for text in data.get("texts", []):
-            await db.insert("texts", TextInDB(**text))
-        for unit in data.get("units", []):
-            await db.insert("units", UnitInDB(**unit))
+        for text_data in data.get("texts", []):
+            await create_text(TextInDB(**text_data))
+        for unit_data in data.get("units", []):
+            await create_unit(UnitInDB(**unit_data))
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -52,7 +64,7 @@ async def import_text(file: UploadFile) -> dict:
 @router.post(
     "/unit/create", response_model=UnitInDB, status_code=status.HTTP_201_CREATED
 )
-async def create_unit(unit: Unit) -> UnitInDB:
+async def create_unit(unit: Unit | UnitInDB) -> UnitInDB:
     # find text the unit belongs to
     text = await db.get("texts", unit.text)
     if not text:
@@ -61,7 +73,7 @@ async def create_unit(unit: Unit) -> UnitInDB:
             detail="The corresponding text does not exist",
         )
     # use all fields but "label" in the example to check for duplicate
-    example = {k: v for k, v in unit.dict(exclude_unset=True).items() if k != "label"}
+    example = {k: v for k, v in unit.mongo(exclude_unset=True).items() if k != "label"}
     if await db.get_by_example("texts", example):
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
@@ -69,7 +81,7 @@ async def create_unit(unit: Unit) -> UnitInDB:
         )
     return UnitInDB(
         **await db.insert(
-            f"{text['slug']}_units", UnitInDB(**unit.dict(exclude_unset=True))
+            f"{text['slug']}_units", UnitInDB(**unit.mongo(exclude_unset=True))
         )
     )
 

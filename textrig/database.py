@@ -39,7 +39,7 @@ async def update(
 ) -> bool:
     result: UpdateResult = await _db[collection].update_one(
         filter={"_id": _to_obj_id(doc_id)},
-        update={"$set": updates.dict(exclude_unset=True)},
+        update={"$set": updates.mongo(exclude_unset=True)},
     )
     return result.acknowledged
 
@@ -62,8 +62,8 @@ async def get_all(
 
 
 async def insert(collection: str, doc: BaseModel | dict) -> dict:
-    if type(doc) is not dict:
-        doc = doc.dict(exclude_none=True)
+    if isinstance(doc, BaseModel):
+        doc = doc.mongo(exclude_unset=True)
     result: InsertOneResult = await _db[collection].insert_one(doc)
     if not result.acknowledged:
         raise HTTPException(

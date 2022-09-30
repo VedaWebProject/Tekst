@@ -1,14 +1,9 @@
-import datetime
 from typing import Optional
 
-from bson.objectid import ObjectId
+from bson.objectid import InvalidId, ObjectId
 from pydantic import BaseModel as PydanticBaseModel
 from pydantic import Field
 from pydantic.main import ModelMetaclass
-
-
-def convert_datetime_to_realworld(dt: datetime.datetime) -> str:
-    return dt.replace(tzinfo=datetime.timezone.utc).isoformat().replace("+00:00", "Z")
 
 
 def convert_field_to_camel_case(string: str) -> str:
@@ -26,10 +21,11 @@ class PyObjectId(ObjectId):
         yield cls.validate
 
     @classmethod
-    def validate(cls, v) -> ObjectId:
-        if not ObjectId.is_valid(v):
-            raise ValueError("Invalid objectid")
-        return ObjectId(v)
+    def validate(cls, v):
+        try:
+            return ObjectId(str(v))
+        except InvalidId:
+            raise ValueError("Not a valid ObjectId")
 
     @classmethod
     def __modify_schema__(cls, field_schema):
@@ -46,12 +42,34 @@ class BaseModel(PydanticBaseModel):
 class ObjectInDB(PydanticBaseModel):
     """Data model mixin for objects from the DB (which have an ID)"""
 
-    id: PyObjectId | None = Field(alias="_id")
+    id: PyObjectId = Field(...)
+
+    @classmethod
+    def from_mongo(cls, data: dict):
+        """Converts "_id" to "id" """
+        if not data:
+            return data
+        id = data.pop("_id", None)
+        return cls(**dict(data, id=id))
+
+    def mongo(self, **kwargs):
+        exclude_unset = kwargs.pop("exclude_unset", True)
+        by_alias = kwargs.pop("by_alias", True)
+
+        parsed = self.dict(
+            exclude_unset=exclude_unset,
+            by_alias=by_alias,
+            **kwargs,
+        )
+
+        if "_id" not in parsed and "id" in parsed:
+            parsed["_id"] = parsed.pop("id")
+
+        return parsed
 
     class Config:
-        arbitrary_types_allowed = True
         allow_population_by_field_name = True
-        json_encoders = {ObjectId: str}
+        json_encoders = {ObjectId: lambda oid: str(oid)}
 
 
 class AllOptional(ModelMetaclass):
