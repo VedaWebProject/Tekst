@@ -1,6 +1,7 @@
 from pydantic import Field, validator
 from textrig.models.common import AllOptional, BaseModel, ObjectInDB, PyObjectId
 from textrig.utils.strings import safe_name
+from uuid import uuid4
 
 
 # === TEXT UNIT ===
@@ -35,14 +36,15 @@ class Text(BaseModel):
     title: str = Field(
         ..., min_length=1, max_length=64, description="Title of this text"
     )
+    subtitle: str | None = Field(
+        None, min_length=1, max_length=128, description="Subtitle of this text"
+    )
+
     slug: str = Field(
-        "text_title",
+        None,
         min_length=3,
         max_length=32,
         description="Will be ignored and populated automatically",
-    )
-    subtitle: str | None = Field(
-        None, min_length=1, max_length=128, description="Subtitle of this text"
     )
 
     levels: list[str] = Field(list(), min_items=1)
@@ -54,10 +56,23 @@ class Text(BaseModel):
 
     @validator("slug", always=True)
     def generate_slug(cls, value, values) -> str:
-        if not values.get("title"):
+        if not value:
+            if not values.get("title", None):
+                return str(uuid4())
+            else:
+                return safe_name(values.get("title"), min_len=3, max_len=32)
+        else:
             return value
-        # swallow_chars and strip_prefix for MongoDB collection naming constraints
-        return safe_name(values["title"], min_len=3, max_len=32)
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "title": "Rigveda",
+                "subtitle": "An ancient Indian collection of Vedic Sanskrit hymns",
+                "levels": ["Book", "Hymn", "Stanza"],
+                "locDelim": "."
+            }
+        }
 
 
 class TextUpdate(Text, metaclass=AllOptional):
