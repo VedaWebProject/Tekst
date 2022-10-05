@@ -2,6 +2,7 @@
     "texts": [
         {
             "title": "Rigveda",
+            "slug": "rigveda",
             "subtitle": "An ancient Indian collection of Vedic Sanskrit hymns",
             "levels": ["Book", "Hymn", "Stanza"]
         }

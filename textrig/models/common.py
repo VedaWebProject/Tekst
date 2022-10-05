@@ -35,6 +35,24 @@ class PyObjectId(ObjectId):
 class BaseModel(PydanticBaseModel):
     """Base class for all TextRig models"""
 
+    def __init__(self, **kwargs):
+        """Converts "_id" to "id" """
+        if "_id" in kwargs and kwargs["_id"]:
+            kwargs["id"] = kwargs.pop("_id")
+        super().__init__(**kwargs)
+
+    def dict(self, for_mongo: bool = False, **kwargs):
+        parsed = super().dict(
+            exclude_unset=kwargs.pop("exclude_unset", True),
+            by_alias=kwargs.pop("by_alias", True),
+            **kwargs,
+        )
+
+        if for_mongo and "_id" not in parsed and "id" in parsed:
+            parsed["_id"] = parsed.pop("id")
+
+        return parsed
+
     class Config:
         alias_generator = convert_field_to_camel_case
 
@@ -43,29 +61,6 @@ class ObjectInDB(PydanticBaseModel):
     """Data model mixin for objects from the DB (which have an ID)"""
 
     id: PyObjectId = Field(...)
-
-    @classmethod
-    def from_mongo(cls, data: dict):
-        """Converts "_id" to "id" """
-        if not data:
-            return data
-        id = data.pop("_id", None)
-        return cls(**dict(data, id=id))
-
-    def mongo(self, **kwargs):
-        exclude_unset = kwargs.pop("exclude_unset", True)
-        by_alias = kwargs.pop("by_alias", True)
-
-        parsed = self.dict(
-            exclude_unset=exclude_unset,
-            by_alias=by_alias,
-            **kwargs,
-        )
-
-        if "_id" not in parsed and "id" in parsed:
-            parsed["_id"] = parsed.pop("id")
-
-        return parsed
 
     class Config:
         allow_population_by_field_name = True

@@ -19,37 +19,41 @@ router = APIRouter(
 @router.post(
     "/text/create", response_model=TextInDB, status_code=status.HTTP_201_CREATED
 )
-async def create_text(text: Text | TextInDB) -> TextInDB:
+async def create_text(text: Text) -> TextInDB:
+
     if await db.get("texts", text.slug, "slug"):
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail="A text with an equal title already exists",
+            detail="A text with an equal slug already exists",
         )
-    return TextInDB(
-        **await db.insert("texts", TextInDB(**text.mongo(exclude_unset=True)))
-    )
+
+    return TextInDB(**await db.insert("texts", text))
 
 
 @router.post(
     "/text/import-sample-data",
     response_model=dict,
     status_code=status.HTTP_201_CREATED,
-    include_in_schema=False,
+    include_in_schema=_cfg.dev_mode,
 )
 async def import_text(file: UploadFile) -> dict:
+
     if not _cfg.dev_mode:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="Endpoint not available in production system",
         )
+
     try:
         # parse data
         data = json.loads(await file.read())
-        # import data
-        for text_data in data.get("texts", []):
-            await create_text(TextInDB(**text_data))
-        for unit_data in data.get("units", []):
-            await create_unit(UnitInDB(**unit_data))
+        result = dict()
+        # import texts
+        texts = [TextInDB(**td) for td in data.get("texts", [])]
+        result["texts"] = await db.insert_many("texts", texts)
+        # import units
+        units = [UnitInDB(**ud) for ud in data.get("units", [])]
+        result["units"] = await db.insert_many("units", units)
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -57,48 +61,52 @@ async def import_text(file: UploadFile) -> dict:
         )
     finally:
         await file.close()
-    # OK
-    return {"status": "done"}
+
+    return result
 
 
 @router.post(
     "/unit/create", response_model=UnitInDB, status_code=status.HTTP_201_CREATED
 )
 async def create_unit(unit: Unit | UnitInDB) -> UnitInDB:
+
     # find text the unit belongs to
     text = await db.get("texts", unit.text)
+
     if not text:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="The corresponding text does not exist",
         )
+
     # use all fields but "label" in the example to check for duplicate
-    example = {k: v for k, v in unit.mongo(exclude_unset=True).items() if k != "label"}
+    example = {k: v for k, v in unit.dict().items() if k != "label"}
     if await db.get_by_example("texts", example):
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="The unit conflicts with an existing one",
         )
-    return UnitInDB(
-        **await db.insert(
-            f"{text['slug']}_units", UnitInDB(**unit.mongo(exclude_unset=True))
-        )
-    )
+
+    return UnitInDB(**await db.insert(f"{text['slug']}_units", UnitInDB(**unit.dict())))
 
 
 @router.patch(
     "/text/update/{text_id}", response_model=TextInDB, status_code=status.HTTP_200_OK
 )
 async def update_text(text_id: str, text_update: TextUpdate):
+
     if not await db.update("texts", text_id, text_update):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Could not update text {text_id}",
         )
+
     text_data = await db.get("texts", text_id)
+
     if not text_data:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Could not return data for text {text_id}",
         )
+
     return TextInDB(**text_data)

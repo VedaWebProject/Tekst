@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from textrig import database as db
 from textrig.config import TextRigConfig, get_config
 from textrig.routers import admin, meta, text
 from textrig.tags import tags_metadata
@@ -30,7 +31,14 @@ app = FastAPI(
     redoc_url=_cfg.doc.redoc_url,
 )
 
+
 # register routers
 app.include_router(admin.router)
 app.include_router(meta.router)
 app.include_router(text.router)
+
+
+# initialize things
+@app.on_event("startup")
+async def on_startup():
+    await db.init()
