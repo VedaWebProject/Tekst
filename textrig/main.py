@@ -11,7 +11,7 @@ _cfg: TextRigConfig = get_config()
 
 # create app instance
 app = FastAPI(
-    root_path="" if _cfg.dev_mode else _cfg.root_path,
+    root_path=_cfg.root_path,
     title=_cfg.app_name,
     description=_cfg.info.description,
     version=_cfg.info.version,
