@@ -15,7 +15,7 @@ This is the "main" TextRig repository. While certain parts of the apllication co
 
 ## State of development
 
-Development on this software is in an early conceptual phase. At this point, there is no usable release or public instance. 
+Development on this software is in an early conceptual phase. At this point, there is no usable release or public instance.
 
 
 ## TextRig Repositories
@@ -24,6 +24,6 @@ The code and resources of the TextRig platform application are organized in the 
 
 | Repository | Description |
 | --- | --- |
-| [TextRig](https://github.com/VedaWebProject/TextRig) | This very repository. A place for general information, documentation and the resources needed to deploy an instance of the TextRig platform. |
-| [TextRig-client](https://github.com/VedaWebProject/TextRig-client) | The code base of the TextRig **client** application and the resources needed to deploy it. |
-| [TextRig-server](https://github.com/VedaWebProject/TextRig-server) | The code base of the TextRig **server** application and the resources needed to deploy it. |
+| [TextRig](https://github.com/VedaWebProject/textrig) | This very repository. A place for general information, documentation and the resources needed to deploy an instance of the TextRig platform. |
+| [textrig-client](https://github.com/VedaWebProject/textrig-client) | The code base of the TextRig **client** application and the resources needed to deploy it. |
+| [textrig-server](https://github.com/VedaWebProject/textrig-server) | The code base of the TextRig **server** application and the resources needed to deploy it. |
