@@ -4,7 +4,7 @@ tags_metadata = [
         "description": "Text-related operations",
         "externalDocs": {
             "description": "View external documentation",
-            "url": "https://github.com/VedaWebProject/TextRig-server",
+            "url": "https://github.com/VedaWebProject/textrig-server",
         },
     },
 ]
