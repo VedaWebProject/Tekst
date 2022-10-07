@@ -36,3 +36,16 @@ jobs:
     - name: Run tests
       if: always()
       run: poetry run pytest
+    - name: Get coverage
+      run: poetry run coverage json -q -o /dev/stdout | python3 -c "import sys, json; print(round(float(json.load(sys.stdin)['totals']['percent_covered_display']), 1))" | echo "COVERAGE=$(</dev/stdin)" >> $GITHUB_ENV
+    - name: Generate coverage badge
+      uses: schneegans/dynamic-badges-action@v1.4.0
+      with:
+        auth: ${{ secrets.GIST_SECRET }}
+        gistID: cd17e3ef6eb05cb28bd038cb409f2ee8
+        filename: coverage.json
+        label: Coverage
+        message: ${{ env.COVERAGE }}%
+        valColorRange: ${{ env.COVERAGE }}
+        maxColorRange: 100
+        minColorRange: 0
