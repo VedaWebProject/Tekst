@@ -1,5 +1,6 @@
-from textrig import logging
 import os
+
+from textrig import logging
 
 
 def test_logging_setup_without_errors(testing_config):
