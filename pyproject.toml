@@ -101,9 +101,6 @@ title = "TextRig - Test Coverage Report"
     shell = """
     DEV_MODE=true poetry run python3 -m textrig
     """
-    # shell = """
-    #     DEV_MODE=true poetry run uvicorn --reload --reload-dir textrig --log-level debug textrig.main:app
-    # """
 
     [tool.poe.tasks.check]
     help = "Run all checks on code base: tests, linting, code style, import order"
