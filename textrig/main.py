@@ -1,8 +1,11 @@
 from fastapi import FastAPI
 from textrig import database as db
 from textrig.config import TextRigConfig, get_config
+from textrig.logging import setup_logging
 from textrig.routers import admin, meta, text
 from textrig.tags import tags_metadata
+from textrig.logging import log
+import sys
 
 
 # get (possibly cached) config data
@@ -38,7 +41,11 @@ app.include_router(meta.router)
 app.include_router(text.router)
 
 
-# initialize things
+# initial setup for things
 @app.on_event("startup")
 async def on_startup():
-    await db.init()
+
+    print(file=sys.stderr)  # blank line for visual separation of app runs
+    setup_logging()  # set up logging to match prod/dev requirements
+    log.info(f"This is TextRig Server v{_cfg.info.version}")  # Hello World!
+    await db.init()  # run DB initialization routine

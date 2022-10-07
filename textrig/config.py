@@ -63,11 +63,16 @@ class TextRigConfig(BaseSettings):
     dev_mode: bool = False
     root_path: str = ""
     snippets_dir: str = "/snippets"
+    log_level: str = "info"
 
     # special domain
     db: DbConfig = DbConfig()  # db cfg (MongoDB)
     doc: DocConfig = DocConfig()  # doc cfg (SwaggerUI, Redoc, OpenAPI)
     info: InfoConfig = InfoConfig()  # general information cfg
+
+    @validator("log_level")
+    def uppercase_log_lvl(cls, v: str):
+        return v.upper()
 
     class Config:
         env_nested_delimiter = "__"
