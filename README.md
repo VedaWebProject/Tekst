@@ -1,5 +1,8 @@
 # TextRig Server
 
+![tests workflow](https://github.com/VedaWebProject/textrig-server/actions/workflows/tests.yml/badge.svg)
+![style workflow](https://github.com/VedaWebProject/textrig-server/actions/workflows/style.yml/badge.svg)
+
 This is the code repository for the **server** part of the TextRig platform. For general information on TextRig, please visit the main [TextRig repository](https://github.com/VedaWebProject/textrig).
 
 
