@@ -19,7 +19,7 @@ router = APIRouter(
 @router.post(
     "/text/create", response_model=TextInDB, status_code=status.HTTP_201_CREATED
 )
-async def create_text(text: Text) -> TextInDB:
+async def create_text(text: Text) -> dict:
 
     if await db.get("texts", text.slug, "slug"):
         raise HTTPException(
@@ -27,12 +27,12 @@ async def create_text(text: Text) -> TextInDB:
             detail="A text with an equal slug already exists",
         )
 
-    return TextInDB(**await db.insert("texts", text))
+    return await db.insert("texts", text)
 
 
 @router.post(
     "/text/import-sample-data",
-    response_model=dict,
+    response_model=dict[str, str],
     status_code=status.HTTP_201_CREATED,
     include_in_schema=_cfg.dev_mode,
 )
@@ -68,7 +68,7 @@ async def import_text(file: UploadFile) -> dict:
 @router.post(
     "/unit/create", response_model=UnitInDB, status_code=status.HTTP_201_CREATED
 )
-async def create_unit(unit: Unit | UnitInDB) -> UnitInDB:
+async def create_unit(unit: Unit | UnitInDB) -> dict:
 
     # find text the unit belongs to
     text = await db.get("texts", unit.text)
@@ -87,13 +87,13 @@ async def create_unit(unit: Unit | UnitInDB) -> UnitInDB:
             detail="The unit conflicts with an existing one",
         )
 
-    return UnitInDB(**await db.insert(f"{text['slug']}_units", UnitInDB(**unit.dict())))
+    return await db.insert(f"{text['slug']}_units", UnitInDB(**unit.dict()))
 
 
 @router.patch(
     "/text/update/{text_id}", response_model=TextInDB, status_code=status.HTTP_200_OK
 )
-async def update_text(text_id: str, text_update: TextUpdate):
+async def update_text(text_id: str, text_update: TextUpdate) -> dict:
 
     if not await db.update("texts", text_id, text_update):
         raise HTTPException(
@@ -109,4 +109,4 @@ async def update_text(text_id: str, text_update: TextUpdate):
             detail=f"Could not return data for text {text_id}",
         )
 
-    return TextInDB(**text_data)
+    return text_data

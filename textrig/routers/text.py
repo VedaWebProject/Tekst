@@ -16,7 +16,7 @@ async def get_all_texts(limit: int = 100) -> list[TextInDB]:
 
 
 @router.get("/get/{text_id}", response_model=TextInDB, status_code=status.HTTP_200_OK)
-async def get_text_by_id(text_id: str) -> TextInDB:
+async def get_text_by_id(text_id: str) -> dict:
     text = await db.get("texts", text_id)
     if not text:
         raise HTTPException(

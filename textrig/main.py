@@ -43,7 +43,7 @@ app.include_router(text.router)
 
 # initial setup for things
 @app.on_event("startup")
-async def on_startup():
+async def on_startup() -> None:
 
     print(file=sys.stderr)  # blank line for visual separation of app runs
     setup_logging()  # set up logging to match prod/dev requirements

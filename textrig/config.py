@@ -18,14 +18,14 @@ class DbConfig(BaseModel):
     name: str = "textrig"
 
     @validator("host", "password", pre=True)
-    def url_quote(cls, v):
+    def url_quote(cls, v) -> str:
         return quote(str(v).encode("utf8"), safe="")
 
     @validator("name", always=True)
-    def generate_db_name(cls, v):
+    def generate_db_name(cls, v) -> str:
         return safe_name(v)
 
-    def get_uri(self):
+    def get_uri(self) -> str:
         creds = f"{self.user}:{self.password}@" if self.user and self.password else ""
         return f"{self.protocol}://{creds}{self.host}:{str(self.port)}"
 
@@ -71,7 +71,7 @@ class TextRigConfig(BaseSettings):
     info: InfoConfig = InfoConfig()  # general information cfg
 
     @validator("log_level")
-    def uppercase_log_lvl(cls, v: str):
+    def uppercase_log_lvl(cls, v: str) -> str:
         return v.upper()
 
     class Config:
@@ -80,7 +80,7 @@ class TextRigConfig(BaseSettings):
 
 
 @lru_cache()
-def get_config():
+def get_config() -> TextRigConfig:
     return TextRigConfig(
         _env_file=".env.dev" if os.environ.get("DEV_MODE") else ".env.prod"
     )

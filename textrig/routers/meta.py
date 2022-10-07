@@ -9,8 +9,8 @@ router = APIRouter(
 )
 
 
-@router.get("", summary="Platform metadata")
-async def meta(cfg: TextRigConfig = Depends(get_config)):
+@router.get("", response_model=dict[str, str], summary="Platform metadata")
+async def meta(cfg: TextRigConfig = Depends(get_config)) -> dict:
     """
     Returns platform metadata, possibly customized for this platform instance.
     """

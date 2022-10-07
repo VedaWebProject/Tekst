@@ -8,7 +8,7 @@ from textrig.config import TextRigConfig, get_config
 _cfg: TextRigConfig = get_config()
 
 
-def setup_logging():
+def setup_logging() -> None:
 
     if "gunicorn" in os.environ.get("SERVER_SOFTWARE", ""):
 

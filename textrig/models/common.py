@@ -21,14 +21,14 @@ class PyObjectId(ObjectId):
         yield cls.validate
 
     @classmethod
-    def validate(cls, v):
+    def validate(cls, v) -> ObjectId:
         try:
             return ObjectId(str(v))
         except InvalidId:
             raise ValueError("Not a valid ObjectId")
 
     @classmethod
-    def __modify_schema__(cls, field_schema):
+    def __modify_schema__(cls, field_schema) -> None:
         field_schema.update(type="string")
 
 
@@ -41,7 +41,7 @@ class BaseModel(PydanticBaseModel):
             kwargs["id"] = kwargs.pop("_id")
         super().__init__(**kwargs)
 
-    def dict(self, for_mongo: bool = False, **kwargs):
+    def dict(self, for_mongo: bool = False, **kwargs) -> dict:
         parsed = super().dict(
             exclude_unset=kwargs.pop("exclude_unset", True),
             by_alias=kwargs.pop("by_alias", True),
