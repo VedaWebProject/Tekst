@@ -1,6 +1,6 @@
 import pytest
 from pydantic.error_wrappers import ValidationError
-from textrig.models.text import Text
+from textrig.models.text import Text, TextInDB
 
 
 def test_basic_validation():
@@ -26,3 +26,18 @@ def test_composition(dummy_data_text):
     text = dummy_data_text
     assert text.title == "Rigveda"
     assert len(text.levels) == 3
+
+
+def test_serialization(dummy_data_text):
+    text = dummy_data_text
+    dummy_id = "6331b6e05c474b9f8f19330f"
+    assert text.dict().get("title")
+    text = TextInDB(_id=dummy_id, **text.dict())
+    assert str(text.dict().get("id", None)) == dummy_id
+    assert str(text.dict(for_mongo=True).get("_id", None)) == dummy_id
+
+
+def test_deserialization():
+    data = {"title": "Foo", "locDelim": "+"}
+    t = Text(**data)
+    assert t.loc_delim == "+"

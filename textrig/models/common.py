@@ -4,13 +4,7 @@ from bson.objectid import InvalidId, ObjectId
 from pydantic import BaseModel as PydanticBaseModel
 from pydantic import Field
 from pydantic.main import ModelMetaclass
-
-
-def convert_field_to_camel_case(string: str) -> str:
-    return "".join(
-        word if index == 0 else word.capitalize()
-        for index, word in enumerate(string.split("_"))
-    )
+from textrig.utils.strings import snake_to_camel_case
 
 
 class PyObjectId(ObjectId):
@@ -54,7 +48,7 @@ class BaseModel(PydanticBaseModel):
         return parsed
 
     class Config:
-        alias_generator = convert_field_to_camel_case
+        alias_generator = snake_to_camel_case
 
 
 class ObjectInDB(PydanticBaseModel):

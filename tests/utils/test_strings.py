@@ -23,3 +23,7 @@ def test_safe_name():
 
 def test_remove_diacritics():
     assert strings.remove_diacritics("Hörglwàartŝ") == "Horglwaarts"
+
+
+def test_snake_to_camel_case():
+    assert strings.snake_to_camel_case("foo_bar_baz") == "fooBarBaz"
