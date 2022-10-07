@@ -92,7 +92,7 @@ title = "TextRig - Test Coverage Report"
     help = "Run test suite with pytest"
     interpreter = ["bash", "zsh"]
     shell = """
-        poetry run coverage run -m pytest && poetry run coverage report
+        poetry run coverage run -m pytest && poetry run coverage report -m
     """
 
     [tool.poe.tasks.run]
