@@ -35,8 +35,8 @@ jobs:
       uses: andymckay/cancel-action@0.2
     - name: Run tests
       if: always()
-      run: poetry run pytest
-    - name: Get coverage
+      run: poetry run coverage run -m pytest
+    - name: Read coverage percentage
       run: poetry run coverage json -q -o /dev/stdout | python3 -c "import sys, json; print(round(float(json.load(sys.stdin)['totals']['percent_covered_display']), 1))" | echo "COVERAGE=$(</dev/stdin)" >> $GITHUB_ENV
     - name: Generate coverage badge
       uses: schneegans/dynamic-badges-action@v1.4.0
