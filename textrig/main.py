@@ -1,11 +1,11 @@
+import sys
+
 from fastapi import FastAPI
 from textrig import database as db
 from textrig.config import TextRigConfig, get_config
-from textrig.logging import setup_logging
+from textrig.logging import log, setup_logging
 from textrig.routers import admin, meta, text
 from textrig.tags import tags_metadata
-from textrig.logging import log
-import sys
 
 
 # get (possibly cached) config data
