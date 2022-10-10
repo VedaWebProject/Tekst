@@ -47,5 +47,16 @@ async def on_startup() -> None:
 
     print(file=sys.stderr)  # blank line for visual separation of app runs
     setup_logging()  # set up logging to match prod/dev requirements
-    log.info(f"This is TextRig Server v{_cfg.info.version}")  # Hello World!
     await db.init()  # run DB initialization routine
+
+    # Hello World!
+    log.info(
+        f"TextRig Server v{_cfg.info.version} "
+        f"running in {'DEVELOPMENT' if _cfg.dev_mode else 'PRODUCTION'} MODE"
+    )
+
+    if _cfg.dev_mode:
+        log.info(
+            "Development server bound to "
+            f"http://{_cfg.dev_srv_host}:{_cfg.dev_srv_port}"
+        )

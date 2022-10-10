@@ -65,6 +65,10 @@ class TextRigConfig(BaseSettings):
     snippets_dir: str = "/snippets"
     log_level: str = "info"
 
+    # dev server socket binding
+    dev_srv_host: str = "127.0.0.1"
+    dev_srv_port: str = "8000"
+
     # special domain
     db: DbConfig = DbConfig()  # db cfg (MongoDB)
     doc: DocConfig = DocConfig()  # doc cfg (SwaggerUI, Redoc, OpenAPI)
