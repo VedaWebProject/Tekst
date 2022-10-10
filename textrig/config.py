@@ -63,9 +63,9 @@ class TextRigConfig(BaseSettings):
     dev_mode: bool = False
     root_path: str = ""
     snippets_dir: str = "/snippets"
-    log_level: str = "info"
+    log_level: str = "INFO"
 
-    # dev server socket binding
+    # dev server binding
     dev_srv_host: str = "127.0.0.1"
     dev_srv_port: str = "8000"
 
