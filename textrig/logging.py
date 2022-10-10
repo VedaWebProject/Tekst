@@ -46,7 +46,7 @@ def setup_logging() -> None:
 
         dev_log_fmt = (
             "{bold}{log_color}{levelname:8}{reset} {white}{message}{blue} "
-            "\u2022 {name} \u2022 {process}:{threadName} \u2022 {filename}:{lineno}"
+            "({name} - {process}:{threadName} - {filename}:{lineno})"
         )
 
         formatter = ColoredFormatter(
