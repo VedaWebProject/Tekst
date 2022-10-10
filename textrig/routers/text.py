@@ -1,6 +1,6 @@
 import textrig.database as db
 from fastapi import APIRouter, HTTPException, status
-from textrig.models.text import TextInDB
+from textrig.models.text import TextRead
 
 
 router = APIRouter(
@@ -10,12 +10,12 @@ router = APIRouter(
 )
 
 
-@router.get("/all", response_model=list[TextInDB], status_code=status.HTTP_200_OK)
-async def get_all_texts(limit: int = 100) -> list[TextInDB]:
+@router.get("/all", response_model=list[TextRead], status_code=status.HTTP_200_OK)
+async def get_all_texts(limit: int = 100) -> list[TextRead]:
     return await db.get_all("texts", limit=limit)
 
 
-@router.get("/get/{text_id}", response_model=TextInDB, status_code=status.HTTP_200_OK)
+@router.get("/get/{text_id}", response_model=TextRead, status_code=status.HTTP_200_OK)
 async def get_text_by_id(text_id: str) -> dict:
     text = await db.get("texts", text_id)
     if not text:

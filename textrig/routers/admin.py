@@ -3,7 +3,7 @@ import json
 import textrig.database as db
 from fastapi import APIRouter, HTTPException, UploadFile, status
 from textrig.config import TextRigConfig, get_config
-from textrig.models.text import Text, TextInDB, TextUpdate, Unit, UnitInDB
+from textrig.models.text import Text, TextRead, TextUpdate, Unit, UnitRead
 
 
 _cfg: TextRigConfig = get_config()
@@ -17,7 +17,7 @@ router = APIRouter(
 
 
 @router.post(
-    "/text/create", response_model=TextInDB, status_code=status.HTTP_201_CREATED
+    "/text/create", response_model=TextRead, status_code=status.HTTP_201_CREATED
 )
 async def create_text(text: Text) -> dict:
 
@@ -49,10 +49,10 @@ async def import_text(file: UploadFile) -> dict:
         data = json.loads(await file.read())
         result = dict()
         # import texts
-        texts = [TextInDB(**td) for td in data.get("texts", [])]
+        texts = [TextRead(**td) for td in data.get("texts", [])]
         result["texts"] = await db.insert_many("texts", texts)
         # import units
-        units = [UnitInDB(**ud) for ud in data.get("units", [])]
+        units = [UnitRead(**ud) for ud in data.get("units", [])]
         result["units"] = await db.insert_many("units", units)
     except Exception as e:
         raise HTTPException(
@@ -66,9 +66,9 @@ async def import_text(file: UploadFile) -> dict:
 
 
 @router.post(
-    "/unit/create", response_model=UnitInDB, status_code=status.HTTP_201_CREATED
+    "/unit/create", response_model=UnitRead, status_code=status.HTTP_201_CREATED
 )
-async def create_unit(unit: Unit | UnitInDB) -> dict:
+async def create_unit(unit: Unit | UnitRead) -> dict:
 
     # find text the unit belongs to
     text = await db.get("texts", unit.text)
@@ -87,11 +87,11 @@ async def create_unit(unit: Unit | UnitInDB) -> dict:
             detail="The unit conflicts with an existing one",
         )
 
-    return await db.insert(f"{text['slug']}_units", UnitInDB(**unit.dict()))
+    return await db.insert(f"{text['slug']}_units", UnitRead(**unit.dict()))
 
 
 @router.patch(
-    "/text/update/{text_id}", response_model=TextInDB, status_code=status.HTTP_200_OK
+    "/text/update/{text_id}", response_model=TextRead, status_code=status.HTTP_200_OK
 )
 async def update_text(text_id: str, text_update: TextUpdate) -> dict:
 

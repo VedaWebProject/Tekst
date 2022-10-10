@@ -16,12 +16,12 @@ class Unit(BaseModel):
     parent: PyObjectId | None = Field(None, description="ID of parent unit")
 
 
-class UnitUpdate(Unit, metaclass=AllOptional):
+class UnitRead(Unit, ObjectInDB):
 
     pass
 
 
-class UnitInDB(Unit, ObjectInDB):
+class UnitUpdate(Unit, metaclass=AllOptional):
 
     pass
 
@@ -83,11 +83,11 @@ class Text(BaseModel):
         }
 
 
-class TextUpdate(Text, metaclass=AllOptional):
+class TextRead(Text, ObjectInDB):
 
     pass
 
 
-class TextInDB(Text, ObjectInDB):
+class TextUpdate(Text, metaclass=AllOptional):
 
     pass

@@ -17,11 +17,11 @@ class Snippet(BaseModel):
         return safe_name(value, min_len=3, max_len=32)
 
 
-class SnippetUpdate(Snippet, metaclass=AllOptional):
+class SnippetRead(Snippet, ObjectInDB):
 
     pass
 
 
-class SnippetInDB(Snippet, ObjectInDB):
+class SnippetUpdate(Snippet, metaclass=AllOptional):
 
     pass
