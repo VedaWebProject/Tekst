@@ -1,5 +1,5 @@
-import textrig.database as db
 from fastapi import APIRouter, HTTPException, status
+from textrig.db import crud
 from textrig.models.text import Text, TextRead, TextUpdate
 
 
@@ -12,24 +12,24 @@ router = APIRouter(
 
 @router.get("", response_model=list[TextRead], status_code=status.HTTP_200_OK)
 async def get_all_texts(limit: int = 100) -> list[TextRead]:
-    return await db.get_all("texts", limit=limit)
+    return await crud.get_all("texts", limit=limit)
 
 
 @router.post("", response_model=TextRead, status_code=status.HTTP_201_CREATED)
 async def create_text(text: Text) -> dict:
 
-    if await db.get("texts", text.slug, "slug"):
+    if await crud.get("texts", text.slug, "slug"):
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="A text with an equal slug already exists",
         )
 
-    return await db.insert("texts", text)
+    return await crud.insert("texts", text)
 
 
 @router.get("/{text_id}", response_model=TextRead, status_code=status.HTTP_200_OK)
 async def get_text_by_id(text_id: str) -> dict:
-    text = await db.get("texts", text_id)
+    text = await crud.get("texts", text_id)
     if not text:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -41,13 +41,13 @@ async def get_text_by_id(text_id: str) -> dict:
 @router.patch("/{text_id}", response_model=TextRead, status_code=status.HTTP_200_OK)
 async def update_text(text_id: str, text_update: TextUpdate) -> dict:
 
-    if not await db.update("texts", text_id, text_update):
+    if not await crud.update("texts", text_id, text_update):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Could not update text {text_id}",
         )
 
-    text_data = await db.get("texts", text_id)
+    text_data = await crud.get("texts", text_id)
 
     if not text_data:
         raise HTTPException(

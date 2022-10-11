@@ -1,55 +1,16 @@
 from typing import Any, Type
 
-import pymongo
 from bson import ObjectId
 from bson.errors import InvalidId
 from fastapi import HTTPException, status
-from motor.motor_asyncio import AsyncIOMotorClient as DatabaseClient
-from motor.motor_asyncio import AsyncIOMotorDatabase as Database
 from pymongo.results import InsertManyResult, InsertOneResult, UpdateResult
 from textrig.config import TextRigConfig, get_config
+from textrig.db.client import Database, get_db
 from textrig.models.common import BaseModel
 
 
 _cfg: TextRigConfig = get_config()
-
-# init db connection
-_client: DatabaseClient = DatabaseClient(_cfg.db.get_uri())
-_db: Database = _client[_cfg.db.name]
-
-
-# database object getter for use as a dependency
-def get_db() -> Database:
-
-    return _db
-
-
-async def init() -> None:
-
-    # create indexes for "texts" collection
-    await _db["texts"].create_indexes(
-        [pymongo.IndexModel([("slug", pymongo.ASCENDING)], name="slug", unique=True)]
-    )
-
-    # create indexes for "units" collection
-    await _db["units"].create_indexes(
-        [
-            pymongo.IndexModel(
-                [
-                    ("text", pymongo.ASCENDING),
-                    ("level", pymongo.ASCENDING),
-                    ("index", pymongo.ASCENDING),
-                ],
-                name="text_level_index",
-            ),
-            pymongo.IndexModel(
-                [
-                    ("parent", pymongo.ASCENDING),
-                ],
-                name="parent",
-            ),
-        ]
-    )
+_db: Database = get_db()
 
 
 def _to_obj_id(obj_id: str | ObjectId) -> ObjectId:

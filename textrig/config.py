@@ -83,7 +83,7 @@ class TextRigConfig(BaseSettings):
         case_sensitive = False
 
 
-@lru_cache()
+@lru_cache
 def get_config() -> TextRigConfig:
     return TextRigConfig(
         _env_file=".env.dev" if os.environ.get("DEV_MODE") else ".env.prod"

@@ -1,9 +1,9 @@
 import json
 from typing import Any
 
-import textrig.database as db
 from fastapi import APIRouter, HTTPException, UploadFile, status
 from textrig.config import TextRigConfig, get_config
+from textrig.db import crud
 from textrig.logging import log
 from textrig.models.text import TextRead, UnitRead
 
@@ -39,8 +39,8 @@ async def import_text(file: UploadFile) -> dict:
         texts = [TextRead(**td) for td in data.get("texts", [])]
         units = [UnitRead(**ud) for ud in data.get("units", [])]
         result = dict(
-            texts=await db.insert_many("texts", texts),
-            units=await db.insert_many("units", units),
+            texts=await crud.insert_many("texts", texts),
+            units=await crud.insert_many("units", units),
         )
     except Exception as e:
         raise HTTPException(

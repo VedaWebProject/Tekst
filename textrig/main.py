@@ -1,8 +1,8 @@
 import sys
 
 from fastapi import FastAPI
-from textrig import database as db
 from textrig.config import TextRigConfig, get_config
+from textrig.db import indexes
 from textrig.logging import log, setup_logging
 from textrig.routers import admin, texts, uidata, units
 from textrig.tags import tags_metadata
@@ -48,7 +48,6 @@ async def on_startup() -> None:
 
     print(file=sys.stderr)  # blank line for visual separation of app runs
     setup_logging()  # set up logging to match prod/dev requirements
-    await db.init()  # run DB initialization routine
 
     # Hello World!
     log.info(
@@ -56,6 +55,11 @@ async def on_startup() -> None:
         f"running in {'DEVELOPMENT' if _cfg.dev_mode else 'PRODUCTION'} MODE"
     )
 
+    # create DB indexes
+    log.info("Creating DB indexes...")
+    await indexes.create_indexes()
+
+    # log dev server info
     if _cfg.dev_mode:
         log.info(
             "Development server bound to "

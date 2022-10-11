@@ -1,5 +1,5 @@
-import textrig.database as db
 from fastapi import APIRouter, HTTPException, status
+from textrig.db import crud
 from textrig.models.text import Unit, UnitRead
 
 
@@ -14,7 +14,7 @@ router = APIRouter(
 async def create_unit(unit: Unit) -> dict:
 
     # find text the unit belongs to
-    text = await db.get("texts", unit.text_id)
+    text = await crud.get("texts", unit.text_id)
 
     if not text:
         raise HTTPException(
@@ -24,10 +24,18 @@ async def create_unit(unit: Unit) -> dict:
 
     # use all fields but "label" in the example to check for duplicate
     example = {k: v for k, v in unit.dict().items() if k != "label"}
-    if await db.get_by_example("texts", example):
+    if await crud.get_by_example("texts", example):
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="The unit conflicts with an existing one",
         )
 
-    return await db.insert(f"{text['slug']}_units", UnitRead(**unit.dict()))
+    return await crud.insert(f"{text['slug']}_units", UnitRead(**unit.dict()))
+
+
+@router.get("", response_model=list[UnitRead], status_code=status.HTTP_200_OK)
+async def get_units(
+    text_id: str, level: int, index: int = 0, parent: str = None
+) -> dict:
+
+    pass
