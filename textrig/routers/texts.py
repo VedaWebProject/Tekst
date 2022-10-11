@@ -4,7 +4,7 @@ from textrig.models.text import TextRead
 
 
 router = APIRouter(
-    prefix="/text",
+    prefix="/texts",
     tags=["text"],
     responses={status.HTTP_404_NOT_FOUND: {"description": "Not found"}},
 )
