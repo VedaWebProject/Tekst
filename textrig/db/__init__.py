@@ -1,10 +1,10 @@
-from motor.motor_asyncio import AsyncIOMotorClient
+from motor.motor_asyncio import AsyncIOMotorClient as DatabaseClient
 from motor.motor_asyncio import AsyncIOMotorDatabase as Database
 from textrig.config import TextRigConfig, get_config
 
 
 _cfg: TextRigConfig = get_config()
-_client: AsyncIOMotorClient = AsyncIOMotorClient(_cfg.db.get_uri())
+_client: DatabaseClient = DatabaseClient(_cfg.db.get_uri())
 _db = _client[_cfg.db.name]
 
 

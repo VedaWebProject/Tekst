@@ -5,7 +5,7 @@ from bson.errors import InvalidId
 from fastapi import HTTPException, status
 from pymongo.results import InsertManyResult, InsertOneResult, UpdateResult
 from textrig.config import TextRigConfig, get_config
-from textrig.db.client import Database, get_db
+from textrig.db import Database, get_db
 from textrig.models.common import BaseModel
 
 
