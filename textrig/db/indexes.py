@@ -10,17 +10,18 @@ _index_models = {
     "units": [
         pymongo.IndexModel(
             [
-                ("textId", pymongo.ASCENDING),
+                ("textSlug", pymongo.ASCENDING),
                 ("level", pymongo.ASCENDING),
                 ("index", pymongo.ASCENDING),
             ],
-            name="textId_level_index",
+            name="textSlug_level_index",
         ),
         pymongo.IndexModel(
             [
+                ("textSlug", pymongo.ASCENDING),
                 ("parentId", pymongo.ASCENDING),
             ],
-            name="parentId",
+            name="textSlug_parentId",
         ),
     ],
 }

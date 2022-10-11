@@ -9,7 +9,7 @@ from textrig.utils.strings import safe_name
 class Unit(BaseModel):
     """A unit of text (e.g. chapter, paragraph, ...)"""
 
-    text_id: PyObjectId = Field(..., description="ID of text this unit belongs to")
+    text_slug: str = Field(..., description="Slug of the text this unit belongs to")
     parent_id: PyObjectId | None = Field(None, description="ID of parent unit")
     level: int = Field(..., description="Index of structure level this unit is on")
     index: int = Field(..., description="Position among all text units on this level")

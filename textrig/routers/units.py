@@ -15,7 +15,7 @@ router = APIRouter(
 async def create_unit(unit: Unit) -> dict:
 
     # find text the unit belongs to
-    text = await crud.get("texts", unit.text_id)
+    text = await crud.get("texts", unit.text_slug, field="slug")
 
     if not text:
         raise HTTPException(
@@ -31,19 +31,19 @@ async def create_unit(unit: Unit) -> dict:
             detail="The unit conflicts with an existing one",
         )
 
-    return await crud.insert(f"{text['slug']}_units", UnitRead(**unit.dict()))
+    return await crud.insert("units", unit)
 
 
 @router.get("", response_model=list[UnitRead], status_code=status.HTTP_200_OK)
 async def get_units(
-    text_id: str,
+    text_slug: str,
     level: int,
     index: int = None,
     parent_id: str = None,
     limit: int = 1000,
 ) -> list:
 
-    example = dict(text_id=ObjectId(text_id), level=level)
+    example = dict(text_slug=text_slug, level=level)
 
     if index is not None:
         example["index"] = index

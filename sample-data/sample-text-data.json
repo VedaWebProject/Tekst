@@ -3,6 +3,7 @@
         {
             "id": "6331b6e05c474b9f8f19330f",
             "title": "Rigveda",
+            "slug": "rigveda",
             "subtitle": "An ancient Indian collection of Vedic Sanskrit hymns",
             "levels": ["Book", "Hymn", "Stanza"]
         }
@@ -10,14 +11,14 @@
     "units": [
         {
             "id": "6331b6f45c474b9f8f193310",
-            "textId": "6331b6e05c474b9f8f19330f",
+            "textSlug": "rigveda",
             "level": 0,
             "index": 0,
             "label": "01"
         },
         {
             "id": "6331b7145c474b9f8f193311",
-            "textId": "6331b6e05c474b9f8f19330f",
+            "textSlug": "rigveda",
             "level": 1,
             "index": 0,
             "label": "001",
@@ -25,7 +26,7 @@
         },
         {
             "id": "6331b73b5c474b9f8f193313",
-            "textId": "6331b6e05c474b9f8f19330f",
+            "textSlug": "rigveda",
             "level": 1,
             "index": 1,
             "label": "002",
@@ -33,7 +34,7 @@
         },
         {
             "id": "6331b74a5c474b9f8f193314",
-            "textId": "6331b6e05c474b9f8f19330f",
+            "textSlug": "rigveda",
             "level": 2,
             "index": 0,
             "label": "01",
@@ -41,7 +42,7 @@
         },
         {
             "id": "6331b72a5c474b9f8f193312",
-            "textId": "6331b6e05c474b9f8f19330f",
+            "textSlug": "rigveda",
             "level": 2,
             "index": 1,
             "label": "02",
@@ -49,7 +50,7 @@
         },
         {
             "id": "6331b75a5c474b9f8f193315",
-            "textId": "6331b6e05c474b9f8f19330f",
+            "textSlug": "rigveda",
             "level": 2,
             "index": 2,
             "label": "01",
