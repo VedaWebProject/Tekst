@@ -67,7 +67,7 @@ class TextRigConfig(BaseSettings):
 
     # dev server binding
     dev_srv_host: str = "127.0.0.1"
-    dev_srv_port: str = "8000"
+    dev_srv_port: int = 8000
 
     # special domain
     db: DbConfig = DbConfig()  # db cfg (MongoDB)
