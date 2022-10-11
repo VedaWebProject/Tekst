@@ -1,3 +1,4 @@
+from bson import ObjectId
 from fastapi import APIRouter, HTTPException, status
 from textrig.db import crud
 from textrig.models.text import Unit, UnitRead
@@ -24,7 +25,7 @@ async def create_unit(unit: Unit) -> dict:
 
     # use all fields but "label" in the example to check for duplicate
     example = {k: v for k, v in unit.dict().items() if k != "label"}
-    if await crud.get_by_example("texts", example):
+    if await crud.get_one("texts", example):
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="The unit conflicts with an existing one",
@@ -35,7 +36,19 @@ async def create_unit(unit: Unit) -> dict:
 
 @router.get("", response_model=list[UnitRead], status_code=status.HTTP_200_OK)
 async def get_units(
-    text_id: str, level: int, index: int = 0, parent: str = None
-) -> dict:
+    text_id: str,
+    level: int,
+    index: int = None,
+    parent_id: str = None,
+    limit: int = 1000,
+) -> list:
 
-    pass
+    example = dict(text_id=ObjectId(text_id), level=level)
+
+    if index is not None:
+        example["index"] = index
+
+    if parent_id:
+        example["parent_id"] = ObjectId(parent_id)
+
+    return await crud.get_many("units", example=example, limit=limit)

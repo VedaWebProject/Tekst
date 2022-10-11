@@ -5,12 +5,13 @@ from bson.errors import InvalidId
 from fastapi import HTTPException, status
 from pymongo.results import InsertManyResult, InsertOneResult, UpdateResult
 from textrig.config import TextRigConfig, get_config
-from textrig.db import Database, get_db
+from textrig.db import coll
+from textrig.logging import log
 from textrig.models.common import BaseModel
+from textrig.utils.strings import keys_snake_to_camel_case
 
 
 _cfg: TextRigConfig = get_config()
-_db: Database = get_db()
 
 
 def _to_obj_id(obj_id: str | ObjectId) -> ObjectId:
@@ -34,7 +35,7 @@ async def update(
     if isinstance(update, BaseModel):
         updates = updates.dict(for_mongo=True)
 
-    result: UpdateResult = await _db[collection].update_one(
+    result: UpdateResult = await coll(collection).update_one(
         filter={"_id": _to_obj_id(doc_id)},
         update={"$set": updates},
     )
@@ -52,7 +53,7 @@ async def get(
     if field == "_id":
         value = _to_obj_id(value)
 
-    data = await _db[collection].find_one({field: value})
+    data = await coll(collection).find_one({field: value})
 
     if not data:
         return None
@@ -63,16 +64,20 @@ async def get(
     return data
 
 
-async def get_by_example(collection: str, example: dict) -> dict | None:
+async def get_one(collection: str, example: dict) -> dict | None:
 
-    return await _db[collection].find_one(example)
+    example = keys_snake_to_camel_case(example)
+    log.debug(f"Get one by example: {example}")
+
+    return await coll(collection).find_one(example)
 
 
-async def get_all(
-    collection: str, example: dict = {}, limit: int = 10
-) -> list[BaseModel]:
+async def get_many(collection: str, example: dict = {}, limit: int = 10) -> list[dict]:
 
-    cursor = _db[collection].find(example)
+    example = keys_snake_to_camel_case(example)
+    log.debug(f"Get many by example: {example} (limit: {limit})")
+
+    cursor = coll(collection).find(example)
     return await cursor.to_list(length=min([limit, 1000]))
 
 
@@ -81,7 +86,7 @@ async def insert(collection: str, doc: BaseModel | dict) -> dict:
     if isinstance(doc, BaseModel):
         doc = doc.dict(for_mongo=True)
 
-    result: InsertOneResult = await _db[collection].insert_one(doc)
+    result: InsertOneResult = await coll(collection).insert_one(doc)
 
     if not result.acknowledged:
         raise IOError(f"Error inserting document: {str(doc)}")
@@ -94,7 +99,7 @@ async def insert_many(collection: str, docs: list[BaseModel] | list[dict]) -> li
     if not type(docs) == list[dict]:
         docs = [d.dict(for_mongo=True) for d in docs]
 
-    result: InsertManyResult = await _db[collection].insert_many(docs)
+    result: InsertManyResult = await coll(collection).insert_many(docs)
 
     if not result.acknowledged:
         raise IOError(f"Error inserting {len(docs)} documents into DB")

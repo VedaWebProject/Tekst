@@ -12,7 +12,7 @@ router = APIRouter(
 
 @router.get("", response_model=list[TextRead], status_code=status.HTTP_200_OK)
 async def get_all_texts(limit: int = 100) -> list[TextRead]:
-    return await crud.get_all("texts", limit=limit)
+    return await crud.get_many("texts", limit=limit)
 
 
 @router.post("", response_model=TextRead, status_code=status.HTTP_201_CREATED)

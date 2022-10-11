@@ -46,3 +46,7 @@ def snake_to_camel_case(string: str) -> str:
         word if index == 0 else word.capitalize()
         for index, word in enumerate(string.split("_"))
     )
+
+
+def keys_snake_to_camel_case(dictionary: dict) -> dict:
+    return {snake_to_camel_case(k): v for k, v in dictionary.items()}

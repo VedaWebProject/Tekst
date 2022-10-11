@@ -1,9 +1,6 @@
 # create indexes for "texts" collection
 import pymongo
-from textrig.db import Database, get_db
-
-
-_db: Database = get_db()
+from textrig.db import coll
 
 
 _index_models = {
@@ -33,4 +30,4 @@ async def create_indexes():
 
     # create indexes
     for collection, indexes in _index_models.items():
-        await _db[collection].create_indexes(indexes)
+        await coll(collection).create_indexes(indexes)
