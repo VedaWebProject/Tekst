@@ -11,13 +11,18 @@ router = APIRouter(
 )
 
 
-@router.get("", response_model=dict[str, Any], summary="Platform metadata")
-async def meta(cfg: TextRigConfig = Depends(get_config)) -> dict:
+@router.get(
+    "",
+    response_model=dict[str, Any],
+    summary="Data the client needs to display in the UI",
+)
+async def uidata(cfg: TextRigConfig = Depends(get_config)) -> dict:
     """
     Returns all UI data at once
     """
     return {
         "platform": await uidata_platform(cfg),
+        "help": await uidata_help(),
     }
 
 
@@ -26,13 +31,17 @@ async def uidata_platform(cfg: TextRigConfig = Depends(get_config)) -> dict:
     """
     Returns platform metadata, possibly customized for this platform instance.
     """
+    return dict(title=cfg.app_name, **cfg.info.dict())
+
+
+@router.get("/help", response_model=dict[str, str], summary="Help texts")
+async def uidata_help(cfg: TextRigConfig = Depends(get_config)) -> dict:
+    """
+    Returns all help texts.
+    """
+    # TODO: Load help texts from Markdown source
     return {
-        "title": f"{cfg.app_name}{' (dev mode)' if cfg.dev_mode else ''}",
-        "description": cfg.info.description,
-        "website": cfg.info.website,
-        "platform": cfg.info.platform,
-        "platform_website": cfg.info.platform_website,
-        "version": cfg.info.version,
-        "license": cfg.info.license,
-        "license_url": cfg.info.license_url,
+        "foo": "foo",
+        "bar": "bar",
+        "baz": "baz",
     }

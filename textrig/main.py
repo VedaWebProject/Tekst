@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from textrig import database as db
 from textrig.config import TextRigConfig, get_config
 from textrig.logging import log, setup_logging
-from textrig.routers import admin, texts, uidata
+from textrig.routers import admin, texts, uidata, units
 from textrig.tags import tags_metadata
 
 
@@ -39,6 +39,7 @@ app = FastAPI(
 app.include_router(admin.router)
 app.include_router(uidata.router)
 app.include_router(texts.router)
+app.include_router(units.router)
 
 
 # initial setup for things

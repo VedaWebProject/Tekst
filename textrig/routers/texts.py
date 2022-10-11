@@ -1,21 +1,33 @@
 import textrig.database as db
 from fastapi import APIRouter, HTTPException, status
-from textrig.models.text import TextRead
+from textrig.models.text import Text, TextRead, TextUpdate
 
 
 router = APIRouter(
     prefix="/texts",
-    tags=["text"],
+    tags=["texts"],
     responses={status.HTTP_404_NOT_FOUND: {"description": "Not found"}},
 )
 
 
-@router.get("/all", response_model=list[TextRead], status_code=status.HTTP_200_OK)
+@router.get("", response_model=list[TextRead], status_code=status.HTTP_200_OK)
 async def get_all_texts(limit: int = 100) -> list[TextRead]:
     return await db.get_all("texts", limit=limit)
 
 
-@router.get("/get/{text_id}", response_model=TextRead, status_code=status.HTTP_200_OK)
+@router.post("", response_model=TextRead, status_code=status.HTTP_201_CREATED)
+async def create_text(text: Text) -> dict:
+
+    if await db.get("texts", text.slug, "slug"):
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="A text with an equal slug already exists",
+        )
+
+    return await db.insert("texts", text)
+
+
+@router.get("/{text_id}", response_model=TextRead, status_code=status.HTTP_200_OK)
 async def get_text_by_id(text_id: str) -> dict:
     text = await db.get("texts", text_id)
     if not text:
@@ -24,3 +36,23 @@ async def get_text_by_id(text_id: str) -> dict:
             detail="A text with the given ID cannot be found",
         )
     return text
+
+
+@router.patch("/{text_id}", response_model=TextRead, status_code=status.HTTP_200_OK)
+async def update_text(text_id: str, text_update: TextUpdate) -> dict:
+
+    if not await db.update("texts", text_id, text_update):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Could not update text {text_id}",
+        )
+
+    text_data = await db.get("texts", text_id)
+
+    if not text_data:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Could not return data for text {text_id}",
+        )
+
+    return text_data
