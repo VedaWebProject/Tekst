@@ -1,11 +1,23 @@
 import logging
 import os
 
-from fastapi.logger import logger as fastapi_logger
 from textrig.config import TextRigConfig, get_config
 
 
 _cfg: TextRigConfig = get_config()
+
+
+def _get_relevant_loggers() -> list[logging.Logger]:
+
+    loggers = [
+        "textrig",
+        "fastapi",
+        "uvicorn.access",
+        "uvicorn.default",
+        "uvicorn.error",
+    ]
+
+    return [logging.getLogger(logger) for logger in loggers]
 
 
 def setup_logging() -> None:
@@ -17,24 +29,15 @@ def setup_logging() -> None:
         funneling all the logs into the gunicorn log handlers...
         """
 
-        # collect loggers
-        root_logger = logging.getLogger()
+        # if running with gunicorn, we're letting gunicorn handle all logging
         gunicorn_logger = logging.getLogger("gunicorn.error")
-        uvicorn_access_logger = logging.getLogger("uvicorn.access")
-        uvicorn_default_logger = logging.getLogger("uvicorn.default")
-
-        # Use gunicorn error handlers for root, uvicorn, and fastapi loggers
-        root_logger.handlers = gunicorn_logger.handlers
-        uvicorn_access_logger.handlers = gunicorn_logger.handlers
-        uvicorn_default_logger.handlers = gunicorn_logger.handlers
-        fastapi_logger.handlers = gunicorn_logger.handlers
-
-        # Pass on logging levels for root, uvicorn, and fastapi loggers
-        root_logger.setLevel(_cfg.log_level)
         gunicorn_logger.setLevel(_cfg.log_level)
-        uvicorn_access_logger.setLevel(_cfg.log_level)
-        uvicorn_default_logger.setLevel(_cfg.log_level)
-        fastapi_logger.setLevel(_cfg.log_level)
+
+        # Use gunicorn error handlers for textrig-, uvicorn-, and fastapi loggers;
+        # Pass on logging levels for textrig-, uvicorn-, and fastapi loggers
+        for logger in _get_relevant_loggers():
+            logger.handlers = gunicorn_logger.handlers
+            logger.setLevel(_cfg.log_level)
 
     elif _cfg.dev_mode:
 
@@ -44,6 +47,7 @@ def setup_logging() -> None:
 
         from colorlog import ColoredFormatter, StreamHandler
 
+        # easy on the eye, no timestamps. perfect for development.
         dev_log_fmt = (
             "{bold}{log_color}{levelname:8}{reset} {white}{message}{blue} "
             "({name} - {process}:{threadName} - {filename}:{lineno})"
@@ -67,9 +71,9 @@ def setup_logging() -> None:
         handler = StreamHandler()
         handler.setFormatter(formatter)
 
-        root_logger = logging.getLogger()
-        root_logger.addHandler(handler)
-        root_logger.setLevel(_cfg.log_level)
+        for logger in _get_relevant_loggers():
+            logger.addHandler(handler)
+            logger.setLevel(_cfg.log_level)
 
     else:
 
