@@ -6,7 +6,6 @@ from fastapi import HTTPException, status
 from pymongo.results import InsertManyResult, InsertOneResult, UpdateResult
 from textrig.config import TextRigConfig, get_config
 from textrig.db import coll
-from textrig.logging import log
 from textrig.models.common import BaseModel
 from textrig.utils.strings import keys_snake_to_camel_case
 
@@ -43,7 +42,7 @@ async def update(
     return result.acknowledged
 
 
-async def get(
+async def find_one(
     collection: str, value: Any, field: str = "_id", model: Type[BaseModel] = None
 ) -> dict | None | BaseModel:
 
@@ -64,24 +63,20 @@ async def get(
     return data
 
 
-async def get_one(collection: str, example: dict) -> dict | None:
+async def find_one_by_example(collection: str, example: dict) -> dict | None:
 
     example = keys_snake_to_camel_case(example)
-    log.debug(f"Get one by example: {example}")
-
     return await coll(collection).find_one(example)
 
 
-async def get_many(collection: str, example: dict = {}, limit: int = 10) -> list[dict]:
+async def find(collection: str, example: dict = {}, limit: int = 10) -> list[dict]:
 
     example = keys_snake_to_camel_case(example)
-    log.debug(f"Get many by example: {example} (limit: {limit})")
-
     cursor = coll(collection).find(example)
     return await cursor.to_list(length=min([limit, 1000]))
 
 
-async def insert(collection: str, doc: BaseModel | dict) -> dict:
+async def insert_one(collection: str, doc: BaseModel | dict) -> dict:
 
     if isinstance(doc, BaseModel):
         doc = doc.dict(for_mongo=True)
@@ -91,7 +86,7 @@ async def insert(collection: str, doc: BaseModel | dict) -> dict:
     if not result.acknowledged:
         raise IOError(f"Error inserting document: {str(doc)}")
 
-    return await get(collection, result.inserted_id)
+    return await find_one(collection, result.inserted_id)
 
 
 async def insert_many(collection: str, docs: list[BaseModel] | list[dict]) -> list[str]:

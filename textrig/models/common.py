@@ -47,6 +47,10 @@ class BaseModel(PydanticBaseModel):
 
         return parsed
 
+    @classmethod
+    def field_names(cls, alias: bool = False):
+        return list(cls.schema(alias).get("properties").keys())
+
     class Config:
         alias_generator = snake_to_camel_case
 

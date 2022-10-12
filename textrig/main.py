@@ -2,9 +2,10 @@ import sys
 
 from fastapi import FastAPI
 from textrig.config import TextRigConfig, get_config
+from textrig.db import client as db_client
 from textrig.db import indexes
 from textrig.logging import log, setup_logging
-from textrig.routers import admin, texts, uidata, units
+from textrig.routers import admin, texts, uidata
 from textrig.tags import tags_metadata
 
 
@@ -39,10 +40,8 @@ app = FastAPI(
 app.include_router(admin.router)
 app.include_router(uidata.router)
 app.include_router(texts.router)
-app.include_router(units.router)
 
 
-# initial setup for things
 @app.on_event("startup")
 async def on_startup() -> None:
 
@@ -56,7 +55,7 @@ async def on_startup() -> None:
     )
 
     # create DB indexes
-    log.info("Creating DB indexes...")
+    log.info("Creating database indexes")
     await indexes.create_indexes()
 
     # log dev server info
@@ -65,3 +64,10 @@ async def on_startup() -> None:
             "Development server bound to "
             f"http://{_cfg.dev_srv_host}:{_cfg.dev_srv_port}"
         )
+
+
+@app.on_event("shutdown")
+async def on_shutdown():
+
+    log.info("Closing database client")
+    db_client.close()

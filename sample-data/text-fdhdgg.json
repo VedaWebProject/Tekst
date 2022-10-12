@@ -1,0 +1,44 @@
+{
+    "title": "Fuchs, du hast die Gans gestohlen",
+    "slug": "fdhdgg",
+    "subtitle": "Ein deutschsprachiges Volkslied von 1824",
+    "levels": ["Strophe", "Zeile"],
+    "locDelim": ",",
+    "structure": [
+        {
+            "label": "1",
+            "units": [
+                { "label": "1" },
+                { "label": "2" },
+                { "label": "3" },
+                { "label": "4" }
+            ]
+        },
+        {
+            "label": "2",
+            "units": [
+                { "label": "1" },
+                { "label": "2" },
+                { "label": "3" },
+                {
+                    "label": "4",
+                    "units": [
+                        { "label": "1" },
+                        { "label": "2" },
+                        { "label": "3" },
+                        { "label": "4" }
+                    ]
+                }
+            ]
+        },
+        {
+            "label": "3",
+            "units": [
+                { "label": "1" },
+                { "label": "2" },
+                { "label": "3" },
+                { "label": "4" }
+            ]
+        }
+    ]
+}

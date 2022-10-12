@@ -5,15 +5,10 @@ from textrig.config import TextRigConfig, get_config
 
 
 _cfg: TextRigConfig = get_config()
-_client: DatabaseClient = DatabaseClient(_cfg.db.get_uri())
-_db = _client[_cfg.db.name]
 
-
-# database object getter for use as a dependency
-def db() -> Database:
-
-    return _db
+client: DatabaseClient = DatabaseClient(_cfg.db.get_uri())
+db: Database = client[_cfg.db.name]
 
 
 def coll(name: str) -> Collection:
-    return _db[name]
+    return db[name]
