@@ -4,8 +4,8 @@ from functools import lru_cache
 import pytest
 import requests
 from fastapi.testclient import TestClient
+from textrig.app import app as app_instance
 from textrig.config import TextRigConfig, get_config
-from textrig.main import app as app_instance
 from textrig.models.text import Text
 
 
