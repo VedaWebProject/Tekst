@@ -1,11 +1,11 @@
 import json
 
-from bson import ObjectId
 from fastapi import APIRouter, HTTPException, UploadFile, status
 from textrig.config import TextRigConfig, get_config
 from textrig.db import crud
 from textrig.logging import log
 from textrig.models.text import Text, TextRead, TextUpdate, Unit, UnitRead
+from textrig.routers.units import create_unit
 
 
 _cfg: TextRigConfig = get_config()
@@ -92,11 +92,11 @@ async def import_text(file: UploadFile) -> dict:
         return text
 
     except Exception as e:
-        raise e
-        # raise HTTPException(
-        #     status_code=status.HTTP_400_BAD_REQUEST,
-        #     detail=f"Invalid import data: {str(e)}",
-        # )
+        log.error(e)
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Invalid import data: {str(e)}",
+        )
     finally:
         await file.close()
 
@@ -132,46 +132,3 @@ async def update_text(text_id: str, text_update: TextUpdate) -> dict:
         )
 
     return text_data
-
-
-@router.post("/units", response_model=UnitRead, status_code=status.HTTP_201_CREATED)
-async def create_unit(unit: Unit) -> dict:
-
-    # find text the unit belongs to
-    text = await crud.find_one("texts", unit.text_slug, field="slug")
-
-    if not text:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="The corresponding text does not exist",
-        )
-
-    # use all fields but "label" in the example to check for duplicate
-    example = {k: v for k, v in unit.dict().items() if k != "label"}
-    if await crud.find_one_by_example("texts", example):
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="The unit conflicts with an existing one",
-        )
-
-    return await crud.insert_one("units", unit)
-
-
-@router.get("/units", response_model=list[UnitRead], status_code=status.HTTP_200_OK)
-async def get_units(
-    text_slug: str,
-    level: int,
-    index: int = None,
-    parent_id: str = None,
-    limit: int = 1000,
-) -> list:
-
-    example = dict(text_slug=text_slug, level=level)
-
-    if index is not None:
-        example["index"] = index
-
-    if parent_id:
-        example["parent_id"] = ObjectId(parent_id)
-
-    return await crud.find("units", example=example, limit=limit)
