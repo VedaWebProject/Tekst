@@ -15,10 +15,13 @@ pytest fixtures go in here...
 """
 
 
-def get_db_client_override() -> DatabaseClient:
+async def get_db_client_override() -> DatabaseClient:
     cfg: TextRigConfig = get_config()
     db_client = get_client(cfg.db.get_uri())
-    return db_client
+    yield db_client
+    # clean up
+    await db_client.drop_database(cfg.db.name)
+    db_client.close()
 
 
 @pytest.fixture
