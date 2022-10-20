@@ -39,7 +39,7 @@ def setup_logging() -> None:
             logger.handlers = gunicorn_logger.handlers
             logger.setLevel(_cfg.log_level)
 
-    elif _cfg.dev_mode:
+    else:
 
         """
         Colorful logging setup for development (app ran by uvicorn)
@@ -53,7 +53,7 @@ def setup_logging() -> None:
             "({name} - {process}:{threadName} - {filename}:{lineno})"
         )
 
-        formatter = ColoredFormatter(
+        dev_log_formatter = ColoredFormatter(
             dev_log_fmt,
             datefmt=None,
             reset=True,
@@ -68,21 +68,14 @@ def setup_logging() -> None:
             style="{",
         )
 
-        handler = StreamHandler()
-        handler.setFormatter(formatter)
+        dev_log_handler = StreamHandler()
+        dev_log_handler.setFormatter(dev_log_formatter)
 
         for logger in _get_relevant_loggers():
-            logger.addHandler(handler)
+            for handler in logger.handlers:
+                logger.removeHandler(handler)
+            logger.addHandler(dev_log_handler)
             logger.setLevel(_cfg.log_level)
-
-    else:
-
-        """
-        A possible case: Production use without gunicorn (e.g. in a cluster).
-        Not planned, just a placeholder...
-        """
-
-        pass
 
 
 log = logging.getLogger("textrig")

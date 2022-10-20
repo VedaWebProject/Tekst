@@ -35,7 +35,7 @@ async def uidata_platform(cfg: TextRigConfig = Depends(get_config)) -> dict:
 
 
 @router.get("/help", response_model=dict[str, str], summary="Help texts")
-async def uidata_help(cfg: TextRigConfig = Depends(get_config)) -> dict:
+async def uidata_help() -> dict:
     """
     Returns all help texts.
     """

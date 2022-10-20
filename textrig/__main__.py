@@ -11,4 +11,5 @@ if __name__ == "__main__":
         log_config=None,
         host=_cfg.dev_srv_host,
         port=_cfg.dev_srv_port,
+        env_file=".env.dev",
     )

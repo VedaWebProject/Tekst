@@ -3,7 +3,7 @@ import os
 from textrig import logging
 
 
-def test_logging_setup_without_errors(testing_config):
+def test_logging_setup_without_errors():
     os.environ["DEV_MODE"] = "false"
     logging.setup_logging()
     logging.log.info("foo bar")

@@ -1,6 +1,8 @@
 # create indexes for "texts" collection
 import pymongo
-from textrig.db import coll
+from motor.motor_asyncio import AsyncIOMotorDatabase as Database
+from textrig.config import TextRigConfig, get_config
+from textrig.dependencies import get_db, get_db_client
 
 
 _index_models = {
@@ -27,8 +29,16 @@ _index_models = {
 }
 
 
-async def create_indexes():
+async def create_indexes(cfg: TextRigConfig = get_config()):
+    """
+    Creates all necessary database indexes. Unfortunately, because FastAPI dependency
+    injection is not available during startup/shutdown events, we cannot properly use
+    the DB dependency here. Instead, we're forced to serve the dependency functions
+    the config that's passed to this function (which will be "manually" fetched) :(
+    """
+
+    db: Database = get_db(get_db_client(cfg), cfg)
 
     # create indexes
     for collection, indexes in _index_models.items():
-        await coll(collection).create_indexes(indexes)
+        await db[collection].create_indexes(indexes)
