@@ -21,6 +21,9 @@ jobs:
         image: mongo:5.0.9
         ports:
           - 27017:27017
+        env:
+          MONGO_INITDB_ROOT_USERNAME: root
+          MONGO_INITDB_ROOT_PASSWORD: root
     defaults:
       run:
         working-directory: .
