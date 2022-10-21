@@ -1,16 +1,15 @@
-version: '3.1'
+version: "3.9"
 
 services:
 
-  textrig-server:
+  app:
     build:
-      context: ..
-      dockerfile: docker/Dockerfile
+      context: .
+      target: prod
     restart: always
     ports:
       - 127.0.0.1:8000:8000
-    env_file:
-    - .env.prod
+    env_file: [.env.prod]
 
   mongo:
     image: mongo:5.0.9
