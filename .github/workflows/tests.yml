@@ -16,17 +16,22 @@ on:
 jobs:
   tests:
     runs-on: ubuntu-22.04
+    services:
+      mongo:
+        image: mongo:5.0.9
+        ports:
+          - 27017:27017
     defaults:
       run:
         working-directory: .
     steps:
     - uses: actions/checkout@v3
-    - name: Install poetry
-      run: pipx install poetry
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
     - uses: actions/setup-python@v4
       with:
         python-version: '3.10'
-        cache: 'poetry'
+        cache: ${{ !env.ACT && 'poetry' || '' }}
         cache-dependency-path: 'poetry.lock'
     - name: Install dependencies
       run: poetry install
