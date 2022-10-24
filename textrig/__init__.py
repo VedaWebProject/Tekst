@@ -17,4 +17,6 @@ pkg_meta = dict(
     website=data["Home-page"],
 )
 
+__version__ = pkg_meta["version"]
+
 del metadata, data
