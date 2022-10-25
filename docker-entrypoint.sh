@@ -2,7 +2,7 @@
 
 set -e
 
-. /opt/pysetup/.venv/bin/activate
+. /textrig/.venv/bin/activate
 
 # misc setup logic...
 
