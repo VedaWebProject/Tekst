@@ -19,7 +19,6 @@ main-deps:
     ENV POETRY_NO_INTERACTION=1
     ENV PATH="/root/.local/bin:$VENV_PATH/bin:$PATH"
 
-    RUN apt-get update && apt-get install --no-install-recommends -y curl
     RUN python3 -m pip install pipx && pipx install poetry==$POETRY_VERSION
 
     COPY pyproject.toml poetry.lock* ./
@@ -36,13 +35,16 @@ dev-deps:
 build:
 
     FROM +main-deps
+
+    RUN poetry run pip install --upgrade setuptools wheel
+
     COPY --dir textrig ./
     COPY README.md LICENSE MANIFEST.in ./
 
-    RUN poetry run pip install --upgrade setuptools wheel
     RUN poetry build
 
     SAVE ARTIFACT ./dist/* dist/
+    SAVE ARTIFACT ./dist/* AS LOCAL dist/
 
 
 prod-env:
@@ -60,21 +62,24 @@ prod-env:
 
 prod:
 
-    COPY --dir +prod-env/.venv/ ./
-    COPY ./gunicorn_conf.py ./docker-entrypoint.sh ./
-    RUN chmod +x docker-entrypoint.sh
-
-    ARG TEXTRIG_VERSION=$(' \
-        . .venv/bin/activate && \
-        python3 -c "from textrig import __version__ as v; print(v)" \
-    ')
+    RUN apt-get update && apt-get install --no-install-recommends -y curl
 
     RUN groupadd -g 1337 textrig && \
         useradd -m -u 1337 -g textrig textrig
     USER textrig
 
     HEALTHCHECK --interval=2m --timeout=5s --retries=3 --start-period=30s \
-        CMD curl -f http://localhost/ || exit 1
+        CMD curl -f http://localhost:8000 || exit 1
+
+    COPY --dir +prod-env/.venv/ ./
+
+    ARG TEXTRIG_VERSION=$(' \
+        . .venv/bin/activate && \
+        python3 -c "from textrig import __version__ as v; print(v)" \
+    ')
+
+    COPY ./gunicorn_conf.py ./docker-entrypoint.sh ./
+    RUN chmod +x docker-entrypoint.sh
 
     EXPOSE 8000
 
