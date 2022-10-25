@@ -12,7 +12,7 @@ ENV PIP_NO_CACHE_DIR=1
 ENV VENV_PATH=/textrig/.venv
 
 
-main-deps:
+build-base:
 
     ENV POETRY_VERSION=1.2.2
     ENV POETRY_VIRTUALENVS_IN_PROJECT=true
@@ -22,69 +22,75 @@ main-deps:
     RUN python3 -m pip install pipx && pipx install poetry==$POETRY_VERSION
 
     COPY pyproject.toml poetry.lock* ./
-    RUN poetry run pip install --upgrade pip
-    RUN poetry install --no-root --only main --sync
+    RUN poetry run pip install --upgrade pip wheel setuptools
 
 
-dev-deps:
+deps:
 
-    FROM +main-deps
-    RUN poetry install --no-root --sync
+    FROM +build-base
+    ARG DEV_DEPS=
+
+    RUN poetry export \
+        ${DEV_DEPS:+--with dev} \
+        --without-hashes \
+        --without-urls \
+        --format requirements.txt \
+        --output requirements.txt
+    RUN poetry run pip wheel -r requirements.txt --wheel-dir=wheels
+
+    SAVE ARTIFACT wheels /wheels
+    SAVE ARTIFACT requirements.txt
 
 
 build:
 
-    FROM +main-deps
-
-    RUN poetry run pip install --upgrade setuptools wheel
+    FROM +build-base
 
     COPY --dir textrig ./
     COPY README.md LICENSE MANIFEST.in ./
 
     RUN poetry build
 
-    SAVE ARTIFACT ./dist/* dist/
+    SAVE ARTIFACT ./dist
     SAVE ARTIFACT ./dist/* AS LOCAL dist/
-
-
-prod-env:
-
-    FROM +main-deps
-    COPY +build/dist/*.whl ./dist/
-
-    RUN poetry run pip install \
-            "uvicorn[standard]>=0.18,<1.0" \
-            "gunicorn>=20.1,<21.0" && \
-        poetry run pip install dist/*.whl
-
-    SAVE ARTIFACT "$VENV_PATH"/* .venv/
 
 
 prod:
 
+    # install gunicorn and uvicorn workers
+    RUN python3 -m pip install \
+        "uvicorn[standard]>=0.18,<1.0" \
+        "gunicorn>=20.1,<21.0"
+
+    # instal curl (for health check)
     RUN apt-get update && apt-get install --no-install-recommends -y curl
+
+    # copy and install dependencies
+    COPY --dir +deps/wheels ./
+    COPY +deps/requirements.txt ./
+    RUN python3 -m pip install --no-index --find-links=wheels -r requirements.txt
+
+    # copy and install app
+    COPY --dir +build/dist ./
+    RUN python3 -m pip install dist/*.whl
+
+    # cleanup
+    RUN rm -rf dist wheels requirements.txt
+
+    COPY ./gunicorn_conf.py ./
+
+    HEALTHCHECK --interval=2m --timeout=5s --retries=3 --start-period=30s \
+        CMD curl -f http://localhost:8000 || exit 1
 
     RUN groupadd -g 1337 textrig && \
         useradd -m -u 1337 -g textrig textrig
     USER textrig
 
-    HEALTHCHECK --interval=2m --timeout=5s --retries=3 --start-period=30s \
-        CMD curl -f http://localhost:8000 || exit 1
-
-    COPY --dir +prod-env/.venv/ ./
-
-    ARG TEXTRIG_VERSION=$(' \
-        . .venv/bin/activate && \
-        python3 -c "from textrig import __version__ as v; print(v)" \
-    ')
-
-    COPY ./gunicorn_conf.py ./docker-entrypoint.sh ./
-    RUN chmod +x docker-entrypoint.sh
-
     EXPOSE 8000
 
-    ENTRYPOINT ["/textrig/docker-entrypoint.sh"]
-    CMD ["textrig.app:app", "--config", "gunicorn_conf.py"]
+    ENTRYPOINT ["gunicorn", "textrig.app:app", "--config", "gunicorn_conf.py"]
 
+    # save Docker image
+    ARG TEXTRIG_VERSION=$('python3 -c "from textrig import __version__ as v; print(v)"')
     SAVE IMAGE "textrig-server:$TEXTRIG_VERSION"
     SAVE IMAGE "textrig-server:latest"
