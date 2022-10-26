@@ -37,7 +37,7 @@ jobs:
         cache: ${{ !env.ACT && 'poetry' || '' }}
         cache-dependency-path: 'poetry.lock'
     - name: Install dependencies
-      run: poetry install
+      run: poetry install --sync
     - name: Cancel on setup error
       if: failure()
       uses: andymckay/cancel-action@0.2
