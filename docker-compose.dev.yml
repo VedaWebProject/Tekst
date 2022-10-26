@@ -5,6 +5,7 @@ services:
   mongo:
     image: mongo:5.0.9
     restart: always
+    init: true
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
@@ -13,9 +14,10 @@ services:
 
   mongo-express:
     image: mongo-express
+    restart: always
+    init: true
     depends_on:
       - mongo
-    restart: always
     ports:
       - 127.0.0.1:8081:8081
     environment:

@@ -15,6 +15,7 @@ services:
   mongo:
     image: mongo:5.0.9
     restart: always
+    init: true
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
