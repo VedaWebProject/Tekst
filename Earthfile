@@ -1,23 +1,29 @@
 VERSION 0.6
-FROM python:3.10-slim-bullseye
+FROM earthly/dind:alpine
 WORKDIR /textrig
 
-ENV PYTHONFAULTHANDLER=1
-ENV PYTHONHASHSEED=random
-ENV PYTHONUNBUFFERED=1
-ENV PIP_ROOT_USER_ACTION=ignore
-ENV PIP_DEFAULT_TIMEOUT=100
-ENV PIP_DISABLE_PIP_VERSION_CHECK=1
-ENV PIP_NO_CACHE_DIR=1
-ENV VENV_PATH=/textrig/.venv
+
+python-base:
+
+    FROM python:3.10-slim-bullseye
+
+    ENV PYTHONFAULTHANDLER=1
+    ENV PYTHONHASHSEED=random
+    ENV PYTHONUNBUFFERED=1
+    ENV PIP_ROOT_USER_ACTION=ignore
+    ENV PIP_DEFAULT_TIMEOUT=100
+    ENV PIP_DISABLE_PIP_VERSION_CHECK=1
+    ENV PIP_NO_CACHE_DIR=1
 
 
-build-base:
+poetry-base:
+
+    FROM +python-base
 
     ENV POETRY_VERSION=1.2.2
     ENV POETRY_VIRTUALENVS_IN_PROJECT=true
     ENV POETRY_NO_INTERACTION=1
-    ENV PATH="/root/.local/bin:$VENV_PATH/bin:$PATH"
+    ENV PATH="/root/.local/bin:$PATH"
 
     RUN python3 -m pip install pipx && pipx install poetry==$POETRY_VERSION
 
@@ -27,7 +33,7 @@ build-base:
 
 deps:
 
-    FROM +build-base
+    FROM +poetry-base
     ARG DEV_DEPS=
 
     RUN poetry export \
@@ -44,7 +50,7 @@ deps:
 
 build:
 
-    FROM +build-base
+    FROM +poetry-base
 
     COPY --dir textrig ./
     COPY README.md LICENSE MANIFEST.in ./
@@ -56,6 +62,8 @@ build:
 
 
 prod:
+
+    FROM +python-base
 
     # install gunicorn and uvicorn workers
     RUN python3 -m pip install \
@@ -94,3 +102,41 @@ prod:
     ARG TEXTRIG_VERSION=$('python3 -c "from textrig import __version__ as v; print(v)"')
     SAVE IMAGE "textrig-server:$TEXTRIG_VERSION"
     SAVE IMAGE "textrig-server:latest"
+
+
+tests-runner:
+
+    FROM +poetry-base
+    ARG TESTS_TYPE=
+    ENV TESTS_PATH=${TESTS_TYPE}
+
+    # do a full project setup
+    COPY --dir textrig tests README.md LICENSE MANIFEST.in .env.dev .env.test ./
+    RUN poetry install --sync
+
+    ENTRYPOINT poetry run pytest "tests/$TESTS_PATH"
+    SAVE IMAGE "textrig-tests-runner:latest"
+
+
+tests:
+
+    ARG TESTS_TYPE=
+
+    IF [ $TESTS_TYPE = "integration" ]
+
+        COPY docker-compose.dev.yml ./
+
+        WITH DOCKER \
+                --compose docker-compose.dev.yml --service mongo \
+                --load textrig-tests-runner:latest=(+tests-runner --TESTS_TYPE="$TESTS_TYPE")
+            RUN docker run --network=host textrig-tests-runner:latest
+        END
+
+    ELSE
+
+        WITH DOCKER \
+                --load textrig-tests-runner:latest=(+tests-runner --TESTS_TYPE="$TESTS_TYPE")
+            RUN docker run textrig-tests-runner:latest
+        END
+
+    END
