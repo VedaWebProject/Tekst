@@ -12,7 +12,7 @@ ENV PYTHONFAULTHANDLER=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
     PIP_NO_CACHE_DIR=1 \
     PIP_ROOT_USER_ACTION=ignore \
-    PYSETUP_PATH="/textrig"
+    WORKDIR_PATH="/textrig"
 
 
 # =====================
@@ -33,7 +33,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN python3 -m pip install pipx && \
     pipx install poetry==$POETRY_VERSION
 
-WORKDIR "$PYSETUP_PATH"
+WORKDIR "$WORKDIR_PATH"
 COPY ./poetry.lock* ./pyproject.toml ./
 
 RUN poetry run pip install --upgrade \
@@ -74,14 +74,14 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-WORKDIR "$PYSETUP_PATH"
+WORKDIR "$WORKDIR_PATH"
 
 # copy WSGI config
 COPY ./gunicorn_conf.py ./
 
 # copy app and dependencies
-COPY --from=builder "$PYSETUP_PATH"/deps/* deps/
-COPY --from=builder "$PYSETUP_PATH"/dist/* dist/
+COPY --from=builder "$WORKDIR_PATH"/deps/ deps/
+COPY --from=builder "$WORKDIR_PATH"/dist/ dist/
 
 # install app and dependencies
 RUN python3 -m pip install \
