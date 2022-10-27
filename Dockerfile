@@ -24,9 +24,8 @@ FROM base AS builder
 ENV POETRY_VERSION=1.2.2 \
     POETRY_HOME="/opt/poetry" \
     POETRY_VIRTUALENVS_IN_PROJECT=true \
-    POETRY_NO_INTERACTION=1
-
-ENV PATH="/root/.local/bin:$PATH"
+    POETRY_NO_INTERACTION=1 \
+    PATH="/root/.local/bin:$PATH"
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -94,10 +93,14 @@ RUN rm -rf dist deps
 
 # install uvicorn ASGI workers and gunicorn WSGI server
 RUN python3 -m pip install \
-    "uvicorn[standard]>=0.18,<1.0" \
-    "gunicorn>=20.1,<21.0"
+        "uvicorn[standard]>=0.18,<1.0" \
+        "gunicorn>=20.1,<21.0"
 
-HEALTHCHECK --interval=2m --timeout=5s --retries=3 --start-period=30s \
+HEALTHCHECK \
+    --interval=2m \
+    --timeout=5s \
+    --retries=3 \
+    --start-period=30s \
     CMD curl http://localhost:8000 || exit 1
 
 RUN groupadd -g 1337 textrig && \
