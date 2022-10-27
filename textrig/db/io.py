@@ -44,7 +44,10 @@ class DbIO:
             field = "_id"
 
         if field == "_id":
-            value = self._obj_id(value)
+            try:
+                value = self._obj_id(value)
+            except Exception:
+                return None
 
         data = await self._db[collection].find_one({field: value})
 
