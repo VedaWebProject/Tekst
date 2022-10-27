@@ -138,6 +138,17 @@ title = "TextRig - Test Coverage Report"
         docker compose -f docker-compose.dev.yml -p textrig-dev down --volumes
     """
 
+    [tool.poe.tasks.build-image]
+    help = "Build and tag production Docker image for app"
+    interpreter = ["bash", "zsh"]
+    shell = """
+        TEXTRIG_VERSION=$(poetry run python3 -c "from textrig import __version__ as v; print(v, end='')")
+        docker build \\
+            --tag textrig-server:latest \\
+            --tag textrig-server:$TEXTRIG_VERSION \\
+            --target prod .
+    """
+
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
