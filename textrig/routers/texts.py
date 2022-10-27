@@ -5,8 +5,8 @@ from textrig.config import TextRigConfig, get_config
 from textrig.db.io import DbIO
 from textrig.dependencies import get_cfg, get_db_io
 from textrig.logging import log
-from textrig.models.text import Text, TextRead, TextUpdate, Unit, UnitRead
-from textrig.routers.units import create_unit
+from textrig.models.text import Text, TextRead, TextUpdate, Node, NodeRead
+from textrig.routers.nodes import create_node
 
 
 _cfg: TextRigConfig = get_config()
@@ -69,24 +69,24 @@ async def import_text(file: UploadFile, cfg: TextRigConfig = Depends(get_cfg)) -
         stack = deque()
         indices = [0]
 
-        # push units of first structure level onto stack
-        for unit in data.get("structure", []):
-            unit["parentId"] = None
-            unit["textSlug"] = text.slug
-            unit["level"] = 0
-            unit["index"] = indices[0]
-            stack.append(unit)
+        # push nodes of first structure level onto stack
+        for node in data.get("structure", []):
+            node["parentId"] = None
+            node["textSlug"] = text.slug
+            node["level"] = 0
+            node["index"] = indices[0]
+            stack.append(node)
             indices[0] += 1
 
         # process stack
         while stack:
-            unit_data = stack.pop()
-            unit: UnitRead = UnitRead(**await create_unit(Unit(**unit_data)))
+            node_data = stack.pop()
+            node: NodeRead = NodeRead(**await create_node(Node(**node_data)))
 
-            for u in unit_data.get("units", []):
-                u["parentId"] = unit.id
+            for u in node_data.get("nodes", []):
+                u["parentId"] = node.id
                 u["textSlug"] = text.slug
-                u["level"] = unit.level + 1
+                u["level"] = node.level + 1
                 if len(indices) <= u["level"]:
                     indices.append(0)
                 u["index"] = indices[u["level"]]

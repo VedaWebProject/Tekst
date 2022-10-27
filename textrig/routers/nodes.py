@@ -2,21 +2,21 @@ from bson import ObjectId
 from fastapi import APIRouter, Depends, HTTPException, status
 from textrig.db.io import DbIO
 from textrig.dependencies import get_db_io
-from textrig.models.text import Unit, UnitRead
+from textrig.models.text import Node, NodeRead
 
 
 router = APIRouter(
-    prefix="/units",
-    tags=["units"],
+    prefix="/nodes",
+    tags=["nodes"],
     responses={status.HTTP_404_NOT_FOUND: {"description": "Not found"}},
 )
 
 
-@router.post("", response_model=UnitRead, status_code=status.HTTP_201_CREATED)
-async def create_unit(unit: Unit, db_io: DbIO = Depends(get_db_io)) -> dict:
+@router.post("", response_model=NodeRead, status_code=status.HTTP_201_CREATED)
+async def create_node(node: Node, db_io: DbIO = Depends(get_db_io)) -> dict:
 
-    # find text the unit belongs to
-    text = await db_io.find_one("texts", unit.text_slug, field="slug")
+    # find text the node belongs to
+    text = await db_io.find_one("texts", node.text_slug, field="slug")
 
     if not text:
         raise HTTPException(
@@ -25,18 +25,18 @@ async def create_unit(unit: Unit, db_io: DbIO = Depends(get_db_io)) -> dict:
         )
 
     # use all fields but "label" in the example to check for duplicate
-    example = {k: v for k, v in unit.dict().items() if k != "label"}
+    example = {k: v for k, v in node.dict().items() if k != "label"}
     if await db_io.find_one_by_example("texts", example):
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail="The unit conflicts with an existing one",
+            detail="The node conflicts with an existing one",
         )
 
-    return await db_io.insert_one("units", unit)
+    return await db_io.insert_one("nodes", node)
 
 
-@router.get("", response_model=list[UnitRead], status_code=status.HTTP_200_OK)
-async def get_units(
+@router.get("", response_model=list[NodeRead], status_code=status.HTTP_200_OK)
+async def get_nodes(
     text_slug: str,
     level: int,
     index: int = None,
@@ -53,4 +53,4 @@ async def get_units(
     if parent_id:
         example["parent_id"] = ObjectId(parent_id)
 
-    return await db_io.find("units", example=example, limit=limit)
+    return await db_io.find("nodes", example=example, limit=limit)

@@ -9,7 +9,7 @@ _index_models = {
     "texts": [
         pymongo.IndexModel([("slug", pymongo.ASCENDING)], name="slug", unique=True)
     ],
-    "units": [
+    "nodes": [
         pymongo.IndexModel(
             [
                 ("textSlug", pymongo.ASCENDING),

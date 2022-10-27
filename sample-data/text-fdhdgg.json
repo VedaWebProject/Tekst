@@ -7,7 +7,7 @@
     "structure": [
         {
             "label": "1",
-            "units": [
+            "nodes": [
                 { "label": "1" },
                 { "label": "2" },
                 { "label": "3" },
@@ -16,13 +16,13 @@
         },
         {
             "label": "2",
-            "units": [
+            "nodes": [
                 { "label": "1" },
                 { "label": "2" },
                 { "label": "3" },
                 {
                     "label": "4",
-                    "units": [
+                    "nodes": [
                         { "label": "1" },
                         { "label": "2" },
                         { "label": "3" },
@@ -33,7 +33,7 @@
         },
         {
             "label": "3",
-            "units": [
+            "nodes": [
                 { "label": "1" },
                 { "label": "2" },
                 { "label": "3" },

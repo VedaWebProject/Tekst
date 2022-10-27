@@ -3,25 +3,25 @@ from textrig.models.common import AllOptional, BaseModel, ObjectInDB, PyObjectId
 from textrig.utils.strings import safe_name
 
 
-# === TEXT UNIT ===
+# === TEXT NODE ===
 
 
-class Unit(BaseModel):
-    """A unit of text (e.g. chapter, paragraph, ...)"""
+class Node(BaseModel):
+    """A node in a text structure (e.g. chapter, paragraph, ...)"""
 
-    text_slug: str = Field(..., description="Slug of the text this unit belongs to")
-    parent_id: PyObjectId | None = Field(None, description="ID of parent unit")
-    level: int = Field(..., description="Index of structure level this unit is on")
-    index: int = Field(..., description="Position among all text units on this level")
-    label: str = Field(..., description="Label for identifying this text unit")
+    text_slug: str = Field(..., description="Slug of the text this node belongs to")
+    parent_id: PyObjectId | None = Field(None, description="ID of parent node")
+    level: int = Field(..., description="Index of structure level this node is on")
+    index: int = Field(..., description="Position among all text nodes on this level")
+    label: str = Field(..., description="Label for identifying this text node")
 
 
-class UnitRead(Unit, ObjectInDB):
+class NodeRead(Node, ObjectInDB):
 
     pass
 
 
-class UnitUpdate(Unit, metaclass=AllOptional):
+class NodeUpdate(Node, metaclass=AllOptional):
 
     pass
 
