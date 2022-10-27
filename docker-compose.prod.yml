@@ -3,7 +3,11 @@ version: "3.9"
 services:
 
   app:
-    image: textrig-server:latest
+    build:
+      context: .
+      target: prod
+      platforms:
+        - "linux/amd64"
     restart: always
     init: true
     depends_on:
