@@ -1,5 +1,11 @@
 from pydantic import Field, root_validator
-from textrig.models.common import AllOptional, BaseModel, ObjectInDB, PyObjectId
+from textrig.models.common import (
+    AllOptional,
+    BaseModel,
+    Metadata,
+    ObjectInDB,
+    PyObjectId,
+)
 from textrig.utils.strings import safe_name
 
 
@@ -14,6 +20,7 @@ class Node(BaseModel):
     level: int = Field(..., description="Index of structure level this node is on")
     index: int = Field(..., description="Position among all text nodes on this level")
     label: str = Field(..., description="Label for identifying this text node")
+    meta: Metadata | None = Field(None, description="Arbitrary metadata")
 
 
 class NodeRead(Node, ObjectInDB):
