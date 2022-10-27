@@ -26,6 +26,23 @@ _index_models = {
             name="textSlug_parentId",
         ),
     ],
+    "layers": [
+        pymongo.IndexModel(
+            [
+                ("textSlug", pymongo.ASCENDING),
+                ("level", pymongo.ASCENDING),
+                ("public", pymongo.ASCENDING),
+            ],
+            name="textSlug_level_public",
+        ),
+        pymongo.IndexModel(
+            [
+                ("textSlug", pymongo.ASCENDING),
+                ("ownerId", pymongo.ASCENDING),
+            ],
+            name="textSlug_ownerId",
+        ),
+    ],
 }
 
 

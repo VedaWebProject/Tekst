@@ -7,6 +7,10 @@ from pydantic.main import ModelMetaclass
 from textrig.utils.strings import snake_to_camel_case
 
 
+# type alias for a flat dict of arbitrary metadata
+Metadata = dict[str, str | bool | int | float]
+
+
 class PyObjectId(ObjectId):
     """A pydantic representation of MongoDB's object ID"""
 
