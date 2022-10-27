@@ -53,7 +53,7 @@ build:
     FROM +poetry-base
 
     COPY --dir textrig ./
-    COPY README.md LICENSE MANIFEST.in ./
+    COPY README.md LICENSE ./
 
     RUN poetry build
 
@@ -122,7 +122,7 @@ tests:
 
     ARG TESTS_TYPE=
 
-    IF [ $TESTS_TYPE = "integration" ]
+    IF [ "$TESTS_TYPE" = "integration" ] || [ -z "$TESTS_TYPE" ]
 
         COPY docker-compose.dev.yml ./
 
