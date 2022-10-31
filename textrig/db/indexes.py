@@ -19,7 +19,7 @@ def _get_index_definitions() -> dict:
                     ("index", pymongo.ASCENDING),
                 ],
                 name="textSlug_parentId_level_index",
-                unique=True
+                unique=True,
             ),
         ],
         "layers": [
