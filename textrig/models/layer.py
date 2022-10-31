@@ -24,12 +24,12 @@ class Layer(BaseModel):
 
 class LayerRead(Layer, ObjectInDB):
 
-    pass
+    ...
 
 
 class LayerUpdate(Layer, metaclass=AllOptional):
 
-    pass
+    ...
 
 
 # === (LAYER) UNIT BASE CLASS ===

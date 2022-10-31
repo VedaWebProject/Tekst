@@ -29,12 +29,12 @@ class Node(BaseModel):
 
 class NodeRead(Node, ObjectInDB):
 
-    pass
+    ...
 
 
 class NodeUpdate(Node, metaclass=AllOptional):
 
-    pass
+    ...
 
 
 # === TEXT ===
@@ -96,9 +96,9 @@ class Text(BaseModel):
 
 class TextRead(Text, ObjectInDB):
 
-    pass
+    ...
 
 
 class TextUpdate(Text, metaclass=AllOptional):
 
-    pass
+    ...

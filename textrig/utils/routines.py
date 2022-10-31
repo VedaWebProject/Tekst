@@ -5,4 +5,5 @@ _cfg: TextRigConfig = get_config()
 
 
 def load_snippets() -> dict[str, dict]:
+
     pass

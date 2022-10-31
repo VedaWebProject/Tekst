@@ -19,9 +19,9 @@ class Snippet(BaseModel):
 
 class SnippetRead(Snippet, ObjectInDB):
 
-    pass
+    ...
 
 
 class SnippetUpdate(Snippet, metaclass=AllOptional):
 
-    pass
+    ...

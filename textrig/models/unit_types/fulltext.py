@@ -11,9 +11,9 @@ class FullText(Unit):
 
 class FullTextRead(FullText, ObjectInDB):
 
-    pass
+    ...
 
 
 class FullTextUpdate(FullText, metaclass=AllOptional):
 
-    pass
+    ...
