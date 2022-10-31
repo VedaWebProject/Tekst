@@ -6,7 +6,7 @@ from textrig.db import indexes
 from textrig.db import init_client as init_db_client
 from textrig.dependencies import get_db_client
 from textrig.logging import log, setup_logging
-from textrig.routers import admin, texts, uidata
+from textrig.routers import admin, texts, uidata, nodes
 from textrig.tags import tags_metadata
 
 
@@ -42,6 +42,7 @@ def get_app() -> FastAPI:
     app.include_router(admin.router)
     app.include_router(uidata.router)
     app.include_router(texts.router)
+    app.include_router(nodes.router)
 
     return app
 
