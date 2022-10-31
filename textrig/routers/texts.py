@@ -13,20 +13,20 @@ _cfg: TextRigConfig = get_config()
 
 
 router = APIRouter(
-    prefix="",
+    prefix="/texts",
     tags=["texts"],
     responses={status.HTTP_404_NOT_FOUND: {"description": "Not found"}},
 )
 
 
-@router.get("/texts", response_model=list[TextRead], status_code=status.HTTP_200_OK)
+@router.get("", response_model=list[TextRead], status_code=status.HTTP_200_OK)
 async def get_all_texts(
     limit: int = 100, db_io: DbIO = Depends(get_db_io)
 ) -> list[TextRead]:
     return await db_io.find("texts", limit=limit)
 
 
-@router.post("/texts", response_model=TextRead, status_code=status.HTTP_201_CREATED)
+@router.post("", response_model=TextRead, status_code=status.HTTP_201_CREATED)
 async def create_text(text: Text, db_io: DbIO = Depends(get_db_io)) -> TextRead:
 
     if await db_io.find_one("texts", text.slug, "slug"):
@@ -41,7 +41,7 @@ async def create_text(text: Text, db_io: DbIO = Depends(get_db_io)) -> TextRead:
 
 
 @router.post(
-    "/texts/import",
+    "/import",
     response_model=TextRead,
     status_code=status.HTTP_201_CREATED,
     include_in_schema=_cfg.dev_mode,
@@ -109,7 +109,7 @@ async def import_text(
         await file.close()
 
 
-@router.get("/texts/{text_id}", response_model=TextRead, status_code=status.HTTP_200_OK)
+@router.get("/{text_id}", response_model=TextRead, status_code=status.HTTP_200_OK)
 async def get_text_by_id(text_id: str, db_io: DbIO = Depends(get_db_io)) -> dict:
     text = await db_io.find_one("texts", text_id)
     if not text:
@@ -121,7 +121,7 @@ async def get_text_by_id(text_id: str, db_io: DbIO = Depends(get_db_io)) -> dict
 
 
 @router.patch(
-    "/texts/{text_id}", response_model=TextRead, status_code=status.HTTP_200_OK
+    "/{text_id}", response_model=TextRead, status_code=status.HTTP_200_OK
 )
 async def update_text(
     text_id: str, text_update: TextUpdate, db_io: DbIO = Depends(get_db_io)
