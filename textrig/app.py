@@ -6,7 +6,7 @@ from textrig.db import indexes
 from textrig.db import init_client as init_db_client
 from textrig.dependencies import get_db_client
 from textrig.logging import log, setup_logging
-from textrig.routers import admin, texts, uidata, nodes
+from textrig.routers import admin, nodes, texts, uidata
 from textrig.tags import tags_metadata
 
 
