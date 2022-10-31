@@ -26,7 +26,7 @@ async def create_node(node: Node, db_io: DbIO = Depends(get_db_io)) -> dict:
 
     # use all fields but "label" in the example to check for duplicate
     example = {k: v for k, v in node.dict().items() if k != "label"}
-    if await db_io.find_one_by_example("texts", example):
+    if await db_io.find_one_by_example("nodes", example):
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="The node conflicts with an existing one",
