@@ -43,6 +43,15 @@ _index_models = {
             name="textSlug_ownerId",
         ),
     ],
+    "units": [
+        pymongo.IndexModel(
+            [
+                ("layerId", pymongo.ASCENDING),
+                ("nodeId", pymongo.ASCENDING),
+            ],
+            name="layerId_nodeId",
+        ),
+    ],
 }
 
 
