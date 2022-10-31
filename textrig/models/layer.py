@@ -38,5 +38,6 @@ class LayerUpdate(Layer, metaclass=AllOptional):
 class Unit(BaseModel):
     """A unit of data belonging to a certain data layer"""
 
-    layer_id: PyObjectId = Field(..., description="Layer ID this unit belongs to")
+    layer_id: PyObjectId = Field(..., description="Parent data layer ID")
+    node_id: PyObjectId = Field(..., description="Parent text node ID")
     meta: Metadata | None = Field(None, description="Arbitrary metadata")
