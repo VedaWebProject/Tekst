@@ -27,7 +27,7 @@ async def get_all_texts(
 
 
 @router.post("/texts", response_model=TextRead, status_code=status.HTTP_201_CREATED)
-async def create_text(text: Text, db_io: DbIO = Depends(get_db_io)) -> dict:
+async def create_text(text: Text, db_io: DbIO = Depends(get_db_io)) -> TextRead:
 
     if await db_io.find_one("texts", text.slug, "slug"):
         raise HTTPException(
@@ -46,7 +46,11 @@ async def create_text(text: Text, db_io: DbIO = Depends(get_db_io)) -> dict:
     status_code=status.HTTP_201_CREATED,
     include_in_schema=_cfg.dev_mode,
 )
-async def import_text(file: UploadFile, cfg: TextRigConfig = Depends(get_cfg)) -> dict:
+async def import_text(
+    file: UploadFile,
+    cfg: TextRigConfig = Depends(get_cfg),
+    db_io: DbIO = Depends(get_db_io),
+) -> TextRead:
 
     if not cfg.dev_mode:
         raise HTTPException(
@@ -61,7 +65,7 @@ async def import_text(file: UploadFile, cfg: TextRigConfig = Depends(get_cfg)) -
         data = json.loads(await file.read())
 
         # create and save text object
-        text: TextRead = TextRead(**await create_text(Text(**data)))
+        text: TextRead = TextRead(**await create_text(Text(**data), db_io))
 
         # process text structure
         from collections import deque
@@ -81,7 +85,7 @@ async def import_text(file: UploadFile, cfg: TextRigConfig = Depends(get_cfg)) -
         # process stack
         while stack:
             node_data = stack.pop()
-            node: NodeRead = NodeRead(**await create_node(Node(**node_data)))
+            node: NodeRead = NodeRead(**await create_node(Node(**node_data), db_io))
 
             for u in node_data.get("nodes", []):
                 u["parentId"] = node.id
