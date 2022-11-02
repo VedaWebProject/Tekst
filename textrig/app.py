@@ -1,12 +1,12 @@
 import sys
 
-from fastapi import FastAPI
+from fastapi import FastAPI, status
 from textrig.config import TextRigConfig, get_config
 from textrig.db import indexes
 from textrig.db import init_client as init_db_client
 from textrig.dependencies import get_db_client
 from textrig.logging import log, setup_logging
-from textrig.routers import admin, nodes, texts, uidata
+from textrig.routers import admin, layers, nodes, texts, uidata
 from textrig.tags import tags_metadata
 
 
@@ -36,12 +36,16 @@ def get_app() -> FastAPI:
         redoc_url=_cfg.doc.redoc_url,
         on_startup=[startup_routine],
         on_shutdown=[shutdown_routine],
+        responses={
+            status.HTTP_400_BAD_REQUEST: {"description": "Invalid Request"},
+        },
     )
 
     # register routers
     app.include_router(admin.router)
     app.include_router(uidata.router)
     app.include_router(texts.router)
+    app.include_router(layers.router)
     app.include_router(nodes.router)
 
     return app

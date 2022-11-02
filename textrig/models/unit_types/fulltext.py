@@ -1,19 +1,22 @@
 from pydantic import Field
 from textrig.models.common import AllOptional, ObjectInDB
-from textrig.models.layer import Unit
+from textrig.models.layer import UnitTypeBase
 
 
-class FullText(Unit):
+class UnitType(UnitTypeBase):
     """A simple fulltext unit type"""
 
     text: str | None = Field(None, description="Text content of the fulltext unit")
 
+    def get_template() -> dict:
+        return {"text": None}
 
-class FullTextRead(FullText, ObjectInDB):
+
+class UnitTypeRead(UnitType, ObjectInDB):
 
     ...
 
 
-class FullTextUpdate(FullText, metaclass=AllOptional):
+class UnitTypeUpdate(UnitType, metaclass=AllOptional):
 
     ...

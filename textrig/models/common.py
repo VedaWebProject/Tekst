@@ -7,6 +7,9 @@ from pydantic.main import ModelMetaclass
 from textrig.utils.strings import snake_to_camel_case
 
 
+# from textrig.logging import log
+
+
 # type alias for a flat dict of arbitrary metadata
 Metadata = dict[str, str | bool | int | float]
 
@@ -20,6 +23,10 @@ class PyObjectId(ObjectId):
 
     @classmethod
     def validate(cls, v) -> ObjectId:
+
+        if type(v) is ObjectId:
+            return v
+
         try:
             return ObjectId(str(v))
         except InvalidId:
@@ -67,6 +74,7 @@ class ObjectInDB(PydanticBaseModel):
     class Config:
         allow_population_by_field_name = True
         json_encoders = {ObjectId: lambda oid: str(oid)}
+        # arbitrary_types_allowed = True
 
 
 class AllOptional(ModelMetaclass):

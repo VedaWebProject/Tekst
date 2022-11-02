@@ -120,9 +120,7 @@ async def get_text_by_id(text_id: str, db_io: DbIO = Depends(get_db_io)) -> dict
     return text
 
 
-@router.patch(
-    "/{text_id}", response_model=TextRead, status_code=status.HTTP_200_OK
-)
+@router.patch("/{text_id}", response_model=TextRead, status_code=status.HTTP_200_OK)
 async def update_text(
     text_id: str, text_update: TextUpdate, db_io: DbIO = Depends(get_db_io)
 ) -> dict:
