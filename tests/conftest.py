@@ -2,10 +2,10 @@ import json
 
 import pytest
 import requests
-from fastapi.testclient import TestClient
-from textrig.app import get_app
+from httpx import AsyncClient
+from textrig.app import app
 from textrig.config import TextRigConfig, get_config
-from textrig.db import DatabaseClient, get_client
+from textrig.db import DatabaseClient
 from textrig.dependencies import get_db_client
 from textrig.models.text import Text
 
@@ -15,9 +15,10 @@ pytest fixtures go in here...
 """
 
 
+@pytest.fixture
 async def get_db_client_override() -> DatabaseClient:
     cfg: TextRigConfig = get_config()
-    db_client = get_client(cfg.db.get_uri())
+    db_client: DatabaseClient = DatabaseClient(cfg.db.get_uri())
     yield db_client
     # clean up
     await db_client.drop_database(cfg.db.name)
@@ -29,32 +30,40 @@ def sample_data(shared_datadir) -> dict:
     return json.loads((shared_datadir / "sample-data.json").read_text())
 
 
+@pytest.fixture(scope="session")
+def anyio_backend():
+    return "asyncio"
+
+
+# @pytest.fixture(scope="session")
+# def event_loop():
+#     try:
+#         loop = asyncio.get_running_loop()
+#     except RuntimeError:
+#         loop = asyncio.new_event_loop()
+#     yield loop
+#     loop.close()
+
+
 @pytest.fixture
 def config() -> TextRigConfig:
     return get_config()
 
 
 @pytest.fixture
-def base_url(config) -> str:
-    return f"http://{config.dev_srv_host}:{config.dev_srv_port}{config.root_path}"
-
-
-@pytest.fixture
-def test_app():
+async def test_app(get_db_client_override):
     """
     Provides an app instance with overridden dependencies
     """
-    app = get_app()
-    app.dependency_overrides[get_db_client] = get_db_client_override
+    # app = get_app()
+    app.dependency_overrides[get_db_client] = lambda: get_db_client_override
     return app
 
 
 @pytest.fixture
-def test_client(test_app, base_url):
-    """
-    Provides a TestClient instance configured with an app instance
-    """
-    return TestClient(app=test_app, base_url=base_url)
+async def test_client(test_app):
+    async with AsyncClient(app=test_app, base_url="http://test") as client:
+        yield client
 
 
 @pytest.fixture
