@@ -9,15 +9,14 @@ _cfg: TextRigConfig = get_config()
 
 def _get_relevant_loggers() -> list[logging.Logger]:
 
-    loggers = [
+    for logger in [
         "textrig",
         "fastapi",
         "uvicorn.access",
         "uvicorn.default",
         "uvicorn.error",
-    ]
-
-    return [logging.getLogger(logger) for logger in loggers]
+    ]:
+        yield logging.getLogger(logger)
 
 
 def setup_logging() -> None:
