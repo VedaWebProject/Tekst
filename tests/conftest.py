@@ -55,7 +55,6 @@ async def test_app(get_db_client_override):
     """
     Provides an app instance with overridden dependencies
     """
-    # app = get_app()
     app.dependency_overrides[get_db_client] = lambda: get_db_client_override
     return app
 
