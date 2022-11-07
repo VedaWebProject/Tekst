@@ -20,7 +20,7 @@ class Layer(BaseModel):
     text_slug: str = Field(..., description="Slug of the text this layer belongs to")
     level: int = Field(..., description="Text level this layer belongs to")
     layer_type: str = Field(...)
-    # owner_id: PyObjectId | None = Field(None)  # TODO: users don't exist, yet
+    # owner_id: PyObjectId = Field(None)  # TODO: users don't exist, yet
     public: bool = Field(False, description="Publication status of this layer")
     meta: Metadata | None = Field(None, description="Arbitrary metadata")
 
@@ -43,7 +43,7 @@ class UnitTypeBase(BaseModel, abc.ABC):
 
     layer_id: PyObjectId = Field(..., description="Parent data layer ID")
     node_id: PyObjectId = Field(..., description="Parent text node ID")
-    meta: Metadata | None = Field(None, description="Arbitrary metadata")
+    meta: Metadata = Field(None, description="Arbitrary metadata")
 
     @staticmethod
     @abc.abstractmethod
