@@ -55,3 +55,19 @@ async def get_nodes(
         example["parent_id"] = ObjectId(parent_id)
 
     return await db_io.find("nodes", example=example, limit=limit)
+
+
+@router.get("/children", response_model=list[NodeRead], status_code=status.HTTP_200_OK)
+async def get_children(
+    text_slug: str,
+    node_id: str,
+    limit: int = 1000,
+    db_io: DbIO = Depends(get_db_io),
+) -> list:
+
+    return await db_io.find(
+        "nodes",
+        example={"text_slug": text_slug, "parent_id": ObjectId(node_id)},
+        limit=limit,
+        hint="textSlug_parentId_level_index",
+    )
