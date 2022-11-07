@@ -73,11 +73,14 @@ class DbIO:
         example: dict = {},
         projection: dict = None,
         limit: int = 10,
+        hint: str = None,
         to_list: bool = True,
     ) -> list[dict] | Cursor:
 
         example = keys_snake_to_camel_case(example)
-        cursor = self._db[collection].find(example, projection=projection, limit=limit)
+        cursor = self._db[collection].find(
+            example, projection=projection, limit=limit, hint=hint
+        )
 
         if to_list:
             return await cursor.to_list(length=limit if limit > 0 else None)
