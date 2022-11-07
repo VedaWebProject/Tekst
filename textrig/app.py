@@ -65,7 +65,7 @@ async def startup_routine() -> None:
     await indexes.create_indexes()
 
     # log dev server info
-    if _cfg.dev_mode:
+    if _cfg.dev_mode:  # pragma: no cover
         log.info(
             "Development server bound to "
             f"http://{_cfg.dev_srv_host}:{_cfg.dev_srv_port}"
