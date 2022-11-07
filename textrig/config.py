@@ -79,6 +79,7 @@ class TextRigConfig(BaseSettings):
         return v.upper()
 
     class Config:
+        env_prefix = "TR_"
         env_nested_delimiter = "__"
         case_sensitive = False
 
@@ -86,5 +87,5 @@ class TextRigConfig(BaseSettings):
 @lru_cache
 def get_config() -> TextRigConfig:
     return TextRigConfig(
-        _env_file=".env.dev" if os.environ.get("DEV_MODE") else ".env.prod"
+        _env_file=".env.dev" if os.environ.get("TR_DEV_MODE") else ".env.prod"
     )

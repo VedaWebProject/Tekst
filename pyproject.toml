@@ -97,7 +97,7 @@ title = "TextRig - Test Coverage Report"
     interpreter = ["bash", "zsh"]
     shell = """
         docker compose -f docker-compose.dev.yml -p textrig-testing up --detach mongo
-        DEV_MODE=true ; TESTING=true
+        TR_DEV_MODE=true ; TESTING=true
         poetry run coverage run -m pytest && poetry run coverage report -m
         docker compose -f docker-compose.dev.yml -p textrig-testing down --volumes
     """
@@ -106,7 +106,7 @@ title = "TextRig - Test Coverage Report"
     help = "Run the application dev server (only for development!)"
     interpreter = ["bash", "zsh"]
     shell = """
-    DEV_MODE=true poetry run python3 -m textrig
+    TR_DEV_MODE=true poetry run python3 -m textrig
     """
 
     [tool.poe.tasks.check]
@@ -134,7 +134,7 @@ title = "TextRig - Test Coverage Report"
     interpreter = ["bash", "zsh"]
     shell = """
         docker compose -f docker-compose.dev.yml -p textrig-dev up --detach
-        DEV_MODE=true
+        TR_DEV_MODE=true
         poetry run python3 -m textrig
         docker compose -f docker-compose.dev.yml -p textrig-dev down --volumes
     """
