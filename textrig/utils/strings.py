@@ -39,14 +39,3 @@ def remove_diacritics(string: str) -> str:
     return "".join(
         c for c in ucdata.normalize("NFD", string) if ucdata.category(c) != "Mn"
     )
-
-
-def snake_to_camel_case(string: str) -> str:
-    return "".join(
-        word if index == 0 else word.capitalize()
-        for index, word in enumerate(string.split("_"))
-    )
-
-
-def keys_snake_to_camel_case(dictionary: dict) -> dict:
-    return {snake_to_camel_case(k): v for k, v in dictionary.items()}

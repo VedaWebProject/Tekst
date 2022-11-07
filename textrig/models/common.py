@@ -1,10 +1,10 @@
 from typing import Optional
 
 from bson.objectid import InvalidId, ObjectId
+from humps import camelize
 from pydantic import BaseModel as PydanticBaseModel
 from pydantic import Field
 from pydantic.main import ModelMetaclass
-from textrig.utils.strings import snake_to_camel_case
 
 
 # from textrig.logging import log
@@ -63,7 +63,7 @@ class BaseModel(PydanticBaseModel):
         return list(cls.schema(alias).get("properties").keys())
 
     class Config:
-        alias_generator = snake_to_camel_case
+        alias_generator = camelize
         allow_population_by_field_name = True
 
 

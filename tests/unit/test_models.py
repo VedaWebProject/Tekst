@@ -41,3 +41,11 @@ def test_deserialization():
     data = {"title": "Foo", "locDelim": "+"}
     t = Text(**data)
     assert t.loc_delim == "+"
+
+
+def test_model_field_casing():
+    t = Text(title="foo", loc_delim="bar")
+    assert t.title == "foo"
+    assert t.loc_delim == "bar"
+    t = Text(title="foo", locDelim="bar")
+    assert t.loc_delim == "bar"

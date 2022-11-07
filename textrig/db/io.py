@@ -1,11 +1,11 @@
 from typing import Any, Mapping
 
 from bson import ObjectId
+from humps import camelize
 from motor.motor_asyncio import AsyncIOMotorCursor as Cursor
 from motor.motor_asyncio import AsyncIOMotorDatabase as Database
 from pymongo.results import InsertManyResult, InsertOneResult, UpdateResult
 from textrig.models.common import BaseModel
-from textrig.utils.strings import keys_snake_to_camel_case
 
 
 class DbIO:
@@ -64,7 +64,7 @@ class DbIO:
 
     async def find_one_by_example(self, collection: str, example: dict) -> dict | None:
 
-        example = keys_snake_to_camel_case(example)
+        example = camelize(example)
         return await self._db[collection].find_one(example)
 
     async def find(
@@ -77,7 +77,7 @@ class DbIO:
         to_list: bool = True,
     ) -> list[dict] | Cursor:
 
-        example = keys_snake_to_camel_case(example)
+        example = camelize(example)
         cursor = self._db[collection].find(
             example, projection=projection, limit=limit, hint=hint
         )
