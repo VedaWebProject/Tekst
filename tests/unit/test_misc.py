@@ -12,10 +12,6 @@ def test_globals_integrity(test_app, config):
 
 
 def test_logging_setup_without_errors():
-    os.environ["DEV_MODE"] = "false"
-    logging.setup_logging()
-    logging.log.info("foo bar")
-    os.environ["DEV_MODE"] = "true"
     logging.setup_logging()
     logging.log.info("foo bar")
     os.environ["SERVER_SOFTWARE"] = "gunicorn"

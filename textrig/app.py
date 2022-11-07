@@ -73,7 +73,7 @@ async def startup_routine() -> None:
 
 
 @app.on_event("shutdown")
-async def shutdown_routine():
+async def shutdown_routine() -> None:
 
     log.info("Closing database client")
     get_db_client(_cfg).close()
