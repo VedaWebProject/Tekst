@@ -16,12 +16,21 @@ pytest fixtures go in here...
 
 
 @pytest.fixture
-async def get_db_client_override() -> DatabaseClient:
-    cfg: TextRigConfig = get_config()
-    db_client: DatabaseClient = DatabaseClient(cfg.db.get_uri())
+def config() -> TextRigConfig:
+    return get_config()
+
+
+@pytest.fixture
+def root_path(config) -> TextRigConfig:
+    return config.root_path
+
+
+@pytest.fixture
+async def get_db_client_override(config) -> DatabaseClient:
+    db_client: DatabaseClient = DatabaseClient(config.db.get_uri())
     yield db_client
     # clean up
-    await db_client.drop_database(cfg.db.name)
+    await db_client.drop_database(config.db.name)
     db_client.close()
 
 
@@ -43,11 +52,6 @@ def anyio_backend():
 #         loop = asyncio.new_event_loop()
 #     yield loop
 #     loop.close()
-
-
-@pytest.fixture
-def config() -> TextRigConfig:
-    return get_config()
 
 
 @pytest.fixture
