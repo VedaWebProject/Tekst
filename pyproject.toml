@@ -93,22 +93,28 @@ title = "TextRig - Test Coverage Report"
     help = "Run flake8 linter"
     cmd = "flake8 ."
 
-    [tool.poe.tasks.test]
+    [tool.poe.tasks.run-tests]
     help = "Run test suite with pytest"
     interpreter = ["bash", "zsh"]
     shell = """
-        docker compose -f docker-compose.dev.yml -p textrig-testing up --detach mongo
         TR_DEV_MODE=true ; TESTING=true
         poetry run coverage run -m pytest && poetry run coverage report -m
-        docker compose -f docker-compose.dev.yml -p textrig-testing down --volumes
     """
 
-    [tool.poe.tasks.run]
+    [tool.poe.tasks.test]
+    help = "Run tests, start and stop test services stack automatically"
+    sequence = ["test-stack-up", "run-tests", "test-stack-down"]
+
+    [tool.poe.tasks.run-app]
     help = "Run the application dev server (only for development!)"
     interpreter = ["bash", "zsh"]
     shell = """
     TR_DEV_MODE=true poetry run python3 -m textrig
     """
+
+    [tool.poe.tasks.run]
+    help = "Run dev services stack and dev server, clean up afterwards"
+    sequence = ["dev-stack-up", "run-app", "dev-stack-down"]
 
     [tool.poe.tasks.check]
     help = "Run all checks on code base: tests, linting, code style, import order"
@@ -130,14 +136,32 @@ title = "TextRig - Test Coverage Report"
             htmlcov \
     """
 
-    [tool.poe.tasks.dev-stack-run]
-    help = "Run dev services stack and dev server, clean up afterwards"
+    [tool.poe.tasks.dev-stack-up]
+    help = "Run dev services stack"
     interpreter = ["bash", "zsh"]
     shell = """
         docker compose -f docker-compose.dev.yml -p textrig-dev up --detach
-        TR_DEV_MODE=true
-        poetry run python3 -m textrig
+    """
+
+    [tool.poe.tasks.dev-stack-down]
+    help = "Stop dev stack and clean up all resources"
+    interpreter = ["bash", "zsh"]
+    shell = """
         docker compose -f docker-compose.dev.yml -p textrig-dev down --volumes
+    """
+
+    [tool.poe.tasks.test-stack-up]
+    help = "Run test services stack"
+    interpreter = ["bash", "zsh"]
+    shell = """
+        docker compose -f docker-compose.dev.yml -p textrig-testing up --detach mongo
+    """
+
+    [tool.poe.tasks.test-stack-down]
+    help = "Stop test stack and clean up all resources"
+    interpreter = ["bash", "zsh"]
+    shell = """
+        docker compose -f docker-compose.dev.yml -p textrig-testing down --volumes
     """
 
     [tool.poe.tasks.build-image]
