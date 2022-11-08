@@ -104,6 +104,7 @@ title = "TextRig - Test Coverage Report"
     [tool.poe.tasks.test]
     help = "Run tests, start and stop test services stack automatically"
     sequence = ["test-stack-up", "run-tests", "test-stack-down"]
+    ignore_fail = "return_non_zero"
 
     [tool.poe.tasks.run-app]
     help = "Run the application dev server (only for development!)"
