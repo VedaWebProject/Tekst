@@ -36,7 +36,7 @@ async def get_db_client_override(config) -> DatabaseClient:
 
 @pytest.fixture
 def sample_data(shared_datadir) -> dict:
-    return json.loads((shared_datadir / "sample-data.json").read_text())
+    return json.loads((shared_datadir / "test-data.json").read_text())
 
 
 @pytest.fixture(scope="session")
