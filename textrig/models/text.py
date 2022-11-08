@@ -1,10 +1,10 @@
 from pydantic import Field, root_validator
 from textrig.models.common import (
     AllOptional,
-    BaseModel,
     Metadata,
     ObjectInDB,
     PyObjectId,
+    TextRigBaseModel,
 )
 from textrig.utils.strings import safe_name
 
@@ -12,7 +12,7 @@ from textrig.utils.strings import safe_name
 # === TEXT NODE ===
 
 
-class Node(BaseModel):
+class Node(TextRigBaseModel):
     """A node in a text structure (e.g. chapter, paragraph, ...)"""
 
     text_slug: str = Field(..., description="Slug of the text this node belongs to")
@@ -40,7 +40,7 @@ class NodeUpdate(Node, metaclass=AllOptional):
 # === TEXT ===
 
 
-class Text(BaseModel):
+class Text(TextRigBaseModel):
     """A text represented in TextRig"""
 
     title: str = Field(

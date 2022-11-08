@@ -4,17 +4,17 @@ import importlib
 from pydantic import Field
 from textrig.models.common import (
     AllOptional,
-    BaseModel,
     Metadata,
     ObjectInDB,
     PyObjectId,
+    TextRigBaseModel,
 )
 
 
 # === (TEXT) LAYER ===
 
 
-class Layer(BaseModel):
+class Layer(TextRigBaseModel):
     """A data layer describing a set of data on a text"""
 
     text_slug: str = Field(..., description="Slug of the text this layer belongs to")
@@ -38,7 +38,7 @@ class LayerUpdate(Layer, metaclass=AllOptional):
 # === (LAYER) UNIT TYPE BASE CLASS ===
 
 
-class UnitTypeBase(BaseModel, abc.ABC):
+class UnitTypeBase(TextRigBaseModel, abc.ABC):
     """A unit of data belonging to a certain data layer"""
 
     layer_id: PyObjectId = Field(..., description="Parent data layer ID")

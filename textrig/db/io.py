@@ -5,7 +5,7 @@ from humps import camelize
 from motor.motor_asyncio import AsyncIOMotorCursor as Cursor
 from motor.motor_asyncio import AsyncIOMotorDatabase as Database
 from pymongo.results import InsertManyResult, InsertOneResult, UpdateResult
-from textrig.models.common import BaseModel
+from textrig.models.common import TextRigBaseModel
 
 
 class DbIO:
@@ -34,10 +34,10 @@ class DbIO:
         )
 
     async def update(
-        self, collection: str, doc_id: ObjectId | str, updates: BaseModel | dict
+        self, collection: str, doc_id: ObjectId | str, updates: TextRigBaseModel | dict
     ) -> bool:
 
-        if isinstance(updates, BaseModel):
+        if isinstance(updates, TextRigBaseModel):
             updates = updates.dict(for_mongo=True)
 
         result: UpdateResult = await self._db[collection].update_one(
@@ -87,9 +87,9 @@ class DbIO:
         else:
             return cursor
 
-    async def insert_one(self, collection: str, doc: BaseModel | dict) -> dict:
+    async def insert_one(self, collection: str, doc: TextRigBaseModel | dict) -> dict:
 
-        if isinstance(doc, BaseModel):
+        if isinstance(doc, TextRigBaseModel):
             doc = doc.dict(for_mongo=True)
 
         result: InsertOneResult = await self._db[collection].insert_one(doc)
@@ -100,7 +100,7 @@ class DbIO:
         return await self.find_one(collection, result.inserted_id)
 
     async def insert_many(
-        self, collection: str, docs: list[BaseModel] | list[dict]
+        self, collection: str, docs: list[TextRigBaseModel] | list[dict]
     ) -> list[str]:
 
         if not type(docs) == list[dict]:

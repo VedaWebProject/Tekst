@@ -1,12 +1,12 @@
 from pydantic import Field, validator
-from textrig.models.common import AllOptional, BaseModel, ObjectInDB
+from textrig.models.common import AllOptional, ObjectInDB, TextRigBaseModel
 from textrig.utils.strings import safe_name
 
 
 # === TEXT ===
 
 
-class Snippet(BaseModel):
+class Snippet(TextRigBaseModel):
     """A content snippet"""
 
     name: str = Field(..., description="Safe name to identify the snippet by")

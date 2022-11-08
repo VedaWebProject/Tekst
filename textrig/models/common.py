@@ -2,8 +2,7 @@ from typing import Optional
 
 from bson.objectid import InvalidId, ObjectId
 from humps import camelize
-from pydantic import BaseModel as PydanticBaseModel
-from pydantic import Field
+from pydantic import BaseModel, Field
 from pydantic.main import ModelMetaclass
 
 
@@ -37,7 +36,7 @@ class PyObjectId(ObjectId):
         field_schema.update(type="string")
 
 
-class BaseModel(PydanticBaseModel):
+class TextRigBaseModel(BaseModel):
     """Base class for all TextRig models"""
 
     def __init__(self, **kwargs):
@@ -67,7 +66,7 @@ class BaseModel(PydanticBaseModel):
         allow_population_by_field_name = True
 
 
-class ObjectInDB(PydanticBaseModel):
+class ObjectInDB(BaseModel):
     """Data model mixin for objects from the DB (which have an ID)"""
 
     id: PyObjectId = Field(...)
