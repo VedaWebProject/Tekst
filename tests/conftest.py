@@ -5,9 +5,8 @@ import requests
 from httpx import AsyncClient
 from textrig.app import app
 from textrig.config import TextRigConfig, get_config
-from textrig.db import DatabaseClient
+from textrig.db import DatabaseClient, indexes
 from textrig.dependencies import get_db_client
-from textrig.models.text import Text
 
 
 """
@@ -25,9 +24,15 @@ def root_path(config) -> TextRigConfig:
     return config.root_path
 
 
+@pytest.fixture(scope="session")
+def anyio_backend():
+    return "asyncio"
+
+
 @pytest.fixture
 async def get_db_client_override(config) -> DatabaseClient:
     db_client: DatabaseClient = DatabaseClient(config.db.get_uri())
+    await indexes.create_indexes(cfg=config, db_client=db_client)
     yield db_client
     # clean up
     await db_client.drop_database(config.db.name)
@@ -35,13 +40,8 @@ async def get_db_client_override(config) -> DatabaseClient:
 
 
 @pytest.fixture
-def sample_data(shared_datadir) -> dict:
+def test_data(shared_datadir) -> dict:
     return json.loads((shared_datadir / "test-data.json").read_text())
-
-
-@pytest.fixture(scope="session")
-def anyio_backend():
-    return "asyncio"
 
 
 # @pytest.fixture(scope="session")
@@ -64,19 +64,26 @@ async def test_app(get_db_client_override):
 
 
 @pytest.fixture
-async def test_client(test_app):
+async def test_client(test_app) -> AsyncClient:
     async with AsyncClient(app=test_app, base_url="http://test") as client:
         yield client
 
 
 @pytest.fixture
-def dummy_data_text(sample_data) -> Text:
-    return Text(**sample_data["texts"][0])
+async def load_test_data_texts(root_path, test_client, test_data) -> None:
+    for text in test_data["texts"]:
+        await test_client.post(f"{root_path}/texts", json=text)
 
 
 @pytest.fixture
-def dummy_data_texts(sample_data) -> Text:
-    return [Text(**t) for t in sample_data["texts"]]
+async def load_test_data_nodes(root_path, test_client, test_data) -> None:
+    for node in test_data["nodes"]:
+        await test_client.post(f"{root_path}/nodes", json=node)
+
+
+@pytest.fixture
+async def load_test_data(load_test_data_texts, load_test_data_nodes) -> None:
+    pass  # this fixture just groups some others
 
 
 @pytest.fixture(autouse=True)

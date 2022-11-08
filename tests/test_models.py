@@ -22,19 +22,13 @@ def test_dict_override():
     assert "loc_delim" not in t_data
 
 
-def test_composition(dummy_data_text):
-    text = dummy_data_text
-    assert text.title == "Rigveda"
-    assert len(text.levels) == 3
-
-
-def test_serialization(dummy_data_text):
-    text = dummy_data_text
-    dummy_id = "6331b6e05c474b9f8f19330f"
+def test_serialization(test_data):
+    text = Text(**test_data["texts"][0])
     assert text.dict().get("title")
-    text = TextRead(_id=dummy_id, **text.dict())
-    assert str(text.dict().get("id", None)) == dummy_id
-    assert str(text.dict(for_mongo=True).get("_id", None)) == dummy_id
+    dummy_id = "6331b6e05c474b9f8f19330f"
+    text = TextRead(_id=dummy_id, **test_data["texts"][0])
+    assert text.dict().get("id", False)
+    assert text.dict(for_mongo=True).get("_id", False)
 
 
 def test_deserialization():

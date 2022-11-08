@@ -6,9 +6,6 @@ from pydantic import BaseModel, Field
 from pydantic.main import ModelMetaclass
 
 
-# from textrig.logging import log
-
-
 # type alias for a flat dict of arbitrary metadata
 Metadata = dict[str, str | bool | int | float]
 

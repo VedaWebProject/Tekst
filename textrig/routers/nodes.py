@@ -29,7 +29,7 @@ async def create_node(node: Node, db_io: DbIO = Depends(get_db_io)) -> dict:
     try:
         return await db_io.insert_one("nodes", node)
     except DuplicateKeyError:
-        log.warn(f"Cannot create node. Conflict: {node}")
+        log.warning(f"Cannot create node. Conflict: {node}")
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="Conflict with existing node",
@@ -39,14 +39,23 @@ async def create_node(node: Node, db_io: DbIO = Depends(get_db_io)) -> dict:
 @router.get("", response_model=list[NodeRead], status_code=status.HTTP_200_OK)
 async def get_nodes(
     text_slug: str,
-    level: int,
+    level: int = None,
     index: int = None,
     parent_id: str = None,
     limit: int = 1000,
     db_io: DbIO = Depends(get_db_io),
 ) -> list:
 
-    example = dict(text_slug=text_slug, level=level)
+    if level is None and parent_id is None:
+        raise HTTPException(
+            status.HTTP_400_BAD_REQUEST,
+            detail="Request must contain either level or parentId",
+        )
+
+    example = dict(text_slug=text_slug)
+
+    if level is not None:
+        example["level"] = level
 
     if index is not None:
         example["index"] = index
