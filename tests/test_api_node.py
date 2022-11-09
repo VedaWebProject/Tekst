@@ -8,7 +8,7 @@ from textrig.models.node import Node, NodeRead
 async def test_create_node(
     root_path, test_client: AsyncClient, test_data, load_test_data_texts
 ):
-    endpoint = f"{root_path}/nodes"
+    endpoint = f"{root_path}/node"
     nodes = test_data["nodes"]
 
     for node in nodes:
@@ -20,7 +20,7 @@ async def test_create_node(
 async def test_child_node_io(
     root_path, test_client: AsyncClient, test_data, load_test_data_texts
 ):
-    endpoint = f"{root_path}/nodes"
+    endpoint = f"{root_path}/node"
     node = test_data["nodes"][0]
 
     # create parent
@@ -53,7 +53,7 @@ async def test_child_node_io(
 async def test_create_node_invalid_text_fail(
     root_path, test_client: AsyncClient, test_data, load_test_data_texts
 ):
-    endpoint = f"{root_path}/nodes"
+    endpoint = f"{root_path}/node"
     node = test_data["nodes"][0]
     node["textSlug"] = "this_does_not_exist"
 
@@ -65,7 +65,7 @@ async def test_create_node_invalid_text_fail(
 async def test_create_node_duplicate_fail(
     root_path, test_client: AsyncClient, test_data, load_test_data_texts
 ):
-    endpoint = f"{root_path}/nodes"
+    endpoint = f"{root_path}/node"
     node = test_data["nodes"][0]
 
     resp = await test_client.post(endpoint, json=node)
@@ -79,7 +79,7 @@ async def test_create_node_duplicate_fail(
 async def test_get_nodes(
     root_path, test_client: AsyncClient, test_data, load_test_data
 ):
-    endpoint = f"{root_path}/nodes"
+    endpoint = f"{root_path}/node"
     text = test_data["texts"][0]
     text_slug = text["slug"]
     nodes = [n for n in test_data["nodes"] if n["textSlug"] == text_slug]

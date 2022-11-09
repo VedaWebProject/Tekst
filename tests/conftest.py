@@ -76,14 +76,14 @@ async def test_client(test_app) -> AsyncClient:
 async def load_test_data_texts(root_path, test_client, test_data) -> None:
     """Insert test data for texts into testing database"""
     for text in test_data["texts"]:
-        await test_client.post(f"{root_path}/texts", json=text)
+        await test_client.post(f"{root_path}/text", json=text)
 
 
 @pytest.fixture
 async def load_test_data_nodes(root_path, test_client, test_data) -> None:
     """Insert test data for nodes into testing database"""
     for node in test_data["nodes"]:
-        await test_client.post(f"{root_path}/nodes", json=node)
+        await test_client.post(f"{root_path}/node", json=node)
 
 
 @pytest.fixture

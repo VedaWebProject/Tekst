@@ -11,8 +11,8 @@ _cfg: TextRigConfig = get_config()
 
 
 router = APIRouter(
-    prefix="/layers",
-    tags=["layers"],
+    prefix="/layer",
+    tags=["layer"],
     responses={
         status.HTTP_404_NOT_FOUND: {"description": "Not found"},
     },
