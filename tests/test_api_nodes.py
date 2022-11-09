@@ -1,7 +1,7 @@
 import pytest
 from bson import ObjectId
 from httpx import AsyncClient
-from textrig.models.text import Node, NodeRead
+from textrig.models.node import Node, NodeRead
 
 
 @pytest.mark.anyio
