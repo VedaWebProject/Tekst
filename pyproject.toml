@@ -141,28 +141,28 @@ title = "TextRig - Test Coverage Report"
     help = "Run dev services stack"
     interpreter = ["bash", "zsh"]
     shell = """
-        docker compose -f docker-compose.dev.yml -p textrig-dev up --detach
+        docker compose -f docker-compose.yml --profile dev -p textrig-dev up --detach
     """
 
     [tool.poe.tasks.dev-stack-down]
     help = "Stop dev stack and clean up all resources"
     interpreter = ["bash", "zsh"]
     shell = """
-        docker compose -f docker-compose.dev.yml -p textrig-dev down --volumes
+        docker compose -f docker-compose.yml --profile dev -p textrig-dev down --volumes
     """
 
     [tool.poe.tasks.test-stack-up]
     help = "Run test services stack"
     interpreter = ["bash", "zsh"]
     shell = """
-        docker compose -f docker-compose.dev.yml -p textrig-testing up --detach mongo
+        docker compose -f docker-compose.yml --profile test -p textrig-testing up --detach
     """
 
     [tool.poe.tasks.test-stack-down]
     help = "Stop test stack and clean up all resources"
     interpreter = ["bash", "zsh"]
     shell = """
-        docker compose -f docker-compose.dev.yml -p textrig-testing down --volumes
+        docker compose -f docker-compose.yml --profile test -p textrig-testing down --volumes
     """
 
     [tool.poe.tasks.build-image]
