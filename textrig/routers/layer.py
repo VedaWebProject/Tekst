@@ -1,8 +1,11 @@
+import pkgutil
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from textrig.config import TextRigConfig, get_config
 from textrig.db.io import DbIO
 from textrig.dependencies import get_db_io
 from textrig.logging import log
+from textrig.models import units
 from textrig.models.layer import Layer, LayerRead
 from textrig.models.unit_base import get_unit_type
 
@@ -65,4 +68,5 @@ async def get_layer_template(layer_id: str, db_io: DbIO = Depends(get_db_io)) ->
 
 @router.get("/types", status_code=status.HTTP_200_OK)
 async def get_layer_types() -> list:
-    pass
+    """Returns a list of all available data layer unit types"""
+    return [mod.name for mod in pkgutil.iter_modules(units.__path__)]
