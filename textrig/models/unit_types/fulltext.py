@@ -1,6 +1,6 @@
 from pydantic import Field
 from textrig.models.common import AllOptional, ObjectInDB
-from textrig.models.layer import UnitTypeBase
+from textrig.models.unit import UnitTypeBase
 
 
 class UnitType(UnitTypeBase):
