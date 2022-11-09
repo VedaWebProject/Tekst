@@ -5,7 +5,7 @@ from pydantic import Field
 from textrig.models.common import Metadata, PyObjectId, TextRigBaseModel
 
 
-class UnitTypeBase(TextRigBaseModel, abc.ABC):
+class UnitBase(TextRigBaseModel, abc.ABC):
     """A unit of data belonging to a certain data layer"""
 
     layer_id: PyObjectId = Field(..., description="Parent data layer ID")
@@ -18,5 +18,5 @@ class UnitTypeBase(TextRigBaseModel, abc.ABC):
         ...
 
 
-def get_unit_type(type_name: str) -> UnitTypeBase:
-    return importlib.import_module(f"textrig.models.unit_types.{type_name}").UnitType
+def get_unit_type(type_name: str) -> UnitBase:
+    return importlib.import_module(f"textrig.models.units.{type_name.lower()}").Unit

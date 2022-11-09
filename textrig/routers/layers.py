@@ -4,7 +4,7 @@ from textrig.db.io import DbIO
 from textrig.dependencies import get_db_io
 from textrig.logging import log
 from textrig.models.layer import Layer, LayerRead
-from textrig.models.unit import get_unit_type
+from textrig.models.unit_base import get_unit_type
 
 
 _cfg: TextRigConfig = get_config()

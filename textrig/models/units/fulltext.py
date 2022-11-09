@@ -1,9 +1,9 @@
 from pydantic import Field
 from textrig.models.common import AllOptional, ObjectInDB
-from textrig.models.unit import UnitTypeBase
+from textrig.models.unit_base import UnitBase
 
 
-class UnitType(UnitTypeBase):
+class Unit(UnitBase):
     """A simple fulltext unit type"""
 
     text: str = Field(None, description="Text content of the fulltext unit")
@@ -12,11 +12,11 @@ class UnitType(UnitTypeBase):
         return {"text": None}
 
 
-class UnitTypeRead(UnitType, ObjectInDB):
+class UnitTypeRead(Unit, ObjectInDB):
 
     ...
 
 
-class UnitTypeUpdate(UnitType, metaclass=AllOptional):
+class UnitTypeUpdate(Unit, metaclass=AllOptional):
 
     ...
