@@ -59,7 +59,6 @@ async def create_indexes(cfg: TextRigConfig = get_config(), db_client: Client = 
     the DB dependency here. Instead, we're forced to serve the dependency functions
     the config that's passed to this function (which will be "manually" fetched) :(
     """
-
     db_client = db_client if db_client else get_db_client(cfg)
     db: Database = get_db(db_client, cfg)
     indexes = _get_index_definitions()

@@ -19,7 +19,6 @@ class PyObjectId(ObjectId):
 
     @classmethod
     def validate(cls, v) -> ObjectId:
-
         if type(v) is ObjectId:
             return v
 

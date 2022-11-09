@@ -29,7 +29,6 @@ async def get_all_texts(
 
 @router.post("", response_model=TextRead, status_code=status.HTTP_201_CREATED)
 async def create_text(text: Text, db_io: DbIO = Depends(get_db_io)) -> TextRead:
-
     if await db_io.find_one("texts", text.slug, "slug"):
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
@@ -52,7 +51,6 @@ async def import_text(
     cfg: TextRigConfig = Depends(get_cfg),
     db_io: DbIO = Depends(get_db_io),
 ) -> TextRead:
-
     if not cfg.dev_mode:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
@@ -125,7 +123,6 @@ async def get_text_by_id(text_id: str, db_io: DbIO = Depends(get_db_io)) -> dict
 async def update_text(
     text_id: str, text_update: TextUpdate, db_io: DbIO = Depends(get_db_io)
 ) -> dict:
-
     if not await db_io.update("texts", text_id, text_update):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,

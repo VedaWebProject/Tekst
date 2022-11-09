@@ -49,7 +49,6 @@ app.include_router(nodes.router)
 
 @app.on_event("startup")
 async def startup_routine() -> None:
-
     print(file=sys.stderr)  # blank line for visual separation of app runs
     setup_logging()  # set up logging to match prod/dev requirements
 
@@ -74,6 +73,5 @@ async def startup_routine() -> None:
 
 @app.on_event("shutdown")
 async def shutdown_routine() -> None:
-
     log.info("Closing database client")
     get_db_client(_cfg).close()

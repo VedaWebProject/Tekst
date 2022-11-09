@@ -8,7 +8,6 @@ from textrig.models.node import Node, NodeRead
 async def test_create_node(
     root_path, test_client: AsyncClient, test_data, load_test_data_texts
 ):
-
     endpoint = f"{root_path}/nodes"
     nodes = test_data["nodes"]
 
@@ -21,7 +20,6 @@ async def test_create_node(
 async def test_child_node_io(
     root_path, test_client: AsyncClient, test_data, load_test_data_texts
 ):
-
     endpoint = f"{root_path}/nodes"
     node = test_data["nodes"][0]
 
@@ -55,7 +53,6 @@ async def test_child_node_io(
 async def test_create_node_invalid_text_fail(
     root_path, test_client: AsyncClient, test_data, load_test_data_texts
 ):
-
     endpoint = f"{root_path}/nodes"
     node = test_data["nodes"][0]
     node["textSlug"] = "this_does_not_exist"
@@ -68,7 +65,6 @@ async def test_create_node_invalid_text_fail(
 async def test_create_node_duplicate_fail(
     root_path, test_client: AsyncClient, test_data, load_test_data_texts
 ):
-
     endpoint = f"{root_path}/nodes"
     node = test_data["nodes"][0]
 
@@ -83,7 +79,6 @@ async def test_create_node_duplicate_fail(
 async def test_get_nodes(
     root_path, test_client: AsyncClient, test_data, load_test_data
 ):
-
     endpoint = f"{root_path}/nodes"
     text = test_data["texts"][0]
     text_slug = text["slug"]

@@ -8,7 +8,6 @@ _cfg: TextRigConfig = get_config()
 
 
 def _get_relevant_loggers() -> list[logging.Logger]:
-
     for logger in [
         "textrig",
         "fastapi",
@@ -20,7 +19,6 @@ def _get_relevant_loggers() -> list[logging.Logger]:
 
 
 def setup_logging() -> None:
-
     if "gunicorn" in os.environ.get("SERVER_SOFTWARE", ""):
 
         """

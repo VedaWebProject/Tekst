@@ -1,5 +1,4 @@
 if __name__ == "__main__":
-
     import uvicorn
     from textrig.config import TextRigConfig, get_config
 

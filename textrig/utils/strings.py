@@ -15,7 +15,6 @@ def safe_name(
     applies the defined length constraints. If min_len is set to >0 and fails,
     the string will be left-justified and filled with underscores until min_len is met.
     """
-
     # support byte strings
     if isinstance(string, bytes):
         string = string.decode()
@@ -36,7 +35,6 @@ def safe_name(
 
 def remove_diacritics(string: str) -> str:
     """Removes diacritics from the input string."""
-
     return "".join(
         c for c in ucdata.normalize("NFD", string) if ucdata.category(c) != "Mn"
     )

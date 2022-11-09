@@ -16,7 +16,6 @@ router = APIRouter(
 
 @router.post("", response_model=NodeRead, status_code=status.HTTP_201_CREATED)
 async def create_node(node: Node, db_io: DbIO = Depends(get_db_io)) -> dict:
-
     # find text the node belongs to
     text = await db_io.find_one("texts", node.text_slug, field="slug")
 
@@ -45,7 +44,6 @@ async def get_nodes(
     limit: int = 1000,
     db_io: DbIO = Depends(get_db_io),
 ) -> list:
-
     if level is None and parent_id is None:
         raise HTTPException(
             status.HTTP_400_BAD_REQUEST,
@@ -73,7 +71,6 @@ async def get_children(
     limit: int = 1000,
     db_io: DbIO = Depends(get_db_io),
 ) -> list:
-
     return await db_io.find(
         "nodes",
         example={"text_slug": text_slug, "parent_id": ObjectId(node_id)},

@@ -21,7 +21,6 @@ router = APIRouter(
 
 @router.post("", response_model=LayerRead, status_code=status.HTTP_201_CREATED)
 async def create_layer(layer: Layer, db_io: DbIO = Depends(get_db_io)) -> LayerRead:
-
     if not await db_io.find_one("texts", layer.text_slug, "slug"):
         raise HTTPException(
             status.HTTP_400_BAD_REQUEST, detail="Corresponding text doesn't exist"
@@ -34,7 +33,6 @@ async def create_layer(layer: Layer, db_io: DbIO = Depends(get_db_io)) -> LayerR
 
 @router.get("/template", status_code=status.HTTP_200_OK)
 async def get_layer_template(layer_id: str, db_io: DbIO = Depends(get_db_io)) -> dict:
-
     layer_data = await db_io.find_one("layers", layer_id)
 
     if not layer_data:
@@ -67,5 +65,4 @@ async def get_layer_template(layer_id: str, db_io: DbIO = Depends(get_db_io)) ->
 
 @router.get("/types", status_code=status.HTTP_200_OK)
 async def get_layer_types() -> list:
-
     pass
