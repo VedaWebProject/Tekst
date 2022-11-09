@@ -17,9 +17,7 @@ router = APIRouter(
     summary="Data the client needs to display in the UI",
 )
 async def uidata(cfg: TextRigConfig = Depends(get_config)) -> dict:
-    """
-    Returns all UI data at once
-    """
+    """Returns all UI data at once"""
     return {
         "platform": await uidata_platform(cfg),
         "help": await uidata_help(),
@@ -28,17 +26,13 @@ async def uidata(cfg: TextRigConfig = Depends(get_config)) -> dict:
 
 @router.get("/platform", response_model=dict[str, str], summary="Platform metadata")
 async def uidata_platform(cfg: TextRigConfig = Depends(get_config)) -> dict:
-    """
-    Returns platform metadata, possibly customized for this platform instance.
-    """
+    """Returns platform metadata, possibly customized for this platform instance."""
     return dict(title=cfg.app_name, **cfg.info.dict())
 
 
 @router.get("/help", response_model=dict[str, str], summary="Help texts")
 async def uidata_help() -> dict:
-    """
-    Returns all help texts.
-    """
+    """Returns all help texts."""
     # TODO: Load help texts from Markdown source
     return {
         "foo": "foo",

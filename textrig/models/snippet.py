@@ -18,10 +18,12 @@ class Snippet(TextRigBaseModel):
 
 
 class SnippetRead(Snippet, ObjectInDB):
+    """An existing content snippet read from the database"""
 
     ...
 
 
 class SnippetUpdate(Snippet, metaclass=AllOptional):
+    """An update to an existing content snippet"""
 
     ...

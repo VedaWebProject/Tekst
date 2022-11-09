@@ -13,10 +13,12 @@ class Unit(UnitBase):
 
 
 class UnitTypeRead(Unit, ObjectInDB):
+    """An existing fulltext unit read from the database"""
 
     ...
 
 
 class UnitTypeUpdate(Unit, metaclass=AllOptional):
+    """An update to an existing fulltext unit"""
 
     ...

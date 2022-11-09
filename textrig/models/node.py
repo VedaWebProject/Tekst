@@ -24,10 +24,12 @@ class Node(TextRigBaseModel):
 
 
 class NodeRead(Node, ObjectInDB):
+    """An existing node read from the database"""
 
     ...
 
 
 class NodeUpdate(Node, metaclass=AllOptional):
+    """An update to an existing node"""
 
     ...

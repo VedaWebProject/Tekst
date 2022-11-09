@@ -8,7 +8,8 @@ def safe_name(
     max_len: int = 32,
     delim: str = "_",
 ) -> str:
-    """Creates a safe name (e.g. for use as an identifier) from the input string.
+    """
+    Creates a safe name (e.g. for use as an identifier) from the input string.
 
     Removes diacritics, lowercases, replaces spaces with underscores and
     applies the defined length constraints. If min_len is set to >0 and fails,

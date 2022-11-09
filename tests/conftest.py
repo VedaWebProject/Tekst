@@ -56,9 +56,7 @@ def test_data(shared_datadir) -> dict:
 
 @pytest.fixture
 async def test_app(get_db_client_override):
-    """
-    Provides an app instance with overridden dependencies
-    """
+    """Provides an app instance with overridden dependencies"""
     app.dependency_overrides[get_db_client] = lambda: get_db_client_override
     return app
 

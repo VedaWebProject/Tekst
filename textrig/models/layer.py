@@ -14,10 +14,11 @@ class Layer(TextRigBaseModel):
 
 
 class LayerRead(Layer, ObjectInDB):
-
+    """An existing data layer read from the database"""
     ...
 
 
 class LayerUpdate(Layer, metaclass=AllOptional):
+    """An update to an existing data layer"""
 
     ...

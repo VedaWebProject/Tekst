@@ -58,10 +58,12 @@ class Text(TextRigBaseModel):
 
 
 class TextRead(Text, ObjectInDB):
+    """An existing text read from the database"""
 
     ...
 
 
 class TextUpdate(Text, metaclass=AllOptional):
+    """An update to an existing text"""
 
     ...
