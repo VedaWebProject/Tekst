@@ -16,11 +16,13 @@ pytest fixtures go in here...
 
 @pytest.fixture
 def config() -> TextRigConfig:
+    """Returns the app config according to passed env vars, env file or defaults"""
     return get_config()
 
 
 @pytest.fixture
 def root_path(config) -> TextRigConfig:
+    """Returns the configured app root path"""
     return config.root_path
 
 
@@ -31,6 +33,7 @@ def anyio_backend():
 
 @pytest.fixture
 async def get_db_client_override(config) -> DatabaseClient:
+    """Dependency override for the database client dependency"""
     db_client: DatabaseClient = DatabaseClient(config.db.get_uri())
     await indexes.create_indexes(cfg=config, db_client=db_client)
     yield db_client
@@ -41,6 +44,7 @@ async def get_db_client_override(config) -> DatabaseClient:
 
 @pytest.fixture
 def test_data(shared_datadir) -> dict:
+    """Returns all shared test data"""
     return json.loads((shared_datadir / "test-data.json").read_text())
 
 
@@ -63,29 +67,35 @@ async def test_app(get_db_client_override):
 
 @pytest.fixture
 async def test_client(test_app) -> AsyncClient:
+    """Returns an asynchronous test client for API testing"""
     async with AsyncClient(app=test_app, base_url="http://test") as client:
         yield client
 
 
 @pytest.fixture
 async def load_test_data_texts(root_path, test_client, test_data) -> None:
+    """Insert test data for texts into testing database"""
     for text in test_data["texts"]:
         await test_client.post(f"{root_path}/texts", json=text)
 
 
 @pytest.fixture
 async def load_test_data_nodes(root_path, test_client, test_data) -> None:
+    """Insert test data for nodes into testing database"""
     for node in test_data["nodes"]:
         await test_client.post(f"{root_path}/nodes", json=node)
 
 
 @pytest.fixture
 async def load_test_data(load_test_data_texts, load_test_data_nodes) -> None:
-    pass  # this fixture just groups some others
+    """This fixture just groups some others"""
+    pass
 
 
 @pytest.fixture(autouse=True)
 def disable_network_calls(monkeypatch):
+    """Prevents outside network access while testing"""
+
     def stunted_get():
         raise RuntimeError("Network access not allowed during testing!")
 
