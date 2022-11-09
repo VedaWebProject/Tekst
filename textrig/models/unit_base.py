@@ -28,14 +28,14 @@ class UnitBase(TextRigBaseModel, abc.ABC):
         ...
 
 
-def get_unit_type(type_name: str) -> UnitBase:
+def get_unit_type(type_name: str) -> type[UnitBase]:
     """
     Loads a specific data layer unit type by its type name during runtime
 
     :param type_name: Name of the unit type to load (will be lower-cased)
     :type type_name: str
     :return: The class of the requested unit type
-    :rtype: UnitBase
+    :rtype: type[UnitBase]
     """
 
     return importlib.import_module(f"textrig.models.units.{type_name.lower()}").Unit
