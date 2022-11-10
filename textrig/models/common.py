@@ -74,18 +74,18 @@ class TextRigBaseModel(BaseModel):
         allow_population_by_field_name = True
         json_encoders = {
             ObjectId: lambda oid: str(oid),
-            DocumentId: lambda poid: str(poid),
+            DocumentId: lambda poid: str(poid),  # is this necessary?
         }
 
 
 class DbDocument(BaseModel):
-    """Data schema mixin for objects in the database (which have an ID)"""
+    """Schema mixin for objects in the database (which have an ID)"""
 
     id: DocumentId = Field(...)
 
     class Config:
-        allow_population_by_field_name = True
         arbitrary_types_allowed = True
+        # allow_population_by_field_name = True  # only needed for aliased fields
 
 
 class AllOptional(ModelMetaclass):
