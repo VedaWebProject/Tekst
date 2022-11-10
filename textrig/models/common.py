@@ -10,22 +10,33 @@ from pydantic.main import ModelMetaclass
 Metadata = dict[str, str | bool | int | float]
 
 
-class PyObjectId(ObjectId):
-    """A pydantic representation of MongoDB's object ID"""
+class DocId(ObjectId):
+    """A project specific wrapper for MongoDB's bson.ObjectId"""
+
+    def __repr__(self):
+        return f"DocId('{str(self)}')"
+
+    def __eq__(self, other):
+        if not isinstance(other, (DocId, ObjectId, str)):
+            return False
+        return str(self) == str(other)
+
+    def __hash__(self):
+        return hash(str(self))
 
     @classmethod
     def __get_validators__(cls):
         yield cls.validate
 
     @classmethod
-    def validate(cls, v) -> ObjectId:
-        if type(v) is ObjectId:
+    def validate(cls, v) -> "DocId":
+        if type(v) is DocId:
             return v
 
         try:
-            return ObjectId(str(v))
+            return DocId(str(v))
         except InvalidId:
-            raise ValueError("Not a valid ObjectId")
+            raise ValueError("Not a valid DocId")
 
     @classmethod
     def __modify_schema__(cls, field_schema) -> None:
@@ -60,17 +71,17 @@ class TextRigBaseModel(BaseModel):
     class Config:
         alias_generator = camelize
         allow_population_by_field_name = True
+        json_encoders = {ObjectId: lambda oid: str(oid), DocId: lambda poid: str(poid)}
 
 
-class ObjectInDB(BaseModel):
-    """Data model mixin for objects from the DB (which have an ID)"""
+class DbObject(BaseModel):
+    """Data schema mixin for objects in the database (which have an ID)"""
 
-    id: PyObjectId = Field(...)
+    id: DocId = Field(...)
 
     class Config:
         allow_population_by_field_name = True
-        json_encoders = {ObjectId: lambda oid: str(oid)}
-        # arbitrary_types_allowed = True
+        arbitrary_types_allowed = True
 
 
 class AllOptional(ModelMetaclass):

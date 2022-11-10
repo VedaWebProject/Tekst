@@ -1,5 +1,5 @@
 from pydantic import Field, root_validator
-from textrig.models.common import AllOptional, ObjectInDB, TextRigBaseModel
+from textrig.models.common import AllOptional, DbObject, TextRigBaseModel
 from textrig.utils.strings import safe_name
 
 
@@ -57,7 +57,7 @@ class Text(TextRigBaseModel):
         }
 
 
-class TextRead(Text, ObjectInDB):
+class TextRead(Text, DbObject):
     """An existing text read from the database"""
 
     ...

@@ -1,5 +1,5 @@
 from pydantic import Field, validator
-from textrig.models.common import AllOptional, ObjectInDB, TextRigBaseModel
+from textrig.models.common import AllOptional, DbObject, TextRigBaseModel
 from textrig.utils.strings import safe_name
 
 
@@ -17,7 +17,7 @@ class Snippet(TextRigBaseModel):
         return safe_name(value, min_len=3, max_len=32)
 
 
-class SnippetRead(Snippet, ObjectInDB):
+class SnippetRead(Snippet, DbObject):
     """An existing content snippet read from the database"""
 
     ...

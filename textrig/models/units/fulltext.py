@@ -1,5 +1,5 @@
 from pydantic import Field
-from textrig.models.common import AllOptional, ObjectInDB
+from textrig.models.common import AllOptional, DbObject
 from textrig.models.unit_base import UnitBase
 
 
@@ -12,7 +12,7 @@ class Unit(UnitBase):
         return {"text": None}
 
 
-class UnitTypeRead(Unit, ObjectInDB):
+class UnitTypeRead(Unit, DbObject):
     """An existing fulltext unit read from the database"""
 
     ...

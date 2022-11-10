@@ -37,16 +37,16 @@ async def test_child_node_io(
     child = NodeRead(**resp.json())
     assert "id" in resp.json()
     assert "parentId" in resp.json()
-    assert resp.json()["parentId"] == str(child.parent_id)
+    assert resp.json()["parentId"] == child.parent_id
 
     # find children by parent ID
     resp = await test_client.get(
-        endpoint, params={"text_slug": parent.text_slug, "parent_id": str(parent.id)}
+        endpoint, params={"text_slug": parent.text_slug, "parent_id": parent.id}
     )
     assert resp.status_code == 200, f"response status {resp.status_code} != 200"
     assert type(resp.json()) is list
     assert len(resp.json()) == 1
-    assert resp.json()[0]["id"] == str(child.id)
+    assert resp.json()[0]["id"] == child.id
 
 
 @pytest.mark.anyio
