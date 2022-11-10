@@ -1,6 +1,6 @@
 import pytest
-from bson import ObjectId
 from httpx import AsyncClient
+from textrig.models.common import DocumentId
 from textrig.models.node import Node, NodeRead
 
 
@@ -112,7 +112,7 @@ async def test_get_nodes(
 
     # test returned nodes have IDs
     assert "id" in resp.json()[0]
-    ObjectId(resp.json()[0]["id"])
+    DocumentId(resp.json()[0]["id"])
 
     # test specific index
     resp = await test_client.get(

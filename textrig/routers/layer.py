@@ -43,7 +43,7 @@ async def get_layer_template(layer_id: str, db_io: DbIO = Depends(get_db_io)) ->
 
     # decode layer data: Usually, this is handled automatically by our models, but
     # in this case we're returning a raw dict/JSON, so we have to manually make sure
-    # that a) the ID field is called "id" and b) the ObjectId value is encoded as str.
+    # that a) the ID field is called "id" and b) the DocumentId value is encoded as str.
     layer_data = LayerRead(**layer_data).dict()
     layer_data["id"] = str(layer_data["id"])
 

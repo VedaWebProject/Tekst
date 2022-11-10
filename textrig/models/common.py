@@ -1,7 +1,7 @@
 from typing import Optional
 
-from bson.errors import InvalidId
 from bson import ObjectId
+from bson.errors import InvalidId
 from humps import camelize
 from pydantic import BaseModel, Field
 from pydantic.main import ModelMetaclass

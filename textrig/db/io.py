@@ -10,7 +10,7 @@ from textrig.models.common import TextRigBaseModel
 
 class DbIO:
     """
-    A wrapper class for all IO operations on the database
+    A wrapper class for all IO operations through the MongoDB database
 
     This is meant to be used as a dependency for FastAPI dependency injection.
     The methods wrap and extend Motor/pymongo/MongoDB functionality to ease usage
@@ -24,8 +24,8 @@ class DbIO:
         """
         Normalizes IDs to be ObjectId instances
 
-        Takes a string or ObjectId and returns an ObjectId. Raises an error if
-        any other type is passed.
+        Takes a string or ObjectId and returns an ObjectId.
+        Raises an error if any other type is passed.
 
         :param obj_id: The ID to normalize
         :type obj_id: str | ObjectId
@@ -40,7 +40,7 @@ class DbIO:
             return obj_id
         else:
             raise TypeError(
-                f"Takes string-like object or ObjectId, {type(obj_id)} given"
+                f"Takes string-like object or ObjectId; {type(obj_id)} given"
             )
 
     async def count_documents(
