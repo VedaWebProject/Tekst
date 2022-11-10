@@ -154,5 +154,6 @@ cython_debug/
 # editor settings
 .vscode
 
-#notes
+# misc
+temp.py
 notes.md
