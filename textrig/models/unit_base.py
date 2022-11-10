@@ -2,14 +2,14 @@ import abc
 import importlib
 
 from pydantic import Field
-from textrig.models.common import DocId, Metadata, TextRigBaseModel
+from textrig.models.common import DocumentId, Metadata, TextRigBaseModel
 
 
 class UnitBase(TextRigBaseModel, abc.ABC):
     """A type of data unit belonging to a certain data layer"""
 
-    layer_id: DocId = Field(..., description="Parent data layer ID")
-    node_id: DocId = Field(..., description="Parent text node ID")
+    layer_id: DocumentId = Field(..., description="Parent data layer ID")
+    node_id: DocumentId = Field(..., description="Parent text node ID")
     meta: Metadata = Field(None, description="Arbitrary metadata")
 
     @staticmethod

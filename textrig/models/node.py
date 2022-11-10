@@ -1,8 +1,8 @@
 from pydantic import Field
 from textrig.models.common import (
     AllOptional,
-    DbObject,
-    DocId,
+    DbDocument,
+    DocumentId,
     Metadata,
     TextRigBaseModel,
 )
@@ -12,7 +12,7 @@ class Node(TextRigBaseModel):
     """A node in a text structure (e.g. chapter, paragraph, ...)"""
 
     text_slug: str = Field(..., description="Slug of the text this node belongs to")
-    parent_id: DocId = Field(None, description="ID of parent node")
+    parent_id: DocumentId = Field(None, description="ID of parent node")
     level: int = Field(
         ..., description="Index of structure level this node is on", ge=0
     )
@@ -23,7 +23,7 @@ class Node(TextRigBaseModel):
     meta: Metadata = Field(None, description="Arbitrary metadata")
 
 
-class NodeRead(Node, DbObject):
+class NodeRead(Node, DbDocument):
     """An existing node read from the database"""
 
     ...

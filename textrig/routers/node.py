@@ -3,7 +3,7 @@ from pymongo.errors import DuplicateKeyError
 from textrig.db.io import DbIO
 from textrig.dependencies import get_db_io
 from textrig.logging import log
-from textrig.models.common import DocId
+from textrig.models.common import DocumentId
 from textrig.models.node import Node, NodeRead
 
 
@@ -59,7 +59,7 @@ async def get_nodes(
         example["index"] = index
 
     if parent_id:
-        example["parent_id"] = DocId(parent_id)
+        example["parent_id"] = DocumentId(parent_id)
 
     return await db_io.find("nodes", example=example, limit=limit)
 

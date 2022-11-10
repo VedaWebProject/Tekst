@@ -1,5 +1,5 @@
 from pydantic import Field
-from textrig.models.common import AllOptional, DbObject, Metadata, TextRigBaseModel
+from textrig.models.common import AllOptional, DbDocument, Metadata, TextRigBaseModel
 
 
 class Layer(TextRigBaseModel):
@@ -13,7 +13,7 @@ class Layer(TextRigBaseModel):
     meta: Metadata | None = Field(None, description="Arbitrary metadata")
 
 
-class LayerRead(Layer, DbObject):
+class LayerRead(Layer, DbDocument):
     """An existing data layer read from the database"""
 
     ...

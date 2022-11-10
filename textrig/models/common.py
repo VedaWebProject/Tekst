@@ -1,6 +1,7 @@
 from typing import Optional
 
-from bson.objectid import InvalidId, ObjectId
+from bson.errors import InvalidId
+from bson import ObjectId
 from humps import camelize
 from pydantic import BaseModel, Field
 from pydantic.main import ModelMetaclass
@@ -10,14 +11,14 @@ from pydantic.main import ModelMetaclass
 Metadata = dict[str, str | bool | int | float]
 
 
-class DocId(ObjectId):
+class DocumentId(ObjectId):
     """A project specific wrapper for MongoDB's bson.ObjectId"""
 
     def __repr__(self):
         return f"DocId('{str(self)}')"
 
     def __eq__(self, other):
-        if not isinstance(other, (DocId, ObjectId, str)):
+        if not isinstance(other, (DocumentId, ObjectId, str)):
             return False
         return str(self) == str(other)
 
@@ -29,14 +30,14 @@ class DocId(ObjectId):
         yield cls.validate
 
     @classmethod
-    def validate(cls, v) -> "DocId":
-        if type(v) is DocId:
+    def validate(cls, v) -> "DocumentId":
+        if type(v) is DocumentId:
             return v
 
         try:
-            return DocId(str(v))
+            return DocumentId(str(v))
         except InvalidId:
-            raise ValueError("Not a valid DocId")
+            raise ValueError("Not a valid DocumentId")
 
     @classmethod
     def __modify_schema__(cls, field_schema) -> None:
@@ -71,13 +72,16 @@ class TextRigBaseModel(BaseModel):
     class Config:
         alias_generator = camelize
         allow_population_by_field_name = True
-        json_encoders = {ObjectId: lambda oid: str(oid), DocId: lambda poid: str(poid)}
+        json_encoders = {
+            ObjectId: lambda oid: str(oid),
+            DocumentId: lambda poid: str(poid),
+        }
 
 
-class DbObject(BaseModel):
+class DbDocument(BaseModel):
     """Data schema mixin for objects in the database (which have an ID)"""
 
-    id: DocId = Field(...)
+    id: DocumentId = Field(...)
 
     class Config:
         allow_population_by_field_name = True
