@@ -1,6 +1,6 @@
 from pydantic import Field
 from textrig.models.common import AllOptional, DbDocument
-from textrig.models.unit_base import UnitBase
+from textrig.models.unit import UnitBase
 
 
 class Unit(UnitBase):
