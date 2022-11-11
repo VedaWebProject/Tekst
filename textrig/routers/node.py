@@ -4,7 +4,7 @@ from textrig.db.io import DbIO
 from textrig.dependencies import get_db_io
 from textrig.logging import log
 from textrig.models.common import DocumentId
-from textrig.models.node import Node, NodeRead
+from textrig.models.text import Node, NodeRead
 
 
 router = APIRouter(

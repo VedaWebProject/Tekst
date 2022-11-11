@@ -5,8 +5,7 @@ from textrig.config import TextRigConfig, get_config
 from textrig.db.io import DbIO
 from textrig.dependencies import get_cfg, get_db_io
 from textrig.logging import log
-from textrig.models.node import Node, NodeRead
-from textrig.models.text import Text, TextRead, TextUpdate
+from textrig.models.text import Node, NodeRead, Text, TextRead, TextUpdate
 from textrig.routers.node import create_node
 
 
