@@ -17,7 +17,7 @@ from textrig.models.common import (
 class LayerTypeABC(ABC):
     """Abstract base class for defining a data layer type"""
 
-    class UnitBase(ABC, TextRigBaseModel):
+    class UnitBase(TextRigBaseModel):
         """A base class for types of data units belonging to a certain data layer"""
 
         layer_id: DocumentId = Field(..., description="Data layer ID")
@@ -49,30 +49,42 @@ class LayerTypeABC(ABC):
         raise NotImplementedError(f"This method should have been implemented in {cls}")
 
     @classmethod
-    @abstractmethod
     def get_unit_read_model(cls) -> type[UnitReadBase]:
         """
         Dynamically generates and returns the unit read model
         for units of this type of data layer
         """
-        return type(
-            f"{cls.get_unit_model().__name__}Read",
-            (cls.get_unit_model(), cls.UnitReadBase),
-            {},
-        )
+        model_name = f"{cls.get_unit_model().__name__}Read"
+        if not hasattr(cls, model_name):
+            # model doesn't exist, has to be created
+            model = type(
+                model_name,
+                (cls.get_unit_model(), cls.UnitReadBase),
+                {},
+            )
+            # and set as an attribute of the respective layer type class
+            setattr(cls, model_name, model)
+        # return model
+        return getattr(cls, model_name)
 
     @classmethod
-    @abstractmethod
     def get_unit_update_model(cls) -> type[UnitUpdateBase]:
         """
         Dynamically generates and returns the unit update model
         for units of this type of data layer
         """
-        return type(
-            f"{cls.get_unit_model().__name__}Update",
-            (cls.get_unit_model(), cls.UnitUpdateBase),
-            {},
-        )
+        model_name = f"{cls.get_unit_model().__name__}Update"
+        if not hasattr(cls, model_name):
+            # model doesn't exist, has to be created
+            model = type(
+                model_name,
+                (cls.get_unit_model(), cls.UnitUpdateBase),
+                {},
+            )
+            # and set as an attribute of the respective layer type class
+            setattr(cls, model_name, model)
+        # return model
+        return getattr(cls, model_name)
 
     @classmethod
     def prepare_import_template(cls) -> dict:
