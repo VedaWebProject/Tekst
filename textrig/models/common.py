@@ -54,15 +54,14 @@ class TextRigBaseModel(BaseModel):
         super().__init__(**kwargs)
 
     def dict(self, for_mongo: bool = False, **kwargs) -> dict:
+        """Overrides dict() in Basemodel to handle "_id" and change some defaults"""
         parsed = super().dict(
             exclude_unset=kwargs.pop("exclude_unset", True),
             by_alias=kwargs.pop("by_alias", True),
             **kwargs,
         )
-
         if for_mongo and "_id" not in parsed and "id" in parsed:
             parsed["_id"] = parsed.pop("id")
-
         return parsed
 
     @classmethod
