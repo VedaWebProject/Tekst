@@ -6,7 +6,7 @@ from textrig.db import indexes
 from textrig.db import init_client as init_db_client
 from textrig.dependencies import get_db_client
 from textrig.logging import log, setup_logging
-from textrig.routers import admin, layer, node, text, uidata
+from textrig.routers import admin, layer, node, text, uidata, unit
 from textrig.tags import tags_metadata
 
 
@@ -45,6 +45,7 @@ app.include_router(uidata.router)
 app.include_router(text.router)
 app.include_router(layer.router)
 app.include_router(node.router)
+app.include_router(unit.router)
 
 
 @app.on_event("startup")

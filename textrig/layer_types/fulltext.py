@@ -1,21 +1,35 @@
 from pydantic import Field
-from textrig.models.common import AllOptional, DbDocument
-from textrig.models.layer import UnitBase
+from textrig.layer_types import LayerTypeABC
 
 
-class FullTextUnit(UnitBase):
-    """A simple fulltext layer unit type"""
+class FullText(LayerTypeABC):
+    """A simple fulltext layer type"""
 
-    text: str = Field(None, description="Text content of the fulltext unit")
+    class FullTextUnit(LayerTypeABC.UnitBase):
+        text: str = Field(
+            None,
+            description="Text content of the fulltext unit",
+            extra={"template": True},
+        )
 
+    class FullTextUnitRead(FullTextUnit, LayerTypeABC.UnitReadBase):
+        ...
 
-class FullTextUnitRead(FullTextUnit, DbDocument):
-    """An existing fulltext unit read from the database"""
+    class FullTextUnitUpdate(FullTextUnit, LayerTypeABC.UnitUpdateBase):
+        ...
 
-    ...
+    @classmethod
+    def get_description(cls) -> str:
+        return "A simple fulltext data layer"
 
+    @classmethod
+    def get_unit_model(cls) -> type[FullTextUnit]:
+        return cls.FullTextUnit
 
-class FullTextUnitUpdate(FullTextUnit, metaclass=AllOptional):
-    """An update to an existing fulltext unit"""
+    @classmethod
+    def get_unit_read_model(cls) -> type[FullTextUnitRead]:
+        return cls.FullTextUnitRead
 
-    ...
+    @classmethod
+    def get_unit_update_model(cls) -> type[FullTextUnitUpdate]:
+        return cls.FullTextUnitUpdate

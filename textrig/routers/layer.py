@@ -1,13 +1,10 @@
-import pkgutil
-
 from fastapi import APIRouter, Depends, HTTPException, status
 from textrig.config import TextRigConfig, get_config
 from textrig.db.io import DbIO
 from textrig.dependencies import get_db_io
+from textrig.layer_types import get_layer_type, get_layer_type_names
 from textrig.logging import log
-from textrig.models import units
 from textrig.models.layer import Layer, LayerRead
-from textrig.models.unit import get_unit_type
 
 
 _cfg: TextRigConfig = get_config()
@@ -56,7 +53,7 @@ async def get_layer_template(layer_id: str, db_io: DbIO = Depends(get_db_io)) ->
     )
 
     # import unit type for the requested layer
-    UnitType = get_unit_type(layer_data["layerType"])
+    UnitType = get_layer_type(layer_data["layerType"])
 
     # apply generated unit templates to data
     layer_data["units"] = [
@@ -69,4 +66,4 @@ async def get_layer_template(layer_id: str, db_io: DbIO = Depends(get_db_io)) ->
 @router.get("/types", status_code=status.HTTP_200_OK)
 async def get_layer_types() -> list:
     """Returns a list of all available data layer unit types"""
-    return [mod.name for mod in pkgutil.iter_modules(units.__path__)]
+    return get_layer_type_names()
