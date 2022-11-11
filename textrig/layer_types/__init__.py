@@ -1,11 +1,10 @@
 import importlib
 import inspect
 import pkgutil
-from types import ModuleType
 from abc import ABC, abstractmethod
+from types import ModuleType
 
 from pydantic import Field
-
 from textrig.models.common import (
     AllOptional,
     DbDocument,
@@ -119,7 +118,7 @@ def _get_layer_type_module(layer_type_name: str) -> ModuleType:
     :return: The requested module
     :rtype: ModuleType
     """
-    return importlib.import_module(f"{__path__}.{layer_type_name.lower()}")
+    return importlib.import_module(f"{__name__}.{layer_type_name.lower()}")
 
 
 def get_layer_type_names() -> list[str]:
@@ -129,9 +128,7 @@ def get_layer_type_names() -> list[str]:
     :return: A list of all layer type names (lowercased slugs)
     :rtype: list[str]
     """
-    return [
-        mod.name.lower() for mod in pkgutil.iter_modules(__path__)
-    ]
+    return [mod.name.lower() for mod in pkgutil.iter_modules(__path__)]
 
 
 def get_layer_type(layer_type_name: str) -> type[LayerTypeABC]:
