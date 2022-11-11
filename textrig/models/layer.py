@@ -13,7 +13,7 @@ class Layer(TextRigBaseModel):
     layer_type: str = Field(...)
     # owner_id: DocId = Field(None)  # TODO: users don't exist, yet
     public: bool = Field(False, description="Publication status of this layer")
-    meta: Metadata | None = Field(None, description="Arbitrary metadata")
+    meta: Metadata = Field(None, description="Arbitrary metadata")
 
 
 class LayerRead(Layer, DbDocument):
