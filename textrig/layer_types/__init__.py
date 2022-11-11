@@ -51,14 +51,28 @@ class LayerTypeABC(ABC):
     @classmethod
     @abstractmethod
     def get_unit_read_model(cls) -> type[UnitReadBase]:
-        """Returns the unit read model for units of this type of data layer"""
-        raise NotImplementedError(f"This method should have been implemented in {cls}")
+        """
+        Dynamically generates and returns the unit read model
+        for units of this type of data layer
+        """
+        return type(
+            f"{cls.get_unit_model().__name__}Read",
+            (cls.get_unit_model(), cls.UnitReadBase),
+            {},
+        )
 
     @classmethod
     @abstractmethod
     def get_unit_update_model(cls) -> type[UnitUpdateBase]:
-        """Returns the unit update model for units of this type of data layer"""
-        raise NotImplementedError(f"This method should have been implemented in {cls}")
+        """
+        Dynamically generates and returns the unit update model
+        for units of this type of data layer
+        """
+        return type(
+            f"{cls.get_unit_model().__name__}Update",
+            (cls.get_unit_model(), cls.UnitUpdateBase),
+            {},
+        )
 
     @classmethod
     def prepare_import_template(cls) -> dict:

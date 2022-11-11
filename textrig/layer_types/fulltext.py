@@ -12,12 +12,6 @@ class FullText(LayerTypeABC):
             extra={"template": True},
         )
 
-    class FullTextUnitRead(FullTextUnit, LayerTypeABC.UnitReadBase):
-        ...
-
-    class FullTextUnitUpdate(FullTextUnit, LayerTypeABC.UnitUpdateBase):
-        ...
-
     @classmethod
     def get_description(cls) -> str:
         return "A simple fulltext data layer"
@@ -25,11 +19,3 @@ class FullText(LayerTypeABC):
     @classmethod
     def get_unit_model(cls) -> type[FullTextUnit]:
         return cls.FullTextUnit
-
-    @classmethod
-    def get_unit_read_model(cls) -> type[FullTextUnitRead]:
-        return cls.FullTextUnitRead
-
-    @classmethod
-    def get_unit_update_model(cls) -> type[FullTextUnitUpdate]:
-        return cls.FullTextUnitUpdate
