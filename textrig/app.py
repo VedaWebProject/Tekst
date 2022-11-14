@@ -39,7 +39,7 @@ app = FastAPI(
 )
 
 
-# register routers
+# register routers  # TODO: do that dynamically!
 app.include_router(admin.router)
 app.include_router(uidata.router)
 app.include_router(text.router)
