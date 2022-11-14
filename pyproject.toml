@@ -26,6 +26,7 @@ email-validator = "^1.2.1"
 motor = "^3.0.0"
 python-multipart = "^0.0.5"
 pyhumps = "^3.8.0"
+pluggy = "^1.0.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.2"

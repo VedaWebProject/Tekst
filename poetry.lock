@@ -333,7 +333,7 @@ test = ["appdirs (==1.4.4)", "pytest (>=7.2)", "pytest-cov (>=4)", "pytest-mock 
 name = "pluggy"
 version = "1.0.0"
 description = "plugin and hook calling mechanisms for python"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6"
 
@@ -592,7 +592,7 @@ standard = ["colorama (>=0.4)", "httptools (>=0.4.0)", "python-dotenv (>=0.13)",
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "43c95f2c15a1a2a9cb0519be2a4caab884a812466e1d10801472329f1cbc0f56"
+content-hash = "447e2f004e469b8460fcd04f707e19f570aef66fd1e2d0c9a2088a5b77ce11a7"
 
 [metadata.files]
 anyio = [
