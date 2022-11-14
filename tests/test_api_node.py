@@ -13,7 +13,9 @@ async def test_create_node(
 
     for node in nodes:
         resp = await test_client.post(endpoint, json=node)
-        assert resp.status_code == 201, f"response status {resp.status_code} != 201"
+        assert (
+            resp.status_code == 201
+        ), f"HTTP status {resp.status_code} (expected: 201)"
 
 
 @pytest.mark.anyio
@@ -25,7 +27,7 @@ async def test_child_node_io(
 
     # create parent
     resp = await test_client.post(endpoint, json=node)
-    assert resp.status_code == 201, f"response status {resp.status_code} != 201"
+    assert resp.status_code == 201, f"HTTP status {resp.status_code} (expected: 201)"
     parent: NodeRead = NodeRead(**resp.json())
 
     # create child
@@ -43,7 +45,7 @@ async def test_child_node_io(
     resp = await test_client.get(
         endpoint, params={"text_slug": parent.text_slug, "parent_id": parent.id}
     )
-    assert resp.status_code == 200, f"response status {resp.status_code} != 200"
+    assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) is list
     assert len(resp.json()) == 1
     assert resp.json()[0]["id"] == child.id
@@ -58,7 +60,7 @@ async def test_create_node_invalid_text_fail(
     node["textSlug"] = "this_does_not_exist"
 
     resp = await test_client.post(endpoint, json=node)
-    assert resp.status_code == 400, f"response status {resp.status_code} != 400"
+    assert resp.status_code == 400, f"HTTP status {resp.status_code} (expected: 400)"
 
 
 @pytest.mark.anyio
@@ -69,10 +71,10 @@ async def test_create_node_duplicate_fail(
     node = test_data["nodes"][0]
 
     resp = await test_client.post(endpoint, json=node)
-    assert resp.status_code == 201, f"response status {resp.status_code} != 201"
+    assert resp.status_code == 201, f"HTTP status {resp.status_code} (expected: 201)"
 
     resp = await test_client.post(endpoint, json=node)
-    assert resp.status_code == 409, f"response status {resp.status_code} != 409"
+    assert resp.status_code == 409, f"HTTP status {resp.status_code} (expected: 409)"
 
 
 @pytest.mark.anyio
@@ -92,7 +94,7 @@ async def test_get_nodes(
     resp = await test_client.get(
         endpoint, params={"text_slug": text_slug, "level": 0, "limit": 2}
     )
-    assert resp.status_code == 200, f"response status {resp.status_code} != 200"
+    assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) is list
     assert len(resp.json()) == 2
 
@@ -100,13 +102,13 @@ async def test_get_nodes(
     resp = await test_client.get(
         endpoint, params={"text_slug": "this_does_not_exist", "level": 0}
     )
-    assert resp.status_code == 200, f"response status {resp.status_code} != 200"
+    assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) is list
     assert len(resp.json()) == 0
 
     # test results contain all nodes of level 0
     resp = await test_client.get(endpoint, params={"text_slug": text_slug, "level": 0})
-    assert resp.status_code == 200, f"response status {resp.status_code} != 200"
+    assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) is list
     assert len(resp.json()) == len(nodes)
 
@@ -118,6 +120,6 @@ async def test_get_nodes(
     resp = await test_client.get(
         endpoint, params={"text_slug": text_slug, "level": 0, "index": 0}
     )
-    assert resp.status_code == 200, f"response status {resp.status_code} != 200"
+    assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) is list
     assert len(resp.json()) == 1
