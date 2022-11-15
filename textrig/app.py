@@ -11,10 +11,52 @@ from textrig.routers import get_routers
 from textrig.tags import tags_metadata
 
 
+# set up logging to match prod/dev requirements
+setup_logging()
+
 # get (possibly cached) config data
 _cfg: TextRigConfig = get_config()
 
 
+def pre_startup_routine() -> None:
+    print(file=sys.stderr)  # blank line for visual separation of app runs
+
+    # Hello World!
+    log.info(
+        f"TextRig Server v{_cfg.info.version} "
+        f"running in {'DEVELOPMENT' if _cfg.dev_mode else 'PRODUCTION'} MODE"
+    )
+
+    # init layer type plugin manager
+    init_layer_type_manager()
+
+    # include routers
+    log.info("Hooking up API routers")
+    for router in get_routers():
+        app.include_router(router)
+
+
+async def startup_routine() -> None:
+    log.info("Initializing database client")
+    init_db_client(_cfg.db.get_uri())
+
+    log.info("Creating database indexes")
+    await indexes.create_indexes()
+
+    # log dev server info
+    if _cfg.dev_mode:  # pragma: no cover
+        log.info(
+            "Development server bound to "
+            f"http://{_cfg.dev_srv_host}:{_cfg.dev_srv_port}"
+        )
+
+
+async def shutdown_routine() -> None:
+    log.info("Closing database client")
+    get_db_client(_cfg).close()
+
+
+# initialize FastAPI app
 app = FastAPI(
     root_path=_cfg.root_path,
     title=_cfg.app_name,
@@ -37,43 +79,9 @@ app = FastAPI(
     responses={
         status.HTTP_400_BAD_REQUEST: {"description": "Invalid Request"},
     },
+    on_startup=[startup_routine],
+    on_shutdown=[shutdown_routine],
 )
 
-
-@app.on_event("startup")
-async def startup_routine() -> None:
-    print(file=sys.stderr)  # blank line for visual separation of app runs
-    setup_logging()  # set up logging to match prod/dev requirements
-
-    # Hello World!
-    log.info(
-        f"TextRig Server v{_cfg.info.version} "
-        f"running in {'DEVELOPMENT' if _cfg.dev_mode else 'PRODUCTION'} MODE"
-    )
-
-    # init layer type plugin manager
-    init_layer_type_manager()
-
-    # include routers
-    log.info("Hooking up API routers")
-    for router in get_routers():
-        app.include_router(router)
-
-    log.info("Initializing database client")
-    init_db_client(_cfg.db.get_uri())
-
-    log.info("Creating database indexes")
-    await indexes.create_indexes()
-
-    # log dev server info
-    if _cfg.dev_mode:  # pragma: no cover
-        log.info(
-            "Development server bound to "
-            f"http://{_cfg.dev_srv_host}:{_cfg.dev_srv_port}"
-        )
-
-
-@app.on_event("shutdown")
-async def shutdown_routine() -> None:
-    log.info("Closing database client")
-    get_db_client(_cfg).close()
+# run pre-startup routine
+pre_startup_routine()
