@@ -28,7 +28,8 @@ async def create_layer(layer: Layer, db_io: DbIO = Depends(get_db_io)) -> LayerR
         raise HTTPException(
             status.HTTP_400_BAD_REQUEST, detail="Corresponding text doesn't exist"
         )
-
+    # TODO: Check is layer type is valid?
+    # ...
     layer = await db_io.insert_one("layers", layer)
     log.debug(f"Created layer: {layer}")
     return layer
@@ -45,7 +46,16 @@ async def get_layer_template(layer_id: str, db_io: DbIO = Depends(get_db_io)) ->
     # in this case we're returning a raw dict/JSON, so we have to manually make sure
     # that a) the ID field is called "id" and b) the DocumentId value is encoded as str.
     layer_data = LayerRead(**layer_data).dict()
-    layer_data["id"] = str(layer_data["id"])
+
+    # import unit type for the requested layer
+    template = get_layer_type(layer_data["layerType"]).prepare_import_template()
+    # apply data from layer instance
+    template["layerId"] = str(layer_data["id"])
+    template["_level"] = str(layer_data["level"])
+    template["_title"] = str(layer_data["title"])
+
+    # generate unit template
+    node_template = {key: None for key in template["_unitSchema"].keys()}
 
     # get IDs of all nodes on this structure level as a base for unit templates
     nodes = await db_io.find(
@@ -55,15 +65,12 @@ async def get_layer_template(layer_id: str, db_io: DbIO = Depends(get_db_io)) ->
         limit=0,
     )
 
-    # import unit type for the requested layer
-    UnitType = get_layer_type(layer_data["layerType"])
-
-    # apply generated unit templates to data
-    layer_data["units"] = [
-        dict(nodeId=str(node["_id"]), **UnitType.get_template()) for node in nodes
+    # fill in unit templates with IDs
+    template["units"] = [
+        dict(nodeId=str(node["_id"]), **node_template) for node in nodes
     ]
 
-    return layer_data
+    return template
 
 
 @router.get("/types", status_code=status.HTTP_200_OK)

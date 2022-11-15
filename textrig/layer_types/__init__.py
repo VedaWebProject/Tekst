@@ -152,7 +152,7 @@ def get_layer_type_names() -> list[str]:
     return [p[0] for p in _get_layer_type_manager().list_name_plugin()]
 
 
-def get_layer_type(layer_type_name: str) -> type[LayerTypePluginABC]:
+def get_layer_type(layer_type_name: str) -> LayerTypePluginABC:
     """
     Returns a specific layer type's class by name
 
