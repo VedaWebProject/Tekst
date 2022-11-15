@@ -26,5 +26,13 @@
       "index": 2,
       "label": "003"
     }
+  ],
+  "layers": [
+    {
+      "title": "A test layer",
+      "textSlug": "rigveda",
+      "level": 0,
+      "layer_type": "fulltext"
+    }
   ]
 }

@@ -79,7 +79,7 @@ async def test_create_node_duplicate_fail(
 
 @pytest.mark.anyio
 async def test_get_nodes(
-    root_path, test_client: AsyncClient, test_data, load_test_data
+    root_path, test_client: AsyncClient, test_data, load_test_data_nodes
 ):
     endpoint = f"{root_path}/node"
     text = test_data["texts"][0]

@@ -80,16 +80,21 @@ async def load_test_data_texts(root_path, test_client, test_data) -> None:
 
 
 @pytest.fixture
-async def load_test_data_nodes(root_path, test_client, test_data) -> None:
+async def load_test_data_nodes(
+    root_path, test_client, test_data, load_test_data_texts
+) -> None:
     """Insert test data for nodes into testing database"""
     for node in test_data["nodes"]:
         await test_client.post(f"{root_path}/node", json=node)
 
 
 @pytest.fixture
-async def load_test_data(load_test_data_texts, load_test_data_nodes) -> None:
-    """This fixture just groups some others"""
-    pass
+async def load_test_data_layers(
+    root_path, test_client, test_data, load_test_data_nodes
+) -> None:
+    """Insert test data for layers into testing database"""
+    for layer in test_data["layers"]:
+        await test_client.post(f"{root_path}/layer", json=layer)
 
 
 @pytest.fixture(autouse=True)

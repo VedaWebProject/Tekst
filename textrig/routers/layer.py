@@ -28,6 +28,26 @@ router = APIRouter(
 # ROUTES DEFINITIONS...
 
 
+@router.get("", response_model=list[LayerRead], status_code=status.HTTP_200_OK)
+async def get_layers(
+    text_slug: str,
+    level: int = None,
+    layer_type: str = None,
+    limit: int = 1000,
+    db_io: DbIO = Depends(get_db_io),
+) -> list:
+
+    example = dict(text_slug=text_slug)
+
+    if level is not None:
+        example["level"] = level
+
+    if layer_type is not None:
+        example["layer_type"] = layer_type
+
+    return await db_io.find("layers", example=example, limit=limit)
+
+
 @router.post("", response_model=LayerRead, status_code=status.HTTP_201_CREATED)
 async def create_layer(layer: Layer, db_io: DbIO = Depends(get_db_io)) -> LayerRead:
     if not await db_io.find_one("texts", layer.text_slug, "slug"):
@@ -59,7 +79,7 @@ async def get_layer_template(layer_id: str, db_io: DbIO = Depends(get_db_io)) ->
     template["layerId"] = str(layer_data["id"])
     template["_level"] = layer_data["level"]
     template["_title"] = layer_data["title"]
-    template["_description"] = layer_data["description"]
+    template["_description"] = layer_data.get("description", None)
 
     # generate unit template
     node_template = {key: None for key in template["_unitSchema"].keys()}
@@ -108,3 +128,16 @@ async def map_layer_types() -> dict:
             "description": lt_type.get_description(),
         }
     return resp_data
+
+
+@router.get("/{layer_id}", response_model=LayerRead, status_code=status.HTTP_200_OK)
+async def get_layer(
+    layer_id: str,
+    db_io: DbIO = Depends(get_db_io),
+) -> list:
+    layer_data = await db_io.find_one("layers", layer_id)
+    if not layer_data:
+        raise HTTPException(
+            status.HTTP_404_NOT_FOUND, detail=f"No layer with ID {layer_id}"
+        )
+    return layer_data
