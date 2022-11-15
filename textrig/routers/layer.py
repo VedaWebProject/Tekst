@@ -7,7 +7,7 @@ from starlette.background import BackgroundTask
 from textrig.config import TextRigConfig, get_config
 from textrig.db.io import DbIO
 from textrig.dependencies import get_db_io
-from textrig.layer_types import get_layer_type, get_layer_type_names
+from textrig.layer_types import get_layer_type, get_layer_types
 from textrig.logging import log
 from textrig.models.layer import Layer, LayerRead
 from textrig.utils.strings import safe_name
@@ -99,6 +99,12 @@ async def get_layer_template(layer_id: str, db_io: DbIO = Depends(get_db_io)) ->
 
 
 @router.get("/types", status_code=status.HTTP_200_OK)
-async def get_layer_types() -> list:
+async def map_layer_types() -> dict:
     """Returns a list of all available data layer unit types"""
-    return get_layer_type_names()
+    resp_data = {}
+    for lt_name, lt_type in get_layer_types().items():
+        resp_data[lt_name] = {
+            "name": lt_type.get_name(),
+            "description": lt_type.get_description(),
+        }
+    return resp_data
