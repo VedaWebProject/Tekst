@@ -19,11 +19,6 @@ router = APIRouter(
 )
 
 
-def get_router() -> APIRouter:
-    """Normalized access to the router object"""
-    return router
-
-
 # ROUTES DEFINITIONS...
 
 

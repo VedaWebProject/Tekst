@@ -72,44 +72,43 @@ def _generate_update_endpoint(
     return update_unit
 
 
-def get_router() -> APIRouter:
-    # initialize unit router
-    router = APIRouter(
-        prefix="/unit",
-        tags=["unit"],
-        responses={status.HTTP_404_NOT_FOUND: {"description": "Not found"}},
+# initialize unit router
+router = APIRouter(
+    prefix="/unit",
+    tags=["unit"],
+    responses={status.HTTP_404_NOT_FOUND: {"description": "Not found"}},
+)
+
+# dynamically add all needed routes for every layer type's units
+for lt_name, lt_class in get_layer_types().items():
+    # add route for reading a unit from the database
+    router.add_api_route(
+        path=f"/{lt_name}",
+        endpoint=_generate_read_endpoint(lt_class.get_unit_read_model()),
+        methods=["GET"],
+        response_model=lt_class.get_unit_read_model(),
+        status_code=status.HTTP_200_OK,
+        tags=[lt_name],
     )
-    # dynamically add all needed routes for every layer type's units
-    for lt_name, lt_class in get_layer_types().items():
-        # add route for reading a unit from the database
-        router.add_api_route(
-            path=f"/{lt_name}",
-            endpoint=_generate_read_endpoint(lt_class.get_unit_read_model()),
-            methods=["GET"],
-            response_model=lt_class.get_unit_read_model(),
-            status_code=status.HTTP_200_OK,
-            tags=[lt_name],
-        )
-        # add route for creating a unit
-        router.add_api_route(
-            path=f"/{lt_name}",
-            endpoint=_generate_create_endpoint(
-                lt_class.get_unit_model(), lt_class.get_unit_read_model()
-            ),
-            methods=["POST"],
-            response_model=lt_class.get_unit_read_model(),
-            status_code=status.HTTP_201_CREATED,
-            tags=[lt_name],
-        )
-        # add route for updating a unit
-        router.add_api_route(
-            path=f"/{lt_name}",
-            endpoint=_generate_update_endpoint(
-                lt_class.get_unit_update_model(), lt_class.get_unit_read_model()
-            ),
-            methods=["PATCH"],
-            response_model=lt_class.get_unit_read_model(),
-            status_code=status.HTTP_200_OK,
-            tags=[lt_name],
-        )
-    return router
+    # add route for creating a unit
+    router.add_api_route(
+        path=f"/{lt_name}",
+        endpoint=_generate_create_endpoint(
+            lt_class.get_unit_model(), lt_class.get_unit_read_model()
+        ),
+        methods=["POST"],
+        response_model=lt_class.get_unit_read_model(),
+        status_code=status.HTTP_201_CREATED,
+        tags=[lt_name],
+    )
+    # add route for updating a unit
+    router.add_api_route(
+        path=f"/{lt_name}",
+        endpoint=_generate_update_endpoint(
+            lt_class.get_unit_update_model(), lt_class.get_unit_read_model()
+        ),
+        methods=["PATCH"],
+        response_model=lt_class.get_unit_read_model(),
+        status_code=status.HTTP_200_OK,
+        tags=[lt_name],
+    )
