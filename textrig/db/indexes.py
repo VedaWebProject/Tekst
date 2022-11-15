@@ -4,6 +4,7 @@ from motor.motor_asyncio import AsyncIOMotorClient as Client
 from motor.motor_asyncio import AsyncIOMotorDatabase as Database
 from textrig.config import TextRigConfig, get_config
 from textrig.dependencies import get_db, get_db_client
+from textrig.logging import log
 
 
 def _get_index_definitions() -> dict:
@@ -59,6 +60,7 @@ async def create_indexes(cfg: TextRigConfig = get_config(), db_client: Client = 
     the DB dependency here. Instead, we're forced to serve the dependency functions
     the config that's passed to this function (which will be "manually" fetched) :(
     """
+    log.info("Creating database indexes")
     db_client = db_client if db_client else get_db_client(cfg)
     db: Database = get_db(db_client, cfg)
     indexes = _get_index_definitions()

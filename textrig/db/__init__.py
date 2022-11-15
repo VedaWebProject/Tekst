@@ -1,13 +1,17 @@
 from motor.motor_asyncio import AsyncIOMotorClient as DatabaseClient
+from textrig.config import TextRigConfig, get_config
+from textrig.logging import log
 
 
+_cfg: TextRigConfig = get_config()
 _db_client: DatabaseClient = None
 
 
-def init_client(db_uri: str) -> None:
+def init_client(db_uri: str = None) -> None:
     global _db_client
     if _db_client is None:
-        _db_client = DatabaseClient(db_uri)
+        log.info("Initializing database client")
+        _db_client = DatabaseClient(db_uri or _cfg.db.get_uri())
 
 
 def get_client(db_uri: str) -> DatabaseClient:

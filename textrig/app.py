@@ -2,8 +2,8 @@ import sys
 
 from fastapi import FastAPI, status
 from textrig.config import TextRigConfig, get_config
-from textrig.db import indexes
 from textrig.db import init_client as init_db_client
+from textrig.db.indexes import create_indexes
 from textrig.dependencies import get_db_client
 from textrig.layer_types import init_layer_type_manager
 from textrig.logging import log, setup_logging
@@ -37,12 +37,8 @@ def pre_startup_routine() -> None:
 
 
 async def startup_routine() -> None:
-    log.info("Initializing database client")
-    init_db_client(_cfg.db.get_uri())
-
-    log.info("Creating database indexes")
-    await indexes.create_indexes()
-
+    init_db_client()
+    await create_indexes()
     # log dev server info
     if _cfg.dev_mode:  # pragma: no cover
         log.info(
