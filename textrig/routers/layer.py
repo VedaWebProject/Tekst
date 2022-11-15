@@ -1,10 +1,16 @@
+import json
+from tempfile import NamedTemporaryFile
+
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.responses import FileResponse
+from starlette.background import BackgroundTask
 from textrig.config import TextRigConfig, get_config
 from textrig.db.io import DbIO
 from textrig.dependencies import get_db_io
 from textrig.layer_types import get_layer_type, get_layer_type_names
 from textrig.logging import log
 from textrig.models.layer import Layer, LayerRead
+from textrig.utils.strings import safe_name
 
 
 _cfg: TextRigConfig = get_config()
@@ -51,9 +57,9 @@ async def get_layer_template(layer_id: str, db_io: DbIO = Depends(get_db_io)) ->
     template = get_layer_type(layer_data["layerType"]).prepare_import_template()
     # apply data from layer instance
     template["layerId"] = str(layer_data["id"])
-    template["_level"] = str(layer_data["level"])
-    template["_title"] = str(layer_data["title"])
-    template["_description"] = str(layer_data["description"])
+    template["_level"] = layer_data["level"]
+    template["_title"] = layer_data["title"]
+    template["_description"] = layer_data["description"]
 
     # generate unit template
     node_template = {key: None for key in template["_unitSchema"].keys()}
@@ -71,7 +77,25 @@ async def get_layer_template(layer_id: str, db_io: DbIO = Depends(get_db_io)) ->
         dict(nodeId=str(node["_id"]), **node_template) for node in nodes
     ]
 
-    return template
+    # create temporary file and stream it as a file response
+    tempfile = NamedTemporaryFile(mode="w")
+    tempfile.write(json.dumps(template, indent=2))
+    tempfile.flush()
+
+    # prepare headers
+    filename = (
+        f"{layer_data['textSlug']}_layer_{safe_name(template['layerId'])}"
+        "_template.json"
+    )
+    headers = {"Content-Disposition": f'attachment; filename="{filename}"'}
+
+    log.debug(f"Serving layer template as temporary file {tempfile.name}")
+    return FileResponse(
+        tempfile.name,
+        headers=headers,
+        media_type="application/json",
+        background=BackgroundTask(tempfile.close),
+    )
 
 
 @router.get("/types", status_code=status.HTTP_200_OK)
