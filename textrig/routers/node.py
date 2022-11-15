@@ -14,6 +14,14 @@ router = APIRouter(
 )
 
 
+def get_router() -> APIRouter:
+    """Normalized access to the router object"""
+    return router
+
+
+# ROUTES DEFINITIONS...
+
+
 @router.post("", response_model=NodeRead, status_code=status.HTTP_201_CREATED)
 async def create_node(node: Node, db_io: DbIO = Depends(get_db_io)) -> dict:
     # find text the node belongs to

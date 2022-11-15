@@ -19,6 +19,14 @@ router = APIRouter(
 )
 
 
+def get_router() -> APIRouter:
+    """Normalized access to the router object"""
+    return router
+
+
+# ROUTES DEFINITIONS...
+
+
 @router.post("", response_model=LayerRead, status_code=status.HTTP_201_CREATED)
 async def create_layer(layer: Layer, db_io: DbIO = Depends(get_db_io)) -> LayerRead:
     if not await db_io.find_one("texts", layer.text_slug, "slug"):

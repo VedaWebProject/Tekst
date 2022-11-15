@@ -7,7 +7,7 @@ from textrig.db import init_client as init_db_client
 from textrig.dependencies import get_db_client
 from textrig.layer_types import init_layer_type_manager
 from textrig.logging import log, setup_logging
-from textrig.routers import admin, layer, node, text, uidata, unit
+from textrig.routers import get_routers
 from textrig.tags import tags_metadata
 
 
@@ -40,14 +40,6 @@ app = FastAPI(
 )
 
 
-# register routers  # TODO: do that dynamically!
-app.include_router(admin.router)
-app.include_router(uidata.router)
-app.include_router(text.router)
-app.include_router(layer.router)
-app.include_router(node.router)
-
-
 @app.on_event("startup")
 async def startup_routine() -> None:
     print(file=sys.stderr)  # blank line for visual separation of app runs
@@ -59,8 +51,13 @@ async def startup_routine() -> None:
         f"running in {'DEVELOPMENT' if _cfg.dev_mode else 'PRODUCTION'} MODE"
     )
 
+    # init layer type plugin manager
     init_layer_type_manager()
-    app.include_router(unit.get_router())
+
+    # include routers
+    log.info("Hooking up API routers")
+    for router in get_routers():
+        app.include_router(router)
 
     log.info("Initializing database client")
     init_db_client(_cfg.db.get_uri())

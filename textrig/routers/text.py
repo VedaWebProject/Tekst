@@ -19,6 +19,14 @@ router = APIRouter(
 )
 
 
+def get_router() -> APIRouter:
+    """Normalized access to the router object"""
+    return router
+
+
+# ROUTES DEFINITIONS...
+
+
 @router.get("", response_model=list[TextRead], status_code=status.HTTP_200_OK)
 async def get_all_texts(
     limit: int = 100, db_io: DbIO = Depends(get_db_io)

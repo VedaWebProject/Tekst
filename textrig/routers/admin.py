@@ -11,6 +11,14 @@ router = APIRouter(
 )
 
 
+def get_router() -> APIRouter:
+    """Normalized access to the router object"""
+    return router
+
+
+# ROUTES DEFINITIONS...
+
+
 @router.get("", response_model=dict[str, Any], status_code=status.HTTP_200_OK)
 async def hello_admin(cfg: TextRigConfig = Depends(get_config)) -> dict:
     return {"message": f"Welcome, Admin! This is {cfg.app_name} v{cfg.info.version}!"}
