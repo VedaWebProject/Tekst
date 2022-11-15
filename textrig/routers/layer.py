@@ -53,6 +53,7 @@ async def get_layer_template(layer_id: str, db_io: DbIO = Depends(get_db_io)) ->
     template["layerId"] = str(layer_data["id"])
     template["_level"] = str(layer_data["level"])
     template["_title"] = str(layer_data["title"])
+    template["_description"] = str(layer_data["description"])
 
     # generate unit template
     node_template = {key: None for key in template["_unitSchema"].keys()}
