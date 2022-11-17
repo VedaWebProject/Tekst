@@ -62,6 +62,19 @@ class TextRigBaseModel(BaseModel):
         )
         if for_mongo and "_id" not in parsed and "id" in parsed:
             parsed["_id"] = parsed.pop("id")
+        if not for_mongo:
+            for key in parsed:
+                if type(parsed[key]) == DocumentId:
+                    parsed[key] = str(parsed[key])
+        return parsed
+
+    def json(self, **kwargs) -> dict:
+        """Overrides json() in Basemodel to change some defaults"""
+        parsed = super().json(
+            exclude_unset=kwargs.pop("exclude_unset", True),
+            by_alias=kwargs.pop("by_alias", True),
+            **kwargs,
+        )
         return parsed
 
     @classmethod
