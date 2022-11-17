@@ -131,6 +131,7 @@ async def update_text(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Could not update text {updated_id}",
         )
+    log.debug(f"Updated text {updated_id} to {text_update.json()}")
     text_data = await db_io.find_one("texts", updated_id)
     if not text_data:
         raise HTTPException(
