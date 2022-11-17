@@ -6,8 +6,9 @@ from textrig.models.text import Node, NodeRead
 
 @pytest.mark.anyio
 async def test_create_node(
-    root_path, test_client: AsyncClient, test_data, load_test_data_texts
+    root_path, test_client: AsyncClient, test_data, insert_test_data
 ):
+    await insert_test_data("texts")
     endpoint = f"{root_path}/node"
     nodes = test_data["nodes"]
 
@@ -20,8 +21,9 @@ async def test_create_node(
 
 @pytest.mark.anyio
 async def test_child_node_io(
-    root_path, test_client: AsyncClient, test_data, load_test_data_texts
+    root_path, test_client: AsyncClient, test_data, insert_test_data
 ):
+    await insert_test_data("texts")
     endpoint = f"{root_path}/node"
     node = test_data["nodes"][0]
 
@@ -53,8 +55,9 @@ async def test_child_node_io(
 
 @pytest.mark.anyio
 async def test_create_node_invalid_text_fail(
-    root_path, test_client: AsyncClient, test_data, load_test_data_texts
+    root_path, test_client: AsyncClient, test_data, insert_test_data
 ):
+    await insert_test_data("texts")
     endpoint = f"{root_path}/node"
     node = test_data["nodes"][0]
     node["textSlug"] = "this_does_not_exist"
@@ -65,8 +68,9 @@ async def test_create_node_invalid_text_fail(
 
 @pytest.mark.anyio
 async def test_create_node_duplicate_fail(
-    root_path, test_client: AsyncClient, test_data, load_test_data_texts
+    root_path, test_client: AsyncClient, test_data, insert_test_data
 ):
+    await insert_test_data("texts")
     endpoint = f"{root_path}/node"
     node = test_data["nodes"][0]
 
@@ -79,8 +83,9 @@ async def test_create_node_duplicate_fail(
 
 @pytest.mark.anyio
 async def test_get_nodes(
-    root_path, test_client: AsyncClient, test_data, load_test_data_nodes
+    root_path, test_client: AsyncClient, test_data, insert_test_data
 ):
+    await insert_test_data("texts", "nodes")
     endpoint = f"{root_path}/node"
     text = test_data["texts"][0]
     text_slug = text["slug"]

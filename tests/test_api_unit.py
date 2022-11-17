@@ -3,9 +3,8 @@ from httpx import AsyncClient
 
 
 @pytest.mark.anyio
-async def test_create_layer_unit(
-    root_path, test_client: AsyncClient, load_test_data_layers
-):
+async def test_create_layer_unit(root_path, test_client: AsyncClient, insert_test_data):
+    await insert_test_data("texts", "nodes", "layers")
     # get ID of existing test layer
     endpoint = f"{root_path}/layer"
     resp = await test_client.get(

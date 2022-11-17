@@ -5,8 +5,9 @@ from textrig.layer_types import get_layer_type_names
 
 @pytest.mark.anyio
 async def test_create_layer(
-    root_path, test_client: AsyncClient, test_data, load_test_data_nodes
+    root_path, test_client: AsyncClient, test_data, insert_test_data
 ):
+    await insert_test_data("texts", "nodes")
     endpoint = f"{root_path}/layer"
     payload = {
         "title": "A test layer",
@@ -25,8 +26,9 @@ async def test_create_layer(
 
 @pytest.mark.anyio
 async def test_create_layer_invalid(
-    root_path, test_client: AsyncClient, test_data, load_test_data_nodes
+    root_path, test_client: AsyncClient, test_data, insert_test_data
 ):
+    await insert_test_data("texts", "nodes")
     endpoint = f"{root_path}/layer"
     payload = {
         "title": "A test layer",
@@ -49,7 +51,8 @@ async def test_get_layer_types_info(root_path, test_client: AsyncClient):
 
 
 @pytest.mark.anyio
-async def test_get_layer(root_path, test_client: AsyncClient, load_test_data_layers):
+async def test_get_layer(root_path, test_client: AsyncClient, insert_test_data):
+    await insert_test_data("texts", "nodes", "layers")
     # get existing layer id
     endpoint = f"{root_path}/layer"
     resp = await test_client.get(endpoint, params={"text_slug": "rigveda"})
@@ -70,7 +73,8 @@ async def test_get_layer(root_path, test_client: AsyncClient, load_test_data_lay
 
 
 @pytest.mark.anyio
-async def test_get_layers(root_path, test_client: AsyncClient, load_test_data_layers):
+async def test_get_layers(root_path, test_client: AsyncClient, insert_test_data):
+    await insert_test_data("texts", "nodes", "layers")
     endpoint = f"{root_path}/layer"
     resp = await test_client.get(
         endpoint, params={"text_slug": "rigveda", "level": 0, "layer_type": "fulltext"}
@@ -97,8 +101,9 @@ async def test_get_layers(root_path, test_client: AsyncClient, load_test_data_la
 
 @pytest.mark.anyio
 async def test_get_layer_template(
-    root_path, test_client: AsyncClient, load_test_data_layers
+    root_path, test_client: AsyncClient, insert_test_data
 ):
+    await insert_test_data("texts", "nodes", "layers")
     endpoint = f"{root_path}/layer"
     resp = await test_client.get(endpoint, params={"text_slug": "rigveda"})
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
@@ -117,8 +122,9 @@ async def test_get_layer_template(
 
 @pytest.mark.anyio
 async def test_get_layer_template_invalid_id(
-    root_path, test_client: AsyncClient, load_test_data_layers
+    root_path, test_client: AsyncClient, insert_test_data
 ):
+    await insert_test_data("texts", "nodes", "layers")
     endpoint = f"{root_path}/layer/template"
     resp = await test_client.get(endpoint, params={"layer_id": "foo"})
     assert resp.status_code == 400, f"HTTP status {resp.status_code} (expected: 400)"

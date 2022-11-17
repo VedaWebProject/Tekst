@@ -4,7 +4,8 @@ from textrig.models.text import TextRead, TextUpdate
 
 
 @pytest.mark.anyio
-async def test_get_texts(root_path, test_client: AsyncClient, load_test_data_texts):
+async def test_get_texts(root_path, test_client: AsyncClient, insert_test_data):
+    await insert_test_data("texts")
     endpoint = f"{root_path}/text"
     resp = await test_client.get(endpoint)
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
@@ -24,7 +25,8 @@ async def test_create_text(root_path, test_client: AsyncClient):
 
 
 @pytest.mark.anyio
-async def test_update_text(root_path, test_client: AsyncClient, load_test_data_texts):
+async def test_update_text(root_path, test_client: AsyncClient, insert_test_data):
+    await insert_test_data("texts")
     # get text from db
     endpoint = f"{root_path}/text"
     resp = await test_client.get(endpoint)

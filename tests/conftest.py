@@ -5,7 +5,7 @@ import requests
 from httpx import AsyncClient
 from textrig.app import app
 from textrig.config import TextRigConfig, get_config
-from textrig.db import DatabaseClient, indexes
+from textrig.db import DatabaseClient
 from textrig.dependencies import get_db_client
 
 
@@ -14,13 +14,13 @@ pytest fixtures go in here...
 """
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def config() -> TextRigConfig:
     """Returns the app config according to passed env vars, env file or defaults"""
     return get_config()
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def root_path(config) -> TextRigConfig:
     """Returns the configured app root path"""
     return config.root_path
@@ -31,14 +31,12 @@ def anyio_backend():
     return "asyncio"
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 async def get_db_client_override(config) -> DatabaseClient:
     """Dependency override for the database client dependency"""
     db_client: DatabaseClient = DatabaseClient(config.db.get_uri())
-    await indexes.create_indexes(cfg=config, db_client=db_client)
     yield db_client
-    # clean up
-    await db_client.drop_database(config.db.name)
+    # close db connection
     db_client.close()
 
 
@@ -59,10 +57,12 @@ def test_data(shared_datadir) -> dict:
 
 
 @pytest.fixture
-async def test_app(get_db_client_override):
+async def test_app(config, get_db_client_override):
     """Provides an app instance with overridden dependencies"""
     app.dependency_overrides[get_db_client] = lambda: get_db_client_override
-    return app
+    yield app
+    # cleanup data
+    await get_db_client_override.drop_database(config.db.name)
 
 
 @pytest.fixture
@@ -73,28 +73,18 @@ async def test_client(test_app) -> AsyncClient:
 
 
 @pytest.fixture
-async def load_test_data_texts(root_path, test_client, test_data) -> None:
-    """Insert test data for texts into testing database"""
-    for text in test_data["texts"]:
-        await test_client.post(f"{root_path}/text", json=text)
+async def insert_test_data(root_path, test_client, test_data) -> callable:
+    """
+    Returns an asynchronous function to load
+    test data for certain database collections
+    """
 
+    async def _insert_test_data(*collections: str) -> None:
+        for collection in collections:
+            for doc in test_data[collection]:
+                await test_client.post(f"{root_path}/{collection[:-1]}", json=doc)
 
-@pytest.fixture
-async def load_test_data_nodes(
-    root_path, test_client, test_data, load_test_data_texts
-) -> None:
-    """Insert test data for nodes into testing database"""
-    for node in test_data["nodes"]:
-        await test_client.post(f"{root_path}/node", json=node)
-
-
-@pytest.fixture
-async def load_test_data_layers(
-    root_path, test_client, test_data, load_test_data_nodes
-) -> None:
-    """Insert test data for layers into testing database"""
-    for layer in test_data["layers"]:
-        await test_client.post(f"{root_path}/layer", json=layer)
+    return _insert_test_data
 
 
 @pytest.fixture(autouse=True)

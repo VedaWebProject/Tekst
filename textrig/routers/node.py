@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from pymongo.errors import DuplicateKeyError
 from textrig.db.io import DbIO
 from textrig.dependencies import get_db_io
 from textrig.logging import log
@@ -21,21 +20,22 @@ router = APIRouter(
 async def create_node(node: Node, db_io: DbIO = Depends(get_db_io)) -> dict:
     # find text the node belongs to
     text = await db_io.find_one("texts", node.text_slug, field="slug")
-
     if not text:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="The corresponding text does not exist",
         )
-
-    try:
-        return await db_io.insert_one("nodes", node)
-    except DuplicateKeyError:
+    # check for semantic duplicates
+    dupes = await db_io.find_one_by_example(
+        "nodes", {"text_slug": node.text_slug, "level": node.level, "index": node.index}
+    )
+    if dupes:
         log.warning(f"Cannot create node. Conflict: {node}")
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="Conflict with existing node",
         )
+    return await db_io.insert_one("nodes", node)
 
 
 @router.get("", response_model=list[NodeRead], status_code=status.HTTP_200_OK)
