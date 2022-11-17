@@ -25,7 +25,7 @@ class Layer(TextRigBaseModel):
 
     @validator("description")
     def handle_whitespaces_in_description(cls, v):
-        return re.sub(r"\s+", " ", v)
+        return re.sub(r"[\s\n]+", " ", v)
 
 
 class LayerRead(Layer, DbDocument):

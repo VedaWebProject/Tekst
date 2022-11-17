@@ -4,13 +4,14 @@ from textrig.layer_types import get_layer_type_names
 
 
 @pytest.mark.anyio
-async def test_create_fulltext_layer(
+async def test_create_layer(
     root_path, test_client: AsyncClient, test_data, load_test_data_nodes
 ):
     endpoint = f"{root_path}/layer"
     payload = {
         "title": "A test layer",
         "textSlug": "rigveda",
+        "description": "This is     a string with \n some space    chars",
         "level": 0,
         "layer_type": "fulltext",
     }
@@ -19,10 +20,11 @@ async def test_create_fulltext_layer(
     assert resp.status_code == 201, f"HTTP status {resp.status_code} (expected: 201)"
     assert "id" in resp.json()
     assert resp.json()["title"] == "A test layer"
+    assert resp.json()["description"] == "This is a string with some space chars"
 
 
 @pytest.mark.anyio
-async def test_create_fulltext_layer_invalid(
+async def test_create_layer_invalid(
     root_path, test_client: AsyncClient, test_data, load_test_data_nodes
 ):
     endpoint = f"{root_path}/layer"
