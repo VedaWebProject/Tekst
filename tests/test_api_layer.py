@@ -49,6 +49,29 @@ async def test_get_layer_types_info(root_path, test_client: AsyncClient):
 
 
 @pytest.mark.anyio
+async def test_get_layer(root_path, test_client: AsyncClient, load_test_data_layers):
+    # get existing layer id
+    endpoint = f"{root_path}/layer"
+    resp = await test_client.get(
+        endpoint, params={"text_slug": "rigveda"}
+    )
+    assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) > 0
+    assert isinstance(resp.json()[0], dict)
+    assert "id" in resp.json()[0]
+    layer = resp.json()[0]
+    layer_id = layer["id"]
+    # get layer by id
+    endpoint = f"{root_path}/layer/{layer_id}"
+    resp = await test_client.get(endpoint)
+    assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
+    assert isinstance(resp.json(), dict)
+    assert "id" in resp.json()
+    assert resp.json()["id"] == layer_id
+
+
+@pytest.mark.anyio
 async def test_get_layers(root_path, test_client: AsyncClient, load_test_data_layers):
     endpoint = f"{root_path}/layer"
     resp = await test_client.get(
