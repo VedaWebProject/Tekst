@@ -92,14 +92,14 @@ class DbIO:
         if doc_id is None:
             doc_id = updates.get("id", updates.get("_id", None))
             if doc_id is None:
-                return False
+                return None
         # update document
         result: UpdateResult = await self._db[collection].update_one(
             filter={"_id": self._obj_id(doc_id)},
             update={"$set": updates},
         )
         # return ID if operation was successful, None otherwise
-        return str(result.upserted_id) if result.acknowledged else None
+        return str(doc_id) if result.acknowledged else None
 
     async def find_one(
         self, collection: str, value: Any, field: str = "_id"
