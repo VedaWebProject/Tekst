@@ -23,7 +23,7 @@ class SnippetRead(Snippet, DbDocument):
     ...
 
 
-class SnippetUpdate(Snippet, metaclass=AllOptional):
+class SnippetUpdate(Snippet, DbDocument, metaclass=AllOptional):
     """An update to an existing content snippet"""
 
     ...

@@ -34,7 +34,7 @@ class LayerRead(Layer, DbDocument):
     ...
 
 
-class LayerUpdate(Layer, metaclass=AllOptional):
+class LayerUpdate(Layer, DbDocument, metaclass=AllOptional):
     """An update to an existing data layer"""
 
     ...

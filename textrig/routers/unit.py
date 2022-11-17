@@ -51,22 +51,20 @@ def _generate_update_endpoint(
     unit_read_model: type[LayerTypePluginABC.UnitReadBase],
 ):
     async def update_unit(
-        unit_id: str, unit_update: unit_update_model, db_io: DbIO = Depends(get_db_io)
+        unit_update: unit_update_model, db_io: DbIO = Depends(get_db_io)
     ) -> unit_read_model:
-        if not await db_io.update("units", unit_id, unit_update):
+        updated_id = await db_io.update("units", unit_update)
+        if not updated_id:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Could not update unit {unit_id}",
+                detail=f"Could not update unit {updated_id}",
             )
-
-        unit_data = await db_io.find_one("units", unit_id)
-
+        unit_data = await db_io.find_one("units", updated_id)
         if not unit_data:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail=f"Could not return data for unit {unit_id}",
+                detail=f"Could not return data for unit {updated_id}",
             )
-
         return unit_data
 
     return update_unit

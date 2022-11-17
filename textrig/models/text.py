@@ -48,19 +48,7 @@ class Text(TextRigBaseModel):
                 values["slug"] = safe_name(
                     values.get("title"), min_len=2, max_len=16, delim=""
                 )
-
         return values
-
-    class Config:
-        schema_extra = {
-            "example": {
-                "title": "Rigveda",
-                "slug": "rigveda",
-                "subtitle": "An ancient Indian collection of Vedic Sanskrit hymns",
-                "levels": ["Book", "Hymn", "Stanza"],
-                "locDelim": ".",
-            }
-        }
 
 
 class TextRead(Text, DbDocument):
@@ -69,7 +57,7 @@ class TextRead(Text, DbDocument):
     ...
 
 
-class TextUpdate(Text, metaclass=AllOptional):
+class TextUpdate(Text, DbDocument, metaclass=AllOptional):
     """An update to an existing text"""
 
     ...
@@ -96,7 +84,7 @@ class NodeRead(Node, DbDocument):
     ...
 
 
-class NodeUpdate(Node, metaclass=AllOptional):
+class NodeUpdate(Node, DbDocument, metaclass=AllOptional):
     """An update to an existing node"""
 
     ...

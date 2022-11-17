@@ -66,30 +66,40 @@ class DbIO:
         )
 
     async def update(
-        self, collection: str, doc_id: ObjectId | str, updates: TextRigBaseModel | dict
-    ) -> bool:
+        self,
+        collection: str,
+        updates: TextRigBaseModel | dict,
+        doc_id: ObjectId | str = None,
+    ) -> str:
         """
         Updates a document in the database
 
         :param collection: Name of the target collection
         :type collection: str
-        :param doc_id: ID of the target document
-        :type doc_id: ObjectId | str
         :param updates: The updated values
         :type updates: TextRigBaseModel | dict
-        :return: Success of the operation
-        :rtype: bool
+        :param doc_id: ID of the target document
+                       (only needed if passed update object
+                       doesn't have an 'id' or '_id' field)
+        :type doc_id: ObjectId | str
+        :return: ID of updated document or None if operation unsuccessful
+        :rtype: str
         """
         # serialize model instance if applicable
         if isinstance(updates, TextRigBaseModel):
             updates = updates.dict(for_mongo=True)
+        # check if and how ID was passed
+        if doc_id is None:
+            doc_id = updates.get("id", updates.get("_id", None))
+            if doc_id is None:
+                return False
         # update document
         result: UpdateResult = await self._db[collection].update_one(
             filter={"_id": self._obj_id(doc_id)},
             update={"$set": updates},
         )
-        # return whether operation was successful
-        return result.acknowledged
+        # return ID if operation was successful, None otherwise
+        return str(result.upserted_id) if result.acknowledged else None
 
     async def find_one(
         self, collection: str, value: Any, field: str = "_id"

@@ -42,7 +42,7 @@ class LayerTypePluginABC(ABC):
     class UnitReadBase(UnitBase, DbDocument):
         ...
 
-    class UnitUpdateBase(UnitBase, metaclass=AllOptional):
+    class UnitUpdateBase(UnitBase, DbDocument, metaclass=AllOptional):
         ...
 
     @classmethod

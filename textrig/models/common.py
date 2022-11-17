@@ -101,7 +101,7 @@ class AllOptional(ModelMetaclass):
         for base in bases:
             annotations.update(base.__annotations__)
         for field in annotations:
-            if not field.startswith("__"):
+            if not field.startswith("__") and field not in ("id", "_id"):
                 annotations[field] = Optional[annotations[field]]
         namespaces["__annotations__"] = annotations
         return super().__new__(self, name, bases, namespaces, **kwargs)
