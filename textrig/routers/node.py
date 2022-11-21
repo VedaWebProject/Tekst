@@ -93,3 +93,31 @@ async def get_children(
         example={"parent_id": node_id},
         limit=limit,
     )
+
+
+@router.get("/{node_id}/next", response_model=NodeRead, status_code=status.HTTP_200_OK)
+async def get_next(
+    node_id: str,
+    db_io: DbIO = Depends(get_db_io),
+) -> dict:
+    node = await db_io.find_one("nodes", node_id)
+    if not node:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Invalid node ID {node_id}",
+        )
+    node = NodeRead(**node)
+    node = await db_io.find_one_by_example(
+        "nodes",
+        example={
+            "text_slug": node.text_slug,
+            "level": node.level,
+            "index": node.index + 1,
+        },
+    )
+    if not node:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"No next node found for node {node_id}",
+        )
+    return node

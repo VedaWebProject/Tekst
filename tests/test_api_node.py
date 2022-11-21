@@ -169,3 +169,31 @@ async def test_update_node(
     node_update = NodeUpdate(id="637b9ad396d541a505e5439b", label="Brand new label")
     resp = await test_client.patch(endpoint, json=node_update.dict())
     assert resp.status_code == 400, f"HTTP status {resp.status_code} (expected: 400)"
+
+
+@pytest.mark.anyio
+async def test_node_next(
+    root_path, test_client: AsyncClient, insert_test_data, test_data
+):
+    await insert_test_data("texts", "nodes")
+    text_slug = test_data["texts"][0]["slug"]
+    # get second last node from level 0
+    endpoint = f"{root_path}/node"
+    resp = await test_client.get(endpoint, params={"text_slug": text_slug, "level": 0})
+    assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
+    assert type(resp.json()) == list
+    assert len(resp.json()) > 0
+    nodes = [NodeRead(**n) for n in resp.json()]
+    node_second_last = nodes[len(nodes) - 2]
+    node_last = nodes[len(nodes) - 1]
+    # get next node
+    endpoint = f"{root_path}/node/{node_second_last.id}/next"
+    resp = await test_client.get(endpoint)
+    assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
+    assert type(resp.json()) == dict
+    assert "id" in resp.json()
+    assert resp.json()["id"] == node_last.id
+    # fail to get node after last
+    endpoint = f"{root_path}/node/{node_last.id}/next"
+    resp = await test_client.get(endpoint)
+    assert resp.status_code == 404, f"HTTP status {resp.status_code} (expected: 404)"
