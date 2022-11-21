@@ -1,10 +1,10 @@
 from typing import Any
 
 from bson import ObjectId
-from humps import camelize
 from motor.motor_asyncio import AsyncIOMotorCursor as Cursor
 from motor.motor_asyncio import AsyncIOMotorDatabase as Database
 from pymongo.results import InsertManyResult, InsertOneResult, UpdateResult
+from textrig.db import for_mongo_request
 from textrig.models.common import TextRigBaseModel
 
 
@@ -99,7 +99,7 @@ class DbIO:
             update={"$set": updates},
         )
         # return ID if operation was successful, None otherwise
-        return str(doc_id) if result.acknowledged else None
+        return str(doc_id) if result.raw_result.get("updatedExisting", False) else None
 
     async def find_one(
         self, collection: str, value: Any, field: str = "_id"
@@ -140,7 +140,7 @@ class DbIO:
         :return: Document data or None if nothing is found
         :rtype: dict | None
         """
-        example = camelize(example)
+        example = for_mongo_request(example)
         return await self._db[collection].find_one(example)
 
     async def find(
@@ -173,8 +173,9 @@ class DbIO:
         :return: List of document data sets or database cursor
         :rtype: list[dict] | Cursor
         """
-        # force camel case on example keys
-        example = camelize(example)
+        # force camel case on example keys, make ObjectIds
+        if example:
+            example = for_mongo_request(example)
         # get cursor from db
         cursor = self._db[collection].find(
             example, projection=projection, limit=limit, hint=hint

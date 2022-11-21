@@ -1,5 +1,6 @@
 import pytest
 from httpx import AsyncClient
+from textrig.layer_types import get_layer_type
 
 
 @pytest.mark.anyio
@@ -41,6 +42,10 @@ async def test_create_layer_unit(root_path, test_client: AsyncClient, insert_tes
     assert "id" in resp.json()
     unit_id = resp.json()["id"]
 
+    # fail to create duplicate
+    resp = await test_client.post(endpoint, json=payload)
+    assert resp.status_code == 409, f"HTTP status {resp.status_code} (expected: 409)"
+
     # get unit
     endpoint = f"{root_path}/unit/fulltext"
     resp = await test_client.get(endpoint, params={"unit_id": unit_id})
@@ -50,5 +55,24 @@ async def test_create_layer_unit(root_path, test_client: AsyncClient, insert_tes
     assert resp.json()["text"] == "Ein Raabe geht im Feld spazieren."
     assert resp.json()["meta"]["foo"] == "bar"
 
+    # fail to get unit with invalid ID
+    endpoint = f"{root_path}/unit/fulltext"
+    resp = await test_client.get(
+        endpoint, params={"unit_id": "637b9ad396d541a505e5439b"}
+    )
+    assert resp.status_code == 404, f"HTTP status {resp.status_code} (expected: 404)"
+
     # update unit
-    # TODO
+    UpdateModel = get_layer_type("fulltext").get_unit_update_model()
+    unit_update = UpdateModel(id=unit_id, text="FOO BAR")
+    resp = await test_client.patch(endpoint, json=unit_update.dict())
+    assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
+    assert type(resp.json()) == dict
+    assert "id" in resp.json()
+    assert resp.json()["id"] == unit_id
+    assert resp.json()["text"] == "FOO BAR"
+
+    # fail to update unit with invalid ID
+    unit_update = UpdateModel(id="637b9ad396d541a505e5439b", text="FOO BAR")
+    resp = await test_client.patch(endpoint, json=unit_update.dict())
+    assert resp.status_code == 400, f"HTTP status {resp.status_code} (expected: 400)"

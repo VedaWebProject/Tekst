@@ -34,7 +34,7 @@ def _generate_create_endpoint(
         ):
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
-                detail="A text with an equal slug already exists",
+                detail="An equal unit already exists",
             )
         # TODO: check if layer ID and node ID are valid!
         pass
@@ -59,13 +59,7 @@ def _generate_update_endpoint(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=f"Could not update unit {updated_id}",
             )
-        unit_data = await db_io.find_one("units", updated_id)
-        if not unit_data:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail=f"Could not return data for unit {updated_id}",
-            )
-        return unit_data
+        return await db_io.find_one("units", updated_id)
 
     return update_unit
 

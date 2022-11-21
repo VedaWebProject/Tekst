@@ -2,8 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from textrig.db.io import DbIO
 from textrig.dependencies import get_db_io
 from textrig.logging import log
-from textrig.models.common import DocumentId
-from textrig.models.text import Node, NodeRead
+from textrig.models.text import Node, NodeRead, NodeUpdate
 
 
 router = APIRouter(
@@ -62,21 +61,35 @@ async def get_nodes(
         example["index"] = index
 
     if parent_id:
-        example["parent_id"] = DocumentId(parent_id)
+        example["parent_id"] = parent_id
 
     return await db_io.find("nodes", example=example, limit=limit)
 
 
-@router.get("/children", response_model=list[NodeRead], status_code=status.HTTP_200_OK)
+@router.patch("", response_model=NodeRead, status_code=status.HTTP_200_OK)
+async def update_node(
+    node_update: NodeUpdate, db_io: DbIO = Depends(get_db_io)
+) -> dict:
+    updated_id = await db_io.update("nodes", node_update)
+    if not updated_id:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Could not update text {updated_id}",
+        )
+    log.debug(f"Updated node {updated_id} to {node_update.json()}")
+    return await db_io.find_one("nodes", updated_id)
+
+
+@router.get(
+    "/{node_id}/children", response_model=list[NodeRead], status_code=status.HTTP_200_OK
+)
 async def get_children(
-    text_slug: str,
     node_id: str,
     limit: int = 1000,
     db_io: DbIO = Depends(get_db_io),
 ) -> list:
     return await db_io.find(
         "nodes",
-        example={"text_slug": text_slug, "parent_id": node_id},
+        example={"parent_id": node_id},
         limit=limit,
-        hint="textSlug_parentId_level_index",
     )

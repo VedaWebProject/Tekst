@@ -1,7 +1,7 @@
 import pytest
 from httpx import AsyncClient
 from textrig.models.common import DocumentId
-from textrig.models.text import Node, NodeRead
+from textrig.models.text import Node, NodeRead, NodeUpdate
 
 
 @pytest.mark.anyio
@@ -47,6 +47,13 @@ async def test_child_node_io(
     resp = await test_client.get(
         endpoint, params={"text_slug": parent.text_slug, "parent_id": parent.id}
     )
+    assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
+    assert type(resp.json()) is list
+    assert len(resp.json()) == 1
+    assert resp.json()[0]["id"] == child.id
+
+    # find children by parent ID using dedicated children endpoint
+    resp = await test_client.get(f"{root_path}/node/{child.parent_id}/children")
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) is list
     assert len(resp.json()) == 1
@@ -128,3 +135,37 @@ async def test_get_nodes(
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) is list
     assert len(resp.json()) == 1
+
+    # test invalid request
+    resp = await test_client.get(endpoint, params={"text_slug": text_slug})
+    assert resp.status_code == 400, f"HTTP status {resp.status_code} (expected: 400)"
+
+
+@pytest.mark.anyio
+async def test_update_node(
+    root_path, test_client: AsyncClient, insert_test_data, test_data
+):
+    await insert_test_data("texts", "nodes")
+    text_slug = test_data["texts"][0]["slug"]
+    # get node from db
+    endpoint = f"{root_path}/node"
+    resp = await test_client.get(endpoint, params={"text_slug": text_slug, "level": 0})
+    assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
+    assert type(resp.json()) == list
+    assert len(resp.json()) > 0
+    node = NodeRead(**resp.json()[0])
+    # update node
+    node_update = NodeUpdate(id=node.id, label="A fresh label")
+    resp = await test_client.patch(endpoint, json=node_update.dict())
+    assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
+    assert "id" in resp.json()
+    assert resp.json()["id"] == str(node.id)
+    assert "label" in resp.json()
+    assert resp.json()["label"] == "A fresh label"
+    # update unchanged node
+    resp = await test_client.patch(endpoint, json=node_update.dict())
+    assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
+    # update invalid node
+    node_update = NodeUpdate(id="637b9ad396d541a505e5439b", label="Brand new label")
+    resp = await test_client.patch(endpoint, json=node_update.dict())
+    assert resp.status_code == 400, f"HTTP status {resp.status_code} (expected: 400)"

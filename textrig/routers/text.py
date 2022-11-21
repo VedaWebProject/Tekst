@@ -52,7 +52,7 @@ async def import_text(
     file: UploadFile,
     cfg: TextRigConfig = Depends(get_cfg),
     db_io: DbIO = Depends(get_db_io),
-) -> TextRead:
+) -> TextRead:  # pragma: no cover
     if not cfg.dev_mode:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
@@ -132,10 +132,4 @@ async def update_text(
             detail=f"Could not update text {updated_id}",
         )
     log.debug(f"Updated text {updated_id} to {text_update.json()}")
-    text_data = await db_io.find_one("texts", updated_id)
-    if not text_data:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Could not return data for text {updated_id}",
-        )
-    return text_data
+    return await db_io.find_one("texts", updated_id)
