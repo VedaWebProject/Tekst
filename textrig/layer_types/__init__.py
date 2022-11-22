@@ -5,6 +5,7 @@ from abc import ABC, abstractmethod
 
 import pluggy
 from pydantic import Field
+from pymongo import IndexModel
 from textrig.logging import log
 from textrig.models.common import (
     AllOptional,
@@ -69,6 +70,13 @@ class LayerTypePluginABC(ABC):
     @_layer_type_spec
     def get_unit_model(cls) -> type[UnitBase]:
         """Returns the unit base model for units of this type of data layer"""
+        ...
+
+    @classmethod
+    @abstractmethod
+    @_layer_type_spec
+    def get_index_model(cls) -> IndexModel:
+        """Returns the model for the database index of this layer type"""
         ...
 
     @classmethod
