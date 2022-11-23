@@ -3,9 +3,6 @@ from textrig.models.common import AllOptional, DbDocument, TextRigBaseModel
 from textrig.utils.strings import safe_name
 
 
-# === TEXT ===
-
-
 class Snippet(TextRigBaseModel):
     """A content snippet"""
 
