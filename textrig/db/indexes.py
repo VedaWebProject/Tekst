@@ -41,15 +41,6 @@ def _get_index_models() -> dict:
                 name="textSlug_ownerId",
             ),
         ],
-        "units": [
-            pymongo.IndexModel(
-                [
-                    ("layerId", pymongo.ASCENDING),
-                    ("nodeId", pymongo.ASCENDING),
-                ],
-                name="layerId_nodeId",
-            ),
-        ],
     }
 
 
@@ -69,7 +60,14 @@ async def create_indexes(cfg: TextRigConfig = get_config()):
 
     # collect layer type unit index models
     for lt_name, lt_class in get_layer_types().items():
-        indexes["units"].append(lt_class.get_index_model())
+        collection = lt_class.get_collection_name()
+        indexes[collection] = []
+        # add common unit index models
+        for index_model in lt_class.get_common_index_models():
+            indexes[collection].append(index_model)
+        # add specific layer type unit index models
+        for index_model in lt_class.get_index_models():
+            indexes[collection].append(index_model)
 
     # create indexes
     for collection, indexes in indexes.items():

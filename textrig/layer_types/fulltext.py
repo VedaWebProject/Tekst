@@ -30,7 +30,5 @@ class Fulltext(LayerTypePluginABC):
 
     @classmethod
     @layer_type_impl
-    def get_index_model(cls) -> type[FulltextUnit]:
-        return pymongo.IndexModel(
-            [("text", pymongo.TEXT)], name=cls.get_slug(), unique=False
-        )
+    def get_index_models(cls) -> list[pymongo.IndexModel]:
+        return [pymongo.IndexModel([("text", pymongo.TEXT)], name="text", unique=False)]

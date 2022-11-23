@@ -4,8 +4,8 @@ import pkgutil
 from abc import ABC, abstractmethod
 
 import pluggy
+import pymongo
 from pydantic import Field
-from pymongo import IndexModel
 from textrig.logging import log
 from textrig.models.common import (
     AllOptional,
@@ -14,6 +14,7 @@ from textrig.models.common import (
     Metadata,
     TextRigBaseModel,
 )
+from textrig.utils.strings import safe_name
 
 
 # layer type plugin hook specification marker
@@ -61,9 +62,9 @@ class LayerTypePluginABC(ABC):
         ...
 
     @classmethod
-    def get_slug(cls) -> str:
+    def get_safe_name(cls) -> str:
         """Returns the slug of this layer type plugin's name"""
-        return cls.get_name().lower()
+        return safe_name(cls.get_name())
 
     @classmethod
     @abstractmethod
@@ -73,11 +74,32 @@ class LayerTypePluginABC(ABC):
         ...
 
     @classmethod
+    def get_common_index_models(cls) -> list[pymongo.IndexModel]:
+        return [
+            pymongo.IndexModel(
+                [
+                    ("layerId", pymongo.ASCENDING),
+                ],
+                name="layerId",
+            ),
+            pymongo.IndexModel(
+                [
+                    ("nodeId", pymongo.ASCENDING),
+                ],
+                name="nodeId",
+            ),
+        ]
+
+    @classmethod
     @abstractmethod
     @_layer_type_spec
-    def get_index_model(cls) -> IndexModel:
+    def get_index_models(cls) -> list[pymongo.IndexModel]:
         """Returns the model for the database index of this layer type"""
         ...
+
+    @classmethod
+    def get_collection_name(cls) -> str:
+        return f"units_{cls.get_safe_name()}"
 
     @classmethod
     def get_unit_read_model(cls) -> type[UnitReadBase]:
@@ -142,7 +164,7 @@ class LayerTypePluginABC(ABC):
 def get_layer_types() -> dict[str, type[LayerTypePluginABC]]:
     """
     Returns a dict of all layer types, mapping from
-    the layer type's slug to the layer type's class
+    the layer type's safe name to the layer type's class
 
     :return: A dict of all layer types
     :rtype: dict[str, type[LayerTypeABC]]
@@ -199,7 +221,7 @@ def init_layer_type_manager() -> None:
             if sc[1] is not LayerTypePluginABC:
                 plugin = sc[1]
                 log.info(f"Registering internal layer type plugin: {plugin.get_name()}")
-                manager.register(plugin(), plugin.get_slug())
+                manager.register(plugin(), plugin.get_safe_name())
 
     # load and register plugins that might be available from external packages
     manager.load_setuptools_entrypoints(group="textrig")

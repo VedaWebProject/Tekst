@@ -5,12 +5,14 @@ from textrig.layer_types import LayerTypePluginABC, get_layer_types
 from textrig.logging import log
 
 
-def _generate_read_endpoint(unit_read_model: type[LayerTypePluginABC.UnitReadBase]):
+def _generate_read_endpoint(
+    target_collection: str, unit_read_model: type[LayerTypePluginABC.UnitReadBase]
+):
     async def get_unit(
         unit_id: str, db_io: DbIO = Depends(get_db_io)
     ) -> unit_read_model:
         """A generic route for reading a unit from the database"""
-        unit = await db_io.find_one("units", unit_id)
+        unit = await db_io.find_one(target_collection, unit_id)
         if not unit:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
@@ -22,6 +24,7 @@ def _generate_read_endpoint(unit_read_model: type[LayerTypePluginABC.UnitReadBas
 
 
 def _generate_create_endpoint(
+    target_collection: str,
     unit_model: type[LayerTypePluginABC.UnitBase],
     unit_read_model: type[LayerTypePluginABC.UnitReadBase],
 ):
@@ -30,7 +33,7 @@ def _generate_create_endpoint(
     ) -> unit_read_model:
         # check for conflicts
         if await db_io.find_one_by_example(
-            "units", {"layer_id": unit.layer_id, "node_id": unit.node_id}
+            target_collection, {"layer_id": unit.layer_id, "node_id": unit.node_id}
         ):
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
@@ -39,7 +42,7 @@ def _generate_create_endpoint(
         # TODO: check if layer ID and node ID are valid!
         pass
         # insert new unit
-        unit = await db_io.insert_one("units", unit)
+        unit = await db_io.insert_one(target_collection, unit)
         log.debug(f"Created unit: {unit}")
         return unit
 
@@ -47,19 +50,20 @@ def _generate_create_endpoint(
 
 
 def _generate_update_endpoint(
+    target_collection: str,
     unit_update_model: type[LayerTypePluginABC.UnitUpdateBase],
     unit_read_model: type[LayerTypePluginABC.UnitReadBase],
 ):
     async def update_unit(
         unit_update: unit_update_model, db_io: DbIO = Depends(get_db_io)
     ) -> unit_read_model:
-        updated_id = await db_io.update("units", unit_update)
+        updated_id = await db_io.update(target_collection, unit_update)
         if not updated_id:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=f"Could not update unit {updated_id}",
             )
-        return await db_io.find_one("units", updated_id)
+        return await db_io.find_one(target_collection, updated_id)
 
     return update_unit
 
@@ -78,11 +82,12 @@ for lt_name, lt_class in get_layer_types().items():
         path=f"/{lt_name}",
         name=f"Get {lt_class.get_name()} unit",
         description=f"Returns the data for a {lt_class.get_name()} data layer unit",
-        endpoint=_generate_read_endpoint(lt_class.get_unit_read_model()),
+        endpoint=_generate_read_endpoint(
+            lt_class.get_collection_name(), lt_class.get_unit_read_model()
+        ),
         methods=["GET"],
         response_model=lt_class.get_unit_read_model(),
         status_code=status.HTTP_200_OK,
-        tags=[lt_name],
     )
     # add route for creating a unit
     router.add_api_route(
@@ -90,12 +95,13 @@ for lt_name, lt_class in get_layer_types().items():
         name=f"Create {lt_class.get_name()} unit",
         description=f"Creates a {lt_class.get_name()} data layer unit",
         endpoint=_generate_create_endpoint(
-            lt_class.get_unit_model(), lt_class.get_unit_read_model()
+            lt_class.get_collection_name(),
+            lt_class.get_unit_model(),
+            lt_class.get_unit_read_model(),
         ),
         methods=["POST"],
         response_model=lt_class.get_unit_read_model(),
         status_code=status.HTTP_201_CREATED,
-        tags=[lt_name],
     )
     # add route for updating a unit
     router.add_api_route(
@@ -103,10 +109,11 @@ for lt_name, lt_class in get_layer_types().items():
         name=f"Update {lt_class.get_name()} unit",
         description=f"Updates the data for a {lt_class.get_name()} data layer unit",
         endpoint=_generate_update_endpoint(
-            lt_class.get_unit_update_model(), lt_class.get_unit_read_model()
+            lt_class.get_collection_name(),
+            lt_class.get_unit_update_model(),
+            lt_class.get_unit_read_model(),
         ),
         methods=["PATCH"],
         response_model=lt_class.get_unit_read_model(),
         status_code=status.HTTP_200_OK,
-        tags=[lt_name],
     )
