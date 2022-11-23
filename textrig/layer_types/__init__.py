@@ -64,7 +64,7 @@ class LayerTypePluginABC(ABC):
     @classmethod
     def get_safe_name(cls) -> str:
         """Returns the slug of this layer type plugin's name"""
-        return safe_name(cls.get_name())
+        return safe_name(cls.get_name(), max_len=16, delim="")
 
     @classmethod
     @abstractmethod
