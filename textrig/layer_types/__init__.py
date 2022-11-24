@@ -5,15 +5,9 @@ from abc import ABC, abstractmethod
 
 import pluggy
 import pymongo
-from pydantic import Field
 from textrig.logging import log
-from textrig.models.common import (
-    AllOptional,
-    DbDocument,
-    DocumentId,
-    Metadata,
-    TextRigBaseModel,
-)
+from textrig.models.common import TextRigBaseModel
+from textrig.models.unit import UnitBase, UnitReadBase, UnitUpdateBase
 from textrig.utils.strings import safe_name
 
 
@@ -29,23 +23,6 @@ _layer_type_manager = None
 
 class LayerTypePluginABC(ABC):
     """Abstract base class for defining a data layer type"""
-
-    class UnitBase(ABC, TextRigBaseModel):
-        """A base class for types of data units belonging to a certain data layer"""
-
-        layer_id: DocumentId = Field(..., description="Data layer ID")
-        node_id: DocumentId = Field(..., description="Parent text node ID")
-        meta: Metadata = Field(
-            None,
-            description="Arbitrary metadata on this layer unit",
-            extra={"template": True},
-        )
-
-    class UnitReadBase(UnitBase, DbDocument):
-        ...
-
-    class UnitUpdateBase(UnitBase, DbDocument, metaclass=AllOptional):
-        ...
 
     @classmethod
     @abstractmethod
@@ -102,23 +79,29 @@ class LayerTypePluginABC(ABC):
         return f"units_{cls.get_safe_name()}"
 
     @classmethod
+    def _get_model(cls, model_class_name: str, bases: tuple) -> type[TextRigBaseModel]:
+        if not hasattr(cls, model_class_name):
+            # model doesn't exist, has to be created
+            model = type(
+                model_class_name,
+                bases,
+                {"__module__": f"{cls.__module__}.{cls.__name__}"},
+            )
+            # and set as an attribute of the respective layer type class
+            setattr(cls, model_class_name, model)
+        # return model
+        return getattr(cls, model_class_name)
+
+    @classmethod
     def get_unit_read_model(cls) -> type[UnitReadBase]:
         """
         Dynamically generates and returns the unit read model
         for units of this type of data layer
         """
-        model_name = f"{cls.get_unit_model().__name__}Read"
-        if not hasattr(cls, model_name):
-            # model doesn't exist, has to be created
-            model = type(
-                model_name,
-                (cls.get_unit_model(), cls.UnitReadBase),
-                {"__module__": f"{cls.__module__}.{cls.__name__}"},
-            )
-            # and set as an attribute of the respective layer type class
-            setattr(cls, model_name, model)
-        # return model
-        return getattr(cls, model_name)
+        return cls._get_model(
+            f"{cls.get_unit_model().__name__}Read",
+            (cls.get_unit_model(), UnitReadBase),
+        )
 
     @classmethod
     def get_unit_update_model(cls) -> type[UnitUpdateBase]:
@@ -126,18 +109,10 @@ class LayerTypePluginABC(ABC):
         Dynamically generates and returns the unit update model
         for units of this type of data layer
         """
-        model_name = f"{cls.get_unit_model().__name__}Update"
-        if not hasattr(cls, model_name):
-            # model doesn't exist, has to be created
-            model = type(
-                model_name,
-                (cls.get_unit_model(), cls.UnitUpdateBase),
-                {"__module__": f"{cls.__module__}.{cls.__name__}"},
-            )
-            # and set as an attribute of the respective layer type class
-            setattr(cls, model_name, model)
-        # return model
-        return getattr(cls, model_name)
+        return cls._get_model(
+            f"{cls.get_unit_model().__name__}Update",
+            (cls.get_unit_model(), UnitUpdateBase),
+        )
 
     @classmethod
     def prepare_import_template(cls) -> dict:
@@ -161,7 +136,7 @@ class LayerTypePluginABC(ABC):
         return template
 
 
-def get_layer_types() -> dict[str, type[LayerTypePluginABC]]:
+def get_layer_types() -> dict[str, LayerTypePluginABC]:
     """
     Returns a dict of all layer types, mapping from
     the layer type's safe name to the layer type's class
@@ -186,7 +161,7 @@ def get_layer_type(layer_type_name: str) -> LayerTypePluginABC:
     """
     Returns a specific layer type's class by name
 
-    :param layer_type_name: Layer type name/slug
+    :param layer_type_name: Layer type safe name
     :type layer_type_name: str
     :return: The requested layer type's class
     :rtype: type[LayerTypeABC]

@@ -1,12 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from textrig.db.io import DbIO
 from textrig.dependencies import get_db_io
-from textrig.layer_types import LayerTypePluginABC, get_layer_types
+from textrig.layer_types import UnitBase, UnitReadBase, UnitUpdateBase, get_layer_types
 from textrig.logging import log
 
 
 def _generate_read_endpoint(
-    target_collection: str, unit_read_model: type[LayerTypePluginABC.UnitReadBase]
+    target_collection: str, unit_read_model: type[UnitReadBase]
 ):
     async def get_unit(
         unit_id: str, db_io: DbIO = Depends(get_db_io)
@@ -25,8 +25,8 @@ def _generate_read_endpoint(
 
 def _generate_create_endpoint(
     target_collection: str,
-    unit_model: type[LayerTypePluginABC.UnitBase],
-    unit_read_model: type[LayerTypePluginABC.UnitReadBase],
+    unit_model: type[UnitBase],
+    unit_read_model: type[UnitReadBase],
 ):
     async def create_unit(
         unit: unit_model, db_io: DbIO = Depends(get_db_io)
@@ -51,8 +51,8 @@ def _generate_create_endpoint(
 
 def _generate_update_endpoint(
     target_collection: str,
-    unit_update_model: type[LayerTypePluginABC.UnitUpdateBase],
-    unit_read_model: type[LayerTypePluginABC.UnitReadBase],
+    unit_update_model: type[UnitUpdateBase],
+    unit_read_model: type[UnitReadBase],
 ):
     async def update_unit(
         unit_update: unit_update_model, db_io: DbIO = Depends(get_db_io)

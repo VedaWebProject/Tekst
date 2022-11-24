@@ -66,7 +66,10 @@ async def get_layer_template(layer_id: str, db_io: DbIO = Depends(get_db_io)) ->
     layer_data = await db_io.find_one("layers", layer_id)
 
     if not layer_data:
-        raise HTTPException(status.HTTP_400_BAD_REQUEST, detail="Layer doesn't exist")
+        raise HTTPException(
+            status.HTTP_400_BAD_REQUEST,
+            detail=f"Layer with ID {layer_id} doesn't exist",
+        )
 
     # decode layer data: Usually, this is handled automatically by our models, but
     # in this case we're returning a raw dict/JSON, so we have to manually make sure

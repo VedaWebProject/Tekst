@@ -8,7 +8,7 @@ from pydantic.main import ModelMetaclass
 
 
 # type alias for a flat dict of arbitrary metadata
-Metadata = dict[str, str | bool | int | float]
+Metadata = dict[str, str | int | bool | float]
 
 
 class DocumentId(ObjectId):

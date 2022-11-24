@@ -1,12 +1,15 @@
 import pymongo
 from pydantic import Field
 from textrig.layer_types import LayerTypePluginABC, layer_type_impl
+from textrig.models.unit import UnitBase
 
 
 class Fulltext(LayerTypePluginABC):
     """A simple fulltext layer type"""
 
-    class FulltextUnit(LayerTypePluginABC.UnitBase):
+    class FulltextUnit(UnitBase):
+        """A unit of a fulltext data layer"""
+
         text: str = Field(
             None,
             description="Text content of the fulltext unit",
