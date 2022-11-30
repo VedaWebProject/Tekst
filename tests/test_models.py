@@ -1,5 +1,6 @@
 import pytest
 from pydantic.error_wrappers import ValidationError
+from textrig.models.layer import LayerBase
 from textrig.models.text import Text, TextRead
 
 
@@ -43,3 +44,24 @@ def test_model_field_casing():
     assert t.loc_delim == "bar"
     t = Text(title="foo", locDelim="bar")
     assert t.loc_delim == "bar"
+
+
+def test_layer_description_validator():
+    # desc with arbitrary whitespaces
+    layer = LayerBase(
+        title="foo",
+        text_slug="foo",
+        level=0,
+        layer_type="fulltext",
+        description="foo      bar\t\t   baz\n \ttest",
+    )
+    assert layer.description == "foo bar baz test"
+    # desc = None
+    layer = LayerBase(
+        title="foo",
+        text_slug="foo",
+        level=0,
+        layer_type="fulltext",
+        description=None,
+    )
+    assert layer.description is None

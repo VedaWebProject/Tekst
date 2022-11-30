@@ -7,6 +7,7 @@ import pluggy
 import pymongo
 from textrig.logging import log
 from textrig.models.common import TextRigBaseModel
+from textrig.models.layer import LayerBase, LayerReadBase, LayerUpdateBase
 from textrig.models.unit import UnitBase, UnitReadBase, UnitUpdateBase
 from textrig.utils.strings import safe_name
 
@@ -42,6 +43,13 @@ class LayerTypePluginABC(ABC):
     def get_safe_name(cls) -> str:
         """Returns the slug of this layer type plugin's name"""
         return safe_name(cls.get_name(), max_len=16, delim="")
+
+    @classmethod
+    @abstractmethod
+    @_layer_type_spec
+    def get_layer_model(cls) -> type[LayerBase]:
+        """Returns the layer base model for this type of data layer"""
+        ...
 
     @classmethod
     @abstractmethod
@@ -93,14 +101,39 @@ class LayerTypePluginABC(ABC):
         return getattr(cls, model_class_name)
 
     @classmethod
+    def get_layer_read_model(cls) -> type[LayerReadBase]:
+        """
+        Dynamically generates and returns the layer read model
+        for this type of data layer
+        """
+        layer_model = cls.get_layer_model()
+        return cls._get_model(
+            f"{layer_model.__name__}Read",
+            (layer_model, LayerReadBase),
+        )
+
+    @classmethod
+    def get_layer_update_model(cls) -> type[LayerUpdateBase]:
+        """
+        Dynamically generates and returns the layer update model
+        for this type of data layer
+        """
+        layer_model = cls.get_layer_model()
+        return cls._get_model(
+            f"{layer_model.__name__}Update",
+            (layer_model, LayerUpdateBase),
+        )
+
+    @classmethod
     def get_unit_read_model(cls) -> type[UnitReadBase]:
         """
         Dynamically generates and returns the unit read model
         for units of this type of data layer
         """
+        unit_model = cls.get_unit_model()
         return cls._get_model(
-            f"{cls.get_unit_model().__name__}Read",
-            (cls.get_unit_model(), UnitReadBase),
+            f"{unit_model.__name__}Read",
+            (unit_model, UnitReadBase),
         )
 
     @classmethod
@@ -109,9 +142,10 @@ class LayerTypePluginABC(ABC):
         Dynamically generates and returns the unit update model
         for units of this type of data layer
         """
+        unit_model = cls.get_unit_model()
         return cls._get_model(
-            f"{cls.get_unit_model().__name__}Update",
-            (cls.get_unit_model(), UnitUpdateBase),
+            f"{unit_model.__name__}Update",
+            (unit_model, UnitUpdateBase),
         )
 
     @classmethod

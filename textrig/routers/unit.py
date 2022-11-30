@@ -79,7 +79,7 @@ router = APIRouter(
 for lt_name, lt_class in get_layer_types().items():
     # add route for reading a unit from the database
     router.add_api_route(
-        path=f"/{lt_name}",
+        path=f"/{lt_name}/{{unit_id}}",
         name=f"Get {lt_class.get_name()} unit",
         description=f"Returns the data for a {lt_class.get_name()} data layer unit",
         endpoint=_generate_read_endpoint(

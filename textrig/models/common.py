@@ -68,14 +68,13 @@ class TextRigBaseModel(BaseModel):
                     parsed[key] = str(parsed[key])
         return parsed
 
-    def json(self, **kwargs) -> dict:
+    def json(self, **kwargs) -> str:
         """Overrides json() in Basemodel to change some defaults"""
-        parsed = super().json(
+        return super().json(
             exclude_unset=kwargs.pop("exclude_unset", True),
             by_alias=kwargs.pop("by_alias", True),
             **kwargs,
         )
-        return parsed
 
     @classmethod
     def field_names(cls, alias: bool = False):

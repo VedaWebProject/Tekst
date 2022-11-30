@@ -82,7 +82,10 @@ async def insert_test_data(root_path, test_client, test_data) -> callable:
     async def _insert_test_data(*collections: str) -> None:
         for collection in collections:
             for doc in test_data[collection]:
-                await test_client.post(f"{root_path}/{collection[:-1]}", json=doc)
+                endpoint = f"{root_path}/{collection[:-1]}"
+                if collection == "layers":
+                    endpoint += f"/{doc['layer_type']}"
+                await test_client.post(endpoint, json=doc)
 
     return _insert_test_data
 

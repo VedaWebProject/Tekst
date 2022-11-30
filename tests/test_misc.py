@@ -2,7 +2,7 @@ import os
 
 from bson import ObjectId
 from textrig import logging
-from textrig.db import for_mongo_request, get_client
+from textrig.db import for_mongo, get_client
 from textrig.dependencies import get_db_client
 
 
@@ -27,7 +27,7 @@ def test_for_mongo_request():
         "parent_id": "637b94cb6bc85f7410a49bc9",
         "nested": {"id": "637b94cb6bc85f7410a49bc9"},
     }
-    req = for_mongo_request(req)
+    req = for_mongo(req)
     assert type(req.get("id")) == ObjectId
     assert type(req.get("_id")) == ObjectId
     assert "parent_id" not in req

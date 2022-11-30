@@ -47,8 +47,8 @@ async def test_create_layer_unit(root_path, test_client: AsyncClient, insert_tes
     assert resp.status_code == 409, f"HTTP status {resp.status_code} (expected: 409)"
 
     # get unit
-    endpoint = f"{root_path}/unit/fulltext"
-    resp = await test_client.get(endpoint, params={"unit_id": unit_id})
+    endpoint = f"{root_path}/unit/fulltext/{unit_id}"
+    resp = await test_client.get(endpoint)
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) == dict
     assert "id" in resp.json()
@@ -56,13 +56,12 @@ async def test_create_layer_unit(root_path, test_client: AsyncClient, insert_tes
     assert resp.json()["meta"]["foo"] == "bar"
 
     # fail to get unit with invalid ID
-    endpoint = f"{root_path}/unit/fulltext"
-    resp = await test_client.get(
-        endpoint, params={"unit_id": "637b9ad396d541a505e5439b"}
-    )
+    endpoint = f"{root_path}/unit/fulltext/637b9ad396d541a505e5439b"
+    resp = await test_client.get(endpoint)
     assert resp.status_code == 404, f"HTTP status {resp.status_code} (expected: 404)"
 
     # update unit
+    endpoint = f"{root_path}/unit/fulltext"
     UpdateModel = get_layer_type("fulltext").get_unit_update_model()
     unit_update = UpdateModel(id=unit_id, text="FOO BAR")
     resp = await test_client.patch(endpoint, json=unit_update.dict())

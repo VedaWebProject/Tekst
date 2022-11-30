@@ -1,5 +1,5 @@
 from bson import ObjectId
-from humps import camelize
+from humps import camelize, decamelize
 from motor.motor_asyncio import AsyncIOMotorClient as DatabaseClient
 from textrig.config import TextRigConfig, get_config
 from textrig.logging import log
@@ -22,7 +22,7 @@ def get_client(db_uri: str) -> DatabaseClient:
     return _db_client
 
 
-def for_mongo_request(obj: dict) -> dict:
+def for_mongo(obj: dict) -> dict:
     def gen_obj_ids(d: dict) -> dict:
         for k, v in d.items():
             if not isinstance(k, str):
@@ -35,6 +35,23 @@ def for_mongo_request(obj: dict) -> dict:
         return d
 
     return gen_obj_ids(camelize(obj))
+
+
+def from_mongo(obj: dict) -> dict:
+    def encode_obj_ids(d: dict) -> dict:
+        for k, v in d.items():
+            if not isinstance(k, str):
+                raise ValueError("Keys sould be strings")
+            elif isinstance(v, dict):
+                d[k] = encode_obj_ids(v)
+            elif k in ("id", "_id") or k.endswith("Id"):
+                if isinstance(v, ObjectId):
+                    d[k] = str(v)
+                if k == "_id":
+                    d["id"] = d.pop(k)
+        return d
+
+    return encode_obj_ids(decamelize(obj))
 
 
 # class __DbClientProvider:

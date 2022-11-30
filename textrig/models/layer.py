@@ -4,11 +4,7 @@ from pydantic import Field, validator
 from textrig.models.common import AllOptional, DbDocument, Metadata, TextRigBaseModel
 
 
-LayerConfigBlock = dict[str, str | int | float | bool]
-LayerConfig = dict[str, LayerConfigBlock | str | int | float | bool]
-
-
-class Layer(TextRigBaseModel):
+class LayerBase(TextRigBaseModel):
     """A data layer describing a set of data on a text"""
 
     title: str = Field(
@@ -27,21 +23,22 @@ class Layer(TextRigBaseModel):
     )
     # owner_id: DocId = Field(None)  # TODO: users don't exist, yet
     public: bool = Field(False, description="Publication status of this layer")
-    config: LayerConfig = Field(None, description="Configuration of this data layer")
     meta: Metadata = Field(None, description="Arbitrary metadata")
 
     @validator("description")
     def handle_whitespaces_in_description(cls, v):
+        if not isinstance(v, str):
+            return None
         return re.sub(r"[\s\n]+", " ", v)
 
 
-class LayerRead(Layer, DbDocument):
+class LayerReadBase(LayerBase, DbDocument):
     """An existing data layer read from the database"""
 
     ...
 
 
-class LayerUpdate(Layer, DbDocument, metaclass=AllOptional):
+class LayerUpdateBase(LayerBase, DbDocument, metaclass=AllOptional):
     """An update to an existing data layer"""
 
     ...

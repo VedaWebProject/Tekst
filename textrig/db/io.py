@@ -4,7 +4,7 @@ from bson import ObjectId
 from motor.motor_asyncio import AsyncIOMotorCursor as Cursor
 from motor.motor_asyncio import AsyncIOMotorDatabase as Database
 from pymongo.results import InsertManyResult, InsertOneResult, UpdateResult
-from textrig.db import for_mongo_request
+from textrig.db import for_mongo
 from textrig.models.common import TextRigBaseModel
 
 
@@ -140,7 +140,7 @@ class DbIO:
         :return: Document data or None if nothing is found
         :rtype: dict | None
         """
-        example = for_mongo_request(example)
+        example = for_mongo(example)
         return await self._db[collection].find_one(example)
 
     async def find(
@@ -175,7 +175,7 @@ class DbIO:
         """
         # force camel case on example keys, make ObjectIds
         if example:
-            example = for_mongo_request(example)
+            example = for_mongo(example)
         # get cursor from db
         cursor = self._db[collection].find(
             example, projection=projection, limit=limit, hint=hint
