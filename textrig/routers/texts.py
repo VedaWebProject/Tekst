@@ -6,15 +6,15 @@ from textrig.db.io import DbIO
 from textrig.dependencies import get_cfg, get_db_io
 from textrig.logging import log
 from textrig.models.text import Node, NodeRead, Text, TextRead, TextUpdate
-from textrig.routers.node import create_node
+from textrig.routers.nodes import create_node
 
 
 _cfg: TextRigConfig = get_config()
 
 
 router = APIRouter(
-    prefix="/text",
-    tags=["text"],
+    prefix="/texts",
+    tags=["texts"],
     responses={status.HTTP_404_NOT_FOUND: {"description": "Not found"}},
 )
 

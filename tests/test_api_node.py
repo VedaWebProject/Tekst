@@ -9,7 +9,7 @@ async def test_create_node(
     root_path, test_client: AsyncClient, test_data, insert_test_data
 ):
     await insert_test_data("texts")
-    endpoint = f"{root_path}/node"
+    endpoint = f"{root_path}/nodes"
     nodes = test_data["nodes"]
 
     for node in nodes:
@@ -24,7 +24,7 @@ async def test_child_node_io(
     root_path, test_client: AsyncClient, test_data, insert_test_data
 ):
     await insert_test_data("texts")
-    endpoint = f"{root_path}/node"
+    endpoint = f"{root_path}/nodes"
     node = test_data["nodes"][0]
 
     # create parent
@@ -53,7 +53,7 @@ async def test_child_node_io(
     assert resp.json()[0]["id"] == child.id
 
     # find children by parent ID using dedicated children endpoint
-    resp = await test_client.get(f"{root_path}/node/{child.parent_id}/children")
+    resp = await test_client.get(f"{root_path}/nodes/{child.parent_id}/children")
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) is list
     assert len(resp.json()) == 1
@@ -65,7 +65,7 @@ async def test_create_node_invalid_text_fail(
     root_path, test_client: AsyncClient, test_data, insert_test_data
 ):
     await insert_test_data("texts")
-    endpoint = f"{root_path}/node"
+    endpoint = f"{root_path}/nodes"
     node = test_data["nodes"][0]
     node["textSlug"] = "this_does_not_exist"
 
@@ -78,7 +78,7 @@ async def test_create_node_duplicate_fail(
     root_path, test_client: AsyncClient, test_data, insert_test_data
 ):
     await insert_test_data("texts")
-    endpoint = f"{root_path}/node"
+    endpoint = f"{root_path}/nodes"
     node = test_data["nodes"][0]
 
     resp = await test_client.post(endpoint, json=node)
@@ -93,7 +93,7 @@ async def test_get_nodes(
     root_path, test_client: AsyncClient, test_data, insert_test_data
 ):
     await insert_test_data("texts", "nodes")
-    endpoint = f"{root_path}/node"
+    endpoint = f"{root_path}/nodes"
     text = test_data["texts"][0]
     text_slug = text["slug"]
     nodes = [n for n in test_data["nodes"] if n["textSlug"] == text_slug]
@@ -148,7 +148,7 @@ async def test_update_node(
     await insert_test_data("texts", "nodes")
     text_slug = test_data["texts"][0]["slug"]
     # get node from db
-    endpoint = f"{root_path}/node"
+    endpoint = f"{root_path}/nodes"
     resp = await test_client.get(endpoint, params={"text_slug": text_slug, "level": 0})
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) == list
@@ -178,7 +178,7 @@ async def test_node_next(
     await insert_test_data("texts", "nodes")
     text_slug = test_data["texts"][0]["slug"]
     # get second last node from level 0
-    endpoint = f"{root_path}/node"
+    endpoint = f"{root_path}/nodes"
     resp = await test_client.get(endpoint, params={"text_slug": text_slug, "level": 0})
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) == list
@@ -187,13 +187,13 @@ async def test_node_next(
     node_second_last = nodes[len(nodes) - 2]
     node_last = nodes[len(nodes) - 1]
     # get next node
-    endpoint = f"{root_path}/node/{node_second_last.id}/next"
+    endpoint = f"{root_path}/nodes/{node_second_last.id}/next"
     resp = await test_client.get(endpoint)
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) == dict
     assert "id" in resp.json()
     assert resp.json()["id"] == node_last.id
     # fail to get node after last
-    endpoint = f"{root_path}/node/{node_last.id}/next"
+    endpoint = f"{root_path}/nodes/{node_last.id}/next"
     resp = await test_client.get(endpoint)
     assert resp.status_code == 404, f"HTTP status {resp.status_code} (expected: 404)"

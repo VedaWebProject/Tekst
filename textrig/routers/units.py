@@ -70,8 +70,8 @@ def _generate_update_endpoint(
 
 # initialize unit router
 router = APIRouter(
-    prefix="/unit",
-    tags=["unit"],
+    prefix="/units",
+    tags=["units"],
     responses={status.HTTP_404_NOT_FOUND: {"description": "Not found"}},
 )
 

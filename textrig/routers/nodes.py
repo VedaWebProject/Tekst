@@ -6,8 +6,8 @@ from textrig.models.text import Node, NodeRead, NodeUpdate
 
 
 router = APIRouter(
-    prefix="/node",
-    tags=["node"],
+    prefix="/nodes",
+    tags=["nodes"],
     responses={status.HTTP_404_NOT_FOUND: {"description": "Not found"}},
 )
 

@@ -66,8 +66,8 @@ def _generate_update_endpoint(
 
 
 router = APIRouter(
-    prefix="/layer",
-    tags=["layer"],
+    prefix="/layers",
+    tags=["layers"],
     responses={
         status.HTTP_404_NOT_FOUND: {"description": "Not found"},
     },
