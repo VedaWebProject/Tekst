@@ -1,0 +1,20 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.config.json"
+    },
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.cypress-ct.json"
+    }
+  ],
+  "compilerOptions": {
+    "baseUrl": ".", // this must be specified if "paths" is specified.
+    "paths": {
+      "@": ["./src"] // this mapping is relative to "baseUrl"
+    }
+  }
+}
