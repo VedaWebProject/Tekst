@@ -173,10 +173,10 @@ class LayerTypePluginABC(ABC):
 def get_layer_types() -> dict[str, LayerTypePluginABC]:
     """
     Returns a dict of all layer types, mapping from
-    the layer type's safe name to the layer type's class
+    the layer type's safe name to a layer type plugin instance
 
     :return: A dict of all layer types
-    :rtype: dict[str, type[LayerTypeABC]]
+    :rtype: dict[str, LayerTypeABC]
     """
     return {p[0]: p[1] for p in _get_layer_type_manager().list_name_plugin()}
 
@@ -193,12 +193,12 @@ def get_layer_type_names() -> list[str]:
 
 def get_layer_type(layer_type_name: str) -> LayerTypePluginABC:
     """
-    Returns a specific layer type's class by name
+    Returns a specific layer type plugin instance by name
 
     :param layer_type_name: Layer type safe name
     :type layer_type_name: str
-    :return: The requested layer type's class
-    :rtype: type[LayerTypeABC]
+    :return: The requested layer type plugin instance
+    :rtype: LayerTypeABC
     """
     return _get_layer_type_manager().get_plugin(layer_type_name.lower())
 
