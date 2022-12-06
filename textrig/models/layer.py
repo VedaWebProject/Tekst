@@ -31,6 +31,18 @@ class LayerBase(TextRigBaseModel):
             return None
         return re.sub(r"[\s\n]+", " ", v)
 
+    @validator("layer_type")
+    def validate_layer_type_name(cls, v):
+        from textrig.layer_types import get_layer_type_names
+
+        layer_type_names = get_layer_type_names()
+        if v.lower() not in layer_type_names:
+            raise ValueError(
+                f"Given layer type ({v}) is not a valid "
+                f"layer type name (one of {layer_type_names})."
+            )
+        return v.lower()
+
 
 class LayerReadBase(LayerBase, DbDocument):
     """An existing data layer read from the database"""
