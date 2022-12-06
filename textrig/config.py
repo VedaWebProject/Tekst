@@ -59,20 +59,24 @@ class TextRigConfig(BaseSettings):
     """Platform config model"""
 
     # basic
+    env_file: str = ".env.prod"
     app_name: str = "TextRig"
     dev_mode: bool = False
     root_path: str = ""
     snippets_dir: str = "/snippets"
     log_level: str = "INFO"
 
-    # dev server binding
-    dev_srv_host: str = "127.0.0.1"
-    dev_srv_port: int = 8000
+    # uvicorn asgi binding
+    uvicorn_host: str = "127.0.0.1"
+    uvicorn_port: int = 8000
 
-    # special domain
+    # special domain sub configs
     db: DbConfig = DbConfig()  # db cfg (MongoDB)
     doc: DocConfig = DocConfig()  # doc cfg (SwaggerUI, Redoc, OpenAPI)
     info: InfoConfig = InfoConfig()  # general information cfg
+
+    def __init__(self, env_file: str = ".env", *args, **kwargs):
+        super().__init__(*args, env_file=env_file, _env_file=env_file, **kwargs)
 
     @validator("log_level")
     def uppercase_log_lvl(cls, v: str) -> str:
@@ -86,6 +90,11 @@ class TextRigConfig(BaseSettings):
 
 @lru_cache
 def get_config() -> TextRigConfig:
-    return TextRigConfig(
-        _env_file=".env.dev" if os.environ.get("TR_DEV_MODE") else ".env.prod"
-    )
+    env_file = ".env.prod"
+    if os.path.exists(".env"):
+        env_file = ".env"
+    if os.environ.get("TR_DEV_MODE") and os.path.exists(".env.dev"):
+        env_file = ".env.dev"
+    if os.environ.get("TR_ENV_FILE") and os.path.exists(os.environ.get("TR_ENV_FILE")):
+        env_file = os.environ.get("TR_ENV_FILE")
+    return TextRigConfig(env_file=env_file)

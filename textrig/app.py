@@ -19,11 +19,13 @@ _cfg: TextRigConfig = get_config()
 
 
 def pre_startup_routine() -> None:
-    print(file=sys.stderr)  # blank line for visual separation of app runs
+    if _cfg.dev_mode:
+        # blank line for visual separation of app runs in dev mode
+        print(file=sys.stderr)
 
     # Hello World!
     log.info(
-        f"TextRig Server v{_cfg.info.version} "
+        f"{_cfg.app_name} (TextRig Server v{_cfg.info.version}) "
         f"running in {'DEVELOPMENT' if _cfg.dev_mode else 'PRODUCTION'} MODE"
     )
 
@@ -43,7 +45,7 @@ async def startup_routine() -> None:
     if _cfg.dev_mode:  # pragma: no cover
         log.info(
             "Development server bound to "
-            f"http://{_cfg.dev_srv_host}:{_cfg.dev_srv_port}"
+            f"http://{_cfg.uvicorn_host}:{_cfg.uvicorn_port}"
         )
 
 
