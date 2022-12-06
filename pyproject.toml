@@ -138,8 +138,8 @@ title = "TextRig - Test Coverage Report"
     sequence = ["test", "lint", "format-check"]
     ignore_fail = "return_non_zero"
 
-    [tool.poe.tasks.process]
-    help = "Process project with complete toolchain: format, test, lint, style checks, export prod schema"
+    [tool.poe.tasks.pre-commit]
+    help = "Run full pre-commit toolchain: format, test, lint, style checks, export prod schema"
     sequence = ["format", "check", "schema-prod"]
     ignore_fail = "return_non_zero"
 
