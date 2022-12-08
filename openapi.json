@@ -242,7 +242,7 @@
                   "title": "Response Get Layers Layers Get",
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/LayerReadBase"
+                    "type": "object"
                   }
                 }
               }
@@ -1449,80 +1449,6 @@
           }
         }
       },
-      "LayerReadBase": {
-        "title": "LayerReadBase",
-        "required": [
-          "id",
-          "title",
-          "textSlug",
-          "level",
-          "layerType"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "title": "Id",
-            "type": "string"
-          },
-          "title": {
-            "title": "Title",
-            "maxLength": 64,
-            "minLength": 1,
-            "type": "string",
-            "description": "Title of this layer"
-          },
-          "description": {
-            "title": "Description",
-            "maxLength": 128,
-            "minLength": 1,
-            "type": "string",
-            "description": "Short, one-line description of this data layer"
-          },
-          "textSlug": {
-            "title": "Textslug",
-            "type": "string",
-            "description": "Slug of the text this layer belongs to"
-          },
-          "level": {
-            "title": "Level",
-            "type": "integer",
-            "description": "Text level this layer belongs to"
-          },
-          "layerType": {
-            "title": "Layertype",
-            "type": "string",
-            "description": "A string identifying one of the available layer types"
-          },
-          "public": {
-            "title": "Public",
-            "type": "boolean",
-            "description": "Publication status of this layer",
-            "default": false
-          },
-          "meta": {
-            "title": "Meta",
-            "type": "object",
-            "additionalProperties": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "integer"
-                },
-                {
-                  "type": "boolean"
-                },
-                {
-                  "type": "number"
-                }
-              ]
-            },
-            "description": "Arbitrary metadata"
-          }
-        },
-        "description": "An existing data layer read from the database"
-      },
       "Node": {
         "title": "Node",
         "required": [
@@ -1707,7 +1633,8 @@
       "Text": {
         "title": "Text",
         "required": [
-          "title"
+          "title",
+          "levels"
         ],
         "type": "object",
         "properties": {
@@ -1739,8 +1666,7 @@
             "type": "array",
             "items": {
               "type": "string"
-            },
-            "default": []
+            }
           },
           "locDelim": {
             "title": "Locdelim",
@@ -1755,7 +1681,8 @@
         "title": "TextRead",
         "required": [
           "id",
-          "title"
+          "title",
+          "levels"
         ],
         "type": "object",
         "properties": {
@@ -1791,8 +1718,7 @@
             "type": "array",
             "items": {
               "type": "string"
-            },
-            "default": []
+            }
           },
           "locDelim": {
             "title": "Locdelim",
