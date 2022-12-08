@@ -1,10 +1,10 @@
 {
     "title": "Fuchs, du hast die Gans gestohlen",
     "slug": "fdhdgg",
-    "subtitle": "Ein deutschsprachiges Volkslied von 1824",
-    "levels": ["Strophe", "Zeile"],
+    "subtitle": "A German folk song from 1824",
+    "levels": ["Stanza", "Line"],
     "locDelim": ",",
-    "structure": [
+    "nodes": [
         {
             "label": "1",
             "nodes": [
