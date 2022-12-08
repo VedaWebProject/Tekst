@@ -1,8 +1,9 @@
 import os
+import re
 
 from bson import ObjectId
 from textrig import logging
-from textrig.db import for_mongo, get_client
+from textrig.db import _ID_KEY_PATTERN, for_mongo, get_client
 from textrig.dependencies import get_db_client
 
 
@@ -18,6 +19,15 @@ def test_logging_setup_without_errors():
     os.environ["SERVER_SOFTWARE"] = "gunicorn"
     logging.setup_logging()
     logging.log.info("foo bar")
+
+
+def test_id_key_pattern():
+    assert bool(re.match(_ID_KEY_PATTERN, "id"))
+    assert bool(re.match(_ID_KEY_PATTERN, "_id"))
+    assert bool(re.match(_ID_KEY_PATTERN, "parent_id"))
+    assert bool(re.match(_ID_KEY_PATTERN, "parentId"))
+    assert not bool(re.match(_ID_KEY_PATTERN, "parentIde"))
+    assert not bool(re.match(_ID_KEY_PATTERN, "parend_id_foo"))
 
 
 def test_for_mongo_request():
