@@ -83,7 +83,7 @@ class LayerTypePluginABC(ABC):
         ...
 
     @classmethod
-    def get_collection_name(cls) -> str:
+    def units_collection_name(cls) -> str:
         return f"units_{cls.get_safe_name()}"
 
     @classmethod

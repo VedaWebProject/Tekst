@@ -1,4 +1,7 @@
+from fastapi import HTTPException, status
 from pydantic import Field, root_validator
+from textrig.db.io import DbIO
+from textrig.logging import log
 from textrig.models.common import (
     AllOptional,
     DbDocument,
@@ -31,7 +34,7 @@ class Text(TextRigBaseModel):
         None, min_length=1, max_length=128, description="Subtitle of this text"
     )
 
-    levels: list[str] = Field(list(), min_items=1)
+    levels: list[str] = Field(..., min_items=1)
 
     loc_delim: str = Field(
         ",",
@@ -50,17 +53,45 @@ class Text(TextRigBaseModel):
                 )
         return values
 
+    async def create(self, db_io: DbIO) -> "TextRead":
+        text = self.ensure_model_type(Text)
+        if await db_io.find_one("texts", text.slug, "slug"):
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="A text with an equal slug already exists",
+            )
+        text_read = TextRead(**await db_io.insert_one("texts", text))
+        log.debug(f"Created text: {text_read}")
+        return text_read
+
 
 class TextRead(Text, DbDocument):
     """An existing text read from the database"""
 
-    ...
+    @classmethod
+    async def read(cls, doc_id: str | DocumentId, db_io: DbIO) -> "TextRead":
+        text = await db_io.find_one("texts", doc_id)
+        if not text:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"A text with ID {str(doc_id)} cannot be found",
+            )
+        return TextRead(**text)
 
 
 class TextUpdate(Text, DbDocument, metaclass=AllOptional):
     """An update to an existing text"""
 
-    ...
+    async def update(self, db_io: DbIO) -> TextRead:
+        text_update = self.ensure_model_type(TextUpdate)
+        updated_id = await db_io.update("texts", text_update)
+        if not updated_id:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Could not update text {text_update.id}",
+            )
+        log.debug(f"Updated text {updated_id}: {text_update.dict()}")
+        return TextRead(**await db_io.find_one("texts", updated_id))
 
 
 class Node(TextRigBaseModel):
@@ -77,14 +108,53 @@ class Node(TextRigBaseModel):
     label: str = Field(..., description="Label for identifying this text node")
     meta: Metadata = Field(None, description="Arbitrary metadata")
 
+    async def create(self, db_io: DbIO) -> "NodeRead":
+        node = self.ensure_model_type(Node)
+        # find text the node belongs to
+        text = await db_io.find_one("texts", node.text_slug, field="slug")
+        if not text:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Corresponding text '{node.text_slug}' does not exist",
+            )
+        # check for semantic duplicates
+        dupes = await db_io.find_one_by_example(
+            "nodes",
+            {"text_slug": node.text_slug, "level": node.level, "index": node.index},
+        )
+        if dupes:
+            log.warning(f"Cannot create node. Conflict: {node}")
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Conflict with existing node",
+            )
+        return NodeRead(**await db_io.insert_one("nodes", node))
+
 
 class NodeRead(Node, DbDocument):
     """An existing node read from the database"""
 
-    ...
+    @classmethod
+    async def read(cls, doc_id: str | DocumentId, db_io: DbIO) -> "NodeRead":
+        node = await db_io.find_one("texts", doc_id)
+        if not node:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"A node with ID {str(doc_id)} cannot be found",
+            )
+        return NodeRead(**node)
 
 
 class NodeUpdate(Node, DbDocument, metaclass=AllOptional):
     """An update to an existing node"""
 
-    ...
+    async def update(self, db_io: DbIO) -> NodeRead:
+        node_update = self.ensure_model_type(NodeUpdate)
+        updated_id = await db_io.update("nodes", node_update)
+        if not updated_id:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Could not update node {node_update.id}",
+            )
+        log.debug(f"Updated node {updated_id}: {node_update.dict()}")
+        return NodeRead(**await db_io.find_one("nodes", updated_id))

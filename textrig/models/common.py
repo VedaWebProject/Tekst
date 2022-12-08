@@ -76,6 +76,17 @@ class TextRigBaseModel(BaseModel):
             **kwargs,
         )
 
+    def ensure_model_type(
+        self, target_model_type: "TextRigBaseModel"
+    ) -> "TextRigBaseModel":
+        """
+        Used to make sure that (especially subclass) model
+        instances pass validation for the target model. If it quacks like a duck...
+        """
+        if type(self) is not target_model_type:
+            return target_model_type(**self.dict())
+        return self
+
     @classmethod
     def field_names(cls, alias: bool = False):
         return list(cls.schema(alias).get("properties").keys())

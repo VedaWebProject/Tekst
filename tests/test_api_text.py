@@ -25,7 +25,7 @@ async def test_get_texts(root_path, test_client: AsyncClient, insert_test_data):
 @pytest.mark.anyio
 async def test_create_text(root_path, test_client: AsyncClient):
     endpoint = f"{root_path}/texts"
-    payload = {"title": "Just a Test"}
+    payload = {"title": "Just a Test", "levels": ["foo"]}
     resp = await test_client.post(endpoint, json=payload)
     assert resp.status_code == 201, f"HTTP status {resp.status_code} (expected: 201)"
     assert "id" in resp.json()

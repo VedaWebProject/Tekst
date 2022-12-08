@@ -5,20 +5,28 @@ from textrig.models.layer import LayerBase
 from textrig.models.unit import UnitBase
 
 
+class FulltextLayer(LayerBase):
+    @classmethod
+    def get_layer_type_plugin_class(cls) -> type["Fulltext"]:
+        return Fulltext
+
+
+class FulltextUnit(UnitBase):
+    """A unit of a fulltext data layer"""
+
+    text: str = Field(
+        None,
+        description="Text content of the fulltext unit",
+        extra={"template": True},
+    )
+
+    @classmethod
+    def get_layer_type_plugin_class(cls) -> type["Fulltext"]:
+        return Fulltext
+
+
 class Fulltext(LayerTypePluginABC):
     """A simple fulltext layer type"""
-
-    class FulltextLayer(LayerBase):
-        pass
-
-    class FulltextUnit(UnitBase):
-        """A unit of a fulltext data layer"""
-
-        text: str = Field(
-            None,
-            description="Text content of the fulltext unit",
-            extra={"template": True},
-        )
 
     @classmethod
     @layer_type_impl
@@ -33,12 +41,12 @@ class Fulltext(LayerTypePluginABC):
     @classmethod
     @layer_type_impl
     def get_layer_model(cls) -> type[FulltextLayer]:
-        return cls.FulltextLayer
+        return FulltextLayer
 
     @classmethod
     @layer_type_impl
     def get_unit_model(cls) -> type[FulltextUnit]:
-        return cls.FulltextUnit
+        return FulltextUnit
 
     @classmethod
     @layer_type_impl

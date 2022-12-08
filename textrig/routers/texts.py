@@ -5,8 +5,8 @@ from textrig.config import TextRigConfig, get_config
 from textrig.db.io import DbIO
 from textrig.dependencies import get_cfg, get_db_io
 from textrig.logging import log
-from textrig.models.text import Node, NodeRead, Text, TextRead, TextUpdate
-from textrig.routers.nodes import create_node
+from textrig.models.text import Text, TextRead, TextUpdate
+from textrig.utils import importer
 
 
 _cfg: TextRigConfig = get_config()
@@ -31,15 +31,7 @@ async def get_all_texts(
 
 @router.post("", response_model=TextRead, status_code=status.HTTP_201_CREATED)
 async def create_text(text: Text, db_io: DbIO = Depends(get_db_io)) -> TextRead:
-    if await db_io.find_one("texts", text.slug, "slug"):
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="A text with an equal slug already exists",
-        )
-
-    text = await db_io.insert_one("texts", text)
-    log.debug(f"Created text: {text}")
-    return text
+    return await text.create(db_io)
 
 
 @router.post(
@@ -59,47 +51,13 @@ async def import_text(
             detail="Endpoint not available in production system",
         )
 
-    log.debug(f'Importing text data from uploaded file "{file.filename}"')
+    log.debug(f'Importing text data from uploaded file "{file.filename}" ...')
 
     try:
-        # parse data
-        data = json.loads(await file.read())
-
-        # create and save text object
-        text: TextRead = TextRead(**await create_text(Text(**data), db_io))
-
-        # process text structure
-        from collections import deque
-
-        stack = deque()
-        indices = [0]
-
-        # push nodes of first structure level onto stack
-        for node in data.get("structure", []):
-            node["parentId"] = None
-            node["textSlug"] = text.slug
-            node["level"] = 0
-            node["index"] = indices[0]
-            stack.append(node)
-            indices[0] += 1
-
-        # process stack
-        while stack:
-            node_data = stack.pop()
-            node: NodeRead = NodeRead(**await create_node(Node(**node_data), db_io))
-
-            for u in node_data.get("nodes", []):
-                u["parentId"] = node.id
-                u["textSlug"] = text.slug
-                u["level"] = node.level + 1
-                if len(indices) <= u["level"]:
-                    indices.append(0)
-                u["index"] = indices[u["level"]]
-                indices[u["level"]] += 1
-                stack.append(u)
-
-        return text
-
+        text = await importer.import_text(json.loads(await file.read()), db_io)
+    except HTTPException as e:
+        log.error(e.detail)
+        raise e
     except Exception as e:
         log.error(e)
         raise HTTPException(
@@ -109,27 +67,16 @@ async def import_text(
     finally:
         await file.close()
 
+    return text
+
 
 @router.get("/{text_id}", response_model=TextRead, status_code=status.HTTP_200_OK)
 async def get_text_by_id(text_id: str, db_io: DbIO = Depends(get_db_io)) -> dict:
-    text = await db_io.find_one("texts", text_id)
-    if not text:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="A text with the given ID cannot be found",
-        )
-    return text
+    return await TextRead.read(text_id, db_io)
 
 
 @router.patch("", response_model=TextRead, status_code=status.HTTP_200_OK)
 async def update_text(
     text_update: TextUpdate, db_io: DbIO = Depends(get_db_io)
 ) -> dict:
-    updated_id = await db_io.update("texts", text_update)
-    if not updated_id:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Could not update text {updated_id}",
-        )
-    log.debug(f"Updated text {updated_id} to {text_update.json()}")
-    return await db_io.find_one("texts", updated_id)
+    return await text_update.update(db_io)

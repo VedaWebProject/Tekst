@@ -1,5 +1,7 @@
+import re
+
 from bson import ObjectId
-from humps import camelize, decamelize
+from humps import camelize
 from motor.motor_asyncio import AsyncIOMotorClient as DatabaseClient
 from textrig.config import TextRigConfig, get_config
 from textrig.logging import log
@@ -7,6 +9,8 @@ from textrig.logging import log
 
 _cfg: TextRigConfig = get_config()
 _db_client: DatabaseClient = None
+
+_ID_KEY_PATTERN = r"^(id|_id|.*?Id|.*?_id)$"
 
 
 def init_client(db_uri: str = None) -> None:
@@ -24,34 +28,51 @@ def get_client(db_uri: str) -> DatabaseClient:
 
 def for_mongo(obj: dict) -> dict:
     def gen_obj_ids(d: dict) -> dict:
+        out = dict()
         for k, v in d.items():
             if not isinstance(k, str):
                 raise ValueError("Keys sould be strings")
             elif isinstance(v, dict):
-                d[k] = gen_obj_ids(v)
-            elif k in ("id", "_id") or k.endswith("Id"):
+                out[k] = gen_obj_ids(v)
+            elif re.match(_ID_KEY_PATTERN, k):
                 if ObjectId.is_valid(str(v)):
-                    d[k] = ObjectId(str(v))
-        return d
+                    out[k] = ObjectId(str(v))
+                if k == "_id":
+                    out[k] = out.pop("_id")
+            else:
+                out[k] = v
 
-    return gen_obj_ids(camelize(obj))
+        return out
+
+    return camelize(gen_obj_ids(obj))
 
 
-def from_mongo(obj: dict) -> dict:
+def from_mongo(obj: dict | list[dict]) -> dict:
     def encode_obj_ids(d: dict) -> dict:
+        out = dict()
         for k, v in d.items():
             if not isinstance(k, str):
                 raise ValueError("Keys sould be strings")
             elif isinstance(v, dict):
-                d[k] = encode_obj_ids(v)
-            elif k in ("id", "_id") or k.endswith("Id"):
+                out[k] = encode_obj_ids(v)
+            elif re.match(_ID_KEY_PATTERN, k):
                 if isinstance(v, ObjectId):
-                    d[k] = str(v)
+                    out[k] = str(v)
                 if k == "_id":
-                    d["id"] = d.pop(k)
-        return d
+                    out["id"] = out.pop(k)
+            else:
+                out[k] = v
+        return out
 
-    return encode_obj_ids(decamelize(obj))
+    if type(obj) is dict:
+        return encode_obj_ids(obj)
+    elif type(obj) is list:
+        return [encode_obj_ids(o) for o in obj]
+    else:
+        raise TypeError(
+            "The passed object must be of type "
+            f"'dict' or 'list', got '{type(obj).__name__}'"
+        )
 
 
 # class __DbClientProvider:

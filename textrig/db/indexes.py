@@ -60,7 +60,7 @@ async def create_indexes(cfg: TextRigConfig = get_config()):
 
     # collect layer type unit index models
     for lt_name, lt_class in get_layer_types().items():
-        collection = lt_class.get_collection_name()
+        collection = lt_class.units_collection_name()
         indexes[collection] = []
         # add common unit index models
         for index_model in lt_class.get_common_index_models():

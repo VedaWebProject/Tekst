@@ -4,7 +4,7 @@ from bson import ObjectId
 from motor.motor_asyncio import AsyncIOMotorCursor as Cursor
 from motor.motor_asyncio import AsyncIOMotorDatabase as Database
 from pymongo.results import InsertManyResult, InsertOneResult, UpdateResult
-from textrig.db import for_mongo
+from textrig.db import for_mongo, from_mongo
 from textrig.models.common import TextRigBaseModel
 
 
@@ -125,7 +125,7 @@ class DbIO:
             try:
                 value = self._obj_id(value)
             except Exception:
-                return None
+                pass
         # return whatever the db can find (may be None)
         return await self._db[collection].find_one({field: value})
 
@@ -141,7 +141,8 @@ class DbIO:
         :rtype: dict | None
         """
         example = for_mongo(example)
-        return await self._db[collection].find_one(example)
+        found = await self._db[collection].find_one(example)
+        return from_mongo(found) if found else None
 
     async def find(
         self,

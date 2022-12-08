@@ -1,6 +1,5 @@
 import pytest
 from pydantic.error_wrappers import ValidationError
-from textrig.models.layer import LayerBase
 from textrig.models.text import Text, TextRead
 
 
@@ -11,12 +10,12 @@ def test_basic_validation():
 
 
 def test_slug_generation():
-    t = Text(title="agním īḷe puróhitaṁ")
+    t = Text(title="agním īḷe puróhitaṁ", levels=["foo"])
     assert t.slug == "agnimilepurohita"
 
 
 def test_dict_override():
-    t_data = Text(title="agním īḷe puróhitaṁ").dict()
+    t_data = Text(title="agním īḷe puróhitaṁ", levels=["foo"]).dict()
     assert t_data["title"] == "agním īḷe puróhitaṁ"
     assert "slug" in t_data
     assert t_data["slug"] == "agnimilepurohita"
@@ -33,22 +32,22 @@ def test_serialization(test_data):
 
 
 def test_deserialization():
-    data = {"title": "Foo", "locDelim": "+"}
+    data = {"title": "Foo", "locDelim": "+", "levels": ["foo"]}
     t = Text(**data)
     assert t.loc_delim == "+"
 
 
 def test_model_field_casing():
-    t = Text(title="foo", loc_delim="bar")
+    t = Text(title="foo", loc_delim="bar", levels=["foo"])
     assert t.title == "foo"
-    assert t.loc_delim == "bar"
-    t = Text(title="foo", locDelim="bar")
     assert t.loc_delim == "bar"
 
 
 def test_layer_description_validator():
     # desc with arbitrary whitespaces
-    layer = LayerBase(
+    from textrig.layer_types.fulltext import FulltextLayer
+
+    layer = FulltextLayer(
         title="foo",
         text_slug="foo",
         level=0,
@@ -57,7 +56,7 @@ def test_layer_description_validator():
     )
     assert layer.description == "foo bar baz test"
     # desc = None
-    layer = LayerBase(
+    layer = FulltextLayer(
         title="foo",
         text_slug="foo",
         level=0,

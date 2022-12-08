@@ -18,13 +18,7 @@ def _generate_read_endpoint(layer_read_model: type[LayerReadBase]):
         layer_id: str, db_io: DbIO = Depends(get_db_io)
     ) -> layer_read_model:
         """A generic route for reading a layer definition from the database"""
-        layer = await db_io.find_one("layers", layer_id)
-        if not layer:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="A layer with the given ID cannot be found",
-            )
-        return layer
+        return await layer_read_model.read(layer_id, db_io)
 
     return get_layer
 
@@ -36,13 +30,7 @@ def _generate_create_endpoint(
     async def create_layer(
         layer: layer_model, db_io: DbIO = Depends(get_db_io)
     ) -> layer_read_model:
-        if not await db_io.find_one("texts", layer.text_slug, "slug"):
-            raise HTTPException(
-                status.HTTP_400_BAD_REQUEST, detail="Corresponding text doesn't exist"
-            )
-        layer = await db_io.insert_one("layers", layer)
-        log.debug(f"Created layer: {layer}")
-        return layer
+        return await layer.create(db_io)
 
     return create_layer
 
@@ -117,7 +105,7 @@ for lt_name, lt_class in get_layer_types().items():
 # ADDITIONAL ROUTE DEFINITIONS...
 
 
-@router.get("", response_model=list[LayerReadBase], status_code=status.HTTP_200_OK)
+@router.get("", response_model=list[dict], status_code=status.HTTP_200_OK)
 async def get_layers(
     text_slug: str,
     level: int = None,
@@ -134,7 +122,7 @@ async def get_layers(
     if layer_type is not None:
         example["layer_type"] = layer_type
 
-    return await db_io.find("layers", example=example, limit=limit)
+    return from_mongo(await db_io.find("layers", example=example, limit=limit))
 
 
 # @router.post("", response_model=LayerReadBase, status_code=status.HTTP_201_CREATED)
@@ -163,7 +151,8 @@ async def get_layer_template(layer_id: str, db_io: DbIO = Depends(get_db_io)) ->
     # decode layer data: Usually, this is handled automatically by our models, but
     # in this case we're returning a raw dict/JSON, so we have to manually make sure
     # that a) the ID field is called "id" and b) the DocumentId value is encoded as str.
-    layer_data = LayerReadBase(**layer_data).dict()
+    layer_read_model = get_layer_type(layer_data["layerType"]).get_layer_read_model()
+    layer_data = layer_read_model(**layer_data).dict()
 
     # import unit type for the requested layer
     template = get_layer_type(layer_data["layerType"]).prepare_import_template()
@@ -233,5 +222,5 @@ async def get_layer(
             status.HTTP_404_NOT_FOUND, detail=f"No layer with ID {layer_id}"
         )
     # here we're not returning data using our models, as this endpoint works for
-    # any layer type - thus we have to "translate" this response a bit...
+    # any layer type - thus we have to "translate" the response a bit...
     return from_mongo(layer_data)

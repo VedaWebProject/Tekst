@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from textrig.db.io import DbIO
 from textrig.dependencies import get_db_io
-from textrig.logging import log
 from textrig.models.text import Node, NodeRead, NodeUpdate
 
 
@@ -17,24 +16,7 @@ router = APIRouter(
 
 @router.post("", response_model=NodeRead, status_code=status.HTTP_201_CREATED)
 async def create_node(node: Node, db_io: DbIO = Depends(get_db_io)) -> dict:
-    # find text the node belongs to
-    text = await db_io.find_one("texts", node.text_slug, field="slug")
-    if not text:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="The corresponding text does not exist",
-        )
-    # check for semantic duplicates
-    dupes = await db_io.find_one_by_example(
-        "nodes", {"text_slug": node.text_slug, "level": node.level, "index": node.index}
-    )
-    if dupes:
-        log.warning(f"Cannot create node. Conflict: {node}")
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="Conflict with existing node",
-        )
-    return await db_io.insert_one("nodes", node)
+    return await node.create(db_io)
 
 
 @router.get("", response_model=list[NodeRead], status_code=status.HTTP_200_OK)
@@ -70,14 +52,7 @@ async def get_nodes(
 async def update_node(
     node_update: NodeUpdate, db_io: DbIO = Depends(get_db_io)
 ) -> dict:
-    updated_id = await db_io.update("nodes", node_update)
-    if not updated_id:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Could not update text {updated_id}",
-        )
-    log.debug(f"Updated node {updated_id} to {node_update.json()}")
-    return await db_io.find_one("nodes", updated_id)
+    return await node_update.update(db_io)
 
 
 @router.get(
