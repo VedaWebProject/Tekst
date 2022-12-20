@@ -1,36 +1,36 @@
 {
-    "title": "Fuchs, du hast die Gans gestohlen",
-    "slug": "fdhdgg",
-    "subtitle": "A German folk song from 1824",
-    "levels": ["Stanza", "Line"],
-    "locDelim": ",",
-    "nodes": [
-        {
-            "label": "1",
-            "nodes": [
-                { "label": "1" },
-                { "label": "2" },
-                { "label": "3" },
-                { "label": "4" }
-            ]
-        },
-        {
-            "label": "2",
-            "nodes": [
-                { "label": "1" },
-                { "label": "2" },
-                { "label": "3" },
-                { "label": "4" }
-            ]
-        },
-        {
-            "label": "3",
-            "nodes": [
-                { "label": "1" },
-                { "label": "2" },
-                { "label": "3" },
-                { "label": "4" }
-            ]
-        }
-    ]
+  "title": "Fuchs, du hast die Gans gestohlen",
+  "slug": "fdhdgg",
+  "subtitle": "A German folk song from 1824",
+  "levels": ["Stanza", "Line"],
+  "locDelim": ",",
+  "nodes": [
+    {
+      "label": "1",
+      "nodes": [
+        { "label": "1" },
+        { "label": "2" },
+        { "label": "3" },
+        { "label": "4" }
+      ]
+    },
+    {
+      "label": "2",
+      "nodes": [
+        { "label": "1" },
+        { "label": "2" },
+        { "label": "3" },
+        { "label": "4" }
+      ]
+    },
+    {
+      "label": "3",
+      "nodes": [
+        { "label": "1" },
+        { "label": "2" },
+        { "label": "3" },
+        { "label": "4" }
+      ]
+    }
+  ]
 }
