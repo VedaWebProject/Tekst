@@ -35,18 +35,21 @@ def pre_startup_routine() -> None:
     # include routers
     log.info("Hooking up API routers")
     for router in get_routers():
+        log.debug(f"\u22EF {router.prefix}")
         app.include_router(router)
 
 
 async def startup_routine() -> None:
     init_db_client()
     await create_indexes()
-    # log dev server info
+
+    # log dev server info for quick browser access
     if _cfg.dev_mode:  # pragma: no cover
-        log.info(
-            "Development server bound to "
-            f"http://{_cfg.uvicorn_host}:{_cfg.uvicorn_port}"
-        )
+        dev_base_url = f"http://{_cfg.uvicorn_host}:{_cfg.uvicorn_port}"
+        if _cfg.doc.swaggerui_url:
+            log.info(f"\u22EF SwaggerUI docs: {dev_base_url}{_cfg.doc.swaggerui_url}")
+        if _cfg.doc.redoc_url:
+            log.info(f"\u22EF Redoc API docs: {dev_base_url}{_cfg.doc.redoc_url}")
 
 
 async def shutdown_routine() -> None:
