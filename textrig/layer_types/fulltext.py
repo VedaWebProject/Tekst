@@ -1,4 +1,3 @@
-import pymongo
 from pydantic import Field
 from textrig.layer_types import LayerTypePluginABC, layer_type_impl
 from textrig.models.layer import LayerBase
@@ -47,8 +46,3 @@ class Fulltext(LayerTypePluginABC):
     @layer_type_impl
     def get_unit_model(cls) -> type[FulltextUnit]:
         return FulltextUnit
-
-    @classmethod
-    @layer_type_impl
-    def get_index_models(cls) -> list[pymongo.IndexModel]:
-        return [pymongo.IndexModel([("text", pymongo.TEXT)], name="text", unique=False)]

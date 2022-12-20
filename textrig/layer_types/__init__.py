@@ -4,7 +4,6 @@ import pkgutil
 from abc import ABC, abstractmethod
 
 import pluggy
-import pymongo
 from textrig.logging import log
 from textrig.models.common import TextRigBaseModel
 from textrig.models.layer import LayerBase, LayerReadBase, LayerUpdateBase
@@ -57,34 +56,6 @@ class LayerTypePluginABC(ABC):
     def get_unit_model(cls) -> type[UnitBase]:
         """Returns the unit base model for units of this type of data layer"""
         ...
-
-    @classmethod
-    def get_common_index_models(cls) -> list[pymongo.IndexModel]:
-        return [
-            pymongo.IndexModel(
-                [
-                    ("layerId", pymongo.ASCENDING),
-                ],
-                name="layerId",
-            ),
-            pymongo.IndexModel(
-                [
-                    ("nodeId", pymongo.ASCENDING),
-                ],
-                name="nodeId",
-            ),
-        ]
-
-    @classmethod
-    @abstractmethod
-    @_layer_type_spec
-    def get_index_models(cls) -> list[pymongo.IndexModel]:
-        """Returns the model for the database index of this layer type"""
-        ...
-
-    @classmethod
-    def units_collection_name(cls) -> str:
-        return f"units_{cls.get_safe_name()}"
 
     @classmethod
     def _get_model(cls, model_class_name: str, bases: tuple) -> type[TextRigBaseModel]:

@@ -3,7 +3,6 @@ import pymongo
 from motor.motor_asyncio import AsyncIOMotorDatabase as Database
 from textrig.config import TextRigConfig, get_config
 from textrig.dependencies import get_db, get_db_client
-from textrig.layer_types import get_layer_types
 from textrig.logging import log
 
 
@@ -41,6 +40,20 @@ def _get_index_models() -> dict:
                 name="textSlug_ownerId",
             ),
         ],
+        "units": [
+            pymongo.IndexModel(
+                [
+                    ("layerId", pymongo.ASCENDING),
+                ],
+                name="layerId",
+            ),
+            pymongo.IndexModel(
+                [
+                    ("nodeId", pymongo.ASCENDING),
+                ],
+                name="nodeId",
+            ),
+        ],
     }
 
 
@@ -57,17 +70,6 @@ async def create_indexes(cfg: TextRigConfig = get_config()):
 
     # collect common system collection index models
     indexes = _get_index_models()
-
-    # collect layer type unit index models
-    for lt_name, lt_class in get_layer_types().items():
-        collection = lt_class.units_collection_name()
-        indexes[collection] = []
-        # add common unit index models
-        for index_model in lt_class.get_common_index_models():
-            indexes[collection].append(index_model)
-        # add specific layer type unit index models
-        for index_model in lt_class.get_index_models():
-            indexes[collection].append(index_model)
 
     # create indexes
     for collection, indexes in indexes.items():

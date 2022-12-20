@@ -29,17 +29,12 @@ class UnitBase(abc.ABC, TextRigBaseModel):
     def get_layer_type_plugin_class(cls) -> type:
         ...
 
-    @classmethod
-    def collection_name(cls) -> str:
-        return cls.get_layer_type_plugin_class().units_collection_name()
-
     async def create(self, db_io: DbIO) -> "UnitReadBase":
         unit_model = self.get_layer_type_plugin_class().get_unit_model()
         unit = self.ensure_model_type(unit_model)
-        target_collection = self.collection_name()
         # check for conflicts
         if await db_io.find_one_by_example(
-            target_collection, {"layer_id": unit.layer_id, "node_id": unit.node_id}
+            "units", {"layer_id": unit.layer_id, "node_id": unit.node_id}
         ):
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
@@ -48,7 +43,7 @@ class UnitBase(abc.ABC, TextRigBaseModel):
         # TODO: check if layer ID and node ID are valid!
         pass
         # insert new unit
-        unit_data = await db_io.insert_one(target_collection, unit)
+        unit_data = await db_io.insert_one("units", unit)
         log.debug(f"Created unit: {unit_data}")
         unit_read_model = self.get_layer_type_plugin_class().get_unit_read_model()
         return unit_read_model(**unit_data)
@@ -57,7 +52,7 @@ class UnitBase(abc.ABC, TextRigBaseModel):
 class UnitReadBase(UnitBase, DbDocument):
     @classmethod
     async def read(cls, doc_id: str | DocumentId, db_io: DbIO) -> "UnitReadBase":
-        unit_data = await db_io.find_one(cls.collection_name(), doc_id)
+        unit_data = await db_io.find_one("units", doc_id)
         if not unit_data:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
@@ -69,16 +64,13 @@ class UnitReadBase(UnitBase, DbDocument):
 
 class UnitUpdateBase(UnitBase, DbDocument, metaclass=AllOptional):
     async def update(self, db_io: DbIO) -> UnitReadBase:
-        target_collection = self.collection_name()
-        updated_id = await db_io.update(target_collection, self)
+        updated_id = await db_io.update("units", self)
         if not updated_id:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=f"Could not update unit {self.id}",
             )
         unit_read_model = self.get_layer_type_plugin_class().get_unit_read_model()
-        updated_unit = unit_read_model(
-            **await db_io.find_one(target_collection, updated_id)
-        )
+        updated_unit = unit_read_model(**await db_io.find_one("units", updated_id))
         log.debug(f"Updated unit {updated_id}: {updated_unit.dict()}")
         return updated_unit
