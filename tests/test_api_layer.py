@@ -8,13 +8,13 @@ async def test_create_layer(
     root_path, test_client: AsyncClient, test_data, insert_test_data
 ):
     await insert_test_data("texts", "nodes")
-    endpoint = f"{root_path}/layers/fulltext"
+    endpoint = f"{root_path}/layers/plaintext"
     payload = {
         "title": "A test layer",
         "textSlug": "rigveda",
         "description": "This is     a string with \n some space    chars",
         "level": 0,
-        "layer_type": "fulltext",
+        "layer_type": "plaintext",
     }
 
     resp = await test_client.post(endpoint, json=payload)
@@ -29,12 +29,12 @@ async def test_create_layer_invalid(
     root_path, test_client: AsyncClient, test_data, insert_test_data
 ):
     await insert_test_data("texts", "nodes")
-    endpoint = f"{root_path}/layers/fulltext"
+    endpoint = f"{root_path}/layers/plaintext"
     payload = {
         "title": "A test layer",
         "textSlug": "foo",
         "level": 0,
-        "layer_type": "fulltext",
+        "layer_type": "plaintext",
     }
 
     resp = await test_client.post(endpoint, json=payload)
@@ -102,7 +102,7 @@ async def test_get_layers(root_path, test_client: AsyncClient, insert_test_data)
     await insert_test_data("texts", "nodes", "layers")
     endpoint = f"{root_path}/layers"
     resp = await test_client.get(
-        endpoint, params={"text_slug": "rigveda", "level": 0, "layer_type": "fulltext"}
+        endpoint, params={"text_slug": "rigveda", "level": 0, "layer_type": "plaintext"}
     )
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert isinstance(resp.json(), list)
@@ -112,14 +112,14 @@ async def test_get_layers(root_path, test_client: AsyncClient, insert_test_data)
 
     layer_id = resp.json()[0]["id"]
 
-    endpoint = f"{root_path}/layers/fulltext/{layer_id}"
+    endpoint = f"{root_path}/layers/plaintext/{layer_id}"
     resp = await test_client.get(endpoint)
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert isinstance(resp.json(), dict)
     assert "layerType" in resp.json()
 
     # request invalid ID
-    endpoint = f"{root_path}/layers/fulltext/foo"
+    endpoint = f"{root_path}/layers/plaintext/foo"
     resp = await test_client.get(endpoint)
     assert resp.status_code == 404, f"HTTP status {resp.status_code} (expected: 404)"
 

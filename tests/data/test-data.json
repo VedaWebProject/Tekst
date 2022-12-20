@@ -32,7 +32,7 @@
       "title": "A test layer",
       "textSlug": "rigveda",
       "level": 0,
-      "layer_type": "fulltext"
+      "layer_type": "plaintext"
     }
   ]
 }

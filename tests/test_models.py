@@ -45,22 +45,22 @@ def test_model_field_casing():
 
 def test_layer_description_validator():
     # desc with arbitrary whitespaces
-    from textrig.layer_types.fulltext import FulltextLayer
+    from textrig.layer_types.plaintext import PlainTextLayer
 
-    layer = FulltextLayer(
+    layer = PlainTextLayer(
         title="foo",
         text_slug="foo",
         level=0,
-        layer_type="fulltext",
+        layer_type="plaintext",
         description="foo      bar\t\t   baz\n \ttest",
     )
     assert layer.description == "foo bar baz test"
     # desc = None
-    layer = FulltextLayer(
+    layer = PlainTextLayer(
         title="foo",
         text_slug="foo",
         level=0,
-        layer_type="fulltext",
+        layer_type="plaintext",
         description=None,
     )
     assert layer.description is None

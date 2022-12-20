@@ -1,0 +1,48 @@
+from pydantic import Field
+from textrig.layer_types import LayerTypePluginABC, layer_type_impl
+from textrig.models.layer import LayerBase
+from textrig.models.unit import UnitBase
+
+
+class PlainTextLayer(LayerBase):
+    @classmethod
+    def get_layer_type_plugin_class(cls) -> type["PlainText"]:
+        return PlainText
+
+
+class PlainTextUnit(UnitBase):
+    """A unit of a plaintext data layer"""
+
+    text: str = Field(
+        None,
+        description="Text content of the plaintext unit",
+        extra={"template": True},
+    )
+
+    @classmethod
+    def get_layer_type_plugin_class(cls) -> type["PlainText"]:
+        return PlainText
+
+
+class PlainText(LayerTypePluginABC):
+    """A simple plaintext layer type"""
+
+    @classmethod
+    @layer_type_impl
+    def get_name(cls) -> str:
+        return "PlainText"
+
+    @classmethod
+    @layer_type_impl
+    def get_description(cls) -> str:
+        return "A simple plaintext data layer"
+
+    @classmethod
+    @layer_type_impl
+    def get_layer_model(cls) -> type[PlainTextLayer]:
+        return PlainTextLayer
+
+    @classmethod
+    @layer_type_impl
+    def get_unit_model(cls) -> type[PlainTextUnit]:
+        return PlainTextUnit

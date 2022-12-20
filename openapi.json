@@ -44,14 +44,14 @@
         }
       }
     },
-    "/layers/fulltext/{layer_id}": {
+    "/layers/plaintext/{layer_id}": {
       "get": {
         "tags": [
           "layers"
         ],
-        "summary": "Get Fulltext Layer",
-        "description": "Returns the data for a Fulltext data layer",
-        "operationId": "Get_Fulltext_layer_layers_fulltext__layer_id__get",
+        "summary": "Get Plaintext Layer",
+        "description": "Returns the data for a PlainText data layer",
+        "operationId": "Get_PlainText_layer_layers_plaintext__layer_id__get",
         "parameters": [
           {
             "required": true,
@@ -69,7 +69,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FulltextLayerRead"
+                  "$ref": "#/components/schemas/PlainTextLayerRead"
                 }
               }
             }
@@ -93,19 +93,19 @@
         }
       }
     },
-    "/layers/fulltext": {
+    "/layers/plaintext": {
       "post": {
         "tags": [
           "layers"
         ],
-        "summary": "Create Fulltext Layer",
-        "description": "Creates a Fulltext data layer definition",
-        "operationId": "Create_Fulltext_layer_layers_fulltext_post",
+        "summary": "Create Plaintext Layer",
+        "description": "Creates a PlainText data layer definition",
+        "operationId": "Create_PlainText_layer_layers_plaintext_post",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/FulltextLayer"
+                "$ref": "#/components/schemas/PlainTextLayer"
               }
             }
           },
@@ -117,7 +117,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FulltextLayerRead"
+                  "$ref": "#/components/schemas/PlainTextLayerRead"
                 }
               }
             }
@@ -144,14 +144,14 @@
         "tags": [
           "layers"
         ],
-        "summary": "Update Fulltext Layer",
-        "description": "Updates the data for a Fulltext data layer",
-        "operationId": "Update_Fulltext_layer_layers_fulltext_patch",
+        "summary": "Update Plaintext Layer",
+        "description": "Updates the data for a PlainText data layer",
+        "operationId": "Update_PlainText_layer_layers_plaintext_patch",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/FulltextLayerUpdate"
+                "$ref": "#/components/schemas/PlainTextLayerUpdate"
               }
             }
           },
@@ -163,7 +163,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FulltextLayerRead"
+                  "$ref": "#/components/schemas/PlainTextLayerRead"
                 }
               }
             }
@@ -932,14 +932,14 @@
         }
       }
     },
-    "/units/fulltext/{unit_id}": {
+    "/units/plaintext/{unit_id}": {
       "get": {
         "tags": [
           "units"
         ],
-        "summary": "Get Fulltext Unit",
-        "description": "Returns the data for a Fulltext data layer unit",
-        "operationId": "Get_Fulltext_unit_units_fulltext__unit_id__get",
+        "summary": "Get Plaintext Unit",
+        "description": "Returns the data for a PlainText data layer unit",
+        "operationId": "Get_PlainText_unit_units_plaintext__unit_id__get",
         "parameters": [
           {
             "required": true,
@@ -957,7 +957,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FulltextUnitRead"
+                  "$ref": "#/components/schemas/PlainTextUnitRead"
                 }
               }
             }
@@ -981,19 +981,19 @@
         }
       }
     },
-    "/units/fulltext": {
+    "/units/plaintext": {
       "post": {
         "tags": [
           "units"
         ],
-        "summary": "Create Fulltext Unit",
-        "description": "Creates a Fulltext data layer unit",
-        "operationId": "Create_Fulltext_unit_units_fulltext_post",
+        "summary": "Create Plaintext Unit",
+        "description": "Creates a PlainText data layer unit",
+        "operationId": "Create_PlainText_unit_units_plaintext_post",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/FulltextUnit"
+                "$ref": "#/components/schemas/PlainTextUnit"
               }
             }
           },
@@ -1005,7 +1005,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FulltextUnitRead"
+                  "$ref": "#/components/schemas/PlainTextUnitRead"
                 }
               }
             }
@@ -1032,14 +1032,14 @@
         "tags": [
           "units"
         ],
-        "summary": "Update Fulltext Unit",
-        "description": "Updates the data for a Fulltext data layer unit",
-        "operationId": "Update_Fulltext_unit_units_fulltext_patch",
+        "summary": "Update Plaintext Unit",
+        "description": "Updates the data for a PlainText data layer unit",
+        "operationId": "Update_PlainText_unit_units_plaintext_patch",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/FulltextUnitUpdate"
+                "$ref": "#/components/schemas/PlainTextUnitUpdate"
               }
             }
           },
@@ -1051,7 +1051,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FulltextUnitRead"
+                  "$ref": "#/components/schemas/PlainTextUnitRead"
                 }
               }
             }
@@ -1078,364 +1078,6 @@
   },
   "components": {
     "schemas": {
-      "FulltextLayer": {
-        "title": "FulltextLayer",
-        "required": [
-          "title",
-          "textSlug",
-          "level",
-          "layerType"
-        ],
-        "type": "object",
-        "properties": {
-          "title": {
-            "title": "Title",
-            "maxLength": 64,
-            "minLength": 1,
-            "type": "string",
-            "description": "Title of this layer"
-          },
-          "description": {
-            "title": "Description",
-            "maxLength": 128,
-            "minLength": 1,
-            "type": "string",
-            "description": "Short, one-line description of this data layer"
-          },
-          "textSlug": {
-            "title": "Textslug",
-            "type": "string",
-            "description": "Slug of the text this layer belongs to"
-          },
-          "level": {
-            "title": "Level",
-            "type": "integer",
-            "description": "Text level this layer belongs to"
-          },
-          "layerType": {
-            "title": "Layertype",
-            "type": "string",
-            "description": "A string identifying one of the available layer types"
-          },
-          "public": {
-            "title": "Public",
-            "type": "boolean",
-            "description": "Publication status of this layer",
-            "default": false
-          },
-          "meta": {
-            "title": "Meta",
-            "type": "object",
-            "additionalProperties": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "integer"
-                },
-                {
-                  "type": "boolean"
-                },
-                {
-                  "type": "number"
-                }
-              ]
-            },
-            "description": "Arbitrary metadata"
-          }
-        },
-        "description": "A data layer describing a set of data on a text"
-      },
-      "FulltextLayerRead": {
-        "title": "FulltextLayerRead",
-        "required": [
-          "id",
-          "title",
-          "textSlug",
-          "level",
-          "layerType"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "title": "Id",
-            "type": "string"
-          },
-          "title": {
-            "title": "Title",
-            "maxLength": 64,
-            "minLength": 1,
-            "type": "string",
-            "description": "Title of this layer"
-          },
-          "description": {
-            "title": "Description",
-            "maxLength": 128,
-            "minLength": 1,
-            "type": "string",
-            "description": "Short, one-line description of this data layer"
-          },
-          "textSlug": {
-            "title": "Textslug",
-            "type": "string",
-            "description": "Slug of the text this layer belongs to"
-          },
-          "level": {
-            "title": "Level",
-            "type": "integer",
-            "description": "Text level this layer belongs to"
-          },
-          "layerType": {
-            "title": "Layertype",
-            "type": "string",
-            "description": "A string identifying one of the available layer types"
-          },
-          "public": {
-            "title": "Public",
-            "type": "boolean",
-            "description": "Publication status of this layer",
-            "default": false
-          },
-          "meta": {
-            "title": "Meta",
-            "type": "object",
-            "additionalProperties": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "integer"
-                },
-                {
-                  "type": "boolean"
-                },
-                {
-                  "type": "number"
-                }
-              ]
-            },
-            "description": "Arbitrary metadata"
-          }
-        },
-        "description": "An existing data layer read from the database"
-      },
-      "FulltextLayerUpdate": {
-        "title": "FulltextLayerUpdate",
-        "required": [
-          "id"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "title": "Id",
-            "type": "string"
-          },
-          "title": {
-            "title": "Title",
-            "type": "string"
-          },
-          "description": {
-            "title": "Description",
-            "type": "string"
-          },
-          "textSlug": {
-            "title": "Textslug",
-            "type": "string"
-          },
-          "level": {
-            "title": "Level",
-            "type": "integer"
-          },
-          "layerType": {
-            "title": "Layertype",
-            "type": "string"
-          },
-          "public": {
-            "title": "Public",
-            "type": "boolean"
-          },
-          "meta": {
-            "title": "Meta",
-            "type": "object",
-            "additionalProperties": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "integer"
-                },
-                {
-                  "type": "boolean"
-                },
-                {
-                  "type": "number"
-                }
-              ]
-            }
-          }
-        },
-        "description": "An update to an existing data layer"
-      },
-      "FulltextUnit": {
-        "title": "FulltextUnit",
-        "required": [
-          "layerId",
-          "nodeId"
-        ],
-        "type": "object",
-        "properties": {
-          "layerId": {
-            "title": "Layerid",
-            "type": "string",
-            "description": "Data layer ID"
-          },
-          "nodeId": {
-            "title": "Nodeid",
-            "type": "string",
-            "description": "Parent text node ID"
-          },
-          "meta": {
-            "title": "Meta",
-            "type": "object",
-            "additionalProperties": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "integer"
-                },
-                {
-                  "type": "boolean"
-                },
-                {
-                  "type": "number"
-                }
-              ]
-            },
-            "description": "Arbitrary metadata on this layer unit",
-            "extra": {
-              "template": true
-            }
-          },
-          "text": {
-            "title": "Text",
-            "type": "string",
-            "description": "Text content of the fulltext unit",
-            "extra": {
-              "template": true
-            }
-          }
-        },
-        "description": "A unit of a fulltext data layer"
-      },
-      "FulltextUnitRead": {
-        "title": "FulltextUnitRead",
-        "required": [
-          "id",
-          "layerId",
-          "nodeId"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "title": "Id",
-            "type": "string"
-          },
-          "layerId": {
-            "title": "Layerid",
-            "type": "string",
-            "description": "Data layer ID"
-          },
-          "nodeId": {
-            "title": "Nodeid",
-            "type": "string",
-            "description": "Parent text node ID"
-          },
-          "meta": {
-            "title": "Meta",
-            "type": "object",
-            "additionalProperties": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "integer"
-                },
-                {
-                  "type": "boolean"
-                },
-                {
-                  "type": "number"
-                }
-              ]
-            },
-            "description": "Arbitrary metadata on this layer unit",
-            "extra": {
-              "template": true
-            }
-          },
-          "text": {
-            "title": "Text",
-            "type": "string",
-            "description": "Text content of the fulltext unit",
-            "extra": {
-              "template": true
-            }
-          }
-        },
-        "description": "A unit of a fulltext data layer"
-      },
-      "FulltextUnitUpdate": {
-        "title": "FulltextUnitUpdate",
-        "required": [
-          "id"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "title": "Id",
-            "type": "string"
-          },
-          "layerId": {
-            "title": "Layerid",
-            "type": "string"
-          },
-          "nodeId": {
-            "title": "Nodeid",
-            "type": "string"
-          },
-          "meta": {
-            "title": "Meta",
-            "type": "object",
-            "additionalProperties": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "integer"
-                },
-                {
-                  "type": "boolean"
-                },
-                {
-                  "type": "number"
-                }
-              ]
-            }
-          },
-          "text": {
-            "title": "Text",
-            "type": "string"
-          }
-        },
-        "description": "A unit of a fulltext data layer"
-      },
       "HTTPValidationError": {
         "title": "HTTPValidationError",
         "type": "object",
@@ -1629,6 +1271,364 @@
           }
         },
         "description": "An update to an existing node"
+      },
+      "PlainTextLayer": {
+        "title": "PlainTextLayer",
+        "required": [
+          "title",
+          "textSlug",
+          "level",
+          "layerType"
+        ],
+        "type": "object",
+        "properties": {
+          "title": {
+            "title": "Title",
+            "maxLength": 64,
+            "minLength": 1,
+            "type": "string",
+            "description": "Title of this layer"
+          },
+          "description": {
+            "title": "Description",
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string",
+            "description": "Short, one-line description of this data layer"
+          },
+          "textSlug": {
+            "title": "Textslug",
+            "type": "string",
+            "description": "Slug of the text this layer belongs to"
+          },
+          "level": {
+            "title": "Level",
+            "type": "integer",
+            "description": "Text level this layer belongs to"
+          },
+          "layerType": {
+            "title": "Layertype",
+            "type": "string",
+            "description": "A string identifying one of the available layer types"
+          },
+          "public": {
+            "title": "Public",
+            "type": "boolean",
+            "description": "Publication status of this layer",
+            "default": false
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object",
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "description": "Arbitrary metadata"
+          }
+        },
+        "description": "A data layer describing a set of data on a text"
+      },
+      "PlainTextLayerRead": {
+        "title": "PlainTextLayerRead",
+        "required": [
+          "id",
+          "title",
+          "textSlug",
+          "level",
+          "layerType"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "maxLength": 64,
+            "minLength": 1,
+            "type": "string",
+            "description": "Title of this layer"
+          },
+          "description": {
+            "title": "Description",
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string",
+            "description": "Short, one-line description of this data layer"
+          },
+          "textSlug": {
+            "title": "Textslug",
+            "type": "string",
+            "description": "Slug of the text this layer belongs to"
+          },
+          "level": {
+            "title": "Level",
+            "type": "integer",
+            "description": "Text level this layer belongs to"
+          },
+          "layerType": {
+            "title": "Layertype",
+            "type": "string",
+            "description": "A string identifying one of the available layer types"
+          },
+          "public": {
+            "title": "Public",
+            "type": "boolean",
+            "description": "Publication status of this layer",
+            "default": false
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object",
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "description": "Arbitrary metadata"
+          }
+        },
+        "description": "An existing data layer read from the database"
+      },
+      "PlainTextLayerUpdate": {
+        "title": "PlainTextLayerUpdate",
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "textSlug": {
+            "title": "Textslug",
+            "type": "string"
+          },
+          "level": {
+            "title": "Level",
+            "type": "integer"
+          },
+          "layerType": {
+            "title": "Layertype",
+            "type": "string"
+          },
+          "public": {
+            "title": "Public",
+            "type": "boolean"
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object",
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            }
+          }
+        },
+        "description": "An update to an existing data layer"
+      },
+      "PlainTextUnit": {
+        "title": "PlainTextUnit",
+        "required": [
+          "layerId",
+          "nodeId"
+        ],
+        "type": "object",
+        "properties": {
+          "layerId": {
+            "title": "Layerid",
+            "type": "string",
+            "description": "Data layer ID"
+          },
+          "nodeId": {
+            "title": "Nodeid",
+            "type": "string",
+            "description": "Parent text node ID"
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object",
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "description": "Arbitrary metadata on this layer unit",
+            "extra": {
+              "template": true
+            }
+          },
+          "text": {
+            "title": "Text",
+            "type": "string",
+            "description": "Text content of the plaintext unit",
+            "extra": {
+              "template": true
+            }
+          }
+        },
+        "description": "A unit of a plaintext data layer"
+      },
+      "PlainTextUnitRead": {
+        "title": "PlainTextUnitRead",
+        "required": [
+          "id",
+          "layerId",
+          "nodeId"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "layerId": {
+            "title": "Layerid",
+            "type": "string",
+            "description": "Data layer ID"
+          },
+          "nodeId": {
+            "title": "Nodeid",
+            "type": "string",
+            "description": "Parent text node ID"
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object",
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "description": "Arbitrary metadata on this layer unit",
+            "extra": {
+              "template": true
+            }
+          },
+          "text": {
+            "title": "Text",
+            "type": "string",
+            "description": "Text content of the plaintext unit",
+            "extra": {
+              "template": true
+            }
+          }
+        },
+        "description": "A unit of a plaintext data layer"
+      },
+      "PlainTextUnitUpdate": {
+        "title": "PlainTextUnitUpdate",
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "layerId": {
+            "title": "Layerid",
+            "type": "string"
+          },
+          "nodeId": {
+            "title": "Nodeid",
+            "type": "string"
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object",
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            }
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "description": "A unit of a plaintext data layer"
       },
       "Text": {
         "title": "Text",
