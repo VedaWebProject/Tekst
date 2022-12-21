@@ -96,7 +96,7 @@ class TextRigBaseModel(BaseModel):
         allow_population_by_field_name = True
         json_encoders = {
             ObjectId: lambda oid: str(oid),
-            DocumentId: lambda poid: str(poid),  # is this necessary?
+            DocumentId: lambda did: str(did),  # is this necessary?
         }
 
 
