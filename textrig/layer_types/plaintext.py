@@ -1,10 +1,18 @@
 from pydantic import Field
 from textrig.layer_types import LayerTypePluginABC, layer_type_impl
+from textrig.models.common import TextRigBaseModel
 from textrig.models.layer import LayerBase
+from textrig.models.layer_configs import DeepLLinksConfig
 from textrig.models.unit import UnitBase
 
 
+class PlainTextLayerConfig(TextRigBaseModel):
+    deepl_links: DeepLLinksConfig = DeepLLinksConfig()
+
+
 class PlainTextLayer(LayerBase):
+    config: PlainTextLayerConfig = PlainTextLayerConfig()
+
     @classmethod
     def get_layer_type_plugin_class(cls) -> type["PlainText"]:
         return PlainText

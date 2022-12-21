@@ -1078,6 +1078,95 @@
   },
   "components": {
     "schemas": {
+      "DeepLLinksConfig": {
+        "title": "DeepLLinksConfig",
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "title": "Enabled",
+            "type": "boolean",
+            "description": "Enable/disable quick translation links to DeepL",
+            "default": false
+          },
+          "sourceLanguage": {
+            "title": "Sourcelanguage",
+            "enum": [
+              "BG",
+              "CS",
+              "DA",
+              "DE",
+              "EL",
+              "EN",
+              "ES",
+              "ET",
+              "FI",
+              "FR",
+              "HU",
+              "ID",
+              "IT",
+              "JA",
+              "LT",
+              "LV",
+              "NL",
+              "PL",
+              "PT",
+              "RO",
+              "RU",
+              "SK",
+              "SL",
+              "SV",
+              "TR",
+              "UK",
+              "ZH"
+            ],
+            "type": "string",
+            "description": "Source language"
+          },
+          "languages": {
+            "title": "Languages",
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "enum": [
+                "BG",
+                "CS",
+                "DA",
+                "DE",
+                "EL",
+                "EN",
+                "ES",
+                "ET",
+                "FI",
+                "FR",
+                "HU",
+                "ID",
+                "IT",
+                "JA",
+                "LT",
+                "LV",
+                "NL",
+                "PL",
+                "PT",
+                "RO",
+                "RU",
+                "SK",
+                "SL",
+                "SV",
+                "TR",
+                "UK",
+                "ZH"
+              ],
+              "type": "string"
+            },
+            "description": "Target languages to display links for",
+            "default": [
+              "EN",
+              "DE"
+            ]
+          }
+        },
+        "description": "Base class for all TextRig models"
+      },
       "HTTPValidationError": {
         "title": "HTTPValidationError",
         "type": "object",
@@ -1337,9 +1426,34 @@
               ]
             },
             "description": "Arbitrary metadata"
+          },
+          "config": {
+            "title": "Config",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PlainTextLayerConfig"
+              }
+            ],
+            "default": {}
           }
         },
         "description": "A data layer describing a set of data on a text"
+      },
+      "PlainTextLayerConfig": {
+        "title": "PlainTextLayerConfig",
+        "type": "object",
+        "properties": {
+          "deeplLinks": {
+            "title": "Deepllinks",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DeepLLinksConfig"
+              }
+            ],
+            "default": {}
+          }
+        },
+        "description": "Base class for all TextRig models"
       },
       "PlainTextLayerRead": {
         "title": "PlainTextLayerRead",
@@ -1411,6 +1525,15 @@
               ]
             },
             "description": "Arbitrary metadata"
+          },
+          "config": {
+            "title": "Config",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PlainTextLayerConfig"
+              }
+            ],
+            "default": {}
           }
         },
         "description": "An existing data layer read from the database"
@@ -1469,6 +1592,9 @@
                 }
               ]
             }
+          },
+          "config": {
+            "$ref": "#/components/schemas/PlainTextLayerConfig"
           }
         },
         "description": "An update to an existing data layer"
