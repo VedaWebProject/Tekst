@@ -7,34 +7,10 @@ from textrig.models.common import TextRigBaseModel
 class DeepLLinksConfig(TextRigBaseModel):
 
     _DEEPL_LANGUAGES: tuple = (
-        "BG",
-        "CS",
-        "DA",
-        "DE",
-        "EL",
-        "EN",
-        "ES",
-        "ET",
-        "FI",
-        "FR",
-        "HU",
-        "ID",
-        "IT",
-        "JA",
-        "LT",
-        "LV",
-        "NL",
-        "PL",
-        "PT",
-        "RO",
-        "RU",
-        "SK",
-        "SL",
-        "SV",
-        "TR",
-        "UK",
-        "ZH",
-    )
+        "BG", "CS", "DA", "DE", "EL", "EN", "ES", "ET", "FI",
+        "FR", "HU", "ID", "IT", "JA", "LT", "LV", "NL", "PL",
+        "PT", "RO", "RU", "SK", "SL", "SV", "TR", "UK", "ZH",
+    )  # fmt: skip
 
     enabled: bool = Field(
         False,
