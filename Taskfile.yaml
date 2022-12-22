@@ -1,0 +1,142 @@
+# https://taskfile.dev
+
+version: "3"
+
+vars:
+
+tasks:
+  default:
+    desc: Print this very list of available tasks
+    vars:
+      TEXTRIG_VERSION:
+        sh: task version
+    cmds:
+      - echo "This is TextRig server {{.TEXTRIG_VERSION}}"
+      - task --list
+    silent: true
+
+  version:
+    desc: Print project version
+    cmds:
+      - poetry run python3 -c "from textrig import __version__ as v; print(v, end='')"
+    silent: true
+
+  format:
+    desc: Run isort and black to format code base
+    cmds:
+      - poetry run isort .
+      - poetry run black .
+
+  format-check:
+    desc: Check code formatting using isort and black
+    cmds:
+      - poetry run isort . --check --diff
+      - poetry run black . --check --diff
+
+  lint:
+    desc: Run flake8 linter
+    cmds:
+      - flake8 .
+
+  run-tests:
+    desc: Run test suite with pytest
+    env:
+      TR_DEV_MODE: true
+      TESTING: true
+    cmds:
+      - poetry run coverage run -m pytest
+      - poetry run coverage report -m
+
+  test:
+    desc: Run tests, start and stop test services stack automatically
+    cmds:
+      - task: test-stack-up
+      - task: run-tests
+      - task: test-stack-down
+
+  run-app:
+    desc: Run the application dev server (only for development!)
+    env:
+      TR_DEV_MODE: true
+    cmds:
+      - poetry run python3 -m textrig run --reload
+
+  run:
+    desc: Run dev services stack and dev server, clean up afterwards
+    cmds:
+      - task: dev-stack-up
+      - task: run-app
+      - task: dev-stack-down
+
+  schema-prod:
+    desc: Export (production) OpenAPI schema to file openapi.json
+    cmds:
+      - poetry run python3 -m textrig schema -f
+
+  schema-dev:
+    desc: Export (development) OpenAPI schema to file openapi.json
+    env:
+      TR_DEV_MODE: true
+      TR_LOG_LEVEL: ERROR
+    cmds:
+      - poetry run python3 -m textrig schema -f
+
+  check:
+    desc: Run all checks on code base (tests, linting, code style, import order)
+    cmds:
+      - task: test
+      - task: lint
+      - task: format-check
+
+  pre-commit:
+    desc: Run full pre-commit toolchain (format, test, lint, style checks, export prod schema)
+    cmds:
+      - task: format
+      - task: check
+      - task: schema-prod
+
+  clean:
+    desc: Cleanup of generated files (won't work on Windows)
+    cmds:
+      - cmd: shopt -s globstar
+      - cmd: |
+          rm -rf \
+            **/__pycache__ \
+            .pytest_cache \
+            .coverage \
+            .venv/ \
+            .env/ \
+            dist \
+            htmlcov \
+
+  dev-stack-up:
+    desc: Run dev services stack
+    cmds:
+      - docker compose -f docker-compose.yml --profile dev -p textrig-dev up --detach
+
+  dev-stack-down:
+    desc: Stop dev stack and clean up all resources
+    cmds:
+      - docker compose -f docker-compose.yml --profile dev -p textrig-dev down --volumes
+
+  test-stack-up:
+    desc: Run test services stack
+    cmds:
+      - docker compose -f docker-compose.yml --profile test -p textrig-testing up --detach
+
+  test-stack-down:
+    desc: Stop test stack and clean up all resources
+    cmds:
+      - docker compose -f docker-compose.yml --profile test -p textrig-testing down --volumes
+
+  build-image:
+    desc: Build and tag production Docker image for app
+    vars:
+      TEXTRIG_VERSION:
+        sh: task version
+    cmds:
+      - cmd: |
+          docker build \
+            --tag "textrig-server:latest" \
+            --tag "textrig-server:{{.TEXTRIG_VERSION}}" \
+            --target prod .
