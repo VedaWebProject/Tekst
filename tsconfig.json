@@ -15,6 +15,7 @@
     "baseUrl": ".", // this must be specified if "paths" is specified.
     "paths": {
       "@": ["./src"] // this mapping is relative to "baseUrl"
-    }
+    },
+    "types": ["@intlify/unplugin-vue-i18n/messages"]
   }
 }

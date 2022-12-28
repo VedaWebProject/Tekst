@@ -18,9 +18,11 @@
   "dependencies": {
     "pinia": "^2.0.28",
     "vue": "^3.2.45",
+    "vue-i18n": "^9.2.2",
     "vue-router": "^4.1.6"
   },
   "devDependencies": {
+    "@intlify/unplugin-vue-i18n": "^0.8.1",
     "@rushstack/eslint-patch": "^1.2.0",
     "@types/node": "^18.11.17",
     "@vitejs/plugin-vue": "^4.0.0",
