@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router';
 import HelloWorld from './components/HelloWorld.vue';
+import LanguageSwitcher from './i18n/LanguageSwitcher.vue';
 </script>
 
 <template>
@@ -8,12 +9,15 @@ import HelloWorld from './components/HelloWorld.vue';
     <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
 
     <div class="wrapper">
-      <HelloWorld :msg="$t('foo.welcome')" />
+      <HelloWorld msg="Hello World" />
 
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
       </nav>
+
+      <h2>{{ $t('foo.welcome') }}</h2>
+      <LanguageSwitcher />
     </div>
   </header>
 
