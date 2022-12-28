@@ -24,7 +24,7 @@ async def uidata(cfg: TextRigConfig = Depends(get_config)) -> dict:
     return {
         "platform": await uidata_platform(cfg),
         "help": await uidata_help(),
-        "i18n": await uidata_i18n()
+        "i18n": await uidata_i18n(),
     }
 
 
@@ -38,16 +38,8 @@ async def uidata_platform(cfg: TextRigConfig = Depends(get_config)) -> dict:
 async def uidata_i18n(lang: str = None) -> dict:
     """Returns server-managed translations."""
     translations = {
-        "de": {
-            "foo": {
-                "welcome": "Willkommen, Server!"
-            }
-        },
-        "en": {
-            "foo": {
-                "welcome": "Welcome, server!"
-            }
-        },
+        "de": {"foo": {"welcome": "Willkommen, Server!"}},
+        "en": {"foo": {"welcome": "Welcome, server!"}},
     }
     if lang and lang in translations:
         return translations[lang]

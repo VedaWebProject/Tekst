@@ -1,6 +1,7 @@
 import sys
 
 from fastapi import FastAPI, status
+from fastapi.middleware.cors import CORSMiddleware
 from textrig.config import TextRigConfig, get_config
 from textrig.db import init_client as init_db_client
 from textrig.db.indexes import create_indexes
@@ -9,7 +10,6 @@ from textrig.layer_types import init_layer_type_manager
 from textrig.logging import log, setup_logging
 from textrig.routers import get_routers
 from textrig.tags import tags_metadata
-from fastapi.middleware.cors import CORSMiddleware
 
 
 # set up logging to match prod/dev requirements
@@ -91,7 +91,7 @@ app.add_middleware(
     allow_origins=["*"],
     allow_credentials=["*"],
     allow_methods=["*"],
-    allow_headers=["*"]
+    allow_headers=["*"],
 )
 
 # run pre-startup routine
