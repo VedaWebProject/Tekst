@@ -1,7 +1,18 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router';
 import HelloWorld from './components/HelloWorld.vue';
+import FullScreenLoader from './components/FullScreenLoader.vue';
 import LanguageSwitcher from './i18n/LanguageSwitcher.vue';
+import { ref, onMounted } from 'vue';
+import { i18n, setI18nLanguage } from './i18n';
+
+const loading = ref(true);
+
+onMounted(() => {
+  setI18nLanguage(i18n.global.locale).then(() => {
+    loading.value = false;
+  });
+});
 </script>
 
 <template>
@@ -22,6 +33,7 @@ import LanguageSwitcher from './i18n/LanguageSwitcher.vue';
   </header>
 
   <RouterView />
+  <FullScreenLoader :show="loading" duration="100ms" text="loading..." />
 </template>
 
 <style scoped>
