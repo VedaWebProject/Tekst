@@ -24,6 +24,7 @@ async def uidata(cfg: TextRigConfig = Depends(get_config)) -> dict:
     return {
         "platform": await uidata_platform(cfg),
         "help": await uidata_help(),
+        "i18n": await uidata_i18n()
     }
 
 
@@ -33,7 +34,28 @@ async def uidata_platform(cfg: TextRigConfig = Depends(get_config)) -> dict:
     return dict(title=cfg.app_name, **cfg.info.dict())
 
 
-@router.get("/help", response_model=dict[str, str], summary="Help texts")
+@router.get("/i18n", summary="Help texts")
+async def uidata_i18n(lang: str = None) -> dict:
+    """Returns server-managed translations."""
+    translations = {
+        "de": {
+            "foo": {
+                "welcome": "Willkommen, Server!"
+            }
+        },
+        "en": {
+            "foo": {
+                "welcome": "Welcome, server!"
+            }
+        },
+    }
+    if lang and lang in translations:
+        return translations[lang]
+    else:
+        return translations
+
+
+@router.get("/help", summary="Help texts")
 async def uidata_help() -> dict:
     """Returns all help texts."""
     # TODO: Load help texts from Markdown source
