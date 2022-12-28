@@ -900,6 +900,53 @@
         }
       }
     },
+    "/uidata/i18n": {
+      "get": {
+        "tags": [
+          "uidata"
+        ],
+        "summary": "Help texts",
+        "description": "Returns server-managed translations.",
+        "operationId": "uidata_i18n_uidata_i18n_get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Lang",
+              "type": "string"
+            },
+            "name": "lang",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Request"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/uidata/help": {
       "get": {
         "tags": [
@@ -913,13 +960,7 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {
-                  "title": "Response Uidata Help Uidata Help Get",
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "string"
-                  }
-                }
+                "schema": {}
               }
             }
           },
@@ -1160,8 +1201,8 @@
             },
             "description": "Target languages to display links for",
             "default": [
-              "EN",
-              "DE"
+              "DE",
+              "EN"
             ]
           }
         },
