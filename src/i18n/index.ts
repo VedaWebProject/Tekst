@@ -1,4 +1,5 @@
 import { createI18n } from 'vue-i18n';
+import axios from 'axios';
 
 import staticI18nMsgs from '@intlify/unplugin-vue-i18n/messages';
 
@@ -9,31 +10,42 @@ const I18N_OPTIONS: I18nOptions = {
   globalInjection: true,
   locale: 'en',
   fallbackLocale: 'en',
-  messages: staticI18nMsgs,
 };
 
-export function setupI18n(options: I18nOptions = I18N_OPTIONS) {
+async function setupI18n(options: I18nOptions = I18N_OPTIONS) {
+  // fetch server i18n data
+  const serverI18nMsgs = await axios
+    .get(import.meta.env.TEXTRIG_SERVER_API + '/uidata/i18n')
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error(error);
+      console.error('Error loading translated (i18n) server resources');
+    });
+  // merge static and server i18n messages
+  options.messages = {
+    ...staticI18nMsgs,
+    ...serverI18nMsgs,
+  };
   const i18n = createI18n(options);
-  setI18nLanguage(i18n, options.locale);
+  setI18nLanguage(options.locale, i18n);
   return i18n;
 }
 
-export function setI18nLanguage(i18n: I18n, locale: I18nOptions['locale']) {
-  if (i18n.mode === 'legacy') {
+export const i18n = await setupI18n();
+
+export function setI18nLanguage(locale: I18nOptions['locale'], i18nInstance: I18n = i18n) {
+  const l = locale ?? String(i18nInstance.global.locale);
+  if (i18nInstance.mode === 'legacy') {
     // @ts-ignore
-    i18n.global.locale = locale;
+    i18nInstance.global.locale = l;
   } else {
     // @ts-ignore
-    i18n.global.locale.value = locale;
+    i18nInstance.global.locale.value = l;
   }
-  /**
-   * NOTE:
-   * If you need to specify the language setting for headers, such as the `fetch` API, set it here.
-   * The following is an example for axios.
-   *
-   * axios.defaults.headers.common['Accept-Language'] = locale
-   */
+
+  // set default 'Accept-Language' header for axios
+  axios.defaults.headers.common['Accept-Language'] = l;
 
   // set html lang attr
-  locale && document.querySelector('html')?.setAttribute('lang', locale);
+  document.querySelector('html')?.setAttribute('lang', l);
 }
