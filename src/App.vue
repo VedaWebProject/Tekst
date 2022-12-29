@@ -3,17 +3,20 @@ import { RouterLink, RouterView } from 'vue-router';
 import FullScreenLoader from './components/FullScreenLoader.vue';
 import LanguageSwitcher from './i18n/LanguageSwitcher.vue';
 import { ref, onMounted } from 'vue';
-import { i18n, setI18nLanguage } from './i18n';
+import { setI18nLanguage } from './i18n';
 
 const loading = ref(true);
 
 onMounted(() => {
-  setI18nLanguage(i18n.global.locale)
+  // TODO: instead of just i18n, all resources needed for bootstrapping the
+  // client should be loaded from the server here...
+  setI18nLanguage()
     .then(() => {
       loading.value = false;
     })
     .catch((error) => {
       console.error(error);
+      // TODO: Give error feedback...
     });
 });
 </script>
