@@ -29,4 +29,7 @@ export default defineConfig({
   },
   envPrefix: 'TEXTRIG_',
   appType: 'spa',
+  server: {
+    host: '127.0.0.1',
+  },
 });
