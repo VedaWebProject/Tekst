@@ -1201,8 +1201,8 @@
             },
             "description": "Target languages to display links for",
             "default": [
-              "EN",
-              "DE"
+              "DE",
+              "EN"
             ]
           }
         },

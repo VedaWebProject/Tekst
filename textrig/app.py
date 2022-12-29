@@ -82,10 +82,10 @@ app = FastAPI(
 # TODO: Properly configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=_cfg.cors_allow_origins,
+    allow_credentials=_cfg.cors_allow_credentials,
+    allow_methods=_cfg.cors_allow_methods,
+    allow_headers=_cfg.cors_allow_headers,
 )
 
 # run pre-startup routine

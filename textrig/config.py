@@ -70,6 +70,12 @@ class TextRigConfig(BaseSettings):
     uvicorn_host: str = "127.0.0.1"
     uvicorn_port: int = 8000
 
+    # CORS
+    cors_allow_origins: str | list[str] = ["*"]
+    cors_allow_credentials: str | list[str] = ["*"]
+    cors_allow_methods: str | list[str] = ["*"]
+    cors_allow_headers: str | list[str] = ["*"]
+
     # special domain sub configs
     db: DbConfig = DbConfig()  # db cfg (MongoDB)
     doc: DocConfig = DocConfig()  # doc cfg (SwaggerUI, Redoc, OpenAPI)
@@ -77,6 +83,20 @@ class TextRigConfig(BaseSettings):
 
     def __init__(self, env_file: str = ".env", *args, **kwargs):
         super().__init__(*args, env_file=env_file, _env_file=env_file, **kwargs)
+
+    @validator(
+        "cors_allow_origins",
+        "cors_allow_credentials",
+        "cors_allow_methods",
+        "cors_allow_headers",
+        pre=True,
+    )
+    def split_cors(v):
+        if isinstance(v, list):
+            return [str(e) for e in v]
+        if isinstance(v, str):
+            return [e.strip() for e in v.split(",")]
+        raise TypeError("Value must be a string or list")
 
     @validator("log_level")
     def uppercase_log_lvl(cls, v: str) -> str:
