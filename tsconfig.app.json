@@ -7,6 +7,9 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "types": ["@intlify/unplugin-vue-i18n/messages"],
+    "target": "ES5",
+    "lib": ["DOM", "ES2018"]
   }
 }

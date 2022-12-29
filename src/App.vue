@@ -8,9 +8,13 @@ import { i18n, setI18nLanguage } from './i18n';
 const loading = ref(true);
 
 onMounted(() => {
-  setI18nLanguage(i18n.global.locale).then(() => {
-    loading.value = false;
-  });
+  setI18nLanguage(i18n.global.locale)
+    .then(() => {
+      loading.value = false;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 });
 </script>
 

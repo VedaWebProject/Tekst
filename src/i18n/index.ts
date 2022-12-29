@@ -1,5 +1,4 @@
 import { createI18n } from 'vue-i18n';
-import axios from 'axios';
 
 import staticI18nMsgs from '@intlify/unplugin-vue-i18n/messages';
 
@@ -17,25 +16,26 @@ export const i18n = createI18n(I18N_OPTIONS);
 
 export async function setI18nLanguage(locale: I18nOptions['locale']) {
   // @ts-ignore
-  const l = locale?.value ?? i18n.global.locale.value;
-
+  const l = locale?.value ?? locale ?? i18n.global.locale.value;
+  if (!l) return Promise.reject(`Invalid locale code: ${l}`);
   // fetch server i18n data
-  const serverI18nMsgs = await axios
-    .get(`${import.meta.env.TEXTRIG_SERVER_API}/uidata/i18n?lang=${l}`)
-    .then((response) => response.data)
+  return await fetch(`${import.meta.env.TEXTRIG_SERVER_API}/uidata/i18n?lang=${l}`)
+    .then((response) => {
+      if (!response.ok) throw new Error('foo');
+      return response;
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      i18n.global.mergeLocaleMessage(l, data);
+    })
     .catch((error) => {
       console.error(error);
       console.error('Error loading translated (i18n) server resources');
+    })
+    .finally(() => {
+      // @ts-ignore
+      i18n.global.locale.value = l;
+      // set html lang attr
+      document.querySelector('html')?.setAttribute('lang', l);
     });
-
-  i18n.global.mergeLocaleMessage(l, serverI18nMsgs);
-
-  // @ts-ignore
-  i18n.global.locale.value = l;
-
-  // set default 'Accept-Language' header for axios
-  axios.defaults.headers.common['Accept-Language'] = l;
-
-  // set html lang attr
-  document.querySelector('html')?.setAttribute('lang', l);
 }
