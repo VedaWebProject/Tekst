@@ -25,7 +25,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 <template>
   <Transition name="fade">
-    <div id="blocking-loader" v-if="props.show">
+    <div class="fullscreen-loader" v-show="props.show">
       <div>
         <slot>{{ props.text }}</slot>
       </div>
@@ -34,10 +34,14 @@ const props = withDefaults(defineProps<Props>(), {
 </template>
 
 <style scoped>
-#blocking-loader {
-  position: absolute;
+.fullscreen-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
+  z-index: 1;
+  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
