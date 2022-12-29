@@ -27,15 +27,11 @@ export async function setI18nLanguage(locale: I18nOptions['locale']) {
     .then((response) => response.json())
     .then((data) => {
       i18n.global.mergeLocaleMessage(l, data);
+      // @ts-ignore
+      i18n.global.locale.value = l;
+      document.querySelector('html')?.setAttribute('lang', l);
     })
     .catch((error) => {
       console.error(error);
-      console.error('Error loading translated (i18n) server resources');
-    })
-    .finally(() => {
-      // @ts-ignore
-      i18n.global.locale.value = l;
-      // set html lang attr
-      document.querySelector('html')?.setAttribute('lang', l);
     });
 }

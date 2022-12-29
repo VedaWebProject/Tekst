@@ -16,7 +16,6 @@
     "format": "prettier . --write"
   },
   "dependencies": {
-    "core-js": "^3.27.0",
     "pinia": "^2.0.28",
     "vue": "^3.2.45",
     "vue-i18n": "^9.2.2",
