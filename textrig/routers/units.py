@@ -50,7 +50,7 @@ for lt_name, lt_class in get_layer_types().items():
     # add route for reading a unit from the database
     router.add_api_route(
         path=f"/{lt_name}/{{unit_id}}",
-        name=f"Get {lt_class.get_name()} unit",
+        name=f"get_{lt_name}_unit",
         description=f"Returns the data for a {lt_class.get_name()} data layer unit",
         endpoint=_generate_read_endpoint(lt_class.get_unit_read_model()),
         methods=["GET"],
@@ -60,7 +60,7 @@ for lt_name, lt_class in get_layer_types().items():
     # add route for creating a unit
     router.add_api_route(
         path=f"/{lt_name}",
-        name=f"Create {lt_class.get_name()} unit",
+        name=f"create_{lt_name}_unit",
         description=f"Creates a {lt_class.get_name()} data layer unit",
         endpoint=_generate_create_endpoint(
             lt_class.get_unit_model(),
@@ -73,7 +73,7 @@ for lt_name, lt_class in get_layer_types().items():
     # add route for updating a unit
     router.add_api_route(
         path=f"/{lt_name}",
-        name=f"Update {lt_class.get_name()} unit",
+        name=f"update_{lt_name}_unit",
         description=f"Updates the data for a {lt_class.get_name()} data layer unit",
         endpoint=_generate_update_endpoint(
             lt_class.get_unit_update_model(),

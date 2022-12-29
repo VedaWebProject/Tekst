@@ -22,14 +22,14 @@
           "admin"
         ],
         "summary": "Hello Admin",
-        "operationId": "hello_admin_admin_get",
+        "operationId": "helloAdmin",
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Hello Admin Admin Get",
+                  "title": "Response Helloadmin",
                   "type": "object"
                 }
               }
@@ -51,7 +51,7 @@
         ],
         "summary": "Get Plaintext Layer",
         "description": "Returns the data for a PlainText data layer",
-        "operationId": "Get_PlainText_layer_layers_plaintext__layer_id__get",
+        "operationId": "getPlaintextLayer",
         "parameters": [
           {
             "required": true,
@@ -100,7 +100,7 @@
         ],
         "summary": "Create Plaintext Layer",
         "description": "Creates a PlainText data layer definition",
-        "operationId": "Create_PlainText_layer_layers_plaintext_post",
+        "operationId": "createPlaintextLayer",
         "requestBody": {
           "content": {
             "application/json": {
@@ -146,7 +146,7 @@
         ],
         "summary": "Update Plaintext Layer",
         "description": "Updates the data for a PlainText data layer",
-        "operationId": "Update_PlainText_layer_layers_plaintext_patch",
+        "operationId": "updatePlaintextLayer",
         "requestBody": {
           "content": {
             "application/json": {
@@ -193,7 +193,7 @@
           "layers"
         ],
         "summary": "Get Layers",
-        "operationId": "get_layers_layers_get",
+        "operationId": "getLayers",
         "parameters": [
           {
             "required": true,
@@ -239,7 +239,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Layers Layers Get",
+                  "title": "Response Getlayers",
                   "type": "array",
                   "items": {
                     "type": "object"
@@ -273,7 +273,7 @@
           "layers"
         ],
         "summary": "Get Layer Template",
-        "operationId": "get_layer_template_layers_template_get",
+        "operationId": "getLayerTemplate",
         "parameters": [
           {
             "required": true,
@@ -319,7 +319,7 @@
           "layers"
         ],
         "summary": "Get Layer",
-        "operationId": "get_layer_layers__layer_id__get",
+        "operationId": "getLayer",
         "parameters": [
           {
             "required": true,
@@ -365,7 +365,7 @@
           "nodes"
         ],
         "summary": "Get Nodes",
-        "operationId": "get_nodes_nodes_get",
+        "operationId": "getNodes",
         "parameters": [
           {
             "required": true,
@@ -420,7 +420,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Nodes Nodes Get",
+                  "title": "Response Getnodes",
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/NodeRead"
@@ -452,7 +452,7 @@
           "nodes"
         ],
         "summary": "Create Node",
-        "operationId": "create_node_nodes_post",
+        "operationId": "createNode",
         "requestBody": {
           "content": {
             "application/json": {
@@ -497,7 +497,7 @@
           "nodes"
         ],
         "summary": "Update Node",
-        "operationId": "update_node_nodes_patch",
+        "operationId": "updateNode",
         "requestBody": {
           "content": {
             "application/json": {
@@ -544,7 +544,7 @@
           "nodes"
         ],
         "summary": "Get Children",
-        "operationId": "get_children_nodes__node_id__children_get",
+        "operationId": "getChildren",
         "parameters": [
           {
             "required": true,
@@ -572,7 +572,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Children Nodes  Node Id  Children Get",
+                  "title": "Response Getchildren",
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/NodeRead"
@@ -606,7 +606,7 @@
           "nodes"
         ],
         "summary": "Get Next",
-        "operationId": "get_next_nodes__node_id__next_get",
+        "operationId": "getNext",
         "parameters": [
           {
             "required": true,
@@ -654,7 +654,7 @@
           "texts"
         ],
         "summary": "Get All Texts",
-        "operationId": "get_all_texts_texts_get",
+        "operationId": "getAllTexts",
         "parameters": [
           {
             "required": false,
@@ -673,7 +673,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get All Texts Texts Get",
+                  "title": "Response Getalltexts",
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/TextRead"
@@ -705,7 +705,7 @@
           "texts"
         ],
         "summary": "Create Text",
-        "operationId": "create_text_texts_post",
+        "operationId": "createText",
         "requestBody": {
           "content": {
             "application/json": {
@@ -750,7 +750,7 @@
           "texts"
         ],
         "summary": "Update Text",
-        "operationId": "update_text_texts_patch",
+        "operationId": "updateText",
         "requestBody": {
           "content": {
             "application/json": {
@@ -797,7 +797,7 @@
           "texts"
         ],
         "summary": "Get Text By Id",
-        "operationId": "get_text_by_id_texts__text_id__get",
+        "operationId": "getTextById",
         "parameters": [
           {
             "required": true,
@@ -846,14 +846,14 @@
         ],
         "summary": "Data the client needs to display in the UI",
         "description": "Returns all UI data at once",
-        "operationId": "uidata_uidata_get",
+        "operationId": "uidata",
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Uidata Uidata Get",
+                  "title": "Response Uidata",
                   "type": "object"
                 }
               }
@@ -875,14 +875,14 @@
         ],
         "summary": "Platform metadata",
         "description": "Returns platform metadata, possibly customized for this platform instance.",
-        "operationId": "uidata_platform_uidata_platform_get",
+        "operationId": "uidataPlatform",
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Uidata Platform Uidata Platform Get",
+                  "title": "Response Uidataplatform",
                   "type": "object",
                   "additionalProperties": {
                     "type": "string"
@@ -907,7 +907,7 @@
         ],
         "summary": "Help texts",
         "description": "Returns server-managed translations.",
-        "operationId": "uidata_i18n_uidata_i18n_get",
+        "operationId": "uidataI18n",
         "parameters": [
           {
             "required": false,
@@ -954,7 +954,7 @@
         ],
         "summary": "Help texts",
         "description": "Returns all help texts.",
-        "operationId": "uidata_help_uidata_help_get",
+        "operationId": "uidataHelp",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -980,7 +980,7 @@
         ],
         "summary": "Get Plaintext Unit",
         "description": "Returns the data for a PlainText data layer unit",
-        "operationId": "Get_PlainText_unit_units_plaintext__unit_id__get",
+        "operationId": "getPlaintextUnit",
         "parameters": [
           {
             "required": true,
@@ -1029,7 +1029,7 @@
         ],
         "summary": "Create Plaintext Unit",
         "description": "Creates a PlainText data layer unit",
-        "operationId": "Create_PlainText_unit_units_plaintext_post",
+        "operationId": "createPlaintextUnit",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1075,7 +1075,7 @@
         ],
         "summary": "Update Plaintext Unit",
         "description": "Updates the data for a PlainText data layer unit",
-        "operationId": "Update_PlainText_unit_units_plaintext_patch",
+        "operationId": "updatePlaintextUnit",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1201,8 +1201,8 @@
             },
             "description": "Target languages to display links for",
             "default": [
-              "DE",
-              "EN"
+              "EN",
+              "DE"
             ]
           }
         },

@@ -8,7 +8,7 @@ from textrig.db.indexes import create_indexes
 from textrig.dependencies import get_db_client
 from textrig.layer_types import init_layer_type_manager
 from textrig.logging import log, setup_logging
-from textrig.routers import get_routers
+from textrig.routers import setup_routes
 from textrig.tags import tags_metadata
 
 
@@ -30,14 +30,8 @@ def pre_startup_routine() -> None:
         f"running in {'DEVELOPMENT' if _cfg.dev_mode else 'PRODUCTION'} MODE"
     )
 
-    # init layer type plugin manager
     init_layer_type_manager()
-
-    # include routers
-    log.info("Hooking up API routers")
-    for router in get_routers():
-        log.debug(f"\u22EF {router.prefix}")
-        app.include_router(router)
+    setup_routes(app)
 
 
 async def startup_routine() -> None:
@@ -48,9 +42,9 @@ async def startup_routine() -> None:
     if _cfg.dev_mode:  # pragma: no cover
         dev_base_url = f"http://{_cfg.uvicorn_host}:{_cfg.uvicorn_port}"
         if _cfg.doc.swaggerui_url:
-            log.info(f"\u22EF SwaggerUI docs: {dev_base_url}{_cfg.doc.swaggerui_url}")
+            log.info(f"\u2022 SwaggerUI docs: {dev_base_url}{_cfg.doc.swaggerui_url}")
         if _cfg.doc.redoc_url:
-            log.info(f"\u22EF Redoc API docs: {dev_base_url}{_cfg.doc.redoc_url}")
+            log.info(f"\u2022 Redoc API docs: {dev_base_url}{_cfg.doc.redoc_url}")
 
 
 async def shutdown_routine() -> None:
