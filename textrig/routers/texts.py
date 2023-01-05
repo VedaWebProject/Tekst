@@ -24,7 +24,7 @@ router = APIRouter(
 
 @router.get("", response_model=list[TextRead], status_code=status.HTTP_200_OK)
 async def get_all_texts(
-    limit: int = 100, db_io: DbIO = Depends(get_db_io)
+    db_io: DbIO = Depends(get_db_io), limit: int = 100
 ) -> list[TextRead]:
     return await db_io.find("texts", limit=limit)
 
