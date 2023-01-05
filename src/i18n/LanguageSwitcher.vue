@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { i18n, setI18nLanguage } from '../i18n';
+import { i18n, setI18nLanguage } from '@/i18n';
 import { ref } from 'vue';
 
 const selectedLanguage = ref(i18n.global.locale);

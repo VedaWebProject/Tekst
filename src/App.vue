@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router';
-import FullScreenLoader from './components/FullScreenLoader.vue';
-import LanguageSwitcher from './i18n/LanguageSwitcher.vue';
+import FullScreenLoader from '@/components/FullScreenLoader.vue';
+import LanguageSwitcher from '@/i18n/LanguageSwitcher.vue';
 import { onBeforeMount } from 'vue';
-import { setI18nLanguage } from './i18n';
+import { setI18nLanguage } from '@/i18n';
 import { useGeneralAppState } from '@/stores/general';
 
 const generalAppState = useGeneralAppState();
