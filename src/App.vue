@@ -2,7 +2,7 @@
 import { RouterLink, RouterView } from 'vue-router';
 import FullScreenLoader from '@/components/FullScreenLoader.vue';
 import LanguageSwitcher from '@/i18n/LanguageSwitcher.vue';
-import { onBeforeMount } from 'vue';
+import { onMounted, onBeforeMount } from 'vue';
 import { setI18nLanguage } from '@/i18n';
 import { useGeneralAppState } from '@/stores/general';
 
@@ -10,6 +10,9 @@ const generalAppState = useGeneralAppState();
 
 onBeforeMount(() => {
   generalAppState.startGlobalLoading();
+});
+
+onMounted(() => {
   // TODO: instead of just i18n, all resources needed for bootstrapping the
   // client should be loaded from the server here...
   setI18nLanguage()
