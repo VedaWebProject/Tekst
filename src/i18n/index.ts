@@ -12,12 +12,20 @@ const I18N_OPTIONS: I18nOptions = {
   messages: staticI18nMsgs,
 };
 
-export const I18N_LANGUAGES: { [localeCode: string]: { [key: string]: string } } = {
+export interface AvailableLanguage {
+  code: string;
+  name: string;
+  icon: string;
+}
+
+export const LANGUAGES: { [languageCode: string]: AvailableLanguage } = {
   en: {
+    code: 'en',
     name: 'English (US)',
     icon: '🇺🇸',
   },
   de: {
+    code: 'de',
     name: 'Deutsch',
     icon: '🇩🇪',
   },
@@ -25,28 +33,25 @@ export const I18N_LANGUAGES: { [localeCode: string]: { [key: string]: string } }
 
 export const i18n = createI18n(I18N_OPTIONS);
 
-export async function setI18nLanguage(locale: I18nOptions['locale'] = i18n.global.locale) {
+export async function setI18nLanguage(
+  locale: I18nOptions['locale'] = i18n.global.locale
+): Promise<AvailableLanguage> {
   // @ts-ignore
   const l = locale?.value ?? locale ?? i18n.global.locale.value;
   if (!l) return Promise.reject(`Invalid locale code: ${l}`);
 
-  try {
-    // fetch server i18n data
-    await fetch(`${import.meta.env.TEXTRIG_SERVER_API}/uidata/i18n?lang=${l}`)
-      .then((response) => {
-        if (!response.ok) throw new Error('foo');
-        return response;
-      })
-      .then((response) => response.json())
-      .then((data) => {
-        i18n.global.mergeLocaleMessage(l, data);
-      });
-  } catch (e) {
-    return Promise.reject('Error loading translations from server');
-  } finally {
-    // @ts-ignore
-    i18n.global.locale.value = l;
-    document.querySelector('html')?.setAttribute('lang', l);
-  }
-  return Promise.resolve();
+  // fetch server i18n data
+  return fetch(`${import.meta.env.TEXTRIG_SERVER_API}/uidata/i18n?lang=${l}`)
+    .then((response) => {
+      if (!response.ok) throw new Error('foo');
+      return response;
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      i18n.global.mergeLocaleMessage(l, data);
+      // @ts-ignore
+      i18n.global.locale.value = l;
+      document.querySelector('html')?.setAttribute('lang', l);
+      return LANGUAGES[l];
+    });
 }

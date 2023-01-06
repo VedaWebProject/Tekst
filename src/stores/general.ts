@@ -1,7 +1,7 @@
 import { ref } from 'vue';
 import { defineStore } from 'pinia';
 
-export const useGeneralAppState = defineStore('general', () => {
+export const useAppStateStore = defineStore('appState', () => {
   const globalLoading = ref(false);
   const startGlobalLoading = () => {
     globalLoading.value = true;
@@ -11,5 +11,9 @@ export const useGeneralAppState = defineStore('general', () => {
       globalLoading.value = false;
     }, 100);
 
-  return { globalLoading, startGlobalLoading, finishGlobalLoading };
+  return {
+    globalLoading,
+    startGlobalLoading,
+    finishGlobalLoading,
+  };
 });
