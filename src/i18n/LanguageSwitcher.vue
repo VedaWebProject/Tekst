@@ -6,14 +6,17 @@ import { ref } from 'vue';
 
 const selectedLanguage = ref(i18n.global.locale);
 const options = i18n.global.availableLocales.map((l) => {
-  const optLabel = `${LANGS[l].icon} ${LANGS[l].name}`;
-  return { label: optLabel, key: l };
+  const lbl = `${LANGS[l]?.icon ?? l}${LANGS[l] && ' '}${LANGS[l]?.name ?? ''}`;
+  return { label: lbl, key: l };
 });
+function handleLanguageSelect(localeCode: string) {
+  localeCode !== selectedLanguage.value && setI18nLanguage(localeCode);
+}
 </script>
 
 <template>
-  <n-dropdown trigger="click" :options="options" @select="setI18nLanguage">
-    <n-button strong secondary type="primary" size="small" icon-placement="left">
+  <n-dropdown trigger="click" :options="options" @select="handleLanguageSelect">
+    <n-button id="lang-btn" strong secondary type="primary" size="small" icon-placement="left">
       <template #icon>
         <n-icon :component="LangIcon" />
       </template>
@@ -21,5 +24,3 @@ const options = i18n.global.availableLocales.map((l) => {
     </n-button>
   </n-dropdown>
 </template>
-
-<style scoped></style>
