@@ -845,7 +845,7 @@
           "uidata"
         ],
         "summary": "Data the client needs to display in the UI",
-        "description": "Returns all UI data at once",
+        "description": "Returns data the client needs to initialize",
         "operationId": "uidata",
         "responses": {
           "200": {
@@ -905,7 +905,7 @@
         "tags": [
           "uidata"
         ],
-        "summary": "Help texts",
+        "summary": "Get server-managed translations",
         "description": "Returns server-managed translations.",
         "operationId": "uidataI18n",
         "parameters": [
@@ -943,32 +943,6 @@
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/uidata/help": {
-      "get": {
-        "tags": [
-          "uidata"
-        ],
-        "summary": "Help texts",
-        "description": "Returns all help texts.",
-        "operationId": "uidataHelp",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid Request"
-          },
-          "404": {
-            "description": "Not found"
           }
         }
       }

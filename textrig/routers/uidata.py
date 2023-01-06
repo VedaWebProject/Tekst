@@ -25,11 +25,9 @@ router = APIRouter(
 async def uidata(
     cfg: TextRigConfig = Depends(get_cfg), db_io: DbIO = Depends(get_db_io)
 ) -> dict:
-    """Returns all UI data at once"""
+    """Returns data the client needs to initialize"""
     return {
         "platform": await uidata_platform(cfg),
-        "help": await uidata_help(),
-        "i18n": await uidata_i18n(),
         "texts": await get_all_texts(db_io),
     }
 
@@ -40,7 +38,7 @@ async def uidata_platform(cfg: TextRigConfig = Depends(get_cfg)) -> dict:
     return dict(title=cfg.app_name, **cfg.info.dict())
 
 
-@router.get("/i18n", summary="Help texts")
+@router.get("/i18n", summary="Get server-managed translations")
 async def uidata_i18n(lang: str = None) -> dict:
     """Returns server-managed translations."""
     translations = {
@@ -51,14 +49,3 @@ async def uidata_i18n(lang: str = None) -> dict:
         return translations[lang]
     else:
         return translations
-
-
-@router.get("/help", summary="Help texts")
-async def uidata_help() -> dict:
-    """Returns all help texts."""
-    # TODO: Load help texts from Markdown source
-    return {
-        "foo": "foo",
-        "bar": "bar",
-        "baz": "baz",
-    }
