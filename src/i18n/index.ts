@@ -12,6 +12,17 @@ const I18N_OPTIONS: I18nOptions = {
   messages: staticI18nMsgs,
 };
 
+export const I18N_LANGUAGES: { [localeCode: string]: { [key: string]: string } } = {
+  en: {
+    name: 'English (US)',
+    icon: '🇺🇸',
+  },
+  de: {
+    name: 'Deutsch',
+    icon: '🇩🇪',
+  },
+};
+
 export const i18n = createI18n(I18N_OPTIONS);
 
 export async function setI18nLanguage(locale: I18nOptions['locale'] = i18n.global.locale) {
