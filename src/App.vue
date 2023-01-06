@@ -37,7 +37,7 @@ onMounted(() => {
       </nav>
 
       <h2>{{ $t('foo.welcome') }}</h2>
-      <LanguageSwitcher />
+      <LanguageSwitcher size="small" />
     </div>
   </header>
 
