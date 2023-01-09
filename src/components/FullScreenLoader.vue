@@ -32,8 +32,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 <template>
   <Transition name="fade">
-    <div class="fullscreen-loader" v-if="props.show">
-      <n-spin v-if="props.spinner" size="small" />
+    <div class="fullscreen-loader" v-show="props.show">
+      <n-spin v-show="props.spinner" size="small" />
       <div class="fullscreen-loader-text">{{ props.text }}</div>
     </div>
   </Transition>

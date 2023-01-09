@@ -15,26 +15,32 @@ const appState = useAppStateStore();
 const settings = useSettingsStore();
 const messages = useMessagesStore();
 
-const loaderText = ref();
+const loaderText = ref<string>();
+const loaderShowSpinner = ref<boolean>(true);
 
 onBeforeMount(() => {
   appState.startGlobalLoading();
 });
 
 onMounted(async () => {
+  let errors = false;
+
   // TODO: instead of just i18n, all resources needed for bootstrapping the
   // client should be loaded from the server here...
   loaderText.value = 'Loading language data...';
-  await settings
-    .setLanguage()
-    .then(() => {
-      appState.finishGlobalLoading();
-    })
-    .catch((error) => {
-      console.error(error);
-      messages.create({ text: 'Error setting up UI language', type: 'error' });
+  await settings.setLanguage().catch((error) => {
+    messages.create({ text: 'Could not load language data from server', type: 'warning' });
+    console.error(error);
+    errors = true;
+  });
+
+  errors &&
+    messages.create({
+      text: 'There were errors initializing the application',
+      type: 'error',
     });
-  loaderText.value = 'Ready.';
+
+  appState.finishGlobalLoading();
 });
 </script>
 
@@ -61,7 +67,12 @@ onMounted(async () => {
     </header>
 
     <RouterView />
-    <FullScreenLoader :show="appState.globalLoading" transition="100ms" :text="loaderText" />
+    <FullScreenLoader
+      :show="appState.globalLoading"
+      transition="100ms"
+      :text="loaderText"
+      :spinner="loaderShowSpinner"
+    />
     <GlobalMessenger />
     <n-global-style />
   </n-config-provider>

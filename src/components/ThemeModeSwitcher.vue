@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { NButton, NIcon } from 'naive-ui';
 import type { Size } from 'naive-ui/es/button/src/interface';
-import { LightModeOutlined as LightIcon, DarkModeOutlined as DarkIcon } from '@vicons/material';
+import LightModeOutlined from '@vicons/material/LightModeOutlined';
+import DarkModeOutlined from '@vicons/material/DarkModeOutlined';
 import { useSettingsStore } from '@/stores/settings';
 import { computed } from 'vue';
 
@@ -13,7 +14,7 @@ const props = withDefaults(defineProps<Props>(), {
   size: 'medium',
 });
 const settings = useSettingsStore();
-const icon = computed(() => (settings.theme === 'dark' ? LightIcon : DarkIcon));
+const icon = computed(() => (settings.theme === 'dark' ? LightModeOutlined : DarkModeOutlined));
 </script>
 
 <template>

@@ -3,117 +3,116 @@
  * Do not make direct changes to the file.
  */
 
-
 export interface paths {
-  "/admin": {
+  '/admin': {
     /** Hello Admin */
-    get: operations["helloAdmin"];
+    get: operations['helloAdmin'];
   };
-  "/layers/plaintext/{layer_id}": {
+  '/layers/plaintext/{layer_id}': {
     /**
-     * Get Plaintext Layer 
+     * Get Plaintext Layer
      * @description Returns the data for a PlainText data layer
      */
-    get: operations["getPlaintextLayer"];
+    get: operations['getPlaintextLayer'];
   };
-  "/layers/plaintext": {
+  '/layers/plaintext': {
     /**
-     * Create Plaintext Layer 
+     * Create Plaintext Layer
      * @description Creates a PlainText data layer definition
      */
-    post: operations["createPlaintextLayer"];
+    post: operations['createPlaintextLayer'];
     /**
-     * Update Plaintext Layer 
+     * Update Plaintext Layer
      * @description Updates the data for a PlainText data layer
      */
-    patch: operations["updatePlaintextLayer"];
+    patch: operations['updatePlaintextLayer'];
   };
-  "/layers": {
+  '/layers': {
     /** Get Layers */
-    get: operations["getLayers"];
+    get: operations['getLayers'];
   };
-  "/layers/template": {
+  '/layers/template': {
     /** Get Layer Template */
-    get: operations["getLayerTemplate"];
+    get: operations['getLayerTemplate'];
   };
-  "/layers/{layer_id}": {
+  '/layers/{layer_id}': {
     /** Get Layer */
-    get: operations["getLayer"];
+    get: operations['getLayer'];
   };
-  "/nodes": {
+  '/nodes': {
     /** Get Nodes */
-    get: operations["getNodes"];
+    get: operations['getNodes'];
     /** Create Node */
-    post: operations["createNode"];
+    post: operations['createNode'];
     /** Update Node */
-    patch: operations["updateNode"];
+    patch: operations['updateNode'];
   };
-  "/nodes/{node_id}/children": {
+  '/nodes/{node_id}/children': {
     /** Get Children */
-    get: operations["getChildren"];
+    get: operations['getChildren'];
   };
-  "/nodes/{node_id}/next": {
+  '/nodes/{node_id}/next': {
     /** Get Next */
-    get: operations["getNext"];
+    get: operations['getNext'];
   };
-  "/texts": {
+  '/texts': {
     /** Get All Texts */
-    get: operations["getAllTexts"];
+    get: operations['getAllTexts'];
     /** Create Text */
-    post: operations["createText"];
+    post: operations['createText'];
     /** Update Text */
-    patch: operations["updateText"];
+    patch: operations['updateText'];
   };
-  "/texts/{text_id}": {
+  '/texts/{text_id}': {
     /** Get Text By Id */
-    get: operations["getTextById"];
+    get: operations['getTextById'];
   };
-  "/uidata": {
+  '/uidata': {
     /**
-     * Data the client needs to display in the UI 
+     * Data the client needs to display in the UI
      * @description Returns all UI data at once
      */
-    get: operations["uidata"];
+    get: operations['uidata'];
   };
-  "/uidata/platform": {
+  '/uidata/platform': {
     /**
-     * Platform metadata 
+     * Platform metadata
      * @description Returns platform metadata, possibly customized for this platform instance.
      */
-    get: operations["uidataPlatform"];
+    get: operations['uidataPlatform'];
   };
-  "/uidata/i18n": {
+  '/uidata/i18n': {
     /**
-     * Help texts 
+     * Help texts
      * @description Returns server-managed translations.
      */
-    get: operations["uidataI18n"];
+    get: operations['uidataI18n'];
   };
-  "/uidata/help": {
+  '/uidata/help': {
     /**
-     * Help texts 
+     * Help texts
      * @description Returns all help texts.
      */
-    get: operations["uidataHelp"];
+    get: operations['uidataHelp'];
   };
-  "/units/plaintext/{unit_id}": {
+  '/units/plaintext/{unit_id}': {
     /**
-     * Get Plaintext Unit 
+     * Get Plaintext Unit
      * @description Returns the data for a PlainText data layer unit
      */
-    get: operations["getPlaintextUnit"];
+    get: operations['getPlaintextUnit'];
   };
-  "/units/plaintext": {
+  '/units/plaintext': {
     /**
-     * Create Plaintext Unit 
+     * Create Plaintext Unit
      * @description Creates a PlainText data layer unit
      */
-    post: operations["createPlaintextUnit"];
+    post: operations['createPlaintextUnit'];
     /**
-     * Update Plaintext Unit 
+     * Update Plaintext Unit
      * @description Updates the data for a PlainText data layer unit
      */
-    patch: operations["updatePlaintextUnit"];
+    patch: operations['updatePlaintextUnit'];
   };
 }
 
@@ -122,69 +121,124 @@ export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
     /**
-     * DeepLLinksConfig 
+     * DeepLLinksConfig
      * @description Base class for all TextRig models
      */
     DeepLLinksConfig: {
       /**
-       * Enabled 
-       * @description Enable/disable quick translation links to DeepL 
+       * Enabled
+       * @description Enable/disable quick translation links to DeepL
        * @default false
        */
       enabled?: boolean;
       /**
-       * Sourcelanguage 
-       * @description Source language 
+       * Sourcelanguage
+       * @description Source language
        * @enum {string}
        */
-      sourceLanguage?: "BG" | "CS" | "DA" | "DE" | "EL" | "EN" | "ES" | "ET" | "FI" | "FR" | "HU" | "ID" | "IT" | "JA" | "LT" | "LV" | "NL" | "PL" | "PT" | "RO" | "RU" | "SK" | "SL" | "SV" | "TR" | "UK" | "ZH";
+      sourceLanguage?:
+        | 'BG'
+        | 'CS'
+        | 'DA'
+        | 'DE'
+        | 'EL'
+        | 'EN'
+        | 'ES'
+        | 'ET'
+        | 'FI'
+        | 'FR'
+        | 'HU'
+        | 'ID'
+        | 'IT'
+        | 'JA'
+        | 'LT'
+        | 'LV'
+        | 'NL'
+        | 'PL'
+        | 'PT'
+        | 'RO'
+        | 'RU'
+        | 'SK'
+        | 'SL'
+        | 'SV'
+        | 'TR'
+        | 'UK'
+        | 'ZH';
       /**
-       * Languages 
-       * @description Target languages to display links for 
+       * Languages
+       * @description Target languages to display links for
        * @default [
        *   "DE",
        *   "EN"
        * ]
        */
-      languages?: ("BG" | "CS" | "DA" | "DE" | "EL" | "EN" | "ES" | "ET" | "FI" | "FR" | "HU" | "ID" | "IT" | "JA" | "LT" | "LV" | "NL" | "PL" | "PT" | "RO" | "RU" | "SK" | "SL" | "SV" | "TR" | "UK" | "ZH")[];
+      languages?: (
+        | 'BG'
+        | 'CS'
+        | 'DA'
+        | 'DE'
+        | 'EL'
+        | 'EN'
+        | 'ES'
+        | 'ET'
+        | 'FI'
+        | 'FR'
+        | 'HU'
+        | 'ID'
+        | 'IT'
+        | 'JA'
+        | 'LT'
+        | 'LV'
+        | 'NL'
+        | 'PL'
+        | 'PT'
+        | 'RO'
+        | 'RU'
+        | 'SK'
+        | 'SL'
+        | 'SV'
+        | 'TR'
+        | 'UK'
+        | 'ZH'
+      )[];
     };
     /** HTTPValidationError */
     HTTPValidationError: {
       /** Detail */
-      detail?: (components["schemas"]["ValidationError"])[];
+      detail?: components['schemas']['ValidationError'][];
     };
     /**
-     * Node 
+     * Node
      * @description A node in a text structure (e.g. chapter, paragraph, ...)
      */
     Node: {
       /**
-       * Textslug 
+       * Textslug
        * @description Slug of the text this node belongs to
        */
       textSlug: string;
       /**
-       * Parentid 
+       * Parentid
        * @description ID of parent node
        */
       parentId?: string;
       /**
-       * Level 
+       * Level
        * @description Index of structure level this node is on
        */
       level: number;
       /**
-       * Index 
+       * Index
        * @description Position among all text nodes on this level
        */
       index: number;
       /**
-       * Label 
+       * Label
        * @description Label for identifying this text node
        */
       label: string;
       /**
-       * Meta 
+       * Meta
        * @description Arbitrary metadata
        */
       meta?: {
@@ -192,39 +246,39 @@ export interface components {
       };
     };
     /**
-     * NodeRead 
+     * NodeRead
      * @description An existing node read from the database
      */
     NodeRead: {
       /** Id */
       id: string;
       /**
-       * Textslug 
+       * Textslug
        * @description Slug of the text this node belongs to
        */
       textSlug: string;
       /**
-       * Parentid 
+       * Parentid
        * @description ID of parent node
        */
       parentId?: string;
       /**
-       * Level 
+       * Level
        * @description Index of structure level this node is on
        */
       level: number;
       /**
-       * Index 
+       * Index
        * @description Position among all text nodes on this level
        */
       index: number;
       /**
-       * Label 
+       * Label
        * @description Label for identifying this text node
        */
       label: string;
       /**
-       * Meta 
+       * Meta
        * @description Arbitrary metadata
        */
       meta?: {
@@ -232,7 +286,7 @@ export interface components {
       };
     };
     /**
-     * NodeUpdate 
+     * NodeUpdate
      * @description An update to an existing node
      */
     NodeUpdate: {
@@ -254,118 +308,118 @@ export interface components {
       };
     };
     /**
-     * PlainTextLayer 
+     * PlainTextLayer
      * @description A data layer describing a set of data on a text
      */
     PlainTextLayer: {
       /**
-       * Title 
+       * Title
        * @description Title of this layer
        */
       title: string;
       /**
-       * Description 
+       * Description
        * @description Short, one-line description of this data layer
        */
       description?: string;
       /**
-       * Textslug 
+       * Textslug
        * @description Slug of the text this layer belongs to
        */
       textSlug: string;
       /**
-       * Level 
+       * Level
        * @description Text level this layer belongs to
        */
       level: number;
       /**
-       * Layertype 
+       * Layertype
        * @description A string identifying one of the available layer types
        */
       layerType: string;
       /**
-       * Public 
-       * @description Publication status of this layer 
+       * Public
+       * @description Publication status of this layer
        * @default false
        */
       public?: boolean;
       /**
-       * Meta 
+       * Meta
        * @description Arbitrary metadata
        */
       meta?: {
         [key: string]: (string | number | boolean | number) | undefined;
       };
       /**
-       * Config 
+       * Config
        * @default {}
        */
-      config?: components["schemas"]["PlainTextLayerConfig"];
+      config?: components['schemas']['PlainTextLayerConfig'];
     };
     /**
-     * PlainTextLayerConfig 
+     * PlainTextLayerConfig
      * @description Base class for all TextRig models
      */
     PlainTextLayerConfig: {
       /**
-       * Deepllinks 
+       * Deepllinks
        * @default {}
        */
-      deeplLinks?: components["schemas"]["DeepLLinksConfig"];
+      deeplLinks?: components['schemas']['DeepLLinksConfig'];
     };
     /**
-     * PlainTextLayerRead 
+     * PlainTextLayerRead
      * @description An existing data layer read from the database
      */
     PlainTextLayerRead: {
       /** Id */
       id: string;
       /**
-       * Title 
+       * Title
        * @description Title of this layer
        */
       title: string;
       /**
-       * Description 
+       * Description
        * @description Short, one-line description of this data layer
        */
       description?: string;
       /**
-       * Textslug 
+       * Textslug
        * @description Slug of the text this layer belongs to
        */
       textSlug: string;
       /**
-       * Level 
+       * Level
        * @description Text level this layer belongs to
        */
       level: number;
       /**
-       * Layertype 
+       * Layertype
        * @description A string identifying one of the available layer types
        */
       layerType: string;
       /**
-       * Public 
-       * @description Publication status of this layer 
+       * Public
+       * @description Publication status of this layer
        * @default false
        */
       public?: boolean;
       /**
-       * Meta 
+       * Meta
        * @description Arbitrary metadata
        */
       meta?: {
         [key: string]: (string | number | boolean | number) | undefined;
       };
       /**
-       * Config 
+       * Config
        * @default {}
        */
-      config?: components["schemas"]["PlainTextLayerConfig"];
+      config?: components['schemas']['PlainTextLayerConfig'];
     };
     /**
-     * PlainTextLayerUpdate 
+     * PlainTextLayerUpdate
      * @description An update to an existing data layer
      */
     PlainTextLayerUpdate: {
@@ -387,68 +441,68 @@ export interface components {
       meta?: {
         [key: string]: (string | number | boolean | number) | undefined;
       };
-      config?: components["schemas"]["PlainTextLayerConfig"];
+      config?: components['schemas']['PlainTextLayerConfig'];
     };
     /**
-     * PlainTextUnit 
+     * PlainTextUnit
      * @description A unit of a plaintext data layer
      */
     PlainTextUnit: {
       /**
-       * Layerid 
+       * Layerid
        * @description Data layer ID
        */
       layerId: string;
       /**
-       * Nodeid 
+       * Nodeid
        * @description Parent text node ID
        */
       nodeId: string;
       /**
-       * Meta 
+       * Meta
        * @description Arbitrary metadata on this layer unit
        */
       meta?: {
         [key: string]: (string | number | boolean | number) | undefined;
       };
       /**
-       * Text 
+       * Text
        * @description Text content of the plaintext unit
        */
       text?: string;
     };
     /**
-     * PlainTextUnitRead 
+     * PlainTextUnitRead
      * @description A unit of a plaintext data layer
      */
     PlainTextUnitRead: {
       /** Id */
       id: string;
       /**
-       * Layerid 
+       * Layerid
        * @description Data layer ID
        */
       layerId: string;
       /**
-       * Nodeid 
+       * Nodeid
        * @description Parent text node ID
        */
       nodeId: string;
       /**
-       * Meta 
+       * Meta
        * @description Arbitrary metadata on this layer unit
        */
       meta?: {
         [key: string]: (string | number | boolean | number) | undefined;
       };
       /**
-       * Text 
+       * Text
        * @description Text content of the plaintext unit
        */
       text?: string;
     };
     /**
-     * PlainTextUnitUpdate 
+     * PlainTextUnitUpdate
      * @description A unit of a plaintext data layer
      */
     PlainTextUnitUpdate: {
@@ -466,67 +520,67 @@ export interface components {
       text?: string;
     };
     /**
-     * Text 
+     * Text
      * @description A text represented in TextRig
      */
     Text: {
       /**
-       * Title 
+       * Title
        * @description Title of this text
        */
       title: string;
       /**
-       * Slug 
+       * Slug
        * @description A short identifier string for use in URLs and internal operations (will be generated automatically if missing)
        */
       slug?: string;
       /**
-       * Subtitle 
+       * Subtitle
        * @description Subtitle of this text
        */
       subtitle?: string;
       /** Levels */
-      levels: (string)[];
+      levels: string[];
       /**
-       * Locdelim 
-       * @description Delimiter for displaying text locations 
+       * Locdelim
+       * @description Delimiter for displaying text locations
        * @default ,
        */
       locDelim?: string;
     };
     /**
-     * TextRead 
+     * TextRead
      * @description An existing text read from the database
      */
     TextRead: {
       /** Id */
       id: string;
       /**
-       * Title 
+       * Title
        * @description Title of this text
        */
       title: string;
       /**
-       * Slug 
+       * Slug
        * @description A short identifier string for use in URLs and internal operations (will be generated automatically if missing)
        */
       slug?: string;
       /**
-       * Subtitle 
+       * Subtitle
        * @description Subtitle of this text
        */
       subtitle?: string;
       /** Levels */
-      levels: (string)[];
+      levels: string[];
       /**
-       * Locdelim 
-       * @description Delimiter for displaying text locations 
+       * Locdelim
+       * @description Delimiter for displaying text locations
        * @default ,
        */
       locDelim?: string;
     };
     /**
-     * TextUpdate 
+     * TextUpdate
      * @description An update to an existing text
      */
     TextUpdate: {
@@ -539,7 +593,7 @@ export interface components {
       /** Subtitle */
       subtitle?: string;
       /** Levels */
-      levels?: (string)[];
+      levels?: string[];
       /** Locdelim */
       locDelim?: string;
     };
@@ -563,14 +617,13 @@ export interface components {
 export type external = Record<string, never>;
 
 export interface operations {
-
   helloAdmin: {
     /** Hello Admin */
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": Record<string, never>;
+          'application/json': Record<string, never>;
         };
       };
       /** @description Invalid Request */
@@ -581,7 +634,7 @@ export interface operations {
   };
   getPlaintextLayer: {
     /**
-     * Get Plaintext Layer 
+     * Get Plaintext Layer
      * @description Returns the data for a PlainText data layer
      */
     parameters: {
@@ -593,7 +646,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": components["schemas"]["PlainTextLayerRead"];
+          'application/json': components['schemas']['PlainTextLayerRead'];
         };
       };
       /** @description Invalid Request */
@@ -603,26 +656,26 @@ export interface operations {
       /** @description Validation Error */
       422: {
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };
   };
   createPlaintextLayer: {
     /**
-     * Create Plaintext Layer 
+     * Create Plaintext Layer
      * @description Creates a PlainText data layer definition
      */
     requestBody: {
       content: {
-        "application/json": components["schemas"]["PlainTextLayer"];
+        'application/json': components['schemas']['PlainTextLayer'];
       };
     };
     responses: {
       /** @description Successful Response */
       201: {
         content: {
-          "application/json": components["schemas"]["PlainTextLayerRead"];
+          'application/json': components['schemas']['PlainTextLayerRead'];
         };
       };
       /** @description Invalid Request */
@@ -632,26 +685,26 @@ export interface operations {
       /** @description Validation Error */
       422: {
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };
   };
   updatePlaintextLayer: {
     /**
-     * Update Plaintext Layer 
+     * Update Plaintext Layer
      * @description Updates the data for a PlainText data layer
      */
     requestBody: {
       content: {
-        "application/json": components["schemas"]["PlainTextLayerUpdate"];
+        'application/json': components['schemas']['PlainTextLayerUpdate'];
       };
     };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": components["schemas"]["PlainTextLayerRead"];
+          'application/json': components['schemas']['PlainTextLayerRead'];
         };
       };
       /** @description Invalid Request */
@@ -661,7 +714,7 @@ export interface operations {
       /** @description Validation Error */
       422: {
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };
@@ -680,7 +733,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": (Record<string, never>)[];
+          'application/json': Record<string, never>[];
         };
       };
       /** @description Invalid Request */
@@ -690,7 +743,7 @@ export interface operations {
       /** @description Validation Error */
       422: {
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };
@@ -706,7 +759,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": Record<string, never>;
+          'application/json': Record<string, never>;
         };
       };
       /** @description Invalid Request */
@@ -716,7 +769,7 @@ export interface operations {
       /** @description Validation Error */
       422: {
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };
@@ -732,7 +785,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": Record<string, never>;
+          'application/json': Record<string, never>;
         };
       };
       /** @description Invalid Request */
@@ -742,7 +795,7 @@ export interface operations {
       /** @description Validation Error */
       422: {
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };
@@ -762,7 +815,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": (components["schemas"]["NodeRead"])[];
+          'application/json': components['schemas']['NodeRead'][];
         };
       };
       /** @description Invalid Request */
@@ -772,7 +825,7 @@ export interface operations {
       /** @description Validation Error */
       422: {
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };
@@ -781,14 +834,14 @@ export interface operations {
     /** Create Node */
     requestBody: {
       content: {
-        "application/json": components["schemas"]["Node"];
+        'application/json': components['schemas']['Node'];
       };
     };
     responses: {
       /** @description Successful Response */
       201: {
         content: {
-          "application/json": components["schemas"]["NodeRead"];
+          'application/json': components['schemas']['NodeRead'];
         };
       };
       /** @description Invalid Request */
@@ -798,7 +851,7 @@ export interface operations {
       /** @description Validation Error */
       422: {
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };
@@ -807,14 +860,14 @@ export interface operations {
     /** Update Node */
     requestBody: {
       content: {
-        "application/json": components["schemas"]["NodeUpdate"];
+        'application/json': components['schemas']['NodeUpdate'];
       };
     };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": components["schemas"]["NodeRead"];
+          'application/json': components['schemas']['NodeRead'];
         };
       };
       /** @description Invalid Request */
@@ -824,7 +877,7 @@ export interface operations {
       /** @description Validation Error */
       422: {
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };
@@ -843,7 +896,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": (components["schemas"]["NodeRead"])[];
+          'application/json': components['schemas']['NodeRead'][];
         };
       };
       /** @description Invalid Request */
@@ -853,7 +906,7 @@ export interface operations {
       /** @description Validation Error */
       422: {
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };
@@ -869,7 +922,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": components["schemas"]["NodeRead"];
+          'application/json': components['schemas']['NodeRead'];
         };
       };
       /** @description Invalid Request */
@@ -879,7 +932,7 @@ export interface operations {
       /** @description Validation Error */
       422: {
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };
@@ -895,7 +948,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": (components["schemas"]["TextRead"])[];
+          'application/json': components['schemas']['TextRead'][];
         };
       };
       /** @description Invalid Request */
@@ -905,7 +958,7 @@ export interface operations {
       /** @description Validation Error */
       422: {
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };
@@ -914,14 +967,14 @@ export interface operations {
     /** Create Text */
     requestBody: {
       content: {
-        "application/json": components["schemas"]["Text"];
+        'application/json': components['schemas']['Text'];
       };
     };
     responses: {
       /** @description Successful Response */
       201: {
         content: {
-          "application/json": components["schemas"]["TextRead"];
+          'application/json': components['schemas']['TextRead'];
         };
       };
       /** @description Invalid Request */
@@ -931,7 +984,7 @@ export interface operations {
       /** @description Validation Error */
       422: {
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };
@@ -940,14 +993,14 @@ export interface operations {
     /** Update Text */
     requestBody: {
       content: {
-        "application/json": components["schemas"]["TextUpdate"];
+        'application/json': components['schemas']['TextUpdate'];
       };
     };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": components["schemas"]["TextRead"];
+          'application/json': components['schemas']['TextRead'];
         };
       };
       /** @description Invalid Request */
@@ -957,7 +1010,7 @@ export interface operations {
       /** @description Validation Error */
       422: {
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };
@@ -973,7 +1026,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": components["schemas"]["TextRead"];
+          'application/json': components['schemas']['TextRead'];
         };
       };
       /** @description Invalid Request */
@@ -983,21 +1036,21 @@ export interface operations {
       /** @description Validation Error */
       422: {
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };
   };
   uidata: {
     /**
-     * Data the client needs to display in the UI 
+     * Data the client needs to display in the UI
      * @description Returns all UI data at once
      */
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": Record<string, never>;
+          'application/json': Record<string, never>;
         };
       };
       /** @description Invalid Request */
@@ -1008,14 +1061,14 @@ export interface operations {
   };
   uidataPlatform: {
     /**
-     * Platform metadata 
+     * Platform metadata
      * @description Returns platform metadata, possibly customized for this platform instance.
      */
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": {
+          'application/json': {
             [key: string]: string | undefined;
           };
         };
@@ -1028,7 +1081,7 @@ export interface operations {
   };
   uidataI18n: {
     /**
-     * Help texts 
+     * Help texts
      * @description Returns server-managed translations.
      */
     parameters?: {
@@ -1040,7 +1093,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": Record<string, never>;
+          'application/json': Record<string, never>;
         };
       };
       /** @description Invalid Request */
@@ -1050,21 +1103,21 @@ export interface operations {
       /** @description Validation Error */
       422: {
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };
   };
   uidataHelp: {
     /**
-     * Help texts 
+     * Help texts
      * @description Returns all help texts.
      */
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": Record<string, never>;
+          'application/json': Record<string, never>;
         };
       };
       /** @description Invalid Request */
@@ -1075,7 +1128,7 @@ export interface operations {
   };
   getPlaintextUnit: {
     /**
-     * Get Plaintext Unit 
+     * Get Plaintext Unit
      * @description Returns the data for a PlainText data layer unit
      */
     parameters: {
@@ -1087,7 +1140,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": components["schemas"]["PlainTextUnitRead"];
+          'application/json': components['schemas']['PlainTextUnitRead'];
         };
       };
       /** @description Invalid Request */
@@ -1097,26 +1150,26 @@ export interface operations {
       /** @description Validation Error */
       422: {
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };
   };
   createPlaintextUnit: {
     /**
-     * Create Plaintext Unit 
+     * Create Plaintext Unit
      * @description Creates a PlainText data layer unit
      */
     requestBody: {
       content: {
-        "application/json": components["schemas"]["PlainTextUnit"];
+        'application/json': components['schemas']['PlainTextUnit'];
       };
     };
     responses: {
       /** @description Successful Response */
       201: {
         content: {
-          "application/json": components["schemas"]["PlainTextUnitRead"];
+          'application/json': components['schemas']['PlainTextUnitRead'];
         };
       };
       /** @description Invalid Request */
@@ -1126,26 +1179,26 @@ export interface operations {
       /** @description Validation Error */
       422: {
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };
   };
   updatePlaintextUnit: {
     /**
-     * Update Plaintext Unit 
+     * Update Plaintext Unit
      * @description Updates the data for a PlainText data layer unit
      */
     requestBody: {
       content: {
-        "application/json": components["schemas"]["PlainTextUnitUpdate"];
+        'application/json': components['schemas']['PlainTextUnitUpdate'];
       };
     };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": components["schemas"]["PlainTextUnitRead"];
+          'application/json': components['schemas']['PlainTextUnitRead'];
         };
       };
       /** @description Invalid Request */
@@ -1155,7 +1208,7 @@ export interface operations {
       /** @description Validation Error */
       422: {
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };
