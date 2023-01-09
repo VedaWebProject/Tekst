@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router';
+import { RouterView } from 'vue-router';
 import FullScreenLoader from '@/components/FullScreenLoader.vue';
-import LanguageSwitcher from '@/i18n/LanguageSwitcher.vue';
-import ThemeModeSwitcher from '@/components/ThemeModeSwitcher.vue';
 import GlobalMessenger from '@/components/GlobalMessenger.vue';
 import { onMounted, onBeforeMount, ref } from 'vue';
 import { useAppStateStore } from '@/stores/general';
 import { useMessagesStore } from '@/stores/messages';
-import { NConfigProvider, NGlobalStyle, NSpace, lightTheme, darkTheme } from 'naive-ui';
+import { NConfigProvider, NGlobalStyle, lightTheme, darkTheme } from 'naive-ui';
 import { useSettingsStore } from '@/stores/settings';
 import { lightOverrides, darkOverrides } from '@/theme';
+import PageHeader from './layout/PageHeader.vue';
+import PageFooter from './layout/PageFooter.vue';
 
 const appState = useAppStateStore();
 const settings = useSettingsStore();
@@ -49,24 +49,14 @@ onMounted(async () => {
     :theme="settings.theme === 'light' ? lightTheme : darkTheme"
     :theme-overrides="settings.theme === 'light' ? lightOverrides : darkOverrides"
   >
-    <header>
-      <img alt="TextRig Logo" class="logo" src="@/assets/logo.png" width="125" height="125" />
+    <PageHeader />
 
-      <div class="wrapper">
-        <nav>
-          <RouterLink to="/">Home</RouterLink>
-          <RouterLink to="/about">About</RouterLink>
-        </nav>
+    <main>
+      <RouterView />
+    </main>
 
-        <h2>{{ $t('foo.welcome') }}</h2>
-        <n-space inline :wrap-item="false" size="small">
-          <LanguageSwitcher size="small" />
-          <ThemeModeSwitcher size="small" />
-        </n-space>
-      </div>
-    </header>
+    <PageFooter />
 
-    <RouterView />
     <FullScreenLoader
       :show="appState.globalLoading"
       transition="0.2s"
