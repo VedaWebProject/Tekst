@@ -1,16 +1,21 @@
 <script setup lang="ts">
 import { NSpin } from 'naive-ui';
+
 export interface Props {
   /**
    * Whether or not this loader should be shown
    */
   show: boolean;
   /**
+   * Whether to show a spinner or not
+   */
+  spinner?: boolean;
+  /**
    * Transition duration expressed as a
    * [time](https://developer.mozilla.org/en-US/docs/Web/CSS/time) string,
    * e.g. 0.5s or 500ms - default: 0.2s
    */
-  duration?: string;
+  transition?: string;
   /**
    * Text to display at the center of the loader
    * (only visible if not overridden by custom elements passed in the component slot)
@@ -19,7 +24,8 @@ export interface Props {
 }
 const props = withDefaults(defineProps<Props>(), {
   show: false,
-  duration: '0.2s',
+  spinner: true,
+  transition: '500ms',
   text: 'loading...',
 });
 </script>
@@ -27,7 +33,7 @@ const props = withDefaults(defineProps<Props>(), {
 <template>
   <Transition name="fade">
     <div class="fullscreen-loader" v-if="props.show">
-      <n-spin size="small" />
+      <n-spin v-if="props.spinner" size="small" />
       <div class="fullscreen-loader-text">{{ props.text }}</div>
     </div>
   </Transition>
@@ -50,11 +56,10 @@ const props = withDefaults(defineProps<Props>(), {
 }
 .fullscreen-loader-text {
   padding: 1rem;
-  opacity: 0.5;
 }
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity v-bind('props.duration') ease;
+  transition: opacity v-bind('props.transition') ease;
 }
 
 .fade-enter-from,
