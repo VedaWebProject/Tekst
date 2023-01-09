@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { NSpin } from 'naive-ui';
 export interface Props {
   /**
    * Whether or not this loader should be shown
@@ -25,10 +26,9 @@ const props = withDefaults(defineProps<Props>(), {
 
 <template>
   <Transition name="fade">
-    <div class="fullscreen-loader" v-show="props.show">
-      <div>
-        <slot>{{ props.text }}</slot>
-      </div>
+    <div class="fullscreen-loader" v-if="props.show">
+      <n-spin size="small" />
+      <div class="fullscreen-loader-text">{{ props.text }}</div>
     </div>
   </Transition>
 </template>
@@ -43,9 +43,14 @@ const props = withDefaults(defineProps<Props>(), {
   z-index: 1;
   overflow: hidden;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: #fff;
+}
+.fullscreen-loader-text {
+  padding: 1rem;
+  opacity: 0.5;
 }
 .fade-enter-active,
 .fade-leave-active {
