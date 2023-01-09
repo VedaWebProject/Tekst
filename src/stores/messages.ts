@@ -1,16 +1,18 @@
-import { ref, type Ref } from 'vue';
+import { ref } from 'vue';
 import { defineStore } from 'pinia';
 
 export interface Message {
-  type: 'info' | 'success' | 'warning' | 'error' | 'loading';
+  type?: 'default' | 'info' | 'success' | 'warning' | 'error' | 'loading';
   text: string;
 }
 
 export const useMessagesStore = defineStore('messages', () => {
-  const queue: Ref<Message[]> = ref([]);
-  function create(text: Message['text'], type: Message['type']) {
-    queue.value.push({ text, type });
+  const queue = ref<Message[]>([]);
+
+  function create(msg: Message) {
+    queue.value.push(msg);
   }
+
   return {
     queue,
     create,

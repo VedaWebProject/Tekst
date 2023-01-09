@@ -29,7 +29,7 @@ onMounted(async () => {
     })
     .catch((error) => {
       console.error(error);
-      messages.create('Le Erreur', 'error');
+      messages.create({ text: 'Error setting up UI language', type: 'error' });
     });
 });
 </script>

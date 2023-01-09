@@ -8,12 +8,13 @@ const MessageDispatcher = defineComponent({
     const messages = useMessagesStore();
     const messageUtil = useMessage();
 
+    // react to message queue updates
     watch(messages.queue, (queue) => {
-      const msg = queue.shift();
-      msg && messageUtil.create(msg.text, { type: msg.type });
+      const msg = queue.shift(); // get next message
+      msg && messageUtil.create(msg.text, { type: msg.type ?? 'default' }); // msg might be undefined
     });
 
-    return () => null;
+    return () => null; // nothing to render
   },
 });
 </script>
