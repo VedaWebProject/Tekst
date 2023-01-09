@@ -2,31 +2,34 @@
 import { RouterLink, RouterView } from 'vue-router';
 import FullScreenLoader from '@/components/FullScreenLoader.vue';
 import LanguageSwitcher from '@/i18n/LanguageSwitcher.vue';
-import ThemeModeSwitcher from '@/i18n/ThemeModeSwitcher.vue';
+import ThemeModeSwitcher from '@/components/ThemeModeSwitcher.vue';
+import GlobalMessenger from '@/components/GlobalMessenger.vue';
 import { onMounted, onBeforeMount } from 'vue';
 import { useAppStateStore } from '@/stores/general';
+import { useMessagesStore } from '@/stores/messages';
 import { NConfigProvider, NGlobalStyle, NSpace, lightTheme, darkTheme } from 'naive-ui';
 import { useSettingsStore } from '@/stores/settings';
 import { lightOverrides, darkOverrides } from '@/theme';
 
 const appState = useAppStateStore();
 const settings = useSettingsStore();
+const messages = useMessagesStore();
 
 onBeforeMount(() => {
   appState.startGlobalLoading();
 });
 
-onMounted(() => {
+onMounted(async () => {
   // TODO: instead of just i18n, all resources needed for bootstrapping the
   // client should be loaded from the server here...
-  settings
+  await settings
     .setLanguage()
     .then(() => {
       appState.finishGlobalLoading();
     })
     .catch((error) => {
       console.error(error);
-      // TODO: Give error feedback...
+      messages.create('Le Erreur', 'error');
     });
 });
 </script>
@@ -55,6 +58,7 @@ onMounted(() => {
 
     <RouterView />
     <FullScreenLoader :show="appState.globalLoading" duration="100ms" text="loading..." />
+    <GlobalMessenger />
     <n-global-style />
   </n-config-provider>
 </template>
