@@ -6,7 +6,7 @@ export const useAppStateStore = defineStore('appState', () => {
   const startGlobalLoading = () => {
     globalLoading.value = true;
   };
-  const finishGlobalLoading = (delayMs: number = 100) =>
+  const finishGlobalLoading = (delayMs: number = 0) =>
     setTimeout(() => {
       globalLoading.value = false;
     }, delayMs);

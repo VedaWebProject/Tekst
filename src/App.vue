@@ -39,8 +39,8 @@ onMounted(async () => {
       text: 'There were errors initializing the application',
       type: 'error',
     });
-
-  appState.finishGlobalLoading();
+  loaderText.value = 'Ready.';
+  appState.finishGlobalLoading(200);
 });
 </script>
 
@@ -69,7 +69,7 @@ onMounted(async () => {
     <RouterView />
     <FullScreenLoader
       :show="appState.globalLoading"
-      transition="100ms"
+      transition="0.2s"
       :text="loaderText"
       :spinner="loaderShowSpinner"
     />
