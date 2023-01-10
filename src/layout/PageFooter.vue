@@ -7,10 +7,10 @@ const ui = useUiDataStore();
 <template>
   <footer>
     Powered by
-    <a :href="ui.data.platform.platform_website" title="">
-      {{ ui.data.platform.platform }}
+    <a :href="ui.data.platform?.platform_website" title="">
+      {{ ui.data.platform?.platform }}
     </a>
-    v{{ ui.data.platform.version }} ({{ ui.data.platform.description }}).
+    v{{ ui.data.platform?.version }} ({{ ui.data.platform?.description }}).
   </footer>
 </template>
 
