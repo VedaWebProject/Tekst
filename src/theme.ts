@@ -1,5 +1,5 @@
 import type { GlobalThemeOverrides } from 'naive-ui';
-import extend from 'just-extend';
+import merge from 'lodash.merge';
 
 const commonOverrides: GlobalThemeOverrides = {
   common: {
@@ -19,7 +19,7 @@ const darkOverrides: GlobalThemeOverrides = {
   },
 };
 
-extend(true, lightOverrides, commonOverrides);
-extend(true, darkOverrides, commonOverrides);
+merge(lightOverrides, commonOverrides);
+merge(darkOverrides, commonOverrides);
 
 export { lightOverrides, darkOverrides };
