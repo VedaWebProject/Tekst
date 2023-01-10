@@ -3,7 +3,14 @@ import merge from 'lodash.merge';
 
 const commonOverrides: GlobalThemeOverrides = {
   common: {
-    // warningColor: '#00ff00',
+    fontSize: '16px',
+    fontSizeMini: '14px',
+    fontSizeTiny: '14px',
+    fontSizeSmall: '16px',
+    fontSizeMedium: '16px',
+    fontSizeLarge: '17px',
+    fontSizeHuge: '18px',
+    lineHeight: '1.8',
   },
 };
 
