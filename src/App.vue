@@ -68,4 +68,8 @@ onMounted(async () => {
   </n-config-provider>
 </template>
 
-<style scoped></style>
+<style scoped>
+main {
+  padding: 0.8rem;
+}
+</style>

@@ -26,5 +26,6 @@ import { NSpace } from 'naive-ui';
 <style scoped>
 header {
   background-color: #ff0000;
+  padding: 0.8rem;
 }
 </style>
