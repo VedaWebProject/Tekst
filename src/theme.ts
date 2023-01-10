@@ -19,7 +19,9 @@ const darkOverrides: GlobalThemeOverrides = {
   },
 };
 
-extend(lightOverrides, commonOverrides);
-extend(darkOverrides, commonOverrides);
+extend(true, lightOverrides, commonOverrides);
+extend(true, darkOverrides, commonOverrides);
+
+console.log(darkOverrides);
 
 export { lightOverrides, darkOverrides };
