@@ -14,23 +14,31 @@ const themeVars = useThemeVars();
 const renderMessage: MessageRenderMessage = (props) => {
   const { type } = props;
   return h(
-    NAlert,
+    'div',
     {
-      closable: props.closable,
-      onClose: props.onClose,
-      type: type === 'loading' ? 'default' : type,
-      // title: type in ['loading', 'default'] ? '' : type.toUpperCase(),
-      showIcon: true,
       style: {
         backgroundColor: themeVars.value.bodyColor,
-        boxShadow: 'var(--n-box-shadow)',
-        maxWidth: 'calc(100vw - 32px)',
-        width: '480px',
+        borderRadius: themeVars.value.borderRadius,
       },
     },
-    {
-      default: () => props.content,
-    }
+    h(
+      NAlert,
+      {
+        closable: props.closable,
+        onClose: props.onClose,
+        type: type === 'loading' ? 'default' : type,
+        // title: type in ['loading', 'default'] ? '' : type.toUpperCase(),
+        showIcon: true,
+        style: {
+          boxShadow: 'var(--n-box-shadow)',
+          maxWidth: 'calc(100vw - 32px)',
+          width: '480px',
+        },
+      },
+      {
+        default: () => props.content,
+      }
+    )
   );
 };
 
@@ -62,6 +70,6 @@ const MessageDispatcher = defineComponent({
 
 <style>
 .n-alert__close {
-  z-index: 9999999;
+  z-index: 1;
 }
 </style>
