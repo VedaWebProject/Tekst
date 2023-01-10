@@ -1,2 +1,24 @@
-foo:
-  welcome: 'Welcome DE!'
+general:
+  welcome: '"Willkommen!", sagt der Client.'
+dummy:
+  home: 'Kein Ort ist wie ~'
+  schiller: |
+    Schön wie Engel, voll Walhallas Wonne,
+    Schön vor allen Jünglingen war er,
+    Himmlisch mild sein Blick wie Maiensonne,
+    Rückgestrahlt vom blauen Spiegelmeer.
+
+    Seine Küsse - paradiesisch Fühlen!
+    Wie zwo Flammen sich ergreifen, wie
+    Harfentöne ineinanderspielen
+    Zu der himmelvollen Harmonie -
+
+    Stürzten, flogen, schmolzen Geist und Geist zusammen,
+    Lippen, Wangen brannten, zitterten,
+    Seele rann in Seele - Erd und Himmel schwammen
+    Wie zerronnen um die Liebenden!
+
+    Er ist hin - vergebens, ach vergebens
+    Stöhnet ihm der bange Seufzer nach!
+    Er ist hin, und alle Lust des Lebens
+    Wimmert hin in ein verlornes Ach!

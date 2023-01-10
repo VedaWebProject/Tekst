@@ -55,7 +55,7 @@ const props = withDefaults(defineProps<Props>(), {
   background-color: #fff;
 }
 .fullscreen-loader-text {
-  padding: 1rem;
+  padding: 1em;
 }
 .fade-enter-active,
 .fade-leave-active {

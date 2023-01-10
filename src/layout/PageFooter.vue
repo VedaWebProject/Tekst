@@ -17,6 +17,6 @@ const ui = useUiDataStore();
 <style scoped>
 footer {
   border: 1px dashed #ff9900;
-  padding: 0.8rem;
+  padding: 0.8em;
 }
 </style>

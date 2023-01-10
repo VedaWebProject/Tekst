@@ -10,26 +10,48 @@ const ui = useUiDataStore();
 
 <template>
   <header>
-    <h1>{{ ui.data.platform.title }}</h1>
-    <h2>{{ ui.data.platform.description }}</h2>
-    <img alt="TextRig Logo" class="logo" src="@/assets/logo.png" width="125" height="125" />
+    <div id="header-branding-container">
+      <img :alt="ui.data.platform.title + ' Logo'" class="logo" src="@/assets/logo.png" />
+      <div>
+        <h1>{{ ui.data.platform.title }}</h1>
+        <h2>{{ $t('general.welcome') }}</h2>
+      </div>
+      <div id="header-branding-extra">
+        <n-space inline :wrap-item="false" size="small">
+          <ThemeModeSwitcher size="small" />
+          <LanguageSwitcher size="small" />
+        </n-space>
+      </div>
+    </div>
 
     <nav>
       <RouterLink to="/">Home</RouterLink>
       <RouterLink to="/about">About</RouterLink>
     </nav>
-
-    <h2>{{ $t('foo.welcome') }}</h2>
-    <n-space inline :wrap-item="false" size="small">
-      <LanguageSwitcher size="small" />
-      <ThemeModeSwitcher size="small" />
-    </n-space>
   </header>
 </template>
 
 <style scoped>
 header {
   border: 1px dashed #ff0000;
-  padding: 0.8rem;
+  padding: 0.8em;
+}
+
+#header-branding-container {
+  display: flex;
+  align-items: stretch;
+  justify-content: start;
+  height: 100px;
+}
+
+#header-branding-container .logo {
+  height: 100%;
+  width: auto;
+  margin-right: 0.8em;
+}
+
+#header-branding-extra {
+  flex-grow: 1;
+  text-align: right;
 }
 </style>
