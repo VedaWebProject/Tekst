@@ -9,8 +9,6 @@ import '@/assets/main.css';
 
 const app = createApp(App);
 
-app.provide('serverApi', import.meta.env.TEXTRIG_SERVER_API);
-
 app.use(i18n);
 app.use(createPinia());
 app.use(router);

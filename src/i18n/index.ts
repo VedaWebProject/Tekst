@@ -41,8 +41,10 @@ export async function setI18nLanguage(
   if (!l) return Promise.reject(`Invalid locale code: ${l}`);
 
   // fetch server i18n data
+  const apiUrl = import.meta.env.TEXTRIG_SERVER_API;
+
   try {
-    await fetch(`${import.meta.env.TEXTRIG_SERVER_API}/uidata/i18n?lang=${l}`)
+    await fetch(`${apiUrl}/uidata/i18n?lang=${l}`)
       .then((response) => {
         return response;
       })
@@ -55,5 +57,6 @@ export async function setI18nLanguage(
     i18n.global.locale.value = l;
     document.querySelector('html')?.setAttribute('lang', l);
   }
+
   return LANGUAGES[l];
 }
