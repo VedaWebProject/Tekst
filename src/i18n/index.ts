@@ -45,9 +45,6 @@ export async function setI18nLanguage(
 
   try {
     await fetch(`${apiUrl}/uidata/i18n?lang=${l}`)
-      .then((response) => {
-        return response;
-      })
       .then((response) => response.json())
       .then((data) => {
         i18n.global.mergeLocaleMessage(l, data);

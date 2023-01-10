@@ -24,12 +24,12 @@ const options = Object.keys(LANGS).map((l) => {
 
 function handleLanguageSelect(localeCode: string) {
   localeCode !== settings.language &&
-    settings.setLanguage(localeCode).catch((error) => {
+    settings.setLanguage(localeCode).catch((e) => {
       messages.create({
         text: 'Some UI translations could not be loaded from server',
         type: 'warning',
       });
-      console.error(error);
+      console.error(e);
     });
 }
 </script>
