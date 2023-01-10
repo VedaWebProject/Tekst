@@ -17,6 +17,7 @@
     "serverApiTypes": "npx openapi-typescript https://raw.githubusercontent.com/VedaWebProject/textrig-server/main/openapi.json --output src/serverApi.d.ts"
   },
   "dependencies": {
+    "just-extend": "^6.2.0",
     "pinia": "^2.0.28",
     "vue": "^3.2.45",
     "vue-i18n": "^9.2.2",

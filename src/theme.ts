@@ -1,13 +1,25 @@
 import type { GlobalThemeOverrides } from 'naive-ui';
+import extend from 'just-extend';
 
-export const lightOverrides: GlobalThemeOverrides = {
+const commonOverrides: GlobalThemeOverrides = {
+  common: {
+    // warningColor: '#00ff00',
+  },
+};
+
+const lightOverrides: GlobalThemeOverrides = {
   common: {
     bodyColor: '#FFFFFF',
   },
 };
 
-export const darkOverrides: GlobalThemeOverrides = {
+const darkOverrides: GlobalThemeOverrides = {
   common: {
     bodyColor: '#262626',
   },
 };
+
+extend(lightOverrides, commonOverrides);
+extend(darkOverrides, commonOverrides);
+
+export { lightOverrides, darkOverrides };
