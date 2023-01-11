@@ -42,8 +42,8 @@ async def uidata_platform(cfg: TextRigConfig = Depends(get_cfg)) -> dict:
 async def uidata_i18n(lang: str = None) -> dict:
     """Returns server-managed translations."""
     translations = {
-        "de": {"general": {"welcome": '"Willkommen!", sagt der Server!'}},
-        "en": {"general": {"welcome": '"Welcome!", says the server!'}},
+        "deDE": {"general": {"welcome": '"Willkommen!", sagt der Server!'}},
+        "enUS": {"general": {"welcome": '"Welcome!", says the server!'}},
     }
     if lang and lang in translations:
         return translations[lang]
