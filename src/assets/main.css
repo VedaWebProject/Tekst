@@ -19,3 +19,22 @@ a:hover {
 p {
   margin: 0.5em 0;
 }
+
+/*
+
+    Global CSS fixes for problems with external libraries
+
+*/
+
+/* fix for NaiveUI alert close buttons being overlapped by other elements */
+.n-alert .n-alert__close {
+  z-index: 1;
+}
+
+/* fix for vertically centering NaiveUI alert icons at increased font sizes */
+.n-alert .n-alert__icon {
+  top: 0;
+  bottom: 0;
+  margin-top: auto;
+  margin-bottom: auto;
+}
