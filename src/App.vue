@@ -2,7 +2,8 @@
 import { RouterView } from 'vue-router';
 import FullScreenLoader from '@/components/FullScreenLoader.vue';
 import GlobalMessenger from '@/components/GlobalMessenger.vue';
-import { onMounted, onBeforeMount, ref } from 'vue';
+import { onMounted, onBeforeMount, ref, computed } from 'vue';
+import { LANGUAGES as LANGS } from '@/i18n';
 import { useAppStateStore } from '@/stores/general';
 import { useUiDataStore } from '@/stores/uiData';
 import { useMessagesStore } from '@/stores/messages';
@@ -20,6 +21,9 @@ const ui = useUiDataStore();
 const loaderText = ref('');
 const loaderShowSpinner = ref(true);
 let initLoadingFinished = ref(false);
+
+const nUiLangLocale = computed(() => LANGS[settings.language].nUiLangLocale);
+const nUiDateLocale = computed(() => LANGS[settings.language].nUiDateLocale);
 
 onBeforeMount(() => {
   appState.startGlobalLoading();
@@ -59,6 +63,8 @@ onMounted(async () => {
   <n-config-provider
     :theme="settings.theme === 'light' ? lightTheme : darkTheme"
     :theme-overrides="settings.theme === 'light' ? lightOverrides : darkOverrides"
+    :locale="nUiLangLocale"
+    :date-locale="nUiDateLocale"
   >
     <template v-if="initLoadingFinished">
       <PageHeader />

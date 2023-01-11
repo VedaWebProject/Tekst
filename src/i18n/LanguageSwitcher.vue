@@ -18,12 +18,14 @@ const settings = useSettingsStore();
 const messages = useMessagesStore();
 
 const options = Object.keys(LANGS).map((l) => {
-  const lbl = `${LANGS[l]?.icon ?? l}${LANGS[l] && ' '}${LANGS[l]?.name ?? ''}`;
-  return { label: lbl, key: l };
+  return {
+    label: `${LANGS[l]?.icon ?? l}${LANGS[l] && ' '}${LANGS[l]?.displayFull ?? ''}`,
+    key: l,
+  };
 });
 
 function handleLanguageSelect(localeCode: string) {
-  if (localeCode !== settings.language) return;
+  if (localeCode == settings.language) return;
 
   settings.setLanguage(localeCode).catch((e) => {
     messages.create({
@@ -41,7 +43,7 @@ function handleLanguageSelect(localeCode: string) {
       <template #icon>
         <n-icon :component="LanguageOutlined" />
       </template>
-      {{ settings.language.toUpperCase() }}
+      {{ LANGS[settings.language]?.displayShort }}
     </n-button>
   </n-dropdown>
 </template>

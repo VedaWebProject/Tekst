@@ -1,33 +1,46 @@
-import { createI18n } from 'vue-i18n';
-
 import staticI18nMsgs from '@intlify/unplugin-vue-i18n/messages';
 
+import { createI18n } from 'vue-i18n';
 import type { I18nOptions } from 'vue-i18n';
+
+import type { NDateLocale } from 'naive-ui';
+
+import { enUS, dateEnUS } from 'naive-ui';
+import { deDE, dateDeDE } from 'naive-ui';
 
 const I18N_OPTIONS: I18nOptions = {
   legacy: false,
   globalInjection: true,
-  locale: 'en',
-  fallbackLocale: 'en',
+  locale: 'enUS',
+  fallbackLocale: 'enUS',
   messages: staticI18nMsgs,
 };
 
 export interface AvailableLanguage {
-  code: string;
-  name: string;
+  key: string;
+  displayFull: string;
+  displayShort: string;
   icon: string;
+  nUiLangLocale: any;
+  nUiDateLocale: NDateLocale;
 }
 
-export const LANGUAGES: { [languageCode: string]: AvailableLanguage } = {
-  en: {
-    code: 'en',
-    name: 'English (US)',
+export const LANGUAGES: { [localeKey: string]: AvailableLanguage } = {
+  enUS: {
+    key: 'enUS',
+    displayFull: 'English (US)',
+    displayShort: 'en-US',
     icon: '🇺🇸',
+    nUiLangLocale: enUS,
+    nUiDateLocale: dateEnUS,
   },
-  de: {
-    code: 'de',
-    name: 'Deutsch',
+  deDE: {
+    key: 'deDE',
+    displayFull: 'Deutsch',
+    displayShort: 'de-DE',
     icon: '🇩🇪',
+    nUiLangLocale: deDE,
+    nUiDateLocale: dateDeDE,
   },
 };
 

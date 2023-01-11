@@ -19,7 +19,7 @@ export const useSettingsStore = defineStore('settings', () => {
 
   async function setLanguage(l: string | undefined = language.value): Promise<AvailableLanguage> {
     return setI18nLanguage(l).then((lang: AvailableLanguage) => {
-      language.value = lang.code;
+      language.value = lang.key;
       return lang;
     });
   }
