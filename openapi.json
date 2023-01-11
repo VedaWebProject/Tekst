@@ -290,7 +290,10 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "title": "Response Getlayertemplate",
+                  "type": "object"
+                }
               }
             }
           },
@@ -336,7 +339,10 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "title": "Response Getlayer",
+                  "type": "object"
+                }
               }
             }
           },
@@ -924,7 +930,10 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "title": "Response Uidatai18N",
+                  "type": "object"
+                }
               }
             }
           },
