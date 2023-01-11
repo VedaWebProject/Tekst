@@ -11,9 +11,9 @@ const ui = useUiDataStore();
 <template>
   <header>
     <div id="header-branding-container">
-      <img :alt="ui.data.platform?.title + ' Logo'" class="logo" src="@/assets/logo.png" />
+      <img :alt="ui.get('platform.title') + ' Logo'" class="logo" src="@/assets/logo.png" />
       <div>
-        <h1>{{ ui.data.platform?.title }}</h1>
+        <h1>{{ ui.get('platform.title') }}</h1>
         <h2>{{ $t('general.welcome') }}</h2>
       </div>
       <div id="header-branding-extra">

@@ -37,18 +37,12 @@ onMounted(async () => {
     err = true;
   });
 
-  loaderText.value = 'Loading instance data...';
-  const apiUrl = import.meta.env.TEXTRIG_SERVER_API;
-  await fetch(`${apiUrl}/uidata`)
-    .then((response) => response.json())
-    .then((data) => {
-      ui.data = data;
-    })
-    .catch((e) => {
-      messages.create({ text: 'Could not load instance data from server', type: 'warning' });
-      console.error(e);
-      err = true;
-    });
+  loaderText.value = 'Loading instance UI data...';
+  await ui.loadUiData().catch((e) => {
+    messages.create({ text: 'Could not load instance UI data from server', type: 'warning' });
+    console.error(e);
+    err = true;
+  });
 
   err &&
     messages.create({
@@ -56,8 +50,8 @@ onMounted(async () => {
       type: 'error',
     });
   loaderText.value = 'Ready.';
-  appState.finishGlobalLoading(200);
   initLoadingFinished.value = true;
+  appState.finishGlobalLoading(200);
 });
 </script>
 

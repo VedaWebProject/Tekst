@@ -17,7 +17,7 @@
     "serverApiTypes": "npx openapi-typescript https://raw.githubusercontent.com/VedaWebProject/textrig-server/main/openapi.json --output src/serverApi.d.ts"
   },
   "dependencies": {
-    "@types/lodash.merge": "^4.6.7",
+    "lodash.get": "^4.4.2",
     "lodash.merge": "^4.6.2",
     "pinia": "^2.0.28",
     "vue": "^3.2.45",
@@ -27,6 +27,8 @@
   "devDependencies": {
     "@intlify/unplugin-vue-i18n": "^0.8.1",
     "@rushstack/eslint-patch": "^1.2.0",
+    "@types/lodash.get": "^4.4.7",
+    "@types/lodash.merge": "^4.6.7",
     "@types/node": "^18.11.17",
     "@vicons/material": "^0.12.0",
     "@vitejs/plugin-vue": "^4.0.0",
