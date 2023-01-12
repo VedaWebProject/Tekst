@@ -157,3 +157,6 @@ cython_debug/
 # misc
 temp.py
 notes.md
+
+# env files
+.env.prod
