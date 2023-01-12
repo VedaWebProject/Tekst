@@ -106,7 +106,7 @@ def schema(to_file: bool, output_file: str, indent: int, sort_keys: bool, quiet:
     "--reload",
     "-r",
     is_flag=True,
-    help="Reload app on source file change (only with <TR_DEV_MODE> via environment)",
+    help="Hot-reload on source changes (only if TEXTRIG_DEV_MODE env var is true)",
     show_default=True,
 )
 def run(host: str, port: int, reload: bool):
@@ -121,7 +121,6 @@ def run(host: str, port: int, reload: bool):
         "textrig.app:app",
         host=_cfg.uvicorn_host,
         port=_cfg.uvicorn_port,
-        env_file=_cfg.env_file,
         reload=_cfg.dev_mode and reload,
         log_config=None,
     )

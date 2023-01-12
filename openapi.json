@@ -2,7 +2,7 @@
   "openapi": "3.0.2",
   "info": {
     "title": "TextRig",
-    "description": "A great text research platform",
+    "description": "A text research platform",
     "termsOfService": "https://my-example-text-research-platform.org/terms",
     "contact": {
       "name": "John Doe",

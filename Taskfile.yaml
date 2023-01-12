@@ -43,7 +43,8 @@ tasks:
   run-tests:
     desc: Run test suite with pytest
     env:
-      TR_DEV_MODE: true
+      TEXTRIG_DEV_MODE: true
+      TEXTRIG_ENV_FILE: .env.test
       TESTING: true
     cmds:
       - poetry run coverage run -m pytest
@@ -60,7 +61,7 @@ tasks:
   run-app:
     desc: Run the application dev server (only for development!)
     env:
-      TR_DEV_MODE: true
+      TEXTRIG_DEV_MODE: true
     cmds:
       - poetry run python3 -m textrig run --reload
 
@@ -80,8 +81,8 @@ tasks:
   schema-dev:
     desc: Export (development) OpenAPI schema to file openapi.json
     env:
-      TR_DEV_MODE: true
-      TR_LOG_LEVEL: ERROR
+      TEXTRIG_DEV_MODE: true
+      TEXTRIG_LOG_LEVEL: ERROR
     cmds:
       - poetry run python3 -m textrig schema -f
 

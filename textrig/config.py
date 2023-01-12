@@ -7,6 +7,46 @@ from textrig import pkg_meta
 from textrig.utils.strings import safe_name
 
 
+def _select_env_files() -> list[str]:
+    """
+    Selects the dotenv (.env) files to load.
+    Values from these files override the default
+    values used in the config model classes.
+
+    Selection and priority work as follows:
+
+    - A maximum of two env files will be loaded (".env" and a second one)
+    - Additional env files override values found in ".env"
+    - If one additional env file is found, selection is complete
+
+    Selection steps:
+
+    1. ".env" if it exists
+    2. Custom env file defined in "TEXTRIG_ENV_FILE" env var if it exists
+    3. ".env.dev" if it exists AND if TEXTRIG_DEV_MODE env var is set to true
+    4. ".env.prod" if it exists
+
+    :return: List of .env file paths
+    :rtype: list[str]
+    """
+    env_files = []
+    # define used env file names
+    f_env = ".env"
+    f_env_dev = ".env.dev"
+    f_env_prod = ".env.prod"
+    f_env_custom = os.environ.get("TEXTRIG_ENV_FILE")
+    # prio logic
+    if os.path.exists(f_env):
+        env_files.append(f_env)
+    if f_env_custom and os.path.exists(f_env_custom):
+        env_files.append(f_env_custom)
+    elif os.environ.get("TEXTRIG_DEV_MODE") and os.path.exists(f_env_dev):
+        env_files.append(f_env_dev)
+    elif os.path.exists(f_env_prod):
+        env_files.append(f_env_prod)
+    return env_files
+
+
 class DbConfig(BaseModel):
     """Database config model"""
 
@@ -59,11 +99,10 @@ class TextRigConfig(BaseSettings):
     """Platform config model"""
 
     # basic
-    env_file: str = ".env.prod"
     app_name: str = "TextRig"
     dev_mode: bool = False
     root_path: str = ""
-    snippets_dir: str = "/snippets"
+    user_files_dir: str = "/userfiles"
     log_level: str = "INFO"
 
     # uvicorn asgi binding
@@ -81,8 +120,8 @@ class TextRigConfig(BaseSettings):
     doc: DocConfig = DocConfig()  # doc cfg (SwaggerUI, Redoc, OpenAPI)
     info: InfoConfig = InfoConfig()  # general information cfg
 
-    def __init__(self, env_file: str = ".env", *args, **kwargs):
-        super().__init__(*args, env_file=env_file, _env_file=env_file, **kwargs)
+    # def __init__(self, env_file: str = ".env", *args, **kwargs):
+    #     super().__init__(*args, env_file=env_file, _env_file=env_file, **kwargs)
 
     @validator(
         "cors_allow_origins",
@@ -96,25 +135,19 @@ class TextRigConfig(BaseSettings):
             return [str(e) for e in v]
         if isinstance(v, str):
             return [e.strip() for e in v.split(",")]
-        raise TypeError("Value must be a string or list")
+        raise TypeError("Value must be a string or list of strings")
 
     @validator("log_level")
     def uppercase_log_lvl(cls, v: str) -> str:
         return v.upper()
 
     class Config:
-        env_prefix = "TR_"
+        env_file = _select_env_files()
+        env_prefix = "TEXTRIG_"
         env_nested_delimiter = "__"
         case_sensitive = False
 
 
 @lru_cache
 def get_config() -> TextRigConfig:
-    env_file = ".env.prod"
-    if os.path.exists(".env"):
-        env_file = ".env"
-    if os.environ.get("TR_DEV_MODE") and os.path.exists(".env.dev"):
-        env_file = ".env.dev"
-    if os.environ.get("TR_ENV_FILE") and os.path.exists(os.environ.get("TR_ENV_FILE")):
-        env_file = os.environ.get("TR_ENV_FILE")
-    return TextRigConfig(env_file=env_file)
+    return TextRigConfig()
