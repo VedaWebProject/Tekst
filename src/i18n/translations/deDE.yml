@@ -1,5 +1,8 @@
 general:
   welcome: '"Willkommen!", sagt der Client.'
+  tipThemeToggleLight: Zu hellem Farbschema wechseln
+  tipThemeToggleDark: Zu dunklem Farbschema wechseln
+
 dummy:
   home: 'Kein Ort ist wie ~'
   schiller: |
@@ -22,3 +25,6 @@ dummy:
     Stöhnet ihm der bange Seufzer nach!
     Er ist hin, und alle Lust des Lebens
     Wimmert hin in ein verlornes Ach!
+
+i18n:
+  tipSwitcher: Gebietsschema auswählen (Sprache und Zahlen-/Datumsformatierung)

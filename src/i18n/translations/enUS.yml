@@ -1,5 +1,8 @@
 general:
   welcome: '"Welcome!", says the client.'
+  tipThemeToggleLight: Switch to light mode
+  tipThemeToggleDark: Switch to dark mode
+
 dummy:
   home: There's no place like ~
   schiller: |
@@ -22,3 +25,6 @@ dummy:
     Vainly now I breathe my mournful sighs;
     He is gone in hopeless grief I languish
     Earthly joys I ne'er again can prize!
+
+i18n:
+  tipSwitcher: Choose locale (language and number/date formatting)

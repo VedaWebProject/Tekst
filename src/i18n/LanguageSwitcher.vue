@@ -39,7 +39,13 @@ function handleLanguageSelect(localeCode: string) {
 
 <template>
   <n-dropdown trigger="click" :options="options" @select="handleLanguageSelect">
-    <n-button id="lang-btn" type="primary" :size="props.size" icon-placement="left">
+    <n-button
+      id="lang-btn"
+      type="primary"
+      :size="props.size"
+      icon-placement="left"
+      :title="$t('i18n.tipSwitcher')"
+    >
       <template #icon>
         <n-icon :component="LanguageOutlined" />
       </template>
