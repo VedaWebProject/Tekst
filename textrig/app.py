@@ -19,37 +19,19 @@ setup_logging()
 _cfg: TextRigConfig = get_config()
 
 
-def pre_startup_routine() -> None:
-    if _cfg.dev_mode:
-        # blank line for visual separation of app runs in dev mode
-        print(file=sys.stderr)
+# def pre_startup_routine() -> None:
+#     if _cfg.dev_mode:
+#         # blank line for visual separation of app runs in dev mode
+#         print(file=sys.stderr)
 
-    # Hello World!
-    log.info(
-        f"{_cfg.app_name} (TextRig Server v{_cfg.info.version}) "
-        f"running in {'DEVELOPMENT' if _cfg.dev_mode else 'PRODUCTION'} MODE"
-    )
+#     # Hello World!
+#     log.info(
+#         f"{_cfg.app_name} (TextRig Server v{_cfg.info.version}) "
+#         f"running in {'DEVELOPMENT' if _cfg.dev_mode else 'PRODUCTION'} MODE"
+#     )
 
-    init_layer_type_manager()
-    setup_routes(app)
-
-
-async def startup_routine() -> None:
-    await init_db()
-
-    # log dev server info for quick browser access
-    if _cfg.dev_mode:  # pragma: no cover
-        dev_base_url = f"http://{_cfg.uvicorn_host}:{_cfg.uvicorn_port}"
-        if _cfg.doc.swaggerui_url:
-            log.info(f"\u2022 SwaggerUI docs: {dev_base_url}{_cfg.doc.swaggerui_url}")
-        if _cfg.doc.redoc_url:
-            log.info(f"\u2022 Redoc API docs: {dev_base_url}{_cfg.doc.redoc_url}")
-
-
-async def shutdown_routine() -> None:
-    # log.info("Closing database client")
-    # get_db_client(_cfg).close()
-    pass
+#     init_layer_type_manager()
+#     setup_routes(app)
 
 
 # initialize FastAPI app
@@ -75,8 +57,8 @@ app = FastAPI(
     responses={
         status.HTTP_400_BAD_REQUEST: {"description": "Invalid Request"},
     },
-    on_startup=[startup_routine],
-    on_shutdown=[shutdown_routine],
+    # on_startup=[startup_routine],
+    # on_shutdown=[shutdown_routine],
 )
 
 # TODO: Properly configure CORS
@@ -89,4 +71,34 @@ app.add_middleware(
 )
 
 # run pre-startup routine
-pre_startup_routine()
+# pre_startup_routine()
+
+
+@app.on_event("startup")
+async def startup_routine() -> None:
+    if _cfg.dev_mode:
+        # blank line for visual separation of app runs in dev mode
+        print(file=sys.stderr)
+
+    # Hello World!
+    log.info(
+        f"{_cfg.app_name} (TextRig Server v{_cfg.info.version}) "
+        f"running in {'DEVELOPMENT' if _cfg.dev_mode else 'PRODUCTION'} MODE"
+    )
+
+    init_layer_type_manager()
+    setup_routes(app)
+    await init_db()
+
+    # log dev server info for quick browser access
+    if _cfg.dev_mode:  # pragma: no cover
+        dev_base_url = f"http://{_cfg.uvicorn_host}:{_cfg.uvicorn_port}"
+        if _cfg.doc.swaggerui_url:
+            log.info(f"\u2022 SwaggerUI docs: {dev_base_url}{_cfg.doc.swaggerui_url}")
+        if _cfg.doc.redoc_url:
+            log.info(f"\u2022 Redoc API docs: {dev_base_url}{_cfg.doc.redoc_url}")
+
+
+@app.on_event("shutdown")
+async def shutdown_routine() -> None:
+    log.info(f"Running {_cfg.info.platform} shutdown sequence")

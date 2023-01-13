@@ -63,32 +63,32 @@ def for_mongo(obj: dict) -> dict:
     return camelize(gen_obj_ids(obj))
 
 
-def from_mongo(obj: dict | list[dict]) -> dict:
-    def encode_obj_ids(d: dict) -> dict:
-        out = dict()
-        for k, v in d.items():
-            if not isinstance(k, str):
-                raise ValueError("Keys sould be strings")
-            elif isinstance(v, dict):
-                out[k] = encode_obj_ids(v)
-            elif re.match(_ID_KEY_PATTERN, k):
-                if isinstance(v, ObjectId):
-                    out[k] = str(v)
-                if k == "_id":
-                    out["id"] = out.pop(k)
-            else:
-                out[k] = v
-        return out
+# def from_mongo(obj: dict | list[dict]) -> dict:
+#     def encode_obj_ids(d: dict) -> dict:
+#         out = dict()
+#         for k, v in d.items():
+#             if not isinstance(k, str):
+#                 raise ValueError("Keys sould be strings")
+#             elif isinstance(v, dict):
+#                 out[k] = encode_obj_ids(v)
+#             elif re.match(_ID_KEY_PATTERN, k):
+#                 if isinstance(v, ObjectId):
+#                     out[k] = str(v)
+#                 if k == "_id":
+#                     out["id"] = out.pop(k)
+#             else:
+#                 out[k] = v
+#         return out
 
-    if type(obj) is dict:
-        return encode_obj_ids(obj)
-    elif type(obj) is list:
-        return [encode_obj_ids(o) for o in obj]
-    else:
-        raise TypeError(
-            "The passed object must be of type "
-            f"'dict' or 'list', got '{type(obj).__name__}'"
-        )
+#     if type(obj) is dict:
+#         return encode_obj_ids(obj)
+#     elif type(obj) is list:
+#         return [encode_obj_ids(o) for o in obj]
+#     else:
+#         raise TypeError(
+#             "The passed object must be of type "
+#             f"'dict' or 'list', got '{type(obj).__name__}'"
+#         )
 
 
 # class __DbClientProvider:

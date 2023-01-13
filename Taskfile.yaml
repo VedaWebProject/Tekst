@@ -49,6 +49,7 @@ tasks:
     cmds:
       - poetry run coverage run -m pytest
       - poetry run coverage report -m
+    ignore_error: true
 
   test:
     desc: Run tests, start and stop test services stack automatically

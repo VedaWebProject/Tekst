@@ -3,15 +3,15 @@
 
 from fastapi import APIRouter, HTTPException, status
 
-# from fastapi.responses import FileResponse
-# from starlette.background import BackgroundTask
-from textrig.db import from_mongo
-
 # from textrig.dependencies import get_db_io
 from textrig.layer_types import get_layer_types
 
 # from textrig.logging import log
 from textrig.models.layer import LayerBase, LayerUpdateBase
+
+
+# from fastapi.responses import FileResponse
+# from starlette.background import BackgroundTask
 
 
 # from textrig.utils.strings import safe_name
@@ -118,10 +118,7 @@ async def get_layers(
     if layer_type is not None:
         example["layer_type"] = layer_type
 
-    # return from_mongo(await db_io.find("layers", example=example, limit=limit))
-    return from_mongo(
-        await LayerBase.find(example, limit=limit, with_children=True).to_list()
-    )
+    return await LayerBase.find(example, limit=limit, with_children=True).to_list()
 
 
 # @router.post("", response_model=LayerReadBase, status_code=status.HTTP_201_CREATED)
@@ -225,4 +222,4 @@ async def get_layer(
         )
     # here we're not returning data using our models, as this endpoint works for
     # any layer type - thus we have to "translate" the response a bit...
-    return from_mongo(layer)
+    return layer

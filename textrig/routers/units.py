@@ -1,4 +1,4 @@
-from fastapi import APIRouter, status
+from fastapi import APIRouter, HTTPException, status
 from textrig.layer_types import UnitBase, UnitUpdateBase, get_layer_types
 
 
@@ -28,7 +28,7 @@ def _generate_update_endpoint(
         if not unit:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Unit with ID {node_update.id} could not be found",
+                detail=f"Unit with ID {unit_update.id} could not be found",
             )
         await unit.set(unit_update.dict(exclude_unset=True))
         return unit

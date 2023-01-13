@@ -15,7 +15,7 @@ class DeepLLinksConfig(BaseModel):
         False,
         description="Enable/disable quick translation links to DeepL",
     )
-    source_language: Literal[_DEEPL_LANGUAGES] = Field(
+    source_language: Literal[_DEEPL_LANGUAGES] | None = Field(
         None, description="Source language"
     )
     languages: set[Literal[_DEEPL_LANGUAGES]] = Field(
