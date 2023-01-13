@@ -1,29 +1,45 @@
 import re
 
+# from textrig.logging import log
+from beanie import init_beanie
 from bson import ObjectId
 from humps import camelize
 from motor.motor_asyncio import AsyncIOMotorClient as DatabaseClient
 from textrig.config import TextRigConfig, get_config
-from textrig.logging import log
+from textrig.layer_types import get_layer_types
+from textrig.models.text import Node, NodeUpdate, Text
 
 
 _cfg: TextRigConfig = get_config()
-_db_client: DatabaseClient = None
+# _db_client: DatabaseClient = None
 
 _ID_KEY_PATTERN = r"^(id|_id|.*?Id|.*?_id)$"
 
 
-def init_client(db_uri: str = None) -> None:
-    global _db_client
-    if _db_client is None:
-        log.info("Initializing database client")
-        _db_client = DatabaseClient(db_uri or _cfg.db.get_uri())
+async def init_db(db_uri: str = None) -> None:
+    client = DatabaseClient(db_uri or _cfg.db.get_uri())
+    # collect basic models
+    models = [
+        Text,
+        Node,
+        NodeUpdate,
+    ]
+    # add layer type models
+    for lt_name, lt_class in get_layer_types().items():
+        models.append(lt_class.get_layer_model())
+        models.append(lt_class.get_layer_update_model())
+        models.append(lt_class.get_unit_model())
+        models.append(lt_class.get_unit_update_model())
+    # init beanie ODM
+    await init_beanie(
+        database=client.db_name, allow_index_dropping=True, document_models=models
+    )
 
 
-def get_client(db_uri: str) -> DatabaseClient:
-    global _db_client
-    init_client(db_uri)
-    return _db_client
+# def get_client(db_uri: str) -> DatabaseClient:
+#     global _db_client
+#     init_db(db_uri)
+#     return _db_client
 
 
 def for_mongo(obj: dict) -> dict:

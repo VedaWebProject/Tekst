@@ -3,14 +3,7 @@ import re
 
 from bson import ObjectId
 from textrig import logging
-from textrig.db import _ID_KEY_PATTERN, for_mongo, get_client
-from textrig.dependencies import get_db_client
-
-
-def test_globals_integrity(config):
-    uri = config.db.get_uri()
-    assert get_client(uri) is get_client(uri)
-    assert get_client(uri) is get_db_client(config)
+from textrig.db import _ID_KEY_PATTERN, for_mongo
 
 
 def test_logging_setup_without_errors():

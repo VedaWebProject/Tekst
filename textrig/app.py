@@ -3,9 +3,9 @@ import sys
 from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 from textrig.config import TextRigConfig, get_config
-from textrig.db import init_client as init_db_client
-from textrig.db.indexes import create_indexes
-from textrig.dependencies import get_db_client
+from textrig.db import init_db
+
+# from textrig.dependencies import get_db_client
 from textrig.layer_types import init_layer_type_manager
 from textrig.logging import log, setup_logging
 from textrig.routers import setup_routes
@@ -35,8 +35,7 @@ def pre_startup_routine() -> None:
 
 
 async def startup_routine() -> None:
-    init_db_client()
-    await create_indexes()
+    await init_db()
 
     # log dev server info for quick browser access
     if _cfg.dev_mode:  # pragma: no cover
@@ -48,8 +47,9 @@ async def startup_routine() -> None:
 
 
 async def shutdown_routine() -> None:
-    log.info("Closing database client")
-    get_db_client(_cfg).close()
+    # log.info("Closing database client")
+    # get_db_client(_cfg).close()
+    pass
 
 
 # initialize FastAPI app

@@ -1,6 +1,6 @@
 import pytest
 from pydantic.error_wrappers import ValidationError
-from textrig.models.text import Text, TextRead
+from textrig.models.text import Text
 
 
 def test_basic_validation():
@@ -10,12 +10,12 @@ def test_basic_validation():
 
 
 def test_slug_generation():
-    t = Text(title="agním īḷe puróhitaṁ", levels=["foo"])
+    t = Text(title="agním īḷe puróhitaṁ", slug="agnim", levels=["foo"])
     assert t.slug == "agnimilepurohita"
 
 
 def test_dict_override():
-    t_data = Text(title="agním īḷe puróhitaṁ", levels=["foo"]).dict()
+    t_data = Text(title="agním īḷe puróhitaṁ", slug="agnim", levels=["foo"]).dict()
     assert t_data["title"] == "agním īḷe puróhitaṁ"
     assert "slug" in t_data
     assert t_data["slug"] == "agnimilepurohita"
@@ -26,19 +26,19 @@ def test_serialization(test_data):
     text = Text(**test_data["texts"][0])
     assert text.dict().get("title")
     dummy_id = "6331b6e05c474b9f8f19330f"
-    text = TextRead(_id=dummy_id, **test_data["texts"][0])
+    text = Text(_id=dummy_id, **test_data["texts"][0])
     assert text.dict().get("id", False)
-    assert text.dict(for_mongo=True).get("_id", False)
+    assert text.dict().get("_id", False)
 
 
 def test_deserialization():
-    data = {"title": "Foo", "locDelim": "+", "levels": ["foo"]}
+    data = {"title": "Foo", "slug": "foo", "locDelim": "+", "levels": ["foo"]}
     t = Text(**data)
     assert t.loc_delim == "+"
 
 
 def test_model_field_casing():
-    t = Text(title="foo", loc_delim="bar", levels=["foo"])
+    t = Text(title="foo", slug="foo", loc_delim="bar", levels=["foo"])
     assert t.title == "foo"
     assert t.loc_delim == "bar"
 

@@ -1,6 +1,6 @@
 import pytest
 from httpx import AsyncClient
-from textrig.models.text import TextRead, TextUpdate
+from textrig.models.text import Text, TextUpdate
 
 
 @pytest.mark.anyio
@@ -25,7 +25,7 @@ async def test_get_texts(root_path, test_client: AsyncClient, insert_test_data):
 @pytest.mark.anyio
 async def test_create_text(root_path, test_client: AsyncClient):
     endpoint = f"{root_path}/texts"
-    payload = {"title": "Just a Test", "levels": ["foo"]}
+    payload = {"title": "Just a Test", "slug": "justatest", "levels": ["foo"]}
     resp = await test_client.post(endpoint, json=payload)
     assert resp.status_code == 201, f"HTTP status {resp.status_code} (expected: 201)"
     assert "id" in resp.json()
@@ -45,7 +45,7 @@ async def test_update_text(root_path, test_client: AsyncClient, insert_test_data
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) == list
     assert len(resp.json()) > 0
-    text = TextRead(**resp.json()[0])
+    text = Text(**resp.json()[0])
     # update text
     text_update = TextUpdate(id=text.id, title="Another text")
     resp = await test_client.patch(endpoint, json=text_update.dict())

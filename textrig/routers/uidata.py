@@ -2,8 +2,7 @@ from typing import Any
 
 from fastapi import APIRouter, Depends
 from textrig.config import TextRigConfig
-from textrig.db.io import DbIO
-from textrig.dependencies import get_cfg, get_db_io
+from textrig.dependencies import get_cfg
 from textrig.routers.texts import get_all_texts
 
 
@@ -22,13 +21,11 @@ router = APIRouter(
     response_model=dict[str, Any],
     summary="Data the client needs to display in the UI",
 )
-async def uidata(
-    cfg: TextRigConfig = Depends(get_cfg), db_io: DbIO = Depends(get_db_io)
-) -> dict:
+async def uidata(cfg: TextRigConfig = Depends(get_cfg)) -> dict:
     """Returns data the client needs to initialize"""
     return {
         "platform": await uidata_platform(cfg),
-        "texts": await get_all_texts(db_io),
+        "texts": await get_all_texts(),
     }
 
 

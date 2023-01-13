@@ -1,54 +1,52 @@
-import json
-from tempfile import NamedTemporaryFile
+# import json
+# from tempfile import NamedTemporaryFile
 
-from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.responses import FileResponse
-from starlette.background import BackgroundTask
+from fastapi import APIRouter, HTTPException, status
+
+# from fastapi.responses import FileResponse
+# from starlette.background import BackgroundTask
 from textrig.db import from_mongo
-from textrig.db.io import DbIO
-from textrig.dependencies import get_db_io
-from textrig.layer_types import get_layer_type, get_layer_types
-from textrig.logging import log
-from textrig.models.layer import LayerBase, LayerReadBase, LayerUpdateBase
-from textrig.utils.strings import safe_name
+
+# from textrig.dependencies import get_db_io
+from textrig.layer_types import get_layer_types
+
+# from textrig.logging import log
+from textrig.models.layer import LayerBase, LayerUpdateBase
 
 
-def _generate_read_endpoint(layer_read_model: type[LayerReadBase]):
-    async def get_layer(
-        layer_id: str, db_io: DbIO = Depends(get_db_io)
-    ) -> layer_read_model:
+# from textrig.utils.strings import safe_name
+
+
+def _generate_read_endpoint(layer_read_model: type[LayerBase]):
+    async def get_layer(layer_id: str) -> layer_read_model:
         """A generic route for reading a layer definition from the database"""
-        return await layer_read_model.read(layer_id, db_io)
+        return await layer_read_model.get(layer_id)
 
     return get_layer
 
 
 def _generate_create_endpoint(
     layer_model: type[LayerBase],
-    layer_read_model: type[LayerReadBase],
 ):
-    async def create_layer(
-        layer: layer_model, db_io: DbIO = Depends(get_db_io)
-    ) -> layer_read_model:
-        return await layer.create(db_io)
+    async def create_layer(layer: layer_model) -> layer_model:
+        return await layer.create()
 
     return create_layer
 
 
 def _generate_update_endpoint(
     layer_update_model: type[LayerUpdateBase],
-    layer_read_model: type[LayerReadBase],
+    layer_model: type[LayerBase],
 ):
-    async def update_layer(
-        layer_update: layer_update_model, db_io: DbIO = Depends(get_db_io)
-    ) -> layer_read_model:
-        updated_id = await db_io.update("layers", layer_update)
-        if not updated_id:
+    async def update_layer(layer_update: layer_update_model) -> layer_model:
+        layer: layer_model = await layer_model.get(layer_update.id)
+        if not layer:
             raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Could not update layer {updated_id}",
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Layer with ID {layer_update.id} could not be found",
             )
-        return await db_io.find_one("layers", updated_id)
+        await layer.set(layer_update.dict(exclude_unset=True))
+        return layer
 
     return update_layer
 
@@ -69,9 +67,9 @@ for lt_name, lt_class in get_layer_types().items():
         path=f"/{lt_name}/{{layer_id}}",
         name=f"get_{lt_name}_layer",
         description=f"Returns the data for a {lt_class.get_name()} data layer",
-        endpoint=_generate_read_endpoint(lt_class.get_layer_read_model()),
+        endpoint=_generate_read_endpoint(lt_class.get_layer_model()),
         methods=["GET"],
-        response_model=lt_class.get_layer_read_model(),
+        response_model=lt_class.get_layer_model(),
         status_code=status.HTTP_200_OK,
     )
     # add route for creating a layer
@@ -81,10 +79,9 @@ for lt_name, lt_class in get_layer_types().items():
         description=f"Creates a {lt_class.get_name()} data layer definition",
         endpoint=_generate_create_endpoint(
             lt_class.get_layer_model(),
-            lt_class.get_layer_read_model(),
         ),
         methods=["POST"],
-        response_model=lt_class.get_layer_read_model(),
+        response_model=lt_class.get_layer_model(),
         status_code=status.HTTP_201_CREATED,
     )
     # add route for updating a layer
@@ -94,10 +91,10 @@ for lt_name, lt_class in get_layer_types().items():
         description=f"Updates the data for a {lt_class.get_name()} data layer",
         endpoint=_generate_update_endpoint(
             lt_class.get_layer_update_model(),
-            lt_class.get_layer_read_model(),
+            lt_class.get_layer_model(),
         ),
         methods=["PATCH"],
-        response_model=lt_class.get_layer_read_model(),
+        response_model=lt_class.get_layer_model(),
         status_code=status.HTTP_200_OK,
     )
 
@@ -111,7 +108,6 @@ async def get_layers(
     level: int = None,
     layer_type: str = None,
     limit: int = 1000,
-    db_io: DbIO = Depends(get_db_io),
 ) -> list:
 
     example = dict(text_slug=text_slug)
@@ -122,7 +118,10 @@ async def get_layers(
     if layer_type is not None:
         example["layer_type"] = layer_type
 
-    return from_mongo(await db_io.find("layers", example=example, limit=limit))
+    # return from_mongo(await db_io.find("layers", example=example, limit=limit))
+    return from_mongo(
+        await LayerBase.find(example, limit=limit, with_children=True).to_list()
+    )
 
 
 # @router.post("", response_model=LayerReadBase, status_code=status.HTTP_201_CREATED)
@@ -138,65 +137,69 @@ async def get_layers(
 #     return layer
 
 
-@router.get("/template", status_code=status.HTTP_200_OK)
-async def get_layer_template(layer_id: str, db_io: DbIO = Depends(get_db_io)) -> dict:
-    layer_data = await db_io.find_one("layers", layer_id)
+#
+#   TODO: rebuild template endpoint using beanie logic
+#
 
-    if not layer_data:
-        raise HTTPException(
-            status.HTTP_400_BAD_REQUEST,
-            detail=f"Layer with ID {layer_id} doesn't exist",
-        )
+# @router.get("/template", status_code=status.HTTP_200_OK)
+# async def get_layer_template(layer_id: str, db_io: DbIO = Depends(get_db_io)) -> dict:
+#     layer_data = await db_io.find_one("layers", layer_id)
 
-    # decode layer data: Usually, this is handled automatically by our models, but
-    # in this case we're returning a raw dict/JSON, so we have to manually make sure
-    # that a) the ID field is called "id" and b) the DocumentId value is encoded as str.
-    layer_read_model = get_layer_type(layer_data["layerType"]).get_layer_read_model()
-    layer_data = layer_read_model(**layer_data).dict()
+#     if not layer_data:
+#         raise HTTPException(
+#             status.HTTP_400_BAD_REQUEST,
+#             detail=f"Layer with ID {layer_id} doesn't exist",
+#         )
 
-    # import unit type for the requested layer
-    template = get_layer_type(layer_data["layerType"]).prepare_import_template()
-    # apply data from layer instance
-    template["layerId"] = str(layer_data["id"])
-    template["_level"] = layer_data["level"]
-    template["_title"] = layer_data["title"]
-    template["_description"] = layer_data.get("description", None)
+#     # decode layer data: Usually, this is handled automatically by our models, but
+#     # in this case we're returning a raw dict/JSON, so we have to manually make sure
+#     # that a) the ID field is called "id" and b) the DocumentId value is encoded as str.
+#     layer_read_model = get_layer_type(layer_data["layerType"]).get_layer_read_model()
+#     layer_data = layer_read_model(**layer_data).dict()
 
-    # generate unit template
-    node_template = {key: None for key in template["_unitSchema"].keys()}
+#     # import unit type for the requested layer
+#     template = get_layer_type(layer_data["layerType"]).prepare_import_template()
+#     # apply data from layer instance
+#     template["layerId"] = str(layer_data["id"])
+#     template["_level"] = layer_data["level"]
+#     template["_title"] = layer_data["title"]
+#     template["_description"] = layer_data.get("description", None)
 
-    # get IDs of all nodes on this structure level as a base for unit templates
-    nodes = await db_io.find(
-        "nodes",
-        example={"textSlug": layer_data["textSlug"], "level": layer_data["level"]},
-        projection={"_id", "label"},
-        limit=0,
-    )
+#     # generate unit template
+#     node_template = {key: None for key in template["_unitSchema"].keys()}
 
-    # fill in unit templates with IDs
-    template["units"] = [
-        dict(nodeId=str(node["_id"]), **node_template) for node in nodes
-    ]
+#     # get IDs of all nodes on this structure level as a base for unit templates
+#     nodes = await db_io.find(
+#         "nodes",
+#         example={"textSlug": layer_data["textSlug"], "level": layer_data["level"]},
+#         projection={"_id", "label"},
+#         limit=0,
+#     )
 
-    # create temporary file and stream it as a file response
-    tempfile = NamedTemporaryFile(mode="w")
-    tempfile.write(json.dumps(template, indent=2))
-    tempfile.flush()
+#     # fill in unit templates with IDs
+#     template["units"] = [
+#         dict(nodeId=str(node["_id"]), **node_template) for node in nodes
+#     ]
 
-    # prepare headers
-    filename = (
-        f"{layer_data['textSlug']}_layer_{safe_name(template['layerId'])}"
-        "_template.json"
-    )
-    headers = {"Content-Disposition": f'attachment; filename="{filename}"'}
+#     # create temporary file and stream it as a file response
+#     tempfile = NamedTemporaryFile(mode="w")
+#     tempfile.write(json.dumps(template, indent=2))
+#     tempfile.flush()
 
-    log.debug(f"Serving layer template as temporary file {tempfile.name}")
-    return FileResponse(
-        tempfile.name,
-        headers=headers,
-        media_type="application/json",
-        background=BackgroundTask(tempfile.close),
-    )
+#     # prepare headers
+#     filename = (
+#         f"{layer_data['textSlug']}_layer_{safe_name(template['layerId'])}"
+#         "_template.json"
+#     )
+#     headers = {"Content-Disposition": f'attachment; filename="{filename}"'}
+
+#     log.debug(f"Serving layer template as temporary file {tempfile.name}")
+#     return FileResponse(
+#         tempfile.name,
+#         headers=headers,
+#         media_type="application/json",
+#         background=BackgroundTask(tempfile.close),
+#     )
 
 
 # @router.get("/types", status_code=status.HTTP_200_OK)
@@ -214,13 +217,12 @@ async def get_layer_template(layer_id: str, db_io: DbIO = Depends(get_db_io)) ->
 @router.get("/{layer_id}", status_code=status.HTTP_200_OK)
 async def get_layer(
     layer_id: str,
-    db_io: DbIO = Depends(get_db_io),
 ) -> dict:
-    layer_data = await db_io.find_one("layers", layer_id)
-    if not layer_data:
+    layer = await LayerBase.get(layer_id, with_children=True)
+    if not layer:
         raise HTTPException(
             status.HTTP_404_NOT_FOUND, detail=f"No layer with ID {layer_id}"
         )
     # here we're not returning data using our models, as this endpoint works for
     # any layer type - thus we have to "translate" the response a bit...
-    return from_mongo(layer_data)
+    return from_mongo(layer)

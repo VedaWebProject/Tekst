@@ -1,7 +1,7 @@
 import pytest
+from beanie import PydanticObjectId
 from httpx import AsyncClient
-from textrig.models.common import DocumentId
-from textrig.models.text import Node, NodeRead, NodeUpdate
+from textrig.models.text import Node, NodeUpdate
 
 
 @pytest.mark.anyio
@@ -30,7 +30,7 @@ async def test_child_node_io(
     # create parent
     resp = await test_client.post(endpoint, json=node)
     assert resp.status_code == 201, f"HTTP status {resp.status_code} (expected: 201)"
-    parent: NodeRead = NodeRead(**resp.json())
+    parent: Node = Node(**resp.json())
 
     # create child
     child: Node = Node(**node)
@@ -38,7 +38,7 @@ async def test_child_node_io(
     child.level = parent.level + 1
     child.index = 0
     resp = await test_client.post(endpoint, json=child.dict())
-    child = NodeRead(**resp.json())
+    child = Node(**resp.json())
     assert "id" in resp.json()
     assert "parentId" in resp.json()
     assert resp.json()["parentId"] == child.parent_id
@@ -126,7 +126,7 @@ async def test_get_nodes(
 
     # test returned nodes have IDs
     assert "id" in resp.json()[0]
-    DocumentId(resp.json()[0]["id"])
+    PydanticObjectId(resp.json()[0]["id"])
 
     # test specific index
     resp = await test_client.get(
@@ -153,7 +153,7 @@ async def test_update_node(
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) == list
     assert len(resp.json()) > 0
-    node = NodeRead(**resp.json()[0])
+    node = Node(**resp.json()[0])
     # update node
     node_update = NodeUpdate(id=node.id, label="A fresh label")
     resp = await test_client.patch(endpoint, json=node_update.dict())
@@ -183,7 +183,7 @@ async def test_node_next(
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) == list
     assert len(resp.json()) > 0
-    nodes = [NodeRead(**n) for n in resp.json()]
+    nodes = [Node(**n) for n in resp.json()]
     node_second_last = nodes[len(nodes) - 2]
     node_last = nodes[len(nodes) - 1]
     # get next node
