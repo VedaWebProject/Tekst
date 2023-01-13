@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router';
-import LanguageSwitcher from '@/i18n/LanguageSwitcher.vue';
+import LanguageSwitcher from '@/components/LanguageSwitcher.vue';
 import ThemeModeSwitcher from '@/components/ThemeModeSwitcher.vue';
 import { NSpace } from 'naive-ui';
 import { useUiDataStore } from '@/stores/uiData';

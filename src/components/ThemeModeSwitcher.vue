@@ -26,7 +26,7 @@ const title = computed(() =>
 <template>
   <n-button
     id="lang-btn"
-    type="primary"
+    type="default"
     :size="props.size"
     icon-placement="left"
     @click="settings.toggleTheme"
