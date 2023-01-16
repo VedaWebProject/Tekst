@@ -1,17 +1,15 @@
 import abc
 import re
 
-from beanie import Document
-
 # from fastapi import HTTPException, status
 from pydantic import Field, validator
 
 # from textrig.db.io import DbIO
 # from textrig.logging import log
-from textrig.models.common import AllOptional, Metadata
+from textrig.models.common import AllOptional, DocumentBase, Metadata
 
 
-class LayerBase(abc.ABC, Document):
+class LayerBase(abc.ABC, DocumentBase):
     """A data layer describing a set of data on a text"""
 
     title: str = Field(

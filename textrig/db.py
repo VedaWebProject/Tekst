@@ -1,23 +1,38 @@
-import re
+# import re
 
 # from textrig.logging import log
 from beanie import init_beanie
-from bson import ObjectId
-from humps import camelize
+
+# from humps import camelize
 from motor.motor_asyncio import AsyncIOMotorClient as DatabaseClient
+from motor.motor_asyncio import AsyncIOMotorDatabase as Database
 from textrig.config import TextRigConfig, get_config
 from textrig.layer_types import get_layer_types
+from textrig.models.common import DocumentBase
 from textrig.models.text import Node, NodeUpdate, Text
+from textrig.logging import log
 
 
 _cfg: TextRigConfig = get_config()
-# _db_client: DatabaseClient = None
+_db_client: DatabaseClient = None
 
-_ID_KEY_PATTERN = r"^(id|_id|.*?Id|.*?_id)$"
+# _ID_KEY_PATTERN = r"^(id|_id|.*?Id|.*?_id)$"
 
 
-async def init_db(db_uri: str = None) -> None:
-    client = DatabaseClient(db_uri or _cfg.db.get_uri())
+def _init_client(db_uri: str = None) -> None:
+    global _db_client
+    if _db_client is None:
+        log.info("Initializing database client")
+        _db_client = DatabaseClient(db_uri or _cfg.db.get_uri())
+
+
+def get_client(db_uri: str) -> DatabaseClient:
+    global _db_client
+    _init_client(db_uri)
+    return _db_client
+
+
+async def init_odm(db: Database) -> None:
     # collect basic models
     models = [
         Text,
@@ -32,35 +47,37 @@ async def init_db(db_uri: str = None) -> None:
         models.append(lt_class.get_unit_update_model())
     # init beanie ODM
     await init_beanie(
-        database=client.db_name, allow_index_dropping=True, document_models=models
+        database=db, allow_index_dropping=True, document_models=models
     )
 
 
-# def get_client(db_uri: str) -> DatabaseClient:
-#     global _db_client
-#     init_db(db_uri)
-#     return _db_client
+async def is_unique(
+    obj: DocumentBase, based_on_props: tuple[str]
+) -> bool:
+    criteria = {p: True for p in based_on_props}
+    unique_props = obj.dict(include=criteria)
+    return not bool(await type(obj).find(unique_props).first_or_none())
 
 
-def for_mongo(obj: dict) -> dict:
-    def gen_obj_ids(d: dict) -> dict:
-        out = dict()
-        for k, v in d.items():
-            if not isinstance(k, str):
-                raise ValueError("Keys sould be strings")
-            elif isinstance(v, dict):
-                out[k] = gen_obj_ids(v)
-            elif re.match(_ID_KEY_PATTERN, k):
-                if ObjectId.is_valid(str(v)):
-                    out[k] = ObjectId(str(v))
-                if k == "_id":
-                    out[k] = out.pop("_id")
-            else:
-                out[k] = v
+# def for_mongo(obj: dict) -> dict:
+#     def gen_obj_ids(d: dict) -> dict:
+#         out = dict()
+#         for k, v in d.items():
+#             if not isinstance(k, str):
+#                 raise ValueError("Keys sould be strings")
+#             elif isinstance(v, dict):
+#                 out[k] = gen_obj_ids(v)
+#             elif re.match(_ID_KEY_PATTERN, k):
+#                 if PydanticObjectId.is_valid(str(v)):
+#                     out[k] = PydanticObjectId(str(v))
+#                 if k == "_id":
+#                     out[k] = out.pop("_id")
+#             else:
+#                 out[k] = v
 
-        return out
+#         return out
 
-    return camelize(gen_obj_ids(obj))
+#     return camelize(gen_obj_ids(obj))
 
 
 # def from_mongo(obj: dict | list[dict]) -> dict:

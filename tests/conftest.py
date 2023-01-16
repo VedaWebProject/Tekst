@@ -6,6 +6,8 @@ from asgi_lifespan import LifespanManager
 from httpx import AsyncClient
 from textrig.app import app
 from textrig.config import TextRigConfig, get_config
+from textrig.db import DatabaseClient
+from textrig.dependencies import get_db_client
 
 
 """
@@ -46,11 +48,23 @@ def test_data(shared_datadir) -> dict:
 #     loop.close()
 
 
+@pytest.fixture(scope="session")
+async def get_db_client_override(config) -> DatabaseClient:
+    """Dependency override for the database client dependency"""
+    db_client: DatabaseClient = DatabaseClient(config.db.get_uri())
+    yield db_client
+    # close db connection
+    db_client.close()
+
+
 @pytest.fixture
-async def test_app(config):
+async def test_app(config, get_db_client_override):
     """Provides an app instance with overridden dependencies"""
+    app.dependency_overrides[get_db_client] = lambda: get_db_client_override
     async with LifespanManager(app):
         yield app
+    # cleanup data
+    await get_db_client_override.drop_database(config.db.name)
 
 
 @pytest.fixture

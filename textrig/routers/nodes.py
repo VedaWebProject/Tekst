@@ -1,5 +1,6 @@
 from fastapi import APIRouter, HTTPException, status
-from textrig.models.text import Node, NodeUpdate
+from textrig.models.text import Node, NodeUpdate, Text
+from textrig.logging import log
 
 
 router = APIRouter(
@@ -14,6 +15,29 @@ router = APIRouter(
 
 @router.post("", response_model=Node, status_code=status.HTTP_201_CREATED)
 async def create_node(node: Node) -> dict:
+    if node.id and await Node.get(node.id):
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"A node with id {node.id} already exists",
+        )
+
+    # find text the node belongs to
+    if not await Text.find_one(Text.slug == node.text_slug).exists():
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Corresponding text '{node.text_slug}' does not exist",
+        )
+    # check for semantic duplicates
+    dupes = await Node.find(
+        {"text_slug": node.text_slug, "level": node.level, "index": node.index},
+    ).first_or_none()
+    if dupes:
+        log.warning(f"Cannot create node. Conflict: {node}")
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Conflict with existing node",
+        )
+    # all fine
     return await node.create()
 
 
@@ -50,10 +74,10 @@ async def update_node(node_update: NodeUpdate) -> dict:
     node: Node = await Node.get(node_update.id)
     if not node:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Node with ID {node_update.id} could not be found",
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Node with ID {node_update.id} doesn't exist",
         )
-    await node.set(node_update.dict(exclude_unset=True))
+    await node.set(node_update.dict())
     return node
 
 

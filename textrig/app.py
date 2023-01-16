@@ -3,9 +3,9 @@ import sys
 from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 from textrig.config import TextRigConfig, get_config
-from textrig.db import init_db
+from textrig.db import init_odm
 
-# from textrig.dependencies import get_db_client
+from textrig.dependencies import get_db_client
 from textrig.layer_types import init_layer_type_manager
 from textrig.logging import log, setup_logging
 from textrig.routers import setup_routes
@@ -88,7 +88,7 @@ async def startup_routine() -> None:
 
     init_layer_type_manager()
     setup_routes(app)
-    await init_db()
+    await init_odm(get_db_client(_cfg)[_cfg.db.name])
 
     # log dev server info for quick browser access
     if _cfg.dev_mode:  # pragma: no cover
@@ -102,3 +102,5 @@ async def startup_routine() -> None:
 @app.on_event("shutdown")
 async def shutdown_routine() -> None:
     log.info(f"Running {_cfg.info.platform} shutdown sequence")
+    if not _cfg.testing:
+        get_db_client(_cfg).close()

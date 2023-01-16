@@ -4,8 +4,8 @@ import pkgutil
 from abc import ABC, abstractmethod
 
 import pluggy
-from beanie import Document
 from textrig.logging import log
+from textrig.models.common import DocumentBase
 from textrig.models.layer import LayerBase, LayerUpdateBase
 from textrig.models.unit import UnitBase, UnitUpdateBase
 from textrig.utils.strings import safe_name
@@ -58,7 +58,7 @@ class LayerTypePluginABC(ABC):
         ...
 
     @classmethod
-    def _get_model(cls, model_class_name: str, bases: tuple) -> type[Document]:
+    def _get_model(cls, model_class_name: str, bases: tuple) -> type[DocumentBase]:
         if not hasattr(cls, model_class_name):
             # model doesn't exist, has to be created
             model = type(

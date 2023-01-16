@@ -1,14 +1,14 @@
 # from fastapi import HTTPException, status
 # from textrig.utils.strings import safe_name
-from beanie import Document, PydanticObjectId
+from beanie import PydanticObjectId
 from pydantic import Field
 
 # from textrig.db.io import DbIO
 # from textrig.logging import log
-from textrig.models.common import AllOptional, Metadata
+from textrig.models.common import AllOptional, DocumentBase, Metadata
 
 
-class Text(Document):
+class Text(DocumentBase):
     """A text represented in TextRig"""
 
     title: str = Field(
@@ -58,7 +58,7 @@ class TextUpdate(Text, metaclass=AllOptional):
     pass
 
 
-class Node(Document):
+class Node(DocumentBase):
     """A node in a text structure (e.g. chapter, paragraph, ...)"""
 
     text_slug: str = Field(..., description="Slug of the text this node belongs to")

@@ -39,9 +39,9 @@ async def test_child_node_io(
     child.index = 0
     resp = await test_client.post(endpoint, json=child.dict())
     child = Node(**resp.json())
-    assert "id" in resp.json()
-    assert "parentId" in resp.json()
-    assert resp.json()["parentId"] == child.parent_id
+    assert "_id" in resp.json()
+    assert "parent_id" in resp.json()
+    assert resp.json()["parent_id"] == str(child.parent_id)
 
     # find children by parent ID
     resp = await test_client.get(
@@ -50,14 +50,14 @@ async def test_child_node_io(
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) is list
     assert len(resp.json()) == 1
-    assert resp.json()[0]["id"] == child.id
+    assert resp.json()[0]["_id"] == str(child.id)
 
     # find children by parent ID using dedicated children endpoint
     resp = await test_client.get(f"{root_path}/nodes/{child.parent_id}/children")
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) is list
     assert len(resp.json()) == 1
-    assert resp.json()[0]["id"] == child.id
+    assert resp.json()[0]["_id"] == str(child.id)
 
 
 @pytest.mark.anyio
@@ -67,7 +67,7 @@ async def test_create_node_invalid_text_fail(
     await insert_test_data("texts")
     endpoint = f"{root_path}/nodes"
     node = test_data["nodes"][0]
-    node["textSlug"] = "this_does_not_exist"
+    node["text_slug"] = "this_does_not_exist"
 
     resp = await test_client.post(endpoint, json=node)
     assert resp.status_code == 400, f"HTTP status {resp.status_code} (expected: 400)"
@@ -96,7 +96,7 @@ async def test_get_nodes(
     endpoint = f"{root_path}/nodes"
     text = test_data["texts"][0]
     text_slug = text["slug"]
-    nodes = [n for n in test_data["nodes"] if n["textSlug"] == text_slug]
+    nodes = [n for n in test_data["nodes"] if n["text_slug"] == text_slug]
     # level = 0
     # index = 0
     # parent_id = None
@@ -125,8 +125,8 @@ async def test_get_nodes(
     assert len(resp.json()) == len(nodes)
 
     # test returned nodes have IDs
-    assert "id" in resp.json()[0]
-    PydanticObjectId(resp.json()[0]["id"])
+    assert "_id" in resp.json()[0]
+    PydanticObjectId(resp.json()[0]["_id"])
 
     # test specific index
     resp = await test_client.get(
@@ -156,18 +156,18 @@ async def test_update_node(
     node = Node(**resp.json()[0])
     # update node
     node_update = NodeUpdate(id=node.id, label="A fresh label")
-    resp = await test_client.patch(endpoint, json=node_update.dict())
+    resp = await test_client.patch(endpoint, json=node_update.dict(serialize_ids=True))
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
-    assert "id" in resp.json()
-    assert resp.json()["id"] == str(node.id)
+    assert "_id" in resp.json()
+    assert resp.json()["_id"] == str(node.id)
     assert "label" in resp.json()
     assert resp.json()["label"] == "A fresh label"
     # update unchanged node
-    resp = await test_client.patch(endpoint, json=node_update.dict())
+    resp = await test_client.patch(endpoint, json=node_update.dict(serialize_ids=True))
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     # update invalid node
     node_update = NodeUpdate(id="637b9ad396d541a505e5439b", label="Brand new label")
-    resp = await test_client.patch(endpoint, json=node_update.dict())
+    resp = await test_client.patch(endpoint, json=node_update.dict(serialize_ids=True))
     assert resp.status_code == 400, f"HTTP status {resp.status_code} (expected: 400)"
 
 
@@ -191,8 +191,8 @@ async def test_node_next(
     resp = await test_client.get(endpoint)
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) == dict
-    assert "id" in resp.json()
-    assert resp.json()["id"] == node_last.id
+    assert "_id" in resp.json()
+    assert resp.json()["_id"] == str(node_last.id)
     # fail to get node after last
     endpoint = f"{root_path}/nodes/{node_last.id}/next"
     resp = await test_client.get(endpoint)

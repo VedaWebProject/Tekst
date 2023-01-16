@@ -20,7 +20,13 @@ from textrig.models.layer import LayerBase, LayerUpdateBase
 def _generate_read_endpoint(layer_read_model: type[LayerBase]):
     async def get_layer(layer_id: str) -> layer_read_model:
         """A generic route for reading a layer definition from the database"""
-        return await layer_read_model.get(layer_id)
+        layer = await layer_read_model.get(layer_id)
+        if not layer:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Could not find layer with ID {layer_id}",
+            )
+        return layer
 
     return get_layer
 
@@ -42,10 +48,10 @@ def _generate_update_endpoint(
         layer: layer_model = await layer_model.get(layer_update.id)
         if not layer:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Layer with ID {layer_update.id} could not be found",
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Layer with ID {layer_update.id} doesn't exist",
             )
-        await layer.set(layer_update.dict(exclude_unset=True))
+        await layer.set(layer_update.dict())
         return layer
 
     return update_layer

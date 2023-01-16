@@ -43,9 +43,7 @@ tasks:
   run-tests:
     desc: Run test suite with pytest
     env:
-      TEXTRIG_DEV_MODE: true
       TEXTRIG_ENV_FILE: .env.test
-      TESTING: true
     cmds:
       - poetry run coverage run -m pytest
       - poetry run coverage report -m

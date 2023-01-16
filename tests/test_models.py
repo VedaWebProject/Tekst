@@ -26,13 +26,12 @@ def test_serialization(test_data):
     text = Text(**test_data["texts"][0])
     assert text.dict().get("title")
     dummy_id = "6331b6e05c474b9f8f19330f"
-    text = Text(_id=dummy_id, **test_data["texts"][0])
+    text = Text(id=dummy_id, **test_data["texts"][0])
     assert text.dict().get("id", False)
-    assert text.dict().get("_id", False)
 
 
 def test_deserialization():
-    data = {"title": "Foo", "slug": "foo", "locDelim": "+", "levels": ["foo"]}
+    data = {"title": "Foo", "slug": "foo", "loc_delim": "+", "levels": ["foo"]}
     t = Text(**data)
     assert t.loc_delim == "+"
 

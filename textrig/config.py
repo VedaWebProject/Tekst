@@ -101,6 +101,7 @@ class TextRigConfig(BaseSettings):
     # basic
     app_name: str = "TextRig"
     dev_mode: bool = False
+    testing: bool = False
     root_path: str = ""
     user_files_dir: str = "/userfiles"
     log_level: str = "INFO"

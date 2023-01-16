@@ -1,16 +1,16 @@
 import abc
 
-from beanie import Document, PydanticObjectId
+from beanie import PydanticObjectId
 
 # from fastapi import HTTPException, status
 from pydantic import Field
 
 # from textrig.db.io import DbIO
 # from textrig.logging import log
-from textrig.models.common import AllOptional, Metadata
+from textrig.models.common import AllOptional, DocumentBase, Metadata
 
 
-class UnitBase(abc.ABC, Document):
+class UnitBase(abc.ABC, DocumentBase):
     """A base class for types of data units belonging to a certain data layer"""
 
     layer_id: PydanticObjectId = Field(..., description="Data layer ID")

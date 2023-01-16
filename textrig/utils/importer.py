@@ -1,19 +1,18 @@
 from collections import deque
 
-from textrig.db.io import DbIO
-from textrig.models.text import Node, NodeRead, Text, TextRead
+from textrig.models.text import Node, Text
 
 
-async def import_text(data: dict, db_io: DbIO) -> TextRead | None:
+async def import_text(data: dict) -> Text | None:
     # create and save text object
-    text = await Text(**data).create(db_io)
+    text = await Text(**data).create()
     stack = deque()
     indices = [0]
 
     # push nodes of first structure level onto stack
     for node in data.get("nodes", []):
-        node["parentId"] = None
-        node["textSlug"] = text.slug
+        node["parent_id"] = None
+        node["text_slug"] = text.slug
         node["level"] = 0
         node["index"] = indices[0]
         stack.append(node)
@@ -22,11 +21,11 @@ async def import_text(data: dict, db_io: DbIO) -> TextRead | None:
     # process stack
     while stack:
         node_data = stack.pop()
-        node: NodeRead = await Node(**node_data).create(db_io)
+        node: Node = await Node(**node_data).create()
 
         for u in node_data.get("nodes", []):
-            u["parentId"] = node.id
-            u["textSlug"] = text.slug
+            u["parent_id"] = node.id
+            u["text_slug"] = text.slug
             u["level"] = node.level + 1
             if len(indices) <= u["level"]:
                 indices.append(0)
