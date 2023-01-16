@@ -66,7 +66,7 @@ async def get_nodes(
     if parent_id:
         example["parent_id"] = parent_id
 
-    return await Node.find(example, limit=limit).to_list()
+    return await Node.find(example).limit(limit).to_list()
 
 
 @router.patch("", response_model=Node, status_code=status.HTTP_200_OK)
@@ -88,7 +88,7 @@ async def get_children(
     node_id: str,
     limit: int = 1000,
 ) -> list:
-    return await Node.find({"parent_id": node_id}, limit=limit).to_list()
+    return await Node.find({"parent_id": node_id}).limit(limit).to_list()
 
 
 @router.get("/{node_id}/next", response_model=Node, status_code=status.HTTP_200_OK)

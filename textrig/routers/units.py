@@ -1,11 +1,13 @@
 from fastapi import APIRouter, HTTPException, status
 from textrig.db import is_unique
 from textrig.layer_types import UnitBase, UnitUpdateBase, get_layer_types
+from textrig.utils.validators import validate_id
 
 
 def _generate_read_endpoint(unit_read_model: type[UnitBase]):
     async def get_unit(unit_id: str) -> unit_read_model:
         """A generic route for reading a unit from the database"""
+        validate_id(unit_id)
         unit = await unit_read_model.get(unit_id)
         if not unit:
             raise HTTPException(

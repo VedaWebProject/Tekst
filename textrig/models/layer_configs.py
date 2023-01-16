@@ -18,8 +18,8 @@ class DeepLLinksConfig(BaseModel):
     source_language: Literal[_DEEPL_LANGUAGES] | None = Field(
         None, description="Source language"
     )
-    languages: set[Literal[_DEEPL_LANGUAGES]] = Field(
-        ("EN", "DE"), description="Target languages to display links for"
+    languages: list[Literal[_DEEPL_LANGUAGES]] = Field(
+        ["EN", "DE"], description="Target languages to display links for"
     )
 
     def _uppercase_lang_code(v):

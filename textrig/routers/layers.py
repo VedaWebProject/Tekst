@@ -5,9 +5,11 @@ from fastapi import APIRouter, HTTPException, status
 
 # from textrig.dependencies import get_db_io
 from textrig.layer_types import get_layer_types
+from textrig.utils.validators import validate_id
 
 # from textrig.logging import log
 from textrig.models.layer import LayerBase, LayerUpdateBase
+from textrig.models.text import Text
 
 
 # from fastapi.responses import FileResponse
@@ -20,6 +22,7 @@ from textrig.models.layer import LayerBase, LayerUpdateBase
 def _generate_read_endpoint(layer_read_model: type[LayerBase]):
     async def get_layer(layer_id: str) -> layer_read_model:
         """A generic route for reading a layer definition from the database"""
+        validate_id(layer_id)
         layer = await layer_read_model.get(layer_id)
         if not layer:
             raise HTTPException(
@@ -35,6 +38,11 @@ def _generate_create_endpoint(
     layer_model: type[LayerBase],
 ):
     async def create_layer(layer: layer_model) -> layer_model:
+        if not await Text.find(Text.slug == layer.text_slug).first_or_none():
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Layer refers to invalid text slug '{layer.text_slug}'",
+            )
         return await layer.create()
 
     return create_layer

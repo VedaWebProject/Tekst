@@ -20,7 +20,7 @@ class PlainTextLayer(LayerBase):
 class PlainTextUnit(UnitBase):
     """A unit of a plaintext data layer"""
 
-    text: str = Field(
+    text: str | None = Field(
         None,
         description="Text content of the plaintext unit",
         extra={"template": True},

@@ -3,6 +3,7 @@ import json
 from fastapi import APIRouter, HTTPException, status, UploadFile, Depends
 from textrig.config import TextRigConfig, get_config
 from textrig.dependencies import get_cfg
+from textrig.utils.validators import validate_id
 
 from textrig.logging import log
 from textrig.models.text import Text, TextUpdate
@@ -76,6 +77,7 @@ async def import_text(
 
 @router.get("/{text_id}", response_model=Text, status_code=status.HTTP_200_OK)
 async def get_text_by_id(text_id: str) -> dict:
+    validate_id(text_id)
     text = await Text.get(text_id)
     if not text:
         raise HTTPException(

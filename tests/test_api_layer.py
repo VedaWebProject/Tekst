@@ -71,7 +71,7 @@ async def test_get_layer(root_path, test_client: AsyncClient, insert_test_data):
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert isinstance(resp.json(), dict)
     assert "_id" in resp.json()
-    assert resp.json()["_id"] == layer_update.id
+    assert resp.json()["_id"] == str(layer_update.id)
     assert resp.json()["title"] == layer_update.title
 
 
@@ -121,7 +121,7 @@ async def test_get_layers(root_path, test_client: AsyncClient, insert_test_data)
     # request invalid ID
     endpoint = f"{root_path}/layers/plaintext/foo"
     resp = await test_client.get(endpoint)
-    assert resp.status_code == 404, f"HTTP status {resp.status_code} (expected: 404)"
+    assert resp.status_code == 400, f"HTTP status {resp.status_code} (expected: 400)"
 
 
 # @pytest.mark.anyio

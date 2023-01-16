@@ -34,10 +34,11 @@ async def test_child_node_io(
 
     # create child
     child: Node = Node(**node)
-    child.parent_id = str(parent.id)
+    child.parent_id = parent.id
     child.level = parent.level + 1
     child.index = 0
-    resp = await test_client.post(endpoint, json=child.dict())
+    resp = await test_client.post(endpoint, json=child.dict(serialize_ids=True))
+    assert resp.status_code == 201, f"HTTP status {resp.status_code} (expected: 201)"
     child = Node(**resp.json())
     assert "_id" in resp.json()
     assert "parent_id" in resp.json()
@@ -45,7 +46,7 @@ async def test_child_node_io(
 
     # find children by parent ID
     resp = await test_client.get(
-        endpoint, params={"text_slug": parent.text_slug, "parent_id": parent.id}
+        endpoint, params={"text_slug": parent.text_slug, "parent_id": str(parent.id)}
     )
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) is list
