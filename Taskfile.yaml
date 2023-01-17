@@ -45,7 +45,7 @@ tasks:
     env:
       TEXTRIG_ENV_FILE: .env.test
     cmds:
-      - poetry run coverage run -m pytest
+      - poetry run coverage run -m pytest {{.CLI_ARGS}}
       - poetry run coverage report -m
     ignore_error: true
 
