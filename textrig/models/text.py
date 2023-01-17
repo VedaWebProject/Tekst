@@ -74,7 +74,6 @@ class Node(DocumentBase):
 
     class Settings:
         name = "nodes"
-        is_root = True
 
 
 class NodeUpdate(Node, metaclass=AllOptional):
