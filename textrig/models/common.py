@@ -6,7 +6,7 @@ from bson import ObjectId
 
 # from bson.errors import InvalidId
 # from humps import camelize
-# from pydantic import BaseModel, Field
+from pydantic import Field
 from pydantic.main import ModelMetaclass
 
 
@@ -16,6 +16,8 @@ Metadata = dict[str, str | int | bool | float]
 
 class DocumentBase(Document):
     """Base class for all TextRig DB models"""
+
+    id: PydanticObjectId = Field(None, description="ID of this object")
 
     def dict(self, serialize_ids: bool = False, **kwargs) -> dict:
         """Overrides dict() in Basemodel to change some defaults"""
@@ -36,6 +38,10 @@ class DocumentBase(Document):
             # by_alias=kwargs.pop("by_alias", True),
             **kwargs,
         )
+
+    async def insert(self, **kwargs):
+        self.id = None  # reset ID for new document in case one is already set
+        return await super().insert(**kwargs)
 
     def _serialize_ids(self, obj: "dict | list[dict]") -> dict:
         def encode_obj_ids(d: dict) -> dict:
