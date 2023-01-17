@@ -8,9 +8,9 @@ from motor.motor_asyncio import AsyncIOMotorClient as DatabaseClient
 from motor.motor_asyncio import AsyncIOMotorDatabase as Database
 from textrig.config import TextRigConfig, get_config
 from textrig.layer_types import get_layer_types
+from textrig.logging import log
 from textrig.models.common import DocumentBase
 from textrig.models.text import Node, NodeUpdate, Text
-from textrig.logging import log
 
 
 _cfg: TextRigConfig = get_config()
@@ -46,14 +46,10 @@ async def init_odm(db: Database) -> None:
         models.append(lt_class.get_unit_model())
         models.append(lt_class.get_unit_update_model())
     # init beanie ODM
-    await init_beanie(
-        database=db, allow_index_dropping=True, document_models=models
-    )
+    await init_beanie(database=db, allow_index_dropping=True, document_models=models)
 
 
-async def is_unique(
-    obj: DocumentBase, based_on_props: tuple[str]
-) -> bool:
+async def is_unique(obj: DocumentBase, based_on_props: tuple[str]) -> bool:
     criteria = {p: True for p in based_on_props}
     unique_props = obj.dict(include=criteria)
     return not bool(await type(obj).find(unique_props).first_or_none())

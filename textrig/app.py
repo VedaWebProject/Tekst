@@ -4,7 +4,6 @@ from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 from textrig.config import TextRigConfig, get_config
 from textrig.db import init_odm
-
 from textrig.dependencies import get_db_client
 from textrig.layer_types import init_layer_type_manager
 from textrig.logging import log, setup_logging

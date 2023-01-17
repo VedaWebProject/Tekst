@@ -1,8 +1,9 @@
-from typing import Optional
 import re
-from beanie import Document, PydanticObjectId
+from typing import Optional
 
+from beanie import Document, PydanticObjectId
 from bson import ObjectId
+
 # from bson.errors import InvalidId
 # from humps import camelize
 # from pydantic import BaseModel, Field
@@ -77,10 +78,7 @@ class DocumentBase(Document):
         return list(cls.schema(alias).get("properties").keys())
 
     class Config:
-        json_encoders = {
-            PydanticObjectId: str,
-            ObjectId: str
-        }
+        json_encoders = {PydanticObjectId: str, ObjectId: str}
 
     #     alias_generator = camelize
     #     allow_population_by_field_name = True

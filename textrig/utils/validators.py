@@ -1,5 +1,5 @@
-from fastapi import HTTPException, status
 from beanie import PydanticObjectId
+from fastapi import HTTPException, status
 
 
 def validate_id(id_: str) -> None:

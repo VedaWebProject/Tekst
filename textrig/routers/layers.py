@@ -5,11 +5,11 @@ from fastapi import APIRouter, HTTPException, status
 
 # from textrig.dependencies import get_db_io
 from textrig.layer_types import get_layer_types
-from textrig.utils.validators import validate_id
 
 # from textrig.logging import log
 from textrig.models.layer import LayerBase, LayerUpdateBase
 from textrig.models.text import Text
+from textrig.utils.validators import validate_id
 
 
 # from fastapi.responses import FileResponse

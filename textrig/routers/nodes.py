@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, status
-from textrig.models.text import Node, NodeUpdate, Text
 from textrig.logging import log
+from textrig.models.text import Node, NodeUpdate, Text
 
 
 router = APIRouter(

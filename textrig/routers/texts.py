@@ -1,15 +1,12 @@
 import json
 
-from fastapi import APIRouter, HTTPException, status, UploadFile, Depends
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, status
 from textrig.config import TextRigConfig, get_config
 from textrig.dependencies import get_cfg
-from textrig.utils.validators import validate_id
-
 from textrig.logging import log
 from textrig.models.text import Text, TextUpdate
-
-
 from textrig.utils import importer
+from textrig.utils.validators import validate_id
 
 
 _cfg: TextRigConfig = get_config()
