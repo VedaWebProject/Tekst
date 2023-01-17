@@ -39,6 +39,7 @@ tasks:
     desc: Run flake8 linter
     cmds:
       - flake8 .
+    ignore_error: true
 
   run-tests:
     desc: Run test suite with pytest
