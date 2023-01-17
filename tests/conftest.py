@@ -57,7 +57,7 @@ async def get_db_client_override(config) -> DatabaseClient:
     db_client.close()
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 async def test_app(config, get_db_client_override):
     """Provides an app instance with overridden dependencies"""
     app.dependency_overrides[get_db_client] = lambda: get_db_client_override
@@ -75,7 +75,12 @@ async def test_client(test_app) -> AsyncClient:
 
 
 @pytest.fixture
-async def insert_test_data(root_path, test_client, test_data) -> callable:
+async def reset_db(get_db_client_override, config):
+    await get_db_client_override.drop_database(config.db.name)
+
+
+@pytest.fixture
+async def insert_test_data(reset_db, root_path, test_client, test_data) -> callable:
     """
     Returns an asynchronous function to load
     test data for certain database collections
