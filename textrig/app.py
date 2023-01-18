@@ -27,6 +27,14 @@ def init_app(app: FastAPI) -> None:
         f"{_cfg.app_name} (TextRig Server v{_cfg.info.version}) "
         f"running in {'DEVELOPMENT' if _cfg.dev_mode else 'PRODUCTION'} MODE"
     )
+    # configure CORS middleware
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=_cfg.cors_allow_origins,
+        allow_credentials=_cfg.cors_allow_credentials,
+        allow_methods=_cfg.cors_allow_methods,
+        allow_headers=_cfg.cors_allow_headers,
+    )
     init_layer_type_manager()
     setup_routes(app)
 
@@ -73,15 +81,6 @@ app = FastAPI(
     },
     on_startup=[startup_routine],
     on_shutdown=[shutdown_routine],
-)
-
-# TODO: Properly configure CORS
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=_cfg.cors_allow_origins,
-    allow_credentials=_cfg.cors_allow_credentials,
-    allow_methods=_cfg.cors_allow_methods,
-    allow_headers=_cfg.cors_allow_headers,
 )
 
 init_app(app)
