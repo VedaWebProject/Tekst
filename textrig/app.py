@@ -52,7 +52,7 @@ async def startup_routine() -> None:
 
 
 async def shutdown_routine() -> None:
-    log.info(f"Running {_cfg.info.platform} shutdown sequence")
+    log.info(f"{_cfg.info.platform} cleaning up and shutting down")
     get_db_client(_cfg).close()
 
 
