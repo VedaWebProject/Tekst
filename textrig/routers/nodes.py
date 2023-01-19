@@ -1,3 +1,4 @@
+from beanie import PydanticObjectId
 from fastapi import APIRouter, HTTPException, status
 from textrig.logging import log
 from textrig.models.text import Node, NodeUpdate, Text
@@ -46,7 +47,7 @@ async def get_nodes(
     text_slug: str,
     level: int = None,
     index: int = None,
-    parent_id: str = None,
+    parent_id: PydanticObjectId = None,
     limit: int = 1000,
 ) -> list:
     if level is None and parent_id is None:
@@ -85,7 +86,7 @@ async def update_node(node_update: NodeUpdate) -> dict:
     "/{node_id}/children", response_model=list[Node], status_code=status.HTTP_200_OK
 )
 async def get_children(
-    node_id: str,
+    node_id: PydanticObjectId,
     limit: int = 1000,
 ) -> list:
     return await Node.find({"parent_id": node_id}).limit(limit).to_list()

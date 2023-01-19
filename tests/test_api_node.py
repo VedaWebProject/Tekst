@@ -46,7 +46,7 @@ async def test_child_node_io(
 
     # find children by parent ID
     resp = await test_client.get(
-        endpoint, params={"text_slug": parent.text_slug, "parent_id": str(parent.id)}
+        endpoint, params={"text_slug": parent.text_slug, "parent_id": parent.id}
     )
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) is list
