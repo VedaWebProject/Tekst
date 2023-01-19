@@ -21,7 +21,7 @@ async def test_create_node(
 
 @pytest.mark.anyio
 async def test_child_node_io(
-    root_path, test_client: AsyncClient, test_data, insert_test_data
+    root_path, test_client: AsyncClient, test_data, insert_test_data, json_compat
 ):
     await insert_test_data("texts")
     endpoint = f"{root_path}/nodes"
@@ -37,7 +37,7 @@ async def test_child_node_io(
     child.parent_id = parent.id
     child.level = parent.level + 1
     child.index = 0
-    resp = await test_client.post(endpoint, json=child.dict(serialize_ids=True))
+    resp = await test_client.post(endpoint, json=json_compat(child.dict()))
     assert resp.status_code == 201, f"HTTP status {resp.status_code} (expected: 201)"
     child = Node(**resp.json())
     assert "_id" in resp.json()
@@ -144,7 +144,7 @@ async def test_get_nodes(
 
 @pytest.mark.anyio
 async def test_update_node(
-    root_path, test_client: AsyncClient, insert_test_data, test_data
+    root_path, test_client: AsyncClient, insert_test_data, test_data, json_compat
 ):
     await insert_test_data("texts", "nodes")
     text_slug = test_data["texts"][0]["slug"]
@@ -157,18 +157,18 @@ async def test_update_node(
     node = Node(**resp.json()[0])
     # update node
     node_update = NodeUpdate(id=node.id, label="A fresh label")
-    resp = await test_client.patch(endpoint, json=node_update.dict(serialize_ids=True))
+    resp = await test_client.patch(endpoint, json=json_compat(node_update.dict()))
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert "_id" in resp.json()
     assert resp.json()["_id"] == str(node.id)
     assert "label" in resp.json()
     assert resp.json()["label"] == "A fresh label"
     # update unchanged node
-    resp = await test_client.patch(endpoint, json=node_update.dict(serialize_ids=True))
+    resp = await test_client.patch(endpoint, json=json_compat(node_update.dict()))
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     # update invalid node
     node_update = NodeUpdate(id="637b9ad396d541a505e5439b", label="Brand new label")
-    resp = await test_client.patch(endpoint, json=node_update.dict(serialize_ids=True))
+    resp = await test_client.patch(endpoint, json=json_compat(node_update.dict()))
     assert resp.status_code == 400, f"HTTP status {resp.status_code} (expected: 400)"
 
 

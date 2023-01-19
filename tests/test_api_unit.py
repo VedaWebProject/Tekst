@@ -4,7 +4,9 @@ from textrig.layer_types import get_layer_type
 
 
 @pytest.mark.anyio
-async def test_create_layer_unit(root_path, test_client: AsyncClient, insert_test_data):
+async def test_create_layer_unit(
+    root_path, test_client: AsyncClient, insert_test_data, json_compat
+):
     await insert_test_data("texts", "nodes", "layers")
     # get ID of existing test layer
     endpoint = f"{root_path}/layers"
@@ -64,7 +66,7 @@ async def test_create_layer_unit(root_path, test_client: AsyncClient, insert_tes
     endpoint = f"{root_path}/units/plaintext"
     UpdateModel = get_layer_type("plaintext").get_unit_update_model()
     unit_update = UpdateModel(_id=unit_id, text="FOO BAR")
-    resp = await test_client.patch(endpoint, json=unit_update.dict(serialize_ids=True))
+    resp = await test_client.patch(endpoint, json=json_compat(unit_update.dict()))
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) == dict
     assert "_id" in resp.json()
@@ -73,5 +75,5 @@ async def test_create_layer_unit(root_path, test_client: AsyncClient, insert_tes
 
     # fail to update unit with invalid ID
     unit_update = UpdateModel(id="637b9ad396d541a505e5439b", text="FOO BAR")
-    resp = await test_client.patch(endpoint, json=unit_update.dict(serialize_ids=True))
+    resp = await test_client.patch(endpoint, json=json_compat(unit_update.dict()))
     assert resp.status_code == 400, f"HTTP status {resp.status_code} (expected: 400)"

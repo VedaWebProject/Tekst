@@ -1,4 +1,3 @@
-import re
 from typing import Optional
 
 from beanie import Document, PydanticObjectId
@@ -19,7 +18,7 @@ class DocumentBase(Document):
 
     id: PydanticObjectId = Field(None, description="ID of this object")
 
-    def dict(self, serialize_ids: bool = False, **kwargs) -> dict:
+    def dict(self, **kwargs) -> dict:
         """Overrides dict() in Basemodel to change some defaults"""
 
         parsed = super().dict(
@@ -27,8 +26,6 @@ class DocumentBase(Document):
             # by_alias=kwargs.pop("by_alias", True),
             **kwargs,
         )
-        if serialize_ids:
-            parsed = self._serialize_ids(parsed)
         return parsed
 
     def json(self, **kwargs) -> str:
@@ -42,31 +39,6 @@ class DocumentBase(Document):
     async def insert(self, **kwargs):
         self.id = None  # reset ID for new document in case one is already set
         return await super().insert(**kwargs)
-
-    def _serialize_ids(self, obj: "dict | list[dict]") -> dict:
-        def encode_obj_ids(d: dict) -> dict:
-            out = dict()
-            for k, v in d.items():
-                if not isinstance(k, str):
-                    raise ValueError("Keys sould be strings")
-                elif isinstance(v, dict):
-                    out[k] = encode_obj_ids(v)
-                elif re.match(r"^(id|_id|.*?Id|.*?_id)$", k):
-                    if isinstance(v, ObjectId) or isinstance(v, PydanticObjectId):
-                        out[k] = str(v)
-                else:
-                    out[k] = v
-            return out
-
-        if type(obj) is dict:
-            return encode_obj_ids(obj)
-        elif type(obj) is list:
-            return [encode_obj_ids(o) for o in obj]
-        else:
-            raise TypeError(
-                "The passed object must be of type "
-                f"'dict' or 'list', got '{type(obj).__name__}'"
-            )
 
     # def ensure_model_type(
     #     self, target_model_type: "TextRigBaseModel"

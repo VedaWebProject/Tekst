@@ -51,7 +51,9 @@ async def test_create_layer_invalid(
 
 
 @pytest.mark.anyio
-async def test_get_layer(root_path, test_client: AsyncClient, insert_test_data):
+async def test_get_layer(
+    root_path, test_client: AsyncClient, insert_test_data, json_compat
+):
     await insert_test_data("texts", "nodes", "layers")
     # get existing layer id
     endpoint = f"{root_path}/layers"
@@ -67,7 +69,7 @@ async def test_get_layer(root_path, test_client: AsyncClient, insert_test_data):
     layer_update = LayerUpdate(**resp.json()[0])
     layer_update.title = "foo bar baz"
     endpoint = f"{root_path}/layers/{layer_update.layer_type}"
-    resp = await test_client.patch(endpoint, json=layer_update.dict(serialize_ids=True))
+    resp = await test_client.patch(endpoint, json=json_compat(layer_update.dict()))
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert isinstance(resp.json(), dict)
     assert "_id" in resp.json()
