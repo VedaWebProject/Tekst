@@ -9,19 +9,19 @@
   ],
   "nodes": [
     {
-      "text_slug": "rigveda",
+      "textSlug": "rigveda",
       "level": 0,
       "index": 0,
       "label": "001"
     },
     {
-      "text_slug": "rigveda",
+      "textSlug": "rigveda",
       "level": 0,
       "index": 1,
       "label": "002"
     },
     {
-      "text_slug": "rigveda",
+      "textSlug": "rigveda",
       "level": 0,
       "index": 2,
       "label": "003"
@@ -30,9 +30,9 @@
   "layers": [
     {
       "title": "A test layer",
-      "text_slug": "rigveda",
+      "textSlug": "rigveda",
       "level": 0,
-      "layer_type": "plaintext"
+      "layerType": "plaintext"
     }
   ]
 }

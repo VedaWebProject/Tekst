@@ -19,7 +19,7 @@ def test_dict_override():
     assert t_data["title"] == "agním īḷe puróhitaṁ"
     assert "slug" in t_data
     assert t_data["slug"] == "agnim"
-    assert "loc_delim" not in t_data
+    assert "locDelim" not in t_data
 
 
 def test_serialization(test_data):
@@ -31,7 +31,7 @@ def test_serialization(test_data):
 
 
 def test_deserialization():
-    data = {"title": "Foo", "slug": "foo", "loc_delim": "+", "levels": ["foo"]}
+    data = {"title": "Foo", "slug": "foo", "locDelim": "+", "levels": ["foo"]}
     t = Text(**data)
     assert t.loc_delim == "+"
 

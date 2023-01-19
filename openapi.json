@@ -44,7 +44,7 @@
         }
       }
     },
-    "/layers/plaintext/{layer_id}": {
+    "/layers/plaintext/{layerId}": {
       "get": {
         "tags": [
           "layers"
@@ -56,10 +56,10 @@
           {
             "required": true,
             "schema": {
-              "title": "Layer Id",
+              "title": "Layerid",
               "type": "string"
             },
-            "name": "layer_id",
+            "name": "layerId",
             "in": "path"
           }
         ],
@@ -198,10 +198,10 @@
           {
             "required": true,
             "schema": {
-              "title": "Text Slug",
+              "title": "Textslug",
               "type": "string"
             },
-            "name": "text_slug",
+            "name": "textSlug",
             "in": "query"
           },
           {
@@ -216,10 +216,10 @@
           {
             "required": false,
             "schema": {
-              "title": "Layer Type",
+              "title": "Layertype",
               "type": "string"
             },
-            "name": "layer_type",
+            "name": "layerType",
             "in": "query"
           },
           {
@@ -267,7 +267,7 @@
         }
       }
     },
-    "/layers/{layer_id}": {
+    "/layers/{layerId}": {
       "get": {
         "tags": [
           "layers"
@@ -278,10 +278,14 @@
           {
             "required": true,
             "schema": {
-              "title": "Layer Id",
-              "type": "string"
+              "title": "Layerid",
+              "type": "string",
+              "examples": [
+                "5eb7cf5a86d9755df3a6c593",
+                "5eb7cfb05e32e07750a1756a"
+              ]
             },
-            "name": "layer_id",
+            "name": "layerId",
             "in": "path"
           }
         ],
@@ -327,10 +331,10 @@
           {
             "required": true,
             "schema": {
-              "title": "Text Slug",
+              "title": "Textslug",
               "type": "string"
             },
-            "name": "text_slug",
+            "name": "textSlug",
             "in": "query"
           },
           {
@@ -354,14 +358,14 @@
           {
             "required": false,
             "schema": {
-              "title": "Parent Id",
+              "title": "Parentid",
               "type": "string",
               "examples": [
                 "5eb7cf5a86d9755df3a6c593",
                 "5eb7cfb05e32e07750a1756a"
               ]
             },
-            "name": "parent_id",
+            "name": "parentId",
             "in": "query"
           },
           {
@@ -499,7 +503,7 @@
         }
       }
     },
-    "/nodes/{node_id}/children": {
+    "/nodes/{nodeId}/children": {
       "get": {
         "tags": [
           "nodes"
@@ -510,14 +514,14 @@
           {
             "required": true,
             "schema": {
-              "title": "Node Id",
+              "title": "Nodeid",
               "type": "string",
               "examples": [
                 "5eb7cf5a86d9755df3a6c593",
                 "5eb7cfb05e32e07750a1756a"
               ]
             },
-            "name": "node_id",
+            "name": "nodeId",
             "in": "path"
           },
           {
@@ -565,7 +569,7 @@
         }
       }
     },
-    "/nodes/{node_id}/next": {
+    "/nodes/{nodeId}/next": {
       "get": {
         "tags": [
           "nodes"
@@ -576,10 +580,14 @@
           {
             "required": true,
             "schema": {
-              "title": "Node Id",
-              "type": "string"
+              "title": "Nodeid",
+              "type": "string",
+              "examples": [
+                "5eb7cf5a86d9755df3a6c593",
+                "5eb7cfb05e32e07750a1756a"
+              ]
             },
-            "name": "node_id",
+            "name": "nodeId",
             "in": "path"
           }
         ],
@@ -756,7 +764,7 @@
         }
       }
     },
-    "/texts/{text_id}": {
+    "/texts/{textId}": {
       "get": {
         "tags": [
           "texts"
@@ -767,10 +775,14 @@
           {
             "required": true,
             "schema": {
-              "title": "Text Id",
-              "type": "string"
+              "title": "Textid",
+              "type": "string",
+              "examples": [
+                "5eb7cf5a86d9755df3a6c593",
+                "5eb7cfb05e32e07750a1756a"
+              ]
             },
-            "name": "text_id",
+            "name": "textId",
             "in": "path"
           }
         ],
@@ -915,7 +927,7 @@
         }
       }
     },
-    "/units/plaintext/{unit_id}": {
+    "/units/plaintext/{unitId}": {
       "get": {
         "tags": [
           "units"
@@ -927,10 +939,10 @@
           {
             "required": true,
             "schema": {
-              "title": "Unit Id",
+              "title": "Unitid",
               "type": "string"
             },
-            "name": "unit_id",
+            "name": "unitId",
             "in": "path"
           }
         ],
@@ -1164,7 +1176,7 @@
       "Node": {
         "title": "Node",
         "required": [
-          "text_slug",
+          "textSlug",
           "level",
           "index",
           "label"
@@ -1180,19 +1192,19 @@
               "5eb7cfb05e32e07750a1756a"
             ]
           },
-          "revision_id": {
-            "title": "Revision Id",
+          "revisionId": {
+            "title": "Revisionid",
             "type": "string",
             "format": "uuid",
             "hidden": true
           },
-          "text_slug": {
-            "title": "Text Slug",
+          "textSlug": {
+            "title": "Textslug",
             "type": "string",
             "description": "Slug of the text this node belongs to"
           },
-          "parent_id": {
-            "title": "Parent Id",
+          "parentId": {
+            "title": "Parentid",
             "type": "string",
             "description": "ID of parent node",
             "examples": [
@@ -1254,18 +1266,18 @@
               "5eb7cfb05e32e07750a1756a"
             ]
           },
-          "revision_id": {
-            "title": "Revision Id",
+          "revisionId": {
+            "title": "Revisionid",
             "type": "string",
             "format": "uuid",
             "hidden": true
           },
-          "text_slug": {
-            "title": "Text Slug",
+          "textSlug": {
+            "title": "Textslug",
             "type": "string"
           },
-          "parent_id": {
-            "title": "Parent Id",
+          "parentId": {
+            "title": "Parentid",
             "type": "string",
             "examples": [
               "5eb7cf5a86d9755df3a6c593",
@@ -1311,9 +1323,9 @@
         "title": "PlainTextLayer",
         "required": [
           "title",
-          "text_slug",
+          "textSlug",
           "level",
-          "layer_type"
+          "layerType"
         ],
         "type": "object",
         "properties": {
@@ -1326,8 +1338,8 @@
               "5eb7cfb05e32e07750a1756a"
             ]
           },
-          "revision_id": {
-            "title": "Revision Id",
+          "revisionId": {
+            "title": "Revisionid",
             "type": "string",
             "format": "uuid",
             "hidden": true
@@ -1346,8 +1358,8 @@
             "type": "string",
             "description": "Short, one-line description of this data layer"
           },
-          "text_slug": {
-            "title": "Text Slug",
+          "textSlug": {
+            "title": "Textslug",
             "type": "string",
             "description": "Slug of the text this layer belongs to"
           },
@@ -1356,8 +1368,8 @@
             "type": "integer",
             "description": "Text level this layer belongs to"
           },
-          "layer_type": {
-            "title": "Layer Type",
+          "layerType": {
+            "title": "Layertype",
             "type": "string",
             "description": "A string identifying one of the available layer types"
           },
@@ -1442,8 +1454,8 @@
               "5eb7cfb05e32e07750a1756a"
             ]
           },
-          "revision_id": {
-            "title": "Revision Id",
+          "revisionId": {
+            "title": "Revisionid",
             "type": "string",
             "format": "uuid",
             "hidden": true
@@ -1456,16 +1468,16 @@
             "title": "Description",
             "type": "string"
           },
-          "text_slug": {
-            "title": "Text Slug",
+          "textSlug": {
+            "title": "Textslug",
             "type": "string"
           },
           "level": {
             "title": "Level",
             "type": "integer"
           },
-          "layer_type": {
-            "title": "Layer Type",
+          "layerType": {
+            "title": "Layertype",
             "type": "string"
           },
           "public": {
@@ -1501,8 +1513,8 @@
       "PlainTextUnit": {
         "title": "PlainTextUnit",
         "required": [
-          "layer_id",
-          "node_id"
+          "layerId",
+          "nodeId"
         ],
         "type": "object",
         "properties": {
@@ -1515,14 +1527,14 @@
               "5eb7cfb05e32e07750a1756a"
             ]
           },
-          "revision_id": {
-            "title": "Revision Id",
+          "revisionId": {
+            "title": "Revisionid",
             "type": "string",
             "format": "uuid",
             "hidden": true
           },
-          "layer_id": {
-            "title": "Layer Id",
+          "layerId": {
+            "title": "Layerid",
             "type": "string",
             "description": "Data layer ID",
             "examples": [
@@ -1530,8 +1542,8 @@
               "5eb7cfb05e32e07750a1756a"
             ]
           },
-          "node_id": {
-            "title": "Node Id",
+          "nodeId": {
+            "title": "Nodeid",
             "type": "string",
             "description": "Parent text node ID",
             "examples": [
@@ -1587,22 +1599,22 @@
               "5eb7cfb05e32e07750a1756a"
             ]
           },
-          "revision_id": {
-            "title": "Revision Id",
+          "revisionId": {
+            "title": "Revisionid",
             "type": "string",
             "format": "uuid",
             "hidden": true
           },
-          "layer_id": {
-            "title": "Layer Id",
+          "layerId": {
+            "title": "Layerid",
             "type": "string",
             "examples": [
               "5eb7cf5a86d9755df3a6c593",
               "5eb7cfb05e32e07750a1756a"
             ]
           },
-          "node_id": {
-            "title": "Node Id",
+          "nodeId": {
+            "title": "Nodeid",
             "type": "string",
             "examples": [
               "5eb7cf5a86d9755df3a6c593",
@@ -1654,8 +1666,8 @@
               "5eb7cfb05e32e07750a1756a"
             ]
           },
-          "revision_id": {
-            "title": "Revision Id",
+          "revisionId": {
+            "title": "Revisionid",
             "type": "string",
             "format": "uuid",
             "hidden": true
@@ -1690,8 +1702,8 @@
               "type": "string"
             }
           },
-          "loc_delim": {
-            "title": "Loc Delim",
+          "locDelim": {
+            "title": "Locdelim",
             "type": "string",
             "description": "Delimiter for displaying text locations",
             "default": ","
@@ -1712,8 +1724,8 @@
               "5eb7cfb05e32e07750a1756a"
             ]
           },
-          "revision_id": {
-            "title": "Revision Id",
+          "revisionId": {
+            "title": "Revisionid",
             "type": "string",
             "format": "uuid",
             "hidden": true
@@ -1737,8 +1749,8 @@
               "type": "string"
             }
           },
-          "loc_delim": {
-            "title": "Loc Delim",
+          "locDelim": {
+            "title": "Locdelim",
             "type": "string"
           }
         },

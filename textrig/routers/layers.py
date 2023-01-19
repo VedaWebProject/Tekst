@@ -1,7 +1,8 @@
 # import json
 # from tempfile import NamedTemporaryFile
 
-from fastapi import APIRouter, HTTPException, status
+from beanie import PydanticObjectId
+from fastapi import APIRouter, HTTPException, Path, status
 
 # from textrig.dependencies import get_db_io
 from textrig.layer_types import get_layer_types
@@ -20,7 +21,7 @@ from textrig.utils.validators import validate_id
 
 
 def _generate_read_endpoint(layer_read_model: type[LayerBase]):
-    async def get_layer(layer_id: str) -> layer_read_model:
+    async def get_layer(layer_id: str = Path(..., alias="layerId")) -> layer_read_model:
         """A generic route for reading a layer definition from the database"""
         validate_id(layer_id)
         layer = await layer_read_model.get(layer_id)
@@ -78,7 +79,7 @@ router = APIRouter(
 for lt_name, lt_class in get_layer_types().items():
     # add route for reading a layer definition from the database
     router.add_api_route(
-        path=f"/{lt_name}/{{layer_id}}",
+        path=f"/{lt_name}/{{layerId}}",
         name=f"get_{lt_name}_layer",
         description=f"Returns the data for a {lt_class.get_name()} data layer",
         endpoint=_generate_read_endpoint(lt_class.get_layer_model()),
@@ -124,15 +125,15 @@ async def get_layers(
     limit: int = 1000,
 ) -> list:
 
-    example = dict(text_slug=text_slug)
+    example = dict(textSlug=text_slug)
 
     if level is not None:
         example["level"] = level
 
     if layer_type is not None:
-        example["layer_type"] = layer_type
+        example["layerType"] = layer_type
 
-    return await LayerBase.find(example, limit=limit, with_children=True).to_list()
+    return await LayerBase.find(example, with_children=True).limit(limit).to_list()
 
 
 # @router.post("", response_model=LayerReadBase, status_code=status.HTTP_201_CREATED)
@@ -225,9 +226,9 @@ async def get_layers(
 #     return resp_data
 
 
-@router.get("/{layer_id}", status_code=status.HTTP_200_OK)
+@router.get("/{layerId}", status_code=status.HTTP_200_OK)
 async def get_layer(
-    layer_id: str,
+    layer_id: PydanticObjectId = Path(..., alias="layerId"),
 ) -> dict:
     layer = await LayerBase.get(layer_id, with_children=True)
     if not layer:

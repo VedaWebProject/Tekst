@@ -4,7 +4,7 @@ from beanie import Document, PydanticObjectId
 from bson import ObjectId
 
 # from bson.errors import InvalidId
-# from humps import camelize
+from humps import camelize
 from pydantic import Field
 from pydantic.main import ModelMetaclass
 
@@ -16,7 +16,7 @@ Metadata = dict[str, str | int | bool | float]
 class DocumentBase(Document):
     """Base class for all TextRig DB models"""
 
-    id: PydanticObjectId = Field(None, description="ID of this object")
+    id: PydanticObjectId = Field(None, description="ID of this object", alias="_id")
 
     def dict(self, **kwargs) -> dict:
         """Overrides dict() in Basemodel to change some defaults"""
@@ -57,6 +57,8 @@ class DocumentBase(Document):
 
     class Config:
         json_encoders = {PydanticObjectId: str, ObjectId: str}
+        alias_generator = camelize
+        allow_population_by_field_name = True
 
     #     alias_generator = camelize
     #     allow_population_by_field_name = True

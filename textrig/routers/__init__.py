@@ -26,6 +26,7 @@ def setup_routes(app: "FastAPI") -> None:
     :type app: FastAPI
     """
     log.info("Setting up API routes")
+    # generate route operation IDs from function names
     for router in _get_routers():
         rc = len(router.routes)
         log.debug(f"\u2022 {router.prefix}/... ({rc} route{'s' if rc != 1 else ''})")
@@ -33,3 +34,12 @@ def setup_routes(app: "FastAPI") -> None:
             if isinstance(route, APIRoute):
                 route.operation_id = humps.camelize(route.name)
         app.include_router(router)
+    # add camel-cased aliases to route params
+    for route in app.routes:
+        if isinstance(route, APIRoute):
+            for param in route.dependant.query_params:
+                if not param.field_info.alias:
+                    param.alias = humps.camelize(param.name)
+            for param in route.dependant.path_params:
+                if not param.field_info.alias:
+                    param.alias = humps.camelize(param.name)

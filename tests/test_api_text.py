@@ -1,12 +1,9 @@
 import pytest
 from httpx import AsyncClient
-from textrig.models.text import Text, TextUpdate
 
 
 @pytest.mark.anyio
-async def test_get_texts(
-    root_path, test_client: AsyncClient, insert_test_data, json_compat
-):
+async def test_get_texts(root_path, test_client: AsyncClient, insert_test_data):
     await insert_test_data("texts")
     endpoint = f"{root_path}/texts"
     resp = await test_client.get(endpoint)
@@ -39,9 +36,7 @@ async def test_create_text(root_path, test_client: AsyncClient):
 
 
 @pytest.mark.anyio
-async def test_update_text(
-    root_path, test_client: AsyncClient, insert_test_data, json_compat
-):
+async def test_update_text(root_path, test_client: AsyncClient, insert_test_data):
     await insert_test_data("texts")
     # get text from db
     endpoint = f"{root_path}/texts"
@@ -49,19 +44,19 @@ async def test_update_text(
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) == list
     assert len(resp.json()) > 0
-    text = Text(**resp.json()[0])
+    text = resp.json()[0]
     # update text
-    text_update = TextUpdate(id=text.id, title="Another text")
-    resp = await test_client.patch(endpoint, json=json_compat(text_update.dict()))
+    text_update = {"_id": text["_id"], "title": "Another text"}
+    resp = await test_client.patch(endpoint, json=text_update)
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert "_id" in resp.json()
-    assert resp.json()["_id"] == str(text.id)
+    assert resp.json()["_id"] == str(text["_id"])
     assert "title" in resp.json()
     assert resp.json()["title"] == "Another text"
     # update unchanged text
-    resp = await test_client.patch(endpoint, json=json_compat(text_update.dict()))
+    resp = await test_client.patch(endpoint, json=text_update)
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     # update invalid text
-    text_update = TextUpdate(id="637b9ad396d541a505e5439b", title="Yet another text")
-    resp = await test_client.patch(endpoint, json=json_compat(text_update.dict()))
+    text_update = {"_id": "637b9ad396d541a505e5439b", "title": "Yet another text"}
+    resp = await test_client.patch(endpoint, json=text_update)
     assert resp.status_code == 400, f"HTTP status {resp.status_code} (expected: 400)"

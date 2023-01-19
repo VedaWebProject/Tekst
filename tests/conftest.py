@@ -91,31 +91,31 @@ async def insert_test_data(reset_db, root_path, test_client, test_data) -> calla
             for doc in test_data[collection]:
                 endpoint = f"{root_path}/{collection}"
                 if collection == "layers":
-                    endpoint += f"/{doc['layer_type']}"
+                    endpoint += f"/{doc['layerType']}"
                 await test_client.post(endpoint, json=doc)
 
     return _insert_test_data
 
 
-@pytest.fixture(scope="session")
-def json_compat() -> callable:
-    """
-    Returns a function that forces JSON encodability of the passed object.
-    """
+# @pytest.fixture(scope="session")
+# def json_compat() -> callable:
+#     """
+#     Returns a function that forces JSON encodability of the passed object.
+#     """
 
-    def _json_compat(obj):
-        if isinstance(obj, dict):
-            return {str(k): _json_compat(v) for k, v in obj.items()}
-        elif isinstance(obj, list):
-            return [_json_compat(i) for i in obj]
-        else:
-            try:
-                json.dumps(obj)
-            except Exception:
-                return str(obj)
-            return obj
+#     def _json_compat(obj):
+#         if isinstance(obj, dict):
+#             return {str(k): _json_compat(v) for k, v in obj.items()}
+#         elif isinstance(obj, list):
+#             return [_json_compat(i) for i in obj]
+#         else:
+#             try:
+#                 json.dumps(obj)
+#             except Exception:
+#                 return str(obj)
+#             return obj
 
-    return _json_compat
+#     return _json_compat
 
 
 @pytest.fixture(autouse=True)

@@ -1,6 +1,5 @@
 import pytest
 from httpx import AsyncClient
-from textrig.layer_types import get_layer_type
 
 
 @pytest.mark.anyio
@@ -11,10 +10,10 @@ async def test_create_layer(
     endpoint = f"{root_path}/layers/plaintext"
     payload = {
         "title": "A test layer",
-        "text_slug": "rigveda",
+        "textSlug": "rigveda",
         "description": "This is     a string with \n some space    chars",
         "level": 0,
-        "layer_type": "plaintext",
+        "layerType": "plaintext",
     }
 
     resp = await test_client.post(endpoint, json=payload)
@@ -32,9 +31,9 @@ async def test_create_layer_invalid(
     endpoint = f"{root_path}/layers/plaintext"
     payload = {
         "title": "A test layer",
-        "text_slug": "foo",
+        "textSlug": "foo",
         "level": 0,
-        "layer_type": "plaintext",
+        "layerType": "plaintext",
     }
 
     resp = await test_client.post(endpoint, json=payload)
@@ -51,30 +50,27 @@ async def test_create_layer_invalid(
 
 
 @pytest.mark.anyio
-async def test_get_layer(
-    root_path, test_client: AsyncClient, insert_test_data, json_compat
-):
+async def test_get_layer(root_path, test_client: AsyncClient, insert_test_data):
     await insert_test_data("texts", "nodes", "layers")
     # get existing layer id
     endpoint = f"{root_path}/layers"
-    resp = await test_client.get(endpoint, params={"text_slug": "rigveda"})
+    resp = await test_client.get(endpoint, params={"textSlug": "rigveda"})
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert isinstance(resp.json(), list)
     assert len(resp.json()) > 0
     assert isinstance(resp.json()[0], dict)
     assert "_id" in resp.json()[0]
-    assert "layer_type" in resp.json()[0]
+    assert "layerType" in resp.json()[0]
     # update layer
-    LayerUpdate = get_layer_type(resp.json()[0]["layer_type"]).get_layer_update_model()
-    layer_update = LayerUpdate(**resp.json()[0])
-    layer_update.title = "foo bar baz"
-    endpoint = f"{root_path}/layers/{layer_update.layer_type}"
-    resp = await test_client.patch(endpoint, json=json_compat(layer_update.dict()))
+    layer_update = resp.json()[0]
+    layer_update["title"] = "foo bar baz"
+    endpoint = f"{root_path}/layers/{layer_update['layerType']}"
+    resp = await test_client.patch(endpoint, json=layer_update)
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert isinstance(resp.json(), dict)
     assert "_id" in resp.json()
-    assert resp.json()["_id"] == str(layer_update.id)
-    assert resp.json()["title"] == layer_update.title
+    assert resp.json()["_id"] == str(layer_update["_id"])
+    assert resp.json()["title"] == layer_update["title"]
 
 
 @pytest.mark.anyio
@@ -82,7 +78,7 @@ async def test_update_layer(root_path, test_client: AsyncClient, insert_test_dat
     await insert_test_data("texts", "nodes", "layers")
     # get existing layer id
     endpoint = f"{root_path}/layers"
-    resp = await test_client.get(endpoint, params={"text_slug": "rigveda"})
+    resp = await test_client.get(endpoint, params={"textSlug": "rigveda"})
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert isinstance(resp.json(), list)
     assert len(resp.json()) > 0
@@ -104,7 +100,7 @@ async def test_get_layers(root_path, test_client: AsyncClient, insert_test_data)
     await insert_test_data("texts", "nodes", "layers")
     endpoint = f"{root_path}/layers"
     resp = await test_client.get(
-        endpoint, params={"text_slug": "rigveda", "level": 0, "layer_type": "plaintext"}
+        endpoint, params={"textSlug": "rigveda", "level": 0, "layerType": "plaintext"}
     )
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert isinstance(resp.json(), list)
@@ -118,7 +114,7 @@ async def test_get_layers(root_path, test_client: AsyncClient, insert_test_data)
     resp = await test_client.get(endpoint)
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert isinstance(resp.json(), dict)
-    assert "layer_type" in resp.json()
+    assert "layerType" in resp.json()
 
     # request invalid ID
     endpoint = f"{root_path}/layers/plaintext/foo"
@@ -133,7 +129,7 @@ async def test_get_layers(root_path, test_client: AsyncClient, insert_test_data)
 #     await insert_test_data("texts", "nodes", "layers")
 #     # get all layers for text
 #     endpoint = f"{root_path}/layers"
-#     resp = await test_client.get(endpoint, params={"text_slug": "rigveda"})
+#     resp = await test_client.get(endpoint, params={"textSlug": "rigveda"})
 #     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
 #     assert isinstance(resp.json(), list)
 #     assert len(resp.json()) > 0
@@ -142,7 +138,7 @@ async def test_get_layers(root_path, test_client: AsyncClient, insert_test_data)
 #     layer_id = resp.json()[0]["_id"]  # remember layer ID
 #     # get template for layer
 #     endpoint = f"{root_path}/layers/template"
-#     resp = await test_client.get(endpoint, params={"layer_id": layer_id})
+#     resp = await test_client.get(endpoint, params={"layerId": layer_id})
 #     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
 #     assert isinstance(resp.json(), dict)
 #     assert "_unitSchema" in resp.json()
@@ -155,5 +151,5 @@ async def test_get_layers(root_path, test_client: AsyncClient, insert_test_data)
 # ):
 #     await insert_test_data("texts", "nodes", "layers")
 #     endpoint = f"{root_path}/layers/template"
-#     resp = await test_client.get(endpoint, params={"layer_id": "foo"})
+#     resp = await test_client.get(endpoint, params={"layerId": "foo"})
 #     assert resp.status_code == 400, f"HTTP status {resp.status_code} (expected: 400)"

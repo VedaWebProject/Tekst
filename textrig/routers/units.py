@@ -1,11 +1,11 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, Path, status
 from textrig.db import is_unique
 from textrig.layer_types import UnitBase, UnitUpdateBase, get_layer_types
 from textrig.utils.validators import validate_id
 
 
 def _generate_read_endpoint(unit_read_model: type[UnitBase]):
-    async def get_unit(unit_id: str) -> unit_read_model:
+    async def get_unit(unit_id: str = Path(..., alias="unitId")) -> unit_read_model:
         """A generic route for reading a unit from the database"""
         validate_id(unit_id)
         unit = await unit_read_model.get(unit_id)
@@ -23,7 +23,7 @@ def _generate_create_endpoint(
     unit_model: type[UnitBase],
 ):
     async def create_unit(unit: unit_model) -> unit_model:
-        if not await is_unique(unit, ("layer_id", "node_id")):
+        if not await is_unique(unit, ("layerId", "nodeId")):
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
                 detail="The properties of this unit conflict with another unit",
@@ -61,7 +61,7 @@ router = APIRouter(
 for lt_name, lt_class in get_layer_types().items():
     # add route for reading a unit from the database
     router.add_api_route(
-        path=f"/{lt_name}/{{unit_id}}",
+        path=f"/{lt_name}/{{unitId}}",
         name=f"get_{lt_name}_unit",
         description=f"Returns the data for a {lt_class.get_name()} data layer unit",
         endpoint=_generate_read_endpoint(lt_class.get_unit_model()),

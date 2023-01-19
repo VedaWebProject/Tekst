@@ -1,5 +1,5 @@
 from beanie import PydanticObjectId
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, Path, status
 from textrig.logging import log
 from textrig.models.text import Node, NodeUpdate, Text
 
@@ -16,12 +16,6 @@ router = APIRouter(
 
 @router.post("", response_model=Node, status_code=status.HTTP_201_CREATED)
 async def create_node(node: Node) -> dict:
-    if node.id and await Node.get(node.id):
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=f"A node with id {node.id} already exists",
-        )
-
     # find text the node belongs to
     if not await Text.find_one(Text.slug == node.text_slug).exists():
         raise HTTPException(
@@ -30,7 +24,7 @@ async def create_node(node: Node) -> dict:
         )
     # check for semantic duplicates
     dupes = await Node.find(
-        {"text_slug": node.text_slug, "level": node.level, "index": node.index},
+        {"textSlug": node.text_slug, "level": node.level, "index": node.index},
     ).first_or_none()
     if dupes:
         log.warning(f"Cannot create node. Conflict: {node}")
@@ -56,7 +50,7 @@ async def get_nodes(
             detail="Request must contain either level or parent_id",
         )
 
-    example = dict(text_slug=text_slug)
+    example = dict(textSlug=text_slug)
 
     if level is not None:
         example["level"] = level
@@ -65,7 +59,7 @@ async def get_nodes(
         example["index"] = index
 
     if parent_id:
-        example["parent_id"] = parent_id
+        example["parentId"] = parent_id
 
     return await Node.find(example).limit(limit).to_list()
 
@@ -83,18 +77,18 @@ async def update_node(node_update: NodeUpdate) -> dict:
 
 
 @router.get(
-    "/{node_id}/children", response_model=list[Node], status_code=status.HTTP_200_OK
+    "/{nodeId}/children", response_model=list[Node], status_code=status.HTTP_200_OK
 )
 async def get_children(
-    node_id: PydanticObjectId,
+    node_id: PydanticObjectId = Path(..., alias="nodeId"),
     limit: int = 1000,
 ) -> list:
-    return await Node.find({"parent_id": node_id}).limit(limit).to_list()
+    return await Node.find({"parentId": node_id}).limit(limit).to_list()
 
 
-@router.get("/{node_id}/next", response_model=Node, status_code=status.HTTP_200_OK)
+@router.get("/{nodeId}/next", response_model=Node, status_code=status.HTTP_200_OK)
 async def get_next(
-    node_id: str,
+    node_id: PydanticObjectId = Path(..., alias="nodeId"),
 ) -> dict:
     node = await Node.get(node_id)
     if not node:
@@ -104,7 +98,7 @@ async def get_next(
         )
     node = await Node.find_one(
         {
-            "text_slug": node.text_slug,
+            "textSlug": node.text_slug,
             "level": node.level,
             "index": node.index + 1,
         }
