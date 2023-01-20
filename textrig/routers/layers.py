@@ -165,7 +165,7 @@ async def get_layers(
 
 #     # decode layer data: Usually, this is handled automatically by our models, but
 #     # in this case we're returning a raw dict/JSON, so we have to manually make sure
-#     # that a) the ID field is called "id" and b) the DocumentId value is encoded as str.
+#     # that a) the ID field is called "id" and b) the DocumentId is encoded as str.
 #     layer_read_model = get_layer_type(layer_data["layerType"]).get_layer_read_model()
 #     layer_data = layer_read_model(**layer_data).dict()
 
@@ -235,6 +235,4 @@ async def get_layer(
         raise HTTPException(
             status.HTTP_404_NOT_FOUND, detail=f"No layer with ID {layer_id}"
         )
-    # here we're not returning data using our models, as this endpoint works for
-    # any layer type - thus we have to "translate" the response a bit...
     return layer
