@@ -16,23 +16,21 @@ Metadata = dict[str, str | int | bool | float]
 class DocumentBase(Document):
     """Base class for all TextRig DB models"""
 
-    id: PydanticObjectId = Field(None, description="ID of this object", alias="_id")
+    id: PydanticObjectId = Field(None, description="ID of this object")
 
     def dict(self, **kwargs) -> dict:
-        """Overrides dict() in Basemodel to change some defaults"""
+        """Overrides dict() in Basemodel to set custom defaults"""
 
-        parsed = super().dict(
+        return super().dict(
             exclude_unset=kwargs.pop("exclude_unset", True),
-            # by_alias=kwargs.pop("by_alias", True),
             **kwargs,
         )
-        return parsed
 
     def json(self, **kwargs) -> str:
         """Overrides json() in Basemodel to change some defaults"""
         return super().json(
             exclude_unset=kwargs.pop("exclude_unset", True),
-            # by_alias=kwargs.pop("by_alias", True),
+            by_alias=kwargs.pop("by_alias", True),  # we want camelCased aliases in JSON
             **kwargs,
         )
 
@@ -59,9 +57,9 @@ class DocumentBase(Document):
         json_encoders = {PydanticObjectId: str, ObjectId: str}
         alias_generator = camelize
         allow_population_by_field_name = True
-
-    #     alias_generator = camelize
-    #     allow_population_by_field_name = True
+        # arbitrary_types_allowed = True
+        # alias_generator = camelize
+        # allow_population_by_field_name = True
 
 
 class AllOptional(ModelMetaclass):
