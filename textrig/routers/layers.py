@@ -39,10 +39,10 @@ def _generate_create_endpoint(
     layer_model: type[LayerBase],
 ):
     async def create_layer(layer: layer_model) -> layer_model:
-        if not await Text.find(Text.id == layer.text).first_or_none():
+        if not await Text.find(Text.id == layer.text_id).first_or_none():
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Layer refers to non-existent text '{layer.text}'",
+                detail=f"Layer refers to non-existent text '{layer.text_id}'",
             )
         return await layer.create()
 
@@ -119,13 +119,13 @@ for lt_name, lt_class in get_layer_types().items():
 
 @router.get("", response_model=list[dict], status_code=status.HTTP_200_OK)
 async def get_layers(
-    text: PydanticObjectId,
+    text_id: PydanticObjectId,
     level: int = None,
     layer_type: str = None,
     limit: int = 1000,
 ) -> list:
 
-    example = dict(text=text)
+    example = dict(textId=text_id)
 
     if level is not None:
         example["level"] = level

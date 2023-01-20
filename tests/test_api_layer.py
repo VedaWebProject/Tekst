@@ -10,7 +10,7 @@ async def test_create_layer(
     endpoint = f"{root_path}/layers/plaintext"
     payload = {
         "title": "A test layer",
-        "text": text_id,
+        "textId": text_id,
         "description": "This is     a string with \n some space    chars",
         "level": 0,
         "layerType": "plaintext",
@@ -31,7 +31,7 @@ async def test_create_layer_invalid(
     endpoint = f"{root_path}/layers/plaintext"
     payload = {
         "title": "A test layer",
-        "text": "5eb7cfb05e32e07750a1756a",
+        "textId": "5eb7cfb05e32e07750a1756a",
         "level": 0,
         "layerType": "plaintext",
     }
@@ -54,7 +54,7 @@ async def test_get_layer(root_path, test_client: AsyncClient, insert_test_data):
     text_id = await insert_test_data("texts", "nodes", "layers")
     # get existing layer id
     endpoint = f"{root_path}/layers"
-    resp = await test_client.get(endpoint, params={"text": text_id})
+    resp = await test_client.get(endpoint, params={"textId": text_id})
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert isinstance(resp.json(), list)
     assert len(resp.json()) > 0
@@ -78,7 +78,7 @@ async def test_update_layer(root_path, test_client: AsyncClient, insert_test_dat
     text_id = await insert_test_data("texts", "nodes", "layers")
     # get existing layer id
     endpoint = f"{root_path}/layers"
-    resp = await test_client.get(endpoint, params={"text": text_id})
+    resp = await test_client.get(endpoint, params={"textId": text_id})
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert isinstance(resp.json(), list)
     assert len(resp.json()) > 0
@@ -100,7 +100,7 @@ async def test_get_layers(root_path, test_client: AsyncClient, insert_test_data)
     text_id = await insert_test_data("texts", "nodes", "layers")
     endpoint = f"{root_path}/layers"
     resp = await test_client.get(
-        endpoint, params={"text": text_id, "level": 0, "layerType": "plaintext"}
+        endpoint, params={"textId": text_id, "level": 0, "layerType": "plaintext"}
     )
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert isinstance(resp.json(), list)

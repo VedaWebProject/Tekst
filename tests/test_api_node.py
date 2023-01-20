@@ -9,7 +9,7 @@ async def test_create_node(
 ):
     text_id = await insert_test_data("texts")
     endpoint = f"{root_path}/nodes"
-    nodes = [{"text": text_id, **node} for node in test_data["nodes"]]
+    nodes = [{"textId": text_id, **node} for node in test_data["nodes"]]
 
     for node in nodes:
         resp = await test_client.post(endpoint, json=node)
@@ -24,7 +24,7 @@ async def test_child_node_io(
 ):
     text_id = await insert_test_data("texts")
     endpoint = f"{root_path}/nodes"
-    node = {"text": text_id, **test_data["nodes"][0]}
+    node = {"textId": text_id, **test_data["nodes"][0]}
 
     # create parent
     resp = await test_client.post(endpoint, json=node)
@@ -46,7 +46,7 @@ async def test_child_node_io(
 
     # find children by parent ID
     resp = await test_client.get(
-        endpoint, params={"text": parent["text"], "parentId": parent["_id"]}
+        endpoint, params={"textId": parent["textId"], "parentId": parent["_id"]}
     )
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) is list
@@ -68,7 +68,7 @@ async def test_create_node_invalid_text_fail(
     await insert_test_data("texts")
     endpoint = f"{root_path}/nodes"
     node = test_data["nodes"][0]
-    node["text"] = "5eb7cfb05e32e07750a1756a"
+    node["textId"] = "5eb7cfb05e32e07750a1756a"
 
     resp = await test_client.post(endpoint, json=node)
     assert resp.status_code == 400, f"HTTP status {resp.status_code} (expected: 400)"
@@ -81,7 +81,7 @@ async def test_create_node_duplicate_fail(
     text_id = await insert_test_data("texts")
     endpoint = f"{root_path}/nodes"
     node = test_data["nodes"][0]
-    node["text"] = text_id
+    node["textId"] = text_id
 
     resp = await test_client.post(endpoint, json=node)
     assert resp.status_code == 201, f"HTTP status {resp.status_code} (expected: 201)"
@@ -104,7 +104,7 @@ async def test_get_nodes(
 
     # test results length limit
     resp = await test_client.get(
-        endpoint, params={"text": text_id, "level": 0, "limit": 2}
+        endpoint, params={"textId": text_id, "level": 0, "limit": 2}
     )
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) is list
@@ -112,14 +112,14 @@ async def test_get_nodes(
 
     # test empty results with status 200
     resp = await test_client.get(
-        endpoint, params={"text": "5eb7cfb05e32e07750a1756a", "level": 0}
+        endpoint, params={"textId": "5eb7cfb05e32e07750a1756a", "level": 0}
     )
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) is list
     assert len(resp.json()) == 0
 
     # test results contain all nodes of level 0
-    resp = await test_client.get(endpoint, params={"text": text_id, "level": 0})
+    resp = await test_client.get(endpoint, params={"textId": text_id, "level": 0})
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) is list
     assert len(resp.json()) == len(nodes)
@@ -130,14 +130,14 @@ async def test_get_nodes(
 
     # test specific index
     resp = await test_client.get(
-        endpoint, params={"text": text_id, "level": 0, "index": 0}
+        endpoint, params={"textId": text_id, "level": 0, "index": 0}
     )
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) is list
     assert len(resp.json()) == 1
 
     # test invalid request
-    resp = await test_client.get(endpoint, params={"text": text_id})
+    resp = await test_client.get(endpoint, params={"textId": text_id})
     assert resp.status_code == 400, f"HTTP status {resp.status_code} (expected: 400)"
 
 
@@ -148,7 +148,7 @@ async def test_update_node(
     text_id = await insert_test_data("texts", "nodes")
     # get node from db
     endpoint = f"{root_path}/nodes"
-    resp = await test_client.get(endpoint, params={"text": text_id, "level": 0})
+    resp = await test_client.get(endpoint, params={"textId": text_id, "level": 0})
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) == list
     assert len(resp.json()) > 0
@@ -177,7 +177,7 @@ async def test_node_next(
     text_id = await insert_test_data("texts", "nodes")
     # get second last node from level 0
     endpoint = f"{root_path}/nodes"
-    resp = await test_client.get(endpoint, params={"text": text_id, "level": 0})
+    resp = await test_client.get(endpoint, params={"textId": text_id, "level": 0})
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) == list
     assert len(resp.json()) > 0

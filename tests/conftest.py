@@ -94,11 +94,11 @@ async def insert_test_data(test_app, reset_db, root_path, test_data) -> callable
             await text.create()
         if "nodes" in collections:
             for doc in test_data["nodes"]:
-                await Node(text=text.id, **doc).create()
+                await Node(text_id=text.id, **doc).create()
         if "layers" in collections:
             for doc in test_data["layers"]:
                 LayerModel = get_layer_type(doc["layerType"]).get_layer_model()
-                await LayerModel(text=text.id, **doc).create()
+                await LayerModel(text_id=text.id, **doc).create()
 
         return str(text.id) if text else None
 

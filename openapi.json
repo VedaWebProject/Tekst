@@ -198,14 +198,14 @@
           {
             "required": true,
             "schema": {
-              "title": "Text",
+              "title": "Textid",
               "type": "string",
               "examples": [
                 "5eb7cf5a86d9755df3a6c593",
                 "5eb7cfb05e32e07750a1756a"
               ]
             },
-            "name": "text",
+            "name": "textId",
             "in": "query"
           },
           {
@@ -335,14 +335,14 @@
           {
             "required": true,
             "schema": {
-              "title": "Text",
+              "title": "Textid",
               "type": "string",
               "examples": [
                 "5eb7cf5a86d9755df3a6c593",
                 "5eb7cfb05e32e07750a1756a"
               ]
             },
-            "name": "text",
+            "name": "textId",
             "in": "query"
           },
           {
@@ -1184,7 +1184,7 @@
       "Node": {
         "title": "Node",
         "required": [
-          "text",
+          "textId",
           "level",
           "index",
           "label"
@@ -1206,8 +1206,8 @@
             "format": "uuid",
             "hidden": true
           },
-          "text": {
-            "title": "Text",
+          "textId": {
+            "title": "Textid",
             "type": "string",
             "description": "ID of the text this node belongs to",
             "examples": [
@@ -1284,8 +1284,8 @@
             "format": "uuid",
             "hidden": true
           },
-          "text": {
-            "title": "Text",
+          "textId": {
+            "title": "Textid",
             "type": "string",
             "examples": [
               "5eb7cf5a86d9755df3a6c593",
@@ -1373,8 +1373,8 @@
             "type": "string",
             "description": "Short, one-line description of this data layer"
           },
-          "text": {
-            "title": "Text",
+          "textId": {
+            "title": "Textid",
             "type": "string",
             "description": "ID of the text this layer belongs to",
             "examples": [
@@ -1487,8 +1487,8 @@
             "title": "Description",
             "type": "string"
           },
-          "text": {
-            "title": "Text",
+          "textId": {
+            "title": "Textid",
             "type": "string",
             "examples": [
               "5eb7cf5a86d9755df3a6c593",

@@ -18,7 +18,7 @@ class LayerBase(abc.ABC, DocumentBase):
         max_length=128,
         description="Short, one-line description of this data layer",
     )
-    text: PydanticObjectId | None = Field(
+    text_id: PydanticObjectId | None = Field(
         None, description="ID of the text this layer belongs to"
     )
     level: int = Field(..., description="Text level this layer belongs to")

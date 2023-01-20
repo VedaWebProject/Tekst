@@ -8,7 +8,7 @@ async def test_create_layer_unit(root_path, test_client: AsyncClient, insert_tes
     # get ID of existing test layer
     endpoint = f"{root_path}/layers"
     resp = await test_client.get(
-        endpoint, params={"text": text_id, "layerType": "plaintext"}
+        endpoint, params={"textId": text_id, "layerType": "plaintext"}
     )
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) == list
@@ -18,7 +18,7 @@ async def test_create_layer_unit(root_path, test_client: AsyncClient, insert_tes
 
     # get ID of existing test node
     endpoint = f"{root_path}/nodes"
-    resp = await test_client.get(endpoint, params={"text": text_id, "level": 0})
+    resp = await test_client.get(endpoint, params={"textId": text_id, "level": 0})
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) == list
     assert len(resp.json()) > 0
