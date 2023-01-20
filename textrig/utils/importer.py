@@ -12,7 +12,7 @@ async def import_text(data: dict) -> Text | None:
     # push nodes of first structure level onto stack
     for node in data.get("nodes", []):
         node["parent_id"] = None
-        node["text_slug"] = text.slug
+        node["text"] = text.id
         node["level"] = 0
         node["index"] = indices[0]
         stack.append(node)
@@ -25,7 +25,7 @@ async def import_text(data: dict) -> Text | None:
 
         for u in node_data.get("nodes", []):
             u["parent_id"] = node.id
-            u["text_slug"] = text.slug
+            u["text"] = text.id
             u["level"] = node.level + 1
             if len(indices) <= u["level"]:
                 indices.append(0)

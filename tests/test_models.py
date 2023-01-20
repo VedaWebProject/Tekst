@@ -51,7 +51,7 @@ def test_layer_description_validator(test_app):
 
     layer = PlainTextLayer(
         title="foo",
-        text_slug="foo",
+        text="5eb7cfb05e32e07750a1756a",
         level=0,
         layer_type="plaintext",
         description="foo      bar\t\t   baz\n \ttest",
@@ -60,7 +60,7 @@ def test_layer_description_validator(test_app):
     # desc = None
     layer = PlainTextLayer(
         title="foo",
-        text_slug="foo",
+        text="5eb7cfb05e32e07750a1756a",
         level=0,
         layer_type="plaintext",
         description=None,

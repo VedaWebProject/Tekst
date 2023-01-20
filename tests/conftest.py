@@ -8,6 +8,8 @@ from textrig.app import app
 from textrig.config import TextRigConfig, get_config
 from textrig.db import DatabaseClient
 from textrig.dependencies import get_db_client
+from textrig.layer_types import get_layer_type
+from textrig.models.text import Node, Text
 
 
 """
@@ -80,19 +82,25 @@ async def reset_db(get_db_client_override, config):
 
 
 @pytest.fixture
-async def insert_test_data(reset_db, root_path, test_client, test_data) -> callable:
+async def insert_test_data(test_app, reset_db, root_path, test_data) -> callable:
     """
-    Returns an asynchronous function to load
-    test data for certain database collections
+    Returns an asynchronous function to insert
+    test data into their respective database collections
     """
 
-    async def _insert_test_data(*collections: str) -> None:
-        for collection in collections:
-            for doc in test_data[collection]:
-                endpoint = f"{root_path}/{collection}"
-                if collection == "layers":
-                    endpoint += f"/{doc['layerType']}"
-                await test_client.post(endpoint, json=doc)
+    async def _insert_test_data(*collections: str) -> str | None:
+        if "texts" in collections:
+            text = Text(**test_data["texts"][0])
+            await text.create()
+        if "nodes" in collections:
+            for doc in test_data["nodes"]:
+                await Node(text=text.id, **doc).create()
+        if "layers" in collections:
+            for doc in test_data["layers"]:
+                LayerModel = get_layer_type(doc["layerType"]).get_layer_model()
+                await LayerModel(text=text.id, **doc).create()
+
+        return str(text.id) if text else None
 
     return _insert_test_data
 

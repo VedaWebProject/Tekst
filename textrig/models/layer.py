@@ -1,11 +1,8 @@
 import abc
 import re
 
-# from fastapi import HTTPException, status
+from beanie import PydanticObjectId
 from pydantic import Field, validator
-
-# from textrig.db.io import DbIO
-# from textrig.logging import log
 from textrig.models.common import AllOptional, DocumentBase, Metadata
 
 
@@ -21,7 +18,9 @@ class LayerBase(abc.ABC, DocumentBase):
         max_length=128,
         description="Short, one-line description of this data layer",
     )
-    text_slug: str = Field(..., description="Slug of the text this layer belongs to")
+    text: PydanticObjectId | None = Field(
+        None, description="ID of the text this layer belongs to"
+    )
     level: int = Field(..., description="Text level this layer belongs to")
     layer_type: str = Field(
         ..., description="A string identifying one of the available layer types"

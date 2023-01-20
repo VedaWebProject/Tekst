@@ -61,7 +61,9 @@ class TextUpdate(Text, metaclass=AllOptional):
 class Node(DocumentBase):
     """A node in a text structure (e.g. chapter, paragraph, ...)"""
 
-    text_slug: str = Field(..., description="Slug of the text this node belongs to")
+    text: PydanticObjectId = Field(
+        ..., description="ID of the text this node belongs to"
+    )
     parent_id: PydanticObjectId = Field(None, description="ID of parent node")
     level: int = Field(
         ..., description="Index of structure level this node is on", ge=0

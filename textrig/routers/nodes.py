@@ -17,14 +17,14 @@ router = APIRouter(
 @router.post("", response_model=Node, status_code=status.HTTP_201_CREATED)
 async def create_node(node: Node) -> dict:
     # find text the node belongs to
-    if not await Text.find_one(Text.slug == node.text_slug).exists():
+    if not await Text.find_one(Text.id == node.text).exists():
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Corresponding text '{node.text_slug}' does not exist",
+            detail=f"Corresponding text '{node.text}' does not exist",
         )
     # check for semantic duplicates
     dupes = await Node.find(
-        {"textSlug": node.text_slug, "level": node.level, "index": node.index},
+        {"text": node.text, "level": node.level, "index": node.index},
     ).first_or_none()
     if dupes:
         log.warning(f"Cannot create node. Conflict: {node}")
@@ -38,7 +38,7 @@ async def create_node(node: Node) -> dict:
 
 @router.get("", response_model=list[Node], status_code=status.HTTP_200_OK)
 async def get_nodes(
-    text_slug: str,
+    text: PydanticObjectId,
     level: int = None,
     index: int = None,
     parent_id: PydanticObjectId = None,
@@ -50,7 +50,7 @@ async def get_nodes(
             detail="Request must contain either level or parent_id",
         )
 
-    example = dict(textSlug=text_slug)
+    example = dict(text=text)
 
     if level is not None:
         example["level"] = level
@@ -98,7 +98,7 @@ async def get_next(
         )
     node = await Node.find_one(
         {
-            "textSlug": node.text_slug,
+            "text": node.text,
             "level": node.level,
             "index": node.index + 1,
         }

@@ -30,10 +30,10 @@ async def get_all_texts(limit: int = 100) -> list[Text]:
 
 @router.post("", response_model=Text, status_code=status.HTTP_201_CREATED)
 async def create_text(text: Text) -> Text:
-    if await Text.find_one(Text.slug == text.slug):
+    if await Text.find_one(Text.title == text.title):
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail="An equal text already exists (same slug)",
+            detail="An equal text already exists (same title)",
         )
     return await text.create()
 
