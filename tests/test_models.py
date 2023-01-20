@@ -9,11 +9,6 @@ def test_basic_validation():
         assert "missing" in error.value
 
 
-# def test_slug_generation():
-#     t = Text(title="agním īḷe puróhitaṁ", slug="agnim", levels=["foo"])
-#     assert t.slug == "agnimilepurohita"
-
-
 def test_dict_override(test_app):
     t_data = Text(title="agním īḷe puróhitaṁ", slug="agnim", levels=["foo"]).dict()
     assert t_data["title"] == "agním īḷe puróhitaṁ"
@@ -31,6 +26,8 @@ def test_serialization(test_app, test_data):
     assert "locDelim" in text.dict(by_alias=True)
     assert "id" in text.dict()
     assert "loc_delim" in text.dict()
+    text = Text(**{"_id": dummy_id, **test_data["texts"][0]})
+    assert str(text.id) == dummy_id
 
 
 def test_deserialization(test_app):
