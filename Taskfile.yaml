@@ -26,20 +26,17 @@ tasks:
     cmds:
       - poetry run isort .
       - poetry run black .
-    ignore_error: true
 
   format-check:
     desc: Check code formatting using isort and black
     cmds:
       - poetry run isort . --check --diff
       - poetry run black . --check --diff
-    ignore_error: true
 
   lint:
     desc: Run flake8 linter
     cmds:
       - flake8 .
-    ignore_error: true
 
   run-tests:
     desc: Run test suite with pytest
@@ -48,15 +45,13 @@ tasks:
     cmds:
       - poetry run coverage run -m pytest {{.CLI_ARGS}}
       - poetry run coverage report -m
-    ignore_error: true
 
   test:
     desc: Run tests, start and stop test services stack automatically
     cmds:
+      - defer: {task: test-stack-down}
       - task: test-stack-up
       - task: run-tests
-      - task: test-stack-down
-    ignore_error: true
 
   run-app:
     desc: Run the application dev server (only for development!)
@@ -68,10 +63,9 @@ tasks:
   run:
     desc: Run dev services stack and dev server, clean up afterwards
     cmds:
+      - defer: {task: dev-stack-down}
       - task: dev-stack-up
       - task: run-app
-      - task: dev-stack-down
-    ignore_error: true
 
   schema-prod:
     desc: Export (production) OpenAPI schema to file openapi.json
@@ -92,15 +86,13 @@ tasks:
       - task: test
       - task: lint
       - task: format-check
-    ignore_error: true
 
   pre-commit:
     desc: Run full pre-commit toolchain (format, test, lint, style checks, export prod schema)
     cmds:
+      - defer: {task: schema-prod}
       - task: format
       - task: check
-      - task: schema-prod
-    ignore_error: true
 
   clean:
     desc: Cleanup of generated files (won't work on Windows)
