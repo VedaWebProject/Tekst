@@ -4,7 +4,7 @@ from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 from textrig.config import TextRigConfig, get_config
 from textrig.db import init_odm
-from textrig.dependencies import get_db_client
+from textrig.dependencies import get_db, get_db_client
 from textrig.layer_types import init_layer_type_manager
 from textrig.logging import log, setup_logging
 from textrig.routers import setup_routes
@@ -40,7 +40,10 @@ def init_app(app: FastAPI) -> None:
 
 
 async def startup_routine() -> None:
-    await init_odm(get_db_client(_cfg)[_cfg.db.name])
+    # this is ugly, but unfortunately we don't have access to FastAPI's
+    # dependency injection system in these lifecycle routines, so we have to
+    # pass all these things by hand...
+    await init_odm(get_db(get_db_client(_cfg), _cfg))
 
     # log dev server info for quick browser access
     if _cfg.dev_mode:  # pragma: no cover
@@ -53,7 +56,7 @@ async def startup_routine() -> None:
 
 async def shutdown_routine() -> None:
     log.info(f"{_cfg.info.platform} cleaning up and shutting down")
-    get_db_client(_cfg).close()
+    get_db_client(_cfg).close()  # again, no DI possible here :(
 
 
 # create FastAPI app instance
