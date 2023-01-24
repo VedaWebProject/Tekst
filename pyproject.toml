@@ -27,7 +27,7 @@ python-multipart = "^0.0.5"
 pyhumps = "^3.8.0"
 pluggy = "^1.0.0"
 click = "^8.1.3"
-beanie = "1.16"
+beanie = "1.17"
 fastapi-users = {extras = ["beanie"], version = "^10.3.0"}
 
 [tool.poetry.group.dev.dependencies]
