@@ -160,3 +160,6 @@ notes.md
 
 # env files
 .env.prod
+
+# anything marked .local for dev
+*.local
