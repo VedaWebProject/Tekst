@@ -6,6 +6,7 @@ from beanie import init_beanie
 # from humps import camelize
 from motor.motor_asyncio import AsyncIOMotorClient as DatabaseClient
 from motor.motor_asyncio import AsyncIOMotorDatabase as Database
+from textrig.auth import AccessToken, User
 from textrig.config import TextRigConfig, get_config
 from textrig.layer_types import get_layer_types
 from textrig.logging import log
@@ -34,11 +35,7 @@ def get_client(db_uri: str) -> DatabaseClient:
 
 async def init_odm(db: Database) -> None:
     # collect basic models
-    models = [
-        Text,
-        Node,
-        NodeUpdate,
-    ]
+    models = [Text, Node, NodeUpdate, User, AccessToken]
     # add layer type models
     for lt_name, lt_class in get_layer_types().items():
         models.append(lt_class.get_layer_model())

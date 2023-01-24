@@ -5,10 +5,10 @@ from pydantic import Field
 
 # from textrig.db.io import DbIO
 # from textrig.logging import log
-from textrig.models.common import AllOptional, DocumentBase, Metadata
+from textrig.models.common import AllOptional, DocumentBase, Metadata, ModelBase
 
 
-class Text(DocumentBase):
+class Text(ModelBase, DocumentBase):
     """A text represented in TextRig"""
 
     title: str = Field(
@@ -58,7 +58,7 @@ class TextUpdate(Text, metaclass=AllOptional):
     pass
 
 
-class Node(DocumentBase):
+class Node(ModelBase, DocumentBase):
     """A node in a text structure (e.g. chapter, paragraph, ...)"""
 
     text_id: PydanticObjectId = Field(

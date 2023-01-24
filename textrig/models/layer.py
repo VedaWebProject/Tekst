@@ -3,10 +3,10 @@ import re
 
 from beanie import PydanticObjectId
 from pydantic import Field, validator
-from textrig.models.common import AllOptional, DocumentBase, Metadata
+from textrig.models.common import AllOptional, DocumentBase, Metadata, ModelBase
 
 
-class LayerBase(abc.ABC, DocumentBase):
+class LayerBase(abc.ABC, ModelBase, DocumentBase):
     """A data layer describing a set of data on a text"""
 
     title: str = Field(

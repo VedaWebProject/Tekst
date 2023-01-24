@@ -5,6 +5,7 @@ from typing import Iterator
 import humps
 from fastapi import FastAPI
 from fastapi.routing import APIRoute, APIRouter
+from textrig.auth import setup_auth_routes
 from textrig.logging import log
 
 
@@ -15,7 +16,7 @@ def _get_routers() -> Iterator[APIRouter]:
             yield module.router
 
 
-def setup_routes(app: "FastAPI") -> None:
+def setup_routes(app: FastAPI) -> None:
     """
     Connects the API routers defined in this module to the passed application instance.
     Also, generates operation IDs based on endpoint function names for each route
@@ -26,20 +27,37 @@ def setup_routes(app: "FastAPI") -> None:
     :type app: FastAPI
     """
     log.info("Setting up API routes")
-    # generate route operation IDs from function names
+    # register routers that aren't auth-related
     for router in _get_routers():
-        rc = len(router.routes)
-        log.debug(f"\u2022 {router.prefix}/... ({rc} route{'s' if rc != 1 else ''})")
-        for route in router.routes:
-            if isinstance(route, APIRoute):
-                route.operation_id = humps.camelize(route.name)
         app.include_router(router)
-    # add camel-cased aliases to route params
+    # register auth-related routers
+    setup_auth_routes(app)
+    # modify routes...
     for route in app.routes:
         if isinstance(route, APIRoute):
+            # generate route operation IDs from function names
+            route.operation_id = humps.camelize(route.name)
+            # add camel-cased aliases to route params
             for param in route.dependant.query_params:
                 if not param.field_info.alias:
                     param.alias = humps.camelize(param.name)
             for param in route.dependant.path_params:
                 if not param.field_info.alias:
                     param.alias = humps.camelize(param.name)
+    # # generate route operation IDs from function names
+    # for router in _get_routers():
+    #     rc = len(router.routes)
+    #     log.debug(f"\u2022 {router.prefix}/... ({rc} route{'s' if rc != 1 else ''})")
+    #     for route in router.routes:
+    #         if isinstance(route, APIRoute):
+    #             route.operation_id = humps.camelize(route.name)
+    #     app.include_router(router)
+    # # add camel-cased aliases to route params
+    # for route in app.routes:
+    #     if isinstance(route, APIRoute):
+    #         for param in route.dependant.query_params:
+    #             if not param.field_info.alias:
+    #                 param.alias = humps.camelize(param.name)
+    #         for param in route.dependant.path_params:
+    #             if not param.field_info.alias:
+    #                 param.alias = humps.camelize(param.name)
