@@ -1,3 +1,5 @@
+import contextlib
+
 from beanie import PydanticObjectId
 from fastapi import APIRouter, Depends, FastAPI, Request
 from fastapi_users import (
@@ -16,12 +18,14 @@ from fastapi_users.authentication.strategy.db import (
     AccessTokenDatabase,
     DatabaseStrategy,
 )
+from fastapi_users.exceptions import UserAlreadyExists
 from fastapi_users_db_beanie import BeanieBaseUser, BeanieUserDatabase, ObjectIDIDMixin
 from fastapi_users_db_beanie.access_token import (
     BeanieAccessTokenDatabase,
     BeanieBaseAccessToken,
 )
 from textrig.config import TextRigConfig, get_config
+from textrig.logging import log
 from textrig.models.common import ModelBase
 
 
@@ -147,16 +151,29 @@ async def get_user_manager(user_db=Depends(get_user_db)):
     yield UserManager(user_db)
 
 
-fastapi_users = FastAPIUsers[User, PydanticObjectId](
+_fastapi_users = FastAPIUsers[User, PydanticObjectId](
     get_user_manager,
     [_auth_backend_cookie, _auth_backend_jwt],
 )
 
 
+async def create_user(user: UserCreate):
+    """Creates/registers a new user programmatically"""
+    get_user_db_context = contextlib.asynccontextmanager(get_user_db)
+    get_user_manager_context = contextlib.asynccontextmanager(get_user_manager)
+    try:
+        async with get_user_db_context() as user_db:
+            async with get_user_manager_context(user_db) as user_manager:
+                user = await user_manager.create(user)
+                log.debug(f"User created: {user}")
+    except UserAlreadyExists:
+        log.warning(f"User {user.email} already exists")
+
+
 def setup_auth_routes(app: FastAPI) -> list[APIRouter]:
     # cookie auth
     app.include_router(
-        fastapi_users.get_auth_router(
+        _fastapi_users.get_auth_router(
             _auth_backend_cookie, requires_verification=not _cfg.dev_mode
         ),
         prefix="/auth/cookie",
@@ -165,7 +182,7 @@ def setup_auth_routes(app: FastAPI) -> list[APIRouter]:
     )
     # jwt auth
     app.include_router(
-        fastapi_users.get_auth_router(
+        _fastapi_users.get_auth_router(
             _auth_backend_jwt, requires_verification=not _cfg.dev_mode
         ),
         prefix="/auth/jwt",
@@ -173,25 +190,25 @@ def setup_auth_routes(app: FastAPI) -> list[APIRouter]:
     )
     # register
     app.include_router(
-        fastapi_users.get_register_router(UserRead, UserCreate),
+        _fastapi_users.get_register_router(UserRead, UserCreate),
         prefix="/auth",
         tags=["auth"],
     )
     # verify
     app.include_router(
-        fastapi_users.get_verify_router(UserRead),
+        _fastapi_users.get_verify_router(UserRead),
         prefix="/auth",
         tags=["auth"],
     )
     # reset pw
     app.include_router(
-        fastapi_users.get_reset_password_router(),
+        _fastapi_users.get_reset_password_router(),
         prefix="/auth",
         tags=["auth"],
     )
     # users
     app.include_router(
-        fastapi_users.get_users_router(
+        _fastapi_users.get_users_router(
             UserRead, UserUpdate, requires_verification=not _cfg.dev_mode
         ),
         prefix="/users",
