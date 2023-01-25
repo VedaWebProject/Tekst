@@ -1,6 +1,7 @@
 import sys
 
 from fastapi import FastAPI, status
+from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 from textrig.config import TextRigConfig, get_config
 from textrig.db import init_odm
@@ -70,6 +71,11 @@ async def startup_routine() -> None:
     # dependency injection system in these lifecycle routines, so we have to
     # pass all these things by hand...
     await init_odm(get_db(get_db_client(_cfg), _cfg))
+
+    # add root route to redirect to docs
+    @app.get("/", response_class=RedirectResponse, status_code=301)
+    async def root_redirect():
+        return _cfg.doc.redoc_url
 
     # log dev server info for quick browser access
     if _cfg.dev_mode:  # pragma: no cover
