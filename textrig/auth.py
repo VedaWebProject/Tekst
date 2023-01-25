@@ -33,25 +33,29 @@ _cfg: TextRigConfig = get_config()
 
 
 class User(ModelBase, BeanieBaseUser[PydanticObjectId]):
-    is_active: bool | None = _cfg.dev_mode
+    is_active: bool = _cfg.dev_mode
+    is_verified: bool = _cfg.dev_mode
     first_name: str
     last_name: str
 
 
 class UserRead(ModelBase, schemas.BaseUser[PydanticObjectId]):
-    is_active: bool | None = _cfg.dev_mode
+    is_active: bool = _cfg.dev_mode
+    is_verified: bool = _cfg.dev_mode
     first_name: str
     last_name: str
 
 
 class UserCreate(ModelBase, schemas.BaseUserCreate):
-    is_active: bool | None = _cfg.dev_mode
+    is_active: bool = _cfg.dev_mode
+    is_verified: bool = _cfg.dev_mode
     first_name: str
     last_name: str
 
 
 class UserUpdate(ModelBase, schemas.BaseUserUpdate):
-    is_active: bool | None = _cfg.dev_mode
+    is_active: bool = _cfg.dev_mode
+    is_verified: bool = _cfg.dev_mode
     first_name: str | None
     last_name: str | None
 
@@ -120,17 +124,19 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[User, PydanticObjectId]):
     verification_token_audience = "textrig:verify"
 
     async def on_after_register(self, user: User, request: Request | None = None):
-        print(f"User {user.id} has registered.")
+        log.info(f"User {user.id} has registered.")
 
     async def on_after_forgot_password(
         self, user: User, token: str, request: Request | None = None
     ):
-        print(f"User {user.id} has forgotten their password. Reset token: {token}")
+        log.info(f"User {user.id} has forgotten their password. Reset token: {token}")
 
     async def on_after_request_verify(
         self, user: User, token: str, request: Request | None = None
     ):
-        print(f"Verification requested for user {user.id}. Verification token: {token}")
+        log.info(
+            f"Verification requested for user {user.id}. Verification token: {token}"
+        )
 
     async def validate_password(
         self,
