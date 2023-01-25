@@ -222,10 +222,12 @@ def setup_auth_routes(app: FastAPI) -> list[APIRouter]:
     )
 
 
-# define auth dependencies for API routes
-current_unverified_user = _fastapi_users.current_user()
-current_user = _fastapi_users.current_user(verified=True)
-current_active_user = _fastapi_users.current_user(verified=True, active=True)
+# define auth dependencies for API routes (optional auth in dev mode)
+current_unverified_user = _fastapi_users.current_user(optional=_cfg.dev_mode)
+current_user = _fastapi_users.current_user(optional=_cfg.dev_mode, verified=True)
+current_active_user = _fastapi_users.current_user(
+    optional=_cfg.dev_mode, verified=True, active=True
+)
 current_superuser = _fastapi_users.current_user(
-    verified=True, active=True, superuser=True
+    optional=_cfg.dev_mode, verified=True, active=True, superuser=True
 )
