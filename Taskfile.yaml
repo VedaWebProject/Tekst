@@ -67,17 +67,14 @@ tasks:
       - task: dev-stack-up
       - task: run-app
 
-  schema-prod:
-    desc: Export (production) OpenAPI schema to file openapi.json
-    cmds:
-      - poetry run python3 -m textrig schema -f
-
-  schema-dev:
+  schema:
     desc: Export (development) OpenAPI schema to file openapi.json
     env:
       TEXTRIG_DEV_MODE: true
       TEXTRIG_LOG_LEVEL: ERROR
     cmds:
+      - defer: {task: dev-stack-down}
+      - task: dev-stack-up
       - poetry run python3 -m textrig schema -f
 
   check:
@@ -88,9 +85,9 @@ tasks:
       - task: format-check
 
   pre-commit:
-    desc: Run full pre-commit toolchain (format, test, lint, style checks, export prod schema)
+    desc: Run full pre-commit toolchain (format, test, lint, style checks, export schema)
     cmds:
-      - defer: {task: schema-prod}
+      - defer: {task: schema}
       - task: format
       - task: check
 

@@ -1,3 +1,5 @@
+import asyncio
+
 import click
 from textrig.config import TextRigConfig, get_config
 
@@ -8,6 +10,44 @@ Command line interface to the main functionalities of TextRig server
 
 
 _cfg: TextRigConfig = get_config()
+
+
+async def _get_and_write_openapi_schema(
+    to_file: bool, output_file: str, indent: int, sort_keys: bool, quiet: bool
+):
+    import json
+
+    from asgi_lifespan import LifespanManager
+    from httpx import AsyncClient
+    from textrig.app import app
+
+    async with LifespanManager(app):
+        async with AsyncClient(app=app, base_url="http://test") as client:
+            resp = await client.get(f"{_cfg.root_path}{_cfg.doc.openapi_url}")
+            if not resp.status_code == 200:
+                click.echo(
+                    "Error: Request to TextRig server "
+                    f"failed with code {resp.status_code}",
+                    err=True,
+                )
+            else:
+                schema = resp.json()
+                json_dump_args = {
+                    "skipkeys": True,
+                    "indent": indent or None,
+                    "sort_keys": sort_keys,
+                }
+                if to_file:
+                    with open(output_file, "w") as f:
+                        json.dump(schema, f, **json_dump_args)
+                    if not quiet:
+                        click.echo(
+                            f"Saved TextRig "
+                            f"({'development' if _cfg.dev_mode else 'production'} mode)"
+                            f" OpenAPI schema to {output_file}."
+                        )
+                else:
+                    click.echo(json.dumps(schema, **json_dump_args))
 
 
 @click.command()
@@ -48,43 +88,15 @@ def schema(to_file: bool, output_file: str, indent: int, sort_keys: bool, quiet:
     Exports TextRig's OpenAPI schema to a JSON file
     (Important: The active TextRig environment variables might influence the schema!)
     """
-    import json
-
-    from fastapi.openapi.utils import get_openapi
-    from textrig.app import app
-
-    schema = get_openapi(
-        title=app.title,
-        version=app.version,
-        openapi_version=app.openapi_version,
-        description=app.description,
-        routes=app.routes,
-        terms_of_service=app.terms_of_service,
-        contact=app.contact,
-        license_info=app.license_info,
+    asyncio.run(
+        _get_and_write_openapi_schema(
+            to_file=to_file,
+            output_file=output_file,
+            indent=indent,
+            sort_keys=sort_keys,
+            quiet=quiet,
+        )
     )
-
-    if not schema:
-        click.echo("Error loading OpenAPI schema", err=True)
-        exit(1)
-
-    json_dump_args = {
-        "skipkeys": True,
-        "indent": indent or None,
-        "sort_keys": sort_keys,
-    }
-
-    if to_file:
-        with open(output_file, "w") as f:
-            json.dump(schema, f, **json_dump_args)
-        if not quiet:
-            click.echo(
-                f"Saved TextRig "
-                f"({'development' if _cfg.dev_mode else 'production'} mode) "
-                f"OpenAPI schema to {output_file}."
-            )
-    else:
-        click.echo(json.dumps(schema, **json_dump_args))
 
 
 @click.command()
