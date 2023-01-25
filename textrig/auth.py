@@ -161,7 +161,7 @@ def setup_auth_routes(app: FastAPI) -> list[APIRouter]:
         ),
         prefix="/auth/cookie",
         tags=["auth"],
-        include_in_schema=_cfg.dev_mode  # only during development
+        include_in_schema=_cfg.dev_mode,  # only during development
     )
     # jwt auth
     app.include_router(

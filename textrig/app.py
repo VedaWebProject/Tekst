@@ -11,53 +11,8 @@ from textrig.routers import setup_routes
 from textrig.tags import tags_metadata
 
 
-# set up logging to match prod/dev requirements
-setup_logging()
-
-# get (possibly cached) config data
-_cfg: TextRigConfig = get_config()
-
-
-def init_app(app: FastAPI) -> None:
-    if _cfg.dev_mode:
-        # blank line for visual separation of app runs in dev mode
-        print(file=sys.stderr)
-    # Hello World!
-    log.info(
-        f"{_cfg.app_name} (TextRig Server v{_cfg.info.version}) "
-        f"running in {'DEVELOPMENT' if _cfg.dev_mode else 'PRODUCTION'} MODE"
-    )
-    # configure CORS middleware
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=_cfg.cors_allow_origins,
-        allow_credentials=_cfg.cors_allow_credentials,
-        allow_methods=_cfg.cors_allow_methods,
-        allow_headers=_cfg.cors_allow_headers,
-    )
-    init_layer_type_manager()
-    setup_routes(app)
-
-
-async def startup_routine() -> None:
-    # this is ugly, but unfortunately we don't have access to FastAPI's
-    # dependency injection system in these lifecycle routines, so we have to
-    # pass all these things by hand...
-    await init_odm(get_db(get_db_client(_cfg), _cfg))
-
-    # log dev server info for quick browser access
-    if _cfg.dev_mode:  # pragma: no cover
-        dev_base_url = f"http://{_cfg.uvicorn_host}:{_cfg.uvicorn_port}"
-        if _cfg.doc.swaggerui_url:
-            log.info(f"\u2022 SwaggerUI docs: {dev_base_url}{_cfg.doc.swaggerui_url}")
-        if _cfg.doc.redoc_url:
-            log.info(f"\u2022 Redoc API docs: {dev_base_url}{_cfg.doc.redoc_url}")
-
-
-async def shutdown_routine() -> None:
-    log.info(f"{_cfg.info.platform} cleaning up and shutting down")
-    get_db_client(_cfg).close()  # again, no DI possible here :(
-
+_cfg: TextRigConfig = get_config()  # get (possibly cached) config data
+setup_logging()  # set up logging to match prod/dev requirements
 
 # create FastAPI app instance
 app = FastAPI(
@@ -82,8 +37,50 @@ app = FastAPI(
     responses={
         status.HTTP_400_BAD_REQUEST: {"description": "Invalid Request"},
     },
-    on_startup=[startup_routine],
-    on_shutdown=[shutdown_routine],
 )
 
-init_app(app)
+
+@app.on_event("startup")
+async def startup_routine() -> None:
+    # dev mode preparations
+    if _cfg.dev_mode:
+        # blank line for visual separation of app runs in dev mode
+        print(file=sys.stderr)
+
+    # Hello World!
+    log.info(
+        f"{_cfg.app_name} (TextRig Server v{_cfg.info.version}) "
+        f"running in {'DEVELOPMENT' if _cfg.dev_mode else 'PRODUCTION'} MODE"
+    )
+
+    # configure CORS middleware
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=_cfg.cors_allow_origins,
+        allow_credentials=_cfg.cors_allow_credentials,
+        allow_methods=_cfg.cors_allow_methods,
+        allow_headers=_cfg.cors_allow_headers,
+    )
+
+    # init app peripherals
+    init_layer_type_manager()
+    setup_routes(app)
+
+    # this is ugly, but unfortunately we don't have access to FastAPI's
+    # dependency injection system in these lifecycle routines, so we have to
+    # pass all these things by hand...
+    await init_odm(get_db(get_db_client(_cfg), _cfg))
+
+    # log dev server info for quick browser access
+    if _cfg.dev_mode:  # pragma: no cover
+        dev_base_url = f"http://{_cfg.uvicorn_host}:{_cfg.uvicorn_port}"
+        if _cfg.doc.swaggerui_url:
+            log.info(f"\u2022 SwaggerUI docs: {dev_base_url}{_cfg.doc.swaggerui_url}")
+        if _cfg.doc.redoc_url:
+            log.info(f"\u2022 Redoc API docs: {dev_base_url}{_cfg.doc.redoc_url}")
+
+
+@app.on_event("shutdown")
+async def shutdown_routine() -> None:
+    log.info(f"{_cfg.info.platform} cleaning up and shutting down")
+    get_db_client(_cfg).close()  # again, no DI possible here :(
