@@ -6,7 +6,12 @@ from fastapi_users import (
     InvalidPasswordException,
     schemas,
 )
-from fastapi_users.authentication import AuthenticationBackend, CookieTransport
+from fastapi_users.authentication import (
+    AuthenticationBackend,
+    BearerTransport,
+    CookieTransport,
+    JWTStrategy,
+)
 from fastapi_users.authentication.strategy.db import (
     AccessTokenDatabase,
     DatabaseStrategy,
@@ -62,6 +67,9 @@ _cookie_transport = CookieTransport(
 )
 
 
+_bearer_transport = BearerTransport(tokenUrl="auth/jwt/login")
+
+
 async def get_user_db():
     yield BeanieUserDatabase(User)
 
@@ -70,7 +78,7 @@ async def get_access_token_db():
     yield BeanieAccessTokenDatabase(AccessToken)
 
 
-def get_database_strategy(
+def _get_database_strategy(
     access_token_db: AccessTokenDatabase[AccessToken] = Depends(get_access_token_db),
 ) -> DatabaseStrategy:
     return DatabaseStrategy(
@@ -78,10 +86,24 @@ def get_database_strategy(
     )
 
 
-auth_backend = AuthenticationBackend(
+def _get_jwt_strategy() -> JWTStrategy:
+    return JWTStrategy(
+        secret=_cfg.security.secret,
+        lifetime_seconds=_cfg.security.jwt_lifetime,
+        token_audience="textrig:jwt",
+    )
+
+
+_auth_backend_cookie = AuthenticationBackend(
     name="cookie",
     transport=_cookie_transport,
-    get_strategy=get_database_strategy,
+    get_strategy=_get_database_strategy,
+)
+
+_auth_backend_jwt = AuthenticationBackend(
+    name="jwt",
+    transport=_bearer_transport,
+    get_strategy=_get_jwt_strategy,
 )
 
 
@@ -127,17 +149,26 @@ async def get_user_manager(user_db=Depends(get_user_db)):
 
 fastapi_users = FastAPIUsers[User, PydanticObjectId](
     get_user_manager,
-    [auth_backend],
+    [_auth_backend_cookie, _auth_backend_jwt],
 )
 
 
 def setup_auth_routes(app: FastAPI) -> list[APIRouter]:
-    # auth
+    # cookie auth
     app.include_router(
         fastapi_users.get_auth_router(
-            auth_backend, requires_verification=not _cfg.dev_mode
+            _auth_backend_cookie, requires_verification=not _cfg.dev_mode
         ),
         prefix="/auth/cookie",
+        tags=["auth"],
+        include_in_schema=_cfg.dev_mode  # only during development
+    )
+    # jwt auth
+    app.include_router(
+        fastapi_users.get_auth_router(
+            _auth_backend_jwt, requires_verification=not _cfg.dev_mode
+        ),
+        prefix="/auth/jwt",
         tags=["auth"],
     )
     # register

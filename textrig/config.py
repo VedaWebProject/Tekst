@@ -103,6 +103,7 @@ class SecurityConfig(BaseModel):
     access_token_lifetime: int = 3600
     reset_pw_token_lifetime: int = 3600
     verification_token_lifetime: int = 3600
+    jwt_lifetime: int = 3600
 
 
 class TextRigConfig(BaseSettings):
