@@ -1,12 +1,13 @@
 import json
 
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, status
+from beanie import PydanticObjectId
+from fastapi import APIRouter, Depends, HTTPException, Path, UploadFile, status
 from textrig.config import TextRigConfig, get_config
-from textrig.db.io import DbIO
-from textrig.dependencies import get_cfg, get_db_io
+from textrig.dependencies import get_cfg
 from textrig.logging import log
-from textrig.models.text import Text, TextRead, TextUpdate
+from textrig.models.text import Text, TextUpdate
 from textrig.utils import importer
+from textrig.utils.validators import validate_id
 
 
 _cfg: TextRigConfig = get_config()
@@ -22,29 +23,31 @@ router = APIRouter(
 # ROUTES DEFINITIONS...
 
 
-@router.get("", response_model=list[TextRead], status_code=status.HTTP_200_OK)
-async def get_all_texts(
-    db_io: DbIO = Depends(get_db_io), limit: int = 100
-) -> list[TextRead]:
-    return await db_io.find("texts", limit=limit)
+@router.get("", response_model=list[Text], status_code=status.HTTP_200_OK)
+async def get_all_texts(limit: int = 100) -> list[Text]:
+    return await Text.find_all(limit=limit).to_list()
 
 
-@router.post("", response_model=TextRead, status_code=status.HTTP_201_CREATED)
-async def create_text(text: Text, db_io: DbIO = Depends(get_db_io)) -> TextRead:
-    return await text.create(db_io)
+@router.post("", response_model=Text, status_code=status.HTTP_201_CREATED)
+async def create_text(text: Text) -> Text:
+    if await Text.find_one(Text.title == text.title):
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="An equal text already exists (same title)",
+        )
+    return await text.create()
 
 
 @router.post(
     "/import",
-    response_model=TextRead,
+    response_model=Text,
     status_code=status.HTTP_201_CREATED,
     include_in_schema=_cfg.dev_mode,
 )
 async def import_text(
     file: UploadFile,
     cfg: TextRigConfig = Depends(get_cfg),
-    db_io: DbIO = Depends(get_db_io),
-) -> TextRead:  # pragma: no cover
+) -> Text:  # pragma: no cover
     if not cfg.dev_mode:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
@@ -54,7 +57,7 @@ async def import_text(
     log.debug(f'Importing text data from uploaded file "{file.filename}" ...')
 
     try:
-        text = await importer.import_text(json.loads(await file.read()), db_io)
+        text = await importer.import_text(json.loads(await file.read()))
     except HTTPException as e:
         log.error(e.detail)
         raise e
@@ -70,13 +73,30 @@ async def import_text(
     return text
 
 
-@router.get("/{text_id}", response_model=TextRead, status_code=status.HTTP_200_OK)
-async def get_text_by_id(text_id: str, db_io: DbIO = Depends(get_db_io)) -> dict:
-    return await TextRead.read(text_id, db_io)
+@router.get("/{textId}", response_model=Text, status_code=status.HTTP_200_OK)
+async def get_text_by_id(text_id: PydanticObjectId = Path(..., alias="textId")) -> dict:
+    validate_id(text_id)
+    text = await Text.get(text_id)
+    if not text:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Could not find text with ID {text_id}",
+        )
+    return text
 
 
-@router.patch("", response_model=TextRead, status_code=status.HTTP_200_OK)
-async def update_text(
-    text_update: TextUpdate, db_io: DbIO = Depends(get_db_io)
-) -> dict:
-    return await text_update.update(db_io)
+@router.patch("", response_model=Text, status_code=status.HTTP_200_OK)
+async def update_text(text_update: TextUpdate) -> dict:
+    text: Text = await Text.get(text_update.id)
+    if not text:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Text with ID {text_update.id} doesn't exist",
+        )
+    if text_update.slug and text_update.slug != text.slug:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Text slug cannot be changed",
+        )
+    await text.set(text_update.dict())
+    return text

@@ -1,12 +1,11 @@
-from pydantic import Field
+from pydantic import BaseModel, Field
 from textrig.layer_types import LayerTypePluginABC, layer_type_impl
-from textrig.models.common import TextRigBaseModel
 from textrig.models.layer import LayerBase
 from textrig.models.layer_configs import DeepLLinksConfig
 from textrig.models.unit import UnitBase
 
 
-class PlainTextLayerConfig(TextRigBaseModel):
+class PlainTextLayerConfig(BaseModel):
     deepl_links: DeepLLinksConfig = DeepLLinksConfig()
 
 
@@ -21,7 +20,7 @@ class PlainTextLayer(LayerBase):
 class PlainTextUnit(UnitBase):
     """A unit of a plaintext data layer"""
 
-    text: str = Field(
+    text: str | None = Field(
         None,
         description="Text content of the plaintext unit",
         extra={"template": True},

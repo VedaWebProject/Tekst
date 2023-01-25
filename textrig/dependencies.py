@@ -2,7 +2,9 @@ from fastapi import Depends
 from motor.motor_asyncio import AsyncIOMotorDatabase as Database
 from textrig.config import TextRigConfig, get_config
 from textrig.db import DatabaseClient, get_client
-from textrig.db.io import DbIO
+
+
+# from textrig.db import DatabaseClient, get_client
 
 
 def get_cfg() -> TextRigConfig:
@@ -19,5 +21,5 @@ def get_db(
     return db_client[cfg.db.name]
 
 
-def get_db_io(db: Database = Depends(get_db)) -> DbIO:
-    return DbIO(db)
+# def get_db_io(db: Database = Depends(get_db)) -> DbIO:
+#     return DbIO(db)

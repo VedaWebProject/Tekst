@@ -1,7 +1,7 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from textrig.db.io import DbIO
-from textrig.dependencies import get_db_io
-from textrig.models.text import Node, NodeRead, NodeUpdate
+from beanie import PydanticObjectId
+from fastapi import APIRouter, HTTPException, Path, status
+from textrig.logging import log
+from textrig.models.text import Node, NodeUpdate, Text
 
 
 router = APIRouter(
@@ -14,19 +14,35 @@ router = APIRouter(
 # ROUTES DEFINITIONS...
 
 
-@router.post("", response_model=NodeRead, status_code=status.HTTP_201_CREATED)
-async def create_node(node: Node, db_io: DbIO = Depends(get_db_io)) -> dict:
-    return await node.create(db_io)
+@router.post("", response_model=Node, status_code=status.HTTP_201_CREATED)
+async def create_node(node: Node) -> dict:
+    # find text the node belongs to
+    if not await Text.find_one(Text.id == node.text_id).exists():
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Corresponding text '{node.text_id}' does not exist",
+        )
+    # check for semantic duplicates
+    dupes = await Node.find(
+        {"textId": node.text_id, "level": node.level, "index": node.index},
+    ).first_or_none()
+    if dupes:
+        log.warning(f"Cannot create node. Conflict: {node}")
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Conflict with existing node",
+        )
+    # all fine
+    return await node.create()
 
 
-@router.get("", response_model=list[NodeRead], status_code=status.HTTP_200_OK)
+@router.get("", response_model=list[Node], status_code=status.HTTP_200_OK)
 async def get_nodes(
-    text_slug: str,
+    text_id: PydanticObjectId,
     level: int = None,
     index: int = None,
-    parent_id: str = None,
+    parent_id: PydanticObjectId = None,
     limit: int = 1000,
-    db_io: DbIO = Depends(get_db_io),
 ) -> list:
     if level is None and parent_id is None:
         raise HTTPException(
@@ -34,7 +50,7 @@ async def get_nodes(
             detail="Request must contain either level or parent_id",
         )
 
-    example = dict(text_slug=text_slug)
+    example = dict(textId=text_id)
 
     if level is not None:
         example["level"] = level
@@ -43,52 +59,49 @@ async def get_nodes(
         example["index"] = index
 
     if parent_id:
-        example["parent_id"] = parent_id
+        example["parentId"] = parent_id
 
-    return await db_io.find("nodes", example=example, limit=limit)
+    return await Node.find(example).limit(limit).to_list()
 
 
-@router.patch("", response_model=NodeRead, status_code=status.HTTP_200_OK)
-async def update_node(
-    node_update: NodeUpdate, db_io: DbIO = Depends(get_db_io)
-) -> dict:
-    return await node_update.update(db_io)
+@router.patch("", response_model=Node, status_code=status.HTTP_200_OK)
+async def update_node(node_update: NodeUpdate) -> dict:
+    node: Node = await Node.get(node_update.id)
+    if not node:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Node with ID {node_update.id} doesn't exist",
+        )
+    await node.set(node_update.dict())
+    return node
 
 
 @router.get(
-    "/{node_id}/children", response_model=list[NodeRead], status_code=status.HTTP_200_OK
+    "/{nodeId}/children", response_model=list[Node], status_code=status.HTTP_200_OK
 )
 async def get_children(
-    node_id: str,
+    node_id: PydanticObjectId = Path(..., alias="nodeId"),
     limit: int = 1000,
-    db_io: DbIO = Depends(get_db_io),
 ) -> list:
-    return await db_io.find(
-        "nodes",
-        example={"parent_id": node_id},
-        limit=limit,
-    )
+    return await Node.find({"parentId": node_id}).limit(limit).to_list()
 
 
-@router.get("/{node_id}/next", response_model=NodeRead, status_code=status.HTTP_200_OK)
+@router.get("/{nodeId}/next", response_model=Node, status_code=status.HTTP_200_OK)
 async def get_next(
-    node_id: str,
-    db_io: DbIO = Depends(get_db_io),
+    node_id: PydanticObjectId = Path(..., alias="nodeId"),
 ) -> dict:
-    node = await db_io.find_one("nodes", node_id)
+    node = await Node.get(node_id)
     if not node:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Invalid node ID {node_id}",
         )
-    node = NodeRead(**node)
-    node = await db_io.find_one_by_example(
-        "nodes",
-        example={
-            "text_slug": node.text_slug,
+    node = await Node.find_one(
+        {
+            "textId": node.text_id,
             "level": node.level,
             "index": node.index + 1,
-        },
+        }
     )
     if not node:
         raise HTTPException(

@@ -82,9 +82,9 @@ class InfoConfig(BaseModel):
     """General information config model"""
 
     platform: str = Field("TextRig", const=True)
-    platform_website: str = Field(pkg_meta["website"], const=True)
+    platform_website: HttpUrl = Field(pkg_meta["website"], const=True)
     license: str = Field(pkg_meta["license"], const=True)
-    license_url: str = Field(pkg_meta["license_url"], const=True)
+    license_url: HttpUrl = Field(pkg_meta["license_url"], const=True)
     version: str = Field(pkg_meta["version"], const=True)
     description: str = pkg_meta["description"]
     long_description: str = pkg_meta["long_description"]
@@ -95,12 +95,24 @@ class InfoConfig(BaseModel):
     contact_email: EmailStr = ""
 
 
+class SecurityConfig(BaseModel):
+    """Security config model"""
+
+    secret: str = "this_should_really_be_changed"
+    cookie_lifetime: int = 3600
+    access_token_lifetime: int = 3600
+    reset_pw_token_lifetime: int = 3600
+    verification_token_lifetime: int = 3600
+    jwt_lifetime: int = 3600
+
+
 class TextRigConfig(BaseSettings):
     """Platform config model"""
 
     # basic
     app_name: str = "TextRig"
     dev_mode: bool = False
+    domain: str | None = None
     root_path: str = ""
     user_files_dir: str = "/userfiles"
     log_level: str = "INFO"
@@ -111,21 +123,21 @@ class TextRigConfig(BaseSettings):
 
     # CORS
     cors_allow_origins: str | list[str] = ["*"]
-    cors_allow_credentials: str | list[str] = ["*"]
+    cors_allow_credentials: bool = True
     cors_allow_methods: str | list[str] = ["*"]
     cors_allow_headers: str | list[str] = ["*"]
 
     # special domain sub configs
-    db: DbConfig = DbConfig()  # db cfg (MongoDB)
-    doc: DocConfig = DocConfig()  # doc cfg (SwaggerUI, Redoc, OpenAPI)
-    info: InfoConfig = InfoConfig()  # general information cfg
+    security: SecurityConfig = SecurityConfig()  # security-related config
+    db: DbConfig = DbConfig()  # db-related config (MongoDB)
+    doc: DocConfig = DocConfig()  # documentation-related config (OpenAPI, Redoc)
+    info: InfoConfig = InfoConfig()  # general information config
 
     # def __init__(self, env_file: str = ".env", *args, **kwargs):
     #     super().__init__(*args, env_file=env_file, _env_file=env_file, **kwargs)
 
     @validator(
         "cors_allow_origins",
-        "cors_allow_credentials",
         "cors_allow_methods",
         "cors_allow_headers",
         pre=True,

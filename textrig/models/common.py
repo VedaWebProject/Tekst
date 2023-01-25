@@ -1,9 +1,11 @@
 from typing import Optional
 
+from beanie import Document, PydanticObjectId
 from bson import ObjectId
-from bson.errors import InvalidId
+
+# from bson.errors import InvalidId
 from humps import camelize
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from pydantic.main import ModelMetaclass
 
 
@@ -11,103 +13,42 @@ from pydantic.main import ModelMetaclass
 Metadata = dict[str, str | int | bool | float]
 
 
-class DocumentId(ObjectId):
-    """A project specific wrapper for MongoDB's bson.ObjectId"""
+class ModelBase(BaseModel):
+    """Base class for all TextRig pydantic models"""
 
-    def __repr__(self):
-        return f"DocId('{str(self)}')"
+    def dict(self, **kwargs) -> dict:
+        """Overrides dict() in Basemodel to set custom defaults"""
 
-    def __eq__(self, other):
-        if not isinstance(other, (DocumentId, ObjectId, str)):
-            return False
-        return str(self) == str(other)
-
-    def __hash__(self):
-        return hash(str(self))
-
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
-
-    @classmethod
-    def validate(cls, v) -> "DocumentId":
-        if type(v) is DocumentId:
-            return v
-
-        try:
-            return DocumentId(str(v))
-        except InvalidId:
-            raise ValueError("Not a valid DocumentId")
-
-    @classmethod
-    def __modify_schema__(cls, field_schema) -> None:
-        field_schema.update(type="string")
-
-
-class TextRigBaseModel(BaseModel):
-    """Base class for all TextRig models"""
-
-    def __init__(self, **kwargs):
-        """Converts "_id" to "id" """
-        if "_id" in kwargs and kwargs["_id"]:
-            kwargs["id"] = kwargs.pop("_id")
-        super().__init__(**kwargs)
-
-    def dict(self, for_mongo: bool = False, **kwargs) -> dict:
-        """Overrides dict() in Basemodel to handle "_id" and change some defaults"""
-        parsed = super().dict(
+        return super().dict(
             exclude_unset=kwargs.pop("exclude_unset", True),
-            by_alias=kwargs.pop("by_alias", True),
             **kwargs,
         )
-        if for_mongo and "_id" not in parsed and "id" in parsed:
-            parsed["_id"] = parsed.pop("id")
-        if not for_mongo:
-            for key in parsed:
-                if type(parsed[key]) == DocumentId:
-                    parsed[key] = str(parsed[key])
-        return parsed
 
     def json(self, **kwargs) -> str:
         """Overrides json() in Basemodel to change some defaults"""
         return super().json(
             exclude_unset=kwargs.pop("exclude_unset", True),
-            by_alias=kwargs.pop("by_alias", True),
+            by_alias=kwargs.pop("by_alias", True),  # we want camelCased aliases in JSON
             **kwargs,
         )
-
-    def ensure_model_type(
-        self, target_model_type: "TextRigBaseModel"
-    ) -> "TextRigBaseModel":
-        """
-        Used to make sure that (especially subclass) model
-        instances pass validation for the target model. If it quacks like a duck...
-        """
-        if type(self) is not target_model_type:
-            return target_model_type(**self.dict())
-        return self
 
     @classmethod
     def field_names(cls, alias: bool = False):
         return list(cls.schema(alias).get("properties").keys())
 
     class Config:
+        json_encoders = {PydanticObjectId: str, ObjectId: str}
         alias_generator = camelize
         allow_population_by_field_name = True
-        json_encoders = {
-            ObjectId: lambda oid: str(oid),
-            DocumentId: lambda did: str(did),  # is this necessary?
-        }
+        # arbitrary_types_allowed = True
 
 
-class DbDocument(BaseModel):
-    """Schema mixin for objects in the database (which have an ID)"""
+class DocumentBase(Document):
+    """Base class for all TextRig DB document models"""
 
-    id: DocumentId = Field(...)
-
-    class Config:
-        arbitrary_types_allowed = True
-        # allow_population_by_field_name = True  # only needed for aliased fields
+    async def insert(self, **kwargs):
+        self.id = None  # reset ID for new document in case one is already set
+        return await super().insert(**kwargs)
 
 
 class AllOptional(ModelMetaclass):

@@ -2,11 +2,14 @@ import json
 
 import pytest
 import requests
+from asgi_lifespan import LifespanManager
 from httpx import AsyncClient
 from textrig.app import app
 from textrig.config import TextRigConfig, get_config
 from textrig.db import DatabaseClient
 from textrig.dependencies import get_db_client
+from textrig.layer_types import get_layer_type
+from textrig.models.text import Node, Text
 
 
 """
@@ -31,15 +34,6 @@ def anyio_backend():
     return "asyncio"
 
 
-@pytest.fixture(scope="session")
-async def get_db_client_override(config) -> DatabaseClient:
-    """Dependency override for the database client dependency"""
-    db_client: DatabaseClient = DatabaseClient(config.db.get_uri())
-    yield db_client
-    # close db connection
-    db_client.close()
-
-
 @pytest.fixture
 def test_data(shared_datadir) -> dict:
     """Returns all shared test data"""
@@ -56,11 +50,21 @@ def test_data(shared_datadir) -> dict:
 #     loop.close()
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
+async def get_db_client_override(config) -> DatabaseClient:
+    """Dependency override for the database client dependency"""
+    db_client: DatabaseClient = DatabaseClient(config.db.get_uri())
+    yield db_client
+    # close db connection
+    db_client.close()
+
+
+@pytest.fixture(scope="session")
 async def test_app(config, get_db_client_override):
     """Provides an app instance with overridden dependencies"""
     app.dependency_overrides[get_db_client] = lambda: get_db_client_override
-    yield app
+    async with LifespanManager(app):
+        yield app
     # cleanup data
     await get_db_client_override.drop_database(config.db.name)
 
@@ -73,21 +77,53 @@ async def test_client(test_app) -> AsyncClient:
 
 
 @pytest.fixture
-async def insert_test_data(root_path, test_client, test_data) -> callable:
+async def reset_db(get_db_client_override, config):
+    await get_db_client_override.drop_database(config.db.name)
+
+
+@pytest.fixture
+async def insert_test_data(test_app, reset_db, root_path, test_data) -> callable:
     """
-    Returns an asynchronous function to load
-    test data for certain database collections
+    Returns an asynchronous function to insert
+    test data into their respective database collections
     """
 
-    async def _insert_test_data(*collections: str) -> None:
-        for collection in collections:
-            for doc in test_data[collection]:
-                endpoint = f"{root_path}/{collection}"
-                if collection == "layers":
-                    endpoint += f"/{doc['layer_type']}"
-                await test_client.post(endpoint, json=doc)
+    async def _insert_test_data(*collections: str) -> str | None:
+        if "texts" in collections:
+            text = Text(**test_data["texts"][0])
+            await text.create()
+        if "nodes" in collections:
+            for doc in test_data["nodes"]:
+                await Node(text_id=text.id, **doc).create()
+        if "layers" in collections:
+            for doc in test_data["layers"]:
+                LayerModel = get_layer_type(doc["layerType"]).get_layer_model()
+                await LayerModel(text_id=text.id, **doc).create()
+
+        return str(text.id) if text else None
 
     return _insert_test_data
+
+
+# @pytest.fixture(scope="session")
+# def json_compat() -> callable:
+#     """
+#     Returns a function that forces JSON encodability of the passed object.
+#     """
+
+#     def _json_compat(obj):
+#         if isinstance(obj, dict):
+#             return {str(k): _json_compat(v) for k, v in obj.items()}
+#         elif isinstance(obj, list):
+#             return [_json_compat(i) for i in obj]
+#         else:
+#             try:
+#                 json.dumps(obj)
+#             except Exception:
+#                 return str(obj)
+#             return obj
+
+#     return _json_compat
 
 
 @pytest.fixture(autouse=True)

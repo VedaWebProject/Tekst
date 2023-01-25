@@ -1,10 +1,9 @@
 from typing import Literal
 
-from pydantic import Field, validator
-from textrig.models.common import TextRigBaseModel
+from pydantic import BaseModel, Field, validator
 
 
-class DeepLLinksConfig(TextRigBaseModel):
+class DeepLLinksConfig(BaseModel):
 
     _DEEPL_LANGUAGES: tuple = (
         "BG", "CS", "DA", "DE", "EL", "EN", "ES", "ET", "FI",
@@ -16,11 +15,11 @@ class DeepLLinksConfig(TextRigBaseModel):
         False,
         description="Enable/disable quick translation links to DeepL",
     )
-    source_language: Literal[_DEEPL_LANGUAGES] = Field(
+    source_language: Literal[_DEEPL_LANGUAGES] | None = Field(
         None, description="Source language"
     )
-    languages: set[Literal[_DEEPL_LANGUAGES]] = Field(
-        ("EN", "DE"), description="Target languages to display links for"
+    languages: list[Literal[_DEEPL_LANGUAGES]] = Field(
+        ["EN", "DE"], description="Target languages to display links for"
     )
 
     def _uppercase_lang_code(v):

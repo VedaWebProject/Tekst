@@ -1,16 +1,15 @@
 import pytest
+from beanie import PydanticObjectId
 from httpx import AsyncClient
-from textrig.models.common import DocumentId
-from textrig.models.text import Node, NodeRead, NodeUpdate
 
 
 @pytest.mark.anyio
 async def test_create_node(
     root_path, test_client: AsyncClient, test_data, insert_test_data
 ):
-    await insert_test_data("texts")
+    text_id = await insert_test_data("texts")
     endpoint = f"{root_path}/nodes"
-    nodes = test_data["nodes"]
+    nodes = [{"textId": text_id, **node} for node in test_data["nodes"]]
 
     for node in nodes:
         resp = await test_client.post(endpoint, json=node)
@@ -23,41 +22,43 @@ async def test_create_node(
 async def test_child_node_io(
     root_path, test_client: AsyncClient, test_data, insert_test_data
 ):
-    await insert_test_data("texts")
+    text_id = await insert_test_data("texts")
     endpoint = f"{root_path}/nodes"
-    node = test_data["nodes"][0]
+    node = {"textId": text_id, **test_data["nodes"][0]}
 
     # create parent
     resp = await test_client.post(endpoint, json=node)
     assert resp.status_code == 201, f"HTTP status {resp.status_code} (expected: 201)"
-    parent: NodeRead = NodeRead(**resp.json())
+    parent = resp.json()
+    assert parent["_id"]
 
     # create child
-    child: Node = Node(**node)
-    child.parent_id = str(parent.id)
-    child.level = parent.level + 1
-    child.index = 0
-    resp = await test_client.post(endpoint, json=child.dict())
-    child = NodeRead(**resp.json())
-    assert "id" in resp.json()
+    child = node
+    child["parentId"] = parent["_id"]
+    child["level"] = parent["level"] + 1
+    child["index"] = 0
+    resp = await test_client.post(endpoint, json=child)
+    assert resp.status_code == 201, f"HTTP status {resp.status_code} (expected: 201)"
+    child = resp.json()
+    assert "_id" in resp.json()
     assert "parentId" in resp.json()
-    assert resp.json()["parentId"] == child.parent_id
+    assert resp.json()["parentId"] == str(child["parentId"])
 
     # find children by parent ID
     resp = await test_client.get(
-        endpoint, params={"text_slug": parent.text_slug, "parent_id": parent.id}
+        endpoint, params={"textId": parent["textId"], "parentId": parent["_id"]}
     )
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) is list
     assert len(resp.json()) == 1
-    assert resp.json()[0]["id"] == child.id
+    assert resp.json()[0]["_id"] == str(child["_id"])
 
     # find children by parent ID using dedicated children endpoint
-    resp = await test_client.get(f"{root_path}/nodes/{child.parent_id}/children")
+    resp = await test_client.get(f"{root_path}/nodes/{child['parentId']}/children")
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) is list
     assert len(resp.json()) == 1
-    assert resp.json()[0]["id"] == child.id
+    assert resp.json()[0]["_id"] == str(child["_id"])
 
 
 @pytest.mark.anyio
@@ -67,7 +68,7 @@ async def test_create_node_invalid_text_fail(
     await insert_test_data("texts")
     endpoint = f"{root_path}/nodes"
     node = test_data["nodes"][0]
-    node["textSlug"] = "this_does_not_exist"
+    node["textId"] = "5eb7cfb05e32e07750a1756a"
 
     resp = await test_client.post(endpoint, json=node)
     assert resp.status_code == 400, f"HTTP status {resp.status_code} (expected: 400)"
@@ -77,9 +78,10 @@ async def test_create_node_invalid_text_fail(
 async def test_create_node_duplicate_fail(
     root_path, test_client: AsyncClient, test_data, insert_test_data
 ):
-    await insert_test_data("texts")
+    text_id = await insert_test_data("texts")
     endpoint = f"{root_path}/nodes"
     node = test_data["nodes"][0]
+    node["textId"] = text_id
 
     resp = await test_client.post(endpoint, json=node)
     assert resp.status_code == 201, f"HTTP status {resp.status_code} (expected: 201)"
@@ -92,11 +94,9 @@ async def test_create_node_duplicate_fail(
 async def test_get_nodes(
     root_path, test_client: AsyncClient, test_data, insert_test_data
 ):
-    await insert_test_data("texts", "nodes")
+    text_id = await insert_test_data("texts", "nodes")
     endpoint = f"{root_path}/nodes"
-    text = test_data["texts"][0]
-    text_slug = text["slug"]
-    nodes = [n for n in test_data["nodes"] if n["textSlug"] == text_slug]
+    nodes = test_data["nodes"]
     # level = 0
     # index = 0
     # parent_id = None
@@ -104,7 +104,7 @@ async def test_get_nodes(
 
     # test results length limit
     resp = await test_client.get(
-        endpoint, params={"text_slug": text_slug, "level": 0, "limit": 2}
+        endpoint, params={"textId": text_id, "level": 0, "limit": 2}
     )
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) is list
@@ -112,32 +112,32 @@ async def test_get_nodes(
 
     # test empty results with status 200
     resp = await test_client.get(
-        endpoint, params={"text_slug": "this_does_not_exist", "level": 0}
+        endpoint, params={"textId": "5eb7cfb05e32e07750a1756a", "level": 0}
     )
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) is list
     assert len(resp.json()) == 0
 
     # test results contain all nodes of level 0
-    resp = await test_client.get(endpoint, params={"text_slug": text_slug, "level": 0})
+    resp = await test_client.get(endpoint, params={"textId": text_id, "level": 0})
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) is list
     assert len(resp.json()) == len(nodes)
 
     # test returned nodes have IDs
-    assert "id" in resp.json()[0]
-    DocumentId(resp.json()[0]["id"])
+    assert "_id" in resp.json()[0]
+    PydanticObjectId(resp.json()[0]["_id"])
 
     # test specific index
     resp = await test_client.get(
-        endpoint, params={"text_slug": text_slug, "level": 0, "index": 0}
+        endpoint, params={"textId": text_id, "level": 0, "index": 0}
     )
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) is list
     assert len(resp.json()) == 1
 
     # test invalid request
-    resp = await test_client.get(endpoint, params={"text_slug": text_slug})
+    resp = await test_client.get(endpoint, params={"textId": text_id})
     assert resp.status_code == 400, f"HTTP status {resp.status_code} (expected: 400)"
 
 
@@ -145,29 +145,28 @@ async def test_get_nodes(
 async def test_update_node(
     root_path, test_client: AsyncClient, insert_test_data, test_data
 ):
-    await insert_test_data("texts", "nodes")
-    text_slug = test_data["texts"][0]["slug"]
+    text_id = await insert_test_data("texts", "nodes")
     # get node from db
     endpoint = f"{root_path}/nodes"
-    resp = await test_client.get(endpoint, params={"text_slug": text_slug, "level": 0})
+    resp = await test_client.get(endpoint, params={"textId": text_id, "level": 0})
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) == list
     assert len(resp.json()) > 0
-    node = NodeRead(**resp.json()[0])
+    node = resp.json()[0]
     # update node
-    node_update = NodeUpdate(id=node.id, label="A fresh label")
-    resp = await test_client.patch(endpoint, json=node_update.dict())
+    node_update = {"_id": node["_id"], "label": "A fresh label"}
+    resp = await test_client.patch(endpoint, json=node_update)
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
-    assert "id" in resp.json()
-    assert resp.json()["id"] == str(node.id)
+    assert "_id" in resp.json()
+    assert resp.json()["_id"] == str(node["_id"])
     assert "label" in resp.json()
     assert resp.json()["label"] == "A fresh label"
     # update unchanged node
-    resp = await test_client.patch(endpoint, json=node_update.dict())
+    resp = await test_client.patch(endpoint, json=node_update)
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     # update invalid node
-    node_update = NodeUpdate(id="637b9ad396d541a505e5439b", label="Brand new label")
-    resp = await test_client.patch(endpoint, json=node_update.dict())
+    node_update = {"_id": "637b9ad396d541a505e5439b", "label": "Brand new label"}
+    resp = await test_client.patch(endpoint, json=node_update)
     assert resp.status_code == 400, f"HTTP status {resp.status_code} (expected: 400)"
 
 
@@ -175,25 +174,24 @@ async def test_update_node(
 async def test_node_next(
     root_path, test_client: AsyncClient, insert_test_data, test_data
 ):
-    await insert_test_data("texts", "nodes")
-    text_slug = test_data["texts"][0]["slug"]
+    text_id = await insert_test_data("texts", "nodes")
     # get second last node from level 0
     endpoint = f"{root_path}/nodes"
-    resp = await test_client.get(endpoint, params={"text_slug": text_slug, "level": 0})
+    resp = await test_client.get(endpoint, params={"textId": text_id, "level": 0})
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) == list
     assert len(resp.json()) > 0
-    nodes = [NodeRead(**n) for n in resp.json()]
+    nodes = resp.json()
     node_second_last = nodes[len(nodes) - 2]
     node_last = nodes[len(nodes) - 1]
     # get next node
-    endpoint = f"{root_path}/nodes/{node_second_last.id}/next"
+    endpoint = f"{root_path}/nodes/{node_second_last['_id']}/next"
     resp = await test_client.get(endpoint)
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) == dict
-    assert "id" in resp.json()
-    assert resp.json()["id"] == node_last.id
+    assert "_id" in resp.json()
+    assert resp.json()["_id"] == str(node_last["_id"])
     # fail to get node after last
-    endpoint = f"{root_path}/nodes/{node_last.id}/next"
+    endpoint = f"{root_path}/nodes/{node_last['_id']}/next"
     resp = await test_client.get(endpoint)
     assert resp.status_code == 404, f"HTTP status {resp.status_code} (expected: 404)"

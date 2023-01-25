@@ -1,6 +1,6 @@
 tags_metadata = [
     {
-        "name": "text",
+        "name": "texts",
         "description": "Text-related operations",
         "externalDocs": {
             "description": "View external documentation",

@@ -1,6 +1,5 @@
 import pytest
 from httpx import AsyncClient
-from textrig.models.text import TextRead, TextUpdate
 
 
 @pytest.mark.anyio
@@ -11,12 +10,12 @@ async def test_get_texts(root_path, test_client: AsyncClient, insert_test_data):
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) == list
     assert len(resp.json()) > 0
-    text_id = resp.json()[0]["id"]
+    text_id = resp.json()[0]["_id"]
     # get one by specific id
     resp = await test_client.get(f"{endpoint}/{text_id}")
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) == dict
-    assert resp.json()["id"] == text_id
+    assert resp.json()["_id"] == text_id
     # get one by non-existent id
     resp = await test_client.get(f"{endpoint}/637b9ad396d541a505e5439b")
     assert resp.status_code == 404, f"HTTP status {resp.status_code} (expected: 404)"
@@ -25,10 +24,10 @@ async def test_get_texts(root_path, test_client: AsyncClient, insert_test_data):
 @pytest.mark.anyio
 async def test_create_text(root_path, test_client: AsyncClient):
     endpoint = f"{root_path}/texts"
-    payload = {"title": "Just a Test", "levels": ["foo"]}
+    payload = {"title": "Just a Test", "slug": "justatest", "levels": ["foo"]}
     resp = await test_client.post(endpoint, json=payload)
     assert resp.status_code == 201, f"HTTP status {resp.status_code} (expected: 201)"
-    assert "id" in resp.json()
+    assert "_id" in resp.json()
     assert "slug" in resp.json()
     assert resp.json()["slug"] == "justatest"
     # create duplicate
@@ -45,19 +44,19 @@ async def test_update_text(root_path, test_client: AsyncClient, insert_test_data
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) == list
     assert len(resp.json()) > 0
-    text = TextRead(**resp.json()[0])
+    text = resp.json()[0]
     # update text
-    text_update = TextUpdate(id=text.id, title="Another text")
-    resp = await test_client.patch(endpoint, json=text_update.dict())
+    text_update = {"_id": text["_id"], "title": "Another text"}
+    resp = await test_client.patch(endpoint, json=text_update)
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
-    assert "id" in resp.json()
-    assert resp.json()["id"] == str(text.id)
+    assert "_id" in resp.json()
+    assert resp.json()["_id"] == str(text["_id"])
     assert "title" in resp.json()
     assert resp.json()["title"] == "Another text"
     # update unchanged text
-    resp = await test_client.patch(endpoint, json=text_update.dict())
+    resp = await test_client.patch(endpoint, json=text_update)
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     # update invalid text
-    text_update = TextUpdate(id="637b9ad396d541a505e5439b", title="Yet another text")
-    resp = await test_client.patch(endpoint, json=text_update.dict())
+    text_update = {"_id": "637b9ad396d541a505e5439b", "title": "Yet another text"}
+    resp = await test_client.patch(endpoint, json=text_update)
     assert resp.status_code == 400, f"HTTP status {resp.status_code} (expected: 400)"
