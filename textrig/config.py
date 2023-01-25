@@ -124,7 +124,7 @@ class TextRigConfig(BaseSettings):
 
     # CORS
     cors_allow_origins: str | list[str] = ["*"]
-    cors_allow_credentials: str | list[str] = ["*"]
+    cors_allow_credentials: bool = True
     cors_allow_methods: str | list[str] = ["*"]
     cors_allow_headers: str | list[str] = ["*"]
 
@@ -139,7 +139,6 @@ class TextRigConfig(BaseSettings):
 
     @validator(
         "cors_allow_origins",
-        "cors_allow_credentials",
         "cors_allow_methods",
         "cors_allow_headers",
         pre=True,
