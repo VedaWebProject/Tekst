@@ -3,116 +3,164 @@
  * Do not make direct changes to the file.
  */
 
+
 export interface paths {
-  '/admin': {
+  "/admin": {
     /** Hello Admin */
-    get: operations['helloAdmin'];
+    get: operations["helloAdmin"];
   };
-  '/layers/plaintext/{layer_id}': {
+  "/layers/plaintext/{layerId}": {
     /**
-     * Get Plaintext Layer
+     * Get Plaintext Layer 
      * @description Returns the data for a PlainText data layer
      */
-    get: operations['getPlaintextLayer'];
+    get: operations["getPlaintextLayer"];
   };
-  '/layers/plaintext': {
+  "/layers/plaintext": {
     /**
-     * Create Plaintext Layer
+     * Create Plaintext Layer 
      * @description Creates a PlainText data layer definition
      */
-    post: operations['createPlaintextLayer'];
+    post: operations["createPlaintextLayer"];
     /**
-     * Update Plaintext Layer
+     * Update Plaintext Layer 
      * @description Updates the data for a PlainText data layer
      */
-    patch: operations['updatePlaintextLayer'];
+    patch: operations["updatePlaintextLayer"];
   };
-  '/layers': {
+  "/layers": {
     /** Get Layers */
-    get: operations['getLayers'];
+    get: operations["getLayers"];
   };
-  '/layers/template': {
-    /** Get Layer Template */
-    get: operations['getLayerTemplate'];
-  };
-  '/layers/{layer_id}': {
+  "/layers/{layerId}": {
     /** Get Layer */
-    get: operations['getLayer'];
+    get: operations["getLayer"];
   };
-  '/nodes': {
+  "/nodes": {
     /** Get Nodes */
-    get: operations['getNodes'];
+    get: operations["getNodes"];
     /** Create Node */
-    post: operations['createNode'];
+    post: operations["createNode"];
     /** Update Node */
-    patch: operations['updateNode'];
+    patch: operations["updateNode"];
   };
-  '/nodes/{node_id}/children': {
+  "/nodes/{nodeId}/children": {
     /** Get Children */
-    get: operations['getChildren'];
+    get: operations["getChildren"];
   };
-  '/nodes/{node_id}/next': {
+  "/nodes/{nodeId}/next": {
     /** Get Next */
-    get: operations['getNext'];
+    get: operations["getNext"];
   };
-  '/texts': {
+  "/texts": {
     /** Get All Texts */
-    get: operations['getAllTexts'];
+    get: operations["getAllTexts"];
     /** Create Text */
-    post: operations['createText'];
+    post: operations["createText"];
     /** Update Text */
-    patch: operations['updateText'];
+    patch: operations["updateText"];
   };
-  '/texts/{text_id}': {
+  "/texts/import": {
+    /** Import Text */
+    post: operations["importText"];
+  };
+  "/texts/{textId}": {
     /** Get Text By Id */
-    get: operations['getTextById'];
+    get: operations["getTextById"];
   };
-  '/uidata': {
+  "/uidata": {
     /**
-     * Data the client needs to display in the UI
-     * @description Returns all UI data at once
+     * Data the client needs to display in the UI 
+     * @description Returns data the client needs to initialize
      */
-    get: operations['uidata'];
+    get: operations["uidata"];
   };
-  '/uidata/platform': {
+  "/uidata/platform": {
     /**
-     * Platform metadata
+     * Platform metadata 
      * @description Returns platform metadata, possibly customized for this platform instance.
      */
-    get: operations['uidataPlatform'];
+    get: operations["uidataPlatform"];
   };
-  '/uidata/i18n': {
+  "/uidata/i18n": {
     /**
-     * Help texts
+     * Get server-managed translations 
      * @description Returns server-managed translations.
      */
-    get: operations['uidataI18n'];
+    get: operations["uidataI18n"];
   };
-  '/uidata/help': {
+  "/units/plaintext/{unitId}": {
     /**
-     * Help texts
-     * @description Returns all help texts.
-     */
-    get: operations['uidataHelp'];
-  };
-  '/units/plaintext/{unit_id}': {
-    /**
-     * Get Plaintext Unit
+     * Get Plaintext Unit 
      * @description Returns the data for a PlainText data layer unit
      */
-    get: operations['getPlaintextUnit'];
+    get: operations["getPlaintextUnit"];
   };
-  '/units/plaintext': {
+  "/units/plaintext": {
     /**
-     * Create Plaintext Unit
+     * Create Plaintext Unit 
      * @description Creates a PlainText data layer unit
      */
-    post: operations['createPlaintextUnit'];
+    post: operations["createPlaintextUnit"];
     /**
-     * Update Plaintext Unit
+     * Update Plaintext Unit 
      * @description Updates the data for a PlainText data layer unit
      */
-    patch: operations['updatePlaintextUnit'];
+    patch: operations["updatePlaintextUnit"];
+  };
+  "/auth/cookie/login": {
+    /** Auth:Cookie.Login */
+    post: operations["auth:cookie.login"];
+  };
+  "/auth/cookie/logout": {
+    /** Auth:Cookie.Logout */
+    post: operations["auth:cookie.logout"];
+  };
+  "/auth/jwt/login": {
+    /** Auth:Jwt.Login */
+    post: operations["auth:jwt.login"];
+  };
+  "/auth/jwt/logout": {
+    /** Auth:Jwt.Logout */
+    post: operations["auth:jwt.logout"];
+  };
+  "/auth/register": {
+    /** Register:Register */
+    post: operations["register:register"];
+  };
+  "/auth/request-verify-token": {
+    /** Verify:Request-Token */
+    post: operations["verify:requestToken"];
+  };
+  "/auth/verify": {
+    /** Verify:Verify */
+    post: operations["verify:verify"];
+  };
+  "/auth/forgot-password": {
+    /** Reset:Forgot Password */
+    post: operations["reset:forgotPassword"];
+  };
+  "/auth/reset-password": {
+    /** Reset:Reset Password */
+    post: operations["reset:resetPassword"];
+  };
+  "/users/me": {
+    /** Users:Current User */
+    get: operations["users:currentUser"];
+    /** Users:Patch Current User */
+    patch: operations["users:patchCurrentUser"];
+  };
+  "/users/{id}": {
+    /** Users:User */
+    get: operations["users:user"];
+    /** Users:Delete User */
+    delete: operations["users:deleteUser"];
+    /** Users:Patch User */
+    patch: operations["users:patchUser"];
+  };
+  "/": {
+    /** Root Redirect */
+    get: operations["root_redirect__get"];
   };
 }
 
@@ -120,165 +168,160 @@ export type webhooks = Record<string, never>;
 
 export interface components {
   schemas: {
-    /**
-     * DeepLLinksConfig
-     * @description Base class for all TextRig models
-     */
+    /** BearerResponse */
+    BearerResponse: {
+      /** Access Token */
+      access_token: string;
+      /** Token Type */
+      token_type: string;
+    };
+    /** Body_auth_cookie_login_auth_cookie_login_post */
+    Body_auth_cookie_login_auth_cookie_login_post: {
+      /** Grant Type */
+      grant_type?: string;
+      /** Username */
+      username: string;
+      /** Password */
+      password: string;
+      /**
+       * Scope 
+       * @default
+       */
+      scope?: string;
+      /** Client Id */
+      client_id?: string;
+      /** Client Secret */
+      client_secret?: string;
+    };
+    /** Body_auth_jwt_login_auth_jwt_login_post */
+    Body_auth_jwt_login_auth_jwt_login_post: {
+      /** Grant Type */
+      grant_type?: string;
+      /** Username */
+      username: string;
+      /** Password */
+      password: string;
+      /**
+       * Scope 
+       * @default
+       */
+      scope?: string;
+      /** Client Id */
+      client_id?: string;
+      /** Client Secret */
+      client_secret?: string;
+    };
+    /** Body_import_text_texts_import_post */
+    Body_import_text_texts_import_post: {
+      /**
+       * File 
+       * Format: binary
+       */
+      file: string;
+    };
+    /** Body_reset_forgot_password_auth_forgot_password_post */
+    Body_reset_forgot_password_auth_forgot_password_post: {
+      /**
+       * Email 
+       * Format: email
+       */
+      email: string;
+    };
+    /** Body_reset_reset_password_auth_reset_password_post */
+    Body_reset_reset_password_auth_reset_password_post: {
+      /** Token */
+      token: string;
+      /** Password */
+      password: string;
+    };
+    /** Body_verify_request_token_auth_request_verify_token_post */
+    Body_verify_request_token_auth_request_verify_token_post: {
+      /**
+       * Email 
+       * Format: email
+       */
+      email: string;
+    };
+    /** Body_verify_verify_auth_verify_post */
+    Body_verify_verify_auth_verify_post: {
+      /** Token */
+      token: string;
+    };
+    /** DeepLLinksConfig */
     DeepLLinksConfig: {
       /**
-       * Enabled
-       * @description Enable/disable quick translation links to DeepL
+       * Enabled 
+       * @description Enable/disable quick translation links to DeepL 
        * @default false
        */
       enabled?: boolean;
       /**
-       * Sourcelanguage
-       * @description Source language
+       * Source Language 
+       * @description Source language 
        * @enum {string}
        */
-      sourceLanguage?:
-        | 'BG'
-        | 'CS'
-        | 'DA'
-        | 'DE'
-        | 'EL'
-        | 'EN'
-        | 'ES'
-        | 'ET'
-        | 'FI'
-        | 'FR'
-        | 'HU'
-        | 'ID'
-        | 'IT'
-        | 'JA'
-        | 'LT'
-        | 'LV'
-        | 'NL'
-        | 'PL'
-        | 'PT'
-        | 'RO'
-        | 'RU'
-        | 'SK'
-        | 'SL'
-        | 'SV'
-        | 'TR'
-        | 'UK'
-        | 'ZH';
+      source_language?: "BG" | "CS" | "DA" | "DE" | "EL" | "EN" | "ES" | "ET" | "FI" | "FR" | "HU" | "ID" | "IT" | "JA" | "LT" | "LV" | "NL" | "PL" | "PT" | "RO" | "RU" | "SK" | "SL" | "SV" | "TR" | "UK" | "ZH";
       /**
-       * Languages
-       * @description Target languages to display links for
+       * Languages 
+       * @description Target languages to display links for 
        * @default [
-       *   "DE",
-       *   "EN"
+       *   "EN",
+       *   "DE"
        * ]
        */
-      languages?: (
-        | 'BG'
-        | 'CS'
-        | 'DA'
-        | 'DE'
-        | 'EL'
-        | 'EN'
-        | 'ES'
-        | 'ET'
-        | 'FI'
-        | 'FR'
-        | 'HU'
-        | 'ID'
-        | 'IT'
-        | 'JA'
-        | 'LT'
-        | 'LV'
-        | 'NL'
-        | 'PL'
-        | 'PT'
-        | 'RO'
-        | 'RU'
-        | 'SK'
-        | 'SL'
-        | 'SV'
-        | 'TR'
-        | 'UK'
-        | 'ZH'
-      )[];
+      languages?: ("BG" | "CS" | "DA" | "DE" | "EL" | "EN" | "ES" | "ET" | "FI" | "FR" | "HU" | "ID" | "IT" | "JA" | "LT" | "LV" | "NL" | "PL" | "PT" | "RO" | "RU" | "SK" | "SL" | "SV" | "TR" | "UK" | "ZH")[];
+    };
+    /** ErrorModel */
+    ErrorModel: {
+      /** Detail */
+      detail: string | ({
+        [key: string]: string | undefined;
+      });
     };
     /** HTTPValidationError */
     HTTPValidationError: {
       /** Detail */
-      detail?: components['schemas']['ValidationError'][];
+      detail?: (components["schemas"]["ValidationError"])[];
     };
     /**
-     * Node
+     * Node 
      * @description A node in a text structure (e.g. chapter, paragraph, ...)
      */
     Node: {
-      /**
-       * Textslug
-       * @description Slug of the text this node belongs to
-       */
-      textSlug: string;
-      /**
-       * Parentid
-       * @description ID of parent node
-       */
-      parentId?: string;
-      /**
-       * Level
-       * @description Index of structure level this node is on
-       */
-      level: number;
-      /**
-       * Index
-       * @description Position among all text nodes on this level
-       */
-      index: number;
-      /**
-       * Label
-       * @description Label for identifying this text node
-       */
-      label: string;
-      /**
-       * Meta
-       * @description Arbitrary metadata
-       */
-      meta?: {
-        [key: string]: (string | number | boolean | number) | undefined;
-      };
-    };
-    /**
-     * NodeRead
-     * @description An existing node read from the database
-     */
-    NodeRead: {
       /** Id */
-      id: string;
+      _id?: string;
       /**
-       * Textslug
-       * @description Slug of the text this node belongs to
+       * Revisionid 
+       * Format: uuid
        */
-      textSlug: string;
+      revisionId?: string;
       /**
-       * Parentid
+       * Textid 
+       * @description ID of the text this node belongs to
+       */
+      textId: string;
+      /**
+       * Parentid 
        * @description ID of parent node
        */
       parentId?: string;
       /**
-       * Level
+       * Level 
        * @description Index of structure level this node is on
        */
       level: number;
       /**
-       * Index
+       * Index 
        * @description Position among all text nodes on this level
        */
       index: number;
       /**
-       * Label
+       * Label 
        * @description Label for identifying this text node
        */
       label: string;
       /**
-       * Meta
+       * Meta 
        * @description Arbitrary metadata
        */
       meta?: {
@@ -286,14 +329,19 @@ export interface components {
       };
     };
     /**
-     * NodeUpdate
+     * NodeUpdate 
      * @description An update to an existing node
      */
     NodeUpdate: {
       /** Id */
-      id: string;
-      /** Textslug */
-      textSlug?: string;
+      _id?: string;
+      /**
+       * Revisionid 
+       * Format: uuid
+       */
+      revisionId?: string;
+      /** Textid */
+      textId?: string;
       /** Parentid */
       parentId?: string;
       /** Level */
@@ -308,129 +356,101 @@ export interface components {
       };
     };
     /**
-     * PlainTextLayer
+     * PlainTextLayer 
      * @description A data layer describing a set of data on a text
      */
     PlainTextLayer: {
+      /** Id */
+      _id?: string;
       /**
-       * Title
+       * Revisionid 
+       * Format: uuid
+       */
+      revisionId?: string;
+      /**
+       * Title 
        * @description Title of this layer
        */
       title: string;
       /**
-       * Description
+       * Description 
        * @description Short, one-line description of this data layer
        */
       description?: string;
       /**
-       * Textslug
-       * @description Slug of the text this layer belongs to
+       * Textid 
+       * @description ID of the text this layer belongs to
        */
-      textSlug: string;
+      textId?: string;
       /**
-       * Level
+       * Level 
        * @description Text level this layer belongs to
        */
       level: number;
       /**
-       * Layertype
+       * Layertype 
        * @description A string identifying one of the available layer types
        */
       layerType: string;
       /**
-       * Public
-       * @description Publication status of this layer
+       * Public 
+       * @description Publication status of this layer 
        * @default false
        */
       public?: boolean;
       /**
-       * Meta
+       * Meta 
        * @description Arbitrary metadata
        */
       meta?: {
         [key: string]: (string | number | boolean | number) | undefined;
       };
       /**
-       * Config
-       * @default {}
+       * Config 
+       * @default {
+       *   "deepl_links": {
+       *     "enabled": false,
+       *     "languages": [
+       *       "EN",
+       *       "DE"
+       *     ]
+       *   }
+       * }
        */
-      config?: components['schemas']['PlainTextLayerConfig'];
+      config?: components["schemas"]["PlainTextLayerConfig"];
     };
-    /**
-     * PlainTextLayerConfig
-     * @description Base class for all TextRig models
-     */
+    /** PlainTextLayerConfig */
     PlainTextLayerConfig: {
       /**
-       * Deepllinks
-       * @default {}
+       * Deepl Links 
+       * @default {
+       *   "enabled": false,
+       *   "languages": [
+       *     "EN",
+       *     "DE"
+       *   ]
+       * }
        */
-      deeplLinks?: components['schemas']['DeepLLinksConfig'];
+      deepl_links?: components["schemas"]["DeepLLinksConfig"];
     };
     /**
-     * PlainTextLayerRead
-     * @description An existing data layer read from the database
-     */
-    PlainTextLayerRead: {
-      /** Id */
-      id: string;
-      /**
-       * Title
-       * @description Title of this layer
-       */
-      title: string;
-      /**
-       * Description
-       * @description Short, one-line description of this data layer
-       */
-      description?: string;
-      /**
-       * Textslug
-       * @description Slug of the text this layer belongs to
-       */
-      textSlug: string;
-      /**
-       * Level
-       * @description Text level this layer belongs to
-       */
-      level: number;
-      /**
-       * Layertype
-       * @description A string identifying one of the available layer types
-       */
-      layerType: string;
-      /**
-       * Public
-       * @description Publication status of this layer
-       * @default false
-       */
-      public?: boolean;
-      /**
-       * Meta
-       * @description Arbitrary metadata
-       */
-      meta?: {
-        [key: string]: (string | number | boolean | number) | undefined;
-      };
-      /**
-       * Config
-       * @default {}
-       */
-      config?: components['schemas']['PlainTextLayerConfig'];
-    };
-    /**
-     * PlainTextLayerUpdate
+     * PlainTextLayerUpdate 
      * @description An update to an existing data layer
      */
     PlainTextLayerUpdate: {
       /** Id */
-      id: string;
+      _id?: string;
+      /**
+       * Revisionid 
+       * Format: uuid
+       */
+      revisionId?: string;
       /** Title */
       title?: string;
       /** Description */
       description?: string;
-      /** Textslug */
-      textSlug?: string;
+      /** Textid */
+      textId?: string;
       /** Level */
       level?: number;
       /** Layertype */
@@ -441,73 +461,55 @@ export interface components {
       meta?: {
         [key: string]: (string | number | boolean | number) | undefined;
       };
-      config?: components['schemas']['PlainTextLayerConfig'];
+      config?: components["schemas"]["PlainTextLayerConfig"];
     };
     /**
-     * PlainTextUnit
+     * PlainTextUnit 
      * @description A unit of a plaintext data layer
      */
     PlainTextUnit: {
-      /**
-       * Layerid
-       * @description Data layer ID
-       */
-      layerId: string;
-      /**
-       * Nodeid
-       * @description Parent text node ID
-       */
-      nodeId: string;
-      /**
-       * Meta
-       * @description Arbitrary metadata on this layer unit
-       */
-      meta?: {
-        [key: string]: (string | number | boolean | number) | undefined;
-      };
-      /**
-       * Text
-       * @description Text content of the plaintext unit
-       */
-      text?: string;
-    };
-    /**
-     * PlainTextUnitRead
-     * @description A unit of a plaintext data layer
-     */
-    PlainTextUnitRead: {
       /** Id */
-      id: string;
+      _id?: string;
       /**
-       * Layerid
+       * Revisionid 
+       * Format: uuid
+       */
+      revisionId?: string;
+      /**
+       * Layerid 
        * @description Data layer ID
        */
       layerId: string;
       /**
-       * Nodeid
+       * Nodeid 
        * @description Parent text node ID
        */
       nodeId: string;
       /**
-       * Meta
+       * Meta 
        * @description Arbitrary metadata on this layer unit
        */
       meta?: {
         [key: string]: (string | number | boolean | number) | undefined;
       };
       /**
-       * Text
+       * Text 
        * @description Text content of the plaintext unit
        */
       text?: string;
     };
     /**
-     * PlainTextUnitUpdate
+     * PlainTextUnitUpdate 
      * @description A unit of a plaintext data layer
      */
     PlainTextUnitUpdate: {
       /** Id */
-      id: string;
+      _id?: string;
+      /**
+       * Revisionid 
+       * Format: uuid
+       */
+      revisionId?: string;
       /** Layerid */
       layerId?: string;
       /** Nodeid */
@@ -520,72 +522,53 @@ export interface components {
       text?: string;
     };
     /**
-     * Text
+     * Text 
      * @description A text represented in TextRig
      */
     Text: {
-      /**
-       * Title
-       * @description Title of this text
-       */
-      title: string;
-      /**
-       * Slug
-       * @description A short identifier string for use in URLs and internal operations (will be generated automatically if missing)
-       */
-      slug?: string;
-      /**
-       * Subtitle
-       * @description Subtitle of this text
-       */
-      subtitle?: string;
-      /** Levels */
-      levels: string[];
-      /**
-       * Locdelim
-       * @description Delimiter for displaying text locations
-       * @default ,
-       */
-      locDelim?: string;
-    };
-    /**
-     * TextRead
-     * @description An existing text read from the database
-     */
-    TextRead: {
       /** Id */
-      id: string;
+      _id?: string;
       /**
-       * Title
+       * Revisionid 
+       * Format: uuid
+       */
+      revisionId?: string;
+      /**
+       * Title 
        * @description Title of this text
        */
       title: string;
       /**
-       * Slug
-       * @description A short identifier string for use in URLs and internal operations (will be generated automatically if missing)
+       * Slug 
+       * @description A short identifier string for use in URLs and internal operations
        */
-      slug?: string;
+      slug: string;
       /**
-       * Subtitle
+       * Subtitle 
        * @description Subtitle of this text
        */
       subtitle?: string;
       /** Levels */
-      levels: string[];
+      levels: (string)[];
       /**
-       * Locdelim
-       * @description Delimiter for displaying text locations
+       * Locdelim 
+       * @description Delimiter for displaying text locations 
        * @default ,
        */
       locDelim?: string;
     };
     /**
-     * TextUpdate
+     * TextUpdate 
      * @description An update to an existing text
      */
     TextUpdate: {
       /** Id */
-      id: string;
+      _id?: string;
+      /**
+       * Revisionid 
+       * Format: uuid
+       */
+      revisionId?: string;
       /** Title */
       title?: string;
       /** Slug */
@@ -593,9 +576,102 @@ export interface components {
       /** Subtitle */
       subtitle?: string;
       /** Levels */
-      levels?: string[];
+      levels?: (string)[];
       /** Locdelim */
       locDelim?: string;
+    };
+    /**
+     * UserCreate 
+     * @description Base class for all TextRig pydantic models
+     */
+    UserCreate: {
+      /**
+       * Email 
+       * Format: email
+       */
+      email: string;
+      /** Password */
+      password: string;
+      /**
+       * Isactive 
+       * @default true
+       */
+      isActive?: boolean;
+      /**
+       * Issuperuser 
+       * @default false
+       */
+      isSuperuser?: boolean;
+      /**
+       * Isverified 
+       * @default true
+       */
+      isVerified?: boolean;
+      /** Firstname */
+      firstName: string;
+      /** Lastname */
+      lastName: string;
+    };
+    /**
+     * UserRead 
+     * @description Base class for all TextRig pydantic models
+     */
+    UserRead: {
+      /** Id */
+      id?: Record<string, never>;
+      /**
+       * Email 
+       * Format: email
+       */
+      email: string;
+      /**
+       * Isactive 
+       * @default true
+       */
+      isActive?: boolean;
+      /**
+       * Issuperuser 
+       * @default false
+       */
+      isSuperuser?: boolean;
+      /**
+       * Isverified 
+       * @default true
+       */
+      isVerified?: boolean;
+      /** Firstname */
+      firstName: string;
+      /** Lastname */
+      lastName: string;
+    };
+    /**
+     * UserUpdate 
+     * @description Base class for all TextRig pydantic models
+     */
+    UserUpdate: {
+      /** Password */
+      password?: string;
+      /**
+       * Email 
+       * Format: email
+       */
+      email?: string;
+      /**
+       * Isactive 
+       * @default true
+       */
+      isActive?: boolean;
+      /** Issuperuser */
+      isSuperuser?: boolean;
+      /**
+       * Isverified 
+       * @default true
+       */
+      isVerified?: boolean;
+      /** Firstname */
+      firstName?: string;
+      /** Lastname */
+      lastName?: string;
     };
     /** ValidationError */
     ValidationError: {
@@ -617,13 +693,14 @@ export interface components {
 export type external = Record<string, never>;
 
 export interface operations {
+
   helloAdmin: {
     /** Hello Admin */
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': Record<string, never>;
+          "application/json": Record<string, never>;
         };
       };
       /** @description Invalid Request */
@@ -634,19 +711,19 @@ export interface operations {
   };
   getPlaintextLayer: {
     /**
-     * Get Plaintext Layer
+     * Get Plaintext Layer 
      * @description Returns the data for a PlainText data layer
      */
     parameters: {
       path: {
-        layer_id: string;
+        layerId: string;
       };
     };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': components['schemas']['PlainTextLayerRead'];
+          "application/json": components["schemas"]["PlainTextLayer"];
         };
       };
       /** @description Invalid Request */
@@ -656,26 +733,26 @@ export interface operations {
       /** @description Validation Error */
       422: {
         content: {
-          'application/json': components['schemas']['HTTPValidationError'];
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };
   };
   createPlaintextLayer: {
     /**
-     * Create Plaintext Layer
+     * Create Plaintext Layer 
      * @description Creates a PlainText data layer definition
      */
     requestBody: {
       content: {
-        'application/json': components['schemas']['PlainTextLayer'];
+        "application/json": components["schemas"]["PlainTextLayer"];
       };
     };
     responses: {
       /** @description Successful Response */
       201: {
         content: {
-          'application/json': components['schemas']['PlainTextLayerRead'];
+          "application/json": components["schemas"]["PlainTextLayer"];
         };
       };
       /** @description Invalid Request */
@@ -685,26 +762,26 @@ export interface operations {
       /** @description Validation Error */
       422: {
         content: {
-          'application/json': components['schemas']['HTTPValidationError'];
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };
   };
   updatePlaintextLayer: {
     /**
-     * Update Plaintext Layer
+     * Update Plaintext Layer 
      * @description Updates the data for a PlainText data layer
      */
     requestBody: {
       content: {
-        'application/json': components['schemas']['PlainTextLayerUpdate'];
+        "application/json": components["schemas"]["PlainTextLayerUpdate"];
       };
     };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': components['schemas']['PlainTextLayerRead'];
+          "application/json": components["schemas"]["PlainTextLayer"];
         };
       };
       /** @description Invalid Request */
@@ -714,7 +791,7 @@ export interface operations {
       /** @description Validation Error */
       422: {
         content: {
-          'application/json': components['schemas']['HTTPValidationError'];
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };
@@ -723,9 +800,9 @@ export interface operations {
     /** Get Layers */
     parameters: {
       query: {
-        text_slug: string;
+        textId: string;
         level?: number;
-        layer_type?: string;
+        layerType?: string;
         limit?: number;
       };
     };
@@ -733,7 +810,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': Record<string, never>[];
+          "application/json": (Record<string, never>)[];
         };
       };
       /** @description Invalid Request */
@@ -743,33 +820,7 @@ export interface operations {
       /** @description Validation Error */
       422: {
         content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  getLayerTemplate: {
-    /** Get Layer Template */
-    parameters: {
-      query: {
-        layer_id: string;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json': Record<string, never>;
-        };
-      };
-      /** @description Invalid Request */
-      400: never;
-      /** @description Not found */
-      404: never;
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };
@@ -778,14 +829,14 @@ export interface operations {
     /** Get Layer */
     parameters: {
       path: {
-        layer_id: string;
+        layerId: string;
       };
     };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': Record<string, never>;
+          "application/json": Record<string, never>;
         };
       };
       /** @description Invalid Request */
@@ -795,7 +846,7 @@ export interface operations {
       /** @description Validation Error */
       422: {
         content: {
-          'application/json': components['schemas']['HTTPValidationError'];
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };
@@ -804,10 +855,10 @@ export interface operations {
     /** Get Nodes */
     parameters: {
       query: {
-        text_slug: string;
+        textId: string;
         level?: number;
         index?: number;
-        parent_id?: string;
+        parentId?: string;
         limit?: number;
       };
     };
@@ -815,7 +866,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': components['schemas']['NodeRead'][];
+          "application/json": (components["schemas"]["Node"])[];
         };
       };
       /** @description Invalid Request */
@@ -825,7 +876,7 @@ export interface operations {
       /** @description Validation Error */
       422: {
         content: {
-          'application/json': components['schemas']['HTTPValidationError'];
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };
@@ -834,14 +885,14 @@ export interface operations {
     /** Create Node */
     requestBody: {
       content: {
-        'application/json': components['schemas']['Node'];
+        "application/json": components["schemas"]["Node"];
       };
     };
     responses: {
       /** @description Successful Response */
       201: {
         content: {
-          'application/json': components['schemas']['NodeRead'];
+          "application/json": components["schemas"]["Node"];
         };
       };
       /** @description Invalid Request */
@@ -851,7 +902,7 @@ export interface operations {
       /** @description Validation Error */
       422: {
         content: {
-          'application/json': components['schemas']['HTTPValidationError'];
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };
@@ -860,14 +911,14 @@ export interface operations {
     /** Update Node */
     requestBody: {
       content: {
-        'application/json': components['schemas']['NodeUpdate'];
+        "application/json": components["schemas"]["NodeUpdate"];
       };
     };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': components['schemas']['NodeRead'];
+          "application/json": components["schemas"]["Node"];
         };
       };
       /** @description Invalid Request */
@@ -877,7 +928,7 @@ export interface operations {
       /** @description Validation Error */
       422: {
         content: {
-          'application/json': components['schemas']['HTTPValidationError'];
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };
@@ -889,14 +940,14 @@ export interface operations {
         limit?: number;
       };
       path: {
-        node_id: string;
+        nodeId: string;
       };
     };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': components['schemas']['NodeRead'][];
+          "application/json": (components["schemas"]["Node"])[];
         };
       };
       /** @description Invalid Request */
@@ -906,7 +957,7 @@ export interface operations {
       /** @description Validation Error */
       422: {
         content: {
-          'application/json': components['schemas']['HTTPValidationError'];
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };
@@ -915,14 +966,14 @@ export interface operations {
     /** Get Next */
     parameters: {
       path: {
-        node_id: string;
+        nodeId: string;
       };
     };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': components['schemas']['NodeRead'];
+          "application/json": components["schemas"]["Node"];
         };
       };
       /** @description Invalid Request */
@@ -932,7 +983,7 @@ export interface operations {
       /** @description Validation Error */
       422: {
         content: {
-          'application/json': components['schemas']['HTTPValidationError'];
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };
@@ -948,7 +999,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': components['schemas']['TextRead'][];
+          "application/json": (components["schemas"]["Text"])[];
         };
       };
       /** @description Invalid Request */
@@ -958,7 +1009,7 @@ export interface operations {
       /** @description Validation Error */
       422: {
         content: {
-          'application/json': components['schemas']['HTTPValidationError'];
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };
@@ -967,14 +1018,14 @@ export interface operations {
     /** Create Text */
     requestBody: {
       content: {
-        'application/json': components['schemas']['Text'];
+        "application/json": components["schemas"]["Text"];
       };
     };
     responses: {
       /** @description Successful Response */
       201: {
         content: {
-          'application/json': components['schemas']['TextRead'];
+          "application/json": components["schemas"]["Text"];
         };
       };
       /** @description Invalid Request */
@@ -984,7 +1035,7 @@ export interface operations {
       /** @description Validation Error */
       422: {
         content: {
-          'application/json': components['schemas']['HTTPValidationError'];
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };
@@ -993,14 +1044,14 @@ export interface operations {
     /** Update Text */
     requestBody: {
       content: {
-        'application/json': components['schemas']['TextUpdate'];
+        "application/json": components["schemas"]["TextUpdate"];
       };
     };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': components['schemas']['TextRead'];
+          "application/json": components["schemas"]["Text"];
         };
       };
       /** @description Invalid Request */
@@ -1010,7 +1061,33 @@ export interface operations {
       /** @description Validation Error */
       422: {
         content: {
-          'application/json': components['schemas']['HTTPValidationError'];
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  importText: {
+    /** Import Text */
+    requestBody: {
+      content: {
+        "multipart/form-data": components["schemas"]["Body_import_text_texts_import_post"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      201: {
+        content: {
+          "application/json": components["schemas"]["Text"];
+        };
+      };
+      /** @description Invalid Request */
+      400: never;
+      /** @description Not found */
+      404: never;
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };
@@ -1019,14 +1096,14 @@ export interface operations {
     /** Get Text By Id */
     parameters: {
       path: {
-        text_id: string;
+        textId: string;
       };
     };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': components['schemas']['TextRead'];
+          "application/json": components["schemas"]["Text"];
         };
       };
       /** @description Invalid Request */
@@ -1036,21 +1113,21 @@ export interface operations {
       /** @description Validation Error */
       422: {
         content: {
-          'application/json': components['schemas']['HTTPValidationError'];
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };
   };
   uidata: {
     /**
-     * Data the client needs to display in the UI
-     * @description Returns all UI data at once
+     * Data the client needs to display in the UI 
+     * @description Returns data the client needs to initialize
      */
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': Record<string, never>;
+          "application/json": Record<string, never>;
         };
       };
       /** @description Invalid Request */
@@ -1061,14 +1138,14 @@ export interface operations {
   };
   uidataPlatform: {
     /**
-     * Platform metadata
+     * Platform metadata 
      * @description Returns platform metadata, possibly customized for this platform instance.
      */
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': {
+          "application/json": {
             [key: string]: string | undefined;
           };
         };
@@ -1081,7 +1158,7 @@ export interface operations {
   };
   uidataI18n: {
     /**
-     * Help texts
+     * Get server-managed translations 
      * @description Returns server-managed translations.
      */
     parameters?: {
@@ -1093,7 +1170,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': Record<string, never>;
+          "application/json": Record<string, never>;
         };
       };
       /** @description Invalid Request */
@@ -1103,44 +1180,26 @@ export interface operations {
       /** @description Validation Error */
       422: {
         content: {
-          'application/json': components['schemas']['HTTPValidationError'];
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
-    };
-  };
-  uidataHelp: {
-    /**
-     * Help texts
-     * @description Returns all help texts.
-     */
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json': Record<string, never>;
-        };
-      };
-      /** @description Invalid Request */
-      400: never;
-      /** @description Not found */
-      404: never;
     };
   };
   getPlaintextUnit: {
     /**
-     * Get Plaintext Unit
+     * Get Plaintext Unit 
      * @description Returns the data for a PlainText data layer unit
      */
     parameters: {
       path: {
-        unit_id: string;
+        unitId: string;
       };
     };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': components['schemas']['PlainTextUnitRead'];
+          "application/json": components["schemas"]["PlainTextUnit"];
         };
       };
       /** @description Invalid Request */
@@ -1150,26 +1209,26 @@ export interface operations {
       /** @description Validation Error */
       422: {
         content: {
-          'application/json': components['schemas']['HTTPValidationError'];
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };
   };
   createPlaintextUnit: {
     /**
-     * Create Plaintext Unit
+     * Create Plaintext Unit 
      * @description Creates a PlainText data layer unit
      */
     requestBody: {
       content: {
-        'application/json': components['schemas']['PlainTextUnit'];
+        "application/json": components["schemas"]["PlainTextUnit"];
       };
     };
     responses: {
       /** @description Successful Response */
       201: {
         content: {
-          'application/json': components['schemas']['PlainTextUnitRead'];
+          "application/json": components["schemas"]["PlainTextUnit"];
         };
       };
       /** @description Invalid Request */
@@ -1179,26 +1238,26 @@ export interface operations {
       /** @description Validation Error */
       422: {
         content: {
-          'application/json': components['schemas']['HTTPValidationError'];
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };
   };
   updatePlaintextUnit: {
     /**
-     * Update Plaintext Unit
+     * Update Plaintext Unit 
      * @description Updates the data for a PlainText data layer unit
      */
     requestBody: {
       content: {
-        'application/json': components['schemas']['PlainTextUnitUpdate'];
+        "application/json": components["schemas"]["PlainTextUnitUpdate"];
       };
     };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': components['schemas']['PlainTextUnitRead'];
+          "application/json": components["schemas"]["PlainTextUnit"];
         };
       };
       /** @description Invalid Request */
@@ -1208,9 +1267,376 @@ export interface operations {
       /** @description Validation Error */
       422: {
         content: {
-          'application/json': components['schemas']['HTTPValidationError'];
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
+    };
+  };
+  "auth:cookie.login": {
+    /** Auth:Cookie.Login */
+    requestBody: {
+      content: {
+        "application/x-www-form-urlencoded": components["schemas"]["Body_auth_cookie_login_auth_cookie_login_post"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Bad Request */
+      400: {
+        content: {
+          "application/json": components["schemas"]["ErrorModel"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  "auth:cookie.logout": {
+    /** Auth:Cookie.Logout */
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Invalid Request */
+      400: never;
+      /** @description Missing token or inactive user. */
+      401: never;
+    };
+  };
+  "auth:jwt.login": {
+    /** Auth:Jwt.Login */
+    requestBody: {
+      content: {
+        "application/x-www-form-urlencoded": components["schemas"]["Body_auth_jwt_login_auth_jwt_login_post"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["BearerResponse"];
+        };
+      };
+      /** @description Bad Request */
+      400: {
+        content: {
+          "application/json": components["schemas"]["ErrorModel"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  "auth:jwt.logout": {
+    /** Auth:Jwt.Logout */
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Invalid Request */
+      400: never;
+      /** @description Missing token or inactive user. */
+      401: never;
+    };
+  };
+  "register:register": {
+    /** Register:Register */
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UserCreate"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      201: {
+        content: {
+          "application/json": components["schemas"]["UserRead"];
+        };
+      };
+      /** @description Bad Request */
+      400: {
+        content: {
+          "application/json": components["schemas"]["ErrorModel"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  "verify:requestToken": {
+    /** Verify:Request-Token */
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["Body_verify_request_token_auth_request_verify_token_post"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      202: {
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Invalid Request */
+      400: never;
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  "verify:verify": {
+    /** Verify:Verify */
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["Body_verify_verify_auth_verify_post"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["UserRead"];
+        };
+      };
+      /** @description Bad Request */
+      400: {
+        content: {
+          "application/json": components["schemas"]["ErrorModel"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  "reset:forgotPassword": {
+    /** Reset:Forgot Password */
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["Body_reset_forgot_password_auth_forgot_password_post"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      202: {
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Invalid Request */
+      400: never;
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  "reset:resetPassword": {
+    /** Reset:Reset Password */
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["Body_reset_reset_password_auth_reset_password_post"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Bad Request */
+      400: {
+        content: {
+          "application/json": components["schemas"]["ErrorModel"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  "users:currentUser": {
+    /** Users:Current User */
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["UserRead"];
+        };
+      };
+      /** @description Invalid Request */
+      400: never;
+      /** @description Missing token or inactive user. */
+      401: never;
+    };
+  };
+  "users:patchCurrentUser": {
+    /** Users:Patch Current User */
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UserUpdate"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["UserRead"];
+        };
+      };
+      /** @description Bad Request */
+      400: {
+        content: {
+          "application/json": components["schemas"]["ErrorModel"];
+        };
+      };
+      /** @description Missing token or inactive user. */
+      401: never;
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  "users:user": {
+    /** Users:User */
+    parameters: {
+      path: {
+        id: Record<string, never>;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["UserRead"];
+        };
+      };
+      /** @description Invalid Request */
+      400: never;
+      /** @description Missing token or inactive user. */
+      401: never;
+      /** @description Not a superuser. */
+      403: never;
+      /** @description The user does not exist. */
+      404: never;
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  "users:deleteUser": {
+    /** Users:Delete User */
+    parameters: {
+      path: {
+        id: Record<string, never>;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      204: never;
+      /** @description Invalid Request */
+      400: never;
+      /** @description Missing token or inactive user. */
+      401: never;
+      /** @description Not a superuser. */
+      403: never;
+      /** @description The user does not exist. */
+      404: never;
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  "users:patchUser": {
+    /** Users:Patch User */
+    parameters: {
+      path: {
+        id: Record<string, never>;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UserUpdate"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["UserRead"];
+        };
+      };
+      /** @description Bad Request */
+      400: {
+        content: {
+          "application/json": components["schemas"]["ErrorModel"];
+        };
+      };
+      /** @description Missing token or inactive user. */
+      401: never;
+      /** @description Not a superuser. */
+      403: never;
+      /** @description The user does not exist. */
+      404: never;
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  root_redirect__get: {
+    /** Root Redirect */
+    responses: {
+      /** @description Successful Response */
+      301: never;
+      /** @description Invalid Request */
+      400: never;
     };
   };
 }
