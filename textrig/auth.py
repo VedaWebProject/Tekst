@@ -222,12 +222,21 @@ def setup_auth_routes(app: FastAPI) -> list[APIRouter]:
     )
 
 
-# define auth dependencies for API routes (optional auth in dev mode)
-current_unverified_user = _fastapi_users.current_user(optional=_cfg.dev_mode)
-current_user = _fastapi_users.current_user(optional=_cfg.dev_mode, verified=True)
-current_active_user = _fastapi_users.current_user(
-    optional=_cfg.dev_mode, verified=True, active=True
-)
-current_superuser = _fastapi_users.current_user(
-    optional=_cfg.dev_mode, verified=True, active=True, superuser=True
+def _current_user(**kwargs) -> callable:
+    """Returns auth dependencies for API routes (optional auth in dev mode)"""
+    return _fastapi_users.current_user(
+        optional=kwargs.pop("optional", False) or _cfg.dev_mode, **kwargs
+    )
+
+
+# prepare auth dependencies for API routes
+dep_user_unverified = _current_user()
+dep_user = _current_user(verified=True)
+dep_user_active = _current_user(verified=True, active=True)
+dep_superuser = _current_user(verified=True, active=True, superuser=True)
+dep_user_unverified_optional = _current_user(optional=True)
+dep_user_optional = _current_user(optional=True, verified=True)
+dep_user_active_optional = _current_user(optional=True, verified=True, active=True)
+dep_superuser_optional = _current_user(
+    optional=True, verified=True, active=True, superuser=True
 )
