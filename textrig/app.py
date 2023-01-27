@@ -73,7 +73,9 @@ async def startup_routine() -> None:
     await init_odm(get_db(get_db_client(_cfg), _cfg))
 
     # add root route to redirect to docs
-    @app.get("/", response_class=RedirectResponse, status_code=301)
+    @app.get(
+        "/", response_class=RedirectResponse, status_code=301, include_in_schema=False
+    )
     async def root_redirect():
         return _cfg.doc.redoc_url
 
