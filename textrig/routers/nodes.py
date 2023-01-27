@@ -47,7 +47,7 @@ async def get_nodes(
     if level is None and parent_id is None:
         raise HTTPException(
             status.HTTP_400_BAD_REQUEST,
-            detail="Request must contain either level or parent_id",
+            detail="Request must contain either 'level' or 'parentId'",
         )
 
     example = dict(textId=text_id)
