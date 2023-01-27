@@ -37,6 +37,8 @@ def setup_routes(app: FastAPI) -> None:
         if isinstance(route, APIRoute):
             # generate route operation IDs from function names
             route.operation_id = humps.camelize(route.name)
+            route_name = getattr(route.endpoint, "__name__", route.name)
+            route.summary = route_name.replace("_", " ").capitalize()
             # add camel-cased aliases to route params
             for param in route.dependant.query_params:
                 if not param.field_info.alias:

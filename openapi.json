@@ -21,7 +21,7 @@
         "tags": [
           "admin"
         ],
-        "summary": "Hello Admin",
+        "summary": "Hello admin",
         "operationId": "helloAdmin",
         "responses": {
           "200": {
@@ -49,7 +49,7 @@
         "tags": [
           "layers"
         ],
-        "summary": "Get Plaintext Layer",
+        "summary": "Get layer",
         "description": "Returns the data for a PlainText data layer",
         "operationId": "getPlaintextLayer",
         "parameters": [
@@ -98,7 +98,7 @@
         "tags": [
           "layers"
         ],
-        "summary": "Create Plaintext Layer",
+        "summary": "Create layer",
         "description": "Creates a PlainText data layer definition",
         "operationId": "createPlaintextLayer",
         "requestBody": {
@@ -144,7 +144,7 @@
         "tags": [
           "layers"
         ],
-        "summary": "Update Plaintext Layer",
+        "summary": "Update layer",
         "description": "Updates the data for a PlainText data layer",
         "operationId": "updatePlaintextLayer",
         "requestBody": {
@@ -192,7 +192,7 @@
         "tags": [
           "layers"
         ],
-        "summary": "Get Layers",
+        "summary": "Get layers",
         "operationId": "getLayers",
         "parameters": [
           {
@@ -276,7 +276,7 @@
         "tags": [
           "layers"
         ],
-        "summary": "Get Layer",
+        "summary": "Get layer",
         "operationId": "getLayer",
         "parameters": [
           {
@@ -329,7 +329,7 @@
         "tags": [
           "nodes"
         ],
-        "summary": "Get Nodes",
+        "summary": "Get nodes",
         "operationId": "getNodes",
         "parameters": [
           {
@@ -424,7 +424,7 @@
         "tags": [
           "nodes"
         ],
-        "summary": "Create Node",
+        "summary": "Create node",
         "operationId": "createNode",
         "requestBody": {
           "content": {
@@ -469,7 +469,7 @@
         "tags": [
           "nodes"
         ],
-        "summary": "Update Node",
+        "summary": "Update node",
         "operationId": "updateNode",
         "requestBody": {
           "content": {
@@ -516,7 +516,7 @@
         "tags": [
           "nodes"
         ],
-        "summary": "Get Children",
+        "summary": "Get children",
         "operationId": "getChildren",
         "parameters": [
           {
@@ -582,7 +582,7 @@
         "tags": [
           "nodes"
         ],
-        "summary": "Get Next",
+        "summary": "Get next",
         "operationId": "getNext",
         "parameters": [
           {
@@ -634,7 +634,7 @@
         "tags": [
           "texts"
         ],
-        "summary": "Get All Texts",
+        "summary": "Get all texts",
         "operationId": "getAllTexts",
         "parameters": [
           {
@@ -685,7 +685,7 @@
         "tags": [
           "texts"
         ],
-        "summary": "Create Text",
+        "summary": "Create text",
         "operationId": "createText",
         "requestBody": {
           "content": {
@@ -730,7 +730,7 @@
         "tags": [
           "texts"
         ],
-        "summary": "Update Text",
+        "summary": "Update text",
         "operationId": "updateText",
         "requestBody": {
           "content": {
@@ -777,7 +777,7 @@
         "tags": [
           "texts"
         ],
-        "summary": "Import Text",
+        "summary": "Import text",
         "operationId": "importText",
         "requestBody": {
           "content": {
@@ -824,7 +824,7 @@
         "tags": [
           "texts"
         ],
-        "summary": "Get Text By Id",
+        "summary": "Get text by id",
         "operationId": "getTextById",
         "parameters": [
           {
@@ -876,7 +876,7 @@
         "tags": [
           "uidata"
         ],
-        "summary": "Data the client needs to display in the UI",
+        "summary": "Uidata",
         "description": "Returns data the client needs to initialize",
         "operationId": "uidata",
         "responses": {
@@ -905,7 +905,7 @@
         "tags": [
           "uidata"
         ],
-        "summary": "Platform metadata",
+        "summary": "Uidata platform",
         "description": "Returns platform metadata, possibly customized for this platform instance.",
         "operationId": "uidataPlatform",
         "responses": {
@@ -937,7 +937,7 @@
         "tags": [
           "uidata"
         ],
-        "summary": "Get server-managed translations",
+        "summary": "Uidata i18n",
         "description": "Returns server-managed translations.",
         "operationId": "uidataI18n",
         "parameters": [
@@ -987,7 +987,7 @@
         "tags": [
           "units"
         ],
-        "summary": "Get Plaintext Unit",
+        "summary": "Get unit",
         "description": "Returns the data for a PlainText data layer unit",
         "operationId": "getPlaintextUnit",
         "parameters": [
@@ -1036,7 +1036,7 @@
         "tags": [
           "units"
         ],
-        "summary": "Create Plaintext Unit",
+        "summary": "Create unit",
         "description": "Creates a PlainText data layer unit",
         "operationId": "createPlaintextUnit",
         "requestBody": {
@@ -1082,7 +1082,7 @@
         "tags": [
           "units"
         ],
-        "summary": "Update Plaintext Unit",
+        "summary": "Update unit",
         "description": "Updates the data for a PlainText data layer unit",
         "operationId": "updatePlaintextUnit",
         "requestBody": {
@@ -1130,7 +1130,7 @@
         "tags": [
           "auth"
         ],
-        "summary": "Auth:Cookie.Login",
+        "summary": "Login",
         "operationId": "auth:cookie.login",
         "requestBody": {
           "content": {
@@ -1193,7 +1193,7 @@
         "tags": [
           "auth"
         ],
-        "summary": "Auth:Cookie.Logout",
+        "summary": "Logout",
         "operationId": "auth:cookie.logout",
         "responses": {
           "200": {
@@ -1226,7 +1226,7 @@
         "tags": [
           "auth"
         ],
-        "summary": "Auth:Jwt.Login",
+        "summary": "Login",
         "operationId": "auth:jwt.login",
         "requestBody": {
           "content": {
@@ -1295,7 +1295,7 @@
         "tags": [
           "auth"
         ],
-        "summary": "Auth:Jwt.Logout",
+        "summary": "Logout",
         "operationId": "auth:jwt.logout",
         "responses": {
           "200": {
@@ -1328,7 +1328,7 @@
         "tags": [
           "auth"
         ],
-        "summary": "Register:Register",
+        "summary": "Register",
         "operationId": "register:register",
         "requestBody": {
           "content": {
@@ -1396,7 +1396,7 @@
         "tags": [
           "auth"
         ],
-        "summary": "Verify:Request-Token",
+        "summary": "Request verify token",
         "operationId": "verify:requestToken",
         "requestBody": {
           "content": {
@@ -1438,7 +1438,7 @@
         "tags": [
           "auth"
         ],
-        "summary": "Verify:Verify",
+        "summary": "Verify",
         "operationId": "verify:verify",
         "requestBody": {
           "content": {
@@ -1503,7 +1503,7 @@
         "tags": [
           "auth"
         ],
-        "summary": "Reset:Forgot Password",
+        "summary": "Forgot password",
         "operationId": "reset:forgotPassword",
         "requestBody": {
           "content": {
@@ -1545,7 +1545,7 @@
         "tags": [
           "auth"
         ],
-        "summary": "Reset:Reset Password",
+        "summary": "Reset password",
         "operationId": "reset:resetPassword",
         "requestBody": {
           "content": {
@@ -1611,7 +1611,7 @@
         "tags": [
           "users"
         ],
-        "summary": "Users:Current User",
+        "summary": "Me",
         "operationId": "users:currentUser",
         "responses": {
           "200": {
@@ -1644,7 +1644,7 @@
         "tags": [
           "users"
         ],
-        "summary": "Users:Patch Current User",
+        "summary": "Update me",
         "operationId": "users:patchCurrentUser",
         "requestBody": {
           "content": {
@@ -1723,7 +1723,7 @@
         "tags": [
           "users"
         ],
-        "summary": "Users:User",
+        "summary": "Get user",
         "operationId": "users:user",
         "parameters": [
           {
@@ -1782,7 +1782,7 @@
         "tags": [
           "users"
         ],
-        "summary": "Users:Delete User",
+        "summary": "Delete user",
         "operationId": "users:deleteUser",
         "parameters": [
           {
@@ -1834,7 +1834,7 @@
         "tags": [
           "users"
         ],
-        "summary": "Users:Patch User",
+        "summary": "Update user",
         "operationId": "users:patchUser",
         "parameters": [
           {
@@ -1922,20 +1922,6 @@
             "OAuth2PasswordBearer": []
           }
         ]
-      }
-    },
-    "/": {
-      "get": {
-        "summary": "Root Redirect",
-        "operationId": "root_redirect__get",
-        "responses": {
-          "301": {
-            "description": "Successful Response"
-          },
-          "400": {
-            "description": "Invalid Request"
-          }
-        }
       }
     }
   },
