@@ -1,4 +1,3 @@
-import abc
 import re
 
 from beanie import PydanticObjectId
@@ -6,7 +5,7 @@ from pydantic import Field, validator
 from textrig.models.common import Metadata, ModelBase
 
 
-class LayerBase(abc.ABC, ModelBase):
+class LayerBase(ModelBase):
     """A data layer describing a set of data on a text"""
 
     title: str = Field(
@@ -52,9 +51,13 @@ class LayerBase(abc.ABC, ModelBase):
         return v.lower()
 
     @classmethod
-    @abc.abstractmethod
     def get_layer_type_plugin_class(cls) -> type:
-        ...
+        raise NotImplementedError(
+            "Method LayerBase.get_layer_type_plugin_class must be overridden!"
+        )
+
+
+LayerBase._root_document_model = LayerBase.get_document_model()
 
 
 # class LayerUpdateBase(LayerBase, metaclass=AllOptional):

@@ -1,4 +1,5 @@
-from fastapi import APIRouter, HTTPException, status
+from beanie import PydanticObjectId
+from fastapi import APIRouter, HTTPException, Path, status
 from textrig.layer_types import UnitBase, get_layer_types
 from textrig.utils.validators import validate_id
 
@@ -7,7 +8,9 @@ def _generate_read_endpoint(unit_model: type[UnitBase]):
     UnitDocument = unit_model.get_document_model()
     UnitRead = unit_model.get_read_model()
 
-    async def get_unit(unit_id: str) -> UnitRead:
+    async def get_unit(
+        unit_id: PydanticObjectId = Path(..., alias="unitId")
+    ) -> UnitRead:
         """A generic route for reading a unit from the database"""
         validate_id(unit_id)
         unit_doc = await UnitDocument.get(unit_id)

@@ -59,7 +59,7 @@ async def test_get_layer(root_path, test_client: AsyncClient, insert_test_data):
     assert isinstance(resp.json(), list)
     assert len(resp.json()) > 0
     assert isinstance(resp.json()[0], dict)
-    assert "_id" in resp.json()[0]
+    assert "id" in resp.json()[0]
     assert "layerType" in resp.json()[0]
     # update layer
     layer_update = resp.json()[0]
@@ -68,8 +68,8 @@ async def test_get_layer(root_path, test_client: AsyncClient, insert_test_data):
     resp = await test_client.patch(endpoint, json=layer_update)
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert isinstance(resp.json(), dict)
-    assert "_id" in resp.json()
-    assert resp.json()["_id"] == str(layer_update["_id"])
+    assert "id" in resp.json()
+    assert resp.json()["id"] == str(layer_update["id"])
     assert resp.json()["title"] == layer_update["title"]
 
 
@@ -83,15 +83,15 @@ async def test_update_layer(root_path, test_client: AsyncClient, insert_test_dat
     assert isinstance(resp.json(), list)
     assert len(resp.json()) > 0
     assert isinstance(resp.json()[0], dict)
-    assert "_id" in resp.json()[0]
+    assert "id" in resp.json()[0]
     layer = resp.json()[0]
-    layer_id = layer["_id"]
+    layer_id = layer["id"]
     # get layer by id
     endpoint = f"{root_path}/layers/{layer_id}"
     resp = await test_client.get(endpoint)
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert isinstance(resp.json(), dict)
-    assert "_id" in resp.json()
+    assert "id" in resp.json()
     assert resp.json()["_id"] == layer_id
 
 
@@ -106,9 +106,9 @@ async def test_get_layers(root_path, test_client: AsyncClient, insert_test_data)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) > 0
     assert isinstance(resp.json()[0], dict)
-    assert "_id" in resp.json()[0]
+    assert "id" in resp.json()[0]
 
-    layer_id = resp.json()[0]["_id"]
+    layer_id = resp.json()[0]["id"]
 
     endpoint = f"{root_path}/layers/plaintext/{layer_id}"
     resp = await test_client.get(endpoint)

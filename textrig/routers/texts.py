@@ -1,13 +1,13 @@
 import json
 
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, status, Path
+from beanie import PydanticObjectId
+from fastapi import APIRouter, Depends, HTTPException, Path, UploadFile, status
 from textrig.config import TextRigConfig, get_config
 from textrig.dependencies import get_cfg
 from textrig.logging import log
 from textrig.models.text import TextCreate, TextDocument, TextRead, TextUpdate
 from textrig.utils import importer
 from textrig.utils.validators import validate_id
-from beanie import PydanticObjectId
 
 
 _cfg: TextRigConfig = get_config()
@@ -31,8 +31,7 @@ async def get_all_texts(limit: int = 100) -> list[TextRead]:
 @router.post("", response_model=TextRead, status_code=status.HTTP_201_CREATED)
 async def create_text(text: TextCreate) -> TextRead:
     if await TextDocument.find_one(
-        TextDocument.title == text.title,
-        TextDocument.slug == text.slug
+        TextDocument.title == text.title, TextDocument.slug == text.slug
     ).exists():
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,

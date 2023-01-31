@@ -142,7 +142,12 @@ class ModelBase(BaseModel):
     def get_document_model(cls) -> type[_DocumentBase]:
         if not cls.__document_model:
             # generate document model
-            cls.__document_model = cls.__generate_model("Document", _DocumentBase)
+            if root_document_model := getattr(cls, "_root_document_model", None):
+                cls.__document_model = cls.__generate_model(
+                    "Document", root_document_model
+                )
+            else:
+                cls.__document_model = cls.__generate_model("Document", _DocumentBase)
         return cls.__document_model
 
     @classmethod

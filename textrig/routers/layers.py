@@ -2,7 +2,7 @@
 # from tempfile import NamedTemporaryFile
 
 from beanie import PydanticObjectId
-from fastapi import APIRouter, HTTPException, status, Path
+from fastapi import APIRouter, HTTPException, Path, status
 
 # from textrig.dependencies import get_db_io
 from textrig.layer_types import get_layer_types
@@ -11,6 +11,7 @@ from textrig.layer_types import get_layer_types
 from textrig.models.layer import LayerBase
 from textrig.models.text import TextDocument
 from textrig.utils.validators import validate_id
+
 
 # from fastapi.responses import FileResponse
 # from starlette.background import BackgroundTask
@@ -23,7 +24,9 @@ def _generate_read_endpoint(layer_model: type[LayerBase]):
     LayerDocument = layer_model.get_document_model()
     LayerRead = layer_model.get_read_model()
 
-    async def get_layer(layer_id: str) -> LayerRead:
+    async def get_layer(
+        layer_id: PydanticObjectId = Path(..., alias="layerId")
+    ) -> LayerRead:
         """A generic route for reading a layer definition from the database"""
         validate_id(layer_id)
         layer_doc = await LayerDocument.get(layer_id)
@@ -65,7 +68,7 @@ def _generate_update_endpoint(
     LayerUpdate = layer_model.get_update_model()
 
     async def update_layer(updates: LayerUpdate) -> LayerRead:
-        layer: LayerDocument = await layer_model.get(updates.id)
+        layer: LayerDocument = await LayerDocument.get(updates.id)
         if not layer:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
@@ -150,6 +153,7 @@ async def get_layers(
         await LayerBase.get_document_model()
         .find(example, with_children=True)
         .limit(limit)
+        .project(LayerBase.get_read_model())
         .to_list()
     )
 

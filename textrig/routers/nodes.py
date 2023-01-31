@@ -1,4 +1,5 @@
-from fastapi import APIRouter, HTTPException, status, Path
+from beanie import PydanticObjectId
+from fastapi import APIRouter, HTTPException, Path, status
 from textrig.logging import log
 from textrig.models.text import (
     NodeCreate,
@@ -8,7 +9,6 @@ from textrig.models.text import (
     TextDocument,
 )
 from textrig.utils.validators import validate_id
-from beanie import PydanticObjectId
 
 
 router = APIRouter(
@@ -33,7 +33,7 @@ async def create_node(node: NodeCreate) -> NodeRead:
     if await NodeDocument.find_one(
         NodeDocument.text_id == node.text_id,
         NodeDocument.level == node.level,
-        NodeDocument.index == node.index
+        NodeDocument.index == node.index,
     ).exists():
         log.warning(f"Cannot create node. Conflict: {node}")
         raise HTTPException(

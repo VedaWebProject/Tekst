@@ -10,7 +10,7 @@ from pydantic import Field
 from textrig.models.common import Metadata, ModelBase
 
 
-class UnitBase(abc.ABC, ModelBase):
+class UnitBase(ModelBase):
     """A base class for types of data units belonging to a certain data layer"""
 
     layer_id: PydanticObjectId = Field(..., description="Data layer ID")
@@ -26,9 +26,13 @@ class UnitBase(abc.ABC, ModelBase):
         is_root = True
 
     @classmethod
-    @abc.abstractmethod
     def get_layer_type_plugin_class(cls) -> type:
-        ...
+        raise NotImplementedError(
+            "Method UnitBase.get_layer_type_plugin_class must be overridden!"
+        )
+
+
+UnitBase._root_document_model = UnitBase.get_document_model()
 
 
 # class UnitUpdateBase(UnitBase, metaclass=AllOptional):
