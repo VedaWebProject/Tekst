@@ -5,32 +5,6 @@ from textrig.models.layer_configs import DeepLLinksConfig
 from textrig.models.unit import UnitBase
 
 
-class PlainTextLayerConfig(BaseModel):
-    deepl_links: DeepLLinksConfig = DeepLLinksConfig()
-
-
-class PlainTextLayer(LayerBase):
-    config: PlainTextLayerConfig = PlainTextLayerConfig()
-
-    @classmethod
-    def get_layer_type_plugin_class(cls) -> type["PlainText"]:
-        return PlainText
-
-
-class PlainTextUnit(UnitBase):
-    """A unit of a plaintext data layer"""
-
-    text: str | None = Field(
-        None,
-        description="Text content of the plaintext unit",
-        extra={"template": True},
-    )
-
-    @classmethod
-    def get_layer_type_plugin_class(cls) -> type["PlainText"]:
-        return PlainText
-
-
 class PlainText(LayerTypePluginABC):
     """A simple plaintext layer type"""
 
@@ -46,10 +20,36 @@ class PlainText(LayerTypePluginABC):
 
     @classmethod
     @layer_type_impl
-    def get_layer_model(cls) -> type[PlainTextLayer]:
+    def get_layer_model(cls) -> type["PlainTextLayer"]:
         return PlainTextLayer
 
     @classmethod
     @layer_type_impl
-    def get_unit_model(cls) -> type[PlainTextUnit]:
+    def get_unit_model(cls) -> type["PlainTextUnit"]:
         return PlainTextUnit
+
+
+class PlainTextLayerConfig(BaseModel):
+    deepl_links: DeepLLinksConfig = DeepLLinksConfig()
+
+
+class PlainTextLayer(LayerBase):
+    config: PlainTextLayerConfig = PlainTextLayerConfig()
+
+    @classmethod
+    def get_layer_type_plugin_class(cls) -> type[PlainText]:
+        return PlainText
+
+
+class PlainTextUnit(UnitBase):
+    """A unit of a plaintext data layer"""
+
+    text: str | None = Field(
+        None,
+        description="Text content of the plaintext unit",
+        extra={"template": True},
+    )
+
+    @classmethod
+    def get_layer_type_plugin_class(cls) -> type[PlainText]:
+        return PlainText

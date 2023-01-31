@@ -3,10 +3,10 @@ import re
 
 from beanie import PydanticObjectId
 from pydantic import Field, validator
-from textrig.models.common import AllOptional, DocumentBase, Metadata, ModelBase
+from textrig.models.common import Metadata, ModelBase
 
 
-class LayerBase(abc.ABC, ModelBase, DocumentBase):
+class LayerBase(abc.ABC, ModelBase):
     """A data layer describing a set of data on a text"""
 
     title: str = Field(
@@ -57,7 +57,7 @@ class LayerBase(abc.ABC, ModelBase, DocumentBase):
         ...
 
 
-class LayerUpdateBase(LayerBase, metaclass=AllOptional):
-    """An update to an existing data layer"""
+# class LayerUpdateBase(LayerBase, metaclass=AllOptional):
+#     """An update to an existing data layer"""
 
-    pass
+#     pass

@@ -1,20 +1,22 @@
-from fastapi import APIRouter, HTTPException, Path, status
-from textrig.db import is_unique
-from textrig.layer_types import UnitBase, UnitUpdateBase, get_layer_types
+from fastapi import APIRouter, HTTPException, status
+from textrig.layer_types import UnitBase, get_layer_types
 from textrig.utils.validators import validate_id
 
 
-def _generate_read_endpoint(unit_read_model: type[UnitBase]):
-    async def get_unit(unit_id: str = Path(..., alias="unitId")) -> unit_read_model:
+def _generate_read_endpoint(unit_model: type[UnitBase]):
+    UnitDocument = unit_model.get_document_model()
+    UnitRead = unit_model.get_read_model()
+
+    async def get_unit(unit_id: str) -> UnitRead:
         """A generic route for reading a unit from the database"""
         validate_id(unit_id)
-        unit = await unit_read_model.get(unit_id)
-        if not unit:
+        unit_doc = await UnitDocument.get(unit_id)
+        if not unit_doc:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail=f"Could not find unit with ID {unit_id}",
             )
-        return unit
+        return unit_doc
 
     return get_unit
 
@@ -22,30 +24,38 @@ def _generate_read_endpoint(unit_read_model: type[UnitBase]):
 def _generate_create_endpoint(
     unit_model: type[UnitBase],
 ):
-    async def create_unit(unit: unit_model) -> unit_model:
-        if not await is_unique(unit, ("layerId", "nodeId")):
+    UnitDocument = unit_model.get_document_model()
+    UnitCreate = unit_model.get_create_model()
+    UnitRead = unit_model.get_read_model()
+
+    async def create_unit(unit: UnitCreate) -> UnitRead:
+        dupes_criteria = {"layerId": True, "nodeId": True}
+        if await UnitDocument.find(unit.dict(include=dupes_criteria)).first_or_none():
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
                 detail="The properties of this unit conflict with another unit",
             )
-        return await unit.create()
+        return await UnitDocument.from_(unit).create()
 
     return create_unit
 
 
 def _generate_update_endpoint(
-    unit_update_model: type[UnitUpdateBase],
     unit_model: type[UnitBase],
 ):
-    async def update_unit(unit_update: unit_update_model) -> unit_model:
-        unit: unit_model = await unit_model.get(unit_update.id)
-        if not unit:
+    UnitDocument = unit_model.get_document_model()
+    UnitRead = unit_model.get_read_model()
+    UnitUpdate = unit_model.get_update_model()
+
+    async def update_unit(updates: UnitUpdate) -> UnitRead:
+        unit_doc = await UnitDocument.get(updates.id)
+        if not unit_doc:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Unit with ID {unit_update.id} doesn't exist",
+                detail=f"Unit with ID {updates.id} doesn't exist",
             )
-        await unit.set(unit_update.dict())
-        return unit
+        await unit_doc.set(updates.dict(exclude={"id"}, exclude_unset=True))
+        return unit_doc
 
     return update_unit
 
@@ -59,14 +69,17 @@ router = APIRouter(
 
 # dynamically add all needed routes for every layer type's units
 for lt_name, lt_class in get_layer_types().items():
+    # type alias unit models
+    UnitModel = lt_class.get_unit_model()
+    UnitReadModel = UnitModel.get_read_model()
     # add route for reading a unit from the database
     router.add_api_route(
         path=f"/{lt_name}/{{unitId}}",
         name=f"get_{lt_name}_unit",
         description=f"Returns the data for a {lt_class.get_name()} data layer unit",
-        endpoint=_generate_read_endpoint(lt_class.get_unit_model()),
+        endpoint=_generate_read_endpoint(UnitModel),
         methods=["GET"],
-        response_model=lt_class.get_unit_model(),
+        response_model=UnitReadModel,
         status_code=status.HTTP_200_OK,
     )
     # add route for creating a unit
@@ -74,11 +87,9 @@ for lt_name, lt_class in get_layer_types().items():
         path=f"/{lt_name}",
         name=f"create_{lt_name}_unit",
         description=f"Creates a {lt_class.get_name()} data layer unit",
-        endpoint=_generate_create_endpoint(
-            lt_class.get_unit_model(),
-        ),
+        endpoint=_generate_create_endpoint(UnitModel),
         methods=["POST"],
-        response_model=lt_class.get_unit_model(),
+        response_model=UnitReadModel,
         status_code=status.HTTP_201_CREATED,
     )
     # add route for updating a unit
@@ -87,8 +98,7 @@ for lt_name, lt_class in get_layer_types().items():
         name=f"update_{lt_name}_unit",
         description=f"Updates the data for a {lt_class.get_name()} data layer unit",
         endpoint=_generate_update_endpoint(
-            lt_class.get_unit_update_model(),
-            lt_class.get_unit_model(),
+            UnitModel,
         ),
         methods=["PATCH"],
         response_model=lt_class.get_unit_model(),

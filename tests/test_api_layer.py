@@ -18,7 +18,7 @@ async def test_create_layer(
 
     resp = await test_client.post(endpoint, json=payload)
     assert resp.status_code == 201, f"HTTP status {resp.status_code} (expected: 201)"
-    assert "_id" in resp.json()
+    assert "id" in resp.json()
     assert resp.json()["title"] == "A test layer"
     assert resp.json()["description"] == "This is a string with some space chars"
 
@@ -55,7 +55,7 @@ async def test_get_layer(root_path, test_client: AsyncClient, insert_test_data):
     # get existing layer id
     endpoint = f"{root_path}/layers"
     resp = await test_client.get(endpoint, params={"textId": text_id})
-    assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
+    assert resp.status_code == 200, f"HTTP {resp.status_code} != 200 ({resp.json()})"
     assert isinstance(resp.json(), list)
     assert len(resp.json()) > 0
     assert isinstance(resp.json()[0], dict)

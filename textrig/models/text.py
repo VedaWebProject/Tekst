@@ -5,10 +5,10 @@ from pydantic import Field
 
 # from textrig.db.io import DbIO
 # from textrig.logging import log
-from textrig.models.common import AllOptional, DocumentBase, Metadata, ModelBase
+from textrig.models.common import Metadata, ModelBase
 
 
-class Text(ModelBase, DocumentBase):
+class Text(ModelBase):
     """A text represented in TextRig"""
 
     title: str = Field(
@@ -39,26 +39,14 @@ class Text(ModelBase, DocumentBase):
     class Settings:
         name = "texts"
 
-    # @root_validator(pre=True)
-    # def generate_dynamic_defaults(cls, values) -> dict:
-    #     # generate slug if none is given
-    #     if "slug" not in values:
-    #         if not values.get("title", None):
-    #             values["slug"] = "text"
-    #         else:
-    #             values["slug"] = safe_name(
-    #                 values.get("title"), min_len=2, max_len=16, delim=""
-    #             )
-    #     return values
+
+TextDocument = Text.get_document_model()
+TextCreate = Text.get_create_model()
+TextRead = Text.get_read_model()
+TextUpdate = Text.get_update_model()
 
 
-class TextUpdate(Text, metaclass=AllOptional):
-    """An update to an existing text"""
-
-    pass
-
-
-class Node(ModelBase, DocumentBase):
+class Node(ModelBase):
     """A node in a text structure (e.g. chapter, paragraph, ...)"""
 
     text_id: PydanticObjectId = Field(
@@ -78,7 +66,7 @@ class Node(ModelBase, DocumentBase):
         name = "nodes"
 
 
-class NodeUpdate(Node, metaclass=AllOptional):
-    """An update to an existing node"""
-
-    pass
+NodeDocument = Node.get_document_model()
+NodeCreate = Node.get_create_model()
+NodeRead = Node.get_read_model()
+NodeUpdate = Node.get_update_model()

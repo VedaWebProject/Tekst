@@ -2,14 +2,10 @@ from typing import Optional
 
 from beanie import Document
 
-# from bson.errors import InvalidId
+# from pydantic import Field
 from humps import camelize
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from pydantic.main import ModelMetaclass
-
-
-# type alias for a flat dict of arbitrary metadata
-Metadata = dict[str, str | int | bool | float]
 
 
 class _CRUDBase(BaseModel):
@@ -69,7 +65,6 @@ class _DocumentBase(Document, _FactoryMixin):
     def dict(self, **kwargs) -> dict:
         from_base = super().dict(
             by_alias=kwargs.pop("by_alias", True),
-            exclude_unset=kwargs.pop("exclude_unset", True),
             **kwargs,
         )
         # if "_id" in from_base:
@@ -162,3 +157,16 @@ class ModelBase(BaseModel):
         if not cls.__update_model:
             cls.__update_model = cls.__generate_model("Update", _UpdateBase)
         return cls.__update_model
+
+
+class _FooBase(ModelBase):
+    foo_bar: str = Field("baz", min_length=1, max_length=64, description="Fooo Baaaaar")
+
+    class Settings:
+        name = "foos"
+
+
+FooDocument = _FooBase.get_document_model()
+FooCreate = _FooBase.get_create_model()
+FooRead = _FooBase.get_read_model()
+FooUpdate = _FooBase.get_update_model()

@@ -5,9 +5,8 @@ from abc import ABC, abstractmethod
 
 import pluggy
 from textrig.logging import log
-from textrig.models.common import DocumentBase
-from textrig.models.layer import LayerBase, LayerUpdateBase
-from textrig.models.unit import UnitBase, UnitUpdateBase
+from textrig.models.layer import LayerBase
+from textrig.models.unit import UnitBase
 from textrig.utils.strings import safe_name
 
 
@@ -56,68 +55,6 @@ class LayerTypePluginABC(ABC):
     def get_unit_model(cls) -> type[UnitBase]:
         """Returns the unit base model for units of this type of data layer"""
         ...
-
-    @classmethod
-    def _get_model(cls, model_class_name: str, bases: tuple) -> type[DocumentBase]:
-        if not hasattr(cls, model_class_name):
-            # model doesn't exist, has to be created
-            model = type(
-                model_class_name,
-                bases,
-                {"__module__": f"{cls.__module__}.{cls.__name__}"},
-            )
-            # and set as an attribute of the respective layer type class
-            setattr(cls, model_class_name, model)
-        # return model
-        return getattr(cls, model_class_name)
-
-    # @classmethod
-    # def get_layer_read_model(cls) -> type[LayerReadBase]:
-    #     """
-    #     Dynamically generates and returns the layer read model
-    #     for this type of data layer
-    #     """
-    #     layer_model = cls.get_layer_model()
-    #     return cls._get_model(
-    #         f"{layer_model.__name__}Read",
-    #         (layer_model, LayerReadBase),
-    #     )
-
-    @classmethod
-    def get_layer_update_model(cls) -> type[LayerUpdateBase]:
-        """
-        Dynamically generates and returns the layer update model
-        for this type of data layer
-        """
-        layer_model = cls.get_layer_model()
-        return cls._get_model(
-            f"{layer_model.__name__}Update",
-            (layer_model, LayerUpdateBase),
-        )
-
-    # @classmethod
-    # def get_unit_read_model(cls) -> type[UnitReadBase]:
-    #     """
-    #     Dynamically generates and returns the unit read model
-    #     for units of this type of data layer
-    #     """
-    #     unit_model = cls.get_unit_model()
-    #     return cls._get_model(
-    #         f"{unit_model.__name__}Read",
-    #         (unit_model, UnitReadBase),
-    #     )
-
-    @classmethod
-    def get_unit_update_model(cls) -> type[UnitUpdateBase]:
-        """
-        Dynamically generates and returns the unit update model
-        for units of this type of data layer
-        """
-        unit_model = cls.get_unit_model()
-        return cls._get_model(
-            f"{unit_model.__name__}Update",
-            (unit_model, UnitUpdateBase),
-        )
 
     @classmethod
     def prepare_import_template(cls) -> dict:

@@ -10,8 +10,7 @@ from textrig.auth import AccessToken, User
 from textrig.config import TextRigConfig, get_config
 from textrig.layer_types import get_layer_types
 from textrig.logging import log
-from textrig.models.common import DocumentBase
-from textrig.models.text import Node, NodeUpdate, Text
+from textrig.models.text import NodeDocument, TextDocument
 
 
 _cfg: TextRigConfig = get_config()
@@ -35,21 +34,13 @@ def get_client(db_uri: str) -> DatabaseClient:
 
 async def init_odm(db: Database) -> None:
     # collect basic models
-    models = [Text, Node, NodeUpdate, User, AccessToken]
+    models = [TextDocument, NodeDocument, User, AccessToken]
     # add layer type models
     for lt_name, lt_class in get_layer_types().items():
-        models.append(lt_class.get_layer_model())
-        models.append(lt_class.get_layer_update_model())
-        models.append(lt_class.get_unit_model())
-        models.append(lt_class.get_unit_update_model())
+        models.append(lt_class.get_layer_model().get_document_model())
+        models.append(lt_class.get_unit_model().get_document_model())
     # init beanie ODM
     await init_beanie(database=db, allow_index_dropping=True, document_models=models)
-
-
-async def is_unique(obj: DocumentBase, based_on_props: tuple[str]) -> bool:
-    criteria = {p: True for p in based_on_props}
-    unique_props = obj.dict(include=criteria)
-    return not bool(await type(obj).find(unique_props).first_or_none())
 
 
 # def for_mongo(obj: dict) -> dict:

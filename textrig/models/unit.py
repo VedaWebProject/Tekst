@@ -7,10 +7,10 @@ from pydantic import Field
 
 # from textrig.db.io import DbIO
 # from textrig.logging import log
-from textrig.models.common import AllOptional, DocumentBase, Metadata, ModelBase
+from textrig.models.common import Metadata, ModelBase
 
 
-class UnitBase(abc.ABC, ModelBase, DocumentBase):
+class UnitBase(abc.ABC, ModelBase):
     """A base class for types of data units belonging to a certain data layer"""
 
     layer_id: PydanticObjectId = Field(..., description="Data layer ID")
@@ -31,5 +31,5 @@ class UnitBase(abc.ABC, ModelBase, DocumentBase):
         ...
 
 
-class UnitUpdateBase(UnitBase, metaclass=AllOptional):
-    pass
+# class UnitUpdateBase(UnitBase, metaclass=AllOptional):
+#     pass

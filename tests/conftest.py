@@ -9,7 +9,7 @@ from textrig.config import TextRigConfig, get_config
 from textrig.db import DatabaseClient
 from textrig.dependencies import get_db_client
 from textrig.layer_types import get_layer_type
-from textrig.models.text import Node, Text
+from textrig.models.text import NodeDocument, TextDocument
 
 
 """
@@ -90,15 +90,16 @@ async def insert_test_data(test_app, reset_db, root_path, test_data) -> callable
 
     async def _insert_test_data(*collections: str) -> str | None:
         if "texts" in collections:
-            text = Text(**test_data["texts"][0])
+            text = TextDocument(**test_data["texts"][0])
             await text.create()
         if "nodes" in collections:
             for doc in test_data["nodes"]:
-                await Node(text_id=text.id, **doc).create()
+                await NodeDocument(text_id=text.id, **doc).create()
         if "layers" in collections:
             for doc in test_data["layers"]:
                 LayerModel = get_layer_type(doc["layerType"]).get_layer_model()
-                await LayerModel(text_id=text.id, **doc).create()
+                LayerDocumentModel = LayerModel.get_document_model()
+                await LayerDocumentModel(text_id=text.id, **doc).create()
 
         return str(text.id) if text else None
 

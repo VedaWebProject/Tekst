@@ -1,13 +1,13 @@
 import json
 
-from beanie import PydanticObjectId
-from fastapi import APIRouter, Depends, HTTPException, Path, UploadFile, status
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, status, Path
 from textrig.config import TextRigConfig, get_config
 from textrig.dependencies import get_cfg
 from textrig.logging import log
-from textrig.models.text import Text, TextUpdate
+from textrig.models.text import TextCreate, TextDocument, TextRead, TextUpdate
 from textrig.utils import importer
 from textrig.utils.validators import validate_id
+from beanie import PydanticObjectId
 
 
 _cfg: TextRigConfig = get_config()
@@ -23,31 +23,34 @@ router = APIRouter(
 # ROUTES DEFINITIONS...
 
 
-@router.get("", response_model=list[Text], status_code=status.HTTP_200_OK)
-async def get_all_texts(limit: int = 100) -> list[Text]:
-    return await Text.find_all(limit=limit).to_list()
+@router.get("", response_model=list[TextRead], status_code=status.HTTP_200_OK)
+async def get_all_texts(limit: int = 100) -> list[TextRead]:
+    return await TextDocument.find_all(limit=limit).project(TextRead).to_list()
 
 
-@router.post("", response_model=Text, status_code=status.HTTP_201_CREATED)
-async def create_text(text: Text) -> Text:
-    if await Text.find_one(Text.title == text.title):
+@router.post("", response_model=TextRead, status_code=status.HTTP_201_CREATED)
+async def create_text(text: TextCreate) -> TextRead:
+    if await TextDocument.find_one(
+        TextDocument.title == text.title,
+        TextDocument.slug == text.slug
+    ).exists():
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail="An equal text already exists (same title)",
+            detail="An equal text already exists (same title or slug)",
         )
-    return await text.create()
+    return await TextDocument.from_(text).create()
 
 
 @router.post(
     "/import",
-    response_model=Text,
+    response_model=TextRead,
     status_code=status.HTTP_201_CREATED,
     include_in_schema=_cfg.dev_mode,
 )
 async def import_text(
     file: UploadFile,
     cfg: TextRigConfig = Depends(get_cfg),
-) -> Text:  # pragma: no cover
+) -> TextRead:  # pragma: no cover
     if not cfg.dev_mode:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
@@ -73,10 +76,10 @@ async def import_text(
     return text
 
 
-@router.get("/{textId}", response_model=Text, status_code=status.HTTP_200_OK)
-async def get_text_by_id(text_id: PydanticObjectId = Path(..., alias="textId")) -> dict:
+@router.get("/{textId}", response_model=TextRead, status_code=status.HTTP_200_OK)
+async def get_text(text_id: PydanticObjectId = Path(..., alias="textId")) -> TextRead:
     validate_id(text_id)
-    text = await Text.get(text_id)
+    text = await TextDocument.get(text_id)
     if not text:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -85,18 +88,18 @@ async def get_text_by_id(text_id: PydanticObjectId = Path(..., alias="textId")) 
     return text
 
 
-@router.patch("", response_model=Text, status_code=status.HTTP_200_OK)
-async def update_text(text_update: TextUpdate) -> dict:
-    text: Text = await Text.get(text_update.id)
+@router.patch("", response_model=TextRead, status_code=status.HTTP_200_OK)
+async def update_text(updates: TextUpdate) -> dict:
+    text = await TextDocument.get(updates.id)
     if not text:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Text with ID {text_update.id} doesn't exist",
+            detail=f"Text with ID {updates.id} doesn't exist",
         )
-    if text_update.slug and text_update.slug != text.slug:
+    if updates.slug and updates.slug != text.slug:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Text slug cannot be changed",
         )
-    await text.set(text_update.dict())
+    await text.set(updates.dict(exclude={"id"}, exclude_unset=True))
     return text
