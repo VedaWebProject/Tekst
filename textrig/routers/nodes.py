@@ -8,7 +8,6 @@ from textrig.models.text import (
     NodeUpdate,
     TextDocument,
 )
-from textrig.utils.validators import validate_id
 
 
 router = APIRouter(
@@ -98,7 +97,6 @@ async def get_children(
 async def get_next(
     node_id: PydanticObjectId = Path(..., alias="nodeId"),
 ) -> dict:
-    validate_id(node_id)
     node = await NodeDocument.get(node_id)
     if not node:
         raise HTTPException(

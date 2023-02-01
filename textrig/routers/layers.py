@@ -10,7 +10,6 @@ from textrig.layer_types import get_layer_types
 # from textrig.logging import log
 from textrig.models.layer import LayerBase
 from textrig.models.text import TextDocument
-from textrig.utils.validators import validate_id
 
 
 # from fastapi.responses import FileResponse
@@ -28,7 +27,6 @@ def _generate_read_endpoint(layer_model: type[LayerBase]):
         layer_id: PydanticObjectId = Path(..., alias="layerId")
     ) -> LayerRead:
         """A generic route for reading a layer definition from the database"""
-        validate_id(layer_id)
         layer_doc = await LayerDocument.get(layer_id)
         if not layer_doc:
             raise HTTPException(
@@ -133,7 +131,9 @@ for lt_name, lt_class in get_layer_types().items():
 # ADDITIONAL ROUTE DEFINITIONS...
 
 
-@router.get("", response_model=list[LayerBase.get_read_model()], status_code=status.HTTP_200_OK)
+@router.get(
+    "", response_model=list[LayerBase.get_read_model()], status_code=status.HTTP_200_OK
+)
 async def get_layers(
     text_id: PydanticObjectId,
     level: int = None,

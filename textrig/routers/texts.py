@@ -7,7 +7,6 @@ from textrig.dependencies import get_cfg
 from textrig.logging import log
 from textrig.models.text import TextCreate, TextDocument, TextRead, TextUpdate
 from textrig.utils import importer
-from textrig.utils.validators import validate_id
 
 
 _cfg: TextRigConfig = get_config()
@@ -77,7 +76,6 @@ async def import_text(
 
 @router.get("/{textId}", response_model=TextRead, status_code=status.HTTP_200_OK)
 async def get_text(text_id: PydanticObjectId = Path(..., alias="textId")) -> TextRead:
-    validate_id(text_id)
     text = await TextDocument.get(text_id)
     if not text:
         raise HTTPException(
