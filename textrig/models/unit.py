@@ -1,5 +1,3 @@
-import abc
-
 from beanie import PydanticObjectId
 
 # from fastapi import HTTPException, status
@@ -32,8 +30,6 @@ class UnitBase(ModelBase):
         )
 
 
-UnitBase._root_document_model = UnitBase.get_document_model()
-
-
-# class UnitUpdateBase(UnitBase, metaclass=AllOptional):
-#     pass
+# generate document model for this base model
+# (used as a document root by child models)
+UnitBase.get_document_model()

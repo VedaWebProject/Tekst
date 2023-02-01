@@ -92,7 +92,7 @@ async def test_update_layer(root_path, test_client: AsyncClient, insert_test_dat
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert isinstance(resp.json(), dict)
     assert "id" in resp.json()
-    assert resp.json()["_id"] == layer_id
+    assert resp.json()["id"] == layer_id
 
 
 @pytest.mark.anyio

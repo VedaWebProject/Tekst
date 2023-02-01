@@ -133,13 +133,13 @@ for lt_name, lt_class in get_layer_types().items():
 # ADDITIONAL ROUTE DEFINITIONS...
 
 
-@router.get("", response_model=list[dict], status_code=status.HTTP_200_OK)
+@router.get("", response_model=list[LayerBase.get_read_model()], status_code=status.HTTP_200_OK)
 async def get_layers(
     text_id: PydanticObjectId,
     level: int = None,
     layer_type: str = None,
     limit: int = 1000,
-) -> list[dict]:
+) -> list[LayerBase.get_read_model()]:
 
     example = dict(textId=text_id)
 
@@ -251,10 +251,10 @@ async def get_layers(
 @router.get("/{layerId}", status_code=status.HTTP_200_OK)
 async def get_layer(
     layer_id: PydanticObjectId = Path(..., alias="layerId"),
-) -> dict:
+) -> LayerBase.get_read_model():
     layer = await LayerBase.get_document_model().get(layer_id, with_children=True)
     if not layer:
         raise HTTPException(
             status.HTTP_404_NOT_FOUND, detail=f"No layer with ID {layer_id}"
         )
-    return layer
+    return LayerBase.get_read_model().from_(layer)

@@ -57,10 +57,6 @@ class LayerBase(ModelBase):
         )
 
 
-LayerBase._root_document_model = LayerBase.get_document_model()
-
-
-# class LayerUpdateBase(LayerBase, metaclass=AllOptional):
-#     """An update to an existing data layer"""
-
-#     pass
+# generate document model for this base model
+# (used as a document root by child models)
+LayerBase.get_document_model()

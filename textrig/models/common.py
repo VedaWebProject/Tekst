@@ -125,45 +125,56 @@ class _UpdateBase(_CRUDBase, _IDMixin, _FactoryMixin, metaclass=_AllOptional):
 
 class ModelBase(BaseModel):
 
+    __root_document_model: type[_DocumentBase] = None
     __document_model: type[_DocumentBase] = None
     __create_model: type[_CreateBase] = None
     __read_model: type[_ReadBase] = None
     __update_model: type[_UpdateBase] = None
 
     @classmethod
-    def __generate_model(cls, suffix: str, base: type) -> type["ModelBase"]:
+    def __generate_model(cls, classname_suffix: str, base: type) -> type["ModelBase"]:
         return type(
-            f"{cls.__name__}{suffix.capitalize()}",
+            f"{cls.__name__}{classname_suffix.capitalize()}",
             (cls, base),
             {"__module__": f"{cls.__module__}"},
         )
 
     @classmethod
     def get_document_model(cls) -> type[_DocumentBase]:
+
+        if cls.__name__ == "ModelBase":
+            raise SystemExit(
+                "This method is not meant to be " "called on ModelBase class directly."
+            )
+        if cls.__name__.endswith("Base"):
+            if not cls.__root_document_model:
+                cls.__root_document_model = cls.__generate_model(
+                    "Document", _DocumentBase
+                )
+            return cls.__root_document_model
         if not cls.__document_model:
-            # generate document model
-            if root_document_model := getattr(cls, "_root_document_model", None):
+            if cls.__root_document_model:
                 cls.__document_model = cls.__generate_model(
-                    "Document", root_document_model
+                    "Document", cls.__root_document_model
                 )
             else:
                 cls.__document_model = cls.__generate_model("Document", _DocumentBase)
         return cls.__document_model
 
     @classmethod
-    def get_create_model(cls) -> type[_CRUDBase]:
+    def get_create_model(cls) -> type[_CreateBase]:
         if not cls.__create_model:
             cls.__create_model = cls.__generate_model("Create", _CreateBase)
         return cls.__create_model
 
     @classmethod
-    def get_read_model(cls) -> type[_CRUDBase]:
+    def get_read_model(cls) -> type[_ReadBase]:
         if not cls.__read_model:
             cls.__read_model = cls.__generate_model("Read", _ReadBase)
         return cls.__read_model
 
     @classmethod
-    def get_update_model(cls) -> type[_CRUDBase]:
+    def get_update_model(cls) -> type[_UpdateBase]:
         if not cls.__update_model:
             cls.__update_model = cls.__generate_model("Update", _UpdateBase)
         return cls.__update_model
