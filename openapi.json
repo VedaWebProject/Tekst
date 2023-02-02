@@ -57,7 +57,11 @@
             "required": true,
             "schema": {
               "title": "Layerid",
-              "type": "string"
+              "type": "string",
+              "examples": [
+                "5eb7cf5a86d9755df3a6c593",
+                "5eb7cfb05e32e07750a1756a"
+              ]
             },
             "name": "layerId",
             "in": "path"
@@ -69,7 +73,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PlainTextLayer"
+                  "$ref": "#/components/schemas/PlainTextLayerRead"
                 }
               }
             }
@@ -105,7 +109,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PlainTextLayer"
+                "$ref": "#/components/schemas/PlainTextLayerCreate"
               }
             }
           },
@@ -117,7 +121,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PlainTextLayer"
+                  "$ref": "#/components/schemas/PlainTextLayerRead"
                 }
               }
             }
@@ -163,7 +167,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PlainTextLayer"
+                  "$ref": "#/components/schemas/PlainTextLayerRead"
                 }
               }
             }
@@ -246,7 +250,7 @@
                   "title": "Response Get Layers Layers Get",
                   "type": "array",
                   "items": {
-                    "type": "object"
+                    "$ref": "#/components/schemas/LayerBaseRead"
                   }
                 }
               }
@@ -299,8 +303,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Layer Layers  Layerid  Get",
-                  "type": "object"
+                  "$ref": "#/components/schemas/LayerBaseRead"
                 }
               }
             }
@@ -396,7 +399,7 @@
                   "title": "Response Get Nodes Nodes Get",
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Node"
+                    "$ref": "#/components/schemas/NodeRead"
                   }
                 }
               }
@@ -430,7 +433,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Node"
+                "$ref": "#/components/schemas/NodeCreate"
               }
             }
           },
@@ -442,7 +445,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Node"
+                  "$ref": "#/components/schemas/NodeRead"
                 }
               }
             }
@@ -487,7 +490,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Node"
+                  "$ref": "#/components/schemas/NodeRead"
                 }
               }
             }
@@ -552,7 +555,7 @@
                   "title": "Response Get Children Nodes  Nodeid  Children Get",
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Node"
+                    "$ref": "#/components/schemas/NodeRead"
                   }
                 }
               }
@@ -605,7 +608,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Node"
+                  "$ref": "#/components/schemas/NodeRead"
                 }
               }
             }
@@ -657,7 +660,7 @@
                   "title": "Response Get All Texts Texts Get",
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Text"
+                    "$ref": "#/components/schemas/TextRead"
                   }
                 }
               }
@@ -691,7 +694,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Text"
+                "$ref": "#/components/schemas/TextCreate"
               }
             }
           },
@@ -703,7 +706,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Text"
+                  "$ref": "#/components/schemas/TextRead"
                 }
               }
             }
@@ -748,7 +751,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Text"
+                  "$ref": "#/components/schemas/TextRead"
                 }
               }
             }
@@ -795,7 +798,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Text"
+                  "$ref": "#/components/schemas/TextRead"
                 }
               }
             }
@@ -824,8 +827,8 @@
         "tags": [
           "texts"
         ],
-        "summary": "Get text by id",
-        "operationId": "getTextById",
+        "summary": "Get text",
+        "operationId": "getText",
         "parameters": [
           {
             "required": true,
@@ -847,7 +850,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Text"
+                  "$ref": "#/components/schemas/TextRead"
                 }
               }
             }
@@ -995,7 +998,11 @@
             "required": true,
             "schema": {
               "title": "Unitid",
-              "type": "string"
+              "type": "string",
+              "examples": [
+                "5eb7cf5a86d9755df3a6c593",
+                "5eb7cfb05e32e07750a1756a"
+              ]
             },
             "name": "unitId",
             "in": "path"
@@ -1007,7 +1014,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PlainTextUnit"
+                  "$ref": "#/components/schemas/PlainTextUnitRead"
                 }
               }
             }
@@ -1043,7 +1050,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PlainTextUnit"
+                "$ref": "#/components/schemas/PlainTextUnitCreate"
               }
             }
           },
@@ -1055,7 +1062,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PlainTextUnit"
+                  "$ref": "#/components/schemas/PlainTextUnitRead"
                 }
               }
             }
@@ -1101,7 +1108,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PlainTextUnit"
+                  "$ref": "#/components/schemas/PlainTextUnitRead"
                 }
               }
             }
@@ -2213,8 +2220,85 @@
           }
         }
       },
-      "Node": {
-        "title": "Node",
+      "LayerBaseRead": {
+        "title": "LayerBaseRead",
+        "required": [
+          "id",
+          "title",
+          "level",
+          "layerType"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "maxLength": 64,
+            "minLength": 1,
+            "type": "string",
+            "description": "Title of this layer"
+          },
+          "description": {
+            "title": "Description",
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string",
+            "description": "Short, one-line description of this data layer"
+          },
+          "textId": {
+            "title": "Textid",
+            "type": "string",
+            "description": "ID of the text this layer belongs to",
+            "examples": [
+              "5eb7cf5a86d9755df3a6c593",
+              "5eb7cfb05e32e07750a1756a"
+            ]
+          },
+          "level": {
+            "title": "Level",
+            "type": "integer",
+            "description": "Text level this layer belongs to"
+          },
+          "layerType": {
+            "title": "Layertype",
+            "type": "string",
+            "description": "A string identifying one of the available layer types"
+          },
+          "public": {
+            "title": "Public",
+            "type": "boolean",
+            "description": "Publication status of this layer",
+            "default": false
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object",
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "description": "Arbitrary metadata"
+          }
+        },
+        "description": "A data layer describing a set of data on a text"
+      },
+      "NodeCreate": {
+        "title": "NodeCreate",
         "required": [
           "textId",
           "level",
@@ -2223,19 +2307,79 @@
         ],
         "type": "object",
         "properties": {
-          "_id": {
-            "title": " Id",
+          "textId": {
+            "title": "Textid",
             "type": "string",
+            "description": "ID of the text this node belongs to",
             "examples": [
               "5eb7cf5a86d9755df3a6c593",
               "5eb7cfb05e32e07750a1756a"
             ]
           },
-          "revisionId": {
-            "title": "Revisionid",
+          "parentId": {
+            "title": "Parentid",
             "type": "string",
-            "format": "uuid",
-            "hidden": true
+            "description": "ID of parent node",
+            "examples": [
+              "5eb7cf5a86d9755df3a6c593",
+              "5eb7cfb05e32e07750a1756a"
+            ]
+          },
+          "level": {
+            "title": "Level",
+            "minimum": 0.0,
+            "type": "integer",
+            "description": "Index of structure level this node is on"
+          },
+          "index": {
+            "title": "Index",
+            "minimum": 0.0,
+            "type": "integer",
+            "description": "Position among all text nodes on this level"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string",
+            "description": "Label for identifying this text node"
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object",
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "description": "Arbitrary metadata"
+          }
+        },
+        "description": "A node in a text structure (e.g. chapter, paragraph, ...)"
+      },
+      "NodeRead": {
+        "title": "NodeRead",
+        "required": [
+          "id",
+          "textId",
+          "level",
+          "index",
+          "label"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
           },
           "textId": {
             "title": "Textid",
@@ -2298,21 +2442,14 @@
       },
       "NodeUpdate": {
         "title": "NodeUpdate",
+        "required": [
+          "id"
+        ],
         "type": "object",
         "properties": {
-          "_id": {
-            "title": " Id",
-            "type": "string",
-            "examples": [
-              "5eb7cf5a86d9755df3a6c593",
-              "5eb7cfb05e32e07750a1756a"
-            ]
-          },
-          "revisionId": {
-            "title": "Revisionid",
-            "type": "string",
-            "format": "uuid",
-            "hidden": true
+          "id": {
+            "title": "Id",
+            "type": "string"
           },
           "textId": {
             "title": "Textid",
@@ -2363,10 +2500,31 @@
             }
           }
         },
-        "description": "An update to an existing node"
+        "description": "A node in a text structure (e.g. chapter, paragraph, ...)"
       },
-      "PlainTextLayer": {
-        "title": "PlainTextLayer",
+      "PlainTextLayerConfig": {
+        "title": "PlainTextLayerConfig",
+        "type": "object",
+        "properties": {
+          "deepl_links": {
+            "title": "Deepl Links",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DeepLLinksConfig"
+              }
+            ],
+            "default": {
+              "enabled": false,
+              "languages": [
+                "EN",
+                "DE"
+              ]
+            }
+          }
+        }
+      },
+      "PlainTextLayerCreate": {
+        "title": "PlainTextLayerCreate",
         "required": [
           "title",
           "level",
@@ -2374,19 +2532,99 @@
         ],
         "type": "object",
         "properties": {
-          "_id": {
-            "title": " Id",
+          "title": {
+            "title": "Title",
+            "maxLength": 64,
+            "minLength": 1,
             "type": "string",
+            "description": "Title of this layer"
+          },
+          "description": {
+            "title": "Description",
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string",
+            "description": "Short, one-line description of this data layer"
+          },
+          "textId": {
+            "title": "Textid",
+            "type": "string",
+            "description": "ID of the text this layer belongs to",
             "examples": [
               "5eb7cf5a86d9755df3a6c593",
               "5eb7cfb05e32e07750a1756a"
             ]
           },
-          "revisionId": {
-            "title": "Revisionid",
+          "level": {
+            "title": "Level",
+            "type": "integer",
+            "description": "Text level this layer belongs to"
+          },
+          "layerType": {
+            "title": "Layertype",
             "type": "string",
-            "format": "uuid",
-            "hidden": true
+            "description": "A string identifying one of the available layer types"
+          },
+          "public": {
+            "title": "Public",
+            "type": "boolean",
+            "description": "Publication status of this layer",
+            "default": false
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object",
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "description": "Arbitrary metadata"
+          },
+          "config": {
+            "title": "Config",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PlainTextLayerConfig"
+              }
+            ],
+            "default": {
+              "deepl_links": {
+                "enabled": false,
+                "languages": [
+                  "EN",
+                  "DE"
+                ]
+              }
+            }
+          }
+        },
+        "description": "A data layer describing a set of data on a text"
+      },
+      "PlainTextLayerRead": {
+        "title": "PlainTextLayerRead",
+        "required": [
+          "id",
+          "title",
+          "level",
+          "layerType"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
           },
           "title": {
             "title": "Title",
@@ -2468,44 +2706,16 @@
         },
         "description": "A data layer describing a set of data on a text"
       },
-      "PlainTextLayerConfig": {
-        "title": "PlainTextLayerConfig",
-        "type": "object",
-        "properties": {
-          "deepl_links": {
-            "title": "Deepl Links",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/DeepLLinksConfig"
-              }
-            ],
-            "default": {
-              "enabled": false,
-              "languages": [
-                "EN",
-                "DE"
-              ]
-            }
-          }
-        }
-      },
       "PlainTextLayerUpdate": {
         "title": "PlainTextLayerUpdate",
+        "required": [
+          "id"
+        ],
         "type": "object",
         "properties": {
-          "_id": {
-            "title": " Id",
-            "type": "string",
-            "examples": [
-              "5eb7cf5a86d9755df3a6c593",
-              "5eb7cfb05e32e07750a1756a"
-            ]
-          },
-          "revisionId": {
-            "title": "Revisionid",
-            "type": "string",
-            "format": "uuid",
-            "hidden": true
+          "id": {
+            "title": "Id",
+            "type": "string"
           },
           "title": {
             "title": "Title",
@@ -2559,29 +2769,81 @@
             "$ref": "#/components/schemas/PlainTextLayerConfig"
           }
         },
-        "description": "An update to an existing data layer"
+        "description": "A data layer describing a set of data on a text"
       },
-      "PlainTextUnit": {
-        "title": "PlainTextUnit",
+      "PlainTextUnitCreate": {
+        "title": "PlainTextUnitCreate",
         "required": [
           "layerId",
           "nodeId"
         ],
         "type": "object",
         "properties": {
-          "_id": {
-            "title": " Id",
+          "layerId": {
+            "title": "Layerid",
             "type": "string",
+            "description": "Data layer ID",
             "examples": [
               "5eb7cf5a86d9755df3a6c593",
               "5eb7cfb05e32e07750a1756a"
             ]
           },
-          "revisionId": {
-            "title": "Revisionid",
+          "nodeId": {
+            "title": "Nodeid",
             "type": "string",
-            "format": "uuid",
-            "hidden": true
+            "description": "Parent text node ID",
+            "examples": [
+              "5eb7cf5a86d9755df3a6c593",
+              "5eb7cfb05e32e07750a1756a"
+            ]
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object",
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "description": "Arbitrary metadata on this layer unit",
+            "extra": {
+              "template": true
+            }
+          },
+          "text": {
+            "title": "Text",
+            "type": "string",
+            "description": "Text content of the plaintext unit",
+            "extra": {
+              "template": true
+            }
+          }
+        },
+        "description": "A unit of a plaintext data layer"
+      },
+      "PlainTextUnitRead": {
+        "title": "PlainTextUnitRead",
+        "required": [
+          "id",
+          "layerId",
+          "nodeId"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
           },
           "layerId": {
             "title": "Layerid",
@@ -2638,21 +2900,14 @@
       },
       "PlainTextUnitUpdate": {
         "title": "PlainTextUnitUpdate",
+        "required": [
+          "id"
+        ],
         "type": "object",
         "properties": {
-          "_id": {
-            "title": " Id",
-            "type": "string",
-            "examples": [
-              "5eb7cf5a86d9755df3a6c593",
-              "5eb7cfb05e32e07750a1756a"
-            ]
-          },
-          "revisionId": {
-            "title": "Revisionid",
-            "type": "string",
-            "format": "uuid",
-            "hidden": true
+          "id": {
+            "title": "Id",
+            "type": "string"
           },
           "layerId": {
             "title": "Layerid",
@@ -2697,8 +2952,8 @@
         },
         "description": "A unit of a plaintext data layer"
       },
-      "Text": {
-        "title": "Text",
+      "TextCreate": {
+        "title": "TextCreate",
         "required": [
           "title",
           "slug",
@@ -2706,19 +2961,58 @@
         ],
         "type": "object",
         "properties": {
-          "_id": {
-            "title": " Id",
+          "title": {
+            "title": "Title",
+            "maxLength": 64,
+            "minLength": 1,
             "type": "string",
-            "examples": [
-              "5eb7cf5a86d9755df3a6c593",
-              "5eb7cfb05e32e07750a1756a"
-            ]
+            "description": "Title of this text"
           },
-          "revisionId": {
-            "title": "Revisionid",
+          "slug": {
+            "title": "Slug",
+            "maxLength": 16,
+            "minLength": 2,
+            "pattern": "^[a-z][a-z0-9\\-_]{0,14}[a-z0-9]$",
             "type": "string",
-            "format": "uuid",
-            "hidden": true
+            "description": "A short identifier string for use in URLs and internal operations"
+          },
+          "subtitle": {
+            "title": "Subtitle",
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string",
+            "description": "Subtitle of this text"
+          },
+          "levels": {
+            "title": "Levels",
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "locDelim": {
+            "title": "Locdelim",
+            "type": "string",
+            "description": "Delimiter for displaying text locations",
+            "default": ","
+          }
+        },
+        "description": "A text represented in TextRig"
+      },
+      "TextRead": {
+        "title": "TextRead",
+        "required": [
+          "id",
+          "title",
+          "slug",
+          "levels"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
           },
           "title": {
             "title": "Title",
@@ -2761,21 +3055,14 @@
       },
       "TextUpdate": {
         "title": "TextUpdate",
+        "required": [
+          "id"
+        ],
         "type": "object",
         "properties": {
-          "_id": {
-            "title": " Id",
-            "type": "string",
-            "examples": [
-              "5eb7cf5a86d9755df3a6c593",
-              "5eb7cfb05e32e07750a1756a"
-            ]
-          },
-          "revisionId": {
-            "title": "Revisionid",
-            "type": "string",
-            "format": "uuid",
-            "hidden": true
+          "id": {
+            "title": "Id",
+            "type": "string"
           },
           "title": {
             "title": "Title",
@@ -2801,15 +3088,15 @@
             "type": "string"
           }
         },
-        "description": "An update to an existing text"
+        "description": "A text represented in TextRig"
       },
       "UserCreate": {
         "title": "UserCreate",
         "required": [
           "email",
           "password",
-          "firstName",
-          "lastName"
+          "first_name",
+          "last_name"
         ],
         "type": "object",
         "properties": {
@@ -2822,38 +3109,37 @@
             "title": "Password",
             "type": "string"
           },
-          "isActive": {
-            "title": "Isactive",
+          "is_active": {
+            "title": "Is Active",
             "type": "boolean",
             "default": true
           },
-          "isSuperuser": {
-            "title": "Issuperuser",
+          "is_superuser": {
+            "title": "Is Superuser",
             "type": "boolean",
             "default": false
           },
-          "isVerified": {
-            "title": "Isverified",
+          "is_verified": {
+            "title": "Is Verified",
             "type": "boolean",
             "default": true
           },
-          "firstName": {
-            "title": "Firstname",
+          "first_name": {
+            "title": "First Name",
             "type": "string"
           },
-          "lastName": {
-            "title": "Lastname",
+          "last_name": {
+            "title": "Last Name",
             "type": "string"
           }
-        },
-        "description": "Base class for all TextRig pydantic models"
+        }
       },
       "UserRead": {
         "title": "UserRead",
         "required": [
           "email",
-          "firstName",
-          "lastName"
+          "first_name",
+          "last_name"
         ],
         "type": "object",
         "properties": {
@@ -2865,31 +3151,31 @@
             "type": "string",
             "format": "email"
           },
-          "isActive": {
-            "title": "Isactive",
+          "is_active": {
+            "title": "Is Active",
             "type": "boolean",
             "default": true
           },
-          "isSuperuser": {
-            "title": "Issuperuser",
+          "is_superuser": {
+            "title": "Is Superuser",
             "type": "boolean",
             "default": false
           },
-          "isVerified": {
-            "title": "Isverified",
+          "is_verified": {
+            "title": "Is Verified",
             "type": "boolean",
             "default": true
           },
-          "firstName": {
-            "title": "Firstname",
+          "first_name": {
+            "title": "First Name",
             "type": "string"
           },
-          "lastName": {
-            "title": "Lastname",
+          "last_name": {
+            "title": "Last Name",
             "type": "string"
           }
         },
-        "description": "Base class for all TextRig pydantic models"
+        "description": "Base User model."
       },
       "UserUpdate": {
         "title": "UserUpdate",
@@ -2904,30 +3190,29 @@
             "type": "string",
             "format": "email"
           },
-          "isActive": {
-            "title": "Isactive",
+          "is_active": {
+            "title": "Is Active",
             "type": "boolean",
             "default": true
           },
-          "isSuperuser": {
-            "title": "Issuperuser",
+          "is_superuser": {
+            "title": "Is Superuser",
             "type": "boolean"
           },
-          "isVerified": {
-            "title": "Isverified",
+          "is_verified": {
+            "title": "Is Verified",
             "type": "boolean",
             "default": true
           },
-          "firstName": {
-            "title": "Firstname",
+          "first_name": {
+            "title": "First Name",
             "type": "string"
           },
-          "lastName": {
-            "title": "Lastname",
+          "last_name": {
+            "title": "Last Name",
             "type": "string"
           }
-        },
-        "description": "Base class for all TextRig pydantic models"
+        }
       },
       "ValidationError": {
         "title": "ValidationError",
