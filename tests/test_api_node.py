@@ -15,7 +15,7 @@ async def test_create_node(
         resp = await test_client.post(endpoint, json=node)
         assert (
             resp.status_code == 201
-        ), f"HTTP status {resp.status_code} (expected: 201)"
+        ), f"HTTP {resp.status_code} != 201 ({resp.json()})"
 
 
 @pytest.mark.anyio
@@ -28,7 +28,7 @@ async def test_child_node_io(
 
     # create parent
     resp = await test_client.post(endpoint, json=node)
-    assert resp.status_code == 201, f"HTTP status {resp.status_code} (expected: 201)"
+    assert resp.status_code == 201, f"HTTP {resp.status_code} != 201 ({resp.json()})"
     parent = resp.json()
     assert parent["id"]
 
@@ -38,7 +38,7 @@ async def test_child_node_io(
     child["level"] = parent["level"] + 1
     child["index"] = 0
     resp = await test_client.post(endpoint, json=child)
-    assert resp.status_code == 201, f"HTTP status {resp.status_code} (expected: 201)"
+    assert resp.status_code == 201, f"HTTP {resp.status_code} != 201 ({resp.json()})"
     child = resp.json()
     assert "id" in resp.json()
     assert "parentId" in resp.json()
@@ -48,14 +48,14 @@ async def test_child_node_io(
     resp = await test_client.get(
         endpoint, params={"textId": parent["textId"], "parentId": parent["id"]}
     )
-    assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
+    assert resp.status_code == 200, f"HTTP {resp.status_code} != 200 ({resp.json()})"
     assert type(resp.json()) is list
     assert len(resp.json()) == 1
     assert resp.json()[0]["id"] == str(child["id"])
 
     # find children by parent ID using dedicated children endpoint
     resp = await test_client.get(f"{root_path}/nodes/{child['parentId']}/children")
-    assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
+    assert resp.status_code == 200, f"HTTP {resp.status_code} != 200 ({resp.json()})"
     assert type(resp.json()) is list
     assert len(resp.json()) == 1
     assert resp.json()[0]["id"] == str(child["id"])
@@ -71,7 +71,7 @@ async def test_create_node_invalid_text_fail(
     node["textId"] = "5eb7cfb05e32e07750a1756a"
 
     resp = await test_client.post(endpoint, json=node)
-    assert resp.status_code == 400, f"HTTP status {resp.status_code} (expected: 400)"
+    assert resp.status_code == 400, f"HTTP {resp.status_code} != 400 ({resp.json()})"
 
 
 @pytest.mark.anyio
@@ -84,10 +84,10 @@ async def test_create_node_duplicate_fail(
     node["textId"] = text_id
 
     resp = await test_client.post(endpoint, json=node)
-    assert resp.status_code == 201, f"HTTP status {resp.status_code} (expected: 201)"
+    assert resp.status_code == 201, f"HTTP {resp.status_code} != 201 ({resp.json()})"
 
     resp = await test_client.post(endpoint, json=node)
-    assert resp.status_code == 409, f"HTTP status {resp.status_code} (expected: 409)"
+    assert resp.status_code == 409, f"HTTP {resp.status_code} != 409 ({resp.json()})"
 
 
 @pytest.mark.anyio
@@ -106,7 +106,7 @@ async def test_get_nodes(
     resp = await test_client.get(
         endpoint, params={"textId": text_id, "level": 0, "limit": 2}
     )
-    assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
+    assert resp.status_code == 200, f"HTTP {resp.status_code} != 200 ({resp.json()})"
     assert type(resp.json()) is list
     assert len(resp.json()) == 2
 
@@ -114,13 +114,13 @@ async def test_get_nodes(
     resp = await test_client.get(
         endpoint, params={"textId": "5eb7cfb05e32e07750a1756a", "level": 0}
     )
-    assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
+    assert resp.status_code == 200, f"HTTP {resp.status_code} != 200 ({resp.json()})"
     assert type(resp.json()) is list
     assert len(resp.json()) == 0
 
     # test results contain all nodes of level 0
     resp = await test_client.get(endpoint, params={"textId": text_id, "level": 0})
-    assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
+    assert resp.status_code == 200, f"HTTP {resp.status_code} != 200 ({resp.json()})"
     assert type(resp.json()) is list
     assert len(resp.json()) == len(nodes)
 
@@ -132,13 +132,13 @@ async def test_get_nodes(
     resp = await test_client.get(
         endpoint, params={"textId": text_id, "level": 0, "index": 0}
     )
-    assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
+    assert resp.status_code == 200, f"HTTP {resp.status_code} != 200 ({resp.json()})"
     assert type(resp.json()) is list
     assert len(resp.json()) == 1
 
     # test invalid request
     resp = await test_client.get(endpoint, params={"textId": text_id})
-    assert resp.status_code == 400, f"HTTP status {resp.status_code} (expected: 400)"
+    assert resp.status_code == 400, f"HTTP {resp.status_code} != 400 ({resp.json()})"
 
 
 @pytest.mark.anyio
@@ -149,25 +149,25 @@ async def test_update_node(
     # get node from db
     endpoint = f"{root_path}/nodes"
     resp = await test_client.get(endpoint, params={"textId": text_id, "level": 0})
-    assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
+    assert resp.status_code == 200, f"HTTP {resp.status_code} != 200 ({resp.json()})"
     assert type(resp.json()) == list
     assert len(resp.json()) > 0
     node = resp.json()[0]
     # update node
     node_update = {"id": node["id"], "label": "A fresh label"}
     resp = await test_client.patch(endpoint, json=node_update)
-    assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
+    assert resp.status_code == 200, f"HTTP {resp.status_code} != 200 ({resp.json()})"
     assert "id" in resp.json()
     assert resp.json()["id"] == str(node["id"])
     assert "label" in resp.json()
     assert resp.json()["label"] == "A fresh label"
     # update unchanged node
     resp = await test_client.patch(endpoint, json=node_update)
-    assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
+    assert resp.status_code == 200, f"HTTP {resp.status_code} != 200 ({resp.json()})"
     # update invalid node
     node_update = {"id": "637b9ad396d541a505e5439b", "label": "Brand new label"}
     resp = await test_client.patch(endpoint, json=node_update)
-    assert resp.status_code == 400, f"HTTP status {resp.status_code} (expected: 400)"
+    assert resp.status_code == 400, f"HTTP {resp.status_code} != 400 ({resp.json()})"
 
 
 @pytest.mark.anyio
@@ -187,11 +187,11 @@ async def test_node_next(
     # get next node
     endpoint = f"{root_path}/nodes/{node_second_last['id']}/next"
     resp = await test_client.get(endpoint)
-    assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
+    assert resp.status_code == 200, f"HTTP {resp.status_code} != 200 ({resp.json()})"
     assert type(resp.json()) == dict
     assert "id" in resp.json()
     assert resp.json()["id"] == str(node_last["id"])
     # fail to get node after last
     endpoint = f"{root_path}/nodes/{node_last['id']}/next"
     resp = await test_client.get(endpoint)
-    assert resp.status_code == 404, f"HTTP status {resp.status_code} (expected: 404)"
+    assert resp.status_code == 404, f"HTTP {resp.status_code} != 404 ({resp.json()})"
