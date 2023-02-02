@@ -102,6 +102,6 @@ for lt_name, lt_class in get_layer_types().items():
             UnitModel,
         ),
         methods=["PATCH"],
-        response_model=lt_class.get_unit_model(),
+        response_model=UnitReadModel,
         status_code=status.HTTP_200_OK,
     )

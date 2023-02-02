@@ -66,7 +66,7 @@ async def test_create_layer_unit(root_path, test_client: AsyncClient, insert_tes
     assert resp.status_code == 200, f"HTTP status {resp.status_code} (expected: 200)"
     assert type(resp.json()) == dict
     assert "id" in resp.json()
-    assert resp.json()["_id"] == unit_id
+    assert resp.json()["id"] == unit_id
     assert resp.json()["text"] == "FOO BAR"
 
     # fail to update unit with invalid ID

@@ -119,7 +119,7 @@ async def test_get_layers(root_path, test_client: AsyncClient, insert_test_data)
     # request invalid ID
     endpoint = f"{root_path}/layers/plaintext/foo"
     resp = await test_client.get(endpoint)
-    assert resp.status_code == 400, f"HTTP status {resp.status_code} (expected: 400)"
+    assert resp.status_code == 422, f"HTTP status {resp.status_code} (expected: 422)"
 
 
 # @pytest.mark.anyio
