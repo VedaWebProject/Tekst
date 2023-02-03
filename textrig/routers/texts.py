@@ -1,7 +1,7 @@
 import json
 
 from beanie import PydanticObjectId
-from fastapi import APIRouter, Depends, HTTPException, Path, UploadFile, status
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, status
 from textrig.config import TextRigConfig, get_config
 from textrig.dependencies import get_cfg
 from textrig.logging import log
@@ -74,26 +74,24 @@ async def import_text(
     return text
 
 
-@router.get("/{textId}", response_model=TextRead, status_code=status.HTTP_200_OK)
-async def get_text(text_id: PydanticObjectId = Path(..., alias="textId")) -> TextRead:
-    text = await TextDocument.get(text_id)
+@router.get("/{id}", response_model=TextRead, status_code=status.HTTP_200_OK)
+async def get_text(id: PydanticObjectId) -> TextRead:
+    text = await TextDocument.get(id)
     if not text:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Could not find text with ID {text_id}",
+            detail=f"Could not find text with ID {id}",
         )
     return text
 
 
-@router.patch("/{textId}", response_model=TextRead, status_code=status.HTTP_200_OK)
-async def update_text(
-    updates: TextUpdate, text_id: PydanticObjectId = Path(..., alias="textId")
-) -> dict:
-    text = await TextDocument.get(text_id)
+@router.patch("/{id}", response_model=TextRead, status_code=status.HTTP_200_OK)
+async def update_text(id: PydanticObjectId, updates: TextUpdate) -> dict:
+    text = await TextDocument.get(id)
     if not text:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Text with ID {text_id} doesn't exist",
+            detail=f"Text with ID {id} doesn't exist",
         )
     if updates.slug and updates.slug != text.slug:
         raise HTTPException(

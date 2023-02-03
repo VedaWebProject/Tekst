@@ -1,5 +1,5 @@
 from beanie import PydanticObjectId
-from fastapi import APIRouter, HTTPException, Path, status
+from fastapi import APIRouter, HTTPException, status
 from textrig.logging import log
 from textrig.models.text import (
     NodeCreate,
@@ -71,39 +71,37 @@ async def get_nodes(
     return await NodeDocument.find(example).limit(limit).to_list()
 
 
-@router.patch("/{nodeId}", response_model=NodeRead, status_code=status.HTTP_200_OK)
-async def update_node(
-    updates: NodeUpdate, node_id: PydanticObjectId = Path(..., alias="nodeId")
-) -> dict:
-    node_doc = await NodeDocument.get(node_id)
+@router.patch("/{id}", response_model=NodeRead, status_code=status.HTTP_200_OK)
+async def update_node(id: PydanticObjectId, updates: NodeUpdate) -> dict:
+    node_doc = await NodeDocument.get(id)
     if not node_doc:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Node with ID {node_id} doesn't exist",
+            detail=f"Node with ID {id} doesn't exist",
         )
     await node_doc.set(updates.dict(exclude_unset=True))
     return node_doc
 
 
 @router.get(
-    "/{nodeId}/children", response_model=list[NodeRead], status_code=status.HTTP_200_OK
+    "/{id}/children", response_model=list[NodeRead], status_code=status.HTTP_200_OK
 )
 async def get_children(
-    node_id: PydanticObjectId = Path(..., alias="nodeId"),
+    id: PydanticObjectId,
     limit: int = 1000,
 ) -> list:
-    return await NodeDocument.find({"parentId": node_id}).limit(limit).to_list()
+    return await NodeDocument.find({"parentId": id}).limit(limit).to_list()
 
 
-@router.get("/{nodeId}/next", response_model=NodeRead, status_code=status.HTTP_200_OK)
+@router.get("/{id}/next", response_model=NodeRead, status_code=status.HTTP_200_OK)
 async def get_next(
-    node_id: PydanticObjectId = Path(..., alias="nodeId"),
+    id: PydanticObjectId,
 ) -> dict:
-    node = await NodeDocument.get(node_id)
+    node = await NodeDocument.get(id)
     if not node:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Invalid node ID {node_id}",
+            detail=f"Invalid node ID {id}",
         )
     node = await NodeDocument.find_one(
         {
@@ -115,6 +113,6 @@ async def get_next(
     if not node:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"No next node found for node {node_id}",
+            detail=f"No next node found for node {id}",
         )
     return node

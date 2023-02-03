@@ -1,5 +1,5 @@
 from beanie import PydanticObjectId
-from fastapi import APIRouter, HTTPException, Path, status
+from fastapi import APIRouter, HTTPException, status
 from textrig.layer_types import get_layer_types
 from textrig.models.unit import UnitBase, UnitBaseDocument, UnitBaseUpdate
 
@@ -8,15 +8,13 @@ def _generate_read_endpoint(
     UnitDocument: type[UnitBase],
     UnitRead: type[UnitBase],
 ):
-    async def get_unit(
-        unit_id: PydanticObjectId = Path(..., alias="unitId")
-    ) -> UnitRead:
+    async def get_unit(id: PydanticObjectId) -> UnitRead:
         """A generic route for reading a unit from the database"""
-        unit_doc = await UnitDocument.get(unit_id)
+        unit_doc = await UnitDocument.get(id)
         if not unit_doc:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Could not find unit with ID {unit_id}",
+                detail=f"Could not find unit with ID {id}",
             )
         return unit_doc
 
@@ -45,14 +43,12 @@ def _generate_update_endpoint(
     UnitRead: type[UnitBase],
     UnitUpdate: type[UnitBase],
 ):
-    async def update_unit(
-        updates: UnitUpdate, unit_id: PydanticObjectId = Path(..., alias="unitId")
-    ) -> UnitRead:
-        unit_doc = await UnitDocument.get(unit_id)
+    async def update_unit(id: PydanticObjectId, updates: UnitUpdate) -> UnitRead:
+        unit_doc = await UnitDocument.get(id)
         if not unit_doc:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Unit with ID {unit_id} doesn't exist",
+                detail=f"Unit with ID {id} doesn't exist",
             )
         await unit_doc.set(updates.dict(exclude_unset=True))
         return unit_doc
@@ -77,7 +73,7 @@ for lt_name, lt_class in get_layer_types().items():
     UnitUpdateModel = UnitModel.get_update_model(UnitBaseUpdate)
     # add route for reading a unit from the database
     router.add_api_route(
-        path=f"/{lt_name}/{{unitId}}",
+        path=f"/{lt_name}/{{id}}",
         name=f"get_{lt_name}_unit",
         description=f"Returns the data for a {lt_class.get_name()} data layer unit",
         endpoint=_generate_read_endpoint(
@@ -104,7 +100,7 @@ for lt_name, lt_class in get_layer_types().items():
     )
     # add route for updating a unit
     router.add_api_route(
-        path=f"/{lt_name}/{{unitId}}",
+        path=f"/{lt_name}/{{id}}",
         name=f"update_{lt_name}_unit",
         description=f"Updates the data for a {lt_class.get_name()} data layer unit",
         endpoint=_generate_update_endpoint(

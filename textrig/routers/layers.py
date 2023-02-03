@@ -2,7 +2,7 @@
 # from tempfile import NamedTemporaryFile
 
 from beanie import PydanticObjectId
-from fastapi import APIRouter, HTTPException, Path, status
+from fastapi import APIRouter, HTTPException, status
 
 # from textrig.dependencies import get_db_io
 from textrig.layer_types import get_layer_types
@@ -28,15 +28,13 @@ def _generate_read_endpoint(
     LayerDocument: type[LayerBase],
     LayerRead: type[LayerBase],
 ):
-    async def get_layer(
-        layer_id: PydanticObjectId = Path(..., alias="layerId")
-    ) -> LayerRead:
+    async def get_layer(id: PydanticObjectId) -> LayerRead:
         """A generic route for reading a layer definition from the database"""
-        layer_doc = await LayerDocument.get(layer_id)
+        layer_doc = await LayerDocument.get(id)
         if not layer_doc:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Could not find layer with ID {layer_id}",
+                detail=f"Could not find layer with ID {id}",
             )
         return layer_doc
 
@@ -66,14 +64,12 @@ def _generate_update_endpoint(
     LayerRead: type[LayerBase],
     LayerUpdate: type[LayerBase],
 ):
-    async def update_layer(
-        updates: LayerUpdate, layer_id: PydanticObjectId = Path(..., alias="layerId")
-    ) -> LayerRead:
-        layer: LayerDocument = await LayerDocument.get(layer_id)
+    async def update_layer(id: PydanticObjectId, updates: LayerUpdate) -> LayerRead:
+        layer: LayerDocument = await LayerDocument.get(id)
         if not layer:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Layer with ID {layer_id} doesn't exist",
+                detail=f"Layer with ID {id} doesn't exist",
             )
         await layer.set(updates.dict(exclude_unset=True))
         return layer
@@ -100,7 +96,7 @@ for lt_name, lt_class in get_layer_types().items():
     LayerUpdateModel = LayerModel.get_update_model(LayerBaseUpdate)
     # add route for reading a layer definition from the database
     router.add_api_route(
-        path=f"/{lt_name}/{{layerId}}",
+        path=f"/{lt_name}/{{id}}",
         name=f"get_{lt_name}_layer",
         description=f"Returns the data for a {lt_class.get_name()} data layer",
         endpoint=_generate_read_endpoint(
@@ -126,7 +122,7 @@ for lt_name, lt_class in get_layer_types().items():
     )
     # add route for updating a layer
     router.add_api_route(
-        path=f"/{lt_name}/{{layerId}}",
+        path=f"/{lt_name}/{{id}}",
         name=f"update_{lt_name}_layer",
         description=f"Updates the data for a {lt_class.get_name()} data layer",
         endpoint=_generate_update_endpoint(
@@ -261,13 +257,11 @@ async def get_layers(
 #     return resp_data
 
 
-@router.get("/{layerId}", response_model=LayerBaseRead, status_code=status.HTTP_200_OK)
+@router.get("/{id}", response_model=LayerBaseRead, status_code=status.HTTP_200_OK)
 async def get_layer(
-    layer_id: PydanticObjectId = Path(..., alias="layerId"),
+    id: PydanticObjectId,
 ) -> LayerBaseRead:
-    layer_doc = await LayerBaseDocument.get(layer_id, with_children=True)
+    layer_doc = await LayerBaseDocument.get(id, with_children=True)
     if not layer_doc:
-        raise HTTPException(
-            status.HTTP_404_NOT_FOUND, detail=f"No layer with ID {layer_id}"
-        )
+        raise HTTPException(status.HTTP_404_NOT_FOUND, detail=f"No layer with ID {id}")
     return layer_doc
