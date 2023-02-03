@@ -44,7 +44,7 @@
         }
       }
     },
-    "/layers/plaintext/{layerId}": {
+    "/layers/plaintext/{id}": {
       "get": {
         "tags": [
           "layers"
@@ -56,17 +56,78 @@
           {
             "required": true,
             "schema": {
-              "title": "Layerid",
+              "title": "Id",
               "type": "string",
               "examples": [
                 "5eb7cf5a86d9755df3a6c593",
                 "5eb7cfb05e32e07750a1756a"
               ]
             },
-            "name": "layerId",
+            "name": "id",
             "in": "path"
           }
         ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlainTextLayerRead"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Request"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "layers"
+        ],
+        "summary": "Update layer",
+        "description": "Updates the data for a PlainText data layer",
+        "operationId": "updatePlaintextLayer",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "examples": [
+                "5eb7cf5a86d9755df3a6c593",
+                "5eb7cfb05e32e07750a1756a"
+              ]
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlainTextLayerUpdate"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -117,52 +178,6 @@
         },
         "responses": {
           "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PlainTextLayerRead"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid Request"
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "layers"
-        ],
-        "summary": "Update layer",
-        "description": "Updates the data for a PlainText data layer",
-        "operationId": "updatePlaintextLayer",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PlainTextLayerUpdate"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
@@ -276,7 +291,7 @@
         }
       }
     },
-    "/layers/{layerId}": {
+    "/layers/{id}": {
       "get": {
         "tags": [
           "layers"
@@ -287,14 +302,14 @@
           {
             "required": true,
             "schema": {
-              "title": "Layerid",
+              "title": "Id",
               "type": "string",
               "examples": [
                 "5eb7cf5a86d9755df3a6c593",
                 "5eb7cfb05e32e07750a1756a"
               ]
             },
-            "name": "layerId",
+            "name": "id",
             "in": "path"
           }
         ],
@@ -468,13 +483,30 @@
             }
           }
         }
-      },
+      }
+    },
+    "/nodes/{id}": {
       "patch": {
         "tags": [
           "nodes"
         ],
         "summary": "Update node",
         "operationId": "updateNode",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "examples": [
+                "5eb7cf5a86d9755df3a6c593",
+                "5eb7cfb05e32e07750a1756a"
+              ]
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -515,7 +547,7 @@
         }
       }
     },
-    "/nodes/{nodeId}/children": {
+    "/nodes/{id}/children": {
       "get": {
         "tags": [
           "nodes"
@@ -526,14 +558,14 @@
           {
             "required": true,
             "schema": {
-              "title": "Nodeid",
+              "title": "Id",
               "type": "string",
               "examples": [
                 "5eb7cf5a86d9755df3a6c593",
                 "5eb7cfb05e32e07750a1756a"
               ]
             },
-            "name": "nodeId",
+            "name": "id",
             "in": "path"
           },
           {
@@ -553,7 +585,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Children Nodes  Nodeid  Children Get",
+                  "title": "Response Get Children Nodes  Id  Children Get",
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/NodeRead"
@@ -581,7 +613,7 @@
         }
       }
     },
-    "/nodes/{nodeId}/next": {
+    "/nodes/{id}/next": {
       "get": {
         "tags": [
           "nodes"
@@ -592,14 +624,14 @@
           {
             "required": true,
             "schema": {
-              "title": "Nodeid",
+              "title": "Id",
               "type": "string",
               "examples": [
                 "5eb7cf5a86d9755df3a6c593",
                 "5eb7cfb05e32e07750a1756a"
               ]
             },
-            "name": "nodeId",
+            "name": "id",
             "in": "path"
           }
         ],
@@ -729,51 +761,6 @@
             }
           }
         }
-      },
-      "patch": {
-        "tags": [
-          "texts"
-        ],
-        "summary": "Update text",
-        "operationId": "updateText",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/TextUpdate"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TextRead"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid Request"
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
       }
     },
     "/texts/import": {
@@ -823,7 +810,7 @@
         }
       }
     },
-    "/texts/{textId}": {
+    "/texts/{id}": {
       "get": {
         "tags": [
           "texts"
@@ -834,17 +821,77 @@
           {
             "required": true,
             "schema": {
-              "title": "Textid",
+              "title": "Id",
               "type": "string",
               "examples": [
                 "5eb7cf5a86d9755df3a6c593",
                 "5eb7cfb05e32e07750a1756a"
               ]
             },
-            "name": "textId",
+            "name": "id",
             "in": "path"
           }
         ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TextRead"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Request"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "texts"
+        ],
+        "summary": "Update text",
+        "operationId": "updateText",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "examples": [
+                "5eb7cf5a86d9755df3a6c593",
+                "5eb7cfb05e32e07750a1756a"
+              ]
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TextUpdate"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -986,7 +1033,7 @@
         }
       }
     },
-    "/units/plaintext/{unitId}": {
+    "/units/plaintext/{id}": {
       "get": {
         "tags": [
           "units"
@@ -998,17 +1045,78 @@
           {
             "required": true,
             "schema": {
-              "title": "Unitid",
+              "title": "Id",
               "type": "string",
               "examples": [
                 "5eb7cf5a86d9755df3a6c593",
                 "5eb7cfb05e32e07750a1756a"
               ]
             },
-            "name": "unitId",
+            "name": "id",
             "in": "path"
           }
         ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlainTextUnitRead"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Request"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "units"
+        ],
+        "summary": "Update unit",
+        "description": "Updates the data for a PlainText data layer unit",
+        "operationId": "updatePlaintextUnit",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "examples": [
+                "5eb7cf5a86d9755df3a6c593",
+                "5eb7cfb05e32e07750a1756a"
+              ]
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlainTextUnitUpdate"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -1059,52 +1167,6 @@
         },
         "responses": {
           "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PlainTextUnitRead"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid Request"
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "units"
-        ],
-        "summary": "Update unit",
-        "description": "Updates the data for a PlainText data layer unit",
-        "operationId": "updatePlaintextUnit",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PlainTextUnitUpdate"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
@@ -2233,7 +2295,11 @@
         "properties": {
           "id": {
             "title": "Id",
-            "type": "string"
+            "type": "string",
+            "examples": [
+              "5eb7cf5a86d9755df3a6c593",
+              "5eb7cfb05e32e07750a1756a"
+            ]
           },
           "title": {
             "title": "Title",
@@ -2380,7 +2446,11 @@
         "properties": {
           "id": {
             "title": "Id",
-            "type": "string"
+            "type": "string",
+            "examples": [
+              "5eb7cf5a86d9755df3a6c593",
+              "5eb7cfb05e32e07750a1756a"
+            ]
           },
           "textId": {
             "title": "Textid",
@@ -2443,15 +2513,8 @@
       },
       "NodeUpdate": {
         "title": "NodeUpdate",
-        "required": [
-          "id"
-        ],
         "type": "object",
         "properties": {
-          "id": {
-            "title": "Id",
-            "type": "string"
-          },
           "textId": {
             "title": "Textid",
             "type": "string",
@@ -2625,7 +2688,11 @@
         "properties": {
           "id": {
             "title": "Id",
-            "type": "string"
+            "type": "string",
+            "examples": [
+              "5eb7cf5a86d9755df3a6c593",
+              "5eb7cfb05e32e07750a1756a"
+            ]
           },
           "title": {
             "title": "Title",
@@ -2709,15 +2776,8 @@
       },
       "PlainTextLayerUpdate": {
         "title": "PlainTextLayerUpdate",
-        "required": [
-          "id"
-        ],
         "type": "object",
         "properties": {
-          "id": {
-            "title": "Id",
-            "type": "string"
-          },
           "title": {
             "title": "Title",
             "type": "string"
@@ -2844,7 +2904,11 @@
         "properties": {
           "id": {
             "title": "Id",
-            "type": "string"
+            "type": "string",
+            "examples": [
+              "5eb7cf5a86d9755df3a6c593",
+              "5eb7cfb05e32e07750a1756a"
+            ]
           },
           "layerId": {
             "title": "Layerid",
@@ -2901,15 +2965,8 @@
       },
       "PlainTextUnitUpdate": {
         "title": "PlainTextUnitUpdate",
-        "required": [
-          "id"
-        ],
         "type": "object",
         "properties": {
-          "id": {
-            "title": "Id",
-            "type": "string"
-          },
           "layerId": {
             "title": "Layerid",
             "type": "string",
@@ -3013,7 +3070,11 @@
         "properties": {
           "id": {
             "title": "Id",
-            "type": "string"
+            "type": "string",
+            "examples": [
+              "5eb7cf5a86d9755df3a6c593",
+              "5eb7cfb05e32e07750a1756a"
+            ]
           },
           "title": {
             "title": "Title",
@@ -3056,15 +3117,8 @@
       },
       "TextUpdate": {
         "title": "TextUpdate",
-        "required": [
-          "id"
-        ],
         "type": "object",
         "properties": {
-          "id": {
-            "title": "Id",
-            "type": "string"
-          },
           "title": {
             "title": "Title",
             "type": "string"
@@ -3138,6 +3192,7 @@
       "UserRead": {
         "title": "UserRead",
         "required": [
+          "id",
           "email",
           "first_name",
           "last_name"
@@ -3145,7 +3200,12 @@
         "type": "object",
         "properties": {
           "id": {
-            "title": "Id"
+            "title": "Id",
+            "type": "string",
+            "examples": [
+              "5eb7cf5a86d9755df3a6c593",
+              "5eb7cfb05e32e07750a1756a"
+            ]
           },
           "email": {
             "title": "Email",
