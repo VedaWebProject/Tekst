@@ -197,6 +197,7 @@
           "layers"
         ],
         "summary": "Get layers",
+        "description": "Returns a list of all data layers matching the given criteria.\n\nAs the resulting list of data layers may contain layers of different types, the\nreturned layer objects are reduced to the common layer properties and do not\ncontain layer type-specific data.",
         "operationId": "getLayers",
         "parameters": [
           {
