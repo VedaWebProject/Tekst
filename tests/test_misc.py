@@ -34,7 +34,7 @@ def test_logging_setup_without_errors():
 #         "nested": {"_id": "637b94cb6bc85f7410a49bc9"},
 #     }
 #     req = for_mongo(req)
-#     assert type(req.get("_id")) == PydanticObjectId
+#     assert type(req.get("_id")) == PyObjectId
 #     assert "parentId" in req
-#     assert type(req.get("parentId")) == PydanticObjectId
-#     assert type(req.get("nested").get("_id")) == PydanticObjectId
+#     assert type(req.get("parentId")) == PyObjectId
+#     assert type(req.get("nested").get("_id")) == PyObjectId

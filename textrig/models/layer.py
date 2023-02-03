@@ -1,11 +1,11 @@
 import re
 
-from beanie import PydanticObjectId
 from pydantic import Field, validator
 from textrig.models.common import (
     DocumentBase,
     Metadata,
     ModelBase,
+    PyObjectId,
     ReadBase,
     UpdateBase,
 )
@@ -23,7 +23,7 @@ class LayerBase(ModelBase):
         max_length=128,
         description="Short, one-line description of this data layer",
     )
-    text_id: PydanticObjectId | None = Field(
+    text_id: PyObjectId | None = Field(
         None, description="ID of the text this layer belongs to"
     )
     level: int = Field(..., description="Text level this layer belongs to")

@@ -1,11 +1,11 @@
 # import json
 # from tempfile import NamedTemporaryFile
 
-from beanie import PydanticObjectId
 from fastapi import APIRouter, HTTPException, status
 
 # from textrig.dependencies import get_db_io
 from textrig.layer_types import get_layer_types
+from textrig.models.common import PyObjectId
 
 # from textrig.logging import log
 from textrig.models.layer import (
@@ -28,7 +28,7 @@ def _generate_read_endpoint(
     LayerDocument: type[LayerBase],
     LayerRead: type[LayerBase],
 ):
-    async def get_layer(id: PydanticObjectId) -> LayerRead:
+    async def get_layer(id: PyObjectId) -> LayerRead:
         """A generic route for reading a layer definition from the database"""
         layer_doc = await LayerDocument.get(id)
         if not layer_doc:
@@ -64,7 +64,7 @@ def _generate_update_endpoint(
     LayerRead: type[LayerBase],
     LayerUpdate: type[LayerBase],
 ):
-    async def update_layer(id: PydanticObjectId, updates: LayerUpdate) -> LayerRead:
+    async def update_layer(id: PyObjectId, updates: LayerUpdate) -> LayerRead:
         layer: LayerDocument = await LayerDocument.get(id)
         if not layer:
             raise HTTPException(
@@ -141,7 +141,7 @@ for lt_name, lt_class in get_layer_types().items():
 
 @router.get("", response_model=list[LayerBaseRead], status_code=status.HTTP_200_OK)
 async def get_layers(
-    text_id: PydanticObjectId,
+    text_id: PyObjectId,
     level: int = None,
     layer_type: str = None,
     limit: int = 1000,
@@ -259,7 +259,7 @@ async def get_layers(
 
 @router.get("/{id}", response_model=LayerBaseRead, status_code=status.HTTP_200_OK)
 async def get_layer(
-    id: PydanticObjectId,
+    id: PyObjectId,
 ) -> LayerBaseRead:
     layer_doc = await LayerBaseDocument.get(id, with_children=True)
     if not layer_doc:

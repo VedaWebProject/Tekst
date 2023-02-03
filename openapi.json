@@ -58,10 +58,7 @@
             "schema": {
               "title": "Id",
               "type": "string",
-              "examples": [
-                "5eb7cf5a86d9755df3a6c593",
-                "5eb7cfb05e32e07750a1756a"
-              ]
+              "example": "5eb7cf5a86d9755df3a6c593"
             },
             "name": "id",
             "in": "path"
@@ -109,10 +106,7 @@
             "schema": {
               "title": "Id",
               "type": "string",
-              "examples": [
-                "5eb7cf5a86d9755df3a6c593",
-                "5eb7cfb05e32e07750a1756a"
-              ]
+              "example": "5eb7cf5a86d9755df3a6c593"
             },
             "name": "id",
             "in": "path"
@@ -220,10 +214,7 @@
             "schema": {
               "title": "Textid",
               "type": "string",
-              "examples": [
-                "5eb7cf5a86d9755df3a6c593",
-                "5eb7cfb05e32e07750a1756a"
-              ]
+              "example": "5eb7cf5a86d9755df3a6c593"
             },
             "name": "textId",
             "in": "query"
@@ -304,10 +295,7 @@
             "schema": {
               "title": "Id",
               "type": "string",
-              "examples": [
-                "5eb7cf5a86d9755df3a6c593",
-                "5eb7cfb05e32e07750a1756a"
-              ]
+              "example": "5eb7cf5a86d9755df3a6c593"
             },
             "name": "id",
             "in": "path"
@@ -356,10 +344,7 @@
             "schema": {
               "title": "Textid",
               "type": "string",
-              "examples": [
-                "5eb7cf5a86d9755df3a6c593",
-                "5eb7cfb05e32e07750a1756a"
-              ]
+              "example": "5eb7cf5a86d9755df3a6c593"
             },
             "name": "textId",
             "in": "query"
@@ -387,10 +372,7 @@
             "schema": {
               "title": "Parentid",
               "type": "string",
-              "examples": [
-                "5eb7cf5a86d9755df3a6c593",
-                "5eb7cfb05e32e07750a1756a"
-              ]
+              "example": "5eb7cf5a86d9755df3a6c593"
             },
             "name": "parentId",
             "in": "query"
@@ -498,10 +480,7 @@
             "schema": {
               "title": "Id",
               "type": "string",
-              "examples": [
-                "5eb7cf5a86d9755df3a6c593",
-                "5eb7cfb05e32e07750a1756a"
-              ]
+              "example": "5eb7cf5a86d9755df3a6c593"
             },
             "name": "id",
             "in": "path"
@@ -560,10 +539,7 @@
             "schema": {
               "title": "Id",
               "type": "string",
-              "examples": [
-                "5eb7cf5a86d9755df3a6c593",
-                "5eb7cfb05e32e07750a1756a"
-              ]
+              "example": "5eb7cf5a86d9755df3a6c593"
             },
             "name": "id",
             "in": "path"
@@ -626,10 +602,7 @@
             "schema": {
               "title": "Id",
               "type": "string",
-              "examples": [
-                "5eb7cf5a86d9755df3a6c593",
-                "5eb7cfb05e32e07750a1756a"
-              ]
+              "example": "5eb7cf5a86d9755df3a6c593"
             },
             "name": "id",
             "in": "path"
@@ -823,10 +796,7 @@
             "schema": {
               "title": "Id",
               "type": "string",
-              "examples": [
-                "5eb7cf5a86d9755df3a6c593",
-                "5eb7cfb05e32e07750a1756a"
-              ]
+              "example": "5eb7cf5a86d9755df3a6c593"
             },
             "name": "id",
             "in": "path"
@@ -873,10 +843,7 @@
             "schema": {
               "title": "Id",
               "type": "string",
-              "examples": [
-                "5eb7cf5a86d9755df3a6c593",
-                "5eb7cfb05e32e07750a1756a"
-              ]
+              "example": "5eb7cf5a86d9755df3a6c593"
             },
             "name": "id",
             "in": "path"
@@ -1047,10 +1014,7 @@
             "schema": {
               "title": "Id",
               "type": "string",
-              "examples": [
-                "5eb7cf5a86d9755df3a6c593",
-                "5eb7cfb05e32e07750a1756a"
-              ]
+              "example": "5eb7cf5a86d9755df3a6c593"
             },
             "name": "id",
             "in": "path"
@@ -1098,10 +1062,7 @@
             "schema": {
               "title": "Id",
               "type": "string",
-              "examples": [
-                "5eb7cf5a86d9755df3a6c593",
-                "5eb7cfb05e32e07750a1756a"
-              ]
+              "example": "5eb7cf5a86d9755df3a6c593"
             },
             "name": "id",
             "in": "path"
@@ -2296,10 +2257,7 @@
           "id": {
             "title": "Id",
             "type": "string",
-            "examples": [
-              "5eb7cf5a86d9755df3a6c593",
-              "5eb7cfb05e32e07750a1756a"
-            ]
+            "example": "5eb7cf5a86d9755df3a6c593"
           },
           "title": {
             "title": "Title",
@@ -2319,10 +2277,7 @@
             "title": "Textid",
             "type": "string",
             "description": "ID of the text this layer belongs to",
-            "examples": [
-              "5eb7cf5a86d9755df3a6c593",
-              "5eb7cfb05e32e07750a1756a"
-            ]
+            "example": "5eb7cf5a86d9755df3a6c593"
           },
           "level": {
             "title": "Level",
@@ -2378,19 +2333,13 @@
             "title": "Textid",
             "type": "string",
             "description": "ID of the text this node belongs to",
-            "examples": [
-              "5eb7cf5a86d9755df3a6c593",
-              "5eb7cfb05e32e07750a1756a"
-            ]
+            "example": "5eb7cf5a86d9755df3a6c593"
           },
           "parentId": {
             "title": "Parentid",
             "type": "string",
             "description": "ID of parent node",
-            "examples": [
-              "5eb7cf5a86d9755df3a6c593",
-              "5eb7cfb05e32e07750a1756a"
-            ]
+            "example": "5eb7cf5a86d9755df3a6c593"
           },
           "level": {
             "title": "Level",
@@ -2447,28 +2396,19 @@
           "id": {
             "title": "Id",
             "type": "string",
-            "examples": [
-              "5eb7cf5a86d9755df3a6c593",
-              "5eb7cfb05e32e07750a1756a"
-            ]
+            "example": "5eb7cf5a86d9755df3a6c593"
           },
           "textId": {
             "title": "Textid",
             "type": "string",
             "description": "ID of the text this node belongs to",
-            "examples": [
-              "5eb7cf5a86d9755df3a6c593",
-              "5eb7cfb05e32e07750a1756a"
-            ]
+            "example": "5eb7cf5a86d9755df3a6c593"
           },
           "parentId": {
             "title": "Parentid",
             "type": "string",
             "description": "ID of parent node",
-            "examples": [
-              "5eb7cf5a86d9755df3a6c593",
-              "5eb7cfb05e32e07750a1756a"
-            ]
+            "example": "5eb7cf5a86d9755df3a6c593"
           },
           "level": {
             "title": "Level",
@@ -2518,18 +2458,12 @@
           "textId": {
             "title": "Textid",
             "type": "string",
-            "examples": [
-              "5eb7cf5a86d9755df3a6c593",
-              "5eb7cfb05e32e07750a1756a"
-            ]
+            "example": "5eb7cf5a86d9755df3a6c593"
           },
           "parentId": {
             "title": "Parentid",
             "type": "string",
-            "examples": [
-              "5eb7cf5a86d9755df3a6c593",
-              "5eb7cfb05e32e07750a1756a"
-            ]
+            "example": "5eb7cf5a86d9755df3a6c593"
           },
           "level": {
             "title": "Level",
@@ -2614,10 +2548,7 @@
             "title": "Textid",
             "type": "string",
             "description": "ID of the text this layer belongs to",
-            "examples": [
-              "5eb7cf5a86d9755df3a6c593",
-              "5eb7cfb05e32e07750a1756a"
-            ]
+            "example": "5eb7cf5a86d9755df3a6c593"
           },
           "level": {
             "title": "Level",
@@ -2689,10 +2620,7 @@
           "id": {
             "title": "Id",
             "type": "string",
-            "examples": [
-              "5eb7cf5a86d9755df3a6c593",
-              "5eb7cfb05e32e07750a1756a"
-            ]
+            "example": "5eb7cf5a86d9755df3a6c593"
           },
           "title": {
             "title": "Title",
@@ -2712,10 +2640,7 @@
             "title": "Textid",
             "type": "string",
             "description": "ID of the text this layer belongs to",
-            "examples": [
-              "5eb7cf5a86d9755df3a6c593",
-              "5eb7cfb05e32e07750a1756a"
-            ]
+            "example": "5eb7cf5a86d9755df3a6c593"
           },
           "level": {
             "title": "Level",
@@ -2789,10 +2714,7 @@
           "textId": {
             "title": "Textid",
             "type": "string",
-            "examples": [
-              "5eb7cf5a86d9755df3a6c593",
-              "5eb7cfb05e32e07750a1756a"
-            ]
+            "example": "5eb7cf5a86d9755df3a6c593"
           },
           "level": {
             "title": "Level",
@@ -2844,19 +2766,13 @@
             "title": "Layerid",
             "type": "string",
             "description": "Data layer ID",
-            "examples": [
-              "5eb7cf5a86d9755df3a6c593",
-              "5eb7cfb05e32e07750a1756a"
-            ]
+            "example": "5eb7cf5a86d9755df3a6c593"
           },
           "nodeId": {
             "title": "Nodeid",
             "type": "string",
             "description": "Parent text node ID",
-            "examples": [
-              "5eb7cf5a86d9755df3a6c593",
-              "5eb7cfb05e32e07750a1756a"
-            ]
+            "example": "5eb7cf5a86d9755df3a6c593"
           },
           "meta": {
             "title": "Meta",
@@ -2905,28 +2821,19 @@
           "id": {
             "title": "Id",
             "type": "string",
-            "examples": [
-              "5eb7cf5a86d9755df3a6c593",
-              "5eb7cfb05e32e07750a1756a"
-            ]
+            "example": "5eb7cf5a86d9755df3a6c593"
           },
           "layerId": {
             "title": "Layerid",
             "type": "string",
             "description": "Data layer ID",
-            "examples": [
-              "5eb7cf5a86d9755df3a6c593",
-              "5eb7cfb05e32e07750a1756a"
-            ]
+            "example": "5eb7cf5a86d9755df3a6c593"
           },
           "nodeId": {
             "title": "Nodeid",
             "type": "string",
             "description": "Parent text node ID",
-            "examples": [
-              "5eb7cf5a86d9755df3a6c593",
-              "5eb7cfb05e32e07750a1756a"
-            ]
+            "example": "5eb7cf5a86d9755df3a6c593"
           },
           "meta": {
             "title": "Meta",
@@ -2970,18 +2877,12 @@
           "layerId": {
             "title": "Layerid",
             "type": "string",
-            "examples": [
-              "5eb7cf5a86d9755df3a6c593",
-              "5eb7cfb05e32e07750a1756a"
-            ]
+            "example": "5eb7cf5a86d9755df3a6c593"
           },
           "nodeId": {
             "title": "Nodeid",
             "type": "string",
-            "examples": [
-              "5eb7cf5a86d9755df3a6c593",
-              "5eb7cfb05e32e07750a1756a"
-            ]
+            "example": "5eb7cf5a86d9755df3a6c593"
           },
           "meta": {
             "title": "Meta",
@@ -3071,10 +2972,7 @@
           "id": {
             "title": "Id",
             "type": "string",
-            "examples": [
-              "5eb7cf5a86d9755df3a6c593",
-              "5eb7cfb05e32e07750a1756a"
-            ]
+            "example": "5eb7cf5a86d9755df3a6c593"
           },
           "title": {
             "title": "Title",
@@ -3202,10 +3100,7 @@
           "id": {
             "title": "Id",
             "type": "string",
-            "examples": [
-              "5eb7cf5a86d9755df3a6c593",
-              "5eb7cfb05e32e07750a1756a"
-            ]
+            "example": "5eb7cf5a86d9755df3a6c593"
           },
           "email": {
             "title": "Email",

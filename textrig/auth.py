@@ -1,6 +1,5 @@
 import contextlib
 
-from beanie import PydanticObjectId
 from fastapi import APIRouter, Depends, FastAPI, Request
 from fastapi_users import (
     BaseUserManager,
@@ -26,21 +25,21 @@ from fastapi_users_db_beanie.access_token import (
 )
 from textrig.config import TextRigConfig, get_config
 from textrig.logging import log
-from textrig.models.common import ModelBase
+from textrig.models.common import ModelBase, PyObjectId
 
 
 _cfg: TextRigConfig = get_config()
 
 
-class User(ModelBase, BeanieBaseUser[PydanticObjectId]):
+class User(ModelBase, BeanieBaseUser[PyObjectId]):
     is_active: bool = _cfg.dev_mode
     is_verified: bool = _cfg.dev_mode
     first_name: str
     last_name: str
 
 
-class UserRead(ModelBase, schemas.BaseUser[PydanticObjectId]):
-    id: PydanticObjectId
+class UserRead(ModelBase, schemas.BaseUser[PyObjectId]):
+    id: PyObjectId
     is_active: bool = _cfg.dev_mode
     is_verified: bool = _cfg.dev_mode
     first_name: str
@@ -61,7 +60,7 @@ class UserUpdate(ModelBase, schemas.BaseUserUpdate):
     last_name: str | None
 
 
-class AccessToken(ModelBase, BeanieBaseAccessToken[PydanticObjectId]):
+class AccessToken(ModelBase, BeanieBaseAccessToken[PyObjectId]):
     pass
 
 
@@ -116,7 +115,7 @@ _auth_backend_jwt = AuthenticationBackend(
 )
 
 
-class UserManager(ObjectIDIDMixin, BaseUserManager[User, PydanticObjectId]):
+class UserManager(ObjectIDIDMixin, BaseUserManager[User, PyObjectId]):
     reset_password_token_secret = _cfg.security.secret
     verification_token_secret = _cfg.security.secret
     reset_password_token_lifetime_seconds = _cfg.security.reset_pw_token_lifetime
@@ -158,7 +157,7 @@ async def get_user_manager(user_db=Depends(get_user_db)):
     yield UserManager(user_db)
 
 
-_fastapi_users = FastAPIUsers[User, PydanticObjectId](
+_fastapi_users = FastAPIUsers[User, PyObjectId](
     get_user_manager,
     [_auth_backend_cookie, _auth_backend_jwt],
 )

@@ -12,6 +12,15 @@ from pydantic.main import ModelMetaclass
 Metadata = dict[str, str | int | bool | float]
 
 
+class PyObjectId(PydanticObjectId):
+    @classmethod
+    def __modify_schema__(cls, field_schema):
+        field_schema.update(
+            type="string",
+            example="5eb7cf5a86d9755df3a6c593",
+        )
+
+
 class _CRUDBase(BaseModel):
     """Base class for all TextRig pydantic models"""
 
@@ -51,7 +60,7 @@ class _CRUDBase(BaseModel):
 
 
 class _IDMixin(BaseModel):
-    id: PydanticObjectId
+    id: PyObjectId
 
     def __init__(self, **kwargs):
         if "_id" in kwargs:

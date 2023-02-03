@@ -1,6 +1,6 @@
-from beanie import PydanticObjectId
 from fastapi import APIRouter, HTTPException, status
 from textrig.layer_types import get_layer_types
+from textrig.models.common import PyObjectId
 from textrig.models.unit import UnitBase, UnitBaseDocument, UnitBaseUpdate
 
 
@@ -8,7 +8,7 @@ def _generate_read_endpoint(
     UnitDocument: type[UnitBase],
     UnitRead: type[UnitBase],
 ):
-    async def get_unit(id: PydanticObjectId) -> UnitRead:
+    async def get_unit(id: PyObjectId) -> UnitRead:
         """A generic route for reading a unit from the database"""
         unit_doc = await UnitDocument.get(id)
         if not unit_doc:
@@ -43,7 +43,7 @@ def _generate_update_endpoint(
     UnitRead: type[UnitBase],
     UnitUpdate: type[UnitBase],
 ):
-    async def update_unit(id: PydanticObjectId, updates: UnitUpdate) -> UnitRead:
+    async def update_unit(id: PyObjectId, updates: UnitUpdate) -> UnitRead:
         unit_doc = await UnitDocument.get(id)
         if not unit_doc:
             raise HTTPException(

@@ -1,6 +1,6 @@
-from beanie import PydanticObjectId
 from fastapi import APIRouter, HTTPException, status
 from textrig.logging import log
+from textrig.models.common import PyObjectId
 from textrig.models.text import (
     NodeCreate,
     NodeDocument,
@@ -45,10 +45,10 @@ async def create_node(node: NodeCreate) -> NodeRead:
 
 @router.get("", response_model=list[NodeRead], status_code=status.HTTP_200_OK)
 async def get_nodes(
-    text_id: PydanticObjectId,
+    text_id: PyObjectId,
     level: int = None,
     index: int = None,
-    parent_id: PydanticObjectId = None,
+    parent_id: PyObjectId = None,
     limit: int = 1000,
 ) -> list[NodeRead]:
     if level is None and parent_id is None:
@@ -72,7 +72,7 @@ async def get_nodes(
 
 
 @router.patch("/{id}", response_model=NodeRead, status_code=status.HTTP_200_OK)
-async def update_node(id: PydanticObjectId, updates: NodeUpdate) -> dict:
+async def update_node(id: PyObjectId, updates: NodeUpdate) -> dict:
     node_doc = await NodeDocument.get(id)
     if not node_doc:
         raise HTTPException(
@@ -87,7 +87,7 @@ async def update_node(id: PydanticObjectId, updates: NodeUpdate) -> dict:
     "/{id}/children", response_model=list[NodeRead], status_code=status.HTTP_200_OK
 )
 async def get_children(
-    id: PydanticObjectId,
+    id: PyObjectId,
     limit: int = 1000,
 ) -> list:
     return await NodeDocument.find({"parentId": id}).limit(limit).to_list()
@@ -95,7 +95,7 @@ async def get_children(
 
 @router.get("/{id}/next", response_model=NodeRead, status_code=status.HTTP_200_OK)
 async def get_next(
-    id: PydanticObjectId,
+    id: PyObjectId,
 ) -> dict:
     node = await NodeDocument.get(id)
     if not node:

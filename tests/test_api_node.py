@@ -1,6 +1,6 @@
 import pytest
-from beanie import PydanticObjectId
 from httpx import AsyncClient
+from textrig.models.common import PyObjectId
 
 
 @pytest.mark.anyio
@@ -126,7 +126,7 @@ async def test_get_nodes(
 
     # test returned nodes have IDs
     assert "id" in resp.json()[0]
-    PydanticObjectId(resp.json()[0]["id"])
+    PyObjectId(resp.json()[0]["id"])
 
     # test specific index
     resp = await test_client.get(

@@ -1,18 +1,22 @@
-from beanie import PydanticObjectId
-
 # from fastapi import HTTPException, status
 from pydantic import Field
 
 # from textrig.db.io import DbIO
 # from textrig.logging import log
-from textrig.models.common import DocumentBase, Metadata, ModelBase, UpdateBase
+from textrig.models.common import (
+    DocumentBase,
+    Metadata,
+    ModelBase,
+    PyObjectId,
+    UpdateBase,
+)
 
 
 class UnitBase(ModelBase):
     """A base class for types of data units belonging to a certain data layer"""
 
-    layer_id: PydanticObjectId = Field(..., description="Data layer ID")
-    node_id: PydanticObjectId = Field(..., description="Parent text node ID")
+    layer_id: PyObjectId = Field(..., description="Data layer ID")
+    node_id: PyObjectId = Field(..., description="Parent text node ID")
     meta: Metadata = Field(
         None,
         description="Arbitrary metadata on this layer unit",

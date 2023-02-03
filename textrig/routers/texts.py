@@ -1,10 +1,10 @@
 import json
 
-from beanie import PydanticObjectId
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, status
 from textrig.config import TextRigConfig, get_config
 from textrig.dependencies import get_cfg
 from textrig.logging import log
+from textrig.models.common import PyObjectId
 from textrig.models.text import TextCreate, TextDocument, TextRead, TextUpdate
 from textrig.utils import importer
 
@@ -75,7 +75,7 @@ async def import_text(
 
 
 @router.get("/{id}", response_model=TextRead, status_code=status.HTTP_200_OK)
-async def get_text(id: PydanticObjectId) -> TextRead:
+async def get_text(id: PyObjectId) -> TextRead:
     text = await TextDocument.get(id)
     if not text:
         raise HTTPException(
@@ -86,7 +86,7 @@ async def get_text(id: PydanticObjectId) -> TextRead:
 
 
 @router.patch("/{id}", response_model=TextRead, status_code=status.HTTP_200_OK)
-async def update_text(id: PydanticObjectId, updates: TextUpdate) -> dict:
+async def update_text(id: PyObjectId, updates: TextUpdate) -> dict:
     text = await TextDocument.get(id)
     if not text:
         raise HTTPException(

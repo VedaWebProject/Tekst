@@ -1,11 +1,10 @@
 # from fastapi import HTTPException, status
 # from textrig.utils.strings import safe_name
-from beanie import PydanticObjectId
 from pydantic import Field
 
 # from textrig.db.io import DbIO
 # from textrig.logging import log
-from textrig.models.common import Metadata, ModelBase
+from textrig.models.common import Metadata, ModelBase, PyObjectId
 
 
 class Text(ModelBase):
@@ -49,10 +48,8 @@ TextUpdate = Text.get_update_model()
 class Node(ModelBase):
     """A node in a text structure (e.g. chapter, paragraph, ...)"""
 
-    text_id: PydanticObjectId = Field(
-        ..., description="ID of the text this node belongs to"
-    )
-    parent_id: PydanticObjectId = Field(None, description="ID of parent node")
+    text_id: PyObjectId = Field(..., description="ID of the text this node belongs to")
+    parent_id: PyObjectId = Field(None, description="ID of parent node")
     level: int = Field(
         ..., description="Index of structure level this node is on", ge=0
     )
