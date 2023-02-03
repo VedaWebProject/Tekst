@@ -2,10 +2,16 @@ import re
 
 from beanie import PydanticObjectId
 from pydantic import Field, validator
-from textrig.models.common import Metadata, ModelBase, RootModelBaseMixin
+from textrig.models.common import (
+    DocumentBase,
+    Metadata,
+    ModelBase,
+    ReadBase,
+    UpdateBase,
+)
 
 
-class LayerBase(RootModelBaseMixin, ModelBase):
+class LayerBase(ModelBase):
     """A data layer describing a set of data on a text"""
 
     title: str = Field(
@@ -57,7 +63,17 @@ class LayerBase(RootModelBaseMixin, ModelBase):
         )
 
 
-# generate document and update models for this base model
-# (used as root models by child models)
-LayerBase.get_document_model()
-LayerBase.get_update_model()
+# generate document and update models for this base model,
+# as those have to be used as bases for inheriting model's document/update models
+
+
+class LayerBaseDocument(LayerBase, DocumentBase):
+    pass
+
+
+class LayerBaseRead(LayerBase, ReadBase):
+    pass
+
+
+class LayerBaseUpdate(LayerBase, UpdateBase):
+    pass

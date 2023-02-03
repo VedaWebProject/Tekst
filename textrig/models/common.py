@@ -41,13 +41,13 @@ class _CRUDBase(BaseModel):
         allow_population_by_field_name = True
 
 
-class _FactoryMixin:
-    @classmethod
-    def from_(cls, obj: BaseModel, **dict_kwargs) -> BaseModel:
-        return cls(**obj.dict(**dict_kwargs))
+# class _FactoryMixin:
+#     @classmethod
+#     def from_(cls, obj: BaseModel, **dict_kwargs) -> BaseModel:
+#         return cls(**obj.dict(**dict_kwargs))
 
-    def to_(self, model: type[BaseModel], **dict_kwargs) -> BaseModel:
-        return model(**self.dict(**dict_kwargs))
+#     def to_(self, model: type[BaseModel], **dict_kwargs) -> BaseModel:
+#         return model(**self.dict(**dict_kwargs))
 
 
 class _IDMixin(BaseModel):
@@ -59,7 +59,7 @@ class _IDMixin(BaseModel):
         super().__init__(**kwargs)
 
 
-class _DocumentBase(Document, _FactoryMixin):
+class DocumentBase(Document):
     """Base class for all TextRig DB document models"""
 
     async def insert(self, **kwargs):
@@ -82,6 +82,10 @@ class _DocumentBase(Document, _FactoryMixin):
             by_alias=kwargs.pop("by_alias", True),
             **kwargs,
         )
+
+    @classmethod
+    def from_(cls, obj: _CRUDBase, **dict_kwargs) -> BaseModel:
+        return cls(**obj.dict(**dict_kwargs))
 
     class Settings:
         pass
@@ -111,27 +115,29 @@ class _AllOptional(ModelMetaclass):
         return super().__new__(self, name, bases, namespaces, **kwargs)
 
 
-class _CreateBase(_CRUDBase, _FactoryMixin):
+class CreateBase(_CRUDBase):
     pass
 
 
-class _ReadBase(_CRUDBase, _IDMixin, _FactoryMixin):
+class ReadBase(_CRUDBase, _IDMixin):
     pass
 
 
-class _UpdateBase(_CRUDBase, _IDMixin, _FactoryMixin, metaclass=_AllOptional):
+class UpdateBase(_CRUDBase, _IDMixin, metaclass=_AllOptional):
     pass
 
 
 class ModelBase(BaseModel):
 
-    _document_model: type[_DocumentBase] = None
-    _create_model: type[_CreateBase] = None
-    _read_model: type[_ReadBase] = None
-    _update_model: type[_UpdateBase] = None
+    _document_model: type[DocumentBase] = None
+    _create_model: type[CreateBase] = None
+    _read_model: type[ReadBase] = None
+    _update_model: type[UpdateBase] = None
 
     @classmethod
-    def _generate_model(cls, classname_suffix: str, base: type) -> type["ModelBase"]:
+    def _generate_model(
+        cls, classname_suffix: str, base: type["ModelBase"]
+    ) -> type["ModelBase"]:
         return type(
             f"{cls.__name__}{classname_suffix.capitalize()}",
             (cls, base),
@@ -139,73 +145,75 @@ class ModelBase(BaseModel):
         )
 
     @classmethod
-    def get_document_model(cls) -> type[_DocumentBase]:
+    def get_document_model(
+        cls, base: type["ModelBase"] = DocumentBase
+    ) -> type[DocumentBase]:
         if not cls._document_model:
-            cls._document_model = cls._generate_model("Document", _DocumentBase)
+            cls._document_model = cls._generate_model("Document", base)
         return cls._document_model
 
     @classmethod
-    def get_create_model(cls) -> type[_CreateBase]:
+    def get_create_model(cls, base: type["ModelBase"] = CreateBase) -> type[CreateBase]:
         if not cls._create_model:
-            cls._create_model = cls._generate_model("Create", _CreateBase)
+            cls._create_model = cls._generate_model("Create", base)
         return cls._create_model
 
     @classmethod
-    def get_read_model(cls) -> type[_ReadBase]:
+    def get_read_model(cls, base: type["ModelBase"] = ReadBase) -> type[ReadBase]:
         if not cls._read_model:
-            cls._read_model = cls._generate_model("Read", _ReadBase)
+            cls._read_model = cls._generate_model("Read", base)
         return cls._read_model
 
     @classmethod
-    def get_update_model(cls) -> type[_UpdateBase]:
+    def get_update_model(cls, base: type["ModelBase"] = UpdateBase) -> type[UpdateBase]:
         if not cls._update_model:
-            cls._update_model = cls._generate_model("Update", _UpdateBase)
+            cls._update_model = cls._generate_model("Update", base)
         return cls._update_model
 
 
-class RootModelBaseMixin:
+# class RootModelBaseMixin:
 
-    _root_document_model: type[_DocumentBase] = None
-    _root_update_model: type[_UpdateBase] = None
+#     _root_document_model: type[DocumentBase] = None
+#     _root_update_model: type[UpdateBase] = None
 
-    @classmethod
-    def get_document_model(cls) -> type[_DocumentBase]:
-        if cls == RootModelBaseMixin:
-            raise SystemExit(
-                "This method is not meant to be called "
-                "on RootModelBaseMixin class directly."
-            )
-        if cls.__name__.endswith("Base"):
-            if not cls._root_document_model:
-                cls._root_document_model = cls._generate_model(
-                    "Document", _DocumentBase
-                )
-            return cls._root_document_model
-        if not cls._document_model:
-            if cls._root_document_model:
-                cls._document_model = cls._generate_model(
-                    "Document", cls._root_document_model
-                )
-            else:
-                cls._document_model = cls._generate_model("Document", _DocumentBase)
-        return cls._document_model
+#     @classmethod
+#     def get_document_model(cls) -> type[DocumentBase]:
+#         if cls == RootModelBaseMixin:
+#             raise SystemExit(
+#                 "This method is not meant to be called "
+#                 "on RootModelBaseMixin class directly."
+#             )
+#         if cls.__name__.endswith("Base"):
+#             if not cls._root_document_model:
+#                 cls._root_document_model = cls._generate_model(
+#                     "Document", DocumentBase
+#                 )
+#             return cls._root_document_model
+#         if not cls._document_model:
+#             if cls._root_document_model:
+#                 cls._document_model = cls._generate_model(
+#                     "Document", cls._root_document_model
+#                 )
+#             else:
+#                 cls._document_model = cls._generate_model("Document", DocumentBase)
+#         return cls._document_model
 
-    @classmethod
-    def get_update_model(cls) -> type[_UpdateBase]:
-        if cls == RootModelBaseMixin:
-            raise SystemExit(
-                "This method is not meant to be called "
-                "on RootModelBaseMixin class directly."
-            )
-        if cls.__name__.endswith("Base"):
-            if not cls._root_update_model:
-                cls._root_update_model = cls._generate_model("Update", _UpdateBase)
-            return cls._root_update_model
-        if not cls._update_model:
-            if cls._root_update_model:
-                cls._update_model = cls._generate_model(
-                    "Update", cls._root_update_model
-                )
-            else:
-                cls._update_model = cls._generate_model("Document", _UpdateBase)
-        return cls._update_model
+#     @classmethod
+#     def get_update_model(cls) -> type[UpdateBase]:
+#         if cls == RootModelBaseMixin:
+#             raise SystemExit(
+#                 "This method is not meant to be called "
+#                 "on RootModelBaseMixin class directly."
+#             )
+#         if cls.__name__.endswith("Base"):
+#             if not cls._root_update_model:
+#                 cls._root_update_model = cls._generate_model("Update", UpdateBase)
+#             return cls._root_update_model
+#         if not cls._update_model:
+#             if cls._root_update_model:
+#                 cls._update_model = cls._generate_model(
+#                     "Update", cls._root_update_model
+#                 )
+#             else:
+#                 cls._update_model = cls._generate_model("Document", UpdateBase)
+#         return cls._update_model

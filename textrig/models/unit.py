@@ -5,10 +5,10 @@ from pydantic import Field
 
 # from textrig.db.io import DbIO
 # from textrig.logging import log
-from textrig.models.common import Metadata, ModelBase, RootModelBaseMixin
+from textrig.models.common import DocumentBase, Metadata, ModelBase, UpdateBase
 
 
-class UnitBase(RootModelBaseMixin, ModelBase):
+class UnitBase(ModelBase):
     """A base class for types of data units belonging to a certain data layer"""
 
     layer_id: PydanticObjectId = Field(..., description="Data layer ID")
@@ -30,7 +30,13 @@ class UnitBase(RootModelBaseMixin, ModelBase):
         )
 
 
-# generate document and update models for this base model
-# (used as root models by child models)
-UnitBase.get_document_model()
-UnitBase.get_update_model()
+# generate document and update models for this base model,
+# as those have to be used as bases for inheriting model's document/update models
+
+
+class UnitBaseDocument(UnitBase, DocumentBase):
+    pass
+
+
+class UnitBaseUpdate(UnitBase, UpdateBase):
+    pass

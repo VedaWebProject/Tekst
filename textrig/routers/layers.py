@@ -8,7 +8,12 @@ from fastapi import APIRouter, HTTPException, Path, status
 from textrig.layer_types import get_layer_types
 
 # from textrig.logging import log
-from textrig.models.layer import LayerBase
+from textrig.models.layer import (
+    LayerBase,
+    LayerBaseDocument,
+    LayerBaseRead,
+    LayerBaseUpdate,
+)
 from textrig.models.text import TextDocument
 
 
@@ -19,10 +24,10 @@ from textrig.models.text import TextDocument
 # from textrig.utils.strings import safe_name
 
 
-def _generate_read_endpoint(layer_model: type[LayerBase]):
-    LayerDocument = layer_model.get_document_model()
-    LayerRead = layer_model.get_read_model()
-
+def _generate_read_endpoint(
+    LayerDocument: type[LayerBase],
+    LayerRead: type[LayerBase],
+):
     async def get_layer(
         layer_id: PydanticObjectId = Path(..., alias="layerId")
     ) -> LayerRead:
@@ -39,12 +44,10 @@ def _generate_read_endpoint(layer_model: type[LayerBase]):
 
 
 def _generate_create_endpoint(
-    layer_model: type[LayerBase],
+    LayerDocument: type[LayerBase],
+    LayerCreate: type[LayerBase],
+    LayerRead: type[LayerBase],
 ):
-    LayerDocument = layer_model.get_document_model()
-    LayerCreate = layer_model.get_create_model()
-    LayerRead = layer_model.get_read_model()
-
     async def create_layer(layer: LayerCreate) -> LayerRead:
         if not await TextDocument.find(
             TextDocument.id == layer.text_id
@@ -59,12 +62,10 @@ def _generate_create_endpoint(
 
 
 def _generate_update_endpoint(
-    layer_model: type[LayerBase],
+    LayerDocument: type[LayerBase],
+    LayerRead: type[LayerBase],
+    LayerUpdate: type[LayerBase],
 ):
-    LayerDocument = layer_model.get_document_model()
-    LayerRead = layer_model.get_read_model()
-    LayerUpdate = layer_model.get_update_model()
-
     async def update_layer(updates: LayerUpdate) -> LayerRead:
         layer: LayerDocument = await LayerDocument.get(updates.id)
         if not layer:
@@ -89,15 +90,20 @@ router = APIRouter(
 
 # dynamically add all needed routes for every layer type's layer definitions
 for lt_name, lt_class in get_layer_types().items():
-    # type alias layer models
+    # type alias unit models
     LayerModel = lt_class.get_layer_model()
+    LayerDocumentModel = LayerModel.get_document_model(LayerBaseDocument)
+    LayerCreateModel = LayerModel.get_create_model()
     LayerReadModel = LayerModel.get_read_model()
+    LayerUpdateModel = LayerModel.get_update_model(LayerBaseUpdate)
     # add route for reading a layer definition from the database
     router.add_api_route(
         path=f"/{lt_name}/{{layerId}}",
         name=f"get_{lt_name}_layer",
         description=f"Returns the data for a {lt_class.get_name()} data layer",
-        endpoint=_generate_read_endpoint(LayerModel),
+        endpoint=_generate_read_endpoint(
+            LayerDocument=LayerDocumentModel, LayerRead=LayerReadModel
+        ),
         methods=["GET"],
         response_model=LayerReadModel,
         status_code=status.HTTP_200_OK,
@@ -108,7 +114,9 @@ for lt_name, lt_class in get_layer_types().items():
         name=f"create_{lt_name}_layer",
         description=f"Creates a {lt_class.get_name()} data layer definition",
         endpoint=_generate_create_endpoint(
-            LayerModel,
+            LayerDocument=LayerDocumentModel,
+            LayerCreate=LayerCreateModel,
+            LayerRead=LayerReadModel,
         ),
         methods=["POST"],
         response_model=LayerReadModel,
@@ -120,7 +128,9 @@ for lt_name, lt_class in get_layer_types().items():
         name=f"update_{lt_name}_layer",
         description=f"Updates the data for a {lt_class.get_name()} data layer",
         endpoint=_generate_update_endpoint(
-            LayerModel,
+            LayerDocument=LayerDocumentModel,
+            LayerRead=LayerReadModel,
+            LayerUpdate=LayerUpdateModel,
         ),
         methods=["PATCH"],
         response_model=LayerReadModel,
@@ -131,17 +141,22 @@ for lt_name, lt_class in get_layer_types().items():
 # ADDITIONAL ROUTE DEFINITIONS...
 
 
-@router.get(
-    "", response_model=list[LayerBase.get_read_model()], status_code=status.HTTP_200_OK
-)
+@router.get("", response_model=list[LayerBaseRead], status_code=status.HTTP_200_OK)
 async def get_layers(
     text_id: PydanticObjectId,
     level: int = None,
     layer_type: str = None,
     limit: int = 1000,
-) -> list[LayerBase.get_read_model()]:
+) -> list[LayerBaseRead]:
+    """
+    Returns a list of all data layers matching the given criteria.
 
-    example = dict(textId=text_id)
+    As the resulting list of data layers may contain layers of different types, the
+    returned layer objects are reduced to the common layer properties and do not
+    contain layer type-specific data.
+    """
+
+    example = {"textId": text_id}
 
     if level is not None:
         example["level"] = level
@@ -150,11 +165,7 @@ async def get_layers(
         example["layerType"] = layer_type
 
     return (
-        await LayerBase.get_document_model()
-        .find(example, with_children=True)
-        .limit(limit)
-        .project(LayerBase.get_read_model())
-        .to_list()
+        await LayerBaseDocument.find(example, with_children=True).limit(limit).to_list()
     )
 
 
@@ -248,13 +259,13 @@ async def get_layers(
 #     return resp_data
 
 
-@router.get("/{layerId}", status_code=status.HTTP_200_OK)
+@router.get("/{layerId}", response_model=LayerBaseRead, status_code=status.HTTP_200_OK)
 async def get_layer(
     layer_id: PydanticObjectId = Path(..., alias="layerId"),
-) -> LayerBase.get_read_model():
-    layer = await LayerBase.get_document_model().get(layer_id, with_children=True)
-    if not layer:
+) -> LayerBaseRead:
+    layer_doc = await LayerBaseDocument.get(layer_id, with_children=True)
+    if not layer_doc:
         raise HTTPException(
             status.HTTP_404_NOT_FOUND, detail=f"No layer with ID {layer_id}"
         )
-    return LayerBase.get_read_model().from_(layer)
+    return layer_doc
