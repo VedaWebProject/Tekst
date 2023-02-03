@@ -40,6 +40,7 @@ class User(ModelBase, BeanieBaseUser[PydanticObjectId]):
 
 
 class UserRead(ModelBase, schemas.BaseUser[PydanticObjectId]):
+    id: PydanticObjectId
     is_active: bool = _cfg.dev_mode
     is_verified: bool = _cfg.dev_mode
     first_name: str
