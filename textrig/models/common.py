@@ -1,6 +1,6 @@
 from typing import Optional
 
-from beanie import Document
+from beanie import Document, PydanticObjectId
 
 # from bson.errors import InvalidId
 from humps import camelize
@@ -51,7 +51,7 @@ class _CRUDBase(BaseModel):
 
 
 class _IDMixin(BaseModel):
-    id: str
+    id: PydanticObjectId
 
     def __init__(self, **kwargs):
         if "_id" in kwargs:
@@ -60,7 +60,7 @@ class _IDMixin(BaseModel):
 
 
 class DocumentBase(Document):
-    """Base class for all TextRig DB document models"""
+    """Base class for all TextRig ODM models"""
 
     async def insert(self, **kwargs):
         self.id = None  # reset ID for new document in case one is already set
@@ -123,7 +123,7 @@ class ReadBase(_CRUDBase, _IDMixin):
     pass
 
 
-class UpdateBase(_CRUDBase, _IDMixin, metaclass=_AllOptional):
+class UpdateBase(_CRUDBase, metaclass=_AllOptional):
     pass
 
 

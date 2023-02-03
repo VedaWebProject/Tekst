@@ -85,18 +85,20 @@ async def get_text(text_id: PydanticObjectId = Path(..., alias="textId")) -> Tex
     return text
 
 
-@router.patch("", response_model=TextRead, status_code=status.HTTP_200_OK)
-async def update_text(updates: TextUpdate) -> dict:
-    text = await TextDocument.get(updates.id)
+@router.patch("/{textId}", response_model=TextRead, status_code=status.HTTP_200_OK)
+async def update_text(
+    updates: TextUpdate, text_id: PydanticObjectId = Path(..., alias="textId")
+) -> dict:
+    text = await TextDocument.get(text_id)
     if not text:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Text with ID {updates.id} doesn't exist",
+            detail=f"Text with ID {text_id} doesn't exist",
         )
     if updates.slug and updates.slug != text.slug:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Text slug cannot be changed",
         )
-    await text.set(updates.dict(exclude={"id"}, exclude_unset=True))
+    await text.set(updates.dict(exclude_unset=True))
     return text

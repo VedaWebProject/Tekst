@@ -71,15 +71,17 @@ async def get_nodes(
     return await NodeDocument.find(example).limit(limit).to_list()
 
 
-@router.patch("", response_model=NodeRead, status_code=status.HTTP_200_OK)
-async def update_node(updates: NodeUpdate) -> dict:
-    node_doc = await NodeDocument.get(updates.id)
+@router.patch("/{nodeId}", response_model=NodeRead, status_code=status.HTTP_200_OK)
+async def update_node(
+    updates: NodeUpdate, node_id: PydanticObjectId = Path(..., alias="nodeId")
+) -> dict:
+    node_doc = await NodeDocument.get(node_id)
     if not node_doc:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Node with ID {updates.id} doesn't exist",
+            detail=f"Node with ID {node_id} doesn't exist",
         )
-    await node_doc.set(updates.dict(exclude={"id"}, exclude_unset=True))
+    await node_doc.set(updates.dict(exclude_unset=True))
     return node_doc
 
 

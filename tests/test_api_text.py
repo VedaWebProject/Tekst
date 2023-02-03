@@ -46,7 +46,8 @@ async def test_update_text(root_path, test_client: AsyncClient, insert_test_data
     assert len(resp.json()) > 0
     text = resp.json()[0]
     # update text
-    text_update = {"id": text["id"], "title": "Another text"}
+    endpoint = f"{root_path}/texts/{text['id']}"
+    text_update = {"title": "Another text"}
     resp = await test_client.patch(endpoint, json=text_update)
     assert resp.status_code == 200, f"HTTP {resp.status_code} != 200 ({resp.json()})"
     assert "id" in resp.json()
@@ -57,6 +58,7 @@ async def test_update_text(root_path, test_client: AsyncClient, insert_test_data
     resp = await test_client.patch(endpoint, json=text_update)
     assert resp.status_code == 200, f"HTTP {resp.status_code} != 200 ({resp.json()})"
     # update invalid text
-    text_update = {"id": "637b9ad396d541a505e5439b", "title": "Yet another text"}
+    text_update = {"title": "Yet another text"}
+    endpoint = f"{root_path}/texts/637b9ad396d541a505e5439b"
     resp = await test_client.patch(endpoint, json=text_update)
     assert resp.status_code == 400, f"HTTP {resp.status_code} != 400 ({resp.json()})"

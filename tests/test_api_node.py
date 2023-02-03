@@ -154,7 +154,8 @@ async def test_update_node(
     assert len(resp.json()) > 0
     node = resp.json()[0]
     # update node
-    node_update = {"id": node["id"], "label": "A fresh label"}
+    endpoint = f"{root_path}/nodes/{node['id']}"
+    node_update = {"label": "A fresh label"}
     resp = await test_client.patch(endpoint, json=node_update)
     assert resp.status_code == 200, f"HTTP {resp.status_code} != 200 ({resp.json()})"
     assert "id" in resp.json()
@@ -165,7 +166,8 @@ async def test_update_node(
     resp = await test_client.patch(endpoint, json=node_update)
     assert resp.status_code == 200, f"HTTP {resp.status_code} != 200 ({resp.json()})"
     # update invalid node
-    node_update = {"id": "637b9ad396d541a505e5439b", "label": "Brand new label"}
+    node_update = {"label": "Brand new label"}
+    endpoint = f"{root_path}/nodes/637b9ad396d541a505e5439b"
     resp = await test_client.patch(endpoint, json=node_update)
     assert resp.status_code == 400, f"HTTP {resp.status_code} != 400 ({resp.json()})"
 

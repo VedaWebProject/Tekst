@@ -45,14 +45,16 @@ def _generate_update_endpoint(
     UnitRead: type[UnitBase],
     UnitUpdate: type[UnitBase],
 ):
-    async def update_unit(updates: UnitUpdate) -> UnitRead:
-        unit_doc = await UnitDocument.get(updates.id)
+    async def update_unit(
+        updates: UnitUpdate, unit_id: PydanticObjectId = Path(..., alias="unitId")
+    ) -> UnitRead:
+        unit_doc = await UnitDocument.get(unit_id)
         if not unit_doc:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Unit with ID {updates.id} doesn't exist",
+                detail=f"Unit with ID {unit_id} doesn't exist",
             )
-        await unit_doc.set(updates.dict(exclude={"id"}, exclude_unset=True))
+        await unit_doc.set(updates.dict(exclude_unset=True))
         return unit_doc
 
     return update_unit
@@ -102,7 +104,7 @@ for lt_name, lt_class in get_layer_types().items():
     )
     # add route for updating a unit
     router.add_api_route(
-        path=f"/{lt_name}",
+        path=f"/{lt_name}/{{unitId}}",
         name=f"update_{lt_name}_unit",
         description=f"Updates the data for a {lt_class.get_name()} data layer unit",
         endpoint=_generate_update_endpoint(

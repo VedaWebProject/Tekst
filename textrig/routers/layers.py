@@ -66,14 +66,16 @@ def _generate_update_endpoint(
     LayerRead: type[LayerBase],
     LayerUpdate: type[LayerBase],
 ):
-    async def update_layer(updates: LayerUpdate) -> LayerRead:
-        layer: LayerDocument = await LayerDocument.get(updates.id)
+    async def update_layer(
+        updates: LayerUpdate, layer_id: PydanticObjectId = Path(..., alias="layerId")
+    ) -> LayerRead:
+        layer: LayerDocument = await LayerDocument.get(layer_id)
         if not layer:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Layer with ID {updates.id} doesn't exist",
+                detail=f"Layer with ID {layer_id} doesn't exist",
             )
-        await layer.set(updates.dict(exclude={"id"}, exclude_unset=True))
+        await layer.set(updates.dict(exclude_unset=True))
         return layer
 
     return update_layer
@@ -124,7 +126,7 @@ for lt_name, lt_class in get_layer_types().items():
     )
     # add route for updating a layer
     router.add_api_route(
-        path=f"/{lt_name}",
+        path=f"/{lt_name}/{{layerId}}",
         name=f"update_{lt_name}_layer",
         description=f"Updates the data for a {lt_class.get_name()} data layer",
         endpoint=_generate_update_endpoint(

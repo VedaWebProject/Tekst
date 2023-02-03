@@ -28,7 +28,7 @@ def test_serialization(test_app, test_data):
     assert "_id" not in text.dict()
     assert "locDelim" in text.dict()
     assert "loc_delim" in text.dict(by_alias=False)
-    text = TextRead(**{"_id": dummy_id, **test_data["texts"][0]})
+    text = TextRead(**{"id": dummy_id, **test_data["texts"][0]})
     assert str(text.id) == dummy_id
 
 

@@ -62,15 +62,15 @@ async def test_get_layer(root_path, test_client: AsyncClient, insert_test_data):
     assert "id" in resp.json()[0]
     assert "layerType" in resp.json()[0]
     # update layer
-    layer_update = resp.json()[0]
-    layer_update["title"] = "foo bar baz"
-    endpoint = f"{root_path}/layers/{layer_update['layerType']}"
-    resp = await test_client.patch(endpoint, json=layer_update)
+    layer = resp.json()[0]
+    update = {"title": "foo bar baz"}
+    endpoint = f"{root_path}/layers/{layer['layerType']}/{layer['id']}"
+    resp = await test_client.patch(endpoint, json=update)
     assert resp.status_code == 200, f"HTTP {resp.status_code} != 200 ({resp.json()})"
     assert isinstance(resp.json(), dict)
     assert "id" in resp.json()
-    assert resp.json()["id"] == str(layer_update["id"])
-    assert resp.json()["title"] == layer_update["title"]
+    assert resp.json()["id"] == str(layer["id"])
+    assert resp.json()["title"] == update["title"]
 
 
 @pytest.mark.anyio
