@@ -33,6 +33,7 @@ app = FastAPI(
     },
     openapi_tags=tags_metadata,
     openapi_url=_cfg.doc.openapi_url,
+    servers=[{"url": f"{_cfg.server_url}/{_cfg.root_path}"}],
     docs_url=_cfg.doc.swaggerui_url,
     redoc_url=_cfg.doc.redoc_url,
     responses={

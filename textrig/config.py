@@ -99,6 +99,7 @@ class SecurityConfig(BaseModel):
     """Security config model"""
 
     secret: str = "this_should_really_be_changed"
+    cookie_domain: str | None = None
     cookie_lifetime: int = 3600
     access_token_lifetime: int = 3600
     reset_pw_token_lifetime: int = 3600
@@ -112,8 +113,8 @@ class TextRigConfig(BaseSettings):
     # basic
     app_name: str = "TextRig"
     dev_mode: bool = False
-    domain: str | None = None
     root_path: str = ""
+    server_url: HttpUrl = "http://127.0.0.1:8000"
     user_files_dir: str = "/userfiles"
     log_level: str = "INFO"
 
