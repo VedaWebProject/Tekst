@@ -2168,7 +2168,8 @@
               "ZH"
             ],
             "type": "string",
-            "description": "Source language"
+            "description": "Source language",
+            "default": "BG"
           },
           "languages": {
             "title": "Languages",
@@ -2510,19 +2511,7 @@
         "type": "object",
         "properties": {
           "deeplLinks": {
-            "title": "Deepllinks",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/DeepLLinksConfig"
-              }
-            ],
-            "default": {
-              "enabled": false,
-              "languages": [
-                "EN",
-                "DE"
-              ]
-            }
+            "$ref": "#/components/schemas/DeepLLinksConfig"
           }
         }
       },
@@ -2593,21 +2582,7 @@
             "description": "Arbitrary metadata"
           },
           "config": {
-            "title": "Config",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PlainTextLayerConfig"
-              }
-            ],
-            "default": {
-              "deepl_links": {
-                "enabled": false,
-                "languages": [
-                  "EN",
-                  "DE"
-                ]
-              }
-            }
+            "$ref": "#/components/schemas/PlainTextLayerConfig"
           }
         },
         "description": "A data layer describing a set of data on a text"
@@ -2685,21 +2660,7 @@
             "description": "Arbitrary metadata"
           },
           "config": {
-            "title": "Config",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PlainTextLayerConfig"
-              }
-            ],
-            "default": {
-              "deepl_links": {
-                "enabled": false,
-                "languages": [
-                  "EN",
-                  "DE"
-                ]
-              }
-            }
+            "$ref": "#/components/schemas/PlainTextLayerConfig"
           }
         },
         "description": "A data layer describing a set of data on a text"

@@ -17,7 +17,7 @@ class UnitBase(ModelBase):
 
     layer_id: PyObjectId = Field(..., description="Data layer ID")
     node_id: PyObjectId = Field(..., description="Parent text node ID")
-    meta: Metadata = Field(
+    meta: Metadata | None = Field(
         None,
         description="Arbitrary metadata on this layer unit",
     )

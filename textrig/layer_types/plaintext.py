@@ -31,11 +31,11 @@ class PlainText(LayerTypePluginABC):
 
 
 class PlainTextLayerConfig(LayerConfigBase):
-    deepl_links: DeepLLinksConfig = DeepLLinksConfig()
+    deepl_links: DeepLLinksConfig = Field(default_factory=DeepLLinksConfig)
 
 
 class PlainTextLayer(LayerBase):
-    config: PlainTextLayerConfig = PlainTextLayerConfig()
+    config: PlainTextLayerConfig = Field(default_factory=PlainTextLayerConfig)
 
     @classmethod
     def get_layer_type_plugin_class(cls) -> type[PlainText]:

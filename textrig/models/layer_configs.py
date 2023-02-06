@@ -17,7 +17,7 @@ class DeepLLinksConfig(LayerConfigBase):
         description="Enable/disable quick translation links to DeepL",
     )
     source_language: Literal[_DEEPL_LANGUAGES] | None = Field(
-        None, description="Source language"
+        _DEEPL_LANGUAGES[0], description="Source language"
     )
     languages: list[Literal[_DEEPL_LANGUAGES]] = Field(
         ["EN", "DE"], description="Target languages to display links for"

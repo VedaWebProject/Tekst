@@ -57,7 +57,7 @@ class Node(ModelBase):
         ..., description="Position among all text nodes on this level", ge=0
     )
     label: str = Field(..., description="Label for identifying this text node")
-    meta: Metadata = Field(None, description="Arbitrary metadata")
+    meta: Metadata | None = Field(None, description="Arbitrary metadata")
 
     class Settings:
         name = "nodes"

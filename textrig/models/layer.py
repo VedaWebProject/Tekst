@@ -17,7 +17,7 @@ class LayerBase(ModelBase):
     title: str = Field(
         ..., min_length=1, max_length=64, description="Title of this layer"
     )
-    description: str = Field(
+    description: str | None = Field(
         None,
         min_length=1,
         max_length=128,
@@ -32,7 +32,7 @@ class LayerBase(ModelBase):
     )
     # owner_id: DocId = Field(None)  # TODO: users don't exist, yet
     public: bool = Field(False, description="Publication status of this layer")
-    meta: Metadata = Field(None, description="Arbitrary metadata")
+    meta: Metadata | None = Field(None, description="Arbitrary metadata")
 
     class Settings:
         name = "layers"
