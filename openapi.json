@@ -366,10 +366,10 @@
           {
             "required": false,
             "schema": {
-              "title": "Index",
+              "title": "Position",
               "type": "integer"
             },
-            "name": "index",
+            "name": "position",
             "in": "query"
           },
           {
@@ -2329,7 +2329,7 @@
         "required": [
           "textId",
           "level",
-          "index",
+          "position",
           "label"
         ],
         "type": "object",
@@ -2352,8 +2352,8 @@
             "type": "integer",
             "description": "Index of structure level this node is on"
           },
-          "index": {
-            "title": "Index",
+          "position": {
+            "title": "Position",
             "minimum": 0.0,
             "type": "integer",
             "description": "Position among all text nodes on this level"
@@ -2393,7 +2393,7 @@
           "id",
           "textId",
           "level",
-          "index",
+          "position",
           "label"
         ],
         "type": "object",
@@ -2421,8 +2421,8 @@
             "type": "integer",
             "description": "Index of structure level this node is on"
           },
-          "index": {
-            "title": "Index",
+          "position": {
+            "title": "Position",
             "minimum": 0.0,
             "type": "integer",
             "description": "Position among all text nodes on this level"
@@ -2474,8 +2474,8 @@
             "title": "Level",
             "type": "integer"
           },
-          "index": {
-            "title": "Index",
+          "position": {
+            "title": "Position",
             "type": "integer"
           },
           "label": {

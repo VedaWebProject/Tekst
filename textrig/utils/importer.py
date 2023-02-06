@@ -7,16 +7,16 @@ async def import_text(data: dict) -> TextRead | None:
     # create and save text object
     text = await TextDocument(**data).create()
     stack = deque()
-    indices = [0]
+    positions = [0]
 
     # push nodes of first structure level onto stack
     for node in data.get("nodes", []):
         node["parentId"] = None
         node["textId"] = text.id
         node["level"] = 0
-        node["index"] = indices[0]
+        node["position"] = positions[0]
         stack.append(node)
-        indices[0] += 1
+        positions[0] += 1
 
     # process stack
     while stack:
@@ -27,10 +27,10 @@ async def import_text(data: dict) -> TextRead | None:
             u["parentId"] = node.id
             u["textId"] = text.id
             u["level"] = node.level + 1
-            if len(indices) <= u["level"]:
-                indices.append(0)
-            u["index"] = indices[u["level"]]
-            indices[u["level"]] += 1
+            if len(positions) <= u["level"]:
+                positions.append(0)
+            u["position"] = positions[u["level"]]
+            positions[u["level"]] += 1
             stack.append(u)
 
     return text

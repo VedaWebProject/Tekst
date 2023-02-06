@@ -36,7 +36,7 @@ async def test_child_node_io(
     child = node
     child["parentId"] = parent["id"]
     child["level"] = parent["level"] + 1
-    child["index"] = 0
+    child["position"] = 0
     resp = await test_client.post(endpoint, json=child)
     assert resp.status_code == 201, f"HTTP {resp.status_code} != 201 ({resp.json()})"
     child = resp.json()
@@ -98,7 +98,7 @@ async def test_get_nodes(
     endpoint = f"{root_path}/nodes"
     nodes = test_data["nodes"]
     # level = 0
-    # index = 0
+    # position = 0
     # parent_id = None
     # limit = 1000
 
@@ -128,9 +128,9 @@ async def test_get_nodes(
     assert "id" in resp.json()[0]
     PyObjectId(resp.json()[0]["id"])
 
-    # test specific index
+    # test specific position
     resp = await test_client.get(
-        endpoint, params={"textId": text_id, "level": 0, "index": 0}
+        endpoint, params={"textId": text_id, "level": 0, "position": 0}
     )
     assert resp.status_code == 200, f"HTTP {resp.status_code} != 200 ({resp.json()})"
     assert type(resp.json()) is list

@@ -53,7 +53,7 @@ class Node(ModelBase):
     level: int = Field(
         ..., description="Index of structure level this node is on", ge=0
     )
-    index: int = Field(
+    position: int = Field(
         ..., description="Position among all text nodes on this level", ge=0
     )
     label: str = Field(..., description="Label for identifying this text node")

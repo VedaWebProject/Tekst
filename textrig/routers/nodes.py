@@ -32,7 +32,7 @@ async def create_node(node: NodeCreate) -> NodeRead:
     if await NodeDocument.find_one(
         NodeDocument.text_id == node.text_id,
         NodeDocument.level == node.level,
-        NodeDocument.index == node.index,
+        NodeDocument.position == node.position,
     ).exists():
         log.warning(f"Cannot create node. Conflict: {node}")
         raise HTTPException(
@@ -47,7 +47,7 @@ async def create_node(node: NodeCreate) -> NodeRead:
 async def get_nodes(
     text_id: PyObjectId,
     level: int = None,
-    index: int = None,
+    position: int = None,
     parent_id: PyObjectId = None,
     limit: int = 1000,
 ) -> list[NodeRead]:
@@ -62,8 +62,8 @@ async def get_nodes(
     if level is not None:
         example["level"] = level
 
-    if index is not None:
-        example["index"] = index
+    if position is not None:
+        example["position"] = position
 
     if parent_id:
         example["parentId"] = parent_id
@@ -107,7 +107,7 @@ async def get_next(
         {
             "textId": node.text_id,
             "level": node.level,
-            "index": node.index + 1,
+            "position": node.position + 1,
         }
     )
     if not node:

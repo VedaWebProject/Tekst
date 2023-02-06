@@ -10,17 +10,17 @@
   "nodes": [
     {
       "level": 0,
-      "index": 0,
+      "position": 0,
       "label": "001"
     },
     {
       "level": 0,
-      "index": 1,
+      "position": 1,
       "label": "002"
     },
     {
       "level": 0,
-      "index": 2,
+      "position": 2,
       "label": "003"
     }
   ],
