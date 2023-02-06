@@ -1,7 +1,9 @@
 import sys
+from typing import Any
 
 from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.openapi.utils import get_openapi
 from fastapi.responses import RedirectResponse
 from textrig.config import TextRigConfig, get_config
 from textrig.db import init_odm
@@ -18,28 +20,47 @@ setup_logging()  # set up logging to match prod/dev requirements
 # create FastAPI app instance
 app = FastAPI(
     root_path=_cfg.root_path,
-    title=_cfg.app_name,
-    description=_cfg.info.description,
-    version=_cfg.info.version,
-    terms_of_service=_cfg.info.terms,
-    contact={
-        "name": _cfg.info.contact_name,
-        "url": _cfg.info.contact_url,
-        "email": _cfg.info.contact_email,
-    },
-    license_info={
-        "name": _cfg.info.license,
-        "url": _cfg.info.license_url,
-    },
-    openapi_tags=tags_metadata,
     openapi_url=_cfg.doc.openapi_url,
-    servers=[{"url": f"{_cfg.server_url}/{_cfg.root_path}"}],
     docs_url=_cfg.doc.swaggerui_url,
     redoc_url=_cfg.doc.redoc_url,
     responses={
         status.HTTP_400_BAD_REQUEST: {"description": "Invalid Request"},
     },
 )
+
+
+def change_union_serialization(schema: dict[str, Any]):
+    if "anyOf" in schema:
+        schema["oneOf"] = schema.pop("anyOf")
+    for child in schema.values():
+        if isinstance(child, dict):
+            change_union_serialization(child)
+    return schema
+
+
+def custom_openapi():
+    if app.openapi_schema:
+        return app.openapi_schema
+    openapi_schema = get_openapi(
+        title=_cfg.app_name,
+        version=_cfg.info.version,
+        description=_cfg.info.description,
+        routes=app.routes,
+        servers=[{"url": f"{_cfg.server_url}/{_cfg.root_path}"}],
+        terms_of_service=_cfg.info.terms,
+        tags=tags_metadata,
+        contact={
+            "name": _cfg.info.contact_name,
+            "url": _cfg.info.contact_url,
+            "email": _cfg.info.contact_email,
+        },
+        license_info={
+            "name": _cfg.info.license,
+            "url": _cfg.info.license_url,
+        },
+    )
+    app.openapi_schema = change_union_serialization(openapi_schema)
+    return app.openapi_schema
 
 
 @app.on_event("startup")
@@ -87,6 +108,9 @@ async def startup_routine() -> None:
             log.info(f"\u2022 SwaggerUI docs: {dev_base_url}{_cfg.doc.swaggerui_url}")
         if _cfg.doc.redoc_url:
             log.info(f"\u2022 Redoc API docs: {dev_base_url}{_cfg.doc.redoc_url}")
+
+    # modify and cache OpenAPI schema
+    app.openapi = custom_openapi
 
 
 @app.on_event("shutdown")

@@ -2222,7 +2222,7 @@
         "properties": {
           "detail": {
             "title": "Detail",
-            "anyOf": [
+            "oneOf": [
               {
                 "type": "string"
               },
@@ -2304,7 +2304,7 @@
             "title": "Meta",
             "type": "object",
             "additionalProperties": {
-              "anyOf": [
+              "oneOf": [
                 {
                   "type": "string"
                 },
@@ -2367,7 +2367,7 @@
             "title": "Meta",
             "type": "object",
             "additionalProperties": {
-              "anyOf": [
+              "oneOf": [
                 {
                   "type": "string"
                 },
@@ -2436,7 +2436,7 @@
             "title": "Meta",
             "type": "object",
             "additionalProperties": {
-              "anyOf": [
+              "oneOf": [
                 {
                   "type": "string"
                 },
@@ -2486,7 +2486,7 @@
             "title": "Meta",
             "type": "object",
             "additionalProperties": {
-              "anyOf": [
+              "oneOf": [
                 {
                   "type": "string"
                 },
@@ -2575,7 +2575,7 @@
             "title": "Meta",
             "type": "object",
             "additionalProperties": {
-              "anyOf": [
+              "oneOf": [
                 {
                   "type": "string"
                 },
@@ -2667,7 +2667,7 @@
             "title": "Meta",
             "type": "object",
             "additionalProperties": {
-              "anyOf": [
+              "oneOf": [
                 {
                   "type": "string"
                 },
@@ -2737,7 +2737,7 @@
             "title": "Meta",
             "type": "object",
             "additionalProperties": {
-              "anyOf": [
+              "oneOf": [
                 {
                   "type": "string"
                 },
@@ -2783,7 +2783,7 @@
             "title": "Meta",
             "type": "object",
             "additionalProperties": {
-              "anyOf": [
+              "oneOf": [
                 {
                   "type": "string"
                 },
@@ -2838,7 +2838,7 @@
             "title": "Meta",
             "type": "object",
             "additionalProperties": {
-              "anyOf": [
+              "oneOf": [
                 {
                   "type": "string"
                 },
@@ -2881,7 +2881,7 @@
             "title": "Meta",
             "type": "object",
             "additionalProperties": {
-              "anyOf": [
+              "oneOf": [
                 {
                   "type": "string"
                 },
@@ -3176,7 +3176,7 @@
             "title": "Location",
             "type": "array",
             "items": {
-              "anyOf": [
+              "oneOf": [
                 {
                   "type": "string"
                 },
