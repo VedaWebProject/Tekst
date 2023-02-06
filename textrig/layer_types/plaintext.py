@@ -1,5 +1,6 @@
-from pydantic import BaseModel, Field
+from pydantic import Field
 from textrig.layer_types import LayerTypePluginABC, layer_type_impl
+from textrig.models.common import LayerConfigBase
 from textrig.models.layer import LayerBase
 from textrig.models.layer_configs import DeepLLinksConfig
 from textrig.models.unit import UnitBase
@@ -29,7 +30,7 @@ class PlainText(LayerTypePluginABC):
         return PlainTextUnit
 
 
-class PlainTextLayerConfig(BaseModel):
+class PlainTextLayerConfig(LayerConfigBase):
     deepl_links: DeepLLinksConfig = DeepLLinksConfig()
 
 

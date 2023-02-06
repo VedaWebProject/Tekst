@@ -1,9 +1,10 @@
 from typing import Literal
 
-from pydantic import BaseModel, Field, validator
+from pydantic import Field, validator
+from textrig.models.common import LayerConfigBase
 
 
-class DeepLLinksConfig(BaseModel):
+class DeepLLinksConfig(LayerConfigBase):
 
     _DEEPL_LANGUAGES: tuple = (
         "BG", "CS", "DA", "DE", "EL", "EN", "ES", "ET", "FI",

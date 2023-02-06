@@ -45,10 +45,6 @@ class _CRUDBase(BaseModel):
     def field_names(cls, alias: bool = False):
         return list(cls.schema(alias).get("properties").keys())
 
-    class Config:
-        alias_generator = camelize
-        allow_population_by_field_name = True
-
 
 # class _FactoryMixin:
 #     @classmethod
@@ -179,50 +175,12 @@ class ModelBase(BaseModel):
             cls._update_model = cls._generate_model("Update", base)
         return cls._update_model
 
+    class Config:
+        alias_generator = camelize
+        allow_population_by_field_name = True
 
-# class RootModelBaseMixin:
 
-#     _root_document_model: type[DocumentBase] = None
-#     _root_update_model: type[UpdateBase] = None
-
-#     @classmethod
-#     def get_document_model(cls) -> type[DocumentBase]:
-#         if cls == RootModelBaseMixin:
-#             raise SystemExit(
-#                 "This method is not meant to be called "
-#                 "on RootModelBaseMixin class directly."
-#             )
-#         if cls.__name__.endswith("Base"):
-#             if not cls._root_document_model:
-#                 cls._root_document_model = cls._generate_model(
-#                     "Document", DocumentBase
-#                 )
-#             return cls._root_document_model
-#         if not cls._document_model:
-#             if cls._root_document_model:
-#                 cls._document_model = cls._generate_model(
-#                     "Document", cls._root_document_model
-#                 )
-#             else:
-#                 cls._document_model = cls._generate_model("Document", DocumentBase)
-#         return cls._document_model
-
-#     @classmethod
-#     def get_update_model(cls) -> type[UpdateBase]:
-#         if cls == RootModelBaseMixin:
-#             raise SystemExit(
-#                 "This method is not meant to be called "
-#                 "on RootModelBaseMixin class directly."
-#             )
-#         if cls.__name__.endswith("Base"):
-#             if not cls._root_update_model:
-#                 cls._root_update_model = cls._generate_model("Update", UpdateBase)
-#             return cls._root_update_model
-#         if not cls._update_model:
-#             if cls._root_update_model:
-#                 cls._update_model = cls._generate_model(
-#                     "Update", cls._root_update_model
-#                 )
-#             else:
-#                 cls._update_model = cls._generate_model("Document", UpdateBase)
-#         return cls._update_model
+class LayerConfigBase(BaseModel):
+    class Config:
+        alias_generator = camelize
+        allow_population_by_field_name = True

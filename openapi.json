@@ -2131,8 +2131,8 @@
             "description": "Enable/disable quick translation links to DeepL",
             "default": false
           },
-          "source_language": {
-            "title": "Source Language",
+          "sourceLanguage": {
+            "title": "Sourcelanguage",
             "enum": [
               "BG",
               "CS",
@@ -2504,8 +2504,8 @@
         "title": "PlainTextLayerConfig",
         "type": "object",
         "properties": {
-          "deepl_links": {
-            "title": "Deepl Links",
+          "deeplLinks": {
+            "title": "Deepllinks",
             "allOf": [
               {
                 "$ref": "#/components/schemas/DeepLLinksConfig"
@@ -3036,8 +3036,8 @@
         "required": [
           "email",
           "password",
-          "first_name",
-          "last_name"
+          "firstName",
+          "lastName"
         ],
         "type": "object",
         "properties": {
@@ -3050,27 +3050,27 @@
             "title": "Password",
             "type": "string"
           },
-          "is_active": {
-            "title": "Is Active",
+          "isActive": {
+            "title": "Isactive",
             "type": "boolean",
             "default": true
           },
-          "is_superuser": {
-            "title": "Is Superuser",
+          "isSuperuser": {
+            "title": "Issuperuser",
             "type": "boolean",
             "default": false
           },
-          "is_verified": {
-            "title": "Is Verified",
+          "isVerified": {
+            "title": "Isverified",
             "type": "boolean",
             "default": true
           },
-          "first_name": {
-            "title": "First Name",
+          "firstName": {
+            "title": "Firstname",
             "type": "string"
           },
-          "last_name": {
-            "title": "Last Name",
+          "lastName": {
+            "title": "Lastname",
             "type": "string"
           }
         }
@@ -3080,8 +3080,8 @@
         "required": [
           "id",
           "email",
-          "first_name",
-          "last_name"
+          "firstName",
+          "lastName"
         ],
         "type": "object",
         "properties": {
@@ -3095,27 +3095,27 @@
             "type": "string",
             "format": "email"
           },
-          "is_active": {
-            "title": "Is Active",
+          "isActive": {
+            "title": "Isactive",
             "type": "boolean",
             "default": true
           },
-          "is_superuser": {
-            "title": "Is Superuser",
+          "isSuperuser": {
+            "title": "Issuperuser",
             "type": "boolean",
             "default": false
           },
-          "is_verified": {
-            "title": "Is Verified",
+          "isVerified": {
+            "title": "Isverified",
             "type": "boolean",
             "default": true
           },
-          "first_name": {
-            "title": "First Name",
+          "firstName": {
+            "title": "Firstname",
             "type": "string"
           },
-          "last_name": {
-            "title": "Last Name",
+          "lastName": {
+            "title": "Lastname",
             "type": "string"
           }
         },
@@ -3134,26 +3134,26 @@
             "type": "string",
             "format": "email"
           },
-          "is_active": {
-            "title": "Is Active",
+          "isActive": {
+            "title": "Isactive",
             "type": "boolean",
             "default": true
           },
-          "is_superuser": {
-            "title": "Is Superuser",
+          "isSuperuser": {
+            "title": "Issuperuser",
             "type": "boolean"
           },
-          "is_verified": {
-            "title": "Is Verified",
+          "isVerified": {
+            "title": "Isverified",
             "type": "boolean",
             "default": true
           },
-          "first_name": {
-            "title": "First Name",
+          "firstName": {
+            "title": "Firstname",
             "type": "string"
           },
-          "last_name": {
-            "title": "Last Name",
+          "lastName": {
+            "title": "Lastname",
             "type": "string"
           }
         }
