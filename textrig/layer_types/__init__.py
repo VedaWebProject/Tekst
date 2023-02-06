@@ -59,7 +59,9 @@ class LayerTypePluginABC(ABC):
     @classmethod
     def prepare_import_template(cls) -> dict:
         """Returns the base template for import data for this data layer type"""
-        schema = cls.get_unit_model().get_create_model().schema()
+        CreateModel = cls.get_unit_model().get_create_model()
+        schema = CreateModel.schema()
+        template_fields = CreateModel.get_template_fields()
         required = schema.get("required", [])
         include_layer_props = ("description", "type", "additionalProperties")
         template = {
@@ -71,7 +73,7 @@ class LayerTypePluginABC(ABC):
         }
         # generate unit schema for the template
         for prop, val in schema.get("properties", {}).items():
-            if val.get("extra") and val.get("extra").get("template"):
+            if prop in template_fields:
                 unit_schema = {k: v for k, v in val.items() if k in include_layer_props}
                 unit_schema["required"] = prop in required
                 template["_unitSchema"][prop] = unit_schema

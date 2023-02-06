@@ -2793,18 +2793,12 @@
                 }
               ]
             },
-            "description": "Arbitrary metadata on this layer unit",
-            "extra": {
-              "template": true
-            }
+            "description": "Arbitrary metadata on this layer unit"
           },
           "text": {
             "title": "Text",
             "type": "string",
-            "description": "Text content of the plaintext unit",
-            "extra": {
-              "template": true
-            }
+            "description": "Text content of the plaintext unit"
           }
         },
         "description": "A unit of a plaintext data layer"
@@ -2854,18 +2848,12 @@
                 }
               ]
             },
-            "description": "Arbitrary metadata on this layer unit",
-            "extra": {
-              "template": true
-            }
+            "description": "Arbitrary metadata on this layer unit"
           },
           "text": {
             "title": "Text",
             "type": "string",
-            "description": "Text content of the plaintext unit",
-            "extra": {
-              "template": true
-            }
+            "description": "Text content of the plaintext unit"
           }
         },
         "description": "A unit of a plaintext data layer"

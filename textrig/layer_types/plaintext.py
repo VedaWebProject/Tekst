@@ -47,8 +47,9 @@ class PlainTextUnit(UnitBase):
     text: str | None = Field(
         None,
         description="Text content of the plaintext unit",
-        extra={"template": True},
     )
+
+    _template_fields = ("text",)
 
     @classmethod
     def get_layer_type_plugin_class(cls) -> type[PlainText]:
