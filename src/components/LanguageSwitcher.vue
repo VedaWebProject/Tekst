@@ -5,6 +5,7 @@ import { useMessagesStore } from '@/stores/messages';
 import { NButton, NDropdown, NIcon } from 'naive-ui';
 import type { Size } from 'naive-ui/es/button/src/interface';
 import LanguageOutlined from '@vicons/material/LanguageOutlined';
+import { i18n } from '@/i18n';
 
 export interface Props {
   /** Size of the language switcher component */
@@ -29,7 +30,7 @@ function handleLanguageSelect(localeCode: string) {
 
   settings.setLanguage(localeCode).catch((e) => {
     messages.create({
-      text: 'Some UI translations could not be loaded from server',
+      text: i18n.global.t('errors.serverI18n'),
       type: 'warning',
     });
     console.error(e);

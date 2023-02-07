@@ -1,20 +1,16 @@
 import { ref } from 'vue';
 import { defineStore } from 'pinia';
 import _get from 'lodash.get';
-
-export interface UiData {
-  [key: string]: any;
-}
+import { UidataApi } from 'textrig-ts-client';
 
 export const useUiDataStore = defineStore('uiData', () => {
-  const data: UiData = ref({});
+  const data = ref({});
+  const uiDataApi = new UidataApi();
 
   async function loadUiData() {
-    return fetch(`${import.meta.env.TEXTRIG_SERVER_API}/uidata`)
-      .then((response) => response.json())
-      .then((uiData: UiData) => {
-        data.value = uiData;
-      });
+    return uiDataApi.uidata().then((uiData) => {
+      data.value = uiData;
+    });
   }
 
   function get(uiDataPath: string) {

@@ -1,0 +1,73 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+
+tasks:
+  default:
+    desc: Print this very list of available tasks
+    vars:
+      TEXTRIG_VERSION:
+        sh: task version
+    cmds:
+      - echo "This is TextRig client {{.TEXTRIG_VERSION}}"
+      - task --list
+    silent: true
+
+  version:
+    desc: Print project version
+    cmds:
+      - npx -c 'node -p "process.env.npm_package_version"'
+    silent: true
+
+  run:
+    desc: Run development server
+    cmds:
+      - npm run dev
+    silent: true
+
+  format:
+    desc: Format code
+    cmds:
+      - npm run format
+
+  lint:
+    desc: Lint code
+    cmds:
+      - npm run lint
+
+  build:
+    desc: Build project
+    cmds:
+      - npm run build
+
+  preview:
+    desc: Preview project
+    cmds:
+      - npm run preview
+
+  generate-api-client:
+    desc: Generate Typescript-fetch client from server's OpenAPI schema
+    cmds:
+      - cmd: |
+          TEMPDIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'trtemp')
+          mkdir -p $TEMPDIR
+          rm -rf $TEMPDIR/*
+          cp ../textrig-server/openapi.json $TEMPDIR
+          docker run \
+            --rm \
+            -u 1000:1000 \
+            -v $TEMPDIR:/local \
+            openapitools/openapi-generator-cli:v6.3.0 \
+              generate \
+                -i /local/openapi.json \
+                -g typescript-fetch \
+                -o /local/textrig-ts-client \
+                --global-property skipFormModel=false \
+                --additional-properties=typescriptThreePlus=true,npmName=textrig-ts-client
+          (cd $TEMPDIR/textrig-ts-client && npm install && npm run build && npm pack)
+          cp $TEMPDIR/textrig-ts-client/textrig-ts-client-0.0.1.tgz ./
+          npm uninstall --no-save textrig-ts-client
+          npm install
+          rm -rf textrig-ts-client-0.0.1.tgz $TEMPDIR

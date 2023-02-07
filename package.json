@@ -13,13 +13,13 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.cypress-ct.json --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "format": "prettier . --write",
-    "serverApiTypes": "npx openapi-typescript https://raw.githubusercontent.com/VedaWebProject/textrig-server/main/openapi.json --output src/serverApi.d.ts"
+    "format": "prettier . --write"
   },
   "dependencies": {
     "lodash.get": "^4.4.2",
     "lodash.merge": "^4.6.2",
     "pinia": "^2.0.28",
+    "textrig-ts-client": "file:textrig-ts-client-0.0.1.tgz",
     "vue": "^3.2.45",
     "vue-i18n": "^9.2.2",
     "vue-router": "^4.1.6"
