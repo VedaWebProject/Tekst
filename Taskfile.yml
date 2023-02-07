@@ -26,6 +26,7 @@ tasks:
     cmds:
       - npm run dev
     silent: true
+    ignore_error: true
 
   format:
     desc: Format code
