@@ -30,11 +30,11 @@ app = FastAPI(
 
 
 def change_union_serialization(schema: dict[str, Any]):
-    if "anyOf" in schema:
-        schema["oneOf"] = schema.pop("anyOf")
-    for child in schema.values():
-        if isinstance(child, dict):
-            change_union_serialization(child)
+    # if "anyOf" in schema:
+    #     schema["oneOf"] = schema.pop("anyOf")
+    # for child in schema.values():
+    #     if isinstance(child, dict):
+    #         change_union_serialization(child)
     return schema
 
 

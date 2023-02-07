@@ -899,16 +899,16 @@
         "tags": [
           "uidata"
         ],
-        "summary": "Uidata",
+        "summary": "Get platform data",
         "description": "Returns data the client needs to initialize",
-        "operationId": "uidata",
+        "operationId": "getPlatformData",
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Uidata Uidata Get",
+                  "title": "Response Get Platform Data Uidata Get",
                   "type": "object"
                 }
               }
@@ -928,16 +928,16 @@
         "tags": [
           "uidata"
         ],
-        "summary": "Uidata platform",
+        "summary": "Get platform info",
         "description": "Returns platform metadata, possibly customized for this platform instance.",
-        "operationId": "uidataPlatform",
+        "operationId": "getPlatformInfo",
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Uidata Platform Uidata Platform Get",
+                  "title": "Response Get Platform Info Uidata Platform Get",
                   "type": "object",
                   "additionalProperties": {
                     "type": "string"
@@ -960,9 +960,9 @@
         "tags": [
           "uidata"
         ],
-        "summary": "Uidata i18n",
+        "summary": "Get translations",
         "description": "Returns server-managed translations.",
-        "operationId": "uidataI18n",
+        "operationId": "getTranslations",
         "parameters": [
           {
             "required": false,
@@ -980,7 +980,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Uidata I18N Uidata I18N Get",
+                  "title": "Response Get Translations Uidata I18N Get",
                   "type": "object"
                 }
               }
@@ -2223,7 +2223,7 @@
         "properties": {
           "detail": {
             "title": "Detail",
-            "oneOf": [
+            "anyOf": [
               {
                 "type": "string"
               },
@@ -2305,7 +2305,7 @@
             "title": "Meta",
             "type": "object",
             "additionalProperties": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "type": "string"
                 },
@@ -2368,7 +2368,7 @@
             "title": "Meta",
             "type": "object",
             "additionalProperties": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "type": "string"
                 },
@@ -2437,7 +2437,7 @@
             "title": "Meta",
             "type": "object",
             "additionalProperties": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "type": "string"
                 },
@@ -2487,7 +2487,7 @@
             "title": "Meta",
             "type": "object",
             "additionalProperties": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "type": "string"
                 },
@@ -2564,7 +2564,7 @@
             "title": "Meta",
             "type": "object",
             "additionalProperties": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "type": "string"
                 },
@@ -2642,7 +2642,7 @@
             "title": "Meta",
             "type": "object",
             "additionalProperties": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "type": "string"
                 },
@@ -2698,7 +2698,7 @@
             "title": "Meta",
             "type": "object",
             "additionalProperties": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "type": "string"
                 },
@@ -2744,7 +2744,7 @@
             "title": "Meta",
             "type": "object",
             "additionalProperties": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "type": "string"
                 },
@@ -2799,7 +2799,7 @@
             "title": "Meta",
             "type": "object",
             "additionalProperties": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "type": "string"
                 },
@@ -2842,7 +2842,7 @@
             "title": "Meta",
             "type": "object",
             "additionalProperties": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "type": "string"
                 },
@@ -3137,7 +3137,7 @@
             "title": "Location",
             "type": "array",
             "items": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "type": "string"
                 },
