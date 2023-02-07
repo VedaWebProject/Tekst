@@ -7,6 +7,7 @@ import type { NDateLocale } from 'naive-ui';
 
 import { enUS, dateEnUS } from 'naive-ui';
 import { deDE, dateDeDE } from 'naive-ui';
+import { UidataApi } from 'textrig-ts-client';
 
 const I18N_OPTIONS: I18nOptions = {
   legacy: false,
@@ -45,6 +46,7 @@ export const LANGUAGES: { [localeKey: string]: AvailableLanguage } = {
 };
 
 export const i18n = createI18n(I18N_OPTIONS);
+const uiDataApi = new UidataApi();
 
 export async function setI18nLanguage(
   locale: I18nOptions['locale'] = i18n.global.locale
@@ -53,15 +55,11 @@ export async function setI18nLanguage(
   const l = locale?.value ?? locale ?? i18n.global.locale.value;
   if (!l) return Promise.reject(`Invalid locale code: ${l}`);
 
-  // fetch server i18n data
-  const apiUrl = import.meta.env.TEXTRIG_SERVER_API;
-
   try {
-    await fetch(`${apiUrl}/uidata/i18n?lang=${l}`)
-      .then((response) => response.json())
-      .then((data) => {
-        i18n.global.mergeLocaleMessage(l, data);
-      });
+    await uiDataApi.uidataI18n({ lang: l }).then((data) => {
+      console.log(data);
+      i18n.global.mergeLocaleMessage(l, data);
+    });
   } finally {
     // @ts-ignore
     i18n.global.locale.value = l;
