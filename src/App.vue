@@ -12,6 +12,7 @@ import { useSettingsStore } from '@/stores/settings';
 import { lightOverrides, darkOverrides } from '@/theme';
 import PageHeader from './layout/PageHeader.vue';
 import PageFooter from './layout/PageFooter.vue';
+import { i18n } from '@/i18n';
 
 const appState = useAppStateStore();
 const settings = useSettingsStore();
@@ -20,7 +21,7 @@ const ui = useUiDataStore();
 
 const loaderText = ref('');
 const loaderShowSpinner = ref(true);
-let initLoadingFinished = ref(false);
+const initLoadingFinished = ref(false);
 
 const nUiLangLocale = computed(() => LANGS[settings.language].nUiLangLocale);
 const nUiDateLocale = computed(() => LANGS[settings.language].nUiDateLocale);
@@ -34,26 +35,26 @@ onMounted(async () => {
 
   // TODO: instead of just i18n, all resources needed for bootstrapping the
   // client should be loaded from the server here...
-  loaderText.value = 'Loading server-managed language data...';
-  await settings.setLanguage().catch((e) => {
-    messages.create({ text: 'Could not load language data from server', type: 'warning' });
-    console.error(e);
+  loaderText.value = i18n.global.t('loading.serverI18n');
+  await settings.setLanguage().catch(() => {
+    messages.create({ text: i18n.global.t('errors.serverI18n'), type: 'warning' });
+    // console.error(e);
     err = true;
   });
 
-  loaderText.value = 'Loading instance UI data...';
-  await ui.loadUiData().catch((e) => {
-    messages.create({ text: 'Could not load instance UI data from server', type: 'warning' });
-    console.error(e);
+  loaderText.value = i18n.global.t('loading.uiData');
+  await ui.loadUiData().catch(() => {
+    messages.create({ text: i18n.global.t('errors.uiData'), type: 'warning' });
+    // console.error(e);
     err = true;
   });
 
   err &&
     messages.create({
-      text: 'There were errors initializing the application',
+      text: i18n.global.t('errors.appInit'),
       type: 'error',
     });
-  loaderText.value = 'Ready.';
+  loaderText.value = i18n.global.t('loading.ready');
   initLoadingFinished.value = true;
   appState.finishGlobalLoading(200);
 });

@@ -28,3 +28,13 @@ dummy:
 
 i18n:
   tipSwitcher: Choose locale (language and number/date formatting)
+
+loading:
+  ready: Ready.
+  serverI18n: Loading UI translations...
+  uiData: Loading platform data...
+
+errors:
+  appInit: There were errors initializing the application.
+  serverI18n: Some translations could not be loaded.
+  uiData: Could not load platform data.
