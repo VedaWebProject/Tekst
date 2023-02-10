@@ -1,26 +1,28 @@
 import { defineStore } from 'pinia';
 
 export interface Message {
-  type?: 'default' | 'info' | 'success' | 'warning' | 'error' | 'loading';
+  type?: 'info' | 'success' | 'warning' | 'error' | 'loading';
   text: string;
 }
 
 export const useMessagesStore = defineStore('messages', () => {
-  // const queue = ref<Message[]>([]);
-
   /**
-   * This store action doesn't really do anything by itself, but it can be
+   * These store actions don't really do anything by themselves, but they can be
    * subscribed to via $onAction
    * (https://pinia.vuejs.org/core-concepts/actions.html#subscribing-to-actions).
-   * See GlobalMessenger.vue, where this is used to react to messages.
+   * See GlobalMessenger.vue, where this is used to pick up and dispatch messages.
    */
-  function create(msg: Message) {
-    // queue.value.push(msg);
-    return msg;
-  }
+  const info = (text: string) => text;
+  const success = (text: string) => text;
+  const warning = (text: string) => text;
+  const error = (text: string) => text;
+  const loading = (text: string) => text;
 
   return {
-    // queue,
-    create,
+    info,
+    success,
+    warning,
+    error,
+    loading,
   };
 });

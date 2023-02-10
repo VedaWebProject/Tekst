@@ -37,23 +37,19 @@ onMounted(async () => {
   // client should be loaded from the server here...
   loaderText.value = i18n.global.t('loading.serverI18n');
   await settings.setLanguage().catch(() => {
-    messages.create({ text: i18n.global.t('errors.serverI18n'), type: 'warning' });
+    messages.warning(i18n.global.t('errors.serverI18n'));
     // console.error(e);
     err = true;
   });
 
   loaderText.value = i18n.global.t('loading.uiData');
   await ui.loadUiData().catch(() => {
-    messages.create({ text: i18n.global.t('errors.uiData'), type: 'warning' });
+    messages.warning(i18n.global.t('errors.uiData'));
     // console.error(e);
     err = true;
   });
 
-  err &&
-    messages.create({
-      text: i18n.global.t('errors.appInit'),
-      type: 'error',
-    });
+  err && messages.error(i18n.global.t('errors.appInit'));
   loaderText.value = i18n.global.t('loading.ready');
   initLoadingFinished.value = true;
   appState.finishGlobalLoading(200);

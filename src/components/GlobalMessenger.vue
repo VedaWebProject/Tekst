@@ -47,11 +47,11 @@ const MessageDispatcher = defineComponent({
     const messages = useMessagesStore();
     const messageUtil = useMessage();
 
-    messages.$onAction(({ args }) => {
-      const msg = args?.length && args[0];
-      msg &&
-        messageUtil.create(msg.text, {
-          type: msg.type ?? 'default',
+    messages.$onAction(({ name, args }) => {
+      const text = args?.length && args[0];
+      text &&
+        messageUtil.create(text, {
+          type: name,
           render: renderMessage,
           closable: true,
         });
