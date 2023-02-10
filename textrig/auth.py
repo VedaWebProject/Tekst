@@ -69,9 +69,9 @@ _cookie_transport = CookieTransport(
     cookie_max_age=_cfg.security.cookie_lifetime,
     cookie_domain=_cfg.security.cookie_domain or None,
     cookie_path=_cfg.root_path or "/",
-    cookie_secure=True,
-    cookie_httponly=True,
-    cookie_samesite="lax",
+    cookie_secure=not _cfg.dev_mode,
+    cookie_httponly=not _cfg.dev_mode,
+    cookie_samesite="Lax",
 )
 
 
