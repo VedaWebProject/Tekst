@@ -24,9 +24,13 @@ const ui = useUiDataStore();
       </div>
     </div>
 
-    <nav>
+    <nav style="display: flex; justify-content: space-around">
       <RouterLink to="/">Home</RouterLink>
       <RouterLink to="/about">About</RouterLink>
+      <RouterLink to="/login">Login</RouterLink>
+      <RouterLink to="/register">Register</RouterLink>
+      <RouterLink to="/account">Account</RouterLink>
+      <RouterLink to="/admin">Admin</RouterLink>
     </nav>
   </header>
 </template>

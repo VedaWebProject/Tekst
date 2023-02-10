@@ -7,7 +7,7 @@ import {
   useThemeVars,
   type MessageRenderMessage,
 } from 'naive-ui';
-import { useMessagesStore } from '@/stores/messages';
+import { useMessagesStore } from '@/stores';
 
 const themeVars = useThemeVars();
 
@@ -49,12 +49,11 @@ const MessageDispatcher = defineComponent({
 
     messages.$onAction(({ name, args }) => {
       const text = args?.length && args[0];
-      text &&
-        messageUtil.create(text, {
-          type: name,
-          render: renderMessage,
-          closable: true,
-        });
+      messageUtil.create(text || name, {
+        type: name,
+        render: renderMessage,
+        closable: true,
+      });
     });
 
     return () => null; // nothing to render

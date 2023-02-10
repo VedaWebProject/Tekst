@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useUiDataStore } from '@/stores/uiData';
+import { useUiDataStore } from '@/stores';
 
 const ui = useUiDataStore();
 </script>

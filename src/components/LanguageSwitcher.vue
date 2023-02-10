@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { LANGUAGES as LANGS } from '@/i18n';
-import { useSettingsStore } from '@/stores/settings';
-import { useMessagesStore } from '@/stores/messages';
+import { useSettingsStore, useMessagesStore } from '@/stores';
 import { NButton, NDropdown, NIcon } from 'naive-ui';
 import type { Size } from 'naive-ui/es/button/src/interface';
 import LanguageOutlined from '@vicons/material/LanguageOutlined';

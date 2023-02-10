@@ -4,17 +4,14 @@ import FullScreenLoader from '@/components/FullScreenLoader.vue';
 import GlobalMessenger from '@/components/GlobalMessenger.vue';
 import { onMounted, onBeforeMount, ref, computed } from 'vue';
 import { LANGUAGES as LANGS } from '@/i18n';
-import { useAppStateStore } from '@/stores/general';
-import { useUiDataStore } from '@/stores/uiData';
-import { useMessagesStore } from '@/stores/messages';
+import { useStateStore, useUiDataStore, useMessagesStore, useSettingsStore } from '@/stores';
 import { NConfigProvider, NGlobalStyle, lightTheme, darkTheme } from 'naive-ui';
-import { useSettingsStore } from '@/stores/settings';
 import { lightOverrides, darkOverrides } from '@/theme';
 import PageHeader from './layout/PageHeader.vue';
 import PageFooter from './layout/PageFooter.vue';
 import { i18n } from '@/i18n';
 
-const appState = useAppStateStore();
+const state = useStateStore();
 const settings = useSettingsStore();
 const messages = useMessagesStore();
 const ui = useUiDataStore();
@@ -27,7 +24,7 @@ const nUiLangLocale = computed(() => LANGS[settings.language].nUiLangLocale);
 const nUiDateLocale = computed(() => LANGS[settings.language].nUiDateLocale);
 
 onBeforeMount(() => {
-  appState.startGlobalLoading();
+  state.startGlobalLoading();
 });
 
 onMounted(async () => {
@@ -52,7 +49,7 @@ onMounted(async () => {
   err && messages.error(i18n.global.t('errors.appInit'));
   loaderText.value = i18n.global.t('loading.ready');
   initLoadingFinished.value = true;
-  appState.finishGlobalLoading(200);
+  state.finishGlobalLoading(200);
 });
 </script>
 
@@ -72,7 +69,7 @@ onMounted(async () => {
     </template>
 
     <FullScreenLoader
-      :show="appState.globalLoading"
+      :show="state.globalLoading"
       transition="0.2s"
       :text="loaderText"
       :spinner="loaderShowSpinner"
