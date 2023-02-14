@@ -23,7 +23,7 @@ async def _get_and_write_openapi_schema(
 
     async with LifespanManager(app):
         async with AsyncClient(app=app, base_url="http://test") as client:
-            resp = await client.get(f"{_cfg.root_path}{_cfg.doc.openapi_url}")
+            resp = await client.get(f"{_cfg.doc.openapi_url}")
             if not resp.status_code == 200:
                 click.echo(
                     "Error: Request to TextRig server "

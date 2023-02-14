@@ -1,5 +1,6 @@
 import sys
 from typing import Any
+from urllib.parse import urljoin
 
 from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
@@ -46,7 +47,7 @@ def custom_openapi():
         version=_cfg.info.version,
         description=_cfg.info.description,
         routes=app.routes,
-        servers=[{"url": f"{_cfg.server_url}/{_cfg.root_path}"}],
+        servers=[{"url": urljoin(_cfg.server_url, _cfg.root_path)}],
         terms_of_service=_cfg.info.terms,
         tags=tags_metadata,
         contact={
