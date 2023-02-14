@@ -2,10 +2,13 @@
 import { RouterLink } from 'vue-router';
 import LanguageSwitcher from '@/components/LanguageSwitcher.vue';
 import ThemeModeSwitcher from '@/components/ThemeModeSwitcher.vue';
-import { NSpace } from 'naive-ui';
-import { useUiDataStore } from '@/stores/uiData';
+import LoginModal from '@/components/LoginModal.vue';
+import RegisterModal from '@/components/RegisterModal.vue';
+import { NSpace, NButton } from 'naive-ui';
+import { useUiDataStore, useStateStore } from '@/stores';
 
 const ui = useUiDataStore();
+const state = useStateStore();
 </script>
 
 <template>
@@ -20,6 +23,9 @@ const ui = useUiDataStore();
         <n-space inline :wrap-item="false" size="small">
           <ThemeModeSwitcher size="small" />
           <LanguageSwitcher size="small" />
+          <n-button @click="state.openLogin" size="small">Login</n-button>
+          <LoginModal />
+          <RegisterModal />
         </n-space>
       </div>
     </div>
@@ -27,8 +33,6 @@ const ui = useUiDataStore();
     <nav style="display: flex; justify-content: space-around">
       <RouterLink to="/">Home</RouterLink>
       <RouterLink to="/about">About</RouterLink>
-      <RouterLink to="/login">Login</RouterLink>
-      <RouterLink to="/register">Register</RouterLink>
       <RouterLink to="/account">Account</RouterLink>
       <RouterLink to="/admin">Admin</RouterLink>
     </nav>

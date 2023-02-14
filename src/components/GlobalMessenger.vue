@@ -27,7 +27,6 @@ const renderMessage: MessageRenderMessage = (props) => {
         closable: props.closable,
         onClose: props.onClose,
         type: type === 'loading' ? 'default' : type,
-        // title: type in ['loading', 'default'] ? '' : type.toUpperCase(),
         showIcon: true,
         style: {
           boxShadow: 'var(--n-box-shadow)',
@@ -49,9 +48,9 @@ const MessageDispatcher = defineComponent({
     const messageUtil = useMessage();
 
     messages.$onAction(({ name, args }) => {
-      const text = args?.length && args[0];
-      messageUtil.create(text || name, {
+      messageUtil.create(args[0] || name, {
         type: name,
+        duration: args[1] || 5000,
         render: renderMessage,
         closable: true,
       });
@@ -63,7 +62,7 @@ const MessageDispatcher = defineComponent({
 </script>
 
 <template>
-  <n-message-provider :duration="5000" placement="bottom" :max="5" keep-alive-on-hover closable>
+  <n-message-provider placement="bottom" :max="5" keep-alive-on-hover closable>
     <MessageDispatcher />
   </n-message-provider>
 </template>

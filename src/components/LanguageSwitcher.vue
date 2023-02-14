@@ -28,10 +28,7 @@ function handleLanguageSelect(localeCode: string) {
   if (localeCode == settings.language) return;
 
   settings.setLanguage(localeCode).catch((e) => {
-    messages.create({
-      text: i18n.global.t('errors.serverI18n'),
-      type: 'warning',
-    });
+    messages.warning(i18n.global.t('errors.serverI18n'));
     console.error(e);
   });
 }

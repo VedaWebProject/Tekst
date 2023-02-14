@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { useAuthStore } from '@/stores';
-import { HomeView, AboutView, AccountView, LoginView, RegisterView } from '@/views';
+import { useAuthStore, useMessagesStore } from '@/stores';
+import { HomeView, AboutView, AccountView } from '@/views';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,16 +22,6 @@ const router = createRouter({
       component: AccountView,
     },
     {
-      path: '/register',
-      name: 'register',
-      component: RegisterView,
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: LoginView,
-    },
-    {
       path: '/admin',
       name: 'admin',
       component: HomeView,
@@ -42,13 +32,15 @@ const router = createRouter({
 
 router.beforeEach(async (to) => {
   // redirect to login page if not logged in and trying to access a restricted page
-  const restrictedPages = ['/admin'];
+  const auth = useAuthStore();
+  const messages = useMessagesStore();
+  const restrictedPages = ['/admin', '/account'];
   const authRequired = restrictedPages.includes(to.path);
-  const authStore = useAuthStore();
 
-  if (authRequired && !authStore.user) {
-    authStore.returnUrl = to.fullPath;
-    return '/login';
+  if (authRequired && !auth.user) {
+    auth.returnUrl = to.fullPath;
+    messages.warning("You don't have access to this page.");
+    return '/home';
   }
 });
 

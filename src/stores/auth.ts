@@ -3,7 +3,6 @@ import { defineStore } from 'pinia';
 import type { UserRead } from 'textrig-ts-client';
 import { UserReadFromJSONTyped, AuthApi, UsersApi } from 'textrig-ts-client';
 import router from '@/router';
-import { useMessagesStore } from './messages';
 
 const authApi = new AuthApi();
 const usersApi = new UsersApi();
@@ -19,16 +18,10 @@ export const useAuthStore = defineStore('auth', () => {
   const returnUrl = ref<string | null>(null);
 
   async function login(username: string, password: string) {
-    try {
-      await authApi.authCookieLogin({ username, password });
-      user.value = await usersApi.usersCurrentUser();
-      localStorage.setItem('user', JSON.stringify(user.value));
-      router.push(returnUrl.value || '/');
-    } catch (error) {
-      console.error(error);
-      const messageStore = useMessagesStore();
-      messageStore.create({ text: 'Error logging in', type: 'error' });
-    }
+    await authApi.authCookieLogin({ username, password });
+    user.value = await usersApi.usersCurrentUser();
+    localStorage.setItem('user', JSON.stringify(user.value));
+    return user.value;
   }
 
   function logout() {
