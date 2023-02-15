@@ -60,7 +60,7 @@ class UserUpdate(ModelBase, schemas.BaseUserUpdate):
     last_name: str | None
 
 
-class AccessToken(ModelBase, BeanieBaseAccessToken[PyObjectId]):
+class AccessToken(BeanieBaseAccessToken[PyObjectId]):
     pass
 
 
