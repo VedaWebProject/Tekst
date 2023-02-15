@@ -39,8 +39,8 @@ async def get_platform_info(cfg: TextRigConfig = Depends(get_cfg)) -> dict:
 async def get_translations(lang: str = None) -> dict:
     """Returns server-managed translations."""
     translations = {
-        "deDE": {"general": {"welcome": '"Willkommen!", sagt der Server!'}},
-        "enUS": {"general": {"welcome": '"Welcome!", says the server!'}},
+        "deDE": {"general": {"welcomeTest": '"Willkommen!", sagt der Server!'}},
+        "enUS": {"general": {"welcomeTest": '"Welcome!", says the server!'}},
     }
     if lang and lang in translations:
         return translations[lang]
