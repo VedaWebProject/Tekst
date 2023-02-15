@@ -100,15 +100,14 @@ async def startup_routine() -> None:
         "/", response_class=RedirectResponse, status_code=301, include_in_schema=False
     )
     async def root_redirect():
-        return _cfg.doc.redoc_url
+        return _cfg.root_path + _cfg.doc.redoc_url
 
     # log dev server info for quick browser access
     if _cfg.dev_mode:  # pragma: no cover
-        dev_base_url = f"http://{_cfg.uvicorn_host}:{_cfg.uvicorn_port}"
         if _cfg.doc.swaggerui_url:
-            log.info(f"\u2022 SwaggerUI docs: {dev_base_url}{_cfg.doc.swaggerui_url}")
+            log.info(f"\u2022 SwaggerUI docs @ {_cfg.doc.swaggerui_url}")
         if _cfg.doc.redoc_url:
-            log.info(f"\u2022 Redoc API docs: {dev_base_url}{_cfg.doc.redoc_url}")
+            log.info(f"\u2022 Redoc API docs @ {_cfg.doc.redoc_url}")
 
     # modify and cache OpenAPI schema
     app.openapi = custom_openapi
