@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
 import type { UserRead } from 'textrig-ts-client';
 import { UserReadFromJSONTyped, AuthApi, UsersApi } from 'textrig-ts-client';
@@ -16,6 +16,7 @@ function getUserFromLocalStorage(): UserRead | null {
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<UserRead | null>(getUserFromLocalStorage());
   const returnUrl = ref<string | null>(null);
+  const loggedIn = computed(() => !!user);
 
   async function login(username: string, password: string) {
     await authApi.authCookieLogin({ username, password });
@@ -33,6 +34,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   return {
     user,
+    loggedIn,
     returnUrl,
     login,
     logout,
