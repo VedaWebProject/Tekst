@@ -60,6 +60,7 @@ function switchToRegistration() {
 function loginUser() {
   auth
     .login(formModel.value.email || '', formModel.value.password || '')
+    .then(() => (loading.value = false))
     .then(() => router.push('/account'))
     .catch(async (e) => {
       /**
@@ -84,8 +85,8 @@ function loginUser() {
     });
 }
 
-function handleLoginClick(e: MouseEvent) {
-  e.preventDefault();
+function handleLoginClick(e: MouseEvent | null = null) {
+  e && e.preventDefault();
   loading.value = true;
   formRef.value
     ?.validate((errors: Array<FormValidationError> | undefined) => {
@@ -135,7 +136,12 @@ function handleLoginClick(e: MouseEvent) {
           />
         </n-form-item>
         <n-form-item path="password" label="Password">
-          <n-input v-model:value="formModel.password" type="password" placeholder="..." />
+          <n-input
+            v-model:value="formModel.password"
+            type="password"
+            placeholder="..."
+            @keyup.enter="() => handleLoginClick()"
+          />
         </n-form-item>
       </n-form>
 

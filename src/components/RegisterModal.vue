@@ -145,8 +145,8 @@ function registerUser() {
     });
 }
 
-function handleRegisterClick(e: MouseEvent) {
-  e.preventDefault();
+function handleRegisterClick(e: MouseEvent | null = null) {
+  e && e.preventDefault();
   loading.value = true;
   formRef.value
     ?.validate((errors: Array<FormValidationError> | undefined) => {
@@ -233,7 +233,12 @@ function switchToLogin() {
           />
         </n-form-item>
         <n-form-item path="lastName" label="Last Name">
-          <n-input v-model:value="formModel.lastName" type="text" placeholder="..." />
+          <n-input
+            v-model:value="formModel.lastName"
+            type="text"
+            placeholder="..."
+            @keyup.enter="() => handleRegisterClick()"
+          />
         </n-form-item>
       </n-form>
 

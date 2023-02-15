@@ -7,9 +7,9 @@ export const useUiDataStore = defineStore('uiData', () => {
   const data = ref({});
   const uiDataApi = new UidataApi();
 
-  async function loadUiData() {
-    return uiDataApi.uidata().then((uiData) => {
-      data.value = uiData;
+  async function loadPlatformData() {
+    return uiDataApi.getPlatformData().then((platformData) => {
+      data.value = platformData;
     });
   }
 
@@ -17,5 +17,5 @@ export const useUiDataStore = defineStore('uiData', () => {
     return _get(data.value, uiDataPath, '');
   }
 
-  return { loadUiData, get };
+  return { loadPlatformData, get };
 });

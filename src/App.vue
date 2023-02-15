@@ -40,9 +40,9 @@ onMounted(async () => {
   });
 
   loaderText.value = i18n.global.t('loading.uiData');
-  await ui.loadUiData().catch(() => {
+  await ui.loadPlatformData().catch((e) => {
     messages.warning(i18n.global.t('errors.uiData'));
-    // console.error(e);
+    console.error(e);
     err = true;
   });
 

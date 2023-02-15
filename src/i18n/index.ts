@@ -56,7 +56,7 @@ export async function setI18nLanguage(
   if (!l) return Promise.reject(`Invalid locale code: ${l}`);
 
   try {
-    await uiDataApi.uidataI18n({ lang: l }).then((data) => {
+    await uiDataApi.getTranslations({ lang: l }).then((data) => {
       i18n.global.mergeLocaleMessage(l, data);
     });
   } finally {

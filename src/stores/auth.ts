@@ -19,7 +19,9 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function login(username: string, password: string) {
     await authApi.authCookieLogin({ username, password });
-    user.value = await usersApi.usersCurrentUser();
+    const loggedInUser = await usersApi.usersCurrentUser();
+    console.log('USER: ' + loggedInUser);
+    user.value = loggedInUser;
     localStorage.setItem('user', JSON.stringify(user.value));
     return user.value;
   }
