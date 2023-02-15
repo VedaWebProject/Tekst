@@ -63,9 +63,11 @@ tasks:
   run:
     desc: Run dev services stack and dev server, clean up afterwards
     cmds:
-      - defer: {task: dev-stack-down}
+      - task: dev-proxy-up
       - task: dev-stack-up
       - task: run-app
+      - defer: {task: dev-stack-down}
+      - defer: {task: dev-proxy-down}
 
   schema:
     desc: Export (development) OpenAPI schema to file openapi.json
@@ -104,6 +106,16 @@ tasks:
             .env/ \
             dist \
             htmlcov \
+
+  dev-proxy-up:
+    desc: Run dev proxy for tunneling requests from 127.0.0.1/api to backend (8000) and all others to frontend (5173)
+    cmds:
+      - docker compose -f dev/dev-proxy/docker-compose.yml -p textrig-dev-proxy up --detach
+
+  dev-proxy-down:
+    desc: Stop dev proxy
+    cmds:
+      - docker compose -f dev/dev-proxy/docker-compose.yml -p textrig-dev-proxy down
 
   dev-stack-up:
     desc: Run dev services stack

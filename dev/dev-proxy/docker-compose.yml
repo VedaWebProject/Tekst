@@ -1,0 +1,10 @@
+version: "3.9"
+
+services:
+  caddy:
+    image: "caddy:2.6-alpine"
+    volumes:
+      - "./:/etc/caddy/:ro"
+    ports:
+      - "127.0.0.1:80:80"
+    network_mode: "host"
