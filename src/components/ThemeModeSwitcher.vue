@@ -14,12 +14,13 @@ export interface Props {
 const props = withDefaults(defineProps<Props>(), {
   size: 'medium',
 });
+
 const settings = useSettingsStore();
+const t = i18n.global.t;
+
 const icon = computed(() => (settings.theme === 'dark' ? LightModeOutlined : DarkModeOutlined));
 const title = computed(() =>
-  settings.theme === 'dark'
-    ? i18n.global.t('general.tipThemeToggleLight')
-    : i18n.global.t('general.tipThemeToggleDark')
+  settings.theme === 'dark' ? t('general.tipThemeToggleLight') : t('general.tipThemeToggleDark')
 );
 </script>
 

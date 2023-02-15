@@ -16,6 +16,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const settings = useSettingsStore();
 const messages = useMessagesStore();
+const t = i18n.global.t;
 
 const options = Object.keys(LANGS).map((l) => {
   return {
@@ -28,7 +29,7 @@ function handleLanguageSelect(localeCode: string) {
   if (localeCode == settings.language) return;
 
   settings.setLanguage(localeCode).catch((e) => {
-    messages.warning(i18n.global.t('errors.serverI18n'));
+    messages.warning(t('errors.serverI18n'));
     console.error(e);
   });
 }

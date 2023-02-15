@@ -15,6 +15,7 @@ const state = useStateStore();
 const settings = useSettingsStore();
 const messages = useMessagesStore();
 const ui = useUiDataStore();
+const t = i18n.global.t;
 
 const loaderText = ref('');
 const loaderShowSpinner = ref(true);
@@ -32,22 +33,22 @@ onMounted(async () => {
 
   // TODO: instead of just i18n, all resources needed for bootstrapping the
   // client should be loaded from the server here...
-  loaderText.value = i18n.global.t('loading.serverI18n');
+  loaderText.value = t('loading.serverI18n');
   await settings.setLanguage().catch(() => {
-    messages.warning(i18n.global.t('errors.serverI18n'));
+    messages.warning(t('errors.serverI18n'));
     // console.error(e);
     err = true;
   });
 
-  loaderText.value = i18n.global.t('loading.uiData');
+  loaderText.value = t('loading.uiData');
   await ui.loadPlatformData().catch((e) => {
-    messages.warning(i18n.global.t('errors.uiData'));
+    messages.warning(t('errors.uiData'));
     console.error(e);
     err = true;
   });
 
-  err && messages.error(i18n.global.t('errors.appInit'));
-  loaderText.value = i18n.global.t('loading.ready');
+  err && messages.error(t('errors.appInit'));
+  loaderText.value = t('loading.ready');
   initLoadingFinished.value = true;
   state.finishGlobalLoading(200);
 });
