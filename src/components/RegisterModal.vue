@@ -52,7 +52,7 @@ function validatePasswordsMatch(rule: FormItemRule, value: string): boolean {
   return !!value && !!formModel.value.password && value === formModel.value.password;
 }
 
-const rules: FormRules = {
+const formRules: FormRules = {
   email: [
     {
       required: true,
@@ -179,6 +179,7 @@ function switchToLogin() {
     :on-update:show="() => null"
   >
     <n-card
+      embedded
       style="width: 720px"
       title="Register new account"
       :bordered="false"
@@ -192,7 +193,7 @@ function switchToLogin() {
       <n-form
         ref="formRef"
         :model="formModel"
-        :rules="rules"
+        :rules="formRules"
         size="large"
         :label-placement="formLabelsLeft ? 'left' : 'top'"
         label-width="auto"

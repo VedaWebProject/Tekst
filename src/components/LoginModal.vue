@@ -29,7 +29,7 @@ const formModel = ref<Record<string, string | null>>(initialFormModel());
 const formRef = ref<FormInst | null>(null);
 const formLabelsLeft = window.innerWidth > 600;
 
-const rules: FormRules = {
+const formRules: FormRules = {
   email: [
     {
       required: true,
@@ -108,6 +108,7 @@ function handleLoginClick(e: MouseEvent | null = null) {
     :on-update:show="() => null"
   >
     <n-card
+      embedded
       style="width: 720px"
       title="Log in to your account"
       :bordered="false"
@@ -121,7 +122,7 @@ function handleLoginClick(e: MouseEvent | null = null) {
       <n-form
         ref="formRef"
         :model="formModel"
-        :rules="rules"
+        :rules="formRules"
         size="large"
         :label-placement="formLabelsLeft ? 'left' : 'top'"
         label-width="auto"
