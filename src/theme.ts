@@ -22,7 +22,7 @@ const lightOverrides: GlobalThemeOverrides = {
 
 const darkOverrides: GlobalThemeOverrides = {
   common: {
-    bodyColor: '#262626',
+    bodyColor: '#181818',
   },
 };
 
