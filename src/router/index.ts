@@ -2,6 +2,10 @@ import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore, useMessagesStore } from '@/stores';
 import { HomeView, AboutView, AccountView } from '@/views';
 
+// restricted routes
+const ONLY_USERS = ['/account'];
+const ONLY_SUPERUSERS = ['/admin'];
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   linkActiveClass: 'active',
@@ -31,15 +35,19 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to) => {
-  // redirect to login page if not logged in and trying to access a restricted page
   const auth = useAuthStore();
   const messages = useMessagesStore();
-  const restrictedPages = ['/admin', '/account'];
-  const authRequired = restrictedPages.includes(to.path);
-
-  if (authRequired && !auth.user) {
+  // assess auth situation
+  const ru = ONLY_USERS.includes(to.path); // route is restricted to users
+  const rsu = ONLY_SUPERUSERS.includes(to.path); // route is restricted to to superusers
+  const l = auth.loggedIn; // a user is logged in
+  const u = auth.user?.isActive; // the user is a verified, active user
+  const su = auth.user?.isSuperuser; // the user is a superuser
+  const authorized = !(ru || rsu) || (ru && l && u) || (rsu && l && su);
+  // redirect if trying to access a restricted page without aithorization
+  if (!authorized) {
     auth.returnUrl = to.fullPath;
-    messages.warning("You don't have access to this page.");
+    messages.warning("You don't have access to the requested page.");
     return '/home';
   }
 });
