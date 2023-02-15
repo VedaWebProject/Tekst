@@ -70,10 +70,9 @@ _cookie_transport = CookieTransport(
     cookie_domain=_cfg.security.cookie_domain or None,
     cookie_path=_cfg.root_path or "/",
     cookie_secure=not _cfg.dev_mode,
-    cookie_httponly=not _cfg.dev_mode,
+    cookie_httponly=True,
     cookie_samesite="Lax",
 )
-
 
 _bearer_transport = BearerTransport(tokenUrl="auth/jwt/login")
 
@@ -231,8 +230,8 @@ def _current_user(**kwargs) -> callable:
 
 # prepare auth dependencies for API routes
 dep_user_unverified = _current_user()
-dep_user = _current_user(verified=True)
-dep_user_active = _current_user(verified=True, active=True)
+dep_user_inactive = _current_user(verified=True)
+dep_user = _current_user(verified=True, active=True)
 dep_superuser = _current_user(verified=True, active=True, superuser=True)
 dep_user_unverified_optional = _current_user(optional=True)
 dep_user_optional = _current_user(optional=True, verified=True)
