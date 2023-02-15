@@ -20,6 +20,11 @@ p {
   margin: 0.5em 0;
 }
 
+b,
+strong {
+  font-weight: bold;
+}
+
 /*
 
     Global CSS fixes for problems with external libraries
