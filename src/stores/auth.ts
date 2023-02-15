@@ -19,15 +19,13 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function login(username: string, password: string) {
     await authApi.authCookieLogin({ username, password });
-    const loggedInUser = await usersApi.usersCurrentUser();
-    console.log('USER: ' + loggedInUser);
-    user.value = loggedInUser;
-    localStorage.setItem('user', JSON.stringify(user.value));
+    user.value = await usersApi.usersCurrentUser();
+    user.value && localStorage.setItem('user', JSON.stringify(user.value));
     return user.value;
   }
 
-  function logout() {
-    authApi.authCookieLogout();
+  async function logout() {
+    await authApi.authCookieLogout();
     user.value = null;
     localStorage.removeItem('user');
     router.push('/login');
