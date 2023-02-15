@@ -115,7 +115,7 @@ class TextRigConfig(BaseSettings):
     dev_mode: bool = False
     root_path: str = ""
     server_url: HttpUrl = "http://127.0.0.1:8000"
-    user_files_dir: str = "/userfiles"
+    user_files_dir: str = "userfiles"
     log_level: str = "INFO"
 
     # uvicorn asgi binding
