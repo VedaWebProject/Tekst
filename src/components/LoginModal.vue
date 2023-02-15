@@ -14,7 +14,9 @@ import {
 } from 'naive-ui';
 import type { ResponseError } from 'textrig-ts-client';
 import { ref } from 'vue';
+import { i18n } from '@/i18n';
 
+const t = i18n.global.t;
 const state = useStateStore();
 const auth = useAuthStore();
 const messages = useMessagesStore();
@@ -61,9 +63,9 @@ function switchToRegistration() {
 
 async function loginUser() {
   try {
-    await auth.login(formModel.value.email || '', formModel.value.password || '');
+    const u = await auth.login(formModel.value.email || '', formModel.value.password || '');
     closeLogin();
-    messages.success('Login successful');
+    messages.success(t('general.welcome', { name: u?.firstName }));
     router.push('/account');
   } catch (e) {
     /**

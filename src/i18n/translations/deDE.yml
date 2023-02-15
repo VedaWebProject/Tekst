@@ -1,5 +1,6 @@
 general:
-  welcome: '"Willkommen!", sagt der Client.'
+  welcome: Willkommen, {name}!
+  welcomeTest: '"Willkommen!", sagt der Client.'
   tipThemeToggleLight: Zu hellem Farbschema wechseln
   tipThemeToggleDark: Zu dunklem Farbschema wechseln
 

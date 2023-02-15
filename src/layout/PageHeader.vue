@@ -17,7 +17,7 @@ const state = useStateStore();
       <img :alt="ui.get('platform.title') + ' Logo'" class="logo" src="@/assets/logo.png" />
       <div>
         <h1>{{ ui.get('platform.title') }}</h1>
-        <h2>{{ $t('general.welcome') }}</h2>
+        <h2>{{ $t('general.welcomeTest') }}</h2>
       </div>
       <div id="header-branding-extra">
         <n-space inline :wrap-item="false" size="small">
