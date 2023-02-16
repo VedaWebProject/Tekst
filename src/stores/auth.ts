@@ -29,7 +29,7 @@ export const useAuthStore = defineStore('auth', () => {
     await authApi.authCookieLogout();
     user.value = null;
     localStorage.removeItem('user');
-    router.push('/login');
+    router.push('/home');
   }
 
   return {
