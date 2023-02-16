@@ -3019,7 +3019,7 @@
           "isActive": {
             "title": "Isactive",
             "type": "boolean",
-            "default": true
+            "default": false
           },
           "isSuperuser": {
             "title": "Issuperuser",
@@ -3029,7 +3029,7 @@
           "isVerified": {
             "title": "Isverified",
             "type": "boolean",
-            "default": true
+            "default": false
           },
           "firstName": {
             "title": "Firstname",
@@ -3046,6 +3046,9 @@
         "required": [
           "id",
           "email",
+          "isActive",
+          "isSuperuser",
+          "isVerified",
           "firstName",
           "lastName"
         ],
@@ -3063,18 +3066,15 @@
           },
           "isActive": {
             "title": "Isactive",
-            "type": "boolean",
-            "default": true
+            "type": "boolean"
           },
           "isSuperuser": {
             "title": "Issuperuser",
-            "type": "boolean",
-            "default": false
+            "type": "boolean"
           },
           "isVerified": {
             "title": "Isverified",
-            "type": "boolean",
-            "default": true
+            "type": "boolean"
           },
           "firstName": {
             "title": "Firstname",
@@ -3103,16 +3103,17 @@
           "isActive": {
             "title": "Isactive",
             "type": "boolean",
-            "default": true
+            "default": false
           },
           "isSuperuser": {
             "title": "Issuperuser",
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
           },
           "isVerified": {
             "title": "Isverified",
             "type": "boolean",
-            "default": true
+            "default": false
           },
           "firstName": {
             "title": "Firstname",

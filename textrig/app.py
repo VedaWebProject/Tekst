@@ -6,6 +6,7 @@ from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.utils import get_openapi
 from fastapi.responses import RedirectResponse
+from textrig.auth import create_sample_users
 from textrig.config import TextRigConfig, get_config
 from textrig.db import init_odm
 from textrig.dependencies import get_db, get_db_client
@@ -111,6 +112,10 @@ async def startup_routine() -> None:
 
     # modify and cache OpenAPI schema
     app.openapi = custom_openapi
+
+    # create sample users for development
+    if _cfg.dev_mode:
+        await create_sample_users()
 
 
 @app.on_event("shutdown")

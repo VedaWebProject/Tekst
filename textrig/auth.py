@@ -32,30 +32,34 @@ _cfg: TextRigConfig = get_config()
 
 
 class User(ModelBase, BeanieBaseUser[PyObjectId]):
-    is_active: bool = _cfg.dev_mode
-    is_verified: bool = _cfg.dev_mode
+    is_active: bool = False
+    is_verified: bool = False
+    is_superuser: bool = False
     first_name: str
     last_name: str
 
 
 class UserRead(ModelBase, schemas.BaseUser[PyObjectId]):
     id: PyObjectId
-    is_active: bool = _cfg.dev_mode
-    is_verified: bool = _cfg.dev_mode
+    is_active: bool
+    is_verified: bool
+    is_superuser: bool
     first_name: str
     last_name: str
 
 
 class UserCreate(ModelBase, schemas.BaseUserCreate):
-    is_active: bool = _cfg.dev_mode
-    is_verified: bool = _cfg.dev_mode
+    is_active: bool = False
+    is_verified: bool = False
+    is_superuser: bool = False
     first_name: str
     last_name: str
 
 
 class UserUpdate(ModelBase, schemas.BaseUserUpdate):
-    is_active: bool = _cfg.dev_mode
-    is_verified: bool = _cfg.dev_mode
+    is_active: bool = False
+    is_verified: bool = False
+    is_superuser: bool = False
     first_name: str | None
     last_name: str | None
 
@@ -162,19 +166,6 @@ _fastapi_users = FastAPIUsers[User, PyObjectId](
 )
 
 
-async def create_user(user: UserCreate):
-    """Creates/registers a new user programmatically"""
-    get_user_db_context = contextlib.asynccontextmanager(get_user_db)
-    get_user_manager_context = contextlib.asynccontextmanager(get_user_manager)
-    try:
-        async with get_user_db_context() as user_db:
-            async with get_user_manager_context(user_db) as user_manager:
-                user = await user_manager.create(user)
-                log.debug(f"User created: {user}")
-    except UserAlreadyExists:
-        log.warning(f"User {user.email} already exists")
-
-
 def setup_auth_routes(app: FastAPI) -> list[APIRouter]:
     # cookie auth
     app.include_router(
@@ -239,3 +230,77 @@ dep_user_active_optional = _current_user(optional=True, verified=True, active=Tr
 dep_superuser_optional = _current_user(
     optional=True, verified=True, active=True, superuser=True
 )
+
+
+async def _create_user(user: UserCreate):
+    """
+    Creates/registers a new user programmatically
+
+    This is only used to generate test accounts for development and won't be called
+    (or have any effect) while running in production mode.
+    """
+    if not _cfg.dev_mode:
+        return
+    get_user_db_context = contextlib.asynccontextmanager(get_user_db)
+    get_user_manager_context = contextlib.asynccontextmanager(get_user_manager)
+    try:
+        async with get_user_db_context() as user_db:
+            async with get_user_manager_context(user_db) as user_manager:
+                user: User = await user_manager.create(user, safe=False)
+                log.debug(f"User created: {user}")
+    except UserAlreadyExists:
+        log.warning(f"User {user.email} already exists")
+
+
+async def create_sample_users():
+    # common
+    pw = "poiPOI098"
+    email_suffix = "@test.com"
+    # unverified user
+    await _create_user(
+        UserCreate(
+            email=f"unverified{email_suffix}",
+            password=pw,
+            first_name="Jerry",
+            last_name="Unverified",
+            is_verified=False,
+            is_active=False,
+            is_superuser=False,
+        )
+    )
+    # inactive user
+    await _create_user(
+        UserCreate(
+            email=f"inactive{email_suffix}",
+            password=pw,
+            first_name="Summer",
+            last_name="Inactive",
+            is_verified=True,
+            is_active=False,
+            is_superuser=False,
+        )
+    )
+    # active user
+    await _create_user(
+        UserCreate(
+            email=f"active{email_suffix}",
+            password=pw,
+            first_name="Morty",
+            last_name="Active",
+            is_verified=True,
+            is_active=True,
+            is_superuser=False,
+        )
+    )
+    # superuser
+    await _create_user(
+        UserCreate(
+            email=f"superuser{email_suffix}",
+            password=pw,
+            first_name="Rick",
+            last_name="Superuser",
+            is_verified=True,
+            is_active=True,
+            is_superuser=True,
+        )
+    )
