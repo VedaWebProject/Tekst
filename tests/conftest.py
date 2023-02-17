@@ -3,7 +3,7 @@ import json
 import pytest
 import requests
 from asgi_lifespan import LifespanManager
-from httpx import AsyncClient
+from httpx import AsyncClient, Response
 from textrig.app import app
 from textrig.config import TextRigConfig, get_config
 from textrig.db import DatabaseClient
@@ -107,10 +107,21 @@ async def insert_test_data(test_app, reset_db, root_path, test_data) -> callable
 
 
 @pytest.fixture
-async def new_user_data() -> dict:
+def new_user_data() -> dict:
     return lambda: dict(
         email="foo@bar.de", password="poiPOI098", first_name="Foo", last_name="Bar"
     )
+
+
+@pytest.fixture(scope="session")
+def status_fail_msg() -> callable:
+    def _status_fail_msg(expected_status: int, response: Response) -> tuple[bool, str]:
+        return (
+            f"HTTP {response.status_code} (expected: {expected_status})"
+            f" -- {response.json()}"
+        )
+
+    return _status_fail_msg
 
 
 # @pytest.fixture(scope="session")
