@@ -106,6 +106,13 @@ async def insert_test_data(test_app, reset_db, root_path, test_data) -> callable
     return _insert_test_data
 
 
+@pytest.fixture
+async def new_user_data() -> dict:
+    return lambda: dict(
+        email="foo@bar.de", password="poiPOI098", first_name="Foo", last_name="Bar"
+    )
+
+
 # @pytest.fixture(scope="session")
 # def json_compat() -> callable:
 #     """
