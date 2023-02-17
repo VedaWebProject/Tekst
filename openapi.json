@@ -3019,7 +3019,7 @@
           "isActive": {
             "title": "Isactive",
             "type": "boolean",
-            "default": true
+            "default": false
           },
           "isSuperuser": {
             "title": "Issuperuser",

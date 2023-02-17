@@ -1,4 +1,5 @@
 import contextlib
+from typing import Any
 
 from fastapi import APIRouter, Depends, FastAPI, Request
 from fastapi_users import (
@@ -18,11 +19,17 @@ from fastapi_users.authentication.strategy.db import (
     DatabaseStrategy,
 )
 from fastapi_users.exceptions import UserAlreadyExists
-from fastapi_users_db_beanie import BeanieBaseUser, BeanieUserDatabase, ObjectIDIDMixin
+from fastapi_users_db_beanie import (
+    UP_BEANIE,
+    BeanieBaseUser,
+    BeanieUserDatabase,
+    ObjectIDIDMixin,
+)
 from fastapi_users_db_beanie.access_token import (
     BeanieAccessTokenDatabase,
     BeanieBaseAccessToken,
 )
+from humps import decamelize
 from textrig.config import TextRigConfig, get_config
 from textrig.logging import log
 from textrig.models.common import AllOptionalMeta, ModelBase, PyObjectId
@@ -84,8 +91,15 @@ _cookie_transport = CookieTransport(
 _bearer_transport = BearerTransport(tokenUrl="auth/jwt/login")
 
 
+class CustomBeanieUserDatabase(BeanieUserDatabase):
+    # This class is necessary to make our model logic work with FastAPI-Users :(
+    async def update(self, user: UP_BEANIE, update_dict: dict[str, Any]) -> UP_BEANIE:
+        """Update a user."""
+        return await super().update(user, decamelize(update_dict))
+
+
 async def get_user_db():
-    yield BeanieUserDatabase(User)
+    yield CustomBeanieUserDatabase(User)
 
 
 async def get_access_token_db():
@@ -281,6 +295,7 @@ async def create_sample_users():
             password=pw,
             first_name="Jerry",
             last_name="Unverified",
+            is_active=True,
         )
     )
     # just a normal user, active and verified
@@ -291,6 +306,7 @@ async def create_sample_users():
             first_name="Morty",
             last_name="Verified",
             is_verified=True,
+            is_active=True,
         )
     )
     # superuser
@@ -302,5 +318,6 @@ async def create_sample_users():
             last_name="Superuser",
             is_verified=True,
             is_superuser=True,
+            is_active=True,
         )
     )
