@@ -187,7 +187,8 @@ def setup_auth_routes(app: FastAPI) -> list[APIRouter]:
     # cookie auth
     app.include_router(
         _fastapi_users.get_auth_router(
-            _auth_backend_cookie, requires_verification=not _cfg.dev_mode
+            _auth_backend_cookie,
+            requires_verification=_cfg.security.users_need_verification,
         ),
         prefix="/auth/cookie",
         tags=["auth"],
@@ -196,7 +197,8 @@ def setup_auth_routes(app: FastAPI) -> list[APIRouter]:
     # jwt auth
     app.include_router(
         _fastapi_users.get_auth_router(
-            _auth_backend_jwt, requires_verification=not _cfg.dev_mode
+            _auth_backend_jwt,
+            requires_verification=_cfg.security.users_need_verification,
         ),
         prefix="/auth/jwt",
         tags=["auth"],
@@ -222,7 +224,9 @@ def setup_auth_routes(app: FastAPI) -> list[APIRouter]:
     # users
     app.include_router(
         _fastapi_users.get_users_router(
-            UserRead, UserUpdate, requires_verification=not _cfg.dev_mode
+            UserRead,
+            UserUpdate,
+            requires_verification=_cfg.security.users_need_verification,
         ),
         prefix="/users",
         tags=["users"],
