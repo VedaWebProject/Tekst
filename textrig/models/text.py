@@ -4,10 +4,10 @@ from pydantic import Field
 
 # from textrig.db.io import DbIO
 # from textrig.logging import log
-from textrig.models.common import Metadata, ModelBase, PyObjectId
+from textrig.models.common import Metadata, ModelBase, ModelFactory, PyObjectId
 
 
-class Text(ModelBase):
+class Text(ModelBase, ModelFactory):
     """A text represented in TextRig"""
 
     title: str = Field(
@@ -45,7 +45,7 @@ TextRead = Text.get_read_model()
 TextUpdate = Text.get_update_model()
 
 
-class Node(ModelBase):
+class Node(ModelBase, ModelFactory):
     """A node in a text structure (e.g. chapter, paragraph, ...)"""
 
     text_id: PyObjectId = Field(..., description="ID of the text this node belongs to")

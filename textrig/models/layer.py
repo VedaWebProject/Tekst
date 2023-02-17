@@ -5,13 +5,14 @@ from textrig.models.common import (
     DocumentBase,
     Metadata,
     ModelBase,
+    ModelFactory,
     PyObjectId,
     ReadBase,
     UpdateBase,
 )
 
 
-class LayerBase(ModelBase):
+class LayerBase(ModelBase, ModelFactory):
     """A data layer describing a set of data on a text"""
 
     title: str = Field(

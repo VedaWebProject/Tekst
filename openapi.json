@@ -3019,7 +3019,7 @@
           "isActive": {
             "title": "Isactive",
             "type": "boolean",
-            "default": false
+            "default": true
           },
           "isSuperuser": {
             "title": "Issuperuser",
@@ -3039,7 +3039,8 @@
             "title": "Lastname",
             "type": "string"
           }
-        }
+        },
+        "description": "Dataset for creating a new user"
       },
       "UserRead": {
         "title": "UserRead",
@@ -3085,7 +3086,7 @@
             "type": "string"
           }
         },
-        "description": "Base User model."
+        "description": "A user registered in the system"
       },
       "UserUpdate": {
         "title": "UserUpdate",
@@ -3102,18 +3103,15 @@
           },
           "isActive": {
             "title": "Isactive",
-            "type": "boolean",
-            "default": false
+            "type": "boolean"
           },
           "isSuperuser": {
             "title": "Issuperuser",
-            "type": "boolean",
-            "default": false
+            "type": "boolean"
           },
           "isVerified": {
             "title": "Isverified",
-            "type": "boolean",
-            "default": false
+            "type": "boolean"
           },
           "firstName": {
             "title": "Firstname",
@@ -3123,7 +3121,8 @@
             "title": "Lastname",
             "type": "string"
           }
-        }
+        },
+        "description": "Updates to a user registered in the system"
       },
       "ValidationError": {
         "title": "ValidationError",

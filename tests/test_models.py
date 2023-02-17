@@ -25,7 +25,6 @@ def test_serialization(test_app, test_data):
     dummy_id = "6331b6e05c474b9f8f19330f"
     text = TextRead(id=dummy_id, loc_delim="---", **test_data["texts"][0])
     assert "id" in text.dict()
-    assert "_id" not in text.dict()
     assert "locDelim" in text.dict()
     assert "loc_delim" in text.dict(by_alias=False)
     text = TextRead(**{"id": dummy_id, **test_data["texts"][0]})

@@ -21,12 +21,9 @@ class PyObjectId(PydanticObjectId):
         )
 
 
-class _CRUDBase(BaseModel):
-    """Base class for all TextRig pydantic models"""
-
+class ModelBase(BaseModel):
     def dict(self, **kwargs) -> dict:
-        """Overrides dict() in Basemodel to set custom defaults"""
-
+        """Overrides dict() in Basemodel to set some custom defaults"""
         return super().dict(
             exclude_unset=kwargs.pop("exclude_unset", True),
             by_alias=kwargs.pop("by_alias", True),
@@ -34,25 +31,16 @@ class _CRUDBase(BaseModel):
         )
 
     def json(self, **kwargs) -> str:
-        """Overrides json() in Basemodel to change some defaults"""
+        """Overrides json() in Basemodel to set some custom defaults"""
         return super().json(
             exclude_unset=kwargs.pop("exclude_unset", True),
             by_alias=kwargs.pop("by_alias", True),
             **kwargs,
         )
 
-    @classmethod
-    def field_names(cls, alias: bool = False):
-        return list(cls.schema(alias).get("properties").keys())
-
-
-# class _FactoryMixin:
-#     @classmethod
-#     def from_(cls, obj: BaseModel, **dict_kwargs) -> BaseModel:
-#         return cls(**obj.dict(**dict_kwargs))
-
-#     def to_(self, model: type[BaseModel], **dict_kwargs) -> BaseModel:
-#         return model(**self.dict(**dict_kwargs))
+    class Config:
+        alias_generator = camelize
+        allow_population_by_field_name = True
 
 
 class _IDMixin(BaseModel):
@@ -71,36 +59,15 @@ class DocumentBase(Document):
         self.id = None  # reset ID for new document in case one is already set
         return await super().insert(**kwargs)
 
-    def dict(self, **kwargs) -> dict:
-        from_base = super().dict(
-            by_alias=kwargs.pop("by_alias", True),
-            exclude_unset=kwargs.pop("exclude_unset", True),
-            **kwargs,
-        )
-        # if "_id" in from_base:
-        #     from_base["id"] = str(from_base.pop("_id"))
-        return from_base
-
-    def json(self, **kwargs) -> str:
-        return super().json(
-            exclude_unset=kwargs.pop("exclude_unset", True),
-            by_alias=kwargs.pop("by_alias", True),
-            **kwargs,
-        )
-
     @classmethod
-    def from_(cls, obj: _CRUDBase, **dict_kwargs) -> BaseModel:
+    def from_(cls, obj: ModelBase, **dict_kwargs) -> BaseModel:
         return cls(**obj.dict(**dict_kwargs))
 
     class Settings:
         pass
 
-    class Config:
-        alias_generator = camelize
-        allow_population_by_field_name = True
 
-
-class _AllOptional(ModelMetaclass):
+class AllOptionalMeta(ModelMetaclass):
     """
     Metaclass to render all fields of a pydantic model optional (on root level).
     This approach was taken from here:
@@ -120,19 +87,19 @@ class _AllOptional(ModelMetaclass):
         return super().__new__(self, name, bases, namespaces, **kwargs)
 
 
-class CreateBase(_CRUDBase):
+class CreateBase:
     pass
 
 
-class ReadBase(_CRUDBase, _IDMixin):
+class ReadBase(ModelBase, _IDMixin):
     pass
 
 
-class UpdateBase(_CRUDBase, metaclass=_AllOptional):
+class UpdateBase(ModelBase, metaclass=AllOptionalMeta):
     pass
 
 
-class ModelBase(BaseModel):
+class ModelFactory:
 
     _document_model: type[DocumentBase] = None
     _create_model: type[CreateBase] = None
@@ -140,9 +107,7 @@ class ModelBase(BaseModel):
     _update_model: type[UpdateBase] = None
 
     @classmethod
-    def _generate_model(
-        cls, classname_suffix: str, base: type["ModelBase"]
-    ) -> type["ModelBase"]:
+    def _generate_model(cls, classname_suffix: str, base: type) -> type["ModelFactory"]:
         return type(
             f"{cls.__name__}{classname_suffix.capitalize()}",
             (cls, base),
@@ -150,37 +115,29 @@ class ModelBase(BaseModel):
         )
 
     @classmethod
-    def get_document_model(
-        cls, base: type["ModelBase"] = DocumentBase
-    ) -> type[DocumentBase]:
+    def get_document_model(cls, base: type[DocumentBase] = DocumentBase) -> type:
         if not cls._document_model:
             cls._document_model = cls._generate_model("Document", base)
         return cls._document_model
 
     @classmethod
-    def get_create_model(cls, base: type["ModelBase"] = CreateBase) -> type[CreateBase]:
+    def get_create_model(cls, base: type[CreateBase] = CreateBase) -> type[CreateBase]:
         if not cls._create_model:
             cls._create_model = cls._generate_model("Create", base)
         return cls._create_model
 
     @classmethod
-    def get_read_model(cls, base: type["ModelBase"] = ReadBase) -> type[ReadBase]:
+    def get_read_model(cls, base: type[ReadBase] = ReadBase) -> type[ReadBase]:
         if not cls._read_model:
             cls._read_model = cls._generate_model("Read", base)
         return cls._read_model
 
     @classmethod
-    def get_update_model(cls, base: type["ModelBase"] = UpdateBase) -> type[UpdateBase]:
+    def get_update_model(cls, base: type[UpdateBase] = UpdateBase) -> type[UpdateBase]:
         if not cls._update_model:
             cls._update_model = cls._generate_model("Update", base)
         return cls._update_model
 
-    class Config:
-        alias_generator = camelize
-        allow_population_by_field_name = True
 
-
-class LayerConfigBase(BaseModel):
-    class Config:
-        alias_generator = camelize
-        allow_population_by_field_name = True
+class LayerConfigBase(ModelBase):
+    pass

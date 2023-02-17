@@ -7,12 +7,13 @@ from textrig.models.common import (
     DocumentBase,
     Metadata,
     ModelBase,
+    ModelFactory,
     PyObjectId,
     UpdateBase,
 )
 
 
-class UnitBase(ModelBase):
+class UnitBase(ModelBase, ModelFactory):
     """A base class for types of data units belonging to a certain data layer"""
 
     layer_id: PyObjectId = Field(..., description="Data layer ID")
