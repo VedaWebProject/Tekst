@@ -39,7 +39,9 @@ class UserBase(ModelBase):
 
 
 class User(UserBase, BeanieBaseUser[PyObjectId]):
-    pass
+    """User document model used by FastAPI-Users"""
+
+    is_active: bool = _cfg.security.users_active_by_default
 
 
 class UserRead(UserBase, schemas.BaseUser[PyObjectId]):
@@ -56,7 +58,7 @@ class UserRead(UserBase, schemas.BaseUser[PyObjectId]):
 class UserCreate(UserBase, schemas.BaseUserCreate):
     """Dataset for creating a new user"""
 
-    pass
+    is_active: bool = _cfg.security.users_active_by_default
 
 
 class UserUpdate(UserBase, schemas.BaseUserUpdate, metaclass=AllOptionalMeta):

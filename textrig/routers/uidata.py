@@ -26,6 +26,7 @@ async def get_platform_data(cfg: TextRigConfig = Depends(get_cfg)) -> dict:
     return {
         "platform": await get_platform_info(cfg),
         "texts": await get_all_texts(),
+        "security": {"usersActiveByDefault": cfg.security.users_active_by_default},
     }
 
 

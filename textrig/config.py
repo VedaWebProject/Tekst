@@ -99,6 +99,7 @@ class SecurityConfig(BaseModel):
     """Security config model"""
 
     secret: str = "this_should_really_be_changed"
+    users_active_by_default: bool = False
     cookie_domain: str | None = None
     cookie_lifetime: int = 3600
     access_token_lifetime: int = 3600
