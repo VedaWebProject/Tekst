@@ -100,7 +100,6 @@ class UpdateBase(ModelBase, metaclass=AllOptionalMeta):
 
 
 class ModelFactory:
-
     _document_model: type[DocumentBase] = None
     _create_model: type[CreateBase] = None
     _read_model: type[ReadBase] = None

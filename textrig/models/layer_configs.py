@@ -5,7 +5,6 @@ from textrig.models.common import LayerConfigBase
 
 
 class DeepLLinksConfig(LayerConfigBase):
-
     _DEEPL_LANGUAGES: tuple = (
         "BG", "CS", "DA", "DE", "EL", "EN", "ES", "ET", "FI",
         "FR", "HU", "ID", "IT", "JA", "LT", "LV", "NL", "PL",

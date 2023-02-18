@@ -30,13 +30,18 @@ app = FastAPI(
     },
 )
 
+# add and configure CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=_cfg.cors_allow_origins,
+    allow_credentials=_cfg.cors_allow_credentials,
+    allow_methods=_cfg.cors_allow_methods,
+    allow_headers=_cfg.cors_allow_headers,
+)
 
-def change_union_serialization(schema: dict[str, Any]):
-    # if "anyOf" in schema:
-    #     schema["oneOf"] = schema.pop("anyOf")
-    # for child in schema.values():
-    #     if isinstance(child, dict):
-    #         change_union_serialization(child)
+
+def process_openapi_schema(schema: dict[str, Any]):
+    # nothing happening here, yet
     return schema
 
 
@@ -61,7 +66,7 @@ def custom_openapi():
             "url": _cfg.info.license_url,
         },
     )
-    app.openapi_schema = change_union_serialization(openapi_schema)
+    app.openapi_schema = process_openapi_schema(openapi_schema)
     return app.openapi_schema
 
 
@@ -76,15 +81,6 @@ async def startup_routine() -> None:
     log.info(
         f"{_cfg.app_name} (TextRig Server v{_cfg.info.version}) "
         f"running in {'DEVELOPMENT' if _cfg.dev_mode else 'PRODUCTION'} MODE"
-    )
-
-    # configure CORS middleware
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=_cfg.cors_allow_origins,
-        allow_credentials=_cfg.cors_allow_credentials,
-        allow_methods=_cfg.cors_allow_methods,
-        allow_headers=_cfg.cors_allow_headers,
     )
 
     # init app peripherals
