@@ -1,4 +1,5 @@
 import contextlib
+import re
 from typing import Any
 
 from fastapi import APIRouter, Depends, FastAPI, Request
@@ -135,6 +136,14 @@ _auth_backend_jwt = AuthenticationBackend(
 )
 
 
+def _validate_required_password_chars(password: str):
+    return (
+        re.search(r"[a-z]", password)
+        and re.search(r"[A-Z]", password)
+        and re.search(r"[0-9]", password)
+    )
+
+
 class UserManager(ObjectIDIDMixin, BaseUserManager[User, PyObjectId]):
     reset_password_token_secret = _cfg.security.secret
     verification_token_secret = _cfg.security.secret
@@ -167,7 +176,11 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[User, PyObjectId]):
             raise InvalidPasswordException(
                 reason="Password should be at least 8 characters long"
             )
-        if user.email in password:
+        if not _validate_required_password_chars(password):
+            raise InvalidPasswordException(
+                reason="Password must contain at least one of each a-z, A-Z, 0-9"
+            )
+        if user.email.lower() in password.lower():
             raise InvalidPasswordException(
                 reason="Password should not contain e-mail address"
             )
