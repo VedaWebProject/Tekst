@@ -89,9 +89,9 @@ tasks:
   pre-commit:
     desc: Run full pre-commit toolchain (format, test, lint, style checks, export schema)
     cmds:
-      - defer: {task: schema}
       - task: format
       - task: check
+      - task: schema
 
   clean:
     desc: Cleanup of generated files (won't work on Windows)
