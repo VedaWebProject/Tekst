@@ -108,7 +108,6 @@ class SecurityConfig(BaseModel):
     reset_pw_token_lifetime: int = 3600
     verification_token_lifetime: int = 3600
     jwt_lifetime: int = 3600
-    csrf_cookie_name: str = "csrftoken"
 
 
 class TextRigConfig(BaseSettings):
