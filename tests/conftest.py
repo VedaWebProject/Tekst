@@ -116,9 +116,14 @@ def new_user_data() -> dict:
 @pytest.fixture(scope="session")
 def status_fail_msg() -> callable:
     def _status_fail_msg(expected_status: int, response: Response) -> tuple[bool, str]:
+        resp_json = "No JSON response data."
+        try:
+            resp_json = response.json()
+        except Exception:
+            pass
         return (
             f"HTTP {response.status_code} (expected: {expected_status})"
-            f" -- {response.json()}"
+            f" -- {resp_json}"
         )
 
     return _status_fail_msg
