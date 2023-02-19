@@ -7,7 +7,7 @@ import type { NDateLocale } from 'naive-ui';
 
 import { enUS, dateEnUS } from 'naive-ui';
 import { deDE, dateDeDE } from 'naive-ui';
-import { UidataApi } from 'textrig-ts-client';
+import { UidataApi } from '@/openapi';
 
 const I18N_OPTIONS: I18nOptions = {
   legacy: false,
@@ -55,15 +55,11 @@ export async function setI18nLanguage(
   const l = locale?.value ?? locale ?? i18n.global.locale.value;
   if (!l) return Promise.reject(`Invalid locale code: ${l}`);
 
-  try {
-    await uiDataApi.getTranslations({ lang: l }).then((data) => {
-      i18n.global.mergeLocaleMessage(l, data);
-    });
-  } finally {
+  return uiDataApi.getTranslations({ lang: l }).then((response) => {
+    i18n.global.mergeLocaleMessage(l, response.data);
     // @ts-ignore
     i18n.global.locale.value = l;
     document.querySelector('html')?.setAttribute('lang', l);
-  }
-
-  return LANGUAGES[l];
+    return LANGUAGES[l];
+  });
 }

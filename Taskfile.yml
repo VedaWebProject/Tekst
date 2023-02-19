@@ -48,8 +48,7 @@ tasks:
     cmds:
       - npm run preview
 
-  generate-api-client:
-    desc: Generate Typescript-fetch client from server's OpenAPI schema
+  generate-openapi-client:
     cmds:
       - cmd: |
           TEMPDIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'trtemp')
@@ -63,12 +62,12 @@ tasks:
             openapitools/openapi-generator-cli:v6.3.0 \
               generate \
                 -i /local/openapi.json \
-                -g typescript-fetch \
+                -g typescript-axios \
                 -o /local/textrig-ts-client \
-                --global-property skipFormModel=false \
-                --additional-properties=typescriptThreePlus=true,npmName=textrig-ts-client
-          (cd $TEMPDIR/textrig-ts-client && npm install && npm run build && npm pack)
-          cp $TEMPDIR/textrig-ts-client/textrig-ts-client-0.0.1.tgz ./
-          npm uninstall --no-save textrig-ts-client
-          npm install
-          rm -rf textrig-ts-client-0.0.1.tgz $TEMPDIR
+            #    --global-property skipFormModel=false \
+                --additional-properties=typescriptThreePlus=true,useSingleRequestParameter=true
+          mkdir -p ./src/openapi/
+          rm -rf ./src/openapi/*
+          cp -r $TEMPDIR/textrig-ts-client/* ./src/openapi/
+          rm -rf $TEMPDIR
+          npm run lint
