@@ -38,7 +38,7 @@ async def test_register_invalid_pw(
 
 
 @pytest.mark.anyio
-async def test_login(root_path, test_client: AsyncClient, status_fail_msg):
+async def test_login(config, root_path, test_client: AsyncClient, status_fail_msg):
     endpoint = f"{root_path}/auth/cookie/login"
     payload = {"username": "verified@test.com", "password": "poiPOI098"}
     resp = await test_client.post(
@@ -47,7 +47,7 @@ async def test_login(root_path, test_client: AsyncClient, status_fail_msg):
         headers={"Content-Type": "application/x-www-form-urlencoded"},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
-    assert resp.headers.get("Set-Cookie", False)
+    assert resp.cookies.get(config.security.cookie_name)
 
 
 @pytest.mark.anyio
@@ -79,7 +79,9 @@ async def test_login_fail_unverified(
 
 
 @pytest.mark.anyio
-async def test_user_updates_self(root_path, test_client: AsyncClient, status_fail_msg):
+async def test_user_updates_self(
+    config, root_path, test_client: AsyncClient, status_fail_msg
+):
     # login
     endpoint = f"{root_path}/auth/cookie/login"
     payload = {"username": "verified@test.com", "password": "poiPOI098"}
@@ -89,19 +91,37 @@ async def test_user_updates_self(root_path, test_client: AsyncClient, status_fai
         headers={"Content-Type": "application/x-www-form-urlencoded"},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
-    assert resp.headers.get("Set-Cookie", False)
+
+    # save auth cookie
+    assert resp.cookies.get(config.security.cookie_name)
+    auth_cookie = resp.cookies.get(config.security.cookie_name)
+
+    # save csrf token from last "safe" request
+    # (which is the login request - all subsequent requests will contain the
+    # auth cookie and are not considered safe)
+    assert resp.cookies.get(config.security.csrf_cookie_name)
+    csrf_token = resp.cookies.get(config.security.csrf_cookie_name)
 
     # get user data from /users/me
-    cookie = resp.headers.get("Set-Cookie")
     endpoint = f"{root_path}/users/me"
-    resp = await test_client.get(endpoint, headers={"Cookie": cookie})
+    resp = await test_client.get(
+        endpoint, cookies={config.security.cookie_name: auth_cookie}
+    )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert "id" in resp.json()
 
     # update own first name
     user_id = resp.json()["id"]
     updates = {"firstName": "Bird Person"}
-    resp = await test_client.patch(endpoint, json=updates, headers={"Cookie": cookie})
+    resp = await test_client.patch(
+        endpoint,
+        json=updates,
+        cookies={
+            config.security.cookie_name: auth_cookie,
+            config.security.csrf_cookie_name: csrf_token,
+        },
+        headers={"x-csrftoken": csrf_token},
+    )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert resp.json()["id"] == user_id
     assert resp.json()["firstName"] == "Bird Person"

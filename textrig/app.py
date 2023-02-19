@@ -6,6 +6,7 @@ from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.utils import get_openapi
 from fastapi.responses import RedirectResponse
+from starlette_csrf import CSRFMiddleware
 from textrig.auth import create_sample_users
 from textrig.config import TextRigConfig, get_config
 from textrig.db import init_odm
@@ -28,6 +29,18 @@ app = FastAPI(
     responses={
         status.HTTP_400_BAD_REQUEST: {"description": "Invalid Request"},
     },
+)
+
+# add and configure CSRF middleware
+app.add_middleware(
+    CSRFMiddleware,
+    secret=_cfg.security.secret,
+    sensitive_cookies={_cfg.security.cookie_name},
+    cookie_name=_cfg.security.csrf_cookie_name,
+    cookie_path=_cfg.root_path or "/",
+    cookie_domain=_cfg.security.cookie_domain or None,
+    cookie_secure=not _cfg.dev_mode,
+    cookie_samesite="Lax",
 )
 
 # add and configure CORS middleware
