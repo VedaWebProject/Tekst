@@ -80,9 +80,9 @@ class AccessToken(BeanieBaseAccessToken[PyObjectId]):
 
 
 _cookie_transport = CookieTransport(
-    cookie_name=_cfg.security.cookie_name,
-    cookie_max_age=_cfg.security.cookie_lifetime or None,
-    cookie_domain=_cfg.security.cookie_domain or None,
+    cookie_name=_cfg.security.auth_cookie_name,
+    cookie_max_age=_cfg.security.auth_cookie_lifetime or None,
+    cookie_domain=_cfg.security.auth_cookie_domain or None,
     cookie_path=_cfg.root_path or "/",
     cookie_secure=not _cfg.dev_mode,
     cookie_httponly=True,

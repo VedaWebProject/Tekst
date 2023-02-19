@@ -47,7 +47,7 @@ async def test_login(config, root_path, test_client: AsyncClient, status_fail_ms
         headers={"Content-Type": "application/x-www-form-urlencoded"},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
-    assert resp.cookies.get(config.security.cookie_name)
+    assert resp.cookies.get(config.security.auth_cookie_name)
 
 
 @pytest.mark.anyio
@@ -93,8 +93,8 @@ async def test_user_updates_self(
     assert resp.status_code == 200, status_fail_msg(200, resp)
 
     # save auth cookie
-    assert resp.cookies.get(config.security.cookie_name)
-    auth_cookie = resp.cookies.get(config.security.cookie_name)
+    assert resp.cookies.get(config.security.auth_cookie_name)
+    auth_token = resp.cookies.get(config.security.auth_cookie_name)
 
     # save csrf token from last "safe" request
     # (which is the login request - all subsequent requests will contain the
@@ -105,7 +105,7 @@ async def test_user_updates_self(
     # get user data from /users/me
     endpoint = f"{root_path}/users/me"
     resp = await test_client.get(
-        endpoint, cookies={config.security.cookie_name: auth_cookie}
+        endpoint, cookies={config.security.auth_cookie_name: auth_token}
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert "id" in resp.json()
@@ -117,10 +117,10 @@ async def test_user_updates_self(
         endpoint,
         json=updates,
         cookies={
-            config.security.cookie_name: auth_cookie,
+            config.security.auth_cookie_name: auth_token,
             config.security.csrf_cookie_name: csrf_token,
         },
-        headers={"x-csrftoken": csrf_token},
+        headers={config.security.csrf_header_name: csrf_token},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert resp.json()["id"] == user_id

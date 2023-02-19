@@ -101,13 +101,15 @@ class SecurityConfig(BaseModel):
     secret: str = "this_should_really_be_changed"
     users_active_by_default: bool = False
     users_need_verification: bool = True
-    cookie_name: str = "textriguserauth"
-    cookie_domain: str | None = None
-    cookie_lifetime: int = 3600
+    auth_cookie_name: str = "textriguserauth"
+    auth_cookie_domain: str | None = None
+    auth_cookie_lifetime: int = 3600
     access_token_lifetime: int = 3600
     reset_pw_token_lifetime: int = 3600
     verification_token_lifetime: int = 3600
     jwt_lifetime: int = 3600
+    csrf_cookie_name: str = "XSRF-TOKEN"
+    csrf_header_name: str = "X-XSRF-TOKEN"
 
 
 class TextRigConfig(BaseSettings):
