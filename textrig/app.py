@@ -41,7 +41,7 @@ app.add_middleware(
     cookie_domain=_cfg.security.cookie_domain or None,
     cookie_secure=not _cfg.dev_mode,
     cookie_samesite="Lax",
-    header_name="X-XSRF-TOKEN"
+    header_name="X-XSRF-TOKEN",
 )
 
 # add and configure CORS middleware
