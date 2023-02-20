@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useUiDataStore } from '@/stores/uiData';
-const ui = useUiDataStore();
+import { usePlatformStore } from '@/stores/platform';
+const pf = usePlatformStore();
 </script>
 
 <template>
-  <h1>About {{ ui.get('platform.title') }}</h1>
+  <h1>About {{ pf.get('general.title') }}</h1>
   <p>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
     labore et dolore magna aliqua. Sed faucibus turpis in eu mi. Condimentum id venenatis a

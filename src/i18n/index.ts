@@ -7,7 +7,7 @@ import type { NDateLocale } from 'naive-ui';
 
 import { enUS, dateEnUS } from 'naive-ui';
 import { deDE, dateDeDE } from 'naive-ui';
-import { UidataApi } from '@/openapi';
+import { PlatformApi } from '@/openapi';
 
 const I18N_OPTIONS: I18nOptions = {
   legacy: false,
@@ -46,7 +46,7 @@ export const LANGUAGES: { [localeKey: string]: AvailableLanguage } = {
 };
 
 export const i18n = createI18n(I18N_OPTIONS);
-const uiDataApi = new UidataApi();
+const platformApi = new PlatformApi();
 
 export async function setI18nLanguage(
   locale: I18nOptions['locale'] = i18n.global.locale
@@ -55,7 +55,7 @@ export async function setI18nLanguage(
   const l = locale?.value ?? locale ?? i18n.global.locale.value;
   if (!l) return Promise.reject(`Invalid locale code: ${l}`);
 
-  return uiDataApi.getTranslations({ lang: l }).then((response) => {
+  return platformApi.getTranslations({ lang: l }).then((response) => {
     i18n.global.mergeLocaleMessage(l, response.data);
     // @ts-ignore
     i18n.global.locale.value = l;

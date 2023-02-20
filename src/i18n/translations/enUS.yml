@@ -33,12 +33,12 @@ i18n:
 loading:
   ready: Ready.
   serverI18n: Loading UI translations...
-  uiData: Loading platform data...
+  platformData: Loading platform data...
 
 errors:
   appInit: There were errors initializing the application.
   serverI18n: Some translations could not be loaded.
-  uiData: Could not load platform data.
+  platformData: Could not load platform data.
   unexpected: An unexpected error occurred. This should not happen.
   followFormRules: Please correct your inputs according to the form rules!
   noAccess: You don't have access to {resource}.

@@ -4,7 +4,7 @@ import FullScreenLoader from '@/components/FullScreenLoader.vue';
 import GlobalMessenger from '@/components/GlobalMessenger.vue';
 import { onMounted, onBeforeMount, ref, computed } from 'vue';
 import { LANGUAGES as LANGS } from '@/i18n';
-import { useStateStore, useUiDataStore, useMessagesStore, useSettingsStore } from '@/stores';
+import { useStateStore, usePlatformStore, useMessagesStore, useSettingsStore } from '@/stores';
 import { NConfigProvider, NGlobalStyle, lightTheme, darkTheme } from 'naive-ui';
 import { lightOverrides, darkOverrides } from '@/theme';
 import PageHeader from './layout/PageHeader.vue';
@@ -14,7 +14,7 @@ import { i18n } from '@/i18n';
 const state = useStateStore();
 const settings = useSettingsStore();
 const messages = useMessagesStore();
-const ui = useUiDataStore();
+const pf = usePlatformStore();
 const t = i18n.global.t;
 
 const loaderText = ref('');
@@ -40,9 +40,9 @@ onMounted(async () => {
     err = true;
   });
 
-  loaderText.value = t('loading.uiData');
-  await ui.loadPlatformData().catch((e) => {
-    messages.warning(t('errors.uiData'));
+  loaderText.value = t('loading.platformData');
+  await pf.loadPlatformData().catch((e) => {
+    messages.warning(t('errors.platformData'));
     console.error(e);
     err = true;
   });

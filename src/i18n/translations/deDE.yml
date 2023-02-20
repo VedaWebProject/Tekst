@@ -33,12 +33,12 @@ i18n:
 loading:
   ready: Fertig.
   serverI18n: Lade UI-Übersetzungen...
-  uiData: Lade Plattform-Daten...
+  platformData: Lade Plattform-Daten...
 
 errors:
   appInit: Es sind Fehler beim Starten der Anwendung aufgetreten.
   serverI18n: Einige Übersetzungen konnten nicht geladen werden.
-  uiData: Plattform-Daten konnten nicht geladen werden.
+  platformData: Plattform-Daten konnten nicht geladen werden.
   unexpected: Ein unerwarteter Fehler ist aufgetreten. Das hätte nicht passieren dürfen.
   followFormRules: Bitte korrigieren Sie Ihre Eingaben entsprechend den Formularregeln!
   noAccess: Sie haben keine Zugriffsberechtigung für {resource}.

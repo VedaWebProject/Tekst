@@ -4,17 +4,17 @@ import router from '@/router';
 import LanguageSwitcher from '@/components/LanguageSwitcher.vue';
 import ThemeModeSwitcher from '@/components/ThemeModeSwitcher.vue';
 import { NSpace, NButton } from 'naive-ui';
-import { useUiDataStore } from '@/stores';
+import { usePlatformStore } from '@/stores';
 
-const ui = useUiDataStore();
+const pf = usePlatformStore();
 </script>
 
 <template>
   <header>
     <div id="header-branding-container">
-      <img :alt="ui.get('platform.title') + ' Logo'" class="logo" src="@/assets/logo.png" />
+      <img :alt="pf.get('general.title') + ' Logo'" class="logo" src="@/assets/logo.png" />
       <div>
-        <h1>{{ ui.get('platform.title') }}</h1>
+        <h1>{{ pf.get('general.title') }}</h1>
         <h2>{{ $t('general.welcomeTest') }}</h2>
       </div>
       <div id="header-branding-extra">
