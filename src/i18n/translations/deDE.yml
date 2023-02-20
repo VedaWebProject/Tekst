@@ -39,3 +39,45 @@ errors:
   appInit: Es sind Fehler beim Starten der Anwendung aufgetreten.
   serverI18n: Einige Übersetzungen konnten nicht geladen werden.
   uiData: Plattform-Daten konnten nicht geladen werden.
+  unexpected: Ein unerwarteter Fehler ist aufgetreten. Das hätte nicht passieren dürfen.
+  followFormRules: Bitte korrigieren Sie Ihre Eingaben entsprechend den Formularregeln!
+  noAccess: Sie haben keine Zugriffsberechtigung für {resource}.
+
+register:
+  register: Registrieren
+  switchToLogin: Mit bestehendem Account einloggen
+  heading: Neuen Account registrieren
+  success: Erfolgreich registriert. Sie können sich jetzt einloggen.
+  labels:
+    email: Email
+    password: Passwort
+    repeatPassword: Password wiederholen
+    firstName: Vorname
+    lastName: Nachname
+  rulesFeedback:
+    emailReq: Email-Adresse wird benötigt
+    emailInvalid: Email-Adresse ist zu offensichtlich ungültig
+    passwordReq: Passwort wird benötigt
+    passwordLength: Mindestens 8 Zeichen
+    passwordChars: 'Mindestens je ein Zeichen aus: a-z, A-Z and 0-9'
+    passwordRepReq: Passwort muss wiederholt werden
+    passwordRepNoMatch: Passwörter stimmen nicht überein
+    firstNameReq: Vorname wird benötigt
+    lastNameReq: Nachname wird benötigt
+  errors:
+    emailAlreadyRegistered: Diese Email-Adresse ist bereits registriert.
+    weakPassword: Das eingegebene Passwort entspricht nicht den Sicherheitsanforderungen.
+
+login:
+  login: Einloggen
+  switchToRegister: Neuen Account registrieren
+  heading: Loggen Sie sich ein
+  labels:
+    email: Email
+    password: Passwort
+  rulesFeedback:
+    emailReq: Email-Adresse wird benötigt
+    passwordReq: Passwort wird benötigt
+  errors:
+    badCreds: Falsche Email-Adresse oder falsches Passwort
+    notVerified: Ihre Email-Adresse ist noch nicht verifiziert. Wir haben Ihren Verifizierungslink nochmals versendet.

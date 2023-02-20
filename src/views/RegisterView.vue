@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { i18n } from '@/i18n';
 import router from '@/router';
 import { useMessagesStore } from '@/stores';
 import {
@@ -15,9 +16,12 @@ import {
   NCard,
 } from 'naive-ui';
 import { AuthApi, type UserCreate } from '@/openapi';
+import { useWindowSize } from '@vueuse/core';
 
 const messages = useMessagesStore();
 const authApi = new AuthApi();
+const { width } = useWindowSize();
+const t = i18n.global.t;
 
 const initialFormModel = () => ({
   email: null,
@@ -32,7 +36,6 @@ const formModel = ref<Record<string, string | null>>(initialFormModel());
 const formRef = ref<FormInst | null>(null);
 const rPasswordFormItemRef = ref<FormItemInst | null>(null);
 const loading = ref(false);
-const formLabelsLeft = window.innerWidth > 600;
 
 function validateEmail(rule: FormItemRule, value: string): boolean {
   return /^.+@.+\.\w+$/.test(value);
@@ -54,55 +57,55 @@ const formRules: FormRules = {
   email: [
     {
       required: true,
-      message: 'Email is required',
+      message: t('register.rulesFeedback.emailReq'),
       trigger: 'blur',
     },
     {
       validator: validateEmail,
-      message: 'Email is too obviously invalid',
+      message: t('register.rulesFeedback.emailInvalid'),
       trigger: 'blur',
     },
   ],
   password: [
     {
       required: true,
-      message: 'Password is required',
+      message: t('register.rulesFeedback.passwordReq'),
       trigger: 'blur',
     },
     {
       validator: validatePasswordLength,
-      message: 'Password must be at least 8 characters long',
+      message: t('register.rulesFeedback.passwordLength'),
       trigger: ['input', 'blur'],
     },
     {
       validator: validatePasswordChars,
-      message: 'Password must contain at least one of each: a-z, A-Z and 0-9',
+      message: t('register.rulesFeedback.passwordChars'),
       trigger: ['input', 'blur'],
     },
   ],
   passwordRepeat: [
     {
       required: true,
-      message: 'Password repetition is required',
+      message: t('register.rulesFeedback.passwordRepReq'),
       trigger: 'blur',
     },
     {
       validator: validatePasswordsMatch,
-      message: "Passwords don't match",
+      message: t('register.rulesFeedback.passwordRepNoMatch'),
       trigger: ['input', 'blur', 'password-input'],
     },
   ],
   firstName: [
     {
       required: true,
-      message: 'First name is required',
+      message: t('register.rulesFeedback.firstNameReq'),
       trigger: 'blur',
     },
   ],
   lastName: [
     {
       required: true,
-      message: 'Last name is required',
+      message: t('register.rulesFeedback.lastNameReq'),
       trigger: 'blur',
     },
   ],
@@ -118,7 +121,7 @@ function registerUser() {
   authApi
     .registerRegister({ userCreate: formModel.value as unknown as UserCreate })
     .then(() => {
-      messages.success('Successfully registered. You can now log in.');
+      messages.success(t('register.success'));
       switchToLogin();
     })
     .catch((e) => {
@@ -129,11 +132,11 @@ function registerUser() {
       if (e.response) {
         const data = e.response.data;
         if (data.detail && data.detail === 'REGISTER_USER_ALREADY_EXISTS') {
-          messages.error('This email address is already registered.');
+          messages.error(t('register.errors.emailAlreadyRegistered'));
         } else if (data.detail?.code === 'REGISTER_INVALID_PASSWORD') {
-          messages.error("Your password doesn't meet the security requirements.");
+          messages.error(t('register.errors.weakPassword'));
         } else {
-          messages.error('An unexpected error occurred. This should not happen.');
+          messages.error(t('errors.unexpected'));
         }
       }
       loading.value = false;
@@ -148,7 +151,7 @@ function handleRegisterClick(e: MouseEvent | null = null) {
       !errors && registerUser();
     })
     .catch(() => {
-      messages.error('Please correct your input according to the form rules.');
+      messages.error(t('errors.followFormRules'));
       loading.value = false;
     });
 }
@@ -168,8 +171,8 @@ function switchToLogin() {
 <template>
   <n-card
     embedded
-    style="width: 720px; margin: 0 auto"
-    title="Register new account"
+    style="width: 720px; max-width: 100%; margin: 0 auto"
+    :title="$t('register.heading')"
     size="huge"
     :segmented="{ content: 'soft' }"
     role="dialog"
@@ -180,49 +183,54 @@ function switchToLogin() {
       :model="formModel"
       :rules="formRules"
       size="large"
-      :label-placement="formLabelsLeft ? 'left' : 'top'"
+      :label-placement="width > 600 ? 'left' : 'top'"
       label-width="auto"
       require-mark-placement="right-hanging"
     >
-      <n-form-item path="email" label="Email">
+      <n-form-item path="email" :label="$t('register.labels.email')">
         <n-input
           v-model:value="formModel.email"
           type="text"
-          placeholder="..."
+          :placeholder="$t('register.labels.email')"
           @keydown.enter.prevent
         />
       </n-form-item>
-      <n-form-item path="password" label="Password">
+      <n-form-item path="password" :label="$t('register.labels.password')">
         <n-input
           v-model:value="formModel.password"
           type="password"
-          placeholder="..."
+          :placeholder="$t('register.labels.password')"
           @input="handlePasswordInput"
           @keydown.enter.prevent
         />
       </n-form-item>
-      <n-form-item ref="rPasswordFormItemRef" first path="passwordRepeat" label="Repeat Password">
+      <n-form-item
+        ref="rPasswordFormItemRef"
+        first
+        path="passwordRepeat"
+        :label="$t('register.labels.repeatPassword')"
+      >
         <n-input
           v-model:value="formModel.passwordRepeat"
-          :disabled="!formModel.password"
           type="password"
-          placeholder="..."
+          :disabled="!formModel.password"
+          :placeholder="$t('register.labels.repeatPassword')"
           @keydown.enter.prevent
         />
       </n-form-item>
-      <n-form-item path="firstName" label="First Name">
+      <n-form-item path="firstName" :label="$t('register.labels.firstName')">
         <n-input
           v-model:value="formModel.firstName"
           type="text"
-          placeholder="..."
+          :placeholder="$t('register.labels.firstName')"
           @keydown.enter.prevent
         />
       </n-form-item>
-      <n-form-item path="lastName" label="Last Name">
+      <n-form-item path="lastName" :label="$t('register.labels.lastName')">
         <n-input
           v-model:value="formModel.lastName"
           type="text"
-          placeholder="..."
+          :placeholder="$t('register.labels.lastName')"
           @keyup.enter="() => handleRegisterClick()"
         />
       </n-form-item>
@@ -238,7 +246,7 @@ function switchToLogin() {
           tabindex="-1"
           @click="switchToLogin"
         >
-          Log in to existing account
+          {{ $t('register.switchToLogin') }}
         </n-button>
         <n-button
           type="primary"
@@ -247,7 +255,7 @@ function switchToLogin() {
           :disabled="loading"
           size="large"
         >
-          Register
+          {{ $t('register.register') }}
         </n-button>
       </div>
     </template>

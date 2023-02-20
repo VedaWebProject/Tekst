@@ -83,6 +83,6 @@ onMounted(async () => {
 <style scoped>
 main {
   border: 1px dashed #0000ff;
-  padding: 3em 0;
+  padding: 2em 1rem;
 }
 </style>

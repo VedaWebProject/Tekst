@@ -1,10 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore, useMessagesStore } from '@/stores';
 import { HomeView, AboutView, AccountView, LoginView, RegisterView } from '@/views';
+import { i18n } from '@/i18n';
 
 // restricted routes
 const ONLY_USERS = ['/account'];
 const ONLY_SUPERUSERS = ['/admin'];
+
+const t = i18n.global.t;
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -57,7 +60,7 @@ router.beforeEach(async (to) => {
   // redirect if trying to access a restricted page without aithorization
   if (!authorized) {
     auth.returnUrl = to.fullPath;
-    messages.warning("You don't have access to the requested page.");
+    messages.warning(t('errors.noAccess', { resource: to.path }));
     return '/home';
   }
 });

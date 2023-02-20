@@ -13,12 +13,14 @@ import {
 } from 'naive-ui';
 import { ref } from 'vue';
 import { i18n } from '@/i18n';
+import { useWindowSize } from '@vueuse/core';
 
 const t = i18n.global.t;
 const auth = useAuthStore();
 const messages = useMessagesStore();
 
 const loading = ref(false);
+const { width } = useWindowSize();
 
 const initialFormModel = () => ({
   email: null,
@@ -27,20 +29,19 @@ const initialFormModel = () => ({
 
 const formModel = ref<Record<string, string | null>>(initialFormModel());
 const formRef = ref<FormInst | null>(null);
-const formLabelsLeft = window.innerWidth > 600;
 
 const formRules: FormRules = {
   email: [
     {
       required: true,
-      message: 'Email is required',
+      message: t('login.rulesFeedback.emailReq'),
       trigger: 'blur',
     },
   ],
   password: [
     {
       required: true,
-      message: 'Password is required',
+      message: t('login.rulesFeedback.passwordReq'),
       trigger: 'blur',
     },
   ],
@@ -73,14 +74,12 @@ function loginUser() {
       if (e.response) {
         const data = e.response.data;
         if (data.detail === 'LOGIN_BAD_CREDENTIALS') {
-          messages.error('Incorrect email or password');
+          messages.error(t('login.errors.badCreds'));
         } else if (data.detail === 'LOGIN_USER_NOT_VERIFIED') {
-          messages.error(
-            'Your account is not yet verified. We re-sent your verification link via email.'
-          );
+          messages.error(t('login.errors.notVerified'));
         }
       } else {
-        messages.error('An unexpected error occurred. This should not happen.');
+        messages.error(t('errors.unexpected'));
       }
       loading.value = false;
     });
@@ -94,7 +93,7 @@ function handleLoginClick(e: MouseEvent | null = null) {
       !errors && loginUser();
     })
     .catch(() => {
-      messages.error('Please correct your input according to the form rules.');
+      messages.error(t('errors.followFormRules'));
       loading.value = false;
     });
 }
@@ -103,8 +102,8 @@ function handleLoginClick(e: MouseEvent | null = null) {
 <template>
   <n-card
     embedded
-    style="width: 720px; margin: 0 auto"
-    title="Log in to your account"
+    style="width: 720px; max-width: 100%; margin: 0 auto"
+    :title="$t('login.heading')"
     :segmented="{ content: 'soft' }"
     size="huge"
     role="dialog"
@@ -115,23 +114,23 @@ function handleLoginClick(e: MouseEvent | null = null) {
       :model="formModel"
       :rules="formRules"
       size="large"
-      :label-placement="formLabelsLeft ? 'left' : 'top'"
+      :label-placement="width > 600 ? 'left' : 'top'"
       label-width="auto"
       require-mark-placement="right-hanging"
     >
-      <n-form-item path="email" label="Email">
+      <n-form-item path="email" :label="$t('login.labels.email')">
         <n-input
           v-model:value="formModel.email"
           type="text"
-          placeholder="..."
+          :placeholder="$t('login.labels.email')"
           @keydown.enter.prevent
         />
       </n-form-item>
-      <n-form-item path="password" label="Password">
+      <n-form-item path="password" :label="$t('login.labels.password')">
         <n-input
           v-model:value="formModel.password"
           type="password"
-          placeholder="..."
+          :placeholder="$t('login.labels.password')"
           @keyup.enter="() => handleLoginClick()"
         />
       </n-form-item>
@@ -147,7 +146,7 @@ function handleLoginClick(e: MouseEvent | null = null) {
           tabindex="-1"
           @click="switchToRegistration"
         >
-          Register new account
+          {{ $t('login.switchToRegister') }}
         </n-button>
         <n-button
           size="large"
@@ -156,7 +155,7 @@ function handleLoginClick(e: MouseEvent | null = null) {
           :loading="loading"
           :disabled="loading"
         >
-          Login
+          {{ $t('login.login') }}
         </n-button>
       </div>
     </template>
