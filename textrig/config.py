@@ -1,5 +1,6 @@
 import os
 from functools import lru_cache
+from secrets import token_hex
 from urllib.parse import quote
 
 from pydantic import BaseModel, BaseSettings, EmailStr, Field, HttpUrl, validator
@@ -98,7 +99,7 @@ class InfoConfig(BaseModel):
 class SecurityConfig(BaseModel):
     """Security config model"""
 
-    secret: str = "this_should_really_be_changed"
+    secret: str = Field(default_factory=lambda: token_hex(32), min_length=16)
     users_active_by_default: bool = False
     users_need_verification: bool = True
     auth_cookie_name: str = "textriguserauth"
