@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import router from '@/router';
-import { useAuthStore, useStateStore, useMessagesStore } from '@/stores';
+import { useAuthStore, useMessagesStore } from '@/stores';
 import {
   type FormInst,
   type FormValidationError,
@@ -10,13 +10,11 @@ import {
   NInput,
   NButton,
   NCard,
-  NModal,
 } from 'naive-ui';
 import { ref } from 'vue';
 import { i18n } from '@/i18n';
 
 const t = i18n.global.t;
-const state = useStateStore();
 const auth = useAuthStore();
 const messages = useMessagesStore();
 
@@ -48,23 +46,22 @@ const formRules: FormRules = {
   ],
 };
 
-function closeLogin() {
+function resetForm() {
   loading.value = false;
   formModel.value = initialFormModel();
   formRef.value?.restoreValidation();
-  state.showLogin = false;
 }
 
 function switchToRegistration() {
-  closeLogin();
-  state.openRegistration();
+  resetForm();
+  router.push('/register');
 }
 
 function loginUser() {
   auth
     .login(formModel.value.email || '', formModel.value.password || '')
     .then((u) => {
-      closeLogin();
+      resetForm();
       messages.success(t('general.welcome', { name: u.firstName }));
       router.push('/account');
     })
@@ -104,75 +101,64 @@ function handleLoginClick(e: MouseEvent | null = null) {
 </script>
 
 <template>
-  <n-modal
-    v-model:show="state.showLogin"
-    :on-close="closeLogin"
-    :on-esc="closeLogin"
-    :on-mask-click="closeLogin"
-    :on-update:show="() => null"
+  <n-card
+    embedded
+    style="width: 720px; margin: 0 auto"
+    title="Log in to your account"
+    :segmented="{ content: 'soft' }"
+    size="huge"
+    role="dialog"
+    aria-modal="true"
   >
-    <n-card
-      embedded
-      style="width: 720px"
-      title="Log in to your account"
-      :bordered="false"
-      :segmented="{ content: 'soft', footer: 'soft' }"
-      size="huge"
-      role="dialog"
-      aria-modal="true"
-      :on-close="closeLogin"
-      closable
+    <n-form
+      ref="formRef"
+      :model="formModel"
+      :rules="formRules"
+      size="large"
+      :label-placement="formLabelsLeft ? 'left' : 'top'"
+      label-width="auto"
+      require-mark-placement="right-hanging"
     >
-      <n-form
-        ref="formRef"
-        :model="formModel"
-        :rules="formRules"
-        size="large"
-        :label-placement="formLabelsLeft ? 'left' : 'top'"
-        label-width="auto"
-        require-mark-placement="right-hanging"
-      >
-        <n-form-item path="email" label="Email">
-          <n-input
-            v-model:value="formModel.email"
-            type="text"
-            placeholder="..."
-            @keydown.enter.prevent
-          />
-        </n-form-item>
-        <n-form-item path="password" label="Password">
-          <n-input
-            v-model:value="formModel.password"
-            type="password"
-            placeholder="..."
-            @keyup.enter="() => handleLoginClick()"
-          />
-        </n-form-item>
-      </n-form>
+      <n-form-item path="email" label="Email">
+        <n-input
+          v-model:value="formModel.email"
+          type="text"
+          placeholder="..."
+          @keydown.enter.prevent
+        />
+      </n-form-item>
+      <n-form-item path="password" label="Password">
+        <n-input
+          v-model:value="formModel.password"
+          type="password"
+          placeholder="..."
+          @keyup.enter="() => handleLoginClick()"
+        />
+      </n-form-item>
+    </n-form>
 
-      <template #footer>
-        <div style="display: flex; justify-content: flex-end; gap: 12px">
-          <n-button
-            quaternary
-            type="primary"
-            size="large"
-            :focusable="false"
-            tabindex="-1"
-            @click="switchToRegistration"
-          >
-            Register new account
-          </n-button>
-          <n-button
-            size="large"
-            type="primary"
-            @click="handleLoginClick"
-            :loading="loading"
-            :disabled="loading"
-          >
-            Login
-          </n-button>
-        </div>
-      </template>
-    </n-card>
-  </n-modal>
+    <template #footer>
+      <div style="display: flex; justify-content: flex-end; gap: 12px">
+        <n-button
+          quaternary
+          type="primary"
+          size="large"
+          :focusable="false"
+          tabindex="-1"
+          @click="switchToRegistration"
+        >
+          Register new account
+        </n-button>
+        <n-button
+          size="large"
+          type="primary"
+          @click="handleLoginClick"
+          :loading="loading"
+          :disabled="loading"
+        >
+          Login
+        </n-button>
+      </div>
+    </template>
+  </n-card>
 </template>

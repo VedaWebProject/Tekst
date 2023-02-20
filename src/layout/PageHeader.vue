@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router';
+import router from '@/router';
 import LanguageSwitcher from '@/components/LanguageSwitcher.vue';
 import ThemeModeSwitcher from '@/components/ThemeModeSwitcher.vue';
-import LoginModal from '@/components/LoginModal.vue';
-import RegisterModal from '@/components/RegisterModal.vue';
 import { NSpace, NButton } from 'naive-ui';
-import { useUiDataStore, useStateStore } from '@/stores';
+import { useUiDataStore } from '@/stores';
 
 const ui = useUiDataStore();
-const state = useStateStore();
 </script>
 
 <template>
@@ -23,9 +21,7 @@ const state = useStateStore();
         <n-space inline :wrap-item="false" size="small">
           <ThemeModeSwitcher size="small" />
           <LanguageSwitcher size="small" />
-          <n-button @click="state.openLogin" size="small">Login</n-button>
-          <LoginModal />
-          <RegisterModal />
+          <n-button @click="() => router.push('/login')" size="small">Login</n-button>
         </n-space>
       </div>
     </div>

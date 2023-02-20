@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useMessagesStore, useStateStore } from '@/stores';
+import router from '@/router';
+import { useMessagesStore } from '@/stores';
 import {
   type FormInst,
   type FormItemInst,
@@ -12,11 +13,9 @@ import {
   NInput,
   NButton,
   NCard,
-  NModal,
 } from 'naive-ui';
 import { AuthApi, type UserCreate } from '@/openapi';
 
-const state = useStateStore();
 const messages = useMessagesStore();
 const authApi = new AuthApi();
 
@@ -154,115 +153,103 @@ function handleRegisterClick(e: MouseEvent | null = null) {
     });
 }
 
-function closeRegistration() {
+function resetForm() {
   loading.value = false;
   formModel.value = initialFormModel();
   formRef.value?.restoreValidation();
-  state.showRegistration = false;
 }
 
 function switchToLogin() {
-  closeRegistration();
-  state.openLogin();
+  resetForm();
+  router.push('/login');
 }
 </script>
 
 <template>
-  <n-modal
-    v-model:show="state.showRegistration"
-    :on-close="closeRegistration"
-    :on-esc="closeRegistration"
-    :on-mask-click="closeRegistration"
-    :on-update:show="() => null"
+  <n-card
+    embedded
+    style="width: 720px; margin: 0 auto"
+    title="Register new account"
+    size="huge"
+    :segmented="{ content: 'soft' }"
+    role="dialog"
+    aria-modal="true"
   >
-    <n-card
-      embedded
-      style="width: 720px"
-      title="Register new account"
-      :bordered="false"
-      size="huge"
-      :segmented="{ content: 'soft', footer: 'soft' }"
-      role="dialog"
-      aria-modal="true"
-      :on-close="closeRegistration"
-      closable
+    <n-form
+      ref="formRef"
+      :model="formModel"
+      :rules="formRules"
+      size="large"
+      :label-placement="formLabelsLeft ? 'left' : 'top'"
+      label-width="auto"
+      require-mark-placement="right-hanging"
     >
-      <n-form
-        ref="formRef"
-        :model="formModel"
-        :rules="formRules"
-        size="large"
-        :label-placement="formLabelsLeft ? 'left' : 'top'"
-        label-width="auto"
-        require-mark-placement="right-hanging"
-      >
-        <n-form-item path="email" label="Email">
-          <n-input
-            v-model:value="formModel.email"
-            type="text"
-            placeholder="..."
-            @keydown.enter.prevent
-          />
-        </n-form-item>
-        <n-form-item path="password" label="Password">
-          <n-input
-            v-model:value="formModel.password"
-            type="password"
-            placeholder="..."
-            @input="handlePasswordInput"
-            @keydown.enter.prevent
-          />
-        </n-form-item>
-        <n-form-item ref="rPasswordFormItemRef" first path="passwordRepeat" label="Repeat Password">
-          <n-input
-            v-model:value="formModel.passwordRepeat"
-            :disabled="!formModel.password"
-            type="password"
-            placeholder="..."
-            @keydown.enter.prevent
-          />
-        </n-form-item>
-        <n-form-item path="firstName" label="First Name">
-          <n-input
-            v-model:value="formModel.firstName"
-            type="text"
-            placeholder="..."
-            @keydown.enter.prevent
-          />
-        </n-form-item>
-        <n-form-item path="lastName" label="Last Name">
-          <n-input
-            v-model:value="formModel.lastName"
-            type="text"
-            placeholder="..."
-            @keyup.enter="() => handleRegisterClick()"
-          />
-        </n-form-item>
-      </n-form>
+      <n-form-item path="email" label="Email">
+        <n-input
+          v-model:value="formModel.email"
+          type="text"
+          placeholder="..."
+          @keydown.enter.prevent
+        />
+      </n-form-item>
+      <n-form-item path="password" label="Password">
+        <n-input
+          v-model:value="formModel.password"
+          type="password"
+          placeholder="..."
+          @input="handlePasswordInput"
+          @keydown.enter.prevent
+        />
+      </n-form-item>
+      <n-form-item ref="rPasswordFormItemRef" first path="passwordRepeat" label="Repeat Password">
+        <n-input
+          v-model:value="formModel.passwordRepeat"
+          :disabled="!formModel.password"
+          type="password"
+          placeholder="..."
+          @keydown.enter.prevent
+        />
+      </n-form-item>
+      <n-form-item path="firstName" label="First Name">
+        <n-input
+          v-model:value="formModel.firstName"
+          type="text"
+          placeholder="..."
+          @keydown.enter.prevent
+        />
+      </n-form-item>
+      <n-form-item path="lastName" label="Last Name">
+        <n-input
+          v-model:value="formModel.lastName"
+          type="text"
+          placeholder="..."
+          @keyup.enter="() => handleRegisterClick()"
+        />
+      </n-form-item>
+    </n-form>
 
-      <template #footer>
-        <div style="display: flex; justify-content: flex-end; gap: 12px">
-          <n-button
-            quaternary
-            type="primary"
-            size="large"
-            :focusable="false"
-            tabindex="-1"
-            @click="switchToLogin"
-          >
-            Log in to existing account
-          </n-button>
-          <n-button
-            type="primary"
-            @click="handleRegisterClick"
-            :loading="loading"
-            :disabled="loading"
-            size="large"
-          >
-            Register
-          </n-button>
-        </div>
-      </template>
-    </n-card>
-  </n-modal>
+    <template #footer>
+      <div style="display: flex; justify-content: flex-end; gap: 12px">
+        <n-button
+          quaternary
+          type="primary"
+          size="large"
+          :focusable="false"
+          tabindex="-1"
+          @click="switchToLogin"
+        >
+          Log in to existing account
+        </n-button>
+        <n-button
+          type="primary"
+          @click="handleRegisterClick"
+          :loading="loading"
+          :disabled="loading"
+          size="large"
+        >
+          Register
+        </n-button>
+      </div>
+    </template>
+  </n-card>
 </template>

@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore, useMessagesStore } from '@/stores';
-import { HomeView, AboutView, AccountView } from '@/views';
+import { HomeView, AboutView, AccountView, LoginView, RegisterView } from '@/views';
 
 // restricted routes
 const ONLY_USERS = ['/account'];
@@ -19,6 +19,16 @@ const router = createRouter({
       path: '/about',
       name: 'about',
       component: AboutView,
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: LoginView,
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: RegisterView,
     },
     {
       path: '/account',
