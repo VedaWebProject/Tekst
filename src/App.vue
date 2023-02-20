@@ -15,14 +15,19 @@ const state = useStateStore();
 const settings = useSettingsStore();
 const messages = useMessagesStore();
 const pf = usePlatformStore();
-const t = i18n.global.t;
 
+const t = i18n.global.t;
 const loaderText = ref('');
 const loaderShowSpinner = ref(true);
 const initLoadingFinished = ref(false);
 
 const nUiLangLocale = computed(() => LANGS[settings.language].nUiLangLocale);
 const nUiDateLocale = computed(() => LANGS[settings.language].nUiDateLocale);
+
+const theme = computed(() => (settings.theme === 'light' ? lightTheme : darkTheme));
+const themeOverrides = computed(() =>
+  settings.theme === 'light' ? lightOverrides : darkOverrides
+);
 
 onBeforeMount(() => {
   state.startGlobalLoading();
@@ -56,33 +61,43 @@ onMounted(async () => {
 
 <template>
   <n-config-provider
-    :theme="settings.theme === 'light' ? lightTheme : darkTheme"
-    :theme-overrides="settings.theme === 'light' ? lightOverrides : darkOverrides"
+    :theme="theme"
+    :theme-overrides="themeOverrides"
     :locale="nUiLangLocale"
     :date-locale="nUiDateLocale"
   >
-    <template v-if="initLoadingFinished">
-      <PageHeader />
-      <main>
-        <RouterView />
-      </main>
-      <PageFooter />
-    </template>
+    <div id="app-container">
+      <template v-if="initLoadingFinished">
+        <PageHeader />
+        <main>
+          <RouterView />
+        </main>
+        <PageFooter />
+      </template>
 
-    <FullScreenLoader
-      :show="state.globalLoading"
-      transition="0.2s"
-      :text="loaderText"
-      :spinner="loaderShowSpinner"
-    />
-    <GlobalMessenger />
+      <FullScreenLoader
+        :show="state.globalLoading"
+        transition="0.2s"
+        :text="loaderText"
+        :spinner="loaderShowSpinner"
+      />
+      <GlobalMessenger />
+    </div>
     <n-global-style />
   </n-config-provider>
 </template>
 
 <style scoped>
+#app-container {
+  --accent-color: v-bind(state.accentColor.plain);
+  --accent-color-light: v-bind(state.accentColor.light);
+  --accent-color-lighter: v-bind(state.accentColor.lighter);
+  --accent-color-dark: v-bind(state.accentColor.dark);
+  --accent-color-darker: v-bind(state.accentColor.darker);
+}
+
 main {
-  border: 1px dashed #0000ff;
+  border: 1px dashed #bbb;
   padding: 2em 1rem;
 }
 </style>

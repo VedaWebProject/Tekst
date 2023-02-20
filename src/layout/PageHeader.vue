@@ -51,7 +51,10 @@ const auth = useAuthStore();
 
 <style scoped>
 header {
-  border: 1px dashed #ff0000;
+  border: 1px dashed #bbb;
+  border-bottom-color: var(--accent-color-darker);
+  border-bottom-width: 5px;
+  border-bottom-style: solid;
   padding: 0.8em;
 }
 
