@@ -2877,6 +2877,12 @@
             "type": "string",
             "description": "Delimiter for displaying text locations",
             "default": ","
+          },
+          "accentColor": {
+            "title": "Accentcolor",
+            "type": "string",
+            "description": "Accent color used for this text in the client UI",
+            "format": "color"
           }
         },
         "description": "A text represented in TextRig"
@@ -2931,6 +2937,12 @@
             "type": "string",
             "description": "Delimiter for displaying text locations",
             "default": ","
+          },
+          "accentColor": {
+            "title": "Accentcolor",
+            "type": "string",
+            "description": "Accent color used for this text in the client UI",
+            "format": "color"
           }
         },
         "description": "A text represented in TextRig"
@@ -2961,6 +2973,11 @@
           "locDelim": {
             "title": "Locdelim",
             "type": "string"
+          },
+          "accentColor": {
+            "title": "Accentcolor",
+            "type": "string",
+            "format": "color"
           }
         },
         "description": "A text represented in TextRig"

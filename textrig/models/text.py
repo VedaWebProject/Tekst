@@ -1,6 +1,7 @@
 # from fastapi import HTTPException, status
 # from textrig.utils.strings import safe_name
-from pydantic import Field
+from pydantic import Field, validator
+from pydantic.color import Color
 
 # from textrig.db.io import DbIO
 # from textrig.logging import log
@@ -34,6 +35,20 @@ class Text(ModelBase, ModelFactory):
         ",",
         description="Delimiter for displaying text locations",
     )
+
+    accent_color: Color = Field(
+        default_factory=lambda: Color("#454545"),
+        description="Accent color used for this text in the client UI",
+    )
+
+    @validator("accent_color")
+    def validate_color(cls, v) -> Color:
+        if not isinstance(v, Color):
+            try:
+                v = Color(v)
+            except Exception:
+                return None
+        return v.as_hex()
 
     class Settings:
         name = "texts"
