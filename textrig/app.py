@@ -54,6 +54,12 @@ app.add_middleware(
 )
 
 
+# add root route to redirect to docs
+@app.get("/", response_class=RedirectResponse, status_code=301, include_in_schema=False)
+async def root_redirect():
+    return _cfg.root_path + _cfg.doc.redoc_url
+
+
 def process_openapi_schema(schema: dict[str, Any]):
     # nothing happening here, yet
     return schema
@@ -106,25 +112,20 @@ async def startup_routine() -> None:
     # pass all these things by hand...
     await init_odm(get_db(get_db_client(_cfg), _cfg))
 
-    # add root route to redirect to docs
-    @app.get(
-        "/", response_class=RedirectResponse, status_code=301, include_in_schema=False
-    )
-    async def root_redirect():
-        return _cfg.root_path + _cfg.doc.redoc_url
-
     # log dev server info for quick browser access
     if _cfg.dev_mode:  # pragma: no cover
+        api_path = _cfg.server_url + _cfg.root_path
         if _cfg.doc.swaggerui_url:
-            log.info(f"\u2022 SwaggerUI docs @ {_cfg.doc.swaggerui_url}")
+            log.info(f"\u2022 SwaggerUI docs @ {api_path}{_cfg.doc.swaggerui_url}")
         if _cfg.doc.redoc_url:
-            log.info(f"\u2022 Redoc API docs @ {_cfg.doc.redoc_url}")
+            log.info(f"\u2022 Redoc API docs @ {api_path}{_cfg.doc.redoc_url}")
 
     # modify and cache OpenAPI schema
     app.openapi = custom_openapi
 
     # create sample users for development
     if _cfg.dev_mode:
+        log.info("Creating sample users for development...")
         await create_sample_users()
 
 

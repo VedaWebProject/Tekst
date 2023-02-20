@@ -153,17 +153,17 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[User, PyObjectId]):
     verification_token_audience = "textrig:verify"
 
     async def on_after_register(self, user: User, request: Request | None = None):
-        log.info(f"User {user.id} has registered.")
+        log.debug(f"User {user.id} has registered.")
 
     async def on_after_forgot_password(
         self, user: User, token: str, request: Request | None = None
     ):
-        log.info(f"User {user.id} has forgotten their password. Reset token: {token}")
+        log.debug(f"User {user.id} has forgotten their password. Reset token: {token}")
 
     async def on_after_request_verify(
         self, user: User, token: str, request: Request | None = None
     ):
-        log.info(
+        log.debug(
             f"Verification requested for user {user.id}. Verification token: {token}"
         )
 
