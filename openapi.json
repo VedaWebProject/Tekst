@@ -643,6 +643,85 @@
         }
       }
     },
+    "/platform": {
+      "get": {
+        "tags": [
+          "platform"
+        ],
+        "summary": "Get platform data",
+        "description": "Returns data the client needs to initialize",
+        "operationId": "getPlatformData",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Platform Data Platform Get",
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Request"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/platform/i18n": {
+      "get": {
+        "tags": [
+          "platform"
+        ],
+        "summary": "Get translations",
+        "description": "Returns server-managed translations.",
+        "operationId": "getTranslations",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Lang",
+              "type": "string"
+            },
+            "name": "lang",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Translations Platform I18N Get",
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Request"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/texts": {
       "get": {
         "tags": [
@@ -871,117 +950,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/TextRead"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid Request"
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/uidata": {
-      "get": {
-        "tags": [
-          "uidata"
-        ],
-        "summary": "Get platform data",
-        "description": "Returns data the client needs to initialize",
-        "operationId": "getPlatformData",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "title": "Response Get Platform Data Uidata Get",
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid Request"
-          },
-          "404": {
-            "description": "Not found"
-          }
-        }
-      }
-    },
-    "/uidata/platform": {
-      "get": {
-        "tags": [
-          "uidata"
-        ],
-        "summary": "Get platform info",
-        "description": "Returns platform metadata, possibly customized for this platform instance.",
-        "operationId": "getPlatformInfo",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "title": "Response Get Platform Info Uidata Platform Get",
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid Request"
-          },
-          "404": {
-            "description": "Not found"
-          }
-        }
-      }
-    },
-    "/uidata/i18n": {
-      "get": {
-        "tags": [
-          "uidata"
-        ],
-        "summary": "Get translations",
-        "description": "Returns server-managed translations.",
-        "operationId": "getTranslations",
-        "parameters": [
-          {
-            "required": false,
-            "schema": {
-              "title": "Lang",
-              "type": "string"
-            },
-            "name": "lang",
-            "in": "query"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "title": "Response Get Translations Uidata I18N Get",
-                  "type": "object"
                 }
               }
             }

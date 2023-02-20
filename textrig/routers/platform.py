@@ -7,8 +7,8 @@ from textrig.routers.texts import get_all_texts
 
 
 router = APIRouter(
-    prefix="/uidata",
-    tags=["uidata"],
+    prefix="/platform",
+    tags=["platform"],
     responses={404: {"description": "Not found"}},
 )
 
@@ -19,21 +19,18 @@ router = APIRouter(
 @router.get(
     "",
     response_model=dict[str, Any],
-    summary="Data the client needs to display in the UI",
+    summary="Get platform data",
 )
 async def get_platform_data(cfg: TextRigConfig = Depends(get_cfg)) -> dict:
     """Returns data the client needs to initialize"""
     return {
-        "platform": await get_platform_info(cfg),
+        "general": dict(title=cfg.app_name, **cfg.info.dict()),
         "texts": await get_all_texts(),
-        "security": {"usersActiveByDefault": cfg.security.users_active_by_default},
+        "security": {
+            "usersActiveByDefault": cfg.security.users_active_by_default,
+            "usersNeedVerification": cfg.security.users_need_verification,
+        },
     }
-
-
-@router.get("/platform", response_model=dict[str, str], summary="Platform metadata")
-async def get_platform_info(cfg: TextRigConfig = Depends(get_cfg)) -> dict:
-    """Returns platform metadata, possibly customized for this platform instance."""
-    return dict(title=cfg.app_name, **cfg.info.dict())
 
 
 @router.get("/i18n", summary="Get server-managed translations")
