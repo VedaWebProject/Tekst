@@ -1,4 +1,5 @@
 import sys
+import re
 from typing import Any
 from urllib.parse import urljoin
 
@@ -35,6 +36,7 @@ app = FastAPI(
 app.add_middleware(
     CSRFMiddleware,
     secret=_cfg.security.secret,
+    required_urls=[re.compile(r".*/auth/cookie/login.*")],
     sensitive_cookies={_cfg.security.auth_cookie_name},
     cookie_name=_cfg.security.csrf_cookie_name,
     cookie_path="/",

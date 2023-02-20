@@ -699,7 +699,7 @@ full = ["httpx (>=0.22.0)", "itsdangerous", "jinja2", "python-multipart", "pyyam
 
 [[package]]
 name = "starlette-csrf"
-version = "1.4.5"
+version = "2.0.0"
 description = "Starlette middleware implementing Double Submit Cookie technique to mitigate CSRF"
 category = "main"
 optional = false
@@ -772,7 +772,7 @@ standard = ["colorama (>=0.4)", "httptools (>=0.4.0)", "python-dotenv (>=0.13)",
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "9e0300721061006cffea51f1a513a9ca73d383acfc3f088b66e9bff67bba8687"
+content-hash = "d8b4d4c9e91029c9dc80fc0819f035fd78f5e7af59c44be0ff8805fe4629f6fd"
 
 [metadata.files]
 anyio = [
@@ -1360,8 +1360,8 @@ starlette = [
     {file = "starlette-0.25.0.tar.gz", hash = "sha256:854c71e73736c429c2bdb07801f2c76c9cba497e7c3cf4988fde5e95fe4cdb3c"},
 ]
 starlette-csrf = [
-    {file = "starlette_csrf-1.4.5-py3-none-any.whl", hash = "sha256:4b8e2ea52bbf1d92bcd6788915f9a83de8b2aa671120a46444acfafdbb0771a1"},
-    {file = "starlette_csrf-1.4.5.tar.gz", hash = "sha256:30ad0777653143d8db74dbdd13614c0320bb20287337fc8dc5dd4b89853ae3e2"},
+    {file = "starlette_csrf-2.0.0-py3-none-any.whl", hash = "sha256:638d55a8f98e8e432b81fea56606b4afe9377d567a60e3c43a566bdd117660a0"},
+    {file = "starlette_csrf-2.0.0.tar.gz", hash = "sha256:5f03b8c496840d612f1f7065aac7a209da084972f6e7844bcc5752c32ac54747"},
 ]
 toml = [
     {file = "toml-0.10.2-py2.py3-none-any.whl", hash = "sha256:806143ae5bfb6a3c6e736a764057db0e6a0e05e338b5630894a5f779cabb4f9b"},
