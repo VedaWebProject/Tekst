@@ -70,6 +70,9 @@ register:
 
 login:
   login: Login
+  logout: Logout
+  tipLoginBtn: Log into your account
+  tipLogoutBtn: Lot out of your account
   switchToRegister: Register new account
   heading: Log in to your account
   labels:

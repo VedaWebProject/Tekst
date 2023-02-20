@@ -4,9 +4,10 @@ import router from '@/router';
 import LanguageSwitcher from '@/components/LanguageSwitcher.vue';
 import ThemeModeSwitcher from '@/components/ThemeModeSwitcher.vue';
 import { NSpace, NButton } from 'naive-ui';
-import { usePlatformStore } from '@/stores';
+import { usePlatformStore, useAuthStore } from '@/stores';
 
 const pf = usePlatformStore();
+const auth = useAuthStore();
 </script>
 
 <template>
@@ -21,7 +22,20 @@ const pf = usePlatformStore();
         <n-space inline :wrap-item="false" size="small">
           <ThemeModeSwitcher size="small" />
           <LanguageSwitcher size="small" />
-          <n-button @click="() => router.push('/login')" size="small">Login</n-button>
+          <n-button
+            v-if="!auth.loggedIn"
+            @click="() => router.push('/login')"
+            size="small"
+            :title="$t('login.tipLoginBtn')"
+            >{{ $t('login.login') }}</n-button
+          >
+          <n-button
+            v-if="auth.loggedIn"
+            @click="auth.logout"
+            size="small"
+            :title="$t('login.tipLogoutBtn')"
+            >{{ $t('login.logout') }}</n-button
+          >
         </n-space>
       </div>
     </div>

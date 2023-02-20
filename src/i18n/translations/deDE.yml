@@ -70,6 +70,9 @@ register:
 
 login:
   login: Einloggen
+  logout: Ausloggen
+  tipLoginBtn: In Ihren Account einloggen
+  tipLogoutBtn: Aus Ihrem Account ausloggen
   switchToRegister: Neuen Account registrieren
   heading: Loggen Sie sich ein
   labels:
