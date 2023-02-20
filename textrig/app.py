@@ -1,5 +1,5 @@
-import sys
 import re
+import sys
 from typing import Any
 from urllib.parse import urljoin
 

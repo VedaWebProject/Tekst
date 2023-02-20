@@ -39,25 +39,49 @@ async def test_register_invalid_pw(
 
 @pytest.mark.anyio
 async def test_login(config, root_path, test_client: AsyncClient, status_fail_msg):
+    # make an unsuspicious request to get the csrf token
+    resp = await test_client.post(f"{root_path}/texts")
+    # save csrf token from previous "safe" request
+    # (which is the login request - all subsequent requests will contain the
+    # auth cookie and are not considered safe)
+    assert resp.cookies.get(config.security.csrf_cookie_name)
+    csrf_token = resp.cookies.get(config.security.csrf_cookie_name)
+
     endpoint = f"{root_path}/auth/cookie/login"
     payload = {"username": "verified@test.com", "password": "poiPOI098"}
     resp = await test_client.post(
         endpoint,
         data=payload,
-        headers={"Content-Type": "application/x-www-form-urlencoded"},
+        headers={
+            "Content-Type": "application/x-www-form-urlencoded",
+            config.security.csrf_header_name: csrf_token,
+        },
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert resp.cookies.get(config.security.auth_cookie_name)
 
 
 @pytest.mark.anyio
-async def test_login_fail_bad_pw(root_path, test_client: AsyncClient, status_fail_msg):
+async def test_login_fail_bad_pw(
+    config, root_path, test_client: AsyncClient, status_fail_msg
+):
+    # make an unsuspicious request to get the csrf token
+    resp = await test_client.post(f"{root_path}/texts")
+    # save csrf token from previous "safe" request
+    # (which is the login request - all subsequent requests will contain the
+    # auth cookie and are not considered safe)
+    assert resp.cookies.get(config.security.csrf_cookie_name)
+    csrf_token = resp.cookies.get(config.security.csrf_cookie_name)
+
     endpoint = f"{root_path}/auth/cookie/login"
     payload = {"username": "verified@test.com", "password": "wrongpassword"}
     resp = await test_client.post(
         endpoint,
         data=payload,
-        headers={"Content-Type": "application/x-www-form-urlencoded"},
+        headers={
+            "Content-Type": "application/x-www-form-urlencoded",
+            config.security.csrf_header_name: csrf_token,
+        },
     )
     assert resp.status_code == 400, status_fail_msg(400, resp)
     assert resp.json()["detail"] == "LOGIN_BAD_CREDENTIALS"
@@ -65,14 +89,25 @@ async def test_login_fail_bad_pw(root_path, test_client: AsyncClient, status_fai
 
 @pytest.mark.anyio
 async def test_login_fail_unverified(
-    root_path, test_client: AsyncClient, status_fail_msg
+    config, root_path, test_client: AsyncClient, status_fail_msg
 ):
+    # make an unsuspicious request to get the csrf token
+    resp = await test_client.post(f"{root_path}/texts")
+    # save csrf token from previous "safe" request
+    # (which is the login request - all subsequent requests will contain the
+    # auth cookie and are not considered safe)
+    assert resp.cookies.get(config.security.csrf_cookie_name)
+    csrf_token = resp.cookies.get(config.security.csrf_cookie_name)
+
     endpoint = f"{root_path}/auth/cookie/login"
     payload = {"username": "unverified@test.com", "password": "poiPOI098"}
     resp = await test_client.post(
         endpoint,
         data=payload,
-        headers={"Content-Type": "application/x-www-form-urlencoded"},
+        headers={
+            "Content-Type": "application/x-www-form-urlencoded",
+            config.security.csrf_header_name: csrf_token,
+        },
     )
     assert resp.status_code == 400, status_fail_msg(400, resp)
     assert resp.json()["detail"] == "LOGIN_USER_NOT_VERIFIED"
@@ -82,13 +117,25 @@ async def test_login_fail_unverified(
 async def test_user_updates_self(
     config, root_path, test_client: AsyncClient, status_fail_msg
 ):
+    # make an unsuspicious request to get the csrf token
+    resp = await test_client.post(f"{root_path}/texts")
+    # save csrf token from previous "safe" request
+    # (which is the login request - all subsequent requests will contain the
+    # auth cookie and are not considered safe)
+    assert resp.cookies.get(config.security.csrf_cookie_name)
+    csrf_token = resp.cookies.get(config.security.csrf_cookie_name)
+
     # login
     endpoint = f"{root_path}/auth/cookie/login"
     payload = {"username": "verified@test.com", "password": "poiPOI098"}
     resp = await test_client.post(
         endpoint,
         data=payload,
-        headers={"Content-Type": "application/x-www-form-urlencoded"},
+        cookies={config.security.csrf_cookie_name: csrf_token},
+        headers={
+            "Content-Type": "application/x-www-form-urlencoded",
+            config.security.csrf_header_name: csrf_token,
+        },
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
 
@@ -96,16 +143,15 @@ async def test_user_updates_self(
     assert resp.cookies.get(config.security.auth_cookie_name)
     auth_token = resp.cookies.get(config.security.auth_cookie_name)
 
-    # save csrf token from last "safe" request
-    # (which is the login request - all subsequent requests will contain the
-    # auth cookie and are not considered safe)
-    assert resp.cookies.get(config.security.csrf_cookie_name)
-    csrf_token = resp.cookies.get(config.security.csrf_cookie_name)
-
     # get user data from /users/me
     endpoint = f"{root_path}/users/me"
     resp = await test_client.get(
-        endpoint, cookies={config.security.auth_cookie_name: auth_token}
+        endpoint,
+        cookies={
+            config.security.auth_cookie_name: auth_token,
+            config.security.csrf_cookie_name: csrf_token,
+        },
+        headers={config.security.csrf_header_name: csrf_token},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert "id" in resp.json()
