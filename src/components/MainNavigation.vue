@@ -1,11 +1,19 @@
 <script setup lang="ts">
 import { h, ref, computed, watch, type Component } from 'vue';
 import { useRoute, RouterLink } from 'vue-router';
+import { useWindowSize } from '@vueuse/core';
 import { NIcon, NMenu } from 'naive-ui';
 import type { MenuOption } from 'naive-ui';
 import BookFilled from '@vicons/material/BookFilled';
 import PersonFilled from '@vicons/material/PersonFilled';
 import WineBarFilled from '@vicons/material/WineBarFilled';
+
+const route = useRoute();
+const activeRouteName = computed(() => route.name?.toString() || null);
+const activeKey = ref<string | null>(activeRouteName.value);
+watch(activeRouteName, (newRouteName) => (activeKey.value = newRouteName));
+
+const { width } = useWindowSize();
 
 function renderIcon(icon: Component) {
   return () => h(NIcon, null, { default: () => h(icon) });
@@ -24,11 +32,6 @@ function renderRouterLink(name: string, label: string, params?: Record<string, s
       { default: () => label }
     );
 }
-
-const route = useRoute();
-const activeRouteName = computed(() => route.name?.toString() || null);
-const activeKey = ref<string | null>(activeRouteName.value);
-watch(activeRouteName, (newRouteName) => (activeKey.value = newRouteName));
 
 const menuOptions: MenuOption[] = [
   {
@@ -110,7 +113,16 @@ const menuOptions: MenuOption[] = [
 </script>
 
 <template>
-  <n-menu v-model:value="activeKey" mode="horizontal" :options="menuOptions" />
+  <n-menu
+    :value="activeKey"
+    :mode="width > 600 ? 'horizontal' : 'vertical'"
+    :options="menuOptions"
+    @update:value="
+      (k) => {
+        activeKey = k;
+      }
+    "
+  />
 </template>
 
 <style scoped></style>
