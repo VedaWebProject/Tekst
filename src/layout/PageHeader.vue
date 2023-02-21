@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router';
 import router from '@/router';
 import LanguageSwitcher from '@/components/LanguageSwitcher.vue';
 import ThemeModeSwitcher from '@/components/ThemeModeSwitcher.vue';
+import MainNavigation from '@/components/MainNavigation.vue';
 import { NSpace, NButton } from 'naive-ui';
 import { usePlatformStore, useAuthStore } from '@/stores';
 
@@ -40,12 +40,9 @@ const auth = useAuthStore();
       </div>
     </div>
 
-    <nav style="display: flex; justify-content: space-around">
-      <RouterLink to="/">Home</RouterLink>
-      <RouterLink to="/about">About</RouterLink>
-      <RouterLink to="/account">Account</RouterLink>
-      <RouterLink to="/admin">Admin</RouterLink>
-    </nav>
+    <MainNavigation />
+
+    <nav style="display: flex; justify-content: space-around"></nav>
   </header>
 </template>
 
