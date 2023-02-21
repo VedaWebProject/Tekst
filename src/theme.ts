@@ -24,10 +24,10 @@ const lightOverrides: GlobalThemeOverrides = {
 const darkOverrides: GlobalThemeOverrides = {
   common: {
     bodyColor: '#181818',
-    primaryColor: Color(lightTheme.common.primaryColor).lighten(0.3).hex(),
-    primaryColorHover: Color(lightTheme.common.primaryColorHover).lighten(0.3).saturate(0.5).hex(),
-    primaryColorPressed: Color(lightTheme.common.primaryColorPressed).lighten(0.3).hex(),
-    primaryColorSuppl: Color(lightTheme.common.primaryColorSuppl).lighten(0.3).hex(),
+    primaryColor: Color(lightTheme.common.primaryColor).lighten(0.2).hex(),
+    primaryColorHover: Color(lightTheme.common.primaryColorHover).lighten(0.2).saturate(0.5).hex(),
+    primaryColorPressed: Color(lightTheme.common.primaryColorPressed).lighten(0.2).hex(),
+    primaryColorSuppl: Color(lightTheme.common.primaryColorSuppl).lighten(0.2).hex(),
   },
 };
 

@@ -8,6 +8,7 @@ import {
   type MessageRenderMessage,
 } from 'naive-ui';
 import { useMessagesStore } from '@/stores';
+import Color from 'color';
 
 const themeVars = useThemeVars();
 
@@ -17,7 +18,7 @@ const renderMessage: MessageRenderMessage = (props) => {
     'div',
     {
       style: {
-        backgroundColor: themeVars.value.bodyColor,
+        backgroundColor: Color(themeVars.value.bodyColor).lighten(0.8).hex(),
         borderRadius: themeVars.value.borderRadius,
       },
     },

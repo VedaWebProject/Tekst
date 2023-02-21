@@ -89,11 +89,11 @@ onMounted(async () => {
 
 <style scoped>
 #app-container {
-  --accent-color: v-bind(state.accentColor.opaque);
-  --accent-color-fade20: v-bind(state.accentColor.translucent20);
-  --accent-color-fade40: v-bind(state.accentColor.translucent40);
-  --accent-color-fade60: v-bind(state.accentColor.translucent60);
-  --accent-color-fade80: v-bind(state.accentColor.translucent80);
+  --accent-color: v-bind(state.accentColor.base);
+  --accent-color-fade1: v-bind(state.accentColor.fade1);
+  --accent-color-fade2: v-bind(state.accentColor.fade2);
+  --accent-color-fade3: v-bind(state.accentColor.fade3);
+  --accent-color-fade4: v-bind(state.accentColor.fade4);
 }
 
 main {

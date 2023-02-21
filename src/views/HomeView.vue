@@ -5,10 +5,10 @@
   <p>{{ $t('dummy.schiller') }}</p>
   <h2>Accent Colors Test</h2>
   <div class="square" style="background-color: var(--accent-color); color: #000"></div>
-  <div class="square" style="background-color: var(--accent-color-fade20); color: #000"></div>
-  <div class="square" style="background-color: var(--accent-color-fade40); color: #000"></div>
-  <div class="square" style="background-color: var(--accent-color-fade60); color: #000"></div>
-  <div class="square" style="background-color: var(--accent-color-fade80); color: #000"></div>
+  <div class="square" style="background-color: var(--accent-color-fade1); color: #000"></div>
+  <div class="square" style="background-color: var(--accent-color-fade2); color: #000"></div>
+  <div class="square" style="background-color: var(--accent-color-fade3); color: #000"></div>
+  <div class="square" style="background-color: var(--accent-color-fade4); color: #000"></div>
 </template>
 
 <style scoped>

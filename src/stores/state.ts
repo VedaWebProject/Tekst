@@ -2,6 +2,7 @@ import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
 import type { TextRead } from '@/openapi';
 import Color from 'color';
+import { useSettingsStore } from './settings';
 
 export const useStateStore = defineStore('state', () => {
   // global loading state
@@ -17,14 +18,16 @@ export const useStateStore = defineStore('state', () => {
   // current text
   const text = ref<TextRead | null>(null);
   // current text accent color variants
+  const settings = useSettingsStore();
   const accentColor = computed(() => {
-    const base = text.value ? text.value.accentColor : '#0f0';
+    const lighten = settings.theme === 'dark' ? 0.2 : 0.0;
+    const base = Color(text.value ? text.value.accentColor : '#18A058').lighten(lighten);
     return {
-      opaque: base,
-      translucent20: Color(base).fade(0.2).hexa(),
-      translucent40: Color(base).fade(0.4).hexa(),
-      translucent60: Color(base).fade(0.6).hexa(),
-      translucent80: Color(base).fade(0.8).hexa(),
+      base: base.hex(),
+      fade1: base.fade(0.2).hexa(),
+      fade2: base.fade(0.4).hexa(),
+      fade3: base.fade(0.6).hexa(),
+      fade4: base.fade(0.8).hexa(),
     };
   });
 
