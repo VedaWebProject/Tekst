@@ -71,6 +71,7 @@ register:
 login:
   login: Einloggen
   logout: Ausloggen
+  logoutSuccessful: Sie sind jetzt ausgeloggt.
   tipLoginBtn: In Ihren Account einloggen
   tipLogoutBtn: Aus Ihrem Account ausloggen
   switchToRegister: Neuen Account registrieren

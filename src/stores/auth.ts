@@ -1,10 +1,13 @@
 import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
 import { AuthApi, UsersApi, type UserRead } from '@/openapi';
+import { useMessagesStore } from './messages';
+import { i18n } from '@/i18n';
 import router from '@/router';
 
 const authApi = new AuthApi();
 const usersApi = new UsersApi();
+const t = i18n.global.t;
 
 function getUserFromLocalStorage(): UserRead | null {
   const storageData = localStorage.getItem('user');
@@ -16,6 +19,7 @@ export const useAuthStore = defineStore('auth', () => {
   const user = ref<UserRead | null>(getUserFromLocalStorage());
   const returnUrl = ref<string | null>(null);
   const loggedIn = computed(() => !!user.value);
+  const messages = useMessagesStore();
 
   async function login(username: string, password: string) {
     return authApi.authCookieLogin({ username, password }).then(async () => {
@@ -28,6 +32,7 @@ export const useAuthStore = defineStore('auth', () => {
   async function logout() {
     try {
       await authApi.authCookieLogout();
+      messages.success(t('login.logoutSuccessful'));
     } catch (e) {
       // nothing
     } finally {

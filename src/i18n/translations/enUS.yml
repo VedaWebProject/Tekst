@@ -71,6 +71,7 @@ register:
 login:
   login: Login
   logout: Logout
+  logoutSuccessful: You are now logged out.
   tipLoginBtn: Log into your account
   tipLogoutBtn: Lot out of your account
   switchToRegister: Register new account
