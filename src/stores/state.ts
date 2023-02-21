@@ -16,14 +16,15 @@ export const useStateStore = defineStore('state', () => {
 
   // current text
   const text = ref<TextRead | null>(null);
+  // current text accent color variants
   const accentColor = computed(() => {
     const base = text.value ? text.value.accentColor : '#0f0';
     return {
-      plain: base,
-      light: Color(base).lighten(0.6).hex(),
-      lighter: Color(base).lighten(0.8).hex(),
-      dark: Color(base).darken(0.4).hex(),
-      darker: Color(base).darken(0.6).hex(),
+      opaque: base,
+      translucent20: Color(base).fade(0.2).hexa(),
+      translucent40: Color(base).fade(0.4).hexa(),
+      translucent60: Color(base).fade(0.6).hexa(),
+      translucent80: Color(base).fade(0.8).hexa(),
     };
   });
 
