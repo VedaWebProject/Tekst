@@ -13,6 +13,9 @@ const commonOverrides: GlobalThemeOverrides = {
     fontSizeHuge: '18px',
     lineHeight: '1.8',
   },
+  Form: {
+    feedbackPadding: '4px 0 8px 2px',
+  },
 };
 
 const lightOverrides: GlobalThemeOverrides = {
