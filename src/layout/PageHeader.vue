@@ -12,11 +12,8 @@ const pf = usePlatformStore();
 <template>
   <header>
     <img id="header-logo" :alt="`${pf.get('general.title')} Logo`" src="@/assets/logo.png" />
-    <div>
-      <div id="page-title">{{ pf.get('general.title') }}</div>
-      <div>{{ $t('general.welcomeTest') }}</div>
-      <MainNavigation />
-    </div>
+    <div id="page-title">{{ pf.get('general.title') }}</div>
+    <MainNavigation />
     <div id="header-branding-extra">
       <n-space inline :wrap-item="false" size="small">
         <ThemeModeSwitcher size="large" />
@@ -30,17 +27,21 @@ const pf = usePlatformStore();
 <style scoped>
 header {
   display: flex;
-  align-items: stretch;
+  align-items: center;
   justify-content: start;
   border-bottom: 3px solid var(--accent-color);
-  padding: 0.8em;
-  padding-bottom: 0;
+  padding: 0.5rem;
 }
 
 header #header-logo {
   align-self: center;
-  height: 86px;
+  height: 56px;
   width: auto;
+  margin-right: 1rem;
+}
+
+header #page-title {
+  font-size: 1.2rem;
   margin-right: 1rem;
 }
 

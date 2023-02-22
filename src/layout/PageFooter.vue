@@ -6,6 +6,7 @@ const pf = usePlatformStore();
 
 <template>
   <footer>
+    <div>{{ $t('general.welcomeTest') }}</div>
     Powered by
     <a :href="pf.get('general.platform_website')" title="">
       {{ pf.get('general.platform') }}
