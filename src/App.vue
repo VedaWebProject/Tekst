@@ -94,10 +94,10 @@ onMounted(async () => {
   --accent-color-fade2: v-bind(state.accentColor.fade2);
   --accent-color-fade3: v-bind(state.accentColor.fade3);
   --accent-color-fade4: v-bind(state.accentColor.fade4);
+  --accent-color-fade5: v-bind(state.accentColor.fade5);
 }
 
 main {
-  border: 1px dashed #bbb;
-  padding: 2em 1rem;
+  padding: 1em;
 }
 </style>

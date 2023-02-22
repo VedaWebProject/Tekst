@@ -16,7 +16,7 @@ const pf = usePlatformStore();
 
 <style scoped>
 footer {
-  border: 1px dashed #bbb;
+  border-top: 3px solid var(--accent-color);
   padding: 0.8em;
 }
 </style>

@@ -14,8 +14,8 @@ const pf = usePlatformStore();
     <div id="header-branding-container">
       <img :alt="pf.get('general.title') + ' Logo'" class="logo" src="@/assets/logo.png" />
       <div>
-        <h1>{{ pf.get('general.title') }}</h1>
-        <h2>{{ $t('general.welcomeTest') }}</h2>
+        <h2>{{ pf.get('general.title') }}</h2>
+        <h3>{{ $t('general.welcomeTest') }}</h3>
       </div>
       <div id="header-branding-extra">
         <n-space inline :wrap-item="false" size="small">
@@ -34,11 +34,9 @@ const pf = usePlatformStore();
 
 <style scoped>
 header {
-  border: 1px dashed #bbb;
-  border-bottom-color: var(--accent-color);
-  border-bottom-width: 5px;
-  border-bottom-style: solid;
+  border-bottom: 3px solid var(--accent-color);
   padding: 0.8em;
+  padding-bottom: 0;
 }
 
 #header-branding-container {

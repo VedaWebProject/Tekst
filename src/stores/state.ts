@@ -28,6 +28,7 @@ export const useStateStore = defineStore('state', () => {
       fade2: base.fade(0.4).hexa(),
       fade3: base.fade(0.6).hexa(),
       fade4: base.fade(0.8).hexa(),
+      fade5: base.fade(0.9).hexa(),
     };
   });
 
