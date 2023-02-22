@@ -11,45 +11,37 @@ const pf = usePlatformStore();
 
 <template>
   <header>
-    <div id="header-branding-container">
-      <img :alt="pf.get('general.title') + ' Logo'" class="logo" src="@/assets/logo.png" />
-      <div>
-        <h2>{{ pf.get('general.title') }}</h2>
-        <h3>{{ $t('general.welcomeTest') }}</h3>
-      </div>
-      <div id="header-branding-extra">
-        <n-space inline :wrap-item="false" size="small">
-          <ThemeModeSwitcher />
-          <LanguageSwitcher />
-          <LoginLogoutButton />
-        </n-space>
-      </div>
+    <img id="header-logo" :alt="`${pf.get('general.title')} Logo`" src="@/assets/logo.png" />
+    <div>
+      <div id="page-title">{{ pf.get('general.title') }}</div>
+      <div>{{ $t('general.welcomeTest') }}</div>
+      <MainNavigation />
     </div>
-
-    <MainNavigation />
-
-    <nav style="display: flex; justify-content: space-around"></nav>
+    <div id="header-branding-extra">
+      <n-space inline :wrap-item="false" size="small">
+        <ThemeModeSwitcher size="large" />
+        <LanguageSwitcher size="large" />
+        <LoginLogoutButton />
+      </n-space>
+    </div>
   </header>
 </template>
 
 <style scoped>
 header {
+  display: flex;
+  align-items: stretch;
+  justify-content: start;
   border-bottom: 3px solid var(--accent-color);
   padding: 0.8em;
   padding-bottom: 0;
 }
 
-#header-branding-container {
-  display: flex;
-  align-items: stretch;
-  justify-content: start;
-  height: 100px;
-}
-
-#header-branding-container .logo {
-  height: 100%;
+header #header-logo {
+  align-self: center;
+  height: 86px;
   width: auto;
-  margin-right: 0.8em;
+  margin-right: 1rem;
 }
 
 #header-branding-extra {
