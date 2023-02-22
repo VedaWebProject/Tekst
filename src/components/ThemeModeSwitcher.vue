@@ -32,6 +32,7 @@ const title = computed(() =>
     icon-placement="left"
     @click="settings.toggleTheme"
     :title="title"
+    :focusable="false"
   >
     <template #icon>
       <n-icon :component="icon" />

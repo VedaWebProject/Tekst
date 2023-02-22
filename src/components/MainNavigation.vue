@@ -4,9 +4,10 @@ import { useRoute, RouterLink } from 'vue-router';
 import { useWindowSize } from '@vueuse/core';
 import { NIcon, NMenu } from 'naive-ui';
 import type { MenuOption } from 'naive-ui';
-import BookFilled from '@vicons/material/BookFilled';
-import PersonFilled from '@vicons/material/PersonFilled';
-import WineBarFilled from '@vicons/material/WineBarFilled';
+import InfoOutlined from '@vicons/material/InfoOutlined';
+import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
+import SearchRound from '@vicons/material/SearchRound';
+import HelpOutlineRound from '@vicons/material/HelpOutlineRound';
 
 const route = useRoute();
 const activeRouteName = computed(() => route.name?.toString() || null);
@@ -35,80 +36,90 @@ function renderRouterLink(name: string, label: string, params?: Record<string, s
 
 const menuOptions: MenuOption[] = [
   {
-    label: renderRouterLink('home', 'Home'),
-    key: 'home',
-    icon: renderIcon(BookFilled),
-  },
-  {
     label: renderRouterLink('about', 'About'),
     key: 'about',
-    icon: renderIcon(BookFilled),
+    icon: renderIcon(InfoOutlined),
   },
   {
-    label: renderRouterLink('account', 'Account'),
-    key: 'account',
-    icon: renderIcon(BookFilled),
+    label: renderRouterLink('browse', 'Browse'),
+    key: 'browse',
+    icon: renderIcon(MenuBookOutlined),
   },
   {
-    label: renderRouterLink('admin', 'Admin'),
-    key: 'admin',
-    icon: renderIcon(BookFilled),
+    label: renderRouterLink('search', 'Search'),
+    key: 'search',
+    icon: renderIcon(SearchRound),
   },
   {
-    label: 'Test 1',
-    key: 'test-1',
-    disabled: true,
-    icon: renderIcon(BookFilled),
+    label: renderRouterLink('help', 'Help'),
+    key: 'help',
+    icon: renderIcon(HelpOutlineRound),
   },
-  {
-    label: 'Test 2',
-    key: 'test-2',
-    icon: renderIcon(BookFilled),
-    children: [
-      {
-        type: 'group',
-        label: 'People',
-        key: 'people',
-        children: [
-          {
-            label: 'Narrator',
-            key: 'narrator',
-            icon: renderIcon(PersonFilled),
-          },
-          {
-            label: 'Sheep Man',
-            key: 'sheep-man',
-            icon: renderIcon(PersonFilled),
-          },
-        ],
-      },
-      {
-        label: 'Beverage',
-        key: 'beverage',
-        icon: renderIcon(WineBarFilled),
-        children: [
-          {
-            label: 'Whisky',
-            key: 'whisky',
-          },
-        ],
-      },
-      {
-        label: 'Food',
-        key: 'food',
-        children: [
-          {
-            label: 'Sandwich',
-            key: 'sandwich',
-          },
-        ],
-      },
-      {
-        label: 'The past increases. The future recedes.',
-        key: 'the-past-increases-the-future-recedes',
-      },
-    ],
-  },
+  // {
+  //   label: renderRouterLink('account', 'Account'),
+  //   key: 'account',
+  //   icon: renderIcon(InfoOutlined),
+  // },
+  // {
+  //   label: renderRouterLink('admin', 'Admin'),
+  //   key: 'admin',
+  //   icon: renderIcon(InfoOutlined),
+  // },
+  // {
+  //   label: 'Test 1',
+  //   key: 'test-1',
+  //   disabled: true,
+  //   icon: renderIcon(InfoOutlined),
+  // },
+  // {
+  //   label: 'Test 2',
+  //   key: 'test-2',
+  //   icon: renderIcon(InfoOutlined),
+  //   children: [
+  //     {
+  //       type: 'group',
+  //       label: 'People',
+  //       key: 'people',
+  //       children: [
+  //         {
+  //           label: 'Narrator',
+  //           key: 'narrator',
+  //           icon: renderIcon(InfoOutlined),
+  //         },
+  //         {
+  //           label: 'Sheep Man',
+  //           key: 'sheep-man',
+  //           icon: renderIcon(InfoOutlined),
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       label: 'Beverage',
+  //       key: 'beverage',
+  //       icon: renderIcon(InfoOutlined),
+  //       children: [
+  //         {
+  //           label: 'Whisky',
+  //           key: 'whisky',
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       label: 'Food',
+  //       key: 'food',
+  //       children: [
+  //         {
+  //           label: 'Sandwich',
+  //           key: 'sandwich',
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       label: 'The past increases. The future recedes.',
+  //       key: 'the-past-increases-the-future-recedes',
+  //     },
+  //   ],
+  // },
 ];
 </script>
 

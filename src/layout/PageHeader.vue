@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import router from '@/router';
 import LanguageSwitcher from '@/components/LanguageSwitcher.vue';
 import ThemeModeSwitcher from '@/components/ThemeModeSwitcher.vue';
 import MainNavigation from '@/components/MainNavigation.vue';
-import { NSpace, NButton } from 'naive-ui';
-import { usePlatformStore, useAuthStore } from '@/stores';
+import LoginLogoutButton from '@/components/LoginLogoutButton.vue';
+import { NSpace } from 'naive-ui';
+import { usePlatformStore } from '@/stores';
 
 const pf = usePlatformStore();
-const auth = useAuthStore();
 </script>
 
 <template>
@@ -20,22 +19,9 @@ const auth = useAuthStore();
       </div>
       <div id="header-branding-extra">
         <n-space inline :wrap-item="false" size="small">
-          <ThemeModeSwitcher size="small" />
-          <LanguageSwitcher size="small" />
-          <n-button
-            v-if="!auth.loggedIn"
-            @click="() => router.push('/login')"
-            size="small"
-            :title="$t('login.tipLoginBtn')"
-            >{{ $t('login.login') }}</n-button
-          >
-          <n-button
-            v-if="auth.loggedIn"
-            @click="auth.logout"
-            size="small"
-            :title="$t('login.tipLogoutBtn')"
-            >{{ $t('login.logout') }}</n-button
-          >
+          <ThemeModeSwitcher />
+          <LanguageSwitcher />
+          <LoginLogoutButton />
         </n-space>
       </div>
     </div>

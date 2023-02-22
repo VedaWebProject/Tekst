@@ -1,6 +1,15 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore, useMessagesStore } from '@/stores';
-import { HomeView, AboutView, AccountView, LoginView, RegisterView } from '@/views';
+import {
+  HomeView,
+  AboutView,
+  AccountView,
+  LoginView,
+  RegisterView,
+  HelpView,
+  BrowseView,
+  SearchView,
+} from '@/views';
 import { i18n } from '@/i18n';
 
 const t = i18n.global.t;
@@ -11,13 +20,23 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: HomeView,
-    },
-    {
-      path: '/about',
       name: 'about',
       component: AboutView,
+    },
+    {
+      path: '/browse',
+      name: 'browse',
+      component: BrowseView,
+    },
+    {
+      path: '/search',
+      name: 'search',
+      component: SearchView,
+    },
+    {
+      path: '/help',
+      name: 'help',
+      component: HelpView,
     },
     {
       path: '/login',

@@ -43,6 +43,7 @@ function handleLanguageSelect(localeCode: string) {
       :size="props.size"
       icon-placement="left"
       :title="$t('i18n.tipSwitcher')"
+      :focusable="false"
     >
       <template #icon>
         <n-icon :component="LanguageOutlined" />
