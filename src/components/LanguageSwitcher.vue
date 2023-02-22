@@ -41,7 +41,6 @@ function handleLanguageSelect(localeCode: string) {
       id="lang-btn"
       quaternary
       round
-      type="primary"
       :size="props.size"
       icon-placement="left"
       :title="$t('i18n.tipSwitcher')"

@@ -23,15 +23,7 @@ function handleClick() {
 </script>
 
 <template>
-  <n-button
-    quaternary
-    round
-    type="primary"
-    size="large"
-    @click="handleClick"
-    :title="tooltip"
-    :focusable="false"
-  >
+  <n-button quaternary round size="large" @click="handleClick" :title="tooltip" :focusable="false">
     <template #icon>
       <n-icon :component="icon" />
     </template>

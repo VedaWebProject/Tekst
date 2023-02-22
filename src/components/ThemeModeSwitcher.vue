@@ -29,7 +29,6 @@ const title = computed(() =>
     id="lang-btn"
     quaternary
     circle
-    type="primary"
     :size="props.size"
     icon-placement="left"
     @click="settings.toggleTheme"
