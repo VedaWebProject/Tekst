@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore, useMessagesStore } from '@/stores';
 import {
-  HomeView,
   AboutView,
   AccountView,
   LoginView,
@@ -9,6 +8,7 @@ import {
   HelpView,
   BrowseView,
   SearchView,
+  AdminView,
 } from '@/views';
 import { i18n } from '@/i18n';
 
@@ -57,7 +57,7 @@ const router = createRouter({
     {
       path: '/admin',
       name: 'admin',
-      component: HomeView,
+      component: AdminView,
       meta: { restricted: 'superuser' },
     },
     { path: '/:pathMatch(.*)*', redirect: '/' },
