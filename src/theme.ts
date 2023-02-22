@@ -23,17 +23,20 @@ const commonOverrides: GlobalThemeOverrides = {
 
 const lightOverrides: GlobalThemeOverrides = {
   common: {
-    bodyColor: '#FFFFFF',
+    bodyColor: '#ffffff',
   },
 };
 
 const darkOverrides: GlobalThemeOverrides = {
   common: {
-    bodyColor: '#181818',
+    bodyColor: '#232323',
     primaryColor: Color(lightTheme.common.primaryColor).lighten(0.2).hex(),
     primaryColorHover: Color(lightTheme.common.primaryColorHover).lighten(0.2).saturate(0.5).hex(),
     primaryColorPressed: Color(lightTheme.common.primaryColorPressed).lighten(0.2).hex(),
     primaryColorSuppl: Color(lightTheme.common.primaryColorSuppl).lighten(0.2).hex(),
+  },
+  Card: {
+    colorEmbedded: '#2a2a2a',
   },
 };
 
