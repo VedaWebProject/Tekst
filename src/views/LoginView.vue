@@ -137,16 +137,18 @@ function handleForgotPasswordClick() {
       </n-form-item>
     </n-form>
 
-    <n-space vertical :size="12">
+    <div style="display: flex; justify-content: flex-end">
       <n-button
-        block
         text
         :focusable="false"
-        style="justify-content: end; margin-bottom: 1rem; margin-top: -12px; font-size: 0.85rem"
+        style="margin-bottom: 2rem; margin-top: -12px; font-size: 0.85rem"
         @click="handleForgotPasswordClick"
       >
         {{ $t('login.forgotPassword') }}
       </n-button>
+    </div>
+
+    <n-space vertical :size="12">
       <n-button
         block
         size="large"
