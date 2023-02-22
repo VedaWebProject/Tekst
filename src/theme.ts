@@ -15,6 +15,9 @@ const commonOverrides: GlobalThemeOverrides = {
   },
   Form: {
     feedbackPadding: '4px 0 8px 2px',
+    feedbackHeightSmall: '18px',
+    feedbackHeightMedium: '18px',
+    feedbackHeightLarge: '20px',
   },
 };
 
