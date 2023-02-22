@@ -10,17 +10,16 @@ import {
   NInput,
   NButton,
   NCard,
+  NSpace,
 } from 'naive-ui';
 import { ref } from 'vue';
 import { i18n } from '@/i18n';
-import { useWindowSize } from '@vueuse/core';
 
 const t = i18n.global.t;
 const auth = useAuthStore();
 const messages = useMessagesStore();
 
 const loading = ref(false);
-const { width } = useWindowSize();
 
 const initialFormModel = () => ({
   email: null,
@@ -85,8 +84,7 @@ function loginUser() {
     });
 }
 
-function handleLoginClick(e: MouseEvent | null = null) {
-  e && e.preventDefault();
+function handleLoginClick() {
   loading.value = true;
   formRef.value
     ?.validate((errors: Array<FormValidationError> | undefined) => {
@@ -97,14 +95,17 @@ function handleLoginClick(e: MouseEvent | null = null) {
       loading.value = false;
     });
 }
+
+function handleForgotPasswordClick() {
+  messages.info('So you forgot your password? This is not implemented, yet!');
+}
 </script>
 
 <template>
+  <h1 style="text-align: center">{{ $t('login.heading') }}</h1>
   <n-card
     embedded
-    style="width: 720px; max-width: 100%; margin: 0 auto"
-    :title="$t('login.heading')"
-    :segmented="{ content: 'soft' }"
+    style="width: 600px; max-width: 100%; margin: 1rem auto"
     size="huge"
     role="dialog"
     aria-modal="true"
@@ -114,7 +115,7 @@ function handleLoginClick(e: MouseEvent | null = null) {
       :model="formModel"
       :rules="formRules"
       size="large"
-      :label-placement="width > 600 ? 'left' : 'top'"
+      label-placement="top"
       label-width="auto"
       require-mark-placement="right-hanging"
     >
@@ -136,28 +137,29 @@ function handleLoginClick(e: MouseEvent | null = null) {
       </n-form-item>
     </n-form>
 
-    <template #footer>
-      <div style="display: flex; justify-content: flex-end; gap: 12px">
-        <n-button
-          quaternary
-          type="primary"
-          size="large"
-          :focusable="false"
-          tabindex="-1"
-          @click="switchToRegistration"
-        >
-          {{ $t('login.switchToRegister') }}
-        </n-button>
-        <n-button
-          size="large"
-          type="primary"
-          @click="handleLoginClick"
-          :loading="loading"
-          :disabled="loading"
-        >
-          {{ $t('login.login') }}
-        </n-button>
-      </div>
-    </template>
+    <n-space vertical :size="12">
+      <n-button
+        block
+        text
+        :focusable="false"
+        style="justify-content: end; margin-bottom: 1rem; margin-top: -12px; font-size: 0.85rem"
+        @click="handleForgotPasswordClick"
+      >
+        {{ $t('login.forgotPassword') }}
+      </n-button>
+      <n-button
+        block
+        size="large"
+        type="primary"
+        @click="handleLoginClick"
+        :loading="loading"
+        :disabled="loading"
+      >
+        {{ $t('login.login') }}
+      </n-button>
+      <n-button secondary block size="large" @click="switchToRegistration">
+        {{ $t('login.switchToRegister') }}
+      </n-button>
+    </n-space>
   </n-card>
 </template>

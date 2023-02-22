@@ -14,13 +14,12 @@ import {
   NInput,
   NButton,
   NCard,
+  NSpace,
 } from 'naive-ui';
 import { AuthApi, type UserCreate } from '@/openapi';
-import { useWindowSize } from '@vueuse/core';
 
 const messages = useMessagesStore();
 const authApi = new AuthApi();
-const { width } = useWindowSize();
 const t = i18n.global.t;
 
 const initialFormModel = () => ({
@@ -169,12 +168,11 @@ function switchToLogin() {
 </script>
 
 <template>
+  <h1 style="text-align: center">{{ $t('register.heading') }}</h1>
   <n-card
     embedded
-    style="width: 720px; max-width: 100%; margin: 0 auto"
-    :title="$t('register.heading')"
+    style="width: 600px; max-width: 100%; margin: 1rem auto"
     size="huge"
-    :segmented="{ content: 'soft' }"
     role="dialog"
     aria-modal="true"
   >
@@ -183,7 +181,7 @@ function switchToLogin() {
       :model="formModel"
       :rules="formRules"
       size="large"
-      :label-placement="width > 600 ? 'left' : 'top'"
+      label-placement="top"
       label-width="auto"
       require-mark-placement="right-hanging"
     >
@@ -236,28 +234,27 @@ function switchToLogin() {
       </n-form-item>
     </n-form>
 
-    <template #footer>
-      <div style="display: flex; justify-content: flex-end; gap: 12px">
-        <n-button
-          quaternary
-          type="primary"
-          size="large"
-          :focusable="false"
-          tabindex="-1"
-          @click="switchToLogin"
-        >
-          {{ $t('register.switchToLogin') }}
-        </n-button>
-        <n-button
-          type="primary"
-          @click="handleRegisterClick"
-          :loading="loading"
-          :disabled="loading"
-          size="large"
-        >
-          {{ $t('register.register') }}
-        </n-button>
-      </div>
-    </template>
+    <n-space vertical :size="12" style="margin-top: 1rem">
+      <n-button
+        block
+        type="primary"
+        @click="handleRegisterClick"
+        :loading="loading"
+        :disabled="loading"
+        size="large"
+      >
+        {{ $t('register.register') }}
+      </n-button>
+      <n-button
+        secondary
+        block
+        size="large"
+        :focusable="false"
+        tabindex="-1"
+        @click="switchToLogin"
+      >
+        {{ $t('register.switchToLogin') }}
+      </n-button>
+    </n-space>
   </n-card>
 </template>

@@ -75,6 +75,7 @@ login:
   tipLoginBtn: Log into your account
   tipLogoutBtn: Lot out of your account
   switchToRegister: Register new account
+  forgotPassword: I forgot my password
   heading: Log in to your account
   labels:
     email: Email

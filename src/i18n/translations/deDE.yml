@@ -51,7 +51,7 @@ register:
   labels:
     email: Email
     password: Passwort
-    repeatPassword: Password wiederholen
+    repeatPassword: Passwort wiederholen
     firstName: Vorname
     lastName: Nachname
   rulesFeedback:
@@ -75,6 +75,7 @@ login:
   tipLoginBtn: In Ihren Account einloggen
   tipLogoutBtn: Aus Ihrem Account ausloggen
   switchToRegister: Neuen Account registrieren
+  forgotPassword: Ich habe mein Passwort vergessen
   heading: Loggen Sie sich ein
   labels:
     email: Email
