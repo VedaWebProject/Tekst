@@ -45,7 +45,7 @@ errors:
 
 register:
   register: Register
-  switchToLogin: Log in to existing account
+  switchToLogin: Log into existing account
   heading: Register new account
   success: Successfully registered. You can now log in.
   labels:
@@ -76,7 +76,7 @@ login:
   tipLogoutBtn: Lot out of your account
   switchToRegister: Register new account
   forgotPassword: I forgot my password
-  heading: Log in to your account
+  heading: Log into your account
   labels:
     email: Email
     password: Password
