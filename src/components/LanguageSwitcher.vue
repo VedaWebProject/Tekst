@@ -38,7 +38,6 @@ function handleLanguageSelect(localeCode: string) {
 <template>
   <n-dropdown trigger="click" :options="options" @select="handleLanguageSelect">
     <n-button
-      id="lang-btn"
       quaternary
       round
       :size="props.size"

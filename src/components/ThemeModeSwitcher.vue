@@ -26,7 +26,6 @@ const title = computed(() =>
 
 <template>
   <n-button
-    id="lang-btn"
     quaternary
     circle
     :size="props.size"
