@@ -2,7 +2,7 @@
 import LanguageSwitcher from '@/components/LanguageSwitcher.vue';
 import ThemeModeSwitcher from '@/components/ThemeModeSwitcher.vue';
 import MainNavigation from '@/components/MainNavigation.vue';
-import LoginLogoutButton from '@/components/LoginLogoutButton.vue';
+import AccountOptionsButton from '@/components/AccountOptionsButton.vue';
 import { NSpace } from 'naive-ui';
 import { usePlatformStore } from '@/stores';
 
@@ -16,9 +16,9 @@ const pf = usePlatformStore();
     <MainNavigation />
     <div id="header-branding-extra">
       <n-space inline :wrap-item="false" size="small">
-        <ThemeModeSwitcher size="large" />
-        <LanguageSwitcher size="large" />
-        <LoginLogoutButton />
+        <ThemeModeSwitcher />
+        <LanguageSwitcher />
+        <AccountOptionsButton />
       </n-space>
     </div>
   </header>

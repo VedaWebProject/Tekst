@@ -86,3 +86,7 @@ login:
   errors:
     badCreds: Incorrect email or password
     notVerified: Your email is not yet verified. We just sent your verification link again.
+
+account:
+  tipAccountBtn: Show account options
+  manage: Manage account

@@ -45,9 +45,9 @@ errors:
 
 register:
   register: Registrieren
-  switchToLogin: Mit bestehendem Account einloggen
-  heading: Neuen Account registrieren
-  success: Erfolgreich registriert. Sie können sich jetzt einloggen.
+  switchToLogin: Mit bestehendem Konto anmelden
+  heading: Neues Konto registrieren
+  success: Erfolgreich registriert. Sie können sich jetzt anmelden.
   labels:
     email: Email
     password: Passwort
@@ -69,14 +69,14 @@ register:
     weakPassword: Das eingegebene Passwort entspricht nicht den Sicherheitsanforderungen.
 
 login:
-  login: Einloggen
-  logout: Ausloggen
+  login: Anmelden
+  logout: Abmelden
   logoutSuccessful: Sie sind jetzt ausgeloggt.
-  tipLoginBtn: In Ihren Account einloggen
-  tipLogoutBtn: Aus Ihrem Account ausloggen
-  switchToRegister: Neuen Account registrieren
+  tipLoginBtn: In Ihrem Konto anmelden
+  tipLogoutBtn: Von Ihrem Konto abmelden
+  switchToRegister: Neues Konto registrieren
   forgotPassword: Ich habe mein Passwort vergessen
-  heading: Loggen Sie sich ein
+  heading: Melden Sie sich an
   labels:
     email: Email
     password: Passwort
@@ -86,3 +86,7 @@ login:
   errors:
     badCreds: Falsche Email-Adresse oder falsches Passwort
     notVerified: Ihre Email-Adresse ist noch nicht verifiziert. Wir haben Ihren Verifizierungslink nochmals versendet.
+
+account:
+  tipAccountBtn: Konto-Optionen anzeigen
+  manage: Konto verwalten

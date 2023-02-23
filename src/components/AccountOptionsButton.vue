@@ -1,0 +1,82 @@
+<script setup lang="ts">
+import { ref, computed, h, type Component } from 'vue';
+import { useAuthStore } from '@/stores';
+import router from '@/router';
+import { NButton, NIcon, NDropdown } from 'naive-ui';
+import LogInRound from '@vicons/material/LogInRound';
+import LogOutRound from '@vicons/material/LogOutRound';
+import AccountCircleRound from '@vicons/material/AccountCircleRound';
+import ManageAccountsRound from '@vicons/material/ManageAccountsRound';
+import { i18n } from '@/i18n';
+
+const t = i18n.global.t;
+const auth = useAuthStore();
+const icon = computed(() => (auth.loggedIn ? AccountCircleRound : LogInRound));
+// const label = computed(() => (auth.loggedIn ? t('login.logout') : t('login.login')));
+const tooltip = computed(() =>
+  auth.loggedIn ? t('account.tipAccountBtn') : t('login.tipLoginBtn')
+);
+
+const showAccountDropdown = ref(false);
+
+const accountOptions = computed(() => [
+  {
+    label: t('account.manage'),
+    key: 'manage',
+    icon: renderIcon(ManageAccountsRound),
+  },
+  {
+    label: t('login.logout'),
+    key: 'logout',
+    icon: renderIcon(LogOutRound),
+  },
+]);
+
+function renderIcon(icon: Component) {
+  return () => h(NIcon, null, { default: () => h(icon) });
+}
+
+function handleClick() {
+  if (!auth.loggedIn) {
+    router.push('/login');
+  } else {
+    showAccountDropdown.value = !showAccountDropdown.value;
+  }
+}
+
+function handleAccountOptionSelect(option: string) {
+  showAccountDropdown.value = false;
+  switch (option) {
+    case 'manage':
+      router.push('/account');
+      break;
+    case 'logout':
+      auth.logout();
+      break;
+  }
+}
+</script>
+
+<template>
+  <n-dropdown
+    :show="showAccountDropdown"
+    :options="accountOptions"
+    :placement="'bottom-end'"
+    :on-clickoutside="() => (showAccountDropdown = false)"
+    @select="handleAccountOptionSelect"
+  >
+    <n-button
+      quaternary
+      circle
+      size="large"
+      @click="handleClick"
+      :title="tooltip"
+      :focusable="false"
+    >
+      <template #icon>
+        <n-icon :component="icon" />
+      </template>
+      <!-- {{ label }} -->
+    </n-button>
+  </n-dropdown>
+</template>

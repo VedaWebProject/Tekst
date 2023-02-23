@@ -2,7 +2,7 @@
 import { h, ref, computed, watch, type Component } from 'vue';
 import { useRoute, RouterLink } from 'vue-router';
 import { useWindowSize } from '@vueuse/core';
-import { NIcon, NMenu } from 'naive-ui';
+import { NMenu, NIcon } from 'naive-ui';
 import type { MenuOption } from 'naive-ui';
 import InfoOutlined from '@vicons/material/InfoOutlined';
 import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
