@@ -2,12 +2,12 @@
   "openapi": "3.0.2",
   "info": {
     "title": "TextRig-DEV",
-    "description": "A text research platform",
-    "termsOfService": "https://textrig-example.org/terms",
+    "description": "An online text research platform",
+    "termsOfService": "https://www.example-textrig-instance.org/terms",
     "contact": {
       "name": "Rick Sanchez",
-      "url": "https://textrig-example.org/contact",
-      "email": "rick.sanchez@textrig-example.org"
+      "url": "https://www.example-textrig-instance.org/contact",
+      "email": "rick.sanchez@example-textrig-instance.org"
     },
     "license": {
       "name": "AGPL-3.0-or-later",

@@ -62,7 +62,8 @@ async def startup_routine() -> None:
 
     # Hello World!
     log.info(
-        f"{_cfg.app_name} (TextRig Server v{_cfg.info.version}) "
+        f"{_cfg.info.platform_name} ({_cfg.textrig_info.name} "
+        f"Server v{_cfg.textrig_info.version}) "
         f"running in {'DEVELOPMENT' if _cfg.dev_mode else 'PRODUCTION'} MODE"
     )
 
@@ -94,5 +95,5 @@ async def startup_routine() -> None:
 
 @app.on_event("shutdown")
 async def shutdown_routine() -> None:
-    log.info(f"{_cfg.info.platform} cleaning up and shutting down")
+    log.info(f"{_cfg.textrig_info.name} cleaning up and shutting down")
     get_db_client(_cfg).close()  # again, no DI possible here :(

@@ -28,8 +28,8 @@ def custom_openapi(app: FastAPI, cfg: TextRigConfig):
         if app.openapi_schema:
             return app.openapi_schema
         openapi_schema = get_openapi(
-            title=cfg.app_name,
-            version=cfg.info.version,
+            title=cfg.info.platform_name,
+            version=cfg.textrig_info.version,
             description=cfg.info.description,
             routes=app.routes,
             servers=[{"url": urljoin(cfg.server_url, cfg.root_path)}],
@@ -41,8 +41,8 @@ def custom_openapi(app: FastAPI, cfg: TextRigConfig):
                 "email": cfg.info.contact_email,
             },
             license_info={
-                "name": cfg.info.license,
-                "url": cfg.info.license_url,
+                "name": cfg.textrig_info.license,
+                "url": cfg.textrig_info.license_url,
             },
         )
         app.openapi_schema = process_openapi_schema(openapi_schema)

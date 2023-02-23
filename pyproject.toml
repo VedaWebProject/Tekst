@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "textrig"
 version = "0.0.1"
-description = "The server part of TextRig - an open, collaborative text research platform"
+description = "An online text research platform"
 readme = "README.md"
 repository = "https://github.com/VedaWebProject/textrig-server"
 documentation = "https://github.com/VedaWebProject/textrig"

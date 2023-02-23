@@ -82,18 +82,28 @@ class DocConfig(BaseModel):
 class InfoConfig(BaseModel):
     """General information config model"""
 
-    platform: str = Field("TextRig", const=True)
-    platform_website: HttpUrl = Field(pkg_meta["website"], const=True)
+    platform_name: str = "TextRig"
+    description: str = "An online text research platform"
+    terms: HttpUrl = "https://www.example-textrig-instance.org/terms"
+    contact_name: str = "Rick Sanchez"
+    contact_url: HttpUrl = "https://www.example-textrig-instance.org/contact"
+    contact_email: EmailStr = "rick.sanchez@example-textrig-instance.org"
+
+
+class TextRigInfoConfig(BaseModel):
+    """
+    TextRig platform information config model
+
+    These values are not configurable. They are taken from the package infos and
+    aren't meant to be changed by users creating an own instance of the platform.
+    """
+
+    name: str = Field("TextRig", const=True)
+    version: str = Field(pkg_meta["version"], const=True)
+    description: str = Field(pkg_meta["description"], const=True)
+    website: HttpUrl = Field(pkg_meta["website"], const=True)
     license: str = Field(pkg_meta["license"], const=True)
     license_url: HttpUrl = Field(pkg_meta["license_url"], const=True)
-    version: str = Field(pkg_meta["version"], const=True)
-    description: str = pkg_meta["description"]
-    long_description: str = pkg_meta["long_description"]
-    website: HttpUrl = pkg_meta["website"]
-    terms: HttpUrl = pkg_meta["website"]
-    contact_name: str = ""
-    contact_url: HttpUrl = ""
-    contact_email: EmailStr = ""
 
 
 class SecurityConfig(BaseModel):
@@ -117,7 +127,6 @@ class TextRigConfig(BaseSettings):
     """Platform config model"""
 
     # basic
-    app_name: str = "TextRig"
     dev_mode: bool = False
     root_path: str = ""
     server_url: HttpUrl = "http://127.0.0.1:8000"
@@ -138,10 +147,8 @@ class TextRigConfig(BaseSettings):
     security: SecurityConfig = SecurityConfig()  # security-related config
     db: DbConfig = DbConfig()  # db-related config (MongoDB)
     doc: DocConfig = DocConfig()  # documentation-related config (OpenAPI, Redoc)
-    info: InfoConfig = InfoConfig()  # general information config
-
-    # def __init__(self, env_file: str = ".env", *args, **kwargs):
-    #     super().__init__(*args, env_file=env_file, _env_file=env_file, **kwargs)
+    info: InfoConfig = InfoConfig()  # general platform information config
+    textrig_info: TextRigInfoConfig = TextRigInfoConfig()  # TextRig information config
 
     @validator(
         "cors_allow_origins",

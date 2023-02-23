@@ -16,4 +16,9 @@ router = APIRouter(
 
 @router.get("", response_model=dict[str, Any], status_code=status.HTTP_200_OK)
 async def hello_admin(cfg: TextRigConfig = Depends(get_config)) -> dict:
-    return {"message": f"Welcome, Admin! This is {cfg.app_name} v{cfg.info.version}!"}
+    return {
+        "message": (
+            "Welcome, Admin! This is "
+            f"{cfg.textrig_info.name} v{cfg.textrig_info.version}!"
+        )
+    }
