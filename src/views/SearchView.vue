@@ -4,7 +4,7 @@ const pf = usePlatformStore();
 </script>
 
 <template>
-  <h1>Search {{ pf.get('general.title') }}</h1>
+  <h1>Search {{ pf.get('info.platform_name') }}</h1>
   <p>...</p>
 </template>
 
