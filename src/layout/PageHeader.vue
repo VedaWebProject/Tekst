@@ -11,8 +11,8 @@ const pf = usePlatformStore();
 
 <template>
   <header>
-    <img id="header-logo" :alt="`${pf.get('info.platform_name')} Logo`" src="@/assets/logo.png" />
-    <div id="page-title">{{ pf.get('info.platform_name') }}</div>
+    <img id="header-logo" :alt="`${pf.get('info.platformName')} Logo`" src="@/assets/logo.png" />
+    <div id="page-title">{{ pf.get('info.platformName') }}</div>
     <MainNavigation />
     <div id="header-branding-extra">
       <n-space inline :wrap-item="false" size="small">
