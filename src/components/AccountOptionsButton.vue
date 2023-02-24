@@ -61,7 +61,6 @@ function handleAccountOptionSelect(option: string) {
   <n-dropdown
     :show="showAccountDropdown"
     :options="accountOptions"
-    :placement="'bottom-end'"
     :on-clickoutside="() => (showAccountDropdown = false)"
     @select="handleAccountOptionSelect"
   >

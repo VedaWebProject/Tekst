@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import LanguageSwitcher from '@/components/LanguageSwitcher.vue';
-import ThemeModeSwitcher from '@/components/ThemeModeSwitcher.vue';
-import MainNavigation from '@/components/MainNavigation.vue';
-import AccountOptionsButton from '@/components/AccountOptionsButton.vue';
-import { NSpace } from 'naive-ui';
+import MainNavigation from '@/components/navigation/MainNavigation.vue';
 import { usePlatformStore } from '@/stores';
 
 const pf = usePlatformStore();
@@ -13,14 +9,7 @@ const pf = usePlatformStore();
   <header>
     <img id="header-logo" :alt="`${pf.get('info.platformName')} Logo`" src="@/assets/logo.png" />
     <div id="page-title">{{ pf.get('info.platformName') }}</div>
-    <MainNavigation />
-    <div id="header-branding-extra">
-      <n-space inline :wrap-item="false" size="small">
-        <ThemeModeSwitcher />
-        <LanguageSwitcher />
-        <AccountOptionsButton />
-      </n-space>
-    </div>
+    <MainNavigation id="main-navigation-bar" />
   </header>
 </template>
 
@@ -28,8 +17,7 @@ const pf = usePlatformStore();
 header {
   display: flex;
   align-items: center;
-  justify-content: start;
-  border-bottom: 3px solid var(--accent-color);
+  justify-content: space-between;
   padding: 0.5rem;
 }
 
@@ -45,8 +33,7 @@ header #page-title {
   margin-right: 1rem;
 }
 
-#header-branding-extra {
-  flex-grow: 1;
-  text-align: right;
+header #main-navigation-bar {
+  flex-grow: 2;
 }
 </style>
