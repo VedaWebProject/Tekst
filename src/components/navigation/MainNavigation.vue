@@ -24,6 +24,7 @@ watch(activeRouteName, (newRouteName) => (activeKey.value = newRouteName));
 
 <template>
   <div class="main-navigation">
+    <div class="main-nav-divider"></div>
     <MainNavigationRouterLink label="About" route="about" :icon="InfoOutlined" />
     <MainNavigationRouterLink label="Browse" route="browse" :icon="MenuBookOutlined" />
     <MainNavigationRouterLink label="Search" route="search" :icon="SearchRound" />
@@ -38,6 +39,7 @@ watch(activeRouteName, (newRouteName) => (activeKey.value = newRouteName));
 <style scoped>
 .main-navigation {
   display: flex;
+  gap: 0.5rem;
 }
 
 .main-navigation > .main-nav-divider {

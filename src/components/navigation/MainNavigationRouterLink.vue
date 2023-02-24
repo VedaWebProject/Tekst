@@ -41,7 +41,7 @@ const themeVars = useThemeVars();
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-right: 1.75rem;
+  margin-right: 1.5rem;
   padding: 0.2rem;
 
   font-weight: normal;

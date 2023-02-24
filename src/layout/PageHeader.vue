@@ -7,33 +7,42 @@ const pf = usePlatformStore();
 
 <template>
   <header>
-    <img id="header-logo" :alt="`${pf.get('info.platformName')} Logo`" src="@/assets/logo.png" />
-    <div id="page-title">{{ pf.get('info.platformName') }}</div>
-    <MainNavigation id="main-navigation-bar" />
+    <div id="header-container">
+      <img id="header-logo" :alt="`${pf.get('info.platformName')} Logo`" src="@/assets/logo.png" />
+      <div id="header-title-container">
+        <div id="header-title">{{ pf.get('info.platformName') }}</div>
+        <div>Some selected text...</div>
+      </div>
+      <MainNavigation style="flex-grow: 2" />
+    </div>
   </header>
 </template>
 
 <style scoped>
 header {
+  padding: 0.5rem;
+  background-color: var(--accent-color);
+}
+
+header #header-container {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0.5rem;
+  justify-content: start;
+  /* flex-wrap: wrap; */
 }
 
 header #header-logo {
   align-self: center;
-  height: 56px;
+  height: 48px;
   width: auto;
   margin-right: 1rem;
 }
 
-header #page-title {
-  font-size: 1.2rem;
-  margin-right: 1rem;
+header #header-title-container {
+  margin-right: 2rem;
 }
 
-header #main-navigation-bar {
-  flex-grow: 2;
+header #header-title {
+  font-size: 1.4rem;
 }
 </style>
