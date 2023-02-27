@@ -41,6 +41,7 @@ header #header-title-container {
 
 header #header-title {
   font-size: 1.4rem;
+  white-space: nowrap;
 }
 
 header #current-text-container {
