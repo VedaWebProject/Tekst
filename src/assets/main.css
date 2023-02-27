@@ -9,12 +9,12 @@
 a,
 a:any-link {
   text-decoration: none;
-  color: var(--accent-color-fade1);
+  color: var(--accent-color-intense);
   transition: 0.1s;
 }
 
 a:hover {
-  color: var(--accent-color);
+  color: var(--accent-color-fade1);
 }
 
 p {

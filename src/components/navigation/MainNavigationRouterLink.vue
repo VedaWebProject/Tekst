@@ -42,7 +42,6 @@ const themeVars = useThemeVars();
   align-items: center;
   gap: 8px;
   margin-right: 1.5rem;
-  padding: 0.2rem;
 
   font-weight: normal;
   font-size: var(--font-size);
@@ -50,12 +49,9 @@ const themeVars = useThemeVars();
   color: var(--font-color);
 }
 
-.main-nav-router-link:hover {
-  color: #0f0;
-}
-
+.main-nav-router-link:hover,
 .main-nav-router-link.router-link-active {
-  color: #f00;
+  color: var(--accent-color-intense);
 }
 
 .main-nav-router-link .main-nav-router-link-label {

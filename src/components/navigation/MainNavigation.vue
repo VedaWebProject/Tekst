@@ -8,10 +8,10 @@ import ThemeModeSwitcher from '../ThemeModeSwitcher.vue';
 import LanguageSwitcher from '../LanguageSwitcher.vue';
 import AccountOptionsButton from '../AccountOptionsButton.vue';
 
-import InfoOutlined from '@vicons/material/InfoOutlined';
-import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
-import SearchRound from '@vicons/material/SearchRound';
-import HelpOutlineRound from '@vicons/material/HelpOutlineRound';
+// import InfoOutlined from '@vicons/material/InfoOutlined';
+// import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
+// import SearchRound from '@vicons/material/SearchRound';
+// import HelpOutlineRound from '@vicons/material/HelpOutlineRound';
 
 const route = useRoute();
 // const state = useStateStore();
@@ -24,11 +24,10 @@ watch(activeRouteName, (newRouteName) => (activeKey.value = newRouteName));
 
 <template>
   <div class="main-navigation">
-    <div class="main-nav-divider"></div>
-    <MainNavigationRouterLink label="About" route="about" :icon="InfoOutlined" />
-    <MainNavigationRouterLink label="Browse" route="browse" :icon="MenuBookOutlined" />
-    <MainNavigationRouterLink label="Search" route="search" :icon="SearchRound" />
-    <MainNavigationRouterLink label="Help" route="help" :icon="HelpOutlineRound" />
+    <MainNavigationRouterLink label="About" route="about" />
+    <MainNavigationRouterLink label="Browse" route="browse" />
+    <MainNavigationRouterLink label="Search" route="search" />
+    <MainNavigationRouterLink label="Help" route="help" />
     <div class="main-nav-divider"></div>
     <ThemeModeSwitcher />
     <LanguageSwitcher />
@@ -39,6 +38,7 @@ watch(activeRouteName, (newRouteName) => (activeKey.value = newRouteName));
 <style scoped>
 .main-navigation {
   display: flex;
+  align-items: center;
   gap: 0.5rem;
 }
 

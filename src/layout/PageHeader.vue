@@ -11,19 +11,14 @@ const pf = usePlatformStore();
       <img id="header-logo" :alt="`${pf.get('info.platformName')} Logo`" src="@/assets/logo.png" />
       <div id="header-title-container">
         <div id="header-title">{{ pf.get('info.platformName') }}</div>
-        <div>Some selected text...</div>
       </div>
       <MainNavigation style="flex-grow: 2" />
     </div>
+    <div id="current-text">Some selected text...</div>
   </header>
 </template>
 
 <style scoped>
-header {
-  padding: 0.5rem;
-  background-color: var(--accent-color);
-}
-
 header #header-container {
   display: flex;
   align-items: center;
@@ -39,10 +34,20 @@ header #header-logo {
 }
 
 header #header-title-container {
-  margin-right: 2rem;
+  margin-right: 3rem;
 }
 
 header #header-title {
   font-size: 1.4rem;
+}
+
+header #current-text {
+  background-color: var(--accent-color);
+  color: var(--theme-text-color-inverted);
+}
+
+header #header-container,
+header #current-text {
+  padding: 0.75rem;
 }
 </style>

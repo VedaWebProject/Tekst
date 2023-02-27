@@ -5,11 +5,12 @@ import GlobalMessenger from '@/components/GlobalMessenger.vue';
 import { onMounted, onBeforeMount, ref, computed } from 'vue';
 import { LANGUAGES as LANGS } from '@/i18n';
 import { useStateStore, usePlatformStore, useMessagesStore, useSettingsStore } from '@/stores';
-import { NConfigProvider, NGlobalStyle, lightTheme, darkTheme } from 'naive-ui';
+import { NConfigProvider, NGlobalStyle, lightTheme, darkTheme, useThemeVars } from 'naive-ui';
 import { lightOverrides, darkOverrides } from '@/theme';
 import PageHeader from './layout/PageHeader.vue';
 import PageFooter from './layout/PageFooter.vue';
 import { i18n } from '@/i18n';
+import Color from 'color';
 
 const state = useStateStore();
 const settings = useSettingsStore();
@@ -24,10 +25,14 @@ const initLoadingFinished = ref(false);
 const nUiLangLocale = computed(() => LANGS[settings.language].nUiLangLocale);
 const nUiDateLocale = computed(() => LANGS[settings.language].nUiDateLocale);
 
+const themeVars = useThemeVars();
 const theme = computed(() => (settings.theme === 'light' ? lightTheme : darkTheme));
 const themeOverrides = computed(() =>
   settings.theme === 'light' ? lightOverrides : darkOverrides
 );
+
+const textColor = computed(() => themeVars.value.textColorBase);
+const textColorInverted = computed(() => Color(textColor.value).negate().hex());
 
 onBeforeMount(() => {
   state.startGlobalLoading();
@@ -90,11 +95,14 @@ onMounted(async () => {
 <style scoped>
 #app-container {
   --accent-color: v-bind(state.accentColor.base);
+  --accent-color-intense: v-bind(state.accentColor.intense);
   --accent-color-fade1: v-bind(state.accentColor.fade1);
   --accent-color-fade2: v-bind(state.accentColor.fade2);
   --accent-color-fade3: v-bind(state.accentColor.fade3);
   --accent-color-fade4: v-bind(state.accentColor.fade4);
   --accent-color-fade5: v-bind(state.accentColor.fade5);
+  --theme-text-color: v-bind(textColor);
+  --theme-text-color-inverted: v-bind(textColorInverted);
 }
 
 main {
