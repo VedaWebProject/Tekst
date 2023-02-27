@@ -24,7 +24,7 @@ export const useStateStore = defineStore('state', () => {
     const base = Color(text.value ? text.value.accentColor : '#41658a').lighten(lighten);
     return {
       base: base.hex(),
-      intense: base.saturate(0.5).hex(),
+      intense: base.saturate(0.75).hex(),
       fade1: base.fade(0.2).hexa(),
       fade2: base.fade(0.4).hexa(),
       fade3: base.fade(0.6).hexa(),

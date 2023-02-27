@@ -1,20 +1,21 @@
 @import './base.css';
 
 #app {
-  max-width: 1280px;
+  max-width: 100%;
   margin: 0 auto;
   padding: 0;
+  --max-app-width: 1280px;
 }
 
 a,
 a:any-link {
   text-decoration: none;
-  color: var(--accent-color-intense);
+  color: var(--accent-color);
   transition: 0.1s;
 }
 
 a:hover {
-  color: var(--accent-color-fade1);
+  color: var(--accent-color-intense);
 }
 
 p {

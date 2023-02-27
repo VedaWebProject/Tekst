@@ -14,7 +14,9 @@ const pf = usePlatformStore();
       </div>
       <MainNavigation style="flex-grow: 2" />
     </div>
-    <div id="current-text">Some selected text...</div>
+    <div id="current-text-container">
+      <div id="current-text">Some selected text...</div>
+    </div>
   </header>
 </template>
 
@@ -41,13 +43,15 @@ header #header-title {
   font-size: 1.4rem;
 }
 
-header #current-text {
+header #current-text-container {
   background-color: var(--accent-color);
   color: var(--theme-text-color-inverted);
 }
 
 header #header-container,
 header #current-text {
+  max-width: var(--max-app-width);
+  margin: 0 auto;
   padding: 0.75rem;
 }
 </style>

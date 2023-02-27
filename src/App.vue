@@ -106,6 +106,8 @@ onMounted(async () => {
 }
 
 main {
+  max-width: var(--max-app-width);
+  margin: 0 auto;
   padding: 1em;
 }
 </style>
