@@ -1,5 +1,6 @@
 import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
+import { useWindowSize } from '@vueuse/core';
 import type { TextRead } from '@/openapi';
 import Color from 'color';
 import { useSettingsStore } from './settings';
@@ -14,7 +15,9 @@ export const useStateStore = defineStore('state', () => {
     setTimeout(() => {
       globalLoading.value = false;
     }, delayMs);
-
+  // small screen (< 800px)
+  const { width } = useWindowSize();
+  const smallScreen = computed(() => width.value < 800);
   // current text
   const text = ref<TextRead | null>(null);
   // current text accent color variants
@@ -37,6 +40,7 @@ export const useStateStore = defineStore('state', () => {
     globalLoading,
     startGlobalLoading,
     finishGlobalLoading,
+    smallScreen,
     text,
     accentColor,
   };

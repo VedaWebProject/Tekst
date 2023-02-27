@@ -1,9 +1,14 @@
 <script setup lang="ts">
+import { defineProps } from 'vue';
 import { LANGUAGES as LANGS } from '@/i18n';
 import { useSettingsStore, useMessagesStore } from '@/stores';
 import { NButton, NDropdown, NIcon } from 'naive-ui';
 import LanguageOutlined from '@vicons/material/LanguageOutlined';
 import { i18n } from '@/i18n';
+
+const props = defineProps<{
+  dropdownSize?: 'small' | 'medium' | 'large' | 'huge' | undefined;
+}>();
 
 const settings = useSettingsStore();
 const messages = useMessagesStore();
@@ -27,7 +32,12 @@ function handleLanguageSelect(localeCode: string) {
 </script>
 
 <template>
-  <n-dropdown trigger="click" :options="options" @select="handleLanguageSelect">
+  <n-dropdown
+    trigger="click"
+    :options="options"
+    :size="props.dropdownSize"
+    @select="handleLanguageSelect"
+  >
     <n-button
       quaternary
       circle
