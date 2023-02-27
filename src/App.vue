@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RouterView } from 'vue-router';
+import { RouterView, useRoute } from 'vue-router';
 import FullScreenLoader from '@/components/FullScreenLoader.vue';
 import GlobalMessenger from '@/components/GlobalMessenger.vue';
 import { onMounted, onBeforeMount, ref, computed } from 'vue';
@@ -11,6 +11,7 @@ import PageHeader from './layout/PageHeader.vue';
 import PageFooter from './layout/PageFooter.vue';
 import { i18n } from '@/i18n';
 import Color from 'color';
+import { setPageTitle } from './router';
 
 const state = useStateStore();
 const settings = useSettingsStore();
@@ -18,6 +19,7 @@ const messages = useMessagesStore();
 const pf = usePlatformStore();
 
 const t = i18n.global.t;
+const route = useRoute();
 const loaderText = ref('');
 const loaderShowSpinner = ref(true);
 const initLoadingFinished = ref(false);
@@ -60,6 +62,7 @@ onMounted(async () => {
   err && messages.error(t('errors.appInit'));
   loaderText.value = t('loading.ready');
   initLoadingFinished.value = true;
+  setPageTitle(route);
   state.finishGlobalLoading(200);
 });
 </script>
