@@ -40,7 +40,8 @@ header #header-title-container {
 }
 
 header #header-title {
-  font-size: 1.4rem;
+  font-size: 1.75rem;
+  color: var(--accent-color-intense);
   white-space: nowrap;
 }
 

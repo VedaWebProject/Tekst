@@ -103,6 +103,9 @@ onMounted(async () => {
   --accent-color-fade5: v-bind(state.accentColor.fade5);
   --theme-text-color: v-bind(textColor);
   --theme-text-color-inverted: v-bind(textColorInverted);
+
+  max-width: 100%;
+  font-family: Assistant;
 }
 
 main {

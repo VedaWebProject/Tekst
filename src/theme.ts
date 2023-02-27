@@ -4,13 +4,13 @@ import Color from 'color';
 
 const commonOverrides: GlobalThemeOverrides = {
   common: {
-    fontSize: '16px',
-    fontSizeMini: '14px',
-    fontSizeTiny: '14px',
-    fontSizeSmall: '16px',
-    fontSizeMedium: '16px',
-    fontSizeLarge: '17px',
-    fontSizeHuge: '18px',
+    fontSize: '18px',
+    fontSizeMini: '16px',
+    fontSizeTiny: '16px',
+    fontSizeSmall: '18px',
+    fontSizeMedium: '18px',
+    fontSizeLarge: '20px',
+    fontSizeHuge: '22px',
     lineHeight: '1.8',
   },
   Form: {
