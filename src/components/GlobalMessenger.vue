@@ -34,6 +34,7 @@ const renderMessage: MessageRenderMessage = (props) => {
           maxWidth: 'calc(100vw - 32px)',
           width: '512px',
           lineHeight: '1.5rem',
+          paddingRight: '36px',
         },
       },
       {
