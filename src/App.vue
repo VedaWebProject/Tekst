@@ -20,9 +20,7 @@ const pf = usePlatformStore();
 
 const t = i18n.global.t;
 const route = useRoute();
-const loaderText = ref('');
-const loaderShowSpinner = ref(true);
-const initLoadingFinished = ref(false);
+const appInitialized = ref(false);
 
 const nUiLangLocale = computed(() => LANGS[settings.language].nUiLangLocale);
 const nUiDateLocale = computed(() => LANGS[settings.language].nUiDateLocale);
@@ -36,34 +34,62 @@ const themeOverrides = computed(() =>
 const textColor = computed(() => themeVars.value.textColorBase);
 const textColorInverted = computed(() => Color(textColor.value).negate().hex());
 
+interface InitStep {
+  info: string;
+  action: () => Promise<boolean>;
+}
+
+const initSteps: InitStep[] = [
+  {
+    info: t('loading.serverI18n'),
+    action: async () => {
+      try {
+        await settings.setLanguage();
+        return true;
+      } catch (e) {
+        messages.warning(t('errors.serverI18n'));
+        console.error(e);
+        return false;
+      }
+    },
+  },
+  {
+    info: t('loading.platformData'),
+    action: async () => {
+      try {
+        await pf.loadPlatformData();
+        return true;
+      } catch (e) {
+        messages.warning(t('errors.platformData'));
+        console.error(e);
+        return false;
+      }
+    },
+  },
+];
+
 onBeforeMount(() => {
   state.startGlobalLoading();
 });
 
 onMounted(async () => {
   let err = false;
+  let count = 0;
 
-  // TODO: instead of just i18n, all resources needed for bootstrapping the
-  // client should be loaded from the server here...
-  loaderText.value = t('loading.serverI18n');
-  await settings.setLanguage().catch(() => {
-    messages.warning(t('errors.serverI18n'));
-    // console.error(e);
-    err = true;
-  });
-
-  loaderText.value = t('loading.platformData');
-  await pf.loadPlatformData().catch((e) => {
-    messages.warning(t('errors.platformData'));
-    console.error(e);
-    err = true;
-  });
+  for (const step of initSteps) {
+    state.globalLoadingProgress = count / initSteps.length;
+    state.globalLoadingMsg = step.info;
+    const success = await step.action();
+    err = err || !success;
+    count++;
+    state.globalLoadingProgress = count / initSteps.length;
+  }
 
   err && messages.error(t('errors.appInit'));
-  loaderText.value = t('loading.ready');
-  initLoadingFinished.value = true;
+  state.globalLoadingMsg = t('loading.ready');
   setPageTitle(route);
-  state.finishGlobalLoading(200);
+  await state.finishGlobalLoading(200, 200);
+  appInitialized.value = true;
 });
 </script>
 
@@ -75,7 +101,7 @@ onMounted(async () => {
     :date-locale="nUiDateLocale"
   >
     <div id="app-container">
-      <template v-if="initLoadingFinished">
+      <template v-if="appInitialized">
         <PageHeader />
         <main>
           <RouterView />
@@ -86,8 +112,10 @@ onMounted(async () => {
       <FullScreenLoader
         :show="state.globalLoading"
         transition="0.2s"
-        :text="loaderText"
-        :spinner="loaderShowSpinner"
+        :text="state.globalLoadingMsg"
+        :progress="state.globalLoadingProgress"
+        :progress-color="state.accentColor.intense"
+        show-progress
       />
       <GlobalMessenger />
     </div>

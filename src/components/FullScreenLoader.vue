@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { NSpin } from 'naive-ui';
+import { computed } from 'vue';
+import { NProgress } from 'naive-ui';
 
 export interface Props {
   /**
@@ -7,34 +8,57 @@ export interface Props {
    */
   show: boolean;
   /**
+   * Text to display at the center of the loader
+   * (only visible if not overridden by custom elements passed in the component slot)
+   */
+  text?: string;
+  /**
    * Whether to show a spinner or not
    */
-  spinner?: boolean;
+  showProgress?: boolean;
+  /**
+   * Progres percentage
+   */
+  progress?: number;
+  /**
+   * Progress bar color
+   */
+  progressColor?: string;
   /**
    * Transition duration expressed as a
    * [time](https://developer.mozilla.org/en-US/docs/Web/CSS/time) string,
    * e.g. 0.5s or 500ms - default: 0.2s
    */
   transition?: string;
-  /**
-   * Text to display at the center of the loader
-   * (only visible if not overridden by custom elements passed in the component slot)
-   */
-  text?: string;
 }
 const props = withDefaults(defineProps<Props>(), {
   show: false,
-  spinner: true,
-  transition: '500ms',
   text: 'loading...',
+  showProgress: true,
+  progress: 0,
+  progressColor: '#444',
+  transition: '500ms',
 });
+
+const progress = computed(() =>
+  props.progress !== undefined ? Math.abs(props.progress) * 100 : 0
+);
 </script>
 
 <template>
   <Transition name="fade">
     <div class="fullscreen-loader" v-show="props.show">
-      <n-spin v-show="props.spinner" size="small" />
       <div class="fullscreen-loader-text">{{ props.text }}</div>
+      <n-progress
+        v-show="props.showProgress && props.progress !== undefined"
+        type="line"
+        :percentage="progress"
+        :show-indicator="false"
+        :height="4"
+        :color="props.progressColor"
+        border-radius="0"
+        processing
+      />
     </div>
   </Transition>
 </template>

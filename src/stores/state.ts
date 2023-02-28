@@ -8,18 +8,26 @@ import { useSettingsStore } from './settings';
 export const useStateStore = defineStore('state', () => {
   // global loading state
   const globalLoading = ref(false);
+  const globalLoadingMsg = ref('');
+  const globalLoadingProgress = ref(0);
   const startGlobalLoading = () => {
     globalLoading.value = true;
   };
-  const finishGlobalLoading = (delayMs: number = 0) =>
-    setTimeout(() => {
-      globalLoading.value = false;
-    }, delayMs);
+  const finishGlobalLoading = async (delayMs: number = 0, resetLoadingDataDelayMs: number = 0) => {
+    await new Promise((resolve) => setTimeout(resolve, delayMs));
+    globalLoading.value = false;
+    await new Promise((resolve) => setTimeout(resolve, resetLoadingDataDelayMs));
+    globalLoadingMsg.value = '...';
+    globalLoadingProgress.value = 0;
+  };
+
   // small screen (< 800px)
   const { width } = useWindowSize();
   const smallScreen = computed(() => width.value < 800);
+
   // current text
   const text = ref<TextRead | null>(null);
+
   // current text accent color variants
   const settings = useSettingsStore();
   const accentColor = computed(() => {
@@ -40,6 +48,8 @@ export const useStateStore = defineStore('state', () => {
     globalLoading,
     startGlobalLoading,
     finishGlobalLoading,
+    globalLoadingMsg,
+    globalLoadingProgress,
     smallScreen,
     text,
     accentColor,
