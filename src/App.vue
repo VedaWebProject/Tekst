@@ -5,12 +5,11 @@ import GlobalMessenger from '@/components/GlobalMessenger.vue';
 import { onMounted, onBeforeMount, ref, computed } from 'vue';
 import { LANGUAGES as LANGS } from '@/i18n';
 import { useStateStore, usePlatformStore, useMessagesStore, useSettingsStore } from '@/stores';
-import { NConfigProvider, NGlobalStyle, lightTheme, darkTheme, useThemeVars } from 'naive-ui';
+import { NConfigProvider, NGlobalStyle, lightTheme, darkTheme } from 'naive-ui';
 import { lightOverrides, darkOverrides } from '@/theme';
 import PageHeader from './layout/PageHeader.vue';
 import PageFooter from './layout/PageFooter.vue';
 import { i18n } from '@/i18n';
-import Color from 'color';
 import { setPageTitle } from './router';
 
 const state = useStateStore();
@@ -25,14 +24,10 @@ const appInitialized = ref(false);
 const nUiLangLocale = computed(() => LANGS[settings.language].nUiLangLocale);
 const nUiDateLocale = computed(() => LANGS[settings.language].nUiDateLocale);
 
-const themeVars = useThemeVars();
 const theme = computed(() => (settings.theme === 'light' ? lightTheme : darkTheme));
 const themeOverrides = computed(() =>
   settings.theme === 'light' ? lightOverrides : darkOverrides
 );
-
-const textColor = computed(() => themeVars.value.textColorBase);
-const textColorInverted = computed(() => Color(textColor.value).negate().hex());
 
 interface InitStep {
   info: string;
@@ -132,8 +127,6 @@ onMounted(async () => {
   --accent-color-fade3: v-bind(state.accentColor.fade3);
   --accent-color-fade4: v-bind(state.accentColor.fade4);
   --accent-color-fade5: v-bind(state.accentColor.fade5);
-  --theme-text-color: v-bind(textColor);
-  --theme-text-color-inverted: v-bind(textColorInverted);
 
   max-width: 100%;
   font-family: Assistant;

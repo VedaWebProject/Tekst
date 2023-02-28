@@ -14,7 +14,7 @@ import NavBar from '@/components/navigation/NavBar.vue';
 <style scoped>
 #current-text-container {
   background-color: var(--accent-color);
-  color: var(--theme-text-color-inverted);
+  color: #fff;
 }
 
 #current-text {
