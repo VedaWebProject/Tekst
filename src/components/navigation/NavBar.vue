@@ -156,12 +156,10 @@ watch(route, () => (menuOpen.value = false));
   padding: 0.75rem 1.5rem;
   font-size: 22px;
   margin: 6px;
-  background-color: var(--accent-color-fade5);
+  background-color: var(--accent-color-fade4);
   border-radius: 4px;
 }
-.navbar-smallscreen .navbar-router-link:hover {
-  background-color: var(--accent-color-fade4);
-}
+
 .navbar-smallscreen .navbar-menu-extra {
   font-size: 44px;
 }
