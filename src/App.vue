@@ -99,7 +99,9 @@ onMounted(async () => {
       <template v-if="appInitialized">
         <PageHeader />
         <main>
-          <RouterView />
+          <div id="main-content">
+            <RouterView />
+          </div>
         </main>
         <PageFooter />
       </template>
@@ -127,14 +129,22 @@ onMounted(async () => {
   --accent-color-fade3: v-bind(state.accentColor.fade3);
   --accent-color-fade4: v-bind(state.accentColor.fade4);
   --accent-color-fade5: v-bind(state.accentColor.fade5);
+  --content-padding: 0.75rem;
 
   max-width: 100%;
   font-family: Assistant;
 }
 
 main {
+  -webkit-box-shadow: inset 0px -8px 12px -12px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: inset 0px -8px 12px -12px rgba(0, 0, 0, 0.75);
+  box-shadow: inset 0px -8px 12px -12px rgba(0, 0, 0, 0.75);
+}
+
+#main-content {
   max-width: var(--max-app-width);
   margin: 0 auto;
-  padding: 1em;
+  padding: var(--content-padding);
+  padding-bottom: 2rem;
 }
 </style>
