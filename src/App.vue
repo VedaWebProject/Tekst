@@ -88,8 +88,8 @@ onMounted(async () => {
   err && messages.error(t('errors.appInit'));
   state.globalLoadingMsg = t('loading.ready');
   setPageTitle(route);
-  await state.finishGlobalLoading(200, 200);
   appInitialized.value = true;
+  await state.finishGlobalLoading(200, 200);
 });
 </script>
 
