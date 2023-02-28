@@ -43,7 +43,7 @@ const themeVars = useThemeVars();
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 0.25rem 1.2rem;
+  padding: 0 1.2rem 0.2rem 1.2rem;
 
   font-weight: normal;
   font-size: var(--font-size);
@@ -54,9 +54,5 @@ const themeVars = useThemeVars();
 .navbar-router-link:hover,
 .navbar-router-link.router-link-active {
   color: var(--accent-color-intense);
-}
-
-.navbar-router-link .navbar-router-link-label {
-  line-height: 1.75;
 }
 </style>
