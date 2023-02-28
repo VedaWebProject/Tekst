@@ -3,7 +3,6 @@ import { defineStore } from 'pinia';
 import { AuthApi, UsersApi, type UserRead } from '@/openapi';
 import { useMessagesStore } from './messages';
 import { i18n } from '@/i18n';
-import { useRoute } from 'vue-router';
 import router from '@/router';
 
 const authApi = new AuthApi();
@@ -21,7 +20,6 @@ export const useAuthStore = defineStore('auth', () => {
   const returnUrl = ref<string | null>(null);
   const loggedIn = computed(() => !!user.value);
   const messages = useMessagesStore();
-  const route = useRoute();
 
   async function login(username: string, password: string) {
     return authApi.authCookieLogin({ username, password }).then(async () => {
@@ -40,9 +38,7 @@ export const useAuthStore = defineStore('auth', () => {
     } finally {
       user.value = null;
       localStorage.removeItem('user');
-      if (route.meta?.restricted) {
-        router.push('/home');
-      }
+      router.push('/home');
     }
   }
 
