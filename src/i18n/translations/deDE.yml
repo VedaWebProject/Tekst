@@ -42,6 +42,7 @@ errors:
   unexpected: Ein unerwarteter Fehler ist aufgetreten. Das hätte nicht passieren dürfen.
   followFormRules: Bitte korrigieren Sie Ihre Eingaben entsprechend den Formularregeln!
   noAccess: Sie haben keine Zugriffsberechtigung für {resource}.
+  csrf: Ihre Browserdaten haben die CSRF-Kontrolle des Servers nicht bestanden. Sie können nicht auf diese Ressource zugreifen.
 
 register:
   register: Registrieren

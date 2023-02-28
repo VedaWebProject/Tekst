@@ -134,6 +134,8 @@ function registerUser() {
           messages.error(t('register.errors.emailAlreadyRegistered'));
         } else if (data.detail?.code === 'REGISTER_INVALID_PASSWORD') {
           messages.error(t('register.errors.weakPassword'));
+        } else if (e.response.status === 403) {
+          messages.error(t('errors.csrf'));
         } else {
           messages.error(t('errors.unexpected'));
         }

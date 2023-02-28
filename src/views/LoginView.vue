@@ -76,6 +76,10 @@ function loginUser() {
           messages.error(t('login.errors.badCreds'));
         } else if (data.detail === 'LOGIN_USER_NOT_VERIFIED') {
           messages.error(t('login.errors.notVerified'));
+        } else if (e.response.status === 403) {
+          messages.error(t('errors.csrf'));
+        } else {
+          messages.error(t('errors.unexpected'));
         }
       } else {
         messages.error(t('errors.unexpected'));
