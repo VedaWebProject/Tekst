@@ -70,7 +70,7 @@ function handleAccountOptionSelect(option: string) {
     @select="handleAccountOptionSelect"
   >
     <n-button
-      quaternary
+      secondary
       circle
       size="large"
       @click="handleClick"

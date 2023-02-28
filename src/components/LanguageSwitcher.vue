@@ -39,7 +39,7 @@ function handleLanguageSelect(localeCode: string) {
     @select="handleLanguageSelect"
   >
     <n-button
-      quaternary
+      secondary
       circle
       size="large"
       icon-placement="left"

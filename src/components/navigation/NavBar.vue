@@ -10,10 +10,10 @@ import { useRoute } from 'vue-router';
 
 import MenuRound from '@vicons/material/MenuRound';
 
-// import InfoOutlined from '@vicons/material/InfoOutlined';
-// import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
-// import SearchRound from '@vicons/material/SearchRound';
-// import HelpOutlineRound from '@vicons/material/HelpOutlineRound';
+import InfoOutlined from '@vicons/material/InfoOutlined';
+import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
+import SearchRound from '@vicons/material/SearchRound';
+import HelpOutlineRound from '@vicons/material/HelpOutlineRound';
 
 const pf = usePlatformStore();
 const state = useStateStore();
@@ -47,10 +47,30 @@ watch(route, () => (menuOpen.value = false));
     </n-button>
 
     <div v-show="menuVisible" class="navbar-menu">
-      <NavBarRouterLink label="About" route="about" />
-      <NavBarRouterLink label="Browse" route="browse" />
-      <NavBarRouterLink label="Search" route="search" />
-      <NavBarRouterLink label="Help" route="help" />
+      <NavBarRouterLink
+        label="About"
+        route="about"
+        :icon="InfoOutlined"
+        :show-icon="state.smallScreen"
+      />
+      <NavBarRouterLink
+        label="Browse"
+        route="browse"
+        :icon="MenuBookOutlined"
+        :show-icon="state.smallScreen"
+      />
+      <NavBarRouterLink
+        label="Search"
+        route="search"
+        :icon="SearchRound"
+        :show-icon="state.smallScreen"
+      />
+      <NavBarRouterLink
+        label="Help"
+        route="help"
+        :icon="HelpOutlineRound"
+        :show-icon="state.smallScreen"
+      />
       <div class="navbar-menu-divider"></div>
       <div class="navbar-menu-extra">
         <ThemeModeSwitcher />
@@ -70,6 +90,10 @@ watch(route, () => (menuOpen.value = false));
   max-width: var(--max-app-width);
   margin: 0 auto;
   padding: 0.75rem;
+}
+
+.navbar-smallscreen .navbar {
+  padding-bottom: 0px;
 }
 
 .navbar-logo {
@@ -98,7 +122,7 @@ watch(route, () => (menuOpen.value = false));
 }
 .navbar-smallscreen .navbar-menu {
   flex-direction: column;
-  align-items: start;
+  align-items: stretch;
   flex-basis: 100%;
   padding-top: 1rem;
 }
@@ -111,8 +135,7 @@ watch(route, () => (menuOpen.value = false));
 .navbar-smallscreen .navbar-menu-divider {
   flex-grow: 1;
   width: 100%;
-  margin: 0.5rem 0;
-  border-top: 1px solid #ddd;
+  margin: 0;
 }
 
 .navbar-menu-extra {
@@ -122,12 +145,24 @@ watch(route, () => (menuOpen.value = false));
 
 .navbar-smallscreen .navbar-menu-extra {
   justify-content: space-around;
-  width: 100%;
+  gap: 40px;
+  max-width: 320px;
+  margin: 24px auto;
 }
 </style>
 
 <style>
 .navbar-smallscreen .navbar-router-link {
-  width: 100%;
+  padding: 0.75rem 1.5rem;
+  font-size: 22px;
+  margin: 6px;
+  background-color: var(--accent-color-fade5);
+  border-radius: 4px;
+}
+.navbar-smallscreen .navbar-router-link:hover {
+  background-color: var(--accent-color-fade4);
+}
+.navbar-smallscreen .navbar-menu-extra {
+  font-size: 44px;
 }
 </style>

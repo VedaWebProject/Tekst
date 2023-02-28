@@ -5,7 +5,8 @@ import { NIcon, useThemeVars } from 'naive-ui';
 const props = defineProps<{
   label: string;
   route: string;
-  icon?: Component;
+  icon: Component;
+  showIcon: boolean;
 }>();
 
 const themeVars = useThemeVars();
@@ -25,7 +26,7 @@ const themeVars = useThemeVars();
           isExactActive && 'router-link-exact-active',
         ]"
       >
-        <NIcon :size="20" v-if="props.icon" :component="props.icon" />
+        <NIcon :size="20" v-if="props.showIcon" :component="props.icon" />
         <span class="navbar-router-link-label">{{ props.label }}</span>
       </div>
     </a>
@@ -40,8 +41,9 @@ const themeVars = useThemeVars();
 
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  padding: 0.75rem 1.5rem;
+  padding: 0.25rem 1.2rem;
 
   font-weight: normal;
   font-size: var(--font-size);
