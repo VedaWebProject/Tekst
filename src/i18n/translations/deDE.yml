@@ -44,6 +44,12 @@ errors:
   noAccess: Sie haben keine Zugriffsberechtigung für {resource}.
   csrf: Ihre Browserdaten haben die CSRF-Kontrolle des Servers nicht bestanden. Sie können nicht auf diese Ressource zugreifen.
 
+nav:
+  about: Über
+  browse: Blättern
+  search: Suche
+  help: Hilfe
+
 register:
   register: Registrieren
   switchToLogin: Mit bestehendem Konto anmelden

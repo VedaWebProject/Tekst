@@ -44,6 +44,12 @@ errors:
   noAccess: You don't have access to {resource}.
   csrf: Your browser data didn't pass the server's CSRF checks. You are not allowed to access this resource.
 
+nav:
+  about: About
+  browse: Browse
+  search: Search
+  help: Help
+
 register:
   register: Register
   switchToLogin: Log into existing account

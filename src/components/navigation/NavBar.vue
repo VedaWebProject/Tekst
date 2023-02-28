@@ -48,25 +48,25 @@ watch(route, () => (menuOpen.value = false));
 
     <div v-show="menuVisible" class="navbar-menu">
       <NavBarRouterLink
-        label="About"
+        :label="$t('nav.about')"
         route="about"
         :icon="InfoOutlined"
         :show-icon="state.smallScreen"
       />
       <NavBarRouterLink
-        label="Browse"
+        :label="$t('nav.browse')"
         route="browse"
         :icon="MenuBookOutlined"
         :show-icon="state.smallScreen"
       />
       <NavBarRouterLink
-        label="Search"
+        :label="$t('nav.search')"
         route="search"
         :icon="SearchRound"
         :show-icon="state.smallScreen"
       />
       <NavBarRouterLink
-        label="Help"
+        :label="$t('nav.help')"
         route="help"
         :icon="HelpOutlineRound"
         :show-icon="state.smallScreen"
