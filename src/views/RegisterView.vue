@@ -13,7 +13,6 @@ import {
   NFormItem,
   NInput,
   NButton,
-  NCard,
   NSpace,
 } from 'naive-ui';
 import { AuthApi, type UserCreate } from '@/openapi';
@@ -171,13 +170,7 @@ function switchToLogin() {
 
 <template>
   <h1 style="text-align: center">{{ $t('register.heading') }}</h1>
-  <n-card
-    embedded
-    style="width: 600px; max-width: 100%; margin: 1rem auto"
-    size="huge"
-    role="dialog"
-    aria-modal="true"
-  >
+  <div class="form-container">
     <n-form
       ref="formRef"
       :model="formModel"
@@ -258,5 +251,5 @@ function switchToLogin() {
         {{ $t('register.switchToLogin') }}
       </n-button>
     </n-space>
-  </n-card>
+  </div>
 </template>

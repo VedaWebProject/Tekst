@@ -28,6 +28,7 @@ const theme = computed(() => (settings.theme === 'light' ? lightTheme : darkThem
 const themeOverrides = computed(() =>
   settings.theme === 'light' ? lightOverrides : darkOverrides
 );
+const mainBgColor = computed(() => (settings.theme === 'light' ? '#00000009' : '#ffffff10'));
 
 interface InitStep {
   info: string;
@@ -130,21 +131,19 @@ onMounted(async () => {
   --accent-color-fade4: v-bind(state.accentColor.fade4);
   --accent-color-fade5: v-bind(state.accentColor.fade5);
   --content-padding: 0.75rem;
-
-  max-width: 100%;
-  font-family: Assistant;
 }
 
 main {
-  -webkit-box-shadow: inset 0px -8px 12px -12px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: inset 0px -8px 12px -12px rgba(0, 0, 0, 0.75);
-  box-shadow: inset 0px -8px 12px -12px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: inset 0px -10px 12px -14px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: inset 0px -10px 12px -14px rgba(0, 0, 0, 0.75);
+  box-shadow: inset 0px -10px 12px -14px rgba(0, 0, 0, 0.75);
+  background-color: v-bind(mainBgColor);
 }
 
 #main-content {
   max-width: var(--max-app-width);
   margin: 0 auto;
   padding: var(--content-padding);
-  padding-bottom: 2rem;
+  padding-bottom: 3rem;
 }
 </style>

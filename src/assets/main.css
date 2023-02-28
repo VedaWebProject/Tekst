@@ -1,9 +1,6 @@
 @import './base.css';
 
 #app {
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 0;
   --max-app-width: 1280px;
 }
 
@@ -27,21 +24,18 @@ strong {
   font-weight: bold;
 }
 
-/*
-
-    Global CSS fixes for problems with external libraries
-
-*/
-
-/* fix for NaiveUI alert close buttons being overlapped by other elements */
-.n-alert .n-alert__close {
-  z-index: 1;
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-weight: 300;
 }
 
-/* fix for vertically centering NaiveUI alert icons at increased font sizes */
-.n-alert .n-alert__icon {
-  top: 0;
-  bottom: 0;
-  margin-top: auto;
-  margin-bottom: auto;
+.form-container {
+  width: 600px;
+  max-width: 100%;
+  margin: 0 auto;
+  background-color: transparent;
+  padding: 23px 32px 24px;
 }

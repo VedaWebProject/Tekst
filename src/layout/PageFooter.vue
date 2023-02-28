@@ -20,7 +20,7 @@ const pf = usePlatformStore();
 <style scoped>
 footer {
   border-top: 4px solid var(--accent-color);
-  padding: var(--content-padding);
+  padding: 1.75rem var(--content-padding);
 }
 
 footer #footer-content {

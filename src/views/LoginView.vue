@@ -9,7 +9,6 @@ import {
   NFormItem,
   NInput,
   NButton,
-  NCard,
   NSpace,
 } from 'naive-ui';
 import { ref } from 'vue';
@@ -107,13 +106,7 @@ function handleForgotPasswordClick() {
 
 <template>
   <h1 style="text-align: center">{{ $t('login.heading') }}</h1>
-  <n-card
-    embedded
-    style="width: 600px; max-width: 100%; margin: 1rem auto"
-    size="huge"
-    role="dialog"
-    aria-modal="true"
-  >
+  <div class="form-container">
     <n-form
       ref="formRef"
       :model="formModel"
@@ -145,7 +138,7 @@ function handleForgotPasswordClick() {
       <n-button
         text
         :focusable="false"
-        style="margin-bottom: 2rem; margin-top: -12px; font-size: 0.85rem"
+        style="margin-bottom: 2rem; margin-top: -12px; font-size: 0.95rem"
         @click="handleForgotPasswordClick"
       >
         {{ $t('login.forgotPassword') }}
@@ -167,5 +160,5 @@ function handleForgotPasswordClick() {
         {{ $t('login.switchToRegister') }}
       </n-button>
     </n-space>
-  </n-card>
+  </div>
 </template>
