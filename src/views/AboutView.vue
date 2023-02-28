@@ -8,11 +8,11 @@ const pf = usePlatformStore();
   <p>{{ $t('dummy.schiller') }}</p>
 
   <h2>Accent Palette Demo</h2>
-  <div class="square" style="background-color: #41658a"></div>
-  <div class="square" style="background-color: #a44a3f"></div>
-  <div class="square" style="background-color: #c76305"></div>
-  <div class="square" style="background-color: #0e402d"></div>
-  <div class="square" style="background-color: #654f6f"></div>
+  <div class="square" style="background-color: #334195"></div>
+  <div class="square" style="background-color: #bc243b"></div>
+  <div class="square" style="background-color: #e4572e"></div>
+  <div class="square" style="background-color: #18a058"></div>
+  <div class="square" style="background-color: #9368b7"></div>
 
   <h2>Current Accent Color Demo</h2>
   <div class="square" style="background-color: var(--accent-color)"></div>
