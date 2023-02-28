@@ -27,7 +27,7 @@ watch(route, () => (menuOpen.value = false));
 
 <template>
   <div class="navbar" :class="state.smallScreen && 'navbar-smallscreen'">
-    <img class="navbar-logo" :alt="`${pf.get('info.platformName')} Logo`" src="@/assets/logo.png" />
+    <img class="navbar-logo" :alt="`${pf.get('info.platformName')} Logo`" src="/logo.png" />
     <div class="navbar-title">{{ pf.get('info.platformName') }}</div>
 
     <n-button
