@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
 import { NButton, NIcon } from 'naive-ui';
-import NavBarRouterLink from './NavBarRouterLink.vue';
-import ThemeModeSwitcher from '../ThemeModeSwitcher.vue';
-import LanguageSwitcher from '../LanguageSwitcher.vue';
-import AccountOptionsButton from '../AccountOptionsButton.vue';
+import NavBarRouterLink from '@/components/NavBarRouterLink.vue';
+import ThemeModeSwitcher from '@/components/ThemeModeSwitcher.vue';
+import LanguageSwitcher from '@/components/LanguageSwitcher.vue';
+import AccountOptionsButton from '@/components/AccountOptionsButton.vue';
+import QuickSearchWidget from '@/components/QuickSearchWidget.vue';
 import { usePlatformStore, useStateStore } from '@/stores';
 import { useRoute } from 'vue-router';
 
@@ -73,6 +74,7 @@ watch(route, () => (menuOpen.value = false));
       />
       <div class="navbar-menu-divider"></div>
       <div class="navbar-menu-extra">
+        <QuickSearchWidget />
         <ThemeModeSwitcher />
         <LanguageSwitcher :dropdown-size="dropdownSize" />
         <AccountOptionsButton :dropdown-size="dropdownSize" />
@@ -125,17 +127,19 @@ watch(route, () => (menuOpen.value = false));
   display: flex;
   flex-direction: row;
   align-items: center;
+  gap: 12px;
 }
 .navbar-smallscreen .navbar-menu {
   flex-direction: column;
   align-items: stretch;
   flex-basis: 100%;
   padding-top: 0.75rem;
+  gap: 0px;
 }
 
 .navbar-menu-divider {
   height: 0px;
-  flex-grow: 2;
+  flex-grow: 3;
 }
 
 .navbar-smallscreen .navbar-menu-divider {
@@ -146,14 +150,14 @@ watch(route, () => (menuOpen.value = false));
 
 .navbar-menu-extra {
   display: flex;
+  align-items: center;
   gap: 12px;
 }
 
 .navbar-smallscreen .navbar-menu-extra {
   justify-content: space-around;
-  gap: 40px;
-  max-width: 320px;
-  margin: 24px auto;
+  gap: 24px;
+  margin: 18px 12px;
 }
 </style>
 
@@ -166,7 +170,7 @@ watch(route, () => (menuOpen.value = false));
   border-radius: 4px;
 }
 
-.navbar-smallscreen .navbar-menu-extra {
-  font-size: 44px;
+.navbar-smallscreen .quicksearch-widget {
+  flex-grow: 2;
 }
 </style>

@@ -3,6 +3,8 @@ general:
   welcomeTest: '"Willkommen!", sagt der Client.'
   tipThemeToggleLight: Zu hellem Farbschema wechseln
   tipThemeToggleDark: Zu dunklem Farbschema wechseln
+  searchAction: Suchen
+  quickSearch: Schnellsuche
 
 dummy:
   home: 'Kein Ort ist wie ~'

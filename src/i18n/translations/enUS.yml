@@ -3,6 +3,8 @@ general:
   welcomeTest: '"Welcome!", says the client.'
   tipThemeToggleLight: Switch to light mode
   tipThemeToggleDark: Switch to dark mode
+  searchAction: Search
+  quickSearch: Quick Search
 
 dummy:
   home: There's no place like ~
