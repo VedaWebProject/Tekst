@@ -50,7 +50,10 @@ const themeVars = useThemeVars();
   color: var(--font-color);
 }
 
-.navbar-router-link:hover,
+.navbar-router-link:hover {
+  color: var(--accent-color);
+}
+
 .navbar-router-link.router-link-active {
   color: var(--accent-color-intense);
 }
