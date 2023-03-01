@@ -21,22 +21,17 @@ tasks:
       - poetry run python3 -c "from textrig import __version__ as v; print(v, end='')"
     silent: true
 
-  format:
-    desc: Run isort and black to format code base
+  fix:
+    desc: Run ruff and black to format code base and attempt to fix linting errors
     cmds:
-      - poetry run isort .
       - poetry run black .
+      - poetry run ruff check . --fix
 
-  format-check:
-    desc: Check code formatting using isort and black
+  check:
+    desc: Check code using ruff and black
     cmds:
-      - poetry run isort . --check --diff
-      - poetry run black . --check --diff
-
-  lint:
-    desc: Run flake8 linter
-    cmds:
-      - flake8 .
+      - poetry run ruff check . --extend-select N
+      - poetry run black . --check
 
   run-tests:
     desc: Run test suite with pytest
@@ -79,23 +74,18 @@ tasks:
       - task: dev-stack-up
       - poetry run python3 -m textrig schema -f
 
-  check:
-    desc: Run all checks on code base (tests, linting, code style, import order)
-    cmds:
-      - task: test
-      - task: lint
-      - task: format-check
-
   pre-commit:
-    desc: Run full pre-commit toolchain (format, test, lint, style checks, export schema)
+    desc: Run full pre-commit toolchain (fix code, test, code checks, export schema)
     cmds:
-      - task: format
+      - task: fix
+      - task: test
       - task: check
       - task: schema
 
   clean:
     desc: Cleanup of generated files (won't work on Windows)
     cmds:
+      - cmd: ruff clean
       - cmd: shopt -s globstar
       - cmd: |
           rm -rf \
