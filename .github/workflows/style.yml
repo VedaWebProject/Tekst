@@ -33,12 +33,9 @@ jobs:
     - name: Cancel on setup error
       if: failure()
       uses: andymckay/cancel-action@0.2
-    - name: Check imports order
+    - name: Lint code base
       if: always()
-      run: poetry run isort --check --diff .
+      run: poetry run ruff check . --extend-select N
     - name: Check code formatting
       if: always()
-      run: poetry run black --check --diff .
-    - name: Ask linter for its blessing
-      if: always()
-      run: poetry run flake8 .
+      run: poetry run black . --check
