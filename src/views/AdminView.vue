@@ -4,8 +4,10 @@ const pf = usePlatformStore();
 </script>
 
 <template>
-  <h1>{{ pf.get('info.platformName') }} Admin Control Panel</h1>
-  <p>...</p>
+  <div class="content-block">
+    <h1>{{ pf.get('info.platformName') }} Admin Control Panel</h1>
+    <p>...</p>
+  </div>
 </template>
 
 <style scoped></style>

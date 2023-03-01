@@ -112,61 +112,63 @@ onMounted(() => {
 </script>
 
 <template>
-  <h1 style="text-align: center">{{ $t('login.heading') }}</h1>
   <div class="form-container">
-    <n-form
-      ref="formRef"
-      :model="formModel"
-      :rules="formRules"
-      size="large"
-      label-placement="top"
-      label-width="auto"
-      require-mark-placement="right-hanging"
-    >
-      <n-form-item path="email" :label="$t('login.labels.email')">
-        <n-input
-          v-model:value="formModel.email"
-          type="text"
-          :placeholder="$t('login.labels.email')"
-          @keydown.enter.prevent
-          ref="firstInputRef"
-        />
-      </n-form-item>
-      <n-form-item path="password" :label="$t('login.labels.password')">
-        <n-input
-          v-model:value="formModel.password"
-          type="password"
-          :placeholder="$t('login.labels.password')"
-          @keyup.enter="() => handleLoginClick()"
-        />
-      </n-form-item>
-    </n-form>
-
-    <div style="display: flex; justify-content: flex-end">
-      <n-button
-        text
-        :focusable="false"
-        style="margin-bottom: 2rem; margin-top: -12px; font-size: 0.95rem"
-        @click="handleForgotPasswordClick"
-      >
-        {{ $t('login.forgotPassword') }}
-      </n-button>
-    </div>
-
-    <n-space vertical :size="12">
-      <n-button
-        block
+    <div class="content-block">
+      <h2 style="text-align: center">{{ $t('login.heading') }}</h2>
+      <n-form
+        ref="formRef"
+        :model="formModel"
+        :rules="formRules"
         size="large"
-        type="primary"
-        @click="handleLoginClick"
-        :loading="loading"
-        :disabled="loading"
+        label-placement="top"
+        label-width="auto"
+        require-mark-placement="right-hanging"
       >
-        {{ $t('login.login') }}
-      </n-button>
-      <n-button secondary block size="large" @click="switchToRegistration">
-        {{ $t('login.switchToRegister') }}
-      </n-button>
-    </n-space>
+        <n-form-item path="email" :label="$t('login.labels.email')">
+          <n-input
+            v-model:value="formModel.email"
+            type="text"
+            :placeholder="$t('login.labels.email')"
+            @keydown.enter.prevent
+            ref="firstInputRef"
+          />
+        </n-form-item>
+        <n-form-item path="password" :label="$t('login.labels.password')">
+          <n-input
+            v-model:value="formModel.password"
+            type="password"
+            :placeholder="$t('login.labels.password')"
+            @keyup.enter="() => handleLoginClick()"
+          />
+        </n-form-item>
+      </n-form>
+
+      <div style="display: flex; justify-content: flex-end">
+        <n-button
+          text
+          :focusable="false"
+          style="margin-bottom: 2rem; margin-top: -12px; font-size: 0.95rem"
+          @click="handleForgotPasswordClick"
+        >
+          {{ $t('login.forgotPassword') }}
+        </n-button>
+      </div>
+
+      <n-space vertical :size="12">
+        <n-button
+          block
+          size="large"
+          type="primary"
+          @click="handleLoginClick"
+          :loading="loading"
+          :disabled="loading"
+        >
+          {{ $t('login.login') }}
+        </n-button>
+        <n-button secondary block size="large" @click="switchToRegistration">
+          {{ $t('login.switchToRegister') }}
+        </n-button>
+      </n-space>
+    </div>
   </div>
 </template>

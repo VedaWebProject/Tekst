@@ -24,7 +24,7 @@ header {
 }
 
 #current-text {
-  padding: var(--content-padding);
+  padding: var(--layout-padding);
   max-width: var(--max-app-width);
   margin: 0 auto;
 }

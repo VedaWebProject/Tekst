@@ -2,7 +2,8 @@
 
 #app {
   --max-app-width: 1280px;
-  --content-padding: 0.75rem;
+  --layout-padding: 0.75rem;
+  --content-padding: 1.5rem;
 }
 
 a,
@@ -38,5 +39,24 @@ h5 {
   max-width: 100%;
   margin: 0 auto;
   background-color: transparent;
-  padding: 23px 32px 24px;
+  padding: 0 32px;
+}
+
+.content-block {
+  margin: 1rem 0;
+  padding: var(--content-padding);
+  border-radius: 6px;
+  background-color: var(--content-bg-color);
+
+  -webkit-box-shadow: 0px 4px 10px -2px rgba(0, 0, 0, 0.12);
+  -moz-box-shadow: 0px 4px 10px -2px rgba(0, 0, 0, 0.12);
+  box-shadow: 0px 4px 10px -2px rgba(0, 0, 0, 0.12);
+}
+
+.content-block > h1:first-child,
+.content-block > h2:first-child,
+.content-block > h3:first-child,
+.content-block > h4:first-child,
+.content-block > h5:first-child {
+  margin-top: 0px;
 }

@@ -30,6 +30,7 @@ const themeOverrides = computed(() =>
   settings.theme === 'light' ? lightOverrides : darkOverrides
 );
 const mainBgColor = computed(() => (settings.theme === 'light' ? '#00000010' : '#ffffff10'));
+const contentBgColor = computed(() => (settings.theme === 'light' ? '#ffffffbb' : '#00000044'));
 
 // app initialization
 const appInitialized = ref(false);
@@ -131,19 +132,22 @@ onMounted(async () => {
 
   --link-color: v-bind(themeVars.primaryColor);
   --link-color-hover: v-bind(themeVars.primaryColorHover);
+
+  --main-bg-color: v-bind(mainBgColor);
+  --content-bg-color: v-bind(contentBgColor);
 }
 
 main {
   -webkit-box-shadow: inset 0px -10px 12px -14px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: inset 0px -10px 12px -14px rgba(0, 0, 0, 0.75);
   box-shadow: inset 0px -10px 12px -14px rgba(0, 0, 0, 0.75);
-  background-color: v-bind(mainBgColor);
+  background-color: var(--main-bg-color);
 }
 
 #main-content {
+  width: 100%;
   max-width: var(--max-app-width);
   margin: 0 auto;
-  padding: var(--content-padding);
-  padding-bottom: 3rem;
+  padding: var(--layout-padding);
 }
 </style>

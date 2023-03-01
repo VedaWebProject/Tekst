@@ -176,81 +176,83 @@ onMounted(() => {
 </script>
 
 <template>
-  <h1 style="text-align: center">{{ $t('register.heading') }}</h1>
   <div class="form-container">
-    <n-form
-      ref="formRef"
-      :model="formModel"
-      :rules="formRules"
-      size="large"
-      label-placement="top"
-      label-width="auto"
-      require-mark-placement="right-hanging"
-    >
-      <n-form-item path="email" :label="$t('register.labels.email')">
-        <n-input
-          v-model:value="formModel.email"
-          type="text"
-          :placeholder="$t('register.labels.email')"
-          @keydown.enter.prevent
-          ref="firstInputRef"
-        />
-      </n-form-item>
-      <n-form-item path="password" :label="$t('register.labels.password')">
-        <n-input
-          v-model:value="formModel.password"
-          type="password"
-          :placeholder="$t('register.labels.password')"
-          @input="handlePasswordInput"
-          @keydown.enter.prevent
-        />
-      </n-form-item>
-      <n-form-item
-        ref="rPasswordFormItemRef"
-        first
-        path="passwordRepeat"
-        :label="$t('register.labels.repeatPassword')"
-      >
-        <n-input
-          v-model:value="formModel.passwordRepeat"
-          type="password"
-          :disabled="!formModel.password"
-          :placeholder="$t('register.labels.repeatPassword')"
-          @keydown.enter.prevent
-        />
-      </n-form-item>
-      <n-form-item path="firstName" :label="$t('register.labels.firstName')">
-        <n-input
-          v-model:value="formModel.firstName"
-          type="text"
-          :placeholder="$t('register.labels.firstName')"
-          @keydown.enter.prevent
-        />
-      </n-form-item>
-      <n-form-item path="lastName" :label="$t('register.labels.lastName')">
-        <n-input
-          v-model:value="formModel.lastName"
-          type="text"
-          :placeholder="$t('register.labels.lastName')"
-          @keyup.enter="() => handleRegisterClick()"
-        />
-      </n-form-item>
-    </n-form>
-
-    <n-space vertical :size="12" style="margin-top: 1rem">
-      <n-button
-        block
-        type="primary"
-        @click="handleRegisterClick"
-        :loading="loading"
-        :disabled="loading"
+    <div class="content-block">
+      <h2 style="text-align: center">{{ $t('register.heading') }}</h2>
+      <n-form
+        ref="formRef"
+        :model="formModel"
+        :rules="formRules"
         size="large"
+        label-placement="top"
+        label-width="auto"
+        require-mark-placement="right-hanging"
       >
-        {{ $t('register.register') }}
-      </n-button>
-      <n-button secondary block size="large" @click="switchToLogin">
-        {{ $t('register.switchToLogin') }}
-      </n-button>
-    </n-space>
+        <n-form-item path="email" :label="$t('register.labels.email')">
+          <n-input
+            v-model:value="formModel.email"
+            type="text"
+            :placeholder="$t('register.labels.email')"
+            @keydown.enter.prevent
+            ref="firstInputRef"
+          />
+        </n-form-item>
+        <n-form-item path="password" :label="$t('register.labels.password')">
+          <n-input
+            v-model:value="formModel.password"
+            type="password"
+            :placeholder="$t('register.labels.password')"
+            @input="handlePasswordInput"
+            @keydown.enter.prevent
+          />
+        </n-form-item>
+        <n-form-item
+          ref="rPasswordFormItemRef"
+          first
+          path="passwordRepeat"
+          :label="$t('register.labels.repeatPassword')"
+        >
+          <n-input
+            v-model:value="formModel.passwordRepeat"
+            type="password"
+            :disabled="!formModel.password"
+            :placeholder="$t('register.labels.repeatPassword')"
+            @keydown.enter.prevent
+          />
+        </n-form-item>
+        <n-form-item path="firstName" :label="$t('register.labels.firstName')">
+          <n-input
+            v-model:value="formModel.firstName"
+            type="text"
+            :placeholder="$t('register.labels.firstName')"
+            @keydown.enter.prevent
+          />
+        </n-form-item>
+        <n-form-item path="lastName" :label="$t('register.labels.lastName')">
+          <n-input
+            v-model:value="formModel.lastName"
+            type="text"
+            :placeholder="$t('register.labels.lastName')"
+            @keyup.enter="() => handleRegisterClick()"
+          />
+        </n-form-item>
+      </n-form>
+
+      <n-space vertical :size="12" style="margin-top: 1rem">
+        <n-button
+          block
+          type="primary"
+          @click="handleRegisterClick"
+          :loading="loading"
+          :disabled="loading"
+          size="large"
+        >
+          {{ $t('register.register') }}
+        </n-button>
+        <n-button secondary block size="large" @click="switchToLogin">
+          {{ $t('register.switchToLogin') }}
+        </n-button>
+      </n-space>
+    </div>
   </div>
 </template>

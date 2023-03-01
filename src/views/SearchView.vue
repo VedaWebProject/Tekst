@@ -4,8 +4,10 @@ const pf = usePlatformStore();
 </script>
 
 <template>
-  <h1>Search {{ pf.get('info.platformName') }}</h1>
-  <p>...</p>
+  <div class="content-block">
+    <h1>Search {{ pf.get('info.platformName') }}</h1>
+    <p>...</p>
+  </div>
 </template>
 
 <style scoped></style>
