@@ -16,26 +16,23 @@ const state = useStateStore();
 const settings = useSettingsStore();
 const messages = useMessagesStore();
 const pf = usePlatformStore();
-
-const t = i18n.global.t;
 const route = useRoute();
-const appInitialized = ref(false);
 
+// i18n
+const t = i18n.global.t;
 const nUiLangLocale = computed(() => LANGS[settings.language].nUiLangLocale);
 const nUiDateLocale = computed(() => LANGS[settings.language].nUiDateLocale);
 
+// theming
 const theme = computed(() => (settings.theme === 'light' ? lightTheme : darkTheme));
 const themeOverrides = computed(() =>
   settings.theme === 'light' ? lightOverrides : darkOverrides
 );
-const mainBgColor = computed(() => (settings.theme === 'light' ? '#00000009' : '#ffffff10'));
+const mainBgColor = computed(() => (settings.theme === 'light' ? '#00000010' : '#ffffff10'));
 
-interface InitStep {
-  info: string;
-  action: () => Promise<boolean>;
-}
-
-const initSteps: InitStep[] = [
+// app initialization
+const appInitialized = ref(false);
+const initSteps = [
   {
     info: t('loading.serverI18n'),
     action: async () => {
@@ -130,7 +127,6 @@ onMounted(async () => {
   --accent-color-fade3: v-bind(state.accentColor.fade3);
   --accent-color-fade4: v-bind(state.accentColor.fade4);
   --accent-color-fade5: v-bind(state.accentColor.fade5);
-  --content-padding: 0.75rem;
 }
 
 main {
