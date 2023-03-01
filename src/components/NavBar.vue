@@ -7,11 +7,10 @@ import LanguageSwitcher from '@/components/LanguageSwitcher.vue';
 import AccountOptionsButton from '@/components/AccountOptionsButton.vue';
 import QuickSearchWidget from '@/components/QuickSearchWidget.vue';
 import { usePlatformStore, useStateStore } from '@/stores';
-import { useRoute } from 'vue-router';
+import { useRoute, RouterLink } from 'vue-router';
 
 import MenuRound from '@vicons/material/MenuRound';
 
-import InfoOutlined from '@vicons/material/InfoOutlined';
 import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
 import SearchRound from '@vicons/material/SearchRound';
 import HelpOutlineRound from '@vicons/material/HelpOutlineRound';
@@ -29,8 +28,9 @@ watch(route, () => (menuOpen.value = false));
 <template>
   <div class="navbar" :class="state.smallScreen && 'navbar-smallscreen'">
     <img class="navbar-logo" :alt="`${pf.get('info.platformName')} Logo`" src="/logo.png" />
-    <div class="navbar-title">{{ pf.get('info.platformName') }}</div>
-
+    <div class="navbar-title">
+      <RouterLink to="/">{{ pf.get('info.platformName') }}</RouterLink>
+    </div>
     <n-button
       v-if="state.smallScreen"
       quaternary
@@ -48,12 +48,6 @@ watch(route, () => (menuOpen.value = false));
     </n-button>
 
     <div v-show="menuVisible" class="navbar-menu">
-      <NavBarRouterLink
-        :label="$t('nav.about')"
-        route="about"
-        :icon="InfoOutlined"
-        :show-icon="state.smallScreen"
-      />
       <NavBarRouterLink
         :label="$t('nav.browse')"
         route="browse"
@@ -94,6 +88,14 @@ watch(route, () => (menuOpen.value = false));
   padding: 0.75rem;
 }
 
+.navbar a:any-link {
+  color: var(--n-font-color);
+}
+
+.navbar a:hover {
+  color: var(--accent-color);
+}
+
 .navbar *,
 .navbar *::before,
 .navbar *::after {
@@ -105,7 +107,6 @@ watch(route, () => (menuOpen.value = false));
 }
 
 .navbar-logo {
-  align-self: center;
   height: 48px;
   width: auto;
   margin-right: 12px;
@@ -114,7 +115,6 @@ watch(route, () => (menuOpen.value = false));
 .navbar-title {
   margin-right: 1.75rem;
   font-size: 1.8rem;
-  /* color: var(--accent-color-intense); */
   white-space: nowrap;
 }
 
@@ -139,7 +139,7 @@ watch(route, () => (menuOpen.value = false));
 
 .navbar-menu-divider {
   height: 0px;
-  flex-grow: 3;
+  flex-grow: 2;
 }
 
 .navbar-smallscreen .navbar-menu-divider {

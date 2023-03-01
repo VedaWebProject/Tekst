@@ -23,7 +23,7 @@ export const useStateStore = defineStore('state', () => {
 
   // small screen (< 800px)
   const { width } = useWindowSize();
-  const smallScreen = computed(() => width.value < 900);
+  const smallScreen = computed(() => width.value < 860);
 
   // current text
   const text = ref<TextRead | null>(null);

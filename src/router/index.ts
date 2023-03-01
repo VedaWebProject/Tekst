@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory, type RouteLocationNormalized } from 'vue-router';
 import { useAuthStore, useMessagesStore } from '@/stores';
 import {
-  AboutView,
+  HomeView,
   AccountView,
   LoginView,
   RegisterView,
@@ -19,15 +19,11 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'about',
-      component: AboutView,
+      name: 'home',
+      component: HomeView,
       meta: {
-        title: 'About',
+        title: 'Home',
       },
-    },
-    {
-      path: '/home',
-      redirect: '/',
     },
     {
       path: '/browse',
