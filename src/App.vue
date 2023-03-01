@@ -30,7 +30,7 @@ const themeOverrides = computed(() =>
   settings.theme === 'light' ? lightOverrides : darkOverrides
 );
 const mainBgColor = computed(() => (settings.theme === 'light' ? '#00000010' : '#ffffff10'));
-const contentBgColor = computed(() => (settings.theme === 'light' ? '#ffffffbb' : '#00000044'));
+const contentBgColor = computed(() => (settings.theme === 'light' ? '#ffffffcc' : '#00000044'));
 
 // app initialization
 const appInitialized = ref(false);
@@ -148,6 +148,6 @@ main {
   width: 100%;
   max-width: var(--max-app-width);
   margin: 0 auto;
-  padding: var(--layout-padding);
+  padding: var(--layout-padding) 0;
 }
 </style>

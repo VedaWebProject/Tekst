@@ -26,10 +26,10 @@ const showModal = ref(false);
     preset="card"
     embedded
     :closable="false"
-    :title="$t('general.quickSearch')"
     size="huge"
     style="width: 600px; max-width: 95%"
   >
+    <h2>{{ $t('general.quickSearch') }}</h2>
     Quick search form goes here...
     <div style="text-align: right; margin-top: 1rem">
       <n-button type="primary">{{ $t('general.searchAction') }}</n-button>

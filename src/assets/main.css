@@ -32,10 +32,19 @@ h3,
 h4,
 h5 {
   font-weight: 300;
+  line-height: 1;
+}
+
+h1:first-child,
+h2:first-child,
+h3:first-child,
+h4:first-child,
+h5:first-child {
+  margin-top: 0px;
 }
 
 .form-container {
-  width: 380px;
+  width: 440px;
   max-width: 100%;
   margin: 0 auto;
   background-color: transparent;
@@ -43,7 +52,8 @@ h5 {
 }
 
 .content-block {
-  margin: 1rem 0;
+  max-width: 100%;
+  margin: 1rem 0.75rem;
   padding: var(--content-padding);
   border-radius: 6px;
   background-color: var(--content-bg-color);
@@ -51,12 +61,4 @@ h5 {
   -webkit-box-shadow: 0px 4px 10px -2px rgba(0, 0, 0, 0.12);
   -moz-box-shadow: 0px 4px 10px -2px rgba(0, 0, 0, 0.12);
   box-shadow: 0px 4px 10px -2px rgba(0, 0, 0, 0.12);
-}
-
-.content-block > h1:first-child,
-.content-block > h2:first-child,
-.content-block > h3:first-child,
-.content-block > h4:first-child,
-.content-block > h5:first-child {
-  margin-top: 0px;
 }

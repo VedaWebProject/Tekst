@@ -156,17 +156,18 @@ watch(route, () => (menuOpen.value = false));
 
 .navbar-smallscreen .navbar-menu-extra {
   justify-content: space-around;
-  gap: 24px;
-  margin: 18px 12px;
+  width: 100%;
+  max-width: 320px;
+  margin: 1rem auto;
 }
 </style>
 
 <style>
 .navbar-smallscreen .navbar-router-link {
-  padding: 0.75rem 1.5rem;
+  padding: 0.5rem 1.5rem;
   font-size: 22px;
   margin: 6px 0;
-  background-color: var(--accent-color-fade4);
+  background-color: var(--accent-color-fade5);
   border-radius: 4px;
 }
 
