@@ -1,16 +1,17 @@
 from fastapi import APIRouter, HTTPException, status
+
 from textrig.layer_types import get_layer_types
 from textrig.models.common import PyObjectId
 from textrig.models.unit import UnitBase, UnitBaseDocument, UnitBaseUpdate
 
 
 def _generate_read_endpoint(
-    UnitDocument: type[UnitBase],
-    UnitRead: type[UnitBase],
+    unit_document_model: type[UnitBase],
+    unit_read_model: type[UnitBase],
 ):
-    async def get_unit(id: PyObjectId) -> UnitRead:
+    async def get_unit(id: PyObjectId) -> unit_read_model:
         """A generic route for reading a unit from the database"""
-        unit_doc = await UnitDocument.get(id)
+        unit_doc = await unit_document_model.get(id)
         if not unit_doc:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
@@ -22,29 +23,33 @@ def _generate_read_endpoint(
 
 
 def _generate_create_endpoint(
-    UnitDocument: type[UnitBase],
-    UnitCreate: type[UnitBase],
-    UnitRead: type[UnitBase],
+    unit_document_model: type[UnitBase],
+    unit_create_model: type[UnitBase],
+    unit_read_model: type[UnitBase],
 ):
-    async def create_unit(unit: UnitCreate) -> UnitRead:
+    async def create_unit(unit: unit_create_model) -> unit_read_model:
         dupes_criteria = {"layerId": True, "nodeId": True}
-        if await UnitDocument.find(unit.dict(include=dupes_criteria)).first_or_none():
+        if await unit_document_model.find(
+            unit.dict(include=dupes_criteria)
+        ).first_or_none():
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
                 detail="The properties of this unit conflict with another unit",
             )
-        return await UnitDocument.from_(unit).create()
+        return await unit_document_model.from_(unit).create()
 
     return create_unit
 
 
 def _generate_update_endpoint(
-    UnitDocument: type[UnitBase],
-    UnitRead: type[UnitBase],
-    UnitUpdate: type[UnitBase],
+    unit_document_model: type[UnitBase],
+    unit_read_model: type[UnitBase],
+    unit_update_model: type[UnitBase],
 ):
-    async def update_unit(id: PyObjectId, updates: UnitUpdate) -> UnitRead:
-        unit_doc = await UnitDocument.get(id)
+    async def update_unit(
+        id: PyObjectId, updates: unit_update_model
+    ) -> unit_read_model:
+        unit_doc = await unit_document_model.get(id)
         if not unit_doc:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
@@ -77,8 +82,8 @@ for lt_name, lt_class in get_layer_types().items():
         name=f"get_{lt_name}_unit",
         description=f"Returns the data for a {lt_class.get_name()} data layer unit",
         endpoint=_generate_read_endpoint(
-            UnitDocument=UnitDocumentModel,
-            UnitRead=UnitReadModel,
+            unit_document_model=UnitDocumentModel,
+            unit_read_model=UnitReadModel,
         ),
         methods=["GET"],
         response_model=UnitReadModel,
@@ -90,9 +95,9 @@ for lt_name, lt_class in get_layer_types().items():
         name=f"create_{lt_name}_unit",
         description=f"Creates a {lt_class.get_name()} data layer unit",
         endpoint=_generate_create_endpoint(
-            UnitDocument=UnitDocumentModel,
-            UnitCreate=UnitCreateModel,
-            UnitRead=UnitReadModel,
+            unit_document_model=UnitDocumentModel,
+            unit_create_model=UnitCreateModel,
+            unit_read_model=UnitReadModel,
         ),
         methods=["POST"],
         response_model=UnitReadModel,
@@ -104,9 +109,9 @@ for lt_name, lt_class in get_layer_types().items():
         name=f"update_{lt_name}_unit",
         description=f"Updates the data for a {lt_class.get_name()} data layer unit",
         endpoint=_generate_update_endpoint(
-            UnitDocument=UnitDocumentModel,
-            UnitRead=UnitReadModel,
-            UnitUpdate=UnitUpdateModel,
+            unit_document_model=UnitDocumentModel,
+            unit_read_model=UnitReadModel,
+            unit_update_model=UnitUpdateModel,
         ),
         methods=["PATCH"],
         response_model=UnitReadModel,

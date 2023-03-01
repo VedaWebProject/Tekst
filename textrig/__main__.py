@@ -1,6 +1,7 @@
 import asyncio
 
 import click
+
 from textrig.config import TextRigConfig, get_config
 
 
@@ -19,6 +20,7 @@ async def _get_and_write_openapi_schema(
 
     from asgi_lifespan import LifespanManager
     from httpx import AsyncClient
+
     from textrig.app import app
 
     async with LifespanManager(app):

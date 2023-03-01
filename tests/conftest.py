@@ -2,6 +2,7 @@ import json
 
 import pytest
 import requests
+
 from asgi_lifespan import LifespanManager
 from httpx import AsyncClient, Response
 from textrig.app import app
@@ -97,9 +98,9 @@ async def insert_test_data(test_app, reset_db, root_path, test_data) -> callable
                 await NodeDocument(text_id=text.id, **doc).create()
         if "layers" in collections:
             for doc in test_data["layers"]:
-                LayerModel = get_layer_type(doc["layerType"]).get_layer_model()
-                LayerDocumentModel = LayerModel.get_document_model()
-                await LayerDocumentModel(text_id=text.id, **doc).create()
+                layer_model = get_layer_type(doc["layerType"]).get_layer_model()
+                layer_document_model = layer_model.get_document_model()
+                await layer_document_model(text_id=text.id, **doc).create()
 
         return str(text.id) if text else None
 

@@ -1,5 +1,6 @@
 import contextlib
 import re
+
 from typing import Any
 
 from fastapi import APIRouter, Depends, FastAPI, Request
@@ -31,6 +32,7 @@ from fastapi_users_db_beanie.access_token import (
     BeanieBaseAccessToken,
 )
 from humps import decamelize
+
 from textrig.config import TextRigConfig, get_config
 from textrig.logging import log
 from textrig.models.common import AllOptionalMeta, ModelBase, PyObjectId

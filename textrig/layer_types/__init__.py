@@ -1,9 +1,11 @@
 import importlib
 import inspect
 import pkgutil
+
 from abc import ABC, abstractmethod
 
 import pluggy
+
 from textrig.logging import log
 from textrig.models.layer import LayerBase
 from textrig.models.unit import UnitBase
@@ -59,9 +61,9 @@ class LayerTypePluginABC(ABC):
     @classmethod
     def prepare_import_template(cls) -> dict:
         """Returns the base template for import data for this data layer type"""
-        CreateModel = cls.get_unit_model().get_create_model()
-        schema = CreateModel.schema()
-        template_fields = CreateModel.get_template_fields()
+        create_model = cls.get_unit_model().get_create_model()
+        schema = create_model.schema()
+        template_fields = create_model.get_template_fields()
         required = schema.get("required", [])
         include_layer_props = ("description", "type", "additionalProperties")
         template = {

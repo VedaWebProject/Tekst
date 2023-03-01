@@ -2,6 +2,7 @@ from typing import Any
 
 from fastapi import APIRouter, Depends
 from humps import camelize
+
 from textrig.config import TextRigConfig
 from textrig.dependencies import get_cfg
 from textrig.routers.texts import get_all_texts

@@ -1,4 +1,5 @@
 import pytest
+
 from pydantic.error_wrappers import ValidationError
 from textrig.models.text import TextCreate, TextRead
 

@@ -4,6 +4,7 @@ import sys
 from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 from starlette_csrf import CSRFMiddleware
+
 from textrig.auth import create_sample_users
 from textrig.config import TextRigConfig, get_config
 from textrig.db import init_odm

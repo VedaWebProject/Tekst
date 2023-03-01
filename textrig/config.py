@@ -1,9 +1,11 @@
 import os
+
 from functools import lru_cache
 from secrets import token_hex
 from urllib.parse import quote
 
 from pydantic import BaseModel, BaseSettings, EmailStr, Field, HttpUrl, validator
+
 from textrig import pkg_meta
 from textrig.utils.strings import safe_name
 
@@ -156,7 +158,7 @@ class TextRigConfig(BaseSettings):
         "cors_allow_headers",
         pre=True,
     )
-    def split_cors(v):
+    def split_cors(cls, v):
         if isinstance(v, list):
             return [str(e) for e in v]
         if isinstance(v, str):

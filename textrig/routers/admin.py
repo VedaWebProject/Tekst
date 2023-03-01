@@ -1,6 +1,7 @@
 from typing import Any
 
 from fastapi import APIRouter, Depends, status
+
 from textrig.config import TextRigConfig, get_config
 
 

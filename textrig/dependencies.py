@@ -1,5 +1,6 @@
 from fastapi import Depends
 from motor.motor_asyncio import AsyncIOMotorDatabase as Database
+
 from textrig.config import TextRigConfig, get_config
 from textrig.db import DatabaseClient, get_client
 

@@ -25,12 +25,12 @@ from textrig.models.text import TextDocument
 
 
 def _generate_read_endpoint(
-    LayerDocument: type[LayerBase],
-    LayerRead: type[LayerBase],
+    layer_document_model: type[LayerBase],
+    layer_read_model: type[LayerBase],
 ):
-    async def get_layer(id: PyObjectId) -> LayerRead:
+    async def get_layer(id: PyObjectId) -> layer_read_model:
         """A generic route for reading a layer definition from the database"""
-        layer_doc = await LayerDocument.get(id)
+        layer_doc = await layer_document_model.get(id)
         if not layer_doc:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
@@ -42,11 +42,11 @@ def _generate_read_endpoint(
 
 
 def _generate_create_endpoint(
-    LayerDocument: type[LayerBase],
-    LayerCreate: type[LayerBase],
-    LayerRead: type[LayerBase],
+    layer_document_model: type[LayerBase],
+    layer_create_model: type[LayerBase],
+    layer_read_model: type[LayerBase],
 ):
-    async def create_layer(layer: LayerCreate) -> LayerRead:
+    async def create_layer(layer: layer_create_model) -> layer_read_model:
         if not await TextDocument.find(
             TextDocument.id == layer.text_id
         ).first_or_none():
@@ -54,18 +54,20 @@ def _generate_create_endpoint(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=f"Layer refers to non-existent text '{layer.text_id}'",
             )
-        return await LayerDocument.from_(layer).create()
+        return await layer_document_model.from_(layer).create()
 
     return create_layer
 
 
 def _generate_update_endpoint(
-    LayerDocument: type[LayerBase],
-    LayerRead: type[LayerBase],
-    LayerUpdate: type[LayerBase],
+    layer_document_model: type[LayerBase],
+    layer_read_model: type[LayerBase],
+    layer_update_model: type[LayerBase],
 ):
-    async def update_layer(id: PyObjectId, updates: LayerUpdate) -> LayerRead:
-        layer: LayerDocument = await LayerDocument.get(id)
+    async def update_layer(
+        id: PyObjectId, updates: layer_update_model
+    ) -> layer_read_model:
+        layer: layer_document_model = await layer_document_model.get(id)
         if not layer:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
@@ -100,7 +102,7 @@ for lt_name, lt_class in get_layer_types().items():
         name=f"get_{lt_name}_layer",
         description=f"Returns the data for a {lt_class.get_name()} data layer",
         endpoint=_generate_read_endpoint(
-            LayerDocument=LayerDocumentModel, LayerRead=LayerReadModel
+            layer_document_model=LayerDocumentModel, layer_read_model=LayerReadModel
         ),
         methods=["GET"],
         response_model=LayerReadModel,
@@ -112,9 +114,9 @@ for lt_name, lt_class in get_layer_types().items():
         name=f"create_{lt_name}_layer",
         description=f"Creates a {lt_class.get_name()} data layer definition",
         endpoint=_generate_create_endpoint(
-            LayerDocument=LayerDocumentModel,
-            LayerCreate=LayerCreateModel,
-            LayerRead=LayerReadModel,
+            layer_document_model=LayerDocumentModel,
+            layer_create_model=LayerCreateModel,
+            layer_read_model=LayerReadModel,
         ),
         methods=["POST"],
         response_model=LayerReadModel,
@@ -126,9 +128,9 @@ for lt_name, lt_class in get_layer_types().items():
         name=f"update_{lt_name}_layer",
         description=f"Updates the data for a {lt_class.get_name()} data layer",
         endpoint=_generate_update_endpoint(
-            LayerDocument=LayerDocumentModel,
-            LayerRead=LayerReadModel,
-            LayerUpdate=LayerUpdateModel,
+            layer_document_model=LayerDocumentModel,
+            layer_read_model=LayerReadModel,
+            layer_update_model=LayerUpdateModel,
         ),
         methods=["PATCH"],
         response_model=LayerReadModel,

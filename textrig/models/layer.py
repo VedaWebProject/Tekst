@@ -1,6 +1,7 @@
 import re
 
 from pydantic import Field, validator
+
 from textrig.models.common import (
     DocumentBase,
     Metadata,

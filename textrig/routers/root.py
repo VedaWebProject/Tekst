@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, status
 from fastapi.responses import RedirectResponse
+
 from textrig.config import TextRigConfig, get_config
 
 

@@ -76,7 +76,7 @@ class AllOptionalMeta(ModelMetaclass):
     https://github.com/pydantic/pydantic/issues/1223#issuecomment-998160737
     """
 
-    def __new__(self, name, bases, namespaces, **kwargs):
+    def __new__(cls, name, bases, namespaces, **kwargs):
         annotations = namespaces.get("__annotations__", {})
         for base in bases:
             annotations.update(base.__annotations__)
@@ -84,7 +84,7 @@ class AllOptionalMeta(ModelMetaclass):
             if not field.startswith("__") and field not in ("id", "_id"):
                 annotations[field] = Optional[annotations[field]]
         namespaces["__annotations__"] = annotations
-        return super().__new__(self, name, bases, namespaces, **kwargs)
+        return super().__new__(cls, name, bases, namespaces, **kwargs)
 
 
 class CreateBase:

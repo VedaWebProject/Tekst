@@ -1,6 +1,7 @@
 from typing import Literal
 
 from pydantic import Field, validator
+
 from textrig.models.common import LayerConfigBase
 
 
@@ -22,7 +23,8 @@ class DeepLLinksConfig(LayerConfigBase):
         ["EN", "DE"], description="Target languages to display links for"
     )
 
-    def _uppercase_lang_code(v):
+    @classmethod
+    def _uppercase_lang_code(cls, v):
         if v is None:
             return v
         if not isinstance(v, str):

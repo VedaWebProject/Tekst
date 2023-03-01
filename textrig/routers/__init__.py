@@ -1,10 +1,13 @@
 import importlib
 import pkgutil
+
 from typing import Iterator
 
 import humps
+
 from fastapi import FastAPI
 from fastapi.routing import APIRoute, APIRouter
+
 from textrig.auth import setup_auth_routes
 from textrig.logging import log
 

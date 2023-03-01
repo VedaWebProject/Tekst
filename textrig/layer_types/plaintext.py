@@ -1,4 +1,5 @@
 from pydantic import Field
+
 from textrig.layer_types import LayerTypePluginABC, layer_type_impl
 from textrig.models.common import LayerConfigBase
 from textrig.models.layer import LayerBase
