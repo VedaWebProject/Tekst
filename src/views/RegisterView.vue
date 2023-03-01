@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted, nextTick } from 'vue';
 import { i18n } from '@/i18n';
 import router from '@/router';
 import { useMessagesStore } from '@/stores';
@@ -33,6 +33,7 @@ const formModel = ref<Record<string, string | null>>(initialFormModel());
 
 const formRef = ref<FormInst | null>(null);
 const rPasswordFormItemRef = ref<FormItemInst | null>(null);
+const firstInputRef = ref<HTMLInputElement | null>(null);
 const loading = ref(false);
 
 function validateEmail(rule: FormItemRule, value: string): boolean {
@@ -166,6 +167,12 @@ function switchToLogin() {
   resetForm();
   router.push('/login');
 }
+
+onMounted(() => {
+  nextTick(() => {
+    firstInputRef.value?.focus();
+  });
+});
 </script>
 
 <template>
@@ -186,6 +193,7 @@ function switchToLogin() {
           type="text"
           :placeholder="$t('register.labels.email')"
           @keydown.enter.prevent
+          ref="firstInputRef"
         />
       </n-form-item>
       <n-form-item path="password" :label="$t('register.labels.password')">
@@ -240,14 +248,7 @@ function switchToLogin() {
       >
         {{ $t('register.register') }}
       </n-button>
-      <n-button
-        secondary
-        block
-        size="large"
-        :focusable="false"
-        tabindex="-1"
-        @click="switchToLogin"
-      >
+      <n-button secondary block size="large" @click="switchToLogin">
         {{ $t('register.switchToLogin') }}
       </n-button>
     </n-space>

@@ -11,7 +11,7 @@ import {
   NButton,
   NSpace,
 } from 'naive-ui';
-import { ref } from 'vue';
+import { ref, onMounted, nextTick } from 'vue';
 import { i18n } from '@/i18n';
 
 const t = i18n.global.t;
@@ -27,6 +27,7 @@ const initialFormModel = () => ({
 
 const formModel = ref<Record<string, string | null>>(initialFormModel());
 const formRef = ref<FormInst | null>(null);
+const firstInputRef = ref<HTMLInputElement | null>(null);
 
 const formRules: FormRules = {
   email: [
@@ -102,6 +103,12 @@ function handleLoginClick() {
 function handleForgotPasswordClick() {
   messages.info('So you forgot your password? This is not implemented, yet!');
 }
+
+onMounted(() => {
+  nextTick(() => {
+    firstInputRef.value?.focus();
+  });
+});
 </script>
 
 <template>
@@ -122,6 +129,7 @@ function handleForgotPasswordClick() {
           type="text"
           :placeholder="$t('login.labels.email')"
           @keydown.enter.prevent
+          ref="firstInputRef"
         />
       </n-form-item>
       <n-form-item path="password" :label="$t('login.labels.password')">
