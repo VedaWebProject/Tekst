@@ -5,7 +5,7 @@ import GlobalMessenger from '@/components/GlobalMessenger.vue';
 import { onMounted, onBeforeMount, ref, computed } from 'vue';
 import { LANGUAGES as LANGS } from '@/i18n';
 import { useStateStore, usePlatformStore, useMessagesStore, useSettingsStore } from '@/stores';
-import { NConfigProvider, NGlobalStyle, lightTheme, darkTheme } from 'naive-ui';
+import { NConfigProvider, NGlobalStyle, lightTheme, darkTheme, useThemeVars } from 'naive-ui';
 import { lightOverrides, darkOverrides } from '@/theme';
 import PageHeader from './layout/PageHeader.vue';
 import PageFooter from './layout/PageFooter.vue';
@@ -17,6 +17,7 @@ const settings = useSettingsStore();
 const messages = useMessagesStore();
 const pf = usePlatformStore();
 const route = useRoute();
+const themeVars = useThemeVars();
 
 // i18n
 const t = i18n.global.t;
@@ -127,6 +128,9 @@ onMounted(async () => {
   --accent-color-fade3: v-bind(state.accentColor.fade3);
   --accent-color-fade4: v-bind(state.accentColor.fade4);
   --accent-color-fade5: v-bind(state.accentColor.fade5);
+
+  --link-color: v-bind(themeVars.primaryColor);
+  --link-color-hover: v-bind(themeVars.primaryColorHover);
 }
 
 main {
