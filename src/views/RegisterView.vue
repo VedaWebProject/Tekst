@@ -57,12 +57,12 @@ const formRules: FormRules = {
     {
       required: true,
       message: t('register.rulesFeedback.emailReq'),
-      trigger: 'blur',
+      // trigger: 'blur',
     },
     {
       validator: validateEmail,
       message: t('register.rulesFeedback.emailInvalid'),
-      trigger: 'blur',
+      // trigger: 'blur',
     },
   ],
   password: [

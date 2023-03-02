@@ -34,7 +34,7 @@ const formRules: FormRules = {
     {
       required: true,
       message: t('login.rulesFeedback.emailReq'),
-      trigger: 'blur',
+      // trigger: 'blur',
     },
   ],
   password: [
