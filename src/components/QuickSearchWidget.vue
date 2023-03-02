@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { NButton, NIcon, NModal } from 'naive-ui';
+import { NButton, NIcon, NModal, NInput } from 'naive-ui';
 import SearchRound from '@vicons/material/SearchRound';
 
 const showModal = ref(false);
@@ -30,8 +30,23 @@ const showModal = ref(false);
     style="width: 600px; max-width: 95%"
   >
     <h2>{{ $t('general.quickSearch') }}</h2>
-    Quick search form goes here...
-    <div style="text-align: right; margin-top: 1rem">
+
+    <n-input round :placeholder="$t('general.quickSearch')">
+      <template #prefix>
+        <n-icon :component="SearchRound" />
+      </template>
+    </n-input>
+
+    <h3>Settings</h3>
+    Quick Search settings go here...
+
+    <h4>Settings</h4>
+    Quick Search settings go here...
+
+    <h5>Settings</h5>
+    Quick Search settings go here...
+
+    <div style="text-align: right; margin-top: 2rem">
       <n-button type="primary">{{ $t('general.searchAction') }}</n-button>
     </div>
   </n-modal>

@@ -12,12 +12,6 @@ import NavBar from '@/components/NavBar.vue';
 </template>
 
 <style scoped>
-header {
-  -webkit-box-shadow: 0px -14px 12px 12px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 0px -14px 12px 12px rgba(0, 0, 0, 0.75);
-  box-shadow: 0px -14px 12px 12px rgba(0, 0, 0, 0.75);
-}
-
 #current-text-container {
   background-color: var(--accent-color);
   color: #fff;

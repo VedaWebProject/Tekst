@@ -138,10 +138,9 @@ onMounted(async () => {
 }
 
 main {
-  -webkit-box-shadow: inset 0px -10px 12px -14px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: inset 0px -10px 12px -14px rgba(0, 0, 0, 0.75);
-  box-shadow: inset 0px -10px 12px -14px rgba(0, 0, 0, 0.75);
   background-color: var(--main-bg-color);
+  box-shadow: inset 0 12px 12px -12px rgba(0, 0, 0, 0.4),
+    inset 0 -10px 12px -12px rgba(0, 0, 0, 0.1);
 }
 
 #main-content {
