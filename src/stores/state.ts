@@ -21,7 +21,7 @@ export const useStateStore = defineStore('state', () => {
     globalLoadingProgress.value = 0;
   };
 
-  // small screen (< 800px)
+  // small screen (< 860px)
   const { width } = useWindowSize();
   const smallScreen = computed(() => width.value < 860);
 
