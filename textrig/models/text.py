@@ -37,7 +37,7 @@ class Text(ModelBase, ModelFactory):
     )
 
     accent_color: Color = Field(
-        default_factory=lambda: Color("#454545"),
+        default_factory=lambda: Color("#18A058"),
         description="Accent color used for this text in the client UI",
     )
 
@@ -71,7 +71,9 @@ class Node(ModelBase, ModelFactory):
     position: int = Field(
         ..., description="Position among all text nodes on this level", ge=0
     )
-    label: str = Field(..., description="Label for identifying this text node")
+    label: str = Field(
+        ..., description="Label for identifying this text node in level context"
+    )
     meta: Metadata | None = Field(None, description="Arbitrary metadata")
 
     class Settings:
