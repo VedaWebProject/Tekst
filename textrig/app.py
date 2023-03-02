@@ -13,6 +13,7 @@ from textrig.layer_types import init_layer_type_manager
 from textrig.logging import log, setup_logging
 from textrig.openapi import custom_openapi
 from textrig.routers import setup_routes
+from textrig.sample_data import create_sample_texts, reset_db
 
 
 _cfg: TextRigConfig = get_config()  # get (possibly cached) config data
@@ -88,10 +89,15 @@ async def startup_routine() -> None:
     # modify and cache OpenAPI schema
     custom_openapi(app, _cfg)
 
-    # create sample users for development
+    # create/insert dev mode sample data
     if _cfg.dev_mode:
-        log.info("Creating sample users for development...")
+        log.info("Running development mode initialization routine...")
+        log.debug("Resetting DB...")
+        await reset_db()
+        log.debug("Creating sample users...")
         await create_sample_users()
+        log.debug("Creating sample texts...")
+        await create_sample_texts()
 
 
 @app.on_event("shutdown")
