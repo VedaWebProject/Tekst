@@ -144,9 +144,9 @@ main {
 }
 
 #main-content {
-  width: 100%;
+  width: auto;
   max-width: var(--max-app-width);
   margin: 0 auto;
-  padding: var(--layout-padding) 0;
+  padding: var(--layout-padding) 0.5rem;
 }
 </style>

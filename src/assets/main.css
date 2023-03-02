@@ -83,7 +83,7 @@ h5:first-child {
 
 .content-block {
   max-width: 100%;
-  margin: 1rem 0.5rem;
+  margin: 1rem 0;
   padding: var(--content-padding);
   border-radius: 6px;
   background-color: var(--content-bg-color);
