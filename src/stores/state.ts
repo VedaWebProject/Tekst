@@ -32,7 +32,7 @@ export const useStateStore = defineStore('state', () => {
   const settings = useSettingsStore();
   const accentColor = computed(() => {
     const lighten = settings.theme === 'dark' ? 0.2 : 0.0;
-    const base = Color(text.value ? text.value.accentColor : '#bc243b').lighten(lighten);
+    const base = Color(text.value ? text.value.accentColor : '#18A058').lighten(lighten);
     return {
       base: base.hex(),
       intense: base.saturate(0.5).hex(),
