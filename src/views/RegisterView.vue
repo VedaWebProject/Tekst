@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, nextTick } from 'vue';
 import { i18n } from '@/i18n';
-import router from '@/router';
+import { useRouter } from 'vue-router';
 import { useMessagesStore } from '@/stores';
 import {
   type FormInst,
@@ -17,6 +17,7 @@ import {
 } from 'naive-ui';
 import { AuthApi, type UserCreate } from '@/openapi';
 
+const router = useRouter();
 const messages = useMessagesStore();
 const authApi = new AuthApi();
 const t = i18n.global.t;

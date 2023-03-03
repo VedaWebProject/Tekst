@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import router from '@/router';
+import { useRouter } from 'vue-router';
 import { useAuthStore, useMessagesStore } from '@/stores';
 import {
   type FormInst,
@@ -17,6 +17,7 @@ import { i18n } from '@/i18n';
 const t = i18n.global.t;
 const auth = useAuthStore();
 const messages = useMessagesStore();
+const router = useRouter();
 
 const loading = ref(false);
 

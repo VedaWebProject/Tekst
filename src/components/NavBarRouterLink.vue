@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, type Component } from 'vue';
+import type { Component } from 'vue';
 import { NIcon, useThemeVars } from 'naive-ui';
 
 const props = defineProps<{

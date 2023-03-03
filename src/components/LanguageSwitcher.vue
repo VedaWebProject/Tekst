@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { defineProps } from 'vue';
 import { LANGUAGES as LANGS } from '@/i18n';
 import { useSettingsStore, useMessagesStore } from '@/stores';
 import { NButton, NDropdown, NIcon } from 'naive-ui';

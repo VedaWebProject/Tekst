@@ -3,8 +3,9 @@ import { defineStore } from 'pinia';
 import { AuthApi, UsersApi, type UserRead } from '@/openapi';
 import { useMessagesStore } from './messages';
 import { i18n } from '@/i18n';
-import router from '@/router';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const authApi = new AuthApi();
 const usersApi = new UsersApi();
 const t = i18n.global.t;

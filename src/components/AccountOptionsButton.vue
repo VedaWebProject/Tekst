@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { defineProps, ref, computed, h, type Component } from 'vue';
+import { ref, computed, h, type Component } from 'vue';
 import { useAuthStore } from '@/stores';
-import router from '@/router';
+import { useRouter } from 'vue-router';
 import { NButton, NIcon, NDropdown } from 'naive-ui';
 import LogInRound from '@vicons/material/LogInRound';
 import LogOutRound from '@vicons/material/LogOutRound';
@@ -15,6 +15,7 @@ const props = defineProps<{
 
 const t = i18n.global.t;
 const auth = useAuthStore();
+const router = useRouter();
 const icon = computed(() => (auth.loggedIn ? AccountCircleRound : LogInRound));
 // const label = computed(() => (auth.loggedIn ? t('login.logout') : t('login.login')));
 const tooltip = computed(() =>
