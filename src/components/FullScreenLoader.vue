@@ -55,7 +55,7 @@ const progress = computed(() =>
         :percentage="progress"
         :show-indicator="false"
         :height="4"
-        :color="props.progressColor"
+        color="#18A058"
         border-radius="0"
         processing
       />
