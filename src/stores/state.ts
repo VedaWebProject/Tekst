@@ -1,9 +1,10 @@
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { defineStore } from 'pinia';
 import { useWindowSize } from '@vueuse/core';
 import type { TextRead } from '@/openapi';
 import Color from 'color';
-import { useSettingsStore } from '@/stores';
+import { useSettingsStore, usePlatformStore } from '@/stores';
+import { useRoute } from 'vue-router';
 
 export const useStateStore = defineStore('state', () => {
   // global loading state
@@ -26,7 +27,10 @@ export const useStateStore = defineStore('state', () => {
   const smallScreen = computed(() => width.value < 860);
 
   // current text
+  const route = useRoute();
+  const pf = usePlatformStore();
   const text = ref<TextRead | undefined>();
+  watch(route, (after) => (text.value = pf.data?.texts.find((t) => t.slug === after.query.text)));
 
   // current text accent color variants
   const settings = useSettingsStore();

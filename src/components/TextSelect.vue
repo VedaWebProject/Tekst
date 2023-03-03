@@ -1,20 +1,25 @@
 <script setup lang="ts">
 import type { TextRead } from '@/openapi';
 import { useStateStore, usePlatformStore } from '@/stores';
+import { useRouter } from 'vue-router';
 import { NDropdown, NButton, NIcon } from 'naive-ui';
 import ArrowDropDownFilled from '@vicons/material/ArrowDropDownFilled';
 
+const router = useRouter();
 const state = useStateStore();
 const pf = usePlatformStore();
 
 const availableTexts = pf.data?.texts;
 const options = availableTexts?.map((t: TextRead) => ({
   label: t.title,
-  key: t.id,
+  key: t.slug,
 }));
 
 function handleSelect(key: string) {
-  state.text = availableTexts?.find((t) => t.id === key);
+  router.push({
+    path: router.currentRoute.value.path,
+    query: { ...router.currentRoute.value.query, text: key },
+  });
 }
 </script>
 
