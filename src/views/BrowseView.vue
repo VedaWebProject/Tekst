@@ -5,7 +5,7 @@ const pf = usePlatformStore();
 
 <template>
   <div class="content-block">
-    <h1>Browse {{ pf.get('info.platformName') }}</h1>
+    <h1>Browse {{ pf.data?.info?.platformName }}</h1>
     <p>...</p>
   </div>
 </template>

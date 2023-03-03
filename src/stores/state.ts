@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 import { useWindowSize } from '@vueuse/core';
 import type { TextRead } from '@/openapi';
 import Color from 'color';
-import { useSettingsStore } from './settings';
+import { useSettingsStore } from '@/stores';
 
 export const useStateStore = defineStore('state', () => {
   // global loading state
@@ -26,7 +26,7 @@ export const useStateStore = defineStore('state', () => {
   const smallScreen = computed(() => width.value < 860);
 
   // current text
-  const text = ref<TextRead | null>(null);
+  const text = ref<TextRead | undefined>();
 
   // current text accent color variants
   const settings = useSettingsStore();

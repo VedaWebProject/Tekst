@@ -5,6 +5,7 @@ general:
   tipThemeToggleDark: Zu dunklem Farbschema wechseln
   searchAction: Suchen
   quickSearch: Schnellsuche
+  textSelect: Wählen Sie den Text, mit dem Sie arbeiten möchten
 
 dummy:
   home: 'Kein Ort ist wie ~'

@@ -27,9 +27,9 @@ watch(route, () => (menuOpen.value = false));
 
 <template>
   <div class="navbar" :class="state.smallScreen && 'navbar-smallscreen'">
-    <img class="navbar-logo" :alt="`${pf.get('info.platformName')} Logo`" src="/logo.png" />
+    <img class="navbar-logo" :alt="`${pf.data?.info?.platformName} Logo`" src="/logo.png" />
     <div class="navbar-title">
-      <RouterLink to="/">{{ pf.get('info.platformName') }}</RouterLink>
+      <RouterLink to="/">{{ pf.data?.info?.platformName }}</RouterLink>
     </div>
     <n-button
       v-if="state.smallScreen"

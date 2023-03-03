@@ -9,7 +9,7 @@ const auth = useAuthStore();
   <div class="content-block">
     <h1>
       {{ auth.user?.firstName }}'{{ !auth.user?.firstName.toLowerCase().endsWith('s') && 's' }}
-      {{ pf.get('info.platformName') }} Account
+      {{ pf.data?.info?.platformName }} Account
     </h1>
     <ul>
       <li><b>Email:</b> {{ auth.user?.email }}</li>

@@ -110,7 +110,7 @@ function applyRouteRestrictions(route: RouteLocationNormalized) {
 
 export function setPageTitle(route: RouteLocationNormalized) {
   const pf = usePlatformStore();
-  const pfName = pf.get('info.platformName');
+  const pfName = pf.data?.info?.platformName;
   const routeTitle = route.meta?.title;
   const divider = pfName && routeTitle ? ' - ' : '';
   document.title = `${pfName}${divider}${routeTitle}`;

@@ -5,6 +5,7 @@ general:
   tipThemeToggleDark: Switch to dark mode
   searchAction: Search
   quickSearch: Quick Search
+  textSelect: Select the text you want to work with
 
 dummy:
   home: There's no place like ~

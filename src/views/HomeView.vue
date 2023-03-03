@@ -5,7 +5,7 @@ const pf = usePlatformStore();
 
 <template>
   <div class="content-block">
-    <h1>{{ pf.get('info.platformName') }} ({{ $t('dummy.home') }})</h1>
+    <h1>{{ pf.data?.info?.platformName }} ({{ $t('dummy.home') }})</h1>
     <p>{{ $t('dummy.schiller') }}</p>
 
     <h2>Accent Palette Demo</h2>

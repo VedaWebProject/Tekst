@@ -5,7 +5,7 @@ const pf = usePlatformStore();
 
 <template>
   <div class="content-block">
-    <h1>{{ pf.get('info.platformName') }} Admin Control Panel</h1>
+    <h1>{{ pf.data?.info?.platformName }} Admin Control Panel</h1>
     <p>...</p>
   </div>
 </template>

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import NavBar from '@/components/NavBar.vue';
-import { NButton, NIcon } from 'naive-ui';
-import ArrowDropDownFilled from '@vicons/material/ArrowDropDownFilled';
+import TextSelect from '@/components/TextSelect.vue';
 import { useStateStore } from '@/stores';
 
 const state = useStateStore();
@@ -12,14 +11,8 @@ const state = useStateStore();
     <NavBar />
     <div id="current-text-container">
       <div id="current-text">
-        <n-button text icon-placement="right" color="#fff">
-          <template #icon>
-            <n-icon>
-              <ArrowDropDownFilled />
-            </n-icon>
-          </template>
-          {{ state.text?.title || 'Text state not implemented' }}
-        </n-button>
+        <TextSelect />
+        <span class="current-text-subtitle">{{ state.text?.subtitle || '' }}</span>
       </div>
     </div>
   </header>
@@ -32,8 +25,17 @@ const state = useStateStore();
 }
 
 #current-text {
-  padding: var(--layout-padding);
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.1em;
+  font-weight: 400;
+  padding: 0.5rem var(--layout-padding);
   max-width: var(--max-app-width);
   margin: 0 auto;
+}
+
+#current-text .current-text-subtitle {
+  font-weight: 300;
+  filter: opacity(0.7);
 }
 </style>
