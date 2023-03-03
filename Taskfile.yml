@@ -65,7 +65,8 @@ tasks:
                 -g typescript-axios \
                 -o /local/textrig-ts-client \
             #    --global-property skipFormModel=false \
-                --additional-properties=typescriptThreePlus=true,useSingleRequestParameter=true
+                --additional-properties=typescriptThreePlus=true,useSingleRequestParameter=true \
+                --skip-validate-spec
           mkdir -p ./src/openapi/
           rm -rf ./src/openapi/*
           cp -r $TEMPDIR/textrig-ts-client/* ./src/openapi/
