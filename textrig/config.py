@@ -4,9 +4,10 @@ from functools import lru_cache
 from secrets import token_hex
 from urllib.parse import quote
 
-from pydantic import BaseModel, BaseSettings, EmailStr, Field, HttpUrl, validator
+from pydantic import BaseSettings, EmailStr, Field, HttpUrl, validator
 
 from textrig import pkg_meta
+from textrig.models.common import ModelBase
 from textrig.utils.strings import safe_name
 
 
@@ -50,7 +51,7 @@ def _select_env_files() -> list[str]:
     return env_files
 
 
-class DbConfig(BaseModel):
+class DbConfig(ModelBase):
     """Database config model"""
 
     protocol: str = "mongodb"
@@ -73,7 +74,7 @@ class DbConfig(BaseModel):
         return f"{self.protocol}://{creds}{self.host}:{str(self.port)}"
 
 
-class DocConfig(BaseModel):
+class DocConfig(ModelBase):
     """Documentation config model"""
 
     openapi_url: str = "/openapi.json"
@@ -81,7 +82,7 @@ class DocConfig(BaseModel):
     redoc_url: str = "/redoc"
 
 
-class InfoConfig(BaseModel):
+class InfoConfig(ModelBase):
     """General information config model"""
 
     platform_name: str = "TextRig"
@@ -92,7 +93,7 @@ class InfoConfig(BaseModel):
     contact_email: EmailStr = "rick.sanchez@example-textrig-instance.org"
 
 
-class TextRigInfoConfig(BaseModel):
+class TextRigInfoConfig(ModelBase):
     """
     TextRig platform information config model
 
@@ -108,7 +109,7 @@ class TextRigInfoConfig(BaseModel):
     license_url: HttpUrl = Field(pkg_meta["license_url"], const=True)
 
 
-class SecurityConfig(BaseModel):
+class SecurityConfig(ModelBase):
     """Security config model"""
 
     secret: str = Field(default_factory=lambda: token_hex(32), min_length=16)

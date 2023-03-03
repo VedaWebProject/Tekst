@@ -657,8 +657,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Platform Data Platform Get",
-                  "type": "object"
+                  "$ref": "#/components/schemas/PlatformData"
                 }
               }
             }
@@ -2218,6 +2217,50 @@
           }
         }
       },
+      "InfoConfig": {
+        "title": "InfoConfig",
+        "type": "object",
+        "properties": {
+          "platformName": {
+            "title": "Platformname",
+            "type": "string",
+            "default": "TextRig"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string",
+            "default": "An online text research platform"
+          },
+          "terms": {
+            "title": "Terms",
+            "maxLength": 2083,
+            "minLength": 1,
+            "type": "string",
+            "format": "uri",
+            "default": "https://www.example-textrig-instance.org/terms"
+          },
+          "contactName": {
+            "title": "Contactname",
+            "type": "string",
+            "default": "Rick Sanchez"
+          },
+          "contactUrl": {
+            "title": "Contacturl",
+            "maxLength": 2083,
+            "minLength": 1,
+            "type": "string",
+            "format": "uri",
+            "default": "https://www.example-textrig-instance.org/contact"
+          },
+          "contactEmail": {
+            "title": "Contactemail",
+            "type": "string",
+            "format": "email",
+            "default": "rick.sanchez@example-textrig-instance.org"
+          }
+        },
+        "description": "General information config model"
+      },
       "LayerBaseRead": {
         "title": "LayerBaseRead",
         "required": [
@@ -2833,6 +2876,67 @@
         },
         "description": "A unit of a plaintext data layer"
       },
+      "PlatformData": {
+        "title": "PlatformData",
+        "required": [
+          "texts"
+        ],
+        "type": "object",
+        "properties": {
+          "info": {
+            "title": "Info",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/InfoConfig"
+              }
+            ],
+            "default": {
+              "platformName": "TextRig-DEV",
+              "description": "An online text research platform",
+              "terms": "https://www.example-textrig-instance.org/terms",
+              "contactName": "Rick Sanchez",
+              "contactUrl": "https://www.example-textrig-instance.org/contact",
+              "contactEmail": "rick.sanchez@example-textrig-instance.org"
+            }
+          },
+          "textrigInfo": {
+            "title": "Textriginfo",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TextRigInfoConfig"
+              }
+            ],
+            "default": {}
+          },
+          "texts": {
+            "title": "Texts",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TextRead"
+            }
+          },
+          "security": {
+            "$ref": "#/components/schemas/PlatformSecurityInfo"
+          }
+        },
+        "description": "Platform data used by the web client"
+      },
+      "PlatformSecurityInfo": {
+        "title": "PlatformSecurityInfo",
+        "type": "object",
+        "properties": {
+          "usersActiveByDefault": {
+            "title": "Usersactivebydefault",
+            "type": "boolean",
+            "default": false
+          },
+          "usersNeedVerification": {
+            "title": "Usersneedverification",
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
       "TextCreate": {
         "title": "TextCreate",
         "required": [
@@ -2946,6 +3050,55 @@
           }
         },
         "description": "A text represented in TextRig"
+      },
+      "TextRigInfoConfig": {
+        "title": "TextRigInfoConfig",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string",
+            "default": "TextRig",
+            "const": "TextRig"
+          },
+          "version": {
+            "title": "Version",
+            "type": "string",
+            "default": "0.0.1",
+            "const": "0.0.1"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string",
+            "default": "An online text research platform",
+            "const": "An online text research platform"
+          },
+          "website": {
+            "title": "Website",
+            "maxLength": 2083,
+            "minLength": 1,
+            "type": "string",
+            "format": "uri",
+            "default": "https://github.com/VedaWebProject/textrig-server",
+            "const": "https://github.com/VedaWebProject/textrig-server"
+          },
+          "license": {
+            "title": "License",
+            "type": "string",
+            "default": "AGPL-3.0-or-later",
+            "const": "AGPL-3.0-or-later"
+          },
+          "licenseUrl": {
+            "title": "Licenseurl",
+            "maxLength": 2083,
+            "minLength": 1,
+            "type": "string",
+            "format": "uri",
+            "default": "https://www.gnu.org/licenses/agpl-3.0.txt",
+            "const": "https://www.gnu.org/licenses/agpl-3.0.txt"
+          }
+        },
+        "description": "TextRig platform information config model\n\nThese values are not configurable. They are taken from the package infos and\naren't meant to be changed by users creating an own instance of the platform."
       },
       "TextUpdate": {
         "title": "TextUpdate",
