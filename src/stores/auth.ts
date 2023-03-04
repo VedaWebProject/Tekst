@@ -5,7 +5,6 @@ import { useMessagesStore } from './messages';
 import { i18n } from '@/i18n';
 import { useRouter } from 'vue-router';
 
-const router = useRouter();
 const authApi = new AuthApi();
 const usersApi = new UsersApi();
 const t = i18n.global.t;
@@ -31,6 +30,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function logout() {
+    const router = useRouter();
     try {
       await authApi.authCookieLogout();
       messages.success(t('login.logoutSuccessful'));
@@ -39,7 +39,7 @@ export const useAuthStore = defineStore('auth', () => {
     } finally {
       user.value = null;
       localStorage.removeItem('user');
-      router.push('/home');
+      router.push('/');
     }
   }
 
