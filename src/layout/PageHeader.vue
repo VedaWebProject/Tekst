@@ -12,7 +12,7 @@ const state = useStateStore();
     <div id="current-text-container">
       <div id="current-text">
         <TextSelect />
-        <span class="current-text-subtitle">{{ state.text?.subtitle || '' }}</span>
+        <span class="current-text-subtitle">{{ state.text?.subtitle || '&nbsp;' }}</span>
       </div>
     </div>
   </header>
@@ -26,6 +26,8 @@ const state = useStateStore();
 
 #current-text {
   display: flex;
+  column-gap: 24px;
+  flex-wrap: wrap;
   justify-content: space-between;
   font-size: 1.1em;
   font-weight: 400;

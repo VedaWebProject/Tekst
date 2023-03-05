@@ -74,11 +74,9 @@ h5:first-child {
 }
 
 .form-container {
-  width: 440px;
-  max-width: 100%;
+  max-width: 440px;
   margin: 0 auto;
   background-color: transparent;
-  padding: 0 32px;
 }
 
 .content-block {
