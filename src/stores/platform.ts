@@ -21,16 +21,16 @@ export const usePlatformStore = defineStore('platform', () => {
         // select default text if none is set
         // TODO implement storing default text ID
         const route = router.currentRoute.value;
-        if ('text' in route.params) {
+        if ('text' in route.params && !route.params.text) {
           router.replace({
             name: route.name || 'browse',
             params: {
               ...route.params,
-              text: route.params.text || data.texts[0].slug,
+              text: data.texts[0].slug,
             },
           });
         } else {
-          state.text = data.texts[0];
+          state.text = data.texts.find((t) => t.slug === route.params.text) || data.texts[0];
         }
       });
   }

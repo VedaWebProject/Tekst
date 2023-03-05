@@ -5,6 +5,7 @@ import type { TextRead } from '@/openapi';
 import Color from 'color';
 import { useSettingsStore, usePlatformStore } from '@/stores';
 import { useRoute } from 'vue-router';
+import type { RouteLocationNormalized } from 'vue-router';
 
 export const useStateStore = defineStore('state', () => {
   // global loading state
@@ -31,12 +32,13 @@ export const useStateStore = defineStore('state', () => {
   const pf = usePlatformStore();
   const text = ref<TextRead | undefined>();
   watch(route, (after) => {
-    if ('text' in route.params) {
+    if ('text' in after.params && after.params.text) {
       text.value = pf.data?.texts.find((t) => t.slug === after.params.text);
     } else {
       text.value = text.value || pf.data?.texts[0];
     }
   });
+  watch(text, () => setPageTitle());
 
   // current text accent color variants
   const settings = useSettingsStore();
@@ -54,6 +56,20 @@ export const useStateStore = defineStore('state', () => {
     };
   });
 
+  // set page title
+  function setPageTitle(forRoute?: RouteLocationNormalized) {
+    const r = forRoute || route;
+    const state = useStateStore();
+    const pf = usePlatformStore();
+    const pfName = pf.data?.info?.platformName;
+    const routeTitle = r.meta?.title;
+    const text = 'text' in r.params && state.text?.title;
+    const divider = pfName && routeTitle ? ' - ' : '';
+    document.title = `${pfName || ''}${divider}${routeTitle || ''}${(text && ': ') || ''}${
+      text || ''
+    }`;
+  }
+
   return {
     globalLoading,
     startGlobalLoading,
@@ -63,5 +79,6 @@ export const useStateStore = defineStore('state', () => {
     smallScreen,
     text,
     accentColor,
+    setPageTitle,
   };
 });

@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, type RouteLocationNormalized } from 'vue-router';
-import { useAuthStore, useMessagesStore } from '@/stores';
+import { useAuthStore, useMessagesStore, useStateStore } from '@/stores';
 import {
   HomeView,
   AccountView,
@@ -11,7 +11,6 @@ import {
   AdminView,
 } from '@/views';
 import { i18n } from '@/i18n';
-import { usePlatformStore } from '@/stores';
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -114,20 +113,12 @@ function applyRouteRestrictions(route: RouteLocationNormalized) {
   }
 }
 
-export function setPageTitle(route: RouteLocationNormalized) {
-  const pf = usePlatformStore();
-  const pfName = pf.data?.info?.platformName;
-  const routeTitle = route.meta?.title;
-  const divider = pfName && routeTitle ? ' - ' : '';
-  document.title = `${pfName}${divider}${routeTitle || ''}`;
-}
-
 router.beforeEach((to) => {
   return applyRouteRestrictions(to);
 });
 
 router.afterEach((to) => {
-  setPageTitle(to);
+  useStateStore().setPageTitle(to);
 });
 
 export default router;

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RouterView, useRoute } from 'vue-router';
+import { RouterView } from 'vue-router';
 import FullScreenLoader from '@/components/FullScreenLoader.vue';
 import GlobalMessenger from '@/components/GlobalMessenger.vue';
 import { onMounted, onBeforeMount, ref, computed } from 'vue';
@@ -10,13 +10,11 @@ import { lightOverrides, darkOverrides } from '@/theme';
 import PageHeader from './layout/PageHeader.vue';
 import PageFooter from './layout/PageFooter.vue';
 import { i18n } from '@/i18n';
-import { setPageTitle } from './router';
 
 const state = useStateStore();
 const settings = useSettingsStore();
 const messages = useMessagesStore();
 const pf = usePlatformStore();
-const route = useRoute();
 const themeVars = useThemeVars();
 
 // i18n
@@ -82,7 +80,7 @@ onMounted(async () => {
 
   err && messages.error(t('errors.appInit'));
   state.globalLoadingMsg = t('loading.ready');
-  setPageTitle(route);
+  state.setPageTitle();
   appInitialized.value = true;
   await state.finishGlobalLoading(200, 200);
 });
