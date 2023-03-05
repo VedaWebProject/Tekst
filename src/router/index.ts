@@ -13,6 +13,13 @@ import {
 import { i18n } from '@/i18n';
 import { usePlatformStore } from '@/stores';
 
+declare module 'vue-router' {
+  interface RouteMeta {
+    title: string;
+    restricted?: 'user' | 'superuser';
+  }
+}
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   linkActiveClass: 'active',
@@ -26,7 +33,7 @@ const router = createRouter({
       },
     },
     {
-      path: '/browse',
+      path: '/browse/:text?',
       name: 'browse',
       component: BrowseView,
       meta: {
@@ -34,7 +41,7 @@ const router = createRouter({
       },
     },
     {
-      path: '/search',
+      path: '/search/:text?',
       name: 'search',
       component: SearchView,
       meta: {
@@ -90,9 +97,7 @@ const router = createRouter({
 function applyRouteRestrictions(route: RouteLocationNormalized) {
   // enforce route restrictions
   if (route.meta?.restricted) {
-    const t = i18n.global.t;
     const auth = useAuthStore();
-    const messages = useMessagesStore();
     const ru = route.meta.restricted === 'user'; // route is restricted to users
     const rsu = route.meta.restricted === 'superuser'; // route is restricted to to superusers
     const l = auth.loggedIn; // a user is logged in
@@ -102,8 +107,9 @@ function applyRouteRestrictions(route: RouteLocationNormalized) {
     // redirect if trying to access a restricted page without aithorization
     if (!authorized) {
       auth.returnUrl = route.fullPath;
-      messages.warning(t('errors.noAccess', { resource: route.path }));
-      return '/home';
+      const messages = useMessagesStore();
+      messages.warning(i18n.global.t('errors.noAccess', { resource: route.path }));
+      return { name: 'login' };
     }
   }
 }
@@ -113,10 +119,10 @@ export function setPageTitle(route: RouteLocationNormalized) {
   const pfName = pf.data?.info?.platformName;
   const routeTitle = route.meta?.title;
   const divider = pfName && routeTitle ? ' - ' : '';
-  document.title = `${pfName}${divider}${routeTitle}`;
+  document.title = `${pfName}${divider}${routeTitle || ''}`;
 }
 
-router.beforeEach(async (to) => {
+router.beforeEach((to) => {
   return applyRouteRestrictions(to);
 });
 

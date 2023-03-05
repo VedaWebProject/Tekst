@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import type { Component } from 'vue';
+import type { RouteLocationRaw } from 'vue-router';
 import { NIcon, useThemeVars } from 'naive-ui';
 
 const props = defineProps<{
   label: string;
-  route: string;
+  route: RouteLocationRaw;
   icon: Component;
   showIcon: boolean;
 }>();
@@ -13,11 +14,7 @@ const themeVars = useThemeVars();
 </script>
 
 <template>
-  <RouterLink
-    :to="{ name: props.route }"
-    custom
-    v-slot="{ href, navigate, isActive, isExactActive }"
-  >
+  <RouterLink :to="props.route" custom v-slot="{ href, navigate, isActive, isExactActive }">
     <a :href="href" @click="navigate">
       <div
         :class="[

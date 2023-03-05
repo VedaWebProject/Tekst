@@ -20,6 +20,7 @@ export const useAuthStore = defineStore('auth', () => {
   const returnUrl = ref<string | null>(null);
   const loggedIn = computed(() => !!user.value);
   const messages = useMessagesStore();
+  const router = useRouter();
 
   async function login(username: string, password: string) {
     return authApi.authCookieLogin({ username, password }).then(async () => {
@@ -30,16 +31,15 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function logout() {
-    const router = useRouter();
     try {
       await authApi.authCookieLogout();
       messages.success(t('login.logoutSuccessful'));
     } catch (e) {
-      // nothing
+      // do sweet FA
     } finally {
       user.value = null;
       localStorage.removeItem('user');
-      router.push('/');
+      router.push({ name: 'login' });
     }
   }
 

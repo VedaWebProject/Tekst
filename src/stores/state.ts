@@ -30,7 +30,13 @@ export const useStateStore = defineStore('state', () => {
   const route = useRoute();
   const pf = usePlatformStore();
   const text = ref<TextRead | undefined>();
-  watch(route, (after) => (text.value = pf.data?.texts.find((t) => t.slug === after.query.text)));
+  watch(route, (after) => {
+    if ('text' in route.params) {
+      text.value = pf.data?.texts.find((t) => t.slug === after.params.text);
+    } else {
+      text.value = text.value || pf.data?.texts[0];
+    }
+  });
 
   // current text accent color variants
   const settings = useSettingsStore();

@@ -22,6 +22,7 @@ const menuVisible = computed(() => !state.smallScreen || menuOpen.value);
 const dropdownSize = computed(() => (state.smallScreen ? 'huge' : undefined));
 
 const route = useRoute();
+const textParam = computed(() => state.text?.slug || pf.data?.texts[0].slug);
 watch(route, () => (menuOpen.value = false));
 </script>
 
@@ -50,19 +51,19 @@ watch(route, () => (menuOpen.value = false));
     <div v-show="menuVisible" class="navbar-menu">
       <NavBarRouterLink
         :label="$t('nav.browse')"
-        route="browse"
+        :route="{ name: 'browse', params: { text: textParam } }"
         :icon="MenuBookOutlined"
         :show-icon="state.smallScreen"
       />
       <NavBarRouterLink
         :label="$t('nav.search')"
-        route="search"
+        :route="{ name: 'search', params: { text: textParam } }"
         :icon="SearchRound"
         :show-icon="state.smallScreen"
       />
       <NavBarRouterLink
         :label="$t('nav.help')"
-        route="help"
+        :route="{ name: 'help' }"
         :icon="HelpOutlineRound"
         :show-icon="state.smallScreen"
       />

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { TextRead } from '@/openapi';
+import { computed } from 'vue';
 import { useStateStore, usePlatformStore } from '@/stores';
 import { useRouter } from 'vue-router';
 import { NDropdown, NButton, NIcon } from 'naive-ui';
@@ -10,16 +11,24 @@ const state = useStateStore();
 const pf = usePlatformStore();
 
 const availableTexts = pf.data?.texts;
-const options = availableTexts?.map((t: TextRead) => ({
-  label: t.title,
-  key: t.slug,
-}));
+const options = computed(() =>
+  availableTexts
+    ?.filter((t: TextRead) => t.id !== state.text?.id)
+    .map((t: TextRead) => ({
+      label: t.title,
+      key: t.slug,
+    }))
+);
 
 function handleSelect(key: string) {
-  router.push({
-    path: router.currentRoute.value.path,
-    query: { ...router.currentRoute.value.query, text: key },
-  });
+  if ('text' in router.currentRoute.value.params) {
+    router.push({
+      name: router.currentRoute.value.name || 'browse',
+      params: { ...router.currentRoute.value.params, text: key },
+    });
+  } else {
+    state.text = availableTexts?.find((t) => t.slug === key);
+  }
 }
 </script>
 

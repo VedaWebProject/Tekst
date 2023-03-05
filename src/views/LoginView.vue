@@ -55,7 +55,7 @@ function resetForm() {
 
 function switchToRegistration() {
   resetForm();
-  router.push('/register');
+  router.push({ name: 'register' });
 }
 
 function loginUser() {
@@ -64,7 +64,7 @@ function loginUser() {
     .then((u) => {
       resetForm();
       messages.success(t('general.welcome', { name: u.firstName }));
-      router.push('/account');
+      router.push({ name: 'account' });
     })
     .catch((e) => {
       /**

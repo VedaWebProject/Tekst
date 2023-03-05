@@ -166,7 +166,7 @@ function resetForm() {
 
 function switchToLogin() {
   resetForm();
-  router.push('/login');
+  router.push({ name: 'login' });
 }
 
 onMounted(() => {

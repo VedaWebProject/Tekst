@@ -43,7 +43,7 @@ function renderIcon(icon: Component) {
 
 function handleClick() {
   if (!auth.loggedIn) {
-    router.push('/login');
+    router.push({ name: 'login' });
   } else {
     showAccountDropdown.value = !showAccountDropdown.value;
   }
@@ -53,7 +53,7 @@ function handleAccountOptionSelect(option: string) {
   showAccountDropdown.value = false;
   switch (option) {
     case 'manage':
-      router.push('/account');
+      router.push({ name: 'account' });
       break;
     case 'logout':
       auth.logout();
