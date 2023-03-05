@@ -206,23 +206,72 @@ LAYERS = {
     ],
     "fdhdgg": [
         {
-            "title": "Originaltext",
+            "title": 'Originalfassung 1824 ("Warnung")',
             "level": 1,
             "layerType": "plaintext",
             "units": [
-                {"sample_node_level": 1, "sample_node_position": 0, "text": "Foo Bar"},
-                {"sample_node_level": 1, "sample_node_position": 1, "text": "Foo Bar"},
-                {"sample_node_level": 1, "sample_node_position": 2, "text": "Foo Bar"},
-                {"sample_node_level": 1, "sample_node_position": 3, "text": "Foo Bar"},
-                {"sample_node_level": 1, "sample_node_position": 4, "text": "Foo Bar"},
-                {"sample_node_level": 1, "sample_node_position": 5, "text": "Foo Bar"},
-                {"sample_node_level": 1, "sample_node_position": 6, "text": "Foo Bar"},
-                {"sample_node_level": 1, "sample_node_position": 7, "text": "Foo Bar"},
-                {"sample_node_level": 1, "sample_node_position": 8, "text": "Foo Bar"},
-                {"sample_node_level": 1, "sample_node_position": 9, "text": "Foo Bar"},
-                {"sample_node_level": 1, "sample_node_position": 10, "text": "Foo Bar"},
-                {"sample_node_level": 1, "sample_node_position": 11, "text": "Foo Bar"},
+                {
+                    "sample_node_level": 1,
+                    "sample_node_position": 0,
+                    "text": "Fuchs, du hast die Gans gestohlen,",
+                },
+                {
+                    "sample_node_level": 1,
+                    "sample_node_position": 1,
+                    "text": "|: gib sie wieder her! :|",
+                },
+                {
+                    "sample_node_level": 1,
+                    "sample_node_position": 2,
+                    "text": "|: Sonst wird sie der Jäger holen",
+                },
+                {
+                    "sample_node_level": 1,
+                    "sample_node_position": 3,
+                    "text": "mit dem Schießgewehr. :|",
+                },
+                {
+                    "sample_node_level": 1,
+                    "sample_node_position": 4,
+                    "text": "Seine große, lange Flinte",
+                },
+                {
+                    "sample_node_level": 1,
+                    "sample_node_position": 5,
+                    "text": "|: schießt auf dich den Schrot, :|",
+                },
+                {
+                    "sample_node_level": 1,
+                    "sample_node_position": 6,
+                    "text": "|: dass dich färbt die rote Tinte",
+                },
+                {
+                    "sample_node_level": 1,
+                    "sample_node_position": 7,
+                    "text": "und dann bist du tot. :|",
+                },
+                {
+                    "sample_node_level": 1,
+                    "sample_node_position": 8,
+                    "text": "Liebes Füchslein, lass dir raten,",
+                },
+                {
+                    "sample_node_level": 1,
+                    "sample_node_position": 9,
+                    "text": "|: sei doch nur kein Dieb; :|",
+                },
+                {
+                    "sample_node_level": 1,
+                    "sample_node_position": 10,
+                    "text": "|: nimm, du brauchst nicht Gänsebraten,",
+                },
+                {
+                    "sample_node_level": 1,
+                    "sample_node_position": 11,
+                    "text": "mit der Maus vorlieb. :|",
+                },
             ],
+            "meta": {"author": "Ernst Anschütz", "year": "1824", "title": "Warnung"},
         }
     ],
 }
