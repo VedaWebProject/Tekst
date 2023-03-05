@@ -127,7 +127,7 @@ tasks:
     cmds:
       - docker compose -f docker-compose.yml --profile test -p textrig-testing down --volumes
 
-  build-image:
+  docker-build:
     desc: Build and tag production Docker image for app
     vars:
       TEXTRIG_VERSION:
