@@ -3,7 +3,7 @@ import { ref, computed, watch } from 'vue';
 import { NButton, NIcon } from 'naive-ui';
 import NavBarRouterLink from '@/components/NavBarRouterLink.vue';
 import ThemeModeSwitcher from '@/components/ThemeModeSwitcher.vue';
-import LanguageSwitcher from '@/components/LanguageSwitcher.vue';
+import LocaleSwitcher from '@/components/LocaleSwitcher.vue';
 import AccountOptionsButton from '@/components/AccountOptionsButton.vue';
 import QuickSearchWidget from '@/components/QuickSearchWidget.vue';
 import { usePlatformStore, useStateStore } from '@/stores';
@@ -71,7 +71,7 @@ watch(route, () => (menuOpen.value = false));
       <div class="navbar-menu-extra">
         <QuickSearchWidget />
         <ThemeModeSwitcher />
-        <LanguageSwitcher :dropdown-size="dropdownSize" />
+        <LocaleSwitcher :dropdown-size="dropdownSize" />
         <AccountOptionsButton :dropdown-size="dropdownSize" />
       </div>
     </div>
