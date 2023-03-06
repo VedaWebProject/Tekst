@@ -4,10 +4,10 @@ import LightModeOutlined from '@vicons/material/LightModeOutlined';
 import DarkModeOutlined from '@vicons/material/DarkModeOutlined';
 import { useSettingsStore } from '@/stores';
 import { computed } from 'vue';
-import { i18n } from '@/i18n';
+import { useI18n } from 'vue-i18n';
 
 const settings = useSettingsStore();
-const t = i18n.global.t;
+const { t } = useI18n({ useScope: 'global' });
 
 const icon = computed(() => (settings.theme === 'dark' ? LightModeOutlined : DarkModeOutlined));
 const title = computed(() =>

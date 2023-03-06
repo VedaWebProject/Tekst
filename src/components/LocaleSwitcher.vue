@@ -4,7 +4,7 @@ import { languageProfiles } from '@/i18n';
 import { useSettingsStore, useMessagesStore } from '@/stores';
 import { NButton, NDropdown, NIcon } from 'naive-ui';
 import LanguageOutlined from '@vicons/material/LanguageOutlined';
-import { i18n } from '@/i18n';
+import { useI18n } from 'vue-i18n';
 
 const props = defineProps<{
   dropdownSize?: 'small' | 'medium' | 'large' | 'huge' | undefined;
@@ -12,7 +12,7 @@ const props = defineProps<{
 
 const settings = useSettingsStore();
 const messages = useMessagesStore();
-const t = i18n.global.t;
+const { t } = useI18n({ useScope: 'global' });
 
 const options = computed(() =>
   Object.keys(languageProfiles).map((l) => {

@@ -9,7 +9,7 @@ import { NConfigProvider, NGlobalStyle, lightTheme, darkTheme, useThemeVars } fr
 import { lightOverrides, darkOverrides } from '@/theme';
 import PageHeader from './layout/PageHeader.vue';
 import PageFooter from './layout/PageFooter.vue';
-import { i18n } from '@/i18n';
+import { useI18n } from 'vue-i18n';
 
 const state = useStateStore();
 const settings = useSettingsStore();
@@ -18,7 +18,7 @@ const pf = usePlatformStore();
 const themeVars = useThemeVars();
 
 // i18n
-const t = i18n.global.t;
+const { t } = useI18n({ useScope: 'global' });
 const nUiLangLocale = computed(() => languageProfiles[settings.language].nUiLangLocale);
 const nUiDateLocale = computed(() => languageProfiles[settings.language].nUiDateLocale);
 

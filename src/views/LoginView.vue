@@ -12,12 +12,12 @@ import {
   NSpace,
 } from 'naive-ui';
 import { ref, onMounted, nextTick } from 'vue';
-import { i18n } from '@/i18n';
+import { useI18n } from 'vue-i18n';
 
-const t = i18n.global.t;
 const auth = useAuthStore();
 const messages = useMessagesStore();
 const router = useRouter();
+const { t } = useI18n({ useScope: 'global' });
 
 const loading = ref(false);
 

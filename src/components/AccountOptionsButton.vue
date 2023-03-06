@@ -7,13 +7,13 @@ import LogInRound from '@vicons/material/LogInRound';
 import LogOutRound from '@vicons/material/LogOutRound';
 import AccountCircleRound from '@vicons/material/AccountCircleRound';
 import ManageAccountsRound from '@vicons/material/ManageAccountsRound';
-import { i18n } from '@/i18n';
+import { useI18n } from 'vue-i18n';
 
 const props = defineProps<{
   dropdownSize?: 'small' | 'medium' | 'large' | 'huge' | undefined;
 }>();
 
-const t = i18n.global.t;
+const { t } = useI18n({ useScope: 'global' });
 const auth = useAuthStore();
 const router = useRouter();
 const icon = computed(() => (auth.loggedIn ? AccountCircleRound : LogInRound));
