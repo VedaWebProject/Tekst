@@ -22,6 +22,7 @@ const state = useStateStore();
 #current-text-container {
   background-color: var(--accent-color);
   color: #fff;
+  transition: 0.3s;
 }
 
 #current-text {
