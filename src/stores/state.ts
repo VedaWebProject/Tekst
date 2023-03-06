@@ -57,10 +57,9 @@ export const useStateStore = defineStore('state', () => {
   });
 
   // set page title
+  const state = useStateStore();
   function setPageTitle(forRoute?: RouteLocationNormalized) {
     const r = forRoute || route;
-    const state = useStateStore();
-    const pf = usePlatformStore();
     const pfName = pf.data?.info?.platformName;
     const routeTitle = r.meta?.title;
     const text = 'text' in r.params && state.text?.title;
