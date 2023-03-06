@@ -30,7 +30,7 @@ export const useStateStore = defineStore('state', () => {
   // current text
   const route = useRoute();
   const pf = usePlatformStore();
-  const text = ref<TextRead | undefined>();
+  const text = ref<TextRead>();
   watch(route, (after) => {
     if ('text' in after.params && after.params.text) {
       text.value = pf.data?.texts.find((t) => t.slug === after.params.text);

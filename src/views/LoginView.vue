@@ -1,16 +1,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 import { useAuthStore, useMessagesStore } from '@/stores';
-import {
-  type FormInst,
-  type FormValidationError,
-  type FormRules,
-  NForm,
-  NFormItem,
-  NInput,
-  NButton,
-  NSpace,
-} from 'naive-ui';
+import { type FormInst, type FormRules, NForm, NFormItem, NInput, NButton, NSpace } from 'naive-ui';
 import { ref, onMounted, nextTick } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -92,7 +83,7 @@ function loginUser() {
 function handleLoginClick() {
   loading.value = true;
   formRef.value
-    ?.validate((errors: Array<FormValidationError> | undefined) => {
+    ?.validate((errors) => {
       !errors && loginUser();
     })
     .catch(() => {

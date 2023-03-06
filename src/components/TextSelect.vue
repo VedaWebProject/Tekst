@@ -33,7 +33,13 @@ function handleSelect(key: string) {
 </script>
 
 <template>
-  <n-dropdown trigger="click" :options="options" placement="bottom-start" @select="handleSelect">
+  <n-dropdown
+    v-if="state.text"
+    trigger="click"
+    :options="options"
+    placement="bottom-start"
+    @select="handleSelect"
+  >
     <n-button
       text
       icon-placement="right"
@@ -46,7 +52,7 @@ function handleSelect(key: string) {
           <ArrowDropDownFilled />
         </n-icon>
       </template>
-      {{ state.text?.title || 'Text state not implemented' }}
+      {{ state.text.title }}
     </n-button>
   </n-dropdown>
 </template>

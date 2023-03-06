@@ -7,7 +7,6 @@ import {
   type FormInst,
   type FormItemInst,
   type FormItemRule,
-  type FormValidationError,
   type FormRules,
   NForm,
   NFormItem,
@@ -154,7 +153,7 @@ function handleRegisterClick(e: MouseEvent | null = null) {
   e && e.preventDefault();
   loading.value = true;
   formRef.value
-    ?.validate((errors: Array<FormValidationError> | undefined) => {
+    ?.validate((errors) => {
       !errors && registerUser();
     })
     .catch(() => {

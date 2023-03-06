@@ -17,7 +17,7 @@ export const useSettingsStore = defineStore('settings', () => {
   const language = ref(i18n.global.locale);
   const languages = i18n.global.availableLocales;
 
-  async function setLanguage(l: string | undefined = language.value): Promise<AvailableLanguage> {
+  async function setLanguage(l: string = language.value): Promise<AvailableLanguage> {
     return setI18nLanguage(l).then((lang: AvailableLanguage) => {
       language.value = lang.key;
       return lang;
