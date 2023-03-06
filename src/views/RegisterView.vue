@@ -2,7 +2,7 @@
 import { ref, onMounted, nextTick } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
-import { useMessagesStore } from '@/stores';
+import { useMessagesStore, usePlatformStore } from '@/stores';
 import {
   type FormInst,
   type FormItemInst,
@@ -19,6 +19,7 @@ import { AuthApi, type UserCreate } from '@/openapi';
 
 const router = useRouter();
 const messages = useMessagesStore();
+const pf = usePlatformStore();
 const authApi = new AuthApi();
 const { t } = useI18n({ useScope: 'global' });
 
@@ -121,7 +122,11 @@ function registerUser() {
   authApi
     .registerRegister({ userCreate: formModel.value as unknown as UserCreate })
     .then(() => {
-      messages.success(t('register.success'));
+      const activationNeeded = !pf.data?.security?.usersActiveByDefault;
+      const activationHint = activationNeeded
+        ? t('register.activationNeededHint')
+        : t('register.activationNotNeededHint');
+      messages.success(`${t('register.success')} ${activationHint}`, activationNeeded ? 20 : 5);
       switchToLogin();
     })
     .catch((e) => {

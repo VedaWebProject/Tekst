@@ -57,7 +57,9 @@ register:
   register: Register
   switchToLogin: Log into existing account
   heading: Register new account
-  success: Successfully registered. You can now log in.
+  success: Successfully registered.
+  activationNeededHint: You will only be able to log in as soon as we activate your account. We will send you an email when that happens.
+  activationNotNeededHint: You can now log in.
   labels:
     email: Email
     password: Password

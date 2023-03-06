@@ -52,7 +52,7 @@ const MessageDispatcher = defineComponent({
     messages.$onAction(({ name, args }) => {
       messageUtil.create(args[0] || name, {
         type: name,
-        duration: args[1] || 5000,
+        duration: (args[1] || 5) * 1000,
         render: renderMessage,
         closable: true,
       });

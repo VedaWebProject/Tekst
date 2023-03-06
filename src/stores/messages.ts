@@ -1,10 +1,5 @@
 import { defineStore } from 'pinia';
 
-export interface Message {
-  type?: 'info' | 'success' | 'warning' | 'error' | 'loading';
-  text: string;
-}
-
 export const useMessagesStore = defineStore('messages', () => {
   /**
    * These store actions don't really do anything by themselves, but they can be
@@ -12,7 +7,10 @@ export const useMessagesStore = defineStore('messages', () => {
    * (https://pinia.vuejs.org/core-concepts/actions.html#subscribing-to-actions).
    * See GlobalMessenger.vue, where this is used to pick up and dispatch messages.
    */
-  const messageFn = (text: string, duration?: number) => ({ text, duration });
+  const messageFn = (text: string, durationSeconds?: number) => ({
+    text,
+    durationSeconds,
+  });
   const info = messageFn;
   const success = messageFn;
   const warning = messageFn;

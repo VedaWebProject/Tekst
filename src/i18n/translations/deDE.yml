@@ -57,7 +57,9 @@ register:
   register: Registrieren
   switchToLogin: Mit bestehendem Konto anmelden
   heading: Neues Konto registrieren
-  success: Erfolgreich registriert. Sie können sich jetzt anmelden.
+  success: Erfolgreich registriert.
+  activationNeededHint: Sie werden sich erst anmelden können, wenn Ihr Konto von uns aktiviert wurde. Sie werden darüber per Email benachrichtigt.
+  activationNotNeededHint: Sie können sich jetzt anmelden.
   labels:
     email: Email
     password: Passwort
