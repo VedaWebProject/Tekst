@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { LANGUAGES as LANGS } from '@/i18n';
+import { languageProfiles } from '@/i18n';
 import { useSettingsStore, useMessagesStore } from '@/stores';
 import { NButton, NDropdown, NIcon } from 'naive-ui';
 import LanguageOutlined from '@vicons/material/LanguageOutlined';
@@ -15,11 +15,14 @@ const messages = useMessagesStore();
 const t = i18n.global.t;
 
 const options = computed(() =>
-  Object.keys(LANGS).map((l) => ({
-    label: `${LANGS[l]?.icon ?? l}${LANGS[l] && ' '}${LANGS[l]?.displayFull ?? ''}`,
-    key: l,
-    disabled: l === settings.language,
-  }))
+  Object.keys(languageProfiles).map((l) => {
+    const profile = languageProfiles[l];
+    return {
+      label: `${profile.icon} ${profile.displayFull}`,
+      key: l,
+      disabled: l === settings.language,
+    };
+  })
 );
 
 function handleLanguageSelect(localeCode: string) {

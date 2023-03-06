@@ -9,7 +9,7 @@ import { enUS, dateEnUS } from 'naive-ui';
 import { deDE, dateDeDE } from 'naive-ui';
 import { PlatformApi } from '@/openapi';
 
-const I18N_OPTIONS: I18nOptions = {
+const i18nOptions: I18nOptions = {
   legacy: false,
   globalInjection: true,
   locale: 'enUS',
@@ -26,7 +26,7 @@ export interface AvailableLanguage {
   nUiDateLocale: NDateLocale;
 }
 
-export const LANGUAGES: { [localeKey: string]: AvailableLanguage } = {
+export const languageProfiles: { [localeKey: string]: AvailableLanguage } = {
   enUS: {
     key: 'enUS',
     displayFull: 'English (US)',
@@ -45,7 +45,7 @@ export const LANGUAGES: { [localeKey: string]: AvailableLanguage } = {
   },
 };
 
-export const i18n = createI18n(I18N_OPTIONS);
+export const i18n = createI18n(i18nOptions);
 const platformApi = new PlatformApi();
 
 export async function setI18nLanguage(
@@ -60,6 +60,6 @@ export async function setI18nLanguage(
     // @ts-ignore
     i18n.global.locale.value = l;
     document.querySelector('html')?.setAttribute('lang', l);
-    return LANGUAGES[l];
+    return languageProfiles[l];
   });
 }
