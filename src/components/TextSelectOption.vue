@@ -23,8 +23,12 @@ const props = defineProps<{
 }
 
 .text-select-option-indicator {
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
+}
+
+.n-dropdown-option-body--disabled .text-select-option-indicator {
+  background-color: #777 !important /* has to override inline style */;
 }
 </style>
