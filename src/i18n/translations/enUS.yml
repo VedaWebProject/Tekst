@@ -45,7 +45,7 @@ errors:
   unexpected: An unexpected error occurred. This should not happen.
   followFormRules: Please correct your inputs according to the form rules!
   noAccess: You don't have access to {resource}.
-  csrf: Your browser data didn't pass the server's CSRF checks. You are not allowed to access this resource.
+  csrf: Your request didn't pass the CSRF checks. Delete your cookies for this website and refresh the page.
 
 nav:
   about: About
