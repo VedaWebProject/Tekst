@@ -210,9 +210,9 @@
         "tags": [
           "layers"
         ],
-        "summary": "Get layers",
+        "summary": "Find layers",
         "description": "Returns a list of all data layers matching the given criteria.\n\nAs the resulting list of data layers may contain layers of different types, the\nreturned layer objects are reduced to the common layer properties and do not\ncontain layer type-specific data.",
-        "operationId": "getLayers",
+        "operationId": "findLayers",
         "parameters": [
           {
             "required": true,
@@ -259,7 +259,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Layers Layers Get",
+                  "title": "Response Find Layers Layers Get",
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/LayerBaseRead"
@@ -287,13 +287,45 @@
         }
       }
     },
+    "/layers/types": {
+      "get": {
+        "tags": [
+          "layers"
+        ],
+        "summary": "Get layer types info",
+        "description": "Returns a list of all available data layer types",
+        "operationId": "getLayerTypesInfo",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Layer Types Info Layers Types Get",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LayerTypeInfo"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Request"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
     "/layers/{id}": {
       "get": {
         "tags": [
           "layers"
         ],
-        "summary": "Get layer",
-        "operationId": "getLayer",
+        "summary": "Get generic layer data by id",
+        "operationId": "getGenericLayerDataById",
         "parameters": [
           {
             "required": true,
@@ -341,8 +373,8 @@
         "tags": [
           "nodes"
         ],
-        "summary": "Get nodes",
-        "operationId": "getNodes",
+        "summary": "Find nodes",
+        "operationId": "findNodes",
         "parameters": [
           {
             "required": true,
@@ -399,7 +431,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Nodes Nodes Get",
+                  "title": "Response Find Nodes Nodes Get",
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/NodeRead"
@@ -2335,6 +2367,29 @@
           }
         },
         "description": "A data layer describing a set of data on a text"
+      },
+      "LayerTypeInfo": {
+        "title": "LayerTypeInfo",
+        "required": [
+          "key",
+          "name",
+          "description"
+        ],
+        "type": "object",
+        "properties": {
+          "key": {
+            "title": "Key",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          }
+        }
       },
       "NodeCreate": {
         "title": "NodeCreate",

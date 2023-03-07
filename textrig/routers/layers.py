@@ -13,6 +13,7 @@ from textrig.models.layer import (
     LayerBaseDocument,
     LayerBaseRead,
     LayerBaseUpdate,
+    LayerTypeInfo,
 )
 from textrig.models.text import TextDocument
 
@@ -142,7 +143,7 @@ for lt_name, lt_class in get_layer_types().items():
 
 
 @router.get("", response_model=list[LayerBaseRead], status_code=status.HTTP_200_OK)
-async def get_layers(
+async def find_layers(
     text_id: PyObjectId,
     level: int = None,
     layer_type: str = None,
@@ -157,29 +158,15 @@ async def get_layers(
     """
 
     example = {"textId": text_id}
-
+    # add to example
     if level is not None:
         example["level"] = level
-
-    if layer_type is not None:
+    if layer_type:
         example["layerType"] = layer_type
 
     return (
         await LayerBaseDocument.find(example, with_children=True).limit(limit).to_list()
     )
-
-
-# @router.post("", response_model=LayerReadBase, status_code=status.HTTP_201_CREATED)
-# async def create_layer(
-#     layer: LayerBase, db_io: DbIO = Depends(get_db_io)
-# ) -> LayerReadBase:
-#     if not await db_io.find_one("texts", layer.text_slug, "slug"):
-#         raise HTTPException(
-#             status.HTTP_400_BAD_REQUEST, detail="Corresponding text doesn't exist"
-#         )
-#     layer = await db_io.insert_one("layers", layer)
-#     log.debug(f"Created layer: {layer}")
-#     return layer
 
 
 #
@@ -247,20 +234,24 @@ async def get_layers(
 #     )
 
 
-# @router.get("/types", status_code=status.HTTP_200_OK)
-# async def map_layer_types() -> dict:
-#     """Returns a list of all available data layer unit types"""
-#     resp_data = {}
-#     for lt_name, lt_type in get_layer_types().items():
-#         resp_data[lt_name] = {
-#             "name": lt_type.get_name(),
-#             "description": lt_type.get_description(),
-#         }
-#     return resp_data
+@router.get("/types", status_code=status.HTTP_200_OK)
+async def get_layer_types_info() -> list[LayerTypeInfo]:
+    """Returns a list of all available data layer types"""
+    return sorted(
+        [
+            {
+                "key": lt.get_safe_name(),
+                "name": lt.get_name(),
+                "description": lt.get_description(),
+            }
+            for lt in get_layer_types().values()
+        ],
+        key=lambda lt: lt["key"],
+    )
 
 
 @router.get("/{id}", response_model=LayerBaseRead, status_code=status.HTTP_200_OK)
-async def get_layer(
+async def get_generic_layer_data_by_id(
     id: PyObjectId,
 ) -> LayerBaseRead:
     layer_doc = await LayerBaseDocument.get(id, with_children=True)

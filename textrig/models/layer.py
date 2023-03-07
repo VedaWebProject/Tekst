@@ -79,3 +79,12 @@ class LayerBaseRead(LayerBase, ReadBase):
 
 class LayerBaseUpdate(LayerBase, UpdateBase):
     pass
+
+
+## MISC MODELS USED FOR RESPONSES
+
+
+class LayerTypeInfo(ModelBase):
+    key: str
+    name: str
+    description: str

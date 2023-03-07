@@ -44,8 +44,20 @@ async def create_node(node: NodeCreate) -> NodeRead:
     return await NodeDocument.from_(node).create()
 
 
+@router.patch("/{id}", response_model=NodeRead, status_code=status.HTTP_200_OK)
+async def update_node(id: PyObjectId, updates: NodeUpdate) -> dict:
+    node_doc = await NodeDocument.get(id)
+    if not node_doc:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Node with ID {id} doesn't exist",
+        )
+    await node_doc.set(updates.dict(exclude_unset=True))
+    return node_doc
+
+
 @router.get("", response_model=list[NodeRead], status_code=status.HTTP_200_OK)
-async def get_nodes(
+async def find_nodes(
     text_id: PyObjectId,
     level: int = None,
     position: int = None,
@@ -70,18 +82,6 @@ async def get_nodes(
         example["parentId"] = parent_id
 
     return await NodeDocument.find(example).limit(limit).to_list()
-
-
-@router.patch("/{id}", response_model=NodeRead, status_code=status.HTTP_200_OK)
-async def update_node(id: PyObjectId, updates: NodeUpdate) -> dict:
-    node_doc = await NodeDocument.get(id)
-    if not node_doc:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Node with ID {id} doesn't exist",
-        )
-    await node_doc.set(updates.dict(exclude_unset=True))
-    return node_doc
 
 
 @router.get(

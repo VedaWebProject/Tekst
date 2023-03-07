@@ -5,9 +5,6 @@ from textrig.config import TextRigConfig, get_config
 from textrig.db import DatabaseClient, get_client
 
 
-# from textrig.db import DatabaseClient, get_client
-
-
 def get_cfg() -> TextRigConfig:
     return get_config()
 
@@ -20,7 +17,3 @@ def get_db(
     db_client: Database = Depends(get_db_client), cfg: TextRigConfig = Depends(get_cfg)
 ) -> Database:
     return db_client[cfg.db.name]
-
-
-# def get_db_io(db: Database = Depends(get_db)) -> DbIO:
-#     return DbIO(db)
