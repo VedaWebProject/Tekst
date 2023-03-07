@@ -25,10 +25,11 @@ const props = defineProps<{
 .text-select-option-indicator {
   width: 20px;
   height: 20px;
+  border: 2px solid rgb(243, 243, 245);
   border-radius: 50%;
 }
 
 .n-dropdown-option-body--disabled .text-select-option-indicator {
-  background-color: #777 !important /* has to override inline style */;
+  background-color: #bbb !important /* has to override inline style */;
 }
 </style>
