@@ -19,7 +19,7 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = "^3.10"
-fastapi = "^0.92"
+fastapi = "^0.93"
 ujson = "^5.4"
 python-dotenv = "^0.20"
 email-validator = "^1.2.1"

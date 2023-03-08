@@ -1,6 +1,8 @@
 import re
 import sys
 
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 from starlette_csrf import CSRFMiddleware
@@ -19,44 +21,8 @@ from textrig.sample_data import create_sample_texts, reset_db
 _cfg: TextRigConfig = get_config()  # get (possibly cached) config data
 setup_logging()  # set up logging to match prod/dev requirements
 
-# create FastAPI app instance
-app = FastAPI(
-    root_path=_cfg.root_path,
-    openapi_url=_cfg.doc.openapi_url,
-    docs_url=_cfg.doc.swaggerui_url,
-    redoc_url=_cfg.doc.redoc_url,
-    responses={
-        status.HTTP_400_BAD_REQUEST: {"description": "Invalid Request"},
-    },
-)
 
-# add and configure CSRF middleware
-app.add_middleware(
-    CSRFMiddleware,
-    secret=_cfg.security.secret,
-    required_urls=[re.compile(r".*/auth/cookie/login.*")],
-    exempt_urls=[re.compile(r".*/auth/cookie/logout.*")],
-    sensitive_cookies={_cfg.security.auth_cookie_name},
-    cookie_name=_cfg.security.csrf_cookie_name,
-    cookie_path="/",
-    cookie_domain=_cfg.security.auth_cookie_domain or None,
-    cookie_secure=not _cfg.dev_mode,
-    cookie_samesite="Lax",
-    header_name=_cfg.security.csrf_header_name,
-)
-
-# add and configure CORS middleware
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=_cfg.cors_allow_origins,
-    allow_credentials=_cfg.cors_allow_credentials,
-    allow_methods=_cfg.cors_allow_methods,
-    allow_headers=_cfg.cors_allow_headers,
-)
-
-
-@app.on_event("startup")
-async def startup_routine() -> None:
+async def startup_routine(app: FastAPI) -> None:
     # dev mode preparations
     if _cfg.dev_mode:
         # blank line for visual separation of app runs in dev mode
@@ -100,7 +66,50 @@ async def startup_routine() -> None:
         await create_sample_texts()
 
 
-@app.on_event("shutdown")
-async def shutdown_routine() -> None:
+async def shutdown_routine(app: FastAPI) -> None:
     log.info(f"{_cfg.textrig_info.name} cleaning up and shutting down")
     get_db_client(_cfg).close()  # again, no DI possible here :(
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await startup_routine(app)
+    yield
+    await shutdown_routine(app)
+
+
+# create FastAPI app instance
+app = FastAPI(
+    root_path=_cfg.root_path,
+    openapi_url=_cfg.doc.openapi_url,
+    docs_url=_cfg.doc.swaggerui_url,
+    redoc_url=_cfg.doc.redoc_url,
+    responses={
+        status.HTTP_400_BAD_REQUEST: {"description": "Invalid Request"},
+    },
+    lifespan=lifespan,
+)
+
+# add and configure CSRF middleware
+app.add_middleware(
+    CSRFMiddleware,
+    secret=_cfg.security.secret,
+    required_urls=[re.compile(r".*/auth/cookie/login.*")],
+    exempt_urls=[re.compile(r".*/auth/cookie/logout.*")],
+    sensitive_cookies={_cfg.security.auth_cookie_name},
+    cookie_name=_cfg.security.csrf_cookie_name,
+    cookie_path="/",
+    cookie_domain=_cfg.security.auth_cookie_domain or None,
+    cookie_secure=not _cfg.dev_mode,
+    cookie_samesite="Lax",
+    header_name=_cfg.security.csrf_header_name,
+)
+
+# add and configure CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=_cfg.cors_allow_origins,
+    allow_credentials=_cfg.cors_allow_credentials,
+    allow_methods=_cfg.cors_allow_methods,
+    allow_headers=_cfg.cors_allow_headers,
+)
