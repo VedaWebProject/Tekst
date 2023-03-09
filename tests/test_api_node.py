@@ -1,7 +1,6 @@
 import pytest
 
 from httpx import AsyncClient
-from textrig.models.common import PyObjectId
 
 
 @pytest.mark.anyio
@@ -96,10 +95,6 @@ async def test_get_nodes(
     text_id = await insert_test_data("texts", "nodes")
     endpoint = f"{root_path}/nodes"
     nodes = test_data["nodes"]
-    # level = 0
-    # position = 0
-    # parent_id = None
-    # limit = 1000
 
     # test results length limit
     resp = await test_client.get(
@@ -125,7 +120,8 @@ async def test_get_nodes(
 
     # test returned nodes have IDs
     assert "id" in resp.json()[0]
-    PyObjectId(resp.json()[0]["id"])
+    # save node ID for later
+    node_id = resp.json()[0]["id"]
 
     # test specific position
     resp = await test_client.get(
@@ -138,6 +134,12 @@ async def test_get_nodes(
     # test invalid request
     resp = await test_client.get(endpoint, params={"textId": text_id})
     assert resp.status_code == 400, status_fail_msg(400, resp)
+
+    # test get specific node by ID
+    resp = await test_client.get(f"{endpoint}/{node_id}")
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert "id" in resp.json()
+    assert resp.json()["id"] == node_id
 
 
 @pytest.mark.anyio

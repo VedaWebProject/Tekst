@@ -45,7 +45,7 @@ async def create_node(node: NodeCreate) -> NodeRead:
 
 
 @router.patch("/{id}", response_model=NodeRead, status_code=status.HTTP_200_OK)
-async def update_node(id: PyObjectId, updates: NodeUpdate) -> dict:
+async def update_node(id: PyObjectId, updates: NodeUpdate) -> NodeDocument:
     node_doc = await NodeDocument.get(id)
     if not node_doc:
         raise HTTPException(
@@ -53,6 +53,17 @@ async def update_node(id: PyObjectId, updates: NodeUpdate) -> dict:
             detail=f"Node with ID {id} doesn't exist",
         )
     await node_doc.set(updates.dict(exclude_unset=True))
+    return node_doc
+
+
+@router.get("/{id}", response_model=NodeRead, status_code=status.HTTP_200_OK)
+async def get_node(id: PyObjectId) -> NodeDocument:
+    node_doc = await NodeDocument.get(id)
+    if not node_doc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Node with ID {id} not found",
+        )
     return node_doc
 
 
@@ -91,7 +102,7 @@ async def get_children(
     id: PyObjectId,
     limit: int = 1000,
 ) -> list:
-    return await NodeDocument.find({"parentId": id}).limit(limit).to_list()
+    return await NodeDocument.find(NodeDocument.parent_id == id).limit(limit).to_list()
 
 
 @router.get("/{id}/next", response_model=NodeRead, status_code=status.HTTP_200_OK)
