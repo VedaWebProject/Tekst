@@ -20,13 +20,16 @@ class PyObjectId(PydanticObjectId):
 
 
 class ModelBase(BaseModel):
-    def dict(self, **kwargs) -> dict:
+    def dict(self, rename_id: bool = True, **kwargs) -> dict:
         """Overrides dict() in Basemodel to set some custom defaults"""
-        return super().dict(
+        data = super().dict(
             exclude_unset=kwargs.pop("exclude_unset", True),
             by_alias=kwargs.pop("by_alias", True),
             **kwargs,
         )
+        if rename_id and "_id" in data:
+            data["id"] = data.pop("_id")
+        return data
 
     def json(self, **kwargs) -> str:
         """Overrides json() in Basemodel to set some custom defaults"""
