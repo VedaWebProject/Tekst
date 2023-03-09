@@ -211,7 +211,7 @@
           "layers"
         ],
         "summary": "Find layers",
-        "description": "Returns a list of all data layers matching the given criteria.\n\nAs the resulting list of data layers may contain layers of different types, the\nreturned layer objects are reduced to the common layer properties and do not\ncontain layer type-specific data.",
+        "description": "Returns a list of all data layers matching the given criteria.\n\nAs the resulting list of data layers may contain layers of different types, the\nreturned layer objects cannot be typed to their precise layer type.",
         "operationId": "findLayers",
         "parameters": [
           {
@@ -262,7 +262,7 @@
                   "title": "Response Find Layers Layers Get",
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/LayerBaseRead"
+                    "type": "object"
                   }
                 }
               }
@@ -344,7 +344,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LayerBaseRead"
+                  "title": "Response Get Generic Layer Data By Id Layers  Id  Get",
+                  "type": "object"
                 }
               }
             }
@@ -505,6 +506,53 @@
       }
     },
     "/nodes/{id}": {
+      "get": {
+        "tags": [
+          "nodes"
+        ],
+        "summary": "Get node",
+        "operationId": "getNode",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NodeRead"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Request"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
       "patch": {
         "tags": [
           "nodes"
@@ -1137,6 +1185,90 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PlainTextUnitRead"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Request"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/units/": {
+      "get": {
+        "tags": [
+          "units"
+        ],
+        "summary": "Find units",
+        "description": "Returns a list of all data layer units matching the given criteria.\n\nAs the resulting list may contain units of different types, the\nreturned unit objects cannot be typed to their precise layer unit type.",
+        "operationId": "findUnits",
+        "parameters": [
+          {
+            "description": "ID (or list of IDs) of layer(s) to return unit data for",
+            "required": true,
+            "schema": {
+              "title": "Layerid",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              "description": "ID (or list of IDs) of layer(s) to return unit data for"
+            },
+            "name": "layerId",
+            "in": "query"
+          },
+          {
+            "description": "ID (or list of IDs) of node(s) to return unit data for",
+            "required": true,
+            "schema": {
+              "title": "Nodeid",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              "description": "ID (or list of IDs) of node(s) to return unit data for"
+            },
+            "name": "nodeId",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "type": "integer",
+              "default": 1000
+            },
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Find Units Units  Get",
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
                 }
               }
             }
@@ -2292,81 +2424,6 @@
           }
         },
         "description": "General information config model"
-      },
-      "LayerBaseRead": {
-        "title": "LayerBaseRead",
-        "required": [
-          "id",
-          "title",
-          "level",
-          "layerType"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "title": "Id",
-            "type": "string",
-            "example": "5eb7cf5a86d9755df3a6c593"
-          },
-          "title": {
-            "title": "Title",
-            "maxLength": 64,
-            "minLength": 1,
-            "type": "string",
-            "description": "Title of this layer"
-          },
-          "description": {
-            "title": "Description",
-            "maxLength": 128,
-            "minLength": 1,
-            "type": "string",
-            "description": "Short, one-line description of this data layer"
-          },
-          "textId": {
-            "title": "Textid",
-            "type": "string",
-            "description": "ID of the text this layer belongs to",
-            "example": "5eb7cf5a86d9755df3a6c593"
-          },
-          "level": {
-            "title": "Level",
-            "type": "integer",
-            "description": "Text level this layer belongs to"
-          },
-          "layerType": {
-            "title": "Layertype",
-            "type": "string",
-            "description": "A string identifying one of the available layer types"
-          },
-          "public": {
-            "title": "Public",
-            "type": "boolean",
-            "description": "Publication status of this layer",
-            "default": false
-          },
-          "meta": {
-            "title": "Meta",
-            "type": "object",
-            "additionalProperties": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "integer"
-                },
-                {
-                  "type": "boolean"
-                },
-                {
-                  "type": "number"
-                }
-              ]
-            },
-            "description": "Arbitrary metadata"
-          }
-        },
-        "description": "A data layer describing a set of data on a text"
       },
       "LayerTypeInfo": {
         "title": "LayerTypeInfo",

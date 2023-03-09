@@ -11,7 +11,6 @@ from textrig.models.common import PyObjectId
 from textrig.models.layer import (
     LayerBase,
     LayerBaseDocument,
-    LayerBaseRead,
     LayerBaseUpdate,
     LayerTypeInfo,
 )
@@ -142,19 +141,18 @@ for lt_name, lt_class in get_layer_types().items():
 # ADDITIONAL ROUTE DEFINITIONS...
 
 
-@router.get("", response_model=list[LayerBaseRead], status_code=status.HTTP_200_OK)
+@router.get("", response_model=list[dict], status_code=status.HTTP_200_OK)
 async def find_layers(
     text_id: PyObjectId,
     level: int = None,
     layer_type: str = None,
     limit: int = 1000,
-) -> list[LayerBaseRead]:
+) -> list[dict]:
     """
     Returns a list of all data layers matching the given criteria.
 
     As the resulting list of data layers may contain layers of different types, the
-    returned layer objects are reduced to the common layer properties and do not
-    contain layer type-specific data.
+    returned layer objects cannot be typed to their precise layer type.
     """
 
     example = {"textId": text_id}
@@ -164,9 +162,14 @@ async def find_layers(
     if layer_type:
         example["layerType"] = layer_type
 
-    return (
+    layers = (
         await LayerBaseDocument.find(example, with_children=True).limit(limit).to_list()
     )
+
+    # calling dict(rename_id=True) on these models here makes sure they have
+    # "id" instead of "_id", because we're not using a proper read model here
+    # that could take care of that automatically (as we don't know the exact type)
+    return [layer.dict(rename_id=True) for layer in layers]
 
 
 #
@@ -250,10 +253,10 @@ async def get_layer_types_info() -> list[LayerTypeInfo]:
     )
 
 
-@router.get("/{id}", response_model=LayerBaseRead, status_code=status.HTTP_200_OK)
+@router.get("/{id}", status_code=status.HTTP_200_OK)
 async def get_generic_layer_data_by_id(
     id: PyObjectId,
-) -> LayerBaseRead:
+) -> dict:
     layer_doc = await LayerBaseDocument.get(id, with_children=True)
     if not layer_doc:
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail=f"No layer with ID {id}")

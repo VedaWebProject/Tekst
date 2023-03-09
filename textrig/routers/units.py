@@ -1,4 +1,5 @@
-from fastapi import APIRouter, HTTPException, status
+from beanie.operators import In
+from fastapi import APIRouter, HTTPException, Query, status
 
 from textrig.layer_types import get_layer_types
 from textrig.models.common import PyObjectId
@@ -117,3 +118,38 @@ for lt_name, lt_class in get_layer_types().items():
         response_model=UnitReadModel,
         status_code=status.HTTP_200_OK,
     )
+
+
+@router.get("/", response_model=list[dict], status_code=status.HTTP_200_OK)
+async def find_units(
+    layer_id: list[PyObjectId] = Query(
+        default_factory=list,
+        description="ID (or list of IDs) of layer(s) to return unit data for",
+    ),
+    node_id: list[PyObjectId] = Query(
+        default_factory=list,
+        description="ID (or list of IDs) of node(s) to return unit data for",
+    ),
+    limit: int = 1000,
+) -> list[dict]:
+    """
+    Returns a list of all data layer units matching the given criteria.
+
+    As the resulting list may contain units of different types, the
+    returned unit objects cannot be typed to their precise layer unit type.
+    """
+
+    units = (
+        await UnitBaseDocument.find(
+            In(UnitBaseDocument.layer_id, layer_id),
+            In(UnitBaseDocument.node_id, node_id),
+            with_children=True,
+        )
+        .limit(limit)
+        .to_list()
+    )
+
+    # calling dict(rename_id=True) on these models here makes sure they have
+    # "id" instead of "_id", because we're not using a proper read model here
+    # that could take care of that automatically (as we don't know the exact type)
+    return [unit.dict(rename_id=True) for unit in units]
