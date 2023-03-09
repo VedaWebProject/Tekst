@@ -1,8 +1,5 @@
-# from fastapi import HTTPException, status
 from pydantic import Field
 
-# from textrig.db.io import DbIO
-# from textrig.logging import log
 from textrig.models.common import (
     DocumentBase,
     Metadata,

@@ -5,7 +5,7 @@ from textrig.models.common import ModelBase
 from textrig.models.text import TextRead
 
 
-_cfg: TextRigConfig = get_config()  # get (possibly cached) config data
+_cfg: TextRigConfig = get_config()
 
 
 class PlatformSecurityInfo(ModelBase):

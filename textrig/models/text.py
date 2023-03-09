@@ -1,10 +1,6 @@
-# from fastapi import HTTPException, status
-# from textrig.utils.strings import safe_name
 from pydantic import Field, validator
 from pydantic.color import Color
 
-# from textrig.db.io import DbIO
-# from textrig.logging import log
 from textrig.models.common import Metadata, ModelBase, ModelFactory, PyObjectId
 
 

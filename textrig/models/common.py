@@ -1,8 +1,6 @@
 from typing import Optional
 
 from beanie import Document, PydanticObjectId
-
-# from bson.errors import InvalidId
 from humps import camelize
 from pydantic import BaseModel
 from pydantic.main import ModelMetaclass
