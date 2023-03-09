@@ -36,10 +36,6 @@ class LayerBase(ModelBase, ModelFactory):
     public: bool = Field(False, description="Publication status of this layer")
     meta: Metadata | None = Field(None, description="Arbitrary metadata")
 
-    class Settings:
-        name = "layers"
-        is_root = True
-
     @validator("description")
     def handle_whitespaces_in_description(cls, v):
         if not isinstance(v, str):
@@ -70,7 +66,9 @@ class LayerBase(ModelBase, ModelFactory):
 
 
 class LayerBaseDocument(LayerBase, DocumentBase):
-    pass
+    class Settings:
+        name = "layers"
+        is_root = True
 
 
 class LayerBaseRead(LayerBase, ReadBase):

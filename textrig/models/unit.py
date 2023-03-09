@@ -22,10 +22,6 @@ class UnitBase(ModelBase, ModelFactory):
 
     __template_fields: tuple[str] = ("meta",)
 
-    class Settings:
-        name = "units"
-        is_root = True
-
     @classmethod
     def get_layer_type_plugin_class(cls) -> type:
         raise NotImplementedError(
@@ -42,7 +38,9 @@ class UnitBase(ModelBase, ModelFactory):
 
 
 class UnitBaseDocument(UnitBase, DocumentBase):
-    pass
+    class Settings:
+        name = "units"
+        is_root = True
 
 
 class UnitBaseUpdate(UnitBase, UpdateBase):
