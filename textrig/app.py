@@ -13,6 +13,7 @@ from textrig.db import init_odm
 from textrig.dependencies import get_db, get_db_client
 from textrig.layer_types import init_layer_type_manager
 from textrig.logging import log, setup_logging
+from textrig.models.settings import PlatformSettingsDocument
 from textrig.openapi import custom_openapi
 from textrig.routers import setup_routes
 from textrig.sample_data import create_sample_texts, reset_db
@@ -64,6 +65,10 @@ async def startup_routine(app: FastAPI) -> None:
         await create_sample_users()
         log.debug("Creating sample texts...")
         await create_sample_texts()
+
+    # create inital platform settings from defaults
+    log.info("Creating initial platform settings from defaults...")
+    await PlatformSettingsDocument().create()
 
 
 async def shutdown_routine(app: FastAPI) -> None:

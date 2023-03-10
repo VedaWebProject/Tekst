@@ -2,6 +2,7 @@ from pydantic import Field
 
 from textrig.config import InfoConfig, TextRigConfig, TextRigInfoConfig, get_config
 from textrig.models.common import ModelBase
+from textrig.models.settings import PlatformSettingsRead
 from textrig.models.text import TextRead
 
 
@@ -19,4 +20,5 @@ class PlatformData(ModelBase):
     info: InfoConfig = _cfg.info
     textrig_info: TextRigInfoConfig = _cfg.textrig_info
     texts: list[TextRead]
+    settings: PlatformSettingsRead
     security: PlatformSecurityInfo = Field(default_factory=PlatformSecurityInfo)

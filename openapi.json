@@ -801,6 +801,53 @@
         }
       }
     },
+    "/settings": {
+      "patch": {
+        "tags": [
+          "settings"
+        ],
+        "summary": "Update platform settings",
+        "operationId": "updatePlatformSettings",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlatformSettingsUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlatformSettingsRead"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Request"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/texts": {
       "get": {
         "tags": [
@@ -2991,7 +3038,8 @@
       "PlatformData": {
         "title": "PlatformData",
         "required": [
-          "texts"
+          "texts",
+          "settings"
         ],
         "type": "object",
         "properties": {
@@ -3027,6 +3075,9 @@
               "$ref": "#/components/schemas/TextRead"
             }
           },
+          "settings": {
+            "$ref": "#/components/schemas/PlatformSettingsRead"
+          },
           "security": {
             "$ref": "#/components/schemas/PlatformSecurityInfo"
           }
@@ -3048,6 +3099,39 @@
             "default": true
           }
         }
+      },
+      "PlatformSettingsRead": {
+        "title": "PlatformSettingsRead",
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "defaultTextId": {
+            "title": "Defaulttextid",
+            "type": "string",
+            "description": "Default text to load in UI",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          }
+        },
+        "description": "Settings defining platform behavior configured by admins"
+      },
+      "PlatformSettingsUpdate": {
+        "title": "PlatformSettingsUpdate",
+        "type": "object",
+        "properties": {
+          "defaultTextId": {
+            "title": "Defaulttextid",
+            "type": "string",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          }
+        },
+        "description": "Settings defining platform behavior configured by admins"
       },
       "TextCreate": {
         "title": "TextCreate",
