@@ -57,16 +57,12 @@ export const useStateStore = defineStore('state', () => {
   });
 
   // set page title
-  const state = useStateStore();
   function setPageTitle(forRoute?: RouteLocationNormalized) {
     const r = forRoute || route;
-    const pfName = pf.data?.info?.platformName;
-    const routeTitle = r.meta?.title;
-    const text = 'text' in r.params && state.text?.title;
-    const divider = pfName && routeTitle ? ' - ' : '';
-    document.title = `${pfName || ''}${divider}${routeTitle || ''}${(text && ': ') || ''}${
-      text || ''
-    }`;
+    const rTitle = r.meta?.title;
+    const tTitle = 'text' in r.params && text.value?.title && ` "${text.value?.title}"`;
+    const pfName = pf.data?.info?.platformName ? ` | ${pf.data?.info?.platformName}` : '';
+    document.title = `${rTitle || ''}${tTitle || ''}${pfName}`;
   }
 
   return {
