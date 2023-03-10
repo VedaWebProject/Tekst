@@ -17,7 +17,7 @@ const i18nOptions: I18nOptions = {
   messages: staticI18nMsgs,
 };
 
-export interface AvailableLanguage {
+export interface AvailableLocale {
   key: string;
   displayFull: string;
   displayShort: string;
@@ -26,7 +26,7 @@ export interface AvailableLanguage {
   nUiDateLocale: NDateLocale;
 }
 
-export const languageProfiles: { [localeKey: string]: AvailableLanguage } = {
+export const localeProfiles: { [localeKey: string]: AvailableLocale } = {
   enUS: {
     key: 'enUS',
     displayFull: 'English (US)',
@@ -50,7 +50,7 @@ const platformApi = new PlatformApi();
 
 export async function setI18nLanguage(
   locale: I18nOptions['locale'] = i18n.global.locale
-): Promise<AvailableLanguage> {
+): Promise<AvailableLocale> {
   // @ts-ignore
   const l = locale?.value ?? locale ?? i18n.global.locale.value;
   if (!l) return Promise.reject(`Invalid locale code: ${l}`);
@@ -60,6 +60,6 @@ export async function setI18nLanguage(
     // @ts-ignore
     i18n.global.locale.value = l;
     document.querySelector('html')?.setAttribute('lang', l);
-    return languageProfiles[l];
+    return localeProfiles[l];
   });
 }

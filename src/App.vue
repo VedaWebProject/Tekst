@@ -3,7 +3,7 @@ import { RouterView } from 'vue-router';
 import FullScreenLoader from '@/components/FullScreenLoader.vue';
 import GlobalMessenger from '@/components/GlobalMessenger.vue';
 import { onMounted, onBeforeMount, ref, computed } from 'vue';
-import { languageProfiles } from '@/i18n';
+import { localeProfiles } from '@/i18n';
 import { useStateStore, usePlatformStore, useMessagesStore } from '@/stores';
 import { NConfigProvider, NGlobalStyle, lightTheme, darkTheme, useThemeVars } from 'naive-ui';
 import { lightOverrides, darkOverrides } from '@/theme';
@@ -18,8 +18,8 @@ const themeVars = useThemeVars();
 
 // i18n
 const { t } = useI18n({ useScope: 'global' });
-const nUiLangLocale = computed(() => languageProfiles[state.language].nUiLangLocale);
-const nUiDateLocale = computed(() => languageProfiles[state.language].nUiDateLocale);
+const nUiLangLocale = computed(() => localeProfiles[state.locale].nUiLangLocale);
+const nUiDateLocale = computed(() => localeProfiles[state.locale].nUiDateLocale);
 
 // theming
 const theme = computed(() => (state.theme === 'light' ? lightTheme : darkTheme));

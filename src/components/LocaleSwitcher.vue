@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { languageProfiles } from '@/i18n';
+import { localeProfiles } from '@/i18n';
 import { useMessagesStore, useStateStore } from '@/stores';
 import { NButton, NDropdown, NIcon } from 'naive-ui';
 import LanguageOutlined from '@vicons/material/LanguageOutlined';
@@ -15,18 +15,18 @@ const messages = useMessagesStore();
 const { t } = useI18n({ useScope: 'global' });
 
 const options = computed(() =>
-  Object.keys(languageProfiles).map((l) => {
-    const profile = languageProfiles[l];
+  Object.keys(localeProfiles).map((l) => {
+    const profile = localeProfiles[l];
     return {
       label: `${profile.icon} ${profile.displayFull}`,
       key: l,
-      disabled: l === state.language,
+      disabled: l === state.locale,
     };
   })
 );
 
 function handleLanguageSelect(localeCode: string) {
-  if (localeCode == state.language) return;
+  if (localeCode == state.locale) return;
 
   state.setLanguage(localeCode).catch((e) => {
     messages.warning(t('errors.serverI18n'));
@@ -53,7 +53,7 @@ function handleLanguageSelect(localeCode: string) {
       <template #icon>
         <n-icon :component="LanguageOutlined" />
       </template>
-      <!-- {{ LANGS[state.language]?.displayShort }} -->
+      <!-- {{ LANGS[state.locale]?.displayShort }} -->
     </n-button>
   </n-dropdown>
 </template>
