@@ -5,7 +5,7 @@ TEXTS = {
             "slug": "rigveda",
             "subtitle": "An ancient Indian collection of Vedic Sanskrit hymns",
             "levels": ["Book", "Hymn", "Stanza"],
-            "accentColor": "#bc243b",
+            "accentColor": "#D43A35",
         },
         "nodes": [
             {
@@ -98,7 +98,7 @@ TEXTS = {
             "slug": "fdhdgg",
             "subtitle": "An old German folk song",
             "levels": ["Stanza", "Line"],
-            "accent_color": "#334195",
+            "accent_color": "#88447f",
         },
         "nodes": [
             {
