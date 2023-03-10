@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import BrowseToolbar from '@/components/BrowseToolbar.vue';
 import NavBar from '@/components/NavBar.vue';
 import TextSelect from '@/components/TextSelect.vue';
 import { useStateStore } from '@/stores';
@@ -9,30 +10,25 @@ const state = useStateStore();
 <template>
   <header>
     <NavBar />
-    <div id="current-text-container">
+    <div class="accent-color-bg">
       <div id="current-text">
         <TextSelect />
         <span class="current-text-subtitle">{{ state.text?.subtitle || '&nbsp;' }}</span>
       </div>
     </div>
   </header>
+  <BrowseToolbar />
 </template>
 
 <style scoped>
-#current-text-container {
-  background-color: var(--accent-color);
-  color: #fff;
-  transition: 0.3s;
-}
-
 #current-text {
   display: flex;
   column-gap: 24px;
   flex-wrap: wrap;
   justify-content: space-between;
-  font-size: 1.1em;
+  font-size: 1.2em;
   font-weight: 400;
-  padding: 0.5rem var(--layout-padding);
+  padding: 0.75rem var(--layout-padding);
   max-width: var(--max-app-width);
   margin: 0 auto;
 }
