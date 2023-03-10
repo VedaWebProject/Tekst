@@ -17,14 +17,16 @@ export const useStateStore = defineStore('state', () => {
   const route = useRoute();
 
   // theme
-  const theme = ref<ThemeMode>('light');
+  const theme = ref<ThemeMode>((localStorage.getItem('theme') as ThemeMode) || 'light');
+  watch(theme, (after) => localStorage.setItem('theme', after));
 
   function toggleTheme() {
     theme.value = theme.value === 'light' ? 'dark' : 'light';
   }
 
   // language
-  const language = ref(i18n.global.locale);
+  const language = ref(localStorage.getItem('language') || i18n.global.locale);
+  watch(language, (after) => localStorage.setItem('language', after));
   const languages = i18n.global.availableLocales;
   async function setLanguage(l: string = language.value): Promise<AvailableLanguage> {
     return setI18nLanguage(l).then((lang: AvailableLanguage) => {
