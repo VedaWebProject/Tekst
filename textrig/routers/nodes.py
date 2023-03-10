@@ -41,7 +41,7 @@ async def create_node(node: NodeCreate) -> NodeRead:
             detail="Conflict with existing node",
         )
     # all fine
-    return await NodeDocument.from_(node).create()
+    return await NodeDocument(**node.dict()).create()
 
 
 @router.patch("/{id}", response_model=NodeRead, status_code=status.HTTP_200_OK)

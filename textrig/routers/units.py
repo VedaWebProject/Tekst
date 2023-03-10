@@ -37,7 +37,7 @@ def _generate_create_endpoint(
                 status_code=status.HTTP_409_CONFLICT,
                 detail="The properties of this unit conflict with another unit",
             )
-        return await unit_document_model.from_(unit).create()
+        return await unit_document_model(**unit.dict()).create()
 
     return create_unit
 

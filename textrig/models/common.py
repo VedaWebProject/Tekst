@@ -60,10 +60,6 @@ class DocumentBase(Document):
         self.id = None  # reset ID for new document in case one is already set
         return await super().insert(**kwargs)
 
-    @classmethod
-    def from_(cls, obj: ModelBase, **dict_kwargs) -> BaseModel:
-        return cls(**obj.dict(**dict_kwargs))
-
     class Settings:
         pass
 

@@ -37,7 +37,7 @@ async def create_text(text: TextCreate) -> TextRead:
             status_code=status.HTTP_409_CONFLICT,
             detail="An equal text already exists (same title or slug)",
         )
-    return await TextDocument.from_(text).create()
+    return await TextDocument(**text.dict()).create()
 
 
 @router.post(

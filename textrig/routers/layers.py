@@ -54,7 +54,7 @@ def _generate_create_endpoint(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=f"Layer refers to non-existent text '{layer.text_id}'",
             )
-        return await layer_document_model.from_(layer).create()
+        return await layer_document_model(**layer.dict()).create()
 
     return create_layer
 
