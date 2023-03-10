@@ -1,13 +1,49 @@
 import { ref, computed, watch } from 'vue';
 import { defineStore } from 'pinia';
 import { useWindowSize } from '@vueuse/core';
-import type { TextRead } from '@/openapi';
 import Color from 'color';
-import { useSettingsStore, usePlatformStore } from '@/stores';
-import { useRoute } from 'vue-router';
 import type { RouteLocationNormalized } from 'vue-router';
+import { usePlatformStore } from '@/stores';
+import { i18n, setI18nLanguage } from '@/i18n';
+import type { AvailableLanguage } from '@/i18n';
+import { useRoute } from 'vue-router';
+import type { TextRead } from '@/openapi';
+
+declare type ThemeMode = 'light' | 'dark';
 
 export const useStateStore = defineStore('state', () => {
+  // define resources
+  const pf = usePlatformStore();
+  const route = useRoute();
+
+  // theme
+  const theme = ref<ThemeMode>('light');
+
+  function toggleTheme() {
+    theme.value = theme.value === 'light' ? 'dark' : 'light';
+  }
+
+  // language
+  const language = ref(i18n.global.locale);
+  const languages = i18n.global.availableLocales;
+  async function setLanguage(l: string = language.value): Promise<AvailableLanguage> {
+    return setI18nLanguage(l).then((lang: AvailableLanguage) => {
+      language.value = lang.key;
+      return lang;
+    });
+  }
+
+  // current text
+  const text = ref<TextRead>();
+  watch(route, (after) => {
+    if ('text' in after.params && after.params.text) {
+      text.value = pf.data?.texts.find((t) => t.slug === after.params.text);
+    } else {
+      text.value = text.value || pf.data?.texts[0];
+    }
+  });
+  watch(text, () => setPageTitle(route));
+
   // global loading state
   const globalLoading = ref(false);
   const globalLoadingMsg = ref('');
@@ -27,23 +63,9 @@ export const useStateStore = defineStore('state', () => {
   const { width } = useWindowSize();
   const smallScreen = computed(() => width.value < 860);
 
-  // current text
-  const route = useRoute();
-  const pf = usePlatformStore();
-  const text = ref<TextRead>();
-  watch(route, (after) => {
-    if ('text' in after.params && after.params.text) {
-      text.value = pf.data?.texts.find((t) => t.slug === after.params.text);
-    } else {
-      text.value = text.value || pf.data?.texts[0];
-    }
-  });
-  watch(text, () => setPageTitle());
-
   // current text accent color variants
-  const settings = useSettingsStore();
   const accentColor = computed(() => {
-    const lighten = settings.theme === 'dark' ? 0.2 : 0.0;
+    const lighten = theme.value === 'dark' ? 0.2 : 0.0;
     const base = Color(text.value ? text.value.accentColor : '#18A058').lighten(lighten);
     return {
       base: base.hex(),
@@ -72,8 +94,13 @@ export const useStateStore = defineStore('state', () => {
     globalLoadingMsg,
     globalLoadingProgress,
     smallScreen,
-    text,
     accentColor,
     setPageTitle,
+    theme,
+    toggleTheme,
+    language,
+    languages,
+    text,
+    setLanguage,
   };
 });

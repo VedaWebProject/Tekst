@@ -4,7 +4,7 @@ import FullScreenLoader from '@/components/FullScreenLoader.vue';
 import GlobalMessenger from '@/components/GlobalMessenger.vue';
 import { onMounted, onBeforeMount, ref, computed } from 'vue';
 import { languageProfiles } from '@/i18n';
-import { useStateStore, usePlatformStore, useMessagesStore, useSettingsStore } from '@/stores';
+import { useStateStore, usePlatformStore, useMessagesStore } from '@/stores';
 import { NConfigProvider, NGlobalStyle, lightTheme, darkTheme, useThemeVars } from 'naive-ui';
 import { lightOverrides, darkOverrides } from '@/theme';
 import PageHeader from './layout/PageHeader.vue';
@@ -12,23 +12,20 @@ import PageFooter from './layout/PageFooter.vue';
 import { useI18n } from 'vue-i18n';
 
 const state = useStateStore();
-const settings = useSettingsStore();
 const messages = useMessagesStore();
 const pf = usePlatformStore();
 const themeVars = useThemeVars();
 
 // i18n
 const { t } = useI18n({ useScope: 'global' });
-const nUiLangLocale = computed(() => languageProfiles[settings.language].nUiLangLocale);
-const nUiDateLocale = computed(() => languageProfiles[settings.language].nUiDateLocale);
+const nUiLangLocale = computed(() => languageProfiles[state.language].nUiLangLocale);
+const nUiDateLocale = computed(() => languageProfiles[state.language].nUiDateLocale);
 
 // theming
-const theme = computed(() => (settings.theme === 'light' ? lightTheme : darkTheme));
-const themeOverrides = computed(() =>
-  settings.theme === 'light' ? lightOverrides : darkOverrides
-);
-const mainBgColor = computed(() => (settings.theme === 'light' ? '#00000010' : '#ffffff10'));
-const contentBgColor = computed(() => (settings.theme === 'light' ? '#ffffffcc' : '#00000044'));
+const theme = computed(() => (state.theme === 'light' ? lightTheme : darkTheme));
+const themeOverrides = computed(() => (state.theme === 'light' ? lightOverrides : darkOverrides));
+const mainBgColor = computed(() => (state.theme === 'light' ? '#00000010' : '#ffffff10'));
+const contentBgColor = computed(() => (state.theme === 'light' ? '#ffffffcc' : '#00000044'));
 
 // app initialization
 const appInitialized = ref(false);
@@ -37,7 +34,7 @@ const initSteps = [
     info: t('loading.serverI18n'),
     action: async () => {
       try {
-        await settings.setLanguage();
+        await state.setLanguage();
         return true;
       } catch (e) {
         messages.warning(t('errors.serverI18n'));
