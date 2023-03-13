@@ -18,19 +18,26 @@ export const usePlatformStore = defineStore('platform', () => {
         return response.data;
       })
       .then((data: PlatformData) => {
-        // select default text if none is set
-        // TODO implement storing default text ID
         const route = router.currentRoute.value;
-        if ('text' in route.params && !route.params.text) {
-          router.replace({
-            name: route.name || 'browse',
-            params: {
-              ...route.params,
-              text: data.texts[0].slug,
-            },
-          });
+        const textParam = data.texts.find((t) => t.slug === route.params.text);
+        const textStorage = data.texts.find((t) => t.slug == localStorage.getItem('text'));
+        const textDefault = data.texts.find((t) => t.id == data.settings.defaultTextId);
+        const textFirst = data.texts[0];
+
+        if ('text' in route.params) {
+          if (!textParam) {
+            router.replace({
+              name: route.name || 'browse',
+              params: {
+                ...route.params,
+                text: textStorage?.slug || textDefault?.slug || textFirst.slug,
+              },
+            });
+          } else {
+            state.text = textParam || textStorage || textDefault || textFirst;
+          }
         } else {
-          state.text = data.texts.find((t) => t.slug === route.params.text) || data.texts[0];
+          state.text = textStorage || textDefault || textFirst;
         }
       });
   }

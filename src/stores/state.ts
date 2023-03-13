@@ -44,7 +44,10 @@ export const useStateStore = defineStore('state', () => {
       text.value = text.value || pf.data?.texts[0];
     }
   });
-  watch(text, () => setPageTitle(route));
+  watch(text, () => {
+    setPageTitle(route);
+    text.value && localStorage.setItem('text', text.value?.slug);
+  });
 
   // global loading state
   const globalLoading = ref(false);
