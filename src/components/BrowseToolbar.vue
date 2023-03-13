@@ -34,6 +34,7 @@ const route = useRoute();
   max-width: var(--max-app-width);
   height: var(--browse-toolbar-height);
   margin: 0 auto;
+  padding: 0 var(--layout-padding);
   display: flex;
   justify-content: space-between;
   align-items: center;
