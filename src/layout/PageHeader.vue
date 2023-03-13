@@ -13,9 +13,9 @@ const state = useStateStore();
     <div class="accent-color-bg">
       <div id="current-text">
         <TextSelect />
-        <span class="current-text-subtitle">{{
-          (!state.smallScreen && state.text?.subtitle) || '&nbsp;'
-        }}</span>
+        <span v-if="!state.smallScreen" class="current-text-subtitle">
+          {{ state.text?.subtitle }}
+        </span>
       </div>
     </div>
   </header>
@@ -24,6 +24,8 @@ const state = useStateStore();
 
 <style scoped>
 #current-text {
+  --current-text-height: 42px;
+  height: var(--current-text-height);
   display: flex;
   column-gap: 24px;
   flex-wrap: wrap;
