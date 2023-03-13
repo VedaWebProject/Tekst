@@ -3,15 +3,6 @@ import _merge from 'lodash.merge';
 
 export declare type ThemeMode = 'light' | 'dark';
 
-export interface AccentColors {
-  base: string;
-  fade1: string;
-  fade2: string;
-  fade3: string;
-  fade4: string;
-  fade5: string;
-}
-
 const commonOverrides: GlobalThemeOverrides = {
   common: {
     fontSize: '18px',
@@ -22,8 +13,8 @@ const commonOverrides: GlobalThemeOverrides = {
     fontSizeLarge: '20px',
     fontSizeHuge: '22px',
     lineHeight: '1.8',
-    fontFamily: 'inherit',
-    fontWeight: '300',
+    fontFamily: 'var(--app-ui-font-family)',
+    fontWeight: 'var(--app-ui-font-weight)',
   },
   Form: {
     feedbackPadding: '4px 0 8px 2px',

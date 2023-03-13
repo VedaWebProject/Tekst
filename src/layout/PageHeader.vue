@@ -24,15 +24,16 @@ const state = useStateStore();
 
 <style scoped>
 #current-text {
-  --current-text-height: 42px;
+  --current-text-height: 64px;
   height: var(--current-text-height);
   display: flex;
   column-gap: 24px;
   flex-wrap: wrap;
   justify-content: space-between;
+  align-items: center;
   font-size: 1.2em;
   font-weight: 400;
-  padding: 0.75rem var(--layout-padding);
+  padding: 0 var(--layout-padding);
   max-width: var(--max-app-width);
   margin: 0 auto;
 }

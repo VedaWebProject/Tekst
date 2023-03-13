@@ -144,3 +144,14 @@ main {
   padding: var(--layout-padding) 0.5rem;
 }
 </style>
+
+<style>
+a,
+a:any-link {
+  color: var(--link-color);
+}
+
+a:hover {
+  color: var(--link-color-hover);
+}
+</style>

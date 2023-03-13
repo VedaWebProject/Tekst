@@ -8,7 +8,7 @@ import { i18n, setI18nLocale } from '@/i18n';
 import type { AvailableLocale } from '@/i18n';
 import { useRoute } from 'vue-router';
 import type { TextRead } from '@/openapi';
-import type { ThemeMode, AccentColors } from '@/theme';
+import type { ThemeMode } from '@/theme';
 
 export const useStateStore = defineStore('state', () => {
   // define resources
@@ -68,7 +68,7 @@ export const useStateStore = defineStore('state', () => {
   const smallScreen = computed(() => width.value < 860);
 
   // current text accent color variants
-  const accentColors = computed<AccentColors>(() => {
+  const accentColors = computed(() => {
     const lighten = theme.value === 'dark' ? 0.25 : 0.0;
     const base = Color(text.value ? text.value.accentColor : '#18A058').lighten(lighten);
     return {
