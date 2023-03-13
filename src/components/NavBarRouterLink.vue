@@ -48,10 +48,10 @@ const themeVars = useThemeVars();
 }
 
 .navbar-router-link:hover {
-  color: var(--accent-color);
+  color: var(--accent-color-intense);
 }
 
 .navbar-router-link.router-link-active {
-  color: var(--accent-color-intense);
+  color: var(--accent-color-intense-darker);
 }
 </style>

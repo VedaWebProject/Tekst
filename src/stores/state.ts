@@ -75,6 +75,7 @@ export const useStateStore = defineStore('state', () => {
     return {
       base: base.hex(),
       intense: base.saturate(0.5).hex(),
+      intenseDarker: base.saturate(0.9).darken(0.2).hex(),
       fade1: base.fade(0.2).hexa(),
       fade2: base.fade(0.4).hexa(),
       fade3: base.fade(0.6).hexa(),
