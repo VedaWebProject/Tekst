@@ -98,7 +98,7 @@ TEXTS = {
             "slug": "fdhdgg",
             "subtitle": "An old German folk song",
             "levels": ["Stanza", "Line"],
-            "accent_color": "#88447f",
+            "accent_color": "#43895F",
         },
         "nodes": [
             {
