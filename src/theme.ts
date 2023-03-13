@@ -1,6 +1,16 @@
-import { type GlobalThemeOverrides, lightTheme } from 'naive-ui';
+import type { GlobalThemeOverrides } from 'naive-ui';
 import _merge from 'lodash.merge';
-import Color from 'color';
+
+export declare type ThemeMode = 'light' | 'dark';
+
+export interface AccentColors {
+  base: string;
+  fade1: string;
+  fade2: string;
+  fade3: string;
+  fade4: string;
+  fade5: string;
+}
 
 const commonOverrides: GlobalThemeOverrides = {
   common: {
@@ -26,16 +36,20 @@ const commonOverrides: GlobalThemeOverrides = {
 const lightOverrides: GlobalThemeOverrides = {
   common: {
     bodyColor: '#ffffff',
+    primaryColor: '#7d7d7d',
+    primaryColorHover: '#8e8e8e',
+    primaryColorPressed: '#8e8e8e',
+    primaryColorSuppl: '#8e8e8e',
   },
 };
 
 const darkOverrides: GlobalThemeOverrides = {
   common: {
     bodyColor: '#232323',
-    primaryColor: Color(lightTheme.common.primaryColor).lighten(0.2).hex(),
-    primaryColorHover: Color(lightTheme.common.primaryColorHover).lighten(0.2).saturate(0.5).hex(),
-    primaryColorPressed: Color(lightTheme.common.primaryColorPressed).lighten(0.2).hex(),
-    primaryColorSuppl: Color(lightTheme.common.primaryColorSuppl).lighten(0.2).hex(),
+    primaryColor: '#b6b6b6',
+    primaryColorHover: '#c9c9c9',
+    primaryColorPressed: '#c9c9c9',
+    primaryColorSuppl: '#c9c9c9',
   },
   Card: {
     colorEmbedded: '#2a2a2a',

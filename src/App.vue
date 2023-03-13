@@ -5,14 +5,7 @@ import GlobalMessenger from '@/components/GlobalMessenger.vue';
 import { onMounted, onBeforeMount, ref, computed } from 'vue';
 import { localeProfiles } from '@/i18n';
 import { useStateStore, usePlatformStore, useMessagesStore } from '@/stores';
-import {
-  NConfigProvider,
-  NGlobalStyle,
-  NBackTop,
-  lightTheme,
-  darkTheme,
-  useThemeVars,
-} from 'naive-ui';
+import { NConfigProvider, NGlobalStyle, NBackTop, lightTheme, darkTheme } from 'naive-ui';
 import { lightOverrides, darkOverrides } from '@/theme';
 import PageHeader from './layout/PageHeader.vue';
 import PageFooter from './layout/PageFooter.vue';
@@ -21,7 +14,6 @@ import { useI18n } from 'vue-i18n';
 const state = useStateStore();
 const messages = useMessagesStore();
 const pf = usePlatformStore();
-const themeVars = useThemeVars();
 
 // i18n
 const { t } = useI18n({ useScope: 'global' });
@@ -113,7 +105,7 @@ onMounted(async () => {
         transition="0.2s"
         :text="state.globalLoadingMsg"
         :progress="state.globalLoadingProgress"
-        :progress-color="state.accentColor.base"
+        :progress-color="state.accentColors.base"
         show-progress
       />
       <GlobalMessenger />
@@ -125,15 +117,15 @@ onMounted(async () => {
 
 <style scoped>
 #app-container {
-  --accent-color: v-bind(state.accentColor.base);
-  --accent-color-fade1: v-bind(state.accentColor.fade1);
-  --accent-color-fade2: v-bind(state.accentColor.fade2);
-  --accent-color-fade3: v-bind(state.accentColor.fade3);
-  --accent-color-fade4: v-bind(state.accentColor.fade4);
-  --accent-color-fade5: v-bind(state.accentColor.fade5);
+  --accent-color: v-bind(state.accentColors.base);
+  --accent-color-fade1: v-bind(state.accentColors.fade1);
+  --accent-color-fade2: v-bind(state.accentColors.fade2);
+  --accent-color-fade3: v-bind(state.accentColors.fade3);
+  --accent-color-fade4: v-bind(state.accentColors.fade4);
+  --accent-color-fade5: v-bind(state.accentColors.fade5);
 
-  --link-color: v-bind(themeVars.primaryColor);
-  --link-color-hover: v-bind(themeVars.primaryColorHover);
+  --link-color: v-bind(state.accentColors.base);
+  --link-color-hover: v-bind(state.accentColors.fade1);
 
   --main-bg-color: v-bind(mainBgColor);
   --content-bg-color: v-bind(contentBgColor);

@@ -54,8 +54,8 @@ const progress = computed(() =>
         type="line"
         :percentage="progress"
         :show-indicator="false"
-        :height="4"
-        color="#18A058"
+        :height="6"
+        color="#676767"
         border-radius="0"
         processing
       />
@@ -77,6 +77,7 @@ const progress = computed(() =>
   justify-content: center;
   align-items: center;
   background-color: #fff;
+  color: #363636;
 }
 .fullscreen-loader-text {
   padding: 1em;
