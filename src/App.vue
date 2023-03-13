@@ -41,7 +41,7 @@ const initSteps = [
     info: t('loading.serverI18n'),
     action: async () => {
       try {
-        await state.setLanguage();
+        await state.setLocale();
         return true;
       } catch (e) {
         messages.warning(t('errors.serverI18n'));

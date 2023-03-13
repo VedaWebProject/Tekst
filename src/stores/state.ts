@@ -4,7 +4,7 @@ import { useWindowSize } from '@vueuse/core';
 import Color from 'color';
 import type { RouteLocationNormalized } from 'vue-router';
 import { usePlatformStore } from '@/stores';
-import { i18n, setI18nLanguage } from '@/i18n';
+import { i18n, setI18nLocale } from '@/i18n';
 import type { AvailableLocale } from '@/i18n';
 import { useRoute } from 'vue-router';
 import type { TextRead } from '@/openapi';
@@ -28,8 +28,8 @@ export const useStateStore = defineStore('state', () => {
   const locale = ref(localStorage.getItem('locale') || i18n.global.locale);
   watch(locale, (after) => localStorage.setItem('locale', after));
   const locales = i18n.global.availableLocales;
-  async function setLanguage(l: string = locale.value): Promise<AvailableLocale> {
-    return setI18nLanguage(l).then((lang: AvailableLocale) => {
+  async function setLocale(l: string = locale.value): Promise<AvailableLocale> {
+    return setI18nLocale(l).then((lang: AvailableLocale) => {
       locale.value = lang.key;
       return lang;
     });
@@ -106,6 +106,6 @@ export const useStateStore = defineStore('state', () => {
     locale,
     locales,
     text,
-    setLanguage,
+    setLocale,
   };
 });

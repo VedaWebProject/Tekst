@@ -7,7 +7,7 @@ const pf = usePlatformStore();
 <template>
   <footer>
     <div id="footer-content">
-      <div>{{ $t('general.welcomeTest') }}</div>
+      <div>{{ $t('server.welcomeTest') }}</div>
       <a :href="pf.data?.textrigInfo?.website" title="">
         {{ pf.data?.textrigInfo?.name }}
       </a>

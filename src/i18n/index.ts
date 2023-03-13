@@ -48,18 +48,26 @@ export const localeProfiles: { [localeKey: string]: AvailableLocale } = {
 export const i18n = createI18n(i18nOptions);
 const platformApi = new PlatformApi();
 
-export async function setI18nLanguage(
+export async function setI18nLocale(
   locale: I18nOptions['locale'] = i18n.global.locale
 ): Promise<AvailableLocale> {
   // @ts-ignore
-  const l = locale?.value ?? locale ?? i18n.global.locale.value;
-  if (!l) return Promise.reject(`Invalid locale code: ${l}`);
+  const l = locale ?? locale.value ?? i18n.global.locale.value;
 
-  return platformApi.getTranslations({ lang: l }).then((response) => {
-    i18n.global.mergeLocaleMessage(l, response.data);
-    // @ts-ignore
-    i18n.global.locale.value = l;
-    document.querySelector('html')?.setAttribute('lang', l);
-    return localeProfiles[l];
-  });
+  if (!l) {
+    // passed locale is invalid
+    return Promise.reject(`Invalid locale code: ${l}`);
+  }
+
+  if (!i18n.global.te('server', l)) {
+    // server data has to be loaded
+    await platformApi.getTranslations({ lang: l }).then((response) => {
+      i18n.global.mergeLocaleMessage(l, { server: response.data });
+    });
+  }
+
+  // @ts-ignore
+  i18n.global.locale.value = l;
+  document.querySelector('html')?.setAttribute('lang', l);
+  return Promise.resolve(localeProfiles[l]);
 }
