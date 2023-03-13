@@ -25,7 +25,6 @@ const props = defineProps<{
 .text-select-option-indicator {
   width: 20px;
   height: 20px;
-  border: 2px solid rgb(243, 243, 245);
   border-radius: 50%;
 }
 

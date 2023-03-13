@@ -42,6 +42,7 @@ function handleSelect(key: string) {
     trigger="click"
     :options="options"
     placement="bottom-start"
+    size="huge"
     @select="handleSelect"
   >
     <n-button
@@ -60,11 +61,3 @@ function handleSelect(key: string) {
     </n-button>
   </n-dropdown>
 </template>
-
-<style scoped>
-.text-select-option-indicator {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-}
-</style>

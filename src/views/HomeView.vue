@@ -11,7 +11,7 @@ const pf = usePlatformStore();
     <h2>Accent Palette Demo</h2>
     <div class="square" style="background-color: #d43a35"></div>
     <div class="square" style="background-color: #476b9a"></div>
-    <div class="square" style="background-color: #00a380"></div>
+    <div class="square" style="background-color: #43895f"></div>
     <div class="square" style="background-color: #dc851f"></div>
     <div class="square" style="background-color: #88447f"></div>
 
