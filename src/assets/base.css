@@ -35,7 +35,6 @@ html {
 
 body {
   line-height: 1.6;
-  overflow-x: hidden;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

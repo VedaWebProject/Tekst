@@ -5,7 +5,14 @@ import GlobalMessenger from '@/components/GlobalMessenger.vue';
 import { onMounted, onBeforeMount, ref, computed } from 'vue';
 import { localeProfiles } from '@/i18n';
 import { useStateStore, usePlatformStore, useMessagesStore } from '@/stores';
-import { NConfigProvider, NGlobalStyle, lightTheme, darkTheme, useThemeVars } from 'naive-ui';
+import {
+  NConfigProvider,
+  NGlobalStyle,
+  NBackTop,
+  lightTheme,
+  darkTheme,
+  useThemeVars,
+} from 'naive-ui';
 import { lightOverrides, darkOverrides } from '@/theme';
 import PageHeader from './layout/PageHeader.vue';
 import PageFooter from './layout/PageFooter.vue';
@@ -111,6 +118,7 @@ onMounted(async () => {
       />
       <GlobalMessenger />
     </div>
+    <n-back-top :visibility-height="200" />
     <n-global-style />
   </n-config-provider>
 </template>
