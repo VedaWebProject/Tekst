@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, h, type Component } from 'vue';
-import { useAuthStore } from '@/stores';
+import { useAuthStore, useStateStore } from '@/stores';
 import { useRouter } from 'vue-router';
 import { NButton, NIcon, NDropdown } from 'naive-ui';
 import LogInRound from '@vicons/material/LogInRound';
@@ -9,12 +9,9 @@ import AccountCircleRound from '@vicons/material/AccountCircleRound';
 import ManageAccountsRound from '@vicons/material/ManageAccountsRound';
 import { useI18n } from 'vue-i18n';
 
-const props = defineProps<{
-  dropdownSize?: 'small' | 'medium' | 'large' | 'huge' | undefined;
-}>();
-
 const { t } = useI18n({ useScope: 'global' });
 const auth = useAuthStore();
+const state = useStateStore();
 const router = useRouter();
 const icon = computed(() => (auth.loggedIn ? AccountCircleRound : LogInRound));
 // const label = computed(() => (auth.loggedIn ? t('login.logout') : t('login.login')));
@@ -67,7 +64,7 @@ function handleAccountOptionSelect(option: string) {
     :show="showAccountDropdown"
     :options="accountOptions"
     :on-clickoutside="() => (showAccountDropdown = false)"
-    :size="props.dropdownSize"
+    :size="state.dropdownSize"
     @select="handleAccountOptionSelect"
   >
     <n-button

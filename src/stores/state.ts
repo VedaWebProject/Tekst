@@ -64,8 +64,8 @@ export const useStateStore = defineStore('state', () => {
   };
 
   // small screen (< 860px)
-  const { width } = useWindowSize();
-  const smallScreen = computed(() => width.value < 860);
+  const smallScreen = computed(() => useWindowSize().width.value < 860);
+  const dropdownSize = computed(() => (smallScreen.value ? 'huge' : undefined));
 
   // current text accent color variants
   const accentColors = computed(() => {
@@ -97,6 +97,7 @@ export const useStateStore = defineStore('state', () => {
     globalLoadingMsg,
     globalLoadingProgress,
     smallScreen,
+    dropdownSize,
     accentColors,
     setPageTitle,
     theme,

@@ -5,16 +5,16 @@ export declare type ThemeMode = 'light' | 'dark';
 
 const commonOverrides: GlobalThemeOverrides = {
   common: {
-    fontSize: '18px',
-    fontSizeMini: '16px',
-    fontSizeTiny: '16px',
-    fontSizeSmall: '18px',
-    fontSizeMedium: '18px',
-    fontSizeLarge: '20px',
-    fontSizeHuge: '22px',
-    lineHeight: '1.8',
     fontFamily: 'var(--app-ui-font-family)',
     fontWeight: 'var(--app-ui-font-weight)',
+    fontSize: 'var(--app-ui-font-size)',
+    fontSizeMini: 'var(--app-ui-font-size-mini)',
+    fontSizeTiny: 'var(--app-ui-font-size-tiny)',
+    fontSizeSmall: 'var(--app-ui-font-size-small)',
+    fontSizeMedium: 'var(--app-ui-font-size-medium)',
+    fontSizeLarge: 'var(--app-ui-font-size-large)',
+    fontSizeHuge: 'var(--app-ui-font-size-huge)',
+    lineHeight: 'var(--app-ui-line-height)',
   },
   Form: {
     feedbackPadding: '4px 0 8px 2px',

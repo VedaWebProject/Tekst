@@ -19,7 +19,6 @@ const pf = usePlatformStore();
 const state = useStateStore();
 const menuOpen = ref(false);
 const menuVisible = computed(() => !state.smallScreen || menuOpen.value);
-const dropdownSize = computed(() => (state.smallScreen ? 'huge' : undefined));
 
 const route = useRoute();
 const textParam = computed(() => state.text?.slug || pf.data?.texts[0].slug);
@@ -71,8 +70,8 @@ watch(route, () => (menuOpen.value = false));
       <div class="navbar-menu-extra">
         <QuickSearchWidget />
         <ThemeModeSwitcher />
-        <LocaleSwitcher :dropdown-size="dropdownSize" />
-        <AccountOptionsButton :dropdown-size="dropdownSize" />
+        <LocaleSwitcher />
+        <AccountOptionsButton />
       </div>
     </div>
   </div>

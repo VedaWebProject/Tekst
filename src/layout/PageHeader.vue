@@ -31,8 +31,6 @@ const state = useStateStore();
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  font-size: 1.2em;
-  font-weight: 400;
   padding: 0 var(--layout-padding);
   max-width: var(--max-app-width);
   margin: 0 auto;

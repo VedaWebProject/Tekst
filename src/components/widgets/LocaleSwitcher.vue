@@ -6,10 +6,6 @@ import { NButton, NDropdown, NIcon } from 'naive-ui';
 import LanguageOutlined from '@vicons/material/LanguageOutlined';
 import { useI18n } from 'vue-i18n';
 
-const props = defineProps<{
-  dropdownSize?: 'small' | 'medium' | 'large' | 'huge' | undefined;
-}>();
-
 const state = useStateStore();
 const messages = useMessagesStore();
 const { t } = useI18n({ useScope: 'global' });
@@ -39,7 +35,7 @@ function handleLanguageSelect(localeCode: string) {
   <n-dropdown
     trigger="click"
     :options="options"
-    :size="props.dropdownSize"
+    :size="state.dropdownSize"
     @select="handleLanguageSelect"
   >
     <n-button
@@ -53,7 +49,6 @@ function handleLanguageSelect(localeCode: string) {
       <template #icon>
         <n-icon :component="LanguageOutlined" />
       </template>
-      <!-- {{ LANGS[state.locale]?.displayShort }} -->
     </n-button>
   </n-dropdown>
 </template>

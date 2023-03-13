@@ -42,7 +42,7 @@ function handleSelect(key: string) {
     trigger="click"
     :options="options"
     placement="bottom-start"
-    size="huge"
+    :size="state.dropdownSize"
     @select="handleSelect"
   >
     <n-button
@@ -50,7 +50,7 @@ function handleSelect(key: string) {
       icon-placement="right"
       color="#eee"
       :title="$t('general.textSelect')"
-      style="font-size: inherit; font-weight: inherit"
+      style="font-size: inherit; font-weight: 400"
     >
       <template #icon>
         <n-icon>

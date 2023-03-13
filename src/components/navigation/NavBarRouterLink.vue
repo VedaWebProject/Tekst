@@ -32,7 +32,6 @@ const themeVars = useThemeVars();
 
 <style scoped>
 .navbar-router-link {
-  --font-size: v-bind(themeVars.fontSizeLarge);
   --font-color: v-bind(themeVars.textColor2);
   --transition-curve: v-bind(themeVars.cubicBezierEaseInOut);
 
@@ -42,7 +41,7 @@ const themeVars = useThemeVars();
   gap: 8px;
   padding: 0 1rem 0.1rem 1rem;
 
-  font-size: var(--font-size);
+  font-size: var(--app-ui-font-size-large);
   transition: 0.3s var(--transition-curve);
   color: var(--font-color);
 }
