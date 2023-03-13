@@ -13,7 +13,9 @@ const state = useStateStore();
     <div class="accent-color-bg">
       <div id="current-text">
         <TextSelect />
-        <span class="current-text-subtitle">{{ state.text?.subtitle || '&nbsp;' }}</span>
+        <span class="current-text-subtitle">{{
+          (!state.smallScreen && state.text?.subtitle) || '&nbsp;'
+        }}</span>
       </div>
     </div>
   </header>
@@ -35,6 +37,6 @@ const state = useStateStore();
 
 #current-text .current-text-subtitle {
   font-weight: 300;
-  filter: opacity(0.7);
+  filter: opacity(0.5);
 }
 </style>

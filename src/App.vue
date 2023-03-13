@@ -113,7 +113,7 @@ onMounted(async () => {
         transition="0.2s"
         :text="state.globalLoadingMsg"
         :progress="state.globalLoadingProgress"
-        :progress-color="state.accentColor.intense"
+        :progress-color="state.accentColor.base"
         show-progress
       />
       <GlobalMessenger />
@@ -126,8 +126,6 @@ onMounted(async () => {
 <style scoped>
 #app-container {
   --accent-color: v-bind(state.accentColor.base);
-  --accent-color-intense: v-bind(state.accentColor.intense);
-  --accent-color-intense-darker: v-bind(state.accentColor.intenseDarker);
   --accent-color-fade1: v-bind(state.accentColor.fade1);
   --accent-color-fade2: v-bind(state.accentColor.fade2);
   --accent-color-fade3: v-bind(state.accentColor.fade3);
