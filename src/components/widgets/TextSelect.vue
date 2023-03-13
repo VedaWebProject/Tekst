@@ -5,7 +5,7 @@ import { useStateStore, usePlatformStore } from '@/stores';
 import { useRouter } from 'vue-router';
 import { NDropdown, NButton, NIcon } from 'naive-ui';
 import ArrowDropDownFilled from '@vicons/material/ArrowDropDownFilled';
-import TextSelectOption from './TextSelectOption.vue';
+import TextSelectOption from '../widgets/TextSelectOption.vue';
 
 const router = useRouter();
 const state = useStateStore();

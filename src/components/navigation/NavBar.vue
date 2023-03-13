@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
 import { NButton, NIcon } from 'naive-ui';
-import NavBarRouterLink from '@/components/NavBarRouterLink.vue';
-import ThemeModeSwitcher from '@/components/ThemeModeSwitcher.vue';
-import LocaleSwitcher from '@/components/LocaleSwitcher.vue';
-import AccountOptionsButton from '@/components/AccountOptionsButton.vue';
-import QuickSearchWidget from '@/components/QuickSearchWidget.vue';
+import NavBarRouterLink from '@/components/navigation/NavBarRouterLink.vue';
+import ThemeModeSwitcher from '@/components/widgets/ThemeModeSwitcher.vue';
+import LocaleSwitcher from '@/components/widgets/LocaleSwitcher.vue';
+import AccountOptionsButton from '@/components/widgets/AccountOptionsButton.vue';
+import QuickSearchWidget from '@/components/widgets/QuickSearch.vue';
 import { usePlatformStore, useStateStore } from '@/stores';
 import { useRoute, RouterLink } from 'vue-router';
 

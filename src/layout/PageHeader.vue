@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import BrowseToolbar from '@/components/BrowseToolbar.vue';
-import NavBar from '@/components/NavBar.vue';
-import TextSelect from '@/components/TextSelect.vue';
+import BrowseToolbar from '@/components/browse/BrowseToolbar.vue';
+import NavBar from '@/components/navigation/NavBar.vue';
+import TextSelect from '@/components/widgets/TextSelect.vue';
 import { useStateStore } from '@/stores';
 
 const state = useStateStore();
