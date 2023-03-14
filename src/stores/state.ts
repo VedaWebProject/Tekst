@@ -21,6 +21,7 @@ export const useStateStore = defineStore('state', () => {
   // define resources
   const pf = usePlatformStore();
   const route = useRoute();
+  const windowSize = useWindowSize();
 
   // theme
   const theme = ref<ThemeMode>((localStorage.getItem('theme') as ThemeMode) || 'light');
@@ -78,7 +79,7 @@ export const useStateStore = defineStore('state', () => {
   };
 
   // small screen (< 860px)
-  const smallScreen = computed(() => useWindowSize().width.value < 860);
+  const smallScreen = computed(() => windowSize.width.value < 860);
   const dropdownSize = computed(() => (smallScreen.value ? 'huge' : undefined));
 
   // current text accent color variants
