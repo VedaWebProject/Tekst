@@ -168,7 +168,7 @@ watch(route, () => (menuOpen.value = false));
   font-size: 22px;
   margin: 6px 0;
   background-color: var(--accent-color-fade5);
-  border-radius: 4px;
+  border-radius: var(--app-ui-border-radius);
 }
 
 .navbar-smallscreen .quicksearch-widget {

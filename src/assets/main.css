@@ -77,11 +77,9 @@ h5:first-child {
   max-width: 100%;
   margin: 1rem 0;
   padding: var(--content-padding);
-  border-radius: 6px;
+  border-radius: var(--app-ui-border-radius);
   background-color: var(--content-bg-color);
-
-  box-shadow: 0 1px 2px -2px rgba(0, 0, 0, 0.08), 0 3px 6px 0 rgba(0, 0, 0, 0.06),
-    0 5px 12px 4px rgba(0, 0, 0, 0.04);
+  box-shadow: var(--app-ui-block-box-shadow);
 }
 
 .accent-color-bg {

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import BrowseToolbar from '@/components/browse/BrowseToolbar.vue';
 import NavBar from '@/components/navigation/NavBar.vue';
 import TextSelect from '@/components/widgets/TextSelect.vue';
 import { useStateStore } from '@/stores';
@@ -19,7 +18,6 @@ const state = useStateStore();
       </div>
     </div>
   </header>
-  <BrowseToolbar />
 </template>
 
 <style scoped>
@@ -38,6 +36,6 @@ const state = useStateStore();
 
 #current-text .current-text-subtitle {
   font-weight: 300;
-  filter: opacity(0.5);
+  filter: opacity(0.6);
 }
 </style>

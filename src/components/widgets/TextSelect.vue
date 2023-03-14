@@ -48,7 +48,7 @@ function handleSelect(key: string) {
     <n-button
       text
       icon-placement="right"
-      color="#eee"
+      color="#fffe"
       :title="$t('general.textSelect')"
       style="font-size: inherit; font-weight: 400"
     >

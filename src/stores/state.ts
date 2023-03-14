@@ -10,6 +10,13 @@ import { useRoute } from 'vue-router';
 import type { TextRead } from '@/openapi';
 import type { ThemeMode } from '@/theme';
 
+export interface BrowseLocation {
+  label: string;
+  level: number;
+  position: number;
+  id?: string;
+}
+
 export const useStateStore = defineStore('state', () => {
   // define resources
   const pf = usePlatformStore();
@@ -48,6 +55,13 @@ export const useStateStore = defineStore('state', () => {
     text.value && localStorage.setItem('text', text.value?.slug);
   });
 
+  // browse location
+  const browse = ref<BrowseLocation>({
+    label: '...',
+    level: 0,
+    position: 0,
+  });
+
   // global loading state
   const globalLoading = ref(false);
   const globalLoadingMsg = ref('');
@@ -69,7 +83,7 @@ export const useStateStore = defineStore('state', () => {
 
   // current text accent color variants
   const accentColors = computed(() => {
-    const lighten = theme.value === 'dark' ? 0.25 : 0.0;
+    const lighten = theme.value === 'dark' ? 0.15 : 0.0;
     const base = Color(text.value ? text.value.accentColor : '#18A058').lighten(lighten);
     return {
       base: base.hex(),
@@ -106,5 +120,6 @@ export const useStateStore = defineStore('state', () => {
     locales,
     text,
     setLocale,
+    browse,
   };
 });
