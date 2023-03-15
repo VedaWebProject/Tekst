@@ -3172,6 +3172,13 @@
               "type": "string"
             }
           },
+          "defaultLevel": {
+            "title": "Defaultlevel",
+            "minimum": 0.0,
+            "type": "integer",
+            "description": "Default structure level for the client to use for browsing this text",
+            "default": 0
+          },
           "locDelim": {
             "title": "Locdelim",
             "type": "string",
@@ -3231,6 +3238,13 @@
             "items": {
               "type": "string"
             }
+          },
+          "defaultLevel": {
+            "title": "Defaultlevel",
+            "minimum": 0.0,
+            "type": "integer",
+            "description": "Default structure level for the client to use for browsing this text",
+            "default": 0
           },
           "locDelim": {
             "title": "Locdelim",
@@ -3318,6 +3332,11 @@
             "items": {
               "type": "string"
             }
+          },
+          "defaultLevel": {
+            "title": "Defaultlevel",
+            "minimum": 0.0,
+            "type": "integer"
           },
           "locDelim": {
             "title": "Locdelim",

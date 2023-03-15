@@ -1,4 +1,4 @@
-from pydantic import Field, validator
+from pydantic import Field, conint, validator
 from pydantic.color import Color
 
 from textrig.models.common import Metadata, ModelBase, ModelFactory, PyObjectId
@@ -27,6 +27,13 @@ class Text(ModelBase, ModelFactory):
 
     levels: list[str] = Field(..., min_items=1)
 
+    default_level: conint(ge=0) = Field(
+        0,
+        description=(
+            "Default structure level for the client to use for browsing this text"
+        ),
+    )
+
     loc_delim: str = Field(
         ",",
         description="Delimiter for displaying text locations",
@@ -36,6 +43,15 @@ class Text(ModelBase, ModelFactory):
         default_factory=lambda: Color("#18A058"),
         description="Accent color used for this text in the client UI",
     )
+
+    @validator("default_level")
+    def validate_default_level(cls, v, values, **kwargs):
+        if v >= len(values["levels"]):
+            raise ValueError(
+                f"Invalid default level value ({v}). "
+                f"This text only has {len(values['levels'])} levels."
+            )
+        return v
 
     @validator("accent_color")
     def validate_color(cls, v) -> Color:
