@@ -7,15 +7,8 @@ import { usePlatformStore } from '@/stores';
 import { i18n, setI18nLocale } from '@/i18n';
 import type { AvailableLocale } from '@/i18n';
 import { useRoute } from 'vue-router';
-import type { TextRead } from '@/openapi';
+import type { NodeRead, TextRead } from '@/openapi';
 import type { ThemeMode } from '@/theme';
-
-export interface BrowseLocation {
-  label: string;
-  level: number;
-  position: number;
-  id?: string;
-}
 
 export const useStateStore = defineStore('state', () => {
   // define resources
@@ -56,12 +49,8 @@ export const useStateStore = defineStore('state', () => {
     text.value && localStorage.setItem('text', text.value?.slug);
   });
 
-  // browse location
-  const browse = ref<BrowseLocation>({
-    label: '...',
-    level: 0,
-    position: 0,
-  });
+  // browse node
+  const browseNode = ref<NodeRead>();
 
   // global loading state
   const globalLoading = ref(false);
@@ -121,6 +110,6 @@ export const useStateStore = defineStore('state', () => {
     locales,
     text,
     setLocale,
-    browse,
+    browseNode,
   };
 });
