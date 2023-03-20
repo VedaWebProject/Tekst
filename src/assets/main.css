@@ -1,4 +1,15 @@
-@import './base.css';
+html {
+  overflow-y: scroll;
+  box-sizing: border-box;
+  margin: 0;
+}
+
+body {
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
 #app {
   font-family: var(--app-ui-font-family);

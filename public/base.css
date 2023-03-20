@@ -24,25 +24,17 @@
     /* Safari, Android, iOS */ url('/fonts/FiraSans/Fira-Sans-Regular.svg#FiraSans') format('svg'); /* Legacy iOS */
 }
 
-html {
-  overflow-y: scroll;
-  box-sizing: border-box;
-  margin: 0;
-}
+/*
 
-body {
-  line-height: 1.6;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  CSS VARIABLES THAT CAN BE
+  CHANGED TO SOMEWHAT CUSTOMIZE
+  THE APP LAYOUT/DESIGN
 
-  /*
-    CSS VARIABLES THAT CAN BE CHANGED TO
-    SOMEWHAT CUSTOMIZE THE APP LAYOUT/DESIGN
-  */
+*/
 
+:root {
   --max-app-width: 1280px;
-  --layout-padding: 0.75rem;
+  --layout-padding: 12px;
   --content-padding: 1.5rem;
 
   --app-ui-font-family: 'Fira Sans', v-sans, system-ui, -apple-system, BlinkMacSystemFont,
@@ -56,6 +48,7 @@ body {
   --app-ui-font-size-medium: 20px;
   --app-ui-font-size-large: 23px;
   --app-ui-font-size-huge: 24px;
+
   --app-ui-line-height: 1.8;
 
   --app-ui-border-radius: 6px;
