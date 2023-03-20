@@ -19,7 +19,7 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = "^3.10"
-fastapi = "^0.93"
+fastapi = "^0.95"
 ujson = "^5.4"
 python-dotenv = "^0.20"
 email-validator = "^1.2.1"
@@ -49,7 +49,7 @@ target-version = "py310"
 line-length = 88
 respect-gitignore = false
 src = ["textrig"]
-ignore = []
+ignore = ["F722"] # "Syntax error in forward annotation" using `Annotated` w/ metadata
 select = ["E", "F", "W", "I"]
 
 [tool.ruff.isort]
