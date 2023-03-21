@@ -13,7 +13,7 @@ body {
 
 #app {
   font-family: var(--app-ui-font-family);
-  font-weight: var(--app-ui-font-weight);
+  font-weight: var(--app-ui-font-weight-light);
 }
 
 a,

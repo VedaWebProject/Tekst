@@ -41,7 +41,8 @@ const themeVars = useThemeVars();
   gap: 8px;
   padding: 0 1rem 0.1rem 1rem;
 
-  font-size: var(--app-ui-font-size-large);
+  font-size: var(--app-ui-font-size-small);
+  font-weight: var(--app-ui-font-weight-normal);
   transition: 0.3s var(--transition-curve);
   color: var(--font-color);
 }

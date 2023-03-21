@@ -39,7 +39,8 @@
 
   --app-ui-font-family: 'Fira Sans', v-sans, system-ui, -apple-system, BlinkMacSystemFont,
     'Segoe UI', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
-  --app-ui-font-weight: 300;
+  --app-ui-font-weight-light: 300;
+  --app-ui-font-weight-normal: 400;
 
   --app-ui-font-size: 22px;
   --app-ui-font-size-mini: 18px;
