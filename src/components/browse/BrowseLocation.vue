@@ -14,7 +14,7 @@ const router = useRouter();
 
 const nodesApi = new NodesApi();
 
-const showLocationSelectModal = ref(false);
+const showModal = ref(false);
 const browseLevel = ref(state.text?.defaultLevel || 0);
 const browseLevelOptions = computed(() =>
   state.text?.levels.map((l: string, i: number) => ({
@@ -30,9 +30,9 @@ interface LocationSelectModel {
   disabled?: boolean;
   options?: { label: string; value: string }[];
 }
-const locationSelectModels = ref<LocationSelectModel[]>(getRawLocationSelectModels());
+const locationSelectModels = ref<LocationSelectModel[]>(getEmptyModels());
 
-function getRawLocationSelectModels(): LocationSelectModel[] {
+function getEmptyModels(): LocationSelectModel[] {
   return (
     state.text?.levels.map((_, i) => ({
       loading: false,
@@ -41,19 +41,21 @@ function getRawLocationSelectModels(): LocationSelectModel[] {
   );
 }
 
-function handleBrowseLevelUpdate() {
-  locationSelectModels.value.forEach((lsm: LocationSelectModel, i: number) => {
-    lsm.loading = false;
-    lsm.disabled = i > browseLevel.value;
-    lsm.selected = lsm.disabled ? undefined : lsm.selected;
-    lsm.options = lsm.disabled ? [] : lsm.options;
-  });
-}
+watch(browseLevel, (lvl) => {
+  // reset location select models
+  locationSelectModels.value = locationSelectModels.value.map(
+    (lsm: LocationSelectModel, i: number) => ({
+      loading: false,
+      disabled: i > lvl,
+      selected: i > lvl ? undefined : lsm.selected,
+      options: i > lvl ? [] : lsm.options,
+    })
+  );
+});
 
-watch(showLocationSelectModal, (show) => {
+watch(showModal, (show) => {
   if (show) {
     browseLevel.value = state.browseNode?.level || state.text?.defaultLevel || 0;
-    handleBrowseLevelUpdate();
   } else {
     // ... or else what?!
   }
@@ -101,8 +103,8 @@ async function updateBrowseNodeByURI() {
         if (!node) throw new Error();
         state.browseNode = node;
         browseLevel.value = node.level;
-        locationSelectModels.value = getRawLocationSelectModels();
-        updateLocationSelectModels(0);
+        locationSelectModels.value = getEmptyModels();
+        updateLocationSelectModels(-1);
       } catch {
         resetBrowseLocation();
       }
@@ -138,7 +140,7 @@ watch(route, (after) => after.name === 'browse' && updateBrowseNodeByURI());
     <n-button
       secondary
       title="Select location"
-      @click="showLocationSelectModal = true"
+      @click="showModal = true"
       :focusable="false"
       size="large"
       color="#fffe"
@@ -166,7 +168,7 @@ watch(route, (after) => after.name === 'browse' && updateBrowseNodeByURI());
 
   <!-- text location selector modal -->
   <n-modal
-    v-model:show="showLocationSelectModal"
+    v-model:show="showModal"
     display-directive="if"
     preset="card"
     embedded
@@ -183,11 +185,7 @@ watch(route, (after) => after.name === 'browse' && updateBrowseNodeByURI());
       :show-require-mark="false"
     >
       <n-form-item label="Level">
-        <n-select
-          :options="browseLevelOptions"
-          v-model:value="browseLevel"
-          @update:value="handleBrowseLevelUpdate"
-        />
+        <n-select :options="browseLevelOptions" v-model:value="browseLevel" />
       </n-form-item>
 
       <n-divider />
