@@ -7,8 +7,10 @@ import { useStateStore } from '@/stores';
 
 const state = useStateStore();
 
-const textLevelLabel = computed(() => state.text?.levels[state.browseNode?.level || 0]);
 const showBrowseToolbar = computed(() => !!state.text);
+const browseLocationLabel = computed(() =>
+  state.browseNodePath.path.map((n) => n.label).join(state.text?.locDelim)
+);
 </script>
 
 <template>
@@ -16,7 +18,9 @@ const showBrowseToolbar = computed(() => !!state.text);
     <n-affix :top="0" class="browse-toolbar-affix accent-color-bg">
       <div class="browse-toolbar">
         <BrowseLocation />
-        <div class="text-location-label">{{ textLevelLabel }}: {{ state.browseNode?.label }}</div>
+        <div class="text-location-label">
+          {{ browseLocationLabel }}
+        </div>
         <n-button secondary size="large" color="#fffe" :focusable="false">
           <template #icon>
             <LayersRound />

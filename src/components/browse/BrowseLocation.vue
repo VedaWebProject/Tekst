@@ -43,7 +43,6 @@ function getEmptyModels(): LocationSelectModel[] {
 
 watch(showModal, (show) => {
   if (show) {
-    browseLevel.value = state.browseNode?.level || state.text?.defaultLevel || 0;
     updateLocationSelectModels(browseLevel.value);
   } else {
     // ... or else what?!
@@ -51,26 +50,24 @@ watch(showModal, (show) => {
 });
 
 async function updateLocationSelectModels(changedLevel: number = browseLevel.value) {
+  // set all live models to loading
+  locationSelectModels.value.forEach((lsm) => {
+    lsm.loading = true;
+  });
+
   // get fresh (reset) location select models
-  const models: LocationSelectModel[] = locationSelectModels.value.map(
-    (lsm: LocationSelectModel, i: number) => ({
-      loading: true,
-      disabled: i > changedLevel,
-      selected: i > changedLevel ? undefined : lsm.selected,
-      options: i > changedLevel ? [] : lsm.options,
-    })
-  );
+  const models: LocationSelectModel[] = getEmptyModels();
 
   // manipulate each location select model
   let index = 0;
   let parentId: string | undefined;
   for (const lsm of models) {
     lsm.disabled = index > changedLevel;
-    lsm.selected = lsm.disabled ? undefined : lsm.selected;
     lsm.loading = false;
     // set options
     if (lsm.disabled) {
       lsm.options = [];
+      lsm.selected = undefined;
     } else {
       // TODO !!!
       const nodes = await nodesApi
@@ -85,6 +82,7 @@ async function updateLocationSelectModels(changedLevel: number = browseLevel.val
         label: n.label,
         value: n.id,
       }));
+      // lsm.selected = // TODO
     }
     parentId = lsm.selected;
     index++;
@@ -103,7 +101,7 @@ function getPrevNextRoute(step: number) {
   };
 }
 
-function resetBrowseLocation(level: number = state.browseNode?.level || 0, position: number = 0) {
+function resetBrowseLocation(level: number = state.text?.defaultLevel || 0, position: number = 0) {
   router.replace({
     ...route,
     query: {
@@ -114,24 +112,24 @@ function resetBrowseLocation(level: number = state.browseNode?.level || 0, posit
   });
 }
 
-async function updateBrowseNodeByURI() {
+async function updateBrowseNodePath() {
   if (route.name === 'browse') {
     const qLvl = parseInt(route.query.lvl?.toString() || '') ?? 0;
     const qPos = parseInt(route.query.pos?.toString() || '') ?? 0;
     if (Number.isInteger(qLvl) && Number.isInteger(qPos)) {
       try {
-        const node = await nodesApi
-          .findNodes({
+        // fill browse node path up to root (no more parent)
+        const path = await nodesApi
+          .getPathByHeadLocation({
             textId: state.text?.id || '',
             level: qLvl,
             position: qPos,
           })
-          .then((response) => response.data[0]);
-        if (!node) throw new Error();
-        state.browseNode = node;
-        browseLevel.value = node.level;
-        locationSelectModels.value = getEmptyModels();
-        updateLocationSelectModels(-1);
+          .then((response) => response.data);
+        if (!path || path.length == 0) {
+          throw new Error();
+        }
+        state.browseNodePath.path = path;
       } catch {
         resetBrowseLocation();
       }
@@ -141,8 +139,18 @@ async function updateBrowseNodeByURI() {
   }
 }
 
-onMounted(() => updateBrowseNodeByURI());
-watch(route, (after) => after.name === 'browse' && updateBrowseNodeByURI());
+onMounted(() => updateBrowseNodePath());
+watch(route, (after, before) => {
+  if (after.name === 'browse') {
+    const afterText = after.params.text;
+    const beforeText = before.params.text;
+    if (afterText !== beforeText || !afterText) {
+      resetBrowseLocation();
+    } else {
+      updateBrowseNodePath();
+    }
+  }
+});
 </script>
 
 <template>
@@ -152,7 +160,7 @@ watch(route, (after) => after.name === 'browse' && updateBrowseNodeByURI());
       <n-button
         secondary
         @click="navigate"
-        :disabled="state.browseNode?.position === 0"
+        :disabled="state.browseNodePath.head()?.position === 0"
         :focusable="false"
         title="Previous location"
         size="large"
@@ -224,7 +232,7 @@ watch(route, (after) => after.name === 'browse' && updateBrowseNodeByURI());
       <n-form-item
         v-for="(levelLoc, index) in locationSelectModels"
         :label="state.text?.levels[index]"
-        :key="`${index}_${state.browseNode?.label}`"
+        :key="`${index}_${state.browseNodePath.head()?.label}`"
         class="location-select-item"
         :class="levelLoc.disabled && 'disabled'"
       >

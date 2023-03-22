@@ -36,7 +36,7 @@ export const useStateStore = defineStore('state', () => {
   }
 
   // current text
-  const text = ref<TextRead>();
+  const text = ref<TextRead | undefined>();
   watch(route, (after) => {
     if ('text' in after.params && after.params.text) {
       text.value = pf.data?.texts.find((t) => t.slug === after.params.text);
@@ -49,8 +49,38 @@ export const useStateStore = defineStore('state', () => {
     text.value && localStorage.setItem('text', text.value?.slug);
   });
 
-  // browse node
-  const browseNode = ref<NodeRead>();
+  // browse node path
+  interface BrowseNodePath {
+    path: NodeRead[];
+    head: () => NodeRead | undefined;
+    root: () => NodeRead | undefined;
+    level: () => number | undefined;
+    position: () => number | undefined;
+  }
+  const browseNodePath = ref<BrowseNodePath>({
+    path: [],
+    head() {
+      return this.path.length > 0 ? this.path[this.path.length - 1] : undefined;
+    },
+    root() {
+      return this.path.length > 0 ? this.path[0] : undefined;
+    },
+    level() {
+      return this.head()?.level;
+    },
+    position() {
+      return this.head()?.position;
+    },
+  });
+  // const browseNodePath = ref<NodeRead[]>([]);
+  // function browseNodePathRoot() {
+  //   return browseNodePath.value.length > 0 ? browseNodePath.value[0] : undefined;
+  // }
+  // function browseNodePathLast() {
+  //   return browseNodePath.value.length > 0
+  //     ? browseNodePath.value[browseNodePath.value.length - 1]
+  //     : undefined;
+  // }
 
   // global loading state
   const globalLoading = ref(false);
@@ -110,6 +140,6 @@ export const useStateStore = defineStore('state', () => {
     locales,
     text,
     setLocale,
-    browseNode,
+    browseNodePath,
   };
 });
