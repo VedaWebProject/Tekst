@@ -6,6 +6,8 @@ TEXTS = {
             "subtitle": "An ancient Indian collection of Vedic Sanskrit hymns",
             "levels": ["Book", "Hymn", "Stanza"],
             "accentColor": "#D43A35",
+            "locDelim": ".",
+            "defaultLevel": 2
         },
         "nodes": [
             {
@@ -38,12 +40,12 @@ TEXTS = {
                             {
                                 "level": 2,
                                 "position": 2,
-                                "label": "003",
+                                "label": "001",
                             },
                             {
                                 "level": 2,
                                 "position": 3,
-                                "label": "004",
+                                "label": "002",
                             },
                         ],
                     },
@@ -57,34 +59,34 @@ TEXTS = {
                     {
                         "level": 1,
                         "position": 2,
-                        "label": "03",
+                        "label": "01",
                         "children": [
                             {
                                 "level": 2,
                                 "position": 4,
-                                "label": "005",
+                                "label": "001",
                             },
                             {
                                 "level": 2,
                                 "position": 5,
-                                "label": "006",
+                                "label": "002",
                             },
                         ],
                     },
                     {
                         "level": 1,
                         "position": 3,
-                        "label": "04",
+                        "label": "02",
                         "children": [
                             {
                                 "level": 2,
                                 "position": 6,
-                                "label": "007",
+                                "label": "001",
                             },
                             {
                                 "level": 2,
                                 "position": 7,
-                                "label": "008",
+                                "label": "002",
                             },
                         ],
                     },
@@ -99,6 +101,8 @@ TEXTS = {
             "subtitle": "An old German folk song",
             "levels": ["Stanza", "Line"],
             "accent_color": "#43895F",
+            "locDelim": " > ",
+            "defaultLevel": 1
         },
         "nodes": [
             {
