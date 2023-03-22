@@ -87,10 +87,7 @@ async def get_path_by_head_location(
         NodeDocument.position == position,
     ).first_or_none()
     if not node_doc:
-        raise HTTPException(
-            status.HTTP_400_BAD_REQUEST,
-            detail="Head node for the requested path does not exist.",
-        )
+        return []
     # construct path up to root node
     path = [node_doc]
     parent_id = node_doc.parent_id
@@ -144,10 +141,7 @@ async def get_path_by_head_id(id: PyObjectId) -> list[NodeDocument]:
     """
     node_doc = await NodeDocument.get(id)
     if not node_doc:
-        raise HTTPException(
-            status.HTTP_400_BAD_REQUEST,
-            detail=f"Head node (ID {id}) for the requested path does not exist.",
-        )
+        return []
     # construct nodes for this path up to root node
     path = [node_doc]
     parent_id = node_doc.parent_id
