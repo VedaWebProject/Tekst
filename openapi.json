@@ -505,6 +505,78 @@
         }
       }
     },
+    "/nodes/path": {
+      "get": {
+        "tags": [
+          "nodes"
+        ],
+        "summary": "Get path by head location",
+        "description": "Returns the text node path from the node with the given level/position\nas the last element, up to its most distant ancestor node\non structure level 0 as the first element of an array.",
+        "operationId": "getPathByHeadLocation",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Textid",
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "name": "textId",
+            "in": "query"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Level",
+              "type": "integer"
+            },
+            "name": "level",
+            "in": "query"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Position",
+              "type": "integer"
+            },
+            "name": "position",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Path By Head Location Nodes Path Get",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NodeRead"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Request"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/nodes/{id}": {
       "get": {
         "tags": [
@@ -647,6 +719,60 @@
               "application/json": {
                 "schema": {
                   "title": "Response Get Children Nodes  Id  Children Get",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NodeRead"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Request"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/nodes/{id}/path": {
+      "get": {
+        "tags": [
+          "nodes"
+        ],
+        "summary": "Get path by head id",
+        "description": "Returns the text node path from the node with the given ID as the last element,\nup to its most distant ancestor node on structure level 0\nas the first element of an array.",
+        "operationId": "getPathByHeadId",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Path By Head Id Nodes  Id  Path Get",
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/NodeRead"

@@ -44,29 +44,6 @@ async def create_node(node: NodeCreate) -> NodeRead:
     return await NodeDocument(**node.dict()).create()
 
 
-@router.patch("/{id}", response_model=NodeRead, status_code=status.HTTP_200_OK)
-async def update_node(id: PyObjectId, updates: NodeUpdate) -> NodeDocument:
-    node_doc = await NodeDocument.get(id)
-    if not node_doc:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Node with ID {id} doesn't exist",
-        )
-    await node_doc.set(updates.dict(exclude_unset=True))
-    return node_doc
-
-
-@router.get("/{id}", response_model=NodeRead, status_code=status.HTTP_200_OK)
-async def get_node(id: PyObjectId) -> NodeDocument:
-    node_doc = await NodeDocument.get(id)
-    if not node_doc:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Node with ID {id} not found",
-        )
-    return node_doc
-
-
 @router.get("", response_model=list[NodeRead], status_code=status.HTTP_200_OK)
 async def find_nodes(
     text_id: PyObjectId,
@@ -74,7 +51,7 @@ async def find_nodes(
     position: int = None,
     parent_id: PyObjectId = None,
     limit: int = 1000,
-) -> list[NodeRead]:
+) -> list[NodeDocument]:
     if level is None and parent_id is None:
         raise HTTPException(
             status.HTTP_400_BAD_REQUEST,
@@ -95,6 +72,59 @@ async def find_nodes(
     return await NodeDocument.find(example).limit(limit).to_list()
 
 
+@router.get("/path", response_model=list[NodeRead], status_code=status.HTTP_200_OK)
+async def get_path_by_head_location(
+    text_id: PyObjectId, level: int, position: int
+) -> list[NodeDocument]:
+    """
+    Returns the text node path from the node with the given level/position
+    as the last element, up to its most distant ancestor node
+    on structure level 0 as the first element of an array.
+    """
+    node_doc = await NodeDocument.find(
+        NodeDocument.text_id == text_id,
+        NodeDocument.level == level,
+        NodeDocument.position == position,
+    ).first_or_none()
+    if not node_doc:
+        raise HTTPException(
+            status.HTTP_400_BAD_REQUEST,
+            detail="Head node for the requested path does not exist.",
+        )
+    # construct path up to root node
+    path = [node_doc]
+    parent_id = node_doc.parent_id
+    while parent_id:
+        parent_doc = await NodeDocument.get(parent_id)
+        if parent_doc:
+            path.insert(0, parent_doc)
+        parent_id = parent_doc.parent_id
+    return path
+
+
+@router.get("/{id}", response_model=NodeRead, status_code=status.HTTP_200_OK)
+async def get_node(id: PyObjectId) -> NodeDocument:
+    node_doc = await NodeDocument.get(id)
+    if not node_doc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Node with ID {id} not found",
+        )
+    return node_doc
+
+
+@router.patch("/{id}", response_model=NodeRead, status_code=status.HTTP_200_OK)
+async def update_node(id: PyObjectId, updates: NodeUpdate) -> NodeDocument:
+    node_doc = await NodeDocument.get(id)
+    if not node_doc:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Node with ID {id} doesn't exist",
+        )
+    await node_doc.set(updates.dict(exclude_unset=True))
+    return node_doc
+
+
 @router.get(
     "/{id}/children", response_model=list[NodeRead], status_code=status.HTTP_200_OK
 )
@@ -103,6 +133,30 @@ async def get_children(
     limit: int = 1000,
 ) -> list:
     return await NodeDocument.find(NodeDocument.parent_id == id).limit(limit).to_list()
+
+
+@router.get("/{id}/path", response_model=list[NodeRead], status_code=status.HTTP_200_OK)
+async def get_path_by_head_id(id: PyObjectId) -> list[NodeDocument]:
+    """
+    Returns the text node path from the node with the given ID as the last element,
+    up to its most distant ancestor node on structure level 0
+    as the first element of an array.
+    """
+    node_doc = await NodeDocument.get(id)
+    if not node_doc:
+        raise HTTPException(
+            status.HTTP_400_BAD_REQUEST,
+            detail=f"Head node (ID {id}) for the requested path does not exist.",
+        )
+    # construct nodes for this path up to root node
+    path = [node_doc]
+    parent_id = node_doc.parent_id
+    while parent_id:
+        parent_doc = await NodeDocument.get(parent_id)
+        if parent_doc:
+            path.insert(0, parent_doc)
+        parent_id = parent_doc.parent_id
+    return path
 
 
 @router.get("/{id}/next", response_model=NodeRead, status_code=status.HTTP_200_OK)
