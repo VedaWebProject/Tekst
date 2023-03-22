@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
-import { useStateStore } from '@/stores';
+import { useRoute } from 'vue-router';
+import { useStateStore, useBrowseStore } from '@/stores';
 import { NButton, NModal, NSelect, NFormItem, NForm, NDivider } from 'naive-ui';
 import ArrowBackIosRound from '@vicons/material/ArrowBackIosRound';
 import ArrowForwardIosRound from '@vicons/material/ArrowForwardIosRound';
@@ -9,8 +9,8 @@ import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
 import { NodesApi, type NodeRead } from '@/openapi';
 
 const state = useStateStore();
+const browse = useBrowseStore();
 const route = useRoute();
-const router = useRouter();
 
 const nodesApi = new NodesApi();
 
@@ -101,56 +101,7 @@ function getPrevNextRoute(step: number) {
   };
 }
 
-function resetBrowseLocation(level: number = state.text?.defaultLevel || 0, position: number = 0) {
-  router.replace({
-    ...route,
-    query: {
-      ...route.query,
-      lvl: level,
-      pos: position,
-    },
-  });
-}
-
-async function updateBrowseNodePath() {
-  if (route.name === 'browse') {
-    const qLvl = parseInt(route.query.lvl?.toString() || '') ?? 0;
-    const qPos = parseInt(route.query.pos?.toString() || '') ?? 0;
-    if (Number.isInteger(qLvl) && Number.isInteger(qPos)) {
-      try {
-        // fill browse node path up to root (no more parent)
-        const path = await nodesApi
-          .getPathByHeadLocation({
-            textId: state.text?.id || '',
-            level: qLvl,
-            position: qPos,
-          })
-          .then((response) => response.data);
-        if (!path || path.length == 0) {
-          throw new Error();
-        }
-        state.browseNodePath.path = path;
-      } catch {
-        resetBrowseLocation();
-      }
-    } else {
-      resetBrowseLocation();
-    }
-  }
-}
-
-onMounted(() => updateBrowseNodePath());
-watch(route, (after, before) => {
-  if (after.name === 'browse') {
-    const afterText = after.params.text;
-    const beforeText = before.params.text;
-    if (afterText !== beforeText || !afterText) {
-      resetBrowseLocation();
-    } else {
-      updateBrowseNodePath();
-    }
-  }
-});
+onMounted(() => browse.updateBrowseNodePath());
 </script>
 
 <template>
@@ -160,7 +111,7 @@ watch(route, (after, before) => {
       <n-button
         secondary
         @click="navigate"
-        :disabled="state.browseNodePath.head()?.position === 0"
+        :disabled="browse.position === 0"
         :focusable="false"
         title="Previous location"
         size="large"
@@ -232,7 +183,7 @@ watch(route, (after, before) => {
       <n-form-item
         v-for="(levelLoc, index) in locationSelectModels"
         :label="state.text?.levels[index]"
-        :key="`${index}_${state.browseNodePath.head()?.label}`"
+        :key="`${index}_${browse.nodePathHead?.label}`"
         class="location-select-item"
         :class="levelLoc.disabled && 'disabled'"
       >

@@ -7,7 +7,7 @@ import { usePlatformStore } from '@/stores';
 import { i18n, setI18nLocale } from '@/i18n';
 import type { AvailableLocale } from '@/i18n';
 import { useRoute } from 'vue-router';
-import type { NodeRead, TextRead } from '@/openapi';
+import type { TextRead } from '@/openapi';
 import type { ThemeMode } from '@/theme';
 
 export const useStateStore = defineStore('state', () => {
@@ -48,39 +48,6 @@ export const useStateStore = defineStore('state', () => {
     setPageTitle(route);
     text.value && localStorage.setItem('text', text.value?.slug);
   });
-
-  // browse node path
-  interface BrowseNodePath {
-    path: NodeRead[];
-    head: () => NodeRead | undefined;
-    root: () => NodeRead | undefined;
-    level: () => number | undefined;
-    position: () => number | undefined;
-  }
-  const browseNodePath = ref<BrowseNodePath>({
-    path: [],
-    head() {
-      return this.path.length > 0 ? this.path[this.path.length - 1] : undefined;
-    },
-    root() {
-      return this.path.length > 0 ? this.path[0] : undefined;
-    },
-    level() {
-      return this.head()?.level;
-    },
-    position() {
-      return this.head()?.position;
-    },
-  });
-  // const browseNodePath = ref<NodeRead[]>([]);
-  // function browseNodePathRoot() {
-  //   return browseNodePath.value.length > 0 ? browseNodePath.value[0] : undefined;
-  // }
-  // function browseNodePathLast() {
-  //   return browseNodePath.value.length > 0
-  //     ? browseNodePath.value[browseNodePath.value.length - 1]
-  //     : undefined;
-  // }
 
   // global loading state
   const globalLoading = ref(false);
@@ -140,6 +107,5 @@ export const useStateStore = defineStore('state', () => {
     locales,
     text,
     setLocale,
-    browseNodePath,
   };
 });

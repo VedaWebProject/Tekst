@@ -3,13 +3,14 @@ import { computed } from 'vue';
 import { NAffix, NButton } from 'naive-ui';
 import BrowseLocation from '@/components/browse/BrowseLocation.vue';
 import LayersRound from '@vicons/material/LayersRound';
-import { useStateStore } from '@/stores';
+import { useStateStore, useBrowseStore } from '@/stores';
 
 const state = useStateStore();
+const browse = useBrowseStore();
 
 const showBrowseToolbar = computed(() => !!state.text);
 const browseLocationLabel = computed(() =>
-  state.browseNodePath.path.map((n) => n.label).join(state.text?.locDelim)
+  browse.nodePath.map((n) => n.label).join(state.text?.locDelim)
 );
 </script>
 
