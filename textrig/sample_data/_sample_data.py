@@ -7,7 +7,7 @@ TEXTS = {
             "levels": ["Book", "Hymn", "Stanza"],
             "accentColor": "#D43A35",
             "locDelim": ".",
-            "defaultLevel": 2
+            "defaultLevel": 2,
         },
         "nodes": [
             {
@@ -102,7 +102,7 @@ TEXTS = {
             "levels": ["Stanza", "Line"],
             "accent_color": "#43895F",
             "locDelim": " > ",
-            "defaultLevel": 1
+            "defaultLevel": 1,
         },
         "nodes": [
             {
