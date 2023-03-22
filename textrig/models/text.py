@@ -39,6 +39,14 @@ class Text(ModelBase, ModelFactory):
         description="Delimiter for displaying text locations",
     )
 
+    labeled_levels: bool = Field(
+        True,
+        description=(
+            "Whether the UI should label the nodes of "
+            "the browse location with each levels' names"
+        ),
+    )
+
     accent_color: Color = Field(
         default_factory=lambda: Color("#18A058"),
         description="Accent color used for this text in the client UI",

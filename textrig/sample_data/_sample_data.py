@@ -8,6 +8,7 @@ TEXTS = {
             "accentColor": "#D43A35",
             "locDelim": ".",
             "defaultLevel": 2,
+            "labeledLevels": False,
         },
         "nodes": [
             {
