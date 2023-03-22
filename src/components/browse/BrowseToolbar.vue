@@ -10,7 +10,13 @@ const browse = useBrowseStore();
 
 const showBrowseToolbar = computed(() => !!state.text);
 const browseLocationLabel = computed(() =>
-  browse.nodePath.map((n) => n.label).join(state.text?.locDelim)
+  browse.nodePath
+    .map((n, i) => {
+      return `${state.text?.labeledLevels ? state.text?.levels[i] : ''}${
+        state.text?.labeledLevels ? ': ' : ''
+      }${n.label}`;
+    })
+    .join(state.text?.locDelim || ', ')
 );
 </script>
 
