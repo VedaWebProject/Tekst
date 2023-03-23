@@ -41,7 +41,7 @@ export const useBrowseStore = defineStore('browse', () => {
           }
           nodePath.value = path;
         } catch {
-          resetBrowseLocation();
+          resetBrowseLocation(level.value);
         }
       } else {
         resetBrowseLocation();
