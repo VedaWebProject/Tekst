@@ -1,33 +1,22 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { NAffix, NButton } from 'naive-ui';
-import BrowseLocation from '@/components/browse/BrowseLocation.vue';
+import BrowseLocationControls from '@/components/browse/BrowseLocationControls.vue';
+import BrowseLocationLabel from '@/components/browse/BrowseLocationLabel.vue';
 import LayersRound from '@vicons/material/LayersRound';
-import { useStateStore, useBrowseStore } from '@/stores';
+import { useStateStore } from '@/stores';
 
 const state = useStateStore();
-const browse = useBrowseStore();
 
 const showBrowseToolbar = computed(() => !!state.text);
-const browseLocationLabel = computed(() =>
-  browse.nodePath
-    .map((n, i) => {
-      return `${state.text?.labeledLevels ? state.text?.levels[i] : ''}${
-        state.text?.labeledLevels ? ': ' : ''
-      }${n.label}`;
-    })
-    .join(state.text?.locDelim || ', ')
-);
 </script>
 
 <template>
   <div v-if="showBrowseToolbar" class="browse-toolbar-container">
     <n-affix :top="0" class="browse-toolbar-affix accent-color-bg">
       <div class="browse-toolbar">
-        <BrowseLocation />
-        <div class="text-location-label">
-          {{ browseLocationLabel }}
-        </div>
+        <BrowseLocationControls />
+        <BrowseLocationLabel class="browse-location-label" />
         <n-button secondary size="large" color="#fffe" :focusable="false">
           <template #icon>
             <LayersRound />
@@ -76,7 +65,7 @@ const browseLocationLabel = computed(() =>
   max-width: var(--max-app-width);
 }
 
-.browse-toolbar .text-location-label {
+.browse-toolbar .browse-location-label {
   flex-grow: 2;
 }
 </style>
