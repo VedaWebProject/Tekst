@@ -145,12 +145,38 @@ async def get_path_by_head_id(id: PyObjectId) -> list[NodeDocument]:
     # construct nodes for this path up to root node
     path = [node_doc]
     parent_id = node_doc.parent_id
-    while parent_id:
-        parent_doc = await NodeDocument.get(parent_id)
-        if parent_doc:
-            path.insert(0, parent_doc)
-        parent_id = parent_doc.parent_id
+    while node_doc.parent_id:
+        node_doc = await NodeDocument.get(parent_id)
+        if node_doc:
+            path.insert(0, node_doc)
     return path
+
+
+@router.get(
+    "/{id}/options", response_model=list[list[NodeRead]], status_code=status.HTTP_200_OK
+)
+async def get_path_options_by_head_id(id: PyObjectId) -> list[list[NodeDocument]]:
+    """
+    Returns the options for selecting text locations derived from the node path of
+    the path with the given ID.
+    """
+    node_doc = await NodeDocument.get(id)
+    if not node_doc:
+        return []
+    # construct options for this path up to root node
+    options = []
+    while node_doc and node_doc.parent_id:
+        siblings = await NodeDocument.find({"parentId": node_doc.parent_id}).to_list()
+        if siblings:
+            options.insert(0, siblings)
+        node_doc = await NodeDocument.get(node_doc.parent_id)
+    # lastly, insert options for root level
+    if node_doc:
+        root_lvl_options = await NodeDocument.find(
+            {"textId": node_doc.text_id, "level": 0}
+        ).to_list()
+        options.insert(0, root_lvl_options)
+    return options
 
 
 @router.get("/{id}/next", response_model=NodeRead, status_code=status.HTTP_200_OK)
