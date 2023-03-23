@@ -46,9 +46,18 @@ interface LocationSelectModel {
   selected: string | null;
   disabled: boolean;
   nodes: NodeRead[];
-  options: { label: string; value: string }[];
 }
 const locationSelectModels = ref<LocationSelectModel[]>(getEmptyModels());
+
+// generate location select options from select model nodes
+const locationSelectOptions = computed(() =>
+  locationSelectModels.value.map((lsm) =>
+    lsm.nodes.map((n) => ({
+      label: n.label,
+      value: n.id,
+    }))
+  )
+);
 
 // generate fresh location select models when text changes
 watch(
@@ -93,13 +102,8 @@ async function updateSelectModelsFromLvl(lvl: number) {
     if (i > lvl) {
       // set nodes
       lsm.nodes = nodes.shift() || [];
-      //generate options
-      lsm.options = lsm.nodes.map((n) => ({
-        label: n.label,
-        value: n.id,
-      }));
       // set selection
-      lsm.selected = lsm.options[0].value || null;
+      lsm.selected = lsm.nodes[0].id || null;
       // set to no loading
       lsm.loading = false;
     }
@@ -109,7 +113,6 @@ async function updateSelectModelsFromLvl(lvl: number) {
 function applyBrowseLevel() {
   locationSelectModels.value.forEach((lsm, i) => {
     lsm.disabled = i > browseLevel.value;
-    lsm.options = lsm.disabled ? [] : lsm.options;
     lsm.nodes = lsm.disabled ? [] : lsm.nodes;
     lsm.selected = lsm.disabled ? null : lsm.selected;
   });
@@ -136,11 +139,6 @@ async function initSelectModels() {
     if (index <= browseLevel.value) {
       // remember nodes for these options
       lsm.nodes = nodesOptions[index];
-      // generate options
-      lsm.options = lsm.nodes.map((n: NodeRead) => ({
-        label: n.label,
-        value: n.id,
-      }));
       // set selection
       lsm.selected = browse.nodePath[index]?.id || null;
     }
@@ -263,7 +261,7 @@ onMounted(() => browse.updateBrowseNodePath());
       >
         <n-select
           v-model:value="levelLoc.selected"
-          :options="levelLoc.options"
+          :options="locationSelectOptions[index]"
           filterable
           placeholder="--"
           :loading="levelLoc.loading"
