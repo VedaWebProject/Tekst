@@ -6,7 +6,8 @@ import { NButton, NModal, NSelect, NFormItem, NForm, NDivider } from 'naive-ui';
 import ArrowBackIosRound from '@vicons/material/ArrowBackIosRound';
 import ArrowForwardIosRound from '@vicons/material/ArrowForwardIosRound';
 import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
-import { NodesApi, type NodeRead } from '@/openapi';
+import { NodesApi, type NodeRead, type TextRead } from '@/openapi';
+import router from '@/router';
 
 const state = useStateStore();
 const browse = useBrowseStore();
@@ -15,6 +16,8 @@ const route = useRoute();
 const nodesApi = new NodesApi();
 
 const showModal = ref(false);
+watch(showModal, (show) => show && initSelectModels());
+
 const browseLevel = ref(state.text?.defaultLevel || 0);
 const browseLevelOptions = computed(() =>
   state.text?.levels.map((l: string, i: number) => ({
@@ -22,73 +25,130 @@ const browseLevelOptions = computed(() =>
     value: i,
   }))
 );
+// sync browse level in location controls state with actual browse level (if possible)
+watch(
+  () => browse.level,
+  (after) => (browseLevel.value = after !== undefined ? after : state.text?.defaultLevel || 0)
+);
+// react to browse level selection changes
+watch(browseLevel, (after, before) => {
+  if (showModal.value) {
+    if (after > before) {
+      updateSelectModelsFromLvl(before);
+    }
+    applyBrowseLevel();
+  }
+});
 
 // model for location select inputs (local state)
 interface LocationSelectModel {
   loading: boolean;
-  selected?: string;
-  disabled?: boolean;
-  options?: { label: string; value: string }[];
+  selected: string | null;
+  disabled: boolean;
+  nodes: NodeRead[];
+  options: { label: string; value: string }[];
 }
 const locationSelectModels = ref<LocationSelectModel[]>(getEmptyModels());
 
-function getEmptyModels(): LocationSelectModel[] {
+// generate fresh location select models when text changes
+watch(
+  () => state.text,
+  (after) => (locationSelectModels.value = getEmptyModels(after))
+);
+
+function getEmptyModels(text: TextRead | undefined = state.text): LocationSelectModel[] {
+  if (!text) return [];
   return (
-    state.text?.levels.map((_, i) => ({
+    text.levels.map((_, i) => ({
       loading: false,
+      selected: null,
+      nodes: [],
+      options: [],
       disabled: i > browseLevel.value,
     })) || []
   );
 }
 
-watch(showModal, (show) => {
-  if (show) {
-    updateLocationSelectModels(browseLevel.value);
-  } else {
-    // ... or else what?!
+async function updateSelectModelsFromLvl(lvl: number) {
+  // abort if the highest enabled level was changed (nothing to do)
+  if (lvl >= locationSelectModels.value.length - 1) {
+    return;
   }
-});
+  // set loading state
+  locationSelectModels.value.forEach((lsm, i) => {
+    // only apply to higher levels
+    if (i > lvl) {
+      lsm.loading = true;
+    }
+  });
+  // load node path options from node selected at lvl as root
+  const nodes = await nodesApi
+    .getPathOptionsByRootId({
+      id: locationSelectModels.value[lvl].selected || '',
+    })
+    .then((response) => response.data);
+  // set nodes for all following levels
+  locationSelectModels.value.forEach((lsm, i) => {
+    // only apply to higher levels
+    if (i > lvl) {
+      // set nodes
+      lsm.nodes = nodes.shift() || [];
+      //generate options
+      lsm.options = lsm.nodes.map((n) => ({
+        label: n.label,
+        value: n.id,
+      }));
+      // set selection
+      lsm.selected = lsm.options[0].value || null;
+      // set to no loading
+      lsm.loading = false;
+    }
+  });
+}
 
-async function updateLocationSelectModels(changedLevel: number = browseLevel.value) {
+function applyBrowseLevel() {
+  locationSelectModels.value.forEach((lsm, i) => {
+    lsm.disabled = i > browseLevel.value;
+    lsm.options = lsm.disabled ? [] : lsm.options;
+    lsm.nodes = lsm.disabled ? [] : lsm.nodes;
+    lsm.selected = lsm.disabled ? null : lsm.selected;
+  });
+}
+
+async function initSelectModels() {
   // set all live models to loading
   locationSelectModels.value.forEach((lsm) => {
     lsm.loading = true;
   });
 
-  // get fresh (reset) location select models
-  const models: LocationSelectModel[] = getEmptyModels();
+  // fetch nodes from head to root
+  const nodesOptions = await nodesApi
+    .getPathOptionsByHeadId({ id: browse.nodePath[browseLevel.value]?.id || '' })
+    .then((response) => response.data);
+
+  // apply browse level
+  applyBrowseLevel();
 
   // manipulate each location select model
   let index = 0;
-  let parentId: string | undefined;
-  for (const lsm of models) {
-    lsm.disabled = index > changedLevel;
-    lsm.loading = false;
-    // set options
-    if (lsm.disabled) {
-      lsm.options = [];
-      lsm.selected = undefined;
-    } else {
-      // TODO !!!
-      const nodes = await nodesApi
-        .findNodes({
-          textId: state.text?.id || '',
-          ...(!parentId && { level: index }),
-          ...(parentId && { parentId }),
-        })
-        .then((response) => response.data);
+  for (const lsm of locationSelectModels.value) {
+    // set options and selection
+    if (index <= browseLevel.value) {
+      // remember nodes for these options
+      lsm.nodes = nodesOptions[index];
       // generate options
-      lsm.options = nodes.map((n: NodeRead) => ({
+      lsm.options = lsm.nodes.map((n: NodeRead) => ({
         label: n.label,
         value: n.id,
       }));
-      // lsm.selected = // TODO
+      // set selection
+      lsm.selected = browse.nodePath[index]?.id || null;
     }
-    parentId = lsm.selected;
     index++;
+    lsm.loading = false;
   }
 
-  locationSelectModels.value = models;
+  // locationSelectModels.value = models;
 }
 
 function getPrevNextRoute(step: number) {
@@ -99,6 +159,25 @@ function getPrevNextRoute(step: number) {
       pos: route.query.pos ? parseInt(route.query.pos.toString()) + step : 0,
     },
   };
+}
+
+function handleLocationSelect() {
+  // we reverse the actual array here, but it will be created from scratch
+  // anyway as soon as the location select modal opens again
+  const selectedLevel = locationSelectModels.value.reverse().find((lsm) => !lsm.disabled);
+  const selectedNode = selectedLevel?.nodes.find((n) => n.id === selectedLevel.selected);
+
+  router.push({
+    name: 'browse',
+    params: { ...route.params },
+    query: {
+      ...route.query,
+      lvl: selectedNode?.level,
+      pos: selectedNode?.position,
+    },
+  });
+  // close location select modal
+  showModal.value = false;
 }
 
 onMounted(() => browse.updateBrowseNodePath());
@@ -159,23 +238,18 @@ onMounted(() => browse.updateBrowseNodePath());
     preset="card"
     embedded
     :closable="false"
-    size="huge"
+    size="large"
     style="width: 600px; max-width: 95%"
   >
     <h2>Select location</h2>
     <n-form
       label-placement="left"
       label-width="auto"
-      size="large"
       :show-feedback="false"
       :show-require-mark="false"
     >
       <n-form-item label="Level">
-        <n-select
-          :options="browseLevelOptions"
-          v-model:value="browseLevel"
-          @update:value="updateLocationSelectModels"
-        />
+        <n-select :options="browseLevelOptions" v-model:value="browseLevel" />
       </n-form-item>
 
       <n-divider />
@@ -183,7 +257,7 @@ onMounted(() => browse.updateBrowseNodePath());
       <n-form-item
         v-for="(levelLoc, index) in locationSelectModels"
         :label="state.text?.levels[index]"
-        :key="`${index}_${browse.nodePathHead?.label}`"
+        :key="`${index}_loc_select`"
         class="location-select-item"
         :class="levelLoc.disabled && 'disabled'"
       >
@@ -191,16 +265,17 @@ onMounted(() => browse.updateBrowseNodePath());
           v-model:value="levelLoc.selected"
           :options="levelLoc.options"
           filterable
-          :placeholder="levelLoc.disabled ? '--' : state.text?.levels[index]"
-          :loading="levelLoc.loading && !levelLoc.disabled"
+          placeholder="--"
+          :loading="levelLoc.loading"
           :disabled="levelLoc.disabled"
-          @update:value="() => updateLocationSelectModels(index)"
+          @update:value="() => updateSelectModelsFromLvl(index)"
         />
       </n-form-item>
     </n-form>
-    <pre style="font-size: 11px; line-height: 1">{{ locationSelectModels }}</pre>
-    <div style="text-align: right">
-      <n-button type="primary">Select</n-button>
+    <!-- <pre style="font-size: 11px; line-height: 1">{{ locationSelectModels }}</pre> -->
+    <div style="display: flex; justify-content: end; gap: 24px; margin-top: 24px">
+      <n-button @click="() => (showModal = false)">Cancel</n-button>
+      <n-button type="primary" @click="handleLocationSelect">Select</n-button>
     </div>
   </n-modal>
 </template>
