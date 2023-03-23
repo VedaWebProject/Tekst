@@ -14,7 +14,6 @@ const commonOverrides: GlobalThemeOverrides = {
     fontSizeMedium: 'var(--app-ui-font-size-medium)',
     fontSizeLarge: 'var(--app-ui-font-size-large)',
     fontSizeHuge: 'var(--app-ui-font-size-huge)',
-    lineHeight: 'var(--app-ui-line-height)',
   },
   Form: {
     feedbackPadding: '4px 0 8px 2px',

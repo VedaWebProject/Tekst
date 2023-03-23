@@ -111,7 +111,6 @@ onMounted(() => {
         ref="formRef"
         :model="formModel"
         :rules="formRules"
-        size="large"
         label-placement="top"
         label-width="auto"
         require-mark-placement="right-hanging"
@@ -149,7 +148,6 @@ onMounted(() => {
       <n-space vertical :size="12">
         <n-button
           block
-          size="large"
           type="primary"
           @click="handleLoginClick"
           :loading="loading"
@@ -157,7 +155,7 @@ onMounted(() => {
         >
           {{ $t('login.login') }}
         </n-button>
-        <n-button secondary block size="large" @click="switchToRegistration">
+        <n-button secondary block @click="switchToRegistration">
           {{ $t('login.switchToRegister') }}
         </n-button>
       </n-space>
