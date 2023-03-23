@@ -706,7 +706,7 @@
             "schema": {
               "title": "Limit",
               "type": "integer",
-              "default": 1000
+              "default": 9999
             },
             "name": "limit",
             "in": "query"
@@ -800,13 +800,13 @@
         }
       }
     },
-    "/nodes/{id}/options": {
+    "/nodes/{id}/path/options-by-head": {
       "get": {
         "tags": [
           "nodes"
         ],
         "summary": "Get path options by head id",
-        "description": "Returns the options for selecting text locations derived from the node path of\nthe path with the given ID.",
+        "description": "Returns the options for selecting text locations derived from the node path of\nthe node with the given ID as head.",
         "operationId": "getPathOptionsByHeadId",
         "parameters": [
           {
@@ -826,7 +826,64 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Path Options By Head Id Nodes  Id  Options Get",
+                  "title": "Response Get Path Options By Head Id Nodes  Id  Path Options By Head Get",
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/NodeRead"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Request"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/nodes/{id}/path/options-by-root": {
+      "get": {
+        "tags": [
+          "nodes"
+        ],
+        "summary": "Get path options by root id",
+        "description": "Returns the options for selecting text locations derived from the node path of\nthe node with the given ID as root. At each level, the first option is taken\nas the basis for the next level.",
+        "operationId": "getPathOptionsByRootId",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Path Options By Root Id Nodes  Id  Path Options By Root Get",
                   "type": "array",
                   "items": {
                     "type": "array",
