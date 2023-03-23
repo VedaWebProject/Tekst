@@ -190,7 +190,7 @@ onMounted(() => browse.updateBrowseNodePath());
         @click="navigate"
         :disabled="browse.position === 0"
         :focusable="false"
-        title="Previous location"
+        :title="$t('browse.location.tipPreviousLocation')"
         size="large"
         color="#fffe"
       >
@@ -202,7 +202,7 @@ onMounted(() => browse.updateBrowseNodePath());
 
     <n-button
       secondary
-      title="Select location"
+      :title="$t('browse.location.tipSelectLocation')"
       @click="showModal = true"
       :focusable="false"
       size="large"
@@ -218,7 +218,7 @@ onMounted(() => browse.updateBrowseNodePath());
         secondary
         @click="navigate"
         :focusable="false"
-        title="Next location"
+        :title="$t('browse.location.tipNextLocation')"
         size="large"
         color="#fffe"
       >
@@ -239,14 +239,14 @@ onMounted(() => browse.updateBrowseNodePath());
     size="large"
     style="width: 600px; max-width: 95%"
   >
-    <h2>Select location</h2>
+    <h2>{{ $t('browse.location.modalHeading') }}</h2>
     <n-form
       label-placement="left"
       label-width="auto"
       :show-feedback="false"
       :show-require-mark="false"
     >
-      <n-form-item label="Level">
+      <n-form-item :label="$t('browse.location.level')">
         <n-select :options="browseLevelOptions" v-model:value="browseLevel" />
       </n-form-item>
 
@@ -272,8 +272,12 @@ onMounted(() => browse.updateBrowseNodePath());
     </n-form>
     <!-- <pre style="font-size: 11px; line-height: 1">{{ locationSelectModels }}</pre> -->
     <div style="display: flex; justify-content: end; gap: 24px; margin-top: 24px">
-      <n-button @click="() => (showModal = false)" :focusable="false">Cancel</n-button>
-      <n-button type="primary" @click="handleLocationSelect">Select</n-button>
+      <n-button @click="() => (showModal = false)" :focusable="false">{{
+        $t('general.cancelAction')
+      }}</n-button>
+      <n-button type="primary" @click="handleLocationSelect">{{
+        $t('general.selectAction')
+      }}</n-button>
     </div>
   </n-modal>
 </template>

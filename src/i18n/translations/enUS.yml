@@ -4,6 +4,8 @@ general:
   tipThemeToggleLight: Switch to light mode
   tipThemeToggleDark: Switch to dark mode
   searchAction: Search
+  selectAction: Select
+  cancelAction: Cancel
   quickSearch: Quick Search
   textSelect: Select the text you want to work with
 
@@ -52,6 +54,14 @@ nav:
   browse: Browse
   search: Search
   help: Help
+
+browse:
+  location:
+    modalHeading: Select level/location
+    level: Level
+    tipSelectLocation: Select level/location
+    tipPreviousLocation: Previous location on this level
+    tipNextLocation: Next location on this level
 
 register:
   register: Register

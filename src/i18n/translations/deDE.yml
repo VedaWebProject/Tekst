@@ -4,6 +4,8 @@ general:
   tipThemeToggleLight: Zu hellem Farbschema wechseln
   tipThemeToggleDark: Zu dunklem Farbschema wechseln
   searchAction: Suchen
+  selectAction: Auswählen
+  cancelAction: Abbrechen
   quickSearch: Schnellsuche
   textSelect: Wählen Sie den Text, mit dem Sie arbeiten möchten
 
@@ -52,6 +54,14 @@ nav:
   browse: Blättern
   search: Suche
   help: Hilfe
+
+browse:
+  location:
+    modalHeading: Ebene/Fundstelle wählen
+    level: Ebene
+    tipSelectLocation: Ebene/Fundstelle wählen
+    tipPreviousLocation: Vorherige Fundstelle auf dieser Ebene
+    tipNextLocation: Nächste Fundstelle auf dieser Ebene
 
 register:
   register: Registrieren
