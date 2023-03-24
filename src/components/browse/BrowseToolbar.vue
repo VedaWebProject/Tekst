@@ -16,7 +16,9 @@ const showBrowseToolbar = computed(() => !!state.text);
     <n-affix :top="0" class="browse-toolbar-affix accent-color-bg">
       <div class="browse-toolbar">
         <BrowseLocationControls />
-        <BrowseLocationLabel v-show="!state.smallScreen" class="browse-location-label" />
+        <div class="browse-toolbar-spacer">
+          <BrowseLocationLabel v-show="!state.smallScreen" class="browse-location-label" />
+        </div>
         <n-button
           secondary
           size="large"
@@ -67,16 +69,24 @@ const showBrowseToolbar = computed(() => !!state.text);
   padding: 0 var(--layout-padding);
 }
 
+.browse-toolbar-spacer {
+  flex-grow: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .browse-toolbar-affix.n-affix--affixed .browse-toolbar {
   max-width: var(--max-app-width);
 }
 
 .browse-toolbar .browse-location-label {
   display: none;
-  flex-grow: 2;
 }
 
 .browse-toolbar-affix.n-affix--affixed .browse-location-label {
-  display: block;
+  display: initial;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>
