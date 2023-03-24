@@ -1,14 +1,19 @@
 <script setup lang="ts">
+import BrowseLocationLabel from '@/components/browse/BrowseLocationLabel.vue';
 import BrowseToolbar from '@/components/browse/BrowseToolbar.vue';
-import { usePlatformStore } from '@/stores/platform';
-const pf = usePlatformStore();
+import { useBrowseStore, useStateStore } from '@/stores';
+
+const browse = useBrowseStore();
+const state = useStateStore();
 </script>
 
 <template>
+  <h1>{{ state.text?.title }}</h1>
+  <h2 style="opacity: 0.75"><BrowseLocationLabel /></h2>
+
   <BrowseToolbar />
 
   <div class="content-block">
-    <h1>Browse {{ pf.data?.info?.platformName }}</h1>
     <p>...</p>
     <p>...</p>
     <p>...</p>

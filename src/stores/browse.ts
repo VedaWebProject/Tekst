@@ -18,7 +18,11 @@ export const useBrowseStore = defineStore('browse', () => {
     nodePath.value.length > 0 ? nodePath.value[nodePath.value.length - 1] : undefined
   );
   const nodePathRoot = computed(() => (nodePath.value.length > 0 ? nodePath.value[0] : undefined));
-  const level = computed(() => nodePathHead.value?.level);
+  const level = computed(() =>
+    nodePathHead.value?.level !== undefined
+      ? nodePathHead.value.level
+      : state.text?.defaultLevel || 0
+  );
   const position = computed(() => nodePathHead.value?.position);
 
   // update browse node path
