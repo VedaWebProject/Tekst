@@ -62,6 +62,7 @@ browse:
     tipSelectLocation: Select level/location
     tipPreviousLocation: Previous location on this level
     tipNextLocation: Next location on this level
+    tipOpenDataLayerList: Select data layers to display
 
 register:
   register: Register

@@ -62,6 +62,7 @@ browse:
     tipSelectLocation: Ebene/Fundstelle wählen
     tipPreviousLocation: Vorherige Fundstelle auf dieser Ebene
     tipNextLocation: Nächste Fundstelle auf dieser Ebene
+    tipOpenDataLayerList: Angezeigte Datenschichten wählen
 
 register:
   register: Registrieren

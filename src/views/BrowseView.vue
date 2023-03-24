@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import BrowseLocationLabel from '@/components/browse/BrowseLocationLabel.vue';
 import BrowseToolbar from '@/components/browse/BrowseToolbar.vue';
-import { useBrowseStore, useStateStore } from '@/stores';
+import { useStateStore } from '@/stores';
 
-const browse = useBrowseStore();
+// const browse = useBrowseStore();
 const state = useStateStore();
 </script>
 

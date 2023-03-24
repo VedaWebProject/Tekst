@@ -17,7 +17,13 @@ const showBrowseToolbar = computed(() => !!state.text);
       <div class="browse-toolbar">
         <BrowseLocationControls />
         <BrowseLocationLabel v-show="!state.smallScreen" class="browse-location-label" />
-        <n-button secondary size="large" color="#fffe" :focusable="false">
+        <n-button
+          secondary
+          size="large"
+          :title="$t('browse.location.tipOpenDataLayerList')"
+          color="#fffe"
+          :focusable="false"
+        >
           <template #icon>
             <LayersRound />
           </template>
