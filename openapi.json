@@ -1506,7 +1506,7 @@
         "parameters": [
           {
             "description": "ID (or list of IDs) of layer(s) to return unit data for",
-            "required": true,
+            "required": false,
             "schema": {
               "title": "Layerid",
               "type": "array",
@@ -1514,14 +1514,15 @@
                 "type": "string",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
-              "description": "ID (or list of IDs) of layer(s) to return unit data for"
+              "description": "ID (or list of IDs) of layer(s) to return unit data for",
+              "default": []
             },
             "name": "layerId",
             "in": "query"
           },
           {
             "description": "ID (or list of IDs) of node(s) to return unit data for",
-            "required": true,
+            "required": false,
             "schema": {
               "title": "Nodeid",
               "type": "array",
@@ -1529,7 +1530,8 @@
                 "type": "string",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
-              "description": "ID (or list of IDs) of node(s) to return unit data for"
+              "description": "ID (or list of IDs) of node(s) to return unit data for",
+              "default": []
             },
             "name": "nodeId",
             "in": "query"

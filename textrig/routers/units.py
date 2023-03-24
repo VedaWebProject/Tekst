@@ -123,11 +123,11 @@ for lt_name, lt_class in get_layer_types().items():
 @router.get("/", response_model=list[dict], status_code=status.HTTP_200_OK)
 async def find_units(
     layer_id: list[PyObjectId] = Query(
-        default_factory=list,
+        [],
         description="ID (or list of IDs) of layer(s) to return unit data for",
     ),
     node_id: list[PyObjectId] = Query(
-        default_factory=list,
+        [],
         description="ID (or list of IDs) of node(s) to return unit data for",
     ),
     limit: int = 1000,
@@ -141,8 +141,8 @@ async def find_units(
 
     units = (
         await UnitBaseDocument.find(
-            In(UnitBaseDocument.layer_id, layer_id),
-            In(UnitBaseDocument.node_id, node_id),
+            In(UnitBaseDocument.layer_id, layer_id) if layer_id else {},
+            In(UnitBaseDocument.node_id, node_id) if node_id else {},
             with_children=True,
         )
         .limit(limit)
