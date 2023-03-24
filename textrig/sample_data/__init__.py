@@ -23,12 +23,12 @@ async def _create_sample_node(node_data: dict, text_id: str, parent_id: str = No
 
 
 async def _create_sample_unit(
-    layer_id: str, unit_data: dict, layer_type: type[LayerTypePluginABC]
+    layer_data: dict, unit_data: dict, layer_type: type[LayerTypePluginABC]
 ):
     # get node ID this unit belongs to
     node = await NodeDocument.find(
         {
-            "level": unit_data.get("sample_node_level", -1),
+            "level": layer_data.get("level", -1),
             "position": unit_data.get("sample_node_position", -1),
         }
     ).first_or_none()
@@ -37,7 +37,9 @@ async def _create_sample_unit(
         return
     # create node
     unit_doc_model = layer_type.get_unit_model().get_document_model()
-    unit_doc = unit_doc_model(layer_id=layer_id, node_id=node.id, **unit_data)
+    unit_doc = unit_doc_model(
+        layer_id=layer_data.get("id"), node_id=node.id, **unit_data
+    )
     unit_id = str((await unit_doc.create()).id)
     return unit_id
 
@@ -49,10 +51,11 @@ async def _create_sample_layers(text_slug: str, text_id: str):
         if not layer_doc_model:
             raise RuntimeError(f"Layer type {layer_data.get('layerType')} not found.")
         layer_doc = layer_doc_model(text_id=text_id, **layer_data)
-        layer_id = str((await layer_doc.create()).id)
+        await layer_doc.create()
+        layer_doc_data = layer_doc.dict()
         # units
         for unit_data in layer_data.get("units", []):
-            await _create_sample_unit(layer_id, unit_data, layer_type)
+            await _create_sample_unit(layer_doc_data, unit_data, layer_type)
 
 
 async def create_sample_texts():
