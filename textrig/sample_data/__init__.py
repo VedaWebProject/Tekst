@@ -28,6 +28,7 @@ async def _create_sample_unit(
     # get node ID this unit belongs to
     node = await NodeDocument.find(
         {
+            "textId": layer_data.get("textId", ""),
             "level": layer_data.get("level", -1),
             "position": unit_data.get("sample_node_position", -1),
         }
