@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { onMounted, type Component } from 'vue';
+import { computed, onMounted, type Component } from 'vue';
 import BrowseLocationLabel from '@/components/browse/BrowseLocationLabel.vue';
 import BrowseToolbar from '@/components/browse/BrowseToolbar.vue';
 import { useStateStore, useBrowseStore } from '@/stores';
 import PlaintextUnit from '@/components/units/PlaintextUnit.vue';
 import UnitContainer from '@/components/browse/UnitContainer.vue';
+import { NIcon } from 'naive-ui';
+import FolderOffTwotone from '@vicons/material/FolderOffTwotone';
 
 const UNIT_COMPONENTS: Record<string, Component> = {
   plaintext: PlaintextUnit,
@@ -12,6 +14,8 @@ const UNIT_COMPONENTS: Record<string, Component> = {
 
 const browse = useBrowseStore();
 const state = useStateStore();
+
+const unitsExist = computed(() => Object.keys(browse.units).length > 0);
 
 // load layers data on mount
 onMounted(() => Object.keys(browse.layers).length == 0 && browse.loadLayersData());
@@ -31,6 +35,13 @@ onMounted(() => Object.keys(browse.layers).length == 0 && browse.loadLayersData(
   >
     <component :is="UNIT_COMPONENTS[unit.layerType]" :dataId="unit.id" />
   </UnitContainer>
+
+  <div v-show="!unitsExist" class="browse-no-units">
+    <n-icon size="48">
+      <FolderOffTwotone />
+    </n-icon>
+    <div>{{ $t('browse.noUnits') }}</div>
+  </div>
 </template>
 
 <style scoped>
@@ -45,5 +56,13 @@ onMounted(() => Object.keys(browse.layers).length == 0 && browse.loadLayersData(
   opacity: 0.6;
   white-space: nowrap;
   margin-top: 12px;
+}
+
+.browse-no-units {
+  padding: 3rem 0;
+  text-align: center;
+  opacity: 0.4;
+  font-size: var(--app-ui-font-size-large);
+  font-weight: var(--app-ui-font-weight-normal);
 }
 </style>
