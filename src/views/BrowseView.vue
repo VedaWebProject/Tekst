@@ -86,10 +86,8 @@ watch(
 </script>
 
 <template>
-  <div class="browse-heading-container">
-    <h1>{{ state.text?.title }}</h1>
-    <h2><BrowseLocationLabel /></h2>
-  </div>
+  <h1 class="browse-heading-title">{{ state.text?.title }}</h1>
+  <h2 class="browse-heading-location"><BrowseLocationLabel /></h2>
 
   <BrowseToolbar />
 
@@ -104,25 +102,16 @@ watch(
 </template>
 
 <style scoped>
-.browse-heading-container {
-  display: flex;
-  flex-wrap: wrap;
-  column-gap: 24px;
-  row-gap: 12px;
-  align-items: baseline;
-  margin: 10px 0 24px 0;
-}
-
-.browse-heading-container > h1 {
+.browse-heading-title {
   margin: 0;
 }
 
-.browse-heading-container > h2 {
+.browse-heading-location {
   flex-grow: 2;
   overflow: hidden;
   text-overflow: ellipsis;
-  opacity: 0.75;
-  margin: 0;
+  opacity: 0.6;
   white-space: nowrap;
+  margin-top: 12px;
 }
 </style>
