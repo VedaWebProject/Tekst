@@ -57,6 +57,7 @@ const showBrowseToolbar = computed(() => !!state.text);
   width: 100vw;
   left: 0px;
   box-shadow: var(--app-ui-fixed-box-shadow);
+  z-index: 2;
 }
 
 .browse-toolbar {
