@@ -1,22 +1,24 @@
 import { ref, computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { defineStore } from 'pinia';
-import { useStateStore } from '@/stores';
+import { useMessagesStore, useStateStore } from '@/stores';
 import type { NodeRead } from '@/openapi';
-import { NodesApi } from '@/openapi/api';
+import { LayersApi, NodesApi, UnitsApi } from '@/openapi/api';
 
 export const useBrowseStore = defineStore('browse', () => {
-  // define resources
+  // composables
   const state = useStateStore();
   const route = useRoute();
   const router = useRouter();
+  const messages = useMessagesStore();
+
+  // API clients
   const nodesApi = new NodesApi();
+  const layersApi = new LayersApi();
+  const unitsApi = new UnitsApi();
 
-  // browse layers and units
-  const layers = ref<Record<string, Record<string, any>>>({});
-  const units = ref<Record<string, Record<string, any>>>({});
+  /* BROWSE NODE PATH */
 
-  // browse node path
   const nodePath = ref<NodeRead[]>([]);
   const nodePathHead = computed(() =>
     nodePath.value.length > 0 ? nodePath.value[nodePath.value.length - 1] : undefined
@@ -57,7 +59,7 @@ export const useBrowseStore = defineStore('browse', () => {
     }
   }
 
-  // reset browse location
+  // reset browse location (change URI parameters)
   function resetBrowseLocation(
     level: number = state.text?.defaultLevel || 0,
     position: number = 0
@@ -89,6 +91,77 @@ export const useBrowseStore = defineStore('browse', () => {
     }
   });
 
+  /* BROWSE LAYERS AND UNITS */
+
+  const layers = ref<Record<string, Record<string, any>>>({});
+  const units = ref<Record<string, Record<string, any>>>({});
+
+  // load layers
+  async function loadLayersData() {
+    if (!state.text) return;
+    Object.keys(units.value).forEach((unitId) => (units.value[unitId].loading = true));
+    try {
+      const data = await layersApi
+        .findLayers({ textId: state.text.id })
+        .then((response) => response.data);
+      const layersData: Record<string, any> = {};
+      data.forEach((l: Record<string, any>) => {
+        layersData[l.id] = {
+          ...l,
+          active: true, // TODO: when is a layer active by default?
+        };
+      });
+      layers.value = layersData;
+    } catch (e) {
+      console.error(e);
+      messages.error('Error loading data layers for this location');
+    }
+  }
+
+  // load units
+  async function loadUnitsData() {
+    if (!nodePathHead.value) return;
+    try {
+      const data = await unitsApi
+        .findUnits({ nodeId: [nodePathHead.value.id] })
+        .then((response) => response.data);
+      const unitsData: Record<string, any> = {};
+      data.forEach((u: Record<string, any>) => {
+        // get layer this unit belongs to to add some of its data
+        const l = layers.value[u.layerId];
+        unitsData[u.id] = {
+          ...u,
+          layerType: l?.layerType,
+          layerTitle: l?.title,
+        };
+      });
+      units.value = unitsData;
+    } catch (e) {
+      console.error(e);
+      messages.error('Error loading data layer units for this location');
+    }
+  }
+
+  // load layers data on text change
+  watch(
+    () => state.text,
+    () => {
+      route.name === 'browse' && loadLayersData();
+    }
+  );
+
+  // load layers data on browse location change
+  watch(
+    () => nodePathHead.value,
+    () => loadUnitsData()
+  );
+
+  // load units data on layers data change
+  watch(
+    () => layers.value,
+    () => loadUnitsData()
+  );
+
   return {
     layers,
     units,
@@ -99,5 +172,7 @@ export const useBrowseStore = defineStore('browse', () => {
     position,
     updateBrowseNodePath,
     resetBrowseLocation,
+    loadUnitsData,
+    loadLayersData,
   };
 });
