@@ -87,7 +87,7 @@ h5:first-child {
 .content-block {
   max-width: 100%;
   margin: 1rem 0;
-  padding: var(--content-padding);
+  padding: var(--content-padding) var(--layout-padding);
   border-radius: var(--app-ui-border-radius);
   background-color: var(--content-bg-color);
   box-shadow: var(--app-ui-block-box-shadow);

@@ -12,6 +12,10 @@ export const useBrowseStore = defineStore('browse', () => {
   const router = useRouter();
   const nodesApi = new NodesApi();
 
+  // browse layers and units
+  const layers = ref<Record<string, Record<string, any>>>({});
+  const units = ref<Record<string, Record<string, any>>>({});
+
   // browse node path
   const nodePath = ref<NodeRead[]>([]);
   const nodePathHead = computed(() =>
@@ -86,6 +90,8 @@ export const useBrowseStore = defineStore('browse', () => {
   });
 
   return {
+    layers,
+    units,
     nodePath,
     nodePathHead,
     nodePathRoot,

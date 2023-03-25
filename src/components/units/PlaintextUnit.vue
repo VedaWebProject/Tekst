@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { PlainTextUnitRead } from '@/openapi';
-import UnitContainer from './UnitContainer.vue';
-const props = defineProps<PlainTextUnitRead>();
+import { useBrowseStore } from '@/stores';
+
+const props = defineProps<{ dataId: string }>();
+const browse = useBrowseStore();
+const data = browse.units[props.dataId];
 </script>
 
 <template>
-  <UnitContainer :layer-title="props.layerId">
-    <div>{{ props.text }}</div>
-  </UnitContainer>
+  <div>{{ data.text }}</div>
 </template>

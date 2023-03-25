@@ -35,7 +35,7 @@
 :root {
   --max-app-width: 1280px;
   --layout-padding: 1rem;
-  --content-padding: 1.5rem;
+  --content-padding: 1rem;
 
   --app-ui-font-family: 'Fira Sans', v-sans, system-ui, -apple-system, BlinkMacSystemFont,
     'Segoe UI', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
