@@ -22,7 +22,7 @@ const props = defineProps<{
   color: var(--accent-color);
   font-size: var(--app-ui-font-size-small);
   font-weight: var(--app-ui-font-weight-normal);
-  margin-bottom: 12px;
+  margin-bottom: 0.5rem;
 }
 
 .unit-container-loader {
