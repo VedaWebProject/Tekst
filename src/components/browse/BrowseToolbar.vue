@@ -82,6 +82,7 @@ const showBrowseToolbar = computed(() => !!state.text);
 
 .browse-toolbar .browse-location-label {
   display: none;
+  opacity: 0.75;
 }
 
 .browse-toolbar-affix.n-affix--affixed .browse-location-label {
