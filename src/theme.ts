@@ -1,5 +1,6 @@
 import type { GlobalThemeOverrides } from 'naive-ui';
 import _merge from 'lodash.merge';
+import Color from 'color';
 
 export declare type ThemeMode = 'light' | 'dark';
 
@@ -26,20 +27,12 @@ const commonOverrides: GlobalThemeOverrides = {
 const lightOverrides: GlobalThemeOverrides = {
   common: {
     bodyColor: '#ffffff',
-    primaryColor: '#7d7d7d',
-    primaryColorHover: '#8e8e8e',
-    primaryColorPressed: '#8e8e8e',
-    primaryColorSuppl: '#8e8e8e',
   },
 };
 
 const darkOverrides: GlobalThemeOverrides = {
   common: {
     bodyColor: '#232323',
-    primaryColor: '#b6b6b6',
-    primaryColorHover: '#c9c9c9',
-    primaryColorPressed: '#c9c9c9',
-    primaryColorSuppl: '#c9c9c9',
   },
   Card: {
     colorEmbedded: '#2a2a2a',
@@ -49,4 +42,20 @@ const darkOverrides: GlobalThemeOverrides = {
 _merge(lightOverrides, commonOverrides);
 _merge(darkOverrides, commonOverrides);
 
-export { lightOverrides, darkOverrides };
+function getOverrides(mode: 'light' | 'dark', primaryColorHex: string): GlobalThemeOverrides {
+  const baseOverrides = mode === 'light' ? lightOverrides : darkOverrides;
+  const lightenHover = 0.15;
+  const primaryColor = Color(primaryColorHex);
+  return {
+    ...baseOverrides,
+    common: {
+      ...baseOverrides.common,
+      primaryColor: primaryColorHex,
+      primaryColorHover: primaryColor.lighten(lightenHover).hex(),
+      primaryColorPressed: primaryColor.lighten(lightenHover * 2).hex(),
+      primaryColorSuppl: primaryColorHex,
+    },
+  };
+}
+
+export { getOverrides };

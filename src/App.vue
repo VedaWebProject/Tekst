@@ -6,7 +6,7 @@ import { onMounted, onBeforeMount, ref, computed } from 'vue';
 import { localeProfiles } from '@/i18n';
 import { useStateStore, usePlatformStore, useMessagesStore } from '@/stores';
 import { NConfigProvider, NGlobalStyle, NBackTop, lightTheme, darkTheme } from 'naive-ui';
-import { lightOverrides, darkOverrides } from '@/theme';
+import { getOverrides } from '@/theme';
 import PageHeader from './layout/PageHeader.vue';
 import PageFooter from './layout/PageFooter.vue';
 import { useI18n } from 'vue-i18n';
@@ -22,7 +22,7 @@ const nUiDateLocale = computed(() => localeProfiles[state.locale].nUiDateLocale)
 
 // theming
 const theme = computed(() => (state.theme === 'light' ? lightTheme : darkTheme));
-const themeOverrides = computed(() => (state.theme === 'light' ? lightOverrides : darkOverrides));
+const themeOverrides = computed(() => getOverrides(state.theme, state.accentColors.base));
 const mainBgColor = computed(() => (state.theme === 'light' ? '#00000010' : '#ffffff10'));
 const contentBgColor = computed(() => (state.theme === 'light' ? '#ffffffcc' : '#00000044'));
 
