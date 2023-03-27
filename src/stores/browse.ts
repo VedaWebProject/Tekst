@@ -120,6 +120,7 @@ export const useBrowseStore = defineStore('browse', () => {
       console.error(e);
       messages.error('Error loading data layers for this location');
     }
+    loadUnitsData();
   }
 
   // load units
@@ -137,7 +138,7 @@ export const useBrowseStore = defineStore('browse', () => {
           ...u,
           layerType: l?.layerType,
           layerTitle: l?.title,
-          active: l?.active,
+          loading: false,
         };
       });
       units.value = unitsData;
@@ -158,12 +159,6 @@ export const useBrowseStore = defineStore('browse', () => {
   // load layers data on browse location change
   watch(
     () => nodePathHead.value,
-    () => loadUnitsData()
-  );
-
-  // load units data on layers data change (only when complete object is changed)
-  watch(
-    () => layers.value,
     () => loadUnitsData()
   );
 
