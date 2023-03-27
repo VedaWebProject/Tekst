@@ -44,15 +44,14 @@ _merge(darkOverrides, commonOverrides);
 
 function getOverrides(mode: 'light' | 'dark', primaryColorHex: string): GlobalThemeOverrides {
   const baseOverrides = mode === 'light' ? lightOverrides : darkOverrides;
-  const lightenHover = 0.15;
   const primaryColor = Color(primaryColorHex);
   return {
     ...baseOverrides,
     common: {
       ...baseOverrides.common,
       primaryColor: primaryColorHex,
-      primaryColorHover: primaryColor.lighten(lightenHover).hex(),
-      primaryColorPressed: primaryColor.lighten(lightenHover * 2).hex(),
+      primaryColorHover: primaryColor.lighten(0.1).saturate(0.15).hex(),
+      primaryColorPressed: primaryColor.lighten(0.3).hex(),
       primaryColorSuppl: primaryColorHex,
     },
   };
