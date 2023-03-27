@@ -63,7 +63,7 @@ browse:
     tipPreviousLocation: Vorherige Fundstelle auf dieser Ebene
     tipNextLocation: Nächste Fundstelle auf dieser Ebene
     tipOpenDataLayerList: Angezeigte Datenschichten wählen
-  noUnits: Die ausgewählten Datenschichten enthalten keine Daten für diese Ebene und Fundstelle.
+  noData: Die ausgewählten Datenschichten enthalten keine Daten für diese Ebene und Fundstelle.
 
 register:
   register: Registrieren

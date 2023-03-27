@@ -36,11 +36,11 @@ onMounted(() => Object.keys(browse.layers).length == 0 && browse.loadLayersData(
     <component :is="UNIT_COMPONENTS[unit.layerType]" :dataId="unit.id" />
   </UnitContainer>
 
-  <div v-show="!unitsExist" class="browse-no-units">
+  <div v-show="!unitsExist" class="browse-no-data">
     <n-icon size="48">
       <FolderOffTwotone />
     </n-icon>
-    <div>{{ $t('browse.noUnits') }}</div>
+    <div>{{ $t('browse.noData') }}</div>
   </div>
 </template>
 
@@ -58,7 +58,7 @@ onMounted(() => Object.keys(browse.layers).length == 0 && browse.loadLayersData(
   margin-top: 12px;
 }
 
-.browse-no-units {
+.browse-no-data {
   padding: 3rem 0;
   text-align: center;
   opacity: 0.4;
