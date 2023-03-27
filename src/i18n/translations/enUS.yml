@@ -3,10 +3,8 @@ general:
   welcomeTest: '"Welcome!", says the client.'
   tipThemeToggleLight: Switch to light mode
   tipThemeToggleDark: Switch to dark mode
-  searchAction: Search
   selectAction: Select
   cancelAction: Cancel
-  quickSearch: Quick Search
   textSelect: Select the text you want to work with
 
 dummy:
@@ -114,3 +112,10 @@ login:
 account:
   tipAccountBtn: Show account options
   manage: Manage account
+
+search:
+  searchAction: Search
+  quickSearch:
+    heading: Quick Search
+  settings:
+    heading: Global Search Settings

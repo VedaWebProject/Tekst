@@ -3,7 +3,6 @@ general:
   welcomeTest: '"Willkommen!", sagt der Client.'
   tipThemeToggleLight: Zu hellem Farbschema wechseln
   tipThemeToggleDark: Zu dunklem Farbschema wechseln
-  searchAction: Suchen
   selectAction: Auswählen
   cancelAction: Abbrechen
   quickSearch: Schnellsuche
@@ -114,3 +113,10 @@ login:
 account:
   tipAccountBtn: Konto-Optionen anzeigen
   manage: Konto verwalten
+
+search:
+  searchAction: Suchen
+  quickSearch:
+    heading: Schnellsuche
+  settings:
+    heading: Globale Sucheinstellungen

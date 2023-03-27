@@ -29,19 +29,19 @@ const showModal = ref(false);
     size="huge"
     style="width: 600px; max-width: 95%"
   >
-    <h2>{{ $t('general.quickSearch') }}</h2>
+    <h2>{{ $t('search.quickSearch.heading') }}</h2>
 
-    <n-input round size="large" :placeholder="$t('general.quickSearch')">
+    <n-input round size="large" :placeholder="$t('search.quickSearch.heading')">
       <template #prefix>
         <n-icon :component="SearchRound" />
       </template>
     </n-input>
 
-    <h3>Settings</h3>
+    <h3>{{ $t('search.settings.heading') }}</h3>
     <p>Quick Search settings go here...</p>
 
     <div style="text-align: right">
-      <n-button type="primary">{{ $t('general.searchAction') }}</n-button>
+      <n-button type="primary">{{ $t('search.searchAction') }}</n-button>
     </div>
   </n-modal>
 </template>
