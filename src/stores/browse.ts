@@ -137,6 +137,7 @@ export const useBrowseStore = defineStore('browse', () => {
           ...u,
           layerType: l?.layerType,
           layerTitle: l?.title,
+          active: l?.active,
         };
       });
       units.value = unitsData;
@@ -160,7 +161,7 @@ export const useBrowseStore = defineStore('browse', () => {
     () => loadUnitsData()
   );
 
-  // load units data on layers data change
+  // load units data on layers data change (only when complete object is changed)
   watch(
     () => layers.value,
     () => loadUnitsData()

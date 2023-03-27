@@ -30,11 +30,12 @@ onMounted(() => Object.keys(browse.layers).length == 0 && browse.loadLayersData(
 
   <UnitContainer
     v-for="unit in browse.units"
-    :key="unit.id"
+    :key="`${unit.id}_${unit.active ? 'active' : 'inactive'}`"
     :title="unit.layerTitle"
     :loading="unit.loading"
+    :active="unit.active"
   >
-    <component :is="UNIT_COMPONENTS[unit.layerType]" :dataId="unit.id" />
+    <component :is="UNIT_COMPONENTS[unit.layerType]" :unitId="unit.id" />
   </UnitContainer>
 
   <div v-show="!unitsExist" class="browse-no-data">

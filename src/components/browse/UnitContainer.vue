@@ -4,11 +4,12 @@ import { NSpin } from 'naive-ui';
 const props = defineProps<{
   title?: string;
   loading?: boolean;
+  active?: boolean;
 }>();
 </script>
 
 <template>
-  <div class="content-block" style="position: relative">
+  <div v-if="props.active" class="content-block" style="position: relative">
     <div class="unit-container-title">{{ props.title }}</div>
     <slot></slot>
     <Transition>

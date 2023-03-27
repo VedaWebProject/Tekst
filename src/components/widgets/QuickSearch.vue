@@ -13,7 +13,7 @@ const showModal = ref(false);
     size="large"
     icon-placement="left"
     @click="showModal = true"
-    :title="$t('general.quickSearch')"
+    :title="$t('search.quickSearch.heading')"
     :focusable="false"
   >
     <template #icon>
