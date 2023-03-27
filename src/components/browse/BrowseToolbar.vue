@@ -4,9 +4,10 @@ import { NAffix, NButton } from 'naive-ui';
 import BrowseLocationControls from '@/components/browse/BrowseLocationControls.vue';
 import BrowseLocationLabel from '@/components/browse/BrowseLocationLabel.vue';
 import LayersRound from '@vicons/material/LayersRound';
-import { useStateStore } from '@/stores';
+import { useBrowseStore, useStateStore } from '@/stores';
 
 const state = useStateStore();
+const browse = useBrowseStore();
 
 const showBrowseToolbar = computed(() => !!state.text);
 </script>
@@ -25,6 +26,7 @@ const showBrowseToolbar = computed(() => !!state.text);
           :title="$t('browse.location.tipOpenDataLayerList')"
           color="#fffe"
           :focusable="false"
+          @click="browse.showLayerToggleDrawer = true"
         >
           <template #icon>
             <LayersRound />

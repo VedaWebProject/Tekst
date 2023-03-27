@@ -7,6 +7,7 @@ import PlaintextUnit from '@/components/units/PlaintextUnit.vue';
 import UnitContainer from '@/components/browse/UnitContainer.vue';
 import { NIcon } from 'naive-ui';
 import FolderOffTwotone from '@vicons/material/FolderOffTwotone';
+import LayerToggleDrawer from '@/components/browse/LayerToggleDrawer.vue';
 
 const UNIT_COMPONENTS: Record<string, Component> = {
   plaintext: PlaintextUnit,
@@ -42,6 +43,8 @@ onMounted(() => Object.keys(browse.layers).length == 0 && browse.loadLayersData(
     </n-icon>
     <div>{{ $t('browse.noData') }}</div>
   </div>
+
+  <LayerToggleDrawer v-model:show="browse.showLayerToggleDrawer" />
 </template>
 
 <style scoped>

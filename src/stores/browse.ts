@@ -17,6 +17,10 @@ export const useBrowseStore = defineStore('browse', () => {
   const layersApi = new LayersApi();
   const unitsApi = new UnitsApi();
 
+  /* BROWSE UI CONTROLS */
+
+  const showLayerToggleDrawer = ref(false);
+
   /* BROWSE NODE PATH */
 
   const nodePath = ref<NodeRead[]>([]);
@@ -163,6 +167,7 @@ export const useBrowseStore = defineStore('browse', () => {
   );
 
   return {
+    showLayerToggleDrawer,
     layers,
     units,
     nodePath,
