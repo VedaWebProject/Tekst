@@ -81,14 +81,14 @@ export const useBrowseStore = defineStore('browse', () => {
   // set browse location to text default when text changes
   watch(
     () => state.text,
-    () => resetBrowseLocation()
+    () => route.name === 'browse' && resetBrowseLocation()
   );
 
   // react to route changes concerning browse state
   watch(route, (after, before) => {
     if (
       after.name === 'browse' &&
-      before.name === 'browse' &&
+      // before.name === 'browse' &&
       after.params.text === before.params.text
     ) {
       updateBrowseNodePath();
@@ -148,18 +148,10 @@ export const useBrowseStore = defineStore('browse', () => {
     }
   }
 
-  // load layers data on text change
-  watch(
-    () => state.text,
-    () => {
-      route.name === 'browse' && loadLayersData();
-    }
-  );
-
   // load layers data on browse location change
   watch(
     () => nodePathHead.value,
-    () => loadUnitsData()
+    () => loadLayersData()
   );
 
   return {
