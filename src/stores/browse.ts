@@ -147,7 +147,7 @@ export const useBrowseStore = defineStore('browse', () => {
   // load layers/units data on browse location change
   watch(
     () => nodePathHead.value,
-    (after, before) => {
+    (after: NodeRead | undefined, before: NodeRead | undefined) => {
       if (after?.textId === before?.textId) {
         // selected text didn't change, only the location did,
         // so it's enough to load new units data

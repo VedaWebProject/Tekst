@@ -20,8 +20,18 @@ const show = computed({
 </script>
 
 <template>
-  <n-drawer v-model:show="show" :width="512" :auto-focus="false" style="max-width: 90%">
-    <n-drawer-content title="Toggle Data Layers" :native-scrollbar="false" closable>
+  <n-drawer
+    v-model:show="show"
+    :width="768"
+    :auto-focus="false"
+    to="#app-container"
+    style="max-width: 90%"
+  >
+    <n-drawer-content
+      title="Toggle Data Layers"
+      header-style="font-size: var(--app-ui-font-size-huge); font-weight: var(--app-ui-font-weight-light)"
+      closable
+    >
       <LayerToggleDrawerItem
         v-for="layer in browse.layers"
         v-model:active="layer.active"
