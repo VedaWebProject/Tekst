@@ -23,7 +23,7 @@ const showBrowseToolbar = computed(() => !!state.text);
         <n-button
           secondary
           size="large"
-          :title="$t('browse.location.tipOpenDataLayerList')"
+          :title="$t('browse.toolbar.tipOpenDataLayerList')"
           color="#fffe"
           :focusable="false"
           @click="browse.showLayerToggleDrawer = true"

@@ -57,14 +57,15 @@ browse:
   location:
     modalHeading: Select level/location
     level: Level
+  toolbar:
     tipSelectLocation: Select level/location
     tipPreviousLocation: Previous location on this level
     tipNextLocation: Next location on this level
     tipOpenDataLayerList: Select data layers to display
-  noData: The selected data layers contain no data for this text level and location. Try choosing a different location or activating more data layers.
   layerToggleDrawer:
     heading: Select data layers
     noData: No data for this location
+  noData: The selected data layers contain no data for this text level and location. Try choosing a different location or activating more data layers.
 
 register:
   register: Register

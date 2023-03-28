@@ -58,14 +58,15 @@ browse:
   location:
     modalHeading: Ebene/Fundstelle wählen
     level: Ebene
+  toolbar:
     tipSelectLocation: Ebene/Fundstelle wählen
     tipPreviousLocation: Vorherige Fundstelle auf dieser Ebene
     tipNextLocation: Nächste Fundstelle auf dieser Ebene
-    tipOpenDataLayerList: Angezeigte Datenschichten wählen
-  noData: Die ausgewählten Datenschichten enthalten keine Daten für diese Ebene und Fundstelle. Wählen Sie eine andere Fundstelle oder aktivieren Sie mehr Datenschichten.
+    tipOpenDataLayerList: Anzuzeigende Datenschichten wählen
   layerToggleDrawer:
     heading: Datenschichten wählen
     noData: Keine Daten für diese Fundstelle
+  noData: Die ausgewählten Datenschichten enthalten keine Daten für diese Ebene und Fundstelle. Wählen Sie eine andere Fundstelle oder aktivieren Sie mehr Datenschichten.
 
 register:
   register: Registrieren

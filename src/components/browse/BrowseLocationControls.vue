@@ -190,7 +190,7 @@ onMounted(() => browse.updateBrowseNodePath());
         @click="navigate"
         :disabled="browse.position === 0"
         :focusable="false"
-        :title="$t('browse.location.tipPreviousLocation')"
+        :title="$t('browse.toolbar.tipPreviousLocation')"
         size="large"
         color="#fffe"
       >
@@ -202,7 +202,7 @@ onMounted(() => browse.updateBrowseNodePath());
 
     <n-button
       secondary
-      :title="$t('browse.location.tipSelectLocation')"
+      :title="$t('browse.toolbar.tipSelectLocation')"
       @click="showModal = true"
       :focusable="false"
       size="large"
@@ -218,7 +218,7 @@ onMounted(() => browse.updateBrowseNodePath());
         secondary
         @click="navigate"
         :focusable="false"
-        :title="$t('browse.location.tipNextLocation')"
+        :title="$t('browse.toolbar.tipNextLocation')"
         size="large"
         color="#fffe"
       >
