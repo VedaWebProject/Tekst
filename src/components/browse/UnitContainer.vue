@@ -9,7 +9,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <div v-show="props.active" class="content-block" style="position: relative">
+  <div v-if="props.active" class="content-block" style="position: relative">
     <div class="unit-container-title">{{ props.title }}</div>
     <slot></slot>
     <Transition>
