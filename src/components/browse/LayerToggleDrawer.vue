@@ -28,16 +28,17 @@ const show = computed({
     style="max-width: 90%"
   >
     <n-drawer-content
-      title="Toggle Data Layers"
+      :title="$t('browse.layerToggleDrawer.heading')"
       header-style="font-size: var(--app-ui-font-size-huge); font-weight: var(--app-ui-font-weight-light)"
       closable
     >
       <LayerToggleDrawerItem
         v-for="layer in browse.layers"
         v-model:active="layer.active"
-        :key="layer.id"
+        :key="`${layer.id}`"
         :title="layer.title"
         :layerType="layer.layerType"
+        :disabled="!Boolean(layer.unit)"
       />
     </n-drawer-content>
   </n-drawer>

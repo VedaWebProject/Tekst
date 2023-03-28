@@ -63,6 +63,9 @@ browse:
     tipNextLocation: Nächste Fundstelle auf dieser Ebene
     tipOpenDataLayerList: Angezeigte Datenschichten wählen
   noData: Die ausgewählten Datenschichten enthalten keine Daten für diese Ebene und Fundstelle. Wählen Sie eine andere Fundstelle oder aktivieren Sie mehr Datenschichten.
+  layerToggleDrawer:
+    heading: Datenschichten wählen
+    noData: Keine Daten für diese Fundstelle
 
 register:
   register: Registrieren

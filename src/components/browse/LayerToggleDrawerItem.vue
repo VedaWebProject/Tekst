@@ -2,11 +2,13 @@
 import { computed } from 'vue';
 import { NSwitch, NIcon } from 'naive-ui';
 import CheckRound from '@vicons/material/CheckRound';
+import { useI18n } from 'vue-i18n';
 
 const props = defineProps<{
   active: boolean;
   title: string;
   layerType: string;
+  disabled?: boolean;
 }>();
 const emits = defineEmits<{ (e: 'update:active', active: boolean): void }>();
 
@@ -18,16 +20,21 @@ const active = computed({
     emits('update:active', value);
   },
 });
+
+const { t } = useI18n({ useScope: 'global' });
+const infoTooltip = computed(() =>
+  props.disabled ? t('browse.layerToggleDrawer.noData') : undefined
+);
 </script>
 
 <template>
-  <div class="layer-toggle-item">
+  <div class="layer-toggle-item" :class="props.disabled && 'disabled'" :title="infoTooltip">
     <n-switch v-model:value="active" size="large">
       <template #checked-icon>
         <n-icon :component="CheckRound" />
       </template>
     </n-switch>
-    <div style="min-width: 1px">
+    <div class="layer-toggle-item-info">
       <div class="layer-toggle-item-title">{{ props.title }}</div>
       <div class="layer-toggle-item-type">{{ props.layerType }}</div>
     </div>
@@ -41,6 +48,15 @@ const active = computed({
   align-items: center;
   gap: 24px;
   margin-bottom: 1rem;
+}
+
+.layer-toggle-item > .layer-toggle-item-info {
+  min-width: 1px;
+}
+
+.layer-toggle-item.disabled > .layer-toggle-item-info {
+  opacity: 0.5;
+  cursor: help;
 }
 
 .layer-toggle-item .layer-toggle-item-title {
