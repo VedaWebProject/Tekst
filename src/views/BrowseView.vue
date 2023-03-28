@@ -16,7 +16,13 @@ const UNIT_COMPONENTS: Record<string, Component> = {
 const browse = useBrowseStore();
 const state = useStateStore();
 
-const unitsExist = computed(() => Object.keys(browse.units).length > 0);
+const unitsExist = computed(() => {
+  // count available units of ACTIVATED layers
+  const units = Object.keys(browse.units).filter(
+    (unitId: string) => browse.layers[browse.units[unitId].layerId].active
+  );
+  return units.length > 0;
+});
 
 // load layers data on mount
 onMounted(() => Object.keys(browse.layers).length == 0 && browse.loadLayersData());
