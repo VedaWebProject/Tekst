@@ -39,6 +39,7 @@ const show = computed({
         :title="layer.title"
         :layerType="layer.layerType"
         :disabled="!Boolean(layer.unit)"
+        :meta="layer.meta"
       />
     </n-drawer-content>
   </n-drawer>

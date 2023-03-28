@@ -9,6 +9,7 @@ const props = defineProps<{
   title: string;
   layerType: string;
   disabled?: boolean;
+  meta?: Record<string, any>;
 }>();
 const emits = defineEmits<{ (e: 'update:active', active: boolean): void }>();
 
@@ -25,18 +26,29 @@ const { t } = useI18n({ useScope: 'global' });
 const infoTooltip = computed(() =>
   props.disabled ? t('browse.layerToggleDrawer.noData') : undefined
 );
+const meta = computed(
+  () =>
+    props.meta && {
+      ...(props.meta.author && { author: props.meta.author }),
+      ...(props.meta.year && { year: props.meta.year }),
+    }
+);
 </script>
 
 <template>
   <div class="layer-toggle-item" :class="props.disabled && 'disabled'" :title="infoTooltip">
-    <n-switch v-model:value="active" size="large">
+    <n-switch v-model:value="active" size="large" :round="false">
       <template #checked-icon>
         <n-icon :component="CheckRound" />
       </template>
     </n-switch>
-    <div class="layer-toggle-item-info">
+    <div class="layer-toggle-item-main">
       <div class="layer-toggle-item-title">{{ props.title }}</div>
-      <div class="layer-toggle-item-type">{{ $t(`layerTypes.${props.layerType}`) }}</div>
+      <div class="layer-toggle-item-type">
+        {{ meta.author && `${meta.author}, ` }}
+        {{ meta.year && `${meta.year}, ` }}
+        {{ $t(`layerTypes.${props.layerType}`) }}
+      </div>
     </div>
   </div>
 </template>
@@ -50,11 +62,12 @@ const infoTooltip = computed(() =>
   margin-bottom: 1rem;
 }
 
-.layer-toggle-item > .layer-toggle-item-info {
+.layer-toggle-item > .layer-toggle-item-main {
   min-width: 1px;
+  flex-grow: 2;
 }
 
-.layer-toggle-item.disabled > .layer-toggle-item-info {
+.layer-toggle-item.disabled > .layer-toggle-item-main {
   opacity: 0.5;
   cursor: help;
 }
