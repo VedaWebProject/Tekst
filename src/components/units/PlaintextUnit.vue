@@ -1,11 +1,7 @@
 <script setup lang="ts">
-import { useBrowseStore } from '@/stores';
-
-const props = defineProps<{ unitId: string }>();
-const browse = useBrowseStore();
-const data = browse.units[props.unitId];
+const props = defineProps<{ data: Record<string, any> }>();
 </script>
 
 <template>
-  <div>{{ data.text }}</div>
+  <div>{{ props.data.text }}</div>
 </template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, type Component } from 'vue';
+import { computed, type Component } from 'vue';
 import BrowseLocationLabel from '@/components/browse/BrowseLocationLabel.vue';
 import BrowseToolbar from '@/components/browse/BrowseToolbar.vue';
 import { useStateStore, useBrowseStore } from '@/stores';
@@ -18,14 +18,8 @@ const state = useStateStore();
 
 const unitsExist = computed(() => {
   // count available units of ACTIVATED layers
-  const units = Object.keys(browse.units).filter(
-    (unitId: string) => browse.layers[browse.units[unitId].layerId].active
-  );
-  return units.length > 0;
+  return browse.layers.filter((l) => l.active && l.unit).length > 0;
 });
-
-// load layers data on mount
-onMounted(() => Object.keys(browse.layers).length == 0 && browse.loadLayersData());
 </script>
 
 <template>
@@ -35,13 +29,13 @@ onMounted(() => Object.keys(browse.layers).length == 0 && browse.loadLayersData(
   <BrowseToolbar />
 
   <UnitContainer
-    v-for="unit in browse.units"
-    :key="`${unit.id}_${browse.layers[unit.layerId]?.active ? 'active' : 'inactive'}`"
-    :title="unit.layerTitle"
-    :loading="unit.loading"
-    :active="browse.layers[unit.layerId]?.active"
+    v-for="layer in browse.layers"
+    :key="`${layer.id}_${layer.active ? 'active' : 'inactive'}`"
+    :title="layer.title"
+    :loading="layer.loading"
+    :active="layer.active && layer.unit"
   >
-    <component :is="UNIT_COMPONENTS[unit.layerType]" :unitId="unit.id" />
+    <component :is="UNIT_COMPONENTS[layer.layerType]" :data="layer.unit" />
   </UnitContainer>
 
   <div v-show="!unitsExist" class="browse-no-data">

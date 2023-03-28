@@ -86,78 +86,83 @@ export const useBrowseStore = defineStore('browse', () => {
 
   // react to route changes concerning browse state
   watch(route, (after, before) => {
-    if (
-      after.name === 'browse' &&
-      // before.name === 'browse' &&
-      after.params.text === before.params.text
-    ) {
+    if (after.name === 'browse' && after.params.text === before.params.text) {
       updateBrowseNodePath();
     }
   });
 
   /* BROWSE LAYERS AND UNITS */
 
-  const layers = ref<Record<string, Record<string, any>>>({});
-  const units = ref<Record<string, Record<string, any>>>({});
+  const layers = ref<Record<string, any>[]>([]);
 
-  // load layers
   async function loadLayersData() {
     if (!state.text) return;
-    Object.keys(units.value).forEach((unitId) => (units.value[unitId].loading = true));
+    // set all layers to loading
+    layers.value.forEach((l) => {
+      l.loading = true;
+    });
+    // fetch data
     try {
-      const data = await layersApi
+      // fetch layers data
+      const layersData = await layersApi
         .findLayers({ textId: state.text.id })
         .then((response) => response.data);
-      const layersData: Record<string, any> = {};
-      data.forEach((l: Record<string, any>) => {
-        layersData[l.id] = {
-          ...l,
-          active: true, // TODO: when is a layer active by default?
-        };
+      layersData.forEach((l: Record<string, any>) => {
+        // keep layer deactivated if it was before
+        const existingLayer = layers.value.find((lo) => lo.id === l.id);
+        l.active = !existingLayer || existingLayer.active;
+        l.loading = false;
       });
-      layers.value = layersData;
+      loadUnitsData(layersData);
     } catch (e) {
       console.error(e);
       messages.error('Error loading data layers for this location');
     }
-    loadUnitsData();
   }
 
-  // load units
-  async function loadUnitsData() {
+  async function loadUnitsData(layersData = layers.value) {
     if (!nodePathHead.value) return;
+    // set all layers to loading
+    layers.value.forEach((l) => {
+      l.loading = true;
+    });
     try {
-      const data = await unitsApi
+      // fetch untis data
+      const unitsData = await unitsApi
         .findUnits({ nodeId: [nodePathHead.value.id] })
         .then((response) => response.data);
-      const unitsData: Record<string, any> = {};
-      data.forEach((u: Record<string, any>) => {
-        // get layer this unit belongs to to add some of its data
-        const l = layers.value[u.layerId];
-        unitsData[u.id] = {
-          ...u,
-          layerType: l?.layerType,
-          layerTitle: l?.title,
-          loading: false,
-        };
+      // assign units to layers
+      layersData.forEach((l: Record<string, any>) => {
+        l.unit = unitsData.find((u: Record<string, any>) => u.layerId == l.id);
+        l.loading = false;
       });
-      units.value = unitsData;
+      // assign (potentially) fresh layers/untis data to store prop
+      layers.value = layersData;
     } catch (e) {
       console.error(e);
       messages.error('Error loading data layer units for this location');
     }
   }
 
-  // load layers data on browse location change
+  // load layers/units data on browse location change
   watch(
     () => nodePathHead.value,
-    () => loadLayersData()
+    (after, before) => {
+      if (after?.textId === before?.textId) {
+        // selected text didn't change, only the location did,
+        // so it's enough to load new units data
+        loadUnitsData();
+      } else {
+        // node path head changed because a different text was selected,
+        // so we have to load full layers data AND according units data
+        loadLayersData();
+      }
+    }
   );
 
   return {
     showLayerToggleDrawer,
     layers,
-    units,
     nodePath,
     nodePathHead,
     nodePathRoot,
@@ -165,7 +170,6 @@ export const useBrowseStore = defineStore('browse', () => {
     position,
     updateBrowseNodePath,
     resetBrowseLocation,
-    loadUnitsData,
     loadLayersData,
   };
 });
