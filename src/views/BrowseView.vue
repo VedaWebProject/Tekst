@@ -33,7 +33,7 @@ const unitsExist = computed(() => {
     :key="`${layer.id}_${layer.active ? 'active' : 'inactive'}`"
     :title="layer.title"
     :loading="layer.loading"
-    :active="layer.active && layer.unit"
+    :active="!!(layer.active && layer.unit)"
   >
     <component :is="UNIT_COMPONENTS[layer.layerType]" :data="layer.unit" />
   </UnitContainer>
