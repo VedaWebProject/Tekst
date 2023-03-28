@@ -69,6 +69,9 @@ onMounted(() => Object.keys(browse.layers).length == 0 && browse.loadLayersData(
 }
 
 .browse-no-data {
+  width: 512px;
+  max-width: 100%;
+  margin: 0 auto;
   padding: 3rem 0;
   text-align: center;
   opacity: 0.4;
