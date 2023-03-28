@@ -53,6 +53,9 @@ nav:
   search: Search
   help: Help
 
+layerTypes:
+  plaintext: Plain Text
+
 browse:
   location:
     modalHeading: Select level/location

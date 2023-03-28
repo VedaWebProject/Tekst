@@ -36,7 +36,7 @@ const infoTooltip = computed(() =>
     </n-switch>
     <div class="layer-toggle-item-info">
       <div class="layer-toggle-item-title">{{ props.title }}</div>
-      <div class="layer-toggle-item-type">{{ props.layerType }}</div>
+      <div class="layer-toggle-item-type">{{ $t(`layerTypes.${props.layerType}`) }}</div>
     </div>
   </div>
 </template>

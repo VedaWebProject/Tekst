@@ -54,6 +54,9 @@ nav:
   search: Suche
   help: Hilfe
 
+layerTypes:
+  plaintext: Einfacher Text
+
 browse:
   location:
     modalHeading: Ebene/Fundstelle wählen
