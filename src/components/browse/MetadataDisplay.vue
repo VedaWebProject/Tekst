@@ -44,7 +44,7 @@ const metaExtra = computed<string[][] | null>(() => {
     </h3>
 
     <template v-for="m in meta" :key="m[0]">
-      <div class="metadata-category">{{ m[0] || '' }}</div>
+      <div class="metadata-category">{{ m[0] ? `${m[0]}:` : '' }}</div>
       <div class="metadata-value">{{ m[1] || '' }}</div>
     </template>
 
@@ -53,7 +53,7 @@ const metaExtra = computed<string[][] | null>(() => {
     </h3>
 
     <template v-for="m in metaExtra" :key="m[0]">
-      <div class="metadata-category">{{ m[0] || '' }}</div>
+      <div class="metadata-category">{{ m[0] ? `${m[0]}:` : '' }}</div>
       <div class="metadata-value">{{ m[1] || '' }}</div>
     </template>
   </div>
@@ -63,17 +63,12 @@ const metaExtra = computed<string[][] | null>(() => {
 .metadata {
   display: grid;
   grid-template-columns: auto 1fr;
-
+  font-weight: var(--app-ui-font-weight-light);
   font-size: var(--app-ui-font-size-medium);
 }
 
 .metadata > .metadata-category {
-  font-weight: var(--app-ui-font-weight-normal);
   text-transform: capitalize;
-}
-
-.metadata > .metadata-value {
-  font-weight: var(--app-ui-font-weight-light);
 }
 
 .metadata > .metadata-category,
