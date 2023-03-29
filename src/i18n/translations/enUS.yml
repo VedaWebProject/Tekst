@@ -65,6 +65,7 @@ meta:
   metadata: Metadata
   baseData: Base data
   extraData: More
+  comment: Comment
 
 browse:
   location:

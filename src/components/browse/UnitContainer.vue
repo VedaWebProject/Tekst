@@ -11,6 +11,7 @@ const props = defineProps<{
   loading?: boolean;
   active?: boolean;
   meta?: Record<string, string>;
+  comment?: string;
 }>();
 
 const showMetaModal = ref(false);
@@ -22,6 +23,7 @@ const showMetaModal = ref(false);
       <div class="unit-container-title-heading">{{ props.title }}</div>
       <div>
         <n-button
+          v-if="props.meta || props.comment"
           quaternary
           circle
           @click="showMetaModal = true"
@@ -51,6 +53,10 @@ const showMetaModal = ref(false);
   >
     <h2>{{ props.title }}: {{ $t('meta.metadata') }}</h2>
     <MetadataDisplay :data="props.meta" :layer-type="props.layerType" />
+    <h3 v-if="props.comment">{{ $t('meta.comment') }}</h3>
+    <div v-if="props.comment" class="layer-comment">
+      {{ props.comment }}
+    </div>
     <ModalButtonFooter>
       <n-button type="primary" @click="() => (showMetaModal = false)">
         {{ $t('general.closeAction') }}
@@ -75,6 +81,12 @@ const showMetaModal = ref(false);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.layer-comment {
+  white-space: pre-wrap;
+  font-weight: var(--app-ui-font-weight-light);
+  font-size: var(--app-ui-font-size-medium);
 }
 
 .unit-container-loader {

@@ -36,6 +36,7 @@ const unitsExist = computed(() => {
     :active="!!(layer.active && layer.unit)"
     :meta="layer.meta"
     :layer-type="layer.layerType"
+    :comment="layer.comment"
   >
     <component :is="UNIT_COMPONENTS[layer.layerType]" :data="layer.unit" />
   </UnitContainer>
