@@ -25,7 +25,8 @@ const showBrowseToolbar = computed(() => !!state.text);
         </div>
 
         <n-button
-          secondary
+          :secondary="!browse.condensedView"
+          :ghost="browse.condensedView"
           size="large"
           :title="$t('browse.toolbar.tipCondensedView')"
           color="#fff"
