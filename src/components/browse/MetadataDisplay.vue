@@ -62,8 +62,8 @@ const metaExtra = computed<string[][] | null>(() => {
 <style scoped>
 .metadata {
   display: grid;
-  grid-template-columns: auto auto;
-  column-gap: 12px;
+  grid-template-columns: auto 1fr;
+
   font-size: var(--app-ui-font-size-medium);
 }
 
@@ -74,6 +74,12 @@ const metaExtra = computed<string[][] | null>(() => {
 
 .metadata > .metadata-value {
   font-weight: var(--app-ui-font-weight-light);
+}
+
+.metadata > .metadata-category,
+.metadata > .metadata-value {
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 0.25rem 0.5rem;
 }
 
 .metadata > .metadata-extra-subheading {
