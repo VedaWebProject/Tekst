@@ -2941,6 +2941,11 @@
             },
             "description": "Arbitrary metadata"
           },
+          "comment": {
+            "title": "Comment",
+            "type": "string",
+            "description": "Plaintext, potentially multiline comment on this layer"
+          },
           "config": {
             "$ref": "#/components/schemas/PlainTextLayerConfig"
           }
@@ -3006,6 +3011,11 @@
             },
             "description": "Arbitrary metadata"
           },
+          "comment": {
+            "title": "Comment",
+            "type": "string",
+            "description": "Plaintext, potentially multiline comment on this layer"
+          },
           "config": {
             "$ref": "#/components/schemas/PlainTextLayerConfig"
           }
@@ -3047,6 +3057,10 @@
             "additionalProperties": {
               "type": "string"
             }
+          },
+          "comment": {
+            "title": "Comment",
+            "type": "string"
           },
           "config": {
             "$ref": "#/components/schemas/PlainTextLayerConfig"

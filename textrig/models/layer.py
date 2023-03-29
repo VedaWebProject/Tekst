@@ -35,6 +35,9 @@ class LayerBase(ModelBase, ModelFactory):
     # owner_id: DocId = Field(None)  # TODO: users don't exist, yet
     public: bool = Field(False, description="Publication status of this layer")
     meta: Metadata | None = Field(None, description="Arbitrary metadata")
+    comment: str | None = Field(
+        None, description="Plaintext, potentially multiline comment on this layer"
+    )
 
     @validator("description")
     def handle_whitespaces_in_description(cls, v):

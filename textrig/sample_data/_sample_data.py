@@ -208,6 +208,7 @@ LAYERS = {
                 {"sample_node_position": 7, "text": "Foo Bar"},
             ],
             "meta": {"author": "Van Nooten & Holland", "year": "1995"},
+            "comment": "This is\na comment\nwith line breaks.",
         }
     ],
     "fdhdgg": [
@@ -271,6 +272,7 @@ LAYERS = {
                 "original title": "Warnung",
                 "language": "DE",
             },
+            "comment": "This version includes repetition markers.",
         }
     ],
 }
