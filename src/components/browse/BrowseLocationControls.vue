@@ -185,7 +185,14 @@ onMounted(() => browse.updateBrowseNodePath());
 <template>
   <!-- text location toolbar buttons -->
   <div class="text-location">
-    <router-link v-slot="{ navigate }" :to="getPrevNextRoute(-1)" custom>
+    <router-link
+      v-slot="{
+        // @ts-ignore
+        navigate,
+      }"
+      :to="getPrevNextRoute(-1)"
+      custom
+    >
       <n-button
         secondary
         @click="navigate"
