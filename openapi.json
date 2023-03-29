@@ -2780,20 +2780,7 @@
             "title": "Meta",
             "type": "object",
             "additionalProperties": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "integer"
-                },
-                {
-                  "type": "boolean"
-                },
-                {
-                  "type": "number"
-                }
-              ]
+              "type": "string"
             },
             "description": "Arbitrary metadata"
           }
@@ -2849,20 +2836,7 @@
             "title": "Meta",
             "type": "object",
             "additionalProperties": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "integer"
-                },
-                {
-                  "type": "boolean"
-                },
-                {
-                  "type": "number"
-                }
-              ]
+              "type": "string"
             },
             "description": "Arbitrary metadata"
           }
@@ -2899,20 +2873,7 @@
             "title": "Meta",
             "type": "object",
             "additionalProperties": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "integer"
-                },
-                {
-                  "type": "boolean"
-                },
-                {
-                  "type": "number"
-                }
-              ]
+              "type": "string"
             }
           }
         },
@@ -2976,20 +2937,7 @@
             "title": "Meta",
             "type": "object",
             "additionalProperties": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "integer"
-                },
-                {
-                  "type": "boolean"
-                },
-                {
-                  "type": "number"
-                }
-              ]
+              "type": "string"
             },
             "description": "Arbitrary metadata"
           },
@@ -3054,20 +3002,7 @@
             "title": "Meta",
             "type": "object",
             "additionalProperties": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "integer"
-                },
-                {
-                  "type": "boolean"
-                },
-                {
-                  "type": "number"
-                }
-              ]
+              "type": "string"
             },
             "description": "Arbitrary metadata"
           },
@@ -3110,20 +3045,7 @@
             "title": "Meta",
             "type": "object",
             "additionalProperties": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "integer"
-                },
-                {
-                  "type": "boolean"
-                },
-                {
-                  "type": "number"
-                }
-              ]
+              "type": "string"
             }
           },
           "config": {
@@ -3156,20 +3078,7 @@
             "title": "Meta",
             "type": "object",
             "additionalProperties": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "integer"
-                },
-                {
-                  "type": "boolean"
-                },
-                {
-                  "type": "number"
-                }
-              ]
+              "type": "string"
             },
             "description": "Arbitrary metadata on this layer unit"
           },
@@ -3211,20 +3120,7 @@
             "title": "Meta",
             "type": "object",
             "additionalProperties": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "integer"
-                },
-                {
-                  "type": "boolean"
-                },
-                {
-                  "type": "number"
-                }
-              ]
+              "type": "string"
             },
             "description": "Arbitrary metadata on this layer unit"
           },
@@ -3254,20 +3150,7 @@
             "title": "Meta",
             "type": "object",
             "additionalProperties": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "integer"
-                },
-                {
-                  "type": "boolean"
-                },
-                {
-                  "type": "number"
-                }
-              ]
+              "type": "string"
             }
           },
           "text": {
