@@ -138,7 +138,7 @@ onMounted(() => {
         <n-button
           text
           :focusable="false"
-          style="margin-bottom: 2rem; margin-top: -12px; font-size: 0.95rem"
+          style="margin-bottom: 2rem; font-size: var(--app-ui-font-size-mini)"
           @click="handleForgotPasswordClick"
         >
           {{ $t('login.forgotPassword') }}

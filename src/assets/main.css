@@ -2,7 +2,7 @@ html {
   overflow-y: scroll;
   box-sizing: border-box;
   margin: 0;
-  font-size: 16px;
+  font-size: var(--app-ui-font-size-medium);
 }
 
 body {
