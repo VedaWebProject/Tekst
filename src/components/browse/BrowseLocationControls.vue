@@ -200,7 +200,7 @@ onMounted(() => browse.updateBrowseNodePath());
         :focusable="false"
         :title="$t('browse.toolbar.tipPreviousLocation')"
         size="large"
-        color="#fffe"
+        color="#fff"
       >
         <template #icon>
           <ArrowBackIosRound />
@@ -214,7 +214,7 @@ onMounted(() => browse.updateBrowseNodePath());
       @click="showModal = true"
       :focusable="false"
       size="large"
-      color="#fffe"
+      color="#fff"
     >
       <template #icon>
         <MenuBookOutlined />
@@ -228,7 +228,7 @@ onMounted(() => browse.updateBrowseNodePath());
         :focusable="false"
         :title="$t('browse.toolbar.tipNextLocation')"
         size="large"
-        color="#fffe"
+        color="#fff"
       >
         <template #icon>
           <ArrowForwardIosRound />
@@ -294,7 +294,7 @@ onMounted(() => browse.updateBrowseNodePath());
 .text-location {
   display: flex;
   justify-content: space-between;
-  gap: 0.75rem;
+  gap: 12px;
 }
 .location-select-item {
   margin-bottom: 0.5rem;

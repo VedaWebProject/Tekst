@@ -20,6 +20,7 @@ export const useBrowseStore = defineStore('browse', () => {
   /* BROWSE UI CONTROLS */
 
   const showLayerToggleDrawer = ref(false);
+  const condensedView = ref(false);
 
   /* BROWSE NODE PATH */
 
@@ -162,6 +163,7 @@ export const useBrowseStore = defineStore('browse', () => {
 
   return {
     showLayerToggleDrawer,
+    condensedView,
     layers,
     nodePath,
     nodePathHead,

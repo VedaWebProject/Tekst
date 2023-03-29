@@ -3,6 +3,8 @@ import { computed } from 'vue';
 import { NAffix, NButton } from 'naive-ui';
 import BrowseLocationControls from '@/components/browse/BrowseLocationControls.vue';
 import BrowseLocationLabel from '@/components/browse/BrowseLocationLabel.vue';
+import CompressRound from '@vicons/material/CompressRound';
+import ExpandRound from '@vicons/material/ExpandRound';
 import LayersRound from '@vicons/material/LayersRound';
 import { useBrowseStore, useStateStore } from '@/stores';
 
@@ -17,14 +19,30 @@ const showBrowseToolbar = computed(() => !!state.text);
     <n-affix :top="0" class="browse-toolbar-affix accent-color-bg">
       <div class="browse-toolbar">
         <BrowseLocationControls />
+
         <div class="browse-toolbar-spacer">
           <BrowseLocationLabel v-show="!state.smallScreen" class="browse-location-label" />
         </div>
+
+        <n-button
+          secondary
+          size="large"
+          :title="$t('browse.toolbar.tipCondensedView')"
+          color="#fff"
+          :focusable="false"
+          @click="browse.condensedView = !browse.condensedView"
+        >
+          <template #icon>
+            <CompressRound v-if="!browse.condensedView" />
+            <ExpandRound v-if="browse.condensedView" />
+          </template>
+        </n-button>
+
         <n-button
           secondary
           size="large"
           :title="$t('browse.toolbar.tipOpenDataLayerList')"
-          color="#fffe"
+          color="#fff"
           :focusable="false"
           @click="browse.showLayerToggleDrawer = true"
         >
@@ -67,7 +85,7 @@ const showBrowseToolbar = computed(() => !!state.text);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 24px;
+  gap: 12px;
   margin: 0 auto;
   padding: 0 var(--layout-padding);
 }

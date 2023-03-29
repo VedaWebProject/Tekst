@@ -74,6 +74,7 @@ browse:
     tipSelectLocation: Select level/location
     tipPreviousLocation: Previous location on this level
     tipNextLocation: Next location on this level
+    tipCondensedView: Toggle condensed view
     tipOpenDataLayerList: Select data layers to display
   layerToggleDrawer:
     heading: Select data layers
