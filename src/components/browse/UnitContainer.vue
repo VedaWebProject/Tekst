@@ -24,7 +24,6 @@ const showMetaModal = ref(false);
         <n-button
           quaternary
           circle
-          color="#aaa"
           @click="showMetaModal = true"
           :focusable="false"
           :title="$t('meta.metadata')"

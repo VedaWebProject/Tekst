@@ -280,7 +280,7 @@ onMounted(() => browse.updateBrowseNodePath());
     </n-form>
     <!-- <pre style="font-size: 11px; line-height: 1">{{ locationSelectModels }}</pre> -->
     <ModalButtonFooter>
-      <n-button @click="() => (showModal = false)" :focusable="false">
+      <n-button @click="showModal = false" :focusable="false">
         {{ $t('general.cancelAction') }}
       </n-button>
       <n-button type="primary" @click="handleLocationSelect">
