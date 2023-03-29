@@ -114,7 +114,7 @@ watch(route, () => (menuOpen.value = false));
 
 .navbar-title {
   margin-right: 1.75rem;
-  font-size: 1.8rem;
+  font-size: 1.25rem;
   white-space: nowrap;
 }
 
