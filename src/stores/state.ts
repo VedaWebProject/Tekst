@@ -69,7 +69,7 @@ export const useStateStore = defineStore('state', () => {
 
   // current text accent color variants
   const accentColors = computed(() => {
-    const lighten = theme.value === 'dark' ? 0.15 : 0.0;
+    const lighten = theme.value === 'dark' ? 0.3 : 0.0;
     const base = Color(text.value ? text.value.accentColor : '#18A058').lighten(lighten);
     return {
       base: base.hex(),
