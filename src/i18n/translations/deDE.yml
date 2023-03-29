@@ -5,6 +5,7 @@ general:
   tipThemeToggleDark: Zu dunklem Farbschema wechseln
   selectAction: Auswählen
   cancelAction: Abbrechen
+  closeAction: Schließen
   quickSearch: Schnellsuche
   textSelect: Wählen Sie den Text, mit dem Sie arbeiten möchten
 
@@ -56,6 +57,15 @@ nav:
 
 layerTypes:
   plaintext: Einfacher Text
+
+meta:
+  author: Autor
+  year: Jahr
+  language: Sprache
+  layerType: Datenschicht-Typ
+  metadata: Metadaten
+  baseData: Basisdaten
+  extraData: Weitere Daten
 
 browse:
   location:

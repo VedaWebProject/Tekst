@@ -3,13 +3,14 @@ import { computed } from 'vue';
 import { NSwitch, NIcon } from 'naive-ui';
 import CheckRound from '@vicons/material/CheckRound';
 import { useI18n } from 'vue-i18n';
+import MetadataDisplayMinimal from './MetadataDisplayMinimal.vue';
 
 const props = defineProps<{
   active: boolean;
   title: string;
   layerType: string;
   disabled?: boolean;
-  meta?: Record<string, any>;
+  meta?: Record<string, string>;
 }>();
 const emits = defineEmits<{ (e: 'update:active', active: boolean): void }>();
 
@@ -26,13 +27,6 @@ const { t } = useI18n({ useScope: 'global' });
 const infoTooltip = computed(() =>
   props.disabled ? t('browse.layerToggleDrawer.noData') : undefined
 );
-const meta = computed(
-  () =>
-    props.meta && {
-      ...(props.meta.author && { author: props.meta.author }),
-      ...(props.meta.year && { year: props.meta.year }),
-    }
-);
 </script>
 
 <template>
@@ -44,10 +38,8 @@ const meta = computed(
     </n-switch>
     <div class="layer-toggle-item-main">
       <div class="layer-toggle-item-title">{{ props.title }}</div>
-      <div class="layer-toggle-item-type">
-        {{ meta.author && `${meta.author}, ` }}
-        {{ meta.year && `${meta.year}, ` }}
-        {{ $t(`layerTypes.${props.layerType}`) }}
+      <div class="layer-toggle-item-meta">
+        <MetadataDisplayMinimal :data="props.meta" :layer-type="props.layerType" />
       </div>
     </div>
   </div>
@@ -78,14 +70,14 @@ const meta = computed(
   font-weight: var(--app-ui-font-weight-normal);
 }
 
-.layer-toggle-item .layer-toggle-item-type {
+.layer-toggle-item .layer-toggle-item-meta {
   opacity: 0.6;
   font-size: var(--app-ui-font-size-mini);
   font-weight: var(--app-ui-font-weight-light);
 }
 
 .layer-toggle-item .layer-toggle-item-title,
-.layer-toggle-item .layer-toggle-item-type {
+.layer-toggle-item .layer-toggle-item-meta {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

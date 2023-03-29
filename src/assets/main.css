@@ -99,3 +99,8 @@ h5:first-child {
   color: #fff;
   transition: 0.3s;
 }
+
+.textrig-modal {
+  width: 600px;
+  max-width: 95%;
+}

@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { NButton, NIcon, NModal, NInput } from 'naive-ui';
 import SearchRound from '@vicons/material/SearchRound';
+import ModalButtonFooter from '@/components/ModalButtonFooter.vue';
 
 const showModal = ref(false);
 </script>
@@ -26,8 +27,8 @@ const showModal = ref(false);
     preset="card"
     embedded
     :closable="false"
-    size="huge"
-    style="width: 600px; max-width: 95%"
+    size="large"
+    class="textrig-modal"
   >
     <h2>{{ $t('search.quickSearch.heading') }}</h2>
 
@@ -40,9 +41,12 @@ const showModal = ref(false);
     <h3>{{ $t('search.settings.heading') }}</h3>
     <p>Quick Search settings go here...</p>
 
-    <div style="text-align: right">
+    <ModalButtonFooter>
+      <n-button @click="() => (showModal = false)" :focusable="false">
+        {{ $t('general.cancelAction') }}
+      </n-button>
       <n-button type="primary">{{ $t('search.searchAction') }}</n-button>
-    </div>
+    </ModalButtonFooter>
   </n-modal>
 </template>
 

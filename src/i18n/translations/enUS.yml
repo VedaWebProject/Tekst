@@ -5,6 +5,7 @@ general:
   tipThemeToggleDark: Switch to dark mode
   selectAction: Select
   cancelAction: Cancel
+  closeAction: Close
   textSelect: Select the text you want to work with
 
 dummy:
@@ -55,6 +56,15 @@ nav:
 
 layerTypes:
   plaintext: Plain Text
+
+meta:
+  author: Author
+  year: Year
+  language: Language
+  layerType: Datalayer Type
+  metadata: Metadata
+  baseData: Base data
+  extraData: Extra data
 
 browse:
   location:

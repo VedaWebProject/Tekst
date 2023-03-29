@@ -8,6 +8,7 @@ import ArrowForwardIosRound from '@vicons/material/ArrowForwardIosRound';
 import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
 import { NodesApi, type NodeRead, type TextRead } from '@/openapi';
 import router from '@/router';
+import ModalButtonFooter from '@/components/ModalButtonFooter.vue';
 
 const state = useStateStore();
 const browse = useBrowseStore();
@@ -237,7 +238,7 @@ onMounted(() => browse.updateBrowseNodePath());
     embedded
     :closable="false"
     size="large"
-    style="width: 600px; max-width: 95%"
+    class="textrig-modal"
   >
     <h2>{{ $t('browse.location.modalHeading') }}</h2>
     <n-form
@@ -271,14 +272,14 @@ onMounted(() => browse.updateBrowseNodePath());
       </n-form-item>
     </n-form>
     <!-- <pre style="font-size: 11px; line-height: 1">{{ locationSelectModels }}</pre> -->
-    <div style="display: flex; justify-content: end; gap: 24px; margin-top: 24px">
-      <n-button @click="() => (showModal = false)" :focusable="false">{{
-        $t('general.cancelAction')
-      }}</n-button>
-      <n-button type="primary" @click="handleLocationSelect">{{
-        $t('general.selectAction')
-      }}</n-button>
-    </div>
+    <ModalButtonFooter>
+      <n-button @click="() => (showModal = false)" :focusable="false">
+        {{ $t('general.cancelAction') }}
+      </n-button>
+      <n-button type="primary" @click="handleLocationSelect">
+        {{ $t('general.selectAction') }}
+      </n-button>
+    </ModalButtonFooter>
   </n-modal>
 </template>
 
