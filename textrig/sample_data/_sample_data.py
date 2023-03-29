@@ -207,11 +207,12 @@ LAYERS = {
                 {"sample_node_position": 6, "text": "Foo Bar"},
                 {"sample_node_position": 7, "text": "Foo Bar"},
             ],
+            "meta": {"author": "Van Nooten & Holland", "year": "1995"},
         }
     ],
     "fdhdgg": [
         {
-            "title": 'Originalfassung 1824 ("Warnung")',
+            "title": "Originalfassung",
             "level": 1,
             "layerType": "plaintext",
             "units": [
@@ -264,7 +265,12 @@ LAYERS = {
                     "text": "mit der Maus vorlieb. :|",
                 },
             ],
-            "meta": {"author": "Ernst Anschütz", "year": "1824", "title": "Warnung"},
+            "meta": {
+                "author": "Ernst Anschütz",
+                "year": "1824",
+                "original title": "Warnung",
+                "language": "DE",
+            },
         }
     ],
 }
