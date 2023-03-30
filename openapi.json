@@ -3510,6 +3510,7 @@
         "required": [
           "email",
           "password",
+          "username",
           "firstName",
           "lastName"
         ],
@@ -3539,12 +3540,23 @@
             "type": "boolean",
             "default": false
           },
+          "username": {
+            "title": "Username",
+            "maxLength": 16,
+            "minLength": 4,
+            "pattern": "[a-zA-Z0-9\\-\\._]+",
+            "type": "string"
+          },
           "firstName": {
             "title": "Firstname",
+            "maxLength": 64,
+            "minLength": 2,
             "type": "string"
           },
           "lastName": {
             "title": "Lastname",
+            "maxLength": 64,
+            "minLength": 2,
             "type": "string"
           }
         },
@@ -3558,6 +3570,7 @@
           "isActive",
           "isSuperuser",
           "isVerified",
+          "username",
           "firstName",
           "lastName"
         ],
@@ -3585,12 +3598,23 @@
             "title": "Isverified",
             "type": "boolean"
           },
+          "username": {
+            "title": "Username",
+            "maxLength": 16,
+            "minLength": 4,
+            "pattern": "[a-zA-Z0-9\\-\\._]+",
+            "type": "string"
+          },
           "firstName": {
             "title": "Firstname",
+            "maxLength": 64,
+            "minLength": 2,
             "type": "string"
           },
           "lastName": {
             "title": "Lastname",
+            "maxLength": 64,
+            "minLength": 2,
             "type": "string"
           }
         },
@@ -3621,12 +3645,23 @@
             "title": "Isverified",
             "type": "boolean"
           },
+          "username": {
+            "title": "Username",
+            "maxLength": 16,
+            "minLength": 4,
+            "pattern": "[a-zA-Z0-9\\-\\._]+",
+            "type": "string"
+          },
           "firstName": {
             "title": "Firstname",
+            "maxLength": 64,
+            "minLength": 2,
             "type": "string"
           },
           "lastName": {
             "title": "Lastname",
+            "maxLength": 64,
+            "minLength": 2,
             "type": "string"
           }
         },

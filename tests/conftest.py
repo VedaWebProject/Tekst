@@ -111,7 +111,11 @@ async def insert_test_data(test_app, reset_db, root_path, test_data) -> callable
 @pytest.fixture
 def new_user_data() -> dict:
     return lambda: dict(
-        email="foo@bar.de", password="poiPOI098", first_name="Foo", last_name="Bar"
+        email="foo@bar.de",
+        username="test_user",
+        password="poiPOI098",
+        first_name="Foo",
+        last_name="Bar",
     )
 
 

@@ -32,6 +32,7 @@ from fastapi_users_db_beanie.access_token import (
     BeanieBaseAccessToken,
 )
 from humps import decamelize
+from pydantic import constr
 
 from textrig.config import TextRigConfig, get_config
 from textrig.logging import log
@@ -44,8 +45,9 @@ _cfg: TextRigConfig = get_config()
 class UserBase(ModelBase):
     """This base class defines the custom fields added to FastAPI-User's user model"""
 
-    first_name: str
-    last_name: str
+    username: constr(min_length=4, max_length=16, regex=r"[a-zA-Z0-9\-\._]+")
+    first_name: constr(min_length=2, max_length=64)
+    last_name: constr(min_length=2, max_length=64)
 
 
 class User(UserBase, BeanieBaseUser[PyObjectId]):
@@ -300,9 +302,10 @@ async def create_sample_users():
     await _create_user(
         UserCreate(
             email=f"inactive{email_suffix}",
+            username="beth123",
             password=pw,
             first_name="Beth",
-            last_name="Inactive",
+            last_name="Smith",
             is_verified=True,
             is_active=False,
         )
@@ -311,9 +314,10 @@ async def create_sample_users():
     await _create_user(
         UserCreate(
             email=f"unverified{email_suffix}",
+            username="jerr.unif",
             password=pw,
             first_name="Jerry",
-            last_name="Unverified",
+            last_name="Smith",
             is_active=True,
         )
     )
@@ -321,9 +325,10 @@ async def create_sample_users():
     await _create_user(
         UserCreate(
             email=f"verified{email_suffix}",
+            username="the_morty",
             password=pw,
             first_name="Morty",
-            last_name="Verified",
+            last_name="Smith",
             is_verified=True,
             is_active=True,
         )
@@ -332,9 +337,10 @@ async def create_sample_users():
     await _create_user(
         UserCreate(
             email=f"superuser{email_suffix}",
+            username="SuperRick",
             password=pw,
             first_name="Rick",
-            last_name="Superuser",
+            last_name="Sanchez",
             is_verified=True,
             is_superuser=True,
             is_active=True,
