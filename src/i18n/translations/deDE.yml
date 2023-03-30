@@ -65,7 +65,7 @@ meta:
   layerType: Datenschicht-Typ
   metadata: Metadaten
   baseData: Basisdaten
-  extraData: Weiteres
+  extraData: Andere
   comment: Kommentar
 
 browse:

@@ -73,7 +73,7 @@ const metaExtra = computed<string[][] | null>(() => {
 
 .metadata > .metadata-category,
 .metadata > .metadata-value {
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: var(--main-bg-color);
   padding: 0.25rem 0.5rem;
 }
 

@@ -36,6 +36,7 @@ const showMetaModal = ref(false);
     :bordered="false"
     :auto-focus="false"
     :closable="false"
+    to="#app-container"
   >
     <h2>{{ props.title }}: {{ $t('meta.metadata') }}</h2>
     <MetadataDisplay :data="props.meta" />
