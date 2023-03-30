@@ -1,9 +1,10 @@
 import { ref, computed, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute, useRouter, type RouteLocationNormalized } from 'vue-router';
 import { defineStore } from 'pinia';
 import { useMessagesStore, useStateStore } from '@/stores';
 import type { NodeRead } from '@/openapi';
 import { LayersApi, NodesApi, UnitsApi } from '@/openapi/api';
+import type { AxiosResponse } from 'axios';
 
 export const useBrowseStore = defineStore('browse', () => {
   // composables
@@ -17,10 +18,11 @@ export const useBrowseStore = defineStore('browse', () => {
   const layersApi = new LayersApi();
   const unitsApi = new UnitsApi();
 
-  /* BROWSE UI CONTROLS */
+  /* BASIC BROWSE UI STATE */
 
   const showLayerToggleDrawer = ref(false);
   const condensedView = ref(false);
+  const loading = ref(true); // this is intentional!
 
   /* BROWSE NODE PATH */
 
@@ -86,7 +88,7 @@ export const useBrowseStore = defineStore('browse', () => {
   );
 
   // react to route changes concerning browse state
-  watch(route, (after, before) => {
+  watch(route, (after: RouteLocationNormalized, before: RouteLocationNormalized) => {
     if (after.name === 'browse' && after.params.text === before.params.text) {
       updateBrowseNodePath();
     }
@@ -98,50 +100,47 @@ export const useBrowseStore = defineStore('browse', () => {
 
   async function loadLayersData() {
     if (!state.text) return;
-    // set all layers to loading
-    layers.value.forEach((l) => {
-      l.loading = true;
-    });
+    // set to loading
+    loading.value = true;
     // fetch data
     try {
       // fetch layers data
       const layersData = await layersApi
         .findLayers({ textId: state.text.id })
-        .then((response) => response.data);
+        .then((response: AxiosResponse) => response.data);
       layersData.forEach((l: Record<string, any>) => {
         // keep layer deactivated if it was before
         const existingLayer = layers.value.find((lo) => lo.id === l.id);
         l.active = !existingLayer || existingLayer.active;
-        l.loading = false;
       });
       loadUnitsData(layersData);
     } catch (e) {
       console.error(e);
       messages.error('Error loading data layers for this location');
+      loading.value = false;
     }
   }
 
   async function loadUnitsData(layersData = layers.value) {
     if (!nodePathHead.value) return;
-    // set all layers to loading
-    layers.value.forEach((l) => {
-      l.loading = true;
-    });
+    // set to loading
+    loading.value = true;
     try {
       // fetch untis data
       const unitsData = await unitsApi
         .findUnits({ nodeId: [nodePathHead.value.id] })
-        .then((response) => response.data);
+        .then((response: AxiosResponse) => response.data);
       // assign units to layers
       layersData.forEach((l: Record<string, any>) => {
         l.unit = unitsData.find((u: Record<string, any>) => u.layerId == l.id);
-        l.loading = false;
       });
       // assign (potentially) fresh layers/untis data to store prop
       layers.value = layersData;
     } catch (e) {
       console.error(e);
       messages.error('Error loading data layer units for this location');
+    } finally {
+      loading.value = false;
     }
   }
 
@@ -164,6 +163,7 @@ export const useBrowseStore = defineStore('browse', () => {
   return {
     showLayerToggleDrawer,
     condensedView,
+    loading,
     layers,
     nodePath,
     nodePathHead,

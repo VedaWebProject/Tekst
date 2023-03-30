@@ -5,7 +5,7 @@ import BrowseToolbar from '@/components/browse/BrowseToolbar.vue';
 import { useStateStore, useBrowseStore } from '@/stores';
 import PlaintextUnit from '@/components/units/PlaintextUnit.vue';
 import UnitContainer from '@/components/browse/UnitContainer.vue';
-import { NIcon } from 'naive-ui';
+import { NIcon, NSpin } from 'naive-ui';
 import FolderOffTwotone from '@vicons/material/FolderOffTwotone';
 import LayerToggleDrawer from '@/components/browse/LayerToggleDrawer.vue';
 
@@ -32,7 +32,7 @@ const unitsExist = computed(() => {
     v-for="layer in browse.layers"
     :key="`${layer.id}_${layer.active ? 'active' : 'inactive'}`"
     :title="layer.title"
-    :loading="layer.loading"
+    :loading="browse.loading"
     :active="!!(layer.active && layer.unit)"
     :meta="layer.meta"
     :layer-type="layer.layerType"
@@ -41,12 +41,18 @@ const unitsExist = computed(() => {
     <component :is="UNIT_COMPONENTS[layer.layerType]" :data="layer.unit" />
   </UnitContainer>
 
-  <div v-show="!unitsExist" class="browse-no-data">
+  <div v-show="!unitsExist && !browse.loading" class="browse-no-data">
     <n-icon size="48">
       <FolderOffTwotone />
     </n-icon>
     <div>{{ $t('browse.noData') }}</div>
   </div>
+
+  <n-spin
+    v-if="!unitsExist && browse.loading"
+    style="margin: 3rem auto 2rem auto; display: flex"
+    :description="$t('loading.loading')"
+  ></n-spin>
 
   <LayerToggleDrawer v-model:show="browse.showLayerToggleDrawer" />
 </template>
