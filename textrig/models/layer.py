@@ -32,7 +32,13 @@ class LayerBase(ModelBase, ModelFactory):
     layer_type: str = Field(
         ..., description="A string identifying one of the available layer types"
     )
-    # owner_id: DocId = Field(None)  # TODO: users don't exist, yet
+    owner_id: PyObjectId | None = Field(None, description="User owning this layer")
+    shared_read: list[PyObjectId] = Field(
+        default_factory=list, description="Users with shared read access to this layer"
+    )
+    shared_write: list[PyObjectId] = Field(
+        default_factory=list, description="Users with shared write access to this layer"
+    )
     public: bool = Field(False, description="Publication status of this layer")
     meta: Metadata | None = Field(None, description="Arbitrary metadata")
     comment: str | None = Field(

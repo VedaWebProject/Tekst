@@ -2927,6 +2927,30 @@
             "type": "string",
             "description": "A string identifying one of the available layer types"
           },
+          "ownerId": {
+            "title": "Ownerid",
+            "type": "string",
+            "description": "User owning this layer",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "sharedRead": {
+            "title": "Sharedread",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "description": "Users with shared read access to this layer"
+          },
+          "sharedWrite": {
+            "title": "Sharedwrite",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "description": "Users with shared write access to this layer"
+          },
           "public": {
             "title": "Public",
             "type": "boolean",
@@ -2997,6 +3021,30 @@
             "type": "string",
             "description": "A string identifying one of the available layer types"
           },
+          "ownerId": {
+            "title": "Ownerid",
+            "type": "string",
+            "description": "User owning this layer",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "sharedRead": {
+            "title": "Sharedread",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "description": "Users with shared read access to this layer"
+          },
+          "sharedWrite": {
+            "title": "Sharedwrite",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "description": "Users with shared write access to this layer"
+          },
           "public": {
             "title": "Public",
             "type": "boolean",
@@ -3046,6 +3094,27 @@
           "layerType": {
             "title": "Layertype",
             "type": "string"
+          },
+          "ownerId": {
+            "title": "Ownerid",
+            "type": "string",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "sharedRead": {
+            "title": "Sharedread",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            }
+          },
+          "sharedWrite": {
+            "title": "Sharedwrite",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            }
           },
           "public": {
             "title": "Public",
