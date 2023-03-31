@@ -1,9 +1,4 @@
-# import re
-
-# from textrig.logging import log
 from beanie import init_beanie
-
-# from humps import camelize
 from motor.motor_asyncio import AsyncIOMotorClient as DatabaseClient
 from motor.motor_asyncio import AsyncIOMotorDatabase as Database
 

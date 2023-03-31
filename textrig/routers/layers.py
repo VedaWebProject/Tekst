@@ -1,26 +1,13 @@
-# import json
-# from tempfile import NamedTemporaryFile
-
 from fastapi import APIRouter, HTTPException, status
 
-# from textrig.dependencies import get_db_io
 from textrig.layer_types import get_layer_types
 from textrig.models.common import PyObjectId
-
-# from textrig.logging import log
 from textrig.models.layer import (
     LayerBase,
     LayerBaseDocument,
     LayerBaseUpdate,
 )
 from textrig.models.text import TextDocument
-
-
-# from fastapi.responses import FileResponse
-# from starlette.background import BackgroundTask
-
-
-# from textrig.utils.strings import safe_name
 
 
 def _generate_read_endpoint(
