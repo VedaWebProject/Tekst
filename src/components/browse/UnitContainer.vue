@@ -13,7 +13,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <div v-if="props.active" class="content-block" style="position: relative">
+  <div v-if="props.active" class="content-block unit-container">
     <div class="unit-container-header">
       <div class="unit-container-header-title">{{ props.title }}</div>
       <div>
@@ -28,6 +28,10 @@ const props = defineProps<{
 </template>
 
 <style scoped>
+.unit-container {
+  position: relative;
+  font-size: var(--app-ui-font-size);
+}
 .unit-container-header {
   display: flex;
   justify-content: flex-end;
@@ -39,7 +43,6 @@ const props = defineProps<{
 .unit-container-header-title {
   flex-grow: 2;
   color: var(--accent-color);
-  font-size: var(--app-ui-font-size-small);
   font-weight: var(--app-ui-font-weight-normal);
   overflow: hidden;
   text-overflow: ellipsis;
