@@ -55,6 +55,9 @@ class User(UserBase, BeanieBaseUser[PyObjectId]):
 
     is_active: bool = _cfg.security.users_active_by_default
 
+    class Settings(BeanieBaseUser.Settings):
+        name = "users"
+
 
 class UserRead(UserBase, schemas.BaseUser[PyObjectId]):
     """A user registered in the system"""
@@ -80,7 +83,8 @@ class UserUpdate(UserBase, schemas.BaseUserUpdate, metaclass=AllOptionalMeta):
 
 
 class AccessToken(BeanieBaseAccessToken[PyObjectId]):
-    pass
+    class Settings(BeanieBaseAccessToken.Settings):
+        name = "access_tokens"
 
 
 _cookie_transport = CookieTransport(
