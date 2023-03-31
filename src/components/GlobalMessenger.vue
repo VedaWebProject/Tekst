@@ -9,10 +9,11 @@ import {
 } from 'naive-ui';
 import { useMessagesStore } from '@/stores';
 import Color from 'color';
+import type { RenderMessageProps } from 'naive-ui/es/message/src/types';
 
 const themeVars = useThemeVars();
 
-const renderMessage: MessageRenderMessage = (props) => {
+const renderMessage: MessageRenderMessage = (props: RenderMessageProps) => {
   const { type } = props;
   return h(
     'div',
@@ -38,7 +39,19 @@ const renderMessage: MessageRenderMessage = (props) => {
         },
       },
       {
-        default: () => props.content,
+        default: () =>
+          h(
+            'div',
+            {
+              style: {
+                fontSize: 'var(--app-ui-font-size-small)',
+                margin: '-5px 0', // a dirty, but effective hack
+              },
+            },
+            {
+              default: () => props.content,
+            }
+          ),
       }
     )
   );
@@ -54,7 +67,6 @@ const MessageDispatcher = defineComponent({
         type: name,
         duration: (args[1] || 5) * 1000,
         render: renderMessage,
-        closable: true,
       });
     });
 
