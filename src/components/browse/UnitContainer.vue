@@ -14,8 +14,8 @@ const props = defineProps<{
 
 <template>
   <div v-if="props.active" class="content-block" style="position: relative">
-    <div class="unit-container-title">
-      <div class="unit-container-title-heading">{{ props.title }}</div>
+    <div class="unit-container-header">
+      <div class="unit-container-header-title">{{ props.title }}</div>
       <div>
         <MetadataWidget :title="props.title" :meta="props.meta" :comment="props.comment" />
       </div>
@@ -28,14 +28,15 @@ const props = defineProps<{
 </template>
 
 <style scoped>
-.unit-container-title {
+.unit-container-header {
   display: flex;
+  justify-content: flex-end;
   flex-wrap: wrap-reverse;
   column-gap: 12px;
   row-gap: 0px;
   margin-bottom: 0.5rem;
 }
-.unit-container-title-heading {
+.unit-container-header-title {
   flex-grow: 2;
   color: var(--accent-color);
   font-size: var(--app-ui-font-size-small);
