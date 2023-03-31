@@ -9,10 +9,12 @@ import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
 import { NodesApi, type NodeRead, type TextRead } from '@/openapi';
 import router from '@/router';
 import ModalButtonFooter from '@/components/ModalButtonFooter.vue';
+import { useMagicKeys, whenever } from '@vueuse/core';
 
 const state = useStateStore();
 const browse = useBrowseStore();
 const route = useRoute();
+const { ArrowLeft, ArrowRight } = useMagicKeys();
 
 const nodesApi = new NodesApi();
 
@@ -179,7 +181,27 @@ function handleLocationSelect() {
   showModal.value = false;
 }
 
+// initialize node path on mount
 onMounted(() => browse.updateBrowseNodePath());
+
+// react to keyboard for in-/decreasing location
+whenever(ArrowRight, () => {
+  router.push(getPrevNextRoute(1));
+});
+whenever(ArrowLeft, () => {
+  router.push(getPrevNextRoute(-1));
+});
+
+// onKeyStroke('ArrowRight', (e: KeyboardEvent) => {
+//   e.preventDefault();
+//   if (e.repeat) return;
+//   router.push(getPrevNextRoute(1));
+// });
+// onKeyStroke(' ', (e: KeyboardEvent) => {
+//   e.preventDefault();
+//   if (e.repeat) return;
+//   showModal.value = true;
+// });
 </script>
 
 <template>
