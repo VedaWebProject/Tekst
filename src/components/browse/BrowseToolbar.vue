@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { NAffix, NButton } from 'naive-ui';
+import { ref, onMounted } from 'vue';
+import { NButton } from 'naive-ui';
 import BrowseLocationControls from '@/components/browse/BrowseLocationControls.vue';
 import BrowseLocationLabel from '@/components/browse/BrowseLocationLabel.vue';
 import CompressRound from '@vicons/material/CompressRound';
@@ -11,19 +11,28 @@ import { useBrowseStore, useStateStore } from '@/stores';
 const state = useStateStore();
 const browse = useBrowseStore();
 
-const showBrowseToolbar = computed(() => !!state.text);
+const affixRef = ref(null);
+
+onMounted(() => {
+  if (affixRef.value) {
+    new IntersectionObserver(
+      ([e]) => e.target.classList.toggle('affixed', e.intersectionRatio < 1),
+      { threshold: [1] }
+    ).observe(affixRef.value);
+  }
+});
 </script>
 
 <template>
-  <div v-if="showBrowseToolbar" class="browse-toolbar-container">
-    <n-affix :top="0" class="browse-toolbar-affix accent-color-bg">
-      <div class="browse-toolbar">
-        <BrowseLocationControls />
+  <div ref="affixRef" class="browse-toolbar-container accent-color-bg">
+    <div v-show="!!state.text" class="browse-toolbar">
+      <BrowseLocationControls />
 
-        <div class="browse-toolbar-spacer">
-          <BrowseLocationLabel v-show="!state.smallScreen" class="browse-location-label" />
-        </div>
+      <div v-show="!state.smallScreen" class="browse-toolbar-middle">
+        <BrowseLocationLabel class="browse-location-label" />
+      </div>
 
+      <div class="browse-toolbar-end">
         <n-button
           :secondary="!browse.condensedView"
           :ghost="browse.condensedView"
@@ -52,52 +61,56 @@ const showBrowseToolbar = computed(() => !!state.text);
           </template>
         </n-button>
       </div>
-    </n-affix>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .browse-toolbar-container {
-  --browse-toolbar-height: 64px;
-  height: var(--browse-toolbar-height);
+  position: sticky;
+  top: -1px;
   border-radius: var(--app-ui-border-radius);
   box-shadow: var(--app-ui-block-box-shadow);
-}
-.browse-toolbar-affix {
   width: 100%;
   max-width: var(--max-app-width);
-  height: var(--browse-toolbar-height);
+  padding: 12px 0;
   border-radius: var(--app-ui-border-radius);
   box-shadow: var(--app-ui-block-box-shadow);
   transition: none;
 }
 
-.browse-toolbar-affix.n-affix--affixed {
-  border-radius: unset;
+.browse-toolbar-container.affixed {
+  border-top-left-radius: unset;
+  border-top-right-radius: unset;
   max-width: unset;
-  width: 100vw;
+  /* width: 100vw; */
   left: 0px;
   box-shadow: var(--app-ui-fixed-box-shadow);
   z-index: 2;
 }
 
 .browse-toolbar {
-  height: var(--browse-toolbar-height);
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  justify-content: space-around;
   align-items: center;
   gap: 12px;
   margin: 0 auto;
-  padding: 0 var(--layout-padding);
+  padding: 0 12px;
 }
 
-.browse-toolbar-spacer {
+.browse-toolbar-middle {
   flex-grow: 2;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.browse-toolbar-affix.n-affix--affixed .browse-toolbar {
+.browse-toolbar-end {
+  display: flex;
+  gap: 12px;
+}
+
+.browse-toolbar-container.affixed .browse-toolbar {
   max-width: var(--max-app-width);
 }
 
@@ -106,7 +119,7 @@ const showBrowseToolbar = computed(() => !!state.text);
   opacity: 0.75;
 }
 
-.browse-toolbar-affix.n-affix--affixed .browse-location-label {
+.browse-toolbar-container.affixed .browse-location-label {
   display: initial;
   overflow: hidden;
   text-overflow: ellipsis;
