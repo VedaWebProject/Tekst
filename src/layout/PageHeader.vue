@@ -32,10 +32,11 @@ const state = useStateStore();
   padding: 0 var(--layout-padding);
   max-width: var(--max-app-width);
   margin: 0 auto;
+  font-size: var(--app-ui-font-size-large);
 }
 
 #current-text .current-text-subtitle {
-  font-weight: 300;
+  font-weight: var(--app-ui-font-weight-light);
   filter: opacity(0.6);
 }
 </style>
