@@ -9,14 +9,14 @@ from starlette_csrf import CSRFMiddleware
 
 from textrig.auth import create_sample_users
 from textrig.config import TextRigConfig, get_config
-from textrig.db import init_odm
+from textrig.db import init_odm, reset_db
 from textrig.dependencies import get_db, get_db_client
 from textrig.layer_types import init_layer_type_manager
 from textrig.logging import log, setup_logging
 from textrig.models.settings import PlatformSettingsDocument
 from textrig.openapi import custom_openapi
 from textrig.routers import setup_routes
-from textrig.sample_data import create_sample_texts, reset_db
+from textrig.sample_data import create_sample_texts
 
 
 _cfg: TextRigConfig = get_config()  # get (possibly cached) config data
@@ -40,6 +40,11 @@ async def startup_routine(app: FastAPI) -> None:
     init_layer_type_manager()
     setup_routes(app)
 
+    # reset db (only in dev mode!)
+    if _cfg.dev_mode:
+        log.debug("Resetting DB...")
+        await reset_db()
+
     # this is ugly, but unfortunately we don't have access to FastAPI's
     # dependency injection system in these lifecycle routines, so we have to
     # pass all these things by hand...
@@ -59,8 +64,6 @@ async def startup_routine(app: FastAPI) -> None:
     # create/insert dev mode sample data
     if _cfg.dev_mode:
         log.info("Running development mode initialization routine...")
-        log.debug("Resetting DB...")
-        await reset_db()
         log.debug("Creating sample users...")
         await create_sample_users()
         log.debug("Creating sample texts...")

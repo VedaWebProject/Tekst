@@ -34,80 +34,17 @@ def get_client(db_uri: str) -> DatabaseClient:
     return _db_client
 
 
+async def reset_db():
+    """Drops the database"""
+    await get_client(_cfg.db.get_uri()).drop_database(_cfg.db.name)
+
+
 async def init_odm(db: Database) -> None:
     # collect basic models
     models = [TextDocument, NodeDocument, PlatformSettingsDocument, User, AccessToken]
     # add layer type models
-    for lt_name, lt_class in get_layer_types().items():
+    for lt_class in get_layer_types().values():
         models.append(lt_class.get_layer_model().get_document_model())
         models.append(lt_class.get_unit_model().get_document_model())
     # init beanie ODM
     await init_beanie(database=db, allow_index_dropping=True, document_models=models)
-
-
-# def for_mongo(obj: dict) -> dict:
-#     def gen_obj_ids(d: dict) -> dict:
-#         out = dict()
-#         for k, v in d.items():
-#             if not isinstance(k, str):
-#                 raise ValueError("Keys sould be strings")
-#             elif isinstance(v, dict):
-#                 out[k] = gen_obj_ids(v)
-#             elif re.match(_ID_KEY_PATTERN, k):
-#                 if PydanticObjectId.is_valid(str(v)):
-#                     out[k] = PydanticObjectId(str(v))
-#                 if k == "_id":
-#                     out[k] = out.pop("_id")
-#             else:
-#                 out[k] = v
-
-#         return out
-
-#     return camelize(gen_obj_ids(obj))
-
-
-# def from_mongo(obj: dict | list[dict]) -> dict:
-#     def encode_obj_ids(d: dict) -> dict:
-#         out = dict()
-#         for k, v in d.items():
-#             if not isinstance(k, str):
-#                 raise ValueError("Keys sould be strings")
-#             elif isinstance(v, dict):
-#                 out[k] = encode_obj_ids(v)
-#             elif re.match(_ID_KEY_PATTERN, k):
-#                 if isinstance(v, ObjectId):
-#                     out[k] = str(v)
-#                 if k == "_id":
-#                     out["id"] = out.pop(k)
-#             else:
-#                 out[k] = v
-#         return out
-
-#     if type(obj) is dict:
-#         return encode_obj_ids(obj)
-#     elif type(obj) is list:
-#         return [encode_obj_ids(o) for o in obj]
-#     else:
-#         raise TypeError(
-#             "The passed object must be of type "
-#             f"'dict' or 'list', got '{type(obj).__name__}'"
-#         )
-
-
-# class __DbClientProvider:
-#     def __init__(self):
-#         self._client: DatabaseClient = None
-
-#     def __call__(self, db_uri: str) -> DatabaseClient:
-#         if self._client is not None:
-#             return self._client
-
-#         self._client = DatabaseClient(db_uri)
-#         return self._client
-
-#     def close(self):
-#         if self._client is not None:
-#             self._client.close()
-
-
-# get_client = __DbClientProvider()
