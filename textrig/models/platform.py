@@ -1,6 +1,7 @@
 from pydantic import Field
 
 from textrig.config import InfoConfig, TextRigConfig, TextRigInfoConfig, get_config
+from textrig.layer_types import LayerTypeInfo
 from textrig.models.common import ModelBase
 from textrig.models.settings import PlatformSettingsRead
 from textrig.models.text import TextRead
@@ -22,3 +23,4 @@ class PlatformData(ModelBase):
     texts: list[TextRead]
     settings: PlatformSettingsRead
     security: PlatformSecurityInfo = Field(default_factory=PlatformSecurityInfo)
+    layer_types: list[LayerTypeInfo]

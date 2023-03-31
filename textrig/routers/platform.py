@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends
 
 from textrig.config import TextRigConfig
 from textrig.dependencies import get_cfg
+from textrig.layer_types import get_layer_types_info
 from textrig.models.platform import PlatformData
 from textrig.models.settings import PlatformSettingsDocument
 from textrig.routers.texts import get_all_texts
@@ -31,6 +32,7 @@ async def get_platform_data(cfg: TextRigConfig = Depends(get_cfg)) -> dict:
     return PlatformData(
         texts=await get_all_texts(),
         settings=await _get_platform_settings(),
+        layer_types=get_layer_types_info(),
     )
 
 

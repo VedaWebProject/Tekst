@@ -287,38 +287,6 @@
         }
       }
     },
-    "/layers/types": {
-      "get": {
-        "tags": [
-          "layers"
-        ],
-        "summary": "Get layer types info",
-        "description": "Returns a list of all available data layer types",
-        "operationId": "getLayerTypesInfo",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "title": "Response Get Layer Types Info Layers Types Get",
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/LayerTypeInfo"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid Request"
-          },
-          "404": {
-            "description": "Not found"
-          }
-        }
-      }
-    },
     "/layers/{id}": {
       "get": {
         "tags": [
@@ -3247,7 +3215,8 @@
         "title": "PlatformData",
         "required": [
           "texts",
-          "settings"
+          "settings",
+          "layerTypes"
         ],
         "type": "object",
         "properties": {
@@ -3288,6 +3257,13 @@
           },
           "security": {
             "$ref": "#/components/schemas/PlatformSecurityInfo"
+          },
+          "layerTypes": {
+            "title": "Layertypes",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LayerTypeInfo"
+            }
           }
         },
         "description": "Platform data used by the web client"

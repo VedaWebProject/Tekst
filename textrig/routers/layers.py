@@ -12,7 +12,6 @@ from textrig.models.layer import (
     LayerBase,
     LayerBaseDocument,
     LayerBaseUpdate,
-    LayerTypeInfo,
 )
 from textrig.models.text import TextDocument
 
@@ -235,22 +234,6 @@ async def find_layers(
 #         media_type="application/json",
 #         background=BackgroundTask(tempfile.close),
 #     )
-
-
-@router.get("/types", status_code=status.HTTP_200_OK)
-async def get_layer_types_info() -> list[LayerTypeInfo]:
-    """Returns a list of all available data layer types"""
-    return sorted(
-        [
-            {
-                "key": lt.get_safe_name(),
-                "name": lt.get_name(),
-                "description": lt.get_description(),
-            }
-            for lt in get_layer_types().values()
-        ],
-        key=lambda lt: lt["key"],
-    )
 
 
 @router.get("/{id}", status_code=status.HTTP_200_OK)

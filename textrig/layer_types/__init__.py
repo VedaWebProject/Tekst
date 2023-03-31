@@ -7,6 +7,7 @@ from abc import ABC, abstractmethod
 import pluggy
 
 from textrig.logging import log
+from textrig.models.common import ModelBase
 from textrig.models.layer import LayerBase
 from textrig.models.unit import UnitBase
 from textrig.utils.strings import safe_name
@@ -82,6 +83,12 @@ class LayerTypePluginABC(ABC):
         return template
 
 
+class LayerTypeInfo(ModelBase):
+    key: str
+    name: str
+    description: str
+
+
 def get_layer_types() -> dict[str, LayerTypePluginABC]:
     """
     Returns a dict of all layer types, mapping from
@@ -148,3 +155,18 @@ def init_layer_type_manager() -> None:
     manager.load_setuptools_entrypoints(group="textrig")
     # set global reference
     _layer_type_manager = manager
+
+
+def get_layer_types_info() -> list[LayerTypeInfo]:
+    """Returns a list of all available data layer types"""
+    return sorted(
+        [
+            {
+                "key": lt.get_safe_name(),
+                "name": lt.get_name(),
+                "description": lt.get_description(),
+            }
+            for lt in get_layer_types().values()
+        ],
+        key=lambda lt: lt["key"],
+    )
