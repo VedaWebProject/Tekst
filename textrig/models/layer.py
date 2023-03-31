@@ -75,9 +75,10 @@ class LayerBase(ModelBase, ModelFactory):
 
 
 class LayerBaseDocument(LayerBase, DocumentBase):
-    class Settings:
+    class Settings(DocumentBase.Settings):
         name = "layers"
         is_root = True
+        indexes = ["textId", "level", "layerType", "ownerId"]
 
 
 class LayerBaseRead(LayerBase, ReadBase):

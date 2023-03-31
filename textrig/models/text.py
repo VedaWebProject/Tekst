@@ -1,7 +1,13 @@
 from pydantic import Field, conint, validator
 from pydantic.color import Color
 
-from textrig.models.common import Metadata, ModelBase, ModelFactory, PyObjectId
+from textrig.models.common import (
+    DocumentBase,
+    Metadata,
+    ModelBase,
+    ModelFactory,
+    PyObjectId,
+)
 
 
 class Text(ModelBase, ModelFactory):
@@ -96,11 +102,13 @@ class Node(ModelBase, ModelFactory):
     )
     meta: Metadata | None = Field(None, description="Arbitrary metadata")
 
-    class Settings:
+
+class NodeDocument(Node, DocumentBase):
+    class Settings(DocumentBase.Settings):
         name = "nodes"
+        indexes = ["textId", "parentId", "level", "position"]
 
 
-NodeDocument = Node.get_document_model()
 NodeCreate = Node.get_create_model()
 NodeRead = Node.get_read_model()
 NodeUpdate = Node.get_update_model()

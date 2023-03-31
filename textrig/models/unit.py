@@ -38,9 +38,10 @@ class UnitBase(ModelBase, ModelFactory):
 
 
 class UnitBaseDocument(UnitBase, DocumentBase):
-    class Settings:
+    class Settings(DocumentBase.Settings):
         name = "units"
         is_root = True
+        indexes = ["layerId", "nodeId"]
 
 
 class UnitBaseUpdate(UnitBase, UpdateBase):
