@@ -42,12 +42,12 @@
   --app-ui-font-weight-light: 300;
   --app-ui-font-weight-normal: 400;
 
-  --app-ui-font-size: 22px;
-  --app-ui-font-size-mini: 18px;
-  --app-ui-font-size-tiny: 18px;
-  --app-ui-font-size-small: 20px;
-  --app-ui-font-size-medium: 20px;
-  --app-ui-font-size-large: 23px;
+  --app-ui-font-size: 20px;
+  --app-ui-font-size-mini: 16px;
+  --app-ui-font-size-tiny: 16px;
+  --app-ui-font-size-small: 18px;
+  --app-ui-font-size-medium: 18px;
+  --app-ui-font-size-large: 22px;
   --app-ui-font-size-huge: 24px;
 
   --app-ui-line-height: 1.8;
