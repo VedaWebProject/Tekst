@@ -1,5 +1,4 @@
 from textrig.config import TextRigConfig, get_config
-from textrig.dependencies import get_db_client
 from textrig.layer_types import LayerTypePluginABC, get_layer_types
 from textrig.logging import log
 from textrig.models.text import NodeDocument, TextDocument
@@ -8,10 +7,6 @@ from textrig.sample_data._sample_data import LAYERS, TEXTS
 
 _cfg: TextRigConfig = get_config()
 _layer_types = get_layer_types()
-
-
-async def reset_db():
-    await get_db_client(_cfg).drop_database(_cfg.db.name)
 
 
 async def _create_sample_node(node_data: dict, text_id: str, parent_id: str = None):
