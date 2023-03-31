@@ -41,6 +41,10 @@ from textrig.models.common import AllOptionalMeta, ModelBase, PyObjectId
 
 _cfg: TextRigConfig = get_config()
 
+# modify FastAPI-User's collection names
+BeanieBaseUser.Settings.name = "users"
+BeanieBaseAccessToken.Settings.name = "access_tokens"
+
 
 class UserBase(ModelBase):
     """This base class defines the custom fields added to FastAPI-User's user model"""
@@ -54,9 +58,6 @@ class User(UserBase, BeanieBaseUser[PyObjectId]):
     """User document model used by FastAPI-Users"""
 
     is_active: bool = _cfg.security.users_active_by_default
-
-    class Settings(BeanieBaseUser.Settings):
-        name = "users"
 
 
 class UserRead(UserBase, schemas.BaseUser[PyObjectId]):
@@ -83,8 +84,7 @@ class UserUpdate(UserBase, schemas.BaseUserUpdate, metaclass=AllOptionalMeta):
 
 
 class AccessToken(BeanieBaseAccessToken[PyObjectId]):
-    class Settings(BeanieBaseAccessToken.Settings):
-        name = "access_tokens"
+    pass
 
 
 _cookie_transport = CookieTransport(
