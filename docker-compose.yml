@@ -1,0 +1,51 @@
+version: "3.9"
+
+services:
+
+  webserver:
+    image: "caddy:2.6-alpine"
+    ports:
+      - "127.0.0.1:8008:80"
+    networks:
+      - front
+      - back
+
+  client-app:
+    build:
+      context: .
+      target: prod
+      platforms:
+        - "linux/amd64"
+    restart: always
+    init: true
+    env_file: [.env.prod]
+    networks:
+      - front
+
+  server-app:
+    build:
+      context: .
+      target: prod
+      platforms:
+        - "linux/amd64"
+    restart: always
+    init: true
+    depends_on:
+      - mongo
+    env_file: [.env.prod]
+    networks:
+      - back
+
+  mongo:
+    image: mongo:5.0.9
+    restart: always
+    init: true
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    networks:
+      - back
+
+networks:
+  front:
+  back:
