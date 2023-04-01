@@ -1,0 +1,46 @@
+version: "3.9"
+
+services:
+
+  caddy:
+    image: "caddy:2.6-alpine"
+    volumes:
+      - "./:/etc/caddy/:ro"
+    network_mode: "host"
+    profiles:
+      - dev
+
+  mongo:
+    image: mongo:5.0.9
+    restart: always
+    init: true
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    ports:
+      - 127.0.0.1:27017:27017
+    networks:
+      - devstack
+    profiles:
+      - dev
+      - test
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    init: true
+    depends_on:
+      - mongo
+    ports:
+      - 127.0.0.1:8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: root
+      ME_CONFIG_MONGODB_URL: mongodb://root:root@mongo:27017/
+    networks:
+      - devstack
+    profiles:
+      - dev
+
+networks:
+  devstack:

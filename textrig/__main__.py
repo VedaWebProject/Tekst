@@ -13,7 +13,7 @@ Command line interface to the main functionalities of TextRig server
 _cfg: TextRigConfig = get_config()
 
 
-async def _get_and_write_openapi_schema(
+async def _generate_openapi_schema(
     to_file: bool, output_file: str, indent: int, sort_keys: bool, quiet: bool
 ):
     import json
@@ -91,7 +91,7 @@ def schema(to_file: bool, output_file: str, indent: int, sort_keys: bool, quiet:
     (Important: The active TextRig environment variables might influence the schema!)
     """
     asyncio.run(
-        _get_and_write_openapi_schema(
+        _generate_openapi_schema(
             to_file=to_file,
             output_file=output_file,
             indent=indent,
