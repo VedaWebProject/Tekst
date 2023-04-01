@@ -3,4 +3,5 @@
 dist/
 node_modules/
 cypress/
-resources/
+Dockerfile
+.dockerignore
