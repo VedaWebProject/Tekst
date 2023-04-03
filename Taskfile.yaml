@@ -46,7 +46,7 @@ tasks:
     cmds:
       - defer: {task: test-stack-down}
       - task: test-stack-up
-      - echo "Giving MongoDB some time to initialize..."; sleep 3
+      - task: wait-for-mongodb
       - task: run-tests
 
   run-app:
@@ -71,7 +71,7 @@ tasks:
     cmds:
       - defer: {task: test-stack-down}
       - task: test-stack-up
-      - echo "Giving MongoDB some time to initialize..."; sleep 3
+      - task: wait-for-mongodb
       - poetry run python3 -m textrig schema -f
 
   pre-commit:
@@ -128,3 +128,7 @@ tasks:
             --tag "textrig-server:latest" \
             --tag "textrig-server:{{.TEXTRIG_VERSION}}" \
             --target prod .
+
+  wait-for-mongodb:
+    internal: true
+    cmd: printf "Waiting for MongoDB service"; while ! $(curl -f http://127.0.0.1:27017 > /dev/null 2>&1); do sleep 1; printf "."; done
