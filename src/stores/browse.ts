@@ -148,9 +148,11 @@ export const useBrowseStore = defineStore('browse', () => {
   watch(
     () => nodePathHead.value,
     (after: NodeRead | undefined, before: NodeRead | undefined) => {
-      if (after?.textId === before?.textId) {
+      if (after?.textId === before?.textId && layers.value.length > 0) {
         // selected text didn't change, only the location did,
-        // so it's enough to load new units data
+        // so it's enough to load new units data (secial case: if the layers
+        // array is empty, we try to load layers again,
+        // as the user might have just logged out)
         loadUnitsData();
       } else {
         // node path head changed because a different text was selected,
