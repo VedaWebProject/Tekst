@@ -3,5 +3,7 @@
 dist/
 node_modules/
 cypress/
+
 Dockerfile
 .dockerignore
+Taskfile.yml

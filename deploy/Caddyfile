@@ -1,6 +1,6 @@
-127.0.0.1:80 {
+:80 {
     try_files {path} /
     encode gzip
-    root * /app
+    root * /var/www/html/app
     file_server
 }
