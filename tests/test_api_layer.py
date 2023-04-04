@@ -77,7 +77,7 @@ async def test_update_layer(
     payload = {
         "title": "Foo Bar Baz",
         "textId": text_id,
-        "level": 1,
+        "level": 0,
         "layerType": "plaintext",
         "ownerId": user_data.get("id"),
     }

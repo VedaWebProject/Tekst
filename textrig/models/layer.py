@@ -113,3 +113,7 @@ class LayerBaseRead(LayerBase, ReadBase):
 
 class LayerBaseUpdate(LayerBase, UpdateBase):
     pass
+
+
+class LayerIdView(ReadBase):
+    pass

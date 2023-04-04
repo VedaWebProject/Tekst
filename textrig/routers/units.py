@@ -1,8 +1,10 @@
 from beanie.operators import In
-from fastapi import APIRouter, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 
+from textrig.auth import UserRead, dep_user, dep_user_optional
 from textrig.layer_types import get_layer_types
 from textrig.models.common import PyObjectId
+from textrig.models.layer import LayerBaseDocument, LayerIdView
 from textrig.models.unit import UnitBase, UnitBaseDocument, UnitBaseUpdate
 
 
@@ -10,9 +12,20 @@ def _generate_read_endpoint(
     unit_document_model: type[UnitBase],
     unit_read_model: type[UnitBase],
 ):
-    async def get_unit(id: PyObjectId) -> unit_read_model:
+    async def get_unit(
+        id: PyObjectId, user: UserRead | None = Depends(dep_user_optional)
+    ) -> unit_read_model:
         """A generic route for reading a unit from the database"""
         unit_doc = await unit_document_model.get(id)
+        # check if the layer this unit belongs to is readable by user
+        layer_read_allowed = unit_doc and (
+            await LayerBaseDocument.find(
+                LayerBaseDocument.id == unit_doc.layer_id, with_children=True
+            )
+            .find(LayerBaseDocument.allowed_to_read(user))
+            .exists()
+        )
+        unit_doc = unit_doc if layer_read_allowed else None
         if not unit_doc:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
@@ -28,7 +41,22 @@ def _generate_create_endpoint(
     unit_create_model: type[UnitBase],
     unit_read_model: type[UnitBase],
 ):
-    async def create_unit(unit: unit_create_model) -> unit_read_model:
+    async def create_unit(
+        unit: unit_create_model, user: UserRead = Depends(dep_user)
+    ) -> unit_read_model:
+        # check if the layer this unit belongs to is writable by user
+        layer_write_allowed = (
+            await LayerBaseDocument.find(
+                LayerBaseDocument.id == unit.layer_id, with_children=True
+            )
+            .find(LayerBaseDocument.allowed_to_write(user))
+            .exists()
+        )
+        if not layer_write_allowed:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="No write access for units belonging to this layer",
+            )
         dupes_criteria = {"layerId": True, "nodeId": True}
         if await unit_document_model.find(
             unit.dict(include=dupes_criteria)
@@ -48,7 +76,7 @@ def _generate_update_endpoint(
     unit_update_model: type[UnitBase],
 ):
     async def update_unit(
-        id: PyObjectId, updates: unit_update_model
+        id: PyObjectId, updates: unit_update_model, user: UserRead = Depends(dep_user)
     ) -> unit_read_model:
         unit_doc = await unit_document_model.get(id)
         if not unit_doc:
@@ -56,6 +84,26 @@ def _generate_update_endpoint(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=f"Unit with ID {id} doesn't exist",
             )
+        # check if unit's layer ID matches updates' layer ID (if it has one specified)
+        if updates.layer_id and unit_doc.layer_id != updates.layer_id:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Referenced layer IDs in unit and updates doesn't match",
+            )
+        # check if the layer this unit belongs to is writable by user
+        layer_write_allowed = (
+            await LayerBaseDocument.find(
+                LayerBaseDocument.id == unit_doc.layer_id, with_children=True
+            )
+            .find(LayerBaseDocument.allowed_to_write(user))
+            .exists()
+        )
+        if not layer_write_allowed:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="No write access for units belonging to this layer",
+            )
+        # apply updates
         await unit_doc.set(updates.dict(exclude_unset=True))
         return unit_doc
 
@@ -131,6 +179,7 @@ async def find_units(
         description="ID (or list of IDs) of node(s) to return unit data for",
     ),
     limit: int = 1000,
+    user: UserRead | None = Depends(dep_user_optional),
 ) -> list[dict]:
     """
     Returns a list of all data layer units matching the given criteria.
@@ -139,10 +188,20 @@ async def find_units(
     returned unit objects cannot be typed to their precise layer unit type.
     """
 
+    readable_layers = (
+        await LayerBaseDocument.find(
+            LayerBaseDocument.allowed_to_read(user), with_children=True
+        )
+        .project(LayerIdView)
+        .to_list()
+    )
+    readable_layer_ids = [layer.id for layer in readable_layers]
+
     units = (
         await UnitBaseDocument.find(
             In(UnitBaseDocument.layer_id, layer_id) if layer_id else {},
             In(UnitBaseDocument.node_id, node_id) if node_id else {},
+            In(UnitBaseDocument.layer_id, readable_layer_ids),
             with_children=True,
         )
         .limit(limit)
