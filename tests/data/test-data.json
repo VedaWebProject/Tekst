@@ -28,7 +28,8 @@
     {
       "title": "A test layer",
       "level": 0,
-      "layerType": "plaintext"
+      "layerType": "plaintext",
+      "public": true
     }
   ]
 }

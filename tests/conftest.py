@@ -6,6 +6,7 @@ import requests
 from asgi_lifespan import LifespanManager
 from httpx import AsyncClient, Response
 from textrig.app import app
+from textrig.auth import UserCreate, _create_user
 from textrig.config import TextRigConfig, get_config
 from textrig.db import DatabaseClient
 from textrig.dependencies import get_db_client
@@ -79,7 +80,7 @@ async def test_client(test_app) -> AsyncClient:
 
 @pytest.fixture
 async def reset_db(get_db_client_override, config):
-    for collection in ("texts", "nodes", "layers", "units"):
+    for collection in ("texts", "nodes", "layers", "units", "users"):
         await get_db_client_override[config.db.name][collection].drop()
 
 
@@ -110,13 +111,44 @@ async def insert_test_data(test_app, reset_db, root_path, test_data) -> callable
 
 @pytest.fixture
 def new_user_data() -> dict:
-    return lambda: dict(
+    return dict(
         email="foo@bar.de",
         username="test_user",
         password="poiPOI098",
         first_name="Foo",
         last_name="Bar",
     )
+
+
+@pytest.fixture
+async def register_test_user(new_user_data) -> callable:
+    async def _register_test_user(superuser: bool = False) -> dict:
+        user = UserCreate(**new_user_data)
+        user.is_active = True
+        user.is_verified = True
+        user.is_superuser = superuser
+        created_user = await _create_user(user)
+        return {"id": str(created_user.id), **new_user_data}
+
+    return _register_test_user
+
+
+@pytest.fixture
+async def get_session_cookie(
+    config, test_client, root_path, status_fail_msg
+) -> callable:
+    async def _get_session_cookie(user_data: dict) -> dict:
+        endpoint = f"{root_path}/auth/cookie/login"
+        payload = {"username": user_data["email"], "password": user_data["password"]}
+        resp = await test_client.post(
+            endpoint,
+            data=payload,
+        )
+        assert resp.status_code == 200, status_fail_msg(200, resp)
+        assert resp.cookies.get(config.security.auth_cookie_name)
+        return resp.cookies
+
+    return _get_session_cookie
 
 
 @pytest.fixture(scope="session")

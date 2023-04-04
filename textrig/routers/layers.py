@@ -1,5 +1,6 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
 
+from textrig.auth import UserRead, dep_user, dep_user_optional
 from textrig.layer_types import get_layer_types
 from textrig.models.common import PyObjectId
 from textrig.models.layer import (
@@ -11,18 +12,24 @@ from textrig.models.text import TextDocument
 
 
 def _generate_read_endpoint(
-    layer_document_model: type[LayerBase],
-    layer_read_model: type[LayerBase],
+    layer_document_model: type[LayerBase], layer_read_model: type[LayerBase]
 ):
-    async def get_layer(id: PyObjectId) -> layer_read_model:
+    async def get_layer(
+        id: PyObjectId, user: UserRead | None = Depends(dep_user_optional)
+    ) -> layer_read_model:
         """A generic route for reading a layer definition from the database"""
-        layer_doc = await layer_document_model.get(id)
+        layer_doc = (
+            await layer_document_model.find(layer_document_model.id == id)
+            .find(layer_document_model.allowed_to_read(user))
+            .first_or_none()
+        )
         if not layer_doc:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail=f"Could not find layer with ID {id}",
             )
-        return layer_doc
+        # return only fields that are not restricted for this user
+        return layer_doc.dict(exclude=layer_doc.restricted_fields(user and user.id))
 
     return get_layer
 
@@ -32,13 +39,19 @@ def _generate_create_endpoint(
     layer_create_model: type[LayerBase],
     layer_read_model: type[LayerBase],
 ):
-    async def create_layer(layer: layer_create_model) -> layer_read_model:
-        if not await TextDocument.find(
-            TextDocument.id == layer.text_id
-        ).first_or_none():
+    async def create_layer(
+        layer: layer_create_model, user: UserRead = Depends(dep_user)
+    ) -> layer_read_model:
+        if not await TextDocument.get(layer.text_id):
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=f"Layer refers to non-existent text '{layer.text_id}'",
+            )
+        uid = user.id if user else "no_id"
+        if uid != layer.owner_id:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Layer's owner ID doesn't match requesting user's ID",
             )
         return await layer_document_model(**layer.dict()).create()
 
@@ -51,16 +64,20 @@ def _generate_update_endpoint(
     layer_update_model: type[LayerBase],
 ):
     async def update_layer(
-        id: PyObjectId, updates: layer_update_model
+        id: PyObjectId, updates: layer_update_model, user: UserRead = Depends(dep_user)
     ) -> layer_read_model:
-        layer: layer_document_model = await layer_document_model.get(id)
-        if not layer:
+        layer_doc: layer_document_model = (
+            await layer_document_model.find(layer_document_model.id == id)
+            .find(layer_document_model.allowed_to_write(user))
+            .first_or_none()
+        )
+        if not layer_doc:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=f"Layer with ID {id} doesn't exist",
             )
-        await layer.set(updates.dict(exclude_unset=True))
-        return layer
+        await layer_doc.set(updates.dict(exclude_unset=True))
+        return layer_doc
 
     return update_layer
 
@@ -133,6 +150,7 @@ async def find_layers(
     level: int = None,
     layer_type: str = None,
     limit: int = 1000,
+    user: UserRead | None = Depends(dep_user_optional),
 ) -> list[dict]:
     """
     Returns a list of all data layers matching the given criteria.
@@ -142,6 +160,7 @@ async def find_layers(
     """
 
     example = {"textId": text_id}
+
     # add to example
     if level is not None:
         example["level"] = level
@@ -149,13 +168,20 @@ async def find_layers(
         example["layerType"] = layer_type
 
     layers = (
-        await LayerBaseDocument.find(example, with_children=True).limit(limit).to_list()
+        await LayerBaseDocument.find(example, with_children=True)
+        .find(LayerBaseDocument.allowed_to_read(user))
+        .limit(limit)
+        .to_list()
     )
 
-    # calling dict(rename_id=True) on these models here makes sure they have
+    # calling dict(rename_id=True) on these models makes sure they have
     # "id" instead of "_id", because we're not using a proper read model here
     # that could take care of that automatically (as we don't know the exact type)
-    return [layer.dict(rename_id=True) for layer in layers]
+    uid = user and user.id
+    return [
+        layer.dict(rename_id=True, exclude=layer.restricted_fields(uid))
+        for layer in layers
+    ]
 
 
 #
@@ -225,9 +251,13 @@ async def find_layers(
 
 @router.get("/{id}", status_code=status.HTTP_200_OK)
 async def get_generic_layer_data_by_id(
-    id: PyObjectId,
+    id: PyObjectId, user: UserRead | None = Depends(dep_user_optional)
 ) -> dict:
-    layer_doc = await LayerBaseDocument.get(id, with_children=True)
+    layer_doc = (
+        await LayerBaseDocument.find(LayerBaseDocument.id == id, with_children=True)
+        .find(LayerBaseDocument.allowed_to_read(user))
+        .first_or_none()
+    )
     if not layer_doc:
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail=f"No layer with ID {id}")
-    return layer_doc
+    return layer_doc.dict(exclude=layer_doc.restricted_fields(user and user.id))

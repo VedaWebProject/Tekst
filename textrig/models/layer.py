@@ -1,7 +1,9 @@
 import re
 
+from beanie.operators import Or
 from pydantic import Field, validator
 
+from textrig.auth import UserRead
 from textrig.models.common import (
     DocumentBase,
     Metadata,
@@ -75,6 +77,30 @@ class LayerBase(ModelBase, ModelFactory):
 
 
 class LayerBaseDocument(LayerBase, DocumentBase):
+    @classmethod
+    def allowed_to_read(cls, user: UserRead | None) -> Or:
+        uid = user.id if user else "no_id"
+        return Or(
+            {"public": True},
+            {"ownerId": uid},
+            {"sharedRead": uid},
+            {"sharedWrite": uid},
+        )
+
+    @classmethod
+    def allowed_to_write(cls, user: UserRead | None) -> Or:
+        uid = user.id if user else "no_id"
+        return Or(
+            {"ownerId": uid},
+            {"sharedWrite": uid},
+        )
+
+    def restricted_fields(self, user_id: str = None) -> dict:
+        return {
+            "shared_read": user_id is None or self.owner_id != user_id,
+            "shared_write": user_id is None or self.owner_id != user_id,
+        }
+
     class Settings(DocumentBase.Settings):
         name = "layers"
         is_root = True

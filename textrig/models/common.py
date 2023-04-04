@@ -56,6 +56,16 @@ class _IDMixin(BaseModel):
 class DocumentBase(Document):
     """Base class for all TextRig ODM models"""
 
+    def restricted_fields(self, user_id: str = None) -> dict:
+        """
+        This may or may not be overridden to define access-restricted fields
+        that should be excluded from .dict() and .json() calls based on
+        the given user ID trying to access data.
+        IMPORTANT: We have to use snake_cased field names in the output dict!
+        Not the camelCased aliases!
+        """
+        return None
+
     async def insert(self, **kwargs):
         self.id = None  # reset ID for new document in case one is already set
         return await super().insert(**kwargs)
@@ -84,7 +94,7 @@ class AllOptionalMeta(ModelMetaclass):
         return super().__new__(cls, name, bases, namespaces, **kwargs)
 
 
-class CreateBase:
+class CreateBase(ModelBase):
     pass
 
 

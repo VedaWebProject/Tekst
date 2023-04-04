@@ -8,7 +8,7 @@ async def test_register(
     root_path, test_client: AsyncClient, new_user_data, status_fail_msg
 ):
     endpoint = f"{root_path}/auth/register"
-    payload = new_user_data()
+    payload = new_user_data
     resp = await test_client.post(endpoint, json=payload)
     assert resp.status_code == 201, status_fail_msg(201, resp)
     assert "id" in resp.json()
@@ -19,7 +19,7 @@ async def test_register_invalid_pw(
     root_path, test_client: AsyncClient, new_user_data, status_fail_msg
 ):
     endpoint = f"{root_path}/auth/register"
-    payload = new_user_data()
+    payload = new_user_data
 
     payload["password"] = "foo"
     resp = await test_client.post(endpoint, json=payload)

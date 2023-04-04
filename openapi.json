@@ -96,7 +96,15 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
       },
       "patch": {
         "tags": [
@@ -154,7 +162,15 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
       }
     },
     "/layers/plaintext": {
@@ -202,7 +218,15 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
       }
     },
     "/layers": {
@@ -284,7 +308,15 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
       }
     },
     "/layers/{id}": {
@@ -334,7 +366,15 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
       }
     },
     "/nodes": {

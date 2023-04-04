@@ -5,9 +5,17 @@ from httpx import AsyncClient
 
 @pytest.mark.anyio
 async def test_create_layer(
-    root_path, test_client: AsyncClient, test_data, insert_test_data, status_fail_msg
+    root_path,
+    test_client: AsyncClient,
+    test_data,
+    insert_test_data,
+    status_fail_msg,
+    register_test_user,
+    get_session_cookie,
 ):
     text_id = await insert_test_data("texts", "nodes")
+    user_data = await register_test_user()
+    session_cookie = await get_session_cookie(user_data)
     endpoint = f"{root_path}/layers/plaintext"
     payload = {
         "title": "A test layer",
@@ -15,13 +23,15 @@ async def test_create_layer(
         "description": "This is     a string with \n some space    chars",
         "level": 0,
         "layerType": "plaintext",
+        "ownerId": user_data["id"],
     }
 
-    resp = await test_client.post(endpoint, json=payload)
+    resp = await test_client.post(endpoint, json=payload, cookies=session_cookie)
     assert resp.status_code == 201, status_fail_msg(201, resp)
     assert "id" in resp.json()
     assert resp.json()["title"] == "A test layer"
     assert resp.json()["description"] == "This is a string with some space chars"
+    assert resp.json()["ownerId"] == user_data.get("id")
 
 
 @pytest.mark.anyio
@@ -51,33 +61,44 @@ async def test_create_layer_invalid(
 
 
 @pytest.mark.anyio
-async def test_get_layer(
-    root_path, test_client: AsyncClient, insert_test_data, status_fail_msg
+async def test_update_layer(
+    root_path,
+    test_client: AsyncClient,
+    insert_test_data,
+    status_fail_msg,
+    register_test_user,
+    get_session_cookie,
 ):
     text_id = await insert_test_data("texts", "nodes", "layers")
-    # get existing layer id
-    endpoint = f"{root_path}/layers"
-    resp = await test_client.get(endpoint, params={"textId": text_id})
-    assert resp.status_code == 200, status_fail_msg(200, resp)
-    assert isinstance(resp.json(), list)
-    assert len(resp.json()) > 0
-    assert isinstance(resp.json()[0], dict)
-    assert "id" in resp.json()[0]
-    assert "layerType" in resp.json()[0]
+    user_data = await register_test_user()
+    session_cookie = await get_session_cookie(user_data)
+    # create new layer (because only owner can update(write))
+    endpoint = f"{root_path}/layers/plaintext"
+    payload = {
+        "title": "Foo Bar Baz",
+        "textId": text_id,
+        "level": 1,
+        "layerType": "plaintext",
+        "ownerId": user_data.get("id"),
+    }
+    resp = await test_client.post(endpoint, json=payload, cookies=session_cookie)
+    assert resp.status_code == 201, status_fail_msg(201, resp)
+    layer_data = resp.json()
+    assert "id" in layer_data
+    assert "ownerId" in layer_data
     # update layer
-    layer = resp.json()[0]
-    update = {"title": "foo bar baz"}
-    endpoint = f"{root_path}/layers/{layer['layerType']}/{layer['id']}"
-    resp = await test_client.patch(endpoint, json=update)
+    updates = {"title": "This Title Changed"}
+    endpoint = f"{root_path}/layers/{layer_data['layerType']}/{layer_data['id']}"
+    resp = await test_client.patch(endpoint, json=updates, cookies=session_cookie)
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), dict)
     assert "id" in resp.json()
-    assert resp.json()["id"] == str(layer["id"])
-    assert resp.json()["title"] == update["title"]
+    assert resp.json()["id"] == str(layer_data["id"])
+    assert resp.json()["title"] == updates["title"]
 
 
 @pytest.mark.anyio
-async def test_update_layer(
+async def test_get_layer(
     root_path, test_client: AsyncClient, insert_test_data, status_fail_msg
 ):
     text_id = await insert_test_data("texts", "nodes", "layers")

@@ -197,6 +197,7 @@ LAYERS = {
             "title": "Van Nooten & Holland",
             "level": 2,
             "layerType": "plaintext",
+            "public": True,
             "units": [
                 {"sample_node_position": 0, "text": "Foo Bar"},
                 {"sample_node_position": 1, "text": "Foo Bar"},
@@ -209,13 +210,14 @@ LAYERS = {
             ],
             "meta": {"author": "Van Nooten & Holland", "year": "1995"},
             "comment": "This is\na comment\nwith line breaks.",
-        }
+        },
     ],
     "fdhdgg": [
         {
             "title": "Originalfassung",
             "level": 1,
             "layerType": "plaintext",
+            "public": True,
             "units": [
                 {
                     "sample_node_position": 0,

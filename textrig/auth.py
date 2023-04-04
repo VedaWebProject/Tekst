@@ -262,19 +262,16 @@ def _current_user(**kwargs) -> callable:
 
 
 # prepare auth dependencies for API routes
-dep_user_unverified = _current_user()
-dep_user_inactive = _current_user(verified=True)
-dep_user = _current_user(verified=True, active=True)
-dep_superuser = _current_user(verified=True, active=True, superuser=True)
-dep_user_unverified_optional = _current_user(optional=True)
-dep_user_optional = _current_user(optional=True, verified=True)
-dep_user_active_optional = _current_user(optional=True, verified=True, active=True)
-dep_superuser_optional = _current_user(
-    optional=True, verified=True, active=True, superuser=True
+dep_user = _current_user(verified=_cfg.security.users_need_verification, active=True)
+dep_superuser = _current_user(
+    verified=_cfg.security.users_need_verification, active=True, superuser=True
+)
+dep_user_optional = _current_user(
+    verified=_cfg.security.users_need_verification, active=True, optional=True
 )
 
 
-async def _create_user(user: UserCreate):
+async def _create_user(user: UserCreate) -> UserRead:
     """
     Creates/registers a new user programmatically
     """
@@ -283,7 +280,7 @@ async def _create_user(user: UserCreate):
     try:
         async with get_user_db_context() as user_db:
             async with get_user_manager_context(user_db) as user_manager:
-                await user_manager.create(user, safe=False)
+                return await user_manager.create(user, safe=False)
     except UserAlreadyExists:
         log.warning("User already exists. Skipping.")
 
