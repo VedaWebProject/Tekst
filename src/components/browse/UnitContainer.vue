@@ -56,7 +56,6 @@ const props = defineProps<{
   width: 100%;
   height: 100%;
   background-color: var(--content-bg-color);
-  opacity: 0.9;
   border-radius: var(--app-ui-border-radius);
 }
 
