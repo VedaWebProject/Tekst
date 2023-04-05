@@ -77,7 +77,7 @@ browse:
     tipSelectLocation: Ebene/Fundstelle wählen
     tipPreviousLocation: Vorherige Fundstelle auf dieser Ebene
     tipNextLocation: Nächste Fundstelle auf dieser Ebene
-    tipCondensedView: Reduzierte Ansicht umschalten
+    tipReducedView: Reduzierte Leseansicht umschalten
     tipOpenDataLayerList: Anzuzeigende Datenschichten wählen
   layerToggleDrawer:
     heading: Datenschichten wählen

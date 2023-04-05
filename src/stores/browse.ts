@@ -21,7 +21,7 @@ export const useBrowseStore = defineStore('browse', () => {
   /* BASIC BROWSE UI STATE */
 
   const showLayerToggleDrawer = ref(false);
-  const condensedView = ref(false);
+  const reducedView = ref(false);
   const loading = ref(true); // this is intentional!
 
   /* BROWSE NODE PATH */
@@ -164,7 +164,7 @@ export const useBrowseStore = defineStore('browse', () => {
 
   return {
     showLayerToggleDrawer,
-    condensedView,
+    reducedView,
     loading,
     layers,
     nodePath,

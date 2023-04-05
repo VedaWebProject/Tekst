@@ -34,17 +34,17 @@ onMounted(() => {
 
       <div class="browse-toolbar-end">
         <n-button
-          :secondary="!browse.condensedView"
-          :ghost="browse.condensedView"
+          :secondary="!browse.reducedView"
+          :ghost="browse.reducedView"
           size="large"
-          :title="$t('browse.toolbar.tipCondensedView')"
+          :title="$t('browse.toolbar.tipReducedView')"
           color="#fff"
           :focusable="false"
-          @click="browse.condensedView = !browse.condensedView"
+          @click="browse.reducedView = !browse.reducedView"
         >
           <template #icon>
-            <CompressRound v-if="!browse.condensedView" />
-            <ExpandRound v-if="browse.condensedView" />
+            <CompressRound v-if="!browse.reducedView" />
+            <ExpandRound v-if="browse.reducedView" />
           </template>
         </n-button>
 
