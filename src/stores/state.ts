@@ -16,7 +16,7 @@ export const useStateStore = defineStore('state', () => {
   const pf = usePlatformStore();
   const route = useRoute();
   const windowSize = useWindowSize();
-  const { t } = useI18n({ useScope: 'global' });
+  const { t, te } = useI18n({ useScope: 'global' });
 
   // theme
   const theme = ref<ThemeMode>((localStorage.getItem('theme') as ThemeMode) || 'light');
@@ -28,7 +28,10 @@ export const useStateStore = defineStore('state', () => {
 
   // locale
   const locale = ref(localStorage.getItem('locale') || i18n.global.locale);
-  watch(locale, (after) => localStorage.setItem('locale', after));
+  watch(locale, (after) => {
+    localStorage.setItem('locale', after);
+    setPageTitle();
+  });
   const locales = i18n.global.availableLocales;
   async function setLocale(l: string = locale.value): Promise<AvailableLocale> {
     return setI18nLocale(l).then((lang: AvailableLocale) => {
@@ -86,7 +89,9 @@ export const useStateStore = defineStore('state', () => {
   // set page title
   function setPageTitle(forRoute?: RouteLocationNormalized) {
     const r = forRoute || route;
-    const rTitle = t(`routes.pageTitle.${String(r.name)}`);
+    const rTitle = te(`routes.pageTitle.${String(r.name)}`)
+      ? t(`routes.pageTitle.${String(r.name)}`)
+      : '';
     const tTitle = 'text' in r.params && text.value?.title && ` "${text.value?.title}"`;
     const pfName = pf.data?.info?.platformName ? ` | ${pf.data?.info?.platformName}` : '';
     document.title = `${rTitle || ''}${tTitle || ''}${pfName}`;
