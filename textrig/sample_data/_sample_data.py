@@ -275,6 +275,13 @@ LAYERS = {
                 "language": "DE",
             },
             "comment": "This version includes repetition markers.",
+            "config": {
+                "deeplLinks": {
+                    "enabled": True,
+                    "languages": ["EN", "FR"],
+                    "sourceLanguage": "DE"
+                }
+            }
         }
     ],
 }
