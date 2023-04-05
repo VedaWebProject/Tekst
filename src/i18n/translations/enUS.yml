@@ -55,6 +55,17 @@ nav:
   search: Search
   help: Help
 
+routes:
+  pageTitle:
+    home: Home
+    browse: Browse
+    search: Search
+    help: Help
+    login: Login
+    register: Register
+    account: Account
+    admin: Administration
+
 layerTypes:
   plaintext: Plain Text
 

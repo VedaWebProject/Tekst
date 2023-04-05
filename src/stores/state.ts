@@ -9,12 +9,14 @@ import type { AvailableLocale } from '@/i18n';
 import { useRoute } from 'vue-router';
 import type { TextRead } from '@/openapi';
 import type { ThemeMode } from '@/theme';
+import { useI18n } from 'vue-i18n';
 
 export const useStateStore = defineStore('state', () => {
   // define resources
   const pf = usePlatformStore();
   const route = useRoute();
   const windowSize = useWindowSize();
+  const { t } = useI18n({ useScope: 'global' });
 
   // theme
   const theme = ref<ThemeMode>((localStorage.getItem('theme') as ThemeMode) || 'light');
@@ -84,7 +86,7 @@ export const useStateStore = defineStore('state', () => {
   // set page title
   function setPageTitle(forRoute?: RouteLocationNormalized) {
     const r = forRoute || route;
-    const rTitle = r.meta?.title;
+    const rTitle = t(`routes.pageTitle.${String(r.name)}`);
     const tTitle = 'text' in r.params && text.value?.title && ` "${text.value?.title}"`;
     const pfName = pf.data?.info?.platformName ? ` | ${pf.data?.info?.platformName}` : '';
     document.title = `${rTitle || ''}${tTitle || ''}${pfName}`;
