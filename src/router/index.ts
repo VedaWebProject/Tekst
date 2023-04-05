@@ -1,15 +1,5 @@
 import { createRouter, createWebHistory, type RouteLocationNormalized } from 'vue-router';
 import { useAuthStore, useMessagesStore, useStateStore } from '@/stores';
-import {
-  HomeView,
-  AccountView,
-  LoginView,
-  RegisterView,
-  HelpView,
-  BrowseView,
-  SearchView,
-  AdminView,
-} from '@/views';
 import { i18n } from '@/i18n';
 
 declare module 'vue-router' {
@@ -17,6 +7,15 @@ declare module 'vue-router' {
     restricted?: 'user' | 'superuser';
   }
 }
+
+const HomeView = () => import('@/views/HomeView.vue');
+const AccountView = () => import('@/views/AccountView.vue');
+const LoginView = () => import('@/views/LoginView.vue');
+const RegisterView = () => import('@/views/RegisterView.vue');
+const HelpView = () => import('@/views/HelpView.vue');
+const BrowseView = () => import('@/views/BrowseView.vue');
+const SearchView = () => import('@/views/SearchView.vue');
+const AdminView = () => import('@/views/AdminView.vue');
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
