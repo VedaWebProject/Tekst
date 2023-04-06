@@ -279,9 +279,9 @@ LAYERS = {
                 "deeplLinks": {
                     "enabled": True,
                     "languages": ["EN", "FR"],
-                    "sourceLanguage": "DE"
+                    "sourceLanguage": "DE",
                 }
-            }
+            },
         }
     ],
 }
