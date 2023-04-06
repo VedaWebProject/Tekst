@@ -93,6 +93,9 @@ browse:
     heading: Select data layers
     noData: No data for this location
   noData: The selected data layers contain no data for this text level and location. Try choosing a different location or activating more data layers.
+  units:
+    widgets:
+      tipDeepLTranslate: Translate with DeepL
 
 register:
   register: Register

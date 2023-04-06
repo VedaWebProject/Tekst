@@ -1,17 +1,12 @@
 <script setup lang="ts">
-import { computed, type Component } from 'vue';
+import { computed } from 'vue';
 import BrowseLocationLabel from '@/components/browse/BrowseLocationLabel.vue';
 import BrowseToolbar from '@/components/browse/BrowseToolbar.vue';
 import { useStateStore, useBrowseStore } from '@/stores';
-import PlaintextUnit from '@/components/units/PlaintextUnit.vue';
-import UnitContainer from '@/components/browse/UnitContainer.vue';
 import { NIcon, NSpin } from 'naive-ui';
 import FolderOffTwotone from '@vicons/material/FolderOffTwotone';
 import LayerToggleDrawer from '@/components/browse/LayerToggleDrawer.vue';
-
-const UNIT_COMPONENTS: Record<string, Component> = {
-  plaintext: PlaintextUnit,
-};
+import UnitContainer from '@/components/browse/UnitContainer.vue';
 
 const browse = useBrowseStore();
 const state = useStateStore();
@@ -31,15 +26,9 @@ const unitsExist = computed(() => {
   <UnitContainer
     v-for="layer in browse.layers"
     :key="`${layer.id}_${layer.active ? 'active' : 'inactive'}`"
-    :title="layer.title"
     :loading="browse.loading"
-    :active="!!(layer.active && layer.unit)"
-    :meta="layer.meta"
-    :layer-type="layer.layerType"
-    :comment="layer.comment"
-  >
-    <component :is="UNIT_COMPONENTS[layer.layerType]" :data="layer.unit" />
-  </UnitContainer>
+    :layer="layer"
+  />
 
   <div v-show="!unitsExist && !browse.loading" class="browse-no-data">
     <n-icon size="48">

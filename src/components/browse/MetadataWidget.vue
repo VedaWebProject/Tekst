@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { NButton, NModal, NIcon } from 'naive-ui';
+import { NButton, NModal } from 'naive-ui';
 import MetadataDisplay from './MetadataDisplay.vue';
 import ModalButtonFooter from '@/components/ModalButtonFooter.vue';
 import InfoOutlined from '@vicons/material/InfoOutlined';
+import UnitContainerHeaderWidget from '@/components/browse/UnitContainerHeaderWidget.vue';
 
 const props = defineProps<{
   title: string;
@@ -15,18 +16,11 @@ const showMetaModal = ref(false);
 </script>
 
 <template>
-  <n-button
-    v-if="props.meta || props.comment"
-    quaternary
-    circle
-    @click="showMetaModal = true"
-    :focusable="false"
+  <UnitContainerHeaderWidget
     :title="$t('meta.metadata')"
-  >
-    <template #icon>
-      <n-icon size="22px" :component="InfoOutlined" />
-    </template>
-  </n-button>
+    :iconComponent="InfoOutlined"
+    @click="showMetaModal = true"
+  />
 
   <n-modal
     v-model:show="showMetaModal"
