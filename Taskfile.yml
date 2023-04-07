@@ -52,9 +52,10 @@ tasks:
     cmds:
       - cmd: |
           TEMPDIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'trtemp')
-          mkdir -p $TEMPDIR
-          rm -rf $TEMPDIR/*
-          cp ../textrig-server/openapi.json $TEMPDIR
+          OUTDIR="$TEMPDIR/textrig-ts-client"
+          mkdir -p $OUTDIR
+          cp ../textrig-server/openapi.json $TEMPDIR/
+          cp .openapi-generator-ignore $OUTDIR
           docker run \
             --rm \
             -u 1000:1000 \
