@@ -5,7 +5,6 @@ import { useRouter } from 'vue-router';
 import { NButton, NIcon, NDropdown } from 'naive-ui';
 import LogInRound from '@vicons/material/LogInRound';
 import LogOutRound from '@vicons/material/LogOutRound';
-import AccountCircleRound from '@vicons/material/AccountCircleRound';
 import ManageAccountsRound from '@vicons/material/ManageAccountsRound';
 import { useI18n } from 'vue-i18n';
 
@@ -13,8 +12,6 @@ const { t } = useI18n({ useScope: 'global' });
 const auth = useAuthStore();
 const state = useStateStore();
 const router = useRouter();
-const icon = computed(() => (auth.loggedIn ? AccountCircleRound : LogInRound));
-// const label = computed(() => (auth.loggedIn ? t('login.logout') : t('login.login')));
 const tooltip = computed(() =>
   auth.loggedIn ? t('account.tipAccountBtn') : t('login.tipLoginBtn')
 );
@@ -33,6 +30,14 @@ const accountOptions = computed(() => [
     icon: renderIcon(LogOutRound),
   },
 ]);
+
+const initials = computed(
+  () =>
+    auth.loggedIn &&
+    `${auth.user?.firstName[0].toUpperCase()}${auth.user?.lastName[0].toUpperCase()}`
+);
+
+const color = computed(() => (auth.loggedIn ? state.accentColors.fade2 : undefined));
 
 function renderIcon(icon: Component) {
   return () => h(NIcon, null, { default: () => h(icon) });
@@ -68,17 +73,28 @@ function handleAccountOptionSelect(option: string) {
     @select="handleAccountOptionSelect"
   >
     <n-button
-      secondary
+      :secondary="!auth.loggedIn"
       circle
       size="large"
       @click="handleClick"
       :title="tooltip"
       :focusable="false"
+      :color="color"
+      :style="auth.loggedIn && 'color: #fff'"
+      class="account-options-button"
     >
-      <template #icon>
-        <n-icon :component="icon" />
+      <template v-if="auth.loggedIn">{{ initials }}</template>
+      <template v-if="!auth.loggedIn" #icon>
+        <n-icon :component="LogInRound" />
       </template>
       <!-- {{ label }} -->
     </n-button>
   </n-dropdown>
 </template>
+
+<style scoped>
+.account-options-button {
+  font-size: var(--app-ui-font-size-mini) !important;
+  font-weight: var(--app-ui-font-weight-normal) !important;
+}
+</style>
