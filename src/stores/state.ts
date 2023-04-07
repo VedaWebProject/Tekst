@@ -44,8 +44,10 @@ export const useStateStore = defineStore('state', () => {
   const text = ref<TextRead>();
   watch(route, (after) => {
     if ('text' in after.params && after.params.text && text.value?.slug !== after.params.text) {
-      // use text from route
-      text.value = pf.data?.texts.find((t) => t.slug === after.params.text);
+      // use text from route OR default text
+      text.value =
+        pf.data?.texts.find((t) => t.slug === after.params.text) ||
+        pf.data?.texts.find((t) => t.id === pf.data?.settings.defaultTextId);
     }
   });
   watch(text, () => {
