@@ -25,13 +25,17 @@ const UNIT_WIDGETS: Record<string, Component> = {
       <div class="unit-container-header-title">{{ props.layer.title }}</div>
       <div class="unit-container-header-widgets">
         <!-- config-specific widgets -->
-        <component
+        <template
           v-for="(configSection, configSectionKey) in props.layer.config"
           :key="configSectionKey"
-          :is="UNIT_WIDGETS[configSectionKey] || 'span'"
-          :unit-data="props.layer.unit"
-          :widget-config="configSection"
-        />
+        >
+          <component
+            v-if="configSectionKey in UNIT_WIDGETS"
+            :is="UNIT_WIDGETS[configSectionKey]"
+            :unit-data="props.layer.unit"
+            :widget-config="configSection"
+          />
+        </template>
         <!-- generic unit widgets -->
         <MetadataWidget
           v-if="props.layer.meta || props.layer.comment"
