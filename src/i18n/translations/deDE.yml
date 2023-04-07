@@ -96,7 +96,7 @@ browse:
   noData: Die ausgewählten Datenschichten enthalten keine Daten für diese Ebene und Fundstelle. Wählen Sie eine andere Fundstelle oder aktivieren Sie mehr Datenschichten.
   units:
     widgets:
-      tipDeepLTranslate: Übersetzen mit DeepL
+      tipDeepLTranslate: DeepL-Übersetzung öffnen
 
 register:
   register: Registrieren

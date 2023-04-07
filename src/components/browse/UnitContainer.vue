@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { NSpin } from 'naive-ui';
-import MetadataWidget from '@/components/browse/MetadataWidget.vue';
+import MetadataWidget from '@/components/browse/widgets/MetadataWidget.vue';
 import { type Component, defineAsyncComponent } from 'vue';
 
 const props = defineProps<{
@@ -13,7 +13,9 @@ const UNIT_COMPONENTS: Record<string, Component> = {
 };
 
 const UNIT_WIDGETS: Record<string, Component> = {
-  deeplLinks: defineAsyncComponent(() => import('@/components/browse/DeepLLinkWidget.vue')),
+  deeplLinks: defineAsyncComponent(
+    () => import('@/components/browse/widgets/DeepLLinksWidget.vue')
+  ),
 };
 </script>
 

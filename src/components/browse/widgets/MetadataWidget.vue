@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { NButton, NModal } from 'naive-ui';
-import MetadataDisplay from './MetadataDisplay.vue';
+import MetadataDisplay from '@/components/browse/MetadataDisplay.vue';
 import ModalButtonFooter from '@/components/ModalButtonFooter.vue';
 import InfoOutlined from '@vicons/material/InfoOutlined';
 import UnitContainerHeaderWidget from '@/components/browse/UnitContainerHeaderWidget.vue';
