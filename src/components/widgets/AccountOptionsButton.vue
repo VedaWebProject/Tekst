@@ -98,3 +98,10 @@ function handleAccountOptionSelect(option: string) {
   font-weight: var(--app-ui-font-weight-normal) !important;
 }
 </style>
+
+<style scoped>
+.account-options-button {
+  font-size: var(--app-ui-font-size-mini) !important;
+  font-weight: var(--app-ui-font-weight-normal) !important;
+}
+</style>
