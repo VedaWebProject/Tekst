@@ -1,10 +1,11 @@
-import { createRouter, createWebHistory, type RouteLocationNormalized } from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore, useMessagesStore, useStateStore } from '@/stores';
 import { i18n } from '@/i18n';
 
 declare module 'vue-router' {
   interface RouteMeta {
     restricted?: 'user' | 'superuser';
+    isTextSpecific?: boolean;
   }
 }
 
@@ -30,11 +31,17 @@ const router = createRouter({
       path: '/browse/:text?',
       name: 'browse',
       component: BrowseView,
+      meta: {
+        isTextSpecific: true,
+      },
     },
     {
       path: '/search/:text?',
       name: 'search',
       component: SearchView,
+      meta: {
+        isTextSpecific: true,
+      },
     },
     {
       path: '/help',
@@ -71,28 +78,27 @@ const router = createRouter({
   ],
 });
 
-function applyRouteRestrictions(route: RouteLocationNormalized) {
+router.beforeEach(async (to, from, next) => {
   // enforce route restrictions
-  if (route.meta?.restricted) {
+  if (to.meta?.restricted) {
     const auth = useAuthStore();
-    const ru = route.meta.restricted === 'user'; // route is restricted to users
-    const rsu = route.meta.restricted === 'superuser'; // route is restricted to to superusers
+    const ru = to.meta.restricted === 'user'; // route is restricted to users
+    const rsu = to.meta.restricted === 'superuser'; // route is restricted to to superusers
     const l = auth.loggedIn; // a user is logged in
     const u = auth.user?.isActive && auth.user?.isVerified; // the user is a verified, active user
     const su = auth.user?.isSuperuser; // the user is a superuser
     const authorized = (ru && l && u) || (rsu && l && su);
     // redirect if trying to access a restricted page without aithorization
     if (!authorized) {
-      auth.returnUrl = route.fullPath;
+      auth.returnUrl = to.fullPath;
       const messages = useMessagesStore();
-      messages.warning(i18n.global.t('errors.noAccess', { resource: route.path }));
-      return { name: 'login' };
+      messages.warning(i18n.global.t('errors.noAccess', { resource: to.path }));
+      next({ name: 'login' });
+      return; // this is important!
     }
   }
-}
-
-router.beforeEach((to) => {
-  return applyRouteRestrictions(to);
+  // proceed to next hook in router pipeline
+  next();
 });
 
 router.afterEach((to) => {

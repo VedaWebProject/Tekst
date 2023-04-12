@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RouterView } from 'vue-router';
+import { RouterView, useRoute, useRouter } from 'vue-router';
 import FullScreenLoader from '@/components/FullScreenLoader.vue';
 import GlobalMessenger from '@/components/GlobalMessenger.vue';
 import { onMounted, onBeforeMount, ref, computed } from 'vue';
@@ -14,6 +14,8 @@ import { useI18n } from 'vue-i18n';
 const state = useStateStore();
 const messages = useMessagesStore();
 const pf = usePlatformStore();
+const route = useRoute();
+const router = useRouter();
 
 // i18n
 const { t } = useI18n({ useScope: 'global' });
@@ -53,6 +55,29 @@ const initSteps = [
         console.error(e);
         return false;
       }
+    },
+  },
+  {
+    info: 'Determining working text...',
+    action: async () => {
+      state.text =
+        pf.data?.texts.find((t) => t.slug === route.params.text) ||
+        pf.data?.texts.find((t) => t.slug == localStorage.getItem('text')) ||
+        pf.data?.texts.find((t) => t.id == pf.data?.settings.defaultTextId) ||
+        pf.data?.texts[0];
+
+      if (route.meta.isTextSpecific) {
+        router.replace({
+          name: route.name || 'browse',
+          params: {
+            ...route.params,
+            text: state.text?.slug,
+          },
+          query: route.query,
+        });
+      }
+
+      return true;
     },
   },
 ];

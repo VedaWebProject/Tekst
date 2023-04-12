@@ -1,7 +1,7 @@
 import { ref, computed, watch } from 'vue';
 import { useRoute, useRouter, type RouteLocationNormalized } from 'vue-router';
 import { defineStore } from 'pinia';
-import { useMessagesStore, useStateStore } from '@/stores';
+import { useMessagesStore, useStateStore, useAuthStore } from '@/stores';
 import type { NodeRead } from '@/openapi';
 import { LayersApi, NodesApi, UnitsApi } from '@/openapi/api';
 import type { AxiosResponse } from 'axios';
@@ -9,6 +9,7 @@ import type { AxiosResponse } from 'axios';
 export const useBrowseStore = defineStore('browse', () => {
   // composables
   const state = useStateStore();
+  const auth = useAuthStore();
   const route = useRoute();
   const router = useRouter();
   const messages = useMessagesStore();
@@ -40,29 +41,29 @@ export const useBrowseStore = defineStore('browse', () => {
 
   // update browse node path
   async function updateBrowseNodePath() {
-    if (route.name === 'browse') {
-      const qLvl = parseInt(route.query.lvl?.toString() || '') ?? 0;
-      const qPos = parseInt(route.query.pos?.toString() || '') ?? 0;
-      if (Number.isInteger(qLvl) && Number.isInteger(qPos)) {
-        try {
-          // fill browse node path up to root (no more parent)
-          const path = await nodesApi
-            .getPathByHeadLocation({
-              textId: state.text?.id || '',
-              level: qLvl,
-              position: qPos,
-            })
-            .then((response) => response.data);
-          if (!path || path.length == 0) {
-            throw new Error();
-          }
-          nodePath.value = path;
-        } catch {
-          resetBrowseLocation(level.value);
+    console.log('updateBrowseNodePath');
+    if (route.name !== 'browse') return;
+    const qLvl = parseInt(route.query.lvl?.toString() || '') ?? 0;
+    const qPos = parseInt(route.query.pos?.toString() || '') ?? 0;
+    if (Number.isInteger(qLvl) && Number.isInteger(qPos)) {
+      try {
+        // fill browse node path up to root (no more parent)
+        const path = await nodesApi
+          .getPathByHeadLocation({
+            textId: state.text?.id || '',
+            level: qLvl,
+            position: qPos,
+          })
+          .then((response) => response.data);
+        if (!path || path.length == 0) {
+          throw new Error();
         }
-      } else {
-        resetBrowseLocation();
+        nodePath.value = path;
+      } catch {
+        resetBrowseLocation(level.value);
       }
+    } else {
+      resetBrowseLocation();
     }
   }
 
@@ -73,6 +74,9 @@ export const useBrowseStore = defineStore('browse', () => {
   ) {
     router.replace({
       ...route,
+      params: {
+        text: state.text?.slug || '',
+      },
       query: {
         ...route.query,
         lvl: level,
@@ -85,6 +89,7 @@ export const useBrowseStore = defineStore('browse', () => {
   watch(
     () => state.text,
     () => route.name === 'browse' && resetBrowseLocation()
+    // () => route.name === 'browse' && resetBrowseLocation()
   );
 
   // react to route changes concerning browse state
@@ -159,6 +164,14 @@ export const useBrowseStore = defineStore('browse', () => {
         // so we have to load full layers data AND according units data
         loadLayersData();
       }
+    }
+  );
+
+  // remove accessed data that might be restricted
+  watch(
+    () => auth.user,
+    (after, before) => {
+      if (before && !after) layers.value = [];
     }
   );
 

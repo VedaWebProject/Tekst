@@ -1,7 +1,7 @@
 import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
 import { AuthApi, UsersApi, type UserRead } from '@/openapi';
-import { useMessagesStore, useBrowseStore } from '@/stores';
+import { useMessagesStore } from '@/stores';
 import { i18n } from '@/i18n';
 import router from '@/router';
 
@@ -19,7 +19,6 @@ export const useAuthStore = defineStore('auth', () => {
   const returnUrl = ref<string | null>(null);
   const loggedIn = computed(() => !!user.value);
   const messages = useMessagesStore();
-  const browse = useBrowseStore();
   const { t } = i18n.global;
 
   async function login(username: string, password: string) {
@@ -40,8 +39,6 @@ export const useAuthStore = defineStore('auth', () => {
       // remove user data
       user.value = null;
       localStorage.removeItem('user');
-      // remove accessed data that might have restricted access
-      browse.layers = [];
       // redirect to login view
       router.push({ name: 'login' });
     }
