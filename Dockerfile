@@ -4,7 +4,7 @@ COPY . .
 RUN npm install && npm run build
 
 FROM caddy:2.6-alpine AS prod
-WORKDIR "/var/www/html/app"
+WORKDIR "/var/www/html"
 COPY --from=builder /app/dist/ ./
 COPY ./deploy/Caddyfile /etc/caddy/
 # 82:82 is alpine default for www-data
