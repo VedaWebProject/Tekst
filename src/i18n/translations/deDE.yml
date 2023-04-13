@@ -35,14 +35,15 @@ dummy:
 i18n:
   tipSwitcher: Gebietsschema auswählen (Sprache und Zahlen-/Datumsformat)
 
-loading:
+init:
   loading: Lade...
   ready: Fertig.
+  error: Es sind Fehler beim Starten der Anwendung aufgetreten.
   serverI18n: Lade UI-Übersetzungen...
   platformData: Lade Plattform-Daten...
+  workingText: Lege Arbeitstext fest...
 
 errors:
-  appInit: Es sind Fehler beim Starten der Anwendung aufgetreten.
   serverI18n: Einige Übersetzungen konnten nicht geladen werden.
   platformData: Plattform-Daten konnten nicht geladen werden.
   unexpected: Ein unerwarteter Fehler ist aufgetreten. Das hätte nicht passieren dürfen.

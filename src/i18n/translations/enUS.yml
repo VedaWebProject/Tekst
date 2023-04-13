@@ -34,14 +34,15 @@ dummy:
 i18n:
   tipSwitcher: Choose locale (language and number/date formatting)
 
-loading:
+init:
   loading: Loading...
   ready: Ready.
+  error: There were errors initializing the application.
   serverI18n: Loading UI translations...
   platformData: Loading platform data...
+  workingText: Setting up working text...
 
 errors:
-  appInit: There were errors initializing the application.
   serverI18n: Some translations could not be loaded.
   platformData: Could not load platform data.
   unexpected: An unexpected error occurred. This should not happen.

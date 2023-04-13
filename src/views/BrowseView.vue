@@ -40,7 +40,7 @@ const unitsExist = computed(() => {
   <n-spin
     v-if="!unitsExist && browse.loading"
     style="margin: 3rem auto 2rem auto; display: flex"
-    :description="$t('loading.loading')"
+    :description="$t('init.loading')"
   ></n-spin>
 
   <LayerToggleDrawer v-model:show="browse.showLayerToggleDrawer" />

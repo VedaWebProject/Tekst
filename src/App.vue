@@ -1,24 +1,20 @@
 <script setup lang="ts">
-import { RouterView, useRoute, useRouter } from 'vue-router';
+import { RouterView } from 'vue-router';
 import FullScreenLoader from '@/components/FullScreenLoader.vue';
 import GlobalMessenger from '@/components/GlobalMessenger.vue';
-import { onMounted, onBeforeMount, ref, computed } from 'vue';
+import { computed } from 'vue';
 import { localeProfiles } from '@/i18n';
-import { useStateStore, usePlatformStore, useMessagesStore } from '@/stores';
+import { useStateStore } from '@/stores';
 import { NConfigProvider, NGlobalStyle, NBackTop, lightTheme, darkTheme } from 'naive-ui';
 import { getOverrides } from '@/theme';
 import PageHeader from './layout/PageHeader.vue';
 import PageFooter from './layout/PageFooter.vue';
-import { useI18n } from 'vue-i18n';
+import { useInitializeApp } from '@/init';
 
 const state = useStateStore();
-const messages = useMessagesStore();
-const pf = usePlatformStore();
-const route = useRoute();
-const router = useRouter();
+const { initialized, error } = useInitializeApp();
 
 // i18n
-const { t } = useI18n({ useScope: 'global' });
 const nUiLangLocale = computed(() => localeProfiles[state.locale].nUiLangLocale);
 const nUiDateLocale = computed(() => localeProfiles[state.locale].nUiDateLocale);
 
@@ -27,84 +23,6 @@ const theme = computed(() => (state.theme === 'light' ? lightTheme : darkTheme))
 const themeOverrides = computed(() => getOverrides(state.theme, state.accentColors.base));
 const mainBgColor = computed(() => (state.theme === 'light' ? '#00000010' : '#ffffff10'));
 const contentBgColor = computed(() => (state.theme === 'light' ? '#ffffffcc' : '#00000044'));
-
-// app initialization
-const appInitialized = ref(false);
-const initSteps = [
-  {
-    info: t('loading.serverI18n'),
-    action: async () => {
-      try {
-        await state.setLocale();
-        return true;
-      } catch (e) {
-        messages.warning(t('errors.serverI18n'));
-        console.error(e);
-        return false;
-      }
-    },
-  },
-  {
-    info: t('loading.platformData'),
-    action: async () => {
-      try {
-        await pf.loadPlatformData();
-        return true;
-      } catch (e) {
-        messages.warning(t('errors.platformData'));
-        console.error(e);
-        return false;
-      }
-    },
-  },
-  {
-    info: 'Determining working text...',
-    action: async () => {
-      state.text =
-        pf.data?.texts.find((t) => t.slug === route.params.text) ||
-        pf.data?.texts.find((t) => t.slug == localStorage.getItem('text')) ||
-        pf.data?.texts.find((t) => t.id == pf.data?.settings.defaultTextId) ||
-        pf.data?.texts[0];
-
-      if (route.meta.isTextSpecific) {
-        router.replace({
-          name: route.name || 'browse',
-          params: {
-            ...route.params,
-            text: state.text?.slug,
-          },
-          query: route.query,
-        });
-      }
-
-      return true;
-    },
-  },
-];
-
-onBeforeMount(() => {
-  state.startGlobalLoading();
-});
-
-onMounted(async () => {
-  let err = false;
-  let count = 0;
-
-  for (const step of initSteps) {
-    state.globalLoadingProgress = count / initSteps.length;
-    state.globalLoadingMsg = step.info;
-    const success = await step.action();
-    err = err || !success;
-    count++;
-    state.globalLoadingProgress = count / initSteps.length;
-  }
-
-  err && messages.error(t('errors.appInit'));
-  state.globalLoadingMsg = t('loading.ready');
-  state.setPageTitle();
-  appInitialized.value = true;
-  await state.finishGlobalLoading(200, 200);
-});
 </script>
 
 <template>
@@ -115,7 +33,9 @@ onMounted(async () => {
     :date-locale="nUiDateLocale"
   >
     <div id="app-container">
-      <template v-if="appInitialized">
+      <template v-if="error"> ERROR </template>
+
+      <template v-else-if="initialized">
         <PageHeader />
         <main>
           <div id="main-content">
