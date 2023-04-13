@@ -41,7 +41,6 @@ export const useBrowseStore = defineStore('browse', () => {
 
   // update browse node path
   async function updateBrowseNodePath() {
-    console.log('updateBrowseNodePath');
     if (route.name !== 'browse') return;
     const qLvl = parseInt(route.query.lvl?.toString() || '') ?? 0;
     const qPos = parseInt(route.query.pos?.toString() || '') ?? 0;
