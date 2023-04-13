@@ -44,7 +44,7 @@ onMounted(() => {
         >
           <template #icon>
             <CompressRound v-if="!browse.reducedView" />
-            <ExpandRound v-if="browse.reducedView" />
+            <ExpandRound v-else />
           </template>
         </n-button>
 

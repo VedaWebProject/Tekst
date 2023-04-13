@@ -34,10 +34,12 @@ const showMetaModal = ref(false);
   >
     <h2>{{ props.title }}: {{ $t('meta.metadata') }}</h2>
     <MetadataDisplay :data="props.meta" />
-    <h3 v-if="props.comment">{{ $t('meta.comment') }}</h3>
-    <div v-if="props.comment" class="layer-comment">
-      {{ props.comment }}
-    </div>
+    <template v-if="props.comment">
+      <h3>{{ $t('meta.comment') }}</h3>
+      <div class="layer-comment">
+        {{ props.comment }}
+      </div>
+    </template>
     <ModalButtonFooter>
       <n-button type="primary" @click="() => (showMetaModal = false)">
         {{ $t('general.closeAction') }}
