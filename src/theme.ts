@@ -1,6 +1,9 @@
 import type { GlobalThemeOverrides } from 'naive-ui';
 import _merge from 'lodash.merge';
 import Color from 'color';
+import { computed } from 'vue';
+import { useStateStore } from '@/stores';
+import { lightTheme, darkTheme } from 'naive-ui';
 
 export declare type ThemeMode = 'light' | 'dark';
 
@@ -42,19 +45,33 @@ const darkOverrides: GlobalThemeOverrides = {
 _merge(lightOverrides, commonOverrides);
 _merge(darkOverrides, commonOverrides);
 
-function getOverrides(mode: 'light' | 'dark', primaryColorHex: string): GlobalThemeOverrides {
-  const baseOverrides = mode === 'light' ? lightOverrides : darkOverrides;
-  const primaryColor = Color(primaryColorHex);
+export function useTheme() {
+  const state = useStateStore();
+  const theme = computed(() => (state.theme === 'light' ? lightTheme : darkTheme));
+  const mainBgColor = computed(() => (state.theme === 'light' ? '#00000010' : '#ffffff10'));
+  const contentBgColor = computed(() => (state.theme === 'light' ? '#ffffffcc' : '#00000044'));
+
+  const themeOverrides = computed(() => {
+    const mode = state.theme;
+    const primaryColorHex = state.accentColors.base;
+    const baseOverrides = mode === 'light' ? lightOverrides : darkOverrides;
+    const primaryColor = Color(primaryColorHex);
+    return {
+      ...baseOverrides,
+      common: {
+        ...baseOverrides.common,
+        primaryColor: primaryColorHex,
+        primaryColorHover: primaryColor.lighten(0.1).saturate(0.15).hex(),
+        primaryColorPressed: primaryColor.lighten(0.3).hex(),
+        primaryColorSuppl: primaryColorHex,
+      },
+    };
+  });
+
   return {
-    ...baseOverrides,
-    common: {
-      ...baseOverrides.common,
-      primaryColor: primaryColorHex,
-      primaryColorHover: primaryColor.lighten(0.1).saturate(0.15).hex(),
-      primaryColorPressed: primaryColor.lighten(0.3).hex(),
-      primaryColorSuppl: primaryColorHex,
-    },
+    theme,
+    themeOverrides,
+    mainBgColor,
+    contentBgColor,
   };
 }
-
-export { getOverrides };
