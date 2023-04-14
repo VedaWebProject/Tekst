@@ -5,27 +5,47 @@ from httpx import AsyncClient
 
 @pytest.mark.anyio
 async def test_create_node(
-    root_path, test_client: AsyncClient, test_data, insert_test_data, status_fail_msg
+    root_path,
+    test_client: AsyncClient,
+    test_data,
+    insert_test_data,
+    status_fail_msg,
+    register_test_user,
+    get_session_cookie,
 ):
     text_id = await insert_test_data("texts")
     endpoint = f"{root_path}/nodes"
     nodes = [{"textId": text_id, **node} for node in test_data["nodes"]]
 
+    # create superuser
+    superuser_data = await register_test_user(superuser=True)
+    session_cookie = await get_session_cookie(superuser_data)
+
     for node in nodes:
-        resp = await test_client.post(endpoint, json=node)
+        resp = await test_client.post(endpoint, json=node, cookies=session_cookie)
         assert resp.status_code == 201, status_fail_msg(201, resp)
 
 
 @pytest.mark.anyio
 async def test_child_node_io(
-    root_path, test_client: AsyncClient, test_data, insert_test_data, status_fail_msg
+    root_path,
+    test_client: AsyncClient,
+    test_data,
+    insert_test_data,
+    status_fail_msg,
+    register_test_user,
+    get_session_cookie,
 ):
     text_id = await insert_test_data("texts")
     endpoint = f"{root_path}/nodes"
     node = {"textId": text_id, **test_data["nodes"][0]}
 
+    # create superuser
+    superuser_data = await register_test_user(superuser=True)
+    session_cookie = await get_session_cookie(superuser_data)
+
     # create parent
-    resp = await test_client.post(endpoint, json=node)
+    resp = await test_client.post(endpoint, json=node, cookies=session_cookie)
     assert resp.status_code == 201, status_fail_msg(201, resp)
     parent = resp.json()
     assert parent["id"]
@@ -35,7 +55,7 @@ async def test_child_node_io(
     child["parentId"] = parent["id"]
     child["level"] = parent["level"] + 1
     child["position"] = 0
-    resp = await test_client.post(endpoint, json=child)
+    resp = await test_client.post(endpoint, json=child, cookies=session_cookie)
     assert resp.status_code == 201, status_fail_msg(201, resp)
     child = resp.json()
     assert "id" in resp.json()
@@ -61,30 +81,50 @@ async def test_child_node_io(
 
 @pytest.mark.anyio
 async def test_create_node_invalid_text_fail(
-    root_path, test_client: AsyncClient, test_data, insert_test_data, status_fail_msg
+    root_path,
+    test_client: AsyncClient,
+    test_data,
+    insert_test_data,
+    status_fail_msg,
+    register_test_user,
+    get_session_cookie,
 ):
     await insert_test_data("texts")
     endpoint = f"{root_path}/nodes"
     node = test_data["nodes"][0]
     node["textId"] = "5eb7cfb05e32e07750a1756a"
 
-    resp = await test_client.post(endpoint, json=node)
+    # create superuser
+    superuser_data = await register_test_user(superuser=True)
+    session_cookie = await get_session_cookie(superuser_data)
+
+    resp = await test_client.post(endpoint, json=node, cookies=session_cookie)
     assert resp.status_code == 400, status_fail_msg(400, resp)
 
 
 @pytest.mark.anyio
 async def test_create_node_duplicate_fail(
-    root_path, test_client: AsyncClient, test_data, insert_test_data, status_fail_msg
+    root_path,
+    test_client: AsyncClient,
+    test_data,
+    insert_test_data,
+    status_fail_msg,
+    register_test_user,
+    get_session_cookie,
 ):
     text_id = await insert_test_data("texts")
     endpoint = f"{root_path}/nodes"
     node = test_data["nodes"][0]
     node["textId"] = text_id
 
-    resp = await test_client.post(endpoint, json=node)
+    # create superuser
+    superuser_data = await register_test_user(superuser=True)
+    session_cookie = await get_session_cookie(superuser_data)
+
+    resp = await test_client.post(endpoint, json=node, cookies=session_cookie)
     assert resp.status_code == 201, status_fail_msg(201, resp)
 
-    resp = await test_client.post(endpoint, json=node)
+    resp = await test_client.post(endpoint, json=node, cookies=session_cookie)
     assert resp.status_code == 409, status_fail_msg(409, resp)
 
 
@@ -144,7 +184,13 @@ async def test_get_nodes(
 
 @pytest.mark.anyio
 async def test_update_node(
-    root_path, test_client: AsyncClient, insert_test_data, test_data, status_fail_msg
+    root_path,
+    test_client: AsyncClient,
+    insert_test_data,
+    test_data,
+    status_fail_msg,
+    register_test_user,
+    get_session_cookie,
 ):
     text_id = await insert_test_data("texts", "nodes")
     # get node from db
@@ -154,23 +200,26 @@ async def test_update_node(
     assert type(resp.json()) == list
     assert len(resp.json()) > 0
     node = resp.json()[0]
+    # create superuser
+    superuser_data = await register_test_user(superuser=True)
+    session_cookie = await get_session_cookie(superuser_data)
     # update node
     endpoint = f"{root_path}/nodes/{node['id']}"
     node_update = {"label": "A fresh label"}
-    resp = await test_client.patch(endpoint, json=node_update)
+    resp = await test_client.patch(endpoint, json=node_update, cookies=session_cookie)
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert "id" in resp.json()
     assert resp.json()["id"] == str(node["id"])
     assert "label" in resp.json()
     assert resp.json()["label"] == "A fresh label"
     # update unchanged node
-    resp = await test_client.patch(endpoint, json=node_update)
+    resp = await test_client.patch(endpoint, json=node_update, cookies=session_cookie)
     assert resp.status_code == 200, status_fail_msg(200, resp)
     # update invalid node
     node_update = {"label": "Brand new label"}
     endpoint = f"{root_path}/nodes/637b9ad396d541a505e5439b"
     resp = await test_client.patch(endpoint, json=node_update)
-    assert resp.status_code == 400, status_fail_msg(400, resp)
+    assert resp.status_code == 400, status_fail_msg(400, resp, cookies=session_cookie)
 
 
 @pytest.mark.anyio

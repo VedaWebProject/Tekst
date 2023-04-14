@@ -46,7 +46,15 @@
           "404": {
             "description": "Not found"
           }
-        }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
       }
     },
     "/layers/plaintext/{id}": {
@@ -510,7 +518,15 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
       }
     },
     "/nodes/path": {
@@ -688,7 +704,15 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
       }
     },
     "/nodes/{id}/children": {
@@ -1093,7 +1117,15 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
       }
     },
     "/texts": {
@@ -1191,54 +1223,15 @@
               }
             }
           }
-        }
-      }
-    },
-    "/texts/import": {
-      "post": {
-        "tags": [
-          "texts"
-        ],
-        "summary": "Import text",
-        "operationId": "importText",
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "$ref": "#/components/schemas/Body_import_text_texts_import_post"
-              }
-            }
-          },
-          "required": true
         },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TextRead"
-                }
-              }
-            }
+        "security": [
+          {
+            "APIKeyCookie": []
           },
-          "400": {
-            "description": "Invalid Request"
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
+          {
+            "OAuth2PasswordBearer": []
           }
-        }
+        ]
       }
     },
     "/texts/{id}": {
@@ -1344,7 +1337,15 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
       }
     },
     "/units/plaintext/{id}": {
@@ -2512,20 +2513,6 @@
           "client_secret": {
             "title": "Client Secret",
             "type": "string"
-          }
-        }
-      },
-      "Body_import_text_texts_import_post": {
-        "title": "Body_import_text_texts_import_post",
-        "required": [
-          "file"
-        ],
-        "type": "object",
-        "properties": {
-          "file": {
-            "title": "File",
-            "type": "string",
-            "format": "binary"
           }
         }
       },

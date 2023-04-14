@@ -122,7 +122,7 @@ def new_user_data() -> dict:
 
 @pytest.fixture
 async def register_test_user(new_user_data) -> callable:
-    async def _register_test_user(superuser: bool = False) -> dict:
+    async def _register_test_user(*, superuser: bool = False) -> dict:
         user = UserCreate(**new_user_data)
         user.is_active = True
         user.is_verified = True

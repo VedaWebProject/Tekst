@@ -1,5 +1,6 @@
 from fastapi import APIRouter, HTTPException, status
 
+from textrig.auth import SuperuserDep
 from textrig.logging import log
 from textrig.models.common import PyObjectId
 from textrig.models.text import (
@@ -22,7 +23,7 @@ router = APIRouter(
 
 
 @router.post("", response_model=NodeRead, status_code=status.HTTP_201_CREATED)
-async def create_node(node: NodeCreate) -> NodeRead:
+async def create_node(su: SuperuserDep, node: NodeCreate) -> NodeRead:
     # find text the node belongs to
     if not await TextDocument.find_one(TextDocument.id == node.text_id).exists():
         raise HTTPException(
@@ -111,7 +112,9 @@ async def get_node(id: PyObjectId) -> NodeDocument:
 
 
 @router.patch("/{id}", response_model=NodeRead, status_code=status.HTTP_200_OK)
-async def update_node(id: PyObjectId, updates: NodeUpdate) -> NodeDocument:
+async def update_node(
+    su: SuperuserDep, id: PyObjectId, updates: NodeUpdate
+) -> NodeDocument:
     node_doc = await NodeDocument.get(id)
     if not node_doc:
         raise HTTPException(

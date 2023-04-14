@@ -1,5 +1,6 @@
 from fastapi import APIRouter, status
 
+from textrig.auth import SuperuserDep
 from textrig.config import TextRigConfig, get_config
 from textrig.models.settings import (
     PlatformSettingsDocument,
@@ -23,6 +24,7 @@ router = APIRouter(
 
 @router.patch("", response_model=PlatformSettingsRead, status_code=status.HTTP_200_OK)
 async def update_platform_settings(
+    su: SuperuserDep,
     settings_updates: PlatformSettingsUpdate,
 ) -> PlatformSettingsRead:
     settings_doc = await PlatformSettingsDocument.find_all().first_or_none()

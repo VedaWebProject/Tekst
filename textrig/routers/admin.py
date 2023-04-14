@@ -2,6 +2,7 @@ from typing import Any
 
 from fastapi import APIRouter, Depends, status
 
+from textrig.auth import SuperuserDep
 from textrig.config import TextRigConfig, get_config
 
 
@@ -16,7 +17,9 @@ router = APIRouter(
 
 
 @router.get("", response_model=dict[str, Any], status_code=status.HTTP_200_OK)
-async def hello_admin(cfg: TextRigConfig = Depends(get_config)) -> dict:
+async def hello_admin(
+    su: SuperuserDep, cfg: TextRigConfig = Depends(get_config)
+) -> dict:
     return {
         "message": (
             "Welcome, Admin! This is "

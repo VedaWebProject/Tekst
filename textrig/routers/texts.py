@@ -1,13 +1,10 @@
-import json
+from beanie.operators import Or
+from fastapi import APIRouter, HTTPException, status
 
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, status
-
+from textrig.auth import SuperuserDep
 from textrig.config import TextRigConfig, get_config
-from textrig.dependencies import get_cfg
-from textrig.logging import log
 from textrig.models.common import PyObjectId
 from textrig.models.text import TextCreate, TextDocument, TextRead, TextUpdate
-from textrig.utils import importer
 
 
 _cfg: TextRigConfig = get_config()
@@ -29,9 +26,9 @@ async def get_all_texts(limit: int = 100) -> list[TextRead]:
 
 
 @router.post("", response_model=TextRead, status_code=status.HTTP_201_CREATED)
-async def create_text(text: TextCreate) -> TextRead:
+async def create_text(su: SuperuserDep, text: TextCreate) -> TextRead:
     if await TextDocument.find_one(
-        TextDocument.title == text.title, TextDocument.slug == text.slug
+        Or({"title": text.title}, {"slug": text.slug})
     ).exists():
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
@@ -40,39 +37,39 @@ async def create_text(text: TextCreate) -> TextRead:
     return await TextDocument(**text.dict()).create()
 
 
-@router.post(
-    "/import",
-    response_model=TextRead,
-    status_code=status.HTTP_201_CREATED,
-    include_in_schema=_cfg.dev_mode,
-)
-async def import_text(
-    file: UploadFile,
-    cfg: TextRigConfig = Depends(get_cfg),
-) -> TextRead:  # pragma: no cover
-    if not cfg.dev_mode:
-        raise HTTPException(
-            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="Endpoint not available in production system",
-        )
+# @router.post(
+#     "/import",
+#     response_model=TextRead,
+#     status_code=status.HTTP_201_CREATED,
+#     include_in_schema=_cfg.dev_mode,
+# )
+# async def import_text(
+#     file: UploadFile,
+#     cfg: TextRigConfig = Depends(get_cfg),
+# ) -> TextRead:  # pragma: no cover
+#     if not cfg.dev_mode:
+#         raise HTTPException(
+#             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+#             detail="Endpoint not available in production system",
+#         )
 
-    log.debug(f'Importing text data from uploaded file "{file.filename}" ...')
+#     log.debug(f'Importing text data from uploaded file "{file.filename}" ...')
 
-    try:
-        text = await importer.import_text(json.loads(await file.read()))
-    except HTTPException as e:
-        log.error(e.detail)
-        raise e
-    except Exception as e:
-        log.error(e)
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Invalid import data: {str(e)}",
-        )
-    finally:
-        await file.close()
+#     try:
+#         text = await importer.import_text(json.loads(await file.read()))
+#     except HTTPException as e:
+#         log.error(e.detail)
+#         raise e
+#     except Exception as e:
+#         log.error(e)
+#         raise HTTPException(
+#             status_code=status.HTTP_400_BAD_REQUEST,
+#             detail=f"Invalid import data: {str(e)}",
+#         )
+#     finally:
+#         await file.close()
 
-    return text
+#     return text
 
 
 @router.get("/{id}", response_model=TextRead, status_code=status.HTTP_200_OK)
@@ -87,12 +84,12 @@ async def get_text(id: PyObjectId) -> TextRead:
 
 
 @router.patch("/{id}", response_model=TextRead, status_code=status.HTTP_200_OK)
-async def update_text(id: PyObjectId, updates: TextUpdate) -> dict:
+async def update_text(su: SuperuserDep, id: PyObjectId, updates: TextUpdate) -> dict:
     text = await TextDocument.get(id)
     if not text:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Text {id} doesn't exist or requires extra permissions",
+            detail=f"Text {id} doesn't exist",
         )
     if updates.slug and updates.slug != text.slug:
         raise HTTPException(

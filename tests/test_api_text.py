@@ -25,22 +25,66 @@ async def test_get_texts(
 
 
 @pytest.mark.anyio
-async def test_create_text(root_path, test_client: AsyncClient, status_fail_msg):
+async def test_create_text(
+    reset_db,
+    root_path,
+    test_client: AsyncClient,
+    status_fail_msg,
+    register_test_user,
+    get_session_cookie,
+):
+    superuser_data = await register_test_user(superuser=True)
+    session_cookie = await get_session_cookie(superuser_data)
     endpoint = f"{root_path}/texts"
     payload = {"title": "Just a Test", "slug": "justatest", "levels": ["foo"]}
-    resp = await test_client.post(endpoint, json=payload)
+    resp = await test_client.post(endpoint, json=payload, cookies=session_cookie)
     assert resp.status_code == 201, status_fail_msg(201, resp)
     assert "id" in resp.json()
     assert "slug" in resp.json()
     assert resp.json()["slug"] == "justatest"
     # create duplicate
-    resp = await test_client.post(endpoint, json=payload)
+    resp = await test_client.post(endpoint, json=payload, cookies=session_cookie)
     assert resp.status_code == 409, status_fail_msg(409, resp)
 
 
 @pytest.mark.anyio
+async def test_create_text_unauthorized(
+    reset_db,
+    root_path,
+    test_client: AsyncClient,
+    status_fail_msg,
+    register_test_user,
+    get_session_cookie,
+):
+    user_data = await register_test_user()  # not a superuser (=unauthorized)!
+    session_cookie = await get_session_cookie(user_data)
+    endpoint = f"{root_path}/texts"
+    payload = {"title": "Meow", "slug": "meow", "levels": ["meow"]}
+    resp = await test_client.post(endpoint, json=payload, cookies=session_cookie)
+    assert resp.status_code == 403, status_fail_msg(403, resp)
+
+
+@pytest.mark.anyio
+async def test_create_text_unauthenticated(
+    reset_db,
+    root_path,
+    test_client: AsyncClient,
+    status_fail_msg,
+):
+    endpoint = f"{root_path}/texts"
+    payload = {"title": "Meow", "slug": "meow", "levels": ["meow"]}
+    resp = await test_client.post(endpoint, json=payload)
+    assert resp.status_code == 401, status_fail_msg(401, resp)
+
+
+@pytest.mark.anyio
 async def test_update_text(
-    root_path, test_client: AsyncClient, insert_test_data, status_fail_msg
+    root_path,
+    test_client: AsyncClient,
+    insert_test_data,
+    status_fail_msg,
+    register_test_user,
+    get_session_cookie,
 ):
     await insert_test_data("texts")
     # get text from db
@@ -50,20 +94,27 @@ async def test_update_text(
     assert type(resp.json()) == list
     assert len(resp.json()) > 0
     text = resp.json()[0]
-    # update text
+    # update text unauthenticated
     endpoint = f"{root_path}/texts/{text['id']}"
-    text_update = {"title": "Another text"}
+    text_update = {"title": "Unauthenticated text update"}
     resp = await test_client.patch(endpoint, json=text_update)
+    assert resp.status_code == 401, status_fail_msg(401, resp)
+    # create superuser
+    superuser_data = await register_test_user(superuser=True)
+    session_cookie = await get_session_cookie(superuser_data)
+    # update text
+    text_update = {"title": "Another text"}
+    resp = await test_client.patch(endpoint, json=text_update, cookies=session_cookie)
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert "id" in resp.json()
     assert resp.json()["id"] == str(text["id"])
     assert "title" in resp.json()
     assert resp.json()["title"] == "Another text"
     # update unchanged text
-    resp = await test_client.patch(endpoint, json=text_update)
+    resp = await test_client.patch(endpoint, json=text_update, cookies=session_cookie)
     assert resp.status_code == 200, status_fail_msg(200, resp)
     # update invalid text
     text_update = {"title": "Yet another text"}
     endpoint = f"{root_path}/texts/637b9ad396d541a505e5439b"
-    resp = await test_client.patch(endpoint, json=text_update)
+    resp = await test_client.patch(endpoint, json=text_update, cookies=session_cookie)
     assert resp.status_code == 400, status_fail_msg(400, resp)

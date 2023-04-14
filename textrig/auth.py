@@ -256,9 +256,7 @@ def setup_auth_routes(app: FastAPI) -> list[APIRouter]:
 
 def _current_user(**kwargs) -> callable:
     """Returns auth dependencies for API routes (optional auth in dev mode)"""
-    return _fastapi_users.current_user(
-        optional=kwargs.pop("optional", False) or _cfg.dev_mode, **kwargs
-    )
+    return _fastapi_users.current_user(optional=kwargs.pop("optional", False), **kwargs)
 
 
 # auth dependencies for API routes

@@ -41,7 +41,7 @@ async def test_register_invalid_pw(
 @pytest.mark.anyio
 async def test_login(config, root_path, test_client: AsyncClient, status_fail_msg):
     endpoint = f"{root_path}/auth/cookie/login"
-    payload = {"username": "verified@test.com", "password": "poiPOI098"}
+    payload = {"username": "user@test.com", "password": "poiPOI098"}
     resp = await test_client.post(
         endpoint,
         data=payload,
@@ -55,7 +55,7 @@ async def test_login_fail_bad_pw(
     config, root_path, test_client: AsyncClient, status_fail_msg
 ):
     endpoint = f"{root_path}/auth/cookie/login"
-    payload = {"username": "verified@test.com", "password": "wrongpassword"}
+    payload = {"username": "user@test.com", "password": "wrongpassword"}
     resp = await test_client.post(
         endpoint,
         data=payload,
@@ -84,7 +84,7 @@ async def test_user_updates_self(
 ):
     # login
     endpoint = f"{root_path}/auth/cookie/login"
-    payload = {"username": "verified@test.com", "password": "poiPOI098"}
+    payload = {"username": "user@test.com", "password": "poiPOI098"}
     resp = await test_client.post(
         endpoint,
         data=payload,

@@ -36,9 +36,18 @@ async def test_create_layer(
 
 @pytest.mark.anyio
 async def test_create_layer_invalid(
-    root_path, test_client: AsyncClient, test_data, insert_test_data, status_fail_msg
+    root_path,
+    test_client: AsyncClient,
+    test_data,
+    insert_test_data,
+    status_fail_msg,
+    register_test_user,
+    get_session_cookie,
 ):
     await insert_test_data("texts", "nodes")
+    user_data = await register_test_user()
+    session_cookie = await get_session_cookie(user_data)
+
     endpoint = f"{root_path}/layers/plaintext"
     payload = {
         "title": "A test layer",
@@ -47,7 +56,7 @@ async def test_create_layer_invalid(
         "layerType": "plaintext",
     }
 
-    resp = await test_client.post(endpoint, json=payload)
+    resp = await test_client.post(endpoint, json=payload, cookies=session_cookie)
     assert resp.status_code == 400, status_fail_msg(400, resp)
 
 
