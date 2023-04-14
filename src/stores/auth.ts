@@ -4,9 +4,10 @@ import { AuthApi, UsersApi, type UserRead } from '@/openapi';
 import { useMessagesStore } from '@/stores';
 import { i18n } from '@/i18n';
 import router from '@/router';
+import { configureApi } from '@/openApiConfig';
 
-const authApi = new AuthApi();
-const usersApi = new UsersApi();
+const authApi = configureApi(AuthApi);
+const usersApi = configureApi(UsersApi);
 
 function getUserFromLocalStorage(): UserRead | null {
   const storageData = localStorage.getItem('user');

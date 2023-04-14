@@ -15,11 +15,12 @@ import {
   NSpace,
 } from 'naive-ui';
 import { AuthApi, type UserCreate } from '@/openapi';
+import { configureApi } from '@/openApiConfig';
 
 const router = useRouter();
 const messages = useMessagesStore();
 const pf = usePlatformStore();
-const authApi = new AuthApi();
+const authApi = configureApi(AuthApi);
 const { t } = useI18n({ useScope: 'global' });
 
 const initialFormModel = () => ({

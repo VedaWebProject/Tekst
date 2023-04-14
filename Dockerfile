@@ -1,7 +1,8 @@
 FROM node:18.15-alpine AS builder
+ARG BASE_PATH
 WORKDIR "/app"
 COPY . .
-RUN npm install && npm run build
+RUN npm install && npm run build-only -- --base=$BASE_PATH
 
 FROM caddy:2.6-alpine AS prod
 WORKDIR "/var/www/html"

@@ -10,13 +10,14 @@ import { NodesApi, type NodeRead, type TextRead } from '@/openapi';
 import router from '@/router';
 import ModalButtonFooter from '@/components/ModalButtonFooter.vue';
 import { useMagicKeys, whenever } from '@vueuse/core';
+import { configureApi } from '@/openApiConfig';
 
 const state = useStateStore();
 const browse = useBrowseStore();
 const route = useRoute();
 const { ArrowLeft, ArrowRight } = useMagicKeys();
 
-const nodesApi = new NodesApi();
+const nodesApi = configureApi(NodesApi);
 
 const showModal = ref(false);
 watch(showModal, (show) => show && initSelectModels());

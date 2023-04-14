@@ -5,6 +5,7 @@ import { useMessagesStore, useStateStore, useAuthStore } from '@/stores';
 import type { NodeRead } from '@/openapi';
 import { LayersApi, NodesApi, UnitsApi } from '@/openapi/api';
 import type { AxiosResponse } from 'axios';
+import { configureApi } from '@/openApiConfig';
 
 export const useBrowseStore = defineStore('browse', () => {
   // composables
@@ -15,9 +16,9 @@ export const useBrowseStore = defineStore('browse', () => {
   const messages = useMessagesStore();
 
   // API clients
-  const nodesApi = new NodesApi();
-  const layersApi = new LayersApi();
-  const unitsApi = new UnitsApi();
+  const nodesApi = configureApi(NodesApi);
+  const layersApi = configureApi(LayersApi);
+  const unitsApi = configureApi(UnitsApi);
 
   /* BASIC BROWSE UI STATE */
 

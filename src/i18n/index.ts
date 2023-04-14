@@ -1,13 +1,11 @@
 import staticI18nMsgs from '@intlify/unplugin-vue-i18n/messages';
-
 import { createI18n } from 'vue-i18n';
 import type { I18nOptions } from 'vue-i18n';
-
 import type { NDateLocale } from 'naive-ui';
-
 import { enUS, dateEnUS } from 'naive-ui';
 import { deDE, dateDeDE } from 'naive-ui';
 import { PlatformApi } from '@/openapi';
+import { configureApi } from '@/openApiConfig';
 
 const i18nOptions: I18nOptions = {
   legacy: false,
@@ -46,7 +44,7 @@ export const localeProfiles: { [localeKey: string]: AvailableLocale } = {
 };
 
 export const i18n = createI18n(i18nOptions);
-const platformApi = new PlatformApi();
+const platformApi = configureApi(PlatformApi);
 
 export async function setI18nLocale(
   locale: I18nOptions['locale'] = i18n.global.locale
