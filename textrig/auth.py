@@ -1,7 +1,7 @@
 import contextlib
 import re
 
-from typing import Any
+from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, FastAPI, Request
 from fastapi_users import (
@@ -261,14 +261,27 @@ def _current_user(**kwargs) -> callable:
     )
 
 
-# prepare auth dependencies for API routes
-dep_user = _current_user(verified=_cfg.security.users_need_verification, active=True)
-dep_superuser = _current_user(
-    verified=_cfg.security.users_need_verification, active=True, superuser=True
-)
-dep_user_optional = _current_user(
-    verified=_cfg.security.users_need_verification, active=True, optional=True
-)
+# auth dependencies for API routes
+UserDep = Annotated[
+    UserRead,
+    Depends(_current_user(verified=_cfg.security.users_need_verification, active=True)),
+]
+SuperuserDep = Annotated[
+    UserRead,
+    Depends(
+        _current_user(
+            verified=_cfg.security.users_need_verification, active=True, superuser=True
+        )
+    ),
+]
+OptionalUserDep = Annotated[
+    UserRead | None,
+    Depends(
+        _current_user(
+            verified=_cfg.security.users_need_verification, active=True, optional=True
+        )
+    ),
+]
 
 
 async def _create_user(user: UserCreate) -> UserRead:

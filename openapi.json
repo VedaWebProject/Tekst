@@ -1569,10 +1569,12 @@
             "in": "query"
           },
           {
+            "description": "Return at most <limit> items",
             "required": false,
             "schema": {
               "title": "Limit",
               "type": "integer",
+              "description": "Return at most <limit> items",
               "default": 1000
             },
             "name": "limit",

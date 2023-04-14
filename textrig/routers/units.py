@@ -1,7 +1,9 @@
-from beanie.operators import In
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from typing import Annotated
 
-from textrig.auth import UserRead, dep_user, dep_user_optional
+from beanie.operators import In
+from fastapi import APIRouter, HTTPException, Query, status
+
+from textrig.auth import OptionalUserDep, UserDep
 from textrig.layer_types import get_layer_types
 from textrig.models.common import PyObjectId
 from textrig.models.layer import LayerBaseDocument, LayerIdView
@@ -12,9 +14,7 @@ def _generate_read_endpoint(
     unit_document_model: type[UnitBase],
     unit_read_model: type[UnitBase],
 ):
-    async def get_unit(
-        id: PyObjectId, user: UserRead | None = Depends(dep_user_optional)
-    ) -> unit_read_model:
+    async def get_unit(id: PyObjectId, user: OptionalUserDep) -> unit_read_model:
         """A generic route for reading a unit from the database"""
         unit_doc = await unit_document_model.get(id)
         # check if the layer this unit belongs to is readable by user
@@ -41,9 +41,7 @@ def _generate_create_endpoint(
     unit_create_model: type[UnitBase],
     unit_read_model: type[UnitBase],
 ):
-    async def create_unit(
-        unit: unit_create_model, user: UserRead = Depends(dep_user)
-    ) -> unit_read_model:
+    async def create_unit(unit: unit_create_model, user: UserDep) -> unit_read_model:
         # check if the layer this unit belongs to is writable by user
         layer_write_allowed = (
             await LayerBaseDocument.find(
@@ -76,19 +74,19 @@ def _generate_update_endpoint(
     unit_update_model: type[UnitBase],
 ):
     async def update_unit(
-        id: PyObjectId, updates: unit_update_model, user: UserRead = Depends(dep_user)
+        id: PyObjectId, updates: unit_update_model, user: UserDep
     ) -> unit_read_model:
         unit_doc = await unit_document_model.get(id)
         if not unit_doc:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Unit with ID {id} doesn't exist",
+                detail=f"Unit {id} doesn't exist",
             )
         # check if unit's layer ID matches updates' layer ID (if it has one specified)
         if updates.layer_id and unit_doc.layer_id != updates.layer_id:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Referenced layer IDs in unit and updates doesn't match",
+                detail="Referenced layer ID in unit and updates doesn't match",
             )
         # check if the layer this unit belongs to is writable by user
         layer_write_allowed = (
@@ -101,7 +99,7 @@ def _generate_update_endpoint(
         if not layer_write_allowed:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="No write access for units belonging to this layer",
+                detail=f"No write access for units of layer {unit_doc.layer_id}",
             )
         # apply updates
         await unit_doc.set(updates.dict(exclude_unset=True))
@@ -170,16 +168,16 @@ for lt_name, lt_class in get_layer_types().items():
 
 @router.get("/", response_model=list[dict], status_code=status.HTTP_200_OK)
 async def find_units(
-    layer_id: list[PyObjectId] = Query(
-        [],
-        description="ID (or list of IDs) of layer(s) to return unit data for",
-    ),
-    node_id: list[PyObjectId] = Query(
-        [],
-        description="ID (or list of IDs) of node(s) to return unit data for",
-    ),
-    limit: int = 1000,
-    user: UserRead | None = Depends(dep_user_optional),
+    user: OptionalUserDep,
+    layer_id: Annotated[
+        list[PyObjectId],
+        Query(description="ID (or list of IDs) of layer(s) to return unit data for"),
+    ] = [],
+    node_id: Annotated[
+        list[PyObjectId],
+        Query(description="ID (or list of IDs) of node(s) to return unit data for"),
+    ] = [],
+    limit: Annotated[int, Query(description="Return at most <limit> items")] = 1000,
 ) -> list[dict]:
     """
     Returns a list of all data layer units matching the given criteria.
