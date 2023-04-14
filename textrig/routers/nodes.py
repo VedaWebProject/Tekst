@@ -116,7 +116,7 @@ async def update_node(id: PyObjectId, updates: NodeUpdate) -> NodeDocument:
     if not node_doc:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Node with ID {id} doesn't exist",
+            detail=f"Node {id} doesn't exist or requires extra permissions",
         )
     await node_doc.set(updates.dict(exclude_unset=True))
     return node_doc

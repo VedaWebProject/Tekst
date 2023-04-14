@@ -92,7 +92,7 @@ async def update_text(id: PyObjectId, updates: TextUpdate) -> dict:
     if not text:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Text with ID {id} doesn't exist",
+            detail=f"Text {id} doesn't exist or requires extra permissions",
         )
     if updates.slug and updates.slug != text.slug:
         raise HTTPException(
