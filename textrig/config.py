@@ -28,7 +28,6 @@ def _select_env_files() -> list[str]:
     1. ".env" if it exists
     2. Custom env file defined in "TEXTRIG_ENV_FILE" env var if it exists
     3. ".env.dev" if it exists AND if TEXTRIG_DEV_MODE env var is set to true
-    4. ".env.prod" if it exists
 
     :return: List of .env file paths
     :rtype: list[str]
@@ -37,7 +36,6 @@ def _select_env_files() -> list[str]:
     # define used env file names
     f_env = ".env"
     f_env_dev = ".env.dev"
-    f_env_prod = ".env.prod"
     f_env_custom = os.environ.get("TEXTRIG_ENV_FILE")
     # prio logic
     if os.path.exists(f_env):
@@ -46,8 +44,6 @@ def _select_env_files() -> list[str]:
         env_files.append(f_env_custom)
     elif os.environ.get("TEXTRIG_DEV_MODE") and os.path.exists(f_env_dev):
         env_files.append(f_env_dev)
-    elif os.path.exists(f_env_prod):
-        env_files.append(f_env_prod)
     return env_files
 
 
@@ -131,10 +127,10 @@ class TextRigConfig(BaseSettings):
 
     # basic
     dev_mode: bool = False
-    api_path: str = ""
+    api_path: str = "/api"
     server_url: HttpUrl = "http://127.0.0.1:8000"
     user_files_dir: str = "userfiles"
-    log_level: str = "INFO"
+    log_level: str = "warning"
 
     # uvicorn asgi binding
     uvicorn_host: str = "127.0.0.1"

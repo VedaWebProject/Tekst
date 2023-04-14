@@ -3289,12 +3289,7 @@
               }
             ],
             "default": {
-              "platformName": "TextRig-DEV",
-              "description": "An online text research platform",
-              "terms": "https://www.example-textrig-instance.org/terms",
-              "contactName": "Rick Sanchez",
-              "contactUrl": "https://www.example-textrig-instance.org/contact",
-              "contactEmail": "rick.sanchez@example-textrig-instance.org"
+              "platformName": "TextRig-DEV"
             }
           },
           "textrigInfo": {
