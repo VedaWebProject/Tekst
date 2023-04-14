@@ -338,8 +338,8 @@ async def create_sample_users():
     # just a normal user, active and verified
     await _create_user(
         UserCreate(
-            email=f"verified{email_suffix}",
-            username="the_morty",
+            email=f"user{email_suffix}",
+            username="the_morty123",
             password=pw,
             first_name="Morty",
             last_name="Smith",
