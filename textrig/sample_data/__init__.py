@@ -1,11 +1,9 @@
-from textrig.config import TextRigConfig, get_config
 from textrig.layer_types import LayerTypePluginABC, get_layer_types
 from textrig.logging import log
 from textrig.models.text import NodeDocument, TextDocument
 from textrig.sample_data._sample_data import LAYERS, TEXTS
 
 
-_cfg: TextRigConfig = get_config()
 _layer_types = get_layer_types()
 
 

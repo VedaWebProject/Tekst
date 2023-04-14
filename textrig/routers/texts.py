@@ -2,12 +2,8 @@ from beanie.operators import Or
 from fastapi import APIRouter, HTTPException, status
 
 from textrig.auth import SuperuserDep
-from textrig.config import TextRigConfig, get_config
 from textrig.models.common import PyObjectId
 from textrig.models.text import TextCreate, TextDocument, TextRead, TextUpdate
-
-
-_cfg: TextRigConfig = get_config()
 
 
 router = APIRouter(

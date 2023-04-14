@@ -1,15 +1,11 @@
 from fastapi import APIRouter, status
 
 from textrig.auth import SuperuserDep
-from textrig.config import TextRigConfig, get_config
 from textrig.models.settings import (
     PlatformSettingsDocument,
     PlatformSettingsRead,
     PlatformSettingsUpdate,
 )
-
-
-_cfg: TextRigConfig = get_config()
 
 
 router = APIRouter(
