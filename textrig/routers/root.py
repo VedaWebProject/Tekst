@@ -14,4 +14,4 @@ router = APIRouter(
     "/", response_class=RedirectResponse, status_code=301, include_in_schema=False
 )
 async def root_redirect(cfg: TextRigConfig = Depends(get_cfg)):
-    return cfg.root_path + cfg.doc.redoc_url
+    return cfg.api_path + cfg.doc.redoc_url

@@ -26,9 +26,9 @@ def config() -> TextRigConfig:
 
 
 @pytest.fixture(scope="session")
-def root_path(config) -> TextRigConfig:
+def api_path(config) -> TextRigConfig:
     """Returns the configured app root path"""
-    return config.root_path
+    return config.api_path
 
 
 @pytest.fixture(scope="session")
@@ -85,7 +85,7 @@ async def reset_db(get_db_client_override, config):
 
 
 @pytest.fixture
-async def insert_test_data(test_app, reset_db, root_path, test_data) -> callable:
+async def insert_test_data(test_app, reset_db, api_path, test_data) -> callable:
     """
     Returns an asynchronous function to insert
     test data into their respective database collections
@@ -135,10 +135,10 @@ async def register_test_user(new_user_data) -> callable:
 
 @pytest.fixture
 async def get_session_cookie(
-    config, test_client, root_path, status_fail_msg
+    config, test_client, api_path, status_fail_msg
 ) -> callable:
     async def _get_session_cookie(user_data: dict) -> dict:
-        endpoint = f"{root_path}/auth/cookie/login"
+        endpoint = f"{api_path}/auth/cookie/login"
         payload = {"username": user_data["email"], "password": user_data["password"]}
         resp = await test_client.post(
             endpoint,

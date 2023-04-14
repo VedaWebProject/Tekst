@@ -52,7 +52,7 @@ async def startup_routine(app: FastAPI) -> None:
 
     # log dev server info for quick browser access
     if _cfg.dev_mode:  # pragma: no cover
-        api_path = _cfg.server_url + _cfg.root_path
+        api_path = _cfg.server_url + _cfg.api_path
         if _cfg.doc.swaggerui_url:
             log.info(f"\u2022 SwaggerUI docs @ {api_path}{_cfg.doc.swaggerui_url}")
         if _cfg.doc.redoc_url:
@@ -88,7 +88,7 @@ async def lifespan(app: FastAPI):
 
 # create FastAPI app instance
 app = FastAPI(
-    root_path=_cfg.root_path,
+    api_path=_cfg.api_path,
     openapi_url=_cfg.doc.openapi_url,
     docs_url=_cfg.doc.swaggerui_url,
     redoc_url=_cfg.doc.redoc_url,

@@ -5,9 +5,9 @@ from httpx import AsyncClient
 
 @pytest.mark.anyio
 async def test_register(
-    root_path, test_client: AsyncClient, new_user_data, status_fail_msg
+    api_path, test_client: AsyncClient, new_user_data, status_fail_msg
 ):
-    endpoint = f"{root_path}/auth/register"
+    endpoint = f"{api_path}/auth/register"
     payload = new_user_data
     resp = await test_client.post(endpoint, json=payload)
     assert resp.status_code == 201, status_fail_msg(201, resp)
@@ -16,9 +16,9 @@ async def test_register(
 
 @pytest.mark.anyio
 async def test_register_invalid_pw(
-    root_path, test_client: AsyncClient, new_user_data, status_fail_msg
+    api_path, test_client: AsyncClient, new_user_data, status_fail_msg
 ):
-    endpoint = f"{root_path}/auth/register"
+    endpoint = f"{api_path}/auth/register"
     payload = new_user_data
 
     payload["password"] = "foo"
@@ -39,8 +39,8 @@ async def test_register_invalid_pw(
 
 
 @pytest.mark.anyio
-async def test_login(config, root_path, test_client: AsyncClient, status_fail_msg):
-    endpoint = f"{root_path}/auth/cookie/login"
+async def test_login(config, api_path, test_client: AsyncClient, status_fail_msg):
+    endpoint = f"{api_path}/auth/cookie/login"
     payload = {"username": "user@test.com", "password": "poiPOI098"}
     resp = await test_client.post(
         endpoint,
@@ -52,9 +52,9 @@ async def test_login(config, root_path, test_client: AsyncClient, status_fail_ms
 
 @pytest.mark.anyio
 async def test_login_fail_bad_pw(
-    config, root_path, test_client: AsyncClient, status_fail_msg
+    config, api_path, test_client: AsyncClient, status_fail_msg
 ):
-    endpoint = f"{root_path}/auth/cookie/login"
+    endpoint = f"{api_path}/auth/cookie/login"
     payload = {"username": "user@test.com", "password": "wrongpassword"}
     resp = await test_client.post(
         endpoint,
@@ -66,9 +66,9 @@ async def test_login_fail_bad_pw(
 
 @pytest.mark.anyio
 async def test_login_fail_unverified(
-    config, root_path, test_client: AsyncClient, status_fail_msg
+    config, api_path, test_client: AsyncClient, status_fail_msg
 ):
-    endpoint = f"{root_path}/auth/cookie/login"
+    endpoint = f"{api_path}/auth/cookie/login"
     payload = {"username": "unverified@test.com", "password": "poiPOI098"}
     resp = await test_client.post(
         endpoint,
@@ -80,10 +80,10 @@ async def test_login_fail_unverified(
 
 @pytest.mark.anyio
 async def test_user_updates_self(
-    config, root_path, test_client: AsyncClient, status_fail_msg
+    config, api_path, test_client: AsyncClient, status_fail_msg
 ):
     # login
-    endpoint = f"{root_path}/auth/cookie/login"
+    endpoint = f"{api_path}/auth/cookie/login"
     payload = {"username": "user@test.com", "password": "poiPOI098"}
     resp = await test_client.post(
         endpoint,
@@ -96,7 +96,7 @@ async def test_user_updates_self(
     auth_token = resp.cookies.get(config.security.auth_cookie_name)
 
     # get user data from /users/me
-    endpoint = f"{root_path}/users/me"
+    endpoint = f"{api_path}/users/me"
     resp = await test_client.get(
         endpoint,
         cookies={

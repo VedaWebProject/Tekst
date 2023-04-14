@@ -5,7 +5,7 @@ from httpx import AsyncClient
 
 @pytest.mark.anyio
 async def test_create_node(
-    root_path,
+    api_path,
     test_client: AsyncClient,
     test_data,
     insert_test_data,
@@ -14,7 +14,7 @@ async def test_create_node(
     get_session_cookie,
 ):
     text_id = await insert_test_data("texts")
-    endpoint = f"{root_path}/nodes"
+    endpoint = f"{api_path}/nodes"
     nodes = [{"textId": text_id, **node} for node in test_data["nodes"]]
 
     # create superuser
@@ -28,7 +28,7 @@ async def test_create_node(
 
 @pytest.mark.anyio
 async def test_child_node_io(
-    root_path,
+    api_path,
     test_client: AsyncClient,
     test_data,
     insert_test_data,
@@ -37,7 +37,7 @@ async def test_child_node_io(
     get_session_cookie,
 ):
     text_id = await insert_test_data("texts")
-    endpoint = f"{root_path}/nodes"
+    endpoint = f"{api_path}/nodes"
     node = {"textId": text_id, **test_data["nodes"][0]}
 
     # create superuser
@@ -72,7 +72,7 @@ async def test_child_node_io(
     assert resp.json()[0]["id"] == str(child["id"])
 
     # find children by parent ID using dedicated children endpoint
-    resp = await test_client.get(f"{root_path}/nodes/{child['parentId']}/children")
+    resp = await test_client.get(f"{api_path}/nodes/{child['parentId']}/children")
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert type(resp.json()) is list
     assert len(resp.json()) == 1
@@ -81,7 +81,7 @@ async def test_child_node_io(
 
 @pytest.mark.anyio
 async def test_create_node_invalid_text_fail(
-    root_path,
+    api_path,
     test_client: AsyncClient,
     test_data,
     insert_test_data,
@@ -90,7 +90,7 @@ async def test_create_node_invalid_text_fail(
     get_session_cookie,
 ):
     await insert_test_data("texts")
-    endpoint = f"{root_path}/nodes"
+    endpoint = f"{api_path}/nodes"
     node = test_data["nodes"][0]
     node["textId"] = "5eb7cfb05e32e07750a1756a"
 
@@ -104,7 +104,7 @@ async def test_create_node_invalid_text_fail(
 
 @pytest.mark.anyio
 async def test_create_node_duplicate_fail(
-    root_path,
+    api_path,
     test_client: AsyncClient,
     test_data,
     insert_test_data,
@@ -113,7 +113,7 @@ async def test_create_node_duplicate_fail(
     get_session_cookie,
 ):
     text_id = await insert_test_data("texts")
-    endpoint = f"{root_path}/nodes"
+    endpoint = f"{api_path}/nodes"
     node = test_data["nodes"][0]
     node["textId"] = text_id
 
@@ -130,10 +130,10 @@ async def test_create_node_duplicate_fail(
 
 @pytest.mark.anyio
 async def test_get_nodes(
-    root_path, test_client: AsyncClient, test_data, insert_test_data, status_fail_msg
+    api_path, test_client: AsyncClient, test_data, insert_test_data, status_fail_msg
 ):
     text_id = await insert_test_data("texts", "nodes")
-    endpoint = f"{root_path}/nodes"
+    endpoint = f"{api_path}/nodes"
     nodes = test_data["nodes"]
 
     # test results length limit
@@ -184,7 +184,7 @@ async def test_get_nodes(
 
 @pytest.mark.anyio
 async def test_update_node(
-    root_path,
+    api_path,
     test_client: AsyncClient,
     insert_test_data,
     test_data,
@@ -194,7 +194,7 @@ async def test_update_node(
 ):
     text_id = await insert_test_data("texts", "nodes")
     # get node from db
-    endpoint = f"{root_path}/nodes"
+    endpoint = f"{api_path}/nodes"
     resp = await test_client.get(endpoint, params={"textId": text_id, "level": 0})
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert type(resp.json()) == list
@@ -204,7 +204,7 @@ async def test_update_node(
     superuser_data = await register_test_user(superuser=True)
     session_cookie = await get_session_cookie(superuser_data)
     # update node
-    endpoint = f"{root_path}/nodes/{node['id']}"
+    endpoint = f"{api_path}/nodes/{node['id']}"
     node_update = {"label": "A fresh label"}
     resp = await test_client.patch(endpoint, json=node_update, cookies=session_cookie)
     assert resp.status_code == 200, status_fail_msg(200, resp)
@@ -217,18 +217,18 @@ async def test_update_node(
     assert resp.status_code == 200, status_fail_msg(200, resp)
     # update invalid node
     node_update = {"label": "Brand new label"}
-    endpoint = f"{root_path}/nodes/637b9ad396d541a505e5439b"
+    endpoint = f"{api_path}/nodes/637b9ad396d541a505e5439b"
     resp = await test_client.patch(endpoint, json=node_update)
     assert resp.status_code == 400, status_fail_msg(400, resp, cookies=session_cookie)
 
 
 @pytest.mark.anyio
 async def test_node_next(
-    root_path, test_client: AsyncClient, insert_test_data, test_data, status_fail_msg
+    api_path, test_client: AsyncClient, insert_test_data, test_data, status_fail_msg
 ):
     text_id = await insert_test_data("texts", "nodes")
     # get second last node from level 0
-    endpoint = f"{root_path}/nodes"
+    endpoint = f"{api_path}/nodes"
     resp = await test_client.get(endpoint, params={"textId": text_id, "level": 0})
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert type(resp.json()) == list
@@ -237,13 +237,13 @@ async def test_node_next(
     node_second_last = nodes[len(nodes) - 2]
     node_last = nodes[len(nodes) - 1]
     # get next node
-    endpoint = f"{root_path}/nodes/{node_second_last['id']}/next"
+    endpoint = f"{api_path}/nodes/{node_second_last['id']}/next"
     resp = await test_client.get(endpoint)
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert type(resp.json()) == dict
     assert "id" in resp.json()
     assert resp.json()["id"] == str(node_last["id"])
     # fail to get node after last
-    endpoint = f"{root_path}/nodes/{node_last['id']}/next"
+    endpoint = f"{api_path}/nodes/{node_last['id']}/next"
     resp = await test_client.get(endpoint)
     assert resp.status_code == 404, status_fail_msg(404, resp)

@@ -5,7 +5,7 @@ from httpx import AsyncClient
 
 @pytest.mark.anyio
 async def test_create_layer_unit(
-    root_path,
+    api_path,
     test_client: AsyncClient,
     insert_test_data,
     status_fail_msg,
@@ -17,7 +17,7 @@ async def test_create_layer_unit(
     session_cookie = await get_session_cookie(user_data)
 
     # create new layer (because only owner can update(write))
-    endpoint = f"{root_path}/layers/plaintext"
+    endpoint = f"{api_path}/layers/plaintext"
     payload = {
         "title": "Foo Bar Baz",
         "textId": text_id,
@@ -33,7 +33,7 @@ async def test_create_layer_unit(
     assert layer_data["ownerId"] == user_data["id"]
 
     # get ID of existing test node
-    endpoint = f"{root_path}/nodes"
+    endpoint = f"{api_path}/nodes"
     resp = await test_client.get(
         endpoint, params={"textId": text_id, "level": 0}, cookies=session_cookie
     )
@@ -44,7 +44,7 @@ async def test_create_layer_unit(
     node_id = resp.json()[0]["id"]
 
     # create plaintext layer unit
-    endpoint = f"{root_path}/units/plaintext"
+    endpoint = f"{api_path}/units/plaintext"
     payload = {
         "layerId": layer_data["id"],
         "nodeId": node_id,
@@ -64,7 +64,7 @@ async def test_create_layer_unit(
     assert resp.status_code == 409, status_fail_msg(409, resp)
 
     # get unit
-    endpoint = f"{root_path}/units/plaintext/{unit_id}"
+    endpoint = f"{api_path}/units/plaintext/{unit_id}"
     resp = await test_client.get(endpoint, cookies=session_cookie)
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert type(resp.json()) == dict
@@ -73,12 +73,12 @@ async def test_create_layer_unit(
     assert resp.json()["meta"]["foo"] == "bar"
 
     # fail to get unit with invalid ID
-    endpoint = f"{root_path}/units/plaintext/637b9ad396d541a505e5439b"
+    endpoint = f"{api_path}/units/plaintext/637b9ad396d541a505e5439b"
     resp = await test_client.get(endpoint, cookies=session_cookie)
     assert resp.status_code == 404, status_fail_msg(404, resp)
 
     # update unit
-    endpoint = f"{root_path}/units/plaintext/{unit_id}"
+    endpoint = f"{api_path}/units/plaintext/{unit_id}"
     unit_update = {"text": "FOO BAR"}
     resp = await test_client.patch(endpoint, json=unit_update, cookies=session_cookie)
     assert resp.status_code == 200, status_fail_msg(200, resp)
@@ -89,6 +89,6 @@ async def test_create_layer_unit(
 
     # fail to update unit with invalid ID
     unit_update = {"text": "FOO BAR"}
-    endpoint = f"{root_path}/units/plaintext/637b9ad396d541a505e5439b"
+    endpoint = f"{api_path}/units/plaintext/637b9ad396d541a505e5439b"
     resp = await test_client.patch(endpoint, json=unit_update, cookies=session_cookie)
     assert resp.status_code == 400, status_fail_msg(400, resp)
