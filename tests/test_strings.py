@@ -1,4 +1,4 @@
-from textrig.utils import strings
+from tekst.utils import strings
 
 
 def test_safe_name():

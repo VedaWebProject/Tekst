@@ -1,4 +1,4 @@
-from textrig.utils import routines
+from tekst.utils import routines
 
 
 def test_load_snippets():

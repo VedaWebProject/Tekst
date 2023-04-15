@@ -1,7 +1,7 @@
 import pytest
 
 from pydantic.error_wrappers import ValidationError
-from textrig.models.text import TextCreate, TextRead
+from tekst.models.text import TextCreate, TextRead
 
 
 def test_basic_validation():
@@ -49,7 +49,7 @@ def test_model_field_casing(test_app):
 
 def test_layer_description_validator(test_app):
     # desc with arbitrary whitespaces
-    from textrig.layer_types.plaintext import PlainTextLayer
+    from tekst.layer_types.plaintext import PlainTextLayer
 
     layer = PlainTextLayer(
         title="foo",

@@ -8,17 +8,17 @@ tasks:
   default:
     desc: Print this very list of available tasks
     vars:
-      TEXTRIG_VERSION:
+      TEKST_VERSION:
         sh: task version
     cmds:
-      - echo "This is TextRig server {{.TEXTRIG_VERSION}}"
+      - echo "This is Tekst server {{.TEKST_VERSION}}"
       - task --list
     silent: true
 
   version:
     desc: Print project version
     cmds:
-      - poetry run python3 -c "from textrig import __version__ as v; print(v, end='')"
+      - poetry run python3 -c "from tekst import __version__ as v; print(v, end='')"
     silent: true
 
   fix:
@@ -36,7 +36,7 @@ tasks:
   run-tests:
     desc: Run test suite with pytest
     env:
-      TEXTRIG_ENV_FILE: .env.test
+      TEKST_ENV_FILE: .env.test
     cmds:
       - poetry run coverage run -m pytest {{.CLI_ARGS}}
       - poetry run coverage report -m
@@ -52,9 +52,9 @@ tasks:
   run-app:
     desc: Run the application dev server (only for development!)
     env:
-      TEXTRIG_DEV_MODE: true
+      TEKST_DEV_MODE: true
     cmds:
-      - poetry run python3 -m textrig run --reload
+      - poetry run python3 -m tekst run --reload
 
   run:
     desc: Run dev services stack and dev server, clean up afterwards
@@ -66,13 +66,13 @@ tasks:
   schema:
     desc: Export (development) OpenAPI schema to file openapi.json
     env:
-      TEXTRIG_DEV_MODE: true
-      TEXTRIG_LOG_LEVEL: ERROR
+      TEKST_DEV_MODE: true
+      TEKST_LOG_LEVEL: ERROR
     cmds:
       - defer: {task: test-stack-down}
       - task: test-stack-up
       - task: wait-for-mongodb
-      - poetry run python3 -m textrig schema -f
+      - poetry run python3 -m tekst schema -f
 
   pre-commit:
     desc: Run full pre-commit toolchain (fix code, test, code checks, export schema)
@@ -100,33 +100,33 @@ tasks:
   dev-stack-up:
     desc: Run dev services stack
     cmds:
-      - docker compose -f dev/docker-compose.yml --profile dev -p textrig-dev up --detach
+      - docker compose -f dev/docker-compose.yml --profile dev -p tekst-dev up --detach
 
   dev-stack-down:
     desc: Stop dev stack and clean up all resources
     cmds:
-      - docker compose -f dev/docker-compose.yml --profile dev -p textrig-dev down --volumes
+      - docker compose -f dev/docker-compose.yml --profile dev -p tekst-dev down --volumes
 
   test-stack-up:
     desc: Run test services stack
     cmds:
-      - docker compose -f dev/docker-compose.yml --profile test -p textrig-testing up --detach
+      - docker compose -f dev/docker-compose.yml --profile test -p tekst-testing up --detach
 
   test-stack-down:
     desc: Stop test stack and clean up all resources
     cmds:
-      - docker compose -f dev/docker-compose.yml --profile test -p textrig-testing down --volumes
+      - docker compose -f dev/docker-compose.yml --profile test -p tekst-testing down --volumes
 
   docker-build:
     desc: Build and tag production Docker image for app
     vars:
-      TEXTRIG_VERSION:
+      TEKST_VERSION:
         sh: task version
     cmds:
       - cmd: |
           docker build \
-            --tag "textrig-server:latest" \
-            --tag "textrig-server:{{.TEXTRIG_VERSION}}" \
+            --tag "tekst-server:latest" \
+            --tag "tekst-server:{{.TEKST_VERSION}}" \
             --target prod .
 
   wait-for-mongodb:

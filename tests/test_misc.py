@@ -1,7 +1,7 @@
 import os
 
-from textrig import logging
-from textrig.auth import _validate_required_password_chars
+from tekst import logging
+from tekst.auth import _validate_required_password_chars
 
 
 def test_password_chars_regex():

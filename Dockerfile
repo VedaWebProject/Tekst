@@ -12,7 +12,7 @@ ENV PYTHONFAULTHANDLER=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
     PIP_NO_CACHE_DIR=1 \
     PIP_ROOT_USER_ACTION=ignore \
-    WORKDIR_PATH="/textrig"
+    WORKDIR_PATH="/tekst"
 
 
 # =====================
@@ -53,7 +53,7 @@ RUN poetry run pip wheel \
         --wheel-dir deps
 
 # copy app source and build wheel
-COPY textrig/ textrig/
+COPY tekst/ tekst/
 COPY README.md LICENSE ./
 RUN poetry build --format wheel
 
@@ -103,11 +103,11 @@ HEALTHCHECK \
     --start-period=30s \
     CMD curl http://localhost:8000 || exit 1
 
-RUN groupadd -g 1337 textrig && \
-    useradd -m -u 1337 -g textrig textrig
+RUN groupadd -g 1337 tekst && \
+    useradd -m -u 1337 -g tekst tekst
 
-USER textrig
+USER tekst
 
 EXPOSE 8000
 
-ENTRYPOINT ["gunicorn", "textrig.app:app", "--config", "gunicorn_conf.py"]
+ENTRYPOINT ["gunicorn", "tekst.app:app", "--config", "gunicorn_conf.py"]

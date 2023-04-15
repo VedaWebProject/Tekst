@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'textrig/**'
+      - 'tekst/**'
       - 'tests/**'
       - 'pyproject.toml'
   pull_request:

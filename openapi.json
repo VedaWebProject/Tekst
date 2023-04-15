@@ -1,13 +1,13 @@
 {
   "openapi": "3.0.2",
   "info": {
-    "title": "TextRig-DEV",
+    "title": "Tekst-DEV",
     "description": "An online text research platform",
-    "termsOfService": "https://www.example-textrig-instance.org/terms",
+    "termsOfService": "https://www.example-tekst-instance.org/terms",
     "contact": {
       "name": "Rick Sanchez",
-      "url": "https://www.example-textrig-instance.org/contact",
-      "email": "rick.sanchez@example-textrig-instance.org"
+      "url": "https://www.example-tekst-instance.org/contact",
+      "email": "rick.sanchez@example-tekst-instance.org"
     },
     "license": {
       "name": "AGPL-3.0-or-later",
@@ -2706,7 +2706,7 @@
           "platformName": {
             "title": "Platformname",
             "type": "string",
-            "default": "TextRig"
+            "default": "Tekst"
           },
           "description": {
             "title": "Description",
@@ -2719,7 +2719,7 @@
             "minLength": 1,
             "type": "string",
             "format": "uri",
-            "default": "https://www.example-textrig-instance.org/terms"
+            "default": "https://www.example-tekst-instance.org/terms"
           },
           "contactName": {
             "title": "Contactname",
@@ -2732,13 +2732,13 @@
             "minLength": 1,
             "type": "string",
             "format": "uri",
-            "default": "https://www.example-textrig-instance.org/contact"
+            "default": "https://www.example-tekst-instance.org/contact"
           },
           "contactEmail": {
             "title": "Contactemail",
             "type": "string",
             "format": "email",
-            "default": "rick.sanchez@example-textrig-instance.org"
+            "default": "rick.sanchez@example-tekst-instance.org"
           }
         },
         "description": "General information config model"
@@ -3289,14 +3289,14 @@
               }
             ],
             "default": {
-              "platformName": "TextRig-DEV"
+              "platformName": "Tekst-DEV"
             }
           },
-          "textrigInfo": {
-            "title": "Textriginfo",
+          "tekstInfo": {
+            "title": "Tekstinfo",
             "allOf": [
               {
-                "$ref": "#/components/schemas/TextRigInfoConfig"
+                "$ref": "#/components/schemas/TekstInfoConfig"
               }
             ],
             "default": {}
@@ -3373,6 +3373,55 @@
         },
         "description": "Settings defining platform behavior configured by admins"
       },
+      "TekstInfoConfig": {
+        "title": "TekstInfoConfig",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string",
+            "default": "Tekst",
+            "const": "Tekst"
+          },
+          "version": {
+            "title": "Version",
+            "type": "string",
+            "default": "0.0.1",
+            "const": "0.0.1"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string",
+            "default": "An online text research platform",
+            "const": "An online text research platform"
+          },
+          "website": {
+            "title": "Website",
+            "maxLength": 2083,
+            "minLength": 1,
+            "type": "string",
+            "format": "uri",
+            "default": "https://github.com/VedaWebProject/tekst-server",
+            "const": "https://github.com/VedaWebProject/tekst-server"
+          },
+          "license": {
+            "title": "License",
+            "type": "string",
+            "default": "AGPL-3.0-or-later",
+            "const": "AGPL-3.0-or-later"
+          },
+          "licenseUrl": {
+            "title": "Licenseurl",
+            "maxLength": 2083,
+            "minLength": 1,
+            "type": "string",
+            "format": "uri",
+            "default": "https://www.gnu.org/licenses/agpl-3.0.txt",
+            "const": "https://www.gnu.org/licenses/agpl-3.0.txt"
+          }
+        },
+        "description": "Tekst platform information config model\n\nThese values are not configurable. They are taken from the package infos and\naren't meant to be changed by users creating an own instance of the platform."
+      },
       "TextCreate": {
         "title": "TextCreate",
         "required": [
@@ -3438,7 +3487,7 @@
             "format": "color"
           }
         },
-        "description": "A text represented in TextRig"
+        "description": "A text represented in Tekst"
       },
       "TextRead": {
         "title": "TextRead",
@@ -3511,56 +3560,7 @@
             "format": "color"
           }
         },
-        "description": "A text represented in TextRig"
-      },
-      "TextRigInfoConfig": {
-        "title": "TextRigInfoConfig",
-        "type": "object",
-        "properties": {
-          "name": {
-            "title": "Name",
-            "type": "string",
-            "default": "TextRig",
-            "const": "TextRig"
-          },
-          "version": {
-            "title": "Version",
-            "type": "string",
-            "default": "0.0.1",
-            "const": "0.0.1"
-          },
-          "description": {
-            "title": "Description",
-            "type": "string",
-            "default": "An online text research platform",
-            "const": "An online text research platform"
-          },
-          "website": {
-            "title": "Website",
-            "maxLength": 2083,
-            "minLength": 1,
-            "type": "string",
-            "format": "uri",
-            "default": "https://github.com/VedaWebProject/textrig-server",
-            "const": "https://github.com/VedaWebProject/textrig-server"
-          },
-          "license": {
-            "title": "License",
-            "type": "string",
-            "default": "AGPL-3.0-or-later",
-            "const": "AGPL-3.0-or-later"
-          },
-          "licenseUrl": {
-            "title": "Licenseurl",
-            "maxLength": 2083,
-            "minLength": 1,
-            "type": "string",
-            "format": "uri",
-            "default": "https://www.gnu.org/licenses/agpl-3.0.txt",
-            "const": "https://www.gnu.org/licenses/agpl-3.0.txt"
-          }
-        },
-        "description": "TextRig platform information config model\n\nThese values are not configurable. They are taken from the package infos and\naren't meant to be changed by users creating an own instance of the platform."
+        "description": "A text represented in Tekst"
       },
       "TextUpdate": {
         "title": "TextUpdate",
@@ -3604,7 +3604,7 @@
             "format": "color"
           }
         },
-        "description": "A text represented in TextRig"
+        "description": "A text represented in Tekst"
       },
       "UserCreate": {
         "title": "UserCreate",
@@ -3806,7 +3806,7 @@
       "APIKeyCookie": {
         "type": "apiKey",
         "in": "cookie",
-        "name": "textriguserauth"
+        "name": "tekstuserauth"
       },
       "OAuth2PasswordBearer": {
         "type": "oauth2",
@@ -3825,7 +3825,7 @@
       "description": "Text-related operations",
       "externalDocs": {
         "description": "View external documentation",
-        "url": "https://github.com/VedaWebProject/textrig-server"
+        "url": "https://github.com/VedaWebProject/tekst-server"
       }
     }
   ]

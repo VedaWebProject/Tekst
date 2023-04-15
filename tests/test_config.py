@@ -1,8 +1,8 @@
-from textrig.config import DbConfig, TextRigConfig
+from tekst.config import DbConfig, TekstConfig
 
 
 def test_config():
-    cfg: TextRigConfig = TextRigConfig()
+    cfg: TekstConfig = TekstConfig()
     cfg.info.platform_name = "a"
     assert cfg.info.platform_name == "a"
     cfg.db = DbConfig(host="b", port=1, user="c", password="d")

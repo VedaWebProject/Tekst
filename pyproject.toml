@@ -1,10 +1,10 @@
 [tool.poetry]
-name = "textrig"
+name = "tekst"
 version = "0.0.1"
 description = "An online text research platform"
 readme = "README.md"
-repository = "https://github.com/VedaWebProject/textrig-server"
-documentation = "https://github.com/VedaWebProject/textrig"
+repository = "https://github.com/VedaWebProject/tekst-server"
+documentation = "https://github.com/VedaWebProject/tekst"
 keywords = ["text", "research", "platform", "collaboration"]
 authors = ["Börge Kiss <bkis@bkis.github.io>"]
 license = "AGPL-3.0-or-later"
@@ -48,7 +48,7 @@ ruff = "^0.0.253"
 target-version = "py310"
 line-length = 88
 respect-gitignore = false
-src = ["textrig"]
+src = ["tekst"]
 ignore = ["F722"] # "Syntax error in forward annotation" using `Annotated` w/ metadata
 select = ["E", "F", "W", "I"]
 
@@ -69,7 +69,7 @@ env_override_existing_values = 1
 env_files = [".env.dev", ".env.test"]
 
 [tool.coverage.run]
-source = ["textrig"]
+source = ["tekst"]
 branch = true
 omit = [
     "*/**/__main__.py",
@@ -81,7 +81,7 @@ precision = 2
 skip_empty = true
 
 [tool.coverage.html]
-title = "TextRig - Test Coverage Report"
+title = "Tekst - Test Coverage Report"
 
 
 [build-system]

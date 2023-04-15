@@ -5,13 +5,13 @@ import requests
 
 from asgi_lifespan import LifespanManager
 from httpx import AsyncClient, Response
-from textrig.app import app
-from textrig.auth import UserCreate, _create_user
-from textrig.config import TextRigConfig, get_config
-from textrig.db import DatabaseClient
-from textrig.dependencies import get_db_client
-from textrig.layer_types import get_layer_type
-from textrig.models.text import NodeDocument, TextDocument
+from tekst.app import app
+from tekst.auth import UserCreate, _create_user
+from tekst.config import TekstConfig, get_config
+from tekst.db import DatabaseClient
+from tekst.dependencies import get_db_client
+from tekst.layer_types import get_layer_type
+from tekst.models.text import NodeDocument, TextDocument
 
 
 """
@@ -20,13 +20,13 @@ pytest fixtures go in here...
 
 
 @pytest.fixture(scope="session")
-def config() -> TextRigConfig:
+def config() -> TekstConfig:
     """Returns the app config according to passed env vars, env file or defaults"""
     return get_config()
 
 
 @pytest.fixture(scope="session")
-def api_path(config) -> TextRigConfig:
+def api_path(config) -> TekstConfig:
     """Returns the configured app root path"""
     return config.api_path
 
