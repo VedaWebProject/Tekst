@@ -17,7 +17,7 @@ services:
       platforms:
         - "linux/amd64"
       args:
-        BASE_PATH: ${TEXTRIG_CLIENT_PATH}
+        BASE_PATH: ${TEKST_CLIENT_PATH}
     restart: always
     init: true
     env_file: [.env.prod]
