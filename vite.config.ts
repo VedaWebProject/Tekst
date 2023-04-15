@@ -27,7 +27,7 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
-  envPrefix: 'TEXTRIG_',
+  envPrefix: 'TEKST_',
   appType: 'spa',
   server: {
     host: '127.0.0.1',

@@ -8,10 +8,10 @@ tasks:
   default:
     desc: Print this very list of available tasks
     vars:
-      TEXTRIG_VERSION:
+      TEKST_VERSION:
         sh: task version
     cmds:
-      - echo "This is TextRig client {{.TEXTRIG_VERSION}}"
+      - echo "This is Tekst client {{.TEKST_VERSION}}"
       - task --list
     silent: true
 
@@ -52,9 +52,9 @@ tasks:
     cmds:
       - cmd: |
           TEMPDIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'trtemp')
-          OUTDIR="$TEMPDIR/textrig-ts-client"
+          OUTDIR="$TEMPDIR/tekst-ts-client"
           mkdir -p $OUTDIR
-          cp ../textrig-server/openapi.json $TEMPDIR/
+          cp ../tekst-server/openapi.json $TEMPDIR/
           cp .openapi-generator-ignore $OUTDIR
           docker run \
             --rm \
@@ -64,12 +64,12 @@ tasks:
               generate \
                 -i /local/openapi.json \
                 -g typescript-axios \
-                -o /local/textrig-ts-client \
+                -o /local/tekst-ts-client \
             #    --global-property skipFormModel=false \
                 --additional-properties=typescriptThreePlus=true,useSingleRequestParameter=true \
                 --skip-validate-spec
           mkdir -p ./src/openapi/
           rm -rf ./src/openapi/*
-          cp -r $TEMPDIR/textrig-ts-client/* ./src/openapi/
+          cp -r $TEMPDIR/tekst-ts-client/* ./src/openapi/
           rm -rf $TEMPDIR
           npm run lint

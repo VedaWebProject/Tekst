@@ -28,7 +28,7 @@ const showModal = ref(false);
     embedded
     :closable="false"
     size="large"
-    class="textrig-modal"
+    class="tekst-modal"
   >
     <h2>{{ $t('search.quickSearch.heading') }}</h2>
 

@@ -268,7 +268,7 @@ whenever(ArrowLeft, () => {
     embedded
     :closable="false"
     size="large"
-    class="textrig-modal"
+    class="tekst-modal"
   >
     <h2>{{ $t('browse.location.modalHeading') }}</h2>
     <n-form

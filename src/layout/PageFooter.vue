@@ -8,10 +8,10 @@ const pf = usePlatformStore();
   <footer>
     <div id="footer-content">
       <div>{{ $t('server.welcomeTest') }}</div>
-      <a :href="pf.data?.textrigInfo?.website" title="">
-        {{ pf.data?.textrigInfo?.name }}
+      <a :href="pf.data?.tekstInfo?.website" title="">
+        {{ pf.data?.tekstInfo?.name }}
       </a>
-      v{{ pf.data?.textrigInfo?.version }}
+      v{{ pf.data?.tekstInfo?.version }}
     </div>
   </footer>
 </template>

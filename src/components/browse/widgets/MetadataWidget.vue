@@ -25,7 +25,7 @@ const showMetaModal = ref(false);
   <n-modal
     v-model:show="showMetaModal"
     preset="card"
-    class="textrig-modal"
+    class="tekst-modal"
     size="large"
     :bordered="false"
     :auto-focus="false"
