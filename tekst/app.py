@@ -88,7 +88,7 @@ async def lifespan(app: FastAPI):
 
 # create FastAPI app instance
 app = FastAPI(
-    api_path=_cfg.api_path,
+    root_path=_cfg.api_path,
     openapi_url=_cfg.doc.openapi_url,
     docs_url=_cfg.doc.swaggerui_url,
     redoc_url=_cfg.doc.redoc_url,
