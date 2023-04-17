@@ -8,6 +8,7 @@ general:
   closeAction: Schließen
   quickSearch: Schnellsuche
   textSelect: Wählen Sie den Text, mit dem Sie arbeiten möchten
+  admin: Administration
 
 dummy:
   home: 'Kein Ort ist wie ~'
@@ -126,10 +127,12 @@ register:
     emailAlreadyRegistered: Diese Email-Adresse ist bereits registriert.
     weakPassword: Das eingegebene Passwort entspricht nicht den Sicherheitsanforderungen.
 
-login:
+account:
   login: Anmelden
   logout: Abmelden
+  manage: Konto verwalten
   logoutSuccessful: Sie sind jetzt ausgeloggt.
+  tipAccountBtn: Konto-Optionen anzeigen
   tipLoginBtn: In Ihrem Konto anmelden
   tipLogoutBtn: Von Ihrem Konto abmelden
   switchToRegister: Neues Konto registrieren
@@ -144,10 +147,6 @@ login:
   errors:
     badCreds: Falsche Email-Adresse oder falsches Passwort
     notVerified: Ihre Email-Adresse ist noch nicht verifiziert. Wir haben Ihren Verifizierungslink nochmals versendet.
-
-account:
-  tipAccountBtn: Konto-Optionen anzeigen
-  manage: Konto verwalten
 
 search:
   searchAction: Suchen

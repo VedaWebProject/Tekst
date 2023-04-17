@@ -7,6 +7,7 @@ general:
   cancelAction: Cancel
   closeAction: Close
   textSelect: Select the text you want to work with
+  admin: Administration
 
 dummy:
   home: There's no place like ~
@@ -125,10 +126,12 @@ register:
     emailAlreadyRegistered: This email address is already registered.
     weakPassword: The given password doesn't meet the security requirements.
 
-login:
+account:
   login: Login
   logout: Logout
+  manage: Manage account
   logoutSuccessful: You are now logged out.
+  tipAccountBtn: Show account options
   tipLoginBtn: Log into your account
   tipLogoutBtn: Lot out of your account
   switchToRegister: Register new account
@@ -143,10 +146,6 @@ login:
   errors:
     badCreds: Incorrect email or password
     notVerified: Your email is not yet verified. We just sent your verification link again.
-
-account:
-  tipAccountBtn: Show account options
-  manage: Manage account
 
 search:
   searchAction: Search

@@ -6,6 +6,7 @@ import { NButton, NIcon, NDropdown } from 'naive-ui';
 import LogInRound from '@vicons/material/LogInRound';
 import LogOutRound from '@vicons/material/LogOutRound';
 import ManageAccountsRound from '@vicons/material/ManageAccountsRound';
+import SettingsRound from '@vicons/material/SettingsRound';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n({ useScope: 'global' });
@@ -13,7 +14,7 @@ const auth = useAuthStore();
 const state = useStateStore();
 const router = useRouter();
 const tooltip = computed(() =>
-  auth.loggedIn ? t('account.tipAccountBtn') : t('login.tipLoginBtn')
+  auth.loggedIn ? t('account.tipAccountBtn') : t('account.tipLoginBtn')
 );
 
 const showAccountDropdown = ref(false);
@@ -24,8 +25,17 @@ const accountOptions = computed(() => [
     key: 'manage',
     icon: renderIcon(ManageAccountsRound),
   },
+  ...(auth.user?.isSuperuser
+    ? [
+        {
+          label: t('general.admin'),
+          key: 'admin',
+          icon: renderIcon(SettingsRound),
+        },
+      ]
+    : []),
   {
-    label: t('login.logout'),
+    label: t('account.logout'),
     key: 'logout',
     icon: renderIcon(LogOutRound),
   },
@@ -59,6 +69,9 @@ function handleAccountOptionSelect(option: string) {
       break;
     case 'logout':
       auth.logout();
+      break;
+    case 'admin':
+      router.push({ name: 'admin' });
       break;
   }
 }
