@@ -3,6 +3,7 @@ import re
 
 from typing import Annotated, Any
 
+from beanie import Document
 from fastapi import APIRouter, Depends, FastAPI, Request
 from fastapi_users import (
     BaseUserManager,
@@ -42,8 +43,8 @@ from tekst.models.common import AllOptionalMeta, ModelBase, PyObjectId
 _cfg: TekstConfig = get_config()
 
 # modify FastAPI-User's collection names
-BeanieBaseUser.Settings.name = "users"
-BeanieBaseAccessToken.Settings.name = "access_tokens"
+# BeanieBaseUser.Settings.name = "users"
+# BeanieBaseAccessToken.Settings.name = "access_tokens"
 
 
 class UserBase(ModelBase):
@@ -54,10 +55,13 @@ class UserBase(ModelBase):
     last_name: constr(min_length=2, max_length=64)
 
 
-class User(UserBase, BeanieBaseUser[PyObjectId]):
+class User(UserBase, BeanieBaseUser, Document):
     """User document model used by FastAPI-Users"""
 
     is_active: bool = _cfg.security.users_active_by_default
+
+    class Settings(BeanieBaseUser.Settings):
+        name = "users"
 
 
 class UserRead(UserBase, schemas.BaseUser[PyObjectId]):
@@ -83,8 +87,9 @@ class UserUpdate(UserBase, schemas.BaseUserUpdate, metaclass=AllOptionalMeta):
     pass
 
 
-class AccessToken(BeanieBaseAccessToken[PyObjectId]):
-    pass
+class AccessToken(BeanieBaseAccessToken, Document):
+    class Settings(BeanieBaseAccessToken.Settings):
+        name = "access_tokens"
 
 
 _cookie_transport = CookieTransport(
