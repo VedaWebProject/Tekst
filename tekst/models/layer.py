@@ -78,8 +78,12 @@ class LayerBase(ModelBase, ModelFactory):
 
 class LayerBaseDocument(LayerBase, DocumentBase):
     @classmethod
-    def allowed_to_read(cls, user: UserRead | None) -> Or:
+    def allowed_to_read(cls, user: UserRead | None) -> dict:
         uid = user.id if user else "no_id"
+        if not user:
+            return {"public": True}
+        if user.is_superuser:
+            return {}
         return Or(
             {"public": True},
             {"ownerId": uid},
@@ -88,8 +92,12 @@ class LayerBaseDocument(LayerBase, DocumentBase):
         )
 
     @classmethod
-    def allowed_to_write(cls, user: UserRead | None) -> Or:
+    def allowed_to_write(cls, user: UserRead | None) -> dict:
         uid = user.id if user else "no_id"
+        if not user:
+            return {"public": True}
+        if user.is_superuser:
+            return {}
         return Or(
             {"ownerId": uid},
             {"sharedWrite": uid},

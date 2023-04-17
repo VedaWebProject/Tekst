@@ -30,6 +30,12 @@
       "level": 0,
       "layerType": "plaintext",
       "public": true
+    },
+    {
+      "title": "A private test layer",
+      "level": 0,
+      "layerType": "plaintext",
+      "public": false
     }
   ]
 }

@@ -107,6 +107,31 @@ async def test_update_layer(
 
 
 @pytest.mark.anyio
+async def test_create_layer_with_forged_owner_id(
+    api_path,
+    test_client: AsyncClient,
+    insert_test_data,
+    status_fail_msg,
+    register_test_user,
+    get_session_cookie,
+):
+    text_id = await insert_test_data("texts", "nodes")
+    user_data = await register_test_user()
+    session_cookie = await get_session_cookie(user_data)
+    # create new layer with made up owner ID
+    endpoint = f"{api_path}/layers/plaintext"
+    payload = {
+        "title": "Foo Bar Baz",
+        "textId": text_id,
+        "level": 0,
+        "layerType": "plaintext",
+        "ownerId": "643d3cdc21efd6c46ae1527e",
+    }
+    resp = await test_client.post(endpoint, json=payload, cookies=session_cookie)
+    assert resp.status_code == 400, status_fail_msg(400, resp)
+
+
+@pytest.mark.anyio
 async def test_get_layer(
     api_path, test_client: AsyncClient, insert_test_data, status_fail_msg
 ):
@@ -128,6 +153,34 @@ async def test_get_layer(
     assert isinstance(resp.json(), dict)
     assert "id" in resp.json()
     assert resp.json()["id"] == layer_id
+
+
+@pytest.mark.anyio
+async def test_access_private_layer(
+    api_path,
+    test_client: AsyncClient,
+    insert_test_data,
+    status_fail_msg,
+    register_test_user,
+    get_session_cookie,
+):
+    text_id = await insert_test_data("texts", "nodes", "layers")
+    # get all accessible layers
+    endpoint = f"{api_path}/layers"
+    resp = await test_client.get(endpoint, params={"textId": text_id})
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert isinstance(resp.json(), list)
+    accessible_unauthorized = len(resp.json())
+    # register test superuser
+    user_data = await register_test_user(superuser=True)
+    session_cookie = await get_session_cookie(user_data)
+    # get all accessible layers again
+    resp = await test_client.get(
+        endpoint, params={"textId": text_id}, cookies=session_cookie
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) > accessible_unauthorized  # this should be greater now
 
 
 @pytest.mark.anyio
