@@ -55,6 +55,15 @@ export const useStateStore = defineStore('state', () => {
     text.value && localStorage.setItem('text', text.value?.slug);
   });
 
+  // fallback text for invalid text references
+  const fallbackText = computed(
+    () =>
+      text.value ||
+      pf.data?.texts.find((t) => t.slug == localStorage.getItem('text')) ||
+      pf.data?.texts.find((t) => t.id === pf.data?.settings.defaultTextId) ||
+      pf.data?.texts[0]
+  );
+
   // global loading state
   const globalLoading = ref(false);
   const globalLoadingMsg = ref('');
@@ -114,6 +123,7 @@ export const useStateStore = defineStore('state', () => {
     locale,
     locales,
     text,
+    fallbackText,
     setLocale,
   };
 });

@@ -70,12 +70,13 @@ export const useBrowseStore = defineStore('browse', () => {
   // reset browse location (change URI parameters)
   function resetBrowseLocation(
     level: number = state.text?.defaultLevel || 0,
-    position: number = 0
+    position: number = 0,
+    text: string = state.fallbackText?.slug || ''
   ) {
     router.replace({
       ...route,
       params: {
-        text: state.text?.slug || '',
+        text: text,
       },
       query: {
         ...route.query,
