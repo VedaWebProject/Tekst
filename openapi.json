@@ -3650,14 +3650,14 @@
           },
           "firstName": {
             "title": "Firstname",
-            "maxLength": 64,
-            "minLength": 2,
+            "maxLength": 32,
+            "minLength": 1,
             "type": "string"
           },
           "lastName": {
             "title": "Lastname",
-            "maxLength": 64,
-            "minLength": 2,
+            "maxLength": 32,
+            "minLength": 1,
             "type": "string"
           }
         },
@@ -3708,14 +3708,14 @@
           },
           "firstName": {
             "title": "Firstname",
-            "maxLength": 64,
-            "minLength": 2,
+            "maxLength": 32,
+            "minLength": 1,
             "type": "string"
           },
           "lastName": {
             "title": "Lastname",
-            "maxLength": 64,
-            "minLength": 2,
+            "maxLength": 32,
+            "minLength": 1,
             "type": "string"
           }
         },
@@ -3755,14 +3755,14 @@
           },
           "firstName": {
             "title": "Firstname",
-            "maxLength": 64,
-            "minLength": 2,
+            "maxLength": 32,
+            "minLength": 1,
             "type": "string"
           },
           "lastName": {
             "title": "Lastname",
-            "maxLength": 64,
-            "minLength": 2,
+            "maxLength": 32,
+            "minLength": 1,
             "type": "string"
           }
         },

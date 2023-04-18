@@ -3,8 +3,10 @@ import re
 
 from typing import Annotated, Any
 
+import fastapi_users.models as fapi_users_models
+
 from beanie import Document
-from fastapi import APIRouter, Depends, FastAPI, Request
+from fastapi import APIRouter, Depends, FastAPI, HTTPException, Request, status
 from fastapi_users import (
     BaseUserManager,
     FastAPIUsers,
@@ -34,6 +36,7 @@ from fastapi_users_db_beanie.access_token import (
 )
 from humps import decamelize
 from pydantic import constr
+from pymongo import IndexModel
 
 from tekst.config import TekstConfig, get_config
 from tekst.logging import log
@@ -51,8 +54,8 @@ class UserBase(ModelBase):
     """This base class defines the custom fields added to FastAPI-User's user model"""
 
     username: constr(min_length=4, max_length=16, regex=r"[a-zA-Z0-9\-\._]+")
-    first_name: constr(min_length=2, max_length=64)
-    last_name: constr(min_length=2, max_length=64)
+    first_name: constr(min_length=1, max_length=32)
+    last_name: constr(min_length=1, max_length=32)
 
 
 class User(UserBase, BeanieBaseUser, Document):
@@ -62,6 +65,9 @@ class User(UserBase, BeanieBaseUser, Document):
 
     class Settings(BeanieBaseUser.Settings):
         name = "users"
+        indexes = BeanieBaseUser.Settings.indexes + [
+            IndexModel("username", unique=True)
+        ]
 
 
 class UserRead(UserBase, schemas.BaseUser[PyObjectId]):
@@ -185,18 +191,34 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[User, PyObjectId]):
         password: str,
         user: UserCreate | User,
     ) -> None:
+        # validate length
         if len(password) < 8:
             raise InvalidPasswordException(
                 reason="Password should be at least 8 characters long"
             )
+        # validate characters
         if not _validate_required_password_chars(password):
             raise InvalidPasswordException(
                 reason="Password must contain at least one of each a-z, A-Z, 0-9"
             )
+        # check if password contains email
         if user.email.lower() in password.lower():
             raise InvalidPasswordException(
                 reason="Password should not contain e-mail address"
             )
+
+    async def create(self, user_create, **kwargs) -> fapi_users_models.UP:
+        """
+        Overrides FastAPI-User's BaseUserManager's create method to check if the
+        username already exists and respond with a meaningful HTTP exception.
+        """
+        existing_user = await User.find_one(User.username == user_create.username)
+        if existing_user is not None:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="REGISTER_USERNAME_ALREADY_EXISTS",
+            )
+        return await super().create(user_create, **kwargs)
 
 
 async def get_user_manager(user_db=Depends(get_user_db)):
