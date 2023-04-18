@@ -109,6 +109,7 @@ register:
   activationNotNeededHint: Sie können sich jetzt anmelden.
   labels:
     email: Email
+    username: Username
     password: Passwort
     repeatPassword: Passwort wiederholen
     firstName: Vorname
@@ -116,15 +117,21 @@ register:
   rulesFeedback:
     emailReq: Email-Adresse wird benötigt
     emailInvalid: Email-Adresse ist zu offensichtlich ungültig
+    usernameReq: Username wird benötigt
+    usernameLength: 4 bis 16 Zeichen
+    usernameChars: 'Erlaubte Zeichen: a-z, A-Z, 0-9 und - . _'
     passwordReq: Passwort wird benötigt
     passwordLength: Mindestens 8 Zeichen
     passwordChars: 'Mindestens je ein Zeichen aus: a-z, A-Z and 0-9'
     passwordRepReq: Passwort muss wiederholt werden
     passwordRepNoMatch: Passwörter stimmen nicht überein
     firstNameReq: Vorname wird benötigt
+    firstNameLength: 1 bis 32 Zeichen
     lastNameReq: Nachname wird benötigt
+    lastNameLength: 1 bis 32 Zeichen
   errors:
     emailAlreadyRegistered: Diese Email-Adresse ist bereits registriert.
+    usernameAlreadyRegistered: Dieser Username ist bereits vergeben.
     weakPassword: Das eingegebene Passwort entspricht nicht den Sicherheitsanforderungen.
 
 account:
@@ -145,7 +152,7 @@ account:
     emailReq: Email-Adresse wird benötigt
     passwordReq: Passwort wird benötigt
   errors:
-    badCreds: Falsche Email-Adresse oder falsches Passwort
+    badCreds: Falsche Email-Adresse oder falsches Passwort oder Konto noch nicht aktiviert
     notVerified: Ihre Email-Adresse ist noch nicht verifiziert. Wir haben Ihren Verifizierungslink nochmals versendet.
 
 search:

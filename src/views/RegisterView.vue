@@ -25,6 +25,7 @@ const { t } = useI18n({ useScope: 'global' });
 
 const initialFormModel = () => ({
   email: null,
+  username: null,
   password: null,
   passwordRepeat: null,
   firstName: null,
@@ -67,6 +68,24 @@ const formRules: FormRules = {
       // trigger: 'blur',
     },
   ],
+  username: [
+    {
+      required: true,
+      message: t('register.rulesFeedback.usernameReq'),
+      trigger: 'blur',
+    },
+    {
+      validator: (rule: FormItemRule, value: string) =>
+        !!value && value.length >= 4 && value.length <= 16,
+      message: t('register.rulesFeedback.usernameLength'),
+      trigger: 'blur',
+    },
+    {
+      validator: (rule: FormItemRule, value: string) => !!value && /^[a-zA-Z0-9.\-_]*$/.test(value),
+      message: t('register.rulesFeedback.usernameChars'),
+      trigger: 'blur',
+    },
+  ],
   password: [
     {
       required: true,
@@ -102,11 +121,23 @@ const formRules: FormRules = {
       message: t('register.rulesFeedback.firstNameReq'),
       trigger: 'blur',
     },
+    {
+      validator: (rule: FormItemRule, value: string) =>
+        !!value && value.length >= 1 && value.length <= 32,
+      message: t('register.rulesFeedback.firstNameLength'),
+      trigger: 'blur',
+    },
   ],
   lastName: [
     {
       required: true,
       message: t('register.rulesFeedback.lastNameReq'),
+      trigger: 'blur',
+    },
+    {
+      validator: (rule: FormItemRule, value: string) =>
+        !!value && value.length >= 1 && value.length <= 32,
+      message: t('register.rulesFeedback.lastNameLength'),
       trigger: 'blur',
     },
   ],
@@ -136,9 +167,11 @@ function registerUser() {
        */
       if (e.response) {
         const data = e.response.data;
-        if (data.detail && data.detail === 'REGISTER_USER_ALREADY_EXISTS') {
+        if (data.detail === 'REGISTER_USER_ALREADY_EXISTS') {
           messages.error(t('register.errors.emailAlreadyRegistered'));
-        } else if (data.detail?.code === 'REGISTER_INVALID_PASSWORD') {
+        } else if (data.detail === 'REGISTER_USERNAME_ALREADY_EXISTS') {
+          messages.error(t('register.errors.usernameAlreadyRegistered'));
+        } else if (data.detail === 'REGISTER_INVALID_PASSWORD') {
           messages.error(t('register.errors.weakPassword'));
         } else if (e.response.status === 403) {
           messages.error(t('errors.csrf'));
@@ -200,6 +233,14 @@ onMounted(() => {
             :placeholder="$t('register.labels.email')"
             @keydown.enter.prevent
             ref="firstInputRef"
+          />
+        </n-form-item>
+        <n-form-item path="username" :label="$t('register.labels.username')">
+          <n-input
+            v-model:value="formModel.username"
+            type="text"
+            :placeholder="$t('register.labels.username')"
+            @keydown.enter.prevent
           />
         </n-form-item>
         <n-form-item path="password" :label="$t('register.labels.password')">
