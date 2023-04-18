@@ -10,31 +10,37 @@ services:
       - front
       - back
 
-  client-app:
+  tekst-client:
     build:
-      context: .
+      context: https://github.com/VedaWebProject/tekst-client.git
       target: prod
       platforms:
         - "linux/amd64"
+      tags:
+        - "tekst-client:custom"
       args:
-        BASE_PATH: ${TEKST_CLIENT_PATH}
+        TEKST_CLIENT_PATH: ${TEKST_CLIENT_PATH}
+        TEKST_SERVER_URL: ${TEKST_SERVER_URL}
+        TEKST_API_PATH: ${TEKST_API_PATH}
     restart: always
     init: true
-    env_file: [.env.prod]
+    env_file: [.env.client]
     networks:
       - front
 
-  server-app:
+  tekst-server:
     build:
-      context: .
+      context: https://github.com/VedaWebProject/tekst-server.git
       target: prod
       platforms:
         - "linux/amd64"
+      tags:
+        - "tekst-server:custom"
     restart: always
     init: true
     depends_on:
       - mongo
-    env_file: [.env.prod]
+    env_file: [.env.server]
     networks:
       - back
 
