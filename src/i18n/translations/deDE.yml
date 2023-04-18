@@ -137,9 +137,9 @@ register:
 account:
   login: Anmelden
   logout: Abmelden
-  manage: Konto verwalten
+  manage: Konto verwalten ({username})
   logoutSuccessful: Sie sind jetzt ausgeloggt.
-  tipAccountBtn: Konto-Optionen anzeigen
+  tipAccountBtn: Konto-Optionen für {username} anzeigen
   tipLoginBtn: In Ihrem Konto anmelden
   tipLogoutBtn: Von Ihrem Konto abmelden
   switchToRegister: Neues Konto registrieren

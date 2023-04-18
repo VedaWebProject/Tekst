@@ -14,14 +14,16 @@ const auth = useAuthStore();
 const state = useStateStore();
 const router = useRouter();
 const tooltip = computed(() =>
-  auth.loggedIn ? t('account.tipAccountBtn') : t('account.tipLoginBtn')
+  auth.loggedIn
+    ? t('account.tipAccountBtn', { username: auth.user?.username })
+    : t('account.tipLoginBtn')
 );
 
 const showAccountDropdown = ref(false);
 
 const accountOptions = computed(() => [
   {
-    label: t('account.manage'),
+    label: t('account.manage', { username: auth.user?.username }),
     key: 'manage',
     icon: renderIcon(ManageAccountsRound),
   },

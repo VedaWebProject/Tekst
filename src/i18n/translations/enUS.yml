@@ -136,9 +136,9 @@ register:
 account:
   login: Login
   logout: Logout
-  manage: Manage account
+  manage: Manage account ({username})
   logoutSuccessful: You are now logged out.
-  tipAccountBtn: Show account options
+  tipAccountBtn: Show account options for {username}
   tipLoginBtn: Log into your account
   tipLogoutBtn: Lot out of your account
   switchToRegister: Register new account
