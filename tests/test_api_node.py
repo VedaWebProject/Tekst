@@ -18,7 +18,7 @@ async def test_create_node(
     nodes = [{"textId": text_id, **node} for node in test_data["nodes"]]
 
     # create superuser
-    superuser_data = await register_test_user(superuser=True)
+    superuser_data = await register_test_user(is_superuser=True)
     session_cookie = await get_session_cookie(superuser_data)
 
     for node in nodes:
@@ -41,7 +41,7 @@ async def test_child_node_io(
     node = {"textId": text_id, **test_data["nodes"][0]}
 
     # create superuser
-    superuser_data = await register_test_user(superuser=True)
+    superuser_data = await register_test_user(is_superuser=True)
     session_cookie = await get_session_cookie(superuser_data)
 
     # create parent
@@ -95,7 +95,7 @@ async def test_create_node_invalid_text_fail(
     node["textId"] = "5eb7cfb05e32e07750a1756a"
 
     # create superuser
-    superuser_data = await register_test_user(superuser=True)
+    superuser_data = await register_test_user(is_superuser=True)
     session_cookie = await get_session_cookie(superuser_data)
 
     resp = await test_client.post(endpoint, json=node, cookies=session_cookie)
@@ -118,7 +118,7 @@ async def test_create_node_duplicate_fail(
     node["textId"] = text_id
 
     # create superuser
-    superuser_data = await register_test_user(superuser=True)
+    superuser_data = await register_test_user(is_superuser=True)
     session_cookie = await get_session_cookie(superuser_data)
 
     resp = await test_client.post(endpoint, json=node, cookies=session_cookie)
@@ -201,7 +201,7 @@ async def test_update_node(
     assert len(resp.json()) > 0
     node = resp.json()[0]
     # create superuser
-    superuser_data = await register_test_user(superuser=True)
+    superuser_data = await register_test_user(is_superuser=True)
     session_cookie = await get_session_cookie(superuser_data)
     # update node
     endpoint = f"{api_path}/nodes/{node['id']}"

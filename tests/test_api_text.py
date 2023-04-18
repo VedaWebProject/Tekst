@@ -33,7 +33,7 @@ async def test_create_text(
     register_test_user,
     get_session_cookie,
 ):
-    superuser_data = await register_test_user(superuser=True)
+    superuser_data = await register_test_user(is_superuser=True)
     session_cookie = await get_session_cookie(superuser_data)
     endpoint = f"{api_path}/texts"
     payload = {"title": "Just a Test", "slug": "justatest", "levels": ["foo"]}
@@ -100,7 +100,7 @@ async def test_update_text(
     resp = await test_client.patch(endpoint, json=text_update)
     assert resp.status_code == 401, status_fail_msg(401, resp)
     # create superuser
-    superuser_data = await register_test_user(superuser=True)
+    superuser_data = await register_test_user(is_superuser=True)
     session_cookie = await get_session_cookie(superuser_data)
     # update text
     text_update = {"title": "Another text"}

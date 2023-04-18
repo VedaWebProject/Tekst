@@ -172,7 +172,7 @@ async def test_access_private_layer(
     assert isinstance(resp.json(), list)
     accessible_unauthorized = len(resp.json())
     # register test superuser
-    user_data = await register_test_user(superuser=True)
+    user_data = await register_test_user(is_superuser=True)
     session_cookie = await get_session_cookie(user_data)
     # get all accessible layers again
     resp = await test_client.get(
