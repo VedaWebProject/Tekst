@@ -171,7 +171,7 @@ function registerUser() {
           messages.error(t('register.errors.emailAlreadyRegistered'));
         } else if (data.detail === 'REGISTER_USERNAME_ALREADY_EXISTS') {
           messages.error(t('register.errors.usernameAlreadyRegistered'));
-        } else if (data.detail === 'REGISTER_INVALID_PASSWORD') {
+        } else if (data.detail.code === 'REGISTER_INVALID_PASSWORD') {
           messages.error(t('register.errors.weakPassword'));
         } else if (e.response.status === 403) {
           messages.error(t('errors.csrf'));
