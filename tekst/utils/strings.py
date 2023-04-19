@@ -34,7 +34,9 @@ def safe_name(
 
 
 def remove_diacritics(string: str) -> str:
-    """Removes diacritics from the input string."""
+    """Removes diacritics from the input string and returns it NFC-normalized"""
     return "".join(
-        c for c in ucdata.normalize("NFD", string) if ucdata.category(c) != "Mn"
+        ucdata.normalize("NFC", c)
+        for c in ucdata.normalize("NFD", string)
+        if ucdata.category(c) != "Mn"
     )
