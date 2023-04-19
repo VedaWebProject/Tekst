@@ -8,8 +8,8 @@ This is the "main" Tekst repository. While destinct parts of the application cod
 
 If, however, you want to visit or even contribute to the Tekst code repositories, here's where to look first:
 
-- [**tekst-server**](https://github.com/VedaWebProject/tekst-server) - Codebase of the **Tekst** *server* application.
-- [**tekst-client**](https://github.com/VedaWebProject/tekst-client) - Codebase of the **Tekst** *client* application.
+- [**tekst-api**](https://github.com/VedaWebProject/tekst-api) - Codebase of the **Tekst** *server* application.
+- [**tekst-web**](https://github.com/VedaWebProject/tekst-web) - Codebase of the **Tekst** *client* application.
 
 
 ## Contents  <!-- omit in toc -->
@@ -40,12 +40,12 @@ To deploy Tekst with Docker, follow these steps (example commands assume using s
     cd tekst
     ```
 
-3. Download the `.env` files from [the server repository](https://raw.githubusercontent.com/VedaWebProject/tekst-server/main/.env) as well as [the client repository](https://raw.githubusercontent.com/VedaWebProject/tekst-client/main/.env) and name them `.env.server` and `.env.client`, respectively:
+3. Download the `.env` files from [the server repository](https://raw.githubusercontent.com/VedaWebProject/tekst-api/main/.env) as well as [the client repository](https://raw.githubusercontent.com/VedaWebProject/tekst-web/main/.env) and name them `.env.server` and `.env.client`, respectively:
 
     ```sh
-    wget https://raw.githubusercontent.com/VedaWebProject/tekst-server/main/.env
+    wget https://raw.githubusercontent.com/VedaWebProject/tekst-api/main/.env
     mv .env .env.server
-    wget https://raw.githubusercontent.com/VedaWebProject/tekst-client/main/.env
+    wget https://raw.githubusercontent.com/VedaWebProject/tekst-web/main/.env
     mv .env .env.client
     ```
 
@@ -54,7 +54,7 @@ To deploy Tekst with Docker, follow these steps (example commands assume using s
 5. Build the docker images for the server and client applications (for the client, you'll have to repeat this whenever you change the value of `TEKST_CLIENT_PATH` in `.env.client`!):
 
     ```sh
-    docker compose --env-file .env.client build tekst-client tekst-server
+    docker compose --env-file .env.client build tekst-web tekst-api
     ```
 
     (...this may take a while!)

@@ -12,14 +12,14 @@ services:
       - front
       - back
 
-  tekst-client:
+  tekst-web:
     build:
-      context: https://github.com/VedaWebProject/tekst-client.git
+      context: https://github.com/VedaWebProject/tekst-web.git
       target: prod
       platforms:
         - "linux/amd64"
       tags:
-        - "tekst-client:custom"
+        - "tekst-web:custom"
       args:
         TEKST_CLIENT_PATH: ${TEKST_CLIENT_PATH}
         TEKST_SERVER_URL: ${TEKST_SERVER_URL}
@@ -30,14 +30,14 @@ services:
     networks:
       - front
 
-  tekst-server:
+  tekst-api:
     build:
-      context: https://github.com/VedaWebProject/tekst-server.git
+      context: https://github.com/VedaWebProject/tekst-api.git
       target: prod
       platforms:
         - "linux/amd64"
       tags:
-        - "tekst-server:custom"
+        - "tekst-api:custom"
     restart: always
     init: true
     depends_on:
