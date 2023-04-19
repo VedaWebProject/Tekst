@@ -1,8 +1,8 @@
 :80 {
-    redir /api /api/
+    redir {$API_PATH:/api} {$API_PATH:/api}/
 
-    handle /api/* {
-        uri strip_prefix /api
+    handle {$API_PATH:/api}/* {
+        uri strip_prefix {$API_PATH:/api}
         reverse_proxy http://tekst-api:8000
     }
 

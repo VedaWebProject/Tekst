@@ -4,10 +4,12 @@ services:
 
   webserver:
     image: "caddy:2.6-alpine"
+    environment:
+      API_PATH: ${TEKST_API_PATH}
     volumes:
       - "./deploy/caddy:/etc/caddy/:ro"
     ports:
-      - "${TEKST_SERVER_URL:-127.0.0.1:8087}:80"
+      - "127.0.0.1:8087:80"
     networks:
       - front
       - back
@@ -24,9 +26,12 @@ services:
         WEB_PATH: ${TEKST_WEB_PATH}
         SERVER_URL: ${TEKST_SERVER_URL}
         API_PATH: ${TEKST_API_PATH}
+    environment:
+      TEKST_WEB_PATH: ${TEKST_WEB_PATH}
+      TEKST_SERVER_URL: ${TEKST_SERVER_URL}
+      TEKST_API_PATH: ${TEKST_API_PATH}
     restart: always
     init: true
-    env_file: .env
     networks:
       - front
 
