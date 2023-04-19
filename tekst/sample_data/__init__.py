@@ -53,12 +53,16 @@ async def _create_sample_layers(text_slug: str, text_id: str):
 
 
 async def create_sample_texts():
-    for text_slug, text_data in TEXTS.items():
-        text_doc = TextDocument(**text_data["text"])
-        text_id = str((await text_doc.create()).id)
-        log.debug(f"Created {text_slug} as {text_id}")
-        # nodes
-        for node in text_data["nodes"]:
-            await _create_sample_node(node, text_id)
-        # layers belonging to this text
-        await _create_sample_layers(text_slug, text_id)
+    no_texts = not (await TextDocument.find({}).exists())
+    if no_texts:
+        for text_slug, text_data in TEXTS.items():
+            text_doc = TextDocument(**text_data["text"])
+            text_id = str((await text_doc.create()).id)
+            log.debug(f"Created {text_slug} as {text_id}")
+            # nodes
+            for node in text_data["nodes"]:
+                await _create_sample_node(node, text_id)
+            # layers belonging to this text
+            await _create_sample_layers(text_slug, text_id)
+    else:
+        log.warning("Found texts in the database. Skipping sample data creation.")
