@@ -2,12 +2,10 @@
 
 # Tekst <!-- omit in toc -->
 
-> *...as in* **T**ext **E**xploration *and* **K**nowledge **S**tructuring **T**ool
+*...as in* **T**ext **E**xploration *and* **K**nowledge **S**tructuring **T**ool
 
-<div style="padding: 12px; margin: 12px 0; background-color: #ff000025; border: 2px solid #ff000090; border-radius: 4px">
-    ⚠ Tekst is still somewhere between a conceptual phase and its early stages of development. As of now there's no stable (let alone production-ready) version available.<br/>
-    As soon as we're ready for it, the VedaWeb platform will become the first public instance of Tekst. Until then, you are welcome to follow the development of Tekst here and in the code repositories mentioned below.
-</div>
+> ⚠ Tekst is still somewhere between a conceptual phase and its early stages of development. As of now there's no stable (let alone production-ready) version available.
+> As soon as we're ready for it, the VedaWeb platform will become the first public instance of Tekst. Until then, you are welcome to follow the development of Tekst here and in the code repositories mentioned below.
 
 Tekst is a collaborative, web-based research platform for displaying, linking, exploring, and enriching resources on natural language texts. It is developed within the scope of the [VedaWeb 2.0](https://vedaweb.uni-koeln.de/) research project on Old Indic texts, where it constitutes the technical basis of the research platform "VedaWeb", which will be launched in its new form as part of the project's efforts.
 
