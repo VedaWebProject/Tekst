@@ -54,7 +54,7 @@ tasks:
           TEMPDIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'trtemp')
           OUTDIR="$TEMPDIR/tekst-ts-client"
           mkdir -p $OUTDIR
-          cp ../tekst-server/openapi.json $TEMPDIR/
+          cp ../tekst-api/openapi.json $TEMPDIR/
           cp .openapi-generator-ignore $OUTDIR
           docker run \
             --rm \
