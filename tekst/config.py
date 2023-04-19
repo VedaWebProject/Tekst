@@ -168,6 +168,7 @@ class TekstConfig(BaseSettings):
 
     class Config:
         env_file = _select_env_files()
+        env_file_encoding = "utf-8"
         env_prefix = "TEKST_"
         env_nested_delimiter = "__"
         case_sensitive = False
