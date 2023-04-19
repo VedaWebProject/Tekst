@@ -5,7 +5,7 @@ services:
   webserver:
     image: "caddy:2.6-alpine"
     environment:
-      API_PATH: ${TEKST_API_PATH}
+      TEKST_API_PATH: ${TEKST_API_PATH}
     volumes:
       - "./deploy/caddy:/etc/caddy/:ro"
     ports:
@@ -27,7 +27,6 @@ services:
         SERVER_URL: ${TEKST_SERVER_URL}
         API_PATH: ${TEKST_API_PATH}
     environment:
-      TEKST_WEB_PATH: ${TEKST_WEB_PATH}
       TEKST_SERVER_URL: ${TEKST_SERVER_URL}
       TEKST_API_PATH: ${TEKST_API_PATH}
     restart: always
