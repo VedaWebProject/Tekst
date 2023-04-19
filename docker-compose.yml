@@ -4,6 +4,8 @@ services:
 
   webserver:
     image: "caddy:2.6-alpine"
+    volumes:
+      - "./deploy/caddy:/etc/caddy/:ro"
     ports:
       - "127.0.0.1:8008:80"
     networks:
