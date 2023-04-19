@@ -3401,8 +3401,8 @@
             "minLength": 1,
             "type": "string",
             "format": "uri",
-            "default": "https://github.com/VedaWebProject/tekst-api",
-            "const": "https://github.com/VedaWebProject/tekst-api"
+            "default": "https://github.com/VedaWebProject/tekst-server",
+            "const": "https://github.com/VedaWebProject/tekst-server"
           },
           "license": {
             "title": "License",
