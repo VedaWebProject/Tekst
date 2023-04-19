@@ -7,7 +7,7 @@ services:
     volumes:
       - "./deploy/caddy:/etc/caddy/:ro"
     ports:
-      - "127.0.0.1:8008:80"
+      - "${TEKST_SERVER_URL:-127.0.0.1:8087}:80"
     networks:
       - front
       - back
@@ -21,12 +21,12 @@ services:
       tags:
         - "tekst-web:custom"
       args:
-        TEKST_CLIENT_PATH: ${TEKST_CLIENT_PATH}
-        TEKST_SERVER_URL: ${TEKST_SERVER_URL}
-        TEKST_API_PATH: ${TEKST_API_PATH}
+        WEB_PATH: ${TEKST_WEB_PATH}
+        SERVER_URL: ${TEKST_SERVER_URL}
+        API_PATH: ${TEKST_API_PATH}
     restart: always
     init: true
-    env_file: [.env.client]
+    env_file: .env
     networks:
       - front
 
@@ -42,7 +42,7 @@ services:
     init: true
     depends_on:
       - mongo
-    env_file: [.env.server]
+    env_file: .env
     networks:
       - back
 

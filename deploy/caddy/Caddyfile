@@ -1,10 +1,10 @@
-127.0.0.1:80 {
+:80 {
     redir /api /api/
 
     handle /api/* {
         uri strip_prefix /api
-        reverse_proxy http://server:8000
+        reverse_proxy http://tekst-api:8000
     }
 
-    reverse_proxy * http://client:80
+    reverse_proxy * http://tekst-web:80
 }

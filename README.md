@@ -40,26 +40,23 @@ To deploy Tekst with Docker, follow these steps (example commands assume using s
     cd tekst
     ```
 
-3. Download the `.env` files from [the server repository](https://raw.githubusercontent.com/VedaWebProject/tekst-api/main/.env) as well as [the client repository](https://raw.githubusercontent.com/VedaWebProject/tekst-web/main/.env) and name them `.env.server` and `.env.client`, respectively:
+3. Copy the `.env.docker` file and name the copy `.env`:
 
     ```sh
-    wget https://raw.githubusercontent.com/VedaWebProject/tekst-api/main/.env
-    mv .env .env.server
-    wget https://raw.githubusercontent.com/VedaWebProject/tekst-web/main/.env
-    mv .env .env.client
+    cp .env.docker .env
     ```
 
-4. Configure the values in `.env.server` and `.env.client` to match your deployment environment and needed features. Use the comments in those files for guidance. If you leave everything unchanged, Tekst will run with sensible defaults for a full-featured, Docker-based production environment served at `/` (root path). The application will be available via the local port `8008` of address `127.0.0.1`.
+4. Configure the values in `.env` to match your deployment environment and needed features. Use the comments in those files for guidance. If you leave everything unchanged, Tekst will run with sensible defaults for a full-featured, Docker-based production environment served at `/` (root path). By default, the application will later be available via the local port `8087` at `127.0.0.1`.
 
-5. Build the docker images for the server and client applications (for the client, you'll have to repeat this whenever you change the value of `TEKST_CLIENT_PATH` in `.env.client`!):
+5. Build the docker images for the **tekst-api** (server) and **tekst-web** (client) applications. **Important:** Whenever you decide to change one of `TEKST_WEB_PATH`, `TEKST_SERVER_URL` or `TEKST_API_PATH` in your `.env` file, you'll have to build the image for **tekst-web** (client) again, as these values are statically replaced in the code during the build process!
 
     ```sh
-    docker compose --env-file .env.client build tekst-web tekst-api
+    docker compose build tekst-api tekst-web
     ```
 
-    (...this may take a while!)
+    ... now grab a (small) coffee ☕
 
-6. Run the complete stack with:
+6. Run the complete application stack with:
 
     ```sh
     docker compose up
@@ -67,4 +64,4 @@ To deploy Tekst with Docker, follow these steps (example commands assume using s
 
     Add the `-d` flag to run it in detached mode (in the background).
 
-7. Read [this](https://docs.docker.com/engine/reference/commandline/compose/) to learn how to stop, start, reset (...) the application stack with Docker Compose.
+7. Read [this](https://docs.docker.com/engine/reference/commandline/compose/) to learn how to stop, start, reset (...) the application stack using Docker Compose.
