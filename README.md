@@ -19,14 +19,14 @@ If, however, you want to visit or even contribute to the Tekst code repositories
 
 ## Contents  <!-- omit in toc -->
 
-- [State of development](#state-of-development)
+- [What is Tekst, really?](#what-is-tekst-really)
 - [Deployment](#deployment)
   - [Docker (recommended)](#docker-recommended)
 
 
-## State of development
+## What is Tekst, really?
 
-Development on this software is in an early conceptual phase. At this point, there is no usable release or public instance.
+🚧 **TODO:** Answer the question.
 
 
 ## Deployment
@@ -36,7 +36,7 @@ To deploy Tekst with Docker, follow these steps (example commands assume using s
 
 1. Requirements:
    - [Git](https://git-scm.com/)
-   - [Docker](https://docs.docker.com/engine/install), including the [docker-compose-plugin](https://docs.docker.com/compose/install/linux/) (recommended) or [Compose](https://docs.docker.com/compose/install/other/) standalone
+   - [Docker](https://docs.docker.com/engine/install) and Docker Compose. If you're on Linux, the [docker-compose-plugin](https://docs.docker.com/compose/install/linux/) for Docker is recommended. Otherwise there's [Compose](https://docs.docker.com/compose/install/other/) standalone, for which the commands below have to be run as `docker-compose ...` instead of `docker compose ...`
 
 2. Clone this repository and change into the resulting directory:
 
