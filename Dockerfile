@@ -1,15 +1,15 @@
 FROM node:18.15-alpine AS builder
 
-ARG TEKST_CLIENT_PATH=/
-ARG TEKST_SERVER_URL=http://127.0.0.1
-ARG TEKST_API_PATH=/api
+ARG WEB_PATH
+ARG SERVER_URL
+ARG API_PATH
 
-ENV TEKST_SERVER_URL=$TEKST_SERVER_URL \
-    TEKST_API_PATH=$TEKST_API_PATH
+ENV TEKST_SERVER_URL=$SERVER_URL \
+    TEKST_API_PATH=$API_PATH
 
 WORKDIR "/app"
 COPY . .
-RUN npm install && npm run build-only -- --base=$TEKST_CLIENT_PATH
+RUN npm install && npm run build-only -- --base=$WEB_PATH
 
 
 FROM caddy:2.6-alpine AS prod
