@@ -2,7 +2,6 @@ import re
 import sys
 
 from contextlib import asynccontextmanager
-from multiprocessing import Lock
 
 from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
@@ -62,14 +61,11 @@ async def startup_routine(app: FastAPI) -> None:
     # modify and cache OpenAPI schema
     custom_openapi(app, _cfg)
 
-    # this should only be run by one single instance
-    init_lock = Lock()
-    with init_lock:
-        # create/insert dev mode sample users
-        if _cfg.dev_mode:
-            log.info("Running development mode initialization routine...")
-            log.debug("Creating sample users...")
-            await create_sample_users()
+    # create/insert dev mode sample data
+    if _cfg.dev_mode:
+        log.info("Running development mode initialization routine...")
+        log.debug("Creating sample users...")
+        await create_sample_users()
         # create/insert sample data
         log.debug("Creating sample texts...")
         await create_sample_texts()
