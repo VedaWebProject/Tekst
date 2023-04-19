@@ -3401,8 +3401,8 @@
             "minLength": 1,
             "type": "string",
             "format": "uri",
-            "default": "https://github.com/VedaWebProject/tekst-server",
-            "const": "https://github.com/VedaWebProject/tekst-server"
+            "default": "https://github.com/VedaWebProject/tekst-api",
+            "const": "https://github.com/VedaWebProject/tekst-api"
           },
           "license": {
             "title": "License",
@@ -3825,7 +3825,7 @@
       "description": "Text-related operations",
       "externalDocs": {
         "description": "View external documentation",
-        "url": "https://github.com/VedaWebProject/tekst-server"
+        "url": "https://github.com/VedaWebProject/tekst-api"
       }
     }
   ]

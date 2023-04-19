@@ -1,7 +1,7 @@
 # Tekst Server
 
-[![tests](https://github.com/VedaWebProject/tekst-server/actions/workflows/tests.yml/badge.svg)](https://github.com/VedaWebProject/tekst-server/actions/workflows/tests.yml)
-[![style checks](https://github.com/VedaWebProject/tekst-server/actions/workflows/style.yml/badge.svg)](https://github.com/VedaWebProject/tekst-server/actions/workflows/style.yml)
+[![tests](https://github.com/VedaWebProject/tekst-api/actions/workflows/tests.yml/badge.svg)](https://github.com/VedaWebProject/tekst-api/actions/workflows/tests.yml)
+[![style checks](https://github.com/VedaWebProject/tekst-api/actions/workflows/style.yml/badge.svg)](https://github.com/VedaWebProject/tekst-api/actions/workflows/style.yml)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 This is the code repository for the **server** part of the Tekst platform. For general information on Tekst, please visit the main [Tekst repository](https://github.com/VedaWebProject/tekst).

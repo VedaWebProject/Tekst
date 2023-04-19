@@ -125,8 +125,8 @@ tasks:
     cmds:
       - cmd: |
           docker build \
-            --tag "tekst-server:latest" \
-            --tag "tekst-server:{{.TEKST_VERSION}}" \
+            --tag "tekst-api:latest" \
+            --tag "tekst-api:{{.TEKST_VERSION}}" \
             --target prod .
 
   wait-for-mongodb:
