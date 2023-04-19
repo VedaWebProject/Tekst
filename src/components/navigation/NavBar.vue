@@ -21,7 +21,7 @@ const menuOpen = ref(false);
 const menuVisible = computed(() => !state.smallScreen || menuOpen.value);
 
 const route = useRoute();
-const textParam = computed(() => state.text?.slug || pf.data?.texts[0].slug);
+const textParam = computed(() => state.text?.slug || pf.data?.texts[0]?.slug);
 watch(route, () => (menuOpen.value = false));
 </script>
 
