@@ -67,7 +67,6 @@ def setup_logging() -> None:
             dev_log_formatter = Formatter(
                 dev_log_fmt,
                 datefmt=None,
-                reset=True,
                 style="{",
             )
 
