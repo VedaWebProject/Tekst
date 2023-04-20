@@ -105,14 +105,14 @@ def schema(to_file: bool, output_file: str, indent: int, sort_keys: bool, quiet:
 @click.option(
     "--host",
     "-h",
-    default=_cfg.uvicorn_host,
+    default=_cfg.dev_host,
     help="Server host (dynamic default from environment)",
     show_default=True,
 )
 @click.option(
     "--port",
     "-p",
-    default=_cfg.uvicorn_port,
+    default=_cfg.dev_port,
     help="Server port (dynamic default from environment)",
     show_default=True,
 )
@@ -126,15 +126,15 @@ def schema(to_file: bool, output_file: str, indent: int, sort_keys: bool, quiet:
 def run(host: str, port: int, reload: bool):
     """Runs Tekst server via Uvicorn ASGI"""
 
-    _cfg.uvicorn_host = host
-    _cfg.uvicorn_port = port
+    _cfg.dev_host = host
+    _cfg.dev_port = port
 
     import uvicorn
 
     uvicorn.run(
         "tekst.app:app",
-        host=_cfg.uvicorn_host,
-        port=_cfg.uvicorn_port,
+        host=_cfg.dev_host,
+        port=_cfg.dev_port,
         reload=_cfg.dev_mode and reload,
         log_config=None,
     )

@@ -133,8 +133,8 @@ class TekstConfig(BaseSettings):
     log_level: str = "warning"
 
     # uvicorn asgi binding
-    uvicorn_host: str = "127.0.0.1"
-    uvicorn_port: int = 8000
+    dev_host: str = "127.0.0.1"
+    dev_port: int = 8000
 
     # CORS
     cors_allow_origins: str | list[str] = ["*"]
