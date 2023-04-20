@@ -19,7 +19,7 @@ def _get_relevant_loggers() -> list[logging.Logger]:
 
 
 def setup_logging() -> None:
-    if "gunicorn" in os.environ.get("SERVER_SOFTWARE", "") or not _cfg.dev_mode:
+    if "gunicorn" in os.environ.get("SERVER_SOFTWARE", ""):
         """
         This should trigger in production running gunicorn with uvicorn workers,
         funneling all the logs into the gunicorn log handlers...
@@ -35,6 +35,12 @@ def setup_logging() -> None:
             logger.handlers = gunicorn_logger.handlers
             logger.setLevel(_cfg.log_level)
 
+    elif not _cfg.dev_mode:
+        prod_logger = logging.getLogger("tekst")
+        prod_logger.setLevel(_cfg.log_level)
+        for logger in _get_relevant_loggers():
+            logger.handlers = prod_logger.handlers
+            logger.setLevel(_cfg.log_level)
     else:
         """
         Colorful logging setup for development (app ran by uvicorn)
