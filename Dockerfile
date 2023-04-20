@@ -104,13 +104,14 @@ RUN groupadd -g 1337 tekst && \
     useradd -m -u 1337 -g tekst tekst
 
 # copy WSGI config
-COPY ./deploy/gunicorn_conf.py ./deploy/entrypoint.sh ./
+COPY ./deploy/gunicorn_conf.py ./
+COPY ./deploy/entrypoint.sh /
 
 USER tekst
 
 EXPOSE 8000
 
-ENTRYPOINT ["$WORKDIR_PATH/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
 
 # additional arguments are appended to gunicorn command call
 # CMD []
