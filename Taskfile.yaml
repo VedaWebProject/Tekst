@@ -42,7 +42,7 @@ tasks:
       - poetry run coverage run -m pytest {{.CLI_ARGS}}
       - poetry run coverage report -m
 
-  test:
+  tests:
     desc: Run tests, start and stop test services stack automatically
     cmds:
       - defer: {task: test-stack-down}
@@ -50,7 +50,7 @@ tasks:
       - task: wait-for-mongodb
       - task: run-tests
 
-  run-app:
+  run-dev:
     desc: Run the application dev server (only for development!)
     env:
       TEKST_DEV_MODE: true
@@ -58,11 +58,11 @@ tasks:
       - poetry run python3 -m tekst setup
       - poetry run python3 -m tekst run --reload
 
-  run:
+  dev:
     desc: Run dev services stack and dev server, clean up afterwards
     cmds:
       - task: dev-stack-up
-      - task: run-app
+      - task: run-dev
       - defer: {task: dev-stack-down}
 
   schema:
@@ -80,7 +80,7 @@ tasks:
     desc: Run full pre-commit toolchain (fix code, test, code checks, export schema)
     cmds:
       - task: fix
-      - task: test
+      - task: tests
       - task: check
       - task: schema
 
