@@ -19,7 +19,7 @@ _db_client: DatabaseClient = None
 def _init_client(db_uri: str = None) -> None:
     global _db_client
     if _db_client is None:
-        log.info("Initializing database client")
+        log.info("Initializing database client...")
         _db_client = DatabaseClient(db_uri or _cfg.db.get_uri())
 
 

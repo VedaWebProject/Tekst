@@ -9,11 +9,10 @@ from starlette_csrf import CSRFMiddleware
 
 from tekst.auth import create_sample_users
 from tekst.config import TekstConfig, get_config
-from tekst.db import init_odm, reset_db
+from tekst.db import init_odm
 from tekst.dependencies import get_db, get_db_client
 from tekst.layer_types import init_layer_type_manager
 from tekst.logging import log, setup_logging
-from tekst.models.settings import PlatformSettingsDocument
 from tekst.openapi import custom_openapi
 from tekst.routers import setup_routes
 from tekst.sample_data import create_sample_texts
@@ -40,11 +39,6 @@ async def startup_routine(app: FastAPI) -> None:
     init_layer_type_manager()
     setup_routes(app)
 
-    # reset db (only in dev mode!)
-    if _cfg.dev_mode:
-        log.debug("Resetting DB...")
-        await reset_db()
-
     # this is ugly, but unfortunately we don't have access to FastAPI's
     # dependency injection system in these lifecycle routines, so we have to
     # pass all these things by hand...
@@ -61,17 +55,10 @@ async def startup_routine(app: FastAPI) -> None:
     # modify and cache OpenAPI schema
     custom_openapi(app, _cfg)
 
-    # create/insert dev mode sample data
-    if _cfg.dev_mode:
-        log.info("Running development mode initialization routine...")
-        log.debug("Creating sample users...")
-        await create_sample_users()
-        # create/insert sample data
-        log.debug("Creating sample texts...")
-        await create_sample_texts()
-        # create inital platform settings from defaults
-        log.info("Creating initial platform settings from defaults...")
-        await PlatformSettingsDocument().create()
+    log.debug("Creating sample users...")
+    await create_sample_users()
+    log.info("Creating sample texts...")
+    await create_sample_texts()
 
 
 async def shutdown_routine(app: FastAPI) -> None:

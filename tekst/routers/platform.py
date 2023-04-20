@@ -16,7 +16,11 @@ router = APIRouter(
 
 
 async def _get_platform_settings():
-    return await PlatformSettingsDocument.find_all().first_or_none()
+    pf_settings = await PlatformSettingsDocument.find_one({})
+    if pf_settings:
+        return pf_settings
+    else:
+        return await PlatformSettingsDocument().create()
 
 
 # ROUTES DEFINITIONS...
