@@ -35,18 +35,10 @@ def setup_logging() -> None:
             logger.handlers = gunicorn_logger.handlers
             logger.setLevel(_cfg.log_level)
 
-    elif not _cfg.dev_mode:
-        prod_logger = logging.getLogger("tekst")
-        prod_logger.setLevel(_cfg.log_level)
-        for logger in _get_relevant_loggers():
-            logger.handlers = prod_logger.handlers
-            logger.setLevel(_cfg.log_level)
     else:
         """
         Colorful logging setup for development (app ran by uvicorn)
         """
-
-        from colorlog import ColoredFormatter, StreamHandler
 
         # easy on the eye, no timestamps. perfect for development.
         dev_log_fmt = (
@@ -54,20 +46,30 @@ def setup_logging() -> None:
             "({name} - {process}:{threadName} - {filename}:{lineno})"
         )
 
-        dev_log_formatter = ColoredFormatter(
-            dev_log_fmt,
-            datefmt=None,
-            reset=True,
-            log_colors={
-                "DEBUG": "cyan",
-                "INFO": "green",
-                "WARNING": "yellow",
-                "ERROR": "red",
-                "CRITICAL": "red,bg_white",
-            },
-            secondary_log_colors={},
-            style="{",
-        )
+        try:
+            from colorlog import ColoredFormatter, StreamHandler
+            dev_log_formatter = ColoredFormatter(
+                dev_log_fmt,
+                datefmt=None,
+                reset=True,
+                log_colors={
+                    "DEBUG": "cyan",
+                    "INFO": "green",
+                    "WARNING": "yellow",
+                    "ERROR": "red",
+                    "CRITICAL": "red,bg_white",
+                },
+                secondary_log_colors={},
+                style="{",
+            )
+        except ModuleNotFoundError:
+            from logging import Formatter, StreamHandler
+            dev_log_formatter = Formatter(
+                dev_log_fmt,
+                datefmt=None,
+                reset=True,
+                style="{",
+            )
 
         dev_log_handler = StreamHandler()
         dev_log_handler.setFormatter(dev_log_formatter)
