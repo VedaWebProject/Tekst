@@ -1,5 +1,7 @@
 import json
 
+from pathlib import Path
+
 import pytest
 import requests
 
@@ -37,9 +39,10 @@ def anyio_backend():
 
 
 @pytest.fixture
-def test_data(shared_datadir) -> dict:
+def test_data(request) -> dict:
     """Returns all shared test data"""
-    return json.loads((shared_datadir / "test-data.json").read_text())
+    datadir = Path(request.config.rootdir) / "tests/data"
+    return json.loads((datadir / "test-data.json").read_text())
 
 
 # @pytest.fixture(scope="session")

@@ -34,20 +34,22 @@ tasks:
       - poetry run black . --check
 
   run-tests:
-    desc: Run test suite with pytest
+    desc: Run complete test suite with pytest
     env:
       TEKST_ENV_FILE: .env.test
     cmds:
-      - poetry run python3 -m tekst setup
       - poetry run coverage run -m pytest {{.CLI_ARGS}}
       - poetry run coverage report -m
 
   tests:
-    desc: Run tests, start and stop test services stack automatically
+    desc: Run test categories separately, start and stop services stack
+    env:
+      TEKST_ENV_FILE: .env.test
     cmds:
       - defer: {task: test-stack-down}
       - task: test-stack-up
       - task: wait-for-mongodb
+      - poetry run python3 -m tekst setup
       - task: run-tests
 
   run-dev:
