@@ -19,7 +19,7 @@ def _get_relevant_loggers() -> list[logging.Logger]:
 
 
 def setup_logging() -> None:
-    if "gunicorn" in os.environ.get("SERVER_SOFTWARE", ""):
+    if "gunicorn" in os.environ.get("SERVER_SOFTWARE", "") or not _cfg.dev_mode:
         """
         This should trigger in production running gunicorn with uvicorn workers,
         funneling all the logs into the gunicorn log handlers...
