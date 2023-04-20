@@ -334,6 +334,9 @@ async def create_sample_users():
     """Creates sample users needed for testing in development"""
     if not _cfg.dev_mode:
         return
+    if (await User.find_one().exists()):
+        log.warning("Users found in database. Skipping sample user creation.")
+        return
     # common
     pw = "poiPOI098"
     email_suffix = "@test.com"
