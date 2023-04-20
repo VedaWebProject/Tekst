@@ -75,9 +75,6 @@ RUN apt-get update && \
 
 WORKDIR "$WORKDIR_PATH"
 
-# copy WSGI config
-COPY ./gunicorn_conf.py ./
-
 # copy app and dependencies
 COPY --from=builder "$WORKDIR_PATH"/deps/ deps/
 COPY --from=builder "$WORKDIR_PATH"/dist/ dist/
@@ -105,6 +102,9 @@ HEALTHCHECK \
 
 RUN groupadd -g 1337 tekst && \
     useradd -m -u 1337 -g tekst tekst
+
+# copy WSGI config
+COPY ./deploy/gunicorn_conf.py ./
 
 USER tekst
 
