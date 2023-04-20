@@ -3,6 +3,7 @@ import asyncio
 import click
 
 from tekst.config import TekstConfig, get_config
+from tekst.openapi import generate_openapi_schema
 
 
 """
@@ -11,45 +12,6 @@ Command line interface to the main functionalities of Tekst server
 
 
 _cfg: TekstConfig = get_config()
-
-
-async def _generate_openapi_schema(
-    to_file: bool, output_file: str, indent: int, sort_keys: bool, quiet: bool
-):
-    import json
-
-    from asgi_lifespan import LifespanManager
-    from httpx import AsyncClient
-
-    from tekst.app import app
-
-    async with LifespanManager(app):
-        async with AsyncClient(app=app, base_url="http://test") as client:
-            resp = await client.get(f"{_cfg.doc.openapi_url}")
-            if not resp.status_code == 200:
-                click.echo(
-                    "Error: Request to Tekst server "
-                    f"failed with code {resp.status_code}",
-                    err=True,
-                )
-            else:
-                schema = resp.json()
-                json_dump_args = {
-                    "skipkeys": True,
-                    "indent": indent or None,
-                    "sort_keys": sort_keys,
-                }
-                if to_file:
-                    with open(output_file, "w") as f:
-                        json.dump(schema, f, **json_dump_args)
-                    if not quiet:
-                        click.echo(
-                            f"Saved Tekst "
-                            f"({'development' if _cfg.dev_mode else 'production'} mode)"
-                            f" OpenAPI schema to {output_file}."
-                        )
-                else:
-                    click.echo(json.dumps(schema, **json_dump_args))
 
 
 @click.command()
@@ -90,15 +52,23 @@ def schema(to_file: bool, output_file: str, indent: int, sort_keys: bool, quiet:
     Exports Tekst's OpenAPI schema to a JSON file
     (Important: The active Tekst environment variables might influence the schema!)
     """
-    asyncio.run(
-        _generate_openapi_schema(
+    schema = asyncio.run(
+        generate_openapi_schema(
             to_file=to_file,
             output_file=output_file,
             indent=indent,
             sort_keys=sort_keys,
-            quiet=quiet,
+            cfg=_cfg,
         )
     )
+    if to_file and not quiet:
+        click.echo(
+            f"Saved Tekst "
+            f"({'development' if _cfg.dev_mode else 'production'} mode)"
+            f" OpenAPI schema to {output_file}."
+        )
+    if not to_file:
+        click.echo(schema)
 
 
 @click.command()
