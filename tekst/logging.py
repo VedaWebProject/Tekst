@@ -40,14 +40,14 @@ def setup_logging() -> None:
         Colorful logging setup for development (app ran by uvicorn)
         """
 
-        # easy on the eye, no timestamps. perfect for development.
-        dev_log_fmt = (
-            "{bold}{log_color}{levelname:8}{reset} {white}{message}{blue} "
-            "({name} - {process}:{threadName} - {filename}:{lineno})"
-        )
-
         try:
             from colorlog import ColoredFormatter, StreamHandler
+
+            # easy on the eye, no timestamps. perfect for development.
+            dev_log_fmt = (
+                "{bold}{log_color}{levelname:8}{reset} {white}{message}{blue} "
+                "({name} - {process}:{threadName} - {filename}:{lineno})"
+            )
             dev_log_formatter = ColoredFormatter(
                 dev_log_fmt,
                 datefmt=None,
@@ -64,6 +64,11 @@ def setup_logging() -> None:
             )
         except ModuleNotFoundError:
             from logging import Formatter, StreamHandler
+
+            dev_log_fmt = (
+                "{levelname:8} {message} "
+                "({name} - {process}:{threadName} - {filename}:{lineno})"
+            )
             dev_log_formatter = Formatter(
                 dev_log_fmt,
                 datefmt=None,
