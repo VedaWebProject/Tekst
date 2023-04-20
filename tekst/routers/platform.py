@@ -15,14 +15,6 @@ router = APIRouter(
 )
 
 
-async def _get_platform_settings():
-    pf_settings = await PlatformSettingsDocument.find_one({})
-    if pf_settings:
-        return pf_settings
-    else:
-        return await PlatformSettingsDocument().create()
-
-
 # ROUTES DEFINITIONS...
 
 
@@ -35,7 +27,7 @@ async def get_platform_data(cfg: TekstConfig = Depends(get_cfg)) -> dict:
     """Returns data the client needs to initialize"""
     return PlatformData(
         texts=await get_all_texts(),
-        settings=await _get_platform_settings(),
+        settings=await PlatformSettingsDocument.find_one({}),
         layer_types=get_layer_types_info(),
     )
 

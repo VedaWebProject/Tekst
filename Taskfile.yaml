@@ -38,6 +38,7 @@ tasks:
     env:
       TEKST_ENV_FILE: .env.test
     cmds:
+      - poetry run python3 -m tekst setup
       - poetry run coverage run -m pytest {{.CLI_ARGS}}
       - poetry run coverage report -m
 
@@ -54,6 +55,7 @@ tasks:
     env:
       TEKST_DEV_MODE: true
     cmds:
+      - poetry run python3 -m tekst setup
       - poetry run python3 -m tekst run --reload
 
   run:

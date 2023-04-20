@@ -334,7 +334,8 @@ async def create_sample_users():
     """Creates sample users needed for testing in development"""
     if not _cfg.dev_mode:
         return
-    if (await User.find_one().exists()):
+    log.debug("Creating sample users...")
+    if await User.find_one().exists():
         log.warning("Users found in database. Skipping sample user creation.")
         return
     # common

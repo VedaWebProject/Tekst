@@ -6,7 +6,6 @@ from tekst.models.common import PyObjectId
 from tekst.models.layer import (
     LayerBase,
     LayerBaseDocument,
-    LayerBaseUpdate,
 )
 from tekst.models.text import TextDocument
 
@@ -93,10 +92,10 @@ router = APIRouter(
 for lt_name, lt_class in get_layer_types().items():
     # type alias unit models
     LayerModel = lt_class.get_layer_model()
-    LayerDocumentModel = LayerModel.get_document_model(LayerBaseDocument)
+    LayerDocumentModel = LayerModel.get_document_model()
     LayerCreateModel = LayerModel.get_create_model()
     LayerReadModel = LayerModel.get_read_model()
-    LayerUpdateModel = LayerModel.get_update_model(LayerBaseUpdate)
+    LayerUpdateModel = LayerModel.get_update_model()
     # add route for reading a layer definition from the database
     router.add_api_route(
         path=f"/{lt_name}/{{id}}",

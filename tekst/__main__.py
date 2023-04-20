@@ -4,6 +4,7 @@ import click
 
 from tekst.config import TekstConfig, get_config
 from tekst.openapi import generate_openapi_schema
+from tekst.setup import app_setup
 
 
 """
@@ -12,6 +13,11 @@ Command line interface to the main functionalities of Tekst server
 
 
 _cfg: TekstConfig = get_config()
+
+
+@click.command()
+def setup():
+    asyncio.run(app_setup(_cfg))
 
 
 @click.command()
@@ -117,6 +123,7 @@ def cli():
 
 
 # add individual commands to CLI app
+cli.add_command(setup)
 cli.add_command(schema)
 cli.add_command(run)
 

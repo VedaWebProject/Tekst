@@ -8,8 +8,8 @@ import pluggy
 
 from tekst.logging import log
 from tekst.models.common import ModelBase
-from tekst.models.layer import LayerBase
-from tekst.models.unit import UnitBase
+from tekst.models.layer import LayerBase, LayerBaseDocument, LayerBaseUpdate
+from tekst.models.unit import UnitBase, UnitBaseDocument, UnitBaseUpdate
 from tekst.utils.strings import safe_name
 
 
@@ -150,6 +150,11 @@ def init_layer_type_manager() -> None:
                 plugin = sc[1]
                 log.info(f"Registering internal layer type plugin: {plugin.get_name()}")
                 manager.register(plugin(), plugin.get_safe_name())
+                # create layer/unit document models
+                plugin.get_layer_model().get_document_model(LayerBaseDocument)
+                plugin.get_layer_model().get_update_model(LayerBaseUpdate)
+                plugin.get_unit_model().get_document_model(UnitBaseDocument)
+                plugin.get_unit_model().get_update_model(UnitBaseUpdate)
 
     # load and register plugins that might be available from external packages
     manager.load_setuptools_entrypoints(group="tekst")

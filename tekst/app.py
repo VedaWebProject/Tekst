@@ -7,7 +7,6 @@ from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 from starlette_csrf import CSRFMiddleware
 
-from tekst.auth import create_sample_users
 from tekst.config import TekstConfig, get_config
 from tekst.db import init_odm
 from tekst.dependencies import get_db, get_db_client
@@ -15,7 +14,6 @@ from tekst.layer_types import init_layer_type_manager
 from tekst.logging import log, setup_logging
 from tekst.openapi import custom_openapi
 from tekst.routers import setup_routes
-from tekst.sample_data import create_sample_texts
 
 
 _cfg: TekstConfig = get_config()  # get (possibly cached) config data
@@ -35,7 +33,6 @@ async def startup_routine(app: FastAPI) -> None:
         f"running in {'DEVELOPMENT' if _cfg.dev_mode else 'PRODUCTION'} MODE"
     )
 
-    # init app peripherals
     init_layer_type_manager()
     setup_routes(app)
 
@@ -54,11 +51,6 @@ async def startup_routine(app: FastAPI) -> None:
 
     # modify and cache OpenAPI schema
     custom_openapi(app, _cfg)
-
-    log.debug("Creating sample users...")
-    await create_sample_users()
-    log.info("Creating sample texts...")
-    await create_sample_texts()
 
 
 async def shutdown_routine(app: FastAPI) -> None:

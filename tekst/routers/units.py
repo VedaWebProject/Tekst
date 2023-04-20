@@ -7,7 +7,7 @@ from tekst.auth import OptionalUserDep, UserDep
 from tekst.layer_types import get_layer_types
 from tekst.models.common import PyObjectId
 from tekst.models.layer import LayerBaseDocument, LayerIdView
-from tekst.models.unit import UnitBase, UnitBaseDocument, UnitBaseUpdate
+from tekst.models.unit import UnitBase, UnitBaseDocument
 
 
 def _generate_read_endpoint(
@@ -119,10 +119,10 @@ router = APIRouter(
 for lt_name, lt_class in get_layer_types().items():
     # type alias unit models
     UnitModel = lt_class.get_unit_model()
-    UnitDocumentModel = UnitModel.get_document_model(UnitBaseDocument)
+    UnitDocumentModel = UnitModel.get_document_model()
     UnitCreateModel = UnitModel.get_create_model()
     UnitReadModel = UnitModel.get_read_model()
-    UnitUpdateModel = UnitModel.get_update_model(UnitBaseUpdate)
+    UnitUpdateModel = UnitModel.get_update_model()
     # add route for reading a unit from the database
     router.add_api_route(
         path=f"/{lt_name}/{{id}}",

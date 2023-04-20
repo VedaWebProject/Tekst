@@ -53,6 +53,7 @@ async def _create_sample_layers(text_slug: str, text_id: str):
 
 
 async def create_sample_texts():
+    log.info("Creating sample texts...")
     if not (await TextDocument.find_one().exists()):
         for text_slug, text_data in TEXTS.items():
             text_doc = TextDocument(**text_data["text"])

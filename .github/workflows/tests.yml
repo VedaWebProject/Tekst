@@ -41,6 +41,9 @@ jobs:
     - name: Cancel on setup error
       if: failure()
       uses: andymckay/cancel-action@0.2
+    - name: Run pre-launch app setup
+      if: always()
+      run: poetry run python3 -m tekst setup
     - name: Run tests
       if: always()
       run: poetry run pytest

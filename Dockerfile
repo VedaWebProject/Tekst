@@ -110,4 +110,7 @@ USER tekst
 
 EXPOSE 8000
 
-ENTRYPOINT ["gunicorn", "tekst.app:app", "--config", "gunicorn_conf.py"]
+ENTRYPOINT ["/entrypoint.sh"]
+
+# additional arguments are appended to gunicorn command call
+# CMD []
