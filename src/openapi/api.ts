@@ -1023,7 +1023,7 @@ export interface TextCreate {
      */
     'title': string;
     /**
-     * A short identifier string for use in URLs and internal operations
+     * A short identifier for use in URLs and internal operations
      * @type {string}
      * @memberof TextCreate
      */
@@ -1084,7 +1084,7 @@ export interface TextRead {
      */
     'title': string;
     /**
-     * A short identifier string for use in URLs and internal operations
+     * A short identifier for use in URLs and internal operations
      * @type {string}
      * @memberof TextRead
      */

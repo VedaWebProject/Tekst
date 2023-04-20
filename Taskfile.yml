@@ -54,7 +54,6 @@ tasks:
           TEMPDIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'trtemp')
           OUTDIR="$TEMPDIR/tekst-ts-client"
           mkdir -p $OUTDIR
-          cp ../tekst-api/openapi.json $TEMPDIR/
           cp .openapi-generator-ignore $OUTDIR
           docker run \
             --rm \
@@ -62,7 +61,7 @@ tasks:
             -v $TEMPDIR:/local \
             openapitools/openapi-generator-cli:v6.3.0 \
               generate \
-                -i /local/openapi.json \
+                -i https://raw.githubusercontent.com/VedaWebProject/tekst-api/main/openapi.json \
                 -g typescript-axios \
                 -o /local/tekst-ts-client \
             #    --global-property skipFormModel=false \
