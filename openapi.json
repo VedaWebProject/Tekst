@@ -3444,7 +3444,7 @@
             "minLength": 2,
             "pattern": "^[a-z][a-z0-9\\-_]{0,14}[a-z0-9]$",
             "type": "string",
-            "description": "A short identifier string for use in URLs and internal operations"
+            "description": "A short identifier for use in URLs and internal operations"
           },
           "subtitle": {
             "title": "Subtitle",
@@ -3517,7 +3517,7 @@
             "minLength": 2,
             "pattern": "^[a-z][a-z0-9\\-_]{0,14}[a-z0-9]$",
             "type": "string",
-            "description": "A short identifier string for use in URLs and internal operations"
+            "description": "A short identifier for use in URLs and internal operations"
           },
           "subtitle": {
             "title": "Subtitle",

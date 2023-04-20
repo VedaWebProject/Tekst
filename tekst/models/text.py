@@ -22,9 +22,7 @@ class Text(ModelBase, ModelFactory):
         regex=r"^[a-z][a-z0-9\-_]{0,14}[a-z0-9]$",
         min_length=2,
         max_length=16,
-        description=(
-            "A short identifier string for use in URLs and internal operations"
-        ),
+        description=("A short identifier for use in URLs and internal operations"),
     )
 
     subtitle: str = Field(
