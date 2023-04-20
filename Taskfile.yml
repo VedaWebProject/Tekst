@@ -21,7 +21,7 @@ tasks:
       - npx -c 'node -p "process.env.npm_package_version"'
     silent: true
 
-  run:
+  dev:
     desc: Run development server
     cmds:
       - npm run dev
