@@ -168,6 +168,16 @@ _auth_backend_jwt = AuthenticationBackend(
 )
 
 
+async def _get_enabled_backends() -> list[AuthenticationBackend]:
+    """Returns the enabled backends following custom logic"""
+    enabled_backends = []
+    if _cfg.security.enable_cookie_auth:
+        enabled_backends.append(_auth_backend_cookie)
+    if _cfg.security.enable_jwt_auth:
+        enabled_backends.append(_auth_backend_jwt)
+    return enabled_backends
+
+
 def _validate_required_password_chars(password: str):
     return (
         re.search(r"[a-z]", password)
@@ -246,30 +256,33 @@ _fastapi_users = FastAPIUsers[User, PyObjectId](
 
 def setup_auth_routes(app: FastAPI) -> list[APIRouter]:
     # cookie auth
-    app.include_router(
-        _fastapi_users.get_auth_router(
-            _auth_backend_cookie,
-            requires_verification=_cfg.security.users_need_verification,
-        ),
-        prefix="/auth/cookie",
-        tags=["auth"],
-        include_in_schema=_cfg.dev_mode,  # only during development
-    )
+    if _cfg.security.enable_cookie_auth:
+        app.include_router(
+            _fastapi_users.get_auth_router(
+                _auth_backend_cookie,
+                requires_verification=_cfg.security.users_need_verification,
+            ),
+            prefix="/auth/cookie",
+            tags=["auth"],
+            include_in_schema=_cfg.dev_mode,  # only during development
+        )
     # jwt auth
-    app.include_router(
-        _fastapi_users.get_auth_router(
-            _auth_backend_jwt,
-            requires_verification=_cfg.security.users_need_verification,
-        ),
-        prefix="/auth/jwt",
-        tags=["auth"],
-    )
+    if _cfg.security.enable_jwt_auth:
+        app.include_router(
+            _fastapi_users.get_auth_router(
+                _auth_backend_jwt,
+                requires_verification=_cfg.security.users_need_verification,
+            ),
+            prefix="/auth/jwt",
+            tags=["auth"],
+        )
     # register
-    app.include_router(
-        _fastapi_users.get_register_router(UserRead, UserCreate),
-        prefix="/auth",
-        tags=["auth"],
-    )
+    if _cfg.security.enable_registration:
+        app.include_router(
+            _fastapi_users.get_register_router(UserRead, UserCreate),
+            prefix="/auth",
+            tags=["auth"],
+        )
     # verify
     app.include_router(
         _fastapi_users.get_verify_router(UserRead),
@@ -296,7 +309,11 @@ def setup_auth_routes(app: FastAPI) -> list[APIRouter]:
 
 def _current_user(**kwargs) -> callable:
     """Returns auth dependencies for API routes (optional auth in dev mode)"""
-    return _fastapi_users.current_user(optional=kwargs.pop("optional", False), **kwargs)
+    return _fastapi_users.current_user(
+        optional=kwargs.pop("optional", False),
+        get_enabled_backends=_get_enabled_backends,
+        **kwargs,
+    )
 
 
 # auth dependencies for API routes

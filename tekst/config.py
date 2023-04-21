@@ -111,6 +111,9 @@ class SecurityConfig(ModelBase):
     secret: str = Field(default_factory=lambda: token_hex(32), min_length=16)
     users_active_by_default: bool = False
     users_need_verification: bool = True
+    enable_registration: bool = True
+    enable_cookie_auth: bool = True
+    enable_jwt_auth: bool = True
     auth_cookie_name: str = "tekstuserauth"
     auth_cookie_domain: str | None = None
     auth_cookie_lifetime: int = 3600

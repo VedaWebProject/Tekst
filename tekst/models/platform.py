@@ -13,6 +13,8 @@ _cfg: TekstConfig = get_config()
 class PlatformSecurityInfo(ModelBase):
     users_active_by_default: bool = _cfg.security.users_active_by_default
     users_need_verification: bool = _cfg.security.users_need_verification
+    enable_registration: bool = _cfg.security.enable_registration
+    enable_cookie_auth: bool = _cfg.security.enable_cookie_auth
 
 
 class PlatformData(ModelBase):
