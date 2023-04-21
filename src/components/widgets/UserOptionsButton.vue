@@ -41,6 +41,14 @@ const userOptions = computed(() => [
   ...(auth.user?.isSuperuser
     ? [
         {
+          type: 'divider',
+          key: 'dividerAdministration',
+        },
+      ]
+    : []),
+  ...(auth.user?.isSuperuser
+    ? [
+        {
           type: 'group',
           label: t('administration.labelOptionGroup'),
           key: 'administration',
@@ -56,7 +64,7 @@ const userOptions = computed(() => [
     : []),
   {
     type: 'divider',
-    key: 'd1',
+    key: 'dividerLogout',
   },
   {
     label: t('user.logout'),

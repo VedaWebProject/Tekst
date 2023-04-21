@@ -65,7 +65,8 @@ routes:
     help: Hilfe
     login: Anmeldung
     register: Registrierung
-    profile: Profil
+    user: Profil
+    account: Benutzerkonto
     users: Benutzer
 
 layerTypes:
