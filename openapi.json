@@ -1023,6 +1023,55 @@
         }
       }
     },
+    "/platform/user/{username}": {
+      "get": {
+        "tags": [
+          "platform"
+        ],
+        "summary": "Get public user info",
+        "description": "Returns public information on the user with the specified username",
+        "operationId": "getPublicUserInfo",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Username",
+              "type": "string"
+            },
+            "name": "username",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserReadPublic"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Request"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/platform/i18n": {
       "get": {
         "tags": [
@@ -3613,7 +3662,8 @@
           "password",
           "username",
           "firstName",
-          "lastName"
+          "lastName",
+          "affiliation"
         ],
         "type": "object",
         "properties": {
@@ -3659,6 +3709,30 @@
             "maxLength": 32,
             "minLength": 1,
             "type": "string"
+          },
+          "affiliation": {
+            "title": "Affiliation",
+            "maxLength": 64,
+            "minLength": 1,
+            "type": "string"
+          },
+          "publicFields": {
+            "title": "Publicfields",
+            "type": "array",
+            "items": {
+              "enum": [
+                "username",
+                "email",
+                "firstName",
+                "lastName",
+                "affiliation"
+              ],
+              "type": "string"
+            },
+            "description": "Data fields set public by this user",
+            "default": [
+              "username"
+            ]
           }
         },
         "description": "Dataset for creating a new user"
@@ -3673,7 +3747,8 @@
           "isVerified",
           "username",
           "firstName",
-          "lastName"
+          "lastName",
+          "affiliation"
         ],
         "type": "object",
         "properties": {
@@ -3717,9 +3792,62 @@
             "maxLength": 32,
             "minLength": 1,
             "type": "string"
+          },
+          "affiliation": {
+            "title": "Affiliation",
+            "maxLength": 64,
+            "minLength": 1,
+            "type": "string"
+          },
+          "publicFields": {
+            "title": "Publicfields",
+            "type": "array",
+            "items": {
+              "enum": [
+                "username",
+                "email",
+                "firstName",
+                "lastName",
+                "affiliation"
+              ],
+              "type": "string"
+            },
+            "description": "Data fields set public by this user",
+            "default": [
+              "username"
+            ]
           }
         },
         "description": "A user registered in the system"
+      },
+      "UserReadPublic": {
+        "title": "UserReadPublic",
+        "required": [
+          "username"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "title": "Username",
+            "type": "string"
+          },
+          "email": {
+            "title": "Email",
+            "type": "string"
+          },
+          "firstName": {
+            "title": "Firstname",
+            "type": "string"
+          },
+          "lastName": {
+            "title": "Lastname",
+            "type": "string"
+          },
+          "affiliation": {
+            "title": "Affiliation",
+            "type": "string"
+          }
+        }
       },
       "UserUpdate": {
         "title": "UserUpdate",
@@ -3764,6 +3892,26 @@
             "maxLength": 32,
             "minLength": 1,
             "type": "string"
+          },
+          "affiliation": {
+            "title": "Affiliation",
+            "maxLength": 64,
+            "minLength": 1,
+            "type": "string"
+          },
+          "publicFields": {
+            "title": "Publicfields",
+            "type": "array",
+            "items": {
+              "enum": [
+                "username",
+                "email",
+                "firstName",
+                "lastName",
+                "affiliation"
+              ],
+              "type": "string"
+            }
           }
         },
         "description": "Updates to a user registered in the system"

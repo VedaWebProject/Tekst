@@ -1,5 +1,7 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
+from humps import decamelize
 
+from tekst.auth import User, UserReadPublic
 from tekst.config import TekstConfig
 from tekst.dependencies import get_cfg
 from tekst.layer_types import get_layer_types_info
@@ -29,6 +31,27 @@ async def get_platform_data(cfg: TekstConfig = Depends(get_cfg)) -> dict:
         texts=await get_all_texts(),
         settings=await PlatformSettingsDocument.find_one({}),
         layer_types=get_layer_types_info(),
+    )
+
+
+@router.get("/user/{username}", summary="Get public user info")
+async def get_public_user_info(username: str) -> UserReadPublic:
+    """Returns public information on the user with the specified username"""
+    user = await User.find_one({"username": username})
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"User '{username}' does not exist",
+        )
+    return UserReadPublic(
+        username=user.username,
+        **user.dict(
+            include={
+                decamelize(field): True
+                for field in user.public_fields
+                if field != "username"
+            }
+        ),
     )
 
 

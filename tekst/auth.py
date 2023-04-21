@@ -1,7 +1,7 @@
 import contextlib
 import re
 
-from typing import Annotated, Any
+from typing import Annotated, Any, Literal
 
 import fastapi_users.models as fapi_users_models
 
@@ -34,8 +34,8 @@ from fastapi_users_db_beanie.access_token import (
     BeanieAccessTokenDatabase,
     BeanieBaseAccessToken,
 )
-from humps import decamelize
-from pydantic import constr
+from humps import camelize, decamelize
+from pydantic import Field, constr
 from pymongo import IndexModel
 
 from tekst.config import TekstConfig, get_config
@@ -45,9 +45,18 @@ from tekst.models.common import AllOptionalMeta, ModelBase, PyObjectId
 
 _cfg: TekstConfig = get_config()
 
-# modify FastAPI-User's collection names
-# BeanieBaseUser.Settings.name = "users"
-# BeanieBaseAccessToken.Settings.name = "access_tokens"
+
+class UserReadPublic(ModelBase):
+    username: str
+    email: str | None = None
+    first_name: str | None = None
+    last_name: str | None = None
+    affiliation: str | None = None
+
+
+PublicUserField = Literal[
+    tuple([camelize(field) for field in UserReadPublic.__fields__.keys()])
+]
 
 
 class UserBase(ModelBase):
@@ -56,6 +65,10 @@ class UserBase(ModelBase):
     username: constr(min_length=4, max_length=16, regex=r"[a-zA-Z0-9\-\._]+")
     first_name: constr(min_length=1, max_length=32)
     last_name: constr(min_length=1, max_length=32)
+    affiliation: constr(min_length=1, max_length=64)
+    public_fields: list[PublicUserField] = Field(
+        ["username"], description="Data fields set public by this user"
+    )
 
 
 class User(UserBase, BeanieBaseUser, Document):
@@ -349,8 +362,10 @@ async def create_sample_users():
             password=pw,
             first_name="Beth",
             last_name="Smith",
+            affiliation="Rick's daughter",
             is_verified=True,
             is_active=False,
+            public_fields=["email", "firstName", "lastName", "affiliation"],
         )
     )
     # unverified user
@@ -361,7 +376,9 @@ async def create_sample_users():
             password=pw,
             first_name="Jerry",
             last_name="Smith",
+            affiliation="Rick's son-in-law",
             is_active=True,
+            public_fields=["email", "firstName", "lastName", "affiliation"],
         )
     )
     # just a normal user, active and verified
@@ -372,8 +389,10 @@ async def create_sample_users():
             password=pw,
             first_name="Morty",
             last_name="Smith",
+            affiliation="Rick's grandson",
             is_verified=True,
             is_active=True,
+            public_fields=["email", "firstName", "lastName", "affiliation"],
         )
     )
     # superuser
@@ -384,8 +403,10 @@ async def create_sample_users():
             password=pw,
             first_name="Rick",
             last_name="Sanchez",
+            affiliation="Mad scientist",
             is_verified=True,
             is_superuser=True,
             is_active=True,
+            public_fields=["email", "firstName", "lastName", "affiliation"],
         )
     )

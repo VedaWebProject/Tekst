@@ -120,6 +120,7 @@ def new_user_data() -> dict:
         password="poiPOI098",
         first_name="Foo",
         last_name="Bar",
+        affiliation="Some Institution",
     )
 
 
