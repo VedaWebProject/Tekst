@@ -15,6 +15,7 @@ class PlatformSecurityInfo(ModelBase):
     users_need_verification: bool = _cfg.security.users_need_verification
     enable_registration: bool = _cfg.security.enable_registration
     enable_cookie_auth: bool = _cfg.security.enable_cookie_auth
+    enable_jwt_auth: bool = _cfg.security.enable_jwt_auth
 
 
 class PlatformData(ModelBase):

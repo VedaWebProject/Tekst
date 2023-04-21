@@ -3396,6 +3396,11 @@
             "title": "Enablecookieauth",
             "type": "boolean",
             "default": true
+          },
+          "enableJwtAuth": {
+            "title": "Enablejwtauth",
+            "type": "boolean",
+            "default": true
           }
         }
       },
