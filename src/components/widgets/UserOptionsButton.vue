@@ -3,12 +3,13 @@ import { ref, computed, h, type Component } from 'vue';
 import { useAuthStore, useStateStore } from '@/stores';
 import { useRouter } from 'vue-router';
 import { NButton, NIcon, NDropdown } from 'naive-ui';
+import { useI18n } from 'vue-i18n';
+
 import LogInRound from '@vicons/material/LogInRound';
 import LogOutRound from '@vicons/material/LogOutRound';
 import ManageAccountsRound from '@vicons/material/ManageAccountsRound';
 import SettingsRound from '@vicons/material/SettingsRound';
 import PersonRound from '@vicons/material/PersonRound';
-import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n({ useScope: 'global' });
 const auth = useAuthStore();
@@ -49,16 +50,9 @@ const userOptions = computed(() => [
   ...(auth.user?.isSuperuser
     ? [
         {
-          type: 'group',
-          label: t('administration.labelOptionGroup'),
-          key: 'administration',
-          children: [
-            {
-              label: t('administration.labelOptionUsers'),
-              key: 'admin',
-              icon: renderIcon(SettingsRound),
-            },
-          ],
+          label: t('administration.labelOption'),
+          key: 'admin',
+          icon: renderIcon(SettingsRound),
         },
       ]
     : []),
@@ -106,7 +100,7 @@ function handleUserOptionSelect(option: string) {
       auth.logout();
       break;
     case 'admin':
-      router.push({ name: 'admin' });
+      router.push({ name: 'adminOverview' });
       break;
   }
 }

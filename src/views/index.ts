@@ -6,4 +6,7 @@ export { default as RegisterView } from './RegisterView.vue';
 export { default as BrowseView } from './BrowseView.vue';
 export { default as HelpView } from './HelpView.vue';
 export { default as SearchView } from './SearchView.vue';
-export { default as UsersView } from './UsersView.vue';
+
+export { default as AdminView } from './admin/AdminView.vue';
+export { default as AdminOverviewView } from './admin/AdminOverviewView.vue';
+export { default as AdminUsersView } from './admin/AdminUsersView.vue';

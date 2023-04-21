@@ -160,8 +160,10 @@ user:
     notVerified: Your email is not yet verified. We just sent your verification link again.
 
 administration:
-  labelOptionGroup: Administration
-  labelOptionUsers: Users
+  heading: Administration
+  labelOption: Administration
+  overview: Overview
+  users: Users
 
 search:
   searchAction: Search

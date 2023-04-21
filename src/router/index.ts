@@ -12,12 +12,16 @@ declare module 'vue-router' {
 const HomeView = () => import('@/views/HomeView.vue');
 const UserView = () => import('@/views/UserView.vue');
 const AccountView = () => import('@/views/AccountView.vue');
-const LoginView = () => import('@/views/LoginView.vue');
-const RegisterView = () => import('@/views/RegisterView.vue');
 const HelpView = () => import('@/views/HelpView.vue');
 const BrowseView = () => import('@/views/BrowseView.vue');
 const SearchView = () => import('@/views/SearchView.vue');
-const UsersView = () => import('@/views/UsersView.vue');
+
+const LoginView = () => import('@/views/LoginView.vue');
+const RegisterView = () => import('@/views/RegisterView.vue');
+
+const AdminView = () => import('@/views/admin/AdminView.vue');
+const AdminOverviewView = () => import('@/views/admin/AdminOverviewView.vue');
+const AdminUsersView = () => import('@/views/admin/AdminUsersView.vue');
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -73,12 +77,24 @@ const router = createRouter({
       },
     },
     {
-      path: '/users',
-      name: 'users',
-      component: UsersView,
+      path: '/admin',
+      component: AdminView,
+      name: 'admin',
       meta: {
         restricted: 'superuser',
       },
+      children: [
+        {
+          path: '',
+          name: 'adminOverview',
+          component: AdminOverviewView,
+        },
+        {
+          path: 'users',
+          name: 'adminUsers',
+          component: AdminUsersView,
+        },
+      ],
     },
     { path: '/:pathMatch(.*)*', redirect: '/' },
   ],

@@ -161,8 +161,10 @@ user:
     notVerified: Ihre Email-Adresse ist noch nicht verifiziert. Wir haben Ihren Verifizierungslink nochmals versendet.
 
 administration:
-  labelOptionGroup: Administration
-  labelOptionUsers: Benutzer
+  heading: Administration
+  labelOption: Administration
+  overview: Übersicht
+  users: Benutzer
 
 search:
   searchAction: Suchen
