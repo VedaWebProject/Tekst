@@ -2,6 +2,7 @@
 import { useProfile } from '@/profile';
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
+import { NSkeleton } from 'naive-ui';
 
 const route = useRoute();
 const username = computed(() =>
@@ -31,6 +32,9 @@ const { user, error } = useProfile(username);
       </li>
     </ul>
   </div>
+
+  <n-skeleton v-else-if="!user" text :repeat="5" />
+
   <div v-else class="content-block">
     <h1>Oops... {{ $t('errors.error') }}!</h1>
     {{ $t('user.profileNotFound', { username }) }}
