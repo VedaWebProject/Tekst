@@ -44,6 +44,7 @@ init:
   workingText: Lege Arbeitstext fest...
 
 errors:
+  error: Fehler
   serverI18n: Einige Übersetzungen konnten nicht geladen werden.
   platformData: Plattform-Daten konnten nicht geladen werden.
   unexpected: Ein unerwarteter Fehler ist aufgetreten. Das hätte nicht passieren dürfen.
@@ -114,6 +115,7 @@ register:
     repeatPassword: Passwort wiederholen
     firstName: Vorname
     lastName: Nachname
+    affiliation: Zugehörigkeit
   rulesFeedback:
     emailReq: Email-Adresse wird benötigt
     emailInvalid: Email-Adresse ist zu offensichtlich ungültig
@@ -138,6 +140,8 @@ user:
   login: Anmelden
   logout: Abmelden
   profile: Profil öffnen
+  profileHeading: 'Öffentliches Profil: {username}'
+  profileNotFound: Das Benutzerprofil "{username}" konnte nicht gefunden werden.
   manage: Benutzerkonto verwalten
   logoutSuccessful: Sie sind jetzt ausgeloggt.
   tipUserBtn: Benutzer-Aktionen für {username} anzeigen

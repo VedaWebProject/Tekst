@@ -55,7 +55,7 @@ function loginUser() {
     .then((u) => {
       resetForm();
       messages.success(t('general.welcome', { name: u.firstName }));
-      router.push({ name: 'user' });
+      router.push({ name: 'user', params: { username: u.username } });
     })
     .catch((e) => {
       /**

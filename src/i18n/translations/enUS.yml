@@ -43,6 +43,7 @@ init:
   workingText: Setting up working text...
 
 errors:
+  error: Error
   serverI18n: Some translations could not be loaded.
   platformData: Could not load platform data.
   unexpected: An unexpected error occurred. This should not happen.
@@ -113,6 +114,7 @@ register:
     repeatPassword: Repeat Password
     firstName: First Name
     lastName: Last Name
+    affiliation: Affiliation
   rulesFeedback:
     emailReq: Email is required
     emailInvalid: Email is too obviously invalid
@@ -137,6 +139,8 @@ user:
   login: Login
   logout: Logout
   profile: Open profile
+  profileHeading: 'Public profile: {username}'
+  profileNotFound: The user profile "{username}" could not be found.
   manage: Manage account
   logoutSuccessful: You are now logged out.
   tipUserBtn: Show user actions for {username}

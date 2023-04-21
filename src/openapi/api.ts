@@ -1235,7 +1235,30 @@ export interface UserCreate {
      * @memberof UserCreate
      */
     'lastName': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserCreate
+     */
+    'affiliation': string;
+    /**
+     * Data fields set public by this user
+     * @type {Array<string>}
+     * @memberof UserCreate
+     */
+    'publicFields'?: Array<UserCreatePublicFieldsEnum>;
 }
+
+export const UserCreatePublicFieldsEnum = {
+    Username: 'username',
+    Email: 'email',
+    FirstName: 'firstName',
+    LastName: 'lastName',
+    Affiliation: 'affiliation'
+} as const;
+
+export type UserCreatePublicFieldsEnum = typeof UserCreatePublicFieldsEnum[keyof typeof UserCreatePublicFieldsEnum];
+
 /**
  * A user registered in the system
  * @export
@@ -1290,6 +1313,66 @@ export interface UserRead {
      * @memberof UserRead
      */
     'lastName': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserRead
+     */
+    'affiliation': string;
+    /**
+     * Data fields set public by this user
+     * @type {Array<string>}
+     * @memberof UserRead
+     */
+    'publicFields'?: Array<UserReadPublicFieldsEnum>;
+}
+
+export const UserReadPublicFieldsEnum = {
+    Username: 'username',
+    Email: 'email',
+    FirstName: 'firstName',
+    LastName: 'lastName',
+    Affiliation: 'affiliation'
+} as const;
+
+export type UserReadPublicFieldsEnum = typeof UserReadPublicFieldsEnum[keyof typeof UserReadPublicFieldsEnum];
+
+/**
+ * 
+ * @export
+ * @interface UserReadPublic
+ */
+export interface UserReadPublic {
+    /**
+     * 
+     * @type {string}
+     * @memberof UserReadPublic
+     */
+    'username': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserReadPublic
+     */
+    'email'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserReadPublic
+     */
+    'firstName'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserReadPublic
+     */
+    'lastName'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserReadPublic
+     */
+    'affiliation'?: string;
 }
 /**
  * Updates to a user registered in the system
@@ -1345,7 +1428,30 @@ export interface UserUpdate {
      * @memberof UserUpdate
      */
     'lastName'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserUpdate
+     */
+    'affiliation'?: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof UserUpdate
+     */
+    'publicFields'?: Array<UserUpdatePublicFieldsEnum>;
 }
+
+export const UserUpdatePublicFieldsEnum = {
+    Username: 'username',
+    Email: 'email',
+    FirstName: 'firstName',
+    LastName: 'lastName',
+    Affiliation: 'affiliation'
+} as const;
+
+export type UserUpdatePublicFieldsEnum = typeof UserUpdatePublicFieldsEnum[keyof typeof UserUpdatePublicFieldsEnum];
+
 /**
  * 
  * @export
@@ -3916,6 +4022,40 @@ export const PlatformApiAxiosParamCreator = function (configuration?: Configurat
             };
         },
         /**
+         * Returns public information on the user with the specified username
+         * @summary Get public user info
+         * @param {string} username 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getPublicUserInfo: async (username: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'username' is not null or undefined
+            assertParamExists('getPublicUserInfo', 'username', username)
+            const localVarPath = `/platform/user/{username}`
+                .replace(`{${"username"}}`, encodeURIComponent(String(username)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Returns server-managed translations.
          * @summary Get translations
          * @param {string} [lang] 
@@ -3971,6 +4111,17 @@ export const PlatformApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
+         * Returns public information on the user with the specified username
+         * @summary Get public user info
+         * @param {string} username 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getPublicUserInfo(username: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserReadPublic>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getPublicUserInfo(username, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
          * Returns server-managed translations.
          * @summary Get translations
          * @param {string} [lang] 
@@ -4001,6 +4152,16 @@ export const PlatformApiFactory = function (configuration?: Configuration, baseP
             return localVarFp.getPlatformData(options).then((request) => request(axios, basePath));
         },
         /**
+         * Returns public information on the user with the specified username
+         * @summary Get public user info
+         * @param {PlatformApiGetPublicUserInfoRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getPublicUserInfo(requestParameters: PlatformApiGetPublicUserInfoRequest, options?: AxiosRequestConfig): AxiosPromise<UserReadPublic> {
+            return localVarFp.getPublicUserInfo(requestParameters.username, options).then((request) => request(axios, basePath));
+        },
+        /**
          * Returns server-managed translations.
          * @summary Get translations
          * @param {PlatformApiGetTranslationsRequest} requestParameters Request parameters.
@@ -4012,6 +4173,20 @@ export const PlatformApiFactory = function (configuration?: Configuration, baseP
         },
     };
 };
+
+/**
+ * Request parameters for getPublicUserInfo operation in PlatformApi.
+ * @export
+ * @interface PlatformApiGetPublicUserInfoRequest
+ */
+export interface PlatformApiGetPublicUserInfoRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof PlatformApiGetPublicUserInfo
+     */
+    readonly username: string
+}
 
 /**
  * Request parameters for getTranslations operation in PlatformApi.
@@ -4043,6 +4218,18 @@ export class PlatformApi extends BaseAPI {
      */
     public getPlatformData(options?: AxiosRequestConfig) {
         return PlatformApiFp(this.configuration).getPlatformData(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Returns public information on the user with the specified username
+     * @summary Get public user info
+     * @param {PlatformApiGetPublicUserInfoRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PlatformApi
+     */
+    public getPublicUserInfo(requestParameters: PlatformApiGetPublicUserInfoRequest, options?: AxiosRequestConfig) {
+        return PlatformApiFp(this.configuration).getPublicUserInfo(requestParameters.username, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
