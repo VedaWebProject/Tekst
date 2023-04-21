@@ -6,7 +6,7 @@ import ThemeModeSwitcher from '@/components/widgets/ThemeModeSwitcher.vue';
 import LocaleSwitcher from '@/components/widgets/LocaleSwitcher.vue';
 import UserOptionsButton from '@/components/widgets/UserOptionsButton.vue';
 import QuickSearchWidget from '@/components/widgets/QuickSearch.vue';
-import { usePlatformStore, useStateStore } from '@/stores';
+import { useAuthStore, usePlatformStore, useStateStore } from '@/stores';
 import { useRoute, RouterLink } from 'vue-router';
 
 import MenuRound from '@vicons/material/MenuRound';
@@ -16,6 +16,7 @@ import SearchRound from '@vicons/material/SearchRound';
 import HelpOutlineRound from '@vicons/material/HelpOutlineRound';
 
 const pf = usePlatformStore();
+const auth = useAuthStore();
 const state = useStateStore();
 const menuOpen = ref(false);
 const menuVisible = computed(() => !state.smallScreen || menuOpen.value);
@@ -71,7 +72,7 @@ watch(route, () => (menuOpen.value = false));
         <QuickSearchWidget />
         <ThemeModeSwitcher />
         <LocaleSwitcher />
-        <UserOptionsButton />
+        <UserOptionsButton v-if="pf.data?.security?.enableRegistration || auth.loggedIn" />
       </div>
     </div>
   </div>

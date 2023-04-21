@@ -135,7 +135,6 @@ function handleUserOptionSelect(option: string) {
       <template v-if="!auth.loggedIn" #icon>
         <n-icon :component="LogInRound" />
       </template>
-      <!-- {{ label }} -->
     </n-button>
   </n-dropdown>
 </template>

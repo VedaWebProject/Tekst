@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { useAuthStore, useMessagesStore, useStateStore } from '@/stores';
+import { useAuthStore, useMessagesStore, usePlatformStore, useStateStore } from '@/stores';
 import { i18n } from '@/i18n';
 
 declare module 'vue-router' {
@@ -85,6 +85,11 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
+  // check if route is disabled
+  const pf = usePlatformStore();
+  if (to.name === 'register' && !pf.data?.security?.enableRegistration) {
+    next({ name: 'home' });
+  }
   // enforce route restrictions
   if (to.meta?.restricted) {
     const auth = useAuthStore();

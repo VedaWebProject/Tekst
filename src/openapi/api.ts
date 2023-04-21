@@ -891,6 +891,24 @@ export interface PlatformSecurityInfo {
      * @memberof PlatformSecurityInfo
      */
     'usersNeedVerification'?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PlatformSecurityInfo
+     */
+    'enableRegistration'?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PlatformSecurityInfo
+     */
+    'enableCookieAuth'?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PlatformSecurityInfo
+     */
+    'enableJwtAuth'?: boolean;
 }
 /**
  * Settings defining platform behavior configured by admins
