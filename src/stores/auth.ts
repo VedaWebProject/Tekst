@@ -33,7 +33,7 @@ export const useAuthStore = defineStore('auth', () => {
   async function logout() {
     try {
       await authApi.authCookieLogout();
-      messages.success(t('account.logoutSuccessful'));
+      messages.success(t('user.logoutSuccessful'));
     } catch (e) {
       // do sweet FA
     } finally {

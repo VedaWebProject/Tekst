@@ -8,7 +8,6 @@ general:
   closeAction: Schließen
   quickSearch: Schnellsuche
   textSelect: Wählen Sie den Text, mit dem Sie arbeiten möchten
-  admin: Administration
 
 dummy:
   home: 'Kein Ort ist wie ~'
@@ -66,8 +65,8 @@ routes:
     help: Hilfe
     login: Anmeldung
     register: Registrierung
-    account: Konto
-    admin: Administration
+    profile: Profil
+    users: Benutzer
 
 layerTypes:
   plaintext: Einfacher Text
@@ -109,7 +108,7 @@ register:
   activationNotNeededHint: Sie können sich jetzt anmelden.
   labels:
     email: Email
-    username: Username
+    username: Benutzername
     password: Passwort
     repeatPassword: Passwort wiederholen
     firstName: Vorname
@@ -117,7 +116,7 @@ register:
   rulesFeedback:
     emailReq: Email-Adresse wird benötigt
     emailInvalid: Email-Adresse ist zu offensichtlich ungültig
-    usernameReq: Username wird benötigt
+    usernameReq: Benutzername wird benötigt
     usernameLength: 4 bis 16 Zeichen
     usernameChars: 'Erlaubte Zeichen: a-z, A-Z, 0-9 und - . _'
     passwordReq: Passwort wird benötigt
@@ -131,15 +130,16 @@ register:
     lastNameLength: 1 bis 32 Zeichen
   errors:
     emailAlreadyRegistered: Diese Email-Adresse ist bereits registriert.
-    usernameAlreadyRegistered: Dieser Username ist bereits vergeben.
+    usernameAlreadyRegistered: Dieser Benutzername ist bereits vergeben.
     weakPassword: Das eingegebene Passwort entspricht nicht den Sicherheitsanforderungen.
 
-account:
+user:
   login: Anmelden
   logout: Abmelden
-  manage: Konto verwalten ({username})
+  profile: Profil öffnen
+  manage: Benutzerkonto verwalten
   logoutSuccessful: Sie sind jetzt ausgeloggt.
-  tipAccountBtn: Konto-Optionen für {username} anzeigen
+  tipUserBtn: Benutzer-Aktionen für {username} anzeigen
   tipLoginBtn: In Ihrem Konto anmelden
   tipLogoutBtn: Von Ihrem Konto abmelden
   switchToRegister: Neues Konto registrieren
@@ -154,6 +154,10 @@ account:
   errors:
     badCreds: Falsche Email-Adresse oder falsches Passwort oder Konto noch nicht aktiviert
     notVerified: Ihre Email-Adresse ist noch nicht verifiziert. Wir haben Ihren Verifizierungslink nochmals versendet.
+
+administration:
+  labelOptionGroup: Administration
+  labelOptionUsers: Benutzer
 
 search:
   searchAction: Suchen

@@ -4,7 +4,7 @@ import { NButton, NIcon } from 'naive-ui';
 import NavBarRouterLink from '@/components/navigation/NavBarRouterLink.vue';
 import ThemeModeSwitcher from '@/components/widgets/ThemeModeSwitcher.vue';
 import LocaleSwitcher from '@/components/widgets/LocaleSwitcher.vue';
-import AccountOptionsButton from '@/components/widgets/AccountOptionsButton.vue';
+import UserOptionsButton from '@/components/widgets/UserOptionsButton.vue';
 import QuickSearchWidget from '@/components/widgets/QuickSearch.vue';
 import { usePlatformStore, useStateStore } from '@/stores';
 import { useRoute, RouterLink } from 'vue-router';
@@ -71,7 +71,7 @@ watch(route, () => (menuOpen.value = false));
         <QuickSearchWidget />
         <ThemeModeSwitcher />
         <LocaleSwitcher />
-        <AccountOptionsButton />
+        <UserOptionsButton />
       </div>
     </div>
   </div>

@@ -7,6 +7,7 @@ import LogInRound from '@vicons/material/LogInRound';
 import LogOutRound from '@vicons/material/LogOutRound';
 import ManageAccountsRound from '@vicons/material/ManageAccountsRound';
 import SettingsRound from '@vicons/material/SettingsRound';
+import PersonRound from '@vicons/material/PersonRound';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n({ useScope: 'global' });
@@ -14,30 +15,51 @@ const auth = useAuthStore();
 const state = useStateStore();
 const router = useRouter();
 const tooltip = computed(() =>
-  auth.loggedIn
-    ? t('account.tipAccountBtn', { username: auth.user?.username })
-    : t('account.tipLoginBtn')
+  auth.loggedIn ? t('user.tipUserBtn', { username: auth.user?.username }) : t('user.tipLoginBtn')
 );
 
-const showAccountDropdown = ref(false);
+const showUserDropdown = ref(false);
 
-const accountOptions = computed(() => [
+const userOptions = computed(() => [
   {
-    label: t('account.manage', { username: auth.user?.username }),
-    key: 'manage',
-    icon: renderIcon(ManageAccountsRound),
+    type: 'group',
+    label: `${auth.user?.firstName} ${auth.user?.lastName} (${auth.user?.username})`,
+    key: 'user',
+    children: [
+      {
+        label: t('user.profile'),
+        key: 'profile',
+        icon: renderIcon(PersonRound),
+      },
+      {
+        label: t('user.manage'),
+        key: 'manage',
+        icon: renderIcon(ManageAccountsRound),
+      },
+    ],
   },
   ...(auth.user?.isSuperuser
     ? [
         {
-          label: t('general.admin'),
-          key: 'admin',
-          icon: renderIcon(SettingsRound),
+          type: 'group',
+          label: t('administration.labelOptionGroup'),
+          key: 'administration',
+          children: [
+            {
+              label: t('administration.labelOptionUsers'),
+              key: 'admin',
+              icon: renderIcon(SettingsRound),
+            },
+          ],
         },
       ]
     : []),
   {
-    label: t('account.logout'),
+    type: 'divider',
+    key: 'd1',
+  },
+  {
+    label: t('user.logout'),
     key: 'logout',
     icon: renderIcon(LogOutRound),
   },
@@ -59,13 +81,16 @@ function handleClick() {
   if (!auth.loggedIn) {
     router.push({ name: 'login' });
   } else {
-    showAccountDropdown.value = !showAccountDropdown.value;
+    showUserDropdown.value = !showUserDropdown.value;
   }
 }
 
-function handleAccountOptionSelect(option: string) {
-  showAccountDropdown.value = false;
+function handleUserOptionSelect(option: string) {
+  showUserDropdown.value = false;
   switch (option) {
+    case 'profile':
+      router.push({ name: 'user', params: { username: auth.user?.username } });
+      break;
     case 'manage':
       router.push({ name: 'account' });
       break;
@@ -81,11 +106,11 @@ function handleAccountOptionSelect(option: string) {
 
 <template>
   <n-dropdown
-    :show="showAccountDropdown"
-    :options="accountOptions"
-    :on-clickoutside="() => (showAccountDropdown = false)"
+    :show="showUserDropdown"
+    :options="userOptions"
+    :on-clickoutside="() => (showUserDropdown = false)"
     :size="state.dropdownSize"
-    @select="handleAccountOptionSelect"
+    @select="handleUserOptionSelect"
   >
     <n-button
       :secondary="!auth.loggedIn"
@@ -96,7 +121,7 @@ function handleAccountOptionSelect(option: string) {
       :focusable="false"
       :color="color"
       :style="auth.loggedIn && 'color: #fff'"
-      class="account-options-button"
+      class="user-options-button"
     >
       <template v-if="auth.loggedIn">{{ initials }}</template>
       <template v-if="!auth.loggedIn" #icon>
@@ -108,14 +133,14 @@ function handleAccountOptionSelect(option: string) {
 </template>
 
 <style scoped>
-.account-options-button {
+.user-options-button {
   font-size: var(--app-ui-font-size-mini) !important;
   font-weight: var(--app-ui-font-weight-normal) !important;
 }
 </style>
 
 <style scoped>
-.account-options-button {
+.user-options-button {
   font-size: var(--app-ui-font-size-mini) !important;
   font-weight: var(--app-ui-font-weight-normal) !important;
 }

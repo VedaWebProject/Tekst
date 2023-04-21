@@ -7,7 +7,6 @@ general:
   cancelAction: Cancel
   closeAction: Close
   textSelect: Select the text you want to work with
-  admin: Administration
 
 dummy:
   home: There's no place like ~
@@ -65,8 +64,8 @@ routes:
     help: Help
     login: Login
     register: Register
-    account: Account
-    admin: Administration
+    profile: Profil
+    users: Users
 
 layerTypes:
   plaintext: Plain Text
@@ -102,7 +101,7 @@ browse:
 register:
   register: Register
   switchToLogin: Log into existing account
-  heading: Register new account
+  heading: Register new user
   success: Successfully registered.
   activationNeededHint: You will only be able to log in as soon as we activate your account. We will send you an email when that happens.
   activationNotNeededHint: You can now log in.
@@ -133,15 +132,16 @@ register:
     usernameAlreadyRegistered: This username is already taken.
     weakPassword: The given password doesn't meet the security requirements.
 
-account:
+user:
   login: Login
   logout: Logout
-  manage: Manage account ({username})
+  profile: Open profile
+  manage: Manage account
   logoutSuccessful: You are now logged out.
-  tipAccountBtn: Show account options for {username}
+  tipUserBtn: Show user actions for {username}
   tipLoginBtn: Log into your account
-  tipLogoutBtn: Lot out of your account
-  switchToRegister: Register new account
+  tipLogoutBtn: Log out of your account
+  switchToRegister: Register new user
   forgotPassword: I forgot my password
   heading: Log into your account
   labels:
@@ -153,6 +153,10 @@ account:
   errors:
     badCreds: Incorrect email, incorrect password or account isn't activated, yet
     notVerified: Your email is not yet verified. We just sent your verification link again.
+
+administration:
+  labelOptionGroup: Administration
+  labelOptionUsers: Users
 
 search:
   searchAction: Search

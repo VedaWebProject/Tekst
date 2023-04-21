@@ -10,13 +10,14 @@ declare module 'vue-router' {
 }
 
 const HomeView = () => import('@/views/HomeView.vue');
+const UserView = () => import('@/views/UserView.vue');
 const AccountView = () => import('@/views/AccountView.vue');
 const LoginView = () => import('@/views/LoginView.vue');
 const RegisterView = () => import('@/views/RegisterView.vue');
 const HelpView = () => import('@/views/HelpView.vue');
 const BrowseView = () => import('@/views/BrowseView.vue');
 const SearchView = () => import('@/views/SearchView.vue');
-const AdminView = () => import('@/views/AdminView.vue');
+const UsersView = () => import('@/views/UsersView.vue');
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -59,6 +60,11 @@ const router = createRouter({
       component: RegisterView,
     },
     {
+      path: '/user/:username',
+      name: 'user',
+      component: UserView,
+    },
+    {
       path: '/account',
       name: 'account',
       component: AccountView,
@@ -67,9 +73,9 @@ const router = createRouter({
       },
     },
     {
-      path: '/admin',
-      name: 'admin',
-      component: AdminView,
+      path: '/users',
+      name: 'users',
+      component: UsersView,
       meta: {
         restricted: 'superuser',
       },

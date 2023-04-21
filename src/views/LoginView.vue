@@ -25,14 +25,14 @@ const formRules: FormRules = {
   email: [
     {
       required: true,
-      message: t('account.rulesFeedback.emailReq'),
+      message: t('user.rulesFeedback.emailReq'),
       // trigger: 'blur',
     },
   ],
   password: [
     {
       required: true,
-      message: t('account.rulesFeedback.passwordReq'),
+      message: t('user.rulesFeedback.passwordReq'),
       trigger: 'blur',
     },
   ],
@@ -55,7 +55,7 @@ function loginUser() {
     .then((u) => {
       resetForm();
       messages.success(t('general.welcome', { name: u.firstName }));
-      router.push({ name: 'account' });
+      router.push({ name: 'user' });
     })
     .catch((e) => {
       /**
@@ -65,9 +65,9 @@ function loginUser() {
       if (e.response) {
         const data = e.response.data;
         if (data.detail === 'LOGIN_BAD_CREDENTIALS') {
-          messages.error(t('account.errors.badCreds'));
+          messages.error(t('user.errors.badCreds'));
         } else if (data.detail === 'LOGIN_USER_NOT_VERIFIED') {
-          messages.error(t('account.errors.notVerified'));
+          messages.error(t('user.errors.notVerified'));
         } else if (e.response.status === 403) {
           messages.error(t('errors.csrf'));
         } else {
@@ -106,7 +106,7 @@ onMounted(() => {
 <template>
   <div class="form-container">
     <div class="content-block">
-      <h2 style="text-align: center">{{ $t('account.heading') }}</h2>
+      <h2 style="text-align: center">{{ $t('user.heading') }}</h2>
       <n-form
         ref="formRef"
         :model="formModel"
@@ -115,20 +115,20 @@ onMounted(() => {
         label-width="auto"
         require-mark-placement="right-hanging"
       >
-        <n-form-item path="email" :label="$t('account.labels.email')">
+        <n-form-item path="email" :label="$t('user.labels.email')">
           <n-input
             v-model:value="formModel.email"
             type="text"
-            :placeholder="$t('account.labels.email')"
+            :placeholder="$t('user.labels.email')"
             @keydown.enter.prevent
             ref="firstInputRef"
           />
         </n-form-item>
-        <n-form-item path="password" :label="$t('account.labels.password')">
+        <n-form-item path="password" :label="$t('user.labels.password')">
           <n-input
             v-model:value="formModel.password"
             type="password"
-            :placeholder="$t('account.labels.password')"
+            :placeholder="$t('user.labels.password')"
             @keyup.enter="() => handleLoginClick()"
           />
         </n-form-item>
@@ -141,7 +141,7 @@ onMounted(() => {
           style="margin-bottom: 2rem; font-size: var(--app-ui-font-size-mini)"
           @click="handleForgotPasswordClick"
         >
-          {{ $t('account.forgotPassword') }}
+          {{ $t('user.forgotPassword') }}
         </n-button>
       </div>
 
@@ -153,10 +153,10 @@ onMounted(() => {
           :loading="loading"
           :disabled="loading"
         >
-          {{ $t('account.login') }}
+          {{ $t('user.login') }}
         </n-button>
         <n-button secondary block @click="switchToRegistration">
-          {{ $t('account.switchToRegister') }}
+          {{ $t('user.switchToRegister') }}
         </n-button>
       </n-space>
     </div>
