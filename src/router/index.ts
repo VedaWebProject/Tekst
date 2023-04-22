@@ -120,7 +120,11 @@ router.beforeEach(async (to, from, next) => {
       auth.returnUrl = to.fullPath;
       const messages = useMessagesStore();
       messages.warning(i18n.global.t('errors.noAccess', { resource: to.path }));
-      next({ name: 'login' });
+      if (auth.loggedIn) {
+        next({ name: 'home' });
+      } else {
+        next({ name: 'login' });
+      }
       return; // this is important!
     }
   }
