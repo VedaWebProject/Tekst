@@ -1,11 +1,8 @@
-<script setup lang="ts">
-import { usePlatformStore } from '@/stores/platform';
-const pf = usePlatformStore();
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div class="content-block">
-    <h1>Search {{ pf.data?.info?.platformName }}</h1>
+    <h1>Search</h1>
     <p>...</p>
   </div>
 </template>

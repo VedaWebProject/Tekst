@@ -7,9 +7,9 @@ import { useI18n } from 'vue-i18n';
 
 import LogInRound from '@vicons/material/LogInRound';
 import LogOutRound from '@vicons/material/LogOutRound';
-import ManageAccountsRound from '@vicons/material/ManageAccountsRound';
 import SettingsRound from '@vicons/material/SettingsRound';
 import PersonRound from '@vicons/material/PersonRound';
+import RemoveRedEyeRound from '@vicons/material/RemoveRedEyeRound';
 
 const { t } = useI18n({ useScope: 'global' });
 const auth = useAuthStore();
@@ -30,12 +30,12 @@ const userOptions = computed(() => [
       {
         label: t('user.profile'),
         key: 'profile',
-        icon: renderIcon(PersonRound),
+        icon: renderIcon(RemoveRedEyeRound),
       },
       {
-        label: t('user.manage'),
-        key: 'manage',
-        icon: renderIcon(ManageAccountsRound),
+        label: t('user.account.optionLabel'),
+        key: 'account',
+        icon: renderIcon(PersonRound),
       },
     ],
   },
@@ -50,7 +50,7 @@ const userOptions = computed(() => [
   ...(auth.user?.isSuperuser
     ? [
         {
-          label: t('administration.labelOption'),
+          label: t('administration.optionLabel'),
           key: 'admin',
           icon: renderIcon(SettingsRound),
         },
@@ -93,8 +93,8 @@ function handleUserOptionSelect(option: string) {
     case 'profile':
       router.push({ name: 'user', params: { username: auth.user?.username } });
       break;
-    case 'manage':
-      router.push({ name: 'account' });
+    case 'account':
+      router.push({ name: 'accountManage' });
       break;
     case 'logout':
       auth.logout();

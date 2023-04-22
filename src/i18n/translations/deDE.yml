@@ -67,7 +67,7 @@ routes:
     login: Anmeldung
     register: Registrierung
     user: Profil
-    account: Benutzerkonto
+    accountManage: Benutzerkonto verwalten
     adminOverview: 'Admin: Übersicht'
     adminUsers: 'Admin: Benutzer'
 
@@ -140,10 +140,13 @@ register:
 user:
   login: Anmelden
   logout: Abmelden
-  profile: Profil öffnen
-  profileHeading: 'Öffentliches Profil: {username}'
+  profile: Öffentliches Profil
+  profileHeading: 'Öffentliches Profil von {username}'
   profileNotFound: Das Benutzerprofil "{username}" konnte nicht gefunden werden.
-  manage: Benutzerkonto verwalten
+  account:
+    optionLabel: Mein Benutzerkonto
+    heading: "{name}'s Benutzerkonto"
+    headingManage: Benutzerdaten
   logoutSuccessful: Sie sind jetzt ausgeloggt.
   tipUserBtn: Benutzer-Aktionen für {username} anzeigen
   tipLoginBtn: In Ihrem Konto anmelden
@@ -163,7 +166,7 @@ user:
 
 administration:
   heading: Administration
-  labelOption: Administration
+  optionLabel: Administration
   overview: Übersicht
   users: Benutzer
 

@@ -66,7 +66,7 @@ routes:
     login: Login
     register: Register
     user: Profile
-    account: Account
+    accountManage: Manage account
     adminOverview: 'Admin: Overview'
     adminUsers: 'Admin: Users'
 
@@ -139,10 +139,13 @@ register:
 user:
   login: Login
   logout: Logout
-  profile: Open profile
-  profileHeading: 'Public profile: {username}'
+  profile: Public profile
+  profileHeading: 'Public profile of {username}'
   profileNotFound: The user profile "{username}" could not be found.
-  manage: Manage account
+  account:
+    optionLabel: My account
+    heading: "{name}'s Account"
+    headingManage: User data
   logoutSuccessful: You are now logged out.
   tipUserBtn: Show user actions for {username}
   tipLoginBtn: Log into your account
@@ -162,7 +165,7 @@ user:
 
 administration:
   heading: Administration
-  labelOption: Administration
+  optionLabel: Administration
   overview: Overview
   users: Users
 
