@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import NavBar from '@/components/navigation/NavBar.vue';
+import PrimaryNavBar from '@/components/navigation/PrimaryNavBar.vue';
 import TextSelect from '@/components/widgets/TextSelect.vue';
 import { useStateStore } from '@/stores';
 
@@ -8,7 +8,7 @@ const state = useStateStore();
 
 <template>
   <header>
-    <NavBar />
+    <PrimaryNavBar />
     <div class="accent-color-bg">
       <div id="current-text">
         <TextSelect />
