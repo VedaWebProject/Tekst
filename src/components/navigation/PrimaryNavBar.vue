@@ -6,6 +6,7 @@ import ThemeModeSwitcher from '@/components/widgets/ThemeModeSwitcher.vue';
 import LocaleSwitcher from '@/components/widgets/LocaleSwitcher.vue';
 import UserOptionsButton from '@/components/widgets/UserOptionsButton.vue';
 import QuickSearchWidget from '@/components/widgets/QuickSearch.vue';
+import HelpNavButton from '@/components/widgets/HelpNavButton.vue';
 import { useAuthStore, usePlatformStore, useStateStore } from '@/stores';
 import { useRoute, RouterLink } from 'vue-router';
 
@@ -13,7 +14,6 @@ import MenuRound from '@vicons/material/MenuRound';
 
 import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
 import SearchRound from '@vicons/material/SearchRound';
-import HelpOutlineRound from '@vicons/material/HelpOutlineRound';
 
 const pf = usePlatformStore();
 const auth = useAuthStore();
@@ -61,17 +61,12 @@ watch(route, () => (menuOpen.value = false));
         :icon="SearchRound"
         :show-icon="state.smallScreen"
       />
-      <NavBarRouterLink
-        :label="$t('nav.help')"
-        :route="{ name: 'help' }"
-        :icon="HelpOutlineRound"
-        :show-icon="state.smallScreen"
-      />
       <div class="navbar-menu-divider"></div>
       <div class="navbar-menu-extra">
         <QuickSearchWidget />
         <ThemeModeSwitcher />
         <LocaleSwitcher />
+        <HelpNavButton />
         <UserOptionsButton v-if="pf.data?.security?.enableRegistration || auth.loggedIn" />
       </div>
     </div>
