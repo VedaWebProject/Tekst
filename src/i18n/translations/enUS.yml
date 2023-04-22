@@ -67,7 +67,8 @@ routes:
     register: Register
     user: Profile
     account: Account
-    users: Users
+    adminOverview: 'Admin: Overview'
+    adminUsers: 'Admin: Users'
 
 layerTypes:
   plaintext: Plain Text

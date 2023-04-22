@@ -79,7 +79,6 @@ const router = createRouter({
     {
       path: '/admin',
       component: AdminView,
-      name: 'admin',
       meta: {
         restricted: 'superuser',
       },
