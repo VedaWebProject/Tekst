@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useProfile } from '@/profile';
+import { useProfile } from '@/fetchers';
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { NSkeleton } from 'naive-ui';

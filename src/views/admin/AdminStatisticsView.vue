@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useStats } from '@/stats';
+import { useStats } from '@/fetchers';
 import { computed } from 'vue';
 import { NProgress, NSpin } from 'naive-ui';
 import { usePlatformStore } from '@/stores';
@@ -47,7 +47,7 @@ const layerTypes = computed(() => {
         <n-progress
           type="line"
           :percentage="(count / (counts.layers || 1)) * 100"
-          :height="32"
+          :height="24"
           :border-radius="4"
           indicator-placement="inside"
           color="var(--accent-color-fade4)"
@@ -71,7 +71,7 @@ const layerTypes = computed(() => {
           <n-progress
             type="line"
             :percentage="(count / (text.layersCount || 1)) * 100"
-            :height="16"
+            :height="24"
             :border-radius="4"
             indicator-placement="inside"
             color="var(--accent-color-fade4)"

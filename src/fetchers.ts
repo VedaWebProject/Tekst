@@ -1,6 +1,6 @@
 import { ref, isRef, unref, watchEffect, type Ref } from 'vue';
 import { configureApi } from './openApiConfig';
-import { PlatformApi, type UserReadPublic } from '@/openapi';
+import { PlatformApi, AdminApi, type UserReadPublic, type PlatformStats } from '@/openapi';
 import type { AxiosResponse } from 'axios';
 
 export function useProfile(username: string | Ref) {
@@ -25,4 +25,24 @@ export function useProfile(username: string | Ref) {
   }
 
   return { user, error };
+}
+
+export function useStats() {
+  const stats = ref<PlatformStats | null>(null);
+  const error = ref(false);
+  const adminApi = configureApi(AdminApi);
+
+  function load() {
+    stats.value = null;
+    error.value = false;
+    adminApi
+      .getStats()
+      .then((response: AxiosResponse<PlatformStats, any>) => response.data)
+      .then((s: PlatformStats) => (stats.value = s))
+      .catch(() => (error.value = true));
+  }
+
+  load();
+
+  return { stats, error, load };
 }
