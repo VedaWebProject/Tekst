@@ -21,21 +21,20 @@
     }
   ],
   "paths": {
-    "/admin": {
+    "/admin/stats": {
       "get": {
         "tags": [
           "admin"
         ],
-        "summary": "Hello admin",
-        "operationId": "helloAdmin",
+        "summary": "Stats",
+        "operationId": "stats",
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Hello Admin Admin Get",
-                  "type": "object"
+                  "$ref": "#/components/schemas/PlatformStats"
                 }
               }
             }
@@ -46,15 +45,7 @@
           "404": {
             "description": "Not found"
           }
-        },
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
+        }
       }
     },
     "/layers/plaintext/{id}": {
@@ -3437,6 +3428,28 @@
         },
         "description": "Settings defining platform behavior configured by admins"
       },
+      "PlatformStats": {
+        "title": "PlatformStats",
+        "required": [
+          "usersCount",
+          "texts"
+        ],
+        "type": "object",
+        "properties": {
+          "usersCount": {
+            "title": "Userscount",
+            "type": "integer"
+          },
+          "texts": {
+            "title": "Texts",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TextStats"
+            }
+          }
+        },
+        "description": "Platform statistics data"
+      },
       "TekstInfoConfig": {
         "title": "TekstInfoConfig",
         "type": "object",
@@ -3625,6 +3638,33 @@
           }
         },
         "description": "A text represented in Tekst"
+      },
+      "TextStats": {
+        "title": "TextStats",
+        "required": [
+          "nodesCount",
+          "layersCount",
+          "layerTypes"
+        ],
+        "type": "object",
+        "properties": {
+          "nodesCount": {
+            "title": "Nodescount",
+            "type": "integer"
+          },
+          "layersCount": {
+            "title": "Layerscount",
+            "type": "integer"
+          },
+          "layerTypes": {
+            "title": "Layertypes",
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer"
+            }
+          }
+        },
+        "description": "Text statistics data"
       },
       "TextUpdate": {
         "title": "TextUpdate",

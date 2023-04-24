@@ -6,7 +6,7 @@ from fastapi import APIRouter, HTTPException, Query, status
 from tekst.auth import OptionalUserDep, UserDep
 from tekst.layer_types import get_layer_types
 from tekst.models.common import PyObjectId
-from tekst.models.layer import LayerBaseDocument, LayerIdView
+from tekst.models.layer import LayerBaseDocument, LayerMinimalView
 from tekst.models.unit import UnitBase, UnitBaseDocument
 
 
@@ -190,7 +190,7 @@ async def find_units(
         await LayerBaseDocument.find(
             LayerBaseDocument.allowed_to_read(user), with_children=True
         )
-        .project(LayerIdView)
+        .project(LayerMinimalView)
         .to_list()
     )
     readable_layer_ids = [layer.id for layer in readable_layers]

@@ -27,3 +27,18 @@ class PlatformData(ModelBase):
     settings: PlatformSettingsRead
     security: PlatformSecurityInfo = Field(default_factory=PlatformSecurityInfo)
     layer_types: list[LayerTypeInfo]
+
+
+class TextStats(ModelBase):
+    """Text statistics data"""
+
+    nodes_count: int
+    layers_count: int
+    layer_types: dict[str, int]
+
+
+class PlatformStats(ModelBase):
+    """Platform statistics data"""
+
+    users_count: int
+    texts: list[TextStats]

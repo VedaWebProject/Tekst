@@ -317,26 +317,18 @@ def _current_user(**kwargs) -> callable:
 
 
 # auth dependencies for API routes
-UserDep = Annotated[
-    UserRead,
-    Depends(_current_user(verified=_cfg.security.users_need_verification, active=True)),
-]
-SuperuserDep = Annotated[
-    UserRead,
-    Depends(
-        _current_user(
-            verified=_cfg.security.users_need_verification, active=True, superuser=True
-        )
-    ),
-]
-OptionalUserDep = Annotated[
-    UserRead | None,
-    Depends(
-        _current_user(
-            verified=_cfg.security.users_need_verification, active=True, optional=True
-        )
-    ),
-]
+get_current_user = _current_user(
+    verified=_cfg.security.users_need_verification, active=True
+)
+get_current_superuser = _current_user(
+    verified=_cfg.security.users_need_verification, active=True, superuser=True
+)
+get_current_optional_user = _current_user(
+    verified=_cfg.security.users_need_verification, active=True, optional=True
+)
+UserDep = Annotated[UserRead, Depends(get_current_user)]
+SuperuserDep = Annotated[UserRead, Depends(get_current_superuser)]
+OptionalUserDep = Annotated[UserRead | None, Depends(get_current_optional_user)]
 
 
 async def _create_user(user: UserCreate) -> UserRead:

@@ -123,5 +123,5 @@ class LayerBaseUpdate(LayerBase, UpdateBase):
     pass
 
 
-class LayerIdView(ReadBase):
-    pass
+class LayerMinimalView(ReadBase):
+    layer_type: str
