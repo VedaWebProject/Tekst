@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, status
 
-from tekst.auth import User, get_current_superuser
+from tekst.auth import User, UserRead, get_current_superuser
 from tekst.config import TekstConfig, get_config
 from tekst.layer_types import get_layer_type_names
 from tekst.models.layer import LayerBaseDocument
@@ -12,6 +12,7 @@ router = APIRouter(
     prefix="/admin",
     tags=["admin"],
     responses={status.HTTP_404_NOT_FOUND: {"description": "Not found"}},
+    # dependencies=[],
     dependencies=[Depends(get_current_superuser)],
 )
 
@@ -51,3 +52,8 @@ async def get_stats(cfg: TekstConfig = Depends(get_config)) -> PlatformStats:
         users_count=await User.find_all().count(),
         texts=text_stats,
     )
+
+
+@router.get("/users", response_model=list[UserRead], status_code=status.HTTP_200_OK)
+async def get_users(cfg: TekstConfig = Depends(get_config)) -> list[User]:
+    return await User.find_all().to_list()
