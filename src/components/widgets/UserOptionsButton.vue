@@ -50,7 +50,7 @@ const userOptions = computed(() => [
   ...(auth.user?.isSuperuser
     ? [
         {
-          label: t('administration.optionLabel'),
+          label: t('admin.optionLabel'),
           key: 'admin',
           icon: renderIcon(SettingsRound),
         },
@@ -100,7 +100,7 @@ function handleUserOptionSelect(option: string) {
       auth.logout();
       break;
     case 'admin':
-      router.push({ name: 'adminOverview' });
+      router.push({ name: 'adminStatistics' });
       break;
   }
 }

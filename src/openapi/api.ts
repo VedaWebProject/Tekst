@@ -1171,6 +1171,12 @@ export interface TextRead {
 export interface TextStats {
     /**
      * 
+     * @type {string}
+     * @memberof TextStats
+     */
+    'id': string;
+    /**
+     * 
      * @type {number}
      * @memberof TextStats
      */
@@ -1548,11 +1554,11 @@ export const AdminApiAxiosParamCreator = function (configuration?: Configuration
     return {
         /**
          * 
-         * @summary Stats
+         * @summary Get stats
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        stats: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getStats: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/admin/stats`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -1594,12 +1600,12 @@ export const AdminApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
-         * @summary Stats
+         * @summary Get stats
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async stats(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PlatformStats>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.stats(options);
+        async getStats(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PlatformStats>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getStats(options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -1614,12 +1620,12 @@ export const AdminApiFactory = function (configuration?: Configuration, basePath
     return {
         /**
          * 
-         * @summary Stats
+         * @summary Get stats
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        stats(options?: AxiosRequestConfig): AxiosPromise<PlatformStats> {
-            return localVarFp.stats(options).then((request) => request(axios, basePath));
+        getStats(options?: AxiosRequestConfig): AxiosPromise<PlatformStats> {
+            return localVarFp.getStats(options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -1633,13 +1639,13 @@ export const AdminApiFactory = function (configuration?: Configuration, basePath
 export class AdminApi extends BaseAPI {
     /**
      * 
-     * @summary Stats
+     * @summary Get stats
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AdminApi
      */
-    public stats(options?: AxiosRequestConfig) {
-        return AdminApiFp(this.configuration).stats(options).then((request) => request(this.axios, this.basePath));
+    public getStats(options?: AxiosRequestConfig) {
+        return AdminApiFp(this.configuration).getStats(options).then((request) => request(this.axios, this.basePath));
     }
 }
 

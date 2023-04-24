@@ -68,8 +68,20 @@ routes:
     register: Registrierung
     user: Profil
     accountManage: Benutzerkonto verwalten
-    adminOverview: 'Admin: Übersicht'
+    adminStatistics: 'Admin: Statistiken'
     adminUsers: 'Admin: Benutzer'
+
+internals:
+  user: Benutzer
+  users: Benutzer
+  text: Text
+  texts: Texte
+  node: Text-Knoten
+  nodes: Text-Knoten
+  layer: Datenschicht
+  layers: Datenschichten
+  unit: Daten-Einheit
+  units: Daten-Einheiten
 
 layerTypes:
   plaintext: Einfacher Text
@@ -164,10 +176,15 @@ user:
     badCreds: Falsche Email-Adresse oder falsches Passwort oder Konto noch nicht aktiviert
     notVerified: Ihre Email-Adresse ist noch nicht verifiziert. Wir haben Ihren Verifizierungslink nochmals versendet.
 
-administration:
+admin:
   heading: Administration
   optionLabel: Administration
-  overview: Übersicht
+  statistics:
+    heading: Statistiken
+    globalHeading: Global
+    absoluteNumbersHeading: Absolute Zahlen
+    layerTypesHeading: Datenschicht-Typen
+    textsHeading: Texte
   users: Benutzer
 
 search:

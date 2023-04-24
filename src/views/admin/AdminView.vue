@@ -4,28 +4,26 @@ import SecondaryNavBar from '@/components/navigation/SecondaryNavBar.vue';
 import NavBarRouterLink from '@/components/navigation/NavBarRouterLink.vue';
 
 import PeopleRound from '@vicons/material/PeopleRound';
-import DashboardRound from '@vicons/material/DashboardRound';
+import BarChartRound from '@vicons/material/BarChartRound';
 </script>
 
 <template>
   <SecondaryNavBar>
     <NavBarRouterLink
-      :label="$t('administration.overview')"
-      :route="{ name: 'adminOverview' }"
-      :icon="DashboardRound"
+      :label="$t('admin.statistics.heading')"
+      :route="{ name: 'adminStatistics' }"
+      :icon="BarChartRound"
       show-icon
     />
     <NavBarRouterLink
-      :label="$t('administration.users')"
+      :label="$t('admin.users')"
       :route="{ name: 'adminUsers' }"
       :icon="PeopleRound"
       show-icon
     />
   </SecondaryNavBar>
 
-  <div class="content-block">
-    <router-view></router-view>
-  </div>
+  <router-view></router-view>
 </template>
 
 <style scoped></style>

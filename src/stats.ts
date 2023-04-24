@@ -12,7 +12,7 @@ export function useStats() {
     stats.value = null;
     error.value = false;
     adminApi
-      .stats()
+      .getStats()
       .then((response: AxiosResponse<PlatformStats, any>) => response.data)
       .then((s: PlatformStats) => (stats.value = s))
       .catch(() => (error.value = true));

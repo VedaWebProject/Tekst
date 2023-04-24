@@ -21,7 +21,7 @@ const LoginView = () => import('@/views/LoginView.vue');
 const RegisterView = () => import('@/views/RegisterView.vue');
 
 const AdminView = () => import('@/views/admin/AdminView.vue');
-const AdminOverviewView = () => import('@/views/admin/AdminOverviewView.vue');
+const AdminStatisticsView = () => import('@/views/admin/AdminStatisticsView.vue');
 const AdminUsersView = () => import('@/views/admin/AdminUsersView.vue');
 
 const router = createRouter({
@@ -92,8 +92,8 @@ const router = createRouter({
       children: [
         {
           path: '',
-          name: 'adminOverview',
-          component: AdminOverviewView,
+          name: 'adminStatistics',
+          component: AdminStatisticsView,
         },
         {
           path: 'users',

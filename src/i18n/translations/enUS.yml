@@ -67,8 +67,20 @@ routes:
     register: Register
     user: Profile
     accountManage: Manage account
-    adminOverview: 'Admin: Overview'
+    adminStatistics: 'Admin: Statistics'
     adminUsers: 'Admin: Users'
+
+internals:
+  user: User
+  users: Users
+  text: Text
+  texts: Texts
+  node: Text node
+  nodes: Text nodes
+  layer: Data layer
+  layers: Data layers
+  unit: Data unit
+  units: Daten units
 
 layerTypes:
   plaintext: Plain Text
@@ -163,10 +175,15 @@ user:
     badCreds: Incorrect email, incorrect password or account isn't activated, yet
     notVerified: Your email is not yet verified. We just sent your verification link again.
 
-administration:
+admin:
   heading: Administration
   optionLabel: Administration
-  overview: Overview
+  statistics:
+    heading: Statistics
+    globalHeading: Global
+    absoluteNumbersHeading: Absolute Numbers
+    layerTypesHeading: Datalayer Types
+    textsHeading: Texts
   users: Users
 
 search:
