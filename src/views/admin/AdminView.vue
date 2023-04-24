@@ -24,7 +24,6 @@ import DashboardRound from '@vicons/material/DashboardRound';
   </SecondaryNavBar>
 
   <div class="content-block">
-    <h1>{{ $t('administration.heading') }}</h1>
     <router-view></router-view>
   </div>
 </template>

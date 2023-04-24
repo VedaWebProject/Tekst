@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <h2>{{ $t('administration.users') }}</h2>
+  <h1>{{ $t('administration.heading') }}: {{ $t('administration.users') }}</h1>
   <p>Users administration....</p>
 </template>
 

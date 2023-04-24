@@ -33,7 +33,7 @@ const { user, error } = useProfile(username);
     </ul>
   </div>
 
-  <n-skeleton v-else-if="!user" text :repeat="5" />
+  <n-skeleton v-else-if="!error" text :repeat="5" />
 
   <div v-else class="content-block">
     <h1>Oops... {{ $t('errors.error') }}!</h1>

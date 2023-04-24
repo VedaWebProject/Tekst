@@ -943,6 +943,25 @@ export interface PlatformSettingsUpdate {
     'defaultTextId'?: string;
 }
 /**
+ * Platform statistics data
+ * @export
+ * @interface PlatformStats
+ */
+export interface PlatformStats {
+    /**
+     * 
+     * @type {number}
+     * @memberof PlatformStats
+     */
+    'usersCount': number;
+    /**
+     * 
+     * @type {Array<TextStats>}
+     * @memberof PlatformStats
+     */
+    'texts': Array<TextStats>;
+}
+/**
  * Tekst platform information config model  These values are not configurable. They are taken from the package infos and aren\'t meant to be changed by users creating an own instance of the platform.
  * @export
  * @interface TekstInfoConfig
@@ -1143,6 +1162,31 @@ export interface TextRead {
      * @memberof TextRead
      */
     'accentColor'?: string;
+}
+/**
+ * Text statistics data
+ * @export
+ * @interface TextStats
+ */
+export interface TextStats {
+    /**
+     * 
+     * @type {number}
+     * @memberof TextStats
+     */
+    'nodesCount': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof TextStats
+     */
+    'layersCount': number;
+    /**
+     * 
+     * @type {{ [key: string]: number; }}
+     * @memberof TextStats
+     */
+    'layerTypes': { [key: string]: number; };
 }
 /**
  * A text represented in Tekst
@@ -1504,12 +1548,12 @@ export const AdminApiAxiosParamCreator = function (configuration?: Configuration
     return {
         /**
          * 
-         * @summary Hello admin
+         * @summary Stats
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        helloAdmin: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/admin`;
+        stats: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/admin/stats`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -1550,12 +1594,12 @@ export const AdminApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
-         * @summary Hello admin
+         * @summary Stats
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async helloAdmin(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.helloAdmin(options);
+        async stats(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PlatformStats>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.stats(options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -1570,12 +1614,12 @@ export const AdminApiFactory = function (configuration?: Configuration, basePath
     return {
         /**
          * 
-         * @summary Hello admin
+         * @summary Stats
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        helloAdmin(options?: AxiosRequestConfig): AxiosPromise<object> {
-            return localVarFp.helloAdmin(options).then((request) => request(axios, basePath));
+        stats(options?: AxiosRequestConfig): AxiosPromise<PlatformStats> {
+            return localVarFp.stats(options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -1589,13 +1633,13 @@ export const AdminApiFactory = function (configuration?: Configuration, basePath
 export class AdminApi extends BaseAPI {
     /**
      * 
-     * @summary Hello admin
+     * @summary Stats
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AdminApi
      */
-    public helloAdmin(options?: AxiosRequestConfig) {
-        return AdminApiFp(this.configuration).helloAdmin(options).then((request) => request(this.axios, this.basePath));
+    public stats(options?: AxiosRequestConfig) {
+        return AdminApiFp(this.configuration).stats(options).then((request) => request(this.axios, this.basePath));
     }
 }
 

@@ -33,31 +33,31 @@ strong {
 }
 
 h1 {
-  font-size: 32px;
+  font-size: 1.6rem;
   font-weight: 300;
   margin-bottom: 1.25rem;
 }
 
 h2 {
-  font-size: 26px;
+  font-size: 1.5rem;
   font-weight: 300;
   margin-bottom: 1rem;
 }
 
 h3 {
-  font-size: 24px;
+  font-size: 1.3rem;
   font-weight: 300;
   margin-bottom: 0.8rem;
 }
 
 h4 {
-  font-size: 22px;
+  font-size: 1.2rem;
   font-weight: 300;
   margin-bottom: 0.5rem;
 }
 
 h5 {
-  font-size: 20px;
+  font-size: 1.1rem;
   font-weight: 400;
   margin-bottom: 0.25rem;
 }
