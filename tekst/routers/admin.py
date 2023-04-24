@@ -20,7 +20,7 @@ router = APIRouter(
 
 
 @router.get("/stats", response_model=PlatformStats, status_code=status.HTTP_200_OK)
-async def stats(cfg: TekstConfig = Depends(get_config)) -> PlatformStats:
+async def get_stats(cfg: TekstConfig = Depends(get_config)) -> PlatformStats:
     layer_type_names = get_layer_type_names()
     texts = await TextDocument.find_all().to_list()
     text_stats = []

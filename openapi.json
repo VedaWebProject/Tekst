@@ -26,8 +26,8 @@
         "tags": [
           "admin"
         ],
-        "summary": "Stats",
-        "operationId": "stats",
+        "summary": "Get stats",
+        "operationId": "getStats",
         "responses": {
           "200": {
             "description": "Successful Response",
