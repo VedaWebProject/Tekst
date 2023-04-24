@@ -3650,12 +3650,18 @@
       "TextStats": {
         "title": "TextStats",
         "required": [
+          "id",
           "nodesCount",
           "layersCount",
           "layerTypes"
         ],
         "type": "object",
         "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
           "nodesCount": {
             "title": "Nodescount",
             "type": "integer"

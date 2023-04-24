@@ -40,6 +40,7 @@ async def get_stats(cfg: TekstConfig = Depends(get_config)) -> PlatformStats:
         layers_count = sum(layer_types.values())
         text_stats.append(
             TextStats(
+                id=text.id,
                 nodes_count=nodes_count,
                 layers_count=layers_count,
                 layer_types=layer_types,
