@@ -16,7 +16,7 @@ import BarChartRound from '@vicons/material/BarChartRound';
       show-icon
     />
     <NavBarRouterLink
-      :label="$t('admin.users')"
+      :label="$t('admin.users.heading')"
       :route="{ name: 'adminUsers' }"
       :icon="PeopleRound"
       show-icon

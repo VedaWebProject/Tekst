@@ -1,6 +1,12 @@
 import { ref, isRef, unref, watchEffect, type Ref } from 'vue';
 import { configureApi } from './openApiConfig';
-import { PlatformApi, AdminApi, type UserReadPublic, type PlatformStats } from '@/openapi';
+import {
+  PlatformApi,
+  AdminApi,
+  type UserReadPublic,
+  type PlatformStats,
+  type UserRead,
+} from '@/openapi';
 import type { AxiosResponse } from 'axios';
 
 export function useProfile(username: string | Ref) {
@@ -45,4 +51,28 @@ export function useStats() {
   load();
 
   return { stats, error, load };
+}
+
+export function useUsers() {
+  const users = ref<Array<UserRead> | null>(null);
+  const error = ref(false);
+  const adminApi = configureApi(AdminApi);
+
+  function load() {
+    users.value = null;
+    error.value = false;
+    adminApi
+      .getUsers()
+      .then((response: AxiosResponse<Array<UserRead>, any>) => response.data)
+      .then((u: Array<UserRead>) => (users.value = u))
+      .catch(() => (error.value = true));
+  }
+
+  load();
+
+  return {
+    users,
+    error,
+    load,
+  };
 }

@@ -174,6 +174,15 @@ user:
   errors:
     badCreds: Incorrect email, incorrect password or account isn't activated, yet
     notVerified: Your email is not yet verified. We just sent your verification link again.
+  fields:
+    email: Email
+    username: Username
+    firstName: First Name
+    lastName: Last Name
+    affiliation: Affiliation
+    active: Active
+    verified: Verified
+    superuser: Admin
 
 admin:
   heading: Administration
@@ -184,7 +193,8 @@ admin:
     absoluteNumbersHeading: Absolute Numbers
     layerTypesHeading: Datalayer Types
     textsHeading: Texts
-  users: Users
+  users:
+    heading: Users
 
 search:
   searchAction: Search

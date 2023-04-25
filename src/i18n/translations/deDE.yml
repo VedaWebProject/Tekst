@@ -175,6 +175,15 @@ user:
   errors:
     badCreds: Falsche Email-Adresse oder falsches Passwort oder Konto noch nicht aktiviert
     notVerified: Ihre Email-Adresse ist noch nicht verifiziert. Wir haben Ihren Verifizierungslink nochmals versendet.
+  fields:
+    email: Email
+    username: Benutzername
+    firstName: Vorname
+    lastName: Nachname
+    affiliation: Zugehörigkeit
+    active: Aktiv
+    verified: Verifiziert
+    superuser: Admin
 
 admin:
   heading: Administration
@@ -185,7 +194,8 @@ admin:
     absoluteNumbersHeading: Absolute Zahlen
     layerTypesHeading: Datenschicht-Typen
     textsHeading: Texte
-  users: Benutzer
+  users:
+    heading: Benutzer
 
 search:
   searchAction: Suchen
