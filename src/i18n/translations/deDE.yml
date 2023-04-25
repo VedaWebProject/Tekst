@@ -5,6 +5,7 @@ general:
   tipThemeToggleDark: Zu dunklem Farbschema wechseln
   selectAction: Auswählen
   cancelAction: Abbrechen
+  saveAction: Speichern
   closeAction: Schließen
   quickSearch: Schnellsuche
   textSelect: Wählen Sie den Text, mit dem Sie arbeiten möchten

@@ -167,8 +167,8 @@ function rowProps(user: UserRead) {
     preset="dialog"
     :title="`${t('internals.user')}: ${userUpdatesPayload?.username || ''}`"
     :icon="() => iconEditUser"
-    positive-text="Save"
-    negative-text="Cancel"
+    :positive-text="$t('general.saveAction')"
+    :negative-text="$t('general.cancelAction')"
     @positive-click="handleSaveUserUpdate"
     @negative-click="handleCloseUserUpdate"
   >
