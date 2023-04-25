@@ -196,6 +196,7 @@ admin:
     textsHeading: Texte
   users:
     heading: Benutzer
+    save: Benutzer "{username}" gespeichert
 
 search:
   searchAction: Suchen
