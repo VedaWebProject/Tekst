@@ -197,6 +197,9 @@ admin:
   users:
     heading: Benutzer
     save: Benutzer "{username}" gespeichert
+    checkLabelActive: Konto ist aktiv
+    checkLabelVerified: Email ist verifiziert
+    checkLabelSuperuser: Benutzer ist Administrator
 
 search:
   searchAction: Suchen

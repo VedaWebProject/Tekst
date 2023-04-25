@@ -196,6 +196,9 @@ admin:
   users:
     heading: Users
     save: Saved user "{username}"
+    checkLabelActive: Account is active
+    checkLabelVerified: Email is verified
+    checkLabelSuperuser: User is administrator
 
 search:
   searchAction: Search

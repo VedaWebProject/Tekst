@@ -30,10 +30,10 @@ interface UserUpdatePayload {
 const usersApi = configureApi(UsersApi);
 const messages = useMessagesStore();
 const showUserUpdateModal = ref(false);
-const initialUserUpdates: UserUpdatePayload = { updates: {} };
-const userUpdates = ref<UserUpdatePayload>(initialUserUpdates);
+const emptyUserUpdatePayload: UserUpdatePayload = { updates: {} };
+const userUpdatesPayload = ref<UserUpdatePayload>(emptyUserUpdatePayload);
 const handleOpenUserUpdate = (user: UserRead) => {
-  userUpdates.value = {
+  userUpdatesPayload.value = {
     id: user.id,
     username: user.username,
     // selectively add user properties to possible updates
@@ -46,19 +46,19 @@ const handleOpenUserUpdate = (user: UserRead) => {
   showUserUpdateModal.value = true;
 };
 const handleCloseUserUpdate = () => {
-  userUpdates.value = initialUserUpdates;
+  userUpdatesPayload.value = emptyUserUpdatePayload;
   showUserUpdateModal.value = false;
 };
 const handleSaveUserUpdate = async () => {
   try {
-    if (!userUpdates.value.id || !userUpdates.value.updates) {
+    if (!userUpdatesPayload.value.id || !userUpdatesPayload.value.updates) {
       throw new Error();
     }
     await usersApi.usersPatchUser({
-      id: userUpdates.value.id,
-      userUpdate: userUpdates.value.updates,
+      id: userUpdatesPayload.value.id,
+      userUpdate: userUpdatesPayload.value.updates,
     });
-    messages.success(t('admin.users.save', { username: userUpdates.value.username }));
+    messages.success(t('admin.users.save', { username: userUpdatesPayload.value.username }));
   } catch {
     messages.error(t('errors.unexpected'));
   } finally {
@@ -122,7 +122,8 @@ const columns: Array<DataTableColumn> = [
 
 const pagination: PaginationProps = {
   pageSizes: [10, 20, 50, 100],
-  pageSize: 10,
+  defaultPageSize: 10,
+  showSizePicker: true,
 };
 
 function rowClassName(user: UserRead) {
@@ -164,16 +165,24 @@ function rowProps(user: UserRead) {
   <n-modal
     v-model:show="showUserUpdateModal"
     preset="dialog"
-    :title="`${t('internals.user')}: ${userUpdates?.username}`"
+    :title="`${t('internals.user')}: ${userUpdatesPayload?.username || ''}`"
     :icon="() => iconEditUser"
     positive-text="Save"
     negative-text="Cancel"
     @positive-click="handleSaveUserUpdate"
     @negative-click="handleCloseUserUpdate"
   >
-    <n-checkbox v-model:checked="userUpdates.updates.isActive">active</n-checkbox>
-    <n-checkbox v-model:checked="userUpdates.updates.isVerified">verified</n-checkbox>
-    <n-checkbox v-model:checked="userUpdates.updates.isSuperuser">Superuser</n-checkbox>
+    <div style="display: flex; flex-direction: column; margin: 1rem 0">
+      <n-checkbox v-model:checked="userUpdatesPayload.updates.isActive">
+        {{ $t('admin.users.checkLabelActive') }}
+      </n-checkbox>
+      <n-checkbox v-model:checked="userUpdatesPayload.updates.isVerified">
+        {{ $t('admin.users.checkLabelVerified') }}
+      </n-checkbox>
+      <n-checkbox v-model:checked="userUpdatesPayload.updates.isSuperuser">
+        {{ $t('admin.users.checkLabelSuperuser') }}
+      </n-checkbox>
+    </div>
   </n-modal>
 </template>
 
