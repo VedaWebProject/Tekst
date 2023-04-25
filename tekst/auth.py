@@ -62,7 +62,7 @@ PublicUserField = Literal[
 class UserBase(ModelBase):
     """This base class defines the custom fields added to FastAPI-User's user model"""
 
-    username: constr(min_length=4, max_length=16, regex=r"[a-zA-Z0-9\-\._]+")
+    username: constr(min_length=4, max_length=16, regex=r"[a-zA-Z0-9\-_]+")
     first_name: constr(min_length=1, max_length=32)
     last_name: constr(min_length=1, max_length=32)
     affiliation: constr(min_length=1, max_length=64)
@@ -381,7 +381,7 @@ async def create_sample_users():
     await _create_user(
         UserCreate(
             email=f"unverified{email_suffix}",
-            username="jerr.unif",
+            username="jerr_unif",
             password=pw,
             first_name="Jerry",
             last_name="Smith",
