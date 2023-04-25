@@ -81,7 +81,7 @@ const formRules: FormRules = {
       trigger: 'blur',
     },
     {
-      validator: (rule: FormItemRule, value: string) => !!value && /^[a-zA-Z0-9.\-_]*$/.test(value),
+      validator: (rule: FormItemRule, value: string) => !!value && /^[a-zA-Z0-9\-_]*$/.test(value),
       message: t('register.rulesFeedback.usernameChars'),
       trigger: 'blur',
     },
