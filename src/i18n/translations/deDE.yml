@@ -68,7 +68,8 @@ routes:
     login: Anmeldung
     register: Registrierung
     user: Profil
-    accountManage: Benutzerkonto verwalten
+    accountProfile: 'Benutzerkonto: Profil'
+    accountManage: 'Benutzerkonto: Benutzerdaten'
     adminStatistics: 'Admin: Statistiken'
     adminUsers: 'Admin: Benutzer'
 
@@ -135,7 +136,7 @@ register:
     emailInvalid: Email-Adresse ist zu offensichtlich ungültig
     usernameReq: Benutzername wird benötigt
     usernameLength: 4 bis 16 Zeichen
-    usernameChars: 'Erlaubte Zeichen: a-z, A-Z, 0-9 und - . _'
+    usernameChars: 'Erlaubte Zeichen: a-z, A-Z, 0-9 und - _'
     passwordReq: Passwort wird benötigt
     passwordLength: Mindestens 8 Zeichen
     passwordChars: 'Mindestens je ein Zeichen aus: a-z, A-Z and 0-9'

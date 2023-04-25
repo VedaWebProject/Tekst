@@ -9,7 +9,6 @@ import LogInRound from '@vicons/material/LogInRound';
 import LogOutRound from '@vicons/material/LogOutRound';
 import SettingsRound from '@vicons/material/SettingsRound';
 import PersonRound from '@vicons/material/PersonRound';
-import RemoveRedEyeRound from '@vicons/material/RemoveRedEyeRound';
 
 const { t } = useI18n({ useScope: 'global' });
 const auth = useAuthStore();
@@ -28,14 +27,14 @@ const userOptions = computed(() => [
     key: 'user',
     children: [
       {
-        label: t('user.profile'),
-        key: 'profile',
-        icon: renderIcon(RemoveRedEyeRound),
-      },
-      {
         label: t('user.account.optionLabel'),
         key: 'account',
         icon: renderIcon(PersonRound),
+      },
+      {
+        label: t('user.logout'),
+        key: 'logout',
+        icon: renderIcon(LogOutRound),
       },
     ],
   },
@@ -56,15 +55,6 @@ const userOptions = computed(() => [
         },
       ]
     : []),
-  {
-    type: 'divider',
-    key: 'dividerLogout',
-  },
-  {
-    label: t('user.logout'),
-    key: 'logout',
-    icon: renderIcon(LogOutRound),
-  },
 ]);
 
 const initials = computed(
@@ -90,11 +80,8 @@ function handleClick() {
 function handleUserOptionSelect(option: string) {
   showUserDropdown.value = false;
   switch (option) {
-    case 'profile':
-      router.push({ name: 'user', params: { username: auth.user?.username } });
-      break;
     case 'account':
-      router.push({ name: 'accountManage' });
+      router.push({ name: 'accountProfile' });
       break;
     case 'logout':
       auth.logout();

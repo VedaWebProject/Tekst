@@ -1,16 +1,20 @@
 <script setup lang="ts">
 import NavBarRouterLink from '@/components/navigation/NavBarRouterLink.vue';
 import SecondaryNavBar from '@/components/navigation/SecondaryNavBar.vue';
-import { useAuthStore } from '@/stores';
 import { RouterView } from 'vue-router';
 
 import ManageAccountsRound from '@vicons/material/ManageAccountsRound';
-
-const auth = useAuthStore();
+import RemoveRedEyeRound from '@vicons/material/RemoveRedEyeRound';
 </script>
 
 <template>
   <SecondaryNavBar>
+    <NavBarRouterLink
+      :label="$t('user.profile')"
+      :route="{ name: 'accountProfile' }"
+      :icon="RemoveRedEyeRound"
+      show-icon
+    />
     <NavBarRouterLink
       :label="$t('user.account.headingManage')"
       :route="{ name: 'accountManage' }"
@@ -19,8 +23,5 @@ const auth = useAuthStore();
     />
   </SecondaryNavBar>
 
-  <div class="content-block">
-    <h1>{{ $t('user.account.heading', { name: auth.user?.firstName }) }}</h1>
-    <router-view></router-view>
-  </div>
+  <router-view></router-view>
 </template>

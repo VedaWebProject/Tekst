@@ -2,12 +2,21 @@
 import { useProfile } from '@/fetchers';
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { NSkeleton } from 'naive-ui';
+import { NSpin } from 'naive-ui';
+import { useAuthStore } from '@/stores';
 
 const route = useRoute();
-const username = computed(() =>
-  route.name === 'user' && route.params.username ? String(route.params.username) : undefined
-);
+const username = computed(() => {
+  if (route.name) {
+    if (route.name === 'user' && route.params.username) {
+      return String(route.params.username);
+    } else if (route.name === 'accountProfile') {
+      const auth = useAuthStore();
+      return auth.user?.username;
+    }
+  }
+  return null;
+});
 const { user, error } = useProfile(username);
 </script>
 
@@ -33,7 +42,11 @@ const { user, error } = useProfile(username);
     </ul>
   </div>
 
-  <n-skeleton v-else-if="!error" text :repeat="5" />
+  <n-spin v-else-if="!error">
+    <template #description>
+      {{ $t('init.loading') }}
+    </template>
+  </n-spin>
 
   <div v-else class="content-block">
     <h1>Oops... {{ $t('errors.error') }}!</h1>

@@ -78,6 +78,11 @@ const router = createRouter({
       children: [
         {
           path: '',
+          name: 'accountProfile',
+          component: UserView,
+        },
+        {
+          path: 'manage',
           name: 'accountManage',
           component: AccountManageView,
         },

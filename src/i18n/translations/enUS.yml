@@ -67,7 +67,8 @@ routes:
     login: Login
     register: Register
     user: Profile
-    accountManage: Manage account
+    accountProfile: 'Account: Profile'
+    accountManage: 'Account: Manage'
     adminStatistics: 'Admin: Statistics'
     adminUsers: 'Admin: Users'
 
@@ -134,7 +135,7 @@ register:
     emailInvalid: Email is too obviously invalid
     usernameReq: Username is required
     usernameLength: 4 to 16 characters
-    usernameChars: 'Allowed characters: a-z, A-Z, 0-9 and - . _'
+    usernameChars: 'Allowed characters: a-z, A-Z, 0-9 and - _'
     passwordReq: Password is required
     passwordLength: Minimum 8 characters
     passwordChars: 'Minimum one of each: a-z, A-Z and 0-9'
