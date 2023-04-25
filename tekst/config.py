@@ -116,8 +116,8 @@ class SecurityConfig(ModelBase):
     enable_jwt_auth: bool = True
     auth_cookie_name: str = "tekstuserauth"
     auth_cookie_domain: str | None = None
-    auth_cookie_lifetime: int = 3600
-    access_token_lifetime: int = 3600
+    auth_cookie_lifetime: int = 43200
+    access_token_lifetime: int = 86400
     reset_pw_token_lifetime: int = 3600
     verification_token_lifetime: int = 3600
     jwt_lifetime: int = 3600
