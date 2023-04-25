@@ -193,7 +193,6 @@ admin:
   statistics:
     heading: Statistiken
     globalHeading: Global
-    absoluteNumbersHeading: Absolute Zahlen
     layerTypesHeading: Datenschicht-Typen
     textsHeading: Texte
   users:

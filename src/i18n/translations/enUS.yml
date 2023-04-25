@@ -192,7 +192,6 @@ admin:
   statistics:
     heading: Statistics
     globalHeading: Global
-    absoluteNumbersHeading: Absolute Numbers
     layerTypesHeading: Datalayer Types
     textsHeading: Texts
   users:

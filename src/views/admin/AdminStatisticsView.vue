@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import { useStats } from '@/fetchers';
 import { computed } from 'vue';
-import { NProgress, NSpin } from 'naive-ui';
+import { NProgress, NSpin, NStatistic, NIcon } from 'naive-ui';
 import { usePlatformStore } from '@/stores';
+
+import SupervisorAccountRound from '@vicons/material/SupervisorAccountRound';
+import LibraryBooksRound from '@vicons/material/LibraryBooksRound';
+import AccountTreeRound from '@vicons/material/AccountTreeRound';
+import LayersRound from '@vicons/material/LayersRound';
 
 const pf = usePlatformStore();
 const { stats, error } = useStats();
@@ -33,13 +38,39 @@ const layerTypes = computed(() => {
   <div v-if="stats && !error" style="margin-top: 1rem">
     <h2>{{ $t('admin.statistics.globalHeading') }}</h2>
     <div class="content-block">
-      <h3>{{ $t('admin.statistics.absoluteNumbersHeading') }}</h3>
-      <ul>
-        <li>{{ $t('internals.users') }}: {{ counts.users }}</li>
-        <li>{{ $t('internals.texts') }}: {{ counts.texts }}</li>
-        <li>{{ $t('internals.nodes') }}: {{ counts.nodes }}</li>
-        <li>{{ $t('internals.layers') }}: {{ counts.layers }}</li>
-      </ul>
+      <div class="statistics-container">
+        <n-statistic :label="$t('internals.users')" :value="counts.users">
+          <template #prefix>
+            <n-icon>
+              <SupervisorAccountRound />
+            </n-icon>
+          </template>
+        </n-statistic>
+
+        <n-statistic :label="$t('internals.texts')" :value="counts.texts">
+          <template #prefix>
+            <n-icon>
+              <LibraryBooksRound />
+            </n-icon>
+          </template>
+        </n-statistic>
+
+        <n-statistic :label="$t('internals.nodes')" :value="counts.nodes">
+          <template #prefix>
+            <n-icon>
+              <AccountTreeRound />
+            </n-icon>
+          </template>
+        </n-statistic>
+
+        <n-statistic :label="$t('internals.layers')" :value="counts.layers">
+          <template #prefix>
+            <n-icon>
+              <LayersRound />
+            </n-icon>
+          </template>
+        </n-statistic>
+      </div>
 
       <h3>{{ $t('admin.statistics.layerTypesHeading') }}</h3>
       <div v-for="(count, layerType) in layerTypes" :key="layerType" style="margin: 12px 0">
@@ -61,10 +92,25 @@ const layerTypes = computed(() => {
     <div v-for="(text, index) in stats.texts" :key="index">
       <div class="content-block">
         <h3>{{ pf.data?.texts.find((t) => t.id == text.id)?.title }}</h3>
-        <ul>
-          <li>{{ $t('internals.nodes') }}: {{ text.nodesCount }}</li>
-          <li>{{ $t('internals.layers') }}: {{ text.layersCount }}</li>
-        </ul>
+
+        <div class="statistics-container">
+          <n-statistic :label="$t('internals.nodes')" :value="text.nodesCount">
+            <template #prefix>
+              <n-icon>
+                <AccountTreeRound />
+              </n-icon>
+            </template>
+          </n-statistic>
+
+          <n-statistic :label="$t('internals.layers')" :value="text.layersCount">
+            <template #prefix>
+              <n-icon>
+                <LayersRound />
+              </n-icon>
+            </template>
+          </n-statistic>
+        </div>
+
         <h4>{{ $t('admin.statistics.layerTypesHeading') }}</h4>
         <div v-for="(count, layerType) in text.layerTypes" :key="layerType" style="margin: 12px 0">
           <div>{{ $t(`layerTypes.${layerType}`) }}: {{ count }}</div>
@@ -95,4 +141,9 @@ const layerTypes = computed(() => {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.statistics-container {
+  display: flex;
+  justify-content: space-around;
+}
+</style>
