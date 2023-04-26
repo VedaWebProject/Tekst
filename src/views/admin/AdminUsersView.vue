@@ -9,6 +9,7 @@ import { configureApi } from '@/openApiConfig';
 import { useMessagesStore } from '@/stores';
 
 import CheckRound from '@vicons/material/CheckRound';
+import ClearRound from '@vicons/material/ClearRound';
 import ShieldTwotone from '@vicons/material/ShieldTwotone';
 import ManageAccountsRound from '@vicons/material/ManageAccountsRound';
 
@@ -16,9 +17,11 @@ const { users, error, load: loadUsers } = useUsers();
 const { t } = useI18n({ useScope: 'global' });
 
 // icons
-const iconElement = (icon: Component) => h(NIcon, null, { default: () => h(icon) });
-const iconCheck = iconElement(CheckRound);
-const iconSuperuser = iconElement(ShieldTwotone);
+const iconElement = (icon: Component, color?: string) =>
+  h(NIcon, { color }, { default: () => h(icon) });
+const iconCheck = iconElement(CheckRound, 'var(--col-success)');
+const iconCross = iconElement(ClearRound, 'var(--col-error)');
+const iconSuperuser = iconElement(ShieldTwotone, 'var(--col-info)');
 const iconEditUser = iconElement(ManageAccountsRound);
 
 // things related to updating users
@@ -97,7 +100,7 @@ const columns: Array<DataTableColumn> = [
   {
     key: 'isActive',
     title: t('user.fields.active'),
-    render: (u) => (u.isActive ? iconCheck : null),
+    render: (u) => (u.isActive ? iconCheck : iconCross),
     align: 'center',
     // @ts-ignore
     sorter: (r1, r2) => r2.isActive - r1.isActive,
@@ -105,7 +108,7 @@ const columns: Array<DataTableColumn> = [
   {
     key: 'isVerified',
     title: t('user.fields.verified'),
-    render: (u) => (u.isVerified ? iconCheck : null),
+    render: (u) => (u.isVerified ? iconCheck : iconCross),
     align: 'center',
     // @ts-ignore
     sorter: (r1, r2) => r2.isVerified - r1.isVerified,
@@ -144,7 +147,7 @@ function rowProps(user: UserRead) {
 <template>
   <h1>{{ $t('admin.heading') }}: {{ $t('admin.users.heading') }}</h1>
 
-  <div v-if="!error" class="content-block">
+  <div v-if="!error">
     <n-data-table
       pagination-behavior-on-filter="first"
       :columns="columns"
@@ -186,35 +189,4 @@ function rowProps(user: UserRead) {
   </n-modal>
 </template>
 
-<style scoped>
-:deep(.n-data-table .n-data-table-td) {
-  background-color: unset !important;
-}
-
-:deep(.inactive td:first-child) {
-  border-left: 4px solid rgba(255, 0, 0, 0.75);
-}
-:deep(.inactive td:first-child) {
-  border-left: 4px solid rgba(255, 0, 0, 0.75);
-}
-
-:deep(.inactive) {
-  background-color: rgba(255, 0, 0, 0.1);
-}
-
-:deep(.unverified td:first-child) {
-  border-left: 4px solid rgba(255, 145, 0, 0.75);
-}
-
-:deep(.unverified) {
-  background-color: rgba(255, 145, 0, 0.1);
-}
-
-:deep(.superuser td:first-child) {
-  border-left: 4px solid rgba(0, 60, 255, 0.75);
-}
-
-:deep(.superuser) {
-  background-color: rgba(0, 60, 255, 0.1);
-}
-</style>
+<style scoped></style>

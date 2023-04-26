@@ -76,10 +76,6 @@ const nUiDateLocale = computed(() => localeProfiles[state.locale].nUiDateLocale)
   --col-success: v-bind(themeVars.successColor);
   --col-warning: v-bind(themeVars.warningColor);
   --col-error: v-bind(themeVars.errorColor);
-  --col-info: v-bind(themeVars.infoColor);
-  --col-success: v-bind(themeVars.successColor);
-  --col-warning: v-bind(themeVars.warningColor);
-  --col-error: v-bind(themeVars.errorColor);
 }
 
 main {
