@@ -144,6 +144,14 @@ const layerTypes = computed(() => {
 <style scoped>
 .statistics-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-start;
+  gap: var(--content-padding);
+  flex-wrap: wrap;
+}
+
+.statistics-container > * {
+  padding: 0.5rem 1rem;
+  background-color: var(--main-bg-color);
+  border-radius: 4px;
 }
 </style>
