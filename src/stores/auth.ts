@@ -5,7 +5,7 @@ import { useMessagesStore, usePlatformStore } from '@/stores';
 import router from '@/router';
 import { configureApi } from '@/openApiConfig';
 import { useIntervalFn } from '@vueuse/core';
-import { useI18n } from 'vue-i18n';
+import { i18n } from '@/i18n';
 
 const authApi = configureApi(AuthApi);
 const usersApi = configureApi(UsersApi);
@@ -21,7 +21,7 @@ function useCookieCountdown(cb: () => {}, startNow: boolean = false) {
 
   const pf = usePlatformStore();
   const messages = useMessagesStore();
-  const { t } = useI18n({ useScope: 'global' });
+  const { t } = i18n.global;
 
   const authCookieExpiryMs = ref(Number(localStorage.getItem('authCookieExpiry') || -1));
   let warnAheadMinutes = [...WARN_MINS_BEFORE_COOKIE_EXPIRY];
@@ -71,7 +71,7 @@ function useCookieCountdown(cb: () => {}, startNow: boolean = false) {
 
 export const useAuthStore = defineStore('auth', () => {
   const messages = useMessagesStore();
-  const { t } = useI18n({ useScope: 'global' });
+  const { t } = i18n.global;
 
   const user = ref<UserRead | null>(getUserFromLocalStorage());
   const returnUrl = ref<string | null>(null);
