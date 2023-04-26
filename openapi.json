@@ -3439,6 +3439,11 @@
             "title": "Enablejwtauth",
             "type": "boolean",
             "default": true
+          },
+          "authCookieLifetime": {
+            "title": "Authcookielifetime",
+            "type": "integer",
+            "default": 43200
           }
         }
       },
@@ -3596,12 +3601,12 @@
             "title": "Locdelim",
             "type": "string",
             "description": "Delimiter for displaying text locations",
-            "default": ","
+            "default": ", "
           },
           "labeledLevels": {
             "title": "Labeledlevels",
             "type": "boolean",
-            "description": "Whether the UI should label the nodes of the browse location with each levels' names",
+            "description": "Whether the UI should label the parts of the browse location with each levels' names",
             "default": true
           },
           "accentColor": {
@@ -3669,12 +3674,12 @@
             "title": "Locdelim",
             "type": "string",
             "description": "Delimiter for displaying text locations",
-            "default": ","
+            "default": ", "
           },
           "labeledLevels": {
             "title": "Labeledlevels",
             "type": "boolean",
-            "description": "Whether the UI should label the nodes of the browse location with each levels' names",
+            "description": "Whether the UI should label the parts of the browse location with each levels' names",
             "default": true
           },
           "accentColor": {
