@@ -4,7 +4,7 @@ from functools import lru_cache
 from secrets import token_hex
 from urllib.parse import quote
 
-from pydantic import BaseSettings, EmailStr, Field, HttpUrl, validator
+from pydantic import BaseSettings, EmailStr, Field, HttpUrl, conint, validator
 
 from tekst import pkg_meta
 from tekst.models.common import ModelBase
@@ -116,11 +116,11 @@ class SecurityConfig(ModelBase):
     enable_jwt_auth: bool = True
     auth_cookie_name: str = "tekstuserauth"
     auth_cookie_domain: str | None = None
-    auth_cookie_lifetime: int = 43200
-    access_token_lifetime: int = 86400
-    reset_pw_token_lifetime: int = 3600
-    verification_token_lifetime: int = 3600
-    jwt_lifetime: int = 3600
+    auth_cookie_lifetime: conint(ge=3600) = 43200
+    access_token_lifetime: conint(ge=3600) = 43200
+    auth_jwt_lifetime: int = conint(ge=3600)
+    reset_pw_token_lifetime: conint(ge=600) = 3600
+    verification_token_lifetime: conint(ge=600) = 3600
     csrf_cookie_name: str = "XSRF-TOKEN"
     csrf_header_name: str = "X-XSRF-TOKEN"
 

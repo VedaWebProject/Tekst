@@ -3443,7 +3443,7 @@
           "authCookieLifetime": {
             "title": "Authcookielifetime",
             "type": "integer",
-            "default": 43200
+            "default": 3600
           }
         }
       },

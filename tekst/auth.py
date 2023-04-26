@@ -150,7 +150,7 @@ def _get_database_strategy(
 def _get_jwt_strategy() -> JWTStrategy:
     return JWTStrategy(
         secret=_cfg.security.secret,
-        lifetime_seconds=_cfg.security.jwt_lifetime,
+        lifetime_seconds=_cfg.security.auth_jwt_lifetime,
         token_audience="tekst:jwt",
     )
 
