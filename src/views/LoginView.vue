@@ -55,7 +55,12 @@ function loginUser() {
     .then((u) => {
       resetForm();
       messages.success(t('general.welcome', { name: u.firstName }));
-      router.push({ name: 'user', params: { username: u.username } });
+      if (auth.returnUrl) {
+        router.push(auth.returnUrl);
+        auth.returnUrl = null;
+      } else {
+        router.push({ name: 'accountProfile', params: { username: u.username } });
+      }
     })
     .catch((e) => {
       /**

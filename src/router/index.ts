@@ -126,14 +126,14 @@ router.beforeEach(async (to, from, next) => {
     const u = auth.user?.isActive && auth.user?.isVerified; // the user is a verified, active user
     const su = auth.user?.isSuperuser; // the user is a superuser
     const authorized = (ru && l && u) || (rsu && l && su);
-    // redirect if trying to access a restricted page without aithorization
+    // redirect if trying to access a restricted page without authorization
     if (!authorized) {
-      auth.returnUrl = to.fullPath;
       const messages = useMessagesStore();
       messages.warning(i18n.global.t('errors.noAccess', { resource: to.path }));
       if (auth.loggedIn) {
         next({ name: 'home' });
       } else {
+        auth.returnUrl = to.fullPath;
         next({ name: 'login' });
       }
       return; // this is important!

@@ -909,6 +909,12 @@ export interface PlatformSecurityInfo {
      * @memberof PlatformSecurityInfo
      */
     'enableJwtAuth'?: boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof PlatformSecurityInfo
+     */
+    'authCookieLifetime'?: number;
 }
 /**
  * Settings defining platform behavior configured by admins
@@ -1090,7 +1096,7 @@ export interface TextCreate {
      */
     'locDelim'?: string;
     /**
-     * Whether the UI should label the nodes of the browse location with each levels\' names
+     * Whether the UI should label the parts of the browse location with each levels\' names
      * @type {boolean}
      * @memberof TextCreate
      */
@@ -1151,7 +1157,7 @@ export interface TextRead {
      */
     'locDelim'?: string;
     /**
-     * Whether the UI should label the nodes of the browse location with each levels\' names
+     * Whether the UI should label the parts of the browse location with each levels\' names
      * @type {boolean}
      * @memberof TextRead
      */
