@@ -9,9 +9,9 @@ import { useI18n } from 'vue-i18n';
 const state = useStateStore();
 const { t } = useI18n({ useScope: 'global' });
 
-const icon = computed(() => (state.theme === 'dark' ? LightModeOutlined : DarkModeOutlined));
+const icon = computed(() => (state.themeMode === 'dark' ? LightModeOutlined : DarkModeOutlined));
 const title = computed(() =>
-  state.theme === 'dark' ? t('general.tipThemeToggleLight') : t('general.tipThemeToggleDark')
+  state.themeMode === 'dark' ? t('general.tipThemeToggleLight') : t('general.tipThemeToggleDark')
 );
 </script>
 
@@ -21,7 +21,7 @@ const title = computed(() =>
     circle
     size="large"
     icon-placement="left"
-    @click="state.toggleTheme"
+    @click="state.toggleThemeMode"
     :title="title"
     :focusable="false"
   >

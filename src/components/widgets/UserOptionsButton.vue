@@ -4,6 +4,7 @@ import { useAuthStore, useStateStore } from '@/stores';
 import { useRouter } from 'vue-router';
 import { NButton, NIcon, NDropdown } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
+import { useTheme } from '@/theme';
 
 import LogInRound from '@vicons/material/LogInRound';
 import LogOutRound from '@vicons/material/LogOutRound';
@@ -13,6 +14,7 @@ import PersonRound from '@vicons/material/PersonRound';
 const { t } = useI18n({ useScope: 'global' });
 const auth = useAuthStore();
 const state = useStateStore();
+const { accentColors } = useTheme();
 const router = useRouter();
 const tooltip = computed(() =>
   auth.loggedIn ? t('user.tipUserBtn', { username: auth.user?.username }) : t('user.tipLoginBtn')
@@ -63,7 +65,7 @@ const initials = computed(
     `${auth.user?.firstName[0].toUpperCase()}${auth.user?.lastName[0].toUpperCase()}`
 );
 
-const color = computed(() => (auth.loggedIn ? state.accentColors.fade2 : undefined));
+const color = computed(() => (auth.loggedIn ? accentColors.value.fade2 : undefined));
 
 function renderIcon(icon: Component) {
   return () => h(NIcon, null, { default: () => h(icon) });

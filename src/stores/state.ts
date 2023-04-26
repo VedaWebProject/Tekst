@@ -1,7 +1,6 @@
 import { ref, computed, watch } from 'vue';
 import { defineStore } from 'pinia';
 import { useWindowSize } from '@vueuse/core';
-import Color from 'color';
 import type { RouteLocationNormalized } from 'vue-router';
 import { usePlatformStore } from '@/stores';
 import { i18n, setI18nLocale } from '@/i18n';
@@ -19,11 +18,11 @@ export const useStateStore = defineStore('state', () => {
   const { t, te } = useI18n({ useScope: 'global' });
 
   // theme
-  const theme = ref<ThemeMode>((localStorage.getItem('theme') as ThemeMode) || 'light');
-  watch(theme, (after) => localStorage.setItem('theme', after));
+  const themeMode = ref<ThemeMode>((localStorage.getItem('theme') as ThemeMode) || 'light');
+  watch(themeMode, (after) => localStorage.setItem('theme', after));
 
-  function toggleTheme() {
-    theme.value = theme.value === 'light' ? 'dark' : 'light';
+  function toggleThemeMode() {
+    themeMode.value = themeMode.value === 'light' ? 'dark' : 'light';
   }
 
   // locale
@@ -83,20 +82,6 @@ export const useStateStore = defineStore('state', () => {
   const smallScreen = computed(() => windowSize.width.value < 860);
   const dropdownSize = computed(() => (smallScreen.value ? 'huge' : undefined));
 
-  // current text accent color variants
-  const accentColors = computed(() => {
-    const lighten = theme.value === 'dark' ? 0.25 : 0.0;
-    const base = Color(text.value ? text.value.accentColor : '#18A058').lighten(lighten);
-    return {
-      base: base.hex(),
-      fade1: base.fade(0.2).hexa(),
-      fade2: base.fade(0.4).hexa(),
-      fade3: base.fade(0.6).hexa(),
-      fade4: base.fade(0.8).hexa(),
-      fade5: base.fade(0.9).hexa(),
-    };
-  });
-
   // set page title
   function setPageTitle(forRoute?: RouteLocationNormalized) {
     const r = forRoute || route;
@@ -116,10 +101,9 @@ export const useStateStore = defineStore('state', () => {
     globalLoadingProgress,
     smallScreen,
     dropdownSize,
-    accentColors,
     setPageTitle,
-    theme,
-    toggleTheme,
+    themeMode,
+    toggleThemeMode,
     locale,
     locales,
     text,

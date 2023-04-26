@@ -5,15 +5,16 @@ import GlobalMessenger from '@/components/GlobalMessenger.vue';
 import { computed } from 'vue';
 import { localeProfiles } from '@/i18n';
 import { useStateStore } from '@/stores';
-import { NConfigProvider, NGlobalStyle, NBackTop } from 'naive-ui';
+import { NConfigProvider, NGlobalStyle, NBackTop, useThemeVars } from 'naive-ui';
 import { useTheme } from '@/theme';
 import PageHeader from './layout/PageHeader.vue';
 import PageFooter from './layout/PageFooter.vue';
 import { useInitializeApp } from '@/init';
 
 const state = useStateStore();
+const themeVars = useThemeVars();
 const { initialized, error } = useInitializeApp();
-const { theme, themeOverrides, mainBgColor, contentBgColor } = useTheme();
+const { theme, themeOverrides, mainBgColor, contentBgColor, accentColors } = useTheme();
 
 // i18n
 const nUiLangLocale = computed(() => localeProfiles[state.locale].nUiLangLocale);
@@ -45,7 +46,7 @@ const nUiDateLocale = computed(() => localeProfiles[state.locale].nUiDateLocale)
         transition="0.2s"
         :text="state.globalLoadingMsg"
         :progress="state.globalLoadingProgress"
-        :progress-color="state.accentColors.base"
+        :progress-color="accentColors.base"
         show-progress
       />
       <GlobalMessenger />
@@ -57,18 +58,28 @@ const nUiDateLocale = computed(() => localeProfiles[state.locale].nUiDateLocale)
 
 <style scoped>
 #app-container {
-  --accent-color: v-bind(state.accentColors.base);
-  --accent-color-fade1: v-bind(state.accentColors.fade1);
-  --accent-color-fade2: v-bind(state.accentColors.fade2);
-  --accent-color-fade3: v-bind(state.accentColors.fade3);
-  --accent-color-fade4: v-bind(state.accentColors.fade4);
-  --accent-color-fade5: v-bind(state.accentColors.fade5);
+  --accent-color: v-bind(accentColors.base);
+  --accent-color-fade1: v-bind(accentColors.fade1);
+  --accent-color-fade2: v-bind(accentColors.fade2);
+  --accent-color-fade3: v-bind(accentColors.fade3);
+  --accent-color-fade4: v-bind(accentColors.fade4);
+  --accent-color-fade5: v-bind(accentColors.fade5);
 
-  --link-color: v-bind(state.accentColors.base);
-  --link-color-hover: v-bind(state.accentColors.fade1);
+  --link-color: v-bind(accentColors.base);
+  --link-color-hover: v-bind(accentColors.fade1);
 
   --main-bg-color: v-bind(mainBgColor);
   --content-bg-color: v-bind(contentBgColor);
+
+  /* NaiveUI feedback colors */
+  --col-info: v-bind(themeVars.infoColor);
+  --col-success: v-bind(themeVars.successColor);
+  --col-warning: v-bind(themeVars.warningColor);
+  --col-error: v-bind(themeVars.errorColor);
+  --col-info: v-bind(themeVars.infoColor);
+  --col-success: v-bind(themeVars.successColor);
+  --col-warning: v-bind(themeVars.warningColor);
+  --col-error: v-bind(themeVars.errorColor);
 }
 
 main {

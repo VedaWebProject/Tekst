@@ -47,13 +47,27 @@ _merge(darkOverrides, commonOverrides);
 
 export function useTheme() {
   const state = useStateStore();
-  const theme = computed(() => (state.theme === 'light' ? lightTheme : darkTheme));
-  const mainBgColor = computed(() => (state.theme === 'light' ? '#00000010' : '#ffffff10'));
-  const contentBgColor = computed(() => (state.theme === 'light' ? '#ffffffcc' : '#00000044'));
+  const theme = computed(() => (state.themeMode === 'light' ? lightTheme : darkTheme));
+  const mainBgColor = computed(() => (state.themeMode === 'light' ? '#00000010' : '#ffffff10'));
+  const contentBgColor = computed(() => (state.themeMode === 'light' ? '#ffffffcc' : '#00000044'));
+
+  // current text accent color variants
+  const accentColors = computed(() => {
+    const lighten = state.themeMode === 'dark' ? 0.25 : 0.0;
+    const base = Color(state.text ? state.text.accentColor : '#18A058').lighten(lighten);
+    return {
+      base: base.hex(),
+      fade1: base.fade(0.2).hexa(),
+      fade2: base.fade(0.4).hexa(),
+      fade3: base.fade(0.6).hexa(),
+      fade4: base.fade(0.8).hexa(),
+      fade5: base.fade(0.9).hexa(),
+    };
+  });
 
   const themeOverrides = computed(() => {
-    const mode = state.theme;
-    const primaryColorHex = state.accentColors.base;
+    const mode = state.themeMode;
+    const primaryColorHex = accentColors.value.base;
     const baseOverrides = mode === 'light' ? lightOverrides : darkOverrides;
     const primaryColor = Color(primaryColorHex);
     return {
@@ -73,5 +87,6 @@ export function useTheme() {
     themeOverrides,
     mainBgColor,
     contentBgColor,
+    accentColors,
   };
 }
