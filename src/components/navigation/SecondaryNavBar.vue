@@ -9,5 +9,7 @@
 <style scoped>
 .secondary-navbar {
   display: flex;
+  flex-wrap: wrap;
+  row-gap: 12px;
 }
 </style>
