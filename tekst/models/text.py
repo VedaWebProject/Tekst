@@ -39,14 +39,14 @@ class Text(ModelBase, ModelFactory):
     )
 
     loc_delim: str = Field(
-        ",",
+        ", ",
         description="Delimiter for displaying text locations",
     )
 
     labeled_levels: bool = Field(
         True,
         description=(
-            "Whether the UI should label the nodes of "
+            "Whether the UI should label the parts of "
             "the browse location with each levels' names"
         ),
     )
