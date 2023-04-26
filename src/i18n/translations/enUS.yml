@@ -185,6 +185,7 @@ user:
     active: Active
     verified: Verified
     superuser: Admin
+  autoLogout: You will be automatically logged out in {minutes} minutes.
 
 admin:
   heading: Administration

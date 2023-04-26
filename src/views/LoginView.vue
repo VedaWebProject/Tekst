@@ -59,7 +59,7 @@ function loginUser() {
         router.push(auth.returnUrl);
         auth.returnUrl = null;
       } else {
-        router.push({ name: 'accountProfile', params: { username: u.username } });
+        router.push({ name: 'accountProfile' });
       }
     })
     .catch((e) => {

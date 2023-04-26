@@ -186,6 +186,7 @@ user:
     active: Aktiv
     verified: Verifiziert
     superuser: Admin
+  autoLogout: Sie werden in {minutes} Minuten automatisch abgemeldet.
 
 admin:
   heading: Administration
