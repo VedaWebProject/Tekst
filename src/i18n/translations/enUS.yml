@@ -145,6 +145,8 @@ register:
     firstNameLength: 1 to 32 characters
     lastNameReq: Last name is required
     lastNameLength: 1 to 32 characters
+    affiliationReq: Affiliation is required
+    affiliationLength: 4 to 64 characters
   errors:
     emailAlreadyRegistered: This email address is already registered.
     usernameAlreadyRegistered: This username is already taken.

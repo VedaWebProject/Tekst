@@ -30,6 +30,7 @@ const initialFormModel = () => ({
   passwordRepeat: null,
   firstName: null,
   lastName: null,
+  affiliation: null,
 });
 
 const formModel = ref<Record<string, string | null>>(initialFormModel());
@@ -138,6 +139,19 @@ const formRules: FormRules = {
       validator: (rule: FormItemRule, value: string) =>
         !!value && value.length >= 1 && value.length <= 32,
       message: t('register.rulesFeedback.lastNameLength'),
+      trigger: 'blur',
+    },
+  ],
+  affiliation: [
+    {
+      required: true,
+      message: t('register.rulesFeedback.affiliationReq'),
+      trigger: 'blur',
+    },
+    {
+      validator: (rule: FormItemRule, value: string) =>
+        !!value && value.length >= 4 && value.length <= 64,
+      message: t('register.rulesFeedback.affiliationLength'),
       trigger: 'blur',
     },
   ],
@@ -279,6 +293,14 @@ onMounted(() => {
             v-model:value="formModel.lastName"
             type="text"
             :placeholder="$t('register.labels.lastName')"
+            @keydown.enter.prevent
+          />
+        </n-form-item>
+        <n-form-item path="affiliation" :label="$t('register.labels.affiliation')">
+          <n-input
+            v-model:value="formModel.affiliation"
+            type="text"
+            :placeholder="$t('register.labels.affiliation')"
             @keyup.enter="() => handleRegisterClick()"
           />
         </n-form-item>
