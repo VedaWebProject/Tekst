@@ -204,6 +204,9 @@ admin:
     checkLabelActive: Konto ist aktiv
     checkLabelVerified: Email ist verifiziert
     checkLabelSuperuser: Benutzer ist Administrator
+    editModal:
+      accountStatus: Konto-Status
+      adminWarning: Vorsicht! Sie sollten wissen, was Sie tun!
 
 search:
   heading: Suche
