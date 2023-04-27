@@ -21,8 +21,8 @@ const { user, error } = useProfile(username);
 </script>
 
 <template>
+  <h1>{{ $t('user.profileHeading', { username }) }}</h1>
   <div v-if="user && !error" class="content-block">
-    <h1>{{ $t('user.profileHeading', { username }) }}</h1>
     <ul>
       <li v-if="user?.username">
         <b>{{ $t('register.labels.username') }}:</b> {{ user.username }}

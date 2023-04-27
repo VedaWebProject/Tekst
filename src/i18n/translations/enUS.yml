@@ -161,7 +161,7 @@ user:
   account:
     optionLabel: My account
     heading: "{name}'s Account"
-    headingManage: User data
+    headingManage: Manage Account
   logoutSuccessful: You are now logged out.
   tipUserBtn: Show user actions for {username}
   tipLoginBtn: Log into your account
@@ -205,6 +205,7 @@ admin:
     checkLabelSuperuser: User is administrator
 
 search:
+  heading: Search
   searchAction: Search
   quickSearch:
     heading: Quick Search

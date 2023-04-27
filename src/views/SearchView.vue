@@ -1,8 +1,8 @@
 <script setup lang="ts"></script>
 
 <template>
+  <h1>{{ $t('search.heading') }}</h1>
   <div class="content-block">
-    <h1>Search</h1>
     <p>...</p>
   </div>
 </template>
