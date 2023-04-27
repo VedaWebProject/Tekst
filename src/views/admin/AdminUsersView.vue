@@ -2,7 +2,7 @@
 import { useUsers } from '@/fetchers';
 import type { DataTableColumn, PaginationProps } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
-import { NDataTable, NIcon, NModal, NCheckbox, NAlert } from 'naive-ui';
+import { NDataTable, NIcon, NModal, NCheckbox } from 'naive-ui';
 import { UsersApi, type UserRead, type UserUpdate } from '@/openapi';
 import { ref, h, type Component } from 'vue';
 import { configureApi } from '@/openApiConfig';
@@ -12,8 +12,6 @@ import CheckRound from '@vicons/material/CheckRound';
 import ClearRound from '@vicons/material/ClearRound';
 import ShieldTwotone from '@vicons/material/ShieldTwotone';
 import ManageAccountsRound from '@vicons/material/ManageAccountsRound';
-import VerifiedUserRound from '@vicons/material/VerifiedUserRound';
-import WarningRound from '@vicons/material/WarningRound';
 
 const { users, error, load: loadUsers } = useUsers();
 const { t } = useI18n({ useScope: 'global' });
@@ -170,6 +168,7 @@ function rowProps(user: UserRead) {
   <n-modal
     v-model:show="showUserUpdateModal"
     preset="dialog"
+    to="#app-container"
     :title="`${t('internals.user')}: ${userUpdatesPayload?.username || ''}`"
     :icon="() => iconEditUser"
     :positive-text="$t('general.saveAction')"
@@ -177,34 +176,27 @@ function rowProps(user: UserRead) {
     @positive-click="handleSaveUserUpdate"
     @negative-click="handleCloseUserUpdate"
   >
-    <n-alert
-      type="default"
-      :title="$t('admin.users.editModal.accountStatus')"
-      style="margin-top: 1rem"
-    >
-      <template #icon>
-        <n-icon :component="VerifiedUserRound" />
-      </template>
+    <div style="display: flex; flex-direction: column; gap: 4px; margin: 24px 0">
       <n-checkbox v-model:checked="userUpdatesPayload.updates.isActive">
         {{ $t('admin.users.checkLabelActive') }}
       </n-checkbox>
-      <br />
       <n-checkbox v-model:checked="userUpdatesPayload.updates.isVerified">
         {{ $t('admin.users.checkLabelVerified') }}
       </n-checkbox>
-    </n-alert>
-    <n-alert
-      type="error"
-      :title="$t('admin.users.editModal.adminWarning')"
-      style="margin-top: 1rem"
-    >
-      <template #icon>
-        <n-icon :component="WarningRound" />
-      </template>
+      <div
+        style="
+          padding: 8px 4px 0px 0px;
+          font-size: var(--app-ui-font-size-tiny);
+          font-weight: var(--app-ui-font-weight-light);
+          color: var(--col-error) !important;
+        "
+      >
+        {{ $t('admin.users.editModal.adminWarning') }}
+      </div>
       <n-checkbox v-model:checked="userUpdatesPayload.updates.isSuperuser">
         {{ $t('admin.users.checkLabelSuperuser') }}
       </n-checkbox>
-    </n-alert>
+    </div>
   </n-modal>
 </template>
 
