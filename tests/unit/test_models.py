@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import pytest
 
 from pydantic.error_wrappers import ValidationError
@@ -24,11 +26,24 @@ def test_serialization(test_app, test_data):
     text = TextCreate(**test_data["texts"][0])
     assert text.dict().get("title")
     dummy_id = "6331b6e05c474b9f8f19330f"
-    text = TextRead(id=dummy_id, loc_delim="---", **test_data["texts"][0])
+    text = TextRead(
+        id=dummy_id,
+        loc_delim="---",
+        created_at=datetime.now(),
+        modified_at=datetime.now(),
+        **test_data["texts"][0],
+    )
     assert "id" in text.dict()
     assert "locDelim" in text.dict()
     assert "loc_delim" in text.dict(by_alias=False)
-    text = TextRead(**{"id": dummy_id, **test_data["texts"][0]})
+    text = TextRead(
+        **{
+            "id": dummy_id,
+            "createdAt": datetime.now(),
+            "modifiedAt": datetime.now(),
+            **test_data["texts"][0],
+        }
+    )
     assert str(text.id) == dummy_id
 
 

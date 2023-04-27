@@ -121,7 +121,7 @@ async def update_node(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Node {id} doesn't exist or requires extra permissions",
         )
-    await node_doc.set(updates.dict(exclude_unset=True))
+    await node_doc.apply(updates.dict(exclude_unset=True))
     return node_doc
 
 

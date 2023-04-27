@@ -1,8 +1,12 @@
+from datetime import datetime
 from typing import Optional
 
-from beanie import Document, PydanticObjectId
+from beanie import (
+    Document,
+    PydanticObjectId,
+)
 from humps import camelize
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from pydantic.main import ModelMetaclass
 
 
@@ -56,6 +60,9 @@ class _IDMixin(BaseModel):
 class DocumentBase(Document):
     """Base class for all Tekst ODM models"""
 
+    created_at: datetime = datetime.utcnow()
+    modified_at: datetime = datetime.utcnow()
+
     def restricted_fields(self, user_id: str = None) -> dict:
         """
         This may or may not be overridden to define access-restricted fields
@@ -69,6 +76,10 @@ class DocumentBase(Document):
     async def insert(self, **kwargs):
         self.id = None  # reset ID for new document in case one is already set
         return await super().insert(**kwargs)
+
+    async def apply(self, updates: dict, **kwargs):
+        updates["modifiedAt"] = datetime.utcnow()
+        return await self.set(updates, **kwargs)
 
     class Settings:
         pass
@@ -99,7 +110,12 @@ class CreateBase(ModelBase):
 
 
 class ReadBase(ModelBase, _IDMixin):
-    pass
+    created_at: datetime = Field(
+        ..., description="Creation date and time of this object"
+    )
+    modified_at: datetime = Field(
+        ..., description="Last modification date and time of this object"
+    )
 
 
 class UpdateBase(ModelBase, metaclass=AllOptionalMeta):

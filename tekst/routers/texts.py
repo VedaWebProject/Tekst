@@ -92,5 +92,5 @@ async def update_text(su: SuperuserDep, id: PyObjectId, updates: TextUpdate) -> 
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Text slug cannot be changed",
         )
-    await text.set(updates.dict(exclude_unset=True))
+    await text.apply(updates.dict(exclude_unset=True))
     return text

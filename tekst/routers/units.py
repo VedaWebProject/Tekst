@@ -102,7 +102,7 @@ def _generate_update_endpoint(
                 detail=f"No write access for units of layer {unit_doc.layer_id}",
             )
         # apply updates
-        await unit_doc.set(updates.dict(exclude_unset=True))
+        await unit_doc.apply(updates.dict(exclude_unset=True))
         return unit_doc
 
     return update_unit

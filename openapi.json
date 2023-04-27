@@ -2907,6 +2907,8 @@
         "title": "NodeRead",
         "required": [
           "id",
+          "createdAt",
+          "modifiedAt",
           "textId",
           "level",
           "position",
@@ -2918,6 +2920,18 @@
             "title": "Id",
             "type": "string",
             "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "createdAt": {
+            "title": "Createdat",
+            "type": "string",
+            "description": "Creation date and time of this object",
+            "format": "date-time"
+          },
+          "modifiedAt": {
+            "title": "Modifiedat",
+            "type": "string",
+            "description": "Last modification date and time of this object",
+            "format": "date-time"
           },
           "textId": {
             "title": "Textid",
@@ -3096,6 +3110,8 @@
         "title": "PlainTextLayerRead",
         "required": [
           "id",
+          "createdAt",
+          "modifiedAt",
           "title",
           "level",
           "layerType"
@@ -3106,6 +3122,18 @@
             "title": "Id",
             "type": "string",
             "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "createdAt": {
+            "title": "Createdat",
+            "type": "string",
+            "description": "Creation date and time of this object",
+            "format": "date-time"
+          },
+          "modifiedAt": {
+            "title": "Modifiedat",
+            "type": "string",
+            "description": "Last modification date and time of this object",
+            "format": "date-time"
           },
           "title": {
             "title": "Title",
@@ -3293,6 +3321,8 @@
         "title": "PlainTextUnitRead",
         "required": [
           "id",
+          "createdAt",
+          "modifiedAt",
           "layerId",
           "nodeId"
         ],
@@ -3302,6 +3332,18 @@
             "title": "Id",
             "type": "string",
             "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "createdAt": {
+            "title": "Createdat",
+            "type": "string",
+            "description": "Creation date and time of this object",
+            "format": "date-time"
+          },
+          "modifiedAt": {
+            "title": "Modifiedat",
+            "type": "string",
+            "description": "Last modification date and time of this object",
+            "format": "date-time"
           },
           "layerId": {
             "title": "Layerid",
@@ -3450,7 +3492,9 @@
       "PlatformSettingsRead": {
         "title": "PlatformSettingsRead",
         "required": [
-          "id"
+          "id",
+          "createdAt",
+          "modifiedAt"
         ],
         "type": "object",
         "properties": {
@@ -3458,6 +3502,18 @@
             "title": "Id",
             "type": "string",
             "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "createdAt": {
+            "title": "Createdat",
+            "type": "string",
+            "description": "Creation date and time of this object",
+            "format": "date-time"
+          },
+          "modifiedAt": {
+            "title": "Modifiedat",
+            "type": "string",
+            "description": "Last modification date and time of this object",
+            "format": "date-time"
           },
           "defaultTextId": {
             "title": "Defaulttextid",
@@ -3622,6 +3678,8 @@
         "title": "TextRead",
         "required": [
           "id",
+          "createdAt",
+          "modifiedAt",
           "title",
           "slug",
           "levels"
@@ -3632,6 +3690,18 @@
             "title": "Id",
             "type": "string",
             "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "createdAt": {
+            "title": "Createdat",
+            "type": "string",
+            "description": "Creation date and time of this object",
+            "format": "date-time"
+          },
+          "modifiedAt": {
+            "title": "Modifiedat",
+            "type": "string",
+            "description": "Last modification date and time of this object",
+            "format": "date-time"
           },
           "title": {
             "title": "Title",

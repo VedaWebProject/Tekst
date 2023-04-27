@@ -73,7 +73,7 @@ def _generate_update_endpoint(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=f"Layer {id} doesn't exist or requires extra permissions",
             )
-        await layer_doc.set(updates.dict(exclude_unset=True))
+        await layer_doc.apply(updates.dict(exclude_unset=True))
         return layer_doc
 
     return update_layer
