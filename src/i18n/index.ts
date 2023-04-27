@@ -1,7 +1,7 @@
 import staticI18nMsgs from '@intlify/unplugin-vue-i18n/messages';
 import { createI18n } from 'vue-i18n';
 import type { I18nOptions } from 'vue-i18n';
-import type { NDateLocale } from 'naive-ui';
+import type { NDateLocale, NLocale } from 'naive-ui';
 import { enUS, dateEnUS } from 'naive-ui';
 import { deDE, dateDeDE } from 'naive-ui';
 import { PlatformApi } from '@/openapi';
@@ -20,7 +20,7 @@ export interface AvailableLocale {
   displayFull: string;
   displayShort: string;
   icon: string;
-  nUiLangLocale: any;
+  nUiLangLocale: NLocale;
   nUiDateLocale: NDateLocale;
 }
 
