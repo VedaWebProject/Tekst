@@ -13,8 +13,8 @@ This is the "main" Tekst repository. While the actual application code has its o
 
 If, however, you want to visit or even contribute to the Tekst code repositories, here's where to look first:
 
-- [**tekst-api**](https://github.com/VedaWebProject/tekst-api) - Codebase of the **Tekst** *server* application.
-- [**tekst-web**](https://github.com/VedaWebProject/tekst-web) - Codebase of the **Tekst** *client* application.
+- [**Tekst-API**](https://github.com/VedaWebProject/Tekst-API) - Codebase of the **Tekst** *server* application.
+- [**Tekst-Web**](https://github.com/VedaWebProject/Tekst-Web) - Codebase of the **Tekst** *client* application.
 
 
 ## Contents  <!-- omit in toc -->
