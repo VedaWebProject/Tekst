@@ -122,7 +122,7 @@ export const useAuthStore = defineStore('auth', () => {
       _setCookieExpiry();
       _startSessionCheck();
       const userData = (await usersApi.usersCurrentUser()).data;
-      userData && localStorage.setItem('user', JSON.stringify(user.value));
+      userData && localStorage.setItem('user', JSON.stringify(userData));
       user.value = userData;
       message.success(t('general.welcome', { name: userData.firstName }));
       nextRoute && router.push(nextRoute);
