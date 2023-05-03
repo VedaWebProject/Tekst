@@ -1,7 +1,7 @@
 # Tekst API
 
-[![tests](https://github.com/VedaWebProject/tekst-api/actions/workflows/tests.yml/badge.svg)](https://github.com/VedaWebProject/tekst-api/actions/workflows/tests.yml)
-[![style checks](https://github.com/VedaWebProject/tekst-api/actions/workflows/style.yml/badge.svg)](https://github.com/VedaWebProject/tekst-api/actions/workflows/style.yml)
+[![tests](https://github.com/VedaWebProject/Tekst-API/actions/workflows/tests.yml/badge.svg)](https://github.com/VedaWebProject/Tekst-API/actions/workflows/tests.yml)
+[![style checks](https://github.com/VedaWebProject/Tekst-API/actions/workflows/style.yml/badge.svg)](https://github.com/VedaWebProject/Tekst-API/actions/workflows/style.yml)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 This is the code repository for the **server** part of the Tekst platform.
@@ -9,7 +9,7 @@ For general information on Tekst, please visit the main [Tekst repository](https
 
 ## Development
 
-1. Clone this repository via `git clone https://github.com/VedaWebProject/tekst-api.git`
+1. Clone this repository via `git clone https://github.com/VedaWebProject/Tekst-API.git`
 2. This project is configured to use [Poetry](https://python-poetry.org) as its dependency management and build tool. You can install Poetry from [here](https://python-poetry.org/docs/master/#installation).
 3. Install the project and its dependencies (from the project directory): `poetry install`
 4. You can now use
