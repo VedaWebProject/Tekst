@@ -9,9 +9,9 @@ import { useRouter, type RouteLocationRaw } from 'vue-router';
 import type { AxiosError } from 'axios';
 import { createTemplatePromise } from '@vueuse/core';
 
-const SESSION_POLL_INTERVAL_S = 10; // TEMPORARY FOR DEV: Should be 60 or even 300
-const SESSION_EXPIRY_OFFSET_S = 1; // TEMPORARY FOR DEV: Should be 10 or even 30
-const SESSION_WARN_AHEAD_S = 300;
+const SESSION_POLL_INTERVAL_S = 60; // check session expiry every n seconds
+const SESSION_EXPIRY_OFFSET_S = 10; // assume session expired n seconds early
+const SESSION_WARN_AHEAD_S = 600; // start showing warnings n seconds before expiry
 
 function getUserFromLocalStorage(): UserRead | null {
   const storageData = localStorage.getItem('user');
