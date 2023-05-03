@@ -157,3 +157,9 @@ onMounted(() => {
     </n-modal>
   </LoginTemplatePromise>
 </template>
+
+<style scoped>
+.login-message {
+  padding-bottom: 1rem;
+}
+</style>
