@@ -57,21 +57,17 @@ function switchToRegistration() {
   router.push({ name: 'register' });
 }
 
-async function loginUser(nextRoute: RouteLocationRaw | null | undefined) {
-  try {
-    return await auth.login(formModel.value.email || '', formModel.value.password || '', nextRoute);
-  } finally {
-    resetForm();
-  }
-}
-
 async function handleLoginClick(
-  resolveLogin: (res: Promise<boolean>) => void,
+  resolveLogin: (res: boolean | Promise<boolean>) => void,
   nextRoute: RouteLocationRaw | null | undefined
 ) {
   formRef.value
     ?.validate(async (errors) => {
-      !errors && resolveLogin(loginUser(nextRoute));
+      if (errors) return;
+      resolveLogin(
+        auth.login(formModel.value.email || '', formModel.value.password || '', nextRoute)
+      );
+      resetForm();
     })
     .catch(() => {
       message.error(t('errors.followFormRules'));
