@@ -63,7 +63,6 @@ export const useAuthStore = defineStore('auth', () => {
       Date.now() / 1000 +
       (pfData.value?.security?.authCookieLifetime || 0) -
       SESSION_EXPIRY_OFFSET_S;
-    console.log(sessionExpiryTsSec.value);
     localStorage.setItem('sessionExpiryS', String(sessionExpiryTsSec.value));
   }
 
@@ -111,7 +110,6 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       return await LoginTemplatePromise.start(message, nextRoute, showRegisterLink);
     } catch {
-      console.log('Login cancelled');
       return false;
     }
   }
