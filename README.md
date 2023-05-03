@@ -5,7 +5,7 @@ For general information on Tekst, please visit the main [Tekst repository](https
 
 ## Development
 
-1. Clone this repository via `git clone https://github.com/VedaWebProject/tekst-web.git`
+1. Clone this repository via `git clone https://github.com/VedaWebProject/Tekst-Web.git`
 2. Install the project and its dependencies (from project directory): `npm install`
 3. You can now use
    - `npm run dev` to run the [Vite](https://vitejs.dev/) dev server
