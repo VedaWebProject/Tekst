@@ -1,11 +1,11 @@
 import { ref, computed, watch } from 'vue';
 import { useRoute, useRouter, type RouteLocationNormalized } from 'vue-router';
 import { defineStore } from 'pinia';
-import { useMessagesStore, useStateStore, useAuthStore } from '@/stores';
+import { useStateStore, useAuthStore } from '@/stores';
 import type { NodeRead } from '@/openapi';
-import { LayersApi, NodesApi, UnitsApi } from '@/openapi/api';
 import type { AxiosResponse } from 'axios';
-import { configureApi } from '@/openApiConfig';
+import { useApi } from '@/api';
+import { useMessages } from '@/messages';
 
 export const useBrowseStore = defineStore('browse', () => {
   // composables
@@ -13,12 +13,12 @@ export const useBrowseStore = defineStore('browse', () => {
   const auth = useAuthStore();
   const route = useRoute();
   const router = useRouter();
-  const messages = useMessagesStore();
+  const { message } = useMessages();
 
   // API clients
-  const nodesApi = configureApi(NodesApi);
-  const layersApi = configureApi(LayersApi);
-  const unitsApi = configureApi(UnitsApi);
+  const { nodesApi } = useApi();
+  const { layersApi } = useApi();
+  const { unitsApi } = useApi();
 
   /* BASIC BROWSE UI STATE */
 
@@ -122,7 +122,7 @@ export const useBrowseStore = defineStore('browse', () => {
       loadUnitsData(layersData);
     } catch (e) {
       console.error(e);
-      messages.error('Error loading data layers for this location');
+      message.error('Error loading data layers for this location');
       loading.value = false;
     }
   }
@@ -144,7 +144,7 @@ export const useBrowseStore = defineStore('browse', () => {
       layers.value = layersData;
     } catch (e) {
       console.error(e);
-      messages.error('Error loading data layer units for this location');
+      message.error('Error loading data layer units for this location');
     } finally {
       loading.value = false;
     }

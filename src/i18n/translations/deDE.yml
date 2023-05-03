@@ -153,9 +153,9 @@ register:
     usernameAlreadyRegistered: Dieser Benutzername ist bereits vergeben.
     weakPassword: Das eingegebene Passwort entspricht nicht den Sicherheitsanforderungen.
 
-user:
-  login: Anmelden
-  logout: Abmelden
+account:
+  loginBtn: Anmelden
+  logoutBtn: Abmelden
   profile: Öffentliches Profil
   profileHeading: 'Öffentliches Profil von {username}'
   profileNotFound: Das Benutzerprofil "{username}" konnte nicht gefunden werden.
@@ -169,10 +169,8 @@ user:
   tipLogoutBtn: Von Ihrem Konto abmelden
   switchToRegister: Neues Konto registrieren
   forgotPassword: Ich habe mein Passwort vergessen
-  heading: Melden Sie sich an
-  labels:
-    email: Email
-    password: Passwort
+  login:
+    heading: Melden Sie sich an
   rulesFeedback:
     emailReq: Email-Adresse wird benötigt
     passwordReq: Passwort wird benötigt
@@ -182,13 +180,16 @@ user:
   fields:
     email: Email
     username: Benutzername
+    password: Passwort
     firstName: Vorname
     lastName: Nachname
     affiliation: Zugehörigkeit
     active: Aktiv
     verified: Verifiziert
     superuser: Admin
-  autoLogout: Sie werden in {minutes} Minuten automatisch abgemeldet.
+  autoLogout: Ihre Sitzung endet automatisch in {minutes} Minuten und {seconds} Sekunden. Melden Sie sich ab und wieder an, um Ihre Sitzung jetzt zu erneuern.
+  sessionExpired: Ihre Sitzung ist abgelaufen.
+  renewLogin: Melden Sie sich wieder an, um Ihre Sitzung zu erneuern.
 
 admin:
   heading: Administration

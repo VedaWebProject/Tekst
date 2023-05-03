@@ -6,18 +6,18 @@ import { NButton, NModal, NSelect, NFormItem, NForm, NDivider } from 'naive-ui';
 import ArrowBackIosRound from '@vicons/material/ArrowBackIosRound';
 import ArrowForwardIosRound from '@vicons/material/ArrowForwardIosRound';
 import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
-import { NodesApi, type NodeRead, type TextRead } from '@/openapi';
+import type { NodeRead, TextRead } from '@/openapi';
 import router from '@/router';
 import ModalButtonFooter from '@/components/ModalButtonFooter.vue';
 import { useMagicKeys, whenever } from '@vueuse/core';
-import { configureApi } from '@/openApiConfig';
+import { useApi } from '@/api';
 
 const state = useStateStore();
 const browse = useBrowseStore();
 const route = useRoute();
 const { ArrowLeft, ArrowRight } = useMagicKeys();
 
-const nodesApi = configureApi(NodesApi);
+const { nodesApi } = useApi();
 
 const showModal = ref(false);
 watch(showModal, (show) => show && initSelectModels());

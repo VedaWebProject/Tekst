@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import type { TextRead } from '@/openapi';
 import { computed, h } from 'vue';
-import { useStateStore, usePlatformStore } from '@/stores';
+import { useStateStore } from '@/stores';
 import { useRouter } from 'vue-router';
 import { NDropdown, NButton, NIcon } from 'naive-ui';
 import ArrowDropDownFilled from '@vicons/material/ArrowDropDownFilled';
 import TextSelectOption from '../widgets/TextSelectOption.vue';
+import { usePlatformData } from '@/platformData';
 
 const router = useRouter();
 const state = useStateStore();
-const pf = usePlatformStore();
-const availableTexts = pf.data?.texts || [];
+const { pfData } = usePlatformData();
+const availableTexts = pfData.value?.texts || [];
 
 function renderLabel(title: string, subtitle?: string, accentColor?: string) {
   return h(TextSelectOption, { title, subtitle, accentColor });

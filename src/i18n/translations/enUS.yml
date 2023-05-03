@@ -152,9 +152,9 @@ register:
     usernameAlreadyRegistered: This username is already taken.
     weakPassword: The given password doesn't meet the security requirements.
 
-user:
-  login: Login
-  logout: Logout
+account:
+  loginBtn: Login
+  logoutBtn: Logout
   profile: Public profile
   profileHeading: 'Public profile of {username}'
   profileNotFound: The user profile "{username}" could not be found.
@@ -168,10 +168,8 @@ user:
   tipLogoutBtn: Log out of your account
   switchToRegister: Register new user
   forgotPassword: I forgot my password
-  heading: Log into your account
-  labels:
-    email: Email
-    password: Password
+  login:
+    heading: Log into your account
   rulesFeedback:
     emailReq: Email is required
     passwordReq: Password is required
@@ -181,13 +179,16 @@ user:
   fields:
     email: Email
     username: Username
+    password: Password
     firstName: First Name
     lastName: Last Name
     affiliation: Affiliation
     active: Active
     verified: Verified
     superuser: Admin
-  autoLogout: You will be automatically logged out in {minutes} minutes.
+  autoLogout: Your session will automatically end in {minutes} minutes and {seconds} seconds. You can log out and log back in to renew your session now.
+  sessionExpired: Your session expired.
+  renewLogin: Log in again to renew your session.
 
 admin:
   heading: Administration

@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { useAuthStore, useMessagesStore, usePlatformStore, useStateStore } from '@/stores';
+import { useAuthStore, useStateStore } from '@/stores';
 import { i18n } from '@/i18n';
+import { useMessages } from '@/messages';
+import { usePlatformData } from '@/platformData';
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -17,7 +19,6 @@ const HelpView = () => import('@/views/HelpView.vue');
 const BrowseView = () => import('@/views/BrowseView.vue');
 const SearchView = () => import('@/views/SearchView.vue');
 
-const LoginView = () => import('@/views/LoginView.vue');
 const RegisterView = () => import('@/views/RegisterView.vue');
 
 const AdminView = () => import('@/views/admin/AdminView.vue');
@@ -53,11 +54,6 @@ const router = createRouter({
       path: '/help',
       name: 'help',
       component: HelpView,
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: LoginView,
     },
     {
       path: '/register',
@@ -113,8 +109,8 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   // check if route is disabled
-  const pf = usePlatformStore();
-  if (to.name === 'register' && !pf.data?.security?.enableRegistration) {
+  const { pfData } = usePlatformData();
+  if (to.name === 'register' && !pfData.value?.security?.enableRegistration) {
     next({ name: 'home' });
   }
   // enforce route restrictions
@@ -128,13 +124,13 @@ router.beforeEach(async (to, from, next) => {
     const authorized = (ru && l && u) || (rsu && l && su);
     // redirect if trying to access a restricted page without authorization
     if (!authorized) {
-      const messages = useMessagesStore();
-      messages.warning(i18n.global.t('errors.noAccess', { resource: to.path }));
+      const { message } = useMessages();
+      message.warning(i18n.global.t('errors.noAccess', { resource: to.path }));
       if (auth.loggedIn) {
         next({ name: 'home' });
       } else {
         auth.returnUrl = to.fullPath;
-        next({ name: 'login' });
+        next(from || { name: 'home' });
       }
       return; // this is important!
     }

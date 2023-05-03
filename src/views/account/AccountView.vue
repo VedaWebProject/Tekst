@@ -10,13 +10,13 @@ import RemoveRedEyeRound from '@vicons/material/RemoveRedEyeRound';
 <template>
   <SecondaryNavBar>
     <NavBarRouterLink
-      :label="$t('user.profile')"
+      :label="$t('account.profile')"
       :route="{ name: 'accountProfile' }"
       :icon="RemoveRedEyeRound"
       show-icon
     />
     <NavBarRouterLink
-      :label="$t('user.account.headingManage')"
+      :label="$t('account.account.headingManage')"
       :route="{ name: 'accountManage' }"
       :icon="ManageAccountsRound"
       show-icon

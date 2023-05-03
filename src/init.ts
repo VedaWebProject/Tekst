@@ -1,8 +1,10 @@
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
-import { useMessagesStore, usePlatformStore, useStateStore } from '@/stores';
+import { useStateStore } from '@/stores';
 import { useAsyncQueue } from '@vueuse/core';
+import { useMessages } from '@/messages';
+import { usePlatformData } from '@/platformData';
 
 interface InitStep {
   info: string;
@@ -12,8 +14,8 @@ interface InitStep {
 export function useInitializeApp() {
   // resources
   const state = useStateStore();
-  const messages = useMessagesStore();
-  const pf = usePlatformStore();
+  const { message } = useMessages();
+  const { pfData, loadPlatformData } = usePlatformData();
   const route = useRoute();
   const router = useRouter();
   const { t } = useI18n({ useScope: 'global' });
@@ -37,7 +39,7 @@ export function useInitializeApp() {
           await state.setLocale();
           return success;
         } catch (e) {
-          messages.warning(t('errors.serverI18n'));
+          message.warning(t('errors.serverI18n'));
           console.error(e);
           return false;
         }
@@ -48,10 +50,10 @@ export function useInitializeApp() {
       info: t('init.platformData'),
       action: async (success: boolean) => {
         try {
-          await pf.loadPlatformData();
+          await loadPlatformData();
           return success;
         } catch (e) {
-          messages.warning(t('errors.platformData'));
+          message.warning(t('errors.platformData'));
           console.error(e);
           return false;
         }
@@ -62,10 +64,10 @@ export function useInitializeApp() {
       info: t('init.workingText'),
       action: async (success: boolean) => {
         state.text =
-          pf.data?.texts.find((t) => t.slug === route.params.text) ||
-          pf.data?.texts.find((t) => t.slug == localStorage.getItem('text')) ||
-          pf.data?.texts.find((t) => t.id == pf.data?.settings.defaultTextId) ||
-          pf.data?.texts[0];
+          pfData.value?.texts.find((t) => t.slug === route.params.text) ||
+          pfData.value?.texts.find((t) => t.slug == localStorage.getItem('text')) ||
+          pfData.value?.texts.find((t) => t.id == pfData.value?.settings.defaultTextId) ||
+          pfData.value?.texts[0];
 
         if (route.meta.isTextSpecific) {
           router.replace({

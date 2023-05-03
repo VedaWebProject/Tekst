@@ -5,7 +5,7 @@ const auth = useAuthStore();
 </script>
 
 <template>
-  <h1>{{ $t('user.account.headingManage') }}</h1>
+  <h1>{{ $t('account.account.headingManage') }}</h1>
   <div class="content-block">
     <ul>
       <li><b>Email:</b> {{ auth.user?.email }}</li>

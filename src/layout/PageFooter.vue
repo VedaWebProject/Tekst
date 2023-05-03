@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { usePlatformStore } from '@/stores';
+import { usePlatformData } from '@/platformData';
 
-const pf = usePlatformStore();
+const { pfData } = usePlatformData();
 </script>
 
 <template>
   <footer>
     <div id="footer-content">
       <div>{{ $t('server.welcomeTest') }}</div>
-      <a :href="pf.data?.tekstInfo?.website" title="">
-        {{ pf.data?.tekstInfo?.name }}
+      <a :href="pfData?.tekstInfo?.website" title="">
+        {{ pfData?.tekstInfo?.name }}
       </a>
-      v{{ pf.data?.tekstInfo?.version }}
+      v{{ pfData?.tekstInfo?.version }}
     </div>
   </footer>
 </template>
