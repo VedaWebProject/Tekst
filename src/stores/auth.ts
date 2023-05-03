@@ -60,7 +60,10 @@ export const useAuthStore = defineStore('auth', () => {
 
   function _setCookieExpiry() {
     sessionExpiryTsSec.value =
-      (pfData.value?.security?.authCookieLifetime || 0) - SESSION_EXPIRY_OFFSET_S;
+      Date.now() / 1000 +
+      (pfData.value?.security?.authCookieLifetime || 0) -
+      SESSION_EXPIRY_OFFSET_S;
+    console.log(sessionExpiryTsSec.value);
     localStorage.setItem('sessionExpiryS', String(sessionExpiryTsSec.value));
   }
 
