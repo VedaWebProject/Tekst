@@ -8,6 +8,7 @@ import { useIntervalFn } from '@vueuse/core';
 import { useRouter, type RouteLocationRaw } from 'vue-router';
 import type { AxiosError } from 'axios';
 import { createTemplatePromise } from '@vueuse/core';
+import { usePlatformData } from '@/platformData';
 
 const SESSION_POLL_INTERVAL_S = 60; // check session expiry every n seconds
 const SESSION_EXPIRY_OFFSET_S = 10; // assume session expired n seconds early
@@ -43,8 +44,8 @@ export const LoginTemplatePromise = createTemplatePromise<
 >();
 
 export const useAuthStore = defineStore('auth', () => {
-  // const { pfData } = usePlatformData();
   const router = useRouter();
+  const { pfData } = usePlatformData();
   const { message } = useMessages();
   const { authApi, usersApi } = useApi();
   const { t } = i18n.global;
@@ -58,8 +59,8 @@ export const useAuthStore = defineStore('auth', () => {
   );
 
   function _setCookieExpiry() {
-    // sessionExpiryTsSec.value = (pfData.value?.security?.authCookieLifetime || 0) - SESSION_EXPIRY_OFFSET_EARLY;
-    sessionExpiryTsSec.value = Date.now() / 1000 + 30 - SESSION_EXPIRY_OFFSET_S;
+    sessionExpiryTsSec.value =
+      (pfData.value?.security?.authCookieLifetime || 0) - SESSION_EXPIRY_OFFSET_S;
     localStorage.setItem('sessionExpiryS', String(sessionExpiryTsSec.value));
   }
 
