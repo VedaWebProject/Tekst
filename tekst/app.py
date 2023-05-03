@@ -3,7 +3,7 @@ import sys
 
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, status
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from starlette_csrf import CSRFMiddleware
 
@@ -71,9 +71,6 @@ app = FastAPI(
     openapi_url=_cfg.doc.openapi_url,
     docs_url=_cfg.doc.swaggerui_url,
     redoc_url=_cfg.doc.redoc_url,
-    responses={
-        status.HTTP_400_BAD_REQUEST: {"description": "Invalid Request"},
-    },
     lifespan=lifespan,
 )
 
