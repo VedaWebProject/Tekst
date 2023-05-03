@@ -1761,6 +1761,9 @@
               }
             }
           },
+          "204": {
+            "description": "No Content"
+          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -1795,6 +1798,9 @@
           },
           "401": {
             "description": "Missing token or inactive user."
+          },
+          "204": {
+            "description": "No Content"
           }
         },
         "security": [
@@ -2315,7 +2321,8 @@
           {
             "required": true,
             "schema": {
-              "title": "Id"
+              "title": "Id",
+              "type": "string"
             },
             "name": "id",
             "in": "path"
@@ -2374,7 +2381,8 @@
           {
             "required": true,
             "schema": {
-              "title": "Id"
+              "title": "Id",
+              "type": "string"
             },
             "name": "id",
             "in": "path"
@@ -2426,7 +2434,8 @@
           {
             "required": true,
             "schema": {
-              "title": "Id"
+              "title": "Id",
+              "type": "string"
             },
             "name": "id",
             "in": "path"
@@ -4156,7 +4165,7 @@
       "description": "Text-related operations",
       "externalDocs": {
         "description": "View external documentation",
-        "url": "https://github.com/VedaWebProject/tekst-api"
+        "url": "https://github.com/VedaWebProject/Tekst-API"
       }
     }
   ]
