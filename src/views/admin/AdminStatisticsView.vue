@@ -2,14 +2,14 @@
 import { useStats } from '@/fetchers';
 import { computed } from 'vue';
 import { NProgress, NSpin, NStatistic, NIcon } from 'naive-ui';
-import { usePlatformStore } from '@/stores';
 
 import SupervisorAccountRound from '@vicons/material/SupervisorAccountRound';
 import LibraryBooksRound from '@vicons/material/LibraryBooksRound';
 import AccountTreeRound from '@vicons/material/AccountTreeRound';
 import LayersRound from '@vicons/material/LayersRound';
+import { usePlatformData } from '@/platformData';
 
-const pf = usePlatformStore();
+const { pfData } = usePlatformData();
 const { stats, error } = useStats();
 
 const counts = computed(() => ({
@@ -91,7 +91,7 @@ const layerTypes = computed(() => {
 
     <div v-for="(text, index) in stats.texts" :key="index">
       <div class="content-block">
-        <h3>{{ pf.data?.texts.find((t) => t.id == text.id)?.title }}</h3>
+        <h3>{{ pfData?.texts.find((t) => t.id == text.id)?.title }}</h3>
 
         <div class="statistics-container">
           <n-statistic :label="$t('internals.nodes')" :value="text.nodesCount">

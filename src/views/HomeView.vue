@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { usePlatformStore } from '@/stores/platform';
-const pf = usePlatformStore();
+import { usePlatformData } from '@/platformData';
+const { pfData } = usePlatformData();
 </script>
 
 <template>
   <div class="content-block">
-    <h1>{{ pf.data?.info?.platformName }} ({{ $t('dummy.home') }})</h1>
+    <h1>{{ pfData?.info?.platformName }} ({{ $t('dummy.home') }})</h1>
     <p>{{ $t('dummy.schiller') }}</p>
 
     <h2>Accent Palette Demo</h2>

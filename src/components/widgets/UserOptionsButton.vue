@@ -16,8 +16,11 @@ const auth = useAuthStore();
 const state = useStateStore();
 const { accentColors } = useTheme();
 const router = useRouter();
+
 const tooltip = computed(() =>
-  auth.loggedIn ? t('user.tipUserBtn', { username: auth.user?.username }) : t('user.tipLoginBtn')
+  auth.loggedIn
+    ? t('account.tipUserBtn', { username: auth.user?.username })
+    : t('account.tipLoginBtn')
 );
 
 const showUserDropdown = ref(false);
@@ -29,12 +32,12 @@ const userOptions = computed(() => [
     key: 'user',
     children: [
       {
-        label: t('user.account.optionLabel'),
+        label: t('account.account.optionLabel'),
         key: 'account',
         icon: renderIcon(PersonRound),
       },
       {
-        label: t('user.logout'),
+        label: t('account.logoutBtn'),
         key: 'logout',
         icon: renderIcon(LogOutRound),
       },
@@ -71,11 +74,11 @@ function renderIcon(icon: Component) {
   return () => h(NIcon, null, { default: () => h(icon) });
 }
 
-function handleClick() {
+async function handleClick() {
   if (!auth.loggedIn) {
-    router.push({ name: 'login' });
-  } else {
-    showUserDropdown.value = !showUserDropdown.value;
+    auth.showLoginModal(undefined, { name: 'accountProfile' });
+  } else if (!showUserDropdown.value) {
+    showUserDropdown.value = true;
   }
 }
 

@@ -7,30 +7,30 @@ import LocaleSwitcher from '@/components/widgets/LocaleSwitcher.vue';
 import UserOptionsButton from '@/components/widgets/UserOptionsButton.vue';
 import QuickSearchWidget from '@/components/widgets/QuickSearch.vue';
 import HelpNavButton from '@/components/widgets/HelpNavButton.vue';
-import { useAuthStore, usePlatformStore, useStateStore } from '@/stores';
+import { useAuthStore, useStateStore } from '@/stores';
 import { useRoute, RouterLink } from 'vue-router';
+import { usePlatformData } from '@/platformData';
 
 import MenuRound from '@vicons/material/MenuRound';
-
 import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
 import SearchRound from '@vicons/material/SearchRound';
 
-const pf = usePlatformStore();
+const { pfData } = usePlatformData();
 const auth = useAuthStore();
 const state = useStateStore();
 const menuOpen = ref(false);
 const menuVisible = computed(() => !state.smallScreen || menuOpen.value);
 
 const route = useRoute();
-const textParam = computed(() => state.text?.slug || pf.data?.texts[0]?.slug);
+const textParam = computed(() => state.text?.slug || pfData.value?.texts[0]?.slug);
 watch(route, () => (menuOpen.value = false));
 </script>
 
 <template>
   <div class="navbar" :class="state.smallScreen && 'navbar-smallscreen'">
-    <img class="navbar-logo" :alt="`${pf.data?.info?.platformName} Logo`" src="/logo.png" />
+    <img class="navbar-logo" :alt="`${pfData?.info?.platformName} Logo`" src="/logo.png" />
     <div class="navbar-title">
-      <RouterLink to="/">{{ pf.data?.info?.platformName }}</RouterLink>
+      <RouterLink to="/">{{ pfData?.info?.platformName }}</RouterLink>
     </div>
     <n-button
       v-if="state.smallScreen"
@@ -67,7 +67,7 @@ watch(route, () => (menuOpen.value = false));
         <ThemeModeSwitcher />
         <LocaleSwitcher />
         <HelpNavButton />
-        <UserOptionsButton v-if="pf.data?.security?.enableRegistration || auth.loggedIn" />
+        <UserOptionsButton v-if="pfData?.security?.enableRegistration || auth.loggedIn" />
       </div>
     </div>
   </div>

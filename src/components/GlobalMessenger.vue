@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineComponent, h } from 'vue';
+import { defineComponent, h, watch } from 'vue';
 import {
   NMessageProvider,
   useMessage,
@@ -7,7 +7,7 @@ import {
   useThemeVars,
   type MessageRenderMessage,
 } from 'naive-ui';
-import { useMessagesStore } from '@/stores';
+import { useMessages } from '@/messages';
 import Color from 'color';
 import type { RenderMessageProps } from 'naive-ui/es/message/src/types';
 
@@ -59,17 +59,21 @@ const renderMessage: MessageRenderMessage = (props: RenderMessageProps) => {
 
 const MessageDispatcher = defineComponent({
   setup() {
-    const messages = useMessagesStore();
+    const { messageQueue } = useMessages();
     const messageUtil = useMessage();
-
-    messages.$onAction(({ name, args }) => {
-      messageUtil.create(args[0] || name, {
-        type: name,
-        duration: (args[1] || 5) * 1000,
-        render: renderMessage,
-      });
+    watch(messageQueue, (after, before) => {
+      if (after.length > before.length) {
+        while (messageQueue.value.length > 0) {
+          const msg = messageQueue.value.pop();
+          msg &&
+            messageUtil.create(msg.text, {
+              type: msg.type,
+              duration: msg.durationSeconds * 1000,
+              render: renderMessage,
+            });
+        }
+      }
     });
-
     return () => null; // nothing to render
   },
 });

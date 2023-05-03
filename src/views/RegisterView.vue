@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, nextTick } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRouter } from 'vue-router';
-import { useMessagesStore, usePlatformStore } from '@/stores';
 import {
   type FormInst,
   type FormItemInst,
@@ -14,13 +12,16 @@ import {
   NButton,
   NSpace,
 } from 'naive-ui';
-import { AuthApi, type UserCreate } from '@/openapi';
-import { configureApi } from '@/openApiConfig';
+import type { UserCreate } from '@/openapi';
+import { useApi } from '@/api';
+import { useMessages } from '@/messages';
+import { usePlatformData } from '@/platformData';
+import { useAuthStore } from '@/stores';
 
-const router = useRouter();
-const messages = useMessagesStore();
-const pf = usePlatformStore();
-const authApi = configureApi(AuthApi);
+const auth = useAuthStore();
+const { message } = useMessages();
+const { pfData } = usePlatformData();
+const { authApi } = useApi();
 const { t } = useI18n({ useScope: 'global' });
 
 const initialFormModel = () => ({
@@ -167,11 +168,11 @@ function registerUser() {
   authApi
     .registerRegister({ userCreate: formModel.value as unknown as UserCreate })
     .then(() => {
-      const activationNeeded = !pf.data?.security?.usersActiveByDefault;
+      const activationNeeded = !pfData.value?.security?.usersActiveByDefault;
       const activationHint = activationNeeded
         ? t('register.activationNeededHint')
         : t('register.activationNotNeededHint');
-      messages.success(`${t('register.success')} ${activationHint}`, activationNeeded ? 20 : 5);
+      message.success(`${t('register.success')} ${activationHint}`, activationNeeded ? 20 : 5);
       switchToLogin();
     })
     .catch((e) => {
@@ -182,15 +183,15 @@ function registerUser() {
       if (e.response) {
         const data = e.response.data;
         if (data.detail === 'REGISTER_USER_ALREADY_EXISTS') {
-          messages.error(t('register.errors.emailAlreadyRegistered'));
+          message.error(t('register.errors.emailAlreadyRegistered'));
         } else if (data.detail === 'REGISTER_USERNAME_ALREADY_EXISTS') {
-          messages.error(t('register.errors.usernameAlreadyRegistered'));
+          message.error(t('register.errors.usernameAlreadyRegistered'));
         } else if (data.detail.code === 'REGISTER_INVALID_PASSWORD') {
-          messages.error(t('register.errors.weakPassword'));
+          message.error(t('register.errors.weakPassword'));
         } else if (e.response.status === 403) {
-          messages.error(t('errors.csrf'));
+          message.error(t('errors.csrf'));
         } else {
-          messages.error(t('errors.unexpected'));
+          message.error(t('errors.unexpected'));
         }
       }
       loading.value = false;
@@ -205,7 +206,7 @@ function handleRegisterClick(e: MouseEvent | null = null) {
       !errors && registerUser();
     })
     .catch(() => {
-      messages.error(t('errors.followFormRules'));
+      message.error(t('errors.followFormRules'));
       loading.value = false;
     });
 }
@@ -218,7 +219,7 @@ function resetForm() {
 
 function switchToLogin() {
   resetForm();
-  router.push({ name: 'login' });
+  auth.showLoginModal(undefined, { name: 'accountProfile' });
 }
 
 onMounted(() => {
@@ -229,9 +230,9 @@ onMounted(() => {
 </script>
 
 <template>
+  <h2 style="text-align: center">{{ $t('register.heading') }}</h2>
   <div class="form-container">
     <div class="content-block">
-      <h2 style="text-align: center">{{ $t('register.heading') }}</h2>
       <n-form
         ref="formRef"
         :model="formModel"

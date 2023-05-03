@@ -1,18 +1,12 @@
 import { ref, isRef, unref, watchEffect, type Ref } from 'vue';
-import { configureApi } from './openApiConfig';
-import {
-  PlatformApi,
-  AdminApi,
-  type UserReadPublic,
-  type PlatformStats,
-  type UserRead,
-} from '@/openapi';
+import type { UserReadPublic, PlatformStats, UserRead } from '@/openapi';
 import type { AxiosResponse } from 'axios';
+import { useApi } from './api';
 
 export function useProfile(username: string | Ref) {
   const user = ref<UserReadPublic | null>(null);
   const error = ref(false);
-  const platformApi = configureApi(PlatformApi);
+  const { platformApi } = useApi();
 
   function fetchProfileData() {
     user.value = null;
@@ -36,7 +30,7 @@ export function useProfile(username: string | Ref) {
 export function useStats() {
   const stats = ref<PlatformStats | null>(null);
   const error = ref(false);
-  const adminApi = configureApi(AdminApi);
+  const { adminApi } = useApi();
 
   function load() {
     stats.value = null;
@@ -56,7 +50,7 @@ export function useStats() {
 export function useUsers() {
   const users = ref<Array<UserRead> | null>(null);
   const error = ref(false);
-  const adminApi = configureApi(AdminApi);
+  const { adminApi } = useApi();
 
   function load() {
     users.value = null;

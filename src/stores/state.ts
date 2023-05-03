@@ -2,17 +2,17 @@ import { ref, computed, watch } from 'vue';
 import { defineStore } from 'pinia';
 import { useWindowSize } from '@vueuse/core';
 import type { RouteLocationNormalized } from 'vue-router';
-import { usePlatformStore } from '@/stores';
 import { i18n, setI18nLocale } from '@/i18n';
 import type { AvailableLocale } from '@/i18n';
 import { useRoute } from 'vue-router';
 import type { TextRead } from '@/openapi';
 import type { ThemeMode } from '@/theme';
 import { useI18n } from 'vue-i18n';
+import { usePlatformData } from '@/platformData';
 
 export const useStateStore = defineStore('state', () => {
   // define resources
-  const pf = usePlatformStore();
+  const { pfData } = usePlatformData();
   const route = useRoute();
   const windowSize = useWindowSize();
   const { t, te } = useI18n({ useScope: 'global' });
@@ -45,8 +45,8 @@ export const useStateStore = defineStore('state', () => {
     if ('text' in after.params && after.params.text && text.value?.slug !== after.params.text) {
       // use text from route OR default text
       text.value =
-        pf.data?.texts.find((t) => t.slug === after.params.text) ||
-        pf.data?.texts.find((t) => t.id === pf.data?.settings.defaultTextId);
+        pfData.value?.texts.find((t) => t.slug === after.params.text) ||
+        pfData.value?.texts.find((t) => t.id === pfData.value?.settings.defaultTextId);
     }
   });
   watch(text, () => {
@@ -58,9 +58,9 @@ export const useStateStore = defineStore('state', () => {
   const fallbackText = computed(
     () =>
       text.value ||
-      pf.data?.texts.find((t) => t.slug == localStorage.getItem('text')) ||
-      pf.data?.texts.find((t) => t.id === pf.data?.settings.defaultTextId) ||
-      pf.data?.texts[0]
+      pfData.value?.texts.find((t) => t.slug == localStorage.getItem('text')) ||
+      pfData.value?.texts.find((t) => t.id === pfData.value?.settings.defaultTextId) ||
+      pfData.value?.texts[0]
   );
 
   // global loading state
@@ -89,7 +89,7 @@ export const useStateStore = defineStore('state', () => {
       ? t(`routes.pageTitle.${String(r.name)}`)
       : '';
     const tTitle = 'text' in r.params && text.value?.title && ` "${text.value?.title}"`;
-    const pfName = pf.data?.info?.platformName ? ` | ${pf.data?.info?.platformName}` : '';
+    const pfName = pfData.value?.info?.platformName ? ` | ${pfData.value?.info?.platformName}` : '';
     document.title = `${rTitle || ''}${tTitle || ''}${pfName}`;
   }
 

@@ -1,14 +1,17 @@
 import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
-import { AuthApi, UsersApi, type UserRead } from '@/openapi';
-import { useMessagesStore, usePlatformStore } from '@/stores';
-import router from '@/router';
-import { configureApi } from '@/openApiConfig';
-import { useIntervalFn } from '@vueuse/core';
+import type { ErrorModel, UserRead } from '@/openapi';
+import { useMessages } from '@/messages';
+import { useApi } from '@/api';
 import { i18n } from '@/i18n';
+import { useIntervalFn } from '@vueuse/core';
+import { useRouter, type RouteLocationRaw } from 'vue-router';
+import type { AxiosError } from 'axios';
+import { createTemplatePromise } from '@vueuse/core';
 
-const authApi = configureApi(AuthApi);
-const usersApi = configureApi(UsersApi);
+const SESSION_POLL_INTERVAL_S = 10; // TEMPORARY FOR DEV: Should be 60 or even 300
+const SESSION_EXPIRY_OFFSET_S = 1; // TEMPORARY FOR DEV: Should be 10 or even 30
+const SESSION_WARN_AHEAD_S = 300;
 
 function getUserFromLocalStorage(): UserRead | null {
   const storageData = localStorage.getItem('user');
@@ -16,97 +19,146 @@ function getUserFromLocalStorage(): UserRead | null {
   return JSON.parse(storageData) as UserRead;
 }
 
-function useCookieCountdown(cb: () => {}, startNow: boolean = false) {
-  const WARN_MINS_BEFORE_COOKIE_EXPIRY = [1, 3, 5, 10];
+const { pause: _stopSessionCheck, resume: _startSessionCheck } = useIntervalFn(
+  () => {
+    const { checkSession } = useAuthStore();
+    checkSession();
+  },
+  SESSION_POLL_INTERVAL_S * 1000,
+  { immediate: true, immediateCallback: false }
+);
 
-  const pf = usePlatformStore();
-  const messages = useMessagesStore();
-  const { t } = i18n.global;
-
-  const authCookieExpiryMs = ref(Number(localStorage.getItem('authCookieExpiry') || -1));
-  let warnAheadMinutes = [...WARN_MINS_BEFORE_COOKIE_EXPIRY];
-  const getCookieExpiry = () =>
-    Date.now() + (pf.data?.security?.authCookieLifetime || 0) * 1000 - 10000;
-
-  const { pause: pauseInterval, resume: resumeInterval } = useIntervalFn(
-    () => {
-      const now = Date.now();
-      // check if expired
-      if (now > authCookieExpiryMs.value) {
-        cb();
-        return;
-      }
-      // check and warn if expiration is near
-      for (const mins of warnAheadMinutes) {
-        if ((authCookieExpiryMs.value - now) / 1000 / 60 < mins) {
-          warnAheadMinutes.splice(warnAheadMinutes.indexOf(mins));
-          messages.warning(t('user.autoLogout', { minutes: mins }), 30);
-          return;
-        }
-      }
-    },
-    5000,
-    { immediate: startNow }
-  );
-
-  const startCookieCountdown = () => {
-    authCookieExpiryMs.value = getCookieExpiry();
-    localStorage.setItem('authCookieExpiry', String(authCookieExpiryMs.value));
-    warnAheadMinutes = [...WARN_MINS_BEFORE_COOKIE_EXPIRY];
-    resumeInterval();
-  };
-
-  const stopCookieCountdown = () => {
-    authCookieExpiryMs.value = -1;
-    localStorage.removeItem('authCookieExpiry');
-    warnAheadMinutes = [];
-    pauseInterval();
-  };
-
-  return {
-    startCookieCountdown,
-    stopCookieCountdown,
-  };
-}
+export const LoginTemplatePromise = createTemplatePromise<
+  // promise resolve type
+  boolean,
+  // extra args
+  [
+    // login modal message
+    string | undefined,
+    // route to change to after login
+    RouteLocationRaw | undefined,
+    // display register button
+    boolean
+  ]
+>();
 
 export const useAuthStore = defineStore('auth', () => {
-  const messages = useMessagesStore();
+  // const { pfData } = usePlatformData();
+  const router = useRouter();
+  const { message } = useMessages();
+  const { authApi, usersApi } = useApi();
   const { t } = i18n.global;
 
   const user = ref<UserRead | null>(getUserFromLocalStorage());
   const returnUrl = ref<string | null>(null);
   const loggedIn = computed(() => !!user.value);
 
-  // observe auth cookie expiry
-  const { startCookieCountdown, stopCookieCountdown } = useCookieCountdown(logout, loggedIn.value);
+  const sessionExpiryTsSec = ref(
+    Number(localStorage.getItem('sessionExpiryS') || Number.MAX_SAFE_INTEGER)
+  );
 
-  // login
-  async function login(username: string, password: string) {
-    return authApi.authCookieLogin({ username, password }).then(async () => {
-      // receive and save user data
-      user.value = (await usersApi.usersCurrentUser()).data;
-      user.value && localStorage.setItem('user', JSON.stringify(user.value));
-      // start cookie expiry monitoring
-      startCookieCountdown();
-      return user.value;
-    });
+  function _setCookieExpiry() {
+    // sessionExpiryTsSec.value = (pfData.value?.security?.authCookieLifetime || 0) - SESSION_EXPIRY_OFFSET_EARLY;
+    sessionExpiryTsSec.value = Date.now() / 1000 + 30 - SESSION_EXPIRY_OFFSET_S;
+    localStorage.setItem('sessionExpiryS', String(sessionExpiryTsSec.value));
   }
 
-  // logout
+  function _unsetCookieExpiry() {
+    sessionExpiryTsSec.value = Number.MAX_SAFE_INTEGER;
+    localStorage.removeItem('sessionExpiryS');
+  }
+
+  async function _renewExpiredSession() {
+    message.warning(t('account.sessionExpired'));
+    _cleanupSession();
+    if (!(await showLoginModal(t('account.renewLogin'), router.currentRoute.value, false))) {
+      router.push({ name: 'home' });
+    }
+  }
+
+  function _cleanupSession() {
+    user.value = null;
+    localStorage.removeItem('user');
+    _unsetCookieExpiry();
+    _stopSessionCheck();
+  }
+
+  function _sessionExpiresInS() {
+    return sessionExpiryTsSec.value - Date.now() / 1000;
+  }
+
+  function checkSession() {
+    const timeLeftS = _sessionExpiresInS();
+    if (timeLeftS <= 0) {
+      _renewExpiredSession();
+      return;
+    } else if (timeLeftS <= SESSION_WARN_AHEAD_S) {
+      const minutes = Math.floor(timeLeftS / 60);
+      const seconds = Math.round(timeLeftS % 60);
+      message.warning(t('account.autoLogout', { minutes, seconds }), 30);
+    }
+  }
+
+  async function showLoginModal(
+    message: string | undefined = undefined,
+    nextRoute: RouteLocationRaw = { name: 'home' },
+    showRegisterLink: boolean = true
+  ) {
+    try {
+      return await LoginTemplatePromise.start(message, nextRoute, showRegisterLink);
+    } catch {
+      console.log('Login cancelled');
+      return false;
+    }
+  }
+
+  async function login(
+    username: string,
+    password: string,
+    nextRoute: RouteLocationRaw | null | undefined
+  ) {
+    try {
+      await authApi.authCookieLogin({ username, password }, { headers: { is_login: true } });
+      _setCookieExpiry();
+      _startSessionCheck();
+      const userData = (await usersApi.usersCurrentUser()).data;
+      userData && localStorage.setItem('user', JSON.stringify(user.value));
+      user.value = userData;
+      message.success(t('general.welcome', { name: userData.firstName }));
+      nextRoute && router.push(nextRoute);
+      return true;
+    } catch (e) {
+      /**
+       * Unfortunately, the errors returned by the endpoints generated by
+       * FastAPI-Users have a weird custom model that we have to handle here...
+       */
+      const error = e as AxiosError;
+      if (error.response) {
+        const data = error.response.data as ErrorModel;
+        if (data.detail === 'LOGIN_BAD_CREDENTIALS') {
+          message.error(t('account.errors.badCreds'));
+        } else if (data.detail === 'LOGIN_USER_NOT_VERIFIED') {
+          message.error(t('account.errors.notVerified'));
+        } else if (error.response.status === 403) {
+          message.error(t('errors.csrf'));
+        } else {
+          message.error(t('errors.unexpected'));
+        }
+      } else {
+        message.error(t('errors.unexpected'));
+      }
+      _cleanupSession();
+      return false;
+    }
+  }
+
   async function logout() {
     try {
       await authApi.authCookieLogout();
-      messages.success(t('user.logoutSuccessful'));
-    } catch (e) {
-      // do sweet FA
+      message.success(t('account.logoutSuccessful'));
     } finally {
-      // remove user and auth data
-      user.value = null;
-      localStorage.removeItem('user');
-      // stop cookie expiry monitoring
-      stopCookieCountdown();
-      // redirect to login view
-      router.push({ name: 'login' });
+      _cleanupSession();
+      router.push({ name: 'home' });
     }
   }
 
@@ -114,7 +166,9 @@ export const useAuthStore = defineStore('auth', () => {
     user,
     loggedIn,
     returnUrl,
+    showLoginModal,
     login,
     logout,
+    checkSession,
   };
 });

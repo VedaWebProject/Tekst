@@ -3,15 +3,15 @@ import { useUsers } from '@/fetchers';
 import type { DataTableColumn, PaginationProps } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import { NDataTable, NIcon, NModal, NCheckbox } from 'naive-ui';
-import { UsersApi, type UserRead, type UserUpdate } from '@/openapi';
+import type { UserRead, UserUpdate } from '@/openapi';
 import { ref, h, type Component } from 'vue';
-import { configureApi } from '@/openApiConfig';
-import { useMessagesStore } from '@/stores';
+import { useMessages } from '@/messages';
 
 import CheckRound from '@vicons/material/CheckRound';
 import ClearRound from '@vicons/material/ClearRound';
 import ShieldTwotone from '@vicons/material/ShieldTwotone';
 import ManageAccountsRound from '@vicons/material/ManageAccountsRound';
+import { useApi } from '@/api';
 
 const { users, error, load: loadUsers } = useUsers();
 const { t } = useI18n({ useScope: 'global' });
@@ -30,8 +30,8 @@ interface UserUpdatePayload {
   username?: string;
   updates: UserUpdate;
 }
-const usersApi = configureApi(UsersApi);
-const messages = useMessagesStore();
+const { usersApi } = useApi();
+const { message } = useMessages();
 const showUserUpdateModal = ref(false);
 const emptyUserUpdatePayload: UserUpdatePayload = { updates: {} };
 const userUpdatesPayload = ref<UserUpdatePayload>(emptyUserUpdatePayload);
@@ -61,9 +61,9 @@ const handleSaveUserUpdate = async () => {
       id: userUpdatesPayload.value.id,
       userUpdate: userUpdatesPayload.value.updates,
     });
-    messages.success(t('admin.users.save', { username: userUpdatesPayload.value.username }));
+    message.success(t('admin.users.save', { username: userUpdatesPayload.value.username }));
   } catch {
-    messages.error(t('errors.unexpected'));
+    message.error(t('errors.unexpected'));
   } finally {
     loadUsers();
     handleCloseUserUpdate();
@@ -73,33 +73,33 @@ const handleSaveUserUpdate = async () => {
 const columns: Array<DataTableColumn> = [
   {
     key: 'email',
-    title: t('user.fields.email'),
+    title: t('account.fields.email'),
     sorter: 'default',
   },
   {
     key: 'username',
-    title: t('user.fields.username'),
+    title: t('account.fields.username'),
     defaultSortOrder: 'ascend',
     sorter: 'default',
   },
   {
     key: 'firstName',
-    title: t('user.fields.firstName'),
+    title: t('account.fields.firstName'),
     sorter: 'default',
   },
   {
     key: 'lastName',
-    title: t('user.fields.lastName'),
+    title: t('account.fields.lastName'),
     sorter: 'default',
   },
   {
     key: 'affiliation',
-    title: t('user.fields.affiliation'),
+    title: t('account.fields.affiliation'),
     sorter: 'default',
   },
   {
     key: 'isActive',
-    title: t('user.fields.active'),
+    title: t('account.fields.active'),
     render: (u) => (u.isActive ? iconCheck : iconCross),
     align: 'center',
     // @ts-ignore
@@ -107,7 +107,7 @@ const columns: Array<DataTableColumn> = [
   },
   {
     key: 'isVerified',
-    title: t('user.fields.verified'),
+    title: t('account.fields.verified'),
     render: (u) => (u.isVerified ? iconCheck : iconCross),
     align: 'center',
     // @ts-ignore
@@ -115,7 +115,7 @@ const columns: Array<DataTableColumn> = [
   },
   {
     key: 'isSuperuser',
-    title: t('user.fields.superuser'),
+    title: t('account.fields.superuser'),
     render: (u) => (u.isSuperuser ? iconSuperuser : null),
     align: 'center',
     // @ts-ignore

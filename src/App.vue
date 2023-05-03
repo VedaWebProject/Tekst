@@ -10,6 +10,7 @@ import { useTheme } from '@/theme';
 import PageHeader from './layout/PageHeader.vue';
 import PageFooter from './layout/PageFooter.vue';
 import { useInitializeApp } from '@/init';
+import LoginModal from '@/components/LoginModal.vue';
 
 const state = useStateStore();
 const themeVars = useThemeVars();
@@ -51,6 +52,7 @@ const nUiDateLocale = computed(() => localeProfiles[state.locale].nUiDateLocale)
       />
       <GlobalMessenger />
     </div>
+    <LoginModal />
     <n-back-top :visibility-height="200" />
     <n-global-style />
   </n-config-provider>

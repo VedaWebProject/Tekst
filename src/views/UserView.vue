@@ -21,7 +21,7 @@ const { user, error } = useProfile(username);
 </script>
 
 <template>
-  <h1>{{ $t('user.profileHeading', { username }) }}</h1>
+  <h1>{{ $t('account.profileHeading', { username }) }}</h1>
   <div v-if="user && !error" class="content-block">
     <ul>
       <li v-if="user?.username">
@@ -50,6 +50,6 @@ const { user, error } = useProfile(username);
 
   <div v-else class="content-block">
     <h1>Oops... {{ $t('errors.error') }}!</h1>
-    {{ $t('user.profileNotFound', { username }) }}
+    {{ $t('account.profileNotFound', { username }) }}
   </div>
 </template>
