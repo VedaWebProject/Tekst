@@ -26,7 +26,7 @@
   border-bottom: 2px solid transparent;
 }
 
-.secondary-navbar .navbar-router-link.router-link-exact-active {
-  border-bottom: 2px solid var(--accent-color);
+.secondary-navbar .navbar-router-link.router-link-active {
+  border-bottom: 1px solid var(--accent-color);
 }
 </style>

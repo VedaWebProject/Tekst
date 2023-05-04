@@ -24,6 +24,9 @@ const RegisterView = () => import('@/views/RegisterView.vue');
 const AdminView = () => import('@/views/admin/AdminView.vue');
 const AdminStatisticsView = () => import('@/views/admin/AdminStatisticsView.vue');
 const AdminUsersView = () => import('@/views/admin/AdminUsersView.vue');
+const AdminTextsView = () => import('@/views/admin/AdminTextsView.vue');
+const AdminTextsGeneralView = () => import('@/views/admin/AdminTextsGeneralView.vue');
+const AdminTextsStructureView = () => import('@/views/admin/AdminTextsStructureView.vue');
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -73,7 +76,7 @@ const router = createRouter({
       },
       children: [
         {
-          path: '',
+          path: 'profile',
           name: 'accountProfile',
           component: UserView,
         },
@@ -92,7 +95,7 @@ const router = createRouter({
       },
       children: [
         {
-          path: '',
+          path: 'statistics',
           name: 'adminStatistics',
           component: AdminStatisticsView,
         },
@@ -100,6 +103,25 @@ const router = createRouter({
           path: 'users',
           name: 'adminUsers',
           component: AdminUsersView,
+        },
+        {
+          path: 'texts/:text',
+          component: AdminTextsView,
+          meta: {
+            isTextSpecific: true,
+          },
+          children: [
+            {
+              path: '',
+              name: 'adminTexts',
+              component: AdminTextsGeneralView,
+            },
+            {
+              path: 'structure',
+              name: 'adminTextsStructure',
+              component: AdminTextsStructureView,
+            },
+          ],
         },
       ],
     },

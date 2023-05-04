@@ -72,6 +72,7 @@ routes:
     accountManage: 'Benutzerkonto: Benutzerdaten'
     adminStatistics: 'Admin: Statistiken'
     adminUsers: 'Admin: Benutzer'
+    adminTexts: 'Admin: Texte'
 
 internals:
   user: Benutzer
@@ -208,6 +209,12 @@ admin:
     editModal:
       accountStatus: Konto-Status
       adminWarning: Vorsicht! Sie sollten wissen, was Sie tun!
+  texts:
+    heading: Texte
+    general:
+      heading: Allgemeine Einstellungen
+    structure:
+      heading: Struktur
 
 search:
   heading: Suche

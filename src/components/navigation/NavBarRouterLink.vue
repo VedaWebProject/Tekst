@@ -51,7 +51,7 @@ const themeVars = useThemeVars();
   color: var(--accent-color-fade1);
 }
 
-.navbar-router-link.router-link-exact-active {
+.navbar-router-link.router-link-active {
   color: var(--accent-color);
 }
 </style>

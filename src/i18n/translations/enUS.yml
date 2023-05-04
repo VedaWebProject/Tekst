@@ -71,6 +71,7 @@ routes:
     accountManage: 'Account: Manage'
     adminStatistics: 'Admin: Statistics'
     adminUsers: 'Admin: Users'
+    adminTexts: 'Admin: Texts'
 
 internals:
   user: User
@@ -207,6 +208,12 @@ admin:
     editModal:
       accountStatus: Account status
       adminWarning: Careful! You better know what you are doing!
+  texts:
+    heading: Texts
+    general:
+      heading: General Settings
+    structure:
+      heading: Structure
 
 search:
   heading: Search
