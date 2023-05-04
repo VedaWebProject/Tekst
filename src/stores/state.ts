@@ -33,10 +33,9 @@ export const useStateStore = defineStore('state', () => {
   });
   const locales = i18n.global.availableLocales;
   async function setLocale(l: string = locale.value): Promise<AvailableLocale> {
-    return setI18nLocale(l).then((lang: AvailableLocale) => {
-      locale.value = lang.key;
-      return lang;
-    });
+    const lang = await setI18nLocale(l);
+    locale.value = lang.key;
+    return lang;
   }
 
   // current text

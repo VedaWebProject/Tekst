@@ -7,7 +7,7 @@ import { useMessages } from '@/messages';
 import { usePlatformData } from '@/platformData';
 
 interface InitStep {
-  info: string;
+  info: () => string;
   action: (success: boolean) => Promise<boolean>;
 }
 
@@ -25,7 +25,7 @@ export function useInitializeApp() {
   const initSteps: InitStep[] = [
     // set global loading state, start process
     {
-      info: '',
+      info: () => '',
       action: async () => {
         state.startGlobalLoading();
         return true;
@@ -33,7 +33,7 @@ export function useInitializeApp() {
     },
     // load i18n data from server
     {
-      info: t('init.serverI18n'),
+      info: () => t('init.serverI18n'),
       action: async (success: boolean) => {
         try {
           await state.setLocale();
@@ -47,7 +47,7 @@ export function useInitializeApp() {
     },
     // load platform data from server
     {
-      info: t('init.platformData'),
+      info: () => t('init.platformData'),
       action: async (success: boolean) => {
         try {
           await loadPlatformData();
@@ -61,7 +61,7 @@ export function useInitializeApp() {
     },
     // set up initial working text
     {
-      info: t('init.workingText'),
+      info: () => t('init.workingText'),
       action: async (success: boolean) => {
         state.text =
           pfData.value?.texts.find((t) => t.slug === route.params.text) ||
@@ -84,7 +84,7 @@ export function useInitializeApp() {
     },
     // finish global loading, end process
     {
-      info: '',
+      info: () => t('init.ready'),
       action: async (success: boolean) => {
         initialized.value = true;
         state.globalLoadingProgress = 1;
@@ -96,7 +96,7 @@ export function useInitializeApp() {
 
   const { result } = useAsyncQueue(
     initSteps.map((step: InitStep, i: number) => (success: boolean) => {
-      state.globalLoadingMsg = step.info;
+      state.globalLoadingMsg = step.info();
       state.globalLoadingProgress = i / initSteps.length;
       return step.action(success);
     })

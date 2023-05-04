@@ -45,6 +45,16 @@ export const localeProfiles: { [localeKey: string]: AvailableLocale } = {
 export const i18n = createI18n(i18nOptions);
 const { platformApi } = useApi();
 
+// set initial i18n locale
+// @ts-ignore
+i18n.global.locale.value = localStorage.getItem('locale') || 'enUS';
+
+async function loadServerTranslations(locale: string) {
+  await platformApi.getTranslations({ lang: locale }).then((response) => {
+    i18n.global.mergeLocaleMessage(locale, { server: response.data });
+  });
+}
+
 export async function setI18nLocale(
   locale: I18nOptions['locale'] = i18n.global.locale
 ): Promise<AvailableLocale> {
@@ -57,10 +67,7 @@ export async function setI18nLocale(
   }
 
   if (!i18n.global.te('server', l)) {
-    // server data has to be loaded
-    await platformApi.getTranslations({ lang: l }).then((response) => {
-      i18n.global.mergeLocaleMessage(l, { server: response.data });
-    });
+    await loadServerTranslations(l);
   }
 
   // @ts-ignore
