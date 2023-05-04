@@ -53,7 +53,7 @@ To deploy Tekst with Docker, follow these steps (example commands assume using s
 
 4. Configure the values in `.env` to match your deployment environment and needed features. Use the comments in those files for guidance. If you leave everything unchanged, Tekst will run with sensible defaults for a full-featured, Docker-based production environment served at `/` (root path). By default, the application will later be available via the local port `8087` at `127.0.0.1`.
 
-5. Build the docker images for the **tekst-api** (server) and **tekst-web** (client) applications. **Important:** Whenever you decide to change one of `TEKST_WEB_PATH`, `TEKST_SERVER_URL` or `TEKST_API_PATH` in your `.env` file, you'll have to build the image for **tekst-web** (client) again, as these values are statically replaced in the code during the build process!
+5. Build the docker images for the **Tekst-API** (server) and **Tekst-Web** (client) applications. **Important:** Whenever you decide to change one of `TEKST_WEB_PATH`, `TEKST_SERVER_URL` or `TEKST_API_PATH` in your `.env` file, you'll have to build the image for **Tekst-Web** (client) again, as these values are statically replaced in the code during the build process!
 
     ```sh
     docker compose build tekst-api tekst-web
