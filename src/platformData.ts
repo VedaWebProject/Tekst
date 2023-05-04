@@ -1,4 +1,4 @@
-import { readonly, ref } from 'vue';
+import { ref } from 'vue';
 import type { PlatformData } from '@/openapi';
 import { useApi } from '@/api';
 
@@ -6,7 +6,7 @@ const data = ref<PlatformData>();
 
 export function usePlatformData() {
   const { platformApi } = useApi();
-  const pfData = readonly(data);
+  const pfData = data;
 
   async function loadPlatformData() {
     return platformApi.getPlatformData().then((response) => {
