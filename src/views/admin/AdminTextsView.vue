@@ -17,7 +17,13 @@ function handleTabSwitch(selectedTabName: string) {
 
   <div class="content-block">
     <h2>{{ state.text?.title }}</h2>
-    <n-tabs type="card" default-value="adminTexts" size="large" @update:value="handleTabSwitch">
+    <n-tabs
+      type="card"
+      default-value="adminTexts"
+      size="large"
+      tab-style="font-weight: var(--app-ui-font-weight-normal)"
+      @update:value="handleTabSwitch"
+    >
       <n-tab name="adminTexts">{{ $t('admin.texts.general.heading') }}</n-tab>
       <n-tab name="adminTextsStructure">{{ $t('admin.texts.structure.heading') }}</n-tab>
     </n-tabs>
