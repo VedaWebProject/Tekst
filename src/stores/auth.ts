@@ -158,6 +158,8 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       await authApi.authCookieLogout();
       message.success(t('account.logoutSuccessful'));
+    } catch {
+      // do sweet FA
     } finally {
       _cleanupSession();
       router.push({ name: 'home' });
