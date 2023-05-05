@@ -3466,20 +3466,17 @@
           "name": {
             "title": "Name",
             "type": "string",
-            "default": "Tekst",
-            "const": "Tekst"
+            "default": "Tekst"
           },
           "version": {
             "title": "Version",
             "type": "string",
-            "default": "0.0.1",
-            "const": "0.0.1"
+            "default": "0.0.1"
           },
           "description": {
             "title": "Description",
             "type": "string",
-            "default": "An online text research platform",
-            "const": "An online text research platform"
+            "default": "An online text research platform"
           },
           "website": {
             "title": "Website",
@@ -3487,14 +3484,12 @@
             "minLength": 1,
             "type": "string",
             "format": "uri",
-            "default": "https://github.com/VedaWebProject/tekst-api",
-            "const": "https://github.com/VedaWebProject/tekst-api"
+            "default": "https://github.com/VedaWebProject/tekst-api"
           },
           "license": {
             "title": "License",
             "type": "string",
-            "default": "AGPL-3.0-or-later",
-            "const": "AGPL-3.0-or-later"
+            "default": "AGPL-3.0-or-later"
           },
           "licenseUrl": {
             "title": "Licenseurl",
@@ -3502,8 +3497,7 @@
             "minLength": 1,
             "type": "string",
             "format": "uri",
-            "default": "https://www.gnu.org/licenses/agpl-3.0.txt",
-            "const": "https://www.gnu.org/licenses/agpl-3.0.txt"
+            "default": "https://www.gnu.org/licenses/agpl-3.0.txt"
           }
         },
         "description": "Tekst platform information config model\n\nThese values are not configurable. They are taken from the package infos and\naren't meant to be changed by users creating an own instance of the platform."

@@ -97,12 +97,12 @@ class TekstInfoConfig(ModelBase):
     aren't meant to be changed by users creating an own instance of the platform.
     """
 
-    name: str = Field("Tekst", const=True)
-    version: str = Field(pkg_meta["version"], const=True)
-    description: str = Field(pkg_meta["description"], const=True)
-    website: HttpUrl = Field(pkg_meta["website"], const=True)
-    license: str = Field(pkg_meta["license"], const=True)
-    license_url: HttpUrl = Field(pkg_meta["license_url"], const=True)
+    name: str = Field("Tekst")
+    version: str = Field(pkg_meta["version"])
+    description: str = Field(pkg_meta["description"])
+    website: HttpUrl = Field(pkg_meta["website"])
+    license: str = Field(pkg_meta["license"])
+    license_url: HttpUrl = Field(pkg_meta["license_url"])
 
 
 class SecurityConfig(ModelBase):
