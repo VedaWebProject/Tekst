@@ -25,19 +25,19 @@ const { user, error } = useProfile(username);
   <div v-if="user && !error" class="content-block">
     <ul>
       <li v-if="user?.username">
-        <b>{{ $t('register.labels.username') }}:</b> {{ user.username }}
+        <b>{{ $t('models.user.username') }}:</b> {{ user.username }}
       </li>
       <li v-if="user?.email">
-        <b>{{ $t('register.labels.email') }}:</b> {{ user.email }}
+        <b>{{ $t('models.user.email') }}:</b> {{ user.email }}
       </li>
       <li v-if="user?.firstName">
-        <b>{{ $t('register.labels.firstName') }}:</b> {{ user.firstName }}
+        <b>{{ $t('models.user.firstName') }}:</b> {{ user.firstName }}
       </li>
       <li v-if="user?.lastName">
-        <b>{{ $t('register.labels.lastName') }}:</b> {{ user.lastName }}
+        <b>{{ $t('models.user.lastName') }}:</b> {{ user.lastName }}
       </li>
       <li v-if="user?.affiliation">
-        <b>{{ $t('register.labels.affiliation') }}:</b> {{ user.affiliation }}
+        <b>{{ $t('models.user.affiliation') }}:</b> {{ user.affiliation }}
       </li>
     </ul>
   </div>

@@ -34,14 +34,14 @@ const formRules: FormRules = {
   email: [
     {
       required: true,
-      message: t('account.rulesFeedback.emailReq'),
+      message: () => t('forms.rulesFeedback.isRequired', { x: t('models.user.email') }),
       // trigger: 'blur',
     },
   ],
   password: [
     {
       required: true,
-      message: t('account.rulesFeedback.passwordReq'),
+      message: () => t('forms.rulesFeedback.isRequired', { x: t('models.user.password') }),
       trigger: 'blur',
     },
   ],
@@ -90,7 +90,7 @@ onMounted(() => {
     <n-modal
       show
       preset="card"
-      size="small"
+      size="large"
       class="tekst-modal"
       @close="reject(null)"
       @mask-click="reject(null)"
@@ -98,7 +98,7 @@ onMounted(() => {
       closable
       embedded
     >
-      <div class="form-container" style="margin-bottom: 2rem">
+      <div class="form-container" style="margin-bottom: 1rem">
         <h2 style="text-align: center">{{ $t('account.login.heading') }}</h2>
         <div v-show="args[0]" class="login-message">{{ args[0] }}</div>
         <n-form
@@ -109,20 +109,20 @@ onMounted(() => {
           label-width="auto"
           require-mark-placement="right-hanging"
         >
-          <n-form-item path="email" :label="$t('account.fields.email')">
+          <n-form-item path="email" :label="$t('models.user.email')">
             <n-input
               v-model:value="formModel.email"
               type="text"
-              :placeholder="$t('account.fields.email')"
+              :placeholder="$t('models.user.email')"
               @keydown.enter.prevent
               ref="firstInputRef"
             />
           </n-form-item>
-          <n-form-item path="password" :label="$t('account.fields.password')">
+          <n-form-item path="password" :label="$t('models.user.password')">
             <n-input
               v-model:value="formModel.password"
               type="password"
-              :placeholder="$t('account.fields.password')"
+              :placeholder="$t('models.user.password')"
               @keyup.enter="handleLoginClick(resolve, args[1])"
             />
           </n-form-item>

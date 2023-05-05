@@ -14,7 +14,7 @@ watch(
     (browseLocationLabel.value = after
       .map((n, i) => {
         const lvlLabel = state.text?.levels[i];
-        const nodePrefix = state.text?.labeledLevels && lvlLabel ? `${lvlLabel}: ` : '';
+        const nodePrefix = state.text?.labeledLocation && lvlLabel ? `${lvlLabel}: ` : '';
         return n.label ? `${nodePrefix}${n.label}` : '';
       })
       .join(state.text?.locDelim || ', '))

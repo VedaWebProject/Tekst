@@ -75,30 +75,8 @@ routes:
     adminUsers: 'Admin: Benutzer'
     adminTexts: 'Admin: Texte'
 
-internals:
-  user: Benutzer
-  users: Benutzer
-  text: Text
-  texts: Texte
-  node: Text-Knoten
-  nodes: Text-Knoten
-  layer: Datenschicht
-  layers: Datenschichten
-  unit: Daten-Einheit
-  units: Daten-Einheiten
-
 layerTypes:
   plaintext: Einfacher Text
-
-meta:
-  author: Autor
-  year: Jahr
-  language: Sprache
-  layerType: Datenschicht-Typ
-  metadata: Metadaten
-  baseData: Basisdaten
-  extraData: Andere
-  comment: Kommentar
 
 browse:
   location:
@@ -118,6 +96,13 @@ browse:
     widgets:
       tipDeepLTranslate: DeepL-Übersetzung öffnen
 
+forms:
+  rulesFeedback:
+    minChars: 'Mindestens {min} Zeichen'
+    minMaxChars: '{min} bis {max} Zeichen'
+    isRequired: '{x} wird benötigt'
+    user:
+
 register:
   register: Registrieren
   switchToLogin: Mit bestehendem Konto anmelden
@@ -125,35 +110,56 @@ register:
   success: Erfolgreich registriert.
   activationNeededHint: Sie werden sich erst anmelden können, wenn Ihr Konto von uns aktiviert wurde. Sie werden darüber per Email benachrichtigt.
   activationNotNeededHint: Sie können sich jetzt anmelden.
-  labels:
-    email: Email
-    username: Benutzername
-    password: Passwort
-    repeatPassword: Passwort wiederholen
-    firstName: Vorname
-    lastName: Nachname
-    affiliation: Zugehörigkeit
+  repeatPassword: '@:models.user.password wiederholen'
   rulesFeedback:
-    emailReq: Email-Adresse wird benötigt
-    emailInvalid: Email-Adresse ist zu offensichtlich ungültig
-    usernameReq: Benutzername wird benötigt
-    usernameLength: 4 bis 16 Zeichen
+    emailInvalid: '@:models.user.email ist zu offensichtlich ungültig'
     usernameChars: 'Erlaubte Zeichen: a-z, A-Z, 0-9 und - _'
-    passwordReq: Passwort wird benötigt
-    passwordLength: Mindestens 8 Zeichen
     passwordChars: 'Mindestens je ein Zeichen aus: a-z, A-Z and 0-9'
     passwordRepReq: Passwort muss wiederholt werden
     passwordRepNoMatch: Passwörter stimmen nicht überein
-    firstNameReq: Vorname wird benötigt
-    firstNameLength: 1 bis 32 Zeichen
-    lastNameReq: Nachname wird benötigt
-    lastNameLength: 1 bis 32 Zeichen
-    affiliationReq: Zugehörigkeit wird benötigt
-    affiliationLength: 4 bis 64 Zeichen
   errors:
     emailAlreadyRegistered: Diese Email-Adresse ist bereits registriert.
     usernameAlreadyRegistered: Dieser Benutzername ist bereits vergeben.
     weakPassword: Das eingegebene Passwort entspricht nicht den Sicherheitsanforderungen.
+
+models:
+  user:
+    modelLabel: Benutzer | Benutzer
+    email: Email-Adresse
+    username: Benutzername
+    password: Passwort
+    firstName: Vorname
+    lastName: Nachname
+    affiliation: Zugehörigkeit
+    active: Aktiv
+    verified: Verifiziert
+    superuser: Admin
+  text:
+    modelLabel: Text | Texte
+    title: Titel
+    slug: Identifikator
+    subtitle: Untertitel
+    levels: Strukturebenen
+    defaultLevel: Standard-Strukturebene
+    locDelim: Fundstellen-Trennzeichen
+    labeledLocation: Beschriftete Fundstelle
+    accentColor: Akzent-Farbe
+  node:
+    modelLabel: Text-Knoten | Text-Knoten
+  layer:
+    modelLabel: Datenschicht | Datenschichten
+    layerType: Datenschicht-Typ
+  unit:
+    modelLabel: Daten-Einheit | Daten-Einheiten
+  meta:
+    modelLabel: Metadaten
+    author: Autor
+    year: Jahr
+    language: Sprache
+    layerType: '@:models.layer.layerType'
+    baseData: Basisdaten
+    extraData: Andere
+    comment: Kommentar
 
 account:
   loginBtn: Anmelden
@@ -173,22 +179,9 @@ account:
   forgotPassword: Ich habe mein Passwort vergessen
   login:
     heading: Melden Sie sich an
-  rulesFeedback:
-    emailReq: Email-Adresse wird benötigt
-    passwordReq: Passwort wird benötigt
   errors:
-    badCreds: Falsche Email-Adresse oder falsches Passwort oder Konto noch nicht aktiviert
+    badCreds: Falsche Email-Adresse/Passwort oder Konto noch nicht aktiviert
     notVerified: Ihre Email-Adresse ist noch nicht verifiziert. Wir haben Ihren Verifizierungslink nochmals versendet.
-  fields:
-    email: Email
-    username: Benutzername
-    password: Passwort
-    firstName: Vorname
-    lastName: Nachname
-    affiliation: Zugehörigkeit
-    active: Aktiv
-    verified: Verifiziert
-    superuser: Admin
   autoLogout: Ihre Sitzung endet automatisch in {minutes} Minuten und {seconds} Sekunden. Melden Sie sich ab und wieder an, um Ihre Sitzung jetzt zu erneuern.
   sessionExpired: Ihre Sitzung ist abgelaufen.
   renewLogin: Melden Sie sich wieder an, um Ihre Sitzung zu erneuern.

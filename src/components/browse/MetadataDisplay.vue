@@ -17,7 +17,7 @@ const meta = computed<string[][] | null>(() => {
   priority
     .filter((p: string) => p in data)
     .forEach((p: string) => {
-      m.push([te(`meta.${p}`) ? t(`meta.${p}`) : p, data[p]]);
+      m.push([te(`models.meta.${p}`) ? t(`models.meta.${p}`) : p, data[p]]);
     });
 
   return m.length > 0 ? m : null;
@@ -29,7 +29,7 @@ const metaExtra = computed<string[][] | null>(() => {
 
   Object.keys(data).forEach((p: string) => {
     if (!priority.includes(p)) {
-      m.push([te(`meta.${p}`) ? t(`meta.${p}`) : p, data[p]]);
+      m.push([te(`models.meta.${p}`) ? t(`models.meta.${p}`) : p, data[p]]);
     }
   });
 
@@ -40,7 +40,7 @@ const metaExtra = computed<string[][] | null>(() => {
 <template>
   <div class="metadata">
     <h3 v-if="meta" class="metadata-extra-subheading">
-      {{ $t('meta.baseData') }}
+      {{ $t('models.meta.baseData') }}
     </h3>
 
     <template v-for="m in meta" :key="m[0]">
@@ -49,7 +49,7 @@ const metaExtra = computed<string[][] | null>(() => {
     </template>
 
     <h3 v-if="metaExtra" class="metadata-extra-subheading">
-      {{ $t('meta.extraData') }}
+      {{ $t('models.meta.extraData') }}
     </h3>
 
     <template v-for="m in metaExtra" :key="m[0]">

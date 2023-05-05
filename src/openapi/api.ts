@@ -396,6 +396,18 @@ export interface NodeRead {
      */
     'id': string;
     /**
+     * Creation date and time of this object
+     * @type {string}
+     * @memberof NodeRead
+     */
+    'createdAt': string;
+    /**
+     * Last modification date and time of this object
+     * @type {string}
+     * @memberof NodeRead
+     */
+    'modifiedAt': string;
+    /**
      * ID of the text this node belongs to
      * @type {string}
      * @memberof NodeRead
@@ -579,6 +591,18 @@ export interface PlainTextLayerRead {
      * @memberof PlainTextLayerRead
      */
     'id': string;
+    /**
+     * Creation date and time of this object
+     * @type {string}
+     * @memberof PlainTextLayerRead
+     */
+    'createdAt': string;
+    /**
+     * Last modification date and time of this object
+     * @type {string}
+     * @memberof PlainTextLayerRead
+     */
+    'modifiedAt': string;
     /**
      * Title of this layer
      * @type {string}
@@ -775,6 +799,18 @@ export interface PlainTextUnitRead {
      */
     'id': string;
     /**
+     * Creation date and time of this object
+     * @type {string}
+     * @memberof PlainTextUnitRead
+     */
+    'createdAt': string;
+    /**
+     * Last modification date and time of this object
+     * @type {string}
+     * @memberof PlainTextUnitRead
+     */
+    'modifiedAt': string;
+    /**
      * Data layer ID
      * @type {string}
      * @memberof PlainTextUnitRead
@@ -928,6 +964,18 @@ export interface PlatformSettingsRead {
      * @memberof PlatformSettingsRead
      */
     'id': string;
+    /**
+     * Creation date and time of this object
+     * @type {string}
+     * @memberof PlatformSettingsRead
+     */
+    'createdAt': string;
+    /**
+     * Last modification date and time of this object
+     * @type {string}
+     * @memberof PlatformSettingsRead
+     */
+    'modifiedAt': string;
     /**
      * Default text to load in UI
      * @type {string}
@@ -1100,7 +1148,7 @@ export interface TextCreate {
      * @type {boolean}
      * @memberof TextCreate
      */
-    'labeledLevels'?: boolean;
+    'labeledLocation'?: boolean;
     /**
      * Accent color used for this text in the client UI
      * @type {string}
@@ -1120,6 +1168,18 @@ export interface TextRead {
      * @memberof TextRead
      */
     'id': string;
+    /**
+     * Creation date and time of this object
+     * @type {string}
+     * @memberof TextRead
+     */
+    'createdAt': string;
+    /**
+     * Last modification date and time of this object
+     * @type {string}
+     * @memberof TextRead
+     */
+    'modifiedAt': string;
     /**
      * Title of this text
      * @type {string}
@@ -1161,7 +1221,7 @@ export interface TextRead {
      * @type {boolean}
      * @memberof TextRead
      */
-    'labeledLevels'?: boolean;
+    'labeledLocation'?: boolean;
     /**
      * Accent color used for this text in the client UI
      * @type {string}
@@ -1247,7 +1307,7 @@ export interface TextUpdate {
      * @type {boolean}
      * @memberof TextUpdate
      */
-    'labeledLevels'?: boolean;
+    'labeledLocation'?: boolean;
     /**
      * 
      * @type {string}
@@ -5378,11 +5438,11 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
         /**
          * 
          * @summary Delete user
-         * @param {any} id 
+         * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usersDeleteUser: async (id: any, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        usersDeleteUser: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('usersDeleteUser', 'id', id)
             const localVarPath = `/users/{id}`
@@ -5460,12 +5520,12 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
         /**
          * 
          * @summary Update user
-         * @param {any} id 
+         * @param {string} id 
          * @param {UserUpdate} userUpdate 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usersPatchUser: async (id: any, userUpdate: UserUpdate, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        usersPatchUser: async (id: string, userUpdate: UserUpdate, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('usersPatchUser', 'id', id)
             // verify required parameter 'userUpdate' is not null or undefined
@@ -5506,11 +5566,11 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
         /**
          * 
          * @summary Get user
-         * @param {any} id 
+         * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usersUser: async (id: any, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        usersUser: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('usersUser', 'id', id)
             const localVarPath = `/users/{id}`
@@ -5566,11 +5626,11 @@ export const UsersApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Delete user
-         * @param {any} id 
+         * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async usersDeleteUser(id: any, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async usersDeleteUser(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.usersDeleteUser(id, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -5588,23 +5648,23 @@ export const UsersApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Update user
-         * @param {any} id 
+         * @param {string} id 
          * @param {UserUpdate} userUpdate 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async usersPatchUser(id: any, userUpdate: UserUpdate, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserRead>> {
+        async usersPatchUser(id: string, userUpdate: UserUpdate, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserRead>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.usersPatchUser(id, userUpdate, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * 
          * @summary Get user
-         * @param {any} id 
+         * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async usersUser(id: any, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserRead>> {
+        async usersUser(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserRead>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.usersUser(id, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -5678,10 +5738,10 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
 export interface UsersApiUsersDeleteUserRequest {
     /**
      * 
-     * @type {any}
+     * @type {string}
      * @memberof UsersApiUsersDeleteUser
      */
-    readonly id: any
+    readonly id: string
 }
 
 /**
@@ -5706,10 +5766,10 @@ export interface UsersApiUsersPatchCurrentUserRequest {
 export interface UsersApiUsersPatchUserRequest {
     /**
      * 
-     * @type {any}
+     * @type {string}
      * @memberof UsersApiUsersPatchUser
      */
-    readonly id: any
+    readonly id: string
 
     /**
      * 
@@ -5727,10 +5787,10 @@ export interface UsersApiUsersPatchUserRequest {
 export interface UsersApiUsersUserRequest {
     /**
      * 
-     * @type {any}
+     * @type {string}
      * @memberof UsersApiUsersUser
      */
-    readonly id: any
+    readonly id: string
 }
 
 /**

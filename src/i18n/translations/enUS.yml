@@ -74,30 +74,8 @@ routes:
     adminUsers: 'Admin: Users'
     adminTexts: 'Admin: Texts'
 
-internals:
-  user: User
-  users: Users
-  text: Text
-  texts: Texts
-  node: Text node
-  nodes: Text nodes
-  layer: Data layer
-  layers: Data layers
-  unit: Data unit
-  units: Daten units
-
 layerTypes:
   plaintext: Plain Text
-
-meta:
-  author: Author
-  year: Year
-  language: Language
-  layerType: Datalayer Type
-  metadata: Metadata
-  baseData: Base data
-  extraData: Other
-  comment: Comment
 
 browse:
   location:
@@ -117,6 +95,12 @@ browse:
     widgets:
       tipDeepLTranslate: Open DeepL translation
 
+forms:
+  rulesFeedback:
+    minChars: 'Minimum {min} characters'
+    minMaxChars: '{min} to {max} characters'
+    isRequired: '{x} is required'
+
 register:
   register: Register
   switchToLogin: Log into existing account
@@ -124,35 +108,56 @@ register:
   success: Successfully registered.
   activationNeededHint: You will only be able to log in as soon as we activate your account. We will send you an email when that happens.
   activationNotNeededHint: You can now log in.
-  labels:
-    email: Email
-    username: Username
-    password: Password
-    repeatPassword: Repeat Password
-    firstName: First Name
-    lastName: Last Name
-    affiliation: Affiliation
+  repeatPassword: 'Repeat @:models.user.password'
   rulesFeedback:
-    emailReq: Email is required
-    emailInvalid: Email is too obviously invalid
-    usernameReq: Username is required
-    usernameLength: 4 to 16 characters
+    emailInvalid: '@:models.user.email is too obviously invalid'
     usernameChars: 'Allowed characters: a-z, A-Z, 0-9 and - _'
-    passwordReq: Password is required
-    passwordLength: Minimum 8 characters
     passwordChars: 'Minimum one of each: a-z, A-Z and 0-9'
     passwordRepReq: Password repetition is required
     passwordRepNoMatch: Passwords don't match
-    firstNameReq: First name is required
-    firstNameLength: 1 to 32 characters
-    lastNameReq: Last name is required
-    lastNameLength: 1 to 32 characters
-    affiliationReq: Affiliation is required
-    affiliationLength: 4 to 64 characters
   errors:
     emailAlreadyRegistered: This email address is already registered.
     usernameAlreadyRegistered: This username is already taken.
     weakPassword: The given password doesn't meet the security requirements.
+
+models:
+  user:
+    modelLabel: User | Users
+    email: Email
+    username: Username
+    password: Password
+    firstName: First Name
+    lastName: Last Name
+    affiliation: Affiliation
+    active: Active
+    verified: Verified
+    superuser: Admin
+  text:
+    modelLabel: Text | Texts
+    title: Title
+    slug: Identifier
+    subtitle: Subtitle
+    levels: Structure levels
+    defaultLevel: Default structure level
+    locDelim: Location delimiter
+    labeledLocation: Labeled location
+    accentColor: Accent color
+  node:
+    modelLabel: Text node | Text Nodes
+  layer:
+    modelLabel: Data layer | Data layers
+    layerType: Datalayer Type
+  unit:
+    modelLabel: Data unit | Data units
+  meta:
+    modelLabel: Metadata
+    author: Author
+    year: Year
+    language: Language
+    layerType: '@:models.layer.layerType'
+    baseData: Base data
+    extraData: Other
+    comment: Comment
 
 account:
   loginBtn: Login
@@ -172,22 +177,9 @@ account:
   forgotPassword: I forgot my password
   login:
     heading: Log into your account
-  rulesFeedback:
-    emailReq: Email is required
-    passwordReq: Password is required
   errors:
-    badCreds: Incorrect email, incorrect password or account isn't activated, yet
+    badCreds: Incorrect email/password or account isn't activated, yet
     notVerified: Your email is not yet verified. We just sent your verification link again.
-  fields:
-    email: Email
-    username: Username
-    password: Password
-    firstName: First Name
-    lastName: Last Name
-    affiliation: Affiliation
-    active: Active
-    verified: Verified
-    superuser: Admin
   autoLogout: Your session will automatically end in {minutes} minutes and {seconds} seconds. You can log out and log back in to renew your session now.
   sessionExpired: Your session expired.
   renewLogin: Log in again to renew your session.

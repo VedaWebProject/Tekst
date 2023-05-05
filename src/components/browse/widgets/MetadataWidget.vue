@@ -17,7 +17,7 @@ const showMetaModal = ref(false);
 
 <template>
   <UnitContainerHeaderWidget
-    :title="$t('meta.metadata')"
+    :title="$t('models.meta.modelLabel')"
     :iconComponent="InfoOutlined"
     @click="showMetaModal = true"
   />
@@ -31,11 +31,12 @@ const showMetaModal = ref(false);
     :auto-focus="false"
     :closable="false"
     to="#app-container"
+    embedded
   >
-    <h2>{{ props.title }}: {{ $t('meta.metadata') }}</h2>
+    <h2>{{ props.title }}: {{ $t('models.meta.modelLabel') }}</h2>
     <MetadataDisplay :data="props.meta" />
     <template v-if="props.comment">
-      <h3>{{ $t('meta.comment') }}</h3>
+      <h3>{{ $t('models.meta.comment') }}</h3>
       <div class="layer-comment">
         {{ props.comment }}
       </div>

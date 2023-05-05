@@ -39,7 +39,7 @@ const layerTypes = computed(() => {
     <h2>{{ $t('admin.statistics.globalHeading') }}</h2>
     <div class="content-block">
       <div class="statistics-container">
-        <n-statistic :label="$t('internals.users')" :value="counts.users">
+        <n-statistic :label="$t('models.user.modelLabel', 2)" :value="counts.users">
           <template #prefix>
             <n-icon>
               <SupervisorAccountRound />
@@ -47,7 +47,7 @@ const layerTypes = computed(() => {
           </template>
         </n-statistic>
 
-        <n-statistic :label="$t('internals.texts')" :value="counts.texts">
+        <n-statistic :label="$t('models.text.modelLabel', 2)" :value="counts.texts">
           <template #prefix>
             <n-icon>
               <LibraryBooksRound />
@@ -55,7 +55,7 @@ const layerTypes = computed(() => {
           </template>
         </n-statistic>
 
-        <n-statistic :label="$t('internals.nodes')" :value="counts.nodes">
+        <n-statistic :label="$t('models.node.modelLabel', 2)" :value="counts.nodes">
           <template #prefix>
             <n-icon>
               <AccountTreeRound />
@@ -63,7 +63,7 @@ const layerTypes = computed(() => {
           </template>
         </n-statistic>
 
-        <n-statistic :label="$t('internals.layers')" :value="counts.layers">
+        <n-statistic :label="$t('models.layer.modelLabel', 2)" :value="counts.layers">
           <template #prefix>
             <n-icon>
               <LayersRound />
@@ -94,7 +94,7 @@ const layerTypes = computed(() => {
         <h3>{{ pfData?.texts.find((t) => t.id == text.id)?.title }}</h3>
 
         <div class="statistics-container">
-          <n-statistic :label="$t('internals.nodes')" :value="text.nodesCount">
+          <n-statistic :label="$t('models.node.modelLabel', 2)" :value="text.nodesCount">
             <template #prefix>
               <n-icon>
                 <AccountTreeRound />
@@ -102,7 +102,7 @@ const layerTypes = computed(() => {
             </template>
           </n-statistic>
 
-          <n-statistic :label="$t('internals.layers')" :value="text.layersCount">
+          <n-statistic :label="$t('models.layer.modelLabel', 2)" :value="text.layersCount">
             <template #prefix>
               <n-icon>
                 <LayersRound />

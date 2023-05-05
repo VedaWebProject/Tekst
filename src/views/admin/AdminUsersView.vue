@@ -73,33 +73,33 @@ const handleSaveUserUpdate = async () => {
 const columns: Array<DataTableColumn> = [
   {
     key: 'email',
-    title: t('account.fields.email'),
+    title: () => t('models.user.email'),
     sorter: 'default',
   },
   {
     key: 'username',
-    title: t('account.fields.username'),
+    title: () => t('models.user.username'),
     defaultSortOrder: 'ascend',
     sorter: 'default',
   },
   {
     key: 'firstName',
-    title: t('account.fields.firstName'),
+    title: () => t('models.user.firstName'),
     sorter: 'default',
   },
   {
     key: 'lastName',
-    title: t('account.fields.lastName'),
+    title: () => t('models.user.lastName'),
     sorter: 'default',
   },
   {
     key: 'affiliation',
-    title: t('account.fields.affiliation'),
+    title: () => t('models.user.affiliation'),
     sorter: 'default',
   },
   {
     key: 'isActive',
-    title: t('account.fields.active'),
+    title: () => t('models.user.active'),
     render: (u) => (u.isActive ? iconCheck : iconCross),
     align: 'center',
     // @ts-ignore
@@ -107,7 +107,7 @@ const columns: Array<DataTableColumn> = [
   },
   {
     key: 'isVerified',
-    title: t('account.fields.verified'),
+    title: () => t('models.user.verified'),
     render: (u) => (u.isVerified ? iconCheck : iconCross),
     align: 'center',
     // @ts-ignore
@@ -115,7 +115,7 @@ const columns: Array<DataTableColumn> = [
   },
   {
     key: 'isSuperuser',
-    title: t('account.fields.superuser'),
+    title: () => t('models.user.superuser'),
     render: (u) => (u.isSuperuser ? iconSuperuser : null),
     align: 'center',
     // @ts-ignore
@@ -169,7 +169,7 @@ function rowProps(user: UserRead) {
     v-model:show="showUserUpdateModal"
     preset="dialog"
     to="#app-container"
-    :title="`${t('internals.user')}: ${userUpdatesPayload?.username || ''}`"
+    :title="`${t('models.user.modelLabel')}: ${userUpdatesPayload?.username || ''}`"
     :icon="() => iconEditUser"
     :positive-text="$t('general.saveAction')"
     :negative-text="$t('general.cancelAction')"
