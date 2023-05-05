@@ -151,7 +151,7 @@ const layerTypes = computed(() => {
 
 .statistics-container > * {
   padding: 0.5rem 1rem;
-  background-color: var(--main-bg-color);
+  border: 1px solid var(--main-bg-color);
   border-radius: 4px;
 }
 </style>
