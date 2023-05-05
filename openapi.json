@@ -3560,8 +3560,8 @@
             "description": "Delimiter for displaying text locations",
             "default": ", "
           },
-          "labeledLevels": {
-            "title": "Labeledlevels",
+          "labeledLocation": {
+            "title": "Labeledlocation",
             "type": "boolean",
             "description": "Whether the UI should label the parts of the browse location with each levels' names",
             "default": true
@@ -3647,8 +3647,8 @@
             "description": "Delimiter for displaying text locations",
             "default": ", "
           },
-          "labeledLevels": {
-            "title": "Labeledlevels",
+          "labeledLocation": {
+            "title": "Labeledlocation",
             "type": "boolean",
             "description": "Whether the UI should label the parts of the browse location with each levels' names",
             "default": true
@@ -3727,8 +3727,8 @@
             "title": "Locdelim",
             "type": "string"
           },
-          "labeledLevels": {
-            "title": "Labeledlevels",
+          "labeledLocation": {
+            "title": "Labeledlocation",
             "type": "boolean"
           },
           "accentColor": {

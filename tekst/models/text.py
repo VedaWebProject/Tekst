@@ -43,7 +43,7 @@ class Text(ModelBase, ModelFactory):
         description="Delimiter for displaying text locations",
     )
 
-    labeled_levels: bool = Field(
+    labeled_location: bool = Field(
         True,
         description=(
             "Whether the UI should label the parts of "
