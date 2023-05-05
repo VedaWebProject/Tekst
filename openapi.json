@@ -39,9 +39,6 @@
               }
             }
           },
-          "400": {
-            "description": "Invalid Request"
-          },
           "404": {
             "description": "Not found"
           }
@@ -77,9 +74,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "Invalid Request"
           },
           "404": {
             "description": "Not found"
@@ -125,9 +119,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "Invalid Request"
           },
           "404": {
             "description": "Not found"
@@ -192,9 +183,6 @@
               }
             }
           },
-          "400": {
-            "description": "Invalid Request"
-          },
           "404": {
             "description": "Not found"
           },
@@ -247,9 +235,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "Invalid Request"
           },
           "404": {
             "description": "Not found"
@@ -338,9 +323,6 @@
               }
             }
           },
-          "400": {
-            "description": "Invalid Request"
-          },
           "404": {
             "description": "Not found"
           },
@@ -395,9 +377,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "Invalid Request"
           },
           "404": {
             "description": "Not found"
@@ -495,9 +474,6 @@
               }
             }
           },
-          "400": {
-            "description": "Invalid Request"
-          },
           "404": {
             "description": "Not found"
           },
@@ -539,9 +515,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "Invalid Request"
           },
           "404": {
             "description": "Not found"
@@ -620,9 +593,6 @@
               }
             }
           },
-          "400": {
-            "description": "Invalid Request"
-          },
           "404": {
             "description": "Not found"
           },
@@ -668,9 +638,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "Invalid Request"
           },
           "404": {
             "description": "Not found"
@@ -725,9 +692,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "Invalid Request"
           },
           "404": {
             "description": "Not found"
@@ -797,9 +761,6 @@
               }
             }
           },
-          "400": {
-            "description": "Invalid Request"
-          },
           "404": {
             "description": "Not found"
           },
@@ -850,9 +811,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "Invalid Request"
           },
           "404": {
             "description": "Not found"
@@ -908,9 +866,6 @@
               }
             }
           },
-          "400": {
-            "description": "Invalid Request"
-          },
           "404": {
             "description": "Not found"
           },
@@ -965,9 +920,6 @@
               }
             }
           },
-          "400": {
-            "description": "Invalid Request"
-          },
           "404": {
             "description": "Not found"
           },
@@ -1014,9 +966,6 @@
               }
             }
           },
-          "400": {
-            "description": "Invalid Request"
-          },
           "404": {
             "description": "Not found"
           },
@@ -1051,9 +1000,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "Invalid Request"
           },
           "404": {
             "description": "Not found"
@@ -1090,9 +1036,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "Invalid Request"
           },
           "404": {
             "description": "Not found"
@@ -1141,9 +1084,6 @@
               }
             }
           },
-          "400": {
-            "description": "Invalid Request"
-          },
           "404": {
             "description": "Not found"
           },
@@ -1187,9 +1127,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "Invalid Request"
           },
           "404": {
             "description": "Not found"
@@ -1249,9 +1186,6 @@
               }
             }
           },
-          "400": {
-            "description": "Invalid Request"
-          },
           "404": {
             "description": "Not found"
           },
@@ -1293,9 +1227,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "Invalid Request"
           },
           "404": {
             "description": "Not found"
@@ -1351,9 +1282,6 @@
               }
             }
           },
-          "400": {
-            "description": "Invalid Request"
-          },
           "404": {
             "description": "Not found"
           },
@@ -1407,9 +1335,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "Invalid Request"
           },
           "404": {
             "description": "Not found"
@@ -1465,9 +1390,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "Invalid Request"
           },
           "404": {
             "description": "Not found"
@@ -1532,9 +1454,6 @@
               }
             }
           },
-          "400": {
-            "description": "Invalid Request"
-          },
           "404": {
             "description": "Not found"
           },
@@ -1587,9 +1506,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "Invalid Request"
           },
           "404": {
             "description": "Not found"
@@ -1683,9 +1599,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "Invalid Request"
           },
           "404": {
             "description": "Not found"
@@ -1793,9 +1706,6 @@
               }
             }
           },
-          "400": {
-            "description": "Invalid Request"
-          },
           "401": {
             "description": "Missing token or inactive user."
           },
@@ -1897,9 +1807,6 @@
                 "schema": {}
               }
             }
-          },
-          "400": {
-            "description": "Invalid Request"
           },
           "401": {
             "description": "Missing token or inactive user."
@@ -2009,9 +1916,6 @@
               }
             }
           },
-          "400": {
-            "description": "Invalid Request"
-          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -2116,9 +2020,6 @@
               }
             }
           },
-          "400": {
-            "description": "Invalid Request"
-          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -2216,9 +2117,6 @@
               }
             }
           },
-          "400": {
-            "description": "Invalid Request"
-          },
           "401": {
             "description": "Missing token or inactive user."
           }
@@ -2259,6 +2157,9 @@
               }
             }
           },
+          "401": {
+            "description": "Missing token or inactive user."
+          },
           "400": {
             "description": "Bad Request",
             "content": {
@@ -2285,9 +2186,6 @@
                 }
               }
             }
-          },
-          "401": {
-            "description": "Missing token or inactive user."
           },
           "422": {
             "description": "Validation Error",
@@ -2339,9 +2237,6 @@
               }
             }
           },
-          "400": {
-            "description": "Invalid Request"
-          },
           "401": {
             "description": "Missing token or inactive user."
           },
@@ -2391,9 +2286,6 @@
         "responses": {
           "204": {
             "description": "Successful Response"
-          },
-          "400": {
-            "description": "Invalid Request"
           },
           "401": {
             "description": "Missing token or inactive user."
@@ -2462,6 +2354,15 @@
               }
             }
           },
+          "401": {
+            "description": "Missing token or inactive user."
+          },
+          "403": {
+            "description": "Not a superuser."
+          },
+          "404": {
+            "description": "The user does not exist."
+          },
           "400": {
             "description": "Bad Request",
             "content": {
@@ -2488,15 +2389,6 @@
                 }
               }
             }
-          },
-          "401": {
-            "description": "Missing token or inactive user."
-          },
-          "403": {
-            "description": "Not a superuser."
-          },
-          "404": {
-            "description": "The user does not exist."
           },
           "422": {
             "description": "Validation Error",
@@ -3595,8 +3487,8 @@
             "minLength": 1,
             "type": "string",
             "format": "uri",
-            "default": "https://github.com/VedaWebProject/Tekst-API",
-            "const": "https://github.com/VedaWebProject/Tekst-API"
+            "default": "https://github.com/VedaWebProject/tekst-api",
+            "const": "https://github.com/VedaWebProject/tekst-api"
           },
           "license": {
             "title": "License",
