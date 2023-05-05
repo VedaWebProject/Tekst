@@ -35,27 +35,10 @@ const initialFormModel = () => ({
 });
 
 const formModel = ref<Record<string, string | null>>(initialFormModel());
-
 const formRef = ref<FormInst | null>(null);
 const rPasswordFormItemRef = ref<FormItemInst | null>(null);
 const firstInputRef = ref<HTMLInputElement | null>(null);
 const loading = ref(false);
-
-function validateEmail(rule: FormItemRule, value: string): boolean {
-  return /^.+@.+\.\w+$/.test(value);
-}
-
-function validatePasswordLength(rule: FormItemRule, value: string): boolean {
-  return !!value && value.length >= 8;
-}
-
-function validatePasswordChars(rule: FormItemRule, value: string): boolean {
-  return !!value && /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(value);
-}
-
-function validatePasswordsMatch(rule: FormItemRule, value: string): boolean {
-  return !!value && !!formModel.value.password && value === formModel.value.password;
-}
 
 const formRules: FormRules = {
   email: [
@@ -65,7 +48,7 @@ const formRules: FormRules = {
       // trigger: 'blur',
     },
     {
-      validator: validateEmail,
+      validator: (rule: FormItemRule, value: string) => /^.+@.+\.\w+$/.test(value),
       message: t('register.rulesFeedback.emailInvalid'),
       // trigger: 'blur',
     },
@@ -95,12 +78,13 @@ const formRules: FormRules = {
       trigger: 'blur',
     },
     {
-      validator: validatePasswordLength,
+      validator: (rule: FormItemRule, value: string) => !!value && value.length >= 8,
       message: t('register.rulesFeedback.passwordLength'),
       trigger: ['input', 'blur'],
     },
     {
-      validator: validatePasswordChars,
+      validator: (rule: FormItemRule, value: string) =>
+        !!value && /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(value),
       message: t('register.rulesFeedback.passwordChars'),
       trigger: ['input', 'blur'],
     },
@@ -112,7 +96,8 @@ const formRules: FormRules = {
       trigger: 'blur',
     },
     {
-      validator: validatePasswordsMatch,
+      validator: (rule: FormItemRule, value: string) =>
+        !!value && !!formModel.value.password && value === formModel.value.password,
       message: t('register.rulesFeedback.passwordRepNoMatch'),
       trigger: ['input', 'blur', 'password-input'],
     },
