@@ -5,7 +5,7 @@ import GlobalMessenger from '@/components/GlobalMessenger.vue';
 import { computed } from 'vue';
 import { localeProfiles } from '@/i18n';
 import { useStateStore } from '@/stores';
-import { NConfigProvider, NGlobalStyle, NBackTop, useThemeVars } from 'naive-ui';
+import { NConfigProvider, NDialogProvider, NGlobalStyle, NBackTop, useThemeVars } from 'naive-ui';
 import { useTheme } from '@/theme';
 import PageHeader from './layout/PageHeader.vue';
 import PageFooter from './layout/PageFooter.vue';
@@ -29,32 +29,34 @@ const nUiDateLocale = computed(() => localeProfiles[state.locale].nUiDateLocale)
     :locale="nUiLangLocale"
     :date-locale="nUiDateLocale"
   >
-    <div id="app-container">
-      <template v-if="error"> ERROR </template>
+    <n-dialog-provider>
+      <div id="app-container">
+        <template v-if="error"> ERROR </template>
 
-      <template v-else-if="initialized">
-        <PageHeader />
-        <main>
-          <div id="main-content">
-            <RouterView />
-          </div>
-        </main>
-        <PageFooter />
-      </template>
+        <template v-else-if="initialized">
+          <PageHeader />
+          <main>
+            <div id="main-content">
+              <RouterView />
+            </div>
+          </main>
+          <PageFooter />
+        </template>
 
-      <FullScreenLoader
-        :show="state.globalLoading"
-        transition="0.2s"
-        :text="state.globalLoadingMsg"
-        :progress="state.globalLoadingProgress"
-        :progress-color="accentColors.base"
-        show-progress
-      />
-      <GlobalMessenger />
-    </div>
-    <LoginModal />
-    <n-back-top :visibility-height="200" />
-    <n-global-style />
+        <FullScreenLoader
+          :show="state.globalLoading"
+          transition="0.2s"
+          :text="state.globalLoadingMsg"
+          :progress="state.globalLoadingProgress"
+          :progress-color="accentColors.base"
+          show-progress
+        />
+        <GlobalMessenger />
+      </div>
+      <LoginModal />
+      <n-back-top :visibility-height="200" />
+      <n-global-style />
+    </n-dialog-provider>
   </n-config-provider>
 </template>
 

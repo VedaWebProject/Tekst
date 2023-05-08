@@ -9,6 +9,9 @@ general:
   closeAction: Schließen
   quickSearch: Schnellsuche
   textSelect: Wählen Sie den Text, mit dem Sie arbeiten möchten
+  info: Information
+  warning: Warnung
+  error: Fehler
 
 dummy:
   home: 'Kein Ort ist wie ~'
@@ -187,6 +190,12 @@ account:
   manage:
     heading: Konto verwalten
     headingChangeUserData: Allgemeine Benutzerdaten
+    msgEmailSaveSuccess: '@:models.user.email gespeichert.'
+    msgEmailChangeWarning: Stellen Sie sicher, dass Sie eine gültige @:models.user.email eingeben, auf die Sie Zugriff haben! Wenn Sie fortfahren, werden Sie abgemeldet und müssen Ihre geänderte @:models.users.email verifizieren, bevor Sie sich wieder anmelden können.
+    msgVerifyEmailWarning: Bitte verifizieren Sie Ihre geänderte @:models.user.email bevor Sie sich wieder anmelden!
+    msgPasswordSaveSuccess: '@:models.user.password saved.'
+    msgPasswordChangeWarning: Wenn Sie fortfahren, werden Sie abgemeldet und müssen sich mit Ihrem neuen Passwort wieder anmelden.
+    msgUserDataSaveSuccess: Benutzerdaten gespeichert.
 
 admin:
   heading: Administration

@@ -8,6 +8,9 @@ general:
   saveAction: Save
   closeAction: Close
   textSelect: Select the text you want to work with
+  info: Information
+  warning: Warning
+  error: Error
 
 dummy:
   home: There's no place like ~
@@ -185,6 +188,12 @@ account:
   manage:
     heading: Manage Account
     headingChangeUserData: General User Data
+    msgEmailSaveSuccess: '@:models.user.email saved.'
+    msgEmailChangeWarning: Make sure you entered a valid email address you have access to! If you proceed, you will be logged out and have to verify your changed email address before you can log in again.
+    msgVerifyEmailWarning: Please verify your changed email address before logging in again!
+    msgPasswordSaveSuccess: '@:models.user.password saved.'
+    msgPasswordChangeWarning: If you proceed, you will be logged out and have to log in again using your changed password.
+    msgUserDataSaveSuccess: User data saved.
 
 admin:
   heading: Administration

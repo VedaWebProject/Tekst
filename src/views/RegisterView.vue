@@ -88,8 +88,7 @@ function registerUser() {
     });
 }
 
-function handleRegisterClick(e: MouseEvent | null = null) {
-  e && e.preventDefault();
+function handleRegisterClick() {
   loading.value = true;
   formRef.value
     ?.validate((errors) => {
