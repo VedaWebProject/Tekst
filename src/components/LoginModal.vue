@@ -90,15 +90,15 @@ onMounted(() => {
     <n-modal
       show
       preset="card"
-      size="medium"
+      size="large"
       class="tekst-modal"
       @close="reject(null)"
       @mask-click="reject(null)"
       to="#app-container"
-      closable
+      :closable="false"
       embedded
     >
-      <div class="form-container" style="margin-bottom: 1rem">
+      <div class="form-container" style="margin-bottom: 0.5rem">
         <h2 style="text-align: center">{{ $t('account.login.heading') }}</h2>
         <div v-show="args[0]" class="login-message">{{ args[0] }}</div>
         <n-form
