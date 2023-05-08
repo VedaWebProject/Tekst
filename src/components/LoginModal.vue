@@ -90,7 +90,7 @@ onMounted(() => {
     <n-modal
       show
       preset="card"
-      size="large"
+      size="medium"
       class="tekst-modal"
       @close="reject(null)"
       @mask-click="reject(null)"
