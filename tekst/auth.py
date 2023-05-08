@@ -6,7 +6,15 @@ from typing import Annotated, Any, Literal
 import fastapi_users.models as fapi_users_models
 
 from beanie import Document
-from fastapi import APIRouter, Depends, FastAPI, HTTPException, Request, status
+from fastapi import (
+    APIRouter,
+    Depends,
+    FastAPI,
+    HTTPException,
+    Request,
+    Response,
+    status,
+)
 from fastapi_users import (
     BaseUserManager,
     FastAPIUsers,
@@ -195,19 +203,45 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[User, PyObjectId]):
     verification_token_audience = "tekst:verify"
 
     async def on_after_register(self, user: User, request: Request | None = None):
-        log.debug(f"User {user.id} has registered.")
+        log.critical(f"[on_after_register] {user.id}")
 
-    async def on_after_forgot_password(
-        self, user: User, token: str, request: Request | None = None
+    async def on_after_update(
+        self,
+        user: User,
+        update_dict: dict[str, Any],
+        request: Request | None = None,
     ):
-        log.debug(f"User {user.id} has forgotten their password. Reset token: {token}")
+        log.critical(f"[on_after_update] {user.username}: {update_dict}")
+
+    async def on_after_login(
+        self,
+        user: User,
+        request: Request | None = None,
+        response: Response | None = None,
+    ):
+        log.critical(f"[on_after_login] {user.username}")
 
     async def on_after_request_verify(
         self, user: User, token: str, request: Request | None = None
     ):
-        log.debug(
-            f"Verification requested for user {user.id}. Verification token: {token}"
-        )
+        log.critical(f"[on_after_request_verify] {user.username}/{user.email}: {token}")
+
+    async def on_after_verify(self, user: User, request: Request | None = None):
+        log.critical(f"[on_after_verify] {user.username}/{user.email}")
+
+    async def on_after_forgot_password(
+        self, user: User, token: str, request: Request | None = None
+    ):
+        log.critical(f"[on_after_forgot_password] {user.username}: {token}")
+
+    async def on_after_reset_password(self, user: User, request: Request | None = None):
+        log.critical(f"[on_after_reset_password] {user.username}")
+
+    async def on_before_delete(self, user: User, request: Request | None = None):
+        log.critical(f"[on_before_delete] {user.username}")
+
+    async def on_after_delete(self, user: User, request: Request | None = None):
+        log.critical(f"[on_after_delete] {user.username}")
 
     async def validate_password(
         self,
