@@ -29,7 +29,7 @@ const state = useStateStore();
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  padding: 0 var(--layout-padding);
+  padding: 0 var(--layout-gap);
   max-width: var(--max-app-width);
   margin: 0 auto;
   font-size: var(--app-ui-font-size-large);

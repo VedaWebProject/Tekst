@@ -5,7 +5,6 @@ import {
   type FormInst,
   type FormItemInst,
   type FormItemRule,
-  type FormRules,
   NForm,
   NFormItem,
   NInput,
@@ -17,6 +16,7 @@ import { useApi } from '@/api';
 import { useMessages } from '@/messages';
 import { usePlatformData } from '@/platformData';
 import { useAuthStore } from '@/stores';
+import { useFormRules } from '@/formRules';
 
 const auth = useAuthStore();
 const { message } = useMessages();
@@ -36,111 +36,16 @@ const initialFormModel = () => ({
 
 const formModel = ref<Record<string, string | null>>(initialFormModel());
 const formRef = ref<FormInst | null>(null);
+const formRules = useFormRules();
 const rPasswordFormItemRef = ref<FormItemInst | null>(null);
 const firstInputRef = ref<HTMLInputElement | null>(null);
 const loading = ref(false);
 
-const formRules: FormRules = {
-  email: [
-    {
-      required: true,
-      message: () => t('forms.rulesFeedback.isRequired', { x: t('models.user.email') }),
-      // trigger: 'blur',
-    },
-    {
-      validator: (rule: FormItemRule, value: string) => /^.+@.+\.\w+$/.test(value),
-      message: () => t('register.rulesFeedback.emailInvalid'),
-      // trigger: 'blur',
-    },
-  ],
-  username: [
-    {
-      required: true,
-      message: () => t('forms.rulesFeedback.isRequired', { x: t('models.user.username') }),
-      trigger: 'blur',
-    },
-    {
-      validator: (rule: FormItemRule, value: string) =>
-        !!value && value.length >= 4 && value.length <= 16,
-      message: () => t('forms.rulesFeedback.minMaxChars', { min: 4, max: 16 }),
-      trigger: 'blur',
-    },
-    {
-      validator: (rule: FormItemRule, value: string) => !!value && /^[a-zA-Z0-9\-_]*$/.test(value),
-      message: () => t('register.rulesFeedback.usernameChars'),
-      trigger: 'blur',
-    },
-  ],
-  password: [
-    {
-      required: true,
-      message: () => t('forms.rulesFeedback.isRequired', { x: t('models.user.password') }),
-      trigger: 'blur',
-    },
-    {
-      validator: (rule: FormItemRule, value: string) => !!value && value.length >= 8,
-      message: () => t('forms.rulesFeedback.minChars', { min: 8 }),
-      trigger: ['input', 'blur'],
-    },
-    {
-      validator: (rule: FormItemRule, value: string) =>
-        !!value && /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(value),
-      message: () => t('register.rulesFeedback.passwordChars'),
-      trigger: ['input', 'blur'],
-    },
-  ],
-  passwordRepeat: [
-    {
-      required: true,
-      message: () => t('register.rulesFeedback.passwordRepReq'),
-      trigger: 'blur',
-    },
-    {
-      validator: (rule: FormItemRule, value: string) =>
-        !!value && !!formModel.value.password && value === formModel.value.password,
-      message: () => t('register.rulesFeedback.passwordRepNoMatch'),
-      trigger: ['input', 'blur', 'password-input'],
-    },
-  ],
-  firstName: [
-    {
-      required: true,
-      message: () => t('forms.rulesFeedback.isRequired', { x: t('models.user.firstName') }),
-      trigger: 'blur',
-    },
-    {
-      validator: (rule: FormItemRule, value: string) =>
-        !!value && value.length >= 1 && value.length <= 32,
-      message: () => t('forms.rulesFeedback.minMaxChars', { min: 1, max: 32 }),
-      trigger: 'blur',
-    },
-  ],
-  lastName: [
-    {
-      required: true,
-      message: () => t('forms.rulesFeedback.isRequired', { x: t('models.user.lastName') }),
-      trigger: 'blur',
-    },
-    {
-      validator: (rule: FormItemRule, value: string) =>
-        !!value && value.length >= 1 && value.length <= 32,
-      message: () => t('forms.rulesFeedback.minMaxChars', { min: 1, max: 32 }),
-      trigger: 'blur',
-    },
-  ],
-  affiliation: [
-    {
-      required: true,
-      message: () => t('forms.rulesFeedback.isRequired', { x: t('models.user.affiliation') }),
-      trigger: 'blur',
-    },
-    {
-      validator: (rule: FormItemRule, value: string) =>
-        !!value && value.length >= 4 && value.length <= 64,
-      message: () => t('forms.rulesFeedback.minMaxChars', { min: 4, max: 64 }),
-      trigger: 'blur',
-    },
-  ],
+const passwordRepeatMatchRule = {
+  validator: (rule: FormItemRule, value: string) =>
+    !!value && !!formModel.value.password && value === formModel.value.password,
+  message: () => t('register.rulesFeedback.passwordRepNoMatch'),
+  trigger: ['input', 'blur', 'password-input'],
 };
 
 function handlePasswordInput() {
@@ -215,7 +120,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <h2 style="text-align: center">{{ $t('register.heading') }}</h2>
+  <h1 style="text-align: center">{{ $t('register.heading') }}</h1>
   <div class="form-container">
     <div class="content-block">
       <n-form
@@ -232,6 +137,7 @@ onMounted(() => {
             type="text"
             :placeholder="$t('models.user.email')"
             @keydown.enter.prevent
+            :disabled="loading"
             ref="firstInputRef"
           />
         </n-form-item>
@@ -241,6 +147,7 @@ onMounted(() => {
             type="text"
             :placeholder="$t('models.user.username')"
             @keydown.enter.prevent
+            :disabled="loading"
           />
         </n-form-item>
         <n-form-item path="password" :label="$t('models.user.password')">
@@ -250,18 +157,20 @@ onMounted(() => {
             :placeholder="$t('models.user.password')"
             @input="handlePasswordInput"
             @keydown.enter.prevent
+            :disabled="loading"
           />
         </n-form-item>
         <n-form-item
           ref="rPasswordFormItemRef"
           first
           path="passwordRepeat"
+          :rule="formRules.passwordRepeat.concat([passwordRepeatMatchRule])"
           :label="$t('register.repeatPassword')"
         >
           <n-input
             v-model:value="formModel.passwordRepeat"
             type="password"
-            :disabled="!formModel.password"
+            :disabled="!formModel.password || loading"
             :placeholder="$t('register.repeatPassword')"
             @keydown.enter.prevent
           />
@@ -272,6 +181,7 @@ onMounted(() => {
             type="text"
             :placeholder="$t('models.user.firstName')"
             @keydown.enter.prevent
+            :disabled="loading"
           />
         </n-form-item>
         <n-form-item path="lastName" :label="$t('models.user.lastName')">
@@ -280,6 +190,7 @@ onMounted(() => {
             type="text"
             :placeholder="$t('models.user.lastName')"
             @keydown.enter.prevent
+            :disabled="loading"
           />
         </n-form-item>
         <n-form-item path="affiliation" :label="$t('models.user.affiliation')">
@@ -288,6 +199,7 @@ onMounted(() => {
             type="text"
             :placeholder="$t('models.user.affiliation')"
             @keyup.enter="() => handleRegisterClick()"
+            :disabled="loading"
           />
         </n-form-item>
       </n-form>

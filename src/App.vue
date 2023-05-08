@@ -90,7 +90,7 @@ main {
   width: auto;
   max-width: var(--max-app-width);
   margin: 0 auto;
-  padding: var(--layout-padding);
+  padding: var(--layout-gap);
 }
 </style>
 

@@ -170,7 +170,6 @@ account:
   account:
     optionLabel: Mein Benutzerkonto
     heading: "{name}'s Benutzerkonto"
-    headingManage: Konto verwalten
   logoutSuccessful: Sie sind jetzt ausgeloggt.
   tipUserBtn: Benutzer-Aktionen für {username} anzeigen
   tipLoginBtn: In Ihrem Konto anmelden
@@ -185,6 +184,9 @@ account:
   autoLogout: Ihre Sitzung endet automatisch in {minutes} Minuten und {seconds} Sekunden. Melden Sie sich ab und wieder an, um Ihre Sitzung jetzt zu erneuern.
   sessionExpired: Ihre Sitzung ist abgelaufen.
   renewLogin: Melden Sie sich wieder an, um Ihre Sitzung zu erneuern.
+  manage:
+    heading: Konto verwalten
+    headingChangeUserData: Allgemeine Benutzerdaten
 
 admin:
   heading: Administration

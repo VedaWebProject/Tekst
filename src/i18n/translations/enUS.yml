@@ -167,7 +167,6 @@ account:
   profileNotFound: The user profile "{username}" could not be found.
   account:
     optionLabel: My account
-    heading: "{name}'s Account"
     headingManage: Manage Account
   logoutSuccessful: You are now logged out.
   tipUserBtn: Show user actions for {username}
@@ -183,6 +182,9 @@ account:
   autoLogout: Your session will automatically end in {minutes} minutes and {seconds} seconds. You can log out and log back in to renew your session now.
   sessionExpired: Your session expired.
   renewLogin: Log in again to renew your session.
+  manage:
+    heading: Manage Account
+    headingChangeUserData: General User Data
 
 admin:
   heading: Administration

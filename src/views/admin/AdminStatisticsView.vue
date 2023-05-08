@@ -145,7 +145,7 @@ const layerTypes = computed(() => {
 .statistics-container {
   display: flex;
   justify-content: flex-start;
-  gap: var(--content-padding);
+  gap: var(--content-gap);
   flex-wrap: wrap;
 }
 

@@ -39,27 +39,27 @@ h1 {
 }
 
 h2 {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   font-weight: 300;
   margin-bottom: 1rem;
 }
 
 h3 {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: 300;
   margin-bottom: 0.8rem;
 }
 
 h4 {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 300;
   margin-bottom: 0.5rem;
 }
 
 h5 {
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 400;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.3rem;
 }
 
 h1,
@@ -88,7 +88,7 @@ h5:first-child {
 .content-block {
   max-width: 100%;
   margin: 1rem 0;
-  padding: var(--content-padding) var(--layout-padding);
+  padding: var(--content-gap) var(--layout-gap);
   border-radius: var(--app-ui-border-radius);
   background-color: var(--content-bg-color);
   box-shadow: var(--app-ui-block-box-shadow);

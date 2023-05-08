@@ -1,24 +1,17 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 import { useAuthStore, LoginTemplatePromise } from '@/stores';
-import {
-  type FormInst,
-  type FormRules,
-  NForm,
-  NFormItem,
-  NInput,
-  NButton,
-  NSpace,
-  NModal,
-} from 'naive-ui';
+import { type FormInst, NForm, NFormItem, NInput, NButton, NSpace, NModal } from 'naive-ui';
 import { ref, onMounted, nextTick } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useMessages } from '@/messages';
 import type { RouteLocationRaw } from 'vue-router';
+import { useFormRules } from '@/formRules';
 
 const auth = useAuthStore();
 const { message } = useMessages();
 const router = useRouter();
+const formRules = useFormRules();
 const { t } = useI18n({ useScope: 'global' });
 
 const initialFormModel = () => ({
@@ -29,23 +22,6 @@ const initialFormModel = () => ({
 const formModel = ref<Record<string, string | null>>(initialFormModel());
 const formRef = ref<FormInst | null>(null);
 const firstInputRef = ref<HTMLInputElement | null>(null);
-
-const formRules: FormRules = {
-  email: [
-    {
-      required: true,
-      message: () => t('forms.rulesFeedback.isRequired', { x: t('models.user.email') }),
-      // trigger: 'blur',
-    },
-  ],
-  password: [
-    {
-      required: true,
-      message: () => t('forms.rulesFeedback.isRequired', { x: t('models.user.password') }),
-      trigger: 'blur',
-    },
-  ],
-};
 
 function resetForm() {
   formModel.value = initialFormModel();
@@ -98,31 +74,36 @@ onMounted(() => {
       :closable="false"
       embedded
     >
-      <div class="form-container" style="margin-bottom: 0.5rem">
+      <div class="form-container">
         <h2 style="text-align: center">{{ $t('account.login.heading') }}</h2>
         <div v-show="args[0]" class="login-message">{{ args[0] }}</div>
         <n-form
           ref="formRef"
           :model="formModel"
-          :rules="formRules"
           label-placement="top"
           label-width="auto"
           require-mark-placement="right-hanging"
         >
-          <n-form-item path="email" :label="$t('models.user.email')">
+          <n-form-item path="email" :rule="formRules.loginEmail" :label="$t('models.user.email')">
             <n-input
               v-model:value="formModel.email"
               type="text"
               :placeholder="$t('models.user.email')"
               @keydown.enter.prevent
+              :disabled="isResolving"
               ref="firstInputRef"
             />
           </n-form-item>
-          <n-form-item path="password" :label="$t('models.user.password')">
+          <n-form-item
+            path="password"
+            :rule="formRules.loginPassword"
+            :label="$t('models.user.password')"
+          >
             <n-input
               v-model:value="formModel.password"
               type="password"
               :placeholder="$t('models.user.password')"
+              :disabled="isResolving"
               @keyup.enter="handleLoginClick(resolve, args[1])"
             />
           </n-form-item>
@@ -139,7 +120,7 @@ onMounted(() => {
           </n-button>
         </div>
 
-        <n-space vertical :size="12">
+        <n-space vertical :size="12" style="margin-bottom: 0.5rem">
           <n-button
             block
             type="primary"

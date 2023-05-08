@@ -19,7 +19,7 @@ const { pfData } = usePlatformData();
 <style scoped>
 footer {
   /* border-top: 2px solid var(--accent-color); */
-  padding: 1.75rem var(--layout-padding);
+  padding: 1.75rem var(--layout-gap);
 }
 
 footer #footer-content {
