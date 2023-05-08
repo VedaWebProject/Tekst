@@ -20,8 +20,8 @@ const initialEmailFormModel = () => ({
 });
 
 const initialPasswordFormModel = () => ({
-  password: null,
-  passwordRepeat: null,
+  password: '',
+  passwordRepeat: '',
 });
 
 const initialUserDataFormModel = () => ({
@@ -35,20 +35,20 @@ const formRules = useFormRules();
 
 const emailFormRef = ref<FormInst | null>(null);
 const emailFormModel = ref<Record<string, string | null>>(initialEmailFormModel());
-const emailModelChanged = computed(
-  () => JSON.stringify(initialEmailFormModel()) !== JSON.stringify(emailFormModel.value)
+const emailModelChanged = computed(() =>
+  modelChanged(passwordFormModel.value, initialPasswordFormModel())
 );
 
 const passwordFormRef = ref<FormInst | null>(null);
 const passwordFormModel = ref<Record<string, string | null>>(initialPasswordFormModel());
-const passwordModelChanged = computed(
-  () => JSON.stringify(initialPasswordFormModel()) !== JSON.stringify(passwordFormModel.value)
+const passwordModelChanged = computed(() =>
+  modelChanged(passwordFormModel.value, initialPasswordFormModel())
 );
 
 const userDataFormRef = ref<FormInst | null>(null);
 const userDataFormModel = ref<Record<string, string | null>>(initialUserDataFormModel());
-const userDataModelChanged = computed(
-  () => JSON.stringify(initialUserDataFormModel()) !== JSON.stringify(userDataFormModel.value)
+const userDataModelChanged = computed(() =>
+  modelChanged(userDataFormModel.value, initialUserDataFormModel())
 );
 
 const rPasswordFormItemRef = ref<FormItemInst | null>(null);
@@ -88,6 +88,28 @@ async function updateUser(userUpdate: UserUpdate) {
   }
 }
 
+function keepChanged(
+  changed: Record<string, string | null>,
+  original: Record<string, string | null>
+) {
+  return Object.keys(changed).reduce((prev, curr) => {
+    if (changed[curr] !== original[curr]) prev[curr] = changed[curr];
+    return prev;
+  }, {} as Record<string, string | null>);
+}
+
+function modelChanged(
+  changed: Record<string, string | null>,
+  original: Record<string, string | null>
+) {
+  for (const key in original) {
+    if (changed[key] !== original[key]) {
+      return true;
+    }
+  }
+  return false;
+}
+
 function handleEmailSave() {
   emailFormRef.value
     ?.validate(async (errors) => {
@@ -99,7 +121,7 @@ function handleEmailSave() {
           negativeText: t('general.cancelAction'),
           style: 'font-weight: var(--app-ui-font-weight-light)',
           onPositiveClick: async () => {
-            await updateUser(emailFormModel.value);
+            await updateUser(keepChanged(emailFormModel.value, initialEmailFormModel()));
             message.success(t('account.manage.msgEmailSaveSuccess'));
             message.warning(t('account.manage.msgVerifyEmailWarning'), 20);
             await auth.logout();
@@ -127,7 +149,7 @@ async function handlePasswordSave() {
           negativeText: t('general.cancelAction'),
           style: 'font-weight: var(--app-ui-font-weight-light)',
           onPositiveClick: async () => {
-            await updateUser(passwordFormModel.value);
+            await updateUser({ password: passwordFormModel.value.password || undefined });
             message.success(t('account.manage.msgPasswordSaveSuccess'));
             await auth.logout();
             auth.showLoginModal(undefined, { name: 'accountProfile' }, false);
@@ -143,7 +165,7 @@ async function handleUserDataSave() {
   userDataFormRef.value
     ?.validate(async (errors) => {
       if (!errors) {
-        await updateUser(userDataFormModel.value);
+        await updateUser(keepChanged(userDataFormModel.value, initialUserDataFormModel()));
         message.success(t('account.manage.msgUserDataSaveSuccess'));
       }
     })
