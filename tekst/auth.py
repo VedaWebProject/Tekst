@@ -48,7 +48,7 @@ from pymongo import IndexModel
 
 from tekst.config import TekstConfig, get_config
 from tekst.logging import log
-from tekst.models.common import AllOptionalMeta, ModelBase, PyObjectId
+from tekst.models.common import AllOptionalMeta, Locale, ModelBase, PyObjectId
 
 
 _cfg: TekstConfig = get_config()
@@ -74,6 +74,7 @@ class UserBase(ModelBase):
     first_name: constr(min_length=1, max_length=32)
     last_name: constr(min_length=1, max_length=32)
     affiliation: constr(min_length=1, max_length=64)
+    locale: Locale | None = None
     public_fields: list[PublicUserField] = Field(
         ["username"], description="Data fields set public by this user"
     )

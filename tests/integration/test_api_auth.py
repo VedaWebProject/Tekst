@@ -96,7 +96,7 @@ async def test_login(
         endpoint,
         data=payload,
     )
-    assert resp.status_code == 204, status_fail_msg(204, resp)
+    assert resp.status_code == 200, status_fail_msg(200, resp)
     assert resp.cookies.get(config.security.auth_cookie_name)
 
 
@@ -157,7 +157,7 @@ async def test_user_updates_self(
         endpoint,
         data=payload,
     )
-    assert resp.status_code == 204, status_fail_msg(204, resp)
+    assert resp.status_code == 200, status_fail_msg(200, resp)
 
     # save auth cookie
     assert resp.cookies.get(config.security.auth_cookie_name)

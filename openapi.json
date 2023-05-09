@@ -1674,9 +1674,6 @@
               }
             }
           },
-          "204": {
-            "description": "No Content"
-          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -1708,9 +1705,6 @@
           },
           "401": {
             "description": "Missing token or inactive user."
-          },
-          "204": {
-            "description": "No Content"
           }
         },
         "security": [
@@ -2219,8 +2213,7 @@
           {
             "required": true,
             "schema": {
-              "title": "Id",
-              "type": "string"
+              "title": "Id"
             },
             "name": "id",
             "in": "path"
@@ -2276,8 +2269,7 @@
           {
             "required": true,
             "schema": {
-              "title": "Id",
-              "type": "string"
+              "title": "Id"
             },
             "name": "id",
             "in": "path"
@@ -2326,8 +2318,7 @@
           {
             "required": true,
             "schema": {
-              "title": "Id",
-              "type": "string"
+              "title": "Id"
             },
             "name": "id",
             "in": "path"
@@ -3794,6 +3785,14 @@
             "minLength": 1,
             "type": "string"
           },
+          "locale": {
+            "title": "Locale",
+            "enum": [
+              "deDE",
+              "enUS"
+            ],
+            "type": "string"
+          },
           "publicFields": {
             "title": "Publicfields",
             "type": "array",
@@ -3875,6 +3874,14 @@
             "title": "Affiliation",
             "maxLength": 64,
             "minLength": 1,
+            "type": "string"
+          },
+          "locale": {
+            "title": "Locale",
+            "enum": [
+              "deDE",
+              "enUS"
+            ],
             "type": "string"
           },
           "publicFields": {
@@ -3975,6 +3982,14 @@
             "title": "Affiliation",
             "maxLength": 64,
             "minLength": 1,
+            "type": "string"
+          },
+          "locale": {
+            "title": "Locale",
+            "enum": [
+              "deDE",
+              "enUS"
+            ],
             "type": "string"
           },
           "publicFields": {

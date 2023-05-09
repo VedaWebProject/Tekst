@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional
+from typing import Literal, Optional
 
 from beanie import (
     Document,
@@ -12,6 +12,9 @@ from pydantic.main import ModelMetaclass
 
 # type alias for a flat dict of arbitrary metadata
 Metadata = dict[str, str]
+
+# type alias for available locale identifiers
+Locale = Literal["deDE", "enUS"]
 
 
 class PyObjectId(PydanticObjectId):

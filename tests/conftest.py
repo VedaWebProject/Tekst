@@ -150,7 +150,7 @@ async def get_session_cookie(
             endpoint,
             data=payload,
         )
-        assert resp.status_code == 204, status_fail_msg(204, resp)
+        assert resp.status_code == 200, status_fail_msg(200, resp)
         assert resp.cookies.get(config.security.auth_cookie_name)
         return resp.cookies
 
