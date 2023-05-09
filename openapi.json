@@ -1674,6 +1674,9 @@
               }
             }
           },
+          "204": {
+            "description": "No Content"
+          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -1705,6 +1708,9 @@
           },
           "401": {
             "description": "Missing token or inactive user."
+          },
+          "204": {
+            "description": "No Content"
           }
         },
         "security": [
@@ -2213,7 +2219,8 @@
           {
             "required": true,
             "schema": {
-              "title": "Id"
+              "title": "Id",
+              "type": "string"
             },
             "name": "id",
             "in": "path"
@@ -2269,7 +2276,8 @@
           {
             "required": true,
             "schema": {
-              "title": "Id"
+              "title": "Id",
+              "type": "string"
             },
             "name": "id",
             "in": "path"
@@ -2318,7 +2326,8 @@
           {
             "required": true,
             "schema": {
-              "title": "Id"
+              "title": "Id",
+              "type": "string"
             },
             "name": "id",
             "in": "path"
