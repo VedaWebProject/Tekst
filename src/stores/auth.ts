@@ -1,14 +1,15 @@
 import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
-import type { ErrorModel, UserRead } from '@/openapi';
+import type { ErrorModel, UserRead, UserUpdate } from '@/openapi';
 import { useMessages } from '@/messages';
 import { useApi } from '@/api';
-import { i18n } from '@/i18n';
+import { i18n, localeProfiles } from '@/i18n';
 import { useIntervalFn } from '@vueuse/core';
 import { useRouter, type RouteLocationRaw } from 'vue-router';
 import type { AxiosError } from 'axios';
 import { createTemplatePromise } from '@vueuse/core';
 import { usePlatformData } from '@/platformData';
+import { useStateStore } from '@/stores';
 
 const SESSION_POLL_INTERVAL_S = 60; // check session expiry every n seconds
 const SESSION_EXPIRY_OFFSET_S = 10; // assume session expired n seconds early
@@ -49,6 +50,7 @@ export const useAuthStore = defineStore('auth', () => {
   const { message } = useMessages();
   const { authApi, usersApi } = useApi();
   const { t } = i18n.global;
+  const state = useStateStore();
 
   const user = ref<UserRead | null>(getUserFromLocalStorage());
   const returnUrl = ref<string | null>(null);
@@ -126,6 +128,16 @@ export const useAuthStore = defineStore('auth', () => {
       const userData = (await usersApi.usersCurrentUser()).data;
       userData && localStorage.setItem('user', JSON.stringify(userData));
       user.value = userData;
+      // process user locale
+      if (!userData.locale) {
+        try {
+          updateUser({ locale: localeProfiles[state.locale].apiLocaleEnum });
+        } catch {
+          // just let it happen
+        }
+      } else {
+        await state.setLocale(userData.locale);
+      }
       message.success(t('general.welcome', { name: userData.firstName }));
       nextRoute && router.push(nextRoute);
       return true;
@@ -166,6 +178,18 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  async function updateUser(userUpdate: UserUpdate) {
+    if (!user.value) return Promise.reject('no user');
+    const updatedUser = await usersApi
+      .usersPatchCurrentUser({ userUpdate })
+      .then((response) => response.data);
+    if (updatedUser) {
+      user.value = updatedUser;
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+    }
+    return updatedUser;
+  }
+
   return {
     user,
     loggedIn,
@@ -173,6 +197,7 @@ export const useAuthStore = defineStore('auth', () => {
     showLoginModal,
     login,
     logout,
+    updateUser,
     checkSession,
   };
 });

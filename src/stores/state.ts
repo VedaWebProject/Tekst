@@ -2,18 +2,20 @@ import { ref, computed, watch } from 'vue';
 import { defineStore } from 'pinia';
 import { useWindowSize } from '@vueuse/core';
 import type { RouteLocationNormalized } from 'vue-router';
-import { i18n, setI18nLocale } from '@/i18n';
+import { i18n, setI18nLocale, localeProfiles } from '@/i18n';
 import type { AvailableLocale } from '@/i18n';
 import { useRoute } from 'vue-router';
 import type { TextRead } from '@/openapi';
 import type { ThemeMode } from '@/theme';
 import { useI18n } from 'vue-i18n';
 import { usePlatformData } from '@/platformData';
+import { useAuthStore } from './auth';
 
 export const useStateStore = defineStore('state', () => {
   // define resources
   const { pfData } = usePlatformData();
   const route = useRoute();
+  const auth = useAuthStore();
   const windowSize = useWindowSize();
   const { t, te } = useI18n({ useScope: 'global' });
 
@@ -26,15 +28,20 @@ export const useStateStore = defineStore('state', () => {
   }
 
   // locale
-  const locale = ref(localStorage.getItem('locale') || i18n.global.locale);
+  const locale = ref(auth.user?.locale || localStorage.getItem('locale') || i18n.global.locale);
+  const locales = i18n.global.availableLocales;
   watch(locale, (after) => {
     localStorage.setItem('locale', after);
     setPageTitle();
   });
-  const locales = i18n.global.availableLocales;
   async function setLocale(l: string = locale.value): Promise<AvailableLocale> {
     const lang = await setI18nLocale(l);
     locale.value = lang.key;
+    try {
+      await auth.updateUser({ locale: localeProfiles[lang.key].apiLocaleEnum });
+    } catch {
+      // do sweet FA
+    }
     return lang;
   }
 

@@ -1376,6 +1376,12 @@ export interface UserCreate {
      */
     'affiliation': string;
     /**
+     * 
+     * @type {string}
+     * @memberof UserCreate
+     */
+    'locale'?: UserCreateLocaleEnum;
+    /**
      * Data fields set public by this user
      * @type {Array<string>}
      * @memberof UserCreate
@@ -1383,6 +1389,12 @@ export interface UserCreate {
     'publicFields'?: Array<UserCreatePublicFieldsEnum>;
 }
 
+export const UserCreateLocaleEnum = {
+    DeDe: 'deDE',
+    EnUs: 'enUS'
+} as const;
+
+export type UserCreateLocaleEnum = typeof UserCreateLocaleEnum[keyof typeof UserCreateLocaleEnum];
 export const UserCreatePublicFieldsEnum = {
     Username: 'username',
     Email: 'email',
@@ -1454,6 +1466,12 @@ export interface UserRead {
      */
     'affiliation': string;
     /**
+     * 
+     * @type {string}
+     * @memberof UserRead
+     */
+    'locale'?: UserReadLocaleEnum;
+    /**
      * Data fields set public by this user
      * @type {Array<string>}
      * @memberof UserRead
@@ -1461,6 +1479,12 @@ export interface UserRead {
     'publicFields'?: Array<UserReadPublicFieldsEnum>;
 }
 
+export const UserReadLocaleEnum = {
+    DeDe: 'deDE',
+    EnUs: 'enUS'
+} as const;
+
+export type UserReadLocaleEnum = typeof UserReadLocaleEnum[keyof typeof UserReadLocaleEnum];
 export const UserReadPublicFieldsEnum = {
     Username: 'username',
     Email: 'email',
@@ -1570,12 +1594,24 @@ export interface UserUpdate {
     'affiliation'?: string;
     /**
      * 
+     * @type {string}
+     * @memberof UserUpdate
+     */
+    'locale'?: UserUpdateLocaleEnum;
+    /**
+     * 
      * @type {Array<string>}
      * @memberof UserUpdate
      */
     'publicFields'?: Array<UserUpdatePublicFieldsEnum>;
 }
 
+export const UserUpdateLocaleEnum = {
+    DeDe: 'deDE',
+    EnUs: 'enUS'
+} as const;
+
+export type UserUpdateLocaleEnum = typeof UserUpdateLocaleEnum[keyof typeof UserUpdateLocaleEnum];
 export const UserUpdatePublicFieldsEnum = {
     Username: 'username',
     Email: 'email',
@@ -5438,11 +5474,11 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
         /**
          * 
          * @summary Delete user
-         * @param {string} id 
+         * @param {any} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usersDeleteUser: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        usersDeleteUser: async (id: any, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('usersDeleteUser', 'id', id)
             const localVarPath = `/users/{id}`
@@ -5520,12 +5556,12 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
         /**
          * 
          * @summary Update user
-         * @param {string} id 
+         * @param {any} id 
          * @param {UserUpdate} userUpdate 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usersPatchUser: async (id: string, userUpdate: UserUpdate, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        usersPatchUser: async (id: any, userUpdate: UserUpdate, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('usersPatchUser', 'id', id)
             // verify required parameter 'userUpdate' is not null or undefined
@@ -5566,11 +5602,11 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
         /**
          * 
          * @summary Get user
-         * @param {string} id 
+         * @param {any} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usersUser: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        usersUser: async (id: any, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('usersUser', 'id', id)
             const localVarPath = `/users/{id}`
@@ -5626,11 +5662,11 @@ export const UsersApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Delete user
-         * @param {string} id 
+         * @param {any} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async usersDeleteUser(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async usersDeleteUser(id: any, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.usersDeleteUser(id, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -5648,23 +5684,23 @@ export const UsersApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Update user
-         * @param {string} id 
+         * @param {any} id 
          * @param {UserUpdate} userUpdate 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async usersPatchUser(id: string, userUpdate: UserUpdate, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserRead>> {
+        async usersPatchUser(id: any, userUpdate: UserUpdate, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserRead>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.usersPatchUser(id, userUpdate, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * 
          * @summary Get user
-         * @param {string} id 
+         * @param {any} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async usersUser(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserRead>> {
+        async usersUser(id: any, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserRead>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.usersUser(id, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -5738,10 +5774,10 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
 export interface UsersApiUsersDeleteUserRequest {
     /**
      * 
-     * @type {string}
+     * @type {any}
      * @memberof UsersApiUsersDeleteUser
      */
-    readonly id: string
+    readonly id: any
 }
 
 /**
@@ -5766,10 +5802,10 @@ export interface UsersApiUsersPatchCurrentUserRequest {
 export interface UsersApiUsersPatchUserRequest {
     /**
      * 
-     * @type {string}
+     * @type {any}
      * @memberof UsersApiUsersPatchUser
      */
-    readonly id: string
+    readonly id: any
 
     /**
      * 
@@ -5787,10 +5823,10 @@ export interface UsersApiUsersPatchUserRequest {
 export interface UsersApiUsersUserRequest {
     /**
      * 
-     * @type {string}
+     * @type {any}
      * @memberof UsersApiUsersUser
      */
-    readonly id: string
+    readonly id: any
 }
 
 /**

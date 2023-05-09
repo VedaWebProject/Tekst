@@ -5,6 +5,7 @@ import type { NDateLocale, NLocale } from 'naive-ui';
 import { enUS, dateEnUS } from 'naive-ui';
 import { deDE, dateDeDE } from 'naive-ui';
 import { useApi } from '@/api';
+import { UserUpdateLocaleEnum } from '@/openapi';
 
 const i18nOptions: I18nOptions = {
   legacy: false,
@@ -21,6 +22,7 @@ export interface AvailableLocale {
   icon: string;
   nUiLangLocale: NLocale;
   nUiDateLocale: NDateLocale;
+  apiLocaleEnum: UserUpdateLocaleEnum;
 }
 
 export const localeProfiles: { [localeKey: string]: AvailableLocale } = {
@@ -31,6 +33,7 @@ export const localeProfiles: { [localeKey: string]: AvailableLocale } = {
     icon: '🇺🇸',
     nUiLangLocale: enUS,
     nUiDateLocale: dateEnUS,
+    apiLocaleEnum: UserUpdateLocaleEnum.EnUs,
   },
   deDE: {
     key: 'deDE',
@@ -39,6 +42,7 @@ export const localeProfiles: { [localeKey: string]: AvailableLocale } = {
     icon: '🇩🇪',
     nUiLangLocale: deDE,
     nUiDateLocale: dateDeDE,
+    apiLocaleEnum: UserUpdateLocaleEnum.DeDe,
   },
 };
 

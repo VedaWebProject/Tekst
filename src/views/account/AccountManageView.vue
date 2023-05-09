@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useApi } from '@/api';
 import { useFormRules } from '@/formRules';
 import { useMessages } from '@/messages';
 import type { UserUpdate } from '@/openapi';
@@ -12,7 +11,6 @@ import { useI18n } from 'vue-i18n';
 const dialog = useDialog();
 const auth = useAuthStore();
 const { message } = useMessages();
-const { usersApi } = useApi();
 const { t } = useI18n({ useScope: 'global' });
 
 const initialEmailFormModel = () => ({
@@ -71,10 +69,7 @@ function handlePasswordInput() {
 async function updateUser(userUpdate: UserUpdate) {
   loading.value = true;
   try {
-    const updatedUser = await usersApi
-      .usersPatchCurrentUser({ userUpdate })
-      .then((response) => response.data);
-    auth.user = updatedUser;
+    await auth.updateUser(userUpdate);
     return true;
   } catch {
     /**
