@@ -152,7 +152,16 @@ export const useAuthStore = defineStore('auth', () => {
         if (data.detail === 'LOGIN_BAD_CREDENTIALS') {
           message.error(t('account.errors.badCreds'));
         } else if (data.detail === 'LOGIN_USER_NOT_VERIFIED') {
-          message.error(t('account.errors.notVerified'));
+          authApi
+            .verifyRequestToken({
+              bodyVerifyRequestTokenAuthRequestVerifyTokenPost: { email: username },
+            })
+            .then(() => {
+              message.error(t('account.errors.notVerified'));
+            })
+            .catch(() => {
+              message.error(t('account.errors.unexpected'));
+            });
         } else if (error.response.status === 403) {
           message.error(t('errors.csrf'));
         } else {
