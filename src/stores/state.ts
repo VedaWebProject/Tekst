@@ -34,13 +34,18 @@ export const useStateStore = defineStore('state', () => {
     localStorage.setItem('locale', after);
     setPageTitle();
   });
-  async function setLocale(l: string = locale.value): Promise<AvailableLocale> {
+  async function setLocale(
+    l: string = locale.value,
+    updateUserLocale: boolean = true
+  ): Promise<AvailableLocale> {
     const lang = await setI18nLocale(l);
     locale.value = lang.key;
-    try {
-      await auth.updateUser({ locale: localeProfiles[lang.key].apiLocaleEnum });
-    } catch {
-      // do sweet FA
+    if (updateUserLocale) {
+      try {
+        await auth.updateUser({ locale: localeProfiles[lang.key].apiLocaleEnum });
+      } catch {
+        // do sweet FA
+      }
     }
     return lang;
   }

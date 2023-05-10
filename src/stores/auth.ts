@@ -136,7 +136,7 @@ export const useAuthStore = defineStore('auth', () => {
           // just let it happen
         }
       } else {
-        await state.setLocale(userData.locale);
+        await state.setLocale(userData.locale, false);
       }
       message.success(t('general.welcome', { name: userData.firstName }));
       nextRoute && router.push(nextRoute);
