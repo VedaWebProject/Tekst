@@ -1,12 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from humps import decamelize
 
-from tekst.auth import User, UserReadPublic
 from tekst.config import TekstConfig
 from tekst.dependencies import get_cfg
 from tekst.layer_types import get_layer_types_info
 from tekst.models.platform import PlatformData
 from tekst.models.settings import PlatformSettingsDocument
+from tekst.models.user import User, UserReadPublic
 from tekst.routers.texts import get_all_texts
 
 

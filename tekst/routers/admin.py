@@ -1,18 +1,18 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, HTTPException, Response, status
 
-from tekst.auth import User, UserRead, get_current_superuser
+from tekst.auth import SuperuserDep
+from tekst.email import send_test_email
 from tekst.layer_types import get_layer_type_names
 from tekst.models.layer import LayerBaseDocument
 from tekst.models.platform import PlatformStats, TextStats
 from tekst.models.text import NodeDocument, TextDocument
+from tekst.models.user import User, UserRead
 
 
 router = APIRouter(
     prefix="/admin",
     tags=["admin"],
     responses={status.HTTP_404_NOT_FOUND: {"description": "Not found"}},
-    # dependencies=[],
-    dependencies=[Depends(get_current_superuser)],
 )
 
 
@@ -20,7 +20,7 @@ router = APIRouter(
 
 
 @router.get("/stats", response_model=PlatformStats, status_code=status.HTTP_200_OK)
-async def get_stats() -> PlatformStats:
+async def get_stats(su: SuperuserDep) -> PlatformStats:
     layer_type_names = get_layer_type_names()
     texts = await TextDocument.find_all().to_list()
     text_stats = []
@@ -54,5 +54,21 @@ async def get_stats() -> PlatformStats:
 
 
 @router.get("/users", response_model=list[UserRead], status_code=status.HTTP_200_OK)
-async def get_users() -> list[User]:
+async def get_users(su: SuperuserDep) -> list[User]:
     return await User.find_all().to_list()
+
+
+@router.get(
+    "/testemail",
+    summary="Send test email to test email setup",
+    status_code=status.HTTP_204_NO_CONTENT,
+    response_class=Response,
+)
+async def test_email(su: SuperuserDep):
+    try:
+        send_test_email(su)
+    except Exception:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Something went wrong",
+        )

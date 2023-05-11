@@ -3,7 +3,6 @@ import re
 from beanie.operators import Or
 from pydantic import Field, validator
 
-from tekst.auth import UserRead
 from tekst.models.common import (
     DocumentBase,
     Metadata,
@@ -13,6 +12,7 @@ from tekst.models.common import (
     ReadBase,
     UpdateBase,
 )
+from tekst.models.user import UserRead
 
 
 class LayerBase(ModelBase, ModelFactory):

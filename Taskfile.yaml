@@ -104,6 +104,7 @@ tasks:
   dev-stack-up:
     desc: Run dev services stack
     cmds:
+      - task: gen-smtp-ssl-cert
       - docker compose -f dev/docker-compose.yml --profile dev -p tekst-dev up --detach
 
   dev-stack-down:
@@ -114,6 +115,7 @@ tasks:
   test-stack-up:
     desc: Run test services stack
     cmds:
+      - task: gen-smtp-ssl-cert
       - docker compose -f dev/docker-compose.yml --profile test -p tekst-testing up --detach
 
   test-stack-down:
@@ -137,3 +139,8 @@ tasks:
     internal: true
     silent: true
     cmd: printf "Waiting for MongoDB service"; while ! $(curl -f http://127.0.0.1:27017 > /dev/null 2>&1); do sleep 1; printf "."; done; printf "\n"
+
+  gen-smtp-ssl-cert:
+    internal: true
+    silent: true
+    cmd: cd dev/smtp-ssl && ./generate.sh

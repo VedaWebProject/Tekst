@@ -51,7 +51,7 @@ class DbConfig(ModelBase):
     """Database config model"""
 
     protocol: str = "mongodb"
-    host: str = "localhost"
+    host: str = "127.0.0.1"
     port: int = 27017
     user: str = "root"
     password: str = "root"
@@ -125,11 +125,23 @@ class SecurityConfig(ModelBase):
     csrf_header_name: str = "X-XSRF-TOKEN"
 
 
+class EMailConfig(ModelBase):
+    """Email-related things config model"""
+
+    smtp_server: str | None = None
+    smtp_port: int | None = 25
+    smtp_user: str | None = None
+    smtp_password: str | None = None
+    smtp_starttls: bool = True
+    from_address: str = "noreply@example-tekst-instance.org"
+
+
 class TekstConfig(BaseSettings):
     """Platform config model"""
 
     # basic
     dev_mode: bool = False
+    web_path: str = "/"
     api_path: str = "/api"
     server_url: HttpUrl = "http://127.0.0.1:8000"
     user_files_dir: str = "userfiles"
@@ -146,6 +158,7 @@ class TekstConfig(BaseSettings):
     cors_allow_headers: str | list[str] = ["*"]
 
     # special domain sub configs
+    email: EMailConfig = EMailConfig()  # Email-related config
     security: SecurityConfig = SecurityConfig()  # security-related config
     db: DbConfig = DbConfig()  # db-related config (MongoDB)
     doc: DocConfig = DocConfig()  # documentation-related config (OpenAPI, Redoc)

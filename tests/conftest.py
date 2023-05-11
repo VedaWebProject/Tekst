@@ -8,12 +8,13 @@ import requests
 from asgi_lifespan import LifespanManager
 from httpx import AsyncClient, Response
 from tekst.app import app
-from tekst.auth import UserCreate, _create_user
+from tekst.auth import _create_user
 from tekst.config import TekstConfig, get_config
 from tekst.db import DatabaseClient
 from tekst.dependencies import get_db_client
 from tekst.layer_types import get_layer_type
 from tekst.models.text import NodeDocument, TextDocument
+from tekst.models.user import UserCreate
 
 
 """

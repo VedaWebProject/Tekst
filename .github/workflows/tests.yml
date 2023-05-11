@@ -24,6 +24,13 @@ jobs:
         env:
           MONGO_INITDB_ROOT_USERNAME: root
           MONGO_INITDB_ROOT_PASSWORD: root
+      mailpit:
+        image: axllent/mailpit:v1.6
+        ports:
+          - 1025:1025
+        env:
+          MP_SMTP_AUTH_ACCEPT_ANY: true
+          MP_SMTP_AUTH_ALLOW_INSECURE: true
     defaults:
       run:
         working-directory: .

@@ -29,7 +29,7 @@ services:
       - test
 
   mongo-express:
-    image: mongo-express
+    image: mongo-express:1.0.0-alpha.4
     restart: always
     init: true
     depends_on:
@@ -37,13 +37,29 @@ services:
     ports:
       - 127.0.0.1:8081:8081
     environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: root
-      ME_CONFIG_MONGODB_ADMINPASSWORD: root
       ME_CONFIG_MONGODB_URL: mongodb://root:root@mongo:27017/
     networks:
       - devstack
     profiles:
       - dev
+
+  mailpit:
+    image: axllent/mailpit:v1.6
+    restart: always
+    init: true
+    volumes:
+      - ./smtp-ssl:/smtp-ssl
+    ports:
+      - 127.0.0.1:1025:1025
+      - 127.0.0.1:8025:8025
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: true
+      MP_SMTP_AUTH_ALLOW_INSECURE: true
+      MP_SMTP_TLS_CERT: /smtp-ssl/localhost.crt
+      MP_SMTP_TLS_KEY: /smtp-ssl/localhost.key
+    profiles:
+      - dev
+      - test
 
 volumes:
   mongo_configdb:

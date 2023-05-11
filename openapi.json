@@ -89,6 +89,31 @@
         ]
       }
     },
+    "/admin/testmail": {
+      "get": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "Test mail",
+        "operationId": "testMail",
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
     "/layers/plaintext/{id}": {
       "get": {
         "tags": [

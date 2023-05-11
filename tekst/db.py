@@ -2,12 +2,13 @@ from beanie import init_beanie
 from motor.motor_asyncio import AsyncIOMotorClient as DatabaseClient
 from motor.motor_asyncio import AsyncIOMotorDatabase as Database
 
-from tekst.auth import AccessToken, User
+from tekst.auth import AccessToken
 from tekst.config import TekstConfig, get_config
 from tekst.layer_types import get_layer_types
 from tekst.logging import log
 from tekst.models.settings import PlatformSettingsDocument
 from tekst.models.text import NodeDocument, TextDocument
+from tekst.models.user import User
 
 
 _cfg: TekstConfig = get_config()

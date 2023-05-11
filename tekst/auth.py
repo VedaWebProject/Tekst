@@ -1,7 +1,7 @@
 import contextlib
 import re
 
-from typing import Annotated, Any, Literal
+from typing import Annotated, Any
 
 import fastapi_users.models as fapi_users_models
 
@@ -19,7 +19,6 @@ from fastapi_users import (
     BaseUserManager,
     FastAPIUsers,
     InvalidPasswordException,
-    schemas,
 )
 from fastapi_users.authentication import (
     AuthenticationBackend,
@@ -34,7 +33,6 @@ from fastapi_users.authentication.strategy.db import (
 from fastapi_users.exceptions import UserAlreadyExists
 from fastapi_users_db_beanie import (
     UP_BEANIE,
-    BeanieBaseUser,
     BeanieUserDatabase,
     ObjectIDIDMixin,
 )
@@ -42,77 +40,16 @@ from fastapi_users_db_beanie.access_token import (
     BeanieAccessTokenDatabase,
     BeanieBaseAccessToken,
 )
-from humps import camelize, decamelize
-from pydantic import Field, constr
-from pymongo import IndexModel
+from humps import decamelize
 
 from tekst.config import TekstConfig, get_config
+from tekst.email import TemplateIdentifier, send_email
 from tekst.logging import log
-from tekst.models.common import AllOptionalMeta, Locale, ModelBase, PyObjectId
+from tekst.models.common import PyObjectId
+from tekst.models.user import User, UserCreate, UserRead, UserUpdate
 
 
 _cfg: TekstConfig = get_config()
-
-
-class UserReadPublic(ModelBase):
-    username: str
-    email: str | None = None
-    first_name: str | None = None
-    last_name: str | None = None
-    affiliation: str | None = None
-
-
-PublicUserField = Literal[
-    tuple([camelize(field) for field in UserReadPublic.__fields__.keys()])
-]
-
-
-class UserBase(ModelBase):
-    """This base class defines the custom fields added to FastAPI-User's user model"""
-
-    username: constr(min_length=4, max_length=16, regex=r"[a-zA-Z0-9\-_]+")
-    first_name: constr(min_length=1, max_length=32)
-    last_name: constr(min_length=1, max_length=32)
-    affiliation: constr(min_length=1, max_length=64)
-    locale: Locale | None = None
-    public_fields: list[PublicUserField] = Field(
-        ["username"], description="Data fields set public by this user"
-    )
-
-
-class User(UserBase, BeanieBaseUser, Document):
-    """User document model used by FastAPI-Users"""
-
-    is_active: bool = _cfg.security.users_active_by_default
-
-    class Settings(BeanieBaseUser.Settings):
-        name = "users"
-        indexes = BeanieBaseUser.Settings.indexes + [
-            IndexModel("username", unique=True)
-        ]
-
-
-class UserRead(UserBase, schemas.BaseUser[PyObjectId]):
-    """A user registered in the system"""
-
-    # we redefine these fields here because they should be required in a read model
-    # but have default values in FastAPI-User's schemas.BaseUser...
-    id: PyObjectId
-    is_active: bool
-    is_verified: bool
-    is_superuser: bool
-
-
-class UserCreate(UserBase, schemas.BaseUserCreate):
-    """Dataset for creating a new user"""
-
-    is_active: bool = _cfg.security.users_active_by_default
-
-
-class UserUpdate(UserBase, schemas.BaseUserUpdate, metaclass=AllOptionalMeta):
-    """Updates to a user registered in the system"""
-
-    pass
 
 
 class AccessToken(BeanieBaseAccessToken, Document):
@@ -225,7 +162,12 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[User, PyObjectId]):
     async def on_after_request_verify(
         self, user: User, token: str, request: Request | None = None
     ):
-        log.critical(f"[on_after_request_verify] {user.username}/{user.email}: {token}")
+        send_email(
+            user,
+            TemplateIdentifier.VERIFY,
+            token=token,
+            token_lifetime_minutes=int(_cfg.security.verification_token_lifetime / 60),
+        )
 
     async def on_after_verify(self, user: User, request: Request | None = None):
         log.critical(f"[on_after_verify] {user.username}/{user.email}")
