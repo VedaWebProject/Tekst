@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useApi } from '@/api';
 import { useFormRules } from '@/formRules';
 import { useMessages } from '@/messages';
 import type { UserUpdate } from '@/openapi';
@@ -12,6 +13,7 @@ const dialog = useDialog();
 const auth = useAuthStore();
 const { message } = useMessages();
 const { t } = useI18n({ useScope: 'global' });
+const { authApi } = useApi();
 
 const initialEmailFormModel = () => ({
   email: auth.user?.email || null,
@@ -34,7 +36,7 @@ const formRules = useFormRules();
 const emailFormRef = ref<FormInst | null>(null);
 const emailFormModel = ref<Record<string, string | null>>(initialEmailFormModel());
 const emailModelChanged = computed(() =>
-  modelChanged(passwordFormModel.value, initialPasswordFormModel())
+  modelChanged(emailFormModel.value, initialEmailFormModel())
 );
 
 const passwordFormRef = ref<FormInst | null>(null);
@@ -118,8 +120,19 @@ function handleEmailSave() {
           onPositiveClick: async () => {
             await updateUser(keepChanged(emailFormModel.value, initialEmailFormModel()));
             message.success(t('account.manage.msgEmailSaveSuccess'));
-            message.warning(t('account.manage.msgVerifyEmailWarning'), 20);
             await auth.logout();
+            authApi
+              .verifyRequestToken({
+                bodyVerifyRequestTokenAuthRequestVerifyTokenPost: {
+                  email: emailFormModel.value.email || '',
+                },
+              })
+              .then(() => {
+                message.warning(t('account.manage.msgVerifyEmailWarning'), 20);
+              })
+              .catch(() => {
+                message.error(t('errors.unexpected'));
+              });
             auth.showLoginModal(
               t('account.manage.msgVerifyEmailWarning'),
               { name: 'accountProfile' },

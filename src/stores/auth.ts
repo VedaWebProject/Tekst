@@ -160,7 +160,7 @@ export const useAuthStore = defineStore('auth', () => {
               message.error(t('account.errors.notVerified'));
             })
             .catch(() => {
-              message.error(t('account.errors.unexpected'));
+              message.error(t('errors.unexpected'));
             });
         } else if (error.response.status === 403) {
           message.error(t('errors.csrf'));

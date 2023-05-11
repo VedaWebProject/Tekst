@@ -77,6 +77,7 @@ routes:
     adminStatistics: 'Admin: Statistiken'
     adminUsers: 'Admin: Benutzer'
     adminTexts: 'Admin: Texte'
+    verify: Verifizierung
 
 layerTypes:
   plaintext: Einfacher Text
@@ -183,7 +184,7 @@ account:
     heading: Melden Sie sich an
   errors:
     badCreds: Falsche Email-Adresse/Passwort oder Konto noch nicht aktiviert
-    notVerified: Ihre Email-Adresse ist noch nicht verifiziert. Wir haben Ihren Verifizierungslink nochmals versendet.
+    notVerified: Ihre Email-Adresse ist noch nicht verifiziert. Wir haben Ihnen einen Verifizierungslink geschickt.
   autoLogout: Ihre Sitzung endet automatisch in {minutes} Minuten und {seconds} Sekunden. Melden Sie sich ab und wieder an, um Ihre Sitzung jetzt zu erneuern.
   sessionExpired: Ihre Sitzung ist abgelaufen.
   renewLogin: Melden Sie sich wieder an, um Ihre Sitzung zu erneuern.
@@ -192,10 +193,16 @@ account:
     headingChangeUserData: Allgemeine Benutzerdaten
     msgEmailSaveSuccess: '@:models.user.email gespeichert.'
     msgEmailChangeWarning: Stellen Sie sicher, dass Sie eine gültige @:models.user.email eingeben, auf die Sie Zugriff haben! Wenn Sie fortfahren, werden Sie abgemeldet und müssen Ihre geänderte @:models.users.email verifizieren, bevor Sie sich wieder anmelden können.
-    msgVerifyEmailWarning: Bitte verifizieren Sie Ihre geänderte @:models.user.email bevor Sie sich wieder anmelden!
+    msgVerifyEmailWarning: Bitte verifizieren Sie Ihre geänderte @:models.user.email bevor Sie sich wieder anmelden! Wir haben Ihnen einen Verifizierungs-Link gesendet.
     msgPasswordSaveSuccess: '@:models.user.password saved.'
     msgPasswordChangeWarning: Wenn Sie fortfahren, werden Sie abgemeldet und müssen sich mit Ihrem neuen Passwort wieder anmelden.
     msgUserDataSaveSuccess: Benutzerdaten gespeichert.
+
+verify:
+  success: Ihre Email-Adresse wurde erfolgreich verifiziert! Sie können sich jetzt in Ihrem Konto anmelden.
+  error:
+    badToken: Dieser Verifizierungslink ist entweder ungültig oder bereits abgelaufen.
+    alreadyVerified: Diese Email-Adresse ist bereits verifiziert.
 
 admin:
   heading: Administration

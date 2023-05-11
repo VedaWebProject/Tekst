@@ -13,13 +13,14 @@ declare module 'vue-router' {
 
 const HomeView = () => import('@/views/HomeView.vue');
 const UserView = () => import('@/views/UserView.vue');
-const AccountView = () => import('@/views/account/AccountView.vue');
-const AccountManageView = () => import('@/views/account/AccountManageView.vue');
 const HelpView = () => import('@/views/HelpView.vue');
 const BrowseView = () => import('@/views/BrowseView.vue');
 const SearchView = () => import('@/views/SearchView.vue');
-
 const RegisterView = () => import('@/views/RegisterView.vue');
+
+const AccountView = () => import('@/views/account/AccountView.vue');
+const AccountManageView = () => import('@/views/account/AccountManageView.vue');
+const VerifyView = () => import('@/views/VerifyView.vue');
 
 const AdminView = () => import('@/views/admin/AdminView.vue');
 const AdminStatisticsView = () => import('@/views/admin/AdminStatisticsView.vue');
@@ -67,6 +68,11 @@ const router = createRouter({
       path: '/user/:username',
       name: 'user',
       component: UserView,
+    },
+    {
+      path: '/verify',
+      name: 'verify',
+      component: VerifyView,
     },
     {
       path: '/account',
