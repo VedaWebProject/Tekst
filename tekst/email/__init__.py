@@ -21,6 +21,8 @@ class TemplateIdentifier(Enum):
     TEST = "test"
     VERIFY = "verify"
     VERIFIED = "verified"
+    PASSWORD_FORGOT = "password_forgot"
+    PASSWORD_RESET = "password_reset"
 
 
 @lru_cache(maxsize=128)

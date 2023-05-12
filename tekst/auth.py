@@ -141,7 +141,7 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[User, PyObjectId]):
     verification_token_audience = "tekst:verify"
 
     async def on_after_register(self, user: User, request: Request | None = None):
-        log.critical(f"[on_after_register] {user.id}")
+        log.info(f"User {user.username} has registered.")
 
     async def on_after_update(
         self,
@@ -149,7 +149,7 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[User, PyObjectId]):
         update_dict: dict[str, Any],
         request: Request | None = None,
     ):
-        log.critical(f"[on_after_update] {user.username}: {update_dict}")
+        pass  # nothing to do here ATM
 
     async def on_after_login(
         self,
@@ -157,7 +157,7 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[User, PyObjectId]):
         request: Request | None = None,
         response: Response | None = None,
     ):
-        log.critical(f"[on_after_login] {user.username}")
+        pass  # nothing to do here ATM
 
     async def on_after_request_verify(
         self, user: User, token: str, request: Request | None = None
@@ -175,7 +175,12 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[User, PyObjectId]):
     async def on_after_forgot_password(
         self, user: User, token: str, request: Request | None = None
     ):
-        log.critical(f"[on_after_forgot_password] {user.username}: {token}")
+        send_email(
+            user,
+            TemplateIdentifier.PASSWORD_FORGOT,
+            token=token,
+            token_lifetime_minutes=int(_cfg.security.reset_pw_token_lifetime / 60),
+        )
 
     async def on_after_reset_password(self, user: User, request: Request | None = None):
         log.critical(f"[on_after_reset_password] {user.username}")
