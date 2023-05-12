@@ -183,13 +183,13 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[User, PyObjectId]):
         )
 
     async def on_after_reset_password(self, user: User, request: Request | None = None):
-        log.critical(f"[on_after_reset_password] {user.username}")
+        pass  # nothing to do here ATM
 
     async def on_before_delete(self, user: User, request: Request | None = None):
-        log.critical(f"[on_before_delete] {user.username}")
+        log.debug(f"[on_before_delete] {user.username}")
 
     async def on_after_delete(self, user: User, request: Request | None = None):
-        log.critical(f"[on_after_delete] {user.username}")
+        log.debug(f"[on_after_delete] {user.username}")
 
     async def validate_password(
         self,

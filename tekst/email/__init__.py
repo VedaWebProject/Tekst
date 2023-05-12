@@ -3,7 +3,6 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from enum import Enum
-from functools import lru_cache
 from os.path import exists, realpath
 from pathlib import Path
 from urllib.parse import urljoin
@@ -25,7 +24,6 @@ class TemplateIdentifier(Enum):
     PASSWORD_RESET = "password_reset"
 
 
-@lru_cache(maxsize=128)
 def _get_templates(
     template_id: TemplateIdentifier, locale: str = "enUS"
 ) -> dict[str, str]:
