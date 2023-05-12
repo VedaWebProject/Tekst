@@ -77,6 +77,7 @@ routes:
     adminUsers: 'Admin: Users'
     adminTexts: 'Admin: Texts'
     verify: Verification
+    reset: Reset password
 
 layerTypes:
   plaintext: Plain Text
@@ -175,7 +176,18 @@ account:
   tipLoginBtn: Log into your account
   tipLogoutBtn: Log out of your account
   switchToRegister: Register new user
-  forgotPassword: I forgot my password
+  verify:
+    success: Your email address has been successfully verified! You can now log into your account.
+    badToken: This verification link is either invalid or already expired.
+    alreadyVerified: This email address is already verified.
+  forgotPassword:
+    forgotPassword: I forgot my password
+    sentResetLink: We sent a password reset link to {email}
+    invalidEmail: Please enter a valid email address into the login form!
+  resetPassword:
+    heading: Set new password
+    success: Your new password has been saved. You can now log in.
+    badToken: The used password reset link is either invalid or already expired.
   login:
     heading: Log into your account
   errors:
@@ -193,12 +205,6 @@ account:
     msgPasswordSaveSuccess: '@:models.user.password saved.'
     msgPasswordChangeWarning: If you proceed, you will be logged out and have to log in again using your changed password.
     msgUserDataSaveSuccess: User data saved.
-
-verify:
-  success: Your email address has been successfully verified! You can now log into your account.
-  error:
-    badToken: This verification link is either invalid or already expired.
-    alreadyVerified: This email address is already verified.
 
 admin:
   heading: Administration

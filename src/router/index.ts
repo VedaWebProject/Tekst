@@ -21,6 +21,7 @@ const RegisterView = () => import('@/views/RegisterView.vue');
 const AccountView = () => import('@/views/account/AccountView.vue');
 const AccountManageView = () => import('@/views/account/AccountManageView.vue');
 const VerifyView = () => import('@/views/VerifyView.vue');
+const ResetView = () => import('@/views/ResetView.vue');
 
 const AdminView = () => import('@/views/admin/AdminView.vue');
 const AdminStatisticsView = () => import('@/views/admin/AdminStatisticsView.vue');
@@ -73,6 +74,11 @@ const router = createRouter({
       path: '/verify',
       name: 'verify',
       component: VerifyView,
+    },
+    {
+      path: '/reset',
+      name: 'reset',
+      component: ResetView,
     },
     {
       path: '/account',

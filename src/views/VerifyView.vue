@@ -25,9 +25,9 @@ onMounted(() => {
         if (e.response) {
           const data = e.response.data as ErrorModel;
           if (data.detail === 'VERIFY_USER_BAD_TOKEN') {
-            error.value = t('verify.error.badToken');
+            error.value = t('account.verify.badToken');
           } else if (data.detail === 'VERIFY_USER_ALREADY_VERIFIED') {
-            error.value = t('verify.error.alreadyVerified');
+            error.value = t('account.verify.alreadyVerified');
           } else {
             error.value = t('errors.unexpected');
           }
@@ -42,7 +42,7 @@ onMounted(() => {
 <template>
   <div class="content-block" style="padding: 2rem; text-align: center">
     <div v-if="verified" style="color: var(--col-success)">
-      {{ $t('verify.success') }}
+      {{ $t('account.verify.success') }}
     </div>
 
     <div v-else-if="!error" style="padding: 2rem; text-align: center">

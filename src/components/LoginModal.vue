@@ -7,12 +7,14 @@ import { useI18n } from 'vue-i18n';
 import { useMessages } from '@/messages';
 import type { RouteLocationRaw } from 'vue-router';
 import { useFormRules } from '@/formRules';
+import { useApi } from '@/api';
 
 const auth = useAuthStore();
 const { message } = useMessages();
 const router = useRouter();
 const formRules = useFormRules();
 const { t } = useI18n({ useScope: 'global' });
+const { authApi } = useApi();
 
 const initialFormModel = () => ({
   email: null,
@@ -21,7 +23,7 @@ const initialFormModel = () => ({
 
 const formModel = ref<Record<string, string | null>>(initialFormModel());
 const formRef = ref<FormInst | null>(null);
-const firstInputRef = ref<HTMLInputElement | null>(null);
+const emailInputRef = ref<HTMLInputElement | null>(null);
 
 function resetForm() {
   formModel.value = initialFormModel();
@@ -50,13 +52,26 @@ async function handleLoginClick(
     });
 }
 
-function handleForgotPasswordClick() {
-  message.info('So you forgot your password? This is not implemented, yet!');
+function handleForgotPasswordClick(resolveLogin: (res: boolean | Promise<boolean>) => void) {
+  if (formModel.value.email && /^.+@.+\.\w+$/.test(formModel.value.email)) {
+    authApi
+      .resetForgotPassword({
+        bodyResetForgotPasswordAuthForgotPasswordPost: { email: formModel.value.email },
+      })
+      .catch(() => {
+        message.error('errors.unexpected', 10);
+      });
+    message.info(t('account.forgotPassword.sentResetLink', { email: formModel.value.email }), 10);
+    resetForm();
+    resolveLogin(false);
+  } else {
+    message.error(t('account.forgotPassword.invalidEmail'));
+  }
 }
 
 onMounted(() => {
   nextTick(() => {
-    firstInputRef.value?.focus();
+    emailInputRef.value?.focus();
   });
 });
 </script>
@@ -91,7 +106,7 @@ onMounted(() => {
               :placeholder="$t('models.user.email')"
               @keydown.enter.prevent
               :disabled="isResolving"
-              ref="firstInputRef"
+              ref="emailInputRef"
             />
           </n-form-item>
           <n-form-item
@@ -114,9 +129,9 @@ onMounted(() => {
             text
             :focusable="false"
             style="margin-bottom: 2rem; font-size: var(--app-ui-font-size-mini)"
-            @click="handleForgotPasswordClick"
+            @click="handleForgotPasswordClick(resolve)"
           >
-            {{ $t('account.forgotPassword') }}
+            {{ $t('account.forgotPassword.forgotPassword') }}
           </n-button>
         </div>
 

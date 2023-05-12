@@ -78,6 +78,7 @@ routes:
     adminUsers: 'Admin: Benutzer'
     adminTexts: 'Admin: Texte'
     verify: Verifizierung
+    reset: Passwort zurücksetzen
 
 layerTypes:
   plaintext: Einfacher Text
@@ -177,7 +178,18 @@ account:
   tipLoginBtn: In Ihrem Konto anmelden
   tipLogoutBtn: Von Ihrem Konto abmelden
   switchToRegister: Neues Konto registrieren
-  forgotPassword: Ich habe mein Passwort vergessen
+  verify:
+    success: Ihre Email-Adresse wurde erfolgreich verifiziert! Sie können sich jetzt in Ihrem Konto anmelden.
+    badToken: Dieser Verifizierungslink ist entweder ungültig oder bereits abgelaufen.
+    alreadyVerified: Diese Email-Adresse ist bereits verifiziert.
+  forgotPassword:
+    forgotPassword: Ich habe mein Passwort vergessen
+    sentResetLink: Wir haben einen Link zum Zurücksetzen des Passworts an {email} gesendet
+    invalidEmail: Bitte tragen Sie eine gültige Email-Adresse in das Anmeldeformular ein!
+  resetPassword:
+    heading: Neues Passwort festlegen
+    success: Ihr neues Passwort wurde gespeichert. Sie können sich jetzt einloggen.
+    badToken: Der benutzte Passwort-Zurücksetzen-Link ist entweder ungültig oder bereits abgelaufen.
   login:
     heading: Melden Sie sich an
   errors:
@@ -195,12 +207,6 @@ account:
     msgPasswordSaveSuccess: '@:models.user.password saved.'
     msgPasswordChangeWarning: Wenn Sie fortfahren, werden Sie abgemeldet und müssen sich mit Ihrem neuen Passwort wieder anmelden.
     msgUserDataSaveSuccess: Benutzerdaten gespeichert.
-
-verify:
-  success: Ihre Email-Adresse wurde erfolgreich verifiziert! Sie können sich jetzt in Ihrem Konto anmelden.
-  error:
-    badToken: Dieser Verifizierungslink ist entweder ungültig oder bereits abgelaufen.
-    alreadyVerified: Diese Email-Adresse ist bereits verifiziert.
 
 admin:
   heading: Administration
