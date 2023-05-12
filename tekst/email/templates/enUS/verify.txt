@@ -1,0 +1,9 @@
+Dear {first_name},
+
+please verify your email address for {platform_name} by clicking the following link or copying and pasting it into your browser's address bar:
+
+{web_url}/verify/?token={token}
+
+Please note that this verification link is only valid for {token_lifetime_minutes} minutes.
+
+See you on {platform_name} ({web_url})!

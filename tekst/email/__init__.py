@@ -1,19 +1,45 @@
 import smtplib
-
+from os.path import exists
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from enum import Enum
+from functools import lru_cache
+from glob import glob
 from os.path import realpath
 from pathlib import Path
 from urllib.parse import urljoin
 
 from tekst.config import TekstConfig, get_config
-from tekst.email.templates import EMAIL_TEMPLATES, TemplateIdentifier
 from tekst.logging import log
 from tekst.models.user import UserRead
 
 
 _cfg: TekstConfig = get_config()  # get (possibly cached) config data
 _TEMPLATES_DIR = Path(realpath(__file__)).parent / "templates"
+
+
+class TemplateIdentifier(Enum):
+    TEST = "test"
+    VERIFY = "verify"
+
+
+@lru_cache(maxsize=128)
+def _get_templates(templateId: TemplateIdentifier, locale: str = "enUS") -> dict[str, str]:
+    templates = dict()
+    for template_type in ("subject", "html", "txt"):
+        path = str(_TEMPLATES_DIR / locale / f"{templateId.value}.{template_type}")
+        if not exists(path) and locale != "enUS":
+            log.warning(
+                "Missing email translation "
+                f"'{templateId.value}.{template_type}' for locale '{locale}'. "
+                "Falling back to 'enUS'."
+            )
+            path = str(_TEMPLATES_DIR / "enUS" / f"{templateId.value}.{template_type}")
+        if not exists(path):
+            raise FileNotFoundError(f"{path} does not exist.")
+        with open(path, 'r') as fp:
+            templates[template_type] = fp.read()
+    return templates
 
 
 def _send_email(*, to: str, subject: str, txt: str, html: str):
@@ -48,7 +74,7 @@ def _send_email(*, to: str, subject: str, txt: str, html: str):
 
 
 def send_email(to_user: UserRead, templateId: TemplateIdentifier, **kwargs):
-    templates = EMAIL_TEMPLATES.get(to_user.locale or "enUS").get(templateId.value)
+    templates = _get_templates(templateId, to_user.locale or "enUS")
     for key in templates:
         templates[key] = (
             templates[key]
