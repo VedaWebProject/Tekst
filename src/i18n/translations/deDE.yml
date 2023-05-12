@@ -171,9 +171,7 @@ account:
   profile: Öffentliches Profil
   profileHeading: 'Öffentliches Profil von {username}'
   profileNotFound: Das Benutzerprofil "{username}" konnte nicht gefunden werden.
-  account:
-    optionLabel: Mein Benutzerkonto
-    heading: "{name}'s Benutzerkonto"
+  optionLabel: Mein Benutzerkonto
   logoutSuccessful: Sie sind jetzt ausgeloggt.
   tipUserBtn: Benutzer-Aktionen für {username} anzeigen
   tipLoginBtn: In Ihrem Konto anmelden

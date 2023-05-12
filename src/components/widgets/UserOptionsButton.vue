@@ -32,7 +32,7 @@ const userOptions = computed(() => [
     key: 'user',
     children: [
       {
-        label: t('account.account.optionLabel'),
+        label: t('account.optionLabel'),
         key: 'account',
         icon: renderIcon(PersonRound),
       },

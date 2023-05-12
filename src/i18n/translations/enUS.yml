@@ -169,9 +169,7 @@ account:
   profile: Public profile
   profileHeading: 'Public profile of {username}'
   profileNotFound: The user profile "{username}" could not be found.
-  account:
-    optionLabel: My account
-    headingManage: Manage Account
+  optionLabel: My account
   logoutSuccessful: You are now logged out.
   tipUserBtn: Show user actions for {username}
   tipLoginBtn: Log into your account
