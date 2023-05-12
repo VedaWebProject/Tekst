@@ -89,13 +89,13 @@
         ]
       }
     },
-    "/admin/testmail": {
+    "/admin/testemail": {
       "get": {
         "tags": [
           "admin"
         ],
-        "summary": "Test mail",
-        "operationId": "testMail",
+        "summary": "Test email",
+        "operationId": "testEmail",
         "responses": {
           "204": {
             "description": "Successful Response"
@@ -3509,7 +3509,7 @@
             "minLength": 1,
             "type": "string",
             "format": "uri",
-            "default": "https://github.com/VedaWebProject/tekst-api"
+            "default": "https://github.com/VedaWebProject/Tekst-API"
           },
           "license": {
             "title": "License",

@@ -1,0 +1,6 @@
+Hallo {first_name},
+
+Danke für das Verifizieren dieser Email-Adresse!
+Sie können sich jetzt auf {platform_name} anmelden.
+
+Bis bald auf {platform_name}!

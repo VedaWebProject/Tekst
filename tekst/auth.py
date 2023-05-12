@@ -170,7 +170,7 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[User, PyObjectId]):
         )
 
     async def on_after_verify(self, user: User, request: Request | None = None):
-        log.critical(f"[on_after_verify] {user.username}/{user.email}")
+        send_email(user, TemplateIdentifier.VERIFIED)
 
     async def on_after_forgot_password(
         self, user: User, token: str, request: Request | None = None
