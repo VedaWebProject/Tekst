@@ -246,7 +246,6 @@ def setup_auth_routes(app: FastAPI) -> list[APIRouter]:
             ),
             prefix="/auth/cookie",
             tags=["auth"],
-            dependencies=[SuperuserDep] if _cfg.security.closed_mode else [],
         )
     # jwt auth
     if _cfg.security.enable_jwt_auth:
@@ -257,14 +256,15 @@ def setup_auth_routes(app: FastAPI) -> list[APIRouter]:
             ),
             prefix="/auth/jwt",
             tags=["auth"],
-            dependencies=[SuperuserDep] if _cfg.security.closed_mode else [],
         )
     # register
     app.include_router(
         _fastapi_users.get_register_router(UserRead, UserCreate),
         prefix="/auth",
         tags=["auth"],
-        dependencies=[SuperuserDep] if _cfg.security.closed_mode else [],
+        dependencies=[Depends(get_current_superuser)]
+        if _cfg.security.closed_mode
+        else [],
     )
     # verify
     if not _cfg.security.closed_mode:
