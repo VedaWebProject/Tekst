@@ -82,7 +82,7 @@ const progress = computed(() =>
 .fullscreen-loader-text {
   padding: 1em;
 }
-.fade-enter-active,
+
 .fade-leave-active {
   transition: opacity v-bind('props.transition') ease;
 }

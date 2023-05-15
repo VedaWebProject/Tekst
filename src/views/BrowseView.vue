@@ -3,10 +3,11 @@ import { computed } from 'vue';
 import BrowseLocationLabel from '@/components/browse/BrowseLocationLabel.vue';
 import BrowseToolbar from '@/components/browse/BrowseToolbar.vue';
 import { useStateStore, useBrowseStore } from '@/stores';
-import { NIcon, NSpin } from 'naive-ui';
+import { NSpin } from 'naive-ui';
 import FolderOffTwotone from '@vicons/material/FolderOffTwotone';
 import LayerToggleDrawer from '@/components/browse/LayerToggleDrawer.vue';
 import UnitContainer from '@/components/browse/UnitContainer.vue';
+import HugeLabeledIcon from '@/components/HugeLabeledIcon.vue';
 
 const browse = useBrowseStore();
 const state = useStateStore();
@@ -30,12 +31,11 @@ const unitsExist = computed(() => {
     :layer="layer"
   />
 
-  <div v-show="!unitsExist && !browse.loading" class="browse-no-data">
-    <n-icon size="48">
-      <FolderOffTwotone />
-    </n-icon>
-    <div>{{ $t('browse.noData') }}</div>
-  </div>
+  <huge-labeled-icon
+    v-show="!unitsExist && !browse.loading"
+    :message="$t('browse.noData')"
+    :icon="FolderOffTwotone"
+  />
 
   <n-spin
     v-if="!unitsExist && browse.loading"
@@ -58,16 +58,5 @@ const unitsExist = computed(() => {
   opacity: 0.6;
   white-space: nowrap;
   margin-top: 12px;
-}
-
-.browse-no-data {
-  width: 512px;
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 3rem 0;
-  text-align: center;
-  opacity: 0.4;
-  font-size: var(--app-ui-font-size-large);
-  font-weight: var(--app-ui-font-weight-normal);
 }
 </style>

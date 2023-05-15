@@ -11,6 +11,8 @@ import PageHeader from './layout/PageHeader.vue';
 import PageFooter from './layout/PageFooter.vue';
 import { useInitializeApp } from '@/init';
 import LoginModal from '@/components/LoginModal.vue';
+import HugeLabeledIcon from '@/components/HugeLabeledIcon.vue';
+import ErrorTwotone from '@vicons/material/ErrorTwotone';
 
 const state = useStateStore();
 const themeVars = useThemeVars();
@@ -31,7 +33,12 @@ const nUiDateLocale = computed(() => localeProfiles[state.locale].nUiDateLocale)
   >
     <n-dialog-provider>
       <div id="app-container">
-        <template v-if="error"> ERROR </template>
+        <huge-labeled-icon
+          v-if="initialized && error"
+          :message="$t('init.error')"
+          :loading="!error && !initialized"
+          :icon="ErrorTwotone"
+        />
 
         <template v-else-if="initialized">
           <PageHeader />

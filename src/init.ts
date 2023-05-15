@@ -5,6 +5,7 @@ import { useStateStore } from '@/stores';
 import { useAsyncQueue } from '@vueuse/core';
 import { useMessages } from '@/messages';
 import { usePlatformData } from '@/platformData';
+import { computed } from 'vue';
 
 interface InitStep {
   info: () => string;
@@ -21,6 +22,7 @@ export function useInitializeApp() {
   const { t } = useI18n({ useScope: 'global' });
 
   const initialized = ref(false);
+  const error = computed(() => result.map((r) => r.data).includes(false));
 
   const initSteps: InitStep[] = [
     // set global loading state, start process
@@ -40,7 +42,6 @@ export function useInitializeApp() {
           return success;
         } catch (e) {
           message.warning(t('errors.serverI18n'));
-          console.error(e);
           return false;
         }
       },
@@ -54,7 +55,6 @@ export function useInitializeApp() {
           return success;
         } catch (e) {
           message.warning(t('errors.platformData'));
-          console.error(e);
           return false;
         }
       },
@@ -104,6 +104,6 @@ export function useInitializeApp() {
 
   return {
     initialized,
-    error: !result,
+    error,
   };
 }

@@ -6,7 +6,10 @@ import type { AxiosError } from 'axios';
 import type { ErrorModel } from '@/openapi';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
-import TokenActionResult from '@/components/TokenActionResult.vue';
+import HugeLabeledIcon from '@/components/HugeLabeledIcon.vue';
+
+import CheckCircleTwotone from '@vicons/material/CheckCircleTwotone';
+import KeyOffTwotone from '@vicons/material/KeyOffTwotone';
 
 const { authApi } = useApi();
 const route = useRoute();
@@ -44,9 +47,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <token-action-result
+  <huge-labeled-icon
     :message="error ? error : t('account.verify.success')"
-    :success="verified"
     :loading="!error && !verified"
+    :icon="error ? KeyOffTwotone : CheckCircleTwotone"
   />
 </template>
