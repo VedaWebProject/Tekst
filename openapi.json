@@ -3509,7 +3509,7 @@
             "minLength": 1,
             "type": "string",
             "format": "uri",
-            "default": "https://github.com/VedaWebProject/tekst-api"
+            "default": "https://github.com/VedaWebProject/Tekst-API"
           },
           "license": {
             "title": "License",
@@ -3833,7 +3833,6 @@
             "items": {
               "enum": [
                 "username",
-                "email",
                 "firstName",
                 "lastName",
                 "affiliation"
@@ -3924,7 +3923,6 @@
             "items": {
               "enum": [
                 "username",
-                "email",
                 "firstName",
                 "lastName",
                 "affiliation"
@@ -3948,10 +3946,6 @@
         "properties": {
           "username": {
             "title": "Username",
-            "type": "string"
-          },
-          "email": {
-            "title": "Email",
             "type": "string"
           },
           "firstName": {
@@ -4032,7 +4026,6 @@
             "items": {
               "enum": [
                 "username",
-                "email",
                 "firstName",
                 "lastName",
                 "affiliation"

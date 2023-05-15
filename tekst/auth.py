@@ -356,7 +356,7 @@ async def create_sample_users():
             affiliation="Rick's daughter",
             is_verified=True,
             is_active=False,
-            public_fields=["email", "firstName", "lastName", "affiliation"],
+            public_fields=["firstName", "lastName", "affiliation"],
         )
     )
     # unverified user
@@ -369,7 +369,7 @@ async def create_sample_users():
             last_name="Smith",
             affiliation="Rick's son-in-law",
             is_active=True,
-            public_fields=["email", "firstName", "lastName", "affiliation"],
+            public_fields=["firstName", "lastName", "affiliation"],
         )
     )
     # just a normal user, active and verified
@@ -383,7 +383,7 @@ async def create_sample_users():
             affiliation="Rick's grandson",
             is_verified=True,
             is_active=True,
-            public_fields=["email", "firstName", "lastName", "affiliation"],
+            public_fields=["firstName", "lastName", "affiliation"],
         )
     )
     # superuser
@@ -398,6 +398,6 @@ async def create_sample_users():
             is_verified=True,
             is_superuser=True,
             is_active=True,
-            public_fields=["email", "firstName", "lastName", "affiliation"],
+            public_fields=["firstName", "lastName", "affiliation"],
         )
     )

@@ -20,7 +20,6 @@ _cfg: TekstConfig = get_config()
 
 class UserReadPublic(ModelBase):
     username: str
-    email: str | None = None
     first_name: str | None = None
     last_name: str | None = None
     affiliation: str | None = None
