@@ -3832,7 +3832,6 @@
             "type": "array",
             "items": {
               "enum": [
-                "username",
                 "firstName",
                 "lastName",
                 "affiliation"
@@ -3840,9 +3839,7 @@
               "type": "string"
             },
             "description": "Data fields set public by this user",
-            "default": [
-              "username"
-            ]
+            "default": []
           }
         },
         "description": "Dataset for creating a new user"
@@ -3922,7 +3919,6 @@
             "type": "array",
             "items": {
               "enum": [
-                "username",
                 "firstName",
                 "lastName",
                 "affiliation"
@@ -3930,9 +3926,7 @@
               "type": "string"
             },
             "description": "Data fields set public by this user",
-            "default": [
-              "username"
-            ]
+            "default": []
           }
         },
         "description": "A user registered in the system"
@@ -4025,7 +4019,6 @@
             "type": "array",
             "items": {
               "enum": [
-                "username",
                 "firstName",
                 "lastName",
                 "affiliation"

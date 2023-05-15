@@ -26,7 +26,13 @@ class UserReadPublic(ModelBase):
 
 
 PublicUserField = Literal[
-    tuple([camelize(field) for field in UserReadPublic.__fields__.keys()])
+    tuple(
+        [
+            camelize(field)
+            for field in UserReadPublic.__fields__.keys()
+            if field != "username"
+        ]
+    )
 ]
 
 
@@ -39,7 +45,7 @@ class UserBase(ModelBase):
     affiliation: constr(min_length=1, max_length=64)
     locale: Locale | None = None
     public_fields: list[PublicUserField] = Field(
-        ["username"], description="Data fields set public by this user"
+        [], description="Data fields set public by this user"
     )
 
 
