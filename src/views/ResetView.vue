@@ -74,6 +74,7 @@ async function handlePasswordSave() {
               } else {
                 message.error(t('errors.unexpected'));
               }
+              router.push({ name: 'home' });
               loading.value = false;
             });
         })();
@@ -124,7 +125,7 @@ onMounted(() => {
             type="password"
             :disabled="!passwordFormModel.password || loading"
             :placeholder="$t('register.repeatPassword')"
-            @keydown.enter.prevent
+            @keyup.enter="handlePasswordSave"
           />
         </n-form-item>
       </n-form>

@@ -2,11 +2,11 @@
 import { useApi } from '@/api';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { NSpin } from 'naive-ui';
 import type { AxiosError } from 'axios';
 import type { ErrorModel } from '@/openapi';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
+import TokenActionResult from '@/components/TokenActionResult.vue';
 
 const { authApi } = useApi();
 const route = useRoute();
@@ -44,21 +44,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="content-block" style="padding: 2rem; text-align: center">
-    <div v-if="verified" style="color: var(--col-success)">
-      {{ $t('account.verify.success') }}
-    </div>
-
-    <div v-else-if="!error" style="padding: 2rem; text-align: center">
-      <n-spin>
-        <template #description>
-          {{ $t('init.loading') }}
-        </template>
-      </n-spin>
-    </div>
-
-    <div v-else style="color: var(--col-error)">
-      {{ error }}
-    </div>
-  </div>
+  <token-action-result
+    :message="error ? error : t('account.verify.success')"
+    :success="verified"
+    :loading="!error && !verified"
+  />
 </template>
