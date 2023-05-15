@@ -3,6 +3,7 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from enum import Enum
+from functools import lru_cache
 from os.path import exists, realpath
 from pathlib import Path
 from urllib.parse import urljoin
@@ -24,6 +25,7 @@ class TemplateIdentifier(Enum):
     PASSWORD_RESET = "password_reset"
 
 
+@lru_cache(maxsize=128)
 def _get_templates(
     template_id: TemplateIdentifier, locale: str = "enUS"
 ) -> dict[str, str]:
@@ -79,8 +81,9 @@ def _send_email(*, to: str, subject: str, txt: str, html: str):
 
 def send_email(to_user: UserRead, template_id: TemplateIdentifier, **kwargs):
     templates = _get_templates(template_id, to_user.locale or "enUS")
+    email_contents = dict()
     for key in templates:
-        templates[key] = (
+        email_contents[key] = (
             templates[key]
             .format(
                 web_url=urljoin(_cfg.server_url, _cfg.web_path).strip("/"),
@@ -92,9 +95,9 @@ def send_email(to_user: UserRead, template_id: TemplateIdentifier, **kwargs):
         )
     _send_email(
         to=to_user.email,
-        subject=templates.get("subject"),
-        txt=templates.get("txt"),
-        html=templates.get("html"),
+        subject=email_contents.get("subject", ""),
+        txt=email_contents.get("txt", ""),
+        html=email_contents.get("html", ""),
     )
 
 

@@ -3509,7 +3509,7 @@
             "minLength": 1,
             "type": "string",
             "format": "uri",
-            "default": "https://github.com/VedaWebProject/Tekst-API"
+            "default": "https://github.com/VedaWebProject/tekst-api"
           },
           "license": {
             "title": "License",
