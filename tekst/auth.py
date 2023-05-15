@@ -242,35 +242,37 @@ def setup_auth_routes(app: FastAPI) -> list[APIRouter]:
         app.include_router(
             _fastapi_users.get_auth_router(
                 _auth_backend_cookie,
-                requires_verification=_cfg.security.users_need_verification,
+                requires_verification=not _cfg.security.closed_mode,
             ),
             prefix="/auth/cookie",
             tags=["auth"],
-            include_in_schema=_cfg.dev_mode,  # only during development
+            dependencies=[SuperuserDep] if _cfg.security.closed_mode else [],
         )
     # jwt auth
     if _cfg.security.enable_jwt_auth:
         app.include_router(
             _fastapi_users.get_auth_router(
                 _auth_backend_jwt,
-                requires_verification=_cfg.security.users_need_verification,
+                requires_verification=not _cfg.security.closed_mode,
             ),
             prefix="/auth/jwt",
             tags=["auth"],
+            dependencies=[SuperuserDep] if _cfg.security.closed_mode else [],
         )
     # register
-    if _cfg.security.enable_registration:
+    app.include_router(
+        _fastapi_users.get_register_router(UserRead, UserCreate),
+        prefix="/auth",
+        tags=["auth"],
+        dependencies=[SuperuserDep] if _cfg.security.closed_mode else [],
+    )
+    # verify
+    if not _cfg.security.closed_mode:
         app.include_router(
-            _fastapi_users.get_register_router(UserRead, UserCreate),
+            _fastapi_users.get_verify_router(UserRead),
             prefix="/auth",
             tags=["auth"],
         )
-    # verify
-    app.include_router(
-        _fastapi_users.get_verify_router(UserRead),
-        prefix="/auth",
-        tags=["auth"],
-    )
     # reset pw
     app.include_router(
         _fastapi_users.get_reset_password_router(),
@@ -282,7 +284,7 @@ def setup_auth_routes(app: FastAPI) -> list[APIRouter]:
         _fastapi_users.get_users_router(
             UserRead,
             UserUpdate,
-            requires_verification=_cfg.security.users_need_verification,
+            requires_verification=not _cfg.security.closed_mode,
         ),
         prefix="/users",
         tags=["users"],
@@ -299,14 +301,12 @@ def _current_user(**kwargs) -> callable:
 
 
 # auth dependencies for API routes
-get_current_user = _current_user(
-    verified=_cfg.security.users_need_verification, active=True
-)
+get_current_user = _current_user(verified=not _cfg.security.closed_mode, active=True)
 get_current_superuser = _current_user(
-    verified=_cfg.security.users_need_verification, active=True, superuser=True
+    verified=not _cfg.security.closed_mode, active=True, superuser=True
 )
 get_current_optional_user = _current_user(
-    verified=_cfg.security.users_need_verification, active=True, optional=True
+    verified=not _cfg.security.closed_mode, active=True, optional=True
 )
 UserDep = Annotated[UserRead, Depends(get_current_user)]
 SuperuserDep = Annotated[UserRead, Depends(get_current_superuser)]

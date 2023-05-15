@@ -109,9 +109,8 @@ class SecurityConfig(ModelBase):
     """Security config model"""
 
     secret: str = Field(default_factory=lambda: token_hex(32), min_length=16)
+    closed_mode: bool = False
     users_active_by_default: bool = False
-    users_need_verification: bool = True
-    enable_registration: bool = True
     enable_cookie_auth: bool = True
     enable_jwt_auth: bool = True
     auth_cookie_name: str = "tekstuserauth"

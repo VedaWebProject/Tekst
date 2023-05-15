@@ -3383,20 +3383,15 @@
         "title": "PlatformSecurityInfo",
         "type": "object",
         "properties": {
+          "closedMode": {
+            "title": "Closedmode",
+            "type": "boolean",
+            "default": false
+          },
           "usersActiveByDefault": {
             "title": "Usersactivebydefault",
             "type": "boolean",
             "default": false
-          },
-          "usersNeedVerification": {
-            "title": "Usersneedverification",
-            "type": "boolean",
-            "default": true
-          },
-          "enableRegistration": {
-            "title": "Enableregistration",
-            "type": "boolean",
-            "default": true
           },
           "enableCookieAuth": {
             "title": "Enablecookieauth",

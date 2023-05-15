@@ -11,9 +11,8 @@ _cfg: TekstConfig = get_config()
 
 
 class PlatformSecurityInfo(ModelBase):
+    closed_mode: bool = _cfg.security.closed_mode
     users_active_by_default: bool = _cfg.security.users_active_by_default
-    users_need_verification: bool = _cfg.security.users_need_verification
-    enable_registration: bool = _cfg.security.enable_registration
     enable_cookie_auth: bool = _cfg.security.enable_cookie_auth
     enable_jwt_auth: bool = _cfg.security.enable_jwt_auth
     auth_cookie_lifetime: int = _cfg.security.auth_cookie_lifetime
