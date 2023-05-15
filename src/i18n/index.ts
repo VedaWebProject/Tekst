@@ -79,3 +79,9 @@ export async function setI18nLocale(
   document.querySelector('html')?.setAttribute('lang', l);
   return Promise.resolve(localeProfiles[l]);
 }
+
+export function getAvaliableBrowserLocaleKey() {
+  return window.navigator.languages
+    .map((l) => localeProfiles[l.replace(/[^a-zA-Z]/, '')])
+    .find((l) => !!l)?.key;
+}

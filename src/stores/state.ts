@@ -2,7 +2,7 @@ import { ref, computed, watch } from 'vue';
 import { defineStore } from 'pinia';
 import { useWindowSize } from '@vueuse/core';
 import type { RouteLocationNormalized } from 'vue-router';
-import { i18n, setI18nLocale, localeProfiles } from '@/i18n';
+import { i18n, setI18nLocale, localeProfiles, getAvaliableBrowserLocaleKey } from '@/i18n';
 import type { AvailableLocale } from '@/i18n';
 import { useRoute } from 'vue-router';
 import type { TextRead } from '@/openapi';
@@ -28,7 +28,12 @@ export const useStateStore = defineStore('state', () => {
   }
 
   // locale
-  const locale = ref(auth.user?.locale || localStorage.getItem('locale') || i18n.global.locale);
+  const locale = ref(
+    auth.user?.locale ||
+      localStorage.getItem('locale') ||
+      getAvaliableBrowserLocaleKey() ||
+      i18n.global.locale
+  );
   const locales = i18n.global.availableLocales;
   watch(locale, (after) => {
     localStorage.setItem('locale', after);
