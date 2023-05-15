@@ -2,10 +2,20 @@
 import { useApi } from '@/api';
 import { useFormRules } from '@/formRules';
 import { useMessages } from '@/messages';
-import type { UserUpdate } from '@/openapi';
+import type { UserUpdate, UserUpdatePublicFieldsEnum } from '@/openapi';
 import { useAuthStore } from '@/stores';
 import type { FormInst, FormItemInst, FormItemRule } from 'naive-ui';
-import { NButton, NSpace, NInput, NFormItem, NForm, NGrid, NGridItem, useDialog } from 'naive-ui';
+import {
+  NCheckbox,
+  NButton,
+  NSpace,
+  NInput,
+  NFormItem,
+  NForm,
+  NGrid,
+  NGridItem,
+  useDialog,
+} from 'naive-ui';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -31,6 +41,12 @@ const initialUserDataFormModel = () => ({
   affiliation: auth.user?.affiliation || null,
 });
 
+const initialpublicFieldsFormModel = () => ({
+  firstName: auth.user?.publicFields?.includes('firstName') || false,
+  lastName: auth.user?.publicFields?.includes('lastName') || false,
+  affiliation: auth.user?.publicFields?.includes('affiliation') || false,
+});
+
 const formRules = useFormRules();
 
 const emailFormRef = ref<FormInst | null>(null);
@@ -49,6 +65,12 @@ const userDataFormRef = ref<FormInst | null>(null);
 const userDataFormModel = ref<Record<string, string | null>>(initialUserDataFormModel());
 const userDataModelChanged = computed(() =>
   modelChanged(userDataFormModel.value, initialUserDataFormModel())
+);
+
+const publicFieldsFormRef = ref<FormInst | null>(null);
+const publicFieldsFormModel = ref<Record<string, boolean>>(initialpublicFieldsFormModel());
+const publicFieldsModelChanged = computed(() =>
+  modelChanged(publicFieldsFormModel.value, initialpublicFieldsFormModel())
 );
 
 const rPasswordFormItemRef = ref<FormItemInst | null>(null);
@@ -95,10 +117,7 @@ function keepChanged(
   }, {} as Record<string, string | null>);
 }
 
-function modelChanged(
-  changed: Record<string, string | null>,
-  original: Record<string, string | null>
-) {
+function modelChanged(changed: Record<string, any>, original: Record<string, any>) {
   for (const key in original) {
     if (changed[key] !== original[key]) {
       return true;
@@ -181,12 +200,21 @@ async function handleUserDataSave() {
       message.error(t('errors.followFormRules'));
     });
 }
+
+async function handlepublicFieldsSave() {
+  await updateUser({
+    publicFields: Object.keys(publicFieldsFormModel.value).filter(
+      (k) => publicFieldsFormModel.value[k]
+    ) as UserUpdatePublicFieldsEnum[],
+  });
+  message.success(t('account.manage.msgUserDataSaveSuccess'));
+}
 </script>
 
 <template>
   <h1>{{ $t('account.manage.heading') }}</h1>
 
-  <n-grid cols="1 m:2" responsive="screen" x-gap="20px">
+  <n-grid cols="1 m:2" responsive="screen" x-gap="18px">
     <n-grid-item>
       <div class="content-block">
         <h2>{{ t('models.user.email') }}</h2>
@@ -324,6 +352,40 @@ async function handleUserDataSave() {
             @click="handleUserDataSave"
             :loading="loading"
             :disabled="loading || !userDataModelChanged"
+          >
+            {{ $t('general.saveAction') }}
+          </n-button>
+        </n-space>
+      </div>
+    </n-grid-item>
+
+    <n-grid-item>
+      <div class="content-block">
+        <h2>{{ t('account.manage.headingChangePublicFields') }}</h2>
+        <n-form
+          ref="publicFieldsFormRef"
+          :model="publicFieldsFormModel"
+          :show-label="false"
+          require-mark-placement="right-hanging"
+        >
+          <n-form-item>
+            <n-checkbox checked disabled aria-readonly :focusable="false">
+              {{ t(`models.user.username`) }}
+            </n-checkbox>
+          </n-form-item>
+          <n-form-item v-for="(_, field) in publicFieldsFormModel" :path="field" :key="field">
+            <n-checkbox v-model:checked="publicFieldsFormModel[field]" :disabled="loading">
+              {{ t(`models.user.${field}`) }}
+            </n-checkbox>
+          </n-form-item>
+        </n-form>
+        <n-space :size="12" justify="end">
+          <n-button
+            block
+            type="primary"
+            @click="handlepublicFieldsSave"
+            :loading="loading"
+            :disabled="loading || !publicFieldsModelChanged"
           >
             {{ $t('general.saveAction') }}
           </n-button>

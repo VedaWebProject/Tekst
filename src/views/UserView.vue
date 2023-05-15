@@ -24,20 +24,12 @@ const { user, error } = useProfile(username);
   <h1>{{ $t('account.profileHeading', { username }) }}</h1>
   <div v-if="user && !error" class="content-block">
     <ul>
-      <li v-if="user?.username">
-        <b>{{ $t('models.user.username') }}:</b> {{ user.username }}
-      </li>
-      <li v-if="user?.email">
-        <b>{{ $t('models.user.email') }}:</b> {{ user.email }}
-      </li>
-      <li v-if="user?.firstName">
-        <b>{{ $t('models.user.firstName') }}:</b> {{ user.firstName }}
-      </li>
-      <li v-if="user?.lastName">
-        <b>{{ $t('models.user.lastName') }}:</b> {{ user.lastName }}
-      </li>
-      <li v-if="user?.affiliation">
-        <b>{{ $t('models.user.affiliation') }}:</b> {{ user.affiliation }}
+      <li v-for="(value, key) in user" :key="key">
+        <b>{{ $t(`models.user.${key}`) }}: </b>
+        <span v-if="value">{{ value }}</span>
+        <span v-else style="opacity: 0.5; font-style: italic">{{
+          $t('account.profileFieldNotPublic')
+        }}</span>
       </li>
     </ul>
   </div>

@@ -85,7 +85,7 @@ layerTypes:
 
 browse:
   location:
-    modalHeading: Ebene/Fundstelle wählen
+    modalHeading: Ebene/Fundstelle
     level: Ebene
   toolbar:
     tipSelectLocation: Ebene/Fundstelle wählen
@@ -94,7 +94,7 @@ browse:
     tipReducedView: Reduzierte Leseansicht umschalten
     tipOpenDataLayerList: Anzuzeigende Datenschichten wählen
   layerToggleDrawer:
-    heading: Datenschichten wählen
+    heading: Datenschichten anzeigen
     noData: Keine Daten für diese Fundstelle
   noData: Die ausgewählten Datenschichten enthalten keine Daten für diese Ebene und Fundstelle. Wählen Sie eine andere Fundstelle oder aktivieren Sie mehr Datenschichten.
   units:
@@ -111,7 +111,7 @@ forms:
 register:
   register: Registrieren
   switchToLogin: Mit bestehendem Konto anmelden
-  heading: Neues Konto registrieren
+  heading: Neues Konto
   success: Erfolgreich registriert.
   activationNeededHint: Sie werden sich erst anmelden können, wenn Ihr Konto von uns aktiviert wurde. Sie werden darüber per Email benachrichtigt.
   activationNotNeededHint: Sie können sich jetzt anmelden.
@@ -172,6 +172,7 @@ account:
   profile: Öffentliches Profil
   profileHeading: 'Öffentliches Profil von {username}'
   profileNotFound: Das Benutzerprofil "{username}" konnte nicht gefunden werden.
+  profileFieldNotPublic: nicht öffentlich
   optionLabel: Mein Benutzerkonto
   logoutSuccessful: Sie sind jetzt ausgeloggt.
   tipUserBtn: Benutzer-Aktionen für {username} anzeigen
@@ -187,11 +188,11 @@ account:
     sentResetLink: Wir haben einen Link zum Zurücksetzen des Passworts an {email} gesendet
     invalidEmail: Bitte tragen Sie eine gültige Email-Adresse in das Anmeldeformular ein!
   resetPassword:
-    heading: Neues Passwort festlegen
+    heading: Neues Passwort
     success: Ihr neues Passwort wurde gespeichert. Sie können sich jetzt einloggen.
     badToken: Der benutzte Passwort-Zurücksetzen-Link ist entweder ungültig oder bereits abgelaufen.
   login:
-    heading: Melden Sie sich an
+    heading: Anmelden
   errors:
     badCreds: Falsche Email-Adresse/Passwort oder Konto noch nicht aktiviert
     notVerified: Ihre Email-Adresse ist noch nicht verifiziert. Wir haben Ihnen einen Verifizierungslink geschickt.
@@ -201,6 +202,7 @@ account:
   manage:
     heading: Konto verwalten
     headingChangeUserData: Allgemeine Benutzerdaten
+    headingChangePublicFields: Öffentliche Profildaten
     msgEmailSaveSuccess: '@:models.user.email gespeichert.'
     msgEmailChangeWarning: Stellen Sie sicher, dass Sie eine gültige @:models.user.email eingeben, auf die Sie Zugriff haben! Wenn Sie fortfahren, werden Sie abgemeldet und müssen Ihre geänderte @:models.users.email verifizieren, bevor Sie sich wieder anmelden können.
     msgVerifyEmailWarning: Bitte verifizieren Sie Ihre geänderte @:models.user.email bevor Sie sich wieder anmelden! Wir haben Ihnen einen Verifizierungs-Link gesendet.

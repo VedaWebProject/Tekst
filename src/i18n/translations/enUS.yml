@@ -84,7 +84,7 @@ layerTypes:
 
 browse:
   location:
-    modalHeading: Select level/location
+    modalHeading: Level/Location
     level: Level
   toolbar:
     tipSelectLocation: Select level/location
@@ -93,7 +93,7 @@ browse:
     tipReducedView: Toggle reduced reading view
     tipOpenDataLayerList: Select data layers to display
   layerToggleDrawer:
-    heading: Select data layers
+    heading: Show Data Layers
     noData: No data for this location
   noData: The selected data layers contain no data for this text level and location. Try choosing a different location or activating more data layers.
   units:
@@ -109,7 +109,7 @@ forms:
 register:
   register: Register
   switchToLogin: Log into existing account
-  heading: Register new user
+  heading: Register
   success: Successfully registered.
   activationNeededHint: You will only be able to log in as soon as we activate your account. We will send you an email when that happens.
   activationNotNeededHint: You can now log in.
@@ -167,15 +167,16 @@ models:
 account:
   loginBtn: Login
   logoutBtn: Logout
-  profile: Public profile
-  profileHeading: 'Public profile of {username}'
+  profile: Public Profile
+  profileHeading: 'Public Profile of {username}'
   profileNotFound: The user profile "{username}" could not be found.
-  optionLabel: My account
+  profileFieldNotPublic: not public
+  optionLabel: My Account
   logoutSuccessful: You are now logged out.
   tipUserBtn: Show user actions for {username}
   tipLoginBtn: Log into your account
   tipLogoutBtn: Log out of your account
-  switchToRegister: Register new user
+  switchToRegister: Register New User
   verify:
     success: Your email address has been successfully verified! You can now log into your account.
     badToken: This verification link is either invalid or already expired.
@@ -185,11 +186,11 @@ account:
     sentResetLink: We sent a password reset link to {email}
     invalidEmail: Please enter a valid email address into the login form!
   resetPassword:
-    heading: Set new password
+    heading: New Password
     success: Your new password has been saved. You can now log in.
     badToken: The used password reset link is either invalid or already expired.
   login:
-    heading: Log into your account
+    heading: Login
   errors:
     badCreds: Incorrect email/password or account isn't activated, yet
     notVerified: Your email is not yet verified. We just sent you a verification link.
@@ -199,6 +200,7 @@ account:
   manage:
     heading: Manage Account
     headingChangeUserData: General User Data
+    headingChangePublicFields: Public Profile Data
     msgEmailSaveSuccess: '@:models.user.email saved.'
     msgEmailChangeWarning: Make sure you entered a valid email address you have access to! If you proceed, you will be logged out and have to verify your changed email address before you can log in again.
     msgVerifyEmailWarning: Please verify your changed email address before logging in again! We just sent you a verification link.
