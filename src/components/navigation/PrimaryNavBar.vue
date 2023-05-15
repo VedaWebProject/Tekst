@@ -67,7 +67,7 @@ watch(route, () => (menuOpen.value = false));
         <ThemeModeSwitcher />
         <LocaleSwitcher />
         <HelpNavButton />
-        <UserOptionsButton v-if="pfData?.security?.enableRegistration || auth.loggedIn" />
+        <UserOptionsButton v-if="pfData?.security?.closedMode === false || auth.loggedIn" />
       </div>
     </div>
   </div>

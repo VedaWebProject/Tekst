@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore, useStateStore } from '@/stores';
 import { i18n } from '@/i18n';
 import { useMessages } from '@/messages';
-import { usePlatformData } from '@/platformData';
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -16,6 +15,7 @@ const UserView = () => import('@/views/UserView.vue');
 const HelpView = () => import('@/views/HelpView.vue');
 const BrowseView = () => import('@/views/BrowseView.vue');
 const SearchView = () => import('@/views/SearchView.vue');
+const LoginView = () => import('@/views/LoginView.vue');
 const RegisterView = () => import('@/views/RegisterView.vue');
 
 const AccountView = () => import('@/views/account/AccountView.vue');
@@ -64,6 +64,11 @@ const router = createRouter({
       path: '/register',
       name: 'register',
       component: RegisterView,
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: LoginView,
     },
     {
       path: '/user/:username',
@@ -142,11 +147,6 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-  // check if route is disabled
-  const { pfData } = usePlatformData();
-  if (to.name === 'register' && !pfData.value?.security?.enableRegistration) {
-    next({ name: 'home' });
-  }
   // enforce route restrictions
   if (to.meta?.restricted) {
     const auth = useAuthStore();

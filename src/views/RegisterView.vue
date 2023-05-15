@@ -17,6 +17,7 @@ import { useMessages } from '@/messages';
 import { usePlatformData } from '@/platformData';
 import { useAuthStore } from '@/stores';
 import { useFormRules } from '@/formRules';
+import router from '@/router';
 
 const auth = useAuthStore();
 const { message } = useMessages();
@@ -112,6 +113,12 @@ function switchToLogin() {
 }
 
 onMounted(() => {
+  if (
+    (auth.loggedIn && !auth.user?.isSuperuser) ||
+    (pfData.value?.security?.closedMode && !auth.loggedIn)
+  ) {
+    router.push({ name: 'home' });
+  }
   nextTick(() => {
     firstInputRef.value?.focus();
   });

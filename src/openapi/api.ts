@@ -920,19 +920,13 @@ export interface PlatformSecurityInfo {
      * @type {boolean}
      * @memberof PlatformSecurityInfo
      */
+    'closedMode'?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PlatformSecurityInfo
+     */
     'usersActiveByDefault'?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PlatformSecurityInfo
-     */
-    'usersNeedVerification'?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PlatformSecurityInfo
-     */
-    'enableRegistration'?: boolean;
     /**
      * 
      * @type {boolean}

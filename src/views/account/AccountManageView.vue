@@ -3,6 +3,7 @@ import { useApi } from '@/api';
 import { useFormRules } from '@/formRules';
 import { useMessages } from '@/messages';
 import type { UserUpdate, UserUpdatePublicFieldsEnum } from '@/openapi';
+import { usePlatformData } from '@/platformData';
 import { useAuthStore } from '@/stores';
 import type { FormInst, FormItemInst, FormItemRule } from 'naive-ui';
 import {
@@ -21,6 +22,7 @@ import { useI18n } from 'vue-i18n';
 
 const dialog = useDialog();
 const auth = useAuthStore();
+const { pfData } = usePlatformData();
 const { message } = useMessages();
 const { t } = useI18n({ useScope: 'global' });
 const { authApi } = useApi();
@@ -126,39 +128,50 @@ function modelChanged(changed: Record<string, any>, original: Record<string, any
   return false;
 }
 
+async function updateEmail() {
+  const updated = await updateUser(keepChanged(emailFormModel.value, initialEmailFormModel()));
+  if (updated) {
+    message.success(t('account.manage.msgEmailSaveSuccess'));
+    if (!pfData.value?.security?.closedMode === true) {
+      await auth.logout();
+      authApi
+        .verifyRequestToken({
+          bodyVerifyRequestTokenAuthRequestVerifyTokenPost: {
+            email: emailFormModel.value.email || '',
+          },
+        })
+        .then(() => {
+          message.warning(t('account.manage.msgVerifyEmailWarning'), 20);
+        })
+        .catch(() => {
+          message.error(t('errors.unexpected'));
+        });
+      auth.showLoginModal(
+        t('account.manage.msgVerifyEmailWarning'),
+        { name: 'accountProfile' },
+        false
+      );
+    }
+  }
+}
+
 function handleEmailSave() {
   emailFormRef.value
     ?.validate(async (errors) => {
-      !errors &&
-        dialog.warning({
-          title: t('general.warning'),
-          content: t('account.manage.msgEmailChangeWarning'),
-          positiveText: t('general.saveAction'),
-          negativeText: t('general.cancelAction'),
-          style: 'font-weight: var(--app-ui-font-weight-light)',
-          onPositiveClick: async () => {
-            await updateUser(keepChanged(emailFormModel.value, initialEmailFormModel()));
-            message.success(t('account.manage.msgEmailSaveSuccess'));
-            await auth.logout();
-            authApi
-              .verifyRequestToken({
-                bodyVerifyRequestTokenAuthRequestVerifyTokenPost: {
-                  email: emailFormModel.value.email || '',
-                },
-              })
-              .then(() => {
-                message.warning(t('account.manage.msgVerifyEmailWarning'), 20);
-              })
-              .catch(() => {
-                message.error(t('errors.unexpected'));
-              });
-            auth.showLoginModal(
-              t('account.manage.msgVerifyEmailWarning'),
-              { name: 'accountProfile' },
-              false
-            );
-          },
-        });
+      if (!errors) {
+        if (pfData.value?.security?.closedMode) {
+          updateEmail();
+        } else {
+          dialog.warning({
+            title: t('general.warning'),
+            content: t('account.manage.msgEmailChangeWarning'),
+            positiveText: t('general.saveAction'),
+            negativeText: t('general.cancelAction'),
+            style: 'font-weight: var(--app-ui-font-weight-light)',
+            onPositiveClick: updateEmail,
+          });
+        }
+      }
     })
     .catch(() => {
       message.error(t('errors.followFormRules'));
