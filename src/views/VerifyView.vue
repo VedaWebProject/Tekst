@@ -6,9 +6,11 @@ import { NSpin } from 'naive-ui';
 import type { AxiosError } from 'axios';
 import type { ErrorModel } from '@/openapi';
 import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
 
 const { authApi } = useApi();
 const route = useRoute();
+const router = useRouter();
 const token = route.query.token?.toString();
 const verified = ref(false);
 const error = ref<string | null>(null);
@@ -35,6 +37,8 @@ onMounted(() => {
           error.value = t('errors.unexpected');
         }
       });
+  } else {
+    router.push({ name: 'home' });
   }
 });
 </script>
