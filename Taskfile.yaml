@@ -64,6 +64,7 @@ tasks:
     desc: Run dev services stack and dev server, clean up afterwards
     cmds:
       - task: dev-stack-up
+      - task: print-dev-uris
       - task: run-dev
       - defer: {task: dev-stack-down}
 
@@ -122,6 +123,21 @@ tasks:
     desc: Stop test stack and clean up all resources
     cmds:
       - docker compose -f dev/docker-compose.yml --profile test -p tekst-testing down --volumes
+
+  print-dev-uris:
+    internal: true
+    silent: true
+    cmd: |
+      printf "
+      +--------------------------------------------------+
+      | 🌐 Client        http://127.0.0.1                |
+      | 🐍 API           http://127.0.0.1/api            |
+      | 📖 API Docs      http://127.0.0.1/api/docs       |
+      | 📬 MailPit       http://127.0.0.1:8025           |
+      | 📂 MongoExpress  http://127.0.0.1:8081           |
+      +--------------------------------------------------+
+
+      "
 
   docker-build:
     desc: Build and tag production Docker image for app
