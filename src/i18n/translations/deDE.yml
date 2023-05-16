@@ -205,7 +205,7 @@ account:
     headingChangePublicFields: Öffentliche Profildaten
     msgEmailSaveSuccess: '@:models.user.email gespeichert.'
     msgEmailChangeWarning: Stellen Sie sicher, dass Sie eine gültige @:models.user.email eingeben, auf die Sie Zugriff haben! Wenn Sie fortfahren, werden Sie abgemeldet und müssen Ihre geänderte @:models.users.email verifizieren, bevor Sie sich wieder anmelden können.
-    msgVerifyEmailWarning: Bitte verifizieren Sie Ihre geänderte @:models.user.email bevor Sie sich wieder anmelden! Wir haben Ihnen einen Verifizierungs-Link gesendet.
+    msgVerifyEmailWarning: Bitte verifizieren Sie Ihre geänderte @:models.user.email bevor Sie sich anmelden! Wir haben Ihnen einen Verifizierungs-Link gesendet.
     msgPasswordSaveSuccess: '@:models.user.password saved.'
     msgPasswordChangeWarning: Wenn Sie fortfahren, werden Sie abgemeldet und müssen sich mit Ihrem neuen Passwort wieder anmelden.
     msgUserDataSaveSuccess: Benutzerdaten gespeichert.

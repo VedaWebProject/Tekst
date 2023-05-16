@@ -64,6 +64,18 @@ function registerUser() {
         ? t('register.activationNeededHint')
         : t('register.activationNotNeededHint');
       message.success(`${t('register.success')} ${activationHint}`, activationNeeded ? 20 : 5);
+      // if no activation is needed, send verification link right away
+      if (!activationNeeded && !pfData.value?.security?.closedMode) {
+        authApi
+          .verifyRequestToken({
+            bodyVerifyRequestTokenAuthRequestVerifyTokenPost: {
+              email: formModel.value.email || '',
+            },
+          })
+          .then(() => {
+            message.warning(t('account.manage.msgVerifyEmailWarning'));
+          });
+      }
       switchToLogin();
     })
     .catch((e) => {
