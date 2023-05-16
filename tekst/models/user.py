@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Literal
 
 from beanie import Document
@@ -53,6 +54,7 @@ class User(UserBase, BeanieBaseUser, Document):
     """User document model used by FastAPI-Users"""
 
     is_active: bool = _cfg.security.users_active_by_default
+    created_at: datetime = datetime.utcnow()
 
     class Settings(BeanieBaseUser.Settings):
         name = "users"
@@ -70,6 +72,7 @@ class UserRead(UserBase, schemas.BaseUser[PyObjectId]):
     is_active: bool
     is_verified: bool
     is_superuser: bool
+    created_at: datetime
 
 
 class UserCreate(UserBase, schemas.BaseUserCreate):

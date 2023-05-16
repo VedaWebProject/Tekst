@@ -3850,7 +3850,8 @@
           "username",
           "firstName",
           "lastName",
-          "affiliation"
+          "affiliation",
+          "createdAt"
         ],
         "type": "object",
         "properties": {
@@ -3922,6 +3923,11 @@
             },
             "description": "Data fields set public by this user",
             "default": []
+          },
+          "createdAt": {
+            "title": "Createdat",
+            "type": "string",
+            "format": "date-time"
           }
         },
         "description": "A user registered in the system"
