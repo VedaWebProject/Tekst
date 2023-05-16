@@ -227,6 +227,7 @@ admin:
     editModal:
       accountStatus: Konto-Status
       adminWarning: Vorsicht! Sie sollten wissen, was Sie tun!
+    msgSentVerificationLink: Eine Verifizierungs-Email wurde an den gerade aktivierten Benutzer gesendet.
   texts:
     heading: Texte
     general:

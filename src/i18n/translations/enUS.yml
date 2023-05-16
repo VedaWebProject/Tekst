@@ -225,6 +225,7 @@ admin:
     editModal:
       accountStatus: Account status
       adminWarning: Careful! You better know what you are doing!
+    msgSentVerificationLink: A verification email was sent to the newly activated user.
   texts:
     heading: Texts
     general:

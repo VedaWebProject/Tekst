@@ -30,11 +30,13 @@ interface UserUpdatePayload {
   username?: string;
   updates: UserUpdate;
 }
-const { usersApi } = useApi();
+
+const { usersApi, authApi } = useApi();
 const { message } = useMessages();
 const showUserUpdateModal = ref(false);
 const emptyUserUpdatePayload: UserUpdatePayload = { updates: {} };
 const userUpdatesPayload = ref<UserUpdatePayload>(emptyUserUpdatePayload);
+
 const handleOpenUserUpdate = (user: UserRead) => {
   userUpdatesPayload.value = {
     id: user.id,
@@ -48,10 +50,12 @@ const handleOpenUserUpdate = (user: UserRead) => {
   };
   showUserUpdateModal.value = true;
 };
+
 const handleCloseUserUpdate = () => {
   userUpdatesPayload.value = emptyUserUpdatePayload;
   showUserUpdateModal.value = false;
 };
+
 const handleSaveUserUpdate = async () => {
   try {
     if (!userUpdatesPayload.value.id || !userUpdatesPayload.value.updates) {
@@ -61,6 +65,23 @@ const handleSaveUserUpdate = async () => {
       id: userUpdatesPayload.value.id,
       userUpdate: userUpdatesPayload.value.updates,
     });
+    // if activation status changed and user isn't verified, send verification link
+    const user = users.value?.find((u) => u.id === userUpdatesPayload.value.id); // :(
+    if (
+      user &&
+      userUpdatesPayload.value.updates.isActive &&
+      !user.isActive &&
+      !userUpdatesPayload.value.updates.isVerified &&
+      !user.isVerified
+    ) {
+      authApi
+        .verifyRequestToken({
+          bodyVerifyRequestTokenAuthRequestVerifyTokenPost: { email: user.email },
+        })
+        .then(() => {
+          message.info(t('admin.users.msgSentVerificationLink'));
+        });
+    }
     message.success(t('admin.users.save', { username: userUpdatesPayload.value.username }));
   } catch {
     message.error(t('errors.unexpected'));
