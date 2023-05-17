@@ -1,0 +1,6 @@
+Dear {first_name},
+
+your account on {platform_name} has been deactivated!
+
+Sincerely,
+{platform_name}

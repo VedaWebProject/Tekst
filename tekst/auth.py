@@ -149,7 +149,16 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[User, PyObjectId]):
         update_dict: dict[str, Any],
         request: Request | None = None,
     ):
-        pass  # nothing to do here ATM
+        if "isActive" in update_dict:
+            if update_dict.get("isActive"):
+                send_email(user, TemplateIdentifier.ACTIVATED)
+            else:
+                send_email(user, TemplateIdentifier.DEACTIVATED)
+        if "isSuperuser" in update_dict:
+            if update_dict.get("isSuperuser"):
+                send_email(user, TemplateIdentifier.SUPERUSER_SET)
+            else:
+                send_email(user, TemplateIdentifier.SUPERUSER_UNSET)
 
     async def on_after_login(
         self,

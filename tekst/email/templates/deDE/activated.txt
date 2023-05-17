@@ -1,0 +1,6 @@
+Hallo {first_name},
+
+Ihr Konto auf {platform_name} wurde aktiviert!
+Gegebenenfalls müssen Sie Ihre Email-Adresse verifizieren, bevor Sie sich anmelden können.
+
+Bis bald auf {platform_name}!

@@ -1,0 +1,6 @@
+Dear {first_name},
+
+your account on {platform_name} has been activated!
+You may have to verify your email address before you can log in.
+
+See you on {platform_name}!
