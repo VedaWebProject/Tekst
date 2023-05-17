@@ -159,6 +159,12 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[User, PyObjectId]):
                 send_email(user, TemplateIdentifier.SUPERUSER_SET)
             else:
                 send_email(user, TemplateIdentifier.SUPERUSER_UNSET)
+        if "password" in update_dict:
+            send_email(
+                user,
+                TemplateIdentifier.PASSWORD_RESET,
+                contact_email=_cfg.info.contact_email,
+            )
 
     async def on_after_login(
         self,
@@ -192,7 +198,11 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[User, PyObjectId]):
         )
 
     async def on_after_reset_password(self, user: User, request: Request | None = None):
-        pass  # nothing to do here ATM
+        send_email(
+            user,
+            TemplateIdentifier.PASSWORD_RESET,
+            contact_email=_cfg.info.contact_email,
+        )
 
     async def on_before_delete(self, user: User, request: Request | None = None):
         log.debug(f"[on_before_delete] {user.username}")
