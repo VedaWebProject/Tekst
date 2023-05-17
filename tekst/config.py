@@ -26,8 +26,8 @@ def _select_env_files() -> list[str]:
     Selection steps:
 
     1. ".env" if it exists
-    2. Custom env file defined in "TEKST_ENV_FILE" env var if it exists
-    3. ".env.dev" if it exists AND if TEKST_DEV_MODE env var is set to true
+    2. ".env.dev" if it exists AND if TEKST_DEV_MODE env var is set to true
+    3. Custom env file defined in "TEKST_ENV_FILE" env var if it exists
 
     :return: List of .env file paths
     :rtype: list[str]
@@ -40,10 +40,10 @@ def _select_env_files() -> list[str]:
     # prio logic
     if os.path.exists(f_env):
         env_files.append(f_env)
+    if os.environ.get("TEKST_DEV_MODE") and os.path.exists(f_env_dev):
+        env_files.append(f_env_dev)
     if f_env_custom and os.path.exists(f_env_custom):
         env_files.append(f_env_custom)
-    elif os.environ.get("TEKST_DEV_MODE") and os.path.exists(f_env_dev):
-        env_files.append(f_env_dev)
     return env_files
 
 
