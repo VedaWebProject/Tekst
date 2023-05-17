@@ -58,6 +58,7 @@ errors:
   unexpected: An unexpected error occurred. This should not happen.
   followFormRules: Please correct your inputs according to the form rules!
   noAccess: You don't have access to {resource}.
+  logInToAccess: Log in to access the requested resource!
   csrf: Your request didn't pass the CSRF checks. Delete your cookies for this website and refresh the page.
 
 nav:

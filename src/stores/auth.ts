@@ -53,7 +53,6 @@ export const useAuthStore = defineStore('auth', () => {
   const state = useStateStore();
 
   const user = ref<UserRead | null>(getUserFromLocalStorage());
-  const returnUrl = ref<string | null>(null);
   const loggedIn = computed(() => !!user.value);
 
   const sessionExpiryTsSec = ref(
@@ -202,7 +201,6 @@ export const useAuthStore = defineStore('auth', () => {
   return {
     user,
     loggedIn,
-    returnUrl,
     showLoginModal,
     login,
     logout,

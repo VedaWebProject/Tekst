@@ -163,8 +163,8 @@ router.beforeEach(async (to, from, next) => {
       if (auth.loggedIn) {
         next({ name: 'home' });
       } else {
-        auth.returnUrl = to.fullPath;
         next(from || { name: 'home' });
+        auth.showLoginModal(i18n.global.t('errors.logInToAccess'), to.fullPath, false);
       }
       return; // this is important!
     }

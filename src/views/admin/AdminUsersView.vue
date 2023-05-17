@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onMounted } from 'vue';
 import { useUsers } from '@/fetchers';
 import { NButton, NInput, NIcon, NCheckbox, NSpace, NSpin, NPagination, NList } from 'naive-ui';
 import UserListItem from '@/views/admin/UserListItem.vue';
@@ -11,10 +12,12 @@ import { useI18n } from 'vue-i18n';
 
 import SearchRound from '@vicons/material/SearchRound';
 import UndoRound from '@vicons/material/UndoRound';
+import { useRoute } from 'vue-router';
 
 const { t } = useI18n({ useScope: 'global' });
 const { users, error, load: loadUsers } = useUsers();
 const { message } = useMessages();
+const route = useRoute();
 
 const pagination = ref({
   page: 1,
@@ -62,6 +65,12 @@ function handleUserUpdated(updatedUser: UserRead) {
   message.success(t('admin.users.save', { username: updatedUser.username }));
   loadUsers();
 }
+
+onMounted(() => {
+  if (route.query.search) {
+    filters.value.search = route.query.search?.toString();
+  }
+});
 </script>
 
 <template>
