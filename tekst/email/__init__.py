@@ -21,6 +21,7 @@ class TemplateIdentifier(Enum):
     TEST = "test"
     VERIFY = "verify"
     VERIFIED = "verified"
+    ACTIVATE_TODO = "activate_todo"
     ACTIVATED = "activated"
     DEACTIVATED = "deactivated"
     PASSWORD_FORGOT = "password_forgot"
@@ -83,7 +84,13 @@ def _send_email(*, to: str, subject: str, txt: str, html: str):
         raise e
 
 
-def send_email(to_user: UserRead, template_id: TemplateIdentifier, **kwargs):
+def send_email(
+    to_user: UserRead,
+    template_id: TemplateIdentifier,
+    *,
+    alternate_recepient: UserRead | None = None,
+    **kwargs,
+):
     templates = _get_templates(template_id, to_user.locale or "enUS")
     email_contents = dict()
     for key in templates:
@@ -98,7 +105,7 @@ def send_email(to_user: UserRead, template_id: TemplateIdentifier, **kwargs):
             .strip()
         )
     _send_email(
-        to=to_user.email,
+        to=alternate_recepient or to_user.email,
         subject=email_contents.get("subject", ""),
         txt=email_contents.get("txt", ""),
         html=email_contents.get("html", ""),

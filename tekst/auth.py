@@ -141,7 +141,14 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[User, PyObjectId]):
     verification_token_audience = "tekst:verify"
 
     async def on_after_register(self, user: User, request: Request | None = None):
-        log.info(f"User {user.username} has registered.")
+        if not _cfg.security.users_active_by_default:
+            admins = await User.find({"isSuperuser": True}).limit(10).to_list()
+            for admin in admins:
+                send_email(
+                    user,
+                    TemplateIdentifier.ACTIVATE_TODO,
+                    alternate_recepient=admin.email,
+                )
 
     async def on_after_update(
         self,

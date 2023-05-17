@@ -1,0 +1,6 @@
+To the administrator(s) of {platform_name},
+
+the user "{username}" ({first_name} {last_name}, {affiliation}) registered on {platform_name} and is awaiting account activation.
+This email has been sent to all administrators.
+
+See you on {platform_name}!

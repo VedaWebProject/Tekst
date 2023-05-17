@@ -1,0 +1,6 @@
+An die Administratoren von {platform_name},
+
+der Benutzer "{username}" ({first_name} {last_name}, {affiliation}) hat sich auf {platform_name} registriert und wartet auf die Aktivierung des Kontos.
+Diese Email wurde an alle Administratoren versandt.
+
+Bis bald auf {platform_name}!
