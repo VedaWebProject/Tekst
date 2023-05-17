@@ -44,6 +44,7 @@ tasks:
   tests:
     desc: Run test categories separately, start and stop services stack
     env:
+      TEKST_DEV_MODE: true
       TEKST_ENV_FILE: .env.test
     cmds:
       - defer: {task: test-stack-down}
