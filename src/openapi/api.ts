@@ -1469,6 +1469,12 @@ export interface UserRead {
      * @memberof UserRead
      */
     'publicFields'?: Array<UserReadPublicFieldsEnum>;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserRead
+     */
+    'createdAt': string;
 }
 
 export const UserReadLocaleEnum = {

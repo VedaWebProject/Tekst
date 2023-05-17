@@ -1,224 +1,138 @@
 <script setup lang="ts">
 import { useUsers } from '@/fetchers';
-import type { DataTableColumn, PaginationProps } from 'naive-ui';
-import { useI18n } from 'vue-i18n';
-import { NDataTable, NIcon, NModal, NCheckbox } from 'naive-ui';
-import type { UserRead, UserUpdate } from '@/openapi';
-import { ref, h, type Component } from 'vue';
+import { NButton, NInput, NIcon, NCheckbox, NSpace, NSpin, NPagination, NList } from 'naive-ui';
+import UserListItem from '@/views/admin/UserListItem.vue';
+import { hashCode } from '@/utils';
+import type { UserRead } from '@/openapi';
+import { ref } from 'vue';
+import { computed } from 'vue';
 import { useMessages } from '@/messages';
+import { useI18n } from 'vue-i18n';
 
-import CheckRound from '@vicons/material/CheckRound';
-import ClearRound from '@vicons/material/ClearRound';
-import ShieldTwotone from '@vicons/material/ShieldTwotone';
-import ManageAccountsRound from '@vicons/material/ManageAccountsRound';
-import { useApi } from '@/api';
+import SearchRound from '@vicons/material/SearchRound';
+import UndoRound from '@vicons/material/UndoRound';
 
-const { users, error, load: loadUsers } = useUsers();
 const { t } = useI18n({ useScope: 'global' });
-
-// icons
-const iconElement = (icon: Component, color?: string) =>
-  h(NIcon, { color }, { default: () => h(icon) });
-const iconCheck = iconElement(CheckRound, 'var(--col-success)');
-const iconCross = iconElement(ClearRound, 'var(--col-error)');
-const iconSuperuser = iconElement(ShieldTwotone, 'var(--col-info)');
-const iconEditUser = iconElement(ManageAccountsRound);
-
-// things related to updating users
-interface UserUpdatePayload {
-  id?: string;
-  username?: string;
-  updates: UserUpdate;
-}
-
-const { usersApi, authApi } = useApi();
+const { users, error, load: loadUsers } = useUsers();
 const { message } = useMessages();
-const showUserUpdateModal = ref(false);
-const emptyUserUpdatePayload: UserUpdatePayload = { updates: {} };
-const userUpdatesPayload = ref<UserUpdatePayload>(emptyUserUpdatePayload);
 
-const handleOpenUserUpdate = (user: UserRead) => {
-  userUpdatesPayload.value = {
-    id: user.id,
-    username: user.username,
-    // selectively add user properties to possible updates
-    updates: {
-      isActive: user.isActive,
-      isVerified: user.isVerified,
-      isSuperuser: user.isSuperuser,
-    },
-  };
-  showUserUpdateModal.value = true;
-};
+const pagination = ref({
+  page: 1,
+  pageSize: 10,
+});
 
-const handleCloseUserUpdate = () => {
-  userUpdatesPayload.value = emptyUserUpdatePayload;
-  showUserUpdateModal.value = false;
-};
+const initialFilters = () => ({
+  search: '',
+  isActive: true,
+  isInactive: true,
+  isVerified: true,
+  isUnverified: true,
+  isSuperuser: true,
+  isNoSuperuser: true,
+});
 
-const handleSaveUserUpdate = async () => {
-  try {
-    if (!userUpdatesPayload.value.id || !userUpdatesPayload.value.updates) {
-      throw new Error();
-    }
-    await usersApi.usersPatchUser({
-      id: userUpdatesPayload.value.id,
-      userUpdate: userUpdatesPayload.value.updates,
-    });
-    // if activation status changed and user isn't verified, send verification link
-    const user = users.value?.find((u) => u.id === userUpdatesPayload.value.id); // :(
-    if (
-      user &&
-      userUpdatesPayload.value.updates.isActive &&
-      !user.isActive &&
-      !userUpdatesPayload.value.updates.isVerified &&
-      !user.isVerified
-    ) {
-      authApi
-        .verifyRequestToken({
-          bodyVerifyRequestTokenAuthRequestVerifyTokenPost: { email: user.email },
-        })
-        .then(() => {
-          message.info(t('admin.users.msgSentVerificationLink'));
-        });
-    }
-    message.success(t('admin.users.save', { username: userUpdatesPayload.value.username }));
-  } catch {
-    message.error(t('errors.unexpected'));
-  } finally {
-    loadUsers();
-    handleCloseUserUpdate();
-  }
-};
+const filters = ref(initialFilters());
 
-const columns: Array<DataTableColumn> = [
-  {
-    key: 'email',
-    title: () => t('models.user.email'),
-    sorter: 'default',
-  },
-  {
-    key: 'username',
-    title: () => t('models.user.username'),
-    defaultSortOrder: 'ascend',
-    sorter: 'default',
-  },
-  {
-    key: 'firstName',
-    title: () => t('models.user.firstName'),
-    sorter: 'default',
-  },
-  {
-    key: 'lastName',
-    title: () => t('models.user.lastName'),
-    sorter: 'default',
-  },
-  {
-    key: 'affiliation',
-    title: () => t('models.user.affiliation'),
-    sorter: 'default',
-  },
-  {
-    key: 'isActive',
-    title: () => t('models.user.active'),
-    render: (u) => (u.isActive ? iconCheck : iconCross),
-    align: 'center',
-    // @ts-ignore
-    sorter: (r1, r2) => r2.isActive - r1.isActive,
-  },
-  {
-    key: 'isVerified',
-    title: () => t('models.user.verified'),
-    render: (u) => (u.isVerified ? iconCheck : iconCross),
-    align: 'center',
-    // @ts-ignore
-    sorter: (r1, r2) => r2.isVerified - r1.isVerified,
-  },
-  {
-    key: 'isSuperuser',
-    title: () => t('models.user.superuser'),
-    render: (u) => (u.isSuperuser ? iconSuperuser : null),
-    align: 'center',
-    // @ts-ignore
-    sorter: (r1, r2) => r2.isSuperuser - r1.isSuperuser,
-  },
-];
-
-const pagination: PaginationProps = {
-  pageSizes: [10, 20, 50, 100],
-  defaultPageSize: 10,
-  showSizePicker: true,
-};
-
-function rowClassName(user: UserRead) {
-  if (!user.isActive) return 'inactive';
-  if (!user.isVerified) return 'unverified';
-  if (user.isSuperuser) return 'superuser';
-  return '';
+function filterData(users: UserRead[]) {
+  pagination.value.page = 1;
+  return users.filter((u) => {
+    const userStringContent = filters.value.search
+      ? [u.username, u.email, u.firstName, u.lastName, u.affiliation, u.createdAt].join(' ')
+      : '';
+    return (
+      (!filters.value.search ||
+        userStringContent.toLowerCase().includes(filters.value.search.toLowerCase())) &&
+      ((filters.value.isActive && u.isActive) || (filters.value.isInactive && !u.isActive)) &&
+      ((filters.value.isVerified && u.isVerified) ||
+        (filters.value.isUnverified && !u.isVerified)) &&
+      ((filters.value.isSuperuser && u.isSuperuser) ||
+        (filters.value.isNoSuperuser && !u.isSuperuser))
+    );
+  });
 }
 
-function rowProps(user: UserRead) {
-  return {
-    style: 'cursor: pointer;',
-    onClick: () => handleOpenUserUpdate(user),
-  };
+const filteredData = computed(() => filterData(users.value || []));
+const paginatedData = computed(() => {
+  const start = (pagination.value.page - 1) * pagination.value.pageSize;
+  const end = start + pagination.value.pageSize;
+  return filteredData.value.slice(start, end);
+});
+
+function handleUserUpdated(updatedUser: UserRead) {
+  message.success(t('admin.users.save', { username: updatedUser.username }));
+  loadUsers();
 }
 </script>
 
 <template>
   <h1>{{ $t('admin.heading') }}: {{ $t('admin.users.heading') }}</h1>
 
-  <div v-if="!error">
-    <n-data-table
-      pagination-behavior-on-filter="first"
-      :columns="columns"
-      :data="users || []"
-      :loading="!users"
-      :row-key="(rowData) => rowData.id"
-      :pagination="pagination"
-      :row-class-name="rowClassName"
-      :row-props="rowProps"
-      size="small"
-    />
-  </div>
+  <template v-if="users && !error">
+    <!-- Filters -->
+    <div style="margin-bottom: 1.5rem">
+      <n-input
+        v-model:value="filters.search"
+        :placeholder="t('search.searchAction')"
+        style="margin-bottom: 1rem"
+        round
+      >
+        <template #prefix>
+          <n-icon :component="SearchRound" />
+        </template>
+      </n-input>
+      <n-space justify="space-around">
+        <n-checkbox v-model:checked="filters.isActive" :label="t('models.user.isActive')" />
+        <n-checkbox v-model:checked="filters.isInactive" :label="t('models.user.isInactive')" />
+        <n-checkbox v-model:checked="filters.isVerified" :label="t('models.user.isVerified')" />
+        <n-checkbox v-model:checked="filters.isUnverified" :label="t('models.user.isUnverified')" />
+        <n-checkbox v-model:checked="filters.isSuperuser" :label="t('models.user.isSuperuser')" />
+        <n-checkbox v-model:checked="filters.isNoSuperuser" :label="t('models.user.modelLabel')" />
+        <n-button secondary round @click="filters = initialFilters()">
+          {{ t('general.resetAction') }}
+          <template #icon>
+            <n-icon :component="UndoRound" />
+          </template>
+        </n-button>
+      </n-space>
+    </div>
+    <!-- Users List -->
+    <div class="content-block" style="padding: var(--content-gap)">
+      <template v-if="paginatedData.length > 0">
+        <n-list style="background-color: transparent">
+          <user-list-item
+            v-for="item in paginatedData"
+            :data="item"
+            :key="hashCode(item)"
+            @user-updated="handleUserUpdated"
+          />
+        </n-list>
+        <!-- Pagination -->
+        <div style="display: flex; justify-content: flex-end; padding-top: 12px">
+          <n-pagination
+            v-model:page-size="pagination.pageSize"
+            v-model:page="pagination.page"
+            :page-sizes="[10, 20, 50, 100]"
+            :default-page-size="10"
+            :item-count="filteredData.length"
+            show-size-picker
+          />
+        </div>
+      </template>
+      <template v-else>
+        {{ t('search.nothingFound') }}
+      </template>
+    </div>
+  </template>
+
+  <n-spin
+    v-else-if="!users && !error"
+    style="margin: 3rem auto 2rem auto; display: flex"
+    :description="$t('init.loading')"
+  />
 
   <div v-else>
     {{ $t('errors.error') }}
   </div>
-
-  <n-modal
-    v-model:show="showUserUpdateModal"
-    preset="dialog"
-    to="#app-container"
-    :title="`${t('models.user.modelLabel')}: ${userUpdatesPayload?.username || ''}`"
-    :icon="() => iconEditUser"
-    :positive-text="$t('general.saveAction')"
-    :negative-text="$t('general.cancelAction')"
-    @positive-click="handleSaveUserUpdate"
-    @negative-click="handleCloseUserUpdate"
-  >
-    <div style="display: flex; flex-direction: column; gap: 4px; margin: 24px 0">
-      <n-checkbox v-model:checked="userUpdatesPayload.updates.isActive">
-        {{ $t('admin.users.checkLabelActive') }}
-      </n-checkbox>
-      <n-checkbox v-model:checked="userUpdatesPayload.updates.isVerified">
-        {{ $t('admin.users.checkLabelVerified') }}
-      </n-checkbox>
-      <div
-        style="
-          padding: 8px 4px 0px 0px;
-          font-size: var(--app-ui-font-size-tiny);
-          font-weight: var(--app-ui-font-weight-light);
-          color: var(--col-error) !important;
-        "
-      >
-        {{ $t('admin.users.editModal.adminWarning') }}
-      </div>
-      <n-checkbox v-model:checked="userUpdatesPayload.updates.isSuperuser">
-        {{ $t('admin.users.checkLabelSuperuser') }}
-      </n-checkbox>
-    </div>
-  </n-modal>
 </template>
 
 <style scoped></style>

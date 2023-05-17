@@ -3,14 +3,18 @@ general:
   welcomeTest: '"Welcome!", says the client.'
   tipThemeToggleLight: Switch to light mode
   tipThemeToggleDark: Switch to dark mode
+  yesAction: 'Yes'
+  noAction: 'No'
   selectAction: Select
   cancelAction: Cancel
   saveAction: Save
   closeAction: Close
+  resetAction: Reset
   textSelect: Select the text you want to work with
   info: Information
   warning: Warning
   error: Error
+  filters: Filters
 
 dummy:
   home: There's no place like ~
@@ -134,9 +138,11 @@ models:
     firstName: First Name
     lastName: Last Name
     affiliation: Affiliation
-    active: Active
-    verified: Verified
-    superuser: Admin
+    isActive: active
+    isInactive: inactive
+    isVerified: verified
+    isUnverified: unverified
+    isSuperuser: Admin
   text:
     modelLabel: Text | Texts
     title: Title
@@ -193,7 +199,7 @@ account:
     heading: Login
   errors:
     badCreds: Incorrect email/password or account isn't activated, yet
-    notVerified: Your email is not yet verified. We just sent you a verification link.
+    notVerified: Your email address is not verified, yet. We just sent you a verification link.
   autoLogout: Your session will automatically end in {minutes} minutes and {seconds} seconds. You can log out and log back in to renew your session now.
   sessionExpired: Your session expired.
   renewLogin: Log in again to renew your session.
@@ -222,10 +228,27 @@ admin:
     checkLabelActive: Account is active
     checkLabelVerified: Email is verified
     checkLabelSuperuser: User is administrator
+    registeredAt: registered at
     editModal:
       accountStatus: Account status
       adminWarning: Careful! You better know what you are doing!
-    msgSentVerificationLink: A verification email was sent to the newly activated user.
+    msgSentVerificationLink: A verification email was sent to "{username}".
+    msgSentVerificationLinkError: Error sending verification link via email.
+    statusBtnTitle:
+      setUser: Downgrade {username} to normal user
+      setSuperuser: Promote {username} to administrator
+      setInactive: Deactivate account of {username}
+      setActive: Activate account of {username}
+      setUnverified: Reset email verification of {username}
+      setVerified: Set email of {username} to verified
+    confirmMsg:
+      areYouSure: Are you sure you want to
+      setUser: '@:admin.users.confirmMsg.areYouSure downgrade {username} to a normal user?'
+      setSuperuser: '@:admin.users.confirmMsg.areYouSure grant administrator permissions to {username}?'
+      setInactive: '@:admin.users.confirmMsg.areYouSure deactivate the account of {username}?'
+      setActive: '@:admin.users.confirmMsg.areYouSure activate the account of {username}?'
+      setUnverified: '@:admin.users.confirmMsg.areYouSure reset the email verification status of {username}?'
+      setVerified: '@:admin.users.confirmMsg.areYouSure set the email address of {username} to verified?'
   texts:
     heading: Texts
     general:
@@ -240,3 +263,4 @@ search:
     heading: Quick Search
   settings:
     heading: Global Search Settings
+  nothingFound: Nothing found

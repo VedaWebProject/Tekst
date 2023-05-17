@@ -227,7 +227,7 @@ async function handlepublicFieldsSave() {
 <template>
   <h1>{{ $t('account.manage.heading') }}</h1>
 
-  <n-grid cols="1 m:2" responsive="screen" x-gap="18px">
+  <n-grid class="account-mgmt-grid" cols="1 m:2" responsive="screen" x-gap="18px" y-gap="18px">
     <n-grid-item>
       <div class="content-block">
         <h2>{{ t('models.user.email') }}</h2>
@@ -407,3 +407,9 @@ async function handlepublicFieldsSave() {
     </n-grid-item>
   </n-grid>
 </template>
+
+<style scoped>
+.account-mgmt-grid .content-block {
+  margin: 0;
+}
+</style>
