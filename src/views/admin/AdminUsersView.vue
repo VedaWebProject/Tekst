@@ -89,7 +89,7 @@ onMounted(() => {
           <n-icon :component="SearchRound" />
         </template>
       </n-input>
-      <n-space justify="space-around">
+      <n-space justify="space-between">
         <n-checkbox v-model:checked="filters.isActive" :label="t('models.user.isActive')" />
         <n-checkbox v-model:checked="filters.isInactive" :label="t('models.user.isInactive')" />
         <n-checkbox v-model:checked="filters.isVerified" :label="t('models.user.isVerified')" />
