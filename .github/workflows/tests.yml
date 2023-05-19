@@ -50,4 +50,4 @@ jobs:
       uses: andymckay/cancel-action@0.2
     - name: Run tests
       if: always()
-      run: TEKST_DEV_MODE=true TEKST_DB__NAME=tekst_testing poetry run python3 -m tekst setup && poetry run pytest
+      run: TEKST_ENV_FILE=.env.test poetry run python3 -m tekst setup && poetry run pytest
