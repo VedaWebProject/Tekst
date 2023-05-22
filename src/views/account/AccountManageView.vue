@@ -19,6 +19,7 @@ import {
 } from 'naive-ui';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { keepChangedRecords, haveRecordsChanged } from '@/utils';
 
 const dialog = useDialog();
 const auth = useAuthStore();
@@ -27,52 +28,52 @@ const { message } = useMessages();
 const { t } = useI18n({ useScope: 'global' });
 const { authApi } = useApi();
 
-const initialEmailFormModel = () => ({
+const initialEmailModel = () => ({
   email: auth.user?.email || null,
 });
 
-const initialPasswordFormModel = () => ({
+const initialPasswordModel = () => ({
   password: '',
   passwordRepeat: '',
 });
 
-const initialUserDataFormModel = () => ({
+const initialUserDataModel = () => ({
   username: auth.user?.username || null,
   firstName: auth.user?.firstName || null,
   lastName: auth.user?.lastName || null,
   affiliation: auth.user?.affiliation || null,
 });
 
-const initialpublicFieldsFormModel = () => ({
+const initialPublicFieldsModel = () => ({
   firstName: auth.user?.publicFields?.includes('firstName') || false,
   lastName: auth.user?.publicFields?.includes('lastName') || false,
   affiliation: auth.user?.publicFields?.includes('affiliation') || false,
 });
 
-const formRules = useFormRules();
+const { accountFormRules } = useFormRules();
 
 const emailFormRef = ref<FormInst | null>(null);
-const emailFormModel = ref<Record<string, string | null>>(initialEmailFormModel());
+const emailFormModel = ref<Record<string, string | null>>(initialEmailModel());
 const emailModelChanged = computed(() =>
-  modelChanged(emailFormModel.value, initialEmailFormModel())
+  haveRecordsChanged(emailFormModel.value, initialEmailModel())
 );
 
 const passwordFormRef = ref<FormInst | null>(null);
-const passwordFormModel = ref<Record<string, string | null>>(initialPasswordFormModel());
+const passwordFormModel = ref<Record<string, string | null>>(initialPasswordModel());
 const passwordModelChanged = computed(() =>
-  modelChanged(passwordFormModel.value, initialPasswordFormModel())
+  haveRecordsChanged(passwordFormModel.value, initialPasswordModel())
 );
 
 const userDataFormRef = ref<FormInst | null>(null);
-const userDataFormModel = ref<Record<string, string | null>>(initialUserDataFormModel());
+const userDataFormModel = ref<Record<string, string | null>>(initialUserDataModel());
 const userDataModelChanged = computed(() =>
-  modelChanged(userDataFormModel.value, initialUserDataFormModel())
+  haveRecordsChanged(userDataFormModel.value, initialUserDataModel())
 );
 
 const publicFieldsFormRef = ref<FormInst | null>(null);
-const publicFieldsFormModel = ref<Record<string, boolean>>(initialpublicFieldsFormModel());
+const publicFieldsFormModel = ref<Record<string, boolean>>(initialPublicFieldsModel());
 const publicFieldsModelChanged = computed(() =>
-  modelChanged(publicFieldsFormModel.value, initialpublicFieldsFormModel())
+  haveRecordsChanged(publicFieldsFormModel.value, initialPublicFieldsModel())
 );
 
 const rPasswordFormItemRef = ref<FormItemInst | null>(null);
@@ -82,7 +83,7 @@ const loading = ref(false);
 const passwordRepeatMatchRule = {
   validator: (rule: FormItemRule, value: string) =>
     !!value && !!passwordFormModel.value.password && value === passwordFormModel.value.password,
-  message: () => t('register.rulesFeedback.passwordRepNoMatch'),
+  message: () => t('models.user.formRulesFeedback.passwordRepNoMatch'),
   trigger: ['input', 'blur', 'password-input'],
 };
 
@@ -109,27 +110,8 @@ async function updateUser(userUpdate: UserUpdate) {
   }
 }
 
-function keepChanged(
-  changed: Record<string, string | null>,
-  original: Record<string, string | null>
-) {
-  return Object.keys(changed).reduce((prev, curr) => {
-    if (changed[curr] !== original[curr]) prev[curr] = changed[curr];
-    return prev;
-  }, {} as Record<string, string | null>);
-}
-
-function modelChanged(changed: Record<string, any>, original: Record<string, any>) {
-  for (const key in original) {
-    if (changed[key] !== original[key]) {
-      return true;
-    }
-  }
-  return false;
-}
-
 async function updateEmail() {
-  const updated = await updateUser(keepChanged(emailFormModel.value, initialEmailFormModel()));
+  const updated = await updateUser(keepChangedRecords(emailFormModel.value, initialEmailModel()));
   if (updated) {
     message.success(t('account.manage.msgEmailSaveSuccess'));
     if (!pfData.value?.security?.closedMode === true) {
@@ -205,7 +187,7 @@ async function handleUserDataSave() {
   userDataFormRef.value
     ?.validate(async (errors) => {
       if (!errors) {
-        await updateUser(keepChanged(userDataFormModel.value, initialUserDataFormModel()));
+        await updateUser(keepChangedRecords(userDataFormModel.value, initialUserDataModel()));
         message.success(t('account.manage.msgUserDataSaveSuccess'));
       }
     })
@@ -234,7 +216,7 @@ async function handlepublicFieldsSave() {
         <n-form
           ref="emailFormRef"
           :model="emailFormModel"
-          :rules="formRules"
+          :rules="accountFormRules"
           label-placement="top"
           label-width="auto"
           require-mark-placement="right-hanging"
@@ -252,6 +234,15 @@ async function handlepublicFieldsSave() {
         </n-form>
         <n-space :size="12" justify="end">
           <n-button
+            secondary
+            block
+            @click="() => (emailFormModel = initialEmailModel())"
+            :loading="loading"
+            :disabled="loading || !emailModelChanged"
+          >
+            {{ $t('general.resetAction') }}
+          </n-button>
+          <n-button
             block
             type="primary"
             @click="handleEmailSave"
@@ -266,7 +257,7 @@ async function handlepublicFieldsSave() {
         <n-form
           ref="passwordFormRef"
           :model="passwordFormModel"
-          :rules="formRules"
+          :rules="accountFormRules"
           label-placement="top"
           label-width="auto"
           require-mark-placement="right-hanging"
@@ -285,7 +276,7 @@ async function handlepublicFieldsSave() {
             ref="rPasswordFormItemRef"
             first
             path="passwordRepeat"
-            :rule="formRules.passwordRepeat.concat([passwordRepeatMatchRule])"
+            :rule="accountFormRules.passwordRepeat.concat([passwordRepeatMatchRule])"
             :label="$t('register.repeatPassword')"
           >
             <n-input
@@ -298,6 +289,15 @@ async function handlepublicFieldsSave() {
           </n-form-item>
         </n-form>
         <n-space :size="12" justify="end">
+          <n-button
+            secondary
+            block
+            @click="() => (passwordFormModel = initialPasswordModel())"
+            :loading="loading"
+            :disabled="loading || !passwordModelChanged"
+          >
+            {{ $t('general.resetAction') }}
+          </n-button>
           <n-button
             block
             type="primary"
@@ -317,7 +317,7 @@ async function handlepublicFieldsSave() {
         <n-form
           ref="userDataFormRef"
           :model="userDataFormModel"
-          :rules="formRules"
+          :rules="accountFormRules"
           label-placement="top"
           label-width="auto"
           require-mark-placement="right-hanging"
@@ -360,6 +360,15 @@ async function handlepublicFieldsSave() {
         </n-form>
         <n-space :size="12" justify="end">
           <n-button
+            secondary
+            block
+            @click="() => (userDataFormModel = initialUserDataModel())"
+            :loading="loading"
+            :disabled="loading || !userDataModelChanged"
+          >
+            {{ $t('general.resetAction') }}
+          </n-button>
+          <n-button
             block
             type="primary"
             @click="handleUserDataSave"
@@ -393,6 +402,15 @@ async function handlepublicFieldsSave() {
           </n-form-item>
         </n-form>
         <n-space :size="12" justify="end">
+          <n-button
+            secondary
+            block
+            @click="() => (publicFieldsFormModel = initialPublicFieldsModel())"
+            :loading="loading"
+            :disabled="loading || !publicFieldsModelChanged"
+          >
+            {{ $t('general.resetAction') }}
+          </n-button>
           <n-button
             block
             type="primary"
