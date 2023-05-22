@@ -37,7 +37,7 @@ const initialFormModel = () => ({
 
 const formModel = ref<Record<string, string | null>>(initialFormModel());
 const formRef = ref<FormInst | null>(null);
-const formRules = useFormRules();
+const { accountFormRules } = useFormRules();
 const rPasswordFormItemRef = ref<FormItemInst | null>(null);
 const firstInputRef = ref<HTMLInputElement | null>(null);
 const loading = ref(false);
@@ -45,7 +45,7 @@ const loading = ref(false);
 const passwordRepeatMatchRule = {
   validator: (rule: FormItemRule, value: string) =>
     !!value && !!formModel.value.password && value === formModel.value.password,
-  message: () => t('register.rulesFeedback.passwordRepNoMatch'),
+  message: () => t('models.user.formRulesFeedback.passwordRepNoMatch'),
   trigger: ['input', 'blur', 'password-input'],
 };
 
@@ -144,7 +144,7 @@ onMounted(() => {
       <n-form
         ref="formRef"
         :model="formModel"
-        :rules="formRules"
+        :rules="accountFormRules"
         label-placement="top"
         label-width="auto"
         require-mark-placement="right-hanging"
@@ -182,7 +182,7 @@ onMounted(() => {
           ref="rPasswordFormItemRef"
           first
           path="passwordRepeat"
-          :rule="formRules.passwordRepeat.concat([passwordRepeatMatchRule])"
+          :rule="accountFormRules.passwordRepeat.concat([passwordRepeatMatchRule])"
           :label="$t('register.repeatPassword')"
         >
           <n-input

@@ -12,7 +12,7 @@ import { useApi } from '@/api';
 const auth = useAuthStore();
 const { message } = useMessages();
 const router = useRouter();
-const formRules = useFormRules();
+const { accountFormRules } = useFormRules();
 const { t } = useI18n({ useScope: 'global' });
 const { authApi } = useApi();
 
@@ -99,7 +99,11 @@ onMounted(() => {
           label-width="auto"
           require-mark-placement="right-hanging"
         >
-          <n-form-item path="email" :rule="formRules.loginEmail" :label="$t('models.user.email')">
+          <n-form-item
+            path="email"
+            :rule="accountFormRules.loginEmail"
+            :label="$t('models.user.email')"
+          >
             <n-input
               v-model:value="formModel.email"
               type="text"
@@ -111,7 +115,7 @@ onMounted(() => {
           </n-form-item>
           <n-form-item
             path="password"
-            :rule="formRules.loginPassword"
+            :rule="accountFormRules.loginPassword"
             :label="$t('models.user.password')"
           >
             <n-input

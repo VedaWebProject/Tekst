@@ -3,7 +3,7 @@ import { i18n } from './i18n';
 
 const t = i18n.global.t;
 
-const formRules: Record<string, FormItemRule[]> = {
+const accountFormRules: Record<string, FormItemRule[]> = {
   email: [
     {
       required: true,
@@ -12,7 +12,7 @@ const formRules: Record<string, FormItemRule[]> = {
     },
     {
       validator: (rule: FormItemRule, value: string) => /^.+@.+\.\w+$/.test(value),
-      message: () => t('register.rulesFeedback.emailInvalid'),
+      message: () => t('models.user.formRulesFeedback.emailInvalid'),
       trigger: 'blur',
     },
   ],
@@ -30,7 +30,7 @@ const formRules: Record<string, FormItemRule[]> = {
     },
     {
       validator: (rule: FormItemRule, value: string) => !!value && /^[a-zA-Z0-9\-_]*$/.test(value),
-      message: () => t('register.rulesFeedback.usernameChars'),
+      message: () => t('models.user.formRulesFeedback.usernameChars'),
       trigger: 'blur',
     },
   ],
@@ -48,14 +48,14 @@ const formRules: Record<string, FormItemRule[]> = {
     {
       validator: (rule: FormItemRule, value: string) =>
         !!value && /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(value),
-      message: () => t('register.rulesFeedback.passwordChars'),
+      message: () => t('models.user.formRulesFeedback.passwordChars'),
       trigger: ['input', 'blur'],
     },
   ],
   passwordRepeat: [
     {
       required: true,
-      message: () => t('register.rulesFeedback.passwordRepReq'),
+      message: () => t('models.user.formRulesFeedback.passwordRepReq'),
       trigger: 'blur',
     },
   ],
@@ -114,8 +114,90 @@ const formRules: Record<string, FormItemRule[]> = {
   ],
 };
 
+const textFormRules: Record<string, FormItemRule[]> = {
+  title: [
+    {
+      required: true,
+      message: () => t('forms.rulesFeedback.isRequired', { x: t('models.text.title') }),
+      trigger: 'blur',
+    },
+    {
+      validator: (rule: FormItemRule, value: string) =>
+        !!value && value.length >= 1 && value.length <= 64,
+      message: () => t('forms.rulesFeedback.minMaxChars', { min: 1, max: 64 }),
+      trigger: 'blur',
+    },
+  ],
+  subtitle: [
+    {
+      validator: (rule: FormItemRule, value: string) => value.length <= 128,
+      message: () => t('forms.rulesFeedback.minMaxChars', { min: 0, max: 128 }),
+      trigger: 'blur',
+    },
+  ],
+  slug: [
+    {
+      required: true,
+      message: () => t('forms.rulesFeedback.isRequired', { x: t('models.text.slug') }),
+      trigger: 'blur',
+    },
+    {
+      validator: (rule: FormItemRule, value: string) =>
+        !!value && value.length >= 1 && value.length <= 16,
+      message: () => t('forms.rulesFeedback.minMaxChars', { min: 1, max: 16 }),
+      trigger: 'blur',
+    },
+    {
+      validator: (rule: FormItemRule, value: string) => !!value && /^[a-z0-9]+$/.test(value),
+      message: () => t('models.text.formRulesFeedback.slugChars'),
+      trigger: ['input', 'blur'],
+    },
+  ],
+  level: [
+    {
+      required: true,
+      message: () => t('forms.rulesFeedback.isRequired', { x: t('models.text.level') }),
+      trigger: 'blur',
+    },
+    {
+      validator: (rule: FormItemRule, value: string) =>
+        !!value && value.length >= 1 && value.length <= 32,
+      message: () => t('forms.rulesFeedback.minMaxChars', { min: 1, max: 32 }),
+      trigger: 'blur',
+    },
+  ],
+  levels: [
+    {
+      required: true,
+      message: () => t('forms.rulesFeedback.isRequired', { x: t('models.text.levels') }),
+      trigger: 'blur',
+    },
+    {
+      validator: (rule: FormItemRule, value: number) => !!value && value >= 1 && value <= 32,
+      message: () => t('models.text.formRulesFeedback.levelsNumber'),
+      trigger: 'blur',
+    },
+  ],
+  defaultLevel: [
+    {
+      validator: (rule: FormItemRule, value: number) =>
+        value !== undefined && value !== null && value >= 0,
+      message: () => t('models.text.formRulesFeedback.defaultLevelRange'),
+      trigger: 'blur',
+    },
+  ],
+  locDelim: [
+    {
+      validator: (rule: FormItemRule, value: string) => value.length <= 3,
+      message: () => t('forms.rulesFeedback.minMaxChars', { min: 0, max: 3 }),
+      trigger: 'blur',
+    },
+  ],
+};
+
 export function useFormRules() {
   return {
-    ...formRules,
+    accountFormRules,
+    textFormRules,
   };
 }

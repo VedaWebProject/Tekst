@@ -146,16 +146,26 @@ models:
     isVerified: verifiziert
     isUnverified: unverifiziert
     isSuperuser: Admin
+    formRulesFeedback:
+      emailInvalid: '@:models.user.email ist zu offensichtlich ungültig'
+      usernameChars: 'Erlaubte Zeichen: a-z, A-Z, 0-9 und - _'
+      passwordChars: 'Mindestens je ein Zeichen aus: a-z, A-Z and 0-9'
+      passwordRepReq: Passwort muss wiederholt werden
+      passwordRepNoMatch: Passwörter stimmen nicht überein
   text:
     modelLabel: Text | Texte
     title: Titel
     slug: Identifikator
     subtitle: Untertitel
+    level: Strukturebene
     levels: Strukturebenen
     defaultLevel: Standard-Strukturebene
     locDelim: Fundstellen-Trennzeichen
     labeledLocation: Beschriftete Fundstelle
     accentColor: Akzent-Farbe
+    formRulesFeedback:
+      slugChars: 'Erlaubte Zeichen: a-z und 0-9'
+      defaultLevelRange: 0 oder höher
   node:
     modelLabel: Text-Knoten | Text-Knoten
   layer:
@@ -256,6 +266,8 @@ admin:
     heading: Texte
     general:
       heading: Allgemeine Einstellungen
+      msgSaved: Text-Einstellungen gespeichert.
+      msgRefreshWarn: Die Seite wird nach dem Speichern automatisch neu geladen.
     structure:
       heading: Struktur
 

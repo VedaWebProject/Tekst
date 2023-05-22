@@ -119,12 +119,6 @@ register:
   activationNeededHint: You will only be able to log in as soon as we activate your account. We will send you an email when that happens.
   activationNotNeededHint: You can now log in.
   repeatPassword: 'Repeat @:models.user.password'
-  rulesFeedback:
-    emailInvalid: '@:models.user.email is too obviously invalid'
-    usernameChars: 'Allowed characters: a-z, A-Z, 0-9 and - _'
-    passwordChars: 'Minimum one of each: a-z, A-Z and 0-9'
-    passwordRepReq: Password repetition is required
-    passwordRepNoMatch: Passwords don't match
   errors:
     emailAlreadyRegistered: This email address is already registered.
     usernameAlreadyRegistered: This username is already taken.
@@ -144,16 +138,27 @@ models:
     isVerified: verified
     isUnverified: unverified
     isSuperuser: Admin
+    formRulesFeedback:
+      emailInvalid: '@:models.user.email is too obviously invalid'
+      usernameChars: 'Allowed characters: a-z, A-Z, 0-9 and - _'
+      passwordChars: 'Minimum one of each: a-z, A-Z and 0-9'
+      passwordRepReq: Password repetition is required
+      passwordRepNoMatch: Passwords don't match
   text:
     modelLabel: Text | Texts
     title: Title
     slug: Identifier
     subtitle: Subtitle
+    level: Structure level
     levels: Structure levels
     defaultLevel: Default structure level
     locDelim: Location delimiter
     labeledLocation: Labeled location
     accentColor: Accent color
+    formRulesFeedback:
+      slugChars: 'Allowed characters: a-z and 0-9'
+      levelsNumber: 1 - 32
+      defaultLevelRange: 0 or greater
   node:
     modelLabel: Text node | Text Nodes
   layer:
@@ -254,6 +259,8 @@ admin:
     heading: Texts
     general:
       heading: General Settings
+      msgSaved: Text settings saved.
+      msgRefreshWarn: The page will automatically refresh after saving the changes.
     structure:
       heading: Structure
 

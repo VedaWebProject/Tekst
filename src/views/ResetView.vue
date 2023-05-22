@@ -16,7 +16,7 @@ const { authApi } = useApi();
 const { message } = useMessages();
 const route = useRoute();
 const router = useRouter();
-const formRules = useFormRules();
+const { accountFormRules } = useFormRules();
 const { t } = useI18n({ useScope: 'global' });
 const token = route.query.token?.toString();
 
@@ -35,7 +35,7 @@ const loading = ref(false);
 const passwordRepeatMatchRule = {
   validator: (rule: FormItemRule, value: string) =>
     !!value && !!passwordFormModel.value.password && value === passwordFormModel.value.password,
-  message: () => t('register.rulesFeedback.passwordRepNoMatch'),
+  message: () => t('models.user.formRulesFeedback.passwordRepNoMatch'),
   trigger: ['input', 'blur', 'password-input'],
 };
 
@@ -97,7 +97,7 @@ onMounted(() => {
       <n-form
         ref="passwordFormRef"
         :model="passwordFormModel"
-        :rules="formRules"
+        :rules="accountFormRules"
         label-placement="top"
         label-width="auto"
         require-mark-placement="right-hanging"
@@ -117,7 +117,7 @@ onMounted(() => {
           ref="rPasswordFormItemRef"
           first
           path="passwordRepeat"
-          :rule="formRules.passwordRepeat.concat([passwordRepeatMatchRule])"
+          :rule="accountFormRules.passwordRepeat.concat([passwordRepeatMatchRule])"
           :label="$t('register.repeatPassword')"
         >
           <n-input

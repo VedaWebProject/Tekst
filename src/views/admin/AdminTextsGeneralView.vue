@@ -3,12 +3,29 @@ import { useFormRules } from '@/formRules';
 import { useMessages } from '@/messages';
 import type { TextUpdate } from '@/openapi';
 import { useStateStore } from '@/stores';
-import { NSpace, NButton, NForm, NFormItem, NInput, NColorPicker, type FormInst } from 'naive-ui';
-import { ref, watch } from 'vue';
+import {
+  NCheckbox,
+  NSelect,
+  NSpace,
+  NButton,
+  NForm,
+  NFormItem,
+  NInput,
+  NColorPicker,
+  type FormInst,
+  useDialog,
+} from 'naive-ui';
+import { computed, ref, watch } from 'vue';
+import { keepChangedRecords, haveRecordsChanged } from '@/utils';
+import { useApi } from '@/api';
+import { useI18n } from 'vue-i18n';
 
 const state = useStateStore();
+const dialog = useDialog();
 const { message } = useMessages();
-const formRules = useFormRules();
+const { textFormRules } = useFormRules();
+const { textsApi } = useApi();
+const { t } = useI18n({ useScope: 'global' });
 const loading = ref(false);
 
 const initialFormModel = (): TextUpdate => ({
@@ -22,14 +39,58 @@ const initialFormModel = (): TextUpdate => ({
   accentColor: state.text?.accentColor,
 });
 const formModel = ref<TextUpdate>(initialFormModel());
+const formModelChanged = computed(() => haveRecordsChanged(formModel.value, initialFormModel()));
 const formRef = ref<FormInst | null>(null);
+const defaultLevelOptions = computed(
+  () =>
+    formModel.value.levels?.map((l, i) => ({
+      label: l,
+      value: i,
+    })) || []
+);
 watch(
   () => state.text,
   () => (formModel.value = initialFormModel())
 );
 
 function handleSave() {
-  message.info('NOT IMPLEMENTED!');
+  loading.value = true;
+  formRef.value
+    ?.validate((errors) => {
+      if (!errors) {
+        dialog.warning({
+          title: t('general.warning'),
+          content: t('admin.texts.general.msgRefreshWarn'),
+          positiveText: t('general.saveAction'),
+          negativeText: t('general.cancelAction'),
+          style: 'font-weight: var(--app-ui-font-weight-light)',
+          onPositiveClick: async () => {
+            try {
+              await textsApi.updateText({
+                id: state.text?.id || '',
+                textUpdate: keepChangedRecords(formModel.value, initialFormModel(), ['levels']),
+              });
+              location.reload();
+            } catch {
+              /**
+               * This will be either an app-level error (e.g. buggy validation, server down, 401)
+               * or the provided email already exists, which we don't want to actively disclose.
+               */
+              message.error(t('errors.unexpected'));
+            } finally {
+              loading.value = false;
+            }
+          },
+          onNegativeClick: () => {
+            loading.value = false;
+          },
+        });
+      }
+    })
+    .catch(() => {
+      message.error(t('errors.followFormRules'));
+      loading.value = false;
+    });
 }
 </script>
 
@@ -37,7 +98,7 @@ function handleSave() {
   <n-form
     ref="formRef"
     :model="formModel"
-    :rules="formRules"
+    :rules="textFormRules"
     label-placement="top"
     label-width="auto"
     require-mark-placement="right-hanging"
@@ -69,17 +130,63 @@ function handleSave() {
         :disabled="loading"
       />
     </n-form-item>
+    <n-form-item path="defaultLevel" :label="$t('models.text.defaultLevel')">
+      <n-select
+        v-model:value="formModel.defaultLevel"
+        :options="defaultLevelOptions"
+        :disabled="loading || !defaultLevelOptions.length"
+        style="font-weight: var(--app-ui-font-weight-normal)"
+      />
+    </n-form-item>
+    <n-form-item path="locDelim" :label="$t('models.text.locDelim')">
+      <n-input
+        v-model:value="formModel.locDelim"
+        type="text"
+        :placeholder="$t('models.text.locDelim')"
+        @keydown.enter.prevent
+        :disabled="loading"
+      />
+    </n-form-item>
+    <n-form-item path="labeledLocation" :label="$t('models.text.labeledLocation')">
+      <n-checkbox v-model:checked="formModel.labeledLocation" :disabled="loading">
+        {{ $t('models.text.labeledLocation') }}
+      </n-checkbox>
+    </n-form-item>
     <n-form-item path="accentColor" :label="$t('models.text.accentColor')">
       <n-color-picker
         v-model:value="formModel.accentColor"
         :modes="['hex']"
         :show-alpha="false"
-        :swatches="['#FFFFFF', '#18A058', '#2080F0', '#F0A020']"
+        :swatches="[
+          '#305D97',
+          '#097F86',
+          '#43895F',
+          '#D49101',
+          '#D26E2B',
+          '#D43A35',
+          '#B83E63',
+          '#88447F',
+        ]"
       />
     </n-form-item>
   </n-form>
-  <n-space :size="12" justify="end">
-    <n-button block type="primary" @click="handleSave" :loading="loading" :disabled="loading">
+  <n-space :size="12" justify="end" style="margin-top: 0.5rem">
+    <n-button
+      secondary
+      block
+      @click="() => (formModel = initialFormModel())"
+      :loading="loading"
+      :disabled="loading || !formModelChanged"
+    >
+      {{ $t('general.resetAction') }}
+    </n-button>
+    <n-button
+      block
+      type="primary"
+      @click="handleSave"
+      :loading="loading"
+      :disabled="loading || !formModelChanged"
+    >
       {{ $t('general.saveAction') }}
     </n-button>
   </n-space>
