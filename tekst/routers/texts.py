@@ -87,10 +87,10 @@ async def update_text(su: SuperuserDep, id: PyObjectId, updates: TextUpdate) -> 
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Text {id} doesn't exist",
         )
-    if updates.slug and updates.slug != text.slug:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Text slug cannot be changed",
-        )
+    # if updates.slug and updates.slug != text.slug:
+    #     raise HTTPException(
+    #         status_code=status.HTTP_400_BAD_REQUEST,
+    #         detail="Text slug cannot be changed",
+    #     )
     await text.apply(updates.dict(exclude_unset=True))
     return text
