@@ -1,4 +1,4 @@
-from pydantic import Field, conint, validator
+from pydantic import Field, conint, constr, validator
 from pydantic.color import Color
 
 from tekst.models.common import (
@@ -19,8 +19,8 @@ class Text(ModelBase, ModelFactory):
 
     slug: str = Field(
         ...,
-        regex=r"^[a-z][a-z0-9\-_]{0,14}[a-z0-9]$",
-        min_length=2,
+        regex=r"^[a-z0-9]+$",
+        min_length=1,
         max_length=16,
         description=("A short identifier for use in URLs and internal operations"),
     )
@@ -29,7 +29,9 @@ class Text(ModelBase, ModelFactory):
         None, min_length=1, max_length=128, description="Subtitle of this text"
     )
 
-    levels: list[str] = Field(..., min_items=1)
+    levels: list[constr(min_length=1, max_length=32)] = Field(
+        ..., min_items=1, max_items=32
+    )
 
     default_level: conint(ge=0) = Field(
         0,
@@ -38,7 +40,7 @@ class Text(ModelBase, ModelFactory):
         ),
     )
 
-    loc_delim: str = Field(
+    loc_delim: constr(min_length=1, max_length=3) = Field(
         ", ",
         description="Delimiter for displaying text locations",
     )

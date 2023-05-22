@@ -3541,8 +3541,8 @@
           "slug": {
             "title": "Slug",
             "maxLength": 16,
-            "minLength": 2,
-            "pattern": "^[a-z][a-z0-9\\-_]{0,14}[a-z0-9]$",
+            "minLength": 1,
+            "pattern": "^[a-z0-9]+$",
             "type": "string",
             "description": "A short identifier for use in URLs and internal operations"
           },
@@ -3555,9 +3555,12 @@
           },
           "levels": {
             "title": "Levels",
+            "maxItems": 32,
             "minItems": 1,
             "type": "array",
             "items": {
+              "maxLength": 32,
+              "minLength": 1,
               "type": "string"
             }
           },
@@ -3570,6 +3573,8 @@
           },
           "locDelim": {
             "title": "Locdelim",
+            "maxLength": 3,
+            "minLength": 1,
             "type": "string",
             "description": "Delimiter for displaying text locations",
             "default": ", "
@@ -3628,8 +3633,8 @@
           "slug": {
             "title": "Slug",
             "maxLength": 16,
-            "minLength": 2,
-            "pattern": "^[a-z][a-z0-9\\-_]{0,14}[a-z0-9]$",
+            "minLength": 1,
+            "pattern": "^[a-z0-9]+$",
             "type": "string",
             "description": "A short identifier for use in URLs and internal operations"
           },
@@ -3642,9 +3647,12 @@
           },
           "levels": {
             "title": "Levels",
+            "maxItems": 32,
             "minItems": 1,
             "type": "array",
             "items": {
+              "maxLength": 32,
+              "minLength": 1,
               "type": "string"
             }
           },
@@ -3657,6 +3665,8 @@
           },
           "locDelim": {
             "title": "Locdelim",
+            "maxLength": 3,
+            "minLength": 1,
             "type": "string",
             "description": "Delimiter for displaying text locations",
             "default": ", "
@@ -3729,6 +3739,8 @@
             "title": "Levels",
             "type": "array",
             "items": {
+              "maxLength": 32,
+              "minLength": 1,
               "type": "string"
             }
           },
@@ -3739,6 +3751,8 @@
           },
           "locDelim": {
             "title": "Locdelim",
+            "maxLength": 3,
+            "minLength": 1,
             "type": "string"
           },
           "labeledLocation": {
