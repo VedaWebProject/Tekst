@@ -5,6 +5,7 @@ general:
   tipThemeToggleDark: Zu dunklem Farbschema wechseln
   yesAction: 'Ja'
   noAction: 'Nein'
+  okAction: OK
   selectAction: Auswählen
   cancelAction: Abbrechen
   saveAction: Speichern
@@ -79,9 +80,11 @@ routes:
     user: Profil
     accountProfile: 'Benutzerkonto: Profil'
     accountManage: 'Benutzerkonto: Benutzerdaten'
-    adminStatistics: 'Admin: Statistiken'
-    adminUsers: 'Admin: Benutzer'
-    adminTexts: 'Admin: Texte'
+    adminStatistics: '@:admin.heading: Statistiken'
+    adminUsers: '@:admin.heading: Benutzer'
+    adminTextsGeneral: '@:admin.heading: Text - Allgemeine Einstellungen'
+    adminTextsStructure: '@:admin.heading: Text - Struktur'
+    adminNewText: '@:admin.heading: Neuer Text'
     verify: Verifizierung
     reset: Passwort zurücksetzen
 
@@ -270,6 +273,10 @@ admin:
       msgRefreshWarn: Die Seite wird nach dem Speichern automatisch neu geladen.
     structure:
       heading: Struktur
+  newText:
+    heading: Neuer Text
+    btnProceed: Fortfahren
+    btnFinish: Abschließen
 
 search:
   heading: Suche

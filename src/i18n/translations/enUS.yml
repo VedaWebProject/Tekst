@@ -5,6 +5,7 @@ general:
   tipThemeToggleDark: Switch to dark mode
   yesAction: 'Yes'
   noAction: 'No'
+  okAction: OK
   selectAction: Select
   cancelAction: Cancel
   saveAction: Save
@@ -78,9 +79,11 @@ routes:
     user: Profile
     accountProfile: 'Account: Profile'
     accountManage: 'Account: Manage'
-    adminStatistics: 'Admin: Statistics'
-    adminUsers: 'Admin: Users'
-    adminTexts: 'Admin: Texts'
+    adminStatistics: '@:admin.heading: Statistics'
+    adminUsers: '@:admin.heading: Users'
+    adminTextsGeneral: '@:admin.heading: Text - General Settings'
+    adminTextsStructure: '@:admin.heading: Text - Structure'
+    adminNewText: '@:admin.heading: New Text'
     verify: Verification
     reset: Reset password
 
@@ -263,6 +266,10 @@ admin:
       msgRefreshWarn: The page will automatically refresh after saving the changes.
     structure:
       heading: Structure
+  newText:
+    heading: New Text
+    btnProceed: Proceed
+    btnFinish: Finish
 
 search:
   heading: Search

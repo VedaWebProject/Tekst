@@ -29,6 +29,7 @@ const AdminUsersView = () => import('@/views/admin/AdminUsersView.vue');
 const AdminTextsView = () => import('@/views/admin/AdminTextsView.vue');
 const AdminTextsGeneralView = () => import('@/views/admin/AdminTextsGeneralView.vue');
 const AdminTextsStructureView = () => import('@/views/admin/AdminTextsStructureView.vue');
+const AdminNewTextView = () => import('@/views/admin/AdminNewTextView.vue');
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -143,6 +144,11 @@ const router = createRouter({
               component: AdminTextsStructureView,
             },
           ],
+        },
+        {
+          path: 'new-text',
+          name: 'adminNewText',
+          component: AdminNewTextView,
         },
       ],
     },
