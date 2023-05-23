@@ -6,8 +6,8 @@ import { NIcon, useThemeVars } from 'naive-ui';
 const props = defineProps<{
   label: string;
   route: RouteLocationRaw;
-  icon: Component;
-  showIcon: boolean;
+  icon?: Component;
+  showIcon?: boolean;
 }>();
 
 const themeVars = useThemeVars();
@@ -23,7 +23,7 @@ const themeVars = useThemeVars();
           isExactActive && 'router-link-exact-active',
         ]"
       >
-        <NIcon :size="20" v-if="props.showIcon" :component="props.icon" />
+        <NIcon :size="20" v-if="icon && showIcon" :component="icon" />
         <span class="navbar-router-link-label">{{ props.label }}</span>
       </div>
     </a>
@@ -51,7 +51,8 @@ const themeVars = useThemeVars();
   color: var(--accent-color-fade1);
 }
 
-.navbar-router-link.router-link-active {
+.navbar-router-link.router-link-active,
+.navbar-router-link.router-link-exact-active {
   color: var(--accent-color);
 }
 </style>

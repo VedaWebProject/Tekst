@@ -106,6 +106,8 @@ const router = createRouter({
     },
     {
       path: '/admin',
+      name: 'admin',
+      redirect: { name: 'adminStatistics' },
       component: AdminView,
       meta: {
         restricted: 'superuser',
@@ -123,14 +125,16 @@ const router = createRouter({
         },
         {
           path: 'texts/:text',
+          name: 'adminTexts',
+          redirect: { name: 'adminTextsGeneral' },
           component: AdminTextsView,
           meta: {
             isTextSpecific: true,
           },
           children: [
             {
-              path: '',
-              name: 'adminTexts',
+              path: 'general',
+              name: 'adminTextsGeneral',
               component: AdminTextsGeneralView,
             },
             {
