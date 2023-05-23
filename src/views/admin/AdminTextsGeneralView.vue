@@ -28,7 +28,7 @@ const { textsApi } = useApi();
 const { t } = useI18n({ useScope: 'global' });
 const loading = ref(false);
 
-const initialFormModel = (): TextUpdate => ({
+const initialModel = (): TextUpdate => ({
   title: state.text?.title,
   subtitle: state.text?.subtitle,
   slug: state.text?.slug,
@@ -38,19 +38,19 @@ const initialFormModel = (): TextUpdate => ({
   labeledLocation: state.text?.labeledLocation,
   accentColor: state.text?.accentColor,
 });
-const formModel = ref<TextUpdate>(initialFormModel());
-const formModelChanged = computed(() => haveRecordsChanged(formModel.value, initialFormModel()));
+const model = ref<TextUpdate>(initialModel());
+const modelChanged = computed(() => haveRecordsChanged(model.value, initialModel()));
 const formRef = ref<FormInst | null>(null);
 const defaultLevelOptions = computed(
   () =>
-    formModel.value.levels?.map((l, i) => ({
+    model.value.levels?.map((l, i) => ({
       label: l,
       value: i,
     })) || []
 );
 watch(
   () => state.text,
-  () => (formModel.value = initialFormModel())
+  () => (model.value = initialModel())
 );
 
 function handleSave() {
@@ -68,7 +68,7 @@ function handleSave() {
             try {
               await textsApi.updateText({
                 id: state.text?.id || '',
-                textUpdate: keepChangedRecords(formModel.value, initialFormModel(), ['levels']),
+                textUpdate: keepChangedRecords(model.value, initialModel(), ['levels']),
               });
               location.reload();
             } catch {
@@ -97,7 +97,7 @@ function handleSave() {
 <template>
   <n-form
     ref="formRef"
-    :model="formModel"
+    :model="model"
     :rules="textFormRules"
     label-placement="top"
     label-width="auto"
@@ -105,7 +105,7 @@ function handleSave() {
   >
     <n-form-item path="title" :label="$t('models.text.title')">
       <n-input
-        v-model:value="formModel.title"
+        v-model:value="model.title"
         type="text"
         :placeholder="$t('models.text.title')"
         @keydown.enter.prevent
@@ -114,7 +114,7 @@ function handleSave() {
     </n-form-item>
     <n-form-item path="subtitle" :label="$t('models.text.subtitle')">
       <n-input
-        v-model:value="formModel.subtitle"
+        v-model:value="model.subtitle"
         type="text"
         :placeholder="$t('models.text.subtitle')"
         @keydown.enter.prevent
@@ -123,7 +123,7 @@ function handleSave() {
     </n-form-item>
     <n-form-item path="slug" :label="$t('models.text.slug')">
       <n-input
-        v-model:value="formModel.slug"
+        v-model:value="model.slug"
         type="text"
         :placeholder="$t('models.text.slug')"
         @keydown.enter.prevent
@@ -132,7 +132,7 @@ function handleSave() {
     </n-form-item>
     <n-form-item path="defaultLevel" :label="$t('models.text.defaultLevel')">
       <n-select
-        v-model:value="formModel.defaultLevel"
+        v-model:value="model.defaultLevel"
         :options="defaultLevelOptions"
         :disabled="loading || !defaultLevelOptions.length"
         style="font-weight: var(--app-ui-font-weight-normal)"
@@ -140,7 +140,7 @@ function handleSave() {
     </n-form-item>
     <n-form-item path="locDelim" :label="$t('models.text.locDelim')">
       <n-input
-        v-model:value="formModel.locDelim"
+        v-model:value="model.locDelim"
         type="text"
         :placeholder="$t('models.text.locDelim')"
         @keydown.enter.prevent
@@ -148,13 +148,13 @@ function handleSave() {
       />
     </n-form-item>
     <n-form-item path="labeledLocation" :label="$t('models.text.labeledLocation')">
-      <n-checkbox v-model:checked="formModel.labeledLocation" :disabled="loading">
+      <n-checkbox v-model:checked="model.labeledLocation" :disabled="loading">
         {{ $t('models.text.labeledLocation') }}
       </n-checkbox>
     </n-form-item>
     <n-form-item path="accentColor" :label="$t('models.text.accentColor')">
       <n-color-picker
-        v-model:value="formModel.accentColor"
+        v-model:value="model.accentColor"
         :modes="['hex']"
         :show-alpha="false"
         :swatches="[
@@ -174,9 +174,9 @@ function handleSave() {
     <n-button
       secondary
       block
-      @click="() => (formModel = initialFormModel())"
+      @click="() => (model = initialModel())"
       :loading="loading"
-      :disabled="loading || !formModelChanged"
+      :disabled="loading || !modelChanged"
     >
       {{ $t('general.resetAction') }}
     </n-button>
@@ -185,7 +185,7 @@ function handleSave() {
       type="primary"
       @click="handleSave"
       :loading="loading"
-      :disabled="loading || !formModelChanged"
+      :disabled="loading || !modelChanged"
     >
       {{ $t('general.saveAction') }}
     </n-button>
