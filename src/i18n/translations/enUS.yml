@@ -59,6 +59,7 @@ errors:
   serverI18n: Some translations could not be loaded.
   platformData: Could not load platform data.
   unexpected: An unexpected error occurred. This should not happen.
+  conflict: There is a conflict with already existing data.
   followFormRules: Please correct your inputs according to the form rules!
   noAccess: You don't have access to {resource}.
   logInToAccess: Log in to access the requested resource!
@@ -164,7 +165,6 @@ models:
     isInactive: Inactive, not publicly listed
     formRulesFeedback:
       slugChars: 'Allowed characters: a-z and 0-9'
-      levelsNumber: 1 - 32
       defaultLevelRange: 0 or greater
   node:
     modelLabel: Text node | Text Nodes
@@ -272,8 +272,14 @@ admin:
       heading: Structure
   newText:
     heading: New Text
+    headerInfoMsg: |
+      Here you can create a new text. For this, you need to provide only the most basic information.
+      Initially, the text is not listed publicly and is only accessible to administrators.
+      You will then be redirected to a view where you can make further detailed settings
+      before making the text publicly available.
     btnProceed: Proceed
     btnFinish: Finish
+    msgSaveSuccess: The new text "{title}" was successfully created. You may now configure its details.
 
 search:
   heading: Search

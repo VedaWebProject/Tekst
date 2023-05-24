@@ -1,78 +1,92 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import {
+  NDynamicInput,
   NForm,
   NInput,
-  NColorPicker,
-  NCheckbox,
   NFormItem,
-  NStep,
-  NSteps,
+  NSpace,
+  NButton,
+  NAlert,
   type FormInst,
-  useDialog,
 } from 'naive-ui';
 import type { TextCreate } from '@/openapi';
 import { useFormRules } from '@/formRules';
-import StepContainer from '@/components/admin/StepContainer.vue';
-import { useStateStore } from '@/stores';
-import { onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useMessages } from '@/messages';
+import { useApi } from '@/api';
+import { useStateStore } from '@/stores';
+import { usePlatformData } from '@/platformData';
+import { useRouter } from 'vue-router';
+import type { AxiosError } from 'axios';
 
 const initialModel = (): TextCreate => ({
   title: '',
-  subtitle: '',
   slug: '',
-  levels: ['book'],
-  defaultLevel: 0,
-  locDelim: ', ',
-  labeledLocation: true,
-  accentColor: '#305D97',
+  levels: ['', ''],
 });
 
-const state = useStateStore();
 const { t } = useI18n({ useScope: 'global' });
 const { textFormRules } = useFormRules();
-const dialog = useDialog();
+const { textsApi } = useApi();
+const router = useRouter();
+const { message } = useMessages();
+const state = useStateStore();
+const { pfData, loadPlatformData } = usePlatformData();
 const model = ref<TextCreate>(initialModel());
 const formRef = ref<FormInst | null>(null);
-const currentStep = ref(1);
-const currentStatus = ref<'wait' | 'error' | 'finish' | 'process'>('process');
+const loading = ref(false);
 
-function proceed() {
-  currentStep.value++;
+function handleTitleChange(title: string) {
+  const tokens = title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim()
+    .split(' ');
+  if (tokens.length > 1) {
+    model.value.slug = tokens.map((t) => t[0]).join('');
+  } else {
+    const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '');
+    model.value.slug = slug.substring(0, Math.min(15, slug.length));
+  }
 }
 
-function finish() {
-  console.log('FINISH');
+async function handleSave() {
+  loading.value = true;
+  try {
+    formRef.value
+      ?.validate(async (error) => {
+        if (error) return;
+        try {
+          const createdText = (await textsApi.createText({ textCreate: model.value })).data;
+          await loadPlatformData();
+          state.text = pfData.value?.texts.find((t) => t.slug === createdText.slug) || state.text;
+          router.push({ name: 'adminTextsGeneral', params: { text: createdText.slug } });
+          message.success(t('admin.newText.msgSaveSuccess', { title: createdText.title }));
+        } catch (e) {
+          const error = e as AxiosError;
+          if (error.response && error.response.status === 409) {
+            message.error(t('errors.conflict'));
+          } else {
+            message.error(t('errors.unexpected'));
+          }
+        }
+      })
+      .catch(() => {
+        message.error(t('errors.followFormRules'));
+      });
+  } finally {
+    loading.value = false;
+  }
 }
-
-onMounted(() => {
-  dialog.info({
-    title: 'INFO!',
-    content: 'INFO!',
-    positiveText: t('general.okAction'),
-    style: 'font-weight: var(--app-ui-font-weight-light)',
-  });
-});
 </script>
 
 <template>
   <h1>{{ $t('admin.heading') }}: {{ $t('admin.newText.heading') }}</h1>
 
-  <n-steps
-    v-if="!state.smallScreen"
-    size="small"
-    :current="(currentStep as number)"
-    :status="currentStatus"
-    style="margin: 2rem 0"
-  >
-    <n-step title="I Me Mine" description="All through the day, I me mine I me mine, I me mine" />
-    <n-step
-      title="Let It Be"
-      description="When I find myself in times of trouble Mother Mary comes to me"
-    />
-    <n-step title="Come Together" description="Here come old flat top He come grooving up slowly" />
-  </n-steps>
+  <n-alert :title="$t('general.info')" type="info">
+    {{ $t('admin.newText.headerInfoMsg') }}
+  </n-alert>
 
   <div class="content-block">
     <n-form
@@ -83,89 +97,55 @@ onMounted(() => {
       label-width="auto"
       require-mark-placement="right-hanging"
     >
-      <StepContainer
-        :step-no="1"
-        :current-step="currentStep"
-        :submit-button-label="$t('admin.newText.btnProceed')"
-        @submit="proceed"
-      >
-        <n-form-item path="title" :label="$t('models.text.title')">
-          <n-input
-            v-model:value="model.title"
-            type="text"
-            :placeholder="$t('models.text.title')"
-            @keydown.enter.prevent
-            :disabled="false"
-          />
-        </n-form-item>
-        <n-form-item path="subtitle" :label="$t('models.text.subtitle')">
-          <n-input
-            v-model:value="model.subtitle"
-            type="text"
-            :placeholder="$t('models.text.subtitle')"
-            @keydown.enter.prevent
-            :disabled="false"
-          />
-        </n-form-item>
-        <n-form-item path="slug" :label="$t('models.text.slug')">
-          <n-input
-            v-model:value="model.slug"
-            type="text"
-            :placeholder="$t('models.text.slug')"
-            @keydown.enter.prevent
-            :disabled="false"
-          />
-        </n-form-item>
-      </StepContainer>
-
-      <StepContainer
-        :step-no="2"
-        :current-step="currentStep"
-        :submit-button-label="$t('admin.newText.btnProceed')"
-        @submit="proceed"
-      >
-        - LEVELS<br />
-        - DEFAULT LEVEL
-      </StepContainer>
-
-      <StepContainer
-        :step-no="3"
-        :current-step="currentStep"
-        :submit-button-label="$t('admin.newText.btnFinish')"
-        @submit="finish"
-      >
-        <n-form-item path="locDelim" :label="$t('models.text.locDelim')">
-          <n-input
-            v-model:value="model.locDelim"
-            type="text"
-            :placeholder="$t('models.text.locDelim')"
-            @keydown.enter.prevent
-            :disabled="false"
-          />
-        </n-form-item>
-        <n-form-item path="labeledLocation" :label="$t('models.text.labeledLocation')">
-          <n-checkbox v-model:checked="model.labeledLocation" :disabled="false">
-            {{ $t('models.text.labeledLocation') }}
-          </n-checkbox>
-        </n-form-item>
-        <n-form-item path="accentColor" :label="$t('models.text.accentColor')">
-          <n-color-picker
-            v-model:value="model.accentColor"
-            :modes="['hex']"
-            :show-alpha="false"
-            :swatches="[
-              '#305D97',
-              '#097F86',
-              '#43895F',
-              '#D49101',
-              '#D26E2B',
-              '#D43A35',
-              '#B83E63',
-              '#88447F',
-            ]"
-          />
-        </n-form-item>
-      </StepContainer>
+      <n-form-item path="title" :label="$t('models.text.title')">
+        <n-input
+          v-model:value="model.title"
+          type="text"
+          :placeholder="$t('models.text.title')"
+          @keydown.enter.prevent
+          @input="handleTitleChange"
+          :disabled="loading"
+        />
+      </n-form-item>
+      <n-form-item path="slug" :label="$t('models.text.slug')">
+        <n-input
+          v-model:value="model.slug"
+          type="text"
+          :placeholder="$t('models.text.slug')"
+          @keydown.enter.prevent
+          :disabled="loading"
+        />
+      </n-form-item>
+      <n-form-item :label="$t('models.text.levels')" required>
+        <n-dynamic-input
+          v-model:value="model.levels"
+          :min="1"
+          :max="32"
+          item-style="margin-bottom: 0;"
+          show-sort-button
+          #="{ index }"
+        >
+          <n-form-item
+            ignore-path-change
+            :show-label="false"
+            :path="`levels[${index}]`"
+            :rule="textFormRules.level"
+          >
+            <n-input
+              v-model:value="model.levels[index]"
+              type="text"
+              :placeholder="$t('models.text.level')"
+              @keydown.enter.prevent
+              :disabled="loading"
+            />
+          </n-form-item>
+        </n-dynamic-input>
+      </n-form-item>
+      <n-space :size="12" justify="end" style="margin-top: 0.5rem">
+        <n-button block type="primary" @click="handleSave" :loading="loading" :disabled="loading">
+          {{ $t('general.saveAction') }}
+        </n-button>
+      </n-space>
     </n-form>
   </div>
 </template>
