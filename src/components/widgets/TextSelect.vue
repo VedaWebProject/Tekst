@@ -13,19 +13,30 @@ const state = useStateStore();
 const { pfData } = usePlatformData();
 const availableTexts = computed(() => pfData.value?.texts || []);
 
+const renderLabel = (t: TextRead) => {
+  return () =>
+    h(TextSelectOption, {
+      text: t,
+      selected: t.id === state.text?.id,
+      onClick: handleSelect,
+    });
+};
 const options = computed(() =>
-  availableTexts.value.map((t: TextRead) => ({
-    label: () =>
-      h(TextSelectOption, {
-        text: t,
-        selected: t.id === state.text?.id,
-      }),
-    key: t.slug,
-    disabled: t.id === state.text?.id,
-  }))
+  availableTexts.value
+    .filter((t) => t.id !== state.text?.id)
+    .map((t: TextRead) => ({
+      render: renderLabel(t),
+      key: t.slug,
+      type: 'render',
+      disabled: t.id === state.text?.id,
+      props: {
+        onClick: () => handleSelect(t.slug),
+      },
+    }))
 );
 
 function handleSelect(key: string) {
+  console.log(key);
   if ('text' in router.currentRoute.value.params) {
     router.push({
       name: router.currentRoute.value.name || 'browse',
@@ -43,6 +54,7 @@ function handleSelect(key: string) {
     trigger="click"
     :options="options"
     :disabled="options.length <= 1"
+    :render-label="renderLabel"
     placement="bottom-start"
     :size="state.dropdownSize"
     @select="handleSelect"

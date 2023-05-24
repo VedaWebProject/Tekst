@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { TextRead } from '@/openapi';
+import { NIcon } from 'naive-ui';
+import DisabledVisibleRound from '@vicons/material/DisabledVisibleRound';
 
 defineProps<{
   text: TextRead;
@@ -10,10 +12,20 @@ defineProps<{
 <template>
   <div class="text-select-option" :title="text.subtitle">
     <div class="text-select-option-indicator" :style="{ backgroundColor: text.accentColor }"></div>
-    <div class="text-select-option-label">
-      {{ text.title }}
-      {{ !text.isActive ? `[${$t('models.text.isInactive')}]` : '' }}
-      {{ !!selected ? `(${$t('general.selected')})` : '' }}
+    <div>
+      <div>
+        {{ text.title }}
+      </div>
+      <div style="font-size: var(--app-ui-font-size-tiny); opacity: 0.8">
+        {{ text.subtitle }}
+      </div>
+      <div
+        v-if="!text.isActive"
+        style="font-size: var(--app-ui-font-size-small); font-style: italic; opacity: 0.5"
+      >
+        <n-icon :component="DisabledVisibleRound" />
+        {{ $t('models.text.isInactive') }}
+      </div>
     </div>
   </div>
 </template>
@@ -21,14 +33,21 @@ defineProps<{
 <style scoped>
 .text-select-option {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   gap: 12px;
+  padding: 4px 6px;
+  margin: 2px 6px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.text-select-option:hover {
+  background-color: #88888825;
 }
 
 .text-select-option-indicator {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
+  width: 12px;
+  border-radius: 3px;
 }
 
 .n-dropdown-option-body--disabled .text-select-option-indicator {
