@@ -89,8 +89,10 @@ export const useBrowseStore = defineStore('browse', () => {
   // set browse location to text default when text changes
   watch(
     () => state.text,
-    () => route.name === 'browse' && resetBrowseLocation()
-    // () => route.name === 'browse' && resetBrowseLocation()
+    () => {
+      route.name === 'browse' && resetBrowseLocation();
+      nodePath.value = [];
+    }
   );
 
   // react to route changes concerning browse state
