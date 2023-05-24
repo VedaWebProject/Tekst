@@ -54,7 +54,7 @@ class Text(ModelBase, ModelFactory):
     )
 
     accent_color: Color = Field(
-        default_factory=lambda: Color("#18A058"),
+        default_factory=lambda: Color("#305D97"),
         description="Accent color used for this text in the client UI",
     )
 
