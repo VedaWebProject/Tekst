@@ -1,16 +1,19 @@
 <script setup lang="ts">
-const props = defineProps<{
-  title: string;
-  subtitle?: string;
-  accentColor?: string;
+import type { TextRead } from '@/openapi';
+
+defineProps<{
+  text: TextRead;
+  selected?: boolean;
 }>();
 </script>
 
 <template>
-  <div class="text-select-option" :title="props.subtitle">
-    <div class="text-select-option-indicator" :style="{ backgroundColor: props.accentColor }"></div>
+  <div class="text-select-option" :title="text.subtitle">
+    <div class="text-select-option-indicator" :style="{ backgroundColor: text.accentColor }"></div>
     <div class="text-select-option-label">
-      {{ props.title }}
+      {{ text.title }}
+      {{ !text.isActive ? `[${$t('models.text.isInactive')}]` : '' }}
+      {{ !!selected ? `(${$t('general.selected')})` : '' }}
     </div>
   </div>
 </template>

@@ -37,6 +37,7 @@ const initialModel = (): TextUpdate => ({
   locDelim: state.text?.locDelim,
   labeledLocation: state.text?.labeledLocation,
   accentColor: state.text?.accentColor,
+  isActive: state.text?.isActive,
 });
 const model = ref<TextUpdate>(initialModel());
 const modelChanged = computed(() => haveRecordsChanged(model.value, initialModel()));
@@ -147,11 +148,6 @@ function handleSave() {
         :disabled="loading"
       />
     </n-form-item>
-    <n-form-item path="labeledLocation" :label="$t('models.text.labeledLocation')">
-      <n-checkbox v-model:checked="model.labeledLocation" :disabled="loading">
-        {{ $t('models.text.labeledLocation') }}
-      </n-checkbox>
-    </n-form-item>
     <n-form-item path="accentColor" :label="$t('models.text.accentColor')">
       <n-color-picker
         v-model:value="model.accentColor"
@@ -169,7 +165,18 @@ function handleSave() {
         ]"
       />
     </n-form-item>
+    <n-form-item :label="t('general.flags')">
+      <n-space vertical>
+        <n-checkbox v-model:checked="model.labeledLocation" :disabled="loading">
+          {{ $t('models.text.labeledLocation') }}
+        </n-checkbox>
+        <n-checkbox v-model:checked="model.isActive" :disabled="loading">
+          {{ $t('models.text.isActive') }}
+        </n-checkbox>
+      </n-space>
+    </n-form-item>
   </n-form>
+
   <n-space :size="12" justify="end" style="margin-top: 0.5rem">
     <n-button
       secondary

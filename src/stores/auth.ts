@@ -46,7 +46,7 @@ export const LoginTemplatePromise = createTemplatePromise<
 
 export const useAuthStore = defineStore('auth', () => {
   const router = useRouter();
-  const { pfData } = usePlatformData();
+  const { pfData, loadPlatformData } = usePlatformData();
   const { message } = useMessages();
   const { authApi, usersApi } = useApi();
   const { t } = i18n.global;
@@ -127,6 +127,7 @@ export const useAuthStore = defineStore('auth', () => {
       const userData = (await usersApi.usersCurrentUser()).data;
       userData && localStorage.setItem('user', JSON.stringify(userData));
       user.value = userData;
+      loadPlatformData();
       // process user locale
       if (!userData.locale) {
         try {
@@ -178,8 +179,11 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       await authApi.authCookieLogout();
       message.success(t('account.logoutSuccessful'));
+      // reload platform data as some resources might not be accessible anymore
+      await loadPlatformData();
+      state.text = pfData.value?.texts[0];
     } catch {
-      // do sweet FA
+      location.reload();
     } finally {
       _cleanupSession();
       router.push({ name: 'home' });

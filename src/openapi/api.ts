@@ -1149,6 +1149,12 @@ export interface TextCreate {
      * @memberof TextCreate
      */
     'accentColor'?: string;
+    /**
+     * Whether the text should be listed for non-admin users in the web client
+     * @type {boolean}
+     * @memberof TextCreate
+     */
+    'isActive'?: boolean;
 }
 /**
  * A text represented in Tekst
@@ -1222,6 +1228,12 @@ export interface TextRead {
      * @memberof TextRead
      */
     'accentColor'?: string;
+    /**
+     * Whether the text should be listed for non-admin users in the web client
+     * @type {boolean}
+     * @memberof TextRead
+     */
+    'isActive'?: boolean;
 }
 /**
  * Text statistics data
@@ -1308,6 +1320,12 @@ export interface TextUpdate {
      * @memberof TextUpdate
      */
     'accentColor'?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof TextUpdate
+     */
+    'isActive'?: boolean;
 }
 /**
  * Dataset for creating a new user
@@ -4300,6 +4318,12 @@ export const PlatformApiAxiosParamCreator = function (configuration?: Configurat
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            // authentication APIKeyCookie required
+
+            // authentication OAuth2PasswordBearer required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "OAuth2PasswordBearer", [], configuration)
+
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -4730,6 +4754,12 @@ export const TextsApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication APIKeyCookie required
+
+            // authentication OAuth2PasswordBearer required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "OAuth2PasswordBearer", [], configuration)
 
             if (limit !== undefined) {
                 localVarQueryParameter['limit'] = limit;

@@ -17,6 +17,8 @@ general:
   warning: Warnung
   error: Fehler
   filters: Filter
+  selected: ausgewählt
+  flags: Merkmale
 
 dummy:
   home: 'Kein Ort ist wie ~'
@@ -166,6 +168,8 @@ models:
     locDelim: Fundstellen-Trennzeichen
     labeledLocation: Beschriftete Fundstelle
     accentColor: Akzent-Farbe
+    isActive: Aktiv, öffentlich gelistet
+    isInactive: Inaktiv, nicht öffentlich gelistet
     formRulesFeedback:
       slugChars: 'Erlaubte Zeichen: a-z und 0-9'
       defaultLevelRange: 0 oder höher

@@ -16,6 +16,8 @@ general:
   warning: Warning
   error: Error
   filters: Filters
+  selected: selected
+  flags: Flags
 
 dummy:
   home: There's no place like ~
@@ -158,6 +160,8 @@ models:
     locDelim: Location delimiter
     labeledLocation: Labeled location
     accentColor: Accent color
+    isActive: Active, publicly listed
+    isInactive: Inactive, not publicly listed
     formRulesFeedback:
       slugChars: 'Allowed characters: a-z and 0-9'
       levelsNumber: 1 - 32

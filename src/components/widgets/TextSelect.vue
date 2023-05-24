@@ -11,15 +11,15 @@ import { usePlatformData } from '@/platformData';
 const router = useRouter();
 const state = useStateStore();
 const { pfData } = usePlatformData();
-const availableTexts = pfData.value?.texts || [];
-
-function renderLabel(title: string, subtitle?: string, accentColor?: string) {
-  return h(TextSelectOption, { title, subtitle, accentColor });
-}
+const availableTexts = computed(() => pfData.value?.texts || []);
 
 const options = computed(() =>
-  availableTexts.map((t: TextRead) => ({
-    label: () => renderLabel(t.title, t.subtitle, t.accentColor),
+  availableTexts.value.map((t: TextRead) => ({
+    label: () =>
+      h(TextSelectOption, {
+        text: t,
+        selected: t.id === state.text?.id,
+      }),
     key: t.slug,
     disabled: t.id === state.text?.id,
   }))
@@ -32,7 +32,7 @@ function handleSelect(key: string) {
       params: { ...router.currentRoute.value.params, text: key },
     });
   } else {
-    state.text = availableTexts.find((t) => t.slug === key);
+    state.text = availableTexts.value.find((t) => t.slug === key);
   }
 }
 </script>
@@ -42,6 +42,7 @@ function handleSelect(key: string) {
     v-if="state.text"
     trigger="click"
     :options="options"
+    :disabled="options.length <= 1"
     placement="bottom-start"
     :size="state.dropdownSize"
     @select="handleSelect"
@@ -50,10 +51,16 @@ function handleSelect(key: string) {
       text
       icon-placement="right"
       color="#fffe"
+      :focusable="false"
+      :keyboard="false"
       :title="$t('general.textSelect')"
-      style="font-size: inherit; font-weight: 400"
+      :style="{
+        fontSize: 'inherit',
+        fontWeight: 'var(--app-ui-font-weight-normal)',
+        cursor: options.length > 1 ? 'pointer' : 'default',
+      }"
     >
-      <template #icon>
+      <template #icon v-if="options.length > 1">
         <n-icon>
           <ArrowDropDownFilled />
         </n-icon>
