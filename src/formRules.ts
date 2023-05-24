@@ -130,7 +130,8 @@ const textFormRules: Record<string, FormItemRule[]> = {
   ],
   subtitle: [
     {
-      validator: (rule: FormItemRule, value: string) => value.length <= 128,
+      validator: (rule: FormItemRule, value: string) =>
+        value == null ? true : value.length <= 128,
       message: () => t('forms.rulesFeedback.minMaxChars', { min: 0, max: 128 }),
       trigger: 'blur',
     },
@@ -170,11 +171,6 @@ const textFormRules: Record<string, FormItemRule[]> = {
     {
       required: true,
       message: () => t('forms.rulesFeedback.isRequired', { x: t('models.text.levels') }),
-      trigger: 'blur',
-    },
-    {
-      validator: (rule: FormItemRule, value: number) => !!value && value >= 1 && value <= 32,
-      message: () => t('models.text.formRulesFeedback.levelsNumber'),
       trigger: 'blur',
     },
   ],
