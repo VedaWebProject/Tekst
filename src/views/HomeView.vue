@@ -9,10 +9,13 @@ const { pfData } = usePlatformData();
     <p>{{ $t('dummy.schiller') }}</p>
 
     <h2>Accent Palette Demo</h2>
-    <div class="square" style="background-color: #d43a35"></div>
-    <div class="square" style="background-color: #476b9a"></div>
+    <div class="square" style="background-color: #305d97"></div>
+    <div class="square" style="background-color: #097f86"></div>
     <div class="square" style="background-color: #43895f"></div>
-    <div class="square" style="background-color: #dc851f"></div>
+    <div class="square" style="background-color: #d49101"></div>
+    <div class="square" style="background-color: #d26e2b"></div>
+    <div class="square" style="background-color: #d43a35"></div>
+    <div class="square" style="background-color: #b83e63"></div>
     <div class="square" style="background-color: #88447f"></div>
 
     <h2>Current Accent Color Demo</h2>
@@ -27,8 +30,8 @@ const { pfData } = usePlatformData();
 <style scoped>
 .square {
   display: inline-block;
-  width: 100px;
-  height: 100px;
+  width: 60px;
+  height: 60px;
   margin: 0.5rem;
 }
 </style>
