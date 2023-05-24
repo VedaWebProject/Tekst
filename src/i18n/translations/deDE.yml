@@ -283,7 +283,7 @@ admin:
     headerInfoMsg: |
       Hier können Sie einen neuen Text anlegen. Dafür müssen Sie nur die grundlegendsten Angaben machen.
       Zunächst wird der Text nicht öffentlich gelistet und ist nur für Administratoren zugänglich.
-      Sie werden im Anschluss zu einer Ansicht weitergeleitet, in der Sie weitere Detaileinstellungen vornehmen können,
+      Sie werden im Anschluss zu einer Ansicht weitergeleitet, in der Sie weitere Einstellungen vornehmen können,
       bevor Sie den Text öffentlich verfügbar machen.
     btnProceed: Fortfahren
     btnFinish: Abschließen
