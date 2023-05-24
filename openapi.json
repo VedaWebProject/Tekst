@@ -1029,7 +1029,15 @@
           "404": {
             "description": "Not found"
           }
-        }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
       }
     },
     "/platform/user/{username}": {
@@ -1224,7 +1232,15 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
       },
       "post": {
         "tags": [
@@ -3590,6 +3606,12 @@
             "type": "string",
             "description": "Accent color used for this text in the client UI",
             "format": "color"
+          },
+          "isActive": {
+            "title": "Isactive",
+            "type": "boolean",
+            "description": "Whether the text should be listed for non-admin users in the web client",
+            "default": false
           }
         },
         "description": "A text represented in Tekst"
@@ -3682,6 +3704,12 @@
             "type": "string",
             "description": "Accent color used for this text in the client UI",
             "format": "color"
+          },
+          "isActive": {
+            "title": "Isactive",
+            "type": "boolean",
+            "description": "Whether the text should be listed for non-admin users in the web client",
+            "default": false
           }
         },
         "description": "A text represented in Tekst"
@@ -3763,6 +3791,10 @@
             "title": "Accentcolor",
             "type": "string",
             "format": "color"
+          },
+          "isActive": {
+            "title": "Isactive",
+            "type": "boolean"
           }
         },
         "description": "A text represented in Tekst"

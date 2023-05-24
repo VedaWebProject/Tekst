@@ -1,7 +1,7 @@
 from beanie.operators import Or
 from fastapi import APIRouter, HTTPException, status
 
-from tekst.auth import SuperuserDep
+from tekst.auth import OptionalUserDep, SuperuserDep
 from tekst.models.common import PyObjectId
 from tekst.models.text import TextCreate, TextDocument, TextRead, TextUpdate
 
@@ -17,8 +17,9 @@ router = APIRouter(
 
 
 @router.get("", response_model=list[TextRead], status_code=status.HTTP_200_OK)
-async def get_all_texts(limit: int = 100) -> list[TextRead]:
-    return await TextDocument.find_all(limit=limit).project(TextRead).to_list()
+async def get_all_texts(ou: OptionalUserDep, limit: int = 100) -> list[TextRead]:
+    restrictions = {"isActive": True} if not (ou and ou.is_superuser) else {}
+    return await TextDocument.find(restrictions).limit(limit).to_list()
 
 
 @router.post("", response_model=TextRead, status_code=status.HTTP_201_CREATED)

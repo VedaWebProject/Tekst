@@ -9,6 +9,7 @@ TEXTS = {
             "locDelim": ".",
             "defaultLevel": 2,
             "labeledLocation": False,
+            "isActive": False,
         },
         "nodes": [
             {
@@ -104,6 +105,7 @@ TEXTS = {
             "accent_color": "#43895F",
             "locDelim": " > ",
             "defaultLevel": 1,
+            "isActive": True,
         },
         "nodes": [
             {

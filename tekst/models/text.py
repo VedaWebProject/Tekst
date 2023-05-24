@@ -58,6 +58,13 @@ class Text(ModelBase, ModelFactory):
         description="Accent color used for this text in the client UI",
     )
 
+    is_active: bool = Field(
+        False,
+        description=(
+            "Whether the text should be listed " "for non-admin users in the web client"
+        ),
+    )
+
     @validator("default_level")
     def validate_default_level(cls, v, values, **kwargs):
         if v >= len(values["levels"]):

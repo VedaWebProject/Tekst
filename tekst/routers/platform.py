@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from humps import decamelize
 
+from tekst.auth import OptionalUserDep
 from tekst.config import TekstConfig
 from tekst.dependencies import get_cfg
 from tekst.layer_types import get_layer_types_info
@@ -25,10 +26,12 @@ router = APIRouter(
     response_model=PlatformData,
     summary="Get platform data",
 )
-async def get_platform_data(cfg: TekstConfig = Depends(get_cfg)) -> dict:
+async def get_platform_data(
+    ou: OptionalUserDep, cfg: TekstConfig = Depends(get_cfg)
+) -> dict:
     """Returns data the client needs to initialize"""
     return PlatformData(
-        texts=await get_all_texts(),
+        texts=await get_all_texts(ou),
         settings=await PlatformSettingsDocument.find_one({}),
         layer_types=get_layer_types_info(),
     )
