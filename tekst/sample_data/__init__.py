@@ -1,10 +1,10 @@
-from tekst.layer_types import LayerTypePluginABC, get_layer_types
+from tekst.layer_types import LayerTypeABC, get_layer_type_manager
 from tekst.logging import log
 from tekst.models.text import NodeDocument, TextDocument
 from tekst.sample_data._sample_data import LAYERS, TEXTS
 
 
-_layer_types = get_layer_types()
+_layer_types = get_layer_type_manager().get_all()
 
 
 async def _create_sample_node(node_data: dict, text_id: str, parent_id: str = None):
@@ -16,7 +16,7 @@ async def _create_sample_node(node_data: dict, text_id: str, parent_id: str = No
 
 
 async def _create_sample_unit(
-    layer_data: dict, unit_data: dict, layer_type: type[LayerTypePluginABC]
+    layer_data: dict, unit_data: dict, layer_type: type[LayerTypeABC]
 ):
     # get node ID this unit belongs to
     node = await NodeDocument.find(

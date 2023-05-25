@@ -23,12 +23,6 @@ class UnitBase(ModelBase, ModelFactory):
     __template_fields: tuple[str] = ("meta",)
 
     @classmethod
-    def get_layer_type_plugin_class(cls) -> type:
-        raise NotImplementedError(
-            "Method UnitBase.get_layer_type_plugin_class must be overridden!"
-        )
-
-    @classmethod
     def get_template_fields(cls) -> tuple[str]:
         return cls.__template_fields + getattr(cls, "_template_fields", tuple())
 

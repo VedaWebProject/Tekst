@@ -66,7 +66,7 @@ async def test_create_layer_invalid(
 #     resp = await test_client.get(endpoint)
 #     assert resp.status_code == 200, status_fail_msg(200, resp)
 #     assert isinstance(resp.json(), dict)
-#     assert len(resp.json()) == len(get_layer_type_names())
+#     assert len(resp.json()) == len(get_layer_type_manager().list_names())
 
 
 @pytest.mark.anyio

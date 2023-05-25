@@ -4,8 +4,6 @@ import pkgutil
 
 from abc import ABC, abstractmethod
 
-import pluggy
-
 from tekst.logging import log
 from tekst.models.common import ModelBase
 from tekst.models.layer import LayerBase, LayerBaseDocument, LayerBaseUpdate
@@ -13,48 +11,38 @@ from tekst.models.unit import UnitBase, UnitBaseDocument, UnitBaseUpdate
 from tekst.utils.strings import safe_name
 
 
-# layer type plugin hook specification marker
-_layer_type_spec = pluggy.HookspecMarker("tekst")
-
-# layer type plugin hook implementation marker
-layer_type_impl = pluggy.HookimplMarker("tekst")
-
-# global variable to hold plugin manager instance
-_layer_type_manager = None
+# global variable to hold layer type manager instance
+_layer_type_manager: "LayerTypeManager" = None
 
 
-class LayerTypePluginABC(ABC):
+class LayerTypeABC(ABC):
     """Abstract base class for defining a data layer type"""
 
     @classmethod
     @abstractmethod
-    @_layer_type_spec
     def get_description(cls) -> str:
         """A short, one-line description of this layer type"""
         ...
 
     @classmethod
     @abstractmethod
-    @_layer_type_spec
-    def get_name(cls) -> str:
-        """Returns the class name of this layer type plugin"""
+    def get_label(cls) -> str:
+        """Returns the class name of this layer type"""
         ...
 
     @classmethod
-    def get_safe_name(cls) -> str:
-        """Returns the slug of this layer type plugin's name"""
-        return safe_name(cls.get_name(), max_len=16, delim="")
+    def get_name(cls) -> str:
+        """Returns the slug of this layer type's name"""
+        return safe_name(cls.get_label(), max_len=16, delim="")
 
     @classmethod
     @abstractmethod
-    @_layer_type_spec
     def get_layer_model(cls) -> type[LayerBase]:
         """Returns the layer base model for this type of data layer"""
         ...
 
     @classmethod
     @abstractmethod
-    @_layer_type_spec
     def get_unit_model(cls) -> type[UnitBase]:
         """Returns the unit base model for units of this type of data layer"""
         ...
@@ -84,45 +72,49 @@ class LayerTypePluginABC(ABC):
 
 
 class LayerTypeInfo(ModelBase):
-    key: str
     name: str
+    label: str
     description: str
 
 
-def get_layer_types() -> dict[str, LayerTypePluginABC]:
-    """
-    Returns a dict of all layer types, mapping from
-    the layer type's safe name to a layer type plugin instance
+class LayerTypeManager:
+    __layer_types: dict[str, LayerTypeABC] = dict()
 
-    :return: A dict of all layer types
-    :rtype: dict[str, LayerTypeABC]
-    """
-    return {p[0]: p[1] for p in _get_layer_type_manager().list_name_plugin()}
+    def register(self, layer_type_class: type[LayerTypeABC], layer_type_name: str):
+        # create layer/unit document models
+        layer_type_class.get_layer_model().get_document_model(LayerBaseDocument)
+        layer_type_class.get_layer_model().get_update_model(LayerBaseUpdate)
+        layer_type_class.get_unit_model().get_document_model(UnitBaseDocument)
+        layer_type_class.get_unit_model().get_update_model(UnitBaseUpdate)
+        # register instance
+        self.__layer_types[layer_type_name.lower()] = layer_type_class()
+
+    def get(self, layer_type_name: str) -> LayerTypeABC:
+        return self.__layer_types.get(layer_type_name.lower())
+
+    def get_all(self) -> dict[str, LayerTypeABC]:
+        return self.__layer_types
+
+    def list_names(self) -> list[str]:
+        return list(self.__layer_types.keys())
+
+    def get_layer_types_info(self) -> list[LayerTypeInfo]:
+        """Returns a list of all available data layer types"""
+        return sorted(
+            [
+                {
+                    "name": lt.get_name(),
+                    "label": lt.get_label(),
+                    "description": lt.get_description(),
+                }
+                for lt in self.__layer_types.values()
+            ],
+            key=lambda lt: lt["name"],
+        )
 
 
-def get_layer_type_names() -> list[str]:
-    """
-    Returns a list of the names/slugs of all existing layer types
-
-    :return: A list of all layer type names (lowercased slugs)
-    :rtype: list[str]
-    """
-    return [p[0] for p in _get_layer_type_manager().list_name_plugin()]
-
-
-def get_layer_type(layer_type_name: str) -> LayerTypePluginABC:
-    """
-    Returns a specific layer type plugin instance by name
-
-    :param layer_type_name: Layer type safe name
-    :type layer_type_name: str
-    :return: The requested layer type plugin instance
-    :rtype: LayerTypeABC
-    """
-    return _get_layer_type_manager().get_plugin(layer_type_name.lower())
-
-
-def _get_layer_type_manager() -> pluggy.PluginManager:
+def get_layer_type_manager() -> LayerTypeManager:
+    global _layer_type_manager
     if _layer_type_manager is None:
         init_layer_type_manager()
     return _layer_type_manager
@@ -132,46 +124,22 @@ def init_layer_type_manager() -> None:
     global _layer_type_manager
     if _layer_type_manager is not None:
         return
-    log.info("Initializing layer type plugin manager")
+    log.info("Initializing layer type manager")
     # init manager
-    manager = pluggy.PluginManager("tekst")
-    # register layer type plugin specification
-    manager.add_hookspecs(LayerTypePluginABC)
+    _layer_type_manager = LayerTypeManager()
     # get internal layer type module names
     lt_modules = [mod.name.lower() for mod in pkgutil.iter_modules(__path__)]
     for lt_module in lt_modules:
         module = importlib.import_module(f"{__name__}.{lt_module.lower()}")
-        plugins_from_module = inspect.getmembers(
-            module, lambda o: inspect.isclass(o) and issubclass(o, LayerTypePluginABC)
+        layer_types_from_module = inspect.getmembers(
+            module, lambda o: inspect.isclass(o) and issubclass(o, LayerTypeABC)
         )
         # exclude LayerTypeABC class (which is weirdly picked up here)
-        for sc in plugins_from_module:
-            if sc[1] is not LayerTypePluginABC:
-                plugin = sc[1]
-                log.info(f"Registering internal layer type plugin: {plugin.get_name()}")
-                manager.register(plugin(), plugin.get_safe_name())
-                # create layer/unit document models
-                plugin.get_layer_model().get_document_model(LayerBaseDocument)
-                plugin.get_layer_model().get_update_model(LayerBaseUpdate)
-                plugin.get_unit_model().get_document_model(UnitBaseDocument)
-                plugin.get_unit_model().get_update_model(UnitBaseUpdate)
-
-    # load and register plugins that might be available from external packages
-    manager.load_setuptools_entrypoints(group="tekst")
-    # set global reference
-    _layer_type_manager = manager
-
-
-def get_layer_types_info() -> list[LayerTypeInfo]:
-    """Returns a list of all available data layer types"""
-    return sorted(
-        [
-            {
-                "key": lt.get_safe_name(),
-                "name": lt.get_name(),
-                "description": lt.get_description(),
-            }
-            for lt in get_layer_types().values()
-        ],
-        key=lambda lt: lt["key"],
-    )
+        for layer_type_impl in layer_types_from_module:
+            if layer_type_impl[1] is not LayerTypeABC:
+                layer_type_class = layer_type_impl[1]
+                # register layer type instance with layer type manager
+                log.info(f"Registering layer type: {layer_type_class.get_name()}")
+                _layer_type_manager.register(
+                    layer_type_class, layer_type_class.get_name()
+                )

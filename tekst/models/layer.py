@@ -55,21 +55,15 @@ class LayerBase(ModelBase, ModelFactory):
 
     @validator("layer_type")
     def validate_layer_type_name(cls, v):
-        from tekst.layer_types import get_layer_type_names
+        from tekst.layer_types import get_layer_type_manager
 
-        layer_type_names = get_layer_type_names()
+        layer_type_names = get_layer_type_manager().list_names()
         if v.lower() not in layer_type_names:
             raise ValueError(
                 f"Given layer type ({v}) is not a valid "
                 f"layer type name (one of {layer_type_names})."
             )
         return v.lower()
-
-    @classmethod
-    def get_layer_type_plugin_class(cls) -> type:
-        raise NotImplementedError(
-            "Method LayerBase.get_layer_type_plugin_class must be overridden!"
-        )
 
 
 # generate document and update models for this base model,

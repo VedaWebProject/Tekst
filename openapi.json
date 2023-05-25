@@ -2775,18 +2775,18 @@
       "LayerTypeInfo": {
         "title": "LayerTypeInfo",
         "required": [
-          "key",
           "name",
+          "label",
           "description"
         ],
         "type": "object",
         "properties": {
-          "key": {
-            "title": "Key",
-            "type": "string"
-          },
           "name": {
             "title": "Name",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
             "type": "string"
           },
           "description": {

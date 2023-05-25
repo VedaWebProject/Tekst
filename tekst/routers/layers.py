@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, status
 
 from tekst.auth import OptionalUserDep, UserDep
-from tekst.layer_types import get_layer_types
+from tekst.layer_types import get_layer_type_manager
 from tekst.models.common import PyObjectId
 from tekst.models.layer import (
     LayerBase,
@@ -89,7 +89,7 @@ router = APIRouter(
 
 
 # dynamically add all needed routes for every layer type's layer definitions
-for lt_name, lt_class in get_layer_types().items():
+for lt_name, lt_class in get_layer_type_manager().get_all().items():
     # type alias unit models
     LayerModel = lt_class.get_layer_model()
     LayerDocumentModel = LayerModel.get_document_model()
@@ -100,7 +100,7 @@ for lt_name, lt_class in get_layer_types().items():
     router.add_api_route(
         path=f"/{lt_name}/{{id}}",
         name=f"get_{lt_name}_layer",
-        description=f"Returns the data for a {lt_class.get_name()} data layer",
+        description=f"Returns the data for a {lt_class.get_label()} data layer",
         endpoint=_generate_read_endpoint(
             layer_document_model=LayerDocumentModel, layer_read_model=LayerReadModel
         ),
@@ -112,7 +112,7 @@ for lt_name, lt_class in get_layer_types().items():
     router.add_api_route(
         path=f"/{lt_name}",
         name=f"create_{lt_name}_layer",
-        description=f"Creates a {lt_class.get_name()} data layer definition",
+        description=f"Creates a {lt_class.get_label()} data layer definition",
         endpoint=_generate_create_endpoint(
             layer_document_model=LayerDocumentModel,
             layer_create_model=LayerCreateModel,
@@ -126,7 +126,7 @@ for lt_name, lt_class in get_layer_types().items():
     router.add_api_route(
         path=f"/{lt_name}/{{id}}",
         name=f"update_{lt_name}_layer",
-        description=f"Updates the data for a {lt_class.get_name()} data layer",
+        description=f"Updates the data for a {lt_class.get_label()} data layer",
         endpoint=_generate_update_endpoint(
             layer_document_model=LayerDocumentModel,
             layer_read_model=LayerReadModel,
@@ -194,15 +194,19 @@ async def find_layers(
 #             status.HTTP_400_BAD_REQUEST,
 #             detail=f"Layer with ID {layer_id} doesn't exist",
 #         )
+#
+#     layer_type_manager = get_layer_type_manager()
 
 #     # decode layer data: Usually, this is handled automatically by our models, but
 #     # in this case we're returning a raw dict/JSON, so we have to manually make sure
 #     # that a) the ID field is called "id" and b) the DocumentId is encoded as str.
-#     layer_read_model = get_layer_type(layer_data["layerType"]).get_layer_read_model()
+#     layer_read_model = layer_type_manager \
+#       .get(layer_data["layerType"]).get_layer_read_model()
 #     layer_data = layer_read_model(**layer_data).dict()
 
 #     # import unit type for the requested layer
-#     template = get_layer_type(layer_data["layerType"]).prepare_import_template()
+#     template = layer_type_manager \
+#       .get(layer_data["layerType"]).prepare_import_template()
 #     # apply data from layer instance
 #     template["layerId"] = str(layer_data["id"])
 #     template["_level"] = layer_data["level"]

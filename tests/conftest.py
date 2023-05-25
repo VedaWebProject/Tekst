@@ -12,7 +12,7 @@ from tekst.auth import _create_user
 from tekst.config import TekstConfig, get_config
 from tekst.db import DatabaseClient
 from tekst.dependencies import get_db_client
-from tekst.layer_types import get_layer_type
+from tekst.layer_types import get_layer_type_manager
 from tekst.models.text import NodeDocument, TextDocument
 from tekst.models.user import UserCreate
 
@@ -104,7 +104,9 @@ async def insert_test_data(test_app, reset_db, api_path, test_data) -> callable:
                 await NodeDocument(text_id=text.id, **doc).create()
         if "layers" in collections:
             for doc in test_data["layers"]:
-                layer_model = get_layer_type(doc["layerType"]).get_layer_model()
+                layer_model = (
+                    get_layer_type_manager().get(doc["layerType"]).get_layer_model()
+                )
                 layer_document_model = layer_model.get_document_model()
                 await layer_document_model(text_id=text.id, **doc).create()
 
