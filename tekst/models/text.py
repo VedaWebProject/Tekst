@@ -73,10 +73,14 @@ class Text(ModelBase, ModelFactory):
     @validator("subtitle")
     def validate_subtitle(cls, v) -> dict[Locale, str] | None:
         if v is not None:
-            subtitles = {str(locale): str(subtitle) for locale, subtitle in v.items()}
-            assert "enUS" in subtitles.keys()
-            return subtitles
-        return v
+            if not isinstance(v, dict) or "enUS" not in v.keys():
+                raise ValueError(
+                    "Subtitle has to be a either None or a dict containing "
+                    "at least a translation for 'enUS'"
+                )
+            return {str(locale): str(subtitle) for locale, subtitle in v.items()}
+        else:
+            return v
 
     @validator("default_level")
     def validate_default_level(cls, v, values, **kwargs):
