@@ -78,7 +78,7 @@ const layerTypes = computed(() => {
         <n-progress
           type="line"
           :percentage="(count / (counts.layers || 1)) * 100"
-          :height="24"
+          :height="18"
           :border-radius="4"
           indicator-placement="inside"
           color="var(--accent-color-fade4)"
@@ -117,7 +117,7 @@ const layerTypes = computed(() => {
           <n-progress
             type="line"
             :percentage="(count / (text.layersCount || 1)) * 100"
-            :height="24"
+            :height="18"
             :border-radius="4"
             indicator-placement="inside"
             color="var(--accent-color-fade4)"
