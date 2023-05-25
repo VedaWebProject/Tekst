@@ -3,7 +3,10 @@ TEXTS = {
         "text": {
             "title": "Rigveda",
             "slug": "rigveda",
-            "subtitle": "An ancient Indian collection of Vedic Sanskrit hymns",
+            "subtitle": {
+                "enUS": "An ancient Indian collection of Vedic Sanskrit hymns",
+                "deDE": "Eine altindische Sammlung von vedischen Sanskrit-Hymnen",
+            },
             "levels": ["Book", "Hymn", "Stanza"],
             "accentColor": "#D43A35",
             "locDelim": ".",
@@ -100,7 +103,10 @@ TEXTS = {
         "text": {
             "title": "Fuchs, du hast die Gans gestohlen",
             "slug": "fdhdgg",
-            "subtitle": "An old German folk song",
+            "subtitle": {
+                "enUS": "An old German folk song",
+                "deDE": "Ein altdeutsches Volkslied",
+            },
             "levels": ["Stanza", "Line"],
             "accent_color": "#43895F",
             "locDelim": " > ",

@@ -3,6 +3,7 @@ from pydantic.color import Color
 
 from tekst.models.common import (
     DocumentBase,
+    Locale,
     Metadata,
     ModelBase,
     ModelFactory,
@@ -25,8 +26,12 @@ class Text(ModelBase, ModelFactory):
         description=("A short identifier for use in URLs and internal operations"),
     )
 
-    subtitle: str = Field(
-        None, min_length=1, max_length=128, description="Subtitle of this text"
+    subtitle: dict[Locale, str] | None = Field(
+        None,
+        description=(
+            "Subtitle translations of this text "
+            "(must at least contain one translation for 'enUS')"
+        ),
     )
 
     levels: list[constr(min_length=1, max_length=32)] = Field(
@@ -64,6 +69,14 @@ class Text(ModelBase, ModelFactory):
             "Whether the text should be listed " "for non-admin users in the web client"
         ),
     )
+
+    @validator("subtitle")
+    def validate_subtitle(cls, v) -> dict[Locale, str] | None:
+        if v is not None:
+            subtitles = {str(locale): str(subtitle) for locale, subtitle in v.items()}
+            assert "enUS" in subtitles.keys()
+            return subtitles
+        return v
 
     @validator("default_level")
     def validate_default_level(cls, v, values, **kwargs):

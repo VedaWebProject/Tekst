@@ -3564,10 +3564,11 @@
           },
           "subtitle": {
             "title": "Subtitle",
-            "maxLength": 128,
-            "minLength": 1,
-            "type": "string",
-            "description": "Subtitle of this text"
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Subtitle translations of this text (must at least contain one translation for 'enUS')"
           },
           "levels": {
             "title": "Levels",
@@ -3662,10 +3663,11 @@
           },
           "subtitle": {
             "title": "Subtitle",
-            "maxLength": 128,
-            "minLength": 1,
-            "type": "string",
-            "description": "Subtitle of this text"
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Subtitle translations of this text (must at least contain one translation for 'enUS')"
           },
           "levels": {
             "title": "Levels",
@@ -3761,7 +3763,10 @@
           },
           "subtitle": {
             "title": "Subtitle",
-            "type": "string"
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
           },
           "levels": {
             "title": "Levels",
