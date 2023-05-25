@@ -4,7 +4,7 @@ from beanie.operators import In
 from fastapi import APIRouter, HTTPException, Query, status
 
 from tekst.auth import OptionalUserDep, UserDep
-from tekst.layer_types import get_layer_type_manager
+from tekst.layer_types import layer_type_manager
 from tekst.models.common import PyObjectId
 from tekst.models.layer import LayerBaseDocument, LayerMinimalView
 from tekst.models.unit import UnitBase, UnitBaseDocument
@@ -116,7 +116,7 @@ router = APIRouter(
 )
 
 # dynamically add all needed routes for every layer type's units
-for lt_name, lt_class in get_layer_type_manager().get_all().items():
+for lt_name, lt_class in layer_type_manager.get_all().items():
     # type alias unit models
     UnitModel = lt_class.get_unit_model()
     UnitDocumentModel = UnitModel.get_document_model()

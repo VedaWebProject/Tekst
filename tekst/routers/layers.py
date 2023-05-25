@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, status
 
 from tekst.auth import OptionalUserDep, UserDep
-from tekst.layer_types import get_layer_type_manager
+from tekst.layer_types import layer_type_manager
 from tekst.models.common import PyObjectId
 from tekst.models.layer import (
     LayerBase,
@@ -89,7 +89,7 @@ router = APIRouter(
 
 
 # dynamically add all needed routes for every layer type's layer definitions
-for lt_name, lt_class in get_layer_type_manager().get_all().items():
+for lt_name, lt_class in layer_type_manager.get_all().items():
     # type alias unit models
     LayerModel = lt_class.get_layer_model()
     LayerDocumentModel = LayerModel.get_document_model()
@@ -195,7 +195,7 @@ async def find_layers(
 #             detail=f"Layer with ID {layer_id} doesn't exist",
 #         )
 #
-#     layer_type_manager = get_layer_type_manager()
+#     layer_type_manager = layer_type_manager
 
 #     # decode layer data: Usually, this is handled automatically by our models, but
 #     # in this case we're returning a raw dict/JSON, so we have to manually make sure

@@ -1,10 +1,10 @@
-from tekst.layer_types import LayerTypeABC, get_layer_type_manager
+from tekst.layer_types import LayerTypeABC, layer_type_manager
 from tekst.logging import log
 from tekst.models.text import NodeDocument, TextDocument
 from tekst.sample_data._sample_data import LAYERS, TEXTS
 
 
-_layer_types = get_layer_type_manager().get_all()
+_layer_types = layer_type_manager.get_all()
 
 
 async def _create_sample_node(node_data: dict, text_id: str, parent_id: str = None):

@@ -55,9 +55,9 @@ class LayerBase(ModelBase, ModelFactory):
 
     @validator("layer_type")
     def validate_layer_type_name(cls, v):
-        from tekst.layer_types import get_layer_type_manager
+        from tekst.layer_types import layer_type_manager
 
-        layer_type_names = get_layer_type_manager().list_names()
+        layer_type_names = layer_type_manager.list_names()
         if v.lower() not in layer_type_names:
             raise ValueError(
                 f"Given layer type ({v}) is not a valid "

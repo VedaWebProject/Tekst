@@ -11,10 +11,6 @@ from tekst.models.unit import UnitBase, UnitBaseDocument, UnitBaseUpdate
 from tekst.utils.strings import safe_name
 
 
-# global variable to hold layer type manager instance
-_layer_type_manager: "LayerTypeManager" = None
-
-
 class LayerTypeABC(ABC):
     """Abstract base class for defining a data layer type"""
 
@@ -113,20 +109,13 @@ class LayerTypeManager:
         )
 
 
-def get_layer_type_manager() -> LayerTypeManager:
-    global _layer_type_manager
-    if _layer_type_manager is None:
-        init_layer_type_manager()
-    return _layer_type_manager
-
-
 def init_layer_type_manager() -> None:
-    global _layer_type_manager
-    if _layer_type_manager is not None:
-        return
+    global layer_type_manager
+    if layer_type_manager is not None:
+        return layer_type_manager
     log.info("Initializing layer type manager")
     # init manager
-    _layer_type_manager = LayerTypeManager()
+    manager = LayerTypeManager()
     # get internal layer type module names
     lt_modules = [mod.name.lower() for mod in pkgutil.iter_modules(__path__)]
     for lt_module in lt_modules:
@@ -140,6 +129,10 @@ def init_layer_type_manager() -> None:
                 layer_type_class = layer_type_impl[1]
                 # register layer type instance with layer type manager
                 log.info(f"Registering layer type: {layer_type_class.get_name()}")
-                _layer_type_manager.register(
-                    layer_type_class, layer_type_class.get_name()
-                )
+                manager.register(layer_type_class, layer_type_class.get_name())
+    layer_type_manager = manager
+
+
+# global variable to hold layer type manager instance
+layer_type_manager: LayerTypeManager = None
+init_layer_type_manager()
