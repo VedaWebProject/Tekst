@@ -85,8 +85,8 @@ routes:
     accountManage: 'Account: Manage'
     adminStatistics: '@:admin.heading: Statistics'
     adminUsers: '@:admin.heading: Users'
-    adminTextsGeneral: '@:admin.heading: Text - General Settings'
-    adminTextsStructure: '@:admin.heading: Text - Structure'
+    adminTextsGeneral: '@:admin.heading: Texts - General Settings'
+    adminTextsStructure: '@:admin.heading: Texts - Structure'
     adminNewText: '@:admin.heading: New Text'
     verify: Verification
     reset: Reset password
