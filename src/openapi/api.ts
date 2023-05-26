@@ -319,13 +319,13 @@ export interface LayerTypeInfo {
      * @type {string}
      * @memberof LayerTypeInfo
      */
-    'key': string;
+    'name': string;
     /**
      * 
      * @type {string}
      * @memberof LayerTypeInfo
      */
-    'name': string;
+    'label': string;
     /**
      * 
      * @type {string}
@@ -1010,6 +1010,33 @@ export interface PlatformStats {
     'texts': Array<TextStats>;
 }
 /**
+ * 
+ * @export
+ * @interface SubtitleTranslation
+ */
+export interface SubtitleTranslation {
+    /**
+     * 
+     * @type {string}
+     * @memberof SubtitleTranslation
+     */
+    'locale': SubtitleTranslationLocaleEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof SubtitleTranslation
+     */
+    'subtitle': string;
+}
+
+export const SubtitleTranslationLocaleEnum = {
+    DeDe: 'deDE',
+    EnUs: 'enUS'
+} as const;
+
+export type SubtitleTranslationLocaleEnum = typeof SubtitleTranslationLocaleEnum[keyof typeof SubtitleTranslationLocaleEnum];
+
+/**
  * Tekst platform information config model  These values are not configurable. They are taken from the package infos and aren\'t meant to be changed by users creating an own instance of the platform.
  * @export
  * @interface TekstInfoConfig
@@ -1114,11 +1141,11 @@ export interface TextCreate {
      */
     'slug': string;
     /**
-     * Subtitle of this text
-     * @type {string}
+     * Subtitle translations of this text (if set, it must contain at least one element)
+     * @type {Array<SubtitleTranslation>}
      * @memberof TextCreate
      */
-    'subtitle'?: string;
+    'subtitle'?: Array<SubtitleTranslation>;
     /**
      * 
      * @type {Array<string>}
@@ -1193,11 +1220,11 @@ export interface TextRead {
      */
     'slug': string;
     /**
-     * Subtitle of this text
-     * @type {string}
+     * Subtitle translations of this text (if set, it must contain at least one element)
+     * @type {Array<SubtitleTranslation>}
      * @memberof TextRead
      */
-    'subtitle'?: string;
+    'subtitle'?: Array<SubtitleTranslation>;
     /**
      * 
      * @type {Array<string>}
@@ -1286,10 +1313,10 @@ export interface TextUpdate {
     'slug'?: string;
     /**
      * 
-     * @type {string}
+     * @type {Array<SubtitleTranslation>}
      * @memberof TextUpdate
      */
-    'subtitle'?: string;
+    'subtitle'?: Array<SubtitleTranslation>;
     /**
      * 
      * @type {Array<string>}
