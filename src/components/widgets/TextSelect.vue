@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { TextRead } from '@/openapi';
-import { computed, h } from 'vue';
+import { computed, h, ref } from 'vue';
 import { useStateStore } from '@/stores';
 import { useRouter } from 'vue-router';
 import { NDropdown, NButton, NIcon } from 'naive-ui';
@@ -15,6 +15,7 @@ const { locale } = useI18n();
 const { pfData } = usePlatformData();
 const availableTexts = computed(() => pfData.value?.texts || []);
 const disabled = computed(() => availableTexts.value.length <= 1);
+const textSelectDropdownRef = ref();
 
 const renderLabel = (t: TextRead) => {
   return () =>
@@ -35,6 +36,7 @@ const options = computed(() =>
 );
 
 function handleSelect(key: string) {
+  textSelectDropdownRef.value.doUpdateShow(false);
   if ('text' in router.currentRoute.value.params) {
     router.push({
       name: router.currentRoute.value.name || 'browse',
@@ -49,6 +51,7 @@ function handleSelect(key: string) {
 <template>
   <n-dropdown
     v-if="state.text"
+    ref="textSelectDropdownRef"
     trigger="click"
     :options="options"
     :disabled="disabled"
