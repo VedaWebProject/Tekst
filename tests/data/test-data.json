@@ -3,10 +3,16 @@
     {
       "title": "Rigveda",
       "slug": "rigveda",
-      "subtitle": {
-        "enUS": "An ancient Indian collection of Vedic Sanskrit hymns",
-        "deDE": "Eine altindische Sammlung von vedischen Sanskrit-Hymnen"
-      },
+      "subtitle": [
+        {
+            "locale": "enUS",
+            "subtitle": "An ancient Indian collection of Vedic Sanskrit hymns"
+        },
+        {
+            "locale": "deDE",
+            "subtitle": "Eine altindische Sammlung vedischer Sanskrit-Hymnen"
+        }
+    ],
       "levels": ["Book", "Hymn", "Stanza"],
       "isActive": true
     }

@@ -3495,6 +3495,30 @@
         },
         "description": "Platform statistics data"
       },
+      "SubtitleTranslation": {
+        "title": "SubtitleTranslation",
+        "required": [
+          "locale",
+          "subtitle"
+        ],
+        "type": "object",
+        "properties": {
+          "locale": {
+            "title": "Locale",
+            "enum": [
+              "deDE",
+              "enUS"
+            ],
+            "type": "string"
+          },
+          "subtitle": {
+            "title": "Subtitle",
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          }
+        }
+      },
       "TekstInfoConfig": {
         "title": "TekstInfoConfig",
         "type": "object",
@@ -3564,11 +3588,12 @@
           },
           "subtitle": {
             "title": "Subtitle",
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubtitleTranslation"
             },
-            "description": "Subtitle translations of this text (must at least contain one translation for 'enUS')"
+            "description": "Subtitle translations of this text (if set, it must contain at least one element)"
           },
           "levels": {
             "title": "Levels",
@@ -3663,11 +3688,12 @@
           },
           "subtitle": {
             "title": "Subtitle",
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubtitleTranslation"
             },
-            "description": "Subtitle translations of this text (must at least contain one translation for 'enUS')"
+            "description": "Subtitle translations of this text (if set, it must contain at least one element)"
           },
           "levels": {
             "title": "Levels",
@@ -3763,9 +3789,10 @@
           },
           "subtitle": {
             "title": "Subtitle",
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubtitleTranslation"
             }
           },
           "levels": {

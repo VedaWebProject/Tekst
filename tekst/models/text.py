@@ -1,5 +1,6 @@
-from pydantic import Field, conint, constr, validator
+from pydantic import Field, conint, conlist, constr, validator
 from pydantic.color import Color
+from typing_extensions import TypedDict
 
 from tekst.models.common import (
     DocumentBase,
@@ -9,6 +10,11 @@ from tekst.models.common import (
     ModelFactory,
     PyObjectId,
 )
+
+
+class SubtitleTranslation(TypedDict):
+    locale: Locale
+    subtitle: constr(min_length=1, max_length=128)
 
 
 class Text(ModelBase, ModelFactory):
@@ -26,11 +32,11 @@ class Text(ModelBase, ModelFactory):
         description=("A short identifier for use in URLs and internal operations"),
     )
 
-    subtitle: dict[Locale, str] | None = Field(
+    subtitle: conlist(SubtitleTranslation, min_items=1) | None = Field(
         None,
         description=(
             "Subtitle translations of this text "
-            "(must at least contain one translation for 'enUS')"
+            "(if set, it must contain at least one element)"
         ),
     )
 
@@ -71,16 +77,13 @@ class Text(ModelBase, ModelFactory):
     )
 
     @validator("subtitle")
-    def validate_subtitle(cls, v) -> dict[Locale, str] | None:
-        if v is not None:
-            if not isinstance(v, dict) or "enUS" not in v.keys():
-                raise ValueError(
-                    "Subtitle has to be a either None or a dict containing "
-                    "at least a translation for 'enUS'"
-                )
-            return {str(locale): str(subtitle) for locale, subtitle in v.items()}
-        else:
-            return v
+    def validate_subtitle(cls, v) -> list[SubtitleTranslation] | None:
+        if v is not None and len(v) < 1:
+            raise ValueError(
+                "Subtitle has to be a either None or a list of subtitle "
+                "translations with at least one element."
+            )
+        return v
 
     @validator("default_level")
     def validate_default_level(cls, v, values, **kwargs):
