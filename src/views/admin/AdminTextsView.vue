@@ -15,8 +15,7 @@ const state = useStateStore();
 </script>
 
 <template>
-  <h1>{{ $t('admin.heading') }}: {{ $t('admin.texts.heading') }}</h1>
-  <h2>{{ state.text?.title }}</h2>
+  <h1>{{ $t('admin.heading') }}: {{ state.text?.title }}</h1>
 
   <SecondaryNavBar align="flex-start">
     <NavBarRouterLink
