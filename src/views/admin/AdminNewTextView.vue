@@ -23,7 +23,7 @@ import type { AxiosError } from 'axios';
 const initialModel = (): TextCreate => ({
   title: '',
   slug: '',
-  levels: ['', ''],
+  levels: [''],
 });
 
 const { t } = useI18n({ useScope: 'global' });
@@ -130,6 +130,7 @@ async function handleSave() {
             :show-label="false"
             :path="`levels[${index}]`"
             :rule="textFormRules.level"
+            style="flex-grow: 2"
           >
             <n-input
               v-model:value="model.levels[index]"
