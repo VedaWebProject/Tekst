@@ -1,4 +1,4 @@
-from pydantic import Field, conint, conlist, constr, validator
+from pydantic import Field, conint, constr, validator
 from pydantic.color import Color
 from typing_extensions import TypedDict
 
@@ -32,7 +32,7 @@ class Text(ModelBase, ModelFactory):
         description=("A short identifier for use in URLs and internal operations"),
     )
 
-    subtitle: conlist(SubtitleTranslation, min_items=1) | None = Field(
+    subtitle: list[SubtitleTranslation] | None = Field(
         None,
         description=(
             "Subtitle translations of this text "
@@ -79,10 +79,7 @@ class Text(ModelBase, ModelFactory):
     @validator("subtitle")
     def validate_subtitle(cls, v) -> list[SubtitleTranslation] | None:
         if v is not None and len(v) < 1:
-            raise ValueError(
-                "Subtitle has to be a either None or a list of subtitle "
-                "translations with at least one element."
-            )
+            return None
         return v
 
     @validator("default_level")

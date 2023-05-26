@@ -94,4 +94,4 @@ async def update_text(su: SuperuserDep, id: PyObjectId, updates: TextUpdate) -> 
     #         detail="Text slug cannot be changed",
     #     )
     await text.apply(updates.dict(exclude_unset=True))
-    return text
+    return await TextDocument.get(id)

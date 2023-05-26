@@ -3588,7 +3588,6 @@
           },
           "subtitle": {
             "title": "Subtitle",
-            "minItems": 1,
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/SubtitleTranslation"
@@ -3688,7 +3687,6 @@
           },
           "subtitle": {
             "title": "Subtitle",
-            "minItems": 1,
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/SubtitleTranslation"
@@ -3789,7 +3787,6 @@
           },
           "subtitle": {
             "title": "Subtitle",
-            "minItems": 1,
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/SubtitleTranslation"
