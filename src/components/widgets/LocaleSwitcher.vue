@@ -25,9 +25,9 @@ const options = computed(() =>
 function handleLanguageSelect(localeCode: string) {
   if (localeCode == state.locale) return;
 
-  state.setLocale(localeCode).catch((e) => {
+  state.setLocale(localeCode).catch(() => {
     message.warning(t('errors.serverI18n'));
-    console.error(e);
+    // console.error(e);
   });
 }
 </script>

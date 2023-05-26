@@ -7,36 +7,34 @@ import { NDropdown, NButton, NIcon } from 'naive-ui';
 import ArrowDropDownFilled from '@vicons/material/ArrowDropDownFilled';
 import TextSelectOption from '../widgets/TextSelectOption.vue';
 import { usePlatformData } from '@/platformData';
+import { useI18n } from 'vue-i18n';
 
 const router = useRouter();
 const state = useStateStore();
+const { locale } = useI18n();
 const { pfData } = usePlatformData();
 const availableTexts = computed(() => pfData.value?.texts || []);
+const disabled = computed(() => availableTexts.value.length <= 1);
 
 const renderLabel = (t: TextRead) => {
   return () =>
     h(TextSelectOption, {
       text: t,
+      locale: locale.value,
       selected: t.id === state.text?.id,
-      onClick: handleSelect,
+      onClick: () => handleSelect(t.slug),
     });
 };
 const options = computed(() =>
-  availableTexts.value
-    .filter((t) => t.id !== state.text?.id)
-    .map((t: TextRead) => ({
-      render: renderLabel(t),
-      key: t.slug,
-      type: 'render',
-      disabled: t.id === state.text?.id,
-      props: {
-        onClick: () => handleSelect(t.slug),
-      },
-    }))
+  availableTexts.value.map((t: TextRead) => ({
+    render: renderLabel(t),
+    key: t.slug,
+    type: 'render',
+    show: t.id !== state.text?.id,
+  }))
 );
 
 function handleSelect(key: string) {
-  console.log(key);
   if ('text' in router.currentRoute.value.params) {
     router.push({
       name: router.currentRoute.value.name || 'browse',
@@ -53,11 +51,10 @@ function handleSelect(key: string) {
     v-if="state.text"
     trigger="click"
     :options="options"
-    :disabled="options.length <= 1"
+    :disabled="disabled"
     :render-label="renderLabel"
     placement="bottom-start"
     :size="state.dropdownSize"
-    @select="handleSelect"
   >
     <n-button
       text
@@ -69,10 +66,10 @@ function handleSelect(key: string) {
       :style="{
         fontSize: 'inherit',
         fontWeight: 'var(--app-ui-font-weight-normal)',
-        cursor: options.length > 1 ? 'pointer' : 'default',
+        cursor: !disabled ? 'pointer' : 'default',
       }"
     >
-      <template #icon v-if="options.length > 1">
+      <template #icon v-if="!disabled">
         <n-icon>
           <ArrowDropDownFilled />
         </n-icon>

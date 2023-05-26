@@ -19,6 +19,7 @@ general:
   filters: Filter
   selected: ausgewählt
   flags: Merkmale
+  language: Sprache
 
 dummy:
   home: 'Kein Ort ist wie ~'

@@ -1,3 +1,5 @@
+import type { SubtitleTranslation } from './openapi';
+
 export function hashCode(obj: any) {
   const string = JSON.stringify(obj);
   let hash = 0;
@@ -22,9 +24,20 @@ export function keepChangedRecords(
 
 export function haveRecordsChanged(changed: Record<string, any>, original: Record<string, any>) {
   for (const key in original) {
-    if (changed[key] !== original[key]) {
+    if (JSON.stringify(changed[key]) !== JSON.stringify(original[key])) {
       return true;
     }
   }
   return false;
+}
+
+export function determineTextSubtitle(
+  subtitleTranslations: SubtitleTranslation[],
+  localeKey: string
+) {
+  const subtitleTranslation =
+    subtitleTranslations.find((s) => s && s.locale === localeKey) ||
+    subtitleTranslations.find((s) => s && s.locale === 'enUS') ||
+    subtitleTranslations[0];
+  return subtitleTranslation ? subtitleTranslation.subtitle : '';
 }

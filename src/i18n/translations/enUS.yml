@@ -18,6 +18,7 @@ general:
   filters: Filters
   selected: selected
   flags: Flags
+  language: Language
 
 dummy:
   home: There's no place like ~

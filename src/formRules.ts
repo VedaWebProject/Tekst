@@ -130,9 +130,21 @@ const textFormRules: Record<string, FormItemRule[]> = {
   ],
   subtitle: [
     {
+      required: true,
+      message: () => t('forms.rulesFeedback.isRequired', { x: t('models.text.subtitle') }),
+      trigger: 'blur',
+    },
+    {
       validator: (rule: FormItemRule, value: string) =>
-        value == null ? true : value.length <= 128,
-      message: () => t('forms.rulesFeedback.minMaxChars', { min: 0, max: 128 }),
+        value != null && value.length >= 1 && value.length <= 128,
+      message: () => t('forms.rulesFeedback.minMaxChars', { min: 1, max: 128 }),
+      trigger: 'blur',
+    },
+  ],
+  subtitleLocale: [
+    {
+      validator: (rule: FormItemRule, value: string) => !!value,
+      message: () => t('forms.rulesFeedback.isRequired', { x: t('general.language') }),
       trigger: 'blur',
     },
   ],

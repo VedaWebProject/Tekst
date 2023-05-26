@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useFormRules } from '@/formRules';
 import { useMessages } from '@/messages';
-import type { TextUpdate } from '@/openapi';
 import { useStateStore } from '@/stores';
 import {
   NCheckbox,
@@ -12,6 +11,7 @@ import {
   NFormItem,
   NInput,
   NColorPicker,
+  NDynamicInput,
   type FormInst,
   useDialog,
 } from 'naive-ui';
@@ -19,6 +19,8 @@ import { computed, ref, watch } from 'vue';
 import { keepChangedRecords, haveRecordsChanged } from '@/utils';
 import { useApi } from '@/api';
 import { useI18n } from 'vue-i18n';
+import { localeProfiles } from '@/i18n';
+import type { SubtitleTranslation, TextUpdate } from '@/openapi';
 
 const state = useStateStore();
 const dialog = useDialog();
@@ -28,23 +30,30 @@ const { textsApi } = useApi();
 const { t } = useI18n({ useScope: 'global' });
 const loading = ref(false);
 
-const initialModel = (): TextUpdate => ({
+const initialModel = () => ({
   title: state.text?.title,
-  subtitle: state.text?.subtitle,
+  subtitle: state.text?.subtitle || [],
   slug: state.text?.slug,
-  levels: state.text?.levels,
   defaultLevel: state.text?.defaultLevel,
   locDelim: state.text?.locDelim,
   labeledLocation: state.text?.labeledLocation,
   accentColor: state.text?.accentColor,
   isActive: state.text?.isActive,
 });
-const model = ref<TextUpdate>(initialModel());
+const model = ref<Record<string, any>>(initialModel());
 const modelChanged = computed(() => haveRecordsChanged(model.value, initialModel()));
 const formRef = ref<FormInst | null>(null);
+const subtitleLocaleOptions = computed(() =>
+  Object.keys(localeProfiles)
+    .filter((l) => !model.value.subtitle.find((s: SubtitleTranslation) => s && s.locale == l))
+    .map((l) => ({
+      label: l,
+      value: l,
+    }))
+);
 const defaultLevelOptions = computed(
   () =>
-    model.value.levels?.map((l, i) => ({
+    state.text?.levels.map((l: string, i: number) => ({
       label: l,
       value: i,
     })) || []
@@ -67,9 +76,15 @@ function handleSave() {
           style: 'font-weight: var(--app-ui-font-weight-light)',
           onPositiveClick: async () => {
             try {
+              const updates = keepChangedRecords(model.value, initialModel(), [
+                'levels',
+              ]) as TextUpdate;
+              // filter incomplete subtitle translations
+              updates.subtitle = updates.subtitle?.filter((s) => !!s.locale && !!s.subtitle) || [];
+              // submit updates
               await textsApi.updateText({
                 id: state.text?.id || '',
-                textUpdate: keepChangedRecords(model.value, initialModel(), ['levels']),
+                textUpdate: updates,
               });
               location.reload();
             } catch {
@@ -113,15 +128,52 @@ function handleSave() {
         :disabled="loading"
       />
     </n-form-item>
-    <n-form-item path="subtitle" :label="$t('models.text.subtitle')">
-      <n-input
+
+    <n-form-item :label="$t('models.text.subtitle')">
+      <n-dynamic-input
         v-model:value="model.subtitle"
-        type="text"
-        :placeholder="$t('models.text.subtitle')"
-        @keydown.enter.prevent
-        :disabled="loading"
-      />
+        item-style="margin-bottom: 0;"
+        :min="0"
+        :max="Object.keys(localeProfiles).length"
+        @create="() => ({ locale: null, subtitle: '' })"
+        #="{ index, value }"
+      >
+        <div style="display: flex; align-items: flex-start; width: 100%">
+          <n-form-item
+            ignore-path-change
+            :show-label="false"
+            :path="`subtitle[${index}].locale`"
+            :rule="textFormRules.subtitleLocale"
+            required
+          >
+            <n-select
+              v-model:value="model.subtitle[index].locale"
+              :options="subtitleLocaleOptions"
+              :placeholder="$t('general.language')"
+              :consistent-menu-width="false"
+              style="min-width: 200px"
+              @keydown.enter.prevent
+            />
+          </n-form-item>
+          <div style="margin: 0 8px">:</div>
+          <n-form-item
+            ignore-path-change
+            :show-label="false"
+            :path="`subtitle[${index}].subtitle`"
+            :rule="textFormRules.subtitle"
+            style="flex-grow: 2"
+          >
+            <n-input
+              v-model:value="model.subtitle[index].subtitle"
+              :rule="textFormRules.subtitle"
+              :placeholder="$t('models.text.subtitle')"
+              @keydown.enter.prevent
+            />
+          </n-form-item>
+        </div>
+      </n-dynamic-input>
     </n-form-item>
+
     <n-form-item path="slug" :label="$t('models.text.slug')">
       <n-input
         v-model:value="model.slug"
@@ -131,6 +183,7 @@ function handleSave() {
         :disabled="loading"
       />
     </n-form-item>
+
     <n-form-item path="defaultLevel" :label="$t('models.text.defaultLevel')">
       <n-select
         v-model:value="model.defaultLevel"
@@ -139,6 +192,7 @@ function handleSave() {
         style="font-weight: var(--app-ui-font-weight-normal)"
       />
     </n-form-item>
+
     <n-form-item path="locDelim" :label="$t('models.text.locDelim')">
       <n-input
         v-model:value="model.locDelim"
@@ -148,6 +202,7 @@ function handleSave() {
         :disabled="loading"
       />
     </n-form-item>
+
     <n-form-item path="accentColor" :label="$t('models.text.accentColor')">
       <n-color-picker
         v-model:value="model.accentColor"
@@ -165,6 +220,7 @@ function handleSave() {
         ]"
       />
     </n-form-item>
+
     <n-form-item :label="t('general.flags')">
       <n-space vertical>
         <n-checkbox v-model:checked="model.labeledLocation" :disabled="loading">
