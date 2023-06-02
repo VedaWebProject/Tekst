@@ -179,13 +179,14 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       await authApi.authCookieLogout();
       message.success(t('account.logoutSuccessful'));
+    } catch {
+      // sweet FA, because this might just be a 403 because of a programmatic
+      // logout after a user changed their email
+    } finally {
+      _cleanupSession();
       // reload platform data as some resources might not be accessible anymore
       await loadPlatformData();
       state.text = pfData.value?.texts[0];
-    } catch {
-      location.reload();
-    } finally {
-      _cleanupSession();
       router.push({ name: 'home' });
     }
   }

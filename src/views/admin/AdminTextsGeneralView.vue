@@ -16,11 +16,11 @@ import {
   useDialog,
 } from 'naive-ui';
 import { computed, ref, watch } from 'vue';
-import { keepChangedRecords, haveRecordsChanged } from '@/utils';
 import { useApi } from '@/api';
 import { useI18n } from 'vue-i18n';
 import { localeProfiles } from '@/i18n';
-import type { SubtitleTranslation, TextUpdate } from '@/openapi';
+import type { SubtitleTranslation } from '@/openapi';
+import { useModelChanges } from '@/modelChanges';
 
 const state = useStateStore();
 const dialog = useDialog();
@@ -41,7 +41,11 @@ const initialModel = () => ({
   isActive: state.text?.isActive,
 });
 const model = ref<Record<string, any>>(initialModel());
-const modelChanged = computed(() => haveRecordsChanged(model.value, initialModel()));
+const {
+  changed: modelChanged,
+  reset: resetModelChanges,
+  getChanges: getModelChanges,
+} = useModelChanges(model);
 const formRef = ref<FormInst | null>(null);
 const subtitleLocaleOptions = computed(() =>
   Object.keys(localeProfiles)
@@ -63,6 +67,11 @@ watch(
   () => (model.value = initialModel())
 );
 
+function handleReset() {
+  model.value = initialModel();
+  resetModelChanges();
+}
+
 function handleSave() {
   loading.value = true;
   formRef.value
@@ -76,17 +85,12 @@ function handleSave() {
           style: 'font-weight: var(--app-ui-font-weight-light)',
           onPositiveClick: async () => {
             try {
-              const updates = keepChangedRecords(model.value, initialModel(), [
-                'levels',
-              ]) as TextUpdate;
-              // filter incomplete subtitle translations
-              updates.subtitle = updates.subtitle?.filter((s) => !!s.locale && !!s.subtitle) || [];
-              // submit updates
               await textsApi.updateText({
                 id: state.text?.id || '',
-                textUpdate: updates,
+                textUpdate: getModelChanges(),
               });
               location.reload();
+              resetModelChanges();
             } catch {
               /**
                * This will be either an app-level error (e.g. buggy validation, server down, 401)
@@ -237,7 +241,7 @@ function handleSave() {
     <n-button
       secondary
       block
-      @click="() => (model = initialModel())"
+      @click="() => handleReset"
       :loading="loading"
       :disabled="loading || !modelChanged"
     >

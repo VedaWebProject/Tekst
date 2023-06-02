@@ -17,9 +17,9 @@ import {
   NGridItem,
   useDialog,
 } from 'naive-ui';
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { keepChangedRecords, haveRecordsChanged } from '@/utils';
+import { useModelChanges } from '@/modelChanges';
 
 const dialog = useDialog();
 const auth = useAuthStore();
@@ -54,27 +54,29 @@ const { accountFormRules } = useFormRules();
 
 const emailFormRef = ref<FormInst | null>(null);
 const emailFormModel = ref<Record<string, string | null>>(initialEmailModel());
-const emailModelChanged = computed(() =>
-  haveRecordsChanged(emailFormModel.value, initialEmailModel())
-);
+const {
+  changed: emailModelChanged,
+  getChanges: getEmailModelChanges,
+  reset: resetEmailModelChanges,
+} = useModelChanges(emailFormModel);
 
 const passwordFormRef = ref<FormInst | null>(null);
 const passwordFormModel = ref<Record<string, string | null>>(initialPasswordModel());
-const passwordModelChanged = computed(() =>
-  haveRecordsChanged(passwordFormModel.value, initialPasswordModel())
-);
+const { changed: passwordModelChanged, reset: resetPasswordModelChanges } =
+  useModelChanges(passwordFormModel);
 
 const userDataFormRef = ref<FormInst | null>(null);
 const userDataFormModel = ref<Record<string, string | null>>(initialUserDataModel());
-const userDataModelChanged = computed(() =>
-  haveRecordsChanged(userDataFormModel.value, initialUserDataModel())
-);
+const {
+  changed: userDataModelChanged,
+  getChanges: getUserDataModelChanges,
+  reset: resetUserDataModelChanges,
+} = useModelChanges(userDataFormModel);
 
 const publicFieldsFormRef = ref<FormInst | null>(null);
 const publicFieldsFormModel = ref<Record<string, boolean>>(initialPublicFieldsModel());
-const publicFieldsModelChanged = computed(() =>
-  haveRecordsChanged(publicFieldsFormModel.value, initialPublicFieldsModel())
-);
+const { changed: publicFieldsModelChanged, reset: resetPublicFieldsModelChanges } =
+  useModelChanges(publicFieldsFormModel);
 
 const rPasswordFormItemRef = ref<FormItemInst | null>(null);
 const firstInputRef = ref<HTMLInputElement | null>(null);
@@ -111,8 +113,8 @@ async function updateUser(userUpdate: UserUpdate) {
 }
 
 async function updateEmail() {
-  const updated = await updateUser(keepChangedRecords(emailFormModel.value, initialEmailModel()));
-  if (updated) {
+  if (await updateUser(getEmailModelChanges())) {
+    resetEmailModelChanges();
     message.success(t('account.manage.msgEmailSaveSuccess'));
     if (!pfData.value?.security?.closedMode === true) {
       await auth.logout();
@@ -172,6 +174,7 @@ async function handlePasswordSave() {
           style: 'font-weight: var(--app-ui-font-weight-light)',
           onPositiveClick: async () => {
             await updateUser({ password: passwordFormModel.value.password || undefined });
+            resetPasswordModelChanges();
             message.success(t('account.manage.msgPasswordSaveSuccess'));
             await auth.logout();
             auth.showLoginModal(undefined, { name: 'accountProfile' }, false);
@@ -187,7 +190,8 @@ async function handleUserDataSave() {
   userDataFormRef.value
     ?.validate(async (errors) => {
       if (!errors) {
-        await updateUser(keepChangedRecords(userDataFormModel.value, initialUserDataModel()));
+        await updateUser(getUserDataModelChanges());
+        resetUserDataModelChanges();
         message.success(t('account.manage.msgUserDataSaveSuccess'));
       }
     })
@@ -202,6 +206,7 @@ async function handlepublicFieldsSave() {
       (k) => publicFieldsFormModel.value[k]
     ) as UserUpdatePublicFieldsEnum[],
   });
+  resetPublicFieldsModelChanges();
   message.success(t('account.manage.msgUserDataSaveSuccess'));
 }
 </script>
