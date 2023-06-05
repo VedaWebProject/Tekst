@@ -82,6 +82,15 @@ class Text(ModelBase, ModelFactory):
             return None
         return v
 
+    @validator("default_level")
+    def validate_default_level(cls, v, values, **kwargs):
+        if values["levels"] and v >= len(values["levels"]):
+            raise ValueError(
+                f"Invalid default level value ({v}). "
+                f"This text only has {len(values['levels'])} levels."
+            )
+        return v
+
     @validator("accent_color")
     def validate_color(cls, v) -> Color:
         if not isinstance(v, Color):
