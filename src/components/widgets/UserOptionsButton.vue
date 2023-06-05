@@ -68,7 +68,7 @@ const initials = computed(
     `${auth.user?.firstName[0].toUpperCase()}${auth.user?.lastName[0].toUpperCase()}`
 );
 
-const color = computed(() => (auth.loggedIn ? accentColors.value.fade2 : undefined));
+const color = computed(() => (auth.loggedIn ? accentColors.value.base : undefined));
 
 function renderIcon(icon: Component) {
   return () => h(NIcon, null, { default: () => h(icon) });
