@@ -14,7 +14,9 @@ def test_basic_validation():
 
 def test_dict_override(test_app):
     t_data = TextCreate(
-        title="agním īḷe puróhitaṁ", slug="agnim", levels=["foo"]
+        title="agním īḷe puróhitaṁ",
+        slug="agnim",
+        levels=[[{"locale": "enUS", "label": "foo"}]],
     ).dict()
     assert t_data["title"] == "agním īḷe puróhitaṁ"
     assert "slug" in t_data
@@ -48,16 +50,31 @@ def test_serialization(test_app, test_data):
 
 
 def test_deserialization(test_app):
-    data = {"title": "Foo", "slug": "foo", "locDelim": "+", "levels": ["foo"]}
+    data = {
+        "title": "Foo",
+        "slug": "foo",
+        "locDelim": "+",
+        "levels": [[{"locale": "enUS", "label": "foo"}]],
+    }
     t = TextCreate(**data)
     assert t.loc_delim == "+"
-    data = {"title": "Foo", "slug": "foo", "loc_delim": "+", "levels": ["foo"]}
+    data = {
+        "title": "Foo",
+        "slug": "foo",
+        "loc_delim": "+",
+        "levels": [[{"locale": "enUS", "label": "foo"}]],
+    }
     t = TextCreate(**data)
     assert t.loc_delim == "+"
 
 
 def test_model_field_casing(test_app):
-    t = TextCreate(title="foo", slug="foo", loc_delim="bar", levels=["foo"])
+    t = TextCreate(
+        title="foo",
+        slug="foo",
+        loc_delim="bar",
+        levels=[[{"locale": "enUS", "label": "foo"}]],
+    )
     assert t.title == "foo"
     assert t.loc_delim == "bar"
 

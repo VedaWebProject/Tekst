@@ -13,7 +13,20 @@
             "subtitle": "Eine altindische Sammlung vedischer Sanskrit-Hymnen"
         }
     ],
-      "levels": ["Book", "Hymn", "Stanza"],
+      "levels": [
+        [
+            {"locale": "enUS", "label": "Book"},
+            {"locale": "deDE", "label": "Buch"}
+        ],
+        [
+            {"locale": "enUS", "label": "Hymn"},
+            {"locale": "deDE", "label": "Hymnus"}
+        ],
+        [
+            {"locale": "enUS", "label": "Stanza"},
+            {"locale": "deDE", "label": "Strophe"}
+        ]
+    ],
       "isActive": true
     }
   ],

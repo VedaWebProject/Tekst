@@ -13,7 +13,20 @@ TEXTS = {
                     "subtitle": "Eine altindische Sammlung vedischer Sanskrit-Hymnen",
                 },
             ],
-            "levels": ["Book", "Hymn", "Stanza"],
+            "levels": [
+                [
+                    {"locale": "enUS", "label": "Book"},
+                    {"locale": "deDE", "label": "Buch"},
+                ],
+                [
+                    {"locale": "enUS", "label": "Hymn"},
+                    {"locale": "deDE", "label": "Hymnus"},
+                ],
+                [
+                    {"locale": "enUS", "label": "Stanza"},
+                    {"locale": "deDE", "label": "Strophe"},
+                ],
+            ],
             "accentColor": "#D43A35",
             "locDelim": ".",
             "defaultLevel": 2,
@@ -113,7 +126,16 @@ TEXTS = {
                 {"locale": "enUS", "subtitle": "An old German folk song"},
                 {"locale": "deDE", "subtitle": "Ein altdeutsches Volkslied"},
             ],
-            "levels": ["Stanza", "Line"],
+            "levels": [
+                [
+                    {"locale": "enUS", "label": "Stanza"},
+                    {"locale": "deDE", "label": "Strophe"},
+                ],
+                [
+                    {"locale": "enUS", "label": "Line"},
+                    {"locale": "deDE", "label": "Vers"},
+                ],
+            ],
             "accent_color": "#43895F",
             "locDelim": " > ",
             "defaultLevel": 1,

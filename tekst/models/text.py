@@ -1,4 +1,4 @@
-from pydantic import Field, conint, constr, validator
+from pydantic import Field, conint, conlist, constr, validator
 from pydantic.color import Color
 from typing_extensions import TypedDict
 
@@ -15,6 +15,11 @@ from tekst.models.common import (
 class SubtitleTranslation(TypedDict):
     locale: Locale
     subtitle: constr(min_length=1, max_length=128)
+
+
+class StructureLevelTranslation(TypedDict):
+    locale: Locale
+    label: constr(min_length=1, max_length=32)
 
 
 class Text(ModelBase, ModelFactory):
@@ -40,7 +45,7 @@ class Text(ModelBase, ModelFactory):
         ),
     )
 
-    levels: list[constr(min_length=1, max_length=32)] = Field(
+    levels: list[conlist(StructureLevelTranslation, min_items=1)] = Field(
         ..., min_items=1, max_items=32
     )
 

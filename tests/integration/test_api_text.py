@@ -36,7 +36,11 @@ async def test_create_text(
     superuser_data = await register_test_user(is_superuser=True)
     session_cookie = await get_session_cookie(superuser_data)
     endpoint = f"{api_path}/texts"
-    payload = {"title": "Just a Test", "slug": "justatest", "levels": ["foo"]}
+    payload = {
+        "title": "Just a Test",
+        "slug": "justatest",
+        "levels": [[{"locale": "enUS", "label": "foo"}]],
+    }
     resp = await test_client.post(endpoint, json=payload, cookies=session_cookie)
     assert resp.status_code == 201, status_fail_msg(201, resp)
     assert "id" in resp.json()

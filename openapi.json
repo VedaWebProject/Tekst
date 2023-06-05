@@ -3495,6 +3495,30 @@
         },
         "description": "Platform statistics data"
       },
+      "StructureLevelTranslation": {
+        "title": "StructureLevelTranslation",
+        "required": [
+          "locale",
+          "label"
+        ],
+        "type": "object",
+        "properties": {
+          "locale": {
+            "title": "Locale",
+            "enum": [
+              "deDE",
+              "enUS"
+            ],
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "maxLength": 32,
+            "minLength": 1,
+            "type": "string"
+          }
+        }
+      },
       "SubtitleTranslation": {
         "title": "SubtitleTranslation",
         "required": [
@@ -3600,9 +3624,11 @@
             "minItems": 1,
             "type": "array",
             "items": {
-              "maxLength": 32,
-              "minLength": 1,
-              "type": "string"
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/StructureLevelTranslation"
+              }
             }
           },
           "defaultLevel": {
@@ -3699,9 +3725,11 @@
             "minItems": 1,
             "type": "array",
             "items": {
-              "maxLength": 32,
-              "minLength": 1,
-              "type": "string"
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/StructureLevelTranslation"
+              }
             }
           },
           "defaultLevel": {
@@ -3796,9 +3824,11 @@
             "title": "Levels",
             "type": "array",
             "items": {
-              "maxLength": 32,
-              "minLength": 1,
-              "type": "string"
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/StructureLevelTranslation"
+              }
             }
           },
           "defaultLevel": {
