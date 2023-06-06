@@ -55,12 +55,11 @@ const subtitleLocaleOptions = computed(() =>
       value: l,
     }))
 );
-const defaultLevelOptions = computed(
-  () =>
-    state.text?.levels.map((l: string, i: number) => ({
-      label: l,
-      value: i,
-    })) || []
+const defaultLevelOptions = computed(() =>
+  state.textLevelLabels.map((lbl, i: number) => ({
+    label: lbl,
+    value: i,
+  }))
 );
 watch(
   () => state.text,
@@ -84,13 +83,14 @@ function handleSave() {
           negativeText: t('general.cancelAction'),
           style: 'font-weight: var(--app-ui-font-weight-light)',
           onPositiveClick: async () => {
+            const changes = getModelChanges();
             try {
               await textsApi.updateText({
                 id: state.text?.id || '',
-                textUpdate: getModelChanges(),
+                textUpdate: changes,
               });
               location.reload();
-              resetModelChanges();
+              // resetModelChanges();
             } catch {
               /**
                * This will be either an app-level error (e.g. buggy validation, server down, 401)
@@ -123,6 +123,7 @@ function handleSave() {
     label-width="auto"
     require-mark-placement="right-hanging"
   >
+    <!-- TITLE -->
     <n-form-item path="title" :label="$t('models.text.title')">
       <n-input
         v-model:value="model.title"
@@ -133,6 +134,7 @@ function handleSave() {
       />
     </n-form-item>
 
+    <!-- SUBTITLE -->
     <n-form-item :label="$t('models.text.subtitle')">
       <n-dynamic-input
         v-model:value="model.subtitle"
@@ -142,7 +144,7 @@ function handleSave() {
         @create="() => ({ locale: null, subtitle: '' })"
         #="{ index, value }"
       >
-        <div style="display: flex; align-items: flex-start; width: 100%">
+        <div style="display: flex; align-items: flex-start; gap: 12px; width: 100%">
           <n-form-item
             ignore-path-change
             :show-label="false"
@@ -159,7 +161,6 @@ function handleSave() {
               @keydown.enter.prevent
             />
           </n-form-item>
-          <div style="margin: 0 8px">:</div>
           <n-form-item
             ignore-path-change
             :show-label="false"
@@ -178,6 +179,7 @@ function handleSave() {
       </n-dynamic-input>
     </n-form-item>
 
+    <!-- SLUG -->
     <n-form-item path="slug" :label="$t('models.text.slug')">
       <n-input
         v-model:value="model.slug"
@@ -188,6 +190,7 @@ function handleSave() {
       />
     </n-form-item>
 
+    <!-- DEFAULT STRUCTURE LEVEL-->
     <n-form-item path="defaultLevel" :label="$t('models.text.defaultLevel')">
       <n-select
         v-model:value="model.defaultLevel"
@@ -197,6 +200,7 @@ function handleSave() {
       />
     </n-form-item>
 
+    <!-- LOCATION DELIMITER -->
     <n-form-item path="locDelim" :label="$t('models.text.locDelim')">
       <n-input
         v-model:value="model.locDelim"
@@ -207,6 +211,7 @@ function handleSave() {
       />
     </n-form-item>
 
+    <!-- ACCENT COLOR -->
     <n-form-item path="accentColor" :label="$t('models.text.accentColor')">
       <n-color-picker
         v-model:value="model.accentColor"
@@ -227,9 +232,11 @@ function handleSave() {
 
     <n-form-item :label="t('general.flags')">
       <n-space vertical>
+        <!-- LABELED LOCATION -->
         <n-checkbox v-model:checked="model.labeledLocation" :disabled="loading">
           {{ $t('models.text.labeledLocation') }}
         </n-checkbox>
+        <!-- ACTIVE -->
         <n-checkbox v-model:checked="model.isActive" :disabled="loading">
           {{ $t('models.text.isActive') }}
         </n-checkbox>

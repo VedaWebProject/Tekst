@@ -1012,6 +1012,33 @@ export interface PlatformStats {
 /**
  * 
  * @export
+ * @interface StructureLevelTranslation
+ */
+export interface StructureLevelTranslation {
+    /**
+     * 
+     * @type {string}
+     * @memberof StructureLevelTranslation
+     */
+    'locale': StructureLevelTranslationLocaleEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof StructureLevelTranslation
+     */
+    'label': string;
+}
+
+export const StructureLevelTranslationLocaleEnum = {
+    DeDe: 'deDE',
+    EnUs: 'enUS'
+} as const;
+
+export type StructureLevelTranslationLocaleEnum = typeof StructureLevelTranslationLocaleEnum[keyof typeof StructureLevelTranslationLocaleEnum];
+
+/**
+ * 
+ * @export
  * @interface SubtitleTranslation
  */
 export interface SubtitleTranslation {
@@ -1148,10 +1175,10 @@ export interface TextCreate {
     'subtitle'?: Array<SubtitleTranslation>;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<Array<StructureLevelTranslation>>}
      * @memberof TextCreate
      */
-    'levels': Array<string>;
+    'levels': Array<Array<StructureLevelTranslation>>;
     /**
      * Default structure level for the client to use for browsing this text
      * @type {number}
@@ -1227,10 +1254,10 @@ export interface TextRead {
     'subtitle'?: Array<SubtitleTranslation>;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<Array<StructureLevelTranslation>>}
      * @memberof TextRead
      */
-    'levels': Array<string>;
+    'levels': Array<Array<StructureLevelTranslation>>;
     /**
      * Default structure level for the client to use for browsing this text
      * @type {number}
@@ -1319,10 +1346,10 @@ export interface TextUpdate {
     'subtitle'?: Array<SubtitleTranslation>;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<Array<StructureLevelTranslation>>}
      * @memberof TextUpdate
      */
-    'levels'?: Array<string>;
+    'levels'?: Array<Array<StructureLevelTranslation>>;
     /**
      * 
      * @type {number}

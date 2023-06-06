@@ -11,6 +11,8 @@ general:
   saveAction: Speichern
   closeAction: Schließen
   resetAction: Zurücksetzen
+  addAction: Hinzufügen
+  removeAction: Entfernen
   quickSearch: Schnellsuche
   textSelect: Wählen Sie den Text, mit dem Sie arbeiten möchten
   info: Information
@@ -117,6 +119,7 @@ forms:
   rulesFeedback:
     minChars: 'Mindestens {min} Zeichen'
     minMaxChars: '{min} bis {max} Zeichen'
+    minMaxItems: '{min} to {max} Elemente'
     isRequired: '{x} wird benötigt'
     user:
 

@@ -3,7 +3,6 @@ import { computed } from 'vue';
 import BrowseLocationLabel from '@/components/browse/BrowseLocationLabel.vue';
 import BrowseToolbar from '@/components/browse/BrowseToolbar.vue';
 import { useStateStore, useBrowseStore } from '@/stores';
-import { NSpin } from 'naive-ui';
 import FolderOffTwotone from '@vicons/material/FolderOffTwotone';
 import LayerToggleDrawer from '@/components/browse/LayerToggleDrawer.vue';
 import UnitContainer from '@/components/browse/UnitContainer.vue';
@@ -24,25 +23,16 @@ const unitsExist = computed(() => {
 
   <BrowseToolbar />
 
-  <UnitContainer
-    v-for="layer in browse.layers"
-    :key="`${layer.id}_${layer.active ? 'active' : 'inactive'}`"
-    :loading="browse.loading"
-    :layer="layer"
-  />
+  <template v-if="unitsExist">
+    <UnitContainer
+      v-for="layer in browse.layers"
+      :key="layer.id"
+      :loading="browse.loading"
+      :layer="layer"
+    />
+  </template>
 
-  <huge-labeled-icon
-    v-show="!unitsExist && !browse.loading"
-    :message="$t('browse.noData')"
-    :icon="FolderOffTwotone"
-  />
-
-  <n-spin
-    v-if="!unitsExist && browse.loading"
-    style="margin: 3rem auto 2rem auto; display: flex"
-    :description="$t('init.loading')"
-  ></n-spin>
-
+  <huge-labeled-icon v-else :message="$t('browse.noData')" :icon="FolderOffTwotone" />
   <LayerToggleDrawer v-model:show="browse.showLayerToggleDrawer" />
 </template>
 

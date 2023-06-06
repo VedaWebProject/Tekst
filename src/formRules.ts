@@ -166,7 +166,22 @@ const textFormRules: Record<string, FormItemRule[]> = {
       trigger: ['input', 'blur'],
     },
   ],
-  level: [
+  levels: [
+    {
+      validator: (rule: FormItemRule, value: any[]) =>
+        !!value && value.length >= 1 && value.length <= 32,
+      message: () => t('forms.rulesFeedback.minMaxItems', { min: 1, max: 32 }),
+      trigger: 'blur',
+    },
+  ],
+  levelTranslationLocale: [
+    {
+      validator: (rule: FormItemRule, value: string) => !!value,
+      message: () => t('forms.rulesFeedback.isRequired', { x: t('general.language') }),
+      trigger: 'blur',
+    },
+  ],
+  levelTranslationLabel: [
     {
       required: true,
       message: () => t('forms.rulesFeedback.isRequired', { x: t('models.text.level') }),
@@ -176,13 +191,6 @@ const textFormRules: Record<string, FormItemRule[]> = {
       validator: (rule: FormItemRule, value: string) =>
         !!value && value.length >= 1 && value.length <= 32,
       message: () => t('forms.rulesFeedback.minMaxChars', { min: 1, max: 32 }),
-      trigger: 'blur',
-    },
-  ],
-  levels: [
-    {
-      required: true,
-      message: () => t('forms.rulesFeedback.isRequired', { x: t('models.text.levels') }),
       trigger: 'blur',
     },
   ],

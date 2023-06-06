@@ -104,3 +104,7 @@ h5:first-child {
   width: 600px;
   max-width: 95%;
 }
+
+.n-select {
+  font-weight: var(--app-ui-font-weight-normal);
+}

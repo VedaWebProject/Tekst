@@ -130,11 +130,15 @@ export const useBrowseStore = defineStore('browse', () => {
   }
 
   async function loadUnitsData(layersData = layers.value) {
-    if (!nodePathHead.value) return;
+    if (!nodePathHead.value) {
+      layers.value = [];
+      loading.value = false;
+      return;
+    }
     // set to loading
     loading.value = true;
     try {
-      // fetch untis data
+      // fetch units data
       const unitsData = await unitsApi
         .findUnits({ nodeId: [nodePathHead.value.id] })
         .then((response: AxiosResponse) => response.data);

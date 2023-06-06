@@ -11,6 +11,8 @@ general:
   saveAction: Save
   closeAction: Close
   resetAction: Reset
+  addAction: Add
+  removeAction: Remove
   textSelect: Select the text you want to work with
   info: Information
   warning: Warning
@@ -116,6 +118,7 @@ forms:
   rulesFeedback:
     minChars: 'Minimum {min} characters'
     minMaxChars: '{min} to {max} characters'
+    minMaxItems: '{min} to {max} items'
     isRequired: '{x} is required'
 
 register:

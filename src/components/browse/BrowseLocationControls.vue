@@ -24,9 +24,9 @@ watch(showModal, (show) => show && initSelectModels());
 
 const browseLevel = ref(state.text?.defaultLevel || 0);
 const browseLevelOptions = computed(() =>
-  state.text?.levels.map((l: string, i: number) => ({
-    label: l,
+  state.textLevelLabels.map((l, i) => ({
     value: i,
+    label: l,
   }))
 );
 // sync browse level in location controls state with actual browse level (if possible)
@@ -129,25 +129,29 @@ async function initSelectModels() {
   });
 
   // fetch nodes from head to root
-  const nodesOptions = await nodesApi
-    .getPathOptionsByHeadId({ id: browse.nodePath[browseLevel.value]?.id || '' })
-    .then((response) => response.data);
+  try {
+    const nodesOptions = await nodesApi
+      .getPathOptionsByHeadId({ id: browse.nodePath[browseLevel.value]?.id })
+      .then((response) => response.data);
 
-  // apply browse level
-  applyBrowseLevel();
+    // apply browse level
+    applyBrowseLevel();
 
-  // manipulate each location select model
-  let index = 0;
-  for (const lsm of locationSelectModels.value) {
-    // set options and selection
-    if (index <= browseLevel.value) {
-      // remember nodes for these options
-      lsm.nodes = nodesOptions[index];
-      // set selection
-      lsm.selected = browse.nodePath[index]?.id || null;
+    // manipulate each location select model
+    let index = 0;
+    for (const lsm of locationSelectModels.value) {
+      // set options and selection
+      if (index <= browseLevel.value) {
+        // remember nodes for these options
+        lsm.nodes = nodesOptions[index];
+        // set selection
+        lsm.selected = browse.nodePath[index]?.id || null;
+      }
+      index++;
+      lsm.loading = false;
     }
-    index++;
-    lsm.loading = false;
+  } catch {
+    // sweet FA
   }
 
   // locationSelectModels.value = models;
@@ -192,17 +196,6 @@ whenever(ArrowRight, () => {
 whenever(ArrowLeft, () => {
   router.push(getPrevNextRoute(-1));
 });
-
-// onKeyStroke('ArrowRight', (e: KeyboardEvent) => {
-//   e.preventDefault();
-//   if (e.repeat) return;
-//   router.push(getPrevNextRoute(1));
-// });
-// onKeyStroke(' ', (e: KeyboardEvent) => {
-//   e.preventDefault();
-//   if (e.repeat) return;
-//   showModal.value = true;
-// });
 </script>
 
 <template>
@@ -238,6 +231,7 @@ whenever(ArrowLeft, () => {
       :focusable="false"
       size="large"
       color="#fff"
+      :disabled="!browse.nodePath[browseLevel]?.id"
     >
       <template #icon>
         <MenuBookOutlined />
@@ -285,7 +279,7 @@ whenever(ArrowLeft, () => {
 
       <n-form-item
         v-for="(levelLoc, index) in locationSelectModels"
-        :label="state.text?.levels[index]"
+        :label="state.textLevelLabels[index]"
         :key="`${index}_loc_select`"
         class="location-select-item"
         :class="levelLoc.disabled && 'disabled'"

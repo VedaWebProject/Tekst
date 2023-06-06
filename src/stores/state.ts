@@ -79,6 +79,18 @@ export const useStateStore = defineStore('state', () => {
       pfData.value?.texts[0]
   );
 
+  // text level labels
+  const textLevelLabels = computed(
+    () =>
+      text.value?.levels.map(
+        (l) =>
+          l.find((l) => l.locale === locale.value)?.label ||
+          l.find((l) => l.locale === 'enUS')?.label ||
+          (l.length > 0 && l[0].label) ||
+          ''
+      ) || []
+  );
+
   // global loading state
   const globalLoading = ref(false);
   const globalLoadingMsg = ref('');
@@ -124,6 +136,7 @@ export const useStateStore = defineStore('state', () => {
     locales,
     text,
     fallbackText,
+    textLevelLabels,
     setLocale,
   };
 });
