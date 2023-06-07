@@ -215,7 +215,10 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[User, PyObjectId]):
         log.debug(f"[on_before_delete] {user.username}")
 
     async def on_after_delete(self, user: User, request: Request | None = None):
-        log.debug(f"[on_after_delete] {user.username}")
+        send_email(
+            user,
+            TemplateIdentifier.DELETED,
+        )
 
     async def validate_password(
         self,

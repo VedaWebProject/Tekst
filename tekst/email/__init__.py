@@ -24,6 +24,7 @@ class TemplateIdentifier(Enum):
     ACTIVATE_TODO = "activate_todo"
     ACTIVATED = "activated"
     DEACTIVATED = "deactivated"
+    DELETED = "deleted"
     PASSWORD_FORGOT = "password_forgot"
     PASSWORD_RESET = "password_reset"
     SUPERUSER_SET = "superuser_set"
