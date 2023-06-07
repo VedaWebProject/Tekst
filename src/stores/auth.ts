@@ -15,9 +15,9 @@ const SESSION_POLL_INTERVAL_S = 60; // check session expiry every n seconds
 const SESSION_EXPIRY_OFFSET_S = 10; // assume session expired n seconds early
 const SESSION_WARN_AHEAD_S = 600; // start showing warnings n seconds before expiry
 
-function getUserFromLocalStorage(): UserRead | null {
+function getUserFromLocalStorage() {
   const storageData = localStorage.getItem('user');
-  if (!storageData) return null;
+  if (!storageData) return;
   return JSON.parse(storageData) as UserRead;
 }
 
@@ -52,7 +52,7 @@ export const useAuthStore = defineStore('auth', () => {
   const { t } = i18n.global;
   const state = useStateStore();
 
-  const user = ref<UserRead | null>(getUserFromLocalStorage());
+  const user = ref(getUserFromLocalStorage());
   const loggedIn = computed(() => !!user.value);
 
   const sessionExpiryTsSec = ref(
@@ -81,7 +81,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   function _cleanupSession() {
-    user.value = null;
+    user.value = undefined;
     localStorage.removeItem('user');
     _unsetCookieExpiry();
     _stopSessionCheck();

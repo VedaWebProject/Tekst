@@ -1,10 +1,20 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { useUsers } from '@/fetchers';
-import { NButton, NInput, NIcon, NCheckbox, NSpace, NSpin, NPagination, NList } from 'naive-ui';
+import {
+  NButton,
+  NInput,
+  NIcon,
+  NCheckbox,
+  NSpace,
+  NSpin,
+  NPagination,
+  NList,
+  useDialog,
+} from 'naive-ui';
 import UserListItem from '@/views/admin/UserListItem.vue';
 import { hashCode } from '@/utils';
-import type { UserRead } from '@/openapi';
+import type { UserRead, UserUpdate } from '@/openapi';
 import { ref } from 'vue';
 import { computed } from 'vue';
 import { useMessages } from '@/messages';
@@ -13,11 +23,16 @@ import { useI18n } from 'vue-i18n';
 import SearchRound from '@vicons/material/SearchRound';
 import UndoRound from '@vicons/material/UndoRound';
 import { useRoute } from 'vue-router';
+import { useApi } from '@/api';
+import { useAuthStore } from '@/stores';
 
 const { t } = useI18n({ useScope: 'global' });
 const { users, error, load: loadUsers } = useUsers();
 const { message } = useMessages();
+const dialog = useDialog();
+const { usersApi, authApi } = useApi();
 const route = useRoute();
+const auth = useAuthStore();
 
 const pagination = ref({
   page: 1,
@@ -61,9 +76,110 @@ const paginatedData = computed(() => {
   return filteredData.value.slice(start, end);
 });
 
-function handleUserUpdated(updatedUser: UserRead) {
-  message.success(t('admin.users.save', { username: updatedUser.username }));
-  loadUsers();
+async function updateUser(user: UserRead, updates: UserUpdate) {
+  try {
+    const updatedUser = (await usersApi.usersPatchUser({ id: user.id, userUpdate: updates })).data;
+    message.success(t('admin.users.save', { username: user.username }));
+    loadUsers();
+    return updatedUser;
+  } catch {
+    message.error(t('errors.unexpected'));
+  }
+}
+
+function handleSuperuserClick(user: UserRead) {
+  dialog.warning({
+    title: t('general.warning'),
+    content: user.isSuperuser
+      ? t('admin.users.confirmMsg.setUser', { username: user.username })
+      : t('admin.users.confirmMsg.setSuperuser', { username: user.username }),
+    positiveText: t('general.yesAction'),
+    negativeText: t('general.noAction'),
+    style: 'font-weight: var(--app-ui-font-weight-light)',
+    onPositiveClick: () => updateUser(user, { isSuperuser: !user.isSuperuser }),
+  });
+}
+
+function handleActiveClick(user: UserRead) {
+  dialog.warning({
+    title: t('general.warning'),
+    content: user.isActive
+      ? t('admin.users.confirmMsg.setInactive', { username: user.username })
+      : t('admin.users.confirmMsg.setActive', { username: user.username }),
+    positiveText: t('general.yesAction'),
+    negativeText: t('general.noAction'),
+    style: 'font-weight: var(--app-ui-font-weight-light)',
+    onPositiveClick: async () => {
+      try {
+        const updatedUser = await updateUser(user, { isActive: !user.isActive });
+        // if just activated but still unverified, send verification mail
+        if (updatedUser && updatedUser.isActive && !updatedUser.isVerified) {
+          try {
+            await authApi.verifyRequestToken({
+              bodyVerifyRequestTokenAuthRequestVerifyTokenPost: { email: updatedUser.email },
+            });
+            message.info(
+              t('admin.users.msgSentVerificationLink', { username: updatedUser.username })
+            );
+          } catch {
+            message.error(t('admin.users.msgSentVerificationLinkError'));
+          }
+        }
+      } catch {
+        message.error('errors.unexpected');
+      }
+    },
+  });
+}
+
+function handleVerifiedClick(user: UserRead) {
+  dialog.warning({
+    title: t('general.warning'),
+    content: user.isVerified
+      ? t('admin.users.confirmMsg.setUnverified', { username: user.username })
+      : t('admin.users.confirmMsg.setVerified', { username: user.username }),
+    positiveText: t('general.yesAction'),
+    negativeText: t('general.noAction'),
+    style: 'font-weight: var(--app-ui-font-weight-light)',
+    onPositiveClick: async () => {
+      try {
+        const updatedUser = await updateUser(user, { isVerified: !user.isVerified });
+        if (updatedUser && !updatedUser.isVerified) {
+          try {
+            await authApi.verifyRequestToken({
+              bodyVerifyRequestTokenAuthRequestVerifyTokenPost: { email: updatedUser.email },
+            });
+            message.info(
+              t('admin.users.msgSentVerificationLink', { username: updatedUser.username })
+            );
+          } catch {
+            message.error(t('admin.users.msgSentVerificationLinkError'));
+          }
+        }
+      } catch {
+        message.error('errors.unexpected');
+      }
+    },
+  });
+}
+
+function handleDeleteClick(user: UserRead) {
+  dialog.warning({
+    title: t('general.warning'),
+    content: t('admin.users.confirmMsg.deleteUser', { username: user.username }),
+    positiveText: t('general.yesAction'),
+    negativeText: t('general.noAction'),
+    style: 'font-weight: var(--app-ui-font-weight-light)',
+    onPositiveClick: async () => {
+      try {
+        await usersApi.usersDeleteUser({ id: user.id });
+        message.success(t('admin.users.msgUserDeleted', { username: user.username }));
+        loadUsers();
+      } catch {
+        message.error('errors.unexpected');
+      }
+    },
+  });
 }
 
 onMounted(() => {
@@ -110,9 +226,13 @@ onMounted(() => {
         <n-list style="background-color: transparent">
           <user-list-item
             v-for="item in paginatedData"
-            :data="item"
             :key="hashCode(item)"
-            @user-updated="handleUserUpdated"
+            :target-user="item"
+            :current-user="auth.user"
+            @active-click="(u) => handleActiveClick(u)"
+            @verified-click="(u) => handleVerifiedClick(u)"
+            @superuser-click="(u) => handleSuperuserClick(u)"
+            @delete-click="(u) => handleDeleteClick(u)"
           />
         </n-list>
         <!-- Pagination -->

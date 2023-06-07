@@ -251,6 +251,7 @@ admin:
       adminWarning: Careful! You better know what you are doing!
     msgSentVerificationLink: A verification email was sent to "{username}".
     msgSentVerificationLinkError: Error sending verification link via email.
+    msgUserDeleted: The user {username} has been deleted and informed via email.
     statusBtnTitle:
       setUser: Downgrade {username} to normal user
       setSuperuser: Promote {username} to administrator
@@ -258,6 +259,7 @@ admin:
       setActive: Activate account of {username}
       setUnverified: Reset email verification of {username}
       setVerified: Set email of {username} to verified
+      deleteUser: Delete user {username}
     confirmMsg:
       areYouSure: Are you sure you want to
       setUser: '@:admin.users.confirmMsg.areYouSure downgrade {username} to a normal user?'
@@ -266,6 +268,7 @@ admin:
       setActive: '@:admin.users.confirmMsg.areYouSure activate the account of {username}?'
       setUnverified: '@:admin.users.confirmMsg.areYouSure reset the email verification status of {username}?'
       setVerified: '@:admin.users.confirmMsg.areYouSure set the email address of {username} to verified?'
+      deleteUser: '@:admin.users.confirmMsg.areYouSure delete the user {username}?'
   texts:
     heading: Texts
     general:
