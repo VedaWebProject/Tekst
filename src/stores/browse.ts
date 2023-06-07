@@ -1,5 +1,5 @@
 import { ref, computed, watch } from 'vue';
-import { useRoute, useRouter, type RouteLocationNormalized } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { defineStore } from 'pinia';
 import { useStateStore, useAuthStore } from '@/stores';
 import type { NodeRead } from '@/openapi';
@@ -41,10 +41,10 @@ export const useBrowseStore = defineStore('browse', () => {
   const position = computed(() => nodePathHead.value?.position);
 
   // update browse node path
-  async function updateBrowseNodePath() {
+  async function updateBrowseNodePath(lvl?: string, pos?: string) {
     if (route.name !== 'browse') return;
-    const qLvl = parseInt(route.query.lvl?.toString() || '') ?? 0;
-    const qPos = parseInt(route.query.pos?.toString() || '') ?? 0;
+    const qLvl = parseInt(lvl || route.query.lvl?.toString() || '') ?? 0;
+    const qPos = parseInt(pos || route.query.pos?.toString() || '') ?? 0;
     if (Number.isInteger(qLvl) && Number.isInteger(qPos)) {
       try {
         // fill browse node path up to root (no more parent)
@@ -96,11 +96,9 @@ export const useBrowseStore = defineStore('browse', () => {
   );
 
   // react to route changes concerning browse state
-  watch(route, (after: RouteLocationNormalized, before: RouteLocationNormalized) => {
-    console.log('watch(route, ');
-    if (after.name === 'browse' && after.params.text === before.params.text) {
-      console.log("if (after.name === 'browse' && after.params.text === before.params.text) {");
-      updateBrowseNodePath();
+  watch([() => route.query.lvl, () => route.query.pos], ([newLvl, newPos]) => {
+    if (route.name === 'browse') {
+      updateBrowseNodePath(newLvl?.toString(), newPos?.toString());
     }
   });
 

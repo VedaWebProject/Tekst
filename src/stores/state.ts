@@ -57,18 +57,24 @@ export const useStateStore = defineStore('state', () => {
 
   // current text
   const text = ref<TextRead>();
-  watch(route, (after) => {
-    if ('text' in after.params && after.params.text && text.value?.slug !== after.params.text) {
-      // use text from route OR default text
-      text.value =
-        pfData.value?.texts.find((t) => t.slug === after.params.text) ||
-        pfData.value?.texts.find((t) => t.id === pfData.value?.settings.defaultTextId);
+  watch(
+    () => route.params.text,
+    (after) => {
+      if (after && text.value?.slug !== after) {
+        // use text from route OR default text
+        text.value =
+          pfData.value?.texts.find((t) => t.slug === after) ||
+          pfData.value?.texts.find((t) => t.id === pfData.value?.settings.defaultTextId);
+      }
     }
-  });
-  watch(text, () => {
-    setPageTitle(route);
-    text.value && localStorage.setItem('text', text.value?.slug);
-  });
+  );
+  watch(
+    () => text.value?.id,
+    () => {
+      setPageTitle(route);
+      text.value && localStorage.setItem('text', text.value?.slug);
+    }
+  );
 
   // fallback text for invalid text references
   const fallbackText = computed(
