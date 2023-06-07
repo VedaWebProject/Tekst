@@ -252,6 +252,8 @@ admin:
     msgSentVerificationLink: A verification email was sent to "{username}".
     msgSentVerificationLinkError: Error sending verification link via email.
     msgUserDeleted: The user {username} has been deleted and informed via email.
+    mailtoLinkTitle: Send email to {username}
+    mailtoSubject: Your {platform} account
     statusBtnTitle:
       setUser: Downgrade {username} to normal user
       setSuperuser: Promote {username} to administrator

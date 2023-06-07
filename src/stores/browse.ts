@@ -97,7 +97,9 @@ export const useBrowseStore = defineStore('browse', () => {
 
   // react to route changes concerning browse state
   watch(route, (after: RouteLocationNormalized, before: RouteLocationNormalized) => {
+    console.log('watch(route, ');
     if (after.name === 'browse' && after.params.text === before.params.text) {
+      console.log("if (after.name === 'browse' && after.params.text === before.params.text) {");
       updateBrowseNodePath();
     }
   });

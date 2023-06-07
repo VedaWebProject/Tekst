@@ -260,6 +260,8 @@ admin:
     msgSentVerificationLink: Eine Verifizierungs-Email wurde an "{username}" gesendet.
     msgSentVerificationLinkError: Beim Senden der Email mit dem Verifizierungs-Link ist ein Fehler aufgetreten.
     msgUserDeleted: Der Benutzer {username} wurde gelöscht und darüber per Email benachrichtigt.
+    mailtoLinkTitle: Email an {username} senden
+    mailtoSubject: Ihr {platform}-Konto
     statusBtnTitle:
       setUser: '{username} zu normalem Benutzer herabstufen'
       setSuperuser: '{username} zu Administrator befördern'

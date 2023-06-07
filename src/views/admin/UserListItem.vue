@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { UserRead } from '@/openapi';
 import { NIcon, NTime, NListItem, NThing, NSpace, NButton } from 'naive-ui';
-import { useI18n } from 'vue-i18n';
 
 import StarRound from '@vicons/material/StarRound';
 import VerifiedUserRound from '@vicons/material/VerifiedUserRound';
@@ -10,6 +9,7 @@ import PersonRound from '@vicons/material/PersonRound';
 import CheckCircleRound from '@vicons/material/CheckCircleRound';
 import QuestionMarkRound from '@vicons/material/QuestionMarkRound';
 import ClearRound from '@vicons/material/ClearRound';
+import { usePlatformData } from '@/platformData';
 
 defineProps<{
   targetUser: UserRead;
@@ -18,7 +18,7 @@ defineProps<{
 
 defineEmits(['superuserClick', 'activeClick', 'verifiedClick', 'deleteClick']);
 
-const { t } = useI18n({ useScope: 'global' });
+const { pfData } = usePlatformData();
 const statusBtnMinWidth = '128px';
 </script>
 
@@ -26,11 +26,19 @@ const statusBtnMinWidth = '128px';
   <n-list-item>
     <n-thing
       :title="targetUser.username"
-      description-style="font-size: var(--app-ui-font-size-tiny); opacity: .6;"
+      description-style="font-size: var(--app-ui-font-size-tiny);"
       content-style="margin-top: 8px"
     >
       <template #description>
-        {{ targetUser.email }} – {{ t('admin.users.registeredAt') }}
+        <a
+          :href="`mailto:${targetUser.email}?subject=${$t('admin.users.mailtoSubject', {
+            platform: pfData?.info?.platformName,
+          })}`"
+          :title="$t('admin.users.mailtoLinkTitle', { username: targetUser.username })"
+        >
+          {{ targetUser.email }}
+        </a>
+        – {{ $t('admin.users.registeredAt') }}
         <n-time :time="new Date(targetUser.createdAt)" type="date" />
       </template>
       <template #header-extra>
@@ -42,15 +50,15 @@ const statusBtnMinWidth = '128px';
             :type="targetUser.isSuperuser ? 'info' : 'default'"
             :title="
               targetUser.isSuperuser
-                ? t('admin.users.statusBtnTitle.setUser', { username: targetUser.username })
-                : t('admin.users.statusBtnTitle.setSuperuser', { username: targetUser.username })
+                ? $t('admin.users.statusBtnTitle.setUser', { username: targetUser.username })
+                : $t('admin.users.statusBtnTitle.setSuperuser', { username: targetUser.username })
             "
             size="tiny"
             :style="{ minWidth: statusBtnMinWidth }"
             @click="$emit('superuserClick', targetUser)"
           >
             {{
-              targetUser.isSuperuser ? t('models.user.isSuperuser') : t('models.user.modelLabel')
+              targetUser.isSuperuser ? $t('models.user.isSuperuser') : $t('models.user.modelLabel')
             }}
             <template #icon>
               <n-icon :component="targetUser.isSuperuser ? StarRound : PersonRound" />
@@ -63,14 +71,14 @@ const statusBtnMinWidth = '128px';
             :type="targetUser.isActive ? 'success' : 'error'"
             :title="
               targetUser.isActive
-                ? t('admin.users.statusBtnTitle.setInactive', { username: targetUser.username })
-                : t('admin.users.statusBtnTitle.setActive', { username: targetUser.username })
+                ? $t('admin.users.statusBtnTitle.setInactive', { username: targetUser.username })
+                : $t('admin.users.statusBtnTitle.setActive', { username: targetUser.username })
             "
             size="tiny"
             :style="{ minWidth: statusBtnMinWidth }"
             @click="$emit('activeClick', targetUser)"
           >
-            {{ targetUser.isActive ? t('models.user.isActive') : t('models.user.isInactive') }}
+            {{ targetUser.isActive ? $t('models.user.isActive') : $t('models.user.isInactive') }}
             <template #icon>
               <n-icon :component="targetUser.isActive ? CheckCircleRound : BlockRound" />
             </template>
@@ -82,15 +90,15 @@ const statusBtnMinWidth = '128px';
             :type="targetUser.isVerified ? 'success' : 'warning'"
             :title="
               targetUser.isVerified
-                ? t('admin.users.statusBtnTitle.setUnverified', { username: targetUser.username })
-                : t('admin.users.statusBtnTitle.setVerified', { username: targetUser.username })
+                ? $t('admin.users.statusBtnTitle.setUnverified', { username: targetUser.username })
+                : $t('admin.users.statusBtnTitle.setVerified', { username: targetUser.username })
             "
             size="tiny"
             :style="{ minWidth: statusBtnMinWidth }"
             @click="$emit('verifiedClick', targetUser)"
           >
             {{
-              targetUser.isVerified ? t('models.user.isVerified') : t('models.user.isUnverified')
+              targetUser.isVerified ? $t('models.user.isVerified') : $t('models.user.isUnverified')
             }}
             <template #icon>
               <n-icon :component="targetUser.isVerified ? VerifiedUserRound : QuestionMarkRound" />
@@ -101,7 +109,7 @@ const statusBtnMinWidth = '128px';
             strong
             secondary
             type="error"
-            :title="t('admin.users.statusBtnTitle.deleteUser', { username: targetUser.username })"
+            :title="$t('admin.users.statusBtnTitle.deleteUser', { username: targetUser.username })"
             size="tiny"
             :disabled="currentUser && currentUser.id === targetUser.id"
             @click="$emit('deleteClick', targetUser)"
