@@ -10,6 +10,7 @@ import {
   NForm,
   NFormItem,
   NInput,
+  NIcon,
   NColorPicker,
   NDynamicInput,
   type FormInst,
@@ -21,6 +22,9 @@ import { useI18n } from 'vue-i18n';
 import { localeProfiles } from '@/i18n';
 import type { SubtitleTranslation } from '@/openapi';
 import { useModelChanges } from '@/modelChanges';
+
+import PlaylistAddRound from '@vicons/material/PlaylistAddRound';
+import PlaylistRemoveRound from '@vicons/material/PlaylistRemoveRound';
 
 const state = useStateStore();
 const dialog = useDialog();
@@ -142,40 +146,60 @@ function handleSave() {
         :min="0"
         :max="Object.keys(localeProfiles).length"
         @create="() => ({ locale: null, subtitle: '' })"
-        #="{ index, value }"
       >
-        <div style="display: flex; align-items: flex-start; gap: 12px; width: 100%">
-          <n-form-item
-            ignore-path-change
-            :show-label="false"
-            :path="`subtitle[${index}].locale`"
-            :rule="textFormRules.subtitleLocale"
-            required
-          >
-            <n-select
-              v-model:value="model.subtitle[index].locale"
-              :options="subtitleLocaleOptions"
-              :placeholder="$t('general.language')"
-              :consistent-menu-width="false"
-              style="min-width: 200px"
-              @keydown.enter.prevent
-            />
-          </n-form-item>
-          <n-form-item
-            ignore-path-change
-            :show-label="false"
-            :path="`subtitle[${index}].subtitle`"
-            :rule="textFormRules.subtitle"
-            style="flex-grow: 2"
-          >
-            <n-input
-              v-model:value="model.subtitle[index].subtitle"
+        <template #default="{ index: subtitleIndex }">
+          <div style="display: flex; align-items: flex-start; gap: 12px; width: 100%">
+            <n-form-item
+              ignore-path-change
+              :show-label="false"
+              :path="`subtitle[${subtitleIndex}].locale`"
+              :rule="textFormRules.subtitleLocale"
+              required
+            >
+              <n-select
+                v-model:value="model.subtitle[subtitleIndex].locale"
+                :options="subtitleLocaleOptions"
+                :placeholder="$t('general.language')"
+                :consistent-menu-width="false"
+                style="min-width: 200px"
+                @keydown.enter.prevent
+              />
+            </n-form-item>
+            <n-form-item
+              ignore-path-change
+              :show-label="false"
+              :path="`subtitle[${subtitleIndex}].subtitle`"
               :rule="textFormRules.subtitle"
-              :placeholder="$t('models.text.subtitle')"
-              @keydown.enter.prevent
-            />
-          </n-form-item>
-        </div>
+              style="flex-grow: 2"
+            >
+              <n-input
+                v-model:value="model.subtitle[subtitleIndex].subtitle"
+                :rule="textFormRules.subtitle"
+                :placeholder="$t('models.text.subtitle')"
+                @keydown.enter.prevent
+              />
+            </n-form-item>
+          </div>
+        </template>
+        <template #action="{ index: indexAction, create, remove }">
+          <n-space style="margin-left: 20px; flex-wrap: nowrap">
+            <n-button secondary type="error" @click="() => remove(indexAction)">
+              <template #icon>
+                <n-icon :component="PlaylistRemoveRound" />
+              </template>
+            </n-button>
+            <n-button
+              secondary
+              type="success"
+              :disabled="model.subtitle.length >= Object.keys(localeProfiles).length"
+              @click="() => create(indexAction)"
+            >
+              <template #icon>
+                <n-icon :component="PlaylistAddRound" />
+              </template>
+            </n-button>
+          </n-space>
+        </template>
       </n-dynamic-input>
     </n-form-item>
 
