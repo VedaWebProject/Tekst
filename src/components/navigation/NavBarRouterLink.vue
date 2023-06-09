@@ -55,4 +55,8 @@ const themeVars = useThemeVars();
 .navbar-router-link.router-link-exact-active {
   color: var(--accent-color);
 }
+
+.navbar-router-link-label {
+  text-align: center;
+}
 </style>
