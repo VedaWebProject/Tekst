@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import {
   NDynamicInput,
   NForm,
@@ -7,16 +7,11 @@ import {
   NFormItem,
   NSpace,
   NButton,
-  NSelect,
   NIcon,
   NAlert,
   type FormInst,
 } from 'naive-ui';
-import type {
-  StructureLevelTranslation,
-  StructureLevelTranslationLocaleEnum,
-  TextCreate,
-} from '@/openapi';
+import type { TextCreate } from '@/openapi';
 import { useFormRules } from '@/formRules';
 import { useI18n } from 'vue-i18n';
 import { useMessages } from '@/messages';
@@ -24,7 +19,6 @@ import { useApi } from '@/api';
 import { useStateStore } from '@/stores';
 import { usePlatformData } from '@/platformData';
 import { useRouter } from 'vue-router';
-import { localeProfiles } from '@/i18n';
 import type { AxiosError } from 'axios';
 
 import PlaylistAddRound from '@vicons/material/PlaylistAddRound';
@@ -39,7 +33,7 @@ interface NewTextModel {
 const initialModel = (): NewTextModel => ({
   title: undefined,
   slug: undefined,
-  levels: [[{ locale: undefined, label: undefined }]],
+  levels: [[{ locale: 'enUS', label: undefined }]],
 });
 
 const { t } = useI18n({ useScope: 'global' });
@@ -52,22 +46,6 @@ const { pfData, loadPlatformData } = usePlatformData();
 const model = ref<Record<string, any>>(initialModel());
 const formRef = ref<FormInst | null>(null);
 const loading = ref(false);
-
-const levelLocaleOptions = computed(() =>
-  model.value.levels.map((lvl: StructureLevelTranslation[]) => {
-    return Object.keys(localeProfiles)
-      .filter(
-        (l) =>
-          !lvl
-            .map((lvl: StructureLevelTranslation) => lvl.locale)
-            .includes(l as StructureLevelTranslationLocaleEnum)
-      )
-      .map((l) => ({
-        label: localeProfiles[l].displayFull,
-        value: localeProfiles[l].apiLocaleEnum,
-      }));
-  })
-);
 
 function handleTitleChange(title: string) {
   const tokens = title
@@ -166,61 +144,21 @@ async function handleSave() {
           <template #default="{ index: levelIndex }">
             <div style="padding-right: 12px">{{ levelIndex + 1 }}.</div>
             <div style="flex-grow: 2">
-              <!-- STRUCTURE LEVEL -->
-              <n-form-item ignore-path-change :show-label="false" :path="`levels[${levelIndex}]`">
-                <n-dynamic-input
-                  v-model:value="model.levels[levelIndex]"
-                  :min="1"
-                  :max="Object.keys(localeProfiles).length"
-                  item-style="margin-bottom: 0;"
+              <!-- STRUCTURE LEVEL LABEL -->
+              <n-form-item
+                ignore-path-change
+                :show-label="false"
+                :path="`levels[${levelIndex}][0].label`"
+                :rule="textFormRules.levelTranslationLabel"
+                style="flex-grow: 2"
+              >
+                <n-input
+                  v-model:value="model.levels[levelIndex][0].label"
+                  type="text"
+                  :placeholder="$t('models.text.levelLabel')"
+                  @keydown.enter.prevent
                   :disabled="loading"
-                  @create="() => ({ locale: null, label: '' })"
-                  #="{ index: translationIndex }"
-                >
-                  <div
-                    style="
-                      display: flex;
-                      align-items: flex-start;
-                      gap: 12px;
-                      flex-wrap: wrap;
-                      width: 100%;
-                    "
-                  >
-                    <!-- STRUCTURE LEVEL LOCALE -->
-                    <n-form-item
-                      ignore-path-change
-                      :show-label="false"
-                      :path="`levels[${levelIndex}][${translationIndex}].locale`"
-                      :rule="textFormRules.levelTranslationLocale"
-                    >
-                      <n-select
-                        v-model:value="model.levels[levelIndex][translationIndex].locale"
-                        :options="levelLocaleOptions[levelIndex]"
-                        :placeholder="$t('general.language')"
-                        :consistent-menu-width="false"
-                        style="min-width: 200px"
-                        @keydown.enter.prevent
-                        :disabled="loading"
-                      />
-                    </n-form-item>
-                    <!-- STRUCTURE LEVEL LABEL -->
-                    <n-form-item
-                      ignore-path-change
-                      :show-label="false"
-                      :path="`levels[${levelIndex}][${translationIndex}].label`"
-                      :rule="textFormRules.levelTranslationLabel"
-                      style="flex-grow: 2"
-                    >
-                      <n-input
-                        v-model:value="model.levels[levelIndex][translationIndex].label"
-                        type="text"
-                        :placeholder="$t('models.text.levelLabel')"
-                        @keydown.enter.prevent
-                        :disabled="loading"
-                      />
-                    </n-form-item>
-                  </div>
-                </n-dynamic-input>
+                />
               </n-form-item>
             </div>
           </template>
