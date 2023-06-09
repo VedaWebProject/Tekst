@@ -214,7 +214,7 @@ async function handleSave() {
                       <n-input
                         v-model:value="model.levels[levelIndex][translationIndex].label"
                         type="text"
-                        :placeholder="$t('models.text.level')"
+                        :placeholder="$t('models.text.levelLabel')"
                         @keydown.enter.prevent
                         :disabled="loading"
                       />

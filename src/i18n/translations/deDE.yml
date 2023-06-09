@@ -169,6 +169,7 @@ models:
     subtitle: Untertitel
     level: Strukturebene
     levels: Strukturebenen
+    levelLabel: Bezeichnung
     defaultLevel: Standard-Strukturebene
     locDelim: Fundstellen-Trennzeichen
     labeledLocation: Beschriftete Fundstelle
