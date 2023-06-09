@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import {
   NDynamicInput,
   NForm,
@@ -11,7 +11,6 @@ import {
   NIcon,
   NAlert,
   type FormInst,
-  type SelectOption,
 } from 'naive-ui';
 import type {
   StructureLevelTranslation,
@@ -31,10 +30,16 @@ import type { AxiosError } from 'axios';
 import PlaylistAddRound from '@vicons/material/PlaylistAddRound';
 import PlaylistRemoveRound from '@vicons/material/PlaylistRemoveRound';
 
-const initialModel = () => ({
-  title: null,
-  slug: null,
-  levels: [[{ locale: null, label: null }]],
+interface NewTextModel {
+  title?: string;
+  slug?: string;
+  levels: { locale?: string; label?: string }[][];
+}
+
+const initialModel = (): NewTextModel => ({
+  title: undefined,
+  slug: undefined,
+  levels: [[{ locale: undefined, label: undefined }]],
 });
 
 const { t } = useI18n({ useScope: 'global' });
@@ -48,19 +53,21 @@ const model = ref<Record<string, any>>(initialModel());
 const formRef = ref<FormInst | null>(null);
 const loading = ref(false);
 
-function levelLocaleOptions(indexLevel: number): SelectOption[] {
-  return Object.keys(localeProfiles)
-    .filter(
-      (l) =>
-        !model.value.levels[indexLevel]
-          .map((lvl: StructureLevelTranslation) => lvl.locale)
-          .includes(l as StructureLevelTranslationLocaleEnum)
-    )
-    .map((l) => ({
-      label: localeProfiles[l].displayFull,
-      value: l,
-    }));
-}
+const levelLocaleOptions = computed(() =>
+  model.value.levels.map((lvl: StructureLevelTranslation[]) => {
+    return Object.keys(localeProfiles)
+      .filter(
+        (l) =>
+          !lvl
+            .map((lvl: StructureLevelTranslation) => lvl.locale)
+            .includes(l as StructureLevelTranslationLocaleEnum)
+      )
+      .map((l) => ({
+        label: localeProfiles[l].displayFull,
+        value: localeProfiles[l].apiLocaleEnum,
+      }));
+  })
+);
 
 function handleTitleChange(title: string) {
   const tokens = title
@@ -156,19 +163,19 @@ async function handleSave() {
           :disabled="loading"
           @create="() => [{ locale: null, label: '' }]"
         >
-          <template #default="{ index: indexLevel }">
-            <div style="padding-right: 12px">{{ indexLevel + 1 }}.</div>
+          <template #default="{ index: levelIndex }">
+            <div style="padding-right: 12px">{{ levelIndex + 1 }}.</div>
             <div style="flex-grow: 2">
               <!-- STRUCTURE LEVEL -->
-              <n-form-item ignore-path-change :show-label="false" :path="`levels[${indexLevel}]`">
+              <n-form-item ignore-path-change :show-label="false" :path="`levels[${levelIndex}]`">
                 <n-dynamic-input
-                  v-model:value="model.levels[indexLevel]"
+                  v-model:value="model.levels[levelIndex]"
                   :min="1"
                   :max="Object.keys(localeProfiles).length"
                   item-style="margin-bottom: 0;"
                   :disabled="loading"
                   @create="() => ({ locale: null, label: '' })"
-                  #="{ index: indexTranslation }"
+                  #="{ index: translationIndex }"
                 >
                   <div
                     style="
@@ -183,12 +190,12 @@ async function handleSave() {
                     <n-form-item
                       ignore-path-change
                       :show-label="false"
-                      :path="`levels[${indexLevel}][${indexTranslation}].locale`"
+                      :path="`levels[${levelIndex}][${translationIndex}].locale`"
                       :rule="textFormRules.levelTranslationLocale"
                     >
                       <n-select
-                        v-model:value="model.levels[indexLevel][indexTranslation].locale"
-                        :options="levelLocaleOptions(indexLevel)"
+                        v-model:value="model.levels[levelIndex][translationIndex].locale"
+                        :options="levelLocaleOptions[levelIndex]"
                         :placeholder="$t('general.language')"
                         :consistent-menu-width="false"
                         style="min-width: 200px"
@@ -200,12 +207,12 @@ async function handleSave() {
                     <n-form-item
                       ignore-path-change
                       :show-label="false"
-                      :path="`levels[${indexLevel}][${indexTranslation}].label`"
+                      :path="`levels[${levelIndex}][${translationIndex}].label`"
                       :rule="textFormRules.levelTranslationLabel"
                       style="flex-grow: 2"
                     >
                       <n-input
-                        v-model:value="model.levels[indexLevel][indexTranslation].label"
+                        v-model:value="model.levels[levelIndex][translationIndex].label"
                         type="text"
                         :placeholder="$t('models.text.level')"
                         @keydown.enter.prevent
