@@ -28,7 +28,8 @@ const AdminStatisticsView = () => import('@/views/admin/AdminStatisticsView.vue'
 const AdminUsersView = () => import('@/views/admin/AdminUsersView.vue');
 const AdminTextsView = () => import('@/views/admin/AdminTextsView.vue');
 const AdminTextsGeneralView = () => import('@/views/admin/AdminTextsGeneralView.vue');
-const AdminTextsStructureView = () => import('@/views/admin/AdminTextsStructureView.vue');
+const AdminTextsLevelsView = () => import('@/views/admin/AdminTextsLevelsView.vue');
+const AdminTextsNodesView = () => import('@/views/admin/AdminTextsNodesView.vue');
 const AdminNewTextView = () => import('@/views/admin/AdminNewTextView.vue');
 
 const router = createRouter({
@@ -139,9 +140,14 @@ const router = createRouter({
               component: AdminTextsGeneralView,
             },
             {
-              path: 'structure',
-              name: 'adminTextsStructure',
-              component: AdminTextsStructureView,
+              path: 'levels',
+              name: 'adminTextsLevels',
+              component: AdminTextsLevelsView,
+            },
+            {
+              path: 'nodes',
+              name: 'adminTextsNodes',
+              component: AdminTextsNodesView,
             },
           ],
         },

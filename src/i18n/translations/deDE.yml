@@ -12,6 +12,7 @@ general:
   closeAction: Schließen
   resetAction: Zurücksetzen
   addAction: Hinzufügen
+  insertAction: Einfügen
   removeAction: Entfernen
   quickSearch: Schnellsuche
   textSelect: Wählen Sie den Text, mit dem Sie arbeiten möchten
@@ -167,10 +168,9 @@ models:
     title: Titel
     slug: Identifikator
     subtitle: Untertitel
-    level: Strukturebene
-    levels: Strukturebenen
+    level: Ebene | Ebenen
     levelLabel: Bezeichnung
-    defaultLevel: Standard-Strukturebene
+    defaultLevel: Standard-Ebene
     locDelim: Fundstellen-Trennzeichen
     labeledLocation: Beschriftete Fundstelle
     accentColor: Akzent-Farbe
@@ -180,7 +180,7 @@ models:
       slugChars: 'Erlaubte Zeichen: a-z und 0-9'
       defaultLevelRange: 0 oder höher
   node:
-    modelLabel: Text-Knoten | Text-Knoten
+    modelLabel: Strukturknoten | Strukturknoten
   layer:
     modelLabel: Datenschicht | Datenschichten
     layerType: Datenschicht-Typ
@@ -286,8 +286,13 @@ admin:
       heading: Allgemeine Einstellungen
       msgSaved: Text-Einstellungen gespeichert.
       msgRefreshWarn: Die Seite wird nach dem Speichern automatisch neu geladen.
-    structure:
-      heading: Struktur
+    levels:
+      heading: Ebenen
+      tipAddLevel: Neue Ebene an Position {n} einfügen
+      tipEditLevel: Ebene "{levelLabel}" bearbeiten
+      tipDeleteLevel: Ebene "{levelLabel}" löschen
+    nodes:
+      heading: Knoten
   newText:
     heading: Neuer Text
     headerInfoMsg: |

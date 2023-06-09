@@ -132,7 +132,7 @@ async function handleSave() {
       </n-form-item>
 
       <!-- STRUCTURE LEVELS -->
-      <n-form-item :label="$t('models.text.levels')" path="levels" required>
+      <n-form-item :label="$t('models.text.level', 2)" path="levels" required>
         <n-dynamic-input
           v-model:value="model.levels"
           :min="1"

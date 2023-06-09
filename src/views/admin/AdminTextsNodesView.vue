@@ -4,4 +4,4 @@ import { useStateStore } from '@/stores';
 const state = useStateStore();
 </script>
 
-<template>{{ $t('admin.texts.structure.heading') }}: {{ state.text?.title }}</template>
+<template>{{ $t('models.node.modelLabel', 2) }}: {{ state.text?.title }}</template>

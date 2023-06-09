@@ -23,22 +23,15 @@ const state = useStateStore();
       :route="{ name: 'adminTextsGeneral', params: { text: state.text?.slug } }"
     />
     <NavBarRouterLink
-      :label="$t('admin.texts.structure.heading')"
-      :route="{ name: 'adminTextsStructure', params: { text: state.text?.slug } }"
+      :label="$t('admin.texts.levels.heading')"
+      :route="{ name: 'adminTextsLevels', params: { text: state.text?.slug } }"
+    />
+    <NavBarRouterLink
+      :label="$t('admin.texts.nodes.heading')"
+      :route="{ name: 'adminTextsNodes', params: { text: state.text?.slug } }"
     />
   </SecondaryNavBar>
 
-  <!-- <n-tabs
-    type="segment"
-    default-value="adminTexts"
-    size="large"
-    :bar-width="0"
-    tab-style="font-weight: var(--app-ui-font-weight-normal)"
-    @update:value="handleTabSwitch"
-  >
-    <n-tab name="adminTexts">{{ $t('admin.texts.general.heading') }}</n-tab>
-    <n-tab name="adminTextsStructure">{{ $t('admin.texts.structure.heading') }}</n-tab>
-  </n-tabs> -->
   <div class="content-block">
     <router-view></router-view>
   </div>

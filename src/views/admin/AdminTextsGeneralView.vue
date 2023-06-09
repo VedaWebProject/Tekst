@@ -189,7 +189,12 @@ function handleSave() {
         </template>
         <template #action="{ index: indexAction, create, remove }">
           <n-space style="margin-left: 20px; flex-wrap: nowrap">
-            <n-button secondary type="error" @click="() => remove(indexAction)">
+            <n-button
+              secondary
+              type="error"
+              :title="t('general.removeAction')"
+              @click="() => remove(indexAction)"
+            >
               <template #icon>
                 <n-icon :component="PlaylistRemoveRound" />
               </template>
@@ -197,6 +202,7 @@ function handleSave() {
             <n-button
               secondary
               type="success"
+              :title="t('general.insertAction')"
               :disabled="model.subtitle.length >= Object.keys(localeProfiles).length"
               @click="() => create(indexAction)"
             >

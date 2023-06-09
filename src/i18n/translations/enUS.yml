@@ -12,6 +12,7 @@ general:
   closeAction: Close
   resetAction: Reset
   addAction: Add
+  insertAction: Insert
   removeAction: Remove
   textSelect: Select the text you want to work with
   info: Information
@@ -159,10 +160,9 @@ models:
     title: Title
     slug: Identifier
     subtitle: Subtitle
-    level: Structure level
-    levels: Structure levels
+    level: Level | Levels
     levelLabel: Label
-    defaultLevel: Default structure level
+    defaultLevel: Default level
     locDelim: Location delimiter
     labeledLocation: Labeled location
     accentColor: Accent color
@@ -172,7 +172,7 @@ models:
       slugChars: 'Allowed characters: a-z and 0-9'
       defaultLevelRange: 0 or greater
   node:
-    modelLabel: Text node | Text Nodes
+    modelLabel: Structure node | Structure nodes
   layer:
     modelLabel: Data layer | Data layers
     layerType: Datalayer Type
@@ -278,8 +278,13 @@ admin:
       heading: General Settings
       msgSaved: Text settings saved.
       msgRefreshWarn: The page will automatically refresh after saving the changes.
-    structure:
-      heading: Structure
+    levels:
+      heading: Levels
+      tipAddLevel: Insert new level at position {n}
+      tipEditLevel: Edit level "{levelLabel}"
+      tipDeleteLevel: Delete level "{levelLabel}"
+    nodes:
+      heading: Nodes
   newText:
     heading: New Text
     headerInfoMsg: |
