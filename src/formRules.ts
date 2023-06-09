@@ -204,8 +204,14 @@ const textFormRules: Record<string, FormItemRule[]> = {
   ],
   locDelim: [
     {
-      validator: (rule: FormItemRule, value: string) => value.length <= 3,
-      message: () => t('forms.rulesFeedback.minMaxChars', { min: 0, max: 3 }),
+      required: true,
+      message: () => t('forms.rulesFeedback.isRequired', { x: t('models.text.locDelim') }),
+      trigger: 'blur',
+    },
+    {
+      validator: (rule: FormItemRule, value: string) =>
+        !!value && value.length >= 1 && value.length <= 3,
+      message: () => t('forms.rulesFeedback.minMaxChars', { min: 1, max: 3 }),
       trigger: 'blur',
     },
   ],
