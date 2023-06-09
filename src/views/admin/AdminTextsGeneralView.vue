@@ -51,7 +51,7 @@ const subtitleLocaleOptions = computed(() =>
   Object.keys(localeProfiles)
     .filter((l) => !model.value.subtitle.find((s: SubtitleTranslation) => s && s.locale == l))
     .map((l) => ({
-      label: l,
+      label: localeProfiles[l].displayFull,
       value: l,
     }))
 );
