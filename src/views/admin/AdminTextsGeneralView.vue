@@ -44,27 +44,33 @@ const initialModel = () => ({
   accentColor: state.text?.accentColor,
   isActive: state.text?.isActive,
 });
+
 const model = ref<Record<string, any>>(initialModel());
+
 const {
   changed: modelChanged,
   reset: resetModelChanges,
   getChanges: getModelChanges,
 } = useModelChanges(model);
+
 const formRef = ref<FormInst | null>(null);
+
 const subtitleLocaleOptions = computed(() =>
   Object.keys(localeProfiles)
     .filter((l) => !model.value.subtitle.find((s: SubtitleTranslation) => s && s.locale == l))
     .map((l) => ({
-      label: localeProfiles[l].displayFull,
+      label: `${localeProfiles[l].icon} ${localeProfiles[l].displayFull}`,
       value: l,
     }))
 );
+
 const defaultLevelOptions = computed(() =>
   state.textLevelLabels.map((lbl, i: number) => ({
     label: lbl,
     value: i,
   }))
 );
+
 watch(
   () => state.text,
   () => (model.value = initialModel())
