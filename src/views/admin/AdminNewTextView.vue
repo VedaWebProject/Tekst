@@ -21,8 +21,8 @@ import { usePlatformData } from '@/platformData';
 import { useRouter } from 'vue-router';
 import type { AxiosError } from 'axios';
 
-import PlaylistAddRound from '@vicons/material/PlaylistAddRound';
-import PlaylistRemoveRound from '@vicons/material/PlaylistRemoveRound';
+import AddRound from '@vicons/material/AddRound';
+import MinusRound from '@vicons/material/MinusRound';
 
 interface NewTextModel {
   title?: string;
@@ -166,22 +166,24 @@ async function handleSave() {
             <n-space style="margin-left: 20px; flex-wrap: nowrap">
               <n-button
                 secondary
-                type="error"
+                circle
+                :title="t('general.removeAction')"
                 :disabled="model.levels.length === 1"
                 @click="() => remove(indexAction)"
               >
                 <template #icon>
-                  <n-icon :component="PlaylistRemoveRound" />
+                  <n-icon :component="MinusRound" />
                 </template>
               </n-button>
               <n-button
                 secondary
-                type="success"
+                circle
+                :title="t('general.insertAction')"
                 :disabled="model.levels.length >= 32"
                 @click="() => create(indexAction)"
               >
                 <template #icon>
-                  <n-icon :component="PlaylistAddRound" />
+                  <n-icon :component="AddRound" />
                 </template>
               </n-button>
             </n-space>

@@ -23,8 +23,8 @@ import { localeProfiles } from '@/i18n';
 import type { SubtitleTranslation } from '@/openapi';
 import { useModelChanges } from '@/modelChanges';
 
-import PlaylistAddRound from '@vicons/material/PlaylistAddRound';
-import PlaylistRemoveRound from '@vicons/material/PlaylistRemoveRound';
+import AddRound from '@vicons/material/AddRound';
+import MinusRound from '@vicons/material/MinusRound';
 
 const state = useStateStore();
 const dialog = useDialog();
@@ -191,23 +191,23 @@ function handleSave() {
           <n-space style="margin-left: 20px; flex-wrap: nowrap">
             <n-button
               secondary
-              type="error"
+              circle
               :title="t('general.removeAction')"
               @click="() => remove(indexAction)"
             >
               <template #icon>
-                <n-icon :component="PlaylistRemoveRound" />
+                <n-icon :component="MinusRound" />
               </template>
             </n-button>
             <n-button
               secondary
-              type="success"
+              circle
               :title="t('general.insertAction')"
               :disabled="model.subtitle.length >= Object.keys(localeProfiles).length"
               @click="() => create(indexAction)"
             >
               <template #icon>
-                <n-icon :component="PlaylistAddRound" />
+                <n-icon :component="AddRound" />
               </template>
             </n-button>
           </n-space>
