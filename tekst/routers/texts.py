@@ -1,9 +1,18 @@
 from beanie.operators import Or
 from fastapi import APIRouter, HTTPException, status
+from pydantic import conlist
 
 from tekst.auth import OptionalUserDep, SuperuserDep
 from tekst.models.common import PyObjectId
-from tekst.models.text import TextCreate, TextDocument, TextRead, TextUpdate
+from tekst.models.layer import LayerBaseDocument
+from tekst.models.text import (
+    NodeDocument,
+    StructureLevelTranslation,
+    TextCreate,
+    TextDocument,
+    TextRead,
+    TextUpdate,
+)
 
 
 router = APIRouter(
@@ -67,6 +76,47 @@ async def create_text(su: SuperuserDep, text: TextCreate) -> TextRead:
 #         await file.close()
 
 #     return text
+
+
+@router.post(
+    "/{id}/insert-node", response_model=TextRead, status_code=status.HTTP_200_OK
+)
+async def insert_level(
+    su: SuperuserDep,
+    id: PyObjectId,
+    index: int,
+    level: conlist(StructureLevelTranslation, min_items=1),
+) -> TextRead:
+    text: TextDocument = await TextDocument.get(id)
+    # text exists?
+    if not text:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Could not find text with ID {id}",
+        )
+    # index valid?
+    if index < 0 or index > len(text.levels):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=(
+                f"Invalid level index {index}: " f"Text has {len(text.levels)} levels."
+            ),
+        )
+    # update all existing layers with level > position
+    await LayerBaseDocument.find(
+        LayerBaseDocument.text_id == id,
+        LayerBaseDocument.level >= index,
+        with_children=True,
+    ).inc({LayerBaseDocument.level: 1})
+    # update all existing nodes with level > position
+    await NodeDocument.find(
+        NodeDocument.text_id == id, NodeDocument.level >= index
+    ).inc({NodeDocument.level: 1})
+    # update text levels
+    levels = list(text.levels)
+    levels.insert(index, level)
+    await text.apply({levels: levels})
+    return await TextDocument.get(id)
 
 
 @router.get("/{id}", response_model=TextRead, status_code=status.HTTP_200_OK)

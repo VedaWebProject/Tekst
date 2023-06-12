@@ -1293,6 +1293,84 @@
         ]
       }
     },
+    "/texts/{id}/insert-node": {
+      "post": {
+        "tags": [
+          "texts"
+        ],
+        "summary": "Insert level",
+        "operationId": "insertLevel",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "name": "id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Index",
+              "type": "integer"
+            },
+            "name": "index",
+            "in": "query"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "Level",
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/StructureLevelTranslation"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TextRead"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
     "/texts/{id}": {
       "get": {
         "tags": [
