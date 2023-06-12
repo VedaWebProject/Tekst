@@ -104,11 +104,14 @@ async function updateSelectModelsFromLvl(lvl: number) {
   locationSelectModels.value.forEach((lsm, i) => {
     // only apply to higher levels
     if (i > lvl) {
-      // set nodes
-      lsm.nodes = nodes.shift() || [];
-      // set selection
-      lsm.selected = lsm.nodes[0].id || null;
-      // set to no loading
+      // only do this if we're <= current browse level
+      if (i <= browseLevel.value) {
+        // set nodes
+        lsm.nodes = nodes.shift() || [];
+        // set selection
+        lsm.selected = lsm.nodes[0]?.id || null;
+        // set to no loading
+      }
       lsm.loading = false;
     }
   });
@@ -170,7 +173,9 @@ function getPrevNextRoute(step: number) {
 function handleLocationSelect() {
   // we reverse the actual array here, but it will be created from scratch
   // anyway as soon as the location select modal opens again
-  const selectedLevel = locationSelectModels.value.reverse().find((lsm) => !lsm.disabled);
+  const selectedLevel = locationSelectModels.value
+    .reverse()
+    .find((lsm) => !lsm.disabled && !!lsm.selected);
   const selectedNode = selectedLevel?.nodes.find((n) => n.id === selectedLevel.selected);
 
   router.push({
@@ -231,7 +236,7 @@ whenever(ArrowLeft, () => {
       :focusable="false"
       size="large"
       color="#fff"
-      :disabled="!browse.nodePath[browseLevel]?.id"
+      :disabled="!browse.nodePath[browseLevel]"
     >
       <template #icon>
         <MenuBookOutlined />
@@ -290,7 +295,7 @@ whenever(ArrowLeft, () => {
           filterable
           placeholder="--"
           :loading="levelLoc.loading"
-          :disabled="levelLoc.disabled"
+          :disabled="levelLoc.disabled || locationSelectOptions[index].length === 0"
           @update:value="() => updateSelectModelsFromLvl(index)"
         />
       </n-form-item>
