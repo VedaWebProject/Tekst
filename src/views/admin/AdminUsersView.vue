@@ -12,7 +12,7 @@ import {
   NList,
   useDialog,
 } from 'naive-ui';
-import UserListItem from '@/views/admin/UserListItem.vue';
+import UserListItem from '@/components/admin/UserListItem.vue';
 import { hashCode } from '@/utils';
 import type { UserRead, UserUpdate } from '@/openapi';
 import { ref } from 'vue';
@@ -229,10 +229,10 @@ onMounted(() => {
             :key="hashCode(item)"
             :target-user="item"
             :current-user="auth.user"
-            @active-click="(u) => handleActiveClick(u)"
-            @verified-click="(u) => handleVerifiedClick(u)"
-            @superuser-click="(u) => handleSuperuserClick(u)"
-            @delete-click="(u) => handleDeleteClick(u)"
+            @active-click="(u: UserRead) => handleActiveClick(u)"
+            @verified-click="(u: UserRead) => handleVerifiedClick(u)"
+            @superuser-click="(u: UserRead) => handleSuperuserClick(u)"
+            @delete-click="(u: UserRead) => handleDeleteClick(u)"
           />
         </n-list>
         <!-- Pagination -->
