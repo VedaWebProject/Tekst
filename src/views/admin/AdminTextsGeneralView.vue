@@ -25,8 +25,10 @@ import { useModelChanges } from '@/modelChanges';
 
 import AddRound from '@vicons/material/AddRound';
 import MinusRound from '@vicons/material/MinusRound';
+import { usePlatformData } from '@/platformData';
 
 const state = useStateStore();
+const { loadPlatformData } = usePlatformData();
 const dialog = useDialog();
 const { message } = useMessages();
 const { textFormRules } = useFormRules();
@@ -95,12 +97,15 @@ function handleSave() {
           onPositiveClick: async () => {
             const changes = getModelChanges();
             try {
-              await textsApi.updateText({
-                id: state.text?.id || '',
-                textUpdate: changes,
-              });
-              location.reload();
-              // resetModelChanges();
+              const updatedText = (
+                await textsApi.updateText({
+                  id: state.text?.id || '',
+                  textUpdate: changes,
+                })
+              ).data;
+              loadPlatformData();
+              state.text = updatedText;
+              resetModelChanges();
             } catch {
               /**
                * This will be either an app-level error (e.g. buggy validation, server down, 401)
