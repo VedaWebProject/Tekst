@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from beanie.operators import Or
+from beanie.operators import Or, Set
 from fastapi import APIRouter, HTTPException, status
 from pydantic import conlist
 
@@ -90,12 +90,14 @@ async def insert_level(
     level: conlist(StructureLevelTranslation, min_items=1),
 ) -> TextRead:
     text: TextDocument = await TextDocument.get(id)
+
     # text exists?
     if not text:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Could not find text with ID {id}",
         )
+
     # index valid?
     if index < 0 or index > len(text.levels):
         raise HTTPException(
@@ -104,22 +106,47 @@ async def insert_level(
                 f"Invalid level index {index}: " f"Text has {len(text.levels)} levels."
             ),
         )
+
     # update text itself
     text.levels.insert(index, level)
     if text.default_level >= index:
         text.default_level += 1
     text.modified_at = datetime.utcnow()
     await text.save()
+
     # update all existing layers with level >= index
     await LayerBaseDocument.find(
         LayerBaseDocument.text_id == id,
         LayerBaseDocument.level >= index,
         with_children=True,
     ).inc({LayerBaseDocument.level: 1})
+
     # update all existing nodes with level >= index
     await NodeDocument.find(
         NodeDocument.text_id == id, NodeDocument.level >= index
     ).inc({NodeDocument.level: 1})
+
+    # create dummy node on new level
+    parent_node = await NodeDocument.find_one(
+        NodeDocument.text_id == id,
+        NodeDocument.level == index - 1,
+        NodeDocument.position == 0,
+    )
+    only_node = NodeDocument(
+        text_id=id,
+        parent_id=parent_node.id if parent_node else None,
+        level=index,
+        position=0,
+        label="???",
+    )
+    await only_node.create()
+
+    # make all nodes of lower level (higher level value) children of this node
+    if index < len(text.levels) - 1:
+        await NodeDocument.find(
+            NodeDocument.text_id == id, NodeDocument.level == index + 1
+        ).update(Set({NodeDocument.parent_id: only_node.id}))
+
     return await TextDocument.get(id)
 
 
