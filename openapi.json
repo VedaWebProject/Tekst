@@ -1293,7 +1293,7 @@
         ]
       }
     },
-    "/texts/{id}/insert-node": {
+    "/texts/{id}/insert-level": {
       "post": {
         "tags": [
           "texts"

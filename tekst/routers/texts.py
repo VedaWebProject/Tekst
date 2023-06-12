@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from beanie.operators import Or
 from fastapi import APIRouter, HTTPException, status
 from pydantic import conlist
@@ -79,7 +81,7 @@ async def create_text(su: SuperuserDep, text: TextCreate) -> TextRead:
 
 
 @router.post(
-    "/{id}/insert-node", response_model=TextRead, status_code=status.HTTP_200_OK
+    "/{id}/insert-level", response_model=TextRead, status_code=status.HTTP_200_OK
 )
 async def insert_level(
     su: SuperuserDep,
@@ -102,20 +104,22 @@ async def insert_level(
                 f"Invalid level index {index}: " f"Text has {len(text.levels)} levels."
             ),
         )
-    # update all existing layers with level > position
+    # update text itself
+    text.levels.insert(index, level)
+    if text.default_level >= index:
+        text.default_level += 1
+    text.modified_at = datetime.utcnow()
+    await text.save()
+    # update all existing layers with level >= index
     await LayerBaseDocument.find(
         LayerBaseDocument.text_id == id,
         LayerBaseDocument.level >= index,
         with_children=True,
     ).inc({LayerBaseDocument.level: 1})
-    # update all existing nodes with level > position
+    # update all existing nodes with level >= index
     await NodeDocument.find(
         NodeDocument.text_id == id, NodeDocument.level >= index
     ).inc({NodeDocument.level: 1})
-    # update text levels
-    levels = list(text.levels)
-    levels.insert(index, level)
-    await text.apply({levels: levels})
     return await TextDocument.get(id)
 
 
