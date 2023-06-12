@@ -127,7 +127,7 @@ export const useAuthStore = defineStore('auth', () => {
       const userData = (await usersApi.usersCurrentUser()).data;
       userData && localStorage.setItem('user', JSON.stringify(userData));
       user.value = userData;
-      loadPlatformData();
+      await loadPlatformData();
       // process user locale
       if (!userData.locale) {
         try {

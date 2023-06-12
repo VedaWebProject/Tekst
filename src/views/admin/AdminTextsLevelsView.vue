@@ -1,27 +1,86 @@
 <script setup lang="ts">
-import type { StructureLevelTranslation } from '@/openapi';
 import { useStateStore } from '@/stores';
+import InsertLevelButton from '@/components/admin/InsertLevelButton.vue';
+import { useFormRules } from '@/formRules';
+import {
+  NSpace,
+  NIcon,
+  NInput,
+  NSelect,
+  NModal,
+  NButton,
+  NForm,
+  NFormItem,
+  NDynamicInput,
+  type FormInst,
+} from 'naive-ui';
+import { computed, ref } from 'vue';
 import { localeProfiles } from '@/i18n';
-import { NButton, NIcon } from 'naive-ui';
-import { computed } from 'vue';
+import type { StructureLevelTranslation, StructureLevelTranslationLocaleEnum } from '@/openapi';
+
+import AddRound from '@vicons/material/AddRound';
+import MinusRound from '@vicons/material/MinusRound';
 
 import DeleteRound from '@vicons/material/DeleteRound';
 import EditRound from '@vicons/material/EditRound';
-import AddRound from '@vicons/material/AddRound';
 import { useMessages } from '@/messages';
 import { useI18n } from 'vue-i18n';
+import { useApi } from '@/api';
+import { usePlatformData } from '@/platformData';
 
 const state = useStateStore();
+const { loadPlatformData } = usePlatformData();
 const { message } = useMessages();
+const { textsApi } = useApi();
 const { locale } = useI18n();
+const { textFormRules } = useFormRules();
+const { t } = useI18n({ useScope: 'global' });
 
 const levels = computed<StructureLevelTranslation[][]>(() => state.text?.levels || [[]]);
 
-function handleAddClick(level: number) {
+const showEditModal = ref(false);
+const formModel = ref<Record<string, any>>({});
+const formRef = ref<FormInst | null>(null);
+const loading = ref(false);
+const editModalLevel = ref<number>(-1);
+const editModalAction = ref<'edit' | 'insert'>('edit');
+const editModalTitle = computed(() =>
+  editModalAction.value === 'edit'
+    ? t('admin.texts.levels.tipEditLevel', {
+        levelLabel: getLevelLabel(levels.value[editModalLevel.value]),
+      })
+    : t('admin.texts.levels.tipInsertLevel', { n: editModalLevel.value + 1 })
+);
+
+const levelLocaleOptions = computed(() =>
+  Object.keys(localeProfiles)
+    .filter(
+      (l) =>
+        !formModel.value.translations
+          .map((lvlTrans: StructureLevelTranslation) => lvlTrans.locale)
+          .includes(l as StructureLevelTranslationLocaleEnum)
+    )
+    .map((l) => ({
+      label: `${localeProfiles[l].icon} ${localeProfiles[l].displayFull}`,
+      value: localeProfiles[l].apiLocaleEnum,
+    }))
+);
+
+function handleInsertClick(level: number) {
+  formModel.value = { translations: [{ locale: null, label: null }] };
+  editModalAction.value = 'insert';
+  editModalLevel.value = level;
+  showEditModal.value = true;
   message.info(`INSERT: ${level}`);
 }
 
 function handleEditClick(level: number) {
+  formModel.value = {
+    translations: levels.value[level].map((l) => ({ locale: l.locale, label: l.label })),
+  };
+  editModalAction.value = 'edit';
+  editModalLevel.value = level;
+  showEditModal.value = true;
   message.info(`EDIT: ${level}`);
 }
 
@@ -30,27 +89,40 @@ function handleDeleteClick(level: number) {
 }
 
 function getLevelLabel(lvl: StructureLevelTranslation[]) {
-  return lvl.find((t) => t.locale === locale.value)?.label;
+  return (lvl && lvl.find((t) => t.locale === locale.value)?.label) || '';
+}
+
+function destroyEditModal() {
+  formModel.value = {};
+  editModalAction.value = 'edit';
+  editModalLevel.value = -1;
+}
+
+async function handleSubmit() {
+  try {
+    if (editModalAction.value === 'insert') {
+      const updatedText = (
+        await textsApi.insertLevel({
+          id: state.text?.id || '',
+          index: editModalLevel.value,
+          structureLevelTranslation: formModel.value.translations,
+        })
+      ).data;
+      await loadPlatformData();
+      state.text = updatedText;
+    }
+    message.success('YEP!');
+  } catch {
+    message.error('errors.unexpected');
+  } finally {
+    showEditModal.value = false;
+  }
 }
 </script>
 
 <template>
   <div v-for="(lvl, lvlIndex) in levels" :key="`lvl_${lvlIndex}`">
-    <div class="add-level-wrapper">
-      <div class="add-level-separator"></div>
-      <n-button
-        dashed
-        circle
-        size="small"
-        :title="$t('admin.texts.levels.tipAddLevel', { n: lvlIndex + 1 })"
-        @click="() => handleAddClick(lvlIndex)"
-      >
-        <template #icon>
-          <n-icon :component="AddRound" />
-        </template>
-      </n-button>
-      <div class="add-level-separator"></div>
-    </div>
+    <insert-level-button :level="lvlIndex" @click="handleInsertClick" />
     <div class="level">
       <div class="level-index">{{ lvlIndex + 1 }}.</div>
       <div class="level-translations">
@@ -72,6 +144,7 @@ function getLevelLabel(lvl: StructureLevelTranslation[]) {
           circle
           :title="$t('admin.texts.levels.tipEditLevel', { levelLabel: getLevelLabel(lvl) })"
           @click="() => handleEditClick(lvlIndex)"
+          :focusable="false"
         >
           <n-icon :component="EditRound" />
         </n-button>
@@ -80,27 +153,125 @@ function getLevelLabel(lvl: StructureLevelTranslation[]) {
           circle
           :title="$t('admin.texts.levels.tipDeleteLevel', { levelLabel: getLevelLabel(lvl) })"
           @click="() => handleDeleteClick(lvlIndex)"
+          :focusable="false"
         >
           <n-icon :component="DeleteRound" />
         </n-button>
       </div>
     </div>
   </div>
-  <div class="add-level-wrapper">
-    <div class="add-level-separator"></div>
-    <n-button
-      dashed
-      circle
-      size="small"
-      :title="$t('admin.texts.levels.tipAddLevel', { n: levels.length + 1 })"
-      @click="() => handleAddClick(levels.length)"
+
+  <insert-level-button :level="levels.length" @click="handleInsertClick" />
+
+  <n-modal
+    v-model:show="showEditModal"
+    preset="card"
+    embedded
+    :closable="false"
+    size="large"
+    class="tekst-modal"
+    @after-leave="destroyEditModal"
+  >
+    <h2>{{ editModalTitle }}</h2>
+
+    <n-form
+      ref="formRef"
+      :model="formModel"
+      :rules="textFormRules"
+      label-placement="top"
+      label-width="auto"
+      require-mark-placement="right-hanging"
     >
-      <template #icon>
-        <n-icon :component="AddRound" />
-      </template>
-    </n-button>
-    <div class="add-level-separator"></div>
-  </div>
+      <!-- STRUCTURE LEVEL -->
+      <n-form-item ignore-path-change :show-label="false" :path="`translations`">
+        <n-dynamic-input
+          v-model:value="formModel.translations"
+          :min="1"
+          :max="Object.keys(localeProfiles).length"
+          item-style="margin-bottom: 0;"
+          :disabled="loading"
+          @create="() => ({ locale: null, label: '' })"
+        >
+          <template #default="{ index: translationIndex }">
+            <div style="display: flex; align-items: flex-start; gap: 12px; width: 100%">
+              <!-- STRUCTURE LEVEL LOCALE -->
+              <n-form-item
+                ignore-path-change
+                :show-label="false"
+                :path="`translations[${translationIndex}].locale`"
+                :rule="textFormRules.levelTranslationLocale"
+              >
+                <n-select
+                  v-model:value="formModel.translations[translationIndex].locale"
+                  :options="levelLocaleOptions"
+                  :placeholder="$t('general.language')"
+                  :consistent-menu-width="false"
+                  style="min-width: 160px"
+                  @keydown.enter.prevent
+                  :disabled="loading"
+                />
+              </n-form-item>
+              <!-- STRUCTURE LEVEL LABEL -->
+              <n-form-item
+                ignore-path-change
+                :show-label="false"
+                :path="`translations[${translationIndex}].label`"
+                :rule="textFormRules.levelTranslationLabel"
+                style="flex-grow: 2"
+              >
+                <n-input
+                  v-model:value="formModel.translations[translationIndex].label"
+                  type="text"
+                  :placeholder="$t('models.text.levelLabel')"
+                  @keydown.enter.prevent
+                  :disabled="loading"
+                />
+              </n-form-item>
+            </div>
+          </template>
+          <template #action="{ index: indexAction, create, remove }">
+            <n-space style="margin-left: 20px; flex-wrap: nowrap">
+              <n-button
+                secondary
+                circle
+                :disabled="formModel.translations.length === 1"
+                @click="() => remove(indexAction)"
+              >
+                <template #icon>
+                  <n-icon :component="MinusRound" />
+                </template>
+              </n-button>
+              <n-button
+                secondary
+                circle
+                :disabled="formModel.translations.length >= Object.keys(localeProfiles).length"
+                @click="() => create(indexAction)"
+              >
+                <template #icon>
+                  <n-icon :component="AddRound" />
+                </template>
+              </n-button>
+            </n-space>
+          </template>
+        </n-dynamic-input>
+      </n-form-item>
+    </n-form>
+
+    <n-space :size="12" justify="end" style="margin-top: 0.5rem">
+      <n-button
+        secondary
+        block
+        @click="showEditModal = false"
+        :loading="loading"
+        :disabled="loading"
+      >
+        {{ $t('general.cancelAction') }}
+      </n-button>
+      <n-button block type="primary" @click="handleSubmit" :loading="loading" :disabled="loading">
+        {{ $t('general.saveAction') }}
+      </n-button>
+    </n-space>
+  </n-modal>
 </template>
 
 <style scoped>
@@ -138,19 +309,5 @@ function getLevelLabel(lvl: StructureLevelTranslation[]) {
   justify-content: center;
   flex-wrap: wrap;
   gap: 12px;
-}
-
-.add-level-wrapper {
-  display: flex;
-  align-items: center;
-  padding: 6px 0;
-  text-align: center;
-}
-
-.add-level-separator {
-  flex-grow: 2;
-  height: 0;
-  border-bottom: 1px dashed #888;
-  opacity: 0.25;
 }
 </style>

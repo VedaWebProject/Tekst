@@ -280,7 +280,7 @@ admin:
       msgRefreshWarn: The page will automatically refresh after saving the changes.
     levels:
       heading: Levels
-      tipAddLevel: Insert new level at position {n}
+      tipInsertLevel: Insert new level at position {n}
       tipEditLevel: Edit level "{levelLabel}"
       tipDeleteLevel: Delete level "{levelLabel}"
     nodes:

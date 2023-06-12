@@ -288,7 +288,7 @@ admin:
       msgRefreshWarn: Die Seite wird nach dem Speichern automatisch neu geladen.
     levels:
       heading: Ebenen
-      tipAddLevel: Neue Ebene an Position {n} einfügen
+      tipInsertLevel: Neue Ebene an Position {n} einfügen
       tipEditLevel: Ebene "{levelLabel}" bearbeiten
       tipDeleteLevel: Ebene "{levelLabel}" löschen
     nodes:
