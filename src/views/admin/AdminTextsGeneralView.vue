@@ -14,7 +14,6 @@ import {
   NColorPicker,
   NDynamicInput,
   type FormInst,
-  useDialog,
 } from 'naive-ui';
 import { computed, ref, watch } from 'vue';
 import { useApi } from '@/api';
@@ -29,7 +28,6 @@ import { usePlatformData } from '@/platformData';
 
 const state = useStateStore();
 const { loadPlatformData } = usePlatformData();
-const dialog = useDialog();
 const { message } = useMessages();
 const { textFormRules } = useFormRules();
 const { textsApi } = useApi();
@@ -86,40 +84,28 @@ function handleReset() {
 function handleSave() {
   loading.value = true;
   formRef.value
-    ?.validate((errors) => {
+    ?.validate(async (errors) => {
       if (!errors) {
-        dialog.warning({
-          title: t('general.warning'),
-          content: t('admin.texts.general.msgRefreshWarn'),
-          positiveText: t('general.saveAction'),
-          negativeText: t('general.cancelAction'),
-          style: 'font-weight: var(--app-ui-font-weight-light)',
-          onPositiveClick: async () => {
-            const changes = getModelChanges();
-            try {
-              const updatedText = (
-                await textsApi.updateText({
-                  id: state.text?.id || '',
-                  textUpdate: changes,
-                })
-              ).data;
-              await loadPlatformData();
-              state.text = updatedText;
-              resetModelChanges();
-            } catch {
-              /**
-               * This will be either an app-level error (e.g. buggy validation, server down, 401)
-               * or the provided email already exists, which we don't want to actively disclose.
-               */
-              message.error(t('errors.unexpected'));
-            } finally {
-              loading.value = false;
-            }
-          },
-          onNegativeClick: () => {
-            loading.value = false;
-          },
-        });
+        const changes = getModelChanges();
+        try {
+          const updatedText = (
+            await textsApi.updateText({
+              id: state.text?.id || '',
+              textUpdate: changes,
+            })
+          ).data;
+          await loadPlatformData();
+          state.text = updatedText;
+          resetModelChanges();
+        } catch {
+          /**
+           * This will be either an app-level error (e.g. buggy validation, server down, 401)
+           * or the provided email already exists, which we don't want to actively disclose.
+           */
+          message.error(t('errors.unexpected'));
+        } finally {
+          loading.value = false;
+        }
       }
     })
     .catch(() => {

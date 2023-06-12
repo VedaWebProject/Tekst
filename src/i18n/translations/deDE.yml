@@ -285,7 +285,6 @@ admin:
     general:
       heading: Allgemeine Einstellungen
       msgSaved: Text-Einstellungen gespeichert.
-      msgRefreshWarn: Die Seite wird nach dem Speichern automatisch neu geladen.
     levels:
       heading: Ebenen
       tipInsertLevel: Neue Ebene an Position {n} einfügen

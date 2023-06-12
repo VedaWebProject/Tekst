@@ -277,7 +277,6 @@ admin:
     general:
       heading: General Settings
       msgSaved: Text settings saved.
-      msgRefreshWarn: The page will automatically refresh after saving the changes.
     levels:
       heading: Levels
       tipInsertLevel: Insert new level at position {n}
