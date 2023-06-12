@@ -103,7 +103,7 @@ function handleSave() {
                   textUpdate: changes,
                 })
               ).data;
-              loadPlatformData();
+              await loadPlatformData();
               state.text = updatedText;
               resetModelChanges();
             } catch {
