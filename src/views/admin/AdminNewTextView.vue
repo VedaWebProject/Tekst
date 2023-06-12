@@ -33,7 +33,7 @@ interface NewTextModel {
 const initialModel = (): NewTextModel => ({
   title: undefined,
   slug: undefined,
-  levels: [[{ locale: 'enUS', label: undefined }]],
+  levels: [[{ locale: state.locale, label: undefined }]],
 });
 
 const { t } = useI18n({ useScope: 'global' });
@@ -139,7 +139,7 @@ async function handleSave() {
           :max="32"
           item-style="margin-bottom: 0;"
           :disabled="loading"
-          @create="() => [{ locale: null, label: '' }]"
+          @create="() => [{ locale: state.locale, label: '' }]"
         >
           <template #default="{ index: levelIndex }">
             <div style="padding-right: 12px">{{ levelIndex + 1 }}.</div>
