@@ -1300,6 +1300,18 @@
         ],
         "summary": "Insert level",
         "operationId": "insertLevel",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1310,6 +1322,71 @@
           },
           "required": true
         },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TextRead"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/texts/{id}/delete-level/{index}": {
+      "post": {
+        "tags": [
+          "texts"
+        ],
+        "summary": "Delete level",
+        "operationId": "deleteLevel",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "name": "id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Index",
+              "exclusiveMaximum": 32.0,
+              "minimum": 0.0,
+              "type": "integer"
+            },
+            "name": "index",
+            "in": "path"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -2827,18 +2904,11 @@
       "InsertLevelRequest": {
         "title": "InsertLevelRequest",
         "required": [
-          "textId",
           "index",
           "translations"
         ],
         "type": "object",
         "properties": {
-          "textId": {
-            "title": "Textid",
-            "type": "string",
-            "description": "ID of the text to insert this level into",
-            "example": "5eb7cf5a86d9755df3a6c593"
-          },
           "index": {
             "title": "Index",
             "exclusiveMaximum": 32.0,
@@ -2917,6 +2987,8 @@
           },
           "label": {
             "title": "Label",
+            "maxLength": 256,
+            "minLength": 1,
             "type": "string",
             "description": "Label for identifying this text node in level context"
           },
@@ -2988,6 +3060,8 @@
           },
           "label": {
             "title": "Label",
+            "maxLength": 256,
+            "minLength": 1,
             "type": "string",
             "description": "Label for identifying this text node in level context"
           },
@@ -3029,6 +3103,8 @@
           },
           "label": {
             "title": "Label",
+            "maxLength": 256,
+            "minLength": 1,
             "type": "string"
           },
           "meta": {

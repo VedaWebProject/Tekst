@@ -1,7 +1,8 @@
 from datetime import datetime
 
-from beanie.operators import Or, Set
+from beanie.operators import Or, Set, Unset
 from fastapi import APIRouter, HTTPException, status
+from pydantic import conint
 
 from tekst.auth import OptionalUserDep, SuperuserDep
 from tekst.models.common import PyObjectId
@@ -82,14 +83,16 @@ async def create_text(su: SuperuserDep, text: TextCreate) -> TextRead:
 @router.post(
     "/{id}/insert-level", response_model=TextRead, status_code=status.HTTP_200_OK
 )
-async def insert_level(su: SuperuserDep, data: InsertLevelRequest) -> TextRead:
-    text_doc: TextDocument = await TextDocument.get(data.text_id)
+async def insert_level(
+    su: SuperuserDep, id: PyObjectId, data: InsertLevelRequest
+) -> TextRead:
+    text_doc: TextDocument = await TextDocument.get(id)
 
     # text exists?
     if not text_doc:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Could not find text with ID {data.text_id}",
+            detail=f"Could not find text with ID {id}",
         )
 
     # index valid?
@@ -111,14 +114,14 @@ async def insert_level(su: SuperuserDep, data: InsertLevelRequest) -> TextRead:
 
     # update all existing layers with level >= index
     await LayerBaseDocument.find(
-        LayerBaseDocument.text_id == data.text_id,
+        LayerBaseDocument.text_id == id,
         LayerBaseDocument.level >= data.index,
         with_children=True,
     ).inc({LayerBaseDocument.level: 1})
 
     # update all existing nodes with level >= index
     await NodeDocument.find(
-        NodeDocument.text_id == data.text_id, NodeDocument.level >= data.index
+        NodeDocument.text_id == id, NodeDocument.level >= data.index
     ).inc({NodeDocument.level: 1})
 
     # create one dummy node per node on parent level and configure
@@ -134,7 +137,7 @@ async def insert_level(su: SuperuserDep, data: InsertLevelRequest) -> TextRead:
     ).get("label", "???")
     if data.index == 0:
         dummy_node = NodeDocument(
-            text_id=data.text_id,
+            text_id=id,
             parent_id=None,
             level=data.index,
             position=0,
@@ -143,33 +146,130 @@ async def insert_level(su: SuperuserDep, data: InsertLevelRequest) -> TextRead:
         await dummy_node.create()
         # make dummy node parent of all nodes on level "index+1" (if exists)
         await NodeDocument.find(
-            NodeDocument.text_id == data.text_id, NodeDocument.level == data.index + 1
+            NodeDocument.text_id == id, NodeDocument.level == data.index + 1
         ).update(Set({NodeDocument.parent_id: dummy_node.id}))
     else:
         parent_level_nodes = (
             await NodeDocument.find(
-                NodeDocument.text_id == data.text_id,
+                NodeDocument.text_id == id,
                 NodeDocument.level == data.index - 1,
             )
             .sort(+NodeDocument.position)
             .to_list()
         )
         # index > 0, so there is a parent level
-        for i, parent_level_node in enumerate(parent_level_nodes):
+        for parent_level_node in parent_level_nodes:
             # parent of each dummy node is respective node on parent level
             dummy_node = NodeDocument(**parent_level_node.dict(exclude={"id"}))
             dummy_node.parent_id = parent_level_node.id
             dummy_node.level = data.index
-            dummy_node.position = i
-            dummy_node.label = f"{label_prefix} {i + 1}"
+            dummy_node.position = parent_level_node.position
+            dummy_node.label = f"{label_prefix} {parent_level_node.position + 1}"
             await dummy_node.create()
             # make dummy node parent of respective nodes on level "index+1" (if exists)
             # that were previously children of dummy's parent node on level "index-1"
             await NodeDocument.find(
-                NodeDocument.text_id == data.text_id,
+                NodeDocument.text_id == id,
                 NodeDocument.level == data.index + 1,
                 NodeDocument.parent_id == parent_level_node.id,
             ).update(Set({NodeDocument.parent_id: dummy_node.id}))
+
+    return text_doc
+
+
+@router.post(
+    "/{id}/delete-level/{index}",
+    response_model=TextRead,
+    status_code=status.HTTP_200_OK,
+)
+async def delete_level(
+    su: SuperuserDep, id: PyObjectId, index: conint(ge=0, lt=32)
+) -> TextRead:
+    text_doc: TextDocument = await TextDocument.get(id)
+
+    # text exists?
+    if not text_doc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Could not find text with ID {id}",
+        )
+
+    # index valid?
+    if index < 0 or index > len(text_doc.levels):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=(
+                f"Invalid level index {index}: "
+                f"Text has {len(text_doc.levels)} levels."
+            ),
+        )
+
+    # update text itself
+    text_doc.levels.pop(index)
+    if text_doc.default_level >= index:
+        levels_range = range(len(text_doc.levels))
+        dl = text_doc.default_level
+        # try (in this order): lower level, higher level, 0
+        text_doc.default_level = (
+            dl - 1
+            if dl - 1 in levels_range
+            else dl + 1
+            if dl + 1 in levels_range
+            else 0
+        )
+    text_doc.modified_at = datetime.utcnow()
+    await text_doc.save()
+
+    # make nodes of higher level (if exists) parents of nodes of lower level (if exists)
+    if index == 0:
+        # the level to delete is the highest (lowest index) level, so all nodes on
+        # the next lower (higher index) level have no parent node anymore
+        await NodeDocument.find(
+            NodeDocument.text_id == id,
+            NodeDocument.level == index + 1,
+        ).update(Unset({NodeDocument.parent_id: None}))
+    elif index < len(text_doc.levels) - 1:
+        # the level to delete is neither the highest (lowest index) nor the
+        # lowest (highest index), so need to connect the adjacent levels' nodes
+        target_level_nodes = await NodeDocument.find(
+            NodeDocument.text_id == id,
+            NodeDocument.level == index,
+        ).to_list()
+        for target_level_node in target_level_nodes:
+            target_children = await NodeDocument.find(
+                NodeDocument.text_id == id,
+                NodeDocument.level == index + 1,
+                NodeDocument.parent_id == target_level_node.id,
+            ).to_list()
+            for target_child in target_children:
+                lbl = f"{target_level_node.label}: {target_child.label}"
+                target_child.label = lbl[:256]
+                target_child.parent_id = target_level_node.parent_id
+                await target_child.save()
+
+    # delete all existing layers with level == index
+    await LayerBaseDocument.find(
+        LayerBaseDocument.text_id == id,
+        LayerBaseDocument.level == index,
+        with_children=True,
+    ).delete()
+
+    # update all existing layers with level > index
+    await LayerBaseDocument.find(
+        LayerBaseDocument.text_id == id,
+        LayerBaseDocument.level > index,
+        with_children=True,
+    ).inc({LayerBaseDocument.level: -1})
+
+    # delete all existing nodes with level == index
+    await NodeDocument.find(
+        NodeDocument.text_id == id, NodeDocument.level == index
+    ).delete()
+
+    # update all existing nodes with level >= index
+    await NodeDocument.find(
+        NodeDocument.text_id == id, NodeDocument.level >= index
+    ).inc({LayerBaseDocument.level: -1})
 
     return text_doc
 

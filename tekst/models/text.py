@@ -126,7 +126,7 @@ class Node(ModelBase, ModelFactory):
     position: conint(ge=0) = Field(
         ..., description="Position among all text nodes on this level"
     )
-    label: str = Field(
+    label: constr(min_length=1, max_length=256) = Field(
         ..., description="Label for identifying this text node in level context"
     )
     meta: Metadata | None = Field(None, description="Arbitrary metadata")
@@ -144,9 +144,6 @@ NodeUpdate = Node.get_update_model()
 
 
 class InsertLevelRequest(ModelBase):
-    text_id: PyObjectId = Field(
-        ..., description="ID of the text to insert this level into"
-    )
     index: conint(ge=0, lt=32) = Field(..., description="Index of the level to insert")
     translations: conlist(StructureLevelTranslation, min_items=1) = Field(
         ..., description="Translation(s) for the label of the level to insert"
