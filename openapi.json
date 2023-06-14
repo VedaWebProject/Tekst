@@ -1300,37 +1300,11 @@
         ],
         "summary": "Insert level",
         "operationId": "insertLevel",
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "title": "Id",
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "name": "id",
-            "in": "path"
-          },
-          {
-            "required": true,
-            "schema": {
-              "title": "Index",
-              "type": "integer"
-            },
-            "name": "index",
-            "in": "query"
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "title": "Level",
-                "minItems": 1,
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/StructureLevelTranslation"
-                }
+                "$ref": "#/components/schemas/InsertLevelRequest"
               }
             }
           },
@@ -2850,6 +2824,39 @@
         },
         "description": "General information config model"
       },
+      "InsertLevelRequest": {
+        "title": "InsertLevelRequest",
+        "required": [
+          "textId",
+          "index",
+          "translations"
+        ],
+        "type": "object",
+        "properties": {
+          "textId": {
+            "title": "Textid",
+            "type": "string",
+            "description": "ID of the text to insert this level into",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "index": {
+            "title": "Index",
+            "exclusiveMaximum": 32.0,
+            "minimum": 0.0,
+            "type": "integer",
+            "description": "Index of the level to insert"
+          },
+          "translations": {
+            "title": "Translations",
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StructureLevelTranslation"
+            },
+            "description": "Translation(s) for the label of the level to insert"
+          }
+        }
+      },
       "LayerTypeInfo": {
         "title": "LayerTypeInfo",
         "required": [
@@ -2897,6 +2904,7 @@
           },
           "level": {
             "title": "Level",
+            "exclusiveMaximum": 32.0,
             "minimum": 0.0,
             "type": "integer",
             "description": "Index of structure level this node is on"
@@ -2967,6 +2975,7 @@
           },
           "level": {
             "title": "Level",
+            "exclusiveMaximum": 32.0,
             "minimum": 0.0,
             "type": "integer",
             "description": "Index of structure level this node is on"
@@ -3009,10 +3018,13 @@
           },
           "level": {
             "title": "Level",
+            "exclusiveMaximum": 32.0,
+            "minimum": 0.0,
             "type": "integer"
           },
           "position": {
             "title": "Position",
+            "minimum": 0.0,
             "type": "integer"
           },
           "label": {

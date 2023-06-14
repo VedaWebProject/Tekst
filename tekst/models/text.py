@@ -120,11 +120,11 @@ class Node(ModelBase, ModelFactory):
 
     text_id: PyObjectId = Field(..., description="ID of the text this node belongs to")
     parent_id: PyObjectId = Field(None, description="ID of parent node")
-    level: int = Field(
-        ..., description="Index of structure level this node is on", ge=0
+    level: conint(ge=0, lt=32) = Field(
+        ..., description="Index of structure level this node is on"
     )
-    position: int = Field(
-        ..., description="Position among all text nodes on this level", ge=0
+    position: conint(ge=0) = Field(
+        ..., description="Position among all text nodes on this level"
     )
     label: str = Field(
         ..., description="Label for identifying this text node in level context"
@@ -141,3 +141,13 @@ class NodeDocument(Node, DocumentBase):
 NodeCreate = Node.get_create_model()
 NodeRead = Node.get_read_model()
 NodeUpdate = Node.get_update_model()
+
+
+class InsertLevelRequest(ModelBase):
+    text_id: PyObjectId = Field(
+        ..., description="ID of the text to insert this level into"
+    )
+    index: conint(ge=0, lt=32) = Field(..., description="Index of the level to insert")
+    translations: conlist(StructureLevelTranslation, min_items=1) = Field(
+        ..., description="Translation(s) for the label of the level to insert"
+    )

@@ -2,14 +2,13 @@ from datetime import datetime
 
 from beanie.operators import Or, Set
 from fastapi import APIRouter, HTTPException, status
-from pydantic import conlist
 
 from tekst.auth import OptionalUserDep, SuperuserDep
 from tekst.models.common import PyObjectId
 from tekst.models.layer import LayerBaseDocument
 from tekst.models.text import (
+    InsertLevelRequest,
     NodeDocument,
-    StructureLevelTranslation,
     TextCreate,
     TextDocument,
     TextRead,
@@ -83,71 +82,96 @@ async def create_text(su: SuperuserDep, text: TextCreate) -> TextRead:
 @router.post(
     "/{id}/insert-level", response_model=TextRead, status_code=status.HTTP_200_OK
 )
-async def insert_level(
-    su: SuperuserDep,
-    id: PyObjectId,
-    index: int,
-    level: conlist(StructureLevelTranslation, min_items=1),
-) -> TextRead:
-    text: TextDocument = await TextDocument.get(id)
+async def insert_level(su: SuperuserDep, data: InsertLevelRequest) -> TextRead:
+    text_doc: TextDocument = await TextDocument.get(data.text_id)
 
     # text exists?
-    if not text:
+    if not text_doc:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Could not find text with ID {id}",
+            detail=f"Could not find text with ID {data.text_id}",
         )
 
     # index valid?
-    if index < 0 or index > len(text.levels):
+    if data.index < 0 or data.index > len(text_doc.levels):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=(
-                f"Invalid level index {index}: " f"Text has {len(text.levels)} levels."
+                f"Invalid level index {data.index}: "
+                f"Text has {len(text_doc.levels)} levels."
             ),
         )
 
     # update text itself
-    text.levels.insert(index, level)
-    if text.default_level >= index:
-        text.default_level += 1
-    text.modified_at = datetime.utcnow()
-    await text.save()
+    text_doc.levels.insert(data.index, data.translations)
+    if text_doc.default_level >= data.index:
+        text_doc.default_level += 1
+    text_doc.modified_at = datetime.utcnow()
+    await text_doc.save()
 
     # update all existing layers with level >= index
     await LayerBaseDocument.find(
-        LayerBaseDocument.text_id == id,
-        LayerBaseDocument.level >= index,
+        LayerBaseDocument.text_id == data.text_id,
+        LayerBaseDocument.level >= data.index,
         with_children=True,
     ).inc({LayerBaseDocument.level: 1})
 
     # update all existing nodes with level >= index
     await NodeDocument.find(
-        NodeDocument.text_id == id, NodeDocument.level >= index
+        NodeDocument.text_id == data.text_id, NodeDocument.level >= data.index
     ).inc({NodeDocument.level: 1})
 
-    # create dummy node on new level
-    parent_node = await NodeDocument.find_one(
-        NodeDocument.text_id == id,
-        NodeDocument.level == index - 1,
-        NodeDocument.position == 0,
-    )
-    only_node = NodeDocument(
-        text_id=id,
-        parent_id=parent_node.id if parent_node else None,
-        level=index,
-        position=0,
-        label="???",
-    )
-    await only_node.create()
-
-    # make all nodes of lower level (higher level value) children of this node
-    if index < len(text.levels) - 1:
+    # create one dummy node per node on parent level and configure
+    # parent-child-relationships on next lower/higher level
+    # (different operation if level == 0, as in this case there is no parent level)
+    label_prefix = next(
+        (
+            lvl_trans
+            for lvl_trans in data.translations
+            if lvl_trans.get("locale", None) == "enUS"
+        ),
+        data.translations[0],
+    ).get("label", "???")
+    if data.index == 0:
+        dummy_node = NodeDocument(
+            text_id=data.text_id,
+            parent_id=None,
+            level=data.index,
+            position=0,
+            label=f"{label_prefix} 1",
+        )
+        await dummy_node.create()
+        # make dummy node parent of all nodes on level "index+1" (if exists)
         await NodeDocument.find(
-            NodeDocument.text_id == id, NodeDocument.level == index + 1
-        ).update(Set({NodeDocument.parent_id: only_node.id}))
+            NodeDocument.text_id == data.text_id, NodeDocument.level == data.index + 1
+        ).update(Set({NodeDocument.parent_id: dummy_node.id}))
+    else:
+        parent_level_nodes = (
+            await NodeDocument.find(
+                NodeDocument.text_id == data.text_id,
+                NodeDocument.level == data.index - 1,
+            )
+            .sort(+NodeDocument.position)
+            .to_list()
+        )
+        # index > 0, so there is a parent level
+        for i, parent_level_node in enumerate(parent_level_nodes):
+            # parent of each dummy node is respective node on parent level
+            dummy_node = NodeDocument(**parent_level_node.dict(exclude={"id"}))
+            dummy_node.parent_id = parent_level_node.id
+            dummy_node.level = data.index
+            dummy_node.position = i
+            dummy_node.label = f"{label_prefix} {i + 1}"
+            await dummy_node.create()
+            # make dummy node parent of respective nodes on level "index+1" (if exists)
+            # that were previously children of dummy's parent node on level "index-1"
+            await NodeDocument.find(
+                NodeDocument.text_id == data.text_id,
+                NodeDocument.level == data.index + 1,
+                NodeDocument.parent_id == parent_level_node.id,
+            ).update(Set({NodeDocument.parent_id: dummy_node.id}))
 
-    return await TextDocument.get(id)
+    return text_doc
 
 
 @router.get("/{id}", response_model=TextRead, status_code=status.HTTP_200_OK)
