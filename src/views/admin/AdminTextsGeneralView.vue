@@ -97,6 +97,7 @@ function handleSave() {
           await loadPlatformData();
           state.text = updatedText;
           resetModelChanges();
+          message.success(t('admin.texts.general.msgSaved'));
         } catch {
           /**
            * This will be either an app-level error (e.g. buggy validation, server down, 401)
