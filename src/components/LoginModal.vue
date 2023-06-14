@@ -59,7 +59,7 @@ function handleForgotPasswordClick(resolveLogin: (res: boolean | Promise<boolean
         bodyResetForgotPasswordAuthForgotPasswordPost: { email: formModel.value.email },
       })
       .catch(() => {
-        message.error('errors.unexpected', 10);
+        message.error(t('errors.unexpected'), 10);
       });
     message.info(t('account.forgotPassword.sentResetLink', { email: formModel.value.email }), 10);
     resetForm();
