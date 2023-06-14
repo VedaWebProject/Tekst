@@ -126,7 +126,7 @@ function handleActiveClick(user: UserRead) {
           }
         }
       } catch {
-        message.error('errors.unexpected');
+        message.error(t('errors.unexpected'));
       }
     },
   });
@@ -157,7 +157,7 @@ function handleVerifiedClick(user: UserRead) {
           }
         }
       } catch {
-        message.error('errors.unexpected');
+        message.error(t('errors.unexpected'));
       }
     },
   });
@@ -176,7 +176,7 @@ function handleDeleteClick(user: UserRead) {
         message.success(t('admin.users.msgUserDeleted', { username: user.username }));
         loadUsers();
       } catch {
-        message.error('errors.unexpected');
+        message.error(t('errors.unexpected'));
       }
     },
   });

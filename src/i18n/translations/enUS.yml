@@ -14,6 +14,7 @@ general:
   addAction: Add
   insertAction: Insert
   removeAction: Remove
+  deleteAction: Delete
   textSelect: Select the text you want to work with
   info: Information
   warning: Warning
@@ -280,8 +281,28 @@ admin:
     levels:
       heading: Levels
       tipInsertLevel: Insert new level at position {n}
-      tipEditLevel: Edit level "{levelLabel}"
+      tipEditLevel: 'Edit label translations for level "{levelLabel}"'
       tipDeleteLevel: Delete level "{levelLabel}"
+      msgInsertSuccess: Level inserted at position {position}
+      msgEditSuccess: Changes to level at position {position} saved
+      msgDeleteSuccess: Level "{levelLabel}" deleted
+      warnInsertLevel: |
+        Retroactively inserting a text level is an operation with serious
+        impact on the text's data model. The application will try its best to embed the
+        new level into the existing data structure, but you will have to adjust the
+        result to your needs using the text's structure nodes settings afterwards.
+        Also, it is recommended to make a backup of the current state of your database
+        before performing this operation.
+      warnDeleteLevel: |
+        Deleting a text level has far-reaching consequences: All data associated
+        with this text level will be deleted with it. This includes all (!) data layers
+        on this level, regardless of the user who created it!
+        The application will try its best to re-connect adjacent levels,
+        but you will have to adjust the result to your needs using the text's
+        structure nodes settings afterwards.
+        Please make sure you know what you are doing and make a backup
+        of your database before doing this! Are you sure you want to delete the text
+        level "{levelLabel}"?
     nodes:
       heading: Nodes
   newText:

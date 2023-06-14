@@ -14,6 +14,7 @@ general:
   addAction: Hinzufügen
   insertAction: Einfügen
   removeAction: Entfernen
+  deleteAction: Löschen
   quickSearch: Schnellsuche
   textSelect: Wählen Sie den Text, mit dem Sie arbeiten möchten
   info: Information
@@ -288,8 +289,33 @@ admin:
     levels:
       heading: Ebenen
       tipInsertLevel: Neue Ebene an Position {n} einfügen
-      tipEditLevel: Ebene "{levelLabel}" bearbeiten
+      tipEditLevel: Übersetzungen der Bezeichnung für Ebene "{levelLabel}" bearbeiten
       tipDeleteLevel: Ebene "{levelLabel}" löschen
+      msgInsertSuccess: Ebene an Position {position} eingefügt
+      msgEditSuccess: Änerungen an Ebene auf Position {position} gespeichert
+      msgDeleteSuccess: Ebene "{levelLabel}" gelöscht
+      warnInsertLevel: |
+        Das nachträgliche Einfügen einer Textebene ist eine Operation mit
+        gravierenden Auswirkungen auf das Datenmodell des Textes.
+        Die Anwendung wird ihr Bestes tun, um die neue Ebene in die
+        bestehende Datenstruktur einzubetten, aber Sie werden das Ergebnis
+        anschließend mit Hilfe der Einstellungen für die Strukturknoten des Textes
+        an Ihre Bedürfnisse anpassen müssen.
+        Es ist außerdem angeraten, ein Backup des aktuellen Zustands Ihrer
+        Datenbank zu erstellen, bevor Sie diesen Schritt durchführen.
+      warnDeleteLevel: |
+        Das Löschen einer Textebene hat weitreichende Folgen:
+        Alle Daten, die mit dieser Textebene verbunden sind,
+        werden mit ihr gelöscht. Dies betrifft alle (!) Datenschichten auf dieser
+        Ebene - egal, welcher Benutzer diese erstellt hat!
+        Die Anwendung wird ihr Bestes tun, um angrenzende Ebenen sinnvoll miteinander
+        zu verbinden, aber Sie werden das Ergebnis
+        anschließend mit Hilfe der Einstellungen für die Strukturknoten des Textes
+        an Ihre Bedürfnisse anpassen müssen.
+        Bitte vergewissern Sie sich, dass Sie wissen,
+        was Sie tun und machen Sie ein Backup Ihrer Datenbank,
+        bevor Sie diese Aktion durchführen! Sind Sie sich sicher, dass Sie die
+        Textebene "{levelLabel}" löschen möchten?
     nodes:
       heading: Knoten
   newText:

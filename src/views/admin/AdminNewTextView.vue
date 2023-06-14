@@ -198,5 +198,3 @@ async function handleSave() {
     </n-form>
   </div>
 </template>
-
-<style scoped></style>

@@ -8,11 +8,13 @@ import {
   NInput,
   NSelect,
   NModal,
+  NAlert,
   NButton,
   NForm,
   NFormItem,
   NDynamicInput,
   type FormInst,
+  useDialog,
 } from 'naive-ui';
 import { computed, ref } from 'vue';
 import { localeProfiles } from '@/i18n';
@@ -35,6 +37,7 @@ const { textsApi } = useApi();
 const { locale } = useI18n();
 const { textFormRules } = useFormRules();
 const { t } = useI18n({ useScope: 'global' });
+const dialog = useDialog();
 
 const levels = computed<StructureLevelTranslation[][]>(() => state.text?.levels || [[]]);
 
@@ -50,6 +53,9 @@ const editModalTitle = computed(() =>
         levelLabel: getLevelLabel(levels.value[editModalLevel.value]),
       })
     : t('admin.texts.levels.tipInsertLevel', { n: editModalLevel.value + 1 })
+);
+const editModalWarning = computed(() =>
+  editModalAction.value === 'edit' ? undefined : t('admin.texts.levels.warnInsertLevel')
 );
 
 const levelLocaleOptions = computed(() =>
@@ -71,7 +77,6 @@ function handleInsertClick(level: number) {
   editModalAction.value = 'insert';
   editModalLevel.value = level;
   showEditModal.value = true;
-  message.info(`INSERT: ${level}`);
 }
 
 function handleEditClick(level: number) {
@@ -81,15 +86,44 @@ function handleEditClick(level: number) {
   editModalAction.value = 'edit';
   editModalLevel.value = level;
   showEditModal.value = true;
-  message.info(`EDIT: ${level}`);
 }
 
 function handleDeleteClick(level: number) {
-  message.info(`DELETE: ${level}`);
+  const targetLevelLabel = getLevelLabel(levels.value[level]);
+  dialog.warning({
+    title: t('general.warning'),
+    content: t('admin.texts.levels.warnDeleteLevel', {
+      levelLabel: targetLevelLabel,
+    }),
+    positiveText: t('general.deleteAction'),
+    negativeText: t('general.cancelAction'),
+    style: 'font-weight: var(--app-ui-font-weight-light); width: 680px; max-width: 95%',
+    onPositiveClick: async () => {
+      loading.value = true;
+      try {
+        state.text = (
+          await textsApi.deleteLevel({
+            id: state.text?.id || '',
+            index: level,
+          })
+        ).data;
+        message.success(
+          t('admin.texts.levels.msgDeleteSuccess', {
+            levelLabel: targetLevelLabel,
+          })
+        );
+        await loadPlatformData();
+      } catch {
+        message.error(t('errors.unexpected'));
+      } finally {
+        loading.value = false;
+      }
+    },
+  });
 }
 
 function getLevelLabel(lvl: StructureLevelTranslation[]) {
-  return (lvl && lvl.find((t) => t.locale === locale.value)?.label) || '';
+  return (lvl && lvl.find((t) => t.locale === locale.value)?.label) || lvl[0]?.label || '';
 }
 
 function destroyEditModal() {
@@ -98,70 +132,103 @@ function destroyEditModal() {
   editModalLevel.value = -1;
 }
 
-async function handleSubmit() {
-  try {
-    if (editModalAction.value === 'insert') {
-      const updatedText = (
-        await textsApi.insertLevel({
-          id: state.text?.id || '',
-          index: editModalLevel.value,
-          structureLevelTranslation: formModel.value.translations,
-        })
-      ).data;
-      await loadPlatformData();
-      state.text = updatedText;
-    }
-    message.success('YEP!');
-  } catch {
-    message.error('errors.unexpected');
-  } finally {
-    showEditModal.value = false;
-  }
+async function handleModalSubmit() {
+  formRef.value
+    ?.validate(async (errors) => {
+      if (!errors) {
+        loading.value = true;
+        try {
+          if (editModalAction.value === 'insert') {
+            state.text = (
+              await textsApi.insertLevel({
+                id: state.text?.id || '',
+                insertLevelRequest: {
+                  index: editModalLevel.value,
+                  translations: formModel.value.translations,
+                },
+              })
+            ).data;
+            message.success(
+              t('admin.texts.levels.msgInsertSuccess', { position: editModalLevel.value + 1 })
+            );
+          } else if (editModalAction.value === 'edit') {
+            state.text = (
+              await textsApi.updateText({
+                id: state.text?.id || '',
+                textUpdate: {
+                  levels: state.text?.levels.map((lvl, i) => {
+                    if (i === editModalLevel.value) {
+                      return formModel.value.translations;
+                    } else {
+                      return lvl;
+                    }
+                  }),
+                },
+              })
+            ).data;
+            message.success(
+              t('admin.texts.levels.msgEditSuccess', { position: editModalLevel.value + 1 })
+            );
+          }
+          await loadPlatformData();
+        } catch {
+          message.error(t('errors.unexpected'));
+        } finally {
+          loading.value = false;
+          showEditModal.value = false;
+        }
+      }
+    })
+    .catch(() => {
+      message.error(t('errors.followFormRules'));
+    });
 }
 </script>
 
 <template>
-  <div v-for="(lvl, lvlIndex) in levels" :key="`lvl_${lvlIndex}`">
-    <insert-level-button :level="lvlIndex" @click="handleInsertClick" />
-    <div class="level">
-      <div class="level-index">{{ lvlIndex + 1 }}.</div>
-      <div class="level-translations">
-        <template v-for="lvlTranslation in lvl" :key="lvlTranslation.locale">
-          <div>
-            {{ localeProfiles[lvlTranslation.locale].icon }}
-            <span style="font-weight: normal">
-              {{ localeProfiles[lvlTranslation.locale].displayFull }}:
-            </span>
-          </div>
-          <div>
-            {{ lvlTranslation.label }}
-          </div>
-        </template>
-      </div>
-      <div class="level-buttons">
-        <n-button
-          secondary
-          circle
-          :title="$t('admin.texts.levels.tipEditLevel', { levelLabel: getLevelLabel(lvl) })"
-          @click="() => handleEditClick(lvlIndex)"
-          :focusable="false"
-        >
-          <n-icon :component="EditRound" />
-        </n-button>
-        <n-button
-          secondary
-          circle
-          :title="$t('admin.texts.levels.tipDeleteLevel', { levelLabel: getLevelLabel(lvl) })"
-          @click="() => handleDeleteClick(lvlIndex)"
-          :focusable="false"
-        >
-          <n-icon :component="DeleteRound" />
-        </n-button>
+  <div class="content-block">
+    <div v-for="(lvl, lvlIndex) in levels" :key="`lvl_${lvlIndex}`">
+      <insert-level-button :level="lvlIndex" @click="handleInsertClick" />
+      <div class="level">
+        <div class="level-index">{{ lvlIndex + 1 }}.</div>
+        <div class="level-translations">
+          <template v-for="lvlTranslation in lvl" :key="lvlTranslation.locale">
+            <div>
+              {{ localeProfiles[lvlTranslation.locale].icon }}
+              <span style="font-weight: normal">
+                {{ localeProfiles[lvlTranslation.locale].displayFull }}:
+              </span>
+            </div>
+            <div>
+              {{ lvlTranslation.label }}
+            </div>
+          </template>
+        </div>
+        <div class="level-buttons">
+          <n-button
+            secondary
+            circle
+            :title="$t('admin.texts.levels.tipEditLevel', { levelLabel: getLevelLabel(lvl) })"
+            @click="() => handleEditClick(lvlIndex)"
+            :focusable="false"
+          >
+            <n-icon :component="EditRound" />
+          </n-button>
+          <n-button
+            secondary
+            circle
+            :title="$t('admin.texts.levels.tipDeleteLevel', { levelLabel: getLevelLabel(lvl) })"
+            @click="() => handleDeleteClick(lvlIndex)"
+            :focusable="false"
+          >
+            <n-icon :component="DeleteRound" />
+          </n-button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <insert-level-button :level="levels.length" @click="handleInsertClick" />
+    <insert-level-button :level="levels.length" @click="handleInsertClick" />
+  </div>
 
   <n-modal
     v-model:show="showEditModal"
@@ -170,9 +237,19 @@ async function handleSubmit() {
     :closable="false"
     size="large"
     class="tekst-modal"
+    to="#app-container"
     @after-leave="destroyEditModal"
   >
     <h2>{{ editModalTitle }}</h2>
+
+    <n-alert
+      v-if="editModalWarning"
+      :title="$t('general.warning')"
+      type="warning"
+      style="margin-bottom: 1rem"
+    >
+      {{ editModalWarning }}
+    </n-alert>
 
     <n-form
       ref="formRef"
@@ -206,9 +283,9 @@ async function handleSubmit() {
                   :options="levelLocaleOptions"
                   :placeholder="$t('general.language')"
                   :consistent-menu-width="false"
-                  style="min-width: 160px"
                   @keydown.enter.prevent
                   :disabled="loading"
+                  style="min-width: 160px; font-weight: var(--app-ui-font-weight-normal)"
                 />
               </n-form-item>
               <!-- STRUCTURE LEVEL LABEL -->
@@ -267,7 +344,13 @@ async function handleSubmit() {
       >
         {{ $t('general.cancelAction') }}
       </n-button>
-      <n-button block type="primary" @click="handleSubmit" :loading="loading" :disabled="loading">
+      <n-button
+        block
+        type="primary"
+        @click="handleModalSubmit"
+        :loading="loading"
+        :disabled="loading"
+      >
         {{ $t('general.saveAction') }}
       </n-button>
     </n-space>

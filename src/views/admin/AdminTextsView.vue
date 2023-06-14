@@ -32,7 +32,5 @@ const state = useStateStore();
     />
   </SecondaryNavBar>
 
-  <div class="content-block">
-    <router-view></router-view>
-  </div>
+  <router-view></router-view>
 </template>
