@@ -1293,7 +1293,7 @@
         ]
       }
     },
-    "/texts/{id}/insert-level": {
+    "/texts/{id}/level": {
       "post": {
         "tags": [
           "texts"
@@ -1357,8 +1357,8 @@
         ]
       }
     },
-    "/texts/{id}/delete-level/{index}": {
-      "post": {
+    "/texts/{id}/level/{index}": {
+      "delete": {
         "tags": [
           "texts"
         ],

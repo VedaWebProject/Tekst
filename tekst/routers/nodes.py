@@ -96,7 +96,10 @@ async def get_path_by_head_location(
         parent_doc = await NodeDocument.get(parent_id)
         if parent_doc:
             path.insert(0, parent_doc)
-        parent_id = parent_doc.parent_id
+            parent_id = parent_doc.parent_id
+        else:
+            parent_id = None
+
     return path
 
 

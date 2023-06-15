@@ -80,9 +80,7 @@ async def create_text(su: SuperuserDep, text: TextCreate) -> TextRead:
 #     return text
 
 
-@router.post(
-    "/{id}/insert-level", response_model=TextRead, status_code=status.HTTP_200_OK
-)
+@router.post("/{id}/level", response_model=TextRead, status_code=status.HTTP_200_OK)
 async def insert_level(
     su: SuperuserDep, id: PyObjectId, data: InsertLevelRequest
 ) -> TextRead:
@@ -177,8 +175,8 @@ async def insert_level(
     return text_doc
 
 
-@router.post(
-    "/{id}/delete-level/{index}",
+@router.delete(
+    "/{id}/level/{index}",
     response_model=TextRead,
     status_code=status.HTTP_200_OK,
 )
@@ -195,7 +193,7 @@ async def delete_level(
         )
 
     # index valid?
-    if index < 0 or index > len(text_doc.levels):
+    if index < 0 or index >= len(text_doc.levels):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=(
@@ -203,22 +201,6 @@ async def delete_level(
                 f"Text has {len(text_doc.levels)} levels."
             ),
         )
-
-    # update text itself
-    text_doc.levels.pop(index)
-    if text_doc.default_level >= index:
-        levels_range = range(len(text_doc.levels))
-        dl = text_doc.default_level
-        # try (in this order): lower level, higher level, 0
-        text_doc.default_level = (
-            dl - 1
-            if dl - 1 in levels_range
-            else dl + 1
-            if dl + 1 in levels_range
-            else 0
-        )
-    text_doc.modified_at = datetime.utcnow()
-    await text_doc.save()
 
     # make nodes of higher level (if exists) parents of nodes of lower level (if exists)
     if index == 0:
@@ -242,7 +224,7 @@ async def delete_level(
                 NodeDocument.parent_id == target_level_node.id,
             ).to_list()
             for target_child in target_children:
-                lbl = f"{target_level_node.label}: {target_child.label}"
+                lbl = f"{target_child.label[:128]} ({target_level_node.label[:125]})"
                 target_child.label = lbl[:256]
                 target_child.parent_id = target_level_node.parent_id
                 await target_child.save()
@@ -270,6 +252,22 @@ async def delete_level(
     await NodeDocument.find(
         NodeDocument.text_id == id, NodeDocument.level >= index
     ).inc({LayerBaseDocument.level: -1})
+
+    # update text itself
+    text_doc.levels.pop(index)
+    if text_doc.default_level >= index:
+        levels_range = range(len(text_doc.levels))
+        dl = text_doc.default_level
+        # try (in this order): lower level, higher level, 0
+        text_doc.default_level = (
+            dl - 1
+            if dl - 1 in levels_range
+            else dl + 1
+            if dl + 1 in levels_range
+            else 0
+        )
+    text_doc.modified_at = datetime.utcnow()
+    await text_doc.save()
 
     return text_doc
 
