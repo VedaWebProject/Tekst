@@ -59,17 +59,13 @@ const editModalWarning = computed(() =>
 );
 
 const levelLocaleOptions = computed(() =>
-  Object.keys(localeProfiles)
-    .filter(
-      (l) =>
-        !formModel.value.translations
-          .map((lvlTrans: StructureLevelTranslation) => lvlTrans.locale)
-          .includes(l as StructureLevelTranslationLocaleEnum)
-    )
-    .map((l) => ({
-      label: `${localeProfiles[l].icon} ${localeProfiles[l].displayFull}`,
-      value: localeProfiles[l].apiLocaleEnum,
-    }))
+  Object.keys(localeProfiles).map((l) => ({
+    label: `${localeProfiles[l].icon} ${localeProfiles[l].displayFull}`,
+    value: localeProfiles[l].apiLocaleEnum,
+    disabled: !!formModel.value.translations
+      .map((lvlTrans: StructureLevelTranslation) => lvlTrans.locale)
+      .includes(l as StructureLevelTranslationLocaleEnum),
+  }))
 );
 
 function handleInsertClick(level: number) {
@@ -283,7 +279,7 @@ async function handleModalSubmit() {
                   :consistent-menu-width="false"
                   @keydown.enter.prevent
                   :disabled="loading"
-                  style="min-width: 160px; font-weight: var(--app-ui-font-weight-normal)"
+                  style="min-width: 200px; font-weight: var(--app-ui-font-weight-normal)"
                 />
               </n-form-item>
               <!-- STRUCTURE LEVEL LABEL -->

@@ -56,12 +56,11 @@ const {
 const formRef = ref<FormInst | null>(null);
 
 const subtitleLocaleOptions = computed(() =>
-  Object.keys(localeProfiles)
-    .filter((l) => !model.value.subtitle.find((s: SubtitleTranslation) => s && s.locale == l))
-    .map((l) => ({
-      label: `${localeProfiles[l].icon} ${localeProfiles[l].displayFull}`,
-      value: l,
-    }))
+  Object.keys(localeProfiles).map((l) => ({
+    label: `${localeProfiles[l].icon} ${localeProfiles[l].displayFull}`,
+    value: l,
+    disabled: !!model.value.subtitle.find((s: SubtitleTranslation) => s && s.locale == l),
+  }))
 );
 
 const defaultLevelOptions = computed(() =>
