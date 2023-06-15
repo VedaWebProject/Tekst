@@ -90,9 +90,10 @@ routes:
     accountManage: 'Account: Manage'
     adminStatistics: '@:admin.heading: Statistics'
     adminUsers: '@:admin.heading: Users'
-    adminTextsGeneral: '@:admin.heading: Texts - General Settings'
-    adminTextsStructure: '@:admin.heading: Texts - Structure'
-    adminNewText: '@:admin.heading: New Text'
+    adminTextsGeneral: '@:admin.heading - Texts: General'
+    adminTextsLevels: '@:admin.heading - Texts: Levels'
+    adminTextsNodes: '@:admin.heading - Texts: Nodes'
+    adminNewText: '@:admin.heading - New Text'
     verify: Verification
     reset: Reset password
 
@@ -277,7 +278,7 @@ admin:
   texts:
     heading: Texts
     general:
-      heading: General Settings
+      heading: General
       msgSaved: Text settings saved.
     levels:
       heading: Levels
