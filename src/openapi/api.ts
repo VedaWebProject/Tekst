@@ -311,25 +311,6 @@ export interface InfoConfig {
 /**
  * 
  * @export
- * @interface InsertLevelRequest
- */
-export interface InsertLevelRequest {
-    /**
-     * Index of the level to insert
-     * @type {number}
-     * @memberof InsertLevelRequest
-     */
-    'index': number;
-    /**
-     * Translation(s) for the label of the level to insert
-     * @type {Array<StructureLevelTranslation>}
-     * @memberof InsertLevelRequest
-     */
-    'translations': Array<StructureLevelTranslation>;
-}
-/**
- * 
- * @export
  * @interface LayerTypeInfo
  */
 export interface LayerTypeInfo {
@@ -4812,7 +4793,7 @@ export const TextsApiAxiosParamCreator = function (configuration?: Configuration
          * 
          * @summary Delete level
          * @param {string} id 
-         * @param {number} index 
+         * @param {number} index Index to insert the level at
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -4821,7 +4802,7 @@ export const TextsApiAxiosParamCreator = function (configuration?: Configuration
             assertParamExists('deleteLevel', 'id', id)
             // verify required parameter 'index' is not null or undefined
             assertParamExists('deleteLevel', 'index', index)
-            const localVarPath = `/texts/{id}/delete-level/{index}`
+            const localVarPath = `/texts/{id}/level/{index}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)))
                 .replace(`{${"index"}}`, encodeURIComponent(String(index)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -4831,7 +4812,7 @@ export const TextsApiAxiosParamCreator = function (configuration?: Configuration
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -4931,17 +4912,21 @@ export const TextsApiAxiosParamCreator = function (configuration?: Configuration
          * 
          * @summary Insert level
          * @param {string} id 
-         * @param {InsertLevelRequest} insertLevelRequest 
+         * @param {number} index Index to insert the level at
+         * @param {Array<StructureLevelTranslation>} structureLevelTranslation 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        insertLevel: async (id: string, insertLevelRequest: InsertLevelRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        insertLevel: async (id: string, index: number, structureLevelTranslation: Array<StructureLevelTranslation>, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('insertLevel', 'id', id)
-            // verify required parameter 'insertLevelRequest' is not null or undefined
-            assertParamExists('insertLevel', 'insertLevelRequest', insertLevelRequest)
-            const localVarPath = `/texts/{id}/insert-level`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // verify required parameter 'index' is not null or undefined
+            assertParamExists('insertLevel', 'index', index)
+            // verify required parameter 'structureLevelTranslation' is not null or undefined
+            assertParamExists('insertLevel', 'structureLevelTranslation', structureLevelTranslation)
+            const localVarPath = `/texts/{id}/level/{index}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"index"}}`, encodeURIComponent(String(index)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -4966,7 +4951,7 @@ export const TextsApiAxiosParamCreator = function (configuration?: Configuration
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(insertLevelRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(structureLevelTranslation, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -5044,7 +5029,7 @@ export const TextsApiFp = function(configuration?: Configuration) {
          * 
          * @summary Delete level
          * @param {string} id 
-         * @param {number} index 
+         * @param {number} index Index to insert the level at
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5078,12 +5063,13 @@ export const TextsApiFp = function(configuration?: Configuration) {
          * 
          * @summary Insert level
          * @param {string} id 
-         * @param {InsertLevelRequest} insertLevelRequest 
+         * @param {number} index Index to insert the level at
+         * @param {Array<StructureLevelTranslation>} structureLevelTranslation 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async insertLevel(id: string, insertLevelRequest: InsertLevelRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TextRead>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.insertLevel(id, insertLevelRequest, options);
+        async insertLevel(id: string, index: number, structureLevelTranslation: Array<StructureLevelTranslation>, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TextRead>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.insertLevel(id, index, structureLevelTranslation, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -5156,7 +5142,7 @@ export const TextsApiFactory = function (configuration?: Configuration, basePath
          * @throws {RequiredError}
          */
         insertLevel(requestParameters: TextsApiInsertLevelRequest, options?: AxiosRequestConfig): AxiosPromise<TextRead> {
-            return localVarFp.insertLevel(requestParameters.id, requestParameters.insertLevelRequest, options).then((request) => request(axios, basePath));
+            return localVarFp.insertLevel(requestParameters.id, requestParameters.index, requestParameters.structureLevelTranslation, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -5199,7 +5185,7 @@ export interface TextsApiDeleteLevelRequest {
     readonly id: string
 
     /**
-     * 
+     * Index to insert the level at
      * @type {number}
      * @memberof TextsApiDeleteLevel
      */
@@ -5248,11 +5234,18 @@ export interface TextsApiInsertLevelRequest {
     readonly id: string
 
     /**
-     * 
-     * @type {InsertLevelRequest}
+     * Index to insert the level at
+     * @type {number}
      * @memberof TextsApiInsertLevel
      */
-    readonly insertLevelRequest: InsertLevelRequest
+    readonly index: number
+
+    /**
+     * 
+     * @type {Array<StructureLevelTranslation>}
+     * @memberof TextsApiInsertLevel
+     */
+    readonly structureLevelTranslation: Array<StructureLevelTranslation>
 }
 
 /**
@@ -5340,7 +5333,7 @@ export class TextsApi extends BaseAPI {
      * @memberof TextsApi
      */
     public insertLevel(requestParameters: TextsApiInsertLevelRequest, options?: AxiosRequestConfig) {
-        return TextsApiFp(this.configuration).insertLevel(requestParameters.id, requestParameters.insertLevelRequest, options).then((request) => request(this.axios, this.basePath));
+        return TextsApiFp(this.configuration).insertLevel(requestParameters.id, requestParameters.index, requestParameters.structureLevelTranslation, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

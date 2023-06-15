@@ -142,10 +142,8 @@ async function handleModalSubmit() {
             state.text = (
               await textsApi.insertLevel({
                 id: state.text?.id || '',
-                insertLevelRequest: {
-                  index: editModalLevel.value,
-                  translations: formModel.value.translations,
-                },
+                index: editModalLevel.value,
+                structureLevelTranslation: formModel.value.translations,
               })
             ).data;
             message.success(
