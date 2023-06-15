@@ -68,6 +68,7 @@ errors:
   followFormRules: Please correct your inputs according to the form rules!
   noAccess: You don't have access to {resource}.
   logInToAccess: Log in to access the requested resource!
+  logoutAfter401: You have been logged out after trying to access a restricted resource without authorization.
   csrf: Your request didn't pass the CSRF checks. Delete your cookies for this website and refresh the page.
 
 nav:
