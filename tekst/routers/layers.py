@@ -1,4 +1,6 @@
-from fastapi import APIRouter, HTTPException, status
+from typing import Annotated
+
+from fastapi import APIRouter, HTTPException, Path, status
 
 from tekst.auth import OptionalUserDep, UserDep
 from tekst.layer_types import layer_type_manager
@@ -251,12 +253,18 @@ async def find_layers(
 
 
 @router.get("/{id}", status_code=status.HTTP_200_OK)
-async def get_generic_layer_data_by_id(id: PyObjectId, user: OptionalUserDep) -> dict:
+async def get_generic_layer_data_by_id(
+    layer_id: Annotated[PyObjectId, Path(alias="id")], user: OptionalUserDep
+) -> dict:
     layer_doc = (
-        await LayerBaseDocument.find(LayerBaseDocument.id == id, with_children=True)
+        await LayerBaseDocument.find(
+            LayerBaseDocument.id == layer_id, with_children=True
+        )
         .find(LayerBaseDocument.allowed_to_read(user))
         .first_or_none()
     )
     if not layer_doc:
-        raise HTTPException(status.HTTP_404_NOT_FOUND, detail=f"No layer with ID {id}")
+        raise HTTPException(
+            status.HTTP_404_NOT_FOUND, detail=f"No layer with ID {layer_id}"
+        )
     return layer_doc.dict(exclude=layer_doc.restricted_fields(user and user.id))

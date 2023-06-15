@@ -1,4 +1,6 @@
-from fastapi import APIRouter, HTTPException, status
+from typing import Annotated
+
+from fastapi import APIRouter, HTTPException, Path, status
 
 from tekst.auth import SuperuserDep
 from tekst.logging import log
@@ -104,25 +106,27 @@ async def get_path_by_head_location(
 
 
 @router.get("/{id}", response_model=NodeRead, status_code=status.HTTP_200_OK)
-async def get_node(id: PyObjectId) -> NodeDocument:
-    node_doc = await NodeDocument.get(id)
+async def get_node(node_id: Annotated[PyObjectId, Path(alias="id")]) -> NodeDocument:
+    node_doc = await NodeDocument.get(node_id)
     if not node_doc:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Node with ID {id} not found",
+            detail=f"Node with ID {node_id} not found",
         )
     return node_doc
 
 
 @router.patch("/{id}", response_model=NodeRead, status_code=status.HTTP_200_OK)
 async def update_node(
-    su: SuperuserDep, id: PyObjectId, updates: NodeUpdate
+    su: SuperuserDep,
+    node_id: Annotated[PyObjectId, Path(alias="id")],
+    updates: NodeUpdate,
 ) -> NodeDocument:
-    node_doc = await NodeDocument.get(id)
+    node_doc = await NodeDocument.get(node_id)
     if not node_doc:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Node {id} doesn't exist or requires extra permissions",
+            detail=f"Node {node_id} doesn't exist or requires extra permissions",
         )
     await node_doc.apply(updates.dict(exclude_unset=True))
     return node_doc
@@ -132,20 +136,26 @@ async def update_node(
     "/{id}/children", response_model=list[NodeRead], status_code=status.HTTP_200_OK
 )
 async def get_children(
-    id: PyObjectId,
+    node_id: Annotated[PyObjectId, Path(alias="id")],
     limit: int = 9999,
 ) -> list:
-    return await NodeDocument.find(NodeDocument.parent_id == id).limit(limit).to_list()
+    return (
+        await NodeDocument.find(NodeDocument.parent_id == node_id)
+        .limit(limit)
+        .to_list()
+    )
 
 
 @router.get("/{id}/path", response_model=list[NodeRead], status_code=status.HTTP_200_OK)
-async def get_path_by_head_id(id: PyObjectId) -> list[NodeDocument]:
+async def get_path_by_head_id(
+    node_id: Annotated[PyObjectId, Path(alias="id")]
+) -> list[NodeDocument]:
     """
     Returns the text node path from the node with the given ID as the last element,
     up to its most distant ancestor node on structure level 0
     as the first element of an array.
     """
-    node_doc = await NodeDocument.get(id)
+    node_doc = await NodeDocument.get(node_id)
     if not node_doc:
         return []
     # construct nodes for this path up to root node
@@ -163,12 +173,14 @@ async def get_path_by_head_id(id: PyObjectId) -> list[NodeDocument]:
     response_model=list[list[NodeRead]],
     status_code=status.HTTP_200_OK,
 )
-async def get_path_options_by_head_id(id: PyObjectId) -> list[list[NodeDocument]]:
+async def get_path_options_by_head_id(
+    node_id: Annotated[PyObjectId, Path(alias="id")]
+) -> list[list[NodeDocument]]:
     """
     Returns the options for selecting text locations derived from the node path of
     the node with the given ID as head.
     """
-    node_doc = await NodeDocument.get(id)
+    node_doc = await NodeDocument.get(node_id)
     if not node_doc:
         return []
     # construct options for this path up to root node
@@ -191,13 +203,15 @@ async def get_path_options_by_head_id(id: PyObjectId) -> list[list[NodeDocument]
     response_model=list[list[NodeRead]],
     status_code=status.HTTP_200_OK,
 )
-async def get_path_options_by_root_id(id: PyObjectId) -> list[list[NodeDocument]]:
+async def get_path_options_by_root_id(
+    node_id: Annotated[PyObjectId, Path(alias="id")]
+) -> list[list[NodeDocument]]:
     """
     Returns the options for selecting text locations derived from the node path of
     the node with the given ID as root. At each level, the first option is taken
     as the basis for the next level.
     """
-    node_doc = await NodeDocument.get(id)
+    node_doc = await NodeDocument.get(node_id)
     if not node_doc:
         return []
     # construct options for this path up to max_level
@@ -213,13 +227,13 @@ async def get_path_options_by_root_id(id: PyObjectId) -> list[list[NodeDocument]
 
 @router.get("/{id}/next", response_model=NodeRead, status_code=status.HTTP_200_OK)
 async def get_next(
-    id: PyObjectId,
+    node_id: Annotated[PyObjectId, Path(alias="id")],
 ) -> dict:
-    node = await NodeDocument.get(id)
+    node = await NodeDocument.get(node_id)
     if not node:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Invalid node ID {id}",
+            detail=f"Invalid node ID {node_id}",
         )
     node = await NodeDocument.find_one(
         {
@@ -231,6 +245,6 @@ async def get_next(
     if not node:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"No next node found for node {id}",
+            detail=f"No next node found for node {node_id}",
         )
     return node

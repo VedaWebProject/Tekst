@@ -1293,7 +1293,7 @@
         ]
       }
     },
-    "/texts/{id}/level": {
+    "/texts/{id}/level/{index}": {
       "post": {
         "tags": [
           "texts"
@@ -1310,13 +1310,31 @@
             },
             "name": "id",
             "in": "path"
+          },
+          {
+            "description": "Index to insert the level at",
+            "required": true,
+            "schema": {
+              "title": "Index",
+              "exclusiveMaximum": 32.0,
+              "minimum": 0.0,
+              "type": "integer",
+              "description": "Index to insert the level at"
+            },
+            "name": "index",
+            "in": "path"
           }
         ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/InsertLevelRequest"
+                "title": "Translations",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/StructureLevelTranslation"
+                },
+                "description": "Label translations for this level"
               }
             }
           },
@@ -1355,9 +1373,7 @@
             "OAuth2PasswordBearer": []
           }
         ]
-      }
-    },
-    "/texts/{id}/level/{index}": {
+      },
       "delete": {
         "tags": [
           "texts"
@@ -1376,12 +1392,14 @@
             "in": "path"
           },
           {
+            "description": "Index to insert the level at",
             "required": true,
             "schema": {
               "title": "Index",
               "exclusiveMaximum": 32.0,
               "minimum": 0.0,
-              "type": "integer"
+              "type": "integer",
+              "description": "Index to insert the level at"
             },
             "name": "index",
             "in": "path"
@@ -2900,32 +2918,6 @@
           }
         },
         "description": "General information config model"
-      },
-      "InsertLevelRequest": {
-        "title": "InsertLevelRequest",
-        "required": [
-          "index",
-          "translations"
-        ],
-        "type": "object",
-        "properties": {
-          "index": {
-            "title": "Index",
-            "exclusiveMaximum": 32.0,
-            "minimum": 0.0,
-            "type": "integer",
-            "description": "Index of the level to insert"
-          },
-          "translations": {
-            "title": "Translations",
-            "minItems": 1,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/StructureLevelTranslation"
-            },
-            "description": "Translation(s) for the label of the level to insert"
-          }
-        }
       },
       "LayerTypeInfo": {
         "title": "LayerTypeInfo",

@@ -144,7 +144,6 @@ NodeUpdate = Node.get_update_model()
 
 
 class InsertLevelRequest(ModelBase):
-    index: conint(ge=0, lt=32) = Field(..., description="Index of the level to insert")
     translations: conlist(StructureLevelTranslation, min_items=1) = Field(
         ..., description="Translation(s) for the label of the level to insert"
     )
