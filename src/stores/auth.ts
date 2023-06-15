@@ -2,7 +2,7 @@ import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
 import type { ErrorModel, UserRead, UserUpdate } from '@/openapi';
 import { useMessages } from '@/messages';
-import { useApi } from '@/api';
+import { useApi } from '@/api/index';
 import { i18n, localeProfiles } from '@/i18n';
 import { useIntervalFn } from '@vueuse/core';
 import { useRouter, type RouteLocationRaw } from 'vue-router';
@@ -186,7 +186,11 @@ export const useAuthStore = defineStore('auth', () => {
       _cleanupSession();
       // reload platform data as some resources might not be accessible anymore
       await loadPlatformData();
-      state.text = pfData.value?.texts[0];
+      if (!pfData.value?.texts.find((t) => t.id === state.text?.id)) {
+        state.text =
+          pfData.value?.texts.find((t) => t.id === pfData.value?.settings.defaultTextId) ||
+          pfData.value?.texts[0];
+      }
       router.push({ name: 'home' });
     }
   }
