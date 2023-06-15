@@ -87,6 +87,7 @@ watch(
   max-width: var(--max-app-width);
   margin: 0 auto;
   padding: 0.75rem;
+  font-size: var(--app-ui-font-size-small);
 }
 
 .navbar a:any-link {

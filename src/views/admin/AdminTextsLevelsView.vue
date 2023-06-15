@@ -180,6 +180,10 @@ async function handleModalSubmit() {
 </script>
 
 <template>
+  <h1>
+    {{ $t('admin.heading') }}: {{ state.text?.title }} - {{ $t('admin.texts.levels.heading') }}
+  </h1>
+
   <div class="content-block">
     <div v-for="(lvl, lvlIndex) in levels" :key="`lvl_${lvlIndex}`">
       <insert-level-button :level="lvlIndex" @click="handleInsertClick" />

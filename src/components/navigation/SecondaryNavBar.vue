@@ -1,5 +1,3 @@
-<script setup lang="ts"></script>
-
 <template>
   <div class="secondary-navbar-wrapper">
     <div class="secondary-navbar">
@@ -27,9 +25,9 @@
 
 <style>
 .secondary-navbar .navbar-router-link {
+  font-size: var(--app-ui-font-size-small);
   padding: 0.3rem;
   margin: 0 0.5rem;
-  font-size: var(--app-ui-font-size-tiny);
   border-bottom: 3px solid transparent;
 }
 

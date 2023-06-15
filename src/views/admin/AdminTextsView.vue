@@ -15,20 +15,21 @@ const state = useStateStore();
 </script>
 
 <template>
-  <h1>{{ $t('admin.heading') }}: {{ state.text?.title }}</h1>
-
-  <SecondaryNavBar align="flex-start">
+  <SecondaryNavBar style="margin-top: 0.5rem">
     <NavBarRouterLink
       :label="$t('admin.texts.general.heading')"
       :route="{ name: 'adminTextsGeneral', params: { text: state.text?.slug } }"
+      size="tiny"
     />
     <NavBarRouterLink
       :label="$t('admin.texts.levels.heading')"
       :route="{ name: 'adminTextsLevels', params: { text: state.text?.slug } }"
+      size="tiny"
     />
     <NavBarRouterLink
       :label="$t('admin.texts.nodes.heading')"
       :route="{ name: 'adminTextsNodes', params: { text: state.text?.slug } }"
+      size="tiny"
     />
   </SecondaryNavBar>
 

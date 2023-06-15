@@ -8,6 +8,7 @@ const props = defineProps<{
   route: RouteLocationRaw;
   icon?: Component;
   showIcon?: boolean;
+  size?: 'mini' | 'tiny' | 'small' | 'medium' | 'large' | 'huge';
 }>();
 
 const themeVars = useThemeVars();
@@ -24,7 +25,11 @@ const themeVars = useThemeVars();
         ]"
       >
         <NIcon :size="20" v-if="icon && showIcon" :component="icon" />
-        <span class="navbar-router-link-label">{{ props.label }}</span>
+        <span
+          class="navbar-router-link-label"
+          :style="{ 'font-size': `var(--app-ui-font-size-${props.size || 'small'}` }"
+          >{{ props.label }}</span
+        >
       </div>
     </a>
   </RouterLink>
@@ -41,7 +46,6 @@ const themeVars = useThemeVars();
   gap: 8px;
   padding: 0 1rem 0.1rem 1rem;
 
-  font-size: var(--app-ui-font-size-small);
   font-weight: var(--app-ui-font-weight-normal);
   transition: 0.3s var(--transition-curve);
   color: var(--font-color);
