@@ -82,12 +82,12 @@ const infoTooltip = computed(() =>
 }
 
 .layer-toggle-item .layer-toggle-item-title-extra {
-  opacity: 0.5;
+  opacity: 0.75;
   font-size: 0.8em;
 }
 
 .layer-toggle-item .layer-toggle-item-meta {
-  opacity: 0.6;
+  opacity: 0.75;
   font-size: var(--app-ui-font-size-mini);
   font-weight: var(--app-ui-font-weight-light);
 }

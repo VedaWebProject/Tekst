@@ -35,9 +35,11 @@ const headerMiddleText = computed(() =>
 <template>
   <div v-if="layer.active && layer.unit" class="content-block unit-container">
     <div class="unit-container-header">
-      <div class="unit-container-header-title">{{ layer.title }}</div>
-      <div class="unit-container-header-middle">
-        {{ headerMiddleText }}
+      <div class="unit-container-header-title-container">
+        <div class="unit-container-header-title">{{ layer.title }}</div>
+        <div class="unit-container-header-title-extra">
+          {{ headerMiddleText }}
+        </div>
       </div>
       <div class="unit-container-header-widgets">
         <!-- config-specific widgets -->
@@ -79,12 +81,21 @@ const headerMiddleText = computed(() =>
 }
 .unit-container-header {
   display: flex;
-  align-items: baseline;
+  align-items: flex-start;
   flex-wrap: wrap;
   column-gap: 12px;
   row-gap: 0px;
   margin-bottom: 0.5rem;
 }
+
+.unit-container-header-title-container {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  flex-grow: 2;
+  column-gap: 12px;
+}
+
 .unit-container-header-title {
   color: var(--accent-color);
   font-weight: var(--app-ui-font-weight-normal);
@@ -93,7 +104,7 @@ const headerMiddleText = computed(() =>
   white-space: nowrap;
 }
 
-.unit-container-header-middle {
+.unit-container-header-title-extra {
   flex-grow: 2;
   opacity: 0.5;
   font-size: 0.8em;

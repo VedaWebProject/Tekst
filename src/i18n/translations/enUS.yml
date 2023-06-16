@@ -222,7 +222,7 @@ account:
     badCreds: Incorrect email/password or account isn't activated, yet
     notVerified: Your email address is not verified, yet. We just sent you a verification link.
   autoLogout: Your session will automatically end in {minutes} minutes and {seconds} seconds. You can log out and log back in to renew your session now.
-  sessionExpired: Your session expired.
+  sessionExpired: Your session has expired. You have been logged out.
   renewLogin: Log in again to renew your session.
   manage:
     heading: Manage Account

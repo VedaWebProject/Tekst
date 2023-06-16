@@ -230,7 +230,7 @@ account:
     badCreds: Falsche Email-Adresse/Passwort oder Konto noch nicht aktiviert
     notVerified: Ihre Email-Adresse ist noch nicht verifiziert. Wir haben Ihnen einen Verifizierungs-Link geschickt.
   autoLogout: Ihre Sitzung endet automatisch in {minutes} Minuten und {seconds} Sekunden. Melden Sie sich ab und wieder an, um Ihre Sitzung jetzt zu erneuern.
-  sessionExpired: Ihre Sitzung ist abgelaufen.
+  sessionExpired: Ihre Sitzung ist abgelaufen. Sie wurden abgemeldet.
   renewLogin: Melden Sie sich wieder an, um Ihre Sitzung zu erneuern.
   manage:
     heading: Konto verwalten

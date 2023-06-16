@@ -50,6 +50,7 @@ function renderOption(option: DropdownOption) {
     placement="bottom-start"
     :size="state.dropdownSize"
     :render-label="renderOption"
+    show-arrow
   >
     <UnitContainerHeaderWidget
       :title="$t('browse.units.widgets.tipDeepLTranslate')"
