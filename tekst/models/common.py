@@ -61,7 +61,7 @@ class _IDMixin(BaseModel):
 
 
 class DocumentBase(Document):
-    """Base class for all Tekst ODM models"""
+    """Base model for all Tekst ODM models"""
 
     created_at: datetime = datetime.utcnow()
     modified_at: datetime = datetime.utcnow()

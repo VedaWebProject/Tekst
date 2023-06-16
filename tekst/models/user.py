@@ -38,7 +38,7 @@ PublicUserField = Literal[
 
 
 class UserBase(ModelBase):
-    """This base class defines the custom fields added to FastAPI-User's user model"""
+    """This base model defines the custom fields added to FastAPI-User's user model"""
 
     username: constr(min_length=4, max_length=16, regex=r"[a-zA-Z0-9\-_]+")
     first_name: constr(min_length=1, max_length=32)

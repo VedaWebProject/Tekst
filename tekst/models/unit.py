@@ -11,7 +11,7 @@ from tekst.models.common import (
 
 
 class UnitBase(ModelBase, ModelFactory):
-    """A base class for types of data units belonging to a certain data layer"""
+    """A base model for types of data units belonging to a certain data layer"""
 
     layer_id: PyObjectId = Field(..., description="Data layer ID")
     node_id: PyObjectId = Field(..., description="Parent text node ID")
