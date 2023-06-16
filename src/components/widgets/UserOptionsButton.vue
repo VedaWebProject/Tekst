@@ -8,8 +8,13 @@ import { useTheme } from '@/theme';
 
 import LogInRound from '@vicons/material/LogInRound';
 import LogOutRound from '@vicons/material/LogOutRound';
-import SettingsRound from '@vicons/material/SettingsRound';
 import PersonRound from '@vicons/material/PersonRound';
+import RemoveRedEyeRound from '@vicons/material/RemoveRedEyeRound';
+import ManageAccountsRound from '@vicons/material/ManageAccountsRound';
+import PeopleRound from '@vicons/material/PeopleRound';
+import BarChartRound from '@vicons/material/BarChartRound';
+import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
+import AddCircleOutlineRound from '@vicons/material/AddCircleOutlineRound';
 
 const { t } = useI18n({ useScope: 'global' });
 const auth = useAuthStore();
@@ -32,14 +37,14 @@ const userOptions = computed(() => [
     key: 'user',
     children: [
       {
-        label: t('account.optionLabel'),
-        key: 'account',
-        icon: renderIcon(PersonRound),
+        label: t('account.profile'),
+        key: 'accountProfile',
+        icon: renderIcon(RemoveRedEyeRound),
       },
       {
-        label: t('account.logoutBtn'),
-        key: 'logout',
-        icon: renderIcon(LogOutRound),
+        label: t('account.manage.heading'),
+        key: 'accountManage',
+        icon: renderIcon(ManageAccountsRound),
       },
     ],
   },
@@ -49,24 +54,45 @@ const userOptions = computed(() => [
           type: 'divider',
           key: 'dividerAdministration',
         },
-      ]
-    : []),
-  ...(auth.user?.isSuperuser
-    ? [
         {
-          label: t('admin.optionLabel'),
+          type: 'group',
+          label: t('admin.optionGroupLabel'),
           key: 'admin',
-          icon: renderIcon(SettingsRound),
+          children: [
+            {
+              label: t('admin.statistics.heading'),
+              key: 'adminStatistics',
+              icon: renderIcon(BarChartRound),
+            },
+            {
+              label: t('admin.users.heading'),
+              key: 'adminUsers',
+              icon: renderIcon(PeopleRound),
+            },
+            {
+              label: t('admin.texts.heading'),
+              key: 'adminTexts',
+              icon: renderIcon(MenuBookOutlined),
+            },
+            {
+              label: t('admin.newText.heading'),
+              key: 'adminNewText',
+              icon: renderIcon(AddCircleOutlineRound),
+            },
+          ],
         },
       ]
     : []),
+  {
+    type: 'divider',
+    key: 'dividerLogout',
+  },
+  {
+    label: t('account.logoutBtn'),
+    key: 'logout',
+    icon: renderIcon(LogOutRound),
+  },
 ]);
-
-const initials = computed(
-  () =>
-    auth.loggedIn &&
-    `${auth.user?.firstName[0].toUpperCase()}${auth.user?.lastName[0].toUpperCase()}`
-);
 
 const color = computed(() => (auth.loggedIn ? accentColors.value.base : undefined));
 
@@ -82,18 +108,19 @@ async function handleClick() {
   }
 }
 
-function handleUserOptionSelect(option: string) {
+function handleUserOptionSelect(key: string) {
   showUserDropdown.value = false;
-  switch (option) {
-    case 'account':
-      router.push({ name: 'accountProfile' });
-      break;
-    case 'logout':
-      auth.logout();
-      break;
-    case 'admin':
-      router.push({ name: 'adminStatistics' });
-      break;
+  if (key === 'logout') {
+    auth.logout();
+  } else if (key === 'adminTexts') {
+    router.push({
+      name: 'adminTexts',
+      params: { text: state.text?.slug },
+    });
+  } else {
+    router.push({
+      name: key,
+    });
   }
 }
 </script>
@@ -105,6 +132,7 @@ function handleUserOptionSelect(option: string) {
     :on-clickoutside="() => (showUserDropdown = false)"
     :size="state.dropdownSize"
     @select="handleUserOptionSelect"
+    show-arrow
   >
     <n-button
       :secondary="!auth.loggedIn"
@@ -117,9 +145,9 @@ function handleUserOptionSelect(option: string) {
       :style="auth.loggedIn && 'color: #fff'"
       class="user-options-button"
     >
-      <template v-if="auth.loggedIn">{{ initials }}</template>
-      <template v-if="!auth.loggedIn" #icon>
-        <n-icon :component="LogInRound" />
+      <template #icon>
+        <n-icon v-if="auth.loggedIn" :component="PersonRound" />
+        <n-icon v-else :component="LogInRound" />
       </template>
     </n-button>
   </n-dropdown>

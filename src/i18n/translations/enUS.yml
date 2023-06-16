@@ -198,7 +198,6 @@ account:
   profileHeading: 'Public Profile of {username}'
   profileNotFound: The user profile "{username}" could not be found.
   profileFieldNotPublic: not public
-  optionLabel: My Account
   logoutSuccessful: You are now logged out.
   tipUserBtn: Show user actions for {username}
   tipLoginBtn: Log into your account
@@ -237,7 +236,7 @@ account:
 
 admin:
   heading: Administration
-  optionLabel: Administration
+  optionGroupLabel: Administration
   statistics:
     heading: Statistics
     globalHeading: Global

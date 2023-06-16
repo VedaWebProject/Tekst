@@ -58,6 +58,7 @@ function handleSelect(key: string) {
     :render-label="renderLabel"
     placement="bottom-start"
     :size="state.dropdownSize"
+    show-arrow
   >
     <n-button
       text

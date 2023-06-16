@@ -206,7 +206,6 @@ account:
   profileHeading: 'Öffentliches Profil von {username}'
   profileNotFound: Das Benutzerprofil "{username}" konnte nicht gefunden werden.
   profileFieldNotPublic: nicht öffentlich
-  optionLabel: Mein Benutzerkonto
   logoutSuccessful: Sie sind jetzt ausgeloggt.
   tipUserBtn: Benutzer-Aktionen für {username} anzeigen
   tipLoginBtn: In Ihrem Konto anmelden
@@ -245,7 +244,7 @@ account:
 
 admin:
   heading: Administration
-  optionLabel: Administration
+  optionGroupLabel: Administration
   statistics:
     heading: Statistiken
     globalHeading: Global

@@ -38,6 +38,7 @@ function handleLanguageSelect(localeCode: string) {
     :options="options"
     :size="state.dropdownSize"
     @select="handleLanguageSelect"
+    show-arrow
   >
     <n-button
       secondary
