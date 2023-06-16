@@ -36,10 +36,8 @@ const show = computed({
         v-for="layer in browse.layers"
         v-model:active="layer.active"
         :key="`${layer.id}`"
-        :title="layer.title"
-        :layerType="layer.layerType"
-        :disabled="!Boolean(layer.unit)"
-        :meta="layer.meta"
+        :layer="layer"
+        :disabled="!layer.unit"
       />
     </n-drawer-content>
   </n-drawer>

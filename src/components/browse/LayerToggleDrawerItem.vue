@@ -4,13 +4,12 @@ import { NSwitch, NIcon } from 'naive-ui';
 import CheckRound from '@vicons/material/CheckRound';
 import { useI18n } from 'vue-i18n';
 import MetadataDisplayMinimal from './MetadataDisplayMinimal.vue';
+import { useStateStore } from '@/stores';
 
 const props = defineProps<{
   active: boolean;
-  title: string;
-  layerType: string;
+  layer: Record<string, any>;
   disabled?: boolean;
-  meta?: Record<string, string>;
 }>();
 const emits = defineEmits<{ (e: 'update:active', active: boolean): void }>();
 
@@ -24,22 +23,28 @@ const active = computed({
 });
 
 const { t } = useI18n({ useScope: 'global' });
+const state = useStateStore();
 const infoTooltip = computed(() =>
   props.disabled ? t('browse.layerToggleDrawer.noData') : undefined
 );
 </script>
 
 <template>
-  <div class="layer-toggle-item" :class="props.disabled && 'disabled'" :title="infoTooltip">
+  <div class="layer-toggle-item" :class="disabled && 'disabled'" :title="infoTooltip">
     <n-switch v-model:value="active" size="large" :round="false">
       <template #checked-icon>
         <n-icon :component="CheckRound" />
       </template>
     </n-switch>
     <div class="layer-toggle-item-main">
-      <div class="layer-toggle-item-title">{{ props.title }}</div>
+      <div class="layer-toggle-item-title-container">
+        <div class="layer-toggle-item-title">{{ layer.title }}</div>
+        <div class="layer-toggle-item-title-extra">
+          ({{ $t('browse.location.level') }}: {{ state.textLevelLabels[layer.level] }})
+        </div>
+      </div>
       <div class="layer-toggle-item-meta">
-        <MetadataDisplayMinimal :data="props.meta" :layer-type="props.layerType" />
+        <MetadataDisplayMinimal :data="layer.meta" :layer-type="layer.layerType" />
       </div>
     </div>
   </div>
@@ -64,10 +69,21 @@ const infoTooltip = computed(() =>
   cursor: help;
 }
 
+.layer-toggle-item .layer-toggle-item-title-container {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
 .layer-toggle-item .layer-toggle-item-title {
   color: var(--accent-color);
   font-size: var(--app-ui-font-size-medium);
   font-weight: var(--app-ui-font-weight-normal);
+}
+
+.layer-toggle-item .layer-toggle-item-title-extra {
+  opacity: 0.5;
+  font-size: 0.8em;
 }
 
 .layer-toggle-item .layer-toggle-item-meta {
