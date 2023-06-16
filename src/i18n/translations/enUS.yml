@@ -115,7 +115,7 @@ browse:
     noData: No data for this location
   noData: The selected data layers contain no data for this text level and location. Try choosing a different location or activating more data layers.
   units:
-    fromHigherLevel: '(from higher text level "{level}")'
+    fromHigherLevel: '(from higher level "{level}")'
     widgets:
       tipDeepLTranslate: Open DeepL translation
 
