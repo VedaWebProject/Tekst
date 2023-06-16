@@ -166,7 +166,7 @@ async def find_layers(
     if layer_type:
         example["layerType"] = layer_type
 
-    layers = (
+    layer_docs = (
         await LayerBaseDocument.find(example, with_children=True)
         .find(LayerBaseDocument.allowed_to_read(user))
         .limit(limit)
@@ -178,8 +178,8 @@ async def find_layers(
     # that could take care of that automatically (as we don't know the exact type)
     uid = user and user.id
     return [
-        layer.dict(rename_id=True, exclude=layer.restricted_fields(uid))
-        for layer in layers
+        layer_doc.dict(rename_id=True, exclude=layer_doc.restricted_fields(uid))
+        for layer_doc in layer_docs
     ]
 
 
