@@ -140,7 +140,7 @@ export const useBrowseStore = defineStore('browse', () => {
     try {
       // fetch units data
       const unitsData = await unitsApi
-        .findUnits({ nodeId: [nodePathHead.value.id] })
+        .findUnits({ nodeId: nodePath.value.map((n) => n.id) })
         .then((response: AxiosResponse) => response.data);
       // assign units to layers
       layersData.forEach((l: Record<string, any>) => {

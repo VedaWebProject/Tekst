@@ -116,6 +116,7 @@ browse:
     noData: Keine Daten für diese Fundstelle
   noData: Die ausgewählten Datenschichten enthalten keine Daten für diese Ebene und Fundstelle. Wählen Sie eine andere Fundstelle oder aktivieren Sie mehr Datenschichten.
   units:
+    fromHigherLevel: '(aus höherer Textebene "{level}")'
     widgets:
       tipDeepLTranslate: DeepL-Übersetzung öffnen
 

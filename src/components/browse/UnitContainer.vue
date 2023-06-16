@@ -2,6 +2,9 @@
 import { NSpin } from 'naive-ui';
 import MetadataWidget from '@/components/browse/widgets/MetadataWidget.vue';
 import { type Component, defineAsyncComponent } from 'vue';
+import { useBrowseStore, useStateStore } from '@/stores';
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const props = defineProps<{
   loading?: boolean;
@@ -17,44 +20,54 @@ const UNIT_WIDGETS: Record<string, Component> = {
     () => import('@/components/browse/widgets/DeepLLinksWidget.vue')
   ),
 };
+
+const browse = useBrowseStore();
+const state = useStateStore();
+const { t } = useI18n({ useScope: 'global' });
+
+const headerMiddleText = computed(() =>
+  props.layer.level !== browse.level
+    ? t('browse.units.fromHigherLevel', { level: state.textLevelLabels[props.layer.level] })
+    : ''
+);
 </script>
 
 <template>
-  <div v-if="props.layer.active && props.layer.unit" class="content-block unit-container">
+  <div v-if="layer.active && layer.unit" class="content-block unit-container">
     <div class="unit-container-header">
-      <div class="unit-container-header-title">{{ props.layer.title }}</div>
+      <div class="unit-container-header-title">{{ layer.title }}</div>
+      <div class="unit-container-header-middle">
+        {{ headerMiddleText }}
+      </div>
       <div class="unit-container-header-widgets">
         <!-- config-specific widgets -->
-        <template
-          v-for="(configSection, configSectionKey) in props.layer.config"
-          :key="configSectionKey"
-        >
+        <template v-for="(configSection, configSectionKey) in layer.config" :key="configSectionKey">
           <component
             v-if="configSectionKey in UNIT_WIDGETS"
             :is="UNIT_WIDGETS[configSectionKey]"
-            :unit-data="props.layer.unit"
+            :unit-data="layer.unit"
             :widget-config="configSection"
           />
         </template>
         <!-- generic unit widgets -->
         <MetadataWidget
-          v-if="props.layer.meta || props.layer.comment"
-          :title="props.layer.title"
-          :meta="props.layer.meta"
-          :comment="props.layer.comment"
+          v-if="layer.meta || layer.comment"
+          :title="layer.title"
+          :meta="layer.meta"
+          :comment="layer.comment"
         />
       </div>
     </div>
 
     <!-- unit-specific component (that displays the actual unit data) -->
     <component
-      :is="UNIT_COMPONENTS[props.layer.layerType]"
-      :unit-data="props.layer.unit"
-      :layer-config="props.layer.config"
+      :is="UNIT_COMPONENTS[layer.layerType]"
+      :unit-data="layer.unit"
+      :layer-config="layer.config"
     />
 
     <Transition>
-      <n-spin v-show="props.loading" class="unit-container-loader" />
+      <n-spin v-show="loading" class="unit-container-loader" />
     </Transition>
   </div>
 </template>
@@ -66,19 +79,24 @@ const UNIT_WIDGETS: Record<string, Component> = {
 }
 .unit-container-header {
   display: flex;
-  justify-content: flex-end;
-  flex-wrap: wrap-reverse;
+  align-items: baseline;
+  flex-wrap: wrap;
   column-gap: 12px;
   row-gap: 0px;
   margin-bottom: 0.5rem;
 }
 .unit-container-header-title {
-  flex-grow: 2;
   color: var(--accent-color);
   font-weight: var(--app-ui-font-weight-normal);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.unit-container-header-middle {
+  flex-grow: 2;
+  opacity: 0.5;
+  font-size: 0.8em;
 }
 
 .unit-container-header-widgets {
