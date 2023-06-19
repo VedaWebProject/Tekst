@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { NSpin } from 'naive-ui';
-import MetadataWidget from '@/components/browse/widgets/MetadataWidget.vue';
+import LayerInfoWidget from '@/components/browse/widgets/LayerInfoWidget.vue';
 import { type Component, defineAsyncComponent } from 'vue';
 import { useBrowseStore, useStateStore } from '@/stores';
 import { computed } from 'vue';
@@ -52,12 +52,7 @@ const headerMiddleText = computed(() =>
           />
         </template>
         <!-- generic unit widgets -->
-        <MetadataWidget
-          v-if="layer.meta || layer.comment"
-          :title="layer.title"
-          :meta="layer.meta"
-          :comment="layer.comment"
-        />
+        <LayerInfoWidget :data="layer" />
       </div>
     </div>
 

@@ -1,18 +1,29 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { NButton, NModal } from 'naive-ui';
 import MetadataDisplay from '@/components/browse/MetadataDisplay.vue';
 import ModalButtonFooter from '@/components/ModalButtonFooter.vue';
 import InfoOutlined from '@vicons/material/InfoOutlined';
 import UnitContainerHeaderWidget from '@/components/browse/UnitContainerHeaderWidget.vue';
+import { useProfile } from '@/fetchers';
+import { useStateStore } from '@/stores';
 
 const props = defineProps<{
-  title: string;
-  meta?: Record<string, string>;
-  comment?: string;
+  data: Record<string, any>;
 }>();
 
+const state = useStateStore();
+
 const showMetaModal = ref(false);
+const { user: owner, error: ownerError } = useProfile(props.data.ownerId, showMetaModal);
+const ownerDisplayName = computed(
+  () =>
+    (owner.value &&
+      (owner.value.firstName && owner.value.lastName
+        ? `${owner.value.firstName} ${owner.value.lastName}`
+        : owner.value.username)) ||
+    ''
+);
 </script>
 
 <template>
@@ -33,14 +44,32 @@ const showMetaModal = ref(false);
     to="#app-container"
     embedded
   >
-    <h2>{{ props.title }}: {{ $t('models.meta.modelLabel') }}</h2>
-    <MetadataDisplay :data="props.meta" />
-    <template v-if="props.comment">
+    <h2>{{ data.title }}</h2>
+
+    <p>
+      {{ $t(`layerTypes.${data.layerType}`) }}
+      {{ $t('models.meta.onLevel', { level: state.textLevelLabels[data.level] }) }}.
+    </p>
+
+    <p v-if="owner && !ownerError">
+      {{ $t('models.meta.providedBy') }}:
+      <RouterLink :to="{ name: 'user', params: { username: owner.username } }">{{
+        ownerDisplayName
+      }}</RouterLink>
+    </p>
+
+    <template v-if="Object.keys(data.meta as object).length">
+      <h3>{{ $t('models.meta.modelLabel') }}</h3>
+      <MetadataDisplay :data="data.meta" />
+    </template>
+
+    <template v-if="data.comment">
       <h3>{{ $t('models.meta.comment') }}</h3>
       <div class="layer-comment">
-        {{ props.comment }}
+        {{ data.comment }}
       </div>
     </template>
+
     <ModalButtonFooter>
       <n-button type="primary" @click="() => (showMetaModal = false)">
         {{ $t('general.closeAction') }}

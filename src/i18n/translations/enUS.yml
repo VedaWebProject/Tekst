@@ -188,9 +188,9 @@ models:
     year: Year
     language: Language
     layerType: '@:models.layer.layerType'
-    baseData: Base data
-    extraData: Other
     comment: Comment
+    providedBy: Provided by
+    onLevel: on level "{level}"
 
 account:
   loginBtn: Login

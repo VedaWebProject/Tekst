@@ -39,21 +39,12 @@ const metaExtra = computed<string[][] | null>(() => {
 
 <template>
   <div class="metadata">
-    <h3 v-if="meta" class="metadata-extra-subheading">
-      {{ $t('models.meta.baseData') }}
-    </h3>
-
     <template v-for="m in meta" :key="m[0]">
       <div class="metadata-category">{{ m[0] ? `${m[0]}:` : '' }}</div>
       <div class="metadata-value">{{ m[1] || '' }}</div>
     </template>
-
-    <h3 v-if="metaExtra" class="metadata-extra-subheading">
-      {{ $t('models.meta.extraData') }}
-    </h3>
-
     <template v-for="m in metaExtra" :key="m[0]">
-      <div class="metadata-category">{{ m[0] ? `${m[0]}:` : '' }}</div>
+      <div class="metadata-category metadata-category-other">{{ m[0] ? `${m[0]}:` : '' }}</div>
       <div class="metadata-value">{{ m[1] || '' }}</div>
     </template>
   </div>
@@ -73,8 +64,12 @@ const metaExtra = computed<string[][] | null>(() => {
 
 .metadata > .metadata-category,
 .metadata > .metadata-value {
-  background-color: var(--main-bg-color);
+  /* background-color: var(--main-bg-color); */
   padding: 0.25rem 0.5rem;
+}
+
+.metadata > .metadata-category-other {
+  font-style: italic;
 }
 
 .metadata > .metadata-extra-subheading {

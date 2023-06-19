@@ -4390,17 +4390,17 @@ export const PlatformApiAxiosParamCreator = function (configuration?: Configurat
             };
         },
         /**
-         * Returns public information on the user with the specified username
+         * Returns public information on the user with the specified username or ID
          * @summary Get public user info
-         * @param {string} username 
+         * @param {string} usernameOrId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getPublicUserInfo: async (username: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'username' is not null or undefined
-            assertParamExists('getPublicUserInfo', 'username', username)
-            const localVarPath = `/platform/user/{username}`
-                .replace(`{${"username"}}`, encodeURIComponent(String(username)));
+        getPublicUserInfo: async (usernameOrId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'usernameOrId' is not null or undefined
+            assertParamExists('getPublicUserInfo', 'usernameOrId', usernameOrId)
+            const localVarPath = `/platform/user/{usernameOrId}`
+                .replace(`{${"usernameOrId"}}`, encodeURIComponent(String(usernameOrId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -4479,14 +4479,14 @@ export const PlatformApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * Returns public information on the user with the specified username
+         * Returns public information on the user with the specified username or ID
          * @summary Get public user info
-         * @param {string} username 
+         * @param {string} usernameOrId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getPublicUserInfo(username: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserReadPublic>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getPublicUserInfo(username, options);
+        async getPublicUserInfo(usernameOrId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserReadPublic>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getPublicUserInfo(usernameOrId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -4520,14 +4520,14 @@ export const PlatformApiFactory = function (configuration?: Configuration, baseP
             return localVarFp.getPlatformData(options).then((request) => request(axios, basePath));
         },
         /**
-         * Returns public information on the user with the specified username
+         * Returns public information on the user with the specified username or ID
          * @summary Get public user info
          * @param {PlatformApiGetPublicUserInfoRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         getPublicUserInfo(requestParameters: PlatformApiGetPublicUserInfoRequest, options?: AxiosRequestConfig): AxiosPromise<UserReadPublic> {
-            return localVarFp.getPublicUserInfo(requestParameters.username, options).then((request) => request(axios, basePath));
+            return localVarFp.getPublicUserInfo(requestParameters.usernameOrId, options).then((request) => request(axios, basePath));
         },
         /**
          * Returns server-managed translations.
@@ -4553,7 +4553,7 @@ export interface PlatformApiGetPublicUserInfoRequest {
      * @type {string}
      * @memberof PlatformApiGetPublicUserInfo
      */
-    readonly username: string
+    readonly usernameOrId: string
 }
 
 /**
@@ -4589,7 +4589,7 @@ export class PlatformApi extends BaseAPI {
     }
 
     /**
-     * Returns public information on the user with the specified username
+     * Returns public information on the user with the specified username or ID
      * @summary Get public user info
      * @param {PlatformApiGetPublicUserInfoRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
@@ -4597,7 +4597,7 @@ export class PlatformApi extends BaseAPI {
      * @memberof PlatformApi
      */
     public getPublicUserInfo(requestParameters: PlatformApiGetPublicUserInfoRequest, options?: AxiosRequestConfig) {
-        return PlatformApiFp(this.configuration).getPublicUserInfo(requestParameters.username, options).then((request) => request(this.axios, this.basePath));
+        return PlatformApiFp(this.configuration).getPublicUserInfo(requestParameters.usernameOrId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

@@ -3,22 +3,28 @@ import type { UserReadPublic, PlatformStats, UserRead } from '@/openapi';
 import type { AxiosResponse } from 'axios';
 import { useApi } from './api';
 
-export function useProfile(username: string | Ref) {
+export function useProfile(
+  usernameOrId: string | Ref<string>,
+  active: boolean | Ref<boolean> = true
+) {
   const user = ref<UserReadPublic | null>(null);
   const error = ref(false);
   const { platformApi } = useApi();
 
   function fetchProfileData() {
+    if (!unref(active)) return;
     user.value = null;
     error.value = false;
+    const unoid = unref(usernameOrId);
+    if (!unoid) return;
     platformApi
-      .getPublicUserInfo({ username: unref(username) })
+      .getPublicUserInfo({ usernameOrId: unoid })
       .then((response: AxiosResponse<UserReadPublic, any>) => response.data)
       .then((u: UserReadPublic) => (user.value = u))
       .catch(() => (error.value = true));
   }
 
-  if (isRef(username)) {
+  if (isRef(usernameOrId) || isRef(active)) {
     watchEffect(fetchProfileData);
   } else {
     fetchProfileData();
