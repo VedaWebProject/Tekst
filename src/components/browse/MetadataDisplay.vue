@@ -55,7 +55,6 @@ const metaExtra = computed<string[][] | null>(() => {
   display: grid;
   grid-template-columns: auto 1fr;
   font-weight: var(--app-ui-font-weight-light);
-  font-size: var(--app-ui-font-size-medium);
 }
 
 .metadata > .metadata-category {

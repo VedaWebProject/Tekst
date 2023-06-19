@@ -115,6 +115,5 @@ const coveragePercent = computed(
 .layer-comment {
   white-space: pre-wrap;
   font-weight: var(--app-ui-font-weight-light);
-  font-size: var(--app-ui-font-size-medium);
 }
 </style>
