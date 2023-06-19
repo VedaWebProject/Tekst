@@ -128,13 +128,11 @@ const layerTypes = computed(() => {
     </div>
   </div>
 
-  <div v-else-if="!error" style="padding: 2rem; text-align: center">
-    <n-spin>
-      <template #description>
-        {{ $t('init.loading') }}
-      </template>
-    </n-spin>
-  </div>
+  <n-spin
+    v-else-if="!error"
+    :description="$t('init.loading')"
+    style="width: 100%; padding: 2rem 0"
+  />
 
   <div v-else>
     {{ $t('errors.error') }}

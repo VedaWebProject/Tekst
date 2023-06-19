@@ -12,10 +12,10 @@ const username = computed(() => {
       return String(route.params.username);
     } else if (route.name === 'accountProfile') {
       const auth = useAuthStore();
-      return auth.user?.username;
+      return auth.user?.username || '';
     }
   }
-  return null;
+  return '';
 });
 const { user, error } = useProfile(username);
 </script>
@@ -34,11 +34,7 @@ const { user, error } = useProfile(username);
     </ul>
   </div>
 
-  <n-spin v-else-if="!error">
-    <template #description>
-      {{ $t('init.loading') }}
-    </template>
-  </n-spin>
+  <n-spin v-else-if="!error" :description="$t('init.loading')" />
 
   <div v-else class="content-block">
     <h1>Oops... {{ $t('errors.error') }}!</h1>
