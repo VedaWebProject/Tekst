@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { NButton, NModal, NProgress } from 'naive-ui';
+import { NButton, NModal, NProgress, NSpin } from 'naive-ui';
 import MetadataDisplay from '@/components/browse/MetadataDisplay.vue';
 import ModalButtonFooter from '@/components/ModalButtonFooter.vue';
 import InfoOutlined from '@vicons/material/InfoOutlined';
@@ -80,8 +80,8 @@ const coveragePercent = computed(
       </div>
     </template>
 
-    <template v-if="coverage && !coverageError">
-      <h3>{{ $t('browse.infoWidget.coverage') }}</h3>
+    <h3>{{ $t('browse.infoWidget.coverage') }}</h3>
+    <template v-if="coverage">
       <p>
         {{
           $t('browse.infoWidget.coverageStatement', {
@@ -102,6 +102,10 @@ const coveragePercent = computed(
         rail-color="var(--accent-color-fade5)"
       />
     </template>
+    <template v-else-if="coverageError">
+      {{ $t('errors.unexpected') }}
+    </template>
+    <n-spin v-else style="width: 100%" />
 
     <ModalButtonFooter>
       <n-button type="primary" @click="() => (showInfoModal = false)">
