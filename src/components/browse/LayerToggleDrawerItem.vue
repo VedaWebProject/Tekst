@@ -71,8 +71,9 @@ const infoTooltip = computed(() =>
 
 .layer-toggle-item .layer-toggle-item-title-container {
   display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
-  gap: 12px;
+  column-gap: 12px;
 }
 
 .layer-toggle-item .layer-toggle-item-title {
@@ -84,6 +85,9 @@ const infoTooltip = computed(() =>
 .layer-toggle-item .layer-toggle-item-title-extra {
   opacity: 0.75;
   font-size: 0.8em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .layer-toggle-item .layer-toggle-item-meta {

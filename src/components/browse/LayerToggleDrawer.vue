@@ -22,7 +22,7 @@ const show = computed({
 <template>
   <n-drawer
     v-model:show="show"
-    :width="768"
+    :width="600"
     :auto-focus="false"
     to="#app-container"
     style="max-width: 90%"
