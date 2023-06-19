@@ -8,6 +8,7 @@ from tekst.auth import OptionalUserDep
 from tekst.config import TekstConfig
 from tekst.dependencies import get_cfg
 from tekst.layer_types import layer_type_manager
+from tekst.models.common import PyObjectId
 from tekst.models.platform import PlatformData
 from tekst.models.settings import PlatformSettingsDocument
 from tekst.models.user import User, UserReadPublic
@@ -42,13 +43,15 @@ async def get_platform_data(
 
 @router.get("/user/{usernameOrId}", summary="Get public user info")
 async def get_public_user_info(
-    username_or_id: Annotated[str, Path(alias="usernameOrId")]
+    username_or_id: Annotated[str | PyObjectId, Path(alias="usernameOrId")]
 ) -> UserReadPublic:
     """Returns public information on the user with the specified username or ID"""
+    if PyObjectId.is_valid(username_or_id):
+        username_or_id = PyObjectId(username_or_id)
     user = await User.find_one(
         Or(
-            {"id": username_or_id},
-            {"username": username_or_id},
+            User.id == username_or_id,
+            User.username == username_or_id,
         )
     )
     if not user:
