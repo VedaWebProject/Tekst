@@ -372,6 +372,64 @@
         ]
       }
     },
+    "/layers/{id}/coverage": {
+      "get": {
+        "tags": [
+          "layers"
+        ],
+        "summary": "Get layer coverage data",
+        "operationId": "getLayerCoverageData",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Layer Coverage Data Layers  Id  Coverage Get",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LayerNodeCoverage"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
     "/layers/{id}": {
       "get": {
         "tags": [
@@ -1053,7 +1111,15 @@
             "required": true,
             "schema": {
               "title": "Usernameorid",
-              "type": "string"
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "string",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                }
+              ]
             },
             "name": "usernameOrId",
             "in": "path"
@@ -2918,6 +2984,29 @@
           }
         },
         "description": "General information config model"
+      },
+      "LayerNodeCoverage": {
+        "title": "LayerNodeCoverage",
+        "required": [
+          "label",
+          "position",
+          "covered"
+        ],
+        "type": "object",
+        "properties": {
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "position": {
+            "title": "Position",
+            "type": "integer"
+          },
+          "covered": {
+            "title": "Covered",
+            "type": "boolean"
+          }
+        }
       },
       "LayerTypeInfo": {
         "title": "LayerTypeInfo",

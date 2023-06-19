@@ -119,3 +119,9 @@ class LayerBaseUpdate(LayerBase, UpdateBase):
 
 class LayerMinimalView(ReadBase):
     layer_type: str
+
+
+class LayerNodeCoverage(ModelBase):
+    label: str
+    position: int
+    covered: bool
