@@ -1,4 +1,7 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from typing import Annotated
+
+from beanie.operators import Or
+from fastapi import APIRouter, Depends, HTTPException, Path, status
 from humps import decamelize
 
 from tekst.auth import OptionalUserDep
@@ -37,14 +40,21 @@ async def get_platform_data(
     )
 
 
-@router.get("/user/{username}", summary="Get public user info")
-async def get_public_user_info(username: str) -> UserReadPublic:
-    """Returns public information on the user with the specified username"""
-    user = await User.find_one({"username": username})
+@router.get("/user/{usernameOrId}", summary="Get public user info")
+async def get_public_user_info(
+    username_or_id: Annotated[str, Path(alias="usernameOrId")]
+) -> UserReadPublic:
+    """Returns public information on the user with the specified username or ID"""
+    user = await User.find_one(
+        Or(
+            {"id": username_or_id},
+            {"username": username_or_id},
+        )
+    )
     if not user:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"User '{username}' does not exist",
+            detail=f"User '{username_or_id}' does not exist",
         )
     return UserReadPublic(
         username=user.username,

@@ -1040,22 +1040,22 @@
         ]
       }
     },
-    "/platform/user/{username}": {
+    "/platform/user/{usernameOrId}": {
       "get": {
         "tags": [
           "platform"
         ],
         "summary": "Get public user info",
-        "description": "Returns public information on the user with the specified username",
+        "description": "Returns public information on the user with the specified username or ID",
         "operationId": "getPublicUserInfo",
         "parameters": [
           {
             "required": true,
             "schema": {
-              "title": "Username",
+              "title": "Usernameorid",
               "type": "string"
             },
-            "name": "username",
+            "name": "usernameOrId",
             "in": "path"
           }
         ],
