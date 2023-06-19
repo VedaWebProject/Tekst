@@ -118,6 +118,9 @@ browse:
     fromHigherLevel: '(from higher level "{level}")'
     widgets:
       tipDeepLTranslate: Open DeepL translation
+  infoWidget:
+    coverage: Coverage
+    coverageStatement: '{present} of {total} nodes on level "{level}".'
 
 forms:
   rulesFeedback:

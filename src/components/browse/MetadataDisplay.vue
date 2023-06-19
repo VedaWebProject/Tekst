@@ -62,10 +62,8 @@ const metaExtra = computed<string[][] | null>(() => {
   text-transform: capitalize;
 }
 
-.metadata > .metadata-category,
-.metadata > .metadata-value {
-  /* background-color: var(--main-bg-color); */
-  padding: 0.25rem 0.5rem;
+.metadata > .metadata-category {
+  padding-right: 1rem;
 }
 
 .metadata > .metadata-category-other {

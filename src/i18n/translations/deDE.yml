@@ -119,6 +119,9 @@ browse:
     fromHigherLevel: '(aus höherer Ebene "{level}")'
     widgets:
       tipDeepLTranslate: DeepL-Übersetzung öffnen
+  infoWidget:
+    coverage: Abdeckung
+    coverageStatement: '{present} von {total} Knoten auf Ebene "{level}".'
 
 forms:
   rulesFeedback:

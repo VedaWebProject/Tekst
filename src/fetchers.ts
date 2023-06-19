@@ -1,5 +1,5 @@
 import { ref, isRef, unref, watchEffect, type Ref } from 'vue';
-import type { UserReadPublic, PlatformStats, UserRead } from '@/openapi';
+import type { UserReadPublic, PlatformStats, UserRead, LayerNodeCoverage } from '@/openapi';
 import type { AxiosResponse } from 'axios';
 import { useApi } from './api';
 
@@ -31,6 +31,33 @@ export function useProfile(
   }
 
   return { user, error };
+}
+
+export function useLayerCoverage(id: string | Ref<string>, active: boolean | Ref<boolean> = true) {
+  const coverage = ref<LayerNodeCoverage[] | null>(null);
+  const error = ref(false);
+  const { layersApi } = useApi();
+
+  function fetchProfileData() {
+    if (!unref(active)) return;
+    coverage.value = null;
+    error.value = false;
+    const layerId = unref(id);
+    if (!layerId) return;
+    layersApi
+      .getLayerCoverageData({ id: layerId })
+      .then((response: AxiosResponse<LayerNodeCoverage[], any>) => response.data)
+      .then((c: LayerNodeCoverage[]) => (coverage.value = c))
+      .catch(() => (error.value = true));
+  }
+
+  if (isRef(id) || isRef(active)) {
+    watchEffect(fetchProfileData);
+  } else {
+    fetchProfileData();
+  }
+
+  return { coverage, error };
 }
 
 export function useStats() {

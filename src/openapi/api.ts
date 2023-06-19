@@ -311,6 +311,31 @@ export interface InfoConfig {
 /**
  * 
  * @export
+ * @interface LayerNodeCoverage
+ */
+export interface LayerNodeCoverage {
+    /**
+     * 
+     * @type {string}
+     * @memberof LayerNodeCoverage
+     */
+    'label': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof LayerNodeCoverage
+     */
+    'position': number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof LayerNodeCoverage
+     */
+    'covered': boolean;
+}
+/**
+ * 
+ * @export
  * @interface LayerTypeInfo
  */
 export interface LayerTypeInfo {
@@ -1685,6 +1710,13 @@ export type UserUpdatePublicFieldsEnum = typeof UserUpdatePublicFieldsEnum[keyof
 /**
  * 
  * @export
+ * @interface Usernameorid
+ */
+export interface Usernameorid {
+}
+/**
+ * 
+ * @export
  * @interface ValidationError
  */
 export interface ValidationError {
@@ -2986,6 +3018,46 @@ export const LayersApiAxiosParamCreator = function (configuration?: Configuratio
             };
         },
         /**
+         * 
+         * @summary Get layer coverage data
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getLayerCoverageData: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('getLayerCoverageData', 'id', id)
+            const localVarPath = `/layers/{id}/coverage`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication APIKeyCookie required
+
+            // authentication OAuth2PasswordBearer required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "OAuth2PasswordBearer", [], configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Returns the data for a PlainText data layer
          * @summary Get layer
          * @param {string} id 
@@ -3118,6 +3190,17 @@ export const LayersApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
+         * 
+         * @summary Get layer coverage data
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getLayerCoverageData(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<LayerNodeCoverage>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getLayerCoverageData(id, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
          * Returns the data for a PlainText data layer
          * @summary Get layer
          * @param {string} id 
@@ -3179,6 +3262,16 @@ export const LayersApiFactory = function (configuration?: Configuration, basePat
          */
         getGenericLayerDataById(requestParameters: LayersApiGetGenericLayerDataByIdRequest, options?: AxiosRequestConfig): AxiosPromise<object> {
             return localVarFp.getGenericLayerDataById(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get layer coverage data
+         * @param {LayersApiGetLayerCoverageDataRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getLayerCoverageData(requestParameters: LayersApiGetLayerCoverageDataRequest, options?: AxiosRequestConfig): AxiosPromise<Array<LayerNodeCoverage>> {
+            return localVarFp.getLayerCoverageData(requestParameters.id, options).then((request) => request(axios, basePath));
         },
         /**
          * Returns the data for a PlainText data layer
@@ -3267,6 +3360,20 @@ export interface LayersApiGetGenericLayerDataByIdRequest {
 }
 
 /**
+ * Request parameters for getLayerCoverageData operation in LayersApi.
+ * @export
+ * @interface LayersApiGetLayerCoverageDataRequest
+ */
+export interface LayersApiGetLayerCoverageDataRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof LayersApiGetLayerCoverageData
+     */
+    readonly id: string
+}
+
+/**
  * Request parameters for getPlaintextLayer operation in LayersApi.
  * @export
  * @interface LayersApiGetPlaintextLayerRequest
@@ -3342,6 +3449,18 @@ export class LayersApi extends BaseAPI {
      */
     public getGenericLayerDataById(requestParameters: LayersApiGetGenericLayerDataByIdRequest, options?: AxiosRequestConfig) {
         return LayersApiFp(this.configuration).getGenericLayerDataById(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get layer coverage data
+     * @param {LayersApiGetLayerCoverageDataRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof LayersApi
+     */
+    public getLayerCoverageData(requestParameters: LayersApiGetLayerCoverageDataRequest, options?: AxiosRequestConfig) {
+        return LayersApiFp(this.configuration).getLayerCoverageData(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -4392,11 +4511,11 @@ export const PlatformApiAxiosParamCreator = function (configuration?: Configurat
         /**
          * Returns public information on the user with the specified username or ID
          * @summary Get public user info
-         * @param {string} usernameOrId 
+         * @param {Usernameorid} usernameOrId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getPublicUserInfo: async (usernameOrId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getPublicUserInfo: async (usernameOrId: Usernameorid, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'usernameOrId' is not null or undefined
             assertParamExists('getPublicUserInfo', 'usernameOrId', usernameOrId)
             const localVarPath = `/platform/user/{usernameOrId}`
@@ -4481,11 +4600,11 @@ export const PlatformApiFp = function(configuration?: Configuration) {
         /**
          * Returns public information on the user with the specified username or ID
          * @summary Get public user info
-         * @param {string} usernameOrId 
+         * @param {Usernameorid} usernameOrId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getPublicUserInfo(usernameOrId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserReadPublic>> {
+        async getPublicUserInfo(usernameOrId: Usernameorid, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserReadPublic>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getPublicUserInfo(usernameOrId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -4550,10 +4669,10 @@ export const PlatformApiFactory = function (configuration?: Configuration, baseP
 export interface PlatformApiGetPublicUserInfoRequest {
     /**
      * 
-     * @type {string}
+     * @type {Usernameorid}
      * @memberof PlatformApiGetPublicUserInfo
      */
-    readonly usernameOrId: string
+    readonly usernameOrId: Usernameorid
 }
 
 /**
