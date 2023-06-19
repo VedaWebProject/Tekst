@@ -99,7 +99,7 @@ const coveragePercent = computed(
         :border-radius="4"
         indicator-placement="inside"
         color="var(--accent-color)"
-        rail-color="var(--accent-color-fade5)"
+        rail-color="var(--accent-color-fade4)"
       />
     </template>
     <template v-else-if="coverageError">

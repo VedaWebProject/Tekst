@@ -82,7 +82,7 @@ const layerTypes = computed(() => {
           :border-radius="4"
           indicator-placement="inside"
           color="var(--accent-color)"
-          rail-color="var(--accent-color-fade5)"
+          rail-color="var(--accent-color-fade4)"
         />
       </div>
     </div>
@@ -121,7 +121,7 @@ const layerTypes = computed(() => {
             :border-radius="4"
             indicator-placement="inside"
             color="var(--accent-color)"
-            rail-color="var(--accent-color-fade5)"
+            rail-color="var(--accent-color-fade4)"
           />
         </div>
       </div>
