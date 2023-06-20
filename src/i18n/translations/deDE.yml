@@ -125,6 +125,7 @@ browse:
     coverageStatement: '{present} von {total} Knoten auf Ebene "{level}".'
   deactivateWidget:
     title: Diese Datenschicht ausblenden
+    message: Die Ebene "{layerTitle}" wurde ausgeblendet. Sie können sie wieder aktivieren, indem Sie die Datenschichten-Auswahl rechts in der Toolbar benutzen.
 
 forms:
   rulesFeedback:

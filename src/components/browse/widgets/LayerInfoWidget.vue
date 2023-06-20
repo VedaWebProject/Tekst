@@ -9,14 +9,14 @@ import { useProfile, useLayerCoverage } from '@/fetchers';
 import { useStateStore } from '@/stores';
 
 const props = defineProps<{
-  data: Record<string, any>;
+  layer: Record<string, any>;
 }>();
 
 const state = useStateStore();
 
 const showInfoModal = ref(false);
-const { user: owner, error: ownerError } = useProfile(props.data.ownerId, showInfoModal);
-const { coverage, error: coverageError } = useLayerCoverage(props.data.id, showInfoModal);
+const { user: owner, error: ownerError } = useProfile(props.layer.ownerId, showInfoModal);
+const { coverage, error: coverageError } = useLayerCoverage(props.layer.id, showInfoModal);
 const ownerDisplayName = computed(
   () =>
     (owner.value &&
@@ -54,11 +54,11 @@ const coveragePercent = computed(
     to="#app-container"
     embedded
   >
-    <h2>{{ data.title }}</h2>
+    <h2>{{ layer.title }}</h2>
 
     <p>
-      {{ $t(`layerTypes.${data.layerType}`) }}
-      {{ $t('models.meta.onLevel', { level: state.textLevelLabels[data.level] }) }}.
+      {{ $t(`layerTypes.${layer.layerType}`) }}
+      {{ $t('models.meta.onLevel', { level: state.textLevelLabels[layer.level] }) }}.
     </p>
 
     <p v-if="owner && !ownerError">
@@ -68,15 +68,15 @@ const coveragePercent = computed(
       }}</RouterLink>
     </p>
 
-    <template v-if="Object.keys(data.meta as object).length">
+    <template v-if="Object.keys(layer.meta as object).length">
       <h3>{{ $t('models.meta.modelLabel') }}</h3>
-      <MetadataDisplay :data="data.meta" />
+      <MetadataDisplay :data="layer.meta" />
     </template>
 
-    <template v-if="data.comment">
+    <template v-if="layer.comment">
       <h3>{{ $t('models.meta.comment') }}</h3>
       <div class="layer-comment">
-        {{ data.comment }}
+        {{ layer.comment }}
       </div>
     </template>
 
@@ -87,7 +87,7 @@ const coveragePercent = computed(
           $t('browse.infoWidget.coverageStatement', {
             present: presentNodes,
             total: coverage.length,
-            level: state.textLevelLabels[data.level],
+            level: state.textLevelLabels[layer.level],
           })
         }}
       </p>

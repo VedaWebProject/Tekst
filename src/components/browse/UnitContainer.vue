@@ -78,8 +78,8 @@ const unitContainerTitle = computed(() =>
           </template>
         </template>
         <!-- generic unit widgets -->
-        <LayerInfoWidget :data="layer" />
-        <LayerDeactivateWidget :layer-id="layer.id" />
+        <LayerInfoWidget :layer="layer" />
+        <LayerDeactivateWidget :layer="layer" />
       </div>
     </div>
 
