@@ -3,11 +3,13 @@ import { NSpin, NIcon } from 'naive-ui';
 import LayerInfoWidget from '@/components/browse/widgets/LayerInfoWidget.vue';
 import LayerDeactivateWidget from '@/components/browse/widgets/LayerDeactivateWidget.vue';
 import LayerMergeWidget from '@/components/browse/widgets/LayerMergeWidget.vue';
-import { type Component, defineAsyncComponent, ref } from 'vue';
+import { ref } from 'vue';
 import { useBrowseStore, useStateStore } from '@/stores';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useElementHover } from '@vueuse/core';
+import unitWidgets from '@/components/browse/widgets/mappings';
+import unitComponents from '@/components/browse/units/mappings';
 
 import FolderOffOutlined from '@vicons/material/FolderOffOutlined';
 import type { CSSProperties } from 'vue';
@@ -16,16 +18,6 @@ const props = defineProps<{
   loading?: boolean;
   layer: Record<string, any>;
 }>();
-
-const UNIT_COMPONENTS: Record<string, Component> = {
-  plaintext: defineAsyncComponent(() => import('@/components/browse/units/PlaintextUnit.vue')),
-};
-
-const UNIT_WIDGETS: Record<string, Component> = {
-  deeplLinks: defineAsyncComponent(
-    () => import('@/components/browse/widgets/DeepLLinksWidget.vue')
-  ),
-};
 
 const browse = useBrowseStore();
 const state = useStateStore();
@@ -80,9 +72,9 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
             :key="configSectionKey"
           >
             <component
-              v-if="configSectionKey in UNIT_WIDGETS"
-              :is="UNIT_WIDGETS[configSectionKey]"
-              :unit-data="layer.unit"
+              v-if="configSectionKey in unitWidgets"
+              :is="unitWidgets[configSectionKey]"
+              :layer="layer"
               :widget-config="configSection"
             />
           </template>
@@ -97,8 +89,8 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
     <!-- unit-specific component (that displays the actual unit data) -->
     <component
       v-if="layer.unit"
-      :is="UNIT_COMPONENTS[layer.layerType]"
-      :unit-data="layer.unit"
+      :is="unitComponents[layer.layerType]"
+      :layer="layer"
       :layer-config="layer.config"
       style="margin-top: 0.5rem"
     />

@@ -10,7 +10,7 @@ import type { DropdownOption } from 'naive-ui';
 
 const props = defineProps<{
   widgetConfig: DeepLLinksConfig;
-  unitData: Record<string, any>;
+  layer: Record<string, any>;
 }>();
 
 const state = useStateStore();
@@ -24,7 +24,7 @@ const options = computed(() =>
 
 function renderOption(option: DropdownOption) {
   const text = encodeURIComponent(
-    String(props.unitData.text)
+    String(props.layer.unit.text)
       .replace(/[^\p{L}\-.?!"']+/gu, ' ')
       .replace(/[ \t\r]+/g, ' ')
       .trim()
@@ -44,7 +44,7 @@ function renderOption(option: DropdownOption) {
 
 <template>
   <n-dropdown
-    v-if="props.widgetConfig?.enabled && props.unitData?.text && props.widgetConfig"
+    v-if="props.widgetConfig?.enabled && props.layer.unit.text && props.widgetConfig"
     trigger="click"
     :options="options"
     placement="bottom-start"

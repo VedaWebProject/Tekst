@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import type { PlainTextLayerConfig, PlainTextUnitRead } from '@/openapi';
+import type { PlainTextLayerConfig } from '@/openapi';
 
 const props = defineProps<{
-  unitData: PlainTextUnitRead;
+  layer: Record<string, any>;
   layerConfig: PlainTextLayerConfig;
 }>();
 </script>
 
 <template>
   <div style="white-space: pre-wrap">
-    {{ props.unitData.text }}
+    {{ props.layer.unit.text }}
   </div>
 </template>

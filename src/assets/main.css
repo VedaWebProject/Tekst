@@ -105,6 +105,10 @@ h5:first-child {
   max-width: 95%;
 }
 
+.tekst-modal-large {
+  width: var(--max-app-width);
+}
+
 .n-select,
 .n-select-menu {
   font-weight: var(--app-ui-font-weight-normal);

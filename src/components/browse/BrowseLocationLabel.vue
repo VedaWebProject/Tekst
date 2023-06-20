@@ -2,11 +2,16 @@
 import { computed } from 'vue';
 import { useStateStore, useBrowseStore } from '@/stores';
 
+const props = defineProps<{
+  maxLevel?: number;
+}>();
+
 const state = useStateStore();
 const browse = useBrowseStore();
 
 const browseLocationLabel = computed(() =>
   browse.nodePath
+    .filter((n) => n.level <= (props.maxLevel ?? Number.MAX_SAFE_INTEGER))
     .map((n) => {
       const lvlLabel = state.textLevelLabels[n.level];
       const nodePrefix = state.text?.labeledLocation && lvlLabel ? `${lvlLabel}: ` : '';
