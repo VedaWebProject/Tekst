@@ -112,9 +112,18 @@ export const useStateStore = defineStore('state', () => {
     globalLoadingProgress.value = 0;
   };
 
-  // small screen (< 860px)
   const smallScreen = computed(() => windowSize.width.value < 860);
   const dropdownSize = computed(() => (smallScreen.value ? 'huge' : undefined));
+
+  // detect touch device
+  const isTouchDevice = ref(true);
+  window.addEventListener(
+    'mouseover',
+    function onFirstHover() {
+      isTouchDevice.value = false;
+    },
+    { once: true }
+  );
 
   // set page title
   function setPageTitle(forRoute?: RouteLocationNormalized) {
@@ -135,6 +144,7 @@ export const useStateStore = defineStore('state', () => {
     globalLoadingProgress,
     smallScreen,
     dropdownSize,
+    isTouchDevice,
     setPageTitle,
     themeMode,
     toggleThemeMode,

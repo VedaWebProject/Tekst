@@ -3,12 +3,14 @@ import { NSpin, NIcon } from 'naive-ui';
 import LayerInfoWidget from '@/components/browse/widgets/LayerInfoWidget.vue';
 import LayerDeactivateWidget from '@/components/browse/widgets/LayerDeactivateWidget.vue';
 import LayerMergeWidget from '@/components/browse/widgets/LayerMergeWidget.vue';
-import { type Component, defineAsyncComponent } from 'vue';
+import { type Component, defineAsyncComponent, ref } from 'vue';
 import { useBrowseStore, useStateStore } from '@/stores';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useElementHover } from '@vueuse/core';
 
 import FolderOffOutlined from '@vicons/material/FolderOffOutlined';
+import type { CSSProperties } from 'vue';
 
 const props = defineProps<{
   loading?: boolean;
@@ -29,6 +31,9 @@ const browse = useBrowseStore();
 const state = useStateStore();
 const { t } = useI18n({ useScope: 'global' });
 
+const unitContainerRef = ref();
+const isUnitContainerHovered = useElementHover(unitContainerRef, { delayEnter: 0, delayLeave: 0 });
+
 const headerMiddleText = computed(() =>
   props.layer.level !== browse.level
     ? `(${t('browse.location.level')}: ${state.textLevelLabels[props.layer.level]})`
@@ -46,6 +51,9 @@ const altUnitContainerStyle = computed(() => (!props.layer.unit ? emptyUnitStyle
 const unitContainerTitle = computed(() =>
   !props.layer.unit ? t('browse.locationLayerNoData') : undefined
 );
+const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
+  opacity: isUnitContainerHovered.value || state.isTouchDevice ? 1 : 0.2,
+}));
 </script>
 
 <template>
@@ -54,6 +62,7 @@ const unitContainerTitle = computed(() =>
     class="content-block unit-container"
     :style="altUnitContainerStyle"
     :title="unitContainerTitle"
+    ref="unitContainerRef"
   >
     <div class="unit-container-header">
       <n-icon v-if="!layer.unit" :component="FolderOffOutlined" />
@@ -63,7 +72,7 @@ const unitContainerTitle = computed(() =>
           {{ headerMiddleText }}
         </div>
       </div>
-      <div class="unit-container-header-widgets">
+      <div class="unit-container-header-widgets" :style="headerWidgetsVisibilityStyle">
         <!-- config-specific widgets -->
         <template v-if="layer.unit">
           <template
@@ -142,6 +151,7 @@ const unitContainerTitle = computed(() =>
   align-items: center;
   flex-wrap: nowrap;
   gap: 8px;
+  transition: opacity 0.2s ease;
 }
 
 .unit-container-loader {
