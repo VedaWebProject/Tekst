@@ -11,9 +11,8 @@ import HugeLabeledIcon from '@/components/HugeLabeledIcon.vue';
 const browse = useBrowseStore();
 const state = useStateStore();
 
-const unitsExist = computed(() => {
-  // count available units of ACTIVATED layers
-  return browse.layers.filter((l) => l.active && l.unit).length > 0;
+const activeLayers = computed(() => {
+  return browse.layers.filter((l) => l.active);
 });
 </script>
 
@@ -23,16 +22,16 @@ const unitsExist = computed(() => {
 
   <BrowseToolbar />
 
-  <template v-if="unitsExist">
+  <template v-if="activeLayers.length">
     <UnitContainer
-      v-for="layer in browse.layers"
+      v-for="layer in activeLayers"
       :key="layer.id"
       :loading="browse.loading"
       :layer="layer"
     />
   </template>
 
-  <huge-labeled-icon v-else :message="$t('browse.noData')" :icon="FolderOffTwotone" />
+  <huge-labeled-icon v-else :message="$t('browse.locationNoData')" :icon="FolderOffTwotone" />
   <LayerToggleDrawer v-model:show="browse.showLayerToggleDrawer" />
 </template>
 

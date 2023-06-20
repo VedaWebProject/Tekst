@@ -24,9 +24,7 @@ const active = computed({
 
 const { t } = useI18n({ useScope: 'global' });
 const state = useStateStore();
-const infoTooltip = computed(() =>
-  props.disabled ? t('browse.layerToggleDrawer.noData') : undefined
-);
+const infoTooltip = computed(() => (props.disabled ? t('browse.locationLayerNoData') : undefined));
 </script>
 
 <template>

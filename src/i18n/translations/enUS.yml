@@ -112,10 +112,10 @@ browse:
     tipOpenDataLayerList: Select data layers to display
   layerToggleDrawer:
     heading: Show Data Layers
-    noData: No data for this location
-  noData: The selected data layers contain no data for this text level and location. Try choosing a different location or activating more data layers.
+  locationLayerNoData: No data for this location
+  locationNoData: The selected data layers contain no data for this text level and location. Try choosing a different location or activating more data layers.
   units:
-    fromHigherLevel: '(from higher level "{level}")'
+    fromHigherLevel: '(Level {level})'
     widgets:
       tipDeepLTranslate: Open DeepL translation
   infoWidget:

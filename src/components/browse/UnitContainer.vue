@@ -30,10 +30,27 @@ const headerMiddleText = computed(() =>
     ? t('browse.units.fromHigherLevel', { level: state.textLevelLabels[props.layer.level] })
     : ''
 );
+
+const emptyUnitStyle = {
+  backgroundColor: 'transparent',
+  border: '3px dashed var(--content-bg-color)',
+  boxShadow: 'none',
+  padding: '12px var(--layout-gap)',
+};
+
+const altUnitContainerStyle = computed(() => (!props.layer.unit ? emptyUnitStyle : {}));
+const unitContainerTitle = computed(() =>
+  !props.layer.unit ? t('browse.locationLayerNoData') : undefined
+);
 </script>
 
 <template>
-  <div v-if="layer.active && layer.unit" class="content-block unit-container">
+  <div
+    v-if="layer.active"
+    class="content-block unit-container"
+    :style="altUnitContainerStyle"
+    :title="unitContainerTitle"
+  >
     <div class="unit-container-header">
       <div class="unit-container-header-title-container">
         <div class="unit-container-header-title">{{ layer.title }}</div>
@@ -43,13 +60,18 @@ const headerMiddleText = computed(() =>
       </div>
       <div class="unit-container-header-widgets">
         <!-- config-specific widgets -->
-        <template v-for="(configSection, configSectionKey) in layer.config" :key="configSectionKey">
-          <component
-            v-if="configSectionKey in UNIT_WIDGETS"
-            :is="UNIT_WIDGETS[configSectionKey]"
-            :unit-data="layer.unit"
-            :widget-config="configSection"
-          />
+        <template v-if="layer.unit">
+          <template
+            v-for="(configSection, configSectionKey) in layer.config"
+            :key="configSectionKey"
+          >
+            <component
+              v-if="configSectionKey in UNIT_WIDGETS"
+              :is="UNIT_WIDGETS[configSectionKey]"
+              :unit-data="layer.unit"
+              :widget-config="configSection"
+            />
+          </template>
         </template>
         <!-- generic unit widgets -->
         <LayerInfoWidget :data="layer" />
@@ -58,10 +80,14 @@ const headerMiddleText = computed(() =>
 
     <!-- unit-specific component (that displays the actual unit data) -->
     <component
+      v-if="layer.unit"
       :is="UNIT_COMPONENTS[layer.layerType]"
       :unit-data="layer.unit"
       :layer-config="layer.config"
+      style="margin-top: 0.5rem"
     />
+
+    <!--  -->
 
     <Transition>
       <n-spin v-show="loading" class="unit-container-loader" />
@@ -80,7 +106,6 @@ const headerMiddleText = computed(() =>
   flex-wrap: wrap;
   column-gap: 12px;
   row-gap: 0px;
-  margin-bottom: 0.5rem;
 }
 
 .unit-container-header-title-container {

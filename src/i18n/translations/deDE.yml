@@ -113,10 +113,10 @@ browse:
     tipOpenDataLayerList: Anzuzeigende Datenschichten wählen
   layerToggleDrawer:
     heading: Datenschichten anzeigen
-    noData: Keine Daten für diese Fundstelle
-  noData: Die ausgewählten Datenschichten enthalten keine Daten für diese Ebene und Fundstelle. Wählen Sie eine andere Fundstelle oder aktivieren Sie mehr Datenschichten.
+  locationLayerNoData: Keine Daten für diese Fundstelle
+  locationNoData: Die ausgewählten Datenschichten enthalten keine Daten für diese Ebene und Fundstelle. Wählen Sie eine andere Fundstelle oder aktivieren Sie mehr Datenschichten.
   units:
-    fromHigherLevel: '(aus höherer Ebene "{level}")'
+    fromHigherLevel: '(Ebene: {level})'
     widgets:
       tipDeepLTranslate: DeepL-Übersetzung öffnen
   infoWidget:
