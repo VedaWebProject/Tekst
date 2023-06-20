@@ -38,7 +38,7 @@ const coveragePercent = computed(
 
 <template>
   <UnitContainerHeaderWidget
-    :title="$t('models.meta.modelLabel')"
+    :title="$t('browse.infoWidget.title')"
     :iconComponent="InfoOutlined"
     @click="showInfoModal = true"
   />
