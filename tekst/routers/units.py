@@ -7,6 +7,7 @@ from tekst.auth import OptionalUserDep, UserDep
 from tekst.layer_types import layer_type_manager
 from tekst.models.common import PyObjectId
 from tekst.models.layer import LayerBaseDocument, LayerMinimalView
+from tekst.models.text import NodeDocument
 from tekst.models.unit import UnitBase, UnitBaseDocument
 
 
@@ -205,6 +206,63 @@ async def find_units(
         .limit(limit)
         .to_list()
     )
+
+    # calling dict(rename_id=True) on these models here makes sure they have
+    # "id" instead of "_id", because we're not using a proper read model here
+    # that could take care of that automatically (as we don't know the exact type)
+    return [unit.dict(rename_id=True) for unit in units]
+
+
+@router.get("/siblings", response_model=list[dict], status_code=status.HTTP_200_OK)
+async def get_siblings(
+    user: OptionalUserDep,
+    unit_id: Annotated[
+        PyObjectId,
+        Query(description="ID of unit to return siblings' data for"),
+    ],
+) -> list[dict]:
+    """
+    Returns a list of all data layer units belonging to the data layer
+    with the given ID, associated to nodes that are children of the same parent node
+    with the given ID.
+
+    As the resulting list may contain units of arbitrary type, the
+    returned unit objects cannot be typed to their precise layer unit type.
+    """
+
+    unit = await UnitBaseDocument.find_one(
+        UnitBaseDocument.id == unit_id, with_children=True
+    )
+
+    if not unit:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Unit with ID {unit_id} could not be found.",
+        )
+
+    unit_node = await NodeDocument.find_one(NodeDocument.id == unit.node_id)
+
+    if not unit_node or not (
+        await LayerBaseDocument.find_one(
+            LayerBaseDocument.id == unit.layer_id,
+            LayerBaseDocument.allowed_to_read(user),
+            with_children=True,
+        )
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="The requested resource could not be found.",
+        )
+
+    nodes = await NodeDocument.find(
+        NodeDocument.parent_id == unit_node.parent_id
+    ).to_list()
+
+    units = await UnitBaseDocument.find(
+        UnitBaseDocument.layer_id == unit.layer_id,
+        In(UnitBaseDocument.node_id, [node.id for node in nodes]),
+        with_children=True,
+    ).to_list()
 
     # calling dict(rename_id=True) on these models here makes sure they have
     # "id" instead of "_id", because we're not using a proper read model here

@@ -1878,6 +1878,67 @@
         ]
       }
     },
+    "/units/siblings": {
+      "get": {
+        "tags": [
+          "units"
+        ],
+        "summary": "Get siblings",
+        "description": "Returns a list of all data layer units belonging to the data layer\nwith the given ID, associated to nodes that are children of the same parent node\nwith the given ID.\n\nAs the resulting list may contain units of arbitrary type, the\nreturned unit objects cannot be typed to their precise layer unit type.",
+        "operationId": "getSiblings",
+        "parameters": [
+          {
+            "description": "ID of unit to return siblings' data for",
+            "required": true,
+            "schema": {
+              "title": "Unitid",
+              "type": "string",
+              "description": "ID of unit to return siblings' data for",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "name": "unitId",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Siblings Units Siblings Get",
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
     "/auth/cookie/login": {
       "post": {
         "tags": [
