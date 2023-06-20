@@ -116,14 +116,17 @@ browse:
   locationNoData: The selected data layers contain no data for this text level and location. Try choosing a different location or activating more data layers.
   units:
     widgets:
-      tipDeepLTranslate: Open DeepL translation
-  infoWidget:
-    title: Show information on this data layer
-    coverage: Coverage
-    coverageStatement: '{present} of {total} nodes on level "{level}".'
-  deactivateWidget:
-    title: Hide this data layer
-    message: The layer "{layerTitle}" has been hidden. You can activate it again using the data layer selection tool to the right side of the toolbar.
+      deepLTranslate:
+        title: Open DeepL translation
+      infoWidget:
+        title: Show information on this data layer
+        coverage: Coverage
+        coverageStatement: '{present} of {total} nodes on level "{level}".'
+      deactivateWidget:
+        title: Hide this data layer
+        message: The data layer "{layerTitle}" has been hidden. You can activate it again using the data layer selection tool to the right side of the toolbar.
+      mergeWidget:
+        title: Open merged view with all data under the parent location
 
 forms:
   rulesFeedback:

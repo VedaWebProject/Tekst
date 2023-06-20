@@ -38,7 +38,7 @@ const coveragePercent = computed(
 
 <template>
   <UnitContainerHeaderWidget
-    :title="$t('browse.infoWidget.title')"
+    :title="$t('browse.units.widgets.infoWidget.title')"
     :iconComponent="InfoOutlined"
     @click="showInfoModal = true"
   />
@@ -80,11 +80,11 @@ const coveragePercent = computed(
       </div>
     </template>
 
-    <h3>{{ $t('browse.infoWidget.coverage') }}</h3>
+    <h3>{{ $t('browse.units.widgets.infoWidget.coverage') }}</h3>
     <template v-if="coverage">
       <p>
         {{
-          $t('browse.infoWidget.coverageStatement', {
+          $t('browse.units.widgets.infoWidget.coverageStatement', {
             present: presentNodes,
             total: coverage.length,
             level: state.textLevelLabels[layer.level],

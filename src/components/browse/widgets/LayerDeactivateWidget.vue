@@ -16,13 +16,15 @@ const { t } = useI18n({ useScope: 'global' });
 function handleClick() {
   const layer = browse.layers.find((l) => l.id == props.layer.id);
   layer && (layer.active = false);
-  message.info(t('browse.deactivateWidget.message', { layerTitle: props.layer.title }));
+  message.info(
+    t('browse.units.widgets.deactivateWidget.message', { layerTitle: props.layer.title })
+  );
 }
 </script>
 
 <template>
   <UnitContainerHeaderWidget
-    :title="$t('browse.deactivateWidget.title')"
+    :title="$t('browse.units.widgets.deactivateWidget.title')"
     :iconComponent="ClearRound"
     @click="handleClick"
   />

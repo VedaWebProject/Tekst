@@ -53,7 +53,7 @@ function renderOption(option: DropdownOption) {
     show-arrow
   >
     <UnitContainerHeaderWidget
-      :title="$t('browse.units.widgets.tipDeepLTranslate')"
+      :title="$t('browse.units.widgets.deepLTranslate.title')"
       :iconComponent="TranslateRound"
     />
   </n-dropdown>

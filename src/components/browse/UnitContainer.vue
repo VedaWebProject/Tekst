@@ -2,6 +2,7 @@
 import { NSpin, NIcon } from 'naive-ui';
 import LayerInfoWidget from '@/components/browse/widgets/LayerInfoWidget.vue';
 import LayerDeactivateWidget from '@/components/browse/widgets/LayerDeactivateWidget.vue';
+import LayerMergeWidget from '@/components/browse/widgets/LayerMergeWidget.vue';
 import { type Component, defineAsyncComponent } from 'vue';
 import { useBrowseStore, useStateStore } from '@/stores';
 import { computed } from 'vue';
@@ -78,6 +79,7 @@ const unitContainerTitle = computed(() =>
           </template>
         </template>
         <!-- generic unit widgets -->
+        <LayerMergeWidget :layer="layer" />
         <LayerInfoWidget :layer="layer" />
         <LayerDeactivateWidget :layer="layer" />
       </div>

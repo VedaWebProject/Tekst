@@ -117,14 +117,17 @@ browse:
   locationNoData: Die ausgewählten Datenschichten enthalten keine Daten für diese Ebene und Fundstelle. Wählen Sie eine andere Fundstelle oder aktivieren Sie mehr Datenschichten.
   units:
     widgets:
-      tipDeepLTranslate: DeepL-Übersetzung öffnen
-  infoWidget:
-    title: Informationen zu dieser Datenschicht anzeigen
-    coverage: Abdeckung
-    coverageStatement: '{present} von {total} Knoten auf Ebene "{level}".'
-  deactivateWidget:
-    title: Diese Datenschicht ausblenden
-    message: Die Ebene "{layerTitle}" wurde ausgeblendet. Sie können sie wieder aktivieren, indem Sie die Datenschichten-Auswahl rechts in der Toolbar benutzen.
+      deepLTranslate:
+        title: DeepL-Übersetzung öffnen
+      infoWidget:
+        title: Informationen zu dieser Datenschicht anzeigen
+        coverage: Abdeckung
+        coverageStatement: '{present} von {total} Knoten auf Ebene "{level}".'
+      deactivateWidget:
+        title: Diese Datenschicht ausblenden
+        message: Die Datenschicht "{layerTitle}" wurde ausgeblendet. Sie können sie wieder aktivieren, indem Sie die Datenschichten-Auswahl rechts in der Toolbar benutzen.
+      mergeWidget:
+        title: Zusammengeführte Ansicht mit allen Daten der übergeordneten Fundstelle öffnen
 
 forms:
   rulesFeedback:
