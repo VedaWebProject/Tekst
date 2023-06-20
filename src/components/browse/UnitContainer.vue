@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { NSpin } from 'naive-ui';
+import { NSpin, NIcon } from 'naive-ui';
 import LayerInfoWidget from '@/components/browse/widgets/LayerInfoWidget.vue';
 import LayerDeactivateWidget from '@/components/browse/widgets/LayerDeactivateWidget.vue';
 import { type Component, defineAsyncComponent } from 'vue';
 import { useBrowseStore, useStateStore } from '@/stores';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import FolderOffOutlined from '@vicons/material/FolderOffOutlined';
 
 const props = defineProps<{
   loading?: boolean;
@@ -47,12 +49,13 @@ const unitContainerTitle = computed(() =>
 
 <template>
   <div
-    v-if="layer.active"
+    v-if="layer.active && (layer.unit || !browse.reducedView)"
     class="content-block unit-container"
     :style="altUnitContainerStyle"
     :title="unitContainerTitle"
   >
     <div class="unit-container-header">
+      <n-icon v-if="!layer.unit" :component="FolderOffOutlined" />
       <div class="unit-container-header-title-container">
         <div class="unit-container-header-title">{{ layer.title }}</div>
         <div class="unit-container-header-title-extra">
@@ -104,7 +107,7 @@ const unitContainerTitle = computed(() =>
 }
 .unit-container-header {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   flex-wrap: wrap;
   column-gap: 12px;
   row-gap: 0px;
