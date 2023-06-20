@@ -123,6 +123,8 @@ browse:
     title: Informationen zu dieser Datenschicht anzeigen
     coverage: Abdeckung
     coverageStatement: '{present} von {total} Knoten auf Ebene "{level}".'
+  deactivateWidget:
+    title: Diese Datenschicht ausblenden
 
 forms:
   rulesFeedback:

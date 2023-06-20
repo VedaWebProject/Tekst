@@ -122,6 +122,8 @@ browse:
     title: Show information on this data layer
     coverage: Coverage
     coverageStatement: '{present} of {total} nodes on level "{level}".'
+  deactivateWidget:
+    title: Hide this data layer
 
 forms:
   rulesFeedback:

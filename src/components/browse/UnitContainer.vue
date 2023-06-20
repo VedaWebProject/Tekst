@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { NSpin } from 'naive-ui';
 import LayerInfoWidget from '@/components/browse/widgets/LayerInfoWidget.vue';
+import LayerDeactivateWidget from '@/components/browse/widgets/LayerDeactivateWidget.vue';
 import { type Component, defineAsyncComponent } from 'vue';
 import { useBrowseStore, useStateStore } from '@/stores';
 import { computed } from 'vue';
@@ -75,6 +76,7 @@ const unitContainerTitle = computed(() =>
         </template>
         <!-- generic unit widgets -->
         <LayerInfoWidget :data="layer" />
+        <LayerDeactivateWidget :layer-id="layer.id" />
       </div>
     </div>
 
