@@ -30,7 +30,7 @@ const { t } = useI18n({ useScope: 'global' });
 
 const headerMiddleText = computed(() =>
   props.layer.level !== browse.level
-    ? t('browse.units.fromHigherLevel', { level: state.textLevelLabels[props.layer.level] })
+    ? `(${t('browse.location.level')}: ${state.textLevelLabels[props.layer.level]})`
     : ''
 );
 

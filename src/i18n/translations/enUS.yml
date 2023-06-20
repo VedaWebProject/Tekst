@@ -115,7 +115,6 @@ browse:
   locationLayerNoData: No data for this location
   locationNoData: The selected data layers contain no data for this text level and location. Try choosing a different location or activating more data layers.
   units:
-    fromHigherLevel: '(Level {level})'
     widgets:
       tipDeepLTranslate: Open DeepL translation
   infoWidget:

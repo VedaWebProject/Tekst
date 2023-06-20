@@ -116,7 +116,6 @@ browse:
   locationLayerNoData: Keine Daten für diese Fundstelle
   locationNoData: Die ausgewählten Datenschichten enthalten keine Daten für diese Ebene und Fundstelle. Wählen Sie eine andere Fundstelle oder aktivieren Sie mehr Datenschichten.
   units:
-    fromHigherLevel: '(Ebene: {level})'
     widgets:
       tipDeepLTranslate: DeepL-Übersetzung öffnen
   infoWidget:
