@@ -1,0 +1,115 @@
+html {
+  overflow-y: scroll;
+  box-sizing: border-box;
+  margin: 0;
+  font-size: var(--app-ui-font-size);
+}
+
+body {
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#app {
+  font-family: var(--app-ui-font-family);
+  font-weight: var(--app-ui-font-weight-light);
+}
+
+a,
+a:any-link {
+  text-decoration: none;
+  transition: 0.1s;
+}
+
+p {
+  margin: 0.5em 0;
+}
+
+b,
+strong {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 1.6rem;
+  font-weight: 300;
+  margin-bottom: 1.25rem;
+}
+
+h2 {
+  font-size: 1.3rem;
+  font-weight: 300;
+  margin-bottom: 1rem;
+}
+
+h3 {
+  font-size: 1.2rem;
+  font-weight: 300;
+  margin-bottom: 0.8rem;
+}
+
+h4 {
+  font-size: 1.1rem;
+  font-weight: 300;
+  margin-bottom: 0.5rem;
+}
+
+h5 {
+  font-size: 1rem;
+  font-weight: 400;
+  margin-bottom: 0.3rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  line-height: 1.25;
+  margin-top: 1.25rem;
+}
+
+h1:first-child,
+h2:first-child,
+h3:first-child,
+h4:first-child,
+h5:first-child {
+  margin-top: 0px;
+}
+
+.form-container {
+  max-width: 440px;
+  margin: 0 auto;
+  background-color: transparent;
+}
+
+.content-block {
+  max-width: 100%;
+  margin: var(--layout-gap) 0;
+  padding: var(--content-gap) var(--layout-gap);
+  border-radius: var(--app-ui-border-radius);
+  background-color: var(--content-bg-color);
+  box-shadow: var(--app-ui-block-box-shadow);
+}
+
+.accent-color-bg {
+  background-color: var(--accent-color);
+  color: #fff;
+  transition: 0.3s;
+}
+
+.tekst-modal {
+  width: 600px;
+  max-width: 95%;
+}
+
+.tekst-modal-large {
+  width: var(--max-app-width);
+}
+
+.n-select,
+.n-select-menu {
+  font-weight: var(--app-ui-font-weight-normal);
+}

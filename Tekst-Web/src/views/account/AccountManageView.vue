@@ -1,0 +1,438 @@
+<script setup lang="ts">
+import { useApi } from '@/api';
+import { useFormRules } from '@/formRules';
+import { useMessages } from '@/messages';
+import type { UserUpdate, UserUpdatePublicFieldsEnum } from '@/openapi';
+import { usePlatformData } from '@/platformData';
+import { useAuthStore } from '@/stores';
+import type { FormInst, FormItemInst, FormItemRule } from 'naive-ui';
+import {
+  NCheckbox,
+  NButton,
+  NSpace,
+  NInput,
+  NFormItem,
+  NForm,
+  NGrid,
+  NGridItem,
+  useDialog,
+} from 'naive-ui';
+import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useModelChanges } from '@/modelChanges';
+
+const dialog = useDialog();
+const auth = useAuthStore();
+const { pfData } = usePlatformData();
+const { message } = useMessages();
+const { t } = useI18n({ useScope: 'global' });
+const { authApi } = useApi();
+
+const initialEmailModel = () => ({
+  email: auth.user?.email || null,
+});
+
+const initialPasswordModel = () => ({
+  password: '',
+  passwordRepeat: '',
+});
+
+const initialUserDataModel = () => ({
+  username: auth.user?.username || null,
+  firstName: auth.user?.firstName || null,
+  lastName: auth.user?.lastName || null,
+  affiliation: auth.user?.affiliation || null,
+});
+
+const initialPublicFieldsModel = () => ({
+  firstName: auth.user?.publicFields?.includes('firstName') || false,
+  lastName: auth.user?.publicFields?.includes('lastName') || false,
+  affiliation: auth.user?.publicFields?.includes('affiliation') || false,
+});
+
+const { accountFormRules } = useFormRules();
+
+const emailFormRef = ref<FormInst | null>(null);
+const emailFormModel = ref<Record<string, string | null>>(initialEmailModel());
+const {
+  changed: emailModelChanged,
+  getChanges: getEmailModelChanges,
+  reset: resetEmailModelChanges,
+} = useModelChanges(emailFormModel);
+
+const passwordFormRef = ref<FormInst | null>(null);
+const passwordFormModel = ref<Record<string, string | null>>(initialPasswordModel());
+const { changed: passwordModelChanged, reset: resetPasswordModelChanges } =
+  useModelChanges(passwordFormModel);
+
+const userDataFormRef = ref<FormInst | null>(null);
+const userDataFormModel = ref<Record<string, string | null>>(initialUserDataModel());
+const {
+  changed: userDataModelChanged,
+  getChanges: getUserDataModelChanges,
+  reset: resetUserDataModelChanges,
+} = useModelChanges(userDataFormModel);
+
+const publicFieldsFormRef = ref<FormInst | null>(null);
+const publicFieldsFormModel = ref<Record<string, boolean>>(initialPublicFieldsModel());
+const { changed: publicFieldsModelChanged, reset: resetPublicFieldsModelChanges } =
+  useModelChanges(publicFieldsFormModel);
+
+const rPasswordFormItemRef = ref<FormItemInst | null>(null);
+const firstInputRef = ref<HTMLInputElement | null>(null);
+const loading = ref(false);
+
+const passwordRepeatMatchRule = {
+  validator: (rule: FormItemRule, value: string) =>
+    !!value && !!passwordFormModel.value.password && value === passwordFormModel.value.password,
+  message: () => t('models.user.formRulesFeedback.passwordRepNoMatch'),
+  trigger: ['input', 'blur', 'password-input'],
+};
+
+function handlePasswordInput() {
+  if (passwordFormModel.value.reenteredPassword) {
+    rPasswordFormItemRef.value?.validate({ trigger: 'password-input' });
+  }
+}
+
+async function updateUser(userUpdate: UserUpdate) {
+  loading.value = true;
+  try {
+    await auth.updateUser(userUpdate);
+    return true;
+  } catch {
+    /**
+     * This will be either an app-level error (e.g. buggy validation, server down, 401)
+     * or the provided email already exists, which we don't want to actively disclose.
+     */
+    message.error(t('errors.unexpected'));
+    return false;
+  } finally {
+    loading.value = false;
+  }
+}
+
+async function updateEmail() {
+  if (await updateUser(getEmailModelChanges())) {
+    resetEmailModelChanges();
+    message.success(t('account.manage.msgEmailSaveSuccess'));
+    if (!pfData.value?.security?.closedMode === true) {
+      await auth.logout();
+      authApi
+        .verifyRequestToken({
+          bodyVerifyRequestTokenAuthRequestVerifyTokenPost: {
+            email: emailFormModel.value.email || '',
+          },
+        })
+        .then(() => {
+          message.warning(t('account.manage.msgVerifyEmailWarning'), 20);
+        })
+        .catch(() => {
+          message.error(t('errors.unexpected'));
+        });
+      auth.showLoginModal(
+        t('account.manage.msgVerifyEmailWarning'),
+        { name: 'accountProfile' },
+        false
+      );
+    }
+  }
+}
+
+function handleEmailSave() {
+  emailFormRef.value
+    ?.validate(async (errors) => {
+      if (!errors) {
+        if (pfData.value?.security?.closedMode) {
+          updateEmail();
+        } else {
+          dialog.warning({
+            title: t('general.warning'),
+            content: t('account.manage.msgEmailChangeWarning'),
+            positiveText: t('general.saveAction'),
+            negativeText: t('general.cancelAction'),
+            style: 'font-weight: var(--app-ui-font-weight-light)',
+            onPositiveClick: updateEmail,
+          });
+        }
+      }
+    })
+    .catch(() => {
+      message.error(t('errors.followFormRules'));
+    });
+}
+
+async function handlePasswordSave() {
+  passwordFormRef.value
+    ?.validate(async (errors) => {
+      !errors &&
+        dialog.warning({
+          title: t('general.warning'),
+          content: t('account.manage.msgPasswordChangeWarning'),
+          positiveText: t('general.saveAction'),
+          negativeText: t('general.cancelAction'),
+          style: 'font-weight: var(--app-ui-font-weight-light)',
+          onPositiveClick: async () => {
+            await updateUser({ password: passwordFormModel.value.password || undefined });
+            resetPasswordModelChanges();
+            message.success(t('account.manage.msgPasswordSaveSuccess'));
+            await auth.logout();
+            auth.showLoginModal(undefined, { name: 'accountProfile' }, false);
+          },
+        });
+    })
+    .catch(() => {
+      message.error(t('errors.followFormRules'));
+    });
+}
+
+async function handleUserDataSave() {
+  userDataFormRef.value
+    ?.validate(async (errors) => {
+      if (!errors) {
+        await updateUser(getUserDataModelChanges());
+        resetUserDataModelChanges();
+        message.success(t('account.manage.msgUserDataSaveSuccess'));
+      }
+    })
+    .catch(() => {
+      message.error(t('errors.followFormRules'));
+    });
+}
+
+async function handlepublicFieldsSave() {
+  await updateUser({
+    publicFields: Object.keys(publicFieldsFormModel.value).filter(
+      (k) => publicFieldsFormModel.value[k]
+    ) as UserUpdatePublicFieldsEnum[],
+  });
+  resetPublicFieldsModelChanges();
+  message.success(t('account.manage.msgUserDataSaveSuccess'));
+}
+</script>
+
+<template>
+  <h1>{{ $t('account.manage.heading') }}</h1>
+
+  <n-grid class="account-mgmt-grid" cols="1 m:2" responsive="screen" x-gap="18px" y-gap="18px">
+    <n-grid-item>
+      <div class="content-block">
+        <h2>{{ t('models.user.email') }}</h2>
+        <n-form
+          ref="emailFormRef"
+          :model="emailFormModel"
+          :rules="accountFormRules"
+          label-placement="top"
+          label-width="auto"
+          require-mark-placement="right-hanging"
+        >
+          <n-form-item path="email" :label="$t('models.user.email')">
+            <n-input
+              v-model:value="emailFormModel.email"
+              type="text"
+              :placeholder="$t('models.user.email')"
+              @keydown.enter.prevent
+              :disabled="loading"
+              ref="firstInputRef"
+            />
+          </n-form-item>
+        </n-form>
+        <n-space :size="12" justify="end">
+          <n-button
+            secondary
+            block
+            @click="() => (emailFormModel = initialEmailModel())"
+            :loading="loading"
+            :disabled="loading || !emailModelChanged"
+          >
+            {{ $t('general.resetAction') }}
+          </n-button>
+          <n-button
+            block
+            type="primary"
+            @click="handleEmailSave"
+            :loading="loading"
+            :disabled="loading || !emailModelChanged"
+          >
+            {{ $t('general.saveAction') }}
+          </n-button>
+        </n-space>
+
+        <h2>{{ t('models.user.password') }}</h2>
+        <n-form
+          ref="passwordFormRef"
+          :model="passwordFormModel"
+          :rules="accountFormRules"
+          label-placement="top"
+          label-width="auto"
+          require-mark-placement="right-hanging"
+        >
+          <n-form-item path="password" :label="$t('models.user.password')">
+            <n-input
+              v-model:value="passwordFormModel.password"
+              type="password"
+              :placeholder="$t('models.user.password')"
+              @input="handlePasswordInput"
+              @keydown.enter.prevent
+              :disabled="loading"
+            />
+          </n-form-item>
+          <n-form-item
+            ref="rPasswordFormItemRef"
+            first
+            path="passwordRepeat"
+            :rule="accountFormRules.passwordRepeat.concat([passwordRepeatMatchRule])"
+            :label="$t('register.repeatPassword')"
+          >
+            <n-input
+              v-model:value="passwordFormModel.passwordRepeat"
+              type="password"
+              :disabled="!passwordFormModel.password || loading"
+              :placeholder="$t('register.repeatPassword')"
+              @keydown.enter.prevent
+            />
+          </n-form-item>
+        </n-form>
+        <n-space :size="12" justify="end">
+          <n-button
+            secondary
+            block
+            @click="() => (passwordFormModel = initialPasswordModel())"
+            :loading="loading"
+            :disabled="loading || !passwordModelChanged"
+          >
+            {{ $t('general.resetAction') }}
+          </n-button>
+          <n-button
+            block
+            type="primary"
+            @click="handlePasswordSave"
+            :loading="loading"
+            :disabled="loading || !passwordModelChanged"
+          >
+            {{ $t('general.saveAction') }}
+          </n-button>
+        </n-space>
+      </div>
+    </n-grid-item>
+
+    <n-grid-item>
+      <div class="content-block">
+        <h2>{{ t('account.manage.headingChangeUserData') }}</h2>
+        <n-form
+          ref="userDataFormRef"
+          :model="userDataFormModel"
+          :rules="accountFormRules"
+          label-placement="top"
+          label-width="auto"
+          require-mark-placement="right-hanging"
+        >
+          <n-form-item path="username" :label="$t('models.user.username')">
+            <n-input
+              v-model:value="userDataFormModel.username"
+              type="text"
+              :placeholder="$t('models.user.username')"
+              @keydown.enter.prevent
+              :disabled="loading"
+            />
+          </n-form-item>
+          <n-form-item path="firstName" :label="$t('models.user.firstName')">
+            <n-input
+              v-model:value="userDataFormModel.firstName"
+              type="text"
+              :placeholder="$t('models.user.firstName')"
+              @keydown.enter.prevent
+              :disabled="loading"
+            />
+          </n-form-item>
+          <n-form-item path="lastName" :label="$t('models.user.lastName')">
+            <n-input
+              v-model:value="userDataFormModel.lastName"
+              type="text"
+              :placeholder="$t('models.user.lastName')"
+              @keydown.enter.prevent
+              :disabled="loading"
+            />
+          </n-form-item>
+          <n-form-item path="affiliation" :label="$t('models.user.affiliation')">
+            <n-input
+              v-model:value="userDataFormModel.affiliation"
+              type="text"
+              :placeholder="$t('models.user.affiliation')"
+              :disabled="loading"
+            />
+          </n-form-item>
+        </n-form>
+        <n-space :size="12" justify="end">
+          <n-button
+            secondary
+            block
+            @click="() => (userDataFormModel = initialUserDataModel())"
+            :loading="loading"
+            :disabled="loading || !userDataModelChanged"
+          >
+            {{ $t('general.resetAction') }}
+          </n-button>
+          <n-button
+            block
+            type="primary"
+            @click="handleUserDataSave"
+            :loading="loading"
+            :disabled="loading || !userDataModelChanged"
+          >
+            {{ $t('general.saveAction') }}
+          </n-button>
+        </n-space>
+      </div>
+    </n-grid-item>
+
+    <n-grid-item>
+      <div class="content-block">
+        <h2>{{ t('account.manage.headingChangePublicFields') }}</h2>
+        <n-form
+          ref="publicFieldsFormRef"
+          :model="publicFieldsFormModel"
+          :show-label="false"
+          require-mark-placement="right-hanging"
+        >
+          <n-form-item>
+            <n-checkbox checked disabled aria-readonly :focusable="false">
+              {{ t(`models.user.username`) }}
+            </n-checkbox>
+          </n-form-item>
+          <n-form-item v-for="(_, field) in publicFieldsFormModel" :path="field" :key="field">
+            <n-checkbox v-model:checked="publicFieldsFormModel[field]" :disabled="loading">
+              {{ t(`models.user.${field}`) }}
+            </n-checkbox>
+          </n-form-item>
+        </n-form>
+        <n-space :size="12" justify="end">
+          <n-button
+            secondary
+            block
+            @click="() => (publicFieldsFormModel = initialPublicFieldsModel())"
+            :loading="loading"
+            :disabled="loading || !publicFieldsModelChanged"
+          >
+            {{ $t('general.resetAction') }}
+          </n-button>
+          <n-button
+            block
+            type="primary"
+            @click="handlepublicFieldsSave"
+            :loading="loading"
+            :disabled="loading || !publicFieldsModelChanged"
+          >
+            {{ $t('general.saveAction') }}
+          </n-button>
+        </n-space>
+      </div>
+    </n-grid-item>
+  </n-grid>
+</template>
+
+<style scoped>
+.account-mgmt-grid .content-block {
+  margin: 0;
+}
+</style>

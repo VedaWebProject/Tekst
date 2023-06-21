@@ -1,0 +1,337 @@
+general:
+  welcome: Welcome, {name}!
+  welcomeTest: '"Welcome!", says the client.'
+  tipThemeToggleLight: Switch to light mode
+  tipThemeToggleDark: Switch to dark mode
+  yesAction: 'Yes'
+  noAction: 'No'
+  okAction: OK
+  selectAction: Select
+  cancelAction: Cancel
+  saveAction: Save
+  closeAction: Close
+  resetAction: Reset
+  addAction: Add
+  insertAction: Insert
+  removeAction: Remove
+  deleteAction: Delete
+  textSelect: Select the text you want to work with
+  info: Information
+  warning: Warning
+  error: Error
+  filters: Filters
+  selected: selected
+  flags: Flags
+  language: Language
+
+dummy:
+  home: There's no place like ~
+  schiller: |
+    Angel-fair, Walhalla's charms displaying,
+    Fairer than all mortal youths was he;
+    Mild his look, as May-day sunbeams straying
+    Gently o'er the blue and glassy sea.
+
+    And his kisses! what ecstatic feeling!
+    Like two flames that lovingly entwine,
+    Like the harp's soft tones together stealing
+    Into one sweet harmony divine,
+
+    Soul and soul embraced, commingled, blended,
+    Lips and cheeks with trembling passion burned,
+    Heaven and earth, in pristine chaos ended,
+    Round the blissful lovers madly turn'd.
+
+    He is gone and, ah! with bitter anguish
+    Vainly now I breathe my mournful sighs;
+    He is gone in hopeless grief I languish
+    Earthly joys I ne'er again can prize!
+
+i18n:
+  tipSwitcher: Choose locale (language and number/date formatting)
+
+init:
+  loading: Loading...
+  init: Initializing...
+  ready: Ready.
+  error: There were errors initializing the application.
+  serverI18n: Loading UI translations...
+  platformData: Loading platform data...
+  workingText: Setting up working text...
+
+errors:
+  error: Error
+  serverI18n: Some translations could not be loaded.
+  platformData: Could not load platform data.
+  unexpected: An unexpected error occurred. This should not happen.
+  conflict: There is a conflict with already existing data.
+  followFormRules: Please correct your inputs according to the form rules!
+  noAccess: You don't have access to {resource}.
+  logInToAccess: Log in to access the requested resource!
+  logoutAfter401: You have been logged out after trying to access a restricted resource without authorization.
+  csrf: Your request didn't pass the CSRF checks. Delete your cookies for this website and refresh the page.
+
+nav:
+  about: About
+  browse: Browse
+  search: Search
+  help: Help
+
+routes:
+  pageTitle:
+    home: Home
+    browse: Browse
+    search: Search
+    help: Help
+    login: Login
+    register: Register
+    user: Profile
+    accountProfile: 'Account: Profile'
+    accountManage: 'Account: Manage'
+    adminStatistics: '@:admin.heading: Statistics'
+    adminUsers: '@:admin.heading: Users'
+    adminTextsGeneral: '@:admin.heading - Texts: General'
+    adminTextsLevels: '@:admin.heading - Texts: Levels'
+    adminTextsNodes: '@:admin.heading - Texts: Nodes'
+    adminNewText: '@:admin.heading - New Text'
+    verify: Verification
+    reset: Reset password
+
+layerTypes:
+  plaintext: Plain Text
+
+browse:
+  location:
+    modalHeading: Level/Location
+    level: Level
+  toolbar:
+    tipSelectLocation: Select level/location
+    tipPreviousLocation: Previous location on this level
+    tipNextLocation: Next location on this level
+    tipReducedView: Toggle reduced reading view
+    tipOpenDataLayerList: Select data layers to display
+  layerToggleDrawer:
+    heading: Show Data Layers
+  locationLayerNoData: No data for this location
+  locationNoData: The selected data layers contain no data for this text level and location. Try choosing a different location or activating more data layers.
+  units:
+    widgets:
+      deepLTranslate:
+        title: Open DeepL translation
+      infoWidget:
+        title: Show information on this data layer
+        coverage: Coverage
+        coverageStatement: '{present} of {total} nodes on level "{level}".'
+      deactivateWidget:
+        title: Hide this data layer
+        message: The data layer "{layerTitle}" has been hidden. You can activate it again using the data layer selection tool to the right side of the toolbar.
+      mergeWidget:
+        title: Open merged view with all data under the parent location
+
+forms:
+  rulesFeedback:
+    minChars: 'Minimum {min} characters'
+    minMaxChars: '{min} to {max} characters'
+    minMaxItems: '{min} to {max} items'
+    isRequired: '{x} is required'
+
+register:
+  register: Register
+  switchToLogin: Log into existing account
+  heading: Register
+  success: Successfully registered.
+  activationNeededHint: You will only be able to log in as soon as we activate your account. We will send you an email when that happens.
+  activationNotNeededHint: You can now log in.
+  repeatPassword: 'Repeat @:models.user.password'
+  errors:
+    emailAlreadyRegistered: This email address is already registered.
+    usernameAlreadyRegistered: This username is already taken.
+    weakPassword: The given password doesn't meet the security requirements.
+
+models:
+  user:
+    modelLabel: User | Users
+    email: Email
+    username: Username
+    password: Password
+    firstName: First Name
+    lastName: Last Name
+    affiliation: Affiliation
+    isActive: active
+    isInactive: inactive
+    isVerified: verified
+    isUnverified: unverified
+    isSuperuser: Admin
+    formRulesFeedback:
+      emailInvalid: '@:models.user.email is too obviously invalid'
+      usernameChars: 'Allowed characters: a-z, A-Z, 0-9 and - _'
+      passwordChars: 'Minimum one of each: a-z, A-Z and 0-9'
+      passwordRepReq: Password repetition is required
+      passwordRepNoMatch: Passwords don't match
+  text:
+    modelLabel: Text | Texts
+    title: Title
+    slug: Identifier
+    subtitle: Subtitle
+    level: Level | Levels
+    levelLabel: Label
+    defaultLevel: Default level
+    locDelim: Location delimiter
+    labeledLocation: Labeled location
+    accentColor: Accent color
+    isActive: Active, publicly listed
+    isInactive: Inactive, not publicly listed
+    formRulesFeedback:
+      slugChars: 'Allowed characters: a-z and 0-9'
+      defaultLevelRange: 0 or greater
+  node:
+    modelLabel: Structure node | Structure nodes
+  layer:
+    modelLabel: Data layer | Data layers
+    layerType: Datalayer Type
+  unit:
+    modelLabel: Data unit | Data units
+  meta:
+    modelLabel: Metadata
+    author: Author
+    year: Year
+    language: Language
+    layerType: '@:models.layer.layerType'
+    comment: Comment
+    providedBy: Provided by
+    onLevel: on level "{level}"
+
+account:
+  loginBtn: Login
+  logoutBtn: Logout
+  profile: Public Profile
+  profileHeading: 'Public Profile of {username}'
+  profileNotFound: The user profile "{username}" could not be found.
+  profileFieldNotPublic: not public
+  logoutSuccessful: You are now logged out.
+  tipUserBtn: Show user actions for {username}
+  tipLoginBtn: Log into your account
+  tipLogoutBtn: Log out of your account
+  switchToRegister: Register New User
+  verify:
+    success: Your email address has been successfully verified! You can now log into your account.
+    badToken: This verification link is either invalid or already expired.
+    alreadyVerified: This email address is already verified.
+  forgotPassword:
+    forgotPassword: I forgot my password
+    sentResetLink: We sent a password reset link to {email}
+    invalidEmail: Please enter a valid email address into the login form!
+  resetPassword:
+    heading: New Password
+    success: Your new password has been saved. You can now log in.
+    badToken: The used password reset link is either invalid or already expired.
+  login:
+    heading: Login
+  errors:
+    badCreds: Incorrect email/password or account isn't activated, yet
+    notVerified: Your email address is not verified, yet. We just sent you a verification link.
+  autoLogout: Your session will automatically end in {minutes} minutes and {seconds} seconds. You can log out and log back in to renew your session now.
+  sessionExpired: Your session has expired. You have been logged out.
+  renewLogin: Log in again to renew your session.
+  manage:
+    heading: Manage Account
+    headingChangeUserData: General User Data
+    headingChangePublicFields: Public Profile Data
+    msgEmailSaveSuccess: '@:models.user.email saved.'
+    msgEmailChangeWarning: Make sure you entered a valid email address you have access to! If you proceed, you will be logged out and have to verify your changed email address before you can log in again.
+    msgVerifyEmailWarning: Please verify your changed email address before logging in! We just sent you a verification link.
+    msgPasswordSaveSuccess: '@:models.user.password saved.'
+    msgPasswordChangeWarning: If you proceed, you will be logged out and have to log in again using your changed password.
+    msgUserDataSaveSuccess: User data saved.
+
+admin:
+  heading: Administration
+  optionGroupLabel: Administration
+  statistics:
+    heading: Statistics
+    globalHeading: Global
+    layerTypesHeading: Datalayer Types
+    textsHeading: Texts
+  users:
+    heading: Users
+    save: Saved user "{username}"
+    checkLabelActive: Account is active
+    checkLabelVerified: Email is verified
+    checkLabelSuperuser: User is administrator
+    registeredAt: registered at
+    editModal:
+      accountStatus: Account status
+      adminWarning: Careful! You better know what you are doing!
+    msgSentVerificationLink: A verification email was sent to "{username}".
+    msgSentVerificationLinkError: Error sending verification link via email.
+    msgUserDeleted: The user {username} has been deleted and informed via email.
+    mailtoLinkTitle: Send email to {username}
+    mailtoSubject: Your {platform} account
+    statusBtnTitle:
+      setUser: Downgrade {username} to normal user
+      setSuperuser: Promote {username} to administrator
+      setInactive: Deactivate account of {username}
+      setActive: Activate account of {username}
+      setUnverified: Reset email verification of {username}
+      setVerified: Set email of {username} to verified
+      deleteUser: Delete user {username}
+    confirmMsg:
+      areYouSure: Are you sure you want to
+      setUser: '@:admin.users.confirmMsg.areYouSure downgrade {username} to a normal user?'
+      setSuperuser: '@:admin.users.confirmMsg.areYouSure grant administrator permissions to {username}?'
+      setInactive: '@:admin.users.confirmMsg.areYouSure deactivate the account of {username}?'
+      setActive: '@:admin.users.confirmMsg.areYouSure activate the account of {username}?'
+      setUnverified: '@:admin.users.confirmMsg.areYouSure reset the email verification status of {username}?'
+      setVerified: '@:admin.users.confirmMsg.areYouSure set the email address of {username} to verified?'
+      deleteUser: '@:admin.users.confirmMsg.areYouSure delete the user {username}?'
+  texts:
+    heading: Texts
+    general:
+      heading: General
+      msgSaved: Text settings saved.
+    levels:
+      heading: Levels
+      tipInsertLevel: Insert new level at position {n}
+      tipEditLevel: 'Edit label translations for level "{levelLabel}"'
+      tipDeleteLevel: Delete level "{levelLabel}"
+      msgInsertSuccess: Level inserted at position {position}
+      msgEditSuccess: Changes to level at position {position} saved
+      msgDeleteSuccess: Level "{levelLabel}" deleted
+      warnInsertLevel: |
+        Retroactively inserting a text level is an operation with serious
+        impact on the text's data model. The application will try its best to embed the
+        new level into the existing data structure, but you will have to adjust the
+        result to your needs using the text's structure nodes settings afterwards.
+        Also, it is recommended to make a backup of the current state of your database
+        before performing this operation.
+      warnDeleteLevel: |
+        Deleting a text level has far-reaching consequences: All data associated
+        with this text level will be deleted with it. This includes all (!) data layers
+        on this level, regardless of the user who created it!
+        The application will try its best to re-connect adjacent levels,
+        but you will have to adjust the result to your needs using the text's
+        structure nodes settings afterwards.
+        Please make sure you know what you are doing and make a backup
+        of your database before doing this! Are you sure you want to delete the text
+        level "{levelLabel}"?
+    nodes:
+      heading: Nodes
+  newText:
+    heading: New Text
+    headerInfoMsg: |
+      Here you can create a new text. For this, you need to provide only the most basic information.
+      Initially, the text is not listed publicly and is only accessible to administrators.
+      You will then be redirected to a view where you can make further settings
+      before making the text publicly available.
+    btnProceed: Proceed
+    btnFinish: Finish
+    msgSaveSuccess: The new text "{title}" was successfully created. You may now configure its details.
+
+search:
+  heading: Search
+  searchAction: Search
+  quickSearch:
+    heading: Quick Search
+  settings:
+    heading: Global Search Settings
+  nothingFound: Nothing found

@@ -1,0 +1,6 @@
+:80 {
+    try_files {path} /
+    encode gzip
+    root * /var/www/html
+    file_server
+}

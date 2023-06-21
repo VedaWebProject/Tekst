@@ -1,0 +1,350 @@
+general:
+  welcome: Willkommen, {name}!
+  welcomeTest: '"Willkommen!", sagt der Client.'
+  tipThemeToggleLight: Zu hellem Farbschema wechseln
+  tipThemeToggleDark: Zu dunklem Farbschema wechseln
+  yesAction: 'Ja'
+  noAction: 'Nein'
+  okAction: OK
+  selectAction: Auswählen
+  cancelAction: Abbrechen
+  saveAction: Speichern
+  closeAction: Schließen
+  resetAction: Zurücksetzen
+  addAction: Hinzufügen
+  insertAction: Einfügen
+  removeAction: Entfernen
+  deleteAction: Löschen
+  quickSearch: Schnellsuche
+  textSelect: Wählen Sie den Text, mit dem Sie arbeiten möchten
+  info: Information
+  warning: Warnung
+  error: Fehler
+  filters: Filter
+  selected: ausgewählt
+  flags: Merkmale
+  language: Sprache
+
+dummy:
+  home: 'Kein Ort ist wie ~'
+  schiller: |
+    Schön wie Engel, voll Walhallas Wonne,
+    Schön vor allen Jünglingen war er,
+    Himmlisch mild sein Blick wie Maiensonne,
+    Rückgestrahlt vom blauen Spiegelmeer.
+
+    Seine Küsse - paradiesisch Fühlen!
+    Wie zwo Flammen sich ergreifen, wie
+    Harfentöne ineinanderspielen
+    Zu der himmelvollen Harmonie -
+
+    Stürzten, flogen, schmolzen Geist und Geist zusammen,
+    Lippen, Wangen brannten, zitterten,
+    Seele rann in Seele - Erd und Himmel schwammen
+    Wie zerronnen um die Liebenden!
+
+    Er ist hin - vergebens, ach vergebens
+    Stöhnet ihm der bange Seufzer nach!
+    Er ist hin, und alle Lust des Lebens
+    Wimmert hin in ein verlornes Ach!
+
+i18n:
+  tipSwitcher: Gebietsschema auswählen (Sprache und Zahlen-/Datumsformat)
+
+init:
+  loading: Lade...
+  init: Initialisiere...
+  ready: Fertig.
+  error: Es sind Fehler beim Starten der Anwendung aufgetreten.
+  serverI18n: Lade UI-Übersetzungen...
+  platformData: Lade Plattform-Daten...
+  workingText: Lege Arbeitstext fest...
+
+errors:
+  error: Fehler
+  serverI18n: Einige Übersetzungen konnten nicht geladen werden.
+  platformData: Plattform-Daten konnten nicht geladen werden.
+  unexpected: Ein unerwarteter Fehler ist aufgetreten. Das hätte nicht passieren dürfen.
+  conflict: Es besteht ein Konflikt mit bereits vorhandenen Daten.
+  followFormRules: Bitte korrigieren Sie Ihre Eingaben entsprechend den Formularregeln!
+  noAccess: Sie haben keine Zugriffsberechtigung für {resource}.
+  logInToAccess: Melden Sie sich an, um auf die angefragte Ressource zuzugreifen!
+  logoutAfter401: Sie wurden abgemeldet, nachdem Sie unbefugt auf eine geschützte Ressource zugreifen wollten.
+  csrf: Ihre Anfrage hat die CSRF-Tests nicht bestanden. Löschen Sie ihre Cookies zu dieser Website und laden Sie sie neu.
+
+nav:
+  about: Über
+  browse: Blättern
+  search: Suche
+  help: Hilfe
+
+routes:
+  pageTitle:
+    home: Startseite
+    browse: Lesen in
+    search: Suchen in
+    help: Hilfe
+    login: Anmeldung
+    register: Registrierung
+    user: Profil
+    accountProfile: 'Benutzerkonto: Profil'
+    accountManage: 'Benutzerkonto: Benutzerdaten'
+    adminStatistics: '@:admin.heading: Statistiken'
+    adminUsers: '@:admin.heading: Benutzer'
+    adminTextsGeneral: '@:admin.heading - Texte: Allgemein'
+    adminTextsLevels: '@:admin.heading - Texte: Ebenen'
+    adminTextsNodes: '@:admin.heading - Texte: Knoten'
+    adminNewText: '@:admin.heading - Neuer Text'
+    verify: Verifizierung
+    reset: Passwort zurücksetzen
+
+layerTypes:
+  plaintext: Einfacher Text
+
+browse:
+  location:
+    modalHeading: Ebene/Fundstelle
+    level: Ebene
+  toolbar:
+    tipSelectLocation: Ebene/Fundstelle wählen
+    tipPreviousLocation: Vorherige Fundstelle auf dieser Ebene
+    tipNextLocation: Nächste Fundstelle auf dieser Ebene
+    tipReducedView: Reduzierte Leseansicht umschalten
+    tipOpenDataLayerList: Anzuzeigende Datenschichten wählen
+  layerToggleDrawer:
+    heading: Datenschichten anzeigen
+  locationLayerNoData: Keine Daten für diese Fundstelle
+  locationNoData: Die ausgewählten Datenschichten enthalten keine Daten für diese Ebene und Fundstelle. Wählen Sie eine andere Fundstelle oder aktivieren Sie mehr Datenschichten.
+  units:
+    widgets:
+      deepLTranslate:
+        title: DeepL-Übersetzung öffnen
+      infoWidget:
+        title: Informationen zu dieser Datenschicht anzeigen
+        coverage: Abdeckung
+        coverageStatement: '{present} von {total} Knoten auf Ebene "{level}".'
+      deactivateWidget:
+        title: Diese Datenschicht ausblenden
+        message: Die Datenschicht "{layerTitle}" wurde ausgeblendet. Sie können sie wieder aktivieren, indem Sie die Datenschichten-Auswahl rechts in der Toolbar benutzen.
+      mergeWidget:
+        title: Zusammengeführte Ansicht mit allen Daten der übergeordneten Fundstelle öffnen
+
+forms:
+  rulesFeedback:
+    minChars: 'Mindestens {min} Zeichen'
+    minMaxChars: '{min} bis {max} Zeichen'
+    minMaxItems: '{min} to {max} Elemente'
+    isRequired: '{x} wird benötigt'
+    user:
+
+register:
+  register: Registrieren
+  switchToLogin: Mit bestehendem Konto anmelden
+  heading: Registrieren
+  success: Erfolgreich registriert.
+  activationNeededHint: Sie werden sich erst anmelden können, wenn Ihr Konto von uns aktiviert wurde. Sie werden darüber per Email benachrichtigt.
+  activationNotNeededHint: Sie können sich jetzt anmelden.
+  repeatPassword: '@:models.user.password wiederholen'
+  rulesFeedback:
+    emailInvalid: '@:models.user.email ist zu offensichtlich ungültig'
+    usernameChars: 'Erlaubte Zeichen: a-z, A-Z, 0-9 und - _'
+    passwordChars: 'Mindestens je ein Zeichen aus: a-z, A-Z and 0-9'
+    passwordRepReq: Passwort muss wiederholt werden
+    passwordRepNoMatch: Passwörter stimmen nicht überein
+  errors:
+    emailAlreadyRegistered: Diese Email-Adresse ist bereits registriert.
+    usernameAlreadyRegistered: Dieser Benutzername ist bereits vergeben.
+    weakPassword: Das eingegebene Passwort entspricht nicht den Sicherheitsanforderungen.
+
+models:
+  user:
+    modelLabel: Benutzer | Benutzer
+    email: Email-Adresse
+    username: Benutzername
+    password: Passwort
+    firstName: Vorname
+    lastName: Nachname
+    affiliation: Zugehörigkeit
+    isActive: aktiv
+    isInactive: inaktiv
+    isVerified: verifiziert
+    isUnverified: unverifiziert
+    isSuperuser: Admin
+    formRulesFeedback:
+      emailInvalid: '@:models.user.email ist zu offensichtlich ungültig'
+      usernameChars: 'Erlaubte Zeichen: a-z, A-Z, 0-9 und - _'
+      passwordChars: 'Mindestens je ein Zeichen aus: a-z, A-Z and 0-9'
+      passwordRepReq: Passwort muss wiederholt werden
+      passwordRepNoMatch: Passwörter stimmen nicht überein
+  text:
+    modelLabel: Text | Texte
+    title: Titel
+    slug: Identifikator
+    subtitle: Untertitel
+    level: Ebene | Ebenen
+    levelLabel: Bezeichnung
+    defaultLevel: Standard-Ebene
+    locDelim: Fundstellen-Trennzeichen
+    labeledLocation: Beschriftete Fundstelle
+    accentColor: Akzent-Farbe
+    isActive: Aktiv, öffentlich gelistet
+    isInactive: Inaktiv, nicht öffentlich gelistet
+    formRulesFeedback:
+      slugChars: 'Erlaubte Zeichen: a-z und 0-9'
+      defaultLevelRange: 0 oder höher
+  node:
+    modelLabel: Strukturknoten | Strukturknoten
+  layer:
+    modelLabel: Datenschicht | Datenschichten
+    layerType: Datenschicht-Typ
+  unit:
+    modelLabel: Daten-Einheit | Daten-Einheiten
+  meta:
+    modelLabel: Metadaten
+    author: Autor
+    year: Jahr
+    language: Sprache
+    layerType: '@:models.layer.layerType'
+    comment: Kommentar
+    providedBy: Bereitgestellt von
+    onLevel: auf Ebene "{level}"
+
+account:
+  loginBtn: Anmelden
+  logoutBtn: Abmelden
+  profile: Öffentliches Profil
+  profileHeading: 'Öffentliches Profil von {username}'
+  profileNotFound: Das Benutzerprofil "{username}" konnte nicht gefunden werden.
+  profileFieldNotPublic: nicht öffentlich
+  logoutSuccessful: Sie sind jetzt ausgeloggt.
+  tipUserBtn: Benutzer-Aktionen für {username} anzeigen
+  tipLoginBtn: In Ihrem Konto anmelden
+  tipLogoutBtn: Von Ihrem Konto abmelden
+  switchToRegister: Neues Konto registrieren
+  verify:
+    success: Ihre Email-Adresse wurde erfolgreich verifiziert! Sie können sich jetzt in Ihrem Konto anmelden.
+    badToken: Dieser Verifizierungs-Link ist entweder ungültig oder bereits abgelaufen.
+    alreadyVerified: Diese Email-Adresse ist bereits verifiziert.
+  forgotPassword:
+    forgotPassword: Ich habe mein Passwort vergessen
+    sentResetLink: Wir haben einen Link zum Zurücksetzen des Passworts an {email} gesendet
+    invalidEmail: Bitte tragen Sie eine gültige Email-Adresse in das Anmeldeformular ein!
+  resetPassword:
+    heading: Neues Passwort
+    success: Ihr neues Passwort wurde gespeichert. Sie können sich jetzt einloggen.
+    badToken: Der benutzte Passwort-Zurücksetzen-Link ist entweder ungültig oder bereits abgelaufen.
+  login:
+    heading: Anmelden
+  errors:
+    badCreds: Falsche Email-Adresse/Passwort oder Konto noch nicht aktiviert
+    notVerified: Ihre Email-Adresse ist noch nicht verifiziert. Wir haben Ihnen einen Verifizierungs-Link geschickt.
+  autoLogout: Ihre Sitzung endet automatisch in {minutes} Minuten und {seconds} Sekunden. Melden Sie sich ab und wieder an, um Ihre Sitzung jetzt zu erneuern.
+  sessionExpired: Ihre Sitzung ist abgelaufen. Sie wurden abgemeldet.
+  renewLogin: Melden Sie sich wieder an, um Ihre Sitzung zu erneuern.
+  manage:
+    heading: Konto verwalten
+    headingChangeUserData: Allgemeine Benutzerdaten
+    headingChangePublicFields: Öffentliche Profildaten
+    msgEmailSaveSuccess: '@:models.user.email gespeichert.'
+    msgEmailChangeWarning: Stellen Sie sicher, dass Sie eine gültige @:models.user.email eingeben, auf die Sie Zugriff haben! Wenn Sie fortfahren, werden Sie abgemeldet und müssen Ihre geänderte @:models.users.email verifizieren, bevor Sie sich wieder anmelden können.
+    msgVerifyEmailWarning: Bitte verifizieren Sie Ihre geänderte @:models.user.email bevor Sie sich anmelden! Wir haben Ihnen einen Verifizierungs-Link gesendet.
+    msgPasswordSaveSuccess: '@:models.user.password gespeichert.'
+    msgPasswordChangeWarning: Wenn Sie fortfahren, werden Sie abgemeldet und müssen sich mit Ihrem neuen Passwort wieder anmelden.
+    msgUserDataSaveSuccess: Benutzerdaten gespeichert.
+
+admin:
+  heading: Administration
+  optionGroupLabel: Administration
+  statistics:
+    heading: Statistiken
+    globalHeading: Global
+    layerTypesHeading: Datenschicht-Typen
+    textsHeading: Texte
+  users:
+    heading: Benutzer
+    save: Benutzer "{username}" gespeichert
+    checkLabelActive: Konto ist aktiv
+    checkLabelVerified: Email ist verifiziert
+    checkLabelSuperuser: Benutzer ist Administrator
+    registeredAt: registriert am
+    editModal:
+      accountStatus: Konto-Status
+      adminWarning: Vorsicht! Sie sollten wissen, was Sie tun!
+    msgSentVerificationLink: Eine Verifizierungs-Email wurde an "{username}" gesendet.
+    msgSentVerificationLinkError: Beim Senden der Email mit dem Verifizierungs-Link ist ein Fehler aufgetreten.
+    msgUserDeleted: Der Benutzer {username} wurde gelöscht und darüber per Email benachrichtigt.
+    mailtoLinkTitle: Email an {username} senden
+    mailtoSubject: Ihr {platform}-Konto
+    statusBtnTitle:
+      setUser: '{username} zu normalem Benutzer herabstufen'
+      setSuperuser: '{username} zu Administrator befördern'
+      setInactive: Konto von {username} deaktivieren
+      setActive: Konto von {username} aktivieren
+      setUnverified: Email-Verifizierung von {username} zurücksetzen
+      setVerified: Email-Adresse von {username} als verifiziert markieren
+      deleteUser: Benutzer {username} löschen
+    confirmMsg:
+      areYouSure: Sind Sie sicher, dass Sie
+      setUser: '@:admin.users.confirmMsg.areYouSure {username} zu einem normalen Benutzer herabstufen möchten?'
+      setSuperuser: '@:admin.users.confirmMsg.areYouSure {username} Administratorenrechte zuteilen möchten?'
+      setInactive: '@:admin.users.confirmMsg.areYouSure das Konto von {username} deaktivieren möchten?'
+      setActive: '@:admin.users.confirmMsg.areYouSure das Konto von {username} aktivieren möchten?'
+      setUnverified: '@:admin.users.confirmMsg.areYouSure die Email-Verifizierung von {username} zurücksetzen möchten?'
+      setVerified: '@:admin.users.confirmMsg.areYouSure die Email-Adresse von {username} als verifiziert markieren möchten?'
+      deleteUser: '@:admin.users.confirmMsg.areYouSure den Benutzer {username} löschen möchten?'
+  texts:
+    heading: Texte
+    general:
+      heading: Allgemein
+      msgSaved: Text-Einstellungen gespeichert.
+    levels:
+      heading: Ebenen
+      tipInsertLevel: Neue Ebene an Position {n} einfügen
+      tipEditLevel: Übersetzungen der Bezeichnung für Ebene "{levelLabel}" bearbeiten
+      tipDeleteLevel: Ebene "{levelLabel}" löschen
+      msgInsertSuccess: Ebene an Position {position} eingefügt
+      msgEditSuccess: Änerungen an Ebene auf Position {position} gespeichert
+      msgDeleteSuccess: Ebene "{levelLabel}" gelöscht
+      warnInsertLevel: |
+        Das nachträgliche Einfügen einer Textebene ist eine Operation mit
+        gravierenden Auswirkungen auf das Datenmodell des Textes.
+        Die Anwendung wird ihr Bestes tun, um die neue Ebene in die
+        bestehende Datenstruktur einzubetten, aber Sie werden das Ergebnis
+        anschließend mit Hilfe der Einstellungen für die Strukturknoten des Textes
+        an Ihre Bedürfnisse anpassen müssen.
+        Es ist außerdem angeraten, ein Backup des aktuellen Zustands Ihrer
+        Datenbank zu erstellen, bevor Sie diesen Schritt durchführen.
+      warnDeleteLevel: |
+        Das Löschen einer Textebene hat weitreichende Folgen:
+        Alle Daten, die mit dieser Textebene verbunden sind,
+        werden mit ihr gelöscht. Dies betrifft alle (!) Datenschichten auf dieser
+        Ebene - egal, welcher Benutzer diese erstellt hat!
+        Die Anwendung wird ihr Bestes tun, um angrenzende Ebenen sinnvoll miteinander
+        zu verbinden, aber Sie werden das Ergebnis
+        anschließend mit Hilfe der Einstellungen für die Strukturknoten des Textes
+        an Ihre Bedürfnisse anpassen müssen.
+        Bitte vergewissern Sie sich, dass Sie wissen,
+        was Sie tun und machen Sie ein Backup Ihrer Datenbank,
+        bevor Sie diese Aktion durchführen! Sind Sie sich sicher, dass Sie die
+        Textebene "{levelLabel}" löschen möchten?
+    nodes:
+      heading: Knoten
+  newText:
+    heading: Neuer Text
+    headerInfoMsg: |
+      Hier können Sie einen neuen Text anlegen. Dafür müssen Sie nur die grundlegendsten Angaben machen.
+      Zunächst wird der Text nicht öffentlich gelistet und ist nur für Administratoren zugänglich.
+      Sie werden im Anschluss zu einer Ansicht weitergeleitet, in der Sie weitere Einstellungen vornehmen können,
+      bevor Sie den Text öffentlich verfügbar machen.
+    btnProceed: Fortfahren
+    btnFinish: Abschließen
+    msgSaveSuccess: Der neue Text "{title}" wurde erfolgreich erstellt. Sie können jetzt Einstellungen dafür vornehmen.
+
+search:
+  heading: Suche
+  searchAction: Suchen
+  quickSearch:
+    heading: Schnellsuche
+  settings:
+    heading: Globale Sucheinstellungen
+  nothingFound: Nichts gefunden
