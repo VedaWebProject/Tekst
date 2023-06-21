@@ -1,4 +1,4 @@
-<img width="72" height="72" align="right" style="position: absolute;  top: 0; right: 0; padding: 12px;" src="resources/logo.png" alt="Tekst logo"/>
+<img width="72" height="72" align="right" style="position: absolute;  top: 0; right: 0; padding: 12px;" src="assets/logo.png" alt="Tekst logo"/>
 
 # Tekst <!-- omit in toc -->
 

@@ -2,8 +2,6 @@
 
 version: "3"
 
-vars:
-
 tasks:
   default:
     desc: Print this very list of available tasks

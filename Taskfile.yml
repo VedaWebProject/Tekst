@@ -1,0 +1,16 @@
+# https://taskfile.dev
+
+version: "3"
+
+tasks:
+  default:
+    desc: Print this very list of available tasks
+    cmds:
+      - task --list
+    silent: true
+
+  docs:
+    desc: Serve documentation on 127.0.0.1:8091
+    cmds:
+      - echo Documentation will be served on http://127.0.0.1:8091
+      - docker run --rm -p 127.0.0.1:8091:8000 -v ./docs:/docs:ro squidfunk/mkdocs-material:9
