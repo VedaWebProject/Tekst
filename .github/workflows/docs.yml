@@ -17,6 +17,9 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./docs
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
