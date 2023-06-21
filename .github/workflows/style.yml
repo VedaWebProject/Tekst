@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-22.04
     defaults:
       run:
-        working-directory: ./Tekst-API
+        working-directory: Tekst-API
     steps:
     - uses: actions/checkout@v3
     - name: Install Poetry
