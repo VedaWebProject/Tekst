@@ -16,7 +16,7 @@ services:
 
   tekst-web:
     build:
-      context: https://github.com/VedaWebProject/Tekst-Web.git
+      context: ./Tekst-Web
       target: prod
       platforms:
         - "linux/amd64"
@@ -36,7 +36,7 @@ services:
 
   tekst-api:
     build:
-      context: https://github.com/VedaWebProject/Tekst-API.git
+      context: ./Tekst-API
       target: prod
       platforms:
         - "linux/amd64"
