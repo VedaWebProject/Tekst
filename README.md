@@ -5,16 +5,11 @@
 *...as in* **T**ext **E**xploration *and* **K**nowledge **S**tructuring **T**ool
 
 > ⚠ Tekst is still somewhere between a conceptual phase and its early stages of development. As of now there's no stable (let alone production-ready) version available.
-> As soon as we're ready for it, the VedaWeb platform will become the first public instance of Tekst. Until then, you are welcome to follow the development of Tekst here and in the code repositories mentioned below.
+> As soon as we're ready for it, the VedaWeb platform will become the first public instance of Tekst. Until then, you are welcome to follow the development of Tekst in this very repository.
 
 Tekst is a collaborative, web-based research platform for displaying, linking, exploring, and enriching resources on natural language texts. It is developed within the scope of the [VedaWeb 2.0](https://vedaweb.uni-koeln.de/) research project on Old Indic texts, where it constitutes the technical basis of the research platform "VedaWeb", which will be launched in its new form as part of the project's efforts.
 
-This is the "main" Tekst repository. While the actual application code has its own repositories (namely the server and client application projects), this very repository is meant to be the go-to place for general information, documentation and the resources needed to deploy an instance of the Tekst platform for yourself or your research project.
-
-If, however, you want to visit or even contribute to the Tekst code repositories, here's where to look first:
-
-- [**Tekst-API**](https://github.com/VedaWebProject/Tekst-API) - Codebase of the **Tekst** *server* application.
-- [**Tekst-Web**](https://github.com/VedaWebProject/Tekst-Web) - Codebase of the **Tekst** *client* application.
+This is a [monorepo](https://en.wikipedia.org/wiki/Monorepo) containing the Tekst server project ([Tekst-API](Tekst-API)), the Tekst client project ([Tekst-Web](Tekst-Web)) as well as general information, documentation and the resources needed to deploy an instance of the Tekst platform for yourself or your research project.
 
 
 ## Contents  <!-- omit in toc -->
@@ -41,7 +36,7 @@ To deploy Tekst with Docker, follow these steps (example commands assume using s
 2. Clone this repository and change into the resulting directory:
 
     ```sh
-    git clone https://github.com/VedaWebProject/tekst.git
+    git clone https://github.com/VedaWebProject/Tekst.git
     cd tekst
     ```
 
