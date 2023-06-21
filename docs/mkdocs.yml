@@ -2,6 +2,8 @@ site_name: Tekst
 docs_dir: content
 repo_url: https://github.com/VedaWebProject/Tekst
 repo_name: VedaWebProject/Tekst
+extra_css:
+  - stylesheets/extra.css
 theme:
   name: material
   language: en
