@@ -1,0 +1,53 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'tekst/**'
+      - 'tests/**'
+      - 'pyproject.toml'
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  tests:
+    runs-on: ubuntu-22.04
+    services:
+      mongo:
+        image: mongo:5.0.9
+        ports:
+          - 27017:27017
+        env:
+          MONGO_INITDB_ROOT_USERNAME: root
+          MONGO_INITDB_ROOT_PASSWORD: root
+      mailpit:
+        image: axllent/mailpit:v1.6
+        ports:
+          - 1025:1025
+        env:
+          MP_SMTP_AUTH_ACCEPT_ANY: true
+          MP_SMTP_AUTH_ALLOW_INSECURE: true
+    defaults:
+      run:
+        working-directory: .
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+        cache: 'poetry'
+        cache-dependency-path: 'poetry.lock'
+    - name: Install dependencies
+      run: poetry install --sync
+    - name: Cancel on setup error
+      if: failure()
+      uses: andymckay/cancel-action@0.2
+    - name: Run tests
+      if: always()
+      run: TEKST_DEV_MODE=true TEKST_CUSTOM_ENV_FILE=.env.test poetry run python3 -m tekst setup && poetry run pytest

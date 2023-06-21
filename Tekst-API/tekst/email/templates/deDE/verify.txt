@@ -1,0 +1,10 @@
+Hallo {first_name},
+
+bitte verifizieren Sie Ihre Email-Adresse für {platform_name} mit einem Klick auf den folgenden Link.
+Alternativ können Sie ihn auch kopieren und manuell in die Adress-Leiste Ihres Browsers einfügen.
+
+{web_url}/verify/?token={token}
+
+Bitte beachten Sie, dass dieser Verifizierungs-Link nur für {token_lifetime_minutes} Minuten gültig ist!
+
+Bis gleich auf {platform_name}!

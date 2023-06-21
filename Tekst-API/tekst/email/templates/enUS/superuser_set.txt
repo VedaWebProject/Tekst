@@ -1,0 +1,5 @@
+Dear {first_name},
+
+you have been granted administrator permissions on {platform_name}.
+
+See you on {platform_name}!

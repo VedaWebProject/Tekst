@@ -1,0 +1,64 @@
+{
+  "texts": [
+    {
+      "title": "Rigveda",
+      "slug": "rigveda",
+      "subtitle": [
+        {
+            "locale": "enUS",
+            "subtitle": "An ancient Indian collection of Vedic Sanskrit hymns"
+        },
+        {
+            "locale": "deDE",
+            "subtitle": "Eine altindische Sammlung vedischer Sanskrit-Hymnen"
+        }
+    ],
+      "levels": [
+        [
+            {"locale": "enUS", "label": "Book"},
+            {"locale": "deDE", "label": "Buch"}
+        ],
+        [
+            {"locale": "enUS", "label": "Hymn"},
+            {"locale": "deDE", "label": "Hymnus"}
+        ],
+        [
+            {"locale": "enUS", "label": "Stanza"},
+            {"locale": "deDE", "label": "Strophe"}
+        ]
+    ],
+      "isActive": true
+    }
+  ],
+  "nodes": [
+    {
+      "level": 0,
+      "position": 0,
+      "label": "001"
+    },
+    {
+      "level": 0,
+      "position": 1,
+      "label": "002"
+    },
+    {
+      "level": 0,
+      "position": 2,
+      "label": "003"
+    }
+  ],
+  "layers": [
+    {
+      "title": "A test layer",
+      "level": 0,
+      "layerType": "plaintext",
+      "public": true
+    },
+    {
+      "title": "A private test layer",
+      "level": 0,
+      "layerType": "plaintext",
+      "public": false
+    }
+  ]
+}

@@ -1,0 +1,87 @@
+[tool.poetry]
+name = "tekst"
+version = "0.0.1"
+description = "An online text research platform"
+readme = "README.md"
+repository = "https://github.com/VedaWebProject/Tekst-API"
+documentation = "https://github.com/VedaWebProject/tekst"
+keywords = ["text", "research", "platform", "collaboration"]
+authors = ["Börge Kiss <bkis@bkis.github.io>"]
+license = "AGPL-3.0-or-later"
+classifiers = [
+    "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
+    "Development Status :: 1 - Planning",
+]
+
+[tool.poetry.urls]
+"VedaWeb Project Website" = "https://vedaweb.uni-koeln.de"
+"License" = "https://www.gnu.org/licenses/agpl-3.0.txt"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.97"
+ujson = "^5.4"
+python-dotenv = "^0.20"
+email-validator = "^1.2.1"
+python-multipart = "^0.0.6"
+pyhumps = "^3.8.0"
+click = "^8.1.3"
+beanie = "^1.18.0"
+fastapi-users = {extras = ["beanie"], version = "^11.0.0"}
+starlette-csrf = "^2.0.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.2"
+black = "^23.1"
+coverage = {extras = ["toml"], version = "^6.4"}
+requests = "^2.28"
+uvicorn = "^0.18"
+colorlog = "^6.7.0"
+pytest-dotenv = "^0.5.2"
+httpx = "^0.23.0"
+asgi-lifespan = "^2.0.0"
+ruff = "^0.0.253"
+
+[tool.ruff]
+target-version = "py310"
+line-length = 88
+respect-gitignore = false
+src = ["tekst"]
+ignore = ["F722"] # "Syntax error in forward annotation" using `Annotated` w/ metadata
+select = ["E", "F", "W", "I"]
+
+[tool.ruff.isort]
+lines-after-imports = 2
+lines-between-types = 1
+
+[tool.ruff.pep8-naming]
+classmethod-decorators = ["classmethod", "pydantic.validator"]
+
+[tool.black]
+line-length = 88
+target-version = ["py310"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+env_override_existing_values = 1
+env_files = [".env.dev", ".env.test"]
+
+[tool.coverage.run]
+source = ["tekst"]
+branch = true
+omit = [
+    "*/**/__main__.py",
+    "*/**/__init__.py"
+]
+
+[tool.coverage.report]
+precision = 2
+skip_empty = true
+
+[tool.coverage.html]
+title = "Tekst - Test Coverage Report"
+
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,6 @@
+Dear {first_name},
+
+thank you for verifying this email address!
+You may now log into your {platform_name} account.
+
+See you on {platform_name}!

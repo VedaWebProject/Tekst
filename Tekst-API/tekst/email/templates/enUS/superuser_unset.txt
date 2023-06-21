@@ -1,0 +1,5 @@
+Dear {first_name},
+
+your administrator permissions on {platform_name} have been revoked.
+
+See you on {platform_name}!

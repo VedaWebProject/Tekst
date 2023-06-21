@@ -1,0 +1,5 @@
+Hallo {first_name},
+
+Ihr Administratorenstatus auf {platform_name} wurde entzogen.
+
+Bis bald auf {platform_name}!

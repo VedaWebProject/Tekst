@@ -1,0 +1,4507 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Tekst-DEV",
+    "description": "An online text research platform",
+    "termsOfService": "https://www.example-tekst-instance.org/terms",
+    "contact": {
+      "name": "Rick Sanchez",
+      "url": "https://www.example-tekst-instance.org/contact",
+      "email": "rick.sanchez@example-tekst-instance.org"
+    },
+    "license": {
+      "name": "AGPL-3.0-or-later",
+      "url": "https://www.gnu.org/licenses/agpl-3.0.txt"
+    },
+    "version": "0.0.1"
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1/api"
+    }
+  ],
+  "paths": {
+    "/admin/stats": {
+      "get": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "Get stats",
+        "operationId": "getStats",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlatformStats"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/admin/users": {
+      "get": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "Get users",
+        "operationId": "getUsers",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Users Admin Users Get",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserRead"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/admin/testemail": {
+      "get": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "Test email",
+        "operationId": "testEmail",
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/layers/plaintext/{id}": {
+      "get": {
+        "tags": [
+          "layers"
+        ],
+        "summary": "Get layer",
+        "description": "Returns the data for a PlainText data layer",
+        "operationId": "getPlaintextLayer",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlainTextLayerRead"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "layers"
+        ],
+        "summary": "Update layer",
+        "description": "Updates the data for a PlainText data layer",
+        "operationId": "updatePlaintextLayer",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlainTextLayerUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlainTextLayerRead"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/layers/plaintext": {
+      "post": {
+        "tags": [
+          "layers"
+        ],
+        "summary": "Create layer",
+        "description": "Creates a PlainText data layer definition",
+        "operationId": "createPlaintextLayer",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlainTextLayerCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlainTextLayerRead"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/layers": {
+      "get": {
+        "tags": [
+          "layers"
+        ],
+        "summary": "Find layers",
+        "description": "Returns a list of all data layers matching the given criteria.\n\nAs the resulting list of data layers may contain layers of different types, the\nreturned layer objects cannot be typed to their precise layer type.",
+        "operationId": "findLayers",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Textid",
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "name": "textId",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Level",
+              "type": "integer"
+            },
+            "name": "level",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Layertype",
+              "type": "string"
+            },
+            "name": "layerType",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "type": "integer",
+              "default": 1000
+            },
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Find Layers Layers Get",
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/layers/{id}/coverage": {
+      "get": {
+        "tags": [
+          "layers"
+        ],
+        "summary": "Get layer coverage data",
+        "operationId": "getLayerCoverageData",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Layer Coverage Data Layers  Id  Coverage Get",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LayerNodeCoverage"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/layers/{id}": {
+      "get": {
+        "tags": [
+          "layers"
+        ],
+        "summary": "Get generic layer data by id",
+        "operationId": "getGenericLayerDataById",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Generic Layer Data By Id Layers  Id  Get",
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/nodes": {
+      "get": {
+        "tags": [
+          "nodes"
+        ],
+        "summary": "Find nodes",
+        "operationId": "findNodes",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Textid",
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "name": "textId",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Level",
+              "type": "integer"
+            },
+            "name": "level",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Position",
+              "type": "integer"
+            },
+            "name": "position",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Parentid",
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "name": "parentId",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "type": "integer",
+              "default": 1000
+            },
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Find Nodes Nodes Get",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NodeRead"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "nodes"
+        ],
+        "summary": "Create node",
+        "operationId": "createNode",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NodeCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NodeRead"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/nodes/path": {
+      "get": {
+        "tags": [
+          "nodes"
+        ],
+        "summary": "Get path by head location",
+        "description": "Returns the text node path from the node with the given level/position\nas the last element, up to its most distant ancestor node\non structure level 0 as the first element of an array.",
+        "operationId": "getPathByHeadLocation",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Textid",
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "name": "textId",
+            "in": "query"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Level",
+              "type": "integer"
+            },
+            "name": "level",
+            "in": "query"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Position",
+              "type": "integer"
+            },
+            "name": "position",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Path By Head Location Nodes Path Get",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NodeRead"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/nodes/{id}": {
+      "get": {
+        "tags": [
+          "nodes"
+        ],
+        "summary": "Get node",
+        "operationId": "getNode",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NodeRead"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "nodes"
+        ],
+        "summary": "Update node",
+        "operationId": "updateNode",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NodeUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NodeRead"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/nodes/{id}/children": {
+      "get": {
+        "tags": [
+          "nodes"
+        ],
+        "summary": "Get children",
+        "operationId": "getChildren",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "name": "id",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "type": "integer",
+              "default": 9999
+            },
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Children Nodes  Id  Children Get",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NodeRead"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/nodes/{id}/path": {
+      "get": {
+        "tags": [
+          "nodes"
+        ],
+        "summary": "Get path by head id",
+        "description": "Returns the text node path from the node with the given ID as the last element,\nup to its most distant ancestor node on structure level 0\nas the first element of an array.",
+        "operationId": "getPathByHeadId",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Path By Head Id Nodes  Id  Path Get",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NodeRead"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/nodes/{id}/path/options-by-head": {
+      "get": {
+        "tags": [
+          "nodes"
+        ],
+        "summary": "Get path options by head id",
+        "description": "Returns the options for selecting text locations derived from the node path of\nthe node with the given ID as head.",
+        "operationId": "getPathOptionsByHeadId",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Path Options By Head Id Nodes  Id  Path Options By Head Get",
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/NodeRead"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/nodes/{id}/path/options-by-root": {
+      "get": {
+        "tags": [
+          "nodes"
+        ],
+        "summary": "Get path options by root id",
+        "description": "Returns the options for selecting text locations derived from the node path of\nthe node with the given ID as root. At each level, the first option is taken\nas the basis for the next level.",
+        "operationId": "getPathOptionsByRootId",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Path Options By Root Id Nodes  Id  Path Options By Root Get",
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/NodeRead"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/nodes/{id}/next": {
+      "get": {
+        "tags": [
+          "nodes"
+        ],
+        "summary": "Get next",
+        "operationId": "getNext",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NodeRead"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/platform": {
+      "get": {
+        "tags": [
+          "platform"
+        ],
+        "summary": "Get platform data",
+        "description": "Returns data the client needs to initialize",
+        "operationId": "getPlatformData",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlatformData"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/platform/user/{usernameOrId}": {
+      "get": {
+        "tags": [
+          "platform"
+        ],
+        "summary": "Get public user info",
+        "description": "Returns public information on the user with the specified username or ID",
+        "operationId": "getPublicUserInfo",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Usernameorid",
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "string",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                }
+              ]
+            },
+            "name": "usernameOrId",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserReadPublic"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/platform/i18n": {
+      "get": {
+        "tags": [
+          "platform"
+        ],
+        "summary": "Get translations",
+        "description": "Returns server-managed translations.",
+        "operationId": "getTranslations",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Lang",
+              "type": "string"
+            },
+            "name": "lang",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Translations Platform I18N Get",
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/settings": {
+      "patch": {
+        "tags": [
+          "settings"
+        ],
+        "summary": "Update platform settings",
+        "operationId": "updatePlatformSettings",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlatformSettingsUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlatformSettingsRead"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/texts": {
+      "get": {
+        "tags": [
+          "texts"
+        ],
+        "summary": "Get all texts",
+        "operationId": "getAllTexts",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "type": "integer",
+              "default": 100
+            },
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get All Texts Texts Get",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TextRead"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "texts"
+        ],
+        "summary": "Create text",
+        "operationId": "createText",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TextCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TextRead"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/texts/{id}/level/{index}": {
+      "post": {
+        "tags": [
+          "texts"
+        ],
+        "summary": "Insert level",
+        "operationId": "insertLevel",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "name": "id",
+            "in": "path"
+          },
+          {
+            "description": "Index to insert the level at",
+            "required": true,
+            "schema": {
+              "title": "Index",
+              "exclusiveMaximum": 32.0,
+              "minimum": 0.0,
+              "type": "integer",
+              "description": "Index to insert the level at"
+            },
+            "name": "index",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "Translations",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/StructureLevelTranslation"
+                },
+                "description": "Label translations for this level"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TextRead"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "texts"
+        ],
+        "summary": "Delete level",
+        "operationId": "deleteLevel",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "name": "id",
+            "in": "path"
+          },
+          {
+            "description": "Index to insert the level at",
+            "required": true,
+            "schema": {
+              "title": "Index",
+              "exclusiveMaximum": 32.0,
+              "minimum": 0.0,
+              "type": "integer",
+              "description": "Index to insert the level at"
+            },
+            "name": "index",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TextRead"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/texts/{id}": {
+      "get": {
+        "tags": [
+          "texts"
+        ],
+        "summary": "Get text",
+        "operationId": "getText",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TextRead"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "texts"
+        ],
+        "summary": "Update text",
+        "operationId": "updateText",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TextUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TextRead"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/units/plaintext/{id}": {
+      "get": {
+        "tags": [
+          "units"
+        ],
+        "summary": "Get unit",
+        "description": "Returns the data for a PlainText data layer unit",
+        "operationId": "getPlaintextUnit",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlainTextUnitRead"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "units"
+        ],
+        "summary": "Update unit",
+        "description": "Updates the data for a PlainText data layer unit",
+        "operationId": "updatePlaintextUnit",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlainTextUnitUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlainTextUnitRead"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/units/plaintext": {
+      "post": {
+        "tags": [
+          "units"
+        ],
+        "summary": "Create unit",
+        "description": "Creates a PlainText data layer unit",
+        "operationId": "createPlaintextUnit",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlainTextUnitCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlainTextUnitRead"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/units/": {
+      "get": {
+        "tags": [
+          "units"
+        ],
+        "summary": "Find units",
+        "description": "Returns a list of all data layer units matching the given criteria.\n\nAs the resulting list may contain units of different types, the\nreturned unit objects cannot be typed to their precise layer unit type.",
+        "operationId": "findUnits",
+        "parameters": [
+          {
+            "description": "ID (or list of IDs) of layer(s) to return unit data for",
+            "required": false,
+            "schema": {
+              "title": "Layerid",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              "description": "ID (or list of IDs) of layer(s) to return unit data for",
+              "default": []
+            },
+            "name": "layerId",
+            "in": "query"
+          },
+          {
+            "description": "ID (or list of IDs) of node(s) to return unit data for",
+            "required": false,
+            "schema": {
+              "title": "Nodeid",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              "description": "ID (or list of IDs) of node(s) to return unit data for",
+              "default": []
+            },
+            "name": "nodeId",
+            "in": "query"
+          },
+          {
+            "description": "Return at most <limit> items",
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "type": "integer",
+              "description": "Return at most <limit> items",
+              "default": 1000
+            },
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Find Units Units  Get",
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/units/siblings": {
+      "get": {
+        "tags": [
+          "units"
+        ],
+        "summary": "Get siblings",
+        "description": "Returns a list of all data layer units belonging to the data layer\nwith the given ID, associated to nodes that are children of the same parent node\nwith the given ID.\n\nAs the resulting list may contain units of arbitrary type, the\nreturned unit objects cannot be typed to their precise layer unit type.",
+        "operationId": "getSiblings",
+        "parameters": [
+          {
+            "description": "ID of unit to return siblings' data for",
+            "required": true,
+            "schema": {
+              "title": "Unitid",
+              "type": "string",
+              "description": "ID of unit to return siblings' data for",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "name": "unitId",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Siblings Units Siblings Get",
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/auth/cookie/login": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Login",
+        "operationId": "auth:cookie.login",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_auth_cookie_login_auth_cookie_login_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                },
+                "examples": {
+                  "LOGIN_BAD_CREDENTIALS": {
+                    "summary": "Bad credentials or the user is inactive.",
+                    "value": {
+                      "detail": "LOGIN_BAD_CREDENTIALS"
+                    }
+                  },
+                  "LOGIN_USER_NOT_VERIFIED": {
+                    "summary": "The user is not verified.",
+                    "value": {
+                      "detail": "LOGIN_USER_NOT_VERIFIED"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/cookie/logout": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Logout",
+        "operationId": "auth:cookie.logout",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "401": {
+            "description": "Missing token or inactive user."
+          },
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/auth/jwt/login": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Login",
+        "operationId": "auth:jwt.login",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_auth_jwt_login_auth_jwt_login_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BearerResponse"
+                },
+                "example": {
+                  "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOTIyMWZmYzktNjQwZi00MzcyLTg2ZDMtY2U2NDJjYmE1NjAzIiwiYXVkIjoiZmFzdGFwaS11c2VyczphdXRoIiwiZXhwIjoxNTcxNTA0MTkzfQ.M10bjOe45I5Ncu_uXvOmVV8QxnL-nZfcH96U90JaocI",
+                  "token_type": "bearer"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                },
+                "examples": {
+                  "LOGIN_BAD_CREDENTIALS": {
+                    "summary": "Bad credentials or the user is inactive.",
+                    "value": {
+                      "detail": "LOGIN_BAD_CREDENTIALS"
+                    }
+                  },
+                  "LOGIN_USER_NOT_VERIFIED": {
+                    "summary": "The user is not verified.",
+                    "value": {
+                      "detail": "LOGIN_USER_NOT_VERIFIED"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/jwt/logout": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Logout",
+        "operationId": "auth:jwt.logout",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "401": {
+            "description": "Missing token or inactive user."
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Register",
+        "operationId": "register:register",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserRead"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                },
+                "examples": {
+                  "REGISTER_USER_ALREADY_EXISTS": {
+                    "summary": "A user with this email already exists.",
+                    "value": {
+                      "detail": "REGISTER_USER_ALREADY_EXISTS"
+                    }
+                  },
+                  "REGISTER_INVALID_PASSWORD": {
+                    "summary": "Password validation failed.",
+                    "value": {
+                      "detail": {
+                        "code": "REGISTER_INVALID_PASSWORD",
+                        "reason": "Password should beat least 3 characters"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/request-verify-token": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Request verify token",
+        "operationId": "verify:requestToken",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_verify_request_token_auth_request_verify_token_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/verify": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Verify",
+        "operationId": "verify:verify",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_verify_verify_auth_verify_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserRead"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                },
+                "examples": {
+                  "VERIFY_USER_BAD_TOKEN": {
+                    "summary": "Bad token, not existing user ornot the e-mail currently set for the user.",
+                    "value": {
+                      "detail": "VERIFY_USER_BAD_TOKEN"
+                    }
+                  },
+                  "VERIFY_USER_ALREADY_VERIFIED": {
+                    "summary": "The user is already verified.",
+                    "value": {
+                      "detail": "VERIFY_USER_ALREADY_VERIFIED"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/forgot-password": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Forgot password",
+        "operationId": "reset:forgotPassword",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_reset_forgot_password_auth_forgot_password_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/reset-password": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Reset password",
+        "operationId": "reset:resetPassword",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_reset_reset_password_auth_reset_password_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                },
+                "examples": {
+                  "RESET_PASSWORD_BAD_TOKEN": {
+                    "summary": "Bad or expired token.",
+                    "value": {
+                      "detail": "RESET_PASSWORD_BAD_TOKEN"
+                    }
+                  },
+                  "RESET_PASSWORD_INVALID_PASSWORD": {
+                    "summary": "Password validation failed.",
+                    "value": {
+                      "detail": {
+                        "code": "RESET_PASSWORD_INVALID_PASSWORD",
+                        "reason": "Password should be at least 3 characters"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/me": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Me",
+        "operationId": "users:currentUser",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserRead"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing token or inactive user."
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Update me",
+        "operationId": "users:patchCurrentUser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserRead"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing token or inactive user."
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                },
+                "examples": {
+                  "UPDATE_USER_EMAIL_ALREADY_EXISTS": {
+                    "summary": "A user with this email already exists.",
+                    "value": {
+                      "detail": "UPDATE_USER_EMAIL_ALREADY_EXISTS"
+                    }
+                  },
+                  "UPDATE_USER_INVALID_PASSWORD": {
+                    "summary": "Password validation failed.",
+                    "value": {
+                      "detail": {
+                        "code": "UPDATE_USER_INVALID_PASSWORD",
+                        "reason": "Password should beat least 3 characters"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Get user",
+        "operationId": "users:user",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserRead"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing token or inactive user."
+          },
+          "403": {
+            "description": "Not a superuser."
+          },
+          "404": {
+            "description": "The user does not exist."
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Delete user",
+        "operationId": "users:deleteUser",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "401": {
+            "description": "Missing token or inactive user."
+          },
+          "403": {
+            "description": "Not a superuser."
+          },
+          "404": {
+            "description": "The user does not exist."
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Update user",
+        "operationId": "users:patchUser",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserRead"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing token or inactive user."
+          },
+          "403": {
+            "description": "Not a superuser."
+          },
+          "404": {
+            "description": "The user does not exist."
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                },
+                "examples": {
+                  "UPDATE_USER_EMAIL_ALREADY_EXISTS": {
+                    "summary": "A user with this email already exists.",
+                    "value": {
+                      "detail": "UPDATE_USER_EMAIL_ALREADY_EXISTS"
+                    }
+                  },
+                  "UPDATE_USER_INVALID_PASSWORD": {
+                    "summary": "Password validation failed.",
+                    "value": {
+                      "detail": {
+                        "code": "UPDATE_USER_INVALID_PASSWORD",
+                        "reason": "Password should beat least 3 characters"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BearerResponse": {
+        "title": "BearerResponse",
+        "required": [
+          "access_token",
+          "token_type"
+        ],
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "title": "Access Token",
+            "type": "string"
+          },
+          "token_type": {
+            "title": "Token Type",
+            "type": "string"
+          }
+        }
+      },
+      "Body_auth_cookie_login_auth_cookie_login_post": {
+        "title": "Body_auth_cookie_login_auth_cookie_login_post",
+        "required": [
+          "username",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "grant_type": {
+            "title": "Grant Type",
+            "pattern": "password",
+            "type": "string"
+          },
+          "username": {
+            "title": "Username",
+            "type": "string"
+          },
+          "password": {
+            "title": "Password",
+            "type": "string"
+          },
+          "scope": {
+            "title": "Scope",
+            "type": "string",
+            "default": ""
+          },
+          "client_id": {
+            "title": "Client Id",
+            "type": "string"
+          },
+          "client_secret": {
+            "title": "Client Secret",
+            "type": "string"
+          }
+        }
+      },
+      "Body_auth_jwt_login_auth_jwt_login_post": {
+        "title": "Body_auth_jwt_login_auth_jwt_login_post",
+        "required": [
+          "username",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "grant_type": {
+            "title": "Grant Type",
+            "pattern": "password",
+            "type": "string"
+          },
+          "username": {
+            "title": "Username",
+            "type": "string"
+          },
+          "password": {
+            "title": "Password",
+            "type": "string"
+          },
+          "scope": {
+            "title": "Scope",
+            "type": "string",
+            "default": ""
+          },
+          "client_id": {
+            "title": "Client Id",
+            "type": "string"
+          },
+          "client_secret": {
+            "title": "Client Secret",
+            "type": "string"
+          }
+        }
+      },
+      "Body_reset_forgot_password_auth_forgot_password_post": {
+        "title": "Body_reset_forgot_password_auth_forgot_password_post",
+        "required": [
+          "email"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "title": "Email",
+            "type": "string",
+            "format": "email"
+          }
+        }
+      },
+      "Body_reset_reset_password_auth_reset_password_post": {
+        "title": "Body_reset_reset_password_auth_reset_password_post",
+        "required": [
+          "token",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "token": {
+            "title": "Token",
+            "type": "string"
+          },
+          "password": {
+            "title": "Password",
+            "type": "string"
+          }
+        }
+      },
+      "Body_verify_request_token_auth_request_verify_token_post": {
+        "title": "Body_verify_request_token_auth_request_verify_token_post",
+        "required": [
+          "email"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "title": "Email",
+            "type": "string",
+            "format": "email"
+          }
+        }
+      },
+      "Body_verify_verify_auth_verify_post": {
+        "title": "Body_verify_verify_auth_verify_post",
+        "required": [
+          "token"
+        ],
+        "type": "object",
+        "properties": {
+          "token": {
+            "title": "Token",
+            "type": "string"
+          }
+        }
+      },
+      "DeepLLinksConfig": {
+        "title": "DeepLLinksConfig",
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "title": "Enabled",
+            "type": "boolean",
+            "description": "Enable/disable quick translation links to DeepL",
+            "default": false
+          },
+          "sourceLanguage": {
+            "title": "Sourcelanguage",
+            "enum": [
+              "BG",
+              "CS",
+              "DA",
+              "DE",
+              "EL",
+              "EN",
+              "ES",
+              "ET",
+              "FI",
+              "FR",
+              "HU",
+              "ID",
+              "IT",
+              "JA",
+              "LT",
+              "LV",
+              "NL",
+              "PL",
+              "PT",
+              "RO",
+              "RU",
+              "SK",
+              "SL",
+              "SV",
+              "TR",
+              "UK",
+              "ZH"
+            ],
+            "type": "string",
+            "description": "Source language",
+            "default": "BG"
+          },
+          "languages": {
+            "title": "Languages",
+            "type": "array",
+            "items": {
+              "enum": [
+                "BG",
+                "CS",
+                "DA",
+                "DE",
+                "EL",
+                "EN",
+                "ES",
+                "ET",
+                "FI",
+                "FR",
+                "HU",
+                "ID",
+                "IT",
+                "JA",
+                "LT",
+                "LV",
+                "NL",
+                "PL",
+                "PT",
+                "RO",
+                "RU",
+                "SK",
+                "SL",
+                "SV",
+                "TR",
+                "UK",
+                "ZH"
+              ],
+              "type": "string"
+            },
+            "description": "Target languages to display links for",
+            "default": [
+              "EN",
+              "DE"
+            ]
+          }
+        }
+      },
+      "ErrorModel": {
+        "title": "ErrorModel",
+        "required": [
+          "detail"
+        ],
+        "type": "object",
+        "properties": {
+          "detail": {
+            "title": "Detail",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "HTTPValidationError": {
+        "title": "HTTPValidationError",
+        "type": "object",
+        "properties": {
+          "detail": {
+            "title": "Detail",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            }
+          }
+        }
+      },
+      "InfoConfig": {
+        "title": "InfoConfig",
+        "type": "object",
+        "properties": {
+          "platformName": {
+            "title": "Platformname",
+            "type": "string",
+            "default": "Tekst"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string",
+            "default": "An online text research platform"
+          },
+          "terms": {
+            "title": "Terms",
+            "maxLength": 2083,
+            "minLength": 1,
+            "type": "string",
+            "format": "uri",
+            "default": "https://www.example-tekst-instance.org/terms"
+          },
+          "contactName": {
+            "title": "Contactname",
+            "type": "string",
+            "default": "Rick Sanchez"
+          },
+          "contactUrl": {
+            "title": "Contacturl",
+            "maxLength": 2083,
+            "minLength": 1,
+            "type": "string",
+            "format": "uri",
+            "default": "https://www.example-tekst-instance.org/contact"
+          },
+          "contactEmail": {
+            "title": "Contactemail",
+            "type": "string",
+            "format": "email",
+            "default": "rick.sanchez@example-tekst-instance.org"
+          }
+        },
+        "description": "General information config model"
+      },
+      "LayerNodeCoverage": {
+        "title": "LayerNodeCoverage",
+        "required": [
+          "label",
+          "position",
+          "covered"
+        ],
+        "type": "object",
+        "properties": {
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "position": {
+            "title": "Position",
+            "type": "integer"
+          },
+          "covered": {
+            "title": "Covered",
+            "type": "boolean"
+          }
+        }
+      },
+      "LayerTypeInfo": {
+        "title": "LayerTypeInfo",
+        "required": [
+          "name",
+          "label",
+          "description"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          }
+        }
+      },
+      "NodeCreate": {
+        "title": "NodeCreate",
+        "required": [
+          "textId",
+          "level",
+          "position",
+          "label"
+        ],
+        "type": "object",
+        "properties": {
+          "textId": {
+            "title": "Textid",
+            "type": "string",
+            "description": "ID of the text this node belongs to",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "parentId": {
+            "title": "Parentid",
+            "type": "string",
+            "description": "ID of parent node",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "level": {
+            "title": "Level",
+            "exclusiveMaximum": 32.0,
+            "minimum": 0.0,
+            "type": "integer",
+            "description": "Index of structure level this node is on"
+          },
+          "position": {
+            "title": "Position",
+            "minimum": 0.0,
+            "type": "integer",
+            "description": "Position among all text nodes on this level"
+          },
+          "label": {
+            "title": "Label",
+            "maxLength": 256,
+            "minLength": 1,
+            "type": "string",
+            "description": "Label for identifying this text node in level context"
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Arbitrary metadata"
+          }
+        },
+        "description": "A node in a text structure (e.g. chapter, paragraph, ...)"
+      },
+      "NodeRead": {
+        "title": "NodeRead",
+        "required": [
+          "id",
+          "createdAt",
+          "modifiedAt",
+          "textId",
+          "level",
+          "position",
+          "label"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "createdAt": {
+            "title": "Createdat",
+            "type": "string",
+            "description": "Creation date and time of this object",
+            "format": "date-time"
+          },
+          "modifiedAt": {
+            "title": "Modifiedat",
+            "type": "string",
+            "description": "Last modification date and time of this object",
+            "format": "date-time"
+          },
+          "textId": {
+            "title": "Textid",
+            "type": "string",
+            "description": "ID of the text this node belongs to",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "parentId": {
+            "title": "Parentid",
+            "type": "string",
+            "description": "ID of parent node",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "level": {
+            "title": "Level",
+            "exclusiveMaximum": 32.0,
+            "minimum": 0.0,
+            "type": "integer",
+            "description": "Index of structure level this node is on"
+          },
+          "position": {
+            "title": "Position",
+            "minimum": 0.0,
+            "type": "integer",
+            "description": "Position among all text nodes on this level"
+          },
+          "label": {
+            "title": "Label",
+            "maxLength": 256,
+            "minLength": 1,
+            "type": "string",
+            "description": "Label for identifying this text node in level context"
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Arbitrary metadata"
+          }
+        },
+        "description": "A node in a text structure (e.g. chapter, paragraph, ...)"
+      },
+      "NodeUpdate": {
+        "title": "NodeUpdate",
+        "type": "object",
+        "properties": {
+          "textId": {
+            "title": "Textid",
+            "type": "string",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "parentId": {
+            "title": "Parentid",
+            "type": "string",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "level": {
+            "title": "Level",
+            "exclusiveMaximum": 32.0,
+            "minimum": 0.0,
+            "type": "integer"
+          },
+          "position": {
+            "title": "Position",
+            "minimum": 0.0,
+            "type": "integer"
+          },
+          "label": {
+            "title": "Label",
+            "maxLength": 256,
+            "minLength": 1,
+            "type": "string"
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        },
+        "description": "A node in a text structure (e.g. chapter, paragraph, ...)"
+      },
+      "PlainTextLayerConfig": {
+        "title": "PlainTextLayerConfig",
+        "type": "object",
+        "properties": {
+          "deeplLinks": {
+            "$ref": "#/components/schemas/DeepLLinksConfig"
+          }
+        }
+      },
+      "PlainTextLayerCreate": {
+        "title": "PlainTextLayerCreate",
+        "required": [
+          "title",
+          "level",
+          "layerType"
+        ],
+        "type": "object",
+        "properties": {
+          "title": {
+            "title": "Title",
+            "maxLength": 64,
+            "minLength": 1,
+            "type": "string",
+            "description": "Title of this layer"
+          },
+          "description": {
+            "title": "Description",
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string",
+            "description": "Short, one-line description of this data layer"
+          },
+          "textId": {
+            "title": "Textid",
+            "type": "string",
+            "description": "ID of the text this layer belongs to",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "level": {
+            "title": "Level",
+            "type": "integer",
+            "description": "Text level this layer belongs to"
+          },
+          "layerType": {
+            "title": "Layertype",
+            "type": "string",
+            "description": "A string identifying one of the available layer types"
+          },
+          "ownerId": {
+            "title": "Ownerid",
+            "type": "string",
+            "description": "User owning this layer",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "sharedRead": {
+            "title": "Sharedread",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "description": "Users with shared read access to this layer"
+          },
+          "sharedWrite": {
+            "title": "Sharedwrite",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "description": "Users with shared write access to this layer"
+          },
+          "public": {
+            "title": "Public",
+            "type": "boolean",
+            "description": "Publication status of this layer",
+            "default": false
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Arbitrary metadata"
+          },
+          "comment": {
+            "title": "Comment",
+            "type": "string",
+            "description": "Plaintext, potentially multiline comment on this layer"
+          },
+          "config": {
+            "$ref": "#/components/schemas/PlainTextLayerConfig"
+          }
+        },
+        "description": "A data layer describing a set of data on a text"
+      },
+      "PlainTextLayerRead": {
+        "title": "PlainTextLayerRead",
+        "required": [
+          "id",
+          "createdAt",
+          "modifiedAt",
+          "title",
+          "level",
+          "layerType"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "createdAt": {
+            "title": "Createdat",
+            "type": "string",
+            "description": "Creation date and time of this object",
+            "format": "date-time"
+          },
+          "modifiedAt": {
+            "title": "Modifiedat",
+            "type": "string",
+            "description": "Last modification date and time of this object",
+            "format": "date-time"
+          },
+          "title": {
+            "title": "Title",
+            "maxLength": 64,
+            "minLength": 1,
+            "type": "string",
+            "description": "Title of this layer"
+          },
+          "description": {
+            "title": "Description",
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string",
+            "description": "Short, one-line description of this data layer"
+          },
+          "textId": {
+            "title": "Textid",
+            "type": "string",
+            "description": "ID of the text this layer belongs to",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "level": {
+            "title": "Level",
+            "type": "integer",
+            "description": "Text level this layer belongs to"
+          },
+          "layerType": {
+            "title": "Layertype",
+            "type": "string",
+            "description": "A string identifying one of the available layer types"
+          },
+          "ownerId": {
+            "title": "Ownerid",
+            "type": "string",
+            "description": "User owning this layer",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "sharedRead": {
+            "title": "Sharedread",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "description": "Users with shared read access to this layer"
+          },
+          "sharedWrite": {
+            "title": "Sharedwrite",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "description": "Users with shared write access to this layer"
+          },
+          "public": {
+            "title": "Public",
+            "type": "boolean",
+            "description": "Publication status of this layer",
+            "default": false
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Arbitrary metadata"
+          },
+          "comment": {
+            "title": "Comment",
+            "type": "string",
+            "description": "Plaintext, potentially multiline comment on this layer"
+          },
+          "config": {
+            "$ref": "#/components/schemas/PlainTextLayerConfig"
+          }
+        },
+        "description": "A data layer describing a set of data on a text"
+      },
+      "PlainTextLayerUpdate": {
+        "title": "PlainTextLayerUpdate",
+        "type": "object",
+        "properties": {
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "textId": {
+            "title": "Textid",
+            "type": "string",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "level": {
+            "title": "Level",
+            "type": "integer"
+          },
+          "layerType": {
+            "title": "Layertype",
+            "type": "string"
+          },
+          "ownerId": {
+            "title": "Ownerid",
+            "type": "string",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "sharedRead": {
+            "title": "Sharedread",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            }
+          },
+          "sharedWrite": {
+            "title": "Sharedwrite",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            }
+          },
+          "public": {
+            "title": "Public",
+            "type": "boolean"
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "comment": {
+            "title": "Comment",
+            "type": "string"
+          },
+          "config": {
+            "$ref": "#/components/schemas/PlainTextLayerConfig"
+          }
+        },
+        "description": "A data layer describing a set of data on a text"
+      },
+      "PlainTextUnitCreate": {
+        "title": "PlainTextUnitCreate",
+        "required": [
+          "layerId",
+          "nodeId"
+        ],
+        "type": "object",
+        "properties": {
+          "layerId": {
+            "title": "Layerid",
+            "type": "string",
+            "description": "Data layer ID",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "nodeId": {
+            "title": "Nodeid",
+            "type": "string",
+            "description": "Parent text node ID",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Arbitrary metadata on this layer unit"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string",
+            "description": "Text content of the plaintext unit"
+          }
+        },
+        "description": "A unit of a plaintext data layer"
+      },
+      "PlainTextUnitRead": {
+        "title": "PlainTextUnitRead",
+        "required": [
+          "id",
+          "createdAt",
+          "modifiedAt",
+          "layerId",
+          "nodeId"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "createdAt": {
+            "title": "Createdat",
+            "type": "string",
+            "description": "Creation date and time of this object",
+            "format": "date-time"
+          },
+          "modifiedAt": {
+            "title": "Modifiedat",
+            "type": "string",
+            "description": "Last modification date and time of this object",
+            "format": "date-time"
+          },
+          "layerId": {
+            "title": "Layerid",
+            "type": "string",
+            "description": "Data layer ID",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "nodeId": {
+            "title": "Nodeid",
+            "type": "string",
+            "description": "Parent text node ID",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Arbitrary metadata on this layer unit"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string",
+            "description": "Text content of the plaintext unit"
+          }
+        },
+        "description": "A unit of a plaintext data layer"
+      },
+      "PlainTextUnitUpdate": {
+        "title": "PlainTextUnitUpdate",
+        "type": "object",
+        "properties": {
+          "layerId": {
+            "title": "Layerid",
+            "type": "string",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "nodeId": {
+            "title": "Nodeid",
+            "type": "string",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "description": "A unit of a plaintext data layer"
+      },
+      "PlatformData": {
+        "title": "PlatformData",
+        "required": [
+          "texts",
+          "settings",
+          "layerTypes"
+        ],
+        "type": "object",
+        "properties": {
+          "info": {
+            "title": "Info",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/InfoConfig"
+              }
+            ],
+            "default": {
+              "platformName": "Tekst-DEV"
+            }
+          },
+          "tekstInfo": {
+            "title": "Tekstinfo",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TekstInfoConfig"
+              }
+            ],
+            "default": {}
+          },
+          "texts": {
+            "title": "Texts",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TextRead"
+            }
+          },
+          "settings": {
+            "$ref": "#/components/schemas/PlatformSettingsRead"
+          },
+          "security": {
+            "$ref": "#/components/schemas/PlatformSecurityInfo"
+          },
+          "layerTypes": {
+            "title": "Layertypes",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LayerTypeInfo"
+            }
+          }
+        },
+        "description": "Platform data used by the web client"
+      },
+      "PlatformSecurityInfo": {
+        "title": "PlatformSecurityInfo",
+        "type": "object",
+        "properties": {
+          "closedMode": {
+            "title": "Closedmode",
+            "type": "boolean",
+            "default": false
+          },
+          "usersActiveByDefault": {
+            "title": "Usersactivebydefault",
+            "type": "boolean",
+            "default": false
+          },
+          "enableCookieAuth": {
+            "title": "Enablecookieauth",
+            "type": "boolean",
+            "default": true
+          },
+          "enableJwtAuth": {
+            "title": "Enablejwtauth",
+            "type": "boolean",
+            "default": true
+          },
+          "authCookieLifetime": {
+            "title": "Authcookielifetime",
+            "type": "integer",
+            "default": 3600
+          }
+        }
+      },
+      "PlatformSettingsRead": {
+        "title": "PlatformSettingsRead",
+        "required": [
+          "id",
+          "createdAt",
+          "modifiedAt"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "createdAt": {
+            "title": "Createdat",
+            "type": "string",
+            "description": "Creation date and time of this object",
+            "format": "date-time"
+          },
+          "modifiedAt": {
+            "title": "Modifiedat",
+            "type": "string",
+            "description": "Last modification date and time of this object",
+            "format": "date-time"
+          },
+          "defaultTextId": {
+            "title": "Defaulttextid",
+            "type": "string",
+            "description": "Default text to load in UI",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          }
+        },
+        "description": "Settings defining platform behavior configured by admins"
+      },
+      "PlatformSettingsUpdate": {
+        "title": "PlatformSettingsUpdate",
+        "type": "object",
+        "properties": {
+          "defaultTextId": {
+            "title": "Defaulttextid",
+            "type": "string",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          }
+        },
+        "description": "Settings defining platform behavior configured by admins"
+      },
+      "PlatformStats": {
+        "title": "PlatformStats",
+        "required": [
+          "usersCount",
+          "texts"
+        ],
+        "type": "object",
+        "properties": {
+          "usersCount": {
+            "title": "Userscount",
+            "type": "integer"
+          },
+          "texts": {
+            "title": "Texts",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TextStats"
+            }
+          }
+        },
+        "description": "Platform statistics data"
+      },
+      "StructureLevelTranslation": {
+        "title": "StructureLevelTranslation",
+        "required": [
+          "locale",
+          "label"
+        ],
+        "type": "object",
+        "properties": {
+          "locale": {
+            "title": "Locale",
+            "enum": [
+              "deDE",
+              "enUS"
+            ],
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "maxLength": 32,
+            "minLength": 1,
+            "type": "string"
+          }
+        }
+      },
+      "SubtitleTranslation": {
+        "title": "SubtitleTranslation",
+        "required": [
+          "locale",
+          "subtitle"
+        ],
+        "type": "object",
+        "properties": {
+          "locale": {
+            "title": "Locale",
+            "enum": [
+              "deDE",
+              "enUS"
+            ],
+            "type": "string"
+          },
+          "subtitle": {
+            "title": "Subtitle",
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          }
+        }
+      },
+      "TekstInfoConfig": {
+        "title": "TekstInfoConfig",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string",
+            "default": "Tekst"
+          },
+          "version": {
+            "title": "Version",
+            "type": "string",
+            "default": "0.0.1"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string",
+            "default": "An online text research platform"
+          },
+          "website": {
+            "title": "Website",
+            "maxLength": 2083,
+            "minLength": 1,
+            "type": "string",
+            "format": "uri",
+            "default": "https://github.com/VedaWebProject/Tekst-API"
+          },
+          "license": {
+            "title": "License",
+            "type": "string",
+            "default": "AGPL-3.0-or-later"
+          },
+          "licenseUrl": {
+            "title": "Licenseurl",
+            "maxLength": 2083,
+            "minLength": 1,
+            "type": "string",
+            "format": "uri",
+            "default": "https://www.gnu.org/licenses/agpl-3.0.txt"
+          }
+        },
+        "description": "Tekst platform information config model\n\nThese values are not configurable. They are taken from the package infos and\naren't meant to be changed by users creating an own instance of the platform."
+      },
+      "TextCreate": {
+        "title": "TextCreate",
+        "required": [
+          "title",
+          "slug",
+          "levels"
+        ],
+        "type": "object",
+        "properties": {
+          "title": {
+            "title": "Title",
+            "maxLength": 64,
+            "minLength": 1,
+            "type": "string",
+            "description": "Title of this text"
+          },
+          "slug": {
+            "title": "Slug",
+            "maxLength": 16,
+            "minLength": 1,
+            "pattern": "^[a-z0-9]+$",
+            "type": "string",
+            "description": "A short identifier for use in URLs and internal operations"
+          },
+          "subtitle": {
+            "title": "Subtitle",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubtitleTranslation"
+            },
+            "description": "Subtitle translations of this text (if set, it must contain at least one element)"
+          },
+          "levels": {
+            "title": "Levels",
+            "maxItems": 32,
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/StructureLevelTranslation"
+              }
+            }
+          },
+          "defaultLevel": {
+            "title": "Defaultlevel",
+            "minimum": 0.0,
+            "type": "integer",
+            "description": "Default structure level for the client to use for browsing this text",
+            "default": 0
+          },
+          "locDelim": {
+            "title": "Locdelim",
+            "maxLength": 3,
+            "minLength": 1,
+            "type": "string",
+            "description": "Delimiter for displaying text locations",
+            "default": ", "
+          },
+          "labeledLocation": {
+            "title": "Labeledlocation",
+            "type": "boolean",
+            "description": "Whether the UI should label the parts of the browse location with each levels' names",
+            "default": true
+          },
+          "accentColor": {
+            "title": "Accentcolor",
+            "type": "string",
+            "description": "Accent color used for this text in the client UI",
+            "format": "color"
+          },
+          "isActive": {
+            "title": "Isactive",
+            "type": "boolean",
+            "description": "Whether the text should be listed for non-admin users in the web client",
+            "default": false
+          }
+        },
+        "description": "A text represented in Tekst"
+      },
+      "TextRead": {
+        "title": "TextRead",
+        "required": [
+          "id",
+          "createdAt",
+          "modifiedAt",
+          "title",
+          "slug",
+          "levels"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "createdAt": {
+            "title": "Createdat",
+            "type": "string",
+            "description": "Creation date and time of this object",
+            "format": "date-time"
+          },
+          "modifiedAt": {
+            "title": "Modifiedat",
+            "type": "string",
+            "description": "Last modification date and time of this object",
+            "format": "date-time"
+          },
+          "title": {
+            "title": "Title",
+            "maxLength": 64,
+            "minLength": 1,
+            "type": "string",
+            "description": "Title of this text"
+          },
+          "slug": {
+            "title": "Slug",
+            "maxLength": 16,
+            "minLength": 1,
+            "pattern": "^[a-z0-9]+$",
+            "type": "string",
+            "description": "A short identifier for use in URLs and internal operations"
+          },
+          "subtitle": {
+            "title": "Subtitle",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubtitleTranslation"
+            },
+            "description": "Subtitle translations of this text (if set, it must contain at least one element)"
+          },
+          "levels": {
+            "title": "Levels",
+            "maxItems": 32,
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/StructureLevelTranslation"
+              }
+            }
+          },
+          "defaultLevel": {
+            "title": "Defaultlevel",
+            "minimum": 0.0,
+            "type": "integer",
+            "description": "Default structure level for the client to use for browsing this text",
+            "default": 0
+          },
+          "locDelim": {
+            "title": "Locdelim",
+            "maxLength": 3,
+            "minLength": 1,
+            "type": "string",
+            "description": "Delimiter for displaying text locations",
+            "default": ", "
+          },
+          "labeledLocation": {
+            "title": "Labeledlocation",
+            "type": "boolean",
+            "description": "Whether the UI should label the parts of the browse location with each levels' names",
+            "default": true
+          },
+          "accentColor": {
+            "title": "Accentcolor",
+            "type": "string",
+            "description": "Accent color used for this text in the client UI",
+            "format": "color"
+          },
+          "isActive": {
+            "title": "Isactive",
+            "type": "boolean",
+            "description": "Whether the text should be listed for non-admin users in the web client",
+            "default": false
+          }
+        },
+        "description": "A text represented in Tekst"
+      },
+      "TextStats": {
+        "title": "TextStats",
+        "required": [
+          "id",
+          "nodesCount",
+          "layersCount",
+          "layerTypes"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "nodesCount": {
+            "title": "Nodescount",
+            "type": "integer"
+          },
+          "layersCount": {
+            "title": "Layerscount",
+            "type": "integer"
+          },
+          "layerTypes": {
+            "title": "Layertypes",
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer"
+            }
+          }
+        },
+        "description": "Text statistics data"
+      },
+      "TextUpdate": {
+        "title": "TextUpdate",
+        "type": "object",
+        "properties": {
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "slug": {
+            "title": "Slug",
+            "type": "string"
+          },
+          "subtitle": {
+            "title": "Subtitle",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubtitleTranslation"
+            }
+          },
+          "levels": {
+            "title": "Levels",
+            "type": "array",
+            "items": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/StructureLevelTranslation"
+              }
+            }
+          },
+          "defaultLevel": {
+            "title": "Defaultlevel",
+            "minimum": 0.0,
+            "type": "integer"
+          },
+          "locDelim": {
+            "title": "Locdelim",
+            "maxLength": 3,
+            "minLength": 1,
+            "type": "string"
+          },
+          "labeledLocation": {
+            "title": "Labeledlocation",
+            "type": "boolean"
+          },
+          "accentColor": {
+            "title": "Accentcolor",
+            "type": "string",
+            "format": "color"
+          },
+          "isActive": {
+            "title": "Isactive",
+            "type": "boolean"
+          }
+        },
+        "description": "A text represented in Tekst"
+      },
+      "UserCreate": {
+        "title": "UserCreate",
+        "required": [
+          "email",
+          "password",
+          "username",
+          "firstName",
+          "lastName",
+          "affiliation"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "title": "Email",
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "title": "Password",
+            "type": "string"
+          },
+          "isActive": {
+            "title": "Isactive",
+            "type": "boolean",
+            "default": false
+          },
+          "isSuperuser": {
+            "title": "Issuperuser",
+            "type": "boolean",
+            "default": false
+          },
+          "isVerified": {
+            "title": "Isverified",
+            "type": "boolean",
+            "default": false
+          },
+          "username": {
+            "title": "Username",
+            "maxLength": 16,
+            "minLength": 4,
+            "pattern": "[a-zA-Z0-9\\-_]+",
+            "type": "string"
+          },
+          "firstName": {
+            "title": "Firstname",
+            "maxLength": 32,
+            "minLength": 1,
+            "type": "string"
+          },
+          "lastName": {
+            "title": "Lastname",
+            "maxLength": 32,
+            "minLength": 1,
+            "type": "string"
+          },
+          "affiliation": {
+            "title": "Affiliation",
+            "maxLength": 64,
+            "minLength": 1,
+            "type": "string"
+          },
+          "locale": {
+            "title": "Locale",
+            "enum": [
+              "deDE",
+              "enUS"
+            ],
+            "type": "string"
+          },
+          "publicFields": {
+            "title": "Publicfields",
+            "type": "array",
+            "items": {
+              "enum": [
+                "firstName",
+                "lastName",
+                "affiliation"
+              ],
+              "type": "string"
+            },
+            "description": "Data fields set public by this user",
+            "default": []
+          }
+        },
+        "description": "Dataset for creating a new user"
+      },
+      "UserRead": {
+        "title": "UserRead",
+        "required": [
+          "id",
+          "email",
+          "isActive",
+          "isSuperuser",
+          "isVerified",
+          "username",
+          "firstName",
+          "lastName",
+          "affiliation",
+          "createdAt"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "email": {
+            "title": "Email",
+            "type": "string",
+            "format": "email"
+          },
+          "isActive": {
+            "title": "Isactive",
+            "type": "boolean"
+          },
+          "isSuperuser": {
+            "title": "Issuperuser",
+            "type": "boolean"
+          },
+          "isVerified": {
+            "title": "Isverified",
+            "type": "boolean"
+          },
+          "username": {
+            "title": "Username",
+            "maxLength": 16,
+            "minLength": 4,
+            "pattern": "[a-zA-Z0-9\\-_]+",
+            "type": "string"
+          },
+          "firstName": {
+            "title": "Firstname",
+            "maxLength": 32,
+            "minLength": 1,
+            "type": "string"
+          },
+          "lastName": {
+            "title": "Lastname",
+            "maxLength": 32,
+            "minLength": 1,
+            "type": "string"
+          },
+          "affiliation": {
+            "title": "Affiliation",
+            "maxLength": 64,
+            "minLength": 1,
+            "type": "string"
+          },
+          "locale": {
+            "title": "Locale",
+            "enum": [
+              "deDE",
+              "enUS"
+            ],
+            "type": "string"
+          },
+          "publicFields": {
+            "title": "Publicfields",
+            "type": "array",
+            "items": {
+              "enum": [
+                "firstName",
+                "lastName",
+                "affiliation"
+              ],
+              "type": "string"
+            },
+            "description": "Data fields set public by this user",
+            "default": []
+          },
+          "createdAt": {
+            "title": "Createdat",
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "description": "A user registered in the system"
+      },
+      "UserReadPublic": {
+        "title": "UserReadPublic",
+        "required": [
+          "username"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "title": "Username",
+            "type": "string"
+          },
+          "firstName": {
+            "title": "Firstname",
+            "type": "string"
+          },
+          "lastName": {
+            "title": "Lastname",
+            "type": "string"
+          },
+          "affiliation": {
+            "title": "Affiliation",
+            "type": "string"
+          }
+        }
+      },
+      "UserUpdate": {
+        "title": "UserUpdate",
+        "type": "object",
+        "properties": {
+          "password": {
+            "title": "Password",
+            "type": "string"
+          },
+          "email": {
+            "title": "Email",
+            "type": "string",
+            "format": "email"
+          },
+          "isActive": {
+            "title": "Isactive",
+            "type": "boolean"
+          },
+          "isSuperuser": {
+            "title": "Issuperuser",
+            "type": "boolean"
+          },
+          "isVerified": {
+            "title": "Isverified",
+            "type": "boolean"
+          },
+          "username": {
+            "title": "Username",
+            "maxLength": 16,
+            "minLength": 4,
+            "pattern": "[a-zA-Z0-9\\-_]+",
+            "type": "string"
+          },
+          "firstName": {
+            "title": "Firstname",
+            "maxLength": 32,
+            "minLength": 1,
+            "type": "string"
+          },
+          "lastName": {
+            "title": "Lastname",
+            "maxLength": 32,
+            "minLength": 1,
+            "type": "string"
+          },
+          "affiliation": {
+            "title": "Affiliation",
+            "maxLength": 64,
+            "minLength": 1,
+            "type": "string"
+          },
+          "locale": {
+            "title": "Locale",
+            "enum": [
+              "deDE",
+              "enUS"
+            ],
+            "type": "string"
+          },
+          "publicFields": {
+            "title": "Publicfields",
+            "type": "array",
+            "items": {
+              "enum": [
+                "firstName",
+                "lastName",
+                "affiliation"
+              ],
+              "type": "string"
+            }
+          }
+        },
+        "description": "Updates to a user registered in the system"
+      },
+      "ValidationError": {
+        "title": "ValidationError",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "loc": {
+            "title": "Location",
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            }
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "APIKeyCookie": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "tekstuserauth"
+      },
+      "OAuth2PasswordBearer": {
+        "type": "oauth2",
+        "flows": {
+          "password": {
+            "scopes": {},
+            "tokenUrl": "auth/jwt/login"
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "texts",
+      "description": "Text-related operations",
+      "externalDocs": {
+        "description": "View external documentation",
+        "url": "https://github.com/VedaWebProject/Tekst-API"
+      }
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+Hallo {first_name},
+
+Ihr Konto auf {platform_name} wurde gelöscht!
+
+Mit freundlichen Grüßen,
+{platform_name}
