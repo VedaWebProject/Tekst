@@ -1,7 +1,7 @@
 # Tekst Web
 
-This is the code repository for the **client** part of the Tekst platform.
-For general information on Tekst, please visit the main [Tekst repository](https://github.com/VedaWebProject/tekst).
+This project holds the codebase for the **client** part of the Tekst platform.
+For general information on Tekst, visit the [Tekst repository](https://github.com/VedaWebProject/tekst).
 
 ## Development
 
