@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-22.04
     defaults:
       run:
-        working-directory: Tekst-API
+        working-directory: ./Tekst-API
     steps:
     - uses: actions/checkout@v3
     - name: Install Poetry
@@ -26,8 +26,8 @@ jobs:
     - uses: actions/setup-python@v4
       with:
         python-version: '3.10'
-        cache: ${{ !env.ACT && 'poetry' || '' }}
-        cache-dependency-path: 'poetry.lock'
+        cache: 'poetry'
+        cache-dependency-path: './Tekst-API/poetry.lock'
     - name: Install dependencies
       run: poetry install --sync
     - name: Cancel on setup error
