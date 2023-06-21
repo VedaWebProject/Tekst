@@ -1,4 +1,7 @@
-site_name: Tekst Documentation
+site_name: Tekst
+docs_dir: content
+repo_url: https://github.com/VedaWebProject/Tekst
+repo_name: VedaWebProject/Tekst
 theme:
   name: material
   language: en
@@ -6,11 +9,5 @@ theme:
   favicon: assets/logo.png
   palette:
     scheme: default
-    primary: blue grey
-    accent: blue grey
-  features:
-    - navigation.instant
-
-docs_dir: content
-repo_url: https://github.com/VedaWebProject/Tekst
-repo_name: VedaWebProject/Tekst
+    primary: teal
+    accent: teal
