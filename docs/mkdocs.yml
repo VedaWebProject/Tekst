@@ -2,8 +2,6 @@ site_name: Tekst
 docs_dir: content
 repo_url: https://github.com/VedaWebProject/Tekst
 repo_name: VedaWebProject/Tekst
-extra_css:
-  - stylesheets/extra.css
 theme:
   name: material
   language: en
@@ -12,15 +10,15 @@ theme:
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: custom
-      accent: custom
+      primary: indigo
+      accent: indigo
       toggle:
         icon: material/weather-night
         name: Switch to dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: custom
-      accent: custom
+      primary: indigo
+      accent: indigo
       toggle:
         icon: material/weather-sunny
         name: Switch to light mode
