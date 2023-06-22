@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import type { PlainTextLayerConfig } from '@/openapi';
 
-const props = defineProps<{
+defineProps<{
   layer: Record<string, any>;
   layerConfig: PlainTextLayerConfig;
 }>();
 </script>
 
 <template>
-  <div style="white-space: pre-wrap">
-    {{ props.layer.unit.text }}
+  <div v-for="unit in layer.units" :key="unit.id" style="white-space: pre-wrap">
+    {{ unit.text }}
   </div>
 </template>

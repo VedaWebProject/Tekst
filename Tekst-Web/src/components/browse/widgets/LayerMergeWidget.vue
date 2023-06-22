@@ -9,9 +9,11 @@ import { useMessages } from '@/messages';
 import { useI18n } from 'vue-i18n';
 import unitComponents from '@/components/browse/units/mappings';
 import BrowseLocationLabel from '@/components/browse/BrowseLocationLabel.vue';
+import UnitHeaderWidgetBar from '@/components/browse/UnitHeaderWidgetBar.vue';
 
 const props = defineProps<{
   layer: Record<string, any>;
+  sourceUnitId: string;
 }>();
 
 const { unitsApi } = useApi();
@@ -26,7 +28,9 @@ async function handleClick() {
   showModal.value = true;
   loading.value = true;
   try {
-    units.value = (await unitsApi.getSiblings({ unitId: props.layer.unit.id })).data;
+    units.value = await unitsApi.getSiblings(
+      { unitId: props.sourceUnitId }
+    ).then((resp) => resp.data);
   } catch {
     message.error(t('errors.unexpected'));
     showModal.value = false;
@@ -54,17 +58,18 @@ async function handleClick() {
     to="#app-container"
     embedded
   >
-    <h2>{{ layer.title }}</h2>
+    <div class="header">
+      <h2>{{ layer.title }}</h2>
+      <UnitHeaderWidgetBar v-if="!loading && units.length" :layer="{ ...layer, units: units }" :show-deactivate-widget="false" :show-merge-widget="false" />
+    </div>
+
     <h3><BrowseLocationLabel :maxLevel="layer.level - 1" /></h3>
 
     <div v-if="!loading && units.length">
       <component
-        v-for="unit in units"
-        :key="unit.id"
         :is="unitComponents[layer.layerType]"
-        :layer="{ ...layer, unit: unit }"
+        :layer="{ ...layer, units: units }"
         :layer-config="layer.config"
-        style="margin-top: 0.5rem"
       />
     </div>
 
@@ -77,3 +82,13 @@ async function handleClick() {
     </ModalButtonFooter>
   </n-modal>
 </template>
+
+<style scoped>
+.header{
+  display: flex;
+  align-items: flex-start;
+}
+.header > h2 {
+  flex-grow: 2;
+}
+</style>

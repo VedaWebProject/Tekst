@@ -144,7 +144,7 @@ export const useBrowseStore = defineStore('browse', () => {
         .then((response: AxiosResponse) => response.data);
       // assign units to layers
       layersData.forEach((l: Record<string, any>) => {
-        l.unit = unitsData.find((u: Record<string, any>) => u.layerId == l.id);
+        l.units = unitsData.filter((u: Record<string, any>) => u.layerId == l.id);
       });
       // assign (potentially) fresh layers/untis data to store prop
       layers.value = layersData;

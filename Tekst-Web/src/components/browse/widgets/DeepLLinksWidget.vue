@@ -8,31 +8,37 @@ import { useStateStore } from '@/stores';
 import { NDropdown } from 'naive-ui';
 import type { DropdownOption } from 'naive-ui';
 
+const DEEPL_TRANSLATOR_URL = 'https://www.deepl.com/translator';
+
 const props = defineProps<{
   widgetConfig: DeepLLinksConfig;
   layer: Record<string, any>;
 }>();
 
 const state = useStateStore();
+const unitsTextEncoded = computed<string>(() => {
+  const unitsText = props.layer.units.map((u: Record<string, any>) => u.text as string).join('\n').trim();
+  return encodeURIComponent(
+    unitsText
+      .replace(/[^\p{L}\-.?!"\n']+/gu, ' ')
+      .replace(/ ?\n ?/g, '\n')
+      .trim()
+  )
+});
 
 const options = computed(() =>
   props.widgetConfig?.languages?.map((l) => ({
-    label: l,
-    key: l,
-  }))
+      label: l,
+      key: l,
+    })
+  )
 );
 
 function renderOption(option: DropdownOption) {
-  const text = encodeURIComponent(
-    String(props.layer.unit.text)
-      .replace(/[^\p{L}\-.?!"']+/gu, ' ')
-      .replace(/[ \t\r]+/g, ' ')
-      .trim()
-  );
   return h(
     'a',
     {
-      href: `https://www.deepl.com/translator#${props.widgetConfig.sourceLanguage}/${option.key}/${text}`,
+      href: `${DEEPL_TRANSLATOR_URL}#${props.widgetConfig.sourceLanguage}/${option.key}/${unitsTextEncoded.value}`,
       target: '_blank',
     },
     {
@@ -44,7 +50,7 @@ function renderOption(option: DropdownOption) {
 
 <template>
   <n-dropdown
-    v-if="props.widgetConfig?.enabled && props.layer.unit.text && props.widgetConfig"
+    v-if="props.widgetConfig?.enabled && unitsTextEncoded && props.widgetConfig"
     trigger="click"
     :options="options"
     placement="bottom-start"

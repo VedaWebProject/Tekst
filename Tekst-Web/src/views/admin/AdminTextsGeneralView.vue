@@ -87,12 +87,11 @@ function handleSave() {
       if (!errors) {
         const changes = getModelChanges();
         try {
-          const updatedText = (
+          const updatedText =
             await textsApi.updateText({
               id: state.text?.id || '',
               textUpdate: changes,
-            })
-          ).data;
+            }).then((resp) => resp.data);
           await loadPlatformData();
           state.text = updatedText;
           resetModelChanges();

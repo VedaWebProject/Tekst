@@ -78,7 +78,12 @@ const paginatedData = computed(() => {
 
 async function updateUser(user: UserRead, updates: UserUpdate) {
   try {
-    const updatedUser = (await usersApi.usersPatchUser({ id: user.id, userUpdate: updates })).data;
+    const updatedUser = await usersApi.usersPatchUser(
+      {
+        id: user.id,
+        userUpdate: updates
+      }
+    ).then((resp) => resp.data);
     message.success(t('admin.users.save', { username: user.username }));
     loadUsers();
     return updatedUser;

@@ -97,12 +97,11 @@ function handleDeleteClick(level: number) {
     onPositiveClick: async () => {
       loading.value = true;
       try {
-        state.text = (
+        state.text =
           await textsApi.deleteLevel({
             id: state.text?.id || '',
             index: level,
-          })
-        ).data;
+          }).then((resp) => resp.data);
         message.success(
           t('admin.texts.levels.msgDeleteSuccess', {
             levelLabel: targetLevelLabel,
@@ -135,18 +134,17 @@ async function handleModalSubmit() {
         loading.value = true;
         try {
           if (editModalAction.value === 'insert') {
-            state.text = (
+            state.text =
               await textsApi.insertLevel({
                 id: state.text?.id || '',
                 index: editModalLevel.value,
                 structureLevelTranslation: formModel.value.translations,
-              })
-            ).data;
+              }).then((resp) => resp.data);
             message.success(
               t('admin.texts.levels.msgInsertSuccess', { position: editModalLevel.value + 1 })
             );
           } else if (editModalAction.value === 'edit') {
-            state.text = (
+            state.text =
               await textsApi.updateText({
                 id: state.text?.id || '',
                 textUpdate: {
@@ -158,8 +156,7 @@ async function handleModalSubmit() {
                     }
                   }),
                 },
-              })
-            ).data;
+              }).then((resp) => resp.data);
             message.success(
               t('admin.texts.levels.msgEditSuccess', { position: editModalLevel.value + 1 })
             );

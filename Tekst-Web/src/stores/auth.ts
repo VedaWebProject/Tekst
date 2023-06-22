@@ -124,7 +124,7 @@ export const useAuthStore = defineStore('auth', () => {
       await authApi.authCookieLogin({ username, password }, { headers: { is_login: true } });
       _setCookieExpiry();
       _startSessionCheck();
-      const userData = (await usersApi.usersCurrentUser()).data;
+      const userData = await usersApi.usersCurrentUser().then((resp) => resp.data);
       userData && localStorage.setItem('user', JSON.stringify(userData));
       user.value = userData;
       await loadPlatformData();
