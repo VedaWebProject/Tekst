@@ -7,6 +7,15 @@ nav:
   - 'index.md'
   - 'setup.md'
 
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+
 theme:
   name: material
   language: en
@@ -14,6 +23,7 @@ theme:
   favicon: assets/logo.png
   features:
     - navigation.instant
+    - content.code.copy
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
