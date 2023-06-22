@@ -216,50 +216,48 @@ async def find_units(
 @router.get("/siblings", response_model=list[dict], status_code=status.HTTP_200_OK)
 async def get_siblings(
     user: OptionalUserDep,
-    unit_id: Annotated[
+    layer_id: Annotated[
         PyObjectId,
-        Query(description="ID of unit to return siblings' data for"),
+        Query(description="ID of layer the requested units belong to"),
+    ],
+    node_id: Annotated[
+        PyObjectId,
+        Query(description="ID of node for which siblings to get associated units for"),
     ],
 ) -> list[dict]:
     """
     Returns a list of all data layer units belonging to the data layer
-    with the given ID, associated to nodes that are children of the same parent node
+    with the given ID, associated to nodes that are siblings of the node
     with the given ID.
 
     As the resulting list may contain units of arbitrary type, the
     returned unit objects cannot be typed to their precise layer unit type.
     """
 
-    unit = await UnitBaseDocument.find_one(
-        UnitBaseDocument.id == unit_id, with_children=True
+    layer = await LayerBaseDocument.find_one(
+        LayerBaseDocument.id == layer_id,
+        LayerBaseDocument.allowed_to_read(user),
+        with_children=True,
     )
 
-    if not unit:
+    if not layer:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Unit with ID {unit_id} could not be found.",
+            detail=f"Layer with ID {layer_id} could not be found.",
         )
 
-    unit_node = await NodeDocument.find_one(NodeDocument.id == unit.node_id)
+    node = await NodeDocument.find_one(NodeDocument.id == node_id)
 
-    if not unit_node or not (
-        await LayerBaseDocument.find_one(
-            LayerBaseDocument.id == unit.layer_id,
-            LayerBaseDocument.allowed_to_read(user),
-            with_children=True,
-        )
-    ):
+    if not node:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="The requested resource could not be found.",
+            detail=f"Node with ID {node_id} could not be found.",
         )
 
-    nodes = await NodeDocument.find(
-        NodeDocument.parent_id == unit_node.parent_id
-    ).to_list()
+    nodes = await NodeDocument.find(NodeDocument.parent_id == node.parent_id).to_list()
 
     units = await UnitBaseDocument.find(
-        UnitBaseDocument.layer_id == unit.layer_id,
+        UnitBaseDocument.layer_id == layer_id,
         In(UnitBaseDocument.node_id, [node.id for node in nodes]),
         with_children=True,
     ).to_list()
