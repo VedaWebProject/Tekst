@@ -55,7 +55,7 @@ async function handleClick() {
     embedded
   >
     <h2>{{ layer.title }}</h2>
-    <h3><BrowseLocationLabel :maxLevel="layer.level" /></h3>
+    <h3><BrowseLocationLabel :maxLevel="layer.level - 1" /></h3>
 
     <div v-if="!loading && units.length">
       <component
