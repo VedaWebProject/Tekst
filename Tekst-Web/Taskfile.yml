@@ -2,8 +2,6 @@
 
 version: '3'
 
-vars:
-
 tasks:
   default:
     desc: Print this very list of available tasks
@@ -61,7 +59,7 @@ tasks:
             -v $TEMPDIR:/local \
             openapitools/openapi-generator-cli:v6.3.0 \
               generate \
-                -i https://raw.githubusercontent.com/VedaWebProject/Tekst-API/main/openapi.json \
+                -i https://raw.githubusercontent.com/VedaWebProject/Tekst/main/Tekst-API/openapi.json \
                 -g typescript-axios \
                 -o /local/tekst-ts-client \
             #    --global-property skipFormModel=false \
