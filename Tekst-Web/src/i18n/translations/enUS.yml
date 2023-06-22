@@ -126,7 +126,7 @@ browse:
         title: Hide this data layer
         message: The data layer "{layerTitle}" has been hidden. You can activate it again using the data layer selection tool to the right side of the toolbar.
       mergeWidget:
-        title: Open merged view with all data under the parent location
+        title: Open merged view with all data of the parent location
 
 forms:
   rulesFeedback:
