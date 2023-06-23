@@ -8,17 +8,18 @@ import { useApi } from '@/api';
 import { useMessages } from '@/messages';
 import { useI18n } from 'vue-i18n';
 import unitComponents from '@/components/browse/units/mappings';
-import BrowseLocationLabel from '@/components/browse/BrowseLocationLabel.vue';
+import LocationLabel from '@/components/browse/LocationLabel.vue';
 import UnitHeaderWidgetBar from '@/components/browse/UnitHeaderWidgetBar.vue';
+import { useBrowseStore } from '@/stores';
 
 const props = defineProps<{
   layer: Record<string, any>;
-  sourceUnitId: string;
 }>();
 
 const { unitsApi } = useApi();
 const { message } = useMessages();
 const { t } = useI18n({ useScope: 'global' });
+const browse = useBrowseStore();
 
 const showModal = ref(false);
 const loading = ref(false);
@@ -28,9 +29,12 @@ async function handleClick() {
   showModal.value = true;
   loading.value = true;
   try {
-    units.value = await unitsApi.getSiblings(
-      { unitId: props.sourceUnitId }
-    ).then((resp) => resp.data);
+    units.value = await unitsApi
+      .getSiblings({
+        layerId: props.layer.id,
+        parentNodeId: browse.nodePath[props.layer.level - 1].id,
+      })
+      .then((resp) => resp.data);
   } catch {
     message.error(t('errors.unexpected'));
     showModal.value = false;
@@ -60,12 +64,19 @@ async function handleClick() {
   >
     <div class="header">
       <h2>{{ layer.title }}</h2>
-      <UnitHeaderWidgetBar v-if="!loading && units.length" :layer="{ ...layer, units: units }" :show-deactivate-widget="false" :show-merge-widget="false" />
+      <UnitHeaderWidgetBar
+        v-if="!loading && units.length"
+        :layer="{ ...layer, units: units }"
+        :show-deactivate-widget="false"
+        :show-merge-widget="false"
+      />
     </div>
 
-    <h3><BrowseLocationLabel :maxLevel="layer.level - 1" /></h3>
+    <div class="merge-location"><LocationLabel :maxLevel="layer.level - 1" /></div>
 
-    <div v-if="!loading && units.length">
+    <n-spin v-if="loading" style="margin: 3rem 0 2rem 0; width: 100%" />
+
+    <div v-else-if="units.length">
       <component
         :is="unitComponents[layer.layerType]"
         :layer="{ ...layer, units: units }"
@@ -73,7 +84,7 @@ async function handleClick() {
       />
     </div>
 
-    <n-spin v-else style="margin: 3rem 0 2rem 0; width: 100%" />
+    <span v-else>{{ t('errors.unexpected') }}</span>
 
     <ModalButtonFooter>
       <n-button type="primary" @click="() => (showModal = false)">
@@ -84,11 +95,18 @@ async function handleClick() {
 </template>
 
 <style scoped>
-.header{
+.header {
   display: flex;
   align-items: flex-start;
 }
+
 .header > h2 {
   flex-grow: 2;
+}
+
+.merge-location {
+  font-size: var(--app-ui-font-size-large);
+  opacity: 0.6;
+  margin-bottom: 1rem;
 }
 </style>

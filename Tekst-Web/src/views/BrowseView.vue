@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import BrowseLocationLabel from '@/components/browse/BrowseLocationLabel.vue';
+import LocationLabel from '@/components/browse/LocationLabel.vue';
 import BrowseToolbar from '@/components/browse/BrowseToolbar.vue';
 import { useStateStore, useBrowseStore } from '@/stores';
 import FolderOffTwotone from '@vicons/material/FolderOffTwotone';
@@ -18,7 +18,7 @@ const activeLayers = computed(() => {
 
 <template>
   <h1 class="browse-heading-title">{{ state.text?.title }}</h1>
-  <h2 class="browse-heading-location"><BrowseLocationLabel /></h2>
+  <h2 class="browse-heading-location"><LocationLabel /></h2>
 
   <BrowseToolbar />
 

@@ -5609,15 +5609,18 @@ export const UnitsApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Returns a list of all data layer units belonging to the data layer with the given ID, associated to nodes that are children of the same parent node with the given ID.  As the resulting list may contain units of arbitrary type, the returned unit objects cannot be typed to their precise layer unit type.
+         * Returns a list of all data layer units belonging to the data layer with the given ID, associated to nodes that are children of the parent node with the given ID.  As the resulting list may contain units of arbitrary type, the returned unit objects cannot be typed to their precise layer unit type.
          * @summary Get siblings
-         * @param {string} unitId ID of unit to return siblings\&#39; data for
+         * @param {string} layerId ID of layer the requested units belong to
+         * @param {string} parentNodeId ID of node for which siblings to get associated units for
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSiblings: async (unitId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'unitId' is not null or undefined
-            assertParamExists('getSiblings', 'unitId', unitId)
+        getSiblings: async (layerId: string, parentNodeId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'layerId' is not null or undefined
+            assertParamExists('getSiblings', 'layerId', layerId)
+            // verify required parameter 'parentNodeId' is not null or undefined
+            assertParamExists('getSiblings', 'parentNodeId', parentNodeId)
             const localVarPath = `/units/siblings`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -5636,8 +5639,12 @@ export const UnitsApiAxiosParamCreator = function (configuration?: Configuration
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "OAuth2PasswordBearer", [], configuration)
 
-            if (unitId !== undefined) {
-                localVarQueryParameter['unitId'] = unitId;
+            if (layerId !== undefined) {
+                localVarQueryParameter['layerId'] = layerId;
+            }
+
+            if (parentNodeId !== undefined) {
+                localVarQueryParameter['parentNodeId'] = parentNodeId;
             }
 
 
@@ -5743,14 +5750,15 @@ export const UnitsApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * Returns a list of all data layer units belonging to the data layer with the given ID, associated to nodes that are children of the same parent node with the given ID.  As the resulting list may contain units of arbitrary type, the returned unit objects cannot be typed to their precise layer unit type.
+         * Returns a list of all data layer units belonging to the data layer with the given ID, associated to nodes that are children of the parent node with the given ID.  As the resulting list may contain units of arbitrary type, the returned unit objects cannot be typed to their precise layer unit type.
          * @summary Get siblings
-         * @param {string} unitId ID of unit to return siblings\&#39; data for
+         * @param {string} layerId ID of layer the requested units belong to
+         * @param {string} parentNodeId ID of node for which siblings to get associated units for
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getSiblings(unitId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<object>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getSiblings(unitId, options);
+        async getSiblings(layerId: string, parentNodeId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<object>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getSiblings(layerId, parentNodeId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -5806,14 +5814,14 @@ export const UnitsApiFactory = function (configuration?: Configuration, basePath
             return localVarFp.getPlaintextUnit(requestParameters.id, options).then((request) => request(axios, basePath));
         },
         /**
-         * Returns a list of all data layer units belonging to the data layer with the given ID, associated to nodes that are children of the same parent node with the given ID.  As the resulting list may contain units of arbitrary type, the returned unit objects cannot be typed to their precise layer unit type.
+         * Returns a list of all data layer units belonging to the data layer with the given ID, associated to nodes that are children of the parent node with the given ID.  As the resulting list may contain units of arbitrary type, the returned unit objects cannot be typed to their precise layer unit type.
          * @summary Get siblings
          * @param {UnitsApiGetSiblingsRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         getSiblings(requestParameters: UnitsApiGetSiblingsRequest, options?: AxiosRequestConfig): AxiosPromise<Array<object>> {
-            return localVarFp.getSiblings(requestParameters.unitId, options).then((request) => request(axios, basePath));
+            return localVarFp.getSiblings(requestParameters.layerId, requestParameters.parentNodeId, options).then((request) => request(axios, basePath));
         },
         /**
          * Updates the data for a PlainText data layer unit
@@ -5891,11 +5899,18 @@ export interface UnitsApiGetPlaintextUnitRequest {
  */
 export interface UnitsApiGetSiblingsRequest {
     /**
-     * ID of unit to return siblings\&#39; data for
+     * ID of layer the requested units belong to
      * @type {string}
      * @memberof UnitsApiGetSiblings
      */
-    readonly unitId: string
+    readonly layerId: string
+
+    /**
+     * ID of node for which siblings to get associated units for
+     * @type {string}
+     * @memberof UnitsApiGetSiblings
+     */
+    readonly parentNodeId: string
 }
 
 /**
@@ -5963,7 +5978,7 @@ export class UnitsApi extends BaseAPI {
     }
 
     /**
-     * Returns a list of all data layer units belonging to the data layer with the given ID, associated to nodes that are children of the same parent node with the given ID.  As the resulting list may contain units of arbitrary type, the returned unit objects cannot be typed to their precise layer unit type.
+     * Returns a list of all data layer units belonging to the data layer with the given ID, associated to nodes that are children of the parent node with the given ID.  As the resulting list may contain units of arbitrary type, the returned unit objects cannot be typed to their precise layer unit type.
      * @summary Get siblings
      * @param {UnitsApiGetSiblingsRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
@@ -5971,7 +5986,7 @@ export class UnitsApi extends BaseAPI {
      * @memberof UnitsApi
      */
     public getSiblings(requestParameters: UnitsApiGetSiblingsRequest, options?: AxiosRequestConfig) {
-        return UnitsApiFp(this.configuration).getSiblings(requestParameters.unitId, options).then((request) => request(this.axios, this.basePath));
+        return UnitsApiFp(this.configuration).getSiblings(requestParameters.layerId, requestParameters.parentNodeId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

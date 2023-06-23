@@ -1884,7 +1884,7 @@
           "units"
         ],
         "summary": "Get siblings",
-        "description": "Returns a list of all data layer units belonging to the data layer\nwith the given ID, associated to nodes that are siblings of the node\nwith the given ID.\n\nAs the resulting list may contain units of arbitrary type, the\nreturned unit objects cannot be typed to their precise layer unit type.",
+        "description": "Returns a list of all data layer units belonging to the data layer\nwith the given ID, associated to nodes that are children of the parent node\nwith the given ID.\n\nAs the resulting list may contain units of arbitrary type, the\nreturned unit objects cannot be typed to their precise layer unit type.",
         "operationId": "getSiblings",
         "parameters": [
           {
@@ -1903,12 +1903,12 @@
             "description": "ID of node for which siblings to get associated units for",
             "required": true,
             "schema": {
-              "title": "Nodeid",
+              "title": "Parentnodeid",
               "type": "string",
               "description": "ID of node for which siblings to get associated units for",
               "example": "5eb7cf5a86d9755df3a6c593"
             },
-            "name": "nodeId",
+            "name": "parentNodeId",
             "in": "query"
           }
         ],

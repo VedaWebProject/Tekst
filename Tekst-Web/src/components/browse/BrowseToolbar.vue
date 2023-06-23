@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue';
 import { NButton } from 'naive-ui';
 import BrowseLocationControls from '@/components/browse/BrowseLocationControls.vue';
-import BrowseLocationLabel from '@/components/browse/BrowseLocationLabel.vue';
+import LocationLabel from '@/components/browse/LocationLabel.vue';
 import CompressRound from '@vicons/material/CompressRound';
 import ExpandRound from '@vicons/material/ExpandRound';
 import LayersRound from '@vicons/material/LayersRound';
@@ -29,7 +29,9 @@ onMounted(() => {
       <BrowseLocationControls />
 
       <div v-show="!state.smallScreen" class="browse-toolbar-middle">
-        <BrowseLocationLabel class="browse-location-label" />
+        <div class="browse-location-label">
+          <LocationLabel />
+        </div>
       </div>
 
       <div class="browse-toolbar-end">

@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import type { CSSProperties } from 'vue';
 import unitWidgets from '@/components/browse/widgets/mappings';
-import LayerMergeWidget from './widgets/LayerMergeWidget.vue';
+import UnitSiblingsWidget from './widgets/UnitSiblingsWidget.vue';
 import LayerInfoWidget from './widgets/LayerInfoWidget.vue';
 import LayerDeactivateWidget from './widgets/LayerDeactivateWidget.vue';
+import { useBrowseStore } from '@/stores';
 
 interface Props {
   layer: Record<string, any>;
@@ -14,18 +15,17 @@ interface Props {
 
 withDefaults(defineProps<Props>(), {
   showDeactivateWidget: true,
-  showMergeWidget: true
+  showMergeWidget: true,
 });
+
+const browse = useBrowseStore();
 </script>
 
 <template>
   <div class="unit-header-widgets" :style="style">
     <!-- config-specific widgets -->
     <template v-if="layer.units.length">
-      <template
-        v-for="(configSection, configSectionKey) in layer.config"
-        :key="configSectionKey"
-      >
+      <template v-for="(configSection, configSectionKey) in layer.config" :key="configSectionKey">
         <component
           v-if="configSectionKey in unitWidgets"
           :is="unitWidgets[configSectionKey]"
@@ -35,7 +35,10 @@ withDefaults(defineProps<Props>(), {
       </template>
     </template>
     <!-- generic unit widgets -->
-    <LayerMergeWidget v-if="showMergeWidget ?? true" :layer="layer" :source-unit-id="layer.units[0].id" />
+    <UnitSiblingsWidget
+      v-if="(showMergeWidget ?? true) && browse.level >= layer.level - 1"
+      :layer="layer"
+    />
     <LayerInfoWidget :layer="layer" />
     <LayerDeactivateWidget v-if="showDeactivateWidget ?? true" :layer="layer" />
   </div>

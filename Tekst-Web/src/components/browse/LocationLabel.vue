@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useStateStore, useBrowseStore } from '@/stores';
+import type { NodeRead } from '@/openapi';
 
 const props = defineProps<{
+  nodePath?: NodeRead[];
   maxLevel?: number;
 }>();
 
 const state = useStateStore();
 const browse = useBrowseStore();
 
-const browseLocationLabel = computed(() =>
-  browse.nodePath
+const LocationLabel = computed(() =>
+  (props.nodePath || browse.nodePath)
     .filter((n) => n.level <= (props.maxLevel ?? Number.MAX_SAFE_INTEGER))
     .map((n) => {
       const lvlLabel = state.textLevelLabels[n.level];
@@ -22,5 +24,5 @@ const browseLocationLabel = computed(() =>
 </script>
 
 <template>
-  <span>{{ browseLocationLabel }}</span>
+  {{ LocationLabel }}
 </template>

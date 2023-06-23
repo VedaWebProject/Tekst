@@ -30,8 +30,8 @@ const headerMiddleText = computed(() =>
 );
 
 const emptyUnitStyle = {
-  backgroundColor: 'transparent',
-  border: '3px dashed var(--content-bg-color)',
+  backgroundColor: 'var(--main-bg-color)',
+  border: '2px dashed var(--main-bg-color)',
   boxShadow: 'none',
   padding: '12px var(--layout-gap)',
 };
