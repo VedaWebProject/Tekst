@@ -2872,6 +2872,512 @@ export class AuthApi extends BaseAPI {
 
 
 /**
+ * BrowseApi - axios parameter creator
+ * @export
+ */
+export const BrowseApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Get layer coverage data
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getLayerCoverageData: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('getLayerCoverageData', 'id', id)
+            const localVarPath = `/browse/layers/{id}/coverage`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication APIKeyCookie required
+
+            // authentication OAuth2PasswordBearer required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "OAuth2PasswordBearer", [], configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Returns the text node path from the node with the given level/position as the last element, up to its most distant ancestor node on structure level 0 as the first element of an array.
+         * @summary Get node path
+         * @param {string} textId 
+         * @param {number} level 
+         * @param {number} position 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getNodePath: async (textId: string, level: number, position: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'textId' is not null or undefined
+            assertParamExists('getNodePath', 'textId', textId)
+            // verify required parameter 'level' is not null or undefined
+            assertParamExists('getNodePath', 'level', level)
+            // verify required parameter 'position' is not null or undefined
+            assertParamExists('getNodePath', 'position', position)
+            const localVarPath = `/browse/nodes/path`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (textId !== undefined) {
+                localVarQueryParameter['textId'] = textId;
+            }
+
+            if (level !== undefined) {
+                localVarQueryParameter['level'] = level;
+            }
+
+            if (position !== undefined) {
+                localVarQueryParameter['position'] = position;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Returns the options for selecting text locations derived from the node path of the node with the given ID as head.
+         * @summary Get path options by head id
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getPathOptionsByHeadId: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('getPathOptionsByHeadId', 'id', id)
+            const localVarPath = `/browse/nodes/{id}/path/options-by-head`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Returns the options for selecting text locations derived from the node path of the node with the given ID as root. At each level, the first option is taken as the basis for the next level.
+         * @summary Get path options by root id
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getPathOptionsByRootId: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('getPathOptionsByRootId', 'id', id)
+            const localVarPath = `/browse/nodes/{id}/path/options-by-root`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Returns a list of all data layer units belonging to the data layer with the given ID, associated to nodes that are children of the parent node with the given ID.  As the resulting list may contain units of arbitrary type, the returned unit objects cannot be typed to their precise layer unit type. Also, the returned unit objects have an additional property containing their respective node\'s label, level and position.
+         * @summary Get unit siblings
+         * @param {string} layerId ID of layer the requested units belong to
+         * @param {string} parentNodeId ID of node for which siblings to get associated units for
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUnitSiblings: async (layerId: string, parentNodeId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'layerId' is not null or undefined
+            assertParamExists('getUnitSiblings', 'layerId', layerId)
+            // verify required parameter 'parentNodeId' is not null or undefined
+            assertParamExists('getUnitSiblings', 'parentNodeId', parentNodeId)
+            const localVarPath = `/browse/unit-siblings`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication APIKeyCookie required
+
+            // authentication OAuth2PasswordBearer required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "OAuth2PasswordBearer", [], configuration)
+
+            if (layerId !== undefined) {
+                localVarQueryParameter['layerId'] = layerId;
+            }
+
+            if (parentNodeId !== undefined) {
+                localVarQueryParameter['parentNodeId'] = parentNodeId;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * BrowseApi - functional programming interface
+ * @export
+ */
+export const BrowseApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = BrowseApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary Get layer coverage data
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getLayerCoverageData(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<LayerNodeCoverage>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getLayerCoverageData(id, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * Returns the text node path from the node with the given level/position as the last element, up to its most distant ancestor node on structure level 0 as the first element of an array.
+         * @summary Get node path
+         * @param {string} textId 
+         * @param {number} level 
+         * @param {number} position 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getNodePath(textId: string, level: number, position: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<NodeRead>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getNodePath(textId, level, position, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * Returns the options for selecting text locations derived from the node path of the node with the given ID as head.
+         * @summary Get path options by head id
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getPathOptionsByHeadId(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Array<NodeRead>>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getPathOptionsByHeadId(id, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * Returns the options for selecting text locations derived from the node path of the node with the given ID as root. At each level, the first option is taken as the basis for the next level.
+         * @summary Get path options by root id
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getPathOptionsByRootId(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Array<NodeRead>>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getPathOptionsByRootId(id, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * Returns a list of all data layer units belonging to the data layer with the given ID, associated to nodes that are children of the parent node with the given ID.  As the resulting list may contain units of arbitrary type, the returned unit objects cannot be typed to their precise layer unit type. Also, the returned unit objects have an additional property containing their respective node\'s label, level and position.
+         * @summary Get unit siblings
+         * @param {string} layerId ID of layer the requested units belong to
+         * @param {string} parentNodeId ID of node for which siblings to get associated units for
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getUnitSiblings(layerId: string, parentNodeId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<object>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getUnitSiblings(layerId, parentNodeId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * BrowseApi - factory interface
+ * @export
+ */
+export const BrowseApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = BrowseApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary Get layer coverage data
+         * @param {BrowseApiGetLayerCoverageDataRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getLayerCoverageData(requestParameters: BrowseApiGetLayerCoverageDataRequest, options?: AxiosRequestConfig): AxiosPromise<Array<LayerNodeCoverage>> {
+            return localVarFp.getLayerCoverageData(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Returns the text node path from the node with the given level/position as the last element, up to its most distant ancestor node on structure level 0 as the first element of an array.
+         * @summary Get node path
+         * @param {BrowseApiGetNodePathRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getNodePath(requestParameters: BrowseApiGetNodePathRequest, options?: AxiosRequestConfig): AxiosPromise<Array<NodeRead>> {
+            return localVarFp.getNodePath(requestParameters.textId, requestParameters.level, requestParameters.position, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Returns the options for selecting text locations derived from the node path of the node with the given ID as head.
+         * @summary Get path options by head id
+         * @param {BrowseApiGetPathOptionsByHeadIdRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getPathOptionsByHeadId(requestParameters: BrowseApiGetPathOptionsByHeadIdRequest, options?: AxiosRequestConfig): AxiosPromise<Array<Array<NodeRead>>> {
+            return localVarFp.getPathOptionsByHeadId(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Returns the options for selecting text locations derived from the node path of the node with the given ID as root. At each level, the first option is taken as the basis for the next level.
+         * @summary Get path options by root id
+         * @param {BrowseApiGetPathOptionsByRootIdRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getPathOptionsByRootId(requestParameters: BrowseApiGetPathOptionsByRootIdRequest, options?: AxiosRequestConfig): AxiosPromise<Array<Array<NodeRead>>> {
+            return localVarFp.getPathOptionsByRootId(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Returns a list of all data layer units belonging to the data layer with the given ID, associated to nodes that are children of the parent node with the given ID.  As the resulting list may contain units of arbitrary type, the returned unit objects cannot be typed to their precise layer unit type. Also, the returned unit objects have an additional property containing their respective node\'s label, level and position.
+         * @summary Get unit siblings
+         * @param {BrowseApiGetUnitSiblingsRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUnitSiblings(requestParameters: BrowseApiGetUnitSiblingsRequest, options?: AxiosRequestConfig): AxiosPromise<Array<object>> {
+            return localVarFp.getUnitSiblings(requestParameters.layerId, requestParameters.parentNodeId, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * Request parameters for getLayerCoverageData operation in BrowseApi.
+ * @export
+ * @interface BrowseApiGetLayerCoverageDataRequest
+ */
+export interface BrowseApiGetLayerCoverageDataRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof BrowseApiGetLayerCoverageData
+     */
+    readonly id: string
+}
+
+/**
+ * Request parameters for getNodePath operation in BrowseApi.
+ * @export
+ * @interface BrowseApiGetNodePathRequest
+ */
+export interface BrowseApiGetNodePathRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof BrowseApiGetNodePath
+     */
+    readonly textId: string
+
+    /**
+     * 
+     * @type {number}
+     * @memberof BrowseApiGetNodePath
+     */
+    readonly level: number
+
+    /**
+     * 
+     * @type {number}
+     * @memberof BrowseApiGetNodePath
+     */
+    readonly position: number
+}
+
+/**
+ * Request parameters for getPathOptionsByHeadId operation in BrowseApi.
+ * @export
+ * @interface BrowseApiGetPathOptionsByHeadIdRequest
+ */
+export interface BrowseApiGetPathOptionsByHeadIdRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof BrowseApiGetPathOptionsByHeadId
+     */
+    readonly id: string
+}
+
+/**
+ * Request parameters for getPathOptionsByRootId operation in BrowseApi.
+ * @export
+ * @interface BrowseApiGetPathOptionsByRootIdRequest
+ */
+export interface BrowseApiGetPathOptionsByRootIdRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof BrowseApiGetPathOptionsByRootId
+     */
+    readonly id: string
+}
+
+/**
+ * Request parameters for getUnitSiblings operation in BrowseApi.
+ * @export
+ * @interface BrowseApiGetUnitSiblingsRequest
+ */
+export interface BrowseApiGetUnitSiblingsRequest {
+    /**
+     * ID of layer the requested units belong to
+     * @type {string}
+     * @memberof BrowseApiGetUnitSiblings
+     */
+    readonly layerId: string
+
+    /**
+     * ID of node for which siblings to get associated units for
+     * @type {string}
+     * @memberof BrowseApiGetUnitSiblings
+     */
+    readonly parentNodeId: string
+}
+
+/**
+ * BrowseApi - object-oriented interface
+ * @export
+ * @class BrowseApi
+ * @extends {BaseAPI}
+ */
+export class BrowseApi extends BaseAPI {
+    /**
+     * 
+     * @summary Get layer coverage data
+     * @param {BrowseApiGetLayerCoverageDataRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BrowseApi
+     */
+    public getLayerCoverageData(requestParameters: BrowseApiGetLayerCoverageDataRequest, options?: AxiosRequestConfig) {
+        return BrowseApiFp(this.configuration).getLayerCoverageData(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Returns the text node path from the node with the given level/position as the last element, up to its most distant ancestor node on structure level 0 as the first element of an array.
+     * @summary Get node path
+     * @param {BrowseApiGetNodePathRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BrowseApi
+     */
+    public getNodePath(requestParameters: BrowseApiGetNodePathRequest, options?: AxiosRequestConfig) {
+        return BrowseApiFp(this.configuration).getNodePath(requestParameters.textId, requestParameters.level, requestParameters.position, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Returns the options for selecting text locations derived from the node path of the node with the given ID as head.
+     * @summary Get path options by head id
+     * @param {BrowseApiGetPathOptionsByHeadIdRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BrowseApi
+     */
+    public getPathOptionsByHeadId(requestParameters: BrowseApiGetPathOptionsByHeadIdRequest, options?: AxiosRequestConfig) {
+        return BrowseApiFp(this.configuration).getPathOptionsByHeadId(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Returns the options for selecting text locations derived from the node path of the node with the given ID as root. At each level, the first option is taken as the basis for the next level.
+     * @summary Get path options by root id
+     * @param {BrowseApiGetPathOptionsByRootIdRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BrowseApi
+     */
+    public getPathOptionsByRootId(requestParameters: BrowseApiGetPathOptionsByRootIdRequest, options?: AxiosRequestConfig) {
+        return BrowseApiFp(this.configuration).getPathOptionsByRootId(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Returns a list of all data layer units belonging to the data layer with the given ID, associated to nodes that are children of the parent node with the given ID.  As the resulting list may contain units of arbitrary type, the returned unit objects cannot be typed to their precise layer unit type. Also, the returned unit objects have an additional property containing their respective node\'s label, level and position.
+     * @summary Get unit siblings
+     * @param {BrowseApiGetUnitSiblingsRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BrowseApi
+     */
+    public getUnitSiblings(requestParameters: BrowseApiGetUnitSiblingsRequest, options?: AxiosRequestConfig) {
+        return BrowseApiFp(this.configuration).getUnitSiblings(requestParameters.layerId, requestParameters.parentNodeId, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+/**
  * LayersApi - axios parameter creator
  * @export
  */
@@ -2988,46 +3494,6 @@ export const LayersApiAxiosParamCreator = function (configuration?: Configuratio
             // verify required parameter 'id' is not null or undefined
             assertParamExists('getGenericLayerDataById', 'id', id)
             const localVarPath = `/layers/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication APIKeyCookie required
-
-            // authentication OAuth2PasswordBearer required
-            // oauth required
-            await setOAuthToObject(localVarHeaderParameter, "OAuth2PasswordBearer", [], configuration)
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Get layer coverage data
-         * @param {string} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getLayerCoverageData: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('getLayerCoverageData', 'id', id)
-            const localVarPath = `/layers/{id}/coverage`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3190,17 +3656,6 @@ export const LayersApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * 
-         * @summary Get layer coverage data
-         * @param {string} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getLayerCoverageData(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<LayerNodeCoverage>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getLayerCoverageData(id, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
          * Returns the data for a PlainText data layer
          * @summary Get layer
          * @param {string} id 
@@ -3262,16 +3717,6 @@ export const LayersApiFactory = function (configuration?: Configuration, basePat
          */
         getGenericLayerDataById(requestParameters: LayersApiGetGenericLayerDataByIdRequest, options?: AxiosRequestConfig): AxiosPromise<object> {
             return localVarFp.getGenericLayerDataById(requestParameters.id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Get layer coverage data
-         * @param {LayersApiGetLayerCoverageDataRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getLayerCoverageData(requestParameters: LayersApiGetLayerCoverageDataRequest, options?: AxiosRequestConfig): AxiosPromise<Array<LayerNodeCoverage>> {
-            return localVarFp.getLayerCoverageData(requestParameters.id, options).then((request) => request(axios, basePath));
         },
         /**
          * Returns the data for a PlainText data layer
@@ -3360,20 +3805,6 @@ export interface LayersApiGetGenericLayerDataByIdRequest {
 }
 
 /**
- * Request parameters for getLayerCoverageData operation in LayersApi.
- * @export
- * @interface LayersApiGetLayerCoverageDataRequest
- */
-export interface LayersApiGetLayerCoverageDataRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof LayersApiGetLayerCoverageData
-     */
-    readonly id: string
-}
-
-/**
  * Request parameters for getPlaintextLayer operation in LayersApi.
  * @export
  * @interface LayersApiGetPlaintextLayerRequest
@@ -3449,18 +3880,6 @@ export class LayersApi extends BaseAPI {
      */
     public getGenericLayerDataById(requestParameters: LayersApiGetGenericLayerDataByIdRequest, options?: AxiosRequestConfig) {
         return LayersApiFp(this.configuration).getGenericLayerDataById(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Get layer coverage data
-     * @param {LayersApiGetLayerCoverageDataRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof LayersApi
-     */
-    public getLayerCoverageData(requestParameters: LayersApiGetLayerCoverageDataRequest, options?: AxiosRequestConfig) {
-        return LayersApiFp(this.configuration).getLayerCoverageData(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -3635,40 +4054,6 @@ export const NodesApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Get next
-         * @param {string} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getNext: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('getNext', 'id', id)
-            const localVarPath = `/nodes/{id}/next`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @summary Get node
          * @param {string} id 
          * @param {*} [options] Override http request option.
@@ -3678,159 +4063,6 @@ export const NodesApiAxiosParamCreator = function (configuration?: Configuration
             // verify required parameter 'id' is not null or undefined
             assertParamExists('getNode', 'id', id)
             const localVarPath = `/nodes/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Returns the text node path from the node with the given ID as the last element, up to its most distant ancestor node on structure level 0 as the first element of an array.
-         * @summary Get path by head id
-         * @param {string} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getPathByHeadId: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('getPathByHeadId', 'id', id)
-            const localVarPath = `/nodes/{id}/path`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Returns the text node path from the node with the given level/position as the last element, up to its most distant ancestor node on structure level 0 as the first element of an array.
-         * @summary Get path by head location
-         * @param {string} textId 
-         * @param {number} level 
-         * @param {number} position 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getPathByHeadLocation: async (textId: string, level: number, position: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'textId' is not null or undefined
-            assertParamExists('getPathByHeadLocation', 'textId', textId)
-            // verify required parameter 'level' is not null or undefined
-            assertParamExists('getPathByHeadLocation', 'level', level)
-            // verify required parameter 'position' is not null or undefined
-            assertParamExists('getPathByHeadLocation', 'position', position)
-            const localVarPath = `/nodes/path`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (textId !== undefined) {
-                localVarQueryParameter['textId'] = textId;
-            }
-
-            if (level !== undefined) {
-                localVarQueryParameter['level'] = level;
-            }
-
-            if (position !== undefined) {
-                localVarQueryParameter['position'] = position;
-            }
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Returns the options for selecting text locations derived from the node path of the node with the given ID as head.
-         * @summary Get path options by head id
-         * @param {string} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getPathOptionsByHeadId: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('getPathOptionsByHeadId', 'id', id)
-            const localVarPath = `/nodes/{id}/path/options-by-head`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Returns the options for selecting text locations derived from the node path of the node with the given ID as root. At each level, the first option is taken as the basis for the next level.
-         * @summary Get path options by root id
-         * @param {string} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getPathOptionsByRootId: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('getPathOptionsByRootId', 'id', id)
-            const localVarPath = `/nodes/{id}/path/options-by-root`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3950,17 +4182,6 @@ export const NodesApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Get next
-         * @param {string} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getNext(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<NodeRead>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getNext(id, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
          * @summary Get node
          * @param {string} id 
          * @param {*} [options] Override http request option.
@@ -3968,52 +4189,6 @@ export const NodesApiFp = function(configuration?: Configuration) {
          */
         async getNode(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<NodeRead>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getNode(id, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * Returns the text node path from the node with the given ID as the last element, up to its most distant ancestor node on structure level 0 as the first element of an array.
-         * @summary Get path by head id
-         * @param {string} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getPathByHeadId(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<NodeRead>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getPathByHeadId(id, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * Returns the text node path from the node with the given level/position as the last element, up to its most distant ancestor node on structure level 0 as the first element of an array.
-         * @summary Get path by head location
-         * @param {string} textId 
-         * @param {number} level 
-         * @param {number} position 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getPathByHeadLocation(textId: string, level: number, position: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<NodeRead>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getPathByHeadLocation(textId, level, position, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * Returns the options for selecting text locations derived from the node path of the node with the given ID as head.
-         * @summary Get path options by head id
-         * @param {string} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getPathOptionsByHeadId(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Array<NodeRead>>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getPathOptionsByHeadId(id, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * Returns the options for selecting text locations derived from the node path of the node with the given ID as root. At each level, the first option is taken as the basis for the next level.
-         * @summary Get path options by root id
-         * @param {string} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getPathOptionsByRootId(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Array<NodeRead>>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getPathOptionsByRootId(id, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -4070,16 +4245,6 @@ export const NodesApiFactory = function (configuration?: Configuration, basePath
         },
         /**
          * 
-         * @summary Get next
-         * @param {NodesApiGetNextRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getNext(requestParameters: NodesApiGetNextRequest, options?: AxiosRequestConfig): AxiosPromise<NodeRead> {
-            return localVarFp.getNext(requestParameters.id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
          * @summary Get node
          * @param {NodesApiGetNodeRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
@@ -4087,46 +4252,6 @@ export const NodesApiFactory = function (configuration?: Configuration, basePath
          */
         getNode(requestParameters: NodesApiGetNodeRequest, options?: AxiosRequestConfig): AxiosPromise<NodeRead> {
             return localVarFp.getNode(requestParameters.id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Returns the text node path from the node with the given ID as the last element, up to its most distant ancestor node on structure level 0 as the first element of an array.
-         * @summary Get path by head id
-         * @param {NodesApiGetPathByHeadIdRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getPathByHeadId(requestParameters: NodesApiGetPathByHeadIdRequest, options?: AxiosRequestConfig): AxiosPromise<Array<NodeRead>> {
-            return localVarFp.getPathByHeadId(requestParameters.id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Returns the text node path from the node with the given level/position as the last element, up to its most distant ancestor node on structure level 0 as the first element of an array.
-         * @summary Get path by head location
-         * @param {NodesApiGetPathByHeadLocationRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getPathByHeadLocation(requestParameters: NodesApiGetPathByHeadLocationRequest, options?: AxiosRequestConfig): AxiosPromise<Array<NodeRead>> {
-            return localVarFp.getPathByHeadLocation(requestParameters.textId, requestParameters.level, requestParameters.position, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Returns the options for selecting text locations derived from the node path of the node with the given ID as head.
-         * @summary Get path options by head id
-         * @param {NodesApiGetPathOptionsByHeadIdRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getPathOptionsByHeadId(requestParameters: NodesApiGetPathOptionsByHeadIdRequest, options?: AxiosRequestConfig): AxiosPromise<Array<Array<NodeRead>>> {
-            return localVarFp.getPathOptionsByHeadId(requestParameters.id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Returns the options for selecting text locations derived from the node path of the node with the given ID as root. At each level, the first option is taken as the basis for the next level.
-         * @summary Get path options by root id
-         * @param {NodesApiGetPathOptionsByRootIdRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getPathOptionsByRootId(requestParameters: NodesApiGetPathOptionsByRootIdRequest, options?: AxiosRequestConfig): AxiosPromise<Array<Array<NodeRead>>> {
-            return localVarFp.getPathOptionsByRootId(requestParameters.id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -4219,20 +4344,6 @@ export interface NodesApiGetChildrenRequest {
 }
 
 /**
- * Request parameters for getNext operation in NodesApi.
- * @export
- * @interface NodesApiGetNextRequest
- */
-export interface NodesApiGetNextRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof NodesApiGetNext
-     */
-    readonly id: string
-}
-
-/**
  * Request parameters for getNode operation in NodesApi.
  * @export
  * @interface NodesApiGetNodeRequest
@@ -4242,76 +4353,6 @@ export interface NodesApiGetNodeRequest {
      * 
      * @type {string}
      * @memberof NodesApiGetNode
-     */
-    readonly id: string
-}
-
-/**
- * Request parameters for getPathByHeadId operation in NodesApi.
- * @export
- * @interface NodesApiGetPathByHeadIdRequest
- */
-export interface NodesApiGetPathByHeadIdRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof NodesApiGetPathByHeadId
-     */
-    readonly id: string
-}
-
-/**
- * Request parameters for getPathByHeadLocation operation in NodesApi.
- * @export
- * @interface NodesApiGetPathByHeadLocationRequest
- */
-export interface NodesApiGetPathByHeadLocationRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof NodesApiGetPathByHeadLocation
-     */
-    readonly textId: string
-
-    /**
-     * 
-     * @type {number}
-     * @memberof NodesApiGetPathByHeadLocation
-     */
-    readonly level: number
-
-    /**
-     * 
-     * @type {number}
-     * @memberof NodesApiGetPathByHeadLocation
-     */
-    readonly position: number
-}
-
-/**
- * Request parameters for getPathOptionsByHeadId operation in NodesApi.
- * @export
- * @interface NodesApiGetPathOptionsByHeadIdRequest
- */
-export interface NodesApiGetPathOptionsByHeadIdRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof NodesApiGetPathOptionsByHeadId
-     */
-    readonly id: string
-}
-
-/**
- * Request parameters for getPathOptionsByRootId operation in NodesApi.
- * @export
- * @interface NodesApiGetPathOptionsByRootIdRequest
- */
-export interface NodesApiGetPathOptionsByRootIdRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof NodesApiGetPathOptionsByRootId
      */
     readonly id: string
 }
@@ -4382,18 +4423,6 @@ export class NodesApi extends BaseAPI {
 
     /**
      * 
-     * @summary Get next
-     * @param {NodesApiGetNextRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof NodesApi
-     */
-    public getNext(requestParameters: NodesApiGetNextRequest, options?: AxiosRequestConfig) {
-        return NodesApiFp(this.configuration).getNext(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
      * @summary Get node
      * @param {NodesApiGetNodeRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
@@ -4402,54 +4431,6 @@ export class NodesApi extends BaseAPI {
      */
     public getNode(requestParameters: NodesApiGetNodeRequest, options?: AxiosRequestConfig) {
         return NodesApiFp(this.configuration).getNode(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Returns the text node path from the node with the given ID as the last element, up to its most distant ancestor node on structure level 0 as the first element of an array.
-     * @summary Get path by head id
-     * @param {NodesApiGetPathByHeadIdRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof NodesApi
-     */
-    public getPathByHeadId(requestParameters: NodesApiGetPathByHeadIdRequest, options?: AxiosRequestConfig) {
-        return NodesApiFp(this.configuration).getPathByHeadId(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Returns the text node path from the node with the given level/position as the last element, up to its most distant ancestor node on structure level 0 as the first element of an array.
-     * @summary Get path by head location
-     * @param {NodesApiGetPathByHeadLocationRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof NodesApi
-     */
-    public getPathByHeadLocation(requestParameters: NodesApiGetPathByHeadLocationRequest, options?: AxiosRequestConfig) {
-        return NodesApiFp(this.configuration).getPathByHeadLocation(requestParameters.textId, requestParameters.level, requestParameters.position, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Returns the options for selecting text locations derived from the node path of the node with the given ID as head.
-     * @summary Get path options by head id
-     * @param {NodesApiGetPathOptionsByHeadIdRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof NodesApi
-     */
-    public getPathOptionsByHeadId(requestParameters: NodesApiGetPathOptionsByHeadIdRequest, options?: AxiosRequestConfig) {
-        return NodesApiFp(this.configuration).getPathOptionsByHeadId(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Returns the options for selecting text locations derived from the node path of the node with the given ID as root. At each level, the first option is taken as the basis for the next level.
-     * @summary Get path options by root id
-     * @param {NodesApiGetPathOptionsByRootIdRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof NodesApi
-     */
-    public getPathOptionsByRootId(requestParameters: NodesApiGetPathOptionsByRootIdRequest, options?: AxiosRequestConfig) {
-        return NodesApiFp(this.configuration).getPathOptionsByRootId(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -5609,56 +5590,6 @@ export const UnitsApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Returns a list of all data layer units belonging to the data layer with the given ID, associated to nodes that are children of the parent node with the given ID.  As the resulting list may contain units of arbitrary type, the returned unit objects cannot be typed to their precise layer unit type.
-         * @summary Get siblings
-         * @param {string} layerId ID of layer the requested units belong to
-         * @param {string} parentNodeId ID of node for which siblings to get associated units for
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getSiblings: async (layerId: string, parentNodeId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'layerId' is not null or undefined
-            assertParamExists('getSiblings', 'layerId', layerId)
-            // verify required parameter 'parentNodeId' is not null or undefined
-            assertParamExists('getSiblings', 'parentNodeId', parentNodeId)
-            const localVarPath = `/units/siblings`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication APIKeyCookie required
-
-            // authentication OAuth2PasswordBearer required
-            // oauth required
-            await setOAuthToObject(localVarHeaderParameter, "OAuth2PasswordBearer", [], configuration)
-
-            if (layerId !== undefined) {
-                localVarQueryParameter['layerId'] = layerId;
-            }
-
-            if (parentNodeId !== undefined) {
-                localVarQueryParameter['parentNodeId'] = parentNodeId;
-            }
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
          * Updates the data for a PlainText data layer unit
          * @summary Update unit
          * @param {string} id 
@@ -5750,18 +5681,6 @@ export const UnitsApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * Returns a list of all data layer units belonging to the data layer with the given ID, associated to nodes that are children of the parent node with the given ID.  As the resulting list may contain units of arbitrary type, the returned unit objects cannot be typed to their precise layer unit type.
-         * @summary Get siblings
-         * @param {string} layerId ID of layer the requested units belong to
-         * @param {string} parentNodeId ID of node for which siblings to get associated units for
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getSiblings(layerId: string, parentNodeId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<object>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getSiblings(layerId, parentNodeId, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
          * Updates the data for a PlainText data layer unit
          * @summary Update unit
          * @param {string} id 
@@ -5812,16 +5731,6 @@ export const UnitsApiFactory = function (configuration?: Configuration, basePath
          */
         getPlaintextUnit(requestParameters: UnitsApiGetPlaintextUnitRequest, options?: AxiosRequestConfig): AxiosPromise<PlainTextUnitRead> {
             return localVarFp.getPlaintextUnit(requestParameters.id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Returns a list of all data layer units belonging to the data layer with the given ID, associated to nodes that are children of the parent node with the given ID.  As the resulting list may contain units of arbitrary type, the returned unit objects cannot be typed to their precise layer unit type.
-         * @summary Get siblings
-         * @param {UnitsApiGetSiblingsRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getSiblings(requestParameters: UnitsApiGetSiblingsRequest, options?: AxiosRequestConfig): AxiosPromise<Array<object>> {
-            return localVarFp.getSiblings(requestParameters.layerId, requestParameters.parentNodeId, options).then((request) => request(axios, basePath));
         },
         /**
          * Updates the data for a PlainText data layer unit
@@ -5893,27 +5802,6 @@ export interface UnitsApiGetPlaintextUnitRequest {
 }
 
 /**
- * Request parameters for getSiblings operation in UnitsApi.
- * @export
- * @interface UnitsApiGetSiblingsRequest
- */
-export interface UnitsApiGetSiblingsRequest {
-    /**
-     * ID of layer the requested units belong to
-     * @type {string}
-     * @memberof UnitsApiGetSiblings
-     */
-    readonly layerId: string
-
-    /**
-     * ID of node for which siblings to get associated units for
-     * @type {string}
-     * @memberof UnitsApiGetSiblings
-     */
-    readonly parentNodeId: string
-}
-
-/**
  * Request parameters for updatePlaintextUnit operation in UnitsApi.
  * @export
  * @interface UnitsApiUpdatePlaintextUnitRequest
@@ -5975,18 +5863,6 @@ export class UnitsApi extends BaseAPI {
      */
     public getPlaintextUnit(requestParameters: UnitsApiGetPlaintextUnitRequest, options?: AxiosRequestConfig) {
         return UnitsApiFp(this.configuration).getPlaintextUnit(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Returns a list of all data layer units belonging to the data layer with the given ID, associated to nodes that are children of the parent node with the given ID.  As the resulting list may contain units of arbitrary type, the returned unit objects cannot be typed to their precise layer unit type.
-     * @summary Get siblings
-     * @param {UnitsApiGetSiblingsRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof UnitsApi
-     */
-    public getSiblings(requestParameters: UnitsApiGetSiblingsRequest, options?: AxiosRequestConfig) {
-        return UnitsApiFp(this.configuration).getSiblings(requestParameters.layerId, requestParameters.parentNodeId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

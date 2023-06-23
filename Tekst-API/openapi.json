@@ -114,6 +114,314 @@
         ]
       }
     },
+    "/browse/unit-siblings": {
+      "get": {
+        "tags": [
+          "browse"
+        ],
+        "summary": "Get unit siblings",
+        "description": "Returns a list of all data layer units belonging to the data layer\nwith the given ID, associated to nodes that are children of the parent node\nwith the given ID.\n\nAs the resulting list may contain units of arbitrary type, the\nreturned unit objects cannot be typed to their precise layer unit type.\nAlso, the returned unit objects have an additional property containing their\nrespective node's label, level and position.",
+        "operationId": "getUnitSiblings",
+        "parameters": [
+          {
+            "description": "ID of layer the requested units belong to",
+            "required": true,
+            "schema": {
+              "title": "Layerid",
+              "type": "string",
+              "description": "ID of layer the requested units belong to",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "name": "layerId",
+            "in": "query"
+          },
+          {
+            "description": "ID of node for which siblings to get associated units for",
+            "required": true,
+            "schema": {
+              "title": "Parentnodeid",
+              "type": "string",
+              "description": "ID of node for which siblings to get associated units for",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "name": "parentNodeId",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Unit Siblings Browse Unit Siblings Get",
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/browse/nodes/path": {
+      "get": {
+        "tags": [
+          "browse"
+        ],
+        "summary": "Get node path",
+        "description": "Returns the text node path from the node with the given level/position\nas the last element, up to its most distant ancestor node\non structure level 0 as the first element of an array.",
+        "operationId": "getNodePath",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Textid",
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "name": "textId",
+            "in": "query"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Level",
+              "type": "integer"
+            },
+            "name": "level",
+            "in": "query"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Position",
+              "type": "integer"
+            },
+            "name": "position",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Node Path Browse Nodes Path Get",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NodeRead"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/browse/nodes/{id}/path/options-by-head": {
+      "get": {
+        "tags": [
+          "browse"
+        ],
+        "summary": "Get path options by head id",
+        "description": "Returns the options for selecting text locations derived from the node path of\nthe node with the given ID as head.",
+        "operationId": "getPathOptionsByHeadId",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Path Options By Head Id Browse Nodes  Id  Path Options By Head Get",
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/NodeRead"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/browse/nodes/{id}/path/options-by-root": {
+      "get": {
+        "tags": [
+          "browse"
+        ],
+        "summary": "Get path options by root id",
+        "description": "Returns the options for selecting text locations derived from the node path of\nthe node with the given ID as root. At each level, the first option is taken\nas the basis for the next level.",
+        "operationId": "getPathOptionsByRootId",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Path Options By Root Id Browse Nodes  Id  Path Options By Root Get",
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/NodeRead"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/browse/layers/{id}/coverage": {
+      "get": {
+        "tags": [
+          "browse"
+        ],
+        "summary": "Get layer coverage data",
+        "operationId": "getLayerCoverageData",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Layer Coverage Data Browse Layers  Id  Coverage Get",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LayerNodeCoverage"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
     "/layers/plaintext/{id}": {
       "get": {
         "tags": [
@@ -372,64 +680,6 @@
         ]
       }
     },
-    "/layers/{id}/coverage": {
-      "get": {
-        "tags": [
-          "layers"
-        ],
-        "summary": "Get layer coverage data",
-        "operationId": "getLayerCoverageData",
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "title": "Id",
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "name": "id",
-            "in": "path"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "title": "Response Get Layer Coverage Data Layers  Id  Coverage Get",
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/LayerNodeCoverage"
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      }
-    },
     "/layers/{id}": {
       "get": {
         "tags": [
@@ -623,75 +873,6 @@
         ]
       }
     },
-    "/nodes/path": {
-      "get": {
-        "tags": [
-          "nodes"
-        ],
-        "summary": "Get path by head location",
-        "description": "Returns the text node path from the node with the given level/position\nas the last element, up to its most distant ancestor node\non structure level 0 as the first element of an array.",
-        "operationId": "getPathByHeadLocation",
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "title": "Textid",
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "name": "textId",
-            "in": "query"
-          },
-          {
-            "required": true,
-            "schema": {
-              "title": "Level",
-              "type": "integer"
-            },
-            "name": "level",
-            "in": "query"
-          },
-          {
-            "required": true,
-            "schema": {
-              "title": "Position",
-              "type": "integer"
-            },
-            "name": "position",
-            "in": "query"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "title": "Response Get Path By Head Location Nodes Path Get",
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/NodeRead"
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/nodes/{id}": {
       "get": {
         "tags": [
@@ -840,211 +1021,6 @@
                   "items": {
                     "$ref": "#/components/schemas/NodeRead"
                   }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/nodes/{id}/path": {
-      "get": {
-        "tags": [
-          "nodes"
-        ],
-        "summary": "Get path by head id",
-        "description": "Returns the text node path from the node with the given ID as the last element,\nup to its most distant ancestor node on structure level 0\nas the first element of an array.",
-        "operationId": "getPathByHeadId",
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "title": "Id",
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "name": "id",
-            "in": "path"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "title": "Response Get Path By Head Id Nodes  Id  Path Get",
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/NodeRead"
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/nodes/{id}/path/options-by-head": {
-      "get": {
-        "tags": [
-          "nodes"
-        ],
-        "summary": "Get path options by head id",
-        "description": "Returns the options for selecting text locations derived from the node path of\nthe node with the given ID as head.",
-        "operationId": "getPathOptionsByHeadId",
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "title": "Id",
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "name": "id",
-            "in": "path"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "title": "Response Get Path Options By Head Id Nodes  Id  Path Options By Head Get",
-                  "type": "array",
-                  "items": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/NodeRead"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/nodes/{id}/path/options-by-root": {
-      "get": {
-        "tags": [
-          "nodes"
-        ],
-        "summary": "Get path options by root id",
-        "description": "Returns the options for selecting text locations derived from the node path of\nthe node with the given ID as root. At each level, the first option is taken\nas the basis for the next level.",
-        "operationId": "getPathOptionsByRootId",
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "title": "Id",
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "name": "id",
-            "in": "path"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "title": "Response Get Path Options By Root Id Nodes  Id  Path Options By Root Get",
-                  "type": "array",
-                  "items": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/NodeRead"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/nodes/{id}/next": {
-      "get": {
-        "tags": [
-          "nodes"
-        ],
-        "summary": "Get next",
-        "operationId": "getNext",
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "title": "Id",
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "name": "id",
-            "in": "path"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NodeRead"
                 }
               }
             }
@@ -1846,79 +1822,6 @@
               "application/json": {
                 "schema": {
                   "title": "Response Find Units Units  Get",
-                  "type": "array",
-                  "items": {
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      }
-    },
-    "/units/siblings": {
-      "get": {
-        "tags": [
-          "units"
-        ],
-        "summary": "Get siblings",
-        "description": "Returns a list of all data layer units belonging to the data layer\nwith the given ID, associated to nodes that are children of the parent node\nwith the given ID.\n\nAs the resulting list may contain units of arbitrary type, the\nreturned unit objects cannot be typed to their precise layer unit type.",
-        "operationId": "getSiblings",
-        "parameters": [
-          {
-            "description": "ID of layer the requested units belong to",
-            "required": true,
-            "schema": {
-              "title": "Layerid",
-              "type": "string",
-              "description": "ID of layer the requested units belong to",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "name": "layerId",
-            "in": "query"
-          },
-          {
-            "description": "ID of node for which siblings to get associated units for",
-            "required": true,
-            "schema": {
-              "title": "Parentnodeid",
-              "type": "string",
-              "description": "ID of node for which siblings to get associated units for",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "name": "parentNodeId",
-            "in": "query"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "title": "Response Get Siblings Units Siblings Get",
                   "type": "array",
                   "items": {
                     "type": "object"

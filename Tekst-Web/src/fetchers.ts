@@ -36,15 +36,15 @@ export function useProfile(
 export function useLayerCoverage(id: string | Ref<string>, active: boolean | Ref<boolean> = true) {
   const coverage = ref<LayerNodeCoverage[] | null>(null);
   const error = ref(false);
-  const { layersApi } = useApi();
+  const { browseApi } = useApi();
 
-  function fetchProfileData() {
+  function fetchCoverageData() {
     if (!unref(active)) return;
     coverage.value = null;
     error.value = false;
     const layerId = unref(id);
     if (!layerId) return;
-    layersApi
+    browseApi
       .getLayerCoverageData({ id: layerId })
       .then((response: AxiosResponse<LayerNodeCoverage[], any>) => response.data)
       .then((c: LayerNodeCoverage[]) => (coverage.value = c))
@@ -52,9 +52,9 @@ export function useLayerCoverage(id: string | Ref<string>, active: boolean | Ref
   }
 
   if (isRef(id) || isRef(active)) {
-    watchEffect(fetchProfileData);
+    watchEffect(fetchCoverageData);
   } else {
-    fetchProfileData();
+    fetchCoverageData();
   }
 
   return { coverage, error };

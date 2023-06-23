@@ -17,7 +17,7 @@ const browse = useBrowseStore();
 const route = useRoute();
 const { ArrowLeft, ArrowRight } = useMagicKeys();
 
-const { nodesApi } = useApi();
+const { browseApi } = useApi();
 
 const showModal = ref(false);
 watch(showModal, (show) => show && initSelectModels());
@@ -95,7 +95,7 @@ async function updateSelectModelsFromLvl(lvl: number) {
     }
   });
   // load node path options from node selected at lvl as root
-  const nodes = await nodesApi
+  const nodes = await browseApi
     .getPathOptionsByRootId({
       id: locationSelectModels.value[lvl].selected || '',
     })
@@ -133,7 +133,7 @@ async function initSelectModels() {
 
   // fetch nodes from head to root
   try {
-    const nodesOptions = await nodesApi
+    const nodesOptions = await browseApi
       .getPathOptionsByHeadId({ id: browse.nodePath[browseLevel.value]?.id })
       .then((response) => response.data);
 

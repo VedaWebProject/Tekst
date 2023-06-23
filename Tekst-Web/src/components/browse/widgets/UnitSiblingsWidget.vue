@@ -16,7 +16,7 @@ const props = defineProps<{
   layer: Record<string, any>;
 }>();
 
-const { unitsApi } = useApi();
+const { browseApi } = useApi();
 const { message } = useMessages();
 const { t } = useI18n({ useScope: 'global' });
 const browse = useBrowseStore();
@@ -29,8 +29,8 @@ async function handleClick() {
   showModal.value = true;
   loading.value = true;
   try {
-    units.value = await unitsApi
-      .getSiblings({
+    units.value = await browseApi
+      .getUnitSiblings({
         layerId: props.layer.id,
         parentNodeId: browse.nodePath[props.layer.level - 1].id,
       })

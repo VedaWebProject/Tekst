@@ -5,8 +5,8 @@ from fastapi import APIRouter, HTTPException, Path, status
 from tekst.auth import OptionalUserDep, UserDep
 from tekst.layer_types import layer_type_manager
 from tekst.models.common import PyObjectId
-from tekst.models.layer import LayerBase, LayerBaseDocument, LayerNodeCoverage
-from tekst.models.text import NodeDocument, TextDocument
+from tekst.models.layer import LayerBase, LayerBaseDocument
+from tekst.models.text import TextDocument
 
 
 def _generate_read_endpoint(
@@ -247,49 +247,6 @@ async def find_layers(
 #         media_type="application/json",
 #         background=BackgroundTask(tempfile.close),
 #     )
-
-
-@router.get("/{id}/coverage", status_code=status.HTTP_200_OK)
-async def get_layer_coverage_data(
-    layer_id: Annotated[PyObjectId, Path(alias="id")], user: OptionalUserDep
-) -> list[LayerNodeCoverage]:
-    layer_doc = await LayerBaseDocument.find_one(
-        LayerBaseDocument.id == layer_id,
-        LayerBaseDocument.allowed_to_read(user),
-        with_children=True,
-    )
-    if not layer_doc:
-        raise HTTPException(
-            status.HTTP_404_NOT_FOUND, detail=f"No layer with ID {layer_id}"
-        )
-    return (
-        await NodeDocument.find(
-            NodeDocument.text_id == layer_doc.text_id,
-            NodeDocument.level == layer_doc.level,
-        )
-        .sort(+NodeDocument.position)
-        .aggregate(
-            [
-                {
-                    "$lookup": {
-                        "from": "units",
-                        "localField": "_id",
-                        "foreignField": "nodeId",
-                        "as": "units",
-                    }
-                },
-                {
-                    "$project": {
-                        "label": 1,
-                        "position": 1,
-                        "covered": {"$gt": [{"$size": "$units"}, 0]},
-                    }
-                },
-            ],
-            projection_model=LayerNodeCoverage,
-        )
-        .to_list()
-    )
 
 
 @router.get("/{id}", status_code=status.HTTP_200_OK)

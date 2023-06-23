@@ -16,7 +16,7 @@ export const useBrowseStore = defineStore('browse', () => {
   const { message } = useMessages();
 
   // API clients
-  const { nodesApi } = useApi();
+  const { browseApi } = useApi();
   const { layersApi } = useApi();
   const { unitsApi } = useApi();
 
@@ -48,8 +48,8 @@ export const useBrowseStore = defineStore('browse', () => {
     if (Number.isInteger(qLvl) && Number.isInteger(qPos)) {
       try {
         // fill browse node path up to root (no more parent)
-        const path = await nodesApi
-          .getPathByHeadLocation({
+        const path = await browseApi
+          .getNodePath({
             textId: state.text?.id || '',
             level: qLvl,
             position: qPos,

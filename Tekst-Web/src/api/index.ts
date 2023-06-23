@@ -9,6 +9,7 @@ import {
   TextsApi,
   UnitsApi,
   UsersApi,
+  BrowseApi,
 } from '@/openapi';
 
 const serverUrl: string | undefined = import.meta.env.TEKST_SERVER_URL;
@@ -29,6 +30,7 @@ const api = {
   nodesApi: configureApi(NodesApi),
   layersApi: configureApi(LayersApi),
   unitsApi: configureApi(UnitsApi),
+  browseApi: configureApi(BrowseApi),
 };
 
 export function useApi() {

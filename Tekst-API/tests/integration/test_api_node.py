@@ -220,30 +220,3 @@ async def test_update_node(
     endpoint = f"{api_path}/nodes/637b9ad396d541a505e5439b"
     resp = await test_client.patch(endpoint, json=node_update)
     assert resp.status_code == 400, status_fail_msg(400, resp, cookies=session_cookie)
-
-
-@pytest.mark.anyio
-async def test_node_next(
-    api_path, test_client: AsyncClient, insert_test_data, test_data, status_fail_msg
-):
-    text_id = await insert_test_data("texts", "nodes")
-    # get second last node from level 0
-    endpoint = f"{api_path}/nodes"
-    resp = await test_client.get(endpoint, params={"textId": text_id, "level": 0})
-    assert resp.status_code == 200, status_fail_msg(200, resp)
-    assert type(resp.json()) == list
-    assert len(resp.json()) > 0
-    nodes = resp.json()
-    node_second_last = nodes[len(nodes) - 2]
-    node_last = nodes[len(nodes) - 1]
-    # get next node
-    endpoint = f"{api_path}/nodes/{node_second_last['id']}/next"
-    resp = await test_client.get(endpoint)
-    assert resp.status_code == 200, status_fail_msg(200, resp)
-    assert type(resp.json()) == dict
-    assert "id" in resp.json()
-    assert resp.json()["id"] == str(node_last["id"])
-    # fail to get node after last
-    endpoint = f"{api_path}/nodes/{node_last['id']}/next"
-    resp = await test_client.get(endpoint)
-    assert resp.status_code == 404, status_fail_msg(404, resp)
