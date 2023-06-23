@@ -17,21 +17,23 @@ const props = defineProps<{
 
 const state = useStateStore();
 const unitsTextEncoded = computed<string>(() => {
-  const unitsText = props.layer.units.map((u: Record<string, any>) => u.text as string).join('\n').trim();
+  const unitsText = props.layer.units
+    .map((u: Record<string, any>) => u.text as string)
+    .join('\n')
+    .trim();
   return encodeURIComponent(
     unitsText
       .replace(/[^\p{L}\-.?!"\n']+/gu, ' ')
       .replace(/ ?\n ?/g, '\n')
       .trim()
-  )
+  );
 });
 
 const options = computed(() =>
   props.widgetConfig?.languages?.map((l) => ({
-      label: l,
-      key: l,
-    })
-  )
+    label: l,
+    key: l,
+  }))
 );
 
 function renderOption(option: DropdownOption) {
