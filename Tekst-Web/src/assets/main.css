@@ -105,7 +105,11 @@ h5:first-child {
   max-width: 95%;
 }
 
-.tekst-modal-large {
+.tekst-modal-small {
+  width: 480px;
+}
+
+.tekst-modal-full {
   width: var(--max-app-width);
 }
 

@@ -55,7 +55,7 @@ async function handleClick() {
   <n-modal
     v-model:show="showModal"
     preset="card"
-    class="tekst-modal tekst-modal-large"
+    class="tekst-modal tekst-modal-full"
     size="large"
     :bordered="false"
     :auto-focus="false"

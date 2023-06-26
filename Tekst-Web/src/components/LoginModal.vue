@@ -82,7 +82,7 @@ onMounted(() => {
       show
       preset="card"
       size="large"
-      class="tekst-modal"
+      class="tekst-modal tekst-modal-small"
       @close="reject(null)"
       @mask-click="reject(null)"
       to="#app-container"
@@ -160,6 +160,7 @@ onMounted(() => {
 
 <style scoped>
 .login-message {
-  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
 }
 </style>
