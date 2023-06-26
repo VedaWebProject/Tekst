@@ -1,6 +1,12 @@
 # Setup
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+## General Requirements
+
+The follwing requirements apply to either deployment strategy. Each deployment strategy then comes with its own respective additional requirements.
+
+- A server to deploy Tekst to (the deployment instructions below assume a Linux-based server with Docker and Docker Compose installed, as this is the recommended setup strategy)
+- Access to a working, reliable **SMTP server** to send out emails containing verification links, password reset links, etc. It is important that this SMTP server is well-configured so the emails it sends actually reach their recepients. Whether you use a third-party SMTP server (like the one of your email provider) or your own self-hosted one is up to you. If you plan to run Tekst in [closed mode](index.md#closed-mode) (only one or more administrators, no public users who can create content), this requirement is **not strictly necessary**.
 
 
 ## Configuration
@@ -10,13 +16,7 @@ The following values can be configured in an `.env` file to match your deploymen
 
 ## Deployment
 
-### General Requirements
-
-The follwing requirements apply to either deployment strategy. Each deployment strategy then comes with its own respective additional requirements.
-
-- Access to a working, reliable **SMTP server** to send out emails containing verification links, password reset links, etc. It is important that this SMTP server is well-configured so the emails it sends actually reach their recepients. Whether you use a third-party SMTP server (like the one of your email provider) or your own self-hosted one is up to you. If you plan to run Tekst in [closed mode](index.md#closed-mode) (only one or more administrators, no public users who can create content), this requirement is **not strictly necessary**.
-
-### Docker (recommended)
+### Using Docker (recommended)
 
 As with every Docker-based deployment, the benefits of this approach are a reproducable deployment environment and an overall isolated setup.
 
@@ -60,3 +60,13 @@ docker compose up
 Add the `-d` flag to run it in detached mode (in the background).
 
 Read [this](https://docs.docker.com/engine/reference/commandline/compose/) to learn how to stop, start, reset (...) the application stack using Docker Compose.
+
+
+### On host system
+
+#### Requirements
+> 🏗 TODO
+
+
+#### Instructions
+> 🏗 TODO
