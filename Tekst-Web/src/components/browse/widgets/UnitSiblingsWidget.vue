@@ -32,10 +32,11 @@ async function handleClick() {
     units.value = await browseApi
       .getUnitSiblings({
         layerId: props.layer.id,
-        parentNodeId: browse.nodePath[props.layer.level - 1].id,
+        parentNodeId: browse.nodePath[props.layer.level - 1]?.id,
       })
       .then((resp) => resp.data);
-  } catch {
+  } catch(e) {
+    console.error(e)
     message.error(t('errors.unexpected'));
     showModal.value = false;
   } finally {
@@ -46,7 +47,7 @@ async function handleClick() {
 
 <template>
   <UnitContainerHeaderWidget
-    :title="$t('browse.units.widgets.mergeWidget.title')"
+    :title="$t('browse.units.widgets.siblingsWidget.title')"
     :iconComponent="MergeRound"
     @click="handleClick"
   />
@@ -68,11 +69,11 @@ async function handleClick() {
         v-if="!loading && units.length"
         :layer="{ ...layer, units: units }"
         :show-deactivate-widget="false"
-        :show-merge-widget="false"
+        :show-siblings-widget="false"
       />
     </div>
 
-    <div class="merge-location"><LocationLabel :maxLevel="layer.level - 1" /></div>
+    <div class="parent-location"><LocationLabel :maxLevel="layer.level - 1" /></div>
 
     <n-spin v-if="loading" style="margin: 3rem 0 2rem 0; width: 100%" />
 
@@ -104,7 +105,7 @@ async function handleClick() {
   flex-grow: 2;
 }
 
-.merge-location {
+.parent-location {
   font-size: var(--app-ui-font-size-large);
   opacity: 0.6;
   margin-bottom: 1rem;

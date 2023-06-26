@@ -126,7 +126,7 @@ browse:
       deactivateWidget:
         title: Diese Datenschicht ausblenden
         message: Die Datenschicht "{layerTitle}" wurde ausgeblendet. Sie können sie wieder aktivieren, indem Sie die Datenschichten-Auswahl rechts in der Toolbar benutzen.
-      mergeWidget:
+      siblingsWidget:
         title: Zusammengeführte Ansicht mit allen Daten der übergeordneten Fundstelle öffnen
 
 forms:

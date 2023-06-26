@@ -9,13 +9,13 @@ import { useBrowseStore } from '@/stores';
 interface Props {
   layer: Record<string, any>;
   style?: CSSProperties;
-  showMergeWidget?: boolean;
+  showSiblingsWidget?: boolean;
   showDeactivateWidget?: boolean;
 }
 
 withDefaults(defineProps<Props>(), {
   showDeactivateWidget: true,
-  showMergeWidget: true,
+  showSiblingsWidget: true,
 });
 
 const browse = useBrowseStore();
@@ -36,7 +36,7 @@ const browse = useBrowseStore();
     </template>
     <!-- generic unit widgets -->
     <UnitSiblingsWidget
-      v-if="(showMergeWidget ?? true) && browse.level >= layer.level - 1"
+      v-if="(showSiblingsWidget ?? true) && browse.level >= layer.level - 1"
       :layer="layer"
     />
     <LayerInfoWidget :layer="layer" />

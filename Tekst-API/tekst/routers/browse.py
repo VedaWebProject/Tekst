@@ -29,9 +29,9 @@ async def get_unit_siblings(
         Query(description="ID of layer the requested units belong to"),
     ],
     parent_node_id: Annotated[
-        PyObjectId,
+        PyObjectId | None,
         Query(description="ID of node for which siblings to get associated units for"),
-    ],
+    ] = None,
 ) -> list[dict]:
     """
     Returns a list of all data layer units belonging to the data layer
@@ -56,7 +56,11 @@ async def get_unit_siblings(
             detail=f"Layer with ID {layer_id} could not be found.",
         )
 
-    nodes = await NodeDocument.find(NodeDocument.parent_id == parent_node_id).to_list()
+    nodes = await NodeDocument.find(
+        NodeDocument.text_id == layer.text_id,
+        NodeDocument.level == layer.level,
+        NodeDocument.parent_id == parent_node_id,
+    ).to_list()
 
     units = await UnitBaseDocument.find(
         UnitBaseDocument.layer_id == layer_id,

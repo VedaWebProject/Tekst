@@ -3040,15 +3040,13 @@ export const BrowseApiAxiosParamCreator = function (configuration?: Configuratio
          * Returns a list of all data layer units belonging to the data layer with the given ID, associated to nodes that are children of the parent node with the given ID.  As the resulting list may contain units of arbitrary type, the returned unit objects cannot be typed to their precise layer unit type. Also, the returned unit objects have an additional property containing their respective node\'s label, level and position.
          * @summary Get unit siblings
          * @param {string} layerId ID of layer the requested units belong to
-         * @param {string} parentNodeId ID of node for which siblings to get associated units for
+         * @param {string} [parentNodeId] ID of node for which siblings to get associated units for
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUnitSiblings: async (layerId: string, parentNodeId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getUnitSiblings: async (layerId: string, parentNodeId?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'layerId' is not null or undefined
             assertParamExists('getUnitSiblings', 'layerId', layerId)
-            // verify required parameter 'parentNodeId' is not null or undefined
-            assertParamExists('getUnitSiblings', 'parentNodeId', parentNodeId)
             const localVarPath = `/browse/unit-siblings`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3146,11 +3144,11 @@ export const BrowseApiFp = function(configuration?: Configuration) {
          * Returns a list of all data layer units belonging to the data layer with the given ID, associated to nodes that are children of the parent node with the given ID.  As the resulting list may contain units of arbitrary type, the returned unit objects cannot be typed to their precise layer unit type. Also, the returned unit objects have an additional property containing their respective node\'s label, level and position.
          * @summary Get unit siblings
          * @param {string} layerId ID of layer the requested units belong to
-         * @param {string} parentNodeId ID of node for which siblings to get associated units for
+         * @param {string} [parentNodeId] ID of node for which siblings to get associated units for
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getUnitSiblings(layerId: string, parentNodeId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<object>>> {
+        async getUnitSiblings(layerId: string, parentNodeId?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<object>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getUnitSiblings(layerId, parentNodeId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -3305,7 +3303,7 @@ export interface BrowseApiGetUnitSiblingsRequest {
      * @type {string}
      * @memberof BrowseApiGetUnitSiblings
      */
-    readonly parentNodeId: string
+    readonly parentNodeId?: string
 }
 
 /**

@@ -137,7 +137,7 @@
           },
           {
             "description": "ID of node for which siblings to get associated units for",
-            "required": true,
+            "required": false,
             "schema": {
               "title": "Parentnodeid",
               "type": "string",
