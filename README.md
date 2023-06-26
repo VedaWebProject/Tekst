@@ -14,11 +14,9 @@ Tekst is a collaborative, web-based research platform for aligning, displaying, 
 
 You are looking for information on concepts, use cases, features, setup, deployment or administration of the  Tekst platform?
 
-**[📑 Click here to go to the Tekst platform's documentation and manual!](https://vedawebproject.github.io/Tekst)**
+**[📖 Click here to go to the Tekst platform's documentation and manual!](https://vedawebproject.github.io/Tekst)**
 
 
 ## Development
 
-This is a monorepo containing the codebases of the Tekst server project ([Tekst-API](Tekst-API)) and the Tekst client project ([Tekst-Web](Tekst-Web)) as well as for the [documentation](https://vedawebproject.github.io/Tekst) and the resources needed to deploy an instance of the Tekst platform for yourself or your research project.
-
-The different project directories contain their own respective `README.md` files covering the development tooling and overall project setup.
+This is a monorepo containing the codebases of the Tekst server project ([Tekst-API](Tekst-API)), the Tekst client project ([Tekst-Web](Tekst-Web)) and the [documentation](https://vedawebproject.github.io/Tekst), as well as the resources needed for deployment. The different project directories contain their own respective `README.md` files covering the development tooling and overall project setup.
