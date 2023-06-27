@@ -3,8 +3,8 @@
 
     handle {$TEKST_API_PATH:/api}/* {
         uri strip_prefix {$TEKST_API_PATH:/api}
-        reverse_proxy http://tekst-api:8000
+        reverse_proxy http://server:8000
     }
 
-    reverse_proxy * http://tekst-web:80
+    reverse_proxy * http://client:80
 }
