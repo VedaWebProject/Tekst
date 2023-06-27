@@ -14,7 +14,7 @@ services:
       - front
       - back
 
-  tekst-web:
+  client:
     build:
       context: ./Tekst-Web
       target: prod
@@ -34,7 +34,7 @@ services:
     networks:
       - front
 
-  tekst-api:
+  server:
     build:
       context: ./Tekst-API
       target: prod
