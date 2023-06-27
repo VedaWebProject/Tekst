@@ -20,3 +20,8 @@ You are looking for information on concepts, use cases, features, setup, deploym
 ## Development
 
 This is a monorepo containing the codebases of the Tekst server project ([Tekst-API](Tekst-API)), the Tekst client project ([Tekst-Web](Tekst-Web)) and the [documentation](https://vedawebproject.github.io/Tekst), as well as the resources needed for deployment. The different project directories contain their own respective `README.md` files covering the development tooling and overall project setup.
+
+
+# Contributing
+
+Please see the [contributing guidelines](CONTRIBUTING.md).
