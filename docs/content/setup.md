@@ -43,6 +43,11 @@ cp .env.docker .env
 
 See [Configuration](#configuration) for details on initially configuring Tekst via this `.env` file.
 
+!!! danger "Attention!"
+
+    You need one initial administrator account to manage your Tekst platform.
+    Please read [Initial Admin Account](#initial-admin-account) to learn how to set it up!
+
 Build the docker images for the **Tekst-API** (server) and **Tekst-Web** (client) applications. **Important:** Whenever you decide to change one of `TEKST_WEB_PATH`, `TEKST_SERVER_URL` or `TEKST_API_PATH` in your `.env` file, you'll have to build the image for **Tekst-Web** (client) again, as these values are statically replaced in the code during the build process!
 
 ```sh
@@ -70,3 +75,17 @@ Read [this](https://docs.docker.com/engine/reference/commandline/compose/) to le
 
 #### Instructions
 > 🏗 TODO
+
+
+## Initial Admin Account
+
+To configure an initial admin account, follow these steps:
+
+1. In your `.env` file, set `TEKST_SECURITY__INIT_ADMIN_EMAIL` (admin account initial email address) and `TEKST_SECURITY__INIT_ADMIN_PASSWORD` (admin account initial password). The Password **must** have at least 8 characters and **must** container at least one of each:
+    - lowercase letters
+    - UPPERCASE LETTERS
+    - digits 0-9
+2. Follow the setup instructions depending on the deployment strategy you chose above.
+3. When setup is finished and everything is working, **immediately log in with your initial administrator account and change its password!**
+
+Alternatively, and this is for advanced users, you can leave the two values blank in `.env` and just register a new user via the Webclient as normal. You then have to log into the database modify the documents for this initial account to be activated, verified and a superuser (admin).

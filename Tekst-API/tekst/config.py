@@ -110,16 +110,22 @@ class SecurityConfig(ModelBase):
 
     secret: str = Field(default_factory=lambda: token_hex(32), min_length=16)
     closed_mode: bool = False
+    init_admin_email: EmailStr | None = None
+    init_admin_password: str | None = None
     users_active_by_default: bool = False
+
     enable_cookie_auth: bool = True
-    enable_jwt_auth: bool = True
     auth_cookie_name: str = "tekstuserauth"
     auth_cookie_domain: str | None = None
     auth_cookie_lifetime: conint(ge=3600) = 43200
     access_token_lifetime: conint(ge=3600) = 43200
+
+    enable_jwt_auth: bool = True
     auth_jwt_lifetime: int = conint(ge=3600)
+
     reset_pw_token_lifetime: conint(ge=600) = 3600
     verification_token_lifetime: conint(ge=600) = 3600
+
     csrf_cookie_name: str = "XSRF-TOKEN"
     csrf_header_name: str = "X-XSRF-TOKEN"
 
@@ -139,22 +145,23 @@ class TekstConfig(BaseSettings):
     """Platform config model"""
 
     # basic
-    dev_mode: bool = False
+    server_url: HttpUrl = "http://127.0.0.1:8000"
     web_path: str = "/"
     api_path: str = "/api"
-    server_url: HttpUrl = "http://127.0.0.1:8000"
-    user_files_dir: str = "userfiles"
-    log_level: str = "warning"
 
-    # uvicorn asgi binding
-    dev_host: str = "127.0.0.1"
-    dev_port: int = 8000
+    log_level: str = "warning"
+    user_files_dir: str = "userfiles"
 
     # CORS
     cors_allow_origins: str | list[str] = ["*"]
     cors_allow_credentials: bool = True
     cors_allow_methods: str | list[str] = ["*"]
     cors_allow_headers: str | list[str] = ["*"]
+
+    # development
+    dev_mode: bool = False
+    dev_host: str = "127.0.0.1"
+    dev_port: int = 8000
 
     # special domain sub configs
     email: EMailConfig = EMailConfig()  # Email-related config

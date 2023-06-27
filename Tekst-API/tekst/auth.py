@@ -356,11 +356,32 @@ async def _create_user(user: UserCreate) -> UserRead:
         log.warning("User already exists. Skipping.")
 
 
-async def create_initial_superuser(user: UserCreate):
-    user.is_active = True
-    user.is_verified = True
-    user.is_superuser = True
-    await _create_user(user)
+async def create_initial_superuser():
+    if _cfg.dev_mode:
+        return
+    if _cfg.security.init_admin_email and _cfg.security.init_admin_password:
+        if await User.find_one(User.email == _cfg.security.init_admin_email).exists():
+            log.warning("Initial admin account already exists. Skipping creation.")
+            return
+        log.info("Creating initial admin account...")
+        user = UserCreate(
+            email=_cfg.security.init_admin_email,
+            password=_cfg.security.init_admin_password,
+            username="admin",
+            first_name="Admin",
+            last_name="Admin",
+            affiliation="Admin",
+        )
+        user.is_active = True
+        user.is_verified = True
+        user.is_superuser = True
+        await _create_user(user)
+        log.warning(
+            "Created initial admin account. "
+            "PLEASE CHANGE THIS ACCOUNT'S EMAIL AND PASSWORD IMMEDIATELY!"
+        )
+    else:
+        log.warning("No initial admin account configured, skipping creation.")
 
 
 async def create_sample_users():

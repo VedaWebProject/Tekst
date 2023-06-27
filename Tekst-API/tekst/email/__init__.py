@@ -82,7 +82,7 @@ def _send_email(*, to: str, subject: str, txt: str, html: str):
             f"{_cfg.email.smtp_server}:{_cfg.email.smtp_port} "
             f"(StartTLS: {_cfg.email.smtp_starttls})"
         )
-        raise e
+        log.error(e)
 
 
 def send_email(
@@ -99,8 +99,8 @@ def send_email(
             templates[key]
             .format(
                 web_url=urljoin(_cfg.server_url, _cfg.web_path).strip("/"),
-                **_cfg.info.dict(by_alias=False),
-                **to_user.dict(by_alias=False),
+                **_cfg.info.dict(by_alias=False, exclude_unset=False),
+                **to_user.dict(by_alias=False, exclude_unset=False),
                 **kwargs,
             )
             .strip()
