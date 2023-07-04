@@ -1,10 +1,15 @@
+{
+	admin off
+	auto_https off
+}
+
 :80 {
-    redir {$TEKST_API_PATH:/api} {$TEKST_API_PATH:/api}/
+	redir {$TEKST_API_PATH:/api} {$TEKST_API_PATH:/api}/
 
-    handle {$TEKST_API_PATH:/api}/* {
-        uri strip_prefix {$TEKST_API_PATH:/api}
-        reverse_proxy http://server:8000
-    }
+	handle {$TEKST_API_PATH:/api}/* {
+		uri strip_prefix {$TEKST_API_PATH:/api}
+		reverse_proxy http://server:8000
+	}
 
-    reverse_proxy * http://client:80
+	reverse_proxy * http://client:80
 }
