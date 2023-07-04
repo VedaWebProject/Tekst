@@ -20,7 +20,7 @@ This list is not exhaustive, but includes some features that might be decisive f
 - Manage multiple independent, potentially differently structured texts and arbitrary related resources in a single platform instance
 - One common user base for the whole platform
 - UI colors will adapt to the currently selected working text for visual unambiguity
-- Built-in [i18n](https://en.wikipedia.org/wiki/Internationalization_and_localization) (with an extensible set of languages)
+- Built-in [i18n](https://en.wikipedia.org/wiki/Internationalization_and_localization) with an extensible set of languages
 - Integrated user management with authentication and role-based as well as owner-based authorization
 - *Closed Mode* to run the platform purely administrator-driven, turning off registration for arbitrary users
 - Extensively typed and documented server API (via [OpenAPI](https://spec.openapis.org/oas/v3.0.2) specification) and built-in interactive API documentation (via [Swagger UI](https://github.com/swagger-api/swagger-ui) and/or [ReDoc](https://github.com/Redocly/redoc)), all thanks to [FastAPI](https://github.com/tiangolo/fastapi)
@@ -30,5 +30,5 @@ This list is not exhaustive, but includes some features that might be decisive f
 
 Depending on your requirements, you might want to consider the following list of potential shortcomings:
 
-- SEO: The (web-)client is a SPA (Single Page Application) that is rendered in the browser (as opposed to SSR), so visibility to search engines is somewhat limited.
-- UI responsiveness: The user interface (especially the public-facing part) is responsive to the use on hand-held mobile devices. That being said, it was primarily developed for desktop-based usage. This might show in places.
+- SEO: The (web-) client is a [SPA](https://en.wikipedia.org/wiki/Single-page_application) that is rendered in the browser (so no SSR). As a result, visibility to search engines is somewhat limited.
+- UI responsiveness: The user interface – especially the public-facing part – is responsive to the use on hand-held mobile devices. That being said, it was primarily developed for desktop-based usage. This might show in places.
