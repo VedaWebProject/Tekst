@@ -41,7 +41,7 @@ typecheck = ["mypy"]
 
 [[package]]
 name = "beanie"
-version = "1.19.2"
+version = "1.20.0"
 description = "Asynchronous Python ODM for MongoDB"
 category = "main"
 optional = false
@@ -50,9 +50,14 @@ python-versions = ">=3.7,<4.0"
 [package.dependencies]
 click = ">=7"
 lazy-model = ">=0.0.3"
-motor = ">=2.5,<4.0"
-pydantic = ">=1.10.0"
+motor = ">=2.5.0,<4.0.0"
+pydantic = ">=1.10.0,<2.0.0"
 toml = "*"
+
+[package.extras]
+doc = ["Markdown (>=3.3)", "Pygments (>=2.8.0)", "jinja2 (>=3.0.3)", "mkdocs (>=1.4)", "mkdocs-material (>=9.0)", "pydoc-markdown (==4.6)"]
+queue = ["beanie-batteries-queue (>=0.2)"]
+test = ["asgi-lifespan (>=1.0.1)", "dnspython (>=2.1.0)", "fastapi (>=0.78.0)", "flake8 (>=3)", "httpx (>=0.23.0)", "pre-commit (>=2.3.0)", "pyright (>=0)", "pytest (>=6.0.0)", "pytest-asyncio (>=0.21.0)", "pytest-cov (>=2.8.1)"]
 
 [[package]]
 name = "black"
@@ -228,34 +233,34 @@ all = ["email-validator (>=1.1.1)", "httpx (>=0.23.0)", "itsdangerous (>=1.1.0)"
 
 [[package]]
 name = "fastapi-users"
-version = "11.0.0"
+version = "12.0.0"
 description = "Ready-to-use and customizable users management for FastAPI"
 category = "main"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 
 [package.dependencies]
 email-validator = ">=1.1.0,<2.1"
 fastapi = ">=0.65.2"
-fastapi-users-db-beanie = {version = ">=1.0.0", optional = true, markers = "extra == \"beanie\""}
+fastapi-users-db-beanie = {version = ">=3.0.0", optional = true, markers = "extra == \"beanie\""}
 makefun = ">=1.11.2,<2.0.0"
 passlib = {version = "1.7.4", extras = ["bcrypt"]}
-pyjwt = {version = "2.6.0", extras = ["crypto"]}
+pyjwt = {version = "2.7.0", extras = ["crypto"]}
 python-multipart = "0.0.6"
 
 [package.extras]
-beanie = ["fastapi-users-db-beanie (>=1.0.0)"]
-oauth = ["httpx-oauth (>=0.4,<0.12)"]
+beanie = ["fastapi-users-db-beanie (>=3.0.0)"]
+oauth = ["httpx-oauth (>=0.13)"]
 redis = ["redis (>=4.3.3,<5.0.0)"]
-sqlalchemy = ["fastapi-users-db-sqlalchemy (>=4.0.0)"]
+sqlalchemy = ["fastapi-users-db-sqlalchemy (>=6.0.0)"]
 
 [[package]]
 name = "fastapi-users-db-beanie"
-version = "2.0.0"
+version = "3.0.0"
 description = "FastAPI Users database adapter for Beanie"
 category = "main"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 
 [package.dependencies]
 beanie = ">=1.11.0,<2.0.0"
@@ -468,7 +473,7 @@ python-versions = "*"
 
 [[package]]
 name = "pyjwt"
-version = "2.6.0"
+version = "2.7.0"
 description = "JSON Web Token implementation in Python"
 category = "main"
 optional = false
@@ -693,7 +698,7 @@ standard = ["colorama (>=0.4)", "httptools (>=0.4.0)", "python-dotenv (>=0.13)",
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "f024fa5626a0d337b2e034c9003921beaa1d84421fe4d88f1ff7a119ef03dfde"
+content-hash = "f35a99fcc3d703477652ef057c64b1acad8921d80fb4fac52ec8ac6cff00de84"
 
 [metadata.files]
 anyio = [
@@ -728,8 +733,8 @@ bcrypt = [
     {file = "bcrypt-4.0.1.tar.gz", hash = "sha256:27d375903ac8261cfe4047f6709d16f7d18d39b1ec92aaf72af989552a650ebd"},
 ]
 beanie = [
-    {file = "beanie-1.19.2-py3-none-any.whl", hash = "sha256:fba803e954eff3f036db2236c1e02fe7afffe4330db2108d405ac820076e3ae1"},
-    {file = "beanie-1.19.2.tar.gz", hash = "sha256:1894c984a9f129bce03e19a9cb52ad47002bb3b4ea1a6b7af3a8a65978a35b78"},
+    {file = "beanie-1.20.0-py3-none-any.whl", hash = "sha256:3212cfc20c1b30d5b4ae9d9dfc02eda0cbc09c26f23c7aeb079baa1d90889a57"},
+    {file = "beanie-1.20.0.tar.gz", hash = "sha256:d83004a8330dab9055ea57a6247a324ed40011f9cdcd527aaf4c0dc9253e9d21"},
 ]
 black = [
     {file = "black-23.3.0-cp310-cp310-macosx_10_16_arm64.whl", hash = "sha256:0945e13506be58bf7db93ee5853243eb368ace1c08a24c65ce108986eac65915"},
@@ -1007,12 +1012,12 @@ fastapi = [
     {file = "fastapi-0.97.0.tar.gz", hash = "sha256:b53248ee45f64f19bb7600953696e3edf94b0f7de94df1e5433fc5c6136fa986"},
 ]
 fastapi-users = [
-    {file = "fastapi_users-11.0.0-py3-none-any.whl", hash = "sha256:434d69df432039681aa0fc938ac42eb1a373307ac8862ec19b8fb8b14084b54f"},
-    {file = "fastapi_users-11.0.0.tar.gz", hash = "sha256:f4a8319a2f72121355ceb8d36e4c48672a62444792cd6889c4e5f89c9111d5a5"},
+    {file = "fastapi_users-12.0.0-py3-none-any.whl", hash = "sha256:df4a49de7aad5394a4eb7a5e327afef8c284790ace5f7aef52f16d730877d3df"},
+    {file = "fastapi_users-12.0.0.tar.gz", hash = "sha256:694cf58f08fff4f76b3e6e1989b8c4bbcda4bc68d20e61a3859b071c5c02b45b"},
 ]
 fastapi-users-db-beanie = [
-    {file = "fastapi_users_db_beanie-2.0.0-py3-none-any.whl", hash = "sha256:95e59abd6331f7c710af2c2dbcfb1cb927814f30619d8c3bf2afc4ed6f27a027"},
-    {file = "fastapi_users_db_beanie-2.0.0.tar.gz", hash = "sha256:93a7acc6522b7429760f31cc16acb0814b0cc60485185d16900f7bd487e841b1"},
+    {file = "fastapi_users_db_beanie-3.0.0-py3-none-any.whl", hash = "sha256:4ed99cca9565cfa67bed436def0b27705142230409516915448494fbfc0fb031"},
+    {file = "fastapi_users_db_beanie-3.0.0.tar.gz", hash = "sha256:5f8000d394ddc065a5eaf7244aa2ac3603acd6a2184d12fa6fa5237b78126369"},
 ]
 h11 = [
     {file = "h11-0.14.0-py3-none-any.whl", hash = "sha256:e3fe4ac4b851c468cc8363d500db52c2ead036020723024a109d37346efaa761"},
@@ -1121,8 +1126,8 @@ pyhumps = [
     {file = "pyhumps-3.8.0.tar.gz", hash = "sha256:498026258f7ee1a8e447c2e28526c0bea9407f9a59c03260aee4bd6c04d681a3"},
 ]
 pyjwt = [
-    {file = "PyJWT-2.6.0-py3-none-any.whl", hash = "sha256:d83c3d892a77bbb74d3e1a2cfa90afaadb60945205d1095d9221f04466f64c14"},
-    {file = "PyJWT-2.6.0.tar.gz", hash = "sha256:69285c7e31fc44f68a1feb309e948e0df53259d579295e6cfe2b1792329f05fd"},
+    {file = "PyJWT-2.7.0-py3-none-any.whl", hash = "sha256:ba2b425b15ad5ef12f200dc67dd56af4e26de2331f965c5439994dad075876e1"},
+    {file = "PyJWT-2.7.0.tar.gz", hash = "sha256:bd6ca4a3c4285c1a2d4349e5a035fdf8fb94e04ccd0fcbe6ba289dae9cc3e074"},
 ]
 pymongo = [
     {file = "pymongo-4.3.3-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:74731c9e423c93cbe791f60c27030b6af6a948cef67deca079da6cd1bb583a8e"},
