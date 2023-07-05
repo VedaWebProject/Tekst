@@ -2,8 +2,20 @@
 
 Tekst is a collaborative, web-based research platform for aligning, displaying, linking, exploring, and enriching resources on natural language texts (and more). It is developed within the scope of the [VedaWeb 2.0](https://vedaweb.uni-koeln.de/) research project on Old Indic texts, where it constitutes the technical basis of the *VedaWeb* research platform.
 
+!!! info "Please note..."
 
-## Use Cases
+    At the moment, the VedaWeb platform is still a custom made application that was developed in an earlier phase of the VedaWeb project. Many of its concepts will find their way into Tekst, but it lacks core features like user management, collaboration and the possibility to work with multiple arbitrarily structured texts. As soon as Tekst is ready, the VedaWeb platform will become the first public instance of Tekst.
+
+
+## Use Case
+
+### Philological Research Projects
+
+The original intent for the development of Tekst was to create a technical basis for the online research platform [VedaWeb](https://vedaweb.uni-koeln.de/), where numerous resources on multiple Old Indic Sanskrit texts can be browsed, compared and searched. These include text versions, translations, annotations and references to external resources, which are all aligned to the structure of their respective reference texts.
+
+Therefore, the most obvious use case are comparable research projects that either want to publish and showcase their research data, simply curate a set of established resources on certain reference texts, or even encourage the research community to participate and contribute to a central platform dedicated to provide relevant resources.
+
+### Other
 
 (WIP)
 
