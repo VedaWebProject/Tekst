@@ -1,8 +1,8 @@
-# Introduction
+# What is Tekst?
 
 Tekst is a collaborative, web-based research platform for aligning, displaying, linking, exploring, and enriching resources on natural language texts (and more). It is developed within the scope of the [VedaWeb 2.0](https://vedaweb.uni-koeln.de/) research project on Old Indic texts, where it constitutes the technical basis of the *VedaWeb* research platform.
 
-!!! info "Please note..."
+!!! info "Please note"
 
     At the moment, the VedaWeb platform is still a custom made application that was developed in an earlier phase of the VedaWeb project. Many of its concepts will find their way into Tekst, but it lacks core features like user management, collaboration and the possibility to work with multiple arbitrarily structured texts. As soon as Tekst is ready, the VedaWeb platform will become the first public instance of Tekst.
 
@@ -17,12 +17,16 @@ Therefore, the most obvious use case are comparable research projects that eithe
 
 ### Other
 
-The above being said, nothing is stopping you from using Tekst in different contexts. As long as ...
+The above being said, nothing is stopping you from using Tekst in different contexts. As long as
 
-1. ... your data revolves around a somewhat structured work or other phenomenon (e.g. book, movie, theatre play or even a simple sequence of years or works) with one or more [structure levels](#structure-levels)
-2. ... the types of [data layers](#data-layers) Tekst offers match the data you want to work with
+1. your data revolves around a somewhat structured work or other phenomenon (e.g. book, movie, theatre play or even a simple sequence of years) with one or more [structure levels](#structure-levels)
+2. the types of [data layers](#data-layers) Tekst offers match the data you want to work with
 
-..., Tekst might be a viable option. In the end, just giving it a try on your local machine [is relatively easy](setup.md#using-docker-recommended).
+..., Tekst might be a viable option. In the end, giving it a try on your local machine [is relatively easy](setup.md#using-docker-recommended).
+
+!!! info "Please note"
+
+    Despite the alternative use cases mentioned, "texts" are used as an exemplary use case throughout this documentation.
 
 
 ## Features
