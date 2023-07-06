@@ -81,11 +81,11 @@ Read [this](https://docs.docker.com/engine/reference/commandline/compose/) to le
 
 To configure an initial admin account, follow these steps:
 
-1. In your `.env` file, set `TEKST_SECURITY__INIT_ADMIN_EMAIL` (admin account initial email address) and `TEKST_SECURITY__INIT_ADMIN_PASSWORD` (admin account initial password). The Password **must** have at least 8 characters and **must** container at least one of each:
+1. In your `.env` file, set `TEKST_SECURITY__INIT_ADMIN_EMAIL` and `TEKST_SECURITY__INIT_ADMIN_PASSWORD`. The Password **must** have at least 8 characters and **must** contain at least one of each:
     - lowercase letters
     - UPPERCASE LETTERS
     - digits 0-9
 2. Follow the setup instructions depending on the deployment strategy you chose above.
 3. When setup is finished and everything is working, **immediately log in with your initial administrator account and change its password!**
 
-Alternatively, and this is for advanced users, you can leave the two values blank in `.env` and just register a new user via the Webclient as normal. You then have to log into the database modify the documents for this initial account to be activated, verified and a superuser (admin).
+Alternatively – and this is for advanced users – you can leave the two values blank in `.env` and just register a new user via the Webclient as normal. You then have to log into the database and modify the data for this initial account (in the `users` collection) to be activated, verified and a superuser (admin). See the [MongoDB documentation](https://www.mongodb.com/docs/mongodb-shell/) for how to do this.

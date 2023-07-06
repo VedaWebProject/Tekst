@@ -5,6 +5,7 @@ repo_name: VedaWebProject/Tekst
 
 nav:
   - 'index.md'
+  - 'concepts.md'
   - 'setup.md'
 
 markdown_extensions:
