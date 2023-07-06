@@ -2,11 +2,15 @@ site_name: Tekst
 docs_dir: content
 repo_url: https://github.com/VedaWebProject/Tekst
 repo_name: VedaWebProject/Tekst
+site_description: A tool for creating open collaborative text research platforms
 
 nav:
   - 'index.md'
   - 'concepts.md'
   - 'setup.md'
+
+plugins:
+  - search
 
 markdown_extensions:
   - admonition
@@ -25,7 +29,12 @@ theme:
   favicon: assets/logo.png
   features:
     - navigation.instant
+    - navigation.sections
+    - navigation.expand
     - content.code.copy
+    - search.suggest
+    - search.highlight
+    - search.share
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
