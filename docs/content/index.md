@@ -11,23 +11,23 @@ Tekst is a collaborative, web-based research platform for aligning, displaying, 
 
 ### Philological Research Projects
 
-The original intent for the development of Tekst was to create a technical basis for the online research platform [VedaWeb](https://vedaweb.uni-koeln.de/), where numerous resources on multiple Old Indic Sanskrit texts can be browsed, compared and searched. These include text versions, translations, annotations and references to external resources, which are all aligned to the structure of their respective reference texts.
+The main intent for the development of Tekst was to create a technical basis for the online research platform [VedaWeb](https://vedaweb.uni-koeln.de/), where numerous resources on multiple Old Indic Sanskrit texts can be browsed, compared and searched. These include text versions, translations, annotations and references to external sources, which are all aligned to the structure of their respective reference texts.
 
 Therefore, the most obvious use case are comparable research projects that either want to publish and showcase their research data, simply curate a set of established resources on certain reference texts, or even encourage the research community to participate and contribute to a central platform dedicated to provide relevant resources.
 
 ### Other
 
-(WIP)
+The above being said, nothing is stopping you from using Tekst in different contexts. As long as ...
 
+1. ... your data revolves around a somewhat structured work or other phenomenon (e.g. book, movie, theatre play or even a simple sequence of years or works) with one or more [structure levels](#structure-levels)
+2. ... the types of [data layers](#data-layers) Tekst offers match the data you want to work with
 
-## Concepts
-
-(WIP)
+..., Tekst might be a viable option. In the end, just giving it a try on your local machine [is relatively easy](setup.md#using-docker-recommended).
 
 
 ## Features
 
-This list is not exhaustive, but includes some features that might be decisive for certain use cases:
+This list is far from exhaustive, but includes some features that might be decisive for certain use cases:
 
 - Manage multiple independent, potentially differently structured texts and arbitrary related resources in a single platform instance
 - One common user base for the whole platform
@@ -36,6 +36,15 @@ This list is not exhaustive, but includes some features that might be decisive f
 - Integrated user management with authentication and role-based as well as owner-based authorization
 - *Closed Mode* to run the platform purely administrator-driven, turning off registration for arbitrary users
 - Extensively typed and documented server API (via [OpenAPI](https://spec.openapis.org/oas/v3.0.2) specification) and built-in interactive API documentation (via [Swagger UI](https://github.com/swagger-api/swagger-ui) and/or [ReDoc](https://github.com/Redocly/redoc)), all thanks to [FastAPI](https://github.com/tiangolo/fastapi)
+
+
+## Concepts
+
+### Structure Levels
+(WIP)
+
+### Data Layers
+(WIP)
 
 
 ## Caveats
