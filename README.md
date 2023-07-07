@@ -14,6 +14,7 @@ Tekst is a collaborative, web-based research platform for aligning, displaying, 
 
 You are looking for information on concepts, use cases, features, setup, deployment or administration of the Tekst platform?
 
+<!-- I know this is a sin – and it hurts me, too. But I need the bigger font on this. -->
 ### 📖 [Click here for the *Tekst* manual!](https://vedawebproject.github.io/Tekst)
 
 
