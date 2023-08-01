@@ -7,8 +7,6 @@
 > 🏗 Tekst is still in a pre-alpha stage. As of now there's no complete (let alone production-ready) version available.
 > As soon as we're ready for it, the new [VedaWeb platform](https://vedaweb.uni-koeln.de/rigveda) will become the first public instance of Tekst. Until then, you are welcome to follow the development of Tekst in this very repository.
 
-> 📢 We recently presented our vision for a collaborative research platform at the **DH 2023** conference in Graz. You can find our conference paper [here](https://doi.org/10.5281/zenodo.8107794)!
-
 Tekst is a collaborative, web-based research platform for aligning, displaying, linking, exploring, and enriching resources on natural language texts (and more). It is developed within the scope of the [VedaWeb 2.0](https://vedaweb.uni-koeln.de/) research project on Old Indic texts, where it constitutes the technical basis of the research platform "VedaWeb", which will be launched in its new form as part of the project's efforts.
 
 
@@ -18,6 +16,11 @@ You are looking for information on concepts, use cases, features, setup, deploym
 
 <!-- I know this is a sin – and it hurts me, too. But I need the bigger font on this. -->
 ### 📖 [Click here for the *Tekst* manual!](https://vedawebproject.github.io/Tekst)
+
+
+## Publications
+
+We presented our vision for a collaborative research platform at the **DH2023** conference (Digital Humanities 2023. Collaboration as Opportunity, Graz, Austria, 10-14 July 2023). You can find our conference paper [here](https://doi.org/10.5281/zenodo.8107794)!
 
 
 ## Development
