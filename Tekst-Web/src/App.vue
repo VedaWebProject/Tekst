@@ -13,11 +13,13 @@ import { useInitializeApp } from '@/init';
 import LoginModal from '@/components/LoginModal.vue';
 import HugeLabeledIcon from '@/components/HugeLabeledIcon.vue';
 import ErrorTwotone from '@vicons/material/ErrorTwotone';
+import { useI18n } from 'vue-i18n';
 
 const state = useStateStore();
 const themeVars = useThemeVars();
 const { initialized, error } = useInitializeApp();
 const { theme, themeOverrides, mainBgColor, contentBgColor, accentColors } = useTheme();
+const { t } = useI18n({ useScope: 'global' });
 
 // i18n
 const nUiLangLocale = computed(() => localeProfiles[state.locale].nUiLangLocale);
@@ -35,7 +37,7 @@ const nUiDateLocale = computed(() => localeProfiles[state.locale].nUiDateLocale)
       <div id="app-container">
         <huge-labeled-icon
           v-if="initialized && error"
-          :message="$t('init.error')"
+          :message="t('init.error')"
           :loading="!error && !initialized"
           :icon="ErrorTwotone"
         />
@@ -91,7 +93,8 @@ const nUiDateLocale = computed(() => localeProfiles[state.locale].nUiDateLocale)
 
 main {
   background-color: var(--main-bg-color);
-  box-shadow: inset 0 12px 12px -12px rgba(0, 0, 0, 0.4),
+  box-shadow:
+    inset 0 12px 12px -12px rgba(0, 0, 0, 0.4),
     inset 0 -10px 12px -12px rgba(0, 0, 0, 0.1);
 }
 

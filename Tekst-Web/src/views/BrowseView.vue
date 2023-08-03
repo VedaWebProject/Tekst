@@ -7,9 +7,11 @@ import FolderOffTwotone from '@vicons/material/FolderOffTwotone';
 import LayerToggleDrawer from '@/components/browse/LayerToggleDrawer.vue';
 import UnitContainer from '@/components/browse/UnitContainer.vue';
 import HugeLabeledIcon from '@/components/HugeLabeledIcon.vue';
+import { useI18n } from 'vue-i18n';
 
 const browse = useBrowseStore();
 const state = useStateStore();
+const { t } = useI18n({ useScope: 'global' });
 
 const activeLayers = computed(() => {
   return browse.layers.filter((l) => l.active);
@@ -31,7 +33,7 @@ const activeLayers = computed(() => {
     />
   </template>
 
-  <huge-labeled-icon v-else :message="$t('browse.locationNoData')" :icon="FolderOffTwotone" />
+  <huge-labeled-icon v-else :message="t('browse.locationNoData')" :icon="FolderOffTwotone" />
   <LayerToggleDrawer v-model:show="browse.showLayerToggleDrawer" />
 </template>
 

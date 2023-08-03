@@ -35,8 +35,8 @@ async function handleClick() {
         parentNodeId: browse.nodePath[props.layer.level - 1]?.id,
       })
       .then((resp) => resp.data);
-  } catch(e) {
-    console.error(e)
+  } catch (e) {
+    console.error(e);
     message.error(t('errors.unexpected'));
     showModal.value = false;
   } finally {
@@ -47,7 +47,7 @@ async function handleClick() {
 
 <template>
   <UnitContainerHeaderWidget
-    :title="$t('browse.units.widgets.siblingsWidget.title')"
+    :title="t('browse.units.widgets.siblingsWidget.title')"
     :iconComponent="MergeRound"
     @click="handleClick"
   />
@@ -89,7 +89,7 @@ async function handleClick() {
 
     <ModalButtonFooter>
       <n-button type="primary" @click="() => (showModal = false)">
-        {{ $t('general.closeAction') }}
+        {{ t('general.closeAction') }}
       </n-button>
     </ModalButtonFooter>
   </n-modal>

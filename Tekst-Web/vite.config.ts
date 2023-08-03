@@ -15,7 +15,7 @@ export default defineConfig({
       vueTsc: true,
       eslint: {
         lintCommand:
-          'eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore',
+          'eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --ignore-path .gitignore',
       },
     }),
     VueI18nPlugin({

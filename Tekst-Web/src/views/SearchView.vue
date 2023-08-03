@@ -1,7 +1,11 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n({ useScope: 'global' });
+</script>
 
 <template>
-  <h1>{{ $t('search.heading') }}</h1>
+  <h1>{{ t('search.heading') }}</h1>
   <div class="content-block">
     <p>...</p>
   </div>

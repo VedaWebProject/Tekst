@@ -90,7 +90,7 @@ onMounted(() => {
       embedded
     >
       <div class="form-container">
-        <h2 style="text-align: center">{{ $t('account.login.heading') }}</h2>
+        <h2 style="text-align: center">{{ t('account.login.heading') }}</h2>
         <div v-show="args[0]" class="login-message">{{ args[0] }}</div>
         <n-form
           ref="formRef"
@@ -102,12 +102,12 @@ onMounted(() => {
           <n-form-item
             path="email"
             :rule="accountFormRules.loginEmail"
-            :label="$t('models.user.email')"
+            :label="t('models.user.email')"
           >
             <n-input
               v-model:value="formModel.email"
               type="text"
-              :placeholder="$t('models.user.email')"
+              :placeholder="t('models.user.email')"
               @keydown.enter.prevent
               :disabled="isResolving"
               ref="emailInputRef"
@@ -116,12 +116,12 @@ onMounted(() => {
           <n-form-item
             path="password"
             :rule="accountFormRules.loginPassword"
-            :label="$t('models.user.password')"
+            :label="t('models.user.password')"
           >
             <n-input
               v-model:value="formModel.password"
               type="password"
-              :placeholder="$t('models.user.password')"
+              :placeholder="t('models.user.password')"
               :disabled="isResolving"
               @keyup.enter="handleLoginClick(resolve, args[1])"
             />
@@ -135,7 +135,7 @@ onMounted(() => {
             style="margin-bottom: 2rem; font-size: var(--app-ui-font-size-mini)"
             @click="handleForgotPasswordClick(resolve)"
           >
-            {{ $t('account.forgotPassword.forgotPassword') }}
+            {{ t('account.forgotPassword.forgotPassword') }}
           </n-button>
         </div>
 
@@ -147,10 +147,10 @@ onMounted(() => {
             :loading="isResolving"
             :disabled="isResolving"
           >
-            {{ $t('account.loginBtn') }}
+            {{ t('account.loginBtn') }}
           </n-button>
           <n-button v-if="args[2]" secondary block @click="reject(switchToRegistration())">
-            {{ $t('account.switchToRegister') }}
+            {{ t('account.switchToRegister') }}
           </n-button>
         </n-space>
       </div>

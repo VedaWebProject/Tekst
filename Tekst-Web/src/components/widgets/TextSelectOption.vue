@@ -4,12 +4,15 @@ import { NIcon } from 'naive-ui';
 import DisabledVisibleRound from '@vicons/material/DisabledVisibleRound';
 import { computed } from 'vue';
 import { determineTextSubtitle } from '@/utils';
+import { useI18n } from 'vue-i18n';
 
 const props = defineProps<{
   text: TextRead;
   locale: string;
   selected?: boolean;
 }>();
+
+const { t } = useI18n({ useScope: 'global' });
 
 const subtitle = computed(() => determineTextSubtitle(props.text.subtitle || [], props.locale));
 </script>
@@ -29,7 +32,7 @@ const subtitle = computed(() => determineTextSubtitle(props.text.subtitle || [],
         style="font-size: var(--app-ui-font-size-small); font-style: italic; opacity: 0.5"
       >
         <n-icon :component="DisabledVisibleRound" />
-        {{ $t('models.text.isInactive') }}
+        {{ t('models.text.isInactive') }}
       </div>
     </div>
   </div>

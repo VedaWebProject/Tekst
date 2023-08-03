@@ -3,11 +3,13 @@ import { computed } from 'vue';
 import { NDrawer, NDrawerContent } from 'naive-ui';
 import { useBrowseStore } from '@/stores';
 import LayerToggleDrawerItem from '@/components/browse/LayerToggleDrawerItem.vue';
-
-const browse = useBrowseStore();
+import { useI18n } from 'vue-i18n';
 
 const props = defineProps<{ show: boolean }>();
 const emits = defineEmits<{ (e: 'update:show', show: boolean): void }>();
+
+const browse = useBrowseStore();
+const { t } = useI18n({ useScope: 'global' });
 
 const show = computed({
   get() {
@@ -28,7 +30,7 @@ const show = computed({
     style="max-width: 90%"
   >
     <n-drawer-content
-      :title="$t('browse.layerToggleDrawer.heading')"
+      :title="t('browse.layerToggleDrawer.heading')"
       header-style="font-size: var(--app-ui-font-size-huge); font-weight: var(--app-ui-font-weight-light)"
       closable
     >

@@ -45,7 +45,7 @@ function handleLanguageSelect(localeCode: string) {
       circle
       size="large"
       icon-placement="left"
-      :title="$t('i18n.tipSwitcher')"
+      :title="t('i18n.tipSwitcher')"
       :focusable="false"
     >
       <template #icon>

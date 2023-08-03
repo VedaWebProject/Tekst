@@ -1,12 +1,15 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
 import { usePlatformData } from '@/platformData';
+
 const { pfData } = usePlatformData();
+const { t } = useI18n({ useScope: 'global' });
 </script>
 
 <template>
   <div class="content-block">
-    <h1>{{ pfData?.info?.platformName }} ({{ $t('dummy.home') }})</h1>
-    <p>{{ $t('dummy.schiller') }}</p>
+    <h1>{{ pfData?.info?.platformName }} ({{ t('dummy.home') }})</h1>
+    <p>{{ t('dummy.schiller') }}</p>
 
     <h2>Accent Palette Demo</h2>
     <div class="square" style="background-color: #305d97"></div>

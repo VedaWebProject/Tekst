@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { i18n } from '@/i18n';
 import { useRoute, useRouter } from 'vue-router';
 import { useStateStore } from '@/stores';
 import { useAsyncQueue } from '@vueuse/core';
@@ -19,7 +19,7 @@ export function useInitializeApp() {
   const { pfData, loadPlatformData } = usePlatformData();
   const route = useRoute();
   const router = useRouter();
-  const { t } = useI18n({ useScope: 'global' });
+  const { t } = i18n.global;
 
   const initialized = ref(false);
   const error = computed(() => result.map((r) => r.data).includes(false));

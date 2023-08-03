@@ -7,6 +7,7 @@ import type { VNodeChild } from 'vue';
 import { useStateStore } from '@/stores';
 import { NDropdown } from 'naive-ui';
 import type { DropdownOption } from 'naive-ui';
+import { useI18n } from 'vue-i18n';
 
 const DEEPL_TRANSLATOR_URL = 'https://www.deepl.com/translator';
 
@@ -16,6 +17,8 @@ const props = defineProps<{
 }>();
 
 const state = useStateStore();
+const { t } = useI18n({ useScope: 'global' });
+
 const unitsTextEncoded = computed<string>(() => {
   const unitsText = props.layer.units
     .map((u: Record<string, any>) => u.text as string)
@@ -29,11 +32,12 @@ const unitsTextEncoded = computed<string>(() => {
   );
 });
 
-const options = computed(() =>
-  props.widgetConfig?.languages?.map((l) => ({
-    label: l,
-    key: l,
-  }))
+const options = computed(
+  () =>
+    props.widgetConfig?.languages?.map((l) => ({
+      label: l,
+      key: l,
+    }))
 );
 
 function renderOption(option: DropdownOption) {
@@ -61,7 +65,7 @@ function renderOption(option: DropdownOption) {
     show-arrow
   >
     <UnitContainerHeaderWidget
-      :title="$t('browse.units.widgets.deepLTranslate.title')"
+      :title="t('browse.units.widgets.deepLTranslate.title')"
       :iconComponent="TranslateRound"
     />
   </n-dropdown>

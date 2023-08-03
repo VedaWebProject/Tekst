@@ -91,7 +91,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <h1 style="text-align: center">{{ $t('account.resetPassword.heading') }}</h1>
+  <h1 style="text-align: center">{{ t('account.resetPassword.heading') }}</h1>
   <div class="form-container">
     <div class="content-block">
       <n-form
@@ -102,11 +102,11 @@ onMounted(() => {
         label-width="auto"
         require-mark-placement="right-hanging"
       >
-        <n-form-item path="password" :label="$t('models.user.password')">
+        <n-form-item path="password" :label="t('models.user.password')">
           <n-input
             v-model:value="passwordFormModel.password"
             type="password"
-            :placeholder="$t('models.user.password')"
+            :placeholder="t('models.user.password')"
             @input="handlePasswordInput"
             @keydown.enter.prevent
             :disabled="loading"
@@ -118,13 +118,13 @@ onMounted(() => {
           first
           path="passwordRepeat"
           :rule="accountFormRules.passwordRepeat.concat([passwordRepeatMatchRule])"
-          :label="$t('register.repeatPassword')"
+          :label="t('register.repeatPassword')"
         >
           <n-input
             v-model:value="passwordFormModel.passwordRepeat"
             type="password"
             :disabled="!passwordFormModel.password || loading"
-            :placeholder="$t('register.repeatPassword')"
+            :placeholder="t('register.repeatPassword')"
             @keyup.enter="handlePasswordSave"
           />
         </n-form-item>
@@ -137,7 +137,7 @@ onMounted(() => {
           :loading="loading"
           :disabled="loading"
         >
-          {{ $t('general.saveAction') }}
+          {{ t('general.saveAction') }}
         </n-button>
       </n-space>
     </div>

@@ -1,13 +1,15 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
 import { usePlatformData } from '@/platformData';
 
 const { pfData } = usePlatformData();
+const { t } = useI18n({ useScope: 'global' });
 </script>
 
 <template>
   <footer>
     <div id="footer-content">
-      <div>{{ $t('server.welcomeTest') }}</div>
+      <div>{{ t('server.welcomeTest') }}</div>
       <a :href="pfData?.tekstInfo?.website" title="">
         {{ pfData?.tekstInfo?.name }}
       </a>

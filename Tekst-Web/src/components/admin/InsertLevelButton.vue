@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { NButton, NIcon } from 'naive-ui';
 import AddRound from '@vicons/material/AddRound';
+import { useI18n } from 'vue-i18n';
 
 defineProps<{
   level: number;
 }>();
 defineEmits(['click']);
+
+const { t } = useI18n({ useScope: 'global' });
 </script>
 
 <template>
@@ -14,7 +17,7 @@ defineEmits(['click']);
     <n-button
       secondary
       circle
-      :title="$t('admin.texts.levels.tipInsertLevel', { n: level + 1 })"
+      :title="t('admin.texts.levels.tipInsertLevel', { n: level + 1 })"
       @click="$emit('click', level)"
       :focusable="false"
     >

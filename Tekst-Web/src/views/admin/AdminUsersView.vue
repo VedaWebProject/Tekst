@@ -195,7 +195,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <h1>{{ $t('admin.heading') }}: {{ $t('admin.users.heading') }}</h1>
+  <h1>{{ t('admin.heading') }}: {{ t('admin.users.heading') }}</h1>
 
   <template v-if="users && !error">
     <!-- Filters -->
@@ -261,10 +261,10 @@ onMounted(() => {
   <n-spin
     v-else-if="!users && !error"
     style="margin: 3rem 0 2rem 0; width: 100%"
-    :description="$t('init.loading')"
+    :description="t('init.loading')"
   />
 
   <div v-else>
-    {{ $t('errors.error') }}
+    {{ t('errors.error') }}
   </div>
 </template>

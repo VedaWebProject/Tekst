@@ -40,7 +40,7 @@ export const LoginTemplatePromise = createTemplatePromise<
     // route to change to after login
     RouteLocationRaw | undefined,
     // display register button
-    boolean
+    boolean,
   ]
 >();
 

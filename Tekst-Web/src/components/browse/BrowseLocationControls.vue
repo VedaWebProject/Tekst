@@ -11,13 +11,15 @@ import router from '@/router';
 import ModalButtonFooter from '@/components/ModalButtonFooter.vue';
 import { useMagicKeys, whenever } from '@vueuse/core';
 import { useApi } from '@/api';
+import { useI18n } from 'vue-i18n';
 
 const state = useStateStore();
 const browse = useBrowseStore();
 const route = useRoute();
-const { ArrowLeft, ArrowRight } = useMagicKeys();
-
+const { t } = useI18n({ useScope: 'global' });
 const { browseApi } = useApi();
+
+const { ArrowLeft, ArrowRight } = useMagicKeys();
 
 const showModal = ref(false);
 watch(showModal, (show) => show && initSelectModels());
@@ -219,7 +221,7 @@ whenever(ArrowLeft, () => {
         @click="navigate"
         :disabled="browse.position === 0"
         :focusable="false"
-        :title="$t('browse.toolbar.tipPreviousLocation')"
+        :title="t('browse.toolbar.tipPreviousLocation')"
         size="large"
         color="#fff"
       >
@@ -231,7 +233,7 @@ whenever(ArrowLeft, () => {
 
     <n-button
       secondary
-      :title="$t('browse.toolbar.tipSelectLocation')"
+      :title="t('browse.toolbar.tipSelectLocation')"
       @click="showModal = true"
       :focusable="false"
       size="large"
@@ -248,7 +250,7 @@ whenever(ArrowLeft, () => {
         secondary
         @click="navigate"
         :focusable="false"
-        :title="$t('browse.toolbar.tipNextLocation')"
+        :title="t('browse.toolbar.tipNextLocation')"
         size="large"
         color="#fff"
       >
@@ -269,14 +271,14 @@ whenever(ArrowLeft, () => {
     size="large"
     class="tekst-modal"
   >
-    <h2>{{ $t('browse.location.modalHeading') }}</h2>
+    <h2>{{ t('browse.location.modalHeading') }}</h2>
     <n-form
       label-placement="left"
       label-width="auto"
       :show-feedback="false"
       :show-require-mark="false"
     >
-      <n-form-item :label="$t('browse.location.level')">
+      <n-form-item :label="t('browse.location.level')">
         <n-select :options="browseLevelOptions" v-model:value="browseLevel" />
       </n-form-item>
 
@@ -303,10 +305,10 @@ whenever(ArrowLeft, () => {
     <!-- <pre style="font-size: 11px; line-height: 1">{{ locationSelectModels }}</pre> -->
     <ModalButtonFooter>
       <n-button @click="showModal = false" :focusable="false">
-        {{ $t('general.cancelAction') }}
+        {{ t('general.cancelAction') }}
       </n-button>
       <n-button type="primary" @click="handleLocationSelect">
-        {{ $t('general.selectAction') }}
+        {{ t('general.selectAction') }}
       </n-button>
     </ModalButtonFooter>
   </n-modal>
