@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CSSProperties } from 'vue';
+import type { StyleValue } from 'vue';
 import unitWidgets from '@/components/browse/widgets/mappings';
 import UnitSiblingsWidget from './widgets/UnitSiblingsWidget.vue';
 import LayerInfoWidget from './widgets/LayerInfoWidget.vue';
@@ -8,7 +8,7 @@ import { useBrowseStore } from '@/stores';
 
 interface Props {
   layer: Record<string, any>;
-  style?: CSSProperties;
+  style?: StyleValue;
   showSiblingsWidget?: boolean;
   showDeactivateWidget?: boolean;
 }
@@ -16,6 +16,7 @@ interface Props {
 withDefaults(defineProps<Props>(), {
   showDeactivateWidget: true,
   showSiblingsWidget: true,
+  style: undefined,
 });
 
 const browse = useBrowseStore();
@@ -27,8 +28,8 @@ const browse = useBrowseStore();
     <template v-if="layer.units.length">
       <template v-for="(configSection, configSectionKey) in layer.config" :key="configSectionKey">
         <component
-          v-if="configSectionKey in unitWidgets"
           :is="unitWidgets[configSectionKey]"
+          v-if="configSectionKey in unitWidgets"
           :layer="layer"
           :widget-config="configSection"
         />

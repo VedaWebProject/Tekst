@@ -34,8 +34,8 @@ const show = computed({
     >
       <LayerToggleDrawerItem
         v-for="layer in browse.layers"
-        v-model:active="layer.active"
         :key="`${layer.id}`"
+        v-model:active="layer.active"
         :layer="layer"
         :disabled="!layer.units.length"
       />

@@ -206,8 +206,8 @@ async function handleModalSubmit() {
             secondary
             circle
             :title="$t('admin.texts.levels.tipEditLevel', { levelLabel: getLevelLabel(lvl) })"
-            @click="() => handleEditClick(lvlIndex)"
             :focusable="false"
+            @click="() => handleEditClick(lvlIndex)"
           >
             <n-icon :component="EditRound" />
           </n-button>
@@ -215,8 +215,8 @@ async function handleModalSubmit() {
             secondary
             circle
             :title="$t('admin.texts.levels.tipDeleteLevel', { levelLabel: getLevelLabel(lvl) })"
-            @click="() => handleDeleteClick(lvlIndex)"
             :focusable="false"
+            @click="() => handleDeleteClick(lvlIndex)"
           >
             <n-icon :component="DeleteRound" />
           </n-button>
@@ -280,9 +280,9 @@ async function handleModalSubmit() {
                   :options="levelLocaleOptions"
                   :placeholder="$t('general.language')"
                   :consistent-menu-width="false"
-                  @keydown.enter.prevent
                   :disabled="loading"
                   style="min-width: 200px; font-weight: var(--app-ui-font-weight-normal)"
+                  @keydown.enter.prevent
                 />
               </n-form-item>
               <!-- STRUCTURE LEVEL LABEL -->
@@ -297,8 +297,8 @@ async function handleModalSubmit() {
                   v-model:value="formModel.translations[translationIndex].label"
                   type="text"
                   :placeholder="$t('models.text.levelLabel')"
-                  @keydown.enter.prevent
                   :disabled="loading"
+                  @keydown.enter.prevent
                 />
               </n-form-item>
             </div>
@@ -335,18 +335,18 @@ async function handleModalSubmit() {
       <n-button
         secondary
         block
-        @click="showEditModal = false"
         :loading="loading"
         :disabled="loading"
+        @click="showEditModal = false"
       >
         {{ $t('general.cancelAction') }}
       </n-button>
       <n-button
         block
         type="primary"
-        @click="handleModalSubmit"
         :loading="loading"
         :disabled="loading"
+        @click="handleModalSubmit"
       >
         {{ $t('general.saveAction') }}
       </n-button>

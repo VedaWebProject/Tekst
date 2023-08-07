@@ -13,9 +13,9 @@ const showModal = ref(false);
     circle
     size="large"
     icon-placement="left"
-    @click="showModal = true"
     :title="$t('search.quickSearch.heading')"
     :focusable="false"
+    @click="showModal = true"
   >
     <template #icon>
       <n-icon :component="SearchRound" />
@@ -42,7 +42,7 @@ const showModal = ref(false);
     <p>Quick Search settings go here...</p>
 
     <ModalButtonFooter>
-      <n-button @click="showModal = false" :focusable="false">
+      <n-button :focusable="false" @click="showModal = false">
         {{ $t('general.cancelAction') }}
       </n-button>
       <n-button type="primary">{{ $t('search.searchAction') }}</n-button>

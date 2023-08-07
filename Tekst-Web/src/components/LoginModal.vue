@@ -83,11 +83,11 @@ onMounted(() => {
       preset="card"
       size="large"
       class="tekst-modal tekst-modal-small"
-      @close="reject(null)"
-      @mask-click="reject(null)"
       to="#app-container"
       :closable="false"
       embedded
+      @close="reject(null)"
+      @mask-click="reject(null)"
     >
       <div class="form-container">
         <h2 style="text-align: center">{{ $t('account.login.heading') }}</h2>
@@ -105,12 +105,12 @@ onMounted(() => {
             :label="$t('models.user.email')"
           >
             <n-input
+              ref="emailInputRef"
               v-model:value="formModel.email"
               type="text"
               :placeholder="$t('models.user.email')"
-              @keydown.enter.prevent
               :disabled="isResolving"
-              ref="emailInputRef"
+              @keydown.enter.prevent
             />
           </n-form-item>
           <n-form-item
@@ -143,9 +143,9 @@ onMounted(() => {
           <n-button
             block
             type="primary"
-            @click="handleLoginClick(resolve, args[1])"
             :loading="isResolving"
             :disabled="isResolving"
+            @click="handleLoginClick(resolve, args[1])"
           >
             {{ $t('account.loginBtn') }}
           </n-button>

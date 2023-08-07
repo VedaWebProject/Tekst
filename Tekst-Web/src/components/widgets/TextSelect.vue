@@ -74,7 +74,7 @@ function handleSelect(key: string) {
         cursor: !disabled ? 'pointer' : 'default',
       }"
     >
-      <template #icon v-if="!disabled">
+      <template v-if="!disabled" #icon>
         <n-icon>
           <ArrowDropDownFilled />
         </n-icon>

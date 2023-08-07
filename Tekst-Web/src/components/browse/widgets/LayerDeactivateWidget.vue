@@ -25,7 +25,7 @@ function handleClick() {
 <template>
   <UnitContainerHeaderWidget
     :title="$t('browse.units.widgets.deactivateWidget.title')"
-    :iconComponent="ClearRound"
+    :icon-component="ClearRound"
     @click="handleClick"
   />
 </template>

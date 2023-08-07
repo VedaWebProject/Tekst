@@ -15,8 +15,8 @@ defineEmits(['click']);
       secondary
       circle
       :title="$t('admin.texts.levels.tipInsertLevel', { n: level + 1 })"
-      @click="$emit('click', level)"
       :focusable="false"
+      @click="$emit('click', level)"
     >
       <template #icon>
         <n-icon :component="AddRound" />

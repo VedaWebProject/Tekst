@@ -216,12 +216,12 @@ whenever(ArrowLeft, () => {
     >
       <n-button
         secondary
-        @click="navigate"
         :disabled="browse.position === 0"
         :focusable="false"
         :title="$t('browse.toolbar.tipPreviousLocation')"
         size="large"
         color="#fff"
+        @click="navigate"
       >
         <template #icon>
           <ArrowBackIosRound />
@@ -232,11 +232,11 @@ whenever(ArrowLeft, () => {
     <n-button
       secondary
       :title="$t('browse.toolbar.tipSelectLocation')"
-      @click="showModal = true"
       :focusable="false"
       size="large"
       color="#fff"
       :disabled="!browse.nodePath[browseLevel]"
+      @click="showModal = true"
     >
       <template #icon>
         <MenuBookOutlined />
@@ -246,11 +246,11 @@ whenever(ArrowLeft, () => {
     <router-link v-slot="{ navigate }" :to="getPrevNextRoute(1)" custom>
       <n-button
         secondary
-        @click="navigate"
         :focusable="false"
         :title="$t('browse.toolbar.tipNextLocation')"
         size="large"
         color="#fff"
+        @click="navigate"
       >
         <template #icon>
           <ArrowForwardIosRound />
@@ -277,15 +277,15 @@ whenever(ArrowLeft, () => {
       :show-require-mark="false"
     >
       <n-form-item :label="$t('browse.location.level')">
-        <n-select :options="browseLevelOptions" v-model:value="browseLevel" />
+        <n-select v-model:value="browseLevel" :options="browseLevelOptions" />
       </n-form-item>
 
       <n-divider />
 
       <n-form-item
         v-for="(levelLoc, index) in locationSelectModels"
-        :label="state.textLevelLabels[index]"
         :key="`${index}_loc_select`"
+        :label="state.textLevelLabels[index]"
         class="location-select-item"
         :class="levelLoc.disabled && 'disabled'"
       >
@@ -302,7 +302,7 @@ whenever(ArrowLeft, () => {
     </n-form>
     <!-- <pre style="font-size: 11px; line-height: 1">{{ locationSelectModels }}</pre> -->
     <ModalButtonFooter>
-      <n-button @click="showModal = false" :focusable="false">
+      <n-button :focusable="false" @click="showModal = false">
         {{ $t('general.cancelAction') }}
       </n-button>
       <n-button type="primary" @click="handleLocationSelect">

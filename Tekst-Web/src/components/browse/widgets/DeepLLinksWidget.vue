@@ -64,7 +64,7 @@ function renderOption(option: DropdownOption) {
   >
     <UnitContainerHeaderWidget
       :title="$t('browse.units.widgets.deepLTranslate.title')"
-      :iconComponent="TranslateRound"
+      :icon-component="TranslateRound"
     />
   </n-dropdown>
 </template>

@@ -15,7 +15,7 @@ const themeVars = useThemeVars();
 </script>
 
 <template>
-  <RouterLink :to="props.route" custom v-slot="{ href, navigate, isActive, isExactActive }">
+  <RouterLink v-slot="{ href, navigate, isActive, isExactActive }" :to="props.route" custom>
     <a :href="href" @click="navigate">
       <div
         :class="[
@@ -24,7 +24,7 @@ const themeVars = useThemeVars();
           isExactActive && 'router-link-exact-active',
         ]"
       >
-        <NIcon :size="20" v-if="icon && showIcon" :component="icon" />
+        <NIcon v-if="icon && showIcon" :size="20" :component="icon" />
         <span
           class="navbar-router-link-label"
           :style="{ 'font-size': `var(--app-ui-font-size-${props.size || 'small'}` }"

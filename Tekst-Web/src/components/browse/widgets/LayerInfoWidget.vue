@@ -39,7 +39,7 @@ const coveragePercent = computed(
 <template>
   <UnitContainerHeaderWidget
     :title="$t('browse.units.widgets.infoWidget.title')"
-    :iconComponent="InfoOutlined"
+    :icon-component="InfoOutlined"
     @click="showInfoModal = true"
   />
 

@@ -48,10 +48,10 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
 <template>
   <div
     v-if="layer.active && (layer.units.length || !browse.reducedView)"
+    ref="unitContainerRef"
     class="content-block unit-container"
     :style="altUnitContainerStyle"
     :title="unitContainerTitle"
-    ref="unitContainerRef"
   >
     <div class="unit-header">
       <n-icon v-if="!layer.units.length" :component="FolderOffOutlined" />
@@ -65,8 +65,8 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
     </div>
     <!-- unit-specific component (that displays the actual unit data) -->
     <component
-      v-if="layer.units.length"
       :is="unitComponents[layer.layerType]"
+      v-if="layer.units.length"
       :layer="layer"
       :layer-config="layer.config"
     />

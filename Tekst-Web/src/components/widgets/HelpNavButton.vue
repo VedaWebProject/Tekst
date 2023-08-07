@@ -7,10 +7,10 @@ import HelpOutlineRound from '@vicons/material/HelpOutlineRound';
   <n-button
     secondary
     circle
-    @click="() => $router.push({ name: 'help' })"
     size="large"
     :title="$t('nav.help')"
     :focusable="false"
+    @click="() => $router.push({ name: 'help' })"
   >
     <template #icon>
       <n-icon :component="HelpOutlineRound" />

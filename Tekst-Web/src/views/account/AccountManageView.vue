@@ -228,12 +228,12 @@ async function handlepublicFieldsSave() {
         >
           <n-form-item path="email" :label="$t('models.user.email')">
             <n-input
+              ref="firstInputRef"
               v-model:value="emailFormModel.email"
               type="text"
               :placeholder="$t('models.user.email')"
-              @keydown.enter.prevent
               :disabled="loading"
-              ref="firstInputRef"
+              @keydown.enter.prevent
             />
           </n-form-item>
         </n-form>
@@ -241,18 +241,18 @@ async function handlepublicFieldsSave() {
           <n-button
             secondary
             block
-            @click="() => (emailFormModel = initialEmailModel())"
             :loading="loading"
             :disabled="loading || !emailModelChanged"
+            @click="() => (emailFormModel = initialEmailModel())"
           >
             {{ $t('general.resetAction') }}
           </n-button>
           <n-button
             block
             type="primary"
-            @click="handleEmailSave"
             :loading="loading"
             :disabled="loading || !emailModelChanged"
+            @click="handleEmailSave"
           >
             {{ $t('general.saveAction') }}
           </n-button>
@@ -272,9 +272,9 @@ async function handlepublicFieldsSave() {
               v-model:value="passwordFormModel.password"
               type="password"
               :placeholder="$t('models.user.password')"
+              :disabled="loading"
               @input="handlePasswordInput"
               @keydown.enter.prevent
-              :disabled="loading"
             />
           </n-form-item>
           <n-form-item
@@ -297,18 +297,18 @@ async function handlepublicFieldsSave() {
           <n-button
             secondary
             block
-            @click="() => (passwordFormModel = initialPasswordModel())"
             :loading="loading"
             :disabled="loading || !passwordModelChanged"
+            @click="() => (passwordFormModel = initialPasswordModel())"
           >
             {{ $t('general.resetAction') }}
           </n-button>
           <n-button
             block
             type="primary"
-            @click="handlePasswordSave"
             :loading="loading"
             :disabled="loading || !passwordModelChanged"
+            @click="handlePasswordSave"
           >
             {{ $t('general.saveAction') }}
           </n-button>
@@ -332,8 +332,8 @@ async function handlepublicFieldsSave() {
               v-model:value="userDataFormModel.username"
               type="text"
               :placeholder="$t('models.user.username')"
-              @keydown.enter.prevent
               :disabled="loading"
+              @keydown.enter.prevent
             />
           </n-form-item>
           <n-form-item path="firstName" :label="$t('models.user.firstName')">
@@ -341,8 +341,8 @@ async function handlepublicFieldsSave() {
               v-model:value="userDataFormModel.firstName"
               type="text"
               :placeholder="$t('models.user.firstName')"
-              @keydown.enter.prevent
               :disabled="loading"
+              @keydown.enter.prevent
             />
           </n-form-item>
           <n-form-item path="lastName" :label="$t('models.user.lastName')">
@@ -350,8 +350,8 @@ async function handlepublicFieldsSave() {
               v-model:value="userDataFormModel.lastName"
               type="text"
               :placeholder="$t('models.user.lastName')"
-              @keydown.enter.prevent
               :disabled="loading"
+              @keydown.enter.prevent
             />
           </n-form-item>
           <n-form-item path="affiliation" :label="$t('models.user.affiliation')">
@@ -367,18 +367,18 @@ async function handlepublicFieldsSave() {
           <n-button
             secondary
             block
-            @click="() => (userDataFormModel = initialUserDataModel())"
             :loading="loading"
             :disabled="loading || !userDataModelChanged"
+            @click="() => (userDataFormModel = initialUserDataModel())"
           >
             {{ $t('general.resetAction') }}
           </n-button>
           <n-button
             block
             type="primary"
-            @click="handleUserDataSave"
             :loading="loading"
             :disabled="loading || !userDataModelChanged"
+            @click="handleUserDataSave"
           >
             {{ $t('general.saveAction') }}
           </n-button>
@@ -400,7 +400,7 @@ async function handlepublicFieldsSave() {
               {{ $t(`models.user.username`) }}
             </n-checkbox>
           </n-form-item>
-          <n-form-item v-for="(_, field) in publicFieldsFormModel" :path="field" :key="field">
+          <n-form-item v-for="(_, field) in publicFieldsFormModel" :key="field" :path="field">
             <n-checkbox v-model:checked="publicFieldsFormModel[field]" :disabled="loading">
               {{ $t(`models.user.${field}`) }}
             </n-checkbox>
@@ -410,18 +410,18 @@ async function handlepublicFieldsSave() {
           <n-button
             secondary
             block
-            @click="() => (publicFieldsFormModel = initialPublicFieldsModel())"
             :loading="loading"
             :disabled="loading || !publicFieldsModelChanged"
+            @click="() => (publicFieldsFormModel = initialPublicFieldsModel())"
           >
             {{ $t('general.resetAction') }}
           </n-button>
           <n-button
             block
             type="primary"
-            @click="handlepublicFieldsSave"
             :loading="loading"
             :disabled="loading || !publicFieldsModelChanged"
+            @click="handlepublicFieldsSave"
           >
             {{ $t('general.saveAction') }}
           </n-button>

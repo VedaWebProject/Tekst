@@ -37,8 +37,8 @@ function handleLanguageSelect(localeCode: string) {
     trigger="click"
     :options="options"
     :size="state.dropdownSize"
-    @select="handleLanguageSelect"
     show-arrow
+    @select="handleLanguageSelect"
   >
     <n-button
       secondary

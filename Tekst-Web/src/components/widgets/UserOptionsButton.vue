@@ -131,19 +131,19 @@ function handleUserOptionSelect(key: string) {
     :options="userOptions"
     :on-clickoutside="() => (showUserDropdown = false)"
     :size="state.dropdownSize"
-    @select="handleUserOptionSelect"
     show-arrow
+    @select="handleUserOptionSelect"
   >
     <n-button
       :secondary="!auth.loggedIn"
       circle
       size="large"
-      @click="handleClick"
       :title="tooltip"
       :focusable="false"
       :color="color"
       :style="auth.loggedIn && 'color: #fff'"
       class="user-options-button"
+      @click="handleClick"
     >
       <template #icon>
         <n-icon v-if="auth.loggedIn" :component="PersonRound" />

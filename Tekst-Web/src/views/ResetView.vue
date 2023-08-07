@@ -104,13 +104,13 @@ onMounted(() => {
       >
         <n-form-item path="password" :label="$t('models.user.password')">
           <n-input
+            ref="firstInputRef"
             v-model:value="passwordFormModel.password"
             type="password"
             :placeholder="$t('models.user.password')"
+            :disabled="loading"
             @input="handlePasswordInput"
             @keydown.enter.prevent
-            :disabled="loading"
-            ref="firstInputRef"
           />
         </n-form-item>
         <n-form-item
@@ -133,9 +133,9 @@ onMounted(() => {
         <n-button
           block
           type="primary"
-          @click="handlePasswordSave"
           :loading="loading"
           :disabled="loading"
+          @click="handlePasswordSave"
         >
           {{ $t('general.saveAction') }}
         </n-button>

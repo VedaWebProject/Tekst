@@ -135,8 +135,8 @@ function handleSave() {
           v-model:value="model.title"
           type="text"
           :placeholder="$t('models.text.title')"
-          @keydown.enter.prevent
           :disabled="loading"
+          @keydown.enter.prevent
         />
       </n-form-item>
 
@@ -217,8 +217,8 @@ function handleSave() {
           v-model:value="model.slug"
           type="text"
           :placeholder="$t('models.text.slug')"
-          @keydown.enter.prevent
           :disabled="loading"
+          @keydown.enter.prevent
         />
       </n-form-item>
 
@@ -238,8 +238,8 @@ function handleSave() {
           v-model:value="model.locDelim"
           type="text"
           :placeholder="$t('models.text.locDelim')"
-          @keydown.enter.prevent
           :disabled="loading"
+          @keydown.enter.prevent
         />
       </n-form-item>
 
@@ -280,18 +280,18 @@ function handleSave() {
       <n-button
         secondary
         block
-        @click="() => handleReset"
         :loading="loading"
         :disabled="loading || !modelChanged"
+        @click="() => handleReset"
       >
         {{ $t('general.resetAction') }}
       </n-button>
       <n-button
         block
         type="primary"
-        @click="handleSave"
         :loading="loading"
         :disabled="loading || !modelChanged"
+        @click="handleSave"
       >
         {{ $t('general.saveAction') }}
       </n-button>

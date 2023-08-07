@@ -114,9 +114,9 @@ async function handleSave() {
           v-model:value="model.title"
           type="text"
           :placeholder="$t('models.text.title')"
+          :disabled="loading"
           @keydown.enter.prevent
           @input="handleTitleChange"
-          :disabled="loading"
         />
       </n-form-item>
 
@@ -126,8 +126,8 @@ async function handleSave() {
           v-model:value="model.slug"
           type="text"
           :placeholder="$t('models.text.slug')"
-          @keydown.enter.prevent
           :disabled="loading"
+          @keydown.enter.prevent
         />
       </n-form-item>
 
@@ -156,8 +156,8 @@ async function handleSave() {
                   v-model:value="model.levels[levelIndex][0].label"
                   type="text"
                   :placeholder="$t('models.text.levelLabel')"
-                  @keydown.enter.prevent
                   :disabled="loading"
+                  @keydown.enter.prevent
                 />
               </n-form-item>
             </div>
@@ -191,7 +191,7 @@ async function handleSave() {
         </n-dynamic-input>
       </n-form-item>
       <n-space :size="12" justify="end" style="margin-top: 0.5rem">
-        <n-button block type="primary" @click="handleSave" :loading="loading" :disabled="loading">
+        <n-button block type="primary" :loading="loading" :disabled="loading" @click="handleSave">
           {{ $t('general.saveAction') }}
         </n-button>
       </n-space>

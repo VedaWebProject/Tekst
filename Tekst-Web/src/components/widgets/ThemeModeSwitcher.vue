@@ -21,9 +21,9 @@ const title = computed(() =>
     circle
     size="large"
     icon-placement="left"
-    @click="state.toggleThemeMode"
     :title="title"
     :focusable="false"
+    @click="state.toggleThemeMode"
   >
     <template #icon>
       <n-icon :component="icon" />

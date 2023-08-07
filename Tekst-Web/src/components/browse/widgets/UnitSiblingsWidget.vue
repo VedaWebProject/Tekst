@@ -48,7 +48,7 @@ async function handleClick() {
 <template>
   <UnitContainerHeaderWidget
     :title="$t('browse.units.widgets.siblingsWidget.title')"
-    :iconComponent="MergeRound"
+    :icon-component="MergeRound"
     @click="handleClick"
   />
 
@@ -73,7 +73,7 @@ async function handleClick() {
       />
     </div>
 
-    <div class="parent-location"><LocationLabel :maxLevel="layer.level - 1" /></div>
+    <div class="parent-location"><LocationLabel :max-level="layer.level - 1" /></div>
 
     <n-spin v-if="loading" style="margin: 3rem 0 2rem 0; width: 100%" />
 

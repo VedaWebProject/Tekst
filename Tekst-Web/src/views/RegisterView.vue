@@ -157,12 +157,12 @@ onMounted(() => {
       >
         <n-form-item path="email" :label="$t('models.user.email')">
           <n-input
+            ref="firstInputRef"
             v-model:value="formModel.email"
             type="text"
             :placeholder="$t('models.user.email')"
-            @keydown.enter.prevent
             :disabled="loading"
-            ref="firstInputRef"
+            @keydown.enter.prevent
           />
         </n-form-item>
         <n-form-item path="username" :label="$t('models.user.username')">
@@ -170,8 +170,8 @@ onMounted(() => {
             v-model:value="formModel.username"
             type="text"
             :placeholder="$t('models.user.username')"
-            @keydown.enter.prevent
             :disabled="loading"
+            @keydown.enter.prevent
           />
         </n-form-item>
         <n-form-item path="password" :label="$t('models.user.password')">
@@ -179,9 +179,9 @@ onMounted(() => {
             v-model:value="formModel.password"
             type="password"
             :placeholder="$t('models.user.password')"
+            :disabled="loading"
             @input="handlePasswordInput"
             @keydown.enter.prevent
-            :disabled="loading"
           />
         </n-form-item>
         <n-form-item
@@ -204,8 +204,8 @@ onMounted(() => {
             v-model:value="formModel.firstName"
             type="text"
             :placeholder="$t('models.user.firstName')"
-            @keydown.enter.prevent
             :disabled="loading"
+            @keydown.enter.prevent
           />
         </n-form-item>
         <n-form-item path="lastName" :label="$t('models.user.lastName')">
@@ -213,8 +213,8 @@ onMounted(() => {
             v-model:value="formModel.lastName"
             type="text"
             :placeholder="$t('models.user.lastName')"
-            @keydown.enter.prevent
             :disabled="loading"
+            @keydown.enter.prevent
           />
         </n-form-item>
         <n-form-item path="affiliation" :label="$t('models.user.affiliation')">
@@ -222,8 +222,8 @@ onMounted(() => {
             v-model:value="formModel.affiliation"
             type="text"
             :placeholder="$t('models.user.affiliation')"
-            @keyup.enter="() => handleRegisterClick()"
             :disabled="loading"
+            @keyup.enter="() => handleRegisterClick()"
           />
         </n-form-item>
       </n-form>
@@ -232,9 +232,9 @@ onMounted(() => {
         <n-button
           block
           type="primary"
-          @click="handleRegisterClick"
           :loading="loading"
           :disabled="loading"
+          @click="handleRegisterClick"
         >
           {{ $t('register.register') }}
         </n-button>
