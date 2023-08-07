@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { NButton, NIcon } from 'naive-ui';
 import HelpOutlineRound from '@vicons/material/HelpOutlineRound';
-import { useI18n } from 'vue-i18n';
-
-const { t } = useI18n({ useScope: 'global' });
 </script>
 
 <template>
@@ -12,7 +9,7 @@ const { t } = useI18n({ useScope: 'global' });
     circle
     @click="() => $router.push({ name: 'help' })"
     size="large"
-    :title="t('nav.help')"
+    :title="$t('nav.help')"
     :focusable="false"
   >
     <template #icon>

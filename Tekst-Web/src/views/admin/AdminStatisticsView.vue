@@ -8,11 +8,9 @@ import LibraryBooksRound from '@vicons/material/LibraryBooksRound';
 import AccountTreeRound from '@vicons/material/AccountTreeRound';
 import LayersRound from '@vicons/material/LayersRound';
 import { usePlatformData } from '@/platformData';
-import { useI18n } from 'vue-i18n';
 
 const { pfData } = usePlatformData();
 const { stats, error } = useStats();
-const { t } = useI18n({ useScope: 'global' });
 
 const counts = computed(() => ({
   users: stats.value?.usersCount,
@@ -35,13 +33,13 @@ const layerTypes = computed(() => {
 </script>
 
 <template>
-  <h1>{{ t('admin.heading') }}: {{ t('admin.statistics.heading') }}</h1>
+  <h1>{{ $t('admin.heading') }}: {{ $t('admin.statistics.heading') }}</h1>
 
   <div v-if="stats && !error" style="margin-top: 1rem">
-    <h2>{{ t('admin.statistics.globalHeading') }}</h2>
+    <h2>{{ $t('admin.statistics.globalHeading') }}</h2>
     <div class="content-block">
       <div class="statistics-container">
-        <n-statistic :label="t('models.user.modelLabel', 2)" :value="counts.users">
+        <n-statistic :label="$t('models.user.modelLabel', 2)" :value="counts.users">
           <template #prefix>
             <n-icon>
               <SupervisorAccountRound />
@@ -49,7 +47,7 @@ const layerTypes = computed(() => {
           </template>
         </n-statistic>
 
-        <n-statistic :label="t('models.text.modelLabel', 2)" :value="counts.texts">
+        <n-statistic :label="$t('models.text.modelLabel', 2)" :value="counts.texts">
           <template #prefix>
             <n-icon>
               <LibraryBooksRound />
@@ -57,7 +55,7 @@ const layerTypes = computed(() => {
           </template>
         </n-statistic>
 
-        <n-statistic :label="t('models.node.modelLabel', 2)" :value="counts.nodes">
+        <n-statistic :label="$t('models.node.modelLabel', 2)" :value="counts.nodes">
           <template #prefix>
             <n-icon>
               <AccountTreeRound />
@@ -65,7 +63,7 @@ const layerTypes = computed(() => {
           </template>
         </n-statistic>
 
-        <n-statistic :label="t('models.layer.modelLabel', 2)" :value="counts.layers">
+        <n-statistic :label="$t('models.layer.modelLabel', 2)" :value="counts.layers">
           <template #prefix>
             <n-icon>
               <LayersRound />
@@ -74,9 +72,9 @@ const layerTypes = computed(() => {
         </n-statistic>
       </div>
 
-      <h3>{{ t('admin.statistics.layerTypesHeading') }}</h3>
+      <h3>{{ $t('admin.statistics.layerTypesHeading') }}</h3>
       <div v-for="(count, layerType) in layerTypes" :key="layerType" style="margin: 12px 0">
-        <div>{{ t(`layerTypes.${layerType}`) }}: {{ count }}</div>
+        <div>{{ $t(`layerTypes.${layerType}`) }}: {{ count }}</div>
         <n-progress
           type="line"
           :percentage="(count / (counts.layers || 1)) * 100"
@@ -89,14 +87,14 @@ const layerTypes = computed(() => {
       </div>
     </div>
 
-    <h2>{{ t('admin.statistics.textsHeading') }}</h2>
+    <h2>{{ $t('admin.statistics.textsHeading') }}</h2>
 
     <div v-for="(text, index) in stats.texts" :key="index">
       <div class="content-block">
         <h3>{{ pfData?.texts.find((t) => t.id == text.id)?.title }}</h3>
 
         <div class="statistics-container">
-          <n-statistic :label="t('models.node.modelLabel', 2)" :value="text.nodesCount">
+          <n-statistic :label="$t('models.node.modelLabel', 2)" :value="text.nodesCount">
             <template #prefix>
               <n-icon>
                 <AccountTreeRound />
@@ -104,7 +102,7 @@ const layerTypes = computed(() => {
             </template>
           </n-statistic>
 
-          <n-statistic :label="t('models.layer.modelLabel', 2)" :value="text.layersCount">
+          <n-statistic :label="$t('models.layer.modelLabel', 2)" :value="text.layersCount">
             <template #prefix>
               <n-icon>
                 <LayersRound />
@@ -113,9 +111,9 @@ const layerTypes = computed(() => {
           </n-statistic>
         </div>
 
-        <h4>{{ t('admin.statistics.layerTypesHeading') }}</h4>
+        <h4>{{ $t('admin.statistics.layerTypesHeading') }}</h4>
         <div v-for="(count, layerType) in text.layerTypes" :key="layerType" style="margin: 12px 0">
-          <div>{{ t(`layerTypes.${layerType}`) }}: {{ count }}</div>
+          <div>{{ $t(`layerTypes.${layerType}`) }}: {{ count }}</div>
           <n-progress
             type="line"
             :percentage="(count / (text.layersCount || 1)) * 100"
@@ -132,12 +130,12 @@ const layerTypes = computed(() => {
 
   <n-spin
     v-else-if="!error"
-    :description="t('init.loading')"
+    :description="$t('init.loading')"
     style="width: 100%; padding: 2rem 0"
   />
 
   <div v-else>
-    {{ t('errors.error') }}
+    {{ $t('errors.error') }}
   </div>
 </template>
 

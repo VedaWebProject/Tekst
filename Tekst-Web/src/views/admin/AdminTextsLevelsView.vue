@@ -179,7 +179,9 @@ async function handleModalSubmit() {
 </script>
 
 <template>
-  <h1>{{ t('admin.heading') }}: {{ state.text?.title }} - {{ t('admin.texts.levels.heading') }}</h1>
+  <h1>
+    {{ $t('admin.heading') }}: {{ state.text?.title }} - {{ $t('admin.texts.levels.heading') }}
+  </h1>
 
   <div class="content-block">
     <div v-for="(lvl, lvlIndex) in levels" :key="`lvl_${lvlIndex}`">
@@ -203,7 +205,7 @@ async function handleModalSubmit() {
           <n-button
             secondary
             circle
-            :title="t('admin.texts.levels.tipEditLevel', { levelLabel: getLevelLabel(lvl) })"
+            :title="$t('admin.texts.levels.tipEditLevel', { levelLabel: getLevelLabel(lvl) })"
             @click="() => handleEditClick(lvlIndex)"
             :focusable="false"
           >
@@ -212,7 +214,7 @@ async function handleModalSubmit() {
           <n-button
             secondary
             circle
-            :title="t('admin.texts.levels.tipDeleteLevel', { levelLabel: getLevelLabel(lvl) })"
+            :title="$t('admin.texts.levels.tipDeleteLevel', { levelLabel: getLevelLabel(lvl) })"
             @click="() => handleDeleteClick(lvlIndex)"
             :focusable="false"
           >
@@ -239,7 +241,7 @@ async function handleModalSubmit() {
 
     <n-alert
       v-if="editModalWarning"
-      :title="t('general.warning')"
+      :title="$t('general.warning')"
       type="warning"
       style="margin-bottom: 1rem"
     >
@@ -276,7 +278,7 @@ async function handleModalSubmit() {
                 <n-select
                   v-model:value="formModel.translations[translationIndex].locale"
                   :options="levelLocaleOptions"
-                  :placeholder="t('general.language')"
+                  :placeholder="$t('general.language')"
                   :consistent-menu-width="false"
                   @keydown.enter.prevent
                   :disabled="loading"
@@ -294,7 +296,7 @@ async function handleModalSubmit() {
                 <n-input
                   v-model:value="formModel.translations[translationIndex].label"
                   type="text"
-                  :placeholder="t('models.text.levelLabel')"
+                  :placeholder="$t('models.text.levelLabel')"
                   @keydown.enter.prevent
                   :disabled="loading"
                 />
@@ -337,7 +339,7 @@ async function handleModalSubmit() {
         :loading="loading"
         :disabled="loading"
       >
-        {{ t('general.cancelAction') }}
+        {{ $t('general.cancelAction') }}
       </n-button>
       <n-button
         block
@@ -346,7 +348,7 @@ async function handleModalSubmit() {
         :loading="loading"
         :disabled="loading"
       >
-        {{ t('general.saveAction') }}
+        {{ $t('general.saveAction') }}
       </n-button>
     </n-space>
   </n-modal>

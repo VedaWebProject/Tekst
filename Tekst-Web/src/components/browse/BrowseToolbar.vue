@@ -7,11 +7,9 @@ import CompressRound from '@vicons/material/CompressRound';
 import ExpandRound from '@vicons/material/ExpandRound';
 import LayersRound from '@vicons/material/LayersRound';
 import { useBrowseStore, useStateStore } from '@/stores';
-import { useI18n } from 'vue-i18n';
 
 const state = useStateStore();
 const browse = useBrowseStore();
-const { t } = useI18n({ useScope: 'global' });
 
 const affixRef = ref(null);
 
@@ -41,7 +39,7 @@ onMounted(() => {
           :secondary="!browse.reducedView"
           :ghost="browse.reducedView"
           size="large"
-          :title="t('browse.toolbar.tipReducedView')"
+          :title="$t('browse.toolbar.tipReducedView')"
           color="#fff"
           :focusable="false"
           @click="browse.reducedView = !browse.reducedView"
@@ -55,7 +53,7 @@ onMounted(() => {
         <n-button
           secondary
           size="large"
-          :title="t('browse.toolbar.tipOpenDataLayerList')"
+          :title="$t('browse.toolbar.tipOpenDataLayerList')"
           color="#fff"
           :focusable="false"
           @click="browse.showLayerToggleDrawer = true"

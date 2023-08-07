@@ -117,7 +117,7 @@ function handleSave() {
 
 <template>
   <h1>
-    {{ t('admin.heading') }}: {{ state.text?.title }} - {{ t('admin.texts.general.heading') }}
+    {{ $t('admin.heading') }}: {{ state.text?.title }} - {{ $t('admin.texts.general.heading') }}
   </h1>
 
   <div class="content-block">
@@ -130,18 +130,18 @@ function handleSave() {
       require-mark-placement="right-hanging"
     >
       <!-- TITLE -->
-      <n-form-item path="title" :label="t('models.text.title')">
+      <n-form-item path="title" :label="$t('models.text.title')">
         <n-input
           v-model:value="model.title"
           type="text"
-          :placeholder="t('models.text.title')"
+          :placeholder="$t('models.text.title')"
           @keydown.enter.prevent
           :disabled="loading"
         />
       </n-form-item>
 
       <!-- SUBTITLE -->
-      <n-form-item :label="t('models.text.subtitle')">
+      <n-form-item :label="$t('models.text.subtitle')">
         <n-dynamic-input
           v-model:value="model.subtitle"
           item-style="margin-bottom: 0;"
@@ -161,7 +161,7 @@ function handleSave() {
                 <n-select
                   v-model:value="model.subtitle[subtitleIndex].locale"
                   :options="subtitleLocaleOptions"
-                  :placeholder="t('general.language')"
+                  :placeholder="$t('general.language')"
                   :consistent-menu-width="false"
                   style="min-width: 200px"
                   @keydown.enter.prevent
@@ -177,7 +177,7 @@ function handleSave() {
                 <n-input
                   v-model:value="model.subtitle[subtitleIndex].subtitle"
                   :rule="textFormRules.subtitle"
-                  :placeholder="t('models.text.subtitle')"
+                  :placeholder="$t('models.text.subtitle')"
                   @keydown.enter.prevent
                 />
               </n-form-item>
@@ -188,7 +188,7 @@ function handleSave() {
               <n-button
                 secondary
                 circle
-                :title="t('general.removeAction')"
+                :title="$t('general.removeAction')"
                 @click="() => remove(indexAction)"
               >
                 <template #icon>
@@ -198,7 +198,7 @@ function handleSave() {
               <n-button
                 secondary
                 circle
-                :title="t('general.insertAction')"
+                :title="$t('general.insertAction')"
                 :disabled="model.subtitle.length >= Object.keys(localeProfiles).length"
                 @click="() => create(indexAction)"
               >
@@ -212,18 +212,18 @@ function handleSave() {
       </n-form-item>
 
       <!-- SLUG -->
-      <n-form-item path="slug" :label="t('models.text.slug')">
+      <n-form-item path="slug" :label="$t('models.text.slug')">
         <n-input
           v-model:value="model.slug"
           type="text"
-          :placeholder="t('models.text.slug')"
+          :placeholder="$t('models.text.slug')"
           @keydown.enter.prevent
           :disabled="loading"
         />
       </n-form-item>
 
       <!-- DEFAULT STRUCTURE LEVEL-->
-      <n-form-item path="defaultLevel" :label="t('models.text.defaultLevel')">
+      <n-form-item path="defaultLevel" :label="$t('models.text.defaultLevel')">
         <n-select
           v-model:value="model.defaultLevel"
           :options="defaultLevelOptions"
@@ -233,18 +233,18 @@ function handleSave() {
       </n-form-item>
 
       <!-- LOCATION DELIMITER -->
-      <n-form-item path="locDelim" :label="t('models.text.locDelim')">
+      <n-form-item path="locDelim" :label="$t('models.text.locDelim')">
         <n-input
           v-model:value="model.locDelim"
           type="text"
-          :placeholder="t('models.text.locDelim')"
+          :placeholder="$t('models.text.locDelim')"
           @keydown.enter.prevent
           :disabled="loading"
         />
       </n-form-item>
 
       <!-- ACCENT COLOR -->
-      <n-form-item path="accentColor" :label="t('models.text.accentColor')">
+      <n-form-item path="accentColor" :label="$t('models.text.accentColor')">
         <n-color-picker
           v-model:value="model.accentColor"
           :modes="['hex']"
@@ -262,15 +262,15 @@ function handleSave() {
         />
       </n-form-item>
 
-      <n-form-item :label="t('general.flags')">
+      <n-form-item :label="$t('general.flags')">
         <n-space vertical>
           <!-- LABELED LOCATION -->
           <n-checkbox v-model:checked="model.labeledLocation" :disabled="loading">
-            {{ t('models.text.labeledLocation') }}
+            {{ $t('models.text.labeledLocation') }}
           </n-checkbox>
           <!-- ACTIVE -->
           <n-checkbox v-model:checked="model.isActive" :disabled="loading">
-            {{ t('models.text.isActive') }}
+            {{ $t('models.text.isActive') }}
           </n-checkbox>
         </n-space>
       </n-form-item>
@@ -284,7 +284,7 @@ function handleSave() {
         :loading="loading"
         :disabled="loading || !modelChanged"
       >
-        {{ t('general.resetAction') }}
+        {{ $t('general.resetAction') }}
       </n-button>
       <n-button
         block
@@ -293,7 +293,7 @@ function handleSave() {
         :loading="loading"
         :disabled="loading || !modelChanged"
       >
-        {{ t('general.saveAction') }}
+        {{ $t('general.saveAction') }}
       </n-button>
     </n-space>
   </div>

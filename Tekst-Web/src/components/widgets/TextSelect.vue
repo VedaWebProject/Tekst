@@ -13,7 +13,6 @@ const router = useRouter();
 const state = useStateStore();
 const { locale } = useI18n();
 const { pfData } = usePlatformData();
-const { t } = useI18n({ useScope: 'global' });
 
 const availableTexts = computed(() => pfData.value?.texts || []);
 const disabled = computed(() => availableTexts.value.length <= 1);
@@ -68,7 +67,7 @@ function handleSelect(key: string) {
       color="#fffe"
       :focusable="false"
       :keyboard="false"
-      :title="t('general.textSelect')"
+      :title="$t('general.textSelect')"
       :style="{
         fontSize: 'inherit',
         fontWeight: 'var(--app-ui-font-weight-normal)',

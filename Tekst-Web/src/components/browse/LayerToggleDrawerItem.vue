@@ -38,7 +38,7 @@ const infoTooltip = computed(() => (props.disabled ? t('browse.locationLayerNoDa
       <div class="layer-toggle-item-title-container">
         <div class="layer-toggle-item-title">{{ layer.title }}</div>
         <div class="layer-toggle-item-title-extra">
-          ({{ t('browse.location.level') }}: {{ state.textLevelLabels[layer.level] }})
+          ({{ $t('browse.location.level') }}: {{ state.textLevelLabels[layer.level] }})
         </div>
       </div>
       <div class="layer-toggle-item-meta">

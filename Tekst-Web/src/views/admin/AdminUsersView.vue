@@ -195,14 +195,14 @@ onMounted(() => {
 </script>
 
 <template>
-  <h1>{{ t('admin.heading') }}: {{ t('admin.users.heading') }}</h1>
+  <h1>{{ $t('admin.heading') }}: {{ $t('admin.users.heading') }}</h1>
 
   <template v-if="users && !error">
     <!-- Filters -->
     <div style="margin-bottom: 1.5rem">
       <n-input
         v-model:value="filters.search"
-        :placeholder="t('search.searchAction')"
+        :placeholder="$t('search.searchAction')"
         style="margin-bottom: 1rem"
         round
       >
@@ -211,14 +211,17 @@ onMounted(() => {
         </template>
       </n-input>
       <n-space justify="space-between" style="padding-left: 12px">
-        <n-checkbox v-model:checked="filters.isActive" :label="t('models.user.isActive')" />
-        <n-checkbox v-model:checked="filters.isInactive" :label="t('models.user.isInactive')" />
-        <n-checkbox v-model:checked="filters.isVerified" :label="t('models.user.isVerified')" />
-        <n-checkbox v-model:checked="filters.isUnverified" :label="t('models.user.isUnverified')" />
-        <n-checkbox v-model:checked="filters.isSuperuser" :label="t('models.user.isSuperuser')" />
-        <n-checkbox v-model:checked="filters.isNoSuperuser" :label="t('models.user.modelLabel')" />
+        <n-checkbox v-model:checked="filters.isActive" :label="$t('models.user.isActive')" />
+        <n-checkbox v-model:checked="filters.isInactive" :label="$t('models.user.isInactive')" />
+        <n-checkbox v-model:checked="filters.isVerified" :label="$t('models.user.isVerified')" />
+        <n-checkbox
+          v-model:checked="filters.isUnverified"
+          :label="$t('models.user.isUnverified')"
+        />
+        <n-checkbox v-model:checked="filters.isSuperuser" :label="$t('models.user.isSuperuser')" />
+        <n-checkbox v-model:checked="filters.isNoSuperuser" :label="$t('models.user.modelLabel')" />
         <n-button secondary round @click="filters = initialFilters()">
-          {{ t('general.resetAction') }}
+          {{ $t('general.resetAction') }}
           <template #icon>
             <n-icon :component="UndoRound" />
           </template>
@@ -253,7 +256,7 @@ onMounted(() => {
         </div>
       </template>
       <template v-else>
-        {{ t('search.nothingFound') }}
+        {{ $t('search.nothingFound') }}
       </template>
     </div>
   </template>
@@ -261,10 +264,10 @@ onMounted(() => {
   <n-spin
     v-else-if="!users && !error"
     style="margin: 3rem 0 2rem 0; width: 100%"
-    :description="t('init.loading')"
+    :description="$t('init.loading')"
   />
 
   <div v-else>
-    {{ t('errors.error') }}
+    {{ $t('errors.error') }}
   </div>
 </template>

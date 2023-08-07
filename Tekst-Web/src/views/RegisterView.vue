@@ -144,7 +144,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <h1 style="text-align: center">{{ t('register.heading') }}</h1>
+  <h1 style="text-align: center">{{ $t('register.heading') }}</h1>
   <div class="form-container">
     <div class="content-block">
       <n-form
@@ -155,30 +155,30 @@ onMounted(() => {
         label-width="auto"
         require-mark-placement="right-hanging"
       >
-        <n-form-item path="email" :label="t('models.user.email')">
+        <n-form-item path="email" :label="$t('models.user.email')">
           <n-input
             v-model:value="formModel.email"
             type="text"
-            :placeholder="t('models.user.email')"
+            :placeholder="$t('models.user.email')"
             @keydown.enter.prevent
             :disabled="loading"
             ref="firstInputRef"
           />
         </n-form-item>
-        <n-form-item path="username" :label="t('models.user.username')">
+        <n-form-item path="username" :label="$t('models.user.username')">
           <n-input
             v-model:value="formModel.username"
             type="text"
-            :placeholder="t('models.user.username')"
+            :placeholder="$t('models.user.username')"
             @keydown.enter.prevent
             :disabled="loading"
           />
         </n-form-item>
-        <n-form-item path="password" :label="t('models.user.password')">
+        <n-form-item path="password" :label="$t('models.user.password')">
           <n-input
             v-model:value="formModel.password"
             type="password"
-            :placeholder="t('models.user.password')"
+            :placeholder="$t('models.user.password')"
             @input="handlePasswordInput"
             @keydown.enter.prevent
             :disabled="loading"
@@ -189,39 +189,39 @@ onMounted(() => {
           first
           path="passwordRepeat"
           :rule="accountFormRules.passwordRepeat.concat([passwordRepeatMatchRule])"
-          :label="t('register.repeatPassword')"
+          :label="$t('register.repeatPassword')"
         >
           <n-input
             v-model:value="formModel.passwordRepeat"
             type="password"
             :disabled="!formModel.password || loading"
-            :placeholder="t('register.repeatPassword')"
+            :placeholder="$t('register.repeatPassword')"
             @keydown.enter.prevent
           />
         </n-form-item>
-        <n-form-item path="firstName" :label="t('models.user.firstName')">
+        <n-form-item path="firstName" :label="$t('models.user.firstName')">
           <n-input
             v-model:value="formModel.firstName"
             type="text"
-            :placeholder="t('models.user.firstName')"
+            :placeholder="$t('models.user.firstName')"
             @keydown.enter.prevent
             :disabled="loading"
           />
         </n-form-item>
-        <n-form-item path="lastName" :label="t('models.user.lastName')">
+        <n-form-item path="lastName" :label="$t('models.user.lastName')">
           <n-input
             v-model:value="formModel.lastName"
             type="text"
-            :placeholder="t('models.user.lastName')"
+            :placeholder="$t('models.user.lastName')"
             @keydown.enter.prevent
             :disabled="loading"
           />
         </n-form-item>
-        <n-form-item path="affiliation" :label="t('models.user.affiliation')">
+        <n-form-item path="affiliation" :label="$t('models.user.affiliation')">
           <n-input
             v-model:value="formModel.affiliation"
             type="text"
-            :placeholder="t('models.user.affiliation')"
+            :placeholder="$t('models.user.affiliation')"
             @keyup.enter="() => handleRegisterClick()"
             :disabled="loading"
           />
@@ -236,10 +236,10 @@ onMounted(() => {
           :loading="loading"
           :disabled="loading"
         >
-          {{ t('register.register') }}
+          {{ $t('register.register') }}
         </n-button>
         <n-button secondary block @click="switchToLogin">
-          {{ t('register.switchToLogin') }}
+          {{ $t('register.switchToLogin') }}
         </n-button>
       </n-space>
     </div>

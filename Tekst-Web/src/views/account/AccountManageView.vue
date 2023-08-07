@@ -212,12 +212,12 @@ async function handlepublicFieldsSave() {
 </script>
 
 <template>
-  <h1>{{ t('account.manage.heading') }}</h1>
+  <h1>{{ $t('account.manage.heading') }}</h1>
 
   <n-grid class="account-mgmt-grid" cols="1 m:2" responsive="screen" x-gap="18px" y-gap="18px">
     <n-grid-item>
       <div class="content-block">
-        <h2>{{ t('models.user.email') }}</h2>
+        <h2>{{ $t('models.user.email') }}</h2>
         <n-form
           ref="emailFormRef"
           :model="emailFormModel"
@@ -226,11 +226,11 @@ async function handlepublicFieldsSave() {
           label-width="auto"
           require-mark-placement="right-hanging"
         >
-          <n-form-item path="email" :label="t('models.user.email')">
+          <n-form-item path="email" :label="$t('models.user.email')">
             <n-input
               v-model:value="emailFormModel.email"
               type="text"
-              :placeholder="t('models.user.email')"
+              :placeholder="$t('models.user.email')"
               @keydown.enter.prevent
               :disabled="loading"
               ref="firstInputRef"
@@ -245,7 +245,7 @@ async function handlepublicFieldsSave() {
             :loading="loading"
             :disabled="loading || !emailModelChanged"
           >
-            {{ t('general.resetAction') }}
+            {{ $t('general.resetAction') }}
           </n-button>
           <n-button
             block
@@ -254,11 +254,11 @@ async function handlepublicFieldsSave() {
             :loading="loading"
             :disabled="loading || !emailModelChanged"
           >
-            {{ t('general.saveAction') }}
+            {{ $t('general.saveAction') }}
           </n-button>
         </n-space>
 
-        <h2>{{ t('models.user.password') }}</h2>
+        <h2>{{ $t('models.user.password') }}</h2>
         <n-form
           ref="passwordFormRef"
           :model="passwordFormModel"
@@ -267,11 +267,11 @@ async function handlepublicFieldsSave() {
           label-width="auto"
           require-mark-placement="right-hanging"
         >
-          <n-form-item path="password" :label="t('models.user.password')">
+          <n-form-item path="password" :label="$t('models.user.password')">
             <n-input
               v-model:value="passwordFormModel.password"
               type="password"
-              :placeholder="t('models.user.password')"
+              :placeholder="$t('models.user.password')"
               @input="handlePasswordInput"
               @keydown.enter.prevent
               :disabled="loading"
@@ -282,13 +282,13 @@ async function handlepublicFieldsSave() {
             first
             path="passwordRepeat"
             :rule="accountFormRules.passwordRepeat.concat([passwordRepeatMatchRule])"
-            :label="t('register.repeatPassword')"
+            :label="$t('register.repeatPassword')"
           >
             <n-input
               v-model:value="passwordFormModel.passwordRepeat"
               type="password"
               :disabled="!passwordFormModel.password || loading"
-              :placeholder="t('register.repeatPassword')"
+              :placeholder="$t('register.repeatPassword')"
               @keydown.enter.prevent
             />
           </n-form-item>
@@ -301,7 +301,7 @@ async function handlepublicFieldsSave() {
             :loading="loading"
             :disabled="loading || !passwordModelChanged"
           >
-            {{ t('general.resetAction') }}
+            {{ $t('general.resetAction') }}
           </n-button>
           <n-button
             block
@@ -310,7 +310,7 @@ async function handlepublicFieldsSave() {
             :loading="loading"
             :disabled="loading || !passwordModelChanged"
           >
-            {{ t('general.saveAction') }}
+            {{ $t('general.saveAction') }}
           </n-button>
         </n-space>
       </div>
@@ -318,7 +318,7 @@ async function handlepublicFieldsSave() {
 
     <n-grid-item>
       <div class="content-block">
-        <h2>{{ t('account.manage.headingChangeUserData') }}</h2>
+        <h2>{{ $t('account.manage.headingChangeUserData') }}</h2>
         <n-form
           ref="userDataFormRef"
           :model="userDataFormModel"
@@ -327,38 +327,38 @@ async function handlepublicFieldsSave() {
           label-width="auto"
           require-mark-placement="right-hanging"
         >
-          <n-form-item path="username" :label="t('models.user.username')">
+          <n-form-item path="username" :label="$t('models.user.username')">
             <n-input
               v-model:value="userDataFormModel.username"
               type="text"
-              :placeholder="t('models.user.username')"
+              :placeholder="$t('models.user.username')"
               @keydown.enter.prevent
               :disabled="loading"
             />
           </n-form-item>
-          <n-form-item path="firstName" :label="t('models.user.firstName')">
+          <n-form-item path="firstName" :label="$t('models.user.firstName')">
             <n-input
               v-model:value="userDataFormModel.firstName"
               type="text"
-              :placeholder="t('models.user.firstName')"
+              :placeholder="$t('models.user.firstName')"
               @keydown.enter.prevent
               :disabled="loading"
             />
           </n-form-item>
-          <n-form-item path="lastName" :label="t('models.user.lastName')">
+          <n-form-item path="lastName" :label="$t('models.user.lastName')">
             <n-input
               v-model:value="userDataFormModel.lastName"
               type="text"
-              :placeholder="t('models.user.lastName')"
+              :placeholder="$t('models.user.lastName')"
               @keydown.enter.prevent
               :disabled="loading"
             />
           </n-form-item>
-          <n-form-item path="affiliation" :label="t('models.user.affiliation')">
+          <n-form-item path="affiliation" :label="$t('models.user.affiliation')">
             <n-input
               v-model:value="userDataFormModel.affiliation"
               type="text"
-              :placeholder="t('models.user.affiliation')"
+              :placeholder="$t('models.user.affiliation')"
               :disabled="loading"
             />
           </n-form-item>
@@ -371,7 +371,7 @@ async function handlepublicFieldsSave() {
             :loading="loading"
             :disabled="loading || !userDataModelChanged"
           >
-            {{ t('general.resetAction') }}
+            {{ $t('general.resetAction') }}
           </n-button>
           <n-button
             block
@@ -380,7 +380,7 @@ async function handlepublicFieldsSave() {
             :loading="loading"
             :disabled="loading || !userDataModelChanged"
           >
-            {{ t('general.saveAction') }}
+            {{ $t('general.saveAction') }}
           </n-button>
         </n-space>
       </div>
@@ -388,7 +388,7 @@ async function handlepublicFieldsSave() {
 
     <n-grid-item>
       <div class="content-block">
-        <h2>{{ t('account.manage.headingChangePublicFields') }}</h2>
+        <h2>{{ $t('account.manage.headingChangePublicFields') }}</h2>
         <n-form
           ref="publicFieldsFormRef"
           :model="publicFieldsFormModel"
@@ -397,12 +397,12 @@ async function handlepublicFieldsSave() {
         >
           <n-form-item>
             <n-checkbox checked disabled aria-readonly :focusable="false">
-              {{ t(`models.user.username`) }}
+              {{ $t(`models.user.username`) }}
             </n-checkbox>
           </n-form-item>
           <n-form-item v-for="(_, field) in publicFieldsFormModel" :path="field" :key="field">
             <n-checkbox v-model:checked="publicFieldsFormModel[field]" :disabled="loading">
-              {{ t(`models.user.${field}`) }}
+              {{ $t(`models.user.${field}`) }}
             </n-checkbox>
           </n-form-item>
         </n-form>
@@ -414,7 +414,7 @@ async function handlepublicFieldsSave() {
             :loading="loading"
             :disabled="loading || !publicFieldsModelChanged"
           >
-            {{ t('general.resetAction') }}
+            {{ $t('general.resetAction') }}
           </n-button>
           <n-button
             block
@@ -423,7 +423,7 @@ async function handlepublicFieldsSave() {
             :loading="loading"
             :disabled="loading || !publicFieldsModelChanged"
           >
-            {{ t('general.saveAction') }}
+            {{ $t('general.saveAction') }}
           </n-button>
         </n-space>
       </div>

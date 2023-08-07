@@ -14,12 +14,10 @@ import { usePlatformData } from '@/platformData';
 import MenuRound from '@vicons/material/MenuRound';
 import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
 import SearchRound from '@vicons/material/SearchRound';
-import { useI18n } from 'vue-i18n';
 
 const { pfData } = usePlatformData();
 const auth = useAuthStore();
 const state = useStateStore();
-const { t } = useI18n({ useScope: 'global' });
 
 const menuOpen = ref(false);
 const menuVisible = computed(() => !state.smallScreen || menuOpen.value);
@@ -58,13 +56,13 @@ watch(
 
     <div v-show="menuVisible" class="navbar-menu">
       <NavBarRouterLink
-        :label="t('nav.browse')"
+        :label="$t('nav.browse')"
         :route="{ name: 'browse', params: { text: textParam } }"
         :icon="MenuBookOutlined"
         :show-icon="state.smallScreen"
       />
       <NavBarRouterLink
-        :label="t('nav.search')"
+        :label="$t('nav.search')"
         :route="{ name: 'search', params: { text: textParam } }"
         :icon="SearchRound"
         :show-icon="state.smallScreen"

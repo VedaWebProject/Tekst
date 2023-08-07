@@ -93,10 +93,10 @@ async function handleSave() {
 </script>
 
 <template>
-  <h1>{{ t('admin.heading') }}: {{ t('admin.newText.heading') }}</h1>
+  <h1>{{ $t('admin.heading') }}: {{ $t('admin.newText.heading') }}</h1>
 
-  <n-alert :title="t('general.info')" type="info">
-    {{ t('admin.newText.headerInfoMsg') }}
+  <n-alert :title="$t('general.info')" type="info">
+    {{ $t('admin.newText.headerInfoMsg') }}
   </n-alert>
 
   <div class="content-block">
@@ -109,11 +109,11 @@ async function handleSave() {
       require-mark-placement="right-hanging"
     >
       <!-- TITLE -->
-      <n-form-item path="title" :label="t('models.text.title')">
+      <n-form-item path="title" :label="$t('models.text.title')">
         <n-input
           v-model:value="model.title"
           type="text"
-          :placeholder="t('models.text.title')"
+          :placeholder="$t('models.text.title')"
           @keydown.enter.prevent
           @input="handleTitleChange"
           :disabled="loading"
@@ -121,18 +121,18 @@ async function handleSave() {
       </n-form-item>
 
       <!-- SLUG -->
-      <n-form-item path="slug" :label="t('models.text.slug')">
+      <n-form-item path="slug" :label="$t('models.text.slug')">
         <n-input
           v-model:value="model.slug"
           type="text"
-          :placeholder="t('models.text.slug')"
+          :placeholder="$t('models.text.slug')"
           @keydown.enter.prevent
           :disabled="loading"
         />
       </n-form-item>
 
       <!-- STRUCTURE LEVELS -->
-      <n-form-item :label="t('models.text.level', 2)" path="levels" required>
+      <n-form-item :label="$t('models.text.level', 2)" path="levels" required>
         <n-dynamic-input
           v-model:value="model.levels"
           :min="1"
@@ -155,7 +155,7 @@ async function handleSave() {
                 <n-input
                   v-model:value="model.levels[levelIndex][0].label"
                   type="text"
-                  :placeholder="t('models.text.levelLabel')"
+                  :placeholder="$t('models.text.levelLabel')"
                   @keydown.enter.prevent
                   :disabled="loading"
                 />
@@ -167,7 +167,7 @@ async function handleSave() {
               <n-button
                 secondary
                 circle
-                :title="t('general.removeAction')"
+                :title="$t('general.removeAction')"
                 :disabled="model.levels.length === 1"
                 @click="() => remove(indexAction)"
               >
@@ -178,7 +178,7 @@ async function handleSave() {
               <n-button
                 secondary
                 circle
-                :title="t('general.insertAction')"
+                :title="$t('general.insertAction')"
                 :disabled="model.levels.length >= 32"
                 @click="() => create(indexAction)"
               >
@@ -192,7 +192,7 @@ async function handleSave() {
       </n-form-item>
       <n-space :size="12" justify="end" style="margin-top: 0.5rem">
         <n-button block type="primary" @click="handleSave" :loading="loading" :disabled="loading">
-          {{ t('general.saveAction') }}
+          {{ $t('general.saveAction') }}
         </n-button>
       </n-space>
     </n-form>

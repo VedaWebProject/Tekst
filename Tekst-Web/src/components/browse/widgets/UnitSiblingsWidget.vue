@@ -47,7 +47,7 @@ async function handleClick() {
 
 <template>
   <UnitContainerHeaderWidget
-    :title="t('browse.units.widgets.siblingsWidget.title')"
+    :title="$t('browse.units.widgets.siblingsWidget.title')"
     :iconComponent="MergeRound"
     @click="handleClick"
   />
@@ -85,11 +85,11 @@ async function handleClick() {
       />
     </div>
 
-    <span v-else>{{ t('errors.unexpected') }}</span>
+    <span v-else>{{ $t('errors.unexpected') }}</span>
 
     <ModalButtonFooter>
       <n-button type="primary" @click="() => (showModal = false)">
-        {{ t('general.closeAction') }}
+        {{ $t('general.closeAction') }}
       </n-button>
     </ModalButtonFooter>
   </n-modal>

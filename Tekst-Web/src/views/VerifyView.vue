@@ -48,7 +48,7 @@ onMounted(() => {
 
 <template>
   <huge-labeled-icon
-    :message="error ? error : t('account.verify.success')"
+    :message="error ? error : $t('account.verify.success')"
     :loading="!error && !verified"
     :icon="error ? KeyOffTwotone : CheckCircleTwotone"
   />
