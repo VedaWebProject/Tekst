@@ -29,7 +29,7 @@ def setup_routes(app: FastAPI) -> None:
     :param app: FastAPI app instance
     :type app: FastAPI
     """
-    log.info("Setting up API routes")
+    log.info("Setting up API routes...")
     # register routers that aren't auth-related
     for router in _get_routers():
         app.include_router(router)

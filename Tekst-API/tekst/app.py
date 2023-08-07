@@ -41,20 +41,12 @@ async def startup_routine(app: FastAPI) -> None:
     # pass all these things by hand...
     await init_odm(get_db(get_db_client(_cfg), _cfg))
 
-    # log dev server info for quick browser access
-    if _cfg.dev_mode:  # pragma: no cover
-        api_path = _cfg.server_url + _cfg.api_path
-        if _cfg.doc.swaggerui_url:
-            log.info(f"\u2022 SwaggerUI docs @ {api_path}{_cfg.doc.swaggerui_url}")
-        if _cfg.doc.redoc_url:
-            log.info(f"\u2022 Redoc API docs @ {api_path}{_cfg.doc.redoc_url}")
-
     # modify and cache OpenAPI schema
     custom_openapi(app, _cfg)
 
 
 async def shutdown_routine(app: FastAPI) -> None:
-    log.info(f"{_cfg.tekst_info.name} cleaning up and shutting down")
+    log.info(f"{_cfg.tekst_info.name} cleaning up and shutting down...")
     get_db_client(_cfg).close()  # again, no DI possible here :(
 
 
