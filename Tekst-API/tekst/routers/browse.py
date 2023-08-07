@@ -68,10 +68,10 @@ async def get_unit_siblings(
         with_children=True,
     ).to_list()
 
-    # calling dict(rename_id=True) on these models here makes sure they have
+    # calling model_dump(rename_id=True) on these models here makes sure they have
     # "id" instead of "_id", because we're not using a proper read model here
     # that could take care of that automatically (as we don't know the exact type)
-    return [unit.dict(rename_id=True) for unit in units]
+    return [unit.model_dump(rename_id=True) for unit in units]
 
 
 @router.get(

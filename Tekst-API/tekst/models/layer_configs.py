@@ -1,8 +1,16 @@
-from typing import Literal
+from typing import Annotated, Literal
 
-from pydantic import Field, validator
+from pydantic import AfterValidator, Field
 
 from tekst.models.common import LayerConfigBase
+
+
+def _uppercase_lang_code(v):
+    if v is None:
+        return v
+    if not isinstance(v, str):
+        raise TypeError("Language codes have to be passed as strings")
+    return v.upper()
 
 
 class DeepLLinksConfig(LayerConfigBase):
@@ -16,25 +24,14 @@ class DeepLLinksConfig(LayerConfigBase):
         False,
         description="Enable/disable quick translation links to DeepL",
     )
-    source_language: Literal[_DEEPL_LANGUAGES] | None = Field(
-        _DEEPL_LANGUAGES[0], description="Source language"
-    )
-    languages: list[Literal[_DEEPL_LANGUAGES]] = Field(
-        ["EN", "DE"], description="Target languages to display links for"
-    )
-
-    @classmethod
-    def _uppercase_lang_code(cls, v):
-        if v is None:
-            return v
-        if not isinstance(v, str):
-            raise TypeError("Language codes have to be passed as strings")
-        return v.upper()
-
-    # validators
-    _validate_source_language = validator(
-        "source_language", pre=True, allow_reuse=True
-    )(_uppercase_lang_code)
-    _validate_languages = validator(
-        "languages", pre=True, each_item=True, allow_reuse=True
-    )(_uppercase_lang_code)
+    source_language: Annotated[
+        Literal[_DEEPL_LANGUAGES] | None,
+        AfterValidator(_uppercase_lang_code),
+        Field(description="Source language"),
+    ] = _DEEPL_LANGUAGES[0]
+    languages: Annotated[
+        list[
+            Annotated[Literal[_DEEPL_LANGUAGES], AfterValidator(_uppercase_lang_code)]
+        ],
+        Field(description="Target languages to display links for"),
+    ] = ["EN", "DE"]

@@ -1,9 +1,9 @@
 from datetime import datetime
-from typing import Annotated
+from typing import Annotated, List
 
 from beanie.operators import Or, Set, Unset
 from fastapi import APIRouter, Body, HTTPException, Path, status
-from pydantic import conint, conlist
+from pydantic import Field
 
 from tekst.auth import OptionalUserDep, SuperuserDep
 from tekst.models.common import PyObjectId
@@ -43,7 +43,7 @@ async def create_text(su: SuperuserDep, text: TextCreate) -> TextRead:
             status_code=status.HTTP_409_CONFLICT,
             detail="An equal text already exists (same title or slug)",
         )
-    return await TextDocument(**text.dict()).create()
+    return await TextDocument(**text.model_dump()).create()
 
 
 # @router.post(
@@ -88,10 +88,11 @@ async def insert_level(
     su: SuperuserDep,
     text_id: Annotated[PyObjectId, Path(alias="id")],
     index: Annotated[
-        conint(ge=0, lt=32), Path(description="Index to insert the level at")
+        Annotated[int, Field(ge=0, lt=32)],
+        Path(description="Index to insert the level at"),
     ],
     translations: Annotated[
-        conlist(StructureLevelTranslation, min_items=1),
+        Annotated[List[StructureLevelTranslation], Field(min_length=1)],
         Body(description="Label translations for this level"),
     ],
 ) -> TextRead:
@@ -169,7 +170,7 @@ async def insert_level(
         # index > 0, so there is a parent level
         for parent_level_node in parent_level_nodes:
             # parent of each dummy node is respective node on parent level
-            dummy_node = NodeDocument(**parent_level_node.dict(exclude={"id"}))
+            dummy_node = NodeDocument(**parent_level_node.model_dump(exclude={"id"}))
             dummy_node.parent_id = parent_level_node.id
             dummy_node.level = index
             dummy_node.position = parent_level_node.position
@@ -195,7 +196,8 @@ async def delete_level(
     su: SuperuserDep,
     text_id: Annotated[PyObjectId, Path(alias="id")],
     index: Annotated[
-        conint(ge=0, lt=32), Path(description="Index to insert the level at")
+        Annotated[int, Field(ge=0, lt=32)],
+        Path(description="Index to insert the level at"),
     ],
 ) -> TextRead:
     text_doc: TextDocument = await TextDocument.get(text_id)
@@ -315,5 +317,5 @@ async def update_text(
     #         status_code=status.HTTP_400_BAD_REQUEST,
     #         detail="Text slug cannot be changed",
     #     )
-    await text.apply(updates.dict(exclude_unset=True))
+    await text.apply(updates.model_dump(exclude_unset=True))
     return await TextDocument.get(text_id)

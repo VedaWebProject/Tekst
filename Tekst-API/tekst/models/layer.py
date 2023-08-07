@@ -1,7 +1,7 @@
 import re
 
 from beanie.operators import Or
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 from tekst.models.common import (
     DocumentBase,
@@ -47,13 +47,15 @@ class LayerBase(ModelBase, ModelFactory):
         None, description="Plaintext, potentially multiline comment on this layer"
     )
 
-    @validator("description")
+    @field_validator("description")
+    @classmethod
     def handle_whitespaces_in_description(cls, v):
         if not isinstance(v, str):
             return None
         return re.sub(r"[\s\n]+", " ", v)
 
-    @validator("layer_type")
+    @field_validator("layer_type")
+    @classmethod
     def validate_layer_type_name(cls, v):
         from tekst.layer_types import layer_type_manager
 

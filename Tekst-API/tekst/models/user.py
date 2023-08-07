@@ -9,8 +9,9 @@ from fastapi_users_db_beanie import (
     BeanieBaseUser,
 )
 from humps import camelize
-from pydantic import Field, constr
+from pydantic import Field, StringConstraints
 from pymongo import IndexModel
+from typing_extensions import Annotated
 
 from tekst.config import TekstConfig, get_config
 from tekst.models.common import AllOptionalMeta, Locale, ModelBase, PyObjectId
@@ -30,7 +31,7 @@ PublicUserField = Literal[
     tuple(
         [
             camelize(field)
-            for field in UserReadPublic.__fields__.keys()
+            for field in UserReadPublic.model_fields.keys()
             if field != "username"
         ]
     )
@@ -40,10 +41,12 @@ PublicUserField = Literal[
 class UserBase(ModelBase):
     """This base model defines the custom fields added to FastAPI-User's user model"""
 
-    username: constr(min_length=4, max_length=16, regex=r"[a-zA-Z0-9\-_]+")
-    first_name: constr(min_length=1, max_length=32)
-    last_name: constr(min_length=1, max_length=32)
-    affiliation: constr(min_length=1, max_length=64)
+    username: Annotated[
+        str, StringConstraints(min_length=4, max_length=16, pattern=r"[a-zA-Z0-9\-_]+")
+    ]
+    first_name: Annotated[str, StringConstraints(min_length=1, max_length=32)]
+    last_name: Annotated[str, StringConstraints(min_length=1, max_length=32)]
+    affiliation: Annotated[str, StringConstraints(min_length=1, max_length=64)]
     locale: Locale | None = None
     public_fields: list[PublicUserField] = Field(
         [], description="Data fields set public by this user"

@@ -27,5 +27,5 @@ async def update_platform_settings(
     if not settings_doc:
         # create from defaults
         settings_doc = await PlatformSettingsDocument().create()
-    await settings_doc.apply(settings_updates.dict(exclude_unset=True))
+    await settings_doc.apply(settings_updates.model_dump(exclude_unset=True))
     return settings_doc

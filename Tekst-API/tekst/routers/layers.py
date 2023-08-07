@@ -25,7 +25,9 @@ def _generate_read_endpoint(
                 detail=f"Could not find layer with ID {id}",
             )
         # return only fields that are not restricted for this user
-        return layer_doc.dict(exclude=layer_doc.restricted_fields(user and user.id))
+        return layer_doc.model_dump(
+            exclude=layer_doc.restricted_fields(user and user.id)
+        )
 
     return get_layer
 
@@ -49,7 +51,7 @@ def _generate_create_endpoint(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Layer's owner ID doesn't match requesting user's ID",
             )
-        return await layer_document_model(**layer.dict()).create()
+        return await layer_document_model(**layer.model_dump()).create()
 
     return create_layer
 
@@ -72,7 +74,7 @@ def _generate_update_endpoint(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=f"Layer {id} doesn't exist or requires extra permissions",
             )
-        await layer_doc.apply(updates.dict(exclude_unset=True))
+        await layer_doc.apply(updates.model_dump(exclude_unset=True))
         return layer_doc
 
     return update_layer
@@ -170,12 +172,12 @@ async def find_layers(
         .to_list()
     )
 
-    # calling dict(rename_id=True) on these models makes sure they have
+    # calling model_dump(rename_id=True) on these models makes sure they have
     # "id" instead of "_id", because we're not using a proper read model here
     # that could take care of that automatically (as we don't know the exact type)
     uid = user and user.id
     return [
-        layer_doc.dict(rename_id=True, exclude=layer_doc.restricted_fields(uid))
+        layer_doc.model_dump(rename_id=True, exclude=layer_doc.restricted_fields(uid))
         for layer_doc in layer_docs
     ]
 
@@ -201,7 +203,7 @@ async def find_layers(
 #     # that a) the ID field is called "id" and b) the DocumentId is encoded as str.
 #     layer_read_model = layer_type_manager \
 #       .get(layer_data["layerType"]).get_layer_read_model()
-#     layer_data = layer_read_model(**layer_data).dict()
+#     layer_data = layer_read_model(**layer_data).model_dump()
 
 #     # import unit type for the requested layer
 #     template = layer_type_manager \
@@ -225,7 +227,7 @@ async def find_layers(
 
 #     # fill in unit templates with IDs
 #     template["units"] = [
-#         dict(nodeId=str(node["_id"]), **node_template) for node in nodes
+#         model_dump(nodeId=str(node["_id"]), **node_template) for node in nodes
 #     ]
 
 #     # create temporary file and stream it as a file response
@@ -264,4 +266,4 @@ async def get_generic_layer_data_by_id(
         raise HTTPException(
             status.HTTP_404_NOT_FOUND, detail=f"No layer with ID {layer_id}"
         )
-    return layer_doc.dict(exclude=layer_doc.restricted_fields(user and user.id))
+    return layer_doc.model_dump(exclude=layer_doc.restricted_fields(user and user.id))

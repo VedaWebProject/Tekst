@@ -57,13 +57,13 @@ def _generate_create_endpoint(
             )
         dupes_criteria = {"layerId": True, "nodeId": True}
         if await unit_document_model.find(
-            unit.dict(include=dupes_criteria)
+            unit.model_dump(include=dupes_criteria)
         ).first_or_none():
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
                 detail="The properties of this unit conflict with another unit",
             )
-        return await unit_document_model(**unit.dict()).create()
+        return await unit_document_model(**unit.model_dump()).create()
 
     return create_unit
 
@@ -102,7 +102,7 @@ def _generate_update_endpoint(
                 detail=f"No write access for units of layer {unit_doc.layer_id}",
             )
         # apply updates
-        await unit_doc.apply(updates.dict(exclude_unset=True))
+        await unit_doc.apply(updates.model_dump(exclude_unset=True))
         return unit_doc
 
     return update_unit
@@ -206,7 +206,7 @@ async def find_units(
         .to_list()
     )
 
-    # calling dict(rename_id=True) on these models here makes sure they have
+    # calling model_dump(rename_id=True) on these models here makes sure they have
     # "id" instead of "_id", because we're not using a proper read model here
     # that could take care of that automatically (as we don't know the exact type)
-    return [unit.dict(rename_id=True) for unit in units]
+    return [unit.model_dump(rename_id=True) for unit in units]

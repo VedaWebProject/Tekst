@@ -61,7 +61,9 @@ async def get_public_user_info(
         )
     return UserReadPublic(
         username=user.username,
-        **user.dict(include={decamelize(field): True for field in user.public_fields}),
+        **user.model_dump(
+            include={decamelize(field): True for field in user.public_fields}
+        ),
     )
 
 

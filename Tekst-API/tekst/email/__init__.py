@@ -99,8 +99,8 @@ def send_email(
             templates[key]
             .format(
                 web_url=urljoin(_cfg.server_url, _cfg.web_path).strip("/"),
-                **_cfg.info.dict(by_alias=False, exclude_unset=False),
-                **to_user.dict(by_alias=False, exclude_unset=False),
+                **_cfg.info.model_dump(by_alias=False, exclude_unset=False),
+                **to_user.model_dump(by_alias=False, exclude_unset=False),
                 **kwargs,
             )
             .strip()

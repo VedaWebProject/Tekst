@@ -44,7 +44,7 @@ async def create_node(su: SuperuserDep, node: NodeCreate) -> NodeRead:
             detail="Conflict with existing node",
         )
     # all fine
-    return await NodeDocument(**node.dict()).create()
+    return await NodeDocument(**node.model_dump()).create()
 
 
 @router.get("", response_model=list[NodeRead], status_code=status.HTTP_200_OK)
@@ -98,7 +98,7 @@ async def update_node(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Node {node_id} doesn't exist or requires extra permissions",
         )
-    await node_doc.apply(updates.dict(exclude_unset=True))
+    await node_doc.apply(updates.model_dump(exclude_unset=True))
     return node_doc
 
 

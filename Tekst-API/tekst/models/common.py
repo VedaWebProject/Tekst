@@ -1,17 +1,17 @@
 from datetime import datetime
-from typing import Literal, Optional
+from typing import Dict, Literal, Optional
 
 from beanie import (
     Document,
     PydanticObjectId,
 )
 from humps import camelize
-from pydantic import BaseModel, Field
-from pydantic.main import ModelMetaclass
+from pydantic import BaseModel, ConfigDict, Field
+from pydantic._internal._model_construction import ModelMetaclass
 
 
 # type alias for a flat dict of arbitrary metadata
-Metadata = dict[str, str]
+Metadata = Dict[str, str]
 
 # type alias for available locale identifiers
 Locale = Literal["deDE", "enUS"]
@@ -19,7 +19,7 @@ Locale = Literal["deDE", "enUS"]
 
 class PyObjectId(PydanticObjectId):
     @classmethod
-    def __modify_schema__(cls, field_schema):
+    def __get_pydantic_json_schema__(cls, field_schema):
         field_schema.update(
             type="string",
             example="5eb7cf5a86d9755df3a6c593",
@@ -27,9 +27,9 @@ class PyObjectId(PydanticObjectId):
 
 
 class ModelBase(BaseModel):
-    def dict(self, rename_id: bool = True, **kwargs) -> dict:
-        """Overrides dict() in Basemodel to set some custom defaults"""
-        data = super().dict(
+    def model_dump(self, rename_id: bool = True, **kwargs) -> dict:
+        """Overrides model_dump() in Basemodel to set some custom defaults"""
+        data = super().model_dump(
             exclude_unset=kwargs.pop("exclude_unset", True),
             by_alias=kwargs.pop("by_alias", True),
             **kwargs,
@@ -38,17 +38,15 @@ class ModelBase(BaseModel):
             data["id"] = data.pop("_id")
         return data
 
-    def json(self, **kwargs) -> str:
-        """Overrides json() in Basemodel to set some custom defaults"""
-        return super().json(
+    def model_dump_json(self, **kwargs) -> str:
+        """Overrides model_dump_json() in Basemodel to set some custom defaults"""
+        return super().model_dump_json(
             exclude_unset=kwargs.pop("exclude_unset", True),
             by_alias=kwargs.pop("by_alias", True),
             **kwargs,
         )
 
-    class Config:
-        alias_generator = camelize
-        allow_population_by_field_name = True
+    model_config = ConfigDict(alias_generator=camelize, populate_by_name=True)
 
 
 class _IDMixin(BaseModel):
@@ -69,7 +67,7 @@ class DocumentBase(Document):
     def restricted_fields(self, user_id: str = None) -> dict:
         """
         This may or may not be overridden to define access-restricted fields
-        that should be excluded from .dict() and .json() calls based on
+        that should be excluded from .model_dump() and .model_dump_json() calls based on
         the given user ID trying to access data.
         IMPORTANT: We have to use snake_cased field names in the output dict!
         Not the camelCased aliases!

@@ -17,16 +17,16 @@ def test_dict_override(test_app):
         title="agním īḷe puróhitaṁ",
         slug="agnim",
         levels=[[{"locale": "enUS", "label": "foo"}]],
-    ).dict()
+    ).model_dump()
     assert t_data["title"] == "agním īḷe puróhitaṁ"
     assert "slug" in t_data
     assert t_data["slug"] == "agnim"
-    assert "locDelim" not in t_data  # because exclude_unset in dict() override
+    assert "locDelim" not in t_data  # because exclude_unset in model_dump() override
 
 
 def test_serialization(test_app, test_data):
     text = TextCreate(**test_data["texts"][0])
-    assert text.dict().get("title")
+    assert text.model_dump().get("title")
     dummy_id = "6331b6e05c474b9f8f19330f"
     text = TextRead(
         id=dummy_id,
@@ -35,9 +35,9 @@ def test_serialization(test_app, test_data):
         modified_at=datetime.now(),
         **test_data["texts"][0],
     )
-    assert "id" in text.dict()
-    assert "locDelim" in text.dict()
-    assert "loc_delim" in text.dict(by_alias=False)
+    assert "id" in text.model_dump()
+    assert "locDelim" in text.model_dump()
+    assert "loc_delim" in text.model_dump(by_alias=False)
     text = TextRead(
         **{
             "id": dummy_id,

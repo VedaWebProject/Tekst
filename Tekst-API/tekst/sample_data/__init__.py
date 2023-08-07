@@ -46,7 +46,7 @@ async def _create_sample_layers(text_slug: str, text_id: str):
             raise RuntimeError(f"Layer type {layer_data.get('layerType')} not found.")
         layer_doc = layer_doc_model(text_id=text_id, **layer_data)
         await layer_doc.create()
-        layer_doc_data = layer_doc.dict()
+        layer_doc_data = layer_doc.model_dump()
         # units
         for unit_data in layer_data.get("units", []):
             await _create_sample_unit(layer_doc_data, unit_data, layer_type)
