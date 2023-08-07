@@ -47,7 +47,7 @@ const progress = computed(() =>
 
 <template>
   <Transition name="fade">
-    <div class="fullscreen-loader" v-show="props.show">
+    <div v-show="props.show" class="fullscreen-loader">
       <div class="fullscreen-loader-text">{{ props.text }}</div>
       <n-progress
         v-show="props.showProgress && props.progress !== undefined"
@@ -79,6 +79,7 @@ const progress = computed(() =>
   background-color: #fff;
   color: #363636;
 }
+
 .fullscreen-loader-text {
   padding: 1em;
 }
