@@ -62,10 +62,10 @@ tasks:
   dev:
     desc: Run dev services stack and dev server, clean up afterwards
     cmds:
+      - defer: {task: dev-stack-down}
       - task: dev-stack-up
       - task: print-dev-uris
       - task: run-dev
-      - defer: {task: dev-stack-down}
 
   schema:
     desc: Export (development) OpenAPI schema to file openapi.json
