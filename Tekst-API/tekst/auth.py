@@ -1,7 +1,7 @@
 import contextlib
 import re
 
-from typing import Annotated, Any
+from typing import Annotated, Any, Dict
 
 import fastapi_users.models as fapi_users_models
 
@@ -72,6 +72,11 @@ _bearer_transport = BearerTransport(tokenUrl="auth/jwt/login")
 
 class CustomBeanieUserDatabase(BeanieUserDatabase):
     # This class is necessary to make our model logic work with FastAPI-Users :(
+
+    async def create(self, create_dict: Dict[str, Any]) -> UP_BEANIE:
+        """Create a user."""
+        return await super().create(decamelize(create_dict))
+
     async def update(self, user: UP_BEANIE, update_dict: dict[str, Any]) -> UP_BEANIE:
         """Update a user."""
         return await super().update(user, decamelize(update_dict))
