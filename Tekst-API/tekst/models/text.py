@@ -114,7 +114,13 @@ class Text(ModelBase, ModelFactory):
         name = "texts"
 
 
-TextDocument = Text.get_document_model()
+# TextDocument = Text.get_document_model()
+class TextDocument(Text, DocumentBase):
+    class Settings(DocumentBase.Settings):
+        name = "texts"
+        bson_encoders = {Color: lambda c: str(c)}
+
+
 TextCreate = Text.get_create_model()
 TextRead = Text.get_read_model()
 TextUpdate = Text.get_update_model()
