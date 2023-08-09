@@ -92,11 +92,11 @@ class Text(ModelBase, ModelFactory):
 
     @field_validator("default_level")
     @classmethod
-    def validate_default_level(cls, v, values, **kwargs):
-        if values["levels"] and v >= len(values["levels"]):
+    def validate_default_level(cls, v, info, **kwargs):
+        if info.data["levels"] and v >= len(info.data["levels"]):
             raise ValueError(
                 f"Invalid default level value ({v}). "
-                f"This text only has {len(values['levels'])} levels."
+                f"This text only has {len(info.data['levels'])} levels."
             )
         return v
 
