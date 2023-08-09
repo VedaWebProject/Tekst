@@ -3,7 +3,6 @@ from typing import Annotated, List
 
 from beanie.operators import Or, Set, Unset
 from fastapi import APIRouter, Body, HTTPException, Path, status
-from pydantic import Field
 
 from tekst.auth import OptionalUserDep, SuperuserDep
 from tekst.models.common import PyObjectId
@@ -88,12 +87,12 @@ async def insert_level(
     su: SuperuserDep,
     text_id: Annotated[PyObjectId, Path(alias="id")],
     index: Annotated[
-        Annotated[int, Field(ge=0, lt=32)],
-        Path(description="Index to insert the level at"),
+        int,
+        Path(ge=0, lt=32, description="Index to insert the level at"),
     ],
     translations: Annotated[
-        Annotated[List[StructureLevelTranslation], Field(min_length=1)],
-        Body(description="Label translations for this level"),
+        List[StructureLevelTranslation],
+        Body(min_length=1, description="Label translations for this level"),
     ],
 ) -> TextRead:
     text_doc: TextDocument = await TextDocument.get(text_id)
@@ -196,8 +195,8 @@ async def delete_level(
     su: SuperuserDep,
     text_id: Annotated[PyObjectId, Path(alias="id")],
     index: Annotated[
-        Annotated[int, Field(ge=0, lt=32)],
-        Path(description="Index to insert the level at"),
+        int,
+        Path(ge=0, lt=32, description="Index to insert the level at"),
     ],
 ) -> TextRead:
     text_doc: TextDocument = await TextDocument.get(text_id)
