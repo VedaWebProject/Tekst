@@ -1,0 +1,3 @@
+*.html linguist-language=Python
+*.subject linguist-language=Python
+*.txt linguist-language=Python
