@@ -31,7 +31,7 @@ router = APIRouter(
     summary="Get platform data",
 )
 async def get_platform_data(
-    ou: OptionalUserDep, cfg: TekstConfig = Depends(get_cfg)
+    ou: OptionalUserDep, cfg: Annotated[TekstConfig, Depends(get_cfg)]
 ) -> dict:
     """Returns data the client needs to initialize"""
     return PlatformData(

@@ -171,11 +171,17 @@ async def find_units(
     user: OptionalUserDep,
     layer_id: Annotated[
         list[PydanticObjectId],
-        Query(description="ID (or list of IDs) of layer(s) to return unit data for"),
+        Query(
+            alias="layerId",
+            description="ID (or list of IDs) of layer(s) to return unit data for",
+        ),
     ] = [],
     node_id: Annotated[
         list[PydanticObjectId],
-        Query(description="ID (or list of IDs) of node(s) to return unit data for"),
+        Query(
+            alias="nodeId",
+            description="ID (or list of IDs) of node(s) to return unit data for",
+        ),
     ] = [],
     limit: Annotated[int, Query(description="Return at most <limit> items")] = 1000,
 ) -> list[dict]:

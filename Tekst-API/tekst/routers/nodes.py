@@ -1,7 +1,7 @@
 from typing import Annotated
 
 from beanie import PydanticObjectId
-from fastapi import APIRouter, HTTPException, Path, status
+from fastapi import APIRouter, HTTPException, Path, Query, status
 
 from tekst.auth import SuperuserDep
 from tekst.logging import log
@@ -49,10 +49,10 @@ async def create_node(su: SuperuserDep, node: NodeCreate) -> NodeRead:
 
 @router.get("", response_model=list[NodeRead], status_code=status.HTTP_200_OK)
 async def find_nodes(
-    text_id: PydanticObjectId,
+    text_id: Annotated[PydanticObjectId, Query(alias="textId")],
     level: int = None,
     position: int = None,
-    parent_id: PydanticObjectId = None,
+    parent_id: Annotated[PydanticObjectId, Query(alias="parentId")] = None,
     limit: int = 1000,
 ) -> list[NodeDocument]:
     if level is None and parent_id is None:

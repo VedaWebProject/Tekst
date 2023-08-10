@@ -20,10 +20,9 @@ class DeepLLinksConfig(LayerConfigBase):
         "PT", "RO", "RU", "SK", "SL", "SV", "TR", "UK", "ZH",
     )  # fmt: skip
 
-    enabled: bool = Field(
-        False,
-        description="Enable/disable quick translation links to DeepL",
-    )
+    enabled: Annotated[
+        bool, Field(description="Enable/disable quick translation links to DeepL")
+    ] = False
     source_language: Annotated[
         Literal[_DEEPL_LANGUAGES] | None,
         AfterValidator(_uppercase_lang_code),
