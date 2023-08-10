@@ -1,10 +1,10 @@
 from typing import Annotated
 
-from fastapi import APIRouter, HTTPException, Path, status
+from beanie import PydanticObjectId
+from fastapi import APIRouter, HTTPException, Path, Query, status
 
 from tekst.auth import OptionalUserDep, UserDep
 from tekst.layer_types import layer_type_manager
-from tekst.models.common import PyObjectId
 from tekst.models.layer import LayerBase, LayerBaseDocument
 from tekst.models.text import TextDocument
 
@@ -12,7 +12,9 @@ from tekst.models.text import TextDocument
 def _generate_read_endpoint(
     layer_document_model: type[LayerBase], layer_read_model: type[LayerBase]
 ):
-    async def get_layer(id: PyObjectId, user: OptionalUserDep) -> layer_read_model:
+    async def get_layer(
+        id: PydanticObjectId, user: OptionalUserDep
+    ) -> layer_read_model:
         """A generic route for reading a layer definition from the database"""
         layer_doc = (
             await layer_document_model.find(layer_document_model.id == id)
@@ -62,7 +64,7 @@ def _generate_update_endpoint(
     layer_update_model: type[LayerBase],
 ):
     async def update_layer(
-        id: PyObjectId, updates: layer_update_model, user: UserDep
+        id: PydanticObjectId, updates: layer_update_model, user: UserDep
     ) -> layer_read_model:
         layer_doc: layer_document_model = (
             await layer_document_model.find(layer_document_model.id == id)
@@ -145,9 +147,9 @@ for lt_name, lt_class in layer_type_manager.get_all().items():
 @router.get("", response_model=list[dict], status_code=status.HTTP_200_OK)
 async def find_layers(
     user: OptionalUserDep,
-    text_id: PyObjectId,
+    text_id: Annotated[PydanticObjectId, Query(alias="textId")],
     level: int = None,
-    layer_type: str = None,
+    layer_type: Annotated[str, Query(alias="layerType")] = None,
     limit: int = 1000,
 ) -> list[dict]:
     """
@@ -253,7 +255,7 @@ async def find_layers(
 
 @router.get("/{id}", status_code=status.HTTP_200_OK)
 async def get_generic_layer_data_by_id(
-    layer_id: Annotated[PyObjectId, Path(alias="id")], user: OptionalUserDep
+    layer_id: Annotated[PydanticObjectId, Path(alias="id")], user: OptionalUserDep
 ) -> dict:
     layer_doc = (
         await LayerBaseDocument.find(

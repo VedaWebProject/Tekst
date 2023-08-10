@@ -17,15 +17,6 @@ Metadata = Dict[str, str]
 Locale = Literal["deDE", "enUS"]
 
 
-class PyObjectId(PydanticObjectId):
-    @classmethod
-    def __get_pydantic_json_schema__(cls, field_schema):
-        field_schema.update(
-            type="string",
-            example="5eb7cf5a86d9755df3a6c593",
-        )
-
-
 class ModelBase(BaseModel):
     def model_dump(self, rename_id: bool = True, **kwargs) -> dict:
         """Overrides model_dump() in Basemodel to set some custom defaults"""
@@ -49,20 +40,13 @@ class ModelBase(BaseModel):
     model_config = ConfigDict(alias_generator=camelize, populate_by_name=True)
 
 
-class _IDMixin(BaseModel):
-    id: PyObjectId
-
-    def __init__(self, **kwargs):
-        if "_id" in kwargs:
-            kwargs["id"] = str(kwargs.pop("_id"))
-        super().__init__(**kwargs)
-
-
 class DocumentBase(Document):
     """Base model for all Tekst ODM models"""
 
     created_at: datetime = datetime.utcnow()
     modified_at: datetime = datetime.utcnow()
+
+    model_config = ConfigDict(alias_generator=camelize, populate_by_name=True)
 
     def restricted_fields(self, user_id: str = None) -> dict:
         """
@@ -110,13 +94,19 @@ class CreateBase(ModelBase):
     pass
 
 
-class ReadBase(ModelBase, _IDMixin):
+class ReadBase(ModelBase):
+    id: PydanticObjectId
     created_at: datetime = Field(
         ..., description="Creation date and time of this object"
     )
     modified_at: datetime = Field(
         ..., description="Last modification date and time of this object"
     )
+
+    def __init__(self, **kwargs):
+        if "_id" in kwargs:
+            kwargs["id"] = str(kwargs.pop("_id", kwargs["id"]))
+        super().__init__(**kwargs)
 
 
 class UpdateBase(ModelBase, metaclass=AllOptionalMeta):

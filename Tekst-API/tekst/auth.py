@@ -5,7 +5,7 @@ from typing import Annotated, Any, Dict
 
 import fastapi_users.models as fapi_users_models
 
-from beanie import Document
+from beanie import Document, PydanticObjectId
 from fastapi import (
     APIRouter,
     Depends,
@@ -45,7 +45,6 @@ from humps import decamelize
 from tekst.config import TekstConfig, get_config
 from tekst.email import TemplateIdentifier, send_email
 from tekst.logging import log
-from tekst.models.common import PyObjectId
 from tekst.models.user import User, UserCreate, UserRead, UserUpdate
 
 
@@ -137,7 +136,7 @@ def _validate_required_password_chars(password: str):
     )
 
 
-class UserManager(ObjectIDIDMixin, BaseUserManager[User, PyObjectId]):
+class UserManager(ObjectIDIDMixin, BaseUserManager[User, PydanticObjectId]):
     reset_password_token_secret = _cfg.security.secret
     verification_token_secret = _cfg.security.secret
     reset_password_token_lifetime_seconds = _cfg.security.reset_pw_token_lifetime
@@ -264,7 +263,7 @@ async def get_user_manager(user_db=Depends(get_user_db)):
     yield UserManager(user_db)
 
 
-_fastapi_users = FastAPIUsers[User, PyObjectId](
+_fastapi_users = FastAPIUsers[User, PydanticObjectId](
     get_user_manager,
     [_auth_backend_cookie, _auth_backend_jwt],
 )

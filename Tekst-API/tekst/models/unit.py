@@ -1,3 +1,4 @@
+from beanie import PydanticObjectId
 from pydantic import Field
 
 from tekst.models.common import (
@@ -5,7 +6,6 @@ from tekst.models.common import (
     Metadata,
     ModelBase,
     ModelFactory,
-    PyObjectId,
     UpdateBase,
 )
 
@@ -13,8 +13,8 @@ from tekst.models.common import (
 class UnitBase(ModelBase, ModelFactory):
     """A base model for types of data units belonging to a certain data layer"""
 
-    layer_id: PyObjectId = Field(..., description="Data layer ID")
-    node_id: PyObjectId = Field(..., description="Parent text node ID")
+    layer_id: PydanticObjectId = Field(..., description="Data layer ID")
+    node_id: PydanticObjectId = Field(..., description="Parent text node ID")
     meta: Metadata | None = Field(
         None,
         description="Arbitrary metadata on this layer unit",

@@ -1,5 +1,6 @@
 import re
 
+from beanie import PydanticObjectId
 from beanie.operators import Or
 from pydantic import Field, field_validator
 
@@ -8,7 +9,6 @@ from tekst.models.common import (
     Metadata,
     ModelBase,
     ModelFactory,
-    PyObjectId,
     ReadBase,
     UpdateBase,
 )
@@ -27,18 +27,20 @@ class LayerBase(ModelBase, ModelFactory):
         max_length=128,
         description="Short, one-line description of this data layer",
     )
-    text_id: PyObjectId | None = Field(
+    text_id: PydanticObjectId | None = Field(
         None, description="ID of the text this layer belongs to"
     )
     level: int = Field(..., description="Text level this layer belongs to")
     layer_type: str = Field(
         ..., description="A string identifying one of the available layer types"
     )
-    owner_id: PyObjectId | None = Field(None, description="User owning this layer")
-    shared_read: list[PyObjectId] = Field(
+    owner_id: PydanticObjectId | None = Field(
+        None, description="User owning this layer"
+    )
+    shared_read: list[PydanticObjectId] = Field(
         default_factory=list, description="Users with shared read access to this layer"
     )
-    shared_write: list[PyObjectId] = Field(
+    shared_write: list[PydanticObjectId] = Field(
         default_factory=list, description="Users with shared write access to this layer"
     )
     public: bool = Field(False, description="Publication status of this layer")

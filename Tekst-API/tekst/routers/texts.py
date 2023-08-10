@@ -1,11 +1,11 @@
 from datetime import datetime
 from typing import Annotated, List
 
+from beanie import PydanticObjectId
 from beanie.operators import Or, Set, Unset
 from fastapi import APIRouter, Body, HTTPException, Path, status
 
 from tekst.auth import OptionalUserDep, SuperuserDep
-from tekst.models.common import PyObjectId
 from tekst.models.layer import LayerBaseDocument
 from tekst.models.text import (
     NodeDocument,
@@ -29,8 +29,10 @@ router = APIRouter(
 
 @router.get("", response_model=list[TextRead], status_code=status.HTTP_200_OK)
 async def get_all_texts(ou: OptionalUserDep, limit: int = 100) -> list[TextRead]:
-    restrictions = {"isActive": True} if not (ou and ou.is_superuser) else {}
-    return await TextDocument.find(restrictions).limit(limit).to_list()
+    restrictions = {} if (ou and ou.is_superuser) else {"isActive": True}
+    return (
+        await TextDocument.find(restrictions).limit(limit).project(TextRead).to_list()
+    )
 
 
 @router.post("", response_model=TextRead, status_code=status.HTTP_201_CREATED)
@@ -85,7 +87,7 @@ async def create_text(su: SuperuserDep, text: TextCreate) -> TextRead:
 )
 async def insert_level(
     su: SuperuserDep,
-    text_id: Annotated[PyObjectId, Path(alias="id")],
+    text_id: Annotated[PydanticObjectId, Path(alias="id")],
     index: Annotated[
         int,
         Path(ge=0, lt=32, description="Index to insert the level at"),
@@ -193,7 +195,7 @@ async def insert_level(
 )
 async def delete_level(
     su: SuperuserDep,
-    text_id: Annotated[PyObjectId, Path(alias="id")],
+    text_id: Annotated[PydanticObjectId, Path(alias="id")],
     index: Annotated[
         int,
         Path(ge=0, lt=32, description="Index to insert the level at"),
@@ -289,7 +291,7 @@ async def delete_level(
 
 
 @router.get("/{id}", response_model=TextRead, status_code=status.HTTP_200_OK)
-async def get_text(text_id: Annotated[PyObjectId, Path(alias="id")]) -> TextRead:
+async def get_text(text_id: Annotated[PydanticObjectId, Path(alias="id")]) -> TextRead:
     text = await TextDocument.get(text_id)
     if not text:
         raise HTTPException(
@@ -302,7 +304,7 @@ async def get_text(text_id: Annotated[PyObjectId, Path(alias="id")]) -> TextRead
 @router.patch("/{id}", response_model=TextRead, status_code=status.HTTP_200_OK)
 async def update_text(
     su: SuperuserDep,
-    text_id: Annotated[PyObjectId, Path(alias="id")],
+    text_id: Annotated[PydanticObjectId, Path(alias="id")],
     updates: TextUpdate,
 ) -> dict:
     text = await TextDocument.get(text_id)

@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Literal
 
-from beanie import Document
+from beanie import Document, PydanticObjectId
 from fastapi_users import (
     schemas,
 )
@@ -14,7 +14,7 @@ from pymongo import IndexModel
 from typing_extensions import Annotated
 
 from tekst.config import TekstConfig, get_config
-from tekst.models.common import AllOptionalMeta, Locale, ModelBase, PyObjectId
+from tekst.models.common import AllOptionalMeta, Locale, ModelBase
 
 
 _cfg: TekstConfig = get_config()
@@ -48,9 +48,9 @@ class UserBase(ModelBase):
     last_name: Annotated[str, StringConstraints(min_length=1, max_length=32)]
     affiliation: Annotated[str, StringConstraints(min_length=1, max_length=64)]
     locale: Locale | None = None
-    public_fields: list[PublicUserField] = Field(
-        [], description="Data fields set public by this user"
-    )
+    public_fields: Annotated[
+        list[PublicUserField], Field(description="Data fields set public by this user")
+    ] = []
 
 
 class User(UserBase, BeanieBaseUser, Document):
@@ -66,12 +66,12 @@ class User(UserBase, BeanieBaseUser, Document):
         ]
 
 
-class UserRead(UserBase, schemas.BaseUser[PyObjectId]):
+class UserRead(UserBase, schemas.BaseUser[PydanticObjectId]):
     """A user registered in the system"""
 
     # we redefine these fields here because they should be required in a read model
     # but have default values in FastAPI-User's schemas.BaseUser...
-    id: PyObjectId
+    id: PydanticObjectId
     is_active: bool
     is_verified: bool
     is_superuser: bool

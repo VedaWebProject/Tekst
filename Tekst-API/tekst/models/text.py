@@ -1,5 +1,6 @@
 from typing import List
 
+from beanie import PydanticObjectId
 from pydantic import Field, StringConstraints, field_validator
 from pydantic_extra_types.color import Color
 from typing_extensions import Annotated, TypedDict
@@ -10,7 +11,6 @@ from tekst.models.common import (
     Metadata,
     ModelBase,
     ModelFactory,
-    PyObjectId,
 )
 
 
@@ -129,8 +129,10 @@ TextUpdate = Text.get_update_model()
 class Node(ModelBase, ModelFactory):
     """A node in a text structure (e.g. chapter, paragraph, ...)"""
 
-    text_id: PyObjectId = Field(..., description="ID of the text this node belongs to")
-    parent_id: PyObjectId = Field(None, description="ID of parent node")
+    text_id: PydanticObjectId = Field(
+        ..., description="ID of the text this node belongs to"
+    )
+    parent_id: PydanticObjectId = Field(None, description="ID of parent node")
     level: Annotated[int, Field(ge=0, lt=32)] = Field(
         ..., description="Index of structure level this node is on"
     )

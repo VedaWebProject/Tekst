@@ -1,10 +1,10 @@
 from typing import Annotated
 
+from beanie import PydanticObjectId
 from fastapi import APIRouter, HTTPException, Path, status
 
 from tekst.auth import SuperuserDep
 from tekst.logging import log
-from tekst.models.common import PyObjectId
 from tekst.models.text import (
     NodeCreate,
     NodeDocument,
@@ -49,10 +49,10 @@ async def create_node(su: SuperuserDep, node: NodeCreate) -> NodeRead:
 
 @router.get("", response_model=list[NodeRead], status_code=status.HTTP_200_OK)
 async def find_nodes(
-    text_id: PyObjectId,
+    text_id: PydanticObjectId,
     level: int = None,
     position: int = None,
-    parent_id: PyObjectId = None,
+    parent_id: PydanticObjectId = None,
     limit: int = 1000,
 ) -> list[NodeDocument]:
     if level is None and parent_id is None:
@@ -76,7 +76,9 @@ async def find_nodes(
 
 
 @router.get("/{id}", response_model=NodeRead, status_code=status.HTTP_200_OK)
-async def get_node(node_id: Annotated[PyObjectId, Path(alias="id")]) -> NodeDocument:
+async def get_node(
+    node_id: Annotated[PydanticObjectId, Path(alias="id")]
+) -> NodeDocument:
     node_doc = await NodeDocument.get(node_id)
     if not node_doc:
         raise HTTPException(
@@ -89,7 +91,7 @@ async def get_node(node_id: Annotated[PyObjectId, Path(alias="id")]) -> NodeDocu
 @router.patch("/{id}", response_model=NodeRead, status_code=status.HTTP_200_OK)
 async def update_node(
     su: SuperuserDep,
-    node_id: Annotated[PyObjectId, Path(alias="id")],
+    node_id: Annotated[PydanticObjectId, Path(alias="id")],
     updates: NodeUpdate,
 ) -> NodeDocument:
     node_doc = await NodeDocument.get(node_id)
@@ -106,7 +108,7 @@ async def update_node(
     "/{id}/children", response_model=list[NodeRead], status_code=status.HTTP_200_OK
 )
 async def get_children(
-    node_id: Annotated[PyObjectId, Path(alias="id")],
+    node_id: Annotated[PydanticObjectId, Path(alias="id")],
     limit: int = 9999,
 ) -> list:
     return (

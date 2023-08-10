@@ -1,12 +1,13 @@
+from beanie import PydanticObjectId
 from pydantic import Field
 
-from tekst.models.common import ModelBase, ModelFactory, PyObjectId
+from tekst.models.common import ModelBase, ModelFactory
 
 
 class PlatformSettings(ModelBase, ModelFactory):
     """Settings defining platform behavior configured by admins"""
 
-    default_text_id: PyObjectId | None = Field(
+    default_text_id: PydanticObjectId | None = Field(
         None, description="Default text to load in UI"
     )
 

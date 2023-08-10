@@ -1,8 +1,9 @@
+from beanie import PydanticObjectId
 from pydantic import Field
 
 from tekst.config import InfoConfig, TekstConfig, TekstInfoConfig, get_config
 from tekst.layer_types import LayerTypeInfo
-from tekst.models.common import ModelBase, PyObjectId
+from tekst.models.common import ModelBase
 from tekst.models.settings import PlatformSettingsRead
 from tekst.models.text import TextRead
 
@@ -32,7 +33,7 @@ class PlatformData(ModelBase):
 class TextStats(ModelBase):
     """Text statistics data"""
 
-    id: PyObjectId
+    id: PydanticObjectId
     nodes_count: int
     layers_count: int
     layer_types: dict[str, int]
