@@ -4,6 +4,13 @@
 
 ...as in **T**ext **E**xploration and **K**nowledge **S**tructuring **T**ool
 
+![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/VedaWebProject/Tekst/server-tests.yml?label=server%20tests)
+![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/y/VedaWebProject/Tekst)
+![GitHub](https://img.shields.io/github/license/VedaWebProject/Tekst)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/VedaWebProject/Tekst)
+![GitHub repo size](https://img.shields.io/github/repo-size/VedaWebProject/Tekst)
+
+
 > 🏗 Tekst is still in a pre-alpha stage. As of now there's no complete (let alone production-ready) version available.
 > As soon as we're ready for it, the new [VedaWeb platform](https://vedaweb.uni-koeln.de/rigveda) will become the first public instance of Tekst. Until then, you are welcome to follow the development of Tekst in this very repository.
 
