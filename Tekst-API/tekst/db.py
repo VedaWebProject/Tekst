@@ -6,8 +6,10 @@ from tekst.auth import AccessToken
 from tekst.config import TekstConfig, get_config
 from tekst.layer_types import layer_type_manager
 from tekst.logging import log
+from tekst.models.layer import LayerBaseDocument
 from tekst.models.settings import PlatformSettingsDocument
 from tekst.models.text import NodeDocument, TextDocument
+from tekst.models.unit import UnitBaseDocument
 from tekst.models.user import User
 
 
@@ -37,7 +39,15 @@ async def reset_db():
 
 async def init_odm(db: Database) -> None:
     # collect basic models
-    models = [TextDocument, NodeDocument, PlatformSettingsDocument, User, AccessToken]
+    models = [
+        TextDocument,
+        NodeDocument,
+        LayerBaseDocument,
+        UnitBaseDocument,
+        PlatformSettingsDocument,
+        User,
+        AccessToken
+    ]
     # add layer type models
     for lt_class in layer_type_manager.get_all().values():
         models.append(lt_class.get_layer_model().get_document_model())

@@ -42,11 +42,6 @@ class ModelBase(BaseModel):
 class DocumentBase(Document):
     """Base model for all Tekst ODM models"""
 
-    created_at: datetime = datetime.utcnow()
-    modified_at: datetime = datetime.utcnow()
-
-    model_config = ConfigDict(alias_generator=camelize, populate_by_name=True)
-
     def restricted_fields(self, user_id: str = None) -> dict:
         """
         This may or may not be overridden to define access-restricted fields
@@ -69,14 +64,8 @@ class DocumentBase(Document):
         pass
 
 
-class ReadBase(ModelBase):
+class ReadBase():
     id: PydanticObjectId
-    created_at: datetime = Field(
-        ..., description="Creation date and time of this object"
-    )
-    modified_at: datetime = Field(
-        ..., description="Last modification date and time of this object"
-    )
 
     def __init__(self, **kwargs):
         if "_id" in kwargs:
@@ -91,17 +80,13 @@ class ModelFactory:
     _update_model: type[ModelBase] = None
 
     @classmethod
-    def _generate_model(cls, classname_suffix: str, base: type) -> type["ModelFactory"]:
-        return type(
-            f"{cls.__name__}{classname_suffix.capitalize()}",
-            (cls, base),
-            {"__module__": f"{cls.__module__}"},
-        )
-
-    @classmethod
     def get_document_model(cls, base: type[DocumentBase] = DocumentBase) -> type:
         if not cls._document_model:
-            cls._document_model = cls._generate_model("Document", base)
+            cls._document_model = type(
+                f"{cls.__name__}Document",
+                (base, cls),
+                {"__module__": f"{cls.__module__}"},
+            )
         return cls._document_model
 
     @classmethod
@@ -111,7 +96,11 @@ class ModelFactory:
     @classmethod
     def get_read_model(cls) -> type[ReadBase]:
         if not cls._read_model:
-            cls._read_model = cls._generate_model("Read", ReadBase)
+            cls._read_model = type(
+                f"{cls.__name__}Read",
+                (cls, ReadBase),
+                {"__module__": f"{cls.__module__}"},
+            )
         return cls._read_model
 
     @classmethod

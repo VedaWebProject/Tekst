@@ -31,8 +31,6 @@ def test_serialization(test_app, test_data):
     text = TextRead(
         id=dummy_id,
         loc_delim="---",
-        created_at=datetime.now(),
-        modified_at=datetime.now(),
         **test_data["texts"][0],
     )
     assert "id" in text.model_dump()

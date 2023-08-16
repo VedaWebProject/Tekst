@@ -122,8 +122,8 @@ class LayerBaseDocument(LayerBase, DocumentBase):
         indexes = ["textId", "level", "layerType", "ownerId"]
 
 
-class LayerBaseRead(LayerBase, ReadBase):
-    pass
+# class LayerBaseRead(LayerBase, ReadBase):
+#     pass
 
 
 LayerBaseUpdate = LayerBase.get_update_model()

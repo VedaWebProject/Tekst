@@ -1,5 +1,6 @@
 from tekst.layer_types import LayerTypeABC, layer_type_manager
 from tekst.logging import log
+from tekst.models.common import PydanticObjectId
 from tekst.models.text import NodeDocument, TextDocument
 from tekst.sample_data._sample_data import LAYERS, TEXTS
 
@@ -20,16 +21,17 @@ async def _create_sample_unit(
 ):
     # get node ID this unit belongs to
     ref_node_example = {
-        "textId": layer_data.get("textId", ""),
+        "textId": PydanticObjectId(layer_data.get("textId", "")),
         "level": layer_data.get("level", -1),
-        "position": unit_data.get("sample_node_position", -1),
+        "position": unit_data.get("sampleNodePosition", -1),
     }
-    node = await NodeDocument.find_one(ref_node_example)
+    node = await NodeDocument.find(
+        NodeDocument.text_id == PydanticObjectId(layer_data.get("textId", "")),
+        NodeDocument.level == layer_data.get("level", -1),
+        NodeDocument.position == unit_data.get("sampleNodePosition", -1),
+    ).first_or_none()
     if not node:
-        log.error(
-            "Could not find target node for unit. " f"Node data: {ref_node_example}"
-        )
-        log.error(await NodeDocument.count())
+        log.error(f"Could not find target node by example {ref_node_example}")
         return
     # create node
     unit_doc_model = layer_type.get_unit_model().get_document_model()
