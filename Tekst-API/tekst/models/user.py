@@ -14,7 +14,7 @@ from pymongo import IndexModel
 from typing_extensions import Annotated
 
 from tekst.config import TekstConfig, get_config
-from tekst.models.common import AllOptionalMeta, Locale, ModelBase
+from tekst.models.common import Locale, ModelBase, ModelFactory
 
 
 _cfg: TekstConfig = get_config()
@@ -38,7 +38,7 @@ PublicUserField = Literal[
 ]
 
 
-class UserBase(ModelBase):
+class UserBase(ModelBase, ModelFactory):
     """This base model defines the custom fields added to FastAPI-User's user model"""
 
     username: Annotated[
@@ -84,7 +84,4 @@ class UserCreate(UserBase, schemas.BaseUserCreate):
     is_active: bool = _cfg.security.users_active_by_default
 
 
-class UserUpdate(UserBase, schemas.BaseUserUpdate, metaclass=AllOptionalMeta):
-    """Updates to a user registered in the system"""
-
-    pass
+UserUpdate = UserBase.get_update_model(schemas.BaseUserUpdate)

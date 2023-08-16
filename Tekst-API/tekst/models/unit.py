@@ -6,7 +6,6 @@ from tekst.models.common import (
     Metadata,
     ModelBase,
     ModelFactory,
-    UpdateBase,
 )
 
 
@@ -38,5 +37,4 @@ class UnitBaseDocument(UnitBase, DocumentBase):
         indexes = ["layerId", "nodeId"]
 
 
-class UnitBaseUpdate(UnitBase, UpdateBase):
-    pass
+UnitBaseUpdate = UnitBase.get_update_model()

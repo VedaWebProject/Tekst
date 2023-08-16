@@ -12,7 +12,6 @@ from tekst.models.common import (
     ModelBase,
     ModelFactory,
     ReadBase,
-    UpdateBase,
 )
 from tekst.models.user import UserRead
 
@@ -127,8 +126,7 @@ class LayerBaseRead(LayerBase, ReadBase):
     pass
 
 
-class LayerBaseUpdate(LayerBase, UpdateBase):
-    pass
+LayerBaseUpdate = LayerBase.get_update_model()
 
 
 class LayerMinimalView(ReadBase):

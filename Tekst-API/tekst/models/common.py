@@ -1,13 +1,12 @@
 from datetime import datetime
-from typing import Dict, Literal, Optional
+from typing import Dict, Literal
 
 from beanie import (
     Document,
     PydanticObjectId,
 )
 from humps import camelize
-from pydantic import BaseModel, ConfigDict, Field
-from pydantic._internal._model_construction import ModelMetaclass
+from pydantic import BaseModel, ConfigDict, Field, create_model
 
 
 # type alias for a flat dict of arbitrary metadata
@@ -70,30 +69,6 @@ class DocumentBase(Document):
         pass
 
 
-class AllOptionalMeta(ModelMetaclass):
-    """
-    Metaclass to render all fields of a pydantic model optional (on root level).
-    This approach was taken from here:
-    https://stackoverflow.com/a/67733889/7399631
-    Alternative ones are discussed here:
-    https://github.com/pydantic/pydantic/issues/1223#issuecomment-998160737
-    """
-
-    def __new__(cls, name, bases, namespaces, **kwargs):
-        annotations = namespaces.get("__annotations__", {})
-        for base in bases:
-            annotations.update(base.__annotations__)
-        for field in annotations:
-            if not field.startswith("__") and field not in ("id", "_id"):
-                annotations[field] = Optional[annotations[field]]
-        namespaces["__annotations__"] = annotations
-        return super().__new__(cls, name, bases, namespaces, **kwargs)
-
-
-class CreateBase(ModelBase):
-    pass
-
-
 class ReadBase(ModelBase):
     id: PydanticObjectId
     created_at: datetime = Field(
@@ -109,15 +84,11 @@ class ReadBase(ModelBase):
         super().__init__(**kwargs)
 
 
-class UpdateBase(ModelBase, metaclass=AllOptionalMeta):
-    pass
-
-
 class ModelFactory:
     _document_model: type[DocumentBase] = None
-    _create_model: type[CreateBase] = None
+    _create_model: type[ModelBase] = None
     _read_model: type[ReadBase] = None
-    _update_model: type[UpdateBase] = None
+    _update_model: type[ModelBase] = None
 
     @classmethod
     def _generate_model(cls, classname_suffix: str, base: type) -> type["ModelFactory"]:
@@ -134,21 +105,34 @@ class ModelFactory:
         return cls._document_model
 
     @classmethod
-    def get_create_model(cls, base: type[CreateBase] = CreateBase) -> type[CreateBase]:
-        if not cls._create_model:
-            cls._create_model = cls._generate_model("Create", base)
-        return cls._create_model
+    def get_create_model(cls) -> type[ModelBase]:
+        return cls
 
     @classmethod
-    def get_read_model(cls, base: type[ReadBase] = ReadBase) -> type[ReadBase]:
+    def get_read_model(cls) -> type[ReadBase]:
         if not cls._read_model:
-            cls._read_model = cls._generate_model("Read", base)
+            cls._read_model = cls._generate_model("Read", ReadBase)
         return cls._read_model
 
     @classmethod
-    def get_update_model(cls, base: type[UpdateBase] = UpdateBase) -> type[UpdateBase]:
+    def get_update_model(
+        cls, additional_bases: type | tuple[type] = ()
+    ) -> type[ModelBase]:
         if not cls._update_model:
-            cls._update_model = cls._generate_model("Update", base)
+            fields = {}
+            for k, v in cls.model_fields.items():
+                fields[k] = (v.annotation, None)
+            additional_bases = (
+                (additional_bases,)
+                if type(additional_bases) is not tuple
+                else additional_bases
+            )
+            cls._update_model = create_model(
+                f"{cls.__name__}Update",
+                __base__=(cls, *additional_bases),
+                __module__=cls.__name__,
+                **fields,
+            )
         return cls._update_model
 
 
