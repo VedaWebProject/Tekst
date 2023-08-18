@@ -10,13 +10,13 @@ from tekst.models.common import (
     DocumentBase,
     Metadata,
     ModelBase,
-    ModelFactory,
+    ModelFactoryMixin,
     ReadBase,
 )
 from tekst.models.user import UserRead
 
 
-class LayerBase(ModelBase, ModelFactory):
+class LayerBase(ModelBase, ModelFactoryMixin):
     """A data layer describing a set of data on a text"""
 
     title: Annotated[
@@ -116,16 +116,13 @@ class LayerBaseDocument(LayerBase, DocumentBase):
             "shared_write": user_id is None or self.owner_id != user_id,
         }
 
-    class Settings(DocumentBase.Settings):
+    class Settings:
         name = "layers"
         is_root = True
         indexes = ["textId", "level", "layerType", "ownerId"]
 
 
-# class LayerBaseRead(LayerBase, ReadBase):
-#     pass
-
-
+LayerBaseRead = LayerBase.get_read_model()
 LayerBaseUpdate = LayerBase.get_update_model()
 
 

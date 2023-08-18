@@ -14,7 +14,7 @@ from pymongo import IndexModel
 from typing_extensions import Annotated
 
 from tekst.config import TekstConfig, get_config
-from tekst.models.common import Locale, ModelBase, ModelFactory
+from tekst.models.common import Locale, ModelBase, ModelFactoryMixin
 
 
 _cfg: TekstConfig = get_config()
@@ -38,7 +38,7 @@ PublicUserField = Literal[
 ]
 
 
-class UserBase(ModelBase, ModelFactory):
+class UserBase(ModelBase, ModelFactoryMixin):
     """This base model defines the custom fields added to FastAPI-User's user model"""
 
     username: Annotated[

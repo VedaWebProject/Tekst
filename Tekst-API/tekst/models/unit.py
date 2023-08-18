@@ -5,11 +5,11 @@ from tekst.models.common import (
     DocumentBase,
     Metadata,
     ModelBase,
-    ModelFactory,
+    ModelFactoryMixin,
 )
 
 
-class UnitBase(ModelBase, ModelFactory):
+class UnitBase(ModelBase, ModelFactoryMixin):
     """A base model for types of data units belonging to a certain data layer"""
 
     layer_id: PydanticObjectId = Field(..., description="Data layer ID")

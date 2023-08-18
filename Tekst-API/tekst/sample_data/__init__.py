@@ -19,19 +19,14 @@ async def _create_sample_node(node_data: dict, text_id: str, parent_id: str = No
 async def _create_sample_unit(
     layer_data: dict, unit_data: dict, layer_type: type[LayerTypeABC]
 ):
-    # get node ID this unit belongs to
-    ref_node_example = {
-        "textId": PydanticObjectId(layer_data.get("textId", "")),
-        "level": layer_data.get("level", -1),
-        "position": unit_data.get("sampleNodePosition", -1),
-    }
+    # get node this unit belongs to
     node = await NodeDocument.find(
         NodeDocument.text_id == PydanticObjectId(layer_data.get("textId", "")),
         NodeDocument.level == layer_data.get("level", -1),
         NodeDocument.position == unit_data.get("sampleNodePosition", -1),
     ).first_or_none()
     if not node:
-        log.error(f"Could not find target node by example {ref_node_example}")
+        log.error(f"Could not find target node for unit {unit_data}")
         return
     # create node
     unit_doc_model = layer_type.get_unit_model().get_document_model()

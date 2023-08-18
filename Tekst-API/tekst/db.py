@@ -46,7 +46,7 @@ async def init_odm(db: Database) -> None:
         UnitBaseDocument,
         PlatformSettingsDocument,
         User,
-        AccessToken
+        AccessToken,
     ]
     # add layer type models
     for lt_class in layer_type_manager.get_all().values():

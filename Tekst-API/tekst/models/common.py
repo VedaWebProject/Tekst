@@ -1,12 +1,12 @@
 from datetime import datetime
-from typing import Dict, Literal
+from typing import Any, Dict, Literal
 
 from beanie import (
     Document,
     PydanticObjectId,
 )
-from humps import camelize
-from pydantic import BaseModel, ConfigDict, Field, create_model
+from humps import camelize, decamelize
+from pydantic import BaseModel, ConfigDict, create_model
 
 
 # type alias for a flat dict of arbitrary metadata
@@ -16,16 +16,22 @@ Metadata = Dict[str, str]
 Locale = Literal["deDE", "enUS"]
 
 
-class ModelBase(BaseModel):
-    def model_dump(self, rename_id: bool = True, **kwargs) -> dict:
+class ModelTransformerMixin:
+    @classmethod
+    def model_from(cls, obj: BaseModel) -> BaseModel:
+        return cls.model_validate(obj, from_attributes=True)
+
+
+class ModelBase(ModelTransformerMixin, BaseModel):
+    model_config = ConfigDict(alias_generator=camelize, populate_by_name=True)
+
+    def model_dump(self, **kwargs) -> dict[str, Any]:
         """Overrides model_dump() in Basemodel to set some custom defaults"""
         data = super().model_dump(
             exclude_unset=kwargs.pop("exclude_unset", True),
             by_alias=kwargs.pop("by_alias", True),
             **kwargs,
         )
-        if rename_id and "_id" in data:
-            data["id"] = data.pop("_id")
         return data
 
     def model_dump_json(self, **kwargs) -> str:
@@ -36,11 +42,26 @@ class ModelBase(BaseModel):
             **kwargs,
         )
 
-    model_config = ConfigDict(alias_generator=camelize, populate_by_name=True)
 
-
-class DocumentBase(Document):
+class DocumentBase(ModelTransformerMixin, Document):
     """Base model for all Tekst ODM models"""
+
+    model_config = None
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **decamelize(kwargs))
+
+    def model_dump(
+        self, rename_id: bool = True, camelize_keys: bool = True, **kwargs
+    ) -> dict[str, Any]:
+        """Overrides model_dump() in Basemodel to set some custom defaults"""
+        data = super().model_dump(
+            exclude_unset=kwargs.pop("exclude_unset", True),
+            **kwargs,
+        )
+        if rename_id and "_id" in data:
+            data["id"] = data.pop("_id")
+        return data if not camelize_keys else camelize(data)
 
     def restricted_fields(self, user_id: str = None) -> dict:
         """
@@ -64,61 +85,55 @@ class DocumentBase(Document):
         pass
 
 
-class ReadBase():
+class ReadBase:
     id: PydanticObjectId
 
-    def __init__(self, **kwargs):
-        if "_id" in kwargs:
-            kwargs["id"] = str(kwargs.pop("_id", kwargs["id"]))
-        super().__init__(**kwargs)
 
-
-class ModelFactory:
+class ModelFactoryMixin:
     _document_model: type[DocumentBase] = None
     _create_model: type[ModelBase] = None
     _read_model: type[ReadBase] = None
     _update_model: type[ModelBase] = None
 
     @classmethod
-    def get_document_model(cls, base: type[DocumentBase] = DocumentBase) -> type:
+    def _to_bases_tuple(cls, bases: type | tuple[type]):
+        return (bases,) if type(bases) is not tuple else bases
+
+    @classmethod
+    def get_document_model(cls, bases: type | tuple[type] = (DocumentBase,)) -> type:
         if not cls._document_model:
             cls._document_model = type(
                 f"{cls.__name__}Document",
-                (base, cls),
+                (cls, *cls._to_bases_tuple(bases)),
                 {"__module__": f"{cls.__module__}"},
             )
         return cls._document_model
 
     @classmethod
     def get_create_model(cls) -> type[ModelBase]:
-        return cls
+        if not cls._create_model:
+            cls._create_model = cls
+        return cls._create_model
 
     @classmethod
-    def get_read_model(cls) -> type[ReadBase]:
+    def get_read_model(cls, bases: type | tuple[type] = (ReadBase,)) -> type[ReadBase]:
         if not cls._read_model:
             cls._read_model = type(
                 f"{cls.__name__}Read",
-                (cls, ReadBase),
+                (cls, *cls._to_bases_tuple(bases)),
                 {"__module__": f"{cls.__module__}"},
             )
         return cls._read_model
 
     @classmethod
-    def get_update_model(
-        cls, additional_bases: type | tuple[type] = ()
-    ) -> type[ModelBase]:
+    def get_update_model(cls, bases: type | tuple[type] = ()) -> type[ModelBase]:
         if not cls._update_model:
             fields = {}
             for k, v in cls.model_fields.items():
                 fields[k] = (v.annotation, None)
-            additional_bases = (
-                (additional_bases,)
-                if type(additional_bases) is not tuple
-                else additional_bases
-            )
             cls._update_model = create_model(
                 f"{cls.__name__}Update",
-                __base__=(cls, *additional_bases),
+                __base__=(cls, *cls._to_bases_tuple(bases)),
                 __module__=cls.__name__,
                 **fields,
             )

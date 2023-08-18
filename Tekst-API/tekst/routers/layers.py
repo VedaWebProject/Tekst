@@ -159,13 +159,13 @@ async def find_layers(
     returned layer objects cannot be typed to their precise layer type.
     """
 
-    example = {"textId": text_id}
+    example = {"text_id": text_id}
 
     # add to example
     if level is not None:
         example["level"] = level
     if layer_type:
-        example["layerType"] = layer_type
+        example["layer_type"] = layer_type
 
     layer_docs = (
         await LayerBaseDocument.find(example, with_children=True)

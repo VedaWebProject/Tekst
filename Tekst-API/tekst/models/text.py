@@ -10,7 +10,7 @@ from tekst.models.common import (
     Locale,
     Metadata,
     ModelBase,
-    ModelFactory,
+    ModelFactoryMixin,
 )
 
 
@@ -24,7 +24,7 @@ class StructureLevelTranslation(TypedDict):
     label: Annotated[str, StringConstraints(min_length=1, max_length=32)]
 
 
-class Text(ModelBase, ModelFactory):
+class Text(ModelBase, ModelFactoryMixin):
     """A text represented in Tekst"""
 
     title: str = Field(
@@ -83,14 +83,14 @@ class Text(ModelBase, ModelFactory):
         ),
     )
 
-    @field_validator("subtitle")
+    @field_validator("subtitle", mode="after")
     @classmethod
     def validate_subtitle(cls, v) -> list[SubtitleTranslation] | None:
         if v is not None and len(v) < 1:
             return None
         return v
 
-    @field_validator("default_level")
+    @field_validator("default_level", mode="after")
     @classmethod
     def validate_default_level(cls, v, info, **kwargs):
         if info.data["levels"] and v >= len(info.data["levels"]):
@@ -100,7 +100,7 @@ class Text(ModelBase, ModelFactory):
             )
         return v
 
-    @field_validator("accent_color")
+    @field_validator("accent_color", mode="after")
     @classmethod
     def validate_color(cls, v) -> Color:
         if not isinstance(v, Color):
@@ -108,17 +108,13 @@ class Text(ModelBase, ModelFactory):
                 v = Color(v)
             except Exception:
                 return None
-        return v.as_hex()
-
-    class Settings:
-        name = "texts"
+        return v
 
 
-# TextDocument = Text.get_document_model()
 class TextDocument(Text, DocumentBase):
     class Settings(DocumentBase.Settings):
         name = "texts"
-        bson_encoders = {Color: lambda c: str(c)}
+        bson_encoders: {Color: lambda c: str(c)}
 
 
 TextCreate = Text.get_create_model()
@@ -126,7 +122,7 @@ TextRead = Text.get_read_model()
 TextUpdate = Text.get_update_model()
 
 
-class Node(ModelBase, ModelFactory):
+class Node(ModelBase, ModelFactoryMixin):
     """A node in a text structure (e.g. chapter, paragraph, ...)"""
 
     text_id: PydanticObjectId = Field(
