@@ -129,13 +129,14 @@ async def get_path_options_by_head_id(
     # construct options for this path up to root node
     options = []
     while node_doc and node_doc.parent_id:
-        siblings = await NodeDocument.find({"parentId": node_doc.parent_id}).to_list()
+        siblings = await NodeDocument.find(NodeDocument.parent_id == node_doc.parent_id).to_list()
         options.insert(0, siblings)
         node_doc = await NodeDocument.get(node_doc.parent_id)
     # lastly, insert options for root level
     if node_doc:
         root_lvl_options = await NodeDocument.find(
-            {"textId": node_doc.text_id, "level": 0}
+            NodeDocument.text_id == node_doc.text_id,
+            NodeDocument.level == 0,
         ).to_list()
         options.insert(0, root_lvl_options)
     return options
@@ -160,7 +161,7 @@ async def get_path_options_by_root_id(
     # construct options for this path up to max_level
     options = []
     while node_doc:
-        children = await NodeDocument.find({"parentId": node_doc.id}).to_list()
+        children = await NodeDocument.find(NodeDocument.parent_id == node_doc.id).to_list()
         if len(children) == 0:
             break
         options.append(children)
@@ -193,7 +194,7 @@ async def get_layer_coverage_data(
                     "$lookup": {
                         "from": "units",
                         "localField": "_id",
-                        "foreignField": "nodeId",
+                        "foreignField": "node_id",
                         "as": "units",
                     }
                 },
