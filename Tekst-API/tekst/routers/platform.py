@@ -36,7 +36,9 @@ async def get_platform_data(
     """Returns data the client needs to initialize"""
     return PlatformData(
         texts=await get_all_texts(ou),
-        settings=PlatformSettingsRead.model_from(await PlatformSettingsDocument.find_one()),
+        settings=PlatformSettingsRead.model_from(
+            await PlatformSettingsDocument.find_one()
+        ),
         layer_types=layer_type_manager.get_layer_types_info(),
     )
 

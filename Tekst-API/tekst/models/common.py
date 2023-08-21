@@ -23,7 +23,9 @@ class ModelTransformerMixin:
 
 
 class ModelBase(ModelTransformerMixin, BaseModel):
-    model_config = ConfigDict(alias_generator=camelize, populate_by_name=True, from_attributes=True)
+    model_config = ConfigDict(
+        alias_generator=camelize, populate_by_name=True, from_attributes=True
+    )
 
     def model_dump(self, **kwargs) -> dict[str, Any]:
         """Overrides model_dump() in Basemodel to set some custom defaults"""
