@@ -144,7 +144,7 @@ class Node(ModelBase, ModelFactoryMixin):
 class NodeDocument(Node, DocumentBase):
     class Settings(DocumentBase.Settings):
         name = "nodes"
-        indexes = ["textId", "parentId", "level", "position"]
+        indexes = ["text_id", "parent_id", "level", "position"]
 
 
 NodeCreate = Node.get_create_model()
