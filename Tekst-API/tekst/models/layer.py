@@ -11,7 +11,6 @@ from tekst.models.common import (
     Metadata,
     ModelBase,
     ModelFactoryMixin,
-    ReadBase,
 )
 from tekst.models.user import UserRead
 
@@ -124,10 +123,6 @@ class LayerBaseDocument(LayerBase, DocumentBase):
 
 LayerBaseRead = LayerBase.get_read_model()
 LayerBaseUpdate = LayerBase.get_update_model()
-
-
-class LayerMinimalView(ReadBase):
-    layer_type: str
 
 
 class LayerNodeCoverage(ModelBase):

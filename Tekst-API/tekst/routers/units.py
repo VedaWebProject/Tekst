@@ -6,7 +6,7 @@ from fastapi import APIRouter, HTTPException, Query, status
 
 from tekst.auth import OptionalUserDep, UserDep
 from tekst.layer_types import layer_type_manager
-from tekst.models.layer import LayerBaseDocument, LayerMinimalView
+from tekst.models.layer import LayerBaseDocument
 from tekst.models.unit import UnitBase, UnitBaseDocument
 
 
@@ -192,13 +192,9 @@ async def find_units(
     returned unit objects cannot be typed to their precise layer unit type.
     """
 
-    readable_layers = (
-        await LayerBaseDocument.find(
-            LayerBaseDocument.allowed_to_read(user), with_children=True
-        )
-        .project(LayerMinimalView)
-        .to_list()
-    )
+    readable_layers = await LayerBaseDocument.find(
+        LayerBaseDocument.allowed_to_read(user), with_children=True
+    ).to_list()
     readable_layer_ids = [layer.id for layer in readable_layers]
 
     units = (
