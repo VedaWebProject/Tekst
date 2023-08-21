@@ -1,20 +1,19 @@
+from beanie import PydanticObjectId
 from pydantic import Field
 
 from tekst.models.common import (
     DocumentBase,
     Metadata,
     ModelBase,
-    ModelFactory,
-    PyObjectId,
-    UpdateBase,
+    ModelFactoryMixin,
 )
 
 
-class UnitBase(ModelBase, ModelFactory):
+class UnitBase(ModelBase, ModelFactoryMixin):
     """A base model for types of data units belonging to a certain data layer"""
 
-    layer_id: PyObjectId = Field(..., description="Data layer ID")
-    node_id: PyObjectId = Field(..., description="Parent text node ID")
+    layer_id: PydanticObjectId = Field(..., description="Data layer ID")
+    node_id: PydanticObjectId = Field(..., description="Parent text node ID")
     meta: Metadata | None = Field(
         None,
         description="Arbitrary metadata on this layer unit",
@@ -38,5 +37,4 @@ class UnitBaseDocument(UnitBase, DocumentBase):
         indexes = ["layerId", "nodeId"]
 
 
-class UnitBaseUpdate(UnitBase, UpdateBase):
-    pass
+UnitBaseUpdate = UnitBase.get_update_model()

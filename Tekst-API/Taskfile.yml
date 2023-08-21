@@ -19,6 +19,16 @@ tasks:
       - poetry run python3 -c "from tekst import __version__ as v; print(v, end='')"
     silent: true
 
+  install:
+    desc: Install dependencies
+    cmds:
+      - poetry install
+
+  update:
+    desc: Update dependencies
+    cmds:
+      - poetry update
+
   fix:
     desc: Run ruff and black to format code base and attempt to fix linting errors
     cmds:
@@ -62,10 +72,10 @@ tasks:
   dev:
     desc: Run dev services stack and dev server, clean up afterwards
     cmds:
+      - defer: {task: dev-stack-down}
       - task: dev-stack-up
       - task: print-dev-uris
       - task: run-dev
-      - defer: {task: dev-stack-down}
 
   schema:
     desc: Export (development) OpenAPI schema to file openapi.json

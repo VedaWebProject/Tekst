@@ -1,10 +1,10 @@
 from typing import Annotated
 
-from fastapi import APIRouter, HTTPException, Path, status
+from beanie import PydanticObjectId
+from fastapi import APIRouter, HTTPException, Path, Query, status
 
 from tekst.auth import OptionalUserDep, UserDep
 from tekst.layer_types import layer_type_manager
-from tekst.models.common import PyObjectId
 from tekst.models.layer import LayerBase, LayerBaseDocument
 from tekst.models.text import TextDocument
 
@@ -12,7 +12,9 @@ from tekst.models.text import TextDocument
 def _generate_read_endpoint(
     layer_document_model: type[LayerBase], layer_read_model: type[LayerBase]
 ):
-    async def get_layer(id: PyObjectId, user: OptionalUserDep) -> layer_read_model:
+    async def get_layer(
+        id: PydanticObjectId, user: OptionalUserDep
+    ) -> layer_read_model:
         """A generic route for reading a layer definition from the database"""
         layer_doc = (
             await layer_document_model.find(layer_document_model.id == id)
@@ -25,7 +27,9 @@ def _generate_read_endpoint(
                 detail=f"Could not find layer with ID {id}",
             )
         # return only fields that are not restricted for this user
-        return layer_doc.dict(exclude=layer_doc.restricted_fields(user and user.id))
+        return layer_doc.model_dump(
+            exclude=layer_doc.restricted_fields(user and user.id)
+        )
 
     return get_layer
 
@@ -49,7 +53,7 @@ def _generate_create_endpoint(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Layer's owner ID doesn't match requesting user's ID",
             )
-        return await layer_document_model(**layer.dict()).create()
+        return await layer_document_model(**layer.model_dump()).create()
 
     return create_layer
 
@@ -60,7 +64,7 @@ def _generate_update_endpoint(
     layer_update_model: type[LayerBase],
 ):
     async def update_layer(
-        id: PyObjectId, updates: layer_update_model, user: UserDep
+        id: PydanticObjectId, updates: layer_update_model, user: UserDep
     ) -> layer_read_model:
         layer_doc: layer_document_model = (
             await layer_document_model.find(layer_document_model.id == id)
@@ -72,7 +76,7 @@ def _generate_update_endpoint(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=f"Layer {id} doesn't exist or requires extra permissions",
             )
-        await layer_doc.apply(updates.dict(exclude_unset=True))
+        await layer_doc.apply(updates.model_dump(exclude_unset=True))
         return layer_doc
 
     return update_layer
@@ -143,9 +147,9 @@ for lt_name, lt_class in layer_type_manager.get_all().items():
 @router.get("", response_model=list[dict], status_code=status.HTTP_200_OK)
 async def find_layers(
     user: OptionalUserDep,
-    text_id: PyObjectId,
+    text_id: Annotated[PydanticObjectId, Query(alias="textId")],
     level: int = None,
-    layer_type: str = None,
+    layer_type: Annotated[str, Query(alias="layerType")] = None,
     limit: int = 1000,
 ) -> list[dict]:
     """
@@ -155,13 +159,13 @@ async def find_layers(
     returned layer objects cannot be typed to their precise layer type.
     """
 
-    example = {"textId": text_id}
+    example = {"text_id": text_id}
 
     # add to example
     if level is not None:
         example["level"] = level
     if layer_type:
-        example["layerType"] = layer_type
+        example["layer_type"] = layer_type
 
     layer_docs = (
         await LayerBaseDocument.find(example, with_children=True)
@@ -170,12 +174,12 @@ async def find_layers(
         .to_list()
     )
 
-    # calling dict(rename_id=True) on these models makes sure they have
+    # calling model_dump(rename_id=True) on these models makes sure they have
     # "id" instead of "_id", because we're not using a proper read model here
     # that could take care of that automatically (as we don't know the exact type)
     uid = user and user.id
     return [
-        layer_doc.dict(rename_id=True, exclude=layer_doc.restricted_fields(uid))
+        layer_doc.model_dump(rename_id=True, exclude=layer_doc.restricted_fields(uid))
         for layer_doc in layer_docs
     ]
 
@@ -201,7 +205,7 @@ async def find_layers(
 #     # that a) the ID field is called "id" and b) the DocumentId is encoded as str.
 #     layer_read_model = layer_type_manager \
 #       .get(layer_data["layerType"]).get_layer_read_model()
-#     layer_data = layer_read_model(**layer_data).dict()
+#     layer_data = layer_read_model(**layer_data).model_dump()
 
 #     # import unit type for the requested layer
 #     template = layer_type_manager \
@@ -225,7 +229,7 @@ async def find_layers(
 
 #     # fill in unit templates with IDs
 #     template["units"] = [
-#         dict(nodeId=str(node["_id"]), **node_template) for node in nodes
+#         model_dump(nodeId=str(node["_id"]), **node_template) for node in nodes
 #     ]
 
 #     # create temporary file and stream it as a file response
@@ -251,7 +255,7 @@ async def find_layers(
 
 @router.get("/{id}", status_code=status.HTTP_200_OK)
 async def get_generic_layer_data_by_id(
-    layer_id: Annotated[PyObjectId, Path(alias="id")], user: OptionalUserDep
+    layer_id: Annotated[PydanticObjectId, Path(alias="id")], user: OptionalUserDep
 ) -> dict:
     layer_doc = (
         await LayerBaseDocument.find(
@@ -264,4 +268,4 @@ async def get_generic_layer_data_by_id(
         raise HTTPException(
             status.HTTP_404_NOT_FOUND, detail=f"No layer with ID {layer_id}"
         )
-    return layer_doc.dict(exclude=layer_doc.restricted_fields(user and user.id))
+    return layer_doc.model_dump(exclude=layer_doc.restricted_fields(user and user.id))

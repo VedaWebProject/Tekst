@@ -1,12 +1,11 @@
 from datetime import datetime
-from typing import Annotated
+from typing import Annotated, List
 
+from beanie import PydanticObjectId
 from beanie.operators import Or, Set, Unset
 from fastapi import APIRouter, Body, HTTPException, Path, status
-from pydantic import conint, conlist
 
 from tekst.auth import OptionalUserDep, SuperuserDep
-from tekst.models.common import PyObjectId
 from tekst.models.layer import LayerBaseDocument
 from tekst.models.text import (
     NodeDocument,
@@ -30,7 +29,7 @@ router = APIRouter(
 
 @router.get("", response_model=list[TextRead], status_code=status.HTTP_200_OK)
 async def get_all_texts(ou: OptionalUserDep, limit: int = 100) -> list[TextRead]:
-    restrictions = {"isActive": True} if not (ou and ou.is_superuser) else {}
+    restrictions = {} if (ou and ou.is_superuser) else {"is_active": True}
     return await TextDocument.find(restrictions).limit(limit).to_list()
 
 
@@ -43,7 +42,7 @@ async def create_text(su: SuperuserDep, text: TextCreate) -> TextRead:
             status_code=status.HTTP_409_CONFLICT,
             detail="An equal text already exists (same title or slug)",
         )
-    return await TextDocument(**text.dict()).create()
+    return await TextDocument(**text.model_dump()).create()
 
 
 # @router.post(
@@ -86,13 +85,14 @@ async def create_text(su: SuperuserDep, text: TextCreate) -> TextRead:
 )
 async def insert_level(
     su: SuperuserDep,
-    text_id: Annotated[PyObjectId, Path(alias="id")],
+    text_id: Annotated[PydanticObjectId, Path(alias="id")],
     index: Annotated[
-        conint(ge=0, lt=32), Path(description="Index to insert the level at")
+        int,
+        Path(ge=0, lt=32, description="Index to insert the level at"),
     ],
     translations: Annotated[
-        conlist(StructureLevelTranslation, min_items=1),
-        Body(description="Label translations for this level"),
+        List[StructureLevelTranslation],
+        Body(min_length=1, description="Label translations for this level"),
     ],
 ) -> TextRead:
     text_doc: TextDocument = await TextDocument.get(text_id)
@@ -169,7 +169,7 @@ async def insert_level(
         # index > 0, so there is a parent level
         for parent_level_node in parent_level_nodes:
             # parent of each dummy node is respective node on parent level
-            dummy_node = NodeDocument(**parent_level_node.dict(exclude={"id"}))
+            dummy_node = NodeDocument(**parent_level_node.model_dump(exclude={"id"}))
             dummy_node.parent_id = parent_level_node.id
             dummy_node.level = index
             dummy_node.position = parent_level_node.position
@@ -193,9 +193,10 @@ async def insert_level(
 )
 async def delete_level(
     su: SuperuserDep,
-    text_id: Annotated[PyObjectId, Path(alias="id")],
+    text_id: Annotated[PydanticObjectId, Path(alias="id")],
     index: Annotated[
-        conint(ge=0, lt=32), Path(description="Index to insert the level at")
+        int,
+        Path(ge=0, lt=32, description="Index to insert the level at"),
     ],
 ) -> TextRead:
     text_doc: TextDocument = await TextDocument.get(text_id)
@@ -288,7 +289,7 @@ async def delete_level(
 
 
 @router.get("/{id}", response_model=TextRead, status_code=status.HTTP_200_OK)
-async def get_text(text_id: Annotated[PyObjectId, Path(alias="id")]) -> TextRead:
+async def get_text(text_id: Annotated[PydanticObjectId, Path(alias="id")]) -> TextRead:
     text = await TextDocument.get(text_id)
     if not text:
         raise HTTPException(
@@ -301,7 +302,7 @@ async def get_text(text_id: Annotated[PyObjectId, Path(alias="id")]) -> TextRead
 @router.patch("/{id}", response_model=TextRead, status_code=status.HTTP_200_OK)
 async def update_text(
     su: SuperuserDep,
-    text_id: Annotated[PyObjectId, Path(alias="id")],
+    text_id: Annotated[PydanticObjectId, Path(alias="id")],
     updates: TextUpdate,
 ) -> dict:
     text = await TextDocument.get(text_id)
@@ -315,5 +316,5 @@ async def update_text(
     #         status_code=status.HTTP_400_BAD_REQUEST,
     #         detail="Text slug cannot be changed",
     #     )
-    await text.apply(updates.dict(exclude_unset=True))
+    await text.apply(updates.model_dump(exclude_unset=True))
     return await TextDocument.get(text_id)

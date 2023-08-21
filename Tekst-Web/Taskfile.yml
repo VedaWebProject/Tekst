@@ -19,6 +19,16 @@ tasks:
       - npx -c 'node -p "process.env.npm_package_version"'
     silent: true
 
+  install:
+    desc: Install dependencies
+    cmds:
+      - npm install
+
+  update:
+    desc: Update dependencies
+    cmds:
+      - npm update
+
   dev:
     desc: Run development server
     cmds:

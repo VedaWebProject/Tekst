@@ -1,28 +1,30 @@
-from pydantic import Field, conint, conlist, constr, validator
-from pydantic.color import Color
-from typing_extensions import TypedDict
+from typing import List
+
+from beanie import PydanticObjectId
+from pydantic import Field, StringConstraints, field_validator
+from pydantic_extra_types.color import Color
+from typing_extensions import Annotated, TypedDict
 
 from tekst.models.common import (
     DocumentBase,
     Locale,
     Metadata,
     ModelBase,
-    ModelFactory,
-    PyObjectId,
+    ModelFactoryMixin,
 )
 
 
 class SubtitleTranslation(TypedDict):
     locale: Locale
-    subtitle: constr(min_length=1, max_length=128)
+    subtitle: Annotated[str, StringConstraints(min_length=1, max_length=128)]
 
 
 class StructureLevelTranslation(TypedDict):
     locale: Locale
-    label: constr(min_length=1, max_length=32)
+    label: Annotated[str, StringConstraints(min_length=1, max_length=32)]
 
 
-class Text(ModelBase, ModelFactory):
+class Text(ModelBase, ModelFactoryMixin):
     """A text represented in Tekst"""
 
     title: str = Field(
@@ -31,7 +33,7 @@ class Text(ModelBase, ModelFactory):
 
     slug: str = Field(
         ...,
-        regex=r"^[a-z0-9]+$",
+        pattern=r"^[a-z0-9]+$",
         min_length=1,
         max_length=16,
         description=("A short identifier for use in URLs and internal operations"),
@@ -45,18 +47,18 @@ class Text(ModelBase, ModelFactory):
         ),
     )
 
-    levels: list[conlist(StructureLevelTranslation, min_items=1)] = Field(
-        ..., min_items=1, max_items=32
-    )
+    levels: list[
+        Annotated[List[StructureLevelTranslation], Field(min_length=1)]
+    ] = Field(..., min_length=1, max_length=32)
 
-    default_level: conint(ge=0) = Field(
+    default_level: Annotated[int, Field(ge=0)] = Field(
         0,
         description=(
             "Default structure level for the client to use for browsing this text"
         ),
     )
 
-    loc_delim: constr(min_length=1, max_length=3) = Field(
+    loc_delim: Annotated[str, StringConstraints(min_length=1, max_length=3)] = Field(
         ", ",
         description="Delimiter for displaying text locations",
     )
@@ -81,52 +83,59 @@ class Text(ModelBase, ModelFactory):
         ),
     )
 
-    @validator("subtitle")
+    @field_validator("subtitle", mode="after")
+    @classmethod
     def validate_subtitle(cls, v) -> list[SubtitleTranslation] | None:
         if v is not None and len(v) < 1:
             return None
         return v
 
-    @validator("default_level")
-    def validate_default_level(cls, v, values, **kwargs):
-        if values["levels"] and v >= len(values["levels"]):
+    @field_validator("default_level", mode="after")
+    @classmethod
+    def validate_default_level(cls, v, info, **kwargs):
+        if info.data["levels"] and v >= len(info.data["levels"]):
             raise ValueError(
                 f"Invalid default level value ({v}). "
-                f"This text only has {len(values['levels'])} levels."
+                f"This text only has {len(info.data['levels'])} levels."
             )
         return v
 
-    @validator("accent_color")
+    @field_validator("accent_color", mode="after")
+    @classmethod
     def validate_color(cls, v) -> Color:
         if not isinstance(v, Color):
             try:
                 v = Color(v)
             except Exception:
                 return None
-        return v.as_hex()
+        return v
 
-    class Settings:
+
+class TextDocument(Text, DocumentBase):
+    class Settings(DocumentBase.Settings):
         name = "texts"
+        bson_encoders = {Color: lambda c: c.as_hex()}
 
 
-TextDocument = Text.get_document_model()
 TextCreate = Text.get_create_model()
 TextRead = Text.get_read_model()
 TextUpdate = Text.get_update_model()
 
 
-class Node(ModelBase, ModelFactory):
+class Node(ModelBase, ModelFactoryMixin):
     """A node in a text structure (e.g. chapter, paragraph, ...)"""
 
-    text_id: PyObjectId = Field(..., description="ID of the text this node belongs to")
-    parent_id: PyObjectId = Field(None, description="ID of parent node")
-    level: conint(ge=0, lt=32) = Field(
+    text_id: PydanticObjectId = Field(
+        ..., description="ID of the text this node belongs to"
+    )
+    parent_id: PydanticObjectId = Field(None, description="ID of parent node")
+    level: Annotated[int, Field(ge=0, lt=32)] = Field(
         ..., description="Index of structure level this node is on"
     )
-    position: conint(ge=0) = Field(
+    position: Annotated[int, Field(ge=0)] = Field(
         ..., description="Position among all text nodes on this level"
     )
-    label: constr(min_length=1, max_length=256) = Field(
+    label: Annotated[str, StringConstraints(min_length=1, max_length=256)] = Field(
         ..., description="Label for identifying this text node in level context"
     )
     meta: Metadata | None = Field(None, description="Arbitrary metadata")
@@ -144,6 +153,6 @@ NodeUpdate = Node.get_update_model()
 
 
 class InsertLevelRequest(ModelBase):
-    translations: conlist(StructureLevelTranslation, min_items=1) = Field(
-        ..., description="Translation(s) for the label of the level to insert"
-    )
+    translations: Annotated[
+        List[StructureLevelTranslation], Field(min_length=1)
+    ] = Field(..., description="Translation(s) for the label of the level to insert")

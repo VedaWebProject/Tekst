@@ -1,10 +1,10 @@
 from typing import Annotated
 
+from beanie import PydanticObjectId
 from beanie.operators import In
 from fastapi import APIRouter, HTTPException, Path, Query, status
 
 from tekst.auth import OptionalUserDep
-from tekst.models.common import PyObjectId
 from tekst.models.layer import LayerBaseDocument, LayerNodeCoverage
 from tekst.models.text import (
     NodeDocument,
@@ -25,12 +25,15 @@ router = APIRouter(
 async def get_unit_siblings(
     user: OptionalUserDep,
     layer_id: Annotated[
-        PyObjectId,
-        Query(description="ID of layer the requested units belong to"),
+        PydanticObjectId,
+        Query(description="ID of layer the requested units belong to", alias="layerId"),
     ],
     parent_node_id: Annotated[
-        PyObjectId | None,
-        Query(description="ID of node for which siblings to get associated units for"),
+        PydanticObjectId | None,
+        Query(
+            description="ID of node for which siblings to get associated units for",
+            alias="parentNodeId",
+        ),
     ] = None,
 ) -> list[dict]:
     """
@@ -68,17 +71,19 @@ async def get_unit_siblings(
         with_children=True,
     ).to_list()
 
-    # calling dict(rename_id=True) on these models here makes sure they have
+    # calling model_dump(rename_id=True) on these models here makes sure they have
     # "id" instead of "_id", because we're not using a proper read model here
     # that could take care of that automatically (as we don't know the exact type)
-    return [unit.dict(rename_id=True) for unit in units]
+    return [unit.model_dump(rename_id=True) for unit in units]
 
 
 @router.get(
     "/nodes/path", response_model=list[NodeRead], status_code=status.HTTP_200_OK
 )
 async def get_node_path(
-    text_id: PyObjectId, level: int, position: int
+    text_id: Annotated[PydanticObjectId, Query(alias="textId")],
+    level: int,
+    position: int,
 ) -> list[NodeDocument]:
     """
     Returns the text node path from the node with the given level/position
@@ -112,7 +117,7 @@ async def get_node_path(
     status_code=status.HTTP_200_OK,
 )
 async def get_path_options_by_head_id(
-    node_id: Annotated[PyObjectId, Path(alias="id")]
+    node_id: Annotated[PydanticObjectId, Path(alias="id")]
 ) -> list[list[NodeDocument]]:
     """
     Returns the options for selecting text locations derived from the node path of
@@ -142,7 +147,7 @@ async def get_path_options_by_head_id(
     status_code=status.HTTP_200_OK,
 )
 async def get_path_options_by_root_id(
-    node_id: Annotated[PyObjectId, Path(alias="id")]
+    node_id: Annotated[PydanticObjectId, Path(alias="id")]
 ) -> list[list[NodeDocument]]:
     """
     Returns the options for selecting text locations derived from the node path of
@@ -165,7 +170,7 @@ async def get_path_options_by_root_id(
 
 @router.get("/layers/{id}/coverage", status_code=status.HTTP_200_OK)
 async def get_layer_coverage_data(
-    layer_id: Annotated[PyObjectId, Path(alias="id")], user: OptionalUserDep
+    layer_id: Annotated[PydanticObjectId, Path(alias="id")], user: OptionalUserDep
 ) -> list[LayerNodeCoverage]:
     layer_doc = await LayerBaseDocument.find_one(
         LayerBaseDocument.id == layer_id,

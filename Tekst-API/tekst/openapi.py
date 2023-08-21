@@ -33,7 +33,7 @@ def custom_openapi(app: FastAPI, cfg: TekstConfig):
             version=cfg.tekst_info.version,
             description=cfg.info.description,
             routes=app.routes,
-            servers=[{"url": urljoin(cfg.server_url, cfg.api_path)}],
+            servers=[{"url": urljoin(str(cfg.server_url), str(cfg.api_path))}],
             terms_of_service=cfg.info.terms,
             tags=tags_metadata,
             contact={

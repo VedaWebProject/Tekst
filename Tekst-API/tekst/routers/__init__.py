@@ -42,10 +42,11 @@ def setup_routes(app: FastAPI) -> None:
             route.operation_id = humps.camelize(route.name)
             route_name = getattr(route.endpoint, "__name__", route.name)
             route.summary = route_name.replace("_", " ").capitalize()
-            # add camel-cased aliases to route params
-            for param in route.dependant.query_params:
-                if not param.field_info.alias:
-                    param.alias = humps.camelize(param.name)
-            for param in route.dependant.path_params:
-                if not param.field_info.alias:
-                    param.alias = humps.camelize(param.name)
+            # # add camel-cased aliases to route params
+            # # (THIS DOESN'T SEEM TO WORK ANYMORE)
+            # for param in route.dependant.query_params:
+            #     if not param.field_info.alias:
+            #         param.alias = humps.camelize(param.name)
+            # for param in route.dependant.path_params:
+            #     if not param.field_info.alias:
+            #         param.alias = humps.camelize(param.name)

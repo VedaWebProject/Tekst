@@ -1,5 +1,5 @@
 {
-  "openapi": "3.0.2",
+  "openapi": "3.1.0",
   "info": {
     "title": "Tekst-DEV",
     "description": "An online text research platform",
@@ -66,11 +66,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Users Admin Users Get",
-                  "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/UserRead"
-                  }
+                  },
+                  "type": "array",
+                  "title": "Response Get Users Admin Users Get"
                 }
               }
             }
@@ -122,30 +122,45 @@
         "summary": "Get unit siblings",
         "description": "Returns a list of all data layer units belonging to the data layer\nwith the given ID, associated to nodes that are children of the parent node\nwith the given ID.\n\nAs the resulting list may contain units of arbitrary type, the\nreturned unit objects cannot be typed to their precise layer unit type.\nAlso, the returned unit objects have an additional property containing their\nrespective node's label, level and position.",
         "operationId": "getUnitSiblings",
-        "parameters": [
+        "security": [
           {
-            "description": "ID of layer the requested units belong to",
-            "required": true,
-            "schema": {
-              "title": "Layerid",
-              "type": "string",
-              "description": "ID of layer the requested units belong to",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "name": "layerId",
-            "in": "query"
+            "APIKeyCookie": []
           },
           {
-            "description": "ID of node for which siblings to get associated units for",
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "layerId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "description": "ID of layer the requested units belong to",
+              "title": "Layerid"
+            },
+            "description": "ID of layer the requested units belong to"
+          },
+          {
+            "name": "parentNodeId",
+            "in": "query",
             "required": false,
             "schema": {
-              "title": "Parentnodeid",
-              "type": "string",
+              "anyOf": [
+                {
+                  "type": "string",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                {
+                  "type": "null"
+                }
+              ],
               "description": "ID of node for which siblings to get associated units for",
-              "example": "5eb7cf5a86d9755df3a6c593"
+              "title": "Parentnodeid"
             },
-            "name": "parentNodeId",
-            "in": "query"
+            "description": "ID of node for which siblings to get associated units for"
           }
         ],
         "responses": {
@@ -154,11 +169,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Unit Siblings Browse Unit Siblings Get",
                   "type": "array",
                   "items": {
                     "type": "object"
-                  }
+                  },
+                  "title": "Response Get Unit Siblings Browse Unit Siblings Get"
                 }
               }
             }
@@ -176,15 +191,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
+        }
       }
     },
     "/browse/nodes/path": {
@@ -197,32 +204,32 @@
         "operationId": "getNodePath",
         "parameters": [
           {
-            "required": true,
-            "schema": {
-              "title": "Textid",
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
             "name": "textId",
-            "in": "query"
-          },
-          {
+            "in": "query",
             "required": true,
             "schema": {
-              "title": "Level",
-              "type": "integer"
-            },
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Textid"
+            }
+          },
+          {
             "name": "level",
-            "in": "query"
-          },
-          {
+            "in": "query",
             "required": true,
             "schema": {
-              "title": "Position",
-              "type": "integer"
-            },
+              "type": "integer",
+              "title": "Level"
+            }
+          },
+          {
             "name": "position",
-            "in": "query"
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Position"
+            }
           }
         ],
         "responses": {
@@ -231,11 +238,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Node Path Browse Nodes Path Get",
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/NodeRead"
-                  }
+                  },
+                  "title": "Response Get Node Path Browse Nodes Path Get"
                 }
               }
             }
@@ -266,14 +273,14 @@
         "operationId": "getPathOptionsByHeadId",
         "parameters": [
           {
+            "name": "id",
+            "in": "path",
             "required": true,
             "schema": {
-              "title": "Id",
               "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "name": "id",
-            "in": "path"
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
           }
         ],
         "responses": {
@@ -282,14 +289,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Path Options By Head Id Browse Nodes  Id  Path Options By Head Get",
                   "type": "array",
                   "items": {
                     "type": "array",
                     "items": {
                       "$ref": "#/components/schemas/NodeRead"
                     }
-                  }
+                  },
+                  "title": "Response Get Path Options By Head Id Browse Nodes  Id  Path Options By Head Get"
                 }
               }
             }
@@ -320,14 +327,14 @@
         "operationId": "getPathOptionsByRootId",
         "parameters": [
           {
+            "name": "id",
+            "in": "path",
             "required": true,
             "schema": {
-              "title": "Id",
               "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "name": "id",
-            "in": "path"
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
           }
         ],
         "responses": {
@@ -336,14 +343,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Path Options By Root Id Browse Nodes  Id  Path Options By Root Get",
                   "type": "array",
                   "items": {
                     "type": "array",
                     "items": {
                       "$ref": "#/components/schemas/NodeRead"
                     }
-                  }
+                  },
+                  "title": "Response Get Path Options By Root Id Browse Nodes  Id  Path Options By Root Get"
                 }
               }
             }
@@ -371,16 +378,24 @@
         ],
         "summary": "Get layer coverage data",
         "operationId": "getLayerCoverageData",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
         "parameters": [
           {
+            "name": "id",
+            "in": "path",
             "required": true,
             "schema": {
-              "title": "Id",
               "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "name": "id",
-            "in": "path"
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
           }
         ],
         "responses": {
@@ -389,11 +404,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Layer Coverage Data Browse Layers  Id  Coverage Get",
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/LayerNodeCoverage"
-                  }
+                  },
+                  "title": "Response Get Layer Coverage Data Browse Layers  Id  Coverage Get"
                 }
               }
             }
@@ -411,15 +426,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
+        }
       }
     },
     "/layers/plaintext/{id}": {
@@ -430,16 +437,24 @@
         "summary": "Get layer",
         "description": "Returns the data for a PlainText data layer",
         "operationId": "getPlaintextLayer",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
         "parameters": [
           {
+            "name": "id",
+            "in": "path",
             "required": true,
             "schema": {
-              "title": "Id",
               "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "name": "id",
-            "in": "path"
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
           }
         ],
         "responses": {
@@ -466,15 +481,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
+        }
       },
       "patch": {
         "tags": [
@@ -483,27 +490,35 @@
         "summary": "Update layer",
         "description": "Updates the data for a PlainText data layer",
         "operationId": "updatePlaintextLayer",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
         "parameters": [
           {
+            "name": "id",
+            "in": "path",
             "required": true,
             "schema": {
-              "title": "Id",
               "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "name": "id",
-            "in": "path"
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/PlainTextLayerUpdate"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -529,15 +544,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
+        }
       }
     },
     "/layers/plaintext": {
@@ -552,7 +559,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PlainTextLayerCreate"
+                "$ref": "#/components/schemas/PlainTextLayer"
               }
             }
           },
@@ -601,44 +608,52 @@
         "summary": "Find layers",
         "description": "Returns a list of all data layers matching the given criteria.\n\nAs the resulting list of data layers may contain layers of different types, the\nreturned layer objects cannot be typed to their precise layer type.",
         "operationId": "findLayers",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
         "parameters": [
           {
+            "name": "textId",
+            "in": "query",
             "required": true,
             "schema": {
-              "title": "Textid",
               "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "name": "textId",
-            "in": "query"
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Textid"
+            }
           },
           {
-            "required": false,
-            "schema": {
-              "title": "Level",
-              "type": "integer"
-            },
             "name": "level",
-            "in": "query"
-          },
-          {
+            "in": "query",
             "required": false,
             "schema": {
-              "title": "Layertype",
-              "type": "string"
-            },
-            "name": "layerType",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Limit",
               "type": "integer",
-              "default": 1000
-            },
+              "title": "Level"
+            }
+          },
+          {
+            "name": "layerType",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Layertype"
+            }
+          },
+          {
             "name": "limit",
-            "in": "query"
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1000,
+              "title": "Limit"
+            }
           }
         ],
         "responses": {
@@ -647,162 +662,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Find Layers Layers Get",
                   "type": "array",
                   "items": {
                     "type": "object"
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      }
-    },
-    "/layers/{id}": {
-      "get": {
-        "tags": [
-          "layers"
-        ],
-        "summary": "Get generic layer data by id",
-        "operationId": "getGenericLayerDataById",
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "title": "Id",
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "name": "id",
-            "in": "path"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "title": "Response Get Generic Layer Data By Id Layers  Id  Get",
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      }
-    },
-    "/nodes": {
-      "get": {
-        "tags": [
-          "nodes"
-        ],
-        "summary": "Find nodes",
-        "operationId": "findNodes",
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "title": "Textid",
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "name": "textId",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Level",
-              "type": "integer"
-            },
-            "name": "level",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Position",
-              "type": "integer"
-            },
-            "name": "position",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Parentid",
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "name": "parentId",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Limit",
-              "type": "integer",
-              "default": 1000
-            },
-            "name": "limit",
-            "in": "query"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "title": "Response Find Nodes Nodes Get",
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/NodeRead"
-                  }
+                  },
+                  "title": "Response Find Layers Layers Get"
                 }
               }
             }
@@ -821,22 +685,87 @@
             }
           }
         }
-      },
+      }
+    },
+    "/layers/{id}": {
+      "get": {
+        "tags": [
+          "layers"
+        ],
+        "summary": "Get generic layer data by id",
+        "operationId": "getGenericLayerDataById",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Response Get Generic Layer Data By Id Layers  Id  Get"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/nodes": {
       "post": {
         "tags": [
           "nodes"
         ],
         "summary": "Create node",
         "operationId": "createNode",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NodeCreate"
+                "$ref": "#/components/schemas/Node"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "201": {
@@ -862,15 +791,93 @@
               }
             }
           }
-        },
-        "security": [
+        }
+      },
+      "get": {
+        "tags": [
+          "nodes"
+        ],
+        "summary": "Find nodes",
+        "operationId": "findNodes",
+        "parameters": [
           {
-            "APIKeyCookie": []
+            "name": "textId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Textid"
+            }
           },
           {
-            "OAuth2PasswordBearer": []
+            "name": "level",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": "Level"
+            }
+          },
+          {
+            "name": "position",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": "Position"
+            }
+          },
+          {
+            "name": "parentId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Parentid"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1000,
+              "title": "Limit"
+            }
           }
-        ]
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NodeRead"
+                  },
+                  "title": "Response Find Nodes Nodes Get"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/nodes/{id}": {
@@ -882,14 +889,14 @@
         "operationId": "getNode",
         "parameters": [
           {
+            "name": "id",
+            "in": "path",
             "required": true,
             "schema": {
-              "title": "Id",
               "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "name": "id",
-            "in": "path"
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
           }
         ],
         "responses": {
@@ -924,27 +931,35 @@
         ],
         "summary": "Update node",
         "operationId": "updateNode",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
         "parameters": [
           {
+            "name": "id",
+            "in": "path",
             "required": true,
             "schema": {
-              "title": "Id",
               "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "name": "id",
-            "in": "path"
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/NodeUpdate"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -970,15 +985,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
+        }
       }
     },
     "/nodes/{id}/children": {
@@ -990,24 +997,24 @@
         "operationId": "getChildren",
         "parameters": [
           {
+            "name": "id",
+            "in": "path",
             "required": true,
             "schema": {
-              "title": "Id",
               "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "name": "id",
-            "in": "path"
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
           },
           {
+            "name": "limit",
+            "in": "query",
             "required": false,
             "schema": {
-              "title": "Limit",
               "type": "integer",
-              "default": 9999
-            },
-            "name": "limit",
-            "in": "query"
+              "default": 9999,
+              "title": "Limit"
+            }
           }
         ],
         "responses": {
@@ -1016,11 +1023,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Children Nodes  Id  Children Get",
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/NodeRead"
-                  }
+                  },
+                  "title": "Response Get Children Nodes  Id  Children Get"
                 }
               }
             }
@@ -1084,9 +1091,10 @@
         "operationId": "getPublicUserInfo",
         "parameters": [
           {
+            "name": "usernameOrId",
+            "in": "path",
             "required": true,
             "schema": {
-              "title": "Usernameorid",
               "anyOf": [
                 {
                   "type": "string"
@@ -1095,10 +1103,9 @@
                   "type": "string",
                   "example": "5eb7cf5a86d9755df3a6c593"
                 }
-              ]
-            },
-            "name": "usernameOrId",
-            "in": "path"
+              ],
+              "title": "Usernameorid"
+            }
           }
         ],
         "responses": {
@@ -1138,13 +1145,13 @@
         "operationId": "getTranslations",
         "parameters": [
           {
+            "name": "lang",
+            "in": "query",
             "required": false,
             "schema": {
-              "title": "Lang",
-              "type": "string"
-            },
-            "name": "lang",
-            "in": "query"
+              "type": "string",
+              "title": "Lang"
+            }
           }
         ],
         "responses": {
@@ -1153,8 +1160,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Translations Platform I18N Get",
-                  "type": "object"
+                  "type": "object",
+                  "title": "Response Get Translations Platform I18N Get"
                 }
               }
             }
@@ -1234,16 +1241,24 @@
         ],
         "summary": "Get all texts",
         "operationId": "getAllTexts",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
         "parameters": [
           {
+            "name": "limit",
+            "in": "query",
             "required": false,
             "schema": {
-              "title": "Limit",
               "type": "integer",
-              "default": 100
-            },
-            "name": "limit",
-            "in": "query"
+              "default": 100,
+              "title": "Limit"
+            }
           }
         ],
         "responses": {
@@ -1252,11 +1267,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get All Texts Texts Get",
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/TextRead"
-                  }
+                  },
+                  "title": "Response Get All Texts Texts Get"
                 }
               }
             }
@@ -1274,15 +1289,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
+        }
       },
       "post": {
         "tags": [
@@ -1290,15 +1297,23 @@
         ],
         "summary": "Create text",
         "operationId": "createText",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/TextCreate"
+                "$ref": "#/components/schemas/Text"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "201": {
@@ -1324,15 +1339,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
+        }
       }
     },
     "/texts/{id}/level/{index}": {
@@ -1342,45 +1349,54 @@
         ],
         "summary": "Insert level",
         "operationId": "insertLevel",
-        "parameters": [
+        "security": [
           {
-            "required": true,
-            "schema": {
-              "title": "Id",
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "name": "id",
-            "in": "path"
+            "APIKeyCookie": []
           },
           {
-            "description": "Index to insert the level at",
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
             "required": true,
             "schema": {
-              "title": "Index",
-              "exclusiveMaximum": 32.0,
-              "minimum": 0.0,
-              "type": "integer",
-              "description": "Index to insert the level at"
-            },
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
+          },
+          {
             "name": "index",
-            "in": "path"
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "exclusiveMaximum": 32,
+              "description": "Index to insert the level at",
+              "title": "Index"
+            },
+            "description": "Index to insert the level at"
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "title": "Translations",
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/StructureLevelTranslation"
                 },
-                "description": "Label translations for this level"
+                "minItems": 1,
+                "description": "Label translations for this level",
+                "title": "Translations"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -1406,15 +1422,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
+        }
       },
       "delete": {
         "tags": [
@@ -1422,29 +1430,37 @@
         ],
         "summary": "Delete level",
         "operationId": "deleteLevel",
-        "parameters": [
+        "security": [
           {
-            "required": true,
-            "schema": {
-              "title": "Id",
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "name": "id",
-            "in": "path"
+            "APIKeyCookie": []
           },
           {
-            "description": "Index to insert the level at",
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
             "required": true,
             "schema": {
-              "title": "Index",
-              "exclusiveMaximum": 32.0,
-              "minimum": 0.0,
-              "type": "integer",
-              "description": "Index to insert the level at"
-            },
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
+          },
+          {
             "name": "index",
-            "in": "path"
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "exclusiveMaximum": 32,
+              "description": "Index to insert the level at",
+              "title": "Index"
+            },
+            "description": "Index to insert the level at"
           }
         ],
         "responses": {
@@ -1471,15 +1487,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
+        }
       }
     },
     "/texts/{id}": {
@@ -1491,14 +1499,14 @@
         "operationId": "getText",
         "parameters": [
           {
+            "name": "id",
+            "in": "path",
             "required": true,
             "schema": {
-              "title": "Id",
               "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "name": "id",
-            "in": "path"
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
           }
         ],
         "responses": {
@@ -1533,27 +1541,35 @@
         ],
         "summary": "Update text",
         "operationId": "updateText",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
         "parameters": [
           {
+            "name": "id",
+            "in": "path",
             "required": true,
             "schema": {
-              "title": "Id",
               "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "name": "id",
-            "in": "path"
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/TextUpdate"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -1579,15 +1595,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
+        }
       }
     },
     "/units/plaintext/{id}": {
@@ -1598,16 +1606,24 @@
         "summary": "Get unit",
         "description": "Returns the data for a PlainText data layer unit",
         "operationId": "getPlaintextUnit",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
         "parameters": [
           {
+            "name": "id",
+            "in": "path",
             "required": true,
             "schema": {
-              "title": "Id",
               "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "name": "id",
-            "in": "path"
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
           }
         ],
         "responses": {
@@ -1634,15 +1650,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
+        }
       },
       "patch": {
         "tags": [
@@ -1651,27 +1659,35 @@
         "summary": "Update unit",
         "description": "Updates the data for a PlainText data layer unit",
         "operationId": "updatePlaintextUnit",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
         "parameters": [
           {
+            "name": "id",
+            "in": "path",
             "required": true,
             "schema": {
-              "title": "Id",
               "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "name": "id",
-            "in": "path"
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/PlainTextUnitUpdate"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -1697,15 +1713,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
+        }
       }
     },
     "/units/plaintext": {
@@ -1720,7 +1728,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PlainTextUnitCreate"
+                "$ref": "#/components/schemas/PlainTextUnit"
               }
             }
           },
@@ -1769,50 +1777,58 @@
         "summary": "Find units",
         "description": "Returns a list of all data layer units matching the given criteria.\n\nAs the resulting list may contain units of different types, the\nreturned unit objects cannot be typed to their precise layer unit type.",
         "operationId": "findUnits",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
         "parameters": [
           {
-            "description": "ID (or list of IDs) of layer(s) to return unit data for",
+            "name": "layerId",
+            "in": "query",
             "required": false,
             "schema": {
-              "title": "Layerid",
               "type": "array",
               "items": {
                 "type": "string",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               "description": "ID (or list of IDs) of layer(s) to return unit data for",
-              "default": []
+              "default": [],
+              "title": "Layerid"
             },
-            "name": "layerId",
-            "in": "query"
+            "description": "ID (or list of IDs) of layer(s) to return unit data for"
           },
           {
-            "description": "ID (or list of IDs) of node(s) to return unit data for",
+            "name": "nodeId",
+            "in": "query",
             "required": false,
             "schema": {
-              "title": "Nodeid",
               "type": "array",
               "items": {
                 "type": "string",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               "description": "ID (or list of IDs) of node(s) to return unit data for",
-              "default": []
+              "default": [],
+              "title": "Nodeid"
             },
-            "name": "nodeId",
-            "in": "query"
+            "description": "ID (or list of IDs) of node(s) to return unit data for"
           },
           {
-            "description": "Return at most <limit> items",
+            "name": "limit",
+            "in": "query",
             "required": false,
             "schema": {
-              "title": "Limit",
               "type": "integer",
               "description": "Return at most <limit> items",
-              "default": 1000
+              "default": 1000,
+              "title": "Limit"
             },
-            "name": "limit",
-            "in": "query"
+            "description": "Return at most <limit> items"
           }
         ],
         "responses": {
@@ -1821,11 +1837,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Find Units Units  Get",
                   "type": "array",
                   "items": {
                     "type": "object"
-                  }
+                  },
+                  "title": "Response Find Units Units  Get"
                 }
               }
             }
@@ -1843,15 +1859,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
+        }
       }
     },
     "/auth/cookie/login": {
@@ -2370,7 +2378,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserUpdate"
+                "$ref": "#/components/schemas/UserBaseUpdate"
               }
             }
           },
@@ -2445,15 +2453,23 @@
         ],
         "summary": "Get user",
         "operationId": "users:user",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
         "parameters": [
           {
+            "name": "id",
+            "in": "path",
             "required": true,
             "schema": {
-              "title": "Id",
-              "type": "string"
-            },
-            "name": "id",
-            "in": "path"
+              "type": "string",
+              "title": "Id"
+            }
           }
         ],
         "responses": {
@@ -2486,7 +2502,14 @@
               }
             }
           }
-        },
+        }
+      },
+      "patch": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Update user",
+        "operationId": "users:patchUser",
         "security": [
           {
             "APIKeyCookie": []
@@ -2494,7 +2517,86 @@
           {
             "OAuth2PasswordBearer": []
           }
-        ]
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserBaseUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserRead"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing token or inactive user."
+          },
+          "403": {
+            "description": "Not a superuser."
+          },
+          "404": {
+            "description": "The user does not exist."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "UPDATE_USER_EMAIL_ALREADY_EXISTS": {
+                    "summary": "A user with this email already exists.",
+                    "value": {
+                      "detail": "UPDATE_USER_EMAIL_ALREADY_EXISTS"
+                    }
+                  },
+                  "UPDATE_USER_INVALID_PASSWORD": {
+                    "summary": "Password validation failed.",
+                    "value": {
+                      "detail": {
+                        "code": "UPDATE_USER_INVALID_PASSWORD",
+                        "reason": "Password should beat least 3 characters"
+                      }
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       },
       "delete": {
         "tags": [
@@ -2502,15 +2604,23 @@
         ],
         "summary": "Delete user",
         "operationId": "users:deleteUser",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
         "parameters": [
           {
+            "name": "id",
+            "in": "path",
             "required": true,
             "schema": {
-              "title": "Id",
-              "type": "string"
-            },
-            "name": "id",
-            "in": "path"
+              "type": "string",
+              "title": "Id"
+            }
           }
         ],
         "responses": {
@@ -2536,312 +2646,256 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      },
-      "patch": {
-        "tags": [
-          "users"
-        ],
-        "summary": "Update user",
-        "operationId": "users:patchUser",
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "title": "Id",
-              "type": "string"
-            },
-            "name": "id",
-            "in": "path"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserUpdate"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserRead"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Missing token or inactive user."
-          },
-          "403": {
-            "description": "Not a superuser."
-          },
-          "404": {
-            "description": "The user does not exist."
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                },
-                "examples": {
-                  "UPDATE_USER_EMAIL_ALREADY_EXISTS": {
-                    "summary": "A user with this email already exists.",
-                    "value": {
-                      "detail": "UPDATE_USER_EMAIL_ALREADY_EXISTS"
-                    }
-                  },
-                  "UPDATE_USER_INVALID_PASSWORD": {
-                    "summary": "Password validation failed.",
-                    "value": {
-                      "detail": {
-                        "code": "UPDATE_USER_INVALID_PASSWORD",
-                        "reason": "Password should beat least 3 characters"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
+        }
       }
     }
   },
   "components": {
     "schemas": {
       "BearerResponse": {
-        "title": "BearerResponse",
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "title": "Access Token"
+          },
+          "token_type": {
+            "type": "string",
+            "title": "Token Type"
+          }
+        },
+        "type": "object",
         "required": [
           "access_token",
           "token_type"
         ],
-        "type": "object",
-        "properties": {
-          "access_token": {
-            "title": "Access Token",
-            "type": "string"
-          },
-          "token_type": {
-            "title": "Token Type",
-            "type": "string"
-          }
-        }
+        "title": "BearerResponse"
       },
       "Body_auth_cookie_login_auth_cookie_login_post": {
-        "title": "Body_auth_cookie_login_auth_cookie_login_post",
+        "properties": {
+          "grant_type": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "password"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Grant Type"
+          },
+          "username": {
+            "type": "string",
+            "title": "Username"
+          },
+          "password": {
+            "type": "string",
+            "title": "Password"
+          },
+          "scope": {
+            "type": "string",
+            "title": "Scope",
+            "default": ""
+          },
+          "client_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Client Id"
+          },
+          "client_secret": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Client Secret"
+          }
+        },
+        "type": "object",
         "required": [
           "username",
           "password"
         ],
-        "type": "object",
-        "properties": {
-          "grant_type": {
-            "title": "Grant Type",
-            "pattern": "password",
-            "type": "string"
-          },
-          "username": {
-            "title": "Username",
-            "type": "string"
-          },
-          "password": {
-            "title": "Password",
-            "type": "string"
-          },
-          "scope": {
-            "title": "Scope",
-            "type": "string",
-            "default": ""
-          },
-          "client_id": {
-            "title": "Client Id",
-            "type": "string"
-          },
-          "client_secret": {
-            "title": "Client Secret",
-            "type": "string"
-          }
-        }
+        "title": "Body_auth_cookie_login_auth_cookie_login_post"
       },
       "Body_auth_jwt_login_auth_jwt_login_post": {
-        "title": "Body_auth_jwt_login_auth_jwt_login_post",
+        "properties": {
+          "grant_type": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "password"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Grant Type"
+          },
+          "username": {
+            "type": "string",
+            "title": "Username"
+          },
+          "password": {
+            "type": "string",
+            "title": "Password"
+          },
+          "scope": {
+            "type": "string",
+            "title": "Scope",
+            "default": ""
+          },
+          "client_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Client Id"
+          },
+          "client_secret": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Client Secret"
+          }
+        },
+        "type": "object",
         "required": [
           "username",
           "password"
         ],
-        "type": "object",
-        "properties": {
-          "grant_type": {
-            "title": "Grant Type",
-            "pattern": "password",
-            "type": "string"
-          },
-          "username": {
-            "title": "Username",
-            "type": "string"
-          },
-          "password": {
-            "title": "Password",
-            "type": "string"
-          },
-          "scope": {
-            "title": "Scope",
-            "type": "string",
-            "default": ""
-          },
-          "client_id": {
-            "title": "Client Id",
-            "type": "string"
-          },
-          "client_secret": {
-            "title": "Client Secret",
-            "type": "string"
-          }
-        }
+        "title": "Body_auth_jwt_login_auth_jwt_login_post"
       },
       "Body_reset_forgot_password_auth_forgot_password_post": {
-        "title": "Body_reset_forgot_password_auth_forgot_password_post",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email"
+          }
+        },
+        "type": "object",
         "required": [
           "email"
         ],
-        "type": "object",
-        "properties": {
-          "email": {
-            "title": "Email",
-            "type": "string",
-            "format": "email"
-          }
-        }
+        "title": "Body_reset_forgot_password_auth_forgot_password_post"
       },
       "Body_reset_reset_password_auth_reset_password_post": {
-        "title": "Body_reset_reset_password_auth_reset_password_post",
+        "properties": {
+          "token": {
+            "type": "string",
+            "title": "Token"
+          },
+          "password": {
+            "type": "string",
+            "title": "Password"
+          }
+        },
+        "type": "object",
         "required": [
           "token",
           "password"
         ],
-        "type": "object",
-        "properties": {
-          "token": {
-            "title": "Token",
-            "type": "string"
-          },
-          "password": {
-            "title": "Password",
-            "type": "string"
-          }
-        }
+        "title": "Body_reset_reset_password_auth_reset_password_post"
       },
       "Body_verify_request_token_auth_request_verify_token_post": {
-        "title": "Body_verify_request_token_auth_request_verify_token_post",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email"
+          }
+        },
+        "type": "object",
         "required": [
           "email"
         ],
-        "type": "object",
-        "properties": {
-          "email": {
-            "title": "Email",
-            "type": "string",
-            "format": "email"
-          }
-        }
+        "title": "Body_verify_request_token_auth_request_verify_token_post"
       },
       "Body_verify_verify_auth_verify_post": {
-        "title": "Body_verify_verify_auth_verify_post",
+        "properties": {
+          "token": {
+            "type": "string",
+            "title": "Token"
+          }
+        },
+        "type": "object",
         "required": [
           "token"
         ],
-        "type": "object",
-        "properties": {
-          "token": {
-            "title": "Token",
-            "type": "string"
-          }
-        }
+        "title": "Body_verify_verify_auth_verify_post"
       },
-      "DeepLLinksConfig": {
-        "title": "DeepLLinksConfig",
-        "type": "object",
+      "DeepLLinksConfig-Input": {
         "properties": {
           "enabled": {
-            "title": "Enabled",
             "type": "boolean",
+            "title": "Enabled",
             "description": "Enable/disable quick translation links to DeepL",
             "default": false
           },
           "sourceLanguage": {
-            "title": "Sourcelanguage",
-            "enum": [
-              "BG",
-              "CS",
-              "DA",
-              "DE",
-              "EL",
-              "EN",
-              "ES",
-              "ET",
-              "FI",
-              "FR",
-              "HU",
-              "ID",
-              "IT",
-              "JA",
-              "LT",
-              "LV",
-              "NL",
-              "PL",
-              "PT",
-              "RO",
-              "RU",
-              "SK",
-              "SL",
-              "SV",
-              "TR",
-              "UK",
-              "ZH"
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "BG",
+                  "CS",
+                  "DA",
+                  "DE",
+                  "EL",
+                  "EN",
+                  "ES",
+                  "ET",
+                  "FI",
+                  "FR",
+                  "HU",
+                  "ID",
+                  "IT",
+                  "JA",
+                  "LT",
+                  "LV",
+                  "NL",
+                  "PL",
+                  "PT",
+                  "RO",
+                  "RU",
+                  "SK",
+                  "SL",
+                  "SV",
+                  "TR",
+                  "UK",
+                  "ZH"
+                ]
+              },
+              {
+                "type": "null"
+              }
             ],
-            "type": "string",
+            "title": "Sourcelanguage",
             "description": "Source language",
             "default": "BG"
           },
           "languages": {
-            "title": "Languages",
-            "type": "array",
             "items": {
+              "type": "string",
               "enum": [
                 "BG",
                 "CS",
@@ -2870,737 +2924,998 @@
                 "TR",
                 "UK",
                 "ZH"
-              ],
-              "type": "string"
+              ]
             },
+            "type": "array",
+            "title": "Languages",
             "description": "Target languages to display links for",
             "default": [
               "EN",
               "DE"
             ]
           }
-        }
+        },
+        "type": "object",
+        "title": "DeepLLinksConfig"
+      },
+      "DeepLLinksConfig-Output": {
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "title": "Enabled",
+            "description": "Enable/disable quick translation links to DeepL",
+            "default": false
+          },
+          "sourceLanguage": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "BG",
+                  "CS",
+                  "DA",
+                  "DE",
+                  "EL",
+                  "EN",
+                  "ES",
+                  "ET",
+                  "FI",
+                  "FR",
+                  "HU",
+                  "ID",
+                  "IT",
+                  "JA",
+                  "LT",
+                  "LV",
+                  "NL",
+                  "PL",
+                  "PT",
+                  "RO",
+                  "RU",
+                  "SK",
+                  "SL",
+                  "SV",
+                  "TR",
+                  "UK",
+                  "ZH"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sourcelanguage",
+            "description": "Source language",
+            "default": "BG"
+          },
+          "languages": {
+            "items": {
+              "type": "string",
+              "enum": [
+                "BG",
+                "CS",
+                "DA",
+                "DE",
+                "EL",
+                "EN",
+                "ES",
+                "ET",
+                "FI",
+                "FR",
+                "HU",
+                "ID",
+                "IT",
+                "JA",
+                "LT",
+                "LV",
+                "NL",
+                "PL",
+                "PT",
+                "RO",
+                "RU",
+                "SK",
+                "SL",
+                "SV",
+                "TR",
+                "UK",
+                "ZH"
+              ]
+            },
+            "type": "array",
+            "title": "Languages",
+            "description": "Target languages to display links for",
+            "default": [
+              "EN",
+              "DE"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "enabled",
+          "sourceLanguage",
+          "languages"
+        ],
+        "title": "DeepLLinksConfig"
       },
       "ErrorModel": {
-        "title": "ErrorModel",
-        "required": [
-          "detail"
-        ],
-        "type": "object",
         "properties": {
           "detail": {
-            "title": "Detail",
             "anyOf": [
               {
                 "type": "string"
               },
               {
-                "type": "object",
                 "additionalProperties": {
                   "type": "string"
-                }
+                },
+                "type": "object"
               }
-            ]
+            ],
+            "title": "Detail"
           }
-        }
+        },
+        "type": "object",
+        "required": [
+          "detail"
+        ],
+        "title": "ErrorModel"
       },
       "HTTPValidationError": {
-        "title": "HTTPValidationError",
-        "type": "object",
         "properties": {
           "detail": {
-            "title": "Detail",
-            "type": "array",
             "items": {
               "$ref": "#/components/schemas/ValidationError"
-            }
+            },
+            "type": "array",
+            "title": "Detail"
           }
-        }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
       },
       "InfoConfig": {
-        "title": "InfoConfig",
-        "type": "object",
         "properties": {
           "platformName": {
-            "title": "Platformname",
             "type": "string",
+            "title": "Platformname",
             "default": "Tekst"
           },
           "description": {
-            "title": "Description",
             "type": "string",
+            "title": "Description",
             "default": "An online text research platform"
           },
           "terms": {
-            "title": "Terms",
+            "type": "string",
             "maxLength": 2083,
             "minLength": 1,
-            "type": "string",
             "format": "uri",
+            "title": "Terms",
             "default": "https://www.example-tekst-instance.org/terms"
           },
           "contactName": {
-            "title": "Contactname",
             "type": "string",
+            "title": "Contactname",
             "default": "Rick Sanchez"
           },
           "contactUrl": {
-            "title": "Contacturl",
+            "type": "string",
             "maxLength": 2083,
             "minLength": 1,
-            "type": "string",
             "format": "uri",
+            "title": "Contacturl",
             "default": "https://www.example-tekst-instance.org/contact"
           },
           "contactEmail": {
-            "title": "Contactemail",
             "type": "string",
             "format": "email",
+            "title": "Contactemail",
             "default": "rick.sanchez@example-tekst-instance.org"
           }
         },
+        "type": "object",
+        "required": [
+          "platformName",
+          "description",
+          "terms",
+          "contactName",
+          "contactUrl",
+          "contactEmail"
+        ],
+        "title": "InfoConfig",
         "description": "General information config model"
       },
       "LayerNodeCoverage": {
-        "title": "LayerNodeCoverage",
+        "properties": {
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "position": {
+            "type": "integer",
+            "title": "Position"
+          },
+          "covered": {
+            "type": "boolean",
+            "title": "Covered"
+          }
+        },
+        "type": "object",
         "required": [
           "label",
           "position",
           "covered"
         ],
-        "type": "object",
-        "properties": {
-          "label": {
-            "title": "Label",
-            "type": "string"
-          },
-          "position": {
-            "title": "Position",
-            "type": "integer"
-          },
-          "covered": {
-            "title": "Covered",
-            "type": "boolean"
-          }
-        }
+        "title": "LayerNodeCoverage"
       },
       "LayerTypeInfo": {
-        "title": "LayerTypeInfo",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          }
+        },
+        "type": "object",
         "required": [
           "name",
           "label",
           "description"
         ],
-        "type": "object",
+        "title": "LayerTypeInfo"
+      },
+      "Node": {
         "properties": {
-          "name": {
-            "title": "Name",
-            "type": "string"
+          "textId": {
+            "type": "string",
+            "title": "Textid",
+            "description": "ID of the text this node belongs to",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "parentId": {
+            "type": "string",
+            "title": "Parentid",
+            "description": "ID of parent node",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "level": {
+            "type": "integer",
+            "exclusiveMaximum": 32.0,
+            "minimum": 0.0,
+            "title": "Level",
+            "description": "Index of structure level this node is on"
+          },
+          "position": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Position",
+            "description": "Position among all text nodes on this level"
           },
           "label": {
+            "type": "string",
+            "maxLength": 256,
+            "minLength": 1,
             "title": "Label",
-            "type": "string"
+            "description": "Label for identifying this text node in level context"
           },
-          "description": {
-            "title": "Description",
-            "type": "string"
+          "meta": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta",
+            "description": "Arbitrary metadata"
           }
-        }
-      },
-      "NodeCreate": {
-        "title": "NodeCreate",
+        },
+        "type": "object",
         "required": [
           "textId",
           "level",
           "position",
           "label"
         ],
-        "type": "object",
-        "properties": {
-          "textId": {
-            "title": "Textid",
-            "type": "string",
-            "description": "ID of the text this node belongs to",
-            "example": "5eb7cf5a86d9755df3a6c593"
-          },
-          "parentId": {
-            "title": "Parentid",
-            "type": "string",
-            "description": "ID of parent node",
-            "example": "5eb7cf5a86d9755df3a6c593"
-          },
-          "level": {
-            "title": "Level",
-            "exclusiveMaximum": 32.0,
-            "minimum": 0.0,
-            "type": "integer",
-            "description": "Index of structure level this node is on"
-          },
-          "position": {
-            "title": "Position",
-            "minimum": 0.0,
-            "type": "integer",
-            "description": "Position among all text nodes on this level"
-          },
-          "label": {
-            "title": "Label",
-            "maxLength": 256,
-            "minLength": 1,
-            "type": "string",
-            "description": "Label for identifying this text node in level context"
-          },
-          "meta": {
-            "title": "Meta",
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            },
-            "description": "Arbitrary metadata"
-          }
-        },
+        "title": "Node",
         "description": "A node in a text structure (e.g. chapter, paragraph, ...)"
       },
       "NodeRead": {
-        "title": "NodeRead",
-        "required": [
-          "id",
-          "createdAt",
-          "modifiedAt",
-          "textId",
-          "level",
-          "position",
-          "label"
-        ],
-        "type": "object",
         "properties": {
           "id": {
-            "title": "Id",
             "type": "string",
+            "title": "Id",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
-          "createdAt": {
-            "title": "Createdat",
-            "type": "string",
-            "description": "Creation date and time of this object",
-            "format": "date-time"
-          },
-          "modifiedAt": {
-            "title": "Modifiedat",
-            "type": "string",
-            "description": "Last modification date and time of this object",
-            "format": "date-time"
-          },
           "textId": {
-            "title": "Textid",
             "type": "string",
+            "title": "Textid",
             "description": "ID of the text this node belongs to",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "parentId": {
-            "title": "Parentid",
             "type": "string",
+            "title": "Parentid",
             "description": "ID of parent node",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "level": {
-            "title": "Level",
+            "type": "integer",
             "exclusiveMaximum": 32.0,
             "minimum": 0.0,
-            "type": "integer",
+            "title": "Level",
             "description": "Index of structure level this node is on"
           },
           "position": {
-            "title": "Position",
-            "minimum": 0.0,
             "type": "integer",
+            "minimum": 0.0,
+            "title": "Position",
             "description": "Position among all text nodes on this level"
           },
           "label": {
-            "title": "Label",
+            "type": "string",
             "maxLength": 256,
             "minLength": 1,
-            "type": "string",
+            "title": "Label",
             "description": "Label for identifying this text node in level context"
           },
           "meta": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Meta",
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            },
             "description": "Arbitrary metadata"
           }
         },
-        "description": "A node in a text structure (e.g. chapter, paragraph, ...)"
+        "type": "object",
+        "required": [
+          "id",
+          "textId",
+          "parentId",
+          "level",
+          "position",
+          "label",
+          "meta"
+        ],
+        "title": "NodeRead"
       },
       "NodeUpdate": {
-        "title": "NodeUpdate",
-        "type": "object",
         "properties": {
           "textId": {
-            "title": "Textid",
             "type": "string",
+            "title": "Textid",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "parentId": {
-            "title": "Parentid",
             "type": "string",
+            "title": "Parentid",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "level": {
-            "title": "Level",
-            "exclusiveMaximum": 32.0,
-            "minimum": 0.0,
-            "type": "integer"
+            "type": "integer",
+            "title": "Level"
           },
           "position": {
-            "title": "Position",
-            "minimum": 0.0,
-            "type": "integer"
+            "type": "integer",
+            "title": "Position"
           },
           "label": {
-            "title": "Label",
-            "maxLength": 256,
-            "minLength": 1,
-            "type": "string"
+            "type": "string",
+            "title": "Label"
           },
           "meta": {
-            "title": "Meta",
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            }
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta"
           }
         },
-        "description": "A node in a text structure (e.g. chapter, paragraph, ...)"
-      },
-      "PlainTextLayerConfig": {
-        "title": "PlainTextLayerConfig",
         "type": "object",
+        "title": "NodeUpdate"
+      },
+      "PlainTextLayer": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Title",
+            "description": "Title of this layer"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 128,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Short, one-line description of this data layer"
+          },
+          "textId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Textid",
+            "description": "ID of the text this layer belongs to"
+          },
+          "level": {
+            "type": "integer",
+            "title": "Level",
+            "description": "Text level this layer belongs to"
+          },
+          "layerType": {
+            "type": "string",
+            "title": "Layertype",
+            "description": "A string identifying one of the available layer types"
+          },
+          "ownerId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ownerid",
+            "description": "User owning this layer"
+          },
+          "sharedRead": {
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "type": "array",
+            "title": "Sharedread",
+            "description": "Users with shared read access to this layer",
+            "default": []
+          },
+          "sharedWrite": {
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "type": "array",
+            "title": "Sharedwrite",
+            "description": "Users with shared write access to this layer",
+            "default": []
+          },
+          "public": {
+            "type": "boolean",
+            "title": "Public",
+            "description": "Publication status of this layer",
+            "default": false
+          },
+          "meta": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta",
+            "description": "Arbitrary metadata"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment",
+            "description": "Plaintext, potentially multiline comment on this layer"
+          },
+          "config": {
+            "$ref": "#/components/schemas/PlainTextLayerConfig-Input"
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "level",
+          "layerType"
+        ],
+        "title": "PlainTextLayer"
+      },
+      "PlainTextLayerConfig-Input": {
         "properties": {
           "deeplLinks": {
-            "$ref": "#/components/schemas/DeepLLinksConfig"
-          }
-        }
-      },
-      "PlainTextLayerCreate": {
-        "title": "PlainTextLayerCreate",
-        "required": [
-          "title",
-          "level",
-          "layerType"
-        ],
-        "type": "object",
-        "properties": {
-          "title": {
-            "title": "Title",
-            "maxLength": 64,
-            "minLength": 1,
-            "type": "string",
-            "description": "Title of this layer"
-          },
-          "description": {
-            "title": "Description",
-            "maxLength": 128,
-            "minLength": 1,
-            "type": "string",
-            "description": "Short, one-line description of this data layer"
-          },
-          "textId": {
-            "title": "Textid",
-            "type": "string",
-            "description": "ID of the text this layer belongs to",
-            "example": "5eb7cf5a86d9755df3a6c593"
-          },
-          "level": {
-            "title": "Level",
-            "type": "integer",
-            "description": "Text level this layer belongs to"
-          },
-          "layerType": {
-            "title": "Layertype",
-            "type": "string",
-            "description": "A string identifying one of the available layer types"
-          },
-          "ownerId": {
-            "title": "Ownerid",
-            "type": "string",
-            "description": "User owning this layer",
-            "example": "5eb7cf5a86d9755df3a6c593"
-          },
-          "sharedRead": {
-            "title": "Sharedread",
-            "type": "array",
-            "items": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "description": "Users with shared read access to this layer"
-          },
-          "sharedWrite": {
-            "title": "Sharedwrite",
-            "type": "array",
-            "items": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "description": "Users with shared write access to this layer"
-          },
-          "public": {
-            "title": "Public",
-            "type": "boolean",
-            "description": "Publication status of this layer",
-            "default": false
-          },
-          "meta": {
-            "title": "Meta",
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            },
-            "description": "Arbitrary metadata"
-          },
-          "comment": {
-            "title": "Comment",
-            "type": "string",
-            "description": "Plaintext, potentially multiline comment on this layer"
-          },
-          "config": {
-            "$ref": "#/components/schemas/PlainTextLayerConfig"
+            "$ref": "#/components/schemas/DeepLLinksConfig-Input"
           }
         },
-        "description": "A data layer describing a set of data on a text"
+        "type": "object",
+        "title": "PlainTextLayerConfig"
+      },
+      "PlainTextLayerConfig-Output": {
+        "properties": {
+          "deeplLinks": {
+            "$ref": "#/components/schemas/DeepLLinksConfig-Output"
+          }
+        },
+        "type": "object",
+        "required": [
+          "deeplLinks"
+        ],
+        "title": "PlainTextLayerConfig"
       },
       "PlainTextLayerRead": {
-        "title": "PlainTextLayerRead",
-        "required": [
-          "id",
-          "createdAt",
-          "modifiedAt",
-          "title",
-          "level",
-          "layerType"
-        ],
-        "type": "object",
         "properties": {
           "id": {
-            "title": "Id",
             "type": "string",
+            "title": "Id",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
-          "createdAt": {
-            "title": "Createdat",
-            "type": "string",
-            "description": "Creation date and time of this object",
-            "format": "date-time"
-          },
-          "modifiedAt": {
-            "title": "Modifiedat",
-            "type": "string",
-            "description": "Last modification date and time of this object",
-            "format": "date-time"
-          },
           "title": {
-            "title": "Title",
+            "type": "string",
             "maxLength": 64,
             "minLength": 1,
-            "type": "string",
+            "title": "Title",
             "description": "Title of this layer"
           },
           "description": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 128,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Description",
-            "maxLength": 128,
-            "minLength": 1,
-            "type": "string",
             "description": "Short, one-line description of this data layer"
           },
           "textId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Textid",
-            "type": "string",
-            "description": "ID of the text this layer belongs to",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "description": "ID of the text this layer belongs to"
           },
           "level": {
-            "title": "Level",
             "type": "integer",
+            "title": "Level",
             "description": "Text level this layer belongs to"
           },
           "layerType": {
-            "title": "Layertype",
             "type": "string",
+            "title": "Layertype",
             "description": "A string identifying one of the available layer types"
           },
           "ownerId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Ownerid",
-            "type": "string",
-            "description": "User owning this layer",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "description": "User owning this layer"
           },
           "sharedRead": {
-            "title": "Sharedread",
-            "type": "array",
             "items": {
               "type": "string",
               "example": "5eb7cf5a86d9755df3a6c593"
             },
-            "description": "Users with shared read access to this layer"
+            "type": "array",
+            "title": "Sharedread",
+            "description": "Users with shared read access to this layer",
+            "default": []
           },
           "sharedWrite": {
-            "title": "Sharedwrite",
-            "type": "array",
             "items": {
               "type": "string",
               "example": "5eb7cf5a86d9755df3a6c593"
             },
-            "description": "Users with shared write access to this layer"
+            "type": "array",
+            "title": "Sharedwrite",
+            "description": "Users with shared write access to this layer",
+            "default": []
           },
           "public": {
-            "title": "Public",
             "type": "boolean",
+            "title": "Public",
             "description": "Publication status of this layer",
             "default": false
           },
           "meta": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Meta",
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            },
             "description": "Arbitrary metadata"
           },
           "comment": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Comment",
-            "type": "string",
             "description": "Plaintext, potentially multiline comment on this layer"
           },
           "config": {
-            "$ref": "#/components/schemas/PlainTextLayerConfig"
+            "$ref": "#/components/schemas/PlainTextLayerConfig-Output"
           }
         },
-        "description": "A data layer describing a set of data on a text"
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "description",
+          "textId",
+          "level",
+          "layerType",
+          "ownerId",
+          "sharedRead",
+          "sharedWrite",
+          "public",
+          "meta",
+          "comment",
+          "config"
+        ],
+        "title": "PlainTextLayerRead"
       },
       "PlainTextLayerUpdate": {
-        "title": "PlainTextLayerUpdate",
-        "type": "object",
         "properties": {
           "title": {
-            "title": "Title",
-            "type": "string"
+            "type": "string",
+            "title": "Title"
           },
           "description": {
-            "title": "Description",
-            "type": "string"
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
           },
           "textId": {
-            "title": "Textid",
-            "type": "string",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Textid"
           },
           "level": {
-            "title": "Level",
-            "type": "integer"
+            "type": "integer",
+            "title": "Level"
           },
           "layerType": {
-            "title": "Layertype",
-            "type": "string"
+            "type": "string",
+            "title": "Layertype"
           },
           "ownerId": {
-            "title": "Ownerid",
-            "type": "string",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ownerid"
           },
           "sharedRead": {
-            "title": "Sharedread",
-            "type": "array",
             "items": {
               "type": "string",
               "example": "5eb7cf5a86d9755df3a6c593"
-            }
+            },
+            "type": "array",
+            "title": "Sharedread"
           },
           "sharedWrite": {
-            "title": "Sharedwrite",
-            "type": "array",
             "items": {
               "type": "string",
               "example": "5eb7cf5a86d9755df3a6c593"
-            }
+            },
+            "type": "array",
+            "title": "Sharedwrite"
           },
           "public": {
-            "title": "Public",
-            "type": "boolean"
+            "type": "boolean",
+            "title": "Public"
           },
           "meta": {
-            "title": "Meta",
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            }
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta"
           },
           "comment": {
-            "title": "Comment",
-            "type": "string"
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment"
           },
           "config": {
-            "$ref": "#/components/schemas/PlainTextLayerConfig"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PlainTextLayerConfig-Input"
+              }
+            ]
           }
         },
-        "description": "A data layer describing a set of data on a text"
-      },
-      "PlainTextUnitCreate": {
-        "title": "PlainTextUnitCreate",
-        "required": [
-          "layerId",
-          "nodeId"
-        ],
         "type": "object",
+        "title": "PlainTextLayerUpdate"
+      },
+      "PlainTextUnit": {
         "properties": {
           "layerId": {
-            "title": "Layerid",
             "type": "string",
+            "title": "Layerid",
             "description": "Data layer ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "nodeId": {
-            "title": "Nodeid",
             "type": "string",
+            "title": "Nodeid",
             "description": "Parent text node ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "meta": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Meta",
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            },
             "description": "Arbitrary metadata on this layer unit"
           },
           "text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Text",
-            "type": "string",
             "description": "Text content of the plaintext unit"
           }
         },
+        "type": "object",
+        "required": [
+          "layerId",
+          "nodeId"
+        ],
+        "title": "PlainTextUnit",
         "description": "A unit of a plaintext data layer"
       },
       "PlainTextUnitRead": {
-        "title": "PlainTextUnitRead",
-        "required": [
-          "id",
-          "createdAt",
-          "modifiedAt",
-          "layerId",
-          "nodeId"
-        ],
-        "type": "object",
         "properties": {
           "id": {
-            "title": "Id",
             "type": "string",
+            "title": "Id",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
-          "createdAt": {
-            "title": "Createdat",
-            "type": "string",
-            "description": "Creation date and time of this object",
-            "format": "date-time"
-          },
-          "modifiedAt": {
-            "title": "Modifiedat",
-            "type": "string",
-            "description": "Last modification date and time of this object",
-            "format": "date-time"
-          },
           "layerId": {
-            "title": "Layerid",
             "type": "string",
+            "title": "Layerid",
             "description": "Data layer ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "nodeId": {
-            "title": "Nodeid",
             "type": "string",
+            "title": "Nodeid",
             "description": "Parent text node ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "meta": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Meta",
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            },
             "description": "Arbitrary metadata on this layer unit"
           },
           "text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Text",
-            "type": "string",
             "description": "Text content of the plaintext unit"
           }
         },
-        "description": "A unit of a plaintext data layer"
+        "type": "object",
+        "required": [
+          "id",
+          "layerId",
+          "nodeId",
+          "meta",
+          "text"
+        ],
+        "title": "PlainTextUnitRead"
       },
       "PlainTextUnitUpdate": {
-        "title": "PlainTextUnitUpdate",
-        "type": "object",
         "properties": {
           "layerId": {
-            "title": "Layerid",
             "type": "string",
+            "title": "Layerid",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "nodeId": {
-            "title": "Nodeid",
             "type": "string",
+            "title": "Nodeid",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "meta": {
-            "title": "Meta",
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            }
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta"
           },
           "text": {
-            "title": "Text",
-            "type": "string"
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Text"
           }
         },
-        "description": "A unit of a plaintext data layer"
+        "type": "object",
+        "title": "PlainTextUnitUpdate"
       },
       "PlatformData": {
-        "title": "PlatformData",
-        "required": [
-          "texts",
-          "settings",
-          "layerTypes"
-        ],
-        "type": "object",
         "properties": {
           "info": {
-            "title": "Info",
             "allOf": [
               {
                 "$ref": "#/components/schemas/InfoConfig"
               }
             ],
             "default": {
-              "platformName": "Tekst-DEV"
+              "contactEmail": "rick.sanchez@example-tekst-instance.org",
+              "contactName": "Rick Sanchez",
+              "contactUrl": "https://www.example-tekst-instance.org/contact",
+              "description": "An online text research platform",
+              "platformName": "Tekst-DEV",
+              "terms": "https://www.example-tekst-instance.org/terms"
             }
           },
           "tekstInfo": {
-            "title": "Tekstinfo",
             "allOf": [
               {
                 "$ref": "#/components/schemas/TekstInfoConfig"
               }
             ],
-            "default": {}
+            "default": {
+              "description": "An online text research platform",
+              "license": "AGPL-3.0-or-later",
+              "licenseUrl": "https://www.gnu.org/licenses/agpl-3.0.txt",
+              "name": "Tekst",
+              "version": "0.0.1",
+              "website": "https://github.com/VedaWebProject/Tekst-API"
+            }
           },
           "texts": {
-            "title": "Texts",
-            "type": "array",
             "items": {
               "$ref": "#/components/schemas/TextRead"
-            }
+            },
+            "type": "array",
+            "title": "Texts"
           },
           "settings": {
             "$ref": "#/components/schemas/PlatformSettingsRead"
@@ -3609,480 +3924,711 @@
             "$ref": "#/components/schemas/PlatformSecurityInfo"
           },
           "layerTypes": {
-            "title": "Layertypes",
-            "type": "array",
             "items": {
               "$ref": "#/components/schemas/LayerTypeInfo"
-            }
+            },
+            "type": "array",
+            "title": "Layertypes"
           }
         },
+        "type": "object",
+        "required": [
+          "info",
+          "tekstInfo",
+          "texts",
+          "settings",
+          "security",
+          "layerTypes"
+        ],
+        "title": "PlatformData",
         "description": "Platform data used by the web client"
       },
       "PlatformSecurityInfo": {
-        "title": "PlatformSecurityInfo",
-        "type": "object",
         "properties": {
           "closedMode": {
-            "title": "Closedmode",
             "type": "boolean",
+            "title": "Closedmode",
             "default": false
           },
           "usersActiveByDefault": {
-            "title": "Usersactivebydefault",
             "type": "boolean",
+            "title": "Usersactivebydefault",
             "default": false
           },
           "enableCookieAuth": {
-            "title": "Enablecookieauth",
             "type": "boolean",
+            "title": "Enablecookieauth",
             "default": true
           },
           "enableJwtAuth": {
-            "title": "Enablejwtauth",
             "type": "boolean",
+            "title": "Enablejwtauth",
             "default": true
           },
           "authCookieLifetime": {
-            "title": "Authcookielifetime",
             "type": "integer",
+            "title": "Authcookielifetime",
             "default": 3600
           }
-        }
+        },
+        "type": "object",
+        "required": [
+          "closedMode",
+          "usersActiveByDefault",
+          "enableCookieAuth",
+          "enableJwtAuth",
+          "authCookieLifetime"
+        ],
+        "title": "PlatformSecurityInfo"
       },
       "PlatformSettingsRead": {
-        "title": "PlatformSettingsRead",
-        "required": [
-          "id",
-          "createdAt",
-          "modifiedAt"
-        ],
-        "type": "object",
         "properties": {
           "id": {
+            "type": "string",
             "title": "Id",
-            "type": "string",
             "example": "5eb7cf5a86d9755df3a6c593"
-          },
-          "createdAt": {
-            "title": "Createdat",
-            "type": "string",
-            "description": "Creation date and time of this object",
-            "format": "date-time"
-          },
-          "modifiedAt": {
-            "title": "Modifiedat",
-            "type": "string",
-            "description": "Last modification date and time of this object",
-            "format": "date-time"
           },
           "defaultTextId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Defaulttextid",
-            "type": "string",
-            "description": "Default text to load in UI",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "description": "Default text to load in UI"
           }
         },
-        "description": "Settings defining platform behavior configured by admins"
+        "type": "object",
+        "required": [
+          "id",
+          "defaultTextId"
+        ],
+        "title": "PlatformSettingsRead"
       },
       "PlatformSettingsUpdate": {
-        "title": "PlatformSettingsUpdate",
-        "type": "object",
         "properties": {
           "defaultTextId": {
-            "title": "Defaulttextid",
-            "type": "string",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Defaulttextid"
           }
         },
-        "description": "Settings defining platform behavior configured by admins"
+        "type": "object",
+        "title": "PlatformSettingsUpdate"
       },
       "PlatformStats": {
-        "title": "PlatformStats",
+        "properties": {
+          "usersCount": {
+            "type": "integer",
+            "title": "Userscount"
+          },
+          "texts": {
+            "items": {
+              "$ref": "#/components/schemas/TextStats"
+            },
+            "type": "array",
+            "title": "Texts"
+          }
+        },
+        "type": "object",
         "required": [
           "usersCount",
           "texts"
         ],
-        "type": "object",
-        "properties": {
-          "usersCount": {
-            "title": "Userscount",
-            "type": "integer"
-          },
-          "texts": {
-            "title": "Texts",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TextStats"
-            }
-          }
-        },
+        "title": "PlatformStats",
         "description": "Platform statistics data"
       },
       "StructureLevelTranslation": {
-        "title": "StructureLevelTranslation",
+        "properties": {
+          "locale": {
+            "type": "string",
+            "enum": [
+              "deDE",
+              "enUS"
+            ],
+            "title": "Locale"
+          },
+          "label": {
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 1,
+            "title": "Label"
+          }
+        },
+        "type": "object",
         "required": [
           "locale",
           "label"
         ],
-        "type": "object",
+        "title": "StructureLevelTranslation"
+      },
+      "SubtitleTranslation": {
         "properties": {
           "locale": {
-            "title": "Locale",
+            "type": "string",
             "enum": [
               "deDE",
               "enUS"
             ],
-            "type": "string"
+            "title": "Locale"
           },
-          "label": {
-            "title": "Label",
-            "maxLength": 32,
+          "subtitle": {
+            "type": "string",
+            "maxLength": 128,
             "minLength": 1,
-            "type": "string"
+            "title": "Subtitle"
           }
-        }
-      },
-      "SubtitleTranslation": {
-        "title": "SubtitleTranslation",
+        },
+        "type": "object",
         "required": [
           "locale",
           "subtitle"
         ],
-        "type": "object",
-        "properties": {
-          "locale": {
-            "title": "Locale",
-            "enum": [
-              "deDE",
-              "enUS"
-            ],
-            "type": "string"
-          },
-          "subtitle": {
-            "title": "Subtitle",
-            "maxLength": 128,
-            "minLength": 1,
-            "type": "string"
-          }
-        }
+        "title": "SubtitleTranslation"
       },
       "TekstInfoConfig": {
-        "title": "TekstInfoConfig",
-        "type": "object",
         "properties": {
           "name": {
-            "title": "Name",
             "type": "string",
+            "title": "Name",
             "default": "Tekst"
           },
           "version": {
-            "title": "Version",
             "type": "string",
+            "title": "Version",
             "default": "0.0.1"
           },
           "description": {
-            "title": "Description",
             "type": "string",
+            "title": "Description",
             "default": "An online text research platform"
           },
           "website": {
-            "title": "Website",
+            "type": "string",
             "maxLength": 2083,
             "minLength": 1,
-            "type": "string",
             "format": "uri",
+            "title": "Website",
             "default": "https://github.com/VedaWebProject/Tekst-API"
           },
           "license": {
-            "title": "License",
             "type": "string",
+            "title": "License",
             "default": "AGPL-3.0-or-later"
           },
           "licenseUrl": {
-            "title": "Licenseurl",
+            "type": "string",
             "maxLength": 2083,
             "minLength": 1,
-            "type": "string",
             "format": "uri",
+            "title": "Licenseurl",
             "default": "https://www.gnu.org/licenses/agpl-3.0.txt"
           }
         },
-        "description": "Tekst platform information config model\n\nThese values are not configurable. They are taken from the package infos and\naren't meant to be changed by users creating an own instance of the platform."
+        "type": "object",
+        "required": [
+          "name",
+          "version",
+          "description",
+          "website",
+          "license",
+          "licenseUrl"
+        ],
+        "title": "TekstInfoConfig",
+        "description": "\n    Tekst platform information config model\n\n    These values are not configurable. They are taken from the package infos and\n    aren't meant to be changed by users creating an own instance of the platform.\n    "
       },
-      "TextCreate": {
-        "title": "TextCreate",
+      "Text": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Title",
+            "description": "Title of this text"
+          },
+          "slug": {
+            "type": "string",
+            "maxLength": 16,
+            "minLength": 1,
+            "pattern": "^[a-z0-9]+$",
+            "title": "Slug",
+            "description": "A short identifier for use in URLs and internal operations"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/SubtitleTranslation"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subtitle",
+            "description": "Subtitle translations of this text (if set, it must contain at least one element)"
+          },
+          "levels": {
+            "items": {
+              "items": {
+                "$ref": "#/components/schemas/StructureLevelTranslation"
+              },
+              "type": "array",
+              "minItems": 1
+            },
+            "type": "array",
+            "maxItems": 32,
+            "minItems": 1,
+            "title": "Levels"
+          },
+          "defaultLevel": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Defaultlevel",
+            "description": "Default structure level for the client to use for browsing this text",
+            "default": 0
+          },
+          "locDelim": {
+            "type": "string",
+            "maxLength": 3,
+            "minLength": 1,
+            "title": "Locdelim",
+            "description": "Delimiter for displaying text locations",
+            "default": ", "
+          },
+          "labeledLocation": {
+            "type": "boolean",
+            "title": "Labeledlocation",
+            "description": "Whether the UI should label the parts of the browse location with each levels' names",
+            "default": true
+          },
+          "accentColor": {
+            "type": "string",
+            "format": "color",
+            "title": "Accentcolor",
+            "description": "Accent color used for this text in the client UI"
+          },
+          "isActive": {
+            "type": "boolean",
+            "title": "Isactive",
+            "description": "Whether the text should be listed for non-admin users in the web client",
+            "default": false
+          }
+        },
+        "type": "object",
         "required": [
           "title",
           "slug",
           "levels"
         ],
-        "type": "object",
-        "properties": {
-          "title": {
-            "title": "Title",
-            "maxLength": 64,
-            "minLength": 1,
-            "type": "string",
-            "description": "Title of this text"
-          },
-          "slug": {
-            "title": "Slug",
-            "maxLength": 16,
-            "minLength": 1,
-            "pattern": "^[a-z0-9]+$",
-            "type": "string",
-            "description": "A short identifier for use in URLs and internal operations"
-          },
-          "subtitle": {
-            "title": "Subtitle",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SubtitleTranslation"
-            },
-            "description": "Subtitle translations of this text (if set, it must contain at least one element)"
-          },
-          "levels": {
-            "title": "Levels",
-            "maxItems": 32,
-            "minItems": 1,
-            "type": "array",
-            "items": {
-              "minItems": 1,
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/StructureLevelTranslation"
-              }
-            }
-          },
-          "defaultLevel": {
-            "title": "Defaultlevel",
-            "minimum": 0.0,
-            "type": "integer",
-            "description": "Default structure level for the client to use for browsing this text",
-            "default": 0
-          },
-          "locDelim": {
-            "title": "Locdelim",
-            "maxLength": 3,
-            "minLength": 1,
-            "type": "string",
-            "description": "Delimiter for displaying text locations",
-            "default": ", "
-          },
-          "labeledLocation": {
-            "title": "Labeledlocation",
-            "type": "boolean",
-            "description": "Whether the UI should label the parts of the browse location with each levels' names",
-            "default": true
-          },
-          "accentColor": {
-            "title": "Accentcolor",
-            "type": "string",
-            "description": "Accent color used for this text in the client UI",
-            "format": "color"
-          },
-          "isActive": {
-            "title": "Isactive",
-            "type": "boolean",
-            "description": "Whether the text should be listed for non-admin users in the web client",
-            "default": false
-          }
-        },
+        "title": "Text",
         "description": "A text represented in Tekst"
       },
       "TextRead": {
-        "title": "TextRead",
-        "required": [
-          "id",
-          "createdAt",
-          "modifiedAt",
-          "title",
-          "slug",
-          "levels"
-        ],
-        "type": "object",
         "properties": {
           "id": {
-            "title": "Id",
             "type": "string",
+            "title": "Id",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
-          "createdAt": {
-            "title": "Createdat",
-            "type": "string",
-            "description": "Creation date and time of this object",
-            "format": "date-time"
-          },
-          "modifiedAt": {
-            "title": "Modifiedat",
-            "type": "string",
-            "description": "Last modification date and time of this object",
-            "format": "date-time"
-          },
           "title": {
-            "title": "Title",
+            "type": "string",
             "maxLength": 64,
             "minLength": 1,
-            "type": "string",
+            "title": "Title",
             "description": "Title of this text"
           },
           "slug": {
-            "title": "Slug",
+            "type": "string",
             "maxLength": 16,
             "minLength": 1,
             "pattern": "^[a-z0-9]+$",
-            "type": "string",
+            "title": "Slug",
             "description": "A short identifier for use in URLs and internal operations"
           },
           "subtitle": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/SubtitleTranslation"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Subtitle",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SubtitleTranslation"
-            },
             "description": "Subtitle translations of this text (if set, it must contain at least one element)"
           },
           "levels": {
-            "title": "Levels",
-            "maxItems": 32,
-            "minItems": 1,
-            "type": "array",
             "items": {
-              "minItems": 1,
-              "type": "array",
               "items": {
                 "$ref": "#/components/schemas/StructureLevelTranslation"
-              }
-            }
+              },
+              "type": "array",
+              "minItems": 1
+            },
+            "type": "array",
+            "maxItems": 32,
+            "minItems": 1,
+            "title": "Levels"
           },
           "defaultLevel": {
-            "title": "Defaultlevel",
-            "minimum": 0.0,
             "type": "integer",
+            "minimum": 0.0,
+            "title": "Defaultlevel",
             "description": "Default structure level for the client to use for browsing this text",
             "default": 0
           },
           "locDelim": {
-            "title": "Locdelim",
+            "type": "string",
             "maxLength": 3,
             "minLength": 1,
-            "type": "string",
+            "title": "Locdelim",
             "description": "Delimiter for displaying text locations",
             "default": ", "
           },
           "labeledLocation": {
-            "title": "Labeledlocation",
             "type": "boolean",
+            "title": "Labeledlocation",
             "description": "Whether the UI should label the parts of the browse location with each levels' names",
             "default": true
           },
           "accentColor": {
-            "title": "Accentcolor",
             "type": "string",
-            "description": "Accent color used for this text in the client UI",
-            "format": "color"
+            "format": "color",
+            "title": "Accentcolor",
+            "description": "Accent color used for this text in the client UI"
           },
           "isActive": {
-            "title": "Isactive",
             "type": "boolean",
+            "title": "Isactive",
             "description": "Whether the text should be listed for non-admin users in the web client",
             "default": false
           }
         },
-        "description": "A text represented in Tekst"
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "slug",
+          "subtitle",
+          "levels",
+          "defaultLevel",
+          "locDelim",
+          "labeledLocation",
+          "accentColor",
+          "isActive"
+        ],
+        "title": "TextRead"
       },
       "TextStats": {
-        "title": "TextStats",
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "nodesCount": {
+            "type": "integer",
+            "title": "Nodescount"
+          },
+          "layersCount": {
+            "type": "integer",
+            "title": "Layerscount"
+          },
+          "layerTypes": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "Layertypes"
+          }
+        },
+        "type": "object",
         "required": [
           "id",
           "nodesCount",
           "layersCount",
           "layerTypes"
         ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "title": "Id",
-            "type": "string",
-            "example": "5eb7cf5a86d9755df3a6c593"
-          },
-          "nodesCount": {
-            "title": "Nodescount",
-            "type": "integer"
-          },
-          "layersCount": {
-            "title": "Layerscount",
-            "type": "integer"
-          },
-          "layerTypes": {
-            "title": "Layertypes",
-            "type": "object",
-            "additionalProperties": {
-              "type": "integer"
-            }
-          }
-        },
+        "title": "TextStats",
         "description": "Text statistics data"
       },
       "TextUpdate": {
-        "title": "TextUpdate",
-        "type": "object",
         "properties": {
           "title": {
-            "title": "Title",
-            "type": "string"
+            "type": "string",
+            "title": "Title"
           },
           "slug": {
-            "title": "Slug",
-            "type": "string"
+            "type": "string",
+            "title": "Slug"
           },
           "subtitle": {
-            "title": "Subtitle",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SubtitleTranslation"
-            }
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/SubtitleTranslation"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subtitle"
           },
           "levels": {
-            "title": "Levels",
-            "type": "array",
             "items": {
-              "minItems": 1,
-              "type": "array",
               "items": {
                 "$ref": "#/components/schemas/StructureLevelTranslation"
-              }
-            }
+              },
+              "type": "array",
+              "minItems": 1
+            },
+            "type": "array",
+            "title": "Levels"
           },
           "defaultLevel": {
-            "title": "Defaultlevel",
-            "minimum": 0.0,
-            "type": "integer"
+            "type": "integer",
+            "title": "Defaultlevel"
           },
           "locDelim": {
-            "title": "Locdelim",
-            "maxLength": 3,
-            "minLength": 1,
-            "type": "string"
+            "type": "string",
+            "title": "Locdelim"
           },
           "labeledLocation": {
-            "title": "Labeledlocation",
-            "type": "boolean"
+            "type": "boolean",
+            "title": "Labeledlocation"
           },
           "accentColor": {
-            "title": "Accentcolor",
             "type": "string",
-            "format": "color"
+            "format": "color",
+            "title": "Accentcolor"
           },
           "isActive": {
-            "title": "Isactive",
-            "type": "boolean"
+            "type": "boolean",
+            "title": "Isactive"
           }
         },
-        "description": "A text represented in Tekst"
+        "type": "object",
+        "title": "TextUpdate"
+      },
+      "UserBaseUpdate": {
+        "properties": {
+          "password": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Password"
+          },
+          "email": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "email"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Email"
+          },
+          "isActive": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Isactive"
+          },
+          "isSuperuser": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Issuperuser"
+          },
+          "isVerified": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Isverified"
+          },
+          "username": {
+            "type": "string",
+            "title": "Username"
+          },
+          "firstName": {
+            "type": "string",
+            "title": "Firstname"
+          },
+          "lastName": {
+            "type": "string",
+            "title": "Lastname"
+          },
+          "affiliation": {
+            "type": "string",
+            "title": "Affiliation"
+          },
+          "locale": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "deDE",
+                  "enUS"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Locale"
+          },
+          "publicFields": {
+            "items": {
+              "type": "string",
+              "enum": [
+                "firstName",
+                "lastName",
+                "affiliation"
+              ]
+            },
+            "type": "array",
+            "title": "Publicfields"
+          }
+        },
+        "type": "object",
+        "title": "UserBaseUpdate"
       },
       "UserCreate": {
-        "title": "UserCreate",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email"
+          },
+          "password": {
+            "type": "string",
+            "title": "Password"
+          },
+          "isActive": {
+            "type": "boolean",
+            "title": "Isactive",
+            "default": false
+          },
+          "isSuperuser": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Issuperuser",
+            "default": false
+          },
+          "isVerified": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Isverified",
+            "default": false
+          },
+          "username": {
+            "type": "string",
+            "maxLength": 16,
+            "minLength": 4,
+            "pattern": "[a-zA-Z0-9\\-_]+",
+            "title": "Username"
+          },
+          "firstName": {
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 1,
+            "title": "Firstname"
+          },
+          "lastName": {
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 1,
+            "title": "Lastname"
+          },
+          "affiliation": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Affiliation"
+          },
+          "locale": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "deDE",
+                  "enUS"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Locale"
+          },
+          "publicFields": {
+            "items": {
+              "type": "string",
+              "enum": [
+                "firstName",
+                "lastName",
+                "affiliation"
+              ]
+            },
+            "type": "array",
+            "title": "Publicfields",
+            "description": "Data fields set public by this user",
+            "default": []
+          }
+        },
+        "type": "object",
         "required": [
           "email",
           "password",
@@ -4091,84 +4637,94 @@
           "lastName",
           "affiliation"
         ],
-        "type": "object",
+        "title": "UserCreate",
+        "description": "Dataset for creating a new user"
+      },
+      "UserRead": {
         "properties": {
-          "email": {
-            "title": "Email",
+          "id": {
             "type": "string",
-            "format": "email"
+            "title": "Id",
+            "example": "5eb7cf5a86d9755df3a6c593"
           },
-          "password": {
-            "title": "Password",
-            "type": "string"
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email"
           },
           "isActive": {
-            "title": "Isactive",
             "type": "boolean",
-            "default": false
+            "title": "Isactive"
           },
           "isSuperuser": {
-            "title": "Issuperuser",
             "type": "boolean",
-            "default": false
+            "title": "Issuperuser"
           },
           "isVerified": {
-            "title": "Isverified",
             "type": "boolean",
-            "default": false
+            "title": "Isverified"
           },
           "username": {
-            "title": "Username",
+            "type": "string",
             "maxLength": 16,
             "minLength": 4,
             "pattern": "[a-zA-Z0-9\\-_]+",
-            "type": "string"
+            "title": "Username"
           },
           "firstName": {
-            "title": "Firstname",
+            "type": "string",
             "maxLength": 32,
             "minLength": 1,
-            "type": "string"
+            "title": "Firstname"
           },
           "lastName": {
-            "title": "Lastname",
+            "type": "string",
             "maxLength": 32,
             "minLength": 1,
-            "type": "string"
+            "title": "Lastname"
           },
           "affiliation": {
-            "title": "Affiliation",
+            "type": "string",
             "maxLength": 64,
             "minLength": 1,
-            "type": "string"
+            "title": "Affiliation"
           },
           "locale": {
-            "title": "Locale",
-            "enum": [
-              "deDE",
-              "enUS"
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "deDE",
+                  "enUS"
+                ]
+              },
+              {
+                "type": "null"
+              }
             ],
-            "type": "string"
+            "title": "Locale"
           },
           "publicFields": {
-            "title": "Publicfields",
-            "type": "array",
             "items": {
+              "type": "string",
               "enum": [
                 "firstName",
                 "lastName",
                 "affiliation"
-              ],
-              "type": "string"
+              ]
             },
+            "type": "array",
+            "title": "Publicfields",
             "description": "Data fields set public by this user",
             "default": []
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat"
           }
         },
-        "description": "Dataset for creating a new user"
-      },
-      "UserRead": {
-        "title": "UserRead",
+        "type": "object",
         "required": [
           "id",
           "email",
@@ -4179,197 +4735,65 @@
           "firstName",
           "lastName",
           "affiliation",
+          "locale",
+          "publicFields",
           "createdAt"
         ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "title": "Id",
-            "type": "string",
-            "example": "5eb7cf5a86d9755df3a6c593"
-          },
-          "email": {
-            "title": "Email",
-            "type": "string",
-            "format": "email"
-          },
-          "isActive": {
-            "title": "Isactive",
-            "type": "boolean"
-          },
-          "isSuperuser": {
-            "title": "Issuperuser",
-            "type": "boolean"
-          },
-          "isVerified": {
-            "title": "Isverified",
-            "type": "boolean"
-          },
-          "username": {
-            "title": "Username",
-            "maxLength": 16,
-            "minLength": 4,
-            "pattern": "[a-zA-Z0-9\\-_]+",
-            "type": "string"
-          },
-          "firstName": {
-            "title": "Firstname",
-            "maxLength": 32,
-            "minLength": 1,
-            "type": "string"
-          },
-          "lastName": {
-            "title": "Lastname",
-            "maxLength": 32,
-            "minLength": 1,
-            "type": "string"
-          },
-          "affiliation": {
-            "title": "Affiliation",
-            "maxLength": 64,
-            "minLength": 1,
-            "type": "string"
-          },
-          "locale": {
-            "title": "Locale",
-            "enum": [
-              "deDE",
-              "enUS"
-            ],
-            "type": "string"
-          },
-          "publicFields": {
-            "title": "Publicfields",
-            "type": "array",
-            "items": {
-              "enum": [
-                "firstName",
-                "lastName",
-                "affiliation"
-              ],
-              "type": "string"
-            },
-            "description": "Data fields set public by this user",
-            "default": []
-          },
-          "createdAt": {
-            "title": "Createdat",
-            "type": "string",
-            "format": "date-time"
-          }
-        },
+        "title": "UserRead",
         "description": "A user registered in the system"
       },
       "UserReadPublic": {
-        "title": "UserReadPublic",
-        "required": [
-          "username"
-        ],
-        "type": "object",
         "properties": {
           "username": {
-            "title": "Username",
-            "type": "string"
-          },
-          "firstName": {
-            "title": "Firstname",
-            "type": "string"
-          },
-          "lastName": {
-            "title": "Lastname",
-            "type": "string"
-          },
-          "affiliation": {
-            "title": "Affiliation",
-            "type": "string"
-          }
-        }
-      },
-      "UserUpdate": {
-        "title": "UserUpdate",
-        "type": "object",
-        "properties": {
-          "password": {
-            "title": "Password",
-            "type": "string"
-          },
-          "email": {
-            "title": "Email",
             "type": "string",
-            "format": "email"
-          },
-          "isActive": {
-            "title": "Isactive",
-            "type": "boolean"
-          },
-          "isSuperuser": {
-            "title": "Issuperuser",
-            "type": "boolean"
-          },
-          "isVerified": {
-            "title": "Isverified",
-            "type": "boolean"
-          },
-          "username": {
-            "title": "Username",
-            "maxLength": 16,
-            "minLength": 4,
-            "pattern": "[a-zA-Z0-9\\-_]+",
-            "type": "string"
+            "title": "Username"
           },
           "firstName": {
-            "title": "Firstname",
-            "maxLength": 32,
-            "minLength": 1,
-            "type": "string"
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Firstname"
           },
           "lastName": {
-            "title": "Lastname",
-            "maxLength": 32,
-            "minLength": 1,
-            "type": "string"
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lastname"
           },
           "affiliation": {
-            "title": "Affiliation",
-            "maxLength": 64,
-            "minLength": 1,
-            "type": "string"
-          },
-          "locale": {
-            "title": "Locale",
-            "enum": [
-              "deDE",
-              "enUS"
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
             ],
-            "type": "string"
-          },
-          "publicFields": {
-            "title": "Publicfields",
-            "type": "array",
-            "items": {
-              "enum": [
-                "firstName",
-                "lastName",
-                "affiliation"
-              ],
-              "type": "string"
-            }
+            "title": "Affiliation"
           }
         },
-        "description": "Updates to a user registered in the system"
+        "type": "object",
+        "required": [
+          "username",
+          "firstName",
+          "lastName",
+          "affiliation"
+        ],
+        "title": "UserReadPublic"
       },
       "ValidationError": {
-        "title": "ValidationError",
-        "required": [
-          "loc",
-          "msg",
-          "type"
-        ],
-        "type": "object",
         "properties": {
           "loc": {
-            "title": "Location",
-            "type": "array",
             "items": {
               "anyOf": [
                 {
@@ -4379,17 +4803,26 @@
                   "type": "integer"
                 }
               ]
-            }
+            },
+            "type": "array",
+            "title": "Location"
           },
           "msg": {
-            "title": "Message",
-            "type": "string"
+            "type": "string",
+            "title": "Message"
           },
           "type": {
-            "title": "Error Type",
-            "type": "string"
+            "type": "string",
+            "title": "Error Type"
           }
-        }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
       }
     },
     "securitySchemes": {

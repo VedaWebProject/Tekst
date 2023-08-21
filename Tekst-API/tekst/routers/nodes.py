@@ -1,10 +1,10 @@
 from typing import Annotated
 
-from fastapi import APIRouter, HTTPException, Path, status
+from beanie import PydanticObjectId
+from fastapi import APIRouter, HTTPException, Path, Query, status
 
 from tekst.auth import SuperuserDep
 from tekst.logging import log
-from tekst.models.common import PyObjectId
 from tekst.models.text import (
     NodeCreate,
     NodeDocument,
@@ -44,15 +44,15 @@ async def create_node(su: SuperuserDep, node: NodeCreate) -> NodeRead:
             detail="Conflict with existing node",
         )
     # all fine
-    return await NodeDocument(**node.dict()).create()
+    return await NodeDocument(**node.model_dump()).create()
 
 
 @router.get("", response_model=list[NodeRead], status_code=status.HTTP_200_OK)
 async def find_nodes(
-    text_id: PyObjectId,
+    text_id: Annotated[PydanticObjectId, Query(alias="textId")],
     level: int = None,
     position: int = None,
-    parent_id: PyObjectId = None,
+    parent_id: Annotated[PydanticObjectId, Query(alias="parentId")] = None,
     limit: int = 1000,
 ) -> list[NodeDocument]:
     if level is None and parent_id is None:
@@ -61,7 +61,7 @@ async def find_nodes(
             detail="Request must contain either 'level' or 'parentId'",
         )
 
-    example = dict(textId=text_id)
+    example = {"text_id": text_id}
 
     if level is not None:
         example["level"] = level
@@ -70,13 +70,15 @@ async def find_nodes(
         example["position"] = position
 
     if parent_id:
-        example["parentId"] = parent_id
+        example["parent_id"] = parent_id
 
     return await NodeDocument.find(example).limit(limit).to_list()
 
 
 @router.get("/{id}", response_model=NodeRead, status_code=status.HTTP_200_OK)
-async def get_node(node_id: Annotated[PyObjectId, Path(alias="id")]) -> NodeDocument:
+async def get_node(
+    node_id: Annotated[PydanticObjectId, Path(alias="id")]
+) -> NodeDocument:
     node_doc = await NodeDocument.get(node_id)
     if not node_doc:
         raise HTTPException(
@@ -89,7 +91,7 @@ async def get_node(node_id: Annotated[PyObjectId, Path(alias="id")]) -> NodeDocu
 @router.patch("/{id}", response_model=NodeRead, status_code=status.HTTP_200_OK)
 async def update_node(
     su: SuperuserDep,
-    node_id: Annotated[PyObjectId, Path(alias="id")],
+    node_id: Annotated[PydanticObjectId, Path(alias="id")],
     updates: NodeUpdate,
 ) -> NodeDocument:
     node_doc = await NodeDocument.get(node_id)
@@ -98,7 +100,7 @@ async def update_node(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Node {node_id} doesn't exist or requires extra permissions",
         )
-    await node_doc.apply(updates.dict(exclude_unset=True))
+    await node_doc.apply(updates.model_dump(exclude_unset=True))
     return node_doc
 
 
@@ -106,7 +108,7 @@ async def update_node(
     "/{id}/children", response_model=list[NodeRead], status_code=status.HTTP_200_OK
 )
 async def get_children(
-    node_id: Annotated[PyObjectId, Path(alias="id")],
+    node_id: Annotated[PydanticObjectId, Path(alias="id")],
     limit: int = 9999,
 ) -> list:
     return (

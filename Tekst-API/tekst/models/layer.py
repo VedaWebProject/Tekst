@@ -1,59 +1,72 @@
 import re
 
+from typing import Annotated
+
+from beanie import PydanticObjectId
 from beanie.operators import Or
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 from tekst.models.common import (
     DocumentBase,
     Metadata,
     ModelBase,
-    ModelFactory,
-    PyObjectId,
+    ModelFactoryMixin,
     ReadBase,
-    UpdateBase,
 )
 from tekst.models.user import UserRead
 
 
-class LayerBase(ModelBase, ModelFactory):
+class LayerBase(ModelBase, ModelFactoryMixin):
     """A data layer describing a set of data on a text"""
 
-    title: str = Field(
-        ..., min_length=1, max_length=64, description="Title of this layer"
-    )
-    description: str | None = Field(
-        None,
-        min_length=1,
-        max_length=128,
-        description="Short, one-line description of this data layer",
-    )
-    text_id: PyObjectId | None = Field(
-        None, description="ID of the text this layer belongs to"
-    )
-    level: int = Field(..., description="Text level this layer belongs to")
-    layer_type: str = Field(
-        ..., description="A string identifying one of the available layer types"
-    )
-    owner_id: PyObjectId | None = Field(None, description="User owning this layer")
-    shared_read: list[PyObjectId] = Field(
-        default_factory=list, description="Users with shared read access to this layer"
-    )
-    shared_write: list[PyObjectId] = Field(
-        default_factory=list, description="Users with shared write access to this layer"
-    )
-    public: bool = Field(False, description="Publication status of this layer")
-    meta: Metadata | None = Field(None, description="Arbitrary metadata")
-    comment: str | None = Field(
-        None, description="Plaintext, potentially multiline comment on this layer"
-    )
+    title: Annotated[
+        str, Field(min_length=1, max_length=64, description="Title of this layer")
+    ]
+    description: Annotated[
+        str | None,
+        Field(
+            min_length=1,
+            max_length=128,
+            description="Short, one-line description of this data layer",
+        ),
+    ] = None
+    text_id: Annotated[
+        PydanticObjectId | None,
+        Field(description="ID of the text this layer belongs to"),
+    ] = None
+    level: Annotated[int, Field(description="Text level this layer belongs to")]
+    layer_type: Annotated[
+        str, Field(description="A string identifying one of the available layer types")
+    ]
+    owner_id: Annotated[
+        PydanticObjectId | None, Field(description="User owning this layer")
+    ] = None
+    shared_read: Annotated[
+        list[PydanticObjectId],
+        Field(description="Users with shared read access to this layer"),
+    ] = []
+    shared_write: Annotated[
+        list[PydanticObjectId],
+        Field(description="Users with shared write access to this layer"),
+    ] = []
+    public: Annotated[
+        bool, Field(description="Publication status of this layer")
+    ] = False
+    meta: Annotated[Metadata | None, Field(description="Arbitrary metadata")] = None
+    comment: Annotated[
+        str | None,
+        Field(description="Plaintext, potentially multiline comment on this layer"),
+    ] = None
 
-    @validator("description")
+    @field_validator("description")
+    @classmethod
     def handle_whitespaces_in_description(cls, v):
         if not isinstance(v, str):
             return None
         return re.sub(r"[\s\n]+", " ", v)
 
-    @validator("layer_type")
+    @field_validator("layer_type")
+    @classmethod
     def validate_layer_type_name(cls, v):
         from tekst.layer_types import layer_type_manager
 
@@ -80,9 +93,9 @@ class LayerBaseDocument(LayerBase, DocumentBase):
             return {}
         return Or(
             {"public": True},
-            {"ownerId": uid},
-            {"sharedRead": uid},
-            {"sharedWrite": uid},
+            {"owner_id": uid},
+            {"shared_read": uid},
+            {"shared_write": uid},
         )
 
     @classmethod
@@ -93,8 +106,8 @@ class LayerBaseDocument(LayerBase, DocumentBase):
         if user.is_superuser:
             return {}
         return Or(
-            {"ownerId": uid},
-            {"sharedWrite": uid},
+            {"owner_id": uid},
+            {"shared_write": uid},
         )
 
     def restricted_fields(self, user_id: str = None) -> dict:
@@ -106,15 +119,11 @@ class LayerBaseDocument(LayerBase, DocumentBase):
     class Settings(DocumentBase.Settings):
         name = "layers"
         is_root = True
-        indexes = ["textId", "level", "layerType", "ownerId"]
+        indexes = ["text_id", "level", "layer_type", "owner_id"]
 
 
-class LayerBaseRead(LayerBase, ReadBase):
-    pass
-
-
-class LayerBaseUpdate(LayerBase, UpdateBase):
-    pass
+LayerBaseRead = LayerBase.get_read_model()
+LayerBaseUpdate = LayerBase.get_update_model()
 
 
 class LayerMinimalView(ReadBase):

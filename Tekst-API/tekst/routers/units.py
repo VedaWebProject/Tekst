@@ -1,11 +1,11 @@
 from typing import Annotated
 
+from beanie import PydanticObjectId
 from beanie.operators import In
 from fastapi import APIRouter, HTTPException, Query, status
 
 from tekst.auth import OptionalUserDep, UserDep
 from tekst.layer_types import layer_type_manager
-from tekst.models.common import PyObjectId
 from tekst.models.layer import LayerBaseDocument, LayerMinimalView
 from tekst.models.unit import UnitBase, UnitBaseDocument
 
@@ -14,7 +14,7 @@ def _generate_read_endpoint(
     unit_document_model: type[UnitBase],
     unit_read_model: type[UnitBase],
 ):
-    async def get_unit(id: PyObjectId, user: OptionalUserDep) -> unit_read_model:
+    async def get_unit(id: PydanticObjectId, user: OptionalUserDep) -> unit_read_model:
         """A generic route for reading a unit from the database"""
         unit_doc = await unit_document_model.get(id)
         # check if the layer this unit belongs to is readable by user
@@ -57,13 +57,13 @@ def _generate_create_endpoint(
             )
         dupes_criteria = {"layerId": True, "nodeId": True}
         if await unit_document_model.find(
-            unit.dict(include=dupes_criteria)
+            unit.model_dump(include=dupes_criteria)
         ).first_or_none():
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
                 detail="The properties of this unit conflict with another unit",
             )
-        return await unit_document_model(**unit.dict()).create()
+        return await unit_document_model(**unit.model_dump()).create()
 
     return create_unit
 
@@ -74,7 +74,7 @@ def _generate_update_endpoint(
     unit_update_model: type[UnitBase],
 ):
     async def update_unit(
-        id: PyObjectId, updates: unit_update_model, user: UserDep
+        id: PydanticObjectId, updates: unit_update_model, user: UserDep
     ) -> unit_read_model:
         unit_doc = await unit_document_model.get(id)
         if not unit_doc:
@@ -102,7 +102,7 @@ def _generate_update_endpoint(
                 detail=f"No write access for units of layer {unit_doc.layer_id}",
             )
         # apply updates
-        await unit_doc.apply(updates.dict(exclude_unset=True))
+        await unit_doc.apply(updates.model_dump(exclude_unset=True))
         return unit_doc
 
     return update_unit
@@ -170,12 +170,18 @@ for lt_name, lt_class in layer_type_manager.get_all().items():
 async def find_units(
     user: OptionalUserDep,
     layer_id: Annotated[
-        list[PyObjectId],
-        Query(description="ID (or list of IDs) of layer(s) to return unit data for"),
+        list[PydanticObjectId],
+        Query(
+            alias="layerId",
+            description="ID (or list of IDs) of layer(s) to return unit data for",
+        ),
     ] = [],
     node_id: Annotated[
-        list[PyObjectId],
-        Query(description="ID (or list of IDs) of node(s) to return unit data for"),
+        list[PydanticObjectId],
+        Query(
+            alias="nodeId",
+            description="ID (or list of IDs) of node(s) to return unit data for",
+        ),
     ] = [],
     limit: Annotated[int, Query(description="Return at most <limit> items")] = 1000,
 ) -> list[dict]:
@@ -206,7 +212,7 @@ async def find_units(
         .to_list()
     )
 
-    # calling dict(rename_id=True) on these models here makes sure they have
+    # calling model_dump(rename_id=True) on these models here makes sure they have
     # "id" instead of "_id", because we're not using a proper read model here
     # that could take care of that automatically (as we don't know the exact type)
-    return [unit.dict(rename_id=True) for unit in units]
+    return [unit.model_dump(rename_id=True) for unit in units]

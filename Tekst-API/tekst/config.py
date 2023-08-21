@@ -4,7 +4,9 @@ from functools import lru_cache
 from secrets import token_hex
 from urllib.parse import quote
 
-from pydantic import BaseSettings, EmailStr, Field, HttpUrl, conint, validator
+from pydantic import EmailStr, Field, HttpUrl, field_validator
+from pydantic_settings import BaseSettings, SettingsConfigDict
+from typing_extensions import Annotated
 
 from tekst import pkg_meta
 from tekst.models.common import ModelBase
@@ -57,11 +59,13 @@ class DbConfig(ModelBase):
     password: str = "root"
     name: str = "tekst"
 
-    @validator("host", "password", pre=True)
+    @field_validator("host", "password", mode="before")
+    @classmethod
     def url_quote(cls, v) -> str:
         return quote(str(v).encode("utf8"), safe="")
 
-    @validator("name", always=True)
+    @field_validator("name", mode="before")
+    @classmethod
     def generate_db_name(cls, v) -> str:
         return safe_name(v)
 
@@ -97,12 +101,12 @@ class TekstInfoConfig(ModelBase):
     aren't meant to be changed by users creating an own instance of the platform.
     """
 
-    name: str = Field("Tekst")
-    version: str = Field(pkg_meta["version"])
-    description: str = Field(pkg_meta["description"])
-    website: HttpUrl = Field(pkg_meta["website"])
-    license: str = Field(pkg_meta["license"])
-    license_url: HttpUrl = Field(pkg_meta["license_url"])
+    name: str = "Tekst"
+    version: str = pkg_meta["version"]
+    description: str = pkg_meta["description"]
+    website: HttpUrl = pkg_meta["website"]
+    license: str = pkg_meta["license"]
+    license_url: HttpUrl = pkg_meta["license_url"]
 
 
 class SecurityConfig(ModelBase):
@@ -117,14 +121,14 @@ class SecurityConfig(ModelBase):
     enable_cookie_auth: bool = True
     auth_cookie_name: str = "tekstuserauth"
     auth_cookie_domain: str | None = None
-    auth_cookie_lifetime: conint(ge=3600) = 43200
-    access_token_lifetime: conint(ge=3600) = 43200
+    auth_cookie_lifetime: Annotated[int, Field(ge=3600)] = 43200
+    access_token_lifetime: Annotated[int, Field(ge=3600)] = 43200
 
     enable_jwt_auth: bool = True
-    auth_jwt_lifetime: int = conint(ge=3600)
+    auth_jwt_lifetime: Annotated[int, Field(ge=3600)] = 43200
 
-    reset_pw_token_lifetime: conint(ge=600) = 3600
-    verification_token_lifetime: conint(ge=600) = 3600
+    reset_pw_token_lifetime: Annotated[int, Field(ge=600)] = 3600
+    verification_token_lifetime: Annotated[int, Field(ge=600)] = 3600
 
     csrf_cookie_name: str = "XSRF-TOKEN"
     csrf_header_name: str = "X-XSRF-TOKEN"
@@ -171,12 +175,10 @@ class TekstConfig(BaseSettings):
     info: InfoConfig = InfoConfig()  # general platform information config
     tekst_info: TekstInfoConfig = TekstInfoConfig()  # Tekst information config
 
-    @validator(
-        "cors_allow_origins",
-        "cors_allow_methods",
-        "cors_allow_headers",
-        pre=True,
+    @field_validator(
+        "cors_allow_origins", "cors_allow_methods", "cors_allow_headers", mode="before"
     )
+    @classmethod
     def split_cors(cls, v):
         if isinstance(v, list):
             return [str(e) for e in v]
@@ -184,16 +186,18 @@ class TekstConfig(BaseSettings):
             return [e.strip() for e in v.split(",")]
         raise TypeError("Value must be a string or list of strings")
 
-    @validator("log_level")
+    @field_validator("log_level")
+    @classmethod
     def uppercase_log_lvl(cls, v: str) -> str:
         return v.upper()
 
-    class Config:
-        env_file = _select_env_files()
-        env_file_encoding = "utf-8"
-        env_prefix = "TEKST_"
-        env_nested_delimiter = "__"
-        case_sensitive = False
+    model_config = SettingsConfigDict(
+        env_file=_select_env_files(),
+        env_file_encoding="utf-8",
+        env_prefix="TEKST_",
+        env_nested_delimiter="__",
+        case_sensitive=False,
+    )
 
 
 @lru_cache
