@@ -114,7 +114,7 @@ class Text(ModelBase, ModelFactoryMixin):
 class TextDocument(Text, DocumentBase):
     class Settings(DocumentBase.Settings):
         name = "texts"
-        bson_encoders: {Color: lambda c: str(c)}
+        bson_encoders = {Color: lambda c: c.as_hex()}
 
 
 TextCreate = Text.get_create_model()

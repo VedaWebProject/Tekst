@@ -23,7 +23,7 @@ class ModelTransformerMixin:
 
 
 class ModelBase(ModelTransformerMixin, BaseModel):
-    model_config = ConfigDict(alias_generator=camelize, populate_by_name=True)
+    model_config = ConfigDict(alias_generator=camelize, populate_by_name=True, from_attributes=True)
 
     def model_dump(self, **kwargs) -> dict[str, Any]:
         """Overrides model_dump() in Basemodel to set some custom defaults"""
@@ -46,7 +46,7 @@ class ModelBase(ModelTransformerMixin, BaseModel):
 class DocumentBase(ModelTransformerMixin, Document):
     """Base model for all Tekst ODM models"""
 
-    model_config = None
+    # model_config = None
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **decamelize(kwargs))
@@ -61,7 +61,7 @@ class DocumentBase(ModelTransformerMixin, Document):
         )
         if rename_id and "_id" in data:
             data["id"] = data.pop("_id")
-        return data if not camelize_keys else camelize(data)
+        return camelize(data) if camelize_keys else data
 
     def restricted_fields(self, user_id: str = None) -> dict:
         """
@@ -79,7 +79,7 @@ class DocumentBase(ModelTransformerMixin, Document):
 
     async def apply(self, updates: dict, **kwargs):
         updates["modifiedAt"] = datetime.utcnow()
-        return await self.set(updates, **kwargs)
+        return await self.set(decamelize(updates), **kwargs)
 
     class Settings:
         pass
@@ -96,12 +96,19 @@ class ModelFactoryMixin:
     _update_model: type[ModelBase] = None
 
     @classmethod
+    def _is_origin_cls(cls, attr: str) -> bool:
+        for clazz in cls.mro():
+            if attr in vars(clazz):
+                return clazz == cls
+        raise AttributeError(f"Attribute '{attr}' not found in class '{cls.__name__}'")
+
+    @classmethod
     def _to_bases_tuple(cls, bases: type | tuple[type]):
         return (bases,) if type(bases) is not tuple else bases
 
     @classmethod
     def get_document_model(cls, bases: type | tuple[type] = (DocumentBase,)) -> type:
-        if not cls._document_model:
+        if not cls._document_model or not cls._is_origin_cls("_document_model"):
             cls._document_model = type(
                 f"{cls.__name__}Document",
                 (cls, *cls._to_bases_tuple(bases)),
@@ -111,13 +118,13 @@ class ModelFactoryMixin:
 
     @classmethod
     def get_create_model(cls) -> type[ModelBase]:
-        if not cls._create_model:
+        if not cls._create_model or not cls._is_origin_cls("_create_model"):
             cls._create_model = cls
         return cls._create_model
 
     @classmethod
     def get_read_model(cls, bases: type | tuple[type] = (ReadBase,)) -> type[ReadBase]:
-        if not cls._read_model:
+        if not cls._read_model or not cls._is_origin_cls("_read_model"):
             cls._read_model = type(
                 f"{cls.__name__}Read",
                 (cls, *cls._to_bases_tuple(bases)),
@@ -127,7 +134,7 @@ class ModelFactoryMixin:
 
     @classmethod
     def get_update_model(cls, bases: type | tuple[type] = ()) -> type[ModelBase]:
-        if not cls._update_model:
+        if not cls._update_model or not cls._is_origin_cls("_update_model"):
             fields = {}
             for k, v in cls.model_fields.items():
                 fields[k] = (v.annotation, None)

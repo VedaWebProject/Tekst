@@ -93,9 +93,9 @@ class LayerBaseDocument(LayerBase, DocumentBase):
             return {}
         return Or(
             {"public": True},
-            {"ownerId": uid},
-            {"sharedRead": uid},
-            {"sharedWrite": uid},
+            {"owner_id": uid},
+            {"shared_read": uid},
+            {"shared_write": uid},
         )
 
     @classmethod
@@ -106,8 +106,8 @@ class LayerBaseDocument(LayerBase, DocumentBase):
         if user.is_superuser:
             return {}
         return Or(
-            {"ownerId": uid},
-            {"sharedWrite": uid},
+            {"owner_id": uid},
+            {"shared_write": uid},
         )
 
     def restricted_fields(self, user_id: str = None) -> dict:
@@ -116,10 +116,10 @@ class LayerBaseDocument(LayerBase, DocumentBase):
             "shared_write": user_id is None or self.owner_id != user_id,
         }
 
-    class Settings:
+    class Settings(DocumentBase.Settings):
         name = "layers"
         is_root = True
-        indexes = ["textId", "level", "layerType", "ownerId"]
+        indexes = ["text_id", "level", "layer_type", "owner_id"]
 
 
 LayerBaseRead = LayerBase.get_read_model()

@@ -13,7 +13,7 @@ class PlatformSettings(ModelBase, ModelFactoryMixin):
 
 
 class PlatformSettingsDocument(PlatformSettings, DocumentBase):
-    class Settings:
+    class Settings(DocumentBase.Settings):
         name = "settings"
 
 

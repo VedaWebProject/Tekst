@@ -85,7 +85,7 @@ async def test_create_layer_unit(
     assert type(resp.json()) == dict
     assert "id" in resp.json()
     assert resp.json()["id"] == unit_id
-    assert resp.json()["text"] == "FOO BAR"
+    assert resp.json()["text"] == unit_update["text"]
 
     # fail to update unit with invalid ID
     unit_update = {"text": "FOO BAR"}

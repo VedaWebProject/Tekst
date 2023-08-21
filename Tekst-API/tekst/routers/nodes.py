@@ -61,7 +61,7 @@ async def find_nodes(
             detail="Request must contain either 'level' or 'parentId'",
         )
 
-    example = dict(textId=text_id)
+    example = {"text_id": text_id}
 
     if level is not None:
         example["level"] = level
@@ -70,7 +70,7 @@ async def find_nodes(
         example["position"] = position
 
     if parent_id:
-        example["parentId"] = parent_id
+        example["parent_id"] = parent_id
 
     return await NodeDocument.find(example).limit(limit).to_list()
 
