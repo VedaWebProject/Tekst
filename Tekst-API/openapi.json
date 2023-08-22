@@ -1775,7 +1775,7 @@
           "units"
         ],
         "summary": "Find units",
-        "description": "Returns a list of all data layer units matching the given criteria.\n\nAs the resulting list may contain units of different types, the\nreturned unit objects cannot be typed to their precise layer unit type.",
+        "description": "Returns a list of all data layer units matching the given criteria.\n\nRespects restricted layers and inactive texts.\nAs the resulting list may contain units of different types, the\nreturned unit objects cannot be typed to their precise layer unit type.",
         "operationId": "findUnits",
         "security": [
           {

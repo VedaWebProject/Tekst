@@ -1,6 +1,7 @@
 from typing import Annotated
 
 from beanie import PydanticObjectId
+from beanie.operators import In
 from fastapi import APIRouter, HTTPException, Path, Query, status
 
 from tekst.auth import OptionalUserDep, UserDep
@@ -16,11 +17,9 @@ def _generate_read_endpoint(
         id: PydanticObjectId, user: OptionalUserDep
     ) -> layer_read_model:
         """A generic route for reading a layer definition from the database"""
-        layer_doc = (
-            await layer_document_model.find(layer_document_model.id == id)
-            .find(layer_document_model.allowed_to_read(user))
-            .first_or_none()
-        )
+        layer_doc = await layer_document_model.find(
+            layer_document_model.id == id, layer_document_model.allowed_to_read(user)
+        ).first_or_none()
         if not layer_doc:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
@@ -167,9 +166,16 @@ async def find_layers(
     if layer_type:
         example["layer_type"] = layer_type
 
+    active_texts = await TextDocument.find(
+        TextDocument.is_active == True  # noqa: E712
+    ).to_list()
+
     layer_docs = (
         await LayerBaseDocument.find(example, with_children=True)
-        .find(LayerBaseDocument.allowed_to_read(user))
+        .find(
+            LayerBaseDocument.allowed_to_read(user),
+            In(LayerBaseDocument.text_id, [text.id for text in active_texts]),
+        )
         .limit(limit)
         .to_list()
     )

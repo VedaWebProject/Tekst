@@ -11,7 +11,6 @@ from tekst.models.common import (
     Metadata,
     ModelBase,
     ModelFactoryMixin,
-    ReadBase,
 )
 from tekst.models.user import UserRead
 
