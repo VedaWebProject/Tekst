@@ -125,20 +125,24 @@ TextUpdate = Text.get_update_model()
 class Node(ModelBase, ModelFactoryMixin):
     """A node in a text structure (e.g. chapter, paragraph, ...)"""
 
-    text_id: PydanticObjectId = Field(
-        ..., description="ID of the text this node belongs to"
-    )
-    parent_id: PydanticObjectId = Field(None, description="ID of parent node")
-    level: Annotated[int, Field(ge=0, lt=32)] = Field(
-        ..., description="Index of structure level this node is on"
-    )
-    position: Annotated[int, Field(ge=0)] = Field(
-        ..., description="Position among all text nodes on this level"
-    )
-    label: Annotated[str, StringConstraints(min_length=1, max_length=256)] = Field(
-        ..., description="Label for identifying this text node in level context"
-    )
-    meta: Metadata | None = Field(None, description="Arbitrary metadata")
+    text_id: Annotated[
+        PydanticObjectId, Field(description="ID of the text this node belongs to")
+    ]
+    parent_id: Annotated[
+        PydanticObjectId | None, Field(description="ID of parent node")
+    ] = None
+    level: Annotated[
+        int, Field(ge=0, lt=32, description="Index of structure level this node is on")
+    ]
+    position: Annotated[
+        int, Field(ge=0, description="Position among all text nodes on this level")
+    ]
+    label: Annotated[
+        str,
+        StringConstraints(min_length=1, max_length=256),
+        Field(description="Label for identifying this text node in level context"),
+    ]
+    meta: Annotated[Metadata | None, Field(description="Arbitrary metadata")] = None
 
 
 class NodeDocument(Node, DocumentBase):

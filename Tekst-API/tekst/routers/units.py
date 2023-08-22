@@ -7,6 +7,7 @@ from fastapi import APIRouter, HTTPException, Query, status
 from tekst.auth import OptionalUserDep, UserDep
 from tekst.layer_types import layer_type_manager
 from tekst.models.layer import LayerBaseDocument
+from tekst.models.text import TextDocument
 from tekst.models.unit import UnitBase, UnitBaseDocument
 
 
@@ -55,9 +56,10 @@ def _generate_create_endpoint(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="No write access for units belonging to this layer",
             )
-        dupes_criteria = {"layerId": True, "nodeId": True}
+        # check for duplicates
         if await unit_document_model.find(
-            unit.model_dump(include=dupes_criteria)
+            UnitDocumentModel.layer_id == unit.layer_id,
+            UnitDocumentModel.node_id == unit.node_id,
         ).first_or_none():
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
@@ -169,14 +171,14 @@ for lt_name, lt_class in layer_type_manager.get_all().items():
 @router.get("/", response_model=list[dict], status_code=status.HTTP_200_OK)
 async def find_units(
     user: OptionalUserDep,
-    layer_id: Annotated[
+    layer_ids: Annotated[
         list[PydanticObjectId],
         Query(
             alias="layerId",
             description="ID (or list of IDs) of layer(s) to return unit data for",
         ),
     ] = [],
-    node_id: Annotated[
+    node_ids: Annotated[
         list[PydanticObjectId],
         Query(
             alias="nodeId",
@@ -188,20 +190,26 @@ async def find_units(
     """
     Returns a list of all data layer units matching the given criteria.
 
+    Respects restricted layers and inactive texts.
     As the resulting list may contain units of different types, the
     returned unit objects cannot be typed to their precise layer unit type.
     """
 
-    readable_layers = await LayerBaseDocument.find(
-        LayerBaseDocument.allowed_to_read(user), with_children=True
+    active_texts = await TextDocument.find(
+        TextDocument.is_active == True  # noqa: E712
     ).to_list()
-    readable_layer_ids = [layer.id for layer in readable_layers]
+
+    readable_layers = await LayerBaseDocument.find(
+        LayerBaseDocument.allowed_to_read(user),
+        In(LayerBaseDocument.text_id, [text.id for text in active_texts]),
+        with_children=True,
+    ).to_list()
 
     units = (
         await UnitBaseDocument.find(
-            In(UnitBaseDocument.layer_id, layer_id) if layer_id else {},
-            In(UnitBaseDocument.node_id, node_id) if node_id else {},
-            In(UnitBaseDocument.layer_id, readable_layer_ids),
+            In(UnitBaseDocument.layer_id, layer_ids) if layer_ids else {},
+            In(UnitBaseDocument.node_id, node_ids) if node_ids else {},
+            In(UnitBaseDocument.layer_id, [layer.id for layer in readable_layers]),
             with_children=True,
         )
         .limit(limit)

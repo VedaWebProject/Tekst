@@ -1775,7 +1775,7 @@
           "units"
         ],
         "summary": "Find units",
-        "description": "Returns a list of all data layer units matching the given criteria.\n\nAs the resulting list may contain units of different types, the\nreturned unit objects cannot be typed to their precise layer unit type.",
+        "description": "Returns a list of all data layer units matching the given criteria.\n\nRespects restricted layers and inactive texts.\nAs the resulting list may contain units of different types, the\nreturned unit objects cannot be typed to their precise layer unit type.",
         "operationId": "findUnits",
         "security": [
           {
@@ -3181,10 +3181,17 @@
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "parentId": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Parentid",
-            "description": "ID of parent node",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "description": "ID of parent node"
           },
           "level": {
             "type": "integer",
@@ -3246,10 +3253,17 @@
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "parentId": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Parentid",
-            "description": "ID of parent node",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "description": "ID of parent node"
           },
           "level": {
             "type": "integer",
@@ -3307,9 +3321,16 @@
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "parentId": {
-            "type": "string",
-            "title": "Parentid",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parentid"
           },
           "level": {
             "type": "integer",
