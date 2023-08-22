@@ -170,11 +170,17 @@ async def find_layers(
         TextDocument.is_active == True  # noqa: E712
     ).to_list()
 
+    active_texts_restriction = (
+        In(LayerBaseDocument.text_id, [text.id for text in active_texts])
+        if not (user and user.is_superuser)
+        else {}
+    )
+
     layer_docs = (
         await LayerBaseDocument.find(example, with_children=True)
         .find(
             LayerBaseDocument.allowed_to_read(user),
-            In(LayerBaseDocument.text_id, [text.id for text in active_texts]),
+            active_texts_restriction,
         )
         .limit(limit)
         .to_list()
