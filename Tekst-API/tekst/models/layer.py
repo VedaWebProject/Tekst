@@ -126,10 +126,6 @@ LayerBaseRead = LayerBase.get_read_model()
 LayerBaseUpdate = LayerBase.get_update_model()
 
 
-class LayerMinimalView(ReadBase):
-    layer_type: str
-
-
 class LayerNodeCoverage(ModelBase):
     label: str
     position: int

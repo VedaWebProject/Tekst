@@ -6,7 +6,7 @@ from fastapi import APIRouter, HTTPException, Query, status
 
 from tekst.auth import OptionalUserDep, UserDep
 from tekst.layer_types import layer_type_manager
-from tekst.models.layer import LayerBaseDocument, LayerMinimalView
+from tekst.models.layer import LayerBaseDocument
 from tekst.models.unit import UnitBase, UnitBaseDocument
 
 
@@ -169,14 +169,14 @@ for lt_name, lt_class in layer_type_manager.get_all().items():
 @router.get("/", response_model=list[dict], status_code=status.HTTP_200_OK)
 async def find_units(
     user: OptionalUserDep,
-    layer_id: Annotated[
+    layer_ids: Annotated[
         list[PydanticObjectId],
         Query(
             alias="layerId",
             description="ID (or list of IDs) of layer(s) to return unit data for",
         ),
     ] = [],
-    node_id: Annotated[
+    node_ids: Annotated[
         list[PydanticObjectId],
         Query(
             alias="nodeId",
@@ -196,15 +196,15 @@ async def find_units(
         await LayerBaseDocument.find(
             LayerBaseDocument.allowed_to_read(user), with_children=True
         )
-        .project(LayerMinimalView)
         .to_list()
     )
     readable_layer_ids = [layer.id for layer in readable_layers]
+    print(readable_layer_ids)
 
     units = (
         await UnitBaseDocument.find(
-            In(UnitBaseDocument.layer_id, layer_id) if layer_id else {},
-            In(UnitBaseDocument.node_id, node_id) if node_id else {},
+            In(UnitBaseDocument.layer_id, layer_ids) if layer_ids else {},
+            In(UnitBaseDocument.node_id, node_ids) if node_ids else {},
             In(UnitBaseDocument.layer_id, readable_layer_ids),
             with_children=True,
         )
