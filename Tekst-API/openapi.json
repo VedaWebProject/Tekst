@@ -3181,10 +3181,17 @@
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "parentId": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Parentid",
-            "description": "ID of parent node",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "description": "ID of parent node"
           },
           "level": {
             "type": "integer",
@@ -3246,10 +3253,17 @@
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "parentId": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Parentid",
-            "description": "ID of parent node",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "description": "ID of parent node"
           },
           "level": {
             "type": "integer",
@@ -3307,9 +3321,16 @@
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "parentId": {
-            "type": "string",
-            "title": "Parentid",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parentid"
           },
           "level": {
             "type": "integer",
