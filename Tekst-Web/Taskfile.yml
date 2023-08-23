@@ -56,28 +56,7 @@ tasks:
     cmds:
       - npm run preview
 
-  generate-openapi-client:
+  generate-api-types:
     cmds:
-      - cmd: |
-          TEMPDIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'trtemp')
-          cp ../Tekst-API/openapi.json $TEMPDIR
-          OUTDIR="$TEMPDIR/tekst-ts-client"
-          mkdir -p $OUTDIR
-          cp .openapi-generator-ignore $OUTDIR
-          docker run \
-            --rm \
-            -u 1000:1000 \
-            -v $TEMPDIR:/local \
-            openapitools/openapi-generator-cli:v6.3.0 \
-              generate \
-                -i /local/openapi.json \
-                -g typescript-axios \
-                -o /local/tekst-ts-client \
-            #    --global-property skipFormModel=false \
-                --additional-properties=typescriptThreePlus=true,useSingleRequestParameter=true \
-                --skip-validate-spec
-          mkdir -p ./src/openapi/
-          rm -rf ./src/openapi/*
-          cp -r $TEMPDIR/tekst-ts-client/* ./src/openapi/
-          rm -rf $TEMPDIR
-          npm run lint
+      - cmd: npx openapi-typescript ../Tekst-API/openapi.json -o ./src/api/schema.d.ts
+      - cmd: npx eslint ./src/api/schema.d.ts --fix
