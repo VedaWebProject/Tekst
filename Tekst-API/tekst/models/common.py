@@ -121,7 +121,11 @@ class ModelFactoryMixin:
     @classmethod
     def get_create_model(cls) -> type[ModelBase]:
         if not cls._create_model or not cls._is_origin_cls("_create_model"):
-            cls._create_model = cls
+            cls._create_model = create_model(
+                f"{cls.__name__}Create",
+                __base__=cls,
+                __module__=cls.__name__,
+            )
         return cls._create_model
 
     @classmethod

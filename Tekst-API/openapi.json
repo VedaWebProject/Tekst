@@ -559,7 +559,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PlainTextLayer"
+                "$ref": "#/components/schemas/PlainTextLayerCreate"
               }
             }
           },
@@ -762,7 +762,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Node"
+                "$ref": "#/components/schemas/NodeCreate"
               }
             }
           }
@@ -1310,7 +1310,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Text"
+                "$ref": "#/components/schemas/TextCreate"
               }
             }
           }
@@ -1728,7 +1728,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PlainTextUnit"
+                "$ref": "#/components/schemas/PlainTextUnitCreate"
               }
             }
           },
@@ -3172,7 +3172,7 @@
         ],
         "title": "LayerTypeInfo"
       },
-      "Node": {
+      "NodeCreate": {
         "properties": {
           "textId": {
             "type": "string",
@@ -3236,8 +3236,7 @@
           "position",
           "label"
         ],
-        "title": "Node",
-        "description": "A node in a text structure (e.g. chapter, paragraph, ...)"
+        "title": "NodeCreate"
       },
       "NodeRead": {
         "properties": {
@@ -3362,7 +3361,28 @@
         "type": "object",
         "title": "NodeUpdate"
       },
-      "PlainTextLayer": {
+      "PlainTextLayerConfig-Input": {
+        "properties": {
+          "deeplLinks": {
+            "$ref": "#/components/schemas/DeepLLinksConfig-Input"
+          }
+        },
+        "type": "object",
+        "title": "PlainTextLayerConfig"
+      },
+      "PlainTextLayerConfig-Output": {
+        "properties": {
+          "deeplLinks": {
+            "$ref": "#/components/schemas/DeepLLinksConfig-Output"
+          }
+        },
+        "type": "object",
+        "required": [
+          "deeplLinks"
+        ],
+        "title": "PlainTextLayerConfig"
+      },
+      "PlainTextLayerCreate": {
         "properties": {
           "title": {
             "type": "string",
@@ -3484,28 +3504,7 @@
           "level",
           "layerType"
         ],
-        "title": "PlainTextLayer"
-      },
-      "PlainTextLayerConfig-Input": {
-        "properties": {
-          "deeplLinks": {
-            "$ref": "#/components/schemas/DeepLLinksConfig-Input"
-          }
-        },
-        "type": "object",
-        "title": "PlainTextLayerConfig"
-      },
-      "PlainTextLayerConfig-Output": {
-        "properties": {
-          "deeplLinks": {
-            "$ref": "#/components/schemas/DeepLLinksConfig-Output"
-          }
-        },
-        "type": "object",
-        "required": [
-          "deeplLinks"
-        ],
-        "title": "PlainTextLayerConfig"
+        "title": "PlainTextLayerCreate"
       },
       "PlainTextLayerRead": {
         "properties": {
@@ -3751,7 +3750,7 @@
         "type": "object",
         "title": "PlainTextLayerUpdate"
       },
-      "PlainTextUnit": {
+      "PlainTextUnitCreate": {
         "properties": {
           "layerId": {
             "type": "string",
@@ -3798,8 +3797,7 @@
           "layerId",
           "nodeId"
         ],
-        "title": "PlainTextUnit",
-        "description": "A unit of a plaintext data layer"
+        "title": "PlainTextUnitCreate"
       },
       "PlainTextUnitRead": {
         "properties": {
@@ -4169,7 +4167,7 @@
         "title": "TekstInfoConfig",
         "description": "\n    Tekst platform information config model\n\n    These values are not configurable. They are taken from the package infos and\n    aren't meant to be changed by users creating an own instance of the platform.\n    "
       },
-      "Text": {
+      "TextCreate": {
         "properties": {
           "title": {
             "type": "string",
@@ -4254,8 +4252,7 @@
           "slug",
           "levels"
         ],
-        "title": "Text",
-        "description": "A text represented in Tekst"
+        "title": "TextCreate"
       },
       "TextRead": {
         "properties": {
