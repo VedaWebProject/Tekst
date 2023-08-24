@@ -6,7 +6,7 @@ from tekst.layer_types import layer_type_manager
 from tekst.models.layer import LayerBaseDocument
 from tekst.models.platform import PlatformStats, TextStats
 from tekst.models.text import NodeDocument, TextDocument
-from tekst.models.user import User, UserRead
+from tekst.models.user import UserDocument, UserRead
 
 
 router = APIRouter(
@@ -48,14 +48,14 @@ async def get_stats(su: SuperuserDep) -> PlatformStats:
         )
 
     return PlatformStats(
-        users_count=await User.find_all().count(),
+        users_count=await UserDocument.find_all().count(),
         texts=text_stats,
     )
 
 
 @router.get("/users", response_model=list[UserRead], status_code=status.HTTP_200_OK)
-async def get_users(su: SuperuserDep) -> list[User]:
-    return await User.find_all().to_list()
+async def get_users(su: SuperuserDep) -> list[UserDocument]:
+    return await UserDocument.find_all().to_list()
 
 
 @router.get(

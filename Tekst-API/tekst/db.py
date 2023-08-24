@@ -10,7 +10,7 @@ from tekst.models.layer import LayerBaseDocument
 from tekst.models.settings import PlatformSettingsDocument
 from tekst.models.text import NodeDocument, TextDocument
 from tekst.models.unit import UnitBaseDocument
-from tekst.models.user import User
+from tekst.models.user import UserDocument
 
 
 _cfg: TekstConfig = get_config()
@@ -45,7 +45,7 @@ async def init_odm(db: Database) -> None:
         LayerBaseDocument,
         UnitBaseDocument,
         PlatformSettingsDocument,
-        User,
+        UserDocument,
         AccessToken,
     ]
     # add layer type models
