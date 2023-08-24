@@ -4165,7 +4165,7 @@
           "licenseUrl"
         ],
         "title": "TekstInfoConfig",
-        "description": "\n    Tekst platform information config model\n\n    These values are not configurable. They are taken from the package infos and\n    aren't meant to be changed by users creating an own instance of the platform.\n    "
+        "description": "Tekst platform information config model\n\nThese values are not configurable. They are taken from the package infos and\naren't meant to be changed by users creating an own instance of the platform."
       },
       "TextCreate": {
         "properties": {
