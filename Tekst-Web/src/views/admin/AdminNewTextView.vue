@@ -11,7 +11,6 @@ import {
   NAlert,
   type FormInst,
 } from 'naive-ui';
-import type { TextCreate } from '@/openapi';
 import { useFormRules } from '@/formRules';
 import { useI18n } from 'vue-i18n';
 import { useMessages } from '@/messages';
@@ -19,7 +18,7 @@ import { useApi } from '@/api';
 import { useStateStore } from '@/stores';
 import { usePlatformData } from '@/platformData';
 import { useRouter } from 'vue-router';
-import type { AxiosError } from 'axios';
+import type { TextCreate } from '@/api';
 
 import AddRound from '@vicons/material/AddRound';
 import MinusRound from '@vicons/material/MinusRound';

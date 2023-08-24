@@ -2,8 +2,7 @@
 import { useApi } from '@/api';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import type { AxiosError } from 'axios';
-import type { ErrorModel } from '@/openapi';
+import type { ErrorModel } from '@/api';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import HugeLabeledIcon from '@/components/HugeLabeledIcon.vue';

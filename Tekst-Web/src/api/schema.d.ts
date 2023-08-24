@@ -1000,11 +1000,10 @@ export interface components {
     };
     /**
      * TekstInfoConfig
-     * @description
-     *     Tekst platform information config model
+     * @description Tekst platform information config model
      *
-     *     These values are not configurable. They are taken from the package infos and
-     *     aren't meant to be changed by users creating an own instance of the platform.
+     * These values are not configurable. They are taken from the package infos and
+     * aren't meant to be changed by users creating an own instance of the platform.
      */
     TekstInfoConfig: {
       /**
@@ -1188,31 +1187,6 @@ export interface components {
       /** Isactive */
       isActive?: boolean;
     };
-    /** UserBaseUpdate */
-    UserBaseUpdate: {
-      /** Password */
-      password?: string | null;
-      /** Email */
-      email?: string | null;
-      /** Isactive */
-      isActive?: boolean | null;
-      /** Issuperuser */
-      isSuperuser?: boolean | null;
-      /** Isverified */
-      isVerified?: boolean | null;
-      /** Username */
-      username?: string;
-      /** Firstname */
-      firstName?: string;
-      /** Lastname */
-      lastName?: string;
-      /** Affiliation */
-      affiliation?: string;
-      /** Locale */
-      locale?: ('deDE' | 'enUS') | null;
-      /** Publicfields */
-      publicFields?: ('firstName' | 'lastName' | 'affiliation')[];
-    };
     /**
      * UserCreate
      * @description Dataset for creating a new user
@@ -1310,6 +1284,31 @@ export interface components {
       lastName: string | null;
       /** Affiliation */
       affiliation: string | null;
+    };
+    /** UserUpdate */
+    UserUpdate: {
+      /** Password */
+      password?: string | null;
+      /** Email */
+      email?: string | null;
+      /** Isactive */
+      isActive?: boolean | null;
+      /** Issuperuser */
+      isSuperuser?: boolean | null;
+      /** Isverified */
+      isVerified?: boolean | null;
+      /** Username */
+      username?: string;
+      /** Firstname */
+      firstName?: string;
+      /** Lastname */
+      lastName?: string;
+      /** Affiliation */
+      affiliation?: string;
+      /** Locale */
+      locale?: ('deDE' | 'enUS') | null;
+      /** Publicfields */
+      publicFields?: ('firstName' | 'lastName' | 'affiliation')[];
     };
     /** ValidationError */
     ValidationError: {
@@ -2473,7 +2472,7 @@ export interface operations {
   'users:patchCurrentUser': {
     requestBody: {
       content: {
-        'application/json': components['schemas']['UserBaseUpdate'];
+        'application/json': components['schemas']['UserUpdate'];
       };
     };
     responses: {
@@ -2576,7 +2575,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        'application/json': components['schemas']['UserBaseUpdate'];
+        'application/json': components['schemas']['UserUpdate'];
       };
     };
     responses: {

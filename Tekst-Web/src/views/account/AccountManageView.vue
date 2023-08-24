@@ -2,7 +2,6 @@
 import { useApi } from '@/api';
 import { useFormRules } from '@/formRules';
 import { useMessages } from '@/messages';
-import type { UserUpdate, UserUpdatePublicFieldsEnum } from '@/openapi';
 import { usePlatformData } from '@/platformData';
 import { useAuthStore } from '@/stores';
 import type { FormInst, FormItemInst, FormItemRule } from 'naive-ui';
@@ -20,6 +19,7 @@ import {
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useModelChanges } from '@/modelChanges';
+import type { UserUpdate, UserUpdatePublicFieldsEnum } from '@/api';
 
 const dialog = useDialog();
 const auth = useAuthStore();

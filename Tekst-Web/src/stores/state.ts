@@ -5,7 +5,7 @@ import type { RouteLocationNormalized } from 'vue-router';
 import { i18n, setI18nLocale, localeProfiles, getAvaliableBrowserLocaleKey } from '@/i18n';
 import type { AvailableLocale } from '@/i18n';
 import { useRoute } from 'vue-router';
-import type { TextRead } from '@/openapi';
+import type { TextRead } from '@/api';
 import type { ThemeMode } from '@/theme';
 import { useI18n } from 'vue-i18n';
 import { usePlatformData } from '@/platformData';
@@ -47,7 +47,7 @@ export const useStateStore = defineStore('state', () => {
     locale.value = lang.key;
     if (updateUserLocale) {
       try {
-        await auth.updateUser({ locale: localeProfiles[lang.key].apiLocaleEnum });
+        await auth.updateUser({ locale: localeProfiles[lang.key].key });
       } catch {
         // do sweet FA
       }

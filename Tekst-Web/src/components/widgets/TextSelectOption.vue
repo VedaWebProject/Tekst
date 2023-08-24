@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { TextRead } from '@/openapi';
+import type { TextRead } from '@/api';
 import { NIcon } from 'naive-ui';
 import DisabledVisibleRound from '@vicons/material/DisabledVisibleRound';
 import { computed } from 'vue';
@@ -56,6 +56,8 @@ const subtitle = computed(() => determineTextSubtitle(props.text.subtitle || [],
 }
 
 .n-dropdown-option-body--disabled .text-select-option-indicator {
-  background-color: #bbb !important /* has to override inline style */;
+  background-color: #bbb !important
+    /* has to override inline style */
+  ;
 }
 </style>

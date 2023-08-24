@@ -9,8 +9,7 @@ import { NInput, NForm, NFormItem, NButton, NSpace } from 'naive-ui';
 import { useRoute } from 'vue-router';
 import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import type { AxiosError } from 'axios';
-import type { ErrorModel } from '@/openapi';
+import type { ErrorModel } from '@/api';
 
 const { authApi } = useApi();
 const { message } = useMessages();

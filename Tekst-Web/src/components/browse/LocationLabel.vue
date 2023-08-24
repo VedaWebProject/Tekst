@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useStateStore, useBrowseStore } from '@/stores';
-import type { NodeRead } from '@/openapi';
+import type { NodeRead } from '@/api';
 
 const props = defineProps<{
   nodePath?: NodeRead[];

@@ -11,14 +11,13 @@ import {
   NButton,
   NSpace,
 } from 'naive-ui';
-import type { ErrorModel, UserCreate } from '@/openapi';
+import type { ErrorModel, UserCreate } from '@/api';
 import { useApi } from '@/api';
 import { useMessages } from '@/messages';
 import { usePlatformData } from '@/platformData';
 import { useAuthStore } from '@/stores';
 import { useFormRules } from '@/formRules';
 import router from '@/router';
-import type { AxiosError } from 'axios';
 
 const auth = useAuthStore();
 const { message } = useMessages();

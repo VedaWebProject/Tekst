@@ -2,9 +2,8 @@ import { ref, computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { defineStore } from 'pinia';
 import { useStateStore, useAuthStore } from '@/stores';
-import type { NodeRead } from '@/openapi';
-import type { AxiosResponse } from 'axios';
-import { useApi } from '@/api';
+import type { NodeRead } from '@/api';
+import { GET } from '@/api';
 import { useMessages } from '@/messages';
 
 export const useBrowseStore = defineStore('browse', () => {
@@ -14,11 +13,6 @@ export const useBrowseStore = defineStore('browse', () => {
   const route = useRoute();
   const router = useRouter();
   const { message } = useMessages();
-
-  // API clients
-  const { browseApi } = useApi();
-  const { layersApi } = useApi();
-  const { unitsApi } = useApi();
 
   /* BASIC BROWSE UI STATE */
 
@@ -46,20 +40,16 @@ export const useBrowseStore = defineStore('browse', () => {
     const qLvl = parseInt(lvl || route.query.lvl?.toString() || '') ?? 0;
     const qPos = parseInt(pos || route.query.pos?.toString() || '') ?? 0;
     if (Number.isInteger(qLvl) && Number.isInteger(qPos)) {
-      try {
-        // fill browse node path up to root (no more parent)
-        const path = await browseApi
-          .getNodePath({
-            textId: state.text?.id || '',
-            level: qLvl,
-            position: qPos,
-          })
-          .then((response) => response.data);
+      // fill browse node path up to root (no more parent)
+      const { data: path, error } = await GET('/browse/nodes/path', {
+        params: { query: { textId: state.text?.id || '', level: qLvl, position: qPos } },
+      });
+      if (!error) {
         if (!path || path.length == 0) {
           throw new Error();
         }
         nodePath.value = path;
-      } catch {
+      } else {
         resetBrowseLocation(level.value);
       }
     } else {
@@ -111,19 +101,19 @@ export const useBrowseStore = defineStore('browse', () => {
     // set to loading
     loading.value = true;
     // fetch data
-    try {
-      // fetch layers data
-      const layersData = await layersApi
-        .findLayers({ textId: state.text.id })
-        .then((response: AxiosResponse) => response.data);
+    // fetch layers data
+    const { data: layersData, error } = await GET('/layers', {
+      params: { query: { textId: state.text.id } },
+    });
+    if (!error) {
       layersData.forEach((l: Record<string, any>) => {
         // keep layer deactivated if it was before
         const existingLayer = layers.value.find((lo) => lo.id === l.id);
         l.active = !existingLayer || existingLayer.active;
       });
       loadUnitsData(layersData);
-    } catch (e) {
-      // console.error(e);
+    } else {
+      console.error(error);
       message.error('Error loading data layers for this location');
       loading.value = false;
     }
@@ -137,23 +127,22 @@ export const useBrowseStore = defineStore('browse', () => {
     }
     // set to loading
     loading.value = true;
-    try {
-      // fetch units data
-      const unitsData = await unitsApi
-        .findUnits({ nodeId: nodePath.value.map((n) => n.id) })
-        .then((response: AxiosResponse) => response.data);
+    // fetch units data
+    const { data: unitsData, error } = await GET('/units/', {
+      params: { query: { nodeId: nodePath.value.map((n) => n.id) } },
+    });
+    if (!error) {
       // assign units to layers
       layersData.forEach((l: Record<string, any>) => {
         l.units = unitsData.filter((u: Record<string, any>) => u.layerId == l.id);
       });
       // assign (potentially) fresh layers/untis data to store prop
       layers.value = layersData;
-    } catch (e) {
-      // console.error(e);
+    } else {
+      console.error(error);
       message.error('Error loading data layer units for this location');
-    } finally {
-      loading.value = false;
     }
+    loading.value = false;
   }
 
   // load layers/units data on browse location change

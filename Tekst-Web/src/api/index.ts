@@ -1,5 +1,5 @@
 import createClient from 'openapi-fetch';
-import type { paths } from '@/api/schema.d.ts';
+import type { paths, components } from '@/api/schema';
 
 const serverUrl: string | undefined = import.meta.env.TEKST_SERVER_URL;
 const apiPath: string | undefined = import.meta.env.TEKST_API_PATH;
@@ -7,21 +7,21 @@ const apiUrl = (serverUrl && apiPath && serverUrl + apiPath) || '/';
 
 // custom, monkeypatched "fetch" for implementing interceptors
 const customFetch = async (input: RequestInfo | URL, init?: RequestInit | undefined) => {
+  // (see: https://blog.logrocket.com/intercepting-javascript-fetch-api-requests-responses/)
   // --- request interceptors go here... ---
   // TODO: intercept requests and add XSRF-token to header
-  // ... (see: https://blog.logrocket.com/intercepting-javascript-fetch-api-requests-responses/)
-  // if (error.response.status === 401 && !error.response.config.url.endsWith('/logout')) {
-  //   console.log('401 response');
-  //   const auth = useAuthStore();
-  //   if (auth.loggedIn) {
-  //     console.log('Running logout sequence in reaction to 401 response');
-  //     auth.logout();
-  //   }
-  // }
   const response = await globalThis.fetch(input, init);
   // --- response interceptors go here... ---
   if (response.status === 401) {
     // TODO: logout and cleanup
+    // if (error.response.status === 401 && !error.response.config.url.endsWith('/logout')) {
+    //   console.log('401 response');
+    //   const auth = useAuthStore();
+    //   if (auth.loggedIn) {
+    //     console.log('Running logout sequence in reaction to 401 response');
+    //     auth.logout();
+    //   }
+    // }
     console.log('401 DETECTED! OH NO!');
   }
   return response;
@@ -107,3 +107,21 @@ export const optionsPresets = {
 //     {{ text.title }}
 //   </div>
 // </template>
+
+// export components types for use throughout codebase
+export type UserCreate = components['schemas']['UserCreate'];
+export type UserRead = components['schemas']['UserRead'];
+export type UserUpdate = components['schemas']['UserUpdate'];
+export type UserReadPublic = components['schemas']['UserReadPublic'];
+export type UserUpdatePublicFieldsEnum = components['schemas']['UserUpdate']['publicFields'];
+export type TextCreate = components['schemas']['TextCreate'];
+export type TextRead = components['schemas']['TextRead'];
+export type SubtitleTranslation = components['schemas']['SubtitleTranslation'];
+export type StructureLevelTranslation = components['schemas']['StructureLevelTranslation'];
+export type NodeRead = components['schemas']['NodeRead'];
+export type PlainTextLayerConfig = components['schemas']['PlainTextLayerConfig-Output'];
+export type DeepLLinksConfigOutput = components['schemas']['DeepLLinksConfig-Output'];
+export type LayerNodeCoverage = components['schemas']['LayerNodeCoverage'];
+export type PlatformStats = components['schemas']['PlatformStats'];
+export type PlatformData = components['schemas']['PlatformData'];
+export type ErrorModel = components['schemas']['ErrorModel'];

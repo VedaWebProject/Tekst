@@ -1,19 +1,18 @@
 import { ref } from 'vue';
-import type { PlatformData } from '@/openapi';
-import { useApi } from '@/api';
+import { GET } from '@/api';
+import type { PlatformData } from '@/api';
 
 const data = ref<PlatformData>();
 
 export function usePlatformData() {
-  const { platformApi } = useApi();
-  const pfData = data;
-
   async function loadPlatformData() {
-    return platformApi.getPlatformData().then((response) => {
-      data.value = response.data;
-      return response.data;
-    });
+    const { data: apiData, error } = await GET('/platform', {});
+    if (!error) {
+      data.value = apiData;
+      return apiData;
+    } else {
+      throw error;
+    }
   }
-
-  return { pfData, loadPlatformData };
+  return { pfData: data, loadPlatformData };
 }

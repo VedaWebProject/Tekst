@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { TextRead } from '@/openapi';
+import type { TextRead } from '@/api';
 import { computed, h, ref } from 'vue';
 import { useStateStore } from '@/stores';
 import { useRouter } from 'vue-router';

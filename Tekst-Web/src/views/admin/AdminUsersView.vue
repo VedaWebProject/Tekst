@@ -14,7 +14,7 @@ import {
 } from 'naive-ui';
 import UserListItem from '@/components/admin/UserListItem.vue';
 import { hashCode } from '@/utils';
-import type { UserRead, UserUpdate } from '@/openapi';
+import type { UserRead, UserUpdate } from '@/api';
 import { ref } from 'vue';
 import { computed } from 'vue';
 import { useMessages } from '@/messages';

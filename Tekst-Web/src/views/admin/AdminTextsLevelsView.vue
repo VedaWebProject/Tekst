@@ -18,7 +18,7 @@ import {
 } from 'naive-ui';
 import { computed, ref } from 'vue';
 import { localeProfiles } from '@/i18n';
-import type { StructureLevelTranslation, StructureLevelTranslationLocaleEnum } from '@/openapi';
+import type { StructureLevelTranslation } from '@/api';
 
 import AddRound from '@vicons/material/AddRound';
 import MinusRound from '@vicons/material/MinusRound';
@@ -49,8 +49,8 @@ const editModalAction = ref<'edit' | 'insert'>('edit');
 const editModalTitle = computed(() =>
   editModalAction.value === 'edit'
     ? t('admin.texts.levels.tipEditLevel', {
-        levelLabel: getLevelLabel(levels.value[editModalLevel.value]),
-      })
+      levelLabel: getLevelLabel(levels.value[editModalLevel.value]),
+    })
     : t('admin.texts.levels.tipInsertLevel', { n: editModalLevel.value + 1 })
 );
 const editModalWarning = computed(() =>
@@ -60,10 +60,10 @@ const editModalWarning = computed(() =>
 const levelLocaleOptions = computed(() =>
   Object.keys(localeProfiles).map((l) => ({
     label: `${localeProfiles[l].icon} ${localeProfiles[l].displayFull}`,
-    value: localeProfiles[l].apiLocaleEnum,
+    value: localeProfiles[l].key,
     disabled: !!formModel.value.translations
       .map((lvlTrans: StructureLevelTranslation) => lvlTrans.locale)
-      .includes(l as StructureLevelTranslationLocaleEnum),
+      .includes(l),
   }))
 );
 
@@ -377,7 +377,7 @@ async function handleModalSubmit() {
   flex-grow: 2;
 }
 
-.level-translations > * {
+.level-translations>* {
   padding-right: 28px;
   white-space: nowrap;
   overflow-x: hidden;

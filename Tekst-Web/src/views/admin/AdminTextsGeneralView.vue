@@ -19,7 +19,7 @@ import { computed, ref, watch } from 'vue';
 import { useApi } from '@/api';
 import { useI18n } from 'vue-i18n';
 import { localeProfiles } from '@/i18n';
-import type { SubtitleTranslation } from '@/openapi';
+import type { SubtitleTranslation } from '@/api';
 import { useModelChanges } from '@/modelChanges';
 
 import AddRound from '@vicons/material/AddRound';
