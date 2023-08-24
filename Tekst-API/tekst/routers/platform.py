@@ -11,7 +11,7 @@ from tekst.dependencies import get_cfg
 from tekst.layer_types import layer_type_manager
 from tekst.models.platform import PlatformData, PlatformSettingsRead
 from tekst.models.settings import PlatformSettingsDocument
-from tekst.models.user import User, UserReadPublic
+from tekst.models.user import UserDocument, UserReadPublic
 from tekst.routers.texts import get_all_texts
 
 
@@ -50,10 +50,10 @@ async def get_public_user_info(
     """Returns public information on the user with the specified username or ID"""
     if PydanticObjectId.is_valid(username_or_id):
         username_or_id = PydanticObjectId(username_or_id)
-    user = await User.find_one(
+    user = await UserDocument.find_one(
         Or(
-            User.id == username_or_id,
-            User.username == username_or_id,
+            UserDocument.id == username_or_id,
+            UserDocument.username == username_or_id,
         )
     )
     if not user:

@@ -45,7 +45,7 @@ from humps import decamelize
 from tekst.config import TekstConfig, get_config
 from tekst.email import TemplateIdentifier, send_email
 from tekst.logging import log
-from tekst.models.user import User, UserCreate, UserRead, UserUpdate
+from tekst.models.user import UserCreate, UserDocument, UserRead, UserUpdate
 
 
 _cfg: TekstConfig = get_config()
@@ -82,7 +82,7 @@ class CustomBeanieUserDatabase(BeanieUserDatabase):
 
 
 async def get_user_db():
-    yield CustomBeanieUserDatabase(User)
+    yield CustomBeanieUserDatabase(UserDocument)
 
 
 async def get_access_token_db():
@@ -136,7 +136,7 @@ def _validate_required_password_chars(password: str):
     )
 
 
-class UserManager(ObjectIDIDMixin, BaseUserManager[User, PydanticObjectId]):
+class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectId]):
     reset_password_token_secret = _cfg.security.secret
     verification_token_secret = _cfg.security.secret
     reset_password_token_lifetime_seconds = _cfg.security.reset_pw_token_lifetime
@@ -144,9 +144,11 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[User, PydanticObjectId]):
     reset_password_token_audience = "tekst:reset"
     verification_token_audience = "tekst:verify"
 
-    async def on_after_register(self, user: User, request: Request | None = None):
+    async def on_after_register(
+        self, user: UserDocument, request: Request | None = None
+    ):
         if not _cfg.security.users_active_by_default:
-            admins = await User.find({"isSuperuser": True}).limit(10).to_list()
+            admins = await UserDocument.find({"isSuperuser": True}).limit(10).to_list()
             for admin in admins:
                 send_email(
                     user,
@@ -156,7 +158,7 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[User, PydanticObjectId]):
 
     async def on_after_update(
         self,
-        user: User,
+        user: UserDocument,
         update_dict: dict[str, Any],
         request: Request | None = None,
     ):
@@ -179,14 +181,14 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[User, PydanticObjectId]):
 
     async def on_after_login(
         self,
-        user: User,
+        user: UserDocument,
         request: Request | None = None,
         response: Response | None = None,
     ):
         pass  # nothing to do here ATM
 
     async def on_after_request_verify(
-        self, user: User, token: str, request: Request | None = None
+        self, user: UserDocument, token: str, request: Request | None = None
     ):
         send_email(
             user,
@@ -195,11 +197,11 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[User, PydanticObjectId]):
             token_lifetime_minutes=int(_cfg.security.verification_token_lifetime / 60),
         )
 
-    async def on_after_verify(self, user: User, request: Request | None = None):
+    async def on_after_verify(self, user: UserDocument, request: Request | None = None):
         send_email(user, TemplateIdentifier.VERIFIED)
 
     async def on_after_forgot_password(
-        self, user: User, token: str, request: Request | None = None
+        self, user: UserDocument, token: str, request: Request | None = None
     ):
         send_email(
             user,
@@ -208,17 +210,21 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[User, PydanticObjectId]):
             token_lifetime_minutes=int(_cfg.security.reset_pw_token_lifetime / 60),
         )
 
-    async def on_after_reset_password(self, user: User, request: Request | None = None):
+    async def on_after_reset_password(
+        self, user: UserDocument, request: Request | None = None
+    ):
         send_email(
             user,
             TemplateIdentifier.PASSWORD_RESET,
             contact_email=_cfg.info.contact_email,
         )
 
-    async def on_before_delete(self, user: User, request: Request | None = None):
+    async def on_before_delete(
+        self, user: UserDocument, request: Request | None = None
+    ):
         log.debug(f"[on_before_delete] {user.username}")
 
-    async def on_after_delete(self, user: User, request: Request | None = None):
+    async def on_after_delete(self, user: UserDocument, request: Request | None = None):
         send_email(
             user,
             TemplateIdentifier.DELETED,
@@ -227,7 +233,7 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[User, PydanticObjectId]):
     async def validate_password(
         self,
         password: str,
-        user: UserCreate | User,
+        user: UserCreate | UserDocument,
     ) -> None:
         # validate length
         if len(password) < 8:
@@ -250,7 +256,9 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[User, PydanticObjectId]):
         Overrides FastAPI-User's BaseUserManager's create method to check if the
         username already exists and respond with a meaningful HTTP exception.
         """
-        existing_user = await User.find_one(User.username == user_create.username)
+        existing_user = await UserDocument.find_one(
+            UserDocument.username == user_create.username
+        )
         if existing_user is not None:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
@@ -263,7 +271,7 @@ async def get_user_manager(user_db=Depends(get_user_db)):
     yield UserManager(user_db)
 
 
-_fastapi_users = FastAPIUsers[User, PydanticObjectId](
+_fastapi_users = FastAPIUsers[UserDocument, PydanticObjectId](
     get_user_manager,
     [_auth_backend_cookie, _auth_backend_jwt],
 )
@@ -364,7 +372,9 @@ async def create_initial_superuser():
     if _cfg.dev_mode:
         return
     if _cfg.security.init_admin_email and _cfg.security.init_admin_password:
-        if await User.find_one(User.email == _cfg.security.init_admin_email).exists():
+        if await UserDocument.find_one(
+            UserDocument.email == _cfg.security.init_admin_email
+        ).exists():
             log.warning("Initial admin account already exists. Skipping creation.")
             return
         log.info("Creating initial admin account...")
@@ -393,7 +403,7 @@ async def create_sample_users():
     if not _cfg.dev_mode:
         return
     log.debug("Creating sample users...")
-    if await User.find_one().exists():
+    if await UserDocument.find_one().exists():
         log.warning("Users found in database. Skipping sample user creation.")
         return
     # common

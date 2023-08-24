@@ -1,9 +1,9 @@
-from typing import List
+from typing import Annotated, List
 
 from beanie import PydanticObjectId
 from pydantic import Field, StringConstraints, field_validator
 from pydantic_extra_types.color import Color
-from typing_extensions import Annotated, TypedDict
+from typing_extensions import TypedDict
 
 from tekst.models.common import (
     DocumentBase,
@@ -24,64 +24,88 @@ class StructureLevelTranslation(TypedDict):
     label: Annotated[str, StringConstraints(min_length=1, max_length=32)]
 
 
+StructureLevelTranslations = Annotated[
+    List[StructureLevelTranslation], Field(min_length=1)
+]
+
+
 class Text(ModelBase, ModelFactoryMixin):
     """A text represented in Tekst"""
 
-    title: str = Field(
-        ..., min_length=1, max_length=64, description="Title of this text"
-    )
+    title: Annotated[
+        str, Field(min_length=1, max_length=64, description="Title of this text")
+    ]
 
-    slug: str = Field(
-        ...,
-        pattern=r"^[a-z0-9]+$",
-        min_length=1,
-        max_length=16,
-        description=("A short identifier for use in URLs and internal operations"),
-    )
-
-    subtitle: list[SubtitleTranslation] | None = Field(
-        None,
-        description=(
-            "Subtitle translations of this text "
-            "(if set, it must contain at least one element)"
+    slug: Annotated[
+        str,
+        Field(
+            pattern=r"^[a-z0-9]+$",
+            min_length=1,
+            max_length=16,
+            description="A short identifier for use in URLs and internal operations",
         ),
-    )
+    ]
 
-    levels: list[
-        Annotated[List[StructureLevelTranslation], Field(min_length=1)]
-    ] = Field(..., min_length=1, max_length=32)
-
-    default_level: Annotated[int, Field(ge=0)] = Field(
-        0,
-        description=(
-            "Default structure level for the client to use for browsing this text"
+    subtitle: Annotated[
+        list[SubtitleTranslation] | None,
+        Field(
+            description=(
+                "Subtitle translations of this text "
+                "(if set, it must contain at least one element)"
+            )
         ),
-    )
+    ] = None
 
-    loc_delim: Annotated[str, StringConstraints(min_length=1, max_length=3)] = Field(
-        ", ",
-        description="Delimiter for displaying text locations",
-    )
+    levels: Annotated[
+        list[StructureLevelTranslations], Field(min_length=1, max_length=32)
+    ]
 
-    labeled_location: bool = Field(
-        True,
-        description=(
-            "Whether the UI should label the parts of "
-            "the browse location with each levels' names"
+    default_level: Annotated[
+        int,
+        Field(
+            ge=0,
+            description=(
+                "Default structure level for the client "
+                "to use for browsing this text"
+            ),
         ),
-    )
+    ] = 0
 
-    accent_color: Color = Field(
-        default_factory=lambda: Color("#305D97"),
-        description="Accent color used for this text in the client UI",
-    )
-
-    is_active: bool = Field(
-        False,
-        description=(
-            "Whether the text should be listed " "for non-admin users in the web client"
+    loc_delim: Annotated[
+        str,
+        StringConstraints(min_length=1, max_length=3),
+        Field(
+            ", ",
+            description="Delimiter for displaying text locations",
         ),
-    )
+    ] = ", "
+
+    labeled_location: Annotated[
+        bool,
+        Field(
+            description=(
+                "Whether the UI should label the parts of "
+                "the browse location with each levels' names"
+            ),
+        ),
+    ] = True
+
+    accent_color: Annotated[
+        Color,
+        Field(
+            description="Accent color used for this text in the client UI",
+        ),
+    ] = Color("#305D97")
+
+    is_active: Annotated[
+        bool,
+        Field(
+            description=(
+                "Whether the text should be listed "
+                "for non-admin users in the web client"
+            ),
+        ),
+    ] = False
 
     @field_validator("subtitle", mode="after")
     @classmethod

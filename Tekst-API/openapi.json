@@ -2378,7 +2378,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserBaseUpdate"
+                "$ref": "#/components/schemas/UserUpdate"
               }
             }
           },
@@ -2534,7 +2534,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserBaseUpdate"
+                "$ref": "#/components/schemas/UserUpdate"
               }
             }
           }
@@ -4446,111 +4446,6 @@
         "type": "object",
         "title": "TextUpdate"
       },
-      "UserBaseUpdate": {
-        "properties": {
-          "password": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Password"
-          },
-          "email": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "email"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Email"
-          },
-          "isActive": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Isactive"
-          },
-          "isSuperuser": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Issuperuser"
-          },
-          "isVerified": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Isverified"
-          },
-          "username": {
-            "type": "string",
-            "title": "Username"
-          },
-          "firstName": {
-            "type": "string",
-            "title": "Firstname"
-          },
-          "lastName": {
-            "type": "string",
-            "title": "Lastname"
-          },
-          "affiliation": {
-            "type": "string",
-            "title": "Affiliation"
-          },
-          "locale": {
-            "anyOf": [
-              {
-                "type": "string",
-                "enum": [
-                  "deDE",
-                  "enUS"
-                ]
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Locale"
-          },
-          "publicFields": {
-            "items": {
-              "type": "string",
-              "enum": [
-                "firstName",
-                "lastName",
-                "affiliation"
-              ]
-            },
-            "type": "array",
-            "title": "Publicfields"
-          }
-        },
-        "type": "object",
-        "title": "UserBaseUpdate"
-      },
       "UserCreate": {
         "properties": {
           "email": {
@@ -4808,6 +4703,111 @@
           "affiliation"
         ],
         "title": "UserReadPublic"
+      },
+      "UserUpdate": {
+        "properties": {
+          "password": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Password"
+          },
+          "email": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "email"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Email"
+          },
+          "isActive": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Isactive"
+          },
+          "isSuperuser": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Issuperuser"
+          },
+          "isVerified": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Isverified"
+          },
+          "username": {
+            "type": "string",
+            "title": "Username"
+          },
+          "firstName": {
+            "type": "string",
+            "title": "Firstname"
+          },
+          "lastName": {
+            "type": "string",
+            "title": "Lastname"
+          },
+          "affiliation": {
+            "type": "string",
+            "title": "Affiliation"
+          },
+          "locale": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "deDE",
+                  "enUS"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Locale"
+          },
+          "publicFields": {
+            "items": {
+              "type": "string",
+              "enum": [
+                "firstName",
+                "lastName",
+                "affiliation"
+              ]
+            },
+            "type": "array",
+            "title": "Publicfields"
+          }
+        },
+        "type": "object",
+        "title": "UserUpdate"
       },
       "ValidationError": {
         "properties": {

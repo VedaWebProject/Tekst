@@ -38,7 +38,7 @@ PublicUserField = Literal[
 ]
 
 
-class UserBase(ModelBase, ModelFactoryMixin):
+class User(ModelBase, ModelFactoryMixin):
     """This base model defines the custom fields added to FastAPI-User's user model"""
 
     username: Annotated[
@@ -53,7 +53,7 @@ class UserBase(ModelBase, ModelFactoryMixin):
     ] = []
 
 
-class User(UserBase, BeanieBaseUser, Document):
+class UserDocument(User, BeanieBaseUser, Document):
     """User document model used by FastAPI-Users"""
 
     is_active: bool = _cfg.security.users_active_by_default
@@ -66,7 +66,7 @@ class User(UserBase, BeanieBaseUser, Document):
         ]
 
 
-class UserRead(UserBase, schemas.BaseUser[PydanticObjectId]):
+class UserRead(User, schemas.BaseUser[PydanticObjectId]):
     """A user registered in the system"""
 
     # we redefine these fields here because they should be required in a read model
@@ -78,10 +78,10 @@ class UserRead(UserBase, schemas.BaseUser[PydanticObjectId]):
     created_at: datetime
 
 
-class UserCreate(UserBase, schemas.BaseUserCreate):
+class UserCreate(User, schemas.BaseUserCreate):
     """Dataset for creating a new user"""
 
     is_active: bool = _cfg.security.users_active_by_default
 
 
-UserUpdate = UserBase.get_update_model(schemas.BaseUserUpdate)
+UserUpdate = User.get_update_model(schemas.BaseUserUpdate)
