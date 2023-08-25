@@ -2,17 +2,26 @@ import createClient from 'openapi-fetch';
 import type { paths, components } from '@/api/schema';
 import queryString from 'query-string';
 import { useAuthStore } from '@/stores';
+import Cookies from 'js-cookie';
 
 const serverUrl: string | undefined = import.meta.env.TEKST_SERVER_URL;
 const apiPath: string | undefined = import.meta.env.TEKST_API_PATH;
 const apiUrl = (serverUrl && apiPath && serverUrl + apiPath) || '/';
 
-// custom, monkeypatched "fetch" for implementing interceptors
+// custom, monkeypatched "fetch" for implementing request/response interceptors
 const customFetch = async (input: RequestInfo | URL, init?: RequestInit | undefined) => {
   // --- request interceptors go here... ---
-  // TODO: intercept requests and add XSRF-token to header
+  // add XSRF header to request headers
+  const xsrfToken = Cookies.get('XSRF-TOKEN');
+  if (xsrfToken) {
+    init = init || {};
+    init.headers = new Headers(init.headers);
+    init.headers.set('X-XSRF-TOKEN', xsrfToken);
+  }
+  // --- perform request ---
   const response = await globalThis.fetch(input, init);
   // --- response interceptors go here... ---
+  // automatically log out on a 401 response
   if (response.status === 401) {
     if (!response.url.endsWith('/logout')) {
       console.log('401 DETECTED! OH NO!');
