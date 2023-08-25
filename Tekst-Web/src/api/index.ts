@@ -18,8 +18,10 @@ const customFetch = async (input: RequestInfo | URL, init?: RequestInit | undefi
     init.headers = new Headers(init.headers);
     init.headers.set('X-XSRF-TOKEN', xsrfToken);
   }
+
   // --- perform request ---
   const response = await globalThis.fetch(input, init);
+
   // --- response interceptors go here... ---
   // automatically log out on a 401 response
   if (response.status === 401) {

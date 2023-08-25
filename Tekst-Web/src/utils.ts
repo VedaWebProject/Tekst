@@ -1,4 +1,4 @@
-import type { SubtitleTranslation } from './openapi';
+import type { SubtitleTranslation } from '@/api';
 
 export function hashCode(obj: any) {
   const string = JSON.stringify(obj);
