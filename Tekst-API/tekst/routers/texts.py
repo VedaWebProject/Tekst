@@ -118,7 +118,6 @@ async def insert_level(
     text_doc.levels.insert(index, translations)
     if text_doc.default_level >= index:
         text_doc.default_level += 1
-    text_doc.modified_at = datetime.utcnow()
     await text_doc.save()
 
     # update all existing layers with level >= index
@@ -282,7 +281,6 @@ async def delete_level(
             if dl + 1 in levels_range
             else 0
         )
-    text_doc.modified_at = datetime.utcnow()
     await text_doc.save()
 
     return text_doc
