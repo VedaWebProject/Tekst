@@ -176,7 +176,6 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
             send_email(
                 user,
                 TemplateIdentifier.PASSWORD_RESET,
-                contact_email=_cfg.info.contact_email,
             )
 
     async def on_after_login(
@@ -216,7 +215,6 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
         send_email(
             user,
             TemplateIdentifier.PASSWORD_RESET,
-            contact_email=_cfg.info.contact_email,
         )
 
     async def on_before_delete(
