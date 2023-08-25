@@ -74,12 +74,12 @@ if not _cfg.dev_mode:
         required_urls=[re.compile(r".*/auth/cookie/login.*")],
         exempt_urls=[re.compile(r".*/auth/cookie/logout.*")],
         sensitive_cookies={_cfg.security.auth_cookie_name},
-        cookie_name=_cfg.security.csrf_cookie_name,
+        cookie_name="XSRF-TOKEN",
         cookie_path="/",
         cookie_domain=_cfg.security.auth_cookie_domain or None,
         cookie_secure=not _cfg.dev_mode,
         cookie_samesite="Lax",
-        header_name=_cfg.security.csrf_header_name,
+        header_name="X-XSRF-TOKEN",
     )
 
 # add and configure CORS middleware

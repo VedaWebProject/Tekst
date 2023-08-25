@@ -130,9 +130,6 @@ class SecurityConfig(ModelBase):
     reset_pw_token_lifetime: Annotated[int, Field(ge=600)] = 3600
     verification_token_lifetime: Annotated[int, Field(ge=600)] = 3600
 
-    csrf_cookie_name: str = "XSRF-TOKEN"
-    csrf_header_name: str = "X-XSRF-TOKEN"
-
 
 class EMailConfig(ModelBase):
     """Email-related things config model"""
