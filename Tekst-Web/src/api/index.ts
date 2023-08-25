@@ -1,6 +1,7 @@
 import createClient from 'openapi-fetch';
 import type { paths, components } from '@/api/schema';
 import queryString from 'query-string';
+import { useAuthStore } from '@/stores';
 
 const serverUrl: string | undefined = import.meta.env.TEKST_SERVER_URL;
 const apiPath: string | undefined = import.meta.env.TEKST_API_PATH;
@@ -8,22 +9,19 @@ const apiUrl = (serverUrl && apiPath && serverUrl + apiPath) || '/';
 
 // custom, monkeypatched "fetch" for implementing interceptors
 const customFetch = async (input: RequestInfo | URL, init?: RequestInit | undefined) => {
-  // (see: https://blog.logrocket.com/intercepting-javascript-fetch-api-requests-responses/)
   // --- request interceptors go here... ---
   // TODO: intercept requests and add XSRF-token to header
   const response = await globalThis.fetch(input, init);
   // --- response interceptors go here... ---
   if (response.status === 401) {
-    // TODO: logout and cleanup
-    // if (error.response.status === 401 && !error.response.config.url.endsWith('/logout')) {
-    //   console.log('401 response');
-    //   const auth = useAuthStore();
-    //   if (auth.loggedIn) {
-    //     console.log('Running logout sequence in reaction to 401 response');
-    //     auth.logout();
-    //   }
-    // }
-    console.log('401 DETECTED! OH NO!');
+    if (!response.url.endsWith('/logout')) {
+      console.log('401 DETECTED! OH NO!');
+      const auth = useAuthStore();
+      if (auth.loggedIn) {
+        console.log('Running logout sequence in reaction to 401 response');
+        auth.logout();
+      }
+    }
   }
   return response;
 };
