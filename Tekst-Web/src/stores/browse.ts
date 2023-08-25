@@ -5,6 +5,7 @@ import { useStateStore, useAuthStore } from '@/stores';
 import type { NodeRead } from '@/api';
 import { GET } from '@/api';
 import { useMessages } from '@/messages';
+import { useI18n } from 'vue-i18n';
 
 export const useBrowseStore = defineStore('browse', () => {
   // composables
@@ -13,6 +14,7 @@ export const useBrowseStore = defineStore('browse', () => {
   const route = useRoute();
   const router = useRouter();
   const { message } = useMessages();
+  const { t } = useI18n({ useScope: 'global' });
 
   /* BASIC BROWSE UI STATE */
 
@@ -46,7 +48,7 @@ export const useBrowseStore = defineStore('browse', () => {
       });
       if (!error) {
         if (!path || path.length == 0) {
-          throw new Error();
+          message.error(t('errors.unexpected'));
         }
         nodePath.value = path;
       } else {

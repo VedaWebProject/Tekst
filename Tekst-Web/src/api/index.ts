@@ -1,5 +1,6 @@
 import createClient from 'openapi-fetch';
 import type { paths, components } from '@/api/schema';
+import queryString from 'query-string';
 
 const serverUrl: string | undefined = import.meta.env.TEKST_SERVER_URL;
 const apiPath: string | undefined = import.meta.env.TEKST_API_PATH;
@@ -30,6 +31,7 @@ const customFetch = async (input: RequestInfo | URL, init?: RequestInit | undefi
 export const { GET, POST, PUT, PATCH, DELETE } = createClient<paths>({
   baseUrl: apiUrl,
   fetch: customFetch,
+  querySerializer: (q) => queryString.stringify(q, { arrayFormat: 'none' }),
 });
 
 export const optionsPresets = {
@@ -113,7 +115,7 @@ export type UserCreate = components['schemas']['UserCreate'];
 export type UserRead = components['schemas']['UserRead'];
 export type UserUpdate = components['schemas']['UserUpdate'];
 export type UserReadPublic = components['schemas']['UserReadPublic'];
-export type UserUpdatePublicFieldsEnum = components['schemas']['UserUpdate']['publicFields'];
+export type UserUpdatePublicFields = components['schemas']['UserUpdate']['publicFields'];
 export type TextCreate = components['schemas']['TextCreate'];
 export type TextRead = components['schemas']['TextRead'];
 export type SubtitleTranslation = components['schemas']['SubtitleTranslation'];

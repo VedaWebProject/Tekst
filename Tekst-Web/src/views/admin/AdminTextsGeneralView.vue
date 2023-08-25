@@ -16,7 +16,7 @@ import {
   type FormInst,
 } from 'naive-ui';
 import { computed, ref, watch } from 'vue';
-import { useApi } from '@/api';
+import { PATCH } from '@/api';
 import { useI18n } from 'vue-i18n';
 import { localeProfiles } from '@/i18n';
 import type { SubtitleTranslation } from '@/api';
@@ -30,7 +30,6 @@ const state = useStateStore();
 const { loadPlatformData } = usePlatformData();
 const { message } = useMessages();
 const { textFormRules } = useFormRules();
-const { textsApi } = useApi();
 const { t } = useI18n({ useScope: 'global' });
 const loading = ref(false);
 
@@ -83,30 +82,25 @@ function handleReset() {
 function handleSave() {
   loading.value = true;
   formRef.value
-    ?.validate(async (errors) => {
-      if (!errors) {
-        const changes = getModelChanges();
-        try {
-          const updatedText = await textsApi
-            .updateText({
-              id: state.text?.id || '',
-              textUpdate: changes,
-            })
-            .then((resp) => resp.data);
-          await loadPlatformData();
-          state.text = updatedText;
-          resetModelChanges();
-          message.success(t('admin.texts.general.msgSaved'));
-        } catch {
-          /**
-           * This will be either an app-level error (e.g. buggy validation, server down, 401)
-           * or the provided email already exists, which we don't want to actively disclose.
-           */
-          message.error(t('errors.unexpected'));
-        } finally {
-          loading.value = false;
-        }
+    ?.validate(async (validationError) => {
+      if (validationError) return;
+      const { data: updatedText, error } = await PATCH('/texts/{id}', {
+        params: { path: { id: state.text?.id || '' } },
+        body: getModelChanges(),
+      });
+      if (!error) {
+        await loadPlatformData();
+        state.text = updatedText;
+        resetModelChanges();
+        message.success(t('admin.texts.general.msgSaved'));
+      } else {
+        /**
+         * This will be either an app-level error (e.g. buggy validation, server down, 401)
+         * or the provided email already exists, which we don't want to actively disclose.
+         */
+        message.error(t('errors.unexpected'));
       }
+      loading.value = false;
     })
     .catch(() => {
       message.error(t('errors.followFormRules'));

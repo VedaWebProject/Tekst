@@ -14,7 +14,7 @@ import {
 import { useFormRules } from '@/formRules';
 import { useI18n } from 'vue-i18n';
 import { useMessages } from '@/messages';
-import { useApi } from '@/api';
+import { POST } from '@/api';
 import { useStateStore } from '@/stores';
 import { usePlatformData } from '@/platformData';
 import { useRouter } from 'vue-router';
@@ -37,7 +37,6 @@ const initialModel = (): NewTextModel => ({
 
 const { t } = useI18n({ useScope: 'global' });
 const { textFormRules } = useFormRules();
-const { textsApi } = useApi();
 const router = useRouter();
 const { message } = useMessages();
 const state = useStateStore();
@@ -64,18 +63,20 @@ async function handleSave() {
   loading.value = true;
   try {
     formRef.value
-      ?.validate(async (error) => {
-        if (error) return;
-        try {
-          const createdText = (await textsApi.createText({ textCreate: model.value as TextCreate }))
-            .data;
+      ?.validate(async (validationError) => {
+        if (validationError) return;
+        const {
+          data: createdText,
+          error,
+          response,
+        } = await POST('/texts', { body: model.value as TextCreate });
+        if (!error) {
           await loadPlatformData();
           state.text = pfData.value?.texts.find((t) => t.slug === createdText.slug) || state.text;
           router.push({ name: 'adminTextsGeneral', params: { text: createdText.slug } });
           message.success(t('admin.newText.msgSaveSuccess', { title: createdText.title }));
-        } catch (e) {
-          const error = e as AxiosError;
-          if (error.response && error.response.status === 409) {
+        } else {
+          if (response.status === 409) {
             message.error(t('errors.conflict'));
           } else {
             message.error(t('errors.unexpected'));

@@ -23,14 +23,13 @@ import { useI18n } from 'vue-i18n';
 import SearchRound from '@vicons/material/SearchRound';
 import UndoRound from '@vicons/material/UndoRound';
 import { useRoute } from 'vue-router';
-import { useApi } from '@/api';
+import { POST, PATCH, DELETE } from '@/api';
 import { useAuthStore } from '@/stores';
 
 const { t } = useI18n({ useScope: 'global' });
 const { users, error, load: loadUsers } = useUsers();
 const { message } = useMessages();
 const dialog = useDialog();
-const { usersApi, authApi } = useApi();
 const route = useRoute();
 const auth = useAuthStore();
 
@@ -77,17 +76,15 @@ const paginatedData = computed(() => {
 });
 
 async function updateUser(user: UserRead, updates: UserUpdate) {
-  try {
-    const updatedUser = await usersApi
-      .usersPatchUser({
-        id: user.id,
-        userUpdate: updates,
-      })
-      .then((resp) => resp.data);
+  const { data: updatedUser, error } = await PATCH('/users/{id}', {
+    params: { path: { id: user.id } },
+    body: updates,
+  });
+  if (!error) {
     message.success(t('admin.users.save', { username: user.username }));
     loadUsers();
     return updatedUser;
-  } catch {
+  } else {
     message.error(t('errors.unexpected'));
   }
 }
@@ -115,23 +112,19 @@ function handleActiveClick(user: UserRead) {
     negativeText: t('general.noAction'),
     style: 'font-weight: var(--app-ui-font-weight-light)',
     onPositiveClick: async () => {
-      try {
-        const updatedUser = await updateUser(user, { isActive: !user.isActive });
-        // if just activated but still unverified, send verification mail
-        if (updatedUser && updatedUser.isActive && !updatedUser.isVerified) {
-          try {
-            await authApi.verifyRequestToken({
-              bodyVerifyRequestTokenAuthRequestVerifyTokenPost: { email: updatedUser.email },
-            });
-            message.info(
-              t('admin.users.msgSentVerificationLink', { username: updatedUser.username })
-            );
-          } catch {
-            message.error(t('admin.users.msgSentVerificationLinkError'));
-          }
+      const updatedUser = await updateUser(user, { isActive: !user.isActive });
+      // if just activated but still unverified, send verification mail
+      if (updatedUser && updatedUser.isActive && !updatedUser.isVerified) {
+        const { error } = await POST('/auth/request-verify-token', {
+          body: { email: updatedUser.email },
+        });
+        if (!error) {
+          message.info(
+            t('admin.users.msgSentVerificationLink', { username: updatedUser.username })
+          );
+        } else {
+          message.error(t('admin.users.msgSentVerificationLinkError'));
         }
-      } catch {
-        message.error(t('errors.unexpected'));
       }
     },
   });
@@ -147,22 +140,18 @@ function handleVerifiedClick(user: UserRead) {
     negativeText: t('general.noAction'),
     style: 'font-weight: var(--app-ui-font-weight-light)',
     onPositiveClick: async () => {
-      try {
-        const updatedUser = await updateUser(user, { isVerified: !user.isVerified });
-        if (updatedUser && !updatedUser.isVerified) {
-          try {
-            await authApi.verifyRequestToken({
-              bodyVerifyRequestTokenAuthRequestVerifyTokenPost: { email: updatedUser.email },
-            });
-            message.info(
-              t('admin.users.msgSentVerificationLink', { username: updatedUser.username })
-            );
-          } catch {
-            message.error(t('admin.users.msgSentVerificationLinkError'));
-          }
+      const updatedUser = await updateUser(user, { isVerified: !user.isVerified });
+      if (updatedUser && !updatedUser.isVerified) {
+        const { error } = await POST('/auth/request-verify-token', {
+          body: { email: updatedUser.email },
+        });
+        if (!error) {
+          message.info(
+            t('admin.users.msgSentVerificationLink', { username: updatedUser.username })
+          );
+        } else {
+          message.error(t('admin.users.msgSentVerificationLinkError'));
         }
-      } catch {
-        message.error(t('errors.unexpected'));
       }
     },
   });
@@ -176,11 +165,11 @@ function handleDeleteClick(user: UserRead) {
     negativeText: t('general.noAction'),
     style: 'font-weight: var(--app-ui-font-weight-light)',
     onPositiveClick: async () => {
-      try {
-        await usersApi.usersDeleteUser({ id: user.id });
+      const { error } = await DELETE('/users/{id}', { params: { path: { id: user.id } } });
+      if (!error) {
         message.success(t('admin.users.msgUserDeleted', { username: user.username }));
         loadUsers();
-      } catch {
+      } else {
         message.error(t('errors.unexpected'));
       }
     },

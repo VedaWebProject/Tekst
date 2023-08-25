@@ -107,7 +107,7 @@ async function handleClick() {
   align-items: flex-start;
 }
 
-.header>h2 {
+.header > h2 {
   flex-grow: 2;
 }
 

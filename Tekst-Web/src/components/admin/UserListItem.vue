@@ -49,10 +49,11 @@ const statusBtnMinWidth = '128px';
             strong
             secondary
             :type="targetUser.isSuperuser ? 'info' : 'default'"
-            :title="targetUser.isSuperuser
+            :title="
+              targetUser.isSuperuser
                 ? $t('admin.users.statusBtnTitle.setUser', { username: targetUser.username })
                 : $t('admin.users.statusBtnTitle.setSuperuser', { username: targetUser.username })
-              "
+            "
             size="tiny"
             :style="{ minWidth: statusBtnMinWidth }"
             @click="$emit('superuserClick', targetUser)"
@@ -69,10 +70,11 @@ const statusBtnMinWidth = '128px';
             strong
             secondary
             :type="targetUser.isActive ? 'success' : 'error'"
-            :title="targetUser.isActive
+            :title="
+              targetUser.isActive
                 ? $t('admin.users.statusBtnTitle.setInactive', { username: targetUser.username })
                 : $t('admin.users.statusBtnTitle.setActive', { username: targetUser.username })
-              "
+            "
             size="tiny"
             :style="{ minWidth: statusBtnMinWidth }"
             @click="$emit('activeClick', targetUser)"
@@ -87,10 +89,11 @@ const statusBtnMinWidth = '128px';
             strong
             secondary
             :type="targetUser.isVerified ? 'success' : 'warning'"
-            :title="targetUser.isVerified
+            :title="
+              targetUser.isVerified
                 ? $t('admin.users.statusBtnTitle.setUnverified', { username: targetUser.username })
                 : $t('admin.users.statusBtnTitle.setVerified', { username: targetUser.username })
-              "
+            "
             size="tiny"
             :style="{ minWidth: statusBtnMinWidth }"
             @click="$emit('verifiedClick', targetUser)"
