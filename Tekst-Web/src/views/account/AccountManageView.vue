@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { useApi } from '@/api';
+import { POST } from '@/api';
 import { useFormRules } from '@/formRules';
 import { useMessages } from '@/messages';
-import type { UserUpdate, UserUpdatePublicFieldsEnum } from '@/openapi';
 import { usePlatformData } from '@/platformData';
 import { useAuthStore } from '@/stores';
 import type { FormInst, FormItemInst, FormItemRule } from 'naive-ui';
@@ -20,13 +19,13 @@ import {
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useModelChanges } from '@/modelChanges';
+import type { UserUpdate, UserUpdatePublicFields } from '@/api';
 
 const dialog = useDialog();
 const auth = useAuthStore();
 const { pfData } = usePlatformData();
 const { message } = useMessages();
 const { t } = useI18n({ useScope: 'global' });
-const { authApi } = useApi();
 
 const initialEmailModel = () => ({
   email: auth.user?.email || null,
@@ -118,18 +117,14 @@ async function updateEmail() {
     message.success(t('account.manage.msgEmailSaveSuccess'));
     if (!pfData.value?.security?.closedMode === true) {
       await auth.logout();
-      authApi
-        .verifyRequestToken({
-          bodyVerifyRequestTokenAuthRequestVerifyTokenPost: {
-            email: emailFormModel.value.email || '',
-          },
-        })
-        .then(() => {
-          message.warning(t('account.manage.msgVerifyEmailWarning'), 20);
-        })
-        .catch(() => {
-          message.error(t('errors.unexpected'));
-        });
+      const { error } = await POST('/auth/request-verify-token', {
+        body: { email: emailFormModel.value.email || '' },
+      });
+      if (!error) {
+        message.warning(t('account.manage.msgVerifyEmailWarning'), 20);
+      } else {
+        message.error(t('errors.unexpected'));
+      }
       auth.showLoginModal(
         t('account.manage.msgVerifyEmailWarning'),
         { name: 'accountProfile' },
@@ -204,7 +199,7 @@ async function handlepublicFieldsSave() {
   await updateUser({
     publicFields: Object.keys(publicFieldsFormModel.value).filter(
       (k) => publicFieldsFormModel.value[k]
-    ) as UserUpdatePublicFieldsEnum[],
+    ) as UserUpdatePublicFields,
   });
   resetPublicFieldsModelChanges();
   message.success(t('account.manage.msgUserDataSaveSuccess'));

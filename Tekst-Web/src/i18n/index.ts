@@ -4,8 +4,40 @@ import type { I18nOptions } from 'vue-i18n';
 import type { NDateLocale, NLocale } from 'naive-ui';
 import { enUS, dateEnUS } from 'naive-ui';
 import { deDE, dateDeDE } from 'naive-ui';
-import { useApi } from '@/api';
-import { UserUpdateLocaleEnum } from '@/openapi';
+import { GET } from '@/api';
+
+export enum LocaleKey {
+  EnUs = 'enUS',
+  DeDe = 'deDE',
+}
+
+export interface AvailableLocale {
+  key: LocaleKey;
+  displayFull: string;
+  displayShort: string;
+  icon: string;
+  nUiLangLocale: NLocale;
+  nUiDateLocale: NDateLocale;
+}
+
+export const localeProfiles: { [localeKey: string]: AvailableLocale } = {
+  enUS: {
+    key: LocaleKey.EnUs,
+    displayFull: 'English (US)',
+    displayShort: 'en-US',
+    icon: '🇺🇸',
+    nUiLangLocale: enUS,
+    nUiDateLocale: dateEnUS,
+  },
+  deDE: {
+    key: LocaleKey.DeDe,
+    displayFull: 'Deutsch',
+    displayShort: 'de-DE',
+    icon: '🇩🇪',
+    nUiLangLocale: deDE,
+    nUiDateLocale: dateDeDE,
+  },
+};
 
 const i18nOptions: I18nOptions = {
   legacy: false,
@@ -15,48 +47,17 @@ const i18nOptions: I18nOptions = {
   messages: staticI18nMsgs,
 };
 
-export interface AvailableLocale {
-  key: string;
-  displayFull: string;
-  displayShort: string;
-  icon: string;
-  nUiLangLocale: NLocale;
-  nUiDateLocale: NDateLocale;
-  apiLocaleEnum: UserUpdateLocaleEnum;
-}
-
-export const localeProfiles: { [localeKey: string]: AvailableLocale } = {
-  enUS: {
-    key: 'enUS',
-    displayFull: 'English (US)',
-    displayShort: 'en-US',
-    icon: '🇺🇸',
-    nUiLangLocale: enUS,
-    nUiDateLocale: dateEnUS,
-    apiLocaleEnum: UserUpdateLocaleEnum.EnUs,
-  },
-  deDE: {
-    key: 'deDE',
-    displayFull: 'Deutsch',
-    displayShort: 'de-DE',
-    icon: '🇩🇪',
-    nUiLangLocale: deDE,
-    nUiDateLocale: dateDeDE,
-    apiLocaleEnum: UserUpdateLocaleEnum.DeDe,
-  },
-};
-
 export const i18n = createI18n(i18nOptions);
-const { platformApi } = useApi();
 
 // set initial i18n locale
 // @ts-ignore
 i18n.global.locale.value = localStorage.getItem('locale') || 'enUS';
 
 async function loadServerTranslations(locale: string) {
-  await platformApi.getTranslations({ lang: locale }).then((response) => {
-    i18n.global.mergeLocaleMessage(locale, { server: response.data });
-  });
+  const { data, error } = await GET('/platform/i18n', { params: { query: { lang: locale } } });
+  if (!error) {
+    i18n.global.mergeLocaleMessage(locale, { server: data });
+  }
 }
 
 export async function setI18nLocale(

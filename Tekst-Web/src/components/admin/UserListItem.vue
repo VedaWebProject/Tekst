@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { UserRead } from '@/openapi';
+import type { UserRead } from '@/api';
 import { NIcon, NTime, NListItem, NThing, NSpace, NButton } from 'naive-ui';
 
 import StarRound from '@vicons/material/StarRound';

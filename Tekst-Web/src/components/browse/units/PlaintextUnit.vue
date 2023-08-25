@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PlainTextLayerConfig } from '@/openapi';
+import type { PlainTextLayerConfig } from '@/api';
 
 defineProps<{
   layer: Record<string, any>;

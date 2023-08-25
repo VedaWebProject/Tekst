@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import UnitContainerHeaderWidget from '@/components/browse/UnitContainerHeaderWidget.vue';
 import TranslateRound from '@vicons/material/TranslateRound';
-import type { DeepLLinksConfig } from '@/openapi';
+import type { DeepLLinksConfigOutput } from '@/api';
 import { computed, h } from 'vue';
 import type { VNodeChild } from 'vue';
 import { useStateStore } from '@/stores';
@@ -11,7 +11,7 @@ import type { DropdownOption } from 'naive-ui';
 const DEEPL_TRANSLATOR_URL = 'https://www.deepl.com/translator';
 
 const props = defineProps<{
-  widgetConfig: DeepLLinksConfig;
+  widgetConfig: DeepLLinksConfigOutput;
   layer: Record<string, any>;
 }>();
 

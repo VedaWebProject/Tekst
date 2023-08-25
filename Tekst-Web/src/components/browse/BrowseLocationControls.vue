@@ -6,16 +6,19 @@ import { NButton, NModal, NSelect, NFormItem, NForm, NDivider } from 'naive-ui';
 import ArrowBackIosRound from '@vicons/material/ArrowBackIosRound';
 import ArrowForwardIosRound from '@vicons/material/ArrowForwardIosRound';
 import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
-import type { NodeRead, TextRead } from '@/openapi';
+import type { NodeRead, TextRead } from '@/api';
 import router from '@/router';
 import ModalButtonFooter from '@/components/ModalButtonFooter.vue';
 import { useMagicKeys, whenever } from '@vueuse/core';
-import { useApi } from '@/api';
+import { GET } from '@/api';
+import { useMessages } from '@/messages';
+import { useI18n } from 'vue-i18n';
 
 const state = useStateStore();
 const browse = useBrowseStore();
 const route = useRoute();
-const { browseApi } = useApi();
+const { message } = useMessages();
+const { t } = useI18n({ useScope: 'global' });
 
 const { ArrowLeft, ArrowRight } = useMagicKeys();
 
@@ -95,11 +98,14 @@ async function updateSelectModelsFromLvl(lvl: number) {
     }
   });
   // load node path options from node selected at lvl as root
-  const nodes = await browseApi
-    .getPathOptionsByRootId({
-      id: locationSelectModels.value[lvl].selected || '',
-    })
-    .then((response) => response.data);
+  const { data: nodes, error } = await GET('/browse/nodes/{id}/path/options-by-root', {
+    params: { path: { id: locationSelectModels.value[lvl].selected || '' } },
+  });
+  if (error) {
+    message.error(t('errors.unexpected'));
+    console.error(error);
+    return;
+  }
   // set nodes for all following levels
   locationSelectModels.value.forEach((lsm, i) => {
     // only apply to higher levels
@@ -132,32 +138,31 @@ async function initSelectModels() {
   });
 
   // fetch nodes from head to root
-  try {
-    const nodesOptions = await browseApi
-      .getPathOptionsByHeadId({ id: browse.nodePath[browseLevel.value]?.id })
-      .then((response) => response.data);
+  const { data: nodesOptions, error } = await GET('/browse/nodes/{id}/path/options-by-head', {
+    params: { path: { id: browse.nodePath[browseLevel.value]?.id } },
+  });
 
-    // apply browse level
-    applyBrowseLevel();
-
-    // manipulate each location select model
-    let index = 0;
-    for (const lsm of locationSelectModels.value) {
-      // set options and selection
-      if (index <= browseLevel.value) {
-        // remember nodes for these options
-        lsm.nodes = nodesOptions[index];
-        // set selection
-        lsm.selected = browse.nodePath[index]?.id || null;
-      }
-      index++;
-      lsm.loading = false;
-    }
-  } catch {
-    // sweet FA
+  if (error) {
+    message.error(t('errors.unexpected'));
+    console.error(error);
+    return;
   }
+  // apply browse level
+  applyBrowseLevel();
 
-  // locationSelectModels.value = models;
+  // manipulate each location select model
+  let index = 0;
+  for (const lsm of locationSelectModels.value) {
+    // set options and selection
+    if (index <= browseLevel.value) {
+      // remember nodes for these options
+      lsm.nodes = nodesOptions[index];
+      // set selection
+      lsm.selected = browse.nodePath[index]?.id || null;
+    }
+    index++;
+    lsm.loading = false;
+  }
 }
 
 function getPrevNextRoute(step: number) {
@@ -318,9 +323,11 @@ whenever(ArrowLeft, () => {
   justify-content: space-between;
   gap: 12px;
 }
+
 .location-select-item {
   margin-bottom: 0.5rem;
 }
+
 .location-select-item.disabled {
   opacity: 0.5;
 }

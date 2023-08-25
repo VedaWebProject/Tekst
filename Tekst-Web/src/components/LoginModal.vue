@@ -7,14 +7,13 @@ import { useI18n } from 'vue-i18n';
 import { useMessages } from '@/messages';
 import type { RouteLocationRaw } from 'vue-router';
 import { useFormRules } from '@/formRules';
-import { useApi } from '@/api';
+import { POST } from '@/api';
 
 const auth = useAuthStore();
 const { message } = useMessages();
 const router = useRouter();
 const { accountFormRules } = useFormRules();
 const { t } = useI18n({ useScope: 'global' });
-const { authApi } = useApi();
 
 const initialFormModel = () => ({
   email: null,
@@ -52,16 +51,16 @@ async function handleLoginClick(
     });
 }
 
-function handleForgotPasswordClick(resolveLogin: (res: boolean | Promise<boolean>) => void) {
+async function handleForgotPasswordClick(resolveLogin: (res: boolean | Promise<boolean>) => void) {
   if (formModel.value.email && /^.+@.+\.\w+$/.test(formModel.value.email)) {
-    authApi
-      .resetForgotPassword({
-        bodyResetForgotPasswordAuthForgotPasswordPost: { email: formModel.value.email },
-      })
-      .catch(() => {
-        message.error(t('errors.unexpected'), 10);
-      });
-    message.info(t('account.forgotPassword.sentResetLink', { email: formModel.value.email }), 10);
+    const { error } = await POST('/auth/forgot-password', {
+      body: { email: formModel.value.email },
+    });
+    if (error) {
+      message.error(t('errors.unexpected'), 10);
+    } else {
+      message.info(t('account.forgotPassword.sentResetLink', { email: formModel.value.email }), 10);
+    }
     resetForm();
     resolveLogin(false);
   } else {

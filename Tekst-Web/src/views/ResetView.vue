@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useApi } from '@/api';
+import { POST } from '@/api';
 import { useFormRules } from '@/formRules';
 import { useMessages } from '@/messages';
 import type { FormInst, FormItemInst, FormItemRule } from 'naive-ui';
@@ -9,10 +9,7 @@ import { NInput, NForm, NFormItem, NButton, NSpace } from 'naive-ui';
 import { useRoute } from 'vue-router';
 import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import type { AxiosError } from 'axios';
-import type { ErrorModel } from '@/openapi';
 
-const { authApi } = useApi();
 const { message } = useMessages();
 const route = useRoute();
 const router = useRouter();
@@ -33,7 +30,7 @@ const firstInputRef = ref<HTMLInputElement | null>(null);
 const loading = ref(false);
 
 const passwordRepeatMatchRule = {
-  validator: (rule: FormItemRule, value: string) =>
+  validator: (_: FormItemRule, value: string) =>
     !!value && !!passwordFormModel.value.password && value === passwordFormModel.value.password,
   message: () => t('models.user.formRulesFeedback.passwordRepNoMatch'),
   trigger: ['input', 'blur', 'password-input'],
@@ -51,32 +48,24 @@ async function handlePasswordSave() {
     ?.validate(async (errors) => {
       !errors &&
         (async () => {
-          authApi
-            .resetResetPassword({
-              bodyResetResetPasswordAuthResetPasswordPost: {
-                password: passwordFormModel.value.password || '',
-                token: token || '',
-              },
-            })
-            .then(() => {
-              message.success(t('account.resetPassword.success'), 10);
-              router.push({ name: 'home' });
-              loading.value = false;
-            })
-            .catch((e: AxiosError) => {
-              if (e.response) {
-                const data = e.response.data as ErrorModel;
-                if (data.detail === 'RESET_PASSWORD_BAD_TOKEN') {
-                  message.error(t('account.resetPassword.badToken'));
-                } else {
-                  message.error(t('errors.unexpected'));
-                }
-              } else {
-                message.error(t('errors.unexpected'));
-              }
-              router.push({ name: 'home' });
-              loading.value = false;
-            });
+          const { error } = await POST('/auth/reset-password', {
+            body: {
+              password: passwordFormModel.value.password || '',
+              token: token || '',
+            },
+          });
+          if (!error) {
+            message.success(t('account.resetPassword.success'), 10);
+            router.push({ name: 'home' });
+          } else {
+            if (error.detail === 'RESET_PASSWORD_BAD_TOKEN') {
+              message.error(t('account.resetPassword.badToken'));
+            } else {
+              message.error(t('errors.unexpected'));
+            }
+            router.push({ name: 'home' });
+          }
+          loading.value = false;
         })();
     })
     .catch(() => {

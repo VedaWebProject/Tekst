@@ -18,7 +18,7 @@ import {
 } from 'naive-ui';
 import { computed, ref } from 'vue';
 import { localeProfiles } from '@/i18n';
-import type { StructureLevelTranslation, StructureLevelTranslationLocaleEnum } from '@/openapi';
+import type { StructureLevelTranslation } from '@/api';
 
 import AddRound from '@vicons/material/AddRound';
 import MinusRound from '@vicons/material/MinusRound';
@@ -27,13 +27,12 @@ import DeleteRound from '@vicons/material/DeleteRound';
 import EditRound from '@vicons/material/EditRound';
 import { useMessages } from '@/messages';
 import { useI18n } from 'vue-i18n';
-import { useApi } from '@/api';
+import { POST, PATCH, DELETE } from '@/api';
 import { usePlatformData } from '@/platformData';
 
 const state = useStateStore();
 const { loadPlatformData } = usePlatformData();
 const { message } = useMessages();
-const { textsApi } = useApi();
 const { t, locale } = useI18n({ useScope: 'global' });
 const { textFormRules } = useFormRules();
 const dialog = useDialog();
@@ -60,10 +59,10 @@ const editModalWarning = computed(() =>
 const levelLocaleOptions = computed(() =>
   Object.keys(localeProfiles).map((l) => ({
     label: `${localeProfiles[l].icon} ${localeProfiles[l].displayFull}`,
-    value: localeProfiles[l].apiLocaleEnum,
+    value: localeProfiles[l].key,
     disabled: !!formModel.value.translations
       .map((lvlTrans: StructureLevelTranslation) => lvlTrans.locale)
-      .includes(l as StructureLevelTranslationLocaleEnum),
+      .includes(l),
   }))
 );
 
@@ -95,24 +94,20 @@ function handleDeleteClick(level: number) {
     style: 'font-weight: var(--app-ui-font-weight-light); width: 680px; max-width: 95%',
     onPositiveClick: async () => {
       loading.value = true;
-      try {
-        state.text = await textsApi
-          .deleteLevel({
-            id: state.text?.id || '',
-            index: level,
-          })
-          .then((resp) => resp.data);
+      const { data, error } = await DELETE('/texts/{id}/level/{index}', {
+        params: { path: { id: state.text?.id || '', index: level } },
+      });
+      if (!error) {
+        state.text = data;
         message.success(
           t('admin.texts.levels.msgDeleteSuccess', {
             levelLabel: targetLevelLabel,
           })
         );
-        await loadPlatformData();
-      } catch {
+      } else {
         message.error(t('errors.unexpected'));
-      } finally {
-        loading.value = false;
       }
+      loading.value = false;
     },
   });
 }
@@ -129,48 +124,49 @@ function destroyEditModal() {
 
 async function handleModalSubmit() {
   formRef.value
-    ?.validate(async (errors) => {
-      if (!errors) {
-        loading.value = true;
-        try {
-          if (editModalAction.value === 'insert') {
-            state.text = await textsApi
-              .insertLevel({
-                id: state.text?.id || '',
-                index: editModalLevel.value,
-                structureLevelTranslation: formModel.value.translations,
-              })
-              .then((resp) => resp.data);
-            message.success(
-              t('admin.texts.levels.msgInsertSuccess', { position: editModalLevel.value + 1 })
-            );
-          } else if (editModalAction.value === 'edit') {
-            state.text = await textsApi
-              .updateText({
-                id: state.text?.id || '',
-                textUpdate: {
-                  levels: state.text?.levels.map((lvl, i) => {
-                    if (i === editModalLevel.value) {
-                      return formModel.value.translations;
-                    } else {
-                      return lvl;
-                    }
-                  }),
-                },
-              })
-              .then((resp) => resp.data);
-            message.success(
-              t('admin.texts.levels.msgEditSuccess', { position: editModalLevel.value + 1 })
-            );
-          }
-          await loadPlatformData();
-        } catch {
+    ?.validate(async (validationError) => {
+      if (validationError) return;
+      loading.value = true;
+
+      if (editModalAction.value === 'insert') {
+        const { data, error } = await POST('/texts/{id}/level/{index}', {
+          params: { path: { id: state.text?.id || '', index: editModalLevel.value } },
+          body: formModel.value.translations,
+        });
+        if (!error) {
+          state.text = data;
+          message.success(
+            t('admin.texts.levels.msgInsertSuccess', { position: editModalLevel.value + 1 })
+          );
+        } else {
           message.error(t('errors.unexpected'));
-        } finally {
-          loading.value = false;
-          showEditModal.value = false;
+        }
+      } else if (editModalAction.value === 'edit') {
+        const textUpdates = {
+          levels: state.text?.levels.map((lvl, i) => {
+            if (i === editModalLevel.value) {
+              return formModel.value.translations;
+            } else {
+              return lvl;
+            }
+          }),
+        };
+        const { data, error } = await PATCH('/texts/{id}', {
+          params: { path: { id: state.text?.id || '' } },
+          body: textUpdates,
+        });
+        if (!error) {
+          state.text = data;
+          message.success(
+            t('admin.texts.levels.msgEditSuccess', { position: editModalLevel.value + 1 })
+          );
+        } else {
+          message.error(t('errors.unexpected'));
         }
       }
+      await loadPlatformData();
+      loading.value = false;
+      showEditModal.value = false;
     })
     .catch(() => {
       message.error(t('errors.followFormRules'));

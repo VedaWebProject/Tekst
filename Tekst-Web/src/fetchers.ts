@@ -1,7 +1,6 @@
 import { ref, isRef, unref, watchEffect, type Ref } from 'vue';
-import type { UserReadPublic, PlatformStats, UserRead, LayerNodeCoverage } from '@/openapi';
-import type { AxiosResponse } from 'axios';
-import { useApi } from './api';
+import { GET } from '@/api';
+import type { UserReadPublic, LayerNodeCoverage, PlatformStats, UserRead } from '@/api';
 
 export function useProfile(
   usernameOrId: string | Ref<string>,
@@ -9,19 +8,23 @@ export function useProfile(
 ) {
   const user = ref<UserReadPublic | null>(null);
   const error = ref(false);
-  const { platformApi } = useApi();
 
-  function fetchProfileData() {
+  async function fetchProfileData() {
     if (!unref(active)) return;
     user.value = null;
     error.value = false;
     const unoid = unref(usernameOrId);
     if (!unoid) return;
-    platformApi
-      .getPublicUserInfo({ usernameOrId: unoid })
-      .then((response: AxiosResponse<UserReadPublic, any>) => response.data)
-      .then((u: UserReadPublic) => (user.value = u))
-      .catch(() => (error.value = true));
+
+    const { data, error: err } = await GET('/platform/user/{usernameOrId}', {
+      params: { path: { usernameOrId: unoid } },
+    });
+
+    if (!err) {
+      user.value = data;
+    } else {
+      error.value = true;
+    }
   }
 
   if (isRef(usernameOrId) || isRef(active)) {
@@ -36,19 +39,23 @@ export function useProfile(
 export function useLayerCoverage(id: string | Ref<string>, active: boolean | Ref<boolean> = true) {
   const coverage = ref<LayerNodeCoverage[] | null>(null);
   const error = ref(false);
-  const { browseApi } = useApi();
 
-  function fetchCoverageData() {
+  async function fetchCoverageData() {
     if (!unref(active)) return;
     coverage.value = null;
     error.value = false;
     const layerId = unref(id);
     if (!layerId) return;
-    browseApi
-      .getLayerCoverageData({ id: layerId })
-      .then((response: AxiosResponse<LayerNodeCoverage[], any>) => response.data)
-      .then((c: LayerNodeCoverage[]) => (coverage.value = c))
-      .catch(() => (error.value = true));
+
+    const { data, error: err } = await GET('/browse/layers/{id}/coverage', {
+      params: { path: { id: layerId } },
+    });
+
+    if (!err) {
+      coverage.value = data;
+    } else {
+      error.value = true;
+    }
   }
 
   if (isRef(id) || isRef(active)) {
@@ -63,16 +70,18 @@ export function useLayerCoverage(id: string | Ref<string>, active: boolean | Ref
 export function useStats() {
   const stats = ref<PlatformStats | null>(null);
   const error = ref(false);
-  const { adminApi } = useApi();
 
-  function load() {
+  async function load() {
     stats.value = null;
     error.value = false;
-    adminApi
-      .getStats()
-      .then((response: AxiosResponse<PlatformStats, any>) => response.data)
-      .then((s: PlatformStats) => (stats.value = s))
-      .catch(() => (error.value = true));
+
+    const { data, error: err } = await GET('/admin/stats', {});
+
+    if (!err) {
+      stats.value = data;
+    } else {
+      error.value = true;
+    }
   }
 
   load();
@@ -83,16 +92,18 @@ export function useStats() {
 export function useUsers() {
   const users = ref<Array<UserRead> | null>(null);
   const error = ref(false);
-  const { adminApi } = useApi();
 
-  function load() {
+  async function load() {
     users.value = null;
     error.value = false;
-    adminApi
-      .getUsers()
-      .then((response: AxiosResponse<Array<UserRead>, any>) => response.data)
-      .then((u: Array<UserRead>) => (users.value = u))
-      .catch(() => (error.value = true));
+
+    const { data, error: err } = await GET('/admin/users', {});
+
+    if (!err) {
+      users.value = data;
+    } else {
+      error.value = true;
+    }
   }
 
   load();

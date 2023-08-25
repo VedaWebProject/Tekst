@@ -4,7 +4,7 @@ import MergeRound from '@vicons/material/MergeRound';
 import { ref } from 'vue';
 import { NModal, NButton, NSpin } from 'naive-ui';
 import ModalButtonFooter from '@/components/ModalButtonFooter.vue';
-import { useApi } from '@/api';
+import { GET } from '@/api';
 import { useMessages } from '@/messages';
 import { useI18n } from 'vue-i18n';
 import unitComponents from '@/components/browse/units/mappings';
@@ -16,7 +16,6 @@ const props = defineProps<{
   layer: Record<string, any>;
 }>();
 
-const { browseApi } = useApi();
 const { message } = useMessages();
 const { t } = useI18n({ useScope: 'global' });
 const browse = useBrowseStore();
@@ -28,20 +27,27 @@ const units = ref<Record<string, any>[]>([]);
 async function handleClick() {
   showModal.value = true;
   loading.value = true;
-  try {
-    units.value = await browseApi
-      .getUnitSiblings({
+
+  const { data: unitsData, error } = await GET('/browse/unit-siblings', {
+    params: {
+      query: {
         layerId: props.layer.id,
         parentNodeId: browse.nodePath[props.layer.level - 1]?.id,
-      })
-      .then((resp) => resp.data);
-  } catch (e) {
-    console.error(e);
+      },
+    },
+  });
+
+  if (error) {
+    console.error(error);
     message.error(t('errors.unexpected'));
     showModal.value = false;
-  } finally {
     loading.value = false;
+    return;
+  } else {
+    units.value = unitsData;
   }
+
+  loading.value = false;
 }
 </script>
 
