@@ -49,6 +49,9 @@ services:
     env_file: .env
     networks:
       - back
+    secrets:
+      - init_admin_email
+      - init_admin_password
 
   mongo:
     image: mongo:5.0.9
@@ -70,3 +73,9 @@ volumes:
 networks:
   front:
   back:
+
+secrets:
+  init_admin_email:
+    file: ./secrets/init_admin_email.txt
+  init_admin_password:
+    file: ./secrets/init_admin_password.txt

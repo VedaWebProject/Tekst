@@ -114,8 +114,8 @@ class SecurityConfig(ModelBase):
 
     secret: str = Field(default_factory=lambda: token_hex(32), min_length=16)
     closed_mode: bool = False
-    init_admin_email: EmailStr | None = None
-    init_admin_password: str | None = None
+    init_admin_email_file: str | None = "tekst_init_admin_email.txt"
+    init_admin_password_file: str | None = "tekst_init_admin_password.txt"
     users_active_by_default: bool = False
 
     enable_cookie_auth: bool = True
