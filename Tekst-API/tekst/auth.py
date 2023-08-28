@@ -389,9 +389,7 @@ async def create_initial_superuser():
         log.warning("No initial admin account configured, skipping creation.")
         return
     # create inital admin account
-    if await UserDocument.find_one(
-        UserDocument.email == init_admin_email
-    ).exists():
+    if await UserDocument.find_one(UserDocument.email == init_admin_email).exists():
         log.warning(
             f"Initial admin account for {init_admin_email} already exists."
             " Skipping creation."
