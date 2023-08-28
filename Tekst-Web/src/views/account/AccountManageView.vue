@@ -101,8 +101,9 @@ async function updateUser(userUpdate: UserUpdate) {
     return true;
   } catch {
     /**
-     * This will be either an app-level error (e.g. buggy validation, server down, 401)
-     * or the provided email already exists, which we don't want to actively disclose.
+     * This will be either an app-level error (e.g. buggy validation, server down),
+     * the provided email already exists (which we don't want to actively disclose)
+     * or we got a 403 for a failed CSRF check.
      */
     message.error(t('errors.unexpected'));
     return false;
@@ -112,26 +113,20 @@ async function updateUser(userUpdate: UserUpdate) {
 }
 
 async function updateEmail() {
-  if (await updateUser(getEmailModelChanges())) {
-    resetEmailModelChanges();
-    message.success(t('account.manage.msgEmailSaveSuccess'));
-    if (!pfData.value?.security?.closedMode === true) {
-      await auth.logout();
-      const { error } = await POST('/auth/request-verify-token', {
-        body: { email: emailFormModel.value.email || '' },
-      });
-      if (!error) {
-        message.warning(t('account.manage.msgVerifyEmailWarning'), 20);
-      } else {
-        message.error(t('errors.unexpected'));
-      }
-      auth.showLoginModal(
-        t('account.manage.msgVerifyEmailWarning'),
-        { name: 'accountProfile' },
-        false
-      );
-    }
+  if (!(await updateUser(getEmailModelChanges()))) return;
+  resetEmailModelChanges();
+  message.success(t('account.manage.msgEmailSaveSuccess'));
+  if (pfData.value?.security?.closedMode === true) return;
+  await auth.logout();
+  const { error } = await POST('/auth/request-verify-token', {
+    body: { email: emailFormModel.value.email || '' },
+  });
+  if (!error) {
+    message.warning(t('account.manage.msgVerifyEmailWarning'), 20);
+  } else {
+    message.error(t('errors.unexpected'));
   }
+  auth.showLoginModal(t('account.manage.msgVerifyEmailWarning'), { name: 'accountProfile' }, false);
 }
 
 function handleEmailSave() {
@@ -183,9 +178,8 @@ async function handlePasswordSave() {
 
 async function handleUserDataSave() {
   userDataFormRef.value
-    ?.validate(async (errors) => {
-      if (!errors) {
-        await updateUser(getUserDataModelChanges());
+    ?.validate(async (validationErrors) => {
+      if (!validationErrors && (await updateUser(getUserDataModelChanges()))) {
         resetUserDataModelChanges();
         message.success(t('account.manage.msgUserDataSaveSuccess'));
       }
@@ -196,13 +190,16 @@ async function handleUserDataSave() {
 }
 
 async function handlepublicFieldsSave() {
-  await updateUser({
-    publicFields: Object.keys(publicFieldsFormModel.value).filter(
-      (k) => publicFieldsFormModel.value[k]
-    ) as UserUpdatePublicFields,
-  });
-  resetPublicFieldsModelChanges();
-  message.success(t('account.manage.msgUserDataSaveSuccess'));
+  if (
+    await updateUser({
+      publicFields: Object.keys(publicFieldsFormModel.value).filter(
+        (k) => publicFieldsFormModel.value[k]
+      ) as UserUpdatePublicFields,
+    })
+  ) {
+    resetPublicFieldsModelChanges();
+    message.success(t('account.manage.msgUserDataSaveSuccess'));
+  }
 }
 </script>
 

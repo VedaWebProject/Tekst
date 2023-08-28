@@ -119,7 +119,7 @@ export const useAuthStore = defineStore('auth', () => {
     nextRoute: RouteLocationRaw | null | undefined
   ) {
     // login
-    const { error, response } = await POST('/auth/cookie/login', {
+    const { error } = await POST('/auth/cookie/login', {
       body: { username, password },
       ...optionsPresets.formUrlEncoded,
     });
@@ -158,8 +158,6 @@ export const useAuthStore = defineStore('auth', () => {
         } else {
           message.error(t('errors.unexpected'));
         }
-      } else if (response.status === 403) {
-        message.error(t('errors.csrf'));
       } else {
         message.error(t('errors.unexpected'));
       }
@@ -189,8 +187,10 @@ export const useAuthStore = defineStore('auth', () => {
     if (!error) {
       user.value = updatedUser;
       localStorage.setItem('user', JSON.stringify(updatedUser));
+      return updatedUser;
+    } else {
+      throw error;
     }
-    return updatedUser;
   }
 
   return {

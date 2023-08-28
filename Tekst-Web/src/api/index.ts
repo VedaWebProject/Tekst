@@ -3,6 +3,8 @@ import type { paths, components } from '@/api/schema';
 import queryString from 'query-string';
 import { useAuthStore } from '@/stores';
 import Cookies from 'js-cookie';
+import { useMessages } from '@/messages';
+import { i18n } from '@/i18n';
 
 const serverUrl: string | undefined = import.meta.env.TEKST_SERVER_URL;
 const apiPath: string | undefined = import.meta.env.TEKST_API_PATH;
@@ -23,16 +25,20 @@ const customFetch = async (input: RequestInfo | URL, init?: RequestInit | undefi
   const response = await globalThis.fetch(input, init);
 
   // --- response interceptors go here... ---
-  // automatically log out on a 401 response
   if (response.status === 401) {
+    // automatically log out on a 401 response
     if (!response.url.endsWith('/logout')) {
-      console.log('401 DETECTED! OH NO!');
+      console.log('Oh no! The server responded with 401!');
       const auth = useAuthStore();
       if (auth.loggedIn) {
-        console.log('Running logout sequence in reaction to 401 response');
+        console.log('Running logout sequence in reaction to 401 response...');
         auth.logout();
       }
     }
+  } else if (response.status === 403) {
+    // show CSRF/XSRF error on 403 response
+    const { message } = useMessages();
+    message.error(i18n.global.t('errors.csrf'));
   }
   return response;
 };
