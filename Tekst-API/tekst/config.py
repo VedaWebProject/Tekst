@@ -134,7 +134,7 @@ class SecurityConfig(ModelBase):
 class EMailConfig(ModelBase):
     """Email-related things config model"""
 
-    smtp_server: str | None = None
+    smtp_server: str | None = "127.0.0.1"
     smtp_port: int | None = 25
     smtp_user: str | None = None
     smtp_password: str | None = None
