@@ -14,6 +14,9 @@ RUN npm install && npm run build-only -- --base=$WEB_PATH
 
 FROM caddy:2.6-alpine AS prod
 
+ARG API_PATH
+ENV TEKST_API_PATH=$API_PATH
+
 WORKDIR "/var/www/html"
 COPY --from=builder /app/dist/ ./
 COPY ./deploy/Caddyfile /etc/caddy/

@@ -2,18 +2,6 @@ version: "3.9"
 
 services:
 
-  webserver:
-    image: "caddy:2.6-alpine"
-    environment:
-      TEKST_API_PATH: ${TEKST_API_PATH}
-    volumes:
-      - "./deploy/caddy:/etc/caddy/:ro"
-    ports:
-      - "127.0.0.1:8087:80"
-    networks:
-      - front
-      - back
-
   client:
     build:
       context: ./Tekst-Web
@@ -31,8 +19,10 @@ services:
       TEKST_API_PATH: ${TEKST_API_PATH}
     restart: always
     init: true
+    ports:
+      - "127.0.0.1:8087:80"
     networks:
-      - front
+      - api
 
   server:
     build:
@@ -48,7 +38,8 @@ services:
       - mongo
     env_file: .env
     networks:
-      - back
+      - api
+      - db
     secrets:
       - init_admin_email
       - init_admin_password
@@ -64,15 +55,15 @@ services:
       - mongo_configdb:/data/configdb
       - mongo_db:/data/db
     networks:
-      - back
+      - db
 
 volumes:
   mongo_configdb:
   mongo_db:
 
 networks:
-  front:
-  back:
+  api:
+  db:
 
 secrets:
   init_admin_email:

@@ -4,8 +4,17 @@
 }
 
 :80 {
-	try_files {path} /
-	encode gzip
-	root * /var/www/html
-	file_server
+    redir {$TEKST_API_PATH:/api} {$TEKST_API_PATH:/api}/
+
+    handle {$TEKST_API_PATH:/api}/* {
+		uri strip_prefix {$TEKST_API_PATH:/api}
+		reverse_proxy http://server:8000
+	}
+
+    handle * {
+        try_files {path} /
+        encode gzip
+        root * /var/www/html
+        file_server
+    }
 }
