@@ -226,7 +226,7 @@ test = ["pytest (>=6)"]
 
 [[package]]
 name = "fastapi"
-version = "0.101.1"
+version = "0.103.0"
 description = "FastAPI framework, high performance, easy to learn, fast to code, ready for production"
 category = "main"
 optional = false
@@ -242,7 +242,7 @@ all = ["email-validator (>=2.0.0)", "httpx (>=0.23.0)", "itsdangerous (>=1.1.0)"
 
 [[package]]
 name = "fastapi-users"
-version = "12.1.1"
+version = "12.1.2"
 description = "Ready-to-use and customizable users management for FastAPI"
 category = "main"
 optional = false
@@ -260,7 +260,7 @@ python-multipart = "0.0.6"
 [package.extras]
 beanie = ["fastapi-users-db-beanie (>=3.0.0)"]
 oauth = ["httpx-oauth (>=0.13)"]
-redis = ["redis (>=4.3.3,<5.0.0)"]
+redis = ["redis (>=4.3.3,<6.0.0)"]
 sqlalchemy = ["fastapi-users-db-sqlalchemy (>=6.0.0)"]
 
 [[package]]
@@ -366,23 +366,24 @@ python-versions = "*"
 
 [[package]]
 name = "motor"
-version = "3.2.0"
+version = "3.3.0"
 description = "Non-blocking MongoDB driver for Tornado or asyncio"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 
 [package.dependencies]
-pymongo = ">=4.4,<5"
+pymongo = ">=4.5,<5"
 
 [package.extras]
-aws = ["pymongo[aws] (>=4.4,<5)"]
-encryption = ["pymongo[encryption] (>=4.4,<5)"]
-gssapi = ["pymongo[gssapi] (>=4.4,<5)"]
-ocsp = ["pymongo[ocsp] (>=4.4,<5)"]
-snappy = ["pymongo[snappy] (>=4.4,<5)"]
-srv = ["pymongo[srv] (>=4.4,<5)"]
-zstd = ["pymongo[zstd] (>=4.4,<5)"]
+aws = ["pymongo[aws] (>=4.5,<5)"]
+encryption = ["pymongo[encryption] (>=4.5,<5)"]
+gssapi = ["pymongo[gssapi] (>=4.5,<5)"]
+ocsp = ["pymongo[ocsp] (>=4.5,<5)"]
+snappy = ["pymongo[snappy] (>=4.5,<5)"]
+srv = ["pymongo[srv] (>=4.5,<5)"]
+test = ["aiohttp", "mockupdb", "motor[encryption]", "pytest (>=7)", "tornado (>=5)"]
+zstd = ["pymongo[zstd] (>=4.5,<5)"]
 
 [[package]]
 name = "mypy-extensions"
@@ -439,11 +440,11 @@ test = ["appdirs (==1.4.4)", "covdefaults (>=2.3)", "pytest (>=7.4)", "pytest-co
 
 [[package]]
 name = "pluggy"
-version = "1.2.0"
+version = "1.3.0"
 description = "plugin and hook calling mechanisms for python"
 category = "dev"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 
 [package.extras]
 dev = ["pre-commit", "tox"]
@@ -486,14 +487,14 @@ typing-extensions = ">=4.6.0,<4.7.0 || >4.7.0"
 
 [[package]]
 name = "pydantic-extra-types"
-version = "2.0.0"
+version = "2.1.0"
 description = "Extra Pydantic types."
 category = "main"
 optional = false
 python-versions = ">=3.7"
 
 [package.dependencies]
-pydantic = ">=2.0b3"
+pydantic = ">=2.0.3"
 
 [package.extras]
 all = ["phonenumbers (>=8,<9)", "pycountry (>=22,<23)"]
@@ -732,7 +733,7 @@ standard = ["colorama (>=0.4)", "httptools (>=0.5.0)", "python-dotenv (>=0.13)",
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "97b61bdd250464ae2c159fd8a0658eeefe9bd0da8b7aa13927a2c77cfb1e8212"
+content-hash = "0c5f700692f2ca349332936028fe0f9d42942b4a2953f0a20b22e25b0e955b37"
 
 [metadata.files]
 annotated-types = [
@@ -1049,12 +1050,12 @@ exceptiongroup = [
     {file = "exceptiongroup-1.1.3.tar.gz", hash = "sha256:097acd85d473d75af5bb98e41b61ff7fe35efe6675e4f9370ec6ec5126d160e9"},
 ]
 fastapi = [
-    {file = "fastapi-0.101.1-py3-none-any.whl", hash = "sha256:aef5f8676eb1b8389952e1fe734abe20f04b71f6936afcc53b320ba79b686a4b"},
-    {file = "fastapi-0.101.1.tar.gz", hash = "sha256:7b32000d14ca9992f7461117b81e4ef9ff0c07936af641b4fe40e67d5f9d63cb"},
+    {file = "fastapi-0.103.0-py3-none-any.whl", hash = "sha256:61ab72c6c281205dd0cbaccf503e829a37e0be108d965ac223779a8479243665"},
+    {file = "fastapi-0.103.0.tar.gz", hash = "sha256:4166732f5ddf61c33e9fa4664f73780872511e0598d4d5434b1816dc1e6d9421"},
 ]
 fastapi-users = [
-    {file = "fastapi_users-12.1.1-py3-none-any.whl", hash = "sha256:1118f25284b42955414142bf3ecfc47feb6c5864a4b52cffde4a91f705889c29"},
-    {file = "fastapi_users-12.1.1.tar.gz", hash = "sha256:d3ba4278799a53137c4414725840847874cead4578c42aad721de3e2aae42805"},
+    {file = "fastapi_users-12.1.2-py3-none-any.whl", hash = "sha256:768e3b17b9b89b5f5d3c303afefd69874da0fc97ebac16a86167d4c8d414d479"},
+    {file = "fastapi_users-12.1.2.tar.gz", hash = "sha256:9a9b44e0917c483aaba2bf80ea488b4ba6475b0fb24e2abfaf21e0b5c5db59bf"},
 ]
 fastapi-users-db-beanie = [
     {file = "fastapi_users_db_beanie-3.0.0-py3-none-any.whl", hash = "sha256:4ed99cca9565cfa67bed436def0b27705142230409516915448494fbfc0fb031"},
@@ -1093,8 +1094,8 @@ makefun = [
     {file = "makefun-1.15.1.tar.gz", hash = "sha256:40b0f118b6ded0d8d78c78f1eb679b8b6b2462e3c1b3e05fb1b2da8cd46b48a5"},
 ]
 motor = [
-    {file = "motor-3.2.0-py3-none-any.whl", hash = "sha256:82cd3d8a3b57e322c3fa382a393b52828c9a2e98b315c78af36f01bae78af6a6"},
-    {file = "motor-3.2.0.tar.gz", hash = "sha256:4fb1e8502260f853554f24115421584e83904a6debb577354d33e9711ee99008"},
+    {file = "motor-3.3.0-py3-none-any.whl", hash = "sha256:32bb0680f5ac3e245dcc98d41d009f3be5d45c1e4a1b2d17951d9f63c8f41ea0"},
+    {file = "motor-3.3.0.tar.gz", hash = "sha256:f18b90089acf914e21485d002c116f27a2215c85174b3bd3e2221d633e8cf7ab"},
 ]
 mypy-extensions = [
     {file = "mypy_extensions-1.0.0-py3-none-any.whl", hash = "sha256:4392f6c0eb8a5668a69e23d168ffa70f0be9ccfd32b5cc2d26a34ae5b844552d"},
@@ -1117,8 +1118,8 @@ platformdirs = [
     {file = "platformdirs-3.10.0.tar.gz", hash = "sha256:b45696dab2d7cc691a3226759c0d3b00c47c8b6e293d96f6436f733303f77f6d"},
 ]
 pluggy = [
-    {file = "pluggy-1.2.0-py3-none-any.whl", hash = "sha256:c2fd55a7d7a3863cba1a013e4e2414658b1d07b6bc57b3919e0c63c9abb99849"},
-    {file = "pluggy-1.2.0.tar.gz", hash = "sha256:d12f0c4b579b15f5e054301bb226ee85eeeba08ffec228092f8defbaa3a4c4b3"},
+    {file = "pluggy-1.3.0-py3-none-any.whl", hash = "sha256:d89c696a773f8bd377d18e5ecda92b7a3793cbe66c87060a6fb58c7b6e1061f7"},
+    {file = "pluggy-1.3.0.tar.gz", hash = "sha256:cf61ae8f126ac6f7c451172cf30e3e43d3ca77615509771b3a984a0730651e12"},
 ]
 pycparser = [
     {file = "pycparser-2.21-py2.py3-none-any.whl", hash = "sha256:8ee45429555515e1f6b185e78100aea234072576aa43ab53aefcae078162fca9"},
@@ -1237,8 +1238,8 @@ pydantic-core = [
     {file = "pydantic_core-2.6.3.tar.gz", hash = "sha256:1508f37ba9e3ddc0189e6ff4e2228bd2d3c3a4641cbe8c07177162f76ed696c7"},
 ]
 pydantic-extra-types = [
-    {file = "pydantic_extra_types-2.0.0-py3-none-any.whl", hash = "sha256:63e5109f00815e71fff2b82090ff0523baef6b8a51889356fd984ef50c184e64"},
-    {file = "pydantic_extra_types-2.0.0.tar.gz", hash = "sha256:137ddacb168d95ea77591dbb3739ec4da5eeac0fc4df7f797371d9904451a178"},
+    {file = "pydantic_extra_types-2.1.0-py3-none-any.whl", hash = "sha256:1b8aa83a2986b0bc6a7179834fdb423c5e0bcef6b2b4cd9261bf753ad7dcc483"},
+    {file = "pydantic_extra_types-2.1.0.tar.gz", hash = "sha256:d07b869e733d33712b07d6b8cd7b0223077c23ae5a1e23bd0699a00401259ec7"},
 ]
 pydantic-settings = [
     {file = "pydantic_settings-2.0.3-py3-none-any.whl", hash = "sha256:ddd907b066622bd67603b75e2ff791875540dc485b7307c4fffc015719da8625"},
