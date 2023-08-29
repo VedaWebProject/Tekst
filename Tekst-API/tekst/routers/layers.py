@@ -186,7 +186,9 @@ async def find_layers(
 
     uid = user and user.id
     return [
-        layer_doc.model_dump(camelize_keys=True, exclude=layer_doc.restricted_fields(uid))
+        layer_doc.model_dump(
+            camelize_keys=True, exclude=layer_doc.restricted_fields(uid)
+        )
         for layer_doc in layer_docs
     ]
 
