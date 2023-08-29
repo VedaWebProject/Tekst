@@ -174,27 +174,6 @@ def status_fail_msg() -> callable:
     return _status_fail_msg
 
 
-# @pytest.fixture(scope="session")
-# def json_compat() -> callable:
-#     """
-#     Returns a function that forces JSON encodability of the passed object.
-#     """
-
-#     def _json_compat(obj):
-#         if isinstance(obj, dict):
-#             return {str(k): _json_compat(v) for k, v in obj.items()}
-#         elif isinstance(obj, list):
-#             return [_json_compat(i) for i in obj]
-#         else:
-#             try:
-#                 json.dumps(obj)
-#             except Exception:
-#                 return str(obj)
-#             return obj
-
-#     return _json_compat
-
-
 @pytest.fixture(autouse=True)
 def disable_network_calls(monkeypatch):
     """Prevents outside network access while testing"""

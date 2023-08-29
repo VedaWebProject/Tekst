@@ -65,16 +65,13 @@ async def get_unit_siblings(
         NodeDocument.parent_id == parent_node_id,
     ).to_list()
 
-    units = await UnitBaseDocument.find(
+    unit_docs = await UnitBaseDocument.find(
         UnitBaseDocument.layer_id == layer_id,
         In(UnitBaseDocument.node_id, [node.id for node in nodes]),
         with_children=True,
     ).to_list()
 
-    # calling model_dump(rename_id=True) on these models here makes sure they have
-    # "id" instead of "_id", because we're not using a proper read model here
-    # that could take care of that automatically (as we don't know the exact type)
-    return [unit.model_dump(rename_id=True) for unit in units]
+    return [unit_doc.model_dump(camelize_keys=True) for unit_doc in unit_docs]
 
 
 @router.get(

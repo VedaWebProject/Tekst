@@ -21,9 +21,9 @@ async def _create_sample_unit(
 ):
     # get node this unit belongs to
     node = await NodeDocument.find(
-        NodeDocument.text_id == PydanticObjectId(layer_data.get("textId", "")),
+        NodeDocument.text_id == PydanticObjectId(layer_data.get("text_id")),
         NodeDocument.level == layer_data.get("level", -1),
-        NodeDocument.position == unit_data.get("sampleNodePosition", -1),
+        NodeDocument.position == unit_data.get("sample_node_position", -1),
     ).first_or_none()
     if not node:
         log.error(f"Could not find target node for unit {unit_data}")
@@ -39,10 +39,10 @@ async def _create_sample_unit(
 
 async def _create_sample_layers(text_slug: str, text_id: str):
     for layer_data in LAYERS.get(text_slug, []):
-        layer_type = _layer_types.get(layer_data.get("layerType"))
+        layer_type = _layer_types.get(layer_data.get("layer_type"))
         layer_doc_model = layer_type.get_layer_model().get_document_model()
         if not layer_doc_model:
-            raise RuntimeError(f"Layer type {layer_data.get('layerType')} not found.")
+            raise RuntimeError(f"Layer type {layer_data.get('layer_type')} not found.")
         layer_doc = layer_doc_model(text_id=text_id, **layer_data)
         await layer_doc.create()
         # units

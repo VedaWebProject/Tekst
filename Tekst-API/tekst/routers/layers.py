@@ -46,13 +46,11 @@ def _generate_create_endpoint(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=f"Layer refers to non-existent text '{layer.text_id}'",
             )
-        uid = user.id if user else "no_id"
-        if uid != layer.owner_id:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Layer's owner ID doesn't match requesting user's ID",
-            )
-        return await layer_document_model(**layer.model_dump()).create()
+        # force some values on creation
+        layer.owner_id = user.id
+        layer.proposed = False
+        layer.public = False
+        return await layer_document_model.model_from(layer).create()
 
     return create_layer
 
@@ -186,12 +184,9 @@ async def find_layers(
         .to_list()
     )
 
-    # calling model_dump(rename_id=True) on these models makes sure they have
-    # "id" instead of "_id", because we're not using a proper read model here
-    # that could take care of that automatically (as we don't know the exact type)
     uid = user and user.id
     return [
-        layer_doc.model_dump(rename_id=True, exclude=layer_doc.restricted_fields(uid))
+        layer_doc.model_dump(camelize_keys=True, exclude=layer_doc.restricted_fields(uid))
         for layer_doc in layer_docs
     ]
 

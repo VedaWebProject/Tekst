@@ -44,7 +44,7 @@ async def create_node(su: SuperuserDep, node: NodeCreate) -> NodeRead:
             detail="Conflict with existing node",
         )
     # all fine
-    return await NodeDocument(**node.model_dump()).create()
+    return await NodeDocument.model_from(node).create()
 
 
 @router.get("", response_model=list[NodeRead], status_code=status.HTTP_200_OK)

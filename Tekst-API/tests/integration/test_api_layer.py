@@ -128,7 +128,8 @@ async def test_create_layer_with_forged_owner_id(
         "ownerId": "643d3cdc21efd6c46ae1527e",
     }
     resp = await test_client.post(endpoint, json=payload, cookies=session_cookie)
-    assert resp.status_code == 400, status_fail_msg(400, resp)
+    assert resp.status_code == 201, status_fail_msg(201, resp)
+    assert resp.json()["ownerId"] != payload["ownerId"]
 
 
 @pytest.mark.anyio

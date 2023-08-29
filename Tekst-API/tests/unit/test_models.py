@@ -1,5 +1,3 @@
-from datetime import datetime
-
 import pytest
 
 from pydantic.error_wrappers import ValidationError
@@ -12,18 +10,6 @@ def test_basic_validation():
         assert "missing" in error.value
 
 
-def test_dict_override(test_app):
-    t_data = TextCreate(
-        title="agním īḷe puróhitaṁ",
-        slug="agnim",
-        levels=[[{"locale": "enUS", "label": "foo"}]],
-    ).model_dump()
-    assert t_data["title"] == "agním īḷe puróhitaṁ"
-    assert "slug" in t_data
-    assert t_data["slug"] == "agnim"
-    assert "locDelim" not in t_data  # because exclude_unset in model_dump() override
-
-
 def test_serialization(test_app, test_data):
     text = TextCreate(**test_data["texts"][0])
     assert text.model_dump().get("title")
@@ -34,13 +20,10 @@ def test_serialization(test_app, test_data):
         **test_data["texts"][0],
     )
     assert "id" in text.model_dump()
-    assert "locDelim" in text.model_dump()
-    assert "loc_delim" in text.model_dump(by_alias=False)
+    assert "loc_delim" in text.model_dump()
     text = TextRead(
         **{
             "id": dummy_id,
-            "createdAt": datetime.now(),
-            "modifiedAt": datetime.now(),
             **test_data["texts"][0],
         }
     )

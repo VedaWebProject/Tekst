@@ -27,43 +27,17 @@ class ModelBase(ModelTransformerMixin, BaseModel):
         alias_generator=camelize, populate_by_name=True, from_attributes=True
     )
 
-    def model_dump(self, **kwargs) -> dict[str, Any]:
-        """Overrides model_dump() in Basemodel to set some custom defaults"""
-        data = super().model_dump(
-            exclude_unset=kwargs.pop("exclude_unset", True),
-            by_alias=kwargs.pop("by_alias", True),
-            **kwargs,
-        )
-        return data
-
-    def model_dump_json(self, **kwargs) -> str:
-        """Overrides model_dump_json() in Basemodel to set some custom defaults"""
-        return super().model_dump_json(
-            exclude_unset=kwargs.pop("exclude_unset", True),
-            by_alias=kwargs.pop("by_alias", True),
-            **kwargs,
-        )
-
 
 class DocumentBase(ModelTransformerMixin, Document):
     """Base model for all Tekst ODM models"""
 
-    # model_config = None
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **decamelize(kwargs))
 
-    def model_dump(
-        self, rename_id: bool = True, camelize_keys: bool = True, **kwargs
-    ) -> dict[str, Any]:
-        """Overrides model_dump() in Basemodel to set some custom defaults"""
-        data = super().model_dump(
-            exclude_unset=kwargs.pop("exclude_unset", True),
-            **kwargs,
-        )
-        if rename_id and "_id" in data:
-            data["id"] = data.pop("_id")
-        return camelize(data) if camelize_keys else data
+    def model_dump(self, camelize_keys: bool = False, **kwargs) -> dict[str, Any]:
+        if camelize_keys:
+            return camelize(super().model_dump(**kwargs))
+        return super().model_dump(**kwargs)
 
     def restricted_fields(self, user_id: str = None) -> dict:
         """

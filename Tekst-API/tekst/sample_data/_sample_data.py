@@ -27,11 +27,11 @@ TEXTS = {
                     {"locale": "deDE", "label": "Strophe"},
                 ],
             ],
-            "accentColor": "#D43A35",
-            "locDelim": ".",
-            "defaultLevel": 2,
-            "labeledLocation": False,
-            "isActive": False,
+            "accent_color": "#D43A35",
+            "loc_delim": ".",
+            "default_level": 2,
+            "labeled_location": False,
+            "is_active": False,
         },
         "nodes": [
             {
@@ -137,9 +137,9 @@ TEXTS = {
                 ],
             ],
             "accent_color": "#43895F",
-            "locDelim": " > ",
-            "defaultLevel": 1,
-            "isActive": True,
+            "loc_delim": " > ",
+            "default_level": 1,
+            "is_active": True,
         },
         "nodes": [
             {
@@ -232,17 +232,17 @@ LAYERS = {
         {
             "title": "Van Nooten & Holland",
             "level": 2,
-            "layerType": "plaintext",
+            "layer_type": "plaintext",
             "public": True,
             "units": [
-                {"sampleNodePosition": 0, "text": "Foo Bar"},
-                {"sampleNodePosition": 1, "text": "Foo Bar"},
-                {"sampleNodePosition": 2, "text": "Foo Bar"},
-                {"sampleNodePosition": 3, "text": "Foo Bar"},
-                {"sampleNodePosition": 4, "text": "Foo Bar"},
-                {"sampleNodePosition": 5, "text": "Foo Bar"},
-                {"sampleNodePosition": 6, "text": "Foo Bar"},
-                {"sampleNodePosition": 7, "text": "Foo Bar"},
+                {"sample_node_position": 0, "text": "Foo Bar"},
+                {"sample_node_position": 1, "text": "Foo Bar"},
+                {"sample_node_position": 2, "text": "Foo Bar"},
+                {"sample_node_position": 3, "text": "Foo Bar"},
+                {"sample_node_position": 4, "text": "Foo Bar"},
+                {"sample_node_position": 5, "text": "Foo Bar"},
+                {"sample_node_position": 6, "text": "Foo Bar"},
+                {"sample_node_position": 7, "text": "Foo Bar"},
             ],
             "meta": {"author": "Van Nooten & Holland", "year": "1995"},
             "comment": "This is\na comment\nwith line breaks.",
@@ -252,55 +252,55 @@ LAYERS = {
         {
             "title": "Originalfassung",
             "level": 1,
-            "layerType": "plaintext",
+            "layer_type": "plaintext",
             "public": True,
             "units": [
                 {
-                    "sampleNodePosition": 0,
+                    "sample_node_position": 0,
                     "text": "Fuchs, du hast die Gans gestohlen,",
                 },
                 {
-                    "sampleNodePosition": 1,
+                    "sample_node_position": 1,
                     "text": "|: gib sie wieder her! :|",
                 },
                 {
-                    "sampleNodePosition": 2,
+                    "sample_node_position": 2,
                     "text": "|: Sonst wird sie der Jäger holen",
                 },
                 {
-                    "sampleNodePosition": 3,
+                    "sample_node_position": 3,
                     "text": "mit dem Schießgewehr. :|",
                 },
                 {
-                    "sampleNodePosition": 4,
+                    "sample_node_position": 4,
                     "text": "Seine große, lange Flinte",
                 },
                 {
-                    "sampleNodePosition": 5,
+                    "sample_node_position": 5,
                     "text": "|: schießt auf dich den Schrot, :|",
                 },
                 {
-                    "sampleNodePosition": 6,
+                    "sample_node_position": 6,
                     "text": "|: dass dich färbt die rote Tinte",
                 },
                 {
-                    "sampleNodePosition": 7,
+                    "sample_node_position": 7,
                     "text": "und dann bist du tot. :|",
                 },
                 {
-                    "sampleNodePosition": 8,
+                    "sample_node_position": 8,
                     "text": "Liebes Füchslein, lass dir raten,",
                 },
                 {
-                    "sampleNodePosition": 9,
+                    "sample_node_position": 9,
                     "text": "|: sei doch nur kein Dieb; :|",
                 },
                 {
-                    "sampleNodePosition": 10,
+                    "sample_node_position": 10,
                     "text": "|: nimm, du brauchst nicht Gänsebraten,",
                 },
                 {
-                    "sampleNodePosition": 11,
+                    "sample_node_position": 11,
                     "text": "mit der Maus vorlieb. :|",
                 },
             ],
@@ -312,10 +312,10 @@ LAYERS = {
             },
             "comment": "This version includes repetition markers.",
             "config": {
-                "deeplLinks": {
+                "deepl_links": {
                     "enabled": True,
                     "languages": ["EN", "FR"],
-                    "sourceLanguage": "DE",
+                    "source_language": "DE",
                 }
             },
         }

@@ -65,7 +65,7 @@ def _generate_create_endpoint(
                 status_code=status.HTTP_409_CONFLICT,
                 detail="The properties of this unit conflict with another unit",
             )
-        return await unit_document_model(**unit.model_dump()).create()
+        return await unit_document_model.model_from(unit).create()
 
     return create_unit
 
@@ -211,7 +211,7 @@ async def find_units(
         with_children=True,
     ).to_list()
 
-    units = (
+    unit_docs = (
         await UnitBaseDocument.find(
             In(UnitBaseDocument.layer_id, layer_ids) if layer_ids else {},
             In(UnitBaseDocument.node_id, node_ids) if node_ids else {},
@@ -222,7 +222,4 @@ async def find_units(
         .to_list()
     )
 
-    # calling model_dump(rename_id=True) on these models here makes sure they have
-    # "id" instead of "_id", because we're not using a proper read model here
-    # that could take care of that automatically (as we don't know the exact type)
-    return [unit.model_dump(rename_id=True) for unit in units]
+    return [unit_doc.model_dump(camelize_keys=True) for unit_doc in unit_docs]

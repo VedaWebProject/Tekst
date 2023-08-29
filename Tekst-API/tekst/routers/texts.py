@@ -41,7 +41,7 @@ async def create_text(su: SuperuserDep, text: TextCreate) -> TextRead:
             status_code=status.HTTP_409_CONFLICT,
             detail="An equal text already exists (same title or slug)",
         )
-    return await TextDocument(**text.model_dump()).create()
+    return await TextDocument.model_from(text).create()
 
 
 # @router.post(
@@ -308,10 +308,5 @@ async def update_text(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Text {text_id} doesn't exist",
         )
-    # if updates.slug and updates.slug != text.slug:
-    #     raise HTTPException(
-    #         status_code=status.HTTP_400_BAD_REQUEST,
-    #         detail="Text slug cannot be changed",
-    #     )
     await text.apply(updates.model_dump(exclude_unset=True))
     return await TextDocument.get(text_id)

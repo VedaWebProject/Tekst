@@ -61,7 +61,7 @@ async def get_public_user_info(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"User '{username_or_id}' does not exist",
         )
-    return UserReadPublic(
+    return dict(
         username=user.username,
         **user.model_dump(
             include={decamelize(field): True for field in user.public_fields}
