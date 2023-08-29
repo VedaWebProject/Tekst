@@ -694,6 +694,12 @@ export interface components {
        */
       sharedWrite?: string[];
       /**
+       * Proposed
+       * @description Whether this layer has been proposed for publication
+       * @default false
+       */
+      proposed?: boolean;
+      /**
        * Public
        * @description Publication status of this layer
        * @default false
@@ -763,6 +769,12 @@ export interface components {
        */
       sharedWrite: string[];
       /**
+       * Proposed
+       * @description Whether this layer has been proposed for publication
+       * @default false
+       */
+      proposed: boolean;
+      /**
        * Public
        * @description Publication status of this layer
        * @default false
@@ -800,6 +812,8 @@ export interface components {
       sharedRead?: string[];
       /** Sharedwrite */
       sharedWrite?: string[];
+      /** Proposed */
+      proposed?: boolean;
       /** Public */
       public?: boolean;
       /** Meta */

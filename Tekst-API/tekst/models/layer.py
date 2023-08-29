@@ -48,6 +48,9 @@ class LayerBase(ModelBase, ModelFactoryMixin):
         list[PydanticObjectId],
         Field(description="Users with shared write access to this layer"),
     ] = []
+    proposed: Annotated[
+        bool, Field(description="Whether this layer has been proposed for publication")
+    ] = False
     public: Annotated[
         bool, Field(description="Publication status of this layer")
     ] = False

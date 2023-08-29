@@ -3461,6 +3461,12 @@
             "description": "Users with shared write access to this layer",
             "default": []
           },
+          "proposed": {
+            "type": "boolean",
+            "title": "Proposed",
+            "description": "Whether this layer has been proposed for publication",
+            "default": false
+          },
           "public": {
             "type": "boolean",
             "title": "Public",
@@ -3590,6 +3596,12 @@
             "description": "Users with shared write access to this layer",
             "default": []
           },
+          "proposed": {
+            "type": "boolean",
+            "title": "Proposed",
+            "description": "Whether this layer has been proposed for publication",
+            "default": false
+          },
           "public": {
             "type": "boolean",
             "title": "Public",
@@ -3638,6 +3650,7 @@
           "ownerId",
           "sharedRead",
           "sharedWrite",
+          "proposed",
           "public",
           "meta",
           "comment",
@@ -3709,6 +3722,10 @@
             },
             "type": "array",
             "title": "Sharedwrite"
+          },
+          "proposed": {
+            "type": "boolean",
+            "title": "Proposed"
           },
           "public": {
             "type": "boolean",
