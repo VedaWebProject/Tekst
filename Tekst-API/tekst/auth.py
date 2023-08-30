@@ -149,7 +149,11 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
         self, user: UserDocument, request: Request | None = None
     ):
         if not _cfg.security.users_active_by_default:
-            admins = await UserDocument.find({"isSuperuser": True}).limit(10).to_list()
+            admins = (
+                await UserDocument.find(UserDocument.is_superuser == True)  # noqa: E712
+                .limit(10)
+                .to_list()
+            )
             for admin in admins:
                 send_email(
                     user,
@@ -163,13 +167,13 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
         update_dict: dict[str, Any],
         request: Request | None = None,
     ):
-        if "isActive" in update_dict:
-            if update_dict.get("isActive"):
+        if "is_active" in update_dict:
+            if update_dict.get("is_active"):
                 send_email(user, TemplateIdentifier.ACTIVATED)
             else:
                 send_email(user, TemplateIdentifier.DEACTIVATED)
-        if "isSuperuser" in update_dict:
-            if update_dict.get("isSuperuser"):
+        if "is_superuser" in update_dict:
+            if update_dict.get("is_superuser"):
                 send_email(user, TemplateIdentifier.SUPERUSER_SET)
             else:
                 send_email(user, TemplateIdentifier.SUPERUSER_UNSET)

@@ -7,6 +7,7 @@ import requests
 
 from asgi_lifespan import LifespanManager
 from httpx import AsyncClient, Response
+from humps import decamelize
 from tekst.app import app
 from tekst.auth import _create_user
 from tekst.config import TekstConfig, get_config
@@ -43,7 +44,7 @@ def anyio_backend():
 def test_data(request) -> dict:
     """Returns all shared test data"""
     datadir = Path(request.config.rootdir) / "tests/data"
-    return json.loads((datadir / "test-data.json").read_text())
+    return decamelize(json.loads((datadir / "test-data.json").read_text()))
 
 
 # @pytest.fixture(scope="session")
@@ -104,8 +105,11 @@ async def insert_test_data(test_app, reset_db, api_path, test_data) -> callable:
                 await NodeDocument(text_id=text.id, **doc).create()
         if "layers" in collections:
             for doc in test_data["layers"]:
-                layer_model = layer_type_manager.get(doc["layerType"]).get_layer_model()
-                layer_document_model = layer_model.get_document_model()
+                layer_document_model = (
+                    layer_type_manager.get(doc["layer_type"])
+                    .get_layer_model()
+                    .get_document_model()
+                )
                 await layer_document_model(text_id=text.id, **doc).create()
 
         return str(text.id) if text else None
