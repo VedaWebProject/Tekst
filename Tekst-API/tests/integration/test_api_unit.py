@@ -4,7 +4,7 @@ from httpx import AsyncClient
 
 
 @pytest.mark.anyio
-async def test_create_layer_unit(
+async def test_create_unit(
     api_path,
     test_client: AsyncClient,
     insert_test_data,
@@ -92,3 +92,12 @@ async def test_create_layer_unit(
     endpoint = f"{api_path}/units/plaintext/637b9ad396d541a505e5439b"
     resp = await test_client.patch(endpoint, json=unit_update, cookies=session_cookie)
     assert resp.status_code == 400, status_fail_msg(400, resp)
+
+    # find all units
+    resp = await test_client.get(
+        f"{api_path}/units/", params={"limit": 100}, cookies=session_cookie
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    units = resp.json()
+    assert type(units) == list
+    assert len(units) > 0

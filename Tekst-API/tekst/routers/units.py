@@ -200,9 +200,9 @@ async def find_units(
     ).to_list()
 
     active_texts_restriction = (
-        In(LayerBaseDocument.text_id, [text.id for text in active_texts])
-        if not (user and user.is_superuser)
-        else {}
+        {}
+        if user and user.is_superuser
+        else In(LayerBaseDocument.text_id, [text.id for text in active_texts])
     )
 
     readable_layers = await LayerBaseDocument.find(
