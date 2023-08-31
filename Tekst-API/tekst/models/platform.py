@@ -1,7 +1,10 @@
+from typing import Annotated, Any
+
 from beanie import PydanticObjectId
+from humps import camelize
 from pydantic import Field
 
-from tekst.config import InfoConfig, TekstConfig, TekstInfoConfig, get_config
+from tekst.config import TekstConfig, get_config
 from tekst.layer_types import LayerTypeInfo
 from tekst.models.common import ModelBase
 from tekst.models.settings import PlatformSettingsRead
@@ -12,22 +15,26 @@ _cfg: TekstConfig = get_config()
 
 
 class PlatformSecurityInfo(ModelBase):
-    closed_mode: bool = _cfg.security.closed_mode
-    users_active_by_default: bool = _cfg.security.users_active_by_default
-    enable_cookie_auth: bool = _cfg.security.enable_cookie_auth
-    enable_jwt_auth: bool = _cfg.security.enable_jwt_auth
-    auth_cookie_lifetime: int = _cfg.security.auth_cookie_lifetime
+    closed_mode: bool = _cfg.security_closed_mode
+    users_active_by_default: bool = _cfg.security_users_active_by_default
+    enable_cookie_auth: bool = _cfg.security_enable_cookie_auth
+    enable_jwt_auth: bool = _cfg.security_enable_jwt_auth
+    auth_cookie_lifetime: int = _cfg.security_auth_cookie_lifetime
 
 
 class PlatformData(ModelBase):
     """Platform data used by the web client"""
 
-    info: InfoConfig = _cfg.info
-    tekst_info: TekstInfoConfig = _cfg.tekst_info
+    info: dict[str, Any] = camelize(
+        _cfg.model_dump(include_keys_prefix="info_", strip_include_keys_prefix=True)
+    )
+    tekst: dict[str, Any] = camelize(
+        _cfg.model_dump(include_keys_prefix="tekst_", strip_include_keys_prefix=True)
+    )
     texts: list[TextRead]
     settings: PlatformSettingsRead
     security: PlatformSecurityInfo = Field(default_factory=PlatformSecurityInfo)
-    layer_types: list[LayerTypeInfo]
+    layer_types: Annotated[list[LayerTypeInfo], Field(alias="layerTypes")]
 
 
 class TextStats(ModelBase):

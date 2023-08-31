@@ -56,7 +56,7 @@ class User(ModelBase, ModelFactoryMixin):
 class UserDocument(User, BeanieBaseUser, Document):
     """User document model used by FastAPI-Users"""
 
-    is_active: bool = _cfg.security.users_active_by_default
+    is_active: bool = _cfg.security_users_active_by_default
     created_at: datetime = datetime.utcnow()
 
     class Settings(BeanieBaseUser.Settings):
@@ -81,7 +81,7 @@ class UserRead(User, schemas.BaseUser[PydanticObjectId]):
 class UserCreate(User, schemas.BaseUserCreate):
     """Dataset for creating a new user"""
 
-    is_active: bool = _cfg.security.users_active_by_default
+    is_active: bool = _cfg.security_users_active_by_default
 
 
 UserUpdate = User.get_update_model(schemas.BaseUserUpdate)

@@ -4,13 +4,17 @@ from functools import lru_cache
 from secrets import token_hex
 from urllib.parse import quote
 
-from pydantic import EmailStr, Field, HttpUrl, field_validator
+from pydantic import EmailStr, Field, HttpUrl, PlainSerializer, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing_extensions import Annotated
 
 from tekst import pkg_meta
-from tekst.models.common import ModelBase
 from tekst.utils.strings import safe_name
+
+
+CustomHttpUrl = Annotated[
+    HttpUrl, PlainSerializer(lambda url: str(url), return_type=str, when_used="always")
+]
 
 
 def _select_env_files() -> list[str]:
@@ -49,109 +53,28 @@ def _select_env_files() -> list[str]:
     return env_files
 
 
-class DbConfig(ModelBase):
-    """Database config model"""
-
-    protocol: str = "mongodb"
-    host: str = "127.0.0.1"
-    port: int = 27017
-    user: str = "root"
-    password: str = "root"
-    name: str = "tekst"
-
-    @field_validator("host", "password", mode="before")
-    @classmethod
-    def url_quote(cls, v) -> str:
-        return quote(str(v).encode("utf8"), safe="")
-
-    @field_validator("name", mode="before")
-    @classmethod
-    def generate_db_name(cls, v) -> str:
-        return safe_name(v)
-
-    def get_uri(self) -> str:
-        creds = f"{self.user}:{self.password}@" if self.user and self.password else ""
-        return f"{self.protocol}://{creds}{self.host}:{str(self.port)}"
-
-
-class DocConfig(ModelBase):
-    """Documentation config model"""
-
-    openapi_url: str = "/openapi.json"
-    swaggerui_url: str = "/docs"
-    redoc_url: str = "/redoc"
-
-
-class InfoConfig(ModelBase):
-    """General information config model"""
-
-    platform_name: str = "Tekst"
-    description: str = "An online text research platform"
-    terms: HttpUrl = "https://www.example-tekst-instance.org/terms"
-    contact_name: str = "Rick Sanchez"
-    contact_url: HttpUrl = "https://www.example-tekst-instance.org/contact"
-    contact_email: EmailStr = "rick.sanchez@example-tekst-instance.org"
-
-
-class TekstInfoConfig(ModelBase):
-    """
-    Tekst platform information config model
-
-    These values are not configurable. They are taken from the package infos and
-    aren't meant to be changed by users creating an own instance of the platform.
-    """
-
-    name: str = "Tekst"
-    version: str = pkg_meta["version"]
-    description: str = pkg_meta["description"]
-    website: HttpUrl = pkg_meta["website"]
-    license: str = pkg_meta["license"]
-    license_url: HttpUrl = pkg_meta["license_url"]
-
-
-class SecurityConfig(ModelBase):
-    """Security config model"""
-
-    secret: str = Field(default_factory=lambda: token_hex(32), min_length=16)
-    closed_mode: bool = False
-    init_admin_email_file: str | None = "init_admin_email.txt"
-    init_admin_password_file: str | None = "init_admin_password.txt"
-    users_active_by_default: bool = False
-
-    enable_cookie_auth: bool = True
-    auth_cookie_name: str = "tekstuserauth"
-    auth_cookie_domain: str | None = None
-    auth_cookie_lifetime: Annotated[int, Field(ge=3600)] = 43200
-    access_token_lifetime: Annotated[int, Field(ge=3600)] = 43200
-
-    enable_jwt_auth: bool = True
-    auth_jwt_lifetime: Annotated[int, Field(ge=3600)] = 43200
-
-    reset_pw_token_lifetime: Annotated[int, Field(ge=600)] = 3600
-    verification_token_lifetime: Annotated[int, Field(ge=600)] = 3600
-
-
-class EMailConfig(ModelBase):
-    """Email-related things config model"""
-
-    smtp_server: str | None = "127.0.0.1"
-    smtp_port: int | None = 25
-    smtp_user: str | None = None
-    smtp_password: str | None = None
-    smtp_starttls: bool = True
-    from_address: str = "noreply@example-tekst-instance.org"
-
-
 class TekstConfig(BaseSettings):
     """Platform config model"""
 
-    # basic
-    server_url: HttpUrl = "http://127.0.0.1:8000"
+    model_config = SettingsConfigDict(
+        env_file=_select_env_files(),
+        env_file_encoding="utf-8",
+        env_prefix="TEKST_",
+        case_sensitive=False,
+    )
+
+    # basics
+    server_url: CustomHttpUrl = "http://127.0.0.1:8000"
     web_path: str = "/"
     api_path: str = "/api"
 
     log_level: str = "warning"
     user_files_dir: str = "userfiles"
+
+    # development
+    dev_mode: bool = False
+    dev_host: str = "127.0.0.1"
+    dev_port: int = 8000
 
     # CORS
     cors_allow_origins: str | list[str] = ["*"]
@@ -159,18 +82,79 @@ class TekstConfig(BaseSettings):
     cors_allow_methods: str | list[str] = ["*"]
     cors_allow_headers: str | list[str] = ["*"]
 
-    # development
-    dev_mode: bool = False
-    dev_host: str = "127.0.0.1"
-    dev_port: int = 8000
+    # Email-related config
+    email_smtp_server: str | None = "127.0.0.1"
+    email_smtp_port: int | None = 25
+    email_smtp_user: str | None = None
+    email_smtp_password: str | None = None
+    email_smtp_starttls: bool = True
+    email_from_address: str = "noreply@example-tekst-instance.org"
 
-    # special domain sub configs
-    email: EMailConfig = EMailConfig()  # Email-related config
-    security: SecurityConfig = SecurityConfig()  # security-related config
-    db: DbConfig = DbConfig()  # db-related config (MongoDB)
-    doc: DocConfig = DocConfig()  # documentation-related config (OpenAPI, Redoc)
-    info: InfoConfig = InfoConfig()  # general platform information config
-    tekst_info: TekstInfoConfig = TekstInfoConfig()  # Tekst information config
+    # security-related config
+    security_secret: str = Field(default_factory=lambda: token_hex(32), min_length=16)
+    security_closed_mode: bool = False
+    security_init_admin_email_file: str | None = "init_admin_email.txt"
+    security_init_admin_password_file: str | None = "init_admin_password.txt"
+    security_users_active_by_default: bool = False
+
+    security_enable_cookie_auth: bool = True
+    security_auth_cookie_name: str = "tekstuserauth"
+    security_auth_cookie_domain: str | None = None
+    security_auth_cookie_lifetime: Annotated[int, Field(ge=3600)] = 43200
+    security_access_token_lifetime: Annotated[int, Field(ge=3600)] = 43200
+
+    security_enable_jwt_auth: bool = True
+    security_auth_jwt_lifetime: Annotated[int, Field(ge=3600)] = 43200
+
+    security_reset_pw_token_lifetime: Annotated[int, Field(ge=600)] = 3600
+    security_verification_token_lifetime: Annotated[int, Field(ge=600)] = 3600
+
+    # db-related config (MongoDB)
+    db_protocol: str = "mongodb"
+    db_host: str = "127.0.0.1"
+    db_port: int = 27017
+    db_user: str = "root"
+    db_password: str = "root"
+    db_name: str = "tekst"
+
+    # documentation-related config (OpenAPI, Redoc)
+    doc_openapi_url: str = "/openapi.json"
+    doc_swaggerui_url: str = "/docs"
+    doc_redoc_url: str = "/redoc"
+
+    # general platform information config
+    info_platform_name: str = "Tekst"
+    info_description: str = "An online text research platform"
+    info_terms: CustomHttpUrl = "https://www.example-tekst-instance.org/terms"
+    info_contact_name: str = "Rick Sanchez"
+    info_contact_url: CustomHttpUrl = "https://www.example-tekst-instance.org/contact"
+    info_contact_email: EmailStr = "rick.sanchez@example-tekst-instance.org"
+
+    # Tekst information config
+    tekst_name: str = "Tekst"
+    tekst_version: str = pkg_meta["version"]
+    tekst_description: str = pkg_meta["description"]
+    tekst_website: CustomHttpUrl = pkg_meta["website"]
+    tekst_license: str = pkg_meta["license"]
+    tekst_license_url: CustomHttpUrl = pkg_meta["license_url"]
+
+    @field_validator("db_host", "db_password", mode="after")
+    @classmethod
+    def url_quote(cls, v: str) -> str:
+        return quote(str(v).encode("utf8"), safe="")
+
+    @field_validator("db_name", mode="after")
+    @classmethod
+    def generate_db_name(cls, v: str) -> str:
+        return safe_name(v)
+
+    def db_get_uri(self) -> str:
+        creds = (
+            f"{self.db_user}:{self.db_password}@"
+            if self.db_user and self.db_password
+            else ""
+        )
+        return f"{self.db_protocol}://{creds}{self.db_host}:{str(self.db_port)}"
 
     @field_validator(
         "cors_allow_origins", "cors_allow_methods", "cors_allow_headers", mode="before"
@@ -188,13 +172,26 @@ class TekstConfig(BaseSettings):
     def uppercase_log_lvl(cls, v: str) -> str:
         return v.upper()
 
-    model_config = SettingsConfigDict(
-        env_file=_select_env_files(),
-        env_file_encoding="utf-8",
-        env_prefix="TEKST_",
-        env_nested_delimiter="__",
-        case_sensitive=False,
-    )
+    def model_dump(
+        self,
+        *,
+        include_keys_prefix: str = None,
+        strip_include_keys_prefix: bool = False,
+        **kwargs,
+    ):
+        if include_keys_prefix is None:
+            return super().model_dump(**kwargs)
+        if "include" in kwargs:
+            raise AttributeError(
+                "TekstConfig.model_dump does not support 'include' argument"
+            )
+        includes_keys = {
+            f for f in self.model_fields.keys() if f.startswith(include_keys_prefix)
+        }
+        return {
+            k.removeprefix(include_keys_prefix if strip_include_keys_prefix else ""): v
+            for k, v in super().model_dump(include=includes_keys, **kwargs).items()
+        }
 
 
 @lru_cache

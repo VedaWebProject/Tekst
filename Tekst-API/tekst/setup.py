@@ -13,7 +13,7 @@ async def app_setup(cfg: TekstConfig):
     log.info("Running Tekst pre-launch app setup...")
 
     log.info("Checking SMTP config...")
-    if not cfg.email.smtp_server:
+    if not cfg.email_smtp_server:
         log.critical("No SMTP server configured. Aborting setup...")
         exit(1)
 

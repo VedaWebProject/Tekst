@@ -10,10 +10,10 @@ def get_cfg() -> TekstConfig:
 
 
 def get_db_client(cfg: TekstConfig = Depends(get_cfg)) -> DatabaseClient:
-    return get_client(cfg.db.get_uri())
+    return get_client(cfg.db_get_uri())
 
 
 def get_db(
     db_client: Database = Depends(get_db_client), cfg: TekstConfig = Depends(get_cfg)
 ) -> Database:
-    return db_client[cfg.db.name]
+    return db_client[cfg.db_name]

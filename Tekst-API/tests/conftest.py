@@ -60,7 +60,7 @@ def test_data(request) -> dict:
 @pytest.fixture(scope="session")
 async def get_db_client_override(config) -> DatabaseClient:
     """Dependency override for the database client dependency"""
-    db_client: DatabaseClient = DatabaseClient(config.db.get_uri())
+    db_client: DatabaseClient = DatabaseClient(config.db_get_uri())
     yield db_client
     # close db connection
     db_client.close()
@@ -73,7 +73,7 @@ async def test_app(config, get_db_client_override):
     async with LifespanManager(app):
         yield app
     # cleanup data
-    await get_db_client_override.drop_database(config.db.name)
+    await get_db_client_override.drop_database(config.db_name)
 
 
 @pytest.fixture
@@ -86,7 +86,7 @@ async def test_client(test_app) -> AsyncClient:
 @pytest.fixture
 async def reset_db(get_db_client_override, config):
     for collection in ("texts", "nodes", "layers", "units", "users"):
-        await get_db_client_override[config.db.name][collection].drop()
+        await get_db_client_override[config.db_name][collection].drop()
 
 
 @pytest.fixture
@@ -156,7 +156,7 @@ async def get_session_cookie(
             data=payload,
         )
         assert resp.status_code == 204, status_fail_msg(204, resp)
-        assert resp.cookies.get(config.security.auth_cookie_name)
+        assert resp.cookies.get(config.security_auth_cookie_name)
         return resp.cookies
 
     return _get_session_cookie

@@ -487,45 +487,6 @@ export interface components {
       /** Detail */
       detail?: components['schemas']['ValidationError'][];
     };
-    /**
-     * InfoConfig
-     * @description General information config model
-     */
-    InfoConfig: {
-      /**
-       * Platformname
-       * @default Tekst
-       */
-      platformName: string;
-      /**
-       * Description
-       * @default An online text research platform
-       */
-      description: string;
-      /**
-       * Terms
-       * Format: uri
-       * @default https://www.example-tekst-instance.org/terms
-       */
-      terms: string;
-      /**
-       * Contactname
-       * @default Rick Sanchez
-       */
-      contactName: string;
-      /**
-       * Contacturl
-       * Format: uri
-       * @default https://www.example-tekst-instance.org/contact
-       */
-      contactUrl: string;
-      /**
-       * Contactemail
-       * Format: email
-       * @default rick.sanchez@example-tekst-instance.org
-       */
-      contactEmail: string;
-    };
     /** LayerNodeCoverage */
     LayerNodeCoverage: {
       /** Label */
@@ -908,6 +869,7 @@ export interface components {
      */
     PlatformData: {
       /**
+       * Info
        * @default {
        *   "contactEmail": "rick.sanchez@example-tekst-instance.org",
        *   "contactName": "Rick Sanchez",
@@ -917,8 +879,9 @@ export interface components {
        *   "terms": "https://www.example-tekst-instance.org/terms"
        * }
        */
-      info: components['schemas']['InfoConfig'];
+      info: Record<string, never>;
       /**
+       * Tekst
        * @default {
        *   "description": "An online text research platform",
        *   "license": "AGPL-3.0-or-later",
@@ -928,7 +891,7 @@ export interface components {
        *   "website": "https://github.com/VedaWebProject/Tekst-API"
        * }
        */
-      tekstInfo: components['schemas']['TekstInfoConfig'];
+      tekst: Record<string, never>;
       /** Texts */
       texts: components['schemas']['TextRead'][];
       settings: components['schemas']['PlatformSettingsRead'];
@@ -1011,47 +974,6 @@ export interface components {
       locale: 'deDE' | 'enUS';
       /** Subtitle */
       subtitle: string;
-    };
-    /**
-     * TekstInfoConfig
-     * @description Tekst platform information config model
-     *
-     * These values are not configurable. They are taken from the package infos and
-     * aren't meant to be changed by users creating an own instance of the platform.
-     */
-    TekstInfoConfig: {
-      /**
-       * Name
-       * @default Tekst
-       */
-      name: string;
-      /**
-       * Version
-       * @default 0.0.1
-       */
-      version: string;
-      /**
-       * Description
-       * @default An online text research platform
-       */
-      description: string;
-      /**
-       * Website
-       * Format: uri
-       * @default https://github.com/VedaWebProject/Tekst-API
-       */
-      website: string;
-      /**
-       * License
-       * @default AGPL-3.0-or-later
-       */
-      license: string;
-      /**
-       * Licenseurl
-       * Format: uri
-       * @default https://www.gnu.org/licenses/agpl-3.0.txt
-       */
-      licenseUrl: string;
     };
     /** TextCreate */
     TextCreate: {

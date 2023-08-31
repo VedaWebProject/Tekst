@@ -28,8 +28,8 @@ async def startup_routine(app: FastAPI) -> None:
 
     # Hello World!
     log.info(
-        f"{_cfg.info.platform_name} ({_cfg.tekst_info.name} "
-        f"Server v{_cfg.tekst_info.version}) "
+        f"{_cfg.info_platform_name} ({_cfg.tekst_name} "
+        f"Server v{_cfg.tekst_version}) "
         f"running in {'DEVELOPMENT' if _cfg.dev_mode else 'PRODUCTION'} MODE"
     )
 
@@ -46,7 +46,7 @@ async def startup_routine(app: FastAPI) -> None:
 
 
 async def shutdown_routine(app: FastAPI) -> None:
-    log.info(f"{_cfg.tekst_info.name} cleaning up and shutting down...")
+    log.info(f"{_cfg.tekst_name} cleaning up and shutting down...")
     get_db_client(_cfg).close()  # again, no DI possible here :(
 
 
@@ -60,9 +60,9 @@ async def lifespan(app: FastAPI):
 # create FastAPI app instance
 app = FastAPI(
     root_path=_cfg.api_path,
-    openapi_url=_cfg.doc.openapi_url,
-    docs_url=_cfg.doc.swaggerui_url,
-    redoc_url=_cfg.doc.redoc_url,
+    openapi_url=_cfg.doc_openapi_url,
+    docs_url=_cfg.doc_swaggerui_url,
+    redoc_url=_cfg.doc_redoc_url,
     lifespan=lifespan,
 )
 
@@ -70,13 +70,13 @@ app = FastAPI(
 if not _cfg.dev_mode:
     app.add_middleware(
         CSRFMiddleware,
-        secret=_cfg.security.secret,
+        secret=_cfg.security_secret,
         required_urls=[re.compile(r".*/auth/cookie/login.*")],
         exempt_urls=[re.compile(r".*/auth/cookie/logout.*")],
-        sensitive_cookies={_cfg.security.auth_cookie_name},
+        sensitive_cookies={_cfg.security_auth_cookie_name},
         cookie_name="XSRF-TOKEN",
         cookie_path="/",
-        cookie_domain=_cfg.security.auth_cookie_domain or None,
+        cookie_domain=_cfg.security_auth_cookie_domain or None,
         cookie_secure=not _cfg.dev_mode,
         cookie_samesite="Lax",
         header_name="X-XSRF-TOKEN",

@@ -97,7 +97,7 @@ async def test_login(
         data=payload,
     )
     assert resp.status_code == 204, status_fail_msg(204, resp)
-    assert resp.cookies.get(config.security.auth_cookie_name)
+    assert resp.cookies.get(config.security_auth_cookie_name)
 
 
 @pytest.mark.anyio
@@ -160,15 +160,15 @@ async def test_user_updates_self(
     assert resp.status_code == 204, status_fail_msg(204, resp)
 
     # save auth cookie
-    assert resp.cookies.get(config.security.auth_cookie_name)
-    auth_token = resp.cookies.get(config.security.auth_cookie_name)
+    assert resp.cookies.get(config.security_auth_cookie_name)
+    auth_token = resp.cookies.get(config.security_auth_cookie_name)
 
     # get user data from /users/me
     endpoint = f"{api_path}/users/me"
     resp = await test_client.get(
         endpoint,
         cookies={
-            config.security.auth_cookie_name: auth_token,
+            config.security_auth_cookie_name: auth_token,
         },
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
@@ -181,7 +181,7 @@ async def test_user_updates_self(
         endpoint,
         json=updates,
         cookies={
-            config.security.auth_cookie_name: auth_token,
+            config.security_auth_cookie_name: auth_token,
         },
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)

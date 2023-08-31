@@ -1,7 +1,12 @@
 from typing import Annotated, List
 
 from beanie import PydanticObjectId
-from pydantic import Field, StringConstraints, field_validator
+from pydantic import (
+    Field,
+    PlainSerializer,
+    StringConstraints,
+    field_validator,
+)
 from pydantic_extra_types.color import Color
 from typing_extensions import TypedDict
 
@@ -26,6 +31,10 @@ class StructureLevelTranslation(TypedDict):
 
 StructureLevelTranslations = Annotated[
     List[StructureLevelTranslation], Field(min_length=1)
+]
+
+AccentColor = Annotated[
+    Color, PlainSerializer(lambda c: c.as_hex(), return_type=str, when_used="always")
 ]
 
 
@@ -91,7 +100,7 @@ class Text(ModelBase, ModelFactoryMixin):
     ] = True
 
     accent_color: Annotated[
-        Color,
+        AccentColor,
         Field(
             description="Accent color used for this text in the client UI",
         ),
@@ -122,16 +131,6 @@ class Text(ModelBase, ModelFactoryMixin):
                 f"Invalid default level value ({v}). "
                 f"This text only has {len(info.data['levels'])} levels."
             )
-        return v
-
-    @field_validator("accent_color", mode="after")
-    @classmethod
-    def validate_color(cls, v) -> Color:
-        if not isinstance(v, Color):
-            try:
-                v = Color(v)
-            except Exception:
-                return None
         return v
 
 

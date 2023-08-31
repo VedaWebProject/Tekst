@@ -3074,58 +3074,6 @@
         "type": "object",
         "title": "HTTPValidationError"
       },
-      "InfoConfig": {
-        "properties": {
-          "platformName": {
-            "type": "string",
-            "title": "Platformname",
-            "default": "Tekst"
-          },
-          "description": {
-            "type": "string",
-            "title": "Description",
-            "default": "An online text research platform"
-          },
-          "terms": {
-            "type": "string",
-            "maxLength": 2083,
-            "minLength": 1,
-            "format": "uri",
-            "title": "Terms",
-            "default": "https://www.example-tekst-instance.org/terms"
-          },
-          "contactName": {
-            "type": "string",
-            "title": "Contactname",
-            "default": "Rick Sanchez"
-          },
-          "contactUrl": {
-            "type": "string",
-            "maxLength": 2083,
-            "minLength": 1,
-            "format": "uri",
-            "title": "Contacturl",
-            "default": "https://www.example-tekst-instance.org/contact"
-          },
-          "contactEmail": {
-            "type": "string",
-            "format": "email",
-            "title": "Contactemail",
-            "default": "rick.sanchez@example-tekst-instance.org"
-          }
-        },
-        "type": "object",
-        "required": [
-          "platformName",
-          "description",
-          "terms",
-          "contactName",
-          "contactUrl",
-          "contactEmail"
-        ],
-        "title": "InfoConfig",
-        "description": "General information config model"
-      },
       "LayerNodeCoverage": {
         "properties": {
           "label": {
@@ -3917,11 +3865,8 @@
       "PlatformData": {
         "properties": {
           "info": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/InfoConfig"
-              }
-            ],
+            "type": "object",
+            "title": "Info",
             "default": {
               "contactEmail": "rick.sanchez@example-tekst-instance.org",
               "contactName": "Rick Sanchez",
@@ -3931,12 +3876,9 @@
               "terms": "https://www.example-tekst-instance.org/terms"
             }
           },
-          "tekstInfo": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/TekstInfoConfig"
-              }
-            ],
+          "tekst": {
+            "type": "object",
+            "title": "Tekst",
             "default": {
               "description": "An online text research platform",
               "license": "AGPL-3.0-or-later",
@@ -3970,7 +3912,7 @@
         "type": "object",
         "required": [
           "info",
-          "tekstInfo",
+          "tekst",
           "texts",
           "settings",
           "security",
@@ -4132,57 +4074,6 @@
           "subtitle"
         ],
         "title": "SubtitleTranslation"
-      },
-      "TekstInfoConfig": {
-        "properties": {
-          "name": {
-            "type": "string",
-            "title": "Name",
-            "default": "Tekst"
-          },
-          "version": {
-            "type": "string",
-            "title": "Version",
-            "default": "0.0.1"
-          },
-          "description": {
-            "type": "string",
-            "title": "Description",
-            "default": "An online text research platform"
-          },
-          "website": {
-            "type": "string",
-            "maxLength": 2083,
-            "minLength": 1,
-            "format": "uri",
-            "title": "Website",
-            "default": "https://github.com/VedaWebProject/Tekst-API"
-          },
-          "license": {
-            "type": "string",
-            "title": "License",
-            "default": "AGPL-3.0-or-later"
-          },
-          "licenseUrl": {
-            "type": "string",
-            "maxLength": 2083,
-            "minLength": 1,
-            "format": "uri",
-            "title": "Licenseurl",
-            "default": "https://www.gnu.org/licenses/agpl-3.0.txt"
-          }
-        },
-        "type": "object",
-        "required": [
-          "name",
-          "version",
-          "description",
-          "website",
-          "license",
-          "licenseUrl"
-        ],
-        "title": "TekstInfoConfig",
-        "description": "Tekst platform information config model\n\nThese values are not configurable. They are taken from the package infos and\naren't meant to be changed by users creating an own instance of the platform."
       },
       "TextCreate": {
         "properties": {

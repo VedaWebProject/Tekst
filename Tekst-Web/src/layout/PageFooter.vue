@@ -8,10 +8,10 @@ const { pfData } = usePlatformData();
   <footer>
     <div id="footer-content">
       <div>{{ $t('server.welcomeTest') }}</div>
-      <a :href="pfData?.tekstInfo?.website" title="">
-        {{ pfData?.tekstInfo?.name }}
+      <a :href="pfData?.tekst?.website" title="">
+        {{ pfData?.tekst?.name }}
       </a>
-      v{{ pfData?.tekstInfo?.version }}
+      v{{ pfData?.tekst?.version }}
     </div>
   </footer>
 </template>

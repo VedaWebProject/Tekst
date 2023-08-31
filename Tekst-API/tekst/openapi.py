@@ -29,21 +29,21 @@ def custom_openapi(app: FastAPI, cfg: TekstConfig):
         if app.openapi_schema:
             return app.openapi_schema
         openapi_schema = get_openapi(
-            title=cfg.info.platform_name,
-            version=cfg.tekst_info.version,
-            description=cfg.info.description,
+            title=cfg.info_platform_name,
+            version=cfg.tekst_version,
+            description=cfg.info_description,
             routes=app.routes,
             servers=[{"url": urljoin(str(cfg.server_url), str(cfg.api_path))}],
-            terms_of_service=cfg.info.terms,
+            terms_of_service=str(cfg.info_terms),
             tags=tags_metadata,
             contact={
-                "name": cfg.info.contact_name,
-                "url": cfg.info.contact_url,
-                "email": cfg.info.contact_email,
+                "name": cfg.info_contact_name,
+                "url": cfg.info_contact_url,
+                "email": cfg.info_contact_email,
             },
             license_info={
-                "name": cfg.tekst_info.license,
-                "url": cfg.tekst_info.license_url,
+                "name": cfg.tekst_license,
+                "url": cfg.tekst_license_url,
             },
         )
         app.openapi_schema = process_openapi_schema(openapi_schema)
@@ -69,7 +69,7 @@ async def generate_openapi_schema(
 
     async with LifespanManager(app):
         async with AsyncClient(app=app, base_url="http://test") as client:
-            resp = await client.get(f"{cfg.doc.openapi_url}")
+            resp = await client.get(f"{cfg.doc_openapi_url}")
             if resp.status_code != 200:
                 raise HTTPException(resp.status_code)
             else:
