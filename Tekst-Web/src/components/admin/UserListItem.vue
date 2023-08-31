@@ -56,6 +56,7 @@ const statusBtnMinWidth = '128px';
             "
             size="tiny"
             :style="{ minWidth: statusBtnMinWidth }"
+            :disabled="currentUser && currentUser.id === targetUser.id"
             @click="$emit('superuserClick', targetUser)"
           >
             {{
