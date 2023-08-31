@@ -61,6 +61,7 @@ class TekstConfig(BaseSettings):
         env_file_encoding="utf-8",
         env_prefix="TEKST_",
         case_sensitive=False,
+        secrets_dir="/run/secrets",
     )
 
     # basics
@@ -93,8 +94,6 @@ class TekstConfig(BaseSettings):
     # security-related config
     security_secret: str = Field(default_factory=lambda: token_hex(32), min_length=16)
     security_closed_mode: bool = False
-    security_init_admin_email_file: str | None = "init_admin_email.txt"
-    security_init_admin_password_file: str | None = "init_admin_password.txt"
     security_users_active_by_default: bool = False
 
     security_enable_cookie_auth: bool = True
@@ -108,6 +107,9 @@ class TekstConfig(BaseSettings):
 
     security_reset_pw_token_lifetime: Annotated[int, Field(ge=600)] = 3600
     security_verification_token_lifetime: Annotated[int, Field(ge=600)] = 3600
+
+    security_init_admin_email: str | None = None
+    security_init_admin_password: str | None = None
 
     # db-related config (MongoDB)
     db_protocol: str = "mongodb"

@@ -1,7 +1,6 @@
 import contextlib
 import re
 
-from pathlib import Path
 from typing import Annotated, Any, Dict
 
 import fastapi_users.models as fapi_users_models
@@ -374,35 +373,23 @@ async def _create_user(user: UserCreate) -> UserRead:
 async def create_initial_superuser():
     if _cfg.dev_mode:
         return
-    # check if initial admin account is properly configured, get credentials
-    if _cfg.security_init_admin_email_file and _cfg.security_init_admin_password_file:
-        init_admin_email_file = Path(_cfg.security_init_admin_email_file)
-        init_admin_password_file = Path(_cfg.security_init_admin_password_file)
-        if init_admin_email_file.is_file() and init_admin_password_file.is_file():
-            with open(init_admin_email_file, "r") as f:
-                init_admin_email = f.read().strip()
-            with open(init_admin_password_file, "r") as f:
-                init_admin_password = f.read().strip()
-            if not len(init_admin_email) or not len(init_admin_password):
-                log.warning("Initial admin account file(s) empty, skipping creation.")
-                return
-        else:
-            log.warning("Initial admin account file(s) not found, skipping creation.")
-            return
-    else:
+    # check if initial admin account is properly configured
+    if not _cfg.security_init_admin_email or not _cfg.security_init_admin_password:
         log.warning("No initial admin account configured, skipping creation.")
         return
     # create inital admin account
-    if await UserDocument.find_one(UserDocument.email == init_admin_email).exists():
+    if await UserDocument.find_one(
+        UserDocument.email == _cfg.security_init_admin_email
+    ).exists():
         log.warning(
-            f"Initial admin account for {init_admin_email} already exists."
-            " Skipping creation."
+            f"Initial admin account for {_cfg.security_init_admin_email}"
+            " already exists. Skipping creation."
         )
         return
     log.info("Creating initial admin account...")
     user = UserCreate(
-        email=init_admin_email,
-        password=init_admin_password,
+        email=_cfg.security_init_admin_email,
+        password=_cfg.security_init_admin_password,
         username="admin",
         first_name="Admin",
         last_name="Admin",
@@ -413,7 +400,7 @@ async def create_initial_superuser():
     user.is_superuser = True
     await _create_user(user)
     log.warning(
-        f"Created initial admin account for email {init_admin_email}. "
+        f"Created initial admin account for email {_cfg.security_init_admin_email}. "
         "PLEASE CHANGE THIS ACCOUNT'S EMAIL AND PASSWORD IMMEDIATELY!"
     )
 
