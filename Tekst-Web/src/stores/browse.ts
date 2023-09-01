@@ -5,7 +5,6 @@ import { useStateStore, useAuthStore } from '@/stores';
 import type { NodeRead } from '@/api';
 import { GET } from '@/api';
 import { useMessages } from '@/messages';
-import { useI18n } from 'vue-i18n';
 
 export const useBrowseStore = defineStore('browse', () => {
   // composables
@@ -14,7 +13,6 @@ export const useBrowseStore = defineStore('browse', () => {
   const route = useRoute();
   const router = useRouter();
   const { message } = useMessages();
-  const { t } = useI18n({ useScope: 'global' });
 
   /* BASIC BROWSE UI STATE */
 
@@ -39,17 +37,14 @@ export const useBrowseStore = defineStore('browse', () => {
   // update browse node path
   async function updateBrowseNodePath(lvl?: string, pos?: string) {
     if (route.name !== 'browse') return;
-    const qLvl = parseInt(lvl || route.query.lvl?.toString() || '') ?? 0;
-    const qPos = parseInt(pos || route.query.pos?.toString() || '') ?? 0;
+    const qLvl = parseInt(lvl || route.query.lvl?.toString() || '0') ?? 0;
+    const qPos = parseInt(pos || route.query.pos?.toString() || '0') ?? 0;
     if (Number.isInteger(qLvl) && Number.isInteger(qPos)) {
       // fill browse node path up to root (no more parent)
       const { data: path, error } = await GET('/browse/nodes/path', {
         params: { query: { textId: state.text?.id || '', level: qLvl, position: qPos } },
       });
-      if (!error) {
-        if (!path || path.length == 0) {
-          message.error(t('errors.unexpected'));
-        }
+      if (!error && path && path.length) {
         nodePath.value = path;
       } else {
         resetBrowseLocation(level.value);
