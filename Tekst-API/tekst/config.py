@@ -33,7 +33,8 @@ def _select_env_files() -> list[str]:
 
     1. ".env" if it exists
     2. ".env.dev" if it exists AND if TEKST_DEV_MODE env var is set to true
-    3. Custom env file defined in "TEKST_CUSTOM_ENV_FILE" env var if it exists
+    3. ".env.prod" if it exists
+    4. Custom env file defined in "TEKST_CUSTOM_ENV_FILE" env var if it exists
 
     :return: List of .env file paths
     :rtype: list[str]
@@ -42,12 +43,15 @@ def _select_env_files() -> list[str]:
     # define used env file names
     f_env = ".env"
     f_env_dev = ".env.dev"
+    f_env_prod = ".env.prod"
     f_env_custom = os.environ.get("TEKST_CUSTOM_ENV_FILE")
     # prio logic
     if os.path.exists(f_env):
         env_files.append(f_env)
     if os.environ.get("TEKST_DEV_MODE") and os.path.exists(f_env_dev):
         env_files.append(f_env_dev)
+    if f_env_prod and os.path.exists(f_env_prod):
+        env_files.append(f_env_prod)
     if f_env_custom and os.path.exists(f_env_custom):
         env_files.append(f_env_custom)
     return env_files
@@ -115,8 +119,8 @@ class TekstConfig(BaseSettings):
     db_protocol: str = "mongodb"
     db_host: str = "127.0.0.1"
     db_port: int = 27017
-    db_user: str = "root"
-    db_password: str = "root"
+    db_user: str | None = None
+    db_password: str | None = None
     db_name: str = "tekst"
 
     # documentation-related config (OpenAPI, Redoc)

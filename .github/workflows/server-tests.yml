@@ -21,9 +21,6 @@ jobs:
         image: mongo:5.0.9
         ports:
           - 27017:27017
-        env:
-          MONGO_INITDB_ROOT_USERNAME: root
-          MONGO_INITDB_ROOT_PASSWORD: root
       mailpit:
         image: axllent/mailpit:v1.6
         ports:

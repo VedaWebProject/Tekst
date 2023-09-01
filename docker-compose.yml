@@ -43,19 +43,24 @@ services:
     secrets:
       - tekst_security_init_admin_email
       - tekst_security_init_admin_password
+      - tekst_db_user
+      - tekst_db_password
 
   mongo:
     image: mongo:5.0.9
     restart: always
     init: true
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/tekst_db_user
+      MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/tekst_db_password
     volumes:
       - mongo_configdb:/data/configdb
       - mongo_db:/data/db
     networks:
       - db
+    secrets:
+      - tekst_db_user
+      - tekst_db_password
 
 volumes:
   mongo_configdb:
@@ -70,3 +75,7 @@ secrets:
     file: ./secrets/security_init_admin_email.txt
   tekst_security_init_admin_password:
     file: ./secrets/security_init_admin_password.txt
+  tekst_db_user:
+    file: ./secrets/db_user.txt
+  tekst_db_password:
+    file: ./secrets/db_password.txt

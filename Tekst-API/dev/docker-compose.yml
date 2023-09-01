@@ -14,9 +14,6 @@ services:
     image: mongo:5.0.9
     restart: always
     init: true
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: root
     volumes:
       - mongo_configdb:/data/configdb
       - mongo_db:/data/db
@@ -37,7 +34,7 @@ services:
     ports:
       - 127.0.0.1:8081:8081
     environment:
-      ME_CONFIG_MONGODB_URL: mongodb://root:root@mongo:27017/
+      ME_CONFIG_MONGODB_URL: mongodb://mongo:27017/
     networks:
       - devstack
     profiles:
