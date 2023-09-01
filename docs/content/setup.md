@@ -6,6 +6,7 @@
 The follwing requirements apply to either deployment strategy. Each deployment strategy then comes with its own respective additional requirements.
 
 - A server to deploy Tekst to (the deployment instructions below assume a Linux-based server with Docker and Docker Compose installed, as this is the recommended setup strategy)
+- A webserver configured to handle traffic between the outside world and Tekst **via HTTPS** (!)
 - Access to a working, reliable **SMTP server** to send out emails containing verification links, password reset links, etc. It is important that this SMTP server is well-configured so the emails it sends actually reach their recepients. Whether you use a third-party SMTP server (like the one of your email provider) or your own self-hosted one is up to you. If you plan to run Tekst in [closed mode](index.md#closed-mode) (only one or more administrators, no public users who can create content), this requirement is **not strictly necessary**.
 
 
