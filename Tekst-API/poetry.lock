@@ -226,13 +226,14 @@ test = ["pytest (>=6)"]
 
 [[package]]
 name = "fastapi"
-version = "0.103.0"
+version = "0.103.1"
 description = "FastAPI framework, high performance, easy to learn, fast to code, ready for production"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 
 [package.dependencies]
+anyio = ">=3.7.1,<4.0.0"
 pydantic = ">=1.7.4,<1.8 || >1.8,<1.8.1 || >1.8.1,<2.0.0 || >2.0.0,<2.0.1 || >2.0.1,<2.1.0 || >2.1.0,<3.0.0"
 starlette = ">=0.27.0,<0.28.0"
 typing-extensions = ">=4.5.0"
@@ -366,7 +367,7 @@ python-versions = "*"
 
 [[package]]
 name = "motor"
-version = "3.3.0"
+version = "3.3.1"
 description = "Non-blocking MongoDB driver for Tornado or asyncio"
 category = "main"
 optional = false
@@ -557,7 +558,7 @@ zstd = ["zstandard"]
 
 [[package]]
 name = "pytest"
-version = "7.4.0"
+version = "7.4.1"
 description = "pytest: simple powerful testing with Python"
 category = "dev"
 optional = false
@@ -1050,8 +1051,8 @@ exceptiongroup = [
     {file = "exceptiongroup-1.1.3.tar.gz", hash = "sha256:097acd85d473d75af5bb98e41b61ff7fe35efe6675e4f9370ec6ec5126d160e9"},
 ]
 fastapi = [
-    {file = "fastapi-0.103.0-py3-none-any.whl", hash = "sha256:61ab72c6c281205dd0cbaccf503e829a37e0be108d965ac223779a8479243665"},
-    {file = "fastapi-0.103.0.tar.gz", hash = "sha256:4166732f5ddf61c33e9fa4664f73780872511e0598d4d5434b1816dc1e6d9421"},
+    {file = "fastapi-0.103.1-py3-none-any.whl", hash = "sha256:5e5f17e826dbd9e9b5a5145976c5cd90bcaa61f2bf9a69aca423f2bcebe44d83"},
+    {file = "fastapi-0.103.1.tar.gz", hash = "sha256:345844e6a82062f06a096684196aaf96c1198b25c06b72c1311b882aa2d8a35d"},
 ]
 fastapi-users = [
     {file = "fastapi_users-12.1.2-py3-none-any.whl", hash = "sha256:768e3b17b9b89b5f5d3c303afefd69874da0fc97ebac16a86167d4c8d414d479"},
@@ -1094,8 +1095,8 @@ makefun = [
     {file = "makefun-1.15.1.tar.gz", hash = "sha256:40b0f118b6ded0d8d78c78f1eb679b8b6b2462e3c1b3e05fb1b2da8cd46b48a5"},
 ]
 motor = [
-    {file = "motor-3.3.0-py3-none-any.whl", hash = "sha256:32bb0680f5ac3e245dcc98d41d009f3be5d45c1e4a1b2d17951d9f63c8f41ea0"},
-    {file = "motor-3.3.0.tar.gz", hash = "sha256:f18b90089acf914e21485d002c116f27a2215c85174b3bd3e2221d633e8cf7ab"},
+    {file = "motor-3.3.1-py3-none-any.whl", hash = "sha256:a0dee83ad0d47b353932ac37467ba397b1e649ce7e3eea7f5a90554883d7cdbe"},
+    {file = "motor-3.3.1.tar.gz", hash = "sha256:c5eb400e27d722a3db03a9826656b6d13acf9b6c70c2fb4604f474eac9da5be4"},
 ]
 mypy-extensions = [
     {file = "mypy_extensions-1.0.0-py3-none-any.whl", hash = "sha256:4392f6c0eb8a5668a69e23d168ffa70f0be9ccfd32b5cc2d26a34ae5b844552d"},
@@ -1337,8 +1338,8 @@ pymongo = [
     {file = "pymongo-4.5.0.tar.gz", hash = "sha256:681f252e43b3ef054ca9161635f81b730f4d8cadd28b3f2b2004f5a72f853982"},
 ]
 pytest = [
-    {file = "pytest-7.4.0-py3-none-any.whl", hash = "sha256:78bf16451a2eb8c7a2ea98e32dc119fd2aa758f1d5d66dbf0a59d69a3969df32"},
-    {file = "pytest-7.4.0.tar.gz", hash = "sha256:b4bf8c45bd59934ed84001ad51e11b4ee40d40a1229d2c79f9c592b0a3f6bd8a"},
+    {file = "pytest-7.4.1-py3-none-any.whl", hash = "sha256:460c9a59b14e27c602eb5ece2e47bec99dc5fc5f6513cf924a7d03a578991b1f"},
+    {file = "pytest-7.4.1.tar.gz", hash = "sha256:2f2301e797521b23e4d2585a0a3d7b5e50fdddaaf7e7d6773ea26ddb17c213ab"},
 ]
 pytest-dotenv = [
     {file = "pytest-dotenv-0.5.2.tar.gz", hash = "sha256:2dc6c3ac6d8764c71c6d2804e902d0ff810fa19692e95fe138aefc9b1aa73732"},
