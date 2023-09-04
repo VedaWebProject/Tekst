@@ -110,9 +110,9 @@ function handleSave() {
 </script>
 
 <template>
-  <h1>
-    {{ $t('admin.heading') }}: {{ state.text?.title }} - {{ $t('admin.texts.general.heading') }}
-  </h1>
+  <h2>
+    {{ $t('admin.texts.general.heading') }}
+  </h2>
 
   <div class="content-block">
     <n-form

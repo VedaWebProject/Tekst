@@ -175,9 +175,9 @@ async function handleModalSubmit() {
 </script>
 
 <template>
-  <h1>
-    {{ $t('admin.heading') }}: {{ state.text?.title }} - {{ $t('admin.texts.levels.heading') }}
-  </h1>
+  <h2>
+    {{ $t('admin.texts.levels.heading') }}
+  </h2>
 
   <div class="content-block">
     <div v-for="(lvl, lvlIndex) in levels" :key="`lvl_${lvlIndex}`">

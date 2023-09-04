@@ -26,5 +26,7 @@ const state = useStateStore();
     />
   </SecondaryNavBar>
 
+  <h1>{{ $t('admin.heading') }}: {{ state.text?.title }}</h1>
+
   <router-view></router-view>
 </template>
