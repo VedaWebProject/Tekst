@@ -67,6 +67,9 @@ target-version = ["py310"]
 testpaths = ["tests"]
 env_override_existing_values = 1
 env_files = [".env.dev", ".env.test"]
+filterwarnings = [
+    'ignore:directory "/run/secrets" does not exist:UserWarning'
+]
 
 [tool.coverage.run]
 source = ["tekst"]
