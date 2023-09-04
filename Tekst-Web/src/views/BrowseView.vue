@@ -2,14 +2,14 @@
 import { computed } from 'vue';
 import LocationLabel from '@/components/browse/LocationLabel.vue';
 import BrowseToolbar from '@/components/browse/BrowseToolbar.vue';
-import { useStateStore, useBrowseStore } from '@/stores';
+import { useBrowseStore, useStateStore } from '@/stores';
 import FolderOffTwotone from '@vicons/material/FolderOffTwotone';
 import LayerToggleDrawer from '@/components/browse/LayerToggleDrawer.vue';
 import UnitContainer from '@/components/browse/UnitContainer.vue';
 import HugeLabeledIcon from '@/components/HugeLabeledIcon.vue';
 
-const browse = useBrowseStore();
 const state = useStateStore();
+const browse = useBrowseStore();
 
 const activeLayers = computed(() => {
   return browse.layers.filter((l) => l.active);
@@ -17,8 +17,9 @@ const activeLayers = computed(() => {
 </script>
 
 <template>
-  <h1 class="browse-heading-title">{{ state.text?.title }}</h1>
-  <h2 class="browse-heading-location"><LocationLabel /></h2>
+  <h1 class="browse-heading-location" :class="state.smallScreen && 'smallscreen'">
+    <LocationLabel />
+  </h1>
 
   <BrowseToolbar />
 
@@ -40,12 +41,7 @@ const activeLayers = computed(() => {
   margin: 0;
 }
 
-.browse-heading-location {
-  flex-grow: 2;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  opacity: 0.6;
-  white-space: nowrap;
-  margin-top: 12px;
+.browse-heading-location.smallscreen {
+  font-size: 1.3rem;
 }
 </style>
