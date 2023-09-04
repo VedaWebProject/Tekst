@@ -202,6 +202,7 @@ models:
     onLevel: on level "{level}"
 
 account:
+  session: Session
   loginBtn: Login
   logoutBtn: Logout
   profile: Public Profile

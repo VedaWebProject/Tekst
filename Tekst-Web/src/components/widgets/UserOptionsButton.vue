@@ -33,6 +33,22 @@ const showUserDropdown = ref(false);
 const userOptions = computed(() => [
   {
     type: 'group',
+    label: t('account.session'),
+    key: 'session',
+    children: [
+      {
+        label: t('account.logoutBtn'),
+        key: 'logout',
+        icon: renderIcon(LogOutRound),
+      },
+      {
+        type: 'divider',
+        key: 'dividerLogout',
+      },
+    ],
+  },
+  {
+    type: 'group',
     label: `${auth.user?.firstName} ${auth.user?.lastName} (${auth.user?.username})`,
     key: 'user',
     children: [
@@ -83,15 +99,6 @@ const userOptions = computed(() => [
         },
       ]
     : []),
-  {
-    type: 'divider',
-    key: 'dividerLogout',
-  },
-  {
-    label: t('account.logoutBtn'),
-    key: 'logout',
-    icon: renderIcon(LogOutRound),
-  },
 ]);
 
 const color = computed(() => (auth.loggedIn ? accentColors.value.base : undefined));

@@ -210,6 +210,7 @@ models:
     onLevel: auf Ebene "{level}"
 
 account:
+  session: Sitzung
   loginBtn: Anmelden
   logoutBtn: Abmelden
   profile: Öffentliches Profil
