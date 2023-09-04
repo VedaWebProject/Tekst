@@ -37,8 +37,8 @@ export const useBrowseStore = defineStore('browse', () => {
   // update browse node path
   async function updateBrowseNodePath(lvl?: string, pos?: string) {
     if (route.name !== 'browse') return;
-    const qLvl = parseInt(lvl || route.query.lvl?.toString() || '0') ?? 0;
-    const qPos = parseInt(pos || route.query.pos?.toString() || '0') ?? 0;
+    const qLvl = parseInt(lvl || route.query.lvl?.toString() || '');
+    const qPos = parseInt(pos || route.query.pos?.toString() || '');
     if (Number.isInteger(qLvl) && Number.isInteger(qPos)) {
       // fill browse node path up to root (no more parent)
       const { data: path, error } = await GET('/browse/nodes/path', {
