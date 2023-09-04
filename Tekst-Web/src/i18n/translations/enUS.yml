@@ -88,8 +88,8 @@ routes:
     user: Profile
     accountProfile: 'Account: Profile'
     accountManage: 'Account: Manage'
-    adminStatistics: '@:admin.heading: Statistics'
-    adminUsers: '@:admin.heading: Users'
+    adminStatistics: '@:admin.heading\: Statistics'
+    adminUsers: '@:admin.heading\: Users'
     adminTextsGeneral: '@:admin.heading - Texts: General'
     adminTextsLevels: '@:admin.heading - Texts: Levels'
     adminTextsNodes: '@:admin.heading - Texts: Nodes'

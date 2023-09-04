@@ -89,8 +89,8 @@ routes:
     user: Profil
     accountProfile: 'Benutzerkonto: Profil'
     accountManage: 'Benutzerkonto: Benutzerdaten'
-    adminStatistics: '@:admin.heading: Statistiken'
-    adminUsers: '@:admin.heading: Benutzer'
+    adminStatistics: '@:admin.heading\: Statistiken'
+    adminUsers: '@:admin.heading\: Benutzer'
     adminTextsGeneral: '@:admin.heading - Texte: Allgemein'
     adminTextsLevels: '@:admin.heading - Texte: Ebenen'
     adminTextsNodes: '@:admin.heading - Texte: Knoten'
