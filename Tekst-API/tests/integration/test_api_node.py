@@ -72,11 +72,24 @@ async def test_child_node_io(
     assert resp.json()[0]["id"] == str(child["id"])
 
     # find children by parent ID using dedicated children endpoint
-    resp = await test_client.get(f"{api_path}/nodes/{child['parentId']}/children")
+    resp = await test_client.get(
+        f"{api_path}/nodes/children",
+        params={"parentId": child["parentId"]},
+        cookies=session_cookie,
+    )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert type(resp.json()) is list
     assert len(resp.json()) == 1
     assert resp.json()[0]["id"] == str(child["id"])
+
+    # find children by text ID and null parent ID using dedicated children endpoint
+    resp = await test_client.get(
+        f"{api_path}/nodes/children", params={"textId": text_id}, cookies=session_cookie
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert type(resp.json()) is list
+    assert len(resp.json()) == 1
+    assert resp.json()[0]["id"] == str(parent["id"])
 
 
 @pytest.mark.anyio

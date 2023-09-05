@@ -99,15 +99,15 @@ export interface paths {
     /** Create node */
     post: operations['createNode'];
   };
+  '/nodes/children': {
+    /** Get children */
+    get: operations['getChildren'];
+  };
   '/nodes/{id}': {
     /** Get node */
     get: operations['getNode'];
     /** Update node */
     patch: operations['updateNode'];
-  };
-  '/nodes/{id}/children': {
-    /** Get children */
-    get: operations['getChildren'];
   };
   '/platform': {
     /**
@@ -1679,6 +1679,34 @@ export interface operations {
       };
     };
   };
+  /** Get children */
+  getChildren: {
+    parameters: {
+      query?: {
+        parentId?: string | null;
+        textId?: string | null;
+        limit?: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['NodeRead'][];
+        };
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
   /** Get node */
   getNode: {
     parameters: {
@@ -1722,35 +1750,6 @@ export interface operations {
       200: {
         content: {
           'application/json': components['schemas']['NodeRead'];
-        };
-      };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  /** Get children */
-  getChildren: {
-    parameters: {
-      query?: {
-        limit?: number;
-      };
-      path: {
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json': components['schemas']['NodeRead'][];
         };
       };
       /** @description Not found */

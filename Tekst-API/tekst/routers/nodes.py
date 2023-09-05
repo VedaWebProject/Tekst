@@ -1,6 +1,7 @@
 from typing import Annotated
 
 from beanie import PydanticObjectId
+from beanie.operators import And
 from fastapi import APIRouter, HTTPException, Path, Query, status
 
 from tekst.auth import SuperuserDep
@@ -75,6 +76,29 @@ async def find_nodes(
     return await NodeDocument.find(example).limit(limit).to_list()
 
 
+@router.get("/children", response_model=list[NodeRead], status_code=status.HTTP_200_OK)
+async def get_children(
+    su: SuperuserDep,
+    parent_id: Annotated[PydanticObjectId | None, Query(alias="parentId")] = None,
+    text_id: Annotated[PydanticObjectId | None, Query(alias="textId")] = None,
+    limit: int = 9999,
+) -> list:
+    if parent_id is None and text_id is None:
+        raise HTTPException(
+            status.HTTP_400_BAD_REQUEST,
+            detail="Request must contain either 'parentId' or 'textId'",
+        )
+    return (
+        await NodeDocument.find(
+            And(NodeDocument.text_id == text_id, NodeDocument.parent_id == parent_id)
+            if text_id
+            else (NodeDocument.parent_id == parent_id),
+        )
+        .limit(limit)
+        .to_list()
+    )
+
+
 @router.get("/{id}", response_model=NodeRead, status_code=status.HTTP_200_OK)
 async def get_node(
     node_id: Annotated[PydanticObjectId, Path(alias="id")]
@@ -102,17 +126,3 @@ async def update_node(
         )
     await node_doc.apply(updates.model_dump(exclude_unset=True))
     return node_doc
-
-
-@router.get(
-    "/{id}/children", response_model=list[NodeRead], status_code=status.HTTP_200_OK
-)
-async def get_children(
-    node_id: Annotated[PydanticObjectId, Path(alias="id")],
-    limit: int = 9999,
-) -> list:
-    return (
-        await NodeDocument.find(NodeDocument.parent_id == node_id)
-        .limit(limit)
-        .to_list()
-    )
