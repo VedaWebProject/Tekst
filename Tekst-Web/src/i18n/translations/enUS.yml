@@ -317,6 +317,12 @@ admin:
         level "{levelLabel}"?
     nodes:
       heading: Nodes
+      warnGeneral: |
+        Rearranging or deleting text nodes has serious impact on the text's data model.
+        It is recommended to make a backup of the current state of your
+        database before making any changes, here.
+      warnDeleteNode: TODO
+      checkShowWarnings: Show warnings before performing destructive operations
   newText:
     heading: New Text
     headerInfoMsg: |

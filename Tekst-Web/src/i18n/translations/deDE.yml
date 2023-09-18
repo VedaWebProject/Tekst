@@ -330,6 +330,12 @@ admin:
         Textebene "{levelLabel}" löschen möchten?
     nodes:
       heading: Knoten
+      warnGeneral: |
+        Das Neuordnen oder Löschen von Textknoten hat gravierende Auswirkungen auf das
+        Datenmodell des Textes. Es ist dringend empfohlen, ein Backup des aktuellen
+        Zustands der Datenbank zu erstellen, bevor Änderungen vorgenommen werden.
+      warnDeleteNode: TODO
+      checkShowWarnings: Zeige Warnungen, bevor destruktive Operationen durchgeführt werden
   newText:
     heading: Neuer Text
     headerInfoMsg: |
