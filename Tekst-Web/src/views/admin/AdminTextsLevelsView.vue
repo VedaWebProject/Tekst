@@ -228,6 +228,7 @@ async function handleModalSubmit() {
     preset="card"
     embedded
     :closable="false"
+    :auto-focus="false"
     size="large"
     class="tekst-modal"
     to="#app-container"
@@ -237,6 +238,7 @@ async function handleModalSubmit() {
 
     <n-alert
       v-if="editModalWarning"
+      closable
       :title="$t('general.warning')"
       type="warning"
       style="margin-bottom: 1rem"
