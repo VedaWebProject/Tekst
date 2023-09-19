@@ -128,14 +128,14 @@ export const useStateStore = defineStore('state', () => {
   );
 
   // set page title
-  function setPageTitle(forRoute?: RouteLocationNormalized) {
-    const r = forRoute || route;
-    const rTitle = $te(`routes.pageTitle.${String(r.name)}`)
-      ? $t(`routes.pageTitle.${String(r.name)}`)
-      : '';
-    const tTitle = 'text' in r.params && text.value?.title && ` "${text.value?.title}"`;
-    const pfName = pfData.value?.info?.platformName ? ` | ${pfData.value?.info?.platformName}` : '';
-    document.title = `${rTitle || ''}${tTitle || ''}${pfName}`;
+  function setPageTitle(forRoute: RouteLocationNormalized = route) {
+    const title = $te(`routes.pageTitle.${String(forRoute.name)}`)
+      ? $t(`routes.pageTitle.${String(forRoute.name)}`, {
+          text: text.value?.title,
+          username: auth.user?.username,
+        })
+      : '...';
+    document.title = `${title} | ${pfData.value?.info?.platformName}`;
   }
 
   return {

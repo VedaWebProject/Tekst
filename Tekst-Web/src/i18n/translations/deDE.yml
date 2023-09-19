@@ -81,19 +81,19 @@ nav:
 routes:
   pageTitle:
     home: Startseite
-    browse: Lesen in
-    search: Suchen in
+    browse: Lesen in "{text}"
+    search: Suchen in "{text}"
     help: Hilfe
     login: Anmeldung
     register: Registrierung
-    user: Profil
-    accountProfile: 'Benutzerkonto: Profil'
-    accountManage: 'Benutzerkonto: Benutzerdaten'
+    user: Profil von {username}
+    accountProfile: Öffentliches Profil
+    accountManage: Konto
     adminStatistics: '@:admin.heading\: Statistiken'
     adminUsers: '@:admin.heading\: Benutzer'
-    adminTextsGeneral: '@:admin.heading - Texte: Allgemein'
-    adminTextsLevels: '@:admin.heading - Texte: Ebenen'
-    adminTextsNodes: '@:admin.heading - Texte: Knoten'
+    adminTextsGeneral: '@:admin.heading - {text}: Allgemein'
+    adminTextsLevels: '@:admin.heading - {text}: Ebenen'
+    adminTextsNodes: '@:admin.heading - {text}: Knoten'
     adminNewText: '@:admin.heading - Neuer Text'
     verify: Verifizierung
     reset: Passwort zurücksetzen
@@ -245,7 +245,7 @@ account:
   sessionExpired: Ihre Sitzung ist abgelaufen. Sie wurden abgemeldet.
   renewLogin: Melden Sie sich wieder an, um Ihre Sitzung zu erneuern.
   manage:
-    heading: Konto verwalten
+    heading: Konto
     headingChangeUserData: Allgemeine Benutzerdaten
     headingChangePublicFields: Öffentliche Profildaten
     msgEmailSaveSuccess: '@:models.user.email gespeichert.'

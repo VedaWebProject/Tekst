@@ -80,19 +80,19 @@ nav:
 routes:
   pageTitle:
     home: Home
-    browse: Browse
-    search: Search
+    browse: Browse "{text}"
+    search: Search "{text}"
     help: Help
     login: Login
     register: Register
-    user: Profile
-    accountProfile: 'Account: Profile'
-    accountManage: 'Account: Manage'
+    user: Profile of {username}
+    accountProfile: Public Profile
+    accountManage: Account
     adminStatistics: '@:admin.heading\: Statistics'
     adminUsers: '@:admin.heading\: Users'
-    adminTextsGeneral: '@:admin.heading - Texts: General'
-    adminTextsLevels: '@:admin.heading - Texts: Levels'
-    adminTextsNodes: '@:admin.heading - Texts: Nodes'
+    adminTextsGeneral: '@:admin.heading - {text}: General'
+    adminTextsLevels: '@:admin.heading - {text}: Levels'
+    adminTextsNodes: '@:admin.heading - {text}: Nodes'
     adminNewText: '@:admin.heading - New Text'
     verify: Verification
     reset: Reset password
@@ -237,7 +237,7 @@ account:
   sessionExpired: Your session has expired. You have been logged out.
   renewLogin: Log in again to renew your session.
   manage:
-    heading: Manage Account
+    heading: Account
     headingChangeUserData: General User Data
     headingChangePublicFields: Public Profile Data
     msgEmailSaveSuccess: '@:models.user.email saved.'
