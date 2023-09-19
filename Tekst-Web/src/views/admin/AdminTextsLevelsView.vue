@@ -331,13 +331,7 @@ async function handleModalSubmit() {
     </n-form>
 
     <n-space :size="12" justify="end" style="margin-top: 0.5rem">
-      <n-button
-        secondary
-        block
-        :loading="loading"
-        :disabled="loading"
-        @click="showEditModal = false"
-      >
+      <n-button secondary block :disabled="loading" @click="showEditModal = false">
         {{ $t('general.cancelAction') }}
       </n-button>
       <n-button
