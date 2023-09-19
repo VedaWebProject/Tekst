@@ -141,8 +141,13 @@ export const useAuthStore = defineStore('auth', () => {
       // process user locale
       if (!userData.locale) {
         updateUser({ locale: localeProfiles[state.locale].key }); // no need to wait
-      } else {
+      } else if (userData.locale !== state.locale) {
         await state.setLocale(userData.locale, false);
+        message.info(
+          $t('account.localeApplied', {
+            locale: localeProfiles[userData.locale].displayFull,
+          })
+        );
       }
       message.success($t('general.welcome', { name: userData.firstName }));
       nextRoute && router.push(nextRoute);
