@@ -32,7 +32,7 @@ const showUserDropdown = ref(false);
 const userOptions = computed(() => [
   {
     type: 'group',
-    label: $t('account.session'),
+    label: $t('account.currentSession'),
     key: 'session',
     children: [
       {

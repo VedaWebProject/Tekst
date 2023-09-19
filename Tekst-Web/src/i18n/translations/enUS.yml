@@ -203,6 +203,7 @@ models:
 
 account:
   session: Session
+  currentSession: Current @:account.session
   loginBtn: Login
   logoutBtn: Logout
   profile: Public Profile
