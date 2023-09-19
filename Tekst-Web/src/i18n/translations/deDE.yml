@@ -222,6 +222,7 @@ account:
   tipLoginBtn: In Ihrem Konto anmelden
   tipLogoutBtn: Von Ihrem Konto abmelden
   switchToRegister: Neues Konto registrieren
+  localeUpdated: Das Gebietsschema für Ihren Account wurde zu {locale} geändert.
   verify:
     success: Ihre Email-Adresse wurde erfolgreich verifiziert! Sie können sich jetzt in Ihrem Konto anmelden.
     badToken: Dieser Verifizierungs-Link ist entweder ungültig oder bereits abgelaufen.

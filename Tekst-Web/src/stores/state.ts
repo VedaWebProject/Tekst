@@ -10,6 +10,7 @@ import type { ThemeMode } from '@/theme';
 import { $t, $te } from '@/i18n';
 import { usePlatformData } from '@/platformData';
 import { useAuthStore } from './auth';
+import { useMessages } from '@/messages';
 
 export const useStateStore = defineStore('state', () => {
   // define resources
@@ -17,6 +18,7 @@ export const useStateStore = defineStore('state', () => {
   const route = useRoute();
   const auth = useAuthStore();
   const windowSize = useWindowSize();
+  const { message } = useMessages();
 
   // theme
   const themeMode = ref<ThemeMode>((localStorage.getItem('theme') as ThemeMode) || 'light');
@@ -44,9 +46,10 @@ export const useStateStore = defineStore('state', () => {
   ): Promise<AvailableLocale> {
     const lang = await setI18nLocale(l);
     locale.value = lang.key;
-    if (updateUserLocale) {
+    if (updateUserLocale && auth.user?.locale !== lang.key) {
       try {
         await auth.updateUser({ locale: localeProfiles[lang.key].key });
+        message.info($t('account.localeUpdated', { locale: lang.displayFull }));
       } catch {
         // do sweet FA
       }

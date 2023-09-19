@@ -214,6 +214,7 @@ account:
   tipLoginBtn: Log into your account
   tipLogoutBtn: Log out of your account
   switchToRegister: Register New User
+  localeUpdated: Your account locale has been changed to {locale}.
   verify:
     success: Your email address has been successfully verified! You can now log into your account.
     badToken: This verification link is either invalid or already expired.
