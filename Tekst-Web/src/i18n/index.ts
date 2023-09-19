@@ -5,6 +5,7 @@ import type { NDateLocale, NLocale } from 'naive-ui';
 import { enUS, dateEnUS } from 'naive-ui';
 import { deDE, dateDeDE } from 'naive-ui';
 import { GET } from '@/api';
+import { unref } from 'vue';
 
 export enum LocaleKey {
   EnUs = 'enUS',
@@ -48,6 +49,7 @@ const i18nOptions: I18nOptions = {
 };
 
 export const i18n = createI18n(i18nOptions);
+export const { t: $t, te: $te, tm: $tm, tc: $tc } = i18n.global;
 
 // set initial i18n locale
 // @ts-ignore
@@ -63,8 +65,7 @@ async function loadServerTranslations(locale: string) {
 export async function setI18nLocale(
   locale: I18nOptions['locale'] = i18n.global.locale
 ): Promise<AvailableLocale> {
-  // @ts-ignore
-  const l = locale ?? locale.value ?? i18n.global.locale.value;
+  const l = unref(locale) ?? i18n.global.locale;
 
   if (!l) {
     // passed locale is invalid

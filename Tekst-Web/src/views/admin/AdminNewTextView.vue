@@ -12,7 +12,7 @@ import {
   type FormInst,
 } from 'naive-ui';
 import { useFormRules } from '@/formRules';
-import { useI18n } from 'vue-i18n';
+import { $t } from '@/i18n';
 import { useMessages } from '@/messages';
 import { POST } from '@/api';
 import { useStateStore } from '@/stores';
@@ -35,7 +35,6 @@ const initialModel = (): NewTextModel => ({
   levels: [[{ locale: state.locale, label: undefined }]],
 });
 
-const { t } = useI18n({ useScope: 'global' });
 const { textFormRules } = useFormRules();
 const router = useRouter();
 const { message } = useMessages();
@@ -74,17 +73,17 @@ async function handleSave() {
           await loadPlatformData();
           state.text = pfData.value?.texts.find((t) => t.slug === createdText.slug) || state.text;
           router.push({ name: 'adminTextsGeneral', params: { text: createdText.slug } });
-          message.success(t('admin.newText.msgSaveSuccess', { title: createdText.title }));
+          message.success($t('admin.newText.msgSaveSuccess', { title: createdText.title }));
         } else {
           if (response.status === 409) {
-            message.error(t('errors.conflict'));
+            message.error($t('errors.conflict'));
           } else {
-            message.error(t('errors.unexpected'));
+            message.error($t('errors.unexpected'));
           }
         }
       })
       .catch(() => {
-        message.error(t('errors.followFormRules'));
+        message.error($t('errors.followFormRules'));
       });
   } finally {
     loading.value = false;

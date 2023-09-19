@@ -17,7 +17,7 @@ import {
 } from 'naive-ui';
 import { computed, ref, watch } from 'vue';
 import { PATCH } from '@/api';
-import { useI18n } from 'vue-i18n';
+import { $t } from '@/i18n';
 import { localeProfiles } from '@/i18n';
 import type { SubtitleTranslation } from '@/api';
 import { useModelChanges } from '@/modelChanges';
@@ -30,7 +30,6 @@ const state = useStateStore();
 const { loadPlatformData } = usePlatformData();
 const { message } = useMessages();
 const { textFormRules } = useFormRules();
-const { t } = useI18n({ useScope: 'global' });
 const loading = ref(false);
 
 const initialModel = () => ({
@@ -92,18 +91,18 @@ function handleSave() {
         await loadPlatformData();
         state.text = updatedText;
         resetModelChanges();
-        message.success(t('admin.texts.general.msgSaved'));
+        message.success($t('admin.texts.general.msgSaved'));
       } else {
         /**
          * This will be either an app-level error (e.g. buggy validation, server down, 401)
          * or the provided email already exists, which we don't want to actively disclose.
          */
-        message.error(t('errors.unexpected'));
+        message.error($t('errors.unexpected'));
       }
       loading.value = false;
     })
     .catch(() => {
-      message.error(t('errors.followFormRules'));
+      message.error($t('errors.followFormRules'));
       loading.value = false;
     });
 }

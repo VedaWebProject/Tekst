@@ -4,7 +4,7 @@ import queryString from 'query-string';
 import { useAuthStore } from '@/stores';
 import Cookies from 'js-cookie';
 import { useMessages } from '@/messages';
-import { i18n } from '@/i18n';
+import { $t } from '@/i18n';
 
 const serverUrl: string | undefined = import.meta.env.TEKST_SERVER_URL;
 const apiPath: string | undefined = import.meta.env.TEKST_API_PATH;
@@ -38,7 +38,7 @@ const customFetch = async (input: RequestInfo | URL, init?: RequestInit | undefi
   } else if (response.status === 403) {
     // show CSRF/XSRF error on 403 response
     const { message } = useMessages();
-    message.error(i18n.global.t('errors.csrf'));
+    message.error($t('errors.csrf'));
   }
   return response;
 };

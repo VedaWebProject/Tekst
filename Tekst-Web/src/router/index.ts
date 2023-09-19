@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore, useStateStore } from '@/stores';
-import { i18n } from '@/i18n';
+import { $t } from '@/i18n';
 import { useMessages } from '@/messages';
 
 declare module 'vue-router' {
@@ -169,12 +169,12 @@ router.beforeEach(async (to, from, next) => {
     // redirect if trying to access a restricted page without authorization
     if (!authorized) {
       const { message } = useMessages();
-      message.warning(i18n.global.t('errors.noAccess', { resource: to.path }));
+      message.warning($t('errors.noAccess', { resource: to.path }));
       if (auth.loggedIn) {
         next({ name: 'home' });
       } else {
         next(from || { name: 'home' });
-        auth.showLoginModal(i18n.global.t('errors.logInToAccess'), to.fullPath, false);
+        auth.showLoginModal($t('errors.logInToAccess'), to.fullPath, false);
       }
       return; // this is important!
     }

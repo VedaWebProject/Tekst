@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 import type { UserRead, UserUpdate } from '@/api';
 import { useMessages } from '@/messages';
 import { GET, PATCH, POST, optionsPresets } from '@/api/index';
-import { i18n, localeProfiles } from '@/i18n';
+import { $t, localeProfiles } from '@/i18n';
 import { useIntervalFn } from '@vueuse/core';
 import { useRouter, type RouteLocationRaw } from 'vue-router';
 import { createTemplatePromise } from '@vueuse/core';
@@ -47,7 +47,6 @@ export const useAuthStore = defineStore('auth', () => {
   const router = useRouter();
   const { pfData, loadPlatformData } = usePlatformData();
   const { message } = useMessages();
-  const { t } = i18n.global;
   const state = useStateStore();
 
   const user = ref(getUserFromLocalStorage());
@@ -71,9 +70,9 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function _renewExpiredSession() {
-    message.warning(t('account.sessionExpired'));
+    message.warning($t('account.sessionExpired'));
     _cleanupSession();
-    if (!(await showLoginModal(t('account.renewLogin'), router.currentRoute.value, false))) {
+    if (!(await showLoginModal($t('account.renewLogin'), router.currentRoute.value, false))) {
       router.push({ name: 'home' });
     }
   }
@@ -97,7 +96,7 @@ export const useAuthStore = defineStore('auth', () => {
     } else if (timeLeftS <= SESSION_WARN_AHEAD_S) {
       const minutes = Math.floor(timeLeftS / 60);
       const seconds = Math.round(timeLeftS % 60);
-      message.warning(t('account.autoLogout', { minutes, seconds }), 30);
+      message.warning($t('account.autoLogout', { minutes, seconds }), 30);
     }
   }
 
@@ -131,7 +130,7 @@ export const useAuthStore = defineStore('auth', () => {
       // load user data
       const { data: userData, error } = await GET('/users/me', {});
       if (error) {
-        message.error(t('errors.unexpected'));
+        message.error($t('errors.unexpected'));
         _cleanupSession();
         return false;
       }
@@ -145,21 +144,21 @@ export const useAuthStore = defineStore('auth', () => {
       } else {
         await state.setLocale(userData.locale, false);
       }
-      message.success(t('general.welcome', { name: userData.firstName }));
+      message.success($t('general.welcome', { name: userData.firstName }));
       nextRoute && router.push(nextRoute);
       return true;
     } else {
       if (error.detail === 'LOGIN_BAD_CREDENTIALS') {
-        message.error(t('account.errors.badCreds'));
+        message.error($t('account.errors.badCreds'));
       } else if (error.detail === 'LOGIN_USER_NOT_VERIFIED') {
         const { error } = await POST('/auth/request-verify-token', { body: { email: username } });
         if (!error) {
-          message.error(t('account.errors.notVerified'));
+          message.error($t('account.errors.notVerified'));
         } else {
-          message.error(t('errors.unexpected'));
+          message.error($t('errors.unexpected'));
         }
       } else {
-        message.error(t('errors.unexpected'));
+        message.error($t('errors.unexpected'));
       }
       _cleanupSession();
       return false;
@@ -168,7 +167,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function logout() {
     if (!(await POST('/auth/cookie/logout', {})).error) {
-      message.success(t('account.logoutSuccessful'));
+      message.success($t('account.logoutSuccessful'));
     }
     _cleanupSession();
     // reload platform data as some resources might not be accessible anymore

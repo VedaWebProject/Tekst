@@ -4,14 +4,13 @@ import LightModeOutlined from '@vicons/material/LightModeOutlined';
 import DarkModeOutlined from '@vicons/material/DarkModeOutlined';
 import { useStateStore } from '@/stores';
 import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { $t } from '@/i18n';
 
 const state = useStateStore();
-const { t } = useI18n({ useScope: 'global' });
 
 const icon = computed(() => (state.themeMode === 'dark' ? LightModeOutlined : DarkModeOutlined));
 const title = computed(() =>
-  state.themeMode === 'dark' ? t('general.tipThemeToggleLight') : t('general.tipThemeToggleDark')
+  state.themeMode === 'dark' ? $t('general.tipThemeToggleLight') : $t('general.tipThemeToggleDark')
 );
 </script>
 

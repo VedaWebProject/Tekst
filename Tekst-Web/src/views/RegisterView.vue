@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, nextTick } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { $t } from '@/i18n';
 import {
   type FormInst,
   type FormItemInst,
@@ -22,7 +22,6 @@ import router from '@/router';
 const auth = useAuthStore();
 const { message } = useMessages();
 const { pfData } = usePlatformData();
-const { t } = useI18n({ useScope: 'global' });
 
 const initialFormModel = () => ({
   email: null,
@@ -44,7 +43,7 @@ const loading = ref(false);
 const passwordRepeatMatchRule = {
   validator: (rule: FormItemRule, value: string) =>
     !!value && !!formModel.value.password && value === formModel.value.password,
-  message: () => t('models.user.formRulesFeedback.passwordRepNoMatch'),
+  message: () => $t('models.user.formRulesFeedback.passwordRepNoMatch'),
   trigger: ['input', 'blur', 'password-input'],
 };
 
@@ -62,9 +61,9 @@ async function registerUser() {
   if (!error) {
     const activationNeeded = !pfData.value?.security?.usersActiveByDefault;
     const activationHint = activationNeeded
-      ? t('register.activationNeededHint')
-      : t('register.activationNotNeededHint');
-    message.success(`${t('register.success')} ${activationHint}`, activationNeeded ? 20 : 5);
+      ? $t('register.activationNeededHint')
+      : $t('register.activationNotNeededHint');
+    message.success(`${$t('register.success')} ${activationHint}`, activationNeeded ? 20 : 5);
     // if no activation is needed, send verification link right away
     if (!activationNeeded && !pfData.value?.security?.closedMode) {
       if (
@@ -72,9 +71,9 @@ async function registerUser() {
           await POST('/auth/request-verify-token', { body: { email: formModel.value.email || '' } })
         ).error
       ) {
-        message.warning(t('account.manage.msgVerifyEmailWarning'));
+        message.warning($t('account.manage.msgVerifyEmailWarning'));
       } else {
-        message.error(t('errors.unexpected'));
+        message.error($t('errors.unexpected'));
       }
     }
     switchToLogin();
@@ -84,13 +83,13 @@ async function registerUser() {
      * FastAPI-Users have a weird custom model that we have to handle here...
      */
     if (error.detail === 'REGISTER_USER_ALREADY_EXISTS') {
-      message.error(t('register.errors.emailAlreadyRegistered'));
+      message.error($t('register.errors.emailAlreadyRegistered'));
     } else if (error.detail === 'REGISTER_USERNAME_ALREADY_EXISTS') {
-      message.error(t('register.errors.usernameAlreadyRegistered'));
+      message.error($t('register.errors.usernameAlreadyRegistered'));
     } else if ((error.detail as Record<string, string>).code === 'REGISTER_INVALID_PASSWORD') {
-      message.error(t('register.errors.weakPassword'));
+      message.error($t('register.errors.weakPassword'));
     } else {
-      message.error(t('errors.unexpected'));
+      message.error($t('errors.unexpected'));
     }
   }
   loading.value = false;
@@ -103,7 +102,7 @@ function handleRegisterClick() {
       !errors && registerUser();
     })
     .catch(() => {
-      message.error(t('errors.followFormRules'));
+      message.error($t('errors.followFormRules'));
       loading.value = false;
     });
 }

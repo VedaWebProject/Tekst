@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { i18n } from '@/i18n';
+import { $t } from '@/i18n';
 import { useRoute, useRouter } from 'vue-router';
 import { useStateStore } from '@/stores';
 import { useAsyncQueue } from '@vueuse/core';
@@ -19,7 +19,6 @@ export function useInitializeApp() {
   const { pfData, loadPlatformData } = usePlatformData();
   const route = useRoute();
   const router = useRouter();
-  const { t } = i18n.global;
 
   const initialized = ref(false);
   const error = computed(() => result.map((r) => r.data).includes(false));
@@ -35,33 +34,33 @@ export function useInitializeApp() {
     },
     // load i18n data from server
     {
-      info: () => t('init.serverI18n'),
+      info: () => $t('init.serverI18n'),
       action: async (success: boolean) => {
         try {
           await state.setLocale();
           return success;
         } catch (e) {
-          message.warning(t('errors.serverI18n'));
+          message.warning($t('errors.serverI18n'));
           return false;
         }
       },
     },
     // load platform data from server
     {
-      info: () => t('init.platformData'),
+      info: () => $t('init.platformData'),
       action: async (success: boolean) => {
         try {
           await loadPlatformData();
           return success;
         } catch (e) {
-          message.warning(t('errors.platformData'));
+          message.warning($t('errors.platformData'));
           return false;
         }
       },
     },
     // set up initial working text
     {
-      info: () => t('init.workingText'),
+      info: () => $t('init.workingText'),
       action: async (success: boolean) => {
         state.text =
           pfData.value?.texts.find((t) => t.slug === route.params.text) ||
@@ -84,7 +83,7 @@ export function useInitializeApp() {
     },
     // finish global loading, end process
     {
-      info: () => t('init.ready'),
+      info: () => $t('init.ready'),
       action: async (success: boolean) => {
         initialized.value = true;
         state.globalLoadingProgress = 1;

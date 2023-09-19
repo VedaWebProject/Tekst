@@ -4,7 +4,7 @@ import { useFormRules } from '@/formRules';
 import { useMessages } from '@/messages';
 import type { FormInst, FormItemInst, FormItemRule } from 'naive-ui';
 import { ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { $t } from '@/i18n';
 import { NInput, NForm, NFormItem, NButton, NSpace } from 'naive-ui';
 import { useRoute } from 'vue-router';
 import { onMounted } from 'vue';
@@ -14,7 +14,6 @@ const { message } = useMessages();
 const route = useRoute();
 const router = useRouter();
 const { accountFormRules } = useFormRules();
-const { t } = useI18n({ useScope: 'global' });
 const token = route.query.token?.toString();
 
 const initialPasswordFormModel = () => ({
@@ -32,7 +31,7 @@ const loading = ref(false);
 const passwordRepeatMatchRule = {
   validator: (_: FormItemRule, value: string) =>
     !!value && !!passwordFormModel.value.password && value === passwordFormModel.value.password,
-  message: () => t('models.user.formRulesFeedback.passwordRepNoMatch'),
+  message: () => $t('models.user.formRulesFeedback.passwordRepNoMatch'),
   trigger: ['input', 'blur', 'password-input'],
 };
 
@@ -55,13 +54,13 @@ async function handlePasswordSave() {
             },
           });
           if (!error) {
-            message.success(t('account.resetPassword.success'), 10);
+            message.success($t('account.resetPassword.success'), 10);
             router.push({ name: 'home' });
           } else {
             if (error.detail === 'RESET_PASSWORD_BAD_TOKEN') {
-              message.error(t('account.resetPassword.badToken'));
+              message.error($t('account.resetPassword.badToken'));
             } else {
-              message.error(t('errors.unexpected'));
+              message.error($t('errors.unexpected'));
             }
             router.push({ name: 'home' });
           }
@@ -69,7 +68,7 @@ async function handlePasswordSave() {
         })();
     })
     .catch(() => {
-      message.error(t('errors.followFormRules'));
+      message.error($t('errors.followFormRules'));
       loading.value = false;
     });
 }

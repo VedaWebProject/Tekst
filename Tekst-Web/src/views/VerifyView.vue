@@ -2,7 +2,7 @@
 import { POST } from '@/api';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { useI18n } from 'vue-i18n';
+import { $t } from '@/i18n';
 import { useRouter } from 'vue-router';
 import HugeLabeledIcon from '@/components/HugeLabeledIcon.vue';
 
@@ -14,7 +14,6 @@ const router = useRouter();
 const token = route.query.token?.toString();
 const verified = ref(false);
 const error = ref<string | null>(null);
-const { t } = useI18n({ useScope: 'global' });
 
 onMounted(async () => {
   if (token) {
@@ -23,11 +22,11 @@ onMounted(async () => {
       verified.value = true;
     } else {
       if (apiError.detail === 'VERIFY_USER_BAD_TOKEN') {
-        error.value = t('account.verify.badToken');
+        error.value = $t('account.verify.badToken');
       } else if (apiError.detail === 'VERIFY_USER_ALREADY_VERIFIED') {
-        error.value = t('account.verify.alreadyVerified');
+        error.value = $t('account.verify.alreadyVerified');
       } else {
-        error.value = t('errors.unexpected');
+        error.value = $t('errors.unexpected');
       }
     }
   } else {

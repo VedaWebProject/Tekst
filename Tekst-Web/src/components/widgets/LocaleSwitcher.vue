@@ -4,12 +4,11 @@ import { localeProfiles } from '@/i18n';
 import { useStateStore } from '@/stores';
 import { NButton, NDropdown, NIcon } from 'naive-ui';
 import LanguageOutlined from '@vicons/material/LanguageOutlined';
-import { useI18n } from 'vue-i18n';
+import { $t } from '@/i18n';
 import { useMessages } from '@/messages';
 
 const state = useStateStore();
 const { message } = useMessages();
-const { t } = useI18n({ useScope: 'global' });
 
 const options = computed(() =>
   Object.keys(localeProfiles).map((l) => {
@@ -26,7 +25,7 @@ function handleLanguageSelect(localeCode: string) {
   if (localeCode == state.locale) return;
 
   state.setLocale(localeCode).catch(() => {
-    message.warning(t('errors.serverI18n'));
+    message.warning($t('errors.serverI18n'));
     // console.error(e);
   });
 }

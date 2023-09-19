@@ -26,14 +26,15 @@ import MinusRound from '@vicons/material/MinusRound';
 import DeleteRound from '@vicons/material/DeleteRound';
 import EditRound from '@vicons/material/EditRound';
 import { useMessages } from '@/messages';
-import { useI18n } from 'vue-i18n';
+import { $t } from '@/i18n';
 import { POST, PATCH, DELETE } from '@/api';
 import { usePlatformData } from '@/platformData';
+import { useI18n } from 'vue-i18n';
 
 const state = useStateStore();
 const { loadPlatformData } = usePlatformData();
 const { message } = useMessages();
-const { t, locale } = useI18n({ useScope: 'global' });
+const { locale } = useI18n({ useScope: 'global' });
 const { textFormRules } = useFormRules();
 const dialog = useDialog();
 
@@ -47,13 +48,13 @@ const editModalLevel = ref<number>(-1);
 const editModalAction = ref<'edit' | 'insert'>('edit');
 const editModalTitle = computed(() =>
   editModalAction.value === 'edit'
-    ? t('admin.texts.levels.tipEditLevel', {
+    ? $t('admin.texts.levels.tipEditLevel', {
         levelLabel: getLevelLabel(levels.value[editModalLevel.value]),
       })
-    : t('admin.texts.levels.tipInsertLevel', { n: editModalLevel.value + 1 })
+    : $t('admin.texts.levels.tipInsertLevel', { n: editModalLevel.value + 1 })
 );
 const editModalWarning = computed(() =>
-  editModalAction.value === 'edit' ? undefined : t('admin.texts.levels.warnInsertLevel')
+  editModalAction.value === 'edit' ? undefined : $t('admin.texts.levels.warnInsertLevel')
 );
 
 const levelLocaleOptions = computed(() =>
@@ -85,12 +86,12 @@ function handleEditClick(level: number) {
 function handleDeleteClick(level: number) {
   const targetLevelLabel = getLevelLabel(levels.value[level]);
   dialog.warning({
-    title: t('general.warning'),
-    content: t('admin.texts.levels.warnDeleteLevel', {
+    title: $t('general.warning'),
+    content: $t('admin.texts.levels.warnDeleteLevel', {
       levelLabel: targetLevelLabel,
     }),
-    positiveText: t('general.deleteAction'),
-    negativeText: t('general.cancelAction'),
+    positiveText: $t('general.deleteAction'),
+    negativeText: $t('general.cancelAction'),
     style: 'font-weight: var(--app-ui-font-weight-light); width: 680px; max-width: 95%',
     onPositiveClick: async () => {
       loading.value = true;
@@ -100,12 +101,12 @@ function handleDeleteClick(level: number) {
       if (!error) {
         state.text = data;
         message.success(
-          t('admin.texts.levels.msgDeleteSuccess', {
+          $t('admin.texts.levels.msgDeleteSuccess', {
             levelLabel: targetLevelLabel,
           })
         );
       } else {
-        message.error(t('errors.unexpected'));
+        message.error($t('errors.unexpected'));
       }
       loading.value = false;
     },
@@ -136,10 +137,10 @@ async function handleModalSubmit() {
         if (!error) {
           state.text = data;
           message.success(
-            t('admin.texts.levels.msgInsertSuccess', { position: editModalLevel.value + 1 })
+            $t('admin.texts.levels.msgInsertSuccess', { position: editModalLevel.value + 1 })
           );
         } else {
-          message.error(t('errors.unexpected'));
+          message.error($t('errors.unexpected'));
         }
       } else if (editModalAction.value === 'edit') {
         const textUpdates = {
@@ -158,10 +159,10 @@ async function handleModalSubmit() {
         if (!error) {
           state.text = data;
           message.success(
-            t('admin.texts.levels.msgEditSuccess', { position: editModalLevel.value + 1 })
+            $t('admin.texts.levels.msgEditSuccess', { position: editModalLevel.value + 1 })
           );
         } else {
-          message.error(t('errors.unexpected'));
+          message.error($t('errors.unexpected'));
         }
       }
       await loadPlatformData();
@@ -169,7 +170,7 @@ async function handleModalSubmit() {
       showEditModal.value = false;
     })
     .catch(() => {
-      message.error(t('errors.followFormRules'));
+      message.error($t('errors.followFormRules'));
     });
 }
 </script>

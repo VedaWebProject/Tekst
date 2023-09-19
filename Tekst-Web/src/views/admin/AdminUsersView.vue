@@ -18,7 +18,7 @@ import type { UserRead, UserUpdate } from '@/api';
 import { ref } from 'vue';
 import { computed } from 'vue';
 import { useMessages } from '@/messages';
-import { useI18n } from 'vue-i18n';
+import { $t } from '@/i18n';
 
 import SearchRound from '@vicons/material/SearchRound';
 import UndoRound from '@vicons/material/UndoRound';
@@ -26,7 +26,6 @@ import { useRoute } from 'vue-router';
 import { POST, PATCH, DELETE } from '@/api';
 import { useAuthStore } from '@/stores';
 
-const { t } = useI18n({ useScope: 'global' });
 const { users, error, load: loadUsers } = useUsers();
 const { message } = useMessages();
 const dialog = useDialog();
@@ -81,22 +80,22 @@ async function updateUser(user: UserRead, updates: UserUpdate) {
     body: updates,
   });
   if (!error) {
-    message.success(t('admin.users.save', { username: user.username }));
+    message.success($t('admin.users.save', { username: user.username }));
     loadUsers();
     return updatedUser;
   } else {
-    message.error(t('errors.unexpected'));
+    message.error($t('errors.unexpected'));
   }
 }
 
 function handleSuperuserClick(user: UserRead) {
   dialog.warning({
-    title: t('general.warning'),
+    title: $t('general.warning'),
     content: user.isSuperuser
-      ? t('admin.users.confirmMsg.setUser', { username: user.username })
-      : t('admin.users.confirmMsg.setSuperuser', { username: user.username }),
-    positiveText: t('general.yesAction'),
-    negativeText: t('general.noAction'),
+      ? $t('admin.users.confirmMsg.setUser', { username: user.username })
+      : $t('admin.users.confirmMsg.setSuperuser', { username: user.username }),
+    positiveText: $t('general.yesAction'),
+    negativeText: $t('general.noAction'),
     style: 'font-weight: var(--app-ui-font-weight-light)',
     onPositiveClick: () => updateUser(user, { isSuperuser: !user.isSuperuser }),
   });
@@ -104,12 +103,12 @@ function handleSuperuserClick(user: UserRead) {
 
 function handleActiveClick(user: UserRead) {
   dialog.warning({
-    title: t('general.warning'),
+    title: $t('general.warning'),
     content: user.isActive
-      ? t('admin.users.confirmMsg.setInactive', { username: user.username })
-      : t('admin.users.confirmMsg.setActive', { username: user.username }),
-    positiveText: t('general.yesAction'),
-    negativeText: t('general.noAction'),
+      ? $t('admin.users.confirmMsg.setInactive', { username: user.username })
+      : $t('admin.users.confirmMsg.setActive', { username: user.username }),
+    positiveText: $t('general.yesAction'),
+    negativeText: $t('general.noAction'),
     style: 'font-weight: var(--app-ui-font-weight-light)',
     onPositiveClick: async () => {
       const updatedUser = await updateUser(user, { isActive: !user.isActive });
@@ -120,10 +119,10 @@ function handleActiveClick(user: UserRead) {
         });
         if (!error) {
           message.info(
-            t('admin.users.msgSentVerificationLink', { username: updatedUser.username })
+            $t('admin.users.msgSentVerificationLink', { username: updatedUser.username })
           );
         } else {
-          message.error(t('admin.users.msgSentVerificationLinkError'));
+          message.error($t('admin.users.msgSentVerificationLinkError'));
         }
       }
     },
@@ -132,12 +131,12 @@ function handleActiveClick(user: UserRead) {
 
 function handleVerifiedClick(user: UserRead) {
   dialog.warning({
-    title: t('general.warning'),
+    title: $t('general.warning'),
     content: user.isVerified
-      ? t('admin.users.confirmMsg.setUnverified', { username: user.username })
-      : t('admin.users.confirmMsg.setVerified', { username: user.username }),
-    positiveText: t('general.yesAction'),
-    negativeText: t('general.noAction'),
+      ? $t('admin.users.confirmMsg.setUnverified', { username: user.username })
+      : $t('admin.users.confirmMsg.setVerified', { username: user.username }),
+    positiveText: $t('general.yesAction'),
+    negativeText: $t('general.noAction'),
     style: 'font-weight: var(--app-ui-font-weight-light)',
     onPositiveClick: async () => {
       const updatedUser = await updateUser(user, { isVerified: !user.isVerified });
@@ -147,10 +146,10 @@ function handleVerifiedClick(user: UserRead) {
         });
         if (!error) {
           message.info(
-            t('admin.users.msgSentVerificationLink', { username: updatedUser.username })
+            $t('admin.users.msgSentVerificationLink', { username: updatedUser.username })
           );
         } else {
-          message.error(t('admin.users.msgSentVerificationLinkError'));
+          message.error($t('admin.users.msgSentVerificationLinkError'));
         }
       }
     },
@@ -159,18 +158,18 @@ function handleVerifiedClick(user: UserRead) {
 
 function handleDeleteClick(user: UserRead) {
   dialog.warning({
-    title: t('general.warning'),
-    content: t('admin.users.confirmMsg.deleteUser', { username: user.username }),
-    positiveText: t('general.yesAction'),
-    negativeText: t('general.noAction'),
+    title: $t('general.warning'),
+    content: $t('admin.users.confirmMsg.deleteUser', { username: user.username }),
+    positiveText: $t('general.yesAction'),
+    negativeText: $t('general.noAction'),
     style: 'font-weight: var(--app-ui-font-weight-light)',
     onPositiveClick: async () => {
       const { error } = await DELETE('/users/{id}', { params: { path: { id: user.id } } });
       if (!error) {
-        message.success(t('admin.users.msgUserDeleted', { username: user.username }));
+        message.success($t('admin.users.msgUserDeleted', { username: user.username }));
         loadUsers();
       } else {
-        message.error(t('errors.unexpected'));
+        message.error($t('errors.unexpected'));
       }
     },
   });

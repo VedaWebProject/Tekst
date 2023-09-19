@@ -56,7 +56,6 @@ function handleSelect(key: string) {
     trigger="click"
     :options="options"
     :disabled="disabled"
-    :render-label="renderLabel"
     placement="bottom-start"
     :size="state.dropdownSize"
     show-arrow

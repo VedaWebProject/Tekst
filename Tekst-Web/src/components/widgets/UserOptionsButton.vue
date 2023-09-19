@@ -3,7 +3,7 @@ import { ref, computed, h, type Component } from 'vue';
 import { useAuthStore, useStateStore } from '@/stores';
 import { useRouter } from 'vue-router';
 import { NButton, NIcon, NDropdown } from 'naive-ui';
-import { useI18n } from 'vue-i18n';
+import { $t } from '@/i18n';
 import { useTheme } from '@/theme';
 
 import LogInRound from '@vicons/material/LogInRound';
@@ -16,7 +16,6 @@ import BarChartRound from '@vicons/material/BarChartRound';
 import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
 import AddCircleOutlineRound from '@vicons/material/AddCircleOutlineRound';
 
-const { t } = useI18n({ useScope: 'global' });
 const auth = useAuthStore();
 const state = useStateStore();
 const { accentColors } = useTheme();
@@ -24,8 +23,8 @@ const router = useRouter();
 
 const tooltip = computed(() =>
   auth.loggedIn
-    ? t('account.tipUserBtn', { username: auth.user?.username })
-    : t('account.tipLoginBtn')
+    ? $t('account.tipUserBtn', { username: auth.user?.username })
+    : $t('account.tipLoginBtn')
 );
 
 const showUserDropdown = ref(false);
@@ -33,11 +32,11 @@ const showUserDropdown = ref(false);
 const userOptions = computed(() => [
   {
     type: 'group',
-    label: t('account.session'),
+    label: $t('account.session'),
     key: 'session',
     children: [
       {
-        label: t('account.logoutBtn'),
+        label: $t('account.logoutBtn'),
         key: 'logout',
         icon: renderIcon(LogOutRound),
       },
@@ -53,12 +52,12 @@ const userOptions = computed(() => [
     key: 'user',
     children: [
       {
-        label: t('account.profile'),
+        label: $t('account.profile'),
         key: 'accountProfile',
         icon: renderIcon(RemoveRedEyeRound),
       },
       {
-        label: t('account.manage.heading'),
+        label: $t('account.manage.heading'),
         key: 'accountManage',
         icon: renderIcon(ManageAccountsRound),
       },
@@ -72,26 +71,26 @@ const userOptions = computed(() => [
         },
         {
           type: 'group',
-          label: t('admin.optionGroupLabel'),
+          label: $t('admin.optionGroupLabel'),
           key: 'admin',
           children: [
             {
-              label: t('admin.statistics.heading'),
+              label: $t('admin.statistics.heading'),
               key: 'adminStatistics',
               icon: renderIcon(BarChartRound),
             },
             {
-              label: t('admin.users.heading'),
+              label: $t('admin.users.heading'),
               key: 'adminUsers',
               icon: renderIcon(PeopleRound),
             },
             {
-              label: t('admin.texts.heading'),
+              label: $t('admin.texts.heading'),
               key: 'adminTexts',
               icon: renderIcon(MenuBookOutlined),
             },
             {
-              label: t('admin.newText.heading'),
+              label: $t('admin.newText.heading'),
               key: 'adminNewText',
               icon: renderIcon(AddCircleOutlineRound),
             },

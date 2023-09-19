@@ -3,7 +3,7 @@ import { NSpin, NIcon } from 'naive-ui';
 import { ref } from 'vue';
 import { useBrowseStore, useStateStore } from '@/stores';
 import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { $t } from '@/i18n';
 import { useElementHover } from '@vueuse/core';
 import UnitHeaderWidgetBar from '@/components/browse/UnitHeaderWidgetBar.vue';
 import unitComponents from '@/components/browse/units/mappings';
@@ -18,14 +18,13 @@ const props = defineProps<{
 
 const browse = useBrowseStore();
 const state = useStateStore();
-const { t } = useI18n({ useScope: 'global' });
 
 const unitContainerRef = ref();
 const isUnitContainerHovered = useElementHover(unitContainerRef, { delayEnter: 0, delayLeave: 0 });
 
 const headerMiddleText = computed(() =>
   props.layer.level !== browse.level
-    ? `(${t('browse.location.level')}: ${state.textLevelLabels[props.layer.level]})`
+    ? `(${$t('browse.location.level')}: ${state.textLevelLabels[props.layer.level]})`
     : ''
 );
 
@@ -38,7 +37,7 @@ const emptyUnitStyle = {
 
 const altUnitContainerStyle = computed(() => (!props.layer.units.length ? emptyUnitStyle : {}));
 const unitContainerTitle = computed(() =>
-  !props.layer.units.length ? t('browse.locationLayerNoData') : undefined
+  !props.layer.units.length ? $t('browse.locationLayerNoData') : undefined
 );
 const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
   opacity: isUnitContainerHovered.value || state.isTouchDevice ? 1 : 0.2,

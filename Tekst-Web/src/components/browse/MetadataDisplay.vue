@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { $t, $te } from '@/i18n';
 
 const props = defineProps<{
   data?: Record<string, any>;
 }>();
 
-const { t, te } = useI18n({ useScope: 'global' });
 const priority = ['author', 'year', 'language'];
 
 const meta = computed<string[][] | null>(() => {
@@ -17,7 +16,7 @@ const meta = computed<string[][] | null>(() => {
   priority
     .filter((p: string) => p in data)
     .forEach((p: string) => {
-      m.push([te(`models.meta.${p}`) ? t(`models.meta.${p}`) : p, data[p]]);
+      m.push([$te(`models.meta.${p}`) ? $t(`models.meta.${p}`) : p, data[p]]);
     });
 
   return m.length > 0 ? m : null;
@@ -29,7 +28,7 @@ const metaExtra = computed<string[][] | null>(() => {
 
   Object.keys(data).forEach((p: string) => {
     if (!priority.includes(p)) {
-      m.push([te(`models.meta.${p}`) ? t(`models.meta.${p}`) : p, data[p]]);
+      m.push([$te(`models.meta.${p}`) ? $t(`models.meta.${p}`) : p, data[p]]);
     }
   });
 

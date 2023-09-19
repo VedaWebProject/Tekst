@@ -12,13 +12,12 @@ import ModalButtonFooter from '@/components/ModalButtonFooter.vue';
 import { useMagicKeys, whenever } from '@vueuse/core';
 import { GET } from '@/api';
 import { useMessages } from '@/messages';
-import { useI18n } from 'vue-i18n';
+import { $t } from '@/i18n';
 
 const state = useStateStore();
 const browse = useBrowseStore();
 const route = useRoute();
 const { message } = useMessages();
-const { t } = useI18n({ useScope: 'global' });
 
 const { ArrowLeft, ArrowRight } = useMagicKeys();
 
@@ -102,7 +101,7 @@ async function updateSelectModelsFromLvl(lvl: number) {
     params: { path: { id: locationSelectModels.value[lvl].selected || '' } },
   });
   if (error) {
-    message.error(t('errors.unexpected'));
+    message.error($t('errors.unexpected'));
     console.error(error);
     return;
   }
@@ -143,7 +142,7 @@ async function initSelectModels() {
   });
 
   if (error) {
-    message.error(t('errors.unexpected'));
+    message.error($t('errors.unexpected'));
     console.error(error);
     return;
   }

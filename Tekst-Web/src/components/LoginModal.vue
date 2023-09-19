@@ -3,7 +3,7 @@ import { useRouter } from 'vue-router';
 import { useAuthStore, LoginTemplatePromise } from '@/stores';
 import { type FormInst, NForm, NFormItem, NInput, NButton, NSpace, NModal } from 'naive-ui';
 import { ref, onMounted, nextTick } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { $t } from '@/i18n';
 import { useMessages } from '@/messages';
 import type { RouteLocationRaw } from 'vue-router';
 import { useFormRules } from '@/formRules';
@@ -13,7 +13,6 @@ const auth = useAuthStore();
 const { message } = useMessages();
 const router = useRouter();
 const { accountFormRules } = useFormRules();
-const { t } = useI18n({ useScope: 'global' });
 
 const initialFormModel = () => ({
   email: null,
@@ -47,7 +46,7 @@ async function handleLoginClick(
       resetForm();
     })
     .catch(() => {
-      message.error(t('errors.followFormRules'));
+      message.error($t('errors.followFormRules'));
     });
 }
 
@@ -57,14 +56,17 @@ async function handleForgotPasswordClick(resolveLogin: (res: boolean | Promise<b
       body: { email: formModel.value.email },
     });
     if (error) {
-      message.error(t('errors.unexpected'), 10);
+      message.error($t('errors.unexpected'), 10);
     } else {
-      message.info(t('account.forgotPassword.sentResetLink', { email: formModel.value.email }), 10);
+      message.info(
+        $t('account.forgotPassword.sentResetLink', { email: formModel.value.email }),
+        10
+      );
     }
     resetForm();
     resolveLogin(false);
   } else {
-    message.error(t('account.forgotPassword.invalidEmail'));
+    message.error($t('account.forgotPassword.invalidEmail'));
   }
 }
 

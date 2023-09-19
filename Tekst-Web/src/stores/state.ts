@@ -7,7 +7,7 @@ import type { AvailableLocale } from '@/i18n';
 import { useRoute } from 'vue-router';
 import type { TextRead } from '@/api';
 import type { ThemeMode } from '@/theme';
-import { useI18n } from 'vue-i18n';
+import { $t, $te } from '@/i18n';
 import { usePlatformData } from '@/platformData';
 import { useAuthStore } from './auth';
 
@@ -17,7 +17,6 @@ export const useStateStore = defineStore('state', () => {
   const route = useRoute();
   const auth = useAuthStore();
   const windowSize = useWindowSize();
-  const { t, te } = useI18n({ useScope: 'global' });
 
   // theme
   const themeMode = ref<ThemeMode>((localStorage.getItem('theme') as ThemeMode) || 'light');
@@ -128,8 +127,8 @@ export const useStateStore = defineStore('state', () => {
   // set page title
   function setPageTitle(forRoute?: RouteLocationNormalized) {
     const r = forRoute || route;
-    const rTitle = te(`routes.pageTitle.${String(r.name)}`)
-      ? t(`routes.pageTitle.${String(r.name)}`)
+    const rTitle = $te(`routes.pageTitle.${String(r.name)}`)
+      ? $t(`routes.pageTitle.${String(r.name)}`)
       : '';
     const tTitle = 'text' in r.params && text.value?.title && ` "${text.value?.title}"`;
     const pfName = pfData.value?.info?.platformName ? ` | ${pfData.value?.info?.platformName}` : '';

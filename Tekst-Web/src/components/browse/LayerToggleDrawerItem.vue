@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import { NSwitch, NIcon } from 'naive-ui';
 import CheckRound from '@vicons/material/CheckRound';
-import { useI18n } from 'vue-i18n';
+import { $t } from '@/i18n';
 import MetadataDisplayMinimal from './MetadataDisplayMinimal.vue';
 import { useStateStore } from '@/stores';
 
@@ -22,9 +22,8 @@ const active = computed({
   },
 });
 
-const { t } = useI18n({ useScope: 'global' });
 const state = useStateStore();
-const infoTooltip = computed(() => (props.disabled ? t('browse.locationLayerNoData') : undefined));
+const infoTooltip = computed(() => (props.disabled ? $t('browse.locationLayerNoData') : undefined));
 </script>
 
 <template>

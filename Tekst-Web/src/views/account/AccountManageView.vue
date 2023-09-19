@@ -17,7 +17,7 @@ import {
   useDialog,
 } from 'naive-ui';
 import { ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { $t } from '@/i18n';
 import { useModelChanges } from '@/modelChanges';
 import type { UserUpdate, UserUpdatePublicFields } from '@/api';
 
@@ -25,7 +25,6 @@ const dialog = useDialog();
 const auth = useAuthStore();
 const { pfData } = usePlatformData();
 const { message } = useMessages();
-const { t } = useI18n({ useScope: 'global' });
 
 const initialEmailModel = () => ({
   email: auth.user?.email || null,
@@ -84,7 +83,7 @@ const loading = ref(false);
 const passwordRepeatMatchRule = {
   validator: (rule: FormItemRule, value: string) =>
     !!value && !!passwordFormModel.value.password && value === passwordFormModel.value.password,
-  message: () => t('models.user.formRulesFeedback.passwordRepNoMatch'),
+  message: () => $t('models.user.formRulesFeedback.passwordRepNoMatch'),
   trigger: ['input', 'blur', 'password-input'],
 };
 
@@ -105,7 +104,7 @@ async function updateUser(userUpdate: UserUpdate) {
      * the provided email already exists (which we don't want to actively disclose)
      * or we got a 403 for a failed CSRF check.
      */
-    message.error(t('errors.unexpected'));
+    message.error($t('errors.unexpected'));
     return false;
   } finally {
     loading.value = false;
@@ -115,18 +114,22 @@ async function updateUser(userUpdate: UserUpdate) {
 async function updateEmail() {
   if (!(await updateUser(getEmailModelChanges()))) return;
   resetEmailModelChanges();
-  message.success(t('account.manage.msgEmailSaveSuccess'));
+  message.success($t('account.manage.msgEmailSaveSuccess'));
   if (pfData.value?.security?.closedMode === true) return;
   await auth.logout();
   const { error } = await POST('/auth/request-verify-token', {
     body: { email: emailFormModel.value.email || '' },
   });
   if (!error) {
-    message.warning(t('account.manage.msgVerifyEmailWarning'), 20);
+    message.warning($t('account.manage.msgVerifyEmailWarning'), 20);
   } else {
-    message.error(t('errors.unexpected'));
+    message.error($t('errors.unexpected'));
   }
-  auth.showLoginModal(t('account.manage.msgVerifyEmailWarning'), { name: 'accountProfile' }, false);
+  auth.showLoginModal(
+    $t('account.manage.msgVerifyEmailWarning'),
+    { name: 'accountProfile' },
+    false
+  );
 }
 
 function handleEmailSave() {
@@ -137,10 +140,10 @@ function handleEmailSave() {
           updateEmail();
         } else {
           dialog.warning({
-            title: t('general.warning'),
-            content: t('account.manage.msgEmailChangeWarning'),
-            positiveText: t('general.saveAction'),
-            negativeText: t('general.cancelAction'),
+            title: $t('general.warning'),
+            content: $t('account.manage.msgEmailChangeWarning'),
+            positiveText: $t('general.saveAction'),
+            negativeText: $t('general.cancelAction'),
             style: 'font-weight: var(--app-ui-font-weight-light)',
             onPositiveClick: updateEmail,
           });
@@ -148,7 +151,7 @@ function handleEmailSave() {
       }
     })
     .catch(() => {
-      message.error(t('errors.followFormRules'));
+      message.error($t('errors.followFormRules'));
     });
 }
 
@@ -157,22 +160,22 @@ async function handlePasswordSave() {
     ?.validate(async (errors) => {
       !errors &&
         dialog.warning({
-          title: t('general.warning'),
-          content: t('account.manage.msgPasswordChangeWarning'),
-          positiveText: t('general.saveAction'),
-          negativeText: t('general.cancelAction'),
+          title: $t('general.warning'),
+          content: $t('account.manage.msgPasswordChangeWarning'),
+          positiveText: $t('general.saveAction'),
+          negativeText: $t('general.cancelAction'),
           style: 'font-weight: var(--app-ui-font-weight-light)',
           onPositiveClick: async () => {
             await updateUser({ password: passwordFormModel.value.password || undefined });
             resetPasswordModelChanges();
-            message.success(t('account.manage.msgPasswordSaveSuccess'));
+            message.success($t('account.manage.msgPasswordSaveSuccess'));
             await auth.logout();
             auth.showLoginModal(undefined, { name: 'accountProfile' }, false);
           },
         });
     })
     .catch(() => {
-      message.error(t('errors.followFormRules'));
+      message.error($t('errors.followFormRules'));
     });
 }
 
@@ -181,11 +184,11 @@ async function handleUserDataSave() {
     ?.validate(async (validationErrors) => {
       if (!validationErrors && (await updateUser(getUserDataModelChanges()))) {
         resetUserDataModelChanges();
-        message.success(t('account.manage.msgUserDataSaveSuccess'));
+        message.success($t('account.manage.msgUserDataSaveSuccess'));
       }
     })
     .catch(() => {
-      message.error(t('errors.followFormRules'));
+      message.error($t('errors.followFormRules'));
     });
 }
 
@@ -198,7 +201,7 @@ async function handlepublicFieldsSave() {
     })
   ) {
     resetPublicFieldsModelChanges();
-    message.success(t('account.manage.msgUserDataSaveSuccess'));
+    message.success($t('account.manage.msgUserDataSaveSuccess'));
   }
 }
 </script>

@@ -6,7 +6,7 @@ import { NModal, NButton, NSpin } from 'naive-ui';
 import ModalButtonFooter from '@/components/ModalButtonFooter.vue';
 import { GET } from '@/api';
 import { useMessages } from '@/messages';
-import { useI18n } from 'vue-i18n';
+import { $t } from '@/i18n';
 import unitComponents from '@/components/browse/units/mappings';
 import LocationLabel from '@/components/browse/LocationLabel.vue';
 import UnitHeaderWidgetBar from '@/components/browse/UnitHeaderWidgetBar.vue';
@@ -17,7 +17,6 @@ const props = defineProps<{
 }>();
 
 const { message } = useMessages();
-const { t } = useI18n({ useScope: 'global' });
 const browse = useBrowseStore();
 
 const showModal = ref(false);
@@ -39,7 +38,7 @@ async function handleClick() {
 
   if (error) {
     console.error(error);
-    message.error(t('errors.unexpected'));
+    message.error($t('errors.unexpected'));
     showModal.value = false;
     loading.value = false;
     return;

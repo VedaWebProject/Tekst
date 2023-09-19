@@ -15,7 +15,7 @@ import { GET } from '@/api';
 import { useStateStore } from '@/stores';
 import { onMounted } from 'vue';
 import { useMessages } from '@/messages';
-import { useI18n } from 'vue-i18n';
+import { $t } from '@/i18n';
 import DeleteFilled from '@vicons/material/DeleteFilled';
 import { watch } from 'vue';
 import type { Component } from 'vue';
@@ -25,7 +25,6 @@ import EditTwotone from '@vicons/material/EditTwotone';
 
 const state = useStateStore();
 const { message } = useMessages();
-const { t } = useI18n({ useScope: 'global' });
 const dialog = useDialog();
 
 const treeData = ref<TreeOption[]>([]);
@@ -39,7 +38,7 @@ async function handleLoad(node?: TreeOption) {
     },
   });
   if (error) {
-    message.error(t('errors.unexpected'));
+    message.error($t('errors.unexpected'));
     console.error(error);
     return Promise.reject(error);
   }
@@ -79,10 +78,10 @@ function handleDrop(data: TreeDropInfo) {
 
 function handleDeleteNode(node: TreeOption) {
   dialog.warning({
-    title: t('general.warning'),
-    content: t('admin.texts.nodes.warnDeleteNode', { nodeLabel: node.label }),
-    positiveText: t('general.deleteAction'),
-    negativeText: t('general.cancelAction'),
+    title: $t('general.warning'),
+    content: $t('admin.texts.nodes.warnDeleteNode', { nodeLabel: node.label }),
+    positiveText: $t('general.deleteAction'),
+    negativeText: $t('general.cancelAction'),
     style: 'font-weight: var(--app-ui-font-weight-light); width: 680px; max-width: 95%',
     onPositiveClick: async () => {
       // loading.value = true;

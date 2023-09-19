@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { $t } from '@/i18n';
 
 const props = defineProps<{
   data?: Record<string, any>;
   layerType?: string;
 }>();
-
-const { t } = useI18n({ useScope: 'global' });
 
 const meta = computed<string>(() => {
   const minimalMeta = ['author', 'year', 'language'];
@@ -20,7 +18,7 @@ const meta = computed<string>(() => {
     }
   });
 
-  props.layerType && m.push(t(`layerTypes.${props.layerType}`));
+  props.layerType && m.push($t(`layerTypes.${props.layerType}`));
   return m.join(', ');
 });
 </script>
