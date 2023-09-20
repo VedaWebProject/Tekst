@@ -7,12 +7,14 @@ from fastapi import APIRouter, HTTPException, Path, Query, status
 from tekst.auth import SuperuserDep
 from tekst.logging import log
 from tekst.models.text import (
+    DeleteNodeResult,
     NodeCreate,
     NodeDocument,
     NodeRead,
     NodeUpdate,
     TextDocument,
 )
+from tekst.models.unit import UnitBaseDocument
 
 
 router = APIRouter(
@@ -122,7 +124,57 @@ async def update_node(
     if not node_doc:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Node {node_id} doesn't exist or requires extra permissions",
+            detail=f"Node {node_id} doesn't exist",
         )
     await node_doc.apply(updates.model_dump(exclude_unset=True))
     return node_doc
+
+
+@router.delete(
+    "/{id}",
+    response_model=DeleteNodeResult,
+    status_code=status.HTTP_200_OK,
+    description=(
+        "Deletes the specified node. Also deletes any associated units, "
+        "child nodes and units associated with child nodes."
+    ),
+)
+async def delete_node(
+    su: SuperuserDep,
+    node_id: Annotated[PydanticObjectId, Path(alias="id")],
+) -> DeleteNodeResult:
+    node_doc = await NodeDocument.get(node_id)
+    if not node_doc:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Node {node_id} doesn't exist",
+        )
+    # delete node and everything associated with it
+    to_delete = [node_doc]
+    units_deleted = 0
+    nodes_deleted = 0
+    while to_delete:
+        curr_node = to_delete[0]
+        # delete associated units
+        units_deleted += (
+            await UnitBaseDocument.find(
+                UnitBaseDocument.node_id == curr_node.id, with_children=True
+            ).delete()
+        ).deleted_count
+        # collect child nodes to delete
+        to_delete += (
+            await NodeDocument.find(NodeDocument.parent_id == curr_node.id)
+            .sort(-NodeDocument.position)
+            .to_list()
+        )
+        # decrement position value of all following sibling nodes on this level
+        await NodeDocument.find(
+            NodeDocument.text_id == curr_node.text_id,
+            NodeDocument.level == curr_node.level,
+            NodeDocument.position > curr_node.position,
+        ).inc({NodeDocument.position: -1})
+        # delete current node
+        await curr_node.delete()
+        nodes_deleted += 1
+        to_delete.pop(0)
+    return DeleteNodeResult(units=units_deleted, nodes=nodes_deleted)

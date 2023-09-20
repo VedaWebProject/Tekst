@@ -106,6 +106,11 @@ export interface paths {
   '/nodes/{id}': {
     /** Get node */
     get: operations['getNode'];
+    /**
+     * Delete node
+     * @description Deletes the specified node. Also deletes any associated units, child nodes and units associated with child nodes.
+     */
+    delete: operations['deleteNode'];
     /** Update node */
     patch: operations['updateNode'];
   };
@@ -472,6 +477,13 @@ export interface components {
         | 'UK'
         | 'ZH'
       )[];
+    };
+    /** DeleteNodeResult */
+    DeleteNodeResult: {
+      /** Units */
+      units: number;
+      /** Nodes */
+      nodes: number;
     };
     /** ErrorModel */
     ErrorModel: {
@@ -1719,6 +1731,35 @@ export interface operations {
       200: {
         content: {
           'application/json': components['schemas']['NodeRead'];
+        };
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /**
+   * Delete node
+   * @description Deletes the specified node. Also deletes any associated units, child nodes and units associated with child nodes.
+   */
+  deleteNode: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['DeleteNodeResult'];
         };
       };
       /** @description Not found */

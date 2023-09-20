@@ -183,3 +183,8 @@ class InsertLevelRequest(ModelBase):
     translations: Annotated[
         List[StructureLevelTranslation], Field(min_length=1)
     ] = Field(..., description="Translation(s) for the label of the level to insert")
+
+
+class DeleteNodeResult(ModelBase):
+    units: int
+    nodes: int

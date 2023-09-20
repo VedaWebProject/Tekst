@@ -10,8 +10,8 @@ import {
   type TreeDropInfo,
   type TreeOption,
 } from 'naive-ui';
-import { h, ref } from 'vue';
-import { GET } from '@/api';
+import { computed, h, ref } from 'vue';
+import { DELETE, GET } from '@/api';
 import { useStateStore } from '@/stores';
 import { onMounted } from 'vue';
 import { useMessages } from '@/messages';
@@ -19,21 +19,21 @@ import { $t } from '@/i18n';
 import DeleteFilled from '@vicons/material/DeleteFilled';
 import { watch } from 'vue';
 import type { Component } from 'vue';
-import DeleteNodeModal from '@/components/admin/DeleteNodeModal.vue';
 
 import ArrowForwardIosRound from '@vicons/material/ArrowForwardIosRound';
 import EditTwotone from '@vicons/material/EditTwotone';
+import { positiveButtonProps, negativeButtonProps } from '@/components/dialogButtonProps';
 
 const state = useStateStore();
 const { message } = useMessages();
 const dialog = useDialog();
 
 const treeData = ref<TreeOption[]>([]);
-const selectedNode = ref<TreeOption | null>();
 const showWarnings = ref(true);
-const showDeleteModal = ref(false);
+const deleteLoading = ref(false);
+const loading = computed(() => deleteLoading.value);
 
-async function handleLoad(node?: TreeOption) {
+async function loadTreeData(node?: TreeOption) {
   const { data, error } = await GET('/nodes/children', {
     params: {
       query: { textId: state.text?.id || '', ...(node ? { parentId: String(node.key) } : {}) },
@@ -59,15 +59,13 @@ async function handleLoad(node?: TreeOption) {
   }
 }
 
-function handleSelect(
-  value: Array<string & number>,
-  option: Array<TreeOption | null>,
-  meta: {
-    node: TreeOption | null;
-    action: 'select' | 'unselect';
+function deleteFromTreeData(node: TreeOption, tree: TreeOption[] = treeData.value) {
+  const index = tree.indexOf(node);
+  if (index >= 0) {
+    tree.splice(index, 1);
+  } else {
+    tree.filter((n) => n.children?.length).forEach((n) => deleteFromTreeData(node, n.children));
   }
-) {
-  selectedNode.value = meta.action === 'select' ? meta.node : null;
 }
 
 function handleDrop(data: TreeDropInfo) {
@@ -78,24 +76,37 @@ function handleDrop(data: TreeDropInfo) {
   console.log('DROP!', data);
 }
 
-function handleDeleteNode(node: TreeOption) {
-  showDeleteModal.value = true;
-  // dialog.warning({
-  //   title: $t('general.warning'),
-  //   content: $t('admin.texts.nodes.warnDeleteNode', { nodeLabel: node.label }),
-  //   positiveText: $t('general.deleteAction'),
-  //   negativeText: $t('general.cancelAction'),
-  //   positiveButtonProps: positiveButtonProps,
-  //   negativeButtonProps: negativeButtonProps,
-  //   autoFocus: false,
-  //   closable: false,
-  //   onPositiveClick: async () => {
-  //     // loading.value = true;
-  //     //TODO
-  //     // loading.value = false;
-  //     console.log('DELETE!');
-  //   },
-  // });
+async function deleteNode(node: TreeOption) {
+  deleteLoading.value = true;
+  const { data: result, error } = await DELETE('/nodes/{id}', {
+    params: { path: { id: node.key?.toString() || '' } },
+  });
+  if (!error) {
+    deleteFromTreeData(node);
+    message.success(`Deleted ${result.nodes} nodes and ${result.units} units`);
+  } else {
+    message.error('errors.unexpected');
+  }
+  deleteLoading.value = false;
+}
+
+async function handleDeleteClick(node: TreeOption) {
+  if (!showWarnings.value) {
+    deleteNode(node);
+    return;
+  }
+  dialog.warning({
+    title: $t('general.warning'),
+    content: $t('admin.texts.nodes.warnDeleteNode', { nodeLabel: node.label }),
+    positiveText: $t('general.deleteAction'),
+    negativeText: $t('general.cancelAction'),
+    positiveButtonProps: positiveButtonProps,
+    negativeButtonProps: negativeButtonProps,
+    autoFocus: false,
+    closable: false,
+    loading: deleteLoading.value,
+    onPositiveClick: async () => await deleteNode(node),
+  });
 }
 
 function renderSwitcherIcon() {
@@ -125,6 +136,8 @@ function renderSuffixButton(icon: Component, onClick: () => void) {
     size: 'small',
     quaternary: true,
     circle: true,
+    loading: loading.value,
+    disabled: loading.value,
     renderIcon: () =>
       h(NIcon, null, {
         default: () => h(icon),
@@ -143,17 +156,17 @@ function renderSuffix(info: { option: TreeOption; checked: boolean; selected: bo
     renderSuffixButton(EditTwotone, () => {
       alert('EDIT!');
     }),
-    renderSuffixButton(DeleteFilled, () => handleDeleteNode(info.option)),
+    renderSuffixButton(DeleteFilled, () => handleDeleteClick(info.option)),
   ]);
 }
 
-onMounted(() => handleLoad());
+onMounted(() => loadTreeData());
 
 watch(
   () => state.text?.id,
   () => {
     treeData.value = [];
-    handleLoad();
+    loadTreeData();
   }
 );
 </script>
@@ -176,19 +189,15 @@ watch(
       block-line
       draggable
       :data="treeData"
-      :on-load="handleLoad"
+      :on-load="loadTreeData"
       :render-switcher-icon="renderSwitcherIcon"
       :render-label="renderLabel"
       :render-suffix="renderSuffix"
-      :expand-on-dragenter="false"
       @drop="handleDrop"
-      @update:selected-keys="handleSelect"
     />
   </div>
 
   <n-spin v-else style="margin: 3rem 0 2rem 0; width: 100%" :description="$t('init.loading')" />
-
-  <DeleteNodeModal v-model:show="showDeleteModal" />
 </template>
 
 <style>

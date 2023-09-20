@@ -1078,6 +1078,59 @@
             }
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "nodes"
+        ],
+        "summary": "Delete node",
+        "description": "Deletes the specified node. Also deletes any associated units, child nodes and units associated with child nodes.",
+        "operationId": "deleteNode",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteNodeResult"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/platform": {
@@ -3069,6 +3122,24 @@
           "languages"
         ],
         "title": "DeepLLinksConfig"
+      },
+      "DeleteNodeResult": {
+        "properties": {
+          "units": {
+            "type": "integer",
+            "title": "Units"
+          },
+          "nodes": {
+            "type": "integer",
+            "title": "Nodes"
+          }
+        },
+        "type": "object",
+        "required": [
+          "units",
+          "nodes"
+        ],
+        "title": "DeleteNodeResult"
       },
       "ErrorModel": {
         "properties": {
