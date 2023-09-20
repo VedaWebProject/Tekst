@@ -19,6 +19,7 @@ import { $t } from '@/i18n';
 import DeleteFilled from '@vicons/material/DeleteFilled';
 import { watch } from 'vue';
 import type { Component } from 'vue';
+import DeleteNodeModal from '@/components/admin/DeleteNodeModal.vue';
 
 import ArrowForwardIosRound from '@vicons/material/ArrowForwardIosRound';
 import EditTwotone from '@vicons/material/EditTwotone';
@@ -30,6 +31,7 @@ const dialog = useDialog();
 const treeData = ref<TreeOption[]>([]);
 const selectedNode = ref<TreeOption | null>();
 const showWarnings = ref(true);
+const showDeleteModal = ref(false);
 
 async function handleLoad(node?: TreeOption) {
   const { data, error } = await GET('/nodes/children', {
@@ -77,19 +79,23 @@ function handleDrop(data: TreeDropInfo) {
 }
 
 function handleDeleteNode(node: TreeOption) {
-  dialog.warning({
-    title: $t('general.warning'),
-    content: $t('admin.texts.nodes.warnDeleteNode', { nodeLabel: node.label }),
-    positiveText: $t('general.deleteAction'),
-    negativeText: $t('general.cancelAction'),
-    style: 'font-weight: var(--app-ui-font-weight-light); width: 680px; max-width: 95%',
-    onPositiveClick: async () => {
-      // loading.value = true;
-      //TODO
-      // loading.value = false;
-      console.log('DELETE!');
-    },
-  });
+  showDeleteModal.value = true;
+  // dialog.warning({
+  //   title: $t('general.warning'),
+  //   content: $t('admin.texts.nodes.warnDeleteNode', { nodeLabel: node.label }),
+  //   positiveText: $t('general.deleteAction'),
+  //   negativeText: $t('general.cancelAction'),
+  //   positiveButtonProps: positiveButtonProps,
+  //   negativeButtonProps: negativeButtonProps,
+  //   autoFocus: false,
+  //   closable: false,
+  //   onPositiveClick: async () => {
+  //     // loading.value = true;
+  //     //TODO
+  //     // loading.value = false;
+  //     console.log('DELETE!');
+  //   },
+  // });
 }
 
 function renderSwitcherIcon() {
@@ -181,6 +187,8 @@ watch(
   </div>
 
   <n-spin v-else style="margin: 3rem 0 2rem 0; width: 100%" :description="$t('init.loading')" />
+
+  <DeleteNodeModal v-model:show="showDeleteModal" />
 </template>
 
 <style>

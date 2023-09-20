@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 import { useAuthStore, LoginTemplatePromise } from '@/stores';
-import { type FormInst, NForm, NFormItem, NInput, NButton, NSpace, NModal } from 'naive-ui';
+import { type FormInst, NForm, NFormItem, NInput, NButton, NModal } from 'naive-ui';
 import { ref, onMounted, nextTick } from 'vue';
 import { $t } from '@/i18n';
 import { useMessages } from '@/messages';
 import type { RouteLocationRaw } from 'vue-router';
 import { useFormRules } from '@/formRules';
 import { POST } from '@/api';
+import ModelButtonFooter from '@/components/ModalButtonFooter.vue';
 
 const auth = useAuthStore();
 const { message } = useMessages();
@@ -140,9 +141,11 @@ onMounted(() => {
           </n-button>
         </div>
 
-        <n-space vertical :size="12" style="margin-bottom: 0.5rem">
+        <ModelButtonFooter>
+          <n-button v-if="args[2]" secondary @click="reject(switchToRegistration())">
+            {{ $t('account.switchToRegister') }}
+          </n-button>
           <n-button
-            block
             type="primary"
             :loading="isResolving"
             :disabled="isResolving"
@@ -150,10 +153,7 @@ onMounted(() => {
           >
             {{ $t('account.loginBtn') }}
           </n-button>
-          <n-button v-if="args[2]" secondary block @click="reject(switchToRegistration())">
-            {{ $t('account.switchToRegister') }}
-          </n-button>
-        </n-space>
+        </ModelButtonFooter>
       </div>
     </n-modal>
   </LoginTemplatePromise>

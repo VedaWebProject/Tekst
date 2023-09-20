@@ -1,5 +1,5 @@
 <template>
-  <div style="display: flex; justify-content: end; gap: 24px; margin-top: 24px">
+  <div style="display: flex; justify-content: end; gap: 1rem; margin-top: 1rem">
     <slot></slot>
   </div>
 </template>

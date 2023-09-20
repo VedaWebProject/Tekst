@@ -19,17 +19,19 @@ import {
 import { computed, ref } from 'vue';
 import { localeProfiles } from '@/i18n';
 import type { StructureLevelTranslation } from '@/api';
+import ModalButtonFooter from '@/components/ModalButtonFooter.vue';
+import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
 
-import AddRound from '@vicons/material/AddRound';
-import MinusRound from '@vicons/material/MinusRound';
-
-import DeleteRound from '@vicons/material/DeleteRound';
-import EditRound from '@vicons/material/EditRound';
 import { useMessages } from '@/messages';
 import { $t } from '@/i18n';
 import { POST, PATCH, DELETE } from '@/api';
 import { usePlatformData } from '@/platformData';
 import { useI18n } from 'vue-i18n';
+
+import AddRound from '@vicons/material/AddRound';
+import MinusRound from '@vicons/material/MinusRound';
+import DeleteRound from '@vicons/material/DeleteRound';
+import EditRound from '@vicons/material/EditRound';
 
 const state = useStateStore();
 const { loadPlatformData } = usePlatformData();
@@ -92,7 +94,10 @@ function handleDeleteClick(level: number) {
     }),
     positiveText: $t('general.deleteAction'),
     negativeText: $t('general.cancelAction'),
-    style: 'font-weight: var(--app-ui-font-weight-light); width: 680px; max-width: 95%',
+    positiveButtonProps: positiveButtonProps,
+    negativeButtonProps: negativeButtonProps,
+    autoFocus: false,
+    closable: false,
     onPositiveClick: async () => {
       loading.value = true;
       const { data, error } = await DELETE('/texts/{id}/level/{index}', {
@@ -330,20 +335,14 @@ async function handleModalSubmit() {
       </n-form-item>
     </n-form>
 
-    <n-space :size="12" justify="end" style="margin-top: 0.5rem">
-      <n-button secondary block :disabled="loading" @click="showEditModal = false">
+    <ModalButtonFooter>
+      <n-button secondary :disabled="loading" @click="showEditModal = false">
         {{ $t('general.cancelAction') }}
       </n-button>
-      <n-button
-        block
-        type="primary"
-        :loading="loading"
-        :disabled="loading"
-        @click="handleModalSubmit"
-      >
+      <n-button type="primary" :loading="loading" :disabled="loading" @click="handleModalSubmit">
         {{ $t('general.saveAction') }}
       </n-button>
-    </n-space>
+    </ModalButtonFooter>
   </n-modal>
 </template>
 

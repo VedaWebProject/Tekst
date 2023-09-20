@@ -20,6 +20,7 @@ import { ref } from 'vue';
 import { $t } from '@/i18n';
 import { useModelChanges } from '@/modelChanges';
 import type { UserUpdate, UserUpdatePublicFields } from '@/api';
+import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
 
 const dialog = useDialog();
 const auth = useAuthStore();
@@ -144,7 +145,10 @@ function handleEmailSave() {
             content: $t('account.manage.msgEmailChangeWarning'),
             positiveText: $t('general.saveAction'),
             negativeText: $t('general.cancelAction'),
-            style: 'font-weight: var(--app-ui-font-weight-light)',
+            positiveButtonProps: positiveButtonProps,
+            negativeButtonProps: negativeButtonProps,
+            autoFocus: false,
+            closable: false,
             onPositiveClick: updateEmail,
           });
         }
@@ -164,7 +168,10 @@ async function handlePasswordSave() {
           content: $t('account.manage.msgPasswordChangeWarning'),
           positiveText: $t('general.saveAction'),
           negativeText: $t('general.cancelAction'),
-          style: 'font-weight: var(--app-ui-font-weight-light)',
+          positiveButtonProps: positiveButtonProps,
+          negativeButtonProps: negativeButtonProps,
+          autoFocus: false,
+          closable: false,
           onPositiveClick: async () => {
             await updateUser({ password: passwordFormModel.value.password || undefined });
             resetPasswordModelChanges();

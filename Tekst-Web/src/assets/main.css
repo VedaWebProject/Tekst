@@ -117,3 +117,7 @@ h5:first-child {
 .n-select-menu {
   font-weight: var(--app-ui-font-weight-normal);
 }
+
+.n-dialog {
+  font-weight: var(--app-ui-font-weight-light);
+}

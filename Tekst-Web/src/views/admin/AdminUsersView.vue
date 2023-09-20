@@ -25,6 +25,7 @@ import UndoRound from '@vicons/material/UndoRound';
 import { useRoute } from 'vue-router';
 import { POST, PATCH, DELETE } from '@/api';
 import { useAuthStore } from '@/stores';
+import { positiveButtonProps, negativeButtonProps } from '@/components/dialogButtonProps';
 
 const { users, error, load: loadUsers } = useUsers();
 const { message } = useMessages();
@@ -96,7 +97,10 @@ function handleSuperuserClick(user: UserRead) {
       : $t('admin.users.confirmMsg.setSuperuser', { username: user.username }),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    style: 'font-weight: var(--app-ui-font-weight-light)',
+    positiveButtonProps: positiveButtonProps,
+    negativeButtonProps: negativeButtonProps,
+    autoFocus: false,
+    closable: false,
     onPositiveClick: () => updateUser(user, { isSuperuser: !user.isSuperuser }),
   });
 }
@@ -109,7 +113,10 @@ function handleActiveClick(user: UserRead) {
       : $t('admin.users.confirmMsg.setActive', { username: user.username }),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    style: 'font-weight: var(--app-ui-font-weight-light)',
+    positiveButtonProps: positiveButtonProps,
+    negativeButtonProps: negativeButtonProps,
+    autoFocus: false,
+    closable: false,
     onPositiveClick: async () => {
       const updatedUser = await updateUser(user, { isActive: !user.isActive });
       // if just activated but still unverified, send verification mail
@@ -137,7 +144,10 @@ function handleVerifiedClick(user: UserRead) {
       : $t('admin.users.confirmMsg.setVerified', { username: user.username }),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    style: 'font-weight: var(--app-ui-font-weight-light)',
+    positiveButtonProps: positiveButtonProps,
+    negativeButtonProps: negativeButtonProps,
+    autoFocus: false,
+    closable: false,
     onPositiveClick: async () => {
       const updatedUser = await updateUser(user, { isVerified: !user.isVerified });
       if (updatedUser && !updatedUser.isVerified) {
@@ -162,7 +172,10 @@ function handleDeleteClick(user: UserRead) {
     content: $t('admin.users.confirmMsg.deleteUser', { username: user.username }),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    style: 'font-weight: var(--app-ui-font-weight-light)',
+    positiveButtonProps: positiveButtonProps,
+    negativeButtonProps: negativeButtonProps,
+    autoFocus: false,
+    closable: false,
     onPositiveClick: async () => {
       const { error } = await DELETE('/users/{id}', { params: { path: { id: user.id } } });
       if (!error) {
