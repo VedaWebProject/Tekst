@@ -324,7 +324,10 @@ admin:
         Rearranging or deleting text nodes has serious impact on the text's data model.
         It is recommended to make a backup of the current state of your
         database before making any changes, here.
-      warnDeleteNode: TODO
+      warnDeleteNode: |
+        If you delete this node, all data associated with it or its children will
+        be deleted with it. This can potentially affect all data layers,
+        even ones created by other users. Are you really sure?
       checkShowWarnings: Show warnings before performing destructive operations
   newText:
     heading: New Text
