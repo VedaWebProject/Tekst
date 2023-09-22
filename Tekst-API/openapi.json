@@ -1133,6 +1133,71 @@
         }
       }
     },
+    "/nodes/{id}/move": {
+      "post": {
+        "tags": [
+          "nodes"
+        ],
+        "summary": "Move node",
+        "description": "Moves the specified node to a new position on its structure level.",
+        "operationId": "moveNode",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MoveNodeRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NodeRead"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/platform": {
       "get": {
         "tags": [
@@ -3222,6 +3287,37 @@
           "description"
         ],
         "title": "LayerTypeInfo"
+      },
+      "MoveNodeRequestBody": {
+        "properties": {
+          "position": {
+            "type": "integer",
+            "title": "Position"
+          },
+          "after": {
+            "type": "boolean",
+            "title": "After"
+          },
+          "parentId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parentid"
+          }
+        },
+        "type": "object",
+        "required": [
+          "position",
+          "after",
+          "parentId"
+        ],
+        "title": "MoveNodeRequestBody"
       },
       "NodeCreate": {
         "properties": {

@@ -9,9 +9,10 @@ import {
   useDialog,
   type TreeDropInfo,
   type TreeOption,
+  type TreeDragInfo,
 } from 'naive-ui';
 import { computed, h, ref } from 'vue';
-import { DELETE, GET } from '@/api';
+import { DELETE, GET, POST } from '@/api';
 import { useStateStore } from '@/stores';
 import { onMounted } from 'vue';
 import { useMessages } from '@/messages';
@@ -24,11 +25,18 @@ import ArrowForwardIosRound from '@vicons/material/ArrowForwardIosRound';
 import EditTwotone from '@vicons/material/EditTwotone';
 import { positiveButtonProps, negativeButtonProps } from '@/components/dialogButtonProps';
 
+interface NodeTreeOption extends TreeOption {
+  level: number;
+  position: number;
+  parentKey: string | null;
+}
+
 const state = useStateStore();
 const { message } = useMessages();
 const dialog = useDialog();
 
-const treeData = ref<TreeOption[]>([]);
+const treeData = ref<NodeTreeOption[]>([]);
+const dragNode = ref<NodeTreeOption | null>(null);
 const showWarnings = ref(true);
 const deleteLoading = ref(false);
 const loading = computed(() => deleteLoading.value);
@@ -42,9 +50,9 @@ async function loadTreeData(node?: TreeOption) {
   if (error) {
     message.error($t('errors.unexpected'));
     console.error(error);
-    return Promise.reject(error);
+    return;
   }
-  const subTreeData = data.map((child) => ({
+  const subTreeData: NodeTreeOption[] = data.map((child) => ({
     key: child.id,
     label: child.label,
     isLeaf: child.level >= (state.text?.levels.length || Number.MAX_SAFE_INTEGER) - 1,
@@ -68,12 +76,45 @@ function deleteFromTreeData(node: TreeOption, tree: TreeOption[] = treeData.valu
   }
 }
 
-function handleDrop(data: TreeDropInfo) {
-  if (data.dragNode.level !== data.node.level) {
-    message.error('Text nodes can only be moved on their original structure level.');
+function isDropAllowed(info: {
+  dropPosition: 'before' | 'inside' | 'after';
+  node: TreeOption;
+  phase: 'drag' | 'drop';
+}) {
+  return info.dropPosition !== 'inside' && info.node.level === dragNode.value?.level;
+}
+
+function handleDragStart(data: TreeDragInfo) {
+  dragNode.value = data.node as NodeTreeOption;
+}
+
+function handleDragEnd() {
+  dragNode.value = null;
+}
+
+async function handleDrop(dropData: TreeDropInfo) {
+  if (dropData.dragNode.level !== dropData.node.level) {
+    message.error($t('admin.texts.nodes.errorNodeLeftLevel'));
     return;
   }
-  console.log('DROP!', data);
+  const { data, error } = await POST('/nodes/{id}/move', {
+    params: {
+      path: { id: dropData.dragNode.key?.toString() || '' },
+    },
+    body: {
+      position: dropData.node.position as number,
+      after: dropData.dropPosition === 'after',
+      parentId: dropData.node.parentKey as string | null,
+    },
+  });
+  if (!error) {
+    message.success(
+      `Moved node "${data.label}" to position ${data.position} on level ${data.level}"`
+    );
+  } else {
+    message.error($t('errors.unexpected'));
+  }
+  loadTreeData();
 }
 
 async function deleteNode(node: TreeOption) {
@@ -83,9 +124,11 @@ async function deleteNode(node: TreeOption) {
   });
   if (!error) {
     deleteFromTreeData(node);
-    message.success(`Deleted ${result.nodes} nodes and ${result.units} units`);
+    message.success(
+      $t('admin.texts.nodes.infoDeletedNode', { nodes: result.nodes, units: result.units })
+    );
   } else {
-    message.error('errors.unexpected');
+    message.error($t('errors.unexpected'));
   }
   deleteLoading.value = false;
 }
@@ -125,7 +168,7 @@ function renderLabel({ option }: { option: TreeOption }) {
     'div',
     { style: 'padding: 4px' },
     {
-      default: () => `${levelLabel}: ${option.label}`,
+      default: () => `${levelLabel}: ${option.label} (${option.parentKey})`,
     }
   );
 }
@@ -165,7 +208,6 @@ onMounted(() => loadTreeData());
 watch(
   () => state.text?.id,
   () => {
-    treeData.value = [];
     loadTreeData();
   }
 );
@@ -192,7 +234,10 @@ watch(
       :on-load="loadTreeData"
       :render-switcher-icon="renderSwitcherIcon"
       :render-label="renderLabel"
+      :allow-drop="isDropAllowed"
       :render-suffix="renderSuffix"
+      @dragstart="handleDragStart"
+      @dragend="handleDragEnd"
       @drop="handleDrop"
     />
   </div>

@@ -188,3 +188,9 @@ class InsertLevelRequest(ModelBase):
 class DeleteNodeResult(ModelBase):
     units: int
     nodes: int
+
+
+class MoveNodeRequestBody(ModelBase):
+    position: int
+    after: bool
+    parent_id: Annotated[PydanticObjectId | None, Field(alias="parentId")]

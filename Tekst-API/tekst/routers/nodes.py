@@ -8,6 +8,7 @@ from tekst.auth import SuperuserDep
 from tekst.logging import log
 from tekst.models.text import (
     DeleteNodeResult,
+    MoveNodeRequestBody,
     NodeCreate,
     NodeDocument,
     NodeRead,
@@ -97,6 +98,7 @@ async def get_children(
             else (NodeDocument.parent_id == parent_id),
         )
         .limit(limit)
+        .sort(+NodeDocument.position)
         .to_list()
     )
 
@@ -178,3 +180,43 @@ async def delete_node(
         nodes_deleted += 1
         to_delete.pop(0)
     return DeleteNodeResult(units=units_deleted, nodes=nodes_deleted)
+
+
+@router.post(
+    "/{id}/move",
+    response_model=NodeRead,
+    status_code=status.HTTP_200_OK,
+    description="Moves the specified node to a new position on its structure level.",
+)
+async def move_node(
+    su: SuperuserDep,
+    node_id: Annotated[PydanticObjectId, Path(alias="id")],
+    target: MoveNodeRequestBody,
+) -> NodeRead:
+    node_doc = await NodeDocument.get(node_id)
+    if not node_doc:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Node {node_id} doesn't exist",
+        )
+    # decrement position of all following nodes
+    await NodeDocument.find(
+        NodeDocument.text_id == node_doc.text_id,
+        NodeDocument.level == node_doc.level,
+        NodeDocument.position > node_doc.position,
+        NodeDocument.id != node_doc.id,
+    ).inc({NodeDocument.position: -1})
+    # move node
+    node_doc.position = target.position + (
+        1 if target.after and target.position < node_doc.position else 0
+    )
+    node_doc.parent_id = target.parent_id
+    await node_doc.save()
+    # increment position of all following nodes
+    await NodeDocument.find(
+        NodeDocument.text_id == node_doc.text_id,
+        NodeDocument.level == node_doc.level,
+        NodeDocument.position >= node_doc.position,
+        NodeDocument.id != node_doc.id,
+    ).inc({NodeDocument.position: 1})
+    return node_doc

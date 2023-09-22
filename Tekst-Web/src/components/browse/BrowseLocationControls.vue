@@ -304,9 +304,8 @@ whenever(ArrowLeft, () => {
         />
       </n-form-item>
     </n-form>
-    <!-- <pre style="font-size: 11px; line-height: 1">{{ locationSelectModels }}</pre> -->
     <ModalButtonFooter>
-      <n-button :focusable="false" @click="showModal = false">
+      <n-button secondary :focusable="false" @click="showModal = false">
         {{ $t('general.cancelAction') }}
       </n-button>
       <n-button type="primary" @click="handleLocationSelect">

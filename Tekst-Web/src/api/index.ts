@@ -28,6 +28,8 @@ const customFetch = async (input: RequestInfo | URL, init?: RequestInit | undefi
   if (response.status === 401) {
     // automatically log out on a 401 response
     if (!response.url.endsWith('/logout')) {
+      const { message } = useMessages();
+      message.error($t('errors.logInToAccess'));
       console.log('Oh no! The server responded with 401!');
       const auth = useAuthStore();
       if (auth.loggedIn) {

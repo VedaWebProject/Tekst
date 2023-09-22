@@ -328,6 +328,8 @@ admin:
         If you delete this node, all data associated with it or its children will
         be deleted with it. This can potentially affect all data layers,
         even ones created by other users. Are you really sure?
+      infoDeletedNode: Deleted {nodes} nodes and {units} data units.
+      errorNodeLeftLevel: Text nodes can only be moved on their original structure level.
       checkShowWarnings: Show warnings before performing destructive operations
   newText:
     heading: New Text

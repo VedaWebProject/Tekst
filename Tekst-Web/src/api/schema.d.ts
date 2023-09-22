@@ -114,6 +114,13 @@ export interface paths {
     /** Update node */
     patch: operations['updateNode'];
   };
+  '/nodes/{id}/move': {
+    /**
+     * Move node
+     * @description Moves the specified node to a new position on its structure level.
+     */
+    post: operations['moveNode'];
+  };
   '/platform': {
     /**
      * Get platform data
@@ -516,6 +523,15 @@ export interface components {
       label: string;
       /** Description */
       description: string;
+    };
+    /** MoveNodeRequestBody */
+    MoveNodeRequestBody: {
+      /** Position */
+      position: number;
+      /** After */
+      after: boolean;
+      /** Parentid */
+      parentId: string | null;
     };
     /** NodeCreate */
     NodeCreate: {
@@ -1784,6 +1800,40 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': components['schemas']['NodeUpdate'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['NodeRead'];
+        };
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /**
+   * Move node
+   * @description Moves the specified node to a new position on its structure level.
+   */
+  moveNode: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['MoveNodeRequestBody'];
       };
     };
     responses: {
