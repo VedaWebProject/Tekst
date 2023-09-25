@@ -219,4 +219,48 @@ async def move_node(
         NodeDocument.position >= node_doc.position,
         NodeDocument.id != node_doc.id,
     ).inc({NodeDocument.position: 1})
+    # update nodes positions on all subsequent levels, if any
+    await update_node_positions_from_level(node_doc.level + 1, node_doc.text_id)
+    # return originally moved node
     return node_doc
+
+
+async def update_node_positions_from_level(
+    level: int, text: PydanticObjectId | TextDocument
+) -> None:
+    """
+    Updates the positions of all nodes on the given level (>0)
+    and all subsequent levels. This assumes that the positions of the nodes on
+    the parent level of the given level are already correct!
+    """
+    # as we use the parents' positions to determine the position of the children,
+    # this only works for levels >= 1
+    if level < 1:
+        raise AttributeError("Level must be >= 1")
+    # check if text exists
+    if not isinstance(text, TextDocument):
+        if isinstance(text, PydanticObjectId):
+            text = await TextDocument.get(text)
+        else:
+            raise AttributeError("Text must be a TextDocument or PydanticObjectId")
+        if not text:
+            raise AttributeError("This text doesn't exist")
+    # check if level exists - stop here if it doesn't
+    if level >= len(text.levels):
+        return
+    # update the position of this level's nodes by using the parents' positions
+    pos = 0
+    async for parent in NodeDocument.find(
+        NodeDocument.text_id == text.id,
+        NodeDocument.level == level - 1,
+    ).sort(+NodeDocument.position):
+        # update this parent's children's positions
+        async for child in NodeDocument.find(
+            NodeDocument.parent_id == parent.id,
+        ).sort(+NodeDocument.position):
+            child.position = pos
+            pos += 1
+            await child.save()
+    # if there are levels below this level (higher level index), update them as well
+    if level + 1 < len(text.levels):
+        await update_node_positions_from_level(level + 1, text)
