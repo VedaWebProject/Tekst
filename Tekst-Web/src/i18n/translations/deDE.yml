@@ -342,8 +342,9 @@ admin:
         seinen Kind-Knoten verbunden sind, ebenfalls gelöscht.
         Dies kann potenziell alle Datenschichten betreffen – auch jene,
         die von anderen Benutzern angelegt wurden. Sind Sie sich wirklich sicher?
-      infoDeletedNode: '{nodes} Knoten und {units} Daten-Einheiten gelöscht.'
-      errorNodeLeftLevel: Text-Knoten können nur innerhalb der gleichen Ebene verschoben werden.
+      infoDeletedNode: Knoten "{node}" gelöscht (insgesamt {nodes} Knoten und {units} Daten-Einheiten)
+      infoMovedNode: Knoten "{node}" auf position {position} von Ebene "{level}" verschoben
+      errorNodeLeftLevel: Text-Knoten können nur innerhalb der gleichen Ebene verschoben werden!
       checkShowWarnings: Zeige Warnungen, bevor destruktive Operationen durchgeführt werden
   newText:
     heading: Neuer Text

@@ -67,15 +67,6 @@ async function loadTreeData(node?: TreeOption) {
   }
 }
 
-function deleteFromTreeData(node: TreeOption, tree: TreeOption[] = treeData.value) {
-  const index = tree.indexOf(node);
-  if (index >= 0) {
-    tree.splice(index, 1);
-  } else {
-    tree.filter((n) => n.children?.length).forEach((n) => deleteFromTreeData(node, n.children));
-  }
-}
-
 function isDropAllowed(info: {
   dropPosition: 'before' | 'inside' | 'after';
   node: TreeOption;
@@ -90,6 +81,27 @@ function handleDragStart(data: TreeDragInfo) {
 
 function handleDragEnd() {
   dragNode.value = null;
+}
+
+function getTreeNodeByKey(
+  key: string | null,
+  tree: NodeTreeOption[] = treeData.value
+): NodeTreeOption | undefined {
+  if (key === null) return undefined;
+  const targetNode = tree.find((n) => n.key === key);
+  if (targetNode) {
+    return targetNode;
+  } else {
+    for (const node of tree) {
+      if (node.children?.length) {
+        const targetNode = getTreeNodeByKey(key, node.children as NodeTreeOption[]);
+        if (targetNode) {
+          return targetNode;
+        }
+      }
+    }
+    return undefined;
+  }
 }
 
 async function handleDrop(dropData: TreeDropInfo) {
@@ -109,14 +121,27 @@ async function handleDrop(dropData: TreeDropInfo) {
   });
   if (!error) {
     message.success(
-      `Moved node "${data.label}" to position ${data.position} on level "${
-        state.textLevelLabels[data.level]
-      }"`
+      $t('admin.texts.nodes.infoMovedNode', {
+        node: data.label,
+        position: data.position,
+        level: state.textLevelLabels[data.level],
+      })
     );
   } else {
     message.error($t('errors.unexpected'));
   }
-  loadTreeData();
+  // update tree data
+  if (dropData.dragNode.parentKey === null) {
+    // no parent (level 0)
+    loadTreeData();
+  } else if (dropData.dragNode.parentKey === dropData.node.parentKey) {
+    // same parent (load tree data for common parent)
+    loadTreeData(getTreeNodeByKey(dropData.dragNode.parentKey as string | null));
+  } else {
+    // different parent (load tree data for both parents)
+    loadTreeData(getTreeNodeByKey(dropData.dragNode.parentKey as string | null));
+    loadTreeData(getTreeNodeByKey(dropData.node.parentKey as string | null));
+  }
 }
 
 async function deleteNode(node: TreeOption) {
@@ -125,9 +150,13 @@ async function deleteNode(node: TreeOption) {
     params: { path: { id: node.key?.toString() || '' } },
   });
   if (!error) {
-    deleteFromTreeData(node);
+    loadTreeData(getTreeNodeByKey(node.parentKey as string | null));
     message.success(
-      $t('admin.texts.nodes.infoDeletedNode', { nodes: result.nodes, units: result.units })
+      $t('admin.texts.nodes.infoDeletedNode', {
+        node: node.label,
+        nodes: result.nodes,
+        units: result.units,
+      })
     );
   } else {
     message.error($t('errors.unexpected'));
