@@ -11,7 +11,7 @@ import {
   type TreeOption,
   type TreeDragInfo,
 } from 'naive-ui';
-import { computed, h, ref } from 'vue';
+import { h, ref } from 'vue';
 import { DELETE, GET, POST } from '@/api';
 import { useStateStore } from '@/stores';
 import { onMounted } from 'vue';
@@ -38,8 +38,7 @@ const dialog = useDialog();
 const treeData = ref<NodeTreeOption[]>([]);
 const dragNode = ref<NodeTreeOption | null>(null);
 const showWarnings = ref(true);
-const deleteLoading = ref(false);
-const loading = computed(() => deleteLoading.value);
+const loading = ref(false);
 
 async function loadTreeData(node?: TreeOption) {
   const { data, error } = await GET('/nodes/children', {
@@ -104,11 +103,7 @@ function getTreeNodeByKey(
   }
 }
 
-async function handleDrop(dropData: TreeDropInfo) {
-  if (dropData.dragNode.level !== dropData.node.level) {
-    message.error($t('admin.texts.nodes.errorNodeLeftLevel'));
-    return;
-  }
+async function moveNode(dropData: TreeDropInfo) {
   const { data, error } = await POST('/nodes/{id}/move', {
     params: {
       path: { id: dropData.dragNode.key?.toString() || '' },
@@ -133,19 +128,29 @@ async function handleDrop(dropData: TreeDropInfo) {
   // update tree data
   if (dropData.dragNode.parentKey === null) {
     // no parent (level 0)
-    loadTreeData();
+    await loadTreeData();
   } else if (dropData.dragNode.parentKey === dropData.node.parentKey) {
     // same parent (load tree data for common parent)
-    loadTreeData(getTreeNodeByKey(dropData.dragNode.parentKey as string | null));
+    await loadTreeData(getTreeNodeByKey(dropData.dragNode.parentKey as string | null));
   } else {
     // different parent (load tree data for both parents)
-    loadTreeData(getTreeNodeByKey(dropData.dragNode.parentKey as string | null));
-    loadTreeData(getTreeNodeByKey(dropData.node.parentKey as string | null));
+    await loadTreeData(getTreeNodeByKey(dropData.dragNode.parentKey as string | null));
+    await loadTreeData(getTreeNodeByKey(dropData.node.parentKey as string | null));
   }
 }
 
+async function handleDrop(dropData: TreeDropInfo) {
+  loading.value = true;
+  if (dropData.dragNode.level !== dropData.node.level) {
+    message.error($t('admin.texts.nodes.errorNodeLeftLevel'));
+  } else {
+    await moveNode(dropData);
+  }
+  loading.value = false;
+}
+
 async function deleteNode(node: TreeOption) {
-  deleteLoading.value = true;
+  loading.value = true;
   const { data: result, error } = await DELETE('/nodes/{id}', {
     params: { path: { id: node.key?.toString() || '' } },
   });
@@ -161,7 +166,7 @@ async function deleteNode(node: TreeOption) {
   } else {
     message.error($t('errors.unexpected'));
   }
-  deleteLoading.value = false;
+  loading.value = false;
 }
 
 async function handleDeleteClick(node: TreeOption) {
@@ -178,7 +183,7 @@ async function handleDeleteClick(node: TreeOption) {
     negativeButtonProps: negativeButtonProps,
     autoFocus: false,
     closable: false,
-    loading: deleteLoading.value,
+    loading: loading.value,
     onPositiveClick: async () => await deleteNode(node),
   });
 }
@@ -260,13 +265,15 @@ watch(
   <div v-if="treeData.length" class="content-block">
     <n-tree
       block-line
-      draggable
+      :draggable="!loading"
+      :selectable="!loading"
       :data="treeData"
       :on-load="loadTreeData"
       :render-switcher-icon="renderSwitcherIcon"
       :render-label="renderLabel"
       :allow-drop="isDropAllowed"
       :render-suffix="renderSuffix"
+      :style="loading ? { opacity: 0.5, pointerEvents: 'none' } : {}"
       @dragstart="handleDragStart"
       @dragend="handleDragEnd"
       @drop="handleDrop"
