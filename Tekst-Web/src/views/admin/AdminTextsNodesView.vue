@@ -168,7 +168,7 @@ function renderLabel({ option }: { option: TreeOption }) {
     'div',
     { style: 'padding: 4px' },
     {
-      default: () => `${levelLabel}: ${option.label} (${option.parentKey})`,
+      default: () => `${levelLabel}: ${option.label}`,
     }
   );
 }
