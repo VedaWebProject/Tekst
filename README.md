@@ -27,7 +27,7 @@ You are looking for information on concepts, use cases, features, setup, deploym
 
 ## Publications
 
-We presented our vision for a collaborative research platform at the **DH2023** conference (Digital Humanities 2023. Collaboration as Opportunity, Graz, Austria, 10-14 July 2023). You can find our conference paper [here](https://doi.org/10.5281/zenodo.8107794)!
+We presented our vision for a collaborative text research platform at the **DH2023** conference (Digital Humanities 2023. Collaboration as Opportunity, Graz, Austria, 10-14 July 2023). You can find our conference paper [here](https://doi.org/10.5281/zenodo.8107794)!
 
 
 ## Development
