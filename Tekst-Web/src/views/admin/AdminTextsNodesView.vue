@@ -109,7 +109,9 @@ async function handleDrop(dropData: TreeDropInfo) {
   });
   if (!error) {
     message.success(
-      `Moved node "${data.label}" to position ${data.position} on level ${data.level}"`
+      `Moved node "${data.label}" to position ${data.position} on level "${
+        state.textLevelLabels[data.level]
+      }"`
     );
   } else {
     message.error($t('errors.unexpected'));
