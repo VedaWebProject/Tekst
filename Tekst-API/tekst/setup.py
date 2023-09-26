@@ -14,15 +14,14 @@ async def app_setup(cfg: TekstConfig):
 
     log.info("Checking SMTP config...")
     if not cfg.email_smtp_server:
-        log.critical("No SMTP server configured. Aborting setup...")
-        exit(1)
+        log.warning("No SMTP server configured")  # pragma: no cover
 
     init_layer_type_manager()
     await init_odm(get_db(get_db_client(cfg), cfg))
 
     log.info("Creating initial platform settings from defaults...")
     if not (await PlatformSettingsDocument.find_one().exists()):
-        await PlatformSettingsDocument().create()
+        await PlatformSettingsDocument().create()  # pragma: no cover
     else:
         log.warning("Platform settings already exist. Skipping settings creation.")
 
