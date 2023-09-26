@@ -28,7 +28,7 @@ import { positiveButtonProps, negativeButtonProps } from '@/components/dialogBut
 interface NodeTreeOption extends TreeOption {
   level: number;
   position: number;
-  parentKey: string | null;
+  parentKey: string | null | undefined;
 }
 
 const state = useStateStore();

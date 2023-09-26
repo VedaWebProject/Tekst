@@ -322,7 +322,7 @@ export interface components {
       token: string;
     };
     /** DeepLLinksConfig */
-    'DeepLLinksConfig-Input': {
+    DeepLLinksConfig: {
       /**
        * Enabled
        * @description Enable/disable quick translation links to DeepL
@@ -374,88 +374,6 @@ export interface components {
        * ]
        */
       languages?: (
-        | 'BG'
-        | 'CS'
-        | 'DA'
-        | 'DE'
-        | 'EL'
-        | 'EN'
-        | 'ES'
-        | 'ET'
-        | 'FI'
-        | 'FR'
-        | 'HU'
-        | 'ID'
-        | 'IT'
-        | 'JA'
-        | 'LT'
-        | 'LV'
-        | 'NL'
-        | 'PL'
-        | 'PT'
-        | 'RO'
-        | 'RU'
-        | 'SK'
-        | 'SL'
-        | 'SV'
-        | 'TR'
-        | 'UK'
-        | 'ZH'
-      )[];
-    };
-    /** DeepLLinksConfig */
-    'DeepLLinksConfig-Output': {
-      /**
-       * Enabled
-       * @description Enable/disable quick translation links to DeepL
-       * @default false
-       */
-      enabled: boolean;
-      /**
-       * Sourcelanguage
-       * @description Source language
-       * @default BG
-       */
-      sourceLanguage:
-        | (
-            | 'BG'
-            | 'CS'
-            | 'DA'
-            | 'DE'
-            | 'EL'
-            | 'EN'
-            | 'ES'
-            | 'ET'
-            | 'FI'
-            | 'FR'
-            | 'HU'
-            | 'ID'
-            | 'IT'
-            | 'JA'
-            | 'LT'
-            | 'LV'
-            | 'NL'
-            | 'PL'
-            | 'PT'
-            | 'RO'
-            | 'RU'
-            | 'SK'
-            | 'SL'
-            | 'SV'
-            | 'TR'
-            | 'UK'
-            | 'ZH'
-          )
-        | null;
-      /**
-       * Languages
-       * @description Target languages to display links for
-       * @default [
-       *   "EN",
-       *   "DE"
-       * ]
-       */
-      languages: (
         | 'BG'
         | 'CS'
         | 'DA'
@@ -586,7 +504,7 @@ export interface components {
        * Parentid
        * @description ID of parent node
        */
-      parentId: string | null;
+      parentId?: string | null;
       /**
        * Level
        * @description Index of structure level this node is on
@@ -606,7 +524,7 @@ export interface components {
        * Meta
        * @description Arbitrary metadata
        */
-      meta: {
+      meta?: {
         [key: string]: string;
       } | null;
     };
@@ -631,12 +549,8 @@ export interface components {
       } | null;
     };
     /** PlainTextLayerConfig */
-    'PlainTextLayerConfig-Input': {
-      deeplLinks?: components['schemas']['DeepLLinksConfig-Input'];
-    };
-    /** PlainTextLayerConfig */
-    'PlainTextLayerConfig-Output': {
-      deeplLinks: components['schemas']['DeepLLinksConfig-Output'];
+    PlainTextLayerConfig: {
+      deeplLinks?: components['schemas']['DeepLLinksConfig'];
     };
     /** PlainTextLayerCreate */
     PlainTextLayerCreate: {
@@ -706,7 +620,7 @@ export interface components {
        * @description Plaintext, potentially multiline comment on this layer
        */
       comment?: string | null;
-      config?: components['schemas']['PlainTextLayerConfig-Input'];
+      config?: components['schemas']['PlainTextLayerConfig'];
     };
     /** PlainTextLayerRead */
     PlainTextLayerRead: {
@@ -724,12 +638,12 @@ export interface components {
        * Description
        * @description Short, one-line description of this data layer
        */
-      description: string | null;
+      description?: string | null;
       /**
        * Textid
        * @description ID of the text this layer belongs to
        */
-      textId: string | null;
+      textId?: string | null;
       /**
        * Level
        * @description Text level this layer belongs to
@@ -744,44 +658,44 @@ export interface components {
        * Ownerid
        * @description User owning this layer
        */
-      ownerId: string | null;
+      ownerId?: string | null;
       /**
        * Sharedread
        * @description Users with shared read access to this layer
        * @default []
        */
-      sharedRead: string[];
+      sharedRead?: string[];
       /**
        * Sharedwrite
        * @description Users with shared write access to this layer
        * @default []
        */
-      sharedWrite: string[];
+      sharedWrite?: string[];
       /**
        * Proposed
        * @description Whether this layer has been proposed for publication
        * @default false
        */
-      proposed: boolean;
+      proposed?: boolean;
       /**
        * Public
        * @description Publication status of this layer
        * @default false
        */
-      public: boolean;
+      public?: boolean;
       /**
        * Meta
        * @description Arbitrary metadata
        */
-      meta: {
+      meta?: {
         [key: string]: string;
       } | null;
       /**
        * Comment
        * @description Plaintext, potentially multiline comment on this layer
        */
-      comment: string | null;
-      config: components['schemas']['PlainTextLayerConfig-Output'];
+      comment?: string | null;
+      config?: components['schemas']['PlainTextLayerConfig'];
     };
     /** PlainTextLayerUpdate */
     PlainTextLayerUpdate: {
@@ -811,7 +725,7 @@ export interface components {
       } | null;
       /** Comment */
       comment?: string | null;
-      config?: components['schemas']['PlainTextLayerConfig-Input'];
+      config?: components['schemas']['PlainTextLayerConfig'];
     };
     /** PlainTextUnitCreate */
     PlainTextUnitCreate: {
@@ -863,14 +777,14 @@ export interface components {
        * Meta
        * @description Arbitrary metadata on this layer unit
        */
-      meta: {
+      meta?: {
         [key: string]: string;
       } | null;
       /**
        * Text
        * @description Text content of the plaintext unit
        */
-      text: string | null;
+      text?: string | null;
     };
     /** PlainTextUnitUpdate */
     PlainTextUnitUpdate: {
@@ -907,7 +821,7 @@ export interface components {
        *   "terms": "https://www.example-tekst-instance.org/terms"
        * }
        */
-      info: Record<string, never>;
+      info?: Record<string, never>;
       /**
        * Tekst
        * @default {
@@ -919,11 +833,11 @@ export interface components {
        *   "website": "https://github.com/VedaWebProject/Tekst-API"
        * }
        */
-      tekst: Record<string, never>;
+      tekst?: Record<string, never>;
       /** Texts */
       texts: components['schemas']['TextRead'][];
       settings: components['schemas']['PlatformSettingsRead'];
-      security: components['schemas']['PlatformSecurityInfo'];
+      security?: components['schemas']['PlatformSecurityInfo'];
       /** Layertypes */
       layerTypes: components['schemas']['LayerTypeInfo'][];
     };
@@ -933,27 +847,27 @@ export interface components {
        * Closedmode
        * @default false
        */
-      closedMode: boolean;
+      closedMode?: boolean;
       /**
        * Usersactivebydefault
        * @default false
        */
-      usersActiveByDefault: boolean;
+      usersActiveByDefault?: boolean;
       /**
        * Enablecookieauth
        * @default true
        */
-      enableCookieAuth: boolean;
+      enableCookieAuth?: boolean;
       /**
        * Enablejwtauth
        * @default true
        */
-      enableJwtAuth: boolean;
+      enableJwtAuth?: boolean;
       /**
        * Authcookielifetime
        * @default 3600
        */
-      authCookieLifetime: number;
+      authCookieLifetime?: number;
     };
     /** PlatformSettingsRead */
     PlatformSettingsRead: {
@@ -966,7 +880,7 @@ export interface components {
        * Defaulttextid
        * @description Default text to load in UI
        */
-      defaultTextId: string | null;
+      defaultTextId?: string | null;
     };
     /** PlatformSettingsUpdate */
     PlatformSettingsUpdate: {
@@ -1074,7 +988,7 @@ export interface components {
        * Subtitle
        * @description Subtitle translations of this text (if set, it must contain at least one element)
        */
-      subtitle: components['schemas']['SubtitleTranslation'][] | null;
+      subtitle?: components['schemas']['SubtitleTranslation'][] | null;
       /** Levels */
       levels: components['schemas']['StructureLevelTranslation'][][];
       /**
@@ -1082,31 +996,31 @@ export interface components {
        * @description Default structure level for the client to use for browsing this text
        * @default 0
        */
-      defaultLevel: number;
+      defaultLevel?: number;
       /**
        * Locdelim
        * @description Delimiter for displaying text locations
        * @default ,
        */
-      locDelim: string;
+      locDelim?: string;
       /**
        * Labeledlocation
        * @description Whether the UI should label the parts of the browse location with each levels' names
        * @default true
        */
-      labeledLocation: boolean;
+      labeledLocation?: boolean;
       /**
        * Accentcolor
        * Format: color
        * @description Accent color used for this text in the client UI
        */
-      accentColor: string;
+      accentColor?: string;
       /**
        * Isactive
        * @description Whether the text should be listed for non-admin users in the web client
        * @default false
        */
-      isActive: boolean;
+      isActive?: boolean;
     };
     /**
      * TextStats
@@ -1225,13 +1139,13 @@ export interface components {
       /** Affiliation */
       affiliation: string;
       /** Locale */
-      locale: ('deDE' | 'enUS') | null;
+      locale?: ('deDE' | 'enUS') | null;
       /**
        * Publicfields
        * @description Data fields set public by this user
        * @default []
        */
-      publicFields: ('firstName' | 'lastName' | 'affiliation')[];
+      publicFields?: ('firstName' | 'lastName' | 'affiliation')[];
       /**
        * Createdat
        * Format: date-time
@@ -1243,11 +1157,11 @@ export interface components {
       /** Username */
       username: string;
       /** Firstname */
-      firstName: string | null;
+      firstName?: string | null;
       /** Lastname */
-      lastName: string | null;
+      lastName?: string | null;
       /** Affiliation */
-      affiliation: string | null;
+      affiliation?: string | null;
     };
     /** UserUpdate */
     UserUpdate: {

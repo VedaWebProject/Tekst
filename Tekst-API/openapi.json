@@ -2993,7 +2993,7 @@
         ],
         "title": "Body_verify_verify_auth_verify_post"
       },
-      "DeepLLinksConfig-Input": {
+      "DeepLLinksConfig": {
         "properties": {
           "enabled": {
             "type": "boolean",
@@ -3086,106 +3086,6 @@
           }
         },
         "type": "object",
-        "title": "DeepLLinksConfig"
-      },
-      "DeepLLinksConfig-Output": {
-        "properties": {
-          "enabled": {
-            "type": "boolean",
-            "title": "Enabled",
-            "description": "Enable/disable quick translation links to DeepL",
-            "default": false
-          },
-          "sourceLanguage": {
-            "anyOf": [
-              {
-                "type": "string",
-                "enum": [
-                  "BG",
-                  "CS",
-                  "DA",
-                  "DE",
-                  "EL",
-                  "EN",
-                  "ES",
-                  "ET",
-                  "FI",
-                  "FR",
-                  "HU",
-                  "ID",
-                  "IT",
-                  "JA",
-                  "LT",
-                  "LV",
-                  "NL",
-                  "PL",
-                  "PT",
-                  "RO",
-                  "RU",
-                  "SK",
-                  "SL",
-                  "SV",
-                  "TR",
-                  "UK",
-                  "ZH"
-                ]
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Sourcelanguage",
-            "description": "Source language",
-            "default": "BG"
-          },
-          "languages": {
-            "items": {
-              "type": "string",
-              "enum": [
-                "BG",
-                "CS",
-                "DA",
-                "DE",
-                "EL",
-                "EN",
-                "ES",
-                "ET",
-                "FI",
-                "FR",
-                "HU",
-                "ID",
-                "IT",
-                "JA",
-                "LT",
-                "LV",
-                "NL",
-                "PL",
-                "PT",
-                "RO",
-                "RU",
-                "SK",
-                "SL",
-                "SV",
-                "TR",
-                "UK",
-                "ZH"
-              ]
-            },
-            "type": "array",
-            "title": "Languages",
-            "description": "Target languages to display links for",
-            "default": [
-              "EN",
-              "DE"
-            ]
-          }
-        },
-        "type": "object",
-        "required": [
-          "enabled",
-          "sourceLanguage",
-          "languages"
-        ],
         "title": "DeepLLinksConfig"
       },
       "DeleteNodeResult": {
@@ -3451,11 +3351,9 @@
         "required": [
           "id",
           "textId",
-          "parentId",
           "level",
           "position",
-          "label",
-          "meta"
+          "label"
         ],
         "title": "NodeRead"
       },
@@ -3508,25 +3406,13 @@
         "type": "object",
         "title": "NodeUpdate"
       },
-      "PlainTextLayerConfig-Input": {
+      "PlainTextLayerConfig": {
         "properties": {
           "deeplLinks": {
-            "$ref": "#/components/schemas/DeepLLinksConfig-Input"
+            "$ref": "#/components/schemas/DeepLLinksConfig"
           }
         },
         "type": "object",
-        "title": "PlainTextLayerConfig"
-      },
-      "PlainTextLayerConfig-Output": {
-        "properties": {
-          "deeplLinks": {
-            "$ref": "#/components/schemas/DeepLLinksConfig-Output"
-          }
-        },
-        "type": "object",
-        "required": [
-          "deeplLinks"
-        ],
         "title": "PlainTextLayerConfig"
       },
       "PlainTextLayerCreate": {
@@ -3648,7 +3534,7 @@
             "description": "Plaintext, potentially multiline comment on this layer"
           },
           "config": {
-            "$ref": "#/components/schemas/PlainTextLayerConfig-Input"
+            "$ref": "#/components/schemas/PlainTextLayerConfig"
           }
         },
         "type": "object",
@@ -3783,25 +3669,15 @@
             "description": "Plaintext, potentially multiline comment on this layer"
           },
           "config": {
-            "$ref": "#/components/schemas/PlainTextLayerConfig-Output"
+            "$ref": "#/components/schemas/PlainTextLayerConfig"
           }
         },
         "type": "object",
         "required": [
           "id",
           "title",
-          "description",
-          "textId",
           "level",
-          "layerType",
-          "ownerId",
-          "sharedRead",
-          "sharedWrite",
-          "proposed",
-          "public",
-          "meta",
-          "comment",
-          "config"
+          "layerType"
         ],
         "title": "PlainTextLayerRead"
       },
@@ -3906,7 +3782,7 @@
           "config": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/PlainTextLayerConfig-Input"
+                "$ref": "#/components/schemas/PlainTextLayerConfig"
               }
             ]
           }
@@ -4014,9 +3890,7 @@
         "required": [
           "id",
           "layerId",
-          "nodeId",
-          "meta",
-          "text"
+          "nodeId"
         ],
         "title": "PlainTextUnitRead"
       },
@@ -4110,11 +3984,8 @@
         },
         "type": "object",
         "required": [
-          "info",
-          "tekst",
           "texts",
           "settings",
-          "security",
           "layerTypes"
         ],
         "title": "PlatformData",
@@ -4149,13 +4020,6 @@
           }
         },
         "type": "object",
-        "required": [
-          "closedMode",
-          "usersActiveByDefault",
-          "enableCookieAuth",
-          "enableJwtAuth",
-          "authCookieLifetime"
-        ],
         "title": "PlatformSecurityInfo"
       },
       "PlatformSettingsRead": {
@@ -4181,8 +4045,7 @@
         },
         "type": "object",
         "required": [
-          "id",
-          "defaultTextId"
+          "id"
         ],
         "title": "PlatformSettingsRead"
       },
@@ -4450,13 +4313,7 @@
           "id",
           "title",
           "slug",
-          "subtitle",
-          "levels",
-          "defaultLevel",
-          "locDelim",
-          "labeledLocation",
-          "accentColor",
-          "isActive"
+          "levels"
         ],
         "title": "TextRead"
       },
@@ -4755,8 +4612,6 @@
           "firstName",
           "lastName",
           "affiliation",
-          "locale",
-          "publicFields",
           "createdAt"
         ],
         "title": "UserRead",
@@ -4804,10 +4659,7 @@
         },
         "type": "object",
         "required": [
-          "username",
-          "firstName",
-          "lastName",
-          "affiliation"
+          "username"
         ],
         "title": "UserReadPublic"
       },
