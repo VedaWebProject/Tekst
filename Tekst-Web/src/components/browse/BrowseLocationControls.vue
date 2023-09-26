@@ -3,16 +3,18 @@ import { ref, computed, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useStateStore, useBrowseStore } from '@/stores';
 import { NButton, NModal, NSelect, NFormItem, NForm, NDivider } from 'naive-ui';
-import ArrowBackIosRound from '@vicons/material/ArrowBackIosRound';
-import ArrowForwardIosRound from '@vicons/material/ArrowForwardIosRound';
-import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
 import type { NodeRead, TextRead } from '@/api';
 import router from '@/router';
 import ModalButtonFooter from '@/components/ModalButtonFooter.vue';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import { useMagicKeys, whenever } from '@vueuse/core';
 import { GET } from '@/api';
 import { useMessages } from '@/messages';
 import { $t } from '@/i18n';
+
+import ArrowBackIosRound from '@vicons/material/ArrowBackIosRound';
+import ArrowForwardIosRound from '@vicons/material/ArrowForwardIosRound';
+import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
 
 const state = useStateStore();
 const browse = useBrowseStore();
@@ -272,8 +274,12 @@ whenever(ArrowLeft, () => {
     :closable="false"
     size="large"
     class="tekst-modal"
+    to="#app-container"
   >
-    <h2>{{ $t('browse.location.modalHeading') }}</h2>
+    <h2>
+      {{ $t('browse.location.modalHeading') }}
+      <HelpButtonWidget />
+    </h2>
     <n-form
       label-placement="left"
       label-width="auto"

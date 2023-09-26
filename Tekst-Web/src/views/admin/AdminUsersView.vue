@@ -13,19 +13,20 @@ import {
   useDialog,
 } from 'naive-ui';
 import UserListItem from '@/components/admin/UserListItem.vue';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import { hashCode } from '@/utils';
 import type { UserRead, UserUpdate } from '@/api';
 import { ref } from 'vue';
 import { computed } from 'vue';
 import { useMessages } from '@/messages';
 import { $t } from '@/i18n';
-
-import SearchRound from '@vicons/material/SearchRound';
-import UndoRound from '@vicons/material/UndoRound';
 import { useRoute } from 'vue-router';
 import { POST, PATCH, DELETE } from '@/api';
 import { useAuthStore } from '@/stores';
 import { positiveButtonProps, negativeButtonProps } from '@/components/dialogButtonProps';
+
+import SearchRound from '@vicons/material/SearchRound';
+import UndoRound from '@vicons/material/UndoRound';
 
 const { users, error, load: loadUsers } = useUsers();
 const { message } = useMessages();
@@ -196,7 +197,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <h1>{{ $t('admin.heading') }}: {{ $t('admin.users.heading') }}</h1>
+  <h1>
+    {{ $t('admin.heading') }}: {{ $t('admin.users.heading') }}
+    <HelpButtonWidget />
+  </h1>
 
   <template v-if="users && !error">
     <!-- Filters -->

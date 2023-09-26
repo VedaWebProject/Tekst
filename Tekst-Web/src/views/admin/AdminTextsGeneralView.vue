@@ -21,10 +21,11 @@ import { $t } from '@/i18n';
 import { localeProfiles } from '@/i18n';
 import type { SubtitleTranslation } from '@/api';
 import { useModelChanges } from '@/modelChanges';
+import { usePlatformData } from '@/platformData';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 
 import AddRound from '@vicons/material/AddRound';
 import MinusRound from '@vicons/material/MinusRound';
-import { usePlatformData } from '@/platformData';
 
 const state = useStateStore();
 const { loadPlatformData } = usePlatformData();
@@ -111,6 +112,7 @@ function handleSave() {
 <template>
   <h2>
     {{ $t('admin.texts.general.heading') }}
+    <HelpButtonWidget />
   </h2>
 
   <div class="content-block">

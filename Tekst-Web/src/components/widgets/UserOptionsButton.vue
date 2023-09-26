@@ -57,7 +57,7 @@ const userOptions = computed(() => [
         icon: renderIcon(RemoveRedEyeRound),
       },
       {
-        label: $t('account.manage.heading'),
+        label: $t('account.account'),
         key: 'accountManage',
         icon: renderIcon(ManageAccountsRound),
       },

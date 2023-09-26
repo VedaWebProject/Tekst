@@ -19,6 +19,7 @@ import { useStateStore } from '@/stores';
 import { usePlatformData } from '@/platformData';
 import { useRouter } from 'vue-router';
 import type { TextCreate } from '@/api';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 
 import AddRound from '@vicons/material/AddRound';
 import MinusRound from '@vicons/material/MinusRound';
@@ -92,7 +93,10 @@ async function handleSave() {
 </script>
 
 <template>
-  <h1>{{ $t('admin.heading') }}: {{ $t('admin.newText.heading') }}</h1>
+  <h1>
+    {{ $t('admin.heading') }}: {{ $t('admin.newText.heading') }}
+    <HelpButtonWidget />
+  </h1>
 
   <n-alert :title="$t('general.info')" type="info">
     {{ $t('admin.newText.headerInfoMsg') }}

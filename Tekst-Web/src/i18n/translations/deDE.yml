@@ -210,12 +210,13 @@ models:
     onLevel: auf Ebene "{level}"
 
 account:
+  account: Konto
   session: Sitzung
   currentSession: Aktuelle @:account.session
   loginBtn: Anmelden
   logoutBtn: Abmelden
   profile: Öffentliches Profil
-  profileHeading: 'Öffentliches Profil von {username}'
+  profileHeading: '{username}: Öffentliches Profil'
   profileNotFound: Das Benutzerprofil "{username}" konnte nicht gefunden werden.
   profileFieldNotPublic: nicht öffentlich
   logoutSuccessful: Sie sind jetzt ausgeloggt.
@@ -246,7 +247,7 @@ account:
   sessionExpired: Ihre Sitzung ist abgelaufen. Sie wurden abgemeldet.
   renewLogin: Melden Sie sich wieder an, um Ihre Sitzung zu erneuern.
   manage:
-    heading: Konto
+    heading: '{username}: Konto'
     headingChangeUserData: Allgemeine Benutzerdaten
     headingChangePublicFields: Öffentliche Profildaten
     msgEmailSaveSuccess: '@:models.user.email gespeichert.'
@@ -365,3 +366,6 @@ search:
   settings:
     heading: Globale Sucheinstellungen
   nothingFound: Nichts gefunden
+
+help:
+  helpButtonTitle: Hilfe anzeigen

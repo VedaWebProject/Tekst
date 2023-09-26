@@ -2,13 +2,13 @@
 import { computed } from 'vue';
 import LocationLabel from '@/components/browse/LocationLabel.vue';
 import BrowseToolbar from '@/components/browse/BrowseToolbar.vue';
-import { useBrowseStore, useStateStore } from '@/stores';
+import { useBrowseStore } from '@/stores';
 import FolderOffTwotone from '@vicons/material/FolderOffTwotone';
 import LayerToggleDrawer from '@/components/browse/LayerToggleDrawer.vue';
 import UnitContainer from '@/components/browse/UnitContainer.vue';
 import HugeLabeledIcon from '@/components/HugeLabeledIcon.vue';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 
-const state = useStateStore();
 const browse = useBrowseStore();
 
 const activeLayers = computed(() => {
@@ -17,8 +17,9 @@ const activeLayers = computed(() => {
 </script>
 
 <template>
-  <h1 class="browse-heading-location" :class="state.smallScreen && 'smallscreen'">
-    <LocationLabel />
+  <h1>
+    <LocationLabel />&nbsp;
+    <HelpButtonWidget />
   </h1>
 
   <BrowseToolbar />
@@ -37,10 +38,6 @@ const activeLayers = computed(() => {
 </template>
 
 <style scoped>
-.browse-heading-title {
-  margin: 0;
-}
-
 .browse-heading-location.smallscreen {
   font-size: 1.3rem;
 }

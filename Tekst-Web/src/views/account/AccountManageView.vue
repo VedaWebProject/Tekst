@@ -21,6 +21,7 @@ import { $t } from '@/i18n';
 import { useModelChanges } from '@/modelChanges';
 import type { UserUpdate, UserUpdatePublicFields } from '@/api';
 import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 
 const dialog = useDialog();
 const auth = useAuthStore();
@@ -214,7 +215,10 @@ async function handlepublicFieldsSave() {
 </script>
 
 <template>
-  <h1>{{ $t('account.manage.heading') }}</h1>
+  <h1>
+    {{ $t('account.manage.heading', { username: auth.user?.username }) }}
+    <HelpButtonWidget />
+  </h1>
 
   <n-grid class="account-mgmt-grid" cols="1 m:2" responsive="screen" x-gap="18px" y-gap="18px">
     <n-grid-item>
@@ -390,7 +394,10 @@ async function handlepublicFieldsSave() {
 
     <n-grid-item>
       <div class="content-block">
-        <h2>{{ $t('account.manage.headingChangePublicFields') }}</h2>
+        <h2>
+          {{ $t('account.manage.headingChangePublicFields') }}
+          <HelpButtonWidget />
+        </h2>
         <n-form
           ref="publicFieldsFormRef"
           :model="publicFieldsFormModel"

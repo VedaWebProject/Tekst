@@ -202,12 +202,13 @@ models:
     onLevel: on level "{level}"
 
 account:
+  account: Account
   session: Session
   currentSession: Current @:account.session
   loginBtn: Login
   logoutBtn: Logout
   profile: Public Profile
-  profileHeading: 'Public Profile of {username}'
+  profileHeading: '{username}: Public Profile'
   profileNotFound: The user profile "{username}" could not be found.
   profileFieldNotPublic: not public
   logoutSuccessful: You are now logged out.
@@ -238,7 +239,7 @@ account:
   sessionExpired: Your session has expired. You have been logged out.
   renewLogin: Log in again to renew your session.
   manage:
-    heading: Account
+    heading: '{username}: Account'
     headingChangeUserData: General User Data
     headingChangePublicFields: Public Profile Data
     msgEmailSaveSuccess: '@:models.user.email saved.'
@@ -351,3 +352,6 @@ search:
   settings:
     heading: Global Search Settings
   nothingFound: Nothing found
+
+help:
+  helpButtonTitle: Show help

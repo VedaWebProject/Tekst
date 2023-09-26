@@ -1,7 +1,12 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+</script>
 
 <template>
-  <h1>Help</h1>
+  <h1>
+    Help
+    <HelpButtonWidget />
+  </h1>
   <div class="content-block">
     <p>...</p>
   </div>

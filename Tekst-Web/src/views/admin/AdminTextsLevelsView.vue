@@ -20,6 +20,7 @@ import { computed, ref } from 'vue';
 import { localeProfiles } from '@/i18n';
 import type { StructureLevelTranslation } from '@/api';
 import ModalButtonFooter from '@/components/ModalButtonFooter.vue';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
 
 import { useMessages } from '@/messages';
@@ -183,6 +184,7 @@ async function handleModalSubmit() {
 <template>
   <h2>
     {{ $t('admin.texts.levels.heading') }}
+    <HelpButtonWidget />
   </h2>
 
   <div class="content-block">

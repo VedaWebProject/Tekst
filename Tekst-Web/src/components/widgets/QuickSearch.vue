@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { NButton, NIcon, NModal, NInput } from 'naive-ui';
 import SearchRound from '@vicons/material/SearchRound';
 import ModalButtonFooter from '@/components/ModalButtonFooter.vue';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 
 const showModal = ref(false);
 </script>
@@ -29,10 +30,14 @@ const showModal = ref(false);
     :closable="false"
     size="large"
     class="tekst-modal"
+    to="#app-container"
   >
-    <h2>{{ $t('search.quickSearch.heading') }}</h2>
+    <h2>
+      {{ $t('search.quickSearch.heading') }}
+      <HelpButtonWidget />
+    </h2>
 
-    <n-input round size="large" :placeholder="$t('search.quickSearch.heading')">
+    <n-input round size="large" placeholder="...">
       <template #prefix>
         <n-icon :component="SearchRound" />
       </template>

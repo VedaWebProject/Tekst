@@ -16,7 +16,7 @@ import RemoveRedEyeRound from '@vicons/material/RemoveRedEyeRound';
       show-icon
     />
     <NavBarRouterLink
-      :label="$t('account.manage.heading')"
+      :label="$t('account.account')"
       :route="{ name: 'accountManage' }"
       :icon="ManageAccountsRound"
       show-icon

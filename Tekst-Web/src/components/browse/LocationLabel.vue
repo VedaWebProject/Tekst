@@ -11,7 +11,7 @@ const props = defineProps<{
 const state = useStateStore();
 const browse = useBrowseStore();
 
-const LocationLabel = computed(() =>
+const locationLabel = computed(() =>
   (props.nodePath || browse.nodePath)
     .filter((n) => n.level <= (props.maxLevel ?? Number.MAX_SAFE_INTEGER))
     .map((n) => {
@@ -24,5 +24,5 @@ const LocationLabel = computed(() =>
 </script>
 
 <template>
-  {{ LocationLabel }}
+  {{ locationLabel }}
 </template>

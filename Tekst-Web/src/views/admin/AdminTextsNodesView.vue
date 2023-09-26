@@ -24,6 +24,7 @@ import type { Component } from 'vue';
 import ArrowForwardIosRound from '@vicons/material/ArrowForwardIosRound';
 import EditTwotone from '@vicons/material/EditTwotone';
 import { positiveButtonProps, negativeButtonProps } from '@/components/dialogButtonProps';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 
 interface NodeTreeOption extends TreeOption {
   level: number;
@@ -250,7 +251,10 @@ watch(
 </script>
 
 <template>
-  <h2>{{ $t('admin.texts.nodes.heading') }}</h2>
+  <h2>
+    {{ $t('admin.texts.nodes.heading') }}
+    <HelpButtonWidget />
+  </h2>
 
   <n-alert closable :title="$t('general.warning')" type="warning">
     {{ $t('admin.texts.nodes.warnGeneral') }}
