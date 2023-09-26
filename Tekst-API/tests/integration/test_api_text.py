@@ -122,3 +122,41 @@ async def test_update_text(
     endpoint = f"{api_path}/texts/637b9ad396d541a505e5439b"
     resp = await test_client.patch(endpoint, json=text_update, cookies=session_cookie)
     assert resp.status_code == 400, status_fail_msg(400, resp)
+
+
+@pytest.mark.anyio
+async def test_insert_level(
+    api_path,
+    test_client: AsyncClient,
+    insert_test_data,
+    status_fail_msg,
+    register_test_user,
+    get_session_cookie,
+):
+    await insert_test_data("texts")
+
+    # create superuser
+    superuser_data = await register_test_user(is_superuser=True)
+    session_cookie = await get_session_cookie(superuser_data)
+
+    # get text from db
+    endpoint = f"{api_path}/texts"
+    resp = await test_client.get(endpoint)
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert type(resp.json()) == list
+    assert len(resp.json()) > 0
+    text = resp.json()[0]
+    assert len(text["levels"]) == 3
+
+    # insert level
+    resp = await test_client.post(
+        f"/texts/{text['id']}/level/0",
+        json=[
+            {"locale": "enUS", "label": "A level"},
+            {"locale": "deDE", "label": "Eine Ebene"},
+        ],
+        cookies=session_cookie,
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert "id" in resp.json()
+    assert len(resp.json()["levels"]) == 4
