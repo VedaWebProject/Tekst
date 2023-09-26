@@ -233,3 +233,60 @@ async def test_update_node(
     endpoint = f"{api_path}/nodes/637b9ad396d541a505e5439b"
     resp = await test_client.patch(endpoint, json=node_update)
     assert resp.status_code == 400, status_fail_msg(400, resp, cookies=session_cookie)
+
+
+@pytest.mark.anyio
+async def test_delete_node(
+    api_path,
+    test_client: AsyncClient,
+    insert_test_data,
+    test_data,
+    status_fail_msg,
+    register_test_user,
+    get_session_cookie,
+):
+    text_id = await insert_test_data("texts", "nodes", "layers")
+
+    # get node from db
+    endpoint = f"{api_path}/nodes"
+    resp = await test_client.get(
+        endpoint, params={"textId": text_id, "level": 0, "position": 0}
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert type(resp.json()) == list
+    assert len(resp.json()) > 0
+    node = resp.json()[0]
+
+    # create superuser
+    superuser_data = await register_test_user(is_superuser=True)
+    session_cookie = await get_session_cookie(superuser_data)
+
+    # get existing layer
+    endpoint = f"{api_path}/layers"
+    resp = await test_client.get(endpoint, params={"textId": text_id})
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) > 0
+    layer = resp.json()[0]
+
+    # create plaintext layer unit
+    endpoint = f"{api_path}/units/plaintext"
+    payload = {
+        "layerId": layer["id"],
+        "nodeId": node["id"],
+        "text": "Ein Raabe geht im Feld spazieren.",
+        "meta": {"foo": "bar"},
+    }
+    resp = await test_client.post(endpoint, json=payload, cookies=session_cookie)
+    assert resp.status_code == 201, status_fail_msg(201, resp)
+    assert type(resp.json()) == dict
+    assert resp.json()["text"] == "Ein Raabe geht im Feld spazieren."
+    assert resp.json()["meta"]["foo"] == "bar"
+    assert "id" in resp.json()
+
+    # delete node
+    endpoint = f"{api_path}/nodes/{node['id']}"
+    resp = await test_client.delete(endpoint, cookies=session_cookie)
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert resp.json().get("nodes", None) == 1
+    assert resp.json().get("units", None) == 1
