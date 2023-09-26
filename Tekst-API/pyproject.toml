@@ -75,8 +75,7 @@ filterwarnings = [
 source = ["tekst"]
 branch = true
 omit = [
-    "*/**/__main__.py",
-    "*/**/__init__.py"
+    "tekst/__main__.py"
 ]
 
 [tool.coverage.report]
