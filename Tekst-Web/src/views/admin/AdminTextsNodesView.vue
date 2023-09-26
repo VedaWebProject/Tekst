@@ -4,15 +4,18 @@ import {
   NButton,
   NIcon,
   NTree,
+  NModal,
   NAlert,
   NCheckbox,
+  NInput,
   useDialog,
   type TreeDropInfo,
   type TreeOption,
   type TreeDragInfo,
+  type InputInst,
 } from 'naive-ui';
 import { h, ref } from 'vue';
-import { DELETE, GET, POST } from '@/api';
+import { DELETE, GET, PATCH, POST } from '@/api';
 import { useStateStore } from '@/stores';
 import { onMounted } from 'vue';
 import { useMessages } from '@/messages';
@@ -20,10 +23,11 @@ import { $t } from '@/i18n';
 import DeleteFilled from '@vicons/material/DeleteFilled';
 import { watch } from 'vue';
 import type { Component } from 'vue';
+import { positiveButtonProps, negativeButtonProps } from '@/components/dialogButtonProps';
+import ModalButtonFooter from '@/components/ModalButtonFooter.vue';
 
 import ArrowForwardIosRound from '@vicons/material/ArrowForwardIosRound';
 import EditTwotone from '@vicons/material/EditTwotone';
-import { positiveButtonProps, negativeButtonProps } from '@/components/dialogButtonProps';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 
 interface NodeTreeOption extends TreeOption {
@@ -40,6 +44,10 @@ const treeData = ref<NodeTreeOption[]>([]);
 const dragNode = ref<NodeTreeOption | null>(null);
 const showWarnings = ref(true);
 const loading = ref(false);
+const showRenameModal = ref(false);
+const nodeRename = ref<NodeTreeOption | null>(null);
+const nodeRenameInputRef = ref<InputInst | null>(null);
+const nodeRenameInputValue = ref('');
 
 async function loadTreeData(node?: TreeOption) {
   const { data, error } = await GET('/nodes/children', {
@@ -84,7 +92,7 @@ function handleDragEnd() {
 }
 
 function getTreeNodeByKey(
-  key: string | null,
+  key: string | null | undefined,
   tree: NodeTreeOption[] = treeData.value
 ): NodeTreeOption | undefined {
   if (key === null) return undefined;
@@ -170,7 +178,7 @@ async function deleteNode(node: TreeOption) {
   loading.value = false;
 }
 
-async function handleDeleteClick(node: TreeOption) {
+async function handleDeleteClick(node: NodeTreeOption) {
   if (!showWarnings.value) {
     deleteNode(node);
     return;
@@ -187,6 +195,37 @@ async function handleDeleteClick(node: TreeOption) {
     loading: loading.value,
     onPositiveClick: async () => await deleteNode(node),
   });
+}
+
+function handleRenameClick(node: NodeTreeOption) {
+  nodeRename.value = node;
+  nodeRenameInputValue.value = node.label || '';
+  showRenameModal.value = true;
+}
+
+async function handleRenameSubmit() {
+  loading.value = true;
+  const { data, error } = await PATCH('/nodes/{id}', {
+    params: { path: { id: nodeRename.value?.key?.toString() || '' } },
+    body: {
+      label: nodeRenameInputValue.value,
+    },
+  });
+  if (!error) {
+    message.success(
+      $t('admin.texts.nodes.rename.msgSuccess', {
+        oldName: nodeRename.value?.label,
+        newName: data.label,
+      })
+    );
+  } else {
+    message.error($t('errors.unexpected'));
+  }
+  await loadTreeData(getTreeNodeByKey(nodeRename.value?.parentKey));
+  showRenameModal.value = false;
+  nodeRenameInputValue.value = '';
+  nodeRename.value = null;
+  loading.value = false;
 }
 
 function renderSwitcherIcon() {
@@ -234,9 +273,9 @@ function renderSuffix(info: { option: TreeOption; checked: boolean; selected: bo
   if (!info.selected) return null;
   return h('div', { style: 'display: flex; gap: 4px; padding: 4px' }, [
     renderSuffixButton(EditTwotone, () => {
-      alert('EDIT!');
+      handleRenameClick(info.option as NodeTreeOption);
     }),
-    renderSuffixButton(DeleteFilled, () => handleDeleteClick(info.option)),
+    renderSuffixButton(DeleteFilled, () => handleDeleteClick(info.option as NodeTreeOption)),
   ]);
 }
 
@@ -285,6 +324,42 @@ watch(
   </div>
 
   <n-spin v-else style="margin: 3rem 0 2rem 0; width: 100%" :description="$t('init.loading')" />
+
+  <n-modal
+    v-model:show="showRenameModal"
+    preset="card"
+    class="tekst-modal"
+    size="large"
+    :bordered="false"
+    :closable="false"
+    to="#app-container"
+    embedded
+    @after-enter="nodeRenameInputRef?.select()"
+    @close="
+      () => {
+        nodeRenameInputValue = '';
+        nodeRename = null;
+      }
+    "
+  >
+    <h2>{{ $t('admin.texts.nodes.rename.heading') }}</h2>
+    <n-input
+      ref="nodeRenameInputRef"
+      v-model:value="nodeRenameInputValue"
+      type="text"
+      :loading="loading"
+      :autofocus="true"
+      @keydown.enter="handleRenameSubmit"
+    />
+    <ModalButtonFooter>
+      <n-button secondary :disabled="loading" @click="showRenameModal = false">
+        {{ $t('general.cancelAction') }}
+      </n-button>
+      <n-button type="primary" :loading="loading" :disabled="loading" @click="handleRenameSubmit">
+        {{ $t('general.saveAction') }}
+      </n-button>
+    </ModalButtonFooter>
+  </n-modal>
 </template>
 
 <style>

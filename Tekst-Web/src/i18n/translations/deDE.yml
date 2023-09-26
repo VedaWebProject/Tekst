@@ -347,6 +347,9 @@ admin:
       infoMovedNode: Knoten "{node}" auf position {position} von Ebene "{level}" verschoben
       errorNodeLeftLevel: Text-Knoten können nur innerhalb der gleichen Ebene verschoben werden!
       checkShowWarnings: Zeige Warnungen, bevor destruktive Operationen durchgeführt werden
+      rename:
+        heading: Knoten umbenennen
+        msgSuccess: Knoten "{oldName}" umbenannt zu "{newName}"
   newText:
     heading: Neuer Text
     headerInfoMsg: |
