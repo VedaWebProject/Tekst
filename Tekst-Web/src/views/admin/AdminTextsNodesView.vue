@@ -4,33 +4,30 @@ import {
   NButton,
   NIcon,
   NTree,
-  NModal,
   NAlert,
   NCheckbox,
-  NInput,
   useDialog,
   type TreeDropInfo,
   type TreeOption,
   type TreeDragInfo,
-  type InputInst,
 } from 'naive-ui';
 import { h, ref } from 'vue';
-import { DELETE, GET, PATCH, POST } from '@/api';
+import { DELETE, GET, POST, type NodeRead } from '@/api';
 import { useStateStore } from '@/stores';
 import { onMounted } from 'vue';
 import { useMessages } from '@/messages';
 import { $t } from '@/i18n';
-import DeleteFilled from '@vicons/material/DeleteFilled';
 import { watch } from 'vue';
 import type { Component } from 'vue';
 import { positiveButtonProps, negativeButtonProps } from '@/components/dialogButtonProps';
-import ModalButtonFooter from '@/components/ModalButtonFooter.vue';
+import RenameNodeModal from '@/components/admin/RenameNodeModal.vue';
 
+import DeleteFilled from '@vicons/material/DeleteFilled';
 import ArrowForwardIosRound from '@vicons/material/ArrowForwardIosRound';
 import EditTwotone from '@vicons/material/EditTwotone';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 
-interface NodeTreeOption extends TreeOption {
+export interface NodeTreeOption extends TreeOption {
   level: number;
   position: number;
   parentKey: string | null | undefined;
@@ -44,10 +41,9 @@ const treeData = ref<NodeTreeOption[]>([]);
 const dragNode = ref<NodeTreeOption | null>(null);
 const showWarnings = ref(true);
 const loading = ref(false);
+
 const showRenameModal = ref(false);
-const nodeRename = ref<NodeTreeOption | null>(null);
-const nodeRenameInputRef = ref<InputInst | null>(null);
-const nodeRenameInputValue = ref('');
+const nodeToRename = ref<NodeTreeOption | null>(null);
 
 async function loadTreeData(node?: TreeOption) {
   const { data, error } = await GET('/nodes/children', {
@@ -198,34 +194,23 @@ async function handleDeleteClick(node: NodeTreeOption) {
 }
 
 function handleRenameClick(node: NodeTreeOption) {
-  nodeRename.value = node;
-  nodeRenameInputValue.value = node.label || '';
+  nodeToRename.value = node;
   showRenameModal.value = true;
 }
 
-async function handleRenameSubmit() {
-  loading.value = true;
-  const { data, error } = await PATCH('/nodes/{id}', {
-    params: { path: { id: nodeRename.value?.key?.toString() || '' } },
-    body: {
-      label: nodeRenameInputValue.value,
-    },
-  });
-  if (!error) {
+async function handleRenameResult(node: NodeRead | undefined) {
+  if (node) {
     message.success(
       $t('admin.texts.nodes.rename.msgSuccess', {
-        oldName: nodeRename.value?.label,
-        newName: data.label,
+        oldName: nodeToRename.value?.label,
+        newName: node.label,
       })
     );
   } else {
     message.error($t('errors.unexpected'));
   }
-  await loadTreeData(getTreeNodeByKey(nodeRename.value?.parentKey));
-  showRenameModal.value = false;
-  nodeRenameInputValue.value = '';
-  nodeRename.value = null;
-  loading.value = false;
+  await loadTreeData(getTreeNodeByKey(nodeToRename.value?.parentKey));
+  nodeToRename.value = null;
 }
 
 function renderSwitcherIcon() {
@@ -325,41 +310,11 @@ watch(
 
   <n-spin v-else style="margin: 3rem 0 2rem 0; width: 100%" :description="$t('init.loading')" />
 
-  <n-modal
+  <RenameNodeModal
     v-model:show="showRenameModal"
-    preset="card"
-    class="tekst-modal"
-    size="large"
-    :bordered="false"
-    :closable="false"
-    to="#app-container"
-    embedded
-    @after-enter="nodeRenameInputRef?.select()"
-    @close="
-      () => {
-        nodeRenameInputValue = '';
-        nodeRename = null;
-      }
-    "
-  >
-    <h2>{{ $t('admin.texts.nodes.rename.heading') }}</h2>
-    <n-input
-      ref="nodeRenameInputRef"
-      v-model:value="nodeRenameInputValue"
-      type="text"
-      :loading="loading"
-      :autofocus="true"
-      @keydown.enter="handleRenameSubmit"
-    />
-    <ModalButtonFooter>
-      <n-button secondary :disabled="loading" @click="showRenameModal = false">
-        {{ $t('general.cancelAction') }}
-      </n-button>
-      <n-button type="primary" :loading="loading" :disabled="loading" @click="handleRenameSubmit">
-        {{ $t('general.saveAction') }}
-      </n-button>
-    </ModalButtonFooter>
-  </n-modal>
+    :node="nodeToRename"
+    @submit="handleRenameResult"
+  />
 </template>
 
 <style>

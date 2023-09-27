@@ -194,6 +194,7 @@ models:
       defaultLevelRange: 0 oder höher
   node:
     modelLabel: Strukturknoten | Strukturknoten
+    label: Bezeichnung
   layer:
     modelLabel: Datenschicht | Datenschichten
     layerType: Datenschicht-Typ

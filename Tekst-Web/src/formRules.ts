@@ -215,9 +215,26 @@ const textFormRules: Record<string, FormItemRule[]> = {
   ],
 };
 
+const nodeFormRules: Record<string, FormItemRule[]> = {
+  label: [
+    {
+      required: true,
+      message: () => $t('forms.rulesFeedback.isRequired', { x: $t('models.node.label') }),
+      trigger: 'blur',
+    },
+    {
+      validator: (rule: FormItemRule, value: string) =>
+        !!value && value.length >= 1 && value.length <= 256,
+      message: () => $t('forms.rulesFeedback.minMaxChars', { min: 1, max: 256 }),
+      trigger: 'blur',
+    },
+  ],
+};
+
 export function useFormRules() {
   return {
     accountFormRules,
     textFormRules,
+    nodeFormRules,
   };
 }

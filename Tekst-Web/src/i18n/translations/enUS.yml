@@ -186,6 +186,7 @@ models:
       defaultLevelRange: 0 or greater
   node:
     modelLabel: Structure node | Structure nodes
+    label: Label
   layer:
     modelLabel: Data layer | Data layers
     layerType: Datalayer Type
