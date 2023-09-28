@@ -5,7 +5,6 @@ from beanie.operators import And
 from fastapi import APIRouter, HTTPException, Path, Query, status
 
 from tekst.auth import SuperuserDep
-from tekst.logging import log
 from tekst.models.text import (
     DeleteNodeResult,
     MoveNodeRequestBody,
@@ -30,24 +29,80 @@ router = APIRouter(
 
 @router.post("", response_model=NodeRead, status_code=status.HTTP_201_CREATED)
 async def create_node(su: SuperuserDep, node: NodeCreate) -> NodeRead:
+    """
+    Creates a new node. The position will be automatically set to the last position
+    of the node's parent (or the first parent before that has children).
+    """
     # find text the node belongs to
-    if not await TextDocument.find_one(TextDocument.id == node.text_id).exists():
+    text = await TextDocument.find_one(TextDocument.id == node.text_id)
+    if not text:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Corresponding text '{node.text_id}' does not exist",
         )
-    # check for semantic duplicates
-    if await NodeDocument.find_one(
+    # check if level is valid
+    if not node.level < len(text.levels):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Invalid level {node.level}",
+        )
+    # determine node position:
+    # check if there is a parent
+    if node.parent_id is None:
+        # no parent, so make it last node on level 0
+        # text_id is important in case parent_id == None
+        last_sibling = (
+            await NodeDocument.find(
+                NodeDocument.text_id == text.id,
+                NodeDocument.parent_id == node.parent_id,
+            )
+            .sort(-NodeDocument.position)
+            .first_or_none()
+        )
+        if last_sibling:
+            node.position = last_sibling.position + 1
+        else:
+            node.position = 0
+    else:
+        # there is a parent, so we need to get the last child of the parent (if any)
+        # or the one of the previous parent (and so on...) and use its position + 1
+        parent = await NodeDocument.get(node.parent_id)
+        while True:
+            # text_id is important in case parent_id == None
+            last_child = (
+                await NodeDocument.find(
+                    NodeDocument.text_id == text.id,
+                    NodeDocument.parent_id == parent.id,
+                )
+                .sort(-NodeDocument.position)
+                .first_or_none()
+            )
+            if last_child:
+                # found a last child of a parent on next higher level
+                node.position = last_child.position + 1
+                break
+            else:
+                # the parent doesn't have any children, so check the previous one
+                prev_parent = await NodeDocument.find_one(
+                    NodeDocument.text_id == text.id,
+                    NodeDocument.level == node.level - 1,
+                    NodeDocument.position == parent.position - 1,
+                )
+                if not prev_parent:
+                    # the previous parent doesn't exist, so position will be 0
+                    node.position = 0
+                    break
+                else:
+                    # previous parent exists, so remember it for the next iteration
+                    parent = prev_parent
+    # increment position of all subsequent nodes on this level
+    # (including nodes with other parents)
+    await NodeDocument.find(
         NodeDocument.text_id == node.text_id,
         NodeDocument.level == node.level,
-        NodeDocument.position == node.position,
-    ).exists():
-        log.warning(f"Cannot create node. Conflict: {node}")
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="Conflict with existing node",
-        )
-    # all fine
+        NodeDocument.position >= node.position,
+    ).inc({NodeDocument.position: 1})
+    # all fine, create node
     return await NodeDocument.model_from(node).create()
 
 

@@ -748,6 +748,7 @@
           "nodes"
         ],
         "summary": "Create node",
+        "description": "Creates a new node. The position will be automatically set to the last position\nof the node's parent (or the first parent before that has children).",
         "operationId": "createNode",
         "security": [
           {

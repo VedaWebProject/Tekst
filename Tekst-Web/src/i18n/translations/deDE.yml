@@ -335,6 +335,12 @@ admin:
         Textebene "{levelLabel}" löschen möchten?
     nodes:
       heading: Knoten
+      add:
+        heading: Knoten zu "{parentLabel}" auf Ebene {level} hinzufügen
+        btnAddNodeFirstLevel: Knoten auf oberster Ebene hinzufügen
+        btnAddNodeFirstLevelTip: Knoten auf oberster Ebene hinzufügen
+        btnAddChildNodeTip: Kind-Knoten einfügen
+        msgSuccess: Knoten "{label}" zu "{parentLabel}" hinzugefügt
       warnGeneral: |
         Das Neuordnen oder Löschen von Textknoten hat gravierende Auswirkungen auf das
         Datenmodell des Textes. Es ist dringend empfohlen, ein Backup des aktuellen

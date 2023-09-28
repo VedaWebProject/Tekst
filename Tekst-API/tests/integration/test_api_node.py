@@ -116,32 +116,6 @@ async def test_create_node_invalid_text_fail(
 
 
 @pytest.mark.anyio
-async def test_create_node_duplicate_fail(
-    api_path,
-    test_client: AsyncClient,
-    test_data,
-    insert_test_data,
-    status_fail_msg,
-    register_test_user,
-    get_session_cookie,
-):
-    text_id = await insert_test_data("texts")
-    endpoint = f"{api_path}/nodes"
-    node = test_data["nodes"][0]
-    node["textId"] = text_id
-
-    # create superuser
-    superuser_data = await register_test_user(is_superuser=True)
-    session_cookie = await get_session_cookie(superuser_data)
-
-    resp = await test_client.post(endpoint, json=node, cookies=session_cookie)
-    assert resp.status_code == 201, status_fail_msg(201, resp)
-
-    resp = await test_client.post(endpoint, json=node, cookies=session_cookie)
-    assert resp.status_code == 409, status_fail_msg(409, resp)
-
-
-@pytest.mark.anyio
 async def test_get_nodes(
     api_path, test_client: AsyncClient, test_data, insert_test_data, status_fail_msg
 ):

@@ -322,6 +322,12 @@ admin:
         level "{levelLabel}"?
     nodes:
       heading: Nodes
+      add:
+        heading: Add node to "{parentLabel}" on level {level}
+        btnAddNodeFirstLevel: Add top-level node
+        btnAddNodeFirstLevelTip: Add node on highest level
+        btnAddChildNodeTip: Insert child node
+        msgSuccess: Added node "{label}" to "{parentLabel}"
       warnGeneral: |
         Rearranging or deleting text nodes has serious impact on the text's data model.
         It is recommended to make a backup of the current state of your

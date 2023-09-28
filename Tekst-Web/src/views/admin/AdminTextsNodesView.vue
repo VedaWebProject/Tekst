@@ -21,7 +21,9 @@ import { watch } from 'vue';
 import type { Component } from 'vue';
 import { positiveButtonProps, negativeButtonProps } from '@/components/dialogButtonProps';
 import RenameNodeModal from '@/components/admin/RenameNodeModal.vue';
+import AddNodeModal from '@/components/admin/AddNodeModal.vue';
 
+import AddOutlined from '@vicons/material/AddOutlined';
 import DeleteFilled from '@vicons/material/DeleteFilled';
 import ArrowForwardIosRound from '@vicons/material/ArrowForwardIosRound';
 import EditTwotone from '@vicons/material/EditTwotone';
@@ -44,6 +46,9 @@ const loading = ref(false);
 
 const showRenameModal = ref(false);
 const nodeToRename = ref<NodeTreeOption | null>(null);
+
+const showAddModal = ref(false);
+const nodeParentToAddTo = ref<NodeTreeOption | null>(null);
 
 async function loadTreeData(node?: TreeOption) {
   const { data, error } = await GET('/nodes/children', {
@@ -199,6 +204,7 @@ function handleRenameClick(node: NodeTreeOption) {
 }
 
 async function handleRenameResult(node: NodeRead | undefined) {
+  loading.value = true;
   if (node) {
     message.success(
       $t('admin.texts.nodes.rename.msgSuccess', {
@@ -211,6 +217,29 @@ async function handleRenameResult(node: NodeRead | undefined) {
   }
   await loadTreeData(getTreeNodeByKey(nodeToRename.value?.parentKey));
   nodeToRename.value = null;
+  loading.value = false;
+}
+
+function handleAddNodeClick(parent: NodeTreeOption | null = null) {
+  nodeParentToAddTo.value = parent;
+  showAddModal.value = true;
+}
+
+async function handleAddResult(node: NodeRead | undefined) {
+  loading.value = true;
+  if (node) {
+    message.success(
+      $t('admin.texts.nodes.add.msgSuccess', {
+        label: node.label,
+        parentLabel: nodeParentToAddTo.value?.label || state.text?.title || '',
+      })
+    );
+  } else {
+    message.error($t('errors.unexpected'));
+  }
+  await loadTreeData(getTreeNodeByKey(nodeParentToAddTo.value?.key?.toString()));
+  nodeParentToAddTo.value = null;
+  loading.value = false;
 }
 
 function renderSwitcherIcon() {
@@ -261,6 +290,9 @@ function renderSuffix(info: { option: TreeOption; checked: boolean; selected: bo
       handleRenameClick(info.option as NodeTreeOption);
     }),
     renderSuffixButton(DeleteFilled, () => handleDeleteClick(info.option as NodeTreeOption)),
+    info.option.isLeaf
+      ? null
+      : renderSuffixButton(AddOutlined, () => handleAddNodeClick(info.option as NodeTreeOption)),
   ]);
 }
 
@@ -280,14 +312,33 @@ watch(
     <HelpButtonWidget />
   </h2>
 
-  <n-alert closable :title="$t('general.warning')" type="warning">
+  <n-alert v-if="treeData.length" closable :title="$t('general.warning')" type="warning">
     {{ $t('admin.texts.nodes.warnGeneral') }}
   </n-alert>
 
-  <div style="padding: var(--layout-gap) 0 0 var(--content-gap)">
-    <n-checkbox v-model:checked="showWarnings">
+  <div
+    style="
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: end;
+      gap: var(--layout-gap);
+      padding: var(--layout-gap) 0 0 var(--content-gap);
+    "
+  >
+    <n-checkbox v-if="treeData.length" v-model:checked="showWarnings">
       {{ $t('admin.texts.nodes.checkShowWarnings') }}
     </n-checkbox>
+    <div style="flex-grow: 2"></div>
+    <n-button
+      type="primary"
+      :title="$t('admin.texts.nodes.add.btnAddNodeFirstLevelTip')"
+      @click="handleAddNodeClick(null)"
+    >
+      <template #icon>
+        <AddOutlined />
+      </template>
+      {{ $t('admin.texts.nodes.add.btnAddNodeFirstLevel') }}
+    </n-button>
   </div>
 
   <div v-if="treeData.length" class="content-block">
@@ -308,13 +359,19 @@ watch(
     />
   </div>
 
-  <n-spin v-else style="margin: 3rem 0 2rem 0; width: 100%" :description="$t('init.loading')" />
+  <n-spin
+    v-else-if="loading"
+    style="margin: 3rem 0 2rem 0; width: 100%"
+    :description="$t('init.loading')"
+  />
 
   <RenameNodeModal
     v-model:show="showRenameModal"
     :node="nodeToRename"
     @submit="handleRenameResult"
   />
+
+  <AddNodeModal v-model:show="showAddModal" :parent="nodeParentToAddTo" @submit="handleAddResult" />
 </template>
 
 <style>

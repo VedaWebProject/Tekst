@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { PATCH } from '@/api';
+import { POST } from '@/api';
 import { $t } from '@/i18n';
 import type { NodeTreeOption } from '@/views/admin/AdminTextsNodesView.vue';
 import { NForm, NFormItem, NModal, NButton, NInput, type InputInst, type FormInst } from 'naive-ui';
 import ModalButtonFooter from '@/components/ModalButtonFooter.vue';
 import { ref } from 'vue';
 import { useFormRules } from '@/formRules';
-import { useModelChanges } from '@/modelChanges';
+import { useStateStore } from '@/stores';
 import { useMessages } from '@/messages';
 
-const props = withDefaults(defineProps<{ show: boolean; node: NodeTreeOption | null }>(), {
+const props = withDefaults(defineProps<{ show: boolean; parent: NodeTreeOption | null }>(), {
   show: false,
 });
 const emits = defineEmits(['update:show', 'submit']);
@@ -18,11 +18,11 @@ const initialNodeModel = () => ({
   label: '',
 });
 
+const state = useStateStore();
 const { message } = useMessages();
 
 const nodeFormRef = ref<FormInst | null>(null);
 const nodeFormModel = ref<Record<string, string | null>>(initialNodeModel());
-const { changed, getChanges } = useModelChanges(nodeFormModel);
 
 const { nodeFormRules } = useFormRules();
 const loading = ref(false);
@@ -34,9 +34,14 @@ async function handleSubmit() {
   nodeFormRef.value
     ?.validate(async (validationErrors) => {
       if (!validationErrors) {
-        const { data, error } = await PATCH('/nodes/{id}', {
-          params: { path: { id: props.node?.key?.toString() || '' } },
-          body: getChanges(),
+        const { data, error } = await POST('/nodes', {
+          body: {
+            label: nodeFormModel.value.label || '',
+            level: (props.parent?.level ?? -1) + 1,
+            position: Number.MAX_SAFE_INTEGER,
+            textId: state.text?.id || '',
+            parentId: props.parent?.key?.toString() || null,
+          },
         });
         emits('submit', error ? undefined : data);
         emits('update:show', false);
@@ -60,15 +65,16 @@ async function handleSubmit() {
     to="#app-container"
     embedded
     @update:show="$emit('update:show', $event)"
-    @after-enter="
-      () => {
-        nodeFormModel.label = props.node?.label || '';
-        $nextTick(() => nodeRenameInputRef?.select());
-      }
-    "
     @after-leave="nodeFormModel.label = ''"
   >
-    <h2>{{ $t('admin.texts.nodes.rename.heading') }}</h2>
+    <h2>
+      {{
+        $t('admin.texts.nodes.add.heading', {
+          level: (props.parent?.level ?? -1) + 1,
+          parentLabel: props.parent?.label || state.text?.title || '',
+        })
+      }}
+    </h2>
 
     <n-form
       ref="nodeFormRef"
@@ -93,12 +99,7 @@ async function handleSubmit() {
       <n-button secondary :disabled="loading" @click="$emit('update:show', false)">
         {{ $t('general.cancelAction') }}
       </n-button>
-      <n-button
-        type="primary"
-        :loading="loading"
-        :disabled="loading || !changed"
-        @click="handleSubmit"
-      >
+      <n-button type="primary" :loading="loading" :disabled="loading" @click="handleSubmit">
         {{ $t('general.saveAction') }}
       </n-button>
     </ModalButtonFooter>
