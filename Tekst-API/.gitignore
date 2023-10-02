@@ -166,3 +166,6 @@ notes.md
 
 # anything marked .local for dev
 *.local
+
+# bruno collection
+.bruno/
