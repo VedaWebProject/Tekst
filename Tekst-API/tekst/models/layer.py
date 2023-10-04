@@ -54,6 +54,10 @@ class LayerBase(ModelBase, ModelFactoryMixin):
     public: Annotated[
         bool, Field(description="Publication status of this layer")
     ] = False
+    citation: Annotated[
+        str | None,
+        Field(description="Citation details for this layer", max_length=1000),
+    ] = None
     meta: Annotated[Metadata | None, Field(description="Arbitrary metadata")] = None
     comment: Annotated[
         str | None,

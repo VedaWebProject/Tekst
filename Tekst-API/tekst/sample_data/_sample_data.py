@@ -311,6 +311,7 @@ LAYERS = {
                 "language": "DE",
             },
             "comment": "This version includes repetition markers.",
+            "citation": "Anschütz, Ernst. Warnung. 1824.",
             "config": {
                 "deepl_links": {
                     "enabled": True,

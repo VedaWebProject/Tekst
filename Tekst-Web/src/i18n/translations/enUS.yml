@@ -120,6 +120,7 @@ browse:
         title: Open DeepL translation
       infoWidget:
         title: Show information on this data layer
+        citeAs: Cite as
         coverage: Coverage
         coverageStatement: '{present} of {total} nodes on level "{level}".'
       deactivateWidget:
@@ -190,6 +191,8 @@ models:
   layer:
     modelLabel: Data layer | Data layers
     layerType: Datalayer Type
+    citation: Citation
+    comment: Comment
   unit:
     modelLabel: Data unit | Data units
   meta:
@@ -198,7 +201,6 @@ models:
     year: Year
     language: Language
     layerType: '@:models.layer.layerType'
-    comment: Comment
     providedBy: Provided by
     onLevel: on level "{level}"
 

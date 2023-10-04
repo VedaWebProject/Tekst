@@ -3507,6 +3507,19 @@
             "description": "Publication status of this layer",
             "default": false
           },
+          "citation": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Citation",
+            "description": "Citation details for this layer"
+          },
           "meta": {
             "anyOf": [
               {
@@ -3642,6 +3655,19 @@
             "description": "Publication status of this layer",
             "default": false
           },
+          "citation": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Citation",
+            "description": "Citation details for this layer"
+          },
           "meta": {
             "anyOf": [
               {
@@ -3754,6 +3780,17 @@
           "public": {
             "type": "boolean",
             "title": "Public"
+          },
+          "citation": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Citation"
           },
           "meta": {
             "anyOf": [

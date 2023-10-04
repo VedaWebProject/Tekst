@@ -121,6 +121,7 @@ browse:
         title: DeepL-Übersetzung öffnen
       infoWidget:
         title: Informationen zu dieser Datenschicht anzeigen
+        citeAs: Zitieren als
         coverage: Abdeckung
         coverageStatement: '{present} von {total} Knoten auf Ebene "{level}".'
       deactivateWidget:
@@ -198,6 +199,8 @@ models:
   layer:
     modelLabel: Datenschicht | Datenschichten
     layerType: Datenschicht-Typ
+    comment: Kommentar
+    citation: Zitation
   unit:
     modelLabel: Daten-Einheit | Daten-Einheiten
   meta:
@@ -206,7 +209,6 @@ models:
     year: Jahr
     language: Sprache
     layerType: '@:models.layer.layerType'
-    comment: Kommentar
     providedBy: Bereitgestellt von
     onLevel: auf Ebene "{level}"
 

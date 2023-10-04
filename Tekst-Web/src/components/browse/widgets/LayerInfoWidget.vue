@@ -74,9 +74,16 @@ const coveragePercent = computed(
     </template>
 
     <template v-if="layer.comment">
-      <h3>{{ $t('models.meta.comment') }}</h3>
+      <h3>{{ $t('models.layer.comment') }}</h3>
       <div class="layer-comment">
         {{ layer.comment }}
+      </div>
+    </template>
+
+    <template v-if="layer.citation">
+      <h3>{{ $t('browse.units.widgets.infoWidget.citeAs') }}</h3>
+      <div>
+        {{ layer.citation }}
       </div>
     </template>
 
