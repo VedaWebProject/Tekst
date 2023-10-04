@@ -69,7 +69,6 @@ const coveragePercent = computed(
     </p>
 
     <template v-if="Object.keys(layer.meta as object).length">
-      <h3>{{ $t('models.meta.modelLabel') }}</h3>
       <MetadataDisplay :data="layer.meta" />
     </template>
 
