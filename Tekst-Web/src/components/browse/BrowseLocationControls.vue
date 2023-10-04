@@ -271,6 +271,7 @@ whenever(ArrowLeft, () => {
     display-directive="if"
     preset="card"
     embedded
+    :auto-focus="false"
     :closable="false"
     size="large"
     class="tekst-modal"
