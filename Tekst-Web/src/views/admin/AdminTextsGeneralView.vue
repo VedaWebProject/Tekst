@@ -34,8 +34,8 @@ const { textFormRules } = useFormRules();
 const loading = ref(false);
 
 const initialModel = () => ({
-  title: state.text?.title,
-  subtitle: state.text?.subtitle || [],
+  title: state.text?.title.toString(),
+  subtitle: JSON.parse(JSON.stringify(state.text?.subtitle || [])),
   slug: state.text?.slug,
   defaultLevel: state.text?.defaultLevel,
   locDelim: state.text?.locDelim,
