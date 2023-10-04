@@ -263,11 +263,12 @@ function renderLabel({ option }: { option: TreeOption }) {
   );
 }
 
-function renderSuffixButton(icon: Component, onClick: () => void) {
+function renderSuffixButton(icon: Component, onClick: () => void, title?: string) {
   return h(NButton, {
     type: 'primary',
     size: 'small',
     quaternary: true,
+    title: title,
     circle: true,
     loading: loading.value,
     disabled: loading.value,
@@ -286,13 +287,25 @@ function renderSuffixButton(icon: Component, onClick: () => void) {
 function renderSuffix(info: { option: TreeOption; checked: boolean; selected: boolean }) {
   if (!info.selected) return null;
   return h('div', { style: 'display: flex; gap: 4px; padding: 4px' }, [
-    renderSuffixButton(EditTwotone, () => {
-      handleRenameClick(info.option as NodeTreeOption);
-    }),
-    renderSuffixButton(DeleteFilled, () => handleDeleteClick(info.option as NodeTreeOption)),
+    renderSuffixButton(
+      EditTwotone,
+      () => {
+        handleRenameClick(info.option as NodeTreeOption);
+      },
+      $t('admin.texts.nodes.rename.heading')
+    ),
+    renderSuffixButton(
+      DeleteFilled,
+      () => handleDeleteClick(info.option as NodeTreeOption),
+      $t('admin.texts.nodes.tipDeleteNode', { node: info.option.label || '' })
+    ),
     info.option.isLeaf
       ? null
-      : renderSuffixButton(AddOutlined, () => handleAddNodeClick(info.option as NodeTreeOption)),
+      : renderSuffixButton(
+          AddOutlined,
+          () => handleAddNodeClick(info.option as NodeTreeOption),
+          $t('admin.texts.nodes.add.tooltip')
+        ),
   ]);
 }
 

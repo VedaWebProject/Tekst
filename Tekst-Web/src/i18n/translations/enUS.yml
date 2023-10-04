@@ -324,6 +324,7 @@ admin:
       heading: Nodes
       add:
         heading: Add node to "{parentLabel}" on level {level}
+        tooltip: Add node
         btnAddNodeFirstLevel: Add top-level node
         btnAddNodeFirstLevelTip: Add node on highest level
         btnAddChildNodeTip: Insert child node
@@ -336,6 +337,7 @@ admin:
         If you delete this node, all data associated with it or its children will
         be deleted with it. This can potentially affect all data layers,
         even ones created by other users. Are you really sure?
+      tipDeleteNode: Delete node "{node}"
       infoDeletedNode: Deleted node "{node}" (total of {nodes} nodes and {units} data units)
       infoMovedNode: Moved node "{node}" to position {position} on level "{level}"
       errorNodeLeftLevel: Text nodes can only be moved on their original structure level!

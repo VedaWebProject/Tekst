@@ -337,6 +337,7 @@ admin:
       heading: Knoten
       add:
         heading: Knoten zu "{parentLabel}" auf Ebene {level} hinzufügen
+        tooltip: Knoten hinzufügen
         btnAddNodeFirstLevel: Knoten auf oberster Ebene hinzufügen
         btnAddNodeFirstLevelTip: Knoten auf oberster Ebene hinzufügen
         btnAddChildNodeTip: Kind-Knoten einfügen
@@ -350,6 +351,7 @@ admin:
         seinen Kind-Knoten verbunden sind, ebenfalls gelöscht.
         Dies kann potenziell alle Datenschichten betreffen – auch jene,
         die von anderen Benutzern angelegt wurden. Sind Sie sich wirklich sicher?
+      tipDeleteNode: Knoten "{node}" löschen
       infoDeletedNode: Knoten "{node}" gelöscht (insgesamt {nodes} Knoten und {units} Daten-Einheiten)
       infoMovedNode: Knoten "{node}" auf position {position} von Ebene "{level}" verschoben
       errorNodeLeftLevel: Text-Knoten können nur innerhalb der gleichen Ebene verschoben werden!
