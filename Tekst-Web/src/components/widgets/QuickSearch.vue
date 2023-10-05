@@ -48,7 +48,7 @@ const showModal = ref(false);
     <p>Quick Search settings go here...</p>
 
     <ModalButtonFooter>
-      <n-button :focusable="false" @click="showModal = false">
+      <n-button secondary :focusable="false" @click="showModal = false">
         {{ $t('general.cancelAction') }}
       </n-button>
       <n-button type="primary">{{ $t('search.searchAction') }}</n-button>
