@@ -28,6 +28,7 @@ const showModal = ref(false);
     preset="card"
     embedded
     :closable="false"
+    :auto-focus="false"
     size="large"
     class="tekst-modal"
     to="#app-container"
