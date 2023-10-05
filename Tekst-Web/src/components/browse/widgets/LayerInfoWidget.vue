@@ -3,10 +3,15 @@ import { computed, ref } from 'vue';
 import { NButton, NModal, NProgress, NSpin } from 'naive-ui';
 import MetadataDisplay from '@/components/browse/MetadataDisplay.vue';
 import ModalButtonFooter from '@/components/ModalButtonFooter.vue';
-import InfoOutlined from '@vicons/material/InfoOutlined';
+import IconHeading from '@/components/typography/IconHeading.vue';
 import UnitContainerHeaderWidget from '@/components/browse/UnitContainerHeaderWidget.vue';
 import { useProfile, useLayerCoverage } from '@/fetchers';
 import { useStateStore } from '@/stores';
+
+import InfoOutlined from '@vicons/material/InfoOutlined';
+import ChatBubbleOutlineOutlined from '@vicons/material/ChatBubbleOutlineOutlined';
+import FormatQuoteFilled from '@vicons/material/FormatQuoteFilled';
+import PercentOutlined from '@vicons/material/PercentOutlined';
 
 const props = defineProps<{
   layer: Record<string, any>;
@@ -73,20 +78,26 @@ const coveragePercent = computed(
     </template>
 
     <template v-if="layer.comment">
-      <h3>{{ $t('models.layer.comment') }}</h3>
+      <IconHeading level="3" :icon="ChatBubbleOutlineOutlined">
+        {{ $t('models.layer.comment') }}
+      </IconHeading>
       <div class="layer-comment">
         {{ layer.comment }}
       </div>
     </template>
 
     <template v-if="layer.citation">
-      <h3>{{ $t('browse.units.widgets.infoWidget.citeAs') }}</h3>
+      <IconHeading level="3" :icon="FormatQuoteFilled">
+        {{ $t('browse.units.widgets.infoWidget.citeAs') }}
+      </IconHeading>
       <div>
         {{ layer.citation }}
       </div>
     </template>
 
-    <h3>{{ $t('browse.units.widgets.infoWidget.coverage') }}</h3>
+    <IconHeading level="3" :icon="PercentOutlined">
+      {{ $t('browse.units.widgets.infoWidget.coverage') }}
+    </IconHeading>
     <template v-if="coverage">
       <p>
         {{
