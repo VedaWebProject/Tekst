@@ -3,11 +3,13 @@ import { computed } from 'vue';
 import LocationLabel from '@/components/browse/LocationLabel.vue';
 import BrowseToolbar from '@/components/browse/BrowseToolbar.vue';
 import { useBrowseStore } from '@/stores';
-import FolderOffTwotone from '@vicons/material/FolderOffTwotone';
 import LayerToggleDrawer from '@/components/browse/LayerToggleDrawer.vue';
 import UnitContainer from '@/components/browse/UnitContainer.vue';
 import HugeLabeledIcon from '@/components/HugeLabeledIcon.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+
+import FolderOffTwotone from '@vicons/material/FolderOffTwotone';
+import HourglassTopTwotone from '@vicons/material/HourglassTopTwotone';
 
 const browse = useBrowseStore();
 
@@ -33,6 +35,11 @@ const activeLayers = computed(() => {
     />
   </template>
 
+  <huge-labeled-icon
+    v-else-if="browse.loading"
+    :message="$t('init.loading')"
+    :icon="HourglassTopTwotone"
+  />
   <huge-labeled-icon v-else :message="$t('browse.locationNoData')" :icon="FolderOffTwotone" />
   <LayerToggleDrawer v-model:show="browse.showLayerToggleDrawer" />
 </template>
