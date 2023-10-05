@@ -11,7 +11,7 @@ import LogOutRound from '@vicons/material/LogOutRound';
 import PersonRound from '@vicons/material/PersonRound';
 import RemoveRedEyeRound from '@vicons/material/RemoveRedEyeRound';
 import ManageAccountsRound from '@vicons/material/ManageAccountsRound';
-import PeopleRound from '@vicons/material/PeopleRound';
+import PeopleFilled from '@vicons/material/PeopleFilled';
 import BarChartRound from '@vicons/material/BarChartRound';
 import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
 import AddCircleOutlineRound from '@vicons/material/AddCircleOutlineRound';
@@ -82,7 +82,7 @@ const userOptions = computed(() => [
             {
               label: $t('admin.users.heading'),
               key: 'adminUsers',
-              icon: renderIcon(PeopleRound),
+              icon: renderIcon(PeopleFilled),
             },
             {
               label: $t('admin.texts.heading'),

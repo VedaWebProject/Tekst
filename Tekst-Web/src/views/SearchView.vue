@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import IconHeading from '@/components/typography/IconHeading.vue';
+
+import ManageSearchFilled from '@vicons/material/ManageSearchFilled';
 </script>
 
 <template>
-  <h1>
+  <IconHeading level="1" :icon="ManageSearchFilled">
     {{ $t('search.heading') }}
     <HelpButtonWidget />
-  </h1>
+  </IconHeading>
   <div class="content-block">
     <p>...</p>
   </div>

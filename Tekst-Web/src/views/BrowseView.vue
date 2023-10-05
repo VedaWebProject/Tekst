@@ -7,9 +7,11 @@ import LayerToggleDrawer from '@/components/browse/LayerToggleDrawer.vue';
 import UnitContainer from '@/components/browse/UnitContainer.vue';
 import HugeLabeledIcon from '@/components/HugeLabeledIcon.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import IconHeading from '@/components/typography/IconHeading.vue';
 
 import FolderOffTwotone from '@vicons/material/FolderOffTwotone';
 import HourglassTopTwotone from '@vicons/material/HourglassTopTwotone';
+import MenuBookTwotone from '@vicons/material/MenuBookTwotone';
 
 const browse = useBrowseStore();
 
@@ -19,10 +21,10 @@ const activeLayers = computed(() => {
 </script>
 
 <template>
-  <h1>
+  <IconHeading level="1" :icon="MenuBookTwotone">
     <LocationLabel />&nbsp;
     <HelpButtonWidget />
-  </h1>
+  </IconHeading>
 
   <BrowseToolbar />
 

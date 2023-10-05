@@ -4,11 +4,13 @@ import { computed } from 'vue';
 import { NProgress, NSpin, NStatistic, NIcon } from 'naive-ui';
 import { usePlatformData } from '@/platformData';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import IconHeading from '@/components/typography/IconHeading.vue';
 
 import SupervisorAccountRound from '@vicons/material/SupervisorAccountRound';
 import LibraryBooksRound from '@vicons/material/LibraryBooksRound';
 import AccountTreeRound from '@vicons/material/AccountTreeRound';
 import LayersRound from '@vicons/material/LayersRound';
+import BarChartRound from '@vicons/material/BarChartRound';
 
 const { pfData } = usePlatformData();
 const { stats, error } = useStats();
@@ -34,10 +36,10 @@ const layerTypes = computed(() => {
 </script>
 
 <template>
-  <h1>
+  <IconHeading level="1" :icon="BarChartRound">
     {{ $t('admin.heading') }}: {{ $t('admin.statistics.heading') }}
     <HelpButtonWidget />
-  </h1>
+  </IconHeading>
 
   <div v-if="stats && !error" style="margin-top: 1rem">
     <h2>{{ $t('admin.statistics.globalHeading') }}</h2>

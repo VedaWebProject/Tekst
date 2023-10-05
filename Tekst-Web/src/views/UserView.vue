@@ -4,6 +4,9 @@ import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { NSpin } from 'naive-ui';
 import { useAuthStore } from '@/stores';
+import IconHeading from '@/components/typography/IconHeading.vue';
+
+import PersonFilled from '@vicons/material/PersonFilled';
 
 const route = useRoute();
 
@@ -22,7 +25,10 @@ const { user, error } = useProfile(username);
 </script>
 
 <template>
-  <h1>{{ $t('account.profileHeading', { username }) }}</h1>
+  <IconHeading level="1" :icon="PersonFilled">
+    {{ $t('account.profileHeading', { username }) }}
+  </IconHeading>
+
   <div v-if="user && !error" class="content-block">
     <ul>
       <li v-for="(value, key) in user" :key="key">

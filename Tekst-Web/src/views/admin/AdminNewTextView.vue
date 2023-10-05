@@ -20,9 +20,11 @@ import { usePlatformData } from '@/platformData';
 import { useRouter } from 'vue-router';
 import type { TextCreate } from '@/api';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import IconHeading from '@/components/typography/IconHeading.vue';
 
 import AddRound from '@vicons/material/AddRound';
 import MinusRound from '@vicons/material/MinusRound';
+import AddCircleOutlineRound from '@vicons/material/AddCircleOutlineRound';
 
 interface NewTextModel {
   title?: string;
@@ -93,10 +95,10 @@ async function handleSave() {
 </script>
 
 <template>
-  <h1>
+  <IconHeading level="1" :icon="AddCircleOutlineRound">
     {{ $t('admin.heading') }}: {{ $t('admin.newText.heading') }}
     <HelpButtonWidget />
-  </h1>
+  </IconHeading>
 
   <n-alert :title="$t('general.info')" type="info">
     {{ $t('admin.newText.headerInfoMsg') }}

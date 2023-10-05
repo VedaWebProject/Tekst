@@ -6,7 +6,7 @@ import NavBarRouterLink from '@/components/navigation/NavBarRouterLink.vue';
 
 import PeopleRound from '@vicons/material/PeopleRound';
 import BarChartRound from '@vicons/material/BarChartRound';
-import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
+import LibraryBooksOutlined from '@vicons/material/LibraryBooksOutlined';
 import AddCircleOutlineRound from '@vicons/material/AddCircleOutlineRound';
 
 const state = useStateStore();
@@ -29,7 +29,7 @@ const state = useStateStore();
     <NavBarRouterLink
       :label="$t('admin.texts.heading')"
       :route="{ name: 'adminTexts', params: { text: state.text?.slug } }"
-      :icon="MenuBookOutlined"
+      :icon="LibraryBooksOutlined"
       show-icon
     />
     <NavBarRouterLink

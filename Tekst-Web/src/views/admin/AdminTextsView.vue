@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import { useStateStore } from '@/stores';
 import { RouterView } from 'vue-router';
+
 import NavBarRouterLink from '@/components/navigation/NavBarRouterLink.vue';
 import SecondaryNavBar from '@/components/navigation/SecondaryNavBar.vue';
+import IconHeading from '@/components/typography/IconHeading.vue';
+
+import LibraryBooksOutlined from '@vicons/material/LibraryBooksOutlined';
 
 const state = useStateStore();
 </script>
@@ -26,7 +30,9 @@ const state = useStateStore();
     />
   </SecondaryNavBar>
 
-  <h1>{{ $t('admin.heading') }}: {{ state.text?.title }}</h1>
+  <IconHeading level="1" :icon="LibraryBooksOutlined">
+    {{ $t('admin.heading') }}: {{ state.text?.title }}
+  </IconHeading>
 
   <router-view></router-view>
 </template>

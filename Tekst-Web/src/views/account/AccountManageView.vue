@@ -22,6 +22,9 @@ import { useModelChanges } from '@/modelChanges';
 import type { UserUpdate, UserUpdatePublicFields } from '@/api';
 import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import IconHeading from '@/components/typography/IconHeading.vue';
+
+import ManageAccountsRound from '@vicons/material/ManageAccountsRound';
 
 const dialog = useDialog();
 const auth = useAuthStore();
@@ -215,10 +218,10 @@ async function handlepublicFieldsSave() {
 </script>
 
 <template>
-  <h1>
+  <IconHeading level="1" :icon="ManageAccountsRound">
     {{ $t('account.manage.heading', { username: auth.user?.username }) }}
     <HelpButtonWidget />
-  </h1>
+  </IconHeading>
 
   <n-grid class="account-mgmt-grid" cols="1 m:2" responsive="screen" x-gap="18px" y-gap="18px">
     <n-grid-item>
