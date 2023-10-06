@@ -6,7 +6,6 @@
 
 ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/VedaWebProject/Tekst/server-tests.yml?label=server%20tests)
 ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/y/VedaWebProject/Tekst)
-![GitHub](https://img.shields.io/github/license/VedaWebProject/Tekst)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/VedaWebProject/Tekst)
 ![GitHub repo size](https://img.shields.io/github/repo-size/VedaWebProject/Tekst)
 
