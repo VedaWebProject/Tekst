@@ -12,6 +12,7 @@ import IconHeading from '@/components/typography/IconHeading.vue';
 import FolderOffTwotone from '@vicons/material/FolderOffTwotone';
 import HourglassTopTwotone from '@vicons/material/HourglassTopTwotone';
 import MenuBookTwotone from '@vicons/material/MenuBookTwotone';
+import ErrorOutlineOutlined from '@vicons/material/ErrorOutlineOutlined';
 
 const browse = useBrowseStore();
 
@@ -41,6 +42,11 @@ const activeLayers = computed(() => {
     v-else-if="browse.loading"
     :message="$t('init.loading')"
     :icon="HourglassTopTwotone"
+  />
+  <huge-labeled-icon
+    v-else-if="!browse.nodePath.length"
+    :message="$t('browse.textNoNodes')"
+    :icon="ErrorOutlineOutlined"
   />
   <huge-labeled-icon v-else :message="$t('browse.locationNoData')" :icon="FolderOffTwotone" />
   <LayerToggleDrawer v-model:show="browse.showLayerToggleDrawer" />

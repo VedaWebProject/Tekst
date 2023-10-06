@@ -37,6 +37,7 @@ export const useBrowseStore = defineStore('browse', () => {
   // update browse node path
   async function updateBrowseNodePath(lvl?: string, pos?: string) {
     if (route.name !== 'browse') return;
+    loading.value = true;
     const qLvl = parseInt(lvl || route.query.lvl?.toString() || '');
     const qPos = parseInt(pos || route.query.pos?.toString() || '');
     if (Number.isInteger(qLvl) && Number.isInteger(qPos)) {
@@ -52,6 +53,7 @@ export const useBrowseStore = defineStore('browse', () => {
     } else {
       resetBrowseLocation();
     }
+    loading.value = false;
   }
 
   // reset browse location (change URI parameters)
@@ -97,7 +99,6 @@ export const useBrowseStore = defineStore('browse', () => {
     if (!state.text) return;
     // set to loading
     loading.value = true;
-    // fetch data
     // fetch layers data
     const { data: layersData, error } = await GET('/layers', {
       params: { query: { textId: state.text.id } },
@@ -108,18 +109,17 @@ export const useBrowseStore = defineStore('browse', () => {
         const existingLayer = layers.value.find((lo) => lo.id === l.id);
         l.active = !existingLayer || existingLayer.active;
       });
-      loadUnitsData(layersData);
+      await loadUnitsData(layersData);
     } else {
       console.error(error);
       message.error('Error loading data layers for this location');
-      loading.value = false;
     }
+    loading.value = false;
   }
 
   async function loadUnitsData(layersData = layers.value) {
     if (!nodePathHead.value) {
       layers.value = [];
-      loading.value = false;
       return;
     }
     // set to loading
