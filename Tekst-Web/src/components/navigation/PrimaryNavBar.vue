@@ -87,7 +87,7 @@ watch(
   flex-wrap: wrap;
   max-width: var(--max-app-width);
   margin: 0 auto;
-  padding: 0.75rem;
+  padding: var(--layout-gap);
   font-size: var(--app-ui-font-size-small);
 }
 
