@@ -13,7 +13,6 @@ from typing_extensions import TypedDict
 from tekst.models.common import (
     DocumentBase,
     Locale,
-    Metadata,
     ModelBase,
     ModelFactoryMixin,
 )
@@ -165,7 +164,6 @@ class Node(ModelBase, ModelFactoryMixin):
         StringConstraints(min_length=1, max_length=256),
         Field(description="Label for identifying this text node in level context"),
     ]
-    meta: Annotated[Metadata | None, Field(description="Arbitrary metadata")] = None
 
 
 class NodeDocument(Node, DocumentBase):
