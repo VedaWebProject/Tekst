@@ -113,6 +113,7 @@ browse:
   layerToggleDrawer:
     heading: Show Data Layers
   locationLayerNoData: No data for this location
+  textNoNodes: This text's setup seems incomplete. There are no structure nodes defined.
   locationNoData: The selected data layers contain no data for this text level and location. Try choosing a different location or activating more data layers.
   units:
     widgets:
@@ -327,10 +328,14 @@ admin:
       add:
         heading: Add node to "{parentLabel}" on level {level}
         tooltip: Add node
-        btnAddNodeFirstLevel: Add top-level node
-        btnAddNodeFirstLevelTip: Add node on highest level
-        btnAddChildNodeTip: Insert child node
         msgSuccess: Added node "{label}" to "{parentLabel}"
+      tipBtnAddNodeFirstLevel: Add top-level node
+      tipBtnDownloadTemplate: Download structure definition template
+      tipBtnUploadStructure: Upload structure definition (only if structure is empty!)
+      infoNoNodes: |
+        This text does not have any structure nodes, yet. Add nodes to the text's
+        structure levels using the interface below or download a structure template
+        you can programmatically populate with your data and upload it here.
       warnGeneral: |
         Rearranging or deleting text nodes has serious impact on the text's data model.
         It is recommended to make a backup of the current state of your

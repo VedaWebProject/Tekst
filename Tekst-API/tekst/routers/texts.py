@@ -1,10 +1,15 @@
+from copy import deepcopy
+from pathlib import Path as SysPath
 from typing import Annotated, List
 
 from beanie import PydanticObjectId
 from beanie.operators import Or, Set, Unset
-from fastapi import APIRouter, Body, HTTPException, Path, status
+from fastapi import APIRouter, Body, Depends, HTTPException, Path, status
+from fastapi.responses import FileResponse
 
 from tekst.auth import OptionalUserDep, SuperuserDep
+from tekst.dependencies import get_temp_dir
+from tekst.models.exchange import NodeDefinition, TextStructureDefinition
 from tekst.models.layer import LayerBaseDocument
 from tekst.models.text import (
     NodeDocument,
@@ -77,6 +82,61 @@ async def create_text(su: SuperuserDep, text: TextCreate) -> TextRead:
 #         await file.close()
 
 #     return text
+
+
+@router.get("/{id}/template", status_code=status.HTTP_200_OK)
+async def download_structure_template(
+    su: SuperuserDep,
+    text_id: Annotated[PydanticObjectId, Path(alias="id")],
+    temp_dir_name: str = Depends(get_temp_dir),
+) -> FileResponse:
+    """
+    Download the structure template for a text to help compose a structure
+    definition that can later be uploaded to the server
+    """
+    # find text
+    text = await TextDocument.get(text_id)
+    if not text:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Could not find text with ID {text_id}",
+        )
+    # create template for text
+    structure_def: TextStructureDefinition = TextStructureDefinition()
+    curr_node_def: NodeDefinition | None = None
+    dummy_node = NodeDefinition(
+        label="Label for the first node on level '{}' (required!)",
+    )
+    for n in range(len(text.levels)):
+        node = deepcopy(dummy_node)
+        node.label = node.label.format(text.levels[n][0]["label"])
+        if curr_node_def is None:
+            structure_def.structure.append(node)
+        else:
+            curr_node_def.children = []
+            curr_node_def.children.append(node)
+        curr_node_def = node
+    # validate template
+    try:
+        TextStructureDefinition.model_validate(structure_def)
+    except Exception:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Error creating template",
+        )
+    # allocate and write temporary file
+    temp_file_name = f"{text.slug}_structure_template.json"
+    temp_file_path = SysPath(temp_dir_name) / temp_file_name
+    with open(temp_file_path, "w") as f:
+        f.write(
+            structure_def.model_dump_json(indent=2, by_alias=True, exclude_none=True)
+        )
+    # return structure template file
+    return FileResponse(
+        path=temp_file_path,
+        media_type="application/octet-stream",
+        filename=temp_file_name,
+    )
 
 
 @router.post(

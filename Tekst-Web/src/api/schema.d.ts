@@ -96,7 +96,11 @@ export interface paths {
   '/nodes': {
     /** Find nodes */
     get: operations['findNodes'];
-    /** Create node */
+    /**
+     * Create node
+     * @description Creates a new node. The position will be automatically set to the last position
+     * of the node's parent (or the first parent before that has children).
+     */
     post: operations['createNode'];
   };
   '/nodes/children': {
@@ -151,6 +155,14 @@ export interface paths {
     get: operations['getAllTexts'];
     /** Create text */
     post: operations['createText'];
+  };
+  '/texts/{id}/template': {
+    /**
+     * Download structure template
+     * @description Download the structure template for a text to help compose a structure
+     * definition that can later be uploaded to the server
+     */
+    get: operations['downloadStructureTemplate'];
   };
   '/texts/{id}/level/{index}': {
     /** Insert level */
@@ -479,13 +491,6 @@ export interface components {
        * @description Label for identifying this text node in level context
        */
       label: string;
-      /**
-       * Meta
-       * @description Arbitrary metadata
-       */
-      meta?: {
-        [key: string]: string;
-      } | null;
     };
     /** NodeRead */
     NodeRead: {
@@ -520,13 +525,6 @@ export interface components {
        * @description Label for identifying this text node in level context
        */
       label: string;
-      /**
-       * Meta
-       * @description Arbitrary metadata
-       */
-      meta?: {
-        [key: string]: string;
-      } | null;
     };
     /** NodeUpdate */
     NodeUpdate: {
@@ -543,10 +541,6 @@ export interface components {
       position?: number;
       /** Label */
       label?: string;
-      /** Meta */
-      meta?: {
-        [key: string]: string;
-      } | null;
     };
     /** PlainTextLayerConfig */
     PlainTextLayerConfig: {
@@ -608,6 +602,11 @@ export interface components {
        * @default false
        */
       public?: boolean;
+      /**
+       * Citation
+       * @description Citation details for this layer
+       */
+      citation?: string | null;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -684,6 +683,11 @@ export interface components {
        */
       public?: boolean;
       /**
+       * Citation
+       * @description Citation details for this layer
+       */
+      citation?: string | null;
+      /**
        * Meta
        * @description Arbitrary metadata
        */
@@ -719,6 +723,8 @@ export interface components {
       proposed?: boolean;
       /** Public */
       public?: boolean;
+      /** Citation */
+      citation?: string | null;
       /** Meta */
       meta?: {
         [key: string]: string;
@@ -1595,7 +1601,11 @@ export interface operations {
       };
     };
   };
-  /** Create node */
+  /**
+   * Create node
+   * @description Creates a new node. The position will be automatically set to the last position
+   * of the node's parent (or the first parent before that has children).
+   */
   createNode: {
     requestBody: {
       content: {
@@ -1909,6 +1919,36 @@ export interface operations {
       201: {
         content: {
           'application/json': components['schemas']['TextRead'];
+        };
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /**
+   * Download structure template
+   * @description Download the structure template for a text to help compose a structure
+   * definition that can later be uploaded to the server
+   */
+  downloadStructureTemplate: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': unknown;
         };
       };
       /** @description Not found */

@@ -12,7 +12,7 @@ import {
   type TreeDragInfo,
 } from 'naive-ui';
 import { h, ref } from 'vue';
-import { DELETE, GET, POST, type NodeRead } from '@/api';
+import { DELETE, GET, POST, getFullUrl, type NodeRead } from '@/api';
 import { useStateStore } from '@/stores';
 import { onMounted } from 'vue';
 import { useMessages } from '@/messages';
@@ -28,6 +28,8 @@ import DeleteFilled from '@vicons/material/DeleteFilled';
 import ArrowForwardIosRound from '@vicons/material/ArrowForwardIosRound';
 import EditTwotone from '@vicons/material/EditTwotone';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import FileDownloadOutlined from '@vicons/material/FileDownloadOutlined';
+import FileUploadOutlined from '@vicons/material/FileUploadOutlined';
 
 export interface NodeTreeOption extends TreeOption {
   level: number;
@@ -242,6 +244,18 @@ async function handleAddResult(node: NodeRead | undefined) {
   loading.value = false;
 }
 
+async function handleDownloadTemplateClick() {
+  // As we want a proper, direct download, we let the browser handle it
+  // by opening a new tab with the correct URL for the file download.
+  const textId = state.text?.id || '';
+  const path = `/texts/${textId}/template`;
+  window.open(getFullUrl(path), '_blank');
+}
+
+async function handleUploadStructureClick() {
+  // TODO
+}
+
 function renderSwitcherIcon() {
   return h(
     NIcon,
@@ -329,6 +343,10 @@ watch(
     {{ $t('admin.texts.nodes.warnGeneral') }}
   </n-alert>
 
+  <n-alert v-else :title="$t('general.info')" type="info">
+    {{ $t('admin.texts.nodes.infoNoNodes') }}
+  </n-alert>
+
   <div
     style="
       display: flex;
@@ -342,16 +360,36 @@ watch(
       {{ $t('admin.texts.nodes.checkShowWarnings') }}
     </n-checkbox>
     <div style="flex-grow: 2"></div>
-    <n-button
-      type="primary"
-      :title="$t('admin.texts.nodes.add.btnAddNodeFirstLevelTip')"
-      @click="handleAddNodeClick(null)"
-    >
-      <template #icon>
-        <AddOutlined />
-      </template>
-      {{ $t('admin.texts.nodes.add.btnAddNodeFirstLevel') }}
-    </n-button>
+    <div style="display: flex; gap: 0.5rem">
+      <n-button
+        type="primary"
+        :title="$t('admin.texts.nodes.tipBtnAddNodeFirstLevel')"
+        @click="handleAddNodeClick(null)"
+      >
+        <template #icon>
+          <AddOutlined />
+        </template>
+      </n-button>
+      <n-button
+        secondary
+        :title="$t('admin.texts.nodes.tipBtnDownloadTemplate')"
+        @click="handleDownloadTemplateClick()"
+      >
+        <template #icon>
+          <FileDownloadOutlined />
+        </template>
+      </n-button>
+      <n-button
+        secondary
+        :title="$t('admin.texts.nodes.tipBtnUploadStructure')"
+        :disabled="!!treeData.length"
+        @click="handleUploadStructureClick()"
+      >
+        <template #icon>
+          <FileUploadOutlined />
+        </template>
+      </n-button>
+    </div>
   </div>
 
   <div v-if="treeData.length" class="content-block">

@@ -64,6 +64,9 @@ export const optionsPresets = {
   },
 };
 
+export const getFullUrl = (path: string, query?: Record<string, any>) =>
+  apiUrl + path + (query ? '?' + queryString.stringify(query, { arrayFormat: 'none' }) : '');
+
 // export components types for use throughout codebase
 export type UserCreate = components['schemas']['UserCreate'];
 export type UserRead = components['schemas']['UserRead'];

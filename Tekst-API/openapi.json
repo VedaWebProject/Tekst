@@ -1493,6 +1493,59 @@
         }
       }
     },
+    "/texts/{id}/template": {
+      "get": {
+        "tags": [
+          "texts"
+        ],
+        "summary": "Download structure template",
+        "description": "Download the structure template for a text to help compose a structure\ndefinition that can later be uploaded to the server",
+        "operationId": "downloadStructureTemplate",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/texts/{id}/level/{index}": {
       "post": {
         "tags": [
@@ -3260,21 +3313,6 @@
             "minLength": 1,
             "title": "Label",
             "description": "Label for identifying this text node in level context"
-          },
-          "meta": {
-            "anyOf": [
-              {
-                "additionalProperties": {
-                  "type": "string"
-                },
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Meta",
-            "description": "Arbitrary metadata"
           }
         },
         "type": "object",
@@ -3331,21 +3369,6 @@
             "minLength": 1,
             "title": "Label",
             "description": "Label for identifying this text node in level context"
-          },
-          "meta": {
-            "anyOf": [
-              {
-                "additionalProperties": {
-                  "type": "string"
-                },
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Meta",
-            "description": "Arbitrary metadata"
           }
         },
         "type": "object",
@@ -3388,20 +3411,6 @@
           "label": {
             "type": "string",
             "title": "Label"
-          },
-          "meta": {
-            "anyOf": [
-              {
-                "additionalProperties": {
-                  "type": "string"
-                },
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Meta"
           }
         },
         "type": "object",
