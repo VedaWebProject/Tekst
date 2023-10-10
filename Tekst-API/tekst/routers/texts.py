@@ -1,10 +1,20 @@
+
 from copy import deepcopy
 from pathlib import Path as SysPath
 from typing import Annotated, List
 
 from beanie import PydanticObjectId
 from beanie.operators import Or, Set, Unset
-from fastapi import APIRouter, Body, Depends, HTTPException, Path, status
+from fastapi import (
+    APIRouter,
+    Body,
+    Depends,
+    File,
+    HTTPException,
+    Path,
+    UploadFile,
+    status,
+)
 from fastapi.responses import FileResponse
 
 from tekst.auth import OptionalUserDep, SuperuserDep
@@ -111,10 +121,10 @@ async def download_structure_template(
         node = deepcopy(dummy_node)
         node.label = node.label.format(text.levels[n][0]["label"])
         if curr_node_def is None:
-            structure_def.structure.append(node)
+            structure_def.nodes.append(node)
         else:
-            curr_node_def.children = []
-            curr_node_def.children.append(node)
+            curr_node_def.nodes = []
+            curr_node_def.nodes.append(node)
         curr_node_def = node
     # validate template
     try:
@@ -137,6 +147,83 @@ async def download_structure_template(
         media_type="application/octet-stream",
         filename=temp_file_name,
     )
+
+
+@router.post("/{id}/structure", status_code=status.HTTP_201_CREATED)
+async def upload_structure_definition(
+    su: SuperuserDep,
+    text_id: Annotated[PydanticObjectId, Path(alias="id")],
+    file: Annotated[
+        UploadFile, File(description="JSON file containing the text's structure")
+    ],
+) -> None:
+    """
+    Upload the structure definition for a text to apply as a structure of nodes
+    """
+    # test upload file MIME type
+    if not file.content_type.lower() == "application/json":
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid file MIME type (must be 'application/json')",
+        )
+    # find text
+    text = await TextDocument.get(text_id)
+    if not text:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Could not find text with ID {text_id}",
+        )
+    # does text already have structure nodes defined?
+    if await NodeDocument.find_one(NodeDocument.text_id == text_id).exists():
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="This text already has structure nodes",
+        )
+    # validate structure definition
+    try:
+        structure_def = TextStructureDefinition.model_validate_json(await file.read())
+    except Exception:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid structure definition",
+        )
+    # import nodes depth-first
+    nodes = [
+        dict(
+            level=0,
+            position=i,
+            parent_id=None,
+            **structure_def.nodes[i].model_dump(by_alias=False),
+        )
+        for i in range(len(structure_def.nodes))
+    ]
+    structure_def = None
+    positions = [0] * len(text.levels)
+    positions[0] += len(nodes) - 1
+    while nodes:
+        node = nodes.pop(0)
+        node["id"] = (
+            await NodeDocument(
+                text_id=text_id,
+                label=node["label"],
+                level=node["level"],
+                position=node["position"],
+                parent_id=node["parent_id"],
+            ).create()
+        ).id
+        children_level = node["level"] + 1
+        if children_level >= len(text.levels):
+            continue
+        for child in node.get("nodes", []):
+            nodes.append(
+                dict(
+                    level=children_level,
+                    parent_id=node["id"],
+                    position=positions[children_level],
+                    **child,
+                )
+            )
+            positions[children_level] += 1
 
 
 @router.post(
