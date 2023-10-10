@@ -1,4 +1,3 @@
-
 from copy import deepcopy
 from pathlib import Path as SysPath
 from typing import Annotated, List
@@ -188,42 +187,37 @@ async def upload_structure_definition(
             detail="Invalid structure definition",
         )
     # import nodes depth-first
-    nodes = [
-        dict(
-            level=0,
-            position=i,
-            parent_id=None,
-            **structure_def.nodes[i].model_dump(by_alias=False),
-        )
-        for i in range(len(structure_def.nodes))
-    ]
-    structure_def = None
-    positions = [0] * len(text.levels)
-    positions[0] += len(nodes) - 1
-    while nodes:
-        node = nodes.pop(0)
-        node["id"] = (
-            await NodeDocument(
+    nodes = structure_def.model_dump(exclude_none=True, by_alias=False)["nodes"]
+    structure_def = None  # de-reference structure definition object
+    # apply parent IDs (None) to all 0-level nodes
+    for node in nodes:
+        node["parent_id"] = None
+    # process nodes level by level
+    for level in range(len(text.levels)):
+        if len(nodes) == 0:
+            break
+        # create NodeDocument instances for each node definition
+        node_docs = [
+            NodeDocument(
                 text_id=text_id,
-                label=node["label"],
-                level=node["level"],
-                position=node["position"],
-                parent_id=node["parent_id"],
-            ).create()
-        ).id
-        children_level = node["level"] + 1
-        if children_level >= len(text.levels):
-            continue
-        for child in node.get("nodes", []):
-            nodes.append(
-                dict(
-                    level=children_level,
-                    parent_id=node["id"],
-                    position=positions[children_level],
-                    **child,
-                )
+                parent_id=nodes[i]["parent_id"],
+                level=level,
+                position=i,
+                label=nodes[i]["label"],
             )
-            positions[children_level] += 1
+            for i in range(len(nodes))
+        ]
+        # bulk-insert documents
+        inserted_ids = (await NodeDocument.insert_many(node_docs)).inserted_ids
+        # collect children and their parents' IDs
+        children = []
+        for i in range(len(nodes)):
+            children_temp = nodes[i].get("nodes", [])
+            # apply parent ID
+            for c in children_temp:
+                c["parent_id"] = inserted_ids[i]
+            children += children_temp
+        nodes = children
 
 
 @router.post(

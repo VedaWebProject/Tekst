@@ -221,8 +221,7 @@ async def delete_node(
         # delete associated units
         units_deleted += (
             await UnitBaseDocument.find(
-                In(UnitBaseDocument.node_id, target_ids),
-                with_children=True
+                In(UnitBaseDocument.node_id, target_ids), with_children=True
             ).delete()
         ).deleted_count
         # collect child nodes to delete
@@ -240,9 +239,9 @@ async def delete_node(
             NodeDocument.position > target_nodes[0].position,
         ).inc({NodeDocument.position: len(target_nodes) * -1})
         # delete current target nodes
-        nodes_deleted += (await NodeDocument.find(
-            In(NodeDocument.id, target_ids)
-        ).delete()).deleted_count
+        nodes_deleted += (
+            await NodeDocument.find(In(NodeDocument.id, target_ids)).delete()
+        ).deleted_count
         to_delete.pop(0)
     return DeleteNodeResult(units=units_deleted, nodes=nodes_deleted)
 

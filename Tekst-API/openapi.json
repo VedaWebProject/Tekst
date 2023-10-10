@@ -1546,6 +1546,69 @@
         }
       }
     },
+    "/texts/{id}/structure": {
+      "post": {
+        "tags": [
+          "texts"
+        ],
+        "summary": "Upload structure definition",
+        "description": "Upload the structure definition for a text to apply as a structure of nodes",
+        "operationId": "uploadStructureDefinition",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_upload_structure_definition_texts__id__structure_post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/texts/{id}/level/{index}": {
       "post": {
         "tags": [
@@ -3019,6 +3082,21 @@
           "password"
         ],
         "title": "Body_reset_reset_password_auth_reset_password_post"
+      },
+      "Body_upload_structure_definition_texts__id__structure_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "title": "File",
+            "description": "JSON file containing the text's structure"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_upload_structure_definition_texts__id__structure_post"
       },
       "Body_verify_request_token_auth_request_verify_token_post": {
         "properties": {
