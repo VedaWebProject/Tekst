@@ -1,7 +1,7 @@
 from typing import Annotated
 
 from beanie import PydanticObjectId
-from beanie.operators import And
+from beanie.operators import And, In
 from fastapi import APIRouter, HTTPException, Path, Query, status
 
 from tekst.auth import SuperuserDep
@@ -201,38 +201,48 @@ async def delete_node(
     node_id: Annotated[PydanticObjectId, Path(alias="id")],
 ) -> DeleteNodeResult:
     node_doc = await NodeDocument.get(node_id)
+    text_id = node_doc.text_id
     if not node_doc:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Node {node_id} doesn't exist",
         )
     # delete node and everything associated with it
-    to_delete = [node_doc]
+    to_delete = [[node_doc]]
     units_deleted = 0
     nodes_deleted = 0
     while to_delete:
-        curr_node = to_delete[0]
+        target_nodes = to_delete[0]
+        if len(target_nodes) == 0:
+            to_delete.pop(0)
+            continue
+        target_level = target_nodes[0].level
+        target_ids = [n.id for n in target_nodes]
         # delete associated units
         units_deleted += (
             await UnitBaseDocument.find(
-                UnitBaseDocument.node_id == curr_node.id, with_children=True
+                In(UnitBaseDocument.node_id, target_ids),
+                with_children=True
             ).delete()
         ).deleted_count
         # collect child nodes to delete
-        to_delete += (
-            await NodeDocument.find(NodeDocument.parent_id == curr_node.id)
+        to_delete.append(
+            await NodeDocument.find(
+                In(NodeDocument.parent_id, target_ids),
+            )
             .sort(-NodeDocument.position)
             .to_list()
         )
         # decrement position value of all following sibling nodes on this level
         await NodeDocument.find(
-            NodeDocument.text_id == curr_node.text_id,
-            NodeDocument.level == curr_node.level,
-            NodeDocument.position > curr_node.position,
-        ).inc({NodeDocument.position: -1})
-        # delete current node
-        await curr_node.delete()
-        nodes_deleted += 1
+            NodeDocument.text_id == text_id,
+            NodeDocument.level == target_level,
+            NodeDocument.position > target_nodes[0].position,
+        ).inc({NodeDocument.position: len(target_nodes) * -1})
+        # delete current target nodes
+        nodes_deleted += (await NodeDocument.find(
+            In(NodeDocument.id, target_ids)
+        ).delete()).deleted_count
         to_delete.pop(0)
     return DeleteNodeResult(units=units_deleted, nodes=nodes_deleted)
 
