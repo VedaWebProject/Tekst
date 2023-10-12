@@ -171,6 +171,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function logout() {
+    router.push({ name: 'home' });
     if (!(await POST('/auth/cookie/logout', {})).error) {
       message.success($t('account.logoutSuccessful'));
     }
@@ -182,7 +183,6 @@ export const useAuthStore = defineStore('auth', () => {
         pfData.value?.texts.find((t) => t.id === pfData.value?.settings.defaultTextId) ||
         pfData.value?.texts[0];
     }
-    router.push({ name: 'home' });
   }
 
   async function updateUser(userUpdate: UserUpdate) {

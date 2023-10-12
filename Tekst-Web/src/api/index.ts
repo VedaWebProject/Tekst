@@ -34,7 +34,7 @@ const customFetch = async (input: RequestInfo | URL, init?: RequestInit | undefi
       const auth = useAuthStore();
       if (auth.loggedIn) {
         console.log('Running logout sequence in reaction to 401 response...');
-        auth.logout();
+        await auth.logout();
       }
     }
   } else if (response.status === 403) {
@@ -60,11 +60,6 @@ export const optionsPresets = {
       return new URLSearchParams(
         Object.entries(body).map(([key, value]) => [String(key), String(value)])
       ).toString();
-    },
-  },
-  multipartFormdata: {
-    headers: {
-      'Content-Type': 'multipart/form-data',
     },
   },
 };
