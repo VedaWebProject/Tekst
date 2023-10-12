@@ -18,7 +18,7 @@ import { onMounted } from 'vue';
 import { useMessages } from '@/messages';
 import { $t } from '@/i18n';
 import { watch } from 'vue';
-import type { Component } from 'vue';
+import type { Component, Ref } from 'vue';
 import { positiveButtonProps } from '@/components/dialogButtonProps';
 import RenameNodeModal from '@/components/admin/RenameNodeModal.vue';
 import AddNodeModal from '@/components/admin/AddNodeModal.vue';
@@ -30,6 +30,7 @@ import EditTwotone from '@vicons/material/EditTwotone';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import FileDownloadOutlined from '@vicons/material/FileDownloadOutlined';
 import FileUploadOutlined from '@vicons/material/FileUploadOutlined';
+import { computed } from 'vue';
 
 export interface NodeTreeOption extends TreeOption {
   level: number;
@@ -44,7 +45,22 @@ const dialog = useDialog();
 const treeData = ref<NodeTreeOption[]>([]);
 const dragNode = ref<NodeTreeOption | null>(null);
 const showWarnings = ref(true);
-const loading = ref(false);
+
+const loadingAdd = ref(false);
+const loadingRename = ref(false);
+const loadingDelete = ref(false);
+const loadingMove = ref(false);
+const loadingUpload = ref(false);
+const loadingData = ref(false);
+const loading = computed(
+  () =>
+    loadingAdd.value ||
+    loadingRename.value ||
+    loadingDelete.value ||
+    loadingData.value ||
+    loadingMove.value ||
+    loadingUpload.value
+);
 
 const showRenameModal = ref(false);
 const nodeToRename = ref<NodeTreeOption | null>(null);
@@ -152,17 +168,17 @@ async function moveNode(dropData: TreeDropInfo) {
 }
 
 async function handleDrop(dropData: TreeDropInfo) {
-  loading.value = true;
+  loadingMove.value = true;
   if (dropData.dragNode.level !== dropData.node.level) {
     message.error($t('admin.texts.nodes.errorNodeLeftLevel'));
   } else {
     await moveNode(dropData);
   }
-  loading.value = false;
+  loadingMove.value = false;
 }
 
 async function deleteNode(node: TreeOption) {
-  loading.value = true;
+  loadingDelete.value = true;
   const { data: result, error } = await DELETE('/nodes/{id}', {
     params: { path: { id: node.key?.toString() || '' } },
   });
@@ -178,7 +194,7 @@ async function deleteNode(node: TreeOption) {
   } else {
     message.error($t('errors.unexpected'));
   }
-  loading.value = false;
+  loadingDelete.value = false;
 }
 
 async function handleDeleteClick(node: NodeTreeOption) {
@@ -207,7 +223,7 @@ function handleRenameClick(node: NodeTreeOption) {
 }
 
 async function handleRenameResult(node: NodeRead | undefined) {
-  loading.value = true;
+  loadingRename.value = true;
   if (node) {
     message.success(
       $t('admin.texts.nodes.rename.msgSuccess', {
@@ -220,7 +236,7 @@ async function handleRenameResult(node: NodeRead | undefined) {
   }
   await loadTreeData(getTreeNodeByKey(nodeToRename.value?.parentKey));
   nodeToRename.value = null;
-  loading.value = false;
+  loadingRename.value = false;
 }
 
 function handleAddNodeClick(parent: NodeTreeOption | null = null) {
@@ -229,7 +245,7 @@ function handleAddNodeClick(parent: NodeTreeOption | null = null) {
 }
 
 async function handleAddResult(node: NodeRead | undefined) {
-  loading.value = true;
+  loadingAdd.value = true;
   if (node) {
     message.success(
       $t('admin.texts.nodes.add.msgSuccess', {
@@ -242,7 +258,7 @@ async function handleAddResult(node: NodeRead | undefined) {
   }
   await loadTreeData(getTreeNodeByKey(nodeParentToAddTo.value?.key?.toString()));
   nodeParentToAddTo.value = null;
-  loading.value = false;
+  loadingAdd.value = false;
 }
 
 async function handleDownloadTemplateClick() {
@@ -263,7 +279,7 @@ async function handleUploadStructureClick() {
 
   input.onchange = async () => {
     if (!input.files) return;
-    loading.value = true;
+    loadingUpload.value = true;
     const formData = new FormData();
     formData.append('file', input.files[0]);
     try {
@@ -285,10 +301,16 @@ async function handleUploadStructureClick() {
       const err: Error = error as Error;
       message.error($t('admin.texts.nodes.upload.msgError', { details: err.message }));
     } finally {
-      loading.value = false;
+      input.remove();
+      loadingUpload.value = false;
       loadTreeData();
     }
   };
+
+  input.onclose = () => {
+    input.remove();
+  };
+
   input.click();
 }
 
@@ -313,14 +335,19 @@ function renderLabel({ option }: { option: TreeOption }) {
   );
 }
 
-function renderSuffixButton(icon: Component, onClick: () => void, title?: string) {
+function renderSuffixButton(
+  icon: Component,
+  onClick: () => void,
+  title?: string,
+  loadingState?: Ref<boolean>
+) {
   return h(NButton, {
     type: 'primary',
     size: 'small',
     quaternary: true,
     title: title,
     circle: true,
-    loading: loading.value,
+    loading: loadingState?.value ?? loading.value,
     disabled: loading.value,
     renderIcon: () =>
       h(NIcon, null, {
@@ -342,19 +369,22 @@ function renderSuffix(info: { option: TreeOption; checked: boolean; selected: bo
       () => {
         handleRenameClick(info.option as NodeTreeOption);
       },
-      $t('admin.texts.nodes.rename.heading')
+      $t('admin.texts.nodes.rename.heading'),
+      loadingRename
     ),
     renderSuffixButton(
       DeleteFilled,
       () => handleDeleteClick(info.option as NodeTreeOption),
-      $t('admin.texts.nodes.tipDeleteNode', { node: info.option.label || '' })
+      $t('admin.texts.nodes.tipDeleteNode', { node: info.option.label || '' }),
+      loadingDelete
     ),
     info.option.isLeaf
       ? null
       : renderSuffixButton(
           AddOutlined,
           () => handleAddNodeClick(info.option as NodeTreeOption),
-          $t('admin.texts.nodes.add.tooltip')
+          $t('admin.texts.nodes.add.tooltip'),
+          loadingAdd
         ),
   ]);
 }
