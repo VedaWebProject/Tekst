@@ -164,6 +164,13 @@ export interface paths {
      */
     get: operations['downloadStructureTemplate'];
   };
+  '/texts/{id}/structure': {
+    /**
+     * Upload structure definition
+     * @description Upload the structure definition for a text to apply as a structure of nodes
+     */
+    post: operations['uploadStructureDefinition'];
+  };
   '/texts/{id}/level/{index}': {
     /** Insert level */
     post: operations['insertLevel'];
@@ -319,6 +326,15 @@ export interface components {
       token: string;
       /** Password */
       password: string;
+    };
+    /** Body_upload_structure_definition_texts__id__structure_post */
+    Body_upload_structure_definition_texts__id__structure_post: {
+      /**
+       * File
+       * Format: binary
+       * @description JSON file containing the text's structure
+       */
+      file: string;
     };
     /** Body_verify_request_token_auth_request_verify_token_post */
     Body_verify_request_token_auth_request_verify_token_post: {
@@ -1947,6 +1963,40 @@ export interface operations {
     responses: {
       /** @description Successful Response */
       200: {
+        content: {
+          'application/json': unknown;
+        };
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /**
+   * Upload structure definition
+   * @description Upload the structure definition for a text to apply as a structure of nodes
+   */
+  uploadStructureDefinition: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        'multipart/form-data': components['schemas']['Body_upload_structure_definition_texts__id__structure_post'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      201: {
         content: {
           'application/json': unknown;
         };

@@ -372,6 +372,9 @@ admin:
       rename:
         heading: Knoten umbenennen
         msgSuccess: Knoten "{oldName}" umbenannt zu "{newName}"
+      upload:
+        msgSuccess: Neue Textstruktur erfolgreich hochgeladen und verarbeitet
+        msgError: 'Fehler beim Hochladen und Verarbeiten der Textstruktur. Details: {details}'
   newText:
     heading: Neuer Text
     headerInfoMsg: |

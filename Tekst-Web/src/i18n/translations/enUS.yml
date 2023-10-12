@@ -355,6 +355,9 @@ admin:
       rename:
         heading: Rename Node
         msgSuccess: Node "{oldName}" renamed to "{newName}"
+      upload:
+        msgSuccess: New text structure uploaded and processed successfully
+        msgError: 'Error uploading and processing text structure. Details: {details}'
   newText:
     heading: New Text
     headerInfoMsg: |

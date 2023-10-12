@@ -254,7 +254,42 @@ async function handleDownloadTemplateClick() {
 }
 
 async function handleUploadStructureClick() {
-  // TODO
+  // unfortunately, this file upload doesn't work with our generated API client :(
+  const path = `/texts/${state.text?.id || ''}/structure`;
+  const apiEndpoint = getFullUrl(path);
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'application/json,.json';
+
+  input.onchange = async () => {
+    if (!input.files) return;
+    loading.value = true;
+    const formData = new FormData();
+    formData.append('file', input.files[0]);
+    try {
+      const response = await fetch(apiEndpoint, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+        },
+        body: formData,
+      });
+      if (response.ok) {
+        message.success($t('admin.texts.nodes.upload.msgSuccess'));
+      } else {
+        const detail = (await response.json()).detail;
+        const err = new Error(detail);
+        throw err;
+      }
+    } catch (error) {
+      const err: Error = error as Error;
+      message.error($t('admin.texts.nodes.upload.msgError', { details: err.message }));
+    } finally {
+      loading.value = false;
+      loadTreeData();
+    }
+  };
+  input.click();
 }
 
 function renderSwitcherIcon() {

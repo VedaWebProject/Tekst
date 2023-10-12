@@ -62,6 +62,11 @@ export const optionsPresets = {
       ).toString();
     },
   },
+  multipartFormdata: {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  },
 };
 
 export const getFullUrl = (path: string, query?: Record<string, any>) =>
