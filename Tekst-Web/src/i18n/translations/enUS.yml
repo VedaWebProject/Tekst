@@ -341,9 +341,12 @@ admin:
         It is recommended to make a backup of the current state of your
         database before making any changes, here.
       warnDeleteNode: |
-        If you delete this node, all data associated with it or its children will
+        If you delete this node, all data associated with it or its child nodes will
         be deleted with it. This can potentially affect all data layers,
-        even ones created by other users. Are you really sure?
+        even ones created by other users. If what you want to do can be achieved by
+        merely moving the node within the structure level it is on, you should do
+        so instead, as moving nodes works without deleting any data.
+        Now, are you really sure you want to delete the selected structure node?
       tipDeleteNode: Delete node "{node}"
       infoDeletedNode: Deleted node "{node}" (total of {nodes} nodes and {units} data units)
       infoMovedNode: Moved node "{node}" to position {position} on level "{level}"

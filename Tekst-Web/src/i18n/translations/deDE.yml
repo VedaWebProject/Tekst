@@ -360,7 +360,10 @@ admin:
         Wenn Sie diesen Knoten löschen, werden alle Daten, die mit ihm und allen
         seinen Kind-Knoten verbunden sind, ebenfalls gelöscht.
         Dies kann potenziell alle Datenschichten betreffen – auch jene,
-        die von anderen Benutzern angelegt wurden. Sind Sie sich wirklich sicher?
+        die von anderen Benutzern angelegt wurden. Falls Sie ihr Ziel auch durch das Verschieben
+        des Knotens auf seiner Strukturebene erreichen können, sollten sie das stattdessen tun,
+        da auf diese Weise keine Daten gelöscht würden.
+        Nun, sind Sie sich wirklich sicher, dass Sie den ausgewählten Knoten löschen wollen?
       tipDeleteNode: Knoten "{node}" löschen
       infoDeletedNode: Knoten "{node}" gelöscht (insgesamt {nodes} Knoten und {units} Daten-Einheiten)
       infoMovedNode: Knoten "{node}" auf position {position} von Ebene "{level}" verschoben
