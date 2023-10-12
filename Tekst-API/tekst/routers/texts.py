@@ -181,10 +181,10 @@ async def upload_structure_definition(
     # validate structure definition
     try:
         structure_def = TextStructureDefinition.model_validate_json(await file.read())
-    except Exception:
+    except Exception as e:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Invalid structure definition",
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=f"Invalid structure definition ({str(e)})",
         )
     # import nodes depth-first
     nodes = structure_def.model_dump(exclude_none=True, by_alias=False)["nodes"]
