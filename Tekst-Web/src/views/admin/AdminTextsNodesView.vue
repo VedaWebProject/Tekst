@@ -437,6 +437,7 @@ watch(
         <template #icon>
           <AddOutlined />
         </template>
+        {{ $t('admin.texts.nodes.lblBtnAddNodeFirstLevel') }}
       </n-button>
       <n-button
         secondary
@@ -447,6 +448,7 @@ watch(
         <template #icon>
           <FileDownloadOutlined />
         </template>
+        {{ $t('admin.texts.nodes.lblBtnDownloadTemplate') }}
       </n-button>
       <n-button
         secondary
@@ -457,6 +459,7 @@ watch(
         <template #icon>
           <FileUploadOutlined />
         </template>
+        {{ $t('admin.texts.nodes.lblBtnUploadStructure') }}
       </n-button>
     </div>
   </div>

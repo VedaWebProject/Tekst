@@ -342,8 +342,11 @@ admin:
         heading: Knoten zu "{parentLabel}" auf Ebene {level} hinzufügen
         tooltip: Knoten hinzufügen
         msgSuccess: Knoten "{label}" zu "{parentLabel}" hinzugefügt
+      lblBtnAddNodeFirstLevel: Hinzufügen
       tipBtnAddNodeFirstLevel: Knoten auf oberster Ebene hinzufügen
+      lblBtnDownloadTemplate: Vorlage
       tipBtnDownloadTemplate: Strukturdefinitions-Vorlage herunterladen
+      lblBtnUploadStructure: Importieren
       tipBtnUploadStructure: Strukturdefinition hochladen (nur bei leerer Struktur!)
       infoNoNodes: |
         Dieser Text hat noch keine Strukturknoten.

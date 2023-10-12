@@ -329,9 +329,12 @@ admin:
         heading: Add node to "{parentLabel}" on level {level}
         tooltip: Add node
         msgSuccess: Added node "{label}" to "{parentLabel}"
+      lblBtnAddNodeFirstLevel: Add
       tipBtnAddNodeFirstLevel: Add top-level node
+      lblBtnDownloadTemplate: Template
       tipBtnDownloadTemplate: Download structure definition template
-      tipBtnUploadStructure: Upload structure definition (only if structure is empty!)
+      lblBtnUploadStructure: Import
+      tipBtnUploadStructure: Import structure definition (only if structure is empty!)
       infoNoNodes: |
         This text does not have any structure nodes, yet. Add nodes to the text's
         structure levels using the interface below or download a structure template
