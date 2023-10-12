@@ -132,6 +132,7 @@ function getTreeNodeByKey(
 }
 
 async function moveNode(dropData: TreeDropInfo) {
+  message.info($t('init.loading'), 3);
   const { data, error } = await POST('/nodes/{id}/move', {
     params: {
       path: { id: dropData.dragNode.key?.toString() || '' },
@@ -430,6 +431,7 @@ watch(
       <n-button
         type="primary"
         :title="$t('admin.texts.nodes.tipBtnAddNodeFirstLevel')"
+        :disabled="loading"
         @click="handleAddNodeClick(null)"
       >
         <template #icon>
@@ -439,6 +441,7 @@ watch(
       <n-button
         secondary
         :title="$t('admin.texts.nodes.tipBtnDownloadTemplate')"
+        :disabled="loading"
         @click="handleDownloadTemplateClick()"
       >
         <template #icon>
@@ -448,7 +451,7 @@ watch(
       <n-button
         secondary
         :title="$t('admin.texts.nodes.tipBtnUploadStructure')"
-        :disabled="!!treeData.length"
+        :disabled="!!treeData.length || loading"
         @click="handleUploadStructureClick()"
       >
         <template #icon>
