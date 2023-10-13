@@ -126,17 +126,23 @@ async def get_path_options_by_head_id(
     # construct options for this path up to root node
     options = []
     while node_doc and node_doc.parent_id:
-        siblings = await NodeDocument.find(
-            NodeDocument.parent_id == node_doc.parent_id
-        ).sort(+NodeDocument.position).to_list()
+        siblings = (
+            await NodeDocument.find(NodeDocument.parent_id == node_doc.parent_id)
+            .sort(+NodeDocument.position)
+            .to_list()
+        )
         options.insert(0, siblings)
         node_doc = await NodeDocument.get(node_doc.parent_id)
     # lastly, insert options for root level
     if node_doc:
-        root_lvl_options = await NodeDocument.find(
-            NodeDocument.text_id == node_doc.text_id,
-            NodeDocument.level == 0,
-        ).sort(+NodeDocument.position).to_list()
+        root_lvl_options = (
+            await NodeDocument.find(
+                NodeDocument.text_id == node_doc.text_id,
+                NodeDocument.level == 0,
+            )
+            .sort(+NodeDocument.position)
+            .to_list()
+        )
         options.insert(0, root_lvl_options)
     return options
 

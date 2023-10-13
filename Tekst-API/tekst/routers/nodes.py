@@ -1,10 +1,11 @@
 from typing import Annotated
 
 from beanie import PydanticObjectId
-from beanie.operators import And, In
+from beanie.operators import And, In, NotIn
 from fastapi import APIRouter, HTTPException, Path, Query, status
 
 from tekst.auth import SuperuserDep
+from tekst.logging import log
 from tekst.models.text import (
     DeleteNodeResult,
     MoveNodeRequestBody,
@@ -257,74 +258,65 @@ async def move_node(
     node_id: Annotated[PydanticObjectId, Path(alias="id")],
     target: MoveNodeRequestBody,
 ) -> NodeRead:
-    node_doc = await NodeDocument.get(node_id)
-    if not node_doc:
+    # get node document
+    node: NodeDocument = await NodeDocument.get(node_id)
+    if not node:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Node {node_id} doesn't exist",
         )
-    # decrement position of all following nodes
-    await NodeDocument.find(
-        NodeDocument.text_id == node_doc.text_id,
-        NodeDocument.level == node_doc.level,
-        NodeDocument.position > node_doc.position,
-        NodeDocument.id != node_doc.id,
-    ).inc({NodeDocument.position: -1})
-    # move node
-    node_doc.position = target.position + (
-        1 if target.after and target.position < node_doc.position else 0
-    )
-    node_doc.parent_id = target.parent_id
-    await node_doc.save()
-    # increment position of all following nodes
-    await NodeDocument.find(
-        NodeDocument.text_id == node_doc.text_id,
-        NodeDocument.level == node_doc.level,
-        NodeDocument.position >= node_doc.position,
-        NodeDocument.id != node_doc.id,
-    ).inc({NodeDocument.position: 1})
-    # update nodes positions on all subsequent levels, if any
-    await update_node_positions_from_level(node_doc.level + 1, node_doc.text_id)
-    # return originally moved node
-    return node_doc
-
-
-async def update_node_positions_from_level(
-    level: int, text: PydanticObjectId | TextDocument
-) -> None:
-    """
-    Updates the positions of all nodes on the given level (>0)
-    and all subsequent levels. This assumes that the positions of the nodes on
-    the parent level of the given level are already correct!
-    """
-    # as we use the parents' positions to determine the position of the children,
-    # this only works for levels >= 1
-    if level < 1:
-        raise AttributeError("Level must be >= 1")
-    # check if text exists
-    if not isinstance(text, TextDocument):
-        if isinstance(text, PydanticObjectId):
-            text = await TextDocument.get(text)
-        else:
-            raise AttributeError("Text must be a TextDocument or PydanticObjectId")
-        if not text:
-            raise AttributeError("This text doesn't exist")
-    # check if level exists - stop here if it doesn't
-    if level >= len(text.levels):
-        return
-    # update the position of this level's nodes by using the parents' positions
-    pos = 0
-    async for parent in NodeDocument.find(
-        NodeDocument.text_id == text.id,
-        NodeDocument.level == level - 1,
-    ).sort(+NodeDocument.position):
-        # update this parent's children's positions
-        async for child in NodeDocument.find(
-            NodeDocument.parent_id == parent.id,
-        ).sort(+NodeDocument.position):
-            child.position = pos
-            pos += 1
-            await child.save()
-    # if there are levels below this level (higher level index), update them as well
-    if level + 1 < len(text.levels):
-        await update_node_positions_from_level(level + 1, text)
+    # define initial working vars
+    text_levels = len((await TextDocument.get(node.text_id)).levels)
+    forward = target.position > node.position
+    direction_mod = 1 if forward else -1
+    position = target.position + (1 if target.after else 0) - (1 if forward else 0)
+    distance = abs(position - node.position)
+    to_move = [node]
+    # set new node parent if needed
+    if node.parent_id != target.parent_id:
+        node.parent_id = target.parent_id
+        await node.save()
+    # move node and all children
+    for level in range(node.level, text_levels):
+        # determine sequence of nodes that have to be shifted
+        shift_start = (
+            (to_move[0].position + len(to_move))
+            if forward
+            else (to_move[0].position - distance)
+        )
+        shift_end = shift_start + distance - 1
+        log.debug(f"shift: {shift_start}-{shift_end} on level {level}")
+        to_shift = (
+            await NodeDocument.find(
+                NodeDocument.text_id == node.text_id,
+                NodeDocument.level == level,
+                NodeDocument.position >= shift_start,
+                NodeDocument.position <= shift_end,
+                NotIn(NodeDocument.id, [n.id for n in to_move]),
+            )
+            .sort(+NodeDocument.position)
+            .to_list()
+        )
+        # move nodes
+        await NodeDocument.find(In(NodeDocument.id, [n.id for n in to_move])).inc(
+            {NodeDocument.position: distance * direction_mod}
+        )
+        # shift jumped nodes
+        await NodeDocument.find(In(NodeDocument.id, [n.id for n in to_shift])).inc(
+            {NodeDocument.position: len(to_move) * direction_mod * -1}
+        )
+        # prepare next level
+        if level < text_levels - 1:
+            to_move = (
+                await NodeDocument.find(
+                    In(NodeDocument.parent_id, [n.id for n in to_move]),
+                )
+                .sort(+NodeDocument.position)
+                .to_list()
+            )
+            if not to_move:
+                break
+            distance = await NodeDocument.find(
+                In(NodeDocument.parent_id, [n.id for n in to_shift]),
+            ).count()
+    return await NodeDocument.get(node_id)
