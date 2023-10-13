@@ -464,7 +464,7 @@ watch(
     </div>
   </div>
 
-  <div v-if="treeData.length" class="content-block">
+  <div v-if="treeData.length" class="content-block" style="position: relative">
     <n-tree
       block-line
       :draggable="!loading"
@@ -475,10 +475,15 @@ watch(
       :render-label="renderLabel"
       :allow-drop="isDropAllowed"
       :render-suffix="renderSuffix"
-      :style="loading ? { opacity: 0.5, pointerEvents: 'none' } : {}"
+      :style="loading ? { opacity: 0.3, pointerEvents: 'none' } : {}"
       @dragstart="handleDragStart"
       @dragend="handleDragEnd"
       @drop="handleDrop"
+    />
+    <n-spin
+      v-if="loading"
+      style="position: absolute; top: 50%; left: 50%"
+      :description="$t('init.loading')"
     />
   </div>
 
