@@ -132,7 +132,6 @@ function getTreeNodeByKey(
 }
 
 async function moveNode(dropData: TreeDropInfo) {
-  message.info($t('init.loading'), 3);
   const { data, error } = await POST('/nodes/{id}/move', {
     params: {
       path: { id: dropData.dragNode.key?.toString() || '' },
