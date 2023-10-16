@@ -111,8 +111,7 @@ export const useBrowseStore = defineStore('browse', () => {
       });
       await loadUnitsData(layersData);
     } else {
-      console.error(error);
-      message.error('Error loading data layers for this location');
+      message.error('Error loading data layers for this location', error.detail?.toString());
     }
     loading.value = false;
   }
@@ -136,8 +135,7 @@ export const useBrowseStore = defineStore('browse', () => {
       // assign (potentially) fresh layers/untis data to store prop
       layers.value = layersData;
     } else {
-      console.error(error);
-      message.error('Error loading data layer units for this location');
+      message.error('Error loading data layer units for this location', error.detail?.toString());
     }
     loading.value = false;
   }

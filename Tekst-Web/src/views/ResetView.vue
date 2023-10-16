@@ -54,13 +54,13 @@ async function handlePasswordSave() {
             },
           });
           if (!error) {
-            message.success($t('account.resetPassword.success'), 10);
+            message.success($t('account.resetPassword.success'), undefined, 10);
             router.push({ name: 'home' });
           } else {
             if (error.detail === 'RESET_PASSWORD_BAD_TOKEN') {
               message.error($t('account.resetPassword.badToken'));
             } else {
-              message.error($t('errors.unexpected'));
+              message.error($t('errors.unexpected'), error.detail?.toString());
             }
             router.push({ name: 'home' });
           }

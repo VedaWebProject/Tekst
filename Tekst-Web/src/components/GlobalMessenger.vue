@@ -1,59 +1,22 @@
 <script setup lang="ts">
 import { defineComponent, h, watch } from 'vue';
-import {
-  NMessageProvider,
-  useMessage,
-  NAlert,
-  useThemeVars,
-  type MessageRenderMessage,
-} from 'naive-ui';
+import { NMessageProvider, useMessage, type MessageRenderMessage } from 'naive-ui';
 import { useMessages } from '@/messages';
-import Color from 'color';
 import type { RenderMessageProps } from 'naive-ui/es/message/src/types';
-
-const themeVars = useThemeVars();
+import GlobalMessage from '@/components/GlobalMessage.vue';
+import GlobalMessageContent from '@/components/GlobalMessageContent.vue';
 
 const renderMessage: MessageRenderMessage = (props: RenderMessageProps) => {
-  const { type } = props;
   return h(
-    'div',
+    GlobalMessage,
     {
-      style: {
-        backgroundColor: Color(themeVars.value.bodyColor).lighten(0.8).hex(),
-        borderRadius: themeVars.value.borderRadius,
-      },
+      type: props.type,
+      closable: props.closable,
+      onClose: props.onClose,
     },
-    h(
-      NAlert,
-      {
-        closable: props.closable,
-        onClose: props.onClose,
-        type: type === 'loading' ? 'default' : type,
-        showIcon: true,
-        style: {
-          boxShadow: 'var(--n-box-shadow)',
-          maxWidth: 'calc(100vw - 32px)',
-          width: '512px',
-          lineHeight: '1.5rem',
-          paddingRight: '36px',
-        },
-      },
-      {
-        default: () =>
-          h(
-            'div',
-            {
-              style: {
-                fontSize: 'var(--app-ui-font-size-small)',
-                margin: '-5px 0', // a dirty, but effective hack
-              },
-            },
-            {
-              default: () => props.content,
-            }
-          ),
-      }
-    )
+    {
+      default: props.content,
+    }
   );
 };
 
@@ -66,10 +29,18 @@ const MessageDispatcher = defineComponent({
         while (messageQueue.value.length > 0) {
           const msg = messageQueue.value.pop();
           msg &&
-            messageUtil.create(msg.text, {
+            messageUtil.create('', {
               type: msg.type,
-              duration: msg.durationSeconds * 1000,
-              render: renderMessage,
+              duration: msg.seconds * 1000,
+              render: (props) =>
+                renderMessage({
+                  ...props,
+                  content: () =>
+                    h(GlobalMessageContent, null, {
+                      default: () => msg.text,
+                      details: msg.details ? () => msg.details : undefined,
+                    }),
+                }),
             });
         }
       }

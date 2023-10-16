@@ -96,7 +96,7 @@ export const useAuthStore = defineStore('auth', () => {
     } else if (timeLeftS <= SESSION_WARN_AHEAD_S) {
       const minutes = Math.floor(timeLeftS / 60);
       const seconds = Math.round(timeLeftS % 60);
-      message.warning($t('account.autoLogout', { minutes, seconds }), 30);
+      message.warning($t('account.autoLogout', { minutes, seconds }), undefined, 30);
     }
   }
 
@@ -128,8 +128,8 @@ export const useAuthStore = defineStore('auth', () => {
       _setCookieExpiry();
       _startSessionCheck();
       // load user data
-      const { data: userData, error } = await GET('/users/me', {});
-      if (error) {
+      const { data: userData, error: userError } = await GET('/users/me', {});
+      if (userError) {
         message.error($t('errors.unexpected'));
         _cleanupSession();
         return false;
@@ -160,10 +160,10 @@ export const useAuthStore = defineStore('auth', () => {
         if (!error) {
           message.error($t('account.errors.notVerified'));
         } else {
-          message.error($t('errors.unexpected'));
+          message.error($t('errors.unexpected'), error.detail?.toString());
         }
       } else {
-        message.error($t('errors.unexpected'));
+        message.error($t('errors.unexpected'), error.detail?.toString());
       }
       _cleanupSession();
       return false;

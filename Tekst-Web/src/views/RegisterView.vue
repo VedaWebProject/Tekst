@@ -63,17 +63,20 @@ async function registerUser() {
     const activationHint = activationNeeded
       ? $t('register.activationNeededHint')
       : $t('register.activationNotNeededHint');
-    message.success(`${$t('register.success')} ${activationHint}`, activationNeeded ? 20 : 5);
+    message.success(
+      `${$t('register.success')} ${activationHint}`,
+      undefined,
+      activationNeeded ? 20 : 5
+    );
     // if no activation is needed, send verification link right away
     if (!activationNeeded && !pfData.value?.security?.closedMode) {
-      if (
-        !(
-          await POST('/auth/request-verify-token', { body: { email: formModel.value.email || '' } })
-        ).error
-      ) {
+      const { error: verifyTokenError } = await POST('/auth/request-verify-token', {
+        body: { email: formModel.value.email || '' },
+      });
+      if (!verifyTokenError) {
         message.warning($t('account.manage.msgVerifyEmailWarning'));
       } else {
-        message.error($t('errors.unexpected'));
+        message.error($t('errors.unexpected'), verifyTokenError.detail?.toString());
       }
     }
     switchToLogin();
@@ -89,7 +92,7 @@ async function registerUser() {
     } else if ((error.detail as Record<string, string>).code === 'REGISTER_INVALID_PASSWORD') {
       message.error($t('register.errors.weakPassword'));
     } else {
-      message.error($t('errors.unexpected'));
+      message.error($t('errors.unexpected'), error.detail?.toString());
     }
   }
   loading.value = false;

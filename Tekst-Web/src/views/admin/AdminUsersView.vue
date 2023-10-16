@@ -88,7 +88,7 @@ async function updateUser(user: UserRead, updates: UserUpdate) {
     loadUsers();
     return updatedUser;
   } else {
-    message.error($t('errors.unexpected'));
+    message.error($t('errors.unexpected'), error.detail?.toString());
   }
 }
 
@@ -132,7 +132,7 @@ function handleActiveClick(user: UserRead) {
             $t('admin.users.msgSentVerificationLink', { username: updatedUser.username })
           );
         } else {
-          message.error($t('admin.users.msgSentVerificationLinkError'));
+          message.error($t('admin.users.msgSentVerificationLinkError'), error.detail?.toString());
         }
       }
     },
@@ -162,7 +162,7 @@ function handleVerifiedClick(user: UserRead) {
             $t('admin.users.msgSentVerificationLink', { username: updatedUser.username })
           );
         } else {
-          message.error($t('admin.users.msgSentVerificationLinkError'));
+          message.error($t('admin.users.msgSentVerificationLinkError'), error.detail?.toString());
         }
       }
     },
@@ -185,7 +185,7 @@ function handleDeleteClick(user: UserRead) {
         message.success($t('admin.users.msgUserDeleted', { username: user.username }));
         loadUsers();
       } else {
-        message.error($t('errors.unexpected'));
+        message.error($t('errors.unexpected'), error.detail?.toString());
       }
     },
   });

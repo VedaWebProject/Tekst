@@ -62,6 +62,7 @@ init:
 
 errors:
   error: Fehler
+  details: Details
   serverI18n: Einige Übersetzungen konnten nicht geladen werden.
   platformData: Plattform-Daten konnten nicht geladen werden.
   unexpected: Ein unerwarteter Fehler ist aufgetreten. Das hätte nicht passieren dürfen.
@@ -377,7 +378,7 @@ admin:
         msgSuccess: Knoten "{oldName}" umbenannt zu "{newName}"
       upload:
         msgSuccess: Neue Textstruktur erfolgreich hochgeladen und verarbeitet
-        msgError: 'Fehler beim Hochladen und Verarbeiten der Textstruktur. Details: {details}'
+        msgError: 'Fehler beim Hochladen und Verarbeiten der Textstruktur'
   newText:
     heading: Neuer Text
     headerInfoMsg: |

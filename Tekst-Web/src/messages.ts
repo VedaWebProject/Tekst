@@ -1,10 +1,11 @@
 import type { MessageType } from 'naive-ui';
 import { ref } from 'vue';
 
-interface Message {
+export interface Message {
   text: string;
+  details?: string;
   type: MessageType;
-  durationSeconds: number;
+  seconds: number;
 }
 
 // this needs to be globally shared, so it's defined outside of the composable
@@ -12,12 +13,13 @@ const messageQueue = ref<Message[]>([]);
 
 export function useMessages() {
   function messageFn(type: MessageType) {
-    return (text: string, durationSeconds: number = 5) => {
+    return (text: string, details?: string, seconds: number = 5) => {
       messageQueue.value = messageQueue.value.concat([
         {
           text,
+          details,
           type,
-          durationSeconds,
+          seconds,
         },
       ]);
     };

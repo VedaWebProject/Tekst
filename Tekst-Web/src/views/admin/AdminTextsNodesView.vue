@@ -75,8 +75,7 @@ async function loadTreeData(node?: TreeOption) {
     },
   });
   if (error) {
-    message.error($t('errors.unexpected'));
-    console.error(error);
+    message.error($t('errors.unexpected'), error.detail?.toString());
     return;
   }
   const subTreeData: NodeTreeOption[] = data.map((child) => ({
@@ -151,7 +150,7 @@ async function moveNode(dropData: TreeDropInfo) {
       })
     );
   } else {
-    message.error($t('errors.unexpected'));
+    message.error($t('errors.unexpected'), error.detail?.toString());
   }
   // update tree data
   if (dropData.dragNode.parentKey === null) {
@@ -192,7 +191,7 @@ async function deleteNode(node: TreeOption) {
       })
     );
   } else {
-    message.error($t('errors.unexpected'));
+    message.error($t('errors.unexpected'), error.detail?.toString());
   }
   loadingDelete.value = false;
 }
@@ -299,7 +298,7 @@ async function handleUploadStructureClick() {
       }
     } catch (error) {
       const err: Error = error as Error;
-      message.error($t('admin.texts.nodes.upload.msgError', { details: err.message }));
+      message.error($t('admin.texts.nodes.upload.msgError', err.message));
     } finally {
       input.remove();
       loadingUpload.value = false;

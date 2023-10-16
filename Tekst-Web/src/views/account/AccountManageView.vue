@@ -126,9 +126,9 @@ async function updateEmail() {
     body: { email: emailFormModel.value.email || '' },
   });
   if (!error) {
-    message.warning($t('account.manage.msgVerifyEmailWarning'), 20);
+    message.warning($t('account.manage.msgVerifyEmailWarning'), undefined, 20);
   } else {
-    message.error($t('errors.unexpected'));
+    message.error($t('errors.unexpected'), error.detail?.toString());
   }
   auth.showLoginModal(
     $t('account.manage.msgVerifyEmailWarning'),

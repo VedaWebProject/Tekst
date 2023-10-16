@@ -61,6 +61,7 @@ init:
 
 errors:
   error: Error
+  details: Details
   serverI18n: Some translations could not be loaded.
   platformData: Could not load platform data.
   unexpected: An unexpected error occurred. This should not happen.
@@ -360,7 +361,7 @@ admin:
         msgSuccess: Node "{oldName}" renamed to "{newName}"
       upload:
         msgSuccess: New text structure uploaded and processed successfully
-        msgError: 'Error uploading and processing text structure. Details: {details}'
+        msgError: 'Error uploading and processing text structure'
   newText:
     heading: New Text
     headerInfoMsg: |

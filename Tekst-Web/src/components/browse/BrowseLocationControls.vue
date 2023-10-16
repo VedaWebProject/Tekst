@@ -103,8 +103,7 @@ async function updateSelectModelsFromLvl(lvl: number) {
     params: { path: { id: locationSelectModels.value[lvl].selected || '' } },
   });
   if (error) {
-    message.error($t('errors.unexpected'));
-    console.error(error);
+    message.error($t('errors.unexpected'), error.detail?.toString());
     return;
   }
   // set nodes for all following levels
@@ -144,8 +143,7 @@ async function initSelectModels() {
   });
 
   if (error) {
-    message.error($t('errors.unexpected'));
-    console.error(error);
+    message.error($t('errors.unexpected'), error.detail?.toString());
     return;
   }
   // apply browse level
