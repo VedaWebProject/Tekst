@@ -201,13 +201,12 @@ async function handleDeleteClick(node: NodeTreeOption) {
     deleteNode(node);
     return;
   }
-  const d = dialog.create({
+  const d = dialog.warning({
     title: $t('general.warning'),
     content: $t('admin.texts.nodes.warnDeleteNode', { nodeLabel: node.label }),
     positiveText: $t('general.deleteAction'),
     positiveButtonProps: positiveButtonProps,
     autoFocus: true,
-    closable: true,
     onPositiveClick: async () => {
       d.loading = true;
       await deleteNode(node);
