@@ -24,6 +24,7 @@ withDefaults(
       :component="icon"
       :size="iconSize"
       :color="iconColor === 'accent' ? 'var(--accent-color)' : 'inherit'"
+      style="opacity: 0.6"
     />
     <slot></slot>
   </component>

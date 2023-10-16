@@ -11,7 +11,7 @@ import IconHeading from '@/components/typography/IconHeading.vue';
 
 import FolderOffTwotone from '@vicons/material/FolderOffTwotone';
 import HourglassTopTwotone from '@vicons/material/HourglassTopTwotone';
-import MenuBookTwotone from '@vicons/material/MenuBookTwotone';
+import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
 import ErrorOutlineOutlined from '@vicons/material/ErrorOutlineOutlined';
 
 const browse = useBrowseStore();
@@ -22,7 +22,7 @@ const activeLayers = computed(() => {
 </script>
 
 <template>
-  <IconHeading level="1" :icon="MenuBookTwotone">
+  <IconHeading level="1" :icon="MenuBookOutlined">
     <LocationLabel />&nbsp;
     <HelpButtonWidget />
   </IconHeading>
