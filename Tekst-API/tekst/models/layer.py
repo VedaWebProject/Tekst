@@ -25,8 +25,8 @@ class LayerBase(ModelBase, ModelFactoryMixin):
         str | None,
         Field(
             min_length=1,
-            max_length=128,
-            description="Short, one-line description of this data layer",
+            max_length=512,
+            description="Short, concise description of this data layer",
         ),
     ] = None
     text_id: Annotated[
@@ -69,7 +69,7 @@ class LayerBase(ModelBase, ModelFactoryMixin):
     def handle_whitespaces_in_description(cls, v):
         if not isinstance(v, str):
             return None
-        return re.sub(r"[\s\n]+", " ", v)
+        return re.sub(r"[\s\n\r]+", " ", v)
 
     @field_validator("layer_type")
     @classmethod

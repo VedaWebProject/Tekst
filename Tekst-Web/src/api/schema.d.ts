@@ -571,7 +571,7 @@ export interface components {
       title: string;
       /**
        * Description
-       * @description Short, one-line description of this data layer
+       * @description Short, concise description of this data layer
        */
       description?: string | null;
       /**
@@ -651,7 +651,7 @@ export interface components {
       title: string;
       /**
        * Description
-       * @description Short, one-line description of this data layer
+       * @description Short, concise description of this data layer
        */
       description?: string | null;
       /**

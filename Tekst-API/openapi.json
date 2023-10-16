@@ -3516,7 +3516,7 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 128,
+                "maxLength": 512,
                 "minLength": 1
               },
               {
@@ -3524,7 +3524,7 @@
               }
             ],
             "title": "Description",
-            "description": "Short, one-line description of this data layer"
+            "description": "Short, concise description of this data layer"
           },
           "textId": {
             "anyOf": [
@@ -3664,7 +3664,7 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 128,
+                "maxLength": 512,
                 "minLength": 1
               },
               {
@@ -3672,7 +3672,7 @@
               }
             ],
             "title": "Description",
-            "description": "Short, one-line description of this data layer"
+            "description": "Short, concise description of this data layer"
           },
           "textId": {
             "anyOf": [
