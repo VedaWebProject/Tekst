@@ -12,7 +12,7 @@ withDefaults(
   {
     icon: undefined,
     iconSize: '1em',
-    iconColor: 'text',
+    iconColor: 'accent',
   }
 );
 </script>
@@ -24,7 +24,6 @@ withDefaults(
       :component="icon"
       :size="iconSize"
       :color="iconColor === 'accent' ? 'var(--accent-color)' : 'inherit'"
-      style="opacity: 0.6"
     />
     <slot></slot>
   </component>
