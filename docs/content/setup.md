@@ -105,7 +105,7 @@ sudo chmod u=rw,go= secrets/*
 Build the docker images for the **Tekst-API** (server) and **Tekst-Web** (client) applications.
 
 ```sh
-docker compose build tekst-api tekst-web
+docker compose build server client
 ```
 
 ... now grab a (small) coffee ☕
