@@ -400,7 +400,7 @@ watch(
 <template>
   <h2>
     {{ $t('admin.texts.nodes.heading') }}
-    <HelpButtonWidget />
+    <HelpButtonWidget help-key="adminTextsNodesView" />
   </h2>
 
   <n-alert v-if="treeData.length" closable :title="$t('general.warning')" type="warning">

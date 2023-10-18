@@ -37,7 +37,7 @@ const showModal = ref(false);
   >
     <IconHeading level="1" :icon="SearchRound">
       {{ $t('search.quickSearch.heading') }}
-      <HelpButtonWidget />
+      <HelpButtonWidget help-key="quickSearch" />
     </IconHeading>
 
     <n-input round size="large" placeholder="...">

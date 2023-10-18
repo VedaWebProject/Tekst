@@ -105,7 +105,11 @@ h5:first-child {
   max-width: 95%;
 }
 
-.tekst-modal-small {
+.tekst-modal-wide {
+  width: 900px;
+}
+
+.tekst-modal-narrow {
   width: 480px;
 }
 

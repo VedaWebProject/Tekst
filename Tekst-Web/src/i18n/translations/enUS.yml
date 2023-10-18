@@ -383,4 +383,8 @@ search:
   nothingFound: Nothing found
 
 help:
-  helpButtonTitle: Show help
+  help: Help
+  tipHelpButton: Show help
+  msgFoundCount: Found {count} entries
+  errorNotFound: This help text entry could not be loaded.
+  msgNoHelpTextsFound: No help entries could be found.

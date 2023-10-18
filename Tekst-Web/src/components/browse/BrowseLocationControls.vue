@@ -277,7 +277,7 @@ whenever(ArrowLeft, () => {
   >
     <h2>
       {{ $t('browse.location.modalHeading') }}
-      <HelpButtonWidget />
+      <HelpButtonWidget help-key="browseLocationControls" />
     </h2>
     <n-form
       label-placement="left"

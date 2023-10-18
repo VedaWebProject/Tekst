@@ -8,7 +8,7 @@ import ManageSearchFilled from '@vicons/material/ManageSearchFilled';
 <template>
   <IconHeading level="1" :icon="ManageSearchFilled">
     {{ $t('search.heading') }}
-    <HelpButtonWidget />
+    <HelpButtonWidget help-key="searchView" />
   </IconHeading>
   <div class="content-block">
     <p>...</p>

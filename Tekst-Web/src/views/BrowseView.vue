@@ -24,7 +24,7 @@ const activeLayers = computed(() => {
 <template>
   <IconHeading level="1" :icon="MenuBookOutlined">
     <LocationLabel />&nbsp;
-    <HelpButtonWidget />
+    <HelpButtonWidget help-key="browseView" />
   </IconHeading>
 
   <BrowseToolbar />

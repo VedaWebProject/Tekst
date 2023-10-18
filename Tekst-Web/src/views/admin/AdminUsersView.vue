@@ -201,7 +201,7 @@ onMounted(() => {
 <template>
   <IconHeading level="1" :icon="PeopleFilled">
     {{ $t('admin.heading') }}: {{ $t('admin.users.heading') }}
-    <HelpButtonWidget />
+    <HelpButtonWidget help-key="adminUsersView" />
   </IconHeading>
 
   <template v-if="users && !error">

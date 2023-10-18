@@ -1,20 +1,45 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { NModal, NButton, NIcon } from 'naive-ui';
+import { NModal, NButton, NIcon, NSpin } from 'naive-ui';
 
 import QuestionMarkFilled from '@vicons/material/QuestionMarkFilled';
 import type { Size } from 'naive-ui/es/button/src/interface';
+import { $t } from '@/i18n';
+import { useHelp, type HelpText } from '@/help';
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
+    helpKey: string;
     size?: Size;
   }>(),
-  { size: 'tiny' }
+  {
+    size: 'tiny',
+  }
 );
 
+const { getHelpText } = useHelp();
 const showModal = ref(false);
-const title = ref('...');
-const content = ref('...');
+const loading = ref(false);
+const helpText = ref<HelpText>();
+
+async function loadHelp() {
+  loading.value = true;
+  try {
+    helpText.value = await getHelpText(props.helpKey);
+  } catch {
+    helpText.value = undefined;
+  }
+  loading.value = false;
+}
+
+async function handleClose() {
+  helpText.value = undefined;
+}
+
+async function handleHelpButtonClick() {
+  loadHelp();
+  showModal.value = true;
+}
 </script>
 
 <template>
@@ -24,9 +49,9 @@ const content = ref('...');
       circle
       color="var(--accent-color)"
       :size="size"
-      :title="$t('help.helpButtonTitle')"
+      :title="$t('help.tipHelpButton')"
       style="vertical-align: super"
-      @click="showModal = true"
+      @click="handleHelpButtonClick"
     >
       <template #icon>
         <n-icon :component="QuestionMarkFilled" />
@@ -36,16 +61,25 @@ const content = ref('...');
 
   <n-modal
     v-model:show="showModal"
+    display-directive="if"
     preset="card"
-    class="tekst-modal"
+    class="tekst-modal-wide"
     size="large"
     :bordered="false"
     :auto-focus="false"
     :closable="true"
     to="#app-container"
-    :title="title"
+    :title="$t('help.help')"
     embedded
+    @after-leave="handleClose"
   >
-    {{ content }}
+    <!-- eslint-disable-next-line vue/no-v-html -->
+    <div v-if="helpText" v-html="helpText.content"></div>
+    <n-spin
+      v-else-if="loading"
+      :description="$t('init.loading')"
+      style="width: 100%; display: flex; justify-content: center"
+    />
+    <div v-else>{{ $t('help.errorNotFound') }}</div>
   </n-modal>
 </template>

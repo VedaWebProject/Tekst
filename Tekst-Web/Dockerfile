@@ -9,7 +9,7 @@ ENV TEKST_SERVER_URL=$SERVER_URL \
 
 WORKDIR "/app"
 COPY . .
-RUN npm install && npm run build-only -- --base=$WEB_PATH
+RUN npm install && npm run build -- --base=$WEB_PATH
 
 
 FROM caddy:2.6-alpine AS prod

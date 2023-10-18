@@ -400,4 +400,8 @@ search:
   nothingFound: Nichts gefunden
 
 help:
-  helpButtonTitle: Hilfe anzeigen
+  help: Hilfe
+  tipHelpButton: Hilfe anzeigen
+  msgFoundCount: '{count} Einträge gefunden'
+  errorNotFound: Dieser Hilfe-Text konnte nicht geladen werden.
+  msgNoHelpTextsFound: Es konnten keine Hilfe-Einträge gefunden werden.

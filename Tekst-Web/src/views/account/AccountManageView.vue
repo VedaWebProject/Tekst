@@ -220,7 +220,7 @@ async function handlepublicFieldsSave() {
 <template>
   <IconHeading level="1" :icon="ManageAccountsRound">
     {{ $t('account.manage.heading', { username: auth.user?.username }) }}
-    <HelpButtonWidget />
+    <HelpButtonWidget help-key="accountManageView" />
   </IconHeading>
 
   <n-grid class="account-mgmt-grid" cols="1 m:2" responsive="screen" x-gap="18px" y-gap="18px">
@@ -399,7 +399,7 @@ async function handlepublicFieldsSave() {
       <div class="content-block">
         <h2>
           {{ $t('account.manage.headingChangePublicFields') }}
-          <HelpButtonWidget />
+          <HelpButtonWidget help-key="accountPublicFields" />
         </h2>
         <n-form
           ref="publicFieldsFormRef"

@@ -32,7 +32,7 @@ tasks:
   dev:
     desc: Run development server
     cmds:
-      - npm run dev
+      - npm run start
     silent: true
     ignore_error: true
 
@@ -51,12 +51,18 @@ tasks:
     cmds:
       - npm run build
 
-  preview:
-    desc: Preview project
-    cmds:
-      - npm run preview
-
   generate-api-types:
     cmds:
       - cmd: npx openapi-typescript ../Tekst-API/openapi.json -o ./src/api/schema.d.ts
       - cmd: npx eslint ./src/api/schema.d.ts --fix
+
+  help-texts:
+    cmds:
+      - node scripts/parseHelpTexts.mjs
+      - npx eslint src/assets/help/index.ts --fix
+
+  pre-commit:
+    cmds:
+      - task: generate-api-types
+      - task: help-texts
+      - task: lint

@@ -38,7 +38,7 @@ const layerTypes = computed(() => {
 <template>
   <IconHeading level="1" :icon="BarChartRound">
     {{ $t('admin.heading') }}: {{ $t('admin.statistics.heading') }}
-    <HelpButtonWidget />
+    <HelpButtonWidget help-key="adminStatisticsView" />
   </IconHeading>
 
   <div v-if="stats && !error" style="margin-top: 1rem">

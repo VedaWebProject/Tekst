@@ -112,7 +112,7 @@ function handleSave() {
 <template>
   <h2>
     {{ $t('admin.texts.general.heading') }}
-    <HelpButtonWidget />
+    <HelpButtonWidget help-key="adminTextsGeneralView" />
   </h2>
 
   <div class="content-block">

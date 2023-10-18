@@ -184,7 +184,7 @@ async function handleModalSubmit() {
 <template>
   <h2>
     {{ $t('admin.texts.levels.heading') }}
-    <HelpButtonWidget />
+    <HelpButtonWidget help-key="adminTextsLevelsView" />
   </h2>
 
   <div class="content-block">

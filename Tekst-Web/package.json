@@ -3,17 +3,20 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "vite",
+    "start": "vite",
+    "prestart": "node scripts/parseHelpTexts.mjs; eslint src/assets/help/index.ts --fix",
+    "build-only": "vite build",
     "build": "run-p type-check build-only",
+    "prebuild": "node scripts/parseHelpTexts.mjs; eslint src/assets/help/index.ts --fix",
     "preview": "vite preview",
     "test:e2e": "start-server-and-test preview :4173 'cypress run --e2e'",
     "test:e2e:dev": "start-server-and-test 'vite dev --port 4173' :4173 'cypress open --e2e'",
     "test:unit": "cypress run --component",
     "test:unit:dev": "cypress open --component",
-    "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.cypress-ct.json --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "format": "prettier . --write"
+    "format": "prettier . --write",
+    "prepare": "node scripts/parseHelpTexts.mjs; eslint src/assets/help/index.ts --fix"
   },
   "dependencies": {
     "@vueuse/core": "^10.3.0",
@@ -48,6 +51,8 @@
     "eslint": "^8.45.0",
     "eslint-plugin-cypress": "^2.13.3",
     "eslint-plugin-vue": "^9.16.1",
+    "isomorphic-dompurify": "^1.9.0",
+    "marked": "^9.1.2",
     "naive-ui": "^2.34.4",
     "npm-run-all": "^4.1.5",
     "openapi-typescript": "^6.5.3",
