@@ -399,7 +399,7 @@ async function handlepublicFieldsSave() {
       <div class="content-block">
         <h2>
           {{ $t('account.manage.headingChangePublicFields') }}
-          <HelpButtonWidget help-key="accountPublicFields" />
+          <HelpButtonWidget help-key="accountManagePublicFields" />
         </h2>
         <n-form
           ref="publicFieldsFormRef"
