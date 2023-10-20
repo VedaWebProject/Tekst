@@ -270,7 +270,7 @@ async function handleDownloadTemplateClick() {
 async function handleUploadStructureClick() {
   // unfortunately, this file upload doesn't work with our generated API client :(
   const path = `/texts/${state.text?.id || ''}/structure`;
-  const apiEndpoint = getFullUrl(path);
+  const endpointUrl = getFullUrl(path);
   const input = document.createElement('input');
   input.type = 'file';
   input.accept = 'application/json,.json';
@@ -281,7 +281,7 @@ async function handleUploadStructureClick() {
     const formData = new FormData();
     formData.append('file', input.files[0]);
     try {
-      const response = await fetch(apiEndpoint, {
+      const response = await fetch(endpointUrl, {
         method: 'POST',
         headers: {
           Accept: 'application/json',

@@ -1,6 +1,5 @@
 import createClient from 'openapi-fetch';
 import type { paths, components } from '@/api/schema';
-import queryString from 'query-string';
 import { useAuthStore } from '@/stores';
 import Cookies from 'js-cookie';
 import { useMessages } from '@/messages';
@@ -48,7 +47,6 @@ const customFetch = async (input: RequestInfo | URL, init?: RequestInit | undefi
 export const { GET, POST, PUT, PATCH, DELETE } = createClient<paths>({
   baseUrl: apiUrl,
   fetch: customFetch,
-  querySerializer: (q) => queryString.stringify(q, { arrayFormat: 'none' }),
 });
 
 export const optionsPresets = {
@@ -64,8 +62,14 @@ export const optionsPresets = {
   },
 };
 
-export const getFullUrl = (path: string, query?: Record<string, any>) =>
-  apiUrl + path + (query ? '?' + queryString.stringify(query, { arrayFormat: 'none' }) : '');
+export function getFullUrl(path: string, query?: Record<string, any>): URL {
+  const searchParams = new URLSearchParams(
+    Object.fromEntries(Object.entries(query || {}).map(([key, value]) => [key, String(value)]))
+  );
+  const queryString = searchParams.toString() ? '?' + searchParams.toString() : '';
+  const relPath = path.replace(/^\/+/, '');
+  return new URL(relPath + queryString, apiUrl.replace(/\/*$/, '/'));
+}
 
 // export components types for use throughout codebase
 export type UserCreate = components['schemas']['UserCreate'];

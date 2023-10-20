@@ -25,9 +25,8 @@
     "lodash.get": "^4.4.2",
     "lodash.merge": "^4.6.2",
     "normalize.css": "^8.0.1",
-    "openapi-fetch": "^0.7.4",
+    "openapi-fetch": "^0.8.0",
     "pinia": "^2.1.4",
-    "query-string": "^8.1.0",
     "vue": "^3.3.4",
     "vue-i18n": "^9.3.0",
     "vue-router": "^4.2.4"
