@@ -81,6 +81,7 @@ const nUiDateLocale = computed(() => localeProfiles[state.locale].nUiDateLocale)
 
   --main-bg-color: v-bind(mainBgColor);
   --content-bg-color: v-bind(contentBgColor);
+  --text-color: v-bind(themeVars.textColor3);
 
   /* NaiveUI feedback colors */
   --col-info: v-bind(themeVars.infoColor);

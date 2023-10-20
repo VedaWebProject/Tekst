@@ -76,7 +76,15 @@ h2:first-child,
 h3:first-child,
 h4:first-child,
 h5:first-child {
-  margin-top: 0px;
+  margin-top: .25rem;
+}
+
+li > p {
+  margin: 0;
+}
+
+blockquote {
+  font-style: italic;
 }
 
 .form-container {
