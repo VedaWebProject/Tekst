@@ -1,21 +1,29 @@
 <script setup lang="ts">
-import { NButton, NIcon } from 'naive-ui';
+import { computed, onUnmounted, watch, h, type Component, type CSSProperties } from 'vue';
+import { NSelect, NButton, NIcon, type SelectOption } from 'naive-ui';
 import { useEditor, EditorContent } from '@tiptap/vue-3';
 import StarterKit from '@tiptap/starter-kit';
-import { computed, onUnmounted, watch, h, type Component, type CSSProperties, ref } from 'vue';
+import TextAlign from '@tiptap/extension-text-align';
+import Link from '@tiptap/extension-link';
 
 import FormatBoldOutlined from '@vicons/material/FormatBoldOutlined';
 import FormatItalicOutlined from '@vicons/material/FormatItalicOutlined';
 import CodeOutlined from '@vicons/material/CodeOutlined';
 import FormatClearOutlined from '@vicons/material/FormatClearOutlined';
-import FormatQuoteOutlined from '@vicons/material/FormatQuoteOutlined';
+import FormatQuoteFilled from '@vicons/material/FormatQuoteFilled';
 import FormatListBulletedOutlined from '@vicons/material/FormatListBulletedOutlined';
 import FormatListNumberedOutlined from '@vicons/material/FormatListNumberedOutlined';
 import HorizontalRuleOutlined from '@vicons/material/HorizontalRuleOutlined';
 import KeyboardReturnOutlined from '@vicons/material/KeyboardReturnOutlined';
 import UndoOutlined from '@vicons/material/UndoOutlined';
 import RedoOutlined from '@vicons/material/RedoOutlined';
-import HtmlOutlined from '@vicons/material/HtmlOutlined';
+import FormatAlignLeftOutlined from '@vicons/material/FormatAlignLeftOutlined';
+import FormatAlignCenterOutlined from '@vicons/material/FormatAlignCenterOutlined';
+import FormatAlignRightOutlined from '@vicons/material/FormatAlignRightOutlined';
+import FormatAlignJustifyOutlined from '@vicons/material/FormatAlignJustifyOutlined';
+import InsertLinkOutlined from '@vicons/material/InsertLinkOutlined';
+import FormatSizeOutlined from '@vicons/material/FormatSizeOutlined';
+import ShortTextOutlined from '@vicons/material/ShortTextOutlined';
 
 const props = withDefaults(
   defineProps<{
@@ -30,8 +38,7 @@ const props = withDefaults(
 );
 
 const emit = defineEmits(['update:document']);
-
-const showHtml = ref(false);
+const currentBlockType = computed(() => blockTypeOptions.find((o) => o.isActive())?.value);
 
 const editor = useEditor({
   content: props.document,
@@ -40,6 +47,12 @@ const editor = useEditor({
       heading: {
         levels: [1, 2, 3, 4],
       },
+    }),
+    TextAlign.configure({
+      types: ['heading', 'paragraph'],
+    }),
+    Link.configure({
+      openOnClick: false,
     }),
   ],
   injectCSS: false,
@@ -59,19 +72,130 @@ const editor = useEditor({
   },
 });
 
+const blockTypeOptions = [
+  {
+    label: 'Heading 1',
+    value: 'h1',
+    action: () => editor.value?.chain().focus().toggleHeading({ level: 1 }).run(),
+    isActive: () => editor.value?.isActive('heading', { level: 1 }),
+    iconComponent: FormatSizeOutlined,
+  },
+  {
+    label: 'Heading 2',
+    value: 'h2',
+    action: () => editor.value?.chain().focus().toggleHeading({ level: 2 }).run(),
+    isActive: () => editor.value?.isActive('heading', { level: 2 }),
+    iconComponent: FormatSizeOutlined,
+  },
+  {
+    label: 'Heading 3',
+    value: 'h3',
+    action: () => editor.value?.chain().focus().toggleHeading({ level: 3 }).run(),
+    isActive: () => editor.value?.isActive('heading', { level: 3 }),
+    iconComponent: FormatSizeOutlined,
+  },
+  {
+    label: 'Heading 4',
+    value: 'h4',
+    action: () => editor.value?.chain().focus().toggleHeading({ level: 4 }).run(),
+    isActive: () => editor.value?.isActive('heading', { level: 4 }),
+    iconComponent: FormatSizeOutlined,
+  },
+  {
+    label: 'Bulleted List',
+    value: 'bulletedList',
+    action: () => editor.value?.chain().focus().toggleBulletList().run(),
+    isActive: () => editor.value?.isActive('bulletList'),
+    iconComponent: FormatListBulletedOutlined,
+  },
+  {
+    label: 'Numbered List',
+    value: 'numberedList',
+    action: () => editor.value?.chain().focus().toggleOrderedList().run(),
+    isActive: () => editor.value?.isActive('orderedList'),
+    iconComponent: FormatListNumberedOutlined,
+  },
+  {
+    label: 'Blockquote',
+    value: 'blockQuote',
+    action: () => editor.value?.chain().focus().toggleBlockquote().run(),
+    isActive: () => editor.value?.isActive('blockquote'),
+    iconComponent: FormatQuoteFilled,
+  },
+  {
+    label: 'Code Block',
+    value: 'code',
+    action: () => editor.value?.chain().focus().toggleCodeBlock().run(),
+    isActive: () => editor.value?.isActive('codeBlock'),
+    iconComponent: CodeOutlined,
+  },
+  {
+    label: 'Normal',
+    value: 'normal',
+    action: () => editor.value?.chain().focus().setParagraph().run(),
+    isActive: () => editor.value?.isActive('paragraph'),
+    iconComponent: ShortTextOutlined,
+  },
+];
+
 const toolbarStyles = computed<CSSProperties>(() => ({
   fontSize: { small: 18, medium: 22, large: 24 }[props.toolbarSize],
 }));
 
-function renderToolbarIcon(icon: Component) {
+function renderToolbarIcon(icon?: Component) {
   return () =>
     h(
       NIcon,
       { size: toolbarStyles.value.fontSize },
       {
-        default: () => h(icon),
+        default: icon ? () => h(icon) : undefined,
       }
     );
+}
+
+function renderBlockTypeOption(option: SelectOption) {
+  return [
+    h(
+      NIcon,
+      {
+        style: {
+          verticalAlign: '-0.15em',
+          marginRight: '4px',
+        },
+      },
+      {
+        default: () => h(option.iconComponent as Component),
+      }
+    ),
+    option.label as string,
+  ];
+}
+
+function handleLinkClick() {
+  const previousUrl = editor.value?.getAttributes('link').href;
+  const url = window.prompt('URL', previousUrl);
+
+  // cancelled
+  if (url === null) {
+    return;
+  }
+
+  // empty
+  if (url === '') {
+    if (editor.value?.isActive('link')) {
+      editor.value?.chain().focus().unsetLink().run();
+    } else {
+      editor.value?.chain().focus().extendMarkRange('link').unsetLink().run();
+    }
+    return;
+  }
+
+  // update link
+  editor.value?.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
+}
+
+function handleSelectBlockType(value: string, option: SelectOption) {
+  (option.action as () => void)();
 }
 
 watch(
@@ -90,6 +214,16 @@ onUnmounted(() => {
 <template>
   <div>
     <div v-if="editor" class="toolbar">
+      <n-select
+        :value="currentBlockType"
+        :options="blockTypeOptions"
+        :size="toolbarSize"
+        :consistent-menu-width="false"
+        :render-label="renderBlockTypeOption"
+        style="width: auto; flex-grow: 2"
+        @update:value="handleSelectBlockType"
+      />
+      <div class="spacer"></div>
       <n-button
         :style="toolbarStyles"
         :size="toolbarSize"
@@ -102,18 +236,27 @@ onUnmounted(() => {
         :style="toolbarStyles"
         :size="toolbarSize"
         :disabled="!editor.can().chain().focus().toggleItalic().run()"
-        :class="{ 'is-active': editor.isActive('italic') }"
+        :type="(editor.isActive('italic') && 'primary') || undefined"
         :render-icon="renderToolbarIcon(FormatItalicOutlined)"
         @click="editor.chain().focus().toggleItalic().run()"
+      />
+      <div class="spacer"></div>
+      <n-button
+        :style="toolbarStyles"
+        :size="toolbarSize"
+        :type="(editor.isActive('link') && 'primary') || undefined"
+        :render-icon="renderToolbarIcon(InsertLinkOutlined)"
+        @click="handleLinkClick"
       />
       <n-button
         :style="toolbarStyles"
         :size="toolbarSize"
         :disabled="!editor.can().chain().focus().toggleCode().run()"
-        :class="{ 'is-active': editor.isActive('code') }"
+        :type="(editor.isActive('code') && 'primary') || undefined"
         :render-icon="renderToolbarIcon(CodeOutlined)"
         @click="editor.chain().focus().toggleCode().run()"
       />
+      <div class="spacer"></div>
       <n-button
         :style="toolbarStyles"
         :size="toolbarSize"
@@ -125,66 +268,36 @@ onUnmounted(() => {
           }
         "
       />
+      <div class="spacer"></div>
       <n-button
         :style="toolbarStyles"
         :size="toolbarSize"
-        :class="{ 'is-active': editor.isActive('heading', { level: 1 }) }"
-        @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
-      >
-        H1
-      </n-button>
-      <n-button
-        :style="toolbarStyles"
-        :size="toolbarSize"
-        :class="{ 'is-active': editor.isActive('heading', { level: 2 }) }"
-        @click="editor.chain().focus().toggleHeading({ level: 2 }).run()"
-      >
-        H2
-      </n-button>
-      <n-button
-        :style="toolbarStyles"
-        :size="toolbarSize"
-        :class="{ 'is-active': editor.isActive('heading', { level: 3 }) }"
-        @click="editor.chain().focus().toggleHeading({ level: 3 }).run()"
-      >
-        H3
-      </n-button>
-      <n-button
-        :style="toolbarStyles"
-        :size="toolbarSize"
-        :class="{ 'is-active': editor.isActive('heading', { level: 4 }) }"
-        @click="editor.chain().focus().toggleHeading({ level: 4 }).run()"
-      >
-        H4
-      </n-button>
-      <n-button
-        :style="toolbarStyles"
-        :size="toolbarSize"
-        :class="{ 'is-active': editor.isActive('bulletList') }"
-        :render-icon="renderToolbarIcon(FormatListBulletedOutlined)"
-        @click="editor.chain().focus().toggleBulletList().run()"
+        :render-icon="renderToolbarIcon(FormatAlignLeftOutlined)"
+        :type="(editor.isActive({ textAlign: 'left' }) && 'primary') || undefined"
+        @click="editor.chain().focus().setTextAlign('left').run()"
       />
       <n-button
         :style="toolbarStyles"
         :size="toolbarSize"
-        :class="{ 'is-active': editor.isActive('orderedList') }"
-        :render-icon="renderToolbarIcon(FormatListNumberedOutlined)"
-        @click="editor.chain().focus().toggleOrderedList().run()"
+        :render-icon="renderToolbarIcon(FormatAlignRightOutlined)"
+        :type="(editor.isActive({ textAlign: 'right' }) && 'primary') || undefined"
+        @click="editor.chain().focus().setTextAlign('right').run()"
       />
       <n-button
         :style="toolbarStyles"
         :size="toolbarSize"
-        :class="{ 'is-active': editor.isActive('codeBlock') }"
-        :render-icon="renderToolbarIcon(CodeOutlined)"
-        @click="editor.chain().focus().toggleCodeBlock().run()"
+        :render-icon="renderToolbarIcon(FormatAlignCenterOutlined)"
+        :type="(editor.isActive({ textAlign: 'center' }) && 'primary') || undefined"
+        @click="editor.chain().focus().setTextAlign('center').run()"
       />
       <n-button
         :style="toolbarStyles"
         :size="toolbarSize"
-        :secondary="editor.isActive('blockquote')"
-        :render-icon="renderToolbarIcon(FormatQuoteOutlined)"
-        @click="editor.chain().focus().toggleBlockquote().run()"
+        :render-icon="renderToolbarIcon(FormatAlignJustifyOutlined)"
+        :type="(editor.isActive({ textAlign: 'justify' }) && 'primary') || undefined"
+        @click="editor.chain().focus().setTextAlign('justify').run()"
       />
+      <div class="spacer"></div>
       <n-button
         :style="toolbarStyles"
         :size="toolbarSize"
@@ -197,6 +310,7 @@ onUnmounted(() => {
         :render-icon="renderToolbarIcon(KeyboardReturnOutlined)"
         @click="editor.chain().focus().setHardBreak().run()"
       />
+      <div class="spacer"></div>
       <n-button
         :style="toolbarStyles"
         :size="toolbarSize"
@@ -211,12 +325,6 @@ onUnmounted(() => {
         :render-icon="renderToolbarIcon(RedoOutlined)"
         @click="editor.chain().focus().redo().run()"
       />
-      <n-button
-        :style="toolbarStyles"
-        :size="toolbarSize"
-        :render-icon="renderToolbarIcon(HtmlOutlined)"
-        @click="showHtml = !showHtml"
-      />
     </div>
     <editor-content :editor="editor" />
   </div>
@@ -228,10 +336,14 @@ onUnmounted(() => {
   gap: 0.5rem;
   justify-content: flex-start;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: flex-end;
 }
 
 .toolbar * {
   font-weight: var(--app-ui-font-weight-bold) !important;
+}
+
+.toolbar > .spacer {
+  margin: 0 2px;
 }
 </style>
