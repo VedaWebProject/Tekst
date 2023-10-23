@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onUnmounted, watch, h, type Component, type CSSProperties } from 'vue';
+import { computed, onUnmounted, h, type Component, type CSSProperties } from 'vue';
 import { NSelect, NButton, NIcon, type SelectOption } from 'naive-ui';
 import { useEditor, EditorContent } from '@tiptap/vue-3';
 import StarterKit from '@tiptap/starter-kit';
@@ -38,7 +38,11 @@ const props = withDefaults(
 );
 
 const emit = defineEmits(['update:document']);
-const currentBlockType = computed(() => blockTypeOptions.find((o) => o.isActive())?.value);
+const currentBlockType = computed(
+  () =>
+    (blockTypeOptions.find((o) => o.isActive() && o.value !== 'normal') || blockTypeOptions[0])
+      .value
+);
 
 const editor = useEditor({
   content: props.document,
@@ -61,18 +65,22 @@ const editor = useEditor({
   },
   editorProps: {
     attributes: {
-      style: `
-        outline: 0;
-        margin: .5rem 0;
-        padding: 0 .5rem;
-        border: 1px solid var(--text-color);
-        border-radius: var(--app-ui-border-radius);
-      `,
+      style: 'outline: 0;',
     },
   },
 });
 
 const blockTypeOptions = [
+  {
+    label: 'Normal',
+    value: 'normal',
+    action: () => {
+      editor.value?.commands.clearNodes();
+      editor.value?.chain().focus().setParagraph().run();
+    },
+    isActive: () => editor.value?.isActive('paragraph'),
+    iconComponent: ShortTextOutlined,
+  },
   {
     label: 'Heading 1',
     value: 'h1',
@@ -128,13 +136,6 @@ const blockTypeOptions = [
     action: () => editor.value?.chain().focus().toggleCodeBlock().run(),
     isActive: () => editor.value?.isActive('codeBlock'),
     iconComponent: CodeOutlined,
-  },
-  {
-    label: 'Normal',
-    value: 'normal',
-    action: () => editor.value?.chain().focus().setParagraph().run(),
-    isActive: () => editor.value?.isActive('paragraph'),
-    iconComponent: ShortTextOutlined,
   },
 ];
 
@@ -197,14 +198,6 @@ function handleLinkClick() {
 function handleSelectBlockType(value: string, option: SelectOption) {
   (option.action as () => void)();
 }
-
-watch(
-  () => props.document,
-  (newDocument) => {
-    if (editor.value?.getHTML() === newDocument) return;
-    editor.value?.commands.setContent(newDocument, false);
-  }
-);
 
 onUnmounted(() => {
   editor.value?.destroy();
@@ -279,16 +272,16 @@ onUnmounted(() => {
       <n-button
         :style="toolbarStyles"
         :size="toolbarSize"
-        :render-icon="renderToolbarIcon(FormatAlignRightOutlined)"
-        :type="(editor.isActive({ textAlign: 'right' }) && 'primary') || undefined"
-        @click="editor.chain().focus().setTextAlign('right').run()"
+        :render-icon="renderToolbarIcon(FormatAlignCenterOutlined)"
+        :type="(editor.isActive({ textAlign: 'center' }) && 'primary') || undefined"
+        @click="editor.chain().focus().setTextAlign('center').run()"
       />
       <n-button
         :style="toolbarStyles"
         :size="toolbarSize"
-        :render-icon="renderToolbarIcon(FormatAlignCenterOutlined)"
-        :type="(editor.isActive({ textAlign: 'center' }) && 'primary') || undefined"
-        @click="editor.chain().focus().setTextAlign('center').run()"
+        :render-icon="renderToolbarIcon(FormatAlignRightOutlined)"
+        :type="(editor.isActive({ textAlign: 'right' }) && 'primary') || undefined"
+        @click="editor.chain().focus().setTextAlign('right').run()"
       />
       <n-button
         :style="toolbarStyles"
@@ -326,7 +319,18 @@ onUnmounted(() => {
         @click="editor.chain().focus().redo().run()"
       />
     </div>
-    <editor-content :editor="editor" />
+    <div
+      style="
+        margin: 0.5rem 0;
+        padding: 4px var(--content-gap);
+        border: 1px solid var(--text-color);
+        border-radius: var(--app-ui-border-radius);
+        max-height: 50vh;
+        overflow-y: scroll;
+      "
+    >
+      <editor-content :editor="editor" />
+    </div>
   </div>
 </template>
 
