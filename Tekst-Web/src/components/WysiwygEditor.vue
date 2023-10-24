@@ -8,6 +8,7 @@ import Link from '@tiptap/extension-link';
 import Image from '@tiptap/extension-image';
 import PromptModal from './PromptModal.vue';
 import { PromptTemplatePromise } from '@/templatePromises';
+import { $t } from '@/i18n';
 
 import FormatBoldOutlined from '@vicons/material/FormatBoldOutlined';
 import FormatItalicOutlined from '@vicons/material/FormatItalicOutlined';
@@ -42,11 +43,6 @@ const props = withDefaults(
 );
 
 const emit = defineEmits(['update:document']);
-const currentBlockType = computed(
-  () =>
-    (blockTypeOptions.find((o) => o.isActive() && o.value !== 'normal') || blockTypeOptions[0])
-      .value
-);
 
 const editor = useEditor({
   content: props.document,
@@ -78,9 +74,9 @@ const editor = useEditor({
   },
 });
 
-const blockTypeOptions = [
+const blockTypeOptions = computed(() => [
   {
-    label: 'Normal Text',
+    label: $t('wysiwyg.blockTypes.paragraph'),
     value: 'normal',
     action: () => {
       editor.value?.commands.clearNodes();
@@ -90,62 +86,70 @@ const blockTypeOptions = [
     iconComponent: ShortTextOutlined,
   },
   {
-    label: 'Heading 1',
+    label: $t('wysiwyg.blockTypes.heading', { level: 1 }),
     value: 'h1',
     action: () => editor.value?.chain().focus().toggleHeading({ level: 1 }).run(),
     isActive: () => editor.value?.isActive('heading', { level: 1 }),
     iconComponent: FormatSizeOutlined,
   },
   {
-    label: 'Heading 2',
+    label: $t('wysiwyg.blockTypes.heading', { level: 2 }),
     value: 'h2',
     action: () => editor.value?.chain().focus().toggleHeading({ level: 2 }).run(),
     isActive: () => editor.value?.isActive('heading', { level: 2 }),
     iconComponent: FormatSizeOutlined,
   },
   {
-    label: 'Heading 3',
+    label: $t('wysiwyg.blockTypes.heading', { level: 3 }),
     value: 'h3',
     action: () => editor.value?.chain().focus().toggleHeading({ level: 3 }).run(),
     isActive: () => editor.value?.isActive('heading', { level: 3 }),
     iconComponent: FormatSizeOutlined,
   },
   {
-    label: 'Heading 4',
+    label: $t('wysiwyg.blockTypes.heading', { level: 4 }),
     value: 'h4',
     action: () => editor.value?.chain().focus().toggleHeading({ level: 4 }).run(),
     isActive: () => editor.value?.isActive('heading', { level: 4 }),
     iconComponent: FormatSizeOutlined,
   },
   {
-    label: 'Bulleted List',
+    label: $t('wysiwyg.blockTypes.bulletedList'),
     value: 'bulletedList',
     action: () => editor.value?.chain().focus().toggleBulletList().run(),
     isActive: () => editor.value?.isActive('bulletList'),
     iconComponent: FormatListBulletedOutlined,
   },
   {
-    label: 'Numbered List',
+    label: $t('wysiwyg.blockTypes.numberedList'),
     value: 'numberedList',
     action: () => editor.value?.chain().focus().toggleOrderedList().run(),
     isActive: () => editor.value?.isActive('orderedList'),
     iconComponent: FormatListNumberedOutlined,
   },
   {
-    label: 'Blockquote',
+    label: $t('wysiwyg.blockTypes.blockQuote'),
     value: 'blockQuote',
     action: () => editor.value?.chain().focus().toggleBlockquote().run(),
     isActive: () => editor.value?.isActive('blockquote'),
     iconComponent: FormatQuoteFilled,
   },
   {
-    label: 'Code Block',
+    label: $t('wysiwyg.blockTypes.codeBlock'),
     value: 'code',
     action: () => editor.value?.chain().focus().toggleCodeBlock().run(),
     isActive: () => editor.value?.isActive('codeBlock'),
     iconComponent: CodeOutlined,
   },
-];
+]);
+
+const currentBlockType = computed(
+  () =>
+    (
+      blockTypeOptions.value.find((o) => o.isActive() && o.value !== 'normal') ||
+      blockTypeOptions.value[0]
+    ).value
+);
 
 const toolbarStyles = computed<CSSProperties>(() => ({
   fontSize: { small: 18, medium: 22, large: 24 }[props.toolbarSize],
@@ -183,8 +187,8 @@ function renderBlockTypeOption(option: SelectOption) {
 async function handleAddLinkClick() {
   try {
     const url = await PromptTemplatePromise.start(
-      'Link',
-      'Set Link URL:',
+      $t('wysiwyg.linkPrompt.title'),
+      $t('wysiwyg.linkPrompt.message'),
       editor.value?.getAttributes('link').href
     );
     // empty
@@ -205,7 +209,11 @@ async function handleAddLinkClick() {
 
 async function handleAddImageClick() {
   try {
-    const url = await PromptTemplatePromise.start('Image', 'Set Image URL:', undefined);
+    const url = await PromptTemplatePromise.start(
+      $t('wysiwyg.imagePrompt.title'),
+      $t('wysiwyg.imagePrompt.message'),
+      undefined
+    );
     // empty
     if (url === '') return;
     // update link
@@ -240,6 +248,7 @@ onUnmounted(() => {
       <n-button
         :style="toolbarStyles"
         :size="toolbarSize"
+        :title="$t('wysiwyg.bold')"
         :disabled="!editor.can().chain().focus().toggleBold().run()"
         :type="(editor.isActive('bold') && 'primary') || undefined"
         :render-icon="renderToolbarIcon(FormatBoldOutlined)"
@@ -248,6 +257,7 @@ onUnmounted(() => {
       <n-button
         :style="toolbarStyles"
         :size="toolbarSize"
+        :title="$t('wysiwyg.italic')"
         :disabled="!editor.can().chain().focus().toggleItalic().run()"
         :type="(editor.isActive('italic') && 'primary') || undefined"
         :render-icon="renderToolbarIcon(FormatItalicOutlined)"
@@ -257,6 +267,7 @@ onUnmounted(() => {
       <n-button
         :style="toolbarStyles"
         :size="toolbarSize"
+        :title="$t('wysiwyg.link')"
         :type="(editor.isActive('link') && 'primary') || undefined"
         :render-icon="renderToolbarIcon(InsertLinkOutlined)"
         @click="handleAddLinkClick"
@@ -264,6 +275,7 @@ onUnmounted(() => {
       <n-button
         :style="toolbarStyles"
         :size="toolbarSize"
+        :title="$t('wysiwyg.inlineCode')"
         :disabled="!editor.can().chain().focus().toggleCode().run()"
         :type="(editor.isActive('code') && 'primary') || undefined"
         :render-icon="renderToolbarIcon(CodeOutlined)"
@@ -273,6 +285,7 @@ onUnmounted(() => {
       <n-button
         :style="toolbarStyles"
         :size="toolbarSize"
+        :title="$t('wysiwyg.clearFormat')"
         :render-icon="renderToolbarIcon(FormatClearOutlined)"
         @click="
           () => {
@@ -285,6 +298,7 @@ onUnmounted(() => {
       <n-button
         :style="toolbarStyles"
         :size="toolbarSize"
+        :title="$t('wysiwyg.alignLeft')"
         :render-icon="renderToolbarIcon(FormatAlignLeftOutlined)"
         :type="(editor.isActive({ textAlign: 'left' }) && 'primary') || undefined"
         @click="editor.chain().focus().setTextAlign('left').run()"
@@ -292,6 +306,7 @@ onUnmounted(() => {
       <n-button
         :style="toolbarStyles"
         :size="toolbarSize"
+        :title="$t('wysiwyg.alignCenter')"
         :render-icon="renderToolbarIcon(FormatAlignCenterOutlined)"
         :type="(editor.isActive({ textAlign: 'center' }) && 'primary') || undefined"
         @click="editor.chain().focus().setTextAlign('center').run()"
@@ -299,6 +314,7 @@ onUnmounted(() => {
       <n-button
         :style="toolbarStyles"
         :size="toolbarSize"
+        :title="$t('wysiwyg.alignRight')"
         :render-icon="renderToolbarIcon(FormatAlignRightOutlined)"
         :type="(editor.isActive({ textAlign: 'right' }) && 'primary') || undefined"
         @click="editor.chain().focus().setTextAlign('right').run()"
@@ -306,6 +322,7 @@ onUnmounted(() => {
       <n-button
         :style="toolbarStyles"
         :size="toolbarSize"
+        :title="$t('wysiwyg.alignJustify')"
         :render-icon="renderToolbarIcon(FormatAlignJustifyOutlined)"
         :type="(editor.isActive({ textAlign: 'justify' }) && 'primary') || undefined"
         @click="editor.chain().focus().setTextAlign('justify').run()"
@@ -314,18 +331,21 @@ onUnmounted(() => {
       <n-button
         :style="toolbarStyles"
         :size="toolbarSize"
+        :title="$t('wysiwyg.horizontalRule')"
         :render-icon="renderToolbarIcon(HorizontalRuleOutlined)"
         @click="editor.chain().focus().setHorizontalRule().run()"
       />
       <n-button
         :style="toolbarStyles"
         :size="toolbarSize"
+        :title="$t('wysiwyg.image')"
         :render-icon="renderToolbarIcon(ImageOutlined)"
         @click="handleAddImageClick"
       />
       <n-button
         :style="toolbarStyles"
         :size="toolbarSize"
+        :title="$t('wysiwyg.hardBreak')"
         :render-icon="renderToolbarIcon(KeyboardReturnOutlined)"
         @click="editor.chain().focus().setHardBreak().run()"
       />
@@ -333,6 +353,7 @@ onUnmounted(() => {
       <n-button
         :style="toolbarStyles"
         :size="toolbarSize"
+        :title="$t('wysiwyg.undo')"
         :disabled="!editor.can().chain().focus().undo().run()"
         :render-icon="renderToolbarIcon(UndoOutlined)"
         @click="editor.chain().focus().undo().run()"
@@ -340,6 +361,7 @@ onUnmounted(() => {
       <n-button
         :style="toolbarStyles"
         :size="toolbarSize"
+        :title="$t('wysiwyg.redo')"
         :disabled="!editor.can().chain().focus().redo().run()"
         :render-icon="renderToolbarIcon(RedoOutlined)"
         @click="editor.chain().focus().redo().run()"

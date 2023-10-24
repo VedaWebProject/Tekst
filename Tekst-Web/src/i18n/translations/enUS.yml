@@ -388,3 +388,32 @@ help:
   msgFoundCount: Found {count} entries
   errorNotFound: This help text entry could not be loaded.
   msgNoHelpTextsFound: No help entries could be found.
+
+wysiwyg:
+  blockTypes:
+    paragraph: Normal Text
+    heading: Heading {level}
+    bulletedList: Bulleted List
+    numberedList: Numbered List
+    blockQuote: Block Quote
+    codeBlock: Code Block
+  bold: Bold
+  italic: Italic
+  link: Link selected text
+  inlineCode: Inline code
+  clearFormat: Clear formatting
+  alignLeft: Align left
+  alignCenter: Align center
+  alignRight: Align right
+  alignJustify: Justify
+  horizontalRule: Insert horizontal rule
+  image: Insert image
+  hardBreak: Insert line break
+  undo: undo
+  redo: Redo
+  linkPrompt:
+    title: Link selected text
+    message: Link URL
+  imagePrompt:
+    title: Insert image
+    message: Image URL

@@ -405,3 +405,32 @@ help:
   msgFoundCount: '{count} Einträge gefunden'
   errorNotFound: Dieser Hilfe-Text konnte nicht geladen werden.
   msgNoHelpTextsFound: Es konnten keine Hilfe-Einträge gefunden werden.
+
+wysiwyg:
+  blockTypes:
+    paragraph: Normaler Text
+    heading: Überschrift {level}
+    bulletedList: Stichpunkte
+    numberedList: Nummerierte Liste
+    blockQuote: Blockzitat
+    codeBlock: Code-Block
+  bold: Fett
+  italic: Kursiv
+  link: Ausgewählten Text verlinken
+  inlineCode: Inline-Code
+  clearFormat: Formatierung löschen
+  alignLeft: Links ausrichten
+  alignCenter: Zentrieren
+  alignRight: Rechts ausrichten
+  alignJustify: Blocksatz
+  horizontalRule: Horizontale Linie einfügen
+  image: Bild einfügen
+  hardBreak: Zeilenumbruch einfügen
+  undo: Rückgängig
+  redo: Wiederholen
+  linkPrompt:
+    title: Ausgewählten Text verlinken
+    message: Link URL
+  imagePrompt:
+    title: Bild einfügen
+    message: Bild-URL
