@@ -15,6 +15,7 @@ import PeopleFilled from '@vicons/material/PeopleFilled';
 import BarChartRound from '@vicons/material/BarChartRound';
 import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
 import AddCircleOutlineRound from '@vicons/material/AddCircleOutlineRound';
+import SettingsApplicationsOutlined from '@vicons/material/SettingsApplicationsOutlined';
 
 const auth = useAuthStore();
 const state = useStateStore();
@@ -85,7 +86,7 @@ const userOptions = computed(() => [
               icon: renderIcon(PeopleFilled),
             },
             {
-              label: $t('admin.texts.heading'),
+              label: $t('admin.text.heading'),
               key: 'adminTexts',
               icon: renderIcon(MenuBookOutlined),
             },
@@ -93,6 +94,11 @@ const userOptions = computed(() => [
               label: $t('admin.newText.heading'),
               key: 'adminNewText',
               icon: renderIcon(AddCircleOutlineRound),
+            },
+            {
+              label: $t('admin.system.heading'),
+              key: 'adminSystem',
+              icon: renderIcon(SettingsApplicationsOutlined),
             },
           ],
         },

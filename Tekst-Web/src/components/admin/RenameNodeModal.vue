@@ -68,7 +68,7 @@ async function handleSubmit() {
     "
     @after-leave="nodeFormModel.label = ''"
   >
-    <h2>{{ $t('admin.texts.nodes.rename.heading') }}</h2>
+    <h2>{{ $t('admin.text.nodes.rename.heading') }}</h2>
 
     <n-form
       ref="nodeFormRef"

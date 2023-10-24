@@ -51,13 +51,13 @@ const editModalLevel = ref<number>(-1);
 const editModalAction = ref<'edit' | 'insert'>('edit');
 const editModalTitle = computed(() =>
   editModalAction.value === 'edit'
-    ? $t('admin.texts.levels.tipEditLevel', {
+    ? $t('admin.text.levels.tipEditLevel', {
         levelLabel: getLevelLabel(levels.value[editModalLevel.value]),
       })
-    : $t('admin.texts.levels.tipInsertLevel', { n: editModalLevel.value + 1 })
+    : $t('admin.text.levels.tipInsertLevel', { n: editModalLevel.value + 1 })
 );
 const editModalWarning = computed(() =>
-  editModalAction.value === 'edit' ? undefined : $t('admin.texts.levels.warnInsertLevel')
+  editModalAction.value === 'edit' ? undefined : $t('admin.text.levels.warnInsertLevel')
 );
 
 const levelLocaleOptions = computed(() =>
@@ -90,7 +90,7 @@ function handleDeleteClick(level: number) {
   const targetLevelLabel = getLevelLabel(levels.value[level]);
   dialog.warning({
     title: $t('general.warning'),
-    content: $t('admin.texts.levels.warnDeleteLevel', {
+    content: $t('admin.text.levels.warnDeleteLevel', {
       levelLabel: targetLevelLabel,
     }),
     positiveText: $t('general.deleteAction'),
@@ -107,7 +107,7 @@ function handleDeleteClick(level: number) {
       if (!error) {
         state.text = data;
         message.success(
-          $t('admin.texts.levels.msgDeleteSuccess', {
+          $t('admin.text.levels.msgDeleteSuccess', {
             levelLabel: targetLevelLabel,
           })
         );
@@ -143,7 +143,7 @@ async function handleModalSubmit() {
         if (!error) {
           state.text = data;
           message.success(
-            $t('admin.texts.levels.msgInsertSuccess', { position: editModalLevel.value + 1 })
+            $t('admin.text.levels.msgInsertSuccess', { position: editModalLevel.value + 1 })
           );
         } else {
           message.error($t('errors.unexpected'), error.detail?.toString());
@@ -165,7 +165,7 @@ async function handleModalSubmit() {
         if (!error) {
           state.text = data;
           message.success(
-            $t('admin.texts.levels.msgEditSuccess', { position: editModalLevel.value + 1 })
+            $t('admin.text.levels.msgEditSuccess', { position: editModalLevel.value + 1 })
           );
         } else {
           message.error($t('errors.unexpected'), error.detail?.toString());
@@ -183,7 +183,7 @@ async function handleModalSubmit() {
 
 <template>
   <h2>
-    {{ $t('admin.texts.levels.heading') }}
+    {{ $t('admin.text.levels.heading') }}
     <HelpButtonWidget help-key="adminTextsLevelsView" />
   </h2>
 
@@ -209,7 +209,7 @@ async function handleModalSubmit() {
           <n-button
             secondary
             circle
-            :title="$t('admin.texts.levels.tipEditLevel', { levelLabel: getLevelLabel(lvl) })"
+            :title="$t('admin.text.levels.tipEditLevel', { levelLabel: getLevelLabel(lvl) })"
             :focusable="false"
             @click="() => handleEditClick(lvlIndex)"
           >
@@ -218,7 +218,7 @@ async function handleModalSubmit() {
           <n-button
             secondary
             circle
-            :title="$t('admin.texts.levels.tipDeleteLevel', { levelLabel: getLevelLabel(lvl) })"
+            :title="$t('admin.text.levels.tipDeleteLevel', { levelLabel: getLevelLabel(lvl) })"
             :focusable="false"
             @click="() => handleDeleteClick(lvlIndex)"
           >

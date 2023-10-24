@@ -30,6 +30,8 @@ const AdminTextsGeneralView = () => import('@/views/admin/AdminTextsGeneralView.
 const AdminTextsLevelsView = () => import('@/views/admin/AdminTextsLevelsView.vue');
 const AdminTextsNodesView = () => import('@/views/admin/AdminTextsNodesView.vue');
 const AdminNewTextView = () => import('@/views/admin/AdminNewTextView.vue');
+const AdminSystemView = () => import('@/views/admin/AdminSystemView.vue');
+const AdminSystemSegmentsView = () => import('@/views/admin/AdminSystemSegmentsView.vue');
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -149,6 +151,22 @@ const router = createRouter({
           path: 'new-text',
           name: 'adminNewText',
           component: AdminNewTextView,
+        },
+        {
+          path: 'system',
+          name: 'adminSystem',
+          redirect: { name: 'adminSystemSegments' },
+          component: AdminSystemView,
+          meta: {
+            isTextSpecific: true,
+          },
+          children: [
+            {
+              path: 'segments',
+              name: 'adminSystemSegments',
+              component: AdminSystemSegmentsView,
+            },
+          ],
         },
       ],
     },

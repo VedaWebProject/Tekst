@@ -89,12 +89,13 @@ routes:
     user: Profile of {username}
     accountProfile: Public Profile
     accountManage: Account
-    adminStatistics: '@:admin.heading\: Statistics'
-    adminUsers: '@:admin.heading\: Users'
-    adminTextsGeneral: '@:admin.heading - {text}: General'
-    adminTextsLevels: '@:admin.heading - {text}: Levels'
-    adminTextsNodes: '@:admin.heading - {text}: Nodes'
+    adminStatistics: '@:admin.heading - Statistics'
+    adminUsers: '@:admin.heading - Users'
+    adminTextsGeneral: '{text}: General'
+    adminTextsLevels: '{text}: Levels'
+    adminTextsNodes: '{text}: Nodes'
     adminNewText: '@:admin.heading - New Text'
+    adminSystemSegments: '@:admin.heading - Segments'
     verify: Verification
     reset: Reset password
 
@@ -294,8 +295,8 @@ admin:
       setUnverified: '@:admin.users.confirmMsg.areYouSure reset the email verification status of {username}?'
       setVerified: '@:admin.users.confirmMsg.areYouSure set the email address of {username} to verified?'
       deleteUser: '@:admin.users.confirmMsg.areYouSure delete the user {username}?'
-  texts:
-    heading: Texts
+  text:
+    heading: Text
     general:
       heading: General
       msgSaved: Text settings saved.
@@ -372,6 +373,10 @@ admin:
     btnProceed: Proceed
     btnFinish: Finish
     msgSaveSuccess: The new text "{title}" was successfully created. You may now configure its details.
+  system:
+    heading: System
+    segments:
+      heading: Segments
 
 search:
   heading: Search

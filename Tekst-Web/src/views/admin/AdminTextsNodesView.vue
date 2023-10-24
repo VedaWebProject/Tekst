@@ -143,7 +143,7 @@ async function moveNode(dropData: TreeDropInfo) {
   });
   if (!error) {
     message.success(
-      $t('admin.texts.nodes.infoMovedNode', {
+      $t('admin.text.nodes.infoMovedNode', {
         node: data.label,
         position: data.position,
         level: state.textLevelLabels[data.level],
@@ -169,7 +169,7 @@ async function moveNode(dropData: TreeDropInfo) {
 async function handleDrop(dropData: TreeDropInfo) {
   loadingMove.value = true;
   if (dropData.dragNode.level !== dropData.node.level) {
-    message.error($t('admin.texts.nodes.errorNodeLeftLevel'));
+    message.error($t('admin.text.nodes.errorNodeLeftLevel'));
   } else {
     await moveNode(dropData);
   }
@@ -184,7 +184,7 @@ async function deleteNode(node: TreeOption) {
   if (!error) {
     loadTreeData(getTreeNodeByKey(node.parentKey as string | null));
     message.success(
-      $t('admin.texts.nodes.infoDeletedNode', {
+      $t('admin.text.nodes.infoDeletedNode', {
         node: node.label,
         nodes: result.nodes,
         units: result.units,
@@ -203,7 +203,7 @@ async function handleDeleteClick(node: NodeTreeOption) {
   }
   const d = dialog.warning({
     title: $t('general.warning'),
-    content: $t('admin.texts.nodes.warnDeleteNode', { nodeLabel: node.label }),
+    content: $t('admin.text.nodes.warnDeleteNode', { nodeLabel: node.label }),
     positiveText: $t('general.deleteAction'),
     positiveButtonProps: positiveButtonProps,
     autoFocus: true,
@@ -224,7 +224,7 @@ async function handleRenameResult(node: NodeRead | undefined) {
   loadingRename.value = true;
   if (node) {
     message.success(
-      $t('admin.texts.nodes.rename.msgSuccess', {
+      $t('admin.text.nodes.rename.msgSuccess', {
         oldName: nodeToRename.value?.label,
         newName: node.label,
       })
@@ -246,7 +246,7 @@ async function handleAddResult(node: NodeRead | undefined) {
   loadingAdd.value = true;
   if (node) {
     message.success(
-      $t('admin.texts.nodes.add.msgSuccess', {
+      $t('admin.text.nodes.add.msgSuccess', {
         label: node.label,
         parentLabel: nodeParentToAddTo.value?.label || state.text?.title || '',
       })
@@ -289,7 +289,7 @@ async function handleUploadStructureClick() {
         body: formData,
       });
       if (response.ok) {
-        message.success($t('admin.texts.nodes.upload.msgSuccess'));
+        message.success($t('admin.text.nodes.upload.msgSuccess'));
       } else {
         const detail = (await response.json()).detail;
         const err = new Error(detail);
@@ -297,7 +297,7 @@ async function handleUploadStructureClick() {
       }
     } catch (error) {
       const err: Error = error as Error;
-      message.error($t('admin.texts.nodes.upload.msgError', err.message));
+      message.error($t('admin.text.nodes.upload.msgError', err.message));
     } finally {
       input.remove();
       loadingUpload.value = false;
@@ -367,13 +367,13 @@ function renderSuffix(info: { option: TreeOption; checked: boolean; selected: bo
       () => {
         handleRenameClick(info.option as NodeTreeOption);
       },
-      $t('admin.texts.nodes.rename.heading'),
+      $t('admin.text.nodes.rename.heading'),
       loadingRename
     ),
     renderSuffixButton(
       DeleteFilled,
       () => handleDeleteClick(info.option as NodeTreeOption),
-      $t('admin.texts.nodes.tipDeleteNode', { node: info.option.label || '' }),
+      $t('admin.text.nodes.tipDeleteNode', { node: info.option.label || '' }),
       loadingDelete
     ),
     info.option.isLeaf
@@ -381,7 +381,7 @@ function renderSuffix(info: { option: TreeOption; checked: boolean; selected: bo
       : renderSuffixButton(
           AddOutlined,
           () => handleAddNodeClick(info.option as NodeTreeOption),
-          $t('admin.texts.nodes.add.tooltip'),
+          $t('admin.text.nodes.add.tooltip'),
           loadingAdd
         ),
   ]);
@@ -399,16 +399,16 @@ watch(
 
 <template>
   <h2>
-    {{ $t('admin.texts.nodes.heading') }}
+    {{ $t('admin.text.nodes.heading') }}
     <HelpButtonWidget help-key="adminTextsNodesView" />
   </h2>
 
   <n-alert v-if="treeData.length" closable :title="$t('general.warning')" type="warning">
-    {{ $t('admin.texts.nodes.warnGeneral') }}
+    {{ $t('admin.text.nodes.warnGeneral') }}
   </n-alert>
 
   <n-alert v-else :title="$t('general.info')" type="info">
-    {{ $t('admin.texts.nodes.infoNoNodes') }}
+    {{ $t('admin.text.nodes.infoNoNodes') }}
   </n-alert>
 
   <div
@@ -421,42 +421,42 @@ watch(
     "
   >
     <n-checkbox v-if="treeData.length" v-model:checked="showWarnings">
-      {{ $t('admin.texts.nodes.checkShowWarnings') }}
+      {{ $t('admin.text.nodes.checkShowWarnings') }}
     </n-checkbox>
     <div style="flex-grow: 2"></div>
     <div style="display: flex; gap: 0.5rem">
       <n-button
         type="primary"
-        :title="$t('admin.texts.nodes.tipBtnAddNodeFirstLevel')"
+        :title="$t('admin.text.nodes.tipBtnAddNodeFirstLevel')"
         :disabled="loading"
         @click="handleAddNodeClick(null)"
       >
         <template #icon>
           <AddOutlined />
         </template>
-        {{ $t('admin.texts.nodes.lblBtnAddNodeFirstLevel') }}
+        {{ $t('admin.text.nodes.lblBtnAddNodeFirstLevel') }}
       </n-button>
       <n-button
         secondary
-        :title="$t('admin.texts.nodes.tipBtnDownloadTemplate')"
+        :title="$t('admin.text.nodes.tipBtnDownloadTemplate')"
         :disabled="loading"
         @click="handleDownloadTemplateClick()"
       >
         <template #icon>
           <FileDownloadOutlined />
         </template>
-        {{ $t('admin.texts.nodes.lblBtnDownloadTemplate') }}
+        {{ $t('admin.text.nodes.lblBtnDownloadTemplate') }}
       </n-button>
       <n-button
         secondary
-        :title="$t('admin.texts.nodes.tipBtnUploadStructure')"
+        :title="$t('admin.text.nodes.tipBtnUploadStructure')"
         :disabled="!!treeData.length || loading"
         @click="handleUploadStructureClick()"
       >
         <template #icon>
           <FileUploadOutlined />
         </template>
-        {{ $t('admin.texts.nodes.lblBtnUploadStructure') }}
+        {{ $t('admin.text.nodes.lblBtnUploadStructure') }}
       </n-button>
     </div>
   </div>

@@ -92,7 +92,7 @@ function handleSave() {
         await loadPlatformData();
         state.text = updatedText;
         resetModelChanges();
-        message.success($t('admin.texts.general.msgSaved'));
+        message.success($t('admin.text.general.msgSaved'));
       } else {
         /**
          * This will be either an app-level error (e.g. buggy validation, server down, 401)
@@ -111,7 +111,7 @@ function handleSave() {
 
 <template>
   <h2>
-    {{ $t('admin.texts.general.heading') }}
+    {{ $t('admin.text.general.heading') }}
     <HelpButtonWidget help-key="adminTextsGeneralView" />
   </h2>
 

@@ -8,6 +8,7 @@ import PeopleRound from '@vicons/material/PeopleRound';
 import BarChartRound from '@vicons/material/BarChartRound';
 import LibraryBooksOutlined from '@vicons/material/LibraryBooksOutlined';
 import AddCircleOutlineRound from '@vicons/material/AddCircleOutlineRound';
+import SettingsApplicationsOutlined from '@vicons/material/SettingsApplicationsOutlined';
 
 const state = useStateStore();
 </script>
@@ -27,7 +28,7 @@ const state = useStateStore();
       show-icon
     />
     <NavBarRouterLink
-      :label="$t('admin.texts.heading')"
+      :label="$t('admin.text.heading')"
       :route="{ name: 'adminTexts', params: { text: state.text?.slug } }"
       :icon="LibraryBooksOutlined"
       show-icon
@@ -36,6 +37,12 @@ const state = useStateStore();
       :label="$t('admin.newText.heading')"
       :route="{ name: 'adminNewText' }"
       :icon="AddCircleOutlineRound"
+      show-icon
+    />
+    <NavBarRouterLink
+      :label="$t('admin.system.heading')"
+      :route="{ name: 'adminSystem' }"
+      :icon="SettingsApplicationsOutlined"
       show-icon
     />
   </SecondaryNavBar>
