@@ -241,131 +241,137 @@ onUnmounted(() => {
         :size="toolbarSize"
         :consistent-menu-width="false"
         :render-label="renderBlockTypeOption"
-        style="width: auto; flex-grow: 2"
+        style="width: auto; min-width: 320px; flex-grow: 2"
         @update:value="handleSelectBlockType"
       />
-      <div class="spacer"></div>
-      <n-button
-        :style="toolbarStyles"
-        :size="toolbarSize"
-        :title="$t('wysiwyg.bold')"
-        :disabled="!editor.can().chain().focus().toggleBold().run()"
-        :type="(editor.isActive('bold') && 'primary') || undefined"
-        :render-icon="renderToolbarIcon(FormatBoldOutlined)"
-        @click="editor.chain().focus().toggleBold().run()"
-      />
-      <n-button
-        :style="toolbarStyles"
-        :size="toolbarSize"
-        :title="$t('wysiwyg.italic')"
-        :disabled="!editor.can().chain().focus().toggleItalic().run()"
-        :type="(editor.isActive('italic') && 'primary') || undefined"
-        :render-icon="renderToolbarIcon(FormatItalicOutlined)"
-        @click="editor.chain().focus().toggleItalic().run()"
-      />
-      <div class="spacer"></div>
-      <n-button
-        :style="toolbarStyles"
-        :size="toolbarSize"
-        :title="$t('wysiwyg.link')"
-        :type="(editor.isActive('link') && 'primary') || undefined"
-        :render-icon="renderToolbarIcon(InsertLinkOutlined)"
-        @click="handleAddLinkClick"
-      />
-      <n-button
-        :style="toolbarStyles"
-        :size="toolbarSize"
-        :title="$t('wysiwyg.inlineCode')"
-        :disabled="!editor.can().chain().focus().toggleCode().run()"
-        :type="(editor.isActive('code') && 'primary') || undefined"
-        :render-icon="renderToolbarIcon(CodeOutlined)"
-        @click="editor.chain().focus().toggleCode().run()"
-      />
-      <div class="spacer"></div>
-      <n-button
-        :style="toolbarStyles"
-        :size="toolbarSize"
-        :title="$t('wysiwyg.clearFormat')"
-        :render-icon="renderToolbarIcon(FormatClearOutlined)"
-        @click="
-          () => {
-            editor?.chain().focus().unsetAllMarks().run();
-            editor?.chain().focus().clearNodes().run();
-          }
-        "
-      />
-      <div class="spacer"></div>
-      <n-button
-        :style="toolbarStyles"
-        :size="toolbarSize"
-        :title="$t('wysiwyg.alignLeft')"
-        :render-icon="renderToolbarIcon(FormatAlignLeftOutlined)"
-        :type="(editor.isActive({ textAlign: 'left' }) && 'primary') || undefined"
-        @click="editor.chain().focus().setTextAlign('left').run()"
-      />
-      <n-button
-        :style="toolbarStyles"
-        :size="toolbarSize"
-        :title="$t('wysiwyg.alignCenter')"
-        :render-icon="renderToolbarIcon(FormatAlignCenterOutlined)"
-        :type="(editor.isActive({ textAlign: 'center' }) && 'primary') || undefined"
-        @click="editor.chain().focus().setTextAlign('center').run()"
-      />
-      <n-button
-        :style="toolbarStyles"
-        :size="toolbarSize"
-        :title="$t('wysiwyg.alignRight')"
-        :render-icon="renderToolbarIcon(FormatAlignRightOutlined)"
-        :type="(editor.isActive({ textAlign: 'right' }) && 'primary') || undefined"
-        @click="editor.chain().focus().setTextAlign('right').run()"
-      />
-      <n-button
-        :style="toolbarStyles"
-        :size="toolbarSize"
-        :title="$t('wysiwyg.alignJustify')"
-        :render-icon="renderToolbarIcon(FormatAlignJustifyOutlined)"
-        :type="(editor.isActive({ textAlign: 'justify' }) && 'primary') || undefined"
-        @click="editor.chain().focus().setTextAlign('justify').run()"
-      />
-      <div class="spacer"></div>
-      <n-button
-        :style="toolbarStyles"
-        :size="toolbarSize"
-        :title="$t('wysiwyg.horizontalRule')"
-        :render-icon="renderToolbarIcon(HorizontalRuleOutlined)"
-        @click="editor.chain().focus().setHorizontalRule().run()"
-      />
-      <n-button
-        :style="toolbarStyles"
-        :size="toolbarSize"
-        :title="$t('wysiwyg.image')"
-        :render-icon="renderToolbarIcon(ImageOutlined)"
-        @click="handleAddImageClick"
-      />
-      <n-button
-        :style="toolbarStyles"
-        :size="toolbarSize"
-        :title="$t('wysiwyg.hardBreak')"
-        :render-icon="renderToolbarIcon(KeyboardReturnOutlined)"
-        @click="editor.chain().focus().setHardBreak().run()"
-      />
-      <div class="spacer"></div>
-      <n-button
-        :style="toolbarStyles"
-        :size="toolbarSize"
-        :title="$t('wysiwyg.undo')"
-        :disabled="!editor.can().chain().focus().undo().run()"
-        :render-icon="renderToolbarIcon(UndoOutlined)"
-        @click="editor.chain().focus().undo().run()"
-      />
-      <n-button
-        :style="toolbarStyles"
-        :size="toolbarSize"
-        :title="$t('wysiwyg.redo')"
-        :disabled="!editor.can().chain().focus().redo().run()"
-        :render-icon="renderToolbarIcon(RedoOutlined)"
-        @click="editor.chain().focus().redo().run()"
-      />
+      <div class="toolbar-group">
+        <n-button
+          :style="toolbarStyles"
+          :size="toolbarSize"
+          :title="$t('wysiwyg.bold')"
+          :disabled="!editor.can().chain().focus().toggleBold().run()"
+          :type="(editor.isActive('bold') && 'primary') || undefined"
+          :render-icon="renderToolbarIcon(FormatBoldOutlined)"
+          @click="editor.chain().focus().toggleBold().run()"
+        />
+        <n-button
+          :style="toolbarStyles"
+          :size="toolbarSize"
+          :title="$t('wysiwyg.italic')"
+          :disabled="!editor.can().chain().focus().toggleItalic().run()"
+          :type="(editor.isActive('italic') && 'primary') || undefined"
+          :render-icon="renderToolbarIcon(FormatItalicOutlined)"
+          @click="editor.chain().focus().toggleItalic().run()"
+        />
+      </div>
+      <div class="toolbar-group">
+        <n-button
+          :style="toolbarStyles"
+          :size="toolbarSize"
+          :title="$t('wysiwyg.link')"
+          :type="(editor.isActive('link') && 'primary') || undefined"
+          :render-icon="renderToolbarIcon(InsertLinkOutlined)"
+          @click="handleAddLinkClick"
+        />
+        <n-button
+          :style="toolbarStyles"
+          :size="toolbarSize"
+          :title="$t('wysiwyg.inlineCode')"
+          :disabled="!editor.can().chain().focus().toggleCode().run()"
+          :type="(editor.isActive('code') && 'primary') || undefined"
+          :render-icon="renderToolbarIcon(CodeOutlined)"
+          @click="editor.chain().focus().toggleCode().run()"
+        />
+      </div>
+      <div class="toolbar-group">
+        <n-button
+          :style="toolbarStyles"
+          :size="toolbarSize"
+          :title="$t('wysiwyg.clearFormat')"
+          :render-icon="renderToolbarIcon(FormatClearOutlined)"
+          @click="
+            () => {
+              editor?.chain().focus().unsetAllMarks().run();
+              editor?.chain().focus().clearNodes().run();
+            }
+          "
+        />
+      </div>
+      <div class="toolbar-group">
+        <n-button
+          :style="toolbarStyles"
+          :size="toolbarSize"
+          :title="$t('wysiwyg.alignLeft')"
+          :render-icon="renderToolbarIcon(FormatAlignLeftOutlined)"
+          :type="(editor.isActive({ textAlign: 'left' }) && 'primary') || undefined"
+          @click="editor.chain().focus().setTextAlign('left').run()"
+        />
+        <n-button
+          :style="toolbarStyles"
+          :size="toolbarSize"
+          :title="$t('wysiwyg.alignCenter')"
+          :render-icon="renderToolbarIcon(FormatAlignCenterOutlined)"
+          :type="(editor.isActive({ textAlign: 'center' }) && 'primary') || undefined"
+          @click="editor.chain().focus().setTextAlign('center').run()"
+        />
+        <n-button
+          :style="toolbarStyles"
+          :size="toolbarSize"
+          :title="$t('wysiwyg.alignRight')"
+          :render-icon="renderToolbarIcon(FormatAlignRightOutlined)"
+          :type="(editor.isActive({ textAlign: 'right' }) && 'primary') || undefined"
+          @click="editor.chain().focus().setTextAlign('right').run()"
+        />
+        <n-button
+          :style="toolbarStyles"
+          :size="toolbarSize"
+          :title="$t('wysiwyg.alignJustify')"
+          :render-icon="renderToolbarIcon(FormatAlignJustifyOutlined)"
+          :type="(editor.isActive({ textAlign: 'justify' }) && 'primary') || undefined"
+          @click="editor.chain().focus().setTextAlign('justify').run()"
+        />
+      </div>
+      <div class="toolbar-group">
+        <n-button
+          :style="toolbarStyles"
+          :size="toolbarSize"
+          :title="$t('wysiwyg.horizontalRule')"
+          :render-icon="renderToolbarIcon(HorizontalRuleOutlined)"
+          @click="editor.chain().focus().setHorizontalRule().run()"
+        />
+        <n-button
+          :style="toolbarStyles"
+          :size="toolbarSize"
+          :title="$t('wysiwyg.image')"
+          :render-icon="renderToolbarIcon(ImageOutlined)"
+          @click="handleAddImageClick"
+        />
+        <n-button
+          :style="toolbarStyles"
+          :size="toolbarSize"
+          :title="$t('wysiwyg.hardBreak')"
+          :render-icon="renderToolbarIcon(KeyboardReturnOutlined)"
+          @click="editor.chain().focus().setHardBreak().run()"
+        />
+      </div>
+      <div class="toolbar-group">
+        <n-button
+          :style="toolbarStyles"
+          :size="toolbarSize"
+          :title="$t('wysiwyg.undo')"
+          :disabled="!editor.can().chain().focus().undo().run()"
+          :render-icon="renderToolbarIcon(UndoOutlined)"
+          @click="editor.chain().focus().undo().run()"
+        />
+        <n-button
+          :style="toolbarStyles"
+          :size="toolbarSize"
+          :title="$t('wysiwyg.redo')"
+          :disabled="!editor.can().chain().focus().redo().run()"
+          :render-icon="renderToolbarIcon(RedoOutlined)"
+          @click="editor.chain().focus().redo().run()"
+        />
+      </div>
     </div>
     <div
       style="
@@ -386,7 +392,7 @@ onUnmounted(() => {
 <style scoped>
 .toolbar {
   display: flex;
-  gap: 0.5rem;
+  gap: 1rem;
   justify-content: flex-start;
   flex-wrap: wrap;
   align-items: flex-end;
@@ -396,7 +402,9 @@ onUnmounted(() => {
   font-weight: var(--app-ui-font-weight-bold) !important;
 }
 
-.toolbar > .spacer {
-  margin: 0 2px;
+.toolbar > .toolbar-group {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.4rem;
 }
 </style>
