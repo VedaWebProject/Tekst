@@ -110,7 +110,6 @@ blockquote {
 
 .tekst-modal {
   width: 600px;
-  max-width: 95%;
 }
 
 .tekst-modal-wide {
@@ -123,6 +122,13 @@ blockquote {
 
 .tekst-modal-full {
   width: var(--max-app-width);
+}
+
+.tekst-modal,
+.tekst-modal-full,
+.tekst-modal-wide,
+.tekst-modal-narrow {
+  max-width: 95%;
 }
 
 .n-select,
