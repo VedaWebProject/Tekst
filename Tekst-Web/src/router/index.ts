@@ -157,9 +157,6 @@ const router = createRouter({
           name: 'adminSystem',
           redirect: { name: 'adminSystemSegments' },
           component: AdminSystemView,
-          meta: {
-            isTextSpecific: true,
-          },
           children: [
             {
               path: 'segments',
