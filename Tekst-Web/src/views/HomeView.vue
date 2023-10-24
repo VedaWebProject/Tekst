@@ -1,11 +1,7 @@
 <script setup lang="ts">
-import WysiwygEditor from '@/components/WysiwygEditor.vue';
 import { usePlatformData } from '@/platformData';
-import { ref } from 'vue';
 
 const { pfData } = usePlatformData();
-
-const doc = ref('<p>FOO</p>');
 </script>
 
 <template>
@@ -29,9 +25,6 @@ const doc = ref('<p>FOO</p>');
     <div class="square" style="background-color: var(--accent-color-fade2)"></div>
     <div class="square" style="background-color: var(--accent-color-fade3)"></div>
     <div class="square" style="background-color: var(--accent-color-fade4)"></div>
-
-    <br /><br /><br />
-    <WysiwygEditor v-model:document="doc" />
   </div>
 </template>
 
