@@ -19,6 +19,7 @@
     "prepare": "node scripts/parseHelpTexts.mjs; eslint src/assets/help/index.ts --fix"
   },
   "dependencies": {
+    "@tiptap/extension-image": "^2.1.12",
     "@tiptap/extension-link": "^2.1.12",
     "@tiptap/extension-text-align": "^2.1.12",
     "@tiptap/pm": "^2.1.12",

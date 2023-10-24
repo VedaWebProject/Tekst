@@ -5,6 +5,7 @@ import { useEditor, EditorContent } from '@tiptap/vue-3';
 import StarterKit from '@tiptap/starter-kit';
 import TextAlign from '@tiptap/extension-text-align';
 import Link from '@tiptap/extension-link';
+import Image from '@tiptap/extension-image';
 import PromptModal from './PromptModal.vue';
 import { PromptTemplatePromise } from '@/templatePromises';
 
@@ -26,6 +27,7 @@ import FormatAlignJustifyOutlined from '@vicons/material/FormatAlignJustifyOutli
 import InsertLinkOutlined from '@vicons/material/InsertLinkOutlined';
 import FormatSizeOutlined from '@vicons/material/FormatSizeOutlined';
 import ShortTextOutlined from '@vicons/material/ShortTextOutlined';
+import ImageOutlined from '@vicons/material/ImageOutlined';
 
 const props = withDefaults(
   defineProps<{
@@ -60,6 +62,10 @@ const editor = useEditor({
     Link.configure({
       openOnClick: false,
     }),
+    Image.configure({
+      inline: true,
+      allowBase64: true,
+    }),
   ],
   injectCSS: false,
   onUpdate: () => {
@@ -74,7 +80,7 @@ const editor = useEditor({
 
 const blockTypeOptions = [
   {
-    label: 'Normal',
+    label: 'Normal Text',
     value: 'normal',
     action: () => {
       editor.value?.commands.clearNodes();
@@ -174,14 +180,13 @@ function renderBlockTypeOption(option: SelectOption) {
   ];
 }
 
-async function handleLinkClick() {
+async function handleAddLinkClick() {
   try {
     const url = await PromptTemplatePromise.start(
       'Link',
       'Set Link URL:',
       editor.value?.getAttributes('link').href
     );
-    console.log('ENTER', url);
     // empty
     if (url === '') {
       if (editor.value?.isActive('link')) {
@@ -193,6 +198,18 @@ async function handleLinkClick() {
     }
     // update link
     editor.value?.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
+  } catch {
+    return;
+  }
+}
+
+async function handleAddImageClick() {
+  try {
+    const url = await PromptTemplatePromise.start('Image', 'Set Image URL:', undefined);
+    // empty
+    if (url === '') return;
+    // update link
+    editor.value?.chain().focus().setImage({ src: url }).run();
   } catch {
     return;
   }
@@ -242,7 +259,7 @@ onUnmounted(() => {
         :size="toolbarSize"
         :type="(editor.isActive('link') && 'primary') || undefined"
         :render-icon="renderToolbarIcon(InsertLinkOutlined)"
-        @click="handleLinkClick"
+        @click="handleAddLinkClick"
       />
       <n-button
         :style="toolbarStyles"
@@ -299,6 +316,12 @@ onUnmounted(() => {
         :size="toolbarSize"
         :render-icon="renderToolbarIcon(HorizontalRuleOutlined)"
         @click="editor.chain().focus().setHorizontalRule().run()"
+      />
+      <n-button
+        :style="toolbarStyles"
+        :size="toolbarSize"
+        :render-icon="renderToolbarIcon(ImageOutlined)"
+        @click="handleAddImageClick"
       />
       <n-button
         :style="toolbarStyles"
