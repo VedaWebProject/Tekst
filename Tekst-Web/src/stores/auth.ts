@@ -6,9 +6,9 @@ import { GET, PATCH, POST, optionsPresets } from '@/api/index';
 import { $t, localeProfiles } from '@/i18n';
 import { useIntervalFn } from '@vueuse/core';
 import { useRouter, type RouteLocationRaw } from 'vue-router';
-import { createTemplatePromise } from '@vueuse/core';
 import { usePlatformData } from '@/platformData';
 import { useStateStore } from '@/stores';
+import { LoginTemplatePromise } from '@/templatePromises';
 
 const SESSION_POLL_INTERVAL_S = 60; // check session expiry every n seconds
 const SESSION_EXPIRY_OFFSET_S = 10; // assume session expired n seconds early
@@ -28,20 +28,6 @@ const { pause: _stopSessionCheck, resume: _startSessionCheck } = useIntervalFn(
   SESSION_POLL_INTERVAL_S * 1000,
   { immediate: true, immediateCallback: false }
 );
-
-export const LoginTemplatePromise = createTemplatePromise<
-  // promise resolve type
-  boolean,
-  // extra args
-  [
-    // login modal message
-    string | undefined,
-    // route to change to after login
-    RouteLocationRaw | undefined,
-    // display register button
-    boolean,
-  ]
->();
 
 export const useAuthStore = defineStore('auth', () => {
   const router = useRouter();

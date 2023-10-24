@@ -5,6 +5,8 @@ import { useEditor, EditorContent } from '@tiptap/vue-3';
 import StarterKit from '@tiptap/starter-kit';
 import TextAlign from '@tiptap/extension-text-align';
 import Link from '@tiptap/extension-link';
+import PromptModal from './PromptModal.vue';
+import { PromptTemplatePromise } from '@/templatePromises';
 
 import FormatBoldOutlined from '@vicons/material/FormatBoldOutlined';
 import FormatItalicOutlined from '@vicons/material/FormatItalicOutlined';
@@ -172,27 +174,28 @@ function renderBlockTypeOption(option: SelectOption) {
   ];
 }
 
-function handleLinkClick() {
-  const previousUrl = editor.value?.getAttributes('link').href;
-  const url = window.prompt('URL', previousUrl);
-
-  // cancelled
-  if (url === null) {
-    return;
-  }
-
-  // empty
-  if (url === '') {
-    if (editor.value?.isActive('link')) {
-      editor.value?.chain().focus().unsetLink().run();
-    } else {
-      editor.value?.chain().focus().extendMarkRange('link').unsetLink().run();
+async function handleLinkClick() {
+  try {
+    const url = await PromptTemplatePromise.start(
+      'Link',
+      'Set Link URL:',
+      editor.value?.getAttributes('link').href
+    );
+    console.log('ENTER', url);
+    // empty
+    if (url === '') {
+      if (editor.value?.isActive('link')) {
+        editor.value?.chain().focus().unsetLink().run();
+      } else {
+        editor.value?.chain().focus().extendMarkRange('link').unsetLink().run();
+      }
+      return;
     }
+    // update link
+    editor.value?.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
+  } catch {
     return;
   }
-
-  // update link
-  editor.value?.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
 }
 
 function handleSelectBlockType(value: string, option: SelectOption) {
@@ -332,6 +335,7 @@ onUnmounted(() => {
       <editor-content :editor="editor" />
     </div>
   </div>
+  <PromptModal />
 </template>
 
 <style scoped>

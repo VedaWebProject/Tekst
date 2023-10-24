@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
-import { useAuthStore, LoginTemplatePromise } from '@/stores';
+import { useAuthStore } from '@/stores';
 import { type FormInst, NForm, NFormItem, NInput, NButton, NModal } from 'naive-ui';
 import { ref, onMounted, nextTick } from 'vue';
 import { $t } from '@/i18n';
@@ -9,6 +9,7 @@ import type { RouteLocationRaw } from 'vue-router';
 import { useFormRules } from '@/formRules';
 import { POST } from '@/api';
 import ModelButtonFooter from '@/components/ModalButtonFooter.vue';
+import { LoginTemplatePromise } from '@/templatePromises';
 
 const auth = useAuthStore();
 const { message } = useMessages();
