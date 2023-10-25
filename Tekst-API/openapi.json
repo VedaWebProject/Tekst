@@ -1385,6 +1385,220 @@
         ]
       }
     },
+    "/platform/segments": {
+      "post": {
+        "tags": [
+          "platform"
+        ],
+        "summary": "Create segment",
+        "operationId": "createSegment",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientSegmentCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientSegmentRead"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/platform/segments/{key}": {
+      "get": {
+        "tags": [
+          "platform"
+        ],
+        "summary": "Get segment",
+        "operationId": "getSegment",
+        "parameters": [
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Key"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ClientSegmentRead"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Response Get Segment Platform Segments  Key  Get"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/platform/segments/{id}": {
+      "patch": {
+        "tags": [
+          "platform"
+        ],
+        "summary": "Update segment",
+        "operationId": "updateSegment",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientSegmentUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientSegmentRead"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "platform"
+        ],
+        "summary": "Delete segment",
+        "operationId": "deleteSegment",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/texts": {
       "get": {
         "tags": [
@@ -3159,6 +3373,104 @@
           "key"
         ],
         "title": "ClientSegment"
+      },
+      "ClientSegmentCreate": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "maxLength": 32,
+            "title": "Key",
+            "description": "Key of this segment. System segment keys must start with `system_`."
+          },
+          "isSystemSegment": {
+            "type": "boolean",
+            "title": "Issystemsegment",
+            "description": "Whether this is a system segment (will be set automatically)",
+            "default": false
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 32,
+            "title": "Title",
+            "description": "Title of this segment",
+            "default": ""
+          },
+          "html": {
+            "type": "string",
+            "maxLength": 1048576,
+            "title": "Html",
+            "description": "HTML content of this segment",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "required": [
+          "key"
+        ],
+        "title": "ClientSegmentCreate"
+      },
+      "ClientSegmentRead": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "key": {
+            "type": "string",
+            "maxLength": 32,
+            "title": "Key",
+            "description": "Key of this segment. System segment keys must start with `system_`."
+          },
+          "isSystemSegment": {
+            "type": "boolean",
+            "title": "Issystemsegment",
+            "description": "Whether this is a system segment (will be set automatically)",
+            "default": false
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 32,
+            "title": "Title",
+            "description": "Title of this segment",
+            "default": ""
+          },
+          "html": {
+            "type": "string",
+            "maxLength": 1048576,
+            "title": "Html",
+            "description": "HTML content of this segment",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "key"
+        ],
+        "title": "ClientSegmentRead"
+      },
+      "ClientSegmentUpdate": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "isSystemSegment": {
+            "type": "boolean",
+            "title": "Issystemsegment"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "html": {
+            "type": "string",
+            "title": "Html"
+          }
+        },
+        "type": "object",
+        "title": "ClientSegmentUpdate"
       },
       "DeepLLinksConfig": {
         "properties": {
