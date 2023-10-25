@@ -32,11 +32,12 @@ import ImageOutlined from '@vicons/material/ImageOutlined';
 
 const props = withDefaults(
   defineProps<{
-    document: string;
+    document?: string;
     toolbarSize?: 'small' | 'medium' | 'large';
     maxChars?: number;
   }>(),
   {
+    document: '',
     toolbarSize: 'small',
     maxChars: undefined,
   }
