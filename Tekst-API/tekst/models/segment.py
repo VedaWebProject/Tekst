@@ -30,9 +30,13 @@ class ClientSegment(ModelBase, ModelFactoryMixin):
     ] = ""
 
     @model_validator(mode="after")
-    def determine_if_system_segment(self) -> "ClientSegment":
+    def auto_generate_values(self) -> "ClientSegment":
+        # check if this is a system segment
         if self.key and self.key.startswith("system_"):
             self.is_system_segment = True
+        # set title to key if it's missing
+        if not len(self.title):
+            self.title = self.key
         return self
 
 
