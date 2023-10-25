@@ -1333,10 +1333,10 @@
         }
       }
     },
-    "/settings": {
+    "/platform/settings": {
       "patch": {
         "tags": [
-          "settings"
+          "platform"
         ],
         "summary": "Update platform settings",
         "operationId": "updatePlatformSettings",
@@ -3131,7 +3131,7 @@
             "type": "string",
             "maxLength": 32,
             "title": "Key",
-            "description": "Key of this segment. System segments must use one of SystemSegmentKeys."
+            "description": "Key of this segment. System segment keys must start with `system_`."
           },
           "isSystemSegment": {
             "type": "boolean",

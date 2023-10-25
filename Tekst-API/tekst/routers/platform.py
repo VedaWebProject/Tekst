@@ -2,16 +2,20 @@ from typing import Annotated
 
 from beanie import PydanticObjectId
 from beanie.operators import Or
-from fastapi import APIRouter, Depends, HTTPException, Path, status
+from fastapi import APIRouter, Body, Depends, HTTPException, Path, status
 from humps import decamelize
 
-from tekst.auth import OptionalUserDep
+from tekst.auth import OptionalUserDep, SuperuserDep
 from tekst.config import TekstConfig
 from tekst.dependencies import get_cfg
 from tekst.layer_types import layer_type_manager
-from tekst.models.platform import PlatformData, PlatformSettingsRead
+from tekst.models.platform import PlatformData
 from tekst.models.segment import ClientSegmentDocument
-from tekst.models.settings import PlatformSettingsDocument
+from tekst.models.settings import (
+    PlatformSettingsDocument,
+    PlatformSettingsRead,
+    PlatformSettingsUpdate,
+)
 from tekst.models.user import UserDocument, UserReadPublic
 from tekst.routers.texts import get_all_texts
 
@@ -84,3 +88,18 @@ async def get_translations(lang: str = None) -> dict:
         return translations[lang]
     else:
         return translations
+
+
+@router.patch(
+    "/settings", response_model=PlatformSettingsRead, status_code=status.HTTP_200_OK
+)
+async def update_platform_settings(
+    su: SuperuserDep,
+    updates: Annotated[PlatformSettingsUpdate, Body()],
+) -> PlatformSettingsRead:
+    settings_doc = await PlatformSettingsDocument.find_all().first_or_none()
+    if not settings_doc:
+        # create from defaults
+        settings_doc = await PlatformSettingsDocument().create()
+    await settings_doc.apply(updates.model_dump(exclude_unset=True))
+    return settings_doc
