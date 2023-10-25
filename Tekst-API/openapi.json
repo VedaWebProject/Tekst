@@ -1385,58 +1385,6 @@
         ]
       }
     },
-    "/platform/segments": {
-      "post": {
-        "tags": [
-          "platform"
-        ],
-        "summary": "Create segment",
-        "operationId": "createSegment",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ClientSegmentCreate"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientSegmentRead"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      }
-    },
     "/platform/segments/{key}": {
       "get": {
         "tags": [
@@ -1488,6 +1436,58 @@
             }
           }
         }
+      }
+    },
+    "/platform/segments": {
+      "post": {
+        "tags": [
+          "platform"
+        ],
+        "summary": "Create segment",
+        "operationId": "createSegment",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientSegmentCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientSegmentRead"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
       }
     },
     "/platform/segments/{id}": {
@@ -4470,6 +4470,13 @@
             },
             "type": "array",
             "title": "Systemsegments"
+          },
+          "pageSegmentKeys": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Pagesegmentkeys"
           }
         },
         "type": "object",
@@ -4477,7 +4484,8 @@
           "texts",
           "settings",
           "layerTypes",
-          "systemSegments"
+          "systemSegments",
+          "pageSegmentKeys"
         ],
         "title": "PlatformData",
         "description": "Platform data used by the web client"

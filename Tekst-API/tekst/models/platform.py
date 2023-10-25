@@ -36,7 +36,8 @@ class PlatformData(ModelBase):
     settings: PlatformSettingsRead
     security: PlatformSecurityInfo = PlatformSecurityInfo()
     layer_types: Annotated[list[LayerTypeInfo], Field(alias="layerTypes")]
-    system_segments: list[ClientSegment]
+    system_segments: Annotated[list[ClientSegment], Field(alias="systemSegments")]
+    page_segment_keys: Annotated[list[str], Field(alias="pageSegmentKeys")]
 
 
 class TextStats(ModelBase):

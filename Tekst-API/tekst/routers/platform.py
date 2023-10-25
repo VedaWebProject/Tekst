@@ -53,6 +53,12 @@ async def get_platform_data(
         system_segments=await ClientSegmentDocument.find(
             ClientSegmentDocument.is_system_segment == True  # noqa: E712
         ).to_list(),
+        page_segment_keys=[
+            s.key
+            for s in await ClientSegmentDocument.find(
+                ClientSegmentDocument.is_system_segment == False  # noqa: E712
+            ).to_list()
+        ],
     )
 
 
@@ -110,6 +116,19 @@ async def update_platform_settings(
     return settings_doc
 
 
+@router.get(
+    "/segments/{key}",
+    response_model=ClientSegmentRead | None,
+    status_code=status.HTTP_200_OK,
+)
+async def get_segment(
+    segment_key: Annotated[str, Path(alias="key")]
+) -> ClientSegmentDocument | None:
+    return await ClientSegmentDocument.find_one(
+        ClientSegmentDocument.key == segment_key
+    )
+
+
 @router.post(
     "/segments", response_model=ClientSegmentRead, status_code=status.HTTP_201_CREATED
 )
@@ -125,19 +144,6 @@ async def create_segment(
             detail="An equal segment already exists (same key)",
         )
     return await ClientSegmentDocument.model_from(segment).create()
-
-
-@router.get(
-    "/segments/{key}",
-    response_model=ClientSegmentRead | None,
-    status_code=status.HTTP_200_OK,
-)
-async def get_segment(
-    segment_key: Annotated[str, Path(alias="key")]
-) -> ClientSegmentDocument | None:
-    return await ClientSegmentDocument.find_one(
-        ClientSegmentDocument.key == segment_key
-    )
 
 
 @router.patch(
