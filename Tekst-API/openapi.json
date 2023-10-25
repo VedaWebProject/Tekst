@@ -3125,6 +3125,41 @@
         ],
         "title": "Body_verify_verify_auth_verify_post"
       },
+      "ClientSegment": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "maxLength": 32,
+            "title": "Key",
+            "description": "Key of this segment. System segments must use one of SystemSegmentKeys."
+          },
+          "isSystemSegment": {
+            "type": "boolean",
+            "title": "Issystemsegment",
+            "description": "Whether this is a system segment (will be set automatically)",
+            "default": false
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 32,
+            "title": "Title",
+            "description": "Title of this segment",
+            "default": ""
+          },
+          "html": {
+            "type": "string",
+            "maxLength": 1048576,
+            "title": "Html",
+            "description": "HTML content of this segment",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "required": [
+          "key"
+        ],
+        "title": "ClientSegment"
+      },
       "DeepLLinksConfig": {
         "properties": {
           "enabled": {
@@ -4097,7 +4132,18 @@
             "$ref": "#/components/schemas/PlatformSettingsRead"
           },
           "security": {
-            "$ref": "#/components/schemas/PlatformSecurityInfo"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PlatformSecurityInfo"
+              }
+            ],
+            "default": {
+              "authCookieLifetime": 3600,
+              "closedMode": false,
+              "enableCookieAuth": true,
+              "enableJwtAuth": true,
+              "usersActiveByDefault": false
+            }
           },
           "layerTypes": {
             "items": {
@@ -4105,13 +4151,21 @@
             },
             "type": "array",
             "title": "Layertypes"
+          },
+          "systemSegments": {
+            "items": {
+              "$ref": "#/components/schemas/ClientSegment"
+            },
+            "type": "array",
+            "title": "Systemsegments"
           }
         },
         "type": "object",
         "required": [
           "texts",
           "settings",
-          "layerTypes"
+          "layerTypes",
+          "systemSegments"
         ],
         "title": "PlatformData",
         "description": "Platform data used by the web client"

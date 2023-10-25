@@ -7,6 +7,7 @@ from pydantic import Field
 from tekst.config import TekstConfig, get_config
 from tekst.layer_types import LayerTypeInfo
 from tekst.models.common import ModelBase
+from tekst.models.segment import ClientSegment
 from tekst.models.settings import PlatformSettingsRead
 from tekst.models.text import TextRead
 
@@ -33,8 +34,9 @@ class PlatformData(ModelBase):
     )
     texts: list[TextRead]
     settings: PlatformSettingsRead
-    security: PlatformSecurityInfo = Field(default_factory=PlatformSecurityInfo)
+    security: PlatformSecurityInfo = PlatformSecurityInfo()
     layer_types: Annotated[list[LayerTypeInfo], Field(alias="layerTypes")]
+    system_segments: list[ClientSegment]
 
 
 class TextStats(ModelBase):

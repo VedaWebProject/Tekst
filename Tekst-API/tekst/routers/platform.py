@@ -10,6 +10,7 @@ from tekst.config import TekstConfig
 from tekst.dependencies import get_cfg
 from tekst.layer_types import layer_type_manager
 from tekst.models.platform import PlatformData, PlatformSettingsRead
+from tekst.models.segment import ClientSegmentDocument
 from tekst.models.settings import PlatformSettingsDocument
 from tekst.models.user import UserDocument, UserReadPublic
 from tekst.routers.texts import get_all_texts
@@ -40,6 +41,9 @@ async def get_platform_data(
             await PlatformSettingsDocument.find_one()
         ),
         layer_types=layer_type_manager.get_layer_types_info(),
+        system_segments=await ClientSegmentDocument.find(
+            ClientSegmentDocument.is_system_segment == True  # noqa: E712
+        ).to_list(),
     )
 
 

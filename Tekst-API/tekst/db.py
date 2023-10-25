@@ -7,6 +7,7 @@ from tekst.config import TekstConfig, get_config
 from tekst.layer_types import layer_type_manager
 from tekst.logging import log
 from tekst.models.layer import LayerBaseDocument
+from tekst.models.segment import ClientSegmentDocument
 from tekst.models.settings import PlatformSettingsDocument
 from tekst.models.text import NodeDocument, TextDocument
 from tekst.models.unit import UnitBaseDocument
@@ -45,6 +46,7 @@ async def init_odm(db: Database) -> None:
         LayerBaseDocument,
         UnitBaseDocument,
         PlatformSettingsDocument,
+        ClientSegmentDocument,
         UserDocument,
         AccessToken,
     ]
