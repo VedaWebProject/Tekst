@@ -88,3 +88,7 @@ export type LayerNodeCoverage = components['schemas']['LayerNodeCoverage'];
 export type PlatformStats = components['schemas']['PlatformStats'];
 export type PlatformData = components['schemas']['PlatformData'];
 export type ErrorModel = components['schemas']['ErrorModel'];
+export type ClientSegmentRead = components['schemas']['ClientSegmentRead'];
+export type ClientSegmentCreate = components['schemas']['ClientSegmentCreate'];
+export type ClientSegmentUpdate = components['schemas']['ClientSegmentUpdate'];
+export type ClientSegmentHead = components['schemas']['ClientSegmentHead'];
