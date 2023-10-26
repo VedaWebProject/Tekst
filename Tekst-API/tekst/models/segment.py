@@ -1,8 +1,8 @@
-from typing import Annotated
+from typing import Annotated, Literal
 
-from pydantic import Field, model_validator
+from pydantic import BaseModel, Field, StringConstraints, model_validator
 
-from tekst.models.common import DocumentBase, ModelBase, ModelFactoryMixin
+from tekst.models.common import DocumentBase, Locale, ModelBase, ModelFactoryMixin
 
 
 class ClientSegment(ModelBase, ModelFactoryMixin):
@@ -12,7 +12,12 @@ class ClientSegment(ModelBase, ModelFactoryMixin):
             description=(
                 "Key of this segment. System segment keys must start with `system_`."
             ),
+        ),
+        StringConstraints(
+            strip_whitespace=True,
+            min_length=1,
             max_length=32,
+            pattern=r"[a-zA-Z0-9\-_]+",
         ),
     ]
     is_system_segment: Annotated[
@@ -22,30 +27,36 @@ class ClientSegment(ModelBase, ModelFactoryMixin):
             alias="isSystemSegment",
         ),
     ] = False
+    locale: Annotated[
+        Locale | Literal["*"],
+        Field(description="Locale indicating the translation language of this segment"),
+    ]
     title: Annotated[
-        str, Field(description="Title of this segment", max_length=32)
-    ] = ""
+        str | None, Field(description="Title of this segment", max_length=32)
+    ] = None
     html: Annotated[
         str, Field(description="HTML content of this segment", max_length=1048576)
-    ] = ""
+    ]
 
     @model_validator(mode="after")
-    def auto_generate_values(self) -> "ClientSegment":
-        # check if this is a system segment
+    def set_is_system_segment(self) -> "ClientSegment":
         if self.key and self.key.startswith("system_"):
             self.is_system_segment = True
-        # set title to key if it's missing
-        if not len(self.title):
-            self.title = self.key
         return self
 
 
 class ClientSegmentDocument(ClientSegment, DocumentBase):
     class Settings(DocumentBase.Settings):
         name = "segments"
-        indexes = ["key", "is_system_segment"]
+        indexes = ["key", "is_system_segment", "locale"]
 
 
 ClientSegmentCreate = ClientSegment.get_create_model()
 ClientSegmentRead = ClientSegment.get_read_model()
 ClientSegmentUpdate = ClientSegment.get_update_model()
+
+
+class ClientSegmentHead(BaseModel):
+    key: str
+    title: str
+    locale: Locale

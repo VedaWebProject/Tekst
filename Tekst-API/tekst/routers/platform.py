@@ -13,6 +13,7 @@ from tekst.models.platform import PlatformData
 from tekst.models.segment import (
     ClientSegmentCreate,
     ClientSegmentDocument,
+    ClientSegmentHead,
     ClientSegmentRead,
     ClientSegmentUpdate,
 )
@@ -53,12 +54,11 @@ async def get_platform_data(
         system_segments=await ClientSegmentDocument.find(
             ClientSegmentDocument.is_system_segment == True  # noqa: E712
         ).to_list(),
-        page_segment_keys=[
-            s.key
-            for s in await ClientSegmentDocument.find(
-                ClientSegmentDocument.is_system_segment == False  # noqa: E712
-            ).to_list()
-        ],
+        pages_info=await ClientSegmentDocument.find(
+            ClientSegmentDocument.is_system_segment == False  # noqa: E712
+        )
+        .project(ClientSegmentHead)
+        .to_list(),
     )
 
 
@@ -118,15 +118,34 @@ async def update_platform_settings(
 
 @router.get(
     "/segments/{key}",
-    response_model=ClientSegmentRead | None,
+    response_model=ClientSegmentRead,
     status_code=status.HTTP_200_OK,
 )
 async def get_segment(
     segment_key: Annotated[str, Path(alias="key")]
-) -> ClientSegmentDocument | None:
-    return await ClientSegmentDocument.find_one(
+) -> ClientSegmentDocument:
+    segment = await ClientSegmentDocument.find_one(
         ClientSegmentDocument.key == segment_key
     )
+    if not segment:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Client segment {segment_key} doesn't exist",
+        )
+    return segment
+
+
+# @router.get(
+#     "/segments",
+#     response_model=list[ClientSegmentRead],
+#     status_code=status.HTTP_200_OK,
+# )
+# async def get_segments(
+#     keys: Annotated[list[str], Query(description="List of segment keys to retrieve")]
+# ) -> list[ClientSegmentDocument]:
+#     return await ClientSegmentDocument.find(
+#         In(ClientSegmentDocument.key, keys)
+#     ).to_list()
 
 
 @router.post(
@@ -136,8 +155,9 @@ async def create_segment(
     su: SuperuserDep,
     segment: ClientSegmentCreate,
 ) -> ClientSegmentDocument:
-    if ClientSegmentDocument.find_one(
-        ClientSegmentDocument.key == segment.key
+    if await ClientSegmentDocument.find_one(
+        ClientSegmentDocument.key == segment.key,
+        ClientSegmentDocument.locale == segment.locale,
     ).exists():
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,

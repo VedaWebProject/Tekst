@@ -7,7 +7,7 @@ from pydantic import Field
 from tekst.config import TekstConfig, get_config
 from tekst.layer_types import LayerTypeInfo
 from tekst.models.common import ModelBase
-from tekst.models.segment import ClientSegment
+from tekst.models.segment import ClientSegmentHead, ClientSegmentRead
 from tekst.models.settings import PlatformSettingsRead
 from tekst.models.text import TextRead
 
@@ -36,8 +36,8 @@ class PlatformData(ModelBase):
     settings: PlatformSettingsRead
     security: PlatformSecurityInfo = PlatformSecurityInfo()
     layer_types: Annotated[list[LayerTypeInfo], Field(alias="layerTypes")]
-    system_segments: Annotated[list[ClientSegment], Field(alias="systemSegments")]
-    page_segment_keys: Annotated[list[str], Field(alias="pageSegmentKeys")]
+    system_segments: Annotated[list[ClientSegmentRead], Field(alias="systemSegments")]
+    pages_info: list[ClientSegmentHead]
 
 
 class TextStats(ModelBase):

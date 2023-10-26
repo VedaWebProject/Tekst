@@ -1409,15 +1409,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/components/schemas/ClientSegmentRead"
-                    },
-                    {
-                      "type": "null"
-                    }
-                  ],
-                  "title": "Response Get Segment Platform Segments  Key  Get"
+                  "$ref": "#/components/schemas/ClientSegmentRead"
                 }
               }
             }
@@ -3339,46 +3331,13 @@
         ],
         "title": "Body_verify_verify_auth_verify_post"
       },
-      "ClientSegment": {
-        "properties": {
-          "key": {
-            "type": "string",
-            "maxLength": 32,
-            "title": "Key",
-            "description": "Key of this segment. System segment keys must start with `system_`."
-          },
-          "isSystemSegment": {
-            "type": "boolean",
-            "title": "Issystemsegment",
-            "description": "Whether this is a system segment (will be set automatically)",
-            "default": false
-          },
-          "title": {
-            "type": "string",
-            "maxLength": 32,
-            "title": "Title",
-            "description": "Title of this segment",
-            "default": ""
-          },
-          "html": {
-            "type": "string",
-            "maxLength": 1048576,
-            "title": "Html",
-            "description": "HTML content of this segment",
-            "default": ""
-          }
-        },
-        "type": "object",
-        "required": [
-          "key"
-        ],
-        "title": "ClientSegment"
-      },
       "ClientSegmentCreate": {
         "properties": {
           "key": {
             "type": "string",
             "maxLength": 32,
+            "minLength": 1,
+            "pattern": "[a-zA-Z0-9\\-_]+",
             "title": "Key",
             "description": "Key of this segment. System segment keys must start with `system_`."
           },
@@ -3388,26 +3347,76 @@
             "description": "Whether this is a system segment (will be set automatically)",
             "default": false
           },
+          "locale": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "deDE",
+                  "enUS"
+                ]
+              },
+              {
+                "const": "*"
+              }
+            ],
+            "title": "Locale",
+            "description": "Locale indicating the translation language of this segment"
+          },
           "title": {
-            "type": "string",
-            "maxLength": 32,
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 32
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Title",
-            "description": "Title of this segment",
-            "default": ""
+            "description": "Title of this segment"
           },
           "html": {
             "type": "string",
             "maxLength": 1048576,
             "title": "Html",
-            "description": "HTML content of this segment",
-            "default": ""
+            "description": "HTML content of this segment"
           }
         },
         "type": "object",
         "required": [
-          "key"
+          "key",
+          "locale",
+          "html"
         ],
         "title": "ClientSegmentCreate"
+      },
+      "ClientSegmentHead": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "locale": {
+            "type": "string",
+            "enum": [
+              "deDE",
+              "enUS"
+            ],
+            "title": "Locale"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "title",
+          "locale"
+        ],
+        "title": "ClientSegmentHead"
       },
       "ClientSegmentRead": {
         "properties": {
@@ -3419,6 +3428,8 @@
           "key": {
             "type": "string",
             "maxLength": 32,
+            "minLength": 1,
+            "pattern": "[a-zA-Z0-9\\-_]+",
             "title": "Key",
             "description": "Key of this segment. System segment keys must start with `system_`."
           },
@@ -3428,25 +3439,48 @@
             "description": "Whether this is a system segment (will be set automatically)",
             "default": false
           },
+          "locale": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "deDE",
+                  "enUS"
+                ]
+              },
+              {
+                "const": "*"
+              }
+            ],
+            "title": "Locale",
+            "description": "Locale indicating the translation language of this segment"
+          },
           "title": {
-            "type": "string",
-            "maxLength": 32,
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 32
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Title",
-            "description": "Title of this segment",
-            "default": ""
+            "description": "Title of this segment"
           },
           "html": {
             "type": "string",
             "maxLength": 1048576,
             "title": "Html",
-            "description": "HTML content of this segment",
-            "default": ""
+            "description": "HTML content of this segment"
           }
         },
         "type": "object",
         "required": [
           "id",
-          "key"
+          "key",
+          "locale",
+          "html"
         ],
         "title": "ClientSegmentRead"
       },
@@ -3460,8 +3494,30 @@
             "type": "boolean",
             "title": "Issystemsegment"
           },
+          "locale": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "deDE",
+                  "enUS"
+                ]
+              },
+              {
+                "const": "*"
+              }
+            ],
+            "title": "Locale"
+          },
           "title": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Title"
           },
           "html": {
@@ -4466,17 +4522,17 @@
           },
           "systemSegments": {
             "items": {
-              "$ref": "#/components/schemas/ClientSegment"
+              "$ref": "#/components/schemas/ClientSegmentRead"
             },
             "type": "array",
             "title": "Systemsegments"
           },
-          "pageSegmentKeys": {
+          "pagesInfo": {
             "items": {
-              "type": "string"
+              "$ref": "#/components/schemas/ClientSegmentHead"
             },
             "type": "array",
-            "title": "Pagesegmentkeys"
+            "title": "Pagesinfo"
           }
         },
         "type": "object",
@@ -4485,7 +4541,7 @@
           "settings",
           "layerTypes",
           "systemSegments",
-          "pageSegmentKeys"
+          "pagesInfo"
         ],
         "title": "PlatformData",
         "description": "Platform data used by the web client"

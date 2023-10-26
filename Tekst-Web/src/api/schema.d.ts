@@ -146,9 +146,23 @@ export interface paths {
      */
     get: operations['getTranslations'];
   };
-  '/settings': {
+  '/platform/settings': {
     /** Update platform settings */
     patch: operations['updatePlatformSettings'];
+  };
+  '/platform/segments/{key}': {
+    /** Get segment */
+    get: operations['getSegment'];
+  };
+  '/platform/segments': {
+    /** Create segment */
+    post: operations['createSegment'];
+  };
+  '/platform/segments/{id}': {
+    /** Delete segment */
+    delete: operations['deleteSegment'];
+    /** Update segment */
+    patch: operations['updateSegment'];
   };
   '/texts': {
     /** Get all texts */
@@ -348,6 +362,94 @@ export interface components {
     Body_verify_verify_auth_verify_post: {
       /** Token */
       token: string;
+    };
+    /** ClientSegmentCreate */
+    ClientSegmentCreate: {
+      /**
+       * Key
+       * @description Key of this segment. System segment keys must start with `system_`.
+       */
+      key: string;
+      /**
+       * Issystemsegment
+       * @description Whether this is a system segment (will be set automatically)
+       * @default false
+       */
+      isSystemSegment?: boolean;
+      /**
+       * Locale
+       * @description Locale indicating the translation language of this segment
+       */
+      locale: ('deDE' | 'enUS') | '*';
+      /**
+       * Title
+       * @description Title of this segment
+       */
+      title?: string | null;
+      /**
+       * Html
+       * @description HTML content of this segment
+       */
+      html: string;
+    };
+    /** ClientSegmentHead */
+    ClientSegmentHead: {
+      /** Key */
+      key: string;
+      /** Title */
+      title: string;
+      /**
+       * Locale
+       * @enum {string}
+       */
+      locale: 'deDE' | 'enUS';
+    };
+    /** ClientSegmentRead */
+    ClientSegmentRead: {
+      /**
+       * Id
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      id: string;
+      /**
+       * Key
+       * @description Key of this segment. System segment keys must start with `system_`.
+       */
+      key: string;
+      /**
+       * Issystemsegment
+       * @description Whether this is a system segment (will be set automatically)
+       * @default false
+       */
+      isSystemSegment?: boolean;
+      /**
+       * Locale
+       * @description Locale indicating the translation language of this segment
+       */
+      locale: ('deDE' | 'enUS') | '*';
+      /**
+       * Title
+       * @description Title of this segment
+       */
+      title?: string | null;
+      /**
+       * Html
+       * @description HTML content of this segment
+       */
+      html: string;
+    };
+    /** ClientSegmentUpdate */
+    ClientSegmentUpdate: {
+      /** Key */
+      key?: string;
+      /** Issystemsegment */
+      isSystemSegment?: boolean;
+      /** Locale */
+      locale?: ('deDE' | 'enUS') | '*';
+      /** Title */
+      title?: string | null;
+      /** Html */
+      html?: string;
     };
     /** DeepLLinksConfig */
     DeepLLinksConfig: {
@@ -859,9 +961,22 @@ export interface components {
       /** Texts */
       texts: components['schemas']['TextRead'][];
       settings: components['schemas']['PlatformSettingsRead'];
+      /**
+       * @default {
+       *   "authCookieLifetime": 3600,
+       *   "closedMode": false,
+       *   "enableCookieAuth": true,
+       *   "enableJwtAuth": true,
+       *   "usersActiveByDefault": false
+       * }
+       */
       security?: components['schemas']['PlatformSecurityInfo'];
       /** Layertypes */
       layerTypes: components['schemas']['LayerTypeInfo'][];
+      /** Systemsegments */
+      systemSegments: components['schemas']['ClientSegmentRead'][];
+      /** Pagesinfo */
+      pagesInfo: components['schemas']['ClientSegmentHead'][];
     };
     /** PlatformSecurityInfo */
     PlatformSecurityInfo: {
@@ -1883,6 +1998,113 @@ export interface operations {
       200: {
         content: {
           'application/json': components['schemas']['PlatformSettingsRead'];
+        };
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Get segment */
+  getSegment: {
+    parameters: {
+      path: {
+        key: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['ClientSegmentRead'];
+        };
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Create segment */
+  createSegment: {
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ClientSegmentCreate'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      201: {
+        content: {
+          'application/json': components['schemas']['ClientSegmentRead'];
+        };
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Delete segment */
+  deleteSegment: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      204: {
+        content: never;
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Update segment */
+  updateSegment: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ClientSegmentUpdate'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['ClientSegmentRead'];
         };
       };
       /** @description Not found */
