@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onUnmounted, h, type Component, type CSSProperties } from 'vue';
+import { computed, onUnmounted, h, type Component, type CSSProperties, watch } from 'vue';
 import { NSelect, NButton, NIcon, type SelectOption } from 'naive-ui';
 import { useEditor, EditorContent } from '@tiptap/vue-3';
 import StarterKit from '@tiptap/starter-kit';
@@ -33,17 +33,29 @@ import ImageOutlined from '@vicons/material/ImageOutlined';
 const props = withDefaults(
   defineProps<{
     document?: string;
+    documentId?: string;
     toolbarSize?: 'small' | 'medium' | 'large';
     maxChars?: number;
   }>(),
   {
     document: '',
+    documentId: undefined,
     toolbarSize: 'small',
     maxChars: undefined,
   }
 );
 
 const emit = defineEmits(['update:document']);
+
+if (props.documentId) {
+  // this is for the editor to render document changes made outside the editor
+  watch(
+    () => props.documentId,
+    () => {
+      editor.value?.commands.setContent(props.document);
+    }
+  );
+}
 
 const editor = useEditor({
   content: props.document,
