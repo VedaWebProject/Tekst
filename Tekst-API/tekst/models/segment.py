@@ -1,4 +1,4 @@
-from typing import Annotated, Literal
+from typing import Annotated
 
 from pydantic import BaseModel, Field, StringConstraints, model_validator
 
@@ -28,9 +28,9 @@ class ClientSegment(ModelBase, ModelFactoryMixin):
         ),
     ] = False
     locale: Annotated[
-        Locale | Literal["*"],
+        Locale | None,
         Field(description="Locale indicating the translation language of this segment"),
-    ]
+    ] = None
     title: Annotated[
         str | None, Field(description="Title of this segment", max_length=32)
     ] = None
