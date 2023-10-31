@@ -380,7 +380,7 @@ export interface components {
        * Locale
        * @description Locale indicating the translation language of this segment
        */
-      locale: ('deDE' | 'enUS') | '*';
+      locale?: ('deDE' | 'enUS') | null;
       /**
        * Title
        * @description Title of this segment
@@ -426,7 +426,7 @@ export interface components {
        * Locale
        * @description Locale indicating the translation language of this segment
        */
-      locale: ('deDE' | 'enUS') | '*';
+      locale?: ('deDE' | 'enUS') | null;
       /**
        * Title
        * @description Title of this segment
@@ -445,7 +445,7 @@ export interface components {
       /** Issystemsegment */
       isSystemSegment?: boolean;
       /** Locale */
-      locale?: ('deDE' | 'enUS') | '*';
+      locale?: ('deDE' | 'enUS') | null;
       /** Title */
       title?: string | null;
       /** Html */
