@@ -71,7 +71,10 @@ const defaultLevelOptions = computed(() =>
 
 watch(
   () => state.text,
-  () => (model.value = initialModel())
+  () => {
+    model.value = initialModel();
+    resetModelChanges();
+  }
 );
 
 function handleReset() {
