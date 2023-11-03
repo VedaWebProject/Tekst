@@ -11,9 +11,10 @@ function hashCode(obj: any) {
   return hash;
 }
 
-export function useModelChanges(model: Ref<Record<string, any>>) {
-  const getPropsHashes = (ofModel: Record<string, any>): Record<string, number> => {
+export function useModelChanges(model: Ref<Record<string, any> | undefined>) {
+  const getPropsHashes = (ofModel: Record<string, any> | undefined): Record<string, number> => {
     const hashes: Record<string, number> = {};
+    if (!ofModel) return hashes;
     Object.keys(ofModel).forEach((k) => {
       hashes[k] = hashCode(ofModel[k]);
     });
@@ -21,9 +22,10 @@ export function useModelChanges(model: Ref<Record<string, any>>) {
   };
   const getChanges = (): Record<string, any> => {
     const changes: Record<string, any> = {};
+    if (!model.value) return changes;
     Object.keys(model.value).forEach((k) => {
-      if (modelPropsHashes.value[k] !== hashCode(model.value[k])) {
-        changes[k] = model.value[k];
+      if (modelPropsHashes.value[k] !== hashCode(model.value?.[k])) {
+        changes[k] = model.value?.[k];
       }
     });
     return changes;
