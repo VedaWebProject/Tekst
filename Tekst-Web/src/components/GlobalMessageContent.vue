@@ -10,15 +10,15 @@ import { NCollapse, NCollapseItem } from 'naive-ui';
       name="details"
       style="margin: 0; font-size: var(--app-ui-font-size-mini)"
     >
-      <div
+      <pre
         style="
           font-family: monospace;
           font-size: var(--app-ui-font-size-mini);
           font-weight: var(--app-ui-font-weight-light);
+          white-space: wrap;
+          line-height: 1;
         "
-      >
-        <slot name="details"></slot>
-      </div>
+      ><slot name="details"></slot></pre>
     </n-collapse-item>
   </n-collapse>
 </template>

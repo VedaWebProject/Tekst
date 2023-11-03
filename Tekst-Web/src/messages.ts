@@ -13,11 +13,15 @@ const messageQueue = ref<Message[]>([]);
 
 export function useMessages() {
   function messageFn(type: MessageType) {
-    return (text: string, details?: string, seconds: number = 5) => {
+    return (text: string, details?: string | object, seconds: number = 5) => {
       messageQueue.value = messageQueue.value.concat([
         {
           text,
-          details,
+          details: details
+            ? typeof details == 'string'
+              ? details
+              : JSON.stringify(details, null, 2)
+            : undefined,
           type,
           seconds,
         },
