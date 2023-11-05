@@ -33,7 +33,7 @@ const nUiDateLocale = computed(() => localeProfiles[state.locale].nUiDateLocale)
   >
     <n-dialog-provider>
       <div id="app-container">
-        <huge-labeled-icon
+        <HugeLabeledIcon
           v-if="initialized && error"
           :message="$t('init.error')"
           :loading="!error && !initialized"

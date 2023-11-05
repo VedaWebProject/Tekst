@@ -38,17 +38,17 @@ const activeLayers = computed(() => {
     />
   </template>
 
-  <huge-labeled-icon
+  <HugeLabeledIcon
     v-else-if="browse.loading"
     :message="$t('init.loading')"
     :icon="HourglassTopTwotone"
   />
-  <huge-labeled-icon
+  <HugeLabeledIcon
     v-else-if="!browse.nodePath.length"
     :message="$t('browse.textNoNodes')"
     :icon="ErrorOutlineOutlined"
   />
-  <huge-labeled-icon v-else :message="$t('browse.locationNoData')" :icon="FolderOffTwotone" />
+  <HugeLabeledIcon v-else :message="$t('browse.locationNoData')" :icon="FolderOffTwotone" />
   <LayerToggleDrawer v-model:show="browse.showLayerToggleDrawer" />
 </template>
 

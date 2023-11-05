@@ -36,7 +36,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <huge-labeled-icon
+  <HugeLabeledIcon
     :message="error ? error : $t('account.verify.success')"
     :loading="!error && !verified"
     :icon="error ? KeyOffTwotone : CheckCircleTwotone"
