@@ -32,33 +32,30 @@ import ImageOutlined from '@vicons/material/ImageOutlined';
 
 const props = withDefaults(
   defineProps<{
-    document?: string;
-    documentId?: string;
+    value?: string;
     toolbarSize?: 'small' | 'medium' | 'large';
     maxChars?: number;
   }>(),
   {
-    document: '',
-    documentId: undefined,
+    value: '',
     toolbarSize: 'small',
     maxChars: undefined,
   }
 );
 
-const emit = defineEmits(['update:document']);
+const emit = defineEmits(['update:value', 'blur', 'focus', 'input']);
 
-if (props.documentId) {
-  // this is for the editor to render document changes made outside the editor
-  watch(
-    () => props.documentId,
-    () => {
-      editor.value?.commands.setContent(props.document);
+watch(
+  () => props.value,
+  (newDocument) => {
+    if (newDocument !== editor.value?.getHTML()) {
+      editor.value?.commands.setContent(props.value);
     }
-  );
-}
+  }
+);
 
 const editor = useEditor({
-  content: props.document,
+  content: props.value,
   extensions: [
     StarterKit.configure({
       heading: {
@@ -78,7 +75,16 @@ const editor = useEditor({
   ],
   injectCSS: false,
   onUpdate: () => {
-    emit('update:document', editor.value?.getHTML());
+    emit('update:value', editor.value?.getHTML());
+  },
+  onBlur: () => {
+    emit('blur');
+  },
+  onFocus: () => {
+    emit('focus');
+  },
+  onTransaction: () => {
+    emit('input');
   },
   editorProps: {
     attributes: {
@@ -170,13 +176,9 @@ const toolbarStyles = computed<CSSProperties>(() => ({
 
 function renderToolbarIcon(icon?: Component) {
   return () =>
-    h(
-      NIcon,
-      { size: toolbarStyles.value.fontSize },
-      {
-        default: icon ? () => h(icon) : undefined,
-      }
-    );
+    h(NIcon, null, {
+      default: icon ? () => h(icon) : undefined,
+    });
 }
 
 function renderBlockTypeOption(option: SelectOption) {
@@ -246,8 +248,8 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div>
-    <div v-if="editor" class="toolbar">
+  <div v-if="editor" style="width: 100%">
+    <div class="toolbar">
       <n-select
         :value="currentBlockType"
         :options="blockTypeOptions"
