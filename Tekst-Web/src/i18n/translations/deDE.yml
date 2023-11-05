@@ -454,3 +454,10 @@ wysiwyg:
   imagePrompt:
     title: Bild einfügen
     message: Bild-URL
+
+htmlEditor:
+  wysiwyg: Visueller Editor
+  html: HTML-Editor
+  warnSwitchToWysiwyg: |
+    Beim Wechsel vom HTML-Editor zum visuellen Editor gehen alle HTML-Tags verloren,
+    die vom visuellen Editor nicht unterstützt werden. Sind Sie sicher?

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { $t } from '@/i18n';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
-import WysiwygEditor from '@/components/WysiwygEditor.vue';
+import HtmlEditor from '@/components/HtmlEditor.vue';
 import { computed, ref } from 'vue';
 import { NIcon, NButton, NSelect, NForm, NFormItem, NInput, type FormInst } from 'naive-ui';
 import { usePlatformData } from '@/platformData';
@@ -84,12 +84,13 @@ const systemSegmentKeyOptions = systemSegmentKeys.map((key) => ({
   value: key,
 }));
 
-function getSegmentModel(segmentId?: string) {
+function getSegmentModel(segmentId?: string): ClientSegmentUpdate {
   if (!segmentId) {
     return {
       key: undefined,
       title: '',
       locale: undefined,
+      editorMode: 'wysiwyg',
       html: '',
     };
   } else {
@@ -258,7 +259,11 @@ async function handleDeleteClick() {
       </n-form-item>
       <!-- HTML -->
       <n-form-item path="html" :label="$t('models.segment.html')" required>
-        <WysiwygEditor v-model:value="segmentModel.html" toolbar-size="medium" />
+        <HtmlEditor
+          v-model:value="segmentModel.html"
+          v-model:editor-mode="segmentModel.editorMode"
+          toolbar-size="medium"
+        />
       </n-form-item>
     </n-form>
 

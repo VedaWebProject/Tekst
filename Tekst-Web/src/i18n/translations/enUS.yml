@@ -437,3 +437,10 @@ wysiwyg:
   imagePrompt:
     title: Insert image
     message: Image URL
+
+htmlEditor:
+  wysiwyg: Visual Editor
+  html: HTML Editor
+  warnSwitchToWysiwyg: |
+    Switching from the HTML editor to the visual editor will remove all HTML tags
+    the visual editor doesn't support. Are you sure you want to switch?

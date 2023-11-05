@@ -34,12 +34,10 @@ const props = withDefaults(
   defineProps<{
     value?: string;
     toolbarSize?: 'small' | 'medium' | 'large';
-    maxChars?: number;
   }>(),
   {
     value: '',
     toolbarSize: 'small',
-    maxChars: undefined,
   }
 );
 
