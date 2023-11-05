@@ -3413,6 +3413,11 @@
       },
       "ClientSegmentHead": {
         "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
           "key": {
             "type": "string",
             "title": "Key"
@@ -3446,6 +3451,7 @@
         },
         "type": "object",
         "required": [
+          "id",
           "key"
         ],
         "title": "ClientSegmentHead"

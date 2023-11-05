@@ -1,5 +1,6 @@
 from typing import Annotated, Literal
 
+from beanie import PydanticObjectId
 from pydantic import BaseModel, Field, StringConstraints, model_validator
 
 from tekst.models.common import DocumentBase, Locale, ModelBase, ModelFactoryMixin
@@ -60,6 +61,10 @@ ClientSegmentUpdate = ClientSegment.get_update_model()
 
 
 class ClientSegmentHead(BaseModel):
+    id: PydanticObjectId
     key: str
     title: str | None = None
     locale: Locale | None = None
+
+    class Settings:
+        projection = {"id": "$_id", "key": 1, "title": 1, "locale": 1}

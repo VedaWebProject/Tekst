@@ -28,7 +28,7 @@ import FileOpenOutlined from '@vicons/material/FileOpenOutlined';
 import DeleteOutlined from '@vicons/material/DeleteOutlined';
 import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
 
-const { pfData, loadPlatformData } = usePlatformData();
+const { pfData, loadPlatformData, getSegment } = usePlatformData();
 const { locale } = useI18n();
 const { message } = useMessages();
 const dialog = useDialog();
@@ -82,7 +82,7 @@ const segmentLocaleOptions = computed(() =>
   }))
 );
 
-function getSegmentModel(segmentId?: string): ClientSegmentUpdate {
+async function getSegmentModel(segmentId?: string): Promise<ClientSegmentUpdate> {
   if (!segmentId) {
     return {
       key: undefined,
@@ -92,24 +92,28 @@ function getSegmentModel(segmentId?: string): ClientSegmentUpdate {
       html: '',
     };
   } else {
-    const selectedSegment = pfData.value?.systemSegments.find((s) => s.id === segmentId);
+    const selectedSegmentInfo = pfData.value?.pagesInfo.find((s) => s.id === segmentId);
+    const selectedSegment = await getSegment(
+      selectedSegmentInfo?.key,
+      selectedSegmentInfo?.locale || undefined
+    );
     if (!selectedSegment) {
-      return getSegmentModel();
+      return await getSegmentModel();
     } else {
       return Object.assign({}, selectedSegment);
     }
   }
 }
 
-function handleAddSegmentClick() {
+async function handleAddSegmentClick() {
   selectedSegmentId.value = null;
-  segmentModel.value = getSegmentModel();
+  segmentModel.value = await getSegmentModel();
   resetModelChanges();
   formRef.value?.restoreValidation();
 }
 
-function handleSelectSegment(id: string) {
-  segmentModel.value = getSegmentModel(id);
+async function handleSelectSegment(id: string) {
+  segmentModel.value = await getSegmentModel(id);
   resetModelChanges();
   formRef.value?.restoreValidation();
 }
