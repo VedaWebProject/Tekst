@@ -72,6 +72,7 @@ const segmentLocaleOptions = computed(() =>
 );
 
 const systemSegmentKeys = [
+  'systemHeadEnd',
   'systemBodyEnd',
   'systemFooter',
   'systemSiteNotice',
@@ -79,7 +80,7 @@ const systemSegmentKeys = [
 ];
 
 const systemSegmentKeyOptions = systemSegmentKeys.map((key) => ({
-  label: $t(`admin.system.segments.systemKeys.${key}`),
+  label: () => $t(`admin.system.segments.systemKeys.${key}`),
   value: key,
 }));
 

@@ -57,8 +57,9 @@ init:
   ready: Fertig.
   error: Es sind Fehler beim Starten der Anwendung aufgetreten.
   serverI18n: Lade UI-Übersetzungen...
-  platformData: Lade Plattform-Daten...
+  platformData: Lade Plattformdaten...
   workingText: Lege Arbeitstext fest...
+  systemSegments: Füge Systemsegmente ein...
 
 errors:
   error: Fehler
@@ -402,6 +403,12 @@ admin:
     heading: System
     segments:
       heading: Segmente
+      systemKeys:
+        systemHeadEnd: Ende von HTML head
+        systemBodyEnd: Ende von HTML body
+        systemFooter: Fußzeile
+        systemSiteNotice: Impressum
+        systemPrivacyPolicy: Datenschutzerklärung
 
 search:
   heading: Suche

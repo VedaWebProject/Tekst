@@ -16,7 +16,7 @@ export function useInitializeApp() {
   // resources
   const state = useStateStore();
   const { message } = useMessages();
-  const { pfData, loadPlatformData } = usePlatformData();
+  const { pfData, loadPlatformData, getSegment } = usePlatformData();
   const route = useRoute();
   const router = useRouter();
 
@@ -78,6 +78,19 @@ export function useInitializeApp() {
             query: route.query,
           });
         }
+        return success;
+      },
+    },
+    // apply special system segments
+    {
+      info: () => $t('init.systemSegments'),
+      action: async (success: boolean) => {
+        // HTML body end
+        const bodyEnd = await getSegment('systemBodyEnd');
+        if (bodyEnd) document.body.insertAdjacentHTML('beforeend', bodyEnd.html);
+        // HTML head end
+        const headEnd = await getSegment('systemHeadEnd');
+        if (headEnd) document.head.insertAdjacentHTML('beforeend', headEnd.html);
         return success;
       },
     },
