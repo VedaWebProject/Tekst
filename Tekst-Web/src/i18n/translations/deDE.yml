@@ -417,6 +417,10 @@ admin:
       msgDeleted: '"{title}" wurde gelöscht.'
       warnCancel: Alle ungespeicherten Änderungen gehen verloren. Sind sie sicher?
       warnDelete: Sind Sie sicher, dass Sie "{title}" löschen möchten?
+    pages:
+      heading: Seiten
+      untitled: Unbenannte Seite
+      phSelectPage: Seite auswählen
 
 search:
   heading: Suche

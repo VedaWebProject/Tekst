@@ -402,6 +402,10 @@ admin:
       msgDeleted: Deleted "{title}".
       warnCancel: Any unsaved changes will be lost. Are you sure?
       warnDelete: Are you sure you want to delete "{title}"?
+    pages:
+      heading: Pages
+      untitled: Untitled Page
+      phSelectPage: Select page
 
 search:
   heading: Search

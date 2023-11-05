@@ -399,6 +399,11 @@ export interface components {
     };
     /** ClientSegmentHead */
     ClientSegmentHead: {
+      /**
+       * Id
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      id: string;
       /** Key */
       key: string;
       /** Title */

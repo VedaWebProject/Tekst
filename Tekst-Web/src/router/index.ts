@@ -32,6 +32,7 @@ const AdminTextsNodesView = () => import('@/views/admin/AdminTextsNodesView.vue'
 const AdminNewTextView = () => import('@/views/admin/AdminNewTextView.vue');
 const AdminSystemView = () => import('@/views/admin/AdminSystemView.vue');
 const AdminSystemSegmentsView = () => import('@/views/admin/AdminSystemSegmentsView.vue');
+const AdminSystemPagesView = () => import('@/views/admin/AdminSystemPagesView.vue');
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -155,9 +156,14 @@ const router = createRouter({
         {
           path: 'system',
           name: 'adminSystem',
-          redirect: { name: 'adminSystemSegments' },
+          redirect: { name: 'adminSystemPages' },
           component: AdminSystemView,
           children: [
+            {
+              path: 'pages',
+              name: 'adminSystemPages',
+              component: AdminSystemPagesView,
+            },
             {
               path: 'segments',
               name: 'adminSystemSegments',
