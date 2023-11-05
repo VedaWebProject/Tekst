@@ -11,7 +11,7 @@ import {
   NAlert,
   type FormInst,
 } from 'naive-ui';
-import { useFormRules } from '@/formRules';
+import { textFormRules } from '@/formRules';
 import { $t } from '@/i18n';
 import { useMessages } from '@/messages';
 import { POST } from '@/api';
@@ -38,7 +38,6 @@ const initialModel = (): NewTextModel => ({
   levels: [[{ locale: state.locale, label: undefined }]],
 });
 
-const { textFormRules } = useFormRules();
 const router = useRouter();
 const { message } = useMessages();
 const state = useStateStore();

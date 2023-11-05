@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useStateStore } from '@/stores';
 import InsertLevelButton from '@/components/admin/InsertLevelButton.vue';
-import { useFormRules } from '@/formRules';
+import { textFormRules } from '@/formRules';
 import {
   NSpace,
   NIcon,
@@ -38,7 +38,6 @@ const state = useStateStore();
 const { loadPlatformData } = usePlatformData();
 const { message } = useMessages();
 const { locale } = useI18n({ useScope: 'global' });
-const { textFormRules } = useFormRules();
 const dialog = useDialog();
 
 const levels = computed<StructureLevelTranslation[][]>(() => state.text?.levels || [[]]);

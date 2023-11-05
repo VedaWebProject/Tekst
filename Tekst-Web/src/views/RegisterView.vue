@@ -16,7 +16,7 @@ import { POST } from '@/api';
 import { useMessages } from '@/messages';
 import { usePlatformData } from '@/platformData';
 import { useAuthStore } from '@/stores';
-import { useFormRules } from '@/formRules';
+import { accountFormRules } from '@/formRules';
 import router from '@/router';
 
 const auth = useAuthStore();
@@ -35,7 +35,6 @@ const initialFormModel = () => ({
 
 const formModel = ref<Record<string, string | null>>(initialFormModel());
 const formRef = ref<FormInst | null>(null);
-const { accountFormRules } = useFormRules();
 const rPasswordFormItemRef = ref<FormItemInst | null>(null);
 const firstInputRef = ref<HTMLInputElement | null>(null);
 const loading = ref(false);

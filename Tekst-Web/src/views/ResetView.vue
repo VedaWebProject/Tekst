@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { POST } from '@/api';
-import { useFormRules } from '@/formRules';
+import { accountFormRules } from '@/formRules';
 import { useMessages } from '@/messages';
 import type { FormInst, FormItemInst, FormItemRule } from 'naive-ui';
 import { ref } from 'vue';
@@ -13,7 +13,6 @@ import { useRouter } from 'vue-router';
 const { message } = useMessages();
 const route = useRoute();
 const router = useRouter();
-const { accountFormRules } = useFormRules();
 const token = route.query.token?.toString();
 
 const initialPasswordFormModel = () => ({

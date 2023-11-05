@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useFormRules } from '@/formRules';
+import { textFormRules } from '@/formRules';
 import { useMessages } from '@/messages';
 import { useStateStore } from '@/stores';
 import {
@@ -30,7 +30,6 @@ import MinusRound from '@vicons/material/MinusRound';
 const state = useStateStore();
 const { loadPlatformData } = usePlatformData();
 const { message } = useMessages();
-const { textFormRules } = useFormRules();
 const loading = ref(false);
 
 const initialModel = () => ({

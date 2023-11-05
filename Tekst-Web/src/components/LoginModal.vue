@@ -6,7 +6,7 @@ import { ref, onMounted, nextTick } from 'vue';
 import { $t } from '@/i18n';
 import { useMessages } from '@/messages';
 import type { RouteLocationRaw } from 'vue-router';
-import { useFormRules } from '@/formRules';
+import { accountFormRules } from '@/formRules';
 import { POST } from '@/api';
 import ModelButtonFooter from '@/components/ModalButtonFooter.vue';
 import { LoginTemplatePromise } from '@/templatePromises';
@@ -14,7 +14,6 @@ import { LoginTemplatePromise } from '@/templatePromises';
 const auth = useAuthStore();
 const { message } = useMessages();
 const router = useRouter();
-const { accountFormRules } = useFormRules();
 
 const initialFormModel = () => ({
   email: null,

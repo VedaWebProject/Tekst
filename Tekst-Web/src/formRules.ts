@@ -1,7 +1,7 @@
 import type { FormItemRule } from 'naive-ui';
 import { $t } from '@/i18n';
 
-const accountFormRules: Record<string, FormItemRule[]> = {
+export const accountFormRules: Record<string, FormItemRule[]> = {
   email: [
     {
       required: true,
@@ -112,7 +112,7 @@ const accountFormRules: Record<string, FormItemRule[]> = {
   ],
 };
 
-const textFormRules: Record<string, FormItemRule[]> = {
+export const textFormRules: Record<string, FormItemRule[]> = {
   title: [
     {
       required: true,
@@ -215,7 +215,7 @@ const textFormRules: Record<string, FormItemRule[]> = {
   ],
 };
 
-const nodeFormRules: Record<string, FormItemRule[]> = {
+export const nodeFormRules: Record<string, FormItemRule[]> = {
   label: [
     {
       required: true,
@@ -231,7 +231,7 @@ const nodeFormRules: Record<string, FormItemRule[]> = {
   ],
 };
 
-const systemSegmentFormRules: Record<string, FormItemRule[]> = {
+export const systemSegmentFormRules: Record<string, FormItemRule[]> = {
   title: [
     {
       validator: (rule: FormItemRule, value: string) => !value || value.length <= 32,
@@ -261,7 +261,7 @@ const systemSegmentFormRules: Record<string, FormItemRule[]> = {
   ],
 };
 
-const pageSegmentFormRules: Record<string, FormItemRule[]> = {
+export const pageSegmentFormRules: Record<string, FormItemRule[]> = {
   title: [
     {
       validator: (rule: FormItemRule, value: string) => !value || value.length <= 32,
@@ -306,13 +306,3 @@ const pageSegmentFormRules: Record<string, FormItemRule[]> = {
     },
   ],
 };
-
-export function useFormRules() {
-  return {
-    accountFormRules,
-    textFormRules,
-    nodeFormRules,
-    systemSegmentFormRules,
-    pageSegmentFormRules,
-  };
-}

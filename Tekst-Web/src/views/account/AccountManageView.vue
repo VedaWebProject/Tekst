@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { POST } from '@/api';
-import { useFormRules } from '@/formRules';
+import { accountFormRules } from '@/formRules';
 import { useMessages } from '@/messages';
 import { usePlatformData } from '@/platformData';
 import { useAuthStore } from '@/stores';
@@ -52,8 +52,6 @@ const initialPublicFieldsModel = () => ({
   lastName: auth.user?.publicFields?.includes('lastName') || false,
   affiliation: auth.user?.publicFields?.includes('affiliation') || false,
 });
-
-const { accountFormRules } = useFormRules();
 
 const emailFormRef = ref<FormInst | null>(null);
 const emailFormModel = ref<Record<string, string | null>>(initialEmailModel());

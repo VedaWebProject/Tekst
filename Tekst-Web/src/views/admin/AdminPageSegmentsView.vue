@@ -12,7 +12,7 @@ import HugeLabeledIcon from '@/components/HugeLabeledIcon.vue';
 import { useI18n } from 'vue-i18n';
 import { useModelChanges } from '@/modelChanges';
 import { useMessages } from '@/messages';
-import { systemSegmentFormRules } from '@/formRules';
+import { pageSegmentFormRules } from '@/formRules';
 
 import AddOutlined from '@vicons/material/AddOutlined';
 import FileOpenOutlined from '@vicons/material/FileOpenOutlined';
@@ -71,24 +71,12 @@ const segmentLocaleOptions = computed(() =>
   }))
 );
 
-const systemSegmentKeys = [
-  'systemBodyEnd',
-  'systemFooter',
-  'systemSiteNotice',
-  'systemPrivacyPolicy',
-];
-
-const systemSegmentKeyOptions = systemSegmentKeys.map((key) => ({
-  label: $t(`admin.system.segments.systemKeys.${key}`),
-  value: key,
-}));
-
 function getSegmentModel(segmentId?: string) {
   if (!segmentId) {
     return {
-      key: undefined,
+      key: '',
       title: '',
-      locale: undefined,
+      locale: null,
       html: '',
     };
   } else {
@@ -218,7 +206,7 @@ async function handleDeleteClick() {
     <n-form
       ref="formRef"
       :model="segmentModel"
-      :rules="systemSegmentFormRules"
+      :rules="pageSegmentFormRules"
       label-placement="top"
       label-width="auto"
       require-mark-placement="right-hanging"
@@ -235,12 +223,11 @@ async function handleDeleteClick() {
       </n-form-item>
       <!-- KEY -->
       <n-form-item path="key" :label="$t('models.segment.key')" required>
-        <n-select
+        <n-input
           v-model:value="segmentModel.key"
-          :options="systemSegmentKeyOptions"
+          type="text"
           :placeholder="$t('models.segment.key')"
-          :consistent-menu-width="false"
-          style="min-width: 200px"
+          :disabled="loading"
           @keydown.enter.prevent
         />
       </n-form-item>

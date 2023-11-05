@@ -5,7 +5,7 @@ import type { NodeTreeOption } from '@/views/admin/AdminTextsNodesView.vue';
 import { NForm, NFormItem, NModal, NButton, NInput, type InputInst, type FormInst } from 'naive-ui';
 import ModalButtonFooter from '@/components/ModalButtonFooter.vue';
 import { ref } from 'vue';
-import { useFormRules } from '@/formRules';
+import { nodeFormRules } from '@/formRules';
 import { useStateStore } from '@/stores';
 import { useMessages } from '@/messages';
 
@@ -24,7 +24,6 @@ const { message } = useMessages();
 const nodeFormRef = ref<FormInst | null>(null);
 const nodeFormModel = ref<Record<string, string | null>>(initialNodeModel());
 
-const { nodeFormRules } = useFormRules();
 const loading = ref(false);
 
 const nodeRenameInputRef = ref<InputInst | null>(null);
