@@ -3,7 +3,16 @@ import { $t } from '@/i18n';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import HtmlEditor from '@/components/HtmlEditor.vue';
 import { computed, ref } from 'vue';
-import { NIcon, NButton, NSelect, NForm, NFormItem, NInput, type FormInst } from 'naive-ui';
+import {
+  NIcon,
+  NButton,
+  NSelect,
+  NForm,
+  NFormItem,
+  NInput,
+  type FormInst,
+  useDialog,
+} from 'naive-ui';
 import { usePlatformData } from '@/platformData';
 import { PATCH, type ClientSegmentUpdate, POST, type ClientSegmentCreate, DELETE } from '@/api';
 import { localeProfiles } from '@/i18n';
@@ -17,10 +26,12 @@ import { systemSegmentFormRules } from '@/formRules';
 import AddOutlined from '@vicons/material/AddOutlined';
 import FileOpenOutlined from '@vicons/material/FileOpenOutlined';
 import DeleteOutlined from '@vicons/material/DeleteOutlined';
+import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
 
 const { pfData, loadPlatformData } = usePlatformData();
 const { locale } = useI18n();
 const { message } = useMessages();
+const dialog = useDialog();
 
 const loading = ref(false);
 const formRef = ref<FormInst | null>(null);
@@ -140,13 +151,17 @@ async function updateSegment() {
     body: getModelChanges(),
   });
   if (!error) {
-    message.success('SAVED');
+    message.success(
+      $t('admin.system.segments.msgUpdated', {
+        title: segmentModel.value?.title || segmentModel.value?.key || '',
+      })
+    );
     selectedSegmentId.value = data.id;
     segmentModel.value = data;
     resetModelChanges();
     loadPlatformData();
   } else {
-    message.error('ERROR', error.detail?.toString());
+    message.error($t('errors.unexpected'), error);
   }
 }
 
@@ -155,14 +170,36 @@ async function createSegment() {
     body: getModelChanges() as ClientSegmentCreate,
   });
   if (!error) {
-    message.success('Created');
+    message.success(
+      $t('admin.system.segments.msgCreated', {
+        title: segmentModel.value?.title || segmentModel.value?.key || '',
+      })
+    );
     selectedSegmentId.value = data.id;
     segmentModel.value = data;
     resetModelChanges();
     loadPlatformData();
   } else {
-    message.error('ERROR', error);
+    message.error($t('errors.unexpected'), error);
   }
+}
+
+function handleCancelClick() {
+  if (!modelChanged) {
+    resetForm();
+    return;
+  }
+  dialog.warning({
+    title: $t('general.warning'),
+    content: $t('admin.system.segments.warnCancel'),
+    positiveText: $t('general.yesAction'),
+    negativeText: $t('general.noAction'),
+    positiveButtonProps: positiveButtonProps,
+    negativeButtonProps: negativeButtonProps,
+    autoFocus: false,
+    closable: false,
+    onPositiveClick: resetForm,
+  });
 }
 
 function resetForm() {
@@ -174,16 +211,35 @@ function resetForm() {
 
 async function handleDeleteClick() {
   if (!selectedSegmentId.value) return;
-  const { error } = await DELETE('/platform/segments/{id}', {
-    params: { path: { id: selectedSegmentId.value } },
+
+  dialog.warning({
+    title: $t('general.warning'),
+    content: $t('admin.system.segments.warnDelete', {
+      title: segmentModel.value?.title || segmentModel.value?.key || '',
+    }),
+    positiveText: $t('general.yesAction'),
+    negativeText: $t('general.noAction'),
+    positiveButtonProps: positiveButtonProps,
+    negativeButtonProps: negativeButtonProps,
+    autoFocus: false,
+    closable: false,
+    onPositiveClick: async () => {
+      const { error } = await DELETE('/platform/segments/{id}', {
+        params: { path: { id: selectedSegmentId.value || '' } },
+      });
+      if (!error) {
+        message.success(
+          $t('admin.system.segments.msgDeleted', {
+            title: segmentModel.value?.title || segmentModel.value?.key || '',
+          })
+        );
+      } else {
+        message.error($t('errors.unexpected'), error);
+      }
+      resetForm();
+      loadPlatformData();
+    },
   });
-  if (!error) {
-    message.success('Deleted: ' + segmentModel.value?.title);
-  } else {
-    message.error('Error deleting segment!');
-  }
-  resetForm();
-  loadPlatformData();
 }
 </script>
 
@@ -198,7 +254,7 @@ async function handleDeleteClick() {
       v-model:value="selectedSegmentId"
       filterable
       :options="segmentOptions"
-      placeholder="Select a segment"
+      :placeholder="$t('admin.system.segments.phSelectSegment')"
       style="flex-grow: 2"
       @update:value="handleSelectSegment"
     />
@@ -215,7 +271,7 @@ async function handleDeleteClick() {
   </div>
 
   <div v-if="segmentModel" class="content-block">
-    <h3>{{ segmentModel.title ? segmentHeading : 'Untitled' }}</h3>
+    <h3>{{ segmentModel.title ? segmentHeading : $t('admin.system.segments.untitled') }}</h3>
 
     <n-form
       ref="formRef"
@@ -268,14 +324,16 @@ async function handleDeleteClick() {
     </n-form>
 
     <div style="display: flex; gap: var(--layout-gap); justify-content: end">
-      <n-button secondary @click="resetForm"> Cancel </n-button>
-      <n-button type="primary" :disabled="!modelChanged" @click="handleSaveClick"> Save </n-button>
+      <n-button secondary @click="handleCancelClick">{{ $t('general.cancelAction') }}</n-button>
+      <n-button type="primary" :disabled="!modelChanged" @click="handleSaveClick">{{
+        $t('general.saveAction')
+      }}</n-button>
     </div>
   </div>
 
   <HugeLabeledIcon
     v-else
-    message="Please select a segment from the list or create a new one!"
+    :message="$t('admin.system.segments.noSegment')"
     :icon="FileOpenOutlined"
   />
 </template>

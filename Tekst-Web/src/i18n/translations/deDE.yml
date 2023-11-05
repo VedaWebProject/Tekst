@@ -409,6 +409,14 @@ admin:
         systemFooter: Fußzeile
         systemSiteNotice: Impressum
         systemPrivacyPolicy: Datenschutzerklärung
+      noSegment: Bitte wählen Sie ein Segment aus oder erstellen Sie ein neues!
+      untitled: Unbenanntes Segment
+      phSelectSegment: Segment auswählen
+      msgUpdated: '"{title}" wurde aktualisiert.'
+      msgCreated: '"{title}" wurde erstellt.'
+      msgDeleted: '"{title}" wurde gelöscht.'
+      warnCancel: Alle ungespeicherten Änderungen gehen verloren. Sind sie sicher?
+      warnDelete: Sind Sie sicher, dass Sie "{title}" löschen möchten?
 
 search:
   heading: Suche
