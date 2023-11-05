@@ -15,7 +15,7 @@ import { NCollapse, NCollapseItem } from 'naive-ui';
           font-family: monospace;
           font-size: var(--app-ui-font-size-mini);
           font-weight: var(--app-ui-font-weight-light);
-          white-space: wrap;
+          white-space: pre-wrap;
           line-height: 1;
         "
       ><slot name="details"></slot></pre>
