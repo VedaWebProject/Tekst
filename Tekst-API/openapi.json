@@ -3358,6 +3358,16 @@
             "description": "Whether this is a system segment (will be set automatically)",
             "default": false
           },
+          "editorMode": {
+            "type": "string",
+            "enum": [
+              "wysiwyg",
+              "html"
+            ],
+            "title": "Editormode",
+            "description": "Last used editor mode",
+            "default": "wysiwyg"
+          },
           "locale": {
             "anyOf": [
               {
@@ -3461,6 +3471,16 @@
             "description": "Whether this is a system segment (will be set automatically)",
             "default": false
           },
+          "editorMode": {
+            "type": "string",
+            "enum": [
+              "wysiwyg",
+              "html"
+            ],
+            "title": "Editormode",
+            "description": "Last used editor mode",
+            "default": "wysiwyg"
+          },
           "locale": {
             "anyOf": [
               {
@@ -3514,6 +3534,14 @@
           "isSystemSegment": {
             "type": "boolean",
             "title": "Issystemsegment"
+          },
+          "editorMode": {
+            "type": "string",
+            "enum": [
+              "wysiwyg",
+              "html"
+            ],
+            "title": "Editormode"
           },
           "locale": {
             "anyOf": [

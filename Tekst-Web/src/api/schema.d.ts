@@ -375,6 +375,13 @@ export interface components {
        */
       isSystemSegment?: boolean;
       /**
+       * Editormode
+       * @description Last used editor mode
+       * @default wysiwyg
+       * @enum {string}
+       */
+      editorMode?: 'wysiwyg' | 'html';
+      /**
        * Locale
        * @description Locale indicating the translation language of this segment
        */
@@ -418,6 +425,13 @@ export interface components {
        */
       isSystemSegment?: boolean;
       /**
+       * Editormode
+       * @description Last used editor mode
+       * @default wysiwyg
+       * @enum {string}
+       */
+      editorMode?: 'wysiwyg' | 'html';
+      /**
        * Locale
        * @description Locale indicating the translation language of this segment
        */
@@ -439,6 +453,11 @@ export interface components {
       key?: string;
       /** Issystemsegment */
       isSystemSegment?: boolean;
+      /**
+       * Editormode
+       * @enum {string}
+       */
+      editorMode?: 'wysiwyg' | 'html';
       /** Locale */
       locale?: ('deDE' | 'enUS') | null;
       /** Title */

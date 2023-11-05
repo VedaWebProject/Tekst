@@ -1,4 +1,4 @@
-from typing import Annotated
+from typing import Annotated, Literal
 
 from pydantic import BaseModel, Field, StringConstraints, model_validator
 
@@ -27,6 +27,9 @@ class ClientSegment(ModelBase, ModelFactoryMixin):
             alias="isSystemSegment",
         ),
     ] = False
+    editor_mode: Annotated[
+        Literal["wysiwyg", "html"], Field(description="Last used editor mode")
+    ] = "wysiwyg"
     locale: Annotated[
         Locale | None,
         Field(description="Locale indicating the translation language of this segment"),
