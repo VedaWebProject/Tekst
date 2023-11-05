@@ -214,6 +214,14 @@ models:
     layerType: '@:models.layer.layerType'
     providedBy: Bereitgestellt von
     onLevel: auf Ebene "{level}"
+  segment:
+    modelLabel: Segment
+    key: Schlüssel
+    title: Titel
+    locale: Sprache
+    html: Inhalt
+    formRulesFeedback:
+      keyChars: 'Erlaubte Zeichen: a-z, A-Z, 0-9, -, _'
 
 account:
   account: Konto

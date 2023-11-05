@@ -206,6 +206,14 @@ models:
     layerType: '@:models.layer.layerType'
     providedBy: Provided by
     onLevel: on level "{level}"
+  segment:
+    modelLabel: Segment
+    key: Key
+    title: Title
+    locale: Language
+    html: Content
+    formRulesFeedback:
+      keyChars: 'Allowed characters: a-z, A-Z, 0-9, -, _'
 
 account:
   account: Account
@@ -377,6 +385,11 @@ admin:
     heading: System
     segments:
       heading: Segments
+      systemKeys:
+        systemBodyEnd: End of HTML Body
+        systemFooter: Page Footer
+        systemSiteNotice: Site Notice
+        systemPrivacyPolicy: Privacy Policy
 
 search:
   heading: Search

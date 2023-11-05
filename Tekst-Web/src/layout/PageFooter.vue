@@ -1,28 +1,20 @@
 <script setup lang="ts">
-import { usePlatformData } from '@/platformData';
-
-const { pfData } = usePlatformData();
+import SegmentRenderer from '@/components/SegmentRenderer.vue';
 </script>
 
 <template>
   <footer>
-    <div id="footer-content">
-      <div>{{ $t('server.welcomeTest') }}</div>
-      <a :href="pfData?.tekst?.website" title="">
-        {{ pfData?.tekst?.name }}
-      </a>
-      v{{ pfData?.tekst?.version }}
-    </div>
+    <SegmentRenderer segment-key="systemFooter" />
   </footer>
 </template>
 
 <style scoped>
 footer {
-  /* border-top: 2px solid var(--accent-color); */
   padding: 1.75rem var(--layout-gap);
+  font-size: var(--app-ui-font-size-small);
 }
 
-footer #footer-content {
+footer > * {
   max-width: var(--max-app-width);
   margin: 0 auto;
 }

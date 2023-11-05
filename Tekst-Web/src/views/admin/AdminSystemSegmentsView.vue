@@ -3,19 +3,37 @@ import { $t } from '@/i18n';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import WysiwygEditor from '@/components/WysiwygEditor.vue';
 import { computed, ref } from 'vue';
-import { NIcon, NButton, NSelect } from 'naive-ui';
+import { NIcon, NButton, NSelect, NForm, NFormItem, NInput, type FormInst } from 'naive-ui';
 import { usePlatformData } from '@/platformData';
-import type { ClientSegmentUpdate } from '@/api';
+import { PATCH, type ClientSegmentUpdate, POST, type ClientSegmentCreate, DELETE } from '@/api';
 import { localeProfiles } from '@/i18n';
+import HugeLabeledIcon from '@/components/HugeLabeledIcon.vue';
+
+import { useI18n } from 'vue-i18n';
+import { useModelChanges } from '@/modelChanges';
+import { useMessages } from '@/messages';
+import { useFormRules } from '@/formRules';
 
 import AddOutlined from '@vicons/material/AddOutlined';
-import { useI18n } from 'vue-i18n';
+import FileOpenOutlined from '@vicons/material/FileOpenOutlined';
+import DeleteOutlined from '@vicons/material/DeleteOutlined';
 
-const pf = usePlatformData();
+const { pfData, loadPlatformData } = usePlatformData();
 const { locale } = useI18n();
+const { message } = useMessages();
+const { systemSegmentFormRules } = useFormRules();
 
+const loading = ref(false);
+const formRef = ref<FormInst | null>(null);
 const selectedSegmentId = ref<string | null>(null);
-const segmentModel = ref<ClientSegmentUpdate & { id: string }>();
+const segmentModel = ref<ClientSegmentUpdate>();
+
+const {
+  changed: modelChanged,
+  reset: resetModelChanges,
+  getChanges: getModelChanges,
+} = useModelChanges(segmentModel);
+
 const segmentLocaleFlag = computed(() =>
   segmentModel.value?.locale ? localeProfiles[segmentModel.value.locale].icon : '🌐'
 );
@@ -26,8 +44,8 @@ const segmentHeading = computed(() =>
 );
 
 const segmentOptions = computed(() =>
-  [...new Set(pf.pfData.value?.systemSegments.map((s) => s.key))].map((key) => {
-    const groupSegments = pf.pfData.value?.systemSegments.filter((s) => s.key === key) || [];
+  [...new Set(pfData.value?.systemSegments.map((s) => s.key))].map((key) => {
+    const groupSegments = pfData.value?.systemSegments.filter((s) => s.key === key) || [];
     const currLocaleSegment =
       groupSegments.find((s) => s.locale === locale.value) ||
       groupSegments.find((s) => s.locale === 'enUS') ||
@@ -44,17 +62,38 @@ const segmentOptions = computed(() =>
   })
 );
 
+const segmentLocaleOptions = computed(() =>
+  Object.keys(localeProfiles).map((l) => ({
+    label: `${localeProfiles[l].icon} ${localeProfiles[l].displayFull}`,
+    value: l,
+    disabled: !!pfData.value?.systemSegments.find(
+      (s) => s.locale === l && s.key === segmentModel.value?.key && s.id !== selectedSegmentId.value
+    ),
+  }))
+);
+
+const systemSegmentKeys = [
+  'systemBodyEnd',
+  'systemFooter',
+  'systemSiteNotice',
+  'systemPrivacyPolicy',
+];
+
+const systemSegmentKeyOptions = systemSegmentKeys.map((key) => ({
+  label: $t(`admin.system.segments.systemKeys.${key}`),
+  value: key,
+}));
+
 function getSegmentModel(segmentId?: string) {
   if (!segmentId) {
     return {
-      id: Math.random().toString(),
-      key: '',
+      key: undefined,
       title: '',
-      locale: null,
+      locale: undefined,
       html: '',
     };
   } else {
-    const selectedSegment = pf.pfData.value?.systemSegments.find((s) => s.id === segmentId);
+    const selectedSegment = pfData.value?.systemSegments.find((s) => s.id === segmentId);
     if (!selectedSegment) {
       return getSegmentModel();
     } else {
@@ -66,23 +105,84 @@ function getSegmentModel(segmentId?: string) {
 function handleAddSegmentClick() {
   selectedSegmentId.value = null;
   segmentModel.value = getSegmentModel();
+  resetModelChanges();
+  formRef.value?.restoreValidation();
 }
 
 function handleSelectSegment(id: string) {
   segmentModel.value = getSegmentModel(id);
+  resetModelChanges();
+  formRef.value?.restoreValidation();
 }
 
-function handleSaveClick() {
-  //TODO
+async function handleSaveClick() {
+  loading.value = true;
+  formRef.value
+    ?.validate(async (validationError) => {
+      if (validationError) return;
+      if (selectedSegmentId.value) {
+        await updateSegment();
+      } else {
+        await createSegment();
+      }
+    })
+    .catch(() => {
+      message.error($t('errors.followFormRules'));
+      loading.value = false;
+    });
+  loading.value = false;
 }
 
-function handleDiscardClick() {
+async function updateSegment() {
+  const { data, error } = await PATCH('/platform/segments/{id}', {
+    params: { path: { id: selectedSegmentId.value || '' } },
+    body: getModelChanges(),
+  });
+  if (!error) {
+    message.success('SAVED');
+    selectedSegmentId.value = data.id;
+    segmentModel.value = data;
+    resetModelChanges();
+    loadPlatformData();
+  } else {
+    message.error('ERROR', error.detail?.toString());
+  }
+}
+
+async function createSegment() {
+  const { data, error } = await POST('/platform/segments', {
+    body: getModelChanges() as ClientSegmentCreate,
+  });
+  if (!error) {
+    message.success('Created');
+    selectedSegmentId.value = data.id;
+    segmentModel.value = data;
+    resetModelChanges();
+    loadPlatformData();
+  } else {
+    message.error('ERROR', error);
+  }
+}
+
+function resetForm() {
   selectedSegmentId.value = null;
   segmentModel.value = undefined;
+  resetModelChanges();
+  formRef.value?.restoreValidation();
 }
 
-function handleDeleteClick() {
-  //TODO
+async function handleDeleteClick() {
+  if (!selectedSegmentId.value) return;
+  const { error } = await DELETE('/platform/segments/{id}', {
+    params: { path: { id: selectedSegmentId.value } },
+  });
+  if (!error) {
+    message.success('Deleted: ' + segmentModel.value?.title);
+  } else {
+    message.error('Error deleting segment!');
+  }
+  resetForm();
+  loadPlatformData();
 }
 </script>
 
@@ -101,7 +201,12 @@ function handleDeleteClick() {
       style="flex-grow: 2"
       @update:value="handleSelectSegment"
     />
-    <n-button type="primary" :disabled="!!segmentModel" @click="handleAddSegmentClick">
+    <n-button v-if="selectedSegmentId" secondary @click="handleDeleteClick">
+      <template #icon>
+        <n-icon :component="DeleteOutlined" />
+      </template>
+    </n-button>
+    <n-button type="primary" :disabled="modelChanged" @click="handleAddSegmentClick">
       <template #icon>
         <n-icon :component="AddOutlined" />
       </template>
@@ -109,14 +214,63 @@ function handleDeleteClick() {
   </div>
 
   <div v-if="segmentModel" class="content-block">
-    <h3>{{ segmentModel.title ? segmentHeading : 'New Segment' }}</h3>
-    <WysiwygEditor v-model:document="segmentModel.html" :document-id="segmentModel.id" />
+    <h3>{{ segmentModel.title ? segmentHeading : 'Untitled' }}</h3>
 
-    <div style="display: flex; gap: var(--layout-gap); margin-top: var(--layout-gap)">
-      <n-button v-if="selectedSegmentId" secondary @click="handleDeleteClick"> Delete </n-button>
-      <div style="flex-grow: 2"></div>
-      <n-button secondary @click="handleDiscardClick"> Discard </n-button>
-      <n-button type="primary" @click="handleSaveClick"> Save </n-button>
+    <n-form
+      ref="formRef"
+      :model="segmentModel"
+      :rules="systemSegmentFormRules"
+      label-placement="top"
+      label-width="auto"
+      require-mark-placement="right-hanging"
+    >
+      <!-- TITLE -->
+      <n-form-item path="title" :label="$t('models.segment.title')">
+        <n-input
+          v-model:value="segmentModel.title"
+          type="text"
+          :placeholder="$t('models.segment.title')"
+          :disabled="loading"
+          @keydown.enter.prevent
+        />
+      </n-form-item>
+      <!-- KEY -->
+      <n-form-item path="key" :label="$t('models.segment.key')" required>
+        <n-select
+          v-model:value="segmentModel.key"
+          :options="systemSegmentKeyOptions"
+          :placeholder="$t('models.segment.key')"
+          :consistent-menu-width="false"
+          style="min-width: 200px"
+          @keydown.enter.prevent
+        />
+      </n-form-item>
+      <!-- LOCALE -->
+      <n-form-item :label="$t('models.segment.locale')">
+        <n-select
+          v-model:value="segmentModel.locale"
+          :options="segmentLocaleOptions"
+          :placeholder="$t('general.language')"
+          :consistent-menu-width="false"
+          style="min-width: 200px"
+          @keydown.enter.prevent
+        />
+      </n-form-item>
+      <!-- HTML -->
+      <n-form-item path="html" :label="$t('models.segment.html')" required>
+        <WysiwygEditor v-model:value="segmentModel.html" toolbar-size="medium" />
+      </n-form-item>
+    </n-form>
+
+    <div style="display: flex; gap: var(--layout-gap); justify-content: end">
+      <n-button secondary @click="resetForm"> Cancel </n-button>
+      <n-button type="primary" :disabled="!modelChanged" @click="handleSaveClick"> Save </n-button>
     </div>
   </div>
+
+  <HugeLabeledIcon
+    v-else
+    message="Please select a segment from the list or create a new one!"
+    :icon="FileOpenOutlined"
+  />
 </template>

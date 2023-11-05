@@ -10,7 +10,7 @@ class ClientSegment(ModelBase, ModelFactoryMixin):
         str,
         Field(
             description=(
-                "Key of this segment. System segment keys must start with `system_`."
+                "Key of this segment. System segment keys must start with `system`."
             ),
         ),
         StringConstraints(
@@ -40,7 +40,7 @@ class ClientSegment(ModelBase, ModelFactoryMixin):
 
     @model_validator(mode="after")
     def set_is_system_segment(self) -> "ClientSegment":
-        if self.key and self.key.startswith("system_"):
+        if self.key and self.key.startswith("system"):
             self.is_system_segment = True
         return self
 
@@ -58,5 +58,5 @@ ClientSegmentUpdate = ClientSegment.get_update_model()
 
 class ClientSegmentHead(BaseModel):
     key: str
-    title: str
-    locale: Locale
+    title: str | None = None
+    locale: Locale | None = None

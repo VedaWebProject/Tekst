@@ -231,10 +231,88 @@ const nodeFormRules: Record<string, FormItemRule[]> = {
   ],
 };
 
+const systemSegmentFormRules: Record<string, FormItemRule[]> = {
+  title: [
+    {
+      validator: (rule: FormItemRule, value: string) => !value || value.length <= 32,
+      message: () => $t('forms.rulesFeedback.minMaxChars', { min: 0, max: 32 }),
+      trigger: 'blur',
+    },
+  ],
+  key: [
+    {
+      required: true,
+      message: () => $t('forms.rulesFeedback.isRequired', { x: $t('models.segment.key') }),
+      trigger: 'blur',
+    },
+  ],
+  html: [
+    {
+      required: true,
+      message: () => $t('forms.rulesFeedback.isRequired', { x: $t('models.segment.html') }),
+      trigger: 'blur',
+    },
+    {
+      validator: (rule: FormItemRule, value: string) =>
+        !!value && value.length >= 1 && value.length <= 1048576,
+      message: () => $t('forms.rulesFeedback.minMaxChars', { min: 1, max: 1048576 }),
+      trigger: 'blur',
+    },
+  ],
+};
+
+const pageSegmentFormRules: Record<string, FormItemRule[]> = {
+  title: [
+    {
+      validator: (rule: FormItemRule, value: string) => !value || value.length <= 32,
+      message: () => $t('forms.rulesFeedback.minMaxChars', { min: 0, max: 32 }),
+      trigger: 'blur',
+    },
+  ],
+  key: [
+    {
+      required: true,
+      message: () => $t('forms.rulesFeedback.isRequired', { x: $t('models.segment.key') }),
+      trigger: 'blur',
+    },
+    {
+      validator: (rule: FormItemRule, value: string) =>
+        !!value && value.length >= 1 && value.length <= 32,
+      message: () => $t('forms.rulesFeedback.minMaxChars', { min: 1, max: 32 }),
+      trigger: 'blur',
+    },
+    {
+      validator: (rule: FormItemRule, value: string) => !!value && /^[a-zA-Z0-9\-_]+$/.test(value),
+      message: () => $t('models.segment.formRulesFeedback.keyChars'),
+      trigger: ['input', 'blur'],
+    },
+    {
+      validator: (rule: FormItemRule, value: string) => !!value && !value.startsWith('system'),
+      message: () => $t('models.segment.formRulesFeedback.systemPrefixReserved'),
+      trigger: 'blur',
+    },
+  ],
+  html: [
+    {
+      required: true,
+      message: () => $t('forms.rulesFeedback.isRequired', { x: $t('models.segment.html') }),
+      trigger: 'blur',
+    },
+    {
+      validator: (rule: FormItemRule, value: string) =>
+        !!value && value.length >= 1 && value.length <= 1048576,
+      message: () => $t('forms.rulesFeedback.minMaxChars', { min: 1, max: 1048576 }),
+      trigger: 'blur',
+    },
+  ],
+};
+
 export function useFormRules() {
   return {
     accountFormRules,
     textFormRules,
     nodeFormRules,
+    systemSegmentFormRules,
+    pageSegmentFormRules,
   };
 }

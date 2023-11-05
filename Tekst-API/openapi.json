@@ -1385,7 +1385,7 @@
         ]
       }
     },
-    "/platform/segments/{key}": {
+    "/platform/segments": {
       "get": {
         "tags": [
           "platform"
@@ -1395,12 +1395,25 @@
         "parameters": [
           {
             "name": "key",
-            "in": "path",
+            "in": "query",
             "required": true,
             "schema": {
               "type": "string",
+              "description": "Key of the segment to retrieve",
               "title": "Key"
-            }
+            },
+            "description": "Key of the segment to retrieve"
+          },
+          {
+            "name": "locale",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Locale of the segment to retrieve",
+              "title": "Locale"
+            },
+            "description": "Locale of the segment to retrieve"
           }
         ],
         "responses": {
@@ -1428,24 +1441,30 @@
             }
           }
         }
-      }
-    },
-    "/platform/segments": {
+      },
       "post": {
         "tags": [
           "platform"
         ],
         "summary": "Create segment",
         "operationId": "createSegment",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/ClientSegmentCreate"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "201": {
@@ -1471,15 +1490,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
+        }
       }
     },
     "/platform/segments/{id}": {
@@ -3339,7 +3350,7 @@
             "minLength": 1,
             "pattern": "[a-zA-Z0-9\\-_]+",
             "title": "Key",
-            "description": "Key of this segment. System segment keys must start with `system_`."
+            "description": "Key of this segment. System segment keys must start with `system`."
           },
           "isSystemSegment": {
             "type": "boolean",
@@ -3397,23 +3408,35 @@
             "title": "Key"
           },
           "title": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Title"
           },
           "locale": {
-            "type": "string",
-            "enum": [
-              "deDE",
-              "enUS"
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "deDE",
+                  "enUS"
+                ]
+              },
+              {
+                "type": "null"
+              }
             ],
             "title": "Locale"
           }
         },
         "type": "object",
         "required": [
-          "key",
-          "title",
-          "locale"
+          "key"
         ],
         "title": "ClientSegmentHead"
       },
@@ -3430,7 +3453,7 @@
             "minLength": 1,
             "pattern": "[a-zA-Z0-9\\-_]+",
             "title": "Key",
-            "description": "Key of this segment. System segment keys must start with `system_`."
+            "description": "Key of this segment. System segment keys must start with `system`."
           },
           "isSystemSegment": {
             "type": "boolean",

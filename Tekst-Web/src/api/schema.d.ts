@@ -150,11 +150,9 @@ export interface paths {
     /** Update platform settings */
     patch: operations['updatePlatformSettings'];
   };
-  '/platform/segments/{key}': {
+  '/platform/segments': {
     /** Get segment */
     get: operations['getSegment'];
-  };
-  '/platform/segments': {
     /** Create segment */
     post: operations['createSegment'];
   };
@@ -367,7 +365,7 @@ export interface components {
     ClientSegmentCreate: {
       /**
        * Key
-       * @description Key of this segment. System segment keys must start with `system_`.
+       * @description Key of this segment. System segment keys must start with `system`.
        */
       key: string;
       /**
@@ -397,12 +395,9 @@ export interface components {
       /** Key */
       key: string;
       /** Title */
-      title: string;
-      /**
-       * Locale
-       * @enum {string}
-       */
-      locale: 'deDE' | 'enUS';
+      title?: string | null;
+      /** Locale */
+      locale?: ('deDE' | 'enUS') | null;
     };
     /** ClientSegmentRead */
     ClientSegmentRead: {
@@ -413,7 +408,7 @@ export interface components {
       id: string;
       /**
        * Key
-       * @description Key of this segment. System segment keys must start with `system_`.
+       * @description Key of this segment. System segment keys must start with `system`.
        */
       key: string;
       /**
@@ -2015,8 +2010,11 @@ export interface operations {
   /** Get segment */
   getSegment: {
     parameters: {
-      path: {
+      query: {
+        /** @description Key of the segment to retrieve */
         key: string;
+        /** @description Locale of the segment to retrieve */
+        locale?: string;
       };
     };
     responses: {

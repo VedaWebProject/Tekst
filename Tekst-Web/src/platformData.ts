@@ -18,7 +18,7 @@ export function usePlatformData() {
 
   async function getSegment(key?: string, locale?: string) {
     if (!key) return null;
-    if (key.startsWith('system_')) {
+    if (key.startsWith('system')) {
       const segments = data.value?.systemSegments.filter((s) => s.key === key) || [];
       return (
         segments.find((s) => s.locale === locale) ||
