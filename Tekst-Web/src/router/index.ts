@@ -3,6 +3,9 @@ import { useAuthStore, useStateStore } from '@/stores';
 import { $t } from '@/i18n';
 import { useMessages } from '@/messages';
 
+import GavelOutlined from '@vicons/material/GavelOutlined';
+import PrivacyTipOutlined from '@vicons/material/PrivacyTipOutlined';
+
 declare module 'vue-router' {
   interface RouteMeta {
     restricted?: 'user' | 'superuser';
@@ -16,6 +19,7 @@ const HelpView = () => import('@/views/HelpView.vue');
 const BrowseView = () => import('@/views/BrowseView.vue');
 const SearchView = () => import('@/views/SearchView.vue');
 const RegisterView = () => import('@/views/RegisterView.vue');
+const PageView = () => import('@/views/PageView.vue');
 
 const AccountView = () => import('@/views/account/AccountView.vue');
 const AccountManageView = () => import('@/views/account/AccountManageView.vue');
@@ -68,6 +72,24 @@ const router = createRouter({
       path: '/register',
       name: 'register',
       component: RegisterView,
+    },
+    {
+      path: '/site-notice',
+      name: 'siteNotice',
+      component: PageView,
+      props: {
+        pageKey: 'systemSiteNotice',
+        icon: GavelOutlined,
+      },
+    },
+    {
+      path: '/privacy-policy',
+      name: 'privacyPolicy',
+      component: PageView,
+      props: {
+        pageKey: 'systemPrivacyPolicy',
+        icon: PrivacyTipOutlined,
+      },
     },
     {
       path: '/user/:username',

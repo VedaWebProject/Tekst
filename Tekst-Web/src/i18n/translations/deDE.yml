@@ -66,6 +66,7 @@ errors:
   details: Details
   serverI18n: Einige Übersetzungen konnten nicht geladen werden.
   platformData: Plattform-Daten konnten nicht geladen werden.
+  notFound: Diese Ressource konnte nicht gefunden werden.
   unexpected: Ein unerwarteter Fehler ist aufgetreten. Das hätte nicht passieren dürfen.
   conflict: Es besteht ein Konflikt mit bereits vorhandenen Daten.
   followFormRules: Bitte korrigieren Sie Ihre Eingaben entsprechend den Formularregeln!
@@ -100,6 +101,8 @@ routes:
     adminSystemSegments: '@:admin.heading - Segmente'
     verify: Verifizierung
     reset: Passwort zurücksetzen
+    siteNotice: '@:admin.system.segments.systemKeys.systemSiteNotice'
+    privacyPolicy: '@:admin.system.segments.systemKeys.systemPrivacyPolicy'
 
 layerTypes:
   plaintext: Einfacher Text
