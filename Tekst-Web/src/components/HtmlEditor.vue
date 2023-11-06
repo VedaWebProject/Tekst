@@ -45,7 +45,13 @@ function handleChangeTab(value: 'wysiwyg' | 'html') {
 </script>
 
 <template>
-  <n-tabs type="segment" :value="editorMode" @update:value="handleChangeTab">
+  <n-tabs
+    type="line"
+    size="large"
+    justify-content="start"
+    :value="editorMode"
+    @update:value="handleChangeTab"
+  >
     <n-tab-pane name="wysiwyg" :tab="$t('htmlEditor.wysiwyg')">
       <WysiwygEditor
         :value="value"
