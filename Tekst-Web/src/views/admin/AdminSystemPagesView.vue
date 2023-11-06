@@ -85,9 +85,9 @@ const segmentLocaleOptions = computed(() =>
 async function getSegmentModel(segmentId?: string): Promise<ClientSegmentUpdate> {
   if (!segmentId) {
     return {
-      key: undefined,
+      key: '',
       title: '',
-      locale: undefined,
+      locale: null,
       editorMode: 'wysiwyg',
       html: '',
     };

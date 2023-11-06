@@ -98,9 +98,9 @@ const systemSegmentKeyOptions = systemSegmentKeys.map((key) => ({
 function getSegmentModel(segmentId?: string): ClientSegmentUpdate {
   if (!segmentId) {
     return {
-      key: undefined,
+      key: '',
       title: '',
-      locale: undefined,
+      locale: null,
       editorMode: 'wysiwyg',
       html: '',
     };
