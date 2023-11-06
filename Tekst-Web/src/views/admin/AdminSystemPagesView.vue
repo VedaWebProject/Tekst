@@ -76,8 +76,8 @@ const segmentLocaleOptions = computed(() =>
   Object.keys(localeProfiles).map((l) => ({
     label: `${localeProfiles[l].icon} ${localeProfiles[l].displayFull}`,
     value: l,
-    disabled: !!pfData.value?.systemSegments.find(
-      (s) => s.locale === l && s.key === segmentModel.value?.key && s.id !== selectedSegmentId.value
+    disabled: !!pfData.value?.pagesInfo.find(
+      (p) => p.locale === l && p.key === segmentModel.value?.key && p.id !== selectedSegmentId.value
     ),
   }))
 );
