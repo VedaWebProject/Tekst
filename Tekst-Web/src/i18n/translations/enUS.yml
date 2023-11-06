@@ -98,6 +98,7 @@ routes:
     adminTextsNodes: '{text}: Nodes'
     adminNewText: '@:admin.heading - New Text'
     adminSystemSegments: '@:admin.heading - Segments'
+    adminSystemPages: '@:admin.heading - Pages'
     verify: Verification
     reset: Reset password
     siteNotice: '@:admin.system.segments.systemKeys.systemSiteNotice'

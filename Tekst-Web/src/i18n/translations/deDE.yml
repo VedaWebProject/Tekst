@@ -99,6 +99,7 @@ routes:
     adminTextsNodes: '@:admin.heading - {text}: Knoten'
     adminNewText: '@:admin.heading - Neuer Text'
     adminSystemSegments: '@:admin.heading - Segmente'
+    adminSystemPages: '@:admin.heading - Seiten'
     verify: Verifizierung
     reset: Passwort zurücksetzen
     siteNotice: '@:admin.system.segments.systemKeys.systemSiteNotice'
