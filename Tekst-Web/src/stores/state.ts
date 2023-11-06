@@ -134,9 +134,9 @@ export const useStateStore = defineStore('state', () => {
           text: text.value?.title,
           username: auth.user?.username,
         })
-      : '...';
-    const pfName = pfData.value?.info?.platformName ? ` | ${pfData.value?.info?.platformName}` : '';
-    document.title = title + pfName;
+      : undefined;
+    const pfName = pfData.value?.info?.platformName;
+    document.title = [title, pfName].filter(Boolean).join(' | ');
   }
 
   return {

@@ -4,7 +4,7 @@ import { computed, h, ref } from 'vue';
 import { useStateStore } from '@/stores';
 import { useRouter } from 'vue-router';
 import { NDropdown, NButton, NIcon } from 'naive-ui';
-import ArrowDropDownFilled from '@vicons/material/ArrowDropDownFilled';
+import ExpandMoreOutlined from '@vicons/material/ExpandMoreOutlined';
 import TextSelectOption from '../widgets/TextSelectOption.vue';
 import { usePlatformData } from '@/platformData';
 import { useI18n } from 'vue-i18n';
@@ -74,9 +74,7 @@ function handleSelect(key: string) {
       }"
     >
       <template v-if="!disabled" #icon>
-        <n-icon>
-          <ArrowDropDownFilled />
-        </n-icon>
+        <n-icon :component="ExpandMoreOutlined" />
       </template>
       {{ state.text.title }}
     </n-button>

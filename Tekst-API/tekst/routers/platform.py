@@ -127,18 +127,9 @@ async def get_segment(
         str, Query(description="Locale of the segment to retrieve")
     ] = None,
 ) -> ClientSegmentDocument:
-    segment = (
-        await ClientSegmentDocument.find_one(
-            ClientSegmentDocument.key == key,
-            ClientSegmentDocument.locale == locale,
-        )
-        or await ClientSegmentDocument.find_one(
-            ClientSegmentDocument.key == key,
-            ClientSegmentDocument.locale == "enUS",
-        )
-        or await ClientSegmentDocument.find_one(
-            ClientSegmentDocument.key == key,
-        )
+    segment = await ClientSegmentDocument.find_one(
+        ClientSegmentDocument.key == key,
+        ClientSegmentDocument.locale == locale,
     )
     if not segment:
         raise HTTPException(
@@ -146,19 +137,6 @@ async def get_segment(
             detail=f"Client segment {key} doesn't exist",
         )
     return segment
-
-
-# @router.get(
-#     "/segments",
-#     response_model=list[ClientSegmentRead],
-#     status_code=status.HTTP_200_OK,
-# )
-# async def get_segments(
-#     keys: Annotated[list[str], Query(description="List of segment keys to retrieve")]
-# ) -> list[ClientSegmentDocument]:
-#     return await ClientSegmentDocument.find(
-#         In(ClientSegmentDocument.key, keys)
-#     ).to_list()
 
 
 @router.post(

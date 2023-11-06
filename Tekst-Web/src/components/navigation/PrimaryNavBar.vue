@@ -12,8 +12,7 @@ import { useRoute, RouterLink } from 'vue-router';
 import { usePlatformData } from '@/platformData';
 
 import MenuRound from '@vicons/material/MenuRound';
-import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
-import SearchRound from '@vicons/material/SearchRound';
+import MorePagesDropdown from './MorePagesDropdown.vue';
 
 const { pfData } = usePlatformData();
 const auth = useAuthStore();
@@ -58,15 +57,14 @@ watch(
       <NavBarRouterLink
         :label="$t('nav.browse')"
         :route="{ name: 'browse', params: { text: textParam } }"
-        :icon="MenuBookOutlined"
         :show-icon="state.smallScreen"
       />
       <NavBarRouterLink
         :label="$t('nav.search')"
         :route="{ name: 'search', params: { text: textParam } }"
-        :icon="SearchRound"
         :show-icon="state.smallScreen"
       />
+      <MorePagesDropdown />
       <div class="navbar-menu-divider"></div>
       <div class="navbar-menu-extra">
         <QuickSearchWidget />
@@ -91,6 +89,10 @@ watch(
   font-size: var(--app-ui-font-size-small);
 }
 
+.navbar-smallscreen {
+  padding: var(--layout-gap);
+}
+
 .navbar a:any-link {
   color: var(--n-font-color);
 }
@@ -103,10 +105,6 @@ watch(
 .navbar *::before,
 .navbar *::after {
   font-weight: 300;
-}
-
-.navbar-smallscreen .navbar {
-  padding-bottom: 0px;
 }
 
 .navbar-logo {
@@ -130,14 +128,14 @@ watch(
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 12px;
+  gap: var(--layout-gap);
 }
 .navbar-smallscreen .navbar-menu {
   flex-direction: column;
   align-items: stretch;
   flex-basis: 100%;
   padding-top: 0.75rem;
-  gap: 0px;
+  gap: 0.5rem;
 }
 
 .navbar-menu-divider {
@@ -161,17 +159,19 @@ watch(
   justify-content: space-around;
   width: 100%;
   max-width: 320px;
-  margin: 1rem auto;
+  margin: 0 auto 0 auto;
 }
 </style>
 
 <style>
 .navbar-smallscreen .navbar-router-link {
   padding: 0.5rem 1.5rem;
-  font-size: 22px;
-  margin: 6px 0;
   background-color: var(--accent-color-fade5);
   border-radius: var(--app-ui-border-radius);
+}
+
+.navbar-smallscreen .navbar-more {
+  padding: 0.5rem 1.5rem;
 }
 
 .navbar-smallscreen .quicksearch-widget {

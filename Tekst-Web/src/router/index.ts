@@ -5,6 +5,7 @@ import { useMessages } from '@/messages';
 
 import GavelOutlined from '@vicons/material/GavelOutlined';
 import PrivacyTipOutlined from '@vicons/material/PrivacyTipOutlined';
+import InfoOutlined from '@vicons/material/InfoOutlined';
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -89,6 +90,14 @@ const router = createRouter({
       props: {
         pageKey: 'systemPrivacyPolicy',
         icon: PrivacyTipOutlined,
+      },
+    },
+    {
+      path: '/page',
+      name: 'page',
+      component: PageView,
+      props: {
+        icon: InfoOutlined,
       },
     },
     {

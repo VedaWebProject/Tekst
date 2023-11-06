@@ -245,8 +245,13 @@ async function handleDeleteClick() {
       v-model:value="selectedSegmentId"
       filterable
       size="large"
+      :disabled="modelChanged"
       :options="segmentOptions"
-      :placeholder="$t('admin.system.segments.phSelectSegment')"
+      :placeholder="
+        modelChanged
+          ? $t('admin.system.segments.newSegment')
+          : $t('admin.system.segments.phSelectSegment')
+      "
       style="flex-grow: 2"
       @update:value="handleSelectSegment"
     />

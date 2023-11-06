@@ -79,6 +79,7 @@ nav:
   browse: Browse
   search: Search
   help: Help
+  more: More
 
 routes:
   pageTitle:
@@ -400,7 +401,7 @@ admin:
         systemSiteNotice: Site Notice
         systemPrivacyPolicy: Privacy Policy
       noSegment: Please select a segment or create a new one!
-      untitled: Untitled Segment
+      newSegment: New Segment
       phSelectSegment: Select segment
       msgUpdated: Updated "{title}".
       msgCreated: Created "{title}".

@@ -1,27 +1,33 @@
 <script setup lang="ts">
 import type { ClientSegmentRead } from '@/api';
 import { usePlatformData } from '@/platformData';
-import { watchEffect, type Component } from 'vue';
+import { watch, type Component } from 'vue';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { NSpin } from 'naive-ui';
 import IconHeading from '@/components/typography/IconHeading.vue';
+import { useRoute } from 'vue-router';
 
 const props = defineProps<{
-  pageKey: string;
-  icon: Component;
+  pageKey?: string;
+  icon?: Component;
 }>();
 
 const { locale } = useI18n();
 const loading = ref(false);
 const { getSegment } = usePlatformData();
+const route = useRoute();
 const page = ref<ClientSegmentRead>();
 
-watchEffect(async () => {
-  loading.value = true;
-  page.value = (await getSegment(props.pageKey, locale.value)) || undefined;
-  loading.value = false;
-});
+watch(
+  [() => props.pageKey, () => route.query.p, () => locale.value],
+  async ([propKey, queryKey, nextLocale]) => {
+    loading.value = true;
+    page.value = (await getSegment(propKey || queryKey?.toString(), nextLocale)) || undefined;
+    loading.value = false;
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
