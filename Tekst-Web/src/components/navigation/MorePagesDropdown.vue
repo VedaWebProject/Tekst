@@ -10,20 +10,21 @@ const { pfData } = usePlatformData();
 const state = useStateStore();
 
 const options = computed(() => {
-  let ids: ClientSegmentHead[] = [];
+  const pages: ClientSegmentHead[] = [];
   // add pages with current locale
-  ids = ids.concat(pfData.value?.pagesInfo.filter((p) => p.locale === state.locale) || []);
+  pages.push(...(pfData.value?.pagesInfo.filter((p) => p.locale === state.locale) || []));
   // add pages without locale
-  ids = ids.concat(
-    pfData.value?.pagesInfo.filter((p) => !p.locale && !ids.find((i) => i.key === p.key)) || []
+  pages.push(
+    ...(pfData.value?.pagesInfo.filter((p) => !p.locale && !pages.find((i) => i.key === p.key)) ||
+      [])
   );
   // add pages with enUS locale (fallback)
-  ids = ids.concat(
-    pfData.value?.pagesInfo.filter(
-      (p) => p.locale === 'enUS' && !ids.find((i) => i.key === p.key)
-    ) || []
+  pages.push(
+    ...(pfData.value?.pagesInfo.filter(
+      (p) => p.locale === 'enUS' && !pages.find((i) => i.key === p.key)
+    ) || [])
   );
-  return ids.map((p) => ({ label: p.title, key: p.key }));
+  return pages.map((p) => ({ label: p.title, key: p.key }));
 });
 </script>
 
