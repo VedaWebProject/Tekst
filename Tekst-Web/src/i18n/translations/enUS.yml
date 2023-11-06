@@ -217,6 +217,7 @@ models:
     html: Content
     formRulesFeedback:
       keyChars: 'Allowed characters: a-z, A-Z, 0-9, -, _'
+      systemPrefixReserved: Key prefix "system" is reserved for system segments
 
 account:
   account: Account
