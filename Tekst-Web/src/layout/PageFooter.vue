@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { NButton } from 'naive-ui';
 import SegmentRenderer from '@/components/SegmentRenderer.vue';
 import { usePlatformData } from '@/platformData';
 import { computed } from 'vue';
@@ -17,12 +16,12 @@ const privacyPolicy = computed(
   <footer>
     <SegmentRenderer segment-key="systemFooter" />
     <div id="legal-container">
-      <n-button v-if="siteNotice" text @click="() => $router.push('/site-notice')">{{
-        $t('admin.system.segments.systemKeys.systemSiteNotice')
-      }}</n-button>
-      <n-button v-if="privacyPolicy" text @click="() => $router.push('/privacy-policy')">{{
-        $t('admin.system.segments.systemKeys.systemPrivacyPolicy')
-      }}</n-button>
+      <RouterLink v-if="siteNotice" :to="{ name: 'siteNotice' }">
+        {{ $t('admin.system.segments.systemKeys.systemSiteNotice') }}
+      </RouterLink>
+      <RouterLink v-if="privacyPolicy" :to="{ name: 'privacyPolicy' }">
+        {{ $t('admin.system.segments.systemKeys.systemPrivacyPolicy') }}
+      </RouterLink>
     </div>
   </footer>
 </template>
@@ -46,5 +45,9 @@ footer > #legal-container {
   row-gap: 0.5rem;
   flex-wrap: wrap;
   margin-top: 1.5rem;
+}
+
+footer > #legal-container a:not(:hover) {
+  color: var(--n-font-color);
 }
 </style>
