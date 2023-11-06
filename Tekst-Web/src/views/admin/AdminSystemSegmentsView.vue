@@ -44,10 +44,6 @@ const {
   getChanges: getModelChanges,
 } = useModelChanges(segmentModel);
 
-const segmentHeading = computed(() =>
-  segmentModel.value ? segmentModel.value.title || segmentModel.value.key : ''
-);
-
 const segmentOptions = computed(() =>
   [...new Set(pfData.value?.systemSegments.map((s) => s.key))].map((key) => {
     const groupSegments = pfData.value?.systemSegments.filter((s) => s.key === key) || [];
@@ -248,17 +244,18 @@ async function handleDeleteClick() {
     <n-select
       v-model:value="selectedSegmentId"
       filterable
+      size="large"
       :options="segmentOptions"
       :placeholder="$t('admin.system.segments.phSelectSegment')"
       style="flex-grow: 2"
       @update:value="handleSelectSegment"
     />
-    <n-button v-if="selectedSegmentId" secondary @click="handleDeleteClick">
+    <n-button v-if="selectedSegmentId" secondary size="large" @click="handleDeleteClick">
       <template #icon>
         <n-icon :component="DeleteOutlined" />
       </template>
     </n-button>
-    <n-button type="primary" :disabled="modelChanged" @click="handleAddSegmentClick">
+    <n-button type="primary" :disabled="modelChanged" size="large" @click="handleAddSegmentClick">
       <template #icon>
         <n-icon :component="AddOutlined" />
       </template>
@@ -266,8 +263,6 @@ async function handleDeleteClick() {
   </div>
 
   <div v-if="segmentModel" class="content-block">
-    <h3>{{ segmentModel.title ? segmentHeading : $t('admin.system.segments.untitled') }}</h3>
-
     <n-form
       ref="formRef"
       :model="segmentModel"
