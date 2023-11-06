@@ -44,13 +44,8 @@ const {
   getChanges: getModelChanges,
 } = useModelChanges(segmentModel);
 
-const segmentLocaleFlag = computed(() =>
-  segmentModel.value?.locale ? localeProfiles[segmentModel.value.locale].icon : '🌐'
-);
 const segmentHeading = computed(() =>
-  segmentModel.value
-    ? segmentLocaleFlag.value + ' ' + (segmentModel.value.title || segmentModel.value.key)
-    : ''
+  segmentModel.value ? segmentModel.value.title || segmentModel.value.key : ''
 );
 
 const segmentOptions = computed(() =>
