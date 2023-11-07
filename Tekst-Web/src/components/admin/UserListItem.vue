@@ -78,6 +78,7 @@ const statusBtnMinWidth = '128px';
             "
             size="tiny"
             :style="{ minWidth: statusBtnMinWidth }"
+            :disabled="currentUser && currentUser.id === targetUser.id"
             @click="$emit('activeClick', targetUser)"
           >
             {{ targetUser.isActive ? $t('models.user.isActive') : $t('models.user.isInactive') }}
@@ -97,6 +98,7 @@ const statusBtnMinWidth = '128px';
             "
             size="tiny"
             :style="{ minWidth: statusBtnMinWidth }"
+            :disabled="currentUser && currentUser.id === targetUser.id"
             @click="$emit('verifiedClick', targetUser)"
           >
             {{
