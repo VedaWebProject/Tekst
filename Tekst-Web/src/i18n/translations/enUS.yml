@@ -410,7 +410,7 @@ admin:
       warnDelete: Are you sure you want to delete "{title}"?
     pages:
       heading: Pages
-      untitled: Untitled Page
+      newPage: New Page
       phSelectPage: Select page
 
 search:

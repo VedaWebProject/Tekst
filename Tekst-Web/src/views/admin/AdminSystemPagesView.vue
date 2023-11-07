@@ -237,7 +237,10 @@ async function handleDeleteClick() {
       filterable
       size="large"
       :options="segmentOptions"
-      :placeholder="$t('admin.system.pages.phSelectPage')"
+      :disabled="modelChanged"
+      :placeholder="
+        modelChanged ? $t('admin.system.pages.newPage') : $t('admin.system.pages.phSelectPage')
+      "
       style="flex-grow: 2"
       @update:value="handleSelectSegment"
     />

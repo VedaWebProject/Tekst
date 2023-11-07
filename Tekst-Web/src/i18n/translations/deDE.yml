@@ -425,7 +425,7 @@ admin:
       warnDelete: Sind Sie sicher, dass Sie "{title}" löschen möchten?
     pages:
       heading: Seiten
-      untitled: Unbenannte Seite
+      newPage: Neue Seite
       phSelectPage: Seite auswählen
 
 search:
