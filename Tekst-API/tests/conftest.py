@@ -1,6 +1,7 @@
 import json
 
 from pathlib import Path
+from typing import Callable
 
 import pytest
 import requests
@@ -47,6 +48,17 @@ def test_data(request) -> dict:
     return decamelize(json.loads((datadir / "test-data.json").read_text()))
 
 
+@pytest.fixture
+def get_test_file_path(request) -> Callable[[str], Path]:
+    """Returns all shared test data"""
+
+    def _get_test_file_path(filename: str) -> Path:
+        datadir = Path(request.config.rootdir) / "tests/data"
+        return datadir / filename
+
+    return _get_test_file_path
+
+
 # @pytest.fixture(scope="session")
 # def event_loop():
 #     try:
@@ -90,7 +102,7 @@ async def reset_db(get_db_client_override, config):
 
 
 @pytest.fixture
-async def insert_test_data(test_app, reset_db, api_path, test_data) -> callable:
+async def insert_test_data(test_app, reset_db, api_path, test_data) -> Callable:
     """
     Returns an asynchronous function to insert
     test data into their respective database collections
@@ -130,7 +142,7 @@ def new_user_data() -> dict:
 
 
 @pytest.fixture
-async def register_test_user(new_user_data) -> callable:
+async def register_test_user(new_user_data) -> Callable:
     async def _register_test_user(
         *, is_active: bool = True, is_verified: bool = True, is_superuser: bool = False
     ) -> dict:
@@ -147,7 +159,7 @@ async def register_test_user(new_user_data) -> callable:
 @pytest.fixture
 async def get_session_cookie(
     config, test_client, api_path, status_fail_msg
-) -> callable:
+) -> Callable:
     async def _get_session_cookie(user_data: dict) -> dict:
         endpoint = f"{api_path}/auth/cookie/login"
         payload = {"username": user_data["email"], "password": user_data["password"]}
@@ -163,7 +175,7 @@ async def get_session_cookie(
 
 
 @pytest.fixture(scope="session")
-def status_fail_msg() -> callable:
+def status_fail_msg() -> Callable:
     def _status_fail_msg(expected_status: int, response: Response) -> tuple[bool, str]:
         resp_json = "No JSON response data."
         try:

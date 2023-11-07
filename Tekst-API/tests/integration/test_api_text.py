@@ -160,3 +160,32 @@ async def test_insert_level(
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert "id" in resp.json()
     assert len(resp.json()["levels"]) == 4
+
+
+@pytest.mark.anyio
+async def test_upload_structure(
+    api_path,
+    test_client: AsyncClient,
+    insert_test_data,
+    get_test_file_path,
+    status_fail_msg,
+    register_test_user,
+    get_session_cookie,
+):
+    text_id = await insert_test_data("texts")
+
+    # create superuser
+    superuser_data = await register_test_user(is_superuser=True)
+    session_cookie = await get_session_cookie(superuser_data)
+
+    # read structure file content
+    with open(get_test_file_path("structure.json"), "rb") as f:
+        # upload structure definition
+        endpoint = f"{api_path}/texts/{text_id}/structure"
+        resp = await test_client.post(
+            endpoint,
+            cookies=session_cookie,
+            files={"file": (f.name, f, "application/json")},
+        )
+
+    assert resp.status_code == 201, status_fail_msg(201, resp)
