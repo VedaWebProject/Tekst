@@ -193,10 +193,10 @@ models:
     subtitle: Untertitel
     level: Ebene | Ebenen
     levelLabel: Bezeichnung
-    defaultLevel: Standard-Ebene
-    locDelim: Fundstellen-Trennzeichen
+    defaultLevel: Standardebene
+    locDelim: Fundstellentrennzeichen
     labeledLocation: Beschriftete Fundstelle
-    accentColor: Akzent-Farbe
+    accentColor: Akzentfarbe
     isActive: Aktiv, öffentlich gelistet
     isInactive: Inaktiv, nicht öffentlich gelistet
     formRulesFeedback:
@@ -211,7 +211,7 @@ models:
     comment: Kommentar
     citation: Zitation
   unit:
-    modelLabel: Daten-Einheit | Daten-Einheiten
+    modelLabel: Dateneinheit | Dateneinheiten
   meta:
     modelLabel: Metadaten
     author: Autor
@@ -323,6 +323,12 @@ admin:
     general:
       heading: Allgemein
       msgSaved: Text-Einstellungen gespeichert.
+      warnDeleteText: |
+        Wenn Sie diesen Text ("{title}") löschen, werden alle Daten, die sich auf ihn
+        beziehen, ebenfalls gelöscht. Dies schließt die Textstruktur sowie alle
+        Datenschichten mit ein – unabhängig von welchem User sie erstellt wurden.
+        Sind Sie sich sicher?
+      msgDeleted: Text "{title}" gelöscht
     levels:
       heading: Ebenen
       tipInsertLevel: Neue Ebene an Position {n} einfügen

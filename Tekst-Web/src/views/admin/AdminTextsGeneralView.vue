@@ -14,9 +14,10 @@ import {
   NColorPicker,
   NDynamicInput,
   type FormInst,
+  useDialog,
 } from 'naive-ui';
 import { computed, ref, watch } from 'vue';
-import { PATCH } from '@/api';
+import { DELETE, PATCH } from '@/api';
 import { $t } from '@/i18n';
 import { localeProfiles } from '@/i18n';
 import type { SubtitleTranslation } from '@/api';
@@ -26,10 +27,13 @@ import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 
 import AddRound from '@vicons/material/AddRound';
 import MinusRound from '@vicons/material/MinusRound';
+import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
+import router from '@/router';
 
 const state = useStateStore();
-const { loadPlatformData } = usePlatformData();
+const { pfData, loadPlatformData } = usePlatformData();
 const { message } = useMessages();
+const dialog = useDialog();
 const loading = ref(false);
 
 const initialModel = () => ({
@@ -67,6 +71,15 @@ const defaultLevelOptions = computed(() =>
     value: i,
   }))
 );
+
+const textCanBeDeleted = computed(() => {
+  if (!pfData.value) return false;
+  if (state.text?.isActive) {
+    return pfData.value.texts.filter((t) => t.isActive).length > 1;
+  } else {
+    return pfData.value.texts.length > 1;
+  }
+});
 
 watch(
   () => state.text,
@@ -108,6 +121,35 @@ function handleSave() {
       message.error($t('errors.followFormRules'));
       loading.value = false;
     });
+}
+
+async function handleDelete() {
+  loading.value = true;
+  dialog.warning({
+    title: $t('general.warning'),
+    content: $t('admin.text.general.warnDeleteText', { title: state.text?.title || '?' }),
+    positiveText: $t('general.yesAction'),
+    negativeText: $t('general.noAction'),
+    positiveButtonProps: positiveButtonProps,
+    negativeButtonProps: negativeButtonProps,
+    autoFocus: false,
+    closable: false,
+    onPositiveClick: async () => {
+      const { error } = await DELETE('/texts/{id}', {
+        params: { path: { id: state.text?.id || '' } },
+      });
+      if (!error) {
+        message.success($t('admin.text.general.msgDeleted', { title: state.text?.title || '?' }));
+        await loadPlatformData();
+        state.text =
+          pfData.value?.texts.find((t) => t.id == pfData.value?.settings.defaultTextId) ||
+          pfData.value?.texts[0];
+        router.push({ name: 'home' });
+      } else {
+        message.error($t('errors.unexpected'));
+      }
+    },
+  });
 }
 </script>
 
@@ -273,10 +315,13 @@ function handleSave() {
       </n-form-item>
     </n-form>
 
-    <n-space :size="12" justify="end" style="margin-top: 0.5rem">
+    <div style="display: flex; gap: var(--layout-gap); margin-top: 0.5rem">
+      <n-button secondary :disabled="!textCanBeDeleted" @click="handleDelete">
+        {{ $t('general.deleteAction') }}
+      </n-button>
+      <div style="flex-grow: 2"></div>
       <n-button
         secondary
-        block
         :loading="loading"
         :disabled="loading || !modelChanged"
         @click="() => handleReset"
@@ -284,7 +329,6 @@ function handleSave() {
         {{ $t('general.resetAction') }}
       </n-button>
       <n-button
-        block
         type="primary"
         :loading="loading"
         :disabled="loading || !modelChanged"
@@ -292,6 +336,6 @@ function handleSave() {
       >
         {{ $t('general.saveAction') }}
       </n-button>
-    </n-space>
+    </div>
   </div>
 </template>

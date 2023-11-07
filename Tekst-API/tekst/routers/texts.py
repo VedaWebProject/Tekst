@@ -3,7 +3,7 @@ from pathlib import Path as SysPath
 from typing import Annotated, List
 
 from beanie import PydanticObjectId
-from beanie.operators import Or, Set, Unset
+from beanie.operators import In, Or, Set, Unset
 from fastapi import (
     APIRouter,
     Body,
@@ -20,6 +20,7 @@ from tekst.auth import OptionalUserDep, SuperuserDep
 from tekst.dependencies import get_temp_dir
 from tekst.models.exchange import NodeDefinition, TextStructureDefinition
 from tekst.models.layer import LayerBaseDocument
+from tekst.models.settings import PlatformSettingsDocument
 from tekst.models.text import (
     NodeDocument,
     StructureLevelTranslation,
@@ -28,6 +29,7 @@ from tekst.models.text import (
     TextRead,
     TextUpdate,
 )
+from tekst.models.unit import UnitBaseDocument
 
 
 router = APIRouter(
@@ -424,6 +426,51 @@ async def delete_level(
     await text_doc.save()
 
     return text_doc
+
+
+@router.delete(
+    "/{id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
+async def delete_text(
+    su: SuperuserDep,
+    text_id: Annotated[PydanticObjectId, Path(alias="id")],
+) -> None:
+    text = await TextDocument.get(text_id)
+    if not text:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Could not find text with ID {text_id}",
+        )
+    if await TextDocument.find_all().count() <= 1:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Cannot delete the only text",
+        )
+    # get data layers associated with target text
+    layers = await LayerBaseDocument.find(
+        LayerBaseDocument.text_id == text_id, with_children=True
+    ).to_list()
+    # delete data units of all layers associated with target text
+    await UnitBaseDocument.find(
+        In(UnitBaseDocument.layer_id, [layer.id for layer in layers]),
+        with_children=True,
+    ).delete_many()
+    # delete data layers associated with target text
+    await LayerBaseDocument.find(
+        LayerBaseDocument.text_id == text_id, with_children=True
+    ).delete_many()
+    # delete structure nodes associated with target text
+    await NodeDocument.find(
+        NodeDocument.text_id == text_id,
+    ).delete_many()
+    # delete text itself
+    await text.delete()
+    # check if deleted text was default text, correct if necessary
+    pf_settings = await PlatformSettingsDocument.find_one()
+    if pf_settings.default_text_id == text_id:
+        pf_settings.default_text_id = (await TextDocument.find_one()).id
+        await pf_settings.save()
 
 
 @router.get("/{id}", response_model=TextRead, status_code=status.HTTP_200_OK)

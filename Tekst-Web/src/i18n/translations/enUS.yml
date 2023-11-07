@@ -317,6 +317,11 @@ admin:
     general:
       heading: General
       msgSaved: Text settings saved.
+      warnDeleteText: |
+        Deleting this text ("{title}") will delete all data associated with it,
+        including its configured structure and all data layers, regardless of the
+        user who created it. Are you sure?
+      msgDeleted: Text "{title}" deleted
     levels:
       heading: Levels
       tipInsertLevel: Insert new level at position {n}

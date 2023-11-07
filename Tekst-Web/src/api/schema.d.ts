@@ -192,6 +192,8 @@ export interface paths {
   '/texts/{id}': {
     /** Get text */
     get: operations['getText'];
+    /** Delete text */
+    delete: operations['deleteText'];
     /** Update text */
     patch: operations['updateText'];
   };
@@ -2331,6 +2333,30 @@ export interface operations {
         content: {
           'application/json': components['schemas']['TextRead'];
         };
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Delete text */
+  deleteText: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      204: {
+        content: never;
       };
       /** @description Not found */
       404: {
