@@ -45,6 +45,7 @@ from humps import decamelize
 from tekst.config import TekstConfig, get_config
 from tekst.email import TemplateIdentifier, send_email
 from tekst.logging import log
+from tekst.models.layer import LayerBaseDocument
 from tekst.models.user import UserCreate, UserDocument, UserRead, UserUpdate
 
 
@@ -231,6 +232,10 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
             user,
             TemplateIdentifier.DELETED,
         )
+        # reset data layer ownerships
+        await LayerBaseDocument.find(
+            LayerBaseDocument.owner_id == user.id, with_children=True
+        ).set({LayerBaseDocument.owner_id: None})
 
     async def validate_password(
         self,
