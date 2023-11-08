@@ -73,7 +73,7 @@ const coveragePercent = computed(
       }}</RouterLink>
     </p>
 
-    <template v-if="Object.keys(layer.meta as object).length">
+    <template v-if="layer.meta && Object.keys(layer.meta).length">
       <MetadataDisplay :data="layer.meta" />
     </template>
 
