@@ -1,1 +1,47 @@
-[{"_id":{"$oid":"654b825533ee5737b297f8e3"},"title":"Fuchs, du hast die Gans gestohlen","slug":"fdhdgg","subtitle":[{"locale":"enUS","subtitle":"An old German folk song"},{"locale":"deDE","subtitle":"Ein altdeutsches Volkslied"}],"levels":[[{"locale":"enUS","label":"Stanza"},{"locale":"deDE","label":"Strophe"}],[{"locale":"enUS","label":"Line"},{"locale":"deDE","label":"Vers"}]],"default_level":1,"loc_delim":" > ","labeled_location":true,"accent_color":"#43895f","is_active":true},{"_id":{"$oid":"654ba1f3ec7833e469dde765"},"title":"The Old Pond","slug":"pond","subtitle":[{"locale":"enUS","subtitle":"A Haiku by Matsuo Bashō"},{"locale":"deDE","subtitle":"Ein Haiku von Matsuo Bashō"}],"levels":[[{"locale":"enUS","label":"Phrase"},{"locale":"deDE","label":"Wortgruppe"}]],"default_level":0,"loc_delim":"/","labeled_location":true,"accent_color":"#305d97","is_active":true,"modified_at":{"$date":"2023-11-08T15:09:53.081Z"}}]
+[
+  {
+    "_id": { "$oid": "654b825533ee5737b297f8e3" },
+    "title": "Fuchs, du hast die Gans gestohlen",
+    "slug": "fdhdgg",
+    "subtitle": [
+      { "locale": "enUS", "subtitle": "An old German folk song" },
+      { "locale": "deDE", "subtitle": "Ein altdeutsches Volkslied" }
+    ],
+    "levels": [
+      [
+        { "locale": "enUS", "label": "Stanza" },
+        { "locale": "deDE", "label": "Strophe" }
+      ],
+      [
+        { "locale": "enUS", "label": "Line" },
+        { "locale": "deDE", "label": "Vers" }
+      ]
+    ],
+    "default_level": 1,
+    "loc_delim": " > ",
+    "labeled_location": true,
+    "accent_color": "#43895f",
+    "is_active": true
+  },
+  {
+    "_id": { "$oid": "654ba1f3ec7833e469dde765" },
+    "title": "The Old Pond",
+    "slug": "pond",
+    "subtitle": [
+      { "locale": "enUS", "subtitle": "A Haiku by Matsuo Bashō" },
+      { "locale": "deDE", "subtitle": "Ein Haiku von Matsuo Bashō" }
+    ],
+    "levels": [
+      [
+        { "locale": "enUS", "label": "Phrase" },
+        { "locale": "deDE", "label": "Wortgruppe" }
+      ]
+    ],
+    "default_level": 0,
+    "loc_delim": "/",
+    "labeled_location": true,
+    "accent_color": "#305d97",
+    "is_active": true,
+    "modified_at": { "$date": "2023-11-08T15:09:53.081Z" }
+  }
+]

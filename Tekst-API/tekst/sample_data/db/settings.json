@@ -1,1 +1,6 @@
-[{"_id":{"$oid":"654b9eacad25e691fe930f6d"},"default_text_id":{"$oid":"654b825533ee5737b297f8e3"}}]
+[
+  {
+    "_id": { "$oid": "654b9eacad25e691fe930f6d" },
+    "default_text_id": { "$oid": "654b825533ee5737b297f8e3" }
+  }
+]
