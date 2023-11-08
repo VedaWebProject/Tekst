@@ -19,12 +19,10 @@ async def app_setup(cfg: TekstConfig):
     init_layer_type_manager()
     await init_odm(get_db(get_db_client(cfg), cfg))
 
-    log.info("Creating initial platform settings from defaults...")
-    if not (await PlatformSettingsDocument.find_one().exists()):
-        await PlatformSettingsDocument().create()  # pragma: no cover
-    else:
-        log.warning("Platform settings already exist. Skipping settings creation.")
-
     await create_sample_users()  # happens only when in DEV mode
     await insert_sample_data()  # doesn't happen during test runs
     await create_initial_superuser()  # happens only when not in DEV mode
+
+    if not (await PlatformSettingsDocument.find_one().exists()):
+        log.info("Creating initial platform settings from defaults...")
+        await PlatformSettingsDocument().create()  # pragma: no cover
