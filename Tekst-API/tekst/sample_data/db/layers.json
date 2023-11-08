@@ -41,7 +41,12 @@
     "proposed": false,
     "public": true,
     "citation": null,
-    "meta": { "author": "Matsuo Bashō" },
+    "meta": {
+      "author": "Matsuo Bashō",
+      "year": "1686",
+      "language": "JA",
+      "originaltitle": "-"
+    },
     "comment": null,
     "config": {
       "deeplLinks": {
