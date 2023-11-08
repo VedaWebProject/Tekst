@@ -7,15 +7,17 @@ from httpx import AsyncClient
 async def test_create_node(
     api_path,
     test_client: AsyncClient,
-    test_data,
     insert_test_data,
     status_fail_msg,
     register_test_user,
     get_session_cookie,
 ):
-    text_id = await insert_test_data("texts")
+    text_id = (await insert_test_data("texts"))["texts"][0]
     endpoint = f"{api_path}/nodes"
-    nodes = [{"textId": text_id, **node} for node in test_data["nodes"]]
+    nodes = [
+        {"textId": text_id, "label": f"Node {n}", "level": 0, "position": n}
+        for n in range(10)
+    ]
 
     # create superuser
     superuser_data = await register_test_user(is_superuser=True)
@@ -30,15 +32,15 @@ async def test_create_node(
 async def test_child_node_io(
     api_path,
     test_client: AsyncClient,
-    test_data,
+    get_test_data,
     insert_test_data,
     status_fail_msg,
     register_test_user,
     get_session_cookie,
 ):
-    text_id = await insert_test_data("texts")
+    text_id = (await insert_test_data("texts"))["texts"][0]
     endpoint = f"{api_path}/nodes"
-    node = {"textId": text_id, **test_data["nodes"][0]}
+    node = get_test_data("db/nodes.json", for_http=True)[0]
 
     # create superuser
     superuser_data = await register_test_user(is_superuser=True)
@@ -96,7 +98,7 @@ async def test_child_node_io(
 async def test_create_node_invalid_text_fail(
     api_path,
     test_client: AsyncClient,
-    test_data,
+    get_test_data,
     insert_test_data,
     status_fail_msg,
     register_test_user,
@@ -104,8 +106,8 @@ async def test_create_node_invalid_text_fail(
 ):
     await insert_test_data("texts")
     endpoint = f"{api_path}/nodes"
-    node = test_data["nodes"][0]
-    node["textId"] = "5eb7cfb05e32e07750a1756a"
+    node = get_test_data("db/nodes.json", for_http=True)[0]
+    node["textId"] = "5ed7cfba5e32eb7759a17565"
 
     # create superuser
     superuser_data = await register_test_user(is_superuser=True)
@@ -117,11 +119,11 @@ async def test_create_node_invalid_text_fail(
 
 @pytest.mark.anyio
 async def test_get_nodes(
-    api_path, test_client: AsyncClient, test_data, insert_test_data, status_fail_msg
+    api_path, test_client: AsyncClient, get_test_data, insert_test_data, status_fail_msg
 ):
-    text_id = await insert_test_data("texts", "nodes")
+    text_id = (await insert_test_data("texts", "nodes"))["texts"][0]
     endpoint = f"{api_path}/nodes"
-    nodes = test_data["nodes"]
+    nodes = get_test_data("db/nodes.json", for_http=True)
 
     # test results length limit
     resp = await test_client.get(
@@ -143,7 +145,7 @@ async def test_get_nodes(
     resp = await test_client.get(endpoint, params={"textId": text_id, "level": 0})
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert type(resp.json()) is list
-    assert len(resp.json()) == len(nodes)
+    assert len(resp.json()) == len([n for n in nodes if n["level"] == 0])
 
     # test returned nodes have IDs
     assert "id" in resp.json()[0]
@@ -174,12 +176,11 @@ async def test_update_node(
     api_path,
     test_client: AsyncClient,
     insert_test_data,
-    test_data,
     status_fail_msg,
     register_test_user,
     get_session_cookie,
 ):
-    text_id = await insert_test_data("texts", "nodes")
+    text_id = (await insert_test_data("texts", "nodes"))["texts"][0]
     # get node from db
     endpoint = f"{api_path}/nodes"
     resp = await test_client.get(endpoint, params={"textId": text_id, "level": 0})
@@ -214,12 +215,11 @@ async def test_delete_node(
     api_path,
     test_client: AsyncClient,
     insert_test_data,
-    test_data,
     status_fail_msg,
     register_test_user,
     get_session_cookie,
 ):
-    text_id = await insert_test_data("texts", "nodes", "layers")
+    text_id = (await insert_test_data("texts", "nodes", "layers"))["texts"][0]
 
     # get node from db
     endpoint = f"{api_path}/nodes"
@@ -262,5 +262,44 @@ async def test_delete_node(
     endpoint = f"{api_path}/nodes/{node['id']}"
     resp = await test_client.delete(endpoint, cookies=session_cookie)
     assert resp.status_code == 200, status_fail_msg(200, resp)
-    assert resp.json().get("nodes", None) == 1
+    assert resp.json().get("nodes", None) > 1
     assert resp.json().get("units", None) == 1
+
+
+@pytest.mark.anyio
+async def test_move_node(
+    api_path,
+    test_client: AsyncClient,
+    insert_test_data,
+    status_fail_msg,
+    register_test_user,
+    get_session_cookie,
+):
+    text_id = (await insert_test_data("texts", "nodes", "layers"))["texts"][0]
+
+    # create superuser
+    superuser_data = await register_test_user(is_superuser=True)
+    session_cookie = await get_session_cookie(superuser_data)
+
+    # get node from db
+    endpoint = f"{api_path}/nodes"
+    resp = await test_client.get(
+        endpoint,
+        params={"textId": text_id, "level": 0, "position": 0},
+        cookies=session_cookie,
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert type(resp.json()) == list
+    assert len(resp.json()) > 0
+    node = resp.json()[0]
+
+    # move node
+    endpoint = f"{api_path}/nodes/{node['id']}/move"
+    resp = await test_client.post(
+        endpoint,
+        json={"position": 1, "after": True, "parentId": None},
+        cookies=session_cookie,
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert type(resp.json()) == dict
+    assert resp.json()["position"] == 1

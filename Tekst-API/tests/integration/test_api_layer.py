@@ -7,13 +7,12 @@ from httpx import AsyncClient
 async def test_create_layer(
     api_path,
     test_client: AsyncClient,
-    test_data,
     insert_test_data,
     status_fail_msg,
     register_test_user,
     get_session_cookie,
 ):
-    text_id = await insert_test_data("texts", "nodes")
+    text_id = (await insert_test_data("texts", "nodes"))["texts"][0]
     user_data = await register_test_user()
     session_cookie = await get_session_cookie(user_data)
     endpoint = f"{api_path}/layers/plaintext"
@@ -38,7 +37,6 @@ async def test_create_layer(
 async def test_create_layer_invalid(
     api_path,
     test_client: AsyncClient,
-    test_data,
     insert_test_data,
     status_fail_msg,
     register_test_user,
@@ -78,7 +76,7 @@ async def test_update_layer(
     register_test_user,
     get_session_cookie,
 ):
-    text_id = await insert_test_data("texts", "nodes", "layers")
+    text_id = (await insert_test_data("texts", "nodes", "layers"))["texts"][0]
     user_data = await register_test_user()
     session_cookie = await get_session_cookie(user_data)
     # create new layer (because only owner can update(write))
@@ -115,7 +113,7 @@ async def test_create_layer_with_forged_owner_id(
     register_test_user,
     get_session_cookie,
 ):
-    text_id = await insert_test_data("texts", "nodes")
+    text_id = (await insert_test_data("texts", "nodes"))["texts"][0]
     user_data = await register_test_user()
     session_cookie = await get_session_cookie(user_data)
     # create new layer with made up owner ID
@@ -136,7 +134,7 @@ async def test_create_layer_with_forged_owner_id(
 async def test_get_layer(
     api_path, test_client: AsyncClient, insert_test_data, status_fail_msg
 ):
-    text_id = await insert_test_data("texts", "nodes", "layers")
+    text_id = (await insert_test_data("texts", "nodes", "layers"))["texts"][0]
     # get existing layer id
     endpoint = f"{api_path}/layers"
     resp = await test_client.get(endpoint, params={"textId": text_id})
@@ -165,7 +163,9 @@ async def test_access_private_layer(
     register_test_user,
     get_session_cookie,
 ):
-    text_id = await insert_test_data("texts", "nodes", "layers")
+    inserted_ids = await insert_test_data("texts", "nodes", "layers")
+    text_id = inserted_ids["texts"][0]
+    layer_id = inserted_ids["layers"][0]
     # get all accessible layers
     endpoint = f"{api_path}/layers"
     resp = await test_client.get(endpoint, params={"textId": text_id})
@@ -175,23 +175,32 @@ async def test_access_private_layer(
     # register test superuser
     user_data = await register_test_user(is_superuser=True)
     session_cookie = await get_session_cookie(user_data)
-    # get all accessible layers again
-    resp = await test_client.get(
-        endpoint, params={"textId": text_id}, cookies=session_cookie
+    # set layer to inactive
+    endpoint = f"{api_path}/layers/plaintext/{layer_id}"
+    resp = await test_client.patch(
+        endpoint, json={"public": False}, cookies=session_cookie
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert isinstance(resp.json(), dict)
+    assert resp.json()["public"] is False
+    # logout
+    resp = await test_client.post(f"{api_path}/auth/cookie/logout")
+    assert resp.status_code == 204, status_fail_msg(204, resp)
+    # get all accessible layers again, unauthorized
+    resp = await test_client.get(f"{api_path}/layers", params={"textId": text_id})
+    assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
-    assert len(resp.json()) > accessible_unauthorized  # this should be greater now
+    assert len(resp.json()) < accessible_unauthorized  # this should be less now
 
 
 @pytest.mark.anyio
 async def test_get_layers(
     api_path, test_client: AsyncClient, insert_test_data, status_fail_msg
 ):
-    text_id = await insert_test_data("texts", "nodes", "layers")
+    text_id = (await insert_test_data("texts", "nodes", "layers"))["texts"][0]
     endpoint = f"{api_path}/layers"
     resp = await test_client.get(
-        endpoint, params={"textId": text_id, "level": 0, "layerType": "plaintext"}
+        endpoint, params={"textId": text_id, "level": 1, "layerType": "plaintext"}
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)

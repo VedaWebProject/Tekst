@@ -146,7 +146,7 @@ async def test_insert_level(
     assert type(resp.json()) == list
     assert len(resp.json()) > 0
     text = resp.json()[0]
-    assert len(text["levels"]) == 3
+    assert len(text["levels"]) == 2
 
     # insert level
     resp = await test_client.post(
@@ -159,7 +159,7 @@ async def test_insert_level(
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert "id" in resp.json()
-    assert len(resp.json()["levels"]) == 4
+    assert len(resp.json()["levels"]) == 3
 
 
 @pytest.mark.anyio
@@ -172,7 +172,7 @@ async def test_upload_structure(
     register_test_user,
     get_session_cookie,
 ):
-    text_id = await insert_test_data("texts")
+    text_id = (await insert_test_data("texts"))["texts"][0]
 
     # create superuser
     superuser_data = await register_test_user(is_superuser=True)

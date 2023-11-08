@@ -1,21 +1,18 @@
-import json
-
 from pathlib import Path
-from typing import Callable
+from typing import Any, Callable
 
 import pytest
 import requests
 
 from asgi_lifespan import LifespanManager
+from bson import ObjectId, json_util
 from httpx import AsyncClient, Response
-from humps import decamelize
+from humps import camelize
 from tekst.app import app
 from tekst.auth import _create_user
 from tekst.config import TekstConfig, get_config
 from tekst.db import DatabaseClient
 from tekst.dependencies import get_db_client
-from tekst.layer_types import layer_type_manager
-from tekst.models.text import NodeDocument, TextDocument
 from tekst.models.user import UserCreate
 
 
@@ -42,21 +39,33 @@ def anyio_backend():
 
 
 @pytest.fixture
-def test_data(request) -> dict:
-    """Returns all shared test data"""
-    datadir = Path(request.config.rootdir) / "tests/data"
-    return decamelize(json.loads((datadir / "test-data.json").read_text()))
+def get_test_file_path(request) -> Callable[[str], Any]:
+    """Returns the absolute path to a file relative to tests/data"""
+
+    def _get_test_file_path(rel_path: str) -> Any:
+        datadir = Path(request.config.rootdir) / "tests/data"
+        return datadir / rel_path
+
+    return _get_test_file_path
 
 
 @pytest.fixture
-def get_test_file_path(request) -> Callable[[str], Path]:
-    """Returns all shared test data"""
+def get_test_data(request) -> Callable[[str], Any]:
+    """Returns the object representation of a JSON file relative to tests/data"""
 
-    def _get_test_file_path(filename: str) -> Path:
+    def _get_test_data(rel_path: str, for_http: bool = False) -> Any:
         datadir = Path(request.config.rootdir) / "tests/data"
-        return datadir / filename
+        data = json_util.loads((datadir / rel_path).read_text())
+        if for_http:
+            data = camelize(
+                [
+                    {k: str(v) if isinstance(v, ObjectId) else v for k, v in o.items()}
+                    for o in data
+                ]
+            )
+        return data
 
-    return _get_test_file_path
+    return _get_test_data
 
 
 # @pytest.fixture(scope="session")
@@ -102,29 +111,23 @@ async def reset_db(get_db_client_override, config):
 
 
 @pytest.fixture
-async def insert_test_data(test_app, reset_db, api_path, test_data) -> Callable:
+async def insert_test_data(config, reset_db, get_test_data) -> Callable:
     """
     Returns an asynchronous function to insert
     test data into their respective database collections
     """
 
-    async def _insert_test_data(*collections: str) -> str | None:
-        if "texts" in collections:
-            text = TextDocument(**test_data["texts"][0])
-            await text.create()
-        if "nodes" in collections:
-            for doc in test_data["nodes"]:
-                await NodeDocument(text_id=text.id, **doc).create()
-        if "layers" in collections:
-            for doc in test_data["layers"]:
-                layer_document_model = (
-                    layer_type_manager.get(doc["layer_type"])
-                    .get_layer_model()
-                    .get_document_model()
-                )
-                await layer_document_model(text_id=text.id, **doc).create()
-
-        return str(text.id) if text else None
+    async def _insert_test_data(*collections: str) -> dict[str, list[str]]:
+        db = get_db_client()[config.db_name]
+        ids = dict()
+        for collection in collections:
+            result = await db[collection].insert_many(
+                get_test_data(f"db/{collection}.json")
+            )
+            if not result.acknowledged:
+                raise Exception(f"Failed to insert test {collection}")
+            ids[collection] = [str(id_) for id_ in result.inserted_ids]
+        return ids
 
     return _insert_test_data
 

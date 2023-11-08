@@ -10,21 +10,23 @@ def test_basic_validation():
         assert "missing" in error.value
 
 
-def test_serialization(test_app, test_data):
-    text = TextCreate(**test_data["texts"][0])
+def test_serialization(test_app, get_test_data):
+    test_data = get_test_data("db/texts.json")
+    text = TextCreate(**test_data[0])
+    text.loc_delim = None
     assert text.model_dump().get("title")
     dummy_id = "6331b6e05c474b9f8f19330f"
     text = TextRead(
         id=dummy_id,
         loc_delim="---",
-        **test_data["texts"][0],
+        **text.model_dump(exclude_none=True),
     )
     assert "id" in text.model_dump()
     assert "loc_delim" in text.model_dump()
     text = TextRead(
         **{
             "id": dummy_id,
-            **test_data["texts"][0],
+            **test_data[0],
         }
     )
     assert str(text.id) == dummy_id

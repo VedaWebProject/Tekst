@@ -12,7 +12,7 @@ async def test_create_unit(
     register_test_user,
     get_session_cookie,
 ):
-    text_id = await insert_test_data("texts", "nodes", "layers")
+    text_id = (await insert_test_data("texts", "nodes", "layers"))["texts"][0]
     user_data = await register_test_user()
     session_cookie = await get_session_cookie(user_data)
 
