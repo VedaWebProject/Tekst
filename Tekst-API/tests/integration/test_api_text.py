@@ -5,9 +5,9 @@ from httpx import AsyncClient
 
 @pytest.mark.anyio
 async def test_get_texts(
-    api_path, test_client: AsyncClient, insert_test_data, status_fail_msg
+    api_path, test_client: AsyncClient, insert_sample_data, status_fail_msg
 ):
-    await insert_test_data("texts")
+    await insert_sample_data("texts")
     endpoint = f"{api_path}/texts"
     resp = await test_client.get(endpoint)
     assert resp.status_code == 200, status_fail_msg(200, resp)
@@ -85,12 +85,12 @@ async def test_create_text_unauthenticated(
 async def test_update_text(
     api_path,
     test_client: AsyncClient,
-    insert_test_data,
+    insert_sample_data,
     status_fail_msg,
     register_test_user,
     get_session_cookie,
 ):
-    await insert_test_data("texts")
+    await insert_sample_data("texts")
     # get text from db
     endpoint = f"{api_path}/texts"
     resp = await test_client.get(endpoint)
@@ -128,12 +128,12 @@ async def test_update_text(
 async def test_insert_level(
     api_path,
     test_client: AsyncClient,
-    insert_test_data,
+    insert_sample_data,
     status_fail_msg,
     register_test_user,
     get_session_cookie,
 ):
-    await insert_test_data("texts")
+    await insert_sample_data("texts")
 
     # create superuser
     superuser_data = await register_test_user(is_superuser=True)
@@ -166,20 +166,20 @@ async def test_insert_level(
 async def test_upload_structure(
     api_path,
     test_client: AsyncClient,
-    insert_test_data,
-    get_test_file_path,
+    insert_sample_data,
+    get_sample_data_path,
     status_fail_msg,
     register_test_user,
     get_session_cookie,
 ):
-    text_id = (await insert_test_data("texts"))["texts"][0]
+    text_id = (await insert_sample_data("texts"))["texts"][0]
 
     # create superuser
     superuser_data = await register_test_user(is_superuser=True)
     session_cookie = await get_session_cookie(superuser_data)
 
     # read structure file content
-    with open(get_test_file_path("structure.json"), "rb") as f:
+    with open(get_sample_data_path("structure/fdhdgg.json"), "rb") as f:
         # upload structure definition
         endpoint = f"{api_path}/texts/{text_id}/structure"
         resp = await test_client.post(

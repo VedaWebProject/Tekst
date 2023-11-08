@@ -44,6 +44,7 @@ tasks:
   run-tests:
     desc: Run complete test suite with pytest
     env:
+      TESTING: true
       TEKST_CUSTOM_ENV_FILE: .env.test
     cmds:
       - poetry run coverage run -m pytest {{.CLI_ARGS}}
@@ -52,6 +53,7 @@ tasks:
   tests:
     desc: Run test categories separately, start and stop services stack
     env:
+      TESTING: true
       TEKST_DEV_MODE: true
       TEKST_CUSTOM_ENV_FILE: .env.test
     cmds:

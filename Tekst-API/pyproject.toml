@@ -44,6 +44,7 @@ pytest-dotenv = "^0.5.2"
 httpx = "^0.24.0"
 asgi-lifespan = "^2.1.0"
 ruff = "^0.0.282"
+pytest-env = "^1.1.1"
 
 [tool.ruff]
 target-version = "py310"
@@ -71,6 +72,9 @@ env_files = [".env.dev", ".env.test"]
 filterwarnings = [
     'ignore:directory "/run/secrets" does not exist:UserWarning'
 ]
+
+[tool.pytest_env]
+TESTING = "true"
 
 [tool.coverage.run]
 source = ["tekst"]

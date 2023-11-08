@@ -39,23 +39,23 @@ def anyio_backend():
 
 
 @pytest.fixture
-def get_test_file_path(request) -> Callable[[str], Any]:
+def get_sample_data_path(request) -> Callable[[str], Path]:
     """Returns the absolute path to a file relative to tests/data"""
 
-    def _get_test_file_path(rel_path: str) -> Any:
-        datadir = Path(request.config.rootdir) / "tests/data"
+    def _get_sample_data_path(rel_path: str) -> Path:
+        datadir = Path(request.config.rootdir) / "tekst/sample_data"
         return datadir / rel_path
 
-    return _get_test_file_path
+    return _get_sample_data_path
 
 
 @pytest.fixture
-def get_test_data(request) -> Callable[[str], Any]:
+def get_sample_data(get_sample_data_path) -> Callable[[str], Any]:
     """Returns the object representation of a JSON file relative to tests/data"""
 
-    def _get_test_data(rel_path: str, for_http: bool = False) -> Any:
-        datadir = Path(request.config.rootdir) / "tests/data"
-        data = json_util.loads((datadir / rel_path).read_text())
+    def _get_sample_data(rel_path: str, for_http: bool = False) -> Any:
+        path = get_sample_data_path(rel_path)
+        data = json_util.loads(path.read_text())
         if for_http:
             data = camelize(
                 [
@@ -65,7 +65,7 @@ def get_test_data(request) -> Callable[[str], Any]:
             )
         return data
 
-    return _get_test_data
+    return _get_sample_data
 
 
 # @pytest.fixture(scope="session")
@@ -111,25 +111,25 @@ async def reset_db(get_db_client_override, config):
 
 
 @pytest.fixture
-async def insert_test_data(config, reset_db, get_test_data) -> Callable:
+async def insert_sample_data(config, reset_db, get_sample_data) -> Callable:
     """
     Returns an asynchronous function to insert
     test data into their respective database collections
     """
 
-    async def _insert_test_data(*collections: str) -> dict[str, list[str]]:
+    async def _insert_sample_data(*collections: str) -> dict[str, list[str]]:
         db = get_db_client()[config.db_name]
         ids = dict()
         for collection in collections:
             result = await db[collection].insert_many(
-                get_test_data(f"db/{collection}.json")
+                get_sample_data(f"db/{collection}.json")
             )
             if not result.acknowledged:
                 raise Exception(f"Failed to insert test {collection}")
             ids[collection] = [str(id_) for id_ in result.inserted_ids]
         return ids
 
-    return _insert_test_data
+    return _insert_sample_data
 
 
 @pytest.fixture

@@ -5,7 +5,7 @@ from tekst.dependencies import get_db, get_db_client
 from tekst.layer_types import init_layer_type_manager
 from tekst.logging import log, setup_logging
 from tekst.models.settings import PlatformSettingsDocument
-from tekst.sample_data import create_sample_texts
+from tekst.sample_data import insert_sample_data
 
 
 async def app_setup(cfg: TekstConfig):
@@ -25,6 +25,6 @@ async def app_setup(cfg: TekstConfig):
     else:
         log.warning("Platform settings already exist. Skipping settings creation.")
 
-    await create_sample_users()
-    await create_sample_texts()
-    await create_initial_superuser()
+    await create_sample_users()  # happens only when in DEV mode
+    await insert_sample_data()  # doesn't happen during test runs
+    await create_initial_superuser()  # happens only when not in DEV mode

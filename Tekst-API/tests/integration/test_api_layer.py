@@ -7,12 +7,12 @@ from httpx import AsyncClient
 async def test_create_layer(
     api_path,
     test_client: AsyncClient,
-    insert_test_data,
+    insert_sample_data,
     status_fail_msg,
     register_test_user,
     get_session_cookie,
 ):
-    text_id = (await insert_test_data("texts", "nodes"))["texts"][0]
+    text_id = (await insert_sample_data("texts", "nodes"))["texts"][0]
     user_data = await register_test_user()
     session_cookie = await get_session_cookie(user_data)
     endpoint = f"{api_path}/layers/plaintext"
@@ -37,12 +37,12 @@ async def test_create_layer(
 async def test_create_layer_invalid(
     api_path,
     test_client: AsyncClient,
-    insert_test_data,
+    insert_sample_data,
     status_fail_msg,
     register_test_user,
     get_session_cookie,
 ):
-    await insert_test_data("texts", "nodes")
+    await insert_sample_data("texts", "nodes")
     user_data = await register_test_user()
     session_cookie = await get_session_cookie(user_data)
 
@@ -71,12 +71,12 @@ async def test_create_layer_invalid(
 async def test_update_layer(
     api_path,
     test_client: AsyncClient,
-    insert_test_data,
+    insert_sample_data,
     status_fail_msg,
     register_test_user,
     get_session_cookie,
 ):
-    text_id = (await insert_test_data("texts", "nodes", "layers"))["texts"][0]
+    text_id = (await insert_sample_data("texts", "nodes", "layers"))["texts"][0]
     user_data = await register_test_user()
     session_cookie = await get_session_cookie(user_data)
     # create new layer (because only owner can update(write))
@@ -108,12 +108,12 @@ async def test_update_layer(
 async def test_create_layer_with_forged_owner_id(
     api_path,
     test_client: AsyncClient,
-    insert_test_data,
+    insert_sample_data,
     status_fail_msg,
     register_test_user,
     get_session_cookie,
 ):
-    text_id = (await insert_test_data("texts", "nodes"))["texts"][0]
+    text_id = (await insert_sample_data("texts", "nodes"))["texts"][0]
     user_data = await register_test_user()
     session_cookie = await get_session_cookie(user_data)
     # create new layer with made up owner ID
@@ -132,9 +132,9 @@ async def test_create_layer_with_forged_owner_id(
 
 @pytest.mark.anyio
 async def test_get_layer(
-    api_path, test_client: AsyncClient, insert_test_data, status_fail_msg
+    api_path, test_client: AsyncClient, insert_sample_data, status_fail_msg
 ):
-    text_id = (await insert_test_data("texts", "nodes", "layers"))["texts"][0]
+    text_id = (await insert_sample_data("texts", "nodes", "layers"))["texts"][0]
     # get existing layer id
     endpoint = f"{api_path}/layers"
     resp = await test_client.get(endpoint, params={"textId": text_id})
@@ -158,12 +158,12 @@ async def test_get_layer(
 async def test_access_private_layer(
     api_path,
     test_client: AsyncClient,
-    insert_test_data,
+    insert_sample_data,
     status_fail_msg,
     register_test_user,
     get_session_cookie,
 ):
-    inserted_ids = await insert_test_data("texts", "nodes", "layers")
+    inserted_ids = await insert_sample_data("texts", "nodes", "layers")
     text_id = inserted_ids["texts"][0]
     layer_id = inserted_ids["layers"][0]
     # get all accessible layers
@@ -195,9 +195,9 @@ async def test_access_private_layer(
 
 @pytest.mark.anyio
 async def test_get_layers(
-    api_path, test_client: AsyncClient, insert_test_data, status_fail_msg
+    api_path, test_client: AsyncClient, insert_sample_data, status_fail_msg
 ):
-    text_id = (await insert_test_data("texts", "nodes", "layers"))["texts"][0]
+    text_id = (await insert_sample_data("texts", "nodes", "layers"))["texts"][0]
     endpoint = f"{api_path}/layers"
     resp = await test_client.get(
         endpoint, params={"textId": text_id, "level": 1, "layerType": "plaintext"}
@@ -224,9 +224,9 @@ async def test_get_layers(
 
 # @pytest.mark.anyio
 # async def test_get_layer_template(
-#     api_path, test_client: AsyncClient, insert_test_data
+#     api_path, test_client: AsyncClient, insert_sample_data
 # ):
-#     await insert_test_data("texts", "nodes", "layers")
+#     await insert_sample_data("texts", "nodes", "layers")
 #     # get all layers for text
 #     endpoint = f"{api_path}/layers"
 #     resp = await test_client.get(endpoint, params={"textSlug": "rigveda"})
@@ -247,9 +247,9 @@ async def test_get_layers(
 
 # @pytest.mark.anyio
 # async def test_get_layer_template_invalid_id(
-#     api_path, test_client: AsyncClient, insert_test_data
+#     api_path, test_client: AsyncClient, insert_sample_data
 # ):
-#     await insert_test_data("texts", "nodes", "layers")
+#     await insert_sample_data("texts", "nodes", "layers")
 #     endpoint = f"{api_path}/layers/template"
 #     resp = await test_client.get(endpoint, params={"layerId": "foo"})
 #     assert resp.status_code == 400, status_fail_msg(400, resp)

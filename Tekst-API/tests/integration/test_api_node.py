@@ -7,12 +7,12 @@ from httpx import AsyncClient
 async def test_create_node(
     api_path,
     test_client: AsyncClient,
-    insert_test_data,
+    insert_sample_data,
     status_fail_msg,
     register_test_user,
     get_session_cookie,
 ):
-    text_id = (await insert_test_data("texts"))["texts"][0]
+    text_id = (await insert_sample_data("texts"))["texts"][0]
     endpoint = f"{api_path}/nodes"
     nodes = [
         {"textId": text_id, "label": f"Node {n}", "level": 0, "position": n}
@@ -32,15 +32,15 @@ async def test_create_node(
 async def test_child_node_io(
     api_path,
     test_client: AsyncClient,
-    get_test_data,
-    insert_test_data,
+    get_sample_data,
+    insert_sample_data,
     status_fail_msg,
     register_test_user,
     get_session_cookie,
 ):
-    text_id = (await insert_test_data("texts"))["texts"][0]
+    text_id = (await insert_sample_data("texts"))["texts"][0]
     endpoint = f"{api_path}/nodes"
-    node = get_test_data("db/nodes.json", for_http=True)[0]
+    node = get_sample_data("db/nodes.json", for_http=True)[0]
 
     # create superuser
     superuser_data = await register_test_user(is_superuser=True)
@@ -98,15 +98,15 @@ async def test_child_node_io(
 async def test_create_node_invalid_text_fail(
     api_path,
     test_client: AsyncClient,
-    get_test_data,
-    insert_test_data,
+    get_sample_data,
+    insert_sample_data,
     status_fail_msg,
     register_test_user,
     get_session_cookie,
 ):
-    await insert_test_data("texts")
+    await insert_sample_data("texts")
     endpoint = f"{api_path}/nodes"
-    node = get_test_data("db/nodes.json", for_http=True)[0]
+    node = get_sample_data("db/nodes.json", for_http=True)[0]
     node["textId"] = "5ed7cfba5e32eb7759a17565"
 
     # create superuser
@@ -119,11 +119,15 @@ async def test_create_node_invalid_text_fail(
 
 @pytest.mark.anyio
 async def test_get_nodes(
-    api_path, test_client: AsyncClient, get_test_data, insert_test_data, status_fail_msg
+    api_path,
+    test_client: AsyncClient,
+    get_sample_data,
+    insert_sample_data,
+    status_fail_msg,
 ):
-    text_id = (await insert_test_data("texts", "nodes"))["texts"][0]
+    text_id = (await insert_sample_data("texts", "nodes"))["texts"][0]
     endpoint = f"{api_path}/nodes"
-    nodes = get_test_data("db/nodes.json", for_http=True)
+    nodes = get_sample_data("db/nodes.json", for_http=True)
 
     # test results length limit
     resp = await test_client.get(
@@ -175,12 +179,12 @@ async def test_get_nodes(
 async def test_update_node(
     api_path,
     test_client: AsyncClient,
-    insert_test_data,
+    insert_sample_data,
     status_fail_msg,
     register_test_user,
     get_session_cookie,
 ):
-    text_id = (await insert_test_data("texts", "nodes"))["texts"][0]
+    text_id = (await insert_sample_data("texts", "nodes"))["texts"][0]
     # get node from db
     endpoint = f"{api_path}/nodes"
     resp = await test_client.get(endpoint, params={"textId": text_id, "level": 0})
@@ -214,12 +218,12 @@ async def test_update_node(
 async def test_delete_node(
     api_path,
     test_client: AsyncClient,
-    insert_test_data,
+    insert_sample_data,
     status_fail_msg,
     register_test_user,
     get_session_cookie,
 ):
-    text_id = (await insert_test_data("texts", "nodes", "layers"))["texts"][0]
+    text_id = (await insert_sample_data("texts", "nodes", "layers"))["texts"][0]
 
     # get node from db
     endpoint = f"{api_path}/nodes"
@@ -270,12 +274,12 @@ async def test_delete_node(
 async def test_move_node(
     api_path,
     test_client: AsyncClient,
-    insert_test_data,
+    insert_sample_data,
     status_fail_msg,
     register_test_user,
     get_session_cookie,
 ):
-    text_id = (await insert_test_data("texts", "nodes", "layers"))["texts"][0]
+    text_id = (await insert_sample_data("texts", "nodes", "layers"))["texts"][0]
 
     # create superuser
     superuser_data = await register_test_user(is_superuser=True)

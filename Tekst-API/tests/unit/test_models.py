@@ -10,8 +10,8 @@ def test_basic_validation():
         assert "missing" in error.value
 
 
-def test_serialization(test_app, get_test_data):
-    test_data = get_test_data("db/texts.json")
+def test_serialization(test_app, get_sample_data):
+    test_data = get_sample_data("db/texts.json")
     text = TextCreate(**test_data[0])
     text.loc_delim = None
     assert text.model_dump().get("title")
