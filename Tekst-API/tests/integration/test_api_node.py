@@ -13,7 +13,6 @@ async def test_create_node(
     get_session_cookie,
 ):
     text_id = (await insert_sample_data("texts"))["texts"][0]
-    endpoint = f"{api_path}/nodes"
     nodes = [
         {"textId": text_id, "label": f"Node {n}", "level": 0, "position": n}
         for n in range(10)
@@ -24,7 +23,7 @@ async def test_create_node(
     session_cookie = await get_session_cookie(superuser_data)
 
     for node in nodes:
-        resp = await test_client.post(endpoint, json=node, cookies=session_cookie)
+        resp = await test_client.post("/nodes", json=node, cookies=session_cookie)
         assert resp.status_code == 201, status_fail_msg(201, resp)
 
 
@@ -39,7 +38,6 @@ async def test_child_node_io(
     get_session_cookie,
 ):
     text_id = (await insert_sample_data("texts"))["texts"][0]
-    endpoint = f"{api_path}/nodes"
     node = get_sample_data("db/nodes.json", for_http=True)[0]
 
     # create superuser
@@ -47,7 +45,7 @@ async def test_child_node_io(
     session_cookie = await get_session_cookie(superuser_data)
 
     # create parent
-    resp = await test_client.post(endpoint, json=node, cookies=session_cookie)
+    resp = await test_client.post("/nodes", json=node, cookies=session_cookie)
     assert resp.status_code == 201, status_fail_msg(201, resp)
     parent = resp.json()
     assert parent["id"]
@@ -57,7 +55,7 @@ async def test_child_node_io(
     child["parentId"] = parent["id"]
     child["level"] = parent["level"] + 1
     child["position"] = 0
-    resp = await test_client.post(endpoint, json=child, cookies=session_cookie)
+    resp = await test_client.post("/nodes", json=child, cookies=session_cookie)
     assert resp.status_code == 201, status_fail_msg(201, resp)
     child = resp.json()
     assert "id" in resp.json()
@@ -66,7 +64,7 @@ async def test_child_node_io(
 
     # find children by parent ID
     resp = await test_client.get(
-        endpoint, params={"textId": parent["textId"], "parentId": parent["id"]}
+        "/nodes", params={"textId": parent["textId"], "parentId": parent["id"]}
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert type(resp.json()) is list
@@ -75,7 +73,7 @@ async def test_child_node_io(
 
     # find children by parent ID using dedicated children endpoint
     resp = await test_client.get(
-        f"{api_path}/nodes/children",
+        "/nodes/children",
         params={"parentId": child["parentId"]},
         cookies=session_cookie,
     )
@@ -86,7 +84,7 @@ async def test_child_node_io(
 
     # find children by text ID and null parent ID using dedicated children endpoint
     resp = await test_client.get(
-        f"{api_path}/nodes/children", params={"textId": text_id}, cookies=session_cookie
+        "/nodes/children", params={"textId": text_id}, cookies=session_cookie
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert type(resp.json()) is list
@@ -105,7 +103,6 @@ async def test_create_node_invalid_text_fail(
     get_session_cookie,
 ):
     await insert_sample_data("texts")
-    endpoint = f"{api_path}/nodes"
     node = get_sample_data("db/nodes.json", for_http=True)[0]
     node["textId"] = "5ed7cfba5e32eb7759a17565"
 
@@ -113,7 +110,7 @@ async def test_create_node_invalid_text_fail(
     superuser_data = await register_test_user(is_superuser=True)
     session_cookie = await get_session_cookie(superuser_data)
 
-    resp = await test_client.post(endpoint, json=node, cookies=session_cookie)
+    resp = await test_client.post("/nodes", json=node, cookies=session_cookie)
     assert resp.status_code == 400, status_fail_msg(400, resp)
 
 
@@ -126,12 +123,11 @@ async def test_get_nodes(
     status_fail_msg,
 ):
     text_id = (await insert_sample_data("texts", "nodes"))["texts"][0]
-    endpoint = f"{api_path}/nodes"
     nodes = get_sample_data("db/nodes.json", for_http=True)
 
     # test results length limit
     resp = await test_client.get(
-        endpoint, params={"textId": text_id, "level": 0, "limit": 2}
+        "/nodes", params={"textId": text_id, "level": 0, "limit": 2}
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert type(resp.json()) is list
@@ -139,14 +135,14 @@ async def test_get_nodes(
 
     # test empty results with status 200
     resp = await test_client.get(
-        endpoint, params={"textId": "5eb7cfb05e32e07750a1756a", "level": 0}
+        "/nodes", params={"textId": "5eb7cfb05e32e07750a1756a", "level": 0}
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert type(resp.json()) is list
     assert len(resp.json()) == 0
 
     # test results contain all nodes of level 0
-    resp = await test_client.get(endpoint, params={"textId": text_id, "level": 0})
+    resp = await test_client.get("/nodes", params={"textId": text_id, "level": 0})
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert type(resp.json()) is list
     assert len(resp.json()) == len(
@@ -160,18 +156,18 @@ async def test_get_nodes(
 
     # test specific position
     resp = await test_client.get(
-        endpoint, params={"textId": text_id, "level": 0, "position": 0}
+        "/nodes", params={"textId": text_id, "level": 0, "position": 0}
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert type(resp.json()) is list
     assert len(resp.json()) == 1
 
     # test invalid request
-    resp = await test_client.get(endpoint, params={"textId": text_id})
+    resp = await test_client.get("/nodes", params={"textId": text_id})
     assert resp.status_code == 400, status_fail_msg(400, resp)
 
     # test get specific node by ID
-    resp = await test_client.get(f"{endpoint}/{node_id}")
+    resp = await test_client.get(f"/nodes/{node_id}")
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert "id" in resp.json()
     assert resp.json()["id"] == node_id
@@ -188,8 +184,7 @@ async def test_update_node(
 ):
     text_id = (await insert_sample_data("texts", "nodes"))["texts"][0]
     # get node from db
-    endpoint = f"{api_path}/nodes"
-    resp = await test_client.get(endpoint, params={"textId": text_id, "level": 0})
+    resp = await test_client.get("/nodes", params={"textId": text_id, "level": 0})
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert type(resp.json()) == list
     assert len(resp.json()) > 0
@@ -198,21 +193,23 @@ async def test_update_node(
     superuser_data = await register_test_user(is_superuser=True)
     session_cookie = await get_session_cookie(superuser_data)
     # update node
-    endpoint = f"{api_path}/nodes/{node['id']}"
     node_update = {"label": "A fresh label"}
-    resp = await test_client.patch(endpoint, json=node_update, cookies=session_cookie)
+    resp = await test_client.patch(
+        f"/nodes/{node['id']}", json=node_update, cookies=session_cookie
+    )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert "id" in resp.json()
     assert resp.json()["id"] == str(node["id"])
     assert "label" in resp.json()
     assert resp.json()["label"] == "A fresh label"
     # update unchanged node
-    resp = await test_client.patch(endpoint, json=node_update, cookies=session_cookie)
+    resp = await test_client.patch(
+        f"/nodes/{node['id']}", json=node_update, cookies=session_cookie
+    )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     # update invalid node
     node_update = {"label": "Brand new label"}
-    endpoint = f"{api_path}/nodes/637b9ad396d541a505e5439b"
-    resp = await test_client.patch(endpoint, json=node_update)
+    resp = await test_client.patch("/nodes/637b9ad396d541a505e5439b", json=node_update)
     assert resp.status_code == 400, status_fail_msg(400, resp, cookies=session_cookie)
 
 
@@ -228,9 +225,8 @@ async def test_delete_node(
     text_id = (await insert_sample_data("texts", "nodes", "layers"))["texts"][0]
 
     # get node from db
-    endpoint = f"{api_path}/nodes"
     resp = await test_client.get(
-        endpoint, params={"textId": text_id, "level": 0, "position": 0}
+        "/nodes", params={"textId": text_id, "level": 0, "position": 0}
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert type(resp.json()) == list
@@ -242,22 +238,22 @@ async def test_delete_node(
     session_cookie = await get_session_cookie(superuser_data)
 
     # get existing layer
-    endpoint = f"{api_path}/layers"
-    resp = await test_client.get(endpoint, params={"textId": text_id})
+    resp = await test_client.get("/layers", params={"textId": text_id})
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) > 0
     layer = resp.json()[0]
 
     # create plaintext layer unit
-    endpoint = f"{api_path}/units/plaintext"
     payload = {
         "layerId": layer["id"],
         "nodeId": node["id"],
         "text": "Ein Raabe geht im Feld spazieren.",
         "meta": {"foo": "bar"},
     }
-    resp = await test_client.post(endpoint, json=payload, cookies=session_cookie)
+    resp = await test_client.post(
+        "/units/plaintext", json=payload, cookies=session_cookie
+    )
     assert resp.status_code == 201, status_fail_msg(201, resp)
     assert type(resp.json()) == dict
     assert resp.json()["text"] == "Ein Raabe geht im Feld spazieren."
@@ -265,8 +261,7 @@ async def test_delete_node(
     assert "id" in resp.json()
 
     # delete node
-    endpoint = f"{api_path}/nodes/{node['id']}"
-    resp = await test_client.delete(endpoint, cookies=session_cookie)
+    resp = await test_client.delete(f"/nodes/{node['id']}", cookies=session_cookie)
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert resp.json().get("nodes", None) > 1
     assert resp.json().get("units", None) == 1
@@ -288,9 +283,8 @@ async def test_move_node(
     session_cookie = await get_session_cookie(superuser_data)
 
     # get node from db
-    endpoint = f"{api_path}/nodes"
     resp = await test_client.get(
-        endpoint,
+        "/nodes",
         params={"textId": text_id, "level": 0, "position": 0},
         cookies=session_cookie,
     )
@@ -300,9 +294,8 @@ async def test_move_node(
     node = resp.json()[0]
 
     # move node
-    endpoint = f"{api_path}/nodes/{node['id']}/move"
     resp = await test_client.post(
-        endpoint,
+        f"/nodes/{node['id']}/move",
         json={"position": 1, "after": True, "parentId": None},
         cookies=session_cookie,
     )

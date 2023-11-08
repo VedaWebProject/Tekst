@@ -98,9 +98,11 @@ async def test_app(config, get_db_client_override):
 
 
 @pytest.fixture
-async def test_client(test_app) -> AsyncClient:
+async def test_client(test_app, config) -> AsyncClient:
     """Returns an asynchronous test client for API testing"""
-    async with AsyncClient(app=test_app, base_url="http://test") as client:
+    async with AsyncClient(
+        app=test_app, base_url=f"{config.server_url}{config.api_path}"
+    ) as client:
         yield client
 
 
@@ -164,10 +166,9 @@ async def get_session_cookie(
     config, test_client, api_path, status_fail_msg
 ) -> Callable:
     async def _get_session_cookie(user_data: dict) -> dict:
-        endpoint = f"{api_path}/auth/cookie/login"
         payload = {"username": user_data["email"], "password": user_data["password"]}
         resp = await test_client.post(
-            endpoint,
+            "/auth/cookie/login",
             data=payload,
         )
         assert resp.status_code == 204, status_fail_msg(204, resp)
