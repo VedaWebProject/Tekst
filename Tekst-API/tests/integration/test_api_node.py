@@ -149,7 +149,9 @@ async def test_get_nodes(
     resp = await test_client.get(endpoint, params={"textId": text_id, "level": 0})
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert type(resp.json()) is list
-    assert len(resp.json()) == len([n for n in nodes if n["level"] == 0])
+    assert len(resp.json()) == len(
+        [n for n in nodes if n["textId"] == text_id and n["level"] == 0]
+    )
 
     # test returned nodes have IDs
     assert "id" in resp.json()[0]
