@@ -101,11 +101,11 @@ tasks:
   clean:
     desc: Cleanup of generated files (won't work on Windows)
     cmds:
-      - cmd: ruff clean
+      - cmd: poetry run ruff clean
       - cmd: shopt -s globstar
       - cmd: |
           rm -rf \
-            **/__pycache__ \
+            */**/__pycache__ \
             .pytest_cache \
             .coverage \
             .venv/ \
