@@ -1,7 +1,6 @@
 # Tekst API
 
-[![tests](https://github.com/VedaWebProject/Tekst-API/actions/workflows/tests.yml/badge.svg)](https://github.com/VedaWebProject/Tekst-API/actions/workflows/tests.yml)
-[![style checks](https://github.com/VedaWebProject/Tekst-API/actions/workflows/style.yml/badge.svg)](https://github.com/VedaWebProject/Tekst-API/actions/workflows/style.yml)
+![GitHub Workflow Status (tests)](https://img.shields.io/github/actions/workflow/status/VedaWebProject/Tekst/server-tests.yml?label=server%20tests)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
 This project holds the codebase for the **server** part of the Tekst platform.
