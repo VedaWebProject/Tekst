@@ -24,6 +24,7 @@ services:
     profiles:
       - dev
       - test
+    command: mongod --setParameter diagnosticDataCollectionEnabled=false
 
   mongo-express:
     image: mongo-express:1.0.0-alpha.4

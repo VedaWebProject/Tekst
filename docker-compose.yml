@@ -61,6 +61,7 @@ services:
     secrets:
       - tekst_db_user
       - tekst_db_password
+    command: mongod --setParameter diagnosticDataCollectionEnabled=false
 
 volumes:
   mongo_configdb:
