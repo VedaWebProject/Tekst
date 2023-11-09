@@ -47,7 +47,7 @@ def _get_email_templates(
             path = str(_TEMPLATES_DIR / "enUS" / f"{template_id.value}.{template_type}")
         if not exists(path):
             raise FileNotFoundError(f"{path} does not exist.")
-        with open(path, "r") as fp:
+        with open(path) as fp:
             templates[template_type] = fp.read()
     return templates
 

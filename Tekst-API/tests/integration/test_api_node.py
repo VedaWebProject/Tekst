@@ -67,7 +67,7 @@ async def test_child_node_io(
         "/nodes", params={"textId": parent["textId"], "parentId": parent["id"]}
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
-    assert type(resp.json()) is list
+    assert isinstance(resp.json(), list)
     assert len(resp.json()) == 1
     assert resp.json()[0]["id"] == str(child["id"])
 
@@ -78,7 +78,7 @@ async def test_child_node_io(
         cookies=session_cookie,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
-    assert type(resp.json()) is list
+    assert isinstance(resp.json(), list)
     assert len(resp.json()) == 1
     assert resp.json()[0]["id"] == str(child["id"])
 
@@ -87,7 +87,7 @@ async def test_child_node_io(
         "/nodes/children", params={"textId": text_id}, cookies=session_cookie
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
-    assert type(resp.json()) is list
+    assert isinstance(resp.json(), list)
     assert len(resp.json()) == 1
     assert resp.json()[0]["id"] == str(parent["id"])
 
@@ -130,7 +130,7 @@ async def test_get_nodes(
         "/nodes", params={"textId": text_id, "level": 0, "limit": 2}
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
-    assert type(resp.json()) is list
+    assert isinstance(resp.json(), list)
     assert len(resp.json()) == 2
 
     # test empty results with status 200
@@ -138,13 +138,13 @@ async def test_get_nodes(
         "/nodes", params={"textId": "5eb7cfb05e32e07750a1756a", "level": 0}
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
-    assert type(resp.json()) is list
+    assert isinstance(resp.json(), list)
     assert len(resp.json()) == 0
 
     # test results contain all nodes of level 0
     resp = await test_client.get("/nodes", params={"textId": text_id, "level": 0})
     assert resp.status_code == 200, status_fail_msg(200, resp)
-    assert type(resp.json()) is list
+    assert isinstance(resp.json(), list)
     assert len(resp.json()) == len(
         [n for n in nodes if n["textId"] == text_id and n["level"] == 0]
     )
@@ -159,7 +159,7 @@ async def test_get_nodes(
         "/nodes", params={"textId": text_id, "level": 0, "position": 0}
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
-    assert type(resp.json()) is list
+    assert isinstance(resp.json(), list)
     assert len(resp.json()) == 1
 
     # test invalid request
@@ -186,7 +186,7 @@ async def test_update_node(
     # get node from db
     resp = await test_client.get("/nodes", params={"textId": text_id, "level": 0})
     assert resp.status_code == 200, status_fail_msg(200, resp)
-    assert type(resp.json()) == list
+    assert isinstance(resp.json(), list)
     assert len(resp.json()) > 0
     node = resp.json()[0]
     # create superuser
@@ -229,7 +229,7 @@ async def test_delete_node(
         "/nodes", params={"textId": text_id, "level": 0, "position": 0}
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
-    assert type(resp.json()) == list
+    assert isinstance(resp.json(), list)
     assert len(resp.json()) > 0
     node = resp.json()[0]
 
@@ -255,7 +255,7 @@ async def test_delete_node(
         "/units/plaintext", json=payload, cookies=session_cookie
     )
     assert resp.status_code == 201, status_fail_msg(201, resp)
-    assert type(resp.json()) == dict
+    assert isinstance(resp.json(), dict)
     assert resp.json()["text"] == "Ein Raabe geht im Feld spazieren."
     assert resp.json()["meta"]["foo"] == "bar"
     assert "id" in resp.json()
@@ -289,7 +289,7 @@ async def test_move_node(
         cookies=session_cookie,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
-    assert type(resp.json()) == list
+    assert isinstance(resp.json(), list)
     assert len(resp.json()) > 0
     node = resp.json()[0]
 
@@ -300,5 +300,5 @@ async def test_move_node(
         cookies=session_cookie,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
-    assert type(resp.json()) == dict
+    assert isinstance(resp.json(), dict)
     assert resp.json()["position"] == 1

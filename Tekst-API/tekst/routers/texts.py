@@ -1,6 +1,6 @@
 from copy import deepcopy
 from pathlib import Path as SysPath
-from typing import Annotated, List
+from typing import Annotated
 
 from beanie import PydanticObjectId
 from beanie.operators import In, Or, Set, Unset
@@ -233,7 +233,7 @@ async def insert_level(
         Path(ge=0, lt=32, description="Index to insert the level at"),
     ],
     translations: Annotated[
-        List[StructureLevelTranslation],
+        list[StructureLevelTranslation],
         Body(min_length=1, description="Label translations for this level"),
     ],
 ) -> TextRead:

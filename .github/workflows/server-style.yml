@@ -38,4 +38,4 @@ jobs:
       run: poetry run ruff check . --extend-select N
     - name: Check code formatting
       if: always()
-      run: poetry run black . --check
+      run: poetry run ruff format . --check

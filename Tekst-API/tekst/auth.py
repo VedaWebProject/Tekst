@@ -1,7 +1,7 @@
 import contextlib
 import re
 
-from typing import Annotated, Any, Dict
+from typing import Annotated, Any
 
 import fastapi_users.models as fapi_users_models
 
@@ -73,7 +73,7 @@ _bearer_transport = BearerTransport(tokenUrl="auth/jwt/login")
 class CustomBeanieUserDatabase(BeanieUserDatabase):
     # This class is necessary to make our model logic work with FastAPI-Users :(
 
-    async def create(self, create_dict: Dict[str, Any]) -> UP_BEANIE:
+    async def create(self, create_dict: dict[str, Any]) -> UP_BEANIE:
         """Create a user."""
         return await super().create(decamelize(create_dict))
 
@@ -368,7 +368,7 @@ async def _create_user(user: UserCreate) -> UserRead:
     get_user_db_context = contextlib.asynccontextmanager(get_user_db)
     get_user_manager_context = contextlib.asynccontextmanager(get_user_manager)
     try:
-        async with get_user_db_context() as user_db:
+        async with get_user_db_context() as user_db:  # noqa: SIM117
             async with get_user_manager_context(user_db) as user_manager:
                 return await user_manager.create(user, safe=False)
     except UserAlreadyExists:

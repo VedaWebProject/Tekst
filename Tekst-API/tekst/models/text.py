@@ -1,4 +1,4 @@
-from typing import Annotated, List
+from typing import Annotated
 
 from beanie import PydanticObjectId
 from pydantic import (
@@ -29,7 +29,7 @@ class StructureLevelTranslation(TypedDict):
 
 
 StructureLevelTranslations = Annotated[
-    List[StructureLevelTranslation], Field(min_length=1)
+    list[StructureLevelTranslation], Field(min_length=1)
 ]
 
 AccentColor = Annotated[
@@ -179,7 +179,7 @@ NodeUpdate = Node.get_update_model()
 
 class InsertLevelRequest(ModelBase):
     translations: Annotated[
-        List[StructureLevelTranslation], Field(min_length=1)
+        list[StructureLevelTranslation], Field(min_length=1)
     ] = Field(..., description="Translation(s) for the label of the level to insert")
 
 

@@ -10,13 +10,13 @@ async def test_get_texts(
     await insert_sample_data("texts")
     resp = await test_client.get("/texts")
     assert resp.status_code == 200, status_fail_msg(200, resp)
-    assert type(resp.json()) == list
+    assert isinstance(resp.json(), list)
     assert len(resp.json()) > 0
     text_id = resp.json()[0]["id"]
     # get one by specific id
     resp = await test_client.get(f"/texts/{text_id}")
     assert resp.status_code == 200, status_fail_msg(200, resp)
-    assert type(resp.json()) == dict
+    assert isinstance(resp.json(), dict)
     assert resp.json()["id"] == text_id
     # get one by non-existent id
     resp = await test_client.get("/texts/637b9ad396d541a505e5439b")
@@ -90,7 +90,7 @@ async def test_update_text(
     # get text from db
     resp = await test_client.get("/texts")
     assert resp.status_code == 200, status_fail_msg(200, resp)
-    assert type(resp.json()) == list
+    assert isinstance(resp.json(), list)
     assert len(resp.json()) > 0
     text = resp.json()[0]
     # update text unauthenticated
@@ -141,7 +141,7 @@ async def test_insert_level(
     # get text from db
     resp = await test_client.get("/texts")
     assert resp.status_code == 200, status_fail_msg(200, resp)
-    assert type(resp.json()) == list
+    assert isinstance(resp.json(), list)
     assert len(resp.json()) > 0
     text = resp.json()[0]
     assert len(text["levels"]) == 2

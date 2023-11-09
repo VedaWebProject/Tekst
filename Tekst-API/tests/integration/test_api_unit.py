@@ -38,7 +38,7 @@ async def test_create_unit(
         "/nodes", params={"textId": text_id, "level": 0}, cookies=session_cookie
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
-    assert type(resp.json()) == list
+    assert isinstance(resp.json(), list)
     assert len(resp.json()) > 0
     assert "id" in resp.json()[0]
     node_id = resp.json()[0]["id"]
@@ -54,7 +54,7 @@ async def test_create_unit(
         "/units/plaintext", json=payload, cookies=session_cookie
     )
     assert resp.status_code == 201, status_fail_msg(201, resp)
-    assert type(resp.json()) == dict
+    assert isinstance(resp.json(), dict)
     assert resp.json()["text"] == "Ein Raabe geht im Feld spazieren."
     assert resp.json()["meta"]["foo"] == "bar"
     assert "id" in resp.json()
@@ -69,7 +69,7 @@ async def test_create_unit(
     # get unit
     resp = await test_client.get(f"/units/plaintext/{unit_id}", cookies=session_cookie)
     assert resp.status_code == 200, status_fail_msg(200, resp)
-    assert type(resp.json()) == dict
+    assert isinstance(resp.json(), dict)
     assert "id" in resp.json()
     assert resp.json()["text"] == "Ein Raabe geht im Feld spazieren."
     assert resp.json()["meta"]["foo"] == "bar"
@@ -85,7 +85,7 @@ async def test_create_unit(
         f"/units/plaintext/{unit_id}", json={"text": "FOO BAR"}, cookies=session_cookie
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
-    assert type(resp.json()) == dict
+    assert isinstance(resp.json(), dict)
     assert "id" in resp.json()
     assert resp.json()["id"] == unit_id
     assert resp.json()["text"] == "FOO BAR"
@@ -103,6 +103,5 @@ async def test_create_unit(
         "/units/", params={"limit": 100}, cookies=session_cookie
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
-    units = resp.json()
-    assert type(units) == list
-    assert len(units) > 0
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) > 0

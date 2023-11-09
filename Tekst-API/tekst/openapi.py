@@ -67,7 +67,7 @@ async def generate_openapi_schema(
 
     from tekst.app import app
 
-    async with LifespanManager(app):
+    async with LifespanManager(app):  # noqa: SIM117
         async with AsyncClient(app=app, base_url="http://test") as client:
             resp = await client.get(f"{cfg.doc_openapi_url}")
             if resp.status_code != 200:

@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Literal
+from typing import Annotated, Literal
 
 from beanie import Document, PydanticObjectId
 from fastapi_users import (
@@ -11,7 +11,6 @@ from fastapi_users_db_beanie import (
 from humps import camelize
 from pydantic import Field, StringConstraints
 from pymongo import IndexModel
-from typing_extensions import Annotated
 
 from tekst.config import TekstConfig, get_config
 from tekst.models.common import Locale, ModelBase, ModelFactoryMixin
@@ -31,7 +30,7 @@ PublicUserField = Literal[
     tuple(
         [
             camelize(field)
-            for field in UserReadPublic.model_fields.keys()
+            for field in UserReadPublic.model_fields
             if field != "username"
         ]
     )

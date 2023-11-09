@@ -1,5 +1,8 @@
+import contextlib
+
+from collections.abc import Callable
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
 
 import pytest
 import requests
@@ -182,10 +185,8 @@ async def get_session_cookie(
 def status_fail_msg() -> Callable:
     def _status_fail_msg(expected_status: int, response: Response) -> tuple[bool, str]:
         resp_json = "No JSON response data."
-        try:
+        with contextlib.suppress(Exception):
             resp_json = response.json()
-        except Exception:
-            pass
         return (
             f"HTTP {response.status_code} (expected: {expected_status})"
             f" -- {resp_json}"

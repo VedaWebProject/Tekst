@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any, Dict, Literal
+from typing import Any, Dict, Literal  # noqa: UP035
 
 from beanie import (
     Document,
@@ -10,7 +10,7 @@ from pydantic import BaseModel, ConfigDict, create_model
 
 
 # type alias for a flat dict of arbitrary metadata
-Metadata = Dict[str, str]
+Metadata = Dict[str, str]  # noqa: UP006
 
 # type alias for available locale identifiers
 Locale = Literal["deDE", "enUS"]

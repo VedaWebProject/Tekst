@@ -2,11 +2,11 @@ import os
 
 from functools import lru_cache
 from secrets import token_hex
+from typing import Annotated
 from urllib.parse import quote
 
 from pydantic import EmailStr, Field, HttpUrl, PlainSerializer, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from typing_extensions import Annotated
 
 from tekst import pkg_meta
 from tekst.utils.strings import safe_name
@@ -192,7 +192,7 @@ class TekstConfig(BaseSettings):
                 "TekstConfig.model_dump does not support 'include' argument"
             )
         includes_keys = {
-            f for f in self.model_fields.keys() if f.startswith(include_keys_prefix)
+            f for f in self.model_fields if f.startswith(include_keys_prefix)
         }
         return {
             k.removeprefix(include_keys_prefix if strip_include_keys_prefix else ""): v

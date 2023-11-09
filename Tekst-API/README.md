@@ -2,7 +2,7 @@
 
 [![tests](https://github.com/VedaWebProject/Tekst-API/actions/workflows/tests.yml/badge.svg)](https://github.com/VedaWebProject/Tekst-API/actions/workflows/tests.yml)
 [![style checks](https://github.com/VedaWebProject/Tekst-API/actions/workflows/style.yml/badge.svg)](https://github.com/VedaWebProject/Tekst-API/actions/workflows/style.yml)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
 This project holds the codebase for the **server** part of the Tekst platform.
 For general information on Tekst, visit the [Tekst repository](https://github.com/VedaWebProject/tekst).

@@ -1,7 +1,7 @@
 import importlib
 import pkgutil
 
-from typing import Iterator
+from collections.abc import Iterator
 
 import humps
 

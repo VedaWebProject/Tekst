@@ -30,16 +30,16 @@ tasks:
       - poetry update
 
   fix:
-    desc: Run ruff and black to format code base and attempt to fix linting errors
+    desc: Run ruff to format code base and attempt to fix linting errors
     cmds:
-      - poetry run black .
+      - poetry run ruff format .
       - poetry run ruff check . --fix
 
   check:
-    desc: Check code using ruff and black
+    desc: Check code using ruff
     cmds:
+      - poetry run ruff format . --check
       - poetry run ruff check . --extend-select N
-      - poetry run black . --check
 
   run-tests:
     desc: Run complete test suite with pytest
