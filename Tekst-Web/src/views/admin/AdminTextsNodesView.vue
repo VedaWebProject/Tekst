@@ -417,7 +417,7 @@ watch(
       flex-wrap: wrap;
       justify-content: end;
       gap: var(--layout-gap);
-      padding: var(--layout-gap) 0 0 var(--content-gap);
+      padding: var(--layout-gap) 0 0 var(--layout-gap);
     "
   >
     <n-checkbox v-if="treeData.length" v-model:checked="showWarnings">

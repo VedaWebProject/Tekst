@@ -236,7 +236,7 @@ onMounted(() => {
       </n-space>
     </div>
     <!-- Users List -->
-    <div class="content-block" style="padding: var(--content-gap)">
+    <div class="content-block">
       <template v-if="paginatedData.length > 0">
         <n-list style="background-color: transparent">
           <user-list-item
