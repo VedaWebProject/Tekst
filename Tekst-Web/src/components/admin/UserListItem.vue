@@ -33,7 +33,7 @@ const statusBtnMinWidth = '128px';
       <template #description>
         <a
           :href="`mailto:${targetUser.email}?subject=${$t('admin.users.mailtoSubject', {
-            platform: pfData?.info?.platformName,
+            platform: pfData?.settings.infoPlatformName,
           })}`"
           :title="$t('admin.users.mailtoLinkTitle', { username: targetUser.username })"
         >

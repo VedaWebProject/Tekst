@@ -1,20 +1,16 @@
 import os
 
-from functools import lru_cache
+from functools import cache
 from secrets import token_hex
 from typing import Annotated
 from urllib.parse import quote
 
-from pydantic import EmailStr, Field, HttpUrl, PlainSerializer, field_validator
+from pydantic import EmailStr, Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from tekst import pkg_meta
+from tekst.models.common import CustomHttpUrl
 from tekst.utils.strings import safe_name
-
-
-CustomHttpUrl = Annotated[
-    HttpUrl, PlainSerializer(lambda url: str(url), return_type=str, when_used="always")
-]
 
 
 def _select_env_files() -> list[str]:
@@ -200,6 +196,6 @@ class TekstConfig(BaseSettings):
         }
 
 
-@lru_cache
+@cache
 def get_config() -> TekstConfig:
     return TekstConfig()

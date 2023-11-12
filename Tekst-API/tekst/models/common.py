@@ -1,12 +1,12 @@
 from datetime import datetime
-from typing import Any, Dict, Literal  # noqa: UP035
+from typing import Annotated, Any, Dict, Literal  # noqa: UP035
 
 from beanie import (
     Document,
     PydanticObjectId,
 )
 from humps import camelize, decamelize
-from pydantic import BaseModel, ConfigDict, create_model
+from pydantic import BaseModel, ConfigDict, HttpUrl, PlainSerializer, create_model
 
 
 # type alias for a flat dict of arbitrary metadata
@@ -14,6 +14,11 @@ Metadata = Dict[str, str]  # noqa: UP006
 
 # type alias for available locale identifiers
 Locale = Literal["deDE", "enUS"]
+
+# Pydantic HttpUrl with string serialization
+CustomHttpUrl = Annotated[
+    HttpUrl, PlainSerializer(lambda url: str(url), return_type=str, when_used="always")
+]
 
 
 class ModelTransformerMixin:

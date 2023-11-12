@@ -24,6 +24,7 @@ from tekst.models.settings import (
 )
 from tekst.models.user import UserDocument, UserReadPublic
 from tekst.routers.texts import get_all_texts
+from tekst.settings import get_settings
 
 
 router = APIRouter(
@@ -47,9 +48,7 @@ async def get_platform_data(
     """Returns data the client needs to initialize"""
     return PlatformData(
         texts=await get_all_texts(ou),
-        settings=PlatformSettingsRead.model_from(
-            await PlatformSettingsDocument.find_one()
-        ),
+        settings=await get_settings(),
         layer_types=layer_type_manager.get_layer_types_info(),
         system_segments=await ClientSegmentDocument.find(
             ClientSegmentDocument.is_system_segment == True  # noqa: E712
@@ -108,10 +107,10 @@ async def update_platform_settings(
     su: SuperuserDep,
     updates: PlatformSettingsUpdate,
 ) -> PlatformSettingsRead:
-    settings_doc = await PlatformSettingsDocument.find_all().first_or_none()
+    settings_doc = await PlatformSettingsDocument.find_one()
     if not settings_doc:
-        # create from defaults
-        settings_doc = await PlatformSettingsDocument().create()
+        await get_settings(force_nocache=True)
+        settings_doc = await PlatformSettingsDocument.find_one()
     await settings_doc.apply(updates.model_dump(exclude_unset=True))
     return settings_doc
 

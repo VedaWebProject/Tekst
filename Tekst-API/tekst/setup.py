@@ -4,7 +4,6 @@ from tekst.db import init_odm
 from tekst.dependencies import get_db, get_db_client
 from tekst.layer_types import init_layer_type_manager
 from tekst.logging import log, setup_logging
-from tekst.models.settings import PlatformSettingsDocument
 from tekst.sample_data import insert_sample_data
 
 
@@ -12,9 +11,9 @@ async def app_setup(cfg: TekstConfig):
     setup_logging()
     log.info("Running Tekst pre-launch app setup...")
 
-    log.info("Checking SMTP config...")
-    if not cfg.email_smtp_server:
-        log.warning("No SMTP server configured")  # pragma: no cover
+    # log.info("Checking SMTP config...")
+    # if not cfg.email_smtp_server:
+    #     log.warning("No SMTP server configured")  # pragma: no cover
 
     init_layer_type_manager()
     await init_odm(get_db(get_db_client(cfg), cfg))
@@ -22,7 +21,4 @@ async def app_setup(cfg: TekstConfig):
     await create_sample_users()  # happens only when in DEV mode
     await insert_sample_data()  # doesn't happen during test runs
     await create_initial_superuser()  # happens only when not in DEV mode
-
-    if not (await PlatformSettingsDocument.find_one().exists()):
-        log.info("Creating initial platform settings from defaults...")
-        await PlatformSettingsDocument().create()  # pragma: no cover
+    log.info("Finished Tekst pre-launch app setup.")

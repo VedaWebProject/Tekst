@@ -4565,18 +4565,6 @@
       },
       "PlatformData": {
         "properties": {
-          "info": {
-            "type": "object",
-            "title": "Info",
-            "default": {
-              "contactEmail": "rick.sanchez@example-tekst-instance.org",
-              "contactName": "Rick Sanchez",
-              "contactUrl": "https://www.example-tekst-instance.org/contact",
-              "description": "An online text research platform",
-              "platformName": "Tekst-DEV",
-              "terms": "https://www.example-tekst-instance.org/terms"
-            }
-          },
           "tekst": {
             "type": "object",
             "title": "Tekst",
@@ -4696,6 +4684,37 @@
             ],
             "title": "Defaulttextid",
             "description": "Default text to load in UI"
+          },
+          "infoPlatformName": {
+            "type": "string",
+            "title": "Infoplatformname",
+            "default": "Tekst-DEV"
+          },
+          "infoDescription": {
+            "type": "string",
+            "title": "Infodescription",
+            "default": "An online text research platform"
+          },
+          "infoTerms": {
+            "type": "string",
+            "title": "Infoterms",
+            "default": "https://www.example-tekst-instance.org/terms"
+          },
+          "infoContactName": {
+            "type": "string",
+            "title": "Infocontactname",
+            "default": "Rick Sanchez"
+          },
+          "infoContactUrl": {
+            "type": "string",
+            "title": "Infocontacturl",
+            "default": "https://www.example-tekst-instance.org/contact"
+          },
+          "infoContactEmail": {
+            "type": "string",
+            "format": "email",
+            "title": "Infocontactemail",
+            "default": "rick.sanchez@example-tekst-instance.org"
           }
         },
         "type": "object",
@@ -4717,6 +4736,35 @@
               }
             ],
             "title": "Defaulttextid"
+          },
+          "infoPlatformName": {
+            "type": "string",
+            "title": "Infoplatformname"
+          },
+          "infoDescription": {
+            "type": "string",
+            "title": "Infodescription"
+          },
+          "infoTerms": {
+            "type": "string",
+            "minLength": 1,
+            "format": "uri",
+            "title": "Infoterms"
+          },
+          "infoContactName": {
+            "type": "string",
+            "title": "Infocontactname"
+          },
+          "infoContactUrl": {
+            "type": "string",
+            "minLength": 1,
+            "format": "uri",
+            "title": "Infocontacturl"
+          },
+          "infoContactEmail": {
+            "type": "string",
+            "format": "email",
+            "title": "Infocontactemail"
           }
         },
         "type": "object",

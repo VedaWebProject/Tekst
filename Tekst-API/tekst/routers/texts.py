@@ -20,7 +20,6 @@ from tekst.auth import OptionalUserDep, SuperuserDep
 from tekst.dependencies import get_temp_dir
 from tekst.models.exchange import NodeDefinition, TextStructureDefinition
 from tekst.models.layer import LayerBaseDocument
-from tekst.models.settings import PlatformSettingsDocument
 from tekst.models.text import (
     NodeDocument,
     StructureLevelTranslation,
@@ -30,6 +29,7 @@ from tekst.models.text import (
     TextUpdate,
 )
 from tekst.models.unit import UnitBaseDocument
+from tekst.settings import get_settings
 
 
 router = APIRouter(
@@ -467,7 +467,7 @@ async def delete_text(
     # delete text itself
     await text.delete()
     # check if deleted text was default text, correct if necessary
-    pf_settings = await PlatformSettingsDocument.find_one()
+    pf_settings = await get_settings()
     if pf_settings.default_text_id == text_id:
         pf_settings.default_text_id = (await TextDocument.find_one()).id
         await pf_settings.save()

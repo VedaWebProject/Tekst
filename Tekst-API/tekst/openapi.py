@@ -5,6 +5,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.openapi.utils import get_openapi
 
 from tekst.config import TekstConfig
+from tekst.models.settings import PlatformSettingsRead
 
 
 tags_metadata = [
@@ -19,37 +20,40 @@ tags_metadata = [
 ]
 
 
-def process_openapi_schema(schema: dict[str, Any]) -> dict[str, Any]:
-    # nothing happening here, yet
-    return schema
-
-
-def custom_openapi(app: FastAPI, cfg: TekstConfig):
+def customize_openapi(app: FastAPI, cfg: TekstConfig, settings: PlatformSettingsRead):
     def _custom_openapi():
-        if app.openapi_schema:
-            return app.openapi_schema
-        openapi_schema = get_openapi(
-            title=cfg.info_platform_name,
-            version=cfg.tekst_version,
-            description=cfg.info_description,
-            routes=app.routes,
-            servers=[{"url": urljoin(str(cfg.server_url), str(cfg.api_path))}],
-            terms_of_service=str(cfg.info_terms),
-            tags=tags_metadata,
-            contact={
-                "name": cfg.info_contact_name,
-                "url": cfg.info_contact_url,
-                "email": cfg.info_contact_email,
-            },
-            license_info={
-                "name": cfg.tekst_license,
-                "url": cfg.tekst_license_url,
-            },
-        )
-        app.openapi_schema = process_openapi_schema(openapi_schema)
+        if not app.openapi_schema:
+            app.openapi_schema = generate_schema(app, cfg, settings)
         return app.openapi_schema
 
     app.openapi = _custom_openapi
+
+
+def generate_schema(app: FastAPI, cfg: TekstConfig, settings: PlatformSettingsRead):
+    schema = get_openapi(
+        title=settings.info_platform_name,
+        version=cfg.tekst_version,
+        description=settings.info_description,
+        routes=app.routes,
+        servers=[{"url": urljoin(str(cfg.server_url), str(cfg.api_path))}],
+        terms_of_service=str(settings.info_terms),
+        tags=tags_metadata,
+        contact={
+            "name": settings.info_contact_name,
+            "url": settings.info_contact_url,
+            "email": settings.info_contact_email,
+        },
+        license_info={
+            "name": cfg.tekst_license,
+            "url": cfg.tekst_license_url,
+        },
+    )
+    return process_openapi_schema(schema)
+
+
+def process_openapi_schema(schema: dict[str, Any]) -> dict[str, Any]:
+    # nothing happening here, yet
+    return schema
 
 
 async def generate_openapi_schema(

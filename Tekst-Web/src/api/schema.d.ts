@@ -956,18 +956,6 @@ export interface components {
      */
     PlatformData: {
       /**
-       * Info
-       * @default {
-       *   "contactEmail": "rick.sanchez@example-tekst-instance.org",
-       *   "contactName": "Rick Sanchez",
-       *   "contactUrl": "https://www.example-tekst-instance.org/contact",
-       *   "description": "An online text research platform",
-       *   "platformName": "Tekst-DEV",
-       *   "terms": "https://www.example-tekst-instance.org/terms"
-       * }
-       */
-      info?: Record<string, never>;
-      /**
        * Tekst
        * @default {
        *   "description": "An online text research platform",
@@ -1039,11 +1027,63 @@ export interface components {
        * @description Default text to load in UI
        */
       defaultTextId?: string | null;
+      /**
+       * Infoplatformname
+       * @default Tekst-DEV
+       */
+      infoPlatformName?: string;
+      /**
+       * Infodescription
+       * @default An online text research platform
+       */
+      infoDescription?: string;
+      /**
+       * Infoterms
+       * @default https://www.example-tekst-instance.org/terms
+       */
+      infoTerms?: string;
+      /**
+       * Infocontactname
+       * @default Rick Sanchez
+       */
+      infoContactName?: string;
+      /**
+       * Infocontacturl
+       * @default https://www.example-tekst-instance.org/contact
+       */
+      infoContactUrl?: string;
+      /**
+       * Infocontactemail
+       * Format: email
+       * @default rick.sanchez@example-tekst-instance.org
+       */
+      infoContactEmail?: string;
     };
     /** PlatformSettingsUpdate */
     PlatformSettingsUpdate: {
       /** Defaulttextid */
       defaultTextId?: string | null;
+      /** Infoplatformname */
+      infoPlatformName?: string;
+      /** Infodescription */
+      infoDescription?: string;
+      /**
+       * Infoterms
+       * Format: uri
+       */
+      infoTerms?: string;
+      /** Infocontactname */
+      infoContactName?: string;
+      /**
+       * Infocontacturl
+       * Format: uri
+       */
+      infoContactUrl?: string;
+      /**
+       * Infocontactemail
+       * Format: email
+       */
+      infoContactEmail?: string;
     };
     /**
      * PlatformStats

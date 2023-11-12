@@ -12,8 +12,9 @@ from tekst.db import init_odm
 from tekst.dependencies import get_db, get_db_client
 from tekst.layer_types import init_layer_type_manager
 from tekst.logging import log, setup_logging
-from tekst.openapi import custom_openapi
+from tekst.openapi import customize_openapi
 from tekst.routers import setup_routes
+from tekst.settings import get_settings
 
 
 _cfg: TekstConfig = get_config()  # get (possibly cached) config data
@@ -26,13 +27,6 @@ async def startup_routine(app: FastAPI) -> None:
         # blank line for visual separation of app runs in dev mode
         print(file=sys.stderr)
 
-    # Hello World!
-    log.info(
-        f"{_cfg.info_platform_name} ({_cfg.tekst_name} "
-        f"Server v{_cfg.tekst_version}) "
-        f"running in {'DEVELOPMENT' if _cfg.dev_mode else 'PRODUCTION'} MODE"
-    )
-
     init_layer_type_manager()
     setup_routes(app)
 
@@ -41,8 +35,15 @@ async def startup_routine(app: FastAPI) -> None:
     # pass all these things by hand...
     await init_odm(get_db(get_db_client(_cfg), _cfg))
 
-    # modify and cache OpenAPI schema
-    custom_openapi(app, _cfg)
+    settings = await get_settings()
+    customize_openapi(app, _cfg, settings)
+
+    # Hello World!
+    log.info(
+        f"{settings.info_platform_name} ({_cfg.tekst_name} "
+        f"Server v{_cfg.tekst_version}) "
+        f"running in {'DEVELOPMENT' if _cfg.dev_mode else 'PRODUCTION'} MODE"
+    )
 
 
 async def shutdown_routine(app: FastAPI) -> None:

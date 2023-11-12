@@ -26,9 +26,6 @@ class PlatformSecurityInfo(ModelBase):
 class PlatformData(ModelBase):
     """Platform data used by the web client"""
 
-    info: dict[str, Any] = camelize(
-        _cfg.model_dump(include_keys_prefix="info_", strip_include_keys_prefix=True)
-    )
     tekst: dict[str, Any] = camelize(
         _cfg.model_dump(include_keys_prefix="tekst_", strip_include_keys_prefix=True)
     )

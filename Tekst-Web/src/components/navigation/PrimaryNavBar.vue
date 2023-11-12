@@ -33,9 +33,9 @@ watch(
 
 <template>
   <div class="navbar" :class="state.smallScreen && 'navbar-smallscreen'">
-    <img class="navbar-logo" :alt="`${pfData?.info?.platformName} Logo`" src="/logo.png" />
+    <img class="navbar-logo" :alt="`${pfData?.settings.infoPlatformName} Logo`" src="/logo.png" />
     <div class="navbar-title">
-      <RouterLink to="/">{{ pfData?.info?.platformName }}</RouterLink>
+      <RouterLink to="/">{{ pfData?.settings.infoPlatformName }}</RouterLink>
     </div>
     <n-button
       v-if="state.smallScreen"
