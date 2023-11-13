@@ -1,0 +1,26 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: Tekst
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Börge
+    family-names: Kiss
+    orcid: 'https://orcid.org/0000-0002-2649-1747'
+    affiliation: University of Cologne
+repository-code: 'https://github.com/VedaWebProject/Tekst'
+url: 'https://vedawebproject.github.io/Tekst'
+abstract: >-
+  Tekst is a collaborative, web-based research platform for
+  aligning, displaying, linking, exploring, and enriching
+  resources on natural language texts.
+keywords:
+  - research software
+  - linguistics
+  - platform
+  - collaboration
+license: AGPL-3.0
