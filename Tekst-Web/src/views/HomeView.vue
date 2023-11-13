@@ -1,11 +1,17 @@
 <script setup lang="ts">
 import { usePlatformData } from '@/platformData';
+import { computed } from 'vue';
+import PageView from '@/views/PageView.vue';
 
 const { pfData } = usePlatformData();
+const systemHomeExists = computed(
+  () => !!pfData.value?.systemSegments.find((p) => p.key === 'systemHome')
+);
 </script>
 
 <template>
-  <div class="content-block">
+  <PageView v-if="systemHomeExists" page-key="systemHome" />
+  <div v-else class="content-block">
     <h1>{{ pfData?.settings.infoPlatformName }} ({{ $t('dummy.home') }})</h1>
     <p>{{ $t('dummy.schiller') }}</p>
 

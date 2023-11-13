@@ -400,6 +400,7 @@ admin:
     segments:
       heading: Segments
       systemKeys:
+        systemHome: Home Page
         systemHeadEnd: End of HTML head
         systemBodyEnd: End of HTML body
         systemFooter: Page Footer

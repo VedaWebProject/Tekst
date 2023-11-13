@@ -416,6 +416,7 @@ admin:
     segments:
       heading: Segmente
       systemKeys:
+        systemHome: Startseite
         systemHeadEnd: Ende von HTML head
         systemBodyEnd: Ende von HTML body
         systemFooter: Fußzeile

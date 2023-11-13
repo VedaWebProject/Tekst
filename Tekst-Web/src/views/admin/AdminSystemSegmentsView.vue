@@ -74,6 +74,7 @@ const segmentLocaleOptions = computed(() =>
 );
 
 const systemSegmentKeys = [
+  'systemHome',
   'systemHeadEnd',
   'systemBodyEnd',
   'systemFooter',
