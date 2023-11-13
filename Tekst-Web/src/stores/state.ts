@@ -135,7 +135,7 @@ export const useStateStore = defineStore('state', () => {
           username: auth.user?.username,
         })
       : undefined;
-    const pfName = pfData.value?.info?.platformName;
+    const pfName = pfData.value?.settings.infoPlatformName;
     document.title = [title, pfName].filter(Boolean).join(' | ');
   }
 
