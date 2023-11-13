@@ -1,4 +1,3 @@
-
 from time import monotonic
 
 from tekst.models.settings import PlatformSettingsDocument, PlatformSettingsRead
