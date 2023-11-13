@@ -13,6 +13,9 @@ from tekst.models.common import CustomHttpUrl
 from tekst.utils.strings import safe_name
 
 
+_DEV_MODE: bool = bool(os.environ.get("TEKST_DEV_MODE", False))
+
+
 def _select_env_files() -> list[str]:
     """
     Selects the dotenv (.env) files to load.
@@ -44,7 +47,7 @@ def _select_env_files() -> list[str]:
     # prio logic
     if os.path.exists(f_env):
         env_files.append(f_env)
-    if os.environ.get("TEKST_DEV_MODE") and os.path.exists(f_env_dev):
+    if _DEV_MODE and os.path.exists(f_env_dev):
         env_files.append(f_env_dev)
     if f_env_prod and os.path.exists(f_env_prod):
         env_files.append(f_env_prod)
@@ -61,7 +64,7 @@ class TekstConfig(BaseSettings):
         env_file_encoding="utf-8",
         env_prefix="TEKST_",
         case_sensitive=False,
-        secrets_dir="/run/secrets",
+        secrets_dir="/run/secrets" if not _DEV_MODE else None,
     )
 
     # basics
