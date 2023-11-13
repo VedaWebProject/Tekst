@@ -103,7 +103,7 @@ class Text(ModelBase, ModelFactoryMixin):
         Field(
             description="Accent color used for this text in the client UI",
         ),
-    ] = Color("#305D97")
+    ] = "#305D97"
 
     is_active: Annotated[
         bool,
