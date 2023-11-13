@@ -3,12 +3,8 @@
   "info": {
     "title": "Tekst-DEV",
     "description": "An online text research platform",
-    "termsOfService": "https://www.example-tekst-instance.org/terms",
-    "contact": {
-      "name": "Rick Sanchez",
-      "url": "https://www.example-tekst-instance.org/contact",
-      "email": "rick.sanchez@example-tekst-instance.org"
-    },
+    "termsOfService": "None",
+    "contact": {},
     "license": {
       "name": "AGPL-3.0-or-later",
       "url": "https://www.gnu.org/licenses/agpl-3.0.txt"
@@ -4687,34 +4683,72 @@
           },
           "infoPlatformName": {
             "type": "string",
+            "maxLength": 32,
+            "minLength": 1,
             "title": "Infoplatformname",
             "default": "Tekst-DEV"
           },
           "infoDescription": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Infodescription",
             "default": "An online text research platform"
           },
           "infoTerms": {
-            "type": "string",
-            "title": "Infoterms",
-            "default": "https://www.example-tekst-instance.org/terms"
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Infoterms"
           },
           "infoContactName": {
-            "type": "string",
-            "title": "Infocontactname",
-            "default": "Rick Sanchez"
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 64,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Infocontactname"
           },
           "infoContactUrl": {
-            "type": "string",
-            "title": "Infocontacturl",
-            "default": "https://www.example-tekst-instance.org/contact"
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Infocontacturl"
           },
           "infoContactEmail": {
-            "type": "string",
-            "format": "email",
-            "title": "Infocontactemail",
-            "default": "rick.sanchez@example-tekst-instance.org"
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 64,
+                "minLength": 1,
+                "format": "email"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Infocontactemail"
           }
         },
         "type": "object",
@@ -4742,28 +4776,65 @@
             "title": "Infoplatformname"
           },
           "infoDescription": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Infodescription"
           },
           "infoTerms": {
-            "type": "string",
-            "minLength": 1,
-            "format": "uri",
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 2083,
+                "minLength": 1,
+                "format": "uri"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Infoterms"
           },
           "infoContactName": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Infocontactname"
           },
           "infoContactUrl": {
-            "type": "string",
-            "minLength": 1,
-            "format": "uri",
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 2083,
+                "minLength": 1,
+                "format": "uri"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Infocontacturl"
           },
           "infoContactEmail": {
-            "type": "string",
-            "format": "email",
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "email"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Infocontactemail"
           }
         },

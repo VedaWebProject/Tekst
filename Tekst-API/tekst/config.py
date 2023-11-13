@@ -5,7 +5,7 @@ from secrets import token_hex
 from typing import Annotated
 from urllib.parse import quote
 
-from pydantic import EmailStr, Field, field_validator
+from pydantic import EmailStr, Field, StringConstraints, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from tekst import pkg_meta
@@ -128,12 +128,24 @@ class TekstConfig(BaseSettings):
     doc_redoc_url: str = "/redoc"
 
     # general platform information config
-    info_platform_name: str = "Tekst"
-    info_description: str = "An online text research platform"
-    info_terms: CustomHttpUrl = "https://www.example-tekst-instance.org/terms"
-    info_contact_name: str = "Rick Sanchez"
-    info_contact_url: CustomHttpUrl = "https://www.example-tekst-instance.org/contact"
-    info_contact_email: EmailStr = "rick.sanchez@example-tekst-instance.org"
+    info_platform_name: Annotated[
+        str, StringConstraints(min_length=1, max_length=32)
+    ] = "Tekst"
+    info_description: Annotated[
+        str | None, StringConstraints(max_length=128)
+    ] = "An online text research platform"
+    info_terms: Annotated[
+        CustomHttpUrl | None, StringConstraints(max_length=512)
+    ] = None
+    info_contact_name: Annotated[
+        str | None, StringConstraints(min_length=1, max_length=64)
+    ] = None
+    info_contact_url: Annotated[
+        CustomHttpUrl | None, StringConstraints(max_length=512)
+    ] = None
+    info_contact_email: Annotated[
+        EmailStr | None, StringConstraints(min_length=1, max_length=64)
+    ] = None
 
     # Tekst information config
     tekst_name: str = "Tekst"

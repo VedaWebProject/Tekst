@@ -1036,28 +1036,15 @@ export interface components {
        * Infodescription
        * @default An online text research platform
        */
-      infoDescription?: string;
-      /**
-       * Infoterms
-       * @default https://www.example-tekst-instance.org/terms
-       */
-      infoTerms?: string;
-      /**
-       * Infocontactname
-       * @default Rick Sanchez
-       */
-      infoContactName?: string;
-      /**
-       * Infocontacturl
-       * @default https://www.example-tekst-instance.org/contact
-       */
-      infoContactUrl?: string;
-      /**
-       * Infocontactemail
-       * Format: email
-       * @default rick.sanchez@example-tekst-instance.org
-       */
-      infoContactEmail?: string;
+      infoDescription?: string | null;
+      /** Infoterms */
+      infoTerms?: string | null;
+      /** Infocontactname */
+      infoContactName?: string | null;
+      /** Infocontacturl */
+      infoContactUrl?: string | null;
+      /** Infocontactemail */
+      infoContactEmail?: string | null;
     };
     /** PlatformSettingsUpdate */
     PlatformSettingsUpdate: {
@@ -1066,24 +1053,15 @@ export interface components {
       /** Infoplatformname */
       infoPlatformName?: string;
       /** Infodescription */
-      infoDescription?: string;
-      /**
-       * Infoterms
-       * Format: uri
-       */
-      infoTerms?: string;
+      infoDescription?: string | null;
+      /** Infoterms */
+      infoTerms?: string | null;
       /** Infocontactname */
-      infoContactName?: string;
-      /**
-       * Infocontacturl
-       * Format: uri
-       */
-      infoContactUrl?: string;
-      /**
-       * Infocontactemail
-       * Format: email
-       */
-      infoContactEmail?: string;
+      infoContactName?: string | null;
+      /** Infocontacturl */
+      infoContactUrl?: string | null;
+      /** Infocontactemail */
+      infoContactEmail?: string | null;
     };
     /**
      * PlatformStats
@@ -1156,6 +1134,7 @@ export interface components {
        * Accentcolor
        * Format: color
        * @description Accent color used for this text in the client UI
+       * @default #305D97
        */
       accentColor?: string;
       /**
@@ -1211,6 +1190,7 @@ export interface components {
        * Accentcolor
        * Format: color
        * @description Accent color used for this text in the client UI
+       * @default #305D97
        */
       accentColor?: string;
       /**
