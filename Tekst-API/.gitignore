@@ -158,7 +158,7 @@ cython_debug/
 .ruff_cache
 
 # misc
-/temp*.py
+/temp
 notes.md
 
 # env files
@@ -166,6 +166,3 @@ notes.md
 
 # anything marked .local for dev
 *.local
-
-# bruno collection
-.bruno/
