@@ -11,6 +11,11 @@ import SettingsApplicationsOutlined from '@vicons/material/SettingsApplicationsO
 <template>
   <SecondaryNavBar style="margin-top: 0.5rem">
     <NavBarRouterLink
+      :label="$t('admin.system.platformSettings.heading')"
+      :route="{ name: 'adminSystemSettings' }"
+      size="tiny"
+    />
+    <NavBarRouterLink
       :label="$t('admin.system.pages.heading')"
       :route="{ name: 'adminSystemPages' }"
       size="tiny"

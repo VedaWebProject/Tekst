@@ -214,6 +214,9 @@ models:
     layerType: '@:models.layer.layerType'
     providedBy: Provided by
     onLevel: on level "{level}"
+  platformSettings:
+    infoPlatformName: Platform Name
+    defaultText: Default Text
   segment:
     modelLabel: Segment
     key: Key
@@ -397,6 +400,9 @@ admin:
     msgSaveSuccess: The new text "{title}" was successfully created. You may now configure its details.
   system:
     heading: System
+    platformSettings:
+      heading: Settings
+      msgSaved: Platform settings saved
     segments:
       heading: Segments
       systemKeys:

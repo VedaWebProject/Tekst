@@ -306,3 +306,30 @@ export const pageSegmentFormRules: Record<string, FormItemRule[]> = {
     },
   ],
 };
+
+export const platformSettingsFormRules: Record<string, FormItemRule[]> = {
+  infoPlatformName: [
+    {
+      required: true,
+      message: () =>
+        $t('forms.rulesFeedback.isRequired', {
+          x: $t('models.platformSettings.infoPlatformName'),
+        }),
+      trigger: 'blur',
+    },
+    {
+      validator: (rule: FormItemRule, value: string) =>
+        !!value && value.length >= 1 && value.length <= 32,
+      message: () => $t('forms.rulesFeedback.minMaxChars', { min: 1, max: 32 }),
+      trigger: 'blur',
+    },
+  ],
+  defaultTextId: [
+    {
+      required: true,
+      message: () =>
+        $t('forms.rulesFeedback.isRequired', { x: $t('models.platformSettings.defaultTextId') }),
+      trigger: 'blur',
+    },
+  ],
+};

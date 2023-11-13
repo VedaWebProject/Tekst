@@ -36,6 +36,7 @@ const AdminTextsLevelsView = () => import('@/views/admin/AdminTextsLevelsView.vu
 const AdminTextsNodesView = () => import('@/views/admin/AdminTextsNodesView.vue');
 const AdminNewTextView = () => import('@/views/admin/AdminNewTextView.vue');
 const AdminSystemView = () => import('@/views/admin/AdminSystemView.vue');
+const AdminSystemSettingsView = () => import('@/views/admin/AdminSystemSettingsView.vue');
 const AdminSystemSegmentsView = () => import('@/views/admin/AdminSystemSegmentsView.vue');
 const AdminSystemPagesView = () => import('@/views/admin/AdminSystemPagesView.vue');
 
@@ -187,9 +188,14 @@ const router = createRouter({
         {
           path: 'system',
           name: 'adminSystem',
-          redirect: { name: 'adminSystemPages' },
+          redirect: { name: 'adminSystemSettings' },
           component: AdminSystemView,
           children: [
+            {
+              path: 'settings',
+              name: 'adminSystemSettings',
+              component: AdminSystemSettingsView,
+            },
             {
               path: 'pages',
               name: 'adminSystemPages',
