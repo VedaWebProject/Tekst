@@ -958,12 +958,12 @@ export interface components {
       /**
        * Tekst
        * @default {
-       *   "description": "An online text research platform",
-       *   "license": "AGPL-3.0-or-later",
-       *   "licenseUrl": "https://www.gnu.org/licenses/agpl-3.0.txt",
        *   "name": "Tekst",
        *   "version": "0.0.1",
-       *   "website": "https://github.com/VedaWebProject/Tekst-API"
+       *   "description": "An online text research platform",
+       *   "website": "https://github.com/VedaWebProject/Tekst",
+       *   "license": "AGPL-3.0-or-later",
+       *   "licenseUrl": "https://www.gnu.org/licenses/agpl-3.0.txt"
        * }
        */
       tekst?: Record<string, never>;
@@ -972,11 +972,11 @@ export interface components {
       settings: components['schemas']['PlatformSettingsRead'];
       /**
        * @default {
-       *   "authCookieLifetime": 3600,
        *   "closedMode": false,
+       *   "usersActiveByDefault": false,
        *   "enableCookieAuth": true,
        *   "enableJwtAuth": true,
-       *   "usersActiveByDefault": false
+       *   "authCookieLifetime": 3600
        * }
        */
       security?: components['schemas']['PlatformSecurityInfo'];
@@ -1023,11 +1023,6 @@ export interface components {
        */
       id: string;
       /**
-       * Defaulttextid
-       * @description Default text to load in UI
-       */
-      defaultTextId?: string | null;
-      /**
        * Infoplatformname
        * @default Tekst-DEV
        */
@@ -1041,15 +1036,18 @@ export interface components {
       infoTerms?: string | null;
       /** Infocontactname */
       infoContactName?: string | null;
-      /** Infocontacturl */
-      infoContactUrl?: string | null;
       /** Infocontactemail */
       infoContactEmail?: string | null;
+      /** Infocontacturl */
+      infoContactUrl?: string | null;
+      /**
+       * Defaulttextid
+       * @description Default text to load in UI
+       */
+      defaultTextId?: string | null;
     };
     /** PlatformSettingsUpdate */
     PlatformSettingsUpdate: {
-      /** Defaulttextid */
-      defaultTextId?: string | null;
       /** Infoplatformname */
       infoPlatformName?: string;
       /** Infodescription */
@@ -1058,10 +1056,12 @@ export interface components {
       infoTerms?: string | null;
       /** Infocontactname */
       infoContactName?: string | null;
-      /** Infocontacturl */
-      infoContactUrl?: string | null;
       /** Infocontactemail */
       infoContactEmail?: string | null;
+      /** Infocontacturl */
+      infoContactUrl?: string | null;
+      /** Defaulttextid */
+      defaultTextId?: string | null;
     };
     /**
      * PlatformStats

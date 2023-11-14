@@ -140,11 +140,11 @@ class TekstConfig(BaseSettings):
     info_contact_name: Annotated[
         str | None, StringConstraints(min_length=1, max_length=64)
     ] = None
-    info_contact_url: Annotated[
-        CustomHttpUrl | None, StringConstraints(max_length=512)
-    ] = None
     info_contact_email: Annotated[
         EmailStr | None, StringConstraints(min_length=1, max_length=64)
+    ] = None
+    info_contact_url: Annotated[
+        CustomHttpUrl | None, StringConstraints(max_length=512)
     ] = None
 
     # Tekst information config

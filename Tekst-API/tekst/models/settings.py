@@ -18,11 +18,6 @@ _cfg: TekstConfig = get_config()  # get (possibly cached) config data
 class PlatformSettings(ModelBase, ModelFactoryMixin):
     """Settings defining platform behavior configured by admins"""
 
-    default_text_id: Annotated[
-        PydanticObjectId | None, Field(description="Default text to load in UI")
-    ] = None
-
-    # general platform information config
     info_platform_name: Annotated[
         str, StringConstraints(min_length=1, max_length=32)
     ] = _cfg.info_platform_name
@@ -35,11 +30,14 @@ class PlatformSettings(ModelBase, ModelFactoryMixin):
     info_contact_name: Annotated[
         str | None, StringConstraints(min_length=1, max_length=64)
     ] = None
+    info_contact_email: Annotated[
+        EmailStr | None, StringConstraints(min_length=1, max_length=64)
+    ] = None
     info_contact_url: Annotated[
         CustomHttpUrl | None, StringConstraints(max_length=512)
     ] = None
-    info_contact_email: Annotated[
-        EmailStr | None, StringConstraints(min_length=1, max_length=64)
+    default_text_id: Annotated[
+        PydanticObjectId | None, Field(description="Default text to load in UI")
     ] = None
 
 

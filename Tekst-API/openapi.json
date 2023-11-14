@@ -4668,19 +4668,6 @@
             "title": "Id",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
-          "defaultTextId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Defaulttextid",
-            "description": "Default text to load in UI"
-          },
           "infoPlatformName": {
             "type": "string",
             "maxLength": 32,
@@ -4725,17 +4712,6 @@
             ],
             "title": "Infocontactname"
           },
-          "infoContactUrl": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Infocontacturl"
-          },
           "infoContactEmail": {
             "anyOf": [
               {
@@ -4749,16 +4725,18 @@
               }
             ],
             "title": "Infocontactemail"
-          }
-        },
-        "type": "object",
-        "required": [
-          "id"
-        ],
-        "title": "PlatformSettingsRead"
-      },
-      "PlatformSettingsUpdate": {
-        "properties": {
+          },
+          "infoContactUrl": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Infocontacturl"
+          },
           "defaultTextId": {
             "anyOf": [
               {
@@ -4769,8 +4747,18 @@
                 "type": "null"
               }
             ],
-            "title": "Defaulttextid"
-          },
+            "title": "Defaulttextid",
+            "description": "Default text to load in UI"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "title": "PlatformSettingsRead"
+      },
+      "PlatformSettingsUpdate": {
+        "properties": {
           "infoPlatformName": {
             "type": "string",
             "title": "Infoplatformname"
@@ -4811,6 +4799,18 @@
             ],
             "title": "Infocontactname"
           },
+          "infoContactEmail": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "email"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Infocontactemail"
+          },
           "infoContactUrl": {
             "anyOf": [
               {
@@ -4825,17 +4825,17 @@
             ],
             "title": "Infocontacturl"
           },
-          "infoContactEmail": {
+          "defaultTextId": {
             "anyOf": [
               {
                 "type": "string",
-                "format": "email"
+                "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Infocontactemail"
+            "title": "Defaulttextid"
           }
         },
         "type": "object",
