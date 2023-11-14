@@ -216,6 +216,11 @@ models:
     onLevel: on level "{level}"
   platformSettings:
     infoPlatformName: Platform Name
+    infoDescription: Platform Description
+    infoTerms: API Terms and Conditions (URL)
+    infoContactName: Contact Name
+    infoContactEmail: Contact Email
+    infoContactUrl: Contact URL
     defaultText: Default Text
   segment:
     modelLabel: Segment
@@ -402,9 +407,11 @@ admin:
     heading: System
     platformSettings:
       heading: Settings
+      headingInfo: Information
+      headingOptions: Options
       msgSaved: |
-        Platform settings saved.
-        Please note that it may take up to one minute for the changes to take effect.
+        Platform settings saved. Please note that it may take up to one minute
+        for the changes to take effect on subsequent page loads.
       defaultTextPlaceholder: Automatic
     segments:
       heading: Segments

@@ -221,7 +221,12 @@ models:
     providedBy: Bereitgestellt von
     onLevel: auf Ebene "{level}"
   platformSettings:
-    infoPlatformName: Platform-Name
+    infoPlatformName: Name der Plattform
+    infoDescription: Platformbeschreibung
+    infoTerms: API Nutzungsbedingungen (URL)
+    infoContactName: Name Kontaktperson
+    infoContactEmail: Email Kontaktperson
+    infoContactUrl: URL Kontaktperson
     defaultText: Standard-Text
   segment:
     modelLabel: Segment
@@ -418,10 +423,12 @@ admin:
     heading: System
     platformSettings:
       heading: Einstellungen
+      headingInfo: Informationen
+      headingOptions: Optionen
       msgSaved: |
         Plattform-Einstellungen gespeichert.
         Bitte beachten Sie, dass es bis zu einer Minute dauern kann,
-        bis die Änderungen wirksam werden.
+        bis die Änderungen sich auf spätere Anfragen auswirken.
       defaultTextPlaceholder: Automatisch
     segments:
       heading: Segmente

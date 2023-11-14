@@ -324,6 +324,43 @@ export const platformSettingsFormRules: Record<string, FormItemRule[]> = {
       trigger: 'blur',
     },
   ],
+  infoDescription: [
+    {
+      validator: (rule: FormItemRule, value: string) => !value || value.length <= 128,
+      message: () => $t('forms.rulesFeedback.minMaxChars', { min: 0, max: 128 }),
+      trigger: 'blur',
+    },
+  ],
+  infoTerms: [
+    {
+      validator: (rule: FormItemRule, value: string) => !value || value.length <= 512,
+      message: () => $t('forms.rulesFeedback.minMaxChars', { min: 0, max: 512 }),
+      trigger: 'blur',
+    },
+  ],
+  infoContactName: [
+    {
+      validator: (rule: FormItemRule, value: string) =>
+        !value || (value.length >= 1 && value.length <= 64),
+      message: () => $t('forms.rulesFeedback.minMaxChars', { min: 1, max: 64 }),
+      trigger: 'blur',
+    },
+  ],
+  infoContactEmail: [
+    {
+      validator: (rule: FormItemRule, value: string) =>
+        !value || (value.length >= 1 && value.length <= 64),
+      message: () => $t('forms.rulesFeedback.minMaxChars', { min: 1, max: 64 }),
+      trigger: 'blur',
+    },
+  ],
+  infoContactUrl: [
+    {
+      validator: (rule: FormItemRule, value: string) => !value || value.length <= 512,
+      message: () => $t('forms.rulesFeedback.minMaxChars', { min: 0, max: 512 }),
+      trigger: 'blur',
+    },
+  ],
   defaultTextId: [
     {
       required: true,
