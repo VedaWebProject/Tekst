@@ -16,10 +16,7 @@ const { pfData, overridePfData } = usePlatformData();
 const { message } = useMessages();
 const dialog = useDialog();
 
-const getFormModel = (): PlatformSettingsUpdate => ({
-  defaultTextId: pfData.value?.settings.defaultTextId,
-  infoPlatformName: pfData.value?.settings.infoPlatformName,
-});
+const getFormModel = (): PlatformSettingsUpdate => Object.assign({}, pfData.value?.settings || {});
 
 const loading = ref(false);
 const formRef = ref<FormInst | null>(null);
