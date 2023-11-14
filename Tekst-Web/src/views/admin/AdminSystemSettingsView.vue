@@ -12,7 +12,7 @@ import { platformSettingsFormRules } from '@/formRules';
 
 import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
 
-const { pfData, loadPlatformData } = usePlatformData();
+const { pfData, overridePfData } = usePlatformData();
 const { message } = useMessages();
 const dialog = useDialog();
 
@@ -37,14 +37,16 @@ async function handleSaveClick() {
   formRef.value
     ?.validate(async (validationError) => {
       if (validationError) return;
-      const { error } = await PATCH('/platform/settings', {
+      const { data, error } = await PATCH('/platform/settings', {
         body: getChanges(),
       });
       if (!error) {
-        await loadPlatformData();
-        message.success($t('admin.system.platformSettings.msgSaved'));
+        overridePfData({
+          settings: data,
+        });
+        message.success($t('admin.system.platformSettings.msgSaved'), undefined, 10);
       } else {
-        message.error($t('errors.unexpected'));
+        message.error($t('errors.unexpected'), error);
       }
       reset();
       loading.value = false;
@@ -115,7 +117,7 @@ function resetForm() {
         <n-select
           v-model:value="formModel.defaultTextId"
           :options="defaultTextOptions"
-          :placeholder="$t('models.platformSettings.defaultText')"
+          :placeholder="$t('admin.system.platformSettings.defaultTextPlaceholder')"
           :consistent-menu-width="false"
           style="min-width: 200px"
           @keydown.enter.prevent

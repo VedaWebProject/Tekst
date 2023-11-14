@@ -1,15 +1,23 @@
 import { ref } from 'vue';
 import { GET } from '@/api';
 import type { ClientSegmentRead, PlatformData } from '@/api';
+import _mergeWith from 'lodash.mergewith';
 
-const data = ref<PlatformData>();
+const pfData = ref<PlatformData>();
 const loadedPageSegments = ref<ClientSegmentRead[]>([]);
 
 export function usePlatformData() {
+  async function _cleanLoadedPageSegments() {
+    loadedPageSegments.value = loadedPageSegments.value.filter(
+      (p) => !!pfData.value?.pagesInfo.find((pi) => pi.id === p.id)
+    );
+  }
+
   async function loadPlatformData() {
     const { data: apiData, error } = await GET('/platform', {});
     if (!error) {
-      data.value = apiData;
+      pfData.value = apiData;
+      _cleanLoadedPageSegments();
       return apiData;
     } else {
       throw error;
@@ -19,7 +27,7 @@ export function usePlatformData() {
   async function getSegment(key?: string, locale?: string) {
     if (!key) return undefined;
     if (key.startsWith('system')) {
-      const segments = data.value?.systemSegments.filter((s) => s.key === key) || [];
+      const segments = pfData.value?.systemSegments.filter((s) => s.key === key) || [];
       return (
         segments.find((s) => s.locale === locale) ||
         segments.find((s) => !s.locale) ||
@@ -27,7 +35,7 @@ export function usePlatformData() {
         segments[0]
       );
     } else {
-      const keyMatches = data.value?.pagesInfo.filter((s) => s.key === key) || [];
+      const keyMatches = pfData.value?.pagesInfo.filter((s) => s.key === key) || [];
       const targetSegment =
         keyMatches.find((p) => p.locale === locale) ||
         keyMatches.find((p) => !p.locale) ||
@@ -50,5 +58,13 @@ export function usePlatformData() {
     }
   }
 
-  return { pfData: data, loadPlatformData, getSegment };
+  function overridePfData(updates: Record<string, any>) {
+    _mergeWith(pfData.value, updates, (_, srcValue) => {
+      if (Array.isArray(srcValue)) {
+        return srcValue;
+      }
+    });
+  }
+
+  return { pfData, loadPlatformData, getSegment, overridePfData };
 }

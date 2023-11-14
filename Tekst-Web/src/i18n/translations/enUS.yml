@@ -390,7 +390,7 @@ admin:
         msgError: 'Error uploading and processing text structure'
   newText:
     heading: New Text
-    headerInfoMsg: |
+    headerInfoAlert: |
       Here you can create a new text. For this, you need to provide only the most basic information.
       Initially, the text is not listed publicly and is only accessible to administrators.
       You will then be redirected to a view where you can make further settings
@@ -402,7 +402,10 @@ admin:
     heading: System
     platformSettings:
       heading: Settings
-      msgSaved: Platform settings saved
+      msgSaved: |
+        Platform settings saved.
+        Please note that it may take up to one minute for the changes to take effect.
+      defaultTextPlaceholder: Automatic
     segments:
       heading: Segments
       systemKeys:

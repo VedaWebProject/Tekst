@@ -406,7 +406,7 @@ admin:
         msgError: 'Fehler beim Hochladen und Verarbeiten der Textstruktur'
   newText:
     heading: Neuer Text
-    headerInfoMsg: |
+    headerInfoAlert: |
       Hier können Sie einen neuen Text anlegen. Dafür müssen Sie nur die grundlegendsten Angaben machen.
       Zunächst wird der Text nicht öffentlich gelistet und ist nur für Administratoren zugänglich.
       Sie werden im Anschluss zu einer Ansicht weitergeleitet, in der Sie weitere Einstellungen vornehmen können,
@@ -418,7 +418,11 @@ admin:
     heading: System
     platformSettings:
       heading: Einstellungen
-      msgSaved: Plattform-Einstellungen gespeichert
+      msgSaved: |
+        Plattform-Einstellungen gespeichert.
+        Bitte beachten Sie, dass es bis zu einer Minute dauern kann,
+        bis die Änderungen wirksam werden.
+      defaultTextPlaceholder: Automatisch
     segments:
       heading: Segmente
       systemKeys:
