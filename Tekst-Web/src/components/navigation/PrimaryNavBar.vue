@@ -34,9 +34,15 @@ watch(
 <template>
   <div class="navbar" :class="state.smallScreen && 'navbar-smallscreen'">
     <img class="navbar-logo" :alt="`${pfData?.settings.infoPlatformName} Logo`" src="/logo.png" />
-    <div class="navbar-title">
-      <RouterLink to="/">{{ pfData?.settings.infoPlatformName }}</RouterLink>
+    <div class="title-container">
+      <RouterLink to="/" :title="pfData?.settings.infoDescription" class="navbar-title">
+        {{ pfData?.settings.infoPlatformName }}
+      </RouterLink>
+      <div v-if="pfData?.settings.showHeaderInfo" class="navbar-description">
+        {{ pfData?.settings.infoDescription }}
+      </div>
     </div>
+    <div v-if="state.smallScreen" style="flex-grow: 2"></div>
     <n-button
       v-if="state.smallScreen"
       quaternary
@@ -107,28 +113,41 @@ watch(
   font-weight: 300;
 }
 
+.title-container {
+  display: inline-flex;
+  flex-direction: column;
+  margin-right: var(--layout-gap);
+}
+
 .navbar-logo {
   height: 48px;
   width: auto;
-  margin-right: 12px;
+  margin-right: var(--content-gap);
 }
 
 .navbar-title {
-  margin-right: 1.75rem;
-  font-size: 1.25rem;
+  font-size: var(--app-ui-font-size-huge);
   white-space: nowrap;
+  min-width: 120px;
 }
 
 .navbar-smallscreen .navbar-title {
   flex-grow: 2;
 }
 
+.navbar-description {
+  opacity: 1;
+  font-size: var(--app-ui-font-size-mini);
+  width: 0;
+  min-width: 100%;
+  line-height: 1.2;
+}
+
 .navbar-menu {
-  flex-grow: 2;
+  flex-grow: 4;
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: var(--layout-gap);
 }
 .navbar-smallscreen .navbar-menu {
   flex-direction: column;

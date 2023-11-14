@@ -15,7 +15,15 @@ const privacyPolicy = computed(
 <template>
   <footer>
     <SegmentRenderer segment-key="systemFooter" />
-    <div id="legal-container">
+    <div v-if="pfData?.settings.showFooterInfo">
+      <span>
+        {{ pfData?.settings.infoPlatformName }}
+      </span>
+      <span style="font-style: italic">
+        {{ pfData?.settings.infoDescription && ` – ${pfData?.settings.infoDescription}` }}
+      </span>
+    </div>
+    <div v-if="siteNotice || privacyPolicy" id="legal-container">
       <RouterLink v-if="siteNotice" :to="{ name: 'siteNotice' }">
         {{ $t('admin.system.segments.systemKeys.systemSiteNotice') }}
       </RouterLink>
@@ -28,7 +36,11 @@ const privacyPolicy = computed(
 
 <style scoped>
 footer {
-  padding: 1.75rem var(--layout-gap);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--content-gap);
+  padding: var(--layout-gap);
   font-size: var(--app-ui-font-size-small);
 }
 
@@ -44,10 +56,5 @@ footer > #legal-container {
   column-gap: 2rem;
   row-gap: 0.5rem;
   flex-wrap: wrap;
-  margin-top: 1.5rem;
-}
-
-footer > #legal-container a:not(:hover) {
-  color: var(--n-font-color);
 }
 </style>

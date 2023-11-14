@@ -222,6 +222,8 @@ models:
     infoContactEmail: Contact Email
     infoContactUrl: Contact URL
     defaultText: Default Text
+    showHeaderInfo: Show description in header
+    showFooterInfo: Show title and description in footer
   segment:
     modelLabel: Segment
     key: Key
@@ -413,6 +415,7 @@ admin:
         Platform settings saved. Please note that it may take up to one minute
         for the changes to take effect on subsequent page loads.
       defaultTextPlaceholder: Automatic
+      formLabelDisplay: Display
     segments:
       heading: Segments
       systemKeys:

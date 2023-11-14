@@ -222,12 +222,14 @@ models:
     onLevel: auf Ebene "{level}"
   platformSettings:
     infoPlatformName: Name der Plattform
-    infoDescription: Platformbeschreibung
+    infoDescription: Kurzbeschreibung der Plattform
     infoTerms: API Nutzungsbedingungen (URL)
     infoContactName: Name Kontaktperson
     infoContactEmail: Email Kontaktperson
     infoContactUrl: URL Kontaktperson
     defaultText: Standard-Text
+    showHeaderInfo: Kurzbeschreibung in Kopfzeile anzeigen
+    showFooterInfo: Name und Kurzbeschreibung in Fußzeile anzeigen
   segment:
     modelLabel: Segment
     key: Schlüssel
@@ -430,6 +432,7 @@ admin:
         Bitte beachten Sie, dass es bis zu einer Minute dauern kann,
         bis die Änderungen sich auf spätere Anfragen auswirken.
       defaultTextPlaceholder: Automatisch
+      formLabelDisplay: Darstellung
     segments:
       heading: Segmente
       systemKeys:
