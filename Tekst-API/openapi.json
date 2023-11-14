@@ -4673,6 +4673,7 @@
             "maxLength": 32,
             "minLength": 1,
             "title": "Infoplatformname",
+            "description": "Name of the platform",
             "default": "Tekst-DEV"
           },
           "infoDescription": {
@@ -4686,6 +4687,7 @@
               }
             ],
             "title": "Infodescription",
+            "description": "Short description of the platform",
             "default": "An online text research platform"
           },
           "infoTerms": {
@@ -4697,7 +4699,8 @@
                 "type": "null"
               }
             ],
-            "title": "Infoterms"
+            "title": "Infoterms",
+            "description": "URL to page with terms and conditions for API usage"
           },
           "infoContactName": {
             "anyOf": [
@@ -4710,7 +4713,8 @@
                 "type": "null"
               }
             ],
-            "title": "Infocontactname"
+            "title": "Infocontactname",
+            "description": "Platform contact name"
           },
           "infoContactEmail": {
             "anyOf": [
@@ -4724,7 +4728,8 @@
                 "type": "null"
               }
             ],
-            "title": "Infocontactemail"
+            "title": "Infocontactemail",
+            "description": "Platform contact email"
           },
           "infoContactUrl": {
             "anyOf": [
@@ -4735,7 +4740,8 @@
                 "type": "null"
               }
             ],
-            "title": "Infocontacturl"
+            "title": "Infocontacturl",
+            "description": "URL to page with contact info"
           },
           "defaultTextId": {
             "anyOf": [
@@ -4749,6 +4755,18 @@
             ],
             "title": "Defaulttextid",
             "description": "Default text to load in UI"
+          },
+          "showHeaderInfo": {
+            "type": "boolean",
+            "title": "Showheaderinfo",
+            "description": "Show platform description in header",
+            "default": true
+          },
+          "showFooterInfo": {
+            "type": "boolean",
+            "title": "Showfooterinfo",
+            "description": "Show platform title and description in footer",
+            "default": true
           }
         },
         "type": "object",
@@ -4836,6 +4854,14 @@
               }
             ],
             "title": "Defaulttextid"
+          },
+          "showHeaderInfo": {
+            "type": "boolean",
+            "title": "Showheaderinfo"
+          },
+          "showFooterInfo": {
+            "type": "boolean",
+            "title": "Showfooterinfo"
           }
         },
         "type": "object",

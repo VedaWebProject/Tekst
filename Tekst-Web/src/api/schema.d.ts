@@ -1024,27 +1024,53 @@ export interface components {
       id: string;
       /**
        * Infoplatformname
+       * @description Name of the platform
        * @default Tekst-DEV
        */
       infoPlatformName?: string;
       /**
        * Infodescription
+       * @description Short description of the platform
        * @default An online text research platform
        */
       infoDescription?: string | null;
-      /** Infoterms */
+      /**
+       * Infoterms
+       * @description URL to page with terms and conditions for API usage
+       */
       infoTerms?: string | null;
-      /** Infocontactname */
+      /**
+       * Infocontactname
+       * @description Platform contact name
+       */
       infoContactName?: string | null;
-      /** Infocontactemail */
+      /**
+       * Infocontactemail
+       * @description Platform contact email
+       */
       infoContactEmail?: string | null;
-      /** Infocontacturl */
+      /**
+       * Infocontacturl
+       * @description URL to page with contact info
+       */
       infoContactUrl?: string | null;
       /**
        * Defaulttextid
        * @description Default text to load in UI
        */
       defaultTextId?: string | null;
+      /**
+       * Showheaderinfo
+       * @description Show platform description in header
+       * @default true
+       */
+      showHeaderInfo?: boolean;
+      /**
+       * Showfooterinfo
+       * @description Show platform title and description in footer
+       * @default true
+       */
+      showFooterInfo?: boolean;
     };
     /** PlatformSettingsUpdate */
     PlatformSettingsUpdate: {
@@ -1062,6 +1088,10 @@ export interface components {
       infoContactUrl?: string | null;
       /** Defaulttextid */
       defaultTextId?: string | null;
+      /** Showheaderinfo */
+      showHeaderInfo?: boolean;
+      /** Showfooterinfo */
+      showFooterInfo?: boolean;
     };
     /**
      * PlatformStats
