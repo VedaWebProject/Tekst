@@ -4565,12 +4565,12 @@
             "type": "object",
             "title": "Tekst",
             "default": {
-              "description": "An online text research platform",
-              "license": "AGPL-3.0-or-later",
-              "licenseUrl": "https://www.gnu.org/licenses/agpl-3.0.txt",
               "name": "Tekst",
               "version": "0.0.1",
-              "website": "https://github.com/VedaWebProject/Tekst-API"
+              "description": "An online text research platform",
+              "website": "https://github.com/VedaWebProject/Tekst",
+              "license": "AGPL-3.0-or-later",
+              "licenseUrl": "https://www.gnu.org/licenses/agpl-3.0.txt"
             }
           },
           "texts": {
@@ -4590,11 +4590,11 @@
               }
             ],
             "default": {
-              "authCookieLifetime": 3600,
               "closedMode": false,
+              "usersActiveByDefault": false,
               "enableCookieAuth": true,
               "enableJwtAuth": true,
-              "usersActiveByDefault": false
+              "authCookieLifetime": 3600
             }
           },
           "layerTypes": {
@@ -5600,8 +5600,8 @@
       "name": "texts",
       "description": "Text-related operations",
       "externalDocs": {
-        "description": "View external documentation",
-        "url": "https://github.com/VedaWebProject/Tekst-API"
+        "description": "View full documentation",
+        "url": "https://vedawebproject.github.io/Tekst"
       }
     }
   ]
