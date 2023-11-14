@@ -24,29 +24,6 @@ general:
   flags: Flags
   language: Language
 
-dummy:
-  home: There's no place like ~
-  schiller: |
-    Angel-fair, Walhalla's charms displaying,
-    Fairer than all mortal youths was he;
-    Mild his look, as May-day sunbeams straying
-    Gently o'er the blue and glassy sea.
-
-    And his kisses! what ecstatic feeling!
-    Like two flames that lovingly entwine,
-    Like the harp's soft tones together stealing
-    Into one sweet harmony divine,
-
-    Soul and soul embraced, commingled, blended,
-    Lips and cheeks with trembling passion burned,
-    Heaven and earth, in pristine chaos ended,
-    Round the blissful lovers madly turn'd.
-
-    He is gone and, ah! with bitter anguish
-    Vainly now I breathe my mournful sighs;
-    He is gone in hopeless grief I languish
-    Earthly joys I ne'er again can prize!
-
 i18n:
   tipSwitcher: Choose locale (language and number/date formatting)
 
