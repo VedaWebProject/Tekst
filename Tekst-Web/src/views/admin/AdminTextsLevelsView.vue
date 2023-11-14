@@ -111,7 +111,7 @@ function handleDeleteClick(level: number) {
           })
         );
       } else {
-        message.error($t('errors.unexpected'), error.detail?.toString());
+        message.error($t('errors.unexpected'), error);
       }
       loading.value = false;
     },
@@ -145,7 +145,7 @@ async function handleModalSubmit() {
             $t('admin.text.levels.msgInsertSuccess', { position: editModalLevel.value + 1 })
           );
         } else {
-          message.error($t('errors.unexpected'), error.detail?.toString());
+          message.error($t('errors.unexpected'), error);
         }
       } else if (editModalAction.value === 'edit') {
         const textUpdates = {
@@ -167,7 +167,7 @@ async function handleModalSubmit() {
             $t('admin.text.levels.msgEditSuccess', { position: editModalLevel.value + 1 })
           );
         } else {
-          message.error($t('errors.unexpected'), error.detail?.toString());
+          message.error($t('errors.unexpected'), error);
         }
       }
       await loadPlatformData();

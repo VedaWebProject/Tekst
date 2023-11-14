@@ -57,7 +57,7 @@ async function handleForgotPasswordClick(resolveLogin: (res: boolean | Promise<b
       body: { email: formModel.value.email },
     });
     if (error) {
-      message.error($t('errors.unexpected'), error.detail?.toString(), 10);
+      message.error($t('errors.unexpected'), error, 10);
     } else {
       message.info(
         $t('account.forgotPassword.sentResetLink', { email: formModel.value.email }),

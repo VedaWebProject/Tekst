@@ -82,7 +82,7 @@ async function handleSave() {
           if (response.status === 409) {
             message.error($t('errors.conflict'));
           } else {
-            message.error($t('errors.unexpected'), error.detail?.toString());
+            message.error($t('errors.unexpected'), error);
           }
         }
       })

@@ -88,7 +88,7 @@ async function updateUser(user: UserRead, updates: UserUpdate) {
     loadUsers();
     return updatedUser;
   } else {
-    message.error($t('errors.unexpected'), error.detail?.toString());
+    message.error($t('errors.unexpected'), error);
   }
 }
 
@@ -185,7 +185,7 @@ function handleDeleteClick(user: UserRead) {
         message.success($t('admin.users.msgUserDeleted', { username: user.username }));
         loadUsers();
       } else {
-        message.error($t('errors.unexpected'), error.detail?.toString());
+        message.error($t('errors.unexpected'), error);
       }
     },
   });

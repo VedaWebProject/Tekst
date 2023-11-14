@@ -75,7 +75,7 @@ async function loadTreeData(node?: TreeOption) {
     },
   });
   if (error) {
-    message.error($t('errors.unexpected'), error.detail?.toString());
+    message.error($t('errors.unexpected'), error);
     return;
   }
   const subTreeData: NodeTreeOption[] = data.map((child) => ({
@@ -150,7 +150,7 @@ async function moveNode(dropData: TreeDropInfo) {
       })
     );
   } else {
-    message.error($t('errors.unexpected'), error.detail?.toString());
+    message.error($t('errors.unexpected'), error);
   }
   // update tree data
   if (dropData.dragNode.parentKey === null) {
@@ -191,7 +191,7 @@ async function deleteNode(node: TreeOption) {
       })
     );
   } else {
-    message.error($t('errors.unexpected'), error.detail?.toString());
+    message.error($t('errors.unexpected'), error);
   }
   loadingDelete.value = false;
 }

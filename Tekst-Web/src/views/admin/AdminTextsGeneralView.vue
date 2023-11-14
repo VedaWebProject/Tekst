@@ -146,7 +146,7 @@ async function handleDelete() {
           pfData.value?.texts[0];
         router.push({ name: 'home' });
       } else {
-        message.error($t('errors.unexpected'));
+        message.error($t('errors.unexpected'), error);
       }
     },
   });

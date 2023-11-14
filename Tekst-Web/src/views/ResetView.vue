@@ -59,7 +59,7 @@ async function handlePasswordSave() {
             if (error.detail === 'RESET_PASSWORD_BAD_TOKEN') {
               message.error($t('account.resetPassword.badToken'));
             } else {
-              message.error($t('errors.unexpected'), error.detail?.toString());
+              message.error($t('errors.unexpected'), error);
             }
             router.push({ name: 'home' });
           }

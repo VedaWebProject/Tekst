@@ -37,7 +37,7 @@ async function handleClick() {
   });
 
   if (error) {
-    message.error($t('errors.unexpected'), error.detail?.toString());
+    message.error($t('errors.unexpected'), error);
     showModal.value = false;
     loading.value = false;
     return;

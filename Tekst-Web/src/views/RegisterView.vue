@@ -91,7 +91,7 @@ async function registerUser() {
     } else if ((error.detail as Record<string, string>).code === 'REGISTER_INVALID_PASSWORD') {
       message.error($t('register.errors.weakPassword'));
     } else {
-      message.error($t('errors.unexpected'), error.detail?.toString());
+      message.error($t('errors.unexpected'), error);
     }
   }
   loading.value = false;

@@ -116,7 +116,7 @@ export const useAuthStore = defineStore('auth', () => {
       // load user data
       const { data: userData, error: userError } = await GET('/users/me', {});
       if (userError) {
-        message.error($t('errors.unexpected'));
+        message.error($t('errors.unexpected'), error);
         _cleanupSession();
         return false;
       }
@@ -146,10 +146,10 @@ export const useAuthStore = defineStore('auth', () => {
         if (!error) {
           message.error($t('account.errors.notVerified'));
         } else {
-          message.error($t('errors.unexpected'), error.detail?.toString());
+          message.error($t('errors.unexpected'), error);
         }
       } else {
-        message.error($t('errors.unexpected'), error.detail?.toString());
+        message.error($t('errors.unexpected'), error);
       }
       _cleanupSession();
       return false;
