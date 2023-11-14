@@ -44,7 +44,7 @@ const themeVars = useThemeVars();
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 0 1rem 0.1rem 1rem;
+  padding: 0 1rem 0 1rem;
 
   font-weight: var(--app-ui-font-weight-normal);
   transition: 0.3s var(--transition-curve);
