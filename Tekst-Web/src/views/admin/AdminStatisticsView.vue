@@ -37,7 +37,7 @@ const layerTypes = computed(() => {
 
 <template>
   <IconHeading level="1" :icon="BarChartRound">
-    {{ $t('admin.heading') }}: {{ $t('admin.statistics.heading') }}
+    {{ $t('admin.statistics.heading') }}
     <HelpButtonWidget help-key="adminStatisticsView" />
   </IconHeading>
 

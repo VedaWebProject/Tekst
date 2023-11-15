@@ -24,11 +24,9 @@ import { useRoute } from 'vue-router';
 import { POST, PATCH, DELETE } from '@/api';
 import { useAuthStore } from '@/stores';
 import { positiveButtonProps, negativeButtonProps } from '@/components/dialogButtonProps';
-import IconHeading from '@/components/typography/IconHeading.vue';
 
 import SearchRound from '@vicons/material/SearchRound';
 import UndoRound from '@vicons/material/UndoRound';
-import PeopleFilled from '@vicons/material/PeopleFilled';
 
 const { users, error, load: loadUsers } = useUsers();
 const { message } = useMessages();
@@ -199,10 +197,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <IconHeading level="1" :icon="PeopleFilled">
-    {{ $t('admin.heading') }}: {{ $t('admin.users.heading') }}
-    <HelpButtonWidget help-key="adminUsersView" />
-  </IconHeading>
+  <h2>
+    {{ $t('admin.users.heading') }}
+    <HelpButtonWidget help-key="adminSystemUsersView" />
+  </h2>
 
   <template v-if="users && !error">
     <!-- Filters -->

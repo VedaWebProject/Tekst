@@ -9,4 +9,4 @@ export { default as SearchView } from './SearchView.vue';
 
 export { default as AdminView } from './admin/AdminView.vue';
 export { default as AdminStatisticsView } from './admin/AdminStatisticsView.vue';
-export { default as AdminUsersView } from './admin/AdminUsersView.vue';
+export { default as AdminSystemUsersView } from './admin/AdminSystemUsersView.vue';
