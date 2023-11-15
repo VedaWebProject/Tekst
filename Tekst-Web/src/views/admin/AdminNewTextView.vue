@@ -97,11 +97,11 @@ async function handleSave() {
 
 <template>
   <IconHeading level="1" :icon="AddCircleOutlineRound">
-    {{ $t('admin.heading') }}: {{ $t('admin.newText.heading') }}
+    {{ $t('admin.newText.heading') }}
     <HelpButtonWidget help-key="adminNewTextView" />
   </IconHeading>
 
-  <n-alert :title="$t('general.info')" type="info">
+  <n-alert :title="$t('general.info')" type="info" closable>
     {{ $t('admin.newText.headerInfoAlert') }}
   </n-alert>
 
