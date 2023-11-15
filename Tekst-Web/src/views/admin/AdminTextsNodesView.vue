@@ -14,7 +14,6 @@ import {
 import { h, ref } from 'vue';
 import { DELETE, GET, POST, getFullUrl, type NodeRead } from '@/api';
 import { useStateStore } from '@/stores';
-import { onMounted } from 'vue';
 import { useMessages } from '@/messages';
 import { $t } from '@/i18n';
 import { watch } from 'vue';
@@ -69,6 +68,7 @@ const showAddModal = ref(false);
 const nodeParentToAddTo = ref<NodeTreeOption | null>(null);
 
 async function loadTreeData(node?: TreeOption) {
+  loadingData.value = true;
   const { data, error } = await GET('/nodes/children', {
     params: {
       query: { textId: state.text?.id || '', ...(node ? { parentId: String(node.key) } : {}) },
@@ -76,6 +76,7 @@ async function loadTreeData(node?: TreeOption) {
   });
   if (error) {
     message.error($t('errors.unexpected'), error);
+    loadingData.value = false;
     return;
   }
   const subTreeData: NodeTreeOption[] = data.map((child) => ({
@@ -91,6 +92,7 @@ async function loadTreeData(node?: TreeOption) {
   } else {
     node.children = subTreeData;
   }
+  loadingData.value = false;
 }
 
 function isDropAllowed(info: {
@@ -387,13 +389,12 @@ function renderSuffix(info: { option: TreeOption; checked: boolean; selected: bo
   ]);
 }
 
-onMounted(() => loadTreeData());
-
 watch(
   () => state.text?.id,
   () => {
     loadTreeData();
-  }
+  },
+  { immediate: true }
 );
 </script>
 
@@ -403,11 +404,16 @@ watch(
     <HelpButtonWidget help-key="adminTextsNodesView" />
   </h2>
 
-  <n-alert v-if="treeData.length" closable :title="$t('general.warning')" type="warning">
+  <n-alert
+    v-if="treeData.length && !loadingData"
+    closable
+    :title="$t('general.warning')"
+    type="warning"
+  >
     {{ $t('admin.text.nodes.warnGeneral') }}
   </n-alert>
 
-  <n-alert v-else :title="$t('general.info')" type="info">
+  <n-alert v-if="!treeData.length && !loadingData" closable :title="$t('general.info')" type="info">
     {{ $t('admin.text.nodes.infoNoNodes') }}
   </n-alert>
 
@@ -415,9 +421,9 @@ watch(
     style="
       display: flex;
       flex-wrap: wrap;
-      justify-content: end;
+      justify-content: space-between;
       gap: var(--layout-gap);
-      padding: var(--layout-gap) 0 0 var(--layout-gap);
+      margin-top: var(--layout-gap);
     "
   >
     <n-checkbox v-if="treeData.length" v-model:checked="showWarnings">

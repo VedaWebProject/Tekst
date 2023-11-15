@@ -82,7 +82,7 @@ const userOptions = computed(() => [
             },
             {
               label: $t('admin.users.heading'),
-              key: 'adminUsers',
+              key: 'adminSystemUsers',
               icon: renderIcon(PeopleFilled),
             },
             {

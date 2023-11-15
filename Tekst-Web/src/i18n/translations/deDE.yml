@@ -71,7 +71,7 @@ routes:
     accountProfile: Öffentliches Profil
     accountManage: Konto
     adminStatistics: '@:admin.heading - Statistiken'
-    adminUsers: '@:admin.heading - Benutzer'
+    adminSystemUsers: '@:admin.heading - Benutzer'
     adminTextsGeneral: '@:admin.heading - {text}: Allgemein'
     adminTextsLevels: '@:admin.heading - {text}: Ebenen'
     adminTextsNodes: '@:admin.heading - {text}: Knoten'
@@ -223,7 +223,7 @@ account:
   currentSession: Aktuelle @:account.session
   loginBtn: Anmelden
   logoutBtn: Abmelden
-  profile: Öffentliches Profil
+  profile: Profil
   profileHeading: '{username}: Öffentliches Profil'
   profileNotFound: Das Benutzerprofil "{username}" konnte nicht gefunden werden.
   profileFieldNotPublic: nicht öffentlich

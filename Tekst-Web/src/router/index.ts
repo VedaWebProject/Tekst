@@ -28,7 +28,7 @@ const ResetView = () => import('@/views/ResetView.vue');
 
 const AdminView = () => import('@/views/admin/AdminView.vue');
 const AdminStatisticsView = () => import('@/views/admin/AdminStatisticsView.vue');
-const AdminUsersView = () => import('@/views/admin/AdminUsersView.vue');
+const AdminSystemUsersView = () => import('@/views/admin/AdminSystemUsersView.vue');
 const AdminTextsView = () => import('@/views/admin/AdminTextsView.vue');
 const AdminTextsGeneralView = () => import('@/views/admin/AdminTextsGeneralView.vue');
 const AdminTextsLevelsView = () => import('@/views/admin/AdminTextsLevelsView.vue');
@@ -121,6 +121,8 @@ const router = createRouter({
     },
     {
       path: '/account',
+      name: 'account',
+      redirect: { name: 'accountProfile' },
       component: AccountView,
       meta: {
         restricted: 'user',
@@ -151,11 +153,6 @@ const router = createRouter({
           path: 'statistics',
           name: 'adminStatistics',
           component: AdminStatisticsView,
-        },
-        {
-          path: 'users',
-          name: 'adminUsers',
-          component: AdminUsersView,
         },
         {
           path: 'texts/:text',
@@ -208,6 +205,11 @@ const router = createRouter({
               path: 'segments',
               name: 'adminSystemSegments',
               component: AdminSystemSegmentsView,
+            },
+            {
+              path: 'users',
+              name: 'adminSystemUsers',
+              component: AdminSystemUsersView,
             },
           ],
         },

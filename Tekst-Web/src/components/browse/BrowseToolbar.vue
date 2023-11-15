@@ -3,10 +3,11 @@ import { ref, onMounted } from 'vue';
 import { NButton } from 'naive-ui';
 import BrowseLocationControls from '@/components/browse/BrowseLocationControls.vue';
 import LocationLabel from '@/components/browse/LocationLabel.vue';
+import { useBrowseStore, useStateStore } from '@/stores';
+
 import CompressRound from '@vicons/material/CompressRound';
 import ExpandRound from '@vicons/material/ExpandRound';
 import LayersRound from '@vicons/material/LayersRound';
-import { useBrowseStore, useStateStore } from '@/stores';
 
 const state = useStateStore();
 const browse = useBrowseStore();

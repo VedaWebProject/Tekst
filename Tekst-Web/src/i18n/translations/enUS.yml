@@ -70,7 +70,7 @@ routes:
     accountProfile: Public Profile
     accountManage: Account
     adminStatistics: '@:admin.heading - Statistics'
-    adminUsers: '@:admin.heading - Users'
+    adminSystemUsers: '@:admin.heading - Users'
     adminTextsGeneral: '{text}: General'
     adminTextsLevels: '{text}: Levels'
     adminTextsNodes: '{text}: Nodes'
@@ -217,7 +217,7 @@ account:
   currentSession: Current @:account.session
   loginBtn: Login
   logoutBtn: Logout
-  profile: Public Profile
+  profile: Profile
   profileHeading: '{username}: Public Profile'
   profileNotFound: The user profile "{username}" could not be found.
   profileFieldNotPublic: not public
