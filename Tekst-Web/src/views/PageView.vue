@@ -30,7 +30,6 @@ async function loadPage() {
 
 onBeforeMount(() => {
   loading.value = true;
-  console.log(pageKey, new Date());
   if (
     pageKey.value == 'systemHome' &&
     !pfData.value?.systemSegments.find((p) => p.key === 'systemHome')
