@@ -2,7 +2,7 @@
 import { $t } from '@/i18n';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import HtmlEditor from '@/components/HtmlEditor.vue';
-import { computed, ref } from 'vue';
+import { computed, nextTick, ref } from 'vue';
 import {
   NIcon,
   NButton,
@@ -12,6 +12,7 @@ import {
   NInput,
   type FormInst,
   useDialog,
+  type InputInst,
 } from 'naive-ui';
 import { usePlatformData } from '@/platformData';
 import { PATCH, type ClientSegmentUpdate, POST, type ClientSegmentCreate, DELETE } from '@/api';
@@ -37,6 +38,7 @@ const loading = ref(false);
 const formRef = ref<FormInst | null>(null);
 const selectedSegmentId = ref<string | null>(null);
 const segmentModel = ref<ClientSegmentUpdate>();
+const firstInputRef = ref<InputInst>();
 
 const {
   changed: modelChanged,
@@ -111,6 +113,7 @@ function handleAddSegmentClick() {
   segmentModel.value = getSegmentModel();
   resetModelChanges();
   formRef.value?.restoreValidation();
+  nextTick(() => firstInputRef.value?.focus());
 }
 
 function handleSelectSegment(id: string) {
@@ -280,6 +283,7 @@ async function handleDeleteClick() {
       <!-- TITLE -->
       <n-form-item path="title" :label="$t('models.segment.title')">
         <n-input
+          ref="firstInputRef"
           v-model:value="segmentModel.title"
           type="text"
           :placeholder="$t('models.segment.title')"
