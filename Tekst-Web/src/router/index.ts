@@ -14,7 +14,6 @@ declare module 'vue-router' {
   }
 }
 
-const HomeView = () => import('@/views/HomeView.vue');
 const UserView = () => import('@/views/UserView.vue');
 const HelpView = () => import('@/views/HelpView.vue');
 const BrowseView = () => import('@/views/BrowseView.vue');
@@ -47,7 +46,11 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView,
+      component: PageView,
+      props: {
+        pageKey: 'systemHome',
+        icon: InfoOutlined,
+      },
     },
     {
       path: '/browse/:text?',

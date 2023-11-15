@@ -2,7 +2,7 @@ from typing import Annotated
 
 from beanie import PydanticObjectId
 from beanie.operators import Or
-from fastapi import APIRouter, Depends, HTTPException, Path, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Path, status
 from humps import decamelize
 
 from tekst.auth import OptionalUserDep, SuperuserDep
@@ -116,24 +116,18 @@ async def update_platform_settings(
 
 
 @router.get(
-    "/segments",
+    "/segments/{id}",
     response_model=ClientSegmentRead,
     status_code=status.HTTP_200_OK,
 )
 async def get_segment(
-    key: Annotated[str, Query(description="Key of the segment to retrieve")],
-    locale: Annotated[
-        str, Query(description="Locale of the segment to retrieve")
-    ] = None,
+    segment_id: Annotated[PydanticObjectId, Path(alias="id")],
 ) -> ClientSegmentDocument:
-    segment = await ClientSegmentDocument.find_one(
-        ClientSegmentDocument.key == key,
-        ClientSegmentDocument.locale == locale,
-    )
+    segment = await ClientSegmentDocument.get(segment_id)
     if not segment:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Client segment {key} doesn't exist",
+            detail=f"Client segment with ID {segment_id} doesn't exist",
         )
     return segment
 

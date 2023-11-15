@@ -1381,7 +1381,7 @@
         ]
       }
     },
-    "/platform/segments": {
+    "/platform/segments/{id}": {
       "get": {
         "tags": [
           "platform"
@@ -1390,26 +1390,14 @@
         "operationId": "getSegment",
         "parameters": [
           {
-            "name": "key",
-            "in": "query",
+            "name": "id",
+            "in": "path",
             "required": true,
             "schema": {
               "type": "string",
-              "description": "Key of the segment to retrieve",
-              "title": "Key"
-            },
-            "description": "Key of the segment to retrieve"
-          },
-          {
-            "name": "locale",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "description": "Locale of the segment to retrieve",
-              "title": "Locale"
-            },
-            "description": "Locale of the segment to retrieve"
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
           }
         ],
         "responses": {
@@ -1438,58 +1426,6 @@
           }
         }
       },
-      "post": {
-        "tags": [
-          "platform"
-        ],
-        "summary": "Create segment",
-        "operationId": "createSegment",
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ClientSegmentCreate"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientSegmentRead"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/platform/segments/{id}": {
       "patch": {
         "tags": [
           "platform"
@@ -1596,6 +1532,58 @@
             }
           }
         }
+      }
+    },
+    "/platform/segments": {
+      "post": {
+        "tags": [
+          "platform"
+        ],
+        "summary": "Create segment",
+        "operationId": "createSegment",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientSegmentCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientSegmentRead"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
       }
     },
     "/texts": {

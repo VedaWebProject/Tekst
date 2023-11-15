@@ -150,17 +150,17 @@ export interface paths {
     /** Update platform settings */
     patch: operations['updatePlatformSettings'];
   };
-  '/platform/segments': {
+  '/platform/segments/{id}': {
     /** Get segment */
     get: operations['getSegment'];
-    /** Create segment */
-    post: operations['createSegment'];
-  };
-  '/platform/segments/{id}': {
     /** Delete segment */
     delete: operations['deleteSegment'];
     /** Update segment */
     patch: operations['updateSegment'];
+  };
+  '/platform/segments': {
+    /** Create segment */
+    post: operations['createSegment'];
   };
   '/texts': {
     /** Get all texts */
@@ -2086,42 +2086,13 @@ export interface operations {
   /** Get segment */
   getSegment: {
     parameters: {
-      query: {
-        /** @description Key of the segment to retrieve */
-        key: string;
-        /** @description Locale of the segment to retrieve */
-        locale?: string;
+      path: {
+        id: string;
       };
     };
     responses: {
       /** @description Successful Response */
       200: {
-        content: {
-          'application/json': components['schemas']['ClientSegmentRead'];
-        };
-      };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  /** Create segment */
-  createSegment: {
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['ClientSegmentCreate'];
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      201: {
         content: {
           'application/json': components['schemas']['ClientSegmentRead'];
         };
@@ -2177,6 +2148,32 @@ export interface operations {
     responses: {
       /** @description Successful Response */
       200: {
+        content: {
+          'application/json': components['schemas']['ClientSegmentRead'];
+        };
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Create segment */
+  createSegment: {
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ClientSegmentCreate'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      201: {
         content: {
           'application/json': components['schemas']['ClientSegmentRead'];
         };

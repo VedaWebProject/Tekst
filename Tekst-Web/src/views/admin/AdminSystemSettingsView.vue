@@ -10,7 +10,7 @@ import { useModelChanges } from '@/modelChanges';
 import { useMessages } from '@/messages';
 import { platformSettingsFormRules } from '@/formRules';
 
-const { pfData, overridePfData } = usePlatformData();
+const { pfData, patchPfData } = usePlatformData();
 const { message } = useMessages();
 
 const getFormModel = (): PlatformSettingsUpdate => Object.assign({}, pfData.value?.settings || {});
@@ -35,7 +35,7 @@ async function handleSaveClick() {
         body: getChanges(),
       });
       if (!error) {
-        overridePfData({
+        patchPfData({
           settings: data,
         });
         message.success($t('admin.system.platformSettings.msgSaved'), undefined, 10);

@@ -24,7 +24,7 @@ export function usePlatformData() {
     }
   }
 
-  async function getSegment(key?: string, locale?: string) {
+  function getSegmentId(key?: string, locale?: string) {
     if (!key) return undefined;
     if (key.startsWith('system')) {
       const segments = pfData.value?.systemSegments.filter((s) => s.key === key) || [];
@@ -33,21 +33,30 @@ export function usePlatformData() {
         segments.find((s) => !s.locale) ||
         segments.find((s) => s.locale === 'enUS') ||
         segments[0]
-      );
+      )?.id;
     } else {
       const keyMatches = pfData.value?.pagesInfo.filter((s) => s.key === key) || [];
-      const targetSegment =
+      return (
         keyMatches.find((p) => p.locale === locale) ||
         keyMatches.find((p) => !p.locale) ||
-        keyMatches.find((p) => p.locale === 'enUS');
-      if (!targetSegment) return undefined;
-      const segment = loadedPageSegments.value.find((s) => s.id === targetSegment.id);
+        keyMatches.find((p) => p.locale === 'enUS')
+      )?.id;
+    }
+  }
+
+  async function getSegment(key?: string, locale?: string) {
+    if (!key) return undefined;
+    const targetId = getSegmentId(key, locale);
+    if (!targetId) return undefined;
+    if (key.startsWith('system')) {
+      return pfData.value?.systemSegments.find((s) => s.id === targetId);
+    } else {
+      const segment = loadedPageSegments.value.find((s) => s.id === targetId);
       if (segment) return segment;
-      const { data: segmentData, error } = await GET('/platform/segments', {
+      const { data: segmentData, error } = await GET('/platform/segments/{id}', {
         params: {
-          query: {
-            key: targetSegment.key,
-            ...(targetSegment.locale ? { locale: targetSegment.locale } : {}),
+          path: {
+            id: targetId,
           },
         },
       });
@@ -58,13 +67,14 @@ export function usePlatformData() {
     }
   }
 
-  function overridePfData(updates: Record<string, any>) {
+  function patchPfData(updates: Record<string, any>) {
     _mergeWith(pfData.value, updates, (_, srcValue) => {
       if (Array.isArray(srcValue)) {
         return srcValue;
       }
     });
+    _cleanLoadedPageSegments();
   }
 
-  return { pfData, loadPlatformData, getSegment, overridePfData };
+  return { pfData, loadPlatformData, getSegment, patchPfData };
 }

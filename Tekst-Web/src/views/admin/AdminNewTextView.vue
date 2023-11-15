@@ -41,7 +41,7 @@ const initialModel = (): NewTextModel => ({
 const router = useRouter();
 const { message } = useMessages();
 const state = useStateStore();
-const { pfData, overridePfData } = usePlatformData();
+const { pfData, patchPfData } = usePlatformData();
 const model = ref<Record<string, any>>(initialModel());
 const formRef = ref<FormInst | null>(null);
 const loading = ref(false);
@@ -72,7 +72,7 @@ async function handleSave() {
           response,
         } = await POST('/texts', { body: model.value as TextCreate });
         if (!error) {
-          overridePfData({
+          patchPfData({
             texts: [...(pfData.value?.texts || []), createdText],
           });
           state.text = createdText || state.text;

@@ -100,7 +100,7 @@ export function useInitializeApp() {
       action: async (success: boolean) => {
         initialized.value = true;
         state.globalLoadingProgress = 1;
-        state.finishGlobalLoading(200, 200);
+        state.finishGlobalLoading(800, 200);
         return success;
       },
     },

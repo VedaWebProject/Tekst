@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import type { ClientSegmentRead } from '@/api';
 import { usePlatformData } from '@/platformData';
-import { watch, type Component } from 'vue';
+import { type Component, onBeforeMount } from 'vue';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { NSpin } from 'naive-ui';
 import IconHeading from '@/components/typography/IconHeading.vue';
-import { useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
+import { computed } from 'vue';
+import { watchEffect } from 'vue';
 
 const props = defineProps<{
   pageKey?: string;
@@ -15,26 +17,38 @@ const props = defineProps<{
 
 const { locale } = useI18n();
 const loading = ref(false);
-const { getSegment } = usePlatformData();
-const route = useRoute();
+const { pfData, getSegment } = usePlatformData();
+const router = useRouter();
+
+const pageKey = computed(() => props.pageKey || router.currentRoute.value.query.p?.toString());
 const page = ref<ClientSegmentRead>();
 
-watch(
-  [() => props.pageKey, () => route.query.p, () => locale.value],
-  async ([propKey, queryKey, nextLocale]) => {
-    loading.value = true;
-    page.value = (await getSegment(propKey || queryKey?.toString(), nextLocale)) || undefined;
-    loading.value = false;
-  },
-  { immediate: true }
-);
+async function loadPage() {
+  page.value = await getSegment(pageKey.value, locale.value);
+  loading.value = false;
+}
+
+onBeforeMount(() => {
+  loading.value = true;
+  console.log(pageKey, new Date());
+  if (
+    pageKey.value == 'systemHome' &&
+    !pfData.value?.systemSegments.find((p) => p.key === 'systemHome')
+  ) {
+    router.replace({ name: 'browse' });
+    return;
+  }
+  loadPage();
+});
+
+watchEffect(loadPage);
 </script>
 
 <template>
   <n-spin
     v-if="loading"
     :description="$t('init.loading')"
-    style="width: 100%; display: flex; justify-content: center"
+    style="width: 100%; display: flex; justify-content: center; padding: var(--layout-gap) 0"
   />
   <template v-else-if="page">
     <IconHeading v-if="page.title" level="1" :icon="icon">
