@@ -2,17 +2,17 @@ import { NIcon, type MenuOption } from 'naive-ui';
 import { h, type Component, computed } from 'vue';
 import { RouterLink, type RouteLocationRaw } from 'vue-router';
 import { $t } from '@/i18n';
+import { useStateStore } from '@/stores';
+import { usePlatformData } from '@/platformData';
+import type { ClientSegmentHead } from '@/api';
 
 import RemoveRedEyeRound from '@vicons/material/RemoveRedEyeRound';
 import ManageAccountsRound from '@vicons/material/ManageAccountsRound';
-
 import LibraryBooksOutlined from '@vicons/material/LibraryBooksOutlined';
 import BarChartRound from '@vicons/material/BarChartRound';
 import AddCircleOutlineRound from '@vicons/material/AddCircleOutlineRound';
 import SettingsApplicationsOutlined from '@vicons/material/SettingsApplicationsOutlined';
-import { useStateStore } from '@/stores';
-import { usePlatformData } from '@/platformData';
-import type { ClientSegmentHead } from '@/api';
+import ArrowDropDownFilled from '@vicons/material/ArrowDropDownFilled';
 
 function renderIcon(icon: Component, props?: Record<string, unknown>) {
   return () => h(NIcon, props, { default: () => h(icon) });
@@ -83,6 +83,7 @@ export function useMainMenuOptions() {
             label: () => $t('nav.more'),
             key: 'page',
             children: pagesOptions.value,
+            extra: renderIcon(ArrowDropDownFilled, { size: 15 }),
           },
         ]
       : []),
