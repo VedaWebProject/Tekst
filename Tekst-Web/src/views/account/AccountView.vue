@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router';
 import NavigationMenu from '@/components/navigation/NavigationMenu.vue';
-import { accountMenuOptions } from '@/components/navigation/navMenuOptions';
+import { useStateStore } from '@/stores';
+import { useAccountMenuOptions } from '@/components/navigation/navMenuOptions';
+
+const state = useStateStore();
+const { menuOptions } = useAccountMenuOptions();
 </script>
 
 <template>
-  <div style="display: flex; justify-content: center">
-    <NavigationMenu :options="accountMenuOptions" embed />
+  <div v-if="!state.smallScreen" style="display: flex; justify-content: center">
+    <NavigationMenu :options="menuOptions" embed />
   </div>
   <router-view></router-view>
 </template>

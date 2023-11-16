@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { NButton, NIcon } from 'naive-ui';
-import NavBarRouterLink from '@/components/navigation/NavBarRouterLink.vue';
 import ThemeModeSwitcher from '@/components/widgets/ThemeModeSwitcher.vue';
 import LocaleSwitcher from '@/components/widgets/LocaleSwitcher.vue';
 import UserOptionsButton from '@/components/widgets/UserOptionsButton.vue';
@@ -10,19 +9,20 @@ import HelpNavButton from '@/components/widgets/HelpNavButton.vue';
 import { useAuthStore, useStateStore } from '@/stores';
 import { useRoute, RouterLink } from 'vue-router';
 import { usePlatformData } from '@/platformData';
+import NavigationMenu from '@/components/navigation/NavigationMenu.vue';
+import { useMainMenuOptions } from './navMenuOptions';
 
 import MenuRound from '@vicons/material/MenuRound';
-import MorePagesDropdown from './MorePagesDropdown.vue';
 
-const { pfData } = usePlatformData();
+const { pfData, systemHome } = usePlatformData();
 const auth = useAuthStore();
 const state = useStateStore();
+const { menuOptions } = useMainMenuOptions();
 
 const menuOpen = ref(false);
-const menuVisible = computed(() => !state.smallScreen || menuOpen.value);
 
 const route = useRoute();
-const textParam = computed(() => state.text?.slug || pfData.value?.texts[0]?.slug);
+
 watch(
   () => route.name,
   () => {
@@ -35,13 +35,30 @@ watch(
   <div class="navbar" :class="state.smallScreen && 'navbar-smallscreen'">
     <img class="navbar-logo" :alt="`${pfData?.settings.infoPlatformName} Logo`" src="/logo.png" />
     <div class="title-container">
-      <RouterLink to="/" :title="pfData?.settings.infoDescription" class="navbar-title">
+      <RouterLink
+        :to="!!systemHome ? { path: '/' } : { name: 'browse' }"
+        :title="pfData?.settings.infoDescription"
+        class="navbar-title"
+      >
         {{ pfData?.settings.infoPlatformName }}
       </RouterLink>
       <div v-if="pfData?.settings.showHeaderInfo" class="navbar-description">
         {{ pfData?.settings.infoDescription }}
       </div>
     </div>
+
+    <div v-if="!state.smallScreen" class="navbar-menu">
+      <NavigationMenu :options="menuOptions" />
+      <div class="navbar-menu-divider"></div>
+      <div class="navbar-menu-extra">
+        <QuickSearchWidget />
+        <ThemeModeSwitcher />
+        <LocaleSwitcher />
+        <HelpNavButton />
+        <UserOptionsButton v-if="pfData?.security?.closedMode === false || auth.loggedIn" />
+      </div>
+    </div>
+
     <div v-if="state.smallScreen" style="flex-grow: 2"></div>
     <n-button
       v-if="state.smallScreen"
@@ -59,7 +76,7 @@ watch(
       </template>
     </n-button>
 
-    <div v-show="menuVisible" class="navbar-menu">
+    <!-- <div v-show="menuVisible" class="navbar-menu">
       <NavBarRouterLink
         :label="$t('nav.browse')"
         :route="{ name: 'browse', params: { text: textParam } }"
@@ -79,7 +96,7 @@ watch(
         <HelpNavButton />
         <UserOptionsButton v-if="pfData?.security?.closedMode === false || auth.loggedIn" />
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 

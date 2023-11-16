@@ -4,7 +4,6 @@ import type { I18nOptions } from 'vue-i18n';
 import type { NDateLocale, NLocale } from 'naive-ui';
 import { enUS, dateEnUS } from 'naive-ui';
 import { deDE, dateDeDE } from 'naive-ui';
-import { GET } from '@/api';
 import { unref } from 'vue';
 
 export enum LocaleKey {
@@ -55,31 +54,17 @@ export const { t: $t, te: $te, tm: $tm, tc: $tc } = i18n.global;
 // @ts-ignore
 i18n.global.locale.value = localStorage.getItem('locale') || 'enUS';
 
-async function loadServerTranslations(locale: string) {
-  const { data, error } = await GET('/platform/i18n', { params: { query: { lang: locale } } });
-  if (!error) {
-    i18n.global.mergeLocaleMessage(locale, { server: data });
-  }
-}
-
-export async function setI18nLocale(
-  locale: I18nOptions['locale'] = i18n.global.locale
-): Promise<AvailableLocale> {
+export function setI18nLocale(locale: I18nOptions['locale'] = i18n.global.locale): AvailableLocale {
   const l = unref(locale) ?? i18n.global.locale;
-
   if (!l) {
     // passed locale is invalid
-    return Promise.reject(`Invalid locale code: ${l}`);
+    console.error(`Invalid locale code: ${l}`);
+    return localeProfiles['enUS'];
   }
-
-  if (!i18n.global.te('server', l)) {
-    await loadServerTranslations(l);
-  }
-
   // @ts-ignore
   i18n.global.locale.value = l;
   document.querySelector('html')?.setAttribute('lang', l);
-  return Promise.resolve(localeProfiles[l]);
+  return localeProfiles[l];
 }
 
 export function getAvaliableBrowserLocaleKey() {

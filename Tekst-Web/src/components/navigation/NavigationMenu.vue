@@ -22,7 +22,7 @@ const state = useStateStore();
 <template>
   <n-menu
     :options="options"
-    :dropdown-props="{ size: state.dropdownSize, showArrow: true, trigger: 'hover' }"
+    :dropdown-props="{ size: state.dropdownSize, showArrow: false, trigger: 'hover' }"
     :mode="mode"
     default-expand-all
     :value="$route.name?.toString()"

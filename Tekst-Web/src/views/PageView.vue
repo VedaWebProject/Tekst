@@ -1,14 +1,11 @@
 <script setup lang="ts">
 import type { ClientSegmentRead } from '@/api';
 import { usePlatformData } from '@/platformData';
-import { type Component, onBeforeMount } from 'vue';
-import { ref } from 'vue';
+import { ref, type Component, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { NSpin } from 'naive-ui';
 import IconHeading from '@/components/typography/IconHeading.vue';
-import { useRouter } from 'vue-router';
-import { computed } from 'vue';
-import { watchEffect } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 const props = defineProps<{
   pageKey?: string;
@@ -17,30 +14,32 @@ const props = defineProps<{
 
 const { locale } = useI18n();
 const loading = ref(false);
-const { pfData, getSegment } = usePlatformData();
+const { systemHome, getSegment } = usePlatformData();
 const router = useRouter();
+const route = useRoute();
 
-const pageKey = computed(() => props.pageKey || router.currentRoute.value.query.p?.toString());
 const page = ref<ClientSegmentRead>();
 
 async function loadPage() {
-  page.value = await getSegment(pageKey.value, locale.value);
+  loading.value = true;
+  page.value = await getSegment(props.pageKey || String(route.query.p), locale.value);
+  if (!page.value) {
+    router.replace({ name: 'browse' });
+  }
   loading.value = false;
 }
 
-onBeforeMount(() => {
+watchEffect(() => {
   loading.value = true;
-  if (
-    pageKey.value == 'systemHome' &&
-    !pfData.value?.systemSegments.find((p) => p.key === 'systemHome')
-  ) {
+  if (!(route.name === 'page' || route.name === 'home')) {
+    return;
+  }
+  if (route.name === 'home' && !systemHome.value) {
     router.replace({ name: 'browse' });
     return;
   }
   loadPage();
 });
-
-watchEffect(loadPage);
 </script>
 
 <template>
@@ -56,5 +55,4 @@ watchEffect(loadPage);
     <!-- eslint-disable-next-line vue/no-v-html -->
     <div class="content-block" v-html="page.html"></div>
   </template>
-  <div v-else class="content-block">{{ $t('errors.notFound') }}</div>
 </template>

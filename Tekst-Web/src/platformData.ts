@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { GET } from '@/api';
 import type { ClientSegmentRead, PlatformData } from '@/api';
 import _mergeWith from 'lodash.mergewith';
@@ -7,6 +7,10 @@ const pfData = ref<PlatformData>();
 const loadedPageSegments = ref<ClientSegmentRead[]>([]);
 
 export function usePlatformData() {
+  const systemHome = computed(
+    () => pfData.value?.systemSegments.find((p) => p.key === 'systemHome')
+  );
+
   async function _cleanLoadedPageSegments() {
     loadedPageSegments.value = loadedPageSegments.value.filter(
       (p) => !!pfData.value?.pagesInfo.find((pi) => pi.id === p.id)
@@ -76,5 +80,5 @@ export function usePlatformData() {
     _cleanLoadedPageSegments();
   }
 
-  return { pfData, loadPlatformData, getSegment, patchPfData };
+  return { pfData, loadPlatformData, getSegment, patchPfData, systemHome };
 }
