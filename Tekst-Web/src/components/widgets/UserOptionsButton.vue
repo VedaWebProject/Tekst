@@ -9,13 +9,7 @@ import { useTheme } from '@/theme';
 import LogInRound from '@vicons/material/LogInRound';
 import LogOutRound from '@vicons/material/LogOutRound';
 import PersonRound from '@vicons/material/PersonRound';
-import RemoveRedEyeRound from '@vicons/material/RemoveRedEyeRound';
-import ManageAccountsRound from '@vicons/material/ManageAccountsRound';
-import PeopleFilled from '@vicons/material/PeopleFilled';
-import BarChartRound from '@vicons/material/BarChartRound';
-import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
-import AddCircleOutlineRound from '@vicons/material/AddCircleOutlineRound';
-import SettingsApplicationsOutlined from '@vicons/material/SettingsApplicationsOutlined';
+import ShieldOutlined from '@vicons/material/ShieldOutlined';
 
 const auth = useAuthStore();
 const state = useStateStore();
@@ -32,78 +26,28 @@ const showUserDropdown = ref(false);
 
 const userOptions = computed(() => [
   {
-    type: 'group',
-    label: $t('account.currentSession'),
-    key: 'session',
-    children: [
-      {
-        label: $t('account.logoutBtn'),
-        key: 'logout',
-        icon: renderIcon(LogOutRound),
-      },
-      {
-        type: 'divider',
-        key: 'dividerLogout',
-      },
-    ],
-  },
-  {
-    type: 'group',
-    label: `${auth.user?.firstName} ${auth.user?.lastName} (${auth.user?.username})`,
-    key: 'user',
-    children: [
-      {
-        label: $t('account.profile'),
-        key: 'accountProfile',
-        icon: renderIcon(RemoveRedEyeRound),
-      },
-      {
-        label: $t('account.account'),
-        key: 'accountManage',
-        icon: renderIcon(ManageAccountsRound),
-      },
-    ],
+    label: `${auth.user?.firstName} ${auth.user?.lastName}`,
+    key: 'account',
+    icon: renderIcon(PersonRound),
   },
   ...(auth.user?.isSuperuser
     ? [
         {
-          type: 'divider',
-          key: 'dividerAdministration',
-        },
-        {
-          type: 'group',
           label: $t('admin.optionGroupLabel'),
           key: 'admin',
-          children: [
-            {
-              label: $t('admin.statistics.heading'),
-              key: 'adminStatistics',
-              icon: renderIcon(BarChartRound),
-            },
-            {
-              label: $t('admin.users.heading'),
-              key: 'adminSystemUsers',
-              icon: renderIcon(PeopleFilled),
-            },
-            {
-              label: $t('admin.text.heading'),
-              key: 'adminTexts',
-              icon: renderIcon(MenuBookOutlined),
-            },
-            {
-              label: $t('admin.newText.heading'),
-              key: 'adminNewText',
-              icon: renderIcon(AddCircleOutlineRound),
-            },
-            {
-              label: $t('admin.system.heading'),
-              key: 'adminSystem',
-              icon: renderIcon(SettingsApplicationsOutlined),
-            },
-          ],
+          icon: renderIcon(ShieldOutlined),
         },
       ]
     : []),
+  {
+    type: 'divider',
+    key: 'divider',
+  },
+  {
+    label: $t('account.logoutBtn'),
+    key: 'logout',
+    icon: renderIcon(LogOutRound),
+  },
 ]);
 
 const color = computed(() => (auth.loggedIn ? accentColors.value.base : undefined));

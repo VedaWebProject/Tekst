@@ -11,7 +11,7 @@ import ManageAccountsRound from '@vicons/material/ManageAccountsRound';
 import LibraryBooksOutlined from '@vicons/material/LibraryBooksOutlined';
 import BarChartRound from '@vicons/material/BarChartRound';
 import AddCircleOutlineRound from '@vicons/material/AddCircleOutlineRound';
-import SettingsApplicationsOutlined from '@vicons/material/SettingsApplicationsOutlined';
+import SettingsFilled from '@vicons/material/SettingsFilled';
 import ArrowDropDownFilled from '@vicons/material/ArrowDropDownFilled';
 
 function renderIcon(icon: Component, props?: Record<string, unknown>) {
@@ -158,7 +158,7 @@ export function useAdminMenuOptions() {
     {
       label: $t('admin.system.heading'),
       key: 'adminSystem',
-      icon: renderIcon(SettingsApplicationsOutlined),
+      icon: renderIcon(SettingsFilled),
       children: [
         {
           label: renderLink(() => $t('admin.system.platformSettings.heading'), {

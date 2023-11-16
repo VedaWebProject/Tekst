@@ -214,7 +214,6 @@ models:
 account:
   account: Account
   session: Session
-  currentSession: Current @:account.session
   loginBtn: Login
   logoutBtn: Logout
   profile: Profile

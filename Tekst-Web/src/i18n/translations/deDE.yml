@@ -220,7 +220,6 @@ models:
 account:
   account: Konto
   session: Sitzung
-  currentSession: Aktuelle @:account.session
   loginBtn: Anmelden
   logoutBtn: Abmelden
   profile: Profil
