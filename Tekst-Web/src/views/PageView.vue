@@ -20,9 +20,9 @@ const route = useRoute();
 
 const page = ref<ClientSegmentRead>();
 
-async function loadPage() {
+async function loadPage(pageKey: string | undefined, locale: string) {
   loading.value = true;
-  page.value = await getSegment(props.pageKey || String(route.query.p), locale.value);
+  page.value = await getSegment(pageKey, locale);
   if (!page.value) {
     router.replace({ name: 'browse' });
   }
@@ -38,7 +38,7 @@ watchEffect(() => {
     router.replace({ name: 'browse' });
     return;
   }
-  loadPage();
+  loadPage(props.pageKey || String(route.query.p), locale.value);
 });
 </script>
 
