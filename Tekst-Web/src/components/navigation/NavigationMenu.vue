@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useStateStore } from '@/stores';
 import { NMenu } from 'naive-ui';
 import type { MenuMixedOption } from 'naive-ui/es/menu/src/interface';
 
@@ -6,20 +7,29 @@ withDefaults(
   defineProps<{
     mode?: 'horizontal' | 'vertical';
     options?: MenuMixedOption[];
+    embed?: boolean;
   }>(),
   {
     mode: 'horizontal',
     options: undefined,
+    embed: false,
   }
 );
+
+const state = useStateStore();
 </script>
 
 <template>
   <n-menu
     :options="options"
-    :dropdown-props="{ size: 'medium', showArrow: true, trigger: 'click' }"
+    :dropdown-props="{ size: state.dropdownSize, showArrow: true, trigger: 'hover' }"
     :mode="mode"
     default-expand-all
     :value="$route.name?.toString()"
+    :style="
+      embed
+        ? { backgroundColor: 'var(--main-bg-color)', borderRadius: 'var(--app-ui-border-radius)' }
+        : undefined
+    "
   />
 </template>

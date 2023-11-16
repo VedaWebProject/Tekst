@@ -6,7 +6,7 @@ import { adminMenuOptions } from '@/components/navigation/navMenuOptions';
 
 <template>
   <div style="display: flex; justify-content: center">
-    <NavigationMenu :options="adminMenuOptions" />
+    <NavigationMenu :options="adminMenuOptions" embed />
   </div>
   <router-view></router-view>
 </template>

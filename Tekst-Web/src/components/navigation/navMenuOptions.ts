@@ -14,8 +14,8 @@ import SettingsApplicationsOutlined from '@vicons/material/SettingsApplicationsO
 
 const state = useStateStore();
 
-function renderIcon(icon: Component) {
-  return () => h(NIcon, null, { default: () => h(icon) });
+function renderIcon(icon: Component, props?: Record<string, unknown>) {
+  return () => h(NIcon, props, { default: () => h(icon) });
 }
 
 export const accountMenuOptions: MenuOption[] = [
