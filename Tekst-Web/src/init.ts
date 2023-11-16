@@ -32,19 +32,6 @@ export function useInitializeApp() {
         return true;
       },
     },
-    // load i18n data from server
-    {
-      info: () => $t('init.serverI18n'),
-      action: async (success: boolean) => {
-        try {
-          await state.setLocale();
-          return success;
-        } catch (e) {
-          message.warning($t('errors.serverI18n'));
-          return false;
-        }
-      },
-    },
     // load platform data from server
     {
       info: () => $t('init.platformData'),

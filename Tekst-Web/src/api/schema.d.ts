@@ -139,13 +139,6 @@ export interface paths {
      */
     get: operations['getPublicUserInfo'];
   };
-  '/platform/i18n': {
-    /**
-     * Get translations
-     * @description Returns server-managed translations.
-     */
-    get: operations['getTranslations'];
-  };
   '/platform/settings': {
     /** Update platform settings */
     patch: operations['updatePlatformSettings'];
@@ -2014,35 +2007,6 @@ export interface operations {
       200: {
         content: {
           'application/json': components['schemas']['UserReadPublic'];
-        };
-      };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  /**
-   * Get translations
-   * @description Returns server-managed translations.
-   */
-  getTranslations: {
-    parameters: {
-      query?: {
-        lang?: string;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json': Record<string, never>;
         };
       };
       /** @description Not found */

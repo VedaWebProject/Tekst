@@ -87,19 +87,6 @@ async def get_public_user_info(
     )
 
 
-@router.get("/i18n", summary="Get server-managed translations")
-async def get_translations(lang: str = None) -> dict:
-    """Returns server-managed translations."""
-    translations = {
-        "deDE": {"welcomeTest": '"Willkommen!", sagt der Server!'},
-        "enUS": {"welcomeTest": '"Welcome!", says the server!'},
-    }
-    if lang and lang in translations:
-        return translations[lang]
-    else:
-        return translations
-
-
 @router.patch(
     "/settings", response_model=PlatformSettingsRead, status_code=status.HTTP_200_OK
 )

@@ -1282,53 +1282,6 @@
         }
       }
     },
-    "/platform/i18n": {
-      "get": {
-        "tags": [
-          "platform"
-        ],
-        "summary": "Get translations",
-        "description": "Returns server-managed translations.",
-        "operationId": "getTranslations",
-        "parameters": [
-          {
-            "name": "lang",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "title": "Lang"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "title": "Response Get Translations Platform I18N Get"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/platform/settings": {
       "patch": {
         "tags": [
