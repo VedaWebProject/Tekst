@@ -404,12 +404,7 @@ watch(
     <HelpButtonWidget help-key="adminTextsNodesView" />
   </h2>
 
-  <n-alert
-    v-if="treeData.length && !loadingData"
-    closable
-    :title="$t('general.warning')"
-    type="warning"
-  >
+  <n-alert v-if="treeData.length" closable :title="$t('general.warning')" type="warning">
     {{ $t('admin.text.nodes.warnGeneral') }}
   </n-alert>
 
