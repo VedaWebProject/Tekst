@@ -88,10 +88,10 @@ layerTypes:
 
 browse:
   location:
-    modalHeading: Level/Location
+    modalHeading: Location
     level: Level
   toolbar:
-    tipSelectLocation: Select level/location
+    tipSelectLocation: Select browse level and location
     tipPreviousLocation: Previous location on this level
     tipNextLocation: Next location on this level
     tipReducedView: Toggle reduced reading view

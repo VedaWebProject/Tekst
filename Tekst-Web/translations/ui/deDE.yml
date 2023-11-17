@@ -89,10 +89,10 @@ layerTypes:
 
 browse:
   location:
-    modalHeading: Ebene/Fundstelle
+    modalHeading: Fundstelle
     level: Ebene
   toolbar:
-    tipSelectLocation: Ebene/Fundstelle wählen
+    tipSelectLocation: Ebene und Fundstelle wählen
     tipPreviousLocation: Vorherige Fundstelle auf dieser Ebene
     tipNextLocation: Nächste Fundstelle auf dieser Ebene
     tipReducedView: Reduzierte Leseansicht umschalten
