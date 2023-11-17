@@ -6,7 +6,7 @@ import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const HELP_DIR = path.normalize(`${__dirname}/../help/`);
+const HELP_DIR = path.normalize(`${__dirname}/../translations/help/`);
 const OUT_DIR = path.normalize(`${__dirname}/../src/assets/help/`);
 const localeDirs = readdirSync(HELP_DIR, { withFileTypes: true }).filter((entry) =>
   entry.isDirectory()
