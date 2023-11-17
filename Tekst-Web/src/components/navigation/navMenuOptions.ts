@@ -12,10 +12,12 @@ import LibraryBooksOutlined from '@vicons/material/LibraryBooksOutlined';
 import BarChartRound from '@vicons/material/BarChartRound';
 import AddCircleOutlineRound from '@vicons/material/AddCircleOutlineRound';
 import SettingsFilled from '@vicons/material/SettingsFilled';
-import ArrowDropDownFilled from '@vicons/material/ArrowDropDownFilled';
+import InfoOutlined from '@vicons/material/InfoOutlined';
+import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
+import SearchOutlined from '@vicons/material/SearchOutlined';
 
-function renderIcon(icon: Component, props?: Record<string, unknown>) {
-  return () => h(NIcon, props, { default: () => h(icon) });
+function renderIcon(icon: Component, noop: boolean = false) {
+  return noop ? undefined : () => h(NIcon, undefined, { default: () => h(icon) });
 }
 
 function renderLink(
@@ -37,7 +39,7 @@ function renderLink(
     );
 }
 
-export function useMainMenuOptions() {
+export function useMainMenuOptions(showIcons: boolean = true) {
   const { pfData } = usePlatformData();
   const state = useStateStore();
 
@@ -59,6 +61,7 @@ export function useMainMenuOptions() {
     return pages.map((p) => ({
       label: renderLink(() => p.title || p.key, { name: 'page', query: { p: p.key } }),
       key: `page_${p.key}`,
+      icon: renderIcon(InfoOutlined, !showIcons),
     }));
   });
 
@@ -69,6 +72,7 @@ export function useMainMenuOptions() {
         params: { text: state.text?.slug },
       }),
       key: 'browse',
+      icon: renderIcon(MenuBookOutlined, !showIcons),
     },
     {
       label: renderLink(() => $t('nav.search'), {
@@ -76,6 +80,7 @@ export function useMainMenuOptions() {
         params: { text: state.text?.slug },
       }),
       key: 'search',
+      icon: renderIcon(SearchOutlined, !showIcons),
     },
     ...(pagesOptions.value.length
       ? [
@@ -83,7 +88,6 @@ export function useMainMenuOptions() {
             label: () => $t('nav.more'),
             key: 'page',
             children: pagesOptions.value,
-            extra: renderIcon(ArrowDropDownFilled, { size: 15 }),
           },
         ]
       : []),
@@ -94,17 +98,17 @@ export function useMainMenuOptions() {
   };
 }
 
-export function useAccountMenuOptions() {
+export function useAccountMenuOptions(showIcons: boolean = true) {
   const menuOptions: MenuOption[] = [
     {
       label: renderLink(() => $t('account.profile'), { name: 'accountProfile' }),
       key: 'accountProfile',
-      icon: renderIcon(RemoveRedEyeRound),
+      icon: renderIcon(RemoveRedEyeRound, !showIcons),
     },
     {
       label: renderLink(() => $t('account.account'), { name: 'accountManage' }),
       key: 'accountManage',
-      icon: renderIcon(ManageAccountsRound),
+      icon: renderIcon(ManageAccountsRound, !showIcons),
     },
   ];
 
@@ -113,19 +117,19 @@ export function useAccountMenuOptions() {
   };
 }
 
-export function useAdminMenuOptions() {
+export function useAdminMenuOptions(showIcons: boolean = true) {
   const state = useStateStore();
 
   const menuOptions = computed<MenuOption[]>(() => [
     {
       label: renderLink(() => $t('admin.statistics.heading'), { name: 'adminStatistics' }),
       key: 'adminStatistics',
-      icon: renderIcon(BarChartRound),
+      icon: renderIcon(BarChartRound, !showIcons),
     },
     {
       label: $t('admin.text.heading'),
       key: 'adminText',
-      icon: renderIcon(LibraryBooksOutlined),
+      icon: renderIcon(LibraryBooksOutlined, !showIcons),
       children: [
         {
           label: renderLink(() => $t('admin.text.general.heading'), {
@@ -153,12 +157,12 @@ export function useAdminMenuOptions() {
     {
       label: renderLink(() => $t('admin.newText.heading'), { name: 'adminNewText' }),
       key: 'adminNewText',
-      icon: renderIcon(AddCircleOutlineRound),
+      icon: renderIcon(AddCircleOutlineRound, !showIcons),
     },
     {
       label: $t('admin.system.heading'),
       key: 'adminSystem',
-      icon: renderIcon(SettingsFilled),
+      icon: renderIcon(SettingsFilled, !showIcons),
       children: [
         {
           label: renderLink(() => $t('admin.system.platformSettings.heading'), {

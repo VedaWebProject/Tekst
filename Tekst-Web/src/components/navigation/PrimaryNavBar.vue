@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { NButton, NIcon } from 'naive-ui';
 import ThemeModeSwitcher from '@/components/widgets/ThemeModeSwitcher.vue';
 import LocaleSwitcher from '@/components/widgets/LocaleSwitcher.vue';
@@ -13,15 +13,18 @@ import NavigationMenu from '@/components/navigation/NavigationMenu.vue';
 import { useMainMenuOptions } from './navMenuOptions';
 
 import MenuRound from '@vicons/material/MenuRound';
+import DrawerMenu from './DrawerMenu.vue';
 
 const { pfData, systemHome } = usePlatformData();
 const auth = useAuthStore();
 const state = useStateStore();
-const { menuOptions } = useMainMenuOptions();
-
-const menuOpen = ref(false);
-
 const route = useRoute();
+
+const { menuOptions: mainMenuOptions } = useMainMenuOptions(false);
+const menuOpen = ref(false);
+const showUserOptionsButton = computed(
+  () => pfData.value?.security?.closedMode === false || auth.loggedIn
+);
 
 watch(
   () => route.name,
@@ -48,14 +51,14 @@ watch(
     </div>
 
     <div v-if="!state.smallScreen" class="navbar-menu">
-      <NavigationMenu :options="menuOptions" />
+      <NavigationMenu :options="mainMenuOptions" />
       <div class="navbar-menu-divider"></div>
       <div class="navbar-menu-extra">
         <QuickSearchWidget />
         <ThemeModeSwitcher />
         <LocaleSwitcher />
         <HelpNavButton />
-        <UserOptionsButton v-if="pfData?.security?.closedMode === false || auth.loggedIn" />
+        <UserOptionsButton v-if="showUserOptionsButton" />
       </div>
     </div>
 
@@ -75,29 +78,13 @@ watch(
         </n-icon>
       </template>
     </n-button>
-
-    <!-- <div v-show="menuVisible" class="navbar-menu">
-      <NavBarRouterLink
-        :label="$t('nav.browse')"
-        :route="{ name: 'browse', params: { text: textParam } }"
-        :show-icon="state.smallScreen"
-      />
-      <NavBarRouterLink
-        :label="$t('nav.search')"
-        :route="{ name: 'search', params: { text: textParam } }"
-        :show-icon="state.smallScreen"
-      />
-      <MorePagesDropdown />
-      <div class="navbar-menu-divider"></div>
-      <div class="navbar-menu-extra">
-        <QuickSearchWidget />
-        <ThemeModeSwitcher />
-        <LocaleSwitcher />
-        <HelpNavButton />
-        <UserOptionsButton v-if="pfData?.security?.closedMode === false || auth.loggedIn" />
-      </div>
-    </div> -->
   </div>
+
+  <DrawerMenu
+    v-if="state.smallScreen"
+    v-model:show="menuOpen"
+    :show-user-options-button="showUserOptionsButton"
+  />
 </template>
 
 <style scoped>
@@ -196,21 +183,5 @@ watch(
   width: 100%;
   max-width: 320px;
   margin: 0 auto 0 auto;
-}
-</style>
-
-<style>
-.navbar-smallscreen .navbar-router-link {
-  padding: 0.5rem 1.5rem;
-  background-color: var(--accent-color-fade5);
-  border-radius: var(--app-ui-border-radius);
-}
-
-.navbar-smallscreen .navbar-more {
-  padding: 0.5rem 1.5rem;
-}
-
-.navbar-smallscreen .quicksearch-widget {
-  flex-grow: 2;
 }
 </style>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { NButton, NIcon } from 'naive-ui';
-import HelpOutlineRound from '@vicons/material/HelpOutlineRound';
+import QuestionMarkOutlined from '@vicons/material/QuestionMarkOutlined';
 </script>
 
 <template>
@@ -13,7 +13,7 @@ import HelpOutlineRound from '@vicons/material/HelpOutlineRound';
     @click="() => $router.push({ name: 'help' })"
   >
     <template #icon>
-      <n-icon :component="HelpOutlineRound" />
+      <n-icon :component="QuestionMarkOutlined" />
     </template>
   </n-button>
 </template>

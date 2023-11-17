@@ -499,10 +499,3 @@ watch(
 
   <AddNodeModal v-model:show="showAddModal" :parent="nodeParentToAddTo" @submit="handleAddResult" />
 </template>
-
-<style>
-.n-tree-node-switcher,
-.n-tree-node-switcher--expanded {
-  align-self: center;
-}
-</style>

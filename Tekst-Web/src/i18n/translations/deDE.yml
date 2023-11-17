@@ -24,6 +24,7 @@ general:
   selected: ausgewählt
   flags: Merkmale
   language: Sprache
+  platform: Plattform
 
 i18n:
   tipSwitcher: Gebietsschema auswählen (Sprache und Zahlen-/Datumsformat)

@@ -24,7 +24,6 @@ const state = useStateStore();
     :options="options"
     :dropdown-props="{ size: state.dropdownSize, showArrow: false, trigger: 'hover' }"
     :mode="mode"
-    default-expand-all
     :value="$route.name?.toString()"
     :style="
       embed

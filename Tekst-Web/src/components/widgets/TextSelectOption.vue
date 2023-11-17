@@ -54,10 +54,4 @@ const subtitle = computed(() => determineTextSubtitle(props.text.subtitle || [],
   width: 12px;
   border-radius: 3px;
 }
-
-.n-dropdown-option-body--disabled .text-select-option-indicator {
-  background-color: #bbb !important
-    /* has to override inline style */
-  ;
-}
 </style>

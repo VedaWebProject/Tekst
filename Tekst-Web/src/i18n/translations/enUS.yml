@@ -23,6 +23,7 @@ general:
   selected: selected
   flags: Flags
   language: Language
+  platform: Platform
 
 i18n:
   tipSwitcher: Choose locale (language and number/date formatting)

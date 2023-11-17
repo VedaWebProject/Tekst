@@ -131,6 +131,12 @@ blockquote {
   max-width: 95%;
 }
 
+
+/*
+ * NUI overrides
+ * Unfortunately, we need to override the default NUI styles in this hacky way
+ */
+
 .n-select,
 .n-select-menu {
   font-weight: var(--app-ui-font-weight-normal);
@@ -138,4 +144,13 @@ blockquote {
 
 .n-dialog {
   font-weight: var(--app-ui-font-weight-light);
+}
+
+.n-drawer-header__main {
+  flex-grow: 2;
+}
+
+.n-tree-node-switcher,
+.n-tree-node-switcher--expanded {
+  align-self: center;
 }
