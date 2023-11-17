@@ -59,7 +59,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
       ) || [])
     );
     return pages.map((p) => ({
-      label: renderLink(() => p.title || p.key, { name: 'page', query: { p: p.key } }),
+      label: renderLink(() => p.title || p.key, { name: 'page', params: { p: p.key } }),
       key: `page_${p.key}`,
       icon: renderIcon(InfoOutlined, !showIcons),
     }));

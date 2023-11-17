@@ -38,7 +38,7 @@ watchEffect(() => {
     router.replace({ name: 'browse' });
     return;
   }
-  loadPage(props.pageKey || String(route.query.p), locale.value);
+  loadPage(props.pageKey || String(route.params.p), locale.value);
 });
 </script>
 

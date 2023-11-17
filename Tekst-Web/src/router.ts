@@ -97,7 +97,7 @@ const router = createRouter({
       },
     },
     {
-      path: '/page',
+      path: '/page/:p',
       name: 'page',
       component: PageView,
       props: {
