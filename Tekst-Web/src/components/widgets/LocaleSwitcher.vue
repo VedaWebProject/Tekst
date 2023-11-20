@@ -32,10 +32,10 @@ function handleLanguageSelect(localeCode: string) {
 
 <template>
   <n-dropdown
-    trigger="click"
+    trigger="hover"
+    to="#app-container"
     :options="options"
     :size="state.dropdownSize"
-    show-arrow
     @select="handleLanguageSelect"
   >
     <n-button

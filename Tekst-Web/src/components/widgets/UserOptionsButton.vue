@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, h, type Component } from 'vue';
 import { useAuthStore, useStateStore } from '@/stores';
-import { useRouter, type RouteLocationRaw, RouterLink } from 'vue-router';
+import { type RouteLocationRaw, RouterLink } from 'vue-router';
 import { NButton, NIcon, NDropdown } from 'naive-ui';
 import { $t } from '@/i18n';
 import { useTheme } from '@/theme';
@@ -15,7 +15,6 @@ import LayersFilled from '@vicons/material/LayersFilled';
 const auth = useAuthStore();
 const state = useStateStore();
 const { accentColors } = useTheme();
-const router = useRouter();
 
 const tooltip = computed(() =>
   auth.loggedIn
@@ -65,8 +64,6 @@ const userOptions = computed(() => [
   },
 ]);
 
-const color = computed(() => (auth.loggedIn ? accentColors.value.base : undefined));
-
 function renderLink(
   label: string | (() => string),
   to: RouteLocationRaw,
@@ -77,9 +74,6 @@ function renderLink(
       RouterLink,
       {
         to,
-        style: {
-          fontSize: 'var(--app-ui-font-size)',
-        },
         ...props,
       },
       { default: label }
@@ -90,36 +84,25 @@ function renderIcon(icon: Component) {
   return () => h(NIcon, null, { default: () => h(icon) });
 }
 
-async function handleClick() {
-  if (!auth.loggedIn) {
-    auth.showLoginModal(undefined, { name: 'accountProfile' });
-  } else if (!showUserDropdown.value) {
-    showUserDropdown.value = true;
-  }
+async function handleLoginClick() {
+  auth.showLoginModal(undefined, { name: 'accountProfile' });
 }
 
 function handleUserOptionSelect(key: string) {
   showUserDropdown.value = false;
   if (key === 'logout') {
     auth.logout();
-  } else {
-    const targetRoute = router.resolve({ name: key });
-    if (targetRoute.meta.isTextSpecific) {
-      router.push({ ...targetRoute, params: { ...targetRoute.params, text: state.text?.slug } });
-    } else {
-      router.push({ name: key });
-    }
   }
 }
 </script>
 
 <template>
   <n-dropdown
-    :show="showUserDropdown"
+    v-if="auth.loggedIn"
     :options="userOptions"
-    :on-clickoutside="() => (showUserDropdown = false)"
     :size="state.dropdownSize"
-    show-arrow
+    to="#app-container"
+    trigger="hover"
     @select="handleUserOptionSelect"
   >
     <n-button
@@ -128,25 +111,31 @@ function handleUserOptionSelect(key: string) {
       size="large"
       :title="tooltip"
       :focusable="false"
-      :color="color"
-      :style="auth.loggedIn && 'color: #fff'"
+      :color="accentColors.base"
+      style="color: #fff"
       class="user-options-button"
-      @click="handleClick"
     >
       <template #icon>
-        <n-icon v-if="auth.loggedIn" :component="PersonRound" />
-        <n-icon v-else :component="LogInRound" />
+        <n-icon :component="PersonRound" />
       </template>
     </n-button>
   </n-dropdown>
-</template>
 
-<style scoped>
-.user-options-button {
-  font-size: var(--app-ui-font-size-mini) !important;
-  font-weight: var(--app-ui-font-weight-normal) !important;
-}
-</style>
+  <n-button
+    v-else
+    secondary
+    circle
+    size="large"
+    :title="tooltip"
+    :focusable="false"
+    class="user-options-button"
+    @click="handleLoginClick"
+  >
+    <template #icon>
+      <n-icon :component="LogInRound" />
+    </template>
+  </n-button>
+</template>
 
 <style scoped>
 .user-options-button {

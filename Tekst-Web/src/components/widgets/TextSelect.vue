@@ -54,6 +54,7 @@ function handleSelect(key: string) {
     v-if="state.text"
     ref="textSelectDropdownRef"
     trigger="click"
+    to="#app-container"
     :options="options"
     :disabled="disabled"
     placement="bottom-start"

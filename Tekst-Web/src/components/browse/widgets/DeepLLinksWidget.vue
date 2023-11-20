@@ -57,6 +57,7 @@ function renderOption(option: DropdownOption) {
     v-if="props.widgetConfig?.enabled && unitsTextEncoded && props.widgetConfig"
     trigger="click"
     :options="options"
+    to="#app-container"
     placement="bottom-start"
     :size="state.dropdownSize"
     :render-label="renderOption"
