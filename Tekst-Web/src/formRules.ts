@@ -261,7 +261,7 @@ export const systemSegmentFormRules: Record<string, FormItemRule[]> = {
   ],
 };
 
-export const pageSegmentFormRules: Record<string, FormItemRule[]> = {
+export const infoSegmentFormRules: Record<string, FormItemRule[]> = {
   title: [
     {
       validator: (rule: FormItemRule, value: string) => !value || value.length <= 32,

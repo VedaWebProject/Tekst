@@ -1,7 +1,7 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "Tekst-DEV",
+    "title": "Tekst-Dev",
     "description": "An online text research platform",
     "termsOfService": "None",
     "contact": {},
@@ -4535,7 +4535,7 @@
               "usersActiveByDefault": false,
               "enableCookieAuth": true,
               "enableJwtAuth": true,
-              "authCookieLifetime": 3600
+              "authCookieLifetime": 10800
             }
           },
           "layerTypes": {
@@ -4552,12 +4552,12 @@
             "type": "array",
             "title": "Systemsegments"
           },
-          "pagesInfo": {
+          "infoSegments": {
             "items": {
               "$ref": "#/components/schemas/ClientSegmentHead"
             },
             "type": "array",
-            "title": "Pagesinfo"
+            "title": "Infosegments"
           }
         },
         "type": "object",
@@ -4566,7 +4566,7 @@
           "settings",
           "layerTypes",
           "systemSegments",
-          "pagesInfo"
+          "infoSegments"
         ],
         "title": "PlatformData",
         "description": "Platform data used by the web client"
@@ -4596,7 +4596,7 @@
           "authCookieLifetime": {
             "type": "integer",
             "title": "Authcookielifetime",
-            "default": 3600
+            "default": 10800
           }
         },
         "type": "object",
@@ -4615,7 +4615,7 @@
             "minLength": 1,
             "title": "Infoplatformname",
             "description": "Name of the platform",
-            "default": "Tekst-DEV"
+            "default": "Tekst-Dev"
           },
           "infoDescription": {
             "anyOf": [

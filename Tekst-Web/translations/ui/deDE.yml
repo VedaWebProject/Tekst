@@ -37,7 +37,7 @@ init:
   serverI18n: Lade UI-Übersetzungen...
   platformData: Lade Plattformdaten...
   workingText: Lege Arbeitstext fest...
-  systemSegments: Füge Systemsegmente ein...
+  systemSegments: Füge Seitensegmente ein...
 
 errors:
   error: Fehler
@@ -58,7 +58,7 @@ nav:
   browse: Blättern
   search: Suche
   help: Hilfe
-  more: Mehr
+  info: Info
 
 routes:
   pageTitle:
@@ -78,7 +78,7 @@ routes:
     adminTextsNodes: '@:admin.heading - {text}: Knoten'
     adminNewText: '@:admin.heading - Neuer Text'
     adminSystemSegments: '@:admin.heading - Segmente'
-    adminSystemPages: '@:admin.heading - Seiten'
+    adminSystemInfoPages: '@:admin.heading - Info-Seiten'
     verify: Verifizierung
     reset: Passwort zurücksetzen
     siteNotice: '@:admin.system.segments.systemKeys.systemSiteNotice'
@@ -411,7 +411,7 @@ admin:
       defaultTextPlaceholder: Automatisch
       formLabelDisplay: Darstellung
     segments:
-      heading: Segmente
+      heading: Seitensegmente
       systemKeys:
         systemHome: Startseite
         systemHeadEnd: Ende von HTML head
@@ -427,8 +427,8 @@ admin:
       msgDeleted: '"{title}" wurde gelöscht.'
       warnCancel: Alle ungespeicherten Änderungen gehen verloren. Sind sie sicher?
       warnDelete: Sind Sie sicher, dass Sie "{title}" löschen möchten?
-    pages:
-      heading: Seiten
+    infoPages:
+      heading: Info-Seiten
       newPage: Neue Seite
       phSelectPage: Seite auswählen
 

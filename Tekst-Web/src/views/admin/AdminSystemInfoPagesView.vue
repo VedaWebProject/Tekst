@@ -22,7 +22,7 @@ import HugeLabeledIcon from '@/components/HugeLabeledIcon.vue';
 import { useI18n } from 'vue-i18n';
 import { useModelChanges } from '@/modelChanges';
 import { useMessages } from '@/messages';
-import { pageSegmentFormRules } from '@/formRules';
+import { infoSegmentFormRules } from '@/formRules';
 
 import AddOutlined from '@vicons/material/AddOutlined';
 import FileOpenOutlined from '@vicons/material/FileOpenOutlined';
@@ -47,8 +47,8 @@ const {
 } = useModelChanges(segmentModel);
 
 const segmentOptions = computed(() =>
-  [...new Set(pfData.value?.pagesInfo.map((p) => p.key))].map((key) => {
-    const groupSegments = pfData.value?.pagesInfo.filter((s) => s.key === key) || [];
+  [...new Set(pfData.value?.infoSegments.map((p) => p.key))].map((key) => {
+    const groupSegments = pfData.value?.infoSegments.filter((s) => s.key === key) || [];
     const currLocaleSegment =
       groupSegments.find((s) => s.locale === locale.value) ||
       groupSegments.find((s) => s.locale === 'enUS') ||
@@ -69,7 +69,7 @@ const segmentLocaleOptions = computed(() =>
   Object.keys(localeProfiles).map((l) => ({
     label: `${localeProfiles[l].icon} ${localeProfiles[l].displayFull}`,
     value: l,
-    disabled: !!pfData.value?.pagesInfo.find(
+    disabled: !!pfData.value?.infoSegments.find(
       (p) => p.locale === l && p.key === segmentModel.value?.key && p.id !== selectedSegmentId.value
     ),
   }))
@@ -85,7 +85,7 @@ async function getSegmentModel(segmentId?: string): Promise<ClientSegmentUpdate>
       html: '',
     };
   } else {
-    const selectedSegmentInfo = pfData.value?.pagesInfo.find((s) => s.id === segmentId);
+    const selectedSegmentInfo = pfData.value?.infoSegments.find((s) => s.id === segmentId);
     const selectedSegment = await getSegment(
       selectedSegmentInfo?.key,
       selectedSegmentInfo?.locale || undefined
@@ -230,8 +230,8 @@ async function handleDeleteClick() {
 
 <template>
   <h2>
-    {{ $t('admin.system.pages.heading') }}
-    <HelpButtonWidget help-key="adminSystemPagesView" />
+    {{ $t('admin.system.infoPages.heading') }}
+    <HelpButtonWidget help-key="adminSystemInfoPagesView" />
   </h2>
 
   <div style="display: flex; gap: var(--layout-gap)">
@@ -242,7 +242,9 @@ async function handleDeleteClick() {
       :options="segmentOptions"
       :disabled="modelChanged"
       :placeholder="
-        modelChanged ? $t('admin.system.pages.newPage') : $t('admin.system.pages.phSelectPage')
+        modelChanged
+          ? $t('admin.system.infoPages.newPage')
+          : $t('admin.system.infoPages.phSelectPage')
       "
       style="flex-grow: 2"
       @update:value="handleSelectSegment"
@@ -263,7 +265,7 @@ async function handleDeleteClick() {
     <n-form
       ref="formRef"
       :model="segmentModel"
-      :rules="pageSegmentFormRules"
+      :rules="infoSegmentFormRules"
       label-placement="top"
       label-width="auto"
       require-mark-placement="right-hanging"

@@ -19,7 +19,7 @@ const HelpView = () => import('@/views/HelpView.vue');
 const BrowseView = () => import('@/views/BrowseView.vue');
 const SearchView = () => import('@/views/SearchView.vue');
 const RegisterView = () => import('@/views/RegisterView.vue');
-const PageView = () => import('@/views/PageView.vue');
+const InfoPageView = () => import('@/views/InfoPageView.vue');
 
 const AccountView = () => import('@/views/account/AccountView.vue');
 const AccountManageView = () => import('@/views/account/AccountManageView.vue');
@@ -37,7 +37,7 @@ const AdminNewTextView = () => import('@/views/admin/AdminNewTextView.vue');
 const AdminSystemView = () => import('@/views/admin/AdminSystemView.vue');
 const AdminSystemSettingsView = () => import('@/views/admin/AdminSystemSettingsView.vue');
 const AdminSystemSegmentsView = () => import('@/views/admin/AdminSystemSegmentsView.vue');
-const AdminSystemPagesView = () => import('@/views/admin/AdminSystemPagesView.vue');
+const AdminSystemInfoPagesView = () => import('@/views/admin/AdminSystemInfoPagesView.vue');
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -46,7 +46,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: PageView,
+      component: InfoPageView,
       props: {
         pageKey: 'systemHome',
         icon: InfoOutlined,
@@ -81,7 +81,7 @@ const router = createRouter({
     {
       path: '/site-notice',
       name: 'siteNotice',
-      component: PageView,
+      component: InfoPageView,
       props: {
         pageKey: 'systemSiteNotice',
         icon: GavelOutlined,
@@ -90,16 +90,16 @@ const router = createRouter({
     {
       path: '/privacy-policy',
       name: 'privacyPolicy',
-      component: PageView,
+      component: InfoPageView,
       props: {
         pageKey: 'systemPrivacyPolicy',
         icon: PrivacyTipOutlined,
       },
     },
     {
-      path: '/page/:p',
-      name: 'page',
-      component: PageView,
+      path: '/info/:p',
+      name: 'info',
+      component: InfoPageView,
       props: {
         icon: InfoOutlined,
       },
@@ -198,8 +198,8 @@ const router = createRouter({
             },
             {
               path: 'pages',
-              name: 'adminSystemPages',
-              component: AdminSystemPagesView,
+              name: 'adminSystemInfoPages',
+              component: AdminSystemInfoPagesView,
             },
             {
               path: 'segments',

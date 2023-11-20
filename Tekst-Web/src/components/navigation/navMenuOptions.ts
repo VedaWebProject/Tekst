@@ -43,23 +43,24 @@ export function useMainMenuOptions(showIcons: boolean = true) {
   const { pfData } = usePlatformData();
   const state = useStateStore();
 
-  const pagesOptions = computed(() => {
+  const infoPagesOptions = computed(() => {
     const pages: ClientSegmentHead[] = [];
     // add pages with current locale
-    pages.push(...(pfData.value?.pagesInfo.filter((p) => p.locale === state.locale) || []));
+    pages.push(...(pfData.value?.infoSegments.filter((p) => p.locale === state.locale) || []));
     // add pages without locale
     pages.push(
-      ...(pfData.value?.pagesInfo.filter((p) => !p.locale && !pages.find((i) => i.key === p.key)) ||
-        [])
+      ...(pfData.value?.infoSegments.filter(
+        (p) => !p.locale && !pages.find((i) => i.key === p.key)
+      ) || [])
     );
     // add pages with enUS locale (fallback)
     pages.push(
-      ...(pfData.value?.pagesInfo.filter(
+      ...(pfData.value?.infoSegments.filter(
         (p) => p.locale === 'enUS' && !pages.find((i) => i.key === p.key)
       ) || [])
     );
     return pages.map((p) => ({
-      label: renderLink(() => p.title || p.key, { name: 'page', params: { p: p.key } }),
+      label: renderLink(() => p.title || p.key, { name: 'info', params: { p: p.key } }),
       key: `page_${p.key}`,
       icon: renderIcon(InfoOutlined, !showIcons),
     }));
@@ -82,12 +83,12 @@ export function useMainMenuOptions(showIcons: boolean = true) {
       key: 'search',
       icon: renderIcon(SearchOutlined, !showIcons),
     },
-    ...(pagesOptions.value.length
+    ...(infoPagesOptions.value.length
       ? [
           {
-            label: () => $t('nav.more'),
-            key: 'page',
-            children: pagesOptions.value,
+            label: () => $t('nav.info'),
+            key: 'info',
+            children: infoPagesOptions.value,
           },
         ]
       : []),
@@ -171,8 +172,10 @@ export function useAdminMenuOptions(showIcons: boolean = true) {
           key: 'adminSystemSettings',
         },
         {
-          label: renderLink(() => $t('admin.system.pages.heading'), { name: 'adminSystemPages' }),
-          key: 'adminSystemPages',
+          label: renderLink(() => $t('admin.system.infoPages.heading'), {
+            name: 'adminSystemInfoPages',
+          }),
+          key: 'adminSystemInfoPages',
         },
         {
           label: renderLink(() => $t('admin.system.segments.heading'), {

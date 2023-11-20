@@ -39,8 +39,8 @@ const allMenuOptions = computed(() => [
     key: 'general-group',
     label: $t('general.platform'),
     children: mainMenuOptions.value
-      .concat(mainMenuOptions.value.find((o) => o.key === 'page')?.children || [])
-      .filter((o) => o.key !== 'page'),
+      .concat(mainMenuOptions.value.find((o) => o.key === 'info')?.children || [])
+      .filter((o) => o.key !== 'info'),
   },
   {
     type: 'group',

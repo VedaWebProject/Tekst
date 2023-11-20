@@ -53,7 +53,7 @@ async def get_platform_data(
         system_segments=await ClientSegmentDocument.find(
             ClientSegmentDocument.is_system_segment == True  # noqa: E712
         ).to_list(),
-        pages_info=await ClientSegmentDocument.find(
+        info_segments=await ClientSegmentDocument.find(
             ClientSegmentDocument.is_system_segment == False  # noqa: E712
         )
         .project(ClientSegmentHead)

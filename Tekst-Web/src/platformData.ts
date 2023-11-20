@@ -4,16 +4,16 @@ import type { ClientSegmentRead, PlatformData } from '@/api';
 import _mergeWith from 'lodash.mergewith';
 
 const pfData = ref<PlatformData>();
-const loadedPageSegments = ref<ClientSegmentRead[]>([]);
+const loadedInfoSegments = ref<ClientSegmentRead[]>([]);
 
 export function usePlatformData() {
   const systemHome = computed(
     () => pfData.value?.systemSegments.find((p) => p.key === 'systemHome')
   );
 
-  async function _cleanLoadedPageSegments() {
-    loadedPageSegments.value = loadedPageSegments.value.filter(
-      (p) => !!pfData.value?.pagesInfo.find((pi) => pi.id === p.id)
+  async function _cleanLoadedInfoSegments() {
+    loadedInfoSegments.value = loadedInfoSegments.value.filter(
+      (p) => !!pfData.value?.infoSegments.find((pi) => pi.id === p.id)
     );
   }
 
@@ -21,7 +21,7 @@ export function usePlatformData() {
     const { data: apiData, error } = await GET('/platform', {});
     if (!error) {
       pfData.value = apiData;
-      _cleanLoadedPageSegments();
+      _cleanLoadedInfoSegments();
       return apiData;
     } else {
       throw error;
@@ -39,7 +39,7 @@ export function usePlatformData() {
         segments[0]
       )?.id;
     } else {
-      const keyMatches = pfData.value?.pagesInfo.filter((s) => s.key === key) || [];
+      const keyMatches = pfData.value?.infoSegments.filter((s) => s.key === key) || [];
       return (
         keyMatches.find((p) => p.locale === locale) ||
         keyMatches.find((p) => !p.locale) ||
@@ -55,7 +55,7 @@ export function usePlatformData() {
     if (key.startsWith('system')) {
       return pfData.value?.systemSegments.find((s) => s.id === targetId);
     } else {
-      const segment = loadedPageSegments.value.find((s) => s.id === targetId);
+      const segment = loadedInfoSegments.value.find((s) => s.id === targetId);
       if (segment) return segment;
       const { data: segmentData, error } = await GET('/platform/segments/{id}', {
         params: {
@@ -65,7 +65,7 @@ export function usePlatformData() {
         },
       });
       if (!error) {
-        loadedPageSegments.value.push(segmentData);
+        loadedInfoSegments.value.push(segmentData);
         return segmentData;
       }
     }
@@ -77,7 +77,7 @@ export function usePlatformData() {
         return srcValue;
       }
     });
-    _cleanLoadedPageSegments();
+    _cleanLoadedInfoSegments();
   }
 
   return { pfData, loadPlatformData, getSegment, patchPfData, systemHome };

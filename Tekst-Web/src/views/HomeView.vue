@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { usePlatformData } from '@/platformData';
 import { computed } from 'vue';
-import PageView from '@/views/PageView.vue';
+import InfoPageView from '@/views/InfoPageView.vue';
 
 const { pfData } = usePlatformData();
 const systemHomeExists = computed(
@@ -10,7 +10,7 @@ const systemHomeExists = computed(
 </script>
 
 <template>
-  <PageView v-if="systemHomeExists" page-key="systemHome" />
+  <InfoPageView v-if="systemHomeExists" page-key="systemHome" />
   <template v-else>
     <h1>{{ pfData?.settings.infoPlatformName }}</h1>
     <div class="content-block">

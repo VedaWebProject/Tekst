@@ -978,7 +978,7 @@ export interface components {
       /** Systemsegments */
       systemSegments: components['schemas']['ClientSegmentRead'][];
       /** Pagesinfo */
-      pagesInfo: components['schemas']['ClientSegmentHead'][];
+      infoSegments: components['schemas']['ClientSegmentHead'][];
     };
     /** PlatformSecurityInfo */
     PlatformSecurityInfo: {

@@ -31,7 +31,7 @@ async function loadPage(pageKey: string | undefined, locale: string) {
 
 watchEffect(() => {
   loading.value = true;
-  if (!(route.name === 'page' || route.name === 'home')) {
+  if (!(route.name === 'info' || route.name === 'home')) {
     return;
   }
   if (route.name === 'home' && !systemHome.value) {

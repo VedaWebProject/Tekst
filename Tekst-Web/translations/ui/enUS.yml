@@ -36,7 +36,7 @@ init:
   serverI18n: Loading UI translations...
   platformData: Loading platform data...
   workingText: Setting up working text...
-  systemSegments: Inserting system segments...
+  systemSegments: Inserting system site segments...
 
 errors:
   error: Error
@@ -57,7 +57,7 @@ nav:
   browse: Browse
   search: Search
   help: Help
-  more: More
+  info: Info
 
 routes:
   pageTitle:
@@ -76,8 +76,8 @@ routes:
     adminTextsLevels: '{text}: Levels'
     adminTextsNodes: '{text}: Nodes'
     adminNewText: '@:admin.heading - New Text'
-    adminSystemSegments: '@:admin.heading - Segments'
-    adminSystemPages: '@:admin.heading - Pages'
+    adminSystemSegments: '@:admin.heading - Site Segments'
+    adminSystemInfoPages: '@:admin.heading - Info Pages'
     verify: Verification
     reset: Reset password
     siteNotice: '@:admin.system.segments.systemKeys.systemSiteNotice'
@@ -210,7 +210,7 @@ models:
     html: Content
     formRulesFeedback:
       keyChars: 'Allowed characters: a-z, A-Z, 0-9, -, _'
-      systemPrefixReserved: Key prefix "system" is reserved for system segments
+      systemPrefixReserved: Key prefix "system" is reserved for system site segments
 
 account:
   account: Account
@@ -394,7 +394,7 @@ admin:
       defaultTextPlaceholder: Automatic
       formLabelDisplay: Display
     segments:
-      heading: Segments
+      heading: Site Segments
       systemKeys:
         systemHome: Home Page
         systemHeadEnd: End of HTML head
@@ -410,8 +410,8 @@ admin:
       msgDeleted: Deleted "{title}".
       warnCancel: Any unsaved changes will be lost. Are you sure?
       warnDelete: Are you sure you want to delete "{title}"?
-    pages:
-      heading: Pages
+    infoPages:
+      heading: Info Pages
       newPage: New Page
       phSelectPage: Select page
 
