@@ -126,6 +126,7 @@ const router = createRouter({
       component: DataLayersView,
       meta: {
         isTextSpecific: true,
+        restricted: 'user',
       },
     },
     {
