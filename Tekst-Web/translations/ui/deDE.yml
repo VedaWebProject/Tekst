@@ -218,6 +218,9 @@ models:
       keyChars: 'Erlaubte Zeichen: a-z, A-Z, 0-9, -, _'
       systemPrefixReserved: Schlüssel-Praefix "system" ist reserviert für Systemsegmente
 
+dataLayers:
+  heading: Datenschichten
+
 account:
   account: Konto
   session: Sitzung

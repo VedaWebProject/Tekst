@@ -20,6 +20,7 @@ const BrowseView = () => import('@/views/BrowseView.vue');
 const SearchView = () => import('@/views/SearchView.vue');
 const RegisterView = () => import('@/views/RegisterView.vue');
 const InfoPageView = () => import('@/views/InfoPageView.vue');
+const DataLayersView = () => import('@/views/DataLayersView.vue');
 
 const AccountView = () => import('@/views/account/AccountView.vue');
 const AccountManageView = () => import('@/views/account/AccountManageView.vue');
@@ -118,6 +119,14 @@ const router = createRouter({
       path: '/reset',
       name: 'reset',
       component: ResetView,
+    },
+    {
+      path: '/layers/:text',
+      name: 'dataLayers',
+      component: DataLayersView,
+      meta: {
+        isTextSpecific: true,
+      },
     },
     {
       path: '/account',

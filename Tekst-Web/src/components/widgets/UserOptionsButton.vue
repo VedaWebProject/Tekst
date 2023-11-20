@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, h, type Component } from 'vue';
 import { useAuthStore, useStateStore } from '@/stores';
-import { useRouter } from 'vue-router';
+import { useRouter, type RouteLocationRaw, RouterLink } from 'vue-router';
 import { NButton, NIcon, NDropdown } from 'naive-ui';
 import { $t } from '@/i18n';
 import { useTheme } from '@/theme';
@@ -10,6 +10,7 @@ import LogInRound from '@vicons/material/LogInRound';
 import LogOutRound from '@vicons/material/LogOutRound';
 import PersonRound from '@vicons/material/PersonRound';
 import ShieldOutlined from '@vicons/material/ShieldOutlined';
+import LayersFilled from '@vicons/material/LayersFilled';
 
 const auth = useAuthStore();
 const state = useStateStore();
@@ -26,14 +27,28 @@ const showUserDropdown = ref(false);
 
 const userOptions = computed(() => [
   {
-    label: `${auth.user?.firstName} ${auth.user?.lastName}`,
+    label: renderLink(() => `${auth.user?.firstName} ${auth.user?.lastName}`, {
+      name: 'account',
+    }),
     key: 'account',
     icon: renderIcon(PersonRound),
+  },
+  {
+    label: renderLink(() => $t('dataLayers.heading'), {
+      name: 'dataLayers',
+      params: {
+        text: state.text?.slug || '',
+      },
+    }),
+    key: 'dataLayers',
+    icon: renderIcon(LayersFilled),
   },
   ...(auth.user?.isSuperuser
     ? [
         {
-          label: $t('admin.optionGroupLabel'),
+          label: renderLink(() => $t('admin.optionGroupLabel'), {
+            name: 'admin',
+          }),
           key: 'admin',
           icon: renderIcon(ShieldOutlined),
         },
@@ -52,6 +67,25 @@ const userOptions = computed(() => [
 
 const color = computed(() => (auth.loggedIn ? accentColors.value.base : undefined));
 
+function renderLink(
+  label: string | (() => string),
+  to: RouteLocationRaw,
+  props?: Record<string, unknown>
+) {
+  return () =>
+    h(
+      RouterLink,
+      {
+        to,
+        style: {
+          fontSize: 'var(--app-ui-font-size)',
+        },
+        ...props,
+      },
+      { default: label }
+    );
+}
+
 function renderIcon(icon: Component) {
   return () => h(NIcon, null, { default: () => h(icon) });
 }
@@ -68,15 +102,13 @@ function handleUserOptionSelect(key: string) {
   showUserDropdown.value = false;
   if (key === 'logout') {
     auth.logout();
-  } else if (key === 'adminTexts') {
-    router.push({
-      name: 'adminTexts',
-      params: { text: state.text?.slug },
-    });
   } else {
-    router.push({
-      name: key,
-    });
+    const targetRoute = router.resolve({ name: key });
+    if (targetRoute.meta.isTextSpecific) {
+      router.push({ ...targetRoute, params: { ...targetRoute.params, text: state.text?.slug } });
+    } else {
+      router.push({ name: key });
+    }
   }
 }
 </script>
