@@ -4,7 +4,7 @@ from typing import Annotated
 
 from beanie import PydanticObjectId
 from beanie.operators import Or
-from pydantic import Field, field_validator
+from pydantic import ConfigDict, Field, field_validator, model_validator
 
 from tekst.models.common import (
     DocumentBase,
@@ -48,11 +48,11 @@ class LayerBase(ModelBase, ModelFactoryMixin):
         list[PydanticObjectId],
         Field(description="Users with shared write access to this layer"),
     ] = []
-    proposed: Annotated[
-        bool, Field(description="Whether this layer has been proposed for publication")
-    ] = False
     public: Annotated[
         bool, Field(description="Publication status of this layer")
+    ] = False
+    proposed: Annotated[
+        bool, Field(description="Whether this layer has been proposed for publication")
     ] = False
     citation: Annotated[
         str | None,
@@ -83,6 +83,13 @@ class LayerBase(ModelBase, ModelFactoryMixin):
                 f"layer type name (one of {layer_type_names})."
             )
         return v.lower()
+
+    @model_validator(mode="after")
+    def model_postprocess(self):
+        # cannot be both public and proposed, public has priority
+        if self.public:
+            self.proposed = False
+        return self
 
 
 # generate document and update models for this base model,
@@ -130,6 +137,10 @@ class LayerBaseDocument(LayerBase, DocumentBase):
 
 LayerBaseRead = LayerBase.get_read_model()
 LayerBaseUpdate = LayerBase.get_update_model()
+
+
+class AnyLayerRead(LayerBaseRead):
+    model_config = ConfigDict(extra="allow")
 
 
 class LayerNodeCoverage(ModelBase):

@@ -6,7 +6,7 @@ from fastapi import APIRouter, HTTPException, Path, Query, status
 
 from tekst.auth import OptionalUserDep, UserDep
 from tekst.layer_types import layer_type_manager
-from tekst.models.layer import LayerBase, LayerBaseDocument
+from tekst.models.layer import AnyLayerRead, LayerBase, LayerBaseDocument
 from tekst.models.text import TextDocument
 
 
@@ -141,7 +141,7 @@ for lt_name, lt_class in layer_type_manager.get_all().items():
 # ADDITIONAL ROUTE DEFINITIONS...
 
 
-@router.get("", response_model=list[dict], status_code=status.HTTP_200_OK)
+@router.get("", response_model=list[AnyLayerRead], status_code=status.HTTP_200_OK)
 async def find_layers(
     user: OptionalUserDep,
     text_id: Annotated[PydanticObjectId, Query(alias="textId")],
@@ -186,9 +186,7 @@ async def find_layers(
 
     uid = user and user.id
     return [
-        layer_doc.model_dump(
-            camelize_keys=True, exclude=layer_doc.restricted_fields(uid)
-        )
+        layer_doc.model_dump(exclude=layer_doc.restricted_fields(uid))
         for layer_doc in layer_docs
     ]
 
@@ -262,7 +260,7 @@ async def find_layers(
 #     )
 
 
-@router.get("/{id}", status_code=status.HTTP_200_OK)
+@router.get("/{id}", status_code=status.HTTP_200_OK, response_model=AnyLayerRead)
 async def get_generic_layer_data_by_id(
     layer_id: Annotated[PydanticObjectId, Path(alias="id")], user: OptionalUserDep
 ) -> dict:

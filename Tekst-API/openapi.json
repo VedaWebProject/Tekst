@@ -660,7 +660,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "type": "object"
+                    "$ref": "#/components/schemas/AnyLayerRead"
                   },
                   "title": "Response Find Layers Layers Get"
                 }
@@ -716,8 +716,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "title": "Response Get Generic Layer Data By Id Layers  Id  Get"
+                  "$ref": "#/components/schemas/AnyLayerRead"
                 }
               }
             }
@@ -3118,6 +3117,153 @@
   },
   "components": {
     "schemas": {
+      "AnyLayerRead": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Title",
+            "description": "Title of this layer"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 512,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Short, concise description of this data layer"
+          },
+          "textId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Textid",
+            "description": "ID of the text this layer belongs to"
+          },
+          "level": {
+            "type": "integer",
+            "title": "Level",
+            "description": "Text level this layer belongs to"
+          },
+          "layerType": {
+            "type": "string",
+            "title": "Layertype",
+            "description": "A string identifying one of the available layer types"
+          },
+          "ownerId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ownerid",
+            "description": "User owning this layer"
+          },
+          "sharedRead": {
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "type": "array",
+            "title": "Sharedread",
+            "description": "Users with shared read access to this layer",
+            "default": []
+          },
+          "sharedWrite": {
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "type": "array",
+            "title": "Sharedwrite",
+            "description": "Users with shared write access to this layer",
+            "default": []
+          },
+          "public": {
+            "type": "boolean",
+            "title": "Public",
+            "description": "Publication status of this layer",
+            "default": false
+          },
+          "proposed": {
+            "type": "boolean",
+            "title": "Proposed",
+            "description": "Whether this layer has been proposed for publication",
+            "default": false
+          },
+          "citation": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Citation",
+            "description": "Citation details for this layer"
+          },
+          "meta": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta",
+            "description": "Arbitrary metadata"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment",
+            "description": "Plaintext, potentially multiline comment on this layer"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "level",
+          "layerType"
+        ],
+        "title": "AnyLayerRead"
+      },
       "BearerResponse": {
         "properties": {
           "access_token": {
@@ -4022,16 +4168,16 @@
             "description": "Users with shared write access to this layer",
             "default": []
           },
-          "proposed": {
-            "type": "boolean",
-            "title": "Proposed",
-            "description": "Whether this layer has been proposed for publication",
-            "default": false
-          },
           "public": {
             "type": "boolean",
             "title": "Public",
             "description": "Publication status of this layer",
+            "default": false
+          },
+          "proposed": {
+            "type": "boolean",
+            "title": "Proposed",
+            "description": "Whether this layer has been proposed for publication",
             "default": false
           },
           "citation": {
@@ -4170,16 +4316,16 @@
             "description": "Users with shared write access to this layer",
             "default": []
           },
-          "proposed": {
-            "type": "boolean",
-            "title": "Proposed",
-            "description": "Whether this layer has been proposed for publication",
-            "default": false
-          },
           "public": {
             "type": "boolean",
             "title": "Public",
             "description": "Publication status of this layer",
+            "default": false
+          },
+          "proposed": {
+            "type": "boolean",
+            "title": "Proposed",
+            "description": "Whether this layer has been proposed for publication",
             "default": false
           },
           "citation": {
@@ -4300,13 +4446,13 @@
             "type": "array",
             "title": "Sharedwrite"
           },
-          "proposed": {
-            "type": "boolean",
-            "title": "Proposed"
-          },
           "public": {
             "type": "boolean",
             "title": "Public"
+          },
+          "proposed": {
+            "type": "boolean",
+            "title": "Proposed"
           },
           "citation": {
             "anyOf": [
