@@ -276,6 +276,86 @@ export type webhooks = Record<string, never>;
 
 export interface components {
   schemas: {
+    /** AnyLayerRead */
+    AnyLayerRead: {
+      /**
+       * Id
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      id: string;
+      /**
+       * Title
+       * @description Title of this layer
+       */
+      title: string;
+      /**
+       * Description
+       * @description Short, concise description of this data layer
+       */
+      description?: string | null;
+      /**
+       * Textid
+       * @description ID of the text this layer belongs to
+       */
+      textId?: string | null;
+      /**
+       * Level
+       * @description Text level this layer belongs to
+       */
+      level: number;
+      /**
+       * Layertype
+       * @description A string identifying one of the available layer types
+       */
+      layerType: string;
+      /**
+       * Ownerid
+       * @description User owning this layer
+       */
+      ownerId?: string | null;
+      /**
+       * Sharedread
+       * @description Users with shared read access to this layer
+       * @default []
+       */
+      sharedRead?: string[];
+      /**
+       * Sharedwrite
+       * @description Users with shared write access to this layer
+       * @default []
+       */
+      sharedWrite?: string[];
+      /**
+       * Public
+       * @description Publication status of this layer
+       * @default false
+       */
+      public?: boolean;
+      /**
+       * Proposed
+       * @description Whether this layer has been proposed for publication
+       * @default false
+       */
+      proposed?: boolean;
+      /**
+       * Citation
+       * @description Citation details for this layer
+       */
+      citation?: string | null;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       */
+      meta?: {
+        [key: string]: string;
+      } | null;
+      /**
+       * Comment
+       * @description Plaintext, potentially multiline comment on this layer
+       */
+      comment?: string | null;
+      [key: string]: unknown;
+    };
     /** BearerResponse */
     BearerResponse: {
       /** Access Token */
@@ -723,17 +803,17 @@ export interface components {
        */
       sharedWrite?: string[];
       /**
-       * Proposed
-       * @description Whether this layer has been proposed for publication
-       * @default false
-       */
-      proposed?: boolean;
-      /**
        * Public
        * @description Publication status of this layer
        * @default false
        */
       public?: boolean;
+      /**
+       * Proposed
+       * @description Whether this layer has been proposed for publication
+       * @default false
+       */
+      proposed?: boolean;
       /**
        * Citation
        * @description Citation details for this layer
@@ -803,17 +883,17 @@ export interface components {
        */
       sharedWrite?: string[];
       /**
-       * Proposed
-       * @description Whether this layer has been proposed for publication
-       * @default false
-       */
-      proposed?: boolean;
-      /**
        * Public
        * @description Publication status of this layer
        * @default false
        */
       public?: boolean;
+      /**
+       * Proposed
+       * @description Whether this layer has been proposed for publication
+       * @default false
+       */
+      proposed?: boolean;
       /**
        * Citation
        * @description Citation details for this layer
@@ -851,10 +931,10 @@ export interface components {
       sharedRead?: string[];
       /** Sharedwrite */
       sharedWrite?: string[];
-      /** Proposed */
-      proposed?: boolean;
       /** Public */
       public?: boolean;
+      /** Proposed */
+      proposed?: boolean;
       /** Citation */
       citation?: string | null;
       /** Meta */
@@ -969,7 +1049,7 @@ export interface components {
        *   "usersActiveByDefault": false,
        *   "enableCookieAuth": true,
        *   "enableJwtAuth": true,
-       *   "authCookieLifetime": 3600
+       *   "authCookieLifetime": 10800
        * }
        */
       security?: components['schemas']['PlatformSecurityInfo'];
@@ -977,7 +1057,7 @@ export interface components {
       layerTypes: components['schemas']['LayerTypeInfo'][];
       /** Systemsegments */
       systemSegments: components['schemas']['ClientSegmentRead'][];
-      /** Pagesinfo */
+      /** Infosegments */
       infoSegments: components['schemas']['ClientSegmentHead'][];
     };
     /** PlatformSecurityInfo */
@@ -1004,7 +1084,7 @@ export interface components {
       enableJwtAuth?: boolean;
       /**
        * Authcookielifetime
-       * @default 3600
+       * @default 10800
        */
       authCookieLifetime?: number;
     };
@@ -1018,7 +1098,7 @@ export interface components {
       /**
        * Infoplatformname
        * @description Name of the platform
-       * @default Tekst-DEV
+       * @default Tekst-Dev
        */
       infoPlatformName?: string;
       /**
@@ -1725,7 +1805,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': Record<string, never>[];
+          'application/json': components['schemas']['AnyLayerRead'][];
         };
       };
       /** @description Not found */
@@ -1751,7 +1831,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': Record<string, never>;
+          'application/json': components['schemas']['AnyLayerRead'];
         };
       };
       /** @description Not found */
