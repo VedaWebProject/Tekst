@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { NButton } from 'naive-ui';
+import { ref, onMounted, computed } from 'vue';
+import { NButton, NBadge } from 'naive-ui';
 import BrowseLocationControls from '@/components/browse/BrowseLocationControls.vue';
 import LocationLabel from '@/components/browse/LocationLabel.vue';
 import { useBrowseStore, useStateStore } from '@/stores';
@@ -13,6 +13,9 @@ const state = useStateStore();
 const browse = useBrowseStore();
 
 const affixRef = ref(null);
+const layerDrawerBadgeLabel = computed(
+  () => browse.layers.filter((l) => l.active).length + '/' + browse.layers.length
+);
 
 onMounted(() => {
   if (affixRef.value) {
@@ -51,18 +54,24 @@ onMounted(() => {
           </template>
         </n-button>
 
-        <n-button
-          secondary
-          size="large"
-          :title="$t('browse.toolbar.tipOpenDataLayerList')"
-          color="#fff"
-          :focusable="false"
-          @click="browse.showLayerToggleDrawer = true"
+        <n-badge
+          :value="layerDrawerBadgeLabel"
+          color="var(--content-bg-color)"
+          :show="!browse.loading && !!browse.layers.length"
         >
-          <template #icon>
-            <LayersRound />
-          </template>
-        </n-button>
+          <n-button
+            secondary
+            size="large"
+            :title="$t('browse.toolbar.tipOpenDataLayerList')"
+            color="#fff"
+            :focusable="false"
+            @click="browse.showLayerToggleDrawer = true"
+          >
+            <template #icon>
+              <LayersRound />
+            </template>
+          </n-button>
+        </n-badge>
       </div>
     </div>
   </div>
