@@ -2,7 +2,7 @@ import { ref, computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { defineStore } from 'pinia';
 import { useStateStore, useAuthStore } from '@/stores';
-import type { NodeRead } from '@/api';
+import type { AnyLayerReadFull, NodeRead } from '@/api';
 import { GET } from '@/api';
 import { useMessages } from '@/messages';
 
@@ -93,7 +93,7 @@ export const useBrowseStore = defineStore('browse', () => {
 
   /* BROWSE LAYERS AND UNITS */
 
-  const layers = ref<Record<string, any>[]>([]);
+  const layers = ref<AnyLayerReadFull[]>([]);
 
   async function loadLayersData() {
     if (!state.text) return;
@@ -101,7 +101,7 @@ export const useBrowseStore = defineStore('browse', () => {
     loading.value = true;
     // fetch layers data
     const { data: layersData, error } = await GET('/layers', {
-      params: { query: { textId: state.text.id } },
+      params: { query: { textId: state.text.id, owners: true } },
     });
     if (!error) {
       layersData.forEach((l: Record<string, any>) => {
@@ -109,14 +109,14 @@ export const useBrowseStore = defineStore('browse', () => {
         const existingLayer = layers.value.find((lo) => lo.id === l.id);
         l.active = !existingLayer || existingLayer.active;
       });
-      await loadUnitsData(layersData);
+      await loadUnitsData(layersData as AnyLayerReadFull[]);
     } else {
       message.error('Error loading data layers for this location', error.detail?.toString());
     }
     loading.value = false;
   }
 
-  async function loadUnitsData(layersData = layers.value) {
+  async function loadUnitsData(layersData: AnyLayerReadFull[] = layers.value) {
     if (!nodePathHead.value) {
       layers.value = [];
       return;

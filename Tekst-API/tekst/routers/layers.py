@@ -8,6 +8,7 @@ from tekst.auth import OptionalUserDep, UserDep
 from tekst.layer_types import layer_type_manager
 from tekst.models.layer import AnyLayerRead, LayerBase, LayerBaseDocument
 from tekst.models.text import TextDocument
+from tekst.models.user import UserDocument, UserRead, UserReadPublic
 
 
 def _generate_read_endpoint(
@@ -141,6 +142,45 @@ for lt_name, lt_class in layer_type_manager.get_all().items():
 # ADDITIONAL ROUTE DEFINITIONS...
 
 
+async def _process_layer_results(
+    layer_docs: LayerBaseDocument | list[LayerBaseDocument],
+    user: UserRead | None = None,
+    include_owners: bool = False,
+    include_writable: bool = False,
+) -> AnyLayerRead | list[AnyLayerRead]:
+    # remember if a list has been passed
+    is_list = isinstance(layer_docs, list)
+    # convert single layer document to list
+    if not is_list:
+        layer_docs = [layer_docs]
+    # convert layer documents to AnyLayerRead instances
+    layers = [AnyLayerRead(**layer_doc.model_dump()) for layer_doc in layer_docs]
+    # include writable flag (if applicable)
+    if include_writable and user:
+        for layer in layers:
+            layer.writable = (
+                user.is_superuser
+                or user.id == layer.owner_id
+                or user.id in layer.shared_write
+            )
+    # include owner user data in each layer model (if an owner id is set)
+    if include_owners:
+        for layer in layers:
+            if layer.owner_id:
+                layer.owner = UserReadPublic.model_from(
+                    await UserDocument.get(layer.owner_id)
+                )
+    # apply field restrictions
+    layers = [
+        AnyLayerRead(
+            **layer.model_dump(exclude=layer.restricted_fields(user and user.id))
+        )
+        for layer in layers
+    ]
+    # return data
+    return layers if is_list else layers[0]
+
+
 @router.get("", response_model=list[AnyLayerRead], status_code=status.HTTP_200_OK)
 async def find_layers(
     user: OptionalUserDep,
@@ -148,6 +188,16 @@ async def find_layers(
     level: int = None,
     layer_type: Annotated[str, Query(alias="layerType")] = None,
     limit: int = 1000,
+    include_owners: Annotated[
+        bool, Query(alias="owners", description="Include owners' user data")
+    ] = False,
+    include_writable: Annotated[
+        bool,
+        Query(
+            alias="writable",
+            description="Add flag indicating write permissions for requesting user",
+        ),
+    ] = False,
 ) -> list[dict]:
     """
     Returns a list of all data layers matching the given criteria.
@@ -168,12 +218,14 @@ async def find_layers(
         TextDocument.is_active == True  # noqa: E712
     ).to_list()
 
+    # prepare find query to restrict to layers of active texts
     active_texts_restriction = (
         In(LayerBaseDocument.text_id, [text.id for text in active_texts])
         if not (user and user.is_superuser)
         else {}
     )
 
+    # query for layers the user is allowed to read and that belong to active texts
     layer_docs = (
         await LayerBaseDocument.find(example, with_children=True)
         .find(
@@ -184,11 +236,12 @@ async def find_layers(
         .to_list()
     )
 
-    uid = user and user.id
-    return [
-        layer_doc.model_dump(exclude=layer_doc.restricted_fields(uid))
-        for layer_doc in layer_docs
-    ]
+    return await _process_layer_results(
+        layer_docs=layer_docs,
+        user=user,
+        include_owners=include_owners,
+        include_writable=include_writable,
+    )
 
 
 #
@@ -262,7 +315,18 @@ async def find_layers(
 
 @router.get("/{id}", status_code=status.HTTP_200_OK, response_model=AnyLayerRead)
 async def get_generic_layer_data_by_id(
-    layer_id: Annotated[PydanticObjectId, Path(alias="id")], user: OptionalUserDep
+    user: OptionalUserDep,
+    layer_id: Annotated[PydanticObjectId, Path(alias="id")],
+    include_owners: Annotated[
+        bool, Query(alias="owners", description="Include owners' user data")
+    ] = False,
+    include_writable: Annotated[
+        bool,
+        Query(
+            alias="writable",
+            description="Add flag indicating write permissions for requesting user",
+        ),
+    ] = False,
 ) -> dict:
     layer_doc = (
         await LayerBaseDocument.find(
@@ -275,4 +339,6 @@ async def get_generic_layer_data_by_id(
         raise HTTPException(
             status.HTTP_404_NOT_FOUND, detail=f"No layer with ID {layer_id}"
         )
-    return layer_doc.model_dump(exclude=layer_doc.restricted_fields(user and user.id))
+    return await _process_layer_results(
+        layer_doc, user, include_owners, include_writable
+    )

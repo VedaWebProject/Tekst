@@ -650,6 +650,30 @@
               "default": 1000,
               "title": "Limit"
             }
+          },
+          {
+            "name": "owners",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Include owners' user data",
+              "default": false,
+              "title": "Owners"
+            },
+            "description": "Include owners' user data"
+          },
+          {
+            "name": "writable",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Add flag indicating write permissions for requesting user",
+              "default": false,
+              "title": "Writable"
+            },
+            "description": "Add flag indicating write permissions for requesting user"
           }
         ],
         "responses": {
@@ -708,6 +732,30 @@
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             }
+          },
+          {
+            "name": "owners",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Include owners' user data",
+              "default": false,
+              "title": "Owners"
+            },
+            "description": "Include owners' user data"
+          },
+          {
+            "name": "writable",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Add flag indicating write permissions for requesting user",
+              "default": false,
+              "title": "Writable"
+            },
+            "description": "Add flag indicating write permissions for requesting user"
           }
         ],
         "responses": {
@@ -3182,24 +3230,36 @@
             "description": "User owning this layer"
           },
           "sharedRead": {
-            "items": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Sharedread",
-            "description": "Users with shared read access to this layer",
-            "default": []
+            "description": "Users with shared read access to this layer"
           },
           "sharedWrite": {
-            "items": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Sharedwrite",
-            "description": "Users with shared write access to this layer",
-            "default": []
+            "description": "Users with shared write access to this layer"
           },
           "public": {
             "type": "boolean",
@@ -4149,24 +4209,36 @@
             "description": "User owning this layer"
           },
           "sharedRead": {
-            "items": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Sharedread",
-            "description": "Users with shared read access to this layer",
-            "default": []
+            "description": "Users with shared read access to this layer"
           },
           "sharedWrite": {
-            "items": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Sharedwrite",
-            "description": "Users with shared write access to this layer",
-            "default": []
+            "description": "Users with shared write access to this layer"
           },
           "public": {
             "type": "boolean",
@@ -4297,24 +4369,36 @@
             "description": "User owning this layer"
           },
           "sharedRead": {
-            "items": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Sharedread",
-            "description": "Users with shared read access to this layer",
-            "default": []
+            "description": "Users with shared read access to this layer"
           },
           "sharedWrite": {
-            "items": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Sharedwrite",
-            "description": "Users with shared write access to this layer",
-            "default": []
+            "description": "Users with shared write access to this layer"
           },
           "public": {
             "type": "boolean",
@@ -4431,19 +4515,33 @@
             "title": "Ownerid"
           },
           "sharedRead": {
-            "items": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Sharedread"
           },
           "sharedWrite": {
-            "items": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Sharedwrite"
           },
           "public": {

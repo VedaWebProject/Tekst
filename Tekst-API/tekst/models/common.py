@@ -44,16 +44,6 @@ class DocumentBase(ModelTransformerMixin, Document):
             return camelize(super().model_dump(**kwargs))
         return super().model_dump(**kwargs)
 
-    def restricted_fields(self, user_id: str = None) -> dict:
-        """
-        This may or may not be overridden to define access-restricted fields
-        that should be excluded from .model_dump() and .model_dump_json() calls based on
-        the given user ID trying to access data.
-        IMPORTANT: We have to use snake_cased field names in the output dict!
-        Not the camelCased aliases!
-        """
-        return None
-
     async def insert(self, **kwargs):
         self.id = None  # reset ID for new document in case one is already set
         return await super().insert(**kwargs)

@@ -41,13 +41,13 @@ class LayerBase(ModelBase, ModelFactoryMixin):
         PydanticObjectId | None, Field(description="User owning this layer")
     ] = None
     shared_read: Annotated[
-        list[PydanticObjectId],
+        list[PydanticObjectId] | None,
         Field(description="Users with shared read access to this layer"),
-    ] = []
+    ] = None
     shared_write: Annotated[
-        list[PydanticObjectId],
+        list[PydanticObjectId] | None,
         Field(description="Users with shared write access to this layer"),
-    ] = []
+    ] = None
     public: Annotated[
         bool, Field(description="Publication status of this layer")
     ] = False
@@ -91,6 +91,12 @@ class LayerBase(ModelBase, ModelFactoryMixin):
             self.proposed = False
         return self
 
+    def restricted_fields(self, user_id: str = None) -> dict:
+        return {
+            "shared_read": user_id is None or self.owner_id != user_id,
+            "shared_write": user_id is None or self.owner_id != user_id,
+        }
+
 
 # generate document and update models for this base model,
 # as those have to be used as bases for inheriting model's document/update models
@@ -99,13 +105,14 @@ class LayerBase(ModelBase, ModelFactoryMixin):
 class LayerBaseDocument(LayerBase, DocumentBase):
     @classmethod
     def allowed_to_read(cls, user: UserRead | None) -> dict:
-        uid = user.id if user else "no_id"
         if not user:
             return {"public": True}
         if user.is_superuser:
             return {}
+        uid = user.id if user else "no_id"
         return Or(
             {"public": True},
+            {"proposed": True},
             {"owner_id": uid},
             {"shared_read": uid},
             {"shared_write": uid},
@@ -113,21 +120,13 @@ class LayerBaseDocument(LayerBase, DocumentBase):
 
     @classmethod
     def allowed_to_write(cls, user: UserRead | None) -> dict:
-        uid = user.id if user else "no_id"
-        if not user:
-            return {"public": True}
         if user.is_superuser:
             return {}
+        uid = user.id if user else "no_id"
         return Or(
             {"owner_id": uid},
             {"shared_write": uid},
         )
-
-    def restricted_fields(self, user_id: str = None) -> dict:
-        return {
-            "shared_read": user_id is None or self.owner_id != user_id,
-            "shared_write": user_id is None or self.owner_id != user_id,
-        }
 
     class Settings(DocumentBase.Settings):
         name = "layers"
@@ -141,6 +140,15 @@ LayerBaseUpdate = LayerBase.get_update_model()
 
 class AnyLayerRead(LayerBaseRead):
     model_config = ConfigDict(extra="allow")
+
+    def include_writable(self, user: UserRead | None):
+        if not user:
+            return
+        self.writable = (
+            user.is_superuser
+            or user.id == self.owner_id
+            or user.id in self.shared_write
+        )
 
 
 class LayerNodeCoverage(ModelBase):

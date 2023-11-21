@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { NButton, NModal, NProgress, NSpin } from 'naive-ui';
+import { NButton, NModal, NProgress, NSpin, NIcon } from 'naive-ui';
 import MetadataDisplay from '@/components/browse/MetadataDisplay.vue';
 import ModalButtonFooter from '@/components/ModalButtonFooter.vue';
 import IconHeading from '@/components/typography/IconHeading.vue';
 import UnitContainerHeaderWidget from '@/components/browse/UnitContainerHeaderWidget.vue';
-import { useProfile, useLayerCoverage } from '@/fetchers';
+import { useLayerCoverage } from '@/fetchers';
 import { useStateStore } from '@/stores';
 
 import InfoOutlined from '@vicons/material/InfoOutlined';
 import ChatBubbleOutlineOutlined from '@vicons/material/ChatBubbleOutlineOutlined';
 import FormatQuoteFilled from '@vicons/material/FormatQuoteFilled';
 import PercentOutlined from '@vicons/material/PercentOutlined';
+import PersonFilled from '@vicons/material/PersonFilled';
 
 const props = defineProps<{
   layer: Record<string, any>;
@@ -20,14 +21,13 @@ const props = defineProps<{
 const state = useStateStore();
 
 const showInfoModal = ref(false);
-const { user: owner, error: ownerError } = useProfile(props.layer.ownerId, showInfoModal); // eslint-disable-line
 const { coverage, error: coverageError } = useLayerCoverage(props.layer.id, showInfoModal); // eslint-disable-line
 const ownerDisplayName = computed(
   () =>
-    (owner.value &&
-      (owner.value.firstName && owner.value.lastName
-        ? `${owner.value.firstName} ${owner.value.lastName}`
-        : owner.value.username)) ||
+    (props.layer.owner &&
+      (props.layer.owner.firstName && props.layer.owner.lastName
+        ? `${props.layer.owner.firstName} ${props.layer.owner.lastName}`
+        : props.layer.owner.username)) ||
     ''
 );
 const presentNodes = computed(
@@ -61,16 +61,19 @@ const coveragePercent = computed(
   >
     <h2>{{ layer.title }}</h2>
 
+    <p
+      v-if="layer.owner"
+      style="display: flex; align-items: center; font-size: var(--app-ui-font-size-small)"
+    >
+      <n-icon :component="PersonFilled" style="margin-right: 4px" />
+      <RouterLink :to="{ name: 'user', params: { username: layer.owner.username } }">{{
+        ownerDisplayName
+      }}</RouterLink>
+    </p>
+
     <p>
       {{ $t(`layerTypes.${layer.layerType}`) }}
       {{ $t('models.meta.onLevel', { level: state.textLevelLabels[layer.level] }) }}.
-    </p>
-
-    <p v-if="owner && !ownerError">
-      {{ $t('models.meta.providedBy') }}:
-      <RouterLink :to="{ name: 'user', params: { username: owner.username } }">{{
-        ownerDisplayName
-      }}</RouterLink>
     </p>
 
     <template v-if="layer.meta && Object.keys(layer.meta).length">

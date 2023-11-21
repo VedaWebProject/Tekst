@@ -316,15 +316,13 @@ export interface components {
       /**
        * Sharedread
        * @description Users with shared read access to this layer
-       * @default []
        */
-      sharedRead?: string[];
+      sharedRead?: string[] | null;
       /**
        * Sharedwrite
        * @description Users with shared write access to this layer
-       * @default []
        */
-      sharedWrite?: string[];
+      sharedWrite?: string[] | null;
       /**
        * Public
        * @description Publication status of this layer
@@ -793,15 +791,13 @@ export interface components {
       /**
        * Sharedread
        * @description Users with shared read access to this layer
-       * @default []
        */
-      sharedRead?: string[];
+      sharedRead?: string[] | null;
       /**
        * Sharedwrite
        * @description Users with shared write access to this layer
-       * @default []
        */
-      sharedWrite?: string[];
+      sharedWrite?: string[] | null;
       /**
        * Public
        * @description Publication status of this layer
@@ -873,15 +869,13 @@ export interface components {
       /**
        * Sharedread
        * @description Users with shared read access to this layer
-       * @default []
        */
-      sharedRead?: string[];
+      sharedRead?: string[] | null;
       /**
        * Sharedwrite
        * @description Users with shared write access to this layer
-       * @default []
        */
-      sharedWrite?: string[];
+      sharedWrite?: string[] | null;
       /**
        * Public
        * @description Publication status of this layer
@@ -928,9 +922,9 @@ export interface components {
       /** Ownerid */
       ownerId?: string | null;
       /** Sharedread */
-      sharedRead?: string[];
+      sharedRead?: string[] | null;
       /** Sharedwrite */
-      sharedWrite?: string[];
+      sharedWrite?: string[] | null;
       /** Public */
       public?: boolean;
       /** Proposed */
@@ -1799,6 +1793,10 @@ export interface operations {
         level?: number;
         layerType?: string;
         limit?: number;
+        /** @description Include owners' user data */
+        owners?: boolean;
+        /** @description Add flag indicating write permissions for requesting user */
+        writable?: boolean;
       };
     };
     responses: {
@@ -1823,6 +1821,12 @@ export interface operations {
   /** Get generic layer data by id */
   getGenericLayerDataById: {
     parameters: {
+      query?: {
+        /** @description Include owners' user data */
+        owners?: boolean;
+        /** @description Add flag indicating write permissions for requesting user */
+        writable?: boolean;
+      };
       path: {
         id: string;
       };
