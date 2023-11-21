@@ -49,7 +49,7 @@ async def get_unit_siblings(
 
     layer = await LayerBaseDocument.find_one(
         LayerBaseDocument.id == layer_id,
-        LayerBaseDocument.allowed_to_read(user),
+        await LayerBaseDocument.allowed_to_read(user),
         with_children=True,
     )
 
@@ -182,7 +182,7 @@ async def get_layer_coverage_data(
 ) -> list[LayerNodeCoverage]:
     layer_doc = await LayerBaseDocument.find_one(
         LayerBaseDocument.id == layer_id,
-        LayerBaseDocument.allowed_to_read(user),
+        await LayerBaseDocument.allowed_to_read(user),
         with_children=True,
     )
     if not layer_doc:

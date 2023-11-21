@@ -15,6 +15,7 @@ general:
   insertAction: Einfügen
   removeAction: Entfernen
   deleteAction: Löschen
+  editAction: Bearbeiten
   quickSearch: Schnellsuche
   textSelect: Wählen Sie den Text, mit dem Sie arbeiten möchten
   info: Information
@@ -25,6 +26,7 @@ general:
   flags: Merkmale
   language: Sprache
   platform: Plattform
+  not: Nicht
 
 i18n:
   tipSwitcher: Gebietsschema auswählen (Sprache und Zahlen-/Datumsformat)
@@ -185,9 +187,16 @@ models:
     label: Bezeichnung
   layer:
     modelLabel: Datenschicht | Datenschichten
-    layerType: Datenschicht-Typ
-    comment: Kommentar
+    title: Titel
+    description: Beschreibung
+    level: Ebene
+    layerType: Datenschichttyp
+    writable: Schreibzugriff
+    public: Öffentlich
+    proposed: Vorgeschlagen
     citation: Zitation
+    comment: Kommentar
+    config: Konfiguration
   unit:
     modelLabel: Dateneinheit | Dateneinheiten
   meta:
@@ -196,7 +205,6 @@ models:
     year: Jahr
     language: Sprache
     layerType: '@:models.layer.layerType'
-    providedBy: Bereitgestellt von
     onLevel: auf Ebene "{level}"
   platformSettings:
     infoPlatformName: Name der Plattform
@@ -220,6 +228,15 @@ models:
 
 dataLayers:
   heading: Datenschichten
+  ownedByMe: Von mir
+  ownedByOthers: Von anderen
+  public: '@:models.layer.public'
+  notPublic: '@:general.not @:models.layer.public'
+  proposed: '@:models.layer.proposed'
+  notProposed: '@:general.not @:models.layer.proposed'
+  proposeAction: Vorschlagen
+  makePublicAction: Veröffentlichen
+  makePrivateAction: Veröffentlichung aufheben
 
 account:
   account: Konto

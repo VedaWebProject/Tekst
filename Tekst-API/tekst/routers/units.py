@@ -7,7 +7,6 @@ from fastapi import APIRouter, HTTPException, Query, status
 from tekst.auth import OptionalUserDep, UserDep
 from tekst.layer_types import layer_type_manager
 from tekst.models.layer import LayerBaseDocument
-from tekst.models.text import TextDocument
 from tekst.models.unit import UnitBase, UnitBaseDocument
 
 
@@ -21,10 +20,10 @@ def _generate_read_endpoint(
         # check if the layer this unit belongs to is readable by user
         layer_read_allowed = unit_doc and (
             await LayerBaseDocument.find(
-                LayerBaseDocument.id == unit_doc.layer_id, with_children=True
-            )
-            .find(LayerBaseDocument.allowed_to_read(user))
-            .exists()
+                LayerBaseDocument.id == unit_doc.layer_id,
+                await LayerBaseDocument.allowed_to_read(user),
+                with_children=True,
+            ).exists()
         )
         unit_doc = unit_doc if layer_read_allowed else None
         if not unit_doc:
@@ -195,19 +194,8 @@ async def find_units(
     returned unit objects cannot be typed to their precise layer unit type.
     """
 
-    active_texts = await TextDocument.find(
-        TextDocument.is_active == True  # noqa: E712
-    ).to_list()
-
-    active_texts_restriction = (
-        {}
-        if user and user.is_superuser
-        else In(LayerBaseDocument.text_id, [text.id for text in active_texts])
-    )
-
     readable_layers = await LayerBaseDocument.find(
-        LayerBaseDocument.allowed_to_read(user),
-        active_texts_restriction,
+        await LayerBaseDocument.allowed_to_read(user),
         with_children=True,
     ).to_list()
 

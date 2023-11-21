@@ -1,7 +1,6 @@
 from typing import Annotated
 
 from beanie import PydanticObjectId
-from beanie.operators import In
 from fastapi import APIRouter, HTTPException, Path, Query, status
 
 from tekst.auth import OptionalUserDep, UserDep
@@ -19,7 +18,8 @@ def _generate_read_endpoint(
     ) -> layer_read_model:
         """A generic route for reading a layer definition from the database"""
         layer_doc = await layer_document_model.find(
-            layer_document_model.id == id, layer_document_model.allowed_to_read(user)
+            layer_document_model.id == id,
+            await layer_document_model.allowed_to_read(user),
         ).first_or_none()
         if not layer_doc:
             raise HTTPException(
@@ -205,7 +205,6 @@ async def find_layers(
     As the resulting list of data layers may contain layers of different types, the
     returned layer objects cannot be typed to their precise layer type.
     """
-
     example = {"text_id": text_id}
 
     # add to example
@@ -214,23 +213,10 @@ async def find_layers(
     if layer_type:
         example["layer_type"] = layer_type
 
-    active_texts = await TextDocument.find(
-        TextDocument.is_active == True  # noqa: E712
-    ).to_list()
-
-    # prepare find query to restrict to layers of active texts
-    active_texts_restriction = (
-        In(LayerBaseDocument.text_id, [text.id for text in active_texts])
-        if not (user and user.is_superuser)
-        else {}
-    )
-
     # query for layers the user is allowed to read and that belong to active texts
     layer_docs = (
-        await LayerBaseDocument.find(example, with_children=True)
-        .find(
-            LayerBaseDocument.allowed_to_read(user),
-            active_texts_restriction,
+        await LayerBaseDocument.find(
+            example, await LayerBaseDocument.allowed_to_read(user), with_children=True
         )
         .limit(limit)
         .to_list()
@@ -328,13 +314,11 @@ async def get_generic_layer_data_by_id(
         ),
     ] = False,
 ) -> dict:
-    layer_doc = (
-        await LayerBaseDocument.find(
-            LayerBaseDocument.id == layer_id, with_children=True
-        )
-        .find(LayerBaseDocument.allowed_to_read(user))
-        .first_or_none()
-    )
+    layer_doc = await LayerBaseDocument.find(
+        LayerBaseDocument.id == layer_id,
+        await LayerBaseDocument.allowed_to_read(user),
+        with_children=True,
+    ).first_or_none()
     if not layer_doc:
         raise HTTPException(
             status.HTTP_404_NOT_FOUND, detail=f"No layer with ID {layer_id}"

@@ -13,9 +13,10 @@ import ChatBubbleOutlineOutlined from '@vicons/material/ChatBubbleOutlineOutline
 import FormatQuoteFilled from '@vicons/material/FormatQuoteFilled';
 import PercentOutlined from '@vicons/material/PercentOutlined';
 import PersonFilled from '@vicons/material/PersonFilled';
+import type { AnyLayerReadFull } from '@/api';
 
 const props = defineProps<{
-  layer: Record<string, any>;
+  layer: AnyLayerReadFull;
 }>();
 
 const state = useStateStore();
@@ -61,6 +62,11 @@ const coveragePercent = computed(
   >
     <h2>{{ layer.title }}</h2>
 
+    <p>
+      {{ $t(`layerTypes.${layer.layerType}`) }}
+      {{ $t('models.meta.onLevel', { level: state.textLevelLabels[layer.level] }) }}.
+    </p>
+
     <p
       v-if="layer.owner"
       style="display: flex; align-items: center; font-size: var(--app-ui-font-size-small)"
@@ -69,11 +75,6 @@ const coveragePercent = computed(
       <RouterLink :to="{ name: 'user', params: { username: layer.owner.username } }">{{
         ownerDisplayName
       }}</RouterLink>
-    </p>
-
-    <p>
-      {{ $t(`layerTypes.${layer.layerType}`) }}
-      {{ $t('models.meta.onLevel', { level: state.textLevelLabels[layer.level] }) }}.
     </p>
 
     <template v-if="layer.meta && Object.keys(layer.meta).length">

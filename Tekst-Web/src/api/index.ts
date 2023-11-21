@@ -9,7 +9,7 @@ const serverUrl: string | undefined = import.meta.env.TEKST_SERVER_URL;
 const apiPath: string | undefined = import.meta.env.TEKST_API_PATH;
 const apiUrl = (serverUrl && apiPath && serverUrl + apiPath) || '/';
 
-// custom, monkeypatched "fetch" for implementing request/response interceptors
+// custom, modified "fetch" for implementing request/response interceptors
 const customFetch = async (input: RequestInfo | URL, init?: RequestInit | undefined) => {
   // --- request interceptors go here... ---
   // add XSRF header to request headers
@@ -72,25 +72,47 @@ export function getFullUrl(path: string, query?: Record<string, any>): URL {
 }
 
 // export components types for use throughout codebase
+
+// general
+
+export type ErrorModel = components['schemas']['ErrorModel'];
+
+// user
+
 export type UserCreate = components['schemas']['UserCreate'];
 export type UserRead = components['schemas']['UserRead'];
 export type UserUpdate = components['schemas']['UserUpdate'];
 export type UserReadPublic = components['schemas']['UserReadPublic'];
 export type UserUpdatePublicFields = components['schemas']['UserUpdate']['publicFields'];
+
+// text and text structure
+
 export type TextCreate = components['schemas']['TextCreate'];
 export type TextRead = components['schemas']['TextRead'];
 export type SubtitleTranslation = components['schemas']['SubtitleTranslation'];
 export type StructureLevelTranslation = components['schemas']['StructureLevelTranslation'];
 export type NodeRead = components['schemas']['NodeRead'];
-export type PlainTextLayerConfig = components['schemas']['PlainTextLayerConfig'];
-export type DeepLLinksConfig = components['schemas']['DeepLLinksConfig'];
-export type LayerNodeCoverage = components['schemas']['LayerNodeCoverage'];
+
+// platform
+
 export type PlatformStats = components['schemas']['PlatformStats'];
 export type PlatformData = components['schemas']['PlatformData'];
-export type ErrorModel = components['schemas']['ErrorModel'];
 export type PlatformSettingsRead = components['schemas']['PlatformSettingsRead'];
 export type PlatformSettingsUpdate = components['schemas']['PlatformSettingsUpdate'];
+export type LayerNodeCoverage = components['schemas']['LayerNodeCoverage'];
+
 export type ClientSegmentRead = components['schemas']['ClientSegmentRead'];
 export type ClientSegmentCreate = components['schemas']['ClientSegmentCreate'];
 export type ClientSegmentUpdate = components['schemas']['ClientSegmentUpdate'];
 export type ClientSegmentHead = components['schemas']['ClientSegmentHead'];
+
+// data layers
+
+export type AnyLayerRead = components['schemas']['AnyLayerRead'];
+export type AnyLayerReadFull = AnyLayerRead & { writable?: boolean; owner?: UserReadPublic };
+
+export type PlainTextLayerRead = components['schemas']['PlainTextLayerRead'];
+export type PlainTextLayerUpdate = components['schemas']['PlainTextLayerUpdate'];
+
+export type PlainTextLayerConfig = components['schemas']['PlainTextLayerConfig'];
+export type DeepLLinksConfig = components['schemas']['DeepLLinksConfig'];

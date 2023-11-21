@@ -8,7 +8,7 @@ import { useTheme } from '@/theme';
 
 import LogInRound from '@vicons/material/LogInRound';
 import LogOutRound from '@vicons/material/LogOutRound';
-import PersonRound from '@vicons/material/PersonRound';
+import PersonFilled from '@vicons/material/PersonFilled';
 import ShieldOutlined from '@vicons/material/ShieldOutlined';
 import LayersFilled from '@vicons/material/LayersFilled';
 
@@ -30,7 +30,7 @@ const userOptions = computed(() => [
       name: 'account',
     }),
     key: 'account',
-    icon: renderIcon(PersonRound),
+    icon: renderIcon(PersonFilled),
   },
   {
     label: renderLink(() => $t('dataLayers.heading'), {
@@ -116,7 +116,7 @@ function handleUserOptionSelect(key: string) {
       class="user-options-button"
     >
       <template #icon>
-        <n-icon :component="PersonRound" />
+        <n-icon :component="PersonFilled" />
       </template>
     </n-button>
   </n-dropdown>

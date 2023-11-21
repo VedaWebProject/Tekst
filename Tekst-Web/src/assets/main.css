@@ -154,3 +154,8 @@ blockquote {
 .n-tree-node-switcher--expanded {
   align-self: center;
 }
+
+.n-thing-header__title {
+  font-size: var(--app-ui-font-size) !important;
+  font-weight: var(--app-ui-font-weight-normal) !important;
+}

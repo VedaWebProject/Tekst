@@ -15,6 +15,7 @@ general:
   insertAction: Insert
   removeAction: Remove
   deleteAction: Delete
+  editAction: Edit
   textSelect: Select the text you want to work with
   info: Information
   warning: Warning
@@ -24,6 +25,7 @@ general:
   flags: Flags
   language: Language
   platform: Platform
+  not: Not
 
 i18n:
   tipSwitcher: Choose locale (language and number/date formatting)
@@ -179,9 +181,16 @@ models:
     label: Label
   layer:
     modelLabel: Data layer | Data layers
+    title: Title
+    description: Description
+    level: Level
     layerType: Datalayer Type
+    writable: Write Access
+    public: Public
+    proposed: Proposed
     citation: Citation
     comment: Comment
+    config: Configuration
   unit:
     modelLabel: Data unit | Data units
   meta:
@@ -190,7 +199,6 @@ models:
     year: Year
     language: Language
     layerType: '@:models.layer.layerType'
-    providedBy: Provided by
     onLevel: on level "{level}"
   platformSettings:
     infoPlatformName: Platform Name
@@ -214,6 +222,15 @@ models:
 
 dataLayers:
   heading: Data Layers
+  ownedByMe: By me
+  ownedByOthers: By others
+  public: '@:models.layer.public'
+  notPublic: '@:general.not @:models.layer.public'
+  proposed: '@:models.layer.proposed'
+  notProposed: '@:general.not @:models.layer.proposed'
+  proposeAction: Propose
+  makePublicAction: Make Public
+  makePrivateAction: Make Private
 
 account:
   account: Account

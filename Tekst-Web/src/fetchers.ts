@@ -1,6 +1,12 @@
 import { ref, isRef, unref, watchEffect, type Ref } from 'vue';
 import { GET } from '@/api';
-import type { UserReadPublic, LayerNodeCoverage, PlatformStats, UserRead } from '@/api';
+import type {
+  UserReadPublic,
+  LayerNodeCoverage,
+  PlatformStats,
+  UserRead,
+  AnyLayerRead,
+} from '@/api';
 
 export function useProfile(
   usernameOrId: string | Ref<string>,
@@ -111,6 +117,52 @@ export function useUsers() {
   return {
     users,
     error,
+    load,
+  };
+}
+
+export function useLayers(
+  textId: string | Ref<string>,
+  includeOwners: boolean = true,
+  includeWritable: boolean = true
+) {
+  const layers = ref<AnyLayerRead[] | null>(null);
+  const error = ref(false);
+  const loading = ref(false);
+
+  async function load() {
+    loading.value = true;
+    layers.value = null;
+    error.value = false;
+
+    const { data, error: err } = await GET('/layers', {
+      params: {
+        query: {
+          textId: unref(textId),
+          owners: includeOwners,
+          writable: includeWritable,
+        },
+      },
+    });
+
+    if (!err) {
+      layers.value = data;
+    } else {
+      error.value = true;
+    }
+    loading.value = false;
+  }
+
+  if (isRef(textId)) {
+    watchEffect(load);
+  } else {
+    load();
+  }
+
+  return {
+    layers,
+    error,
+    loading,
     load,
   };
 }

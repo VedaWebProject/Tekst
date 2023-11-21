@@ -3,7 +3,7 @@ import re
 from typing import Annotated
 
 from beanie import PydanticObjectId
-from beanie.operators import Or
+from beanie.operators import And, In, Or
 from pydantic import ConfigDict, Field, field_validator, model_validator
 
 from tekst.models.common import (
@@ -12,6 +12,7 @@ from tekst.models.common import (
     ModelBase,
     ModelFactoryMixin,
 )
+from tekst.models.text import TextDocument
 from tekst.models.user import UserRead
 
 
@@ -104,18 +105,28 @@ class LayerBase(ModelBase, ModelFactoryMixin):
 
 class LayerBaseDocument(LayerBase, DocumentBase):
     @classmethod
-    def allowed_to_read(cls, user: UserRead | None) -> dict:
+    async def allowed_to_read(cls, user: UserRead | None) -> dict:
         if not user:
             return {"public": True}
         if user.is_superuser:
             return {}
-        uid = user.id if user else "no_id"
-        return Or(
-            {"public": True},
-            {"proposed": True},
-            {"owner_id": uid},
-            {"shared_read": uid},
-            {"shared_write": uid},
+
+        active_texts_ids = [
+            text.id
+            for text in await TextDocument.find(
+                TextDocument.is_active == True  # noqa: E712
+            ).to_list()
+        ]
+
+        return And(
+            Or(In(LayerBaseDocument.text_id, active_texts_ids), {"owner_id": user.id}),
+            Or(
+                {"public": True},
+                {"proposed": True},
+                {"owner_id": user.id},
+                {"shared_read": user.id},
+                {"shared_write": user.id},
+            ),
         )
 
     @classmethod
