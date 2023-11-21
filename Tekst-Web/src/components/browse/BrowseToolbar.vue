@@ -56,7 +56,7 @@ onMounted(() => {
 
         <n-badge
           :value="layerDrawerBadgeLabel"
-          color="var(--content-bg-color)"
+          color="var(--accent-color-inverted-intense)"
           :show="!browse.loading && !!browse.layers.length"
         >
           <n-button

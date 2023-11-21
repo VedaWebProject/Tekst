@@ -62,6 +62,8 @@ export function useTheme() {
       fade3: base.fade(0.6).hexa(),
       fade4: base.fade(0.8).hexa(),
       fade5: base.fade(0.9).hexa(),
+      inverted: base.negate().hex(),
+      invertedIntense: base.negate().saturate(0.5).darken(0.1).hex(),
     };
   });
 
