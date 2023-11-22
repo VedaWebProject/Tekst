@@ -27,6 +27,12 @@ general:
   language: Sprache
   platform: Plattform
   not: Nicht
+  areYouSureHelpTextHint: |
+    Bitte vergewissern Sie sich, dass Sie die entsprechende Passage in den
+    Hilfetexten zu diesem Thema gelesen und verstanden haben.
+    Sie finden die Hilfetexte zu jeder Seite, indem Sie auf das kleine '?'-Symbol
+    neben der Überschrift der jeweiligen Seite klicken.
+    Sind Sie sicher, dass Sie fortfahren möchten?
 
 i18n:
   tipSwitcher: Gebietsschema auswählen (Sprache und Zahlen-/Datumsformat)
@@ -234,9 +240,10 @@ dataLayers:
   notPublic: '@:general.not @:models.layer.public'
   proposed: '@:models.layer.proposed'
   notProposed: '@:general.not @:models.layer.proposed'
-  proposeAction: Vorschlagen
-  makePublicAction: Veröffentlichen
-  makePrivateAction: Veröffentlichung aufheben
+  proposeAction: Für Veröffentlichung vorschlagen
+  unproposeAction: Veröffentlichungsvorschlag zurücknehmen
+  publishAction: Veröffentlichen
+  unpublishAction: Veröffentlichung aufheben
 
 account:
   account: Konto

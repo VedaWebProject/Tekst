@@ -5,7 +5,7 @@ from secrets import token_hex
 from typing import Annotated
 from urllib.parse import quote
 
-from pydantic import EmailStr, Field, StringConstraints, field_validator
+from pydantic import EmailStr, Field, StringConstraints, computed_field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from tekst import pkg_meta
@@ -155,23 +155,18 @@ class TekstConfig(BaseSettings):
     tekst_license: str = pkg_meta["license"]
     tekst_license_url: CustomHttpUrl = pkg_meta["license_url"]
 
-    @field_validator("db_host", "db_password", mode="after")
-    @classmethod
-    def url_quote(cls, v: str) -> str:
-        return quote(str(v).encode("utf8"), safe="")
-
     @field_validator("db_name", mode="after")
     @classmethod
     def generate_db_name(cls, v: str) -> str:
         return safe_name(v)
 
-    def db_get_uri(self) -> str:
-        creds = (
-            f"{self.db_user}:{self.db_password}@"
-            if self.db_user and self.db_password
-            else ""
-        )
-        return f"{self.db_protocol}://{creds}{self.db_host}:{str(self.db_port)}"
+    @computed_field
+    @property
+    def db_uri(self) -> str:
+        db_host = quote(str(self.db_host).encode("utf8"), safe="")
+        db_password = quote(str(self.db_password).encode("utf8"), safe="")
+        creds = f"{self.db_user}:{db_password}@" if self.db_user and db_password else ""
+        return f"{self.db_protocol}://{creds}{db_host}:{str(self.db_port)}"
 
     @field_validator(
         "cors_allow_origins", "cors_allow_methods", "cors_allow_headers", mode="before"

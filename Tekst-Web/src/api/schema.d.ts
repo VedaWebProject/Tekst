@@ -93,6 +93,22 @@ export interface paths {
     /** Get generic layer data by id */
     get: operations['getGenericLayerDataById'];
   };
+  '/layers/{id}/propose': {
+    /** Propose layer */
+    post: operations['proposeLayer'];
+  };
+  '/layers/{id}/unpropose': {
+    /** Unpropose layer */
+    post: operations['unproposeLayer'];
+  };
+  '/layers/{id}/publish': {
+    /** Publish layer */
+    post: operations['publishLayer'];
+  };
+  '/layers/{id}/unpublish': {
+    /** Unpublish layer */
+    post: operations['unpublishLayer'];
+  };
   '/nodes': {
     /** Find nodes */
     get: operations['findNodes'];
@@ -1837,6 +1853,102 @@ export interface operations {
         content: {
           'application/json': components['schemas']['AnyLayerRead'];
         };
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Propose layer */
+  proposeLayer: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      204: {
+        content: never;
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Unpropose layer */
+  unproposeLayer: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      204: {
+        content: never;
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Publish layer */
+  publishLayer: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      204: {
+        content: never;
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Unpublish layer */
+  unpublishLayer: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      204: {
+        content: never;
       };
       /** @description Not found */
       404: {

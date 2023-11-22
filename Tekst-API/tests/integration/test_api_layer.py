@@ -179,13 +179,11 @@ async def test_access_private_layer(
     # register test superuser
     user_data = await register_test_user(is_superuser=True)
     session_cookie = await get_session_cookie(user_data)
-    # set layer to inactive
-    resp = await test_client.patch(
-        f"/layers/plaintext/{layer_id}", json={"public": False}, cookies=session_cookie
+    # unpublish
+    resp = await test_client.post(
+        f"/layers/{layer_id}/unpublish", cookies=session_cookie
     )
-    assert resp.status_code == 200, status_fail_msg(200, resp)
-    assert isinstance(resp.json(), dict)
-    assert resp.json()["public"] is False
+    assert resp.status_code == 204, status_fail_msg(204, resp)
     # logout
     resp = await test_client.post("/auth/cookie/logout")
     assert resp.status_code == 204, status_fail_msg(204, resp)
@@ -220,6 +218,93 @@ async def test_get_layers(
     # request invalid ID
     resp = await test_client.get("/layers/plaintext/foo")
     assert resp.status_code == 422, status_fail_msg(422, resp)
+
+
+@pytest.mark.anyio
+async def test_propose_unpropose_publish_unpublish_layer(
+    api_path,
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_fail_msg,
+    register_test_user,
+    get_session_cookie,
+):
+    text_id = (await insert_sample_data("texts", "nodes", "layers"))["texts"][0]
+    user_data = await register_test_user()
+    session_cookie = await get_session_cookie(user_data)
+    # create new layer (because only owner can update(write))
+    payload = {
+        "title": "Foo Bar Baz",
+        "textId": text_id,
+        "level": 0,
+        "layerType": "plaintext",
+        "ownerId": user_data.get("id"),
+    }
+    resp = await test_client.post(
+        "/layers/plaintext", json=payload, cookies=session_cookie
+    )
+    assert resp.status_code == 201, status_fail_msg(201, resp)
+    layer_data = resp.json()
+    assert "id" in layer_data
+    assert "ownerId" in layer_data
+    # become superuser
+    user_data = await register_test_user(is_superuser=True, alternative=True)
+    session_cookie = await get_session_cookie(user_data)
+    # publish unproposed layer
+    resp = await test_client.post(
+        f"/layers/{layer_data['id']}/publish",
+        cookies=session_cookie,
+    )
+    assert resp.status_code == 400, status_fail_msg(400, resp)
+    # propose layer
+    resp = await test_client.post(
+        f"/layers/{layer_data['id']}/propose",
+        cookies=session_cookie,
+    )
+    assert resp.status_code == 204, status_fail_msg(204, resp)
+    # get all accessible layers, check if ours is proposed
+    resp = await test_client.get("/layers", params={"textId": text_id})
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert isinstance(resp.json(), list)
+    for layer in resp.json():
+        if layer["id"] == layer_data["id"]:
+            assert layer["proposed"]
+    # propose layer again
+    resp = await test_client.post(
+        f"/layers/{layer_data['id']}/propose",
+        cookies=session_cookie,
+    )
+    assert resp.status_code == 400, status_fail_msg(400, resp)
+    # publish layer
+    resp = await test_client.post(
+        f"/layers/{layer_data['id']}/publish",
+        cookies=session_cookie,
+    )
+    assert resp.status_code == 204, status_fail_msg(204, resp)
+    # unpublish layer
+    resp = await test_client.post(
+        f"/layers/{layer_data['id']}/unpublish",
+        cookies=session_cookie,
+    )
+    assert resp.status_code == 204, status_fail_msg(204, resp)
+    # unpublish layer again
+    resp = await test_client.post(
+        f"/layers/{layer_data['id']}/unpublish",
+        cookies=session_cookie,
+    )
+    assert resp.status_code == 400, status_fail_msg(400, resp)
+    # propose layer again
+    resp = await test_client.post(
+        f"/layers/{layer_data['id']}/propose",
+        cookies=session_cookie,
+    )
+    assert resp.status_code == 204, status_fail_msg(204, resp)
+    # unpropose layer
+    resp = await test_client.post(
+        f"/layers/{layer_data['id']}/unpropose",
+        cookies=session_cookie,
+    )
+    assert resp.status_code == 204, status_fail_msg(204, resp)
 
 
 # @pytest.mark.anyio

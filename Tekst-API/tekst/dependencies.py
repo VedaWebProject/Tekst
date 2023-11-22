@@ -12,7 +12,7 @@ def get_cfg() -> TekstConfig:
 
 
 def get_db_client(cfg: TekstConfig = get_config()) -> DatabaseClient:
-    return get_client(cfg.db_get_uri())
+    return get_client(cfg.db_uri)
 
 
 def get_db(

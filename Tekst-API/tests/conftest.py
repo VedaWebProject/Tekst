@@ -84,7 +84,7 @@ def get_sample_data(get_sample_data_path) -> Callable[[str], Any]:
 @pytest.fixture(scope="session")
 async def get_db_client_override(config) -> DatabaseClient:
     """Dependency override for the database client dependency"""
-    db_client: DatabaseClient = DatabaseClient(config.db_get_uri())
+    db_client: DatabaseClient = DatabaseClient(config.db_uri)
     yield db_client
     # close db connection
     db_client.close()
@@ -138,28 +138,36 @@ async def insert_sample_data(config, reset_db, get_sample_data) -> Callable:
 
 
 @pytest.fixture
-def new_user_data() -> dict:
-    return dict(
-        email="foo@bar.de",
-        username="test_user",
-        password="poiPOI098",
-        first_name="Foo",
-        last_name="Bar",
-        affiliation="Some Institution",
-    )
+def get_fake_user() -> Callable:
+    def _get_fake_user(alternative: bool = False):
+        return dict(
+            email="foo@bar.de" if not alternative else "bar@foo.de",
+            username="test_user" if not alternative else "test_user2",
+            password="poiPOI098",
+            first_name="Foo",
+            last_name="Bar",
+            affiliation="Some Institution",
+        )
+
+    return _get_fake_user
 
 
 @pytest.fixture
-async def register_test_user(new_user_data) -> Callable:
+async def register_test_user(get_fake_user) -> Callable:
     async def _register_test_user(
-        *, is_active: bool = True, is_verified: bool = True, is_superuser: bool = False
+        *,
+        is_active: bool = True,
+        is_verified: bool = True,
+        is_superuser: bool = False,
+        alternative: bool = False,
     ) -> dict:
-        user = UserCreate(**new_user_data)
+        user_data = get_fake_user(alternative=alternative)
+        user = UserCreate(**user_data)
         user.is_active = is_active
         user.is_verified = is_verified
         user.is_superuser = is_superuser
         created_user = await _create_user(user)
-        return {"id": str(created_user.id), **new_user_data}
+        return {"id": str(created_user.id), **user_data}
 
     return _register_test_user
 

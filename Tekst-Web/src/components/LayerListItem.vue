@@ -8,6 +8,7 @@ import LayerPublicationStatus from '@/components/LayerPublicationStatus.vue';
 import DeleteFilled from '@vicons/material/DeleteFilled';
 import ModeEditFilled from '@vicons/material/ModeEditFilled';
 import StarHalfOutlined from '@vicons/material/StarHalfOutlined';
+import StarBorderOutlined from '@vicons/material/StarBorderOutlined';
 import PublicFilled from '@vicons/material/PublicFilled';
 import PublicOffFilled from '@vicons/material/PublicOffFilled';
 
@@ -16,7 +17,14 @@ const props = defineProps<{
   currentUser?: UserRead;
 }>();
 
-defineEmits(['deleteClick']);
+defineEmits([
+  'proposeClick',
+  'unproposeClick',
+  'publishClick',
+  'unpublishClick',
+  'editClick',
+  'deleteClick',
+]);
 
 const canDelete = computed(
   () =>
@@ -28,9 +36,14 @@ const canPropose = computed(
   () =>
     props.currentUser &&
     (props.currentUser.isSuperuser || props.currentUser.id === props.targetLayer.ownerId) &&
-    !props.targetLayer.public &&
-    !props.targetLayer.proposed
+    !props.targetLayer.public
 );
+
+const actionButtonProps = {
+  quaternary: true,
+  circle: true,
+  focusable: false,
+};
 </script>
 
 <template>
@@ -49,39 +62,67 @@ const canPropose = computed(
       <template #header-extra>
         <n-space>
           <!-- propose -->
-          <n-button v-if="canPropose" secondary :title="$t('dataLayers.proposeAction')">
+          <n-button
+            v-if="canPropose && !targetLayer.proposed"
+            v-bind="actionButtonProps"
+            :title="$t('dataLayers.proposeAction')"
+            @click="$emit('proposeClick', targetLayer)"
+          >
             <template #icon>
               <n-icon :component="StarHalfOutlined" />
             </template>
           </n-button>
-          <!-- make public -->
+          <!-- withdraw proposal -->
+          <n-button
+            v-if="canPropose && targetLayer.proposed"
+            v-bind="actionButtonProps"
+            :title="$t('dataLayers.unproposeAction')"
+            @click="$emit('unproposeClick', targetLayer)"
+          >
+            <template #icon>
+              <n-icon :component="StarBorderOutlined" />
+            </template>
+          </n-button>
+          <!-- publish -->
           <n-button
             v-if="currentUser?.isSuperuser && targetLayer.proposed"
-            secondary
-            :title="$t('dataLayers.makePublicAction')"
+            v-bind="actionButtonProps"
+            :title="$t('dataLayers.publishAction')"
+            @click="$emit('publishClick', targetLayer)"
           >
             <template #icon>
               <n-icon :component="PublicFilled" />
             </template>
           </n-button>
-          <!-- make private -->
+          <!-- withdraw publication -->
           <n-button
             v-if="currentUser?.isSuperuser && targetLayer.public"
-            secondary
-            :title="$t('dataLayers.makePrivateAction')"
+            v-bind="actionButtonProps"
+            :title="$t('dataLayers.unpublishAction')"
+            @click="$emit('unpublishClick', targetLayer)"
           >
             <template #icon>
               <n-icon :component="PublicOffFilled" />
             </template>
           </n-button>
           <!-- edit -->
-          <n-button v-if="targetLayer.writable" secondary :title="$t('general.editAction')">
+          <n-button
+            v-if="targetLayer.writable"
+            v-bind="actionButtonProps"
+            :title="$t('general.editAction')"
+            @click="$emit('editClick', targetLayer)"
+          >
             <template #icon>
               <n-icon :component="ModeEditFilled" />
             </template>
           </n-button>
           <!-- delete -->
-          <n-button v-if="canDelete" secondary :title="$t('general.deleteAction')">
+          <n-button
+            v-if="canDelete"
+            v-bind="actionButtonProps"
+            :title="$t('general.deleteAction')"
+            @click="$emit('deleteClick', targetLayer)"
+          >
             <template #icon>
               <n-icon :component="DeleteFilled" />
             </template>

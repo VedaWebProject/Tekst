@@ -1,7 +1,16 @@
 <script setup lang="ts">
-import { NButton, NInput, NIcon, NCheckbox, NSpace, NSpin, NPagination, NList } from 'naive-ui';
-import { hashCode } from '@/utils';
-import type { AnyLayerRead, AnyLayerReadFull } from '@/api';
+import {
+  NButton,
+  NInput,
+  NIcon,
+  NCheckbox,
+  NSpace,
+  NSpin,
+  NPagination,
+  NList,
+  useDialog,
+} from 'naive-ui';
+import { POST, type AnyLayerRead, type AnyLayerReadFull } from '@/api';
 import { ref } from 'vue';
 import { computed } from 'vue';
 import { $t } from '@/i18n';
@@ -14,11 +23,16 @@ import IconHeading from '@/components/typography/IconHeading.vue';
 import SearchRound from '@vicons/material/SearchRound';
 import UndoRound from '@vicons/material/UndoRound';
 import LayersFilled from '@vicons/material/LayersFilled';
+import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
+import { useMessages } from '@/messages';
 
 const state = useStateStore();
-const textId = computed(() => state.text?.id || '');
-const { layers, loading, error } = useLayers(textId);
 const auth = useAuthStore();
+const dialog = useDialog();
+const { message } = useMessages();
+
+const textId = computed(() => state.text?.id || '');
+const { layers, loading, error, load } = useLayers(textId);
 
 const pagination = ref({
   page: 1,
@@ -62,6 +76,122 @@ const paginatedData = computed(() => {
   const end = start + pagination.value.pageSize;
   return filteredData.value.slice(start, end);
 });
+
+function handleProposeClick(layer: AnyLayerReadFull) {
+  dialog.warning({
+    title: $t('general.warning'),
+    content: $t('dataLayers.warnPropose') + ' ' + $t('general.areYouSureHelpTextHint'),
+    positiveText: $t('general.yesAction'),
+    negativeText: $t('general.noAction'),
+    positiveButtonProps,
+    negativeButtonProps,
+    autoFocus: false,
+    closable: false,
+    onPositiveClick: async () => {
+      const { error } = await POST('/layers/{id}/propose', {
+        params: { path: { id: layer.id } },
+      });
+      if (!error) {
+        message.success($t('YAY'));
+      } else {
+        message.error($t('errors.unexpected'), error);
+      }
+      load();
+    },
+  });
+}
+
+function handleUnproposeClick(layer: AnyLayerReadFull) {
+  dialog.warning({
+    title: $t('general.warning'),
+    content: $t('dataLayers.warnUnpropose'),
+    positiveText: $t('general.yesAction'),
+    negativeText: $t('general.noAction'),
+    positiveButtonProps,
+    negativeButtonProps,
+    autoFocus: false,
+    closable: false,
+    onPositiveClick: async () => {
+      const { error } = await POST('/layers/{id}/unpropose', {
+        params: { path: { id: layer.id } },
+      });
+      if (!error) {
+        message.success($t('YAY'));
+      } else {
+        message.error($t('errors.unexpected'), error);
+      }
+      load();
+    },
+  });
+}
+
+function handlePublishClick(layer: AnyLayerReadFull) {
+  dialog.warning({
+    title: $t('general.warning'),
+    content: $t('dataLayers.warnPublish') + ' ' + $t('general.areYouSureHelpTextHint'),
+    positiveText: $t('general.yesAction'),
+    negativeText: $t('general.noAction'),
+    positiveButtonProps,
+    negativeButtonProps,
+    autoFocus: false,
+    closable: false,
+    onPositiveClick: async () => {
+      const { error } = await POST('/layers/{id}/publish', {
+        params: { path: { id: layer.id } },
+      });
+      if (!error) {
+        message.success($t('YAY'));
+      } else {
+        message.error($t('errors.unexpected'), error);
+      }
+      load();
+    },
+  });
+}
+
+function handleUnpublishClick(layer: AnyLayerReadFull) {
+  dialog.warning({
+    title: $t('general.warning'),
+    content: $t('dataLayers.warnUnpublish'),
+    positiveText: $t('general.yesAction'),
+    negativeText: $t('general.noAction'),
+    positiveButtonProps,
+    negativeButtonProps,
+    autoFocus: false,
+    closable: false,
+    onPositiveClick: async () => {
+      const { error } = await POST('/layers/{id}/unpublish', {
+        params: { path: { id: layer.id } },
+      });
+      if (!error) {
+        message.success($t('YAY'));
+      } else {
+        message.error($t('errors.unexpected'), error);
+      }
+      load();
+    },
+  });
+}
+
+function handleEditClick(layer: AnyLayerReadFull) {
+  alert('handleEditClick ' + JSON.stringify(layer));
+}
+
+function handleDeleteClick(layer: AnyLayerReadFull) {
+  dialog.warning({
+    title: $t('general.warning'),
+    content: $t('dataLayers.warnDelete'),
+    positiveText: $t('general.yesAction'),
+    negativeText: $t('general.noAction'),
+    positiveButtonProps,
+    negativeButtonProps,
+    autoFocus: false,
+    closable: false,
+    onPositiveClick: async () => {
+      alert('handleDeleteClick ' + JSON.stringify(layer));
+    },
+  });
+}
 </script>
 
 <template>
@@ -107,10 +237,15 @@ const paginatedData = computed(() => {
         <n-list style="background-color: transparent">
           <layer-list-item
             v-for="item in paginatedData"
-            :key="hashCode(item)"
-            :target-layer="item as AnyLayerReadFull"
+            :key="item.id"
+            :target-layer="item"
             :current-user="auth.user"
-            @delete-click="() => null"
+            @propose-click="handleProposeClick"
+            @unpropose-click="handleUnproposeClick"
+            @publish-click="handlePublishClick"
+            @unpublish-click="handleUnpublishClick"
+            @edit-click="handleEditClick"
+            @delete-click="handleDeleteClick"
           />
         </n-list>
         <!-- Pagination -->

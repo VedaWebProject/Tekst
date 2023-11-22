@@ -3,7 +3,7 @@ from typing import Annotated
 from beanie import PydanticObjectId
 from fastapi import APIRouter, HTTPException, Path, Query, status
 
-from tekst.auth import OptionalUserDep, UserDep
+from tekst.auth import OptionalUserDep, SuperuserDep, UserDep
 from tekst.layer_types import layer_type_manager
 from tekst.models.layer import AnyLayerRead, LayerBase, LayerBaseDocument
 from tekst.models.text import TextDocument
@@ -17,10 +17,10 @@ def _generate_read_endpoint(
         id: PydanticObjectId, user: OptionalUserDep
     ) -> layer_read_model:
         """A generic route for reading a layer definition from the database"""
-        layer_doc = await layer_document_model.find(
+        layer_doc = await layer_document_model.find_one(
             layer_document_model.id == id,
             await layer_document_model.allowed_to_read(user),
-        ).first_or_none()
+        )
         if not layer_doc:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
@@ -64,16 +64,17 @@ def _generate_update_endpoint(
     async def update_layer(
         id: PydanticObjectId, updates: layer_update_model, user: UserDep
     ) -> layer_read_model:
-        layer_doc: layer_document_model = (
-            await layer_document_model.find(layer_document_model.id == id)
-            .find(layer_document_model.allowed_to_write(user))
-            .first_or_none()
+        layer_doc: layer_document_model = await layer_document_model.find_one(
+            layer_document_model.id == id, layer_document_model.allowed_to_write(user)
         )
         if not layer_doc:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=f"Layer {id} doesn't exist or requires extra permissions",
             )
+        # force keep certain fields
+        for field in ("public", "proposed", "text_id"):
+            setattr(updates, field, getattr(layer_doc, field))
         await layer_doc.apply(updates.model_dump(exclude_unset=True))
         return layer_doc
 
@@ -314,15 +315,128 @@ async def get_generic_layer_data_by_id(
         ),
     ] = False,
 ) -> dict:
-    layer_doc = await LayerBaseDocument.find(
+    layer_doc = await LayerBaseDocument.find_one(
         LayerBaseDocument.id == layer_id,
         await LayerBaseDocument.allowed_to_read(user),
         with_children=True,
-    ).first_or_none()
+    )
     if not layer_doc:
         raise HTTPException(
             status.HTTP_404_NOT_FOUND, detail=f"No layer with ID {layer_id}"
         )
     return await _process_layer_results(
         layer_doc, user, include_owners, include_writable
+    )
+
+
+@router.post("/{id}/propose", status_code=status.HTTP_204_NO_CONTENT)
+async def propose_layer(
+    user: UserDep, layer_id: Annotated[PydanticObjectId, Path(alias="id")]
+) -> None:
+    layer_doc = await LayerBaseDocument.get(layer_id, with_children=True)
+    if not layer_doc:
+        raise HTTPException(
+            status.HTTP_404_NOT_FOUND, detail=f"No layer with ID {layer_id}"
+        )
+    if not user.is_superuser and user.id != layer_doc.owner_id:
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED)
+    if layer_doc.public:
+        raise HTTPException(
+            status.HTTP_400_BAD_REQUEST,
+            detail=f"Layer with ID {layer_id} is already public",
+        )
+    if layer_doc.proposed:
+        raise HTTPException(
+            status.HTTP_400_BAD_REQUEST,
+            detail=f"Layer with ID {layer_id} is already proposed for publication",
+        )
+    # all fine, propose layer
+    await LayerBaseDocument.find_one(
+        LayerBaseDocument.id == layer_id,
+        with_children=True,
+    ).set({LayerBaseDocument.proposed: True})  # noqa: E712
+
+
+@router.post("/{id}/unpropose", status_code=status.HTTP_204_NO_CONTENT)
+async def unpropose_layer(
+    user: UserDep, layer_id: Annotated[PydanticObjectId, Path(alias="id")]
+) -> None:
+    layer_doc = await LayerBaseDocument.get(layer_id, with_children=True)
+    if not layer_doc:
+        raise HTTPException(
+            status.HTTP_404_NOT_FOUND, detail=f"No layer with ID {layer_id}"
+        )
+    if not user.is_superuser and user.id != layer_doc.owner_id:
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED)
+    if not layer_doc.proposed:
+        raise HTTPException(
+            status.HTTP_400_BAD_REQUEST,
+            detail=f"Layer with ID {layer_id} is not proposed for publication",
+        )
+    # all fine, unpropose layer
+    await LayerBaseDocument.find_one(
+        LayerBaseDocument.id == layer_id,
+        with_children=True,
+    ).set(
+        {
+            LayerBaseDocument.proposed: False,  # noqa: E712
+            LayerBaseDocument.public: False,  # noqa: E712
+        }
+    )
+
+
+@router.post("/{id}/publish", status_code=status.HTTP_204_NO_CONTENT)
+async def publish_layer(
+    user: SuperuserDep, layer_id: Annotated[PydanticObjectId, Path(alias="id")]
+) -> None:
+    layer_doc = await LayerBaseDocument.get(layer_id, with_children=True)
+    if not layer_doc:
+        raise HTTPException(
+            status.HTTP_404_NOT_FOUND, detail=f"No layer with ID {layer_id}"
+        )
+    if layer_doc.public:
+        raise HTTPException(
+            status.HTTP_400_BAD_REQUEST,
+            detail=f"Layer with ID {layer_id} is already public",
+        )
+    if not layer_doc.proposed:
+        raise HTTPException(
+            status.HTTP_400_BAD_REQUEST,
+            detail=f"Layer with ID {layer_id} is not proposed for publication",
+        )
+    # all fine, publish layer
+    await LayerBaseDocument.find_one(
+        LayerBaseDocument.id == layer_id,
+        with_children=True,
+    ).set(
+        {
+            LayerBaseDocument.public: True,  # noqa: E712
+            LayerBaseDocument.proposed: False,  # noqa: E712
+        }
+    )
+
+
+@router.post("/{id}/unpublish", status_code=status.HTTP_204_NO_CONTENT)
+async def unpublish_layer(
+    user: SuperuserDep, layer_id: Annotated[PydanticObjectId, Path(alias="id")]
+) -> None:
+    layer_doc = await LayerBaseDocument.get(layer_id, with_children=True)
+    if not layer_doc:
+        raise HTTPException(
+            status.HTTP_404_NOT_FOUND, detail=f"No layer with ID {layer_id}"
+        )
+    if not layer_doc.public:
+        raise HTTPException(
+            status.HTTP_400_BAD_REQUEST,
+            detail=f"Layer with ID {layer_id} is not public",
+        )
+    # all fine, unpublish layer
+    await LayerBaseDocument.find_one(
+        LayerBaseDocument.id == layer_id,
+        with_children=True,
+    ).set(
+        {
+            LayerBaseDocument.public: False,  # noqa: E712
+            LayerBaseDocument.proposed: False,  # noqa: E712
+        }
     )
