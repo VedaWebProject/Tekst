@@ -1,13 +1,14 @@
 import { marked } from 'marked';
 import DOMPurify from 'isomorphic-dompurify';
 import path from 'path';
-import { readdirSync, readFileSync, writeFileSync, rmSync } from 'fs';
+import { readdirSync, readFileSync, writeFileSync, rmSync, copyFileSync } from 'fs';
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const HELP_DIR = path.normalize(`${__dirname}/../translations/help/`);
 const OUT_DIR = path.normalize(`${__dirname}/../src/assets/help/`);
+const DOCS_PATH = path.normalize(`${__dirname}/../../docs/generated/help/`);
 const localeDirs = readdirSync(HELP_DIR, { withFileTypes: true }).filter((entry) =>
   entry.isDirectory()
 );
@@ -34,6 +35,10 @@ for (const localeDir of localeDirs) {
 
   for (const mdFile of mdFiles) {
     const sourceFilePath = path.join(mdFile.path, mdFile.name);
+    // copy file to documentation folder
+    if (localeDir.name === 'enUS') {
+      copyFileSync(sourceFilePath, path.join(DOCS_PATH, mdFile.name));
+    }
     const data = readFileSync(sourceFilePath, 'utf8');
     const title = data.match(/(?<=^# ).*$/m)[0]; // ugly, but simple!
     const html = DOMPurify.sanitize(marked.parse(data));

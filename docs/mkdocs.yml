@@ -8,6 +8,8 @@ nav:
   - 'index.md'
   - 'concepts.md'
   - 'setup.md'
+  - Usage:
+    - 'Data Layers': 'usage/data-layers.md'
 
 plugins:
   - search
@@ -19,7 +21,9 @@ markdown_extensions:
       line_spans: __span
       pygments_lang_class: true
   - pymdownx.inlinehilite
-  - pymdownx.snippets
+  - pymdownx.snippets:
+      base_path: ["./generated/help/"]
+      check_paths: true
   - pymdownx.superfences
 
 theme:
