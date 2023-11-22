@@ -18,7 +18,7 @@ import { useMessages } from '@/messages';
 import { $t } from '@/i18n';
 import { watch } from 'vue';
 import type { Component, Ref } from 'vue';
-import { positiveButtonProps } from '@/components/dialogButtonProps';
+import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
 import RenameNodeModal from '@/components/admin/RenameNodeModal.vue';
 import AddNodeModal from '@/components/admin/AddNodeModal.vue';
 
@@ -207,7 +207,8 @@ async function handleDeleteClick(node: NodeTreeOption) {
     title: $t('general.warning'),
     content: $t('admin.text.nodes.warnDeleteNode', { nodeLabel: node.label }),
     positiveText: $t('general.deleteAction'),
-    positiveButtonProps: positiveButtonProps,
+    positiveButtonProps,
+    negativeButtonProps,
     autoFocus: true,
     onPositiveClick: async () => {
       d.loading = true;

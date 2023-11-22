@@ -94,8 +94,8 @@ function handleDeleteClick(level: number) {
     }),
     positiveText: $t('general.deleteAction'),
     negativeText: $t('general.cancelAction'),
-    positiveButtonProps: positiveButtonProps,
-    negativeButtonProps: negativeButtonProps,
+    positiveButtonProps,
+    negativeButtonProps,
     autoFocus: false,
     closable: false,
     onPositiveClick: async () => {
