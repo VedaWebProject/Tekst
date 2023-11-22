@@ -14,7 +14,6 @@ import {
 } from 'naive-ui';
 import UserListItem from '@/components/admin/UserListItem.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
-import { hashCode } from '@/utils';
 import type { UserRead, UserUpdate } from '@/api';
 import { ref } from 'vue';
 import { computed } from 'vue';
@@ -238,14 +237,14 @@ onMounted(() => {
       <template v-if="paginatedData.length > 0">
         <n-list style="background-color: transparent">
           <user-list-item
-            v-for="item in paginatedData"
-            :key="hashCode(item)"
-            :target-user="item"
+            v-for="user in paginatedData"
+            :key="user.id"
+            :target-user="user"
             :current-user="auth.user"
-            @active-click="(u: UserRead) => handleActiveClick(u)"
-            @verified-click="(u: UserRead) => handleVerifiedClick(u)"
-            @superuser-click="(u: UserRead) => handleSuperuserClick(u)"
-            @delete-click="(u: UserRead) => handleDeleteClick(u)"
+            @active-click="handleActiveClick"
+            @verified-click="handleVerifiedClick"
+            @superuser-click="handleSuperuserClick"
+            @delete-click="handleDeleteClick"
           />
         </n-list>
         <!-- Pagination -->
