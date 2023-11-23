@@ -413,6 +413,8 @@ async def publish_layer(
             LayerBaseDocument.public: True,
             LayerBaseDocument.proposed: False,
             LayerBaseDocument.owner_id: None,
+            LayerBaseDocument.shared_read: [],
+            LayerBaseDocument.shared_write: [],
         }
     )
 

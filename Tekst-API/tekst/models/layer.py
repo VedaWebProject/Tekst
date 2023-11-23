@@ -42,13 +42,13 @@ class LayerBase(ModelBase, ModelFactoryMixin):
         PydanticObjectId | None, Field(description="User owning this layer")
     ] = None
     shared_read: Annotated[
-        list[PydanticObjectId] | None,
+        list[PydanticObjectId],
         Field(description="Users with shared read access to this layer"),
-    ] = None
+    ] = []
     shared_write: Annotated[
-        list[PydanticObjectId] | None,
+        list[PydanticObjectId],
         Field(description="Users with shared write access to this layer"),
-    ] = None
+    ] = []
     public: Annotated[
         bool, Field(description="Publication status of this layer")
     ] = False
@@ -87,9 +87,13 @@ class LayerBase(ModelBase, ModelFactoryMixin):
 
     @model_validator(mode="after")
     def model_postprocess(self):
-        # cannot be both public and proposed, public has priority
         if self.public:
+            # cannot be both public and proposed, public has priority
             self.proposed = False
+            # published layers do not have an owner nor shares, only admins can edit
+            self.owner_id = None
+            self.shared_read = []
+            self.shared_write = []
         return self
 
     def restricted_fields(self, user_id: str = None) -> dict:

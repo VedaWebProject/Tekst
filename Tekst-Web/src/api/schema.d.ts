@@ -332,13 +332,15 @@ export interface components {
       /**
        * Sharedread
        * @description Users with shared read access to this layer
+       * @default []
        */
-      sharedRead?: string[] | null;
+      sharedRead?: string[];
       /**
        * Sharedwrite
        * @description Users with shared write access to this layer
+       * @default []
        */
-      sharedWrite?: string[] | null;
+      sharedWrite?: string[];
       /**
        * Public
        * @description Publication status of this layer
@@ -807,13 +809,15 @@ export interface components {
       /**
        * Sharedread
        * @description Users with shared read access to this layer
+       * @default []
        */
-      sharedRead?: string[] | null;
+      sharedRead?: string[];
       /**
        * Sharedwrite
        * @description Users with shared write access to this layer
+       * @default []
        */
-      sharedWrite?: string[] | null;
+      sharedWrite?: string[];
       /**
        * Public
        * @description Publication status of this layer
@@ -885,13 +889,15 @@ export interface components {
       /**
        * Sharedread
        * @description Users with shared read access to this layer
+       * @default []
        */
-      sharedRead?: string[] | null;
+      sharedRead?: string[];
       /**
        * Sharedwrite
        * @description Users with shared write access to this layer
+       * @default []
        */
-      sharedWrite?: string[] | null;
+      sharedWrite?: string[];
       /**
        * Public
        * @description Publication status of this layer
@@ -938,9 +944,9 @@ export interface components {
       /** Ownerid */
       ownerId?: string | null;
       /** Sharedread */
-      sharedRead?: string[] | null;
+      sharedRead?: string[];
       /** Sharedwrite */
-      sharedWrite?: string[] | null;
+      sharedWrite?: string[];
       /** Public */
       public?: boolean;
       /** Proposed */
