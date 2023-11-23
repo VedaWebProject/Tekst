@@ -72,9 +72,10 @@ def _generate_update_endpoint(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=f"Layer {id} doesn't exist or requires extra permissions",
             )
-        # force-keep certain fields
-        for field in ("public", "proposed", "text_id", "owner_id"):
-            setattr(updates, field, getattr(layer_doc, field))
+        # force-keep certain fields if user is not an admin
+        if not user.is_superuser:
+            for field in ("public", "proposed", "text_id", "owner_id"):
+                setattr(updates, field, getattr(layer_doc, field))
         await layer_doc.apply(updates.model_dump(exclude_unset=True))
         return layer_doc
 
