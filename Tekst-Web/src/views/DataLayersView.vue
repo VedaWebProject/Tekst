@@ -8,6 +8,8 @@ import {
   NSpin,
   NPagination,
   NList,
+  NCollapse,
+  NCollapseItem,
   useDialog,
 } from 'naive-ui';
 import { POST, type AnyLayerRead, type AnyLayerReadFull } from '@/api';
@@ -206,40 +208,42 @@ function handleDeleteClick(layer: AnyLayerReadFull) {
 
   <template v-if="layers && !error && !loading">
     <!-- Filters -->
-    <div style="margin-bottom: 1.5rem">
-      <n-input
-        v-model:value="filters.search"
-        :placeholder="$t('search.searchAction')"
-        style="margin-bottom: 1rem"
-        round
-      >
-        <template #prefix>
-          <n-icon :component="SearchRound" />
-        </template>
-      </n-input>
-      <n-space vertical justify="space-between" style="padding-left: 12px">
-        <n-checkbox v-model:checked="filters.public" :label="$t('dataLayers.public')" />
-        <n-checkbox v-model:checked="filters.notPublic" :label="$t('dataLayers.notPublic')" />
-        <n-checkbox v-model:checked="filters.proposed" :label="$t('dataLayers.proposed')" />
-        <n-checkbox v-model:checked="filters.notProposed" :label="$t('dataLayers.notProposed')" />
-        <n-checkbox v-model:checked="filters.ownedByMe" :label="$t('dataLayers.ownedByMe')" />
-        <n-checkbox
-          v-model:checked="filters.ownedByOthers"
-          :label="$t('dataLayers.ownedByOthers')"
-        />
-        <n-button
-          secondary
+    <n-collapse style="margin-bottom: var(--layout-gap)">
+      <n-collapse-item :title="$t('general.filters')" name="filters">
+        <n-input
+          v-model:value="filters.search"
+          :placeholder="$t('search.searchAction')"
+          style="margin-bottom: 1rem"
           round
-          style="margin-top: var(--layout-gap)"
-          @click="filters = initialFilters()"
         >
-          {{ $t('general.resetAction') }}
-          <template #icon>
-            <n-icon :component="UndoRound" />
+          <template #prefix>
+            <n-icon :component="SearchRound" />
           </template>
-        </n-button>
-      </n-space>
-    </div>
+        </n-input>
+        <n-space vertical justify="space-between" style="padding-left: 12px">
+          <n-checkbox v-model:checked="filters.public" :label="$t('dataLayers.public')" />
+          <n-checkbox v-model:checked="filters.notPublic" :label="$t('dataLayers.notPublic')" />
+          <n-checkbox v-model:checked="filters.proposed" :label="$t('dataLayers.proposed')" />
+          <n-checkbox v-model:checked="filters.notProposed" :label="$t('dataLayers.notProposed')" />
+          <n-checkbox v-model:checked="filters.ownedByMe" :label="$t('dataLayers.ownedByMe')" />
+          <n-checkbox
+            v-model:checked="filters.ownedByOthers"
+            :label="$t('dataLayers.ownedByOthers')"
+          />
+          <n-button
+            secondary
+            round
+            style="margin-top: var(--content-gap)"
+            @click="filters = initialFilters()"
+          >
+            {{ $t('general.resetAction') }}
+            <template #icon>
+              <n-icon :component="UndoRound" />
+            </template>
+          </n-button>
+        </n-space>
+      </n-collapse-item>
+    </n-collapse>
     <!-- Layers List -->
     <div class="content-block">
       <template v-if="paginatedData.length > 0">
