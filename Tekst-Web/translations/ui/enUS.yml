@@ -25,7 +25,7 @@ general:
   flags: Flags
   language: Language
   platform: Platform
-  not: Not
+  not: not
   areYouSureHelpTextHint: |
     Please make sure you have read and understood the corresponding passage in the
     help texts on this topic. You can find the help texts for any page by clicking the
@@ -157,7 +157,7 @@ models:
     isInactive: inactive
     isVerified: verified
     isUnverified: unverified
-    isSuperuser: Admin
+    isSuperuser: Administrator
     formRulesFeedback:
       emailInvalid: '@:models.user.email is too obviously invalid'
       usernameChars: 'Allowed characters: a-z, A-Z, 0-9 and - _'
@@ -189,9 +189,8 @@ models:
     description: Description
     level: Level
     layerType: Datalayer Type
-    writable: Write Access
-    public: Public
-    proposed: Proposed
+    public: public
+    proposed: proposed for publication
     citation: Citation
     comment: Comment
     config: Configuration
@@ -226,8 +225,8 @@ models:
 
 dataLayers:
   heading: Data Layers
-  ownedByMe: By me
-  ownedByOthers: By others
+  ownedByMe: by me
+  ownedByOthers: by others
   public: '@:models.layer.public'
   notPublic: '@:general.not @:models.layer.public'
   proposed: '@:models.layer.proposed'

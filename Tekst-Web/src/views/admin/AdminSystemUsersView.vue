@@ -83,6 +83,7 @@ async function updateUser(user: UserRead, updates: UserUpdate) {
   if (!error) {
     message.success($t('admin.users.save', { username: user.username }));
     loadUsers();
+    filters.value = initialFilters();
     return updatedUser;
   } else {
     message.error($t('errors.unexpected'), error);

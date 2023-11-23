@@ -97,6 +97,7 @@ function handleProposeClick(layer: AnyLayerReadFull) {
         message.error($t('errors.unexpected'), error);
       }
       load();
+      filters.value = initialFilters();
     },
   });
 }
@@ -121,6 +122,7 @@ function handleUnproposeClick(layer: AnyLayerReadFull) {
         message.error($t('errors.unexpected'), error);
       }
       load();
+      filters.value = initialFilters();
     },
   });
 }
@@ -145,6 +147,7 @@ function handlePublishClick(layer: AnyLayerReadFull) {
         message.error($t('errors.unexpected'), error);
       }
       load();
+      filters.value = initialFilters();
     },
   });
 }
@@ -169,6 +172,7 @@ function handleUnpublishClick(layer: AnyLayerReadFull) {
         message.error($t('errors.unexpected'), error);
       }
       load();
+      filters.value = initialFilters();
     },
   });
 }
@@ -213,7 +217,7 @@ function handleDeleteClick(layer: AnyLayerReadFull) {
           <n-icon :component="SearchRound" />
         </template>
       </n-input>
-      <n-space justify="space-between" style="padding-left: 12px">
+      <n-space vertical justify="space-between" style="padding-left: 12px">
         <n-checkbox v-model:checked="filters.public" :label="$t('dataLayers.public')" />
         <n-checkbox v-model:checked="filters.notPublic" :label="$t('dataLayers.notPublic')" />
         <n-checkbox v-model:checked="filters.proposed" :label="$t('dataLayers.proposed')" />
@@ -223,7 +227,12 @@ function handleDeleteClick(layer: AnyLayerReadFull) {
           v-model:checked="filters.ownedByOthers"
           :label="$t('dataLayers.ownedByOthers')"
         />
-        <n-button secondary round @click="filters = initialFilters()">
+        <n-button
+          secondary
+          round
+          style="margin-top: var(--layout-gap)"
+          @click="filters = initialFilters()"
+        >
           {{ $t('general.resetAction') }}
           <template #icon>
             <n-icon :component="UndoRound" />

@@ -7,8 +7,8 @@ import LayerPublicationStatus from '@/components/LayerPublicationStatus.vue';
 
 import DeleteFilled from '@vicons/material/DeleteFilled';
 import ModeEditFilled from '@vicons/material/ModeEditFilled';
-import StarHalfOutlined from '@vicons/material/StarHalfOutlined';
-import StarBorderOutlined from '@vicons/material/StarBorderOutlined';
+import FlagFilled from '@vicons/material/FlagFilled';
+import FlagOutlined from '@vicons/material/FlagOutlined';
 import PublicFilled from '@vicons/material/PublicFilled';
 import PublicOffFilled from '@vicons/material/PublicOffFilled';
 
@@ -69,7 +69,7 @@ const actionButtonProps = {
             @click="$emit('proposeClick', targetLayer)"
           >
             <template #icon>
-              <n-icon :component="StarHalfOutlined" />
+              <n-icon :component="FlagFilled" />
             </template>
           </n-button>
           <!-- withdraw proposal -->
@@ -80,7 +80,7 @@ const actionButtonProps = {
             @click="$emit('unproposeClick', targetLayer)"
           >
             <template #icon>
-              <n-icon :component="StarBorderOutlined" />
+              <n-icon :component="FlagOutlined" />
             </template>
           </n-button>
           <!-- publish -->
