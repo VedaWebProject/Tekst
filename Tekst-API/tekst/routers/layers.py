@@ -354,7 +354,7 @@ async def propose_layer(
     await LayerBaseDocument.find_one(
         LayerBaseDocument.id == layer_id,
         with_children=True,
-    ).set({LayerBaseDocument.proposed: True})  # noqa: E712
+    ).set({LayerBaseDocument.proposed: True})
 
 
 @router.post("/{id}/unpropose", status_code=status.HTTP_204_NO_CONTENT)
@@ -379,8 +379,8 @@ async def unpropose_layer(
         with_children=True,
     ).set(
         {
-            LayerBaseDocument.proposed: False,  # noqa: E712
-            LayerBaseDocument.public: False,  # noqa: E712
+            LayerBaseDocument.proposed: False,
+            LayerBaseDocument.public: False,
         }
     )
 
@@ -410,8 +410,9 @@ async def publish_layer(
         with_children=True,
     ).set(
         {
-            LayerBaseDocument.public: True,  # noqa: E712
-            LayerBaseDocument.proposed: False,  # noqa: E712
+            LayerBaseDocument.public: True,
+            LayerBaseDocument.proposed: False,
+            LayerBaseDocument.owner_id: None,
         }
     )
 
@@ -436,7 +437,7 @@ async def unpublish_layer(
         with_children=True,
     ).set(
         {
-            LayerBaseDocument.public: False,  # noqa: E712
-            LayerBaseDocument.proposed: False,  # noqa: E712
+            LayerBaseDocument.public: False,
+            LayerBaseDocument.proposed: False,
         }
     )
