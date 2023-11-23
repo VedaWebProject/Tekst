@@ -200,7 +200,6 @@ function handleDeleteClick(layer: AnyLayerReadFull) {
 }
 
 function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }) {
-  console.log(data);
   if (data.name === 'filters' && !data.expanded) {
     filters.value = initialFilters();
   }

@@ -192,7 +192,6 @@ function handleDeleteClick(user: UserRead) {
 }
 
 function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }) {
-  console.log(data);
   if (data.name === 'filters' && !data.expanded) {
     filters.value = initialFilters();
   }
