@@ -23,6 +23,13 @@ for (const d of readdirSync(OUT_DIR, { withFileTypes: true }).filter(
   rmSync(path.join(d.path, d.name), { recursive: true, force: true });
   //   console.log(`  🗸 ${d.name}/*`);
 }
+console.log(`🗑 Deleting old help text translations in ${DOCS_PATH} ...`);
+for (const d of readdirSync(DOCS_PATH, { withFileTypes: true }).filter(
+  (entry) => entry.name !== 'README.md' && entry.name !== '.gitignore'
+)) {
+  rmSync(path.join(d.path, d.name), { recursive: true, force: true });
+  //   console.log(`  🗸 ${d.name}/*`);
+}
 
 // parse current markdown help texts
 console.log(`🗘 Processing help text translations in ${HELP_DIR} ...`);
