@@ -191,6 +191,13 @@ function handleDeleteClick(user: UserRead) {
   });
 }
 
+function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }) {
+  console.log(data);
+  if (data.name === 'filters' && !data.expanded) {
+    filters.value = initialFilters();
+  }
+}
+
 onMounted(() => {
   if (route.query.search) {
     filters.value.search = route.query.search?.toString();
@@ -206,7 +213,10 @@ onMounted(() => {
 
   <template v-if="users && !error">
     <!-- Filters -->
-    <n-collapse style="margin-bottom: var(--layout-gap)">
+    <n-collapse
+      style="margin-bottom: var(--layout-gap)"
+      @item-header-click="handleFilterCollapseItemClick"
+    >
       <n-collapse-item :title="$t('general.filters')" name="filters">
         <n-input
           v-model:value="filters.search"

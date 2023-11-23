@@ -21,12 +21,12 @@ import LayerListItem from '@/components/LayerListItem.vue';
 import { useLayers } from '@/fetchers';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import IconHeading from '@/components/typography/IconHeading.vue';
+import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
+import { useMessages } from '@/messages';
 
 import SearchRound from '@vicons/material/SearchRound';
 import UndoRound from '@vicons/material/UndoRound';
 import LayersFilled from '@vicons/material/LayersFilled';
-import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
-import { useMessages } from '@/messages';
 
 const state = useStateStore();
 const auth = useAuthStore();
@@ -198,6 +198,13 @@ function handleDeleteClick(layer: AnyLayerReadFull) {
     },
   });
 }
+
+function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }) {
+  console.log(data);
+  if (data.name === 'filters' && !data.expanded) {
+    filters.value = initialFilters();
+  }
+}
 </script>
 
 <template>
@@ -208,7 +215,10 @@ function handleDeleteClick(layer: AnyLayerReadFull) {
 
   <template v-if="layers && !error && !loading">
     <!-- Filters -->
-    <n-collapse style="margin-bottom: var(--layout-gap)">
+    <n-collapse
+      style="margin-bottom: var(--layout-gap)"
+      @item-header-click="handleFilterCollapseItemClick"
+    >
       <n-collapse-item :title="$t('general.filters')" name="filters">
         <n-input
           v-model:value="filters.search"
