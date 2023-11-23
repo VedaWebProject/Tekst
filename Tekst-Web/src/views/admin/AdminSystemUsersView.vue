@@ -214,7 +214,7 @@ onMounted(() => {
           <n-icon :component="SearchRound" />
         </template>
       </n-input>
-      <n-space justify="space-between" style="padding-left: 12px">
+      <n-space vertical justify="space-between" style="padding-left: 12px">
         <n-checkbox v-model:checked="filters.isActive" :label="$t('models.user.isActive')" />
         <n-checkbox v-model:checked="filters.isInactive" :label="$t('models.user.isInactive')" />
         <n-checkbox v-model:checked="filters.isVerified" :label="$t('models.user.isVerified')" />
@@ -224,7 +224,12 @@ onMounted(() => {
         />
         <n-checkbox v-model:checked="filters.isSuperuser" :label="$t('models.user.isSuperuser')" />
         <n-checkbox v-model:checked="filters.isNoSuperuser" :label="$t('models.user.modelLabel')" />
-        <n-button secondary round @click="filters = initialFilters()">
+        <n-button
+          secondary
+          round
+          style="margin-top: var(--layout-gap)"
+          @click="filters = initialFilters()"
+        >
           {{ $t('general.resetAction') }}
           <template #icon>
             <n-icon :component="UndoRound" />
