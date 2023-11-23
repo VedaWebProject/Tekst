@@ -7,6 +7,7 @@ from tekst.auth import OptionalUserDep, SuperuserDep, UserDep
 from tekst.layer_types import layer_type_manager
 from tekst.models.layer import AnyLayerRead, LayerBase, LayerBaseDocument
 from tekst.models.text import TextDocument
+from tekst.models.unit import UnitBaseDocument
 from tekst.models.user import UserDocument, UserRead, UserReadPublic
 
 
@@ -328,6 +329,40 @@ async def get_generic_layer_data_by_id(
     return await _process_layer_results(
         layer_doc, user, include_owners, include_writable
     )
+
+
+@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_layer(
+    user: UserDep, layer_id: Annotated[PydanticObjectId, Path(alias="id")]
+) -> None:
+    layer_doc = await LayerBaseDocument.get(layer_id, with_children=True)
+    if not layer_doc:
+        raise HTTPException(
+            status.HTTP_404_NOT_FOUND, detail=f"No layer with ID {layer_id}"
+        )
+    if not user.is_superuser and user.id != layer_doc.owner_id:
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED)
+    if layer_doc.public:
+        raise HTTPException(
+            status.HTTP_400_BAD_REQUEST,
+            detail="Cannot delete a published layer",
+        )
+    if layer_doc.proposed:
+        raise HTTPException(
+            status.HTTP_400_BAD_REQUEST,
+            detail="Cannot delete a proposed layer",
+        )
+    # all fine
+    # delete units
+    await UnitBaseDocument.find(
+        UnitBaseDocument.layer_id == layer_id,
+        with_children=True,
+    ).delete()
+    # delete layer
+    await LayerBaseDocument.find_one(
+        LayerBaseDocument.id == layer_id,
+        with_children=True,
+    ).delete()
 
 
 @router.post("/{id}/propose", status_code=status.HTTP_204_NO_CONTENT)

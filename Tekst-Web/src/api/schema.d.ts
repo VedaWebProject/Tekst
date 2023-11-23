@@ -92,6 +92,8 @@ export interface paths {
   '/layers/{id}': {
     /** Get generic layer data by id */
     get: operations['getGenericLayerDataById'];
+    /** Delete layer */
+    delete: operations['deleteLayer'];
   };
   '/layers/{id}/propose': {
     /** Propose layer */
@@ -1859,6 +1861,30 @@ export interface operations {
         content: {
           'application/json': components['schemas']['AnyLayerRead'];
         };
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Delete layer */
+  deleteLayer: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      204: {
+        content: never;
       };
       /** @description Not found */
       404: {

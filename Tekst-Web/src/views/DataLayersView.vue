@@ -12,11 +12,11 @@ import {
   NCollapseItem,
   useDialog,
 } from 'naive-ui';
-import { POST, type AnyLayerRead, type AnyLayerReadFull } from '@/api';
+import { POST, type AnyLayerRead, type AnyLayerReadFull, DELETE } from '@/api';
 import { ref } from 'vue';
 import { computed } from 'vue';
 import { $t } from '@/i18n';
-import { useAuthStore, useStateStore } from '@/stores';
+import { useAuthStore, useBrowseStore, useStateStore } from '@/stores';
 import LayerListItem from '@/components/LayerListItem.vue';
 import { useLayers } from '@/fetchers';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
@@ -29,6 +29,7 @@ import UndoRound from '@vicons/material/UndoRound';
 import LayersFilled from '@vicons/material/LayersFilled';
 
 const state = useStateStore();
+const browse = useBrowseStore();
 const auth = useAuthStore();
 const dialog = useDialog();
 const { message } = useMessages();
@@ -194,7 +195,17 @@ function handleDeleteClick(layer: AnyLayerReadFull) {
     autoFocus: false,
     closable: false,
     onPositiveClick: async () => {
-      alert('handleDeleteClick ' + JSON.stringify(layer));
+      const { error } = await DELETE('/layers/{id}', {
+        params: { path: { id: layer.id } },
+      });
+      if (!error) {
+        message.success($t('YAY'));
+        // remove from browsable layers
+        browse.layers = browse.layers.filter((l) => l.id !== layer.id);
+      } else {
+        message.error($t('errors.unexpected'), error);
+      }
+      load();
     },
   });
 }

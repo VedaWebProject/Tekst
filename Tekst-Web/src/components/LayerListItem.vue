@@ -29,7 +29,9 @@ defineEmits([
 const canDelete = computed(
   () =>
     props.currentUser &&
-    (props.currentUser.isSuperuser || props.currentUser.id === props.targetLayer.ownerId)
+    (props.currentUser.isSuperuser || props.currentUser.id === props.targetLayer.ownerId) &&
+    !props.targetLayer.public &&
+    !props.targetLayer.proposed
 );
 
 const canPropose = computed(
