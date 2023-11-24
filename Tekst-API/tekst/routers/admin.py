@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Response, status
 
 from tekst.auth import SuperuserDep
 from tekst.email import send_test_email
-from tekst.layer_types import layer_type_manager
+from tekst.layer_types import layer_types_mgr
 from tekst.models.layer import LayerBaseDocument
 from tekst.models.platform import PlatformStats, TextStats
 from tekst.models.text import NodeDocument, TextDocument
@@ -21,7 +21,7 @@ router = APIRouter(
 
 @router.get("/stats", response_model=PlatformStats, status_code=status.HTTP_200_OK)
 async def get_stats(su: SuperuserDep) -> PlatformStats:
-    layer_type_names = layer_type_manager.list_names()
+    layer_type_names = layer_types_mgr.list_names()
     texts = await TextDocument.find_all().to_list()
     text_stats = []
 

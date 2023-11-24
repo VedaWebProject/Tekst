@@ -55,9 +55,9 @@ class ClientSegmentDocument(ClientSegment, DocumentBase):
         indexes = ["key", "is_system_segment", "locale"]
 
 
-ClientSegmentCreate = ClientSegment.get_create_model()
-ClientSegmentRead = ClientSegment.get_read_model()
-ClientSegmentUpdate = ClientSegment.get_update_model()
+ClientSegmentCreate = ClientSegment.create_model()
+ClientSegmentRead = ClientSegment.read_model()
+ClientSegmentUpdate = ClientSegment.update_model()
 
 
 class ClientSegmentHead(BaseModel):

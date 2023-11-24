@@ -110,6 +110,7 @@ export type ClientSegmentHead = components['schemas']['ClientSegmentHead'];
 
 export type AnyLayerRead = components['schemas']['AnyLayerRead'];
 export type AnyLayerReadFull = AnyLayerRead & { writable?: boolean; owner?: UserReadPublic };
+export type AnyLayerUpdate = components['schemas']['AnyLayerUpdate'];
 
 export type PlainTextLayerRead = components['schemas']['PlainTextLayerRead'];
 export type PlainTextLayerUpdate = components['schemas']['PlainTextLayerUpdate'];

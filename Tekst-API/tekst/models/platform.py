@@ -5,7 +5,6 @@ from humps import camelize
 from pydantic import Field
 
 from tekst.config import TekstConfig, get_config
-from tekst.layer_types import LayerTypeInfo
 from tekst.models.common import ModelBase
 from tekst.models.segment import ClientSegmentHead, ClientSegmentRead
 from tekst.models.settings import PlatformSettingsRead
@@ -32,7 +31,6 @@ class PlatformData(ModelBase):
     texts: list[TextRead]
     settings: PlatformSettingsRead
     security: PlatformSecurityInfo = PlatformSecurityInfo()
-    layer_types: Annotated[list[LayerTypeInfo], Field(alias="layerTypes")]
     system_segments: Annotated[list[ClientSegmentRead], Field(alias="systemSegments")]
     info_segments: Annotated[list[ClientSegmentHead], Field(alias="infoSegments")]
 

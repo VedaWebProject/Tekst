@@ -1,7 +1,7 @@
 [
   {
     "_id": { "$oid": "654b825533ee5737b297f8f3" },
-    "_class_id": "LayerBaseDocument.PlainTextLayerDocument",
+    "_class_id": "LayerBaseDocument.PlaintextLayerDocument",
     "title": "Originalfassung",
     "description": null,
     "text_id": { "$oid": "654b825533ee5737b297f8e3" },
@@ -30,7 +30,7 @@
   },
   {
     "_id": { "$oid": "654ba3a6ec7833e469dde77a" },
-    "_class_id": "LayerBaseDocument.PlainTextLayerDocument",
+    "_class_id": "LayerBaseDocument.PlaintextLayerDocument",
     "title": "Japanese Version",
     "description": null,
     "text_id": { "$oid": "654ba1f3ec7833e469dde765" },
@@ -58,7 +58,7 @@
   },
   {
     "_id": { "$oid": "654ba525ec7833e469dde77e" },
-    "_class_id": "LayerBaseDocument.PlainTextLayerDocument",
+    "_class_id": "LayerBaseDocument.PlaintextLayerDocument",
     "title": "English Translation",
     "description": null,
     "text_id": { "$oid": "654ba1f3ec7833e469dde765" },
@@ -81,7 +81,7 @@
   },
   {
     "_id": { "$oid": "654ba678ec7833e469dde782" },
-    "_class_id": "LayerBaseDocument.PlainTextLayerDocument",
+    "_class_id": "LayerBaseDocument.PlaintextLayerDocument",
     "title": "Romanic Transliteration",
     "description": null,
     "text_id": { "$oid": "654ba1f3ec7833e469dde765" },

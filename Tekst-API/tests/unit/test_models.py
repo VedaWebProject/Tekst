@@ -64,9 +64,9 @@ def test_model_field_casing(test_app):
 
 def test_layer_description_validator(test_app):
     # desc with arbitrary whitespaces
-    from tekst.layer_types.plaintext import PlainTextLayer
+    from tekst.layer_types.plaintext import PlaintextLayer
 
-    layer = PlainTextLayer(
+    layer = PlaintextLayer(
         title="foo",
         text="5eb7cfb05e32e07750a1756a",
         level=0,
@@ -75,7 +75,7 @@ def test_layer_description_validator(test_app):
     )
     assert layer.description == "foo bar baz test"
     # desc = None
-    layer = PlainTextLayer(
+    layer = PlaintextLayer(
         title="foo",
         text="5eb7cfb05e32e07750a1756a",
         level=0,

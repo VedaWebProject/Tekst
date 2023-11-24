@@ -4,7 +4,7 @@ from motor.motor_asyncio import AsyncIOMotorDatabase as Database
 
 from tekst.auth import AccessToken
 from tekst.config import TekstConfig, get_config
-from tekst.layer_types import layer_type_manager
+from tekst.layer_types import layer_types_mgr
 from tekst.logging import log
 from tekst.models.layer import LayerBaseDocument
 from tekst.models.segment import ClientSegmentDocument
@@ -51,8 +51,8 @@ async def init_odm(db: Database) -> None:
         AccessToken,
     ]
     # add layer type models
-    for lt_class in layer_type_manager.get_all().values():
-        models.append(lt_class.get_layer_model().get_document_model())
-        models.append(lt_class.get_unit_model().get_document_model())
+    for lt_class in layer_types_mgr.get_all().values():
+        models.append(lt_class.layer_model().document_model())
+        models.append(lt_class.get_unit_model().document_model())
     # init beanie ODM
     await init_beanie(database=db, allow_index_dropping=True, document_models=models)

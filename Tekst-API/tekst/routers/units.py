@@ -5,7 +5,7 @@ from beanie.operators import In
 from fastapi import APIRouter, HTTPException, Query, status
 
 from tekst.auth import OptionalUserDep, UserDep
-from tekst.layer_types import layer_type_manager
+from tekst.layer_types import layer_types_mgr
 from tekst.models.layer import LayerBaseDocument
 from tekst.models.unit import UnitBase, UnitBaseDocument
 
@@ -117,18 +117,18 @@ router = APIRouter(
 )
 
 # dynamically add all needed routes for every layer type's units
-for lt_name, lt_class in layer_type_manager.get_all().items():
+for lt_name, lt_class in layer_types_mgr.get_all().items():
     # type alias unit models
     UnitModel = lt_class.get_unit_model()
-    UnitDocumentModel = UnitModel.get_document_model()
-    UnitCreateModel = UnitModel.get_create_model()
-    UnitReadModel = UnitModel.get_read_model()
-    UnitUpdateModel = UnitModel.get_update_model()
+    UnitDocumentModel = UnitModel.document_model()
+    UnitCreateModel = UnitModel.create_model()
+    UnitReadModel = UnitModel.read_model()
+    UnitUpdateModel = UnitModel.update_model()
     # add route for reading a unit from the database
     router.add_api_route(
         path=f"/{lt_name}/{{id}}",
         name=f"get_{lt_name}_unit",
-        description=f"Returns the data for a {lt_class.get_label()} data layer unit",
+        description=f"Returns the data for a {lt_class.get_name()} data layer unit",
         endpoint=_generate_read_endpoint(
             unit_document_model=UnitDocumentModel,
             unit_read_model=UnitReadModel,
@@ -141,7 +141,7 @@ for lt_name, lt_class in layer_type_manager.get_all().items():
     router.add_api_route(
         path=f"/{lt_name}",
         name=f"create_{lt_name}_unit",
-        description=f"Creates a {lt_class.get_label()} data layer unit",
+        description=f"Creates a {lt_class.get_name()} data layer unit",
         endpoint=_generate_create_endpoint(
             unit_document_model=UnitDocumentModel,
             unit_create_model=UnitCreateModel,
@@ -155,7 +155,7 @@ for lt_name, lt_class in layer_type_manager.get_all().items():
     router.add_api_route(
         path=f"/{lt_name}/{{id}}",
         name=f"update_{lt_name}_unit",
-        description=f"Updates the data for a {lt_class.get_label()} data layer unit",
+        description=f"Updates the data for a {lt_class.get_name()} data layer unit",
         endpoint=_generate_update_endpoint(
             unit_document_model=UnitDocumentModel,
             unit_read_model=UnitReadModel,

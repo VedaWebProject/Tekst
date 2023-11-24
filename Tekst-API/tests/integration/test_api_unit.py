@@ -24,9 +24,7 @@ async def test_create_unit(
         "layerType": "plaintext",
         "ownerId": user_data.get("id"),
     }
-    resp = await test_client.post(
-        "/layers/plaintext", json=payload, cookies=session_cookie
-    )
+    resp = await test_client.post("/layers", json=payload, cookies=session_cookie)
     assert resp.status_code == 201, status_fail_msg(201, resp)
     layer_data = resp.json()
     assert "id" in layer_data

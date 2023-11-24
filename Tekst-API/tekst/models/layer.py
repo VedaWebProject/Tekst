@@ -4,7 +4,7 @@ from typing import Annotated
 
 from beanie import PydanticObjectId
 from beanie.operators import And, In, Or
-from pydantic import ConfigDict, Field, field_validator, model_validator
+from pydantic import Field, field_validator, model_validator
 
 from tekst.models.common import (
     DocumentBase,
@@ -75,9 +75,9 @@ class LayerBase(ModelBase, ModelFactoryMixin):
     @field_validator("layer_type")
     @classmethod
     def validate_layer_type_name(cls, v):
-        from tekst.layer_types import layer_type_manager
+        from tekst.layer_types import layer_types_mgr
 
-        layer_type_names = layer_type_manager.list_names()
+        layer_type_names = layer_types_mgr.list_names()
         if v.lower() not in layer_type_names:
             raise ValueError(
                 f"Given layer type ({v}) is not a valid "
@@ -149,21 +149,8 @@ class LayerBaseDocument(LayerBase, DocumentBase):
         indexes = ["text_id", "level", "layer_type", "owner_id"]
 
 
-LayerBaseRead = LayerBase.get_read_model()
-LayerBaseUpdate = LayerBase.get_update_model()
-
-
-class AnyLayerRead(LayerBaseRead):
-    model_config = ConfigDict(extra="allow")
-
-    def include_writable(self, user: UserRead | None):
-        if not user:
-            return
-        self.writable = (
-            user.is_superuser
-            or user.id == self.owner_id
-            or user.id in self.shared_write
-        )
+LayerBaseRead = LayerBase.read_model()
+LayerBaseUpdate = LayerBase.update_model()
 
 
 class LayerNodeCoverage(ModelBase):

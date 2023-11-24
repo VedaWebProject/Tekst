@@ -65,5 +65,5 @@ class PlatformSettingsDocument(PlatformSettings, DocumentBase):
         name = "settings"
 
 
-PlatformSettingsRead = PlatformSettings.get_read_model()
-PlatformSettingsUpdate = PlatformSettings.get_update_model()
+PlatformSettingsRead = PlatformSettings.read_model()
+PlatformSettingsUpdate = PlatformSettings.update_model()

@@ -10,7 +10,7 @@ from starlette_csrf import CSRFMiddleware
 from tekst.config import TekstConfig, get_config
 from tekst.db import init_odm
 from tekst.dependencies import get_db, get_db_client
-from tekst.layer_types import init_layer_type_manager
+from tekst.layer_types import init_layer_types_mgr
 from tekst.logging import log, setup_logging
 from tekst.openapi import customize_openapi
 from tekst.routers import setup_routes
@@ -27,7 +27,7 @@ async def startup_routine(app: FastAPI) -> None:
         # blank line for visual separation of app runs in dev mode
         print(file=sys.stderr)
 
-    init_layer_type_manager()
+    init_layer_types_mgr()
     setup_routes(app)
 
     # this is ugly, but unfortunately we don't have access to FastAPI's

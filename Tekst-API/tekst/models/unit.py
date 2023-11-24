@@ -37,4 +37,4 @@ class UnitBaseDocument(UnitBase, DocumentBase):
         indexes = ["layer_id", "node_id"]
 
 
-UnitBaseUpdate = UnitBase.get_update_model()
+UnitBaseUpdate = UnitBase.update_model()

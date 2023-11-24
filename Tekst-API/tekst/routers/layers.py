@@ -4,8 +4,15 @@ from beanie import PydanticObjectId
 from fastapi import APIRouter, HTTPException, Path, Query, status
 
 from tekst.auth import OptionalUserDep, SuperuserDep, UserDep
-from tekst.layer_types import layer_type_manager
-from tekst.models.layer import AnyLayerRead, LayerBase, LayerBaseDocument
+from tekst.layer_types import (
+    AnyLayerCreateBody,
+    AnyLayerDocument,
+    AnyLayerRead,
+    AnyLayerReadBody,
+    AnyLayerUpdateBody,
+    layer_types_mgr,
+)
+from tekst.models.layer import LayerBase, LayerBaseDocument
 from tekst.models.text import TextDocument
 from tekst.models.unit import UnitBaseDocument
 from tekst.models.user import UserDocument, UserRead, UserReadPublic
@@ -35,52 +42,52 @@ def _generate_read_endpoint(
     return get_layer
 
 
-def _generate_create_endpoint(
-    layer_document_model: type[LayerBase],
-    layer_create_model: type[LayerBase],
-    layer_read_model: type[LayerBase],
-):
-    async def create_layer(
-        layer: layer_create_model, user: UserDep
-    ) -> layer_read_model:
-        if not await TextDocument.get(layer.text_id):
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Layer refers to non-existent text '{layer.text_id}'",
-            )
-        # force some values on creation
-        layer.owner_id = user.id
-        layer.proposed = False
-        layer.public = False
-        return await layer_document_model.model_from(layer).create()
+# def _generate_create_endpoint(
+#     layer_document_model: type[LayerBase],
+#     layer_create_model: type[LayerBase],
+#     layer_read_model: type[LayerBase],
+# ):
+#     async def create_layer(
+#         layer: layer_create_model, user: UserDep
+#     ) -> layer_read_model:
+#         if not await TextDocument.get(layer.text_id):
+#             raise HTTPException(
+#                 status_code=status.HTTP_400_BAD_REQUEST,
+#                 detail=f"Layer refers to non-existent text '{layer.text_id}'",
+#             )
+#         # force some values on creation
+#         layer.owner_id = user.id
+#         layer.proposed = False
+#         layer.public = False
+#         return await layer_document_model.model_from(layer).create()
 
-    return create_layer
+#     return create_layer
 
 
-def _generate_update_endpoint(
-    layer_document_model: type[LayerBase],
-    layer_read_model: type[LayerBase],
-    layer_update_model: type[LayerBase],
-):
-    async def update_layer(
-        id: PydanticObjectId, updates: layer_update_model, user: UserDep
-    ) -> layer_read_model:
-        layer_doc: layer_document_model = await layer_document_model.find_one(
-            layer_document_model.id == id, layer_document_model.allowed_to_write(user)
-        )
-        if not layer_doc:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Layer {id} doesn't exist or requires extra permissions",
-            )
-        # force-keep certain fields if user is not an admin
-        if not user.is_superuser:
-            for field in ("public", "proposed", "text_id", "owner_id"):
-                setattr(updates, field, getattr(layer_doc, field))
-        await layer_doc.apply(updates.model_dump(exclude_unset=True))
-        return layer_doc
+# def _generate_update_endpoint(
+#     layer_document_model: type[LayerBase],
+#     layer_read_model: type[LayerBase],
+#     layer_update_model: type[LayerBase],
+# ):
+#     async def update_layer(
+#         id: PydanticObjectId, updates: layer_update_model, user: UserDep
+#     ) -> layer_read_model:
+#         layer_doc: layer_document_model = await layer_document_model.find_one(
+#             layer_document_model.id == id, layer_document_model.allowed_to_write(user)
+#         )
+#         if not layer_doc:
+#             raise HTTPException(
+#                 status_code=status.HTTP_400_BAD_REQUEST,
+#                 detail=f"Layer {id} doesn't exist or requires extra permissions",
+#             )
+#         # force-keep certain fields if user is not an admin
+#         if not user.is_superuser:
+#             for field in ("public", "proposed", "text_id", "owner_id"):
+#                 setattr(updates, field, getattr(layer_doc, field))
+#         await layer_doc.apply(updates.model_dump(exclude_unset=True))
+#         return layer_doc
 
-    return update_layer
+#     return update_layer
 
 
 router = APIRouter(
@@ -93,18 +100,18 @@ router = APIRouter(
 
 
 # dynamically add all needed routes for every layer type's layer definitions
-for lt_name, lt_class in layer_type_manager.get_all().items():
+for lt_name, lt_class in layer_types_mgr.get_all().items():
     # type alias unit models
-    LayerModel = lt_class.get_layer_model()
-    LayerDocumentModel = LayerModel.get_document_model()
-    LayerCreateModel = LayerModel.get_create_model()
-    LayerReadModel = LayerModel.get_read_model()
-    LayerUpdateModel = LayerModel.get_update_model()
+    LayerModel = lt_class.layer_model()
+    LayerDocumentModel = LayerModel.document_model()
+    LayerCreateModel = LayerModel.create_model()
+    LayerReadModel = LayerModel.read_model()
+    LayerUpdateModel = LayerModel.update_model()
     # add route for reading a layer definition from the database
     router.add_api_route(
         path=f"/{lt_name}/{{id}}",
         name=f"get_{lt_name}_layer",
-        description=f"Returns the data for a {lt_class.get_label()} data layer",
+        description=f"Returns the data for a {lt_class.get_name()} data layer",
         endpoint=_generate_read_endpoint(
             layer_document_model=LayerDocumentModel, layer_read_model=LayerReadModel
         ),
@@ -112,41 +119,41 @@ for lt_name, lt_class in layer_type_manager.get_all().items():
         response_model=LayerReadModel,
         status_code=status.HTTP_200_OK,
     )
-    # add route for creating a layer
-    router.add_api_route(
-        path=f"/{lt_name}",
-        name=f"create_{lt_name}_layer",
-        description=f"Creates a {lt_class.get_label()} data layer definition",
-        endpoint=_generate_create_endpoint(
-            layer_document_model=LayerDocumentModel,
-            layer_create_model=LayerCreateModel,
-            layer_read_model=LayerReadModel,
-        ),
-        methods=["POST"],
-        response_model=LayerReadModel,
-        status_code=status.HTTP_201_CREATED,
-    )
-    # add route for updating a layer
-    router.add_api_route(
-        path=f"/{lt_name}/{{id}}",
-        name=f"update_{lt_name}_layer",
-        description=f"Updates the data for a {lt_class.get_label()} data layer",
-        endpoint=_generate_update_endpoint(
-            layer_document_model=LayerDocumentModel,
-            layer_read_model=LayerReadModel,
-            layer_update_model=LayerUpdateModel,
-        ),
-        methods=["PATCH"],
-        response_model=LayerReadModel,
-        status_code=status.HTTP_200_OK,
-    )
+    # # add route for creating a layer
+    # router.add_api_route(
+    #     path=f"/{lt_name}",
+    #     name=f"create_{lt_name}_layer",
+    #     description=f"Creates a {lt_class.get_name()} data layer definition",
+    #     endpoint=_generate_create_endpoint(
+    #         layer_document_model=LayerDocumentModel,
+    #         layer_create_model=LayerCreateModel,
+    #         layer_read_model=LayerReadModel,
+    #     ),
+    #     methods=["POST"],
+    #     response_model=LayerReadModel,
+    #     status_code=status.HTTP_201_CREATED,
+    # )
+    # # add route for updating a layer
+    # router.add_api_route(
+    #     path=f"/{lt_name}/{{id}}",
+    #     name=f"update_{lt_name}_layer",
+    #     description=f"Updates the data for a {lt_class.get_name()} data layer",
+    #     endpoint=_generate_update_endpoint(
+    #         layer_document_model=LayerDocumentModel,
+    #         layer_read_model=LayerReadModel,
+    #         layer_update_model=LayerUpdateModel,
+    #     ),
+    #     methods=["PATCH"],
+    #     response_model=LayerReadModel,
+    #     status_code=status.HTTP_200_OK,
+    # )
 
 
 # ADDITIONAL ROUTE DEFINITIONS...
 
 
 async def _process_layer_results(
-    layer_docs: LayerBaseDocument | list[LayerBaseDocument],
+    layer_docs: AnyLayerDocument | list[AnyLayerDocument],
     user: UserRead | None = None,
     include_owners: bool = False,
     include_writable: bool = False,
@@ -156,8 +163,17 @@ async def _process_layer_results(
     # convert single layer document to list
     if not is_list:
         layer_docs = [layer_docs]
-    # convert layer documents to AnyLayerRead instances
-    layers = [AnyLayerRead(**layer_doc.model_dump()) for layer_doc in layer_docs]
+    # convert layer documents to layer type's read instances
+    layers = [
+        layer_types_mgr.get(layer_doc.layer_type)
+        .layer_model()
+        .read_model()(
+            **layer_doc.model_dump(
+                exclude=layer_doc.restricted_fields(user and user.id)
+            )
+        )
+        for layer_doc in layer_docs
+    ]
     # include writable flag (if applicable)
     if include_writable and user:
         for layer in layers:
@@ -173,18 +189,61 @@ async def _process_layer_results(
                 layer.owner = UserReadPublic.model_from(
                     await UserDocument.get(layer.owner_id)
                 )
-    # apply field restrictions
-    layers = [
-        AnyLayerRead(
-            **layer.model_dump(exclude=layer.restricted_fields(user and user.id))
-        )
-        for layer in layers
-    ]
-    # return data
     return layers if is_list else layers[0]
 
 
-@router.get("", response_model=list[AnyLayerRead], status_code=status.HTTP_200_OK)
+@router.post("", response_model=AnyLayerReadBody, status_code=status.HTTP_201_CREATED)
+async def create_layer(layer: AnyLayerCreateBody, user: UserDep) -> AnyLayerDocument:
+    if not await TextDocument.get(layer.text_id):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Layer refers to non-existent text '{layer.text_id}'",
+        )
+    # force some values on creation
+    layer.owner_id = user.id
+    layer.proposed = False
+    layer.public = False
+    # find document model for this layer type, instantiate, create
+    return (
+        await layer_types_mgr.get(layer.layer_type)
+        .layer_model()
+        .document_model()
+        .model_from(layer)
+        .create()
+    )
+
+
+@router.patch("/{id}", response_model=AnyLayerReadBody, status_code=status.HTTP_200_OK)
+async def update_layer(
+    id: PydanticObjectId, updates: AnyLayerUpdateBody, user: UserDep
+) -> AnyLayerDocument:
+    if not await LayerBaseDocument.find_one(
+        LayerBaseDocument.id == id,
+        LayerBaseDocument.allowed_to_write(user),
+        with_children=True,
+    ).exists():
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Layer {id} doesn't exist or requires extra permissions",
+        )
+    # force-keep certain fields if user is not an admin
+    if not user.is_superuser:
+        layer_update_model = (
+            layer_types_mgr.get(updates.layer_type).layer_model().update_model()
+        )
+        updates = layer_update_model(
+            **updates.dict(exclude={"public", "proposed", "text_id", "owner_id"})
+        )
+    layer_doc = (
+        await layer_types_mgr.get(updates.layer_type)
+        .layer_model()
+        .document_model()
+        .find_one(LayerBaseDocument.id == id, LayerBaseDocument.allowed_to_write(user))
+    )
+    return await layer_doc.apply(updates.model_dump(exclude_unset=True))
+
+
+@router.get("", response_model=list[AnyLayerReadBody], status_code=status.HTTP_200_OK)
 async def find_layers(
     user: OptionalUserDep,
     text_id: Annotated[PydanticObjectId, Query(alias="textId")],
@@ -201,7 +260,7 @@ async def find_layers(
             description="Add flag indicating write permissions for requesting user",
         ),
     ] = False,
-) -> list[dict]:
+) -> list[AnyLayerRead]:
     """
     Returns a list of all data layers matching the given criteria.
 
@@ -247,17 +306,17 @@ async def find_layers(
 #             detail=f"Layer with ID {layer_id} doesn't exist",
 #         )
 #
-#     layer_type_manager = layer_type_manager
+#     layer_types_mgr = layer_types_mgr
 
 #     # decode layer data: Usually, this is handled automatically by our models, but
 #     # in this case we're returning a raw dict/JSON, so we have to manually make sure
 #     # that a) the ID field is called "id" and b) the DocumentId is encoded as str.
-#     layer_read_model = layer_type_manager \
+#     layer_read_model = layer_types_mgr \
 #       .get(layer_data["layerType"]).get_layer_read_model()
 #     layer_data = layer_read_model(**layer_data).model_dump()
 
 #     # import unit type for the requested layer
-#     template = layer_type_manager \
+#     template = layer_types_mgr \
 #       .get(layer_data["layerType"]).prepare_import_template()
 #     # apply data from layer instance
 #     template["layerId"] = str(layer_data["id"])
@@ -302,7 +361,7 @@ async def find_layers(
 #     )
 
 
-@router.get("/{id}", status_code=status.HTTP_200_OK, response_model=AnyLayerRead)
+@router.get("/{id}", status_code=status.HTTP_200_OK, response_model=AnyLayerReadBody)
 async def get_generic_layer_data_by_id(
     user: OptionalUserDep,
     layer_id: Annotated[PydanticObjectId, Path(alias="id")],
@@ -316,7 +375,7 @@ async def get_generic_layer_data_by_id(
             description="Add flag indicating write permissions for requesting user",
         ),
     ] = False,
-) -> dict:
+) -> AnyLayerRead:
     layer_doc = await LayerBaseDocument.find_one(
         LayerBaseDocument.id == layer_id,
         await LayerBaseDocument.allowed_to_read(user),

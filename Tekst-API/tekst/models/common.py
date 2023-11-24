@@ -78,7 +78,7 @@ class ModelFactoryMixin:
         return (bases,) if type(bases) is not tuple else bases
 
     @classmethod
-    def get_document_model(cls, bases: type | tuple[type] = (DocumentBase,)) -> type:
+    def document_model(cls, bases: type | tuple[type] = (DocumentBase,)) -> type:
         if not cls._document_model or not cls._is_origin_cls("_document_model"):
             cls._document_model = type(
                 f"{cls.__name__}Document",
@@ -88,7 +88,7 @@ class ModelFactoryMixin:
         return cls._document_model
 
     @classmethod
-    def get_create_model(cls) -> type[ModelBase]:
+    def create_model(cls) -> type[ModelBase]:
         if not cls._create_model or not cls._is_origin_cls("_create_model"):
             cls._create_model = create_model(
                 f"{cls.__name__}Create",
@@ -98,7 +98,7 @@ class ModelFactoryMixin:
         return cls._create_model
 
     @classmethod
-    def get_read_model(cls, bases: type | tuple[type] = (ReadBase,)) -> type[ReadBase]:
+    def read_model(cls, bases: type | tuple[type] = (ReadBase,)) -> type[ReadBase]:
         if not cls._read_model or not cls._is_origin_cls("_read_model"):
             cls._read_model = type(
                 f"{cls.__name__}Read",
@@ -108,7 +108,7 @@ class ModelFactoryMixin:
         return cls._read_model
 
     @classmethod
-    def get_update_model(cls, bases: type | tuple[type] = ()) -> type[ModelBase]:
+    def update_model(cls, bases: type | tuple[type] = ()) -> type[ModelBase]:
         if not cls._update_model or not cls._is_origin_cls("_update_model"):
             fields = {}
             for k, v in cls.model_fields.items():
