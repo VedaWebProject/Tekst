@@ -12,82 +12,10 @@ from tekst.layer_types import (
     AnyLayerUpdateBody,
     layer_types_mgr,
 )
-from tekst.models.layer import LayerBase, LayerBaseDocument
+from tekst.models.layer import LayerBaseDocument
 from tekst.models.text import TextDocument
 from tekst.models.unit import UnitBaseDocument
 from tekst.models.user import UserDocument, UserRead, UserReadPublic
-
-
-def _generate_read_endpoint(
-    layer_document_model: type[LayerBase], layer_read_model: type[LayerBase]
-):
-    async def get_layer(
-        id: PydanticObjectId, user: OptionalUserDep
-    ) -> layer_read_model:
-        """A generic route for reading a layer definition from the database"""
-        layer_doc = await layer_document_model.find_one(
-            layer_document_model.id == id,
-            await layer_document_model.allowed_to_read(user),
-        )
-        if not layer_doc:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Could not find layer with ID {id}",
-            )
-        # return only fields that are not restricted for this user
-        return layer_doc.model_dump(
-            exclude=layer_doc.restricted_fields(user and user.id)
-        )
-
-    return get_layer
-
-
-# def _generate_create_endpoint(
-#     layer_document_model: type[LayerBase],
-#     layer_create_model: type[LayerBase],
-#     layer_read_model: type[LayerBase],
-# ):
-#     async def create_layer(
-#         layer: layer_create_model, user: UserDep
-#     ) -> layer_read_model:
-#         if not await TextDocument.get(layer.text_id):
-#             raise HTTPException(
-#                 status_code=status.HTTP_400_BAD_REQUEST,
-#                 detail=f"Layer refers to non-existent text '{layer.text_id}'",
-#             )
-#         # force some values on creation
-#         layer.owner_id = user.id
-#         layer.proposed = False
-#         layer.public = False
-#         return await layer_document_model.model_from(layer).create()
-
-#     return create_layer
-
-
-# def _generate_update_endpoint(
-#     layer_document_model: type[LayerBase],
-#     layer_read_model: type[LayerBase],
-#     layer_update_model: type[LayerBase],
-# ):
-#     async def update_layer(
-#         id: PydanticObjectId, updates: layer_update_model, user: UserDep
-#     ) -> layer_read_model:
-#         layer_doc: layer_document_model = await layer_document_model.find_one(
-#             layer_document_model.id == id, layer_document_model.allowed_to_write(user)
-#         )
-#         if not layer_doc:
-#             raise HTTPException(
-#                 status_code=status.HTTP_400_BAD_REQUEST,
-#                 detail=f"Layer {id} doesn't exist or requires extra permissions",
-#             )
-#         # force-keep certain fields if user is not an admin
-#         if not user.is_superuser:
-#             for field in ("public", "proposed", "text_id", "owner_id"):
-#                 setattr(updates, field, getattr(layer_doc, field))
-#         await layer_doc.apply(updates.model_dump(exclude_unset=True))
-#         return layer_doc
-
-#     return update_layer
 
 
 router = APIRouter(
@@ -99,61 +27,9 @@ router = APIRouter(
 )
 
 
-# dynamically add all needed routes for every layer type's layer definitions
-for lt_name, lt_class in layer_types_mgr.get_all().items():
-    # type alias unit models
-    LayerModel = lt_class.layer_model()
-    LayerDocumentModel = LayerModel.document_model()
-    LayerCreateModel = LayerModel.create_model()
-    LayerReadModel = LayerModel.read_model()
-    LayerUpdateModel = LayerModel.update_model()
-    # add route for reading a layer definition from the database
-    router.add_api_route(
-        path=f"/{lt_name}/{{id}}",
-        name=f"get_{lt_name}_layer",
-        description=f"Returns the data for a {lt_class.get_name()} data layer",
-        endpoint=_generate_read_endpoint(
-            layer_document_model=LayerDocumentModel, layer_read_model=LayerReadModel
-        ),
-        methods=["GET"],
-        response_model=LayerReadModel,
-        status_code=status.HTTP_200_OK,
-    )
-    # # add route for creating a layer
-    # router.add_api_route(
-    #     path=f"/{lt_name}",
-    #     name=f"create_{lt_name}_layer",
-    #     description=f"Creates a {lt_class.get_name()} data layer definition",
-    #     endpoint=_generate_create_endpoint(
-    #         layer_document_model=LayerDocumentModel,
-    #         layer_create_model=LayerCreateModel,
-    #         layer_read_model=LayerReadModel,
-    #     ),
-    #     methods=["POST"],
-    #     response_model=LayerReadModel,
-    #     status_code=status.HTTP_201_CREATED,
-    # )
-    # # add route for updating a layer
-    # router.add_api_route(
-    #     path=f"/{lt_name}/{{id}}",
-    #     name=f"update_{lt_name}_layer",
-    #     description=f"Updates the data for a {lt_class.get_name()} data layer",
-    #     endpoint=_generate_update_endpoint(
-    #         layer_document_model=LayerDocumentModel,
-    #         layer_read_model=LayerReadModel,
-    #         layer_update_model=LayerUpdateModel,
-    #     ),
-    #     methods=["PATCH"],
-    #     response_model=LayerReadModel,
-    #     status_code=status.HTTP_200_OK,
-    # )
-
-
-# ADDITIONAL ROUTE DEFINITIONS...
-
-
 async def _process_layer_results(
     layer_docs: AnyLayerDocument | list[AnyLayerDocument],
+    *,
     user: UserRead | None = None,
     include_owners: bool = False,
     include_writable: bool = False,
@@ -226,21 +102,20 @@ async def update_layer(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Layer {id} doesn't exist or requires extra permissions",
         )
-    # force-keep certain fields if user is not an admin
-    if not user.is_superuser:
-        layer_update_model = (
-            layer_types_mgr.get(updates.layer_type).layer_model().update_model()
-        )
-        updates = layer_update_model(
-            **updates.dict(exclude={"public", "proposed", "text_id", "owner_id"})
-        )
     layer_doc = (
         await layer_types_mgr.get(updates.layer_type)
         .layer_model()
         .document_model()
         .find_one(LayerBaseDocument.id == id, LayerBaseDocument.allowed_to_write(user))
     )
-    return await layer_doc.apply(updates.model_dump(exclude_unset=True))
+    return await layer_doc.apply(
+        updates.model_dump(
+            exclude_unset=True,
+            exclude={"public", "proposed", "text_id", "owner_id"}
+            if not user.is_superuser
+            else None,
+        )
+    )
 
 
 @router.get("", response_model=list[AnyLayerReadBody], status_code=status.HTTP_200_OK)
@@ -251,7 +126,7 @@ async def find_layers(
     layer_type: Annotated[str, Query(alias="layerType")] = None,
     limit: int = 1000,
     include_owners: Annotated[
-        bool, Query(alias="owners", description="Include owners' user data")
+        bool, Query(alias="owners", description="Include owners' user data, if any")
     ] = False,
     include_writable: Annotated[
         bool,
@@ -285,7 +160,7 @@ async def find_layers(
     )
 
     return await _process_layer_results(
-        layer_docs=layer_docs,
+        layer_docs,
         user=user,
         include_owners=include_owners,
         include_writable=include_writable,
@@ -362,11 +237,11 @@ async def find_layers(
 
 
 @router.get("/{id}", status_code=status.HTTP_200_OK, response_model=AnyLayerReadBody)
-async def get_generic_layer_data_by_id(
+async def get_layer(
     user: OptionalUserDep,
     layer_id: Annotated[PydanticObjectId, Path(alias="id")],
-    include_owners: Annotated[
-        bool, Query(alias="owners", description="Include owners' user data")
+    include_owner: Annotated[
+        bool, Query(alias="owner", description="Include owner's user data, if any")
     ] = False,
     include_writable: Annotated[
         bool,
@@ -386,7 +261,10 @@ async def get_generic_layer_data_by_id(
             status.HTTP_404_NOT_FOUND, detail=f"No layer with ID {layer_id}"
         )
     return await _process_layer_results(
-        layer_doc, user, include_owners, include_writable
+        layer_doc,
+        user=user,
+        include_owners=include_owner,
+        include_writable=include_writable,
     )
 
 

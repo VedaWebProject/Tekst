@@ -425,242 +425,6 @@
         }
       }
     },
-    "/layers/debug/{id}": {
-      "get": {
-        "tags": [
-          "layers"
-        ],
-        "summary": "Get layer",
-        "description": "Returns the data for a Debug data layer",
-        "operationId": "getDebugLayer",
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DebugLayerRead"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "layers"
-        ],
-        "summary": "Update layer",
-        "description": "Updates the data for a Debug data layer",
-        "operationId": "updateDebugLayer",
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DebugLayerUpdate"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DebugLayerRead"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/layers/plaintext/{id}": {
-      "get": {
-        "tags": [
-          "layers"
-        ],
-        "summary": "Get layer",
-        "description": "Returns the data for a Plaintext data layer",
-        "operationId": "getPlaintextLayer",
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PlaintextLayerRead"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "layers"
-        ],
-        "summary": "Update layer",
-        "description": "Updates the data for a Plaintext data layer",
-        "operationId": "updatePlaintextLayer",
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PlaintextLayerUpdate"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PlaintextLayerRead"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/layers": {
       "post": {
         "tags": [
@@ -802,11 +566,11 @@
             "required": false,
             "schema": {
               "type": "boolean",
-              "description": "Include owners' user data",
+              "description": "Include owners' user data, if any",
               "default": false,
               "title": "Owners"
             },
-            "description": "Include owners' user data"
+            "description": "Include owners' user data, if any"
           },
           {
             "name": "writable",
@@ -867,12 +631,104 @@
       }
     },
     "/layers/{id}": {
+      "patch": {
+        "tags": [
+          "layers"
+        ],
+        "summary": "Update layer",
+        "operationId": "updateLayer",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/DebugLayerUpdate"
+                  },
+                  {
+                    "$ref": "#/components/schemas/PlaintextLayerUpdate"
+                  }
+                ],
+                "discriminator": {
+                  "propertyName": "layerType",
+                  "mapping": {
+                    "debug": "#/components/schemas/DebugLayerUpdate",
+                    "plaintext": "#/components/schemas/PlaintextLayerUpdate"
+                  }
+                },
+                "title": "Updates"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/DebugLayerRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PlaintextLayerRead"
+                    }
+                  ],
+                  "discriminator": {
+                    "propertyName": "layerType",
+                    "mapping": {
+                      "debug": "#/components/schemas/DebugLayerRead",
+                      "plaintext": "#/components/schemas/PlaintextLayerRead"
+                    }
+                  },
+                  "title": "Response Update Layer Layers  Id  Patch"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
       "get": {
         "tags": [
           "layers"
         ],
-        "summary": "Get generic layer data by id",
-        "operationId": "getGenericLayerDataById",
+        "summary": "Get layer",
+        "operationId": "getLayer",
         "security": [
           {
             "APIKeyCookie": []
@@ -893,16 +749,16 @@
             }
           },
           {
-            "name": "owners",
+            "name": "owner",
             "in": "query",
             "required": false,
             "schema": {
               "type": "boolean",
-              "description": "Include owners' user data",
+              "description": "Include owner's user data, if any",
               "default": false,
-              "title": "Owners"
+              "title": "Owner"
             },
-            "description": "Include owners' user data"
+            "description": "Include owner's user data, if any"
           },
           {
             "name": "writable",
@@ -938,7 +794,7 @@
                       "plaintext": "#/components/schemas/PlaintextLayerRead"
                     }
                   },
-                  "title": "Response Get Generic Layer Data By Id Layers  Id  Get"
+                  "title": "Response Get Layer Layers  Id  Get"
                 }
               }
             }
@@ -4130,6 +3986,7 @@
             "description": "HTML content of this segment"
           }
         },
+        "additionalProperties": true,
         "type": "object",
         "required": [
           "id",
@@ -4141,12 +3998,21 @@
       "ClientSegmentUpdate": {
         "properties": {
           "key": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Key"
           },
           "isSystemSegment": {
             "type": "boolean",
-            "title": "Issystemsegment"
+            "title": "Issystemsegment",
+            "description": "Whether this is a system segment (will be set automatically)",
+            "default": false
           },
           "editorMode": {
             "type": "string",
@@ -4154,7 +4020,9 @@
               "wysiwyg",
               "html"
             ],
-            "title": "Editormode"
+            "title": "Editormode",
+            "description": "Last used editor mode",
+            "default": "wysiwyg"
           },
           "locale": {
             "anyOf": [
@@ -4169,9 +4037,23 @@
                 "type": "null"
               }
             ],
-            "title": "Locale"
+            "title": "Locale",
+            "description": "Locale indicating the translation language of this segment"
           },
           "title": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 32
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title",
+            "description": "Title of this segment"
+          },
+          "html": {
             "anyOf": [
               {
                 "type": "string"
@@ -4180,10 +4062,6 @@
                 "type": "null"
               }
             ],
-            "title": "Title"
-          },
-          "html": {
-            "type": "string",
             "title": "Html"
           }
         },
@@ -4242,8 +4120,7 @@
           },
           "layerType": {
             "const": "debug",
-            "title": "Layertype",
-            "default": "debug"
+            "title": "Layertype"
           },
           "ownerId": {
             "anyOf": [
@@ -4337,7 +4214,8 @@
         "type": "object",
         "required": [
           "title",
-          "level"
+          "level",
+          "layerType"
         ],
         "title": "DebugLayerCreate"
       },
@@ -4389,8 +4267,161 @@
           },
           "layerType": {
             "const": "debug",
-            "title": "Layertype",
-            "default": "debug"
+            "title": "Layertype"
+          },
+          "ownerId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ownerid",
+            "description": "User owning this layer"
+          },
+          "sharedRead": {
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "type": "array",
+            "title": "Sharedread",
+            "description": "Users with shared read access to this layer",
+            "default": []
+          },
+          "sharedWrite": {
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "type": "array",
+            "title": "Sharedwrite",
+            "description": "Users with shared write access to this layer",
+            "default": []
+          },
+          "public": {
+            "type": "boolean",
+            "title": "Public",
+            "description": "Publication status of this layer",
+            "default": false
+          },
+          "proposed": {
+            "type": "boolean",
+            "title": "Proposed",
+            "description": "Whether this layer has been proposed for publication",
+            "default": false
+          },
+          "citation": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Citation",
+            "description": "Citation details for this layer"
+          },
+          "meta": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta",
+            "description": "Arbitrary metadata"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment",
+            "description": "Plaintext, potentially multiline comment on this layer"
+          },
+          "config": {
+            "$ref": "#/components/schemas/DebugLayerConfig"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "level",
+          "layerType"
+        ],
+        "title": "DebugLayerRead"
+      },
+      "DebugLayerUpdate": {
+        "properties": {
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 512,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Short, concise description of this data layer"
+          },
+          "textId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Textid",
+            "description": "ID of the text this layer belongs to"
+          },
+          "level": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Level"
+          },
+          "layerType": {
+            "const": "debug",
+            "title": "Layertype"
           },
           "ownerId": {
             "anyOf": [
@@ -4483,130 +4514,8 @@
         },
         "type": "object",
         "required": [
-          "id",
-          "title",
-          "level"
+          "layerType"
         ],
-        "title": "DebugLayerRead"
-      },
-      "DebugLayerUpdate": {
-        "properties": {
-          "title": {
-            "type": "string",
-            "title": "Title"
-          },
-          "description": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Description"
-          },
-          "textId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Textid"
-          },
-          "level": {
-            "type": "integer",
-            "title": "Level"
-          },
-          "layerType": {
-            "const": "debug",
-            "title": "Layertype"
-          },
-          "ownerId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Ownerid"
-          },
-          "sharedRead": {
-            "items": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
-            "title": "Sharedread"
-          },
-          "sharedWrite": {
-            "items": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
-            "title": "Sharedwrite"
-          },
-          "public": {
-            "type": "boolean",
-            "title": "Public"
-          },
-          "proposed": {
-            "type": "boolean",
-            "title": "Proposed"
-          },
-          "citation": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Citation"
-          },
-          "meta": {
-            "anyOf": [
-              {
-                "additionalProperties": {
-                  "type": "string"
-                },
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Meta"
-          },
-          "comment": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Comment"
-          },
-          "config": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/DebugLayerConfig"
-              }
-            ]
-          }
-        },
-        "type": "object",
         "title": "DebugLayerUpdate"
       },
       "DebugUnitCreate": {
@@ -4705,6 +4614,7 @@
             "description": "Text content of the debug unit"
           }
         },
+        "additionalProperties": true,
         "type": "object",
         "required": [
           "id",
@@ -4716,14 +4626,28 @@
       "DebugUnitUpdate": {
         "properties": {
           "layerId": {
-            "type": "string",
-            "title": "Layerid",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Layerid"
           },
           "nodeId": {
-            "type": "string",
-            "title": "Nodeid",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nodeid"
           },
           "meta": {
             "anyOf": [
@@ -4737,7 +4661,8 @@
                 "type": "null"
               }
             ],
-            "title": "Meta"
+            "title": "Meta",
+            "description": "Arbitrary metadata on this layer unit"
           },
           "text": {
             "anyOf": [
@@ -4748,7 +4673,8 @@
                 "type": "null"
               }
             ],
-            "title": "Text"
+            "title": "Text",
+            "description": "Text content of the debug unit"
           }
         },
         "type": "object",
@@ -5055,6 +4981,7 @@
             "description": "Label for identifying this text node in level context"
           }
         },
+        "additionalProperties": true,
         "type": "object",
         "required": [
           "id",
@@ -5068,9 +4995,16 @@
       "NodeUpdate": {
         "properties": {
           "textId": {
-            "type": "string",
-            "title": "Textid",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Textid"
           },
           "parentId": {
             "anyOf": [
@@ -5082,18 +5016,40 @@
                 "type": "null"
               }
             ],
-            "title": "Parentid"
+            "title": "Parentid",
+            "description": "ID of parent node"
           },
           "level": {
-            "type": "integer",
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Level"
           },
           "position": {
-            "type": "integer",
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Position"
           },
           "label": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Label"
           }
         },
@@ -5152,8 +5108,7 @@
           },
           "layerType": {
             "const": "plaintext",
-            "title": "Layertype",
-            "default": "plaintext"
+            "title": "Layertype"
           },
           "ownerId": {
             "anyOf": [
@@ -5247,7 +5202,8 @@
         "type": "object",
         "required": [
           "title",
-          "level"
+          "level",
+          "layerType"
         ],
         "title": "PlaintextLayerCreate"
       },
@@ -5299,8 +5255,161 @@
           },
           "layerType": {
             "const": "plaintext",
-            "title": "Layertype",
-            "default": "plaintext"
+            "title": "Layertype"
+          },
+          "ownerId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ownerid",
+            "description": "User owning this layer"
+          },
+          "sharedRead": {
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "type": "array",
+            "title": "Sharedread",
+            "description": "Users with shared read access to this layer",
+            "default": []
+          },
+          "sharedWrite": {
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "type": "array",
+            "title": "Sharedwrite",
+            "description": "Users with shared write access to this layer",
+            "default": []
+          },
+          "public": {
+            "type": "boolean",
+            "title": "Public",
+            "description": "Publication status of this layer",
+            "default": false
+          },
+          "proposed": {
+            "type": "boolean",
+            "title": "Proposed",
+            "description": "Whether this layer has been proposed for publication",
+            "default": false
+          },
+          "citation": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Citation",
+            "description": "Citation details for this layer"
+          },
+          "meta": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta",
+            "description": "Arbitrary metadata"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment",
+            "description": "Plaintext, potentially multiline comment on this layer"
+          },
+          "config": {
+            "$ref": "#/components/schemas/PlaintextLayerConfig"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "level",
+          "layerType"
+        ],
+        "title": "PlaintextLayerRead"
+      },
+      "PlaintextLayerUpdate": {
+        "properties": {
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 512,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Short, concise description of this data layer"
+          },
+          "textId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Textid",
+            "description": "ID of the text this layer belongs to"
+          },
+          "level": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Level"
+          },
+          "layerType": {
+            "const": "plaintext",
+            "title": "Layertype"
           },
           "ownerId": {
             "anyOf": [
@@ -5393,130 +5502,8 @@
         },
         "type": "object",
         "required": [
-          "id",
-          "title",
-          "level"
+          "layerType"
         ],
-        "title": "PlaintextLayerRead"
-      },
-      "PlaintextLayerUpdate": {
-        "properties": {
-          "title": {
-            "type": "string",
-            "title": "Title"
-          },
-          "description": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Description"
-          },
-          "textId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Textid"
-          },
-          "level": {
-            "type": "integer",
-            "title": "Level"
-          },
-          "layerType": {
-            "const": "plaintext",
-            "title": "Layertype"
-          },
-          "ownerId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Ownerid"
-          },
-          "sharedRead": {
-            "items": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
-            "title": "Sharedread"
-          },
-          "sharedWrite": {
-            "items": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
-            "title": "Sharedwrite"
-          },
-          "public": {
-            "type": "boolean",
-            "title": "Public"
-          },
-          "proposed": {
-            "type": "boolean",
-            "title": "Proposed"
-          },
-          "citation": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Citation"
-          },
-          "meta": {
-            "anyOf": [
-              {
-                "additionalProperties": {
-                  "type": "string"
-                },
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Meta"
-          },
-          "comment": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Comment"
-          },
-          "config": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PlaintextLayerConfig"
-              }
-            ]
-          }
-        },
-        "type": "object",
         "title": "PlaintextLayerUpdate"
       },
       "PlaintextUnitCreate": {
@@ -5615,6 +5602,7 @@
             "description": "Text content of the plaintext unit"
           }
         },
+        "additionalProperties": true,
         "type": "object",
         "required": [
           "id",
@@ -5626,14 +5614,28 @@
       "PlaintextUnitUpdate": {
         "properties": {
           "layerId": {
-            "type": "string",
-            "title": "Layerid",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Layerid"
           },
           "nodeId": {
-            "type": "string",
-            "title": "Nodeid",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nodeid"
           },
           "meta": {
             "anyOf": [
@@ -5647,7 +5649,8 @@
                 "type": "null"
               }
             ],
-            "title": "Meta"
+            "title": "Meta",
+            "description": "Arbitrary metadata on this layer unit"
           },
           "text": {
             "anyOf": [
@@ -5658,7 +5661,8 @@
                 "type": "null"
               }
             ],
-            "title": "Text"
+            "title": "Text",
+            "description": "Text content of the plaintext unit"
           }
         },
         "type": "object",
@@ -5866,6 +5870,7 @@
             "default": true
           }
         },
+        "additionalProperties": true,
         "type": "object",
         "required": [
           "id"
@@ -5876,24 +5881,31 @@
         "properties": {
           "infoPlatformName": {
             "type": "string",
-            "title": "Infoplatformname"
+            "maxLength": 32,
+            "minLength": 1,
+            "title": "Infoplatformname",
+            "description": "Name of the platform",
+            "default": "Tekst-Dev"
           },
           "infoDescription": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "maxLength": 128
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Infodescription"
+            "title": "Infodescription",
+            "description": "Short description of the platform",
+            "default": "An online text research platform"
           },
           "infoTerms": {
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 2083,
+                "maxLength": 512,
                 "minLength": 1,
                 "format": "uri"
               },
@@ -5901,36 +5913,43 @@
                 "type": "null"
               }
             ],
-            "title": "Infoterms"
+            "title": "Infoterms",
+            "description": "URL to page with terms and conditions for API usage"
           },
           "infoContactName": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "maxLength": 64,
+                "minLength": 1
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Infocontactname"
+            "title": "Infocontactname",
+            "description": "Platform contact name"
           },
           "infoContactEmail": {
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 64,
+                "minLength": 1,
                 "format": "email"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Infocontactemail"
+            "title": "Infocontactemail",
+            "description": "Platform contact email"
           },
           "infoContactUrl": {
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 2083,
+                "maxLength": 512,
                 "minLength": 1,
                 "format": "uri"
               },
@@ -5938,7 +5957,8 @@
                 "type": "null"
               }
             ],
-            "title": "Infocontacturl"
+            "title": "Infocontacturl",
+            "description": "URL to page with contact info"
           },
           "defaultTextId": {
             "anyOf": [
@@ -5950,15 +5970,20 @@
                 "type": "null"
               }
             ],
-            "title": "Defaulttextid"
+            "title": "Defaulttextid",
+            "description": "Default text to load in UI"
           },
           "showHeaderInfo": {
             "type": "boolean",
-            "title": "Showheaderinfo"
+            "title": "Showheaderinfo",
+            "description": "Show platform description in header",
+            "default": true
           },
           "showFooterInfo": {
             "type": "boolean",
-            "title": "Showfooterinfo"
+            "title": "Showfooterinfo",
+            "description": "Show platform title and description in footer",
+            "default": true
           }
         },
         "type": "object",
@@ -6207,6 +6232,7 @@
             "default": false
           }
         },
+        "additionalProperties": true,
         "type": "object",
         "required": [
           "id",
@@ -6252,11 +6278,25 @@
       "TextUpdate": {
         "properties": {
           "title": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Title"
           },
           "slug": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Slug"
           },
           "subtitle": {
@@ -6271,39 +6311,60 @@
                 "type": "null"
               }
             ],
-            "title": "Subtitle"
+            "title": "Subtitle",
+            "description": "Subtitle translations of this text (if set, it must contain at least one element)"
           },
           "levels": {
-            "items": {
-              "items": {
-                "$ref": "#/components/schemas/StructureLevelTranslation"
+            "anyOf": [
+              {
+                "items": {
+                  "items": {
+                    "$ref": "#/components/schemas/StructureLevelTranslation"
+                  },
+                  "type": "array",
+                  "minItems": 1
+                },
+                "type": "array"
               },
-              "type": "array",
-              "minItems": 1
-            },
-            "type": "array",
+              {
+                "type": "null"
+              }
+            ],
             "title": "Levels"
           },
           "defaultLevel": {
             "type": "integer",
-            "title": "Defaultlevel"
+            "minimum": 0.0,
+            "title": "Defaultlevel",
+            "description": "Default structure level for the client to use for browsing this text",
+            "default": 0
           },
           "locDelim": {
             "type": "string",
-            "title": "Locdelim"
+            "maxLength": 3,
+            "minLength": 1,
+            "title": "Locdelim",
+            "description": "Delimiter for displaying text locations",
+            "default": ", "
           },
           "labeledLocation": {
             "type": "boolean",
-            "title": "Labeledlocation"
+            "title": "Labeledlocation",
+            "description": "Whether the UI should label the parts of the browse location with each levels' names",
+            "default": true
           },
           "accentColor": {
             "type": "string",
             "format": "color",
-            "title": "Accentcolor"
+            "title": "Accentcolor",
+            "description": "Accent color used for this text in the client UI",
+            "default": "#305D97"
           },
           "isActive": {
             "type": "boolean",
-            "title": "Isactive"
+            "title": "Isactive",
+            "description": "Whether the text should be listed for non-admin users in the web client",
+            "default": false
           }
         },
         "type": "object",
@@ -6621,19 +6682,47 @@
             "title": "Isverified"
           },
           "username": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Username"
           },
           "firstName": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Firstname"
           },
           "lastName": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Lastname"
           },
           "affiliation": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Affiliation"
           },
           "locale": {
@@ -6661,7 +6750,9 @@
               ]
             },
             "type": "array",
-            "title": "Publicfields"
+            "title": "Publicfields",
+            "description": "Data fields set public by this user",
+            "default": []
           }
         },
         "type": "object",

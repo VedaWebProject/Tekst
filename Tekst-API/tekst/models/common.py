@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Annotated, Any, Dict, Literal  # noqa: UP035
+from typing import Annotated, Any, Dict, Literal, Optional  # noqa: UP035
 
 from beanie import (
     Document,
@@ -57,6 +57,7 @@ class DocumentBase(ModelTransformerMixin, Document):
 
 
 class ReadBase:
+    model_config = ConfigDict(extra="allow")
     id: PydanticObjectId
 
 
@@ -80,10 +81,10 @@ class ModelFactoryMixin:
     @classmethod
     def document_model(cls, bases: type | tuple[type] = (DocumentBase,)) -> type:
         if not cls._document_model or not cls._is_origin_cls("_document_model"):
-            cls._document_model = type(
+            cls._document_model = create_model(
                 f"{cls.__name__}Document",
-                (cls, *cls._to_bases_tuple(bases)),
-                {"__module__": f"{cls.__module__}"},
+                __base__=(cls, *cls._to_bases_tuple(bases)),
+                __module__=cls.__module__,
             )
         return cls._document_model
 
@@ -93,17 +94,17 @@ class ModelFactoryMixin:
             cls._create_model = create_model(
                 f"{cls.__name__}Create",
                 __base__=cls,
-                __module__=cls.__name__,
+                __module__=cls.__module__,
             )
         return cls._create_model
 
     @classmethod
     def read_model(cls, bases: type | tuple[type] = (ReadBase,)) -> type[ReadBase]:
         if not cls._read_model or not cls._is_origin_cls("_read_model"):
-            cls._read_model = type(
+            cls._read_model = create_model(
                 f"{cls.__name__}Read",
-                (cls, *cls._to_bases_tuple(bases)),
-                {"__module__": f"{cls.__module__}"},
+                __base__=(cls, *cls._to_bases_tuple(bases)),
+                __module__=cls.__module__,
             )
         return cls._read_model
 
@@ -112,11 +113,12 @@ class ModelFactoryMixin:
         if not cls._update_model or not cls._is_origin_cls("_update_model"):
             fields = {}
             for k, v in cls.model_fields.items():
-                fields[k] = (v.annotation, None)
+                if not str(k).endswith("_type") and v.is_required():
+                    fields[k] = (Optional[v.annotation], None)  # noqa: UP007
             cls._update_model = create_model(
                 f"{cls.__name__}Update",
                 __base__=(cls, *cls._to_bases_tuple(bases)),
-                __module__=cls.__name__,
+                __module__=cls.__module__,
                 **fields,
             )
         return cls._update_model

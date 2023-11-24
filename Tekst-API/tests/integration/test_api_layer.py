@@ -74,13 +74,14 @@ async def test_update_layer(
         "textId": text_id,
         "level": 0,
         "layerType": "plaintext",
-        "ownerId": user_data.get("id"),
+        "public": True,
     }
     resp = await test_client.post("/layers", json=payload, cookies=session_cookie)
     assert resp.status_code == 201, status_fail_msg(201, resp)
     layer_data = resp.json()
     assert "id" in layer_data
     assert "ownerId" in layer_data
+    assert layer_data.get("public") is False
     # update layer
     updates = {"title": "This Title Changed", "layerType": "plaintext"}
     resp = await test_client.patch(
@@ -93,11 +94,22 @@ async def test_update_layer(
     assert "id" in resp.json()
     assert resp.json()["id"] == str(layer_data["id"])
     assert resp.json()["title"] == updates["title"]
+    # check if updating public/proposed has no effect (as intended)
+    updates = {"public": True, "proposed": True, "layerType": "plaintext"}
+    resp = await test_client.patch(
+        f"/layers/{layer_data['id']}",
+        json=updates,
+        cookies=session_cookie,
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert isinstance(resp.json(), dict)
+    assert resp.json()["public"] is False
+    assert resp.json()["proposed"] is False
     # logout
     resp = await test_client.post("/auth/cookie/logout")
     assert resp.status_code == 204, status_fail_msg(204, resp)
     # update layer unauthorized
-    updates = {"title": "This Title Changed Again"}
+    updates = {"title": "This Title Changed Again", "layerType": "plaintext"}
     resp = await test_client.patch(
         f"/layers/{layer_data['id']}",
         json=updates,
@@ -203,13 +215,13 @@ async def test_get_layers(
 
     layer_id = resp.json()[0]["id"]
 
-    resp = await test_client.get(f"/layers/plaintext/{layer_id}")
+    resp = await test_client.get(f"/layers/{layer_id}")
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), dict)
     assert "layerType" in resp.json()
 
     # request invalid ID
-    resp = await test_client.get("/layers/plaintext/foo")
+    resp = await test_client.get("/layers/foo")
     assert resp.status_code == 422, status_fail_msg(422, resp)
 
 

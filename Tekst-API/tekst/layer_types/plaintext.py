@@ -30,7 +30,7 @@ class PlaintextLayerConfig(LayerConfigBase):
 
 
 class PlaintextLayer(LayerBase):
-    layer_type: Literal["plaintext"] = "plaintext"  # snake_cased layer type classname
+    layer_type: Literal["plaintext"]  # snake_cased layer type classname
     config: PlaintextLayerConfig = Field(default_factory=PlaintextLayerConfig)
 
 

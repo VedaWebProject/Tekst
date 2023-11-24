@@ -30,7 +30,7 @@ class DebugLayerConfig(LayerConfigBase):
 
 
 class DebugLayer(LayerBase):
-    layer_type: Literal["debug"] = "debug"  # snake_cased layer type classname
+    layer_type: Literal["debug"]  # snake_cased layer type classname
     config: DebugLayerConfig = Field(default_factory=DebugLayerConfig)
 
 
