@@ -1,7 +1,7 @@
 from typing import Annotated
 
-from beanie import PydanticObjectId, UpdateResponse
-from beanie.operators import In, Set
+from beanie import PydanticObjectId
+from beanie.operators import In
 from fastapi import APIRouter, Depends, HTTPException, Path, Query, status
 
 from tekst.auth import OptionalUserDep, SuperuserDep, UserDep
