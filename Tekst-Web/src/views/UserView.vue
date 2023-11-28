@@ -31,13 +31,15 @@ const { user, error } = useProfile(username);
 
   <div v-if="user && !error" class="content-block">
     <ul>
-      <li v-for="(value, key) in user" :key="key">
-        <b>{{ $t(`models.user.${key}`) }}: </b>
-        <span v-if="value">{{ value }}</span>
-        <span v-else style="opacity: 0.5; font-style: italic">{{
-          $t('account.profileFieldNotPublic')
-        }}</span>
-      </li>
+      <template v-for="(value, key) in user" :key="key">
+        <li v-if="key !== 'id'">
+          <b>{{ $t(`models.user.${key}`) }}: </b>
+          <span v-if="value">{{ value }}</span>
+          <span v-else style="opacity: 0.5; font-style: italic">{{
+            $t('account.profileFieldNotPublic')
+          }}</span>
+        </li>
+      </template>
     </ul>
   </div>
 

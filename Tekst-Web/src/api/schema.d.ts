@@ -135,12 +135,16 @@ export interface paths {
      */
     get: operations['getPlatformData'];
   };
-  '/platform/user/{usernameOrId}': {
+  '/platform/users/{usernameOrId}': {
     /**
      * Get public user info
      * @description Returns public information on the user with the specified username or ID
      */
     get: operations['getPublicUserInfo'];
+  };
+  '/platform/users': {
+    /** Get public users */
+    get: operations['getPublicUsers'];
   };
   '/platform/settings': {
     /** Update platform settings */
@@ -569,9 +573,7 @@ export interface components {
        * Meta
        * @description Arbitrary metadata
        */
-      meta?: {
-        [key: string]: string;
-      } | null;
+      meta?: components['schemas']['Metadate'][] | null;
       /**
        * Comment
        * @description Plaintext, potentially multiline comment on this layer
@@ -586,6 +588,23 @@ export interface components {
        * @example 5eb7cf5a86d9755df3a6c593
        */
       id: string;
+      /**
+       * Writable
+       * @description Whether this layer is writable for the requesting user
+       */
+      writable?: boolean | null;
+      /** @description Public user data for user owning this layer */
+      owner?: components['schemas']['UserReadPublic'] | null;
+      /**
+       * Sharedreadusers
+       * @description Public user data for users allowed to read this layer
+       */
+      sharedReadUsers?: components['schemas']['UserReadPublic'][] | null;
+      /**
+       * Sharedwriteusers
+       * @description Public user data for users allowed to write this layer
+       */
+      sharedWriteUsers?: components['schemas']['UserReadPublic'][] | null;
       /**
        * Title
        * @description Title of this layer
@@ -649,9 +668,7 @@ export interface components {
        * Meta
        * @description Arbitrary metadata
        */
-      meta?: {
-        [key: string]: string;
-      } | null;
+      meta?: components['schemas']['Metadate'][] | null;
       /**
        * Comment
        * @description Plaintext, potentially multiline comment on this layer
@@ -719,9 +736,7 @@ export interface components {
        * Meta
        * @description Arbitrary metadata
        */
-      meta?: {
-        [key: string]: string;
-      } | null;
+      meta?: components['schemas']['Metadate'][] | null;
       /**
        * Comment
        * @description Plaintext, potentially multiline comment on this layer
@@ -744,12 +759,10 @@ export interface components {
        */
       nodeId: string;
       /**
-       * Meta
-       * @description Arbitrary metadata on this layer unit
+       * Comment
+       * @description Plaintext, potentially multiline comment on this unit
        */
-      meta?: {
-        [key: string]: string;
-      } | null;
+      comment?: string | null;
       /**
        * Text
        * @description Text content of the debug unit
@@ -776,12 +789,10 @@ export interface components {
        */
       nodeId: string;
       /**
-       * Meta
-       * @description Arbitrary metadata on this layer unit
+       * Comment
+       * @description Plaintext, potentially multiline comment on this unit
        */
-      meta?: {
-        [key: string]: string;
-      } | null;
+      comment?: string | null;
       /**
        * Text
        * @description Text content of the debug unit
@@ -796,12 +807,10 @@ export interface components {
       /** Nodeid */
       nodeId?: string | null;
       /**
-       * Meta
-       * @description Arbitrary metadata on this layer unit
+       * Comment
+       * @description Plaintext, potentially multiline comment on this unit
        */
-      meta?: {
-        [key: string]: string;
-      } | null;
+      comment?: string | null;
       /**
        * Text
        * @description Text content of the debug unit
@@ -919,6 +928,13 @@ export interface components {
       position: number;
       /** Covered */
       covered: boolean;
+    };
+    /** Metadate */
+    Metadate: {
+      /** Key */
+      key: string;
+      /** Value */
+      value: string;
     };
     /** MoveNodeRequestBody */
     MoveNodeRequestBody: {
@@ -1078,9 +1094,7 @@ export interface components {
        * Meta
        * @description Arbitrary metadata
        */
-      meta?: {
-        [key: string]: string;
-      } | null;
+      meta?: components['schemas']['Metadate'][] | null;
       /**
        * Comment
        * @description Plaintext, potentially multiline comment on this layer
@@ -1095,6 +1109,23 @@ export interface components {
        * @example 5eb7cf5a86d9755df3a6c593
        */
       id: string;
+      /**
+       * Writable
+       * @description Whether this layer is writable for the requesting user
+       */
+      writable?: boolean | null;
+      /** @description Public user data for user owning this layer */
+      owner?: components['schemas']['UserReadPublic'] | null;
+      /**
+       * Sharedreadusers
+       * @description Public user data for users allowed to read this layer
+       */
+      sharedReadUsers?: components['schemas']['UserReadPublic'][] | null;
+      /**
+       * Sharedwriteusers
+       * @description Public user data for users allowed to write this layer
+       */
+      sharedWriteUsers?: components['schemas']['UserReadPublic'][] | null;
       /**
        * Title
        * @description Title of this layer
@@ -1158,9 +1189,7 @@ export interface components {
        * Meta
        * @description Arbitrary metadata
        */
-      meta?: {
-        [key: string]: string;
-      } | null;
+      meta?: components['schemas']['Metadate'][] | null;
       /**
        * Comment
        * @description Plaintext, potentially multiline comment on this layer
@@ -1228,9 +1257,7 @@ export interface components {
        * Meta
        * @description Arbitrary metadata
        */
-      meta?: {
-        [key: string]: string;
-      } | null;
+      meta?: components['schemas']['Metadate'][] | null;
       /**
        * Comment
        * @description Plaintext, potentially multiline comment on this layer
@@ -1253,12 +1280,10 @@ export interface components {
        */
       nodeId: string;
       /**
-       * Meta
-       * @description Arbitrary metadata on this layer unit
+       * Comment
+       * @description Plaintext, potentially multiline comment on this unit
        */
-      meta?: {
-        [key: string]: string;
-      } | null;
+      comment?: string | null;
       /**
        * Text
        * @description Text content of the plaintext unit
@@ -1285,12 +1310,10 @@ export interface components {
        */
       nodeId: string;
       /**
-       * Meta
-       * @description Arbitrary metadata on this layer unit
+       * Comment
+       * @description Plaintext, potentially multiline comment on this unit
        */
-      meta?: {
-        [key: string]: string;
-      } | null;
+      comment?: string | null;
       /**
        * Text
        * @description Text content of the plaintext unit
@@ -1305,12 +1328,10 @@ export interface components {
       /** Nodeid */
       nodeId?: string | null;
       /**
-       * Meta
-       * @description Arbitrary metadata on this layer unit
+       * Comment
+       * @description Plaintext, potentially multiline comment on this unit
        */
-      meta?: {
-        [key: string]: string;
-      } | null;
+      comment?: string | null;
       /**
        * Text
        * @description Text content of the plaintext unit
@@ -1734,7 +1755,7 @@ export interface components {
        * @description Data fields set public by this user
        * @default []
        */
-      publicFields?: ('firstName' | 'lastName' | 'affiliation')[];
+      publicFields?: ('id' | 'firstName' | 'lastName' | 'affiliation')[];
     };
     /**
      * UserRead
@@ -1772,7 +1793,7 @@ export interface components {
        * @description Data fields set public by this user
        * @default []
        */
-      publicFields?: ('firstName' | 'lastName' | 'affiliation')[];
+      publicFields?: ('id' | 'firstName' | 'lastName' | 'affiliation')[];
       /**
        * Createdat
        * Format: date-time
@@ -1781,6 +1802,11 @@ export interface components {
     };
     /** UserReadPublic */
     UserReadPublic: {
+      /**
+       * Id
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      id: string;
       /** Username */
       username: string;
       /** Firstname */
@@ -1817,7 +1843,7 @@ export interface components {
        * @description Data fields set public by this user
        * @default []
        */
-      publicFields?: ('firstName' | 'lastName' | 'affiliation')[];
+      publicFields?: ('id' | 'firstName' | 'lastName' | 'affiliation')[];
     };
     /** ValidationError */
     ValidationError: {
@@ -2061,6 +2087,8 @@ export interface operations {
         owners?: boolean;
         /** @description Add flag indicating write permissions for requesting user */
         writable?: boolean;
+        /** @description Include shared-with users' user data, if any */
+        shares?: boolean;
       };
     };
     responses: {
@@ -2119,10 +2147,12 @@ export interface operations {
   getLayer: {
     parameters: {
       query?: {
-        /** @description Include owner's user data, if any */
-        owner?: boolean;
+        /** @description Include owners' user data, if any */
+        owners?: boolean;
         /** @description Add flag indicating write permissions for requesting user */
         writable?: boolean;
+        /** @description Include shared-with users' user data, if any */
+        shares?: boolean;
       };
       path: {
         id: string;
@@ -2556,6 +2586,21 @@ export interface operations {
         content: {
           'application/json': components['schemas']['HTTPValidationError'];
         };
+      };
+    };
+  };
+  /** Get public users */
+  getPublicUsers: {
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['UserReadPublic'][];
+        };
+      };
+      /** @description Not found */
+      404: {
+        content: never;
       };
     };
   };

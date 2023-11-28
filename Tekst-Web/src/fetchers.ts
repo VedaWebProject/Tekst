@@ -22,7 +22,7 @@ export function useProfile(
     const unoid = unref(usernameOrId);
     if (!unoid) return;
 
-    const { data, error: err } = await GET('/platform/user/{usernameOrId}', {
+    const { data, error: err } = await GET('/platform/users/{usernameOrId}', {
       params: { path: { usernameOrId: unoid } },
     });
 
@@ -95,11 +95,13 @@ export function useStats() {
   return { stats, error, load };
 }
 
-export function useUsers() {
+export function useUsersAdmin() {
   const users = ref<Array<UserRead> | null>(null);
   const error = ref(false);
+  const loading = ref(false);
 
   async function load() {
+    loading.value = true;
     users.value = null;
     error.value = false;
 
@@ -110,12 +112,44 @@ export function useUsers() {
     } else {
       error.value = true;
     }
+    loading.value = false;
   }
 
   load();
 
   return {
     users,
+    loading,
+    error,
+    load,
+  };
+}
+
+export function useUsersPublic() {
+  const users = ref<Array<UserReadPublic> | null>(null);
+  const error = ref(false);
+  const loading = ref(false);
+
+  async function load() {
+    loading.value = true;
+    users.value = null;
+    error.value = false;
+
+    const { data, error: err } = await GET('/platform/users', {});
+
+    if (!err) {
+      users.value = data;
+    } else {
+      error.value = true;
+    }
+    loading.value = false;
+  }
+
+  load();
+
+  return {
+    users,
+    loading,
     error,
     load,
   };
@@ -124,15 +158,16 @@ export function useUsers() {
 export function useLayers(
   textId: string | Ref<string>,
   includeOwners: boolean = true,
-  includeWritable: boolean = true
+  includeWritable: boolean = true,
+  includeShares: boolean = true
 ) {
-  const layers = ref<AnyLayerRead[] | null>(null);
+  const layers = ref<AnyLayerRead[]>([]);
   const error = ref(false);
   const loading = ref(false);
 
   async function load() {
     loading.value = true;
-    layers.value = null;
+    layers.value = [];
     error.value = false;
 
     const { data, error: err } = await GET('/layers', {
@@ -141,6 +176,7 @@ export function useLayers(
           textId: unref(textId),
           owners: includeOwners,
           writable: includeWritable,
+          shares: includeShares,
         },
       },
     });

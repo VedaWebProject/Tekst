@@ -76,6 +76,8 @@ export function getFullUrl(path: string, query?: Record<string, any>): URL {
 // general
 
 export type ErrorModel = components['schemas']['ErrorModel'];
+export type Metadate = components['schemas']['Metadate'];
+export type Metadata = Metadate[];
 
 // user
 
@@ -89,6 +91,7 @@ export type UserUpdatePublicFields = components['schemas']['UserUpdate']['public
 
 export type TextCreate = components['schemas']['TextCreate'];
 export type TextRead = components['schemas']['TextRead'];
+export type TextUpdate = components['schemas']['TextUpdate'];
 export type SubtitleTranslation = components['schemas']['SubtitleTranslation'];
 export type StructureLevelTranslation = components['schemas']['StructureLevelTranslation'];
 export type NodeRead = components['schemas']['NodeRead'];
@@ -101,6 +104,8 @@ export type PlatformSettingsRead = components['schemas']['PlatformSettingsRead']
 export type PlatformSettingsUpdate = components['schemas']['PlatformSettingsUpdate'];
 export type LayerNodeCoverage = components['schemas']['LayerNodeCoverage'];
 
+// client segments
+
 export type ClientSegmentRead = components['schemas']['ClientSegmentRead'];
 export type ClientSegmentCreate = components['schemas']['ClientSegmentCreate'];
 export type ClientSegmentUpdate = components['schemas']['ClientSegmentUpdate'];
@@ -108,12 +113,19 @@ export type ClientSegmentHead = components['schemas']['ClientSegmentHead'];
 
 // data layers
 
-export type AnyLayerRead = components['schemas']['AnyLayerRead'];
-export type AnyLayerReadFull = AnyLayerRead & { writable?: boolean; owner?: UserReadPublic };
-export type AnyLayerUpdate = components['schemas']['AnyLayerUpdate'];
+export type PlaintextLayerCreate = components['schemas']['PlaintextLayerCreate'];
+export type PlaintextLayerRead = components['schemas']['PlaintextLayerRead'];
+export type PlaintextLayerUpdate = components['schemas']['PlaintextLayerUpdate'];
+export type PlaintextLayerConfig = components['schemas']['PlaintextLayerConfig'];
 
-export type PlainTextLayerRead = components['schemas']['PlainTextLayerRead'];
-export type PlainTextLayerUpdate = components['schemas']['PlainTextLayerUpdate'];
+export type DebugLayerCreate = components['schemas']['DebugLayerCreate'];
+export type DebugLayerRead = components['schemas']['DebugLayerRead'];
+export type DebugLayerUpdate = components['schemas']['DebugLayerUpdate'];
+export type DebugLayerConfig = components['schemas']['DebugLayerConfig'];
 
-export type PlainTextLayerConfig = components['schemas']['PlainTextLayerConfig'];
+export type AnyLayerRead = PlaintextLayerRead | DebugLayerRead;
+export type AnyLayerUpdate = PlaintextLayerUpdate | DebugLayerUpdate;
+
+// common data layer config types
+
 export type DeepLLinksConfig = components['schemas']['DeepLLinksConfig'];

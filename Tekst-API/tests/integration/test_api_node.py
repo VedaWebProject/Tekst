@@ -249,15 +249,15 @@ async def test_delete_node(
         "layerId": layer["id"],
         "nodeId": node["id"],
         "text": "Ein Raabe geht im Feld spazieren.",
-        "meta": {"foo": "bar"},
+        "comment": "This is a comment",
     }
     resp = await test_client.post(
         "/units/plaintext", json=payload, cookies=session_cookie
     )
     assert resp.status_code == 201, status_fail_msg(201, resp)
     assert isinstance(resp.json(), dict)
-    assert resp.json()["text"] == "Ein Raabe geht im Feld spazieren."
-    assert resp.json()["meta"]["foo"] == "bar"
+    assert resp.json()["text"] == payload["text"]
+    assert resp.json()["comment"] == payload["comment"]
     assert "id" in resp.json()
 
     # delete node

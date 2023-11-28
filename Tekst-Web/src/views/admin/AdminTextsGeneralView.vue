@@ -20,14 +20,15 @@ import { computed, ref, watch } from 'vue';
 import { DELETE, PATCH } from '@/api';
 import { $t } from '@/i18n';
 import { localeProfiles } from '@/i18n';
-import type { SubtitleTranslation } from '@/api';
+import type { SubtitleTranslation, TextCreate } from '@/api';
 import { useModelChanges } from '@/modelChanges';
 import { usePlatformData } from '@/platformData';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
+import _cloneDeep from 'lodash.clonedeep';
 
 import AddRound from '@vicons/material/AddRound';
 import MinusRound from '@vicons/material/MinusRound';
-import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
 import router from '@/router';
 
 const state = useStateStore();
@@ -36,18 +37,9 @@ const { message } = useMessages();
 const dialog = useDialog();
 const loading = ref(false);
 
-const initialModel = () => ({
-  title: state.text?.title.toString(),
-  subtitle: JSON.parse(JSON.stringify(state.text?.subtitle || [])),
-  slug: state.text?.slug,
-  defaultLevel: state.text?.defaultLevel,
-  locDelim: state.text?.locDelim,
-  labeledLocation: state.text?.labeledLocation,
-  accentColor: state.text?.accentColor,
-  isActive: state.text?.isActive,
-});
+const initialModel = () => _cloneDeep(state.text);
 
-const model = ref<Record<string, any>>(initialModel());
+const model = ref<TextCreate | undefined>(initialModel());
 
 const {
   changed: modelChanged,
@@ -61,7 +53,7 @@ const subtitleLocaleOptions = computed(() =>
   Object.keys(localeProfiles).map((l) => ({
     label: `${localeProfiles[l].icon} ${localeProfiles[l].displayFull}`,
     value: l,
-    disabled: !!model.value.subtitle.find((s: SubtitleTranslation) => s && s.locale == l),
+    disabled: !!model.value?.subtitle?.find((s: SubtitleTranslation) => s && s.locale == l),
   }))
 );
 
@@ -159,7 +151,7 @@ async function handleDelete() {
     <HelpButtonWidget help-key="adminTextsGeneralView" />
   </h2>
 
-  <div class="content-block">
+  <div v-if="model" class="content-block">
     <n-form
       ref="formRef"
       :model="model"
@@ -180,7 +172,7 @@ async function handleDelete() {
       </n-form-item>
 
       <!-- SUBTITLE -->
-      <n-form-item :label="$t('models.text.subtitle')">
+      <n-form-item v-if="model.subtitle" :label="$t('models.text.subtitle')">
         <n-dynamic-input
           v-model:value="model.subtitle"
           item-style="margin-bottom: 0;"
@@ -215,7 +207,6 @@ async function handleDelete() {
               >
                 <n-input
                   v-model:value="model.subtitle[subtitleIndex].subtitle"
-                  :rule="textFormRules.subtitle"
                   :placeholder="$t('models.text.subtitle')"
                   @keydown.enter.prevent
                 />
@@ -288,6 +279,7 @@ async function handleDelete() {
           v-model:value="model.accentColor"
           :modes="['hex']"
           :show-alpha="false"
+          :disabled="loading"
           :swatches="[
             '#305D97',
             '#097F86',

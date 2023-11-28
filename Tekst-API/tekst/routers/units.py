@@ -43,14 +43,11 @@ def _generate_create_endpoint(
 ):
     async def create_unit(unit: unit_create_model, user: UserDep) -> unit_read_model:
         # check if the layer this unit belongs to is writable by user
-        layer_write_allowed = (
-            await LayerBaseDocument.find(
-                LayerBaseDocument.id == unit.layer_id, with_children=True
-            )
-            .find(LayerBaseDocument.allowed_to_write(user))
-            .exists()
-        )
-        if not layer_write_allowed:
+        if not await LayerBaseDocument.find(
+            LayerBaseDocument.id == unit.layer_id,
+            LayerBaseDocument.allowed_to_write(user),
+            with_children=True,
+        ).exists():
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="No write access for units belonging to this layer",
@@ -59,7 +56,7 @@ def _generate_create_endpoint(
         if await unit_document_model.find(
             UnitDocumentModel.layer_id == unit.layer_id,
             UnitDocumentModel.node_id == unit.node_id,
-        ).first_or_none():
+        ).exists():
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
                 detail="The properties of this unit conflict with another unit",

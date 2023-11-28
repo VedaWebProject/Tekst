@@ -6,7 +6,7 @@ import { negativeButtonProps, positiveButtonProps } from './dialogButtonProps';
 
 withDefaults(
   defineProps<{
-    value?: string;
+    value?: string | null;
     toolbarSize?: 'small' | 'medium' | 'large';
     maxChars?: number;
     editorMode: 'wysiwyg' | 'html';

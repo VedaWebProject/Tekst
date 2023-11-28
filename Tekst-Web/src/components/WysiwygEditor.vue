@@ -32,7 +32,7 @@ import ImageOutlined from '@vicons/material/ImageOutlined';
 
 const props = withDefaults(
   defineProps<{
-    value?: string;
+    value?: string | null;
     toolbarSize?: 'small' | 'medium' | 'large';
   }>(),
   {

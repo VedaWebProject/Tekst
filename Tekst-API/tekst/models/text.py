@@ -60,7 +60,9 @@ class Text(ModelBase, ModelFactoryMixin):
             description=(
                 "Subtitle translations of this text "
                 "(if set, it must contain at least one element)"
-            )
+            ),
+            min_length=1,
+            max_length=32,
         ),
     ] = None
 

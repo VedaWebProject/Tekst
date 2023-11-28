@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { AnyLayerReadFull, UserRead } from '@/api';
-import { NIcon, NListItem, NThing, NSpace, NButton } from 'naive-ui';
+import type { AnyLayerRead, UserRead } from '@/api';
+import { NEllipsis, NIcon, NListItem, NThing, NSpace, NButton } from 'naive-ui';
 import { computed } from 'vue';
 import LayerInfoWidget from '@/components/browse/widgets/LayerInfoWidget.vue';
 import LayerPublicationStatus from '@/components/LayerPublicationStatus.vue';
@@ -13,7 +13,7 @@ import PublicFilled from '@vicons/material/PublicFilled';
 import PublicOffFilled from '@vicons/material/PublicOffFilled';
 
 const props = defineProps<{
-  targetLayer: AnyLayerReadFull;
+  targetLayer: AnyLayerRead;
   currentUser?: UserRead;
 }>();
 
@@ -52,12 +52,22 @@ const actionButtonProps = {
   <n-list-item>
     <n-thing :title="targetLayer.title" content-style="margin-top: 8px">
       <template #description>
-        <div style="opacity: 0.75; font-size: var(--app-ui-font-size-small)">
-          <div v-if="targetLayer.description">
+        <div style="font-size: var(--app-ui-font-size-small)">
+          <div v-if="targetLayer.description" style="font-weight: var(--app-ui-font-weight-normal)">
             {{ targetLayer.description }}
           </div>
-          <div v-if="targetLayer.comment">
-            {{ $t('models.layer.comment') }}: {{ targetLayer.comment }}
+          <div
+            v-if="targetLayer.comment"
+            :style="targetLayer.description ? 'margin-top: .25rem' : ''"
+          >
+            <n-ellipsis
+              expand-trigger="click"
+              :tooltip="false"
+              :line-clamp="2"
+              style="opacity: 0.75"
+            >
+              {{ $t('models.layer.comment') }}: {{ targetLayer.comment }}
+            </n-ellipsis>
           </div>
         </div>
       </template>

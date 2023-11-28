@@ -1,16 +1,35 @@
 from datetime import datetime
-from typing import Annotated, Any, Dict, Literal, Optional  # noqa: UP035
+from typing import Annotated, Any, Literal, Optional  # noqa: UP035
 
 from beanie import (
     Document,
     PydanticObjectId,
 )
 from humps import camelize, decamelize
-from pydantic import BaseModel, ConfigDict, HttpUrl, PlainSerializer, create_model
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    HttpUrl,
+    PlainSerializer,
+    StringConstraints,
+    create_model,
+)
+from typing_extensions import TypedDict
 
 
-# type alias for a flat dict of arbitrary metadata
-Metadata = Dict[str, str]  # noqa: UP006
+# class for one arbitrary metadate
+class Metadate(TypedDict):
+    key: Annotated[str, StringConstraints(min_length=1, max_length=16)]
+    value: Annotated[str, StringConstraints(min_length=1, max_length=128)]
+
+
+# type alias for collection of arbitrary metadata
+Metadata = Annotated[
+    list[Metadate] | None,
+    Field(description="Arbitrary metadata", min_length=0, max_length=64),
+]
+
 
 # type alias for available locale identifiers
 Locale = Literal["deDE", "enUS"]

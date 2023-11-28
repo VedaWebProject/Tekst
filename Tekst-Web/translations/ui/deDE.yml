@@ -1,6 +1,6 @@
 general:
   welcome: Willkommen, {name}!
-  welcomeTest: '"Willkommen!", sagt der Client.'
+  general: Allgemein
   tipThemeToggleLight: Zu hellem Farbschema wechseln
   tipThemeToggleDark: Zu dunklem Farbschema wechseln
   yesAction: 'Ja'
@@ -201,6 +201,9 @@ models:
     proposed: vorgeschlagen für Veröffentlichung
     citation: Zitation
     comment: Kommentar
+    share: Zugriff teilen
+    sharedRead: Lesezugriff teilen
+    sharedWrite: Schreibzugriff teilen
     config: Konfiguration
   unit:
     modelLabel: Dateneinheit | Dateneinheiten
@@ -211,6 +214,8 @@ models:
     language: Sprache
     layerType: '@:models.layer.layerType'
     onLevel: auf Ebene "{level}"
+    key: Metadatum-Schlüssel
+    value: Metadatum-Wert
   platformSettings:
     infoPlatformName: Name der Plattform
     infoDescription: Kurzbeschreibung der Plattform
@@ -243,6 +248,27 @@ dataLayers:
   unproposeAction: Veröffentlichungsvorschlag zurücknehmen
   publishAction: Veröffentlichen
   unpublishAction: Veröffentlichung aufheben
+  warnPropose: |
+    Sie sind dabei, Ihre Datenschicht zur Veröffentlichung vorzuschlagen.
+    Es ist sehr wichtig, dass Sie die Auswirkungen eines
+    Veröffentlichungsvorschlags verstehen.
+  warnUnpropose: |
+    Sind Sie sicher, dass Sie Ihren Veröffentlichungsvorschlag
+    für diese Datenschicht zurückziehen wollen?
+  warnPublish: |
+    Sie sind im Begriff, diese Datenschicht für die Öffentlichkeit
+    (nicht registrierte Benutzer) zu veröffentlichen. Es ist sehr wichtig,
+    dass Sie sich über die Auswirkungen der Veröffentlichung
+    von Datenschichten im Klaren sind.
+  warnUnpublish: |
+    Sind Sie sicher, dass Sie die Veröffentlichung dieser
+    Datenschicht zurückziehen wollen?
+  warnDelete: |
+    Sind Sie sicher, dass Sie diese Datenschicht und alle
+    mit ihr verbundenen Daten löschen wollen?
+  editHeading: Datenschicht bearbeiten
+  untitledHeading: Unbenannte Datenschicht
+  backToOverview: Zurück zur Datenschichten-Übersicht
 
 account:
   account: Konto

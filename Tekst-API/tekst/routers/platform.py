@@ -5,7 +5,7 @@ from beanie.operators import Or
 from fastapi import APIRouter, Depends, HTTPException, Path, status
 from humps import decamelize
 
-from tekst.auth import OptionalUserDep, SuperuserDep
+from tekst.auth import OptionalUserDep, SuperuserDep, UserDep
 from tekst.config import TekstConfig
 from tekst.dependencies import get_cfg
 from tekst.models.platform import PlatformData
@@ -59,10 +59,14 @@ async def get_platform_data(
     )
 
 
-@router.get("/user/{usernameOrId}", summary="Get public user info")
+@router.get(
+    "/users/{usernameOrId}",
+    response_model=UserReadPublic,
+    summary="Get public user info",
+)
 async def get_public_user_info(
     username_or_id: Annotated[str | PydanticObjectId, Path(alias="usernameOrId")]
-) -> UserReadPublic:
+) -> dict:
     """Returns public information on the user with the specified username or ID"""
     if PydanticObjectId.is_valid(username_or_id):
         username_or_id = PydanticObjectId(username_or_id)
@@ -77,12 +81,30 @@ async def get_public_user_info(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"User '{username_or_id}' does not exist",
         )
-    return dict(
+    return UserReadPublic(
+        id=user.id,
         username=user.username,
         **user.model_dump(
             include={decamelize(field): True for field in user.public_fields}
         ),
     )
+
+
+@router.get(
+    "/users", response_model=list[UserReadPublic], status_code=status.HTTP_200_OK
+)
+async def get_public_users(su: UserDep) -> list[UserDocument]:
+    return [
+        UserReadPublic(
+            id=user.id,
+            username=user.username,
+            **user.model_dump(
+                include={decamelize(field): True for field in user.public_fields}
+            ),
+        )
+        for user in await UserDocument.find_all().to_list()
+        if user.is_active
+    ]
 
 
 @router.patch(

@@ -9,7 +9,13 @@ from fastapi import Body
 from humps import decamelize
 
 from tekst.logging import log
-from tekst.models.layer import LayerBase, LayerBaseDocument, LayerBaseUpdate
+from tekst.models.common import ReadBase
+from tekst.models.layer import (
+    LayerBase,
+    LayerBaseDocument,
+    LayerBaseUpdate,
+    LayerReadExtras,
+)
 from tekst.models.unit import UnitBase, UnitBaseDocument, UnitBaseUpdate
 
 
@@ -94,7 +100,7 @@ def init_layer_types_mgr() -> None:
     global layer_types_mgr
     if layer_types_mgr is not None:
         return layer_types_mgr
-    log.info("Initializing layer type manager")
+    log.info("Initializing layer types...")
     # init manager
     manager = LayerTypeManager()
     # get internal layer type module names
@@ -107,8 +113,12 @@ def init_layer_types_mgr() -> None:
         for layer_type_impl in layer_types_from_module:
             # exclude LayerTypeABC class (which is weirdly picked up here)
             if layer_type_impl[1] is not LayerTypeABC:
-                # register layer type instance with layer type manager
                 layer_type_class = layer_type_impl[1]
+                # initialize layer type CRUD models (don't init document models here!)
+                layer_type_class.layer_model().create_model()
+                layer_type_class.layer_model().read_model((LayerReadExtras, ReadBase))
+                layer_type_class.layer_model().update_model()
+                # register layer type instance with layer type manager
                 log.info(f"Registering layer type: {layer_type_class.get_name()}")
                 manager.register(layer_type_class, layer_type_class.get_key())
     layer_types_mgr = manager

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { NButton, NIcon, NModal, NInput } from 'naive-ui';
-import ModalButtonFooter from '@/components/ModalButtonFooter.vue';
+import ButtonFooter from '@/components/ButtonFooter.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import IconHeading from '@/components/typography/IconHeading.vue';
 
@@ -49,12 +49,12 @@ const showModal = ref(false);
     <h3>{{ $t('search.settings.heading') }}</h3>
     <p>Quick Search settings go here...</p>
 
-    <ModalButtonFooter>
+    <ButtonFooter>
       <n-button secondary :focusable="false" @click="showModal = false">
         {{ $t('general.cancelAction') }}
       </n-button>
       <n-button type="primary">{{ $t('search.searchAction') }}</n-button>
-    </ModalButtonFooter>
+    </ButtonFooter>
   </n-modal>
 </template>
 

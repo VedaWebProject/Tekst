@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
-import { useUsers } from '@/fetchers';
+import { useUsersAdmin } from '@/fetchers';
 import {
   NButton,
   NInput,
@@ -29,7 +29,7 @@ import { positiveButtonProps, negativeButtonProps } from '@/components/dialogBut
 import SearchRound from '@vicons/material/SearchRound';
 import UndoRound from '@vicons/material/UndoRound';
 
-const { users, error, load: loadUsers } = useUsers();
+const { users, error, load: loadUsers } = useUsersAdmin();
 const { message } = useMessages();
 const dialog = useDialog();
 const route = useRoute();

@@ -1,7 +1,8 @@
 from typing import Annotated
 
-from beanie import PydanticObjectId
-from fastapi import APIRouter, HTTPException, Path, Query, status
+from beanie import PydanticObjectId, UpdateResponse
+from beanie.operators import In, Set
+from fastapi import APIRouter, Depends, HTTPException, Path, Query, status
 
 from tekst.auth import OptionalUserDep, SuperuserDep, UserDep
 from tekst.layer_types import (
@@ -27,45 +28,74 @@ router = APIRouter(
 )
 
 
-async def _process_layer_results(
-    layer_docs: AnyLayerDocument | list[AnyLayerDocument],
-    *,
-    user: UserRead | None = None,
-    include_owners: bool = False,
-    include_writable: bool = False,
-) -> AnyLayerRead | list[AnyLayerRead]:
-    # remember if a list has been passed
-    is_list = isinstance(layer_docs, list)
-    # convert single layer document to list
-    if not is_list:
-        layer_docs = [layer_docs]
-    # convert layer documents to layer type's read instances
-    layers = [
-        layer_types_mgr.get(layer_doc.layer_type)
-        .layer_model()
-        .read_model()(
-            **layer_doc.model_dump(
-                exclude=layer_doc.restricted_fields(user and user.id)
-            )
-        )
-        for layer_doc in layer_docs
-    ]
-    # include writable flag (if applicable)
-    if include_writable and user:
-        for layer in layers:
-            layer.writable = (
-                user.is_superuser
-                or user.id == layer.owner_id
-                or user.id in layer.shared_write
-            )
-    # include owner user data in each layer model (if an owner id is set)
-    if include_owners:
-        for layer in layers:
-            if layer.owner_id:
-                layer.owner = UserReadPublic.model_from(
-                    await UserDocument.get(layer.owner_id)
+class _ReadIncludes:
+    def __init__(
+        self,
+        owners: Annotated[
+            bool, Query(description="Include owners' user data, if any")
+        ] = False,
+        writable: Annotated[
+            bool,
+            Query(
+                description="Add flag indicating write permissions for requesting user",
+            ),
+        ] = False,
+        shares: Annotated[
+            bool, Query(description="Include shared-with users' user data, if any")
+        ] = False,
+    ):
+        self.owners = owners
+        self.writable = writable
+        self.shares = shares
+
+    async def process(
+        self,
+        layers: AnyLayerDocument | list[AnyLayerDocument],
+        user: UserRead | None = None,
+    ) -> AnyLayerRead | list[AnyLayerRead]:
+        # remember if a list has been passed
+        is_list = isinstance(layers, list)
+        # convert single layer document to list
+        if not is_list:
+            layers = [layers]
+        # convert layer documents to layer type's read instances
+        layers = [
+            layer_types_mgr.get(layer.layer_type)
+            .layer_model()
+            .read_model()(**layer.model_dump(exclude=layer.restricted_fields(user)))
+            for layer in layers
+        ]
+        # include writable flag (if applicable)
+        if self.writable:
+            for layer in layers:
+                layer.writable = bool(
+                    user
+                    and (
+                        user.is_superuser
+                        or user.id == layer.owner_id
+                        or user.id in layer.shared_write
+                    )
                 )
-    return layers if is_list else layers[0]
+        # include owner user data in each layer model (if an owner id is set)
+        if self.owners:
+            for layer in layers:
+                if layer.owner_id:
+                    layer.owner = UserReadPublic.model_from(
+                        await UserDocument.get(layer.owner_id)
+                    )
+        # include shared-with user data in each layer model (if any)
+        if self.shares and user:
+            for layer in layers:
+                if user.is_superuser or user.id == layer.owner_id:
+                    if layer.shared_read:
+                        layer.shared_read_users = await UserDocument.find(
+                            In(UserDocument.id, layer.shared_read)
+                        ).to_list()
+                    if layer.shared_write:
+                        layer.shared_write_users = await UserDocument.find(
+                            In(UserDocument.id, layer.shared_write)
+                        ).to_list()
+        return layers if is_list else layers[0]
 
 
 @router.post("", response_model=AnyLayerReadBody, status_code=status.HTTP_201_CREATED)
@@ -93,27 +123,30 @@ async def create_layer(layer: AnyLayerCreateBody, user: UserDep) -> AnyLayerDocu
 async def update_layer(
     id: PydanticObjectId, updates: AnyLayerUpdateBody, user: UserDep
 ) -> AnyLayerDocument:
-    if not await LayerBaseDocument.find_one(
-        LayerBaseDocument.id == id,
-        LayerBaseDocument.allowed_to_write(user),
-        with_children=True,
-    ).exists():
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Layer {id} doesn't exist or requires extra permissions",
-        )
     layer_doc = (
         await layer_types_mgr.get(updates.layer_type)
         .layer_model()
         .document_model()
         .find_one(LayerBaseDocument.id == id, LayerBaseDocument.allowed_to_write(user))
     )
+    if not layer_doc:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Layer {id} doesn't exist or requires extra permissions",
+        )
+    # update document with reduced updates
     return await layer_doc.apply(
         updates.model_dump(
             exclude_unset=True,
-            exclude={"public", "proposed", "text_id", "owner_id"}
-            if not user.is_superuser
-            else None,
+            # force-keep non-updatable fields
+            exclude={
+                "public",
+                "proposed",
+                "text_id",
+                "owner_id",
+                "level",
+                "layer_type",
+            },
         )
     )
 
@@ -121,20 +154,11 @@ async def update_layer(
 @router.get("", response_model=list[AnyLayerReadBody], status_code=status.HTTP_200_OK)
 async def find_layers(
     user: OptionalUserDep,
+    includes: Annotated[_ReadIncludes, Depends(_ReadIncludes)],
     text_id: Annotated[PydanticObjectId, Query(alias="textId")],
     level: int = None,
     layer_type: Annotated[str, Query(alias="layerType")] = None,
     limit: int = 1000,
-    include_owners: Annotated[
-        bool, Query(alias="owners", description="Include owners' user data, if any")
-    ] = False,
-    include_writable: Annotated[
-        bool,
-        Query(
-            alias="writable",
-            description="Add flag indicating write permissions for requesting user",
-        ),
-    ] = False,
 ) -> list[AnyLayerRead]:
     """
     Returns a list of all data layers matching the given criteria.
@@ -158,13 +182,7 @@ async def find_layers(
         .limit(limit)
         .to_list()
     )
-
-    return await _process_layer_results(
-        layer_docs,
-        user=user,
-        include_owners=include_owners,
-        include_writable=include_writable,
-    )
+    return await includes.process(layer_docs, user)
 
 
 #
@@ -239,17 +257,8 @@ async def find_layers(
 @router.get("/{id}", status_code=status.HTTP_200_OK, response_model=AnyLayerReadBody)
 async def get_layer(
     user: OptionalUserDep,
+    includes: Annotated[_ReadIncludes, Depends(_ReadIncludes)],
     layer_id: Annotated[PydanticObjectId, Path(alias="id")],
-    include_owner: Annotated[
-        bool, Query(alias="owner", description="Include owner's user data, if any")
-    ] = False,
-    include_writable: Annotated[
-        bool,
-        Query(
-            alias="writable",
-            description="Add flag indicating write permissions for requesting user",
-        ),
-    ] = False,
 ) -> AnyLayerRead:
     layer_doc = await LayerBaseDocument.find_one(
         LayerBaseDocument.id == layer_id,
@@ -260,11 +269,9 @@ async def get_layer(
         raise HTTPException(
             status.HTTP_404_NOT_FOUND, detail=f"No layer with ID {layer_id}"
         )
-    return await _process_layer_results(
+    return await includes.process(
         layer_doc,
-        user=user,
-        include_owners=include_owner,
-        include_writable=include_writable,
+        user,
     )
 
 

@@ -3,7 +3,7 @@ import { POST } from '@/api';
 import { $t } from '@/i18n';
 import type { NodeTreeOption } from '@/views/admin/AdminTextsNodesView.vue';
 import { NForm, NFormItem, NModal, NButton, NInput, type InputInst, type FormInst } from 'naive-ui';
-import ModalButtonFooter from '@/components/ModalButtonFooter.vue';
+import ButtonFooter from '@/components/ButtonFooter.vue';
 import { ref } from 'vue';
 import { nodeFormRules } from '@/formRules';
 import { useStateStore } from '@/stores';
@@ -94,13 +94,13 @@ async function handleSubmit() {
         />
       </n-form-item>
     </n-form>
-    <ModalButtonFooter>
+    <ButtonFooter>
       <n-button secondary :disabled="loading" @click="$emit('update:show', false)">
         {{ $t('general.cancelAction') }}
       </n-button>
       <n-button type="primary" :loading="loading" :disabled="loading" @click="handleSubmit">
         {{ $t('general.saveAction') }}
       </n-button>
-    </ModalButtonFooter>
+    </ButtonFooter>
   </n-modal>
 </template>

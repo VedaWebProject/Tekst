@@ -4,7 +4,7 @@ from typing import Annotated
 
 from beanie import PydanticObjectId
 from beanie.operators import And, In, Or
-from pydantic import Field, field_validator, model_validator
+from pydantic import Field, create_model, field_validator, model_validator
 
 from tekst.models.common import (
     DocumentBase,
@@ -13,7 +13,7 @@ from tekst.models.common import (
     ModelFactoryMixin,
 )
 from tekst.models.text import TextDocument
-from tekst.models.user import UserRead
+from tekst.models.user import UserRead, UserReadPublic
 
 
 class LayerBase(ModelBase, ModelFactoryMixin):
@@ -59,10 +59,13 @@ class LayerBase(ModelBase, ModelFactoryMixin):
         str | None,
         Field(description="Citation details for this layer", max_length=1000),
     ] = None
-    meta: Annotated[Metadata | None, Field(description="Arbitrary metadata")] = None
+    meta: Metadata = None
     comment: Annotated[
         str | None,
-        Field(description="Plaintext, potentially multiline comment on this layer"),
+        Field(
+            description="Plaintext, potentially multiline comment on this layer",
+            max_length=1000,
+        ),
     ] = None
 
     @field_validator("description")
@@ -70,7 +73,7 @@ class LayerBase(ModelBase, ModelFactoryMixin):
     def handle_whitespaces_in_description(cls, v):
         if not isinstance(v, str):
             return None
-        return re.sub(r"[\s\n\r]+", " ", v)
+        return re.sub(r"[\s\n\r]+", " ", v).strip()
 
     @field_validator("layer_type")
     @classmethod
@@ -85,6 +88,13 @@ class LayerBase(ModelBase, ModelFactoryMixin):
             )
         return v.lower()
 
+    @field_validator("comment")
+    @classmethod
+    def strip_comment_whitespaces(cls, v):
+        if not isinstance(v, str):
+            return None
+        return re.sub(r"[\n\r]+", "\n", v).strip()
+
     @model_validator(mode="after")
     def model_postprocess(self):
         if self.public:
@@ -96,11 +106,15 @@ class LayerBase(ModelBase, ModelFactoryMixin):
             self.shared_write = []
         return self
 
-    def restricted_fields(self, user_id: str = None) -> dict:
-        return {
-            "shared_read": user_id is None or self.owner_id != user_id,
-            "shared_write": user_id is None or self.owner_id != user_id,
+    def restricted_fields(self, user: UserRead | None = None) -> set[str] | None:
+        restrict_shares_info = user is None or (
+            user.id != self.owner_id and not user.is_superuser
+        )
+        restrictions: dict[str, bool] = {
+            "shared_read": restrict_shares_info,
+            "shared_write": restrict_shares_info,
         }
+        return {k for k, v in restrictions.items() if v}
 
 
 # generate document and update models for this base model,
@@ -149,7 +163,34 @@ class LayerBaseDocument(LayerBase, DocumentBase):
         indexes = ["text_id", "level", "layer_type", "owner_id"]
 
 
-LayerBaseRead = LayerBase.read_model()
+class LayerReadExtras(ModelBase):
+    writable: Annotated[
+        bool | None,
+        Field(description="Whether this layer is writable for the requesting user"),
+    ] = None
+    owner: Annotated[
+        UserReadPublic | None,
+        Field(
+            description="Public user data for user owning this layer",
+        ),
+    ] = None
+    shared_read_users: Annotated[
+        list[UserReadPublic] | None,
+        Field(
+            description="Public user data for users allowed to read this layer",
+        ),
+    ] = None
+    shared_write_users: Annotated[
+        list[UserReadPublic] | None,
+        Field(
+            description="Public user data for users allowed to write this layer",
+        ),
+    ] = None
+
+
+LayerBaseRead = create_model(
+    "LayerBaseRead", __base__=(LayerBase.read_model(), LayerReadExtras)
+)
 LayerBaseUpdate = LayerBase.update_model()
 
 

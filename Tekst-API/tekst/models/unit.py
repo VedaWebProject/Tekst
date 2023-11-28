@@ -1,9 +1,10 @@
+from typing import Annotated
+
 from beanie import PydanticObjectId
 from pydantic import Field
 
 from tekst.models.common import (
     DocumentBase,
-    Metadata,
     ModelBase,
     ModelFactoryMixin,
 )
@@ -14,12 +15,15 @@ class UnitBase(ModelBase, ModelFactoryMixin):
 
     layer_id: PydanticObjectId = Field(..., description="Data layer ID")
     node_id: PydanticObjectId = Field(..., description="Parent text node ID")
-    meta: Metadata | None = Field(
-        None,
-        description="Arbitrary metadata on this layer unit",
-    )
+    comment: Annotated[
+        str | None,
+        Field(
+            description="Plaintext, potentially multiline comment on this unit",
+            max_length=1000,
+        ),
+    ] = None
 
-    __template_fields: tuple[str] = ("meta",)
+    __template_fields: tuple[str] = ("comment",)
 
     @classmethod
     def get_template_fields(cls) -> tuple[str]:

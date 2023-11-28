@@ -20,6 +20,7 @@ _cfg: TekstConfig = get_config()
 
 
 class UserReadPublic(ModelBase):
+    id: PydanticObjectId
     username: str
     first_name: str | None = None
     last_name: str | None = None

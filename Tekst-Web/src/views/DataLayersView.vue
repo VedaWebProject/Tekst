@@ -12,7 +12,7 @@ import {
   NCollapseItem,
   useDialog,
 } from 'naive-ui';
-import { POST, type AnyLayerRead, type AnyLayerReadFull, DELETE } from '@/api';
+import { POST, type AnyLayerRead, DELETE } from '@/api';
 import { ref } from 'vue';
 import { computed } from 'vue';
 import { $t } from '@/i18n';
@@ -27,12 +27,14 @@ import { useMessages } from '@/messages';
 import SearchRound from '@vicons/material/SearchRound';
 import UndoRound from '@vicons/material/UndoRound';
 import LayersFilled from '@vicons/material/LayersFilled';
+import { useRouter } from 'vue-router';
 
 const state = useStateStore();
 const browse = useBrowseStore();
 const auth = useAuthStore();
 const dialog = useDialog();
 const { message } = useMessages();
+const router = useRouter();
 
 const textId = computed(() => state.text?.id || '');
 const { layers, loading, error, load } = useLayers(textId);
@@ -80,7 +82,7 @@ const paginatedData = computed(() => {
   return filteredData.value.slice(start, end);
 });
 
-function handleProposeClick(layer: AnyLayerReadFull) {
+function handleProposeClick(layer: AnyLayerRead) {
   dialog.warning({
     title: $t('general.warning'),
     content: $t('dataLayers.warnPropose') + ' ' + $t('general.areYouSureHelpTextHint'),
@@ -105,7 +107,7 @@ function handleProposeClick(layer: AnyLayerReadFull) {
   });
 }
 
-function handleUnproposeClick(layer: AnyLayerReadFull) {
+function handleUnproposeClick(layer: AnyLayerRead) {
   dialog.warning({
     title: $t('general.warning'),
     content: $t('dataLayers.warnUnpropose'),
@@ -130,7 +132,7 @@ function handleUnproposeClick(layer: AnyLayerReadFull) {
   });
 }
 
-function handlePublishClick(layer: AnyLayerReadFull) {
+function handlePublishClick(layer: AnyLayerRead) {
   dialog.warning({
     title: $t('general.warning'),
     content: $t('dataLayers.warnPublish') + ' ' + $t('general.areYouSureHelpTextHint'),
@@ -155,7 +157,7 @@ function handlePublishClick(layer: AnyLayerReadFull) {
   });
 }
 
-function handleUnpublishClick(layer: AnyLayerReadFull) {
+function handleUnpublishClick(layer: AnyLayerRead) {
   dialog.warning({
     title: $t('general.warning'),
     content: $t('dataLayers.warnUnpublish'),
@@ -180,11 +182,11 @@ function handleUnpublishClick(layer: AnyLayerReadFull) {
   });
 }
 
-function handleEditClick(layer: AnyLayerReadFull) {
-  alert('handleEditClick ' + JSON.stringify(layer));
+function handleEditClick(layer: AnyLayerRead) {
+  router.push({ name: 'dataLayerEdit', params: { text: state.text?.slug, id: layer.id } });
 }
 
-function handleDeleteClick(layer: AnyLayerReadFull) {
+function handleDeleteClick(layer: AnyLayerRead) {
   dialog.warning({
     title: $t('general.warning'),
     content: $t('dataLayers.warnDelete'),

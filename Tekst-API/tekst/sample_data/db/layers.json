@@ -13,12 +13,12 @@
     "proposed": false,
     "public": true,
     "citation": "Anschütz, Ernst. Warnung. 1824.",
-    "meta": {
-      "author": "Ernst Anschütz",
-      "year": "1824",
-      "originaltitle": "Warnung",
-      "language": "DE"
-    },
+    "meta": [
+      { "key": "author", "value": "Ernst Anschütz" },
+      { "key": "year", "value": "1824" },
+      { "key": "Original Title", "value": "Warnung" },
+      { "key": "language", "value": "DE" }
+    ],
     "comment": "This version includes repetition markers.",
     "config": {
       "deeplLinks": {
@@ -41,12 +41,12 @@
     "proposed": false,
     "public": true,
     "citation": null,
-    "meta": {
-      "author": "Matsuo Bashō",
-      "year": "1686",
-      "language": "JA",
-      "originaltitle": "-"
-    },
+    "meta": [
+      { "key": "author", "value": "Matsuo Bashō" },
+      { "key": "year", "value": "1686" },
+      { "key": "language", "value": "JA" },
+      { "key": "Original Title", "value": "-" }
+    ],
     "comment": null,
     "config": {
       "deeplLinks": {

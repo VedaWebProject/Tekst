@@ -5,7 +5,7 @@ import { useStateStore, useBrowseStore } from '@/stores';
 import { NButton, NModal, NSelect, NFormItem, NForm, NDivider } from 'naive-ui';
 import type { NodeRead, TextRead } from '@/api';
 import router from '@/router';
-import ModalButtonFooter from '@/components/ModalButtonFooter.vue';
+import ButtonFooter from '@/components/ButtonFooter.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import { useMagicKeys, whenever } from '@vueuse/core';
 import { GET } from '@/api';
@@ -309,14 +309,14 @@ whenever(ArrowLeft, () => {
         />
       </n-form-item>
     </n-form>
-    <ModalButtonFooter>
+    <ButtonFooter>
       <n-button secondary :focusable="false" @click="showModal = false">
         {{ $t('general.cancelAction') }}
       </n-button>
       <n-button type="primary" @click="handleLocationSelect">
         {{ $t('general.selectAction') }}
       </n-button>
-    </ModalButtonFooter>
+    </ButtonFooter>
   </n-modal>
 </template>
 

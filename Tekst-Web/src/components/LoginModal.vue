@@ -8,7 +8,7 @@ import { useMessages } from '@/messages';
 import type { RouteLocationRaw } from 'vue-router';
 import { accountFormRules } from '@/formRules';
 import { POST } from '@/api';
-import ModelButtonFooter from '@/components/ModalButtonFooter.vue';
+import ButtonFooter from '@/components/ButtonFooter.vue';
 import { LoginTemplatePromise } from '@/templatePromises';
 
 const auth = useAuthStore();
@@ -135,27 +135,26 @@ onMounted(() => {
           <n-button
             text
             :focusable="false"
-            style="margin-bottom: 2rem; font-size: var(--app-ui-font-size-mini)"
+            style="margin-bottom: 1rem; font-size: var(--app-ui-font-size-mini)"
             @click="handleForgotPasswordClick(resolve)"
           >
             {{ $t('account.forgotPassword.forgotPassword') }}
           </n-button>
         </div>
-
-        <ModelButtonFooter>
-          <n-button v-if="args[2]" secondary @click="reject(switchToRegistration())">
-            {{ $t('account.switchToRegister') }}
-          </n-button>
-          <n-button
-            type="primary"
-            :loading="isResolving"
-            :disabled="isResolving"
-            @click="handleLoginClick(resolve, args[1])"
-          >
-            {{ $t('account.loginBtn') }}
-          </n-button>
-        </ModelButtonFooter>
       </div>
+      <ButtonFooter>
+        <n-button v-if="args[2]" secondary @click="reject(switchToRegistration())">
+          {{ $t('account.switchToRegister') }}
+        </n-button>
+        <n-button
+          type="primary"
+          :loading="isResolving"
+          :disabled="isResolving"
+          @click="handleLoginClick(resolve, args[1])"
+        >
+          {{ $t('account.loginBtn') }}
+        </n-button>
+      </ButtonFooter>
     </n-modal>
   </LoginTemplatePromise>
 </template>

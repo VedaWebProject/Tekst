@@ -1,21 +1,21 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { $t } from '@/i18n';
+import type { Metadata } from '@/api';
 
 const props = defineProps<{
-  data?: Record<string, any>;
+  data?: Metadata;
   layerType?: string;
 }>();
 
 const meta = computed<string>(() => {
   const minimalMeta = ['author', 'year', 'language'];
   const m: string[] = [];
-  const data = props.data || {};
+  const data = props.data || [];
 
   minimalMeta.forEach((p: string) => {
-    if (p in data) {
-      m.push(data[p]);
-    }
+    const v = data.find((d) => d.key === p)?.value;
+    v && m.push(v);
   });
 
   props.layerType && m.push($t(`layerTypes.${props.layerType}`));

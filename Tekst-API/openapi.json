@@ -583,6 +583,18 @@
               "title": "Writable"
             },
             "description": "Add flag indicating write permissions for requesting user"
+          },
+          {
+            "name": "shares",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Include shared-with users' user data, if any",
+              "default": false,
+              "title": "Shares"
+            },
+            "description": "Include shared-with users' user data, if any"
           }
         ],
         "responses": {
@@ -749,16 +761,16 @@
             }
           },
           {
-            "name": "owner",
+            "name": "owners",
             "in": "query",
             "required": false,
             "schema": {
               "type": "boolean",
-              "description": "Include owner's user data, if any",
+              "description": "Include owners' user data, if any",
               "default": false,
-              "title": "Owner"
+              "title": "Owners"
             },
-            "description": "Include owner's user data, if any"
+            "description": "Include owners' user data, if any"
           },
           {
             "name": "writable",
@@ -771,6 +783,18 @@
               "title": "Writable"
             },
             "description": "Add flag indicating write permissions for requesting user"
+          },
+          {
+            "name": "shares",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Include shared-with users' user data, if any",
+              "default": false,
+              "title": "Shares"
+            },
+            "description": "Include shared-with users' user data, if any"
           }
         ],
         "responses": {
@@ -1538,7 +1562,7 @@
         ]
       }
     },
-    "/platform/user/{usernameOrId}": {
+    "/platform/users/{usernameOrId}": {
       "get": {
         "tags": [
           "platform"
@@ -1590,6 +1614,42 @@
             }
           }
         }
+      }
+    },
+    "/platform/users": {
+      "get": {
+        "tags": [
+          "platform"
+        ],
+        "summary": "Get public users",
+        "operationId": "getPublicUsers",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/UserReadPublic"
+                  },
+                  "type": "array",
+                  "title": "Response Get Public Users Platform Users Get"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
       }
     },
     "/platform/settings": {
@@ -4183,10 +4243,12 @@
           "meta": {
             "anyOf": [
               {
-                "additionalProperties": {
-                  "type": "string"
+                "items": {
+                  "$ref": "#/components/schemas/Metadate"
                 },
-                "type": "object"
+                "type": "array",
+                "maxItems": 64,
+                "minItems": 0
               },
               {
                 "type": "null"
@@ -4198,7 +4260,8 @@
           "comment": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "maxLength": 1000
               },
               {
                 "type": "null"
@@ -4225,6 +4288,59 @@
             "type": "string",
             "title": "Id",
             "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "writable": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Writable",
+            "description": "Whether this layer is writable for the requesting user"
+          },
+          "owner": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/UserReadPublic"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Public user data for user owning this layer"
+          },
+          "sharedReadUsers": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/UserReadPublic"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sharedreadusers",
+            "description": "Public user data for users allowed to read this layer"
+          },
+          "sharedWriteUsers": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/UserReadPublic"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sharedwriteusers",
+            "description": "Public user data for users allowed to write this layer"
           },
           "title": {
             "type": "string",
@@ -4330,10 +4446,12 @@
           "meta": {
             "anyOf": [
               {
-                "additionalProperties": {
-                  "type": "string"
+                "items": {
+                  "$ref": "#/components/schemas/Metadate"
                 },
-                "type": "object"
+                "type": "array",
+                "maxItems": 64,
+                "minItems": 0
               },
               {
                 "type": "null"
@@ -4345,7 +4463,8 @@
           "comment": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "maxLength": 1000
               },
               {
                 "type": "null"
@@ -4484,10 +4603,12 @@
           "meta": {
             "anyOf": [
               {
-                "additionalProperties": {
-                  "type": "string"
+                "items": {
+                  "$ref": "#/components/schemas/Metadate"
                 },
-                "type": "object"
+                "type": "array",
+                "maxItems": 64,
+                "minItems": 0
               },
               {
                 "type": "null"
@@ -4499,7 +4620,8 @@
           "comment": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "maxLength": 1000
               },
               {
                 "type": "null"
@@ -4532,20 +4654,18 @@
             "description": "Parent text node ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
-          "meta": {
+          "comment": {
             "anyOf": [
               {
-                "additionalProperties": {
-                  "type": "string"
-                },
-                "type": "object"
+                "type": "string",
+                "maxLength": 1000
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Meta",
-            "description": "Arbitrary metadata on this layer unit"
+            "title": "Comment",
+            "description": "Plaintext, potentially multiline comment on this unit"
           },
           "text": {
             "anyOf": [
@@ -4586,20 +4706,18 @@
             "description": "Parent text node ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
-          "meta": {
+          "comment": {
             "anyOf": [
               {
-                "additionalProperties": {
-                  "type": "string"
-                },
-                "type": "object"
+                "type": "string",
+                "maxLength": 1000
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Meta",
-            "description": "Arbitrary metadata on this layer unit"
+            "title": "Comment",
+            "description": "Plaintext, potentially multiline comment on this unit"
           },
           "text": {
             "anyOf": [
@@ -4649,20 +4767,18 @@
             ],
             "title": "Nodeid"
           },
-          "meta": {
+          "comment": {
             "anyOf": [
               {
-                "additionalProperties": {
-                  "type": "string"
-                },
-                "type": "object"
+                "type": "string",
+                "maxLength": 1000
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Meta",
-            "description": "Arbitrary metadata on this layer unit"
+            "title": "Comment",
+            "description": "Plaintext, potentially multiline comment on this unit"
           },
           "text": {
             "anyOf": [
@@ -4851,6 +4967,28 @@
           "covered"
         ],
         "title": "LayerNodeCoverage"
+      },
+      "Metadate": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "maxLength": 16,
+            "minLength": 1,
+            "title": "Key"
+          },
+          "value": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Value"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "value"
+        ],
+        "title": "Metadate"
       },
       "MoveNodeRequestBody": {
         "properties": {
@@ -5171,10 +5309,12 @@
           "meta": {
             "anyOf": [
               {
-                "additionalProperties": {
-                  "type": "string"
+                "items": {
+                  "$ref": "#/components/schemas/Metadate"
                 },
-                "type": "object"
+                "type": "array",
+                "maxItems": 64,
+                "minItems": 0
               },
               {
                 "type": "null"
@@ -5186,7 +5326,8 @@
           "comment": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "maxLength": 1000
               },
               {
                 "type": "null"
@@ -5213,6 +5354,59 @@
             "type": "string",
             "title": "Id",
             "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "writable": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Writable",
+            "description": "Whether this layer is writable for the requesting user"
+          },
+          "owner": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/UserReadPublic"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Public user data for user owning this layer"
+          },
+          "sharedReadUsers": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/UserReadPublic"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sharedreadusers",
+            "description": "Public user data for users allowed to read this layer"
+          },
+          "sharedWriteUsers": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/UserReadPublic"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sharedwriteusers",
+            "description": "Public user data for users allowed to write this layer"
           },
           "title": {
             "type": "string",
@@ -5318,10 +5512,12 @@
           "meta": {
             "anyOf": [
               {
-                "additionalProperties": {
-                  "type": "string"
+                "items": {
+                  "$ref": "#/components/schemas/Metadate"
                 },
-                "type": "object"
+                "type": "array",
+                "maxItems": 64,
+                "minItems": 0
               },
               {
                 "type": "null"
@@ -5333,7 +5529,8 @@
           "comment": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "maxLength": 1000
               },
               {
                 "type": "null"
@@ -5472,10 +5669,12 @@
           "meta": {
             "anyOf": [
               {
-                "additionalProperties": {
-                  "type": "string"
+                "items": {
+                  "$ref": "#/components/schemas/Metadate"
                 },
-                "type": "object"
+                "type": "array",
+                "maxItems": 64,
+                "minItems": 0
               },
               {
                 "type": "null"
@@ -5487,7 +5686,8 @@
           "comment": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "maxLength": 1000
               },
               {
                 "type": "null"
@@ -5520,20 +5720,18 @@
             "description": "Parent text node ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
-          "meta": {
+          "comment": {
             "anyOf": [
               {
-                "additionalProperties": {
-                  "type": "string"
-                },
-                "type": "object"
+                "type": "string",
+                "maxLength": 1000
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Meta",
-            "description": "Arbitrary metadata on this layer unit"
+            "title": "Comment",
+            "description": "Plaintext, potentially multiline comment on this unit"
           },
           "text": {
             "anyOf": [
@@ -5574,20 +5772,18 @@
             "description": "Parent text node ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
-          "meta": {
+          "comment": {
             "anyOf": [
               {
-                "additionalProperties": {
-                  "type": "string"
-                },
-                "type": "object"
+                "type": "string",
+                "maxLength": 1000
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Meta",
-            "description": "Arbitrary metadata on this layer unit"
+            "title": "Comment",
+            "description": "Plaintext, potentially multiline comment on this unit"
           },
           "text": {
             "anyOf": [
@@ -5637,20 +5833,18 @@
             ],
             "title": "Nodeid"
           },
-          "meta": {
+          "comment": {
             "anyOf": [
               {
-                "additionalProperties": {
-                  "type": "string"
-                },
-                "type": "object"
+                "type": "string",
+                "maxLength": 1000
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Meta",
-            "description": "Arbitrary metadata on this layer unit"
+            "title": "Comment",
+            "description": "Plaintext, potentially multiline comment on this unit"
           },
           "text": {
             "anyOf": [
@@ -6082,7 +6276,9 @@
                 "items": {
                   "$ref": "#/components/schemas/SubtitleTranslation"
                 },
-                "type": "array"
+                "type": "array",
+                "maxItems": 32,
+                "minItems": 1
               },
               {
                 "type": "null"
@@ -6175,7 +6371,9 @@
                 "items": {
                   "$ref": "#/components/schemas/SubtitleTranslation"
                 },
-                "type": "array"
+                "type": "array",
+                "maxItems": 32,
+                "minItems": 1
               },
               {
                 "type": "null"
@@ -6305,7 +6503,9 @@
                 "items": {
                   "$ref": "#/components/schemas/SubtitleTranslation"
                 },
-                "type": "array"
+                "type": "array",
+                "maxItems": 32,
+                "minItems": 1
               },
               {
                 "type": "null"
@@ -6454,6 +6654,7 @@
             "items": {
               "type": "string",
               "enum": [
+                "id",
                 "firstName",
                 "lastName",
                 "affiliation"
@@ -6545,6 +6746,7 @@
             "items": {
               "type": "string",
               "enum": [
+                "id",
                 "firstName",
                 "lastName",
                 "affiliation"
@@ -6579,6 +6781,11 @@
       },
       "UserReadPublic": {
         "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
           "username": {
             "type": "string",
             "title": "Username"
@@ -6619,6 +6826,7 @@
         },
         "type": "object",
         "required": [
+          "id",
           "username"
         ],
         "title": "UserReadPublic"
@@ -6744,6 +6952,7 @@
             "items": {
               "type": "string",
               "enum": [
+                "id",
                 "firstName",
                 "lastName",
                 "affiliation"

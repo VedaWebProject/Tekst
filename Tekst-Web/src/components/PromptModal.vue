@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { PromptTemplatePromise } from '@/templatePromises';
 import { NButton, NModal, NInput, NFormItem } from 'naive-ui';
-import ModalButtonFooter from './ModalButtonFooter.vue';
+import ButtonFooter from './ButtonFooter.vue';
 import { ref } from 'vue';
 
 const value = ref('');
@@ -38,14 +38,14 @@ const value = ref('');
           "
         />
       </n-form-item>
-      <ModalButtonFooter>
+      <ButtonFooter>
         <n-button secondary @click="reject(null)">
           {{ $t('general.cancelAction') }}
         </n-button>
         <n-button type="primary" @click="resolve(value)">
           {{ $t('general.okAction') }}
         </n-button>
-      </ModalButtonFooter>
+      </ButtonFooter>
     </n-modal>
   </PromptTemplatePromise>
 </template>

@@ -19,7 +19,7 @@ import {
 import { computed, ref } from 'vue';
 import { localeProfiles } from '@/i18n';
 import type { StructureLevelTranslation } from '@/api';
-import ModalButtonFooter from '@/components/ModalButtonFooter.vue';
+import ButtonFooter from '@/components/ButtonFooter.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
 
@@ -262,7 +262,7 @@ async function handleModalSubmit() {
       require-mark-placement="right-hanging"
     >
       <!-- STRUCTURE LEVEL -->
-      <n-form-item ignore-path-change :show-label="false" :path="`translations`">
+      <n-form-item ignore-path-change :show-label="false" path="translations">
         <n-dynamic-input
           v-model:value="formModel.translations"
           :min="1"
@@ -336,14 +336,14 @@ async function handleModalSubmit() {
       </n-form-item>
     </n-form>
 
-    <ModalButtonFooter>
+    <ButtonFooter>
       <n-button secondary :disabled="loading" @click="showEditModal = false">
         {{ $t('general.cancelAction') }}
       </n-button>
       <n-button type="primary" :loading="loading" :disabled="loading" @click="handleModalSubmit">
         {{ $t('general.saveAction') }}
       </n-button>
-    </ModalButtonFooter>
+    </ButtonFooter>
   </n-modal>
 </template>
 
