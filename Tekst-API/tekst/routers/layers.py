@@ -127,13 +127,21 @@ async def update_layer(
         await layer_types_mgr.get(updates.layer_type)
         .layer_model()
         .document_model()
-        .find_one(LayerBaseDocument.id == id, LayerBaseDocument.allowed_to_write(user))
+        .find_one(
+            LayerBaseDocument.id == id,
+            LayerBaseDocument.allowed_to_write(user),
+            with_children=True,
+        )
     )
     if not layer_doc:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Layer {id} doesn't exist or requires extra permissions",
         )
+    # conditionally force certain updates
+    if layer_doc.public:
+        updates.shared_read = []
+        updates.shared_write = []
     # update document with reduced updates
     return await layer_doc.apply(
         updates.model_dump(
@@ -158,7 +166,7 @@ async def find_layers(
     text_id: Annotated[PydanticObjectId, Query(alias="textId")],
     level: int = None,
     layer_type: Annotated[str, Query(alias="layerType")] = None,
-    limit: int = 1000,
+    limit: int = 4096,
 ) -> list[AnyLayerRead]:
     """
     Returns a list of all data layers matching the given criteria.
@@ -182,6 +190,7 @@ async def find_layers(
         .limit(limit)
         .to_list()
     )
+    # return processed results
     return await includes.process(layer_docs, user)
 
 

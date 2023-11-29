@@ -556,7 +556,7 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "default": 1000,
+              "default": 4096,
               "title": "Limit"
             }
           },

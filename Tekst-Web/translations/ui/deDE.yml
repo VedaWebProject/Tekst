@@ -266,9 +266,10 @@ dataLayers:
   warnDelete: |
     Sind Sie sicher, dass Sie diese Datenschicht und alle
     mit ihr verbundenen Daten löschen wollen?
-  editHeading: Datenschicht bearbeiten
-  untitledHeading: Unbenannte Datenschicht
-  backToOverview: Zurück zur Datenschichten-Übersicht
+  edit:
+    heading: Datenschicht bearbeiten
+    backToOverview: Zurück zur Datenschichten-Übersicht
+    onlyForUnpublished: (nur für nicht veröffentlichte Datenschichten)
 
 account:
   account: Konto

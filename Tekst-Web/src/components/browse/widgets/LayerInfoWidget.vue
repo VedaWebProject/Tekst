@@ -15,6 +15,7 @@ import FormatQuoteFilled from '@vicons/material/FormatQuoteFilled';
 import PercentOutlined from '@vicons/material/PercentOutlined';
 import PersonFilled from '@vicons/material/PersonFilled';
 import LabelOutlined from '@vicons/material/LabelOutlined';
+import UserDisplay from '@/components/UserDisplay.vue';
 
 const props = defineProps<{
   layer: AnyLayerRead;
@@ -24,14 +25,6 @@ const state = useStateStore();
 
 const showInfoModal = ref(false);
 const { coverage, error: coverageError } = useLayerCoverage(props.layer.id, showInfoModal); // eslint-disable-line
-const ownerDisplayName = computed(
-  () =>
-    (props.layer.owner &&
-      (props.layer.owner.firstName && props.layer.owner.lastName
-        ? `${props.layer.owner.firstName} ${props.layer.owner.lastName}`
-        : props.layer.owner.username)) ||
-    ''
-);
 const presentNodes = computed(
   () => coverage.value && coverage.value.filter((n) => n.covered).length
 );
@@ -76,9 +69,9 @@ const coveragePercent = computed(
       style="display: flex; align-items: center; font-size: var(--app-ui-font-size-small)"
     >
       <n-icon :component="PersonFilled" style="margin-right: 4px" />
-      <RouterLink :to="{ name: 'user', params: { username: layer.owner.username } }">{{
-        ownerDisplayName
-      }}</RouterLink>
+      <RouterLink :to="{ name: 'user', params: { username: layer.owner.username } }">
+        <UserDisplay :user="layer.owner" />
+      </RouterLink>
     </p>
 
     <template v-if="layer.meta && Object.keys(layer.meta).length">

@@ -5,7 +5,7 @@ import { useAuthStore, useBrowseStore, useStateStore } from '@/stores';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import IconHeading from '@/components/typography/IconHeading.vue';
 import { useMessages } from '@/messages';
-import { computed, ref, watch } from 'vue';
+import { computed, ref, watch, type VNodeChild, h } from 'vue';
 import _cloneDeep from 'lodash.clonedeep';
 import { RouterLink } from 'vue-router';
 import {
@@ -21,10 +21,11 @@ import {
   NInput,
   NButton,
   type FormInst,
+  type SelectOption,
 } from 'naive-ui';
 import { layerFormRules } from '@/formRules';
 import { useModelChanges } from '@/modelChanges';
-import { onBeforeMount } from 'vue';
+import UserDisplay from '@/components/UserDisplay.vue';
 import { useRoute } from 'vue-router';
 import { useLayers, useUsersPublic } from '@/fetchers';
 import { useRouter } from 'vue-router';
@@ -62,10 +63,7 @@ const shareOptions = computed(() =>
   (users.value || [])
     .filter((u) => u.id !== auth.user?.id)
     .map((u) => {
-      const fullName = (u.firstName + ' ' + (u.lastName ? u.lastName : ''))?.trim();
-      const suffix = [fullName, u.affiliation].filter((s) => s).join(', ');
-      const label = `@${u.username}` + (suffix ? ` (${suffix})` : '');
-      return { label, value: u.id };
+      return { value: u.id, user: u };
     })
 );
 
@@ -73,7 +71,6 @@ const shareOptions = computed(() =>
 watch(layer, () => {
   model.value = getInitialModel();
   reset();
-  console.log(model.value);
 });
 
 // change route if text changes
@@ -116,12 +113,14 @@ async function handleSaveClick() {
     });
 }
 
-onBeforeMount(() => {});
+function renderUserSelectLabel(option: SelectOption): VNodeChild {
+  return h(UserDisplay, { user: option.user });
+}
 </script>
 
 <template>
   <IconHeading v-if="layer" level="1" :icon="LayersFilled">
-    {{ $t('dataLayers.editHeading') }}
+    {{ $t('dataLayers.edit.heading') }}
     <HelpButtonWidget help-key="dataLayerEditView" />
   </IconHeading>
 
@@ -134,12 +133,21 @@ onBeforeMount(() => {});
       <template #icon>
         <KeyboardArrowLeftOutlined />
       </template>
-      {{ $t('dataLayers.backToOverview') }}
+      {{ $t('dataLayers.edit.backToOverview') }}
     </n-button>
   </router-link>
 
   <div v-if="model" class="content-block">
     <h2>{{ layer?.title }}</h2>
+
+    <table>
+      <tbody>
+        <tr v-if="users && model.ownerId">
+          <td>{{ $t('models.user.modelLabel') }}:</td>
+          <td>{{ layer?.owner?.username }}</td>
+        </tr>
+      </tbody>
+    </table>
 
     <n-form
       ref="formRef"
@@ -263,12 +271,20 @@ onBeforeMount(() => {});
           </n-form-item>
         </n-collapse-item>
         <!-- SHARES -->
-        <n-collapse-item :title="$t('models.layer.share')" name="shares">
+        <n-collapse-item
+          :disabled="!layer || layer.public"
+          :title="
+            $t('models.layer.share') +
+            (!layer || layer.public ? ` ${$t('dataLayers.edit.onlyForUnpublished')}` : '')
+          "
+          name="shares"
+        >
           <n-form-item path="sharedRead" :label="$t('models.layer.sharedRead')">
             <n-select
               v-model:value="model.sharedRead"
               multiple
               filterable
+              :render-label="renderUserSelectLabel"
               :loading="loadingUsers"
               :status="errorUsers ? 'error' : undefined"
               :placeholder="$t('models.layer.sharedRead')"
@@ -280,6 +296,7 @@ onBeforeMount(() => {});
               v-model:value="model.sharedWrite"
               multiple
               filterable
+              :render-label="renderUserSelectLabel"
               :loading="loadingUsers"
               :status="errorUsers ? 'error' : undefined"
               :placeholder="$t('models.layer.sharedWrite')"

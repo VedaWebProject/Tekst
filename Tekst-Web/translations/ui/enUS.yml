@@ -252,9 +252,10 @@ dataLayers:
     Are you sure you want to withdraw the publication of this data layer?
   warnDelete: |
     Are you sure you want to delete this data layer and all data associated with it?
-  editHeading: Edit data layer
-  untitledHeading: Untitled Data Layer
-  backToOverview: Back to data layers overview
+  edit:
+    heading: Edit data layer
+    backToOverview: Back to data layers overview
+    onlyForUnpublished: (only for unpublished data layers)
 
 account:
   account: Account
