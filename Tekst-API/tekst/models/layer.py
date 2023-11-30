@@ -104,6 +104,15 @@ class LayerBase(ModelBase, ModelFactoryMixin):
             self.owner_id = None
             self.shared_read = []
             self.shared_write = []
+        # shares
+        self.shared_write = [
+            user_id for user_id in self.shared_write if user_id != self.owner_id
+        ]
+        self.shared_read = [
+            user_id
+            for user_id in self.shared_read
+            if user_id != self.owner_id and user_id not in self.shared_write
+        ]
         return self
 
     def restricted_fields(self, user: UserRead | None = None) -> set[str] | None:
