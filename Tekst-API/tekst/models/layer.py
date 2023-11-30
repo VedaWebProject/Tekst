@@ -31,9 +31,9 @@ class LayerBase(ModelBase, ModelFactoryMixin):
         ),
     ] = None
     text_id: Annotated[
-        PydanticObjectId | None,
+        PydanticObjectId,
         Field(description="ID of the text this layer belongs to"),
-    ] = None
+    ]
     level: Annotated[int, Field(description="Text level this layer belongs to")]
     layer_type: Annotated[
         str, Field(description="A string identifying one of the available layer types")

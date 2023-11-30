@@ -523,8 +523,9 @@ export interface components {
       /**
        * Textid
        * @description ID of the text this layer belongs to
+       * @example 5eb7cf5a86d9755df3a6c593
        */
-      textId?: string | null;
+      textId: string;
       /**
        * Level
        * @description Text level this layer belongs to
@@ -618,8 +619,9 @@ export interface components {
       /**
        * Textid
        * @description ID of the text this layer belongs to
+       * @example 5eb7cf5a86d9755df3a6c593
        */
-      textId?: string | null;
+      textId: string;
       /**
        * Level
        * @description Text level this layer belongs to
@@ -686,10 +688,7 @@ export interface components {
        * @description Short, concise description of this data layer
        */
       description?: string | null;
-      /**
-       * Textid
-       * @description ID of the text this layer belongs to
-       */
+      /** Textid */
       textId?: string | null;
       /** Level */
       level?: number | null;
@@ -1044,8 +1043,9 @@ export interface components {
       /**
        * Textid
        * @description ID of the text this layer belongs to
+       * @example 5eb7cf5a86d9755df3a6c593
        */
-      textId?: string | null;
+      textId: string;
       /**
        * Level
        * @description Text level this layer belongs to
@@ -1139,8 +1139,9 @@ export interface components {
       /**
        * Textid
        * @description ID of the text this layer belongs to
+       * @example 5eb7cf5a86d9755df3a6c593
        */
-      textId?: string | null;
+      textId: string;
       /**
        * Level
        * @description Text level this layer belongs to
@@ -1207,10 +1208,7 @@ export interface components {
        * @description Short, concise description of this data layer
        */
       description?: string | null;
-      /**
-       * Textid
-       * @description ID of the text this layer belongs to
-       */
+      /** Textid */
       textId?: string | null;
       /** Level */
       level?: number | null;

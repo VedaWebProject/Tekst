@@ -4161,17 +4161,10 @@
             "description": "Short, concise description of this data layer"
           },
           "textId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
             "title": "Textid",
-            "description": "ID of the text this layer belongs to"
+            "description": "ID of the text this layer belongs to",
+            "example": "5eb7cf5a86d9755df3a6c593"
           },
           "level": {
             "type": "integer",
@@ -4277,6 +4270,7 @@
         "type": "object",
         "required": [
           "title",
+          "textId",
           "level",
           "layerType"
         ],
@@ -4364,17 +4358,10 @@
             "description": "Short, concise description of this data layer"
           },
           "textId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
             "title": "Textid",
-            "description": "ID of the text this layer belongs to"
+            "description": "ID of the text this layer belongs to",
+            "example": "5eb7cf5a86d9755df3a6c593"
           },
           "level": {
             "type": "integer",
@@ -4482,6 +4469,7 @@
         "required": [
           "id",
           "title",
+          "textId",
           "level",
           "layerType"
         ],
@@ -4524,8 +4512,7 @@
                 "type": "null"
               }
             ],
-            "title": "Textid",
-            "description": "ID of the text this layer belongs to"
+            "title": "Textid"
           },
           "level": {
             "anyOf": [
@@ -5227,17 +5214,10 @@
             "description": "Short, concise description of this data layer"
           },
           "textId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
             "title": "Textid",
-            "description": "ID of the text this layer belongs to"
+            "description": "ID of the text this layer belongs to",
+            "example": "5eb7cf5a86d9755df3a6c593"
           },
           "level": {
             "type": "integer",
@@ -5343,6 +5323,7 @@
         "type": "object",
         "required": [
           "title",
+          "textId",
           "level",
           "layerType"
         ],
@@ -5430,17 +5411,10 @@
             "description": "Short, concise description of this data layer"
           },
           "textId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
             "title": "Textid",
-            "description": "ID of the text this layer belongs to"
+            "description": "ID of the text this layer belongs to",
+            "example": "5eb7cf5a86d9755df3a6c593"
           },
           "level": {
             "type": "integer",
@@ -5548,6 +5522,7 @@
         "required": [
           "id",
           "title",
+          "textId",
           "level",
           "layerType"
         ],
@@ -5590,8 +5565,7 @@
                 "type": "null"
               }
             ],
-            "title": "Textid",
-            "description": "ID of the text this layer belongs to"
+            "title": "Textid"
           },
           "level": {
             "anyOf": [
