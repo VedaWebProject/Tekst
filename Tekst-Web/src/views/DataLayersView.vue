@@ -97,7 +97,7 @@ function handleProposeClick(layer: AnyLayerRead) {
         params: { path: { id: layer.id } },
       });
       if (!error) {
-        message.success($t('YAY'));
+        message.success($t('dataLayers.msgProposed', { title: layer.title }));
       } else {
         message.error($t('errors.unexpected'), error);
       }
@@ -122,7 +122,7 @@ function handleUnproposeClick(layer: AnyLayerRead) {
         params: { path: { id: layer.id } },
       });
       if (!error) {
-        message.success($t('YAY'));
+        message.success($t('dataLayers.msgUnproposed', { title: layer.title }));
       } else {
         message.error($t('errors.unexpected'), error);
       }
@@ -147,7 +147,7 @@ function handlePublishClick(layer: AnyLayerRead) {
         params: { path: { id: layer.id } },
       });
       if (!error) {
-        message.success($t('YAY'));
+        message.success($t('dataLayers.msgPublished', { title: layer.title }));
       } else {
         message.error($t('errors.unexpected'), error);
       }
@@ -172,7 +172,7 @@ function handleUnpublishClick(layer: AnyLayerRead) {
         params: { path: { id: layer.id } },
       });
       if (!error) {
-        message.success($t('YAY'));
+        message.success($t('dataLayers.msgUnpublished', { title: layer.title }));
       } else {
         message.error($t('errors.unexpected'), error);
       }
@@ -201,7 +201,7 @@ function handleDeleteClick(layer: AnyLayerRead) {
         params: { path: { id: layer.id } },
       });
       if (!error) {
-        message.success($t('YAY'));
+        message.success($t('dataLayers.msgDeleted', { title: layer.title }));
         // remove from browsable layers
         browse.layers = browse.layers.filter((l) => l.id !== layer.id);
       } else {

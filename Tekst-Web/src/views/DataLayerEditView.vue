@@ -113,7 +113,7 @@ async function handleSaveClick() {
         },
       });
       if (!error) {
-        message.success($t('YAY'));
+        message.success($t('dataLayers.edit.msgSaved', { title: data.title }));
         layers.value = layers.value.map((l) => (l.id === data.id ? data : l));
         await browse.loadLayersData();
       } else {

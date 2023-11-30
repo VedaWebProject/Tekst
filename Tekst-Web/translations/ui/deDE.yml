@@ -268,10 +268,16 @@ dataLayers:
   warnDelete: |
     Sind Sie sicher, dass Sie diese Datenschicht und alle
     mit ihr verbundenen Daten löschen wollen?
+  msgProposed: Die Datenschicht "{title}" wurde zur Veröffentlichung vorgeschlagen.
+  msgUnproposed: Die Veröffentlichungsvorschlag für die Datenschicht "{title}" wurde zurückgezogen.
+  msgPublished: Die Datenschicht "{title}" wurde veröffentlicht.
+  msgUnpublished: Die Veröffentlichung der Datenschicht "{title}" wurde aufgehoben.
+  msgDeleted: Die Datenschicht "{title}" wurde gelöscht.
   edit:
     heading: Datenschicht bearbeiten
     backToOverview: Zurück zur Datenschichten-Übersicht
     onlyForUnpublished: (nur für nicht veröffentlichte Datenschichten)
+    msgSaved: Ihre Änderungen an der Datenschicht "{title}" wurden gespeichert.
 
 account:
   account: Konto

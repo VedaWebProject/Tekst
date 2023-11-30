@@ -254,10 +254,16 @@ dataLayers:
     Are you sure you want to withdraw the publication of this data layer?
   warnDelete: |
     Are you sure you want to delete this data layer and all data associated with it?
+  msgProposed: The data layer "{title}" has been proposed for publication.
+  msgUnproposed: The publication proposal for the data layer "{title}" has been withdrawn.
+  msgPublished: The data layer "{title}" has been published.
+  msgUnpublished: The publication of the data layer "{title}" has been withdrawn.
+  msgDeleted: The data layer "{title}" has been deleted.
   edit:
     heading: Edit data layer
     backToOverview: Back to data layers overview
     onlyForUnpublished: (only for unpublished data layers)
+    msgSaved: Your changes to the data layer "{title}" have been saved.
 
 account:
   account: Account
