@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type AnyLayerRead, type AnyLayerUpdate, PATCH } from '@/api';
+import { type AnyLayerRead, type AnyLayerUpdate, PATCH, type UserReadPublic } from '@/api';
 import { $t } from '@/i18n';
 import { useAuthStore, useBrowseStore, useStateStore } from '@/stores';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
@@ -20,6 +20,7 @@ import {
   NFormItem,
   NInput,
   NButton,
+  NTag,
   type FormInst,
   type SelectOption,
 } from 'naive-ui';
@@ -35,6 +36,7 @@ import LayersFilled from '@vicons/material/LayersFilled';
 import MinusRound from '@vicons/material/MinusRound';
 import AddRound from '@vicons/material/AddRound';
 import KeyboardArrowLeftOutlined from '@vicons/material/KeyboardArrowLeftOutlined';
+import PersonFilled from '@vicons/material/PersonFilled';
 
 const { message } = useMessages();
 const route = useRoute();
@@ -59,12 +61,24 @@ const loading = computed(() => loadingLayers.value || loadingUsers.value || load
 const model = ref<AnyLayerUpdate | undefined>(getInitialModel());
 const { changed, reset, getChanges } = useModelChanges(model);
 
-const shareOptions = computed(() =>
-  (users.value || [])
-    .filter((u) => u.id !== auth.user?.id)
-    .map((u) => {
-      return { value: u.id, user: u };
-    })
+const shareWriteOptions = computed(() =>
+  model.value
+    ? (users.value || [])
+        .filter((u) => u.id !== auth.user?.id && !model.value?.sharedRead?.find((s) => s === u.id))
+        .map((u) => {
+          return { value: u.id, user: u };
+        })
+    : []
+);
+
+const shareReadOptions = computed(() =>
+  model.value
+    ? (users.value || [])
+        .filter((u) => u.id !== auth.user?.id && !model.value?.sharedWrite?.find((s) => s === u.id))
+        .map((u) => {
+          return { value: u.id, user: u };
+        })
+    : []
 );
 
 // set initial model as soon as layers are loaded
@@ -114,7 +128,28 @@ async function handleSaveClick() {
 }
 
 function renderUserSelectLabel(option: SelectOption): VNodeChild {
-  return h(UserDisplay, { user: option.user });
+  return h(UserDisplay, { user: option.user as UserReadPublic });
+}
+
+function renderUserSelectTag(props: { option: SelectOption; handleClose: () => void }): VNodeChild {
+  return h(
+    NTag,
+    {
+      closable: true,
+      bordered: false,
+      onMousedown: (e: FocusEvent) => {
+        e.preventDefault();
+      },
+      onClose: (e: MouseEvent) => {
+        e.stopPropagation();
+        props.handleClose();
+      },
+    },
+    {
+      default: () => `@${(props.option.user as UserReadPublic).username}`,
+      icon: () => h(NIcon, null, { default: () => h(PersonFilled) }),
+    }
+  );
 }
 </script>
 
@@ -193,6 +228,8 @@ function renderUserSelectLabel(option: SelectOption): VNodeChild {
           <n-input
             v-model:value="model.comment"
             type="textarea"
+            maxlength="1000"
+            show-count
             :placeholder="$t('models.layer.comment')"
             :disabled="loading"
           />
@@ -272,6 +309,7 @@ function renderUserSelectLabel(option: SelectOption): VNodeChild {
         </n-collapse-item>
         <!-- SHARES -->
         <n-collapse-item
+          v-if="auth.user?.isSuperuser || auth.user?.id === layer?.owner?.id"
           :disabled="!layer || layer.public"
           :title="
             $t('models.layer.share') +
@@ -285,10 +323,11 @@ function renderUserSelectLabel(option: SelectOption): VNodeChild {
               multiple
               filterable
               :render-label="renderUserSelectLabel"
+              :render-tag="renderUserSelectTag"
               :loading="loadingUsers"
               :status="errorUsers ? 'error' : undefined"
               :placeholder="$t('models.layer.sharedRead')"
-              :options="shareOptions"
+              :options="shareReadOptions"
             />
           </n-form-item>
           <n-form-item path="sharedWrite" :label="$t('models.layer.sharedWrite')">
@@ -297,10 +336,11 @@ function renderUserSelectLabel(option: SelectOption): VNodeChild {
               multiple
               filterable
               :render-label="renderUserSelectLabel"
+              :render-tag="renderUserSelectTag"
               :loading="loadingUsers"
               :status="errorUsers ? 'error' : undefined"
               :placeholder="$t('models.layer.sharedWrite')"
-              :options="shareOptions"
+              :options="shareWriteOptions"
             />
           </n-form-item>
         </n-collapse-item>
