@@ -55,6 +55,7 @@ function handleChangeTab(value: 'wysiwyg' | 'html') {
     <n-tab-pane name="wysiwyg" :tab="$t('htmlEditor.wysiwyg')">
       <WysiwygEditor
         :value="value"
+        :max-chars="maxChars"
         @update:value="emit('update:value', $event)"
         @blur="emit('blur')"
         @focus="emit('focus')"
@@ -67,6 +68,8 @@ function handleChangeTab(value: 'wysiwyg' | 'html') {
         type="textarea"
         :rows="8"
         placeholder=""
+        :maxlength="maxChars"
+        show-count
         style="font-family: 'Courier New', Courier, monospace"
         @update:value="emit('update:value', $event)"
         @blur="emit('blur')"

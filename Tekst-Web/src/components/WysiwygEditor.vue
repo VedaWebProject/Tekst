@@ -4,6 +4,7 @@ import { NSelect, NButton, NIcon, type SelectOption } from 'naive-ui';
 import { useEditor, EditorContent } from '@tiptap/vue-3';
 import StarterKit from '@tiptap/starter-kit';
 import TextAlign from '@tiptap/extension-text-align';
+import CharacterCount from '@tiptap/extension-character-count';
 import Link from '@tiptap/extension-link';
 import Image from '@tiptap/extension-image';
 import PromptModal from './PromptModal.vue';
@@ -34,10 +35,12 @@ const props = withDefaults(
   defineProps<{
     value?: string | null;
     toolbarSize?: 'small' | 'medium' | 'large';
+    maxChars?: number;
   }>(),
   {
     value: '',
     toolbarSize: 'small',
+    maxChars: undefined,
   }
 );
 
@@ -69,6 +72,10 @@ const editor = useEditor({
     Image.configure({
       inline: true,
       allowBase64: true,
+    }),
+    CharacterCount.configure({
+      limit: props.maxChars,
+      mode: 'textSize',
     }),
   ],
   injectCSS: false,
@@ -413,6 +420,7 @@ onUnmounted(() => {
     >
       <editor-content :editor="editor" />
     </div>
+    <div v-if="editor" class="character-count">{{ editor.getHTML().length }} / {{ maxChars }}</div>
   </div>
   <PromptModal />
 </template>
@@ -434,5 +442,11 @@ onUnmounted(() => {
   display: flex;
   flex-wrap: nowrap;
   gap: 0.4rem;
+}
+
+.character-count {
+  text-align: right;
+  font-size: var(--app-ui-font-size-tiny);
+  color: var(--text-color);
 }
 </style>
