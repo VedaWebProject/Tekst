@@ -5,10 +5,11 @@ import { useMessages } from '@/messages';
 import type { FormInst, FormItemInst, FormItemRule } from 'naive-ui';
 import { ref } from 'vue';
 import { $t } from '@/i18n';
-import { NInput, NForm, NFormItem, NButton, NSpace } from 'naive-ui';
+import { NInput, NForm, NFormItem, NButton } from 'naive-ui';
 import { useRoute } from 'vue-router';
 import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import ButtonFooter from '@/components/ButtonFooter.vue';
 
 const { message } = useMessages();
 const route = useRoute();
@@ -116,17 +117,11 @@ onMounted(() => {
           />
         </n-form-item>
       </n-form>
-      <n-space :size="12" justify="end">
-        <n-button
-          block
-          type="primary"
-          :loading="loading"
-          :disabled="loading"
-          @click="handlePasswordSave"
-        >
+      <ButtonFooter>
+        <n-button type="primary" :loading="loading" :disabled="loading" @click="handlePasswordSave">
           {{ $t('general.saveAction') }}
         </n-button>
-      </n-space>
+      </ButtonFooter>
     </div>
   </div>
 </template>

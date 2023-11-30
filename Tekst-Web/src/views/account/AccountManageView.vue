@@ -8,7 +8,6 @@ import type { FormInst, FormItemInst, FormItemRule } from 'naive-ui';
 import {
   NCheckbox,
   NButton,
-  NSpace,
   NInput,
   NFormItem,
   NForm,
@@ -23,6 +22,7 @@ import type { UserUpdate, UserUpdatePublicFields } from '@/api';
 import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import IconHeading from '@/components/typography/IconHeading.vue';
+import ButtonFooter from '@/components/ButtonFooter.vue';
 
 import ManageAccountsRound from '@vicons/material/ManageAccountsRound';
 
@@ -244,10 +244,9 @@ async function handlepublicFieldsSave() {
             />
           </n-form-item>
         </n-form>
-        <n-space :size="12" justify="end">
+        <ButtonFooter>
           <n-button
             secondary
-            block
             :loading="loading"
             :disabled="loading || !emailModelChanged"
             @click="() => (emailFormModel = initialEmailModel())"
@@ -255,7 +254,6 @@ async function handlepublicFieldsSave() {
             {{ $t('general.resetAction') }}
           </n-button>
           <n-button
-            block
             type="primary"
             :loading="loading"
             :disabled="loading || !emailModelChanged"
@@ -263,7 +261,7 @@ async function handlepublicFieldsSave() {
           >
             {{ $t('general.saveAction') }}
           </n-button>
-        </n-space>
+        </ButtonFooter>
 
         <h2>{{ $t('models.user.password') }}</h2>
         <n-form
@@ -300,10 +298,9 @@ async function handlepublicFieldsSave() {
             />
           </n-form-item>
         </n-form>
-        <n-space :size="12" justify="end">
+        <ButtonFooter>
           <n-button
             secondary
-            block
             :loading="loading"
             :disabled="loading || !passwordModelChanged"
             @click="() => (passwordFormModel = initialPasswordModel())"
@@ -311,7 +308,6 @@ async function handlepublicFieldsSave() {
             {{ $t('general.resetAction') }}
           </n-button>
           <n-button
-            block
             type="primary"
             :loading="loading"
             :disabled="loading || !passwordModelChanged"
@@ -319,7 +315,7 @@ async function handlepublicFieldsSave() {
           >
             {{ $t('general.saveAction') }}
           </n-button>
-        </n-space>
+        </ButtonFooter>
       </div>
     </n-grid-item>
 
@@ -370,10 +366,9 @@ async function handlepublicFieldsSave() {
             />
           </n-form-item>
         </n-form>
-        <n-space :size="12" justify="end">
+        <ButtonFooter>
           <n-button
             secondary
-            block
             :loading="loading"
             :disabled="loading || !userDataModelChanged"
             @click="() => (userDataFormModel = initialUserDataModel())"
@@ -381,7 +376,6 @@ async function handlepublicFieldsSave() {
             {{ $t('general.resetAction') }}
           </n-button>
           <n-button
-            block
             type="primary"
             :loading="loading"
             :disabled="loading || !userDataModelChanged"
@@ -389,7 +383,7 @@ async function handlepublicFieldsSave() {
           >
             {{ $t('general.saveAction') }}
           </n-button>
-        </n-space>
+        </ButtonFooter>
       </div>
     </n-grid-item>
 
@@ -416,10 +410,9 @@ async function handlepublicFieldsSave() {
             </n-checkbox>
           </n-form-item>
         </n-form>
-        <n-space :size="12" justify="end">
+        <ButtonFooter>
           <n-button
             secondary
-            block
             :loading="loading"
             :disabled="loading || !publicFieldsModelChanged"
             @click="() => (publicFieldsFormModel = initialPublicFieldsModel())"
@@ -427,7 +420,6 @@ async function handlepublicFieldsSave() {
             {{ $t('general.resetAction') }}
           </n-button>
           <n-button
-            block
             type="primary"
             :loading="loading"
             :disabled="loading || !publicFieldsModelChanged"
@@ -435,7 +427,7 @@ async function handlepublicFieldsSave() {
           >
             {{ $t('general.saveAction') }}
           </n-button>
-        </n-space>
+        </ButtonFooter>
       </div>
     </n-grid-item>
   </n-grid>

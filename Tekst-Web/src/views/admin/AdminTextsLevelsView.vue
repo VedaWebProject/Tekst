@@ -3,7 +3,6 @@ import { useStateStore } from '@/stores';
 import InsertLevelButton from '@/components/admin/InsertLevelButton.vue';
 import { textFormRules } from '@/formRules';
 import {
-  NSpace,
   NIcon,
   NInput,
   NSelect,
@@ -309,7 +308,7 @@ async function handleModalSubmit() {
             </div>
           </template>
           <template #action="{ index: indexAction, create, remove }">
-            <n-space style="margin-left: 20px; flex-wrap: nowrap">
+            <ButtonFooter>
               <n-button
                 secondary
                 circle
@@ -330,7 +329,7 @@ async function handleModalSubmit() {
                   <n-icon :component="AddRound" />
                 </template>
               </n-button>
-            </n-space>
+            </ButtonFooter>
           </template>
         </n-dynamic-input>
       </n-form-item>
