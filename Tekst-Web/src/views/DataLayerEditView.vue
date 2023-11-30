@@ -63,21 +63,25 @@ const { changed, reset, getChanges } = useModelChanges(model);
 
 const shareWriteOptions = computed(() =>
   model.value
-    ? (users.value || [])
-        .filter((u) => u.id !== auth.user?.id && !model.value?.sharedRead?.find((s) => s === u.id))
-        .map((u) => {
-          return { value: u.id, user: u };
-        })
+    ? (users.value || []).map((u) => {
+        return {
+          value: u.id,
+          disabled: u.id === auth.user?.id || !!model.value?.sharedRead?.find((s) => s === u.id),
+          user: u,
+        };
+      })
     : []
 );
 
 const shareReadOptions = computed(() =>
   model.value
-    ? (users.value || [])
-        .filter((u) => u.id !== auth.user?.id && !model.value?.sharedWrite?.find((s) => s === u.id))
-        .map((u) => {
-          return { value: u.id, user: u };
-        })
+    ? (users.value || []).map((u) => {
+        return {
+          value: u.id,
+          disabled: u.id === auth.user?.id || !!model.value?.sharedWrite?.find((s) => s === u.id),
+          user: u,
+        };
+      })
     : []
 );
 
