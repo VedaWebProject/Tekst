@@ -56,7 +56,7 @@ onMounted(() => {
 
         <n-badge
           :value="layerDrawerBadgeLabel"
-          color="var(--accent-color-inverted-intense)"
+          color="var(--accent-color-inverted-pastel)"
           :show="!!browse.layers.length"
         >
           <n-button
@@ -136,5 +136,11 @@ onMounted(() => {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+</style>
+
+<style>
+.n-badge > .n-badge-sup {
+  color: var(--accent-color-inverted-dark);
 }
 </style>

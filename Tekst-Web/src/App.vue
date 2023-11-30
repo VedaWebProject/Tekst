@@ -76,7 +76,8 @@ const nUiDateLocale = computed(() => localeProfiles[state.locale].nUiDateLocale)
   --accent-color-fade4: v-bind(accentColors.fade4);
   --accent-color-fade5: v-bind(accentColors.fade5);
   --accent-color-inverted: v-bind(accentColors.inverted);
-  --accent-color-inverted-intense: v-bind(accentColors.invertedIntense);
+  --accent-color-inverted-pastel: v-bind(accentColors.invertedPastel);
+  --accent-color-inverted-dark: v-bind(accentColors.invertedDark);
 
   --link-color: v-bind(accentColors.base);
   --link-color-hover: v-bind(accentColors.fade1);
