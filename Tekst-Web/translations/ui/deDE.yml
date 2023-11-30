@@ -76,6 +76,8 @@ routes:
     help: Hilfe
     login: Anmeldung
     register: Registrierung
+    dataLayers: Datenschichten zu "{text}"
+    dataLayerEdit: Datenschicht bearbeiten
     user: Profil von {username}
     accountProfile: Öffentliches Profil
     accountManage: Konto

@@ -73,6 +73,8 @@ routes:
     help: Help
     login: Login
     register: Register
+    dataLayers: Data Layers on "{text}"
+    dataLayerEdit: Edit data layer
     user: Profile of {username}
     accountProfile: Public Profile
     accountManage: Account
