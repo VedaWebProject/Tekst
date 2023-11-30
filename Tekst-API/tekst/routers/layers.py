@@ -142,6 +142,10 @@ async def update_layer(
     if layer_doc.public:
         updates.shared_read = []
         updates.shared_write = []
+    # only allow shares modification for owner or superuser
+    if not user.is_superuser and layer_doc.owner_id != user.id:
+        updates.shared_read = layer_doc.shared_read
+        updates.shared_write = layer_doc.shared_write
     # update document with reduced updates
     return await layer_doc.apply(
         updates.model_dump(
