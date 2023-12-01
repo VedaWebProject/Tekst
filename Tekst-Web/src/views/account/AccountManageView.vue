@@ -232,9 +232,7 @@ async function handleDeleteAccount() {
     closable: false,
     onPositiveClick: async () => {
       loading.value = true;
-      const { error } = await DELETE('/users/me', {
-        params: { path: { id: auth.user?.id || '' } },
-      });
+      const { error } = await DELETE('/platform/users/me', {});
       if (!error) {
         await auth.logout();
       } else {
