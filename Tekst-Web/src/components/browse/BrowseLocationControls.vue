@@ -205,6 +205,9 @@ whenever(ArrowRight, () => {
 whenever(ArrowLeft, () => {
   router.push(getPrevNextRoute(-1));
 });
+
+const btnBgColor = '#00000015';
+const btnColor = '#fff';
 </script>
 
 <template>
@@ -219,12 +222,12 @@ whenever(ArrowLeft, () => {
       custom
     >
       <n-button
-        secondary
         :disabled="browse.position === 0"
         :focusable="false"
         :title="$t('browse.toolbar.tipPreviousLocation')"
         size="large"
-        color="#fff"
+        :color="btnBgColor"
+        :style="{ color: btnColor }"
         @click="navigate"
       >
         <template #icon>
@@ -234,11 +237,11 @@ whenever(ArrowLeft, () => {
     </router-link>
 
     <n-button
-      secondary
       :title="$t('browse.toolbar.tipSelectLocation')"
       :focusable="false"
       size="large"
-      color="#fff"
+      :color="btnBgColor"
+      :style="{ color: btnColor }"
       :disabled="!browse.nodePath[browseLevel]"
       @click="showModal = true"
     >
@@ -249,11 +252,11 @@ whenever(ArrowLeft, () => {
 
     <router-link v-slot="{ navigate }" :to="getPrevNextRoute(1)" custom>
       <n-button
-        secondary
         :focusable="false"
         :title="$t('browse.toolbar.tipNextLocation')"
         size="large"
-        color="#fff"
+        :color="btnBgColor"
+        :style="{ color: btnColor }"
         @click="navigate"
       >
         <template #icon>

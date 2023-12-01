@@ -25,6 +25,10 @@ onMounted(() => {
     ).observe(affixRef.value);
   }
 });
+
+const btnBgColor = '#00000015';
+const btnToggledColor = '#ffffff25';
+const btnColor = '#fff';
 </script>
 
 <template>
@@ -41,11 +45,10 @@ onMounted(() => {
       <div class="browse-toolbar-end">
         <n-badge value="!" color="var(--accent-color-inverted-pastel)" :show="browse.reducedView">
           <n-button
-            :secondary="!browse.reducedView"
-            :ghost="browse.reducedView"
             size="large"
             :title="$t('browse.toolbar.tipReducedView')"
-            color="#fff"
+            :color="browse.reducedView ? btnToggledColor : btnBgColor"
+            :style="{ color: btnColor }"
             :focusable="false"
             @click="browse.reducedView = !browse.reducedView"
           >
@@ -62,10 +65,10 @@ onMounted(() => {
           :show="!!browse.layers.length"
         >
           <n-button
-            secondary
             size="large"
             :title="$t('browse.toolbar.tipOpenDataLayerList')"
-            color="#fff"
+            :color="btnBgColor"
+            :style="{ color: btnColor }"
             :focusable="false"
             @click="browse.showLayerToggleDrawer = true"
           >
