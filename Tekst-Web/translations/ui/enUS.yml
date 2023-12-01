@@ -305,11 +305,13 @@ account:
     heading: '{username}: Account'
     headingChangeUserData: General User Data
     headingChangePublicFields: Public Profile Data
+    headingDeleteAccount: Delete Account
     msgEmailSaveSuccess: '@:models.user.email saved.'
     msgEmailChangeWarning: Make sure you entered a valid email address you have access to! If you proceed, you will be logged out and have to verify your changed email address before you can log in again.
     msgVerifyEmailWarning: Please verify your changed email address before logging in! We just sent you a verification link.
     msgPasswordSaveSuccess: '@:models.user.password saved.'
     msgPasswordChangeWarning: If you proceed, you will be logged out and have to log in again using your changed password.
+    msgDeleteAccountWarning: If you delete your account, all data associated with it will be deleted, too. Are you sure you want to delete your account?
     msgUserDataSaveSuccess: User data saved.
 
 admin:
@@ -351,7 +353,9 @@ admin:
       setActive: '@:admin.users.confirmMsg.areYouSure activate the account of {username}?'
       setUnverified: '@:admin.users.confirmMsg.areYouSure reset the email verification status of {username}?'
       setVerified: '@:admin.users.confirmMsg.areYouSure set the email address of {username} to verified?'
-      deleteUser: '@:admin.users.confirmMsg.areYouSure delete the user {username}?'
+      deleteUser: |
+        '@:admin.users.confirmMsg.areYouSure delete the user account
+        {username} and all the data associated with it?'
   text:
     heading: Text
     general:

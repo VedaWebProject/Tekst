@@ -146,13 +146,13 @@ class LayerBaseDocument(LayerBase, DocumentBase):
         ]
 
         return And(
-            Or(In(LayerBaseDocument.text_id, active_texts_ids), {"owner_id": user.id}),
+            Or(In(LayerBaseDocument.text_id, active_texts_ids), LayerBaseDocument.owner_id == user.id),
             Or(
-                {"public": True},
-                {"proposed": True},
-                {"owner_id": user.id},
-                {"shared_read": user.id},
-                {"shared_write": user.id},
+                LayerBaseDocument.public == True,  # noqa: E712
+                LayerBaseDocument.proposed == True,  # noqa: E712
+                LayerBaseDocument.owner_id == user.id,
+                LayerBaseDocument.shared_read == str(user.id),
+                LayerBaseDocument.shared_write == str(user.id),
             ),
         )
 
@@ -162,8 +162,8 @@ class LayerBaseDocument(LayerBase, DocumentBase):
             return {}
         uid = user.id if user else "no_id"
         return Or(
-            {"owner_id": uid},
-            {"shared_write": uid},
+            LayerBaseDocument.owner_id == uid,
+            LayerBaseDocument.shared_write == str(uid),
         )
 
     class Settings(DocumentBase.Settings):

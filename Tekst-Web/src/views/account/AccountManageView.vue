@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { POST } from '@/api';
+import { DELETE, POST } from '@/api';
 import { accountFormRules } from '@/formRules';
 import { useMessages } from '@/messages';
 import { usePlatformData } from '@/platformData';
@@ -212,6 +212,37 @@ async function handlepublicFieldsSave() {
     resetPublicFieldsModelChanges();
     message.success($t('account.manage.msgUserDataSaveSuccess'));
   }
+}
+
+async function handleDeleteAccount() {
+  dialog.warning({
+    title: $t('general.warning'),
+    content: $t('account.manage.msgDeleteAccountWarning'),
+    positiveText: $t('general.yesAction'),
+    negativeText: $t('general.noAction'),
+    positiveButtonProps: {
+      ...positiveButtonProps,
+      size: 'tiny',
+    },
+    negativeButtonProps: {
+      ...negativeButtonProps,
+      size: 'large',
+    },
+    autoFocus: false,
+    closable: false,
+    onPositiveClick: async () => {
+      loading.value = true;
+      const { error } = await DELETE('/users/me', {
+        params: { path: { id: auth.user?.id || '' } },
+      });
+      if (!error) {
+        await auth.logout();
+      } else {
+        message.error($t('errors.unexpected'), error);
+      }
+      loading.value = false;
+    },
+  });
 }
 </script>
 
@@ -428,6 +459,17 @@ async function handlepublicFieldsSave() {
             {{ $t('general.saveAction') }}
           </n-button>
         </ButtonFooter>
+      </div>
+    </n-grid-item>
+
+    <n-grid-item>
+      <div class="content-block">
+        <h2>
+          {{ $t('account.manage.headingDeleteAccount') }}
+        </h2>
+        <n-button type="error" :disabled="loading" @click="handleDeleteAccount">
+          {{ $t('account.manage.headingDeleteAccount') }}
+        </n-button>
       </div>
     </n-grid-item>
   </n-grid>

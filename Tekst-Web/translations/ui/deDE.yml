@@ -319,11 +319,13 @@ account:
     heading: '{username}: Konto'
     headingChangeUserData: Allgemeine Benutzerdaten
     headingChangePublicFields: Öffentliche Profildaten
+    headingDeleteAccount: Konto löschen
     msgEmailSaveSuccess: '@:models.user.email gespeichert.'
     msgEmailChangeWarning: Stellen Sie sicher, dass Sie eine gültige @:models.user.email eingeben, auf die Sie Zugriff haben! Wenn Sie fortfahren, werden Sie abgemeldet und müssen Ihre geänderte @:models.users.email verifizieren, bevor Sie sich wieder anmelden können.
     msgVerifyEmailWarning: Bitte verifizieren Sie Ihre geänderte @:models.user.email bevor Sie sich anmelden! Wir haben Ihnen einen Verifizierungs-Link gesendet.
     msgPasswordSaveSuccess: '@:models.user.password gespeichert.'
     msgPasswordChangeWarning: Wenn Sie fortfahren, werden Sie abgemeldet und müssen sich mit Ihrem neuen Passwort wieder anmelden.
+    msgDeleteAccountWarning: Wenn Sie Ihr Konto löschen, werden alle Daten, die damit verbunden sind, emenfalls gelöscht. Sind Sie sich sicher?
     msgUserDataSaveSuccess: Benutzerdaten gespeichert.
 
 admin:
@@ -365,7 +367,9 @@ admin:
       setActive: '@:admin.users.confirmMsg.areYouSure das Konto von {username} aktivieren möchten?'
       setUnverified: '@:admin.users.confirmMsg.areYouSure die Email-Verifizierung von {username} zurücksetzen möchten?'
       setVerified: '@:admin.users.confirmMsg.areYouSure die Email-Adresse von {username} als verifiziert markieren möchten?'
-      deleteUser: '@:admin.users.confirmMsg.areYouSure den Benutzer {username} löschen möchten?'
+      deleteUser: |
+        '@:admin.users.confirmMsg.areYouSure den Benutzeraccount {username}
+         und alle damit verknüpften Daten löschen möchten?'
   text:
     heading: Text
     general:

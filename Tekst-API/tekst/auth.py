@@ -6,6 +6,7 @@ from typing import Annotated, Any
 import fastapi_users.models as fapi_users_models
 
 from beanie import Document, PydanticObjectId
+from beanie.operators import In, Pull, Or, Eq
 from fastapi import (
     APIRouter,
     Depends,
@@ -46,6 +47,7 @@ from tekst.config import TekstConfig, get_config
 from tekst.email import TemplateIdentifier, send_email
 from tekst.logging import log
 from tekst.models.layer import LayerBaseDocument
+from tekst.models.unit import UnitBaseDocument
 from tekst.models.user import UserCreate, UserDocument, UserRead, UserUpdate
 
 
@@ -225,17 +227,39 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
     async def on_before_delete(
         self, user: UserDocument, request: Request | None = None
     ):
-        log.debug(f"[on_before_delete] {user.username}")
+        # find owned data layers
+        layers_docs = await LayerBaseDocument.find(
+            LayerBaseDocument.owner_id == user.id, with_children=True
+        ).to_list()
+        owned_layers_ids = [layer.id for layer in layers_docs]
+        # delete units of owned data layers
+        await UnitBaseDocument.find(
+            In(UnitBaseDocument.layer_id, owned_layers_ids),
+            with_children=True,
+        ).delete()
+        # delete owned data layers
+        await LayerBaseDocument.find_one(
+            In(LayerBaseDocument.id, owned_layers_ids),
+            with_children=True,
+        ).delete()
+        # remove user ID from layer shares
+        await LayerBaseDocument.find(
+            Or(
+                LayerBaseDocument.shared_read == str(user.id),
+                LayerBaseDocument.shared_write == str(user.id),
+            ),
+            with_children=True,
+        ).update(
+            Pull(LayerBaseDocument.shared_read == str(user.id)),
+            Pull(LayerBaseDocument.shared_write == str(user.id))
+        )
 
     async def on_after_delete(self, user: UserDocument, request: Request | None = None):
         send_email(
             user,
             TemplateIdentifier.DELETED,
         )
-        # reset data layer ownerships
-        await LayerBaseDocument.find(
-            LayerBaseDocument.owner_id == user.id, with_children=True
-        ).set({LayerBaseDocument.owner_id: None})
+        pass
 
     async def validate_password(
         self,
