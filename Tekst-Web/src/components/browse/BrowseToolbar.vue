@@ -39,20 +39,22 @@ onMounted(() => {
       </div>
 
       <div class="browse-toolbar-end">
-        <n-button
-          :secondary="!browse.reducedView"
-          :ghost="browse.reducedView"
-          size="large"
-          :title="$t('browse.toolbar.tipReducedView')"
-          color="#fff"
-          :focusable="false"
-          @click="browse.reducedView = !browse.reducedView"
-        >
-          <template #icon>
-            <CompressRound v-if="!browse.reducedView" />
-            <ExpandRound v-else />
-          </template>
-        </n-button>
+        <n-badge value="!" color="var(--accent-color-inverted-pastel)" :show="browse.reducedView">
+          <n-button
+            :secondary="!browse.reducedView"
+            :ghost="browse.reducedView"
+            size="large"
+            :title="$t('browse.toolbar.tipReducedView')"
+            color="#fff"
+            :focusable="false"
+            @click="browse.reducedView = !browse.reducedView"
+          >
+            <template #icon>
+              <CompressRound v-if="!browse.reducedView" />
+              <ExpandRound v-else />
+            </template>
+          </n-button>
+        </n-badge>
 
         <n-badge
           :value="layerDrawerBadgeLabel"
