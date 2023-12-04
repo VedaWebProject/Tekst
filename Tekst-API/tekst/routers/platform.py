@@ -2,15 +2,13 @@ from typing import Annotated
 
 from beanie import PydanticObjectId
 from beanie.operators import Or
-from fastapi import APIRouter, Depends, HTTPException, Path, Request, status
+from fastapi import APIRouter, Depends, HTTPException, Path, status
 from humps import decamelize
 
 from tekst.auth import (
     OptionalUserDep,
     SuperuserDep,
     UserDep,
-    UserManager,
-    get_user_manager,
 )
 from tekst.config import TekstConfig
 from tekst.dependencies import get_cfg
@@ -111,17 +109,6 @@ async def get_public_users(su: UserDep) -> list[UserDocument]:
         for user in await UserDocument.find_all().to_list()
         if user.is_active
     ]
-
-
-# extra endpoint for users to delete their own account
-@router.delete("/users/me", status_code=204)
-async def delete_me(
-    user: UserDep,
-    user_mgr: Annotated[UserManager, Depends(get_user_manager)],
-    request: Request,
-) -> None:
-    await user_mgr.delete(user, request)
-    return None
 
 
 @router.patch(

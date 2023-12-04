@@ -327,6 +327,7 @@ account:
     msgPasswordChangeWarning: Wenn Sie fortfahren, werden Sie abgemeldet und müssen sich mit Ihrem neuen Passwort wieder anmelden.
     msgDeleteAccountWarning: Wenn Sie Ihr Konto löschen, werden alle Daten, die damit verbunden sind, emenfalls gelöscht. Sind Sie sich sicher?
     msgUserDataSaveSuccess: Benutzerdaten gespeichert.
+    phDeleteAccountSafetyInput: Geben Sie "{username}" ein, um Ihre Entscheidung zu bestätigen
 
 admin:
   heading: Administration

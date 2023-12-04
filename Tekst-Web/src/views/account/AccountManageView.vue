@@ -223,7 +223,7 @@ async function handleDeleteAccount() {
     closable: false,
     onPositiveClick: async () => {
       loading.value = true;
-      const { error } = await DELETE('/platform/users/me', {});
+      const { error } = await DELETE('/users/me', {});
       if (!error) {
         await auth.logout();
       } else {
@@ -451,7 +451,9 @@ async function handleDeleteAccount() {
       <n-input
         v-model:value="deleteAccountSafetyInput"
         type="text"
-        :placeholder="$t('models.user.username')"
+        :placeholder="
+          $t('account.manage.phDeleteAccountSafetyInput', { username: auth.user?.username })
+        "
         :disabled="loading"
         @keydown.enter.prevent
       />

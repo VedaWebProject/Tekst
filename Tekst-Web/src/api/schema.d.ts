@@ -146,10 +146,6 @@ export interface paths {
     /** Get public users */
     get: operations['getPublicUsers'];
   };
-  '/platform/users/me': {
-    /** Delete me */
-    delete: operations['deleteMe'];
-  };
   '/platform/settings': {
     /** Update platform settings */
     patch: operations['updatePlatformSettings'];
@@ -250,6 +246,14 @@ export interface paths {
      */
     get: operations['findUnits'];
   };
+  '/users/me': {
+    /** Me */
+    get: operations['users:currentUser'];
+    /** Delete me */
+    delete: operations['deleteMe'];
+    /** Update me */
+    patch: operations['users:patchCurrentUser'];
+  };
   '/auth/cookie/login': {
     /** Login */
     post: operations['auth:cookie.login'];
@@ -285,12 +289,6 @@ export interface paths {
   '/auth/reset-password': {
     /** Reset password */
     post: operations['reset:resetPassword'];
-  };
-  '/users/me': {
-    /** Me */
-    get: operations['users:currentUser'];
-    /** Update me */
-    patch: operations['users:patchCurrentUser'];
   };
   '/users/{id}': {
     /** Get user */
@@ -2606,19 +2604,6 @@ export interface operations {
       };
     };
   };
-  /** Delete me */
-  deleteMe: {
-    responses: {
-      /** @description Successful Response */
-      204: {
-        content: never;
-      };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
-    };
-  };
   /** Update platform settings */
   updatePlatformSettings: {
     requestBody: {
@@ -3232,6 +3217,62 @@ export interface operations {
       };
     };
   };
+  /** Me */
+  'users:currentUser': {
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['UserRead'];
+        };
+      };
+      /** @description Missing token or inactive user. */
+      401: {
+        content: never;
+      };
+    };
+  };
+  /** Delete me */
+  deleteMe: {
+    responses: {
+      /** @description Successful Response */
+      204: {
+        content: never;
+      };
+    };
+  };
+  /** Update me */
+  'users:patchCurrentUser': {
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UserUpdate'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['UserRead'];
+        };
+      };
+      /** @description Bad Request */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorModel'];
+        };
+      };
+      /** @description Missing token or inactive user. */
+      401: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
   /** Login */
   'auth:cookie.login': {
     requestBody: {
@@ -3445,53 +3486,6 @@ export interface operations {
         content: {
           'application/json': components['schemas']['ErrorModel'];
         };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  /** Me */
-  'users:currentUser': {
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json': components['schemas']['UserRead'];
-        };
-      };
-      /** @description Missing token or inactive user. */
-      401: {
-        content: never;
-      };
-    };
-  };
-  /** Update me */
-  'users:patchCurrentUser': {
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['UserUpdate'];
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json': components['schemas']['UserRead'];
-        };
-      };
-      /** @description Bad Request */
-      400: {
-        content: {
-          'application/json': components['schemas']['ErrorModel'];
-        };
-      };
-      /** @description Missing token or inactive user. */
-      401: {
-        content: never;
       };
       /** @description Validation Error */
       422: {

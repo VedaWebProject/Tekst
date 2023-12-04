@@ -313,6 +313,7 @@ account:
     msgPasswordChangeWarning: If you proceed, you will be logged out and have to log in again using your changed password.
     msgDeleteAccountWarning: If you delete your account, all data associated with it will be deleted, too. Are you sure you want to delete your account?
     msgUserDataSaveSuccess: User data saved.
+    phDeleteAccountSafetyInput: Type "{username}" to confirm your decision
 
 admin:
   heading: Administration

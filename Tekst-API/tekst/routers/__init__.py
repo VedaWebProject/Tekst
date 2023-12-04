@@ -33,7 +33,7 @@ def setup_routes(app: FastAPI) -> None:
     # register routers that aren't auth-related
     for router in _get_routers():
         app.include_router(router)
-    # register auth-related routers
+    # register auth-related routers (must happen after other routers are registered)
     setup_auth_routes(app)
     # modify routes...
     for route in app.routes:
