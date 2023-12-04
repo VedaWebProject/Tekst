@@ -146,7 +146,10 @@ class LayerBaseDocument(LayerBase, DocumentBase):
         ]
 
         return And(
-            Or(In(LayerBaseDocument.text_id, active_texts_ids), LayerBaseDocument.owner_id == user.id),
+            Or(
+                In(LayerBaseDocument.text_id, active_texts_ids),
+                LayerBaseDocument.owner_id == user.id,
+            ),
             Or(
                 LayerBaseDocument.public == True,  # noqa: E712
                 LayerBaseDocument.proposed == True,  # noqa: E712

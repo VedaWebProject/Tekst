@@ -5,16 +5,7 @@ import { useMessages } from '@/messages';
 import { usePlatformData } from '@/platformData';
 import { useAuthStore } from '@/stores';
 import type { FormInst, FormItemInst, FormItemRule } from 'naive-ui';
-import {
-  NCheckbox,
-  NButton,
-  NInput,
-  NFormItem,
-  NForm,
-  NGrid,
-  NGridItem,
-  useDialog,
-} from 'naive-ui';
+import { NCheckbox, NButton, NInput, NFormItem, NForm, useDialog } from 'naive-ui';
 import { ref } from 'vue';
 import { $t } from '@/i18n';
 import { useModelChanges } from '@/modelChanges';
@@ -80,7 +71,7 @@ const { changed: publicFieldsModelChanged, reset: resetPublicFieldsModelChanges 
   useModelChanges(publicFieldsFormModel);
 
 const rPasswordFormItemRef = ref<FormItemInst | null>(null);
-const firstInputRef = ref<HTMLInputElement | null>(null);
+const deleteAccountSafetyInput = ref('');
 const loading = ref(false);
 
 const passwordRepeatMatchRule = {
@@ -250,227 +241,231 @@ async function handleDeleteAccount() {
     <HelpButtonWidget help-key="accountManageView" />
   </IconHeading>
 
-  <n-grid class="account-mgmt-grid" cols="1 m:2" responsive="screen" x-gap="18px" y-gap="18px">
-    <n-grid-item>
-      <div class="content-block">
-        <h2>{{ $t('models.user.email') }}</h2>
-        <n-form
-          ref="emailFormRef"
-          :model="emailFormModel"
-          :rules="accountFormRules"
-          label-placement="top"
-          label-width="auto"
-          require-mark-placement="right-hanging"
-        >
-          <n-form-item path="email" :label="$t('models.user.email')">
-            <n-input
-              ref="firstInputRef"
-              v-model:value="emailFormModel.email"
-              type="text"
-              :placeholder="$t('models.user.email')"
-              :disabled="loading"
-              @keydown.enter.prevent
-            />
-          </n-form-item>
-        </n-form>
-        <ButtonFooter>
-          <n-button
-            secondary
-            :loading="loading"
-            :disabled="loading || !emailModelChanged"
-            @click="() => (emailFormModel = initialEmailModel())"
-          >
-            {{ $t('general.resetAction') }}
-          </n-button>
-          <n-button
-            type="primary"
-            :loading="loading"
-            :disabled="loading || !emailModelChanged"
-            @click="handleEmailSave"
-          >
-            {{ $t('general.saveAction') }}
-          </n-button>
-        </ButtonFooter>
+  <div class="content-block">
+    <h2>{{ $t('account.manage.headingChangeUserData') }}</h2>
+    <n-form
+      ref="userDataFormRef"
+      :model="userDataFormModel"
+      :rules="accountFormRules"
+      label-placement="top"
+      label-width="auto"
+      require-mark-placement="right-hanging"
+    >
+      <n-form-item path="username" :label="$t('models.user.username')">
+        <n-input
+          v-model:value="userDataFormModel.username"
+          type="text"
+          :placeholder="$t('models.user.username')"
+          :disabled="loading"
+          @keydown.enter.prevent
+        />
+      </n-form-item>
+      <n-form-item path="firstName" :label="$t('models.user.firstName')">
+        <n-input
+          v-model:value="userDataFormModel.firstName"
+          type="text"
+          :placeholder="$t('models.user.firstName')"
+          :disabled="loading"
+          @keydown.enter.prevent
+        />
+      </n-form-item>
+      <n-form-item path="lastName" :label="$t('models.user.lastName')">
+        <n-input
+          v-model:value="userDataFormModel.lastName"
+          type="text"
+          :placeholder="$t('models.user.lastName')"
+          :disabled="loading"
+          @keydown.enter.prevent
+        />
+      </n-form-item>
+      <n-form-item path="affiliation" :label="$t('models.user.affiliation')">
+        <n-input
+          v-model:value="userDataFormModel.affiliation"
+          type="text"
+          :placeholder="$t('models.user.affiliation')"
+          :disabled="loading"
+        />
+      </n-form-item>
+    </n-form>
+    <ButtonFooter>
+      <n-button
+        secondary
+        :loading="loading"
+        :disabled="loading || !userDataModelChanged"
+        @click="() => (userDataFormModel = initialUserDataModel())"
+      >
+        {{ $t('general.resetAction') }}
+      </n-button>
+      <n-button
+        type="primary"
+        :loading="loading"
+        :disabled="loading || !userDataModelChanged"
+        @click="handleUserDataSave"
+      >
+        {{ $t('general.saveAction') }}
+      </n-button>
+    </ButtonFooter>
+  </div>
 
-        <h2>{{ $t('models.user.password') }}</h2>
-        <n-form
-          ref="passwordFormRef"
-          :model="passwordFormModel"
-          :rules="accountFormRules"
-          label-placement="top"
-          label-width="auto"
-          require-mark-placement="right-hanging"
-        >
-          <n-form-item path="password" :label="$t('models.user.password')">
-            <n-input
-              v-model:value="passwordFormModel.password"
-              type="password"
-              :placeholder="$t('models.user.password')"
-              :disabled="loading"
-              @input="handlePasswordInput"
-              @keydown.enter.prevent
-            />
-          </n-form-item>
-          <n-form-item
-            ref="rPasswordFormItemRef"
-            first
-            path="passwordRepeat"
-            :rule="accountFormRules.passwordRepeat.concat([passwordRepeatMatchRule])"
-            :label="$t('register.repeatPassword')"
-          >
-            <n-input
-              v-model:value="passwordFormModel.passwordRepeat"
-              type="password"
-              :disabled="!passwordFormModel.password || loading"
-              :placeholder="$t('register.repeatPassword')"
-              @keydown.enter.prevent
-            />
-          </n-form-item>
-        </n-form>
-        <ButtonFooter>
-          <n-button
-            secondary
-            :loading="loading"
-            :disabled="loading || !passwordModelChanged"
-            @click="() => (passwordFormModel = initialPasswordModel())"
-          >
-            {{ $t('general.resetAction') }}
-          </n-button>
-          <n-button
-            type="primary"
-            :loading="loading"
-            :disabled="loading || !passwordModelChanged"
-            @click="handlePasswordSave"
-          >
-            {{ $t('general.saveAction') }}
-          </n-button>
-        </ButtonFooter>
-      </div>
-    </n-grid-item>
+  <div class="content-block">
+    <h2>{{ $t('models.user.email') }}</h2>
+    <n-form
+      ref="emailFormRef"
+      :model="emailFormModel"
+      :rules="accountFormRules"
+      label-placement="top"
+      label-width="auto"
+      require-mark-placement="right-hanging"
+    >
+      <n-form-item path="email" :label="$t('models.user.email')">
+        <n-input
+          v-model:value="emailFormModel.email"
+          type="text"
+          :placeholder="$t('models.user.email')"
+          :disabled="loading"
+          @keydown.enter.prevent
+        />
+      </n-form-item>
+    </n-form>
+    <ButtonFooter>
+      <n-button
+        secondary
+        :loading="loading"
+        :disabled="loading || !emailModelChanged"
+        @click="() => (emailFormModel = initialEmailModel())"
+      >
+        {{ $t('general.resetAction') }}
+      </n-button>
+      <n-button
+        type="primary"
+        :loading="loading"
+        :disabled="loading || !emailModelChanged"
+        @click="handleEmailSave"
+      >
+        {{ $t('general.saveAction') }}
+      </n-button>
+    </ButtonFooter>
 
-    <n-grid-item>
-      <div class="content-block">
-        <h2>{{ $t('account.manage.headingChangeUserData') }}</h2>
-        <n-form
-          ref="userDataFormRef"
-          :model="userDataFormModel"
-          :rules="accountFormRules"
-          label-placement="top"
-          label-width="auto"
-          require-mark-placement="right-hanging"
-        >
-          <n-form-item path="username" :label="$t('models.user.username')">
-            <n-input
-              v-model:value="userDataFormModel.username"
-              type="text"
-              :placeholder="$t('models.user.username')"
-              :disabled="loading"
-              @keydown.enter.prevent
-            />
-          </n-form-item>
-          <n-form-item path="firstName" :label="$t('models.user.firstName')">
-            <n-input
-              v-model:value="userDataFormModel.firstName"
-              type="text"
-              :placeholder="$t('models.user.firstName')"
-              :disabled="loading"
-              @keydown.enter.prevent
-            />
-          </n-form-item>
-          <n-form-item path="lastName" :label="$t('models.user.lastName')">
-            <n-input
-              v-model:value="userDataFormModel.lastName"
-              type="text"
-              :placeholder="$t('models.user.lastName')"
-              :disabled="loading"
-              @keydown.enter.prevent
-            />
-          </n-form-item>
-          <n-form-item path="affiliation" :label="$t('models.user.affiliation')">
-            <n-input
-              v-model:value="userDataFormModel.affiliation"
-              type="text"
-              :placeholder="$t('models.user.affiliation')"
-              :disabled="loading"
-            />
-          </n-form-item>
-        </n-form>
-        <ButtonFooter>
-          <n-button
-            secondary
-            :loading="loading"
-            :disabled="loading || !userDataModelChanged"
-            @click="() => (userDataFormModel = initialUserDataModel())"
-          >
-            {{ $t('general.resetAction') }}
-          </n-button>
-          <n-button
-            type="primary"
-            :loading="loading"
-            :disabled="loading || !userDataModelChanged"
-            @click="handleUserDataSave"
-          >
-            {{ $t('general.saveAction') }}
-          </n-button>
-        </ButtonFooter>
-      </div>
-    </n-grid-item>
+    <h2>{{ $t('models.user.password') }}</h2>
+    <n-form
+      ref="passwordFormRef"
+      :model="passwordFormModel"
+      :rules="accountFormRules"
+      label-placement="top"
+      label-width="auto"
+      require-mark-placement="right-hanging"
+    >
+      <n-form-item path="password" :label="$t('models.user.password')">
+        <n-input
+          v-model:value="passwordFormModel.password"
+          type="password"
+          :placeholder="$t('models.user.password')"
+          :disabled="loading"
+          @input="handlePasswordInput"
+          @keydown.enter.prevent
+        />
+      </n-form-item>
+      <n-form-item
+        ref="rPasswordFormItemRef"
+        first
+        path="passwordRepeat"
+        :rule="accountFormRules.passwordRepeat.concat([passwordRepeatMatchRule])"
+        :label="$t('register.repeatPassword')"
+      >
+        <n-input
+          v-model:value="passwordFormModel.passwordRepeat"
+          type="password"
+          :disabled="!passwordFormModel.password || loading"
+          :placeholder="$t('register.repeatPassword')"
+          @keydown.enter.prevent
+        />
+      </n-form-item>
+    </n-form>
+    <ButtonFooter>
+      <n-button
+        secondary
+        :loading="loading"
+        :disabled="loading || !passwordModelChanged"
+        @click="() => (passwordFormModel = initialPasswordModel())"
+      >
+        {{ $t('general.resetAction') }}
+      </n-button>
+      <n-button
+        type="primary"
+        :loading="loading"
+        :disabled="loading || !passwordModelChanged"
+        @click="handlePasswordSave"
+      >
+        {{ $t('general.saveAction') }}
+      </n-button>
+    </ButtonFooter>
+  </div>
 
-    <n-grid-item>
-      <div class="content-block">
-        <h2>
-          {{ $t('account.manage.headingChangePublicFields') }}
-          <HelpButtonWidget help-key="accountManagePublicFields" />
-        </h2>
-        <n-form
-          ref="publicFieldsFormRef"
-          :model="publicFieldsFormModel"
-          :show-label="false"
-          require-mark-placement="right-hanging"
-        >
-          <n-form-item>
-            <n-checkbox checked disabled aria-readonly :focusable="false">
-              {{ $t(`models.user.username`) }}
-            </n-checkbox>
-          </n-form-item>
-          <n-form-item v-for="(_, field) in publicFieldsFormModel" :key="field" :path="field">
-            <n-checkbox v-model:checked="publicFieldsFormModel[field]" :disabled="loading">
-              {{ $t(`models.user.${field}`) }}
-            </n-checkbox>
-          </n-form-item>
-        </n-form>
-        <ButtonFooter>
-          <n-button
-            secondary
-            :loading="loading"
-            :disabled="loading || !publicFieldsModelChanged"
-            @click="() => (publicFieldsFormModel = initialPublicFieldsModel())"
-          >
-            {{ $t('general.resetAction') }}
-          </n-button>
-          <n-button
-            type="primary"
-            :loading="loading"
-            :disabled="loading || !publicFieldsModelChanged"
-            @click="handlepublicFieldsSave"
-          >
-            {{ $t('general.saveAction') }}
-          </n-button>
-        </ButtonFooter>
-      </div>
-    </n-grid-item>
+  <div class="content-block">
+    <h2>
+      {{ $t('account.manage.headingChangePublicFields') }}
+      <HelpButtonWidget help-key="accountManagePublicFields" />
+    </h2>
+    <n-form
+      ref="publicFieldsFormRef"
+      :model="publicFieldsFormModel"
+      :show-label="false"
+      require-mark-placement="right-hanging"
+    >
+      <n-form-item>
+        <n-checkbox checked disabled aria-readonly :focusable="false">
+          {{ $t(`models.user.username`) }}
+        </n-checkbox>
+      </n-form-item>
+      <n-form-item v-for="(_, field) in publicFieldsFormModel" :key="field" :path="field">
+        <n-checkbox v-model:checked="publicFieldsFormModel[field]" :disabled="loading">
+          {{ $t(`models.user.${field}`) }}
+        </n-checkbox>
+      </n-form-item>
+    </n-form>
+    <ButtonFooter>
+      <n-button
+        secondary
+        :loading="loading"
+        :disabled="loading || !publicFieldsModelChanged"
+        @click="() => (publicFieldsFormModel = initialPublicFieldsModel())"
+      >
+        {{ $t('general.resetAction') }}
+      </n-button>
+      <n-button
+        type="primary"
+        :loading="loading"
+        :disabled="loading || !publicFieldsModelChanged"
+        @click="handlepublicFieldsSave"
+      >
+        {{ $t('general.saveAction') }}
+      </n-button>
+    </ButtonFooter>
+  </div>
 
-    <n-grid-item>
-      <div class="content-block">
-        <h2>
-          {{ $t('account.manage.headingDeleteAccount') }}
-        </h2>
-        <n-button type="error" :disabled="loading" @click="handleDeleteAccount">
-          {{ $t('account.manage.headingDeleteAccount') }}
-        </n-button>
-      </div>
-    </n-grid-item>
-  </n-grid>
+  <div class="content-block">
+    <h2>
+      {{ $t('account.manage.headingDeleteAccount') }}
+    </h2>
+    <n-form-item :label="$t('models.user.username')" required>
+      <n-input
+        v-model:value="deleteAccountSafetyInput"
+        type="text"
+        :placeholder="$t('models.user.username')"
+        :disabled="loading"
+        @keydown.enter.prevent
+      />
+    </n-form-item>
+    <ButtonFooter>
+      <n-button
+        type="error"
+        :disabled="loading || deleteAccountSafetyInput !== auth.user?.username"
+        @click="handleDeleteAccount"
+      >
+        {{ $t('account.manage.headingDeleteAccount') }}
+      </n-button>
+    </ButtonFooter>
+  </div>
 </template>
 
 <style scoped>

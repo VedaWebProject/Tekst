@@ -6,7 +6,7 @@ from typing import Annotated, Any
 import fastapi_users.models as fapi_users_models
 
 from beanie import Document, PydanticObjectId
-from beanie.operators import In, Pull, Or, Eq
+from beanie.operators import In, Pull
 from fastapi import (
     APIRouter,
     Depends,
@@ -244,14 +244,16 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
         ).delete()
         # remove user ID from layer shares
         await LayerBaseDocument.find(
-            Or(
-                LayerBaseDocument.shared_read == str(user.id),
-                LayerBaseDocument.shared_write == str(user.id),
-            ),
+            LayerBaseDocument.shared_read == str(user.id),
             with_children=True,
         ).update(
             Pull(LayerBaseDocument.shared_read == str(user.id)),
-            Pull(LayerBaseDocument.shared_write == str(user.id))
+        )
+        await LayerBaseDocument.find(
+            LayerBaseDocument.shared_write == str(user.id),
+            with_children=True,
+        ).update(
+            Pull(LayerBaseDocument.shared_write == str(user.id)),
         )
 
     async def on_after_delete(self, user: UserDocument, request: Request | None = None):

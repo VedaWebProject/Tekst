@@ -1652,6 +1652,31 @@
         ]
       }
     },
+    "/platform/users/me": {
+      "delete": {
+        "tags": [
+          "platform"
+        ],
+        "summary": "Delete me",
+        "operationId": "deleteMe",
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
     "/platform/settings": {
       "patch": {
         "tags": [

@@ -146,6 +146,10 @@ export interface paths {
     /** Get public users */
     get: operations['getPublicUsers'];
   };
+  '/platform/users/me': {
+    /** Delete me */
+    delete: operations['deleteMe'];
+  };
   '/platform/settings': {
     /** Update platform settings */
     patch: operations['updatePlatformSettings'];
@@ -2595,6 +2599,19 @@ export interface operations {
         content: {
           'application/json': components['schemas']['UserReadPublic'][];
         };
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+    };
+  };
+  /** Delete me */
+  deleteMe: {
+    responses: {
+      /** @description Successful Response */
+      204: {
+        content: never;
       };
       /** @description Not found */
       404: {
