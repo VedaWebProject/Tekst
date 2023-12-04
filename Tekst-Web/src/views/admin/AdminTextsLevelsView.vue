@@ -6,6 +6,7 @@ import {
   NIcon,
   NInput,
   NSelect,
+  NSpace,
   NModal,
   NAlert,
   NButton,
@@ -308,7 +309,7 @@ async function handleModalSubmit() {
             </div>
           </template>
           <template #action="{ index: indexAction, create, remove }">
-            <ButtonFooter>
+            <n-space style="margin-left: 20px; flex-wrap: nowrap">
               <n-button
                 secondary
                 circle
@@ -329,7 +330,7 @@ async function handleModalSubmit() {
                   <n-icon :component="AddRound" />
                 </template>
               </n-button>
-            </ButtonFooter>
+            </n-space>
           </template>
         </n-dynamic-input>
       </n-form-item>
