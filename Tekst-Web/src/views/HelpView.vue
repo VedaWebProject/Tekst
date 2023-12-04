@@ -1,27 +1,30 @@
 <script setup lang="ts">
-import { NSpin, NCollapse, NCollapseItem, NInput, NIcon } from 'naive-ui';
+import { NSpin, NModal, NInput, NIcon } from 'naive-ui';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import { useHelp, type HelpText } from '@/help';
 import { computed, onMounted, ref } from 'vue';
-
-import SearchOutlined from '@vicons/material/SearchOutlined';
 import { watch } from 'vue';
 import { useStateStore } from '@/stores';
+
+import SearchOutlined from '@vicons/material/SearchOutlined';
 
 const { getHelpTexts } = useHelp();
 
 const state = useStateStore();
 const filter = ref('');
 const loading = ref(false);
+const showModal = ref(false);
 const helpTexts = ref<[string, HelpText][] | null>(null);
 const helpTextsFiltered = computed<[string, HelpText][] | null>(() =>
   filterHelpTexts(helpTexts.value, filter.value)
 );
+const helpTextContent = ref<string>();
 
 function filterHelpTexts(ht: [string, HelpText][] | null, filter: string): [string, HelpText][] {
   if (!ht) return [];
-  if (!filter) return ht;
-  return ht.filter((h) => h[1].content.indexOf(filter) !== -1);
+  return ht
+    .filter((h) => (filter ? h[1].content.indexOf(filter) !== -1 : true))
+    .sort((a, b) => (a[1].title || '').localeCompare(b[1].title || ''));
 }
 
 async function requestHelpTexts() {
@@ -32,6 +35,12 @@ async function requestHelpTexts() {
     HelpText,
   ][];
   loading.value = false;
+}
+
+function handleClick(e: MouseEvent, textKey: string) {
+  e.preventDefault();
+  helpTextContent.value = helpTextsFiltered.value?.find((h) => h[0] === textKey)?.[1].content;
+  showModal.value = true;
 }
 
 onMounted(() => requestHelpTexts());
@@ -60,21 +69,41 @@ watch(
   </div>
 
   <div class="content-block">
-    <n-collapse v-if="helpTextsFiltered">
-      <n-collapse-item
+    <ul
+      v-if="helpTextsFiltered"
+      style="display: flex; flex-direction: column; list-style-type: circle"
+    >
+      <li
         v-for="[textKey, text] of helpTextsFiltered"
         :key="textKey"
         :title="text.title || textKey"
       >
-        <!-- eslint-disable-next-line vue/no-v-html -->
-        <div v-html="text.content"></div>
-      </n-collapse-item>
-    </n-collapse>
+        <a href="#" @click="(e) => handleClick(e, textKey)">{{ text.title || textKey }}</a>
+      </li>
+    </ul>
     <n-spin v-else-if="loading" />
     <div v-else>
       {{ $t('help.msgNoHelpTextsFound') }}
     </div>
   </div>
+
+  <n-modal
+    v-model:show="showModal"
+    display-directive="if"
+    preset="card"
+    class="tekst-modal-wide"
+    size="medium"
+    :bordered="false"
+    :auto-focus="false"
+    :closable="true"
+    to="#app-container"
+    :title="$t('help.help')"
+    embedded
+    @after-leave="helpTextContent = undefined"
+  >
+    <!-- eslint-disable-next-line vue/no-v-html -->
+    <div v-html="helpTextContent"></div>
+  </n-modal>
 </template>
 
 <style scoped></style>
