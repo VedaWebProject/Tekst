@@ -1,6 +1,7 @@
 # from collections import deque
 
-# from tekst.models.text import NodeDocument, TextDocument, TextRead
+# from tekst.models.node import TextDocument, TextRead
+# from tekst.models.node import NodeDocument
 
 
 # async def import_text(data: dict) -> TextRead | None:

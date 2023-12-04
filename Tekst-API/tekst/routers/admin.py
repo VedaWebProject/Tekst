@@ -4,8 +4,9 @@ from tekst.auth import SuperuserDep
 from tekst.email import send_test_email
 from tekst.layer_types import layer_types_mgr
 from tekst.models.layer import LayerBaseDocument
+from tekst.models.node import NodeDocument
 from tekst.models.platform import PlatformStats, TextStats
-from tekst.models.text import NodeDocument, TextDocument
+from tekst.models.text import TextDocument
 from tekst.models.user import UserDocument, UserRead
 
 

@@ -6,7 +6,7 @@ from fastapi import APIRouter, HTTPException, Path, Query, status
 
 from tekst.auth import OptionalUserDep
 from tekst.models.layer import LayerBaseDocument, LayerNodeCoverage
-from tekst.models.text import (
+from tekst.models.node import (
     NodeDocument,
     NodeRead,
 )

@@ -6,13 +6,15 @@ from fastapi import APIRouter, HTTPException, Path, Query, status
 
 from tekst.auth import SuperuserDep
 from tekst.logging import log
-from tekst.models.text import (
+from tekst.models.node import (
     DeleteNodeResult,
-    MoveNodeRequestBody,
     NodeCreate,
     NodeDocument,
     NodeRead,
     NodeUpdate,
+)
+from tekst.models.text import (
+    MoveNodeRequestBody,
     TextDocument,
 )
 from tekst.models.unit import UnitBaseDocument

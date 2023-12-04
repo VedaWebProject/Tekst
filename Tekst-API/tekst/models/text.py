@@ -146,48 +146,10 @@ TextRead = Text.read_model()
 TextUpdate = Text.update_model()
 
 
-class Node(ModelBase, ModelFactoryMixin):
-    """A node in a text structure (e.g. chapter, paragraph, ...)"""
-
-    text_id: Annotated[
-        PydanticObjectId, Field(description="ID of the text this node belongs to")
-    ]
-    parent_id: Annotated[
-        PydanticObjectId | None, Field(description="ID of parent node")
-    ] = None
-    level: Annotated[
-        int, Field(ge=0, lt=32, description="Index of structure level this node is on")
-    ]
-    position: Annotated[
-        int, Field(ge=0, description="Position among all text nodes on this level")
-    ]
-    label: Annotated[
-        str,
-        StringConstraints(min_length=1, max_length=256),
-        Field(description="Label for identifying this text node in level context"),
-    ]
-
-
-class NodeDocument(Node, DocumentBase):
-    class Settings(DocumentBase.Settings):
-        name = "nodes"
-        indexes = ["text_id", "parent_id", "level", "position"]
-
-
-NodeCreate = Node.create_model()
-NodeRead = Node.read_model()
-NodeUpdate = Node.update_model()
-
-
 class InsertLevelRequest(ModelBase):
     translations: Annotated[
         list[StructureLevelTranslation], Field(min_length=1)
     ] = Field(..., description="Translation(s) for the label of the level to insert")
-
-
-class DeleteNodeResult(ModelBase):
-    units: int
-    nodes: int
 
 
 class MoveNodeRequestBody(ModelBase):

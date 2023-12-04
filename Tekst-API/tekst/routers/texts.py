@@ -20,8 +20,8 @@ from tekst.auth import OptionalUserDep, SuperuserDep
 from tekst.dependencies import get_temp_dir
 from tekst.models.exchange import NodeDefinition, TextStructureDefinition
 from tekst.models.layer import LayerBaseDocument
+from tekst.models.node import NodeDocument
 from tekst.models.text import (
-    NodeDocument,
     StructureLevelTranslation,
     TextCreate,
     TextDocument,
