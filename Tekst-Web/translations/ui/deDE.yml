@@ -155,6 +155,9 @@ register:
     weakPassword: Das eingegebene Passwort entspricht nicht den Sicherheitsanforderungen.
 
 models:
+  locale:
+    modelLabel: Sprache | Sprachen
+    allLanguages: Alle Sprachen
   user:
     modelLabel: Benutzer | Benutzer
     email: Email-Adresse

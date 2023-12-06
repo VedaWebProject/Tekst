@@ -11,6 +11,7 @@ import FlagFilled from '@vicons/material/FlagFilled';
 import FlagOutlined from '@vicons/material/FlagOutlined';
 import PublicFilled from '@vicons/material/PublicFilled';
 import PublicOffFilled from '@vicons/material/PublicOffFilled';
+import TranslationDisplay from './TranslationDisplay.vue';
 
 const props = defineProps<{
   targetLayer: AnyLayerRead;
@@ -54,7 +55,7 @@ const actionButtonProps = {
       <template #description>
         <div style="font-size: var(--app-ui-font-size-small)">
           <div v-if="targetLayer.description" style="font-weight: var(--app-ui-font-weight-normal)">
-            {{ targetLayer.description }}
+            <TranslationDisplay :value="targetLayer.description" />
           </div>
           <div
             v-if="targetLayer.comment"

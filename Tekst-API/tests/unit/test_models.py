@@ -37,7 +37,7 @@ def test_deserialization(test_app):
         "title": "Foo",
         "slug": "foo",
         "locDelim": "+",
-        "levels": [[{"locale": "enUS", "label": "foo"}]],
+        "levels": [[{"locale": "enUS", "translation": "foo"}]],
     }
     t = TextCreate(**data)
     assert t.loc_delim == "+"
@@ -45,7 +45,7 @@ def test_deserialization(test_app):
         "title": "Foo",
         "slug": "foo",
         "loc_delim": "+",
-        "levels": [[{"locale": "enUS", "label": "foo"}]],
+        "levels": [[{"locale": "enUS", "translation": "foo"}]],
     }
     t = TextCreate(**data)
     assert t.loc_delim == "+"
@@ -56,7 +56,7 @@ def test_model_field_casing(test_app):
         title="foo",
         slug="foo",
         loc_delim="bar",
-        levels=[[{"locale": "enUS", "label": "foo"}]],
+        levels=[[{"locale": "enUS", "translation": "foo"}]],
     )
     assert t.title == "foo"
     assert t.loc_delim == "bar"
@@ -71,15 +71,17 @@ def test_layer_description_validator(test_app):
         text_id="5eb7cfb05e32e07750a1756a",
         level=0,
         layer_type="plaintext",
-        description="foo      bar\t\t   baz\n \ttest",
+        description=[
+            {"locale": "enUS", "translation": "foo      bar\t\t   baz\n \ttest"}
+        ],
     )
-    assert layer.description == "foo bar baz test"
+    assert layer.description[0]["translation"] == "foo bar baz test"
     # desc = None
     layer = PlaintextLayer(
         title="foo",
         text_id="5eb7cfb05e32e07750a1756a",
         level=0,
         layer_type="plaintext",
-        description=None,
     )
-    assert layer.description is None
+    assert isinstance(layer.description, list)
+    assert len(layer.description) == 0

@@ -9,6 +9,7 @@ import { PATCH, type PlatformSettingsUpdate } from '@/api';
 import { useModelChanges } from '@/modelChanges';
 import { useMessages } from '@/messages';
 import { platformSettingsFormRules } from '@/formRules';
+import TranslationFormItem from '@/components/TranslationFormItem.vue';
 
 const { pfData, patchPfData } = usePlatformData();
 const { message } = useMessages();
@@ -91,15 +92,15 @@ function resetForm() {
         />
       </n-form-item>
       <!-- PLATFORM DESCRIPTION -->
-      <n-form-item path="infoDescription" :label="$t('models.platformSettings.infoDescription')">
-        <n-input
-          v-model:value="formModel.infoDescription"
-          type="text"
-          :placeholder="$t('models.platformSettings.infoDescription')"
-          :disabled="loading"
-          @keydown.enter.prevent
-        />
-      </n-form-item>
+      <TranslationFormItem
+        v-model:value="formModel.infoDescription"
+        parent-form-path-prefix="infoDescription"
+        :loading="loading"
+        :disabled="loading"
+        :main-form-label="$t('models.platformSettings.infoDescription')"
+        :translation-form-label="$t('models.platformSettings.infoDescription')"
+        :translation-form-rule="platformSettingsFormRules.infoDescriptionTranslation"
+      />
       <!-- TERMS URL -->
       <n-form-item path="infoTerms" :label="$t('models.platformSettings.infoTerms')">
         <n-input

@@ -4,17 +4,17 @@
     "title": "Fuchs, du hast die Gans gestohlen",
     "slug": "fdhdgg",
     "subtitle": [
-      { "locale": "enUS", "subtitle": "An old German folk song" },
-      { "locale": "deDE", "subtitle": "Ein altdeutsches Volkslied" }
+      { "locale": "enUS", "translation": "An old German folk song" },
+      { "locale": "deDE", "translation": "Ein altdeutsches Volkslied" }
     ],
     "levels": [
       [
-        { "locale": "enUS", "label": "Stanza" },
-        { "locale": "deDE", "label": "Strophe" }
+        { "locale": "enUS", "translation": "Stanza" },
+        { "locale": "deDE", "translation": "Strophe" }
       ],
       [
-        { "locale": "enUS", "label": "Line" },
-        { "locale": "deDE", "label": "Vers" }
+        { "locale": "enUS", "translation": "Line" },
+        { "locale": "deDE", "translation": "Vers" }
       ]
     ],
     "default_level": 1,
@@ -28,13 +28,13 @@
     "title": "The Old Pond",
     "slug": "pond",
     "subtitle": [
-      { "locale": "enUS", "subtitle": "A Haiku by Matsuo Bashō" },
-      { "locale": "deDE", "subtitle": "Ein Haiku von Matsuo Bashō" }
+      { "locale": "enUS", "translation": "A Haiku by Matsuo Bashō" },
+      { "locale": "deDE", "translation": "Ein Haiku von Matsuo Bashō" }
     ],
     "levels": [
       [
-        { "locale": "enUS", "label": "Phrase" },
-        { "locale": "deDE", "label": "Wortgruppe" }
+        { "locale": "enUS", "translation": "Phrase" },
+        { "locale": "deDE", "translation": "Wortgruppe" }
       ]
     ],
     "default_level": 0,

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import SegmentRenderer from '@/components/SegmentRenderer.vue';
+import TranslationDisplay from '@/components/TranslationDisplay.vue';
 import { usePlatformData } from '@/platformData';
 import { computed } from 'vue';
 
@@ -19,8 +20,8 @@ const privacyPolicy = computed(
       <span>
         {{ pfData?.settings.infoPlatformName }}
       </span>
-      <span style="font-style: italic">
-        {{ pfData?.settings.infoDescription && ` – ${pfData?.settings.infoDescription}` }}
+      <span v-if="pfData?.settings.infoDescription?.length" style="font-style: italic">
+        – <TranslationDisplay :value="pfData?.settings.infoDescription" />
       </span>
     </div>
     <div v-if="siteNotice || privacyPolicy" id="legal-container">

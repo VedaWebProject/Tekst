@@ -99,9 +99,10 @@ export const useStateStore = defineStore('state', () => {
     () =>
       text.value?.levels.map(
         (l) =>
-          l.find((l) => l.locale === locale.value)?.label ||
-          l.find((l) => l.locale === 'enUS')?.label ||
-          (l.length > 0 && l[0].label) ||
+          l.find((l) => l.locale === locale.value)?.translation ||
+          l.find((l) => l.locale === '*')?.translation ||
+          l.find((l) => l.locale === 'enUS')?.translation ||
+          (l.length > 0 && l[0].translation) ||
           ''
       ) || []
   );

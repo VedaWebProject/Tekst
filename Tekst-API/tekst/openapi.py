@@ -6,6 +6,7 @@ from fastapi.openapi.utils import get_openapi
 
 from tekst.config import TekstConfig
 from tekst.models.settings import PlatformSettingsRead
+from tekst.utils import pick_translation
 
 
 tags_metadata = [
@@ -33,7 +34,7 @@ def generate_schema(app: FastAPI, cfg: TekstConfig, settings: PlatformSettingsRe
     schema = get_openapi(
         title=settings.info_platform_name,
         version=cfg.tekst_version,
-        description=settings.info_description,
+        description=pick_translation(settings.info_description),
         routes=app.routes,
         servers=[{"url": urljoin(str(cfg.server_url), str(cfg.api_path))}],
         terms_of_service=str(settings.info_terms),

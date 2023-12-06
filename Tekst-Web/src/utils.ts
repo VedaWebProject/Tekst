@@ -1,5 +1,3 @@
-import type { SubtitleTranslation } from '@/api';
-
 export function hashCode(obj: any) {
   const string = JSON.stringify(obj);
   let hash = 0;
@@ -9,15 +7,4 @@ export function hashCode(obj: any) {
     hash = hash & hash;
   }
   return hash;
-}
-
-export function determineTextSubtitle(
-  subtitleTranslations: SubtitleTranslation[],
-  localeKey: string
-) {
-  const subtitleTranslation =
-    subtitleTranslations.find((s) => s && s.locale === localeKey) ||
-    subtitleTranslations.find((s) => s && s.locale === 'enUS') ||
-    subtitleTranslations[0];
-  return subtitleTranslation ? subtitleTranslation.subtitle : '';
 }

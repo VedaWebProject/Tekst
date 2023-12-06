@@ -18,13 +18,14 @@ from fastapi.responses import FileResponse
 
 from tekst.auth import OptionalUserDep, SuperuserDep
 from tekst.dependencies import get_temp_dir
+from tekst.models.common import Translations
 from tekst.models.exchange import NodeDefinition, TextStructureDefinition
 from tekst.models.layer import LayerBaseDocument
 from tekst.models.node import NodeDocument
 from tekst.models.text import (
-    StructureLevelTranslation,
     TextCreate,
     TextDocument,
+    TextLevelTranslation,
     TextRead,
     TextUpdate,
 )
@@ -233,8 +234,8 @@ async def insert_level(
         Path(ge=0, lt=32, description="Index to insert the level at"),
     ],
     translations: Annotated[
-        list[StructureLevelTranslation],
-        Body(min_length=1, description="Label translations for this level"),
+        Translations[TextLevelTranslation],
+        Body(description="Label translations for this level"),
     ],
 ) -> TextRead:
     text_doc: TextDocument = await TextDocument.get(text_id)

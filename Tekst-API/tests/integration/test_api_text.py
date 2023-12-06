@@ -37,7 +37,7 @@ async def test_create_text(
     payload = {
         "title": "Just a Test",
         "slug": "justatest",
-        "levels": [[{"locale": "enUS", "label": "foo"}]],
+        "levels": [[{"locale": "enUS", "translation": "foo"}]],
     }
     resp = await test_client.post("/texts", json=payload, cookies=session_cookie)
     assert resp.status_code == 201, status_fail_msg(201, resp)
@@ -150,8 +150,8 @@ async def test_insert_level(
     resp = await test_client.post(
         f"/texts/{text['id']}/level/0",
         json=[
-            {"locale": "enUS", "label": "A level"},
-            {"locale": "deDE", "label": "Eine Ebene"},
+            {"locale": "enUS", "translation": "A level"},
+            {"locale": "deDE", "translation": "Eine Ebene"},
         ],
         cookies=session_cookie,
     )

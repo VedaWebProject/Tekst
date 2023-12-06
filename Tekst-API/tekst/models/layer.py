@@ -4,16 +4,30 @@ from typing import Annotated
 
 from beanie import PydanticObjectId
 from beanie.operators import And, In, Or
-from pydantic import Field, create_model, field_validator, model_validator
+from pydantic import (
+    Field,
+    StringConstraints,
+    create_model,
+    field_validator,
+    model_validator,
+)
 
 from tekst.models.common import (
     DocumentBase,
     Metadata,
     ModelBase,
     ModelFactoryMixin,
+    TranslationBase,
+    Translations,
 )
 from tekst.models.text import TextDocument
 from tekst.models.user import UserRead, UserReadPublic
+
+
+class LayerDescriptionTranslation(TranslationBase):
+    translation: Annotated[
+        str, StringConstraints(strip_whitespace=True, min_length=1, max_length=512)
+    ]
 
 
 class LayerBase(ModelBase, ModelFactoryMixin):
@@ -23,13 +37,11 @@ class LayerBase(ModelBase, ModelFactoryMixin):
         str, Field(min_length=1, max_length=64, description="Title of this layer")
     ]
     description: Annotated[
-        str | None,
+        Translations[LayerDescriptionTranslation],
         Field(
-            min_length=1,
-            max_length=512,
             description="Short, concise description of this data layer",
         ),
-    ] = None
+    ] = []
     text_id: Annotated[
         PydanticObjectId,
         Field(description="ID of the text this layer belongs to"),
@@ -59,7 +71,7 @@ class LayerBase(ModelBase, ModelFactoryMixin):
         str | None,
         Field(description="Citation details for this layer", max_length=1000),
     ] = None
-    meta: Metadata = None
+    meta: Metadata = []
     comment: Annotated[
         str | None,
         Field(
@@ -68,12 +80,14 @@ class LayerBase(ModelBase, ModelFactoryMixin):
         ),
     ] = None
 
-    @field_validator("description")
+    @field_validator("description", mode="after")
     @classmethod
     def handle_whitespaces_in_description(cls, v):
-        if not isinstance(v, str):
-            return None
-        return re.sub(r"[\s\n\r]+", " ", v).strip()
+        for desc_trans in v:
+            desc_trans["translation"] = re.sub(
+                r"[\s\n\r]+", " ", desc_trans["translation"]
+            ).strip()
+        return v
 
     @field_validator("layer_type")
     @classmethod

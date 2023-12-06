@@ -37,6 +37,7 @@ import MinusRound from '@vicons/material/MinusRound';
 import AddRound from '@vicons/material/AddRound';
 import KeyboardArrowLeftOutlined from '@vicons/material/KeyboardArrowLeftOutlined';
 import PersonFilled from '@vicons/material/PersonFilled';
+import TranslationFormItem from '@/components/TranslationFormItem.vue';
 
 const { message } = useMessages();
 const route = useRoute();
@@ -208,15 +209,15 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
           />
         </n-form-item>
         <!-- DESCRIPTION -->
-        <n-form-item path="description" :label="$t('models.layer.description')">
-          <n-input
-            v-model:value="model.description"
-            type="text"
-            :placeholder="$t('models.layer.description')"
-            :disabled="loading"
-            @keydown.enter.prevent
-          />
-        </n-form-item>
+        <TranslationFormItem
+          v-model:value="model.description"
+          parent-form-path-prefix="description"
+          :loading="loading"
+          :disabled="loading"
+          :main-form-label="$t('models.layer.description')"
+          :translation-label="$t('models.layer.description')"
+          :translation-form-rule="layerFormRules.descriptionTranslation"
+        />
         <!-- CITATION -->
         <n-form-item path="citation" :label="$t('models.layer.citation')">
           <n-input

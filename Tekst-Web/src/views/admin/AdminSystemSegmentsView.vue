@@ -51,6 +51,7 @@ const segmentOptions = computed(() =>
     const groupSegments = pfData.value?.systemSegments.filter((s) => s.key === key) || [];
     const currLocaleSegment =
       groupSegments.find((s) => s.locale === locale.value) ||
+      groupSegments.find((s) => s.locale === '*') ||
       groupSegments.find((s) => s.locale === 'enUS') ||
       groupSegments[0];
     return {
@@ -58,21 +59,33 @@ const segmentOptions = computed(() =>
       label: currLocaleSegment.title || currLocaleSegment.key,
       key,
       children: groupSegments.map((s) => ({
-        label: (s.locale ? localeProfiles[s.locale].icon : '🌐') + ' ' + (s.title || s.key),
+        label: (localeProfiles[s.locale]?.icon || '🌐') + ' ' + (s.title || s.key),
         value: s.id,
       })),
     };
   })
 );
 
-const segmentLocaleOptions = computed(() =>
-  Object.keys(localeProfiles).map((l) => ({
-    label: `${localeProfiles[l].icon} ${localeProfiles[l].displayFull}`,
-    value: l,
-    disabled: !!pfData.value?.systemSegments.find(
-      (s) => s.locale === l && s.key === segmentModel.value?.key && s.id !== selectedSegmentId.value
-    ),
-  }))
+const localeOptions = computed(() =>
+  [
+    {
+      label: `🌐 ${$t('models.locale.allLanguages')}`,
+      value: '*',
+      disabled: !!pfData.value?.systemSegments.find(
+        (p) =>
+          p.locale === '*' && p.key === segmentModel.value?.key && p.id !== selectedSegmentId.value
+      ),
+    },
+  ].concat(
+    Object.keys(localeProfiles).map((l) => ({
+      label: `${localeProfiles[l].icon} ${localeProfiles[l].displayFull}`,
+      value: l,
+      disabled: !!pfData.value?.systemSegments.find(
+        (p) =>
+          p.locale === l && p.key === segmentModel.value?.key && p.id !== selectedSegmentId.value
+      ),
+    }))
+  )
 );
 
 const systemSegmentKeys = [
@@ -306,7 +319,7 @@ async function handleDeleteClick() {
       <n-form-item :label="$t('models.segment.locale')">
         <n-select
           v-model:value="segmentModel.locale"
-          :options="segmentLocaleOptions"
+          :options="localeOptions"
           :placeholder="$t('general.language')"
           :consistent-menu-width="false"
           style="min-width: 200px"

@@ -404,11 +404,8 @@ export interface components {
        * @enum {string}
        */
       editorMode?: 'wysiwyg' | 'html';
-      /**
-       * Locale
-       * @description Locale indicating the translation language of this segment
-       */
-      locale?: ('deDE' | 'enUS') | null;
+      /** @description Locale indicating the translation language of this segment */
+      locale: components['schemas']['Locale'];
       /**
        * Title
        * @description Title of this segment
@@ -431,8 +428,7 @@ export interface components {
       key: string;
       /** Title */
       title?: string | null;
-      /** Locale */
-      locale?: ('deDE' | 'enUS') | null;
+      locale: components['schemas']['Locale'];
     };
     /** ClientSegmentRead */
     ClientSegmentRead: {
@@ -459,11 +455,8 @@ export interface components {
        * @enum {string}
        */
       editorMode?: 'wysiwyg' | 'html';
-      /**
-       * Locale
-       * @description Locale indicating the translation language of this segment
-       */
-      locale?: ('deDE' | 'enUS') | null;
+      /** @description Locale indicating the translation language of this segment */
+      locale: components['schemas']['Locale'];
       /**
        * Title
        * @description Title of this segment
@@ -493,11 +486,7 @@ export interface components {
        * @enum {string}
        */
       editorMode?: 'wysiwyg' | 'html';
-      /**
-       * Locale
-       * @description Locale indicating the translation language of this segment
-       */
-      locale?: ('deDE' | 'enUS') | null;
+      locale?: components['schemas']['Locale'] | null;
       /**
        * Title
        * @description Title of this segment
@@ -520,8 +509,9 @@ export interface components {
       /**
        * Description
        * @description Short, concise description of this data layer
+       * @default []
        */
-      description?: string | null;
+      description?: components['schemas']['LayerDescriptionTranslation'][];
       /**
        * Textid
        * @description ID of the text this layer belongs to
@@ -575,8 +565,9 @@ export interface components {
       /**
        * Meta
        * @description Arbitrary metadata
+       * @default []
        */
-      meta?: components['schemas']['Metadate'][] | null;
+      meta?: components['schemas']['Metadate'][];
       /**
        * Comment
        * @description Plaintext, potentially multiline comment on this layer
@@ -616,8 +607,9 @@ export interface components {
       /**
        * Description
        * @description Short, concise description of this data layer
+       * @default []
        */
-      description?: string | null;
+      description?: components['schemas']['LayerDescriptionTranslation'][];
       /**
        * Textid
        * @description ID of the text this layer belongs to
@@ -671,8 +663,9 @@ export interface components {
       /**
        * Meta
        * @description Arbitrary metadata
+       * @default []
        */
-      meta?: components['schemas']['Metadate'][] | null;
+      meta?: components['schemas']['Metadate'][];
       /**
        * Comment
        * @description Plaintext, potentially multiline comment on this layer
@@ -688,8 +681,9 @@ export interface components {
       /**
        * Description
        * @description Short, concise description of this data layer
+       * @default []
        */
-      description?: string | null;
+      description?: components['schemas']['LayerDescriptionTranslation'][];
       /** Textid */
       textId?: string | null;
       /** Level */
@@ -736,8 +730,9 @@ export interface components {
       /**
        * Meta
        * @description Arbitrary metadata
+       * @default []
        */
-      meta?: components['schemas']['Metadate'][] | null;
+      meta?: components['schemas']['Metadate'][];
       /**
        * Comment
        * @description Plaintext, potentially multiline comment on this layer
@@ -921,6 +916,12 @@ export interface components {
       /** Detail */
       detail?: components['schemas']['ValidationError'][];
     };
+    /** LayerDescriptionTranslation */
+    LayerDescriptionTranslation: {
+      locale: components['schemas']['Locale'];
+      /** Translation */
+      translation: string;
+    };
     /** LayerNodeCoverage */
     LayerNodeCoverage: {
       /** Label */
@@ -930,6 +931,8 @@ export interface components {
       /** Covered */
       covered: boolean;
     };
+    /** @enum {string} */
+    Locale: '*' | 'deDE' | 'enUS';
     /** Metadate */
     Metadate: {
       /** Key */
@@ -1040,8 +1043,9 @@ export interface components {
       /**
        * Description
        * @description Short, concise description of this data layer
+       * @default []
        */
-      description?: string | null;
+      description?: components['schemas']['LayerDescriptionTranslation'][];
       /**
        * Textid
        * @description ID of the text this layer belongs to
@@ -1095,8 +1099,9 @@ export interface components {
       /**
        * Meta
        * @description Arbitrary metadata
+       * @default []
        */
-      meta?: components['schemas']['Metadate'][] | null;
+      meta?: components['schemas']['Metadate'][];
       /**
        * Comment
        * @description Plaintext, potentially multiline comment on this layer
@@ -1136,8 +1141,9 @@ export interface components {
       /**
        * Description
        * @description Short, concise description of this data layer
+       * @default []
        */
-      description?: string | null;
+      description?: components['schemas']['LayerDescriptionTranslation'][];
       /**
        * Textid
        * @description ID of the text this layer belongs to
@@ -1191,8 +1197,9 @@ export interface components {
       /**
        * Meta
        * @description Arbitrary metadata
+       * @default []
        */
-      meta?: components['schemas']['Metadate'][] | null;
+      meta?: components['schemas']['Metadate'][];
       /**
        * Comment
        * @description Plaintext, potentially multiline comment on this layer
@@ -1208,8 +1215,9 @@ export interface components {
       /**
        * Description
        * @description Short, concise description of this data layer
+       * @default []
        */
-      description?: string | null;
+      description?: components['schemas']['LayerDescriptionTranslation'][];
       /** Textid */
       textId?: string | null;
       /** Level */
@@ -1256,8 +1264,9 @@ export interface components {
       /**
        * Meta
        * @description Arbitrary metadata
+       * @default []
        */
-      meta?: components['schemas']['Metadate'][] | null;
+      meta?: components['schemas']['Metadate'][];
       /**
        * Comment
        * @description Plaintext, potentially multiline comment on this layer
@@ -1373,6 +1382,12 @@ export interface components {
       /** Infosegments */
       infoSegments: components['schemas']['ClientSegmentHead'][];
     };
+    /** PlatformDescriptionTranslation */
+    PlatformDescriptionTranslation: {
+      locale: components['schemas']['Locale'];
+      /** Translation */
+      translation: string;
+    };
     /** PlatformSecurityInfo */
     PlatformSecurityInfo: {
       /**
@@ -1416,10 +1431,15 @@ export interface components {
       infoPlatformName?: string;
       /**
        * Infodescription
-       * @description Short description of the platform
-       * @default An online text research platform
+       * @description Short description of the platform, in multiple languages
+       * @default [
+       *   {
+       *     "locale": "*",
+       *     "translation": "An online text research platform"
+       *   }
+       * ]
        */
-      infoDescription?: string | null;
+      infoDescription?: components['schemas']['PlatformDescriptionTranslation'][];
       /**
        * Infoterms
        * @description URL to page with terms and conditions for API usage
@@ -1469,10 +1489,15 @@ export interface components {
       infoPlatformName?: string;
       /**
        * Infodescription
-       * @description Short description of the platform
-       * @default An online text research platform
+       * @description Short description of the platform, in multiple languages
+       * @default [
+       *   {
+       *     "locale": "*",
+       *     "translation": "An online text research platform"
+       *   }
+       * ]
        */
-      infoDescription?: string | null;
+      infoDescription?: components['schemas']['PlatformDescriptionTranslation'][];
       /**
        * Infoterms
        * @description URL to page with terms and conditions for API usage
@@ -1521,26 +1546,6 @@ export interface components {
       /** Texts */
       texts: components['schemas']['TextStats'][];
     };
-    /** StructureLevelTranslation */
-    StructureLevelTranslation: {
-      /**
-       * Locale
-       * @enum {string}
-       */
-      locale: 'deDE' | 'enUS';
-      /** Label */
-      label: string;
-    };
-    /** SubtitleTranslation */
-    SubtitleTranslation: {
-      /**
-       * Locale
-       * @enum {string}
-       */
-      locale: 'deDE' | 'enUS';
-      /** Subtitle */
-      subtitle: string;
-    };
     /** TextCreate */
     TextCreate: {
       /**
@@ -1556,10 +1561,14 @@ export interface components {
       /**
        * Subtitle
        * @description Subtitle translations of this text (if set, it must contain at least one element)
+       * @default []
        */
-      subtitle?: components['schemas']['SubtitleTranslation'][] | null;
-      /** Levels */
-      levels: components['schemas']['StructureLevelTranslation'][][];
+      subtitle?: components['schemas']['TextSubtitleTranslation'][];
+      /**
+       * Levels
+       * @description Structure levels of this text and their label translations
+       */
+      levels: components['schemas']['TextLevelTranslation'][][];
       /**
        * Defaultlevel
        * @description Default structure level for the client to use for browsing this text
@@ -1592,6 +1601,12 @@ export interface components {
        */
       isActive?: boolean;
     };
+    /** TextLevelTranslation */
+    TextLevelTranslation: {
+      locale: components['schemas']['Locale'];
+      /** Translation */
+      translation: string;
+    };
     /** TextRead */
     TextRead: {
       /**
@@ -1612,10 +1627,14 @@ export interface components {
       /**
        * Subtitle
        * @description Subtitle translations of this text (if set, it must contain at least one element)
+       * @default []
        */
-      subtitle?: components['schemas']['SubtitleTranslation'][] | null;
-      /** Levels */
-      levels: components['schemas']['StructureLevelTranslation'][][];
+      subtitle?: components['schemas']['TextSubtitleTranslation'][];
+      /**
+       * Levels
+       * @description Structure levels of this text and their label translations
+       */
+      levels: components['schemas']['TextLevelTranslation'][][];
       /**
        * Defaultlevel
        * @description Default structure level for the client to use for browsing this text
@@ -1668,6 +1687,12 @@ export interface components {
         [key: string]: number;
       };
     };
+    /** TextSubtitleTranslation */
+    TextSubtitleTranslation: {
+      locale: components['schemas']['Locale'];
+      /** Translation */
+      translation: string;
+    };
     /** TextUpdate */
     TextUpdate: {
       /** Title */
@@ -1677,10 +1702,11 @@ export interface components {
       /**
        * Subtitle
        * @description Subtitle translations of this text (if set, it must contain at least one element)
+       * @default []
        */
-      subtitle?: components['schemas']['SubtitleTranslation'][] | null;
+      subtitle?: components['schemas']['TextSubtitleTranslation'][];
       /** Levels */
-      levels?: components['schemas']['StructureLevelTranslation'][][] | null;
+      levels?: components['schemas']['TextLevelTranslation'][][] | null;
       /**
        * Defaultlevel
        * @description Default structure level for the client to use for browsing this text
@@ -1748,8 +1774,7 @@ export interface components {
       lastName: string;
       /** Affiliation */
       affiliation: string;
-      /** Locale */
-      locale?: ('deDE' | 'enUS') | null;
+      locale?: components['schemas']['Locale'] | null;
       /**
        * Publicfields
        * @description Data fields set public by this user
@@ -1786,8 +1811,7 @@ export interface components {
       lastName: string;
       /** Affiliation */
       affiliation: string;
-      /** Locale */
-      locale?: ('deDE' | 'enUS') | null;
+      locale?: components['schemas']['Locale'] | null;
       /**
        * Publicfields
        * @description Data fields set public by this user
@@ -1836,8 +1860,7 @@ export interface components {
       lastName?: string | null;
       /** Affiliation */
       affiliation?: string | null;
-      /** Locale */
-      locale?: ('deDE' | 'enUS') | null;
+      locale?: components['schemas']['Locale'] | null;
       /**
        * Publicfields
        * @description Data fields set public by this user
@@ -2864,7 +2887,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        'application/json': components['schemas']['StructureLevelTranslation'][];
+        'application/json': components['schemas']['TextLevelTranslation'][];
       };
     };
     responses: {

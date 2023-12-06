@@ -2,23 +2,10 @@
 import { useStateStore } from '@/stores';
 import InsertLevelButton from '@/components/admin/InsertLevelButton.vue';
 import { textFormRules } from '@/formRules';
-import {
-  NIcon,
-  NInput,
-  NSelect,
-  NSpace,
-  NModal,
-  NAlert,
-  NButton,
-  NForm,
-  NFormItem,
-  NDynamicInput,
-  type FormInst,
-  useDialog,
-} from 'naive-ui';
+import { NIcon, NModal, NAlert, NButton, NForm, type FormInst, useDialog } from 'naive-ui';
 import { computed, ref } from 'vue';
 import { localeProfiles } from '@/i18n';
-import type { StructureLevelTranslation } from '@/api';
+import type { Translation } from '@/api';
 import ButtonFooter from '@/components/ButtonFooter.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
@@ -28,9 +15,8 @@ import { $t } from '@/i18n';
 import { POST, PATCH, DELETE } from '@/api';
 import { usePlatformData } from '@/platformData';
 import { useI18n } from 'vue-i18n';
+import TranslationFormItem from '@/components/TranslationFormItem.vue';
 
-import AddRound from '@vicons/material/AddRound';
-import MinusRound from '@vicons/material/MinusRound';
 import DeleteRound from '@vicons/material/DeleteRound';
 import EditRound from '@vicons/material/EditRound';
 
@@ -40,7 +26,7 @@ const { message } = useMessages();
 const { locale } = useI18n({ useScope: 'global' });
 const dialog = useDialog();
 
-const levels = computed<StructureLevelTranslation[][]>(() => state.text?.levels || [[]]);
+const levels = computed<Translation[][]>(() => state.text?.levels || [[]]);
 
 const showEditModal = ref(false);
 const formModel = ref<Record<string, any>>({});
@@ -59,18 +45,8 @@ const editModalWarning = computed(() =>
   editModalAction.value === 'edit' ? undefined : $t('admin.text.levels.warnInsertLevel')
 );
 
-const levelLocaleOptions = computed(() =>
-  Object.keys(localeProfiles).map((l) => ({
-    label: `${localeProfiles[l].icon} ${localeProfiles[l].displayFull}`,
-    value: localeProfiles[l].key,
-    disabled: !!formModel.value.translations
-      .map((lvlTrans: StructureLevelTranslation) => lvlTrans.locale)
-      .includes(l),
-  }))
-);
-
 function handleInsertClick(level: number) {
-  formModel.value = { translations: [{ locale: null, label: null }] };
+  formModel.value = { translations: [{ locale: '*', translation: '' }] };
   editModalAction.value = 'insert';
   editModalLevel.value = level;
   showEditModal.value = true;
@@ -78,7 +54,10 @@ function handleInsertClick(level: number) {
 
 function handleEditClick(level: number) {
   formModel.value = {
-    translations: levels.value[level].map((l) => ({ locale: l.locale, label: l.label })),
+    translations: levels.value[level].map((l) => ({
+      locale: l.locale,
+      translation: l.translation,
+    })),
   };
   editModalAction.value = 'edit';
   editModalLevel.value = level;
@@ -118,8 +97,10 @@ function handleDeleteClick(level: number) {
   });
 }
 
-function getLevelLabel(lvl: StructureLevelTranslation[]) {
-  return (lvl && lvl.find((t) => t.locale === locale.value)?.label) || lvl[0]?.label || '';
+function getLevelLabel(lvl: Translation[]) {
+  return (
+    (lvl && lvl.find((t) => t.locale === locale.value)?.translation) || lvl[0]?.translation || ''
+  );
 }
 
 function destroyEditModal() {
@@ -194,13 +175,21 @@ async function handleModalSubmit() {
         <div class="level-translations">
           <template v-for="lvlTranslation in lvl" :key="lvlTranslation.locale">
             <div>
-              {{ localeProfiles[lvlTranslation.locale].icon }}
+              {{
+                localeProfiles[lvlTranslation.locale]
+                  ? localeProfiles[lvlTranslation.locale].icon
+                  : '🌐'
+              }}
               <span style="font-weight: normal">
-                {{ localeProfiles[lvlTranslation.locale].displayFull }}:
+                {{
+                  localeProfiles[lvlTranslation.locale]
+                    ? localeProfiles[lvlTranslation.locale].displayFull
+                    : $t('models.locale.allLanguages')
+                }}:
               </span>
             </div>
             <div>
-              {{ lvlTranslation.label }}
+              {{ lvlTranslation.translation }}
             </div>
           </template>
         </div>
@@ -256,13 +245,21 @@ async function handleModalSubmit() {
     <n-form
       ref="formRef"
       :model="formModel"
-      :rules="textFormRules"
       label-placement="top"
       label-width="auto"
       require-mark-placement="right-hanging"
     >
       <!-- STRUCTURE LEVEL -->
-      <n-form-item ignore-path-change :show-label="false" path="translations">
+      <TranslationFormItem
+        v-model:value="formModel.translations"
+        parent-form-path-prefix="translations"
+        :loading="loading"
+        :disabled="loading"
+        :main-form-label="$t('models.text.level')"
+        :translation-label="$t('models.text.level')"
+        :translation-form-rule="textFormRules.levelTranslation"
+      />
+      <!-- <n-form-item ignore-path-change :show-label="false" path="translations">
         <n-dynamic-input
           v-model:value="formModel.translations"
           :min="1"
@@ -273,7 +270,6 @@ async function handleModalSubmit() {
         >
           <template #default="{ index: translationIndex }">
             <div style="display: flex; align-items: flex-start; gap: 12px; width: 100%">
-              <!-- STRUCTURE LEVEL LOCALE -->
               <n-form-item
                 ignore-path-change
                 :show-label="false"
@@ -290,7 +286,6 @@ async function handleModalSubmit() {
                   @keydown.enter.prevent
                 />
               </n-form-item>
-              <!-- STRUCTURE LEVEL LABEL -->
               <n-form-item
                 ignore-path-change
                 :show-label="false"
@@ -333,7 +328,7 @@ async function handleModalSubmit() {
             </n-space>
           </template>
         </n-dynamic-input>
-      </n-form-item>
+      </n-form-item> -->
     </n-form>
 
     <ButtonFooter>

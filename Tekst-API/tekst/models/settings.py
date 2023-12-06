@@ -9,10 +9,18 @@ from tekst.models.common import (
     DocumentBase,
     ModelBase,
     ModelFactoryMixin,
+    TranslationBase,
+    Translations,
 )
 
 
 _cfg: TekstConfig = get_config()  # get (possibly cached) config data
+
+
+class PlatformDescriptionTranslation(TranslationBase):
+    translation: Annotated[
+        str, StringConstraints(strip_whitespace=True, min_length=1, max_length=128)
+    ]
 
 
 class PlatformSettings(ModelBase, ModelFactoryMixin):
@@ -24,10 +32,9 @@ class PlatformSettings(ModelBase, ModelFactoryMixin):
         Field(description="Name of the platform"),
     ] = _cfg.info_platform_name
     info_description: Annotated[
-        str | None,
-        StringConstraints(max_length=128),
-        Field(description="Short description of the platform"),
-    ] = _cfg.info_description
+        Translations[PlatformDescriptionTranslation],
+        Field(description="Short description of the platform, in multiple languages"),
+    ] = [{"locale": "*", "translation": _cfg.info_description}]
     info_terms: Annotated[
         CustomHttpUrl | None,
         StringConstraints(max_length=512),

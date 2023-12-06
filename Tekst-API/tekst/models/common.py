@@ -1,5 +1,12 @@
 from datetime import datetime
-from typing import Annotated, Any, Literal, Optional  # noqa: UP035
+from typing import (  # noqa: UP035
+    Annotated,
+    Any,
+    Literal,
+    Optional,
+    TypeVar,
+    get_args,
+)
 
 from beanie import (
     Document,
@@ -13,9 +20,10 @@ from pydantic import (
     HttpUrl,
     PlainSerializer,
     StringConstraints,
+    conlist,
     create_model,
 )
-from typing_extensions import TypedDict
+from typing_extensions import TypeAliasType, TypedDict
 
 
 # class for one arbitrary metadate
@@ -26,18 +34,27 @@ class Metadate(TypedDict):
 
 # type alias for collection of arbitrary metadata
 Metadata = Annotated[
-    list[Metadate] | None,
+    list[Metadate],
     Field(description="Arbitrary metadata", min_length=0, max_length=64),
 ]
 
 
 # type alias for available locale identifiers
-Locale = Literal["deDE", "enUS"]
+Locale = TypeAliasType("Locale", Literal["*", "deDE", "enUS"])
 
 # Pydantic HttpUrl with string serialization
 CustomHttpUrl = Annotated[
     HttpUrl, PlainSerializer(lambda url: str(url), return_type=str, when_used="always")
 ]
+
+
+# translations
+class TranslationBase(TypedDict):
+    locale: Locale
+
+
+T = TypeVar("T", bound=TranslationBase)
+Translations = conlist(T, max_length=len(get_args(Locale.__value__)))
 
 
 class ModelTransformerMixin:

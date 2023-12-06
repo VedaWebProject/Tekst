@@ -78,6 +78,11 @@ export function getFullUrl(path: string, query?: Record<string, any>): URL {
 export type ErrorModel = components['schemas']['ErrorModel'];
 export type Metadate = components['schemas']['Metadate'];
 export type Metadata = Metadate[];
+export type Locale = components['schemas']['Locale'];
+export type Translation = {
+  locale: components['schemas']['Locale'];
+  translation: string;
+};
 
 // user
 
@@ -92,8 +97,6 @@ export type UserUpdatePublicFields = components['schemas']['UserUpdate']['public
 export type TextCreate = components['schemas']['TextCreate'];
 export type TextRead = components['schemas']['TextRead'];
 export type TextUpdate = components['schemas']['TextUpdate'];
-export type SubtitleTranslation = components['schemas']['SubtitleTranslation'];
-export type StructureLevelTranslation = components['schemas']['StructureLevelTranslation'];
 export type NodeRead = components['schemas']['NodeRead'];
 
 // platform

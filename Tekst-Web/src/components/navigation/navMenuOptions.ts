@@ -50,7 +50,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
     // add pages without locale
     pages.push(
       ...(pfData.value?.infoSegments.filter(
-        (p) => !p.locale && !pages.find((i) => i.key === p.key)
+        (p) => p.locale === '*' && !pages.find((i) => i.key === p.key)
       ) || [])
     );
     // add pages with enUS locale (fallback)

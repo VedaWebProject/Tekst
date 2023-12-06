@@ -17,7 +17,12 @@ async def test_create_layer(
     session_cookie = await get_session_cookie(user_data)
     payload = {
         "title": "A test layer",
-        "description": "This is     a string with \n some space    chars",
+        "description": [
+            {
+                "locale": "*",
+                "translation": "This is     a string with \n some space    chars",
+            }
+        ],
         "textId": text_id,
         "level": 0,
         "layerType": "plaintext",
@@ -28,7 +33,10 @@ async def test_create_layer(
     assert resp.status_code == 201, status_fail_msg(201, resp)
     assert "id" in resp.json()
     assert resp.json()["title"] == "A test layer"
-    assert resp.json()["description"] == "This is a string with some space chars"
+    assert (
+        resp.json()["description"][0]["translation"]
+        == "This is a string with some space chars"
+    )
     assert resp.json()["ownerId"] == user_data.get("id")
 
 

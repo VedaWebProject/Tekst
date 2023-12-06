@@ -1,14 +1,10 @@
 <script setup lang="ts">
+import TranslationDisplay from '@/components/TranslationDisplay.vue';
 import PrimaryNavBar from '@/components/navigation/PrimaryNavBar.vue';
 import TextSelect from '@/components/widgets/TextSelect.vue';
 import { useStateStore } from '@/stores';
-import { determineTextSubtitle } from '@/utils';
-import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
 
 const state = useStateStore();
-const { locale } = useI18n();
-const subtitle = computed(() => determineTextSubtitle(state.text?.subtitle || [], locale.value));
 </script>
 
 <template>
@@ -18,7 +14,7 @@ const subtitle = computed(() => determineTextSubtitle(state.text?.subtitle || []
       <div id="current-text">
         <TextSelect />
         <span v-if="!state.smallScreen" class="current-text-subtitle">
-          {{ subtitle }}
+          <TranslationDisplay :value="state.text?.subtitle" />
         </span>
       </div>
     </div>

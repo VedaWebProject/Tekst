@@ -32,9 +32,9 @@ class ClientSegment(ModelBase, ModelFactoryMixin):
         Literal["wysiwyg", "html"], Field(description="Last used editor mode")
     ] = "wysiwyg"
     locale: Annotated[
-        Locale | None,
+        Locale,
         Field(description="Locale indicating the translation language of this segment"),
-    ] = None
+    ]
     title: Annotated[
         str | None, Field(description="Title of this segment", max_length=32)
     ] = None
@@ -64,7 +64,7 @@ class ClientSegmentHead(BaseModel):
     id: PydanticObjectId
     key: str
     title: str | None = None
-    locale: Locale | None = None
+    locale: Locale
 
     class Settings:
         projection = {"id": "$_id", "key": 1, "title": 1, "locale": 1}

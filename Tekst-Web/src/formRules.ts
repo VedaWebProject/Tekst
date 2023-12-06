@@ -1,6 +1,16 @@
 import type { FormItemRule } from 'naive-ui';
 import { $t } from '@/i18n';
 
+export const translationFormRules: Record<string, FormItemRule[]> = {
+  locale: [
+    {
+      required: true,
+      message: () => $t('forms.rulesFeedback.isRequired', { x: $t('models.locale.modelLabel') }),
+      trigger: 'blur',
+    },
+  ],
+};
+
 export const accountFormRules: Record<string, FormItemRule[]> = {
   email: [
     {
@@ -126,7 +136,7 @@ export const textFormRules: Record<string, FormItemRule[]> = {
       trigger: 'blur',
     },
   ],
-  subtitle: [
+  subtitleTranslation: [
     {
       required: true,
       message: () => $t('forms.rulesFeedback.isRequired', { x: $t('models.text.subtitle') }),
@@ -134,7 +144,7 @@ export const textFormRules: Record<string, FormItemRule[]> = {
     },
     {
       validator: (rule: FormItemRule, value: string) =>
-        value != null && value.length >= 1 && value.length <= 128,
+        !!value && value.length >= 1 && value.length <= 128,
       message: () => $t('forms.rulesFeedback.minMaxChars', { min: 1, max: 128 }),
       trigger: 'blur',
     },
@@ -172,14 +182,7 @@ export const textFormRules: Record<string, FormItemRule[]> = {
       trigger: 'blur',
     },
   ],
-  levelTranslationLocale: [
-    {
-      validator: (rule: FormItemRule, value: string) => !!value,
-      message: () => $t('forms.rulesFeedback.isRequired', { x: $t('general.language') }),
-      trigger: 'blur',
-    },
-  ],
-  levelTranslationLabel: [
+  levelTranslation: [
     {
       required: true,
       message: () => $t('forms.rulesFeedback.isRequired', { x: $t('models.text.level') }),
@@ -324,7 +327,7 @@ export const platformSettingsFormRules: Record<string, FormItemRule[]> = {
       trigger: 'blur',
     },
   ],
-  infoDescription: [
+  infoDescriptionTranslation: [
     {
       validator: (rule: FormItemRule, value: string) => !value || value.length <= 128,
       message: () => $t('forms.rulesFeedback.minMaxChars', { min: 0, max: 128 }),
@@ -388,24 +391,15 @@ export const layerFormRules: Record<string, FormItemRule[]> = {
       trigger: 'blur',
     },
   ],
-  description: [
+  descriptionTranslation: [
+    {
+      required: true,
+      message: () => $t('forms.rulesFeedback.isRequired', { x: $t('models.layer.description') }),
+      trigger: 'blur',
+    },
     {
       validator: (rule: FormItemRule, value: string) =>
-        !value || (value.length >= 1 && value.length <= 512),
-      message: () => $t('forms.rulesFeedback.minMaxChars', { min: 1, max: 512 }),
-      trigger: 'blur',
-    },
-  ],
-  shared_read: [
-    {
-      validator: (rule: FormItemRule, value: string) => Array.isArray(value),
-      message: () => $t('forms.rulesFeedback.minMaxChars', { min: 1, max: 512 }),
-      trigger: 'blur',
-    },
-  ],
-  shared_write: [
-    {
-      validator: (rule: FormItemRule, value: string) => Array.isArray(value),
+        !!value && value.length >= 1 && value.length <= 512,
       message: () => $t('forms.rulesFeedback.minMaxChars', { min: 1, max: 512 }),
       trigger: 'blur',
     },

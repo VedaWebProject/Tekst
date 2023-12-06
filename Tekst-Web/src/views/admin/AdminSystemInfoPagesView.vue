@@ -58,21 +58,33 @@ const segmentOptions = computed(() =>
       label: currLocaleSegment.title || currLocaleSegment.key,
       key,
       children: groupSegments.map((s) => ({
-        label: (s.locale ? localeProfiles[s.locale].icon : '🌐') + ' ' + (s.title || s.key),
+        label: (localeProfiles[s.locale]?.icon || '🌐') + ' ' + (s.title || s.key),
         value: s.id,
       })),
     };
   })
 );
 
-const segmentLocaleOptions = computed(() =>
-  Object.keys(localeProfiles).map((l) => ({
-    label: `${localeProfiles[l].icon} ${localeProfiles[l].displayFull}`,
-    value: l,
-    disabled: !!pfData.value?.infoSegments.find(
-      (p) => p.locale === l && p.key === segmentModel.value?.key && p.id !== selectedSegmentId.value
-    ),
-  }))
+const localeOptions = computed(() =>
+  [
+    {
+      label: `🌐 ${$t('models.locale.allLanguages')}`,
+      value: '*',
+      disabled: !!pfData.value?.infoSegments.find(
+        (p) =>
+          p.locale === '*' && p.key === segmentModel.value?.key && p.id !== selectedSegmentId.value
+      ),
+    },
+  ].concat(
+    Object.keys(localeProfiles).map((l) => ({
+      label: `${localeProfiles[l].icon} ${localeProfiles[l].displayFull}`,
+      value: l,
+      disabled: !!pfData.value?.infoSegments.find(
+        (p) =>
+          p.locale === l && p.key === segmentModel.value?.key && p.id !== selectedSegmentId.value
+      ),
+    }))
+  )
 );
 
 async function getSegmentModel(segmentId?: string): Promise<ClientSegmentUpdate> {
@@ -295,7 +307,7 @@ async function handleDeleteClick() {
       <n-form-item :label="$t('models.segment.locale')">
         <n-select
           v-model:value="segmentModel.locale"
-          :options="segmentLocaleOptions"
+          :options="localeOptions"
           :placeholder="$t('general.language')"
           :consistent-menu-width="false"
           style="min-width: 200px"

@@ -34,7 +34,7 @@ export function usePlatformData() {
       const segments = pfData.value?.systemSegments.filter((s) => s.key === key) || [];
       return (
         segments.find((s) => s.locale === locale) ||
-        segments.find((s) => !s.locale) ||
+        segments.find((s) => s.locale === '*') ||
         segments.find((s) => s.locale === 'enUS') ||
         segments[0]
       )?.id;
@@ -42,7 +42,7 @@ export function usePlatformData() {
       const keyMatches = pfData.value?.infoSegments.filter((s) => s.key === key) || [];
       return (
         keyMatches.find((p) => p.locale === locale) ||
-        keyMatches.find((p) => !p.locale) ||
+        keyMatches.find((p) => p.locale === '*') ||
         keyMatches.find((p) => p.locale === 'enUS')
       )?.id;
     }

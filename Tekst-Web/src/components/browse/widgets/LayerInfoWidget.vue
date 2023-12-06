@@ -8,6 +8,8 @@ import UnitContainerHeaderWidget from '@/components/browse/UnitContainerHeaderWi
 import { useLayerCoverage } from '@/fetchers';
 import { useStateStore } from '@/stores';
 import type { AnyLayerRead } from '@/api';
+import UserDisplay from '@/components/UserDisplay.vue';
+import TranslationDisplay from '@/components/TranslationDisplay.vue';
 
 import InfoOutlined from '@vicons/material/InfoOutlined';
 import ChatBubbleOutlineOutlined from '@vicons/material/ChatBubbleOutlineOutlined';
@@ -15,7 +17,6 @@ import FormatQuoteFilled from '@vicons/material/FormatQuoteFilled';
 import PercentOutlined from '@vicons/material/PercentOutlined';
 import PersonFilled from '@vicons/material/PersonFilled';
 import LabelOutlined from '@vicons/material/LabelOutlined';
-import UserDisplay from '@/components/UserDisplay.vue';
 
 const props = defineProps<{
   layer: AnyLayerRead;
@@ -61,7 +62,7 @@ const coveragePercent = computed(
     </template>
 
     <p v-if="layer.description">
-      {{ layer.description }}
+      <TranslationDisplay :value="layer.description" />
     </p>
 
     <p

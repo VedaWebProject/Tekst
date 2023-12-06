@@ -1,3 +1,5 @@
+import re
+
 from typing import Annotated
 
 from beanie import PydanticObjectId
@@ -8,29 +10,23 @@ from pydantic import (
     field_validator,
 )
 from pydantic_extra_types.color import Color
-from typing_extensions import TypedDict
 
 from tekst.models.common import (
     DocumentBase,
-    Locale,
     ModelBase,
     ModelFactoryMixin,
+    TranslationBase,
+    Translations,
 )
 
 
-class SubtitleTranslation(TypedDict):
-    locale: Locale
-    subtitle: Annotated[str, StringConstraints(min_length=1, max_length=128)]
+class TextSubtitleTranslation(TranslationBase):
+    translation: Annotated[str, StringConstraints(min_length=1, max_length=128)]
 
 
-class StructureLevelTranslation(TypedDict):
-    locale: Locale
-    label: Annotated[str, StringConstraints(min_length=1, max_length=32)]
+class TextLevelTranslation(TranslationBase):
+    translation: Annotated[str, StringConstraints(min_length=1, max_length=32)]
 
-
-StructureLevelTranslations = Annotated[
-    list[StructureLevelTranslation], Field(min_length=1)
-]
 
 AccentColor = Annotated[
     Color, PlainSerializer(lambda c: c.as_hex(), return_type=str, when_used="always")
@@ -55,19 +51,22 @@ class Text(ModelBase, ModelFactoryMixin):
     ]
 
     subtitle: Annotated[
-        list[SubtitleTranslation] | None,
+        Translations[TextSubtitleTranslation],
         Field(
             description=(
                 "Subtitle translations of this text "
                 "(if set, it must contain at least one element)"
             ),
+        ),
+    ] = []
+
+    levels: Annotated[
+        list[Translations[TextLevelTranslation]],
+        Field(
+            description="Structure levels of this text and their label translations",
             min_length=1,
             max_length=32,
         ),
-    ] = None
-
-    levels: Annotated[
-        list[StructureLevelTranslations], Field(min_length=1, max_length=32)
     ]
 
     default_level: Annotated[
@@ -83,9 +82,10 @@ class Text(ModelBase, ModelFactoryMixin):
 
     loc_delim: Annotated[
         str,
-        StringConstraints(min_length=1, max_length=3),
         Field(
             ", ",
+            min_length=1,
+            max_length=3,
             description="Delimiter for displaying text locations",
         ),
     ] = ", "
@@ -119,15 +119,17 @@ class Text(ModelBase, ModelFactoryMixin):
 
     @field_validator("subtitle", mode="after")
     @classmethod
-    def validate_subtitle(cls, v) -> list[SubtitleTranslation] | None:
-        if v is not None and len(v) < 1:
-            return None
+    def validate_subtitle(cls, v) -> Translations[TextSubtitleTranslation] | None:
+        for subtitle in v:
+            subtitle["translation"] = re.sub(
+                r"[\s\n\r]+", " ", subtitle["translation"]
+            ).strip()
         return v
 
     @field_validator("default_level", mode="after")
     @classmethod
     def validate_default_level(cls, v, info, **kwargs):
-        if info.data["levels"] and v >= len(info.data["levels"]):
+        if "levels" in info.data and v >= len(info.data["levels"]):
             raise ValueError(
                 f"Invalid default level value ({v}). "
                 f"This text only has {len(info.data['levels'])} levels."
@@ -148,8 +150,9 @@ TextUpdate = Text.update_model()
 
 class InsertLevelRequest(ModelBase):
     translations: Annotated[
-        list[StructureLevelTranslation], Field(min_length=1)
-    ] = Field(..., description="Translation(s) for the label of the level to insert")
+        Translations[TextLevelTranslation],
+        Field(description="Translation(s) for the label of the level to insert"),
+    ]
 
 
 class MoveNodeRequestBody(ModelBase):

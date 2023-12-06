@@ -147,6 +147,9 @@ register:
     weakPassword: The given password doesn't meet the security requirements.
 
 models:
+  locale:
+    modelLabel: Language | Languages
+    allLanguages: All languages
   user:
     modelLabel: User | Users
     email: Email
