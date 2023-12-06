@@ -230,8 +230,9 @@ models:
     infoContactUrl: URL Kontaktperson
     defaultText: Standard-Text
     navInfoEntry: Eigene Beschriftung für Info-Eintrag in Hauptnavigation
-    showHeaderInfo: Kurzbeschreibung in Kopfzeile anzeigen
-    showFooterInfo: Name und Kurzbeschreibung in Fußzeile anzeigen
+    alwaysShowTextInfo: Zeige Textinformationen und -Auswahl auch auf nicht-textspezifischen Seiten
+    showHeaderInfo: Plattform-Untertitel in Kopfzeile anzeigen
+    showFooterInfo: Name und Untertitel der Plattform in Fußzeile anzeigen
   segment:
     modelLabel: Segment
     key: Schlüssel

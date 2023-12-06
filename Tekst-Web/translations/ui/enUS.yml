@@ -222,8 +222,9 @@ models:
     infoContactUrl: Contact URL
     defaultText: Default Text
     navInfoEntry: Custom label for info entry in main navigation
-    showHeaderInfo: Show description in header
-    showFooterInfo: Show title and description in footer
+    alwaysShowTextInfo: Show text info and selector in header even on non-text-specific pages
+    showHeaderInfo: Show platform subtitle in header
+    showFooterInfo: Show platform title and subtitle in footer
   segment:
     modelLabel: Segment
     key: Key

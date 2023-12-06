@@ -69,6 +69,15 @@ class PlatformSettings(ModelBase, ModelFactoryMixin):
         Translations[PlatformNavInfoEntryTranslation],
         Field(description="Custom label for main navigation info entry"),
     ] = []
+    always_show_text_info: Annotated[
+        bool,
+        Field(
+            description=(
+                "Always show text info and selector in header, "
+                "even on non-text-specific pages"
+            )
+        ),
+    ] = True
     show_header_info: Annotated[
         bool, Field(description="Show platform description in header")
     ] = True

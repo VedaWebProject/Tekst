@@ -2,16 +2,23 @@
 import TranslationDisplay from '@/components/TranslationDisplay.vue';
 import PrimaryNavBar from '@/components/navigation/PrimaryNavBar.vue';
 import TextSelect from '@/components/widgets/TextSelect.vue';
+import { usePlatformData } from '@/platformData';
 import { useStateStore } from '@/stores';
+import { useRoute } from 'vue-router';
 
 const state = useStateStore();
+const route = useRoute();
+const { pfData } = usePlatformData();
 </script>
 
 <template>
   <header>
     <PrimaryNavBar />
-    <div class="accent-color-bg">
-      <div id="current-text">
+    <div class="accent-color-bg" style="min-height: 12px">
+      <div
+        v-if="route.meta.isTextSpecific || pfData?.settings.alwaysShowTextInfo"
+        id="current-text"
+      >
         <TextSelect />
         <span v-if="!state.smallScreen" class="current-text-subtitle">
           <TranslationDisplay :value="state.text?.subtitle" />

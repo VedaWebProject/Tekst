@@ -1489,6 +1489,12 @@ export interface components {
        * @default true
        */
       showFooterInfo?: boolean;
+      /**
+       * Alwaysshowtextinfo
+       * @description Always show text info and selector in header, even on non-text-specific pages
+       * @default true
+       */
+      alwaysShowTextInfo?: boolean;
       [key: string]: unknown;
     };
     /** PlatformSettingsUpdate */
@@ -1553,6 +1559,12 @@ export interface components {
        * @default true
        */
       showFooterInfo?: boolean;
+      /**
+       * Alwaysshowtextinfo
+       * @description Always show text info and selector in header, even on non-text-specific pages
+       * @default true
+       */
+      alwaysShowTextInfo?: boolean;
     };
     /**
      * PlatformStats

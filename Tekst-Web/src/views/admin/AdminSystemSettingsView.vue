@@ -180,6 +180,15 @@ function resetForm() {
       <!-- DISPLAY OPTIONS -->
       <n-form-item :label="$t('admin.system.platformSettings.formLabelDisplay')">
         <div style="display: flex; flex-direction: column; gap: 4px">
+          <!-- ALWAY SHOW TEXT INFO, ALSO ON NON-TEXT-SPECIFIC PAGES? -->
+          <n-checkbox
+            v-model:checked="formModel.alwaysShowTextInfo"
+            :round="false"
+            :disabled="loading"
+            @keydown.enter.prevent
+          >
+            {{ $t('models.platformSettings.alwaysShowTextInfo') }}
+          </n-checkbox>
           <!-- SHOW DESCIPTION IN HEADER? -->
           <n-checkbox
             v-model:checked="formModel.showHeaderInfo"

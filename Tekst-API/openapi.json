@@ -6041,6 +6041,12 @@
             "title": "Showfooterinfo",
             "description": "Show platform title and description in footer",
             "default": true
+          },
+          "alwaysShowTextInfo": {
+            "type": "boolean",
+            "title": "Alwaysshowtextinfo",
+            "description": "Always show text info and selector in header, even on non-text-specific pages",
+            "default": true
           }
         },
         "additionalProperties": true,
@@ -6167,6 +6173,12 @@
             "type": "boolean",
             "title": "Showfooterinfo",
             "description": "Show platform title and description in footer",
+            "default": true
+          },
+          "alwaysShowTextInfo": {
+            "type": "boolean",
+            "title": "Alwaysshowtextinfo",
+            "description": "Always show text info and selector in header, even on non-text-specific pages",
             "default": true
           }
         },
