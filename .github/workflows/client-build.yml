@@ -15,6 +15,7 @@ on:
       - 'Tekst-Web/scripts/**'
       - 'Tekst-Web/src/**'
       - 'Tekst-Web/package.json'
+  workflow_dispatch:
 
 jobs:
   build:
