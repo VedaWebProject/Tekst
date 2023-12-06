@@ -67,7 +67,8 @@ const actionButtonProps = {
               :line-clamp="2"
               style="opacity: 0.75"
             >
-              {{ $t('models.layer.comment') }}: {{ targetLayer.comment }}
+              {{ $t('models.layer.comment') }}:
+              <TranslationDisplay :value="targetLayer.comment" />
             </n-ellipsis>
           </div>
         </div>

@@ -420,11 +420,11 @@ export const layerFormRules: Record<string, FormItemRule[]> = {
       trigger: 'blur',
     },
   ],
-  comment: [
+  commentTranslation: [
     {
       validator: (rule: FormItemRule, value: string) =>
-        !value || (value.length >= 1 && value.length <= 1000),
-      message: () => $t('forms.rulesFeedback.minMaxChars', { min: 1, max: 1000 }),
+        !value || (value.length >= 1 && value.length <= 2000),
+      message: () => $t('forms.rulesFeedback.minMaxChars', { min: 1, max: 2000 }),
       trigger: 'blur',
     },
   ],

@@ -4158,17 +4158,14 @@
             "default": []
           },
           "comment": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 1000
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/LayerCommentTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
             "title": "Comment",
-            "description": "Plaintext, potentially multiline comment on this layer"
+            "description": "Plaintext, potentially multiline comment on this layer",
+            "default": []
           },
           "config": {
             "$ref": "#/components/schemas/DebugLayerConfig"
@@ -4345,17 +4342,14 @@
             "default": []
           },
           "comment": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 1000
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/LayerCommentTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
             "title": "Comment",
-            "description": "Plaintext, potentially multiline comment on this layer"
+            "description": "Plaintext, potentially multiline comment on this layer",
+            "default": []
           },
           "config": {
             "$ref": "#/components/schemas/DebugLayerConfig"
@@ -4492,17 +4486,14 @@
             "default": []
           },
           "comment": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 1000
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/LayerCommentTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
             "title": "Comment",
-            "description": "Plaintext, potentially multiline comment on this layer"
+            "description": "Plaintext, potentially multiline comment on this layer",
+            "default": []
           },
           "config": {
             "$ref": "#/components/schemas/DebugLayerConfig"
@@ -4835,6 +4826,25 @@
         },
         "type": "object",
         "title": "HTTPValidationError"
+      },
+      "LayerCommentTranslation": {
+        "properties": {
+          "locale": {
+            "$ref": "#/components/schemas/Locale"
+          },
+          "translation": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 1,
+            "title": "Translation"
+          }
+        },
+        "type": "object",
+        "required": [
+          "locale",
+          "translation"
+        ],
+        "title": "LayerCommentTranslation"
       },
       "LayerDescriptionTranslation": {
         "properties": {
@@ -5225,17 +5235,14 @@
             "default": []
           },
           "comment": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 1000
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/LayerCommentTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
             "title": "Comment",
-            "description": "Plaintext, potentially multiline comment on this layer"
+            "description": "Plaintext, potentially multiline comment on this layer",
+            "default": []
           },
           "config": {
             "$ref": "#/components/schemas/PlaintextLayerConfig"
@@ -5412,17 +5419,14 @@
             "default": []
           },
           "comment": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 1000
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/LayerCommentTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
             "title": "Comment",
-            "description": "Plaintext, potentially multiline comment on this layer"
+            "description": "Plaintext, potentially multiline comment on this layer",
+            "default": []
           },
           "config": {
             "$ref": "#/components/schemas/PlaintextLayerConfig"
@@ -5559,17 +5563,14 @@
             "default": []
           },
           "comment": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 1000
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/LayerCommentTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
             "title": "Comment",
-            "description": "Plaintext, potentially multiline comment on this layer"
+            "description": "Plaintext, potentially multiline comment on this layer",
+            "default": []
           },
           "config": {
             "$ref": "#/components/schemas/PlaintextLayerConfig"

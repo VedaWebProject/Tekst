@@ -30,6 +30,12 @@ class LayerDescriptionTranslation(TranslationBase):
     ]
 
 
+class LayerCommentTranslation(TranslationBase):
+    translation: Annotated[
+        str, StringConstraints(strip_whitespace=True, min_length=1, max_length=2000)
+    ]
+
+
 class LayerBase(ModelBase, ModelFactoryMixin):
     """A data layer describing a set of data on a text"""
 
@@ -73,12 +79,11 @@ class LayerBase(ModelBase, ModelFactoryMixin):
     ] = None
     meta: Metadata = []
     comment: Annotated[
-        str | None,
+        Translations[LayerCommentTranslation],
         Field(
             description="Plaintext, potentially multiline comment on this layer",
-            max_length=1000,
         ),
-    ] = None
+    ] = []
 
     @field_validator("description", mode="after")
     @classmethod
@@ -102,12 +107,14 @@ class LayerBase(ModelBase, ModelFactoryMixin):
             )
         return v.lower()
 
-    @field_validator("comment")
+    @field_validator("comment", mode="after")
     @classmethod
     def strip_comment_whitespaces(cls, v):
-        if not isinstance(v, str):
-            return None
-        return re.sub(r"[\n\r]+", "\n", v).strip()
+        for comment in v:
+            comment["translation"] = re.sub(
+                r"[\n\r]+", "\n", comment["translation"]
+            ).strip()
+        return v
 
     @model_validator(mode="after")
     def model_postprocess(self):

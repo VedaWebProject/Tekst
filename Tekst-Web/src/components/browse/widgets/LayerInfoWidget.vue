@@ -87,7 +87,7 @@ const coveragePercent = computed(
         {{ $t('models.layer.comment') }}
       </IconHeading>
       <div class="layer-comment">
-        {{ layer.comment }}
+        <TranslationDisplay :value="layer.comment" />
       </div>
     </template>
 

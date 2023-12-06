@@ -229,16 +229,16 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
           />
         </n-form-item>
         <!-- COMMENT -->
-        <n-form-item path="comment" :label="$t('models.layer.comment')">
-          <n-input
-            v-model:value="model.comment"
-            type="textarea"
-            maxlength="1000"
-            show-count
-            :placeholder="$t('models.layer.comment')"
-            :disabled="loading"
-          />
-        </n-form-item>
+        <TranslationFormItem
+          v-model:value="model.comment"
+          parent-form-path-prefix="comment"
+          multiline
+          :loading="loading"
+          :disabled="loading"
+          :main-form-label="$t('models.layer.comment')"
+          :translation-form-label="$t('models.layer.comment')"
+          :translation-form-rule="layerFormRules.commentTranslation"
+        />
         <!-- METADATA -->
         <n-collapse-item :title="$t('models.meta.modelLabel')" name="meta">
           <n-form-item

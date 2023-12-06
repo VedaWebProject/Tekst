@@ -544,8 +544,9 @@ export interface components {
       /**
        * Comment
        * @description Plaintext, potentially multiline comment on this layer
+       * @default []
        */
-      comment?: string | null;
+      comment?: components['schemas']['LayerCommentTranslation'][];
       config?: components['schemas']['DebugLayerConfig'];
     };
     /** DebugLayerRead */
@@ -642,8 +643,9 @@ export interface components {
       /**
        * Comment
        * @description Plaintext, potentially multiline comment on this layer
+       * @default []
        */
-      comment?: string | null;
+      comment?: components['schemas']['LayerCommentTranslation'][];
       config?: components['schemas']['DebugLayerConfig'];
       [key: string]: unknown;
     };
@@ -709,8 +711,9 @@ export interface components {
       /**
        * Comment
        * @description Plaintext, potentially multiline comment on this layer
+       * @default []
        */
-      comment?: string | null;
+      comment?: components['schemas']['LayerCommentTranslation'][];
       config?: components['schemas']['DebugLayerConfig'];
     };
     /** DebugUnitCreate */
@@ -904,6 +907,12 @@ export interface components {
       /** Detail */
       detail?: components['schemas']['ValidationError'][];
     };
+    /** LayerCommentTranslation */
+    LayerCommentTranslation: {
+      locale: components['schemas']['Locale'];
+      /** Translation */
+      translation: string;
+    };
     /** LayerDescriptionTranslation */
     LayerDescriptionTranslation: {
       locale: components['schemas']['Locale'];
@@ -1093,8 +1102,9 @@ export interface components {
       /**
        * Comment
        * @description Plaintext, potentially multiline comment on this layer
+       * @default []
        */
-      comment?: string | null;
+      comment?: components['schemas']['LayerCommentTranslation'][];
       config?: components['schemas']['PlaintextLayerConfig'];
     };
     /** PlaintextLayerRead */
@@ -1191,8 +1201,9 @@ export interface components {
       /**
        * Comment
        * @description Plaintext, potentially multiline comment on this layer
+       * @default []
        */
-      comment?: string | null;
+      comment?: components['schemas']['LayerCommentTranslation'][];
       config?: components['schemas']['PlaintextLayerConfig'];
       [key: string]: unknown;
     };
@@ -1258,8 +1269,9 @@ export interface components {
       /**
        * Comment
        * @description Plaintext, potentially multiline comment on this layer
+       * @default []
        */
-      comment?: string | null;
+      comment?: components['schemas']['LayerCommentTranslation'][];
       config?: components['schemas']['PlaintextLayerConfig'];
     };
     /** PlaintextUnitCreate */

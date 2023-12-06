@@ -3,10 +3,12 @@
     "_id": { "$oid": "654b825533ee5737b297f8f3" },
     "_class_id": "LayerBaseDocument.PlaintextLayerDocument",
     "title": "Originalfassung",
-    "description": [{
-      "locale": "deDE",
-      "translation": "Die deutschsprachige Originalfassung von 1824"
-    }],
+    "description": [
+      {
+        "locale": "deDE",
+        "translation": "Die deutschsprachige Originalfassung von 1824"
+      }
+    ],
     "text_id": { "$oid": "654b825533ee5737b297f8e3" },
     "level": 1,
     "layer_type": "plaintext",
@@ -22,7 +24,12 @@
       { "key": "Original Title", "value": "Warnung" },
       { "key": "language", "value": "DE" }
     ],
-    "comment": "This version includes repetition markers.",
+    "comment": [
+      {
+        "locale": "*",
+        "translation": "This version includes repetition markers."
+      }
+    ],
     "config": {
       "deeplLinks": {
         "enabled": true,
@@ -49,7 +56,6 @@
       { "key": "language", "value": "JA" },
       { "key": "Original Title", "value": "-" }
     ],
-    "comment": null,
     "config": {
       "deeplLinks": {
         "enabled": true,
@@ -70,7 +76,6 @@
     "proposed": false,
     "public": true,
     "citation": null,
-    "comment": null,
     "config": {
       "deeplLinks": {
         "enabled": false,
@@ -91,7 +96,6 @@
     "proposed": false,
     "public": true,
     "citation": null,
-    "comment": null,
     "config": {
       "deeplLinks": {
         "enabled": false,

@@ -24,6 +24,7 @@ const props = withDefaults(
     mainFormLabel?: string;
     translationFormLabel?: string;
     translationFormRule?: FormItemRule[];
+    multiline?: boolean;
     minItems?: number;
     loading?: boolean;
     disabled?: boolean;
@@ -32,6 +33,7 @@ const props = withDefaults(
     mainFormLabel: undefined,
     translationFormLabel: undefined,
     translationFormRule: undefined,
+    multiline: false,
     minItems: 0,
     loading: false,
     disabled: false,
@@ -111,10 +113,9 @@ const localeOptions = computed(() =>
           >
             <n-input
               v-model:value="translationValue.translation"
-              type="text"
+              :type="multiline ? 'textarea' : 'text'"
               :placeholder="translationFormLabel"
               :disabled="loading"
-              @keydown.enter.prevent
             />
           </n-form-item>
         </div>
