@@ -2,14 +2,30 @@
 import { $t } from '@/i18n';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import { ref } from 'vue';
-import { NCheckbox, NButton, NSelect, NForm, NFormItem, NInput, type FormInst } from 'naive-ui';
+import {
+  NIcon,
+  NDynamicInput,
+  NCheckbox,
+  NButton,
+  NButtonGroup,
+  NSelect,
+  NForm,
+  NFormItem,
+  NInput,
+  type FormInst,
+} from 'naive-ui';
 import { usePlatformData } from '@/platformData';
 import { PATCH, type PlatformSettingsUpdate } from '@/api';
-
 import { useModelChanges } from '@/modelChanges';
 import { useMessages } from '@/messages';
 import { platformSettingsFormRules } from '@/formRules';
 import TranslationFormItem from '@/components/TranslationFormItem.vue';
+
+import AddRound from '@vicons/material/AddRound';
+import MinusRound from '@vicons/material/MinusRound';
+import ArrowUpwardOutlined from '@vicons/material/ArrowUpwardOutlined';
+import ArrowDownwardOutlined from '@vicons/material/ArrowDownwardOutlined';
+import ButtonFooter from '@/components/ButtonFooter.vue';
 
 const { pfData, patchPfData } = usePlatformData();
 const { message } = useMessages();
@@ -141,15 +157,16 @@ function resetForm() {
           @keydown.enter.prevent
         />
       </n-form-item>
-      <div style="display: flex; gap: var(--layout-gap); justify-content: end">
+      <ButtonFooter>
         <n-button secondary :disabled="!changed" @click="resetForm">{{
           $t('general.resetAction')
         }}</n-button>
         <n-button type="primary" :disabled="!changed" @click="handleSaveClick">{{
           $t('general.saveAction')
         }}</n-button>
-      </div>
+      </ButtonFooter>
     </div>
+
     <div class="content-block">
       <h3>{{ $t('admin.system.platformSettings.headingOptions') }}</h3>
 
@@ -209,14 +226,117 @@ function resetForm() {
           </n-checkbox>
         </div>
       </n-form-item>
-      <div style="display: flex; gap: var(--layout-gap); justify-content: end">
+      <ButtonFooter>
         <n-button secondary :disabled="!changed" @click="resetForm">{{
           $t('general.resetAction')
         }}</n-button>
         <n-button type="primary" :disabled="!changed" @click="handleSaveClick">{{
           $t('general.saveAction')
         }}</n-button>
-      </div>
+      </ButtonFooter>
+    </div>
+
+    <div class="content-block">
+      <h3>{{ $t('models.platformSettings.layerCategories') }}</h3>
+      <!-- LAYER CATEGORIES-->
+      <n-form-item v-if="formModel.layerCategories" :show-label="false" :show-feedback="false">
+        <n-dynamic-input
+          v-model:value="formModel.layerCategories"
+          item-style="margin-bottom: 0;"
+          show-sort-button
+          :min="0"
+          :max="64"
+          @create="() => ({ key: '', translations: [{ locale: '*', translation: '' }] })"
+        >
+          <template #default="{ index }">
+            <div style="display: flex; align-items: flex-start; gap: 12px; width: 100%">
+              <n-form-item
+                ignore-path-change
+                :label="$t('models.platformSettings.layerCategoryKey')"
+                :path="`layerCategories[${index}].key`"
+                :rule="platformSettingsFormRules.layerCategoryKey"
+                required
+              >
+                <n-input
+                  v-model:value="formModel.layerCategories[index].key"
+                  :placeholder="$t('models.platformSettings.layerCategoryKey')"
+                  @keydown.enter.prevent
+                />
+              </n-form-item>
+              <TranslationFormItem
+                v-model:value="formModel.layerCategories[index].translations"
+                :parent-form-path-prefix="`layerCategories[${index}].translations`"
+                :loading="loading"
+                :disabled="loading"
+                required
+                style="flex-grow: 2; padding: 0 var(--layout-gap)"
+                :main-form-label="$t('models.platformSettings.layerCategoryTranslation')"
+                :translation-form-label="$t('models.platformSettings.layerCategoryTranslation')"
+                :translation-form-rule="platformSettingsFormRules.layerCategoryTranslation"
+              />
+            </div>
+          </template>
+          <template #action="{ index: indexAction, create, remove, move }">
+            <n-button-group style="margin-left: var(--layout-gap); padding-top: 26px">
+              <n-button
+                type="primary"
+                secondary
+                :title="$t('general.removeAction')"
+                :focusable="false"
+                @click="() => remove(indexAction)"
+              >
+                <template #icon>
+                  <n-icon :component="MinusRound" />
+                </template>
+              </n-button>
+              <n-button
+                type="primary"
+                secondary
+                :title="$t('general.insertAction')"
+                :disabled="(formModel.layerCategories?.length || 0) >= 64"
+                :focusable="false"
+                @click="() => create(indexAction)"
+              >
+                <template #icon>
+                  <n-icon :component="AddRound" />
+                </template>
+              </n-button>
+              <n-button
+                type="primary"
+                secondary
+                :title="$t('general.moveUpAction')"
+                :disabled="indexAction === 0"
+                :focusable="false"
+                @click="() => move('up', indexAction)"
+              >
+                <template #icon>
+                  <n-icon :component="ArrowUpwardOutlined" />
+                </template>
+              </n-button>
+              <n-button
+                type="primary"
+                secondary
+                :title="$t('general.moveDownAction')"
+                :disabled="indexAction === formModel.layerCategories?.length - 1"
+                :focusable="false"
+                @click="() => move('down', indexAction)"
+              >
+                <template #icon>
+                  <n-icon :component="ArrowDownwardOutlined" />
+                </template>
+              </n-button>
+            </n-button-group>
+          </template>
+        </n-dynamic-input>
+      </n-form-item>
+      <ButtonFooter>
+        <n-button secondary :disabled="!changed" @click="resetForm">{{
+          $t('general.resetAction')
+        }}</n-button>
+        <n-button type="primary" :disabled="!changed" @click="handleSaveClick">{{
+          $t('general.saveAction')
+        }}</n-button>
+      </ButtonFooter>
     </div>
   </n-form>
 </template>

@@ -2,6 +2,7 @@ from typing import Annotated
 
 from beanie import PydanticObjectId
 from pydantic import EmailStr, Field, StringConstraints
+from typing_extensions import TypedDict
 
 from tekst.config import TekstConfig, get_config
 from tekst.models.common import (
@@ -29,8 +30,23 @@ class PlatformNavInfoEntryTranslation(TranslationBase):
     ]
 
 
+class LayerCategoryTranslation(TranslationBase):
+    translation: Annotated[
+        str, StringConstraints(strip_whitespace=True, min_length=1, max_length=32)
+    ]
+
+
+class LayerCategory(TypedDict):
+    key: Annotated[
+        str, StringConstraints(strip_whitespace=True, min_length=1, max_length=16)
+    ]
+    translations: Translations[LayerCategoryTranslation]
+
+
 class PlatformSettings(ModelBase, ModelFactoryMixin):
     """Settings defining platform behavior configured by admins"""
+
+    # INFO
 
     info_platform_name: Annotated[
         str,
@@ -62,12 +78,17 @@ class PlatformSettings(ModelBase, ModelFactoryMixin):
         Field(description="URL to page with contact info"),
     ] = None
 
+    # OPTIONS
     default_text_id: Annotated[
         PydanticObjectId | None, Field(description="Default text to load in UI")
     ] = None
     nav_info_entry: Annotated[
         Translations[PlatformNavInfoEntryTranslation],
         Field(description="Custom label for main navigation info entry"),
+    ] = []
+    layer_categories: Annotated[
+        list[LayerCategory],
+        Field(description="Layer categories to categorize layers in"),
     ] = []
     always_show_text_info: Annotated[
         bool,

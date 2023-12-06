@@ -380,6 +380,38 @@ export const platformSettingsFormRules: Record<string, FormItemRule[]> = {
       trigger: 'blur',
     },
   ],
+  layerCategoryKey: [
+    {
+      required: true,
+      message: () =>
+        $t('forms.rulesFeedback.isRequired', {
+          x: $t('models.platformSettings.layerCategoryKey'),
+        }),
+      trigger: 'blur',
+    },
+    {
+      validator: (rule: FormItemRule, value: string) =>
+        !!value && value.length >= 1 && value.length <= 16,
+      message: () => $t('forms.rulesFeedback.minMaxChars', { min: 1, max: 16 }),
+      trigger: 'blur',
+    },
+  ],
+  layerCategoryTranslation: [
+    {
+      required: true,
+      message: () =>
+        $t('forms.rulesFeedback.isRequired', {
+          x: $t('models.platformSettings.layerCategoryTranslation'),
+        }),
+      trigger: 'blur',
+    },
+    {
+      validator: (rule: FormItemRule, value: string) =>
+        !!value && value.length >= 1 && value.length <= 32,
+      message: () => $t('forms.rulesFeedback.minMaxChars', { min: 1, max: 32 }),
+      trigger: 'blur',
+    },
+  ],
 };
 
 export const layerFormRules: Record<string, FormItemRule[]> = {

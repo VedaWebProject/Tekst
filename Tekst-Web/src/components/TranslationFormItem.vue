@@ -25,6 +25,7 @@ const props = withDefaults(
     translationFormLabel?: string;
     translationFormRule?: FormItemRule[];
     multiline?: boolean;
+    maxTranslationLength?: number;
     minItems?: number;
     loading?: boolean;
     disabled?: boolean;
@@ -34,6 +35,7 @@ const props = withDefaults(
     translationFormLabel: undefined,
     translationFormRule: undefined,
     multiline: false,
+    maxTranslationLength: undefined,
     minItems: 0,
     loading: false,
     disabled: false,
@@ -114,6 +116,8 @@ const localeOptions = computed(() =>
             <n-input
               v-model:value="translationValue.translation"
               :type="multiline ? 'textarea' : 'text'"
+              :show-count="multiline && !!maxTranslationLength"
+              :maxlength="maxTranslationLength"
               :placeholder="translationFormLabel"
               :disabled="loading"
             />
@@ -125,6 +129,7 @@ const localeOptions = computed(() =>
           <n-button
             secondary
             circle
+            :title="$t('translationFormItem.tipBtnRemove')"
             :disabled="!value || value.length === minItems"
             @click="() => remove(actionIndex)"
           >
@@ -135,6 +140,7 @@ const localeOptions = computed(() =>
           <n-button
             secondary
             circle
+            :title="$t('translationFormItem.tipBtnAdd')"
             :disabled="value && value.length >= localeOptions.length"
             @click="() => create(actionIndex)"
           >

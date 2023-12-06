@@ -16,6 +16,8 @@ general:
   removeAction: Remove
   deleteAction: Delete
   editAction: Edit
+  moveUpAction: Move up
+  moveDownAction: Move down
   textSelect: Select the text you want to work with
   info: Information
   warning: Warning
@@ -194,6 +196,7 @@ models:
     description: Description
     level: Level
     layerType: Datalayer Type
+    category: Category
     public: public
     proposed: proposed for publication
     citation: Citation
@@ -225,6 +228,9 @@ models:
     alwaysShowTextInfo: Show text info and selector in header even on non-text-specific pages
     showHeaderInfo: Show platform subtitle in header
     showFooterInfo: Show platform title and subtitle in footer
+    layerCategories: Data layer categories
+    layerCategoryKey: Key
+    layerCategoryTranslation: Label
   segment:
     modelLabel: Segment
     key: Key
@@ -529,3 +535,7 @@ htmlEditor:
   warnSwitchToWysiwyg: |
     Switching from the HTML editor to the visual editor will remove all HTML tags
     the visual editor doesn't support. Are you sure you want to switch?
+
+translationFormItem:
+  tipBtnRemove: Remove entry
+  tipBtnAdd: Add entry

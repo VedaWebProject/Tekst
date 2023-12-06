@@ -59,6 +59,10 @@ class LayerBase(ModelBase, ModelFactoryMixin):
     owner_id: Annotated[
         PydanticObjectId | None, Field(description="User owning this layer")
     ] = None
+    category: Annotated[
+        str | None,
+        Field(description="Data layer category key", max_length=16),
+    ] = None
     shared_read: Annotated[
         list[PydanticObjectId],
         Field(description="Users with shared read access to this layer"),

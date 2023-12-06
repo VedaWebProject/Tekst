@@ -16,6 +16,8 @@ general:
   removeAction: Entfernen
   deleteAction: Löschen
   editAction: Bearbeiten
+  moveUpAction: Nach oben bewegen
+  moveDownAction: Nach unten bewegen
   quickSearch: Schnellsuche
   textSelect: Wählen Sie den Text, mit dem Sie arbeiten möchten
   info: Information
@@ -202,6 +204,7 @@ models:
     description: Beschreibung
     level: Ebene
     layerType: Datenschichttyp
+    category: Kategorie
     public: öffentlich
     proposed: vorgeschlagen für Veröffentlichung
     citation: Zitation
@@ -230,9 +233,12 @@ models:
     infoContactUrl: URL Kontaktperson
     defaultText: Standard-Text
     navInfoEntry: Eigene Beschriftung für Info-Eintrag in Hauptnavigation
-    alwaysShowTextInfo: Zeige Textinformationen und -Auswahl auch auf nicht-textspezifischen Seiten
+    alwaysShowTextInfo: Zeige Textinformationen und -auswahl auch auf nicht-textspezifischen Seiten
     showHeaderInfo: Plattform-Untertitel in Kopfzeile anzeigen
     showFooterInfo: Name und Untertitel der Plattform in Fußzeile anzeigen
+    layerCategories: Datenschicht-Kategorien
+    layerCategoryKey: Schlüssel
+    layerCategoryTranslation: Beschriftung
   segment:
     modelLabel: Segment
     key: Schlüssel
@@ -554,3 +560,7 @@ htmlEditor:
   warnSwitchToWysiwyg: |
     Beim Wechsel vom HTML-Editor zum visuellen Editor gehen alle HTML-Tags verloren,
     die vom visuellen Editor nicht unterstützt werden. Sind Sie sicher?
+
+translationFormItem:
+  tipBtnRemove: Eintrag entfernen
+  tipBtnAdd: Eintrag hinzufügen
