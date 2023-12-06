@@ -1430,7 +1430,7 @@ export interface components {
        */
       infoPlatformName?: string;
       /**
-       * Infodescription
+       * Infosubtitle
        * @description Short description of the platform, in multiple languages
        * @default [
        *   {
@@ -1439,7 +1439,7 @@ export interface components {
        *   }
        * ]
        */
-      infoDescription?: components['schemas']['PlatformDescriptionTranslation'][];
+      infoSubtitle?: components['schemas']['PlatformDescriptionTranslation'][];
       /**
        * Infoterms
        * @description URL to page with terms and conditions for API usage
@@ -1488,7 +1488,7 @@ export interface components {
        */
       infoPlatformName?: string;
       /**
-       * Infodescription
+       * Infosubtitle
        * @description Short description of the platform, in multiple languages
        * @default [
        *   {
@@ -1497,7 +1497,7 @@ export interface components {
        *   }
        * ]
        */
-      infoDescription?: components['schemas']['PlatformDescriptionTranslation'][];
+      infoSubtitle?: components['schemas']['PlatformDescriptionTranslation'][];
       /**
        * Infoterms
        * @description URL to page with terms and conditions for API usage

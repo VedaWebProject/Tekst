@@ -223,7 +223,7 @@ models:
     value: Metadatum-Wert
   platformSettings:
     infoPlatformName: Name der Plattform
-    infoDescription: Kurzbeschreibung der Plattform
+    infoSubtitle: Untertitel der Plattform
     infoTerms: API Nutzungsbedingungen (URL)
     infoContactName: Name Kontaktperson
     infoContactEmail: Email Kontaktperson

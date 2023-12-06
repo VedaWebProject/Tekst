@@ -5920,13 +5920,13 @@
             "description": "Name of the platform",
             "default": "Tekst-Dev"
           },
-          "infoDescription": {
+          "infoSubtitle": {
             "items": {
               "$ref": "#/components/schemas/PlatformDescriptionTranslation"
             },
             "type": "array",
             "maxItems": 3,
-            "title": "Infodescription",
+            "title": "Infosubtitle",
             "description": "Short description of the platform, in multiple languages",
             "default": [
               {
@@ -6031,13 +6031,13 @@
             "description": "Name of the platform",
             "default": "Tekst-Dev"
           },
-          "infoDescription": {
+          "infoSubtitle": {
             "items": {
               "$ref": "#/components/schemas/PlatformDescriptionTranslation"
             },
             "type": "array",
             "maxItems": 3,
-            "title": "Infodescription",
+            "title": "Infosubtitle",
             "description": "Short description of the platform, in multiple languages",
             "default": [
               {

@@ -215,7 +215,7 @@ models:
     value: Metadata value
   platformSettings:
     infoPlatformName: Platform Name
-    infoDescription: Platform Description
+    infoSubtitle: Platform Subtitle
     infoTerms: API Terms and Conditions (URL)
     infoContactName: Contact Name
     infoContactEmail: Contact Email

@@ -20,8 +20,8 @@ const privacyPolicy = computed(
       <span>
         {{ pfData?.settings.infoPlatformName }}
       </span>
-      <span v-if="pfData?.settings.infoDescription?.length" style="font-style: italic">
-        – <TranslationDisplay :value="pfData?.settings.infoDescription" />
+      <span v-if="pfData?.settings.infoSubtitle?.length" style="font-style: italic">
+        – <TranslationDisplay :value="pfData?.settings.infoSubtitle" />
       </span>
     </div>
     <div v-if="siteNotice || privacyPolicy" id="legal-container">

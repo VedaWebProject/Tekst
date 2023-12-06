@@ -256,79 +256,9 @@ async function handleModalSubmit() {
         :loading="loading"
         :disabled="loading"
         :main-form-label="$t('models.text.level')"
-        :translation-label="$t('models.text.level')"
+        :translation-form-label="$t('models.text.level')"
         :translation-form-rule="textFormRules.levelTranslation"
       />
-      <!-- <n-form-item ignore-path-change :show-label="false" path="translations">
-        <n-dynamic-input
-          v-model:value="formModel.translations"
-          :min="1"
-          :max="Object.keys(localeProfiles).length"
-          item-style="margin-bottom: 0;"
-          :disabled="loading"
-          @create="() => ({ locale: null, label: '' })"
-        >
-          <template #default="{ index: translationIndex }">
-            <div style="display: flex; align-items: flex-start; gap: 12px; width: 100%">
-              <n-form-item
-                ignore-path-change
-                :show-label="false"
-                :path="`translations[${translationIndex}].locale`"
-                :rule="textFormRules.levelTranslationLocale"
-              >
-                <n-select
-                  v-model:value="formModel.translations[translationIndex].locale"
-                  :options="levelLocaleOptions"
-                  :placeholder="$t('general.language')"
-                  :consistent-menu-width="false"
-                  :disabled="loading"
-                  style="min-width: 200px; font-weight: var(--app-ui-font-weight-normal)"
-                  @keydown.enter.prevent
-                />
-              </n-form-item>
-              <n-form-item
-                ignore-path-change
-                :show-label="false"
-                :path="`translations[${translationIndex}].label`"
-                :rule="textFormRules.levelTranslationLabel"
-                style="flex-grow: 2"
-              >
-                <n-input
-                  v-model:value="formModel.translations[translationIndex].label"
-                  type="text"
-                  :placeholder="$t('models.text.levelLabel')"
-                  :disabled="loading"
-                  @keydown.enter.prevent
-                />
-              </n-form-item>
-            </div>
-          </template>
-          <template #action="{ index: indexAction, create, remove }">
-            <n-space style="margin-left: 20px; flex-wrap: nowrap">
-              <n-button
-                secondary
-                circle
-                :disabled="formModel.translations.length === 1"
-                @click="() => remove(indexAction)"
-              >
-                <template #icon>
-                  <n-icon :component="MinusRound" />
-                </template>
-              </n-button>
-              <n-button
-                secondary
-                circle
-                :disabled="formModel.translations.length >= Object.keys(localeProfiles).length"
-                @click="() => create(indexAction)"
-              >
-                <template #icon>
-                  <n-icon :component="AddRound" />
-                </template>
-              </n-button>
-            </n-space>
-          </template>
-        </n-dynamic-input>
-      </n-form-item> -->
     </n-form>
 
     <ButtonFooter>

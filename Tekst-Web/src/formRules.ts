@@ -327,7 +327,7 @@ export const platformSettingsFormRules: Record<string, FormItemRule[]> = {
       trigger: 'blur',
     },
   ],
-  infoDescriptionTranslation: [
+  infoSubtitleTranslation: [
     {
       validator: (rule: FormItemRule, value: string) => !value || value.length <= 128,
       message: () => $t('forms.rulesFeedback.minMaxChars', { min: 0, max: 128 }),

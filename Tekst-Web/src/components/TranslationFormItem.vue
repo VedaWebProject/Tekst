@@ -22,7 +22,7 @@ const props = withDefaults(
     value: Translation[] | undefined;
     parentFormPathPrefix: string;
     mainFormLabel?: string;
-    translationLabel?: string;
+    translationFormLabel?: string;
     translationFormRule?: FormItemRule[];
     minItems?: number;
     loading?: boolean;
@@ -30,7 +30,7 @@ const props = withDefaults(
   }>(),
   {
     mainFormLabel: undefined,
-    translationLabel: undefined,
+    translationFormLabel: undefined,
     translationFormRule: undefined,
     minItems: 0,
     loading: false,
@@ -112,7 +112,7 @@ const localeOptions = computed(() =>
             <n-input
               v-model:value="translationValue.translation"
               type="text"
-              :placeholder="translationLabel"
+              :placeholder="translationFormLabel"
               :disabled="loading"
               @keydown.enter.prevent
             />

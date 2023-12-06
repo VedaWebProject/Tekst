@@ -31,10 +31,10 @@ class PlatformSettings(ModelBase, ModelFactoryMixin):
         StringConstraints(min_length=1, max_length=32),
         Field(description="Name of the platform"),
     ] = _cfg.info_platform_name
-    info_description: Annotated[
+    info_subtitle: Annotated[
         Translations[PlatformDescriptionTranslation],
         Field(description="Short description of the platform, in multiple languages"),
-    ] = [{"locale": "*", "translation": _cfg.info_description}]
+    ] = [{"locale": "*", "translation": _cfg.info_subtitle}]
     info_terms: Annotated[
         CustomHttpUrl | None,
         StringConstraints(max_length=512),

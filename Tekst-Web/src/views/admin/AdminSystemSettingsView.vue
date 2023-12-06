@@ -93,13 +93,13 @@ function resetForm() {
       </n-form-item>
       <!-- PLATFORM DESCRIPTION -->
       <TranslationFormItem
-        v-model:value="formModel.infoDescription"
-        parent-form-path-prefix="infoDescription"
+        v-model:value="formModel.infoSubtitle"
+        parent-form-path-prefix="infoSubtitle"
         :loading="loading"
         :disabled="loading"
-        :main-form-label="$t('models.platformSettings.infoDescription')"
-        :translation-form-label="$t('models.platformSettings.infoDescription')"
-        :translation-form-rule="platformSettingsFormRules.infoDescriptionTranslation"
+        :main-form-label="$t('models.platformSettings.infoSubtitle')"
+        :translation-form-label="$t('models.platformSettings.infoSubtitle')"
+        :translation-form-rule="platformSettingsFormRules.infoSubtitleTranslation"
       />
       <!-- TERMS URL -->
       <n-form-item path="infoTerms" :label="$t('models.platformSettings.infoTerms')">

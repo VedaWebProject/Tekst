@@ -34,7 +34,7 @@ def generate_schema(app: FastAPI, cfg: TekstConfig, settings: PlatformSettingsRe
     schema = get_openapi(
         title=settings.info_platform_name,
         version=cfg.tekst_version,
-        description=pick_translation(settings.info_description),
+        description=pick_translation(settings.info_subtitle),
         routes=app.routes,
         servers=[{"url": urljoin(str(cfg.server_url), str(cfg.api_path))}],
         terms_of_service=str(settings.info_terms),

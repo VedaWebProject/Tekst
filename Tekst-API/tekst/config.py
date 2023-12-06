@@ -131,7 +131,7 @@ class TekstConfig(BaseSettings):
     info_platform_name: Annotated[
         str, StringConstraints(min_length=1, max_length=32)
     ] = "Tekst"
-    info_description: Annotated[
+    info_subtitle: Annotated[
         str | None, StringConstraints(max_length=128)
     ] = "An online text research platform"
     info_terms: Annotated[

@@ -215,7 +215,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
           :loading="loading"
           :disabled="loading"
           :main-form-label="$t('models.layer.description')"
-          :translation-label="$t('models.layer.description')"
+          :translation-form-label="$t('models.layer.description')"
           :translation-form-rule="layerFormRules.descriptionTranslation"
         />
         <!-- CITATION -->

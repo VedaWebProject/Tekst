@@ -43,7 +43,7 @@ watch(
         {{ pfData?.settings.infoPlatformName }}
       </RouterLink>
       <div v-if="pfData?.settings.showHeaderInfo" class="navbar-description">
-        <TranslationDisplay :value="pfData?.settings.infoDescription" />
+        <TranslationDisplay :value="pfData?.settings.infoSubtitle" />
       </div>
     </div>
 
