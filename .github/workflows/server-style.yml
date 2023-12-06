@@ -11,14 +11,21 @@ on:
   pull_request:
     branches:
       - main
+    paths:
+      - 'Tekst-API/tekst/**'
+      - 'Tekst-API/tests/**'
+      - 'Tekst-API/pyproject.toml'
   workflow_dispatch:
 
 jobs:
   checks:
-    runs-on: ubuntu-22.04
+
+    runs-on: ubuntu-latest
+
     defaults:
       run:
         working-directory: ./Tekst-API
+
     steps:
     - uses: actions/checkout@v3
     - name: Install Poetry

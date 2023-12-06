@@ -4,7 +4,8 @@
 
 ...as in **T**ext **E**xploration and **K**nowledge **S**tructuring **T**ool
 
-![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/VedaWebProject/Tekst/server-tests.yml?label=server%20tests)
+![GitHub Workflow Status (server tests)](https://img.shields.io/github/actions/workflow/status/VedaWebProject/Tekst/server-tests.yml?label=server%20tests)
+![GitHub Workflow Status (client build)](https://img.shields.io/github/actions/workflow/status/VedaWebProject/Tekst/client-build.yml?label=client%20build)
 ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/y/VedaWebProject/Tekst)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/VedaWebProject/Tekst)
 ![GitHub repo size](https://img.shields.io/github/repo-size/VedaWebProject/Tekst)

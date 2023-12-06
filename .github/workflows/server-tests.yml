@@ -11,11 +11,17 @@ on:
   pull_request:
     branches:
       - main
+    paths:
+      - 'Tekst-API/tekst/**'
+      - 'Tekst-API/tests/**'
+      - 'Tekst-API/pyproject.toml'
   workflow_dispatch:
 
 jobs:
   tests:
-    runs-on: ubuntu-22.04
+
+    runs-on: ubuntu-latest
+
     services:
       mongo:
         image: mongo:5.0.9
@@ -28,9 +34,11 @@ jobs:
         env:
           MP_SMTP_AUTH_ACCEPT_ANY: true
           MP_SMTP_AUTH_ALLOW_INSECURE: true
+
     defaults:
       run:
         working-directory: ./Tekst-API
+
     steps:
     - uses: actions/checkout@v3
     - name: Install Poetry
