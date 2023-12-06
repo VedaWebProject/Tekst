@@ -16,4 +16,4 @@ router = APIRouter(
     "/", response_class=RedirectResponse, status_code=301, include_in_schema=False
 )
 async def root_redirect(cfg: Annotated[TekstConfig, Depends(get_cfg)]):
-    return cfg.api_path + cfg.doc_redoc_url
+    return cfg.api_path + (cfg.doc_redoc_url or cfg.doc_swaggerui_url or "/platform")

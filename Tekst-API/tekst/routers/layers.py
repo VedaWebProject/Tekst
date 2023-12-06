@@ -98,7 +98,12 @@ class _ReadIncludes:
         return layers if is_list else layers[0]
 
 
-@router.post("", response_model=AnyLayerReadBody, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "",
+    response_model=AnyLayerReadBody,
+    status_code=status.HTTP_201_CREATED,
+    responses={status.HTTP_201_CREATED: {"description": "Created"}},
+)
 async def create_layer(layer: AnyLayerCreateBody, user: UserDep) -> AnyLayerDocument:
     if not await TextDocument.get(layer.text_id):
         raise HTTPException(
@@ -121,14 +126,16 @@ async def create_layer(layer: AnyLayerCreateBody, user: UserDep) -> AnyLayerDocu
 
 @router.patch("/{id}", response_model=AnyLayerReadBody, status_code=status.HTTP_200_OK)
 async def update_layer(
-    id: PydanticObjectId, updates: AnyLayerUpdateBody, user: UserDep
+    layer_id: Annotated[PydanticObjectId, Path(alias="id")],
+    updates: AnyLayerUpdateBody,
+    user: UserDep,
 ) -> AnyLayerDocument:
     layer_doc = (
         await layer_types_mgr.get(updates.layer_type)
         .layer_model()
         .document_model()
         .find_one(
-            LayerBaseDocument.id == id,
+            LayerBaseDocument.id == layer_id,
             LayerBaseDocument.allowed_to_write(user),
             with_children=True,
         )
@@ -136,7 +143,7 @@ async def update_layer(
     if not layer_doc:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Layer {id} doesn't exist or requires extra permissions",
+            detail=f"Layer {layer_id} doesn't exist or requires extra permissions",
         )
     # conditionally force certain updates
     if layer_doc.public:

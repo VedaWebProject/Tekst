@@ -481,7 +481,7 @@
         },
         "responses": {
           "201": {
-            "description": "Successful Response",
+            "description": "Created",
             "content": {
               "application/json": {
                 "schema": {
@@ -2448,14 +2448,13 @@
         }
       }
     },
-    "/units/debug/{id}": {
-      "get": {
+    "/units": {
+      "post": {
         "tags": [
           "units"
         ],
-        "summary": "Get unit",
-        "description": "Returns the data for a Debug data layer unit",
-        "operationId": "getDebugUnit",
+        "summary": "Create unit",
+        "operationId": "createUnit",
         "security": [
           {
             "APIKeyCookie": []
@@ -2464,25 +2463,53 @@
             "OAuth2PasswordBearer": []
           }
         ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/DebugUnitCreate"
+                  },
+                  {
+                    "$ref": "#/components/schemas/PlaintextUnitCreate"
+                  }
+                ],
+                "discriminator": {
+                  "propertyName": "layerType",
+                  "mapping": {
+                    "debug": "#/components/schemas/DebugUnitCreate",
+                    "plaintext": "#/components/schemas/PlaintextUnitCreate"
+                  }
+                },
+                "title": "Unit"
+              }
             }
           }
-        ],
+        },
         "responses": {
-          "200": {
-            "description": "Successful Response",
+          "201": {
+            "description": "Created",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DebugUnitRead"
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/DebugUnitRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PlaintextUnitRead"
+                    }
+                  ],
+                  "discriminator": {
+                    "propertyName": "layerType",
+                    "mapping": {
+                      "debug": "#/components/schemas/DebugUnitRead",
+                      "plaintext": "#/components/schemas/PlaintextUnitRead"
+                    }
+                  },
+                  "title": "Response Create Unit Units Post"
                 }
               }
             }
@@ -2502,295 +2529,6 @@
           }
         }
       },
-      "patch": {
-        "tags": [
-          "units"
-        ],
-        "summary": "Update unit",
-        "description": "Updates the data for a Debug data layer unit",
-        "operationId": "updateDebugUnit",
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DebugUnitUpdate"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DebugUnitRead"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/units/debug": {
-      "post": {
-        "tags": [
-          "units"
-        ],
-        "summary": "Create unit",
-        "description": "Creates a Debug data layer unit",
-        "operationId": "createDebugUnit",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DebugUnitCreate"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DebugUnitRead"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      }
-    },
-    "/units/plaintext/{id}": {
-      "get": {
-        "tags": [
-          "units"
-        ],
-        "summary": "Get unit",
-        "description": "Returns the data for a Plaintext data layer unit",
-        "operationId": "getPlaintextUnit",
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PlaintextUnitRead"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "units"
-        ],
-        "summary": "Update unit",
-        "description": "Updates the data for a Plaintext data layer unit",
-        "operationId": "updatePlaintextUnit",
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PlaintextUnitUpdate"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PlaintextUnitRead"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/units/plaintext": {
-      "post": {
-        "tags": [
-          "units"
-        ],
-        "summary": "Create unit",
-        "description": "Creates a Plaintext data layer unit",
-        "operationId": "createPlaintextUnit",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PlaintextUnitCreate"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PlaintextUnitRead"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      }
-    },
-    "/units/": {
       "get": {
         "tags": [
           "units"
@@ -2876,7 +2614,169 @@
                       }
                     }
                   },
-                  "title": "Response Find Units Units  Get"
+                  "title": "Response Find Units Units Get"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/units/{id}": {
+      "get": {
+        "tags": [
+          "units"
+        ],
+        "summary": "Get unit",
+        "description": "A generic route for retrieving a unit by ID from the database",
+        "operationId": "getUnit",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/DebugUnitRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PlaintextUnitRead"
+                    }
+                  ],
+                  "discriminator": {
+                    "propertyName": "layerType",
+                    "mapping": {
+                      "debug": "#/components/schemas/DebugUnitRead",
+                      "plaintext": "#/components/schemas/PlaintextUnitRead"
+                    }
+                  },
+                  "title": "Response Get Unit Units  Id  Get"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "units"
+        ],
+        "summary": "Update unit",
+        "operationId": "updateUnit",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/DebugUnitUpdate"
+                  },
+                  {
+                    "$ref": "#/components/schemas/PlaintextUnitUpdate"
+                  }
+                ],
+                "discriminator": {
+                  "propertyName": "layerType",
+                  "mapping": {
+                    "debug": "#/components/schemas/DebugUnitUpdate",
+                    "plaintext": "#/components/schemas/PlaintextUnitUpdate"
+                  }
+                },
+                "title": "Updates"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/DebugUnitRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PlaintextUnitRead"
+                    }
+                  ],
+                  "discriminator": {
+                    "propertyName": "layerType",
+                    "mapping": {
+                      "debug": "#/components/schemas/DebugUnitRead",
+                      "plaintext": "#/components/schemas/PlaintextUnitRead"
+                    }
+                  },
+                  "title": "Response Update Unit Units  Id  Patch"
                 }
               }
             }

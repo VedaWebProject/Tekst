@@ -49,9 +49,7 @@ async def test_create_unit(
         "text": "Ein Raabe geht im Feld spazieren.",
         "comment": "This is a comment",
     }
-    resp = await test_client.post(
-        "/units/plaintext", json=payload, cookies=session_cookie
-    )
+    resp = await test_client.post("/units", json=payload, cookies=session_cookie)
     assert resp.status_code == 201, status_fail_msg(201, resp)
     assert isinstance(resp.json(), dict)
     assert resp.json()["text"] == payload["text"]
@@ -60,13 +58,11 @@ async def test_create_unit(
     unit_id = resp.json()["id"]
 
     # fail to create duplicate
-    resp = await test_client.post(
-        "/units/plaintext", json=payload, cookies=session_cookie
-    )
+    resp = await test_client.post("/units", json=payload, cookies=session_cookie)
     assert resp.status_code == 409, status_fail_msg(409, resp)
 
     # get unit
-    resp = await test_client.get(f"/units/plaintext/{unit_id}", cookies=session_cookie)
+    resp = await test_client.get(f"/units/{unit_id}", cookies=session_cookie)
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), dict)
     assert "id" in resp.json()
@@ -75,13 +71,13 @@ async def test_create_unit(
 
     # fail to get unit with invalid ID
     resp = await test_client.get(
-        "/units/plaintext/637b9ad396d541a505e5439b", cookies=session_cookie
+        "/units/637b9ad396d541a505e5439b", cookies=session_cookie
     )
     assert resp.status_code == 404, status_fail_msg(404, resp)
 
     # update unit
     resp = await test_client.patch(
-        f"/units/plaintext/{unit_id}",
+        f"/units/{unit_id}",
         json={"layerType": "plaintext", "text": "FOO BAR"},
         cookies=session_cookie,
     )
@@ -93,7 +89,7 @@ async def test_create_unit(
 
     # fail to update unit with invalid ID
     resp = await test_client.patch(
-        "/units/plaintext/637b9ad396d541a505e5439b",
+        "/units/637b9ad396d541a505e5439b",
         json={"layerType": "plaintext", "text": "FOO BAR"},
         cookies=session_cookie,
     )
@@ -101,7 +97,7 @@ async def test_create_unit(
 
     # find all units
     resp = await test_client.get(
-        "/units/", params={"limit": 100}, cookies=session_cookie
+        "/units", params={"limit": 100}, cookies=session_cookie
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)

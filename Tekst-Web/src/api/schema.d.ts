@@ -197,45 +197,7 @@ export interface paths {
     /** Update text */
     patch: operations['updateText'];
   };
-  '/units/debug/{id}': {
-    /**
-     * Get unit
-     * @description Returns the data for a Debug data layer unit
-     */
-    get: operations['getDebugUnit'];
-    /**
-     * Update unit
-     * @description Updates the data for a Debug data layer unit
-     */
-    patch: operations['updateDebugUnit'];
-  };
-  '/units/debug': {
-    /**
-     * Create unit
-     * @description Creates a Debug data layer unit
-     */
-    post: operations['createDebugUnit'];
-  };
-  '/units/plaintext/{id}': {
-    /**
-     * Get unit
-     * @description Returns the data for a Plaintext data layer unit
-     */
-    get: operations['getPlaintextUnit'];
-    /**
-     * Update unit
-     * @description Updates the data for a Plaintext data layer unit
-     */
-    patch: operations['updatePlaintextUnit'];
-  };
-  '/units/plaintext': {
-    /**
-     * Create unit
-     * @description Creates a Plaintext data layer unit
-     */
-    post: operations['createPlaintextUnit'];
-  };
-  '/units/': {
+  '/units': {
     /**
      * Find units
      * @description Returns a list of all data layer units matching the given criteria.
@@ -245,6 +207,17 @@ export interface paths {
      * returned unit objects cannot be typed to their precise layer unit type.
      */
     get: operations['findUnits'];
+    /** Create unit */
+    post: operations['createUnit'];
+  };
+  '/units/{id}': {
+    /**
+     * Get unit
+     * @description A generic route for retrieving a unit by ID from the database
+     */
+    get: operations['getUnit'];
+    /** Update unit */
+    patch: operations['updateUnit'];
   };
   '/users/me': {
     /** Me */
@@ -2209,7 +2182,7 @@ export interface operations {
       };
     };
     responses: {
-      /** @description Successful Response */
+      /** @description Created */
       201: {
         content: {
           'application/json':
@@ -3082,190 +3055,6 @@ export interface operations {
     };
   };
   /**
-   * Get unit
-   * @description Returns the data for a Debug data layer unit
-   */
-  getDebugUnit: {
-    parameters: {
-      path: {
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json': components['schemas']['DebugUnitRead'];
-        };
-      };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  /**
-   * Update unit
-   * @description Updates the data for a Debug data layer unit
-   */
-  updateDebugUnit: {
-    parameters: {
-      path: {
-        id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['DebugUnitUpdate'];
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json': components['schemas']['DebugUnitRead'];
-        };
-      };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  /**
-   * Create unit
-   * @description Creates a Debug data layer unit
-   */
-  createDebugUnit: {
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['DebugUnitCreate'];
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      201: {
-        content: {
-          'application/json': components['schemas']['DebugUnitRead'];
-        };
-      };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  /**
-   * Get unit
-   * @description Returns the data for a Plaintext data layer unit
-   */
-  getPlaintextUnit: {
-    parameters: {
-      path: {
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json': components['schemas']['PlaintextUnitRead'];
-        };
-      };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  /**
-   * Update unit
-   * @description Updates the data for a Plaintext data layer unit
-   */
-  updatePlaintextUnit: {
-    parameters: {
-      path: {
-        id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['PlaintextUnitUpdate'];
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json': components['schemas']['PlaintextUnitRead'];
-        };
-      };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  /**
-   * Create unit
-   * @description Creates a Plaintext data layer unit
-   */
-  createPlaintextUnit: {
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['PlaintextUnitCreate'];
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      201: {
-        content: {
-          'application/json': components['schemas']['PlaintextUnitRead'];
-        };
-      };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  /**
    * Find units
    * @description Returns a list of all data layer units matching the given criteria.
    *
@@ -3292,6 +3081,102 @@ export interface operations {
             | components['schemas']['DebugUnitRead']
             | components['schemas']['PlaintextUnitRead']
           )[];
+        };
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Create unit */
+  createUnit: {
+    requestBody: {
+      content: {
+        'application/json':
+          | components['schemas']['DebugUnitCreate']
+          | components['schemas']['PlaintextUnitCreate'];
+      };
+    };
+    responses: {
+      /** @description Created */
+      201: {
+        content: {
+          'application/json':
+            | components['schemas']['DebugUnitRead']
+            | components['schemas']['PlaintextUnitRead'];
+        };
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /**
+   * Get unit
+   * @description A generic route for retrieving a unit by ID from the database
+   */
+  getUnit: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json':
+            | components['schemas']['DebugUnitRead']
+            | components['schemas']['PlaintextUnitRead'];
+        };
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Update unit */
+  updateUnit: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        'application/json':
+          | components['schemas']['DebugUnitUpdate']
+          | components['schemas']['PlaintextUnitUpdate'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json':
+            | components['schemas']['DebugUnitRead']
+            | components['schemas']['PlaintextUnitRead'];
         };
       };
       /** @description Not found */

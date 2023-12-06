@@ -124,7 +124,7 @@ export const useBrowseStore = defineStore('browse', () => {
     // set to loading
     loading.value = true;
     // fetch units data
-    const { data: unitsData, error } = await GET('/units/', {
+    const { data: unitsData, error } = await GET('/units', {
       params: { query: { nodeId: nodePath.value.map((n) => n.id) } },
     });
     if (!error) {
