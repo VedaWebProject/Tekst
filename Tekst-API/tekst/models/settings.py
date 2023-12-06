@@ -23,6 +23,12 @@ class PlatformDescriptionTranslation(TranslationBase):
     ]
 
 
+class PlatformNavInfoEntryTranslation(TranslationBase):
+    translation: Annotated[
+        str, StringConstraints(strip_whitespace=True, min_length=1, max_length=16)
+    ]
+
+
 class PlatformSettings(ModelBase, ModelFactoryMixin):
     """Settings defining platform behavior configured by admins"""
 
@@ -59,6 +65,10 @@ class PlatformSettings(ModelBase, ModelFactoryMixin):
     default_text_id: Annotated[
         PydanticObjectId | None, Field(description="Default text to load in UI")
     ] = None
+    nav_info_entry: Annotated[
+        Translations[PlatformNavInfoEntryTranslation],
+        Field(description="Custom label for main navigation info entry"),
+    ] = []
     show_header_info: Annotated[
         bool, Field(description="Show platform description in header")
     ] = True

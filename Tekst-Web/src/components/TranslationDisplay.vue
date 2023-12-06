@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Translation } from '@/api';
+import { pickTranslation } from '@/utils';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -8,15 +9,7 @@ const props = defineProps<{
 }>();
 
 const { locale } = useI18n();
-const translation = computed(
-  () =>
-    (
-      props.value?.find((t) => t.locale === locale.value) ||
-      props.value?.find((t) => t.locale === '*') ||
-      props.value?.find((t) => t.locale === 'enUS') ||
-      props.value?.[0]
-    )?.translation
-);
+const translation = computed(() => pickTranslation(props.value, locale.value));
 </script>
 
 <template v-if="translation">

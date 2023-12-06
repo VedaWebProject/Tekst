@@ -372,6 +372,14 @@ export const platformSettingsFormRules: Record<string, FormItemRule[]> = {
       trigger: 'blur',
     },
   ],
+  navInfoEntryTranslation: [
+    {
+      validator: (rule: FormItemRule, value: string) =>
+        !!value && value.length >= 1 && value.length <= 42,
+      message: () => $t('forms.rulesFeedback.minMaxChars', { min: 1, max: 42 }),
+      trigger: 'blur',
+    },
+  ],
 };
 
 export const layerFormRules: Record<string, FormItemRule[]> = {

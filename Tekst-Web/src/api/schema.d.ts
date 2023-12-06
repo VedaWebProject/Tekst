@@ -1388,6 +1388,12 @@ export interface components {
       /** Translation */
       translation: string;
     };
+    /** PlatformNavInfoEntryTranslation */
+    PlatformNavInfoEntryTranslation: {
+      locale: components['schemas']['Locale'];
+      /** Translation */
+      translation: string;
+    };
     /** PlatformSecurityInfo */
     PlatformSecurityInfo: {
       /**
@@ -1466,6 +1472,12 @@ export interface components {
        */
       defaultTextId?: string | null;
       /**
+       * Navinfoentry
+       * @description Custom label for main navigation info entry
+       * @default []
+       */
+      navInfoEntry?: components['schemas']['PlatformNavInfoEntryTranslation'][];
+      /**
        * Showheaderinfo
        * @description Show platform description in header
        * @default true
@@ -1523,6 +1535,12 @@ export interface components {
        * @description Default text to load in UI
        */
       defaultTextId?: string | null;
+      /**
+       * Navinfoentry
+       * @description Custom label for main navigation info entry
+       * @default []
+       */
+      navInfoEntry?: components['schemas']['PlatformNavInfoEntryTranslation'][];
       /**
        * Showheaderinfo
        * @description Show platform description in header

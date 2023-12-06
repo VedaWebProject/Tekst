@@ -5874,6 +5874,25 @@
         ],
         "title": "PlatformDescriptionTranslation"
       },
+      "PlatformNavInfoEntryTranslation": {
+        "properties": {
+          "locale": {
+            "$ref": "#/components/schemas/Locale"
+          },
+          "translation": {
+            "type": "string",
+            "maxLength": 16,
+            "minLength": 1,
+            "title": "Translation"
+          }
+        },
+        "type": "object",
+        "required": [
+          "locale",
+          "translation"
+        ],
+        "title": "PlatformNavInfoEntryTranslation"
+      },
       "PlatformSecurityInfo": {
         "properties": {
           "closedMode": {
@@ -6001,6 +6020,16 @@
             "title": "Defaulttextid",
             "description": "Default text to load in UI"
           },
+          "navInfoEntry": {
+            "items": {
+              "$ref": "#/components/schemas/PlatformNavInfoEntryTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Navinfoentry",
+            "description": "Custom label for main navigation info entry",
+            "default": []
+          },
           "showHeaderInfo": {
             "type": "boolean",
             "title": "Showheaderinfo",
@@ -6117,6 +6146,16 @@
             ],
             "title": "Defaulttextid",
             "description": "Default text to load in UI"
+          },
+          "navInfoEntry": {
+            "items": {
+              "$ref": "#/components/schemas/PlatformNavInfoEntryTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Navinfoentry",
+            "description": "Custom label for main navigation info entry",
+            "default": []
           },
           "showHeaderInfo": {
             "type": "boolean",

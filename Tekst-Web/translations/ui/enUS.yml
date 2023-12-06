@@ -221,6 +221,7 @@ models:
     infoContactEmail: Contact Email
     infoContactUrl: Contact URL
     defaultText: Default Text
+    navInfoEntry: Custom label for info entry in main navigation
     showHeaderInfo: Show description in header
     showFooterInfo: Show title and description in footer
   segment:

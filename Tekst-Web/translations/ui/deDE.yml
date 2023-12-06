@@ -229,6 +229,7 @@ models:
     infoContactEmail: Email Kontaktperson
     infoContactUrl: URL Kontaktperson
     defaultText: Standard-Text
+    navInfoEntry: Eigene Beschriftung für Info-Eintrag in Hauptnavigation
     showHeaderInfo: Kurzbeschreibung in Kopfzeile anzeigen
     showFooterInfo: Name und Kurzbeschreibung in Fußzeile anzeigen
   segment:

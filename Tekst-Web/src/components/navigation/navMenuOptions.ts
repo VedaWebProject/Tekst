@@ -15,6 +15,7 @@ import SettingsFilled from '@vicons/material/SettingsFilled';
 import InfoOutlined from '@vicons/material/InfoOutlined';
 import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
 import SearchOutlined from '@vicons/material/SearchOutlined';
+import { pickTranslation } from '@/utils';
 
 function renderIcon(icon: Component, noop: boolean = false) {
   return noop ? undefined : () => h(NIcon, undefined, { default: () => h(icon) });
@@ -86,7 +87,8 @@ export function useMainMenuOptions(showIcons: boolean = true) {
     ...(infoPagesOptions.value.length
       ? [
           {
-            label: () => $t('nav.info'),
+            label: () =>
+              pickTranslation(pfData.value?.settings.navInfoEntry, state.locale) || $t('nav.info'),
             key: 'info',
             children: infoPagesOptions.value,
           },

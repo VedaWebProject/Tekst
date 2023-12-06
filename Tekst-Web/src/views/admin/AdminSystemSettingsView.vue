@@ -165,6 +165,19 @@ function resetForm() {
           @keydown.enter.prevent
         />
       </n-form-item>
+
+      <!-- TRANSLATE MAIN NAV INFO ENTRY -->
+      <TranslationFormItem
+        v-model:value="formModel.navInfoEntry"
+        parent-form-path-prefix="navInfoEntry"
+        :loading="loading"
+        :disabled="loading"
+        :main-form-label="$t('models.platformSettings.navInfoEntry')"
+        :translation-form-label="$t('models.platformSettings.navInfoEntry')"
+        :translation-form-rule="platformSettingsFormRules.navInfoEntryTranslation"
+      />
+
+      <!-- DISPLAY OPTIONS -->
       <n-form-item :label="$t('admin.system.platformSettings.formLabelDisplay')">
         <div style="display: flex; flex-direction: column; gap: 4px">
           <!-- SHOW DESCIPTION IN HEADER? -->
