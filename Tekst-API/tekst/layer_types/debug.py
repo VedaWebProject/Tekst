@@ -21,7 +21,7 @@ class Debug(LayerTypeABC):
         return DebugLayer
 
     @classmethod
-    def get_unit_model(cls) -> type["DebugUnit"]:
+    def unit_model(cls) -> type["DebugUnit"]:
         return DebugUnit
 
 
@@ -37,6 +37,7 @@ class DebugLayer(LayerBase):
 class DebugUnit(UnitBase):
     """A unit of a plaintext data layer"""
 
+    layer_type: Literal["debug"]  # snake_cased layer type classname
     text: str | None = Field(
         None,
         description="Text content of the debug unit",

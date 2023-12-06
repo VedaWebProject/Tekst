@@ -54,6 +54,6 @@ async def init_odm(db: Database) -> None:
     # add layer type models
     for lt_class in layer_types_mgr.get_all().values():
         models.append(lt_class.layer_model().document_model())
-        models.append(lt_class.get_unit_model().document_model())
+        models.append(lt_class.unit_model().document_model())
     # init beanie ODM
     await init_beanie(database=db, allow_index_dropping=True, document_models=models)

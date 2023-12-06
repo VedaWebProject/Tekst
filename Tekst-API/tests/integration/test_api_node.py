@@ -247,6 +247,7 @@ async def test_delete_node(
     # create plaintext layer unit
     payload = {
         "layerId": layer["id"],
+        "layerType": "plaintext",
         "nodeId": node["id"],
         "text": "Ein Raabe geht im Feld spazieren.",
         "comment": "This is a comment",

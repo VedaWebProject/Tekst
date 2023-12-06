@@ -44,6 +44,7 @@ async def test_create_unit(
     # create plaintext layer unit
     payload = {
         "layerId": layer_data["id"],
+        "layerType": "plaintext",
         "nodeId": node_id,
         "text": "Ein Raabe geht im Feld spazieren.",
         "comment": "This is a comment",
@@ -80,7 +81,9 @@ async def test_create_unit(
 
     # update unit
     resp = await test_client.patch(
-        f"/units/plaintext/{unit_id}", json={"text": "FOO BAR"}, cookies=session_cookie
+        f"/units/plaintext/{unit_id}",
+        json={"layerType": "plaintext", "text": "FOO BAR"},
+        cookies=session_cookie,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), dict)
@@ -91,7 +94,7 @@ async def test_create_unit(
     # fail to update unit with invalid ID
     resp = await test_client.patch(
         "/units/plaintext/637b9ad396d541a505e5439b",
-        json={"text": "FOO BAR"},
+        json={"layerType": "plaintext", "text": "FOO BAR"},
         cookies=session_cookie,
     )
     assert resp.status_code == 400, status_fail_msg(400, resp)

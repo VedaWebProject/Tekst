@@ -76,7 +76,7 @@ h2:first-child,
 h3:first-child,
 h4:first-child,
 h5:first-child {
-  margin-top: .5rem;
+  margin-top: 0.5rem;
 }
 
 li > p {
@@ -130,7 +130,6 @@ blockquote {
 .tekst-modal-narrow {
   max-width: 95%;
 }
-
 
 /*
  * NUI overrides

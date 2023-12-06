@@ -4,7 +4,7 @@ import MergeRound from '@vicons/material/MergeRound';
 import { ref } from 'vue';
 import { NModal, NButton, NSpin } from 'naive-ui';
 import ButtonFooter from '@/components/ButtonFooter.vue';
-import { GET } from '@/api';
+import { GET, type AnyUnitRead, type AnyLayerRead } from '@/api';
 import { useMessages } from '@/messages';
 import { $t } from '@/i18n';
 import unitComponents from '@/components/browse/units/mappings';
@@ -13,7 +13,7 @@ import UnitHeaderWidgetBar from '@/components/browse/UnitHeaderWidgetBar.vue';
 import { useBrowseStore } from '@/stores';
 
 const props = defineProps<{
-  layer: Record<string, any>;
+  layer: AnyLayerRead;
 }>();
 
 const { message } = useMessages();
@@ -21,7 +21,7 @@ const browse = useBrowseStore();
 
 const showModal = ref(false);
 const loading = ref(false);
-const units = ref<Record<string, any>[]>([]);
+const units = ref<AnyUnitRead[]>([]);
 
 async function handleClick() {
   showModal.value = true;

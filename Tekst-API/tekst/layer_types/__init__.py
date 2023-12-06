@@ -46,14 +46,14 @@ class LayerTypeABC(ABC):
 
     @classmethod
     @abstractmethod
-    def get_unit_model(cls) -> type[UnitBase]:
+    def unit_model(cls) -> type[UnitBase]:
         """Returns the unit base model for units of this type of data layer"""
         ...
 
     @classmethod
     def prepare_import_template(cls) -> dict:
         """Returns the base template for import data for this data layer type"""
-        create_model = cls.get_unit_model().create_model()
+        create_model = cls.unit_model().create_model()
         schema = create_model.schema()
         template_fields = create_model.get_template_fields()
         required = schema.get("required", [])
@@ -81,8 +81,8 @@ class LayerTypeManager:
         # create layer/unit document models
         layer_type_class.layer_model().document_model(LayerBaseDocument)
         layer_type_class.layer_model().update_model(LayerBaseUpdate)
-        layer_type_class.get_unit_model().document_model(UnitBaseDocument)
-        layer_type_class.get_unit_model().update_model(UnitBaseUpdate)
+        layer_type_class.unit_model().document_model(UnitBaseDocument)
+        layer_type_class.unit_model().update_model(UnitBaseUpdate)
         # register instance
         self.__layer_types[layer_type_name.lower()] = layer_type_class()
 
@@ -166,5 +166,42 @@ AnyLayerUpdateBody = Annotated[
 AnyLayerDocument = Union[  # noqa: UP007
     tuple(
         [lt.layer_model().document_model() for lt in layer_types_mgr.get_all().values()]
+    )
+]
+
+
+# ### create union type aliases for models of any unit type model
+
+# CREATE
+AnyUnitCreate = Union[  # noqa: UP007
+    tuple([lt.unit_model().create_model() for lt in layer_types_mgr.get_all().values()])
+]
+AnyUnitCreateBody = Annotated[
+    AnyUnitCreate,
+    Body(discriminator="layer_type"),
+]
+
+# READ
+AnyUnitRead = Union[  # noqa: UP007
+    tuple([lt.unit_model().read_model() for lt in layer_types_mgr.get_all().values()])
+]
+AnyUnitReadBody = Annotated[
+    AnyUnitRead,
+    Body(discriminator="layer_type"),
+]
+
+# UPDATE
+AnyUnitUpdate = Union[  # noqa: UP007
+    tuple([lt.unit_model().update_model() for lt in layer_types_mgr.get_all().values()])
+]
+AnyUnitUpdateBody = Annotated[
+    AnyUnitUpdate,
+    Body(discriminator="layer_type"),
+]
+
+# DOCUMENT
+AnyUnitDocument = Union[  # noqa: UP007
+    tuple(
+        [lt.unit_model().document_model() for lt in layer_types_mgr.get_all().values()]
     )
 ]

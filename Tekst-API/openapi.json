@@ -167,7 +167,21 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "type": "object"
+                    "oneOf": [
+                      {
+                        "$ref": "#/components/schemas/DebugUnitRead"
+                      },
+                      {
+                        "$ref": "#/components/schemas/PlaintextUnitRead"
+                      }
+                    ],
+                    "discriminator": {
+                      "propertyName": "layerType",
+                      "mapping": {
+                        "debug": "#/components/schemas/DebugUnitRead",
+                        "plaintext": "#/components/schemas/PlaintextUnitRead"
+                      }
+                    }
                   },
                   "title": "Response Get Unit Siblings Browse Unit Siblings Get"
                 }
@@ -2846,7 +2860,21 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "type": "object"
+                    "oneOf": [
+                      {
+                        "$ref": "#/components/schemas/DebugUnitRead"
+                      },
+                      {
+                        "$ref": "#/components/schemas/PlaintextUnitRead"
+                      }
+                    ],
+                    "discriminator": {
+                      "propertyName": "layerType",
+                      "mapping": {
+                        "debug": "#/components/schemas/DebugUnitRead",
+                        "plaintext": "#/components/schemas/PlaintextUnitRead"
+                      }
+                    }
                   },
                   "title": "Response Find Units Units  Get"
                 }
@@ -4594,6 +4622,10 @@
             "description": "Data layer ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
+          "layerType": {
+            "const": "debug",
+            "title": "Layertype"
+          },
           "nodeId": {
             "type": "string",
             "title": "Nodeid",
@@ -4629,6 +4661,7 @@
         "type": "object",
         "required": [
           "layerId",
+          "layerType",
           "nodeId"
         ],
         "title": "DebugUnitCreate"
@@ -4645,6 +4678,10 @@
             "title": "Layerid",
             "description": "Data layer ID",
             "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "layerType": {
+            "const": "debug",
+            "title": "Layertype"
           },
           "nodeId": {
             "type": "string",
@@ -4683,6 +4720,7 @@
         "required": [
           "id",
           "layerId",
+          "layerType",
           "nodeId"
         ],
         "title": "DebugUnitRead"
@@ -4700,6 +4738,10 @@
               }
             ],
             "title": "Layerid"
+          },
+          "layerType": {
+            "const": "debug",
+            "title": "Layertype"
           },
           "nodeId": {
             "anyOf": [
@@ -4740,6 +4782,9 @@
           }
         },
         "type": "object",
+        "required": [
+          "layerType"
+        ],
         "title": "DebugUnitUpdate"
       },
       "DeepLLinksConfig": {
@@ -5644,6 +5689,10 @@
             "description": "Data layer ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
+          "layerType": {
+            "const": "plaintext",
+            "title": "Layertype"
+          },
           "nodeId": {
             "type": "string",
             "title": "Nodeid",
@@ -5679,6 +5728,7 @@
         "type": "object",
         "required": [
           "layerId",
+          "layerType",
           "nodeId"
         ],
         "title": "PlaintextUnitCreate"
@@ -5695,6 +5745,10 @@
             "title": "Layerid",
             "description": "Data layer ID",
             "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "layerType": {
+            "const": "plaintext",
+            "title": "Layertype"
           },
           "nodeId": {
             "type": "string",
@@ -5733,6 +5787,7 @@
         "required": [
           "id",
           "layerId",
+          "layerType",
           "nodeId"
         ],
         "title": "PlaintextUnitRead"
@@ -5750,6 +5805,10 @@
               }
             ],
             "title": "Layerid"
+          },
+          "layerType": {
+            "const": "plaintext",
+            "title": "Layertype"
           },
           "nodeId": {
             "anyOf": [
@@ -5790,6 +5849,9 @@
           }
         },
         "type": "object",
+        "required": [
+          "layerType"
+        ],
         "title": "PlaintextUnitUpdate"
       },
       "PlatformData": {
@@ -6030,6 +6092,12 @@
             "description": "Custom label for main navigation info entry",
             "default": []
           },
+          "alwaysShowTextInfo": {
+            "type": "boolean",
+            "title": "Alwaysshowtextinfo",
+            "description": "Always show text info and selector in header, even on non-text-specific pages",
+            "default": true
+          },
           "showHeaderInfo": {
             "type": "boolean",
             "title": "Showheaderinfo",
@@ -6040,12 +6108,6 @@
             "type": "boolean",
             "title": "Showfooterinfo",
             "description": "Show platform title and description in footer",
-            "default": true
-          },
-          "alwaysShowTextInfo": {
-            "type": "boolean",
-            "title": "Alwaysshowtextinfo",
-            "description": "Always show text info and selector in header, even on non-text-specific pages",
             "default": true
           }
         },
@@ -6163,6 +6225,12 @@
             "description": "Custom label for main navigation info entry",
             "default": []
           },
+          "alwaysShowTextInfo": {
+            "type": "boolean",
+            "title": "Alwaysshowtextinfo",
+            "description": "Always show text info and selector in header, even on non-text-specific pages",
+            "default": true
+          },
           "showHeaderInfo": {
             "type": "boolean",
             "title": "Showheaderinfo",
@@ -6173,12 +6241,6 @@
             "type": "boolean",
             "title": "Showfooterinfo",
             "description": "Show platform title and description in footer",
-            "default": true
-          },
-          "alwaysShowTextInfo": {
-            "type": "boolean",
-            "title": "Alwaysshowtextinfo",
-            "description": "Always show text info and selector in header, even on non-text-specific pages",
             "default": true
           }
         },

@@ -21,7 +21,7 @@ class Plaintext(LayerTypeABC):
         return PlaintextLayer
 
     @classmethod
-    def get_unit_model(cls) -> type["PlaintextUnit"]:
+    def unit_model(cls) -> type["PlaintextUnit"]:
         return PlaintextUnit
 
 
@@ -37,6 +37,7 @@ class PlaintextLayer(LayerBase):
 class PlaintextUnit(UnitBase):
     """A unit of a plaintext data layer"""
 
+    layer_type: Literal["plaintext"]  # snake_cased layer type classname
     text: str | None = Field(
         None,
         description="Text content of the plaintext unit",

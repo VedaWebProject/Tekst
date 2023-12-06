@@ -1,7 +1,7 @@
 from typing import Annotated
 
 from beanie import PydanticObjectId
-from pydantic import Field
+from pydantic import Field, field_validator
 
 from tekst.models.common import (
     DocumentBase,
@@ -14,6 +14,9 @@ class UnitBase(ModelBase, ModelFactoryMixin):
     """A base model for types of data units belonging to a certain data layer"""
 
     layer_id: PydanticObjectId = Field(..., description="Data layer ID")
+    layer_type: Annotated[
+        str, Field(description="A string identifying one of the available layer types")
+    ]
     node_id: PydanticObjectId = Field(..., description="Parent text node ID")
     comment: Annotated[
         str | None,
@@ -24,6 +27,19 @@ class UnitBase(ModelBase, ModelFactoryMixin):
     ] = None
 
     __template_fields: tuple[str] = ("comment",)
+
+    @field_validator("layer_type")
+    @classmethod
+    def validate_layer_type_name(cls, v):
+        from tekst.layer_types import layer_types_mgr
+
+        layer_type_names = layer_types_mgr.list_names()
+        if v.lower() not in layer_type_names:
+            raise ValueError(
+                f"Given layer type ({v}) is not a valid "
+                f"layer type name (one of {layer_type_names})."
+            )
+        return v.lower()
 
     @classmethod
     def get_template_fields(cls) -> tuple[str]:

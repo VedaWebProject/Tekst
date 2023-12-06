@@ -10,10 +10,11 @@ import unitComponents from '@/components/browse/units/mappings';
 
 import FolderOffOutlined from '@vicons/material/FolderOffOutlined';
 import type { CSSProperties } from 'vue';
+import type { AnyLayerRead } from '@/api';
 
 const props = defineProps<{
   loading?: boolean;
-  layer: Record<string, any>;
+  layer: AnyLayerRead;
 }>();
 
 const browse = useBrowseStore();
@@ -35,9 +36,9 @@ const emptyUnitStyle = {
   padding: '12px var(--layout-gap)',
 };
 
-const altUnitContainerStyle = computed(() => (!props.layer.units.length ? emptyUnitStyle : {}));
+const altUnitContainerStyle = computed(() => (!props.layer.units?.length ? emptyUnitStyle : {}));
 const unitContainerTitle = computed(() =>
-  !props.layer.units.length ? $t('browse.locationLayerNoData') : undefined
+  !props.layer.units?.length ? $t('browse.locationLayerNoData') : undefined
 );
 const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
   opacity: isUnitContainerHovered.value || state.isTouchDevice ? 1 : 0.2,
@@ -46,14 +47,14 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
 
 <template>
   <div
-    v-if="layer.active && (layer.units.length || !browse.reducedView)"
+    v-if="layer.active && (layer.units?.length || !browse.reducedView)"
     ref="unitContainerRef"
     class="content-block unit-container"
     :style="altUnitContainerStyle"
     :title="unitContainerTitle"
   >
     <div class="unit-header">
-      <n-icon v-if="!layer.units.length" :component="FolderOffOutlined" />
+      <n-icon v-if="!layer.units?.length" :component="FolderOffOutlined" />
       <div class="unit-header-title-container">
         <div class="unit-header-title">{{ layer.title }}</div>
         <div class="unit-header-title-extra">
@@ -65,7 +66,7 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
     <!-- unit-specific component (that displays the actual unit data) -->
     <component
       :is="unitComponents[layer.layerType]"
-      v-if="layer.units.length"
+      v-if="layer.units?.length"
       :layer="layer"
       :layer-config="layer.config"
     />

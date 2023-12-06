@@ -5,6 +5,7 @@ from beanie.operators import In
 from fastapi import APIRouter, HTTPException, Path, Query, status
 
 from tekst.auth import OptionalUserDep
+from tekst.layer_types import AnyUnitRead, AnyUnitReadBody, layer_types_mgr
 from tekst.models.layer import LayerBaseDocument, LayerNodeCoverage
 from tekst.models.node import (
     NodeDocument,
@@ -21,7 +22,11 @@ router = APIRouter(
 )
 
 
-@router.get("/unit-siblings", response_model=list[dict], status_code=status.HTTP_200_OK)
+@router.get(
+    "/unit-siblings",
+    response_model=list[AnyUnitReadBody],
+    status_code=status.HTTP_200_OK,
+)
 async def get_unit_siblings(
     user: OptionalUserDep,
     layer_id: Annotated[
@@ -35,7 +40,7 @@ async def get_unit_siblings(
             alias="parentNodeId",
         ),
     ] = None,
-) -> list[dict]:
+) -> list[AnyUnitRead]:
     """
     Returns a list of all data layer units belonging to the data layer
     with the given ID, associated to nodes that are children of the parent node
@@ -71,7 +76,12 @@ async def get_unit_siblings(
         with_children=True,
     ).to_list()
 
-    return [unit_doc.model_dump(camelize_keys=True) for unit_doc in unit_docs]
+    return [
+        layer_types_mgr.get(unit_doc.layer_type)
+        .unit_model()
+        .read_model()(**unit_doc.model_dump())
+        for unit_doc in unit_docs
+    ]
 
 
 @router.get(

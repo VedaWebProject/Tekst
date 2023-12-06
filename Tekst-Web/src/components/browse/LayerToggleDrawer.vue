@@ -37,7 +37,7 @@ const show = computed({
         :key="`${layer.id}`"
         v-model:active="layer.active"
         :layer="layer"
-        :disabled="!layer.units.length"
+        :disabled="!layer.units?.length"
       />
     </n-drawer-content>
   </n-drawer>

@@ -120,13 +120,23 @@ export type PlaintextLayerCreate = components['schemas']['PlaintextLayerCreate']
 export type PlaintextLayerRead = components['schemas']['PlaintextLayerRead'];
 export type PlaintextLayerUpdate = components['schemas']['PlaintextLayerUpdate'];
 export type PlaintextLayerConfig = components['schemas']['PlaintextLayerConfig'];
+export type PlaintextUnitCreate = components['schemas']['PlaintextUnitCreate'];
+export type PlaintextUnitRead = components['schemas']['PlaintextUnitRead'];
+export type PlaintextUnitUpdate = components['schemas']['PlaintextUnitUpdate'];
 
 export type DebugLayerCreate = components['schemas']['DebugLayerCreate'];
 export type DebugLayerRead = components['schemas']['DebugLayerRead'];
 export type DebugLayerUpdate = components['schemas']['DebugLayerUpdate'];
 export type DebugLayerConfig = components['schemas']['DebugLayerConfig'];
+export type DebugUnitCreate = components['schemas']['DebugUnitCreate'];
+export type DebugUnitRead = components['schemas']['DebugUnitRead'];
+export type DebugUnitUpdate = components['schemas']['DebugUnitUpdate'];
 
-export type AnyLayerRead = PlaintextLayerRead | DebugLayerRead;
+export type AnyUnitRead = PlaintextUnitRead | DebugUnitRead;
+export type AnyLayerRead = (PlaintextLayerRead | DebugLayerRead) & {
+  active?: boolean;
+  units?: AnyUnitRead[];
+};
 export type AnyLayerUpdate = PlaintextLayerUpdate | DebugLayerUpdate;
 
 // common data layer config types

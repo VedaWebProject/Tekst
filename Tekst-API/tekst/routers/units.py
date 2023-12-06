@@ -5,7 +5,7 @@ from beanie.operators import In
 from fastapi import APIRouter, HTTPException, Query, status
 
 from tekst.auth import OptionalUserDep, UserDep
-from tekst.layer_types import layer_types_mgr
+from tekst.layer_types import AnyUnitRead, AnyUnitReadBody, layer_types_mgr
 from tekst.models.layer import LayerBaseDocument
 from tekst.models.unit import UnitBase, UnitBaseDocument
 
@@ -116,7 +116,7 @@ router = APIRouter(
 # dynamically add all needed routes for every layer type's units
 for lt_name, lt_class in layer_types_mgr.get_all().items():
     # type alias unit models
-    UnitModel = lt_class.get_unit_model()
+    UnitModel = lt_class.unit_model()
     UnitDocumentModel = UnitModel.document_model()
     UnitCreateModel = UnitModel.create_model()
     UnitReadModel = UnitModel.read_model()
@@ -164,7 +164,7 @@ for lt_name, lt_class in layer_types_mgr.get_all().items():
     )
 
 
-@router.get("/", response_model=list[dict], status_code=status.HTTP_200_OK)
+@router.get("/", response_model=list[AnyUnitReadBody], status_code=status.HTTP_200_OK)
 async def find_units(
     user: OptionalUserDep,
     layer_ids: Annotated[
@@ -182,7 +182,7 @@ async def find_units(
         ),
     ] = [],
     limit: Annotated[int, Query(description="Return at most <limit> items")] = 1000,
-) -> list[dict]:
+) -> list[AnyUnitRead]:
     """
     Returns a list of all data layer units matching the given criteria.
 
@@ -207,4 +207,9 @@ async def find_units(
         .to_list()
     )
 
-    return [unit_doc.model_dump(camelize_keys=True) for unit_doc in unit_docs]
+    return [
+        layer_types_mgr.get(unit_doc.layer_type)
+        .unit_model()
+        .read_model()(**unit_doc.model_dump())
+        for unit_doc in unit_docs
+    ]

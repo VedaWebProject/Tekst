@@ -7,7 +7,7 @@ import MetadataDisplayMinimal from './MetadataDisplayMinimal.vue';
 import { useStateStore } from '@/stores';
 
 const props = defineProps<{
-  active: boolean;
+  active?: boolean;
   layer: Record<string, any>;
   disabled?: boolean;
 }>();

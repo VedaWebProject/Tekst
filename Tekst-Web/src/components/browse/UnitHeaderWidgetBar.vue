@@ -5,9 +5,10 @@ import UnitSiblingsWidget from './widgets/UnitSiblingsWidget.vue';
 import LayerInfoWidget from './widgets/LayerInfoWidget.vue';
 import LayerDeactivateWidget from './widgets/LayerDeactivateWidget.vue';
 import { useBrowseStore } from '@/stores';
+import type { AnyLayerRead } from '@/api';
 
 interface Props {
-  layer: Record<string, any>;
+  layer: AnyLayerRead;
   style?: StyleValue;
   showSiblingsWidget?: boolean;
   showDeactivateWidget?: boolean;
@@ -25,7 +26,7 @@ const browse = useBrowseStore();
 <template>
   <div class="unit-header-widgets" :style="style">
     <!-- config-specific widgets -->
-    <template v-if="layer.units.length">
+    <template v-if="layer.units?.length">
       <template v-for="(configSection, configSectionKey) in layer.config" :key="configSectionKey">
         <component
           :is="unitWidgets[configSectionKey]"
