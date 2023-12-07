@@ -239,7 +239,7 @@ function resetForm() {
     <div class="content-block">
       <h3>{{ $t('models.platformSettings.layerCategories') }}</h3>
       <!-- LAYER CATEGORIES-->
-      <n-form-item v-if="formModel.layerCategories" :show-label="false" :show-feedback="false">
+      <n-form-item v-if="formModel.layerCategories" :show-label="false">
         <n-dynamic-input
           v-model:value="formModel.layerCategories"
           item-style="margin-bottom: 0;"
@@ -328,6 +328,17 @@ function resetForm() {
             </n-button-group>
           </template>
         </n-dynamic-input>
+      </n-form-item>
+      <!-- SHOW LAYER CATEGORY HEADINGS -->
+      <n-form-item :show-label="false">
+        <n-checkbox
+          v-model:checked="formModel.showLayerCategoryHeadings"
+          :round="false"
+          :disabled="loading"
+          @keydown.enter.prevent
+        >
+          {{ $t('models.platformSettings.showLayerCategoryHeadings') }}
+        </n-checkbox>
       </n-form-item>
       <ButtonFooter>
         <n-button secondary :disabled="!changed" @click="resetForm">{{

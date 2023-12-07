@@ -90,6 +90,9 @@ class PlatformSettings(ModelBase, ModelFactoryMixin):
         list[LayerCategory],
         Field(description="Layer categories to categorize layers in"),
     ] = []
+    show_layer_category_headings: Annotated[
+        bool, Field(description="Show layer category headings in browse view")
+    ] = True
     always_show_text_info: Annotated[
         bool,
         Field(

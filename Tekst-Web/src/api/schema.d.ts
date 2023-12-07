@@ -1549,6 +1549,12 @@ export interface components {
        */
       layerCategories?: components['schemas']['LayerCategory-Output'][];
       /**
+       * Showlayercategoryheadings
+       * @description Show layer category headings in browse view
+       * @default true
+       */
+      showLayerCategoryHeadings?: boolean;
+      /**
        * Alwaysshowtextinfo
        * @description Always show text info and selector in header, even on non-text-specific pages
        * @default true
@@ -1624,6 +1630,12 @@ export interface components {
        * @default []
        */
       layerCategories?: components['schemas']['LayerCategory-Input'][];
+      /**
+       * Showlayercategoryheadings
+       * @description Show layer category headings in browse view
+       * @default true
+       */
+      showLayerCategoryHeadings?: boolean;
       /**
        * Alwaysshowtextinfo
        * @description Always show text info and selector in header, even on non-text-specific pages

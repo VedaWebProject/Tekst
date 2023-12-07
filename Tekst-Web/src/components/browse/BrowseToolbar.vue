@@ -7,7 +7,7 @@ import { useBrowseStore, useStateStore } from '@/stores';
 
 import CompressRound from '@vicons/material/CompressRound';
 import ExpandRound from '@vicons/material/ExpandRound';
-import LayersRound from '@vicons/material/LayersRound';
+import LayersFilled from '@vicons/material/LayersFilled';
 
 const state = useStateStore();
 const browse = useBrowseStore();
@@ -73,7 +73,7 @@ const btnColor = '#fff';
             @click="browse.showLayerToggleDrawer = true"
           >
             <template #icon>
-              <LayersRound />
+              <LayersFilled />
             </template>
           </n-button>
         </n-badge>

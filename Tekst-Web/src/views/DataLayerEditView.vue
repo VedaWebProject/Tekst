@@ -233,8 +233,9 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
         <n-form-item :label="$t('models.layer.category')">
           <n-select
             v-model:value="model.category"
+            clearable
             :loading="loading"
-            :placeholder="$t('models.layer.category')"
+            :placeholder="$t('browse.uncategorized')"
             :options="categoryOptions"
           />
         </n-form-item>

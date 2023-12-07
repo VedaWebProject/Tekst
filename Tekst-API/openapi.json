@@ -6147,6 +6147,12 @@
             "description": "Layer categories to categorize layers in",
             "default": []
           },
+          "showLayerCategoryHeadings": {
+            "type": "boolean",
+            "title": "Showlayercategoryheadings",
+            "description": "Show layer category headings in browse view",
+            "default": true
+          },
           "alwaysShowTextInfo": {
             "type": "boolean",
             "title": "Alwaysshowtextinfo",
@@ -6288,6 +6294,12 @@
             "title": "Layercategories",
             "description": "Layer categories to categorize layers in",
             "default": []
+          },
+          "showLayerCategoryHeadings": {
+            "type": "boolean",
+            "title": "Showlayercategoryheadings",
+            "description": "Show layer category headings in browse view",
+            "default": true
           },
           "alwaysShowTextInfo": {
             "type": "boolean",

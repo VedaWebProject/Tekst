@@ -111,6 +111,7 @@ browse:
     tipOpenDataLayerList: Anzuzeigende Datenschichten wählen
   layerToggleDrawer:
     heading: Datenschichten anzeigen
+  uncategorized: Unkategorisiert
   locationLayerNoData: Keine Daten für diese Fundstelle
   textNoNodes: Die Einrichtung dieses Textes scheint unvollständig. Es wurden keine Strukturknoten definiert.
   locationNoData: Die ausgewählten Datenschichten enthalten keine Daten für diese Ebene und Fundstelle. Wählen Sie eine andere Fundstelle oder aktivieren Sie mehr Datenschichten.
@@ -239,6 +240,7 @@ models:
     layerCategories: Datenschicht-Kategorien
     layerCategoryKey: Schlüssel
     layerCategoryTranslation: Beschriftung
+    showLayerCategoryHeadings: Zeige Überschriften für Datenschicht-Kategorien in der Blättern-Ansicht
   segment:
     modelLabel: Segment
     key: Schlüssel

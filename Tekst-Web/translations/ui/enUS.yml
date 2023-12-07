@@ -108,6 +108,7 @@ browse:
     tipOpenDataLayerList: Select data layers to display
   layerToggleDrawer:
     heading: Show Data Layers
+  uncategorized: Uncategorized
   locationLayerNoData: No data for this location
   textNoNodes: This text's setup seems incomplete. There are no structure nodes defined.
   locationNoData: The selected data layers contain no data for this text level and location. Try choosing a different location or activating more data layers.
@@ -231,6 +232,7 @@ models:
     layerCategories: Data layer categories
     layerCategoryKey: Key
     layerCategoryTranslation: Label
+    showLayerCategoryHeadings: Show data layer category headings in browse view
   segment:
     modelLabel: Segment
     key: Key
