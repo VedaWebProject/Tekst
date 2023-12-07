@@ -29,16 +29,18 @@ const showModal = ref(false);
     v-model:show="showModal"
     preset="card"
     embedded
-    :closable="false"
+    header-style="padding-bottom: 1.5rem"
     :auto-focus="false"
     size="large"
     class="tekst-modal"
     to="#app-container"
   >
-    <IconHeading level="1" :icon="SearchRound">
-      {{ $t('search.quickSearch.heading') }}
-      <HelpButtonWidget help-key="quickSearch" />
-    </IconHeading>
+    <template #header>
+      <IconHeading level="1" :icon="SearchRound" style="margin: 0">
+        {{ $t('search.quickSearch.heading') }}
+        <HelpButtonWidget help-key="quickSearch" />
+      </IconHeading>
+    </template>
 
     <n-input round size="large" placeholder="...">
       <template #prefix>

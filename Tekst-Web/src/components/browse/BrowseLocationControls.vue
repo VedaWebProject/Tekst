@@ -15,6 +15,7 @@ import { $t } from '@/i18n';
 import ArrowBackIosRound from '@vicons/material/ArrowBackIosRound';
 import ArrowForwardIosRound from '@vicons/material/ArrowForwardIosRound';
 import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
+import IconHeading from '../typography/IconHeading.vue';
 
 const state = useStateStore();
 const browse = useBrowseStore();
@@ -273,15 +274,18 @@ const btnColor = '#fff';
     preset="card"
     embedded
     :auto-focus="false"
-    :closable="false"
+    header-style="padding-bottom: 1.5rem"
     size="large"
     class="tekst-modal"
     to="#app-container"
   >
-    <h2>
-      {{ $t('browse.location.modalHeading') }}
-      <HelpButtonWidget help-key="browseLocationControls" />
-    </h2>
+    <template #header>
+      <IconHeading level="2" :icon="MenuBookOutlined" style="margin: 0">
+        {{ $t('browse.location.modalHeading') }}
+        <HelpButtonWidget help-key="browseLocationControls" />
+      </IconHeading>
+    </template>
+
     <n-form
       label-placement="left"
       label-width="auto"
