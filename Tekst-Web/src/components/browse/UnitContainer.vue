@@ -41,7 +41,7 @@ const unitContainerTitle = computed(() =>
   !props.layer.units?.length ? $t('browse.locationLayerNoData') : undefined
 );
 const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
-  opacity: isUnitContainerHovered.value || state.isTouchDevice ? 1 : 0.2,
+  opacity: isUnitContainerHovered.value || state.isTouchDevice ? 1 : browse.reducedView ? 0 : 0.2,
 }));
 </script>
 
@@ -50,13 +50,16 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
     v-if="layer.active && (layer.units?.length || !browse.reducedView)"
     ref="unitContainerRef"
     class="content-block unit-container"
+    :class="browse.reducedView ? 'reduced' : ''"
     :style="altUnitContainerStyle"
     :title="unitContainerTitle"
   >
     <div class="unit-header">
       <n-icon v-if="!layer.units?.length" :component="FolderOffOutlined" />
       <div class="unit-header-title-container">
-        <div class="unit-header-title">{{ layer.title }}</div>
+        <div class="unit-header-title" :class="browse.reducedView ? 'reduced' : ''">
+          {{ layer.title }}
+        </div>
         <div class="unit-header-title-extra">
           {{ headerMiddleText }}
         </div>
@@ -68,7 +71,7 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
       :is="unitComponents[layer.layerType]"
       v-if="layer.units?.length"
       :layer="layer"
-      :layer-config="layer.config"
+      :reduced="browse.reducedView"
     />
     <Transition>
       <n-spin v-show="loading" class="unit-loader" />
@@ -80,6 +83,11 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
 .unit-container {
   position: relative;
   font-size: var(--app-ui-font-size);
+}
+.unit-container.reduced {
+  padding-top: 0.3rem;
+  padding-bottom: 0.3rem;
+  margin: 0.5rem 0;
 }
 .unit-header {
   display: flex;
@@ -103,6 +111,12 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.unit-header-title.reduced {
+  font-size: var(--app-ui-font-size-tiny);
+  font-weight: var(--app-ui-font-weight-light);
+  opacity: 0.8;
 }
 
 .unit-header-title-extra {

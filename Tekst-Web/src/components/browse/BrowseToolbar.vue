@@ -94,6 +94,7 @@ const btnColor = '#fff';
   border-radius: var(--app-ui-border-radius);
   box-shadow: var(--app-ui-block-box-shadow);
   transition: none;
+  margin-bottom: var(--layout-gap);
 }
 
 .browse-toolbar-container.affixed {

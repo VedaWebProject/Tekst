@@ -1,10 +1,15 @@
 <script setup lang="ts">
-import type { PlaintextLayerConfig } from '@/api';
+import type { AnyLayerRead } from '@/api';
 
-defineProps<{
-  layer: Record<string, any>;
-  layerConfig: PlaintextLayerConfig;
-}>();
+withDefaults(
+  defineProps<{
+    layer: AnyLayerRead;
+    reduced?: boolean;
+  }>(),
+  {
+    reduced: false,
+  }
+);
 </script>
 
 <template>
