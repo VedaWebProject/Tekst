@@ -57,7 +57,9 @@ export function useTheme() {
   // current text accent color variants
   const accentColors = computed(() => {
     const lighten = state.themeMode === 'dark' ? 0.25 : 0.0;
-    const base = Color(state.text ? state.text.accentColor : '#18A058').lighten(lighten);
+    const baseStatic = Color(state.text ? state.text.accentColor : '#18A058');
+    const base = baseStatic.lighten(lighten);
+    const inverted = baseStatic.negate().darken(0.1);
     return {
       base: base.hex(),
       fade1: base.fade(0.2).hexa(),
@@ -65,9 +67,9 @@ export function useTheme() {
       fade3: base.fade(0.6).hexa(),
       fade4: base.fade(0.8).hexa(),
       fade5: base.fade(0.9).hexa(),
-      inverted: base.negate().hex(),
-      invertedPastel: base.negate().saturate(0.9).lighten(0.5).hex(),
-      invertedDark: base.negate().darken(0.6).hex(),
+      inverted: inverted.hex(),
+      invertedPastel: inverted.saturate(0.9).lighten(0.5).hex(),
+      invertedDark: inverted.darken(0.75).hex(),
     };
   });
 
