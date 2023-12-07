@@ -16,6 +16,8 @@ general:
   removeAction: Remove
   deleteAction: Delete
   editAction: Edit
+  moveUpAction: Move up
+  moveDownAction: Move down
   textSelect: Select the text you want to work with
   info: Information
   warning: Warning
@@ -106,6 +108,7 @@ browse:
     tipOpenDataLayerList: Select data layers to display
   layerToggleDrawer:
     heading: Show Data Layers
+  uncategorized: Uncategorized
   locationLayerNoData: No data for this location
   textNoNodes: This text's setup seems incomplete. There are no structure nodes defined.
   locationNoData: The selected data layers contain no data for this text level and location. Try choosing a different location or activating more data layers.
@@ -194,6 +197,7 @@ models:
     description: Description
     level: Level
     layerType: Datalayer Type
+    category: Category
     public: public
     proposed: proposed for publication
     citation: Citation
@@ -225,6 +229,10 @@ models:
     alwaysShowTextInfo: Show text info and selector in header even on non-text-specific pages
     showHeaderInfo: Show platform subtitle in header
     showFooterInfo: Show platform title and subtitle in footer
+    layerCategories: Data layer categories
+    layerCategoryKey: Key
+    layerCategoryTranslation: Label
+    showLayerCategoryHeadings: Show data layer category headings in browse view
   segment:
     modelLabel: Segment
     key: Key
@@ -529,3 +537,7 @@ htmlEditor:
   warnSwitchToWysiwyg: |
     Switching from the HTML editor to the visual editor will remove all HTML tags
     the visual editor doesn't support. Are you sure you want to switch?
+
+translationFormItem:
+  tipBtnRemove: Remove entry
+  tipBtnAdd: Add entry

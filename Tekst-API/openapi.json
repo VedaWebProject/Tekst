@@ -4101,6 +4101,19 @@
             "title": "Ownerid",
             "description": "User owning this layer"
           },
+          "category": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 16
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category",
+            "description": "Data layer category key"
+          },
           "sharedRead": {
             "items": {
               "type": "string",
@@ -4285,6 +4298,19 @@
             "title": "Ownerid",
             "description": "User owning this layer"
           },
+          "category": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 16
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category",
+            "description": "Data layer category key"
+          },
           "sharedRead": {
             "items": {
               "type": "string",
@@ -4428,6 +4454,19 @@
             ],
             "title": "Ownerid",
             "description": "User owning this layer"
+          },
+          "category": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 16
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category",
+            "description": "Data layer category key"
           },
           "sharedRead": {
             "items": {
@@ -4827,6 +4866,73 @@
         "type": "object",
         "title": "HTTPValidationError"
       },
+      "LayerCategory-Input": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "maxLength": 16,
+            "minLength": 1,
+            "title": "Key"
+          },
+          "translations": {
+            "items": {
+              "$ref": "#/components/schemas/LayerCategoryTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Translations"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "translations"
+        ],
+        "title": "LayerCategory"
+      },
+      "LayerCategory-Output": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "maxLength": 16,
+            "minLength": 1,
+            "title": "Key"
+          },
+          "translations": {
+            "items": {
+              "$ref": "#/components/schemas/LayerCategoryTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Translations"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "translations"
+        ],
+        "title": "LayerCategory"
+      },
+      "LayerCategoryTranslation": {
+        "properties": {
+          "locale": {
+            "$ref": "#/components/schemas/Locale"
+          },
+          "translation": {
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 1,
+            "title": "Translation"
+          }
+        },
+        "type": "object",
+        "required": [
+          "locale",
+          "translation"
+        ],
+        "title": "LayerCategoryTranslation"
+      },
       "LayerCommentTranslation": {
         "properties": {
           "locale": {
@@ -5178,6 +5284,19 @@
             "title": "Ownerid",
             "description": "User owning this layer"
           },
+          "category": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 16
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category",
+            "description": "Data layer category key"
+          },
           "sharedRead": {
             "items": {
               "type": "string",
@@ -5362,6 +5481,19 @@
             "title": "Ownerid",
             "description": "User owning this layer"
           },
+          "category": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 16
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category",
+            "description": "Data layer category key"
+          },
           "sharedRead": {
             "items": {
               "type": "string",
@@ -5505,6 +5637,19 @@
             ],
             "title": "Ownerid",
             "description": "User owning this layer"
+          },
+          "category": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 16
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category",
+            "description": "Data layer category key"
           },
           "sharedRead": {
             "items": {
@@ -5993,6 +6138,21 @@
             "description": "Custom label for main navigation info entry",
             "default": []
           },
+          "layerCategories": {
+            "items": {
+              "$ref": "#/components/schemas/LayerCategory-Output"
+            },
+            "type": "array",
+            "title": "Layercategories",
+            "description": "Layer categories to categorize layers in",
+            "default": []
+          },
+          "showLayerCategoryHeadings": {
+            "type": "boolean",
+            "title": "Showlayercategoryheadings",
+            "description": "Show layer category headings in browse view",
+            "default": true
+          },
           "alwaysShowTextInfo": {
             "type": "boolean",
             "title": "Alwaysshowtextinfo",
@@ -6125,6 +6285,21 @@
             "title": "Navinfoentry",
             "description": "Custom label for main navigation info entry",
             "default": []
+          },
+          "layerCategories": {
+            "items": {
+              "$ref": "#/components/schemas/LayerCategory-Input"
+            },
+            "type": "array",
+            "title": "Layercategories",
+            "description": "Layer categories to categorize layers in",
+            "default": []
+          },
+          "showLayerCategoryHeadings": {
+            "type": "boolean",
+            "title": "Showlayercategoryheadings",
+            "description": "Show layer category headings in browse view",
+            "default": true
           },
           "alwaysShowTextInfo": {
             "type": "boolean",

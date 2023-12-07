@@ -3,6 +3,9 @@ import { computed } from 'vue';
 import { NDrawer, NDrawerContent } from 'naive-ui';
 import { useBrowseStore } from '@/stores';
 import LayerToggleDrawerItem from '@/components/browse/LayerToggleDrawerItem.vue';
+import IconHeading from '../typography/IconHeading.vue';
+
+import LayersFilled from '@vicons/material/LayersFilled';
 
 const props = defineProps<{ show: boolean }>();
 const emits = defineEmits<{ (e: 'update:show', show: boolean): void }>();
@@ -27,18 +30,32 @@ const show = computed({
     to="#app-container"
     style="max-width: 90%"
   >
-    <n-drawer-content
-      :title="$t('browse.layerToggleDrawer.heading')"
-      header-style="font-size: var(--app-ui-font-size-huge); font-weight: var(--app-ui-font-weight-light)"
-      closable
-    >
-      <LayerToggleDrawerItem
-        v-for="layer in browse.layers"
-        :key="`${layer.id}`"
-        v-model:active="layer.active"
-        :layer="layer"
-        :disabled="!layer.units?.length"
-      />
+    <n-drawer-content closable header-style="border: none">
+      <template #header>
+        <IconHeading level="2" :icon="LayersFilled" style="margin: 0">
+          {{ $t('browse.layerToggleDrawer.heading') }}
+        </IconHeading>
+      </template>
+      <template v-for="category in browse.layersCategorized" :key="category.category.key">
+        <div v-if="browse.layersCategorized.length > 1" class="category-label">
+          {{ category.category.translation }}
+        </div>
+        <LayerToggleDrawerItem
+          v-for="layer in category.layers"
+          :key="`${layer.id}`"
+          v-model:active="layer.active"
+          :layer="layer"
+          :disabled="!layer.units?.length"
+        />
+      </template>
     </n-drawer-content>
   </n-drawer>
 </template>
+
+<style scoped>
+.category-label {
+  padding-bottom: 0.25rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--main-bg-color);
+}
+</style>

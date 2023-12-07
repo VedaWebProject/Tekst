@@ -5,11 +5,15 @@ import { useStateStore, useAuthStore } from '@/stores';
 import type { AnyLayerRead, NodeRead } from '@/api';
 import { GET } from '@/api';
 import { useMessages } from '@/messages';
+import { pickTranslation } from '@/utils';
+import { $t } from '@/i18n';
+import { usePlatformData } from '@/platformData';
 
 export const useBrowseStore = defineStore('browse', () => {
   // composables
   const state = useStateStore();
   const auth = useAuthStore();
+  const { pfData } = usePlatformData();
   const route = useRoute();
   const router = useRouter();
   const { message } = useMessages();
@@ -94,6 +98,23 @@ export const useBrowseStore = defineStore('browse', () => {
   /* BROWSE LAYERS AND UNITS */
 
   const layers = ref<AnyLayerRead[]>([]);
+  const layersCategorized = computed(() => {
+    const categorized =
+      pfData.value?.settings.layerCategories?.map((c) => ({
+        category: { key: c.key, translation: pickTranslation(c.translations, state.locale) },
+        layers: layers.value.filter((l) => l.category === c.key),
+      })) || [];
+    const uncategorized = [
+      {
+        category: {
+          key: undefined,
+          translation: $t('browse.uncategorized'),
+        },
+        layers: layers.value.filter((l) => !categorized.find((c) => c.category.key === l.category)),
+      },
+    ];
+    return [...categorized, ...uncategorized].filter((c) => c.layers.length);
+  });
 
   async function loadLayersData() {
     if (!state.text) return;
@@ -171,6 +192,7 @@ export const useBrowseStore = defineStore('browse', () => {
     reducedView,
     loading,
     layers,
+    layersCategorized,
     nodePath,
     nodePathHead,
     nodePathRoot,

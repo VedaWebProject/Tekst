@@ -9,7 +9,7 @@ import IconHeading from '@/components/typography/IconHeading.vue';
 import SupervisorAccountRound from '@vicons/material/SupervisorAccountRound';
 import LibraryBooksRound from '@vicons/material/LibraryBooksRound';
 import AccountTreeRound from '@vicons/material/AccountTreeRound';
-import LayersRound from '@vicons/material/LayersRound';
+import LayersFilled from '@vicons/material/LayersFilled';
 import BarChartRound from '@vicons/material/BarChartRound';
 
 const { pfData } = usePlatformData();
@@ -72,7 +72,7 @@ const layerTypes = computed(() => {
         <n-statistic :label="$t('models.layer.modelLabel', 2)" :value="counts.layers">
           <template #prefix>
             <n-icon>
-              <LayersRound />
+              <LayersFilled />
             </n-icon>
           </template>
         </n-statistic>
@@ -111,7 +111,7 @@ const layerTypes = computed(() => {
           <n-statistic :label="$t('models.layer.modelLabel', 2)" :value="text.layersCount">
             <template #prefix>
               <n-icon>
-                <LayersRound />
+                <LayersFilled />
               </n-icon>
             </template>
           </n-statistic>

@@ -82,15 +82,6 @@ const coveragePercent = computed(
       <MetadataDisplay :data="layer.meta" />
     </template>
 
-    <template v-if="layer.comment">
-      <IconHeading level="3" :icon="ChatBubbleOutlineOutlined">
-        {{ $t('models.layer.comment') }}
-      </IconHeading>
-      <div class="layer-comment">
-        <TranslationDisplay :value="layer.comment" />
-      </div>
-    </template>
-
     <template v-if="layer.citation">
       <IconHeading level="3" :icon="FormatQuoteFilled">
         {{ $t('browse.units.widgets.infoWidget.citeAs') }}
@@ -128,6 +119,15 @@ const coveragePercent = computed(
       {{ $t('errors.unexpected') }}
     </template>
     <n-spin v-else style="width: 100%" />
+
+    <template v-if="layer.comment">
+      <IconHeading level="3" :icon="ChatBubbleOutlineOutlined">
+        {{ $t('models.layer.comment') }}
+      </IconHeading>
+      <div class="layer-comment">
+        <TranslationDisplay :value="layer.comment" />
+      </div>
+    </template>
 
     <ButtonFooter>
       <n-button type="primary" @click="() => (showInfoModal = false)">

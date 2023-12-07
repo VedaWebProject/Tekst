@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import LocationLabel from '@/components/browse/LocationLabel.vue';
 import BrowseToolbar from '@/components/browse/BrowseToolbar.vue';
 import { useBrowseStore } from '@/stores';
@@ -13,12 +12,18 @@ import FolderOffTwotone from '@vicons/material/FolderOffTwotone';
 import HourglassTopTwotone from '@vicons/material/HourglassTopTwotone';
 import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
 import ErrorOutlineOutlined from '@vicons/material/ErrorOutlineOutlined';
+import { usePlatformData } from '@/platformData';
+import { $t } from '@/i18n';
+import { computed } from 'vue';
 
 const browse = useBrowseStore();
+const { pfData } = usePlatformData();
 
-const activeLayers = computed(() => {
-  return browse.layers.filter((l) => l.active);
-});
+const activeLayersCategorized = computed(() =>
+  browse.layersCategorized
+    .map((c) => ({ ...c, layers: c.layers.filter((l) => l.active) }))
+    .filter((c) => c.layers.length)
+);
 </script>
 
 <template>
@@ -29,13 +34,21 @@ const activeLayers = computed(() => {
 
   <BrowseToolbar />
 
-  <template v-if="activeLayers.length">
-    <UnitContainer
-      v-for="layer in activeLayers"
-      :key="layer.id"
-      :loading="browse.loading"
-      :layer="layer"
-    />
+  <template v-if="activeLayersCategorized.length">
+    <template v-for="category in activeLayersCategorized" :key="category.key">
+      <h2
+        v-if="
+          pfData?.settings.showLayerCategoryHeadings &&
+          activeLayersCategorized.length > 1 &&
+          !browse.reducedView
+        "
+      >
+        {{ category.category.translation }}
+      </h2>
+      <template v-for="layer in category.layers" :key="layer.id">
+        <UnitContainer :loading="browse.loading" :layer="layer" />
+      </template>
+    </template>
   </template>
 
   <HugeLabeledIcon

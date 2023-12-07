@@ -38,6 +38,8 @@ import AddRound from '@vicons/material/AddRound';
 import KeyboardArrowLeftOutlined from '@vicons/material/KeyboardArrowLeftOutlined';
 import PersonFilled from '@vicons/material/PersonFilled';
 import TranslationFormItem from '@/components/TranslationFormItem.vue';
+import { usePlatformData } from '@/platformData';
+import { pickTranslation } from '@/utils';
 
 const { message } = useMessages();
 const route = useRoute();
@@ -45,6 +47,7 @@ const router = useRouter();
 const state = useStateStore();
 const browse = useBrowseStore();
 const auth = useAuthStore();
+const { pfData } = usePlatformData();
 
 const textId = computed(() => state.text?.id || '');
 const { layers, loading: loadingLayers } = useLayers(textId);
@@ -61,6 +64,14 @@ const loadingSave = ref(false);
 const loading = computed(() => loadingLayers.value || loadingUsers.value || loadingSave.value);
 const model = ref<AnyLayerUpdate | undefined>(getInitialModel());
 const { changed, reset, getChanges } = useModelChanges(model);
+
+const categoryOptions = computed(
+  () =>
+    pfData.value?.settings.layerCategories?.map((c) => ({
+      label: pickTranslation(c.translations, state.locale) || c.key,
+      value: c.key,
+    })) || []
+);
 
 const shareWriteOptions = computed(() =>
   model.value
@@ -218,6 +229,16 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
           :translation-form-label="$t('models.layer.description')"
           :translation-form-rule="layerFormRules.descriptionTranslation"
         />
+        <!-- CATEGORY -->
+        <n-form-item :label="$t('models.layer.category')">
+          <n-select
+            v-model:value="model.category"
+            clearable
+            :loading="loading"
+            :placeholder="$t('browse.uncategorized')"
+            :options="categoryOptions"
+          />
+        </n-form-item>
         <!-- CITATION -->
         <n-form-item path="citation" :label="$t('models.layer.citation')">
           <n-input
@@ -233,6 +254,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
           v-model:value="model.comment"
           parent-form-path-prefix="comment"
           multiline
+          :max-translation-length="2000"
           :loading="loading"
           :disabled="loading"
           :main-form-label="$t('models.layer.comment')"

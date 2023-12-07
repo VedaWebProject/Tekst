@@ -507,6 +507,11 @@ export interface components {
        */
       ownerId?: string | null;
       /**
+       * Category
+       * @description Data layer category key
+       */
+      category?: string | null;
+      /**
        * Sharedread
        * @description Users with shared read access to this layer
        * @default []
@@ -606,6 +611,11 @@ export interface components {
        */
       ownerId?: string | null;
       /**
+       * Category
+       * @description Data layer category key
+       */
+      category?: string | null;
+      /**
        * Sharedread
        * @description Users with shared read access to this layer
        * @default []
@@ -673,6 +683,11 @@ export interface components {
        * @description User owning this layer
        */
       ownerId?: string | null;
+      /**
+       * Category
+       * @description Data layer category key
+       */
+      category?: string | null;
       /**
        * Sharedread
        * @description Users with shared read access to this layer
@@ -907,6 +922,26 @@ export interface components {
       /** Detail */
       detail?: components['schemas']['ValidationError'][];
     };
+    /** LayerCategory */
+    'LayerCategory-Input': {
+      /** Key */
+      key: string;
+      /** Translations */
+      translations: components['schemas']['LayerCategoryTranslation'][];
+    };
+    /** LayerCategory */
+    'LayerCategory-Output': {
+      /** Key */
+      key: string;
+      /** Translations */
+      translations: components['schemas']['LayerCategoryTranslation'][];
+    };
+    /** LayerCategoryTranslation */
+    LayerCategoryTranslation: {
+      locale: components['schemas']['Locale'];
+      /** Translation */
+      translation: string;
+    };
     /** LayerCommentTranslation */
     LayerCommentTranslation: {
       locale: components['schemas']['Locale'];
@@ -1065,6 +1100,11 @@ export interface components {
        */
       ownerId?: string | null;
       /**
+       * Category
+       * @description Data layer category key
+       */
+      category?: string | null;
+      /**
        * Sharedread
        * @description Users with shared read access to this layer
        * @default []
@@ -1164,6 +1204,11 @@ export interface components {
        */
       ownerId?: string | null;
       /**
+       * Category
+       * @description Data layer category key
+       */
+      category?: string | null;
+      /**
        * Sharedread
        * @description Users with shared read access to this layer
        * @default []
@@ -1231,6 +1276,11 @@ export interface components {
        * @description User owning this layer
        */
       ownerId?: string | null;
+      /**
+       * Category
+       * @description Data layer category key
+       */
+      category?: string | null;
       /**
        * Sharedread
        * @description Users with shared read access to this layer
@@ -1493,6 +1543,18 @@ export interface components {
        */
       navInfoEntry?: components['schemas']['PlatformNavInfoEntryTranslation'][];
       /**
+       * Layercategories
+       * @description Layer categories to categorize layers in
+       * @default []
+       */
+      layerCategories?: components['schemas']['LayerCategory-Output'][];
+      /**
+       * Showlayercategoryheadings
+       * @description Show layer category headings in browse view
+       * @default true
+       */
+      showLayerCategoryHeadings?: boolean;
+      /**
        * Alwaysshowtextinfo
        * @description Always show text info and selector in header, even on non-text-specific pages
        * @default true
@@ -1562,6 +1624,18 @@ export interface components {
        * @default []
        */
       navInfoEntry?: components['schemas']['PlatformNavInfoEntryTranslation'][];
+      /**
+       * Layercategories
+       * @description Layer categories to categorize layers in
+       * @default []
+       */
+      layerCategories?: components['schemas']['LayerCategory-Input'][];
+      /**
+       * Showlayercategoryheadings
+       * @description Show layer category headings in browse view
+       * @default true
+       */
+      showLayerCategoryHeadings?: boolean;
       /**
        * Alwaysshowtextinfo
        * @description Always show text info and selector in header, even on non-text-specific pages
