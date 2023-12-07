@@ -64,7 +64,6 @@ tasks:
   pre-commit:
     cmds:
       - task: generate-api-types
-      - task: help-texts
       - task: format
       - task: lint
       - task: build
