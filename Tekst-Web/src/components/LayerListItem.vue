@@ -54,11 +54,14 @@ const actionButtonProps = {
     <n-thing :title="targetLayer.title" content-style="margin-top: 8px">
       <template #description>
         <div style="font-size: var(--app-ui-font-size-small)">
-          <div v-if="targetLayer.description" style="font-weight: var(--app-ui-font-weight-normal)">
+          <div
+            v-if="targetLayer.description?.length"
+            style="font-weight: var(--app-ui-font-weight-normal)"
+          >
             <TranslationDisplay :value="targetLayer.description" />
           </div>
           <div
-            v-if="targetLayer.comment"
+            v-if="targetLayer.comment?.length"
             :style="targetLayer.description ? 'margin-top: .25rem' : ''"
           >
             <n-ellipsis
