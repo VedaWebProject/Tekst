@@ -54,7 +54,7 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
     :style="altUnitContainerStyle"
     :title="unitContainerTitle"
   >
-    <div class="unit-header">
+    <div class="unit-header" :class="browse.reducedView ? 'reduced' : ''">
       <n-icon v-if="!layer.units?.length" :component="FolderOffOutlined" />
       <div class="unit-header-title-container">
         <div class="unit-header-title" :class="browse.reducedView ? 'reduced' : ''">
@@ -90,11 +90,15 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
   margin: 0.5rem 0;
 }
 .unit-header {
+  margin-bottom: 0.5rem;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   column-gap: 12px;
   row-gap: 0px;
+}
+.unit-header.reduced {
+  margin-bottom: 0;
 }
 
 .unit-header-title-container {
