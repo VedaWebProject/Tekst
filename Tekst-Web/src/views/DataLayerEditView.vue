@@ -131,7 +131,7 @@ async function handleSaveClick() {
       if (!error) {
         message.success($t('dataLayers.edit.msgSaved', { title: data.title }));
         layers.value = layers.value.map((l) => (l.id === data.id ? data : l));
-        await browse.loadLayersData();
+        await browse.loadLayersData(layers.value);
       } else {
         message.error($t('errors.unexpected'), error);
       }

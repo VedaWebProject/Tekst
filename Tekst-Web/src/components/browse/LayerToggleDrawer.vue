@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { NDrawer, NDrawerContent } from 'naive-ui';
-import { useBrowseStore } from '@/stores';
+import { useAuthStore, useBrowseStore } from '@/stores';
 import LayerToggleDrawerItem from '@/components/browse/LayerToggleDrawerItem.vue';
 import IconHeading from '../typography/IconHeading.vue';
 
@@ -10,6 +10,7 @@ import LayersFilled from '@vicons/material/LayersFilled';
 const props = defineProps<{ show: boolean }>();
 const emits = defineEmits<{ (e: 'update:show', show: boolean): void }>();
 
+const auth = useAuthStore();
 const browse = useBrowseStore();
 
 const show = computed({
@@ -25,7 +26,7 @@ const show = computed({
 <template>
   <n-drawer
     v-model:show="show"
-    :width="600"
+    :width="680"
     :auto-focus="false"
     to="#app-container"
     style="max-width: 90%"
@@ -45,6 +46,7 @@ const show = computed({
           :key="`${layer.id}`"
           v-model:active="layer.active"
           :layer="layer"
+          :user="auth.user"
           :disabled="!layer.units?.length"
         />
       </template>

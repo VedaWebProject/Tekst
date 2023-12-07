@@ -9,7 +9,7 @@ defineProps<{
 </script>
 
 <template>
-  <div style="font-size: var(--app-ui-font-size-small); font-style: italic">
+  <div style="font-size: var(--app-ui-font-size-small)">
     <div v-if="layer.public" class="layer-publication-status">
       <n-icon :component="PublicFilled" style="margin-right: 4px" />{{ $t('dataLayers.public') }}
     </div>

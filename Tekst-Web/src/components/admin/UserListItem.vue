@@ -5,7 +5,7 @@ import { NIcon, NTime, NListItem, NThing, NSpace, NButton } from 'naive-ui';
 import StarRound from '@vicons/material/StarRound';
 import VerifiedUserRound from '@vicons/material/VerifiedUserRound';
 import BlockRound from '@vicons/material/BlockRound';
-import PersonRound from '@vicons/material/PersonRound';
+import PersonFilled from '@vicons/material/PersonFilled';
 import CheckCircleRound from '@vicons/material/CheckCircleRound';
 import QuestionMarkRound from '@vicons/material/QuestionMarkRound';
 import ClearRound from '@vicons/material/ClearRound';
@@ -63,7 +63,7 @@ const statusBtnMinWidth = '128px';
               targetUser.isSuperuser ? $t('models.user.isSuperuser') : $t('models.user.modelLabel')
             }}
             <template #icon>
-              <n-icon :component="targetUser.isSuperuser ? StarRound : PersonRound" />
+              <n-icon :component="targetUser.isSuperuser ? StarRound : PersonFilled" />
             </template>
           </n-button>
           <!-- isActive -->

@@ -6,10 +6,11 @@ import ButtonFooter from '@/components/ButtonFooter.vue';
 import IconHeading from '@/components/typography/IconHeading.vue';
 import UnitContainerHeaderWidget from '@/components/browse/UnitContainerHeaderWidget.vue';
 import { useLayerCoverage } from '@/fetchers';
-import { useStateStore } from '@/stores';
+import { useAuthStore, useStateStore } from '@/stores';
 import type { AnyLayerRead } from '@/api';
 import UserDisplay from '@/components/UserDisplay.vue';
 import TranslationDisplay from '@/components/TranslationDisplay.vue';
+import LayerPublicationStatus from '@/components/LayerPublicationStatus.vue';
 
 import InfoOutlined from '@vicons/material/InfoOutlined';
 import ChatBubbleOutlineOutlined from '@vicons/material/ChatBubbleOutlineOutlined';
@@ -22,6 +23,7 @@ const props = defineProps<{
   layer: AnyLayerRead;
 }>();
 
+const auth = useAuthStore();
 const state = useStateStore();
 
 const showInfoModal = ref(false);
@@ -73,6 +75,10 @@ const coveragePercent = computed(
       <RouterLink :to="{ name: 'user', params: { username: layer.owner.username } }">
         <UserDisplay :user="layer.owner" />
       </RouterLink>
+    </p>
+
+    <p v-if="auth.loggedIn">
+      <LayerPublicationStatus :layer="layer" />
     </p>
 
     <template v-if="layer.meta && Object.keys(layer.meta).length">

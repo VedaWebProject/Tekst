@@ -116,21 +116,23 @@ export const useBrowseStore = defineStore('browse', () => {
     return [...categorized, ...uncategorized].filter((c) => c.layers.length);
   });
 
-  async function loadLayersData() {
+  async function loadLayersData(preLoadedData?: AnyLayerRead[]) {
     if (!state.text) return;
     // set to loading
     loading.value = true;
-    // fetch layers data
-    const { data: layersData, error } = await GET('/layers', {
-      params: { query: { textId: state.text.id, owners: true } },
-    });
+    // fetch layers data or use pre-loaded data if it was passed
+    const { data, error } = preLoadedData
+      ? { data: preLoadedData, error: null }
+      : await GET('/layers', {
+          params: { query: { textId: state.text.id, owners: true } },
+        });
     if (!error) {
-      layersData.forEach((l: Record<string, any>) => {
+      data.forEach((l: Record<string, any>) => {
         // keep layer deactivated if it was before
         const existingLayer = layers.value.find((lo) => lo.id === l.id);
         l.active = !existingLayer || existingLayer.active;
       });
-      await loadUnitsData(layersData as AnyLayerRead[]);
+      await loadUnitsData(data as AnyLayerRead[]);
     } else {
       message.error('Error loading data layers for this location', error.detail?.toString());
     }

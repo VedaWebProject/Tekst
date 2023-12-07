@@ -101,7 +101,7 @@ function handleProposeClick(layer: AnyLayerRead) {
       } else {
         message.error($t('errors.unexpected'), error);
       }
-      load();
+      await browse.loadLayersData(await load());
       filters.value = initialFilters();
     },
   });
@@ -126,7 +126,7 @@ function handleUnproposeClick(layer: AnyLayerRead) {
       } else {
         message.error($t('errors.unexpected'), error);
       }
-      load();
+      await browse.loadLayersData(await load());
       filters.value = initialFilters();
     },
   });
@@ -151,7 +151,7 @@ function handlePublishClick(layer: AnyLayerRead) {
       } else {
         message.error($t('errors.unexpected'), error);
       }
-      load();
+      await browse.loadLayersData(await load());
       filters.value = initialFilters();
     },
   });
@@ -176,7 +176,7 @@ function handleUnpublishClick(layer: AnyLayerRead) {
       } else {
         message.error($t('errors.unexpected'), error);
       }
-      load();
+      await browse.loadLayersData(await load());
       filters.value = initialFilters();
     },
   });
@@ -202,12 +202,10 @@ function handleDeleteClick(layer: AnyLayerRead) {
       });
       if (!error) {
         message.success($t('dataLayers.msgDeleted', { title: layer.title }));
-        // remove from browsable layers
-        browse.layers = browse.layers.filter((l) => l.id !== layer.id);
       } else {
         message.error($t('errors.unexpected'), error);
       }
-      load();
+      await browse.loadLayersData(await load());
     },
   });
 }

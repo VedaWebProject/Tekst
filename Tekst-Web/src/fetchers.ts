@@ -187,6 +187,7 @@ export function useLayers(
       error.value = true;
     }
     loading.value = false;
+    return data;
   }
 
   if (isRef(textId)) {
