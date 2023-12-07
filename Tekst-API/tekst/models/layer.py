@@ -156,6 +156,11 @@ class LayerBase(ModelBase, ModelFactoryMixin):
 
 
 class LayerBaseDocument(LayerBase, DocumentBase):
+    class Settings(DocumentBase.Settings):
+        name = "layers"
+        is_root = True
+        indexes = ["text_id", "level", "layer_type", "owner_id"]
+
     @classmethod
     async def allowed_to_read(cls, user: UserRead | None) -> dict:
         if not user:
@@ -193,11 +198,6 @@ class LayerBaseDocument(LayerBase, DocumentBase):
             LayerBaseDocument.owner_id == uid,
             LayerBaseDocument.shared_write == str(uid),
         )
-
-    class Settings(DocumentBase.Settings):
-        name = "layers"
-        is_root = True
-        indexes = ["text_id", "level", "layer_type", "owner_id"]
 
 
 class LayerReadExtras(ModelBase):

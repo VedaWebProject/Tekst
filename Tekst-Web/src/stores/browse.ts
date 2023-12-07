@@ -1,10 +1,9 @@
 import { ref, computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { defineStore } from 'pinia';
-import { useStateStore, useAuthStore } from '@/stores';
-import type { AnyLayerRead, NodeRead } from '@/api';
+import { useStateStore, useLayersStore } from '@/stores';
+import type { NodeRead } from '@/api';
 import { GET } from '@/api';
-import { useMessages } from '@/messages';
 import { pickTranslation } from '@/utils';
 import { $t } from '@/i18n';
 import { usePlatformData } from '@/platformData';
@@ -12,17 +11,17 @@ import { usePlatformData } from '@/platformData';
 export const useBrowseStore = defineStore('browse', () => {
   // composables
   const state = useStateStore();
-  const auth = useAuthStore();
+  const layersStore = useLayersStore();
   const { pfData } = usePlatformData();
   const route = useRoute();
   const router = useRouter();
-  const { message } = useMessages();
 
   /* BASIC BROWSE UI STATE */
 
   const showLayerToggleDrawer = ref(false);
   const reducedView = ref(false);
-  const loading = ref(true); // this is intentional!
+  const loadingNodePath = ref(true); // this is intentional!
+  const loading = computed(() => loadingNodePath.value || layersStore.loading);
 
   /* BROWSE NODE PATH */
 
@@ -41,7 +40,7 @@ export const useBrowseStore = defineStore('browse', () => {
   // update browse node path
   async function updateBrowseNodePath(lvl?: string, pos?: string) {
     if (route.name !== 'browse') return;
-    loading.value = true;
+    loadingNodePath.value = true;
     const qLvl = parseInt(lvl || route.query.lvl?.toString() || '');
     const qPos = parseInt(pos || route.query.pos?.toString() || '');
     if (Number.isInteger(qLvl) && Number.isInteger(qPos)) {
@@ -57,7 +56,7 @@ export const useBrowseStore = defineStore('browse', () => {
     } else {
       resetBrowseLocation();
     }
-    loading.value = false;
+    loadingNodePath.value = false;
   }
 
   // reset browse location (change URI parameters)
@@ -95,14 +94,15 @@ export const useBrowseStore = defineStore('browse', () => {
     }
   });
 
-  /* BROWSE LAYERS AND UNITS */
+  /* LAYERS AND UNITS */
 
-  const layers = ref<AnyLayerRead[]>([]);
+  const layersCount = computed(() => layersStore.data.length);
+  const activeLayersCount = computed(() => layersStore.data.filter((l) => l.active).length);
   const layersCategorized = computed(() => {
     const categorized =
       pfData.value?.settings.layerCategories?.map((c) => ({
         category: { key: c.key, translation: pickTranslation(c.translations, state.locale) },
-        layers: layers.value.filter((l) => l.category === c.key),
+        layers: layersStore.data.filter((l) => l.category === c.key),
       })) || [];
     const uncategorized = [
       {
@@ -110,82 +110,33 @@ export const useBrowseStore = defineStore('browse', () => {
           key: undefined,
           translation: $t('browse.uncategorized'),
         },
-        layers: layers.value.filter((l) => !categorized.find((c) => c.category.key === l.category)),
+        layers: layersStore.data.filter(
+          (l) => !categorized.find((c) => c.category.key === l.category)
+        ),
       },
     ];
     return [...categorized, ...uncategorized].filter((c) => c.layers.length);
   });
 
-  async function loadLayersData(preLoadedData?: AnyLayerRead[]) {
-    if (!state.text) return;
-    // set to loading
-    loading.value = true;
-    // fetch layers data or use pre-loaded data if it was passed
-    const { data, error } = preLoadedData
-      ? { data: preLoadedData, error: null }
-      : await GET('/layers', {
-          params: { query: { textId: state.text.id, owners: true } },
-        });
-    if (!error) {
-      data.forEach((l: Record<string, any>) => {
-        // keep layer deactivated if it was before
-        const existingLayer = layers.value.find((lo) => lo.id === l.id);
-        l.active = !existingLayer || existingLayer.active;
-      });
-      await loadUnitsData(data as AnyLayerRead[]);
-    } else {
-      message.error('Error loading data layers for this location', error.detail?.toString());
-    }
-    loading.value = false;
+  function activateLayer(id: string) {
+    layersStore.data = layersStore.data.map((l) => (l.id === id ? { ...l, active: true } : l));
   }
 
-  async function loadUnitsData(layersData: AnyLayerRead[] = layers.value) {
-    if (!nodePathHead.value) {
-      layers.value = [];
-      return;
-    }
-    // set to loading
-    loading.value = true;
-    // fetch units data
-    const { data: unitsData, error } = await GET('/units', {
-      params: { query: { nodeId: nodePath.value.map((n) => n.id) } },
-    });
-    if (!error) {
-      // assign units to layers
-      layersData.forEach((l: Record<string, any>) => {
-        l.units = unitsData.filter((u: Record<string, any>) => u.layerId == l.id);
-      });
-      // assign (potentially) fresh layers/untis data to store prop
-      layers.value = layersData;
-    } else {
-      message.error('Error loading data layer units for this location', error.detail?.toString());
-    }
-    loading.value = false;
+  function deactivateLayer(id: string) {
+    layersStore.data = layersStore.data.map((l) => (l.id === id ? { ...l, active: false } : l));
   }
 
-  // load layers/units data on browse location change
+  // load units data on browse location change
   watch(
     () => nodePathHead.value,
-    (after: NodeRead | undefined, before: NodeRead | undefined) => {
-      if (after?.textId === before?.textId && layers.value.length > 0) {
-        // selected text didn't change, only the location did,
-        // so it's enough to load new units data (secial case: if the layers
-        // array is empty, we try to load layers again,
-        // as the user might have just logged out)
-        loadUnitsData();
-      } else {
-        // node path head changed because a different text was selected,
-        // so we have to load full layers data AND according units data
-        loadLayersData();
-      }
-    }
-  );
-
-  // remove accessed data that might be restricted
-  watch(
-    () => auth.user,
-    (after, before) => {
-      if (before && !after) layers.value = [];
+    async () => {
+      const nodeIds = nodePath.value.map((n) => n.id);
+      if (!nodeIds.length) return;
+      // fetch units data
+      await layersStore.loadUnits(nodeIds);
+    },
+    {
+      immediate: true,
     }
   );
 
@@ -193,8 +144,11 @@ export const useBrowseStore = defineStore('browse', () => {
     showLayerToggleDrawer,
     reducedView,
     loading,
-    layers,
+    layersCount,
+    activeLayersCount,
     layersCategorized,
+    activateLayer,
+    deactivateLayer,
     nodePath,
     nodePathHead,
     nodePathRoot,
@@ -202,6 +156,5 @@ export const useBrowseStore = defineStore('browse', () => {
     position,
     updateBrowseNodePath,
     resetBrowseLocation,
-    loadLayersData,
   };
 });

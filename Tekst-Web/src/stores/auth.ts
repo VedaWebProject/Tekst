@@ -7,7 +7,7 @@ import { $t, localeProfiles } from '@/i18n';
 import { useIntervalFn } from '@vueuse/core';
 import { useRouter, type RouteLocationRaw } from 'vue-router';
 import { usePlatformData } from '@/platformData';
-import { useBrowseStore, useStateStore } from '@/stores';
+import { useStateStore } from '@/stores';
 import { LoginTemplatePromise } from '@/templatePromises';
 
 const SESSION_POLL_INTERVAL_S = 60; // check session expiry every n seconds
@@ -34,7 +34,6 @@ export const useAuthStore = defineStore('auth', () => {
   const { pfData, loadPlatformData } = usePlatformData();
   const { message } = useMessages();
   const state = useStateStore();
-  const browse = useBrowseStore();
 
   const user = ref(getUserFromLocalStorage());
   const loggedIn = computed(() => !!user.value);
@@ -135,7 +134,6 @@ export const useAuthStore = defineStore('auth', () => {
           })
         );
       }
-      await browse.loadLayersData(); // reload browse layer data
       message.success($t('general.welcome', { name: userData.firstName }));
       nextRoute && router.push(nextRoute);
       return true;
@@ -164,7 +162,6 @@ export const useAuthStore = defineStore('auth', () => {
     }
     _cleanupSession();
     await loadPlatformData(); // reload platform data as some resources might not be accessible anymore
-    await browse.loadLayersData(); // reload browse layer data
     if (!pfData.value?.texts.find((t) => t.id === state.text?.id)) {
       state.text =
         pfData.value?.texts.find((t) => t.id === pfData.value?.settings.defaultTextId) ||

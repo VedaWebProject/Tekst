@@ -196,7 +196,7 @@ async def test_access_private_layer(
     resp = await test_client.post(
         f"/layers/{layer_id}/unpublish", cookies=session_cookie
     )
-    assert resp.status_code == 204, status_fail_msg(204, resp)
+    assert resp.status_code == 200, status_fail_msg(200, resp)
     # logout
     resp = await test_client.post("/auth/cookie/logout")
     assert resp.status_code == 204, status_fail_msg(204, resp)
@@ -272,7 +272,7 @@ async def test_propose_unpropose_publish_unpublish_layer(
         f"/layers/{layer_data['id']}/propose",
         cookies=session_cookie,
     )
-    assert resp.status_code == 204, status_fail_msg(204, resp)
+    assert resp.status_code == 200, status_fail_msg(200, resp)
     # get all accessible layers, check if ours is proposed
     resp = await test_client.get("/layers", params={"textId": text_id})
     assert resp.status_code == 200, status_fail_msg(200, resp)
@@ -291,13 +291,13 @@ async def test_propose_unpropose_publish_unpublish_layer(
         f"/layers/{layer_data['id']}/publish",
         cookies=session_cookie,
     )
-    assert resp.status_code == 204, status_fail_msg(204, resp)
+    assert resp.status_code == 200, status_fail_msg(200, resp)
     # unpublish layer
     resp = await test_client.post(
         f"/layers/{layer_data['id']}/unpublish",
         cookies=session_cookie,
     )
-    assert resp.status_code == 204, status_fail_msg(204, resp)
+    assert resp.status_code == 200, status_fail_msg(200, resp)
     # unpublish layer again
     resp = await test_client.post(
         f"/layers/{layer_data['id']}/unpublish",
@@ -309,13 +309,13 @@ async def test_propose_unpropose_publish_unpublish_layer(
         f"/layers/{layer_data['id']}/propose",
         cookies=session_cookie,
     )
-    assert resp.status_code == 204, status_fail_msg(204, resp)
+    assert resp.status_code == 200, status_fail_msg(200, resp)
     # unpropose layer
     resp = await test_client.post(
         f"/layers/{layer_data['id']}/unpropose",
         cookies=session_cookie,
     )
-    assert resp.status_code == 204, status_fail_msg(204, resp)
+    assert resp.status_code == 200, status_fail_msg(200, resp)
 
 
 @pytest.mark.anyio

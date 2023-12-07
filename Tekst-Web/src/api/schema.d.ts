@@ -2228,12 +2228,6 @@ export interface operations {
         level?: number;
         layerType?: string;
         limit?: number;
-        /** @description Include owners' user data, if any */
-        owners?: boolean;
-        /** @description Add flag indicating write permissions for requesting user */
-        writable?: boolean;
-        /** @description Include shared-with users' user data, if any */
-        shares?: boolean;
       };
     };
     responses: {
@@ -2291,14 +2285,6 @@ export interface operations {
   /** Get layer */
   getLayer: {
     parameters: {
-      query?: {
-        /** @description Include owners' user data, if any */
-        owners?: boolean;
-        /** @description Add flag indicating write permissions for requesting user */
-        writable?: boolean;
-        /** @description Include shared-with users' user data, if any */
-        shares?: boolean;
-      };
       path: {
         id: string;
       };
@@ -2392,8 +2378,12 @@ export interface operations {
     };
     responses: {
       /** @description Successful Response */
-      204: {
-        content: never;
+      200: {
+        content: {
+          'application/json':
+            | components['schemas']['DebugLayerRead']
+            | components['schemas']['PlaintextLayerRead'];
+        };
       };
       /** @description Not found */
       404: {
@@ -2416,8 +2406,12 @@ export interface operations {
     };
     responses: {
       /** @description Successful Response */
-      204: {
-        content: never;
+      200: {
+        content: {
+          'application/json':
+            | components['schemas']['DebugLayerRead']
+            | components['schemas']['PlaintextLayerRead'];
+        };
       };
       /** @description Not found */
       404: {
@@ -2440,8 +2434,12 @@ export interface operations {
     };
     responses: {
       /** @description Successful Response */
-      204: {
-        content: never;
+      200: {
+        content: {
+          'application/json':
+            | components['schemas']['DebugLayerRead']
+            | components['schemas']['PlaintextLayerRead'];
+        };
       };
       /** @description Not found */
       404: {
@@ -2464,8 +2462,12 @@ export interface operations {
     };
     responses: {
       /** @description Successful Response */
-      204: {
-        content: never;
+      200: {
+        content: {
+          'application/json':
+            | components['schemas']['DebugLayerRead']
+            | components['schemas']['PlaintextLayerRead'];
+        };
       };
       /** @description Not found */
       404: {

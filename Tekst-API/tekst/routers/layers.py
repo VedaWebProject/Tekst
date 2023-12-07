@@ -2,12 +2,11 @@ from typing import Annotated
 
 from beanie import PydanticObjectId
 from beanie.operators import In
-from fastapi import APIRouter, Depends, HTTPException, Path, Query, status
+from fastapi import APIRouter, HTTPException, Path, Query, status
 
 from tekst.auth import OptionalUserDep, SuperuserDep, UserDep
 from tekst.layer_types import (
     AnyLayerCreateBody,
-    AnyLayerDocument,
     AnyLayerRead,
     AnyLayerReadBody,
     AnyLayerUpdateBody,
@@ -19,6 +18,43 @@ from tekst.models.unit import UnitBaseDocument
 from tekst.models.user import UserDocument, UserRead, UserReadPublic
 
 
+async def preprocess_layer_read(
+    layer_doc: LayerBaseDocument,
+    for_user: UserRead | None = None,
+) -> AnyLayerRead:
+    # convert layer document to layer type's read model instance
+    layer = (
+        layer_types_mgr.get(layer_doc.layer_type)
+        .layer_model()
+        .read_model()(
+            **layer_doc.model_dump(exclude=layer_doc.restricted_fields(for_user))
+        )
+    )
+    # include writable flag (if applicable)
+    layer.writable = bool(
+        for_user
+        and (
+            for_user.is_superuser
+            or for_user.id == layer.owner_id
+            or for_user.id in layer.shared_write
+        )
+    )
+    # include owner user data in each layer model (if an owner id is set)
+    if layer.owner_id:
+        layer.owner = UserReadPublic.model_from(await UserDocument.get(layer.owner_id))
+    # include shared-with user data in each layer model (if any)
+    if for_user and (for_user.is_superuser or for_user.id == layer.owner_id):
+        if layer.shared_read:
+            layer.shared_read_users = await UserDocument.find(
+                In(UserDocument.id, layer.shared_read)
+            ).to_list()
+        if layer.shared_write:
+            layer.shared_write_users = await UserDocument.find(
+                In(UserDocument.id, layer.shared_write)
+            ).to_list()
+    return layer
+
+
 router = APIRouter(
     prefix="/layers",
     tags=["layers"],
@@ -28,83 +64,13 @@ router = APIRouter(
 )
 
 
-class _ReadIncludes:
-    def __init__(
-        self,
-        owners: Annotated[
-            bool, Query(description="Include owners' user data, if any")
-        ] = False,
-        writable: Annotated[
-            bool,
-            Query(
-                description="Add flag indicating write permissions for requesting user",
-            ),
-        ] = False,
-        shares: Annotated[
-            bool, Query(description="Include shared-with users' user data, if any")
-        ] = False,
-    ):
-        self.owners = owners
-        self.writable = writable
-        self.shares = shares
-
-    async def process(
-        self,
-        layers: AnyLayerDocument | list[AnyLayerDocument],
-        user: UserRead | None = None,
-    ) -> AnyLayerRead | list[AnyLayerRead]:
-        # remember if a list has been passed
-        is_list = isinstance(layers, list)
-        # convert single layer document to list
-        if not is_list:
-            layers = [layers]
-        # convert layer documents to layer type's read instances
-        layers = [
-            layer_types_mgr.get(layer.layer_type)
-            .layer_model()
-            .read_model()(**layer.model_dump(exclude=layer.restricted_fields(user)))
-            for layer in layers
-        ]
-        # include writable flag (if applicable)
-        if self.writable:
-            for layer in layers:
-                layer.writable = bool(
-                    user
-                    and (
-                        user.is_superuser
-                        or user.id == layer.owner_id
-                        or user.id in layer.shared_write
-                    )
-                )
-        # include owner user data in each layer model (if an owner id is set)
-        if self.owners:
-            for layer in layers:
-                if layer.owner_id:
-                    layer.owner = UserReadPublic.model_from(
-                        await UserDocument.get(layer.owner_id)
-                    )
-        # include shared-with user data in each layer model (if any)
-        if self.shares and user:
-            for layer in layers:
-                if user.is_superuser or user.id == layer.owner_id:
-                    if layer.shared_read:
-                        layer.shared_read_users = await UserDocument.find(
-                            In(UserDocument.id, layer.shared_read)
-                        ).to_list()
-                    if layer.shared_write:
-                        layer.shared_write_users = await UserDocument.find(
-                            In(UserDocument.id, layer.shared_write)
-                        ).to_list()
-        return layers if is_list else layers[0]
-
-
 @router.post(
     "",
     response_model=AnyLayerReadBody,
     status_code=status.HTTP_201_CREATED,
     responses={status.HTTP_201_CREATED: {"description": "Created"}},
 )
-async def create_layer(layer: AnyLayerCreateBody, user: UserDep) -> AnyLayerDocument:
+async def create_layer(layer: AnyLayerCreateBody, user: UserDep) -> AnyLayerRead:
     if not await TextDocument.get(layer.text_id):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -115,13 +81,14 @@ async def create_layer(layer: AnyLayerCreateBody, user: UserDep) -> AnyLayerDocu
     layer.proposed = False
     layer.public = False
     # find document model for this layer type, instantiate, create
-    return (
+    layer_doc = (
         await layer_types_mgr.get(layer.layer_type)
         .layer_model()
         .document_model()
         .model_from(layer)
         .create()
     )
+    return await preprocess_layer_read(layer_doc, user)
 
 
 @router.patch("/{id}", response_model=AnyLayerReadBody, status_code=status.HTTP_200_OK)
@@ -129,7 +96,7 @@ async def update_layer(
     layer_id: Annotated[PydanticObjectId, Path(alias="id")],
     updates: AnyLayerUpdateBody,
     user: UserDep,
-) -> AnyLayerDocument:
+) -> AnyLayerRead:
     layer_doc = (
         await layer_types_mgr.get(updates.layer_type)
         .layer_model()
@@ -154,7 +121,7 @@ async def update_layer(
         updates.shared_read = layer_doc.shared_read
         updates.shared_write = layer_doc.shared_write
     # update document with reduced updates
-    return await layer_doc.apply(
+    await layer_doc.apply(
         updates.model_dump(
             exclude_unset=True,
             # force-keep non-updatable fields
@@ -168,12 +135,12 @@ async def update_layer(
             },
         )
     )
+    return await preprocess_layer_read(layer_doc, user)
 
 
 @router.get("", response_model=list[AnyLayerReadBody], status_code=status.HTTP_200_OK)
 async def find_layers(
     user: OptionalUserDep,
-    includes: Annotated[_ReadIncludes, Depends(_ReadIncludes)],
     text_id: Annotated[PydanticObjectId, Query(alias="textId")],
     level: int = None,
     layer_type: Annotated[str, Query(alias="layerType")] = None,
@@ -202,7 +169,7 @@ async def find_layers(
         .to_list()
     )
     # return processed results
-    return await includes.process(layer_docs, user)
+    return [await preprocess_layer_read(layer_doc, user) for layer_doc in layer_docs]
 
 
 #
@@ -277,7 +244,6 @@ async def find_layers(
 @router.get("/{id}", status_code=status.HTTP_200_OK, response_model=AnyLayerReadBody)
 async def get_layer(
     user: OptionalUserDep,
-    includes: Annotated[_ReadIncludes, Depends(_ReadIncludes)],
     layer_id: Annotated[PydanticObjectId, Path(alias="id")],
 ) -> AnyLayerRead:
     layer_doc = await LayerBaseDocument.find_one(
@@ -289,10 +255,7 @@ async def get_layer(
         raise HTTPException(
             status.HTTP_404_NOT_FOUND, detail=f"No layer with ID {layer_id}"
         )
-    return await includes.process(
-        layer_doc,
-        user,
-    )
+    return await preprocess_layer_read(layer_doc, user)
 
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -329,10 +292,12 @@ async def delete_layer(
     ).delete()
 
 
-@router.post("/{id}/propose", status_code=status.HTTP_204_NO_CONTENT)
+@router.post(
+    "/{id}/propose", response_model=AnyLayerReadBody, status_code=status.HTTP_200_OK
+)
 async def propose_layer(
     user: UserDep, layer_id: Annotated[PydanticObjectId, Path(alias="id")]
-) -> None:
+) -> AnyLayerRead:
     layer_doc = await LayerBaseDocument.get(layer_id, with_children=True)
     if not layer_doc:
         raise HTTPException(
@@ -351,16 +316,16 @@ async def propose_layer(
             detail=f"Layer with ID {layer_id} is already proposed for publication",
         )
     # all fine, propose layer
-    await LayerBaseDocument.find_one(
-        LayerBaseDocument.id == layer_id,
-        with_children=True,
-    ).set({LayerBaseDocument.proposed: True})
+    await layer_doc.set({LayerBaseDocument.proposed: True})
+    return await preprocess_layer_read(layer_doc, user)
 
 
-@router.post("/{id}/unpropose", status_code=status.HTTP_204_NO_CONTENT)
+@router.post(
+    "/{id}/unpropose", response_model=AnyLayerReadBody, status_code=status.HTTP_200_OK
+)
 async def unpropose_layer(
     user: UserDep, layer_id: Annotated[PydanticObjectId, Path(alias="id")]
-) -> None:
+) -> AnyLayerRead:
     layer_doc = await LayerBaseDocument.get(layer_id, with_children=True)
     if not layer_doc:
         raise HTTPException(
@@ -374,21 +339,21 @@ async def unpropose_layer(
             detail=f"Layer with ID {layer_id} is not proposed for publication",
         )
     # all fine, unpropose layer
-    await LayerBaseDocument.find_one(
-        LayerBaseDocument.id == layer_id,
-        with_children=True,
-    ).set(
+    await layer_doc.set(
         {
             LayerBaseDocument.proposed: False,
             LayerBaseDocument.public: False,
         }
     )
+    return await preprocess_layer_read(layer_doc, user)
 
 
-@router.post("/{id}/publish", status_code=status.HTTP_204_NO_CONTENT)
+@router.post(
+    "/{id}/publish", response_model=AnyLayerReadBody, status_code=status.HTTP_200_OK
+)
 async def publish_layer(
     user: SuperuserDep, layer_id: Annotated[PydanticObjectId, Path(alias="id")]
-) -> None:
+) -> AnyLayerRead:
     layer_doc = await LayerBaseDocument.get(layer_id, with_children=True)
     if not layer_doc:
         raise HTTPException(
@@ -405,10 +370,7 @@ async def publish_layer(
             detail=f"Layer with ID {layer_id} is not proposed for publication",
         )
     # all fine, publish layer
-    await LayerBaseDocument.find_one(
-        LayerBaseDocument.id == layer_id,
-        with_children=True,
-    ).set(
+    await layer_doc.set(
         {
             LayerBaseDocument.public: True,
             LayerBaseDocument.proposed: False,
@@ -417,12 +379,15 @@ async def publish_layer(
             LayerBaseDocument.shared_write: [],
         }
     )
+    return await preprocess_layer_read(layer_doc, user)
 
 
-@router.post("/{id}/unpublish", status_code=status.HTTP_204_NO_CONTENT)
+@router.post(
+    "/{id}/unpublish", response_model=AnyLayerReadBody, status_code=status.HTTP_200_OK
+)
 async def unpublish_layer(
     user: SuperuserDep, layer_id: Annotated[PydanticObjectId, Path(alias="id")]
-) -> None:
+) -> AnyLayerRead:
     layer_doc = await LayerBaseDocument.get(layer_id, with_children=True)
     if not layer_doc:
         raise HTTPException(
@@ -434,12 +399,10 @@ async def unpublish_layer(
             detail=f"Layer with ID {layer_id} is not public",
         )
     # all fine, unpublish layer
-    await LayerBaseDocument.find_one(
-        LayerBaseDocument.id == layer_id,
-        with_children=True,
-    ).set(
+    await layer_doc.set(
         {
             LayerBaseDocument.public: False,
             LayerBaseDocument.proposed: False,
         }
     )
+    return await preprocess_layer_read(layer_doc, user)

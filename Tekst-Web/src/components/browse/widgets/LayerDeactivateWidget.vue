@@ -4,17 +4,17 @@ import UnitContainerHeaderWidget from '@/components/browse/UnitContainerHeaderWi
 import { useBrowseStore } from '@/stores';
 import { useMessages } from '@/messages';
 import { $t } from '@/i18n';
+import type { AnyLayerRead } from '@/api';
 
 const props = defineProps<{
-  layer: Record<string, any>;
+  layer: AnyLayerRead;
 }>();
 
 const browse = useBrowseStore();
 const { message } = useMessages();
 
 function handleClick() {
-  const layer = browse.layers.find((l) => l.id == props.layer.id);
-  layer && (layer.active = false);
+  browse.deactivateLayer(props.layer.id);
   message.info(
     $t('browse.units.widgets.deactivateWidget.message', { layerTitle: props.layer.title })
   );

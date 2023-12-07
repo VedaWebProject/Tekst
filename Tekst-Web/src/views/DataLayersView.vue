@@ -16,9 +16,8 @@ import { POST, type AnyLayerRead, DELETE } from '@/api';
 import { ref } from 'vue';
 import { computed } from 'vue';
 import { $t } from '@/i18n';
-import { useAuthStore, useBrowseStore, useStateStore } from '@/stores';
+import { useAuthStore, useStateStore } from '@/stores';
 import LayerListItem from '@/components/LayerListItem.vue';
-import { useLayers } from '@/fetchers';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import IconHeading from '@/components/typography/IconHeading.vue';
 import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
@@ -28,16 +27,17 @@ import SearchRound from '@vicons/material/SearchRound';
 import UndoRound from '@vicons/material/UndoRound';
 import LayersFilled from '@vicons/material/LayersFilled';
 import { useRouter } from 'vue-router';
+import { useLayersStore } from '@/stores';
 
 const state = useStateStore();
-const browse = useBrowseStore();
 const auth = useAuthStore();
+const layers = useLayersStore();
 const dialog = useDialog();
 const { message } = useMessages();
 const router = useRouter();
 
-const textId = computed(() => state.text?.id || '');
-const { layers, loading, error, load } = useLayers(textId);
+const actionsLoading = ref(false);
+const loading = computed(() => actionsLoading.value || layers.loading);
 
 const pagination = ref({
   page: 1,
@@ -56,9 +56,9 @@ const initialFilters = () => ({
 
 const filters = ref(initialFilters());
 
-function filterData(layers: AnyLayerRead[]) {
+function filterData(layersData: AnyLayerRead[]) {
   pagination.value.page = 1;
-  return layers.filter((l) => {
+  return layersData.filter((l) => {
     const layerStringContent = filters.value.search
       ? [l.title, l.description, l.ownerId, l.comment, l.citation, JSON.stringify(l.meta)]
           .filter((prop) => prop)
@@ -75,7 +75,7 @@ function filterData(layers: AnyLayerRead[]) {
   });
 }
 
-const filteredData = computed(() => filterData(layers.value || []));
+const filteredData = computed(() => filterData(layers.data));
 const paginatedData = computed(() => {
   const start = (pagination.value.page - 1) * pagination.value.pageSize;
   const end = start + pagination.value.pageSize;
@@ -93,16 +93,18 @@ function handleProposeClick(layer: AnyLayerRead) {
     autoFocus: false,
     closable: false,
     onPositiveClick: async () => {
-      const { error } = await POST('/layers/{id}/propose', {
+      actionsLoading.value = true;
+      const { data, error } = await POST('/layers/{id}/propose', {
         params: { path: { id: layer.id } },
       });
       if (!error) {
+        layers.replace(data);
         message.success($t('dataLayers.msgProposed', { title: layer.title }));
       } else {
         message.error($t('errors.unexpected'), error);
       }
-      await browse.loadLayersData(await load());
       filters.value = initialFilters();
+      actionsLoading.value = false;
     },
   });
 }
@@ -118,16 +120,18 @@ function handleUnproposeClick(layer: AnyLayerRead) {
     autoFocus: false,
     closable: false,
     onPositiveClick: async () => {
-      const { error } = await POST('/layers/{id}/unpropose', {
+      actionsLoading.value = true;
+      const { data, error } = await POST('/layers/{id}/unpropose', {
         params: { path: { id: layer.id } },
       });
       if (!error) {
+        layers.replace(data);
         message.success($t('dataLayers.msgUnproposed', { title: layer.title }));
       } else {
         message.error($t('errors.unexpected'), error);
       }
-      await browse.loadLayersData(await load());
       filters.value = initialFilters();
+      actionsLoading.value = false;
     },
   });
 }
@@ -143,16 +147,18 @@ function handlePublishClick(layer: AnyLayerRead) {
     autoFocus: false,
     closable: false,
     onPositiveClick: async () => {
-      const { error } = await POST('/layers/{id}/publish', {
+      actionsLoading.value = true;
+      const { data, error } = await POST('/layers/{id}/publish', {
         params: { path: { id: layer.id } },
       });
       if (!error) {
+        layers.replace(data);
         message.success($t('dataLayers.msgPublished', { title: layer.title }));
       } else {
         message.error($t('errors.unexpected'), error);
       }
-      await browse.loadLayersData(await load());
       filters.value = initialFilters();
+      actionsLoading.value = false;
     },
   });
 }
@@ -168,16 +174,18 @@ function handleUnpublishClick(layer: AnyLayerRead) {
     autoFocus: false,
     closable: false,
     onPositiveClick: async () => {
-      const { error } = await POST('/layers/{id}/unpublish', {
+      actionsLoading.value = true;
+      const { data, error } = await POST('/layers/{id}/unpublish', {
         params: { path: { id: layer.id } },
       });
       if (!error) {
+        layers.replace(data);
         message.success($t('dataLayers.msgUnpublished', { title: layer.title }));
       } else {
         message.error($t('errors.unexpected'), error);
       }
-      await browse.loadLayersData(await load());
       filters.value = initialFilters();
+      actionsLoading.value = false;
     },
   });
 }
@@ -197,6 +205,7 @@ function handleDeleteClick(layer: AnyLayerRead) {
     autoFocus: false,
     closable: false,
     onPositiveClick: async () => {
+      actionsLoading.value = true;
       const { error } = await DELETE('/layers/{id}', {
         params: { path: { id: layer.id } },
       });
@@ -205,7 +214,8 @@ function handleDeleteClick(layer: AnyLayerRead) {
       } else {
         message.error($t('errors.unexpected'), error);
       }
-      await browse.loadLayersData(await load());
+      await layers.loadLayers();
+      actionsLoading.value = false;
     },
   });
 }
@@ -219,11 +229,11 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
 
 <template>
   <IconHeading level="1" :icon="LayersFilled">
-    {{ $t('dataLayers.heading') }} {{ layers ? `(${layers?.length})` : '' }}
+    {{ $t('dataLayers.heading') }} {{ `(${layers.data.length})` }}
     <HelpButtonWidget help-key="dataLayersView" />
   </IconHeading>
 
-  <template v-if="layers && !error && !loading">
+  <template v-if="layers.data && !layers.error && !loading">
     <!-- Filters -->
     <n-collapse
       style="margin-bottom: var(--layout-gap)"

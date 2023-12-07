@@ -56,12 +56,15 @@ const activeLayersCategorized = computed(() =>
     :message="$t('init.loading')"
     :icon="HourglassTopTwotone"
   />
+
   <HugeLabeledIcon
     v-else-if="!browse.nodePath.length"
     :message="$t('browse.textNoNodes')"
     :icon="ErrorOutlineOutlined"
   />
+
   <HugeLabeledIcon v-else :message="$t('browse.locationNoData')" :icon="FolderOffTwotone" />
+
   <LayerToggleDrawer v-model:show="browse.showLayerToggleDrawer" />
 </template>
 

@@ -573,42 +573,6 @@
               "default": 4096,
               "title": "Limit"
             }
-          },
-          {
-            "name": "owners",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "description": "Include owners' user data, if any",
-              "default": false,
-              "title": "Owners"
-            },
-            "description": "Include owners' user data, if any"
-          },
-          {
-            "name": "writable",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "description": "Add flag indicating write permissions for requesting user",
-              "default": false,
-              "title": "Writable"
-            },
-            "description": "Add flag indicating write permissions for requesting user"
-          },
-          {
-            "name": "shares",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "description": "Include shared-with users' user data, if any",
-              "default": false,
-              "title": "Shares"
-            },
-            "description": "Include shared-with users' user data, if any"
           }
         ],
         "responses": {
@@ -773,42 +737,6 @@
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             }
-          },
-          {
-            "name": "owners",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "description": "Include owners' user data, if any",
-              "default": false,
-              "title": "Owners"
-            },
-            "description": "Include owners' user data, if any"
-          },
-          {
-            "name": "writable",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "description": "Add flag indicating write permissions for requesting user",
-              "default": false,
-              "title": "Writable"
-            },
-            "description": "Add flag indicating write permissions for requesting user"
-          },
-          {
-            "name": "shares",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "description": "Include shared-with users' user data, if any",
-              "default": false,
-              "title": "Shares"
-            },
-            "description": "Include shared-with users' user data, if any"
           }
         ],
         "responses": {
@@ -926,8 +854,30 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "Successful Response"
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/DebugLayerRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PlaintextLayerRead"
+                    }
+                  ],
+                  "discriminator": {
+                    "propertyName": "layerType",
+                    "mapping": {
+                      "debug": "#/components/schemas/DebugLayerRead",
+                      "plaintext": "#/components/schemas/PlaintextLayerRead"
+                    }
+                  },
+                  "title": "Response Propose Layer Layers  Id  Propose Post"
+                }
+              }
+            }
           },
           "404": {
             "description": "Not found"
@@ -973,8 +923,30 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "Successful Response"
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/DebugLayerRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PlaintextLayerRead"
+                    }
+                  ],
+                  "discriminator": {
+                    "propertyName": "layerType",
+                    "mapping": {
+                      "debug": "#/components/schemas/DebugLayerRead",
+                      "plaintext": "#/components/schemas/PlaintextLayerRead"
+                    }
+                  },
+                  "title": "Response Unpropose Layer Layers  Id  Unpropose Post"
+                }
+              }
+            }
           },
           "404": {
             "description": "Not found"
@@ -1020,8 +992,30 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "Successful Response"
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/DebugLayerRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PlaintextLayerRead"
+                    }
+                  ],
+                  "discriminator": {
+                    "propertyName": "layerType",
+                    "mapping": {
+                      "debug": "#/components/schemas/DebugLayerRead",
+                      "plaintext": "#/components/schemas/PlaintextLayerRead"
+                    }
+                  },
+                  "title": "Response Publish Layer Layers  Id  Publish Post"
+                }
+              }
+            }
           },
           "404": {
             "description": "Not found"
@@ -1067,8 +1061,30 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "Successful Response"
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/DebugLayerRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PlaintextLayerRead"
+                    }
+                  ],
+                  "discriminator": {
+                    "propertyName": "layerType",
+                    "mapping": {
+                      "debug": "#/components/schemas/DebugLayerRead",
+                      "plaintext": "#/components/schemas/PlaintextLayerRead"
+                    }
+                  },
+                  "title": "Response Unpublish Layer Layers  Id  Unpublish Post"
+                }
+              }
+            }
           },
           "404": {
             "description": "Not found"

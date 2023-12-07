@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { type AnyLayerRead, type AnyLayerUpdate, PATCH, type UserReadPublic } from '@/api';
+import { type AnyLayerUpdate, PATCH, type UserReadPublic } from '@/api';
 import { $t } from '@/i18n';
-import { useAuthStore, useBrowseStore, useStateStore } from '@/stores';
+import { useAuthStore, useStateStore } from '@/stores';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import IconHeading from '@/components/typography/IconHeading.vue';
 import { useMessages } from '@/messages';
@@ -28,7 +28,7 @@ import { layerFormRules } from '@/formRules';
 import { useModelChanges } from '@/modelChanges';
 import UserDisplay from '@/components/UserDisplay.vue';
 import { useRoute } from 'vue-router';
-import { useLayers, useUsersPublic } from '@/fetchers';
+import { useUsersPublic } from '@/fetchers';
 import { useRouter } from 'vue-router';
 import ButtonFooter from '@/components/ButtonFooter.vue';
 
@@ -40,28 +40,23 @@ import PersonFilled from '@vicons/material/PersonFilled';
 import TranslationFormItem from '@/components/TranslationFormItem.vue';
 import { usePlatformData } from '@/platformData';
 import { pickTranslation } from '@/utils';
+import { useLayersStore } from '@/stores/layers';
 
 const { message } = useMessages();
 const route = useRoute();
 const router = useRouter();
 const state = useStateStore();
-const browse = useBrowseStore();
 const auth = useAuthStore();
 const { pfData } = usePlatformData();
 
-const textId = computed(() => state.text?.id || '');
-const { layers, loading: loadingLayers } = useLayers(textId);
+const layers = useLayersStore();
 const { users, loading: loadingUsers, error: errorUsers } = useUsersPublic();
-
-const layer = computed<AnyLayerRead | undefined>(() =>
-  layers.value.find((l) => l.id === route.params.id)
-);
-
-const getInitialModel = () => _cloneDeep(layer.value);
+const layer = layers.data.find((l) => l.id === route.params.id);
+const getInitialModel = () => _cloneDeep(layer);
 
 const formRef = ref<FormInst | null>(null);
 const loadingSave = ref(false);
-const loading = computed(() => loadingLayers.value || loadingUsers.value || loadingSave.value);
+const loading = computed(() => layers.loading || loadingUsers.value || loadingSave.value);
 const model = ref<AnyLayerUpdate | undefined>(getInitialModel());
 const { changed, reset, getChanges } = useModelChanges(model);
 
@@ -97,12 +92,6 @@ const shareReadOptions = computed(() =>
     : []
 );
 
-// set initial model as soon as layers are loaded
-watch(layer, () => {
-  model.value = getInitialModel();
-  reset();
-});
-
 // change route if text changes
 watch(
   () => state.text,
@@ -122,7 +111,7 @@ async function handleSaveClick() {
     ?.validate(async (validationError) => {
       if (validationError || !model.value) return;
       const { data, error } = await PATCH('/layers/{id}', {
-        params: { path: { id: layer.value?.id || '' } },
+        params: { path: { id: layer?.id || '' } },
         body: {
           ...(getChanges() as AnyLayerUpdate),
           layerType: model.value.layerType,
@@ -130,8 +119,7 @@ async function handleSaveClick() {
       });
       if (!error) {
         message.success($t('dataLayers.edit.msgSaved', { title: data.title }));
-        layers.value = layers.value.map((l) => (l.id === data.id ? data : l));
-        await browse.loadLayersData(layers.value);
+        layers.replace(data);
       } else {
         message.error($t('errors.unexpected'), error);
       }

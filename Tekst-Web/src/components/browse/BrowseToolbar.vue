@@ -13,9 +13,7 @@ const state = useStateStore();
 const browse = useBrowseStore();
 
 const affixRef = ref(null);
-const layerDrawerBadgeLabel = computed(
-  () => browse.layers.filter((l) => l.active).length + '/' + browse.layers.length
-);
+const layerDrawerBadgeLabel = computed(() => browse.activeLayersCount + '/' + browse.layersCount);
 
 onMounted(() => {
   if (affixRef.value) {
@@ -62,7 +60,7 @@ const btnColor = '#fff';
         <n-badge
           :value="layerDrawerBadgeLabel"
           color="var(--accent-color-inverted-pastel)"
-          :show="!!browse.layers.length"
+          :show="browse.layersCount > 0"
         >
           <n-button
             size="large"

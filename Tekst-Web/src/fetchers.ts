@@ -1,12 +1,6 @@
 import { ref, isRef, unref, watchEffect, type Ref } from 'vue';
 import { GET } from '@/api';
-import type {
-  UserReadPublic,
-  LayerNodeCoverage,
-  PlatformStats,
-  UserRead,
-  AnyLayerRead,
-} from '@/api';
+import type { UserReadPublic, LayerNodeCoverage, PlatformStats, UserRead } from '@/api';
 
 export function useProfile(
   usernameOrId: string | Ref<string>,
@@ -151,55 +145,6 @@ export function useUsersPublic() {
     users,
     loading,
     error,
-    load,
-  };
-}
-
-export function useLayers(
-  textId: string | Ref<string>,
-  includeOwners: boolean = true,
-  includeWritable: boolean = true,
-  includeShares: boolean = true
-) {
-  const layers = ref<AnyLayerRead[]>([]);
-  const error = ref(false);
-  const loading = ref(false);
-
-  async function load() {
-    loading.value = true;
-    layers.value = [];
-    error.value = false;
-
-    const { data, error: err } = await GET('/layers', {
-      params: {
-        query: {
-          textId: unref(textId),
-          owners: includeOwners,
-          writable: includeWritable,
-          shares: includeShares,
-        },
-      },
-    });
-
-    if (!err) {
-      layers.value = data;
-    } else {
-      error.value = true;
-    }
-    loading.value = false;
-    return data;
-  }
-
-  if (isRef(textId)) {
-    watchEffect(load);
-  } else {
-    load();
-  }
-
-  return {
-    layers,
-    error,
-    loading,
     load,
   };
 }
