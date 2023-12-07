@@ -141,7 +141,7 @@
     "layer_type": "plaintext",
     "node_id": { "$oid": "654ba288ec7833e469dde768" },
     "meta": null,
-    "text": "water’s sound"
+    "text": "sound of water."
   },
   {
     "_id": { "$oid": "654ba570ec7833e469dde780" },
@@ -150,7 +150,7 @@
     "layer_type": "plaintext",
     "node_id": { "$oid": "654ba287ec7833e469dde767" },
     "meta": null,
-    "text": "a frog jumps in"
+    "text": "a frog jumps in,"
   },
   {
     "_id": { "$oid": "654ba587ec7833e469dde781" },
@@ -159,7 +159,7 @@
     "layer_type": "plaintext",
     "node_id": { "$oid": "654ba282ec7833e469dde766" },
     "meta": null,
-    "text": "Old pond"
+    "text": "The old pond-"
   },
   {
     "_id": { "$oid": "654ba68eec7833e469dde783" },

@@ -26,8 +26,12 @@
     ],
     "comment": [
       {
-        "locale": "*",
+        "locale": "enUS",
         "translation": "This version includes repetition markers."
+      },
+      {
+        "locale": "deDE",
+        "translation": "Diese Version enthält Wiederholungszeichen."
       }
     ],
     "config": {
@@ -36,7 +40,9 @@
         "sourceLanguage": "DE",
         "languages": ["EN", "FR"]
       }
-    }
+    },
+    "category": "versions",
+    "modified_at": { "$date": "2023-12-07T10:45:18.031Z" }
   },
   {
     "_id": { "$oid": "654ba3a6ec7833e469dde77a" },
@@ -53,8 +59,7 @@
     "meta": [
       { "key": "author", "value": "Matsuo Bashō" },
       { "key": "year", "value": "1686" },
-      { "key": "language", "value": "JA" },
-      { "key": "Original Title", "value": "-" }
+      { "key": "language", "value": "JA" }
     ],
     "config": {
       "deeplLinks": {
@@ -62,7 +67,15 @@
         "sourceLanguage": "JA",
         "languages": ["EN", "DE", "FR"]
       }
-    }
+    },
+    "category": "versions",
+    "description": [
+      {
+        "locale": "enUS",
+        "translation": "The original text in Japanese language"
+      }
+    ],
+    "modified_at": { "$date": "2023-12-07T10:28:02.025Z" }
   },
   {
     "_id": { "$oid": "654ba525ec7833e469dde77e" },
@@ -82,7 +95,13 @@
         "sourceLanguage": "BG",
         "languages": ["EN", "DE"]
       }
-    }
+    },
+    "category": "translations",
+    "meta": [
+      { "key": "author", "value": "Robert Hass" },
+      { "key": "language", "value": "EN" }
+    ],
+    "modified_at": { "$date": "2023-12-07T10:50:25.713Z" }
   },
   {
     "_id": { "$oid": "654ba678ec7833e469dde782" },
@@ -102,6 +121,9 @@
         "sourceLanguage": "BG",
         "languages": ["EN", "DE"]
       }
-    }
+    },
+    "category": "versions",
+    "modified_at": { "$date": "2023-12-07T10:43:25.551Z" },
+    "meta": [{ "key": "language", "value": "Hepburn romanization" }]
   }
 ]
