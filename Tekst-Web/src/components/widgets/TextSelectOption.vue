@@ -18,7 +18,10 @@ defineProps<{
       <div>
         {{ text.title }}
       </div>
-      <div style="font-size: var(--app-ui-font-size-tiny); opacity: 0.8">
+      <div
+        v-if="text.subtitle?.length"
+        style="font-size: var(--app-ui-font-size-tiny); opacity: 0.8"
+      >
         <TranslationDisplay :value="text.subtitle" />
       </div>
       <div

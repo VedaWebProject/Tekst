@@ -61,7 +61,7 @@ const coveragePercent = computed(
       <h2 style="margin: 0">{{ layer.title }}</h2>
     </template>
 
-    <p v-if="layer.description">
+    <p v-if="layer.description?.length">
       <TranslationDisplay :value="layer.description" />
     </p>
 
@@ -120,7 +120,7 @@ const coveragePercent = computed(
     </template>
     <n-spin v-else style="width: 100%" />
 
-    <template v-if="layer.comment">
+    <template v-if="layer.comment?.length">
       <IconHeading level="3" :icon="ChatBubbleOutlineOutlined">
         {{ $t('models.layer.comment') }}
       </IconHeading>

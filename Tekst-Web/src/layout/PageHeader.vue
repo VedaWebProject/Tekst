@@ -20,7 +20,10 @@ const { pfData } = usePlatformData();
         id="current-text"
       >
         <TextSelect />
-        <span v-if="!state.smallScreen" class="current-text-subtitle">
+        <span
+          v-if="!state.smallScreen && state.text?.subtitle?.length"
+          class="current-text-subtitle"
+        >
           <TranslationDisplay :value="state.text?.subtitle" />
         </span>
       </div>

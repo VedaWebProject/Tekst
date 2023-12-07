@@ -14,7 +14,7 @@ import { useMainMenuOptions } from './navMenuOptions';
 
 import MenuRound from '@vicons/material/MenuRound';
 import DrawerMenu from './DrawerMenu.vue';
-import TranslationDisplay from '../TranslationDisplay.vue';
+import TranslationDisplay from '@/components/TranslationDisplay.vue';
 
 const { pfData, systemHome } = usePlatformData();
 const auth = useAuthStore();
@@ -42,7 +42,10 @@ watch(
       <RouterLink :to="!!systemHome ? { path: '/' } : { name: 'browse' }" class="navbar-title">
         {{ pfData?.settings.infoPlatformName }}
       </RouterLink>
-      <div v-if="pfData?.settings.showHeaderInfo" class="navbar-description">
+      <div
+        v-if="pfData?.settings.showHeaderInfo && pfData?.settings.infoSubtitle?.length"
+        class="navbar-description"
+      >
         <TranslationDisplay :value="pfData?.settings.infoSubtitle" />
       </div>
     </div>
