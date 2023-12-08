@@ -21,14 +21,6 @@ const show = computed({
     emits('update:show', value);
   },
 });
-
-function handleToggle(id: string, activate: boolean) {
-  if (activate) {
-    browse.activateLayer(id);
-  } else {
-    browse.deactivateLayer(id);
-  }
-}
 </script>
 
 <template>
@@ -52,11 +44,10 @@ function handleToggle(id: string, activate: boolean) {
         <LayerToggleDrawerItem
           v-for="layer in category.layers"
           :key="`${layer.id}`"
-          :active="layer.active"
+          v-model:active="layer.active"
           :layer="layer"
           :user="auth.user"
           :disabled="!layer.units?.length"
-          @update:active="(a) => handleToggle(layer.id, a)"
         />
       </template>
     </n-drawer-content>

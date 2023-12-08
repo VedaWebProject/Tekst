@@ -214,7 +214,7 @@ function handleDeleteClick(layer: AnyLayerRead) {
       } else {
         message.error($t('errors.unexpected'), error);
       }
-      await layers.loadLayers();
+      await layers.load();
       actionsLoading.value = false;
     },
   });

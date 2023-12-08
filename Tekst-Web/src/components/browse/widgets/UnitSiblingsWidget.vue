@@ -82,11 +82,7 @@ async function handleClick() {
     <n-spin v-if="loading" style="margin: 3rem 0 2rem 0; width: 100%" />
 
     <div v-else-if="units.length">
-      <component
-        :is="unitComponents[layer.layerType]"
-        :layer="{ ...layer, units: units }"
-        :layer-config="layer.config"
-      />
+      <component :is="unitComponents[layer.layerType]" :layer="{ ...layer, units: units }" />
     </div>
 
     <span v-else>{{ $t('errors.unexpected') }}</span>

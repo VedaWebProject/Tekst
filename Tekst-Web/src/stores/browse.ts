@@ -2,11 +2,12 @@ import { ref, computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { defineStore } from 'pinia';
 import { useStateStore, useLayersStore } from '@/stores';
-import type { NodeRead } from '@/api';
+import type { AnyLayerRead, AnyUnitRead, NodeRead } from '@/api';
 import { GET } from '@/api';
 import { pickTranslation } from '@/utils';
 import { $t } from '@/i18n';
 import { usePlatformData } from '@/platformData';
+import { useMessages } from '@/messages';
 
 export const useBrowseStore = defineStore('browse', () => {
   // composables
@@ -15,21 +16,20 @@ export const useBrowseStore = defineStore('browse', () => {
   const { pfData } = usePlatformData();
   const route = useRoute();
   const router = useRouter();
+  const { message } = useMessages();
 
   /* BASIC BROWSE UI STATE */
 
   const showLayerToggleDrawer = ref(false);
   const reducedView = ref(false);
   const loadingNodePath = ref(true); // this is intentional!
+  const loadingUnits = ref(false);
   const loading = computed(() => loadingNodePath.value || layersStore.loading);
 
-  /* BROWSE NODE PATH */
+  /* BROWSE LOCATION */
 
   const nodePath = ref<NodeRead[]>([]);
-  const nodePathHead = computed(() =>
-    nodePath.value.length > 0 ? nodePath.value[nodePath.value.length - 1] : undefined
-  );
-  const nodePathRoot = computed(() => (nodePath.value.length > 0 ? nodePath.value[0] : undefined));
+  const nodePathHead = computed(() => nodePath.value[nodePath.value.length - 1]);
   const level = computed(() =>
     nodePathHead.value?.level !== undefined
       ? nodePathHead.value.level
@@ -94,15 +94,65 @@ export const useBrowseStore = defineStore('browse', () => {
     }
   });
 
+  // load units data on browse location change
+  watch(
+    () => nodePathHead.value,
+    async () => {
+      await loadUnits(nodePath.value.map((n) => n.id));
+    },
+    {
+      immediate: true,
+    }
+  );
+
   /* LAYERS AND UNITS */
 
-  const layersCount = computed(() => layersStore.data.length);
-  const activeLayersCount = computed(() => layersStore.data.filter((l) => l.active).length);
+  const layers = ref<AnyLayerRead[]>([]);
+
+  watch(
+    () => layersStore.data,
+    (newLayers) => {
+      // process changed available layers
+      layers.value =
+        newLayers.map((l) => {
+          const existingLayer = layers.value.find((el) => l.id === el.id);
+          return {
+            ...l,
+            active: !existingLayer || existingLayer.active,
+            units: existingLayer?.units || [],
+          };
+        }) || [];
+    },
+    { immediate: true }
+  );
+
+  async function loadUnits(nodeIds: string[]) {
+    if (!nodeIds?.length || loadingUnits.value || !state.text) {
+      return;
+    }
+    loadingUnits.value = true;
+    const { data, error } = await GET('/units', {
+      params: { query: { nodeId: nodeIds } },
+    });
+    if (!error) {
+      // assign units to layers
+      layers.value.forEach((l: AnyLayerRead) => {
+        l.units = data.filter((u: AnyUnitRead) => u.layerId == l.id);
+      });
+    } else {
+      message.error('Error loading data layer units for this location', error.detail?.toString());
+    }
+    loadingUnits.value = false;
+  }
+
+  const layersCount = computed(() => layers.value.length);
+  const activeLayersCount = computed(() => layers.value.filter((l) => l.active).length);
+
   const layersCategorized = computed(() => {
     const categorized =
       pfData.value?.settings.layerCategories?.map((c) => ({
         category: { key: c.key, translation: pickTranslation(c.translations, state.locale) },
-        layers: layersStore.data.filter((l) => l.category === c.key),
+        layers: layers.value.filter((l) => l.category === c.key),
       })) || [];
     const uncategorized = [
       {
@@ -110,35 +160,11 @@ export const useBrowseStore = defineStore('browse', () => {
           key: undefined,
           translation: $t('browse.uncategorized'),
         },
-        layers: layersStore.data.filter(
-          (l) => !categorized.find((c) => c.category.key === l.category)
-        ),
+        layers: layers.value.filter((l) => !categorized.find((c) => c.category.key === l.category)),
       },
     ];
     return [...categorized, ...uncategorized].filter((c) => c.layers.length);
   });
-
-  function activateLayer(id: string) {
-    layersStore.data = layersStore.data.map((l) => (l.id === id ? { ...l, active: true } : l));
-  }
-
-  function deactivateLayer(id: string) {
-    layersStore.data = layersStore.data.map((l) => (l.id === id ? { ...l, active: false } : l));
-  }
-
-  // load units data on browse location change
-  watch(
-    () => nodePathHead.value,
-    async () => {
-      const nodeIds = nodePath.value.map((n) => n.id);
-      if (!nodeIds.length) return;
-      // fetch units data
-      await layersStore.loadUnits(nodeIds);
-    },
-    {
-      immediate: true,
-    }
-  );
 
   return {
     showLayerToggleDrawer,
@@ -147,11 +173,8 @@ export const useBrowseStore = defineStore('browse', () => {
     layersCount,
     activeLayersCount,
     layersCategorized,
-    activateLayer,
-    deactivateLayer,
     nodePath,
     nodePathHead,
-    nodePathRoot,
     level,
     position,
     updateBrowseNodePath,
