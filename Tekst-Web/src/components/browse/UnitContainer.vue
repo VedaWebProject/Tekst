@@ -29,14 +29,6 @@ const headerMiddleText = computed(() =>
     : ''
 );
 
-const emptyUnitStyle = {
-  backgroundColor: 'var(--main-bg-color)',
-  border: '2px dashed var(--main-bg-color)',
-  boxShadow: 'none',
-  padding: '12px var(--layout-gap)',
-};
-
-const altUnitContainerStyle = computed(() => (!props.layer.units?.length ? emptyUnitStyle : {}));
 const unitContainerTitle = computed(() =>
   !props.layer.units?.length ? $t('browse.locationLayerNoData') : undefined
 );
@@ -50,8 +42,7 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
     v-if="layer.active && (layer.units?.length || !browse.reducedView)"
     ref="unitContainerRef"
     class="content-block unit-container"
-    :class="browse.reducedView ? 'reduced' : ''"
-    :style="altUnitContainerStyle"
+    :class="{ reduced: browse.reducedView, empty: !layer.units?.length }"
     :title="unitContainerTitle"
   >
     <div class="unit-header" :class="browse.reducedView ? 'reduced' : ''">
@@ -100,6 +91,15 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
   border-bottom-left-radius: var(--app-ui-border-radius);
   border-bottom-right-radius: var(--app-ui-border-radius);
   margin-bottom: var(--layout-gap);
+}
+.unit-container.empty {
+  background-color: var(--main-bg-color);
+  border: 2px dashed var(--main-bg-color);
+  box-shadow: none;
+  padding: 12px var(--layout-gap);
+}
+.unit-container.empty > .unit-header {
+  margin-bottom: 0;
 }
 .unit-header {
   margin-bottom: 0.5rem;
