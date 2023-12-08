@@ -34,7 +34,11 @@ const activeLayersCategorized = computed(() =>
 
   <BrowseToolbar />
 
-  <template v-if="activeLayersCategorized.length">
+  <div
+    v-if="activeLayersCategorized.length"
+    class="unit-container-container"
+    :class="browse.reducedView ? 'reduced' : ''"
+  >
     <template v-for="category in activeLayersCategorized" :key="category.key">
       <h2
         v-if="
@@ -45,11 +49,14 @@ const activeLayersCategorized = computed(() =>
       >
         {{ category.category.translation }}
       </h2>
-      <template v-for="layer in category.layers" :key="layer.id">
-        <UnitContainer :loading="browse.loading" :layer="layer" />
-      </template>
+      <UnitContainer
+        v-for="layer in category.layers"
+        :key="layer.id"
+        :loading="browse.loading"
+        :layer="layer"
+      />
     </template>
-  </template>
+  </div>
 
   <HugeLabeledIcon
     v-else-if="browse.loading"
@@ -71,5 +78,8 @@ const activeLayersCategorized = computed(() =>
 <style scoped>
 .browse-heading-location.smallscreen {
   font-size: 1.3rem;
+}
+.unit-container-container.reduced {
+  box-shadow: var(--app-ui-block-box-shadow);
 }
 </style>

@@ -87,7 +87,19 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
 .unit-container.reduced {
   padding-top: 0.3rem;
   padding-bottom: 0.3rem;
-  margin: 0.5rem 0;
+  margin: 0;
+  box-shadow: none;
+  border-radius: 0;
+}
+.unit-container.reduced:first-child {
+  border-top-left-radius: var(--app-ui-border-radius);
+  border-top-right-radius: var(--app-ui-border-radius);
+  margin-top: var(--layout-gap);
+}
+.unit-container.reduced:last-child {
+  border-bottom-left-radius: var(--app-ui-border-radius);
+  border-bottom-right-radius: var(--app-ui-border-radius);
+  margin-bottom: var(--layout-gap);
 }
 .unit-header {
   margin-bottom: 0.5rem;
