@@ -24,18 +24,18 @@ export const useBrowseStore = defineStore('browse', () => {
   const reducedView = ref(false);
   const loadingNodePath = ref(true); // this is intentional!
   const loadingUnits = ref(false);
-  const loading = computed(() => loadingNodePath.value || layersStore.loading);
+  const loading = computed(
+    () => loadingUnits.value || loadingNodePath.value || layersStore.loading
+  );
 
   /* BROWSE LOCATION */
 
   const nodePath = ref<NodeRead[]>([]);
-  const nodePathHead = computed(() => nodePath.value[nodePath.value.length - 1]);
-  const level = computed(() =>
-    nodePathHead.value?.level !== undefined
-      ? nodePathHead.value.level
-      : state.text?.defaultLevel || 0
+  const nodePathHead = computed<NodeRead | undefined>(
+    () => nodePath.value[nodePath.value.length - 1]
   );
-  const position = computed(() => nodePathHead.value?.position);
+  const level = computed(() => nodePathHead.value?.level ?? state.text?.defaultLevel ?? 0);
+  const position = computed(() => nodePathHead.value?.position ?? 0);
 
   // update browse node path
   async function updateBrowseNodePath(lvl?: string, pos?: string) {
@@ -44,6 +44,10 @@ export const useBrowseStore = defineStore('browse', () => {
     const qLvl = parseInt(lvl || route.query.lvl?.toString() || '');
     const qPos = parseInt(pos || route.query.pos?.toString() || '');
     if (Number.isInteger(qLvl) && Number.isInteger(qPos)) {
+      if (qLvl == nodePathHead.value?.level && qPos == nodePathHead.value?.position) {
+        loadingNodePath.value = false;
+        return;
+      }
       // fill browse node path up to root (no more parent)
       const { data: path, error } = await GET('/browse/nodes/path', {
         params: { query: { textId: state.text?.id || '', level: qLvl, position: qPos } },
@@ -98,7 +102,7 @@ export const useBrowseStore = defineStore('browse', () => {
   watch(
     () => nodePathHead.value,
     async () => {
-      await loadUnits(nodePath.value.map((n) => n.id));
+      await loadUnits();
     },
     {
       immediate: true,
@@ -108,6 +112,11 @@ export const useBrowseStore = defineStore('browse', () => {
   /* LAYERS AND UNITS */
 
   const layers = ref<AnyLayerRead[]>([]);
+  const layersCount = computed(() => layers.value.length);
+  const activeLayersCount = computed(() => layers.value.filter((l) => l.active).length);
+  const layersCategorized = ref<
+    { category: { key: string | undefined; translation: string }; layers: AnyLayerRead[] }[]
+  >([]);
 
   watch(
     () => layersStore.data,
@@ -122,12 +131,30 @@ export const useBrowseStore = defineStore('browse', () => {
             units: existingLayer?.units || [],
           };
         }) || [];
+      // compute categorized layers
+      const categorized =
+        pfData.value?.settings.layerCategories?.map((c) => ({
+          category: { key: c.key, translation: pickTranslation(c.translations, state.locale) },
+          layers: layers.value.filter((l) => l.category === c.key),
+        })) || [];
+      const uncategorized = [
+        {
+          category: {
+            key: undefined,
+            translation: $t('browse.uncategorized'),
+          },
+          layers: layers.value.filter(
+            (l) => !categorized.find((c) => c.category.key === l.category)
+          ),
+        },
+      ];
+      layersCategorized.value = [...categorized, ...uncategorized].filter((c) => c.layers.length);
     },
     { immediate: true }
   );
 
-  async function loadUnits(nodeIds: string[]) {
-    if (!nodeIds?.length || loadingUnits.value || !state.text) {
+  async function loadUnits(nodeIds: string[] = nodePath.value.map((n) => n.id)) {
+    if (!nodeIds?.length || !state.text) {
       return;
     }
     loadingUnits.value = true;
@@ -144,27 +171,6 @@ export const useBrowseStore = defineStore('browse', () => {
     }
     loadingUnits.value = false;
   }
-
-  const layersCount = computed(() => layers.value.length);
-  const activeLayersCount = computed(() => layers.value.filter((l) => l.active).length);
-
-  const layersCategorized = computed(() => {
-    const categorized =
-      pfData.value?.settings.layerCategories?.map((c) => ({
-        category: { key: c.key, translation: pickTranslation(c.translations, state.locale) },
-        layers: layers.value.filter((l) => l.category === c.key),
-      })) || [];
-    const uncategorized = [
-      {
-        category: {
-          key: undefined,
-          translation: $t('browse.uncategorized'),
-        },
-        layers: layers.value.filter((l) => !categorized.find((c) => c.category.key === l.category)),
-      },
-    ];
-    return [...categorized, ...uncategorized].filter((c) => c.layers.length);
-  });
 
   return {
     showLayerToggleDrawer,

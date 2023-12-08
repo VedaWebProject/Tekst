@@ -2,7 +2,7 @@ import { NIcon, type MenuOption } from 'naive-ui';
 import { h, type Component, computed } from 'vue';
 import { RouterLink, type RouteLocationRaw } from 'vue-router';
 import { $t } from '@/i18n';
-import { useStateStore } from '@/stores';
+import { useBrowseStore, useStateStore } from '@/stores';
 import { usePlatformData } from '@/platformData';
 import type { ClientSegmentHead } from '@/api';
 
@@ -43,6 +43,7 @@ function renderLink(
 export function useMainMenuOptions(showIcons: boolean = true) {
   const { pfData } = usePlatformData();
   const state = useStateStore();
+  const browse = useBrowseStore();
 
   const infoPagesOptions = computed(() => {
     const pages: ClientSegmentHead[] = [];
@@ -72,6 +73,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
       label: renderLink(() => $t('nav.browse'), {
         name: 'browse',
         params: { text: state.text?.slug },
+        query: { lvl: browse.level, pos: browse.position },
       }),
       key: 'browse',
       icon: renderIcon(MenuBookOutlined, !showIcons),
