@@ -17,7 +17,6 @@ export const useLayersStore = defineStore('layers', () => {
       return;
     }
     loading.value = true;
-    layers.value = [];
     error.value = false;
 
     const { data, error: err } = await GET('/layers', {

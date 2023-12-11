@@ -131,6 +131,12 @@ export const useBrowseStore = defineStore('browse', () => {
             units: existingLayer?.units || [],
           };
         }) || [];
+    }
+  );
+
+  watch(
+    layers,
+    () => {
       // compute categorized layers
       const categorized =
         pfData.value?.settings.layerCategories?.map((c) => ({
