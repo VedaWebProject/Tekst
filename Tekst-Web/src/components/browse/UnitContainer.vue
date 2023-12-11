@@ -23,11 +23,16 @@ const state = useStateStore();
 const unitContainerRef = ref();
 const isUnitContainerHovered = useElementHover(unitContainerRef, { delayEnter: 0, delayLeave: 0 });
 
-const headerMiddleText = computed(() =>
-  props.layer.level !== browse.level
-    ? `(${$t('browse.location.level')}: ${state.textLevelLabels[props.layer.level]})`
-    : ''
-);
+const headerExtraText = computed(() => {
+  if (!browse.loadingLayers && props.layer.level !== browse.level) {
+    const level = state.textLevelLabels[props.layer.level];
+    return level
+      ? `(${$t('browse.location.level')}: ${state.textLevelLabels[props.layer.level]})`
+      : '';
+  } else {
+    return '';
+  }
+});
 
 const unitContainerTitle = computed(() =>
   !props.layer.units?.length ? $t('browse.locationLayerNoData') : undefined
@@ -52,7 +57,7 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
           {{ layer.title }}
         </div>
         <div class="unit-header-title-extra">
-          {{ headerMiddleText }}
+          {{ headerExtraText }}
         </div>
       </div>
       <UnitHeaderWidgetBar :layer="layer" :style="headerWidgetsVisibilityStyle" />

@@ -24,6 +24,7 @@ export const useBrowseStore = defineStore('browse', () => {
   const reducedView = ref(false);
   const loadingNodePath = ref(true); // this is intentional!
   const loadingUnits = ref(false);
+  const loadingLayers = computed(() => layersStore.loading);
   const loading = computed(
     () => loadingUnits.value || loadingNodePath.value || layersStore.loading
   );
@@ -182,6 +183,9 @@ export const useBrowseStore = defineStore('browse', () => {
     showLayerToggleDrawer,
     reducedView,
     loading,
+    loadingNodePath,
+    loadingUnits,
+    loadingLayers,
     layersCount,
     activeLayersCount,
     layersCategorized,
