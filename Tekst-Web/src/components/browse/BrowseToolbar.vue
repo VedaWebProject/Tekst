@@ -13,7 +13,9 @@ const state = useStateStore();
 const browse = useBrowseStore();
 
 const affixRef = ref(null);
-const layerDrawerBadgeLabel = computed(() => browse.activeLayersCount + '/' + browse.layersCount);
+const layerDrawerBadgeLabel = computed(() =>
+  browse.layersCount ? browse.activeLayersCount + '/' + browse.layersCount : '...'
+);
 
 onMounted(() => {
   if (affixRef.value) {
@@ -57,11 +59,7 @@ const btnColor = '#fff';
           </n-button>
         </n-badge>
 
-        <n-badge
-          :value="layerDrawerBadgeLabel"
-          color="var(--accent-color-inverted-pastel)"
-          :show="browse.layersCount > 0"
-        >
+        <n-badge :value="layerDrawerBadgeLabel" color="var(--accent-color-inverted-pastel)">
           <n-button
             size="large"
             :title="$t('browse.toolbar.tipOpenDataLayerList')"
