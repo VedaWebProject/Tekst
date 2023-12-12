@@ -32,9 +32,10 @@ const presentNodes = computed(
 );
 const coveragePercent = computed(
   () =>
-    coverage.value &&
-    presentNodes.value &&
-    Math.round((presentNodes.value / coverage.value.length) * 100)
+    (coverage.value &&
+      presentNodes.value &&
+      Math.round((presentNodes.value / coverage.value.length) * 100)) ||
+    0
 );
 </script>
 
@@ -101,7 +102,6 @@ const coveragePercent = computed(
         }}
       </p>
       <n-progress
-        v-if="coveragePercent"
         type="line"
         :percentage="coveragePercent"
         :height="18"
