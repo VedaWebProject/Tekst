@@ -20,7 +20,7 @@ import { $t } from '@/i18n';
 import type { TextCreate } from '@/api';
 import { useModelChanges } from '@/modelChanges';
 import { usePlatformData } from '@/platformData';
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
 import _cloneDeep from 'lodash.clonedeep';
 import TranslationFormItem from '@/components/TranslationFormItem.vue';

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { $t } from '@/i18n';
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import { ref } from 'vue';
 import {
   NIcon,

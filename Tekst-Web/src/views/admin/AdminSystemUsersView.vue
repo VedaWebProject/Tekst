@@ -15,7 +15,7 @@ import {
   useDialog,
 } from 'naive-ui';
 import UserListItem from '@/components/admin/UserListItem.vue';
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import type { UserRead, UserUpdate } from '@/api';
 import { ref } from 'vue';
 import { computed } from 'vue';

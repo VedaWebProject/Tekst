@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { NButton, NIcon, NModal, NInput } from 'naive-ui';
 import ButtonFooter from '@/components/ButtonFooter.vue';
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import IconHeading from '@/components/typography/IconHeading.vue';
 
 import SearchRound from '@vicons/material/SearchRound';

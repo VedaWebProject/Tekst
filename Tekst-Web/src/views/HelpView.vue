@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { NSpin, NModal, NInput, NIcon } from 'naive-ui';
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import { useHelp, type HelpText } from '@/help';
 import { computed, onMounted, ref } from 'vue';
 import { watch } from 'vue';

@@ -2,7 +2,7 @@
 import { type AnyLayerUpdate, PATCH, type UserReadPublic } from '@/api';
 import { $t } from '@/i18n';
 import { useAuthStore, useStateStore } from '@/stores';
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import IconHeading from '@/components/typography/IconHeading.vue';
 import { useMessages } from '@/messages';
 import { computed, ref, watch, type VNodeChild, h } from 'vue';

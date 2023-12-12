@@ -11,7 +11,7 @@ import { $t } from '@/i18n';
 import { useModelChanges } from '@/modelChanges';
 import type { UserUpdate, UserUpdatePublicFields } from '@/api';
 import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import IconHeading from '@/components/typography/IconHeading.vue';
 import ButtonFooter from '@/components/ButtonFooter.vue';
 

@@ -5,7 +5,7 @@ import { useBrowseStore } from '@/stores';
 import LayerToggleDrawer from '@/components/browse/LayerToggleDrawer.vue';
 import UnitContainer from '@/components/browse/UnitContainer.vue';
 import HugeLabeledIcon from '@/components/HugeLabeledIcon.vue';
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import IconHeading from '@/components/typography/IconHeading.vue';
 
 import FolderOffTwotone from '@vicons/material/FolderOffTwotone';

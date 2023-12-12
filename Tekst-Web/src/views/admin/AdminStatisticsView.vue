@@ -3,7 +3,7 @@ import { useStats } from '@/fetchers';
 import { computed } from 'vue';
 import { NProgress, NSpin, NStatistic, NIcon } from 'naive-ui';
 import { usePlatformData } from '@/platformData';
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import IconHeading from '@/components/typography/IconHeading.vue';
 
 import SupervisorAccountRound from '@vicons/material/SupervisorAccountRound';

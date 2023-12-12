@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { $t } from '@/i18n';
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import HtmlEditor from '@/components/HtmlEditor.vue';
 import { computed, nextTick, ref } from 'vue';
 import {

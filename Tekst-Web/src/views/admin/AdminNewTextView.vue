@@ -19,7 +19,7 @@ import { useStateStore } from '@/stores';
 import { usePlatformData } from '@/platformData';
 import { useRouter } from 'vue-router';
 import type { TextCreate } from '@/api';
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import IconHeading from '@/components/typography/IconHeading.vue';
 
 import AddRound from '@vicons/material/AddRound';

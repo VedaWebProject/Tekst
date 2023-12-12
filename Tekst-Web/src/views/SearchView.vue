@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import IconHeading from '@/components/typography/IconHeading.vue';
 
 import ManageSearchFilled from '@vicons/material/ManageSearchFilled';

@@ -6,7 +6,7 @@ import { NButton, NModal, NSelect, NFormItem, NForm, NDivider } from 'naive-ui';
 import type { NodeRead, TextRead } from '@/api';
 import router from '@/router';
 import ButtonFooter from '@/components/ButtonFooter.vue';
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import { useMagicKeys, whenever } from '@vueuse/core';
 import { GET } from '@/api';
 import { useMessages } from '@/messages';

@@ -18,7 +18,7 @@ import { computed } from 'vue';
 import { $t } from '@/i18n';
 import { useAuthStore, useStateStore } from '@/stores';
 import LayerListItem from '@/components/LayerListItem.vue';
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import IconHeading from '@/components/typography/IconHeading.vue';
 import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
 import { useMessages } from '@/messages';

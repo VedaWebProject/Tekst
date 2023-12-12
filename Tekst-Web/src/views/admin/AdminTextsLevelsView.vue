@@ -7,7 +7,7 @@ import { computed, ref } from 'vue';
 import { localeProfiles } from '@/i18n';
 import type { Translation } from '@/api';
 import ButtonFooter from '@/components/ButtonFooter.vue';
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
 
 import { useMessages } from '@/messages';

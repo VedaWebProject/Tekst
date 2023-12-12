@@ -26,7 +26,7 @@ import AddOutlined from '@vicons/material/AddOutlined';
 import DeleteFilled from '@vicons/material/DeleteFilled';
 import ArrowForwardIosRound from '@vicons/material/ArrowForwardIosRound';
 import EditTwotone from '@vicons/material/EditTwotone';
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import FileDownloadOutlined from '@vicons/material/FileDownloadOutlined';
 import FileUploadOutlined from '@vicons/material/FileUploadOutlined';
 import { computed } from 'vue';

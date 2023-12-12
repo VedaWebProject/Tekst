@@ -50,6 +50,7 @@ async function handleHelpButtonClick() {
       color="var(--accent-color)"
       :size="size"
       :title="$t('help.tipHelpButton')"
+      :focusable="false"
       style="vertical-align: super"
       @click="handleHelpButtonClick"
     >
