@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { NButton, NIcon } from 'naive-ui';
-import AddRound from '@vicons/material/AddRound';
+import AddOutlined from '@vicons/material/AddOutlined';
 
 defineProps<{
   level: number;
@@ -19,7 +19,7 @@ defineEmits(['click']);
       @click="$emit('click', level)"
     >
       <template #icon>
-        <n-icon :component="AddRound" />
+        <n-icon :component="AddOutlined" />
       </template>
     </n-button>
     <div class="add-level-separator"></div>

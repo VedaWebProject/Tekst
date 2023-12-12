@@ -1,47 +1,66 @@
 <script setup lang="ts">
-import { type AnyLayerUpdate, PATCH } from '@/api';
+import { type AnyLayerCreate, POST, layerTypes } from '@/api';
 import { $t } from '@/i18n';
-import { useAuthStore, useStateStore } from '@/stores';
+import { useAuthStore, useLayersStore, useStateStore } from '@/stores';
 import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import IconHeading from '@/components/typography/IconHeading.vue';
 import { useMessages } from '@/messages';
 import { computed, ref, watch } from 'vue';
-import _cloneDeep from 'lodash.clonedeep';
 import { RouterLink } from 'vue-router';
-import { NDivider, NSpin, NForm, NButton, type FormInst } from 'naive-ui';
+import { NAlert, NSpin, NForm, NFormItem, NSelect, NButton, type FormInst } from 'naive-ui';
 import { layerFormRules } from '@/forms/formRules';
-import { useModelChanges } from '@/modelChanges';
-import UserDisplay from '@/components/UserDisplay.vue';
-import { useRoute } from 'vue-router';
 import { useUsersPublic } from '@/fetchers';
 import { useRouter } from 'vue-router';
 import ButtonFooter from '@/components/ButtonFooter.vue';
 import { usePlatformData } from '@/platformData';
 import { pickTranslation } from '@/utils';
-import { useLayersStore } from '@/stores/layers';
-import LayerPublicationStatus from '@/components/LayerPublicationStatus.vue';
 import DataLayerForm from '@/forms/DataLayerForm.vue';
 
 import LayersFilled from '@vicons/material/LayersFilled';
 import KeyboardArrowLeftOutlined from '@vicons/material/KeyboardArrowLeftOutlined';
 
 const { message } = useMessages();
-const route = useRoute();
 const router = useRouter();
 const state = useStateStore();
 const auth = useAuthStore();
 const { pfData } = usePlatformData();
-
 const layers = useLayersStore();
+
 const { users, loading: loadingUsers, error: errorUsers } = useUsersPublic();
-const layer = layers.data.find((l) => l.id === route.params.id);
-const getInitialModel = () => _cloneDeep(layer);
+const getInitialModel = () =>
+  ({
+    title: '',
+    description: [],
+    textId: state.text?.id || '',
+    level: state.text?.defaultLevel || 0,
+    layerType: 'plaintext',
+    ownerId: auth.user?.id || null,
+    category: null,
+    sharedRead: [],
+    sharedWrite: [],
+    public: false,
+    proposed: false,
+    citation: null,
+    meta: [],
+    comment: [],
+  }) as AnyLayerCreate;
 
 const formRef = ref<FormInst | null>(null);
 const loadingSave = ref(false);
-const loading = computed(() => layers.loading || loadingUsers.value || loadingSave.value);
-const model = ref<AnyLayerUpdate | undefined>(getInitialModel());
-const { changed, reset, getChanges } = useModelChanges(model);
+const loading = computed(() => loadingUsers.value || loadingSave.value);
+const model = ref<AnyLayerCreate>(getInitialModel());
+
+const layerTypeOptions = layerTypes.map((lt) => ({
+  label: () => $t(`layerTypes.${lt}`),
+  value: lt,
+}));
+
+const levelOptions = computed(() =>
+  state.textLevelLabels.map((label, i) => ({
+    label,
+    value: i,
+  }))
+);
 
 const categoryOptions = computed(
   () =>
@@ -85,7 +104,6 @@ watch(
 
 function handleResetClick() {
   model.value = getInitialModel();
-  reset();
 }
 
 async function handleSaveClick() {
@@ -93,16 +111,12 @@ async function handleSaveClick() {
   formRef.value
     ?.validate(async (validationError) => {
       if (validationError || !model.value) return;
-      const { data, error } = await PATCH('/layers/{id}', {
-        params: { path: { id: layer?.id || '' } },
-        body: {
-          ...(getChanges() as AnyLayerUpdate),
-          layerType: model.value.layerType,
-        },
+      const { data, error } = await POST('/layers', {
+        body: model.value,
       });
       if (!error) {
         message.success($t('dataLayers.edit.msgSaved', { title: data.title }));
-        layers.replace(data);
+        layers.add(data);
       } else {
         message.error($t('errors.unexpected'), error);
       }
@@ -116,9 +130,9 @@ async function handleSaveClick() {
 </script>
 
 <template>
-  <IconHeading v-if="layer" level="1" :icon="LayersFilled">
-    {{ $t('dataLayers.edit.heading') }}
-    <HelpButtonWidget help-key="dataLayerEditView" />
+  <IconHeading level="1" :icon="LayersFilled">
+    {{ $t('dataLayers.create.heading') }}
+    <HelpButtonWidget help-key="dataLayerCreateView" />
   </IconHeading>
 
   <router-link
@@ -135,34 +149,6 @@ async function handleSaveClick() {
   </router-link>
 
   <div v-if="model" class="content-block">
-    <h2>{{ layer?.title }}</h2>
-
-    <table v-if="layer" class="layer-info-table">
-      <tbody>
-        <tr>
-          <td class="row-key">{{ $t('models.text.modelLabel') }}:</td>
-          <td>{{ pfData?.texts?.find((t) => t.id === layer?.textId)?.title }}</td>
-        </tr>
-        <tr>
-          <td class="row-key">{{ $t('models.text.level') }}:</td>
-          <td>{{ state.textLevelLabels[layer?.level || 0] }}</td>
-        </tr>
-        <tr>
-          <td class="row-key">{{ $t('models.user.modelLabel') }}:</td>
-          <td v-if="layer?.owner"><UserDisplay :user="layer.owner" :show-icon="false" /></td>
-          <td v-else>–</td>
-        </tr>
-        <tr>
-          <td class="row-key">{{ $t('dataLayers.edit.status') }}:</td>
-          <td>
-            <LayerPublicationStatus :layer="layer" :show-icon="false" size="tiny" />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <n-divider />
-
     <n-form
       ref="formRef"
       :model="model"
@@ -171,6 +157,35 @@ async function handleSaveClick() {
       label-width="auto"
       require-mark-placement="right-hanging"
     >
+      <n-alert
+        type="error"
+        :closable="false"
+        :title="$t('general.important') + '!'"
+        :show-icon="false"
+        style="margin-bottom: var(--layout-gap); background-color: transparent"
+      >
+        <p>{{ $t('dataLayers.create.warnImmutable') }}</p>
+        <!-- LAYER TYPE -->
+        <n-form-item :label="$t('models.layer.layerType')" path="layerType">
+          <n-select
+            v-model:value="model.layerType"
+            :default-value="layerTypeOptions[0].value"
+            :disabled="loading"
+            :placeholder="$t('models.layer.layerType')"
+            :options="layerTypeOptions"
+          />
+        </n-form-item>
+        <!-- STRUCTURE LEVEL -->
+        <n-form-item :label="$t('models.layer.level')" path="level">
+          <n-select
+            v-model:value="model.level"
+            :disabled="loading"
+            :placeholder="$t('models.layer.level')"
+            :options="levelOptions"
+          />
+        </n-form-item>
+      </n-alert>
+      <!-- COMMON DATA LAYER FORM FIELDS -->
       <DataLayerForm
         v-model:model="model"
         :category-options="categoryOptions"
@@ -179,31 +194,16 @@ async function handleSaveClick() {
         :loading="loading"
         :loading-users="loadingUsers"
         :error-users="errorUsers"
-        :owner="layer?.owner"
-        :public="layer?.public"
+        :owner="auth.user"
+        :public="false"
       />
     </n-form>
 
     <ButtonFooter>
-      <n-button secondary :disabled="!changed" @click="handleResetClick">{{
-        $t('general.resetAction')
-      }}</n-button>
-      <n-button type="primary" :disabled="!changed" @click="handleSaveClick">{{
-        $t('general.saveAction')
-      }}</n-button>
+      <n-button secondary @click="handleResetClick">{{ $t('general.resetAction') }}</n-button>
+      <n-button type="primary" @click="handleSaveClick">{{ $t('general.saveAction') }}</n-button>
     </ButtonFooter>
   </div>
 
   <n-spin v-else-if="loading" size="large" style="width: 100%" />
 </template>
-
-<style scoped>
-table.layer-info-table {
-  font-size: var(--app-ui-font-size-tiny);
-  margin-bottom: var(--layout-gap);
-}
-table.layer-info-table td.row-key {
-  font-weight: var(--app-ui-font-weight-normal);
-  padding-right: var(--content-gap);
-}
-</style>

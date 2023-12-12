@@ -1,5 +1,6 @@
 import type { FormItemRule } from 'naive-ui';
 import { $t } from '@/i18n';
+import { layerTypes } from '@/api';
 
 export const translationFormRules: Record<string, FormItemRule[]> = {
   locale: [
@@ -489,6 +490,36 @@ export const layerFormRules: Record<string, FormItemRule[]> = {
       validator: (rule: FormItemRule, value: string) =>
         !!value && value.length >= 1 && value.length <= 128,
       message: () => $t('forms.rulesFeedback.minMaxChars', { min: 1, max: 128 }),
+      trigger: 'blur',
+    },
+  ],
+  layerType: [
+    {
+      required: true,
+      message: () =>
+        $t('forms.rulesFeedback.isRequired', {
+          x: $t('models.layer.layerType'),
+        }),
+      trigger: 'blur',
+    },
+    {
+      validator: (rule: FormItemRule, value: string) => !!value && layerTypes.includes(value),
+      message: () =>
+        $t('forms.rulesFeedback.mustBeOneOf', {
+          x: $t('models.layer.layerType'),
+          values: layerTypes.join(', '),
+        }),
+      trigger: 'blur',
+    },
+  ],
+  level: [
+    {
+      required: true,
+      type: 'number',
+      message: () =>
+        $t('forms.rulesFeedback.isRequired', {
+          x: $t('models.layer.level'),
+        }),
       trigger: 'blur',
     },
   ],

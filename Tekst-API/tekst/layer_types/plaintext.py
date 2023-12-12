@@ -26,12 +26,12 @@ class Plaintext(LayerTypeABC):
 
 
 class PlaintextLayerConfig(LayerConfigBase):
-    deepl_links: DeepLLinksConfig = Field(default_factory=DeepLLinksConfig)
+    deepl_links: DeepLLinksConfig = DeepLLinksConfig()
 
 
 class PlaintextLayer(LayerBase):
     layer_type: Literal["plaintext"]  # snake_cased layer type classname
-    config: PlaintextLayerConfig = Field(default_factory=PlaintextLayerConfig)
+    config: PlaintextLayerConfig = PlaintextLayerConfig()
 
 
 class PlaintextUnit(UnitBase):

@@ -21,7 +21,7 @@ import { useMessages } from '@/messages';
 import { platformSettingsFormRules } from '@/forms/formRules';
 import TranslationFormItem from '@/forms/TranslationFormItem.vue';
 
-import AddRound from '@vicons/material/AddRound';
+import AddOutlined from '@vicons/material/AddOutlined';
 import MinusRound from '@vicons/material/MinusRound';
 import ArrowUpwardOutlined from '@vicons/material/ArrowUpwardOutlined';
 import ArrowDownwardOutlined from '@vicons/material/ArrowDownwardOutlined';
@@ -298,7 +298,7 @@ function resetForm() {
                 @click="() => create(indexAction)"
               >
                 <template #icon>
-                  <n-icon :component="AddRound" />
+                  <n-icon :component="AddOutlined" />
                 </template>
               </n-button>
               <n-button

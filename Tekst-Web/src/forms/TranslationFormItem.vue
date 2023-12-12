@@ -14,7 +14,7 @@ import {
 import { computed } from 'vue';
 import { translationFormRules } from '@/forms/formRules';
 
-import AddRound from '@vicons/material/AddRound';
+import AddOutlined from '@vicons/material/AddOutlined';
 import MinusRound from '@vicons/material/MinusRound';
 
 const props = withDefaults(
@@ -145,7 +145,7 @@ const localeOptions = computed(() =>
             @click="() => create(actionIndex)"
           >
             <template #icon>
-              <n-icon :component="AddRound" />
+              <n-icon :component="AddOutlined" />
             </template>
           </n-button>
         </n-space>

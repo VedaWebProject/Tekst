@@ -23,12 +23,14 @@ general:
   info: Information
   warning: Warnung
   error: Fehler
+  important: Wichtig
   filters: Filter
   selected: ausgewählt
   flags: Merkmale
   language: Sprache
   platform: Plattform
   not: nicht
+  new: New
   areYouSureHelpTextHint: |
     Bitte vergewissern Sie sich, dass Sie die entsprechende Passage in den
     Hilfetexten zu diesem Thema gelesen und verstanden haben.
@@ -136,7 +138,7 @@ forms:
     minMaxChars: '{min} bis {max} Zeichen'
     minMaxItems: '{min} to {max} Elemente'
     isRequired: '{x} wird benötigt'
-    user:
+    mustBeOneOf: '{x} muss einer der folgenden Werte sein: {values}'
 
 register:
   register: Registrieren
@@ -146,12 +148,6 @@ register:
   activationNeededHint: Sie werden sich erst anmelden können, wenn Ihr Konto von uns aktiviert wurde. Sie werden darüber per Email benachrichtigt.
   activationNotNeededHint: Sie können sich jetzt anmelden.
   repeatPassword: '@:models.user.password wiederholen'
-  rulesFeedback:
-    emailInvalid: '@:models.user.email ist zu offensichtlich ungültig'
-    usernameChars: 'Erlaubte Zeichen: a-z, A-Z, 0-9 und - _'
-    passwordChars: 'Mindestens je ein Zeichen aus: a-z, A-Z and 0-9'
-    passwordRepReq: Passwort muss wiederholt werden
-    passwordRepNoMatch: Passwörter stimmen nicht überein
   errors:
     emailAlreadyRegistered: Diese Email-Adresse ist bereits registriert.
     usernameAlreadyRegistered: Dieser Benutzername ist bereits vergeben.
@@ -292,6 +288,10 @@ dataLayers:
     onlyForUnpublished: (nur für nicht veröffentlichte Datenschichten)
     msgSaved: Ihre Änderungen an der Datenschicht "{title}" wurden gespeichert.
     status: Status
+  create:
+    heading: Neue Datenschicht erstellen
+    warnImmutable: Diese Einstellungen können später nicht mehr geändert werden!
+    msgSaved: Ihre neue Datenschicht "{title}" wurden erstellt.
 
 account:
   account: Konto

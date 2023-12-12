@@ -14,6 +14,7 @@ from pydantic import (
 
 from tekst.models.common import (
     DocumentBase,
+    LayerConfigBase,
     Metadata,
     ModelBase,
     ModelFactoryMixin,
@@ -88,6 +89,7 @@ class LayerBase(ModelBase, ModelFactoryMixin):
             description="Plaintext, potentially multiline comment on this layer",
         ),
     ] = []
+    config: LayerConfigBase = LayerConfigBase()
 
     @field_validator("description", mode="after")
     @classmethod

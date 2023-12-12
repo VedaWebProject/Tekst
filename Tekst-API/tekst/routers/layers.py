@@ -71,10 +71,16 @@ router = APIRouter(
     responses={status.HTTP_201_CREATED: {"description": "Created"}},
 )
 async def create_layer(layer: AnyLayerCreateBody, user: UserDep) -> AnyLayerRead:
-    if not await TextDocument.get(layer.text_id):
+    text = await TextDocument.get(layer.text_id)
+    if not text:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Layer refers to non-existent text '{layer.text_id}'",
+        )
+    if layer.level > len(text.levels) - 1:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Text '{text.title}' only has {len(text.levels)} levels",
         )
     # force some values on creation
     layer.owner_id = user.id

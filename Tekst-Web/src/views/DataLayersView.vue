@@ -22,12 +22,13 @@ import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import IconHeading from '@/components/typography/IconHeading.vue';
 import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
 import { useMessages } from '@/messages';
+import { useRouter } from 'vue-router';
+import { useLayersStore } from '@/stores';
 
 import SearchRound from '@vicons/material/SearchRound';
 import UndoRound from '@vicons/material/UndoRound';
 import LayersFilled from '@vicons/material/LayersFilled';
-import { useRouter } from 'vue-router';
-import { useLayersStore } from '@/stores';
+import AddOutlined from '@vicons/material/AddOutlined';
 
 const state = useStateStore();
 const auth = useAuthStore();
@@ -233,6 +234,16 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
     <HelpButtonWidget help-key="dataLayersView" />
   </IconHeading>
 
+  <!-- Create new layer button -->
+  <n-space justify="end">
+    <n-button v-if="auth.user" type="primary" @click="router.push({ name: 'dataLayerCreate' })">
+      <template #icon>
+        <n-icon :component="AddOutlined" />
+      </template>
+      {{ $t('general.new') }}
+    </n-button>
+  </n-space>
+
   <template v-if="layers.data && !layers.error && !loading">
     <!-- Filters -->
     <n-collapse
@@ -274,6 +285,7 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
         </n-space>
       </n-collapse-item>
     </n-collapse>
+
     <!-- Layers List -->
     <div class="content-block">
       <template v-if="paginatedData.length > 0">

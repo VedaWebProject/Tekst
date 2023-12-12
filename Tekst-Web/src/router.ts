@@ -22,6 +22,7 @@ const RegisterView = () => import('@/views/RegisterView.vue');
 const InfoPageView = () => import('@/views/InfoPageView.vue');
 const DataLayersView = () => import('@/views/DataLayersView.vue');
 const DataLayerEditView = () => import('@/views/DataLayerEditView.vue');
+const DataLayerCreateView = () => import('@/views/DataLayerCreateView.vue');
 
 const AccountView = () => import('@/views/account/AccountView.vue');
 const AccountManageView = () => import('@/views/account/AccountManageView.vue');
@@ -134,6 +135,15 @@ const router = createRouter({
       path: '/layers/:text/edit/:id',
       name: 'dataLayerEdit',
       component: DataLayerEditView,
+      meta: {
+        isTextSpecific: true,
+        restricted: 'user',
+      },
+    },
+    {
+      path: '/layers/:text/create',
+      name: 'dataLayerCreate',
+      component: DataLayerCreateView,
       meta: {
         isTextSpecific: true,
         restricted: 'user',

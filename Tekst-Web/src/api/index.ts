@@ -71,6 +71,10 @@ export function getFullUrl(path: string, query?: Record<string, any>): URL {
   return new URL(relPath + queryString, apiUrl.replace(/\/*$/, '/'));
 }
 
+// export some common platform properties for use throughout codebase
+
+export const layerTypes = ['plaintext', 'debug'];
+
 // export components types for use throughout codebase
 
 // general
@@ -132,7 +136,9 @@ export type DebugUnitCreate = components['schemas']['DebugUnitCreate'];
 export type DebugUnitRead = components['schemas']['DebugUnitRead'];
 export type DebugUnitUpdate = components['schemas']['DebugUnitUpdate'];
 
+export type AnyUnitCreate = PlaintextUnitCreate | DebugUnitCreate;
 export type AnyUnitRead = PlaintextUnitRead | DebugUnitRead;
+export type AnyLayerCreate = PlaintextLayerCreate | DebugLayerCreate;
 export type AnyLayerRead = (PlaintextLayerRead | DebugLayerRead) & {
   active?: boolean;
   units?: AnyUnitRead[];

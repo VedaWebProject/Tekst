@@ -47,6 +47,10 @@ export const useLayersStore = defineStore('layers', () => {
     layers.value = layers.value.map((l) => (l.id === layer.id ? layer : l));
   }
 
+  function add(layer: AnyLayerRead) {
+    layers.value = layers.value.concat([layer]);
+  }
+
   // watch for events that trigger a reload of layers data
   watch(
     [() => auth.loggedIn, () => state.text],
@@ -62,5 +66,6 @@ export const useLayersStore = defineStore('layers', () => {
     loading,
     load,
     replace,
+    add,
   };
 });

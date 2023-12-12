@@ -22,7 +22,7 @@ import type { TextCreate } from '@/api';
 import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import IconHeading from '@/components/typography/IconHeading.vue';
 
-import AddRound from '@vicons/material/AddRound';
+import AddOutlined from '@vicons/material/AddOutlined';
 import MinusRound from '@vicons/material/MinusRound';
 import AddCircleOutlineRound from '@vicons/material/AddCircleOutlineRound';
 
@@ -189,7 +189,7 @@ async function handleSave() {
                 @click="() => create(indexAction)"
               >
                 <template #icon>
-                  <n-icon :component="AddRound" />
+                  <n-icon :component="AddOutlined" />
                 </template>
               </n-button>
             </n-space>

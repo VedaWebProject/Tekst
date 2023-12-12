@@ -5247,7 +5247,19 @@
       "PlaintextLayerConfig": {
         "properties": {
           "deeplLinks": {
-            "$ref": "#/components/schemas/DeepLLinksConfig"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DeepLLinksConfig"
+              }
+            ],
+            "default": {
+              "enabled": false,
+              "sourceLanguage": "BG",
+              "languages": [
+                "EN",
+                "DE"
+              ]
+            }
           }
         },
         "type": "object",
@@ -5380,7 +5392,21 @@
             "default": []
           },
           "config": {
-            "$ref": "#/components/schemas/PlaintextLayerConfig"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PlaintextLayerConfig"
+              }
+            ],
+            "default": {
+              "deeplLinks": {
+                "enabled": false,
+                "languages": [
+                  "EN",
+                  "DE"
+                ],
+                "sourceLanguage": "BG"
+              }
+            }
           }
         },
         "type": "object",
@@ -5577,7 +5603,21 @@
             "default": []
           },
           "config": {
-            "$ref": "#/components/schemas/PlaintextLayerConfig"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PlaintextLayerConfig"
+              }
+            ],
+            "default": {
+              "deeplLinks": {
+                "enabled": false,
+                "languages": [
+                  "EN",
+                  "DE"
+                ],
+                "sourceLanguage": "BG"
+              }
+            }
           }
         },
         "additionalProperties": true,
@@ -5734,7 +5774,21 @@
             "default": []
           },
           "config": {
-            "$ref": "#/components/schemas/PlaintextLayerConfig"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PlaintextLayerConfig"
+              }
+            ],
+            "default": {
+              "deeplLinks": {
+                "enabled": false,
+                "languages": [
+                  "EN",
+                  "DE"
+                ],
+                "sourceLanguage": "BG"
+              }
+            }
           }
         },
         "type": "object",

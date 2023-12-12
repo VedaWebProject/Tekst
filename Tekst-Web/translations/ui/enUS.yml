@@ -22,12 +22,14 @@ general:
   info: Information
   warning: Warning
   error: Error
+  important: Important
   filters: Filters
   selected: selected
   flags: Flags
   language: Language
   platform: Platform
   not: not
+  new: New
   areYouSureHelpTextHint: |
     Please make sure you have read and understood the corresponding passage in the
     help texts on this topic. You can find the help texts for any page by clicking the
@@ -133,6 +135,7 @@ forms:
     minMaxChars: '{min} to {max} characters'
     minMaxItems: '{min} to {max} items'
     isRequired: '{x} is required'
+    mustBeOneOf: '{x} must be one of the following values: {values}'
 
 register:
   register: Register
@@ -278,6 +281,10 @@ dataLayers:
     onlyForUnpublished: (only for unpublished data layers)
     msgSaved: Your changes to the data layer "{title}" have been saved.
     status: Status
+  create:
+    heading: Create new data layer
+    warnImmutable: These settings cannot be changed later!
+    msgSaved: Your new data layer "{title}" has been created.
 
 account:
   account: Account
