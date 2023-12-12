@@ -124,7 +124,7 @@ async def get_node_path(
     status_code=status.HTTP_200_OK,
 )
 async def get_path_options_by_head_id(
-    node_id: Annotated[PydanticObjectId, Path(alias="id")]
+    node_id: Annotated[PydanticObjectId, Path(alias="id")],
 ) -> list[list[NodeDocument]]:
     """
     Returns the options for selecting text locations derived from the node path of
@@ -163,7 +163,7 @@ async def get_path_options_by_head_id(
     status_code=status.HTTP_200_OK,
 )
 async def get_path_options_by_root_id(
-    node_id: Annotated[PydanticObjectId, Path(alias="id")]
+    node_id: Annotated[PydanticObjectId, Path(alias="id")],
 ) -> list[list[NodeDocument]]:
     """
     Returns the options for selecting text locations derived from the node path of

@@ -163,7 +163,7 @@ async def get_children(
 
 @router.get("/{id}", response_model=NodeRead, status_code=status.HTTP_200_OK)
 async def get_node(
-    node_id: Annotated[PydanticObjectId, Path(alias="id")]
+    node_id: Annotated[PydanticObjectId, Path(alias="id")],
 ) -> NodeDocument:
     node_doc = await NodeDocument.get(node_id)
     if not node_doc:

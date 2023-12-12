@@ -69,7 +69,7 @@ async def get_platform_data(
     summary="Get public user info",
 )
 async def get_public_user_info(
-    username_or_id: Annotated[str | PydanticObjectId, Path(alias="usernameOrId")]
+    username_or_id: Annotated[str | PydanticObjectId, Path(alias="usernameOrId")],
 ) -> dict:
     """Returns public information on the user with the specified username or ID"""
     if PydanticObjectId.is_valid(username_or_id):
