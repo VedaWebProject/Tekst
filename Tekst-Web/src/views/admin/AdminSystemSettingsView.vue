@@ -18,8 +18,8 @@ import { usePlatformData } from '@/platformData';
 import { PATCH, type PlatformSettingsUpdate } from '@/api';
 import { useModelChanges } from '@/modelChanges';
 import { useMessages } from '@/messages';
-import { platformSettingsFormRules } from '@/formRules';
-import TranslationFormItem from '@/components/TranslationFormItem.vue';
+import { platformSettingsFormRules } from '@/forms/formRules';
+import TranslationFormItem from '@/forms/TranslationFormItem.vue';
 
 import AddRound from '@vicons/material/AddRound';
 import MinusRound from '@vicons/material/MinusRound';

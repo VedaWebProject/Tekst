@@ -11,7 +11,7 @@ import {
   NAlert,
   type FormInst,
 } from 'naive-ui';
-import { textFormRules } from '@/formRules';
+import { textFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
 import { useMessages } from '@/messages';
 import { POST } from '@/api';

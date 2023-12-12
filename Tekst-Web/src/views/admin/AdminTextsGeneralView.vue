@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { textFormRules } from '@/formRules';
+import { textFormRules } from '@/forms/formRules';
 import { useMessages } from '@/messages';
 import { useStateStore } from '@/stores';
 import {
@@ -23,7 +23,7 @@ import { usePlatformData } from '@/platformData';
 import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
 import _cloneDeep from 'lodash.clonedeep';
-import TranslationFormItem from '@/components/TranslationFormItem.vue';
+import TranslationFormItem from '@/forms/TranslationFormItem.vue';
 
 import router from '@/router';
 

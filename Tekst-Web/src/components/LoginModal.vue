@@ -6,7 +6,7 @@ import { ref, onMounted, nextTick } from 'vue';
 import { $t } from '@/i18n';
 import { useMessages } from '@/messages';
 import type { RouteLocationRaw } from 'vue-router';
-import { accountFormRules } from '@/formRules';
+import { accountFormRules } from '@/forms/formRules';
 import { POST } from '@/api';
 import ButtonFooter from '@/components/ButtonFooter.vue';
 import { LoginTemplatePromise } from '@/templatePromises';

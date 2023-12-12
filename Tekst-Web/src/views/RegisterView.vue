@@ -16,7 +16,7 @@ import { POST } from '@/api';
 import { useMessages } from '@/messages';
 import { usePlatformData } from '@/platformData';
 import { useAuthStore } from '@/stores';
-import { accountFormRules } from '@/formRules';
+import { accountFormRules } from '@/forms/formRules';
 import router from '@/router';
 
 const auth = useAuthStore();

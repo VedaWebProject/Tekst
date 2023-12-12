@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useStateStore } from '@/stores';
 import InsertLevelButton from '@/components/admin/InsertLevelButton.vue';
-import { textFormRules } from '@/formRules';
+import { textFormRules } from '@/forms/formRules';
 import { NIcon, NModal, NAlert, NButton, NForm, type FormInst, useDialog } from 'naive-ui';
 import { computed, ref } from 'vue';
 import { localeProfiles } from '@/i18n';
@@ -15,7 +15,7 @@ import { $t } from '@/i18n';
 import { POST, PATCH, DELETE } from '@/api';
 import { usePlatformData } from '@/platformData';
 import { useI18n } from 'vue-i18n';
-import TranslationFormItem from '@/components/TranslationFormItem.vue';
+import TranslationFormItem from '@/forms/TranslationFormItem.vue';
 
 import DeleteRound from '@vicons/material/DeleteRound';
 import EditRound from '@vicons/material/EditRound';

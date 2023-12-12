@@ -22,7 +22,7 @@ import HugeLabeledIcon from '@/components/HugeLabeledIcon.vue';
 import { useI18n } from 'vue-i18n';
 import { useModelChanges } from '@/modelChanges';
 import { useMessages } from '@/messages';
-import { systemSegmentFormRules } from '@/formRules';
+import { systemSegmentFormRules } from '@/forms/formRules';
 
 import AddOutlined from '@vicons/material/AddOutlined';
 import FileOpenOutlined from '@vicons/material/FileOpenOutlined';

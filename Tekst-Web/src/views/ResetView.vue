@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { POST } from '@/api';
-import { accountFormRules } from '@/formRules';
+import { accountFormRules } from '@/forms/formRules';
 import { useMessages } from '@/messages';
 import type { FormInst, FormItemInst, FormItemRule } from 'naive-ui';
 import { ref } from 'vue';

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { DELETE, POST } from '@/api';
-import { accountFormRules } from '@/formRules';
+import { accountFormRules } from '@/forms/formRules';
 import { useMessages } from '@/messages';
 import { usePlatformData } from '@/platformData';
 import { useAuthStore } from '@/stores';

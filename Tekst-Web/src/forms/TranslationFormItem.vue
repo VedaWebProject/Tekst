@@ -12,7 +12,7 @@ import {
   type FormItemRule,
 } from 'naive-ui';
 import { computed } from 'vue';
-import { translationFormRules } from '@/formRules';
+import { translationFormRules } from '@/forms/formRules';
 
 import AddRound from '@vicons/material/AddRound';
 import MinusRound from '@vicons/material/MinusRound';

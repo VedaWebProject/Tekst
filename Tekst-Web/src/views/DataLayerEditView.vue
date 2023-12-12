@@ -24,7 +24,7 @@ import {
   type FormInst,
   type SelectOption,
 } from 'naive-ui';
-import { layerFormRules } from '@/formRules';
+import { layerFormRules } from '@/forms/formRules';
 import { useModelChanges } from '@/modelChanges';
 import UserDisplay from '@/components/UserDisplay.vue';
 import { useRoute } from 'vue-router';
@@ -37,7 +37,7 @@ import MinusRound from '@vicons/material/MinusRound';
 import AddRound from '@vicons/material/AddRound';
 import KeyboardArrowLeftOutlined from '@vicons/material/KeyboardArrowLeftOutlined';
 import PersonFilled from '@vicons/material/PersonFilled';
-import TranslationFormItem from '@/components/TranslationFormItem.vue';
+import TranslationFormItem from '@/forms/TranslationFormItem.vue';
 import { usePlatformData } from '@/platformData';
 import { pickTranslation } from '@/utils';
 import { useLayersStore } from '@/stores/layers';

@@ -5,7 +5,7 @@ import type { NodeTreeOption } from '@/views/admin/AdminTextsNodesView.vue';
 import { NForm, NFormItem, NModal, NButton, NInput, type InputInst, type FormInst } from 'naive-ui';
 import ButtonFooter from '@/components/ButtonFooter.vue';
 import { ref } from 'vue';
-import { nodeFormRules } from '@/formRules';
+import { nodeFormRules } from '@/forms/formRules';
 import { useStateStore } from '@/stores';
 import { useMessages } from '@/messages';
 
