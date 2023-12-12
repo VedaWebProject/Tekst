@@ -66,12 +66,9 @@ const coveragePercent = computed(
       <TranslationDisplay :value="layer.description" />
     </p>
 
-    <p v-if="layer.owner" style="font-size: var(--app-ui-font-size-small)">
-      <UserDisplay :user="layer.owner" />
-    </p>
-
-    <p v-if="auth.loggedIn">
-      <LayerPublicationStatus :layer="layer" />
+    <p>
+      <UserDisplay v-if="layer.owner" :user="layer.owner" size="small" />
+      <LayerPublicationStatus v-if="auth.loggedIn" :layer="layer" size="small" />
     </p>
 
     <template v-if="layer.meta && Object.keys(layer.meta).length">
