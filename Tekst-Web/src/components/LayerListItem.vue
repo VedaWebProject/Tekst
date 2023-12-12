@@ -50,14 +50,11 @@ const actionButtonProps = {
 </script>
 
 <template>
-  <n-list-item>
+  <n-list-item class="layer-list-item">
     <n-thing :title="targetLayer.title" content-style="margin-top: 8px">
       <template #description>
         <div style="font-size: var(--app-ui-font-size-small)">
-          <div
-            v-if="targetLayer.description?.length"
-            style="font-weight: var(--app-ui-font-weight-normal)"
-          >
+          <div v-if="targetLayer.description?.length">
             <TranslationDisplay :value="targetLayer.description" />
           </div>
           <div
@@ -152,3 +149,9 @@ const actionButtonProps = {
     </n-thing>
   </n-list-item>
 </template>
+
+<style>
+.layer-list-item .n-thing-header__title {
+  color: var(--accent-color) !important;
+}
+</style>
