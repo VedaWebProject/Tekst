@@ -1,16 +1,27 @@
 <script setup lang="ts">
+import { NIcon } from 'naive-ui';
+import { RouterLink } from 'vue-router';
 import type { UserReadPublic } from '@/api';
+import UserDisplayText from '@/components/UserDisplayText.vue';
 
-const props = defineProps<{
-  user: UserReadPublic & Record<string, any>;
-}>();
+import PersonFilled from '@vicons/material/PersonFilled';
 
-const fullName = (props.user.firstName + ' ' + (props.user.lastName || ''))?.trim();
-const personal = [fullName, props.user.affiliation].filter((s) => s).join(', ');
-const username = `@${props.user.username}`;
+withDefaults(
+  defineProps<{
+    user: UserReadPublic & Record<string, any>;
+    showIcon?: boolean;
+  }>(),
+  {
+    showIcon: true,
+  }
+);
 </script>
 
 <template>
-  <span v-if="personal" style="padding-right: 0.25rem">{{ personal }}</span>
-  <span :style="personal ? 'opacity: 0.5' : undefined">{{ username }}</span>
+  <div v-if="user" style="display: flex; align-items: center">
+    <n-icon v-if="showIcon" :component="PersonFilled" style="margin-right: 4px" />
+    <RouterLink :to="{ name: 'user', params: { username: user.username } }">
+      <UserDisplayText :user="user" />
+    </RouterLink>
+  </div>
 </template>

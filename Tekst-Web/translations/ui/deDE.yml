@@ -291,6 +291,7 @@ dataLayers:
     backToOverview: Zurück zur Datenschichten-Übersicht
     onlyForUnpublished: (nur für nicht veröffentlichte Datenschichten)
     msgSaved: Ihre Änderungen an der Datenschicht "{title}" wurden gespeichert.
+    status: Status
 
 account:
   account: Konto

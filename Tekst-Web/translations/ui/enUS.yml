@@ -277,6 +277,7 @@ dataLayers:
     backToOverview: Back to data layers overview
     onlyForUnpublished: (only for unpublished data layers)
     msgSaved: Your changes to the data layer "{title}" have been saved.
+    status: Status
 
 account:
   account: Account

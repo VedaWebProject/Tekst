@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { NButton, NModal, NProgress, NSpin, NIcon } from 'naive-ui';
+import { NButton, NModal, NProgress, NSpin } from 'naive-ui';
 import MetadataDisplay from '@/components/browse/MetadataDisplay.vue';
 import ButtonFooter from '@/components/ButtonFooter.vue';
 import IconHeading from '@/components/typography/IconHeading.vue';
@@ -16,7 +16,6 @@ import InfoOutlined from '@vicons/material/InfoOutlined';
 import ChatBubbleOutlineOutlined from '@vicons/material/ChatBubbleOutlineOutlined';
 import FormatQuoteFilled from '@vicons/material/FormatQuoteFilled';
 import PercentOutlined from '@vicons/material/PercentOutlined';
-import PersonFilled from '@vicons/material/PersonFilled';
 import LabelOutlined from '@vicons/material/LabelOutlined';
 
 const props = defineProps<{
@@ -67,14 +66,8 @@ const coveragePercent = computed(
       <TranslationDisplay :value="layer.description" />
     </p>
 
-    <p
-      v-if="layer.owner"
-      style="display: flex; align-items: center; font-size: var(--app-ui-font-size-small)"
-    >
-      <n-icon :component="PersonFilled" style="margin-right: 4px" />
-      <RouterLink :to="{ name: 'user', params: { username: layer.owner.username } }">
-        <UserDisplay :user="layer.owner" />
-      </RouterLink>
+    <p v-if="layer.owner" style="font-size: var(--app-ui-font-size-small)">
+      <UserDisplay :user="layer.owner" />
     </p>
 
     <p v-if="auth.loggedIn">

@@ -148,7 +148,7 @@ const actionButtonProps = {
           <LayerInfoWidget :layer="targetLayer" />
         </n-space>
       </template>
-      <LayerPublicationStatus :layer="targetLayer" />
+      <LayerPublicationStatus :layer="targetLayer" size="small" />
     </n-thing>
   </n-list-item>
 </template>

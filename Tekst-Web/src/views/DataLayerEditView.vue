@@ -12,6 +12,7 @@ import {
   NCollapse,
   NCollapseItem,
   NSelect,
+  NDivider,
   NSpace,
   NIcon,
   NDynamicInput,
@@ -27,6 +28,7 @@ import {
 import { layerFormRules } from '@/forms/formRules';
 import { useModelChanges } from '@/modelChanges';
 import UserDisplay from '@/components/UserDisplay.vue';
+import UserDisplayText from '@/components/UserDisplayText.vue';
 import { useRoute } from 'vue-router';
 import { useUsersPublic } from '@/fetchers';
 import { useRouter } from 'vue-router';
@@ -41,6 +43,7 @@ import TranslationFormItem from '@/forms/TranslationFormItem.vue';
 import { usePlatformData } from '@/platformData';
 import { pickTranslation } from '@/utils';
 import { useLayersStore } from '@/stores/layers';
+import LayerPublicationStatus from '@/components/LayerPublicationStatus.vue';
 
 const { message } = useMessages();
 const route = useRoute();
@@ -132,7 +135,7 @@ async function handleSaveClick() {
 }
 
 function renderUserSelectLabel(option: SelectOption): VNodeChild {
-  return h(UserDisplay, { user: option.user as UserReadPublic });
+  return h(UserDisplayText, { user: option.user as UserReadPublic });
 }
 
 function renderUserSelectTag(props: { option: SelectOption; handleClose: () => void }): VNodeChild {
@@ -179,14 +182,31 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
   <div v-if="model" class="content-block">
     <h2>{{ layer?.title }}</h2>
 
-    <table>
+    <table v-if="layer" class="layer-info-table">
       <tbody>
-        <tr v-if="users && model.ownerId">
-          <td>{{ $t('models.user.modelLabel') }}:</td>
-          <td>{{ layer?.owner?.username }}</td>
+        <tr>
+          <td class="row-key">{{ $t('models.text.modelLabel') }}:</td>
+          <td>{{ pfData?.texts?.find((t) => t.id === layer?.textId)?.title }}</td>
+        </tr>
+        <tr>
+          <td class="row-key">{{ $t('models.text.level') }}:</td>
+          <td>{{ state.textLevelLabels[layer?.level || 0] }}</td>
+        </tr>
+        <tr>
+          <td class="row-key">{{ $t('models.user.modelLabel') }}:</td>
+          <td v-if="layer?.owner"><UserDisplay :user="layer.owner" :show-icon="false" /></td>
+          <td v-else>–</td>
+        </tr>
+        <tr>
+          <td class="row-key">{{ $t('dataLayers.edit.status') }}:</td>
+          <td>
+            <LayerPublicationStatus :layer="layer" :show-icon="false" size="tiny" />
+          </td>
         </tr>
       </tbody>
     </table>
+
+    <n-divider />
 
     <n-form
       ref="formRef"
@@ -374,3 +394,14 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
 
   <n-spin v-else-if="loading" size="large" style="width: 100%" />
 </template>
+
+<style scoped>
+table.layer-info-table {
+  font-size: var(--app-ui-font-size-tiny);
+  margin-bottom: var(--layout-gap);
+}
+table.layer-info-table td.row-key {
+  font-weight: var(--app-ui-font-weight-normal);
+  padding-right: var(--content-gap);
+}
+</style>
