@@ -160,6 +160,18 @@ export const useBrowseStore = defineStore('browse', () => {
     { immediate: true }
   );
 
+  function setLayerActiveState(layerId: string, active: boolean) {
+    layers.value = layers.value.map((l) => {
+      if (l.id === layerId) {
+        return {
+          ...l,
+          active,
+        };
+      }
+      return l;
+    });
+  }
+
   async function loadUnits(nodeIds: string[] = nodePath.value.map((n) => n.id)) {
     if (!nodeIds?.length || !state.text) {
       return;
@@ -189,6 +201,7 @@ export const useBrowseStore = defineStore('browse', () => {
     layersCount,
     activeLayersCount,
     layersCategorized,
+    setLayerActiveState,
     nodePath,
     nodePathHead,
     level,

@@ -14,7 +14,7 @@ const browse = useBrowseStore();
 const { message } = useMessages();
 
 function handleClick() {
-  browse.deactivateLayer(props.layer.id);
+  browse.setLayerActiveState(props.layer.id, false);
   message.info(
     $t('browse.units.widgets.deactivateWidget.message', { layerTitle: props.layer.title })
   );
