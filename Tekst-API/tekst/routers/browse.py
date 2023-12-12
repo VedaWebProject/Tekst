@@ -212,6 +212,20 @@ async def get_layer_coverage_data(
                         "from": "units",
                         "localField": "_id",
                         "foreignField": "node_id",
+                        "let": {"node_id": "$_id", "layer_id": layer_id},
+                        "pipeline": [
+                            {
+                                "$match": {
+                                    "$expr": {
+                                        "$and": [
+                                            {"$eq": ["$node_id", "$$node_id"]},
+                                            {"$gte": ["$layer_id", "$$layer_id"]},
+                                        ]
+                                    }
+                                }
+                            },
+                            {"$project": {"_id": 1}},
+                        ],
                         "as": "units",
                     }
                 },
