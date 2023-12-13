@@ -131,7 +131,7 @@ async function handleSaveClick() {
 
 <template>
   <IconHeading level="1" :icon="LayersFilled">
-    {{ $t('dataLayers.create.heading') }}
+    {{ $t('dataLayers.create.heading', { text: state.text?.title }) }}
     <HelpButtonWidget help-key="dataLayerCreateView" />
   </IconHeading>
 

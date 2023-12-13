@@ -282,7 +282,7 @@ dataLayers:
     msgSaved: Your changes to the data layer "{title}" have been saved.
     status: Status
   create:
-    heading: Create new data layer
+    heading: New data layer on "{text}"
     warnImmutable: These settings cannot be changed later!
     msgSaved: Your new data layer "{title}" has been created.
 

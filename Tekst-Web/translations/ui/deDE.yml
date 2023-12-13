@@ -289,7 +289,7 @@ dataLayers:
     msgSaved: Ihre Änderungen an der Datenschicht "{title}" wurden gespeichert.
     status: Status
   create:
-    heading: Neue Datenschicht erstellen
+    heading: Neue Datenschicht zu "{text}"
     warnImmutable: Diese Einstellungen können später nicht mehr geändert werden!
     msgSaved: Ihre neue Datenschicht "{title}" wurden erstellt.
 
