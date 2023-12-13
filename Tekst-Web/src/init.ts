@@ -94,9 +94,10 @@ export function useInitializeApp() {
   ];
 
   const { result } = useAsyncQueue(
-    initSteps.map((step: InitStep, i: number) => (success: boolean) => {
+    initSteps.map((step: InitStep, i: number) => async (success: boolean) => {
       state.globalLoadingMsg = step.info();
       state.globalLoadingProgress = i / initSteps.length;
+      await new Promise((resolve) => setTimeout(resolve, 200));
       return step.action(success);
     })
   );
