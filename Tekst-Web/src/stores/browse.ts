@@ -115,9 +115,26 @@ export const useBrowseStore = defineStore('browse', () => {
   const layers = ref<AnyLayerRead[]>([]);
   const layersCount = computed(() => layers.value.length);
   const activeLayersCount = computed(() => layers.value.filter((l) => l.active).length);
-  const layersCategorized = ref<
+  const layersCategorized = computed<
     { category: { key: string | undefined; translation: string }; layers: AnyLayerRead[] }[]
-  >([]);
+  >(() => {
+    // compute categorized layers
+    const categorized =
+      pfData.value?.settings.layerCategories?.map((c) => ({
+        category: { key: c.key, translation: pickTranslation(c.translations, state.locale) },
+        layers: layers.value.filter((l) => l.category === c.key),
+      })) || [];
+    const uncategorized = [
+      {
+        category: {
+          key: undefined,
+          translation: $t('browse.uncategorized'),
+        },
+        layers: layers.value.filter((l) => !categorized.find((c) => c.category.key === l.category)),
+      },
+    ];
+    return [...categorized, ...uncategorized].filter((c) => c.layers.length);
+  });
 
   watch(
     () => layersStore.data,
@@ -133,31 +150,6 @@ export const useBrowseStore = defineStore('browse', () => {
           };
         }) || [];
     }
-  );
-
-  watch(
-    layers,
-    () => {
-      // compute categorized layers
-      const categorized =
-        pfData.value?.settings.layerCategories?.map((c) => ({
-          category: { key: c.key, translation: pickTranslation(c.translations, state.locale) },
-          layers: layers.value.filter((l) => l.category === c.key),
-        })) || [];
-      const uncategorized = [
-        {
-          category: {
-            key: undefined,
-            translation: $t('browse.uncategorized'),
-          },
-          layers: layers.value.filter(
-            (l) => !categorized.find((c) => c.category.key === l.category)
-          ),
-        },
-      ];
-      layersCategorized.value = [...categorized, ...uncategorized].filter((c) => c.layers.length);
-    },
-    { immediate: true }
   );
 
   function setLayerActiveState(layerId: string, active: boolean) {
