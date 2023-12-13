@@ -32,7 +32,7 @@ const { user, error } = useProfile(username);
   <div v-if="user && !error" class="content-block">
     <ul>
       <template v-for="(value, key) in user" :key="key">
-        <li v-if="key !== 'id'">
+        <li v-if="!['id', 'publicFields'].includes(key)">
           <b>{{ $t(`models.user.${key}`) }}: </b>
           <span v-if="value">{{ value }}</span>
           <span v-else style="opacity: 0.5; font-style: italic">{{

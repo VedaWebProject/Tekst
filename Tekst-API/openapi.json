@@ -6798,17 +6798,11 @@
             "pattern": "[a-zA-Z0-9\\-_]+",
             "title": "Username"
           },
-          "firstName": {
+          "name": {
             "type": "string",
-            "maxLength": 32,
+            "maxLength": 64,
             "minLength": 1,
-            "title": "Firstname"
-          },
-          "lastName": {
-            "type": "string",
-            "maxLength": 32,
-            "minLength": 1,
-            "title": "Lastname"
+            "title": "Name"
           },
           "affiliation": {
             "type": "string",
@@ -6831,9 +6825,9 @@
               "type": "string",
               "enum": [
                 "id",
-                "firstName",
-                "lastName",
-                "affiliation"
+                "name",
+                "affiliation",
+                "publicFields"
               ]
             },
             "type": "array",
@@ -6847,8 +6841,7 @@
           "email",
           "password",
           "username",
-          "firstName",
-          "lastName",
+          "name",
           "affiliation"
         ],
         "title": "UserCreate",
@@ -6885,17 +6878,11 @@
             "pattern": "[a-zA-Z0-9\\-_]+",
             "title": "Username"
           },
-          "firstName": {
+          "name": {
             "type": "string",
-            "maxLength": 32,
+            "maxLength": 64,
             "minLength": 1,
-            "title": "Firstname"
-          },
-          "lastName": {
-            "type": "string",
-            "maxLength": 32,
-            "minLength": 1,
-            "title": "Lastname"
+            "title": "Name"
           },
           "affiliation": {
             "type": "string",
@@ -6918,9 +6905,9 @@
               "type": "string",
               "enum": [
                 "id",
-                "firstName",
-                "lastName",
-                "affiliation"
+                "name",
+                "affiliation",
+                "publicFields"
               ]
             },
             "type": "array",
@@ -6942,8 +6929,7 @@
           "isSuperuser",
           "isVerified",
           "username",
-          "firstName",
-          "lastName",
+          "name",
           "affiliation",
           "createdAt"
         ],
@@ -6961,7 +6947,7 @@
             "type": "string",
             "title": "Username"
           },
-          "firstName": {
+          "name": {
             "anyOf": [
               {
                 "type": "string"
@@ -6970,18 +6956,7 @@
                 "type": "null"
               }
             ],
-            "title": "Firstname"
-          },
-          "lastName": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Lastname"
+            "title": "Name"
           },
           "affiliation": {
             "anyOf": [
@@ -6993,12 +6968,21 @@
               }
             ],
             "title": "Affiliation"
+          },
+          "publicFields": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Publicfields",
+            "description": "Data fields set public by this user"
           }
         },
         "type": "object",
         "required": [
           "id",
-          "username"
+          "username",
+          "publicFields"
         ],
         "title": "UserReadPublic"
       },
@@ -7071,7 +7055,7 @@
             ],
             "title": "Username"
           },
-          "firstName": {
+          "name": {
             "anyOf": [
               {
                 "type": "string"
@@ -7080,18 +7064,7 @@
                 "type": "null"
               }
             ],
-            "title": "Firstname"
-          },
-          "lastName": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Lastname"
+            "title": "Name"
           },
           "affiliation": {
             "anyOf": [
@@ -7119,9 +7092,9 @@
               "type": "string",
               "enum": [
                 "id",
-                "firstName",
-                "lastName",
-                "affiliation"
+                "name",
+                "affiliation",
+                "publicFields"
               ]
             },
             "type": "array",

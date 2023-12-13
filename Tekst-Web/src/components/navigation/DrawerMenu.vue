@@ -45,7 +45,7 @@ const allMenuOptions = computed(() => [
   {
     type: 'group',
     key: 'account-group',
-    label: `${auth.user?.firstName} ${auth.user?.lastName}`,
+    label: auth.user?.name || auth.user?.username,
     children: accountMenuOptions,
   },
   {

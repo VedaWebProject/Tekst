@@ -1,4 +1,4 @@
-Dear {first_name},
+Dear {name},
 
 please verify your email address for {platform_name} by clicking the following link or copying and pasting it into your browser's address bar:
 

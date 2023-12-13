@@ -134,7 +134,7 @@ export const useAuthStore = defineStore('auth', () => {
           })
         );
       }
-      message.success($t('general.welcome', { name: userData.firstName }));
+      message.success($t('general.welcome', { name: userData.name }));
       nextRoute && router.push(nextRoute);
       return true;
     } else {

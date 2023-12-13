@@ -26,7 +26,7 @@ const showUserDropdown = ref(false);
 
 const userOptions = computed(() => [
   {
-    label: renderLink(() => `${auth.user?.firstName} ${auth.user?.lastName}`, {
+    label: renderLink(() => `${auth.user?.name}`, {
       name: 'account',
     }),
     key: 'account',

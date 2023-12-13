@@ -68,29 +68,16 @@ export const accountFormRules: Record<string, FormItemRule[]> = {
       trigger: 'blur',
     },
   ],
-  firstName: [
+  name: [
     {
       required: true,
-      message: () => $t('forms.rulesFeedback.isRequired', { x: $t('models.user.firstName') }),
+      message: () => $t('forms.rulesFeedback.isRequired', { x: $t('models.user.name') }),
       trigger: 'blur',
     },
     {
       validator: (rule: FormItemRule, value: string) =>
         !!value && value.length >= 1 && value.length <= 32,
-      message: () => $t('forms.rulesFeedback.minMaxChars', { min: 1, max: 32 }),
-      trigger: 'blur',
-    },
-  ],
-  lastName: [
-    {
-      required: true,
-      message: () => $t('forms.rulesFeedback.isRequired', { x: $t('models.user.lastName') }),
-      trigger: 'blur',
-    },
-    {
-      validator: (rule: FormItemRule, value: string) =>
-        !!value && value.length >= 1 && value.length <= 32,
-      message: () => $t('forms.rulesFeedback.minMaxChars', { min: 1, max: 32 }),
+      message: () => $t('forms.rulesFeedback.minMaxChars', { min: 1, max: 64 }),
       trigger: 'blur',
     },
   ],

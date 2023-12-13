@@ -5,7 +5,7 @@ import { useMessages } from '@/messages';
 import { usePlatformData } from '@/platformData';
 import { useAuthStore } from '@/stores';
 import type { FormInst, FormItemInst, FormItemRule } from 'naive-ui';
-import { NCheckbox, NButton, NInput, NFormItem, NForm, useDialog } from 'naive-ui';
+import { NSpace, NCheckbox, NButton, NInput, NFormItem, NForm, useDialog } from 'naive-ui';
 import { ref } from 'vue';
 import { $t } from '@/i18n';
 import { useModelChanges } from '@/modelChanges';
@@ -33,14 +33,12 @@ const initialPasswordModel = () => ({
 
 const initialUserDataModel = () => ({
   username: auth.user?.username || null,
-  firstName: auth.user?.firstName || null,
-  lastName: auth.user?.lastName || null,
+  name: auth.user?.name || null,
   affiliation: auth.user?.affiliation || null,
 });
 
 const initialPublicFieldsModel = () => ({
-  firstName: auth.user?.publicFields?.includes('firstName') || false,
-  lastName: auth.user?.publicFields?.includes('lastName') || false,
+  name: auth.user?.publicFields?.includes('name') || false,
   affiliation: auth.user?.publicFields?.includes('affiliation') || false,
 });
 
@@ -260,20 +258,11 @@ async function handleDeleteAccount() {
           @keydown.enter.prevent
         />
       </n-form-item>
-      <n-form-item path="firstName" :label="$t('models.user.firstName')">
+      <n-form-item path="name" :label="$t('models.user.name')">
         <n-input
-          v-model:value="userDataFormModel.firstName"
+          v-model:value="userDataFormModel.name"
           type="text"
-          :placeholder="$t('models.user.firstName')"
-          :disabled="loading"
-          @keydown.enter.prevent
-        />
-      </n-form-item>
-      <n-form-item path="lastName" :label="$t('models.user.lastName')">
-        <n-input
-          v-model:value="userDataFormModel.lastName"
-          type="text"
-          :placeholder="$t('models.user.lastName')"
+          :placeholder="$t('models.user.name')"
           :disabled="loading"
           @keydown.enter.prevent
         />
@@ -412,16 +401,16 @@ async function handleDeleteAccount() {
       :show-label="false"
       require-mark-placement="right-hanging"
     >
-      <n-form-item>
+      <n-space vertical>
         <n-checkbox checked disabled aria-readonly :focusable="false">
           {{ $t(`models.user.username`) }}
         </n-checkbox>
-      </n-form-item>
-      <n-form-item v-for="(_, field) in publicFieldsFormModel" :key="field" :path="field">
-        <n-checkbox v-model:checked="publicFieldsFormModel[field]" :disabled="loading">
-          {{ $t(`models.user.${field}`) }}
-        </n-checkbox>
-      </n-form-item>
+        <template v-for="(_, field) in publicFieldsFormModel" :key="field">
+          <n-checkbox v-model:checked="publicFieldsFormModel[field]" :disabled="loading">
+            {{ $t(`models.user.${field}`) }}
+          </n-checkbox>
+        </template>
+      </n-space>
     </n-form>
     <ButtonFooter>
       <n-button

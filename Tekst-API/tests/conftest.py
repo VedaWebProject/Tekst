@@ -144,8 +144,7 @@ def get_fake_user() -> Callable:
             email="foo@bar.de" if not alternative else "bar@foo.de",
             username="test_user" if not alternative else "test_user2",
             password="poiPOI098",
-            first_name="Foo",
-            last_name="Bar",
+            name="Foo Bar",
             affiliation="Some Institution",
         )
 

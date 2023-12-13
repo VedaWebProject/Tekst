@@ -3,7 +3,6 @@ from typing import Annotated
 from beanie import PydanticObjectId
 from beanie.operators import Or
 from fastapi import APIRouter, Depends, HTTPException, Path, status
-from humps import decamelize
 
 from tekst.auth import (
     OptionalUserDep,
@@ -85,13 +84,7 @@ async def get_public_user_info(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"User '{username_or_id}' does not exist",
         )
-    return UserReadPublic(
-        id=user.id,
-        username=user.username,
-        **user.model_dump(
-            include={decamelize(field): True for field in user.public_fields}
-        ),
-    )
+    return UserReadPublic(**user.model_dump())
 
 
 @router.get(
@@ -99,13 +92,7 @@ async def get_public_user_info(
 )
 async def get_public_users(su: UserDep) -> list[UserDocument]:
     return [
-        UserReadPublic(
-            id=user.id,
-            username=user.username,
-            **user.model_dump(
-                include={decamelize(field): True for field in user.public_fields}
-            ),
-        )
+        UserReadPublic(**user.model_dump())
         for user in await UserDocument.find_all().to_list()
         if user.is_active
     ]

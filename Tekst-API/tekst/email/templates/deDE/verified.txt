@@ -1,4 +1,4 @@
-Hallo {first_name},
+Hallo, {name}!
 
 Danke für das Verifizieren dieser Email-Adresse!
 Sie können sich jetzt auf {platform_name} anmelden.

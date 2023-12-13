@@ -422,8 +422,7 @@ async def create_initial_superuser():
         email=_cfg.security_init_admin_email,
         password=_cfg.security_init_admin_password,
         username="admin",
-        first_name="Admin",
-        last_name="Admin",
+        name="Admin Admin",
         affiliation="Admin",
     )
     user.is_active = True
@@ -453,12 +452,11 @@ async def create_sample_users():
             email=f"inactive{email_suffix}",
             username="beth123",
             password=pw,
-            first_name="Beth",
-            last_name="Smith",
+            name="Beth Smith",
             affiliation="Rick's daughter",
             is_verified=True,
             is_active=False,
-            public_fields=["firstName", "lastName", "affiliation"],
+            public_fields=["name", "affiliation"],
         )
     )
     # unverified user
@@ -467,11 +465,10 @@ async def create_sample_users():
             email=f"unverified{email_suffix}",
             username="jerr_unif",
             password=pw,
-            first_name="Jerry",
-            last_name="Smith",
+            name="Jerry Smith",
             affiliation="Rick's son-in-law",
             is_active=True,
-            public_fields=["firstName", "lastName", "affiliation"],
+            public_fields=["name", "affiliation"],
         )
     )
     # just a normal user, active and verified
@@ -480,12 +477,11 @@ async def create_sample_users():
             email=f"user{email_suffix}",
             username="the_morty123",
             password=pw,
-            first_name="Morty",
-            last_name="Smith",
+            name="Morty Smith",
             affiliation="Rick's grandson",
             is_verified=True,
             is_active=True,
-            public_fields=["firstName", "lastName", "affiliation"],
+            public_fields=["name", "affiliation"],
         )
     )
     # superuser
@@ -494,12 +490,11 @@ async def create_sample_users():
             email=f"superuser{email_suffix}",
             username="SuperRick",
             password=pw,
-            first_name="Rick",
-            last_name="Sanchez",
+            name="Rick Sanchez",
             affiliation="Mad scientist",
             is_verified=True,
             is_superuser=True,
             is_active=True,
-            public_fields=["firstName", "lastName", "affiliation"],
+            public_fields=["name", "affiliation"],
         )
     )

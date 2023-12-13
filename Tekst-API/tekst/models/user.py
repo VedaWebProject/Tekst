@@ -9,7 +9,7 @@ from fastapi_users_db_beanie import (
     BeanieBaseUser,
 )
 from humps import camelize
-from pydantic import Field, StringConstraints
+from pydantic import Field, StringConstraints, model_validator
 from pymongo import IndexModel
 
 from tekst.config import TekstConfig, get_config
@@ -22,9 +22,19 @@ _cfg: TekstConfig = get_config()
 class UserReadPublic(ModelBase):
     id: PydanticObjectId
     username: str
-    first_name: str | None = None
-    last_name: str | None = None
+    name: str | None = None
     affiliation: str | None = None
+    public_fields: Annotated[
+        list[str], Field(description="Data fields set public by this user")
+    ]
+
+    @model_validator(mode="after")
+    def model_postprocess(self):
+        if "name" not in self.public_fields:
+            self.name = None
+        if "affiliation" not in self.public_fields:
+            self.affiliation = None
+        return self
 
 
 PublicUserField = Literal[
@@ -44,8 +54,7 @@ class User(ModelBase, ModelFactoryMixin):
     username: Annotated[
         str, StringConstraints(min_length=4, max_length=16, pattern=r"[a-zA-Z0-9\-_]+")
     ]
-    first_name: Annotated[str, StringConstraints(min_length=1, max_length=32)]
-    last_name: Annotated[str, StringConstraints(min_length=1, max_length=32)]
+    name: Annotated[str, StringConstraints(min_length=1, max_length=64)]
     affiliation: Annotated[str, StringConstraints(min_length=1, max_length=64)]
     locale: Locale | None = None
     public_fields: Annotated[
@@ -56,14 +65,14 @@ class User(ModelBase, ModelFactoryMixin):
 class UserDocument(User, BeanieBaseUser, Document):
     """User document model used by FastAPI-Users"""
 
-    is_active: bool = _cfg.security_users_active_by_default
-    created_at: datetime = datetime.utcnow()
-
     class Settings(BeanieBaseUser.Settings):
         name = "users"
         indexes = BeanieBaseUser.Settings.indexes + [
             IndexModel("username", unique=True)
         ]
+
+    is_active: bool = _cfg.security_users_active_by_default
+    created_at: datetime = datetime.utcnow()
 
 
 class UserRead(User, schemas.BaseUser[PydanticObjectId]):

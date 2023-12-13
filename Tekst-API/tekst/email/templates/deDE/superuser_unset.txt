@@ -1,4 +1,4 @@
-Hallo {first_name},
+Hallo, {name}!
 
 Ihr Administratorenstatus auf {platform_name} wurde entzogen.
 

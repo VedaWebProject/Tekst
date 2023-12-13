@@ -125,7 +125,7 @@ const statusBtnMinWidth = '128px';
         </n-space>
       </template>
       <div style="font-size: var(--app-ui-font-size-small)">
-        {{ targetUser.firstName }} {{ targetUser.lastName }} ({{ targetUser.affiliation }})
+        {{ targetUser.name }} ({{ targetUser.affiliation }})
       </div>
     </n-thing>
   </n-list-item>

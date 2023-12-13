@@ -28,5 +28,5 @@ async def test_platform_users(
     assert len(resp.json()) == 1
     assert resp.json()[0]["username"] == user["username"]
     assert "id" in resp.json()[0]
-    assert "firstName" in resp.json()[0]
+    assert "name" in resp.json()[0]
     assert "isActive" not in resp.json()[0]

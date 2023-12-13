@@ -161,8 +161,7 @@ models:
     email: Email
     username: Username
     password: Password
-    firstName: First Name
-    lastName: Last Name
+    name: Name
     affiliation: Affiliation
     isActive: active
     isInactive: inactive

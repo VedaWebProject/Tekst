@@ -1063,6 +1063,16 @@ export interface components {
     };
     /** PlaintextLayerConfig */
     PlaintextLayerConfig: {
+      /**
+       * @default {
+       *   "enabled": false,
+       *   "sourceLanguage": "BG",
+       *   "languages": [
+       *     "EN",
+       *     "DE"
+       *   ]
+       * }
+       */
       deeplLinks?: components['schemas']['DeepLLinksConfig'];
     };
     /** PlaintextLayerCreate */
@@ -1145,6 +1155,18 @@ export interface components {
        * @default []
        */
       comment?: components['schemas']['LayerCommentTranslation'][];
+      /**
+       * @default {
+       *   "deeplLinks": {
+       *     "enabled": false,
+       *     "languages": [
+       *       "EN",
+       *       "DE"
+       *     ],
+       *     "sourceLanguage": "BG"
+       *   }
+       * }
+       */
       config?: components['schemas']['PlaintextLayerConfig'];
     };
     /** PlaintextLayerRead */
@@ -1249,6 +1271,18 @@ export interface components {
        * @default []
        */
       comment?: components['schemas']['LayerCommentTranslation'][];
+      /**
+       * @default {
+       *   "deeplLinks": {
+       *     "enabled": false,
+       *     "languages": [
+       *       "EN",
+       *       "DE"
+       *     ],
+       *     "sourceLanguage": "BG"
+       *   }
+       * }
+       */
       config?: components['schemas']['PlaintextLayerConfig'];
       [key: string]: unknown;
     };
@@ -1322,6 +1356,18 @@ export interface components {
        * @default []
        */
       comment?: components['schemas']['LayerCommentTranslation'][];
+      /**
+       * @default {
+       *   "deeplLinks": {
+       *     "enabled": false,
+       *     "languages": [
+       *       "EN",
+       *       "DE"
+       *     ],
+       *     "sourceLanguage": "BG"
+       *   }
+       * }
+       */
       config?: components['schemas']['PlaintextLayerConfig'];
     };
     /** PlaintextUnitCreate */
@@ -1887,10 +1933,8 @@ export interface components {
       isVerified?: boolean | null;
       /** Username */
       username: string;
-      /** Firstname */
-      firstName: string;
-      /** Lastname */
-      lastName: string;
+      /** Name */
+      name: string;
       /** Affiliation */
       affiliation: string;
       locale?: components['schemas']['Locale'] | null;
@@ -1899,7 +1943,7 @@ export interface components {
        * @description Data fields set public by this user
        * @default []
        */
-      publicFields?: ('id' | 'firstName' | 'lastName' | 'affiliation')[];
+      publicFields?: ('id' | 'name' | 'affiliation' | 'publicFields')[];
     };
     /**
      * UserRead
@@ -1924,10 +1968,8 @@ export interface components {
       isVerified: boolean;
       /** Username */
       username: string;
-      /** Firstname */
-      firstName: string;
-      /** Lastname */
-      lastName: string;
+      /** Name */
+      name: string;
       /** Affiliation */
       affiliation: string;
       locale?: components['schemas']['Locale'] | null;
@@ -1936,7 +1978,7 @@ export interface components {
        * @description Data fields set public by this user
        * @default []
        */
-      publicFields?: ('id' | 'firstName' | 'lastName' | 'affiliation')[];
+      publicFields?: ('id' | 'name' | 'affiliation' | 'publicFields')[];
       /**
        * Createdat
        * Format: date-time
@@ -1952,12 +1994,15 @@ export interface components {
       id: string;
       /** Username */
       username: string;
-      /** Firstname */
-      firstName?: string | null;
-      /** Lastname */
-      lastName?: string | null;
+      /** Name */
+      name?: string | null;
       /** Affiliation */
       affiliation?: string | null;
+      /**
+       * Publicfields
+       * @description Data fields set public by this user
+       */
+      publicFields: string[];
     };
     /** UserUpdate */
     UserUpdate: {
@@ -1973,10 +2018,8 @@ export interface components {
       isVerified?: boolean | null;
       /** Username */
       username?: string | null;
-      /** Firstname */
-      firstName?: string | null;
-      /** Lastname */
-      lastName?: string | null;
+      /** Name */
+      name?: string | null;
       /** Affiliation */
       affiliation?: string | null;
       locale?: components['schemas']['Locale'] | null;
@@ -1985,7 +2028,7 @@ export interface components {
        * @description Data fields set public by this user
        * @default []
        */
-      publicFields?: ('id' | 'firstName' | 'lastName' | 'affiliation')[];
+      publicFields?: ('id' | 'name' | 'affiliation' | 'publicFields')[];
     };
     /** ValidationError */
     ValidationError: {

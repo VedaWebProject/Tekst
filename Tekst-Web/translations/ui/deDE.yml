@@ -162,8 +162,7 @@ models:
     email: Email-Adresse
     username: Benutzername
     password: Passwort
-    firstName: Vorname
-    lastName: Nachname
+    name: Name
     affiliation: Zugehörigkeit
     isActive: aktiv
     isInactive: inaktiv

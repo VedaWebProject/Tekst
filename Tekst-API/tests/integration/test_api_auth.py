@@ -154,7 +154,7 @@ async def test_user_updates_self(
     assert "id" in resp.json()
     # update own first name
     user_id = resp.json()["id"]
-    updates = {"firstName": "Bird Person"}
+    updates = {"name": "Bird Person"}
     resp = await test_client.patch(
         "/users/me",
         json=updates,
@@ -162,4 +162,4 @@ async def test_user_updates_self(
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert resp.json()["id"] == user_id
-    assert resp.json()["firstName"] == "Bird Person"
+    assert resp.json()["name"] == "Bird Person"

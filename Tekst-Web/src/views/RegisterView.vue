@@ -28,8 +28,7 @@ const initialFormModel = () => ({
   username: null,
   password: null,
   passwordRepeat: null,
-  firstName: null,
-  lastName: null,
+  name: null,
   affiliation: null,
 });
 
@@ -189,20 +188,11 @@ onMounted(() => {
             @keydown.enter.prevent
           />
         </n-form-item>
-        <n-form-item path="firstName" :label="$t('models.user.firstName')">
+        <n-form-item path="name" :label="$t('models.user.name')">
           <n-input
-            v-model:value="formModel.firstName"
+            v-model:value="formModel.name"
             type="text"
-            :placeholder="$t('models.user.firstName')"
-            :disabled="loading"
-            @keydown.enter.prevent
-          />
-        </n-form-item>
-        <n-form-item path="lastName" :label="$t('models.user.lastName')">
-          <n-input
-            v-model:value="formModel.lastName"
-            type="text"
-            :placeholder="$t('models.user.lastName')"
+            :placeholder="$t('models.user.name')"
             :disabled="loading"
             @keydown.enter.prevent
           />

@@ -1,4 +1,4 @@
-Hallo {first_name},
+Hallo, {name}!
 
 Ihr Konto auf {platform_name} wurde gelöscht!
 

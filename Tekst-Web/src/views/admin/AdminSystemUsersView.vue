@@ -56,7 +56,7 @@ function filterData(users: UserRead[]) {
   pagination.value.page = 1;
   return users.filter((u) => {
     const userStringContent = filters.value.search
-      ? [u.username, u.email, u.firstName, u.lastName, u.affiliation, u.createdAt].join(' ')
+      ? [u.username, u.email, u.name, u.affiliation, u.createdAt].join(' ')
       : '';
     return (
       (!filters.value.search ||
