@@ -281,6 +281,7 @@ dataLayers:
   msgPublished: Die Datenschicht "{title}" wurde veröffentlicht.
   msgUnpublished: Die Veröffentlichung der Datenschicht "{title}" wurde aufgehoben.
   msgDeleted: Die Datenschicht "{title}" wurde gelöscht.
+  phSearchUsers: Benutzer suchen...
   edit:
     heading: Datenschicht bearbeiten
     backToOverview: Zurück zur Datenschichten-Übersicht

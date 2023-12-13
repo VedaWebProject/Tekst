@@ -7,13 +7,10 @@ import IconHeading from '@/components/typography/IconHeading.vue';
 import { useMessages } from '@/messages';
 import { computed, ref, watch } from 'vue';
 import { RouterLink } from 'vue-router';
-import { NAlert, NSpin, NForm, NFormItem, NSelect, NButton, type FormInst } from 'naive-ui';
+import { NAlert, NForm, NFormItem, NSelect, NButton, type FormInst } from 'naive-ui';
 import { layerFormRules } from '@/forms/formRules';
-import { useUsersPublic } from '@/fetchers';
 import { useRouter } from 'vue-router';
 import ButtonFooter from '@/components/ButtonFooter.vue';
-import { usePlatformData } from '@/platformData';
-import { pickTranslation } from '@/utils';
 import DataLayerForm from '@/forms/DataLayerForm.vue';
 
 import LayersFilled from '@vicons/material/LayersFilled';
@@ -23,10 +20,8 @@ const { message } = useMessages();
 const router = useRouter();
 const state = useStateStore();
 const auth = useAuthStore();
-const { pfData } = usePlatformData();
 const layers = useLayersStore();
 
-const { users, loading: loadingUsers, error: errorUsers } = useUsersPublic();
 const getInitialModel = () =>
   ({
     title: '',
@@ -47,7 +42,6 @@ const getInitialModel = () =>
 
 const formRef = ref<FormInst | null>(null);
 const loadingSave = ref(false);
-const loading = computed(() => loadingUsers.value || loadingSave.value);
 const model = ref<AnyLayerCreate>(getInitialModel());
 
 const layerTypeOptions = layerTypes.map((lt) => ({
@@ -60,38 +54,6 @@ const levelOptions = computed(() =>
     label,
     value: i,
   }))
-);
-
-const categoryOptions = computed(
-  () =>
-    pfData.value?.settings.layerCategories?.map((c) => ({
-      label: pickTranslation(c.translations, state.locale) || c.key,
-      value: c.key,
-    })) || []
-);
-
-const shareWriteOptions = computed(() =>
-  model.value
-    ? (users.value || []).map((u) => {
-        return {
-          value: u.id,
-          disabled: u.id === auth.user?.id || !!model.value?.sharedRead?.find((s) => s === u.id),
-          user: u,
-        };
-      })
-    : []
-);
-
-const shareReadOptions = computed(() =>
-  model.value
-    ? (users.value || []).map((u) => {
-        return {
-          value: u.id,
-          disabled: u.id === auth.user?.id || !!model.value?.sharedWrite?.find((s) => s === u.id),
-          user: u,
-        };
-      })
-    : []
 );
 
 // change route if text changes
@@ -170,7 +132,7 @@ async function handleSaveClick() {
           <n-select
             v-model:value="model.layerType"
             :default-value="layerTypeOptions[0].value"
-            :disabled="loading"
+            :disabled="loadingSave"
             :placeholder="$t('models.layer.layerType')"
             :options="layerTypeOptions"
           />
@@ -179,7 +141,7 @@ async function handleSaveClick() {
         <n-form-item :label="$t('models.layer.level')" path="level">
           <n-select
             v-model:value="model.level"
-            :disabled="loading"
+            :disabled="loadingSave"
             :placeholder="$t('models.layer.level')"
             :options="levelOptions"
           />
@@ -188,12 +150,7 @@ async function handleSaveClick() {
       <!-- COMMON DATA LAYER FORM FIELDS -->
       <DataLayerForm
         v-model:model="model"
-        :category-options="categoryOptions"
-        :share-read-options="shareReadOptions"
-        :share-write-options="shareWriteOptions"
-        :loading="loading"
-        :loading-users="loadingUsers"
-        :error-users="errorUsers"
+        :loading="loadingSave"
         :owner="auth.user"
         :public="false"
       />
@@ -204,6 +161,4 @@ async function handleSaveClick() {
       <n-button type="primary" @click="handleSaveClick">{{ $t('general.saveAction') }}</n-button>
     </ButtonFooter>
   </div>
-
-  <n-spin v-else-if="loading" size="large" style="width: 100%" />
 </template>

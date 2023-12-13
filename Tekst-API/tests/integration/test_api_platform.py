@@ -22,7 +22,9 @@ async def test_platform_users(
 ):
     user = await register_test_user(is_superuser=True)
     session_cookie = await get_session_cookie(user)
-    resp = await test_client.get("/platform/users", cookies=session_cookie)
+    resp = await test_client.get(
+        "/platform/users", params={"q": user.get("username")}, cookies=session_cookie
+    )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 1
@@ -30,3 +32,9 @@ async def test_platform_users(
     assert "id" in resp.json()[0]
     assert "name" in resp.json()[0]
     assert "isActive" not in resp.json()[0]
+    resp = await test_client.get(
+        "/platform/users", params={"q": "nonsense"}, cookies=session_cookie
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) == 0

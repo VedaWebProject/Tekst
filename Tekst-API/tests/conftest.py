@@ -112,7 +112,7 @@ async def test_client(test_app, config) -> AsyncClient:
 @pytest.fixture
 async def reset_db(get_db_client_override, config):
     for collection in ("texts", "nodes", "layers", "units", "users"):
-        await get_db_client_override[config.db_name][collection].drop()
+        await get_db_client_override[config.db_name][collection].delete_many({})
 
 
 @pytest.fixture

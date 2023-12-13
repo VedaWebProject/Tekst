@@ -1,8 +1,8 @@
 from typing import Annotated
 
 from beanie import PydanticObjectId
-from beanie.operators import Or
-from fastapi import APIRouter, Depends, HTTPException, Path, status
+from beanie.operators import Or, Text
+from fastapi import APIRouter, Depends, HTTPException, Path, Query, status
 
 from tekst.auth import (
     OptionalUserDep,
@@ -90,10 +90,21 @@ async def get_public_user_info(
 @router.get(
     "/users", response_model=list[UserReadPublic], status_code=status.HTTP_200_OK
 )
-async def get_public_users(su: UserDep) -> list[UserDocument]:
+async def find_public_users(
+    su: UserDep, query: Annotated[str | None, Query(alias="q")]
+) -> list[UserDocument]:
+    """
+    Returns a list of public users matching the given query.
+
+    Only returns active user accounts. The query is considered to match a full token
+    (e.g. first name, last name, username, a word in the affiliation field).
+    """
+    query = query.strip(" \t\n\r")
+    if len(query) == 0:
+        return []
     return [
         UserReadPublic(**user.model_dump())
-        for user in await UserDocument.find_all().to_list()
+        for user in await UserDocument.find(Text(query)).to_list()
         if user.is_active
     ]
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type AnyLayerUpdate, PATCH } from '@/api';
 import { $t } from '@/i18n';
-import { useAuthStore, useStateStore } from '@/stores';
+import { useStateStore } from '@/stores';
 import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import IconHeading from '@/components/typography/IconHeading.vue';
 import { useMessages } from '@/messages';
@@ -13,11 +13,9 @@ import { layerFormRules } from '@/forms/formRules';
 import { useModelChanges } from '@/modelChanges';
 import UserDisplay from '@/components/UserDisplay.vue';
 import { useRoute } from 'vue-router';
-import { useUsersPublic } from '@/fetchers';
 import { useRouter } from 'vue-router';
 import ButtonFooter from '@/components/ButtonFooter.vue';
 import { usePlatformData } from '@/platformData';
-import { pickTranslation } from '@/utils';
 import { useLayersStore } from '@/stores/layers';
 import LayerPublicationStatus from '@/components/LayerPublicationStatus.vue';
 import DataLayerForm from '@/forms/DataLayerForm.vue';
@@ -29,51 +27,17 @@ const { message } = useMessages();
 const route = useRoute();
 const router = useRouter();
 const state = useStateStore();
-const auth = useAuthStore();
 const { pfData } = usePlatformData();
 
 const layers = useLayersStore();
-const { users, loading: loadingUsers, error: errorUsers } = useUsersPublic();
 const layer = layers.data.find((l) => l.id === route.params.id);
 const getInitialModel = () => _cloneDeep(layer);
 
 const formRef = ref<FormInst | null>(null);
 const loadingSave = ref(false);
-const loading = computed(() => layers.loading || loadingUsers.value || loadingSave.value);
+const loading = computed(() => layers.loading || loadingSave.value);
 const model = ref<AnyLayerUpdate | undefined>(getInitialModel());
 const { changed, reset, getChanges } = useModelChanges(model);
-
-const categoryOptions = computed(
-  () =>
-    pfData.value?.settings.layerCategories?.map((c) => ({
-      label: pickTranslation(c.translations, state.locale) || c.key,
-      value: c.key,
-    })) || []
-);
-
-const shareWriteOptions = computed(() =>
-  model.value
-    ? (users.value || []).map((u) => {
-        return {
-          value: u.id,
-          disabled: u.id === auth.user?.id || !!model.value?.sharedRead?.find((s) => s === u.id),
-          user: u,
-        };
-      })
-    : []
-);
-
-const shareReadOptions = computed(() =>
-  model.value
-    ? (users.value || []).map((u) => {
-        return {
-          value: u.id,
-          disabled: u.id === auth.user?.id || !!model.value?.sharedWrite?.find((s) => s === u.id),
-          user: u,
-        };
-      })
-    : []
-);
 
 // change route if text changes
 watch(
@@ -84,6 +48,7 @@ watch(
 );
 
 function handleResetClick() {
+  console.log(model.value);
   model.value = getInitialModel();
   reset();
 }
@@ -173,12 +138,7 @@ async function handleSaveClick() {
     >
       <DataLayerForm
         v-model:model="model"
-        :category-options="categoryOptions"
-        :share-read-options="shareReadOptions"
-        :share-write-options="shareWriteOptions"
         :loading="loading"
-        :loading-users="loadingUsers"
-        :error-users="errorUsers"
         :owner="layer?.owner"
         :public="layer?.public"
       />

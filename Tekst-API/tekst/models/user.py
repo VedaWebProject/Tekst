@@ -1,5 +1,7 @@
 from datetime import datetime
-from typing import Annotated, Literal
+from typing import Annotated, Literal, get_args
+
+import pymongo
 
 from beanie import Document, PydanticObjectId
 from fastapi_users import (
@@ -8,7 +10,6 @@ from fastapi_users import (
 from fastapi_users_db_beanie import (
     BeanieBaseUser,
 )
-from humps import camelize
 from pydantic import Field, StringConstraints, model_validator
 from pymongo import IndexModel
 
@@ -18,6 +19,8 @@ from tekst.models.common import Locale, ModelBase, ModelFactoryMixin
 
 _cfg: TekstConfig = get_config()
 
+PublicUserField = Literal["name", "affiliation"]
+
 
 class UserReadPublic(ModelBase):
     id: PydanticObjectId
@@ -25,27 +28,16 @@ class UserReadPublic(ModelBase):
     name: str | None = None
     affiliation: str | None = None
     public_fields: Annotated[
-        list[str], Field(description="Data fields set public by this user")
-    ]
+        list[PublicUserField],
+        Field(description="Data fields set public by this user", max_length=64),
+    ] = []
 
     @model_validator(mode="after")
     def model_postprocess(self):
-        if "name" not in self.public_fields:
-            self.name = None
-        if "affiliation" not in self.public_fields:
-            self.affiliation = None
+        for pf in get_args(PublicUserField):
+            if pf not in self.public_fields:
+                setattr(self, pf, None)
         return self
-
-
-PublicUserField = Literal[
-    tuple(
-        [
-            camelize(field)
-            for field in UserReadPublic.model_fields
-            if field != "username"
-        ]
-    )
-]
 
 
 class User(ModelBase, ModelFactoryMixin):
@@ -68,7 +60,14 @@ class UserDocument(User, BeanieBaseUser, Document):
     class Settings(BeanieBaseUser.Settings):
         name = "users"
         indexes = BeanieBaseUser.Settings.indexes + [
-            IndexModel("username", unique=True)
+            IndexModel("username", unique=True),
+            IndexModel(
+                [
+                    ("username", pymongo.TEXT),
+                    ("name", pymongo.TEXT),
+                    ("affiliation", pymongo.TEXT),
+                ],
+            ),
         ]
 
     is_active: bool = _cfg.security_users_active_by_default

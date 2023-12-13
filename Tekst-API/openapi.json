@@ -1651,27 +1651,9 @@
         "tags": [
           "platform"
         ],
-        "summary": "Get public users",
-        "operationId": "getPublicUsers",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "items": {
-                    "$ref": "#/components/schemas/UserReadPublic"
-                  },
-                  "type": "array",
-                  "title": "Response Get Public Users Platform Users Get"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found"
-          }
-        },
+        "summary": "Find public users",
+        "description": "Returns a list of public users matching the given query.\n\nOnly returns active user accounts. The query is considered to match a full token\n(e.g. first name, last name, username, a word in the affiliation field).",
+        "operationId": "findPublicUsers",
         "security": [
           {
             "APIKeyCookie": []
@@ -1679,7 +1661,54 @@
           {
             "OAuth2PasswordBearer": []
           }
-        ]
+        ],
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Q"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserReadPublic"
+                  },
+                  "title": "Response Find Public Users Platform Users Get"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/platform/settings": {
@@ -4136,6 +4165,7 @@
               "example": "5eb7cf5a86d9755df3a6c593"
             },
             "type": "array",
+            "maxItems": 64,
             "title": "Sharedread",
             "description": "Users with shared read access to this layer",
             "default": []
@@ -4146,6 +4176,7 @@
               "example": "5eb7cf5a86d9755df3a6c593"
             },
             "type": "array",
+            "maxItems": 64,
             "title": "Sharedwrite",
             "description": "Users with shared write access to this layer",
             "default": []
@@ -4333,6 +4364,7 @@
               "example": "5eb7cf5a86d9755df3a6c593"
             },
             "type": "array",
+            "maxItems": 64,
             "title": "Sharedread",
             "description": "Users with shared read access to this layer",
             "default": []
@@ -4343,6 +4375,7 @@
               "example": "5eb7cf5a86d9755df3a6c593"
             },
             "type": "array",
+            "maxItems": 64,
             "title": "Sharedwrite",
             "description": "Users with shared write access to this layer",
             "default": []
@@ -4490,6 +4523,7 @@
               "example": "5eb7cf5a86d9755df3a6c593"
             },
             "type": "array",
+            "maxItems": 64,
             "title": "Sharedread",
             "description": "Users with shared read access to this layer",
             "default": []
@@ -4500,6 +4534,7 @@
               "example": "5eb7cf5a86d9755df3a6c593"
             },
             "type": "array",
+            "maxItems": 64,
             "title": "Sharedwrite",
             "description": "Users with shared write access to this layer",
             "default": []
@@ -5331,6 +5366,7 @@
               "example": "5eb7cf5a86d9755df3a6c593"
             },
             "type": "array",
+            "maxItems": 64,
             "title": "Sharedread",
             "description": "Users with shared read access to this layer",
             "default": []
@@ -5341,6 +5377,7 @@
               "example": "5eb7cf5a86d9755df3a6c593"
             },
             "type": "array",
+            "maxItems": 64,
             "title": "Sharedwrite",
             "description": "Users with shared write access to this layer",
             "default": []
@@ -5542,6 +5579,7 @@
               "example": "5eb7cf5a86d9755df3a6c593"
             },
             "type": "array",
+            "maxItems": 64,
             "title": "Sharedread",
             "description": "Users with shared read access to this layer",
             "default": []
@@ -5552,6 +5590,7 @@
               "example": "5eb7cf5a86d9755df3a6c593"
             },
             "type": "array",
+            "maxItems": 64,
             "title": "Sharedwrite",
             "description": "Users with shared write access to this layer",
             "default": []
@@ -5713,6 +5752,7 @@
               "example": "5eb7cf5a86d9755df3a6c593"
             },
             "type": "array",
+            "maxItems": 64,
             "title": "Sharedread",
             "description": "Users with shared read access to this layer",
             "default": []
@@ -5723,6 +5763,7 @@
               "example": "5eb7cf5a86d9755df3a6c593"
             },
             "type": "array",
+            "maxItems": 64,
             "title": "Sharedwrite",
             "description": "Users with shared write access to this layer",
             "default": []
@@ -6824,10 +6865,8 @@
             "items": {
               "type": "string",
               "enum": [
-                "id",
                 "name",
-                "affiliation",
-                "publicFields"
+                "affiliation"
               ]
             },
             "type": "array",
@@ -6904,10 +6943,8 @@
             "items": {
               "type": "string",
               "enum": [
-                "id",
                 "name",
-                "affiliation",
-                "publicFields"
+                "affiliation"
               ]
             },
             "type": "array",
@@ -6971,18 +7008,23 @@
           },
           "publicFields": {
             "items": {
-              "type": "string"
+              "type": "string",
+              "enum": [
+                "name",
+                "affiliation"
+              ]
             },
             "type": "array",
+            "maxItems": 64,
             "title": "Publicfields",
-            "description": "Data fields set public by this user"
+            "description": "Data fields set public by this user",
+            "default": []
           }
         },
         "type": "object",
         "required": [
           "id",
-          "username",
-          "publicFields"
+          "username"
         ],
         "title": "UserReadPublic"
       },
@@ -7091,10 +7133,8 @@
             "items": {
               "type": "string",
               "enum": [
-                "id",
                 "name",
-                "affiliation",
-                "publicFields"
+                "affiliation"
               ]
             },
             "type": "array",

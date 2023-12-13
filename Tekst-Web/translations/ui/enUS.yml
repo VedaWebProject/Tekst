@@ -274,6 +274,7 @@ dataLayers:
   msgPublished: The data layer "{title}" has been published.
   msgUnpublished: The publication of the data layer "{title}" has been withdrawn.
   msgDeleted: The data layer "{title}" has been deleted.
+  phSearchUsers: Search for users...
   edit:
     heading: Edit data layer
     backToOverview: Back to data layers overview

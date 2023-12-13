@@ -2,9 +2,9 @@
 import type { AnyLayerUpdate, UserReadPublic } from '@/api';
 import { layerFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
-import { useAuthStore } from '@/stores';
+import { useAuthStore, useStateStore } from '@/stores';
 import TranslationFormItem from '@/forms/TranslationFormItem.vue';
-import { h, type VNodeChild } from 'vue';
+import { computed, h, ref, type VNodeChild } from 'vue';
 import UserDisplayText from '@/components/UserDisplayText.vue';
 import {
   NCollapse,
@@ -23,29 +23,56 @@ import {
 import MinusRound from '@vicons/material/MinusRound';
 import AddOutlined from '@vicons/material/AddOutlined';
 import PersonFilled from '@vicons/material/PersonFilled';
-import type { SelectMixedOption } from 'naive-ui/es/select/src/interface';
+import { usePlatformData } from '@/platformData';
+import { pickTranslation } from '@/utils';
+import { useUsersPublic } from '@/fetchers';
 
 const props = defineProps<{
   model: AnyLayerUpdate;
-  categoryOptions: SelectMixedOption[];
-  shareReadOptions: SelectMixedOption[];
-  shareWriteOptions: SelectMixedOption[];
   loading?: boolean;
-  loadingUsers?: boolean;
-  errorUsers?: boolean;
   owner?: UserReadPublic | null;
   public?: boolean;
 }>();
 
-const emits = defineEmits(['update:model', 'search:users']);
+const emits = defineEmits(['update:model']);
 
+const state = useStateStore();
 const auth = useAuthStore();
+const { pfData } = usePlatformData();
+
+const userSearchQuery = ref<string>();
+const { users, loading: loadingUsers, error: errorUsers } = useUsersPublic(userSearchQuery);
+
+const categoryOptions = computed(
+  () =>
+    pfData.value?.settings.layerCategories?.map((c) => ({
+      label: pickTranslation(c.translations, state.locale) || c.key,
+      value: c.key,
+    })) || []
+);
+
+const usersOptions = computed(() =>
+  users.value.map((u) => {
+    return {
+      value: u.id,
+      disabled:
+        u.id === auth.user?.id ||
+        !!props.model.sharedRead?.find((s) => s === u.id) ||
+        !!props.model.sharedWrite?.find((s) => s === u.id),
+      user: u,
+    };
+  })
+);
 
 function handleUpdate(field: string, value: any) {
   emits('update:model', {
     ...props.model,
     [field]: value,
   });
+}
+
+function handleUserSearch(query: string) {
+  userSearchQuery.value = query;
 }
 
 function renderUserSelectLabel(option: SelectOption): VNodeChild {
@@ -75,7 +102,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
 </script>
 
 <template>
-  <n-collapse>
+  <n-collapse display-directive="show">
     <!-- TITLE -->
     <n-form-item path="title" :label="$t('models.layer.title')" required>
       <n-input
@@ -217,13 +244,17 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
           multiple
           filterable
           clearable
+          remote
+          clear-filter-after-select
+          :max-tag-count="64"
           :render-label="renderUserSelectLabel"
           :render-tag="renderUserSelectTag"
           :loading="loadingUsers"
           :status="errorUsers ? 'error' : undefined"
-          :placeholder="$t('models.layer.sharedRead')"
-          :options="shareReadOptions"
+          :options="usersOptions"
+          :placeholder="$t('dataLayers.phSearchUsers')"
           @update:value="(v) => handleUpdate('sharedRead', v)"
+          @search="handleUserSearch"
         />
       </n-form-item>
       <n-form-item path="sharedWrite" :label="$t('models.layer.sharedWrite')">
@@ -232,13 +263,17 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
           multiple
           filterable
           clearable
+          remote
+          clear-filter-after-select
+          :max-tag-count="64"
           :render-label="renderUserSelectLabel"
           :render-tag="renderUserSelectTag"
           :loading="loadingUsers"
           :status="errorUsers ? 'error' : undefined"
-          :placeholder="$t('models.layer.sharedWrite')"
-          :options="shareWriteOptions"
+          :options="usersOptions"
+          :placeholder="$t('dataLayers.phSearchUsers')"
           @update:value="(v) => handleUpdate('sharedWrite', v)"
+          @search="handleUserSearch"
         />
       </n-form-item>
     </n-collapse-item>

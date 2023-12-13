@@ -143,8 +143,14 @@ export interface paths {
     get: operations['getPublicUserInfo'];
   };
   '/platform/users': {
-    /** Get public users */
-    get: operations['getPublicUsers'];
+    /**
+     * Find public users
+     * @description Returns a list of public users matching the given query.
+     *
+     * Only returns active user accounts. The query is considered to match a full token
+     * (e.g. first name, last name, username, a word in the affiliation field).
+     */
+    get: operations['findPublicUsers'];
   };
   '/platform/settings': {
     /** Update platform settings */
@@ -1943,7 +1949,7 @@ export interface components {
        * @description Data fields set public by this user
        * @default []
        */
-      publicFields?: ('id' | 'name' | 'affiliation' | 'publicFields')[];
+      publicFields?: ('name' | 'affiliation')[];
     };
     /**
      * UserRead
@@ -1978,7 +1984,7 @@ export interface components {
        * @description Data fields set public by this user
        * @default []
        */
-      publicFields?: ('id' | 'name' | 'affiliation' | 'publicFields')[];
+      publicFields?: ('name' | 'affiliation')[];
       /**
        * Createdat
        * Format: date-time
@@ -2001,8 +2007,9 @@ export interface components {
       /**
        * Publicfields
        * @description Data fields set public by this user
+       * @default []
        */
-      publicFields: string[];
+      publicFields?: ('name' | 'affiliation')[];
     };
     /** UserUpdate */
     UserUpdate: {
@@ -2028,7 +2035,7 @@ export interface components {
        * @description Data fields set public by this user
        * @default []
        */
-      publicFields?: ('id' | 'name' | 'affiliation' | 'publicFields')[];
+      publicFields?: ('name' | 'affiliation')[];
     };
     /** ValidationError */
     ValidationError: {
@@ -2779,8 +2786,19 @@ export interface operations {
       };
     };
   };
-  /** Get public users */
-  getPublicUsers: {
+  /**
+   * Find public users
+   * @description Returns a list of public users matching the given query.
+   *
+   * Only returns active user accounts. The query is considered to match a full token
+   * (e.g. first name, last name, username, a word in the affiliation field).
+   */
+  findPublicUsers: {
+    parameters: {
+      query: {
+        q: string | null;
+      };
+    };
     responses: {
       /** @description Successful Response */
       200: {
@@ -2791,6 +2809,12 @@ export interface operations {
       /** @description Not found */
       404: {
         content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
       };
     };
   };

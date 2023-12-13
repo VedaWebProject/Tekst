@@ -66,11 +66,13 @@ class LayerBase(ModelBase, ModelFactoryMixin):
     ] = None
     shared_read: Annotated[
         list[PydanticObjectId],
-        Field(description="Users with shared read access to this layer"),
+        Field(description="Users with shared read access to this layer", max_length=64),
     ] = []
     shared_write: Annotated[
         list[PydanticObjectId],
-        Field(description="Users with shared write access to this layer"),
+        Field(
+            description="Users with shared write access to this layer", max_length=64
+        ),
     ] = []
     public: Annotated[
         bool, Field(description="Publication status of this layer")

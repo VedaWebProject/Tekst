@@ -1,6 +1,7 @@
 import { ref, isRef, unref, watchEffect, type Ref } from 'vue';
 import { GET } from '@/api';
 import type { UserReadPublic, LayerNodeCoverage, PlatformStats, UserRead } from '@/api';
+import { useDebounceFn } from '@vueuse/core';
 
 export function useProfile(
   usernameOrId: string | Ref<string>,
@@ -119,17 +120,23 @@ export function useUsersAdmin() {
   };
 }
 
-export function useUsersPublic() {
-  const users = ref<Array<UserReadPublic> | null>(null);
+export function useUsersPublic(queryRef: Ref<string | null | undefined>) {
+  const users = ref<UserReadPublic[]>([]);
   const error = ref(false);
   const loading = ref(false);
 
-  async function load() {
+  async function load(query?: string | null) {
+    if (query == null) {
+      users.value = [];
+      loading.value = false;
+      return;
+    }
+
     loading.value = true;
-    users.value = null;
+    users.value = [];
     error.value = false;
 
-    const { data, error: err } = await GET('/platform/users', {});
+    const { data, error: err } = await GET('/platform/users', { params: { query: { q: query } } });
 
     if (!err) {
       users.value = data;
@@ -139,7 +146,11 @@ export function useUsersPublic() {
     loading.value = false;
   }
 
-  load();
+  const debouncedLoad = useDebounceFn(load, 500);
+  watchEffect(() => {
+    loading.value = true;
+    debouncedLoad(unref(queryRef));
+  });
 
   return {
     users,
