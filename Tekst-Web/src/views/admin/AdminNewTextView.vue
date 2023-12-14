@@ -153,8 +153,8 @@ async function handleSave() {
               <n-form-item
                 ignore-path-change
                 :show-label="false"
-                :path="`levels[${levelIndex}][0].label`"
-                :rule="textFormRules.levelTranslationLabel"
+                :path="`levels[${levelIndex}][0].translation`"
+                :rule="textFormRules.levelTranslation"
                 style="flex-grow: 2"
               >
                 <n-input
