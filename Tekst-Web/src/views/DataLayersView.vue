@@ -234,22 +234,9 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
     <HelpButtonWidget help-key="dataLayersView" />
   </IconHeading>
 
-  <!-- Create new layer button -->
-  <n-space justify="end">
-    <n-button v-if="auth.user" type="primary" @click="router.push({ name: 'dataLayerCreate' })">
-      <template #icon>
-        <n-icon :component="AddOutlined" />
-      </template>
-      {{ $t('general.new') }}
-    </n-button>
-  </n-space>
-
   <template v-if="layers.data && !layers.error && !loading">
     <!-- Filters -->
-    <n-collapse
-      style="margin-bottom: var(--layout-gap)"
-      @item-header-click="handleFilterCollapseItemClick"
-    >
+    <n-collapse @item-header-click="handleFilterCollapseItemClick">
       <n-collapse-item :title="$t('general.filters')" name="filters">
         <n-input
           v-model:value="filters.search"
@@ -285,6 +272,16 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
         </n-space>
       </n-collapse-item>
     </n-collapse>
+
+    <!-- Create new layer button -->
+    <n-space justify="end">
+      <n-button v-if="auth.user" type="primary" @click="router.push({ name: 'dataLayerCreate' })">
+        <template #icon>
+          <n-icon :component="AddOutlined" />
+        </template>
+        {{ $t('general.new') }}
+      </n-button>
+    </n-space>
 
     <!-- Layers List -->
     <div class="content-block">
