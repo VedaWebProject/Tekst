@@ -4092,8 +4092,11 @@
       },
       "DebugLayerConfig": {
         "properties": {
-          "deeplLinks": {
-            "$ref": "#/components/schemas/DeepLLinksConfig"
+          "showOnParentLevel": {
+            "type": "boolean",
+            "title": "Showonparentlevel",
+            "description": "Show combined contents of this layer on the parent level",
+            "default": false
           }
         },
         "type": "object",
@@ -4228,7 +4231,14 @@
             "default": []
           },
           "config": {
-            "$ref": "#/components/schemas/DebugLayerConfig"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DebugLayerConfig"
+              }
+            ],
+            "default": {
+              "showOnParentLevel": false
+            }
           }
         },
         "type": "object",
@@ -4427,7 +4437,14 @@
             "default": []
           },
           "config": {
-            "$ref": "#/components/schemas/DebugLayerConfig"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DebugLayerConfig"
+              }
+            ],
+            "default": {
+              "showOnParentLevel": false
+            }
           }
         },
         "additionalProperties": true,
@@ -4586,7 +4603,14 @@
             "default": []
           },
           "config": {
-            "$ref": "#/components/schemas/DebugLayerConfig"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DebugLayerConfig"
+              }
+            ],
+            "default": {
+              "showOnParentLevel": false
+            }
           }
         },
         "type": "object",
@@ -4852,6 +4876,7 @@
               ]
             },
             "type": "array",
+            "maxItems": 32,
             "title": "Languages",
             "description": "Target languages to display links for",
             "default": [
@@ -5281,6 +5306,12 @@
       },
       "PlaintextLayerConfig": {
         "properties": {
+          "showOnParentLevel": {
+            "type": "boolean",
+            "title": "Showonparentlevel",
+            "description": "Show combined contents of this layer on the parent level",
+            "default": false
+          },
           "deeplLinks": {
             "allOf": [
               {
@@ -5435,6 +5466,7 @@
               }
             ],
             "default": {
+              "showOnParentLevel": false,
               "deeplLinks": {
                 "enabled": false,
                 "languages": [
@@ -5648,6 +5680,7 @@
               }
             ],
             "default": {
+              "showOnParentLevel": false,
               "deeplLinks": {
                 "enabled": false,
                 "languages": [
@@ -5821,6 +5854,7 @@
               }
             ],
             "default": {
+              "showOnParentLevel": false,
               "deeplLinks": {
                 "enabled": false,
                 "languages": [

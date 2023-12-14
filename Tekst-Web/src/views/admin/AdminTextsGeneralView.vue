@@ -144,6 +144,7 @@ async function handleDelete() {
       ref="formRef"
       :model="model"
       :rules="textFormRules"
+      :disabled="loading"
       label-placement="top"
       label-width="auto"
       require-mark-placement="right-hanging"
@@ -154,7 +155,6 @@ async function handleDelete() {
           v-model:value="model.title"
           type="text"
           :placeholder="$t('models.text.title')"
-          :disabled="loading"
           @keydown.enter.prevent
         />
       </n-form-item>
@@ -163,8 +163,6 @@ async function handleDelete() {
       <TranslationFormItem
         v-model:value="model.subtitle"
         parent-form-path-prefix="subtitle"
-        :loading="loading"
-        :disabled="loading"
         :main-form-label="$t('models.text.subtitle')"
         :translation-form-label="$t('models.text.subtitle')"
         :translation-form-rule="textFormRules.subtitleTranslation"
@@ -176,7 +174,6 @@ async function handleDelete() {
           v-model:value="model.slug"
           type="text"
           :placeholder="$t('models.text.slug')"
-          :disabled="loading"
           @keydown.enter.prevent
         />
       </n-form-item>
@@ -197,7 +194,6 @@ async function handleDelete() {
           v-model:value="model.locDelim"
           type="text"
           :placeholder="$t('models.text.locDelim')"
-          :disabled="loading"
           @keydown.enter.prevent
         />
       </n-form-item>
@@ -208,7 +204,6 @@ async function handleDelete() {
           v-model:value="model.accentColor"
           :modes="['hex']"
           :show-alpha="false"
-          :disabled="loading"
           :swatches="[
             '#305D97',
             '#097F86',
@@ -225,38 +220,45 @@ async function handleDelete() {
       <n-form-item :label="$t('general.flags')">
         <n-space vertical>
           <!-- LABELED LOCATION -->
-          <n-checkbox v-model:checked="model.labeledLocation" :disabled="loading">
+          <n-checkbox v-model:checked="model.labeledLocation">
             {{ $t('models.text.labeledLocation') }}
           </n-checkbox>
           <!-- ACTIVE -->
-          <n-checkbox v-model:checked="model.isActive" :disabled="loading">
+          <n-checkbox v-model:checked="model.isActive">
             {{ $t('models.text.isActive') }}
           </n-checkbox>
         </n-space>
       </n-form-item>
     </n-form>
+  </div>
 
-    <div style="display: flex; gap: var(--layout-gap); margin-top: 0.5rem">
-      <n-button secondary :disabled="!textCanBeDeleted" @click="handleDelete">
-        {{ $t('general.deleteAction') }}
-      </n-button>
-      <div style="flex-grow: 2"></div>
-      <n-button
-        secondary
-        :loading="loading"
-        :disabled="loading || !modelChanged"
-        @click="() => handleReset"
-      >
-        {{ $t('general.resetAction') }}
-      </n-button>
-      <n-button
-        type="primary"
-        :loading="loading"
-        :disabled="loading || !modelChanged"
-        @click="handleSave"
-      >
-        {{ $t('general.saveAction') }}
-      </n-button>
-    </div>
+  <div
+    style="
+      display: flex;
+      gap: var(--layout-gap);
+      margin-top: 0.5rem;
+      margin-bottom: var(--layout-gap);
+    "
+  >
+    <n-button secondary type="error" :disabled="!textCanBeDeleted" @click="handleDelete">
+      {{ $t('general.deleteAction') }}
+    </n-button>
+    <div style="flex-grow: 2"></div>
+    <n-button
+      secondary
+      :loading="loading"
+      :disabled="loading || !modelChanged"
+      @click="() => handleReset"
+    >
+      {{ $t('general.resetAction') }}
+    </n-button>
+    <n-button
+      type="primary"
+      :loading="loading"
+      :disabled="loading || !modelChanged"
+      @click="handleSave"
+    >
+      {{ $t('general.saveAction') }}
+    </n-button>
   </div>
 </template>

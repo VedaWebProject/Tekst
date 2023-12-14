@@ -161,4 +161,7 @@ class ModelFactoryMixin:
 
 
 class LayerConfigBase(ModelBase):
-    pass
+    show_on_parent_level: Annotated[
+        bool,
+        Field(description="Show combined contents of this layer on the parent level"),
+    ] = False

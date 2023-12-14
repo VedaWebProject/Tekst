@@ -43,22 +43,20 @@ async function handleHelpButtonClick() {
 </script>
 
 <template>
-  <div style="display: inline-table; height: 100%">
-    <n-button
-      secondary
-      circle
-      color="var(--accent-color)"
-      :size="size"
-      :title="$t('help.tipHelpButton')"
-      :focusable="false"
-      style="vertical-align: super"
-      @click="handleHelpButtonClick"
-    >
-      <template #icon>
-        <n-icon :component="QuestionMarkFilled" />
-      </template>
-    </n-button>
-  </div>
+  <n-button
+    secondary
+    circle
+    color="var(--accent-color)"
+    :size="size"
+    :title="$t('help.tipHelpButton')"
+    :focusable="false"
+    style="display: inline-flex; align-self: center; vertical-align: center"
+    @click="handleHelpButtonClick"
+  >
+    <template #icon>
+      <n-icon :component="QuestionMarkFilled" />
+    </template>
+  </n-button>
 
   <n-modal
     v-model:show="showModal"

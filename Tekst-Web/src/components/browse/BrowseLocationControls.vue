@@ -27,7 +27,7 @@ const { ArrowLeft, ArrowRight } = useMagicKeys();
 const showModal = ref(false);
 watch(showModal, (show) => show && initSelectModels());
 
-const browseLevel = ref(state.text?.defaultLevel || 0);
+const browseLevel = ref(browse.level ?? state.text?.defaultLevel ?? 0);
 const browseLevelOptions = computed(() =>
   state.textLevelLabels.map((l, i) => ({
     value: i,
@@ -37,7 +37,9 @@ const browseLevelOptions = computed(() =>
 // sync browse level in location controls state with actual browse level (if possible)
 watch(
   () => browse.level,
-  (after) => (browseLevel.value = after !== undefined ? after : state.text?.defaultLevel || 0)
+  (after) => {
+    browseLevel.value = after ?? state.text?.defaultLevel ?? 0;
+  }
 );
 // react to browse level selection changes
 watch(browseLevel, (after, before) => {
@@ -311,7 +313,9 @@ const btnColor = '#fff';
           filterable
           placeholder="--"
           :loading="levelLoc.loading"
-          :disabled="levelLoc.disabled || locationSelectOptions[index].length === 0"
+          :disabled="
+            levelLoc.loading || levelLoc.disabled || locationSelectOptions[index].length === 0
+          "
           @update:value="() => updateSelectModelsFromLvl(index)"
         />
       </n-form-item>

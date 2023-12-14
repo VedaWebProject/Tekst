@@ -18,16 +18,16 @@ import { usePlatformData } from '@/platformData';
 import { PATCH, type ClientSegmentUpdate, POST, type ClientSegmentCreate, DELETE } from '@/api';
 import { localeProfiles } from '@/i18n';
 import HugeLabeledIcon from '@/components/HugeLabeledIcon.vue';
-
+import ButtonFooter from '@/components/ButtonFooter.vue';
 import { useI18n } from 'vue-i18n';
 import { useModelChanges } from '@/modelChanges';
 import { useMessages } from '@/messages';
 import { infoSegmentFormRules } from '@/forms/formRules';
+import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
 
 import AddOutlined from '@vicons/material/AddOutlined';
 import FileOpenOutlined from '@vicons/material/FileOpenOutlined';
 import DeleteOutlined from '@vicons/material/DeleteOutlined';
-import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
 
 const { pfData, loadPlatformData, getSegment } = usePlatformData();
 const { locale } = useI18n();
@@ -273,65 +273,71 @@ async function handleDeleteClick() {
     </n-button>
   </div>
 
-  <div v-if="segmentModel" class="content-block">
-    <n-form
-      ref="formRef"
-      :model="segmentModel"
-      :rules="infoSegmentFormRules"
-      label-placement="top"
-      label-width="auto"
-      require-mark-placement="right-hanging"
-    >
-      <!-- TITLE -->
-      <n-form-item path="title" :label="$t('models.segment.title')">
-        <n-input
-          ref="firstInputRef"
-          v-model:value="segmentModel.title"
-          type="text"
-          :placeholder="$t('models.segment.title')"
-          :disabled="loading"
-          @keydown.enter.prevent
-        />
-      </n-form-item>
-      <!-- KEY -->
-      <n-form-item path="key" :label="$t('models.segment.key')" required>
-        <n-input
-          v-model:value="segmentModel.key"
-          type="text"
-          :placeholder="$t('models.segment.key')"
-          :disabled="loading"
-          @keydown.enter.prevent
-        />
-      </n-form-item>
-      <!-- LOCALE -->
-      <n-form-item :label="$t('models.segment.locale')">
-        <n-select
-          v-model:value="segmentModel.locale"
-          :options="localeOptions"
-          :placeholder="$t('general.language')"
-          :consistent-menu-width="false"
-          style="min-width: 200px"
-          @keydown.enter.prevent
-        />
-      </n-form-item>
-      <!-- HTML -->
-      <n-form-item path="html" :label="$t('models.segment.html')" required>
-        <HtmlEditor
-          v-model:value="segmentModel.html"
-          v-model:editor-mode="segmentModel.editorMode"
-          toolbar-size="medium"
-          :max-chars="1048576"
-        />
-      </n-form-item>
-    </n-form>
-
-    <div style="display: flex; gap: var(--layout-gap); justify-content: end">
-      <n-button secondary @click="handleCancelClick">{{ $t('general.cancelAction') }}</n-button>
-      <n-button type="primary" :disabled="!modelChanged" @click="handleSaveClick">{{
-        $t('general.saveAction')
-      }}</n-button>
+  <template v-if="segmentModel">
+    <div class="content-block">
+      <n-form
+        ref="formRef"
+        :model="segmentModel"
+        :rules="infoSegmentFormRules"
+        :disabled="loading"
+        label-placement="top"
+        label-width="auto"
+        require-mark-placement="right-hanging"
+      >
+        <!-- TITLE -->
+        <n-form-item path="title" :label="$t('models.segment.title')">
+          <n-input
+            ref="firstInputRef"
+            v-model:value="segmentModel.title"
+            type="text"
+            :placeholder="$t('models.segment.title')"
+            @keydown.enter.prevent
+          />
+        </n-form-item>
+        <!-- KEY -->
+        <n-form-item path="key" :label="$t('models.segment.key')" required>
+          <n-input
+            v-model:value="segmentModel.key"
+            type="text"
+            :placeholder="$t('models.segment.key')"
+            @keydown.enter.prevent
+          />
+        </n-form-item>
+        <!-- LOCALE -->
+        <n-form-item :label="$t('models.segment.locale')">
+          <n-select
+            v-model:value="segmentModel.locale"
+            :options="localeOptions"
+            :placeholder="$t('general.language')"
+            :consistent-menu-width="false"
+            style="min-width: 200px"
+            @keydown.enter.prevent
+          />
+        </n-form-item>
+        <!-- HTML -->
+        <n-form-item path="html" :label="$t('models.segment.html')" required>
+          <HtmlEditor
+            v-model:value="segmentModel.html"
+            v-model:editor-mode="segmentModel.editorMode"
+            toolbar-size="medium"
+            :max-chars="1048576"
+          />
+        </n-form-item>
+      </n-form>
     </div>
-  </div>
+
+    <ButtonFooter style="margin-bottom: var(--layout-gap)">
+      <n-button secondary @click="handleCancelClick">{{ $t('general.cancelAction') }}</n-button>
+      <n-button
+        type="primary"
+        :loading="loading"
+        :disabled="!modelChanged"
+        @click="handleSaveClick"
+      >
+        {{ $t('general.saveAction') }}
+      </n-button>
+    </ButtonFooter>
+  </template>
 
   <HugeLabeledIcon
     v-else

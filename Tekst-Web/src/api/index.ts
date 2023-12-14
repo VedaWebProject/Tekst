@@ -147,4 +147,5 @@ export type AnyLayerUpdate = PlaintextLayerUpdate | DebugLayerUpdate;
 
 // common data layer config types
 
+export type AnyLayerConfig = PlaintextLayerConfig | DebugLayerConfig;
 export type DeepLLinksConfig = components['schemas']['DeepLLinksConfig'];

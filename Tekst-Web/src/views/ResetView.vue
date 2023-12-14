@@ -86,6 +86,7 @@ onMounted(() => {
         ref="passwordFormRef"
         :model="passwordFormModel"
         :rules="accountFormRules"
+        :disabled="loading"
         label-placement="top"
         label-width="auto"
         require-mark-placement="right-hanging"
@@ -96,7 +97,6 @@ onMounted(() => {
             v-model:value="passwordFormModel.password"
             type="password"
             :placeholder="$t('models.user.password')"
-            :disabled="loading"
             @input="handlePasswordInput"
             @keydown.enter.prevent
           />

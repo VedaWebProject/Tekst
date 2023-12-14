@@ -5,7 +5,6 @@ from pydantic import Field
 from tekst.layer_types import LayerTypeABC
 from tekst.models.common import LayerConfigBase
 from tekst.models.layer import LayerBase
-from tekst.models.layer_configs import DeepLLinksConfig
 from tekst.models.unit import UnitBase
 
 
@@ -26,12 +25,12 @@ class Debug(LayerTypeABC):
 
 
 class DebugLayerConfig(LayerConfigBase):
-    deepl_links: DeepLLinksConfig = Field(default_factory=DeepLLinksConfig)
+    pass
 
 
 class DebugLayer(LayerBase):
     layer_type: Literal["debug"]  # snake_cased layer type classname
-    config: DebugLayerConfig = Field(default_factory=DebugLayerConfig)
+    config: DebugLayerConfig = DebugLayerConfig()
 
 
 class DebugUnit(UnitBase):

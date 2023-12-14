@@ -10,8 +10,8 @@ import type { AnyLayerRead } from '@/api';
 interface Props {
   layer: AnyLayerRead;
   style?: StyleValue;
-  showSiblingsWidget?: boolean;
   showDeactivateWidget?: boolean;
+  showSiblingsWidget?: boolean;
 }
 
 withDefaults(defineProps<Props>(), {
@@ -38,7 +38,11 @@ const browse = useBrowseStore();
     </template>
     <!-- generic unit widgets -->
     <UnitSiblingsWidget
-      v-if="(showSiblingsWidget ?? true) && browse.level >= layer.level - 1"
+      v-if="
+        showSiblingsWidget &&
+        layer.config?.showOnParentLevel &&
+        (browse.level == layer.level || browse.level == layer.level - 1)
+      "
       :layer="layer"
     />
     <LayerInfoWidget :layer="layer" />

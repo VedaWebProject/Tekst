@@ -18,24 +18,25 @@ import { POST } from '@/api';
 import { useStateStore } from '@/stores';
 import { usePlatformData } from '@/platformData';
 import { useRouter } from 'vue-router';
-import type { TextCreate } from '@/api';
+import type { TextCreate, Translation } from '@/api';
 import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import IconHeading from '@/components/typography/IconHeading.vue';
 
 import AddOutlined from '@vicons/material/AddOutlined';
 import MinusRound from '@vicons/material/MinusRound';
 import AddCircleOutlineRound from '@vicons/material/AddCircleOutlineRound';
+import ButtonFooter from '@/components/ButtonFooter.vue';
 
 interface NewTextModel {
   title?: string;
   slug?: string;
-  levels: { locale?: string; label?: string }[][];
+  levels: Translation[][];
 }
 
 const initialModel = (): NewTextModel => ({
   title: undefined,
   slug: undefined,
-  levels: [[{ locale: state.locale, label: undefined }]],
+  levels: [[{ locale: state.locale, translation: '' }]],
 });
 
 const router = useRouter();
@@ -110,6 +111,7 @@ async function handleSave() {
       ref="formRef"
       :model="model"
       :rules="textFormRules"
+      :disabled="loading"
       label-placement="top"
       label-width="auto"
       require-mark-placement="right-hanging"
@@ -120,7 +122,6 @@ async function handleSave() {
           v-model:value="model.title"
           type="text"
           :placeholder="$t('models.text.title')"
-          :disabled="loading"
           @keydown.enter.prevent
           @input="handleTitleChange"
         />
@@ -132,7 +133,6 @@ async function handleSave() {
           v-model:value="model.slug"
           type="text"
           :placeholder="$t('models.text.slug')"
-          :disabled="loading"
           @keydown.enter.prevent
         />
       </n-form-item>
@@ -144,8 +144,7 @@ async function handleSave() {
           :min="1"
           :max="32"
           item-style="margin-bottom: 0;"
-          :disabled="loading"
-          @create="() => [{ locale: state.locale, label: '' }]"
+          @create="() => [{ locale: state.locale, translation: '' }]"
         >
           <template #default="{ index: levelIndex }">
             <div style="padding-right: 12px">{{ levelIndex + 1 }}.</div>
@@ -159,10 +158,9 @@ async function handleSave() {
                 style="flex-grow: 2"
               >
                 <n-input
-                  v-model:value="model.levels[levelIndex][0].label"
+                  v-model:value="model.levels[levelIndex][0].translation"
                   type="text"
                   :placeholder="$t('models.text.levelLabel')"
-                  :disabled="loading"
                   @keydown.enter.prevent
                 />
               </n-form-item>
@@ -196,11 +194,12 @@ async function handleSave() {
           </template>
         </n-dynamic-input>
       </n-form-item>
-      <n-space :size="12" justify="end" style="margin-top: 0.5rem">
-        <n-button block type="primary" :loading="loading" :disabled="loading" @click="handleSave">
-          {{ $t('general.saveAction') }}
-        </n-button>
-      </n-space>
     </n-form>
   </div>
+
+  <ButtonFooter style="margin-bottom: var(--layout-gap)">
+    <n-button type="primary" :disabled="loading" :loading="loading" @click="handleSave">
+      {{ $t('general.saveAction') }}
+    </n-button>
+  </ButtonFooter>
 </template>

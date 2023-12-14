@@ -245,6 +245,7 @@ async function handleModalSubmit() {
     <n-form
       ref="formRef"
       :model="formModel"
+      :disabled="loading"
       label-placement="top"
       label-width="auto"
       require-mark-placement="right-hanging"
@@ -254,7 +255,6 @@ async function handleModalSubmit() {
         v-model:value="formModel.translations"
         parent-form-path-prefix="translations"
         :loading="loading"
-        :disabled="loading"
         :main-form-label="$t('models.text.level')"
         :translation-form-label="$t('models.text.level')"
         :translation-form-rule="textFormRules.levelTranslation"

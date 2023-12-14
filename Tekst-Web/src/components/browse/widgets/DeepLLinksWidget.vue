@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import UnitContainerHeaderWidget from '@/components/browse/UnitContainerHeaderWidget.vue';
-import TranslateRound from '@vicons/material/TranslateRound';
 import type { DeepLLinksConfig } from '@/api';
 import { computed, h } from 'vue';
 import type { VNodeChild } from 'vue';
 import { useStateStore } from '@/stores';
 import { NDropdown } from 'naive-ui';
 import type { DropdownOption } from 'naive-ui';
+
+import TranslateOutlined from '@vicons/material/TranslateOutlined';
 
 const DEEPL_TRANSLATOR_URL = 'https://www.deepl.com/translator';
 
@@ -65,7 +66,7 @@ function renderOption(option: DropdownOption) {
   >
     <UnitContainerHeaderWidget
       :title="$t('browse.units.widgets.deepLTranslate.title')"
-      :icon-component="TranslateRound"
+      :icon-component="TranslateOutlined"
     />
   </n-dropdown>
 </template>

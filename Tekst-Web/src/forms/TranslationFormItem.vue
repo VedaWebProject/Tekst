@@ -27,8 +27,6 @@ const props = withDefaults(
     multiline?: boolean;
     maxTranslationLength?: number;
     minItems?: number;
-    loading?: boolean;
-    disabled?: boolean;
   }>(),
   {
     mainFormLabel: undefined,
@@ -37,8 +35,6 @@ const props = withDefaults(
     multiline: false,
     maxTranslationLength: undefined,
     minItems: 0,
-    loading: false,
-    disabled: false,
   }
 );
 
@@ -74,7 +70,6 @@ const localeOptions = computed(() =>
       :min="minItems"
       :max="localeOptions.length"
       item-style="margin-bottom: 0;"
-      :disabled="loading || disabled"
       :default-value="[]"
       @create="
         () => ({
@@ -99,7 +94,6 @@ const localeOptions = computed(() =>
               :options="localeOptions"
               :placeholder="$t('general.language')"
               :consistent-menu-width="false"
-              :disabled="loading"
               style="min-width: 200px; font-weight: var(--app-ui-font-weight-normal)"
               @keydown.enter.prevent
             />
@@ -119,7 +113,6 @@ const localeOptions = computed(() =>
               :show-count="multiline && !!maxTranslationLength"
               :maxlength="maxTranslationLength"
               :placeholder="translationFormLabel"
-              :disabled="loading"
             />
           </n-form-item>
         </div>

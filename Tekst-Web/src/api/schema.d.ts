@@ -476,6 +476,12 @@ export interface components {
     };
     /** DebugLayerConfig */
     DebugLayerConfig: {
+      /**
+       * Showonparentlevel
+       * @description Show combined contents of this layer on the parent level
+       * @default false
+       */
+      showOnParentLevel?: boolean;
       deeplLinks?: components['schemas']['DeepLLinksConfig'];
     };
     /** DebugLayerCreate */
@@ -1070,6 +1076,12 @@ export interface components {
     /** PlaintextLayerConfig */
     PlaintextLayerConfig: {
       /**
+       * Showonparentlevel
+       * @description Show combined contents of this layer on the parent level
+       * @default false
+       */
+      showOnParentLevel?: boolean;
+      /**
        * @default {
        *   "enabled": false,
        *   "sourceLanguage": "BG",
@@ -1163,6 +1175,7 @@ export interface components {
       comment?: components['schemas']['LayerCommentTranslation'][];
       /**
        * @default {
+       *   "showOnParentLevel": false,
        *   "deeplLinks": {
        *     "enabled": false,
        *     "languages": [
@@ -1279,6 +1292,7 @@ export interface components {
       comment?: components['schemas']['LayerCommentTranslation'][];
       /**
        * @default {
+       *   "showOnParentLevel": false,
        *   "deeplLinks": {
        *     "enabled": false,
        *     "languages": [
@@ -1364,6 +1378,7 @@ export interface components {
       comment?: components['schemas']['LayerCommentTranslation'][];
       /**
        * @default {
+       *   "showOnParentLevel": false,
        *   "deeplLinks": {
        *     "enabled": false,
        *     "languages": [

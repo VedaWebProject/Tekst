@@ -2,7 +2,7 @@ from typing import Annotated, Literal
 
 from pydantic import AfterValidator, Field
 
-from tekst.models.common import LayerConfigBase
+from tekst.models.common import ModelBase
 
 
 def _uppercase_lang_code(v):
@@ -13,7 +13,7 @@ def _uppercase_lang_code(v):
     return v.upper()
 
 
-class DeepLLinksConfig(LayerConfigBase):
+class DeepLLinksConfig(ModelBase):
     _DEEPL_LANGUAGES: tuple = (
         "BG", "CS", "DA", "DE", "EL", "EN", "ES", "ET", "FI",
         "FR", "HU", "ID", "IT", "JA", "LT", "LV", "NL", "PL",
@@ -32,5 +32,5 @@ class DeepLLinksConfig(LayerConfigBase):
         list[
             Annotated[Literal[_DEEPL_LANGUAGES], AfterValidator(_uppercase_lang_code)]
         ],
-        Field(description="Target languages to display links for"),
+        Field(description="Target languages to display links for", max_length=32),
     ] = ["EN", "DE"]

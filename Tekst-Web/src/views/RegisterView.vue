@@ -140,6 +140,7 @@ onMounted(() => {
         ref="formRef"
         :model="formModel"
         :rules="accountFormRules"
+        :disabled="loading"
         label-placement="top"
         label-width="auto"
         require-mark-placement="right-hanging"
@@ -150,7 +151,6 @@ onMounted(() => {
             v-model:value="formModel.email"
             type="text"
             :placeholder="$t('models.user.email')"
-            :disabled="loading"
             @keydown.enter.prevent
           />
         </n-form-item>
@@ -159,7 +159,6 @@ onMounted(() => {
             v-model:value="formModel.username"
             type="text"
             :placeholder="$t('models.user.username')"
-            :disabled="loading"
             @keydown.enter.prevent
           />
         </n-form-item>
@@ -168,7 +167,6 @@ onMounted(() => {
             v-model:value="formModel.password"
             type="password"
             :placeholder="$t('models.user.password')"
-            :disabled="loading"
             @input="handlePasswordInput"
             @keydown.enter.prevent
           />
@@ -193,7 +191,6 @@ onMounted(() => {
             v-model:value="formModel.name"
             type="text"
             :placeholder="$t('models.user.name')"
-            :disabled="loading"
             @keydown.enter.prevent
           />
         </n-form-item>
@@ -202,7 +199,6 @@ onMounted(() => {
             v-model:value="formModel.affiliation"
             type="text"
             :placeholder="$t('models.user.affiliation')"
-            :disabled="loading"
             @keyup.enter="() => handleRegisterClick()"
           />
         </n-form-item>

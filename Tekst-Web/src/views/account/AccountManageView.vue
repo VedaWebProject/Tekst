@@ -245,6 +245,7 @@ async function handleDeleteAccount() {
       ref="userDataFormRef"
       :model="userDataFormModel"
       :rules="accountFormRules"
+      :disabled="loading"
       label-placement="top"
       label-width="auto"
       require-mark-placement="right-hanging"
@@ -254,7 +255,6 @@ async function handleDeleteAccount() {
           v-model:value="userDataFormModel.username"
           type="text"
           :placeholder="$t('models.user.username')"
-          :disabled="loading"
           @keydown.enter.prevent
         />
       </n-form-item>
@@ -263,7 +263,6 @@ async function handleDeleteAccount() {
           v-model:value="userDataFormModel.name"
           type="text"
           :placeholder="$t('models.user.name')"
-          :disabled="loading"
           @keydown.enter.prevent
         />
       </n-form-item>
@@ -272,7 +271,6 @@ async function handleDeleteAccount() {
           v-model:value="userDataFormModel.affiliation"
           type="text"
           :placeholder="$t('models.user.affiliation')"
-          :disabled="loading"
         />
       </n-form-item>
     </n-form>
@@ -302,6 +300,7 @@ async function handleDeleteAccount() {
       ref="emailFormRef"
       :model="emailFormModel"
       :rules="accountFormRules"
+      :disabled="loading"
       label-placement="top"
       label-width="auto"
       require-mark-placement="right-hanging"
@@ -311,7 +310,6 @@ async function handleDeleteAccount() {
           v-model:value="emailFormModel.email"
           type="text"
           :placeholder="$t('models.user.email')"
-          :disabled="loading"
           @keydown.enter.prevent
         />
       </n-form-item>
@@ -340,6 +338,7 @@ async function handleDeleteAccount() {
       ref="passwordFormRef"
       :model="passwordFormModel"
       :rules="accountFormRules"
+      :disabled="loading"
       label-placement="top"
       label-width="auto"
       require-mark-placement="right-hanging"
@@ -349,7 +348,6 @@ async function handleDeleteAccount() {
           v-model:value="passwordFormModel.password"
           type="password"
           :placeholder="$t('models.user.password')"
-          :disabled="loading"
           @input="handlePasswordInput"
           @keydown.enter.prevent
         />
@@ -399,6 +397,7 @@ async function handleDeleteAccount() {
       ref="publicFieldsFormRef"
       :model="publicFieldsFormModel"
       :show-label="false"
+      :disabled="loading"
       require-mark-placement="right-hanging"
     >
       <n-space vertical>

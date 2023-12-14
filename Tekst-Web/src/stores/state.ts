@@ -11,6 +11,7 @@ import { $t, $te } from '@/i18n';
 import { usePlatformData } from '@/platformData';
 import { useAuthStore } from './auth';
 import { useMessages } from '@/messages';
+import { type Locale } from '@/api';
 
 export const useStateStore = defineStore('state', () => {
   // define resources
@@ -31,10 +32,10 @@ export const useStateStore = defineStore('state', () => {
   // locale
 
   const locale = ref(
-    auth.user?.locale ||
+    (auth.user?.locale ||
       localStorage.getItem('locale') ||
       getAvaliableBrowserLocaleKey() ||
-      i18n.global.locale
+      i18n.global.locale) as Locale
   );
 
   const locales = i18n.global.availableLocales;

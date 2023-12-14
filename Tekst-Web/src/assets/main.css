@@ -45,21 +45,21 @@ h2 {
 }
 
 h3 {
-  font-size: 1.2rem;
+  font-size: 1.125rem;
   font-weight: 300;
   margin-bottom: 0.8rem;
 }
 
 h4 {
-  font-size: 1.125rem;
-  font-weight: 400;
-  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  font-weight: 300;
+  margin-bottom: 0.8rem;
 }
 
 h5 {
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: 400;
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.5rem;
 }
 
 h1,
@@ -85,6 +85,10 @@ li > p {
 
 blockquote {
   font-style: italic;
+}
+
+strong {
+  font-weight: normal;
 }
 
 .form-container {

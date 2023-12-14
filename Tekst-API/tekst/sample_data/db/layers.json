@@ -35,6 +35,7 @@
       }
     ],
     "config": {
+      "showOnParentLevel": true,
       "deeplLinks": {
         "enabled": true,
         "sourceLanguage": "DE",
@@ -63,9 +64,10 @@
     ],
     "config": {
       "deeplLinks": {
+        "showOnParentLevel": false,
         "enabled": true,
         "sourceLanguage": "JA",
-        "languages": ["EN", "DE", "FR"]
+        "languages": ["EN", "DE", "FR", "ES"]
       }
     },
     "category": "versions",
@@ -90,10 +92,9 @@
     "public": true,
     "citation": null,
     "config": {
+      "showOnParentLevel": true,
       "deeplLinks": {
-        "enabled": false,
-        "sourceLanguage": "BG",
-        "languages": ["EN", "DE"]
+        "enabled": false
       }
     },
     "category": "translations",

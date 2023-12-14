@@ -86,6 +86,7 @@ function resetForm() {
     ref="formRef"
     :model="formModel"
     :rules="platformSettingsFormRules"
+    :disabled="loading"
     label-placement="top"
     label-width="auto"
     require-mark-placement="right-hanging"
@@ -103,7 +104,6 @@ function resetForm() {
           v-model:value="formModel.infoPlatformName"
           type="text"
           :placeholder="$t('models.platformSettings.infoPlatformName')"
-          :disabled="loading"
           @keydown.enter.prevent
         />
       </n-form-item>
@@ -112,7 +112,6 @@ function resetForm() {
         v-model:value="formModel.infoSubtitle"
         parent-form-path-prefix="infoSubtitle"
         :loading="loading"
-        :disabled="loading"
         :main-form-label="$t('models.platformSettings.infoSubtitle')"
         :translation-form-label="$t('models.platformSettings.infoSubtitle')"
         :translation-form-rule="platformSettingsFormRules.infoSubtitleTranslation"
@@ -123,7 +122,6 @@ function resetForm() {
           v-model:value="formModel.infoTerms"
           type="text"
           :placeholder="$t('models.platformSettings.infoTerms')"
-          :disabled="loading"
           @keydown.enter.prevent
         />
       </n-form-item>
@@ -133,7 +131,6 @@ function resetForm() {
           v-model:value="formModel.infoContactName"
           type="text"
           :placeholder="$t('models.platformSettings.infoContactName')"
-          :disabled="loading"
           @keydown.enter.prevent
         />
       </n-form-item>
@@ -143,7 +140,6 @@ function resetForm() {
           v-model:value="formModel.infoContactEmail"
           type="text"
           :placeholder="$t('models.platformSettings.infoContactEmail')"
-          :disabled="loading"
           @keydown.enter.prevent
         />
       </n-form-item>
@@ -153,18 +149,9 @@ function resetForm() {
           v-model:value="formModel.infoContactUrl"
           type="text"
           :placeholder="$t('models.platformSettings.infoContactUrl')"
-          :disabled="loading"
           @keydown.enter.prevent
         />
       </n-form-item>
-      <ButtonFooter>
-        <n-button secondary :disabled="!changed" @click="resetForm">{{
-          $t('general.resetAction')
-        }}</n-button>
-        <n-button type="primary" :disabled="!changed" @click="handleSaveClick">{{
-          $t('general.saveAction')
-        }}</n-button>
-      </ButtonFooter>
     </div>
 
     <div class="content-block">
@@ -188,7 +175,6 @@ function resetForm() {
         v-model:value="formModel.navInfoEntry"
         parent-form-path-prefix="navInfoEntry"
         :loading="loading"
-        :disabled="loading"
         :main-form-label="$t('models.platformSettings.navInfoEntry')"
         :translation-form-label="$t('models.platformSettings.navInfoEntry')"
         :translation-form-rule="platformSettingsFormRules.navInfoEntryTranslation"
@@ -201,7 +187,6 @@ function resetForm() {
           <n-checkbox
             v-model:checked="formModel.alwaysShowTextInfo"
             :round="false"
-            :disabled="loading"
             @keydown.enter.prevent
           >
             {{ $t('models.platformSettings.alwaysShowTextInfo') }}
@@ -210,7 +195,6 @@ function resetForm() {
           <n-checkbox
             v-model:checked="formModel.showHeaderInfo"
             :round="false"
-            :disabled="loading"
             @keydown.enter.prevent
           >
             {{ $t('models.platformSettings.showHeaderInfo') }}
@@ -219,21 +203,12 @@ function resetForm() {
           <n-checkbox
             v-model:checked="formModel.showFooterInfo"
             :round="false"
-            :disabled="loading"
             @keydown.enter.prevent
           >
             {{ $t('models.platformSettings.showFooterInfo') }}
           </n-checkbox>
         </div>
       </n-form-item>
-      <ButtonFooter>
-        <n-button secondary :disabled="!changed" @click="resetForm">{{
-          $t('general.resetAction')
-        }}</n-button>
-        <n-button type="primary" :disabled="!changed" @click="handleSaveClick">{{
-          $t('general.saveAction')
-        }}</n-button>
-      </ButtonFooter>
     </div>
 
     <div class="content-block">
@@ -266,8 +241,6 @@ function resetForm() {
               <TranslationFormItem
                 v-model:value="formModel.layerCategories[index].translations"
                 :parent-form-path-prefix="`layerCategories[${index}].translations`"
-                :loading="loading"
-                :disabled="loading"
                 required
                 style="flex-grow: 2; padding: 0 var(--layout-gap)"
                 :main-form-label="$t('models.platformSettings.layerCategoryTranslation')"
@@ -334,20 +307,19 @@ function resetForm() {
         <n-checkbox
           v-model:checked="formModel.showLayerCategoryHeadings"
           :round="false"
-          :disabled="loading"
           @keydown.enter.prevent
         >
           {{ $t('models.platformSettings.showLayerCategoryHeadings') }}
         </n-checkbox>
       </n-form-item>
-      <ButtonFooter>
-        <n-button secondary :disabled="!changed" @click="resetForm">{{
-          $t('general.resetAction')
-        }}</n-button>
-        <n-button type="primary" :disabled="!changed" @click="handleSaveClick">{{
-          $t('general.saveAction')
-        }}</n-button>
-      </ButtonFooter>
     </div>
   </n-form>
+  <ButtonFooter style="margin-bottom: var(--layout-gap)">
+    <n-button secondary :disabled="!changed" @click="resetForm">{{
+      $t('general.resetAction')
+    }}</n-button>
+    <n-button type="primary" :disabled="!changed" @click="handleSaveClick">{{
+      $t('general.saveAction')
+    }}</n-button>
+  </ButtonFooter>
 </template>

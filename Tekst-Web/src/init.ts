@@ -97,7 +97,7 @@ export function useInitializeApp() {
     initSteps.map((step: InitStep, i: number) => async (success: boolean) => {
       state.globalLoadingMsg = step.info();
       state.globalLoadingProgress = i / initSteps.length;
-      await new Promise((resolve) => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 100)); // dev: delay each step
       return step.action(success);
     })
   );

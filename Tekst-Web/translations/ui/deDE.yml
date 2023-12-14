@@ -248,6 +248,7 @@ models:
 
 dataLayers:
   heading: Datenschichten
+  headingGeneral: Allgemein
   ownedByMe: von mir
   ownedByOthers: von anderen
   public: '@:models.layer.public'
@@ -285,13 +286,23 @@ dataLayers:
   edit:
     heading: Datenschicht bearbeiten
     backToOverview: Zurück zur Datenschichten-Übersicht
-    onlyForUnpublished: (nur für nicht veröffentlichte Datenschichten)
+    onlyForUnpublished: Nur für nicht veröffentlichte Datenschichten!
     msgSaved: Ihre Änderungen an der Datenschicht "{title}" wurden gespeichert.
     status: Status
   create:
     heading: Neue Datenschicht zu "{text}"
     warnImmutable: Diese Einstellungen können später nicht mehr geändert werden!
     msgSaved: Ihre neue Datenschicht "{title}" wurden erstellt.
+  config:
+    headingConfig: Konfiguration
+    specialConfigLabel: Spezielle Konfiguration für Typ "{layerType}"
+    status: Status
+    enabled: Aktiv
+    showOnParentLevel: Ermögliche das Anzeigen von kombinierten Inhalten auf der übergeordneten Ebene
+    deeplLinks:
+      title: DeepL-Übersetzungs-Links
+      sourceLanguage: Quellsprache
+      targetLanguages: Zielsprachen
 
 account:
   account: Konto

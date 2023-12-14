@@ -11,7 +11,7 @@ import { NAlert, NForm, NFormItem, NSelect, NButton, type FormInst } from 'naive
 import { layerFormRules } from '@/forms/formRules';
 import { useRouter } from 'vue-router';
 import ButtonFooter from '@/components/ButtonFooter.vue';
-import DataLayerForm from '@/forms/DataLayerForm.vue';
+import DataLayerFormItems from '@/forms/DataLayerFormItems.vue';
 
 import LayersFilled from '@vicons/material/LayersFilled';
 import KeyboardArrowLeftOutlined from '@vicons/material/KeyboardArrowLeftOutlined';
@@ -31,8 +31,6 @@ const getInitialModel = () =>
     layerType: 'plaintext',
     ownerId: auth.user?.id || null,
     category: null,
-    sharedRead: [],
-    sharedWrite: [],
     public: false,
     proposed: false,
     citation: null,
@@ -110,11 +108,12 @@ async function handleSaveClick() {
     </n-button>
   </router-link>
 
-  <div v-if="model" class="content-block">
+  <template v-if="model">
     <n-form
       ref="formRef"
       :model="model"
       :rules="layerFormRules"
+      :disabled="loadingSave"
       label-placement="top"
       label-width="auto"
       require-mark-placement="right-hanging"
@@ -124,7 +123,7 @@ async function handleSaveClick() {
         :closable="false"
         :title="$t('general.important') + '!'"
         :show-icon="false"
-        style="margin-bottom: var(--layout-gap); background-color: transparent"
+        style="margin: var(--layout-gap) 0"
       >
         <p>{{ $t('dataLayers.create.warnImmutable') }}</p>
         <!-- LAYER TYPE -->
@@ -132,7 +131,6 @@ async function handleSaveClick() {
           <n-select
             v-model:value="model.layerType"
             :default-value="layerTypeOptions[0].value"
-            :disabled="loadingSave"
             :placeholder="$t('models.layer.layerType')"
             :options="layerTypeOptions"
           />
@@ -141,24 +139,18 @@ async function handleSaveClick() {
         <n-form-item :label="$t('models.layer.level')" path="level">
           <n-select
             v-model:value="model.level"
-            :disabled="loadingSave"
             :placeholder="$t('models.layer.level')"
             :options="levelOptions"
           />
         </n-form-item>
       </n-alert>
       <!-- COMMON DATA LAYER FORM FIELDS -->
-      <DataLayerForm
-        v-model:model="model"
-        :loading="loadingSave"
-        :owner="auth.user"
-        :public="false"
-      />
+      <DataLayerFormItems v-model:model="model" :owner="auth.user" :public="false" />
     </n-form>
 
-    <ButtonFooter>
+    <ButtonFooter style="margin-bottom: var(--layout-gap)">
       <n-button secondary @click="handleResetClick">{{ $t('general.resetAction') }}</n-button>
       <n-button type="primary" @click="handleSaveClick">{{ $t('general.saveAction') }}</n-button>
     </ButtonFooter>
-  </div>
+  </template>
 </template>

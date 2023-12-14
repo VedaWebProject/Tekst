@@ -96,7 +96,7 @@ routes:
     privacyPolicy: '@:admin.system.segments.systemKeys.systemPrivacyPolicy'
 
 layerTypes:
-  plaintext: Plain Text
+  plaintext: Plaintext
 
 browse:
   location:
@@ -247,6 +247,7 @@ models:
 
 dataLayers:
   heading: Data Layers
+  headingGeneral: General
   ownedByMe: by me
   ownedByOthers: by others
   public: '@:models.layer.public'
@@ -278,13 +279,22 @@ dataLayers:
   edit:
     heading: Edit data layer
     backToOverview: Back to data layers overview
-    onlyForUnpublished: (only for unpublished data layers)
+    onlyForUnpublished: Only for unpublished data layers!
     msgSaved: Your changes to the data layer "{title}" have been saved.
     status: Status
   create:
     heading: New data layer on "{text}"
     warnImmutable: These settings cannot be changed later!
     msgSaved: Your new data layer "{title}" has been created.
+  config:
+    headingConfig: Configuration
+    status: Status
+    enabled: Enabled
+    showOnParentLevel: Enable viewing combined contents on the parent level
+    deeplLinks:
+      title: DeepL Translation Links
+      sourceLanguage: Source language
+      targetLanguages: Target languages
 
 account:
   account: Account

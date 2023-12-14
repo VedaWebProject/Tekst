@@ -21,7 +21,14 @@ const { pfData } = usePlatformData();
 
 const activeLayersCategorized = computed(() =>
   browse.layersCategorized
-    .map((c) => ({ ...c, layers: c.layers.filter((l) => l.active) }))
+    .map((c) => ({
+      ...c,
+      layers: c.layers.filter(
+        (l) =>
+          l.active &&
+          (l.level == browse.level || (l.config?.showOnParentLevel && l.level == browse.level + 1))
+      ),
+    }))
     .filter((c) => c.layers.length)
 );
 </script>

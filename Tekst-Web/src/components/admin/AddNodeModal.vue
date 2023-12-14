@@ -79,6 +79,7 @@ async function handleSubmit() {
       ref="nodeFormRef"
       :model="nodeFormModel"
       :rules="nodeFormRules"
+      :disabled="loading"
       label-placement="top"
       label-width="auto"
       require-mark-placement="right-hanging"
@@ -88,7 +89,6 @@ async function handleSubmit() {
           ref="nodeRenameInputRef"
           v-model:value="nodeFormModel.label"
           type="text"
-          :disabled="loading"
           :autofocus="true"
           @keydown.enter="handleSubmit"
         />
