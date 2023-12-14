@@ -6,7 +6,7 @@ import LayerInfoWidget from '@/components/browse/widgets/LayerInfoWidget.vue';
 import LayerPublicationStatus from '@/components/LayerPublicationStatus.vue';
 
 import DeleteFilled from '@vicons/material/DeleteFilled';
-import ModeEditFilled from '@vicons/material/ModeEditFilled';
+import SettingsFilled from '@vicons/material/SettingsFilled';
 import FlagFilled from '@vicons/material/FlagFilled';
 import FlagOutlined from '@vicons/material/FlagOutlined';
 import PublicFilled from '@vicons/material/PublicFilled';
@@ -127,7 +127,7 @@ const actionButtonProps = {
             @click="$emit('editClick', targetLayer)"
           >
             <template #icon>
-              <n-icon :component="ModeEditFilled" />
+              <n-icon :component="SettingsFilled" />
             </template>
           </n-button>
           <!-- delete -->
