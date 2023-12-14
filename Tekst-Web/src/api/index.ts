@@ -74,6 +74,7 @@ export function getFullUrl(path: string, query?: Record<string, any>): URL {
 // export some common platform properties for use throughout codebase
 
 export const layerTypes = ['plaintext', 'debug'];
+export const prioritizedMetadataKeys = ['author', 'year', 'language'];
 
 // export components types for use throughout codebase
 

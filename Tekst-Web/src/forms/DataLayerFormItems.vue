@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import type { AnyLayerConfig, AnyLayerUpdate, UserReadPublic } from '@/api';
+import {
+  prioritizedMetadataKeys,
+  type AnyLayerConfig,
+  type AnyLayerUpdate,
+  type UserReadPublic,
+} from '@/api';
 import { layerFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
 import { useAuthStore, useStateStore } from '@/stores';
@@ -25,6 +30,8 @@ import {
 import MinusRound from '@vicons/material/MinusRound';
 import AddOutlined from '@vicons/material/AddOutlined';
 import PersonFilled from '@vicons/material/PersonFilled';
+import TranslateOutlined from '@vicons/material/TranslateOutlined';
+import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 
 const props = defineProps<{
   model: AnyLayerUpdate;
@@ -50,6 +57,18 @@ const categoryOptions = computed(
       label: pickTranslation(c.translations, state.locale) || c.key,
       value: c.key,
     })) || []
+);
+
+const metadataKeysOptions = computed(() =>
+  prioritizedMetadataKeys.map((k) => ({
+    label: () =>
+      h('div', { style: 'display: flex; align-items: center; gap: 4px; padding: 4px' }, [
+        h(NIcon, { component: TranslateOutlined }),
+        $t(`models.meta.${k}`),
+      ]),
+    value: k,
+    disabled: props.model.meta && !!props.model.meta.find((m) => m.key === k),
+  }))
 );
 
 const usersOptions = computed(() =>
@@ -159,7 +178,10 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
 
   <!-- METADATA -->
   <div class="content-block">
-    <h3>{{ $t('models.meta.modelLabel') }}</h3>
+    <h3>
+      {{ $t('models.meta.modelLabel') }}
+      <HelpButtonWidget help-key="metadataForm" />
+    </h3>
     <n-form-item v-if="model.meta" :show-label="false" :show-feedback="false">
       <n-dynamic-input
         :value="model.meta"
@@ -178,10 +200,11 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
               :rule="layerFormRules.metaKey"
               required
             >
-              <n-input
+              <n-select
                 v-model:value="metaEntryValue.key"
-                :placeholder="$t('models.meta.key')"
-                @keydown.enter.prevent
+                filterable
+                tag
+                :options="metadataKeysOptions"
               />
             </n-form-item>
             <n-form-item

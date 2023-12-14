@@ -1,20 +1,18 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { $t, $te } from '@/i18n';
-import type { Metadata, Metadate } from '@/api';
+import { prioritizedMetadataKeys, type Metadata, type Metadate } from '@/api';
 
 const props = defineProps<{
   data?: Metadata;
 }>();
-
-const priority = ['author', 'year', 'language'];
 
 const meta = computed<string[][] | null>(() => {
   const m: string[][] = [];
   const data = props.data || [];
 
   // prioritized keys first
-  priority.forEach((p: string) => {
+  prioritizedMetadataKeys.forEach((p: string) => {
     const v = data.find((d) => d.key === p)?.value;
     v && m.push([$te(`models.meta.${p}`) ? $t(`models.meta.${p}`) : p, v]);
   });
@@ -27,7 +25,7 @@ const metaExtra = computed<string[][] | null>(() => {
   const data = props.data || [];
 
   data.forEach((e: Metadate) => {
-    if (!priority.includes(e.key)) {
+    if (!prioritizedMetadataKeys.includes(e.key)) {
       m.push([$te(`models.meta.${e.key}`) ? $t(`models.meta.${e.key}`) : e.key, e.value]);
     }
   });
