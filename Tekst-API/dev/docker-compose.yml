@@ -11,7 +11,7 @@ services:
       - dev
 
   mongo:
-    image: mongo:5.0.9
+    image: mongo:7
     restart: always
     init: true
     volumes:
@@ -27,7 +27,7 @@ services:
     command: mongod --setParameter diagnosticDataCollectionEnabled=false
 
   mongo-express:
-    image: mongo-express:1.0.0-alpha.4
+    image: mongo-express:1
     restart: always
     init: true
     depends_on:

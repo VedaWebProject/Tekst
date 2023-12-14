@@ -47,7 +47,7 @@ services:
       - tekst_db_password
 
   mongo:
-    image: mongo:5.0.9
+    image: mongo:7
     restart: always
     init: true
     environment:
