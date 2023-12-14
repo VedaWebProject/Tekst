@@ -30,17 +30,17 @@ class PlatformNavInfoEntryTranslation(TranslationBase):
     ]
 
 
-class LayerCategoryTranslation(TranslationBase):
+class ResourceCategoryTranslation(TranslationBase):
     translation: Annotated[
         str, StringConstraints(strip_whitespace=True, min_length=1, max_length=32)
     ]
 
 
-class LayerCategory(TypedDict):
+class ResourceCategory(TypedDict):
     key: Annotated[
         str, StringConstraints(strip_whitespace=True, min_length=1, max_length=16)
     ]
-    translations: Translations[LayerCategoryTranslation]
+    translations: Translations[ResourceCategoryTranslation]
 
 
 class PlatformSettings(ModelBase, ModelFactoryMixin):
@@ -86,12 +86,12 @@ class PlatformSettings(ModelBase, ModelFactoryMixin):
         Translations[PlatformNavInfoEntryTranslation],
         Field(description="Custom label for main navigation info entry"),
     ] = []
-    layer_categories: Annotated[
-        list[LayerCategory],
-        Field(description="Layer categories to categorize layers in"),
+    resource_categories: Annotated[
+        list[ResourceCategory],
+        Field(description="Resource categories to categorize resources in"),
     ] = []
-    show_layer_category_headings: Annotated[
-        bool, Field(description="Show layer category headings in browse view")
+    show_resource_category_headings: Annotated[
+        bool, Field(description="Show resource category headings in browse view")
     ] = True
     always_show_text_info: Annotated[
         bool,

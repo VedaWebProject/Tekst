@@ -1,8 +1,8 @@
 import { ref, computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { defineStore } from 'pinia';
-import { useStateStore, useLayersStore } from '@/stores';
-import type { AnyLayerRead, AnyUnitRead, NodeRead } from '@/api';
+import { useStateStore, useResourcesStore } from '@/stores';
+import type { AnyResourceRead, AnyUnitRead, NodeRead } from '@/api';
 import { GET } from '@/api';
 import { pickTranslation } from '@/utils';
 import { $t } from '@/i18n';
@@ -12,7 +12,7 @@ import { useMessages } from '@/messages';
 export const useBrowseStore = defineStore('browse', () => {
   // composables
   const state = useStateStore();
-  const layersStore = useLayersStore();
+  const resourcesStore = useResourcesStore();
   const { pfData } = usePlatformData();
   const route = useRoute();
   const router = useRouter();
@@ -20,13 +20,13 @@ export const useBrowseStore = defineStore('browse', () => {
 
   /* BASIC BROWSE UI STATE */
 
-  const showLayerToggleDrawer = ref(false);
+  const showResourceToggleDrawer = ref(false);
   const reducedView = ref(false);
   const loadingNodePath = ref(true); // this is intentional!
   const loadingUnits = ref(false);
-  const loadingLayers = computed(() => layersStore.loading);
+  const loadingResources = computed(() => resourcesStore.loading);
   const loading = computed(
-    () => loadingUnits.value || loadingNodePath.value || layersStore.loading
+    () => loadingUnits.value || loadingNodePath.value || resourcesStore.loading
   );
 
   /* BROWSE LOCATION */
@@ -110,19 +110,19 @@ export const useBrowseStore = defineStore('browse', () => {
     }
   );
 
-  /* LAYERS AND UNITS */
+  /* RESOURCES AND UNITS */
 
-  const layers = ref<AnyLayerRead[]>([]);
-  const layersCount = computed(() => layers.value.length);
-  const activeLayersCount = computed(() => layers.value.filter((l) => l.active).length);
-  const layersCategorized = computed<
-    { category: { key: string | undefined; translation: string }; layers: AnyLayerRead[] }[]
+  const resources = ref<AnyResourceRead[]>([]);
+  const resourcesCount = computed(() => resources.value.length);
+  const activeResourcesCount = computed(() => resources.value.filter((l) => l.active).length);
+  const resourcesCategorized = computed<
+    { category: { key: string | undefined; translation: string }; resources: AnyResourceRead[] }[]
   >(() => {
-    // compute categorized layers
+    // compute categorized resources
     const categorized =
-      pfData.value?.settings.layerCategories?.map((c) => ({
+      pfData.value?.settings.resourceCategories?.map((c) => ({
         category: { key: c.key, translation: pickTranslation(c.translations, state.locale) },
-        layers: layers.value.filter((l) => l.category === c.key),
+        resources: resources.value.filter((l) => l.category === c.key),
       })) || [];
     const uncategorized = [
       {
@@ -130,31 +130,33 @@ export const useBrowseStore = defineStore('browse', () => {
           key: undefined,
           translation: $t('browse.uncategorized'),
         },
-        layers: layers.value.filter((l) => !categorized.find((c) => c.category.key === l.category)),
+        resources: resources.value.filter(
+          (l) => !categorized.find((c) => c.category.key === l.category)
+        ),
       },
     ];
-    return [...categorized, ...uncategorized].filter((c) => c.layers.length);
+    return [...categorized, ...uncategorized].filter((c) => c.resources.length);
   });
 
   watch(
-    () => layersStore.data,
-    (newLayers) => {
-      // process changed available layers
-      layers.value =
-        newLayers.map((l) => {
-          const existingLayer = layers.value.find((el) => l.id === el.id);
+    () => resourcesStore.data,
+    (newResources) => {
+      // process changed available resources
+      resources.value =
+        newResources.map((l) => {
+          const existingResource = resources.value.find((el) => l.id === el.id);
           return {
             ...l,
-            active: !existingLayer || existingLayer.active,
-            units: existingLayer?.units || [],
+            active: !existingResource || existingResource.active,
+            units: existingResource?.units || [],
           };
         }) || [];
     }
   );
 
-  function setLayerActiveState(layerId: string, active: boolean) {
-    layers.value = layers.value.map((l) => {
-      if (l.id === layerId) {
+  function setResourceActiveState(resourceId: string, active: boolean) {
+    resources.value = resources.value.map((l) => {
+      if (l.id === resourceId) {
         return {
           ...l,
           active,
@@ -173,27 +175,27 @@ export const useBrowseStore = defineStore('browse', () => {
       params: { query: { nodeId: nodeIds } },
     });
     if (!error) {
-      // assign units to layers
-      layers.value.forEach((l: AnyLayerRead) => {
-        l.units = data.filter((u: AnyUnitRead) => u.layerId == l.id);
+      // assign units to resources
+      resources.value.forEach((l: AnyResourceRead) => {
+        l.units = data.filter((u: AnyUnitRead) => u.resourceId == l.id);
       });
     } else {
-      message.error('Error loading data layer units for this location', error.detail?.toString());
+      message.error('Error loading resource units for this location', error.detail?.toString());
     }
     loadingUnits.value = false;
   }
 
   return {
-    showLayerToggleDrawer,
+    showResourceToggleDrawer,
     reducedView,
     loading,
     loadingNodePath,
     loadingUnits,
-    loadingLayers,
-    layersCount,
-    activeLayersCount,
-    layersCategorized,
-    setLayerActiveState,
+    loadingResources,
+    resourcesCount,
+    activeResourcesCount,
+    resourcesCategorized,
+    setResourceActiveState,
     nodePath,
     nodePathHead,
     level,

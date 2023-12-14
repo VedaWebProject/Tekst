@@ -11,11 +11,12 @@ from tekst.models.common import (
 
 
 class UnitBase(ModelBase, ModelFactoryMixin):
-    """A base model for types of data units belonging to a certain data layer"""
+    """A base model for types of data units belonging to a certain resource"""
 
-    layer_id: PydanticObjectId = Field(..., description="Data layer ID")
-    layer_type: Annotated[
-        str, Field(description="A string identifying one of the available layer types")
+    resource_id: PydanticObjectId = Field(..., description="Resource ID")
+    resource_type: Annotated[
+        str,
+        Field(description="A string identifying one of the available resource types"),
     ]
     node_id: PydanticObjectId = Field(..., description="Parent text node ID")
     comment: Annotated[
@@ -28,16 +29,16 @@ class UnitBase(ModelBase, ModelFactoryMixin):
 
     __template_fields: tuple[str] = ("comment",)
 
-    @field_validator("layer_type")
+    @field_validator("resource_type")
     @classmethod
-    def validate_layer_type_name(cls, v):
-        from tekst.layer_types import layer_types_mgr
+    def validate_resource_type_name(cls, v):
+        from tekst.resource_types import resource_types_mgr
 
-        layer_type_names = layer_types_mgr.list_names()
-        if v.lower() not in layer_type_names:
+        resource_type_names = resource_types_mgr.list_names()
+        if v.lower() not in resource_type_names:
             raise ValueError(
-                f"Given layer type ({v}) is not a valid "
-                f"layer type name (one of {layer_type_names})."
+                f"Given resource type ({v}) is not a valid "
+                f"resource type name (one of {resource_type_names})."
             )
         return v.lower()
 
@@ -54,7 +55,7 @@ class UnitBaseDocument(UnitBase, DocumentBase):
     class Settings(DocumentBase.Settings):
         name = "units"
         is_root = True
-        indexes = ["layer_id", "node_id"]
+        indexes = ["resource_id", "node_id"]
 
 
 UnitBaseUpdate = UnitBase.update_model()

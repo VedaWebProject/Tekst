@@ -1,6 +1,6 @@
 import { ref, isRef, unref, watchEffect, type Ref } from 'vue';
 import { GET } from '@/api';
-import type { UserReadPublic, LayerNodeCoverage, PlatformStats, UserRead } from '@/api';
+import type { UserReadPublic, ResourceNodeCoverage, PlatformStats, UserRead } from '@/api';
 import { useDebounceFn } from '@vueuse/core';
 
 export function useProfile(
@@ -37,19 +37,22 @@ export function useProfile(
   return { user, error };
 }
 
-export function useLayerCoverage(id: string | Ref<string>, active: boolean | Ref<boolean> = true) {
-  const coverage = ref<LayerNodeCoverage[] | null>(null);
+export function useResourceCoverage(
+  id: string | Ref<string>,
+  active: boolean | Ref<boolean> = true
+) {
+  const coverage = ref<ResourceNodeCoverage[] | null>(null);
   const error = ref(false);
 
   async function fetchCoverageData() {
     if (!unref(active)) return;
     coverage.value = null;
     error.value = false;
-    const layerId = unref(id);
-    if (!layerId) return;
+    const resourceId = unref(id);
+    if (!resourceId) return;
 
-    const { data, error: err } = await GET('/browse/layers/{id}/coverage', {
-      params: { path: { id: layerId } },
+    const { data, error: err } = await GET('/browse/resources/{id}/coverage', {
+      params: { path: { id: resourceId } },
     });
 
     if (!err) {

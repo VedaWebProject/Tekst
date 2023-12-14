@@ -1,3 +1,0 @@
-# Neue Datenschicht erstellen
-
-...

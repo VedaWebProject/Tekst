@@ -222,7 +222,7 @@ async def test_delete_node(
     register_test_user,
     get_session_cookie,
 ):
-    text_id = (await insert_sample_data("texts", "nodes", "layers"))["texts"][0]
+    text_id = (await insert_sample_data("texts", "nodes", "resources"))["texts"][0]
 
     # get node from db
     resp = await test_client.get(
@@ -237,17 +237,17 @@ async def test_delete_node(
     superuser_data = await register_test_user(is_superuser=True)
     session_cookie = await get_session_cookie(superuser_data)
 
-    # get existing layer
-    resp = await test_client.get("/layers", params={"textId": text_id})
+    # get existing resource
+    resp = await test_client.get("/resources", params={"textId": text_id})
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) > 0
-    layer = resp.json()[0]
+    resource = resp.json()[0]
 
-    # create plaintext layer unit
+    # create plaintext resource unit
     payload = {
-        "layerId": layer["id"],
-        "layerType": "plaintext",
+        "resourceId": resource["id"],
+        "resourceType": "plaintext",
         "nodeId": node["id"],
         "text": "Ein Raabe geht im Feld spazieren.",
         "comment": "This is a comment",
@@ -275,7 +275,7 @@ async def test_move_node(
     register_test_user,
     get_session_cookie,
 ):
-    text_id = (await insert_sample_data("texts", "nodes", "layers"))["texts"][0]
+    text_id = (await insert_sample_data("texts", "nodes", "resources"))["texts"][0]
 
     # create superuser
     superuser_data = await register_test_user(is_superuser=True)

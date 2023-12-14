@@ -4,7 +4,7 @@ import MergeRound from '@vicons/material/MergeRound';
 import { ref } from 'vue';
 import { NModal, NButton, NSpin } from 'naive-ui';
 import ButtonFooter from '@/components/ButtonFooter.vue';
-import { GET, type AnyUnitRead, type AnyLayerRead } from '@/api';
+import { GET, type AnyUnitRead, type AnyResourceRead } from '@/api';
 import { useMessages } from '@/messages';
 import { $t } from '@/i18n';
 import unitComponents from '@/components/browse/units/mappings';
@@ -13,7 +13,7 @@ import UnitHeaderWidgetBar from '@/components/browse/UnitHeaderWidgetBar.vue';
 import { useBrowseStore } from '@/stores';
 
 const props = defineProps<{
-  layer: AnyLayerRead;
+  resource: AnyResourceRead;
 }>();
 
 const { message } = useMessages();
@@ -30,8 +30,8 @@ async function handleClick() {
   const { data: unitsData, error } = await GET('/browse/unit-siblings', {
     params: {
       query: {
-        layerId: props.layer.id,
-        parentNodeId: browse.nodePath[props.layer.level - 1]?.id,
+        resourceId: props.resource.id,
+        parentNodeId: browse.nodePath[props.resource.level - 1]?.id,
       },
     },
   });
@@ -68,21 +68,24 @@ async function handleClick() {
     embedded
   >
     <div class="header">
-      <h2>{{ layer.title }}</h2>
+      <h2>{{ resource.title }}</h2>
       <UnitHeaderWidgetBar
         v-if="!loading && units.length"
-        :layer="{ ...layer, units: units }"
+        :resource="{ ...resource, units: units }"
         :show-deactivate-widget="false"
         :show-siblings-widget="false"
       />
     </div>
 
-    <div class="parent-location"><LocationLabel :max-level="layer.level - 1" /></div>
+    <div class="parent-location"><LocationLabel :max-level="resource.level - 1" /></div>
 
     <n-spin v-if="loading" style="margin: 3rem 0 2rem 0; width: 100%" />
 
     <div v-else-if="units.length">
-      <component :is="unitComponents[layer.layerType]" :layer="{ ...layer, units: units }" />
+      <component
+        :is="unitComponents[resource.resourceType]"
+        :resource="{ ...resource, units: units }"
+      />
     </div>
 
     <span v-else>{{ $t('errors.unexpected') }}</span>

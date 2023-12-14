@@ -46,7 +46,7 @@ from humps import decamelize
 from tekst.config import TekstConfig, get_config
 from tekst.email import TemplateIdentifier, send_email
 from tekst.logging import log
-from tekst.models.layer import LayerBaseDocument
+from tekst.models.resource import ResourceBaseDocument
 from tekst.models.unit import UnitBaseDocument
 from tekst.models.user import UserCreate, UserDocument, UserRead, UserUpdate
 
@@ -227,33 +227,33 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
     async def on_before_delete(
         self, user: UserDocument, request: Request | None = None
     ):
-        # find owned data layers
-        layers_docs = await LayerBaseDocument.find(
-            LayerBaseDocument.owner_id == user.id, with_children=True
+        # find owned resources
+        resources_docs = await ResourceBaseDocument.find(
+            ResourceBaseDocument.owner_id == user.id, with_children=True
         ).to_list()
-        owned_layers_ids = [layer.id for layer in layers_docs]
-        # delete units of owned data layers
+        owned_resources_ids = [resource.id for resource in resources_docs]
+        # delete units of owned resources
         await UnitBaseDocument.find(
-            In(UnitBaseDocument.layer_id, owned_layers_ids),
+            In(UnitBaseDocument.resource_id, owned_resources_ids),
             with_children=True,
         ).delete()
-        # delete owned data layers
-        await LayerBaseDocument.find_one(
-            In(LayerBaseDocument.id, owned_layers_ids),
+        # delete owned resources
+        await ResourceBaseDocument.find_one(
+            In(ResourceBaseDocument.id, owned_resources_ids),
             with_children=True,
         ).delete()
-        # remove user ID from layer shares
-        await LayerBaseDocument.find(
-            LayerBaseDocument.shared_read == str(user.id),
+        # remove user ID from resource shares
+        await ResourceBaseDocument.find(
+            ResourceBaseDocument.shared_read == str(user.id),
             with_children=True,
         ).update(
-            Pull(LayerBaseDocument.shared_read == str(user.id)),
+            Pull(ResourceBaseDocument.shared_read == str(user.id)),
         )
-        await LayerBaseDocument.find(
-            LayerBaseDocument.shared_write == str(user.id),
+        await ResourceBaseDocument.find(
+            ResourceBaseDocument.shared_write == str(user.id),
             with_children=True,
         ).update(
-            Pull(LayerBaseDocument.shared_write == str(user.id)),
+            Pull(ResourceBaseDocument.shared_write == str(user.id)),
         )
 
     async def on_after_delete(self, user: UserDocument, request: Request | None = None):

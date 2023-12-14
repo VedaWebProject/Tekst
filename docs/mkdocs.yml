@@ -9,7 +9,7 @@ nav:
   - 'concepts.md'
   - 'setup.md'
   - Usage:
-    - 'Data Layers': 'usage/data-layers.md'
+    - 'Resources': 'usage/resources.md'
 
 plugins:
   - search

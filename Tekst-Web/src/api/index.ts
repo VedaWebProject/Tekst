@@ -73,7 +73,7 @@ export function getFullUrl(path: string, query?: Record<string, any>): URL {
 
 // export some common platform properties for use throughout codebase
 
-export const layerTypes = ['plaintext', 'debug'];
+export const resourceTypes = ['plaintext', 'debug'];
 export const prioritizedMetadataKeys = ['author', 'year', 'language'];
 
 // export components types for use throughout codebase
@@ -110,7 +110,7 @@ export type PlatformStats = components['schemas']['PlatformStats'];
 export type PlatformData = components['schemas']['PlatformData'];
 export type PlatformSettingsRead = components['schemas']['PlatformSettingsRead'];
 export type PlatformSettingsUpdate = components['schemas']['PlatformSettingsUpdate'];
-export type LayerNodeCoverage = components['schemas']['LayerNodeCoverage'];
+export type ResourceNodeCoverage = components['schemas']['ResourceNodeCoverage'];
 
 // client segments
 
@@ -119,34 +119,34 @@ export type ClientSegmentCreate = components['schemas']['ClientSegmentCreate'];
 export type ClientSegmentUpdate = components['schemas']['ClientSegmentUpdate'];
 export type ClientSegmentHead = components['schemas']['ClientSegmentHead'];
 
-// data layers
+// resources
 
-export type PlaintextLayerCreate = components['schemas']['PlaintextLayerCreate'];
-export type PlaintextLayerRead = components['schemas']['PlaintextLayerRead'];
-export type PlaintextLayerUpdate = components['schemas']['PlaintextLayerUpdate'];
-export type PlaintextLayerConfig = components['schemas']['PlaintextLayerConfig'];
+export type PlaintextResourceCreate = components['schemas']['PlaintextResourceCreate'];
+export type PlaintextResourceRead = components['schemas']['PlaintextResourceRead'];
+export type PlaintextResourceUpdate = components['schemas']['PlaintextResourceUpdate'];
+export type PlaintextResourceConfig = components['schemas']['PlaintextResourceConfig'];
 export type PlaintextUnitCreate = components['schemas']['PlaintextUnitCreate'];
 export type PlaintextUnitRead = components['schemas']['PlaintextUnitRead'];
 export type PlaintextUnitUpdate = components['schemas']['PlaintextUnitUpdate'];
 
-export type DebugLayerCreate = components['schemas']['DebugLayerCreate'];
-export type DebugLayerRead = components['schemas']['DebugLayerRead'];
-export type DebugLayerUpdate = components['schemas']['DebugLayerUpdate'];
-export type DebugLayerConfig = components['schemas']['DebugLayerConfig'];
+export type DebugResourceCreate = components['schemas']['DebugResourceCreate'];
+export type DebugResourceRead = components['schemas']['DebugResourceRead'];
+export type DebugResourceUpdate = components['schemas']['DebugResourceUpdate'];
+export type DebugResourceConfig = components['schemas']['DebugResourceConfig'];
 export type DebugUnitCreate = components['schemas']['DebugUnitCreate'];
 export type DebugUnitRead = components['schemas']['DebugUnitRead'];
 export type DebugUnitUpdate = components['schemas']['DebugUnitUpdate'];
 
 export type AnyUnitCreate = PlaintextUnitCreate | DebugUnitCreate;
 export type AnyUnitRead = PlaintextUnitRead | DebugUnitRead;
-export type AnyLayerCreate = PlaintextLayerCreate | DebugLayerCreate;
-export type AnyLayerRead = (PlaintextLayerRead | DebugLayerRead) & {
+export type AnyResourceCreate = PlaintextResourceCreate | DebugResourceCreate;
+export type AnyResourceRead = (PlaintextResourceRead | DebugResourceRead) & {
   active?: boolean;
   units?: AnyUnitRead[];
 };
-export type AnyLayerUpdate = PlaintextLayerUpdate | DebugLayerUpdate;
+export type AnyResourceUpdate = PlaintextResourceUpdate | DebugResourceUpdate;
 
-// common data layer config types
+// common resource config types
 
-export type AnyLayerConfig = PlaintextLayerConfig | DebugLayerConfig;
+export type AnyResourceConfig = PlaintextResourceConfig | DebugResourceConfig;
 export type DeepLLinksConfig = components['schemas']['DeepLLinksConfig'];

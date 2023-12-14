@@ -20,9 +20,9 @@ const BrowseView = () => import('@/views/BrowseView.vue');
 const SearchView = () => import('@/views/SearchView.vue');
 const RegisterView = () => import('@/views/RegisterView.vue');
 const InfoPageView = () => import('@/views/InfoPageView.vue');
-const DataLayersView = () => import('@/views/DataLayersView.vue');
-const DataLayerEditView = () => import('@/views/DataLayerEditView.vue');
-const DataLayerCreateView = () => import('@/views/DataLayerCreateView.vue');
+const ResourcesView = () => import('@/views/ResourcesView.vue');
+const ResourceEditView = () => import('@/views/ResourceEditView.vue');
+const ResourceCreateView = () => import('@/views/ResourceCreateView.vue');
 
 const AccountView = () => import('@/views/account/AccountView.vue');
 const AccountManageView = () => import('@/views/account/AccountManageView.vue');
@@ -123,27 +123,27 @@ const router = createRouter({
       component: ResetView,
     },
     {
-      path: '/layers/:text',
-      name: 'dataLayers',
-      component: DataLayersView,
+      path: '/resources/:text',
+      name: 'resources',
+      component: ResourcesView,
       meta: {
         isTextSpecific: true,
         restricted: 'user',
       },
     },
     {
-      path: '/layers/:text/edit/:id',
-      name: 'dataLayerEdit',
-      component: DataLayerEditView,
+      path: '/resources/:text/edit/:id',
+      name: 'resourceEdit',
+      component: ResourceEditView,
       meta: {
         isTextSpecific: true,
         restricted: 'user',
       },
     },
     {
-      path: '/layers/:text/create',
-      name: 'dataLayerCreate',
-      component: DataLayerCreateView,
+      path: '/resources/:text/create',
+      name: 'resourceCreate',
+      component: ResourceCreateView,
       meta: {
         isTextSpecific: true,
         restricted: 'user',

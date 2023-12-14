@@ -80,8 +80,8 @@ routes:
     help: Hilfe
     login: Anmeldung
     register: Registrierung
-    dataLayers: Datenschichten zu "{text}"
-    dataLayerEdit: Datenschicht bearbeiten
+    resources: Ressourcen zu "{text}"
+    resourceEdit: Ressource bearbeiten
     user: Profil von {username}
     accountProfile: Öffentliches Profil
     accountManage: Konto
@@ -98,7 +98,7 @@ routes:
     siteNotice: '@:admin.system.segments.systemKeys.systemSiteNotice'
     privacyPolicy: '@:admin.system.segments.systemKeys.systemPrivacyPolicy'
 
-layerTypes:
+resourceTypes:
   plaintext: Einfacher Text
 
 browse:
@@ -110,25 +110,25 @@ browse:
     tipPreviousLocation: Vorherige Fundstelle auf dieser Ebene
     tipNextLocation: Nächste Fundstelle auf dieser Ebene
     tipReducedView: Reduzierte Leseansicht umschalten
-    tipOpenDataLayerList: Anzuzeigende Datenschichten wählen
-  layerToggleDrawer:
-    heading: Datenschichten anzeigen
+    tipOpenResourceList: Anzuzeigende Ressourcen wählen
+  resourceToggleDrawer:
+    heading: Ressourcen anzeigen
   uncategorized: Unkategorisiert
-  locationLayerNoData: Keine Daten für diese Fundstelle
+  locationResourceNoData: Keine Daten für diese Fundstelle
   textNoNodes: Die Einrichtung dieses Textes scheint unvollständig. Es wurden keine Strukturknoten definiert.
-  locationNoData: Die ausgewählten Datenschichten enthalten keine Daten für diese Ebene und Fundstelle. Wählen Sie eine andere Fundstelle oder aktivieren Sie mehr Datenschichten.
+  locationNoData: Die ausgewählten Ressourcen enthalten keine Daten für diese Ebene und Fundstelle. Wählen Sie eine andere Fundstelle oder aktivieren Sie mehr Ressourcen.
   units:
     widgets:
       deepLTranslate:
         title: DeepL-Übersetzung öffnen
       infoWidget:
-        title: Informationen zu dieser Datenschicht anzeigen
+        title: Informationen zu dieser Ressource anzeigen
         citeAs: Zitieren als
         coverage: Abdeckung
         coverageStatement: '{present} von {total} Knoten auf Ebene "{level}".'
       deactivateWidget:
-        title: Diese Datenschicht ausblenden
-        message: Die Datenschicht "{layerTitle}" wurde ausgeblendet. Sie können sie wieder aktivieren, indem Sie die Datenschichten-Auswahl rechts in der Toolbar benutzen.
+        title: Diese Ressource ausblenden
+        message: Die Ressource "{resourceTitle}" wurde ausgeblendet. Sie können sie wieder aktivieren, indem Sie die Ressourcen-Auswahl rechts in der Toolbar benutzen.
       siblingsWidget:
         title: Zusammengeführte Ansicht mit allen Daten der übergeordneten Fundstelle öffnen
 
@@ -194,12 +194,12 @@ models:
   node:
     modelLabel: Strukturknoten | Strukturknoten
     label: Bezeichnung
-  layer:
-    modelLabel: Datenschicht | Datenschichten
+  resource:
+    modelLabel: Ressource | Ressourcen
     title: Titel
     description: Beschreibung
     level: Ebene
-    layerType: Datenschichttyp
+    resourceType: Datenschichttyp
     category: Kategorie
     public: öffentlich
     proposed: vorgeschlagen für Veröffentlichung
@@ -216,7 +216,7 @@ models:
     author: Autor
     year: Jahr
     language: Sprache
-    layerType: '@:models.layer.layerType'
+    resourceType: '@:models.resource.resourceType'
     onLevel: auf Ebene "{level}"
     key: Metadatum-Schlüssel
     value: Metadatum-Wert
@@ -232,10 +232,10 @@ models:
     alwaysShowTextInfo: Zeige Textinformationen und -auswahl auch auf nicht-textspezifischen Seiten
     showHeaderInfo: Plattform-Untertitel in Kopfzeile anzeigen
     showFooterInfo: Name und Untertitel der Plattform in Fußzeile anzeigen
-    layerCategories: Datenschicht-Kategorien
-    layerCategoryKey: Schlüssel
-    layerCategoryTranslation: Beschriftung
-    showLayerCategoryHeadings: Zeige Überschriften für Datenschicht-Kategorien in der Blättern-Ansicht
+    resourceCategories: Ressource-Kategorien
+    resourceCategoryKey: Schlüssel
+    resourceCategoryTranslation: Beschriftung
+    showResourceCategoryHeadings: Zeige Überschriften für Ressource-Kategorien in der Blättern-Ansicht
   segment:
     modelLabel: Segment
     key: Schlüssel
@@ -246,56 +246,56 @@ models:
       keyChars: 'Erlaubte Zeichen: a-z, A-Z, 0-9, -, _'
       systemPrefixReserved: Schlüssel-Praefix "system" ist reserviert für Systemsegmente
 
-dataLayers:
-  heading: Datenschichten
+resources:
+  heading: Ressourcen
   headingGeneral: Allgemein
   ownedByMe: von mir
   ownedByOthers: von anderen
-  public: '@:models.layer.public'
-  notPublic: '@:general.not @:models.layer.public'
-  proposed: '@:models.layer.proposed'
-  notProposed: '@:general.not @:models.layer.proposed'
+  public: '@:models.resource.public'
+  notPublic: '@:general.not @:models.resource.public'
+  proposed: '@:models.resource.proposed'
+  notProposed: '@:general.not @:models.resource.proposed'
   proposeAction: Für Veröffentlichung vorschlagen
   unproposeAction: Veröffentlichungsvorschlag zurücknehmen
   publishAction: Veröffentlichen
   unpublishAction: Veröffentlichung aufheben
   warnPropose: |
-    Sie sind dabei, Ihre Datenschicht zur Veröffentlichung vorzuschlagen.
+    Sie sind dabei, Ihre Ressource zur Veröffentlichung vorzuschlagen.
     Es ist sehr wichtig, dass Sie die Auswirkungen eines
     Veröffentlichungsvorschlags verstehen.
   warnUnpropose: |
     Sind Sie sicher, dass Sie Ihren Veröffentlichungsvorschlag
-    für diese Datenschicht zurückziehen wollen?
+    für diese Ressource zurückziehen wollen?
   warnPublish: |
-    Sie sind im Begriff, diese Datenschicht für die Öffentlichkeit
+    Sie sind im Begriff, diese Ressource für die Öffentlichkeit
     (nicht registrierte Benutzer) zu veröffentlichen. Es ist sehr wichtig,
     dass Sie sich über die Auswirkungen der Veröffentlichung
-    von Datenschichten im Klaren sind.
+    von Ressourcen im Klaren sind.
   warnUnpublish: |
     Sind Sie sicher, dass Sie die Veröffentlichung dieser
-    Datenschicht zurückziehen wollen?
+    Ressource zurückziehen wollen?
   warnDelete: |
-    Sind Sie sicher, dass Sie diese Datenschicht und alle
+    Sind Sie sicher, dass Sie diese Ressource und alle
     mit ihr verbundenen Daten löschen wollen?
-  msgProposed: Die Datenschicht "{title}" wurde zur Veröffentlichung vorgeschlagen.
-  msgUnproposed: Die Veröffentlichungsvorschlag für die Datenschicht "{title}" wurde zurückgezogen.
-  msgPublished: Die Datenschicht "{title}" wurde veröffentlicht.
-  msgUnpublished: Die Veröffentlichung der Datenschicht "{title}" wurde aufgehoben.
-  msgDeleted: Die Datenschicht "{title}" wurde gelöscht.
+  msgProposed: Die Ressource "{title}" wurde zur Veröffentlichung vorgeschlagen.
+  msgUnproposed: Die Veröffentlichungsvorschlag für die Ressource "{title}" wurde zurückgezogen.
+  msgPublished: Die Ressource "{title}" wurde veröffentlicht.
+  msgUnpublished: Die Veröffentlichung der Ressource "{title}" wurde aufgehoben.
+  msgDeleted: Die Ressource "{title}" wurde gelöscht.
   phSearchUsers: Benutzer suchen...
   edit:
-    heading: Datenschicht bearbeiten
-    backToOverview: Zurück zur Datenschichten-Übersicht
-    onlyForUnpublished: Nur für nicht veröffentlichte Datenschichten!
-    msgSaved: Ihre Änderungen an der Datenschicht "{title}" wurden gespeichert.
+    heading: Ressource bearbeiten
+    backToOverview: Zurück zur Ressourcen-Übersicht
+    onlyForUnpublished: Nur für nicht veröffentlichte Ressourcen!
+    msgSaved: Ihre Änderungen an der Ressource "{title}" wurden gespeichert.
     status: Status
   create:
-    heading: Neue Datenschicht zu "{text}"
+    heading: Neue Ressource zu "{text}"
     warnImmutable: Diese Einstellungen können später nicht mehr geändert werden!
-    msgSaved: Ihre neue Datenschicht "{title}" wurden erstellt.
+    msgSaved: Ihre neue Ressource "{title}" wurden erstellt.
   config:
     headingConfig: Konfiguration
-    specialConfigLabel: Spezielle Konfiguration für Typ "{layerType}"
+    specialConfigLabel: Spezielle Konfiguration für Typ "{resourceType}"
     status: Status
     enabled: Aktiv
     showOnParentLevel: Ermögliche das Anzeigen von kombinierten Inhalten auf der übergeordneten Ebene
@@ -360,7 +360,7 @@ admin:
   statistics:
     heading: Statistiken
     globalHeading: Global
-    layerTypesHeading: Datenschicht-Typen
+    resourceTypesHeading: Ressource-Typen
     textsHeading: Texte
   users:
     heading: Benutzer
@@ -404,7 +404,7 @@ admin:
       warnDeleteText: |
         Wenn Sie diesen Text ("{title}") löschen, werden alle Daten, die sich auf ihn
         beziehen, ebenfalls gelöscht. Dies schließt die Textstruktur sowie alle
-        Datenschichten mit ein – unabhängig von welchem User sie erstellt wurden.
+        Ressourcen mit ein – unabhängig von welchem User sie erstellt wurden.
         Sind Sie sich sicher?
       msgDeleted: Text "{title}" gelöscht
     levels:
@@ -427,7 +427,7 @@ admin:
       warnDeleteLevel: |
         Das Löschen einer Textebene hat weitreichende Folgen:
         Alle Daten, die mit dieser Textebene verbunden sind,
-        werden mit ihr gelöscht. Dies betrifft alle (!) Datenschichten auf dieser
+        werden mit ihr gelöscht. Dies betrifft alle (!) Ressourcen auf dieser
         Ebene - egal, welcher Benutzer diese erstellt hat!
         Die Anwendung wird ihr Bestes tun, um angrenzende Ebenen sinnvoll miteinander
         zu verbinden, aber Sie werden das Ergebnis
@@ -463,7 +463,7 @@ admin:
       warnDeleteNode: |
         Wenn Sie diesen Knoten löschen, werden alle Daten, die mit ihm und allen
         seinen Kind-Knoten verbunden sind, ebenfalls gelöscht.
-        Dies kann potenziell alle Datenschichten betreffen – auch jene,
+        Dies kann potenziell alle Ressourcen betreffen – auch jene,
         die von anderen Benutzern angelegt wurden. Falls Sie ihr Ziel auch durch das Verschieben
         des Knotens auf seiner Strukturebene erreichen können, sollten sie das stattdessen tun,
         da auf diese Weise keine Daten gelöscht würden.

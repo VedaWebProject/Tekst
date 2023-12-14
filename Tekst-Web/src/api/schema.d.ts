@@ -19,12 +19,12 @@ export interface paths {
   '/browse/unit-siblings': {
     /**
      * Get unit siblings
-     * @description Returns a list of all data layer units belonging to the data layer
+     * @description Returns a list of all resource units belonging to the resource
      * with the given ID, associated to nodes that are children of the parent node
      * with the given ID.
      *
      * As the resulting list may contain units of arbitrary type, the
-     * returned unit objects cannot be typed to their precise layer unit type.
+     * returned unit objects cannot be typed to their precise resource unit type.
      * Also, the returned unit objects have an additional property containing their
      * respective node's label, level and position.
      */
@@ -56,45 +56,9 @@ export interface paths {
      */
     get: operations['getPathOptionsByRootId'];
   };
-  '/browse/layers/{id}/coverage': {
-    /** Get layer coverage data */
-    get: operations['getLayerCoverageData'];
-  };
-  '/layers': {
-    /**
-     * Find layers
-     * @description Returns a list of all data layers matching the given criteria.
-     *
-     * As the resulting list of data layers may contain layers of different types, the
-     * returned layer objects cannot be typed to their precise layer type.
-     */
-    get: operations['findLayers'];
-    /** Create layer */
-    post: operations['createLayer'];
-  };
-  '/layers/{id}': {
-    /** Get layer */
-    get: operations['getLayer'];
-    /** Delete layer */
-    delete: operations['deleteLayer'];
-    /** Update layer */
-    patch: operations['updateLayer'];
-  };
-  '/layers/{id}/propose': {
-    /** Propose layer */
-    post: operations['proposeLayer'];
-  };
-  '/layers/{id}/unpropose': {
-    /** Unpropose layer */
-    post: operations['unproposeLayer'];
-  };
-  '/layers/{id}/publish': {
-    /** Publish layer */
-    post: operations['publishLayer'];
-  };
-  '/layers/{id}/unpublish': {
-    /** Unpublish layer */
-    post: operations['unpublishLayer'];
+  '/browse/resources/{id}/coverage': {
+    /** Get resource coverage data */
+    get: operations['getResourceCoverageData'];
   };
   '/nodes': {
     /** Find nodes */
@@ -168,6 +132,42 @@ export interface paths {
     /** Create segment */
     post: operations['createSegment'];
   };
+  '/resources': {
+    /**
+     * Find resources
+     * @description Returns a list of all resources matching the given criteria.
+     *
+     * As the resulting list of resources may contain resources of different types, the
+     * returned resource objects cannot be typed to their precise resource type.
+     */
+    get: operations['findResources'];
+    /** Create resource */
+    post: operations['createResource'];
+  };
+  '/resources/{id}': {
+    /** Get resource */
+    get: operations['getResource'];
+    /** Delete resource */
+    delete: operations['deleteResource'];
+    /** Update resource */
+    patch: operations['updateResource'];
+  };
+  '/resources/{id}/propose': {
+    /** Propose resource */
+    post: operations['proposeResource'];
+  };
+  '/resources/{id}/unpropose': {
+    /** Unpropose resource */
+    post: operations['unproposeResource'];
+  };
+  '/resources/{id}/publish': {
+    /** Publish resource */
+    post: operations['publishResource'];
+  };
+  '/resources/{id}/unpublish': {
+    /** Unpublish resource */
+    post: operations['unpublishResource'];
+  };
   '/texts': {
     /** Get all texts */
     get: operations['getAllTexts'];
@@ -206,11 +206,11 @@ export interface paths {
   '/units': {
     /**
      * Find units
-     * @description Returns a list of all data layer units matching the given criteria.
+     * @description Returns a list of all resource units matching the given criteria.
      *
-     * Respects restricted layers and inactive texts.
+     * Respects restricted resources and inactive texts.
      * As the resulting list may contain units of different types, the
-     * returned unit objects cannot be typed to their precise layer unit type.
+     * returned unit objects cannot be typed to their precise resource unit type.
      */
     get: operations['findUnits'];
     /** Create unit */
@@ -474,82 +474,81 @@ export interface components {
       /** Html */
       html?: string | null;
     };
-    /** DebugLayerConfig */
-    DebugLayerConfig: {
+    /** DebugResourceConfig */
+    DebugResourceConfig: {
       /**
        * Showonparentlevel
-       * @description Show combined contents of this layer on the parent level
+       * @description Show combined contents of this resource on the parent level
        * @default false
        */
       showOnParentLevel?: boolean;
-      deeplLinks?: components['schemas']['DeepLLinksConfig'];
     };
-    /** DebugLayerCreate */
-    DebugLayerCreate: {
+    /** DebugResourceCreate */
+    DebugResourceCreate: {
       /**
        * Title
-       * @description Title of this layer
+       * @description Title of this resource
        */
       title: string;
       /**
        * Description
-       * @description Short, concise description of this data layer
+       * @description Short, concise description of this resource
        * @default []
        */
-      description?: components['schemas']['LayerDescriptionTranslation'][];
+      description?: components['schemas']['ResourceDescriptionTranslation'][];
       /**
        * Textid
-       * @description ID of the text this layer belongs to
+       * @description ID of the text this resource belongs to
        * @example 5eb7cf5a86d9755df3a6c593
        */
       textId: string;
       /**
        * Level
-       * @description Text level this layer belongs to
+       * @description Text level this resource belongs to
        */
       level: number;
       /**
-       * Layertype
+       * Resourcetype
        * @constant
        */
-      layerType: 'debug';
+      resourceType: 'debug';
       /**
        * Ownerid
-       * @description User owning this layer
+       * @description User owning this resource
        */
       ownerId?: string | null;
       /**
        * Category
-       * @description Data layer category key
+       * @description Resource category key
        */
       category?: string | null;
       /**
        * Sharedread
-       * @description Users with shared read access to this layer
+       * @description Users with shared read access to this resource
        * @default []
        */
       sharedRead?: string[];
       /**
        * Sharedwrite
-       * @description Users with shared write access to this layer
+       * @description Users with shared write access to this resource
        * @default []
        */
       sharedWrite?: string[];
       /**
        * Public
-       * @description Publication status of this layer
+       * @description Publication status of this resource
        * @default false
        */
       public?: boolean;
       /**
        * Proposed
-       * @description Whether this layer has been proposed for publication
+       * @description Whether this resource has been proposed for publication
        * @default false
        */
       proposed?: boolean;
       /**
        * Citation
-       * @description Citation details for this layer
+       * @description Citation details for this resource
        */
       citation?: string | null;
       /**
@@ -560,14 +559,19 @@ export interface components {
       meta?: components['schemas']['Metadate'][];
       /**
        * Comment
-       * @description Plaintext, potentially multiline comment on this layer
+       * @description Plaintext, potentially multiline comment on this resource
        * @default []
        */
-      comment?: components['schemas']['LayerCommentTranslation'][];
-      config?: components['schemas']['DebugLayerConfig'];
+      comment?: components['schemas']['ResourceCommentTranslation'][];
+      /**
+       * @default {
+       *   "showOnParentLevel": false
+       * }
+       */
+      config?: components['schemas']['DebugResourceConfig'];
     };
-    /** DebugLayerRead */
-    DebugLayerRead: {
+    /** DebugResourceRead */
+    DebugResourceRead: {
       /**
        * Id
        * @example 5eb7cf5a86d9755df3a6c593
@@ -575,85 +579,85 @@ export interface components {
       id: string;
       /**
        * Writable
-       * @description Whether this layer is writable for the requesting user
+       * @description Whether this resource is writable for the requesting user
        */
       writable?: boolean | null;
-      /** @description Public user data for user owning this layer */
+      /** @description Public user data for user owning this resource */
       owner?: components['schemas']['UserReadPublic'] | null;
       /**
        * Sharedreadusers
-       * @description Public user data for users allowed to read this layer
+       * @description Public user data for users allowed to read this resource
        */
       sharedReadUsers?: components['schemas']['UserReadPublic'][] | null;
       /**
        * Sharedwriteusers
-       * @description Public user data for users allowed to write this layer
+       * @description Public user data for users allowed to write this resource
        */
       sharedWriteUsers?: components['schemas']['UserReadPublic'][] | null;
       /**
        * Title
-       * @description Title of this layer
+       * @description Title of this resource
        */
       title: string;
       /**
        * Description
-       * @description Short, concise description of this data layer
+       * @description Short, concise description of this resource
        * @default []
        */
-      description?: components['schemas']['LayerDescriptionTranslation'][];
+      description?: components['schemas']['ResourceDescriptionTranslation'][];
       /**
        * Textid
-       * @description ID of the text this layer belongs to
+       * @description ID of the text this resource belongs to
        * @example 5eb7cf5a86d9755df3a6c593
        */
       textId: string;
       /**
        * Level
-       * @description Text level this layer belongs to
+       * @description Text level this resource belongs to
        */
       level: number;
       /**
-       * Layertype
+       * Resourcetype
        * @constant
        */
-      layerType: 'debug';
+      resourceType: 'debug';
       /**
        * Ownerid
-       * @description User owning this layer
+       * @description User owning this resource
        */
       ownerId?: string | null;
       /**
        * Category
-       * @description Data layer category key
+       * @description Resource category key
        */
       category?: string | null;
       /**
        * Sharedread
-       * @description Users with shared read access to this layer
+       * @description Users with shared read access to this resource
        * @default []
        */
       sharedRead?: string[];
       /**
        * Sharedwrite
-       * @description Users with shared write access to this layer
+       * @description Users with shared write access to this resource
        * @default []
        */
       sharedWrite?: string[];
       /**
        * Public
-       * @description Publication status of this layer
+       * @description Publication status of this resource
        * @default false
        */
       public?: boolean;
       /**
        * Proposed
-       * @description Whether this layer has been proposed for publication
+       * @description Whether this resource has been proposed for publication
        * @default false
        */
       proposed?: boolean;
       /**
        * Citation
-       * @description Citation details for this layer
+       * @description Citation details for this resource
        */
       citation?: string | null;
       /**
@@ -664,69 +668,74 @@ export interface components {
       meta?: components['schemas']['Metadate'][];
       /**
        * Comment
-       * @description Plaintext, potentially multiline comment on this layer
+       * @description Plaintext, potentially multiline comment on this resource
        * @default []
        */
-      comment?: components['schemas']['LayerCommentTranslation'][];
-      config?: components['schemas']['DebugLayerConfig'];
+      comment?: components['schemas']['ResourceCommentTranslation'][];
+      /**
+       * @default {
+       *   "showOnParentLevel": false
+       * }
+       */
+      config?: components['schemas']['DebugResourceConfig'];
       [key: string]: unknown;
     };
-    /** DebugLayerUpdate */
-    DebugLayerUpdate: {
+    /** DebugResourceUpdate */
+    DebugResourceUpdate: {
       /** Title */
       title?: string | null;
       /**
        * Description
-       * @description Short, concise description of this data layer
+       * @description Short, concise description of this resource
        * @default []
        */
-      description?: components['schemas']['LayerDescriptionTranslation'][];
+      description?: components['schemas']['ResourceDescriptionTranslation'][];
       /** Textid */
       textId?: string | null;
       /** Level */
       level?: number | null;
       /**
-       * Layertype
+       * Resourcetype
        * @constant
        */
-      layerType: 'debug';
+      resourceType: 'debug';
       /**
        * Ownerid
-       * @description User owning this layer
+       * @description User owning this resource
        */
       ownerId?: string | null;
       /**
        * Category
-       * @description Data layer category key
+       * @description Resource category key
        */
       category?: string | null;
       /**
        * Sharedread
-       * @description Users with shared read access to this layer
+       * @description Users with shared read access to this resource
        * @default []
        */
       sharedRead?: string[];
       /**
        * Sharedwrite
-       * @description Users with shared write access to this layer
+       * @description Users with shared write access to this resource
        * @default []
        */
       sharedWrite?: string[];
       /**
        * Public
-       * @description Publication status of this layer
+       * @description Publication status of this resource
        * @default false
        */
       public?: boolean;
       /**
        * Proposed
-       * @description Whether this layer has been proposed for publication
+       * @description Whether this resource has been proposed for publication
        * @default false
        */
       proposed?: boolean;
       /**
        * Citation
-       * @description Citation details for this layer
+       * @description Citation details for this resource
        */
       citation?: string | null;
       /**
@@ -737,25 +746,30 @@ export interface components {
       meta?: components['schemas']['Metadate'][];
       /**
        * Comment
-       * @description Plaintext, potentially multiline comment on this layer
+       * @description Plaintext, potentially multiline comment on this resource
        * @default []
        */
-      comment?: components['schemas']['LayerCommentTranslation'][];
-      config?: components['schemas']['DebugLayerConfig'];
+      comment?: components['schemas']['ResourceCommentTranslation'][];
+      /**
+       * @default {
+       *   "showOnParentLevel": false
+       * }
+       */
+      config?: components['schemas']['DebugResourceConfig'];
     };
     /** DebugUnitCreate */
     DebugUnitCreate: {
       /**
-       * Layerid
-       * @description Data layer ID
+       * Resourceid
+       * @description Resource ID
        * @example 5eb7cf5a86d9755df3a6c593
        */
-      layerId: string;
+      resourceId: string;
       /**
-       * Layertype
+       * Resourcetype
        * @constant
        */
-      layerType: 'debug';
+      resourceType: 'debug';
       /**
        * Nodeid
        * @description Parent text node ID
@@ -781,16 +795,16 @@ export interface components {
        */
       id: string;
       /**
-       * Layerid
-       * @description Data layer ID
+       * Resourceid
+       * @description Resource ID
        * @example 5eb7cf5a86d9755df3a6c593
        */
-      layerId: string;
+      resourceId: string;
       /**
-       * Layertype
+       * Resourcetype
        * @constant
        */
-      layerType: 'debug';
+      resourceType: 'debug';
       /**
        * Nodeid
        * @description Parent text node ID
@@ -811,13 +825,13 @@ export interface components {
     };
     /** DebugUnitUpdate */
     DebugUnitUpdate: {
-      /** Layerid */
-      layerId?: string | null;
+      /** Resourceid */
+      resourceId?: string | null;
       /**
-       * Layertype
+       * Resourcetype
        * @constant
        */
-      layerType: 'debug';
+      resourceType: 'debug';
       /** Nodeid */
       nodeId?: string | null;
       /**
@@ -934,47 +948,6 @@ export interface components {
       /** Detail */
       detail?: components['schemas']['ValidationError'][];
     };
-    /** LayerCategory */
-    'LayerCategory-Input': {
-      /** Key */
-      key: string;
-      /** Translations */
-      translations: components['schemas']['LayerCategoryTranslation'][];
-    };
-    /** LayerCategory */
-    'LayerCategory-Output': {
-      /** Key */
-      key: string;
-      /** Translations */
-      translations: components['schemas']['LayerCategoryTranslation'][];
-    };
-    /** LayerCategoryTranslation */
-    LayerCategoryTranslation: {
-      locale: components['schemas']['Locale'];
-      /** Translation */
-      translation: string;
-    };
-    /** LayerCommentTranslation */
-    LayerCommentTranslation: {
-      locale: components['schemas']['Locale'];
-      /** Translation */
-      translation: string;
-    };
-    /** LayerDescriptionTranslation */
-    LayerDescriptionTranslation: {
-      locale: components['schemas']['Locale'];
-      /** Translation */
-      translation: string;
-    };
-    /** LayerNodeCoverage */
-    LayerNodeCoverage: {
-      /** Label */
-      label: string;
-      /** Position */
-      position: number;
-      /** Covered */
-      covered: boolean;
-    };
     /** @enum {string} */
     Locale: '*' | 'deDE' | 'enUS';
     /** Metadate */
@@ -1073,11 +1046,11 @@ export interface components {
       /** Label */
       label?: string | null;
     };
-    /** PlaintextLayerConfig */
-    PlaintextLayerConfig: {
+    /** PlaintextResourceConfig */
+    PlaintextResourceConfig: {
       /**
        * Showonparentlevel
-       * @description Show combined contents of this layer on the parent level
+       * @description Show combined contents of this resource on the parent level
        * @default false
        */
       showOnParentLevel?: boolean;
@@ -1093,72 +1066,72 @@ export interface components {
        */
       deeplLinks?: components['schemas']['DeepLLinksConfig'];
     };
-    /** PlaintextLayerCreate */
-    PlaintextLayerCreate: {
+    /** PlaintextResourceCreate */
+    PlaintextResourceCreate: {
       /**
        * Title
-       * @description Title of this layer
+       * @description Title of this resource
        */
       title: string;
       /**
        * Description
-       * @description Short, concise description of this data layer
+       * @description Short, concise description of this resource
        * @default []
        */
-      description?: components['schemas']['LayerDescriptionTranslation'][];
+      description?: components['schemas']['ResourceDescriptionTranslation'][];
       /**
        * Textid
-       * @description ID of the text this layer belongs to
+       * @description ID of the text this resource belongs to
        * @example 5eb7cf5a86d9755df3a6c593
        */
       textId: string;
       /**
        * Level
-       * @description Text level this layer belongs to
+       * @description Text level this resource belongs to
        */
       level: number;
       /**
-       * Layertype
+       * Resourcetype
        * @constant
        */
-      layerType: 'plaintext';
+      resourceType: 'plaintext';
       /**
        * Ownerid
-       * @description User owning this layer
+       * @description User owning this resource
        */
       ownerId?: string | null;
       /**
        * Category
-       * @description Data layer category key
+       * @description Resource category key
        */
       category?: string | null;
       /**
        * Sharedread
-       * @description Users with shared read access to this layer
+       * @description Users with shared read access to this resource
        * @default []
        */
       sharedRead?: string[];
       /**
        * Sharedwrite
-       * @description Users with shared write access to this layer
+       * @description Users with shared write access to this resource
        * @default []
        */
       sharedWrite?: string[];
       /**
        * Public
-       * @description Publication status of this layer
+       * @description Publication status of this resource
        * @default false
        */
       public?: boolean;
       /**
        * Proposed
-       * @description Whether this layer has been proposed for publication
+       * @description Whether this resource has been proposed for publication
        * @default false
        */
       proposed?: boolean;
       /**
        * Citation
-       * @description Citation details for this layer
+       * @description Citation details for this resource
        */
       citation?: string | null;
       /**
@@ -1169,10 +1142,10 @@ export interface components {
       meta?: components['schemas']['Metadate'][];
       /**
        * Comment
-       * @description Plaintext, potentially multiline comment on this layer
+       * @description Plaintext, potentially multiline comment on this resource
        * @default []
        */
-      comment?: components['schemas']['LayerCommentTranslation'][];
+      comment?: components['schemas']['ResourceCommentTranslation'][];
       /**
        * @default {
        *   "showOnParentLevel": false,
@@ -1186,10 +1159,10 @@ export interface components {
        *   }
        * }
        */
-      config?: components['schemas']['PlaintextLayerConfig'];
+      config?: components['schemas']['PlaintextResourceConfig'];
     };
-    /** PlaintextLayerRead */
-    PlaintextLayerRead: {
+    /** PlaintextResourceRead */
+    PlaintextResourceRead: {
       /**
        * Id
        * @example 5eb7cf5a86d9755df3a6c593
@@ -1197,85 +1170,85 @@ export interface components {
       id: string;
       /**
        * Writable
-       * @description Whether this layer is writable for the requesting user
+       * @description Whether this resource is writable for the requesting user
        */
       writable?: boolean | null;
-      /** @description Public user data for user owning this layer */
+      /** @description Public user data for user owning this resource */
       owner?: components['schemas']['UserReadPublic'] | null;
       /**
        * Sharedreadusers
-       * @description Public user data for users allowed to read this layer
+       * @description Public user data for users allowed to read this resource
        */
       sharedReadUsers?: components['schemas']['UserReadPublic'][] | null;
       /**
        * Sharedwriteusers
-       * @description Public user data for users allowed to write this layer
+       * @description Public user data for users allowed to write this resource
        */
       sharedWriteUsers?: components['schemas']['UserReadPublic'][] | null;
       /**
        * Title
-       * @description Title of this layer
+       * @description Title of this resource
        */
       title: string;
       /**
        * Description
-       * @description Short, concise description of this data layer
+       * @description Short, concise description of this resource
        * @default []
        */
-      description?: components['schemas']['LayerDescriptionTranslation'][];
+      description?: components['schemas']['ResourceDescriptionTranslation'][];
       /**
        * Textid
-       * @description ID of the text this layer belongs to
+       * @description ID of the text this resource belongs to
        * @example 5eb7cf5a86d9755df3a6c593
        */
       textId: string;
       /**
        * Level
-       * @description Text level this layer belongs to
+       * @description Text level this resource belongs to
        */
       level: number;
       /**
-       * Layertype
+       * Resourcetype
        * @constant
        */
-      layerType: 'plaintext';
+      resourceType: 'plaintext';
       /**
        * Ownerid
-       * @description User owning this layer
+       * @description User owning this resource
        */
       ownerId?: string | null;
       /**
        * Category
-       * @description Data layer category key
+       * @description Resource category key
        */
       category?: string | null;
       /**
        * Sharedread
-       * @description Users with shared read access to this layer
+       * @description Users with shared read access to this resource
        * @default []
        */
       sharedRead?: string[];
       /**
        * Sharedwrite
-       * @description Users with shared write access to this layer
+       * @description Users with shared write access to this resource
        * @default []
        */
       sharedWrite?: string[];
       /**
        * Public
-       * @description Publication status of this layer
+       * @description Publication status of this resource
        * @default false
        */
       public?: boolean;
       /**
        * Proposed
-       * @description Whether this layer has been proposed for publication
+       * @description Whether this resource has been proposed for publication
        * @default false
        */
       proposed?: boolean;
       /**
        * Citation
-       * @description Citation details for this layer
+       * @description Citation details for this resource
        */
       citation?: string | null;
       /**
@@ -1286,10 +1259,10 @@ export interface components {
       meta?: components['schemas']['Metadate'][];
       /**
        * Comment
-       * @description Plaintext, potentially multiline comment on this layer
+       * @description Plaintext, potentially multiline comment on this resource
        * @default []
        */
-      comment?: components['schemas']['LayerCommentTranslation'][];
+      comment?: components['schemas']['ResourceCommentTranslation'][];
       /**
        * @default {
        *   "showOnParentLevel": false,
@@ -1303,65 +1276,65 @@ export interface components {
        *   }
        * }
        */
-      config?: components['schemas']['PlaintextLayerConfig'];
+      config?: components['schemas']['PlaintextResourceConfig'];
       [key: string]: unknown;
     };
-    /** PlaintextLayerUpdate */
-    PlaintextLayerUpdate: {
+    /** PlaintextResourceUpdate */
+    PlaintextResourceUpdate: {
       /** Title */
       title?: string | null;
       /**
        * Description
-       * @description Short, concise description of this data layer
+       * @description Short, concise description of this resource
        * @default []
        */
-      description?: components['schemas']['LayerDescriptionTranslation'][];
+      description?: components['schemas']['ResourceDescriptionTranslation'][];
       /** Textid */
       textId?: string | null;
       /** Level */
       level?: number | null;
       /**
-       * Layertype
+       * Resourcetype
        * @constant
        */
-      layerType: 'plaintext';
+      resourceType: 'plaintext';
       /**
        * Ownerid
-       * @description User owning this layer
+       * @description User owning this resource
        */
       ownerId?: string | null;
       /**
        * Category
-       * @description Data layer category key
+       * @description Resource category key
        */
       category?: string | null;
       /**
        * Sharedread
-       * @description Users with shared read access to this layer
+       * @description Users with shared read access to this resource
        * @default []
        */
       sharedRead?: string[];
       /**
        * Sharedwrite
-       * @description Users with shared write access to this layer
+       * @description Users with shared write access to this resource
        * @default []
        */
       sharedWrite?: string[];
       /**
        * Public
-       * @description Publication status of this layer
+       * @description Publication status of this resource
        * @default false
        */
       public?: boolean;
       /**
        * Proposed
-       * @description Whether this layer has been proposed for publication
+       * @description Whether this resource has been proposed for publication
        * @default false
        */
       proposed?: boolean;
       /**
        * Citation
-       * @description Citation details for this layer
+       * @description Citation details for this resource
        */
       citation?: string | null;
       /**
@@ -1372,10 +1345,10 @@ export interface components {
       meta?: components['schemas']['Metadate'][];
       /**
        * Comment
-       * @description Plaintext, potentially multiline comment on this layer
+       * @description Plaintext, potentially multiline comment on this resource
        * @default []
        */
-      comment?: components['schemas']['LayerCommentTranslation'][];
+      comment?: components['schemas']['ResourceCommentTranslation'][];
       /**
        * @default {
        *   "showOnParentLevel": false,
@@ -1389,21 +1362,21 @@ export interface components {
        *   }
        * }
        */
-      config?: components['schemas']['PlaintextLayerConfig'];
+      config?: components['schemas']['PlaintextResourceConfig'];
     };
     /** PlaintextUnitCreate */
     PlaintextUnitCreate: {
       /**
-       * Layerid
-       * @description Data layer ID
+       * Resourceid
+       * @description Resource ID
        * @example 5eb7cf5a86d9755df3a6c593
        */
-      layerId: string;
+      resourceId: string;
       /**
-       * Layertype
+       * Resourcetype
        * @constant
        */
-      layerType: 'plaintext';
+      resourceType: 'plaintext';
       /**
        * Nodeid
        * @description Parent text node ID
@@ -1429,16 +1402,16 @@ export interface components {
        */
       id: string;
       /**
-       * Layerid
-       * @description Data layer ID
+       * Resourceid
+       * @description Resource ID
        * @example 5eb7cf5a86d9755df3a6c593
        */
-      layerId: string;
+      resourceId: string;
       /**
-       * Layertype
+       * Resourcetype
        * @constant
        */
-      layerType: 'plaintext';
+      resourceType: 'plaintext';
       /**
        * Nodeid
        * @description Parent text node ID
@@ -1459,13 +1432,13 @@ export interface components {
     };
     /** PlaintextUnitUpdate */
     PlaintextUnitUpdate: {
-      /** Layerid */
-      layerId?: string | null;
+      /** Resourceid */
+      resourceId?: string | null;
       /**
-       * Layertype
+       * Resourcetype
        * @constant
        */
-      layerType: 'plaintext';
+      resourceType: 'plaintext';
       /** Nodeid */
       nodeId?: string | null;
       /**
@@ -1610,17 +1583,17 @@ export interface components {
        */
       navInfoEntry?: components['schemas']['PlatformNavInfoEntryTranslation'][];
       /**
-       * Layercategories
-       * @description Layer categories to categorize layers in
+       * Resourcecategories
+       * @description Resource categories to categorize resources in
        * @default []
        */
-      layerCategories?: components['schemas']['LayerCategory-Output'][];
+      resourceCategories?: components['schemas']['ResourceCategory-Output'][];
       /**
-       * Showlayercategoryheadings
-       * @description Show layer category headings in browse view
+       * Showresourcecategoryheadings
+       * @description Show resource category headings in browse view
        * @default true
        */
-      showLayerCategoryHeadings?: boolean;
+      showResourceCategoryHeadings?: boolean;
       /**
        * Alwaysshowtextinfo
        * @description Always show text info and selector in header, even on non-text-specific pages
@@ -1692,17 +1665,17 @@ export interface components {
        */
       navInfoEntry?: components['schemas']['PlatformNavInfoEntryTranslation'][];
       /**
-       * Layercategories
-       * @description Layer categories to categorize layers in
+       * Resourcecategories
+       * @description Resource categories to categorize resources in
        * @default []
        */
-      layerCategories?: components['schemas']['LayerCategory-Input'][];
+      resourceCategories?: components['schemas']['ResourceCategory-Input'][];
       /**
-       * Showlayercategoryheadings
-       * @description Show layer category headings in browse view
+       * Showresourcecategoryheadings
+       * @description Show resource category headings in browse view
        * @default true
        */
-      showLayerCategoryHeadings?: boolean;
+      showResourceCategoryHeadings?: boolean;
       /**
        * Alwaysshowtextinfo
        * @description Always show text info and selector in header, even on non-text-specific pages
@@ -1731,6 +1704,47 @@ export interface components {
       usersCount: number;
       /** Texts */
       texts: components['schemas']['TextStats'][];
+    };
+    /** ResourceCategory */
+    'ResourceCategory-Input': {
+      /** Key */
+      key: string;
+      /** Translations */
+      translations: components['schemas']['ResourceCategoryTranslation'][];
+    };
+    /** ResourceCategory */
+    'ResourceCategory-Output': {
+      /** Key */
+      key: string;
+      /** Translations */
+      translations: components['schemas']['ResourceCategoryTranslation'][];
+    };
+    /** ResourceCategoryTranslation */
+    ResourceCategoryTranslation: {
+      locale: components['schemas']['Locale'];
+      /** Translation */
+      translation: string;
+    };
+    /** ResourceCommentTranslation */
+    ResourceCommentTranslation: {
+      locale: components['schemas']['Locale'];
+      /** Translation */
+      translation: string;
+    };
+    /** ResourceDescriptionTranslation */
+    ResourceDescriptionTranslation: {
+      locale: components['schemas']['Locale'];
+      /** Translation */
+      translation: string;
+    };
+    /** ResourceNodeCoverage */
+    ResourceNodeCoverage: {
+      /** Label */
+      label: string;
+      /** Position */
+      position: number;
+      /** Covered */
+      covered: boolean;
     };
     /** TextCreate */
     TextCreate: {
@@ -1866,10 +1880,10 @@ export interface components {
       id: string;
       /** Nodescount */
       nodesCount: number;
-      /** Layerscount */
-      layersCount: number;
-      /** Layertypes */
-      layerTypes: {
+      /** Resourcescount */
+      resourcesCount: number;
+      /** Resourcetypes */
+      resourceTypes: {
         [key: string]: number;
       };
     };
@@ -2119,20 +2133,20 @@ export interface operations {
   };
   /**
    * Get unit siblings
-   * @description Returns a list of all data layer units belonging to the data layer
+   * @description Returns a list of all resource units belonging to the resource
    * with the given ID, associated to nodes that are children of the parent node
    * with the given ID.
    *
    * As the resulting list may contain units of arbitrary type, the
-   * returned unit objects cannot be typed to their precise layer unit type.
+   * returned unit objects cannot be typed to their precise resource unit type.
    * Also, the returned unit objects have an additional property containing their
    * respective node's label, level and position.
    */
   getUnitSiblings: {
     parameters: {
       query: {
-        /** @description ID of layer the requested units belong to */
-        layerId: string;
+        /** @description ID of resource the requested units belong to */
+        resourceId: string;
         /** @description ID of node for which siblings to get associated units for */
         parentNodeId?: string | null;
       };
@@ -2253,8 +2267,8 @@ export interface operations {
       };
     };
   };
-  /** Get layer coverage data */
-  getLayerCoverageData: {
+  /** Get resource coverage data */
+  getResourceCoverageData: {
     parameters: {
       path: {
         id: string;
@@ -2264,274 +2278,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': components['schemas']['LayerNodeCoverage'][];
-        };
-      };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  /**
-   * Find layers
-   * @description Returns a list of all data layers matching the given criteria.
-   *
-   * As the resulting list of data layers may contain layers of different types, the
-   * returned layer objects cannot be typed to their precise layer type.
-   */
-  findLayers: {
-    parameters: {
-      query: {
-        textId: string;
-        level?: number;
-        layerType?: string;
-        limit?: number;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json': (
-            | components['schemas']['DebugLayerRead']
-            | components['schemas']['PlaintextLayerRead']
-          )[];
-        };
-      };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  /** Create layer */
-  createLayer: {
-    requestBody: {
-      content: {
-        'application/json':
-          | components['schemas']['DebugLayerCreate']
-          | components['schemas']['PlaintextLayerCreate'];
-      };
-    };
-    responses: {
-      /** @description Created */
-      201: {
-        content: {
-          'application/json':
-            | components['schemas']['DebugLayerRead']
-            | components['schemas']['PlaintextLayerRead'];
-        };
-      };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  /** Get layer */
-  getLayer: {
-    parameters: {
-      path: {
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json':
-            | components['schemas']['DebugLayerRead']
-            | components['schemas']['PlaintextLayerRead'];
-        };
-      };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  /** Delete layer */
-  deleteLayer: {
-    parameters: {
-      path: {
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      204: {
-        content: never;
-      };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  /** Update layer */
-  updateLayer: {
-    parameters: {
-      path: {
-        id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        'application/json':
-          | components['schemas']['DebugLayerUpdate']
-          | components['schemas']['PlaintextLayerUpdate'];
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json':
-            | components['schemas']['DebugLayerRead']
-            | components['schemas']['PlaintextLayerRead'];
-        };
-      };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  /** Propose layer */
-  proposeLayer: {
-    parameters: {
-      path: {
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json':
-            | components['schemas']['DebugLayerRead']
-            | components['schemas']['PlaintextLayerRead'];
-        };
-      };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  /** Unpropose layer */
-  unproposeLayer: {
-    parameters: {
-      path: {
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json':
-            | components['schemas']['DebugLayerRead']
-            | components['schemas']['PlaintextLayerRead'];
-        };
-      };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  /** Publish layer */
-  publishLayer: {
-    parameters: {
-      path: {
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json':
-            | components['schemas']['DebugLayerRead']
-            | components['schemas']['PlaintextLayerRead'];
-        };
-      };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  /** Unpublish layer */
-  unpublishLayer: {
-    parameters: {
-      path: {
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json':
-            | components['schemas']['DebugLayerRead']
-            | components['schemas']['PlaintextLayerRead'];
+          'application/json': components['schemas']['ResourceNodeCoverage'][];
         };
       };
       /** @description Not found */
@@ -2966,6 +2713,273 @@ export interface operations {
       };
     };
   };
+  /**
+   * Find resources
+   * @description Returns a list of all resources matching the given criteria.
+   *
+   * As the resulting list of resources may contain resources of different types, the
+   * returned resource objects cannot be typed to their precise resource type.
+   */
+  findResources: {
+    parameters: {
+      query: {
+        textId: string;
+        level?: number;
+        resourceType?: string;
+        limit?: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': (
+            | components['schemas']['DebugResourceRead']
+            | components['schemas']['PlaintextResourceRead']
+          )[];
+        };
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Create resource */
+  createResource: {
+    requestBody: {
+      content: {
+        'application/json':
+          | components['schemas']['DebugResourceCreate']
+          | components['schemas']['PlaintextResourceCreate'];
+      };
+    };
+    responses: {
+      /** @description Created */
+      201: {
+        content: {
+          'application/json':
+            | components['schemas']['DebugResourceRead']
+            | components['schemas']['PlaintextResourceRead'];
+        };
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Get resource */
+  getResource: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json':
+            | components['schemas']['DebugResourceRead']
+            | components['schemas']['PlaintextResourceRead'];
+        };
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Delete resource */
+  deleteResource: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      204: {
+        content: never;
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Update resource */
+  updateResource: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        'application/json':
+          | components['schemas']['DebugResourceUpdate']
+          | components['schemas']['PlaintextResourceUpdate'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json':
+            | components['schemas']['DebugResourceRead']
+            | components['schemas']['PlaintextResourceRead'];
+        };
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Propose resource */
+  proposeResource: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json':
+            | components['schemas']['DebugResourceRead']
+            | components['schemas']['PlaintextResourceRead'];
+        };
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Unpropose resource */
+  unproposeResource: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json':
+            | components['schemas']['DebugResourceRead']
+            | components['schemas']['PlaintextResourceRead'];
+        };
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Publish resource */
+  publishResource: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json':
+            | components['schemas']['DebugResourceRead']
+            | components['schemas']['PlaintextResourceRead'];
+        };
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Unpublish resource */
+  unpublishResource: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json':
+            | components['schemas']['DebugResourceRead']
+            | components['schemas']['PlaintextResourceRead'];
+        };
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
   /** Get all texts */
   getAllTexts: {
     parameters: {
@@ -3226,17 +3240,17 @@ export interface operations {
   };
   /**
    * Find units
-   * @description Returns a list of all data layer units matching the given criteria.
+   * @description Returns a list of all resource units matching the given criteria.
    *
-   * Respects restricted layers and inactive texts.
+   * Respects restricted resources and inactive texts.
    * As the resulting list may contain units of different types, the
-   * returned unit objects cannot be typed to their precise layer unit type.
+   * returned unit objects cannot be typed to their precise resource unit type.
    */
   findUnits: {
     parameters: {
       query?: {
-        /** @description ID (or list of IDs) of layer(s) to return unit data for */
-        layerId?: string[];
+        /** @description ID (or list of IDs) of resource(s) to return unit data for */
+        resourceId?: string[];
         /** @description ID (or list of IDs) of node(s) to return unit data for */
         nodeId?: string[];
         /** @description Return at most <limit> items */

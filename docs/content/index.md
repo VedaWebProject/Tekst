@@ -24,7 +24,7 @@ Therefore, the most obvious use case are comparable research projects that eithe
 The above being said, nothing is stopping you from using Tekst in different contexts. As long as
 
 1. your data revolves around a somewhat structured work or other phenomenon (e.g. book, movie, theatre play or even a simple sequence of years) with one or more [structure levels](concepts.md#structure-levels)
-2. the types of [data layers](concepts.md#data-layers) Tekst offers match the data you want to work with
+2. the types of [resources](concepts.md#resources) Tekst offers match the data you want to work with
 
 ..., Tekst might be a viable option. In the end, giving it a try on your local machine [is relatively easy](setup.md#using-docker-recommended).
 

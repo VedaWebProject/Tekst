@@ -116,7 +116,7 @@
           "browse"
         ],
         "summary": "Get unit siblings",
-        "description": "Returns a list of all data layer units belonging to the data layer\nwith the given ID, associated to nodes that are children of the parent node\nwith the given ID.\n\nAs the resulting list may contain units of arbitrary type, the\nreturned unit objects cannot be typed to their precise layer unit type.\nAlso, the returned unit objects have an additional property containing their\nrespective node's label, level and position.",
+        "description": "Returns a list of all resource units belonging to the resource\nwith the given ID, associated to nodes that are children of the parent node\nwith the given ID.\n\nAs the resulting list may contain units of arbitrary type, the\nreturned unit objects cannot be typed to their precise resource unit type.\nAlso, the returned unit objects have an additional property containing their\nrespective node's label, level and position.",
         "operationId": "getUnitSiblings",
         "security": [
           {
@@ -128,16 +128,16 @@
         ],
         "parameters": [
           {
-            "name": "layerId",
+            "name": "resourceId",
             "in": "query",
             "required": true,
             "schema": {
               "type": "string",
               "example": "5eb7cf5a86d9755df3a6c593",
-              "description": "ID of layer the requested units belong to",
-              "title": "Layerid"
+              "description": "ID of resource the requested units belong to",
+              "title": "Resourceid"
             },
-            "description": "ID of layer the requested units belong to"
+            "description": "ID of resource the requested units belong to"
           },
           {
             "name": "parentNodeId",
@@ -176,7 +176,7 @@
                       }
                     ],
                     "discriminator": {
-                      "propertyName": "layerType",
+                      "propertyName": "resourceType",
                       "mapping": {
                         "debug": "#/components/schemas/DebugUnitRead",
                         "plaintext": "#/components/schemas/PlaintextUnitRead"
@@ -381,13 +381,13 @@
         }
       }
     },
-    "/browse/layers/{id}/coverage": {
+    "/browse/resources/{id}/coverage": {
       "get": {
         "tags": [
           "browse"
         ],
-        "summary": "Get layer coverage data",
-        "operationId": "getLayerCoverageData",
+        "summary": "Get resource coverage data",
+        "operationId": "getResourceCoverageData",
         "security": [
           {
             "APIKeyCookie": []
@@ -416,672 +416,9 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/LayerNodeCoverage"
+                    "$ref": "#/components/schemas/ResourceNodeCoverage"
                   },
-                  "title": "Response Get Layer Coverage Data Browse Layers  Id  Coverage Get"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/layers": {
-      "post": {
-        "tags": [
-          "layers"
-        ],
-        "summary": "Create layer",
-        "operationId": "createLayer",
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/DebugLayerCreate"
-                  },
-                  {
-                    "$ref": "#/components/schemas/PlaintextLayerCreate"
-                  }
-                ],
-                "discriminator": {
-                  "propertyName": "layerType",
-                  "mapping": {
-                    "debug": "#/components/schemas/DebugLayerCreate",
-                    "plaintext": "#/components/schemas/PlaintextLayerCreate"
-                  }
-                },
-                "title": "Layer"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/DebugLayerRead"
-                    },
-                    {
-                      "$ref": "#/components/schemas/PlaintextLayerRead"
-                    }
-                  ],
-                  "discriminator": {
-                    "propertyName": "layerType",
-                    "mapping": {
-                      "debug": "#/components/schemas/DebugLayerRead",
-                      "plaintext": "#/components/schemas/PlaintextLayerRead"
-                    }
-                  },
-                  "title": "Response Create Layer Layers Post"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "layers"
-        ],
-        "summary": "Find layers",
-        "description": "Returns a list of all data layers matching the given criteria.\n\nAs the resulting list of data layers may contain layers of different types, the\nreturned layer objects cannot be typed to their precise layer type.",
-        "operationId": "findLayers",
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "textId",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Textid"
-            }
-          },
-          {
-            "name": "level",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "title": "Level"
-            }
-          },
-          {
-            "name": "layerType",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "title": "Layertype"
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 4096,
-              "title": "Limit"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "oneOf": [
-                      {
-                        "$ref": "#/components/schemas/DebugLayerRead"
-                      },
-                      {
-                        "$ref": "#/components/schemas/PlaintextLayerRead"
-                      }
-                    ],
-                    "discriminator": {
-                      "propertyName": "layerType",
-                      "mapping": {
-                        "debug": "#/components/schemas/DebugLayerRead",
-                        "plaintext": "#/components/schemas/PlaintextLayerRead"
-                      }
-                    }
-                  },
-                  "title": "Response Find Layers Layers Get"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/layers/{id}": {
-      "patch": {
-        "tags": [
-          "layers"
-        ],
-        "summary": "Update layer",
-        "operationId": "updateLayer",
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/DebugLayerUpdate"
-                  },
-                  {
-                    "$ref": "#/components/schemas/PlaintextLayerUpdate"
-                  }
-                ],
-                "discriminator": {
-                  "propertyName": "layerType",
-                  "mapping": {
-                    "debug": "#/components/schemas/DebugLayerUpdate",
-                    "plaintext": "#/components/schemas/PlaintextLayerUpdate"
-                  }
-                },
-                "title": "Updates"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/DebugLayerRead"
-                    },
-                    {
-                      "$ref": "#/components/schemas/PlaintextLayerRead"
-                    }
-                  ],
-                  "discriminator": {
-                    "propertyName": "layerType",
-                    "mapping": {
-                      "debug": "#/components/schemas/DebugLayerRead",
-                      "plaintext": "#/components/schemas/PlaintextLayerRead"
-                    }
-                  },
-                  "title": "Response Update Layer Layers  Id  Patch"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "layers"
-        ],
-        "summary": "Get layer",
-        "operationId": "getLayer",
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/DebugLayerRead"
-                    },
-                    {
-                      "$ref": "#/components/schemas/PlaintextLayerRead"
-                    }
-                  ],
-                  "discriminator": {
-                    "propertyName": "layerType",
-                    "mapping": {
-                      "debug": "#/components/schemas/DebugLayerRead",
-                      "plaintext": "#/components/schemas/PlaintextLayerRead"
-                    }
-                  },
-                  "title": "Response Get Layer Layers  Id  Get"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "layers"
-        ],
-        "summary": "Delete layer",
-        "operationId": "deleteLayer",
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Successful Response"
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/layers/{id}/propose": {
-      "post": {
-        "tags": [
-          "layers"
-        ],
-        "summary": "Propose layer",
-        "operationId": "proposeLayer",
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/DebugLayerRead"
-                    },
-                    {
-                      "$ref": "#/components/schemas/PlaintextLayerRead"
-                    }
-                  ],
-                  "discriminator": {
-                    "propertyName": "layerType",
-                    "mapping": {
-                      "debug": "#/components/schemas/DebugLayerRead",
-                      "plaintext": "#/components/schemas/PlaintextLayerRead"
-                    }
-                  },
-                  "title": "Response Propose Layer Layers  Id  Propose Post"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/layers/{id}/unpropose": {
-      "post": {
-        "tags": [
-          "layers"
-        ],
-        "summary": "Unpropose layer",
-        "operationId": "unproposeLayer",
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/DebugLayerRead"
-                    },
-                    {
-                      "$ref": "#/components/schemas/PlaintextLayerRead"
-                    }
-                  ],
-                  "discriminator": {
-                    "propertyName": "layerType",
-                    "mapping": {
-                      "debug": "#/components/schemas/DebugLayerRead",
-                      "plaintext": "#/components/schemas/PlaintextLayerRead"
-                    }
-                  },
-                  "title": "Response Unpropose Layer Layers  Id  Unpropose Post"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/layers/{id}/publish": {
-      "post": {
-        "tags": [
-          "layers"
-        ],
-        "summary": "Publish layer",
-        "operationId": "publishLayer",
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/DebugLayerRead"
-                    },
-                    {
-                      "$ref": "#/components/schemas/PlaintextLayerRead"
-                    }
-                  ],
-                  "discriminator": {
-                    "propertyName": "layerType",
-                    "mapping": {
-                      "debug": "#/components/schemas/DebugLayerRead",
-                      "plaintext": "#/components/schemas/PlaintextLayerRead"
-                    }
-                  },
-                  "title": "Response Publish Layer Layers  Id  Publish Post"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/layers/{id}/unpublish": {
-      "post": {
-        "tags": [
-          "layers"
-        ],
-        "summary": "Unpublish layer",
-        "operationId": "unpublishLayer",
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/DebugLayerRead"
-                    },
-                    {
-                      "$ref": "#/components/schemas/PlaintextLayerRead"
-                    }
-                  ],
-                  "discriminator": {
-                    "propertyName": "layerType",
-                    "mapping": {
-                      "debug": "#/components/schemas/DebugLayerRead",
-                      "plaintext": "#/components/schemas/PlaintextLayerRead"
-                    }
-                  },
-                  "title": "Response Unpublish Layer Layers  Id  Unpublish Post"
+                  "title": "Response Get Resource Coverage Data Browse Resources  Id  Coverage Get"
                 }
               }
             }
@@ -1968,6 +1305,669 @@
         ]
       }
     },
+    "/resources": {
+      "post": {
+        "tags": [
+          "resources"
+        ],
+        "summary": "Create resource",
+        "operationId": "createResource",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/DebugResourceCreate"
+                  },
+                  {
+                    "$ref": "#/components/schemas/PlaintextResourceCreate"
+                  }
+                ],
+                "discriminator": {
+                  "propertyName": "resourceType",
+                  "mapping": {
+                    "debug": "#/components/schemas/DebugResourceCreate",
+                    "plaintext": "#/components/schemas/PlaintextResourceCreate"
+                  }
+                },
+                "title": "Resource"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/DebugResourceRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PlaintextResourceRead"
+                    }
+                  ],
+                  "discriminator": {
+                    "propertyName": "resourceType",
+                    "mapping": {
+                      "debug": "#/components/schemas/DebugResourceRead",
+                      "plaintext": "#/components/schemas/PlaintextResourceRead"
+                    }
+                  },
+                  "title": "Response Create Resource Resources Post"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "resources"
+        ],
+        "summary": "Find resources",
+        "description": "Returns a list of all resources matching the given criteria.\n\nAs the resulting list of resources may contain resources of different types, the\nreturned resource objects cannot be typed to their precise resource type.",
+        "operationId": "findResources",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "textId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Textid"
+            }
+          },
+          {
+            "name": "level",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": "Level"
+            }
+          },
+          {
+            "name": "resourceType",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Resourcetype"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 4096,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/components/schemas/DebugResourceRead"
+                      },
+                      {
+                        "$ref": "#/components/schemas/PlaintextResourceRead"
+                      }
+                    ],
+                    "discriminator": {
+                      "propertyName": "resourceType",
+                      "mapping": {
+                        "debug": "#/components/schemas/DebugResourceRead",
+                        "plaintext": "#/components/schemas/PlaintextResourceRead"
+                      }
+                    }
+                  },
+                  "title": "Response Find Resources Resources Get"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/resources/{id}": {
+      "patch": {
+        "tags": [
+          "resources"
+        ],
+        "summary": "Update resource",
+        "operationId": "updateResource",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/DebugResourceUpdate"
+                  },
+                  {
+                    "$ref": "#/components/schemas/PlaintextResourceUpdate"
+                  }
+                ],
+                "discriminator": {
+                  "propertyName": "resourceType",
+                  "mapping": {
+                    "debug": "#/components/schemas/DebugResourceUpdate",
+                    "plaintext": "#/components/schemas/PlaintextResourceUpdate"
+                  }
+                },
+                "title": "Updates"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/DebugResourceRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PlaintextResourceRead"
+                    }
+                  ],
+                  "discriminator": {
+                    "propertyName": "resourceType",
+                    "mapping": {
+                      "debug": "#/components/schemas/DebugResourceRead",
+                      "plaintext": "#/components/schemas/PlaintextResourceRead"
+                    }
+                  },
+                  "title": "Response Update Resource Resources  Id  Patch"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "resources"
+        ],
+        "summary": "Get resource",
+        "operationId": "getResource",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/DebugResourceRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PlaintextResourceRead"
+                    }
+                  ],
+                  "discriminator": {
+                    "propertyName": "resourceType",
+                    "mapping": {
+                      "debug": "#/components/schemas/DebugResourceRead",
+                      "plaintext": "#/components/schemas/PlaintextResourceRead"
+                    }
+                  },
+                  "title": "Response Get Resource Resources  Id  Get"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "resources"
+        ],
+        "summary": "Delete resource",
+        "operationId": "deleteResource",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/resources/{id}/propose": {
+      "post": {
+        "tags": [
+          "resources"
+        ],
+        "summary": "Propose resource",
+        "operationId": "proposeResource",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/DebugResourceRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PlaintextResourceRead"
+                    }
+                  ],
+                  "discriminator": {
+                    "propertyName": "resourceType",
+                    "mapping": {
+                      "debug": "#/components/schemas/DebugResourceRead",
+                      "plaintext": "#/components/schemas/PlaintextResourceRead"
+                    }
+                  },
+                  "title": "Response Propose Resource Resources  Id  Propose Post"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/resources/{id}/unpropose": {
+      "post": {
+        "tags": [
+          "resources"
+        ],
+        "summary": "Unpropose resource",
+        "operationId": "unproposeResource",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/DebugResourceRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PlaintextResourceRead"
+                    }
+                  ],
+                  "discriminator": {
+                    "propertyName": "resourceType",
+                    "mapping": {
+                      "debug": "#/components/schemas/DebugResourceRead",
+                      "plaintext": "#/components/schemas/PlaintextResourceRead"
+                    }
+                  },
+                  "title": "Response Unpropose Resource Resources  Id  Unpropose Post"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/resources/{id}/publish": {
+      "post": {
+        "tags": [
+          "resources"
+        ],
+        "summary": "Publish resource",
+        "operationId": "publishResource",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/DebugResourceRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PlaintextResourceRead"
+                    }
+                  ],
+                  "discriminator": {
+                    "propertyName": "resourceType",
+                    "mapping": {
+                      "debug": "#/components/schemas/DebugResourceRead",
+                      "plaintext": "#/components/schemas/PlaintextResourceRead"
+                    }
+                  },
+                  "title": "Response Publish Resource Resources  Id  Publish Post"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/resources/{id}/unpublish": {
+      "post": {
+        "tags": [
+          "resources"
+        ],
+        "summary": "Unpublish resource",
+        "operationId": "unpublishResource",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/DebugResourceRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PlaintextResourceRead"
+                    }
+                  ],
+                  "discriminator": {
+                    "propertyName": "resourceType",
+                    "mapping": {
+                      "debug": "#/components/schemas/DebugResourceRead",
+                      "plaintext": "#/components/schemas/PlaintextResourceRead"
+                    }
+                  },
+                  "title": "Response Unpublish Resource Resources  Id  Unpublish Post"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/texts": {
       "get": {
         "tags": [
@@ -2522,7 +2522,7 @@
                   }
                 ],
                 "discriminator": {
-                  "propertyName": "layerType",
+                  "propertyName": "resourceType",
                   "mapping": {
                     "debug": "#/components/schemas/DebugUnitCreate",
                     "plaintext": "#/components/schemas/PlaintextUnitCreate"
@@ -2548,7 +2548,7 @@
                     }
                   ],
                   "discriminator": {
-                    "propertyName": "layerType",
+                    "propertyName": "resourceType",
                     "mapping": {
                       "debug": "#/components/schemas/DebugUnitRead",
                       "plaintext": "#/components/schemas/PlaintextUnitRead"
@@ -2579,7 +2579,7 @@
           "units"
         ],
         "summary": "Find units",
-        "description": "Returns a list of all data layer units matching the given criteria.\n\nRespects restricted layers and inactive texts.\nAs the resulting list may contain units of different types, the\nreturned unit objects cannot be typed to their precise layer unit type.",
+        "description": "Returns a list of all resource units matching the given criteria.\n\nRespects restricted resources and inactive texts.\nAs the resulting list may contain units of different types, the\nreturned unit objects cannot be typed to their precise resource unit type.",
         "operationId": "findUnits",
         "security": [
           {
@@ -2591,7 +2591,7 @@
         ],
         "parameters": [
           {
-            "name": "layerId",
+            "name": "resourceId",
             "in": "query",
             "required": false,
             "schema": {
@@ -2600,11 +2600,11 @@
                 "type": "string",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
-              "description": "ID (or list of IDs) of layer(s) to return unit data for",
+              "description": "ID (or list of IDs) of resource(s) to return unit data for",
               "default": [],
-              "title": "Layerid"
+              "title": "Resourceid"
             },
-            "description": "ID (or list of IDs) of layer(s) to return unit data for"
+            "description": "ID (or list of IDs) of resource(s) to return unit data for"
           },
           {
             "name": "nodeId",
@@ -2652,7 +2652,7 @@
                       }
                     ],
                     "discriminator": {
-                      "propertyName": "layerType",
+                      "propertyName": "resourceType",
                       "mapping": {
                         "debug": "#/components/schemas/DebugUnitRead",
                         "plaintext": "#/components/schemas/PlaintextUnitRead"
@@ -2723,7 +2723,7 @@
                     }
                   ],
                   "discriminator": {
-                    "propertyName": "layerType",
+                    "propertyName": "resourceType",
                     "mapping": {
                       "debug": "#/components/schemas/DebugUnitRead",
                       "plaintext": "#/components/schemas/PlaintextUnitRead"
@@ -2789,7 +2789,7 @@
                   }
                 ],
                 "discriminator": {
-                  "propertyName": "layerType",
+                  "propertyName": "resourceType",
                   "mapping": {
                     "debug": "#/components/schemas/DebugUnitUpdate",
                     "plaintext": "#/components/schemas/PlaintextUnitUpdate"
@@ -2815,7 +2815,7 @@
                     }
                   ],
                   "discriminator": {
-                    "propertyName": "layerType",
+                    "propertyName": "resourceType",
                     "mapping": {
                       "debug": "#/components/schemas/DebugUnitRead",
                       "plaintext": "#/components/schemas/PlaintextUnitRead"
@@ -4090,51 +4090,51 @@
         "type": "object",
         "title": "ClientSegmentUpdate"
       },
-      "DebugLayerConfig": {
+      "DebugResourceConfig": {
         "properties": {
           "showOnParentLevel": {
             "type": "boolean",
             "title": "Showonparentlevel",
-            "description": "Show combined contents of this layer on the parent level",
+            "description": "Show combined contents of this resource on the parent level",
             "default": false
           }
         },
         "type": "object",
-        "title": "DebugLayerConfig"
+        "title": "DebugResourceConfig"
       },
-      "DebugLayerCreate": {
+      "DebugResourceCreate": {
         "properties": {
           "title": {
             "type": "string",
             "maxLength": 64,
             "minLength": 1,
             "title": "Title",
-            "description": "Title of this layer"
+            "description": "Title of this resource"
           },
           "description": {
             "items": {
-              "$ref": "#/components/schemas/LayerDescriptionTranslation"
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
             },
             "type": "array",
             "maxItems": 3,
             "title": "Description",
-            "description": "Short, concise description of this data layer",
+            "description": "Short, concise description of this resource",
             "default": []
           },
           "textId": {
             "type": "string",
             "title": "Textid",
-            "description": "ID of the text this layer belongs to",
+            "description": "ID of the text this resource belongs to",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "level": {
             "type": "integer",
             "title": "Level",
-            "description": "Text level this layer belongs to"
+            "description": "Text level this resource belongs to"
           },
-          "layerType": {
+          "resourceType": {
             "const": "debug",
-            "title": "Layertype"
+            "title": "Resourcetype"
           },
           "ownerId": {
             "anyOf": [
@@ -4147,7 +4147,7 @@
               }
             ],
             "title": "Ownerid",
-            "description": "User owning this layer"
+            "description": "User owning this resource"
           },
           "category": {
             "anyOf": [
@@ -4160,7 +4160,7 @@
               }
             ],
             "title": "Category",
-            "description": "Data layer category key"
+            "description": "Resource category key"
           },
           "sharedRead": {
             "items": {
@@ -4170,7 +4170,7 @@
             "type": "array",
             "maxItems": 64,
             "title": "Sharedread",
-            "description": "Users with shared read access to this layer",
+            "description": "Users with shared read access to this resource",
             "default": []
           },
           "sharedWrite": {
@@ -4181,19 +4181,19 @@
             "type": "array",
             "maxItems": 64,
             "title": "Sharedwrite",
-            "description": "Users with shared write access to this layer",
+            "description": "Users with shared write access to this resource",
             "default": []
           },
           "public": {
             "type": "boolean",
             "title": "Public",
-            "description": "Publication status of this layer",
+            "description": "Publication status of this resource",
             "default": false
           },
           "proposed": {
             "type": "boolean",
             "title": "Proposed",
-            "description": "Whether this layer has been proposed for publication",
+            "description": "Whether this resource has been proposed for publication",
             "default": false
           },
           "citation": {
@@ -4207,7 +4207,7 @@
               }
             ],
             "title": "Citation",
-            "description": "Citation details for this layer"
+            "description": "Citation details for this resource"
           },
           "meta": {
             "items": {
@@ -4222,18 +4222,18 @@
           },
           "comment": {
             "items": {
-              "$ref": "#/components/schemas/LayerCommentTranslation"
+              "$ref": "#/components/schemas/ResourceCommentTranslation"
             },
             "type": "array",
             "maxItems": 3,
             "title": "Comment",
-            "description": "Plaintext, potentially multiline comment on this layer",
+            "description": "Plaintext, potentially multiline comment on this resource",
             "default": []
           },
           "config": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/DebugLayerConfig"
+                "$ref": "#/components/schemas/DebugResourceConfig"
               }
             ],
             "default": {
@@ -4246,11 +4246,11 @@
           "title",
           "textId",
           "level",
-          "layerType"
+          "resourceType"
         ],
-        "title": "DebugLayerCreate"
+        "title": "DebugResourceCreate"
       },
-      "DebugLayerRead": {
+      "DebugResourceRead": {
         "properties": {
           "id": {
             "type": "string",
@@ -4267,7 +4267,7 @@
               }
             ],
             "title": "Writable",
-            "description": "Whether this layer is writable for the requesting user"
+            "description": "Whether this resource is writable for the requesting user"
           },
           "owner": {
             "anyOf": [
@@ -4278,7 +4278,7 @@
                 "type": "null"
               }
             ],
-            "description": "Public user data for user owning this layer"
+            "description": "Public user data for user owning this resource"
           },
           "sharedReadUsers": {
             "anyOf": [
@@ -4293,7 +4293,7 @@
               }
             ],
             "title": "Sharedreadusers",
-            "description": "Public user data for users allowed to read this layer"
+            "description": "Public user data for users allowed to read this resource"
           },
           "sharedWriteUsers": {
             "anyOf": [
@@ -4308,39 +4308,39 @@
               }
             ],
             "title": "Sharedwriteusers",
-            "description": "Public user data for users allowed to write this layer"
+            "description": "Public user data for users allowed to write this resource"
           },
           "title": {
             "type": "string",
             "maxLength": 64,
             "minLength": 1,
             "title": "Title",
-            "description": "Title of this layer"
+            "description": "Title of this resource"
           },
           "description": {
             "items": {
-              "$ref": "#/components/schemas/LayerDescriptionTranslation"
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
             },
             "type": "array",
             "maxItems": 3,
             "title": "Description",
-            "description": "Short, concise description of this data layer",
+            "description": "Short, concise description of this resource",
             "default": []
           },
           "textId": {
             "type": "string",
             "title": "Textid",
-            "description": "ID of the text this layer belongs to",
+            "description": "ID of the text this resource belongs to",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "level": {
             "type": "integer",
             "title": "Level",
-            "description": "Text level this layer belongs to"
+            "description": "Text level this resource belongs to"
           },
-          "layerType": {
+          "resourceType": {
             "const": "debug",
-            "title": "Layertype"
+            "title": "Resourcetype"
           },
           "ownerId": {
             "anyOf": [
@@ -4353,7 +4353,7 @@
               }
             ],
             "title": "Ownerid",
-            "description": "User owning this layer"
+            "description": "User owning this resource"
           },
           "category": {
             "anyOf": [
@@ -4366,7 +4366,7 @@
               }
             ],
             "title": "Category",
-            "description": "Data layer category key"
+            "description": "Resource category key"
           },
           "sharedRead": {
             "items": {
@@ -4376,7 +4376,7 @@
             "type": "array",
             "maxItems": 64,
             "title": "Sharedread",
-            "description": "Users with shared read access to this layer",
+            "description": "Users with shared read access to this resource",
             "default": []
           },
           "sharedWrite": {
@@ -4387,19 +4387,19 @@
             "type": "array",
             "maxItems": 64,
             "title": "Sharedwrite",
-            "description": "Users with shared write access to this layer",
+            "description": "Users with shared write access to this resource",
             "default": []
           },
           "public": {
             "type": "boolean",
             "title": "Public",
-            "description": "Publication status of this layer",
+            "description": "Publication status of this resource",
             "default": false
           },
           "proposed": {
             "type": "boolean",
             "title": "Proposed",
-            "description": "Whether this layer has been proposed for publication",
+            "description": "Whether this resource has been proposed for publication",
             "default": false
           },
           "citation": {
@@ -4413,7 +4413,7 @@
               }
             ],
             "title": "Citation",
-            "description": "Citation details for this layer"
+            "description": "Citation details for this resource"
           },
           "meta": {
             "items": {
@@ -4428,18 +4428,18 @@
           },
           "comment": {
             "items": {
-              "$ref": "#/components/schemas/LayerCommentTranslation"
+              "$ref": "#/components/schemas/ResourceCommentTranslation"
             },
             "type": "array",
             "maxItems": 3,
             "title": "Comment",
-            "description": "Plaintext, potentially multiline comment on this layer",
+            "description": "Plaintext, potentially multiline comment on this resource",
             "default": []
           },
           "config": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/DebugLayerConfig"
+                "$ref": "#/components/schemas/DebugResourceConfig"
               }
             ],
             "default": {
@@ -4454,11 +4454,11 @@
           "title",
           "textId",
           "level",
-          "layerType"
+          "resourceType"
         ],
-        "title": "DebugLayerRead"
+        "title": "DebugResourceRead"
       },
-      "DebugLayerUpdate": {
+      "DebugResourceUpdate": {
         "properties": {
           "title": {
             "anyOf": [
@@ -4473,12 +4473,12 @@
           },
           "description": {
             "items": {
-              "$ref": "#/components/schemas/LayerDescriptionTranslation"
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
             },
             "type": "array",
             "maxItems": 3,
             "title": "Description",
-            "description": "Short, concise description of this data layer",
+            "description": "Short, concise description of this resource",
             "default": []
           },
           "textId": {
@@ -4504,9 +4504,9 @@
             ],
             "title": "Level"
           },
-          "layerType": {
+          "resourceType": {
             "const": "debug",
-            "title": "Layertype"
+            "title": "Resourcetype"
           },
           "ownerId": {
             "anyOf": [
@@ -4519,7 +4519,7 @@
               }
             ],
             "title": "Ownerid",
-            "description": "User owning this layer"
+            "description": "User owning this resource"
           },
           "category": {
             "anyOf": [
@@ -4532,7 +4532,7 @@
               }
             ],
             "title": "Category",
-            "description": "Data layer category key"
+            "description": "Resource category key"
           },
           "sharedRead": {
             "items": {
@@ -4542,7 +4542,7 @@
             "type": "array",
             "maxItems": 64,
             "title": "Sharedread",
-            "description": "Users with shared read access to this layer",
+            "description": "Users with shared read access to this resource",
             "default": []
           },
           "sharedWrite": {
@@ -4553,19 +4553,19 @@
             "type": "array",
             "maxItems": 64,
             "title": "Sharedwrite",
-            "description": "Users with shared write access to this layer",
+            "description": "Users with shared write access to this resource",
             "default": []
           },
           "public": {
             "type": "boolean",
             "title": "Public",
-            "description": "Publication status of this layer",
+            "description": "Publication status of this resource",
             "default": false
           },
           "proposed": {
             "type": "boolean",
             "title": "Proposed",
-            "description": "Whether this layer has been proposed for publication",
+            "description": "Whether this resource has been proposed for publication",
             "default": false
           },
           "citation": {
@@ -4579,7 +4579,7 @@
               }
             ],
             "title": "Citation",
-            "description": "Citation details for this layer"
+            "description": "Citation details for this resource"
           },
           "meta": {
             "items": {
@@ -4594,18 +4594,18 @@
           },
           "comment": {
             "items": {
-              "$ref": "#/components/schemas/LayerCommentTranslation"
+              "$ref": "#/components/schemas/ResourceCommentTranslation"
             },
             "type": "array",
             "maxItems": 3,
             "title": "Comment",
-            "description": "Plaintext, potentially multiline comment on this layer",
+            "description": "Plaintext, potentially multiline comment on this resource",
             "default": []
           },
           "config": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/DebugLayerConfig"
+                "$ref": "#/components/schemas/DebugResourceConfig"
               }
             ],
             "default": {
@@ -4615,21 +4615,21 @@
         },
         "type": "object",
         "required": [
-          "layerType"
+          "resourceType"
         ],
-        "title": "DebugLayerUpdate"
+        "title": "DebugResourceUpdate"
       },
       "DebugUnitCreate": {
         "properties": {
-          "layerId": {
+          "resourceId": {
             "type": "string",
-            "title": "Layerid",
-            "description": "Data layer ID",
+            "title": "Resourceid",
+            "description": "Resource ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
-          "layerType": {
+          "resourceType": {
             "const": "debug",
-            "title": "Layertype"
+            "title": "Resourcetype"
           },
           "nodeId": {
             "type": "string",
@@ -4665,8 +4665,8 @@
         },
         "type": "object",
         "required": [
-          "layerId",
-          "layerType",
+          "resourceId",
+          "resourceType",
           "nodeId"
         ],
         "title": "DebugUnitCreate"
@@ -4678,15 +4678,15 @@
             "title": "Id",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
-          "layerId": {
+          "resourceId": {
             "type": "string",
-            "title": "Layerid",
-            "description": "Data layer ID",
+            "title": "Resourceid",
+            "description": "Resource ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
-          "layerType": {
+          "resourceType": {
             "const": "debug",
-            "title": "Layertype"
+            "title": "Resourcetype"
           },
           "nodeId": {
             "type": "string",
@@ -4724,15 +4724,15 @@
         "type": "object",
         "required": [
           "id",
-          "layerId",
-          "layerType",
+          "resourceId",
+          "resourceType",
           "nodeId"
         ],
         "title": "DebugUnitRead"
       },
       "DebugUnitUpdate": {
         "properties": {
-          "layerId": {
+          "resourceId": {
             "anyOf": [
               {
                 "type": "string",
@@ -4742,11 +4742,11 @@
                 "type": "null"
               }
             ],
-            "title": "Layerid"
+            "title": "Resourceid"
           },
-          "layerType": {
+          "resourceType": {
             "const": "debug",
-            "title": "Layertype"
+            "title": "Resourcetype"
           },
           "nodeId": {
             "anyOf": [
@@ -4788,7 +4788,7 @@
         },
         "type": "object",
         "required": [
-          "layerType"
+          "resourceType"
         ],
         "title": "DebugUnitUpdate"
       },
@@ -4941,134 +4941,6 @@
         },
         "type": "object",
         "title": "HTTPValidationError"
-      },
-      "LayerCategory-Input": {
-        "properties": {
-          "key": {
-            "type": "string",
-            "maxLength": 16,
-            "minLength": 1,
-            "title": "Key"
-          },
-          "translations": {
-            "items": {
-              "$ref": "#/components/schemas/LayerCategoryTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
-            "title": "Translations"
-          }
-        },
-        "type": "object",
-        "required": [
-          "key",
-          "translations"
-        ],
-        "title": "LayerCategory"
-      },
-      "LayerCategory-Output": {
-        "properties": {
-          "key": {
-            "type": "string",
-            "maxLength": 16,
-            "minLength": 1,
-            "title": "Key"
-          },
-          "translations": {
-            "items": {
-              "$ref": "#/components/schemas/LayerCategoryTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
-            "title": "Translations"
-          }
-        },
-        "type": "object",
-        "required": [
-          "key",
-          "translations"
-        ],
-        "title": "LayerCategory"
-      },
-      "LayerCategoryTranslation": {
-        "properties": {
-          "locale": {
-            "$ref": "#/components/schemas/Locale"
-          },
-          "translation": {
-            "type": "string",
-            "maxLength": 32,
-            "minLength": 1,
-            "title": "Translation"
-          }
-        },
-        "type": "object",
-        "required": [
-          "locale",
-          "translation"
-        ],
-        "title": "LayerCategoryTranslation"
-      },
-      "LayerCommentTranslation": {
-        "properties": {
-          "locale": {
-            "$ref": "#/components/schemas/Locale"
-          },
-          "translation": {
-            "type": "string",
-            "maxLength": 2000,
-            "minLength": 1,
-            "title": "Translation"
-          }
-        },
-        "type": "object",
-        "required": [
-          "locale",
-          "translation"
-        ],
-        "title": "LayerCommentTranslation"
-      },
-      "LayerDescriptionTranslation": {
-        "properties": {
-          "locale": {
-            "$ref": "#/components/schemas/Locale"
-          },
-          "translation": {
-            "type": "string",
-            "maxLength": 512,
-            "minLength": 1,
-            "title": "Translation"
-          }
-        },
-        "type": "object",
-        "required": [
-          "locale",
-          "translation"
-        ],
-        "title": "LayerDescriptionTranslation"
-      },
-      "LayerNodeCoverage": {
-        "properties": {
-          "label": {
-            "type": "string",
-            "title": "Label"
-          },
-          "position": {
-            "type": "integer",
-            "title": "Position"
-          },
-          "covered": {
-            "type": "boolean",
-            "title": "Covered"
-          }
-        },
-        "type": "object",
-        "required": [
-          "label",
-          "position",
-          "covered"
-        ],
-        "title": "LayerNodeCoverage"
       },
       "Locale": {
         "type": "string",
@@ -5304,12 +5176,12 @@
         "type": "object",
         "title": "NodeUpdate"
       },
-      "PlaintextLayerConfig": {
+      "PlaintextResourceConfig": {
         "properties": {
           "showOnParentLevel": {
             "type": "boolean",
             "title": "Showonparentlevel",
-            "description": "Show combined contents of this layer on the parent level",
+            "description": "Show combined contents of this resource on the parent level",
             "default": false
           },
           "deeplLinks": {
@@ -5329,41 +5201,41 @@
           }
         },
         "type": "object",
-        "title": "PlaintextLayerConfig"
+        "title": "PlaintextResourceConfig"
       },
-      "PlaintextLayerCreate": {
+      "PlaintextResourceCreate": {
         "properties": {
           "title": {
             "type": "string",
             "maxLength": 64,
             "minLength": 1,
             "title": "Title",
-            "description": "Title of this layer"
+            "description": "Title of this resource"
           },
           "description": {
             "items": {
-              "$ref": "#/components/schemas/LayerDescriptionTranslation"
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
             },
             "type": "array",
             "maxItems": 3,
             "title": "Description",
-            "description": "Short, concise description of this data layer",
+            "description": "Short, concise description of this resource",
             "default": []
           },
           "textId": {
             "type": "string",
             "title": "Textid",
-            "description": "ID of the text this layer belongs to",
+            "description": "ID of the text this resource belongs to",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "level": {
             "type": "integer",
             "title": "Level",
-            "description": "Text level this layer belongs to"
+            "description": "Text level this resource belongs to"
           },
-          "layerType": {
+          "resourceType": {
             "const": "plaintext",
-            "title": "Layertype"
+            "title": "Resourcetype"
           },
           "ownerId": {
             "anyOf": [
@@ -5376,7 +5248,7 @@
               }
             ],
             "title": "Ownerid",
-            "description": "User owning this layer"
+            "description": "User owning this resource"
           },
           "category": {
             "anyOf": [
@@ -5389,7 +5261,7 @@
               }
             ],
             "title": "Category",
-            "description": "Data layer category key"
+            "description": "Resource category key"
           },
           "sharedRead": {
             "items": {
@@ -5399,7 +5271,7 @@
             "type": "array",
             "maxItems": 64,
             "title": "Sharedread",
-            "description": "Users with shared read access to this layer",
+            "description": "Users with shared read access to this resource",
             "default": []
           },
           "sharedWrite": {
@@ -5410,19 +5282,19 @@
             "type": "array",
             "maxItems": 64,
             "title": "Sharedwrite",
-            "description": "Users with shared write access to this layer",
+            "description": "Users with shared write access to this resource",
             "default": []
           },
           "public": {
             "type": "boolean",
             "title": "Public",
-            "description": "Publication status of this layer",
+            "description": "Publication status of this resource",
             "default": false
           },
           "proposed": {
             "type": "boolean",
             "title": "Proposed",
-            "description": "Whether this layer has been proposed for publication",
+            "description": "Whether this resource has been proposed for publication",
             "default": false
           },
           "citation": {
@@ -5436,7 +5308,7 @@
               }
             ],
             "title": "Citation",
-            "description": "Citation details for this layer"
+            "description": "Citation details for this resource"
           },
           "meta": {
             "items": {
@@ -5451,18 +5323,18 @@
           },
           "comment": {
             "items": {
-              "$ref": "#/components/schemas/LayerCommentTranslation"
+              "$ref": "#/components/schemas/ResourceCommentTranslation"
             },
             "type": "array",
             "maxItems": 3,
             "title": "Comment",
-            "description": "Plaintext, potentially multiline comment on this layer",
+            "description": "Plaintext, potentially multiline comment on this resource",
             "default": []
           },
           "config": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/PlaintextLayerConfig"
+                "$ref": "#/components/schemas/PlaintextResourceConfig"
               }
             ],
             "default": {
@@ -5483,11 +5355,11 @@
           "title",
           "textId",
           "level",
-          "layerType"
+          "resourceType"
         ],
-        "title": "PlaintextLayerCreate"
+        "title": "PlaintextResourceCreate"
       },
-      "PlaintextLayerRead": {
+      "PlaintextResourceRead": {
         "properties": {
           "id": {
             "type": "string",
@@ -5504,7 +5376,7 @@
               }
             ],
             "title": "Writable",
-            "description": "Whether this layer is writable for the requesting user"
+            "description": "Whether this resource is writable for the requesting user"
           },
           "owner": {
             "anyOf": [
@@ -5515,7 +5387,7 @@
                 "type": "null"
               }
             ],
-            "description": "Public user data for user owning this layer"
+            "description": "Public user data for user owning this resource"
           },
           "sharedReadUsers": {
             "anyOf": [
@@ -5530,7 +5402,7 @@
               }
             ],
             "title": "Sharedreadusers",
-            "description": "Public user data for users allowed to read this layer"
+            "description": "Public user data for users allowed to read this resource"
           },
           "sharedWriteUsers": {
             "anyOf": [
@@ -5545,39 +5417,39 @@
               }
             ],
             "title": "Sharedwriteusers",
-            "description": "Public user data for users allowed to write this layer"
+            "description": "Public user data for users allowed to write this resource"
           },
           "title": {
             "type": "string",
             "maxLength": 64,
             "minLength": 1,
             "title": "Title",
-            "description": "Title of this layer"
+            "description": "Title of this resource"
           },
           "description": {
             "items": {
-              "$ref": "#/components/schemas/LayerDescriptionTranslation"
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
             },
             "type": "array",
             "maxItems": 3,
             "title": "Description",
-            "description": "Short, concise description of this data layer",
+            "description": "Short, concise description of this resource",
             "default": []
           },
           "textId": {
             "type": "string",
             "title": "Textid",
-            "description": "ID of the text this layer belongs to",
+            "description": "ID of the text this resource belongs to",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "level": {
             "type": "integer",
             "title": "Level",
-            "description": "Text level this layer belongs to"
+            "description": "Text level this resource belongs to"
           },
-          "layerType": {
+          "resourceType": {
             "const": "plaintext",
-            "title": "Layertype"
+            "title": "Resourcetype"
           },
           "ownerId": {
             "anyOf": [
@@ -5590,7 +5462,7 @@
               }
             ],
             "title": "Ownerid",
-            "description": "User owning this layer"
+            "description": "User owning this resource"
           },
           "category": {
             "anyOf": [
@@ -5603,7 +5475,7 @@
               }
             ],
             "title": "Category",
-            "description": "Data layer category key"
+            "description": "Resource category key"
           },
           "sharedRead": {
             "items": {
@@ -5613,7 +5485,7 @@
             "type": "array",
             "maxItems": 64,
             "title": "Sharedread",
-            "description": "Users with shared read access to this layer",
+            "description": "Users with shared read access to this resource",
             "default": []
           },
           "sharedWrite": {
@@ -5624,19 +5496,19 @@
             "type": "array",
             "maxItems": 64,
             "title": "Sharedwrite",
-            "description": "Users with shared write access to this layer",
+            "description": "Users with shared write access to this resource",
             "default": []
           },
           "public": {
             "type": "boolean",
             "title": "Public",
-            "description": "Publication status of this layer",
+            "description": "Publication status of this resource",
             "default": false
           },
           "proposed": {
             "type": "boolean",
             "title": "Proposed",
-            "description": "Whether this layer has been proposed for publication",
+            "description": "Whether this resource has been proposed for publication",
             "default": false
           },
           "citation": {
@@ -5650,7 +5522,7 @@
               }
             ],
             "title": "Citation",
-            "description": "Citation details for this layer"
+            "description": "Citation details for this resource"
           },
           "meta": {
             "items": {
@@ -5665,18 +5537,18 @@
           },
           "comment": {
             "items": {
-              "$ref": "#/components/schemas/LayerCommentTranslation"
+              "$ref": "#/components/schemas/ResourceCommentTranslation"
             },
             "type": "array",
             "maxItems": 3,
             "title": "Comment",
-            "description": "Plaintext, potentially multiline comment on this layer",
+            "description": "Plaintext, potentially multiline comment on this resource",
             "default": []
           },
           "config": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/PlaintextLayerConfig"
+                "$ref": "#/components/schemas/PlaintextResourceConfig"
               }
             ],
             "default": {
@@ -5699,11 +5571,11 @@
           "title",
           "textId",
           "level",
-          "layerType"
+          "resourceType"
         ],
-        "title": "PlaintextLayerRead"
+        "title": "PlaintextResourceRead"
       },
-      "PlaintextLayerUpdate": {
+      "PlaintextResourceUpdate": {
         "properties": {
           "title": {
             "anyOf": [
@@ -5718,12 +5590,12 @@
           },
           "description": {
             "items": {
-              "$ref": "#/components/schemas/LayerDescriptionTranslation"
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
             },
             "type": "array",
             "maxItems": 3,
             "title": "Description",
-            "description": "Short, concise description of this data layer",
+            "description": "Short, concise description of this resource",
             "default": []
           },
           "textId": {
@@ -5749,9 +5621,9 @@
             ],
             "title": "Level"
           },
-          "layerType": {
+          "resourceType": {
             "const": "plaintext",
-            "title": "Layertype"
+            "title": "Resourcetype"
           },
           "ownerId": {
             "anyOf": [
@@ -5764,7 +5636,7 @@
               }
             ],
             "title": "Ownerid",
-            "description": "User owning this layer"
+            "description": "User owning this resource"
           },
           "category": {
             "anyOf": [
@@ -5777,7 +5649,7 @@
               }
             ],
             "title": "Category",
-            "description": "Data layer category key"
+            "description": "Resource category key"
           },
           "sharedRead": {
             "items": {
@@ -5787,7 +5659,7 @@
             "type": "array",
             "maxItems": 64,
             "title": "Sharedread",
-            "description": "Users with shared read access to this layer",
+            "description": "Users with shared read access to this resource",
             "default": []
           },
           "sharedWrite": {
@@ -5798,19 +5670,19 @@
             "type": "array",
             "maxItems": 64,
             "title": "Sharedwrite",
-            "description": "Users with shared write access to this layer",
+            "description": "Users with shared write access to this resource",
             "default": []
           },
           "public": {
             "type": "boolean",
             "title": "Public",
-            "description": "Publication status of this layer",
+            "description": "Publication status of this resource",
             "default": false
           },
           "proposed": {
             "type": "boolean",
             "title": "Proposed",
-            "description": "Whether this layer has been proposed for publication",
+            "description": "Whether this resource has been proposed for publication",
             "default": false
           },
           "citation": {
@@ -5824,7 +5696,7 @@
               }
             ],
             "title": "Citation",
-            "description": "Citation details for this layer"
+            "description": "Citation details for this resource"
           },
           "meta": {
             "items": {
@@ -5839,18 +5711,18 @@
           },
           "comment": {
             "items": {
-              "$ref": "#/components/schemas/LayerCommentTranslation"
+              "$ref": "#/components/schemas/ResourceCommentTranslation"
             },
             "type": "array",
             "maxItems": 3,
             "title": "Comment",
-            "description": "Plaintext, potentially multiline comment on this layer",
+            "description": "Plaintext, potentially multiline comment on this resource",
             "default": []
           },
           "config": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/PlaintextLayerConfig"
+                "$ref": "#/components/schemas/PlaintextResourceConfig"
               }
             ],
             "default": {
@@ -5868,21 +5740,21 @@
         },
         "type": "object",
         "required": [
-          "layerType"
+          "resourceType"
         ],
-        "title": "PlaintextLayerUpdate"
+        "title": "PlaintextResourceUpdate"
       },
       "PlaintextUnitCreate": {
         "properties": {
-          "layerId": {
+          "resourceId": {
             "type": "string",
-            "title": "Layerid",
-            "description": "Data layer ID",
+            "title": "Resourceid",
+            "description": "Resource ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
-          "layerType": {
+          "resourceType": {
             "const": "plaintext",
-            "title": "Layertype"
+            "title": "Resourcetype"
           },
           "nodeId": {
             "type": "string",
@@ -5918,8 +5790,8 @@
         },
         "type": "object",
         "required": [
-          "layerId",
-          "layerType",
+          "resourceId",
+          "resourceType",
           "nodeId"
         ],
         "title": "PlaintextUnitCreate"
@@ -5931,15 +5803,15 @@
             "title": "Id",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
-          "layerId": {
+          "resourceId": {
             "type": "string",
-            "title": "Layerid",
-            "description": "Data layer ID",
+            "title": "Resourceid",
+            "description": "Resource ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
-          "layerType": {
+          "resourceType": {
             "const": "plaintext",
-            "title": "Layertype"
+            "title": "Resourcetype"
           },
           "nodeId": {
             "type": "string",
@@ -5977,15 +5849,15 @@
         "type": "object",
         "required": [
           "id",
-          "layerId",
-          "layerType",
+          "resourceId",
+          "resourceType",
           "nodeId"
         ],
         "title": "PlaintextUnitRead"
       },
       "PlaintextUnitUpdate": {
         "properties": {
-          "layerId": {
+          "resourceId": {
             "anyOf": [
               {
                 "type": "string",
@@ -5995,11 +5867,11 @@
                 "type": "null"
               }
             ],
-            "title": "Layerid"
+            "title": "Resourceid"
           },
-          "layerType": {
+          "resourceType": {
             "const": "plaintext",
-            "title": "Layertype"
+            "title": "Resourcetype"
           },
           "nodeId": {
             "anyOf": [
@@ -6041,7 +5913,7 @@
         },
         "type": "object",
         "required": [
-          "layerType"
+          "resourceType"
         ],
         "title": "PlaintextUnitUpdate"
       },
@@ -6283,19 +6155,19 @@
             "description": "Custom label for main navigation info entry",
             "default": []
           },
-          "layerCategories": {
+          "resourceCategories": {
             "items": {
-              "$ref": "#/components/schemas/LayerCategory-Output"
+              "$ref": "#/components/schemas/ResourceCategory-Output"
             },
             "type": "array",
-            "title": "Layercategories",
-            "description": "Layer categories to categorize layers in",
+            "title": "Resourcecategories",
+            "description": "Resource categories to categorize resources in",
             "default": []
           },
-          "showLayerCategoryHeadings": {
+          "showResourceCategoryHeadings": {
             "type": "boolean",
-            "title": "Showlayercategoryheadings",
-            "description": "Show layer category headings in browse view",
+            "title": "Showresourcecategoryheadings",
+            "description": "Show resource category headings in browse view",
             "default": true
           },
           "alwaysShowTextInfo": {
@@ -6431,19 +6303,19 @@
             "description": "Custom label for main navigation info entry",
             "default": []
           },
-          "layerCategories": {
+          "resourceCategories": {
             "items": {
-              "$ref": "#/components/schemas/LayerCategory-Input"
+              "$ref": "#/components/schemas/ResourceCategory-Input"
             },
             "type": "array",
-            "title": "Layercategories",
-            "description": "Layer categories to categorize layers in",
+            "title": "Resourcecategories",
+            "description": "Resource categories to categorize resources in",
             "default": []
           },
-          "showLayerCategoryHeadings": {
+          "showResourceCategoryHeadings": {
             "type": "boolean",
-            "title": "Showlayercategoryheadings",
-            "description": "Show layer category headings in browse view",
+            "title": "Showresourcecategoryheadings",
+            "description": "Show resource category headings in browse view",
             "default": true
           },
           "alwaysShowTextInfo": {
@@ -6489,6 +6361,134 @@
         ],
         "title": "PlatformStats",
         "description": "Platform statistics data"
+      },
+      "ResourceCategory-Input": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "maxLength": 16,
+            "minLength": 1,
+            "title": "Key"
+          },
+          "translations": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceCategoryTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Translations"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "translations"
+        ],
+        "title": "ResourceCategory"
+      },
+      "ResourceCategory-Output": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "maxLength": 16,
+            "minLength": 1,
+            "title": "Key"
+          },
+          "translations": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceCategoryTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Translations"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "translations"
+        ],
+        "title": "ResourceCategory"
+      },
+      "ResourceCategoryTranslation": {
+        "properties": {
+          "locale": {
+            "$ref": "#/components/schemas/Locale"
+          },
+          "translation": {
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 1,
+            "title": "Translation"
+          }
+        },
+        "type": "object",
+        "required": [
+          "locale",
+          "translation"
+        ],
+        "title": "ResourceCategoryTranslation"
+      },
+      "ResourceCommentTranslation": {
+        "properties": {
+          "locale": {
+            "$ref": "#/components/schemas/Locale"
+          },
+          "translation": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 1,
+            "title": "Translation"
+          }
+        },
+        "type": "object",
+        "required": [
+          "locale",
+          "translation"
+        ],
+        "title": "ResourceCommentTranslation"
+      },
+      "ResourceDescriptionTranslation": {
+        "properties": {
+          "locale": {
+            "$ref": "#/components/schemas/Locale"
+          },
+          "translation": {
+            "type": "string",
+            "maxLength": 512,
+            "minLength": 1,
+            "title": "Translation"
+          }
+        },
+        "type": "object",
+        "required": [
+          "locale",
+          "translation"
+        ],
+        "title": "ResourceDescriptionTranslation"
+      },
+      "ResourceNodeCoverage": {
+        "properties": {
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "position": {
+            "type": "integer",
+            "title": "Position"
+          },
+          "covered": {
+            "type": "boolean",
+            "title": "Covered"
+          }
+        },
+        "type": "object",
+        "required": [
+          "label",
+          "position",
+          "covered"
+        ],
+        "title": "ResourceNodeCoverage"
       },
       "TextCreate": {
         "properties": {
@@ -6695,24 +6695,24 @@
             "type": "integer",
             "title": "Nodescount"
           },
-          "layersCount": {
+          "resourcesCount": {
             "type": "integer",
-            "title": "Layerscount"
+            "title": "Resourcescount"
           },
-          "layerTypes": {
+          "resourceTypes": {
             "additionalProperties": {
               "type": "integer"
             },
             "type": "object",
-            "title": "Layertypes"
+            "title": "Resourcetypes"
           }
         },
         "type": "object",
         "required": [
           "id",
           "nodesCount",
-          "layersCount",
-          "layerTypes"
+          "resourcesCount",
+          "resourceTypes"
         ],
         "title": "TextStats",
         "description": "Text statistics data"

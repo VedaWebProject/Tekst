@@ -33,13 +33,13 @@ const userOptions = computed(() => [
     icon: renderIcon(PersonFilled),
   },
   {
-    label: renderLink(() => $t('dataLayers.heading'), {
-      name: 'dataLayers',
+    label: renderLink(() => $t('resources.heading'), {
+      name: 'resources',
       params: {
         text: state.text?.slug || '',
       },
     }),
-    key: 'dataLayers',
+    key: 'resources',
     icon: renderIcon(LayersFilled),
   },
   ...(auth.user?.isSuperuser

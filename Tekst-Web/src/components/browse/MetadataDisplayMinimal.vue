@@ -5,7 +5,7 @@ import { prioritizedMetadataKeys, type Metadata } from '@/api';
 
 const props = defineProps<{
   data?: Metadata;
-  layerType?: string;
+  resourceType?: string;
 }>();
 
 const meta = computed<string>(() => {
@@ -17,7 +17,7 @@ const meta = computed<string>(() => {
     v && m.push(v);
   });
 
-  props.layerType && m.push($t(`layerTypes.${props.layerType}`));
+  props.resourceType && m.push($t(`resourceTypes.${props.resourceType}`));
   return m.join(', ');
 });
 </script>

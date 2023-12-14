@@ -77,8 +77,8 @@ routes:
     help: Help
     login: Login
     register: Register
-    dataLayers: Data Layers on "{text}"
-    dataLayerEdit: Edit data layer
+    resources: Resources on "{text}"
+    resourceEdit: Edit resource
     user: Profile of {username}
     accountProfile: Public Profile
     accountManage: Account
@@ -95,7 +95,7 @@ routes:
     siteNotice: '@:admin.system.segments.systemKeys.systemSiteNotice'
     privacyPolicy: '@:admin.system.segments.systemKeys.systemPrivacyPolicy'
 
-layerTypes:
+resourceTypes:
   plaintext: Plaintext
 
 browse:
@@ -107,25 +107,25 @@ browse:
     tipPreviousLocation: Previous location on this level
     tipNextLocation: Next location on this level
     tipReducedView: Toggle reduced reading view
-    tipOpenDataLayerList: Select data layers to display
-  layerToggleDrawer:
-    heading: Show Data Layers
+    tipOpenResourceList: Select resources to display
+  resourceToggleDrawer:
+    heading: Show Resources
   uncategorized: Uncategorized
-  locationLayerNoData: No data for this location
+  locationResourceNoData: No data for this location
   textNoNodes: This text's setup seems incomplete. There are no structure nodes defined.
-  locationNoData: The selected data layers contain no data for this text level and location. Try choosing a different location or activating more data layers.
+  locationNoData: The selected resources contain no data for this text level and location. Try choosing a different location or activating more resources.
   units:
     widgets:
       deepLTranslate:
         title: Open DeepL translation
       infoWidget:
-        title: Show information on this data layer
+        title: Show information on this resource
         citeAs: Cite as
         coverage: Coverage
         coverageStatement: '{present} of {total} nodes on level "{level}".'
       deactivateWidget:
-        title: Hide this data layer
-        message: The data layer "{layerTitle}" has been hidden. You can activate it again using the data layer selection tool to the right side of the toolbar.
+        title: Hide this resource
+        message: The resource "{resourceTitle}" has been hidden. You can activate it again using the resource selection tool to the right side of the toolbar.
       siblingsWidget:
         title: Open merged view with all data of the parent location
 
@@ -193,12 +193,12 @@ models:
   node:
     modelLabel: Structure node | Structure nodes
     label: Label
-  layer:
-    modelLabel: Data layer | Data layers
+  resource:
+    modelLabel: Resource | Resources
     title: Title
     description: Description
     level: Level
-    layerType: Datalayer Type
+    resourceType: Resource Type
     category: Category
     public: public
     proposed: proposed for publication
@@ -215,7 +215,7 @@ models:
     author: Author
     year: Year
     language: Language
-    layerType: '@:models.layer.layerType'
+    resourceType: '@:models.resource.resourceType'
     onLevel: on level "{level}"
     key: Metadata key
     value: Metadata value
@@ -231,10 +231,10 @@ models:
     alwaysShowTextInfo: Show text info and selector in header even on non-text-specific pages
     showHeaderInfo: Show platform subtitle in header
     showFooterInfo: Show platform title and subtitle in footer
-    layerCategories: Data layer categories
-    layerCategoryKey: Key
-    layerCategoryTranslation: Label
-    showLayerCategoryHeadings: Show data layer category headings in browse view
+    resourceCategories: Resource categories
+    resourceCategoryKey: Key
+    resourceCategoryTranslation: Label
+    showResourceCategoryHeadings: Show resource category headings in browse view
   segment:
     modelLabel: Segment
     key: Key
@@ -245,47 +245,47 @@ models:
       keyChars: 'Allowed characters: a-z, A-Z, 0-9, -, _'
       systemPrefixReserved: Key prefix "system" is reserved for system site segments
 
-dataLayers:
-  heading: Data Layers
+resources:
+  heading: Resources
   headingGeneral: General
   ownedByMe: by me
   ownedByOthers: by others
-  public: '@:models.layer.public'
-  notPublic: '@:general.not @:models.layer.public'
-  proposed: '@:models.layer.proposed'
-  notProposed: '@:general.not @:models.layer.proposed'
+  public: '@:models.resource.public'
+  notPublic: '@:general.not @:models.resource.public'
+  proposed: '@:models.resource.proposed'
+  notProposed: '@:general.not @:models.resource.proposed'
   proposeAction: Propose for publication
   unproposeAction: Withdraw publication proposal
   publishAction: Publish
   unpublishAction: Withdraw publication
   warnPropose: |
-    You are about to propose your data layer for publication. It's very important that
+    You are about to propose your resource for publication. It's very important that
     you understand the implications of a publication proposal.
   warnUnpropose: |
-    Are you sure you want to withdraw your publication proposal for this data layer?
+    Are you sure you want to withdraw your publication proposal for this resource?
   warnPublish: |
-    You are about to publish this data layer to the public (non-registered users).
-    It's very important that you understand the implications of publishing data layers.
+    You are about to publish this resource to the public (non-registered users).
+    It's very important that you understand the implications of publishing resources.
   warnUnpublish: |
-    Are you sure you want to withdraw the publication of this data layer?
+    Are you sure you want to withdraw the publication of this resource?
   warnDelete: |
-    Are you sure you want to delete this data layer and all data associated with it?
-  msgProposed: The data layer "{title}" has been proposed for publication.
-  msgUnproposed: The publication proposal for the data layer "{title}" has been withdrawn.
-  msgPublished: The data layer "{title}" has been published.
-  msgUnpublished: The publication of the data layer "{title}" has been withdrawn.
-  msgDeleted: The data layer "{title}" has been deleted.
+    Are you sure you want to delete this resource and all data associated with it?
+  msgProposed: The resource "{title}" has been proposed for publication.
+  msgUnproposed: The publication proposal for the resource "{title}" has been withdrawn.
+  msgPublished: The resource "{title}" has been published.
+  msgUnpublished: The publication of the resource "{title}" has been withdrawn.
+  msgDeleted: The resource "{title}" has been deleted.
   phSearchUsers: Search for users...
   edit:
-    heading: Edit data layer
-    backToOverview: Back to data layers overview
-    onlyForUnpublished: Only for unpublished data layers!
-    msgSaved: Your changes to the data layer "{title}" have been saved.
+    heading: Edit resource
+    backToOverview: Back to resources overview
+    onlyForUnpublished: Only for unpublished resources!
+    msgSaved: Your changes to the resource "{title}" have been saved.
     status: Status
   create:
-    heading: New data layer on "{text}"
+    heading: New resource on "{text}"
     warnImmutable: These settings cannot be changed later!
-    msgSaved: Your new data layer "{title}" has been created.
+    msgSaved: Your new resource "{title}" has been created.
   config:
     headingConfig: Configuration
     status: Status
@@ -352,7 +352,7 @@ admin:
   statistics:
     heading: Statistics
     globalHeading: Global
-    layerTypesHeading: Datalayer Types
+    resourceTypesHeading: Resource Types
     textsHeading: Texts
   users:
     heading: Users
@@ -395,7 +395,7 @@ admin:
       msgSaved: Text settings saved.
       warnDeleteText: |
         Deleting this text ("{title}") will delete all data associated with it,
-        including its configured structure and all data layers, regardless of the
+        including its configured structure and all resources, regardless of the
         user who created it. Are you sure?
       msgDeleted: Text "{title}" deleted
     levels:
@@ -415,7 +415,7 @@ admin:
         before performing this operation.
       warnDeleteLevel: |
         Deleting a text level has far-reaching consequences: All data associated
-        with this text level will be deleted with it. This includes all (!) data layers
+        with this text level will be deleted with it. This includes all (!) resources
         on this level, regardless of the user who created it!
         The application will try its best to re-connect adjacent levels,
         but you will have to adjust the result to your needs using the text's
@@ -445,7 +445,7 @@ admin:
         database before making any changes, here.
       warnDeleteNode: |
         If you delete this node, all data associated with it or its child nodes will
-        be deleted with it. This can potentially affect all data layers,
+        be deleted with it. This can potentially affect all resources,
         even ones created by other users. If what you want to do can be achieved by
         merely moving the node within the structure level it is on, you should do
         so instead, as moving nodes works without deleting any data.

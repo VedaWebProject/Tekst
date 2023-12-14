@@ -160,8 +160,10 @@ class ModelFactoryMixin:
         return cls._update_model
 
 
-class LayerConfigBase(ModelBase):
+class ResourceConfigBase(ModelBase):
     show_on_parent_level: Annotated[
         bool,
-        Field(description="Show combined contents of this layer on the parent level"),
+        Field(
+            description="Show combined contents of this resource on the parent level"
+        ),
     ] = False

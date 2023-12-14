@@ -20,8 +20,8 @@ from tekst.auth import OptionalUserDep, SuperuserDep
 from tekst.dependencies import get_temp_dir
 from tekst.models.common import Translations
 from tekst.models.exchange import NodeDefinition, TextStructureDefinition
-from tekst.models.layer import LayerBaseDocument
 from tekst.models.node import NodeDocument
+from tekst.models.resource import ResourceBaseDocument
 from tekst.models.text import (
     TextCreate,
     TextDocument,
@@ -263,12 +263,12 @@ async def insert_level(
         text_doc.default_level += 1
     await text_doc.save()
 
-    # update all existing layers with level >= index
-    await LayerBaseDocument.find(
-        LayerBaseDocument.text_id == text_id,
-        LayerBaseDocument.level >= index,
+    # update all existing resources with level >= index
+    await ResourceBaseDocument.find(
+        ResourceBaseDocument.text_id == text_id,
+        ResourceBaseDocument.level >= index,
         with_children=True,
-    ).inc({LayerBaseDocument.level: 1})
+    ).inc({ResourceBaseDocument.level: 1})
 
     # update all existing nodes with level >= index
     await NodeDocument.find(
@@ -387,19 +387,19 @@ async def delete_level(
                 target_child.parent_id = target_level_node.parent_id
                 await target_child.save()
 
-    # delete all existing layers with level == index
-    await LayerBaseDocument.find(
-        LayerBaseDocument.text_id == text_id,
-        LayerBaseDocument.level == index,
+    # delete all existing resources with level == index
+    await ResourceBaseDocument.find(
+        ResourceBaseDocument.text_id == text_id,
+        ResourceBaseDocument.level == index,
         with_children=True,
     ).delete()
 
-    # update all existing layers with level > index
-    await LayerBaseDocument.find(
-        LayerBaseDocument.text_id == text_id,
-        LayerBaseDocument.level > index,
+    # update all existing resources with level > index
+    await ResourceBaseDocument.find(
+        ResourceBaseDocument.text_id == text_id,
+        ResourceBaseDocument.level > index,
         with_children=True,
-    ).inc({LayerBaseDocument.level: -1})
+    ).inc({ResourceBaseDocument.level: -1})
 
     # delete all existing nodes with level == index
     await NodeDocument.find(
@@ -409,7 +409,7 @@ async def delete_level(
     # update all existing nodes with level >= index
     await NodeDocument.find(
         NodeDocument.text_id == text_id, NodeDocument.level >= index
-    ).inc({LayerBaseDocument.level: -1})
+    ).inc({ResourceBaseDocument.level: -1})
 
     # update text itself
     text_doc.levels.pop(index)
@@ -448,18 +448,18 @@ async def delete_text(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Cannot delete the only text",
         )
-    # get data layers associated with target text
-    layers = await LayerBaseDocument.find(
-        LayerBaseDocument.text_id == text_id, with_children=True
+    # get resources associated with target text
+    resources = await ResourceBaseDocument.find(
+        ResourceBaseDocument.text_id == text_id, with_children=True
     ).to_list()
-    # delete data units of all layers associated with target text
+    # delete data units of all resources associated with target text
     await UnitBaseDocument.find(
-        In(UnitBaseDocument.layer_id, [layer.id for layer in layers]),
+        In(UnitBaseDocument.resource_id, [resource.id for resource in resources]),
         with_children=True,
     ).delete_many()
-    # delete data layers associated with target text
-    await LayerBaseDocument.find(
-        LayerBaseDocument.text_id == text_id, with_children=True
+    # delete resources associated with target text
+    await ResourceBaseDocument.find(
+        ResourceBaseDocument.text_id == text_id, with_children=True
     ).delete_many()
     # delete structure nodes associated with target text
     await NodeDocument.find(

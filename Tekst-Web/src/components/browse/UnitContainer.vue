@@ -10,11 +10,11 @@ import unitComponents from '@/components/browse/units/mappings';
 
 import FolderOffOutlined from '@vicons/material/FolderOffOutlined';
 import type { CSSProperties } from 'vue';
-import type { AnyLayerRead } from '@/api';
+import type { AnyResourceRead } from '@/api';
 
 const props = defineProps<{
   loading?: boolean;
-  layer: AnyLayerRead;
+  resource: AnyResourceRead;
 }>();
 
 const browse = useBrowseStore();
@@ -24,10 +24,10 @@ const unitContainerRef = ref();
 const isUnitContainerHovered = useElementHover(unitContainerRef, { delayEnter: 0, delayLeave: 0 });
 
 const headerExtraText = computed(() => {
-  if (!browse.loadingLayers && props.layer.level !== browse.level) {
-    const level = state.textLevelLabels[props.layer.level];
+  if (!browse.loadingResources && props.resource.level !== browse.level) {
+    const level = state.textLevelLabels[props.resource.level];
     return level
-      ? `(${$t('browse.location.level')}: ${state.textLevelLabels[props.layer.level]})`
+      ? `(${$t('browse.location.level')}: ${state.textLevelLabels[props.resource.level]})`
       : '';
   } else {
     return '';
@@ -35,7 +35,7 @@ const headerExtraText = computed(() => {
 });
 
 const unitContainerTitle = computed(() =>
-  !props.layer.units?.length ? $t('browse.locationLayerNoData') : undefined
+  !props.resource.units?.length ? $t('browse.locationResourceNoData') : undefined
 );
 const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
   opacity: isUnitContainerHovered.value || state.isTouchDevice ? 1 : browse.reducedView ? 0 : 0.2,
@@ -44,29 +44,29 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
 
 <template>
   <div
-    v-if="layer.active && (layer.units?.length || !browse.reducedView)"
+    v-if="resource.active && (resource.units?.length || !browse.reducedView)"
     ref="unitContainerRef"
     class="content-block unit-container"
-    :class="{ reduced: browse.reducedView, empty: !layer.units?.length }"
+    :class="{ reduced: browse.reducedView, empty: !resource.units?.length }"
     :title="unitContainerTitle"
   >
     <div class="unit-header" :class="browse.reducedView ? 'reduced' : ''">
-      <n-icon v-if="!layer.units?.length" :component="FolderOffOutlined" />
+      <n-icon v-if="!resource.units?.length" :component="FolderOffOutlined" />
       <div class="unit-header-title-container">
         <div class="unit-header-title" :class="browse.reducedView ? 'reduced' : ''">
-          {{ layer.title }}
+          {{ resource.title }}
         </div>
         <div class="unit-header-title-extra">
           {{ headerExtraText }}
         </div>
       </div>
-      <UnitHeaderWidgetBar :layer="layer" :style="headerWidgetsVisibilityStyle" />
+      <UnitHeaderWidgetBar :resource="resource" :style="headerWidgetsVisibilityStyle" />
     </div>
     <!-- unit-specific component (that displays the actual unit data) -->
     <component
-      :is="unitComponents[layer.layerType]"
-      v-if="layer.units?.length"
-      :layer="layer"
+      :is="unitComponents[resource.resourceType]"
+      v-if="resource.units?.length"
+      :resource="resource"
       :reduced="browse.reducedView"
     />
     <Transition>

@@ -12,24 +12,24 @@ async def test_create_unit(
     register_test_user,
     get_session_cookie,
 ):
-    text_id = (await insert_sample_data("texts", "nodes", "layers"))["texts"][0]
+    text_id = (await insert_sample_data("texts", "nodes", "resources"))["texts"][0]
     user_data = await register_test_user()
     session_cookie = await get_session_cookie(user_data)
 
-    # create new layer (because only owner can update(write))
+    # create new resource (because only owner can update(write))
     payload = {
         "title": "Foo Bar Baz",
         "textId": text_id,
         "level": 0,
-        "layerType": "plaintext",
+        "resourceType": "plaintext",
         "ownerId": user_data.get("id"),
     }
-    resp = await test_client.post("/layers", json=payload, cookies=session_cookie)
+    resp = await test_client.post("/resources", json=payload, cookies=session_cookie)
     assert resp.status_code == 201, status_fail_msg(201, resp)
-    layer_data = resp.json()
-    assert "id" in layer_data
-    assert "ownerId" in layer_data
-    assert layer_data["ownerId"] == user_data["id"]
+    resource_data = resp.json()
+    assert "id" in resource_data
+    assert "ownerId" in resource_data
+    assert resource_data["ownerId"] == user_data["id"]
 
     # get ID of existing test node
     resp = await test_client.get(
@@ -41,10 +41,10 @@ async def test_create_unit(
     assert "id" in resp.json()[0]
     node_id = resp.json()[0]["id"]
 
-    # create plaintext layer unit
+    # create plaintext resource unit
     payload = {
-        "layerId": layer_data["id"],
-        "layerType": "plaintext",
+        "resourceId": resource_data["id"],
+        "resourceType": "plaintext",
         "nodeId": node_id,
         "text": "Ein Raabe geht im Feld spazieren.",
         "comment": "This is a comment",
@@ -78,7 +78,7 @@ async def test_create_unit(
     # update unit
     resp = await test_client.patch(
         f"/units/{unit_id}",
-        json={"layerType": "plaintext", "text": "FOO BAR"},
+        json={"resourceType": "plaintext", "text": "FOO BAR"},
         cookies=session_cookie,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
@@ -90,7 +90,7 @@ async def test_create_unit(
     # fail to update unit with invalid ID
     resp = await test_client.patch(
         "/units/637b9ad396d541a505e5439b",
-        json={"layerType": "plaintext", "text": "FOO BAR"},
+        json={"resourceType": "plaintext", "text": "FOO BAR"},
         cookies=session_cookie,
     )
     assert resp.status_code == 400, status_fail_msg(400, resp)

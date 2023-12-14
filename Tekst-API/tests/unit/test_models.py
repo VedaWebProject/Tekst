@@ -62,26 +62,26 @@ def test_model_field_casing(test_app):
     assert t.loc_delim == "bar"
 
 
-def test_layer_description_validator(test_app):
+def test_resource_description_validator(test_app):
     # desc with arbitrary whitespaces
-    from tekst.layer_types.plaintext import PlaintextLayer
+    from tekst.resource_types.plaintext import PlaintextResource
 
-    layer = PlaintextLayer(
+    resource = PlaintextResource(
         title="foo",
         text_id="5eb7cfb05e32e07750a1756a",
         level=0,
-        layer_type="plaintext",
+        resource_type="plaintext",
         description=[
             {"locale": "enUS", "translation": "foo      bar\t\t   baz\n \ttest"}
         ],
     )
-    assert layer.description[0]["translation"] == "foo bar baz test"
+    assert resource.description[0]["translation"] == "foo bar baz test"
     # desc = None
-    layer = PlaintextLayer(
+    resource = PlaintextResource(
         title="foo",
         text_id="5eb7cfb05e32e07750a1756a",
         level=0,
-        layer_type="plaintext",
+        resource_type="plaintext",
     )
-    assert isinstance(layer.description, list)
-    assert len(layer.description) == 0
+    assert isinstance(resource.description, list)
+    assert len(resource.description) == 0

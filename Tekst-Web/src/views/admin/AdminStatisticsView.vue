@@ -19,16 +19,16 @@ const counts = computed(() => ({
   users: stats.value?.usersCount,
   texts: stats.value?.texts.length,
   nodes: stats.value?.texts.map((t) => t.nodesCount).reduce((total, current) => total + current, 0),
-  layers: stats.value?.texts
-    .map((t) => t.layersCount)
+  resources: stats.value?.texts
+    .map((t) => t.resourcesCount)
     .reduce((total, current) => total + current, 0),
 }));
 
-const layerTypes = computed(() => {
+const resourceTypes = computed(() => {
   const types: Record<string, number> = {};
   stats.value?.texts.forEach((t) => {
-    Object.keys(t.layerTypes).forEach((lt) => {
-      types[lt] = lt in types ? types[lt] + t.layerTypes[lt] : t.layerTypes[lt];
+    Object.keys(t.resourceTypes).forEach((lt) => {
+      types[lt] = lt in types ? types[lt] + t.resourceTypes[lt] : t.resourceTypes[lt];
     });
   });
   return types;
@@ -69,7 +69,7 @@ const layerTypes = computed(() => {
           </template>
         </n-statistic>
 
-        <n-statistic :label="$t('models.layer.modelLabel', 2)" :value="counts.layers">
+        <n-statistic :label="$t('models.resource.modelLabel', 2)" :value="counts.resources">
           <template #prefix>
             <n-icon>
               <LayersFilled />
@@ -78,12 +78,16 @@ const layerTypes = computed(() => {
         </n-statistic>
       </div>
 
-      <h3>{{ $t('admin.statistics.layerTypesHeading') }}</h3>
-      <div v-for="(count, layerType) in layerTypes" :key="layerType" style="margin: 12px 0">
-        <div>{{ $t(`layerTypes.${layerType}`) }}: {{ count }}</div>
+      <h3>{{ $t('admin.statistics.resourceTypesHeading') }}</h3>
+      <div
+        v-for="(count, resourceType) in resourceTypes"
+        :key="resourceType"
+        style="margin: 12px 0"
+      >
+        <div>{{ $t(`resourceTypes.${resourceType}`) }}: {{ count }}</div>
         <n-progress
           type="line"
-          :percentage="(count / (counts.layers || 1)) * 100"
+          :percentage="(count / (counts.resources || 1)) * 100"
           :height="18"
           :border-radius="4"
           indicator-placement="inside"
@@ -108,7 +112,7 @@ const layerTypes = computed(() => {
             </template>
           </n-statistic>
 
-          <n-statistic :label="$t('models.layer.modelLabel', 2)" :value="text.layersCount">
+          <n-statistic :label="$t('models.resource.modelLabel', 2)" :value="text.resourcesCount">
             <template #prefix>
               <n-icon>
                 <LayersFilled />
@@ -117,12 +121,16 @@ const layerTypes = computed(() => {
           </n-statistic>
         </div>
 
-        <h4>{{ $t('admin.statistics.layerTypesHeading') }}</h4>
-        <div v-for="(count, layerType) in text.layerTypes" :key="layerType" style="margin: 12px 0">
-          <div>{{ $t(`layerTypes.${layerType}`) }}: {{ count }}</div>
+        <h4>{{ $t('admin.statistics.resourceTypesHeading') }}</h4>
+        <div
+          v-for="(count, resourceType) in text.resourceTypes"
+          :key="resourceType"
+          style="margin: 12px 0"
+        >
+          <div>{{ $t(`resourceTypes.${resourceType}`) }}: {{ count }}</div>
           <n-progress
             type="line"
-            :percentage="(count / (text.layersCount || 1)) * 100"
+            :percentage="(count / (text.resourcesCount || 1)) * 100"
             :height="18"
             :border-radius="4"
             indicator-placement="inside"

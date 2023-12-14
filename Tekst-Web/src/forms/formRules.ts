@@ -1,6 +1,6 @@
 import type { FormItemRule } from 'naive-ui';
 import { $t } from '@/i18n';
-import { layerTypes } from '@/api';
+import { resourceTypes } from '@/api';
 
 export const translationFormRules: Record<string, FormItemRule[]> = {
   locale: [
@@ -368,12 +368,12 @@ export const platformSettingsFormRules: Record<string, FormItemRule[]> = {
       trigger: 'blur',
     },
   ],
-  layerCategoryKey: [
+  resourceCategoryKey: [
     {
       required: true,
       message: () =>
         $t('forms.rulesFeedback.isRequired', {
-          x: $t('models.platformSettings.layerCategoryKey'),
+          x: $t('models.platformSettings.resourceCategoryKey'),
         }),
       trigger: 'blur',
     },
@@ -384,12 +384,12 @@ export const platformSettingsFormRules: Record<string, FormItemRule[]> = {
       trigger: 'blur',
     },
   ],
-  layerCategoryTranslation: [
+  resourceCategoryTranslation: [
     {
       required: true,
       message: () =>
         $t('forms.rulesFeedback.isRequired', {
-          x: $t('models.platformSettings.layerCategoryTranslation'),
+          x: $t('models.platformSettings.resourceCategoryTranslation'),
         }),
       trigger: 'blur',
     },
@@ -402,13 +402,13 @@ export const platformSettingsFormRules: Record<string, FormItemRule[]> = {
   ],
 };
 
-export const layerFormRules: Record<string, FormItemRule[]> = {
+export const resourceFormRules: Record<string, FormItemRule[]> = {
   title: [
     {
       required: true,
       message: () =>
         $t('forms.rulesFeedback.isRequired', {
-          x: $t('models.layer.title'),
+          x: $t('models.resource.title'),
         }),
       trigger: 'blur',
     },
@@ -422,7 +422,7 @@ export const layerFormRules: Record<string, FormItemRule[]> = {
   descriptionTranslation: [
     {
       required: true,
-      message: () => $t('forms.rulesFeedback.isRequired', { x: $t('models.layer.description') }),
+      message: () => $t('forms.rulesFeedback.isRequired', { x: $t('models.resource.description') }),
       trigger: 'blur',
     },
     {
@@ -480,21 +480,21 @@ export const layerFormRules: Record<string, FormItemRule[]> = {
       trigger: 'blur',
     },
   ],
-  layerType: [
+  resourceType: [
     {
       required: true,
       message: () =>
         $t('forms.rulesFeedback.isRequired', {
-          x: $t('models.layer.layerType'),
+          x: $t('models.resource.resourceType'),
         }),
       trigger: 'blur',
     },
     {
-      validator: (rule: FormItemRule, value: string) => !!value && layerTypes.includes(value),
+      validator: (rule: FormItemRule, value: string) => !!value && resourceTypes.includes(value),
       message: () =>
         $t('forms.rulesFeedback.mustBeOneOf', {
-          x: $t('models.layer.layerType'),
-          values: layerTypes.join(', '),
+          x: $t('models.resource.resourceType'),
+          values: resourceTypes.join(', '),
         }),
       trigger: 'blur',
     },
@@ -505,7 +505,7 @@ export const layerFormRules: Record<string, FormItemRule[]> = {
       type: 'number',
       message: () =>
         $t('forms.rulesFeedback.isRequired', {
-          x: $t('models.layer.level'),
+          x: $t('models.resource.level'),
         }),
       trigger: 'blur',
     },

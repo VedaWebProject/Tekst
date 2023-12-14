@@ -13,13 +13,13 @@ const DEEPL_TRANSLATOR_URL = 'https://www.deepl.com/translator';
 
 const props = defineProps<{
   widgetConfig: DeepLLinksConfig;
-  layer: Record<string, any>;
+  resource: Record<string, any>;
 }>();
 
 const state = useStateStore();
 
 const unitsTextEncoded = computed<string>(() => {
-  const unitsText = props.layer.units
+  const unitsText = props.resource.units
     .map((u: Record<string, any>) => u.text as string)
     .join('\n')
     .trim();

@@ -212,11 +212,11 @@ function resetForm() {
     </div>
 
     <div class="content-block">
-      <h3>{{ $t('models.platformSettings.layerCategories') }}</h3>
-      <!-- LAYER CATEGORIES-->
-      <n-form-item v-if="formModel.layerCategories" :show-label="false">
+      <h3>{{ $t('models.platformSettings.resourceCategories') }}</h3>
+      <!-- RESOURCE CATEGORIES-->
+      <n-form-item v-if="formModel.resourceCategories" :show-label="false">
         <n-dynamic-input
-          v-model:value="formModel.layerCategories"
+          v-model:value="formModel.resourceCategories"
           item-style="margin-bottom: 0;"
           show-sort-button
           :min="0"
@@ -227,25 +227,25 @@ function resetForm() {
             <div style="display: flex; align-items: flex-start; gap: 12px; width: 100%">
               <n-form-item
                 ignore-path-change
-                :label="$t('models.platformSettings.layerCategoryKey')"
-                :path="`layerCategories[${index}].key`"
-                :rule="platformSettingsFormRules.layerCategoryKey"
+                :label="$t('models.platformSettings.resourceCategoryKey')"
+                :path="`resourceCategories[${index}].key`"
+                :rule="platformSettingsFormRules.resourceCategoryKey"
                 required
               >
                 <n-input
-                  v-model:value="formModel.layerCategories[index].key"
-                  :placeholder="$t('models.platformSettings.layerCategoryKey')"
+                  v-model:value="formModel.resourceCategories[index].key"
+                  :placeholder="$t('models.platformSettings.resourceCategoryKey')"
                   @keydown.enter.prevent
                 />
               </n-form-item>
               <TranslationFormItem
-                v-model:value="formModel.layerCategories[index].translations"
-                :parent-form-path-prefix="`layerCategories[${index}].translations`"
+                v-model:value="formModel.resourceCategories[index].translations"
+                :parent-form-path-prefix="`resourceCategories[${index}].translations`"
                 required
                 style="flex-grow: 2; padding: 0 var(--layout-gap)"
-                :main-form-label="$t('models.platformSettings.layerCategoryTranslation')"
-                :translation-form-label="$t('models.platformSettings.layerCategoryTranslation')"
-                :translation-form-rule="platformSettingsFormRules.layerCategoryTranslation"
+                :main-form-label="$t('models.platformSettings.resourceCategoryTranslation')"
+                :translation-form-label="$t('models.platformSettings.resourceCategoryTranslation')"
+                :translation-form-rule="platformSettingsFormRules.resourceCategoryTranslation"
               />
             </div>
           </template>
@@ -266,7 +266,7 @@ function resetForm() {
                 type="primary"
                 secondary
                 :title="$t('general.insertAction')"
-                :disabled="(formModel.layerCategories?.length || 0) >= 64"
+                :disabled="(formModel.resourceCategories?.length || 0) >= 64"
                 :focusable="false"
                 @click="() => create(indexAction)"
               >
@@ -290,7 +290,7 @@ function resetForm() {
                 type="primary"
                 secondary
                 :title="$t('general.moveDownAction')"
-                :disabled="indexAction === formModel.layerCategories?.length - 1"
+                :disabled="indexAction === formModel.resourceCategories?.length - 1"
                 :focusable="false"
                 @click="() => move('down', indexAction)"
               >
@@ -302,14 +302,14 @@ function resetForm() {
           </template>
         </n-dynamic-input>
       </n-form-item>
-      <!-- SHOW LAYER CATEGORY HEADINGS -->
+      <!-- SHOW RESOURCE CATEGORY HEADINGS -->
       <n-form-item :show-label="false">
         <n-checkbox
-          v-model:checked="formModel.showLayerCategoryHeadings"
+          v-model:checked="formModel.showResourceCategoryHeadings"
           :round="false"
           @keydown.enter.prevent
         >
-          {{ $t('models.platformSettings.showLayerCategoryHeadings') }}
+          {{ $t('models.platformSettings.showResourceCategoryHeadings') }}
         </n-checkbox>
       </n-form-item>
     </div>

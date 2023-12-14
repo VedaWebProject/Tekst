@@ -2,13 +2,13 @@
 import type { StyleValue } from 'vue';
 import unitWidgets from '@/components/browse/widgets/mappings';
 import UnitSiblingsWidget from './widgets/UnitSiblingsWidget.vue';
-import LayerInfoWidget from './widgets/LayerInfoWidget.vue';
-import LayerDeactivateWidget from './widgets/LayerDeactivateWidget.vue';
+import ResourceInfoWidget from './widgets/ResourceInfoWidget.vue';
+import ResourceDeactivateWidget from './widgets/ResourceDeactivateWidget.vue';
 import { useBrowseStore } from '@/stores';
-import type { AnyLayerRead } from '@/api';
+import type { AnyResourceRead } from '@/api';
 
 interface Props {
-  layer: AnyLayerRead;
+  resource: AnyResourceRead;
   style?: StyleValue;
   showDeactivateWidget?: boolean;
   showSiblingsWidget?: boolean;
@@ -26,12 +26,15 @@ const browse = useBrowseStore();
 <template>
   <div class="unit-header-widgets" :style="style">
     <!-- config-specific widgets -->
-    <template v-if="layer.units?.length">
-      <template v-for="(configSection, configSectionKey) in layer.config" :key="configSectionKey">
+    <template v-if="resource.units?.length">
+      <template
+        v-for="(configSection, configSectionKey) in resource.config"
+        :key="configSectionKey"
+      >
         <component
           :is="unitWidgets[configSectionKey]"
           v-if="configSectionKey in unitWidgets"
-          :layer="layer"
+          :resource="resource"
           :widget-config="configSection"
         />
       </template>
@@ -40,13 +43,13 @@ const browse = useBrowseStore();
     <UnitSiblingsWidget
       v-if="
         showSiblingsWidget &&
-        layer.config?.showOnParentLevel &&
-        (browse.level == layer.level || browse.level == layer.level - 1)
+        resource.config?.showOnParentLevel &&
+        (browse.level == resource.level || browse.level == resource.level - 1)
       "
-      :layer="layer"
+      :resource="resource"
     />
-    <LayerInfoWidget :layer="layer" />
-    <LayerDeactivateWidget v-if="showDeactivateWidget ?? true" :layer="layer" />
+    <ResourceInfoWidget :resource="resource" />
+    <ResourceDeactivateWidget v-if="showDeactivateWidget ?? true" :resource="resource" />
   </div>
 </template>
 

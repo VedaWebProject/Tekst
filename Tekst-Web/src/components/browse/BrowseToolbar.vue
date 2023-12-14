@@ -13,8 +13,8 @@ const state = useStateStore();
 const browse = useBrowseStore();
 
 const affixRef = ref(null);
-const layerDrawerBadgeLabel = computed(() =>
-  browse.layersCount ? browse.activeLayersCount + '/' + browse.layersCount : '...'
+const resourceDrawerBadgeLabel = computed(() =>
+  browse.resourcesCount ? browse.activeResourcesCount + '/' + browse.resourcesCount : '...'
 );
 
 onMounted(() => {
@@ -59,14 +59,14 @@ const btnColor = '#fff';
           </n-button>
         </n-badge>
 
-        <n-badge :value="layerDrawerBadgeLabel" color="var(--accent-color-inverted-pastel)">
+        <n-badge :value="resourceDrawerBadgeLabel" color="var(--accent-color-inverted-pastel)">
           <n-button
             size="large"
-            :title="$t('browse.toolbar.tipOpenDataLayerList')"
+            :title="$t('browse.toolbar.tipOpenResourceList')"
             :color="btnBgColor"
             :style="{ color: btnColor }"
             :focusable="false"
-            @click="browse.showLayerToggleDrawer = true"
+            @click="browse.showResourceToggleDrawer = true"
           >
             <template #icon>
               <LayersFilled />

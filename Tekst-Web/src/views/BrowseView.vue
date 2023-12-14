@@ -2,7 +2,7 @@
 import LocationLabel from '@/components/browse/LocationLabel.vue';
 import BrowseToolbar from '@/components/browse/BrowseToolbar.vue';
 import { useBrowseStore } from '@/stores';
-import LayerToggleDrawer from '@/components/browse/LayerToggleDrawer.vue';
+import ResourceToggleDrawer from '@/components/browse/ResourceToggleDrawer.vue';
 import UnitContainer from '@/components/browse/UnitContainer.vue';
 import HugeLabeledIcon from '@/components/HugeLabeledIcon.vue';
 import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
@@ -19,17 +19,17 @@ import { computed } from 'vue';
 const browse = useBrowseStore();
 const { pfData } = usePlatformData();
 
-const activeLayersCategorized = computed(() =>
-  browse.layersCategorized
+const activeResourcesCategorized = computed(() =>
+  browse.resourcesCategorized
     .map((c) => ({
       ...c,
-      layers: c.layers.filter(
+      resources: c.resources.filter(
         (l) =>
           l.active &&
           (l.level == browse.level || (l.config?.showOnParentLevel && l.level == browse.level + 1))
       ),
     }))
-    .filter((c) => c.layers.length)
+    .filter((c) => c.resources.length)
 );
 </script>
 
@@ -42,25 +42,25 @@ const activeLayersCategorized = computed(() =>
   <BrowseToolbar />
 
   <div
-    v-if="activeLayersCategorized.length"
+    v-if="activeResourcesCategorized.length"
     class="unit-container-container"
     :class="browse.reducedView ? 'reduced' : ''"
   >
-    <template v-for="category in activeLayersCategorized" :key="category.key">
+    <template v-for="category in activeResourcesCategorized" :key="category.key">
       <h2
         v-if="
-          pfData?.settings.showLayerCategoryHeadings &&
-          activeLayersCategorized.length > 1 &&
+          pfData?.settings.showResourceCategoryHeadings &&
+          activeResourcesCategorized.length > 1 &&
           !browse.reducedView
         "
       >
         {{ category.category.translation }}
       </h2>
       <UnitContainer
-        v-for="layer in category.layers"
-        :key="layer.id"
+        v-for="resource in category.resources"
+        :key="resource.id"
         :loading="browse.loading"
-        :layer="layer"
+        :resource="resource"
       />
     </template>
   </div>
@@ -79,7 +79,7 @@ const activeLayersCategorized = computed(() =>
 
   <HugeLabeledIcon v-else :message="$t('browse.locationNoData')" :icon="FolderOffTwotone" />
 
-  <LayerToggleDrawer v-model:show="browse.showLayerToggleDrawer" />
+  <ResourceToggleDrawer v-model:show="browse.showResourceToggleDrawer" />
 </template>
 
 <style scoped>

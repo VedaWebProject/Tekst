@@ -40,8 +40,8 @@ class TextStats(ModelBase):
 
     id: PydanticObjectId
     nodes_count: int
-    layers_count: int
-    layer_types: dict[str, int]
+    resources_count: int
+    resource_types: dict[str, int]
 
 
 class PlatformStats(ModelBase):

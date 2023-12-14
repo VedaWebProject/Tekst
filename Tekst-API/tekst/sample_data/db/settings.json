@@ -11,7 +11,7 @@
     "info_contact_url": null,
     "default_text_id": "654ba1f3ec7833e469dde765",
     "nav_info_entry": [],
-    "layer_categories": [
+    "resource_categories": [
       {
         "key": "versions",
         "translations": [
@@ -27,7 +27,7 @@
         ]
       }
     ],
-    "show_layer_category_headings": true,
+    "show_resource_category_headings": true,
     "always_show_text_info": true,
     "show_header_info": true,
     "show_footer_info": true,
