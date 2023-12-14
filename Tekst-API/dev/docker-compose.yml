@@ -36,6 +36,9 @@ services:
       - 127.0.0.1:8081:8081
     environment:
       ME_CONFIG_MONGODB_URL: mongodb://mongo:27017/
+      ME_CONFIG_BASICAUTH: false
+      ME_CONFIG_BASICAUTH_USERNAME: ''
+      ME_CONFIG_BASICAUTH_PASSWORD: ''
     networks:
       - devstack
     profiles:
