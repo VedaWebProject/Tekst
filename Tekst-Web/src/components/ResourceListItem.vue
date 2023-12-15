@@ -151,6 +151,12 @@ const actionButtonProps = {
 </template>
 
 <style>
+.resource-list-item:first-child {
+  padding-top: 0;
+}
+.resource-list-item:last-child {
+  padding-bottom: 0;
+}
 .resource-list-item .n-thing-header__title {
   color: var(--accent-color) !important;
 }

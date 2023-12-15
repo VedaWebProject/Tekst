@@ -201,6 +201,7 @@ models:
     level: Ebene
     resourceType: Datenschichttyp
     category: Kategorie
+    sortOrder: Sortierreihenfolge
     public: öffentlich
     proposed: vorgeschlagen für Veröffentlichung
     citation: Zitation

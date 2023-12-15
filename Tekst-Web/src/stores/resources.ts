@@ -28,14 +28,16 @@ export const useResourcesStore = defineStore('resources', () => {
     });
 
     if (!err) {
-      resources.value = data.map((l) => {
-        const existingResource = resources.value.find((lo) => lo.id === l.id);
-        return {
-          ...l,
-          active: !existingResource || existingResource.active,
-          units: existingResource?.units || [],
-        };
-      });
+      resources.value = data
+        .map((l) => {
+          const existingResource = resources.value.find((lo) => lo.id === l.id);
+          return {
+            ...l,
+            active: !existingResource || existingResource.active,
+            units: existingResource?.units || [],
+          };
+        })
+        .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0));
       error.value = false;
     } else {
       error.value = true;
@@ -44,11 +46,15 @@ export const useResourcesStore = defineStore('resources', () => {
   }
 
   function replace(resource: AnyResourceRead) {
-    resources.value = resources.value.map((l) => (l.id === resource.id ? resource : l));
+    resources.value = resources.value
+      .map((l) => (l.id === resource.id ? resource : l))
+      .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0));
   }
 
   function add(resource: AnyResourceRead) {
-    resources.value = resources.value.concat([resource]);
+    resources.value = resources.value
+      .concat([resource])
+      .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0));
   }
 
   // watch for events that trigger a reload of resources data

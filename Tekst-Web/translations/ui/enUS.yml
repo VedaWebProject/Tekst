@@ -200,6 +200,7 @@ models:
     level: Level
     resourceType: Resource Type
     category: Category
+    sortOrder: Sort order
     public: public
     proposed: proposed for publication
     citation: Citation

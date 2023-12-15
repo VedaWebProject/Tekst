@@ -535,6 +535,12 @@ export interface components {
        */
       sharedWrite?: string[];
       /**
+       * Sortorder
+       * @description Sort order for displaying this resource among others
+       * @default 100
+       */
+      sortOrder?: number;
+      /**
        * Public
        * @description Publication status of this resource
        * @default false
@@ -644,6 +650,12 @@ export interface components {
        */
       sharedWrite?: string[];
       /**
+       * Sortorder
+       * @description Sort order for displaying this resource among others
+       * @default 100
+       */
+      sortOrder?: number;
+      /**
        * Public
        * @description Publication status of this resource
        * @default false
@@ -721,6 +733,12 @@ export interface components {
        * @default []
        */
       sharedWrite?: string[];
+      /**
+       * Sortorder
+       * @description Sort order for displaying this resource among others
+       * @default 100
+       */
+      sortOrder?: number;
       /**
        * Public
        * @description Publication status of this resource
@@ -1118,6 +1136,12 @@ export interface components {
        */
       sharedWrite?: string[];
       /**
+       * Sortorder
+       * @description Sort order for displaying this resource among others
+       * @default 100
+       */
+      sortOrder?: number;
+      /**
        * Public
        * @description Publication status of this resource
        * @default false
@@ -1235,6 +1259,12 @@ export interface components {
        */
       sharedWrite?: string[];
       /**
+       * Sortorder
+       * @description Sort order for displaying this resource among others
+       * @default 100
+       */
+      sortOrder?: number;
+      /**
        * Public
        * @description Publication status of this resource
        * @default false
@@ -1320,6 +1350,12 @@ export interface components {
        * @default []
        */
       sharedWrite?: string[];
+      /**
+       * Sortorder
+       * @description Sort order for displaying this resource among others
+       * @default 100
+       */
+      sortOrder?: number;
       /**
        * Public
        * @description Publication status of this resource

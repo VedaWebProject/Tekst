@@ -19,6 +19,7 @@ import {
   NSelect,
   NSpace,
   NIcon,
+  NInputNumber,
   NDynamicInput,
   NFormItem,
   NTag,
@@ -143,16 +144,6 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
       :translation-form-rule="resourceFormRules.descriptionTranslation"
       @update:value="(v) => handleUpdate('description', v)"
     />
-    <!-- CATEGORY -->
-    <n-form-item :label="$t('models.resource.category')">
-      <n-select
-        :value="model.category"
-        clearable
-        :placeholder="$t('browse.uncategorized')"
-        :options="categoryOptions"
-        @update:value="(v) => handleUpdate('category', v)"
-      />
-    </n-form-item>
     <!-- CITATION -->
     <n-form-item path="citation" :label="$t('models.resource.citation')">
       <n-input
@@ -174,6 +165,25 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
       :translation-form-rule="resourceFormRules.commentTranslation"
       @update:value="(v) => handleUpdate('comment', v)"
     />
+    <!-- CATEGORY -->
+    <n-form-item :label="$t('models.resource.category')">
+      <n-select
+        :value="model.category"
+        clearable
+        :placeholder="$t('browse.uncategorized')"
+        :options="categoryOptions"
+        @update:value="(v) => handleUpdate('category', v)"
+      />
+    </n-form-item>
+    <!-- SORT ORDER -->
+    <n-form-item path="sortOrder" :label="$t('models.resource.sortOrder')">
+      <n-input-number
+        :min="0"
+        :value="model.sortOrder"
+        style="width: 100%"
+        @update:value="(v) => handleUpdate('sortOrder', v)"
+      />
+    </n-form-item>
   </div>
 
   <!-- METADATA -->

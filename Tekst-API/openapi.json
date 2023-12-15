@@ -4184,6 +4184,13 @@
             "description": "Users with shared write access to this resource",
             "default": []
           },
+          "sortOrder": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Sortorder",
+            "description": "Sort order for displaying this resource among others",
+            "default": 100
+          },
           "public": {
             "type": "boolean",
             "title": "Public",
@@ -4390,6 +4397,13 @@
             "description": "Users with shared write access to this resource",
             "default": []
           },
+          "sortOrder": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Sortorder",
+            "description": "Sort order for displaying this resource among others",
+            "default": 100
+          },
           "public": {
             "type": "boolean",
             "title": "Public",
@@ -4555,6 +4569,13 @@
             "title": "Sharedwrite",
             "description": "Users with shared write access to this resource",
             "default": []
+          },
+          "sortOrder": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Sortorder",
+            "description": "Sort order for displaying this resource among others",
+            "default": 100
           },
           "public": {
             "type": "boolean",
@@ -5285,6 +5306,13 @@
             "description": "Users with shared write access to this resource",
             "default": []
           },
+          "sortOrder": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Sortorder",
+            "description": "Sort order for displaying this resource among others",
+            "default": 100
+          },
           "public": {
             "type": "boolean",
             "title": "Public",
@@ -5499,6 +5527,13 @@
             "description": "Users with shared write access to this resource",
             "default": []
           },
+          "sortOrder": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Sortorder",
+            "description": "Sort order for displaying this resource among others",
+            "default": 100
+          },
           "public": {
             "type": "boolean",
             "title": "Public",
@@ -5672,6 +5707,13 @@
             "title": "Sharedwrite",
             "description": "Users with shared write access to this resource",
             "default": []
+          },
+          "sortOrder": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Sortorder",
+            "description": "Sort order for displaying this resource among others",
+            "default": 100
           },
           "public": {
             "type": "boolean",

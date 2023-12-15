@@ -77,6 +77,10 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
             description="Users with shared write access to this resource", max_length=64
         ),
     ] = []
+    sort_order: Annotated[
+        int,
+        Field(description="Sort order for displaying this resource among others", ge=0),
+    ] = 100
     public: Annotated[
         bool, Field(description="Publication status of this resource")
     ] = False
