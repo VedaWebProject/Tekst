@@ -48,6 +48,7 @@ def generate_schema(app: FastAPI, cfg: TekstConfig, settings: PlatformSettingsRe
             "name": cfg.tekst_license,
             "url": cfg.tekst_license_url,
         },
+        separate_input_output_schemas=False,
     )
     return process_openapi_schema(schema)
 

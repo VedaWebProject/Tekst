@@ -1587,7 +1587,7 @@ export interface components {
        * @description Resource categories to categorize resources in
        * @default []
        */
-      resourceCategories?: components['schemas']['ResourceCategory-Output'][];
+      resourceCategories?: components['schemas']['ResourceCategory'][];
       /**
        * Showresourcecategoryheadings
        * @description Show resource category headings in browse view
@@ -1669,7 +1669,7 @@ export interface components {
        * @description Resource categories to categorize resources in
        * @default []
        */
-      resourceCategories?: components['schemas']['ResourceCategory-Input'][];
+      resourceCategories?: components['schemas']['ResourceCategory'][];
       /**
        * Showresourcecategoryheadings
        * @description Show resource category headings in browse view
@@ -1706,14 +1706,7 @@ export interface components {
       texts: components['schemas']['TextStats'][];
     };
     /** ResourceCategory */
-    'ResourceCategory-Input': {
-      /** Key */
-      key: string;
-      /** Translations */
-      translations: components['schemas']['ResourceCategoryTranslation'][];
-    };
-    /** ResourceCategory */
-    'ResourceCategory-Output': {
+    ResourceCategory: {
       /** Key */
       key: string;
       /** Translations */

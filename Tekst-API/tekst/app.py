@@ -65,6 +65,7 @@ app = FastAPI(
     docs_url=_cfg.doc_swaggerui_url,
     redoc_url=_cfg.doc_redoc_url,
     lifespan=lifespan,
+    separate_input_output_schemas=False,
 )
 
 # add and configure CSRF middleware

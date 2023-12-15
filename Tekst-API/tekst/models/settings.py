@@ -88,7 +88,9 @@ class PlatformSettings(ModelBase, ModelFactoryMixin):
     ] = []
     resource_categories: Annotated[
         list[ResourceCategory],
-        Field(description="Resource categories to categorize resources in"),
+        Field(
+            description="Resource categories to categorize resources in", max_length=32
+        ),
     ] = []
     show_resource_category_headings: Annotated[
         bool, Field(description="Show resource category headings in browse view")

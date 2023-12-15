@@ -6082,7 +6082,10 @@
           "infoTerms": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "maxLength": 512,
+                "minLength": 1,
+                "format": "uri"
               },
               {
                 "type": "null"
@@ -6123,7 +6126,10 @@
           "infoContactUrl": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "maxLength": 512,
+                "minLength": 1,
+                "format": "uri"
               },
               {
                 "type": "null"
@@ -6157,9 +6163,10 @@
           },
           "resourceCategories": {
             "items": {
-              "$ref": "#/components/schemas/ResourceCategory-Output"
+              "$ref": "#/components/schemas/ResourceCategory"
             },
             "type": "array",
+            "maxItems": 32,
             "title": "Resourcecategories",
             "description": "Resource categories to categorize resources in",
             "default": []
@@ -6305,9 +6312,10 @@
           },
           "resourceCategories": {
             "items": {
-              "$ref": "#/components/schemas/ResourceCategory-Input"
+              "$ref": "#/components/schemas/ResourceCategory"
             },
             "type": "array",
+            "maxItems": 32,
             "title": "Resourcecategories",
             "description": "Resource categories to categorize resources in",
             "default": []
@@ -6362,31 +6370,7 @@
         "title": "PlatformStats",
         "description": "Platform statistics data"
       },
-      "ResourceCategory-Input": {
-        "properties": {
-          "key": {
-            "type": "string",
-            "maxLength": 16,
-            "minLength": 1,
-            "title": "Key"
-          },
-          "translations": {
-            "items": {
-              "$ref": "#/components/schemas/ResourceCategoryTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
-            "title": "Translations"
-          }
-        },
-        "type": "object",
-        "required": [
-          "key",
-          "translations"
-        ],
-        "title": "ResourceCategory"
-      },
-      "ResourceCategory-Output": {
+      "ResourceCategory": {
         "properties": {
           "key": {
             "type": "string",
