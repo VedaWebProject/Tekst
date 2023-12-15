@@ -6,7 +6,6 @@ import { i18n, setI18nLocale, localeProfiles, getAvaliableBrowserLocaleKey } fro
 import type { AvailableLocale } from '@/i18n';
 import { useRoute } from 'vue-router';
 import type { TextRead } from '@/api';
-import type { ThemeMode } from '@/theme';
 import { $t, $te } from '@/i18n';
 import { usePlatformData } from '@/platformData';
 import { useAuthStore } from './auth';
@@ -20,14 +19,6 @@ export const useStateStore = defineStore('state', () => {
   const auth = useAuthStore();
   const windowSize = useWindowSize();
   const { message } = useMessages();
-
-  // theme
-  const themeMode = ref<ThemeMode>((localStorage.getItem('theme') as ThemeMode) || 'light');
-  watch(themeMode, (after) => localStorage.setItem('theme', after));
-
-  function toggleThemeMode() {
-    themeMode.value = themeMode.value === 'light' ? 'dark' : 'light';
-  }
 
   // locale
 
@@ -108,21 +99,21 @@ export const useStateStore = defineStore('state', () => {
       ) || []
   );
 
-  // global loading state
+  // init loading state
 
-  const globalLoading = ref(false);
-  const globalLoadingMsg = ref('');
-  const globalLoadingProgress = ref(0);
-  const startGlobalLoading = () => {
-    globalLoading.value = true;
+  const initLoading = ref(false);
+  const initLoadingMsg = ref('');
+  const initLoadingProgress = ref(0);
+  const startInitLoading = () => {
+    initLoading.value = true;
   };
 
-  const finishGlobalLoading = async (delayMs: number = 0, resetLoadingDataDelayMs: number = 0) => {
+  const finishInitLoading = async (delayMs: number = 0, resetLoadingDataDelayMs: number = 0) => {
     await new Promise((resolve) => setTimeout(resolve, delayMs));
-    globalLoading.value = false;
+    initLoading.value = false;
     await new Promise((resolve) => setTimeout(resolve, resetLoadingDataDelayMs));
-    globalLoadingMsg.value = '...';
-    globalLoadingProgress.value = 0;
+    initLoadingMsg.value = '...';
+    initLoadingProgress.value = 0;
   };
 
   // responsiveness
@@ -153,17 +144,15 @@ export const useStateStore = defineStore('state', () => {
   }
 
   return {
-    globalLoading,
-    startGlobalLoading,
-    finishGlobalLoading,
-    globalLoadingMsg,
-    globalLoadingProgress,
+    initLoading,
+    startInitLoading,
+    finishInitLoading,
+    initLoadingMsg,
+    initLoadingProgress,
     smallScreen,
     dropdownSize,
     isTouchDevice,
     setPageTitle,
-    themeMode,
-    toggleThemeMode,
     locale,
     locales,
     text,

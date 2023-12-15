@@ -28,7 +28,7 @@ export function useInitializeApp() {
     {
       info: () => '',
       action: async () => {
-        state.startGlobalLoading();
+        state.startInitLoading();
         return true;
       },
     },
@@ -83,11 +83,11 @@ export function useInitializeApp() {
     },
     // finish global loading, end process
     {
-      info: () => $t('init.ready'),
+      info: () => '',
       action: async (success: boolean) => {
         initialized.value = true;
-        state.globalLoadingProgress = 1;
-        state.finishGlobalLoading(800, 200);
+        state.initLoadingProgress = 1;
+        state.finishInitLoading(800, 200);
         return success;
       },
     },
@@ -95,9 +95,9 @@ export function useInitializeApp() {
 
   const { result } = useAsyncQueue(
     initSteps.map((step: InitStep, i: number) => async (success: boolean) => {
-      state.globalLoadingMsg = step.info();
-      state.globalLoadingProgress = i / initSteps.length;
-      await new Promise((resolve) => setTimeout(resolve, 100)); // dev: delay each step
+      state.initLoadingMsg = step.info();
+      state.initLoadingProgress = i / initSteps.length;
+      await new Promise((resolve) => setTimeout(resolve, 200)); // dev: delay each step
       return step.action(success);
     })
   );

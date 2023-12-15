@@ -4,7 +4,7 @@ import { useAuthStore, useStateStore } from '@/stores';
 import { type RouteLocationRaw, RouterLink } from 'vue-router';
 import { NButton, NIcon, NDropdown } from 'naive-ui';
 import { $t } from '@/i18n';
-import { useTheme } from '@/theme';
+import { useThemeStore } from '@/theme';
 
 import LogInRound from '@vicons/material/LogInRound';
 import LogOutRound from '@vicons/material/LogOutRound';
@@ -14,7 +14,7 @@ import LayersFilled from '@vicons/material/LayersFilled';
 
 const auth = useAuthStore();
 const state = useStateStore();
-const { accentColors } = useTheme();
+const theme = useThemeStore();
 
 const tooltip = computed(() =>
   auth.loggedIn
@@ -111,7 +111,7 @@ function handleUserOptionSelect(key: string) {
       size="large"
       :title="tooltip"
       :focusable="false"
-      :color="accentColors.base"
+      :color="theme.accentColors.base"
       style="color: #fff"
       class="user-options-button"
     >

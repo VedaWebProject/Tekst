@@ -2,15 +2,15 @@
 import { NButton, NIcon } from 'naive-ui';
 import LightModeOutlined from '@vicons/material/LightModeOutlined';
 import DarkModeOutlined from '@vicons/material/DarkModeOutlined';
-import { useStateStore } from '@/stores';
 import { computed } from 'vue';
 import { $t } from '@/i18n';
+import { useThemeStore } from '@/theme';
 
-const state = useStateStore();
+const theme = useThemeStore();
 
-const icon = computed(() => (state.themeMode === 'dark' ? LightModeOutlined : DarkModeOutlined));
+const icon = computed(() => (theme.darkMode ? LightModeOutlined : DarkModeOutlined));
 const title = computed(() =>
-  state.themeMode === 'dark' ? $t('general.tipThemeToggleLight') : $t('general.tipThemeToggleDark')
+  theme.darkMode ? $t('general.tipThemeToggleLight') : $t('general.tipThemeToggleDark')
 );
 </script>
 
@@ -22,7 +22,7 @@ const title = computed(() =>
     icon-placement="left"
     :title="title"
     :focusable="false"
-    @click="state.toggleThemeMode"
+    @click="theme.toggleThemeMode"
   >
     <template #icon>
       <n-icon :component="icon" />

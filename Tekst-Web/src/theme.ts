@@ -1,9 +1,11 @@
 import type { GlobalThemeOverrides } from 'naive-ui';
 import _merge from 'lodash.merge';
 import Color from 'color';
-import { computed } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useStateStore } from '@/stores';
 import { lightTheme, darkTheme } from 'naive-ui';
+import { usePreferredDark } from '@vueuse/core';
+import { defineStore } from 'pinia';
 
 export declare type ThemeMode = 'light' | 'dark';
 
@@ -48,16 +50,24 @@ const darkOverrides: GlobalThemeOverrides = {
 _merge(lightOverrides, commonOverrides);
 _merge(darkOverrides, commonOverrides);
 
-export function useTheme() {
+export const useThemeStore = defineStore('theme', () => {
   const state = useStateStore();
-  const theme = computed(() => (state.themeMode === 'light' ? lightTheme : darkTheme));
-  const mainBgColor = computed(() => (state.themeMode === 'light' ? '#00000010' : '#ffffff10'));
-  const contentBgColor = computed(() => (state.themeMode === 'light' ? '#ffffffcc' : '#00000044'));
+  const browserDarkThemePreferred = usePreferredDark();
+  const darkMode = ref<boolean>(
+    (localStorage.getItem('theme') as ThemeMode) === 'dark' ||
+      browserDarkThemePreferred.value ||
+      false
+  );
+  watch(darkMode, (after) => localStorage.setItem('theme', after === true ? 'dark' : 'light'));
+  const toggleThemeMode = () => (darkMode.value = !darkMode.value);
+  const theme = computed(() => (darkMode.value ? darkTheme : lightTheme));
+  const mainBgColor = computed(() => (darkMode.value ? '#ffffff10' : '#00000010'));
+  const contentBgColor = computed(() => (darkMode.value ? '#00000044' : '#ffffffcc'));
 
   // current text accent color variants
   const accentColors = computed(() => {
-    const lighten = state.themeMode === 'dark' ? 0.25 : 0.0;
-    const baseStatic = Color(state.text ? state.text.accentColor : '#18A058');
+    const lighten = darkMode.value ? 0.25 : 0.0;
+    const baseStatic = Color(state.text ? state.text.accentColor : '#7A7A7A');
     const base = baseStatic.lighten(lighten);
     const inverted = baseStatic.negate().darken(0.1);
     return {
@@ -73,10 +83,9 @@ export function useTheme() {
     };
   });
 
-  const themeOverrides = computed(() => {
-    const mode = state.themeMode;
+  const overrides = computed(() => {
     const primaryColorHex = accentColors.value.base;
-    const baseOverrides = mode === 'light' ? lightOverrides : darkOverrides;
+    const baseOverrides = darkMode.value ? darkOverrides : lightOverrides;
     const primaryColor = Color(primaryColorHex);
     return {
       ...baseOverrides,
@@ -91,10 +100,12 @@ export function useTheme() {
   });
 
   return {
+    darkMode,
+    toggleThemeMode,
     theme,
-    themeOverrides,
+    overrides,
     mainBgColor,
     contentBgColor,
     accentColors,
   };
-}
+});
