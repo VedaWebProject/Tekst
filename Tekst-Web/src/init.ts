@@ -83,7 +83,7 @@ export function useInitializeApp() {
     },
     // finish global loading, end process
     {
-      info: () => '',
+      info: () => $t('init.ready'),
       action: async (success: boolean) => {
         initialized.value = true;
         state.initLoadingProgress = 1;

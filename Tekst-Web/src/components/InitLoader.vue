@@ -1,12 +1,8 @@
 <script setup lang="ts">
 import { useStateStore } from '@/stores';
-import { useLoadingBar, NIcon } from 'naive-ui';
+import { useLoadingBar } from 'naive-ui';
 import { computed, onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
-
-import HourglassTopTwotone from '@vicons/material/HourglassTopTwotone';
-import HourglassBottomTwotone from '@vicons/material/HourglassBottomTwotone';
-import DoneOutlined from '@vicons/material/DoneOutlined';
 
 const props = withDefaults(
   defineProps<{
@@ -37,16 +33,6 @@ const dynamicStyle = computed(() => ({
   backgroundColor: props.darkMode ? '#232323' : '#fff',
 }));
 
-const icon = computed(() => {
-  if (state.initLoadingProgress < 0.5) {
-    return HourglassTopTwotone;
-  } else if (state.initLoadingProgress < 0.999) {
-    return HourglassBottomTwotone;
-  } else {
-    return DoneOutlined;
-  }
-});
-
 // hook in loading bar
 onBeforeMount(() => {
   router.beforeEach(() => {
@@ -65,8 +51,12 @@ onBeforeMount(() => {
   <Transition name="fade">
     <div v-if="props.show" class="global-loader-container">
       <div class="global-loader" :style="dynamicStyle">
-        <n-icon :component="icon" />
-        <div class="global-loader-text">{{ props.text }}</div>
+        <div
+          class="global-loader-text"
+          :style="{ visibility: state.initLoadingProgress < 1 ? 'visible' : 'hidden' }"
+        >
+          {{ props.text }}
+        </div>
       </div>
     </div>
   </Transition>
@@ -90,12 +80,14 @@ onBeforeMount(() => {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: var(--layout-gap);
 }
 
 .global-loader-text {
   font-size: var(--app-ui-font-size-small);
-  height: 1em;
+  height: 2em;
+  width: 100%;
+  text-align: center;
+  transition: 0.5s;
 }
 
 .fade-leave-active {
