@@ -99,7 +99,7 @@ const actionButtonProps = {
           </n-button>
           <!-- publish -->
           <n-button
-            v-if="currentUser?.isSuperuser && targetResource.proposed"
+            v-if="currentUser?.isSuperuser && targetResource.proposed && !targetResource.public"
             v-bind="actionButtonProps"
             :title="$t('resources.publishAction')"
             @click="$emit('publishClick', targetResource)"
@@ -121,7 +121,7 @@ const actionButtonProps = {
           </n-button>
           <!-- edit -->
           <n-button
-            v-if="targetResource.writable"
+            :disabled="!targetResource.writable"
             v-bind="actionButtonProps"
             :title="$t('general.editAction')"
             @click="$emit('editClick', targetResource)"
@@ -132,7 +132,7 @@ const actionButtonProps = {
           </n-button>
           <!-- delete -->
           <n-button
-            v-if="canDelete"
+            :disabled="!canDelete"
             v-bind="actionButtonProps"
             :title="$t('general.deleteAction')"
             @click="$emit('deleteClick', targetResource)"
