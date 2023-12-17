@@ -15,6 +15,7 @@ import ResourceConfigFormItems from '@/forms/resources/config/ResourceConfigForm
 import { usePlatformData } from '@/platformData';
 import { pickTranslation } from '@/utils';
 import { useUsersPublic } from '@/fetchers';
+import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import {
   NSelect,
   NSpace,
@@ -32,7 +33,8 @@ import MinusRound from '@vicons/material/MinusRound';
 import AddOutlined from '@vicons/material/AddOutlined';
 import PersonFilled from '@vicons/material/PersonFilled';
 import TranslateOutlined from '@vicons/material/TranslateOutlined';
-import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
+import ArrowUpwardOutlined from '@vicons/material/ArrowUpwardOutlined';
+import ArrowDownwardOutlined from '@vicons/material/ArrowDownwardOutlined';
 
 const props = defineProps<{
   model: AnyResourceUpdate;
@@ -233,7 +235,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
             </n-form-item>
           </div>
         </template>
-        <template #action="{ index: indexAction, create, remove }">
+        <template #action="{ index: indexAction, create, remove, move }">
           <n-space style="margin-left: 20px; flex-wrap: nowrap">
             <n-button
               secondary
@@ -254,6 +256,30 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
             >
               <template #icon>
                 <n-icon :component="AddOutlined" />
+              </template>
+            </n-button>
+            <n-button
+              secondary
+              circle
+              :title="$t('general.moveUpAction')"
+              :disabled="indexAction === 0"
+              :focusable="false"
+              @click="() => move('up', indexAction)"
+            >
+              <template #icon>
+                <n-icon :component="ArrowUpwardOutlined" />
+              </template>
+            </n-button>
+            <n-button
+              secondary
+              circle
+              :title="$t('general.moveDownAction')"
+              :disabled="indexAction === model.meta.length - 1"
+              :focusable="false"
+              @click="() => move('down', indexAction)"
+            >
+              <template #icon>
+                <n-icon :component="ArrowDownwardOutlined" />
               </template>
             </n-button>
           </n-space>
