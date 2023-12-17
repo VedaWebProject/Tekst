@@ -2,8 +2,8 @@ import { ref, computed, watch } from 'vue';
 import { defineStore } from 'pinia';
 import { useWindowSize } from '@vueuse/core';
 import type { RouteLocationNormalized } from 'vue-router';
-import { i18n, setI18nLocale, localeProfiles, getAvaliableBrowserLocaleKey } from '@/i18n';
-import type { AvailableLocale } from '@/i18n';
+import { i18n, setI18nLocale, getAvaliableBrowserLocaleKey } from '@/i18n';
+import type { LocaleProfile } from '@/i18n';
 import { useRoute } from 'vue-router';
 import type { TextRead } from '@/api';
 import { $t, $te } from '@/i18n';
@@ -38,12 +38,12 @@ export const useStateStore = defineStore('state', () => {
   async function setLocale(
     l: string = locale.value,
     updateUserLocale: boolean = true
-  ): Promise<AvailableLocale> {
+  ): Promise<LocaleProfile> {
     const lang = setI18nLocale(l);
     locale.value = lang.key;
     if (updateUserLocale && auth.user?.locale !== lang.key) {
       try {
-        await auth.updateUser({ locale: localeProfiles[lang.key].key });
+        await auth.updateUser({ locale: lang.key });
         message.info($t('account.localeUpdated', { locale: lang.displayFull }));
       } catch {
         // do sweet FA

@@ -48,12 +48,12 @@ const localeOptions = computed(() =>
       disabled: !!props.value?.map((lvlTrans: Translation) => lvlTrans.locale).includes('*'),
     },
   ].concat(
-    Object.keys(localeProfiles).map((l: string) => ({
-      label: `${localeProfiles[l].icon} ${localeProfiles[l].displayFull}`,
-      value: localeProfiles[l].key,
+    localeProfiles.map((lp) => ({
+      label: `${lp.icon} ${lp.displayFull}`,
+      value: lp.key,
       disabled: !!props.value
         ?.map((lvlTrans: Translation) => lvlTrans.locale)
-        .includes(l as Locale),
+        .includes(lp.key as Locale),
     }))
   )
 );

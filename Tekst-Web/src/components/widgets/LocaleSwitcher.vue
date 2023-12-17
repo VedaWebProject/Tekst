@@ -11,12 +11,11 @@ const state = useStateStore();
 const { message } = useMessages();
 
 const options = computed(() =>
-  Object.keys(localeProfiles).map((l) => {
-    const profile = localeProfiles[l];
+  localeProfiles.map((lp) => {
     return {
-      label: `${profile.icon} ${profile.displayFull}`,
-      key: l,
-      disabled: l === state.locale,
+      label: `${lp.icon} ${lp.displayFull}`,
+      key: lp.key,
+      disabled: lp.key === state.locale,
     };
   })
 );

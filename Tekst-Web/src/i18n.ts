@@ -11,7 +11,7 @@ export enum LocaleKey {
   DeDe = 'deDE',
 }
 
-export interface AvailableLocale {
+export interface LocaleProfile {
   key: LocaleKey;
   displayFull: string;
   displayShort: string;
@@ -20,8 +20,8 @@ export interface AvailableLocale {
   nUiDateLocale: NDateLocale;
 }
 
-export const localeProfiles: { [localeKey: string]: AvailableLocale } = {
-  enUS: {
+export const localeProfiles: LocaleProfile[] = [
+  {
     key: LocaleKey.EnUs,
     displayFull: 'English (US)',
     displayShort: 'en-US',
@@ -29,7 +29,7 @@ export const localeProfiles: { [localeKey: string]: AvailableLocale } = {
     nUiLangLocale: enUS,
     nUiDateLocale: dateEnUS,
   },
-  deDE: {
+  {
     key: LocaleKey.DeDe,
     displayFull: 'Deutsch',
     displayShort: 'de-DE',
@@ -37,7 +37,7 @@ export const localeProfiles: { [localeKey: string]: AvailableLocale } = {
     nUiLangLocale: deDE,
     nUiDateLocale: dateDeDE,
   },
-};
+];
 
 const i18nOptions: I18nOptions = {
   legacy: false,
@@ -54,21 +54,25 @@ export const { t: $t, te: $te, tm: $tm, tc: $tc } = i18n.global;
 // @ts-ignore
 i18n.global.locale.value = localStorage.getItem('locale') || 'enUS';
 
-export function setI18nLocale(locale: I18nOptions['locale'] = i18n.global.locale): AvailableLocale {
+export function getLocaleProfile(localeKey: string): LocaleProfile | undefined {
+  return localeProfiles.find((lp) => lp.key === localeKey);
+}
+
+export function setI18nLocale(locale: I18nOptions['locale'] = i18n.global.locale): LocaleProfile {
   const l = unref(locale) ?? i18n.global.locale;
   if (!l) {
     // passed locale is invalid
     console.error(`Invalid locale code: ${l}`);
-    return localeProfiles['enUS'];
+    return getLocaleProfile('enUS') || localeProfiles[0];
   }
   // @ts-ignore
   i18n.global.locale.value = l;
   document.querySelector('html')?.setAttribute('lang', l);
-  return localeProfiles[l];
+  return getLocaleProfile(l) || localeProfiles[0];
 }
 
 export function getAvaliableBrowserLocaleKey() {
   return window.navigator.languages
-    .map((l) => localeProfiles[l.replace(/[^a-zA-Z]/, '')])
+    .map((l) => getLocaleProfile(l.replace(/[^a-zA-Z]/, '')))
     .find((l) => !!l)?.key;
 }

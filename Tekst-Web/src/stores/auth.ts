@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 import type { UserRead, UserUpdate } from '@/api';
 import { useMessages } from '@/messages';
 import { GET, PATCH, POST, optionsPresets } from '@/api/index';
-import { $t, localeProfiles } from '@/i18n';
+import { $t, getLocaleProfile } from '@/i18n';
 import { useIntervalFn } from '@vueuse/core';
 import { useRouter, type RouteLocationRaw } from 'vue-router';
 import { usePlatformData } from '@/platformData';
@@ -125,12 +125,12 @@ export const useAuthStore = defineStore('auth', () => {
       await loadPlatformData(); // load platform data
       // process user locale
       if (!userData.locale) {
-        updateUser({ locale: localeProfiles[state.locale].key }); // no need to wait
+        updateUser({ locale: state.locale }); // no need to wait
       } else if (userData.locale !== state.locale) {
         await state.setLocale(userData.locale, false);
         message.info(
           $t('account.localeApplied', {
-            locale: localeProfiles[userData.locale].displayFull,
+            locale: getLocaleProfile(userData.locale)?.displayFull,
           })
         );
       }

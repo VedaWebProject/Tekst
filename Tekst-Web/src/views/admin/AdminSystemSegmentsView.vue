@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { $t } from '@/i18n';
+import { $t, getLocaleProfile } from '@/i18n';
 import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import HtmlEditor from '@/components/HtmlEditor.vue';
 import { computed, nextTick, ref } from 'vue';
@@ -60,7 +60,7 @@ const segmentOptions = computed(() =>
       label: currLocaleSegment.title || currLocaleSegment.key,
       key,
       children: groupSegments.map((s) => ({
-        label: (localeProfiles[s.locale]?.icon || '🌐') + ' ' + (s.title || s.key),
+        label: (getLocaleProfile(s.locale)?.icon || '🌐') + ' ' + (s.title || s.key),
         value: s.id,
       })),
     };
@@ -78,12 +78,14 @@ const localeOptions = computed(() =>
       ),
     },
   ].concat(
-    Object.keys(localeProfiles).map((l) => ({
-      label: `${localeProfiles[l].icon} ${localeProfiles[l].displayFull}`,
-      value: l,
+    localeProfiles.map((lp) => ({
+      label: `${lp.icon} ${lp.displayFull}`,
+      value: lp.key,
       disabled: !!pfData.value?.systemSegments.find(
         (p) =>
-          p.locale === l && p.key === segmentModel.value?.key && p.id !== selectedSegmentId.value
+          p.locale === lp.key &&
+          p.key === segmentModel.value?.key &&
+          p.id !== selectedSegmentId.value
       ),
     }))
   )

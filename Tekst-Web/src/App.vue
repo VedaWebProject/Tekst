@@ -3,7 +3,7 @@ import { RouterView } from 'vue-router';
 import InitLoader from '@/components/InitLoader.vue';
 import GlobalMessenger from '@/components/GlobalMessenger.vue';
 import { computed } from 'vue';
-import { localeProfiles } from '@/i18n';
+import { getLocaleProfile } from '@/i18n';
 import { useStateStore } from '@/stores';
 import {
   NLoadingBarProvider,
@@ -27,8 +27,8 @@ const themeVars = useThemeVars();
 const { initialized, error } = useInitializeApp();
 
 // i18n
-const nUiLangLocale = computed(() => localeProfiles[state.locale].nUiLangLocale);
-const nUiDateLocale = computed(() => localeProfiles[state.locale].nUiDateLocale);
+const nUiLangLocale = computed(() => getLocaleProfile(state.locale)?.nUiLangLocale);
+const nUiDateLocale = computed(() => getLocaleProfile(state.locale)?.nUiDateLocale);
 </script>
 
 <template>

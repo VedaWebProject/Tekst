@@ -4,7 +4,7 @@ import InsertLevelButton from '@/components/admin/InsertLevelButton.vue';
 import { textFormRules } from '@/forms/formRules';
 import { NIcon, NModal, NAlert, NButton, NForm, type FormInst, useDialog } from 'naive-ui';
 import { computed, ref } from 'vue';
-import { localeProfiles } from '@/i18n';
+import { getLocaleProfile } from '@/i18n';
 import type { Translation } from '@/api';
 import ButtonFooter from '@/components/ButtonFooter.vue';
 import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
@@ -175,16 +175,11 @@ async function handleModalSubmit() {
         <div class="level-translations">
           <template v-for="lvlTranslation in lvl" :key="lvlTranslation.locale">
             <div>
-              {{
-                localeProfiles[lvlTranslation.locale]
-                  ? localeProfiles[lvlTranslation.locale].icon
-                  : '🌐'
-              }}
+              {{ getLocaleProfile(lvlTranslation.locale)?.icon || '🌐' }}
               <span style="font-weight: normal">
                 {{
-                  localeProfiles[lvlTranslation.locale]
-                    ? localeProfiles[lvlTranslation.locale].displayFull
-                    : $t('models.locale.allLanguages')
+                  getLocaleProfile(lvlTranslation.locale)?.displayFull ||
+                  $t('models.locale.allLanguages')
                 }}:
               </span>
             </div>
