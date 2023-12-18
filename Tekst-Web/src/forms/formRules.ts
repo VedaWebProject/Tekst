@@ -1,5 +1,5 @@
 import type { FormItemRule } from 'naive-ui';
-import { $t } from '@/i18n';
+import { $t, localeProfiles } from '@/i18n';
 import { resourceTypes } from '@/api';
 
 export const translationFormRules: Record<string, FormItemRule[]> = {
@@ -357,6 +357,14 @@ export const platformSettingsFormRules: Record<string, FormItemRule[]> = {
       required: true,
       message: () =>
         $t('forms.rulesFeedback.isRequired', { x: $t('models.platformSettings.defaultTextId') }),
+      trigger: 'blur',
+    },
+  ],
+  availableLocales: [
+    {
+      validator: (rule: FormItemRule, value: string[]) =>
+        !!value && value.length >= 1 && value.length <= localeProfiles.length,
+      message: () => $t('forms.rulesFeedback.minMaxItems', { min: 1, max: localeProfiles.length }),
       trigger: 'blur',
     },
   ],

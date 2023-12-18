@@ -1,7 +1,7 @@
 import staticI18nMsgs from '@intlify/unplugin-vue-i18n/messages';
 import { createI18n } from 'vue-i18n';
 import type { I18nOptions } from 'vue-i18n';
-import type { NDateLocale, NLocale } from 'naive-ui';
+import type { NDateLocale, NLocale, SelectOption } from 'naive-ui';
 import { enUS, dateEnUS } from 'naive-ui';
 import { deDE, dateDeDE } from 'naive-ui';
 import { unref } from 'vue';
@@ -51,8 +51,9 @@ export const i18n = createI18n(i18nOptions);
 export const { t: $t, te: $te, tm: $tm, tc: $tc } = i18n.global;
 
 // set initial i18n locale
+//(happens before app init, where locale is set respecting platform settings)
 // @ts-ignore
-i18n.global.locale.value = localStorage.getItem('locale') || 'enUS';
+i18n.global.locale.value = 'enUS';
 
 export function getLocaleProfile(localeKey: string): LocaleProfile | undefined {
   return localeProfiles.find((lp) => lp.key === localeKey);
@@ -75,4 +76,10 @@ export function getAvaliableBrowserLocaleKey() {
   return window.navigator.languages
     .map((l) => getLocaleProfile(l.replace(/[^a-zA-Z]/, '')))
     .find((l) => !!l)?.key;
+}
+
+export function renderLanguageOptionLabel(availableOptions: SelectOption[], option: SelectOption) {
+  return availableOptions.find((lo) => lo.value === option.value)
+    ? (option.label as string)
+    : `⚠ ${$t('i18n.invalidLanguage')} (${option.value})`;
 }

@@ -45,7 +45,7 @@ watchEffect(() => {
 <template>
   <n-spin
     v-if="loading"
-    :description="$t('init.loading')"
+    :description="$t('general.loading')"
     style="width: 100%; display: flex; justify-content: center; padding: var(--layout-gap) 0"
   />
   <template v-else-if="page">

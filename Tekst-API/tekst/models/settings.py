@@ -1,4 +1,4 @@
-from typing import Annotated
+from typing import Annotated, get_args
 
 from beanie import PydanticObjectId
 from pydantic import EmailStr, Field, StringConstraints
@@ -8,6 +8,7 @@ from tekst.config import TekstConfig, get_config
 from tekst.models.common import (
     CustomHttpUrl,
     DocumentBase,
+    LocaleKey,
     ModelBase,
     ModelFactoryMixin,
     TranslationBase,
@@ -110,6 +111,14 @@ class PlatformSettings(ModelBase, ModelFactoryMixin):
     show_footer_info: Annotated[
         bool, Field(description="Show platform title and description in footer")
     ] = True
+    available_locales: Annotated[
+        list[LocaleKey],
+        Field(
+            descriptions="Locales available for use in platform client",
+            max_length=len(get_args(LocaleKey.__value__)),
+            min_length=1,
+        ),
+    ] = list(get_args(LocaleKey.__value__))
 
 
 class PlatformSettingsDocument(PlatformSettings, DocumentBase):

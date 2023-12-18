@@ -482,14 +482,14 @@ watch(
     <n-spin
       v-if="loading"
       style="position: absolute; top: 50%; left: 50%"
-      :description="$t('init.loading')"
+      :description="$t('general.loading')"
     />
   </div>
 
   <n-spin
     v-else-if="loading"
     style="margin: 3rem 0 2rem 0; width: 100%"
-    :description="$t('init.loading')"
+    :description="$t('general.loading')"
   />
 
   <RenameNodeModal

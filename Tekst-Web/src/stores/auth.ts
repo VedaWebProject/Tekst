@@ -17,7 +17,11 @@ const SESSION_WARN_AHEAD_S = 600; // start showing warnings n seconds before exp
 function getUserFromLocalStorage() {
   const storageData = localStorage.getItem('user');
   if (!storageData) return;
-  return JSON.parse(storageData) as UserRead;
+  try {
+    return JSON.parse(storageData) as UserRead;
+  } catch {
+    localStorage.removeItem('user');
+  }
 }
 
 const { pause: _stopSessionCheck, resume: _startSessionCheck } = useIntervalFn(

@@ -3887,7 +3887,7 @@
           "locale": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/Locale"
+                "$ref": "#/components/schemas/TranslationLocaleKey"
               }
             ],
             "description": "Locale indicating the translation language of this segment"
@@ -3943,7 +3943,7 @@
             "title": "Title"
           },
           "locale": {
-            "$ref": "#/components/schemas/Locale"
+            "$ref": "#/components/schemas/TranslationLocaleKey"
           }
         },
         "type": "object",
@@ -3988,7 +3988,7 @@
           "locale": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/Locale"
+                "$ref": "#/components/schemas/TranslationLocaleKey"
               }
             ],
             "description": "Locale indicating the translation language of this segment"
@@ -4055,7 +4055,7 @@
           "locale": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/Locale"
+                "$ref": "#/components/schemas/TranslationLocaleKey"
               },
               {
                 "type": "null"
@@ -4963,10 +4963,9 @@
         "type": "object",
         "title": "HTTPValidationError"
       },
-      "Locale": {
+      "LocaleKey": {
         "type": "string",
         "enum": [
-          "*",
           "deDE",
           "enUS"
         ]
@@ -6025,7 +6024,7 @@
       "PlatformDescriptionTranslation": {
         "properties": {
           "locale": {
-            "$ref": "#/components/schemas/Locale"
+            "$ref": "#/components/schemas/TranslationLocaleKey"
           },
           "translation": {
             "type": "string",
@@ -6044,7 +6043,7 @@
       "PlatformNavInfoEntryTranslation": {
         "properties": {
           "locale": {
-            "$ref": "#/components/schemas/Locale"
+            "$ref": "#/components/schemas/TranslationLocaleKey"
           },
           "translation": {
             "type": "string",
@@ -6236,6 +6235,20 @@
             "title": "Showfooterinfo",
             "description": "Show platform title and description in footer",
             "default": true
+          },
+          "availableLocales": {
+            "items": {
+              "$ref": "#/components/schemas/LocaleKey"
+            },
+            "type": "array",
+            "maxItems": 2,
+            "minItems": 1,
+            "title": "Availablelocales",
+            "default": [
+              "deDE",
+              "enUS"
+            ],
+            "descriptions": "Locales available for use in platform client"
           }
         },
         "additionalProperties": true,
@@ -6385,6 +6398,20 @@
             "title": "Showfooterinfo",
             "description": "Show platform title and description in footer",
             "default": true
+          },
+          "availableLocales": {
+            "items": {
+              "$ref": "#/components/schemas/LocaleKey"
+            },
+            "type": "array",
+            "maxItems": 2,
+            "minItems": 1,
+            "title": "Availablelocales",
+            "default": [
+              "deDE",
+              "enUS"
+            ],
+            "descriptions": "Locales available for use in platform client"
           }
         },
         "type": "object",
@@ -6439,7 +6466,7 @@
       "ResourceCategoryTranslation": {
         "properties": {
           "locale": {
-            "$ref": "#/components/schemas/Locale"
+            "$ref": "#/components/schemas/TranslationLocaleKey"
           },
           "translation": {
             "type": "string",
@@ -6458,7 +6485,7 @@
       "ResourceCommentTranslation": {
         "properties": {
           "locale": {
-            "$ref": "#/components/schemas/Locale"
+            "$ref": "#/components/schemas/TranslationLocaleKey"
           },
           "translation": {
             "type": "string",
@@ -6477,7 +6504,7 @@
       "ResourceDescriptionTranslation": {
         "properties": {
           "locale": {
-            "$ref": "#/components/schemas/Locale"
+            "$ref": "#/components/schemas/TranslationLocaleKey"
           },
           "translation": {
             "type": "string",
@@ -6603,7 +6630,7 @@
       "TextLevelTranslation": {
         "properties": {
           "locale": {
-            "$ref": "#/components/schemas/Locale"
+            "$ref": "#/components/schemas/TranslationLocaleKey"
           },
           "translation": {
             "type": "string",
@@ -6746,7 +6773,7 @@
       "TextSubtitleTranslation": {
         "properties": {
           "locale": {
-            "$ref": "#/components/schemas/Locale"
+            "$ref": "#/components/schemas/TranslationLocaleKey"
           },
           "translation": {
             "type": "string",
@@ -6852,6 +6879,14 @@
         "type": "object",
         "title": "TextUpdate"
       },
+      "TranslationLocaleKey": {
+        "type": "string",
+        "enum": [
+          "deDE",
+          "enUS",
+          "*"
+        ]
+      },
       "UserCreate": {
         "properties": {
           "email": {
@@ -6914,7 +6949,7 @@
           "locale": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/Locale"
+                "$ref": "#/components/schemas/LocaleKey"
               },
               {
                 "type": "null"
@@ -6992,7 +7027,7 @@
           "locale": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/Locale"
+                "$ref": "#/components/schemas/LocaleKey"
               },
               {
                 "type": "null"
@@ -7182,7 +7217,7 @@
           "locale": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/Locale"
+                "$ref": "#/components/schemas/LocaleKey"
               },
               {
                 "type": "null"

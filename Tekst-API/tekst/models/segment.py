@@ -3,7 +3,12 @@ from typing import Annotated, Literal
 from beanie import PydanticObjectId
 from pydantic import BaseModel, Field, StringConstraints, model_validator
 
-from tekst.models.common import DocumentBase, Locale, ModelBase, ModelFactoryMixin
+from tekst.models.common import (
+    DocumentBase,
+    ModelBase,
+    ModelFactoryMixin,
+    TranslationLocaleKey,
+)
 
 
 class ClientSegment(ModelBase, ModelFactoryMixin):
@@ -32,7 +37,7 @@ class ClientSegment(ModelBase, ModelFactoryMixin):
         Literal["wysiwyg", "html"], Field(description="Last used editor mode")
     ] = "wysiwyg"
     locale: Annotated[
-        Locale,
+        TranslationLocaleKey,
         Field(description="Locale indicating the translation language of this segment"),
     ]
     title: Annotated[
@@ -64,7 +69,7 @@ class ClientSegmentHead(BaseModel):
     id: PydanticObjectId
     key: str
     title: str | None = None
-    locale: Locale
+    locale: TranslationLocaleKey
 
     class Settings:
         projection = {"id": "$_id", "key": 1, "title": 1, "locale": 1}

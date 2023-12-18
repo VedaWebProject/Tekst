@@ -144,7 +144,7 @@ const resourceTypes = computed(() => {
 
   <n-spin
     v-else-if="!error"
-    :description="$t('init.loading')"
+    :description="$t('general.loading')"
     style="width: 100%; padding: 2rem 0"
   />
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { $t } from '@/i18n';
+import { $t, localeProfiles } from '@/i18n';
 import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import {
   NIcon,
   NDynamicInput,
@@ -26,7 +26,9 @@ import MinusRound from '@vicons/material/MinusRound';
 import ArrowUpwardOutlined from '@vicons/material/ArrowUpwardOutlined';
 import ArrowDownwardOutlined from '@vicons/material/ArrowDownwardOutlined';
 import ButtonFooter from '@/components/ButtonFooter.vue';
+import { useStateStore } from '@/stores';
 
+const state = useStateStore();
 const { pfData, patchPfData } = usePlatformData();
 const { message } = useMessages();
 
@@ -43,6 +45,10 @@ const defaultTextOptions = pfData.value?.texts.map((t) => ({
   value: t.id,
 }));
 
+const localeOptions = computed(() =>
+  localeProfiles.map((lp) => ({ label: `${lp.icon} ${lp.displayFull}`, value: lp.key }))
+);
+
 async function handleSaveClick() {
   loading.value = true;
   formRef.value
@@ -55,6 +61,9 @@ async function handleSaveClick() {
         patchPfData({
           settings: data,
         });
+        // If the current locale is invalid after updating the settings,
+        // this call will fix it!
+        await state.setLocale(state.locale);
         message.success($t('admin.system.platformSettings.msgSaved'), undefined, 10);
       } else {
         message.error($t('errors.unexpected'), error);
@@ -158,14 +167,29 @@ function resetForm() {
       <h3>{{ $t('admin.system.platformSettings.headingOptions') }}</h3>
 
       <!-- DEFAULT TEXT -->
-      <n-form-item :label="$t('models.platformSettings.defaultText')">
+      <n-form-item path="defaultTextId" :label="$t('models.platformSettings.defaultText')">
         <n-select
           v-model:value="formModel.defaultTextId"
           :options="defaultTextOptions"
           :clearable="true"
           :placeholder="$t('admin.system.platformSettings.defaultTextPlaceholder')"
           :consistent-menu-width="false"
-          style="min-width: 200px"
+          @keydown.enter.prevent
+        />
+      </n-form-item>
+
+      <!-- AVAILABLE LOCALES -->
+      <n-form-item
+        path="availableLocales"
+        :label="$t('models.platformSettings.availableLocales')"
+        required
+      >
+        <n-select
+          v-model:value="formModel.availableLocales"
+          multiple
+          :options="localeOptions"
+          :placeholder="$t('models.platformSettings.availableLocales')"
+          :consistent-menu-width="false"
           @keydown.enter.prevent
         />
       </n-form-item>

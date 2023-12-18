@@ -39,8 +39,12 @@ Metadata = Annotated[
 ]
 
 
-# type alias for available locale identifiers
-Locale = TypeAliasType("Locale", Literal["*", "deDE", "enUS"])
+# type alias for available locale/language setting identifiers
+_platform_locales = ("deDE", "enUS")
+LocaleKey = TypeAliasType("LocaleKey", Literal[_platform_locales])
+TranslationLocaleKey = TypeAliasType(
+    "TranslationLocaleKey", Literal[_platform_locales + ("*",)]
+)
 
 # Pydantic HttpUrl with string serialization
 CustomHttpUrl = Annotated[
@@ -50,11 +54,11 @@ CustomHttpUrl = Annotated[
 
 # translations
 class TranslationBase(TypedDict):
-    locale: Locale
+    locale: TranslationLocaleKey
 
 
 T = TypeVar("T", bound=TranslationBase)
-Translations = conlist(T, max_length=len(get_args(Locale.__value__)))
+Translations = conlist(T, max_length=len(get_args(TranslationLocaleKey.__value__)))
 
 
 class ModelTransformerMixin:

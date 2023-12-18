@@ -1,17 +1,15 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { localeProfiles } from '@/i18n';
 import { useStateStore } from '@/stores';
 import { NButton, NDropdown, NIcon } from 'naive-ui';
 import LanguageOutlined from '@vicons/material/LanguageOutlined';
 import { $t } from '@/i18n';
-import { useMessages } from '@/messages';
+import type { LocaleKey } from '@/api';
 
 const state = useStateStore();
-const { message } = useMessages();
 
 const options = computed(() =>
-  localeProfiles.map((lp) => {
+  state.availableLocales.map((lp) => {
     return {
       label: `${lp.icon} ${lp.displayFull}`,
       key: lp.key,
@@ -20,17 +18,16 @@ const options = computed(() =>
   })
 );
 
-function handleLanguageSelect(localeCode: string) {
-  if (localeCode == state.locale) return;
-
-  state.setLocale(localeCode).catch((error) => {
-    message.warning($t('errors.serverI18n'), error.detail?.toString());
-  });
+function handleLanguageSelect(localeCode: LocaleKey) {
+  if (localeCode !== state.locale) {
+    state.setLocale(localeCode);
+  }
 }
 </script>
 
 <template>
   <n-dropdown
+    v-if="state.availableLocales.length > 1"
     trigger="hover"
     to="#app-container"
     :options="options"

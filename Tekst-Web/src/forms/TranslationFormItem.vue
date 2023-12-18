@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Translation, Locale } from '@/api';
-import { $t, localeProfiles } from '@/i18n';
+import type { Translation, LocaleKey } from '@/api';
+import { $t, renderLanguageOptionLabel } from '@/i18n';
 import {
   NButton,
   NSpace,
@@ -16,6 +16,7 @@ import { translationFormRules } from '@/forms/formRules';
 
 import AddOutlined from '@vicons/material/AddOutlined';
 import MinusRound from '@vicons/material/MinusRound';
+import { useStateStore } from '@/stores';
 
 const props = withDefaults(
   defineProps<{
@@ -40,22 +41,15 @@ const props = withDefaults(
 
 const emits = defineEmits(['update:value']);
 
+const state = useStateStore();
+
 const localeOptions = computed(() =>
-  [
-    {
-      label: `🌐 ${$t('models.locale.allLanguages')}`,
-      value: '*',
-      disabled: !!props.value?.map((lvlTrans: Translation) => lvlTrans.locale).includes('*'),
-    },
-  ].concat(
-    localeProfiles.map((lp) => ({
-      label: `${lp.icon} ${lp.displayFull}`,
-      value: lp.key,
-      disabled: !!props.value
-        ?.map((lvlTrans: Translation) => lvlTrans.locale)
-        .includes(lp.key as Locale),
-    }))
-  )
+  state.translationLocaleOptions.map((tlo) => ({
+    ...tlo,
+    disabled: !!props.value
+      ?.map((lvlTrans: Translation) => lvlTrans.locale)
+      .includes(tlo.value as LocaleKey),
+  }))
 );
 </script>
 
@@ -94,6 +88,7 @@ const localeOptions = computed(() =>
               :options="localeOptions"
               :placeholder="$t('general.language')"
               :consistent-menu-width="false"
+              :render-label="(o) => renderLanguageOptionLabel(localeOptions, o)"
               style="min-width: 200px; font-weight: var(--app-ui-font-weight-normal)"
               @keydown.enter.prevent
             />

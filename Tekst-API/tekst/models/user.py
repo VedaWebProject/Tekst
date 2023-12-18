@@ -14,7 +14,7 @@ from pydantic import Field, StringConstraints, model_validator
 from pymongo import IndexModel
 
 from tekst.config import TekstConfig, get_config
-from tekst.models.common import Locale, ModelBase, ModelFactoryMixin
+from tekst.models.common import LocaleKey, ModelBase, ModelFactoryMixin
 
 
 _cfg: TekstConfig = get_config()
@@ -48,7 +48,7 @@ class User(ModelBase, ModelFactoryMixin):
     ]
     name: Annotated[str, StringConstraints(min_length=1, max_length=64)]
     affiliation: Annotated[str, StringConstraints(min_length=1, max_length=64)]
-    locale: Locale | None = None
+    locale: LocaleKey | None = None
     public_fields: Annotated[
         list[PublicUserField], Field(description="Data fields set public by this user")
     ] = []

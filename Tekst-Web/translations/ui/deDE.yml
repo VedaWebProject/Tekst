@@ -31,6 +31,7 @@ general:
   platform: Plattform
   not: nicht
   new: New
+  loading: Lade...
   areYouSureHelpTextHint: |
     Bitte vergewissern Sie sich, dass Sie die entsprechende Passage in den
     Hilfetexten zu diesem Thema gelesen und verstanden haben.
@@ -40,21 +41,18 @@ general:
 
 i18n:
   tipSwitcher: Gebietsschema auswählen (Sprache und Zahlen-/Datumsformat)
+  invalidLanguage: Ungültig
 
 init:
-  loading: Lade...
-  init: Initialisiere...
-  ready: Fertig.
-  error: Es sind Fehler beim Starten der Anwendung aufgetreten.
-  serverI18n: Lade UI-Übersetzungen...
-  platformData: Lade Plattformdaten...
+  platformData: …
   workingText: Lege Arbeitstext fest...
   systemSegments: Füge Seitensegmente ein...
+  ready: Fertig.
+  error: Es sind Fehler beim Starten der Anwendung aufgetreten.
 
 errors:
   error: Fehler
   details: Details
-  serverI18n: Einige Übersetzungen konnten nicht geladen werden.
   platformData: Plattform-Daten konnten nicht geladen werden.
   notFound: Diese Ressource konnte nicht gefunden werden.
   unexpected: Ein unerwarteter Fehler ist aufgetreten. Das hätte nicht passieren dürfen.
@@ -229,6 +227,7 @@ models:
     infoContactEmail: Email Kontaktperson
     infoContactUrl: URL Kontaktperson
     defaultText: Standard-Text
+    availableLocales: Verfügbare Gebietsschemata
     navInfoEntry: Eigene Beschriftung für Info-Eintrag in Hauptnavigation
     alwaysShowTextInfo: Zeige Textinformationen und -auswahl auch auf nicht-textspezifischen Seiten
     showHeaderInfo: Plattform-Untertitel in Kopfzeile anzeigen

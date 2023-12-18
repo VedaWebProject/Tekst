@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { $t, getLocaleProfile } from '@/i18n';
+import { $t, getLocaleProfile, renderLanguageOptionLabel } from '@/i18n';
 import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import HtmlEditor from '@/components/HtmlEditor.vue';
 import { computed, nextTick, ref } from 'vue';
@@ -16,7 +16,6 @@ import {
 } from 'naive-ui';
 import { usePlatformData } from '@/platformData';
 import { PATCH, type ClientSegmentUpdate, POST, type ClientSegmentCreate, DELETE } from '@/api';
-import { localeProfiles } from '@/i18n';
 import HugeLabeledIcon from '@/components/HugeLabeledIcon.vue';
 import ButtonFooter from '@/components/ButtonFooter.vue';
 import { useI18n } from 'vue-i18n';
@@ -28,7 +27,9 @@ import { negativeButtonProps, positiveButtonProps } from '@/components/dialogBut
 import AddOutlined from '@vicons/material/AddOutlined';
 import FileOpenOutlined from '@vicons/material/FileOpenOutlined';
 import DeleteOutlined from '@vicons/material/DeleteOutlined';
+import { useStateStore } from '@/stores';
 
+const state = useStateStore();
 const { pfData, loadPlatformData, getSegment } = usePlatformData();
 const { locale } = useI18n();
 const { message } = useMessages();
@@ -66,27 +67,15 @@ const segmentOptions = computed(() =>
 );
 
 const localeOptions = computed(() =>
-  [
-    {
-      label: `🌐 ${$t('models.locale.allLanguages')}`,
-      value: '*',
-      disabled: !!pfData.value?.infoSegments.find(
-        (p) =>
-          p.locale === '*' && p.key === segmentModel.value?.key && p.id !== selectedSegmentId.value
-      ),
-    },
-  ].concat(
-    localeProfiles.map((lp) => ({
-      label: `${lp.icon} ${lp.displayFull}`,
-      value: lp.key,
-      disabled: !!pfData.value?.infoSegments.find(
-        (p) =>
-          p.locale === lp.key &&
-          p.key === segmentModel.value?.key &&
-          p.id !== selectedSegmentId.value
-      ),
-    }))
-  )
+  state.translationLocaleOptions.map((tlo) => ({
+    ...tlo,
+    disabled: !!pfData.value?.infoSegments.find(
+      (p) =>
+        p.locale === tlo.value &&
+        p.key === segmentModel.value?.key &&
+        p.id !== selectedSegmentId.value
+    ),
+  }))
 );
 
 async function getSegmentModel(segmentId?: string): Promise<ClientSegmentUpdate> {
@@ -312,6 +301,7 @@ async function handleDeleteClick() {
             :options="localeOptions"
             :placeholder="$t('general.language')"
             :consistent-menu-width="false"
+            :render-label="(o) => renderLanguageOptionLabel(localeOptions, o)"
             style="min-width: 200px"
             @keydown.enter.prevent
           />

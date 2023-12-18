@@ -2,7 +2,7 @@ import { ref, computed, watch } from 'vue';
 import { defineStore } from 'pinia';
 import { useWindowSize } from '@vueuse/core';
 import type { RouteLocationNormalized } from 'vue-router';
-import { i18n, setI18nLocale, getAvaliableBrowserLocaleKey } from '@/i18n';
+import { i18n, setI18nLocale, getAvaliableBrowserLocaleKey, localeProfiles } from '@/i18n';
 import type { LocaleProfile } from '@/i18n';
 import { useRoute } from 'vue-router';
 import type { TextRead } from '@/api';
@@ -10,7 +10,7 @@ import { $t, $te } from '@/i18n';
 import { usePlatformData } from '@/platformData';
 import { useAuthStore } from './auth';
 import { useMessages } from '@/messages';
-import { type Locale } from '@/api';
+import { type LocaleKey } from '@/api';
 
 export const useStateStore = defineStore('state', () => {
   // define resources
@@ -26,30 +26,49 @@ export const useStateStore = defineStore('state', () => {
     (auth.user?.locale ||
       localStorage.getItem('locale') ||
       getAvaliableBrowserLocaleKey() ||
-      i18n.global.locale) as Locale
+      i18n.global.locale) as LocaleKey
   );
-
-  const locales = i18n.global.availableLocales;
   watch(locale, (after) => {
     localStorage.setItem('locale', after);
     setPageTitle();
   });
 
+  const availableLocales = computed(() =>
+    localeProfiles.filter((lp) => !!pfData.value?.settings.availableLocales?.includes(lp.key))
+  );
+
+  const translationLocaleOptions = computed(() =>
+    [
+      {
+        label: `🌐 ${$t('models.locale.allLanguages')}`,
+        value: '*',
+      },
+    ].concat(
+      availableLocales.value.map((lp) => ({
+        label: `${lp.icon} ${lp.displayFull}`,
+        value: lp.key,
+      }))
+    )
+  );
+
   async function setLocale(
     l: string = locale.value,
     updateUserLocale: boolean = true
   ): Promise<LocaleProfile> {
-    const lang = setI18nLocale(l);
-    locale.value = lang.key;
-    if (updateUserLocale && auth.user?.locale !== lang.key) {
+    const availableLocaleKeys = pfData.value?.settings.availableLocales;
+    const effectiveLocale = setI18nLocale(
+      availableLocaleKeys?.find((al) => al === l) || availableLocaleKeys?.[0] || 'enUS'
+    );
+    locale.value = effectiveLocale.key;
+    if (updateUserLocale && auth.loggedIn && auth.user?.locale !== effectiveLocale.key) {
       try {
-        await auth.updateUser({ locale: lang.key });
-        message.info($t('account.localeUpdated', { locale: lang.displayFull }));
+        await auth.updateUser({ locale: effectiveLocale.key });
+        message.info($t('account.localeUpdated', { locale: effectiveLocale.displayFull }));
       } catch {
         // do sweet FA
       }
     }
-    return lang;
+    return effectiveLocale;
   }
 
   // current text
@@ -154,7 +173,8 @@ export const useStateStore = defineStore('state', () => {
     isTouchDevice,
     setPageTitle,
     locale,
-    locales,
+    availableLocales,
+    translationLocaleOptions,
     text,
     fallbackText,
     textLevelLabels,

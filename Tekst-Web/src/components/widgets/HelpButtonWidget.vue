@@ -76,7 +76,7 @@ async function handleHelpButtonClick() {
     <div v-if="helpText" v-html="helpText.content"></div>
     <n-spin
       v-else-if="loading"
-      :description="$t('init.loading')"
+      :description="$t('general.loading')"
       style="width: 100%; display: flex; justify-content: center"
     />
     <div v-else>{{ $t('help.errorNotFound') }}</div>

@@ -67,7 +67,7 @@ const activeResourcesCategorized = computed(() =>
 
   <HugeLabeledIcon
     v-else-if="browse.loading"
-    :message="$t('init.loading')"
+    :message="$t('general.loading')"
     :icon="HourglassTopTwotone"
   />
 

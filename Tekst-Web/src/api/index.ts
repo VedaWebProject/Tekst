@@ -83,9 +83,10 @@ export const prioritizedMetadataKeys = ['author', 'year', 'language'];
 export type ErrorModel = components['schemas']['ErrorModel'];
 export type Metadate = components['schemas']['Metadate'];
 export type Metadata = Metadate[];
-export type Locale = components['schemas']['Locale'];
+export type LocaleKey = components['schemas']['LocaleKey'];
+export type TranslationLocaleKey = components['schemas']['TranslationLocaleKey'];
 export type Translation = {
-  locale: components['schemas']['Locale'];
+  locale: TranslationLocaleKey;
   translation: string;
 };
 

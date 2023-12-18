@@ -384,7 +384,7 @@ export interface components {
        */
       editorMode?: 'wysiwyg' | 'html';
       /** @description Locale indicating the translation language of this segment */
-      locale: components['schemas']['Locale'];
+      locale: components['schemas']['TranslationLocaleKey'];
       /**
        * Title
        * @description Title of this segment
@@ -407,7 +407,7 @@ export interface components {
       key: string;
       /** Title */
       title?: string | null;
-      locale: components['schemas']['Locale'];
+      locale: components['schemas']['TranslationLocaleKey'];
     };
     /** ClientSegmentRead */
     ClientSegmentRead: {
@@ -435,7 +435,7 @@ export interface components {
        */
       editorMode?: 'wysiwyg' | 'html';
       /** @description Locale indicating the translation language of this segment */
-      locale: components['schemas']['Locale'];
+      locale: components['schemas']['TranslationLocaleKey'];
       /**
        * Title
        * @description Title of this segment
@@ -465,7 +465,7 @@ export interface components {
        * @enum {string}
        */
       editorMode?: 'wysiwyg' | 'html';
-      locale?: components['schemas']['Locale'] | null;
+      locale?: components['schemas']['TranslationLocaleKey'] | null;
       /**
        * Title
        * @description Title of this segment
@@ -967,7 +967,7 @@ export interface components {
       detail?: components['schemas']['ValidationError'][];
     };
     /** @enum {string} */
-    Locale: '*' | 'deDE' | 'enUS';
+    LocaleKey: 'deDE' | 'enUS';
     /** Metadate */
     Metadate: {
       /** Key */
@@ -1525,13 +1525,13 @@ export interface components {
     };
     /** PlatformDescriptionTranslation */
     PlatformDescriptionTranslation: {
-      locale: components['schemas']['Locale'];
+      locale: components['schemas']['TranslationLocaleKey'];
       /** Translation */
       translation: string;
     };
     /** PlatformNavInfoEntryTranslation */
     PlatformNavInfoEntryTranslation: {
-      locale: components['schemas']['Locale'];
+      locale: components['schemas']['TranslationLocaleKey'];
       /** Translation */
       translation: string;
     };
@@ -1648,6 +1648,14 @@ export interface components {
        * @default true
        */
       showFooterInfo?: boolean;
+      /**
+       * Availablelocales
+       * @default [
+       *   "deDE",
+       *   "enUS"
+       * ]
+       */
+      availableLocales?: components['schemas']['LocaleKey'][];
       [key: string]: unknown;
     };
     /** PlatformSettingsUpdate */
@@ -1730,6 +1738,14 @@ export interface components {
        * @default true
        */
       showFooterInfo?: boolean;
+      /**
+       * Availablelocales
+       * @default [
+       *   "deDE",
+       *   "enUS"
+       * ]
+       */
+      availableLocales?: components['schemas']['LocaleKey'][];
     };
     /**
      * PlatformStats
@@ -1750,19 +1766,19 @@ export interface components {
     };
     /** ResourceCategoryTranslation */
     ResourceCategoryTranslation: {
-      locale: components['schemas']['Locale'];
+      locale: components['schemas']['TranslationLocaleKey'];
       /** Translation */
       translation: string;
     };
     /** ResourceCommentTranslation */
     ResourceCommentTranslation: {
-      locale: components['schemas']['Locale'];
+      locale: components['schemas']['TranslationLocaleKey'];
       /** Translation */
       translation: string;
     };
     /** ResourceDescriptionTranslation */
     ResourceDescriptionTranslation: {
-      locale: components['schemas']['Locale'];
+      locale: components['schemas']['TranslationLocaleKey'];
       /** Translation */
       translation: string;
     };
@@ -1832,7 +1848,7 @@ export interface components {
     };
     /** TextLevelTranslation */
     TextLevelTranslation: {
-      locale: components['schemas']['Locale'];
+      locale: components['schemas']['TranslationLocaleKey'];
       /** Translation */
       translation: string;
     };
@@ -1918,7 +1934,7 @@ export interface components {
     };
     /** TextSubtitleTranslation */
     TextSubtitleTranslation: {
-      locale: components['schemas']['Locale'];
+      locale: components['schemas']['TranslationLocaleKey'];
       /** Translation */
       translation: string;
     };
@@ -1968,6 +1984,8 @@ export interface components {
        */
       isActive?: boolean;
     };
+    /** @enum {string} */
+    TranslationLocaleKey: 'deDE' | 'enUS' | '*';
     /**
      * UserCreate
      * @description Dataset for creating a new user
@@ -2001,7 +2019,7 @@ export interface components {
       name: string;
       /** Affiliation */
       affiliation: string;
-      locale?: components['schemas']['Locale'] | null;
+      locale?: components['schemas']['LocaleKey'] | null;
       /**
        * Publicfields
        * @description Data fields set public by this user
@@ -2036,7 +2054,7 @@ export interface components {
       name: string;
       /** Affiliation */
       affiliation: string;
-      locale?: components['schemas']['Locale'] | null;
+      locale?: components['schemas']['LocaleKey'] | null;
       /**
        * Publicfields
        * @description Data fields set public by this user
@@ -2087,7 +2105,7 @@ export interface components {
       name?: string | null;
       /** Affiliation */
       affiliation?: string | null;
-      locale?: components['schemas']['Locale'] | null;
+      locale?: components['schemas']['LocaleKey'] | null;
       /**
        * Publicfields
        * @description Data fields set public by this user

@@ -38,6 +38,7 @@ export function useInitializeApp() {
       action: async (success: boolean) => {
         try {
           await loadPlatformData();
+          await state.setLocale(localStorage.getItem('locale') || undefined);
           return success;
         } catch (e) {
           message.warning($t('errors.platformData'));
