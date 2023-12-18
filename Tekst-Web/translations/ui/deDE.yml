@@ -232,10 +232,10 @@ models:
     alwaysShowTextInfo: Zeige Textinformationen und -auswahl auch auf nicht-textspezifischen Seiten
     showHeaderInfo: Plattform-Untertitel in Kopfzeile anzeigen
     showFooterInfo: Name und Untertitel der Plattform in Fußzeile anzeigen
-    resourceCategories: Ressource-Kategorien
+    resourceCategories: Ressourcen-Kategorien
     resourceCategoryKey: Schlüssel
     resourceCategoryTranslation: Beschriftung
-    showResourceCategoryHeadings: Zeige Überschriften für Ressource-Kategorien in der Blättern-Ansicht
+    showResourceCategoryHeadings: Zeige Überschriften für Ressourcen-Kategorien in der Blättern-Ansicht
   segment:
     modelLabel: Segment
     key: Schlüssel
@@ -360,7 +360,7 @@ admin:
   statistics:
     heading: Statistiken
     globalHeading: Global
-    resourceTypesHeading: Ressource-Typen
+    resourceTypesHeading: Ressourcen-Typen
     textsHeading: Texte
   users:
     heading: Benutzer
