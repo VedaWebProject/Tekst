@@ -1,7 +1,7 @@
 from typing import Annotated
 
 from beanie import PydanticObjectId
-from beanie.operators import Or, Text
+from beanie.operators import NotIn, Or, Text
 from fastapi import APIRouter, Depends, HTTPException, Path, Query, status
 
 from tekst.auth import (
@@ -116,11 +116,22 @@ async def update_platform_settings(
     su: SuperuserDep,
     updates: PlatformSettingsUpdate,
 ) -> PlatformSettingsRead:
-    settings_doc = await PlatformSettingsDocument.find_one()
-    if not settings_doc:
-        await get_settings(force_nocache=True)
-        settings_doc = await PlatformSettingsDocument.find_one()
-    await settings_doc.apply(updates.model_dump(exclude_unset=True))
+    settings = await get_settings(force_nocache=True)
+    settings_doc = await PlatformSettingsDocument.get(settings.id)
+    updates_data = updates.model_dump(exclude_unset=True)
+    # reset user locales if the update reduces available locales
+    if "available_locales" in updates_data:
+        await UserDocument.find(
+            NotIn(UserDocument.locale, updates_data["available_locales"] + [None])
+        ).set(
+            {
+                UserDocument.locale: "enUS"
+                if "enUS" in updates_data["available_locales"]
+                else updates_data["available_locales"][0]
+            }
+        )
+    # apply updates
+    await settings_doc.apply(updates_data)
     return settings_doc
 
 
