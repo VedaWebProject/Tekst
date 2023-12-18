@@ -7,7 +7,7 @@ import VerifiedUserRound from '@vicons/material/VerifiedUserRound';
 import BlockRound from '@vicons/material/BlockRound';
 import PersonFilled from '@vicons/material/PersonFilled';
 import CheckCircleRound from '@vicons/material/CheckCircleRound';
-import QuestionMarkRound from '@vicons/material/QuestionMarkRound';
+import QuestionMarkOutlined from '@vicons/material/QuestionMarkOutlined';
 import ClearRound from '@vicons/material/ClearRound';
 import { usePlatformData } from '@/platformData';
 
@@ -105,7 +105,9 @@ const statusBtnMinWidth = '128px';
               targetUser.isVerified ? $t('models.user.isVerified') : $t('models.user.isUnverified')
             }}
             <template #icon>
-              <n-icon :component="targetUser.isVerified ? VerifiedUserRound : QuestionMarkRound" />
+              <n-icon
+                :component="targetUser.isVerified ? VerifiedUserRound : QuestionMarkOutlined"
+              />
             </template>
           </n-button>
           <!-- delete user -->

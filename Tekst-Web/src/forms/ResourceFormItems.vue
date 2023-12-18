@@ -185,6 +185,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
         style="width: 100%"
         @update:value="(v) => handleUpdate('sortOrder', v)"
       />
+      <HelpButtonWidget help-key="resourceSortOrder" gap-left />
     </n-form-item>
   </div>
 

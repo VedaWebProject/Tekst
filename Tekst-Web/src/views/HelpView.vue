@@ -5,8 +5,10 @@ import { useHelp, type HelpText } from '@/help';
 import { computed, onMounted, ref } from 'vue';
 import { watch } from 'vue';
 import { useStateStore } from '@/stores';
+import IconHeading from '@/components/typography/IconHeading.vue';
 
 import SearchOutlined from '@vicons/material/SearchOutlined';
+import QuestionMarkOutlined from '@vicons/material/QuestionMarkOutlined';
 
 const { getHelpTexts } = useHelp();
 
@@ -54,10 +56,10 @@ watch(
 </script>
 
 <template>
-  <h1>
-    Help
+  <IconHeading level="1" :icon="QuestionMarkOutlined">
+    {{ $t('help.help') }}
     <HelpButtonWidget help-key="helpView" />
-  </h1>
+  </IconHeading>
 
   <NInput v-model:value="filter" round :placeholder="$t('search.searchAction')" clearable>
     <template #prefix>

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { NModal, NButton, NIcon, NSpin } from 'naive-ui';
 
-import QuestionMarkFilled from '@vicons/material/QuestionMarkFilled';
+import QuestionMarkOutlined from '@vicons/material/QuestionMarkOutlined';
 import type { Size } from 'naive-ui/es/button/src/interface';
 import { $t } from '@/i18n';
 import { useHelp, type HelpText } from '@/help';
@@ -11,6 +11,8 @@ const props = withDefaults(
   defineProps<{
     helpKey: string;
     size?: Size;
+    gapLeft?: boolean;
+    gapRight?: boolean;
   }>(),
   {
     size: 'tiny',
@@ -21,6 +23,13 @@ const { getHelpText } = useHelp();
 const showModal = ref(false);
 const loading = ref(false);
 const helpText = ref<HelpText>();
+
+const buttonStyle = computed(() => ({
+  alignSelf: 'center',
+  verticalAlign: 'center',
+  marginLeft: props.gapLeft ? 'var(--content-gap)' : undefined,
+  marginRight: props.gapRight ? 'var(--content-gap)' : undefined,
+}));
 
 async function loadHelp() {
   loading.value = true;
@@ -50,11 +59,11 @@ async function handleHelpButtonClick() {
     :size="size"
     :title="$t('help.tipHelpButton')"
     :focusable="false"
-    style="display: inline-flex; align-self: center; vertical-align: center"
+    :style="buttonStyle"
     @click="handleHelpButtonClick"
   >
     <template #icon>
-      <n-icon :component="QuestionMarkFilled" />
+      <n-icon :component="QuestionMarkOutlined" />
     </template>
   </n-button>
 
