@@ -248,6 +248,7 @@ models:
 resources:
   heading: Resources
   headingGeneral: General
+  msgFoundCount: Found {count} resources ({total} total)
   ownedByMe: by me
   ownedByOthers: by others
   public: '@:models.resource.public'
@@ -357,6 +358,7 @@ admin:
   users:
     heading: Users
     save: Saved user "{username}"
+    msgFoundCount: Found {count} users ({total} total)
     checkLabelActive: Account is active
     checkLabelVerified: Email is verified
     checkLabelSuperuser: User is administrator

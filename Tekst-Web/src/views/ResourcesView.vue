@@ -230,7 +230,7 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
 
 <template>
   <IconHeading level="1" :icon="LayersFilled">
-    {{ $t('resources.heading') }} {{ `(${resources.data.length})` }}
+    {{ $t('resources.heading') }}
     <HelpButtonWidget help-key="resourcesView" />
   </IconHeading>
 
@@ -274,7 +274,15 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
     </n-collapse>
 
     <!-- Create new resource button -->
-    <n-space justify="end">
+    <n-space justify="space-between" align="center" style="margin-top: 0.5rem">
+      <div style="margin-top: 0.5rem">
+        {{
+          $t('resources.msgFoundCount', {
+            count: filteredData.length,
+            total: resources.data.length,
+          })
+        }}
+      </div>
       <n-button v-if="auth.user" type="primary" @click="router.push({ name: 'resourceCreate' })">
         <template #icon>
           <n-icon :component="AddOutlined" />

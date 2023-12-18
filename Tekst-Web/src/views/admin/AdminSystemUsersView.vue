@@ -257,6 +257,11 @@ onMounted(() => {
         </n-space>
       </n-collapse-item>
     </n-collapse>
+
+    <div style="margin-top: 0.5rem">
+      {{ $t('admin.users.msgFoundCount', { count: filteredData.length, total: users.length }) }}
+    </div>
+
     <!-- Users List -->
     <div class="content-block">
       <template v-if="paginatedData.length > 0">
