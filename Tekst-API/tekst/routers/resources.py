@@ -30,7 +30,7 @@ async def preprocess_resource_read(
             **resource_doc.model_dump(exclude=resource_doc.restricted_fields(for_user))
         )
     )
-    # include writable flag (if applicable)
+    # include writable flag
     resource.writable = bool(
         for_user
         and (
@@ -109,15 +109,10 @@ async def update_resource(
     updates: AnyResourceUpdateBody,
     user: UserDep,
 ) -> AnyResourceRead:
-    resource_doc = (
-        await resource_types_mgr.get(updates.resource_type)
-        .resource_model()
-        .document_model()
-        .find_one(
-            ResourceBaseDocument.id == resource_id,
-            ResourceBaseDocument.allowed_to_write(user),
-            with_children=True,
-        )
+    resource_doc = await ResourceBaseDocument.find_one(
+        ResourceBaseDocument.id == resource_id,
+        ResourceBaseDocument.allowed_to_write(user),
+        with_children=True,
     )
     if not resource_doc:
         raise HTTPException(
