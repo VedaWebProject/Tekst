@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type AnyResourceCreate, POST, resourceTypes } from '@/api';
+import { POST, resourceTypes, type AnyResourceRead } from '@/api';
 import { $t } from '@/i18n';
 import { useAuthStore, useResourcesStore, useStateStore } from '@/stores';
 import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
@@ -24,6 +24,7 @@ const resources = useResourcesStore();
 
 const getInitialModel = () =>
   ({
+    id: '',
     title: '',
     description: [],
     textId: state.text?.id || '',
@@ -36,11 +37,11 @@ const getInitialModel = () =>
     citation: null,
     meta: [],
     comment: [],
-  }) as AnyResourceCreate;
+  }) as AnyResourceRead;
 
 const formRef = ref<FormInst | null>(null);
 const loadingSave = ref(false);
-const model = ref<AnyResourceCreate>(getInitialModel());
+const model = ref<AnyResourceRead>(getInitialModel());
 
 const resourceTypeOptions = resourceTypes.map((lt) => ({
   label: () => $t(`resourceTypes.${lt}`),

@@ -123,7 +123,7 @@ export function useUsersAdmin() {
   };
 }
 
-export function useUsersPublic(queryRef: Ref<string | null | undefined>) {
+export function useUsersSearch(queryRef: Ref<string | null | undefined>) {
   const users = ref<UserReadPublic[]>([]);
   const error = ref(false);
   const loading = ref(false);

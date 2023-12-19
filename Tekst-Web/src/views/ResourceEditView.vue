@@ -36,7 +36,7 @@ const getInitialModel = () => _cloneDeep(resource.value);
 const formRef = ref<FormInst | null>(null);
 const loadingSave = ref(false);
 const loading = computed(() => resources.loading || loadingSave.value);
-const model = ref<AnyResourceUpdate | undefined>();
+const model = ref<AnyResourceRead | undefined>();
 const { changed, reset, getChanges } = useModelChanges(model);
 
 // change route if text changes

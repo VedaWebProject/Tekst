@@ -2,8 +2,8 @@
 import {
   prioritizedMetadataKeys,
   type AnyResourceConfig,
-  type AnyResourceUpdate,
   type UserReadPublic,
+  type AnyResourceRead,
 } from '@/api';
 import { resourceFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
@@ -14,7 +14,7 @@ import UserDisplayText from '@/components/UserDisplayText.vue';
 import ResourceConfigFormItems from '@/forms/resources/config/ResourceConfigFormItems.vue';
 import { usePlatformData } from '@/platformData';
 import { pickTranslation } from '@/utils';
-import { useUsersPublic } from '@/fetchers';
+import { useUsersSearch } from '@/fetchers';
 import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import {
   NSelect,
@@ -37,7 +37,7 @@ import ArrowUpwardOutlined from '@vicons/material/ArrowUpwardOutlined';
 import ArrowDownwardOutlined from '@vicons/material/ArrowDownwardOutlined';
 
 const props = defineProps<{
-  model: AnyResourceUpdate;
+  model: AnyResourceRead;
   owner?: UserReadPublic | null;
   public?: boolean;
 }>();
@@ -49,7 +49,11 @@ const auth = useAuthStore();
 const { pfData } = usePlatformData();
 
 const userSearchQuery = ref<string>();
-const { users, loading: loadingUsers, error: errorUsers } = useUsersPublic(userSearchQuery);
+const {
+  users: searchedUsers,
+  loading: loadingUsers,
+  error: errorUsers,
+} = useUsersSearch(userSearchQuery);
 const sharingAuthorized = computed(
   () => auth.user?.isSuperuser || (auth.user && props.owner && auth.user.id === props.owner.id)
 );
@@ -74,18 +78,51 @@ const metadataKeysOptions = computed(() =>
   }))
 );
 
-const usersOptions = computed(() =>
-  users.value.map((u) => {
-    return {
-      value: u.id,
+function postprocessUserOptions(sharedOptions: SelectOption[] = [], disableIds: string[] = []) {
+  return [
+    ...sharedOptions,
+    ...searchedUsers.value
+      .filter((u) => !sharedOptions.map((o) => o.value).includes(u.id))
+      .map((u) => ({
+        value: u.id,
+        user: u,
+      })),
+  ]
+    .map((o) => ({
+      ...o,
       disabled:
-        u.id === auth.user?.id ||
-        !!props.model.sharedRead?.find((s) => s === u.id) ||
-        !!props.model.sharedWrite?.find((s) => s === u.id),
-      user: u,
-    };
-  })
-);
+        o.value === props.model.ownerId ||
+        o.value === auth.user?.id ||
+        disableIds.includes(o.value as string),
+    }))
+    .sort((a, b) => (a.disabled ? 1 : 0) - (b.disabled ? 1 : 0));
+}
+
+const usersOptionsRead = computed(() => {
+  const shared =
+    props.model.sharedRead?.map((id) => {
+      return {
+        value: id,
+        user:
+          props.model.sharedReadUsers?.find((u) => u.id === id) ||
+          searchedUsers.value?.find((u) => u.id === id),
+      };
+    }) || [];
+  return postprocessUserOptions(shared, props.model.sharedWrite);
+});
+
+const usersOptionsWrite = computed(() => {
+  const shared =
+    props.model.sharedWrite?.map((id) => {
+      return {
+        value: id,
+        user:
+          props.model.sharedWriteUsers?.find((u) => u.id === id) ||
+          searchedUsers.value?.find((u) => u.id === id),
+      };
+    }) || [];
+  return postprocessUserOptions(shared, props.model.sharedRead);
+});
 
 function handleUpdate(field: string, value: any) {
   emits('update:model', {
@@ -325,7 +362,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
         :render-tag="renderUserSelectTag"
         :loading="loadingUsers"
         :status="errorUsers ? 'error' : undefined"
-        :options="usersOptions"
+        :options="usersOptionsRead"
         :placeholder="$t('resources.phSearchUsers')"
         @update:value="(v) => handleUpdate('sharedRead', v)"
         @search="handleUserSearch"
@@ -345,7 +382,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
         :render-tag="renderUserSelectTag"
         :loading="loadingUsers"
         :status="errorUsers ? 'error' : undefined"
-        :options="usersOptions"
+        :options="usersOptionsWrite"
         :placeholder="$t('resources.phSearchUsers')"
         @update:value="(v) => handleUpdate('sharedWrite', v)"
         @search="handleUserSearch"
