@@ -9,7 +9,6 @@ from pydantic import (
     StringConstraints,
     create_model,
     field_validator,
-    model_validator,
 )
 
 from tekst.models.common import (
@@ -131,26 +130,6 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
                 r"[\n\r]+", "\n", comment["translation"]
             ).strip()
         return v
-
-    @model_validator(mode="after")
-    def model_postprocess(self):
-        if self.public:
-            # cannot be both public and proposed, public has priority
-            self.proposed = False
-            # published resources do not have an owner nor shares, only admins can edit
-            self.owner_id = None
-            self.shared_read = []
-            self.shared_write = []
-        # shares
-        self.shared_write = [
-            user_id for user_id in self.shared_write if user_id != self.owner_id
-        ]
-        self.shared_read = [
-            user_id
-            for user_id in self.shared_read
-            if user_id != self.owner_id and user_id not in self.shared_write
-        ]
-        return self
 
     def restricted_fields(self, user: UserRead | None = None) -> set[str] | None:
         restrict_shares_info = user is None or (
