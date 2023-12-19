@@ -108,8 +108,8 @@ class TekstConfig(BaseSettings):
     security_enable_jwt_auth: bool = True
     security_auth_jwt_lifetime: Annotated[int, Field(ge=3600)] = 43200
 
-    security_reset_pw_token_lifetime: Annotated[int, Field(ge=600)] = 3600
-    security_verification_token_lifetime: Annotated[int, Field(ge=600)] = 3600
+    security_reset_pw_token_lifetime: Annotated[int, Field(ge=600)] = 3600  # 1h
+    security_verification_token_lifetime: Annotated[int, Field(ge=600)] = 86400  # 24h
 
     security_init_admin_email: str | None = None
     security_init_admin_password: str | None = None
