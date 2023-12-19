@@ -200,7 +200,9 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
             user,
             TemplateIdentifier.VERIFY,
             token=token,
-            token_lifetime_minutes=int(_cfg.security_verification_token_lifetime / 60),
+            token_lifetime_hours=int(
+                _cfg.security_verification_token_lifetime / 60 / 60
+            ),
         )
 
     async def on_after_verify(self, user: UserDocument, request: Request | None = None):
@@ -213,7 +215,7 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
             user,
             TemplateIdentifier.PASSWORD_FORGOT,
             token=token,
-            token_lifetime_minutes=int(_cfg.security_reset_pw_token_lifetime / 60),
+            token_lifetime_hours=int(_cfg.security_reset_pw_token_lifetime / 60 / 60),
         )
 
     async def on_after_reset_password(

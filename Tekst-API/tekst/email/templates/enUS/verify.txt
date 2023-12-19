@@ -4,6 +4,6 @@ please verify your email address for {platform_name} by clicking the following l
 
 {web_url}/verify/?token={token}
 
-Please note that this verification link is only valid for {token_lifetime_minutes} minutes.
+Please note that this verification link is only valid for {token_lifetime_hours} hours.
 
 See you on {platform_name} ({web_url})!

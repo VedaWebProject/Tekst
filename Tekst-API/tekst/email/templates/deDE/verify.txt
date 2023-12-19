@@ -5,6 +5,6 @@ Alternativ können Sie ihn auch kopieren und manuell in die Adress-Leiste Ihres 
 
 {web_url}/verify/?token={token}
 
-Bitte beachten Sie, dass dieser Verifizierungs-Link nur für {token_lifetime_minutes} Minuten gültig ist!
+Bitte beachten Sie, dass dieser Verifizierungs-Link nur für {token_lifetime_hours} Stunden gültig ist!
 
 Bis gleich auf {platform_name}!
