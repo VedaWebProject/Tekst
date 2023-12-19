@@ -7,6 +7,7 @@ import {
   NDynamicInput,
   NCheckbox,
   NButton,
+  NSpace,
   NButtonGroup,
   NSelect,
   NForm,
@@ -206,32 +207,20 @@ function resetForm() {
 
       <!-- DISPLAY OPTIONS -->
       <n-form-item :label="$t('admin.system.platformSettings.formLabelDisplay')">
-        <div style="display: flex; flex-direction: column; gap: 4px">
+        <n-space vertical>
           <!-- ALWAY SHOW TEXT INFO, ALSO ON NON-TEXT-SPECIFIC PAGES? -->
-          <n-checkbox
-            v-model:checked="formModel.alwaysShowTextInfo"
-            :round="false"
-            @keydown.enter.prevent
-          >
+          <n-checkbox v-model:checked="formModel.alwaysShowTextInfo" @keydown.enter.prevent>
             {{ $t('models.platformSettings.alwaysShowTextInfo') }}
           </n-checkbox>
           <!-- SHOW DESCIPTION IN HEADER? -->
-          <n-checkbox
-            v-model:checked="formModel.showHeaderInfo"
-            :round="false"
-            @keydown.enter.prevent
-          >
+          <n-checkbox v-model:checked="formModel.showHeaderInfo" @keydown.enter.prevent>
             {{ $t('models.platformSettings.showHeaderInfo') }}
           </n-checkbox>
           <!-- SHOW TITLE AND DESCIPTION IN FOOTER? -->
-          <n-checkbox
-            v-model:checked="formModel.showFooterInfo"
-            :round="false"
-            @keydown.enter.prevent
-          >
+          <n-checkbox v-model:checked="formModel.showFooterInfo" @keydown.enter.prevent>
             {{ $t('models.platformSettings.showFooterInfo') }}
           </n-checkbox>
-        </div>
+        </n-space>
       </n-form-item>
     </div>
 
@@ -326,15 +315,24 @@ function resetForm() {
           </template>
         </n-dynamic-input>
       </n-form-item>
-      <!-- SHOW RESOURCE CATEGORY HEADINGS -->
       <n-form-item :show-label="false">
-        <n-checkbox
-          v-model:checked="formModel.showResourceCategoryHeadings"
-          :round="false"
-          @keydown.enter.prevent
-        >
-          {{ $t('models.platformSettings.showResourceCategoryHeadings') }}
-        </n-checkbox>
+        <n-space vertical>
+          <!-- SHOW RESOURCE CATEGORY HEADINGS -->
+          <n-checkbox
+            v-model:checked="formModel.showResourceCategoryHeadings"
+            @keydown.enter.prevent
+          >
+            {{ $t('models.platformSettings.showResourceCategoryHeadings') }}
+          </n-checkbox>
+          <!-- ALWAYS SHOW RESOURCE CATEGORY HEADINGS -->
+          <n-checkbox
+            v-model:checked="formModel.alwaysShowResourceCategoryHeadings"
+            :disabled="!formModel.showResourceCategoryHeadings"
+            @keydown.enter.prevent
+          >
+            {{ $t('models.platformSettings.alwaysShowResourceCategoryHeadings') }}
+          </n-checkbox>
+        </n-space>
       </n-form-item>
     </div>
   </n-form>

@@ -235,6 +235,7 @@ models:
     resourceCategoryKey: Key
     resourceCategoryTranslation: Label
     showResourceCategoryHeadings: Show resource category headings in browse view
+    alwaysShowResourceCategoryHeadings: Show resource category headings even for the only category with resources
   segment:
     modelLabel: Segment
     key: Key

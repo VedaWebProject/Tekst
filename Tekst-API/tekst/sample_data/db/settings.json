@@ -28,6 +28,7 @@
       }
     ],
     "show_resource_category_headings": true,
+    "always_show_resource_category_headings": false,
     "always_show_text_info": true,
     "show_header_info": true,
     "show_footer_info": true,

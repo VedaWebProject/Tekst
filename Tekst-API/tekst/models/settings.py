@@ -96,6 +96,10 @@ class PlatformSettings(ModelBase, ModelFactoryMixin):
     show_resource_category_headings: Annotated[
         bool, Field(description="Show resource category headings in browse view")
     ] = True
+    always_show_resource_category_headings: Annotated[
+        bool,
+        Field(description="Show category heading for the only category with resources"),
+    ] = False
     always_show_text_info: Annotated[
         bool,
         Field(

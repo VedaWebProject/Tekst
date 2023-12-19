@@ -50,7 +50,8 @@ const activeResourcesCategorized = computed(() =>
       <h2
         v-if="
           pfData?.settings.showResourceCategoryHeadings &&
-          activeResourcesCategorized.length > 1 &&
+          (activeResourcesCategorized.length > 1 ||
+            pfData?.settings.alwaysShowResourceCategoryHeadings) &&
           !browse.reducedView
         "
       >

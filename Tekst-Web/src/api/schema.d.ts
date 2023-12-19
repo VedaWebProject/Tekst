@@ -1631,6 +1631,12 @@ export interface components {
        */
       showResourceCategoryHeadings?: boolean;
       /**
+       * Alwaysshowresourcecategoryheadings
+       * @description Show category heading for the only category with resources
+       * @default false
+       */
+      alwaysShowResourceCategoryHeadings?: boolean;
+      /**
        * Alwaysshowtextinfo
        * @description Always show text info and selector in header, even on non-text-specific pages
        * @default true
@@ -1720,6 +1726,12 @@ export interface components {
        * @default true
        */
       showResourceCategoryHeadings?: boolean;
+      /**
+       * Alwaysshowresourcecategoryheadings
+       * @description Show category heading for the only category with resources
+       * @default false
+       */
+      alwaysShowResourceCategoryHeadings?: boolean;
       /**
        * Alwaysshowtextinfo
        * @description Always show text info and selector in header, even on non-text-specific pages

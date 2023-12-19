@@ -6218,6 +6218,12 @@
             "description": "Show resource category headings in browse view",
             "default": true
           },
+          "alwaysShowResourceCategoryHeadings": {
+            "type": "boolean",
+            "title": "Alwaysshowresourcecategoryheadings",
+            "description": "Show category heading for the only category with resources",
+            "default": false
+          },
           "alwaysShowTextInfo": {
             "type": "boolean",
             "title": "Alwaysshowtextinfo",
@@ -6380,6 +6386,12 @@
             "title": "Showresourcecategoryheadings",
             "description": "Show resource category headings in browse view",
             "default": true
+          },
+          "alwaysShowResourceCategoryHeadings": {
+            "type": "boolean",
+            "title": "Alwaysshowresourcecategoryheadings",
+            "description": "Show category heading for the only category with resources",
+            "default": false
           },
           "alwaysShowTextInfo": {
             "type": "boolean",

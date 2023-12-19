@@ -236,6 +236,7 @@ models:
     resourceCategoryKey: Schlüssel
     resourceCategoryTranslation: Beschriftung
     showResourceCategoryHeadings: Zeige Überschriften für Ressourcen-Kategorien in der Blättern-Ansicht
+    alwaysShowResourceCategoryHeadings: Zeige Überschrift auch für die einzige Kategorie mit Ressourcen
   segment:
     modelLabel: Segment
     key: Schlüssel
