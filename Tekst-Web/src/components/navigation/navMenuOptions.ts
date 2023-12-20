@@ -30,11 +30,11 @@ function renderLink(
     h(
       RouterLink,
       {
+        ...props,
         to,
         style: {
           fontSize: 'var(--app-ui-font-size)',
         },
-        ...props,
       },
       { default: label }
     );

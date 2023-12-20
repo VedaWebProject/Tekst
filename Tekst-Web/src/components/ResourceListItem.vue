@@ -60,12 +60,7 @@ const actionButtonProps = {
             v-if="targetResource.comment?.length"
             :style="targetResource.description ? 'margin-top: .25rem' : ''"
           >
-            <n-ellipsis
-              expand-trigger="click"
-              :tooltip="false"
-              :line-clamp="2"
-              style="opacity: 0.75"
-            >
+            <n-ellipsis :tooltip="false" :line-clamp="2" style="opacity: 0.75">
               {{ $t('models.resource.comment') }}:
               <TranslationDisplay :value="targetResource.comment" />
             </n-ellipsis>
