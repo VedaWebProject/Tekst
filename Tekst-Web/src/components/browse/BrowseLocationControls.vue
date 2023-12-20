@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useStateStore, useBrowseStore } from '@/stores';
 import { NButton, NModal, NSelect, NFormItem, NForm, NDivider } from 'naive-ui';
@@ -75,6 +75,10 @@ watch(
   () => state.text,
   (after) => (locationSelectModels.value = getEmptyModels(after))
 );
+
+onMounted(() => {
+  browse.updateBrowseNodePath();
+});
 
 function getEmptyModels(text: TextRead | undefined = state.text): LocationSelectModel[] {
   if (!text) return [];
