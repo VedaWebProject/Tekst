@@ -26,7 +26,7 @@ const activeResourcesCategorized = computed(() =>
       resources: c.resources.filter(
         (l) =>
           l.active &&
-          (l.level == browse.level || (l.config?.showOnParentLevel && l.level == browse.level + 1))
+          (l.level <= browse.level || (l.config?.showOnParentLevel && l.level == browse.level + 1))
       ),
     }))
     .filter((c) => c.resources.length)
