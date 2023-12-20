@@ -1,4 +1,3 @@
-from datetime import datetime
 from typing import (  # noqa: UP035
     Annotated,
     Any,
@@ -89,7 +88,6 @@ class DocumentBase(ModelTransformerMixin, Document):
         return await super().insert(**kwargs)
 
     async def apply(self, updates: dict, **kwargs):
-        updates["modified_at"] = datetime.utcnow()
         return await self.set(decamelize(updates), **kwargs)
 
     class Settings:

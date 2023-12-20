@@ -42,8 +42,7 @@
         "languages": ["EN", "FR"]
       }
     },
-    "category": "versions",
-    "modified_at": { "$date": "2023-12-07T10:45:18.031Z" }
+    "category": "versions"
   },
   {
     "_id": { "$oid": "654ba3a6ec7833e469dde77a" },
@@ -76,8 +75,7 @@
         "locale": "enUS",
         "translation": "The original text in Japanese language"
       }
-    ],
-    "modified_at": { "$date": "2023-12-07T10:28:02.025Z" }
+    ]
   },
   {
     "_id": { "$oid": "654ba525ec7833e469dde77e" },
@@ -101,8 +99,7 @@
     "meta": [
       { "key": "author", "value": "Robert Hass" },
       { "key": "language", "value": "EN" }
-    ],
-    "modified_at": { "$date": "2023-12-07T10:50:25.713Z" }
+    ]
   },
   {
     "_id": { "$oid": "654ba678ec7833e469dde782" },
@@ -124,7 +121,6 @@
       }
     },
     "category": "versions",
-    "modified_at": { "$date": "2023-12-07T10:43:25.551Z" },
     "meta": [{ "key": "language", "value": "Hepburn romanization" }]
   }
 ]

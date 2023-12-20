@@ -41,7 +41,6 @@
     "loc_delim": "/",
     "labeled_location": true,
     "accent_color": "#305d97",
-    "is_active": true,
-    "modified_at": { "$date": "2023-11-08T15:09:53.081Z" }
+    "is_active": true
   }
 ]
