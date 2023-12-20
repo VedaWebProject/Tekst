@@ -6,7 +6,6 @@ import MetadataDisplayMinimal from '@/components/browse/MetadataDisplayMinimal.v
 import { useStateStore } from '@/stores';
 import type { AnyResourceRead, UserRead } from '@/api';
 
-import CheckRound from '@vicons/material/CheckRound';
 import PublicFilled from '@vicons/material/PublicFilled';
 import FlagFilled from '@vicons/material/FlagFilled';
 import PersonFilled from '@vicons/material/PersonFilled';
@@ -36,11 +35,7 @@ const infoTooltip = computed(() =>
 
 <template>
   <div class="item" :class="disabled && 'disabled'" :title="infoTooltip">
-    <n-switch v-model:value="active" size="large" :round="false">
-      <template #checked-icon>
-        <n-icon :component="CheckRound" />
-      </template>
-    </n-switch>
+    <n-switch v-model:value="active" size="large" :round="false" />
     <div class="item-main">
       <div class="item-title-container">
         <div class="item-title">{{ resource.title }}</div>
