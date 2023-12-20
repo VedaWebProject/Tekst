@@ -7,7 +7,7 @@ import TextAlign from '@tiptap/extension-text-align';
 import CharacterCount from '@tiptap/extension-character-count';
 import Link from '@tiptap/extension-link';
 import Image from '@tiptap/extension-image';
-import PromptModal from './PromptModal.vue';
+import PromptModal from '@/components/PromptModal.vue';
 import { PromptTemplatePromise } from '@/templatePromises';
 import { $t } from '@/i18n';
 

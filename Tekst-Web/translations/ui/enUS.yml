@@ -256,10 +256,15 @@ resources:
   notPublic: '@:general.not @:models.resource.public'
   proposed: '@:models.resource.proposed'
   notProposed: '@:general.not @:models.resource.proposed'
+  transferAction: Transfer resource to user
   proposeAction: Propose for publication
   unproposeAction: Withdraw publication proposal
   publishAction: Publish
   unpublishAction: Withdraw publication
+  warnTransfer: |
+    When transferring a resource to a user, that user is becoming the new sole owner
+    who can edit, delete, propose and share access rights to the resource.
+    Are you sure you want to transfer ownership of the resource "{title}" to the user "{username}"?
   warnPropose: |
     You are about to propose your resource for publication. It's very important that
     you understand the implications of a publication proposal.
@@ -272,6 +277,7 @@ resources:
     Are you sure you want to withdraw the publication of this resource?
   warnDelete: |
     Are you sure you want to delete this resource and all data associated with it?
+  msgTransferred: The resource "{title}" has been transferred to user "{username}".
   msgProposed: The resource "{title}" has been proposed for publication.
   msgUnproposed: The publication proposal for the resource "{title}" has been withdrawn.
   msgPublished: The resource "{title}" has been published.

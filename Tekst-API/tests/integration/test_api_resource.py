@@ -357,6 +357,46 @@ async def test_delete_resource(
     assert len(resp.json()) == resources_count - 1
 
 
+@pytest.mark.anyio
+async def test_transfer_resource(
+    api_path,
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_fail_msg,
+    register_test_user,
+    get_session_cookie,
+):
+    inserted_ids = await insert_sample_data("texts", "nodes", "resources")
+    resource_id = inserted_ids["resources"][0]
+    # register regular test user
+    user_data = await register_test_user(is_superuser=False)
+    # register test superuser
+    superuser_data = await register_test_user(alternative=True, is_superuser=True)
+    session_cookie = await get_session_cookie(superuser_data)
+    # transfer resource that is still public to test user
+    resp = await test_client.post(
+        f"/resources/{resource_id}/transfer",
+        json=user_data["id"],
+        cookies=session_cookie,
+    )
+    assert resp.status_code == 400, status_fail_msg(400, resp)
+    # unpublish resource
+    resp = await test_client.post(
+        f"/resources/{resource_id}/unpublish",
+        cookies=session_cookie,
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    # transfer resource to test user
+    resp = await test_client.post(
+        f"/resources/{resource_id}/transfer",
+        json=user_data["id"],
+        cookies=session_cookie,
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert isinstance(resp.json(), dict)
+    assert resp.json()["ownerId"] == user_data["id"]
+
+
 # @pytest.mark.anyio
 # async def test_get_resource_template(
 #     api_path, test_client: AsyncClient, insert_sample_data

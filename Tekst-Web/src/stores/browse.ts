@@ -93,21 +93,15 @@ export const useBrowseStore = defineStore('browse', () => {
   );
 
   // react to route changes concerning browse state
-  watch([() => route.query.lvl, () => route.query.pos], ([newLvl, newPos]) => {
-    if (route.name === 'browse') {
-      updateBrowseNodePath(newLvl?.toString(), newPos?.toString());
-    }
-  });
-
-  // load units data on browse location change
   watch(
-    () => nodePathHead.value,
-    async () => {
-      await loadUnits();
+    [() => route.query.lvl, () => route.query.pos],
+    async ([newLvl, newPos]) => {
+      if (route.name === 'browse') {
+        await updateBrowseNodePath(newLvl?.toString(), newPos?.toString());
+        loadUnits();
+      }
     },
-    {
-      immediate: true,
-    }
+    { immediate: true }
   );
 
   /* RESOURCES AND UNITS */

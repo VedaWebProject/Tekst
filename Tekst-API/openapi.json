@@ -1692,6 +1692,87 @@
         }
       }
     },
+    "/resources/{id}/transfer": {
+      "post": {
+        "tags": [
+          "resources"
+        ],
+        "summary": "Transfer resource",
+        "operationId": "transferResource",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593",
+                "title": "Target User Id"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/DebugResourceRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PlaintextResourceRead"
+                    }
+                  ],
+                  "discriminator": {
+                    "propertyName": "resourceType",
+                    "mapping": {
+                      "debug": "#/components/schemas/DebugResourceRead",
+                      "plaintext": "#/components/schemas/PlaintextResourceRead"
+                    }
+                  },
+                  "title": "Response Transfer Resource Resources  Id  Transfer Post"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/resources/{id}/propose": {
       "post": {
         "tags": [

@@ -29,6 +29,8 @@ import SearchRound from '@vicons/material/SearchRound';
 import UndoRound from '@vicons/material/UndoRound';
 import LayersFilled from '@vicons/material/LayersFilled';
 import AddOutlined from '@vicons/material/AddOutlined';
+import { UserSelectTemplatePromise } from '@/templatePromises';
+import UserSelectModal from '@/components/UserSelectModal.vue';
 
 const state = useStateStore();
 const auth = useAuthStore();
@@ -82,6 +84,47 @@ const paginatedData = computed(() => {
   const end = start + pagination.value.pageSize;
   return filteredData.value.slice(start, end);
 });
+
+async function handleTransferClick(resource: AnyResourceRead) {
+  try {
+    const targetUser = await UserSelectTemplatePromise.start(
+      $t('resources.transferAction'),
+      $t('models.user.modelLabel')
+    );
+    dialog.warning({
+      title: $t('general.warning'),
+      content: $t('resources.warnTransfer', {
+        title: resource.title,
+        username: targetUser.username,
+      }),
+      positiveText: $t('general.yesAction'),
+      negativeText: $t('general.noAction'),
+      positiveButtonProps,
+      negativeButtonProps,
+      autoFocus: false,
+      closable: false,
+      onPositiveClick: async () => {
+        actionsLoading.value = true;
+        const { data, error } = await POST('/resources/{id}/transfer', {
+          params: { path: { id: resource.id } },
+          body: targetUser.id,
+        });
+        if (!error) {
+          resources.replace(data);
+          message.success(
+            $t('resources.msgTransferred', { title: resource.title, username: targetUser.username })
+          );
+        } else {
+          message.error($t('errors.unexpected'), error);
+        }
+        filters.value = initialFilters();
+        actionsLoading.value = false;
+      },
+    });
+  } catch (error) {
+    return;
+  }
+}
 
 function handleProposeClick(resource: AnyResourceRead) {
   dialog.warning({
@@ -300,6 +343,7 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
             :key="item.id"
             :target-resource="item"
             :current-user="auth.user"
+            @transfer-click="handleTransferClick"
             @propose-click="handleProposeClick"
             @unpropose-click="handleUnproposeClick"
             @publish-click="handlePublishClick"
@@ -336,4 +380,6 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
   <div v-else>
     {{ $t('errors.error') }}
   </div>
+
+  <UserSelectModal />
 </template>

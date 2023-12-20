@@ -1,5 +1,6 @@
 import { createTemplatePromise } from '@vueuse/core';
 import type { RouteLocationRaw } from 'vue-router';
+import type { UserReadPublic } from './api';
 
 export const LoginTemplatePromise = createTemplatePromise<
   // promise resolve type
@@ -25,6 +26,18 @@ export const PromptTemplatePromise = createTemplatePromise<
     // message
     string | undefined,
     // preset value
+    string | undefined,
+  ]
+>();
+
+export const UserSelectTemplatePromise = createTemplatePromise<
+  // promise resolve type
+  UserReadPublic,
+  // extra args
+  [
+    // title
+    string | undefined,
+    // message
     string | undefined,
   ]
 >();

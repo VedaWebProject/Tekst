@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useStateStore, useBrowseStore } from '@/stores';
 import { NButton, NModal, NSelect, NFormItem, NForm, NDivider } from 'naive-ui';
@@ -197,9 +197,6 @@ function handleLocationSelect() {
   // close location select modal
   showModal.value = false;
 }
-
-// initialize node path on mount
-onMounted(() => browse.updateBrowseNodePath());
 
 // react to keyboard for in-/decreasing location
 whenever(ArrowRight, () => {

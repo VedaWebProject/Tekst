@@ -4,6 +4,7 @@ import { NEllipsis, NIcon, NListItem, NThing, NSpace, NButton } from 'naive-ui';
 import { computed } from 'vue';
 import ResourceInfoWidget from '@/components/browse/widgets/ResourceInfoWidget.vue';
 import ResourcePublicationStatus from '@/components/ResourcePublicationStatus.vue';
+import TranslationDisplay from './TranslationDisplay.vue';
 
 import DeleteFilled from '@vicons/material/DeleteFilled';
 import SettingsFilled from '@vicons/material/SettingsFilled';
@@ -11,7 +12,7 @@ import FlagFilled from '@vicons/material/FlagFilled';
 import FlagOutlined from '@vicons/material/FlagOutlined';
 import PublicFilled from '@vicons/material/PublicFilled';
 import PublicOffFilled from '@vicons/material/PublicOffFilled';
-import TranslationDisplay from './TranslationDisplay.vue';
+import PersonPinFilled from '@vicons/material/PersonPinFilled';
 
 const props = defineProps<{
   targetResource: AnyResourceRead;
@@ -19,6 +20,7 @@ const props = defineProps<{
 }>();
 
 defineEmits([
+  'transferClick',
   'proposeClick',
   'unproposeClick',
   'publishClick',
@@ -27,20 +29,17 @@ defineEmits([
   'deleteClick',
 ]);
 
-const canDelete = computed(
+const isOwnerOrAdmin = computed(
   () =>
     props.currentUser &&
-    (props.currentUser.isSuperuser || props.currentUser.id === props.targetResource.ownerId) &&
-    !props.targetResource.public &&
-    !props.targetResource.proposed
+    (props.currentUser.isSuperuser || props.currentUser.id === props.targetResource.ownerId)
 );
 
-const canPropose = computed(
-  () =>
-    props.currentUser &&
-    (props.currentUser.isSuperuser || props.currentUser.id === props.targetResource.ownerId) &&
-    !props.targetResource.public
+const canDelete = computed(
+  () => isOwnerOrAdmin.value && !props.targetResource.public && !props.targetResource.proposed
 );
+
+const canPropose = computed(() => isOwnerOrAdmin.value && !props.targetResource.public);
 
 const actionButtonProps = {
   quaternary: true,
@@ -75,6 +74,17 @@ const actionButtonProps = {
       </template>
       <template #header-extra>
         <n-space>
+          <!-- transfer to user -->
+          <n-button
+            v-if="isOwnerOrAdmin && !targetResource.public && !targetResource.proposed"
+            v-bind="actionButtonProps"
+            :title="$t('resources.transferAction')"
+            @click="$emit('transferClick', targetResource)"
+          >
+            <template #icon>
+              <n-icon :component="PersonPinFilled" />
+            </template>
+          </n-button>
           <!-- propose -->
           <n-button
             v-if="canPropose && !targetResource.proposed"

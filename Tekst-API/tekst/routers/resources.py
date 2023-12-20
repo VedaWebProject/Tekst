@@ -2,7 +2,7 @@ from typing import Annotated
 
 from beanie import PydanticObjectId
 from beanie.operators import In
-from fastapi import APIRouter, HTTPException, Path, Query, status
+from fastapi import APIRouter, Body, HTTPException, Path, Query, status
 
 from tekst.auth import OptionalUserDep, SuperuserDep, UserDep
 from tekst.models.resource import ResourceBaseDocument
@@ -310,6 +310,56 @@ async def delete_resource(
         ResourceBaseDocument.id == resource_id,
         with_children=True,
     ).delete()
+
+
+@router.post(
+    "/{id}/transfer", response_model=AnyResourceReadBody, status_code=status.HTTP_200_OK
+)
+async def transfer_resource(
+    user: UserDep,
+    resource_id: Annotated[PydanticObjectId, Path(alias="id")],
+    target_user_id: Annotated[PydanticObjectId, Body()],
+) -> AnyResourceRead:
+    resource_doc = await ResourceBaseDocument.get(resource_id, with_children=True)
+    if not resource_doc:
+        raise HTTPException(
+            status.HTTP_404_NOT_FOUND, detail=f"No resource with ID {resource_id}"
+        )
+    if not user.is_superuser and user.id != resource_doc.owner_id:
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED)
+    if resource_doc.public:
+        raise HTTPException(
+            status.HTTP_400_BAD_REQUEST,
+            detail=f"Resource with ID {resource_id} is public",
+        )
+    if resource_doc.proposed:
+        raise HTTPException(
+            status.HTTP_400_BAD_REQUEST,
+            detail=f"Resource with ID {resource_id} is proposed for publication",
+        )
+    if target_user_id == resource_doc.owner_id:
+        return await preprocess_resource_read(resource_doc, user)
+    if not await UserDocument.find_one(UserDocument.id == target_user_id).exists():
+        raise HTTPException(
+            status.HTTP_400_BAD_REQUEST, detail=f"No user with ID {target_user_id}"
+        )
+    # all fine, transfer resource and remove target user ID from resource shares
+    await resource_doc.set(
+        {
+            ResourceBaseDocument.owner_id: target_user_id,
+            ResourceBaseDocument.shared_read: [
+                u_id
+                for u_id in resource_doc.shared_read
+                if str(u_id) != str(target_user_id)
+            ],
+            ResourceBaseDocument.shared_write: [
+                u_id
+                for u_id in resource_doc.shared_write
+                if str(u_id) != str(target_user_id)
+            ],
+        }
+    )
+    return await preprocess_resource_read(resource_doc, user)
 
 
 @router.post(

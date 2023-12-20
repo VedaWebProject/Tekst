@@ -257,10 +257,16 @@ resources:
   notPublic: '@:general.not @:models.resource.public'
   proposed: '@:models.resource.proposed'
   notProposed: '@:general.not @:models.resource.proposed'
+  transferAction: Ressource einem Benutzer zuordnen
   proposeAction: Für Veröffentlichung vorschlagen
   unproposeAction: Veröffentlichungsvorschlag zurücknehmen
   publishAction: Veröffentlichen
   unpublishAction: Veröffentlichung aufheben
+  warnTransfer: |
+    Wenn sie eine Ressource an einen Benutzer übertragen,
+    wird dieser Benutzer der neue einzige Besitzer der Ressource und kann diese editieren,
+    löschen, zur Veröffentlichung vorschlagen und Zugriffsrechte vergeben.
+    Sind Sie sich sicher, dass Sie die Resource "{title}" an den Benutzer "{username}" übertragen möchten?
   warnPropose: |
     Sie sind dabei, Ihre Ressource zur Veröffentlichung vorzuschlagen.
     Es ist sehr wichtig, dass Sie die Auswirkungen eines
@@ -279,6 +285,7 @@ resources:
   warnDelete: |
     Sind Sie sicher, dass Sie diese Ressource und alle
     mit ihr verbundenen Daten löschen wollen?
+  msgTransferred: Die Ressource "{title}" wurde an den Benutzer "{username}" übertragen.
   msgProposed: Die Ressource "{title}" wurde zur Veröffentlichung vorgeschlagen.
   msgUnproposed: Die Veröffentlichungsvorschlag für die Ressource "{title}" wurde zurückgezogen.
   msgPublished: Die Ressource "{title}" wurde veröffentlicht.
