@@ -98,7 +98,7 @@ export const useBrowseStore = defineStore('browse', () => {
     async ([newLvl, newPos]) => {
       if (route.name === 'browse') {
         await updateBrowseNodePath(newLvl?.toString(), newPos?.toString());
-        loadUnits();
+        newLvl && newPos && loadUnits();
       }
     },
     { immediate: true }
