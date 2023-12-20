@@ -35,7 +35,7 @@ const activeResourcesCategorized = computed(() =>
 
 <template>
   <IconHeading level="1" :icon="MenuBookOutlined">
-    <LocationLabel />&nbsp;
+    <LocationLabel />
     <HelpButtonWidget help-key="browseView" />
   </IconHeading>
 
