@@ -30,14 +30,4 @@ export const PromptTemplatePromise = createTemplatePromise<
   ]
 >();
 
-export const UserSelectTemplatePromise = createTemplatePromise<
-  // promise resolve type
-  UserReadPublic,
-  // extra args
-  [
-    // title
-    string | undefined,
-    // message
-    string | undefined,
-  ]
->();
+export const TransferResourceTemplatePromise = createTemplatePromise<UserReadPublic>();

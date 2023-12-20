@@ -264,7 +264,7 @@ resources:
   warnTransfer: |
     When transferring a resource to a user, that user is becoming the new sole owner
     who can edit, delete, propose and share access rights to the resource.
-    Are you sure you want to transfer ownership of the resource "{title}" to the user "{username}"?
+    Please only proceed if you are sure that this is what you want.
   warnPropose: |
     You are about to propose your resource for publication. It's very important that
     you understand the implications of a publication proposal.

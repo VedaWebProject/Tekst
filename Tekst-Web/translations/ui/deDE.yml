@@ -257,7 +257,7 @@ resources:
   notPublic: '@:general.not @:models.resource.public'
   proposed: '@:models.resource.proposed'
   notProposed: '@:general.not @:models.resource.proposed'
-  transferAction: Ressource einem Benutzer zuordnen
+  transferAction: Ressource an Benutzer übertragen
   proposeAction: Für Veröffentlichung vorschlagen
   unproposeAction: Veröffentlichungsvorschlag zurücknehmen
   publishAction: Veröffentlichen
@@ -266,7 +266,7 @@ resources:
     Wenn sie eine Ressource an einen Benutzer übertragen,
     wird dieser Benutzer der neue einzige Besitzer der Ressource und kann diese editieren,
     löschen, zur Veröffentlichung vorschlagen und Zugriffsrechte vergeben.
-    Sind Sie sich sicher, dass Sie die Resource "{title}" an den Benutzer "{username}" übertragen möchten?
+    Bitte fahren Sie nur fort, wenn Sie sich dessen bewusst sind!
   warnPropose: |
     Sie sind dabei, Ihre Ressource zur Veröffentlichung vorzuschlagen.
     Es ist sehr wichtig, dass Sie die Auswirkungen eines

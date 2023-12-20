@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { UserSelectTemplatePromise } from '@/templatePromises';
-import { NSelect, NButton, NModal, NFormItem, type SelectOption } from 'naive-ui';
+import { TransferResourceTemplatePromise } from '@/templatePromises';
+import { NAlert, NSelect, NButton, NModal, NFormItem, type SelectOption } from 'naive-ui';
 import ButtonFooter from './ButtonFooter.vue';
 import { computed, h, ref, type VNodeChild } from 'vue';
 import { useUsersSearch } from '@/fetchers';
@@ -28,7 +28,7 @@ function handleOkClick(resolve: (v: UserReadPublic) => void, reject: (v: any) =>
 </script>
 
 <template>
-  <UserSelectTemplatePromise v-slot="{ args, resolve, reject }">
+  <TransferResourceTemplatePromise v-slot="{ resolve, reject }">
     <n-modal
       :show="true"
       preset="card"
@@ -37,13 +37,20 @@ function handleOkClick(resolve: (v: UserReadPublic) => void, reject: (v: any) =>
       :bordered="false"
       :closable="false"
       to="#app-container"
-      :title="args[0]"
+      :title="$t('resources.transferAction')"
       embedded
       @close="reject(null)"
       @mask-click="reject(null)"
       @esc="reject(null)"
     >
-      <n-form-item :label="args[1]">
+      <n-alert
+        type="warning"
+        :title="$t('general.warning')"
+        style="margin-bottom: var(--layout-gap)"
+      >
+        {{ $t('resources.warnTransfer') }}
+      </n-alert>
+      <n-form-item :label="$t('models.user.modelLabel')">
         <n-select
           v-model:value="value"
           filterable
@@ -68,5 +75,5 @@ function handleOkClick(resolve: (v: UserReadPublic) => void, reject: (v: any) =>
         </n-button>
       </ButtonFooter>
     </n-modal>
-  </UserSelectTemplatePromise>
+  </TransferResourceTemplatePromise>
 </template>
