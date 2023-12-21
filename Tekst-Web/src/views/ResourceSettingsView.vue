@@ -77,7 +77,7 @@ async function handleSaveClick() {
         },
       });
       if (!error) {
-        message.success($t('resources.edit.msgSaved', { title: data.title }));
+        message.success($t('resources.settings.msgSaved', { title: data.title }));
         resources.replace(data);
         reset();
       } else {
@@ -94,8 +94,7 @@ async function handleSaveClick() {
 
 <template>
   <IconHeading v-if="resource" level="1" :icon="LayersFilled">
-    {{ $t('resources.edit.heading') }}
-    <HelpButtonWidget help-key="resourceEditView" />
+    {{ resource?.title }}
   </IconHeading>
 
   <router-link
@@ -107,11 +106,14 @@ async function handleSaveClick() {
       <template #icon>
         <KeyboardArrowLeftOutlined />
       </template>
-      {{ $t('resources.edit.backToOverview') }}
+      {{ $t('resources.settings.backToOverview') }}
     </n-button>
   </router-link>
 
-  <h2>{{ resource?.title }}</h2>
+  <h2>
+    {{ $t('resources.settings.heading') }}
+    <HelpButtonWidget help-key="resourceSettingsView" />
+  </h2>
 
   <table v-if="resource" class="resource-info-table">
     <tbody>
@@ -129,7 +131,7 @@ async function handleSaveClick() {
         <td v-else>–</td>
       </tr>
       <tr>
-        <td class="row-key">{{ $t('resources.edit.status') }}:</td>
+        <td class="row-key">{{ $t('resources.settings.status') }}:</td>
         <td>
           <ResourcePublicationStatus :resource="resource" :show-icon="false" size="tiny" />
         </td>

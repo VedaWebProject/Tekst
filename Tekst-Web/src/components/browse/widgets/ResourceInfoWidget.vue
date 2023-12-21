@@ -63,13 +63,13 @@ const coveragePercent = computed(
       <h2 style="margin: 0">{{ resource.title }}</h2>
     </template>
 
-    <p v-if="resource.description?.length">
-      <TranslationDisplay :value="resource.description" />
+    <p>
+      <UserDisplay v-if="resource.owner" :user="resource.owner" size="tiny" />
+      <ResourcePublicationStatus v-if="auth.loggedIn" :resource="resource" size="tiny" />
     </p>
 
-    <p>
-      <UserDisplay v-if="resource.owner" :user="resource.owner" size="small" />
-      <ResourcePublicationStatus v-if="auth.loggedIn" :resource="resource" size="small" />
+    <p v-if="resource.description?.length">
+      <TranslationDisplay :value="resource.description" />
     </p>
 
     <template v-if="resource.meta && Object.keys(resource.meta).length">

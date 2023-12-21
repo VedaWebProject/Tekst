@@ -105,11 +105,7 @@ function resetForm() {
       <h3>{{ $t('admin.system.platformSettings.headingInfo') }}</h3>
 
       <!-- PLATFORM TITLE -->
-      <n-form-item
-        path="infoPlatformName"
-        :label="$t('models.platformSettings.infoPlatformName')"
-        required
-      >
+      <n-form-item path="infoPlatformName" :label="$t('models.platformSettings.infoPlatformName')">
         <n-input
           v-model:value="formModel.infoPlatformName"
           type="text"
@@ -171,8 +167,8 @@ function resetForm() {
       <n-form-item path="defaultTextId" :label="$t('models.platformSettings.defaultText')">
         <n-select
           v-model:value="formModel.defaultTextId"
+          clearable
           :options="defaultTextOptions"
-          :clearable="true"
           :placeholder="$t('admin.system.platformSettings.defaultTextPlaceholder')"
           :consistent-menu-width="false"
           @keydown.enter.prevent

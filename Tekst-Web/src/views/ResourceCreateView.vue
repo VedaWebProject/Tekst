@@ -76,7 +76,7 @@ async function handleSaveClick() {
         body: model.value,
       });
       if (!error) {
-        message.success($t('resources.edit.msgSaved', { title: data.title }));
+        message.success($t('resources.settings.msgSaved', { title: data.title }));
         resources.add(data);
       } else {
         message.error($t('errors.unexpected'), error);
@@ -105,7 +105,7 @@ async function handleSaveClick() {
       <template #icon>
         <KeyboardArrowLeftOutlined />
       </template>
-      {{ $t('resources.edit.backToOverview') }}
+      {{ $t('resources.settings.backToOverview') }}
     </n-button>
   </router-link>
 

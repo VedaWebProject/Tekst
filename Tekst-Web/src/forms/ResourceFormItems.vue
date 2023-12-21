@@ -349,7 +349,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
         margin-bottom: var(--content-gap);
       "
     >
-      {{ $t('resources.edit.onlyForUnpublished') }}
+      {{ $t('resources.settings.onlyForUnpublished') }}
     </div>
     <n-form-item path="sharedRead" :label="$t('models.resource.sharedRead')">
       <n-select

@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import type { AnyResourceRead, UserRead } from '@/api';
-import { NEllipsis, NIcon, NListItem, NThing, NSpace, NButton } from 'naive-ui';
-import { computed } from 'vue';
+import { NSpace, NDropdown, NEllipsis, NIcon, NListItem, NThing, NButton } from 'naive-ui';
+import { computed, type Component, h } from 'vue';
 import ResourceInfoWidget from '@/components/browse/widgets/ResourceInfoWidget.vue';
 import ResourcePublicationStatus from '@/components/ResourcePublicationStatus.vue';
 import TranslationDisplay from './TranslationDisplay.vue';
+import { useStateStore } from '@/stores';
+import { $t } from '@/i18n';
 
+import MoreVertOutlined from '@vicons/material/MoreVertOutlined';
 import DeleteFilled from '@vicons/material/DeleteFilled';
 import SettingsFilled from '@vicons/material/SettingsFilled';
 import FlagFilled from '@vicons/material/FlagFilled';
@@ -19,15 +22,17 @@ const props = defineProps<{
   currentUser?: UserRead;
 }>();
 
-defineEmits([
+const emit = defineEmits([
   'transferClick',
   'proposeClick',
   'unproposeClick',
   'publishClick',
   'unpublishClick',
-  'editClick',
+  'settingsClick',
   'deleteClick',
 ]);
+
+const state = useStateStore();
 
 const isOwnerOrAdmin = computed(
   () =>
@@ -41,116 +46,133 @@ const canDelete = computed(
 
 const canPropose = computed(() => isOwnerOrAdmin.value && !props.targetResource.public);
 
-const actionButtonProps = {
-  quaternary: true,
-  circle: true,
-  focusable: false,
-};
+const actionOptions = computed(() => [
+  ...(canPropose.value
+    ? [
+        {
+          label: $t('resources.proposeAction'),
+          key: 'propose',
+          icon: renderIcon(FlagFilled),
+          disabled:
+            !canPropose.value || props.targetResource.public || props.targetResource.proposed,
+          props: {
+            onClick: () => emit('proposeClick', props.targetResource),
+          },
+        },
+        {
+          label: $t('resources.unproposeAction'),
+          key: 'unpropose',
+          icon: renderIcon(FlagOutlined),
+          disabled:
+            !canPropose.value || !props.targetResource.proposed || props.targetResource.public,
+          props: {
+            onClick: () => emit('unproposeClick', props.targetResource),
+          },
+        },
+        {
+          type: 'divider',
+          key: 'proposalDivider',
+        },
+      ]
+    : []),
+  ...(props.currentUser?.isSuperuser
+    ? [
+        {
+          label: $t('resources.publishAction'),
+          key: 'publish',
+          icon: renderIcon(PublicFilled),
+          disabled:
+            !props.currentUser?.isSuperuser ||
+            !props.targetResource.proposed ||
+            props.targetResource.public,
+          props: {
+            onClick: () => emit('publishClick', props.targetResource),
+          },
+        },
+        {
+          label: $t('resources.unpublishAction'),
+          key: 'unpublish',
+          icon: renderIcon(PublicOffFilled),
+          disabled: !props.currentUser?.isSuperuser || !props.targetResource.public,
+          props: {
+            onClick: () => emit('unpublishClick', props.targetResource),
+          },
+        },
+        {
+          type: 'divider',
+          key: 'publicationDivider',
+        },
+      ]
+    : []),
+  {
+    label: $t('resources.settingsAction'),
+    key: 'settings',
+    icon: renderIcon(SettingsFilled),
+    disabled: !props.targetResource.writable,
+    props: {
+      onClick: () => emit('settingsClick', props.targetResource),
+    },
+  },
+  {
+    label: $t('resources.transferAction'),
+    key: 'transfer',
+    icon: renderIcon(PersonPinFilled),
+    disabled: !isOwnerOrAdmin.value || props.targetResource.public || props.targetResource.proposed,
+    props: {
+      onClick: () => emit('transferClick', props.targetResource),
+    },
+  },
+  {
+    label: $t('general.deleteAction'),
+    key: 'delete',
+    icon: renderIcon(DeleteFilled),
+    disabled: !canDelete.value,
+    props: {
+      onClick: () => emit('deleteClick', props.targetResource),
+    },
+  },
+]);
+
+const showActionsDropdown = computed(
+  () => !!actionOptions.value.filter((o) => !!o.label && !o.disabled).length
+);
+
+function renderIcon(icon: Component) {
+  return () => h(NIcon, null, { default: () => h(icon) });
+}
 </script>
 
 <template>
   <n-list-item class="resource-list-item">
     <n-thing :title="targetResource.title" content-style="margin-top: 8px">
       <template #description>
-        <div style="font-size: var(--app-ui-font-size-small)">
-          <div v-if="targetResource.description?.length">
-            <TranslationDisplay :value="targetResource.description" />
-          </div>
-          <div
-            v-if="targetResource.comment?.length"
-            :style="targetResource.description ? 'margin-top: .25rem' : ''"
-          >
-            <n-ellipsis :tooltip="false" :line-clamp="2" style="opacity: 0.75">
-              {{ $t('models.resource.comment') }}:
-              <TranslationDisplay :value="targetResource.comment" />
-            </n-ellipsis>
-          </div>
-        </div>
+        <ResourcePublicationStatus :resource="targetResource" size="tiny" />
       </template>
+
       <template #header-extra>
         <n-space>
-          <!-- transfer to user -->
-          <n-button
-            v-if="isOwnerOrAdmin && !targetResource.public && !targetResource.proposed"
-            v-bind="actionButtonProps"
-            :title="$t('resources.transferAction')"
-            @click="$emit('transferClick', targetResource)"
+          <n-dropdown
+            v-if="showActionsDropdown"
+            :options="actionOptions"
+            :size="state.dropdownSize"
+            to="#app-container"
+            trigger="click"
           >
-            <template #icon>
-              <n-icon :component="PersonPinFilled" />
-            </template>
-          </n-button>
-          <!-- propose -->
-          <n-button
-            v-if="canPropose && !targetResource.proposed"
-            v-bind="actionButtonProps"
-            :title="$t('resources.proposeAction')"
-            @click="$emit('proposeClick', targetResource)"
-          >
-            <template #icon>
-              <n-icon :component="FlagFilled" />
-            </template>
-          </n-button>
-          <!-- withdraw proposal -->
-          <n-button
-            v-if="canPropose && targetResource.proposed"
-            v-bind="actionButtonProps"
-            :title="$t('resources.unproposeAction')"
-            @click="$emit('unproposeClick', targetResource)"
-          >
-            <template #icon>
-              <n-icon :component="FlagOutlined" />
-            </template>
-          </n-button>
-          <!-- publish -->
-          <n-button
-            v-if="currentUser?.isSuperuser && targetResource.proposed && !targetResource.public"
-            v-bind="actionButtonProps"
-            :title="$t('resources.publishAction')"
-            @click="$emit('publishClick', targetResource)"
-          >
-            <template #icon>
-              <n-icon :component="PublicFilled" />
-            </template>
-          </n-button>
-          <!-- withdraw publication -->
-          <n-button
-            v-if="currentUser?.isSuperuser && targetResource.public"
-            v-bind="actionButtonProps"
-            :title="$t('resources.unpublishAction')"
-            @click="$emit('unpublishClick', targetResource)"
-          >
-            <template #icon>
-              <n-icon :component="PublicOffFilled" />
-            </template>
-          </n-button>
-          <!-- edit -->
-          <n-button
-            :disabled="!targetResource.writable"
-            v-bind="actionButtonProps"
-            :title="$t('general.editAction')"
-            @click="$emit('editClick', targetResource)"
-          >
-            <template #icon>
-              <n-icon :component="SettingsFilled" />
-            </template>
-          </n-button>
-          <!-- delete -->
-          <n-button
-            :disabled="!canDelete"
-            v-bind="actionButtonProps"
-            :title="$t('general.deleteAction')"
-            @click="$emit('deleteClick', targetResource)"
-          >
-            <template #icon>
-              <n-icon :component="DeleteFilled" />
-            </template>
-          </n-button>
-          <!-- resource info -->
+            <n-button quaternary circle :focusable="false">
+              <template #icon>
+                <n-icon :component="MoreVertOutlined" />
+              </template>
+            </n-button>
+          </n-dropdown>
           <ResourceInfoWidget :resource="targetResource" />
         </n-space>
       </template>
-      <ResourcePublicationStatus :resource="targetResource" size="small" />
+
+      <template v-if="targetResource.description?.length">
+        <n-ellipsis :tooltip="false" :line-clamp="2" expand-trigger="click">
+          <TranslationDisplay :value="targetResource.description" />
+        </n-ellipsis>
+      </template>
     </n-thing>
   </n-list-item>
 </template>

@@ -30,7 +30,7 @@ import UndoRound from '@vicons/material/UndoRound';
 import LayersFilled from '@vicons/material/LayersFilled';
 import AddOutlined from '@vicons/material/AddOutlined';
 import { TransferResourceTemplatePromise } from '@/templatePromises';
-import UserSelectModal from '@/components/UserSelectModal.vue';
+import TransferResourceModal from '@/components/TransferResourceModal.vue';
 
 const state = useStateStore();
 const auth = useAuthStore();
@@ -216,8 +216,8 @@ function handleUnpublishClick(resource: AnyResourceRead) {
   });
 }
 
-function handleEditClick(resource: AnyResourceRead) {
-  router.push({ name: 'resourceEdit', params: { text: state.text?.slug, id: resource.id } });
+function handleSettingsClick(resource: AnyResourceRead) {
+  router.push({ name: 'resourceSettings', params: { text: state.text?.slug, id: resource.id } });
 }
 
 function handleDeleteClick(resource: AnyResourceRead) {
@@ -330,7 +330,7 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
             @unpropose-click="handleUnproposeClick"
             @publish-click="handlePublishClick"
             @unpublish-click="handleUnpublishClick"
-            @edit-click="handleEditClick"
+            @settings-click="handleSettingsClick"
             @delete-click="handleDeleteClick"
           />
         </n-list>
@@ -363,5 +363,5 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
     {{ $t('errors.error') }}
   </div>
 
-  <UserSelectModal />
+  <TransferResourceModal />
 </template>

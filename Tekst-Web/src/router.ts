@@ -21,7 +21,7 @@ const SearchView = () => import('@/views/SearchView.vue');
 const RegisterView = () => import('@/views/RegisterView.vue');
 const InfoPageView = () => import('@/views/InfoPageView.vue');
 const ResourcesView = () => import('@/views/ResourcesView.vue');
-const ResourceEditView = () => import('@/views/ResourceEditView.vue');
+const ResourceSettingsView = () => import('@/views/ResourceSettingsView.vue');
 const ResourceCreateView = () => import('@/views/ResourceCreateView.vue');
 
 const AccountView = () => import('@/views/account/AccountView.vue');
@@ -132,9 +132,9 @@ const router = createRouter({
       },
     },
     {
-      path: '/resources/:text/edit/:id',
-      name: 'resourceEdit',
-      component: ResourceEditView,
+      path: '/resources/:text/settings/:id',
+      name: 'resourceSettings',
+      component: ResourceSettingsView,
       meta: {
         isTextSpecific: true,
         restricted: 'user',

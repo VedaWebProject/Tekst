@@ -76,7 +76,7 @@ routes:
     login: Login
     register: Register
     resources: Resources on "{text}"
-    resourceEdit: Edit resource
+    resourceSettings: Resource Settings
     user: Profile of {username}
     accountProfile: Public Profile
     accountManage: Account
@@ -256,7 +256,8 @@ resources:
   notPublic: '@:general.not @:models.resource.public'
   proposed: '@:models.resource.proposed'
   notProposed: '@:general.not @:models.resource.proposed'
-  transferAction: Transfer resource to user
+  transferAction: Transfer to user
+  settingsAction: Settings
   proposeAction: Propose for publication
   unproposeAction: Withdraw publication proposal
   publishAction: Publish
@@ -284,8 +285,8 @@ resources:
   msgUnpublished: The publication of the resource "{title}" has been withdrawn.
   msgDeleted: The resource "{title}" has been deleted.
   phSearchUsers: Search for users...
-  edit:
-    heading: Edit resource
+  settings:
+    heading: Resource Settings
     backToOverview: Back to resources overview
     onlyForUnpublished: Only for unpublished resources!
     msgSaved: Your changes to the resource "{title}" have been saved.
@@ -295,7 +296,7 @@ resources:
     warnImmutable: These settings cannot be changed later!
     msgSaved: Your new resource "{title}" has been created.
   config:
-    headingConfig: Configuration
+    headingConfig: Features
     status: Status
     enabled: Enabled
     showOnParentLevel: Enable viewing combined contents on the parent level

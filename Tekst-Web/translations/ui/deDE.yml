@@ -79,7 +79,7 @@ routes:
     login: Anmeldung
     register: Registrierung
     resources: Ressourcen zu "{text}"
-    resourceEdit: Ressource bearbeiten
+    resourceSettings: Ressourcen-Einstellungen
     user: Profil von {username}
     accountProfile: Öffentliches Profil
     accountManage: Konto
@@ -257,7 +257,8 @@ resources:
   notPublic: '@:general.not @:models.resource.public'
   proposed: '@:models.resource.proposed'
   notProposed: '@:general.not @:models.resource.proposed'
-  transferAction: Ressource an Benutzer übertragen
+  transferAction: An Benutzer übertragen
+  settingsAction: Einstellungen
   proposeAction: Für Veröffentlichung vorschlagen
   unproposeAction: Veröffentlichungsvorschlag zurücknehmen
   publishAction: Veröffentlichen
@@ -292,8 +293,8 @@ resources:
   msgUnpublished: Die Veröffentlichung der Ressource "{title}" wurde aufgehoben.
   msgDeleted: Die Ressource "{title}" wurde gelöscht.
   phSearchUsers: Benutzer suchen...
-  edit:
-    heading: Ressource bearbeiten
+  settings:
+    heading: Ressourcen-Einstellungen
     backToOverview: Zurück zur Ressourcen-Übersicht
     onlyForUnpublished: Nur für nicht veröffentlichte Ressourcen!
     msgSaved: Ihre Änderungen an der Ressource "{title}" wurden gespeichert.
@@ -303,7 +304,7 @@ resources:
     warnImmutable: Diese Einstellungen können später nicht mehr geändert werden!
     msgSaved: Ihre neue Ressource "{title}" wurden erstellt.
   config:
-    headingConfig: Konfiguration
+    headingConfig: Funktionen
     specialConfigLabel: Spezielle Konfiguration für Typ "{resourceType}"
     status: Status
     enabled: Aktiv
