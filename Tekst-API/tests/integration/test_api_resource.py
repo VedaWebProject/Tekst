@@ -281,12 +281,12 @@ async def test_propose_unpropose_publish_unpublish_resource(
     for resource in resp.json():
         if resource["id"] == resource_data["id"]:
             assert resource["proposed"]
-    # propose resource again
+    # propose resource again (should just go through)
     resp = await test_client.post(
         f"/resources/{resource_data['id']}/propose",
         cookies=session_cookie,
     )
-    assert resp.status_code == 400, status_fail_msg(400, resp)
+    assert resp.status_code == 200, status_fail_msg(200, resp)
     # publish resource
     resp = await test_client.post(
         f"/resources/{resource_data['id']}/publish",
@@ -299,12 +299,12 @@ async def test_propose_unpropose_publish_unpublish_resource(
         cookies=session_cookie,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
-    # unpublish resource again
+    # unpublish resource again (should just go through)
     resp = await test_client.post(
         f"/resources/{resource_data['id']}/unpublish",
         cookies=session_cookie,
     )
-    assert resp.status_code == 400, status_fail_msg(400, resp)
+    assert resp.status_code == 200, status_fail_msg(200, resp)
     # propose resource again
     resp = await test_client.post(
         f"/resources/{resource_data['id']}/propose",

@@ -35,7 +35,7 @@ async def create_unit(unit: AnyUnitCreateBody, user: UserDep) -> AnyUnitDocument
     # check if the resource this unit belongs to is writable by user
     if not await ResourceBaseDocument.find(
         ResourceBaseDocument.id == unit.resource_id,
-        ResourceBaseDocument.allowed_to_write(user),
+        await ResourceBaseDocument.access_conditions_write(user),
         with_children=True,
     ).exists():
         raise HTTPException(
@@ -72,7 +72,7 @@ async def get_unit(
     resource_read_allowed = unit_doc and (
         await ResourceBaseDocument.find_one(
             ResourceBaseDocument.id == unit_doc.resource_id,
-            await ResourceBaseDocument.allowed_to_read(user),
+            await ResourceBaseDocument.access_conditions_read(user),
             with_children=True,
         ).exists()
     )
@@ -105,7 +105,7 @@ async def update_unit(
     # check if the resource this unit belongs to is writable by user
     resource_write_allowed = await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == unit_doc.resource_id,
-        ResourceBaseDocument.allowed_to_write(user),
+        await ResourceBaseDocument.access_conditions_write(user),
         with_children=True,
     ).exists()
     if not resource_write_allowed:
@@ -146,7 +146,7 @@ async def find_units(
     """
 
     readable_resources = await ResourceBaseDocument.find(
-        await ResourceBaseDocument.allowed_to_read(user),
+        await ResourceBaseDocument.access_conditions_read(user),
         with_children=True,
     ).to_list()
 

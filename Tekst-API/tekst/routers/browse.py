@@ -57,7 +57,7 @@ async def get_unit_siblings(
 
     resource = await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == resource_id,
-        await ResourceBaseDocument.allowed_to_read(user),
+        await ResourceBaseDocument.access_conditions_read(user),
         with_children=True,
     )
 
@@ -195,7 +195,7 @@ async def get_resource_coverage_data(
 ) -> list[ResourceNodeCoverage]:
     resource_doc = await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == resource_id,
-        await ResourceBaseDocument.allowed_to_read(user),
+        await ResourceBaseDocument.access_conditions_read(user),
         with_children=True,
     )
     if not resource_doc:

@@ -142,6 +142,15 @@ class TextDocument(Text, DocumentBase):
         name = "texts"
         bson_encoders = {Color: lambda c: c.as_hex()}
 
+    @classmethod
+    async def get_active_texts_ids(cls):
+        return [
+            text.id
+            for text in await TextDocument.find(
+                TextDocument.is_active == True  # noqa: E712
+            ).to_list()
+        ]
+
 
 TextCreate = Text.create_model()
 TextRead = Text.read_model()

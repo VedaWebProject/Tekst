@@ -35,8 +35,14 @@ async def preprocess_resource_read(
         for_user
         and (
             for_user.is_superuser
-            or for_user.id == resource.owner_id
-            or for_user.id in resource.shared_write
+            or (
+                (
+                    for_user.id == resource.owner_id
+                    or for_user.id in resource.shared_write
+                )
+                and not resource.public
+                and not resource.proposed
+            )
         )
     )
     # include owner user data in each resource model (if an owner id is set)
@@ -111,7 +117,7 @@ async def update_resource(
 ) -> AnyResourceRead:
     resource_doc = await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == resource_id,
-        ResourceBaseDocument.allowed_to_write(user),
+        await ResourceBaseDocument.access_conditions_write(user),
         with_children=True,
     )
     if not resource_doc:
@@ -173,7 +179,7 @@ async def find_resources(
     resource_docs = (
         await ResourceBaseDocument.find(
             example,
-            await ResourceBaseDocument.allowed_to_read(user),
+            await ResourceBaseDocument.access_conditions_read(user),
             with_children=True,
         )
         .limit(limit)
@@ -268,7 +274,7 @@ async def get_resource(
 ) -> AnyResourceRead:
     resource_doc = await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == resource_id,
-        await ResourceBaseDocument.allowed_to_read(user),
+        await ResourceBaseDocument.access_conditions_read(user),
         with_children=True,
     )
     if not resource_doc:
@@ -327,15 +333,13 @@ async def transfer_resource(
         )
     if not user.is_superuser and user.id != resource_doc.owner_id:
         raise HTTPException(status.HTTP_401_UNAUTHORIZED)
-    if resource_doc.public:
+    if resource_doc.public or resource_doc.proposed:
         raise HTTPException(
             status.HTTP_400_BAD_REQUEST,
-            detail=f"Resource with ID {resource_id} is public",
-        )
-    if resource_doc.proposed:
-        raise HTTPException(
-            status.HTTP_400_BAD_REQUEST,
-            detail=f"Resource with ID {resource_id} is proposed for publication",
+            detail=(
+                f"Resource with ID {resource_id} is "
+                "published or proposed for publication"
+            ),
         )
     if target_user_id == resource_doc.owner_id:
         return await preprocess_resource_read(resource_doc, user)
@@ -380,13 +384,14 @@ async def propose_resource(
             status.HTTP_400_BAD_REQUEST,
             detail=f"Resource with ID {resource_id} already public",
         )
-    if resource_doc.proposed:
-        raise HTTPException(
-            status.HTTP_400_BAD_REQUEST,
-            detail=f"Resource with ID {resource_id} already proposed for publication",
-        )
     # all fine, propose resource
-    await resource_doc.set({ResourceBaseDocument.proposed: True})
+    await resource_doc.set(
+        {
+            ResourceBaseDocument.proposed: True,
+            ResourceBaseDocument.shared_read: [],
+            ResourceBaseDocument.shared_write: [],
+        }
+    )
     return await preprocess_resource_read(resource_doc, user)
 
 
@@ -405,11 +410,6 @@ async def unpropose_resource(
         )
     if not user.is_superuser and user.id != resource_doc.owner_id:
         raise HTTPException(status.HTTP_401_UNAUTHORIZED)
-    if not resource_doc.proposed:
-        raise HTTPException(
-            status.HTTP_400_BAD_REQUEST,
-            detail=f"Resource with ID {resource_id} is not proposed for publication",
-        )
     # all fine, unpropose resource
     await resource_doc.set(
         {
@@ -430,11 +430,6 @@ async def publish_resource(
     if not resource_doc:
         raise HTTPException(
             status.HTTP_404_NOT_FOUND, detail=f"No resource with ID {resource_id}"
-        )
-    if resource_doc.public:
-        raise HTTPException(
-            status.HTTP_400_BAD_REQUEST,
-            detail=f"Resource with ID {resource_id} is already public",
         )
     if not resource_doc.proposed:
         raise HTTPException(
@@ -466,11 +461,6 @@ async def unpublish_resource(
     if not resource_doc:
         raise HTTPException(
             status.HTTP_404_NOT_FOUND, detail=f"No resource with ID {resource_id}"
-        )
-    if not resource_doc.public:
-        raise HTTPException(
-            status.HTTP_400_BAD_REQUEST,
-            detail=f"Resource with ID {resource_id} is not public",
         )
     # all fine, unpublish resource
     await resource_doc.set(

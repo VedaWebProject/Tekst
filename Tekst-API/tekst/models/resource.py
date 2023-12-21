@@ -3,7 +3,7 @@ import re
 from typing import Annotated
 
 from beanie import PydanticObjectId
-from beanie.operators import And, In, Or
+from beanie.operators import And, Eq, In, Or
 from pydantic import (
     Field,
     StringConstraints,
@@ -153,41 +153,54 @@ class ResourceBaseDocument(ResourceBase, DocumentBase):
         indexes = ["text_id", "level", "resource_type", "owner_id"]
 
     @classmethod
-    async def allowed_to_read(cls, user: UserRead | None) -> dict:
+    async def access_conditions_read(cls, user: UserRead | None) -> dict:
+        active_texts_ids = await TextDocument.get_active_texts_ids()
+        # compose access condition for different user types
         if not user:
-            return {"public": True}
-        if user.is_superuser:
-            return {}
-
-        active_texts_ids = [
-            text.id
-            for text in await TextDocument.find(
-                TextDocument.is_active == True  # noqa: E712
-            ).to_list()
-        ]
-
-        return And(
-            Or(
-                In(ResourceBaseDocument.text_id, active_texts_ids),
-                ResourceBaseDocument.owner_id == user.id,
-            ),
-            Or(
+            # not logged in, no user
+            return And(
                 ResourceBaseDocument.public == True,  # noqa: E712
-                ResourceBaseDocument.proposed == True,  # noqa: E712
-                ResourceBaseDocument.owner_id == user.id,
-                ResourceBaseDocument.shared_read == str(user.id),
-                ResourceBaseDocument.shared_write == str(user.id),
-            ),
-        )
+                In(ResourceBaseDocument.text_id, active_texts_ids),
+            )
+        elif user.is_superuser:
+            # superusers can read all resources
+            return {}
+        else:
+            # logged in as regular user
+            return And(
+                In(ResourceBaseDocument.text_id, active_texts_ids),
+                Or(
+                    ResourceBaseDocument.owner_id == user.id,
+                    Or(
+                        ResourceBaseDocument.public == True,  # noqa: E712
+                        ResourceBaseDocument.proposed == True,  # noqa: E712
+                        ResourceBaseDocument.shared_read == str(user.id),
+                        ResourceBaseDocument.shared_write == str(user.id),
+                    ),
+                ),
+            )
 
     @classmethod
-    def allowed_to_write(cls, user: UserRead | None) -> dict:
+    async def access_conditions_write(cls, user: UserRead | None) -> dict:
+        if not user:
+            # not logged in, no user (don't match anything!)
+            return Eq(ResourceBaseDocument.public, "THIS_WONT_MATCH")
+
         if user.is_superuser:
+            # superusers can write all resources
             return {}
-        uid = user.id if user else "no_id"
-        return Or(
-            ResourceBaseDocument.owner_id == uid,
-            ResourceBaseDocument.shared_write == str(uid),
+
+        active_texts_ids = await TextDocument.get_active_texts_ids()
+
+        # compose conditions for logged in, regular users
+        return And(
+            In(ResourceBaseDocument.text_id, active_texts_ids),
+            ResourceBaseDocument.public == False,  # noqa: E712
+            ResourceBaseDocument.proposed == False,  # noqa: E712
+            Or(
+                ResourceBaseDocument.owner_id == user.id,
+                ResourceBaseDocument.shared_write == str(user.id),
+            ),
         )
 
 
