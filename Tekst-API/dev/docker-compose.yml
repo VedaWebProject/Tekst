@@ -27,7 +27,7 @@ services:
     command: mongod --setParameter diagnosticDataCollectionEnabled=false
 
   mongo-express:
-    image: mongo-express:1
+    image: mongo-express:1.0.0-alpha.4
     restart: always
     init: true
     depends_on:
