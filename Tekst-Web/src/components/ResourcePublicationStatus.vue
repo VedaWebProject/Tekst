@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import type { AnyResourceRead } from '@/api';
 import { NIcon } from 'naive-ui';
-import { PublicFilled, FlagFilled, PublicOffFilled } from '@vicons/material';
+
+import PublicFilled from '@vicons/material/PublicFilled';
+import FlagFilled from '@vicons/material/FlagFilled';
+import PublicOffFilled from '@vicons/material/PublicOffFilled';
 
 withDefaults(
   defineProps<{
