@@ -1,10 +1,11 @@
 import { fileURLToPath, URL } from 'node:url';
 import { resolve, dirname } from 'node:path';
 
-import { defineConfig } from 'vite';
+import { defineConfig, PluginOption } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import checker from 'vite-plugin-checker';
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
+import { visualizer } from 'rollup-plugin-visualizer';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -26,6 +27,7 @@ export default defineConfig({
     VueI18nPlugin({
       include: resolve(dirname(fileURLToPath(import.meta.url)), './translations/ui/**'),
     }),
+    visualizer() as PluginOption,
   ],
   resolve: {
     alias: {
@@ -33,8 +35,17 @@ export default defineConfig({
     },
   },
   define: {
+    __VUE_PROD_DEVTOOLS__: false,
     __VUE_I18N_FULL_INSTALL__: false,
     __VUE_I18N_LEGACY_API__: false,
     __INTLIFY_PROD_DEVTOOLS__: false,
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        assetFileNames: 'assets/[ext]/[ext]-[hash][extname]',
+        chunkFileNames: 'assets/js/chunk-[hash].js',
+      },
+    },
   },
 });

@@ -25,3 +25,6 @@ coverage
 *.njsproj
 *.sln
 *.sw?
+
+# rollup-plugin-visualizer generated stats
+/stats.html

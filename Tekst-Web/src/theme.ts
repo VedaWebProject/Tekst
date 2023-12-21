@@ -1,5 +1,5 @@
 import type { GlobalThemeOverrides } from 'naive-ui';
-import _merge from 'lodash.merge';
+import _mergeWith from 'lodash.mergewith';
 import Color from 'color';
 import { computed, ref, watch } from 'vue';
 import { useStateStore } from '@/stores';
@@ -47,8 +47,8 @@ const darkOverrides: GlobalThemeOverrides = {
   },
 };
 
-_merge(lightOverrides, commonOverrides);
-_merge(darkOverrides, commonOverrides);
+_mergeWith(lightOverrides, commonOverrides);
+_mergeWith(darkOverrides, commonOverrides);
 
 export const useThemeStore = defineStore('theme', () => {
   const state = useStateStore();
