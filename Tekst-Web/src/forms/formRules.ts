@@ -356,8 +356,8 @@ export const platformSettingsFormRules: Record<string, FormItemRule[]> = {
     {
       required: true,
       message: () =>
-        $t('forms.rulesFeedback.isRequired', { x: $t('models.platformSettings.defaultTextId') }),
-      trigger: 'blur',
+        $t('forms.rulesFeedback.isRequired', { x: $t('models.platformSettings.defaultText') }),
+      trigger: ['blur', 'change'],
     },
   ],
   availableLocales: [
