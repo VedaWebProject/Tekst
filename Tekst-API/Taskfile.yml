@@ -41,27 +41,17 @@ tasks:
       - poetry run ruff format . --check
       - poetry run ruff check . --extend-select N
 
-  run-tests:
-    desc: Run complete test suite with pytest
-    env:
-      TESTING: true
-      TEKST_CUSTOM_ENV_FILE: .env.test
-    cmds:
-      - poetry run coverage run -m pytest {{.CLI_ARGS}}
-      - poetry run coverage report -m
-
   tests:
     desc: Run test categories separately, start and stop services stack
     env:
       TESTING: true
-      TEKST_DEV_MODE: true
       TEKST_CUSTOM_ENV_FILE: .env.test
     cmds:
       - defer: {task: test-stack-down}
       - task: test-stack-up
       - task: wait-for-mongodb
-      - poetry run python3 -m tekst setup
-      - task: run-tests
+      - poetry run coverage run -m pytest {{.CLI_ARGS}}
+      - poetry run coverage report -m
 
   run-dev:
     desc: Run the application dev server (only for development!)
