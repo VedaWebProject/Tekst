@@ -12,10 +12,6 @@ export interface paths {
     /** Get users */
     get: operations['getUsers'];
   };
-  '/admin/testemail': {
-    /** Test email */
-    get: operations['testEmail'];
-  };
   '/browse/unit-siblings': {
     /**
      * Get unit siblings
@@ -2174,19 +2170,6 @@ export interface operations {
         content: {
           'application/json': components['schemas']['UserRead'][];
         };
-      };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
-    };
-  };
-  /** Test email */
-  testEmail: {
-    responses: {
-      /** @description Successful Response */
-      204: {
-        content: never;
       };
       /** @description Not found */
       404: {

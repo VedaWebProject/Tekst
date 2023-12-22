@@ -5,7 +5,6 @@ from httpx import AsyncClient
 
 @pytest.mark.anyio
 async def test_create_unit(
-    api_path,
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,

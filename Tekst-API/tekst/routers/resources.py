@@ -341,12 +341,12 @@ async def transfer_resource(
                 "published or proposed for publication"
             ),
         )
-    if target_user_id == resource_doc.owner_id:
-        return await preprocess_resource_read(resource_doc, user)
     if not await UserDocument.find_one(UserDocument.id == target_user_id).exists():
         raise HTTPException(
             status.HTTP_400_BAD_REQUEST, detail=f"No user with ID {target_user_id}"
         )
+    if target_user_id == resource_doc.owner_id:
+        return await preprocess_resource_read(resource_doc, user)
     # all fine, transfer resource and remove target user ID from resource shares
     await resource_doc.set(
         {

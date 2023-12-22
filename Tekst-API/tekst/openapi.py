@@ -60,7 +60,7 @@ def process_openapi_schema(schema: dict[str, Any]) -> dict[str, Any]:
 
 async def generate_openapi_schema(
     to_file: bool, output_file: str, indent: int, sort_keys: bool, cfg: TekstConfig
-) -> str:
+) -> str:  # pragma: no cover
     """
     Atomic operation for creating and processing the OpenAPI schema from outside of
     the app context. This is used in __main__.py

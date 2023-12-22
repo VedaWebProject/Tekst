@@ -7,6 +7,7 @@ from beanie.operators import And, Eq, In, Or
 from pydantic import (
     Field,
     StringConstraints,
+    ValidationError,
     create_model,
     field_validator,
 )
@@ -109,14 +110,14 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
             ).strip()
         return v
 
-    @field_validator("resource_type")
+    @field_validator("resource_type", mode="after")
     @classmethod
     def validate_resource_type_name(cls, v):
         from tekst.resource_types import resource_types_mgr
 
         resource_type_names = resource_types_mgr.list_names()
         if v.lower() not in resource_type_names:
-            raise ValueError(
+            raise ValidationError(
                 f"Given resource type ({v}) is not a valid "
                 f"resource type name (one of {resource_type_names})."
             )

@@ -85,31 +85,6 @@
         ]
       }
     },
-    "/admin/testemail": {
-      "get": {
-        "tags": [
-          "admin"
-        ],
-        "summary": "Test email",
-        "operationId": "testEmail",
-        "responses": {
-          "204": {
-            "description": "Successful Response"
-          },
-          "404": {
-            "description": "Not found"
-          }
-        },
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      }
-    },
     "/browse/unit-siblings": {
       "get": {
         "tags": [

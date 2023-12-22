@@ -31,12 +31,6 @@ def config() -> TekstConfig:
 
 
 @pytest.fixture(scope="session")
-def api_path(config) -> TekstConfig:
-    """Returns the configured app root path"""
-    return config.api_path
-
-
-@pytest.fixture(scope="session")
 def anyio_backend():
     return "asyncio"
 
@@ -182,9 +176,7 @@ async def register_test_user(get_fake_user) -> Callable:
 
 
 @pytest.fixture
-async def get_session_cookie(
-    config, test_client, api_path, status_fail_msg
-) -> Callable:
+async def get_session_cookie(config, test_client, status_fail_msg) -> Callable:
     async def _get_session_cookie(user_data: dict) -> dict:
         payload = {"username": user_data["email"], "password": user_data["password"]}
         resp = await test_client.post(

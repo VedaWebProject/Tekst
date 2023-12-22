@@ -1,7 +1,7 @@
 from typing import Annotated
 
 from beanie import PydanticObjectId
-from pydantic import Field, field_validator
+from pydantic import Field, ValidationError, field_validator
 
 from tekst.models.common import (
     DocumentBase,
@@ -29,14 +29,14 @@ class UnitBase(ModelBase, ModelFactoryMixin):
 
     __template_fields: tuple[str] = ("comment",)
 
-    @field_validator("resource_type")
+    @field_validator("resource_type", mode="after")
     @classmethod
     def validate_resource_type_name(cls, v):
         from tekst.resource_types import resource_types_mgr
 
         resource_type_names = resource_types_mgr.list_names()
         if v.lower() not in resource_type_names:
-            raise ValueError(
+            raise ValidationError(
                 f"Given resource type ({v}) is not a valid "
                 f"resource type name (one of {resource_type_names})."
             )

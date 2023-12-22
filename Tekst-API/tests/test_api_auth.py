@@ -5,9 +5,7 @@ from tekst.auth import create_initial_superuser, create_sample_users
 
 
 @pytest.mark.anyio
-async def test_register(
-    api_path, test_client: AsyncClient, get_fake_user, status_fail_msg
-):
+async def test_register(test_client: AsyncClient, get_fake_user, status_fail_msg):
     payload = get_fake_user()
     resp = await test_client.post("/auth/register", json=payload)
     assert resp.status_code == 201, status_fail_msg(201, resp)
@@ -16,7 +14,7 @@ async def test_register(
 
 @pytest.mark.anyio
 async def test_register_invalid_pw(
-    api_path, test_client: AsyncClient, get_fake_user, status_fail_msg
+    test_client: AsyncClient, get_fake_user, status_fail_msg
 ):
     payload = get_fake_user()
 
@@ -47,7 +45,7 @@ async def test_register_invalid_pw(
 
 @pytest.mark.anyio
 async def test_register_username_exists(
-    api_path, test_client: AsyncClient, get_fake_user, status_fail_msg
+    test_client: AsyncClient, get_fake_user, status_fail_msg
 ):
     payload = get_fake_user()
 
@@ -62,7 +60,7 @@ async def test_register_username_exists(
 
 @pytest.mark.anyio
 async def test_register_email_exists(
-    api_path, test_client: AsyncClient, get_fake_user, status_fail_msg
+    test_client: AsyncClient, get_fake_user, status_fail_msg
 ):
     payload = get_fake_user()
 
@@ -81,7 +79,6 @@ async def test_register_email_exists(
 async def test_login(
     config,
     register_test_user,
-    api_path,
     test_client: AsyncClient,
     status_fail_msg,
 ):
@@ -99,7 +96,6 @@ async def test_login(
 async def test_login_fail_bad_pw(
     config,
     register_test_user,
-    api_path,
     test_client: AsyncClient,
     status_fail_msg,
 ):
@@ -117,7 +113,6 @@ async def test_login_fail_bad_pw(
 async def test_login_fail_unverified(
     config,
     register_test_user,
-    api_path,
     test_client: AsyncClient,
     status_fail_msg,
 ):
@@ -136,7 +131,6 @@ async def test_user_updates_self(
     config,
     register_test_user,
     get_session_cookie,
-    api_path,
     test_client: AsyncClient,
     status_fail_msg,
 ):

@@ -5,7 +5,6 @@ from httpx import AsyncClient
 
 @pytest.mark.anyio
 async def test_create_node(
-    api_path,
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,
@@ -29,7 +28,6 @@ async def test_create_node(
 
 @pytest.mark.anyio
 async def test_child_node_io(
-    api_path,
     test_client: AsyncClient,
     get_sample_data,
     insert_sample_data,
@@ -94,7 +92,6 @@ async def test_child_node_io(
 
 @pytest.mark.anyio
 async def test_create_node_invalid_text_fail(
-    api_path,
     test_client: AsyncClient,
     get_sample_data,
     insert_sample_data,
@@ -116,7 +113,6 @@ async def test_create_node_invalid_text_fail(
 
 @pytest.mark.anyio
 async def test_get_nodes(
-    api_path,
     test_client: AsyncClient,
     get_sample_data,
     insert_sample_data,
@@ -175,7 +171,6 @@ async def test_get_nodes(
 
 @pytest.mark.anyio
 async def test_update_node(
-    api_path,
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,
@@ -215,7 +210,6 @@ async def test_update_node(
 
 @pytest.mark.anyio
 async def test_delete_node(
-    api_path,
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,
@@ -268,7 +262,6 @@ async def test_delete_node(
 
 @pytest.mark.anyio
 async def test_move_node(
-    api_path,
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,

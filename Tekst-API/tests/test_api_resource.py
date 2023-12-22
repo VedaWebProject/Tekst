@@ -5,7 +5,6 @@ from httpx import AsyncClient
 
 @pytest.mark.anyio
 async def test_create_resource(
-    api_path,
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,
@@ -42,7 +41,6 @@ async def test_create_resource(
 
 @pytest.mark.anyio
 async def test_create_resource_invalid(
-    api_path,
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,
@@ -66,7 +64,6 @@ async def test_create_resource_invalid(
 
 @pytest.mark.anyio
 async def test_update_resource(
-    api_path,
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,
@@ -127,7 +124,6 @@ async def test_update_resource(
 
 @pytest.mark.anyio
 async def test_create_resource_with_forged_owner_id(
-    api_path,
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,
@@ -152,7 +148,7 @@ async def test_create_resource_with_forged_owner_id(
 
 @pytest.mark.anyio
 async def test_get_resource(
-    api_path, test_client: AsyncClient, insert_sample_data, status_fail_msg
+    test_client: AsyncClient, insert_sample_data, status_fail_msg
 ):
     text_id = (await insert_sample_data("texts", "nodes", "resources"))["texts"][0]
     # get existing resource id
@@ -174,7 +170,6 @@ async def test_get_resource(
 
 @pytest.mark.anyio
 async def test_access_private_resource(
-    api_path,
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,
@@ -209,7 +204,7 @@ async def test_access_private_resource(
 
 @pytest.mark.anyio
 async def test_get_resources(
-    api_path, test_client: AsyncClient, insert_sample_data, status_fail_msg
+    test_client: AsyncClient, insert_sample_data, status_fail_msg
 ):
     text_id = (await insert_sample_data("texts", "nodes", "resources"))["texts"][0]
     resp = await test_client.get(
@@ -236,7 +231,6 @@ async def test_get_resources(
 
 @pytest.mark.anyio
 async def test_propose_unpropose_publish_unpublish_resource(
-    api_path,
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,
@@ -321,7 +315,6 @@ async def test_propose_unpropose_publish_unpublish_resource(
 
 @pytest.mark.anyio
 async def test_delete_resource(
-    api_path,
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,
@@ -359,7 +352,6 @@ async def test_delete_resource(
 
 @pytest.mark.anyio
 async def test_transfer_resource(
-    api_path,
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,
@@ -399,7 +391,7 @@ async def test_transfer_resource(
 
 # @pytest.mark.anyio
 # async def test_get_resource_template(
-#     api_path, test_client: AsyncClient, insert_sample_data
+#     test_client: AsyncClient, insert_sample_data
 # ):
 #     await insert_sample_data("texts", "nodes", "resources")
 #     # get all resources for text
@@ -422,7 +414,7 @@ async def test_transfer_resource(
 
 # @pytest.mark.anyio
 # async def test_get_resource_template_invalid_id(
-#     api_path, test_client: AsyncClient, insert_sample_data
+#     test_client: AsyncClient, insert_sample_data
 # ):
 #     await insert_sample_data("texts", "nodes", "resources")
 #     endpoint = f"/resources/template"

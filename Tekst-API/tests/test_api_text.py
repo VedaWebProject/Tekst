@@ -4,9 +4,7 @@ from httpx import AsyncClient
 
 
 @pytest.mark.anyio
-async def test_get_texts(
-    api_path, test_client: AsyncClient, insert_sample_data, status_fail_msg
-):
+async def test_get_texts(test_client: AsyncClient, insert_sample_data, status_fail_msg):
     await insert_sample_data("texts")
     resp = await test_client.get("/texts")
     assert resp.status_code == 200, status_fail_msg(200, resp)
@@ -25,7 +23,6 @@ async def test_get_texts(
 
 @pytest.mark.anyio
 async def test_create_text(
-    api_path,
     test_client: AsyncClient,
     status_fail_msg,
     register_test_user,
@@ -50,7 +47,6 @@ async def test_create_text(
 
 @pytest.mark.anyio
 async def test_create_text_unauthorized(
-    api_path,
     test_client: AsyncClient,
     status_fail_msg,
     register_test_user,
@@ -65,7 +61,6 @@ async def test_create_text_unauthorized(
 
 @pytest.mark.anyio
 async def test_create_text_unauthenticated(
-    api_path,
     test_client: AsyncClient,
     status_fail_msg,
 ):
@@ -76,7 +71,6 @@ async def test_create_text_unauthenticated(
 
 @pytest.mark.anyio
 async def test_update_text(
-    api_path,
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,
@@ -122,7 +116,6 @@ async def test_update_text(
 
 @pytest.mark.anyio
 async def test_delete_text(
-    api_path,
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,
@@ -146,7 +139,6 @@ async def test_delete_text(
 
 @pytest.mark.anyio
 async def test_download_structure_template(
-    api_path,
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,
@@ -170,7 +162,6 @@ async def test_download_structure_template(
 
 @pytest.mark.anyio
 async def test_insert_level(
-    api_path,
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,
@@ -220,7 +211,6 @@ async def test_insert_level(
 
 @pytest.mark.anyio
 async def test_delete_level_0(
-    api_path,
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,
@@ -245,7 +235,6 @@ async def test_delete_level_0(
 
 @pytest.mark.anyio
 async def test_delete_level_1(
-    api_path,
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,
@@ -270,7 +259,6 @@ async def test_delete_level_1(
 
 @pytest.mark.anyio
 async def test_upload_structure(
-    api_path,
     test_client: AsyncClient,
     insert_sample_data,
     get_sample_data_path,

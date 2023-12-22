@@ -5,7 +5,7 @@ from tekst import pkg_meta
 
 
 @pytest.mark.anyio
-async def test_platform_data(api_path, test_client: AsyncClient, status_fail_msg):
+async def test_platform_data(test_client: AsyncClient, status_fail_msg):
     resp = await test_client.get("/platform")
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert resp.json()["tekst"]["version"] == pkg_meta["version"]
@@ -13,7 +13,6 @@ async def test_platform_data(api_path, test_client: AsyncClient, status_fail_msg
 
 @pytest.mark.anyio
 async def test_platform_users(
-    api_path,
     test_client: AsyncClient,
     status_fail_msg,
     register_test_user,
@@ -41,7 +40,6 @@ async def test_platform_users(
 
 @pytest.mark.anyio
 async def test_update_platform_settings(
-    api_path,
     test_client: AsyncClient,
     status_fail_msg,
     register_test_user,
@@ -62,7 +60,6 @@ async def test_update_platform_settings(
 
 @pytest.mark.anyio
 async def test_get_public_user_info(
-    api_path,
     test_client: AsyncClient,
     status_fail_msg,
     register_test_user,

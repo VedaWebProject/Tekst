@@ -2,6 +2,7 @@ import pytest
 
 from pydantic.error_wrappers import ValidationError
 from tekst.models.text import TextCreate, TextRead
+from tekst.models.user import UserReadPublic
 
 
 def test_basic_validation():
@@ -10,7 +11,7 @@ def test_basic_validation():
         assert "missing" in error.value
 
 
-def test_serialization(test_app, get_sample_data):
+def test_serialization(get_sample_data):
     test_data = get_sample_data("db/texts.json")
     text = TextCreate(**test_data[0])
     text.loc_delim = None
@@ -32,7 +33,7 @@ def test_serialization(test_app, get_sample_data):
     assert str(text.id) == dummy_id
 
 
-def test_deserialization(test_app):
+def test_deserialization():
     data = {
         "title": "Foo",
         "slug": "foo",
@@ -51,7 +52,7 @@ def test_deserialization(test_app):
     assert t.loc_delim == "+"
 
 
-def test_model_field_casing(test_app):
+def test_model_field_casing():
     t = TextCreate(
         title="foo",
         slug="foo",
@@ -62,7 +63,7 @@ def test_model_field_casing(test_app):
     assert t.loc_delim == "bar"
 
 
-def test_resource_description_validator(test_app):
+def test_resource_description_validator():
     # desc with arbitrary whitespaces
     from tekst.resource_types.plaintext import PlaintextResource
 
@@ -85,3 +86,14 @@ def test_resource_description_validator(test_app):
     )
     assert isinstance(resource.description, list)
     assert len(resource.description) == 0
+
+
+def test_user_read_public():
+    urp = UserReadPublic(
+        id="5eb7cfb05e32e07750a1756a",
+        username="fooBar",
+        name="Foo Bar",
+        affiliation="Baz",
+        public_fields=["name"],
+    )
+    assert not urp.affiliation

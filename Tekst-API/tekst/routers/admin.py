@@ -1,7 +1,6 @@
-from fastapi import APIRouter, HTTPException, Response, status
+from fastapi import APIRouter, status
 
 from tekst.auth import SuperuserDep
-from tekst.email import send_test_email
 from tekst.models.node import NodeDocument
 from tekst.models.platform import PlatformStats, TextStats
 from tekst.models.resource import ResourceBaseDocument
@@ -57,19 +56,3 @@ async def get_stats(su: SuperuserDep) -> PlatformStats:
 @router.get("/users", response_model=list[UserRead], status_code=status.HTTP_200_OK)
 async def get_users(su: SuperuserDep) -> list[UserDocument]:
     return await UserDocument.find_all().to_list()
-
-
-@router.get(
-    "/testemail",
-    summary="Send test email to test email setup",
-    status_code=status.HTTP_204_NO_CONTENT,
-    response_class=Response,
-)
-async def test_email(su: SuperuserDep):
-    try:
-        send_test_email(su)
-    except Exception:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Something went wrong",
-        )
