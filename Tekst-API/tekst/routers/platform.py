@@ -43,6 +43,7 @@ router = APIRouter(
     "",
     response_model=PlatformData,
     summary="Get platform data",
+    status_code=status.HTTP_200_OK,
 )
 async def get_platform_data(
     ou: OptionalUserDep, cfg: Annotated[TekstConfig, Depends(get_cfg)]
@@ -66,6 +67,7 @@ async def get_platform_data(
     "/users/{usernameOrId}",
     response_model=UserReadPublic,
     summary="Get public user info",
+    status_code=status.HTTP_200_OK,
 )
 async def get_public_user_info(
     username_or_id: Annotated[str | PydanticObjectId, Path(alias="usernameOrId")],

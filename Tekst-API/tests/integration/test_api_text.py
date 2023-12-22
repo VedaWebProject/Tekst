@@ -124,6 +124,54 @@ async def test_update_text(
 
 
 @pytest.mark.anyio
+async def test_delete_text(
+    api_path,
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_fail_msg,
+    register_test_user,
+    get_session_cookie,
+):
+    inserted_ids = await insert_sample_data("texts", "nodes")
+    text_id = inserted_ids["texts"][0]
+
+    # create superuser
+    superuser_data = await register_test_user(is_superuser=True)
+    session_cookie = await get_session_cookie(superuser_data)
+
+    # delete text
+    resp = await test_client.delete(
+        f"/texts/{text_id}",
+        cookies=session_cookie,
+    )
+    assert resp.status_code == 204, status_fail_msg(204, resp)
+
+
+@pytest.mark.anyio
+async def test_download_structure_template(
+    api_path,
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_fail_msg,
+    register_test_user,
+    get_session_cookie,
+):
+    inserted_ids = await insert_sample_data("texts", "nodes")
+    text_id = inserted_ids["texts"][0]
+
+    # create superuser
+    superuser_data = await register_test_user(is_superuser=True)
+    session_cookie = await get_session_cookie(superuser_data)
+
+    # delete text
+    resp = await test_client.get(
+        f"/texts/{text_id}/template",
+        cookies=session_cookie,
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+
+
+@pytest.mark.anyio
 async def test_insert_level(
     api_path,
     test_client: AsyncClient,
@@ -132,7 +180,7 @@ async def test_insert_level(
     register_test_user,
     get_session_cookie,
 ):
-    await insert_sample_data("texts")
+    await insert_sample_data("texts", "nodes")
 
     # create superuser
     superuser_data = await register_test_user(is_superuser=True)
@@ -146,7 +194,7 @@ async def test_insert_level(
     text = resp.json()[0]
     assert len(text["levels"]) == 2
 
-    # insert level
+    # insert new level 0
     resp = await test_client.post(
         f"/texts/{text['id']}/level/0",
         json=[
@@ -158,6 +206,69 @@ async def test_insert_level(
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert "id" in resp.json()
     assert len(resp.json()["levels"]) == 3
+
+    # insert new level 1
+    resp = await test_client.post(
+        f"/texts/{text['id']}/level/1",
+        json=[
+            {"locale": "enUS", "translation": "Another level"},
+            {"locale": "deDE", "translation": "Eine weitere Ebene"},
+        ],
+        cookies=session_cookie,
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert "id" in resp.json()
+    assert len(resp.json()["levels"]) == 4
+
+
+@pytest.mark.anyio
+async def test_delete_level_0(
+    api_path,
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_fail_msg,
+    register_test_user,
+    get_session_cookie,
+):
+    inserted_ids = await insert_sample_data("texts", "nodes")
+    text_id = inserted_ids["texts"][0]
+
+    # create superuser
+    superuser_data = await register_test_user(is_superuser=True)
+    session_cookie = await get_session_cookie(superuser_data)
+
+    # delete level 0
+    resp = await test_client.delete(
+        f"/texts/{text_id}/level/0",
+        cookies=session_cookie,
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert "id" in resp.json()
+
+
+@pytest.mark.anyio
+async def test_delete_level_1(
+    api_path,
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_fail_msg,
+    register_test_user,
+    get_session_cookie,
+):
+    inserted_ids = await insert_sample_data("texts", "nodes")
+    text_id = inserted_ids["texts"][0]
+
+    # create superuser
+    superuser_data = await register_test_user(is_superuser=True)
+    session_cookie = await get_session_cookie(superuser_data)
+
+    # delete level 1
+    resp = await test_client.delete(
+        f"/texts/{text_id}/level/1",
+        cookies=session_cookie,
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert "id" in resp.json()
 
 
 @pytest.mark.anyio

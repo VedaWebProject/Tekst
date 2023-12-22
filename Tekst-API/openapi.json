@@ -2322,6 +2322,7 @@
                 "items": {
                   "$ref": "#/components/schemas/TextLevelTranslation"
                 },
+                "minItems": 1,
                 "maxItems": 3,
                 "description": "Label translations for this level",
                 "title": "Translations"

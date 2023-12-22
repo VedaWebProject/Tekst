@@ -1,6 +1,7 @@
 import pytest
 
 from httpx import AsyncClient
+from tekst.auth import create_initial_superuser, create_sample_users
 
 
 @pytest.mark.anyio
@@ -163,3 +164,18 @@ async def test_user_updates_self(
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert resp.json()["id"] == user_id
     assert resp.json()["name"] == "Bird Person"
+
+
+@pytest.mark.anyio
+async def test_create_sample_users(
+    reset_db,
+):
+    await create_sample_users()
+
+
+@pytest.mark.anyio
+async def test_create_initial_superuser(
+    reset_db,
+):
+    await create_initial_superuser()
+    await create_initial_superuser(force=True)

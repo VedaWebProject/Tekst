@@ -121,7 +121,7 @@ async def download_structure_template(
     )
     for n in range(len(text.levels)):
         node = deepcopy(dummy_node)
-        node.label = node.label.format(text.levels[n][0]["label"])
+        node.label = node.label.format(text.levels[n][0]["translation"])
         if curr_node_def is None:
             structure_def.nodes.append(node)
         else:
@@ -235,7 +235,7 @@ async def insert_level(
     ],
     translations: Annotated[
         Translations[TextLevelTranslation],
-        Body(description="Label translations for this level"),
+        Body(description="Label translations for this level", min_length=1),
     ],
 ) -> TextRead:
     text_doc: TextDocument = await TextDocument.get(text_id)
@@ -278,14 +278,13 @@ async def insert_level(
     # create one dummy node per node on parent level and configure
     # parent-child-relationships on next lower/higher level
     # (different operation if level == 0, as in this case there is no parent level)
-    label_prefix = next(
-        (
-            lvl_trans
-            for lvl_trans in translations
-            if lvl_trans.get("locale", None) == "enUS"
-        ),
-        translations[0],
-    ).get("label", "???")
+    translations_map = {t.get("locale"): t.get("translation") for t in translations}
+    label_prefix = (
+        translations_map.get("*")
+        or translations_map.get("enUS")
+        or list(translations_map.values())[0]
+        or "???"
+    )
     if index == 0:
         dummy_node = NodeDocument(
             text_id=text_id,
