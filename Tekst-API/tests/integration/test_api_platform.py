@@ -13,7 +13,6 @@ async def test_platform_data(api_path, test_client: AsyncClient, status_fail_msg
 
 @pytest.mark.anyio
 async def test_platform_users(
-    reset_db,
     api_path,
     test_client: AsyncClient,
     status_fail_msg,
@@ -42,7 +41,6 @@ async def test_platform_users(
 
 @pytest.mark.anyio
 async def test_update_platform_settings(
-    reset_db,
     api_path,
     test_client: AsyncClient,
     status_fail_msg,
@@ -64,7 +62,6 @@ async def test_update_platform_settings(
 
 @pytest.mark.anyio
 async def test_get_public_user_info(
-    reset_db,
     api_path,
     test_client: AsyncClient,
     status_fail_msg,

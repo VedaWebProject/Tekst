@@ -16,7 +16,7 @@ async def test_register(
 
 @pytest.mark.anyio
 async def test_register_invalid_pw(
-    api_path, reset_db, test_client: AsyncClient, get_fake_user, status_fail_msg
+    api_path, test_client: AsyncClient, get_fake_user, status_fail_msg
 ):
     payload = get_fake_user()
 
@@ -47,7 +47,7 @@ async def test_register_invalid_pw(
 
 @pytest.mark.anyio
 async def test_register_username_exists(
-    api_path, reset_db, test_client: AsyncClient, get_fake_user, status_fail_msg
+    api_path, test_client: AsyncClient, get_fake_user, status_fail_msg
 ):
     payload = get_fake_user()
 
@@ -62,7 +62,7 @@ async def test_register_username_exists(
 
 @pytest.mark.anyio
 async def test_register_email_exists(
-    api_path, reset_db, test_client: AsyncClient, get_fake_user, status_fail_msg
+    api_path, test_client: AsyncClient, get_fake_user, status_fail_msg
 ):
     payload = get_fake_user()
 
@@ -80,7 +80,6 @@ async def test_register_email_exists(
 @pytest.mark.anyio
 async def test_login(
     config,
-    reset_db,
     register_test_user,
     api_path,
     test_client: AsyncClient,
@@ -99,7 +98,6 @@ async def test_login(
 @pytest.mark.anyio
 async def test_login_fail_bad_pw(
     config,
-    reset_db,
     register_test_user,
     api_path,
     test_client: AsyncClient,
@@ -118,7 +116,6 @@ async def test_login_fail_bad_pw(
 @pytest.mark.anyio
 async def test_login_fail_unverified(
     config,
-    reset_db,
     register_test_user,
     api_path,
     test_client: AsyncClient,
@@ -137,7 +134,6 @@ async def test_login_fail_unverified(
 @pytest.mark.anyio
 async def test_user_updates_self(
     config,
-    reset_db,
     register_test_user,
     get_session_cookie,
     api_path,
@@ -167,15 +163,11 @@ async def test_user_updates_self(
 
 
 @pytest.mark.anyio
-async def test_create_sample_users(
-    reset_db,
-):
+async def test_create_sample_users():
     await create_sample_users()
 
 
 @pytest.mark.anyio
-async def test_create_initial_superuser(
-    reset_db,
-):
+async def test_create_initial_superuser():
     await create_initial_superuser()
     await create_initial_superuser(force=True)

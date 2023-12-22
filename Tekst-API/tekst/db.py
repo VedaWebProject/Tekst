@@ -34,11 +34,6 @@ def get_client(db_uri: str) -> DatabaseClient:
     return _db_client
 
 
-async def reset_db():
-    """Drops the database"""
-    await get_client(_cfg.db_uri).drop_database(_cfg.db_name)
-
-
 async def init_odm(db: Database) -> None:
     # collect basic models
     models = [

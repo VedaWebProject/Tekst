@@ -25,7 +25,6 @@ async def test_get_texts(
 
 @pytest.mark.anyio
 async def test_create_text(
-    reset_db,
     api_path,
     test_client: AsyncClient,
     status_fail_msg,
@@ -51,7 +50,6 @@ async def test_create_text(
 
 @pytest.mark.anyio
 async def test_create_text_unauthorized(
-    reset_db,
     api_path,
     test_client: AsyncClient,
     status_fail_msg,
@@ -67,7 +65,6 @@ async def test_create_text_unauthorized(
 
 @pytest.mark.anyio
 async def test_create_text_unauthenticated(
-    reset_db,
     api_path,
     test_client: AsyncClient,
     status_fail_msg,

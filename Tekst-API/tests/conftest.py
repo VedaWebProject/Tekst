@@ -115,8 +115,18 @@ async def reset_db(get_db_client_override, config):
         await get_db_client_override[config.db_name][collection].delete_many({})
 
 
+@pytest.fixture(autouse=True)
+async def run_before_and_after_tests(reset_db):
+    """Fixture to execute asserts before and after a test is run"""
+    # before test
+    # ...
+    yield  # test
+    # after test
+    # ...
+
+
 @pytest.fixture
-async def insert_sample_data(config, reset_db, get_sample_data) -> Callable:
+async def insert_sample_data(config, get_sample_data) -> Callable:
     """
     Returns an asynchronous function to insert
     test data into their respective database collections
