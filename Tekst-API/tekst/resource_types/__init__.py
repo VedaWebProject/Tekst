@@ -23,12 +23,6 @@ class ResourceTypeABC(ABC):
     """Abstract base class for defining a resource type"""
 
     @classmethod
-    @abstractmethod
-    def get_description(cls) -> str:
-        """A short, one-line description of this resource type"""
-        ...
-
-    @classmethod
     def get_name(cls) -> str:
         """Returns the name of this resource type"""
         return cls.__name__
@@ -57,11 +51,10 @@ class ResourceTypeABC(ABC):
         schema = create_model.schema()
         template_fields = create_model.get_template_fields()
         required = schema.get("required", [])
-        include_resource_props = ("description", "type", "additionalProperties")
+        include_resource_props = ("description", "resourceType", "additionalProperties")
         template = {
             "_title": "Title of this resource",  # will be overridden
             "_level": -1,  # will be overridden
-            "_description": cls.get_description(),
             "_unitSchema": {},  # will be populated in the next step
             "units": [],  # will be populated on template request
         }

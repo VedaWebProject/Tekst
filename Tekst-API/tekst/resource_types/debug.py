@@ -12,10 +12,6 @@ class Debug(ResourceTypeABC):
     """A simple plaintext resource type"""
 
     @classmethod
-    def get_description(cls) -> str:
-        return "Just a temporary debug resource"
-
-    @classmethod
     def resource_model(cls) -> type["DebugResource"]:
         return DebugResource
 

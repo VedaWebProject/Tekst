@@ -97,3 +97,13 @@ def test_user_read_public():
         public_fields=["name"],
     )
     assert not urp.affiliation
+
+
+def test_text_valid_default_level():
+    with pytest.raises(ValidationError):
+        TextCreate(
+            title="foo",
+            slug="foo",
+            levels=[[{"locale": "enUS", "translation": "foo"}]],
+            default_level=2,
+        )

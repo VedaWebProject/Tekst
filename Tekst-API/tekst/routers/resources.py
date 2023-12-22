@@ -1,10 +1,17 @@
+import json
+
+from tempfile import NamedTemporaryFile
 from typing import Annotated
 
 from beanie import PydanticObjectId
 from beanie.operators import In
 from fastapi import APIRouter, Body, HTTPException, Path, Query, status
+from fastapi.responses import FileResponse
+from starlette.background import BackgroundTask
 
 from tekst.auth import OptionalUserDep, SuperuserDep, UserDep
+from tekst.logging import log
+from tekst.models.node import NodeDocument
 from tekst.models.resource import ResourceBaseDocument
 from tekst.models.text import TextDocument
 from tekst.models.unit import UnitBaseDocument
@@ -192,79 +199,57 @@ async def find_resources(
     ]
 
 
-#
-#   TODO: rebuild template endpoint using beanie logic
-#
+@router.get("/{id}/template", status_code=status.HTTP_200_OK)
+async def get_resource_template(
+    user: UserDep,
+    resource_id: Annotated[str, Path(alias="id")],
+) -> dict:
+    resource_doc = await ResourceBaseDocument.get(resource_id, with_children=True)
+    if not resource_doc:
+        raise HTTPException(
+            status.HTTP_400_BAD_REQUEST,
+            detail=f"Resource with ID {resource_id} doesn't exist",
+        )
+    text_doc = await TextDocument.get(resource_doc.text_id)
 
-# @router.get("/template", status_code=status.HTTP_200_OK)
-# async def get_resource_template(
-#     resource_id: str,
-#     db_io: DbIO = Depends(get_db_io)
-# ) -> dict:
-#     resource_data = await db_io.find_one("resources", resource_id)
+    # import unit type for the requested resource
+    template = resource_types_mgr.get(
+        resource_doc.resource_type
+    ).prepare_import_template()
+    # apply data from resource instance
+    template["resourceId"] = str(resource_doc.id)
+    template["_level"] = resource_doc.level
+    template["_title"] = resource_doc.title
+    template["_description"] = resource_doc.description
 
-#     if not resource_data:
-#         raise HTTPException(
-#             status.HTTP_400_BAD_REQUEST,
-#             detail=f"Resource with ID {resource_id} doesn't exist",
-#         )
-#
-#     resource_types_mgr = resource_types_mgr
+    # generate unit template
+    unit_template = {key: None for key in template["_unitSchema"]}
 
-#     # decode resource data: Usually, this is handled automatically by our models, but
-#     # in this case we're returning a raw dict/JSON, so we have to manually make sure
-#     # that a) the ID field is called "id" and b) the DocumentId is encoded as str.
-#     resource_read_model = resource_types_mgr \
-#       .get(resource_data["resourceType"]).get_resource_read_model()
-#     resource_data = resource_read_model(**resource_data).model_dump()
+    # get IDs of all nodes on this structure level as a base for unit templates
+    nodes = await NodeDocument.find(
+        NodeDocument.text_id == resource_doc.text_id,
+        NodeDocument.level == resource_doc.level,
+    ).to_list()
 
-#     # import unit type for the requested resource
-#     template = resource_types_mgr \
-#       .get(resource_data["resourceType"]).prepare_import_template()
-#     # apply data from resource instance
-#     template["resourceId"] = str(resource_data["id"])
-#     template["_level"] = resource_data["level"]
-#     template["_title"] = resource_data["title"]
-#     template["_description"] = resource_data.get("description", None)
+    # fill in unit templates with IDs
+    template["units"] = [dict(nodeId=str(node.id), **unit_template) for node in nodes]
 
-#     # generate unit template
-#     node_template = {key: None for key in template["_unitSchema"].keys()}
+    # create temporary file and stream it as a file response
+    tempfile = NamedTemporaryFile(mode="w")
+    tempfile.write(json.dumps(template, indent=2, sort_keys=True))
+    tempfile.flush()
 
-#     # get IDs of all nodes on this structure level as a base for unit templates
-# nodes = await db_io.find(
-#     "nodes",
-#     example={
-#         "textSlug": resource_data["textSlug"],
-#         "level": resource_data["level"]
-#     },
-#     projection={"_id", "label"},
-#     limit=0,
-# )
+    # prepare headers
+    filename = f"{text_doc.slug}_resource_{resource_doc.id}" "_template.json"
+    headers = {"Content-Disposition": f'attachment; filename="{filename}"'}
 
-#     # fill in unit templates with IDs
-#     template["units"] = [
-#         model_dump(nodeId=str(node["_id"]), **node_template) for node in nodes
-#     ]
-
-#     # create temporary file and stream it as a file response
-#     tempfile = NamedTemporaryFile(mode="w")
-#     tempfile.write(json.dumps(template, indent=2))
-#     tempfile.flush()
-
-#     # prepare headers
-#     filename = (
-#         f"{resource_data['textSlug']}_resource_{safe_name(template['resourceId'])}"
-#         "_template.json"
-#     )
-#     headers = {"Content-Disposition": f'attachment; filename="{filename}"'}
-
-#     log.debug(f"Serving resource template as temporary file {tempfile.name}")
-#     return FileResponse(
-#         tempfile.name,
-#         headers=headers,
-#         media_type="application/json",
-#         background=BackgroundTask(tempfile.close),
-#     )
+    log.debug(f"Serving resource template as temporary file {tempfile.name}")
+    return FileResponse(
+        tempfile.name,
+        headers=headers,
+        media_type="application/json",
+        background=BackgroundTask(tempfile.close),
+    )
 
 
 @router.get("/{id}", status_code=status.HTTP_200_OK, response_model=AnyResourceReadBody)

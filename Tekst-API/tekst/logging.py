@@ -62,7 +62,7 @@ def setup_logging() -> None:
                 secondary_log_colors={},
                 style="{",
             )
-        except ModuleNotFoundError:
+        except ModuleNotFoundError:  # pragma: no cover
             from logging import Formatter, StreamHandler
 
             dev_log_fmt = (

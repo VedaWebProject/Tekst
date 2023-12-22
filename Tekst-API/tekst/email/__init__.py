@@ -38,14 +38,14 @@ def _get_email_templates(
     templates = dict()
     for template_type in ("subject", "html", "txt"):
         path = str(_TEMPLATES_DIR / locale / f"{template_id.value}.{template_type}")
-        if not exists(path) and locale != "enUS":
+        if not exists(path) and locale != "enUS":  # pragma: no cover
             log.warning(
                 "Missing email translation "
                 f"'{template_id.value}.{template_type}' for locale '{locale}'. "
                 "Falling back to 'enUS'."
             )
             path = str(_TEMPLATES_DIR / "enUS" / f"{template_id.value}.{template_type}")
-        if not exists(path):
+        if not exists(path):  # pragma: no cover
             raise FileNotFoundError(f"{path} does not exist.")
         with open(path) as fp:
             templates[template_type] = fp.read()
@@ -76,7 +76,7 @@ def _send_email(*, to: str, subject: str, txt: str, html: str):
             smtp.login(_cfg.email_smtp_user, _cfg.email_smtp_password)
             smtp.send_message(msg)
             log.debug("Email apparently sent successfully.")
-    except Exception as e:
+    except Exception as e:  # pragma: no cover
         log.error(
             f"Error sending email via "
             f"{_cfg.email_smtp_server}:{_cfg.email_smtp_port} "

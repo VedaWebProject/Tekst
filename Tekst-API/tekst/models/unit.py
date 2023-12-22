@@ -27,8 +27,6 @@ class UnitBase(ModelBase, ModelFactoryMixin):
         ),
     ] = None
 
-    __template_fields: tuple[str] = ("comment",)
-
     @field_validator("resource_type", mode="after")
     @classmethod
     def validate_resource_type_name(cls, v):
@@ -44,7 +42,7 @@ class UnitBase(ModelBase, ModelFactoryMixin):
 
     @classmethod
     def get_template_fields(cls) -> tuple[str]:
-        return cls.__template_fields + getattr(cls, "_template_fields", tuple())
+        return ("comment", *(tuple(cls._template_fields.default) or tuple()))
 
 
 # generate document and update models for this base model,

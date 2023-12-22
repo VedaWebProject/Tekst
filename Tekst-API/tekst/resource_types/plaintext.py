@@ -13,10 +13,6 @@ class Plaintext(ResourceTypeABC):
     """A simple plaintext resource type"""
 
     @classmethod
-    def get_description(cls) -> str:
-        return "A simple plaintext resource"
-
-    @classmethod
     def resource_model(cls) -> type["PlaintextResource"]:
         return PlaintextResource
 

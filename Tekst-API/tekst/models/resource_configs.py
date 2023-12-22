@@ -1,16 +1,8 @@
 from typing import Annotated, Literal
 
-from pydantic import AfterValidator, Field
+from pydantic import Field
 
 from tekst.models.common import ModelBase
-
-
-def _uppercase_lang_code(v):
-    if v is None:
-        return v
-    if not isinstance(v, str):
-        raise TypeError("Language codes have to be passed as strings")
-    return v.upper()
 
 
 class DeepLLinksConfig(ModelBase):
@@ -25,12 +17,9 @@ class DeepLLinksConfig(ModelBase):
     ] = False
     source_language: Annotated[
         Literal[_DEEPL_LANGUAGES] | None,
-        AfterValidator(_uppercase_lang_code),
         Field(description="Source language"),
     ] = _DEEPL_LANGUAGES[0]
     languages: Annotated[
-        list[
-            Annotated[Literal[_DEEPL_LANGUAGES], AfterValidator(_uppercase_lang_code)]
-        ],
+        list[Literal[_DEEPL_LANGUAGES]],
         Field(description="Target languages to display links for", max_length=32),
     ] = ["EN", "DE"]

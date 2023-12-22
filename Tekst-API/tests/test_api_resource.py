@@ -389,34 +389,22 @@ async def test_transfer_resource(
     assert resp.json()["ownerId"] == user_data["id"]
 
 
-# @pytest.mark.anyio
-# async def test_get_resource_template(
-#     test_client: AsyncClient, insert_sample_data
-# ):
-#     await insert_sample_data("texts", "nodes", "resources")
-#     # get all resources for text
-#     endpoint = f"/resources"
-#     resp = await test_client.get(endpoint, params={"textSlug": "rigveda"})
-#     assert resp.status_code == 200, status_fail_msg(200, resp)
-#     assert isinstance(resp.json(), list)
-#     assert len(resp.json()) > 0
-#     assert isinstance(resp.json()[0], dict)
-#     assert "_id" in resp.json()[0]
-#     resource_id = resp.json()[0]["_id"]  # remember resource ID
-#     # get template for resource
-#     endpoint = f"/resources/template"
-#     resp = await test_client.get(endpoint, params={"resourceId": resource_id})
-#     assert resp.status_code == 200, status_fail_msg(200, resp)
-#     assert isinstance(resp.json(), dict)
-#     assert "_unitSchema" in resp.json()
-#     assert "units" in resp.json()
-
-
-# @pytest.mark.anyio
-# async def test_get_resource_template_invalid_id(
-#     test_client: AsyncClient, insert_sample_data
-# ):
-#     await insert_sample_data("texts", "nodes", "resources")
-#     endpoint = f"/resources/template"
-#     resp = await test_client.get(endpoint, params={"resourceId": "foo"})
-#     assert resp.status_code == 400, status_fail_msg(400, resp)
+@pytest.mark.anyio
+async def test_get_resource_template(
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_fail_msg,
+    register_test_user,
+    get_session_cookie,
+):
+    inserted_ids = await insert_sample_data("texts", "nodes", "resources")
+    resource_id = inserted_ids["resources"][0]
+    # register regular test user
+    user_data = await register_test_user(is_superuser=False)
+    session_cookie = await get_session_cookie(user_data)
+    # get resource template
+    resp = await test_client.get(
+        f"/resources/{resource_id}/template", cookies=session_cookie
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert isinstance(resp.json(), dict)

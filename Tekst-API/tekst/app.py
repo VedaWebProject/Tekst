@@ -1,5 +1,4 @@
 import re
-import sys
 
 from contextlib import asynccontextmanager
 
@@ -22,11 +21,6 @@ setup_logging()  # set up logging to match prod/dev requirements
 
 
 async def startup_routine(app: FastAPI) -> None:
-    # dev mode preparations
-    if _cfg.dev_mode:
-        # blank line for visual separation of app runs in dev mode
-        print(file=sys.stderr)
-
     init_resource_types_mgr()
     setup_routes(app)
 

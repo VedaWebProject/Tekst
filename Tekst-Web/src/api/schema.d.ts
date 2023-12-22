@@ -148,6 +148,10 @@ export interface paths {
     /** Update resource */
     patch: operations['updateResource'];
   };
+  '/resources/{id}/template': {
+    /** Get resource template */
+    get: operations['getResourceTemplate'];
+  };
   '/resources/{id}/transfer': {
     /** Transfer resource */
     post: operations['transferResource'];
@@ -2900,6 +2904,32 @@ export interface operations {
           'application/json':
             | components['schemas']['DebugResourceRead']
             | components['schemas']['PlaintextResourceRead'];
+        };
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Get resource template */
+  getResourceTemplate: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': Record<string, never>;
         };
       };
       /** @description Not found */
