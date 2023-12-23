@@ -307,9 +307,9 @@
         "tags": [
           "browse"
         ],
-        "summary": "Get path options by root id",
+        "summary": "Get path options by root",
         "description": "Returns the options for selecting text locations derived from the node path of\nthe node with the given ID as root. At each level, the first option is taken\nas the basis for the next level.",
-        "operationId": "getPathOptionsByRootId",
+        "operationId": "getPathOptionsByRoot",
         "parameters": [
           {
             "name": "id",
@@ -335,7 +335,7 @@
                       "$ref": "#/components/schemas/NodeRead"
                     }
                   },
-                  "title": "Response Get Path Options By Root Id Browse Nodes  Id  Path Options By Root Get"
+                  "title": "Response Get Path Options By Root Browse Nodes  Id  Path Options By Root Get"
                 }
               }
             }

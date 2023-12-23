@@ -157,11 +157,29 @@ async def test_user_updates_self(
 
 
 @pytest.mark.anyio
+async def test_user_deletes_self(
+    config,
+    register_test_user,
+    get_session_cookie,
+    test_client: AsyncClient,
+    status_fail_msg,
+):
+    user_data = await register_test_user()
+    session_cookie = await get_session_cookie(user_data)
+    # delete self
+    resp = await test_client.delete(
+        "/users/me",
+        cookies=session_cookie,
+    )
+    assert resp.status_code == 204, status_fail_msg(204, resp)
+
+
+@pytest.mark.anyio
 async def test_create_sample_users():
     await create_sample_users()
 
 
 @pytest.mark.anyio
 async def test_create_initial_superuser():
-    await create_initial_superuser()
-    await create_initial_superuser(force=True)
+    await create_initial_superuser()  # will abort because of dev mode
+    await create_initial_superuser(force=True)  # forced despite dev mode

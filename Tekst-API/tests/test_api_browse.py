@@ -1,6 +1,7 @@
 import pytest
 
 from httpx import AsyncClient
+from tekst.models.node import NodeDocument
 from tekst.models.resource import ResourceBaseDocument
 from tekst.models.text import TextDocument
 
@@ -10,8 +11,6 @@ async def test_get_unit_siblings(
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,
-    register_test_user,
-    get_session_cookie,
 ):
     await insert_sample_data("texts", "nodes", "resources", "units")
     text = await TextDocument.find_one(TextDocument.slug == "pond")
@@ -28,3 +27,72 @@ async def test_get_unit_siblings(
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 3
+
+
+@pytest.mark.anyio
+async def test_get_node_path(
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_fail_msg,
+):
+    inserted_ids = await insert_sample_data("texts", "nodes")
+    text_id = inserted_ids["texts"][0]
+    resp = await test_client.get(
+        "/browse/nodes/path",
+        params={"textId": text_id, "level": 0, "position": 0},
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert isinstance(resp.json(), list)
+
+
+@pytest.mark.anyio
+async def test_get_path_options_by_head(
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_fail_msg,
+):
+    await insert_sample_data("texts", "nodes")
+    text = await TextDocument.find_one(TextDocument.slug == "fdhdgg")
+    node = await NodeDocument.find_one(
+        NodeDocument.text_id == text.id, NodeDocument.level == 1
+    )
+    resp = await test_client.get(
+        f"/browse/nodes/{str(node.id)}/path/options-by-head",
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert isinstance(resp.json(), list)
+    assert isinstance(resp.json()[0], list)
+
+
+@pytest.mark.anyio
+async def test_get_path_options_by_root(
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_fail_msg,
+):
+    await insert_sample_data("texts", "nodes")
+    text = await TextDocument.find_one(TextDocument.slug == "fdhdgg")
+    node = await NodeDocument.find_one(
+        NodeDocument.text_id == text.id, NodeDocument.level == 0
+    )
+    resp = await test_client.get(
+        f"/browse/nodes/{str(node.id)}/path/options-by-root",
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert isinstance(resp.json(), list)
+    assert isinstance(resp.json()[0], list)
+
+
+@pytest.mark.anyio
+async def test_get_resource_coverage_data(
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_fail_msg,
+):
+    inserted_ids = await insert_sample_data("texts", "nodes", "resources", "units")
+    resource_id = inserted_ids["resources"][0]
+    resp = await test_client.get(
+        f"/browse/resources/{resource_id}/coverage",
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert isinstance(resp.json(), list)

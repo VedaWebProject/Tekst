@@ -210,7 +210,7 @@ async def test_insert_level(
 
 
 @pytest.mark.anyio
-async def test_delete_level_0(
+async def test_delete_top_level(
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,
@@ -234,7 +234,7 @@ async def test_delete_level_0(
 
 
 @pytest.mark.anyio
-async def test_delete_level_1(
+async def test_delete_bottom_level(
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,
@@ -247,6 +247,39 @@ async def test_delete_level_1(
     # create superuser
     superuser_data = await register_test_user(is_superuser=True)
     session_cookie = await get_session_cookie(superuser_data)
+
+    # delete level 1
+    resp = await test_client.delete(
+        f"/texts/{text_id}/level/1",
+        cookies=session_cookie,
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert "id" in resp.json()
+
+
+@pytest.mark.anyio
+async def test_delete_middle_level(
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_fail_msg,
+    register_test_user,
+    get_session_cookie,
+):
+    inserted_ids = await insert_sample_data("texts", "nodes")
+    text_id = inserted_ids["texts"][0]
+
+    # create superuser
+    superuser_data = await register_test_user(is_superuser=True)
+    session_cookie = await get_session_cookie(superuser_data)
+
+    # create extra level
+    resp = await test_client.post(
+        f"/texts/{text_id}/level/2",
+        json=[{"locale": "*", "translation": "Some Level"}],
+        cookies=session_cookie,
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert "id" in resp.json()
 
     # delete level 1
     resp = await test_client.delete(

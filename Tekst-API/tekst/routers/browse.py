@@ -138,25 +138,17 @@ async def get_path_options_by_head_id(
         return []
     # construct options for this path up to root node
     options = []
-    while node_doc and node_doc.parent_id:
+    while node_doc:
         siblings = (
-            await NodeDocument.find(NodeDocument.parent_id == node_doc.parent_id)
+            await NodeDocument.find(
+                NodeDocument.text_id == node_doc.text_id,
+                NodeDocument.parent_id == node_doc.parent_id,
+            )
             .sort(+NodeDocument.position)
             .to_list()
         )
         options.insert(0, siblings)
         node_doc = await NodeDocument.get(node_doc.parent_id)
-    # lastly, insert options for root level
-    if node_doc:
-        root_lvl_options = (
-            await NodeDocument.find(
-                NodeDocument.text_id == node_doc.text_id,
-                NodeDocument.level == 0,
-            )
-            .sort(+NodeDocument.position)
-            .to_list()
-        )
-        options.insert(0, root_lvl_options)
     return options
 
 
@@ -165,7 +157,7 @@ async def get_path_options_by_head_id(
     response_model=list[list[NodeRead]],
     status_code=status.HTTP_200_OK,
 )
-async def get_path_options_by_root_id(
+async def get_path_options_by_root(
     node_id: Annotated[PydanticObjectId, Path(alias="id")],
 ) -> list[list[NodeDocument]]:
     """

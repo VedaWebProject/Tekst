@@ -45,12 +45,12 @@ export interface paths {
   };
   '/browse/nodes/{id}/path/options-by-root': {
     /**
-     * Get path options by root id
+     * Get path options by root
      * @description Returns the options for selecting text locations derived from the node path of
      * the node with the given ID as root. At each level, the first option is taken
      * as the basis for the next level.
      */
-    get: operations['getPathOptionsByRootId'];
+    get: operations['getPathOptionsByRoot'];
   };
   '/browse/resources/{id}/coverage': {
     /** Get resource coverage data */
@@ -2287,12 +2287,12 @@ export interface operations {
     };
   };
   /**
-   * Get path options by root id
+   * Get path options by root
    * @description Returns the options for selecting text locations derived from the node path of
    * the node with the given ID as root. At each level, the first option is taken
    * as the basis for the next level.
    */
-  getPathOptionsByRootId: {
+  getPathOptionsByRoot: {
     parameters: {
       path: {
         id: string;
