@@ -2,12 +2,11 @@ from tekst.models.common import Translations
 
 
 def pick_translation(translations: Translations, locale_key: str = "enUS") -> str:
-    for translation in translations:
-        if translation.get("locale", None) == locale_key:
-            return translation.get("translation", "")
-    for translation in translations:
-        if translation.get("locale", None) == "*":
-            return translation.get("translation", "")
-    if len(translations) > 0:
-        return translations[0].get("translation", "")
-    return ""
+    sorted_translations = sorted(
+        translations, key=lambda x: [locale_key, "*", "enUS"].index(x.get("locale"))
+    )
+    return (
+        sorted_translations[0].get("translation", "")
+        if len(sorted_translations) > 0
+        else ""
+    )

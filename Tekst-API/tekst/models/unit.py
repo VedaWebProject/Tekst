@@ -33,7 +33,7 @@ class UnitBase(ModelBase, ModelFactoryMixin):
         from tekst.resource_types import resource_types_mgr
 
         resource_type_names = resource_types_mgr.list_names()
-        if v.lower() not in resource_type_names:
+        if v.lower() not in resource_type_names:  # pragma: no cover
             raise ValidationError(
                 f"Given resource type ({v}) is not a valid "
                 f"resource type name (one of {resource_type_names})."

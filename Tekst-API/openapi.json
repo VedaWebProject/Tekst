@@ -2673,6 +2673,12 @@
           "404": {
             "description": "Not found"
           },
+          "409": {
+            "description": "Conflict"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -2939,6 +2945,12 @@
           },
           "404": {
             "description": "Not found"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "422": {
             "description": "Validation Error",

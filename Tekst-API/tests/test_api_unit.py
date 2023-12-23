@@ -1,6 +1,8 @@
 import pytest
 
 from httpx import AsyncClient
+from tekst.models.common import PydanticObjectId
+from tekst.models.unit import UnitBaseDocument
 
 
 @pytest.mark.anyio
@@ -11,7 +13,8 @@ async def test_create_unit(
     register_test_user,
     get_session_cookie,
 ):
-    text_id = (await insert_sample_data("texts", "nodes", "resources"))["texts"][0]
+    inserted_ids = await insert_sample_data("texts", "nodes", "resources", "units")
+    text_id = inserted_ids["texts"][0]
     user_data = await register_test_user()
     session_cookie = await get_session_cookie(user_data)
 
@@ -60,6 +63,12 @@ async def test_create_unit(
     resp = await test_client.post("/units", json=payload, cookies=session_cookie)
     assert resp.status_code == 409, status_fail_msg(409, resp)
 
+    # fail to create unit for resource we don't have write access to
+    invalid = payload.copy()
+    invalid["resourceId"] = inserted_ids["resources"][0]
+    resp = await test_client.post("/units", json=invalid, cookies=session_cookie)
+    assert resp.status_code == 401, status_fail_msg(401, resp)
+
     # get unit
     resp = await test_client.get(f"/units/{unit_id}", cookies=session_cookie)
     assert resp.status_code == 200, status_fail_msg(200, resp)
@@ -93,6 +102,36 @@ async def test_create_unit(
         cookies=session_cookie,
     )
     assert resp.status_code == 400, status_fail_msg(400, resp)
+
+    # fail to update unit with changes resource ID
+    resp = await test_client.patch(
+        f"/units/{unit_id}",
+        json={
+            "resourceType": "plaintext",
+            "text": "FOO BAR",
+            "resourceId": "637b9ad396d541a505e5439b",
+        },
+        cookies=session_cookie,
+    )
+    assert resp.status_code == 400, status_fail_msg(400, resp)
+
+    # fail to update unit of resource we don't have write access to
+    resource_id = inserted_ids["resources"][0]
+    unit = await UnitBaseDocument.find_one(
+        UnitBaseDocument.resource_id == PydanticObjectId(resource_id),
+        with_children=True,
+    )
+    resp = await test_client.patch(
+        f"/units/{str(unit.id)}",
+        json={
+            "resourceId": resource_id,
+            "nodeId": node_id,
+            "resourceType": "plaintext",
+            "text": "FOO BAR",
+        },
+        cookies=session_cookie,
+    )
+    assert resp.status_code == 401, status_fail_msg(401, resp)
 
     # find all units
     resp = await test_client.get(

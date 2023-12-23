@@ -29,7 +29,11 @@ router = APIRouter(
     "",
     response_model=AnyUnitReadBody,
     status_code=status.HTTP_201_CREATED,
-    responses={status.HTTP_201_CREATED: {"description": "Created"}},
+    responses={
+        status.HTTP_201_CREATED: {"description": "Created"},
+        status.HTTP_409_CONFLICT: {"description": "Conflict"},
+        status.HTTP_401_UNAUTHORIZED: {"description": "Unauthorized"},
+    },
 )
 async def create_unit(unit: AnyUnitCreateBody, user: UserDep) -> AnyUnitDocument:
     # check if the resource this unit belongs to is writable by user
@@ -84,7 +88,15 @@ async def get_unit(
     return unit_doc
 
 
-@router.patch("/{id}", response_model=AnyUnitReadBody, status_code=status.HTTP_200_OK)
+@router.patch(
+    "/{id}",
+    response_model=AnyUnitReadBody,
+    status_code=status.HTTP_200_OK,
+    responses={
+        status.HTTP_400_BAD_REQUEST: {"description": "Bad request"},
+        status.HTTP_401_UNAUTHORIZED: {"description": "Unauthorized"},
+    },
+)
 async def update_unit(
     unit_id: Annotated[PydanticObjectId, Path(alias="id")],
     updates: AnyUnitUpdateBody,

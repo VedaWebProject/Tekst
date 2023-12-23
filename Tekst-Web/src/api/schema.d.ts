@@ -3406,8 +3406,16 @@ export interface operations {
             | components['schemas']['PlaintextUnitRead'];
         };
       };
+      /** @description Unauthorized */
+      401: {
+        content: never;
+      };
       /** @description Not found */
       404: {
+        content: never;
+      };
+      /** @description Conflict */
+      409: {
         content: never;
       };
       /** @description Validation Error */
@@ -3471,6 +3479,14 @@ export interface operations {
             | components['schemas']['DebugUnitRead']
             | components['schemas']['PlaintextUnitRead'];
         };
+      };
+      /** @description Bad request */
+      400: {
+        content: never;
+      };
+      /** @description Unauthorized */
+      401: {
+        content: never;
       };
       /** @description Not found */
       404: {
