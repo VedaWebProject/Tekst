@@ -489,12 +489,11 @@ async def update_text(
     su: SuperuserDep,
     text_id: Annotated[PydanticObjectId, Path(alias="id")],
     updates: TextUpdate,
-) -> dict:
+) -> TextDocument:
     text = await TextDocument.get(text_id)
     if not text:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Text {text_id} doesn't exist",
         )
-    await text.apply(updates.model_dump(exclude_unset=True))
-    return await TextDocument.get(text_id)
+    return await text.apply_updates(updates)

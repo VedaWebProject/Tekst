@@ -87,8 +87,24 @@ class DocumentBase(ModelTransformerMixin, Document):
         self.id = None  # reset ID for new document in case one is already set
         return await super().insert(**kwargs)
 
-    async def apply(self, updates: dict, **kwargs):
-        return await self.set(decamelize(updates), **kwargs)
+    async def apply_updates(
+        self,
+        updates_model: BaseModel,
+        *,
+        exclude: set[int] | set[str] | None = None,
+        **kwargs,
+    ):
+        """
+        Custom method to apply updates to the document. It does a few things of which
+        some are tricky to do with pure Pydantic or Beanie:
+        1. only applies set fields
+        2. excludes fields that are passed in `exclude`
+        3. (most importantly) avoids serialization of the values (e.g. ObjectId -> str)
+        """
+        for field in updates_model.model_fields_set:
+            if not exclude or field not in exclude:
+                setattr(self, field, getattr(updates_model, field))
+        return await self.replace()
 
     class Settings:
         pass

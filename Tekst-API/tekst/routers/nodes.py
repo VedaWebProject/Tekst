@@ -186,8 +186,7 @@ async def update_node(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Node {node_id} doesn't exist",
         )
-    await node_doc.apply(updates.model_dump(exclude_unset=True))
-    return node_doc
+    return await node_doc.apply_updates(updates)
 
 
 @router.delete(

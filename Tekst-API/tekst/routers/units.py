@@ -125,9 +125,7 @@ async def update_unit(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=f"No write access for units of resource {unit_doc.resource_id}",
         )
-    # apply updates
-    await unit_doc.apply(updates.model_dump(exclude_unset=True))
-    return unit_doc
+    return await unit_doc.apply_updates(updates)
 
 
 @router.get("", response_model=list[AnyUnitReadBody], status_code=status.HTTP_200_OK)

@@ -141,19 +141,16 @@ async def update_resource(
         updates.shared_read = resource_doc.shared_read
         updates.shared_write = resource_doc.shared_write
     # update document with reduced updates
-    await resource_doc.apply(
-        updates.model_dump(
-            exclude_unset=True,
-            # force-keep non-updatable fields
-            exclude={
-                "public",
-                "proposed",
-                "text_id",
-                "owner_id",
-                "level",
-                "resource_type",
-            },
-        )
+    await resource_doc.apply_updates(
+        updates,
+        exclude={
+            "public",
+            "proposed",
+            "text_id",
+            "owner_id",
+            "level",
+            "resource_type",
+        },
     )
     return await preprocess_resource_read(resource_doc, user)
 

@@ -4252,6 +4252,7 @@
           },
           "level": {
             "type": "integer",
+            "minimum": 0.0,
             "title": "Level",
             "description": "Text level this resource belongs to"
           },
@@ -4465,6 +4466,7 @@
           },
           "level": {
             "type": "integer",
+            "minimum": 0.0,
             "title": "Level",
             "description": "Text level this resource belongs to"
           },
@@ -5373,6 +5375,7 @@
           },
           "level": {
             "type": "integer",
+            "minimum": 0.0,
             "title": "Level",
             "description": "Text level this resource belongs to"
           },
@@ -5594,6 +5597,7 @@
           },
           "level": {
             "type": "integer",
+            "minimum": 0.0,
             "title": "Level",
             "description": "Text level this resource belongs to"
           },

@@ -246,16 +246,16 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
         ).delete()
         # remove user ID from resource shares
         await ResourceBaseDocument.find(
-            ResourceBaseDocument.shared_read == str(user.id),
+            ResourceBaseDocument.shared_read == user.id,
             with_children=True,
         ).update(
-            Pull(ResourceBaseDocument.shared_read == str(user.id)),
+            Pull(ResourceBaseDocument.shared_read == user.id),
         )
         await ResourceBaseDocument.find(
-            ResourceBaseDocument.shared_write == str(user.id),
+            ResourceBaseDocument.shared_write == user.id,
             with_children=True,
         ).update(
-            Pull(ResourceBaseDocument.shared_write == str(user.id)),
+            Pull(ResourceBaseDocument.shared_write == user.id),
         )
 
     async def on_after_delete(self, user: UserDocument, request: Request | None = None):

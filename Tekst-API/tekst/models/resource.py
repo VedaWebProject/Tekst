@@ -53,7 +53,9 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         PydanticObjectId,
         Field(description="ID of the text this resource belongs to"),
     ]
-    level: Annotated[int, Field(description="Text level this resource belongs to")]
+    level: Annotated[
+        int, Field(ge=0, description="Text level this resource belongs to")
+    ]
     resource_type: Annotated[
         str,
         Field(description="A string identifying one of the available resource types"),
@@ -175,8 +177,8 @@ class ResourceBaseDocument(ResourceBase, DocumentBase):
                     Or(
                         ResourceBaseDocument.public == True,  # noqa: E712
                         ResourceBaseDocument.proposed == True,  # noqa: E712
-                        ResourceBaseDocument.shared_read == str(user.id),
-                        ResourceBaseDocument.shared_write == str(user.id),
+                        ResourceBaseDocument.shared_read == user.id,
+                        ResourceBaseDocument.shared_write == user.id,
                     ),
                 ),
             )
@@ -200,7 +202,7 @@ class ResourceBaseDocument(ResourceBase, DocumentBase):
             ResourceBaseDocument.proposed == False,  # noqa: E712
             Or(
                 ResourceBaseDocument.owner_id == user.id,
-                ResourceBaseDocument.shared_write == str(user.id),
+                ResourceBaseDocument.shared_write == user.id,
             ),
         )
 

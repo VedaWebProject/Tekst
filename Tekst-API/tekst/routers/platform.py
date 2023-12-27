@@ -117,24 +117,22 @@ async def find_public_users(
 async def update_platform_settings(
     su: SuperuserDep,
     updates: PlatformSettingsUpdate,
-) -> PlatformSettingsRead:
+) -> PlatformSettingsDocument:
     settings = await get_settings(force_nocache=True)
     settings_doc = await PlatformSettingsDocument.get(settings.id)
-    updates_data = updates.model_dump(exclude_unset=True)
     # reset user locales if the update reduces available locales
-    if "available_locales" in updates_data:
+    if updates.available_locales and isinstance(updates.available_locales, list):
         await UserDocument.find(
-            NotIn(UserDocument.locale, updates_data["available_locales"] + [None])
+            NotIn(UserDocument.locale, updates.available_locales + [None])
         ).set(
             {
                 UserDocument.locale: "enUS"
-                if "enUS" in updates_data["available_locales"]
-                else updates_data["available_locales"][0]
+                if "enUS" in updates.available_locales
+                else updates.available_locales[0]
             }
         )
     # apply updates
-    await settings_doc.apply(updates_data)
-    return settings_doc
+    return await settings_doc.apply_updates(updates)
 
 
 @router.get(
@@ -186,8 +184,7 @@ async def update_segment(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Client segment {segment_doc} doesn't exist",
         )
-    await segment_doc.apply(updates.model_dump(exclude_unset=True))
-    return segment_doc
+    return await segment_doc.apply_updates(updates)
 
 
 @router.delete("/segments/{id}", status_code=status.HTTP_204_NO_CONTENT)
