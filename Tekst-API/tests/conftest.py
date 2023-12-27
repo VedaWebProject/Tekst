@@ -103,19 +103,16 @@ async def test_client(test_app, config) -> AsyncClient:
         yield client
 
 
-@pytest.fixture
-async def reset_db(get_db_client_override, config):
+@pytest.fixture(autouse=True)
+async def run_before_and_after_each_test_case(get_db_client_override, config):
+    """Fixture to execute asserts before and after a test is run"""
+    ### before test case
+    # clear DB collections
     for collection in ("texts", "nodes", "resources", "units", "users"):
         await get_db_client_override[config.db_name][collection].delete_many({})
-
-
-@pytest.fixture(autouse=True)
-async def run_before_and_after_tests(reset_db):
-    """Fixture to execute asserts before and after a test is run"""
-    # before test
-    # ...
-    yield  # test
-    # after test
+    ### run test case
+    yield  # test case running now
+    ### after test cae
     # ...
 
 
