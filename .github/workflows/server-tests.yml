@@ -31,6 +31,7 @@ jobs:
         image: axllent/mailpit:v1.6
         ports:
           - 1025:1025
+          - 8025:8025
         env:
           MP_SMTP_AUTH_ACCEPT_ANY: true
           MP_SMTP_AUTH_ALLOW_INSECURE: true
@@ -56,5 +57,3 @@ jobs:
     - name: Run tests
       if: always()
       run: TEKST_DEV_MODE=true TEKST_CUSTOM_ENV_FILE=.env.test poetry run pytest
-      
-      
