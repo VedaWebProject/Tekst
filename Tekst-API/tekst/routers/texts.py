@@ -1,5 +1,5 @@
 from copy import deepcopy
-from pathlib import Path as SysPath
+from tempfile import NamedTemporaryFile
 from typing import Annotated
 
 from beanie import PydanticObjectId
@@ -15,9 +15,11 @@ from fastapi import (
     status,
 )
 from fastapi.responses import FileResponse
+from starlette.background import BackgroundTask
 
 from tekst.auth import OptionalUserDep, SuperuserDep
 from tekst.dependencies import get_temp_dir
+from tekst.logging import log
 from tekst.models.common import Translations
 from tekst.models.exchange import NodeDefinition, TextStructureDefinition
 from tekst.models.node import NodeDocument
@@ -136,18 +138,22 @@ async def download_structure_template(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Error creating template",
         )
-    # allocate and write temporary file
-    temp_file_name = f"{text.slug}_structure_template.json"
-    temp_file_path = SysPath(temp_dir_name) / temp_file_name
-    with open(temp_file_path, "w") as f:
-        f.write(
-            structure_def.model_dump_json(indent=2, by_alias=True, exclude_none=True)
-        )
+    # create temporary file and stream it as a file response
+    tempfile = NamedTemporaryFile(mode="w")
+    tempfile.write(
+        structure_def.model_dump_json(indent=2, by_alias=True, exclude_none=True)
+    )
+    tempfile.flush()
+    # prepare headers
+    filename = f"{text.slug}_structure_template.json"
+    headers = {"Content-Disposition": f'attachment; filename="{filename}"'}
     # return structure template file
+    log.debug(f"Serving resource template as temporary file {tempfile.name}")
     return FileResponse(
-        path=temp_file_path,
-        media_type="application/octet-stream",
-        filename=temp_file_name,
+        path=tempfile.name,
+        headers=headers,
+        media_type="application/json",
+        background=BackgroundTask(tempfile.close),
     )
 
 

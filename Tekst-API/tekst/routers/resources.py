@@ -242,7 +242,7 @@ async def get_resource_template(
 
     log.debug(f"Serving resource template as temporary file {tempfile.name}")
     return FileResponse(
-        tempfile.name,
+        path=tempfile.name,
         headers=headers,
         media_type="application/json",
         background=BackgroundTask(tempfile.close),
