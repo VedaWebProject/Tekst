@@ -79,15 +79,11 @@ filterwarnings = [
     'ignore:directory "/run/secrets" does not exist:UserWarning'
 ]
 
-[tool.pytest_env]
-TESTING = "true"
-
 [tool.coverage.run]
 source = ["tekst"]
-branch = true
+branch = false
 omit = [
     "tekst/__main__.py",
-    "tekst/sample_data/**/*"
 ]
 
 [tool.coverage.report]

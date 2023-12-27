@@ -1,4 +1,3 @@
-from os import environ
 from os.path import realpath
 from pathlib import Path
 
@@ -14,8 +13,6 @@ _SAMPLE_DATA_DIR = Path(realpath(__file__)).parent / "db"
 
 
 async def insert_sample_data():
-    if environ.get("TESTING", False):
-        return
     target_collections = ("texts", "nodes", "resources", "units", "settings")
     db = get_db_client()[_cfg.db_name]
     # check if any of the target collections contains data
