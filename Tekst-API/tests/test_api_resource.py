@@ -13,7 +13,7 @@ async def test_create_resource(
 ):
     text_id = (await insert_sample_data("texts", "nodes"))["texts"][0]
     user_data = await register_test_user()
-    session_cookie = await get_session_cookie(user_data)
+    await get_session_cookie(user_data)
     payload = {
         "title": "A test resource",
         "description": [
@@ -28,7 +28,10 @@ async def test_create_resource(
         "ownerId": user_data["id"],
     }
 
-    resp = await test_client.post("/resources", json=payload, cookies=session_cookie)
+    resp = await test_client.post(
+        "/resources",
+        json=payload,
+    )
     assert resp.status_code == 201, status_fail_msg(201, resp)
     assert "id" in resp.json()
     assert resp.json()["title"] == "A test resource"
@@ -49,7 +52,7 @@ async def test_create_resource_invalid(
 ):
     await insert_sample_data("texts", "nodes")
     user_data = await register_test_user()
-    session_cookie = await get_session_cookie(user_data)
+    await get_session_cookie(user_data)
 
     payload = {
         "title": "A test resource",
@@ -58,7 +61,10 @@ async def test_create_resource_invalid(
         "resourceType": "plaintext",
     }
 
-    resp = await test_client.post("/resources", json=payload, cookies=session_cookie)
+    resp = await test_client.post(
+        "/resources",
+        json=payload,
+    )
     assert resp.status_code == 400, status_fail_msg(400, resp)
 
 
@@ -72,7 +78,7 @@ async def test_update_resource(
 ):
     text_id = (await insert_sample_data("texts", "nodes", "resources"))["texts"][0]
     user_data = await register_test_user()
-    session_cookie = await get_session_cookie(user_data)
+    await get_session_cookie(user_data)
     # create new resource (because only owner can update(write))
     payload = {
         "title": "Foo Bar Baz",
@@ -81,7 +87,10 @@ async def test_update_resource(
         "resourceType": "plaintext",
         "public": True,
     }
-    resp = await test_client.post("/resources", json=payload, cookies=session_cookie)
+    resp = await test_client.post(
+        "/resources",
+        json=payload,
+    )
     assert resp.status_code == 201, status_fail_msg(201, resp)
     resource_data = resp.json()
     assert "id" in resource_data
@@ -92,7 +101,6 @@ async def test_update_resource(
     resp = await test_client.patch(
         f"/resources/{resource_data['id']}",
         json=updates,
-        cookies=session_cookie,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), dict)
@@ -104,7 +112,6 @@ async def test_update_resource(
     resp = await test_client.patch(
         f"/resources/{resource_data['id']}",
         json=updates,
-        cookies=session_cookie,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), dict)
@@ -132,7 +139,7 @@ async def test_create_resource_with_forged_owner_id(
 ):
     text_id = (await insert_sample_data("texts", "nodes"))["texts"][0]
     user_data = await register_test_user()
-    session_cookie = await get_session_cookie(user_data)
+    await get_session_cookie(user_data)
     # create new resource with made up owner ID
     payload = {
         "title": "Foo Bar Baz",
@@ -141,7 +148,10 @@ async def test_create_resource_with_forged_owner_id(
         "resourceType": "plaintext",
         "ownerId": "643d3cdc21efd6c46ae1527e",
     }
-    resp = await test_client.post("/resources", json=payload, cookies=session_cookie)
+    resp = await test_client.post(
+        "/resources",
+        json=payload,
+    )
     assert resp.status_code == 201, status_fail_msg(201, resp)
     assert resp.json()["ownerId"] != payload["ownerId"]
 
@@ -186,10 +196,10 @@ async def test_access_private_resource(
     accessible_unauthorized = len(resp.json())
     # register test superuser
     user_data = await register_test_user(is_superuser=True)
-    session_cookie = await get_session_cookie(user_data)
+    await get_session_cookie(user_data)
     # unpublish
     resp = await test_client.post(
-        f"/resources/{resource_id}/unpublish", cookies=session_cookie
+        f"/resources/{resource_id}/unpublish",
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     # logout
@@ -239,7 +249,7 @@ async def test_propose_unpropose_publish_unpublish_resource(
 ):
     text_id = (await insert_sample_data("texts", "nodes", "resources"))["texts"][0]
     user_data = await register_test_user()
-    session_cookie = await get_session_cookie(user_data)
+    await get_session_cookie(user_data)
     # create new resource (because only owner can update(write))
     payload = {
         "title": "Foo Bar Baz",
@@ -248,24 +258,25 @@ async def test_propose_unpropose_publish_unpublish_resource(
         "resourceType": "plaintext",
         "ownerId": user_data.get("id"),
     }
-    resp = await test_client.post("/resources", json=payload, cookies=session_cookie)
+    resp = await test_client.post(
+        "/resources",
+        json=payload,
+    )
     assert resp.status_code == 201, status_fail_msg(201, resp)
     resource_data = resp.json()
     assert "id" in resource_data
     assert "ownerId" in resource_data
     # become superuser
     user_data = await register_test_user(is_superuser=True, alternative=True)
-    session_cookie = await get_session_cookie(user_data)
+    await get_session_cookie(user_data)
     # publish unproposed resource
     resp = await test_client.post(
         f"/resources/{resource_data['id']}/publish",
-        cookies=session_cookie,
     )
     assert resp.status_code == 400, status_fail_msg(400, resp)
     # propose resource
     resp = await test_client.post(
         f"/resources/{resource_data['id']}/propose",
-        cookies=session_cookie,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     # get all accessible resources, check if ours is proposed
@@ -278,37 +289,31 @@ async def test_propose_unpropose_publish_unpublish_resource(
     # propose resource again (should just go through)
     resp = await test_client.post(
         f"/resources/{resource_data['id']}/propose",
-        cookies=session_cookie,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     # publish resource
     resp = await test_client.post(
         f"/resources/{resource_data['id']}/publish",
-        cookies=session_cookie,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     # unpublish resource
     resp = await test_client.post(
         f"/resources/{resource_data['id']}/unpublish",
-        cookies=session_cookie,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     # unpublish resource again (should just go through)
     resp = await test_client.post(
         f"/resources/{resource_data['id']}/unpublish",
-        cookies=session_cookie,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     # propose resource again
     resp = await test_client.post(
         f"/resources/{resource_data['id']}/propose",
-        cookies=session_cookie,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     # unpropose resource
     resp = await test_client.post(
         f"/resources/{resource_data['id']}/unpropose",
-        cookies=session_cookie,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
 
@@ -331,17 +336,20 @@ async def test_delete_resource(
     resources_count = len(resp.json())
     # register test superuser
     user_data = await register_test_user(is_superuser=True)
-    session_cookie = await get_session_cookie(user_data)
+    await get_session_cookie(user_data)
     # delete resource
-    resp = await test_client.delete(f"/resources/{resource_id}", cookies=session_cookie)
+    resp = await test_client.delete(
+        f"/resources/{resource_id}",
+    )
     assert resp.status_code == 400, status_fail_msg(400, resp)
     # unpublish resource
     resp = await test_client.post(
         f"/resources/{resource_id}/unpublish",
-        cookies=session_cookie,
     )
     # delete resource
-    resp = await test_client.delete(f"/resources/{resource_id}", cookies=session_cookie)
+    resp = await test_client.delete(
+        f"/resources/{resource_id}",
+    )
     assert resp.status_code == 204, status_fail_msg(204, resp)
     # get all accessible resources again
     resp = await test_client.get("/resources", params={"textId": text_id})
@@ -364,25 +372,22 @@ async def test_transfer_resource(
     user_data = await register_test_user(is_superuser=False)
     # register test superuser
     superuser_data = await register_test_user(alternative=True, is_superuser=True)
-    session_cookie = await get_session_cookie(superuser_data)
+    await get_session_cookie(superuser_data)
     # transfer resource that is still public to test user
     resp = await test_client.post(
         f"/resources/{resource_id}/transfer",
         json=user_data["id"],
-        cookies=session_cookie,
     )
     assert resp.status_code == 400, status_fail_msg(400, resp)
     # unpublish resource
     resp = await test_client.post(
         f"/resources/{resource_id}/unpublish",
-        cookies=session_cookie,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     # transfer resource to test user
     resp = await test_client.post(
         f"/resources/{resource_id}/transfer",
         json=user_data["id"],
-        cookies=session_cookie,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), dict)
@@ -401,10 +406,10 @@ async def test_get_resource_template(
     resource_id = inserted_ids["resources"][0]
     # register regular test user
     user_data = await register_test_user(is_superuser=False)
-    session_cookie = await get_session_cookie(user_data)
+    await get_session_cookie(user_data)
     # get resource template
     resp = await test_client.get(
-        f"/resources/{resource_id}/template", cookies=session_cookie
+        f"/resources/{resource_id}/template",
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), dict)

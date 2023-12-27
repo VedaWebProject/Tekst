@@ -29,19 +29,25 @@ async def test_create_text(
     get_session_cookie,
 ):
     superuser_data = await register_test_user(is_superuser=True)
-    session_cookie = await get_session_cookie(superuser_data)
+    await get_session_cookie(superuser_data)
     payload = {
         "title": "Just a Test",
         "slug": "justatest",
         "levels": [[{"locale": "enUS", "translation": "foo"}]],
     }
-    resp = await test_client.post("/texts", json=payload, cookies=session_cookie)
+    resp = await test_client.post(
+        "/texts",
+        json=payload,
+    )
     assert resp.status_code == 201, status_fail_msg(201, resp)
     assert "id" in resp.json()
     assert "slug" in resp.json()
     assert resp.json()["slug"] == "justatest"
     # create duplicate
-    resp = await test_client.post("/texts", json=payload, cookies=session_cookie)
+    resp = await test_client.post(
+        "/texts",
+        json=payload,
+    )
     assert resp.status_code == 409, status_fail_msg(409, resp)
 
 
@@ -53,9 +59,12 @@ async def test_create_text_unauthorized(
     get_session_cookie,
 ):
     user_data = await register_test_user()  # not a superuser (=unauthorized)!
-    session_cookie = await get_session_cookie(user_data)
+    await get_session_cookie(user_data)
     payload = {"title": "Meow", "slug": "meow", "levels": ["meow"]}
-    resp = await test_client.post("/texts", json=payload, cookies=session_cookie)
+    resp = await test_client.post(
+        "/texts",
+        json=payload,
+    )
     assert resp.status_code == 403, status_fail_msg(403, resp)
 
 
@@ -90,11 +99,12 @@ async def test_update_text(
     assert resp.status_code == 401, status_fail_msg(401, resp)
     # create superuser
     superuser_data = await register_test_user(is_superuser=True)
-    session_cookie = await get_session_cookie(superuser_data)
+    await get_session_cookie(superuser_data)
     # update text
     text_update = {"title": "Another text"}
     resp = await test_client.patch(
-        f"/texts/{text['id']}", json=text_update, cookies=session_cookie
+        f"/texts/{text['id']}",
+        json=text_update,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert "id" in resp.json()
@@ -103,13 +113,15 @@ async def test_update_text(
     assert resp.json()["title"] == "Another text"
     # update unchanged text
     resp = await test_client.patch(
-        f"/texts/{text['id']}", json=text_update, cookies=session_cookie
+        f"/texts/{text['id']}",
+        json=text_update,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     # update invalid text
     text_update = {"title": "Yet another text"}
     resp = await test_client.patch(
-        "/texts/637b9ad396d541a505e5439b", json=text_update, cookies=session_cookie
+        "/texts/637b9ad396d541a505e5439b",
+        json=text_update,
     )
     assert resp.status_code == 400, status_fail_msg(400, resp)
 
@@ -127,12 +139,11 @@ async def test_delete_text(
 
     # create superuser
     superuser_data = await register_test_user(is_superuser=True)
-    session_cookie = await get_session_cookie(superuser_data)
+    await get_session_cookie(superuser_data)
 
     # delete text
     resp = await test_client.delete(
         f"/texts/{text_id}",
-        cookies=session_cookie,
     )
     assert resp.status_code == 204, status_fail_msg(204, resp)
 
@@ -150,12 +161,11 @@ async def test_download_structure_template(
 
     # create superuser
     superuser_data = await register_test_user(is_superuser=True)
-    session_cookie = await get_session_cookie(superuser_data)
+    await get_session_cookie(superuser_data)
 
     # delete text
     resp = await test_client.get(
         f"/texts/{text_id}/template",
-        cookies=session_cookie,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
 
@@ -172,7 +182,7 @@ async def test_insert_level(
 
     # create superuser
     superuser_data = await register_test_user(is_superuser=True)
-    session_cookie = await get_session_cookie(superuser_data)
+    await get_session_cookie(superuser_data)
 
     # get text from db
     resp = await test_client.get("/texts")
@@ -189,7 +199,6 @@ async def test_insert_level(
             {"locale": "enUS", "translation": "A level"},
             {"locale": "deDE", "translation": "Eine Ebene"},
         ],
-        cookies=session_cookie,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert "id" in resp.json()
@@ -202,7 +211,6 @@ async def test_insert_level(
             {"locale": "enUS", "translation": "Another level"},
             {"locale": "deDE", "translation": "Eine weitere Ebene"},
         ],
-        cookies=session_cookie,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert "id" in resp.json()
@@ -222,12 +230,11 @@ async def test_delete_top_level(
 
     # create superuser
     superuser_data = await register_test_user(is_superuser=True)
-    session_cookie = await get_session_cookie(superuser_data)
+    await get_session_cookie(superuser_data)
 
     # delete level 0
     resp = await test_client.delete(
         f"/texts/{text_id}/level/0",
-        cookies=session_cookie,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert "id" in resp.json()
@@ -246,12 +253,11 @@ async def test_delete_bottom_level(
 
     # create superuser
     superuser_data = await register_test_user(is_superuser=True)
-    session_cookie = await get_session_cookie(superuser_data)
+    await get_session_cookie(superuser_data)
 
     # delete level 1
     resp = await test_client.delete(
         f"/texts/{text_id}/level/1",
-        cookies=session_cookie,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert "id" in resp.json()
@@ -270,13 +276,12 @@ async def test_delete_middle_level(
 
     # create superuser
     superuser_data = await register_test_user(is_superuser=True)
-    session_cookie = await get_session_cookie(superuser_data)
+    await get_session_cookie(superuser_data)
 
     # create extra level
     resp = await test_client.post(
         f"/texts/{text_id}/level/2",
         json=[{"locale": "*", "translation": "Some Level"}],
-        cookies=session_cookie,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert "id" in resp.json()
@@ -284,7 +289,6 @@ async def test_delete_middle_level(
     # delete level 1
     resp = await test_client.delete(
         f"/texts/{text_id}/level/1",
-        cookies=session_cookie,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert "id" in resp.json()
@@ -303,14 +307,13 @@ async def test_upload_structure(
 
     # create superuser
     superuser_data = await register_test_user(is_superuser=True)
-    session_cookie = await get_session_cookie(superuser_data)
+    await get_session_cookie(superuser_data)
 
     # read structure file content
     with open(get_sample_data_path("structure/fdhdgg.json"), "rb") as f:
         # upload structure definition
         resp = await test_client.post(
             f"/texts/{text_id}/structure",
-            cookies=session_cookie,
             files={"file": (f.name, f, "application/json")},
         )
 

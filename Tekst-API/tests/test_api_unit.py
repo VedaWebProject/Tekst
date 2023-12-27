@@ -16,7 +16,7 @@ async def test_create_unit(
     inserted_ids = await insert_sample_data("texts", "nodes", "resources", "units")
     text_id = inserted_ids["texts"][0]
     user_data = await register_test_user()
-    session_cookie = await get_session_cookie(user_data)
+    await get_session_cookie(user_data)
 
     # create new resource (because only owner can update(write))
     payload = {
@@ -26,7 +26,10 @@ async def test_create_unit(
         "resourceType": "plaintext",
         "ownerId": user_data.get("id"),
     }
-    resp = await test_client.post("/resources", json=payload, cookies=session_cookie)
+    resp = await test_client.post(
+        "/resources",
+        json=payload,
+    )
     assert resp.status_code == 201, status_fail_msg(201, resp)
     resource_data = resp.json()
     assert "id" in resource_data
@@ -35,7 +38,8 @@ async def test_create_unit(
 
     # get ID of existing test node
     resp = await test_client.get(
-        "/nodes", params={"textId": text_id, "level": 0}, cookies=session_cookie
+        "/nodes",
+        params={"textId": text_id, "level": 0},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
@@ -51,7 +55,10 @@ async def test_create_unit(
         "text": "Ein Raabe geht im Feld spazieren.",
         "comment": "This is a comment",
     }
-    resp = await test_client.post("/units", json=payload, cookies=session_cookie)
+    resp = await test_client.post(
+        "/units",
+        json=payload,
+    )
     assert resp.status_code == 201, status_fail_msg(201, resp)
     assert isinstance(resp.json(), dict)
     assert resp.json()["text"] == payload["text"]
@@ -60,17 +67,25 @@ async def test_create_unit(
     unit_id = resp.json()["id"]
 
     # fail to create duplicate
-    resp = await test_client.post("/units", json=payload, cookies=session_cookie)
+    resp = await test_client.post(
+        "/units",
+        json=payload,
+    )
     assert resp.status_code == 409, status_fail_msg(409, resp)
 
     # fail to create unit for resource we don't have write access to
     invalid = payload.copy()
     invalid["resourceId"] = inserted_ids["resources"][0]
-    resp = await test_client.post("/units", json=invalid, cookies=session_cookie)
+    resp = await test_client.post(
+        "/units",
+        json=invalid,
+    )
     assert resp.status_code == 401, status_fail_msg(401, resp)
 
     # get unit
-    resp = await test_client.get(f"/units/{unit_id}", cookies=session_cookie)
+    resp = await test_client.get(
+        f"/units/{unit_id}",
+    )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), dict)
     assert "id" in resp.json()
@@ -79,7 +94,7 @@ async def test_create_unit(
 
     # fail to get unit with invalid ID
     resp = await test_client.get(
-        "/units/637b9ad396d541a505e5439b", cookies=session_cookie
+        "/units/637b9ad396d541a505e5439b",
     )
     assert resp.status_code == 404, status_fail_msg(404, resp)
 
@@ -87,7 +102,6 @@ async def test_create_unit(
     resp = await test_client.patch(
         f"/units/{unit_id}",
         json={"resourceType": "plaintext", "text": "FOO BAR"},
-        cookies=session_cookie,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), dict)
@@ -99,7 +113,6 @@ async def test_create_unit(
     resp = await test_client.patch(
         "/units/637b9ad396d541a505e5439b",
         json={"resourceType": "plaintext", "text": "FOO BAR"},
-        cookies=session_cookie,
     )
     assert resp.status_code == 400, status_fail_msg(400, resp)
 
@@ -111,7 +124,6 @@ async def test_create_unit(
             "text": "FOO BAR",
             "resourceId": "637b9ad396d541a505e5439b",
         },
-        cookies=session_cookie,
     )
     assert resp.status_code == 400, status_fail_msg(400, resp)
 
@@ -129,13 +141,13 @@ async def test_create_unit(
             "resourceType": "plaintext",
             "text": "FOO BAR",
         },
-        cookies=session_cookie,
     )
     assert resp.status_code == 401, status_fail_msg(401, resp)
 
     # find all units
     resp = await test_client.get(
-        "/units", params={"limit": 100}, cookies=session_cookie
+        "/units",
+        params={"limit": 100},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)

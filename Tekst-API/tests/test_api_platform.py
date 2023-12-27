@@ -19,9 +19,10 @@ async def test_platform_users(
     get_session_cookie,
 ):
     user = await register_test_user(is_superuser=True)
-    session_cookie = await get_session_cookie(user)
+    await get_session_cookie(user)
     resp = await test_client.get(
-        "/platform/users", params={"q": user.get("username")}, cookies=session_cookie
+        "/platform/users",
+        params={"q": user.get("username")},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
@@ -31,7 +32,8 @@ async def test_platform_users(
     assert "name" in resp.json()[0]
     assert "isActive" not in resp.json()[0]
     resp = await test_client.get(
-        "/platform/users", params={"q": "nonsense"}, cookies=session_cookie
+        "/platform/users",
+        params={"q": "nonsense"},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
@@ -46,11 +48,10 @@ async def test_update_platform_settings(
     get_session_cookie,
 ):
     user = await register_test_user(is_superuser=True)
-    session_cookie = await get_session_cookie(user)
+    await get_session_cookie(user)
     resp = await test_client.patch(
         "/platform/settings",
         json={"availableLocales": ["enUS"]},
-        cookies=session_cookie,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), dict)
@@ -80,13 +81,12 @@ async def test_crud_segment(
     get_session_cookie,
 ):
     user = await register_test_user(is_superuser=True)
-    session_cookie = await get_session_cookie(user)
+    await get_session_cookie(user)
 
     # create segment
     resp = await test_client.post(
         "/platform/segments",
         json={"key": "foo", "locale": "*", "title": "Foo", "html": "<p>Foo</p>"},
-        cookies=session_cookie,
     )
     assert resp.status_code == 201, status_fail_msg(201, resp)
     assert isinstance(resp.json(), dict)
@@ -97,7 +97,6 @@ async def test_crud_segment(
     resp = await test_client.patch(
         f"/platform/segments/{resp.json()['id']}",
         json={"title": "Bar"},
-        cookies=session_cookie,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), dict)
@@ -107,6 +106,5 @@ async def test_crud_segment(
     # delete segment
     resp = await test_client.delete(
         f"/platform/segments/{resp.json()['id']}",
-        cookies=session_cookie,
     )
     assert resp.status_code == 204, status_fail_msg(204, resp)

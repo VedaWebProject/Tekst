@@ -135,11 +135,10 @@ async def test_user_updates_self(
     status_fail_msg,
 ):
     user_data = await register_test_user()
-    session_cookie = await get_session_cookie(user_data)
+    await get_session_cookie(user_data)
     # get user data from /users/me
     resp = await test_client.get(
         "/users/me",
-        cookies=session_cookie,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert "id" in resp.json()
@@ -149,7 +148,6 @@ async def test_user_updates_self(
     resp = await test_client.patch(
         "/users/me",
         json=updates,
-        cookies=session_cookie,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert resp.json()["id"] == user_id
@@ -165,11 +163,10 @@ async def test_user_deletes_self(
     status_fail_msg,
 ):
     user_data = await register_test_user()
-    session_cookie = await get_session_cookie(user_data)
+    await get_session_cookie(user_data)
     # delete self
     resp = await test_client.delete(
         "/users/me",
-        cookies=session_cookie,
     )
     assert resp.status_code == 204, status_fail_msg(204, resp)
 

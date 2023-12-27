@@ -19,10 +19,13 @@ async def test_create_node(
 
     # create superuser
     superuser_data = await register_test_user(is_superuser=True)
-    session_cookie = await get_session_cookie(superuser_data)
+    await get_session_cookie(superuser_data)
 
     for node in nodes:
-        resp = await test_client.post("/nodes", json=node, cookies=session_cookie)
+        resp = await test_client.post(
+            "/nodes",
+            json=node,
+        )
         assert resp.status_code == 201, status_fail_msg(201, resp)
 
 
@@ -40,10 +43,13 @@ async def test_child_node_io(
 
     # create superuser
     superuser_data = await register_test_user(is_superuser=True)
-    session_cookie = await get_session_cookie(superuser_data)
+    await get_session_cookie(superuser_data)
 
     # create parent
-    resp = await test_client.post("/nodes", json=node, cookies=session_cookie)
+    resp = await test_client.post(
+        "/nodes",
+        json=node,
+    )
     assert resp.status_code == 201, status_fail_msg(201, resp)
     parent = resp.json()
     assert parent["id"]
@@ -53,7 +59,10 @@ async def test_child_node_io(
     child["parentId"] = parent["id"]
     child["level"] = parent["level"] + 1
     child["position"] = 0
-    resp = await test_client.post("/nodes", json=child, cookies=session_cookie)
+    resp = await test_client.post(
+        "/nodes",
+        json=child,
+    )
     assert resp.status_code == 201, status_fail_msg(201, resp)
     child = resp.json()
     assert "id" in resp.json()
@@ -73,7 +82,6 @@ async def test_child_node_io(
     resp = await test_client.get(
         "/nodes/children",
         params={"parentId": child["parentId"]},
-        cookies=session_cookie,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
@@ -82,7 +90,8 @@ async def test_child_node_io(
 
     # find children by text ID and null parent ID using dedicated children endpoint
     resp = await test_client.get(
-        "/nodes/children", params={"textId": text_id}, cookies=session_cookie
+        "/nodes/children",
+        params={"textId": text_id},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
@@ -105,9 +114,12 @@ async def test_create_node_invalid_text_fail(
 
     # create superuser
     superuser_data = await register_test_user(is_superuser=True)
-    session_cookie = await get_session_cookie(superuser_data)
+    await get_session_cookie(superuser_data)
 
-    resp = await test_client.post("/nodes", json=node, cookies=session_cookie)
+    resp = await test_client.post(
+        "/nodes",
+        json=node,
+    )
     assert resp.status_code == 400, status_fail_msg(400, resp)
 
 
@@ -186,11 +198,12 @@ async def test_update_node(
     node = resp.json()[0]
     # create superuser
     superuser_data = await register_test_user(is_superuser=True)
-    session_cookie = await get_session_cookie(superuser_data)
+    await get_session_cookie(superuser_data)
     # update node
     node_update = {"label": "A fresh label"}
     resp = await test_client.patch(
-        f"/nodes/{node['id']}", json=node_update, cookies=session_cookie
+        f"/nodes/{node['id']}",
+        json=node_update,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert "id" in resp.json()
@@ -199,13 +212,17 @@ async def test_update_node(
     assert resp.json()["label"] == "A fresh label"
     # update unchanged node
     resp = await test_client.patch(
-        f"/nodes/{node['id']}", json=node_update, cookies=session_cookie
+        f"/nodes/{node['id']}",
+        json=node_update,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     # update invalid node
     node_update = {"label": "Brand new label"}
     resp = await test_client.patch("/nodes/637b9ad396d541a505e5439b", json=node_update)
-    assert resp.status_code == 400, status_fail_msg(400, resp, cookies=session_cookie)
+    assert resp.status_code == 400, status_fail_msg(
+        400,
+        resp,
+    )
 
 
 @pytest.mark.anyio
@@ -229,7 +246,7 @@ async def test_delete_node(
 
     # create superuser
     superuser_data = await register_test_user(is_superuser=True)
-    session_cookie = await get_session_cookie(superuser_data)
+    await get_session_cookie(superuser_data)
 
     # get existing resource
     resp = await test_client.get("/resources", params={"textId": text_id})
@@ -246,7 +263,10 @@ async def test_delete_node(
         "text": "Ein Raabe geht im Feld spazieren.",
         "comment": "This is a comment",
     }
-    resp = await test_client.post("/units", json=payload, cookies=session_cookie)
+    resp = await test_client.post(
+        "/units",
+        json=payload,
+    )
     assert resp.status_code == 201, status_fail_msg(201, resp)
     assert isinstance(resp.json(), dict)
     assert resp.json()["text"] == payload["text"]
@@ -254,7 +274,9 @@ async def test_delete_node(
     assert "id" in resp.json()
 
     # delete node
-    resp = await test_client.delete(f"/nodes/{node['id']}", cookies=session_cookie)
+    resp = await test_client.delete(
+        f"/nodes/{node['id']}",
+    )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert resp.json().get("nodes", None) > 1
     assert resp.json().get("units", None) == 1
@@ -272,13 +294,12 @@ async def test_move_node(
 
     # create superuser
     superuser_data = await register_test_user(is_superuser=True)
-    session_cookie = await get_session_cookie(superuser_data)
+    await get_session_cookie(superuser_data)
 
     # get node from db
     resp = await test_client.get(
         "/nodes",
         params={"textId": text_id, "level": 0, "position": 0},
-        cookies=session_cookie,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
@@ -289,7 +310,6 @@ async def test_move_node(
     resp = await test_client.post(
         f"/nodes/{node['id']}/move",
         json={"position": 1, "after": True, "parentId": None},
-        cookies=session_cookie,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), dict)

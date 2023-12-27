@@ -62,21 +62,20 @@ app = FastAPI(
     separate_input_output_schemas=False,
 )
 
-# add and configure CSRF middleware
-if not _cfg.dev_mode:
-    app.add_middleware(
-        CSRFMiddleware,
-        secret=_cfg.security_secret,
-        required_urls=[re.compile(r".*/auth/cookie/login.*")],
-        exempt_urls=[re.compile(r".*/auth/cookie/logout.*")],
-        sensitive_cookies={_cfg.security_auth_cookie_name},
-        cookie_name="XSRF-TOKEN",
-        cookie_path="/",
-        cookie_domain=_cfg.security_auth_cookie_domain or None,
-        cookie_secure=not _cfg.dev_mode,
-        cookie_samesite="Lax",
-        header_name="X-XSRF-TOKEN",
-    )
+# add and configure XSRF/CSRF middleware
+app.add_middleware(
+    CSRFMiddleware,
+    secret=_cfg.security_secret,
+    required_urls=[re.compile(r".*/auth/cookie/login.*")],
+    exempt_urls=[re.compile(r".*/auth/cookie/logout.*")],
+    sensitive_cookies={_cfg.security_auth_cookie_name},
+    cookie_name="XSRF-TOKEN",
+    cookie_path="/",
+    cookie_domain=_cfg.security_auth_cookie_domain or None,
+    cookie_secure=not _cfg.dev_mode,
+    cookie_samesite="Lax",
+    header_name="X-XSRF-TOKEN",
+)
 
 # add and configure CORS middleware
 app.add_middleware(
