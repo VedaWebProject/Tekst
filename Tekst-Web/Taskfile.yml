@@ -51,19 +51,17 @@ tasks:
     cmds:
       - npm run build
 
-  generate-api-types:
+  api-schema:
     cmds:
-      - cmd: npx openapi-typescript ../Tekst-API/openapi.json -o ./src/api/schema.d.ts
-      - cmd: npx eslint ./src/api/schema.d.ts --fix
+      - npm run api-schema
 
   help-texts:
     cmds:
-      - node scripts/parseHelpTexts.mjs
-      - npx eslint src/assets/help/index.ts --fix
+      - npm run help-texts
 
   pre-commit:
     cmds:
-      - task: generate-api-types
+      - task: api-schema
       - task: format
       - task: lint
       - task: build
