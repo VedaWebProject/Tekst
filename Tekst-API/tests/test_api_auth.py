@@ -1,5 +1,6 @@
 import pytest
 
+from fastapi.exceptions import HTTPException
 from httpx import AsyncClient
 from tekst.auth import create_initial_superuser, create_sample_users
 
@@ -17,6 +18,11 @@ async def test_register_invalid_pw(
     test_client: AsyncClient, get_fake_user, status_fail_msg
 ):
     payload = get_fake_user()
+
+    payload["password"] = f"aA1{payload['email']}0oO"
+    resp = await test_client.post("/auth/register", json=payload)
+    assert resp.status_code == 400, status_fail_msg(400, resp)
+    assert resp.json()["detail"]["code"] == "REGISTER_INVALID_PASSWORD"
 
     payload["username"] = "uuuuhhh"
     payload["password"] = "foo"
@@ -94,7 +100,6 @@ async def test_login(
 
 @pytest.mark.anyio
 async def test_login_fail_bad_pw(
-    config,
     register_test_user,
     test_client: AsyncClient,
     status_fail_msg,
@@ -111,7 +116,6 @@ async def test_login_fail_bad_pw(
 
 @pytest.mark.anyio
 async def test_login_fail_unverified(
-    config,
     register_test_user,
     test_client: AsyncClient,
     status_fail_msg,
@@ -127,8 +131,24 @@ async def test_login_fail_unverified(
 
 
 @pytest.mark.anyio
+async def test_forgot_password(
+    register_test_user, test_client: AsyncClient, status_fail_msg, get_latest_email
+):
+    from time import sleep
+
+    user_data = await register_test_user(is_active=True, is_verified=True)
+    resp = await test_client.post(
+        "/auth/forgot-password",
+        json={"email": user_data["email"]},
+    )
+    assert resp.status_code == 202, status_fail_msg(202, resp)
+    sleep(1)
+    mail_html = await get_latest_email()
+    assert "/reset/?token=" in mail_html
+
+
+@pytest.mark.anyio
 async def test_user_updates_self(
-    config,
     register_test_user,
     get_session_cookie,
     test_client: AsyncClient,
@@ -156,7 +176,6 @@ async def test_user_updates_self(
 
 @pytest.mark.anyio
 async def test_user_deletes_self(
-    config,
     register_test_user,
     get_session_cookie,
     test_client: AsyncClient,
@@ -172,7 +191,36 @@ async def test_user_deletes_self(
 
 
 @pytest.mark.anyio
+async def test_update_user(
+    register_test_user,
+    get_session_cookie,
+    test_client: AsyncClient,
+    status_fail_msg,
+):
+    user_data = await register_test_user(is_active=False)
+    superuser_data = await register_test_user(is_superuser=True, alternative=True)
+    await get_session_cookie(superuser_data)
+    # update user
+    resp = await test_client.patch(
+        f"/users/{user_data['id']}",
+        json={"isActive": True, "isSuperuser": True, "password": "XoiPOI09871"},
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert resp.json()["isActive"] is True
+    assert resp.json()["isSuperuser"] is True
+    assert "password" not in resp.json()
+    # update user again
+    resp = await test_client.patch(
+        f"/users/{user_data['id']}", json={"isActive": False, "isSuperuser": False}
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert resp.json()["isActive"] is False
+    assert resp.json()["isSuperuser"] is False
+
+
+@pytest.mark.anyio
 async def test_create_sample_users():
+    await create_sample_users()
     await create_sample_users()
 
 
@@ -180,3 +228,11 @@ async def test_create_sample_users():
 async def test_create_initial_superuser():
     await create_initial_superuser()  # will abort because of dev mode
     await create_initial_superuser(force=True)  # forced despite dev mode
+
+
+@pytest.mark.anyio
+async def test_create_duplicate_user(register_test_user):
+    with pytest.raises(HTTPException) as e:
+        await register_test_user()
+        await register_test_user()
+        assert "REGISTER_USERNAME_ALREADY_EXISTS" in e.getrepr()

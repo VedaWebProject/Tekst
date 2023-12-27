@@ -109,6 +109,16 @@ async def test_client(test_app, config) -> AsyncClient:
         yield client
 
 
+@pytest.fixture
+async def get_latest_email() -> Callable:
+    async def _get_latest_email() -> str:
+        resp = requests.get("http://127.0.0.1:8025/view/latest.html")
+        assert resp.status_code == 200
+        return resp.text
+
+    return _get_latest_email
+
+
 @pytest.fixture(autouse=True)
 async def run_before_and_after_each_test_case(get_db_client_override, config):
     """Fixture to execute asserts before and after a test is run"""
@@ -207,11 +217,11 @@ def status_fail_msg() -> Callable:
     return _status_fail_msg
 
 
-@pytest.fixture(autouse=True)
-def disable_network_calls(monkeypatch):
-    """Prevents outside network access while testing"""
+# @pytest.fixture(autouse=True)
+# def disable_network_calls(monkeypatch):
+#     """Prevents outside network access while testing"""
 
-    def stunted_get():
-        raise RuntimeError("Network access not allowed during testing!")
+#     def stunted_get():
+#         raise RuntimeError("Network access not allowed during testing!")
 
-    monkeypatch.setattr(requests, "get", lambda *args, **kwargs: stunted_get())
+#     monkeypatch.setattr(requests, "get", lambda *args, **kwargs: stunted_get())

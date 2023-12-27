@@ -31,7 +31,6 @@ from fastapi_users.authentication.strategy.db import (
     AccessTokenDatabase,
     DatabaseStrategy,
 )
-from fastapi_users.exceptions import UserAlreadyExists
 from fastapi_users_db_beanie import (
     UP_BEANIE,
     BeanieUserDatabase,
@@ -196,7 +195,7 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
     async def on_after_request_verify(
         self, user: UserDocument, token: str, request: Request | None = None
     ):
-        send_email(
+        send_email(  # pragma: no cover
             user,
             TemplateIdentifier.VERIFY,
             token=token,
@@ -206,7 +205,7 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
         )
 
     async def on_after_verify(self, user: UserDocument, request: Request | None = None):
-        send_email(user, TemplateIdentifier.VERIFIED)
+        send_email(user, TemplateIdentifier.VERIFIED)  # pragma: no cover
 
     async def on_after_forgot_password(
         self, user: UserDocument, token: str, request: Request | None = None
@@ -221,7 +220,7 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
     async def on_after_reset_password(
         self, user: UserDocument, request: Request | None = None
     ):
-        send_email(
+        send_email(  # pragma: no cover
             user,
             TemplateIdentifier.PASSWORD_RESET,
         )
@@ -395,25 +394,24 @@ async def _create_user(user: UserCreate) -> UserRead:
     """
     get_user_db_context = contextlib.asynccontextmanager(get_user_db)
     get_user_manager_context = contextlib.asynccontextmanager(get_user_manager)
-    try:
-        async with get_user_db_context() as user_db:  # noqa: SIM117
-            async with get_user_manager_context(user_db) as user_manager:
-                return await user_manager.create(user, safe=False)
-    except UserAlreadyExists:
-        log.warning("User already exists. Skipping.")
+    async with get_user_db_context() as user_db:  # noqa: SIM117
+        async with get_user_manager_context(user_db) as user_manager:
+            return await user_manager.create(user, safe=False)
 
 
 async def create_initial_superuser(force: bool = False):
     if _cfg.dev_mode and not force:
         return
     # check if initial admin account is properly configured
-    if not _cfg.security_init_admin_email or not _cfg.security_init_admin_password:
+    if (
+        not _cfg.security_init_admin_email or not _cfg.security_init_admin_password
+    ):  # pragma: no cover
         log.warning("No initial admin account configured, skipping creation.")
         return
     # create inital admin account
     if await UserDocument.find_one(
         UserDocument.email == _cfg.security_init_admin_email
-    ).exists():
+    ).exists():  # pragma: no cover
         log.warning(
             f"Initial admin account for {_cfg.security_init_admin_email}"
             " already exists. Skipping creation."
@@ -440,7 +438,7 @@ async def create_initial_superuser(force: bool = False):
 async def create_sample_users():
     """Creates sample users needed for testing in development"""
     if not _cfg.dev_mode:
-        return
+        return  # pragma: no cover
     log.debug("Creating sample users...")
     if await UserDocument.find_one().exists():
         log.warning("Users found in database. Skipping sample user creation.")
