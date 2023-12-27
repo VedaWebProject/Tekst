@@ -293,9 +293,9 @@ resources:
   msgUnpublished: Die Veröffentlichung der Ressource "{title}" wurde aufgehoben.
   msgDeleted: Die Ressource "{title}" wurde gelöscht.
   phSearchUsers: Benutzer suchen...
+  backToOverview: Zurück zur Ressourcen-Übersicht
   settings:
     heading: Ressourcen-Einstellungen
-    backToOverview: Zurück zur Ressourcen-Übersicht
     onlyForUnpublished: Nur für nicht veröffentlichte Ressourcen!
     msgSaved: Ihre Änderungen an der Ressource "{title}" wurden gespeichert.
     status: Status

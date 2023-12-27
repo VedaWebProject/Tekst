@@ -285,9 +285,9 @@ resources:
   msgUnpublished: The publication of the resource "{title}" has been withdrawn.
   msgDeleted: The resource "{title}" has been deleted.
   phSearchUsers: Search for users...
+  backToOverview: Back to resources overview
   settings:
     heading: Resource Settings
-    backToOverview: Back to resources overview
     onlyForUnpublished: Only for unpublished resources!
     msgSaved: Your changes to the resource "{title}" have been saved.
     status: Status

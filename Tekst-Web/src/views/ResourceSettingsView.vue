@@ -106,7 +106,7 @@ async function handleSaveClick() {
       <template #icon>
         <KeyboardArrowLeftOutlined />
       </template>
-      {{ $t('resources.settings.backToOverview') }}
+      {{ $t('resources.backToOverview') }}
     </n-button>
   </router-link>
 
