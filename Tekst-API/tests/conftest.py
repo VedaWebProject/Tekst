@@ -5,7 +5,6 @@ from pathlib import Path
 from typing import Any
 
 import pytest
-import requests
 
 from asgi_lifespan import LifespanManager
 from bson import ObjectId, json_util
@@ -107,16 +106,6 @@ async def test_client(test_app, config) -> AsyncClient:
         client.cookies.setdefault("XSRF-TOKEN", xsrf_token)  # set XSRF token cookie
         # yield client instance
         yield client
-
-
-@pytest.fixture
-async def get_latest_email() -> Callable:
-    async def _get_latest_email() -> str:
-        resp = requests.get("http://127.0.0.1:8025/view/latest.html")
-        assert resp.status_code == 200
-        return resp.text
-
-    return _get_latest_email
 
 
 @pytest.fixture(autouse=True)

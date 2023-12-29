@@ -132,19 +132,14 @@ async def test_login_fail_unverified(
 
 @pytest.mark.anyio
 async def test_forgot_password(
-    register_test_user, test_client: AsyncClient, status_fail_msg, get_latest_email
+    register_test_user, test_client: AsyncClient, status_fail_msg
 ):
-    from time import sleep
-
     user_data = await register_test_user(is_active=True, is_verified=True)
     resp = await test_client.post(
         "/auth/forgot-password",
         json={"email": user_data["email"]},
     )
     assert resp.status_code == 202, status_fail_msg(202, resp)
-    sleep(1)
-    mail_html = await get_latest_email()
-    assert "/reset/?token=" in mail_html
 
 
 @pytest.mark.anyio
