@@ -32,9 +32,13 @@ jobs:
         ports:
           - 1025:1025
           - 8025:8025
+        volumes:
+          - "./dev/smtp-ssl:/smtp-ssl"
         env:
           MP_SMTP_AUTH_ACCEPT_ANY: true
           MP_SMTP_AUTH_ALLOW_INSECURE: true
+          MP_SMTP_TLS_CERT: /smtp-ssl/localhost.crt
+          MP_SMTP_TLS_KEY: /smtp-ssl/localhost.key
 
     defaults:
       run:
@@ -51,6 +55,8 @@ jobs:
         cache-dependency-path: './Tekst-API/poetry.lock'
     - name: Install dependencies
       run: poetry install --sync
+    - name: Generate SSL certificate for Mailpit server
+      run: cd dev/smtp-ssl && ./generate.sh
     - name: Cancel on setup error
       if: failure()
       uses: andymckay/cancel-action@0.2
