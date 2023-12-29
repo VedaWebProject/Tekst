@@ -2,21 +2,30 @@
 import { useStateStore } from '@/stores';
 import { NMenu } from 'naive-ui';
 import type { MenuMixedOption } from 'naive-ui/es/menu/src/interface';
+import { computed } from 'vue';
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     mode?: 'horizontal' | 'vertical';
     options?: MenuMixedOption[];
     embed?: boolean;
+    center?: boolean;
   }>(),
   {
     mode: 'horizontal',
     options: undefined,
     embed: false,
+    center: false,
   }
 );
 
 const state = useStateStore();
+
+const menuStyle = computed(() => ({
+  backgroundColor: props.embed ? 'var(--main-bg-color)' : 'transparent',
+  borderRadius: props.embed ? 'var(--app-ui-border-radius)' : undefined,
+  justifyContent: props.center ? 'center' : undefined,
+}));
 </script>
 
 <template>
@@ -30,10 +39,6 @@ const state = useStateStore();
     }"
     :mode="mode"
     :value="$route.name?.toString()"
-    :style="
-      embed
-        ? { backgroundColor: 'var(--main-bg-color)', borderRadius: 'var(--app-ui-border-radius)' }
-        : undefined
-    "
+    :style="menuStyle"
   />
 </template>

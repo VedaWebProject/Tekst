@@ -9,9 +9,7 @@ const { menuOptions } = useAdminMenuOptions();
 </script>
 
 <template>
-  <div v-if="!state.smallScreen" style="display: flex; justify-content: center">
-    <NavigationMenu :options="menuOptions" embed />
-  </div>
+  <NavigationMenu v-if="!state.smallScreen" :options="menuOptions" embed center />
   <router-view></router-view>
 </template>
 
