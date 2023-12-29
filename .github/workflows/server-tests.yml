@@ -28,7 +28,7 @@ jobs:
         ports:
           - 27017:27017
       mailpit:
-        image: axllent/mailpit:v1.6
+        image: axllent/mailpit:v1.11
         ports:
           - 1025:1025
           - 8025:8025
