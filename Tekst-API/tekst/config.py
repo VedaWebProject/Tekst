@@ -49,9 +49,9 @@ def _select_env_files() -> list[str]:
         env_files.append(f_env)
     if _DEV_MODE and os.path.exists(f_env_dev):
         env_files.append(f_env_dev)
-    if f_env_prod and os.path.exists(f_env_prod):
+    if os.path.exists(f_env_prod):  # pragma: no cover
         env_files.append(f_env_prod)
-    if f_env_custom and os.path.exists(f_env_custom):
+    if f_env_custom and os.path.exists(f_env_custom):  # pragma: no cover
         env_files.append(f_env_custom)
     return env_files
 
@@ -169,15 +169,13 @@ class TekstConfig(BaseSettings):
         return f"{self.db_protocol}://{creds}{db_host}:{str(self.db_port)}"
 
     @field_validator(
-        "cors_allow_origins", "cors_allow_methods", "cors_allow_headers", mode="before"
+        "cors_allow_origins", "cors_allow_methods", "cors_allow_headers", mode="after"
     )
     @classmethod
     def split_cors(cls, v):
-        if isinstance(v, list):
-            return [str(e) for e in v]
         if isinstance(v, str):
             return [e.strip() for e in v.split(",")]
-        raise TypeError("Value must be a string or list of strings")
+        return v
 
     @field_validator("log_level")
     @classmethod
@@ -195,7 +193,7 @@ class TekstConfig(BaseSettings):
             return super().model_dump(**kwargs)
         if "include" in kwargs:
             raise AttributeError(
-                "TekstConfig.model_dump does not support 'include' argument"
+                "kwargs 'include_keys_prefix' and 'include' are exclusive"
             )
         includes_keys = {
             f for f in self.model_fields if f.startswith(include_keys_prefix)

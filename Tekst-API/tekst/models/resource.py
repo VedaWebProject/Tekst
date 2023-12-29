@@ -7,7 +7,6 @@ from beanie.operators import And, Eq, In, Or
 from pydantic import (
     Field,
     StringConstraints,
-    ValidationError,
     create_model,
     field_validator,
 )
@@ -119,7 +118,7 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
 
         resource_type_names = resource_types_mgr.list_names()
         if v.lower() not in resource_type_names:
-            raise ValidationError(
+            raise ValueError(
                 f"Given resource type ({v}) is not a valid "
                 f"resource type name (one of {resource_type_names})."
             )
@@ -185,7 +184,7 @@ class ResourceBaseDocument(ResourceBase, DocumentBase):
 
     @classmethod
     async def access_conditions_write(cls, user: UserRead | None) -> dict:
-        if not user:
+        if not user:  # pragma: no cover (as this should never happen anyway)
             # not logged in, no user (don't match anything!)
             return Eq(ResourceBaseDocument.public, "THIS_WONT_MATCH")
 

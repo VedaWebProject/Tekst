@@ -69,7 +69,7 @@ def _send_email(*, to: str, subject: str, txt: str, html: str):
             if _cfg.email_smtp_starttls:
                 log.debug("Initiating StartTLS handshake...")
                 smtp.starttls()
-            else:
+            else:  # pragma: no cover
                 log.debug(
                     "Skipping StartTLS handshake, using unencrypted connection..."
                 )

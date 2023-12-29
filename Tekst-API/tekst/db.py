@@ -35,7 +35,7 @@ def get_client(db_uri: str) -> DatabaseClient:
 
 
 async def init_odm(db: Database) -> None:
-    # collect basic models
+    # collect basic document models
     models = [
         TextDocument,
         NodeDocument,
@@ -46,7 +46,7 @@ async def init_odm(db: Database) -> None:
         UserDocument,
         AccessToken,
     ]
-    # add resource type models
+    # add all resource types' resource and unit document models
     for lt_class in resource_types_mgr.get_all().values():
         models.append(lt_class.resource_model().document_model())
         models.append(lt_class.unit_model().document_model())

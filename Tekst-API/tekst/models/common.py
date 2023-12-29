@@ -1,6 +1,5 @@
 from typing import (  # noqa: UP035
     Annotated,
-    Any,
     Literal,
     Optional,
     TypeVar,
@@ -78,11 +77,6 @@ class DocumentBase(ModelTransformerMixin, Document):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **decamelize(kwargs))
 
-    def model_dump(self, camelize_keys: bool = False, **kwargs) -> dict[str, Any]:
-        if camelize_keys:
-            return camelize(super().model_dump(**kwargs))
-        return super().model_dump(**kwargs)
-
     async def insert(self, **kwargs):
         self.id = None  # reset ID for new document in case one is already set
         return await super().insert(**kwargs)
@@ -126,7 +120,9 @@ class ModelFactoryMixin:
         for clazz in cls.mro():
             if attr in vars(clazz):
                 return clazz == cls
-        raise AttributeError(f"Attribute '{attr}' not found in class '{cls.__name__}'")
+        raise AttributeError(
+            f"Attribute '{attr}' not found in class '{cls.__name__}'"
+        )  # pragma: no cover
 
     @classmethod
     def _to_bases_tuple(cls, bases: type | tuple[type]):

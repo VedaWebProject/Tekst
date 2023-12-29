@@ -28,6 +28,13 @@ async def test_get_unit_siblings(
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 3
 
+    # invalid resource ID
+    resp = await test_client.get(
+        "/browse/unit-siblings",
+        params={"resourceId": "658c163106aa5002b5b90e33"},
+    )
+    assert resp.status_code == 404, status_fail_msg(404, resp)
+
 
 @pytest.mark.anyio
 async def test_get_node_path(
@@ -43,6 +50,25 @@ async def test_get_node_path(
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
+    assert len(resp.json()) > 0
+
+    # higher level
+    resp = await test_client.get(
+        "/browse/nodes/path",
+        params={"textId": text_id, "level": 1, "position": 0},
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) > 0
+
+    # invalid node data
+    resp = await test_client.get(
+        "/browse/nodes/path",
+        params={"textId": "658c163106aa5002b5b90e33", "level": 0, "position": 0},
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) == 0
 
 
 @pytest.mark.anyio

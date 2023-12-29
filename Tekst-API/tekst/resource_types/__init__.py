@@ -36,13 +36,11 @@ class ResourceTypeABC(ABC):
     @abstractmethod
     def resource_model(cls) -> type[ResourceBase]:
         """Returns the resource base model for this type of resource"""
-        ...
 
     @classmethod
     @abstractmethod
     def unit_model(cls) -> type[UnitBase]:
         """Returns the unit base model for units of this type of resource"""
-        ...
 
     @classmethod
     def prepare_import_template(cls) -> dict:

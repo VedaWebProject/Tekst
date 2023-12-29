@@ -86,7 +86,7 @@ async def test_crud_segment(
     # create segment
     resp = await test_client.post(
         "/platform/segments",
-        json={"key": "foo", "locale": "*", "title": "Foo", "html": "<p>Foo</p>"},
+        json={"key": "system_foo", "locale": "*", "title": "Foo", "html": "<p>Foo</p>"},
     )
     assert resp.status_code == 201, status_fail_msg(201, resp)
     assert isinstance(resp.json(), dict)
