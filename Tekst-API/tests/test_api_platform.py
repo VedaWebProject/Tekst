@@ -103,6 +103,15 @@ async def test_crud_segment(
     assert "title" in resp.json()
     assert resp.json()["title"] == "Bar"
 
+    # get segment
+    resp = await test_client.get(
+        f"/platform/segments/{resp.json()['id']}",
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert isinstance(resp.json(), dict)
+    assert "title" in resp.json()
+    assert resp.json()["title"] == "Bar"
+
     # delete segment
     resp = await test_client.delete(
         f"/platform/segments/{resp.json()['id']}",

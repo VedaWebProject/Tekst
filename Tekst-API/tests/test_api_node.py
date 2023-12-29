@@ -28,6 +28,89 @@ async def test_create_node(
         )
         assert resp.status_code == 201, status_fail_msg(201, resp)
 
+    # invalid level
+    resp = await test_client.post(
+        "/nodes",
+        json={"textId": text_id, "label": "Invalid Node", "level": 4, "position": 0},
+    )
+    assert resp.status_code == 400, status_fail_msg(400, resp)
+
+
+@pytest.mark.anyio
+async def test_create_additional_node(
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_fail_msg,
+    register_test_user,
+    get_session_cookie,
+):
+    text_id = (await insert_sample_data("texts", "nodes"))["texts"][0]
+
+    # create superuser
+    superuser_data = await register_test_user(is_superuser=True)
+    await get_session_cookie(superuser_data)
+
+    # get a parent node
+    resp = await test_client.get(
+        "/nodes", params={"textId": text_id, "level": 0, "position": 0}
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) == 1
+
+    resp = await test_client.post(
+        "/nodes",
+        json={
+            "textId": text_id,
+            "parentId": resp.json()[0]["id"],
+            "label": "Additional Node",
+            "level": 1,
+            "position": 9999,
+        },
+    )
+    assert resp.status_code == 201, status_fail_msg(201, resp)
+
+
+@pytest.mark.anyio
+async def test_create_additional_node_only_child(
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_fail_msg,
+    register_test_user,
+    get_session_cookie,
+):
+    text_id = (await insert_sample_data("texts", "nodes"))["texts"][0]
+
+    # create superuser
+    superuser_data = await register_test_user(is_superuser=True)
+    await get_session_cookie(superuser_data)
+
+    # create new node on level 0
+    resp = await test_client.post(
+        "/nodes",
+        json={
+            "textId": text_id,
+            "label": "Additional Node",
+            "level": 0,
+            "position": 9999,
+        },
+    )
+    assert resp.status_code == 201, status_fail_msg(201, resp)
+    assert isinstance(resp.json(), dict)
+
+    # create only-child node
+    resp = await test_client.post(
+        "/nodes",
+        json={
+            "textId": text_id,
+            "parentId": resp.json()["id"],
+            "label": "Additional Node",
+            "level": 1,
+            "position": 9999,
+        },
+    )
+    assert resp.status_code == 201, status_fail_msg(201, resp)
+
 
 @pytest.mark.anyio
 async def test_child_node_io(
@@ -97,6 +180,10 @@ async def test_child_node_io(
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 1
     assert resp.json()[0]["id"] == str(parent["id"])
+
+    # try to request children without parent or text ID
+    resp = await test_client.get("/nodes/children")
+    assert resp.status_code == 400, status_fail_msg(400, resp)
 
 
 @pytest.mark.anyio
@@ -179,6 +266,10 @@ async def test_get_nodes(
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert "id" in resp.json()
     assert resp.json()["id"] == node_id
+
+    # test get specific node by invalid ID
+    resp = await test_client.get("/nodes/5eb7cfb05e32e07750a1756a")
+    assert resp.status_code == 404, status_fail_msg(404, resp)
 
 
 @pytest.mark.anyio
@@ -281,6 +372,12 @@ async def test_delete_node(
     assert resp.json().get("nodes", None) > 1
     assert resp.json().get("units", None) == 1
 
+    # delete node with invalid ID
+    resp = await test_client.delete(
+        "/nodes/637b9ad396d541a505e5439b",
+    )
+    assert resp.status_code == 400, status_fail_msg(400, resp)
+
 
 @pytest.mark.anyio
 async def test_move_node(
@@ -290,7 +387,7 @@ async def test_move_node(
     register_test_user,
     get_session_cookie,
 ):
-    text_id = (await insert_sample_data("texts", "nodes", "resources"))["texts"][0]
+    text_id = (await insert_sample_data("texts", "nodes"))["texts"][0]
 
     # create superuser
     superuser_data = await register_test_user(is_superuser=True)
@@ -313,4 +410,71 @@ async def test_move_node(
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), dict)
+    assert resp.json()["position"] == 1
+
+    # move node with wrong parent ID
+    resp = await test_client.post(
+        f"/nodes/{node['id']}/move",
+        json={"position": 2, "after": True, "parentId": "637b9ad396d541a505e5439b"},
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert isinstance(resp.json(), dict)
+    assert resp.json()["position"] == 2
+
+
+@pytest.mark.anyio
+async def test_move_node_invalid_id(
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_fail_msg,
+    register_test_user,
+    get_session_cookie,
+):
+    # create superuser
+    superuser_data = await register_test_user(is_superuser=True)
+    await get_session_cookie(superuser_data)
+
+    # move node with invalid ID
+    resp = await test_client.post(
+        "/nodes/637b9ad396d541a505e5439b/move",
+        json={"position": 1, "after": True, "parentId": None},
+    )
+    assert resp.status_code == 400, status_fail_msg(400, resp)
+
+
+@pytest.mark.anyio
+async def test_move_node_lowest_level(
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_fail_msg,
+    register_test_user,
+    get_session_cookie,
+):
+    text_id = (await insert_sample_data("texts", "nodes"))["texts"][0]
+
+    # create superuser
+    superuser_data = await register_test_user(is_superuser=True)
+    await get_session_cookie(superuser_data)
+
+    # get node from db
+    resp = await test_client.get(
+        "/nodes",
+        params={"textId": text_id, "level": 1, "position": 0},
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) > 0
+    node = resp.json()[0]
+    assert node["level"] == 1
+    assert node["position"] == 0
+
+    # move
+    resp = await test_client.post(
+        f"/nodes/{node['id']}/move",
+        json={"position": 1, "after": True, "parentId": node["parentId"]},
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert isinstance(resp.json(), dict)
+    assert resp.json()["label"] == "1"
+    assert resp.json()["level"] == 1
     assert resp.json()["position"] == 1

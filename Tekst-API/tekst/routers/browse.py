@@ -112,11 +112,8 @@ async def get_node_path(
     parent_id = node_doc.parent_id
     while parent_id:
         parent_doc = await NodeDocument.get(parent_id)
-        if parent_doc:
-            path.insert(0, parent_doc)
-            parent_id = parent_doc.parent_id
-        else:
-            parent_id = None
+        path.insert(0, parent_doc)
+        parent_id = parent_doc.parent_id
 
     return path
 

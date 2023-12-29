@@ -44,6 +44,8 @@ async def test_get_node_path(
 ):
     inserted_ids = await insert_sample_data("texts", "nodes")
     text_id = inserted_ids["texts"][0]
+
+    # get level 0 path
     resp = await test_client.get(
         "/browse/nodes/path",
         params={"textId": text_id, "level": 0, "position": 0},
@@ -89,6 +91,14 @@ async def test_get_path_options_by_head(
     assert isinstance(resp.json(), list)
     assert isinstance(resp.json()[0], list)
 
+    # invalid node data
+    resp = await test_client.get(
+        "/browse/nodes/658c163106aa5002b5b90e33/path/options-by-head",
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) == 0
+
 
 @pytest.mark.anyio
 async def test_get_path_options_by_root(
@@ -108,6 +118,14 @@ async def test_get_path_options_by_root(
     assert isinstance(resp.json(), list)
     assert isinstance(resp.json()[0], list)
 
+    # invalid node data
+    resp = await test_client.get(
+        "/browse/nodes/658c163106aa5002b5b90e33/path/options-by-root",
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) == 0
+
 
 @pytest.mark.anyio
 async def test_get_resource_coverage_data(
@@ -122,3 +140,9 @@ async def test_get_resource_coverage_data(
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
+
+    # invalid node data
+    resp = await test_client.get(
+        "/browse/resources/658c163106aa5002b5b90e33/coverage",
+    )
+    assert resp.status_code == 404, status_fail_msg(404, resp)

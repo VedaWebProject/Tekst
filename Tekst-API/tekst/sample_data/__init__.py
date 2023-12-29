@@ -17,7 +17,7 @@ async def insert_sample_data():
     db = get_db_client()[_cfg.db_name]
     # check if any of the target collections contains data
     for collection in target_collections:
-        if await db[collection].find_one():
+        if await db[collection].find_one():  # pragma: no cover
             log.warning(
                 f"Found data in collection: {collection}. "
                 f"Skipping sample data insertion."
@@ -29,5 +29,5 @@ async def insert_sample_data():
         path = _SAMPLE_DATA_DIR / f"{collection}.json"
         data = json_util.loads(path.read_text())
         result = await db[collection].insert_many(data)
-        if not result.acknowledged:
+        if not result.acknowledged:  # pragma: no cover
             log.error(f"Failed to insert sample data into collection: {collection}")

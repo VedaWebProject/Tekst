@@ -19,6 +19,6 @@ async def app_setup(cfg: TekstConfig):
     await init_odm(get_db(get_db_client(cfg), cfg))
 
     await create_sample_users()  # happens only when in DEV mode
-    await insert_sample_data()  # doesn't happen during test runs
+    await insert_sample_data()
     await create_initial_superuser()  # happens only when not in DEV mode
     log.info("Finished Tekst pre-launch app setup.")

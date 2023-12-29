@@ -71,10 +71,8 @@ async def create_node(su: SuperuserDep, node: NodeCreate) -> NodeRead:
         # or the one of the previous parent (and so on...) and use its position + 1
         parent = await NodeDocument.get(node.parent_id)
         while True:
-            # text_id is important in case parent_id == None
             last_child = (
                 await NodeDocument.find(
-                    NodeDocument.text_id == text.id,
                     NodeDocument.parent_id == parent.id,
                 )
                 .sort(-NodeDocument.position)
@@ -203,12 +201,12 @@ async def delete_node(
     node_id: Annotated[PydanticObjectId, Path(alias="id")],
 ) -> DeleteNodeResult:
     node_doc = await NodeDocument.get(node_id)
-    text_id = node_doc.text_id
     if not node_doc:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Node {node_id} doesn't exist",
         )
+    text_id = node_doc.text_id
     # delete node and everything associated with it
     to_delete = [[node_doc]]
     units_deleted = 0
@@ -315,7 +313,7 @@ async def move_node(
                 .sort(+NodeDocument.position)
                 .to_list()
             )
-            if not to_move:
+            if not to_move:  # pragma: no cover
                 break
             distance = await NodeDocument.find(
                 In(NodeDocument.parent_id, [n.id for n in to_shift]),

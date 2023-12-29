@@ -5,7 +5,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.openapi.utils import get_openapi
 
 from tekst.config import TekstConfig
-from tekst.models.settings import PlatformSettingsRead
+from tekst.models.settings import PlatformSettings
 from tekst.utils import pick_translation
 
 
@@ -21,7 +21,7 @@ tags_metadata = [
 ]
 
 
-def customize_openapi(app: FastAPI, cfg: TekstConfig, settings: PlatformSettingsRead):
+def customize_openapi(app: FastAPI, cfg: TekstConfig, settings: PlatformSettings):
     def _custom_openapi():
         if not app.openapi_schema:
             app.openapi_schema = generate_schema(app, cfg, settings)
@@ -30,7 +30,7 @@ def customize_openapi(app: FastAPI, cfg: TekstConfig, settings: PlatformSettings
     app.openapi = _custom_openapi
 
 
-def generate_schema(app: FastAPI, cfg: TekstConfig, settings: PlatformSettingsRead):
+def generate_schema(app: FastAPI, cfg: TekstConfig, settings: PlatformSettings):
     schema = get_openapi(
         title=settings.info_platform_name,
         version=cfg.tekst_version,
