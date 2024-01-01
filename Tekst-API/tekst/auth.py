@@ -290,10 +290,9 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
         Overrides FastAPI-User's BaseUserManager's create method to check if the
         username already exists and respond with a meaningful HTTP exception.
         """
-        existing_user = await UserDocument.find_one(
+        if await UserDocument.find_one(
             UserDocument.username == user_create.username
-        )
-        if existing_user is not None:
+        ).exists():
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="REGISTER_USERNAME_ALREADY_EXISTS",

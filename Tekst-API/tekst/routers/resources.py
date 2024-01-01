@@ -103,6 +103,8 @@ async def create_resource(
     resource.owner_id = user.id
     resource.proposed = False
     resource.public = False
+    resource.shared_read = []
+    resource.shared_write = []
     # find document model for this resource type, instantiate, create
     resource_doc = (
         await resource_types_mgr.get(resource.resource_type)
@@ -132,14 +134,22 @@ async def update_resource(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Resource {resource_id} doesn't exist / requires extra permissions",
         )
-    # conditionally force certain updates
-    if resource_doc.public:
-        updates.shared_read = []
-        updates.shared_write = []
     # only allow shares modification for owner or superuser
     if not user.is_superuser and resource_doc.owner_id != user.id:
         updates.shared_read = resource_doc.shared_read
         updates.shared_write = resource_doc.shared_write
+    # conditionally force certain updates
+    if resource_doc.public:
+        updates.shared_read = []
+        updates.shared_write = []
+    # if the updates contain user shares, check if they are valid
+    if updates.shared_read or updates.shared_write:
+        for user_id in updates.shared_read + updates.shared_write:
+            if not await UserDocument.find_one(UserDocument.id == user_id).exists():
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail=f"Shared-with user {user_id} doesn't exist",
+                )
     # update document with reduced updates
     await resource_doc.apply_updates(
         updates,
@@ -273,7 +283,7 @@ async def delete_resource(
     resource_doc = await ResourceBaseDocument.get(resource_id, with_children=True)
     if not resource_doc:
         raise HTTPException(
-            status.HTTP_404_NOT_FOUND, detail=f"No resource with ID {resource_id}"
+            status.HTTP_400_BAD_REQUEST, detail=f"No resource with ID {resource_id}"
         )
     if not user.is_superuser and user.id != resource_doc.owner_id:
         raise HTTPException(status.HTTP_401_UNAUTHORIZED)
