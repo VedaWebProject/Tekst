@@ -61,9 +61,7 @@ async def test_update_platform_settings(
 
 @pytest.mark.anyio
 async def test_get_public_user_info(
-    test_client: AsyncClient,
-    status_fail_msg,
-    register_test_user,
+    test_client: AsyncClient, status_fail_msg, register_test_user, wrong_id
 ):
     user = await register_test_user()
     resp = await test_client.get(f"/platform/users/{user.get('id')}")
@@ -71,6 +69,9 @@ async def test_get_public_user_info(
     assert isinstance(resp.json(), dict)
     assert "username" in resp.json()
     assert resp.json()["username"] == user.get("username")
+    # wrong user ID
+    resp = await test_client.get(f"/platform/users/{wrong_id}")
+    assert resp.status_code == 404, status_fail_msg(404, resp)
 
 
 @pytest.mark.anyio

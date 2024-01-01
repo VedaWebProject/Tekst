@@ -34,6 +34,11 @@ def anyio_backend():
     return "asyncio"
 
 
+@pytest.fixture(scope="session")
+def wrong_id() -> str:
+    return "badab001337d00d42b00b1e5"
+
+
 @pytest.fixture
 def get_sample_data_path(request) -> Callable[[str], Path]:
     """Returns the absolute path to a file relative to tests/data"""
