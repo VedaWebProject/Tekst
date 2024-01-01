@@ -909,9 +909,9 @@
         "tags": [
           "platform"
         ],
-        "summary": "Get public user info",
+        "summary": "Get public user",
         "description": "Returns public information on the user with the specified username or ID",
-        "operationId": "getPublicUserInfo",
+        "operationId": "getPublicUser",
         "parameters": [
           {
             "name": "usernameOrId",
@@ -978,7 +978,7 @@
           {
             "name": "q",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
               "anyOf": [
                 {

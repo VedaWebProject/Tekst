@@ -12,7 +12,7 @@ async def test_platform_data(test_client: AsyncClient, status_fail_msg):
 
 
 @pytest.mark.anyio
-async def test_platform_users(
+async def test_platform_find_users(
     test_client: AsyncClient,
     status_fail_msg,
     register_test_user,
@@ -20,6 +20,7 @@ async def test_platform_users(
 ):
     user = await register_test_user(is_superuser=True)
     await get_session_cookie(user)
+    # legitimate search
     resp = await test_client.get(
         "/platform/users",
         params={"q": user.get("username")},
@@ -31,9 +32,25 @@ async def test_platform_users(
     assert "id" in resp.json()[0]
     assert "name" in resp.json()[0]
     assert "isActive" not in resp.json()[0]
+    # nonsense search
     resp = await test_client.get(
         "/platform/users",
         params={"q": "nonsense"},
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) == 0
+    # no query
+    resp = await test_client.get(
+        "/platform/users",
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) == 0
+    # empty query
+    resp = await test_client.get(
+        "/platform/users",
+        params={"q": "      "},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
@@ -80,6 +97,7 @@ async def test_crud_segment(
     status_fail_msg,
     register_test_user,
     get_session_cookie,
+    wrong_id,
 ):
     user = await register_test_user(is_superuser=True)
     await get_session_cookie(user)
@@ -93,10 +111,18 @@ async def test_crud_segment(
     assert isinstance(resp.json(), dict)
     assert "title" in resp.json()
     assert resp.json()["title"] == "Foo"
+    segment_id = resp.json()["id"]
+
+    # create conflicting segment
+    resp = await test_client.post(
+        "/platform/segments",
+        json={"key": "system_foo", "locale": "*", "title": "Bar", "html": "<p>Bar</p>"},
+    )
+    assert resp.status_code == 409, status_fail_msg(409, resp)
 
     # update segment
     resp = await test_client.patch(
-        f"/platform/segments/{resp.json()['id']}",
+        f"/platform/segments/{segment_id}",
         json={"title": "Bar"},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
@@ -104,17 +130,36 @@ async def test_crud_segment(
     assert "title" in resp.json()
     assert resp.json()["title"] == "Bar"
 
+    # update segment via wrong ID
+    resp = await test_client.patch(
+        f"/platform/segments/{wrong_id}",
+        json={"title": "Bar"},
+    )
+    assert resp.status_code == 400, status_fail_msg(400, resp)
+
     # get segment
     resp = await test_client.get(
-        f"/platform/segments/{resp.json()['id']}",
+        f"/platform/segments/{segment_id}",
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), dict)
     assert "title" in resp.json()
     assert resp.json()["title"] == "Bar"
 
+    # get segment via wrong ID
+    resp = await test_client.get(
+        f"/platform/segments/{wrong_id}",
+    )
+    assert resp.status_code == 404, status_fail_msg(404, resp)
+
     # delete segment
     resp = await test_client.delete(
-        f"/platform/segments/{resp.json()['id']}",
+        f"/platform/segments/{segment_id}",
     )
     assert resp.status_code == 204, status_fail_msg(204, resp)
+
+    # delete segment via wrong ID
+    resp = await test_client.delete(
+        f"/platform/segments/{wrong_id}",
+    )
+    assert resp.status_code == 400, status_fail_msg(400, resp)
