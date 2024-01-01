@@ -216,6 +216,7 @@ async def test_get_nodes(
     get_sample_data,
     insert_sample_data,
     status_fail_msg,
+    wrong_id,
 ):
     text_id = (await insert_sample_data("texts", "nodes"))["texts"][0]
     nodes = get_sample_data("db/nodes.json", for_http=True)
@@ -267,8 +268,8 @@ async def test_get_nodes(
     assert "id" in resp.json()
     assert resp.json()["id"] == node_id
 
-    # test get specific node by invalid ID
-    resp = await test_client.get("/nodes/5eb7cfb05e32e07750a1756a")
+    # test get specific node by wrong ID
+    resp = await test_client.get(f"/nodes/{wrong_id}")
     assert resp.status_code == 404, status_fail_msg(404, resp)
 
 
@@ -323,6 +324,7 @@ async def test_delete_node(
     status_fail_msg,
     register_test_user,
     get_session_cookie,
+    wrong_id,
 ):
     text_id = (await insert_sample_data("texts", "nodes", "resources"))["texts"][0]
 
@@ -372,9 +374,9 @@ async def test_delete_node(
     assert resp.json().get("nodes", None) > 1
     assert resp.json().get("units", None) == 1
 
-    # delete node with invalid ID
+    # delete node with wrong ID
     resp = await test_client.delete(
-        "/nodes/637b9ad396d541a505e5439b",
+        f"/nodes/{wrong_id}",
     )
     assert resp.status_code == 400, status_fail_msg(400, resp)
 
@@ -423,20 +425,21 @@ async def test_move_node(
 
 
 @pytest.mark.anyio
-async def test_move_node_invalid_id(
+async def test_move_node_wrong_id(
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,
     register_test_user,
     get_session_cookie,
+    wrong_id,
 ):
     # create superuser
     superuser_data = await register_test_user(is_superuser=True)
     await get_session_cookie(superuser_data)
 
-    # move node with invalid ID
+    # move node with wrong ID
     resp = await test_client.post(
-        "/nodes/637b9ad396d541a505e5439b/move",
+        f"/nodes/{wrong_id}/move",
         json={"position": 1, "after": True, "parentId": None},
     )
     assert resp.status_code == 400, status_fail_msg(400, resp)

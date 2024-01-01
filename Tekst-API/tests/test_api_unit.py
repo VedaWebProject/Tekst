@@ -12,6 +12,7 @@ async def test_create_unit(
     status_fail_msg,
     register_test_user,
     get_session_cookie,
+    wrong_id,
 ):
     inserted_ids = await insert_sample_data("texts", "nodes", "resources", "units")
     text_id = inserted_ids["texts"][0]
@@ -92,9 +93,9 @@ async def test_create_unit(
     assert resp.json()["text"] == payload["text"]
     assert resp.json()["comment"] == payload["comment"]
 
-    # fail to get unit with invalid ID
+    # fail to get unit with wrong ID
     resp = await test_client.get(
-        "/units/637b9ad396d541a505e5439b",
+        f"/units/{wrong_id}",
     )
     assert resp.status_code == 404, status_fail_msg(404, resp)
 
@@ -109,20 +110,20 @@ async def test_create_unit(
     assert resp.json()["id"] == unit_id
     assert resp.json()["text"] == "FOO BAR"
 
-    # fail to update unit with invalid ID
+    # fail to update unit with wrong ID
     resp = await test_client.patch(
-        "/units/637b9ad396d541a505e5439b",
+        f"/units/{wrong_id}",
         json={"resourceType": "plaintext", "text": "FOO BAR"},
     )
     assert resp.status_code == 400, status_fail_msg(400, resp)
 
-    # fail to update unit with changes resource ID
+    # fail to update unit with changed resource ID
     resp = await test_client.patch(
         f"/units/{unit_id}",
         json={
             "resourceType": "plaintext",
             "text": "FOO BAR",
-            "resourceId": "637b9ad396d541a505e5439b",
+            "resourceId": wrong_id,
         },
     )
     assert resp.status_code == 400, status_fail_msg(400, resp)
