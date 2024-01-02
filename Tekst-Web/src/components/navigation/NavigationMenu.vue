@@ -21,24 +21,32 @@ const props = withDefaults(
 
 const state = useStateStore();
 
+const menuWrapperStyle = computed(() => ({
+  display: 'flex',
+  justifyContent: state.smallScreen ? 'flex-start' : 'center',
+}));
+
 const menuStyle = computed(() => ({
   backgroundColor: props.embed ? 'var(--main-bg-color)' : 'transparent',
   borderRadius: props.embed ? 'var(--app-ui-border-radius)' : undefined,
   justifyContent: props.center ? 'center' : undefined,
+  width: state.smallScreen ? '100%' : 'auto',
 }));
 </script>
 
 <template>
-  <n-menu
-    :options="options"
-    :dropdown-props="{
-      size: state.dropdownSize,
-      showArrow: false,
-      trigger: 'hover',
-      to: '#app-container',
-    }"
-    :mode="mode"
-    :value="$route.name?.toString()"
-    :style="menuStyle"
-  />
+  <div :style="menuWrapperStyle">
+    <n-menu
+      :options="options"
+      :dropdown-props="{
+        size: state.dropdownSize,
+        showArrow: false,
+        trigger: 'hover',
+        to: '#app-container',
+      }"
+      :mode="mode"
+      :value="$route.name?.toString()"
+      :style="menuStyle"
+    />
+  </div>
 </template>
