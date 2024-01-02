@@ -452,7 +452,7 @@ admin:
     nodes:
       heading: Knoten
       add:
-        heading: Knoten zu "{parentLabel}" auf Ebene {level} hinzufügen
+        heading: Knoten zu "{parentLabel}" auf Ebene "{level}" hinzufügen
         tooltip: Knoten hinzufügen
         msgSuccess: Knoten "{label}" zu "{parentLabel}" hinzugefügt
       lblBtnAddNodeFirstLevel: Hinzufügen

@@ -36,7 +36,7 @@ interface NewTextModel {
 const initialModel = (): NewTextModel => ({
   title: undefined,
   slug: undefined,
-  levels: [[{ locale: state.locale, translation: '' }]],
+  levels: [[{ locale: '*', translation: '' }]],
 });
 
 const router = useRouter();
@@ -144,7 +144,7 @@ async function handleSave() {
           :min="1"
           :max="32"
           item-style="margin-bottom: 0;"
-          @create="() => [{ locale: state.locale, translation: '' }]"
+          @create="() => [{ locale: '*', translation: '' }]"
         >
           <template #default="{ index: levelIndex }">
             <div style="padding-right: 12px">{{ levelIndex + 1 }}.</div>

@@ -69,7 +69,7 @@ async function handleSubmit() {
     <h2>
       {{
         $t('admin.text.nodes.add.heading', {
-          level: (props.parent?.level ?? -1) + 2,
+          level: state.textLevelLabels[(props.parent?.level ?? -1) + 1],
           parentLabel: props.parent?.label || state.text?.title || '',
         })
       }}

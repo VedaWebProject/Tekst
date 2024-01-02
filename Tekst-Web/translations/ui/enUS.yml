@@ -437,7 +437,7 @@ admin:
     nodes:
       heading: Nodes
       add:
-        heading: Add node to "{parentLabel}" on level {level}
+        heading: Add node to "{parentLabel}" on level "{level}"
         tooltip: Add node
         msgSuccess: Added node "{label}" to "{parentLabel}"
       lblBtnAddNodeFirstLevel: Add
