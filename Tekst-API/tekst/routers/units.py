@@ -32,7 +32,7 @@ router = APIRouter(
     responses={
         status.HTTP_201_CREATED: {"description": "Created"},
         status.HTTP_409_CONFLICT: {"description": "Conflict"},
-        status.HTTP_401_UNAUTHORIZED: {"description": "Unauthorized"},
+        status.HTTP_403_FORBIDDEN: {"description": "Forbidden"},
     },
 )
 async def create_unit(unit: AnyUnitCreateBody, user: UserDep) -> AnyUnitDocument:
@@ -43,7 +43,7 @@ async def create_unit(unit: AnyUnitCreateBody, user: UserDep) -> AnyUnitDocument
         with_children=True,
     ).exists():
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
+            status_code=status.HTTP_403_FORBIDDEN,
             detail="No write access for units belonging to this resource",
         )
     # check for duplicates
@@ -94,7 +94,7 @@ async def get_unit(
     status_code=status.HTTP_200_OK,
     responses={
         status.HTTP_400_BAD_REQUEST: {"description": "Bad request"},
-        status.HTTP_401_UNAUTHORIZED: {"description": "Unauthorized"},
+        status.HTTP_403_FORBIDDEN: {"description": "Forbidden"},
     },
 )
 async def update_unit(
@@ -122,7 +122,7 @@ async def update_unit(
     ).exists()
     if not resource_write_allowed:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
+            status_code=status.HTTP_403_FORBIDDEN,
             detail=f"No write access for units of resource {unit_doc.resource_id}",
         )
     return await unit_doc.apply_updates(updates)

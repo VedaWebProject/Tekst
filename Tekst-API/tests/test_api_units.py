@@ -81,7 +81,7 @@ async def test_create_unit(
         "/units",
         json=invalid,
     )
-    assert resp.status_code == 401, status_fail_msg(401, resp)
+    assert resp.status_code == 403, status_fail_msg(403, resp)
 
     # get unit
     resp = await test_client.get(
@@ -143,7 +143,7 @@ async def test_create_unit(
             "text": "FOO BAR",
         },
     )
-    assert resp.status_code == 401, status_fail_msg(401, resp)
+    assert resp.status_code == 403, status_fail_msg(403, resp)
 
     # find all units
     resp = await test_client.get(

@@ -2676,8 +2676,8 @@
           "409": {
             "description": "Conflict"
           },
-          "401": {
-            "description": "Unauthorized"
+          "403": {
+            "description": "Forbidden"
           },
           "422": {
             "description": "Validation Error",
@@ -2949,8 +2949,8 @@
           "400": {
             "description": "Bad request"
           },
-          "401": {
-            "description": "Unauthorized"
+          "403": {
+            "description": "Forbidden"
           },
           "422": {
             "description": "Validation Error",

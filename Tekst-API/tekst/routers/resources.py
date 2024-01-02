@@ -286,7 +286,10 @@ async def delete_resource(
             status.HTTP_404_NOT_FOUND, detail=f"No resource with ID {resource_id}"
         )
     if not user.is_superuser and user.id != resource_doc.owner_id:
-        raise HTTPException(status.HTTP_401_UNAUTHORIZED)
+        raise HTTPException(
+            status.HTTP_403_FORBIDDEN,
+            detail="You have no permission to delete this resource",
+        )
     if resource_doc.public:
         raise HTTPException(
             status.HTTP_400_BAD_REQUEST,
@@ -324,7 +327,7 @@ async def transfer_resource(
             status.HTTP_404_NOT_FOUND, detail=f"No resource with ID {resource_id}"
         )
     if not user.is_superuser and user.id != resource_doc.owner_id:
-        raise HTTPException(status.HTTP_401_UNAUTHORIZED)
+        raise HTTPException(status.HTTP_403_FORBIDDEN)
     if resource_doc.public or resource_doc.proposed:
         raise HTTPException(
             status.HTTP_400_BAD_REQUEST,
@@ -370,7 +373,7 @@ async def propose_resource(
             status.HTTP_404_NOT_FOUND, detail=f"No resource with ID {resource_id}"
         )
     if not user.is_superuser and user.id != resource_doc.owner_id:
-        raise HTTPException(status.HTTP_401_UNAUTHORIZED)
+        raise HTTPException(status.HTTP_403_FORBIDDEN)
     if resource_doc.public:
         raise HTTPException(
             status.HTTP_400_BAD_REQUEST,
@@ -401,7 +404,7 @@ async def unpropose_resource(
             status.HTTP_404_NOT_FOUND, detail=f"No resource with ID {resource_id}"
         )
     if not user.is_superuser and user.id != resource_doc.owner_id:
-        raise HTTPException(status.HTTP_401_UNAUTHORIZED)
+        raise HTTPException(status.HTTP_403_FORBIDDEN)
     # all fine, unpropose resource
     await resource_doc.set(
         {

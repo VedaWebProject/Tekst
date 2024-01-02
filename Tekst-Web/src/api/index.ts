@@ -24,22 +24,28 @@ const customFetch = async (input: RequestInfo | URL, init?: RequestInit | undefi
   const response = await globalThis.fetch(input, init);
 
   // --- response interceptors go here... ---
+  if (response.ok) return response; // allow 200-299 response to pass through early
+  const bodyText = await response.clone().text(); // extract response body text
+
   if (response.status === 401) {
     // automatically log out on a 401 response
     if (!response.url.endsWith('/logout')) {
       const { message } = useMessages();
       message.error($t('errors.logInToAccess'));
-      console.log('Oh no! The server responded with 401!');
+      console.log("Oh no! You don't seem to have access to this resource!");
       const auth = useAuthStore();
       if (auth.loggedIn) {
-        console.log('Running logout sequence in reaction to 401 response...');
+        console.log('Running logout sequence in reaction to 401/403 response...');
         await auth.logout();
       }
     }
-  } else if (response.status === 403) {
-    // show CSRF/XSRF error on 403 response
+  } else if (response.status === 403 && bodyText.includes('CSRF')) {
+    // show CSRF/XSRF error on 403 response mentioning CSRF
     const { message } = useMessages();
     message.error($t('errors.csrf'));
+  } else if (response.status === 403) {
+    const { message } = useMessages();
+    message.error($t('errors.forbidden'));
   }
   return response;
 };

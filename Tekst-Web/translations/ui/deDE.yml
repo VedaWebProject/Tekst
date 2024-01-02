@@ -57,6 +57,7 @@ errors:
   notFound: Diese Ressource konnte nicht gefunden werden.
   unexpected: Ein unerwarteter Fehler ist aufgetreten. Das hätte nicht passieren dürfen.
   conflict: Es besteht ein Konflikt mit bereits vorhandenen Daten.
+  forbidden: Sie verfügen nicht über die nötigen Berechtigungen für diese Aktion.
   followFormRules: Bitte korrigieren Sie Ihre Eingaben entsprechend den Formularregeln!
   noAccess: Sie haben keine Zugriffsberechtigung für {resource}.
   logInToAccess: Melden Sie sich an, um auf die angefragte Ressource zuzugreifen!

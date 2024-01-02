@@ -498,7 +498,7 @@ async def test_delete_resource(
     resp = await test_client.delete(
         f"/resources/{resource_id}",
     )
-    assert resp.status_code == 401, status_fail_msg(401, resp)
+    assert resp.status_code == 403, status_fail_msg(403, resp)
 
     # become superuser again
     resp = await test_client.post("/auth/cookie/logout")
