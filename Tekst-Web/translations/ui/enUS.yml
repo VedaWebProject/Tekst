@@ -489,8 +489,7 @@ admin:
       headingInfo: Information
       headingOptions: Options
       msgSaved: |
-        Platform settings saved. Please note that it may take up to one minute
-        for the changes to take effect on subsequent page loads.
+        Platform settings saved. Please note that it may take up to {cacheTTL} seconds for the changes to take effect on subsequent page loads.
       defaultTextPlaceholder: Automatic
       formLabelDisplay: Display
     segments:

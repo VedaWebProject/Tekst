@@ -509,7 +509,7 @@ admin:
       headingOptions: Optionen
       msgSaved: |
         Plattform-Einstellungen gespeichert.
-        Bitte beachten Sie, dass es bis zu einer Minute dauern kann,
+        Bitte beachten Sie, dass es bis zu {cacheTTL} Sekunden dauern kann,
         bis die Änderungen sich auf spätere Anfragen auswirken.
       defaultTextPlaceholder: Automatisch
       formLabelDisplay: Darstellung

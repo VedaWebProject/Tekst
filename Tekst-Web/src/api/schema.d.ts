@@ -97,10 +97,10 @@ export interface paths {
   };
   '/platform/users/{usernameOrId}': {
     /**
-     * Get public user info
+     * Get public user
      * @description Returns public information on the user with the specified username or ID
      */
-    get: operations['getPublicUserInfo'];
+    get: operations['getPublicUser'];
   };
   '/platform/users': {
     /**
@@ -1526,6 +1526,11 @@ export interface components {
       systemSegments: components['schemas']['ClientSegmentRead'][];
       /** Infosegments */
       infoSegments: components['schemas']['ClientSegmentHead'][];
+      /**
+       * Settingscachettl
+       * @default 60
+       */
+      settingsCacheTtl?: number;
     };
     /** PlatformDescriptionTranslation */
     PlatformDescriptionTranslation: {
@@ -2570,10 +2575,10 @@ export interface operations {
     };
   };
   /**
-   * Get public user info
+   * Get public user
    * @description Returns public information on the user with the specified username or ID
    */
-  getPublicUserInfo: {
+  getPublicUser: {
     parameters: {
       path: {
         usernameOrId: string;
@@ -2607,8 +2612,8 @@ export interface operations {
    */
   findPublicUsers: {
     parameters: {
-      query: {
-        q: string | null;
+      query?: {
+        q?: string | null;
       };
     };
     responses: {
@@ -3406,8 +3411,8 @@ export interface operations {
             | components['schemas']['PlaintextUnitRead'];
         };
       };
-      /** @description Unauthorized */
-      401: {
+      /** @description Forbidden */
+      403: {
         content: never;
       };
       /** @description Not found */
@@ -3484,8 +3489,8 @@ export interface operations {
       400: {
         content: never;
       };
-      /** @description Unauthorized */
-      401: {
+      /** @description Forbidden */
+      403: {
         content: never;
       };
       /** @description Not found */
