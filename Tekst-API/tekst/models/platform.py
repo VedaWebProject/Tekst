@@ -33,6 +33,7 @@ class PlatformData(ModelBase):
     security: PlatformSecurityInfo = PlatformSecurityInfo()
     system_segments: Annotated[list[ClientSegmentRead], Field(alias="systemSegments")]
     info_segments: Annotated[list[ClientSegmentHead], Field(alias="infoSegments")]
+    settings_cache_ttl: int = _cfg.settings_cache_ttl
 
 
 class TextStats(ModelBase):

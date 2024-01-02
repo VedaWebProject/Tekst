@@ -120,8 +120,6 @@ async def update_platform_settings(
     su: SuperuserDep,
     updates: PlatformSettingsUpdate,
 ) -> PlatformSettingsDocument:
-    settings = await get_settings(force_nocache=True)
-    settings_doc = await PlatformSettingsDocument.get(settings.id)
     # reset user locales if the update reduces available locales
     if updates.available_locales and isinstance(updates.available_locales, list):
         await UserDocument.find(
@@ -134,6 +132,7 @@ async def update_platform_settings(
             }
         )
     # apply updates
+    settings_doc = await get_settings(nocache=True)
     return await settings_doc.apply_updates(updates)
 
 

@@ -65,6 +65,7 @@ class TekstConfig(BaseSettings):
         env_prefix="TEKST_",
         case_sensitive=False,
         secrets_dir="/run/secrets" if not _DEV_MODE else None,
+        protected_namespaces=("model_",),
     )
 
     # basics
@@ -74,6 +75,8 @@ class TekstConfig(BaseSettings):
 
     log_level: str = "warning"
     user_files_dir: str = "userfiles"
+
+    settings_cache_ttl: int = 60
 
     # development
     dev_mode: bool = False
