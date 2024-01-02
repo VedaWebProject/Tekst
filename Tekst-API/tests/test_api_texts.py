@@ -128,16 +128,19 @@ async def test_update_text(
 
 @pytest.mark.anyio
 async def test_delete_text(
-    test_client: AsyncClient,
-    insert_sample_data,
-    status_fail_msg,
-    login,
+    test_client: AsyncClient, insert_sample_data, status_fail_msg, login, wrong_id
 ):
-    inserted_ids = await insert_sample_data("texts", "nodes")
-    text_id = inserted_ids["texts"][0]
+    inserted_ids = await insert_sample_data("texts", "nodes", "settings")
+    text_id = inserted_ids["texts"][1]
 
     # log in as superuser
     await login(is_superuser=True)
+
+    # try to delete text with wrong ID
+    resp = await test_client.delete(
+        f"/texts/{wrong_id}",
+    )
+    assert resp.status_code == 404, status_fail_msg(404, resp)
 
     # delete text
     resp = await test_client.delete(
@@ -145,13 +148,20 @@ async def test_delete_text(
     )
     assert resp.status_code == 204, status_fail_msg(204, resp)
 
+    # try to delete all texts (must fail because last text cannot be deleted)
+    for text_id in inserted_ids["texts"]:
+        resp = await test_client.delete(
+            f"/texts/{text_id}",
+        )
+        delete_failed = resp.status_code == 400
+        if delete_failed:
+            break
+    assert delete_failed
+
 
 @pytest.mark.anyio
 async def test_download_structure_template(
-    test_client: AsyncClient,
-    insert_sample_data,
-    status_fail_msg,
-    login,
+    test_client: AsyncClient, insert_sample_data, status_fail_msg, login, wrong_id
 ):
     inserted_ids = await insert_sample_data("texts", "nodes")
     text_id = inserted_ids["texts"][0]
@@ -159,19 +169,22 @@ async def test_download_structure_template(
     # log in as superuser
     await login(is_superuser=True)
 
-    # delete text
+    # download template
     resp = await test_client.get(
         f"/texts/{text_id}/template",
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
 
+    # download template w/ wrong ID
+    resp = await test_client.get(
+        f"/texts/{wrong_id}/template",
+    )
+    assert resp.status_code == 404, status_fail_msg(404, resp)
+
 
 @pytest.mark.anyio
 async def test_insert_level(
-    test_client: AsyncClient,
-    insert_sample_data,
-    status_fail_msg,
-    login,
+    test_client: AsyncClient, insert_sample_data, status_fail_msg, login, wrong_id
 ):
     await insert_sample_data("texts", "nodes")
 
@@ -186,13 +199,16 @@ async def test_insert_level(
     text = resp.json()[0]
     assert len(text["levels"]) == 2
 
+    # prepare new level data
+    level_data = [
+        {"locale": "enUS", "translation": "A level"},
+        {"locale": "deDE", "translation": "Eine Ebene"},
+    ]
+
     # insert new level 0
     resp = await test_client.post(
         f"/texts/{text['id']}/level/0",
-        json=[
-            {"locale": "enUS", "translation": "A level"},
-            {"locale": "deDE", "translation": "Eine Ebene"},
-        ],
+        json=level_data,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert "id" in resp.json()
@@ -201,14 +217,25 @@ async def test_insert_level(
     # insert new level 1
     resp = await test_client.post(
         f"/texts/{text['id']}/level/1",
-        json=[
-            {"locale": "enUS", "translation": "Another level"},
-            {"locale": "deDE", "translation": "Eine weitere Ebene"},
-        ],
+        json=level_data,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert "id" in resp.json()
     assert len(resp.json()["levels"]) == 4
+
+    # insert new level for wrong text ID
+    resp = await test_client.post(
+        f"/texts/{wrong_id}/level/0",
+        json=level_data,
+    )
+    assert resp.status_code == 404, status_fail_msg(404, resp)
+
+    # insert new level at invalid index
+    resp = await test_client.post(
+        f"/texts/{text['id']}/level/12",
+        json=level_data,
+    )
+    assert resp.status_code == 400, status_fail_msg(400, resp)
 
 
 @pytest.mark.anyio
@@ -283,24 +310,77 @@ async def test_delete_middle_level(
 
 
 @pytest.mark.anyio
+async def test_fail_delete_level(
+    test_client: AsyncClient, insert_sample_data, status_fail_msg, login, wrong_id
+):
+    inserted_ids = await insert_sample_data("texts", "nodes")
+    text_id = inserted_ids["texts"][0]
+
+    # log in as superuser
+    await login(is_superuser=True)
+
+    # delete level for wrong text ID
+    resp = await test_client.delete(
+        f"/texts/{wrong_id}/level/0",
+    )
+    assert resp.status_code == 404, status_fail_msg(404, resp)
+
+    # delete level at invalid index
+    resp = await test_client.delete(
+        f"/texts/{text_id}/level/12",
+    )
+    assert resp.status_code == 400, status_fail_msg(400, resp)
+
+
+@pytest.mark.anyio
 async def test_upload_structure(
     test_client: AsyncClient,
     insert_sample_data,
     get_sample_data_path,
     status_fail_msg,
     login,
+    wrong_id,
 ):
     text_id = (await insert_sample_data("texts"))["texts"][0]
 
     # log in as superuser
     await login(is_superuser=True)
 
-    # read structure file content
+    # upload invalid structure definition file (give wrong MIME type)
     with open(get_sample_data_path("structure/fdhdgg.json"), "rb") as f:
-        # upload structure definition
+        resp = await test_client.post(
+            f"/texts/{text_id}/structure",
+            files={"file": (f.name, f, "text/plain")},
+        )
+        assert resp.status_code == 400, status_fail_msg(400, resp)
+
+    # upload invalid structure definition file (invalid JSON)
+    resp = await test_client.post(
+        f"/texts/{text_id}/structure",
+        files={"file": ("fdhdgg.json", r"{foo: bar}", "application/json")},
+    )
+    assert resp.status_code == 400, status_fail_msg(400, resp)
+
+    # upload structure definition file for wrong text ID
+    with open(get_sample_data_path("structure/fdhdgg.json"), "rb") as f:
+        resp = await test_client.post(
+            f"/texts/{wrong_id}/structure",
+            files={"file": (f.name, f, "application/json")},
+        )
+        assert resp.status_code == 404, status_fail_msg(404, resp)
+
+    # upload valid structure definition file
+    with open(get_sample_data_path("structure/fdhdgg.json"), "rb") as f:
         resp = await test_client.post(
             f"/texts/{text_id}/structure",
             files={"file": (f.name, f, "application/json")},
         )
+        assert resp.status_code == 201, status_fail_msg(201, resp)
 
-    assert resp.status_code == 201, status_fail_msg(201, resp)
+    # try it again (should fail because text now already has nodes)
+    with open(get_sample_data_path("structure/fdhdgg.json"), "rb") as f:
+        resp = await test_client.post(
+            f"/texts/{text_id}/structure",
+            files={"file": (f.name, f, "application/json")},
+        )
+        assert resp.status_code == 409, status_fail_msg(409, resp)

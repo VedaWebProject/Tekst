@@ -106,7 +106,7 @@ async def test_update_resource(
 ):
     text_id = (await insert_sample_data("texts", "nodes", "resources"))["texts"][0]
     user = await login()
-    other_user = await register_test_user(alternative=True)
+    other_user = await register_test_user(suffix="other")
 
     # create new resource (because only owner can update(write))
     payload = {
@@ -224,7 +224,7 @@ async def test_set_shares_for_public_resource(
         "resources"
     ][0]
     await login(is_superuser=True)
-    other_user = await register_test_user(alternative=True)
+    other_user = await register_test_user(suffix="other")
 
     # set resource public
     res = await ResourceBaseDocument.get(resource_id, with_children=True)
@@ -351,13 +351,10 @@ async def test_get_resources(
 
 @pytest.mark.anyio
 async def test_propose_unpropose_publish_unpublish_resource(
-    test_client: AsyncClient,
-    insert_sample_data,
-    status_fail_msg,
-    login,
+    test_client: AsyncClient, insert_sample_data, status_fail_msg, login, wrong_id
 ):
     text_id = (await insert_sample_data("texts", "nodes", "resources"))["texts"][0]
-    user = await login()
+    owner = await login(suffix="super", is_superuser=True)
 
     # create new resource (because only owner can update(write))
     payload = {
@@ -365,7 +362,7 @@ async def test_propose_unpropose_publish_unpublish_resource(
         "textId": text_id,
         "level": 0,
         "resourceType": "plaintext",
-        "ownerId": user.get("id"),
+        "ownerId": owner.get("id"),
     }
     resp = await test_client.post(
         "/resources",
@@ -375,66 +372,114 @@ async def test_propose_unpropose_publish_unpublish_resource(
     resource_data = resp.json()
     assert "id" in resource_data
     assert "ownerId" in resource_data
-
-    # become superuser
-    user = await login(is_superuser=True, alternative=True)
-    await login(user=user)
+    resource_id = resource_data["id"]
 
     # publish unproposed resource
     resp = await test_client.post(
-        f"/resources/{resource_data['id']}/publish",
+        f"/resources/{resource_id}/publish",
     )
     assert resp.status_code == 400, status_fail_msg(400, resp)
 
     # propose resource
     resp = await test_client.post(
-        f"/resources/{resource_data['id']}/propose",
+        f"/resources/{resource_id}/propose",
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
+
+    # propose resource w/ wrong ID
+    resp = await test_client.post(
+        f"/resources/{wrong_id}/propose",
+    )
+    assert resp.status_code == 404, status_fail_msg(404, resp)
 
     # get all accessible resources, check if ours is proposed
     resp = await test_client.get("/resources", params={"textId": text_id})
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
     for resource in resp.json():
-        if resource["id"] == resource_data["id"]:
+        if resource["id"] == resource_id:
             assert resource["proposed"]
 
     # propose resource again (should just go through)
     resp = await test_client.post(
-        f"/resources/{resource_data['id']}/propose",
+        f"/resources/{resource_id}/propose",
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
+
+    # publish resource w/ wrong ID
+    resp = await test_client.post(
+        f"/resources/{wrong_id}/publish",
+    )
+    assert resp.status_code == 404, status_fail_msg(404, resp)
 
     # publish resource
     resp = await test_client.post(
-        f"/resources/{resource_data['id']}/publish",
+        f"/resources/{resource_id}/publish",
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
 
+    # propose public resource
+    resp = await test_client.post(
+        f"/resources/{resource_id}/propose",
+    )
+    assert resp.status_code == 400, status_fail_msg(400, resp)
+
+    # unpublish resource w/ wrong ID
+    resp = await test_client.post(
+        f"/resources/{wrong_id}/unpublish",
+    )
+    assert resp.status_code == 404, status_fail_msg(404, resp)
+
     # unpublish resource
     resp = await test_client.post(
-        f"/resources/{resource_data['id']}/unpublish",
+        f"/resources/{resource_id}/unpublish",
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
 
     # unpublish resource again (should just go through)
     resp = await test_client.post(
-        f"/resources/{resource_data['id']}/unpublish",
+        f"/resources/{resource_id}/unpublish",
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
 
     # propose resource again
     resp = await test_client.post(
-        f"/resources/{resource_data['id']}/propose",
+        f"/resources/{resource_id}/propose",
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
 
+    # unpropose resource w/ wrong ID
+    resp = await test_client.post(
+        f"/resources/{wrong_id}/unpropose",
+    )
+    assert resp.status_code == 404, status_fail_msg(404, resp)
+
     # unpropose resource
     resp = await test_client.post(
-        f"/resources/{resource_data['id']}/unpropose",
+        f"/resources/{resource_id}/unpropose",
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
+
+    # propose resource unauthorized
+    other_user = await login(suffix="other")
+    resp = await test_client.post(
+        f"/resources/{resource_id}/propose",
+    )
+    assert resp.status_code == 403, status_fail_msg(403, resp)
+
+    # propose resource again
+    await login(user=owner)
+    resp = await test_client.post(
+        f"/resources/{resource_id}/propose",
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+
+    # unpropose resource unauthorized
+    await login(user=other_user)
+    resp = await test_client.post(
+        f"/resources/{resource_id}/unpropose",
+    )
+    assert resp.status_code == 403, status_fail_msg(403, resp)
 
 
 @pytest.mark.anyio
@@ -470,7 +515,7 @@ async def test_delete_resource(
     assert resp.status_code == 404, status_fail_msg(404, resp)
 
     # become non-owner/non-superuser
-    await login(alternative=True)
+    await login(suffix="normalo")
 
     # try to delete resource as non-owner/non-superuser
     resp = await test_client.delete(
@@ -564,7 +609,7 @@ async def test_transfer_resource(
     # register regular test user
     user = await register_test_user(is_superuser=False)
     # register test superuser
-    superuser = await login(alternative=True, is_superuser=True)
+    superuser = await login(suffix="super", is_superuser=True)
 
     # transfer resource that is still public to test user
     resp = await test_client.post(
@@ -586,6 +631,13 @@ async def test_transfer_resource(
     )
     assert resp.status_code == 404, status_fail_msg(404, resp)
 
+    # transfer resource to user w/ wrong ID
+    resp = await test_client.post(
+        f"/resources/{resource_id}/transfer",
+        json=wrong_id,
+    )
+    assert resp.status_code == 400, status_fail_msg(400, resp)
+
     # transfer resource without permission
     await login(user=user)
     resp = await test_client.post(
@@ -596,6 +648,15 @@ async def test_transfer_resource(
 
     # transfer resource to test user
     await login(user=superuser)
+    resp = await test_client.post(
+        f"/resources/{resource_id}/transfer",
+        json=user["id"],
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert isinstance(resp.json(), dict)
+    assert resp.json()["ownerId"] == user["id"]
+
+    # ....and do that again
     resp = await test_client.post(
         f"/resources/{resource_id}/transfer",
         json=user["id"],

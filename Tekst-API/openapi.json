@@ -6136,6 +6136,11 @@
             },
             "type": "array",
             "title": "Infosegments"
+          },
+          "settingsCacheTtl": {
+            "type": "integer",
+            "title": "Settingscachettl",
+            "default": 60
           }
         },
         "type": "object",

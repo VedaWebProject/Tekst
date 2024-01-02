@@ -69,6 +69,7 @@ async def test_update_platform_settings(
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), dict)
     assert "availableLocales" in resp.json()
+    assert len(resp.json()["availableLocales"]) == 1
     assert resp.json()["availableLocales"][0] == "enUS"
 
 

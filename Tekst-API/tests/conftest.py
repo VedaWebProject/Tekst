@@ -1,5 +1,3 @@
-import contextlib
-
 from collections.abc import Callable
 from pathlib import Path
 from typing import Any
@@ -150,10 +148,10 @@ async def insert_sample_data(config, get_sample_data) -> Callable:
 
 @pytest.fixture
 def get_fake_user() -> Callable:
-    def _get_fake_user(alternative: bool = False):
+    def _get_fake_user(suffix: str = ""):
         return dict(
-            email="foo@bar.de" if not alternative else "bar@foo.de",
-            username="test_user" if not alternative else "test_user2",
+            email=f"foo{suffix}@bar.de",
+            username=f"test_user{suffix}",
             password="poiPOI098",
             name="Foo Bar",
             affiliation="Some Institution",
@@ -169,9 +167,9 @@ async def register_test_user(get_fake_user) -> Callable:
         is_active: bool = True,
         is_verified: bool = True,
         is_superuser: bool = False,
-        alternative: bool = False,
+        suffix: str = "",
     ) -> dict:
-        user_data = get_fake_user(alternative=alternative)
+        user_data = get_fake_user(suffix=suffix)
         user = UserCreate(**user_data)
         user.is_active = is_active
         user.is_verified = is_verified
@@ -183,28 +181,30 @@ async def register_test_user(get_fake_user) -> Callable:
 
 
 @pytest.fixture
-async def logout(test_client) -> Callable:
+async def logout(config, test_client: AsyncClient) -> Callable:
     async def _logout() -> None:
         await test_client.post("/auth/cookie/logout")
+        test_client.cookies.delete(name=config.security_auth_cookie_name)
 
     return _logout
 
 
 @pytest.fixture
-async def login(
-    config, test_client, status_fail_msg, logout, register_test_user
-) -> Callable:
+async def login(config, test_client, logout, register_test_user) -> Callable:
     async def _login(*, user: dict | None = None, **kwargs) -> dict:
         await logout()
         if not user:
             user = await register_test_user(**kwargs)
-        payload = {"username": user["email"], "password": user["password"]}
         resp = await test_client.post(
             "/auth/cookie/login",
-            data=payload,
+            data={"username": user["email"], "password": user["password"]},
         )
-        assert resp.status_code == 204, status_fail_msg(204, resp)
-        assert resp.cookies.get(config.security_auth_cookie_name)
+        if resp.status_code != 204:
+            raise Exception(
+                f"Failed to login (got status {resp.status_code}: {resp.text})"
+            )
+        if not resp.cookies.get(config.security_auth_cookie_name):
+            raise Exception("No cookies retrieved after login")
         return user
 
     return _login
@@ -213,12 +213,9 @@ async def login(
 @pytest.fixture(scope="session")
 def status_fail_msg() -> Callable:
     def _status_fail_msg(expected_status: int, response: Response) -> tuple[bool, str]:
-        resp_json = "No JSON response data."
-        with contextlib.suppress(Exception):
-            resp_json = response.json()
         return (
             f"HTTP {response.status_code} (expected: {expected_status})"
-            f" -- {resp_json}"
+            f" -- {response.text}"
         )
 
     return _status_fail_msg
