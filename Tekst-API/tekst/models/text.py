@@ -129,7 +129,11 @@ class Text(ModelBase, ModelFactoryMixin):
     @field_validator("default_level", mode="after")
     @classmethod
     def validate_default_level(cls, v, info, **kwargs):
-        if "levels" in info.data and v >= len(info.data["levels"]):
+        # unfortunately we can only validate this if "levels" is present
+        # ...and this might not be the case (e.g. for update models)
+        if isinstance(info.data.get("levels"), list) and v >= len(
+            info.data.get("levels")
+        ):
             raise ValueError(
                 f"Invalid default level value ({v}). "
                 f"This text only has {len(info.data['levels'])} levels."
