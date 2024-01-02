@@ -15,11 +15,9 @@ async def test_platform_data(test_client: AsyncClient, status_fail_msg):
 async def test_platform_find_users(
     test_client: AsyncClient,
     status_fail_msg,
-    register_test_user,
-    get_session_cookie,
+    login,
 ):
-    user = await register_test_user(is_superuser=True)
-    await get_session_cookie(user)
+    user = await login(is_superuser=True)
     # legitimate search
     resp = await test_client.get(
         "/platform/users",
@@ -61,11 +59,9 @@ async def test_platform_find_users(
 async def test_update_platform_settings(
     test_client: AsyncClient,
     status_fail_msg,
-    register_test_user,
-    get_session_cookie,
+    login,
 ):
-    user = await register_test_user(is_superuser=True)
-    await get_session_cookie(user)
+    await login(is_superuser=True)
     resp = await test_client.patch(
         "/platform/settings",
         json={"availableLocales": ["enUS"]},
@@ -78,9 +74,9 @@ async def test_update_platform_settings(
 
 @pytest.mark.anyio
 async def test_get_public_user_info(
-    test_client: AsyncClient, status_fail_msg, register_test_user, wrong_id
+    test_client: AsyncClient, status_fail_msg, login, wrong_id
 ):
-    user = await register_test_user()
+    user = await login()
     resp = await test_client.get(f"/platform/users/{user.get('id')}")
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), dict)
@@ -95,12 +91,10 @@ async def test_get_public_user_info(
 async def test_crud_segment(
     test_client: AsyncClient,
     status_fail_msg,
-    register_test_user,
-    get_session_cookie,
+    login,
     wrong_id,
 ):
-    user = await register_test_user(is_superuser=True)
-    await get_session_cookie(user)
+    await login(is_superuser=True)
 
     # create segment
     resp = await test_client.post(

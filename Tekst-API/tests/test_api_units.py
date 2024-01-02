@@ -10,14 +10,12 @@ async def test_create_unit(
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,
-    register_test_user,
-    get_session_cookie,
+    login,
     wrong_id,
 ):
     inserted_ids = await insert_sample_data("texts", "nodes", "resources", "units")
     text_id = inserted_ids["texts"][0]
-    user_data = await register_test_user()
-    await get_session_cookie(user_data)
+    user = await login()
 
     # create new resource (because only owner can update(write))
     payload = {
@@ -25,7 +23,7 @@ async def test_create_unit(
         "textId": text_id,
         "level": 0,
         "resourceType": "plaintext",
-        "ownerId": user_data.get("id"),
+        "ownerId": user.get("id"),
     }
     resp = await test_client.post(
         "/resources",
@@ -35,7 +33,7 @@ async def test_create_unit(
     resource_data = resp.json()
     assert "id" in resource_data
     assert "ownerId" in resource_data
-    assert resource_data["ownerId"] == user_data["id"]
+    assert resource_data["ownerId"] == user["id"]
 
     # get ID of existing test node
     resp = await test_client.get(

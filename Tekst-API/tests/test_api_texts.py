@@ -25,11 +25,9 @@ async def test_get_texts(test_client: AsyncClient, insert_sample_data, status_fa
 async def test_create_text(
     test_client: AsyncClient,
     status_fail_msg,
-    register_test_user,
-    get_session_cookie,
+    login,
 ):
-    superuser_data = await register_test_user(is_superuser=True)
-    await get_session_cookie(superuser_data)
+    await login(is_superuser=True)
     payload = {
         "title": "Just a Test",
         "slug": "justatest",
@@ -55,11 +53,9 @@ async def test_create_text(
 async def test_create_text_unauthorized(
     test_client: AsyncClient,
     status_fail_msg,
-    register_test_user,
-    get_session_cookie,
+    login,
 ):
-    user_data = await register_test_user()  # not a superuser (=unauthorized)!
-    await get_session_cookie(user_data)
+    await login()  # not a superuser (=unauthorized)!
     payload = {"title": "Meow", "slug": "meow", "levels": ["meow"]}
     resp = await test_client.post(
         "/texts",
@@ -83,23 +79,25 @@ async def test_update_text(
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,
-    register_test_user,
-    get_session_cookie,
+    login,
 ):
     await insert_sample_data("texts")
+
     # get text from db
     resp = await test_client.get("/texts")
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) > 0
     text = resp.json()[0]
+
     # update text unauthenticated
     text_update = {"title": "Unauthenticated text update"}
     resp = await test_client.patch(f"/texts/{text['id']}", json=text_update)
     assert resp.status_code == 401, status_fail_msg(401, resp)
-    # create superuser
-    superuser_data = await register_test_user(is_superuser=True)
-    await get_session_cookie(superuser_data)
+
+    # log in as superuser
+    await login(is_superuser=True)
+
     # update text
     text_update = {"title": "Another text"}
     resp = await test_client.patch(
@@ -111,12 +109,14 @@ async def test_update_text(
     assert resp.json()["id"] == str(text["id"])
     assert "title" in resp.json()
     assert resp.json()["title"] == "Another text"
+
     # update unchanged text
     resp = await test_client.patch(
         f"/texts/{text['id']}",
         json=text_update,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
+
     # update invalid text
     text_update = {"title": "Yet another text"}
     resp = await test_client.patch(
@@ -131,15 +131,13 @@ async def test_delete_text(
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,
-    register_test_user,
-    get_session_cookie,
+    login,
 ):
     inserted_ids = await insert_sample_data("texts", "nodes")
     text_id = inserted_ids["texts"][0]
 
-    # create superuser
-    superuser_data = await register_test_user(is_superuser=True)
-    await get_session_cookie(superuser_data)
+    # log in as superuser
+    await login(is_superuser=True)
 
     # delete text
     resp = await test_client.delete(
@@ -153,15 +151,13 @@ async def test_download_structure_template(
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,
-    register_test_user,
-    get_session_cookie,
+    login,
 ):
     inserted_ids = await insert_sample_data("texts", "nodes")
     text_id = inserted_ids["texts"][0]
 
-    # create superuser
-    superuser_data = await register_test_user(is_superuser=True)
-    await get_session_cookie(superuser_data)
+    # log in as superuser
+    await login(is_superuser=True)
 
     # delete text
     resp = await test_client.get(
@@ -175,14 +171,12 @@ async def test_insert_level(
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,
-    register_test_user,
-    get_session_cookie,
+    login,
 ):
     await insert_sample_data("texts", "nodes")
 
-    # create superuser
-    superuser_data = await register_test_user(is_superuser=True)
-    await get_session_cookie(superuser_data)
+    # log in as superuser
+    await login(is_superuser=True)
 
     # get text from db
     resp = await test_client.get("/texts")
@@ -222,15 +216,13 @@ async def test_delete_top_level(
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,
-    register_test_user,
-    get_session_cookie,
+    login,
 ):
     inserted_ids = await insert_sample_data("texts", "nodes")
     text_id = inserted_ids["texts"][0]
 
-    # create superuser
-    superuser_data = await register_test_user(is_superuser=True)
-    await get_session_cookie(superuser_data)
+    # log in as superuser
+    await login(is_superuser=True)
 
     # delete level 0
     resp = await test_client.delete(
@@ -245,15 +237,13 @@ async def test_delete_bottom_level(
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,
-    register_test_user,
-    get_session_cookie,
+    login,
 ):
     inserted_ids = await insert_sample_data("texts", "nodes")
     text_id = inserted_ids["texts"][0]
 
-    # create superuser
-    superuser_data = await register_test_user(is_superuser=True)
-    await get_session_cookie(superuser_data)
+    # log in as superuser
+    await login(is_superuser=True)
 
     # delete level 1
     resp = await test_client.delete(
@@ -268,15 +258,13 @@ async def test_delete_middle_level(
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,
-    register_test_user,
-    get_session_cookie,
+    login,
 ):
     inserted_ids = await insert_sample_data("texts", "nodes")
     text_id = inserted_ids["texts"][0]
 
-    # create superuser
-    superuser_data = await register_test_user(is_superuser=True)
-    await get_session_cookie(superuser_data)
+    # log in as superuser
+    await login(is_superuser=True)
 
     # create extra level
     resp = await test_client.post(
@@ -300,14 +288,12 @@ async def test_upload_structure(
     insert_sample_data,
     get_sample_data_path,
     status_fail_msg,
-    register_test_user,
-    get_session_cookie,
+    login,
 ):
     text_id = (await insert_sample_data("texts"))["texts"][0]
 
-    # create superuser
-    superuser_data = await register_test_user(is_superuser=True)
-    await get_session_cookie(superuser_data)
+    # log in as superuser
+    await login(is_superuser=True)
 
     # read structure file content
     with open(get_sample_data_path("structure/fdhdgg.json"), "rb") as f:

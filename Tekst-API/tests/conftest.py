@@ -183,18 +183,31 @@ async def register_test_user(get_fake_user) -> Callable:
 
 
 @pytest.fixture
-async def get_session_cookie(config, test_client, status_fail_msg) -> Callable:
-    async def _get_session_cookie(user_data: dict) -> dict:
-        payload = {"username": user_data["email"], "password": user_data["password"]}
+async def logout(test_client) -> Callable:
+    async def _logout() -> None:
+        await test_client.post("/auth/cookie/logout")
+
+    return _logout
+
+
+@pytest.fixture
+async def login(
+    config, test_client, status_fail_msg, logout, register_test_user
+) -> Callable:
+    async def _login(*, user: dict | None = None, **kwargs) -> dict:
+        await logout()
+        if not user:
+            user = await register_test_user(**kwargs)
+        payload = {"username": user["email"], "password": user["password"]}
         resp = await test_client.post(
             "/auth/cookie/login",
             data=payload,
         )
         assert resp.status_code == 204, status_fail_msg(204, resp)
         assert resp.cookies.get(config.security_auth_cookie_name)
-        return resp.cookies
+        return user
 
-    return _get_session_cookie
+    return _login
 
 
 @pytest.fixture(scope="session")

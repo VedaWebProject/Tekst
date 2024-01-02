@@ -8,8 +8,7 @@ async def test_create_node(
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,
-    register_test_user,
-    get_session_cookie,
+    login,
 ):
     text_id = (await insert_sample_data("texts"))["texts"][0]
     nodes = [
@@ -17,9 +16,7 @@ async def test_create_node(
         for n in range(10)
     ]
 
-    # create superuser
-    superuser_data = await register_test_user(is_superuser=True)
-    await get_session_cookie(superuser_data)
+    await login(is_superuser=True)
 
     for node in nodes:
         resp = await test_client.post(
@@ -41,14 +38,10 @@ async def test_create_additional_node(
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,
-    register_test_user,
-    get_session_cookie,
+    login,
 ):
     text_id = (await insert_sample_data("texts", "nodes"))["texts"][0]
-
-    # create superuser
-    superuser_data = await register_test_user(is_superuser=True)
-    await get_session_cookie(superuser_data)
+    await login(is_superuser=True)
 
     # get a parent node
     resp = await test_client.get(
@@ -76,14 +69,10 @@ async def test_create_additional_node_only_child(
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,
-    register_test_user,
-    get_session_cookie,
+    login,
 ):
     text_id = (await insert_sample_data("texts", "nodes"))["texts"][0]
-
-    # create superuser
-    superuser_data = await register_test_user(is_superuser=True)
-    await get_session_cookie(superuser_data)
+    await login(is_superuser=True)
 
     # create new node on level 0
     resp = await test_client.post(
@@ -118,15 +107,11 @@ async def test_child_node_io(
     get_sample_data,
     insert_sample_data,
     status_fail_msg,
-    register_test_user,
-    get_session_cookie,
+    login,
 ):
     text_id = (await insert_sample_data("texts"))["texts"][0]
     node = get_sample_data("db/nodes.json", for_http=True)[0]
-
-    # create superuser
-    superuser_data = await register_test_user(is_superuser=True)
-    await get_session_cookie(superuser_data)
+    await login(is_superuser=True)
 
     # create parent
     resp = await test_client.post(
@@ -192,16 +177,12 @@ async def test_create_node_invalid_text_fail(
     get_sample_data,
     insert_sample_data,
     status_fail_msg,
-    register_test_user,
-    get_session_cookie,
+    login,
 ):
     await insert_sample_data("texts")
     node = get_sample_data("db/nodes.json", for_http=True)[0]
     node["textId"] = "5ed7cfba5e32eb7759a17565"
-
-    # create superuser
-    superuser_data = await register_test_user(is_superuser=True)
-    await get_session_cookie(superuser_data)
+    await login(is_superuser=True)
 
     resp = await test_client.post(
         "/nodes",
@@ -278,19 +259,20 @@ async def test_update_node(
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,
-    register_test_user,
-    get_session_cookie,
+    login,
 ):
     text_id = (await insert_sample_data("texts", "nodes"))["texts"][0]
+
     # get node from db
     resp = await test_client.get("/nodes", params={"textId": text_id, "level": 0})
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) > 0
     node = resp.json()[0]
-    # create superuser
-    superuser_data = await register_test_user(is_superuser=True)
-    await get_session_cookie(superuser_data)
+
+    # login
+    await login(is_superuser=True)
+
     # update node
     node_update = {"label": "A fresh label"}
     resp = await test_client.patch(
@@ -302,12 +284,14 @@ async def test_update_node(
     assert resp.json()["id"] == str(node["id"])
     assert "label" in resp.json()
     assert resp.json()["label"] == "A fresh label"
+
     # update unchanged node
     resp = await test_client.patch(
         f"/nodes/{node['id']}",
         json=node_update,
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
+
     # update invalid node
     node_update = {"label": "Brand new label"}
     resp = await test_client.patch("/nodes/637b9ad396d541a505e5439b", json=node_update)
@@ -322,8 +306,7 @@ async def test_delete_node(
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,
-    register_test_user,
-    get_session_cookie,
+    login,
     wrong_id,
 ):
     text_id = (await insert_sample_data("texts", "nodes", "resources"))["texts"][0]
@@ -337,9 +320,8 @@ async def test_delete_node(
     assert len(resp.json()) > 0
     node = resp.json()[0]
 
-    # create superuser
-    superuser_data = await register_test_user(is_superuser=True)
-    await get_session_cookie(superuser_data)
+    # log in as superuser
+    await login(is_superuser=True)
 
     # get existing resource
     resp = await test_client.get("/resources", params={"textId": text_id})
@@ -386,14 +368,12 @@ async def test_move_node(
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,
-    register_test_user,
-    get_session_cookie,
+    login,
 ):
     text_id = (await insert_sample_data("texts", "nodes"))["texts"][0]
 
-    # create superuser
-    superuser_data = await register_test_user(is_superuser=True)
-    await get_session_cookie(superuser_data)
+    # log in as superuser
+    await login(is_superuser=True)
 
     # get node from db
     resp = await test_client.get(
@@ -429,13 +409,11 @@ async def test_move_node_wrong_id(
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,
-    register_test_user,
-    get_session_cookie,
+    login,
     wrong_id,
 ):
-    # create superuser
-    superuser_data = await register_test_user(is_superuser=True)
-    await get_session_cookie(superuser_data)
+    # log in as superuser
+    await login(is_superuser=True)
 
     # move node with wrong ID
     resp = await test_client.post(
@@ -450,14 +428,12 @@ async def test_move_node_lowest_level(
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,
-    register_test_user,
-    get_session_cookie,
+    login,
 ):
     text_id = (await insert_sample_data("texts", "nodes"))["texts"][0]
 
-    # create superuser
-    superuser_data = await register_test_user(is_superuser=True)
-    await get_session_cookie(superuser_data)
+    # log in as superuser
+    await login(is_superuser=True)
 
     # get node from db
     resp = await test_client.get(

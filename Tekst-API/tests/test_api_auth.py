@@ -84,12 +84,12 @@ async def test_register_email_exists(
 @pytest.mark.anyio
 async def test_login(
     config,
-    register_test_user,
+    login,
     test_client: AsyncClient,
     status_fail_msg,
 ):
-    user_data = await register_test_user()
-    payload = {"username": user_data["email"], "password": user_data["password"]}
+    user = await login()
+    payload = {"username": user["email"], "password": user["password"]}
     resp = await test_client.post(
         "/auth/cookie/login",
         data=payload,
@@ -100,12 +100,12 @@ async def test_login(
 
 @pytest.mark.anyio
 async def test_login_fail_bad_pw(
-    register_test_user,
+    login,
     test_client: AsyncClient,
     status_fail_msg,
 ):
-    user_data = await register_test_user()
-    payload = {"username": user_data["username"], "password": "XoiPOI09871"}
+    user = await login()
+    payload = {"username": user["username"], "password": "XoiPOI09871"}
     resp = await test_client.post(
         "/auth/cookie/login",
         data=payload,
@@ -120,8 +120,8 @@ async def test_login_fail_unverified(
     test_client: AsyncClient,
     status_fail_msg,
 ):
-    user_data = await register_test_user(is_verified=False)
-    payload = {"username": user_data["email"], "password": user_data["password"]}
+    user = await register_test_user(is_verified=False)
+    payload = {"username": user["email"], "password": user["password"]}
     resp = await test_client.post(
         "/auth/cookie/login",
         data=payload,
@@ -131,26 +131,22 @@ async def test_login_fail_unverified(
 
 
 @pytest.mark.anyio
-async def test_forgot_password(
-    register_test_user, test_client: AsyncClient, status_fail_msg
-):
-    user_data = await register_test_user(is_active=True, is_verified=True)
+async def test_forgot_password(login, test_client: AsyncClient, status_fail_msg):
+    user = await login(is_active=True, is_verified=True)
     resp = await test_client.post(
         "/auth/forgot-password",
-        json={"email": user_data["email"]},
+        json={"email": user["email"]},
     )
     assert resp.status_code == 202, status_fail_msg(202, resp)
 
 
 @pytest.mark.anyio
 async def test_user_updates_self(
-    register_test_user,
-    get_session_cookie,
+    login,
     test_client: AsyncClient,
     status_fail_msg,
 ):
-    user_data = await register_test_user()
-    await get_session_cookie(user_data)
+    await login()
     # get user data from /users/me
     resp = await test_client.get(
         "/users/me",
@@ -171,13 +167,11 @@ async def test_user_updates_self(
 
 @pytest.mark.anyio
 async def test_user_deletes_self(
-    register_test_user,
-    get_session_cookie,
+    login,
     test_client: AsyncClient,
     status_fail_msg,
 ):
-    user_data = await register_test_user()
-    await get_session_cookie(user_data)
+    await login()
     # delete self
     resp = await test_client.delete(
         "/users/me",
@@ -187,17 +181,16 @@ async def test_user_deletes_self(
 
 @pytest.mark.anyio
 async def test_update_user(
+    login,
     register_test_user,
-    get_session_cookie,
     test_client: AsyncClient,
     status_fail_msg,
 ):
-    user_data = await register_test_user(is_active=False)
-    superuser_data = await register_test_user(is_superuser=True, alternative=True)
-    await get_session_cookie(superuser_data)
+    user = await register_test_user(is_active=False)
+    await login(is_superuser=True, alternative=True)
     # update user
     resp = await test_client.patch(
-        f"/users/{user_data['id']}",
+        f"/users/{user['id']}",
         json={"isActive": True, "isSuperuser": True, "password": "XoiPOI09871"},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
@@ -206,7 +199,7 @@ async def test_update_user(
     assert "password" not in resp.json()
     # update user again
     resp = await test_client.patch(
-        f"/users/{user_data['id']}", json={"isActive": False, "isSuperuser": False}
+        f"/users/{user['id']}", json={"isActive": False, "isSuperuser": False}
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert resp.json()["isActive"] is False
@@ -226,8 +219,8 @@ async def test_create_initial_superuser():
 
 
 @pytest.mark.anyio
-async def test_create_duplicate_user(register_test_user):
+async def test_create_duplicate_user(login):
     with pytest.raises(HTTPException) as e:
-        await register_test_user()
-        await register_test_user()
+        await login()
+        await login()
         assert "REGISTER_USERNAME_ALREADY_EXISTS" in e.getrepr()
