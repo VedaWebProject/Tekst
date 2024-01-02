@@ -68,6 +68,7 @@ async function handleSaveClick() {
         message.success($t('admin.system.platformSettings.msgSaved'), undefined, 10);
       } else {
         message.error($t('errors.unexpected'), error);
+        resetForm();
       }
       reset();
       loading.value = false;
