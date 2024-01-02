@@ -378,7 +378,7 @@ async def test_delete_node(
     resp = await test_client.delete(
         f"/nodes/{wrong_id}",
     )
-    assert resp.status_code == 400, status_fail_msg(400, resp)
+    assert resp.status_code == 404, status_fail_msg(404, resp)
 
 
 @pytest.mark.anyio
@@ -442,7 +442,7 @@ async def test_move_node_wrong_id(
         f"/nodes/{wrong_id}/move",
         json={"position": 1, "after": True, "parentId": None},
     )
-    assert resp.status_code == 400, status_fail_msg(400, resp)
+    assert resp.status_code == 404, status_fail_msg(404, resp)
 
 
 @pytest.mark.anyio

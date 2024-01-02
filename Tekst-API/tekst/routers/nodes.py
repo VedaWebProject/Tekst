@@ -203,7 +203,7 @@ async def delete_node(
     node_doc = await NodeDocument.get(node_id)
     if not node_doc:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Node {node_id} doesn't exist",
         )
     text_id = node_doc.text_id
@@ -261,7 +261,7 @@ async def move_node(
     node: NodeDocument = await NodeDocument.get(node_id)
     if not node:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Node {node_id} doesn't exist",
         )
     # define initial working vars

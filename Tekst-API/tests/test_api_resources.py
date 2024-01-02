@@ -151,7 +151,7 @@ async def test_update_resource(
         f"/resources/{wrong_id}",
         json=updates,
     )
-    assert resp.status_code == 400, status_fail_msg(400, resp)
+    assert resp.status_code == 404, status_fail_msg(404, resp)
 
     # update resource's read shares
     updates = {"sharedRead": [other_user_data["id"]], "resourceType": "plaintext"}
@@ -478,12 +478,6 @@ async def test_delete_resource(
     other_user_data = await register_test_user(alternative=True)
     await get_session_cookie(user_data)
 
-    # delete public resource (should not be possible)
-    resp = await test_client.delete(
-        f"/resources/{resource_id}",
-    )
-    assert resp.status_code == 400, status_fail_msg(400, resp)
-
     # unpublish resource
     resp = await test_client.post(
         f"/resources/{resource_id}/unpublish",
@@ -493,7 +487,7 @@ async def test_delete_resource(
     resp = await test_client.delete(
         f"/resources/{wrong_id}",
     )
-    assert resp.status_code == 400, status_fail_msg(400, resp)
+    assert resp.status_code == 404, status_fail_msg(404, resp)
 
     # become non-owner/non-superuser
     resp = await test_client.post("/auth/cookie/logout")
@@ -525,12 +519,76 @@ async def test_delete_resource(
 
 
 @pytest.mark.anyio
+async def test_delete_public_resource(
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_fail_msg,
+    register_test_user,
+    get_session_cookie,
+):
+    inserted_ids = await insert_sample_data("texts", "nodes", "resources")
+    resource_id = inserted_ids["resources"][0]
+
+    # register test users
+    user_data = await register_test_user(is_superuser=True)
+    await get_session_cookie(user_data)
+
+    # ensure resource is public
+    resp = await test_client.post(f"/resources/{resource_id}/unpublish")
+    resp = await test_client.post(f"/resources/{resource_id}/propose")
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert resp.json()["proposed"] is True
+    resp = await test_client.post(f"/resources/{resource_id}/publish")
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert resp.json()["public"] is True
+
+    # delete public resource (should not be possible)
+    resp = await test_client.delete(
+        f"/resources/{resource_id}",
+    )
+    assert resp.status_code == 400, status_fail_msg(400, resp)
+
+
+@pytest.mark.anyio
+async def test_delete_proposed_resource(
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_fail_msg,
+    register_test_user,
+    get_session_cookie,
+):
+    inserted_ids = await insert_sample_data("texts", "nodes", "resources")
+    resource_id = inserted_ids["resources"][0]
+
+    # register test users
+    user_data = await register_test_user(is_superuser=True)
+    await get_session_cookie(user_data)
+
+    # ensure resource is not public
+    resp = await test_client.post(f"/resources/{resource_id}/unpublish")
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert resp.json()["public"] is False
+
+    # ensure resource is proposed
+    resp = await test_client.post(f"/resources/{resource_id}/propose")
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert resp.json()["proposed"] is True
+
+    # delete proposed resource (should not be possible)
+    resp = await test_client.delete(
+        f"/resources/{resource_id}",
+    )
+    assert resp.status_code == 400, status_fail_msg(400, resp)
+
+
+@pytest.mark.anyio
 async def test_transfer_resource(
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,
     register_test_user,
     get_session_cookie,
+    wrong_id,
 ):
     inserted_ids = await insert_sample_data("texts", "nodes", "resources")
     resource_id = inserted_ids["resources"][0]
@@ -553,6 +611,13 @@ async def test_transfer_resource(
         f"/resources/{resource_id}/unpublish",
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
+
+    # transfer resource w/ wrong ID
+    resp = await test_client.post(
+        f"/resources/{wrong_id}/transfer",
+        json=user_data["id"],
+    )
+    assert resp.status_code == 404, status_fail_msg(404, resp)
 
     # transfer resource to test user
     resp = await test_client.post(
@@ -591,4 +656,4 @@ async def test_get_resource_template(
     resp = await test_client.get(
         f"/resources/{wrong_id}/template",
     )
-    assert resp.status_code == 400, status_fail_msg(400, resp)
+    assert resp.status_code == 404, status_fail_msg(404, resp)

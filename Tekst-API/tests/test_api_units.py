@@ -115,7 +115,7 @@ async def test_create_unit(
         f"/units/{wrong_id}",
         json={"resourceType": "plaintext", "text": "FOO BAR"},
     )
-    assert resp.status_code == 400, status_fail_msg(400, resp)
+    assert resp.status_code == 404, status_fail_msg(404, resp)
 
     # fail to update unit with changed resource ID
     resp = await test_client.patch(

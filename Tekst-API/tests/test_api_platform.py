@@ -135,7 +135,7 @@ async def test_crud_segment(
         f"/platform/segments/{wrong_id}",
         json={"title": "Bar"},
     )
-    assert resp.status_code == 400, status_fail_msg(400, resp)
+    assert resp.status_code == 404, status_fail_msg(404, resp)
 
     # get segment
     resp = await test_client.get(
@@ -162,4 +162,4 @@ async def test_crud_segment(
     resp = await test_client.delete(
         f"/platform/segments/{wrong_id}",
     )
-    assert resp.status_code == 400, status_fail_msg(400, resp)
+    assert resp.status_code == 404, status_fail_msg(404, resp)
