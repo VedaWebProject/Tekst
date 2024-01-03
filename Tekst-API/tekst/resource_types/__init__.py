@@ -87,7 +87,7 @@ class ResourceTypeABC(ABC):
         return template
 
 
-class ResourceTypeABCManager:
+class ResourceTypesManager:
     __resource_types: dict[str, ResourceTypeABC] = dict()
 
     def register(
@@ -117,7 +117,7 @@ def init_resource_types_mgr() -> None:
         return resource_types_mgr
     log.info("Initializing resource types...")
     # init manager
-    manager = ResourceTypeABCManager()
+    manager = ResourceTypesManager()
     # get internal resource type module names
     lt_modules = [mod.name.lower() for mod in pkgutil.iter_modules(__path__)]
     for lt_module in lt_modules:
@@ -142,7 +142,7 @@ def init_resource_types_mgr() -> None:
 
 
 # global variable to hold resource type manager instance
-resource_types_mgr: ResourceTypeABCManager = None
+resource_types_mgr: ResourceTypesManager = None
 init_resource_types_mgr()
 
 
