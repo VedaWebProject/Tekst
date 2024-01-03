@@ -8,7 +8,7 @@ from tekst.models.unit import UnitBase
 from tekst.resource_types import ResourceTypeABC
 
 
-class Debug(ResourceTypeABC):
+class Debug(ResourceTypeABC):  # pragma: no cover
     """A simple plaintext resource type"""
 
     @classmethod
@@ -18,6 +18,10 @@ class Debug(ResourceTypeABC):
     @classmethod
     def unit_model(cls) -> type["DebugUnit"]:
         return DebugUnit
+
+    @classmethod
+    def template_fields(cls) -> set[str]:
+        return {"text"}
 
 
 class DebugResourceConfig(ResourceConfigBase):
@@ -37,5 +41,3 @@ class DebugUnit(UnitBase):
         None,
         description="Text content of the debug unit",
     )
-
-    _template_fields = ("text",)

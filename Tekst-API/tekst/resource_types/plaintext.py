@@ -20,6 +20,10 @@ class Plaintext(ResourceTypeABC):
     def unit_model(cls) -> type["PlaintextUnit"]:
         return PlaintextUnit
 
+    @classmethod
+    def template_fields(cls) -> set[str]:
+        return {"text"}
+
 
 class PlaintextResourceConfig(ResourceConfigBase):
     deepl_links: DeepLLinksConfig = DeepLLinksConfig()
@@ -38,5 +42,3 @@ class PlaintextUnit(UnitBase):
         None,
         description="Text content of the plaintext unit",
     )
-
-    _template_fields = ("text",)

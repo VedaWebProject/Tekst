@@ -40,10 +40,6 @@ class UnitBase(ModelBase, ModelFactoryMixin):
             )
         return v.lower()
 
-    @classmethod
-    def get_template_fields(cls) -> tuple[str]:
-        return ("comment", *(tuple(cls._template_fields.default) or tuple()))
-
 
 # generate document and update models for this base model,
 # as those have to be used as bases for inheriting model's document/update models

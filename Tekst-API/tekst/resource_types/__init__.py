@@ -36,18 +36,38 @@ class ResourceTypeABC(ABC):
     @abstractmethod
     def resource_model(cls) -> type[ResourceBase]:
         """Returns the resource base model for this type of resource"""
+        raise NotImplementedError(
+            "Classmethod 'resource_model' must be "
+            f"implemented in subclasses of {cls.__name__}"
+        )  # pragma: no cover
 
     @classmethod
     @abstractmethod
     def unit_model(cls) -> type[UnitBase]:
         """Returns the unit base model for units of this type of resource"""
+        raise NotImplementedError(
+            "Classmethod 'unit_model' must be "
+            f"implemented in subclasses of {cls.__name__}"
+        )  # pragma: no cover
+
+    @classmethod
+    @abstractmethod
+    def template_fields(cls) -> set[str]:
+        """
+        Returns a tuple with the names of the unit model fields
+        that should be part of the import template file for a certain resource type
+        """
+        raise NotImplementedError(
+            "Classmethod 'template_fields' must be "
+            f"implemented in subclasses of {cls.__name__}"
+        )  # pragma: no cover
 
     @classmethod
     def prepare_import_template(cls) -> dict:
         """Returns the base template for import data for this resource type"""
         create_model = cls.unit_model().create_model()
         schema = create_model.schema()
-        template_fields = create_model.get_template_fields()
+        template_fields = cls.template_fields().union({"comment"})
         required = schema.get("required", [])
         include_resource_props = ("description", "resourceType", "additionalProperties")
         template = {
@@ -67,7 +87,7 @@ class ResourceTypeABC(ABC):
         return template
 
 
-class ResourceTypeManager:
+class ResourceTypeABCManager:
     __resource_types: dict[str, ResourceTypeABC] = dict()
 
     def register(
@@ -97,7 +117,7 @@ def init_resource_types_mgr() -> None:
         return resource_types_mgr
     log.info("Initializing resource types...")
     # init manager
-    manager = ResourceTypeManager()
+    manager = ResourceTypeABCManager()
     # get internal resource type module names
     lt_modules = [mod.name.lower() for mod in pkgutil.iter_modules(__path__)]
     for lt_module in lt_modules:
@@ -122,7 +142,7 @@ def init_resource_types_mgr() -> None:
 
 
 # global variable to hold resource type manager instance
-resource_types_mgr: ResourceTypeManager = None
+resource_types_mgr: ResourceTypeABCManager = None
 init_resource_types_mgr()
 
 
