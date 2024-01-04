@@ -5,7 +5,7 @@ import { useAuthStore, useBrowseStore } from '@/stores';
 import ResourceToggleDrawerItem from '@/components/browse/ResourceToggleDrawerItem.vue';
 import IconHeading from '../typography/IconHeading.vue';
 
-import LayersFilled from '@vicons/material/LayersFilled';
+import LayersOutlined from '@vicons/material/LayersOutlined';
 
 const props = defineProps<{ show: boolean }>();
 const emits = defineEmits<{ (e: 'update:show', show: boolean): void }>();
@@ -33,7 +33,7 @@ const show = computed({
   >
     <n-drawer-content closable header-style="border: none">
       <template #header>
-        <IconHeading level="2" :icon="LayersFilled" style="margin: 0">
+        <IconHeading level="2" :icon="LayersOutlined" style="margin: 0">
           {{ $t('browse.resourceToggleDrawer.heading') }}
         </IconHeading>
       </template>

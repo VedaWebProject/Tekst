@@ -10,7 +10,7 @@ import LogInRound from '@vicons/material/LogInRound';
 import LogOutRound from '@vicons/material/LogOutRound';
 import PersonFilled from '@vicons/material/PersonFilled';
 import ShieldOutlined from '@vicons/material/ShieldOutlined';
-import LayersFilled from '@vicons/material/LayersFilled';
+import LayersOutlined from '@vicons/material/LayersOutlined';
 
 const auth = useAuthStore();
 const state = useStateStore();
@@ -40,7 +40,7 @@ const userOptions = computed(() => [
       },
     }),
     key: 'resources',
-    icon: renderIcon(LayersFilled),
+    icon: renderIcon(LayersOutlined),
   },
   ...(auth.user?.isSuperuser
     ? [

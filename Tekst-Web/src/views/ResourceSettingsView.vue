@@ -20,7 +20,7 @@ import { useResourcesStore } from '@/stores/resources';
 import ResourcePublicationStatus from '@/components/ResourcePublicationStatus.vue';
 import ResourceFormItems from '@/forms/ResourceFormItems.vue';
 
-import LayersFilled from '@vicons/material/LayersFilled';
+import LayersOutlined from '@vicons/material/LayersOutlined';
 import KeyboardArrowLeftOutlined from '@vicons/material/KeyboardArrowLeftOutlined';
 
 const { message } = useMessages();
@@ -93,7 +93,7 @@ async function handleSaveClick() {
 </script>
 
 <template>
-  <IconHeading v-if="resource" level="1" :icon="LayersFilled">
+  <IconHeading v-if="resource" level="1" :icon="LayersOutlined">
     {{ resource?.title }}
   </IconHeading>
 

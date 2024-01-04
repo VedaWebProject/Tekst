@@ -27,7 +27,7 @@ import { useResourcesStore } from '@/stores';
 
 import SearchRound from '@vicons/material/SearchRound';
 import UndoRound from '@vicons/material/UndoRound';
-import LayersFilled from '@vicons/material/LayersFilled';
+import LayersOutlined from '@vicons/material/LayersOutlined';
 import AddOutlined from '@vicons/material/AddOutlined';
 import { TransferResourceTemplatePromise } from '@/templatePromises';
 import TransferResourceModal from '@/components/TransferResourceModal.vue';
@@ -254,7 +254,7 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
 </script>
 
 <template>
-  <IconHeading level="1" :icon="LayersFilled">
+  <IconHeading level="1" :icon="LayersOutlined">
     {{ $t('resources.heading') }}
     <HelpButtonWidget help-key="resourcesView" />
   </IconHeading>

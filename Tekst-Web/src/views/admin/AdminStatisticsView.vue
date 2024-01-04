@@ -9,7 +9,7 @@ import IconHeading from '@/components/typography/IconHeading.vue';
 import SupervisorAccountRound from '@vicons/material/SupervisorAccountRound';
 import LibraryBooksRound from '@vicons/material/LibraryBooksRound';
 import AccountTreeRound from '@vicons/material/AccountTreeRound';
-import LayersFilled from '@vicons/material/LayersFilled';
+import LayersOutlined from '@vicons/material/LayersOutlined';
 import BarChartRound from '@vicons/material/BarChartRound';
 
 const { pfData } = usePlatformData();
@@ -72,7 +72,7 @@ const resourceTypes = computed(() => {
         <n-statistic :label="$t('models.resource.modelLabel', 2)" :value="counts.resources">
           <template #prefix>
             <n-icon>
-              <LayersFilled />
+              <LayersOutlined />
             </n-icon>
           </template>
         </n-statistic>
@@ -115,7 +115,7 @@ const resourceTypes = computed(() => {
           <n-statistic :label="$t('models.resource.modelLabel', 2)" :value="text.resourcesCount">
             <template #prefix>
               <n-icon>
-                <LayersFilled />
+                <LayersOutlined />
               </n-icon>
             </template>
           </n-statistic>
