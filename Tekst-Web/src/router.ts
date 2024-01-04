@@ -57,7 +57,7 @@ const router = createRouter({
       },
     },
     {
-      path: '/browse/:text?',
+      path: '/text/:text?/browse',
       name: 'browse',
       component: BrowseView,
       meta: {
@@ -65,7 +65,7 @@ const router = createRouter({
       },
     },
     {
-      path: '/search/:text?',
+      path: '/text/:text?/search',
       name: 'search',
       component: SearchView,
       meta: {
@@ -124,7 +124,7 @@ const router = createRouter({
       component: ResetView,
     },
     {
-      path: '/resources/:text',
+      path: '/text/:text?/resources',
       name: 'resources',
       component: ResourcesView,
       meta: {
@@ -133,7 +133,7 @@ const router = createRouter({
       },
     },
     {
-      path: '/resources/:text/settings/:id',
+      path: '/text/:text?/resources/:id/settings',
       name: 'resourceSettings',
       component: ResourceSettingsView,
       meta: {
@@ -142,7 +142,7 @@ const router = createRouter({
       },
     },
     {
-      path: '/resources/:text/create',
+      path: '/text/:text?/resources/:id/create',
       name: 'resourceCreate',
       component: ResourceCreateView,
       meta: {
@@ -151,7 +151,7 @@ const router = createRouter({
       },
     },
     {
-      path: '/resources/:text/units/:id',
+      path: '/text/:text?/resources/:id/units',
       name: 'resourceUnits',
       component: UnitsView,
       meta: {
