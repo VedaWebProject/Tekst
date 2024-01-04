@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { NButton, NModal, NProgress, NSpin } from 'naive-ui';
+import { NEllipsis, NDivider, NButton, NModal, NProgress, NSpin } from 'naive-ui';
 import MetadataDisplay from '@/components/browse/MetadataDisplay.vue';
 import ButtonFooter from '@/components/ButtonFooter.vue';
 import IconHeading from '@/components/typography/IconHeading.vue';
@@ -63,16 +63,17 @@ const coveragePercent = computed(
       <h2 style="margin: 0">{{ resource.title }}</h2>
     </template>
 
-    <p>
-      <UserDisplay v-if="resource.owner" :user="resource.owner" size="tiny" />
-      <ResourcePublicationStatus v-if="auth.loggedIn" :resource="resource" size="tiny" />
-    </p>
-
     <p v-if="resource.description?.length">
       <TranslationDisplay :value="resource.description" />
     </p>
 
+    <p>
+      <UserDisplay v-if="auth.loggedIn" :user="resource.owner ?? undefined" size="tiny" />
+      <ResourcePublicationStatus v-if="auth.loggedIn" :resource="resource" size="tiny" />
+    </p>
+
     <template v-if="resource.meta && Object.keys(resource.meta).length">
+      <n-divider />
       <IconHeading level="3" :icon="LabelOutlined">
         {{ $t('models.meta.modelLabel') }}
       </IconHeading>
@@ -80,6 +81,7 @@ const coveragePercent = computed(
     </template>
 
     <template v-if="resource.citation">
+      <n-divider />
       <IconHeading level="3" :icon="FormatQuoteFilled">
         {{ $t('browse.units.widgets.infoWidget.citeAs') }}
       </IconHeading>
@@ -88,10 +90,11 @@ const coveragePercent = computed(
       </div>
     </template>
 
-    <IconHeading level="3" :icon="PercentOutlined">
-      {{ $t('browse.units.widgets.infoWidget.coverage') }}
-    </IconHeading>
     <template v-if="coverage">
+      <n-divider />
+      <IconHeading level="3" :icon="PercentOutlined">
+        {{ $t('browse.units.widgets.infoWidget.coverage') }}
+      </IconHeading>
       <p>
         {{
           $t('browse.units.widgets.infoWidget.coverageStatement', {
@@ -112,16 +115,20 @@ const coveragePercent = computed(
       />
     </template>
     <template v-else-if="coverageError">
+      <n-divider />
       {{ $t('errors.unexpected') }}
     </template>
     <n-spin v-else style="width: 100%" />
 
     <template v-if="resource.comment?.length">
+      <n-divider />
       <IconHeading level="3" :icon="ChatBubbleOutlineOutlined">
         {{ $t('models.resource.comment') }}
       </IconHeading>
       <div class="resource-comment">
-        <TranslationDisplay :value="resource.comment" />
+        <n-ellipsis :tooltip="false" :line-clamp="2" expand-trigger="click">
+          <TranslationDisplay :value="resource.comment" />
+        </n-ellipsis>
       </div>
     </template>
 
