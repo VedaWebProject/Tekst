@@ -102,7 +102,7 @@ function handleUserOptionSelect(key: string) {
     :options="userOptions"
     :size="state.dropdownSize"
     to="#app-container"
-    trigger="hover"
+    trigger="click"
     @select="handleUserOptionSelect"
   >
     <n-button

@@ -28,7 +28,7 @@ function handleLanguageSelect(localeCode: LocaleKey) {
 <template>
   <n-dropdown
     v-if="state.availableLocales.length > 1"
-    trigger="hover"
+    trigger="click"
     to="#app-container"
     :options="options"
     :size="state.dropdownSize"
