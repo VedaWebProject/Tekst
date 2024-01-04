@@ -13,7 +13,7 @@ import { useRouter } from 'vue-router';
 import ButtonFooter from '@/components/ButtonFooter.vue';
 import ResourceFormItems from '@/forms/ResourceFormItems.vue';
 
-import LayersOutlined from '@vicons/material/LayersOutlined';
+import LayersFilled from '@vicons/material/LayersFilled';
 import KeyboardArrowLeftOutlined from '@vicons/material/KeyboardArrowLeftOutlined';
 
 const { message } = useMessages();
@@ -92,7 +92,7 @@ async function handleSaveClick() {
 </script>
 
 <template>
-  <IconHeading level="1" :icon="LayersOutlined">
+  <IconHeading level="1" :icon="LayersFilled">
     {{ $t('resources.create.heading', { text: state.text?.title }) }}
     <HelpButtonWidget help-key="resourceCreateView" />
   </IconHeading>

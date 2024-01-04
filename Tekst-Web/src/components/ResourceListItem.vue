@@ -16,6 +16,7 @@ import FlagOutlined from '@vicons/material/FlagOutlined';
 import PublicFilled from '@vicons/material/PublicFilled';
 import PublicOffFilled from '@vicons/material/PublicOffFilled';
 import PersonPinFilled from '@vicons/material/PersonPinFilled';
+import EditNoteOutlined from '@vicons/material/EditNoteOutlined';
 
 const props = defineProps<{
   targetResource: AnyResourceRead;
@@ -29,6 +30,7 @@ const emit = defineEmits([
   'publishClick',
   'unpublishClick',
   'settingsClick',
+  'unitsClick',
   'deleteClick',
 ]);
 
@@ -112,6 +114,19 @@ const actionOptions = computed(() => [
     props: {
       onClick: () => emit('settingsClick', props.targetResource),
     },
+  },
+  {
+    label: $t('resources.unitsAction'),
+    key: 'units',
+    icon: renderIcon(EditNoteOutlined),
+    disabled: !props.targetResource.writable,
+    props: {
+      onClick: () => emit('unitsClick', props.targetResource),
+    },
+  },
+  {
+    type: 'divider',
+    key: 'editDivider',
   },
   {
     label: $t('resources.transferAction'),

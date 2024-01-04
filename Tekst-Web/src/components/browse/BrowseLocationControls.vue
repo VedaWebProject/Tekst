@@ -12,8 +12,8 @@ import { GET } from '@/api';
 import { useMessages } from '@/messages';
 import { $t } from '@/i18n';
 
-import ArrowBackIosRound from '@vicons/material/ArrowBackIosRound';
-import ArrowForwardIosRound from '@vicons/material/ArrowForwardIosRound';
+import ArrowBackIosOutlined from '@vicons/material/ArrowBackIosOutlined';
+import ArrowForwardIosOutlined from '@vicons/material/ArrowForwardIosOutlined';
 import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
 import IconHeading from '../typography/IconHeading.vue';
 
@@ -235,7 +235,7 @@ const btnColor = '#fff';
         @click="navigate"
       >
         <template #icon>
-          <ArrowBackIosRound />
+          <ArrowBackIosOutlined />
         </template>
       </n-button>
     </router-link>
@@ -264,7 +264,7 @@ const btnColor = '#fff';
         @click="navigate"
       >
         <template #icon>
-          <ArrowForwardIosRound />
+          <ArrowForwardIosOutlined />
         </template>
       </n-button>
     </router-link>

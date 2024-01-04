@@ -81,6 +81,7 @@ routes:
     register: Registrierung
     resources: Ressourcen zu "{text}"
     resourceSettings: Ressourcen-Einstellungen
+    resourceUnits: Ressourcen-Inhalte bearbeiten
     user: Profil von {username}
     accountProfile: Öffentliches Profil
     accountManage: Konto
@@ -260,6 +261,7 @@ resources:
   notProposed: '@:general.not @:models.resource.proposed'
   transferAction: An Benutzer übertragen
   settingsAction: Einstellungen
+  unitsAction: Inhalt bearbeiten
   proposeAction: Für Veröffentlichung vorschlagen
   unproposeAction: Veröffentlichungsvorschlag zurücknehmen
   publishAction: Veröffentlichen
@@ -314,6 +316,9 @@ resources:
       title: DeepL-Übersetzungs-Links
       sourceLanguage: Quellsprache
       targetLanguages: Zielsprachen
+
+units:
+  heading: Ressourcen-Inhalte bearbeiten
 
 account:
   account: Konto

@@ -27,7 +27,7 @@ import { useResourcesStore } from '@/stores';
 
 import SearchRound from '@vicons/material/SearchRound';
 import UndoRound from '@vicons/material/UndoRound';
-import LayersOutlined from '@vicons/material/LayersOutlined';
+import LayersFilled from '@vicons/material/LayersFilled';
 import AddOutlined from '@vicons/material/AddOutlined';
 import { TransferResourceTemplatePromise } from '@/templatePromises';
 import TransferResourceModal from '@/components/TransferResourceModal.vue';
@@ -220,6 +220,10 @@ function handleSettingsClick(resource: AnyResourceRead) {
   router.push({ name: 'resourceSettings', params: { text: state.text?.slug, id: resource.id } });
 }
 
+function handleUnitsClick(resource: AnyResourceRead) {
+  router.push({ name: 'resourceUnits', params: { text: state.text?.slug, id: resource.id } });
+}
+
 function handleDeleteClick(resource: AnyResourceRead) {
   dialog.warning({
     title: $t('general.warning'),
@@ -254,7 +258,7 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
 </script>
 
 <template>
-  <IconHeading level="1" :icon="LayersOutlined">
+  <IconHeading level="1" :icon="LayersFilled">
     {{ $t('resources.heading') }}
     <HelpButtonWidget help-key="resourcesView" />
   </IconHeading>
@@ -331,6 +335,7 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
             @publish-click="handlePublishClick"
             @unpublish-click="handleUnpublishClick"
             @settings-click="handleSettingsClick"
+            @units-click="handleUnitsClick"
             @delete-click="handleDeleteClick"
           />
         </n-list>

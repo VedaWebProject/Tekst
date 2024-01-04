@@ -11,23 +11,20 @@ import { RouterLink } from 'vue-router';
 import { NSpin, NForm, NButton, type FormInst } from 'naive-ui';
 import { resourceFormRules } from '@/forms/formRules';
 import { useModelChanges } from '@/modelChanges';
-import UserDisplay from '@/components/UserDisplay.vue';
 import { useRoute } from 'vue-router';
 import { useRouter } from 'vue-router';
+import ResourceInfoWidget from '@/components/browse/widgets/ResourceInfoWidget.vue';
 import ButtonFooter from '@/components/ButtonFooter.vue';
-import { usePlatformData } from '@/platformData';
 import { useResourcesStore } from '@/stores/resources';
-import ResourcePublicationStatus from '@/components/ResourcePublicationStatus.vue';
 import ResourceFormItems from '@/forms/ResourceFormItems.vue';
 
-import LayersOutlined from '@vicons/material/LayersOutlined';
+import SettingsFilled from '@vicons/material/SettingsFilled';
 import KeyboardArrowLeftOutlined from '@vicons/material/KeyboardArrowLeftOutlined';
 
 const { message } = useMessages();
 const route = useRoute();
 const router = useRouter();
 const state = useStateStore();
-const { pfData } = usePlatformData();
 
 const resources = useResourcesStore();
 const resource = ref<AnyResourceRead>();
@@ -47,7 +44,7 @@ watch(
   }
 );
 
-// check route for resource ID
+// watch route for resource ID and react to resource data updates
 watch(
   [() => route.params.id, () => resources.data],
   ([newId, newResources]) => {
@@ -93,8 +90,9 @@ async function handleSaveClick() {
 </script>
 
 <template>
-  <IconHeading v-if="resource" level="1" :icon="LayersOutlined">
-    {{ resource?.title }}
+  <IconHeading v-if="resource" level="1" :icon="SettingsFilled">
+    {{ $t('resources.settings.heading') }}
+    <HelpButtonWidget help-key="resourceSettingsView" />
   </IconHeading>
 
   <router-link
@@ -110,34 +108,10 @@ async function handleSaveClick() {
     </n-button>
   </router-link>
 
-  <h2>
-    {{ $t('resources.settings.heading') }}
-    <HelpButtonWidget help-key="resourceSettingsView" />
+  <h2 v-if="resource">
+    {{ resource?.title }}
+    <ResourceInfoWidget :resource="resource" />
   </h2>
-
-  <table v-if="resource" class="resource-info-table">
-    <tbody>
-      <tr>
-        <td class="row-key">{{ $t('models.text.modelLabel') }}:</td>
-        <td>{{ pfData?.texts?.find((t) => t.id === resource?.textId)?.title }}</td>
-      </tr>
-      <tr>
-        <td class="row-key">{{ $t('models.text.level') }}:</td>
-        <td>{{ state.textLevelLabels[resource?.level || 0] }}</td>
-      </tr>
-      <tr>
-        <td class="row-key">{{ $t('models.user.modelLabel') }}:</td>
-        <td v-if="resource?.owner"><UserDisplay :user="resource.owner" :show-icon="false" /></td>
-        <td v-else>–</td>
-      </tr>
-      <tr>
-        <td class="row-key">{{ $t('resources.settings.status') }}:</td>
-        <td>
-          <ResourcePublicationStatus :resource="resource" :show-icon="false" size="tiny" />
-        </td>
-      </tr>
-    </tbody>
-  </table>
 
   <template v-if="model">
     <n-form
@@ -157,12 +131,12 @@ async function handleSaveClick() {
     </n-form>
 
     <ButtonFooter style="margin-bottom: var(--layout-gap)">
-      <n-button secondary :disabled="!changed" @click="handleResetClick">{{
-        $t('general.resetAction')
-      }}</n-button>
-      <n-button type="primary" :disabled="!changed" @click="handleSaveClick">{{
-        $t('general.saveAction')
-      }}</n-button>
+      <n-button secondary :disabled="!changed" @click="handleResetClick">
+        {{ $t('general.resetAction') }}
+      </n-button>
+      <n-button type="primary" :disabled="!changed" @click="handleSaveClick">
+        {{ $t('general.saveAction') }}
+      </n-button>
     </ButtonFooter>
   </template>
 

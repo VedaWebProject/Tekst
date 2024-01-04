@@ -24,7 +24,7 @@ import AddNodeModal from '@/components/admin/AddNodeModal.vue';
 
 import AddOutlined from '@vicons/material/AddOutlined';
 import DeleteFilled from '@vicons/material/DeleteFilled';
-import ArrowForwardIosRound from '@vicons/material/ArrowForwardIosRound';
+import ArrowForwardIosOutlined from '@vicons/material/ArrowForwardIosOutlined';
 import EditTwotone from '@vicons/material/EditTwotone';
 import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import FileDownloadOutlined from '@vicons/material/FileDownloadOutlined';
@@ -320,7 +320,7 @@ function renderSwitcherIcon() {
     NIcon,
     { size: 'var(--app-ui-font-size-medium)', style: 'align-self: center' },
     {
-      default: () => h(ArrowForwardIosRound),
+      default: () => h(ArrowForwardIosOutlined),
     }
   );
 }

@@ -23,6 +23,7 @@ const InfoPageView = () => import('@/views/InfoPageView.vue');
 const ResourcesView = () => import('@/views/ResourcesView.vue');
 const ResourceSettingsView = () => import('@/views/ResourceSettingsView.vue');
 const ResourceCreateView = () => import('@/views/ResourceCreateView.vue');
+const UnitsView = () => import('@/views/UnitsView.vue');
 
 const AccountView = () => import('@/views/account/AccountView.vue');
 const AccountManageView = () => import('@/views/account/AccountManageView.vue');
@@ -144,6 +145,15 @@ const router = createRouter({
       path: '/resources/:text/create',
       name: 'resourceCreate',
       component: ResourceCreateView,
+      meta: {
+        isTextSpecific: true,
+        restricted: 'user',
+      },
+    },
+    {
+      path: '/resources/:text/units/:id',
+      name: 'resourceUnits',
+      component: UnitsView,
       meta: {
         isTextSpecific: true,
         restricted: 'user',

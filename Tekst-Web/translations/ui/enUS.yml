@@ -78,6 +78,7 @@ routes:
     register: Register
     resources: Resources on "{text}"
     resourceSettings: Resource Settings
+    resourceUnits: Edit Resource Content
     user: Profile of {username}
     accountProfile: Public Profile
     accountManage: Account
@@ -259,6 +260,7 @@ resources:
   notProposed: '@:general.not @:models.resource.proposed'
   transferAction: Transfer to user
   settingsAction: Settings
+  unitsAction: Edit content
   proposeAction: Propose for publication
   unproposeAction: Withdraw publication proposal
   publishAction: Publish
@@ -305,6 +307,9 @@ resources:
       title: DeepL Translation Links
       sourceLanguage: Source language
       targetLanguages: Target languages
+
+units:
+  heading: Edit resource content
 
 account:
   account: Account
