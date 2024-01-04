@@ -225,21 +225,31 @@ async def get_resource_template(
     ).prepare_import_template()
     # apply data from resource instance
     template["resourceId"] = str(resource_doc.id)
-    template["_level"] = resource_doc.level
     template["_title"] = resource_doc.title
-    template["_description"] = resource_doc.description
-
-    # generate unit template
-    unit_template = {key: None for key in template["_unitSchema"]}
+    template["__READ_ME__"] = (
+        "Properties prefixed with an underscore are purely for informational "
+        "purposes and can be omitted in the actual import file. '_unitSchema' "
+        "gives you a schema and a short description of the properties you must/can "
+        "add to each data unit in 'units'. "
+        "Every unit MUST keep the exact 'nodeId' property from this template! "
+        "To leave out a data unit completely, just remove it from 'units'."
+    )
 
     # get IDs of all nodes on this structure level as a base for unit templates
-    nodes = await NodeDocument.find(
-        NodeDocument.text_id == resource_doc.text_id,
-        NodeDocument.level == resource_doc.level,
-    ).to_list()
+    nodes = (
+        await NodeDocument.find(
+            NodeDocument.text_id == resource_doc.text_id,
+            NodeDocument.level == resource_doc.level,
+        )
+        .sort(+NodeDocument.position)
+        .to_list()
+    )
 
     # fill in unit templates with IDs
-    template["units"] = [dict(nodeId=str(node.id), **unit_template) for node in nodes]
+    template["units"] = [
+        dict(nodeId=str(node.id), _position=node.position, _nodeLabel=node.label)
+        for node in nodes
+    ]
 
     # create temporary file and stream it as a file response
     tempfile = NamedTemporaryFile(mode="w")

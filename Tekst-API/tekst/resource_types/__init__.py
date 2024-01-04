@@ -65,11 +65,16 @@ class ResourceTypeABC(ABC):
     @classmethod
     def prepare_import_template(cls) -> dict:
         """Returns the base template for import data for this resource type"""
-        create_model = cls.unit_model().create_model()
-        schema = create_model.schema()
+        schema = cls.unit_model().create_model().schema()
         template_fields = cls.template_fields().union({"comment"})
         required = schema.get("required", [])
-        include_resource_props = ("description", "resourceType", "additionalProperties")
+        include_resource_props = (
+            "description",
+            "default",
+            "anyOf",
+            "oneOf",
+            "type",
+        )
         template = {
             "_title": "Title of this resource",  # will be overridden
             "_level": -1,  # will be overridden
@@ -79,11 +84,11 @@ class ResourceTypeABC(ABC):
         # generate unit schema for the template
         for prop, val in schema.get("properties", {}).items():
             if prop in template_fields:
-                unit_schema = {
+                prop_schema = {
                     k: v for k, v in val.items() if k in include_resource_props
                 }
-                unit_schema["required"] = prop in required
-                template["_unitSchema"][prop] = unit_schema
+                prop_schema["required"] = prop in required
+                template["_unitSchema"][prop] = prop_schema
         return template
 
 

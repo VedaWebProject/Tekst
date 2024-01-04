@@ -32,6 +32,7 @@ general:
   not: nicht
   new: New
   loading: Lade...
+  downloadStarted: Download gestartet
   areYouSureHelpTextHint: |
     Bitte vergewissern Sie sich, dass Sie die entsprechende Passage in den
     Hilfetexten zu diesem Thema gelesen und verstanden haben.
@@ -319,6 +320,10 @@ resources:
 
 units:
   heading: Ressourcen-Inhalte bearbeiten
+  lblBtnDownloadTemplate: Vorlage
+  tipBtnDownloadTemplate: Importvorlage herunterladen
+  lblBtnUploadUnits: Importieren
+  tipBtnUploadUnits: Inhalte importieren
 
 account:
   account: Konto

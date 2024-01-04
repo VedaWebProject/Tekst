@@ -48,7 +48,7 @@ watch(
 watch(
   [() => route.params.id, () => resources.data],
   ([newId, newResources]) => {
-    if (!newId || !newResources?.length) return;
+    if (!newId || !newResources.length) return;
     resource.value = newResources.find((l) => l.id === newId);
     model.value = getInitialModel();
     reset();

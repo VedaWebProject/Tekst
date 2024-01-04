@@ -1,4 +1,4 @@
-from typing import Literal
+from typing import Annotated, Literal
 
 from pydantic import Field
 
@@ -38,7 +38,6 @@ class PlaintextUnit(UnitBase):
     """A unit of a plaintext resource"""
 
     resource_type: Literal["plaintext"]  # snake_cased resource type classname
-    text: str | None = Field(
-        None,
-        description="Text content of the plaintext unit",
-    )
+    text: Annotated[
+        str | None, Field(description="Text content of the plaintext unit")
+    ] = None

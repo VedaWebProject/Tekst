@@ -31,6 +31,7 @@ general:
   not: not
   new: New
   loading: Loading...
+  downloadStarted: Download started
   areYouSureHelpTextHint: |
     Please make sure you have read and understood the corresponding passage in the
     help texts on this topic. You can find the help texts for any page by clicking the
@@ -310,6 +311,10 @@ resources:
 
 units:
   heading: Edit resource content
+  lblBtnDownloadTemplate: Template
+  tipBtnDownloadTemplate: Download import template
+  lblBtnUploadUnits: Import
+  tipBtnUploadUnits: Import content
 
 account:
   account: Account
