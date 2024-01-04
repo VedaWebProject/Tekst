@@ -67,7 +67,7 @@ const nUiDateLocale = computed(() => getLocaleProfile(state.locale)?.nUiDateLoca
           <GlobalMessenger />
         </div>
         <LoginModal />
-        <n-back-top :visibility-height="200" />
+        <n-back-top :visibility-height="200" style="z-index: 2" />
         <n-global-style />
       </n-dialog-provider>
     </n-loading-bar-provider>
