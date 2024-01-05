@@ -99,9 +99,6 @@ routes:
     siteNotice: '@:admin.system.segments.systemKeys.systemSiteNotice'
     privacyPolicy: '@:admin.system.segments.systemKeys.systemPrivacyPolicy'
 
-resourceTypes:
-  plaintext: Einfacher Text
-
 browse:
   location:
     modalHeading: Fundstelle
@@ -317,6 +314,15 @@ resources:
       title: DeepL-Übersetzungs-Links
       sourceLanguage: Quellsprache
       targetLanguages: Zielsprachen
+  types:
+    plaintext:
+      label: Einfacher Text
+      description: |
+        Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar
+        Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar
+        Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar
+      unitFields:
+        text: Text
 
 units:
   heading: Ressourcen-Inhalte bearbeiten

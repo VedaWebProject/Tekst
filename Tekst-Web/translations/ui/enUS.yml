@@ -96,9 +96,6 @@ routes:
     siteNotice: '@:admin.system.segments.systemKeys.systemSiteNotice'
     privacyPolicy: '@:admin.system.segments.systemKeys.systemPrivacyPolicy'
 
-resourceTypes:
-  plaintext: Plaintext
-
 browse:
   location:
     modalHeading: Location
@@ -308,6 +305,15 @@ resources:
       title: DeepL Translation Links
       sourceLanguage: Source language
       targetLanguages: Target languages
+  types:
+    plaintext:
+      label: Plaintext
+      description: |
+        Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar
+        Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar
+        Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar
+      unitFields:
+        text: Text
 
 units:
   heading: Edit resource content

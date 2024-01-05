@@ -5,7 +5,7 @@ import {
   type UserReadPublic,
   type AnyResourceRead,
 } from '@/api';
-import { resourceFormRules } from '@/forms/formRules';
+import { resourceConfigFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
 import { useAuthStore, useStateStore } from '@/stores';
 import TranslationFormItem from '@/forms/TranslationFormItem.vue';
@@ -183,7 +183,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
       parent-form-path-prefix="description"
       :main-form-label="$t('models.resource.description')"
       :translation-form-label="$t('models.resource.description')"
-      :translation-form-rule="resourceFormRules.descriptionTranslation"
+      :translation-form-rule="resourceConfigFormRules.descriptionTranslation"
       @update:value="(v) => handleUpdate('description', v)"
     />
     <!-- CITATION -->
@@ -204,7 +204,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
       :max-translation-length="2000"
       :main-form-label="$t('models.resource.comment')"
       :translation-form-label="$t('models.resource.comment')"
-      :translation-form-rule="resourceFormRules.commentTranslation"
+      :translation-form-rule="resourceConfigFormRules.commentTranslation"
       @update:value="(v) => handleUpdate('comment', v)"
     />
     <!-- CATEGORY -->
@@ -250,7 +250,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
               ignore-path-change
               :show-label="false"
               :path="`meta[${index}].key`"
-              :rule="resourceFormRules.metaKey"
+              :rule="resourceConfigFormRules.metaKey"
               required
             >
               <n-select
@@ -264,7 +264,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
               ignore-path-changechange
               :show-label="false"
               :path="`meta[${index}].value`"
-              :rule="resourceFormRules.metaValue"
+              :rule="resourceConfigFormRules.metaValue"
               style="flex-grow: 2"
               required
             >

@@ -221,7 +221,10 @@ function handleSettingsClick(resource: AnyResourceRead) {
 }
 
 function handleUnitsClick(resource: AnyResourceRead) {
-  router.push({ name: 'resourceUnits', params: { text: state.text?.slug, id: resource.id } });
+  router.push({
+    name: 'resourceUnits',
+    params: { text: state.text?.slug, id: resource.id, pos: 0 },
+  });
 }
 
 function handleDeleteClick(resource: AnyResourceRead) {

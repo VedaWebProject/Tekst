@@ -1,8 +1,8 @@
 import { type Component } from 'vue';
-import DeepLLinksWidgetConfig from '@/forms/resources/config/special/DeepLLinksWidgetConfig.vue';
+import DeepLLinksConfigFormItems from '@/forms/resources/config/DeepLLinksConfigFormItems.vue';
 
 const specialConfigFormItems: Record<string, Component> = {
-  deeplLinks: DeepLLinksWidgetConfig,
+  deeplLinks: DeepLLinksConfigFormItems,
 };
 
 export default specialConfigFormItems;

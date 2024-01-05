@@ -21,7 +21,7 @@ const SearchView = () => import('@/views/SearchView.vue');
 const RegisterView = () => import('@/views/RegisterView.vue');
 const InfoPageView = () => import('@/views/InfoPageView.vue');
 const ResourcesView = () => import('@/views/ResourcesView.vue');
-const ResourceSettingsView = () => import('@/views/ResourceSettingsView.vue');
+const ResourceConfigView = () => import('@/views/ResourceConfigView.vue');
 const ResourceCreateView = () => import('@/views/ResourceCreateView.vue');
 const UnitsView = () => import('@/views/UnitsView.vue');
 
@@ -135,14 +135,14 @@ const router = createRouter({
     {
       path: '/text/:text?/resources/:id/settings',
       name: 'resourceSettings',
-      component: ResourceSettingsView,
+      component: ResourceConfigView,
       meta: {
         isTextSpecific: true,
         restricted: 'user',
       },
     },
     {
-      path: '/text/:text?/resources/:id/create',
+      path: '/text/:text?/resources/create',
       name: 'resourceCreate',
       component: ResourceCreateView,
       meta: {
@@ -151,7 +151,7 @@ const router = createRouter({
       },
     },
     {
-      path: '/text/:text?/resources/:id/units',
+      path: '/text/:text?/resources/:id/units/:pos',
       name: 'resourceUnits',
       component: UnitsView,
       meta: {

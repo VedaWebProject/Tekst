@@ -8,7 +8,7 @@ import { useMessages } from '@/messages';
 import { computed, ref, watch } from 'vue';
 import { RouterLink } from 'vue-router';
 import { NAlert, NForm, NFormItem, NSelect, NButton, type FormInst } from 'naive-ui';
-import { resourceFormRules } from '@/forms/formRules';
+import { resourceConfigFormRules } from '@/forms/formRules';
 import { useRouter } from 'vue-router';
 import ButtonFooter from '@/components/ButtonFooter.vue';
 import ResourceFormItems from '@/forms/ResourceFormItems.vue';
@@ -43,9 +43,9 @@ const formRef = ref<FormInst | null>(null);
 const loadingSave = ref(false);
 const model = ref<AnyResourceRead>(getInitialModel());
 
-const resourceTypeOptions = resourceTypes.map((lt) => ({
-  label: () => $t(`resourceTypes.${lt}`),
-  value: lt,
+const resourceTypeOptions = resourceTypes.map((rt) => ({
+  label: () => $t(`resources.types.${rt}.label`),
+  value: rt,
 }));
 
 const levelOptions = computed(() =>
@@ -114,7 +114,7 @@ async function handleSaveClick() {
     <n-form
       ref="formRef"
       :model="model"
-      :rules="resourceFormRules"
+      :rules="resourceConfigFormRules"
       :disabled="loadingSave"
       label-placement="top"
       label-width="auto"

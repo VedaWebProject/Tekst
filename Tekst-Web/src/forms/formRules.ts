@@ -410,7 +410,7 @@ export const platformSettingsFormRules: Record<string, FormItemRule[]> = {
   ],
 };
 
-export const resourceFormRules: Record<string, FormItemRule[]> = {
+export const resourceConfigFormRules: Record<string, FormItemRule[]> = {
   title: [
     {
       required: true,
@@ -518,4 +518,26 @@ export const resourceFormRules: Record<string, FormItemRule[]> = {
       trigger: 'blur',
     },
   ],
+};
+
+export const unitFormRules: Record<string, Record<string, FormItemRule[]>> = {
+  common: {
+    comment: [
+      {
+        validator: (rule: FormItemRule, value: string) => !!value && value.length <= 1000,
+        message: () => $t('forms.rulesFeedback.minMaxChars', { min: 0, max: 1000 }),
+        trigger: 'blur',
+      },
+    ],
+  },
+  plaintext: {
+    text: [
+      {
+        validator: (rule: FormItemRule, value: string) =>
+          !!value && value.length >= 0 && value.length <= 102400,
+        message: () => $t('forms.rulesFeedback.minMaxChars', { min: 1, max: 102400 }),
+        trigger: 'blur',
+      },
+    ],
+  },
 };

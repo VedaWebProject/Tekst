@@ -5946,7 +5946,8 @@
           "text": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "maxLength": 102400
               },
               {
                 "type": "null"
@@ -6003,7 +6004,8 @@
           "text": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "maxLength": 102400
               },
               {
                 "type": "null"
@@ -6069,7 +6071,8 @@
           "text": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "maxLength": 102400
               },
               {
                 "type": "null"

@@ -2,7 +2,7 @@
 import type { AnyResourceConfig } from '@/api';
 import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import { NFormItem, NCheckbox } from 'naive-ui';
-import specialConfigFormItems from '@/forms/resources/config/special/mappings';
+import specialConfigFormItems from '@/forms/resources/config/mappings';
 
 const props = withDefaults(
   defineProps<{

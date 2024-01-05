@@ -9,7 +9,7 @@ import { computed, ref, watch } from 'vue';
 import _cloneDeep from 'lodash.clonedeep';
 import { RouterLink } from 'vue-router';
 import { NSpin, NForm, NButton, type FormInst } from 'naive-ui';
-import { resourceFormRules } from '@/forms/formRules';
+import { resourceConfigFormRules } from '@/forms/formRules';
 import { useModelChanges } from '@/modelChanges';
 import { useRoute } from 'vue-router';
 import { useRouter } from 'vue-router';
@@ -92,7 +92,7 @@ async function handleSaveClick() {
 <template>
   <IconHeading v-if="resource" level="1" :icon="SettingsFilled">
     {{ $t('resources.settings.heading') }}
-    <HelpButtonWidget help-key="resourceSettingsView" />
+    <HelpButtonWidget help-key="ResourceConfigView" />
   </IconHeading>
 
   <router-link
@@ -117,7 +117,7 @@ async function handleSaveClick() {
     <n-form
       ref="formRef"
       :model="model"
-      :rules="resourceFormRules"
+      :rules="resourceConfigFormRules"
       label-placement="top"
       :disabled="loading"
       label-width="auto"

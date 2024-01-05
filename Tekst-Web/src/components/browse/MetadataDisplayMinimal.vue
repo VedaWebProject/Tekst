@@ -17,7 +17,7 @@ const meta = computed<string>(() => {
     v && m.push(v);
   });
 
-  props.resourceType && m.push($t(`resourceTypes.${props.resourceType}`));
+  props.resourceType && m.push($t(`resources.types.${props.resourceType}.label`));
   return m.join(', ');
 });
 </script>
