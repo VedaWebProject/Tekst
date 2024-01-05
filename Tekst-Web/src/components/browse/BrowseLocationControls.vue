@@ -204,10 +204,10 @@ function handleLocationSelect() {
 
 // react to keyboard for in-/decreasing location
 whenever(ArrowRight, () => {
-  router.push(getPrevNextRoute(1));
+  router.replace(getPrevNextRoute(1));
 });
 whenever(ArrowLeft, () => {
-  router.push(getPrevNextRoute(-1));
+  router.replace(getPrevNextRoute(-1));
 });
 
 const btnBgColor = '#00000015';
