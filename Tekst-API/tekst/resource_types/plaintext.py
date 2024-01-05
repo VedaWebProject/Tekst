@@ -39,6 +39,10 @@ class PlaintextUnit(UnitBase):
 
     resource_type: Literal["plaintext"]  # snake_cased resource type classname
     text: Annotated[
-        str | None,
-        Field(max_length=102400, description="Text content of the plaintext unit"),
-    ] = None
+        str,
+        Field(
+            min_length=1,
+            max_length=102400,
+            description="Text content of the plaintext unit",
+        ),
+    ]

@@ -146,6 +146,7 @@ export type DebugUnitUpdate = components['schemas']['DebugUnitUpdate'];
 
 export type AnyUnitCreate = PlaintextUnitCreate | DebugUnitCreate;
 export type AnyUnitRead = PlaintextUnitRead | DebugUnitRead;
+export type AnyUnitUpdate = PlaintextUnitUpdate | DebugUnitUpdate;
 export type AnyResourceCreate = PlaintextResourceCreate | DebugResourceCreate;
 export type AnyResourceRead = (PlaintextResourceRead | DebugResourceRead) & {
   active?: boolean;

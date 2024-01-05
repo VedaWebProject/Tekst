@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { PlaintextUnitCreate } from '@/api';
 import { NInput, NFormItem } from 'naive-ui';
-import { onMounted } from 'vue';
 
 const props = defineProps<{
   model?: PlaintextUnitCreate;
@@ -15,24 +14,17 @@ function handleUpdate(field: string, value: any) {
     [field]: value,
   });
 }
-
-onMounted(() => {
-  if (!props.model) {
-    emits('update:model', {
-      text: '',
-    });
-  }
-});
 </script>
 
 <template>
   <template v-if="model">
     <!-- TEXT -->
-    <n-form-item :label="$t('resources.types.plaintext.unitFields.text')">
+    <n-form-item :label="$t('resources.types.plaintext.unitFields.text')" path="text">
       <n-input
         type="textarea"
-        :rows="4"
+        :rows="3"
         :value="model.text"
+        :placeholder="$t('resources.types.plaintext.unitFields.text')"
         @update:value="(v) => handleUpdate('text', v)"
       />
     </n-form-item>

@@ -68,10 +68,7 @@ async function handleSaveClick() {
       if (validationError || !model.value) return;
       const { data, error } = await PATCH('/resources/{id}', {
         params: { path: { id: resource.value?.id || '' } },
-        body: {
-          ...(getChanges() as AnyResourceUpdate),
-          resourceType: model.value.resourceType,
-        },
+        body: getChanges(['resourceType']) as AnyResourceUpdate,
       });
       if (!error) {
         message.success($t('resources.settings.msgSaved', { title: data.title }));

@@ -27,8 +27,8 @@ import DeleteFilled from '@vicons/material/DeleteFilled';
 import ArrowForwardIosOutlined from '@vicons/material/ArrowForwardIosOutlined';
 import EditTwotone from '@vicons/material/EditTwotone';
 import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
-import FileDownloadOutlined from '@vicons/material/FileDownloadOutlined';
-import FileUploadOutlined from '@vicons/material/FileUploadOutlined';
+import FileDownloadSharp from '@vicons/material/FileDownloadSharp';
+import FileUploadSharp from '@vicons/material/FileUploadSharp';
 import { computed } from 'vue';
 
 export interface NodeTreeOption extends TreeOption {
@@ -445,7 +445,7 @@ watch(
         @click="handleDownloadTemplateClick()"
       >
         <template #icon>
-          <FileDownloadOutlined />
+          <FileDownloadSharp />
         </template>
         {{ $t('admin.text.nodes.lblBtnDownloadTemplate') }}
       </n-button>
@@ -456,7 +456,7 @@ watch(
         @click="handleUploadStructureClick()"
       >
         <template #icon>
-          <FileUploadOutlined />
+          <FileUploadSharp />
         </template>
         {{ $t('admin.text.nodes.lblBtnUploadStructure') }}
       </n-button>

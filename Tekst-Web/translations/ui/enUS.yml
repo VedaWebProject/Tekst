@@ -30,6 +30,7 @@ general:
   platform: Platform
   not: not
   new: New
+  in: in
   loading: Loading...
   downloadStarted: Download started
   areYouSureHelpTextHint: |
@@ -258,7 +259,7 @@ resources:
   notProposed: '@:general.not @:models.resource.proposed'
   transferAction: Transfer to user
   settingsAction: Settings
-  unitsAction: Edit content
+  unitsAction: Edit contents
   proposeAction: Propose for publication
   unproposeAction: Withdraw publication proposal
   publishAction: Publish
@@ -306,6 +307,10 @@ resources:
       sourceLanguage: Source language
       targetLanguages: Target languages
   types:
+    common:
+      label: Additional Data
+      unitFields:
+        comment: Comment
     plaintext:
       label: Plaintext
       description: |
@@ -321,6 +326,9 @@ units:
   tipBtnDownloadTemplate: Download import template
   lblBtnUploadUnits: Import
   tipBtnUploadUnits: Import content
+  noUnit: There is no content for this location.
+  btnAddUnit: Add content
+  msgSaved: The content for this location has been saved.
 
 account:
   account: Account

@@ -7,7 +7,7 @@ import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import IconHeading from '@/components/typography/IconHeading.vue';
 
 import SupervisorAccountRound from '@vicons/material/SupervisorAccountRound';
-import LibraryBooksRound from '@vicons/material/LibraryBooksRound';
+import LibraryBooksOutlined from '@vicons/material/LibraryBooksOutlined';
 import AccountTreeRound from '@vicons/material/AccountTreeRound';
 import LayersFilled from '@vicons/material/LayersFilled';
 import BarChartRound from '@vicons/material/BarChartRound';
@@ -56,7 +56,7 @@ const resourceTypes = computed(() => {
         <n-statistic :label="$t('models.text.modelLabel', 2)" :value="counts.texts">
           <template #prefix>
             <n-icon>
-              <LibraryBooksRound />
+              <LibraryBooksOutlined />
             </n-icon>
           </template>
         </n-statistic>

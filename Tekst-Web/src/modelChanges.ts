@@ -20,11 +20,11 @@ export function useModelChanges(model: Ref<Record<string, any> | undefined>) {
     });
     return hashes;
   };
-  const getChanges = (): Record<string, any> => {
+  const getChanges = (forceProps?: string[]): Record<string, any> => {
     const changes: Record<string, any> = {};
     if (!model.value) return changes;
     Object.keys(model.value).forEach((k) => {
-      if (modelPropsHashes.value[k] !== hashCode(model.value?.[k])) {
+      if (modelPropsHashes.value[k] !== hashCode(model.value?.[k]) || forceProps?.includes(k)) {
         changes[k] = model.value?.[k];
       }
     });

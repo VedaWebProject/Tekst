@@ -31,6 +31,7 @@ general:
   platform: Plattform
   not: nicht
   new: New
+  in: in
   loading: Lade...
   downloadStarted: Download gestartet
   areYouSureHelpTextHint: |
@@ -259,7 +260,7 @@ resources:
   notProposed: '@:general.not @:models.resource.proposed'
   transferAction: An Benutzer übertragen
   settingsAction: Einstellungen
-  unitsAction: Inhalt bearbeiten
+  unitsAction: Inhalte bearbeiten
   proposeAction: Für Veröffentlichung vorschlagen
   unproposeAction: Veröffentlichungsvorschlag zurücknehmen
   publishAction: Veröffentlichen
@@ -315,6 +316,10 @@ resources:
       sourceLanguage: Quellsprache
       targetLanguages: Zielsprachen
   types:
+    common:
+      label: Zusätzliche Daten
+      unitFields:
+        comment: Kommentar
     plaintext:
       label: Einfacher Text
       description: |
@@ -330,6 +335,9 @@ units:
   tipBtnDownloadTemplate: Importvorlage herunterladen
   lblBtnUploadUnits: Importieren
   tipBtnUploadUnits: Inhalte importieren
+  noUnit: Für diese Fundstelle liegen keine Inhalte vor.
+  btnAddUnit: Inhalt hinzufügen
+  msgSaved: Der Inhalt für diese Fundstelle wurde gespeichert.
 
 account:
   account: Konto

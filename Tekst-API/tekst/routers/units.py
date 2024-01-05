@@ -128,6 +128,28 @@ async def update_unit(
     return await unit_doc.apply_updates(updates)
 
 
+@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_unit(
+    user: UserDep, unit_id: Annotated[PydanticObjectId, Path(alias="id")]
+) -> None:
+    unit_doc = await UnitBaseDocument.get(unit_id, with_children=True)
+    if not unit_doc:
+        raise HTTPException(
+            status.HTTP_404_NOT_FOUND, detail=f"No unit with ID {unit_id}"
+        )
+    if not await ResourceBaseDocument.find_one(
+        ResourceBaseDocument.id == unit_doc.resource_id,
+        await ResourceBaseDocument.access_conditions_write(user),
+        with_children=True,
+    ).exists():
+        raise HTTPException(
+            status.HTTP_400_BAD_REQUEST,
+            detail=f"Cannot delete units of resource {unit_doc.resource_id}",
+        )
+    # all fine, delete unit
+    await unit_doc.delete()
+
+
 @router.get("", response_model=list[AnyUnitReadBody], status_code=status.HTTP_200_OK)
 async def find_units(
     user: OptionalUserDep,

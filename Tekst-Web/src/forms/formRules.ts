@@ -520,21 +520,24 @@ export const resourceConfigFormRules: Record<string, FormItemRule[]> = {
   ],
 };
 
+const commonUnitFormRules: Record<string, FormItemRule[]> = {
+  comment: [
+    {
+      validator: (rule: FormItemRule, value: string) =>
+        !!value && value.length >= 1 && value.length <= 1000,
+      message: () => $t('forms.rulesFeedback.minMaxChars', { min: 1, max: 1000 }),
+      trigger: 'blur',
+    },
+  ],
+};
+
 export const unitFormRules: Record<string, Record<string, FormItemRule[]>> = {
-  common: {
-    comment: [
-      {
-        validator: (rule: FormItemRule, value: string) => !!value && value.length <= 1000,
-        message: () => $t('forms.rulesFeedback.minMaxChars', { min: 0, max: 1000 }),
-        trigger: 'blur',
-      },
-    ],
-  },
+  ...commonUnitFormRules,
   plaintext: {
     text: [
       {
         validator: (rule: FormItemRule, value: string) =>
-          !!value && value.length >= 0 && value.length <= 102400,
+          !!value && value.length >= 1 && value.length <= 102400,
         message: () => $t('forms.rulesFeedback.minMaxChars', { min: 1, max: 102400 }),
         trigger: 'blur',
       },
