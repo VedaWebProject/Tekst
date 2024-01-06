@@ -150,8 +150,8 @@ async def insert_sample_data(config, get_sample_data) -> Callable:
 def get_fake_user() -> Callable:
     def _get_fake_user(suffix: str = ""):
         return dict(
-            email=f"foo{suffix}@bar.de",
-            username=f"test_user{suffix}",
+            email=f"user{suffix}@foo.de",
+            username=f"user{suffix}",
             password="poiPOI098",
             name="Foo Bar",
             affiliation="Some Institution",
@@ -167,8 +167,12 @@ async def register_test_user(get_fake_user) -> Callable:
         is_active: bool = True,
         is_verified: bool = True,
         is_superuser: bool = False,
-        suffix: str = "",
     ) -> dict:
+        suffix = (
+            f"{'a' if is_active else 'x'}"
+            f"{'v' if is_verified else 'x'}"
+            f"{'s' if is_superuser else 'x'}"
+        )
         user_data = get_fake_user(suffix=suffix)
         user = UserCreate(**user_data)
         user.is_active = is_active

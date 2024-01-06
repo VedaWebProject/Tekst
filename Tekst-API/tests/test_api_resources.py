@@ -105,8 +105,8 @@ async def test_update_resource(
     logout,
 ):
     text_id = (await insert_sample_data("texts", "nodes", "resources"))["texts"][0]
-    user = await login()
-    other_user = await register_test_user(suffix="other")
+    superuser = await login(is_superuser=True)
+    other_user = await register_test_user()
 
     # create new resource (because only owner can update(write))
     payload = {
@@ -124,7 +124,7 @@ async def test_update_resource(
     resource_data = resp.json()
     assert "id" in resource_data
     assert "ownerId" in resource_data
-    assert resource_data["ownerId"] == user.get("id")
+    assert resource_data["ownerId"] == superuser.get("id")
     assert resource_data.get("public") is False
 
     # update resource
@@ -224,7 +224,7 @@ async def test_set_shares_for_public_resource(
         "resources"
     ][0]
     await login(is_superuser=True)
-    other_user = await register_test_user(suffix="other")
+    other_user = await register_test_user()
 
     # set resource public
     res = await ResourceBaseDocument.get(resource_id, with_children=True)
@@ -269,7 +269,7 @@ async def test_create_resource_with_forged_owner_id(
 
 @pytest.mark.anyio
 async def test_get_resource(
-    test_client: AsyncClient, insert_sample_data, status_fail_msg, wrong_id
+    test_client: AsyncClient, insert_sample_data, status_fail_msg, wrong_id, login
 ):
     resource_id = (await insert_sample_data("texts", "nodes", "resources"))[
         "resources"
@@ -282,7 +282,15 @@ async def test_get_resource(
     assert "id" in resp.json()
     assert resp.json()["id"] == resource_id
 
-    # get resource by wrong ID
+    # fail to get resource by wrong ID
+    resp = await test_client.get(f"/resources/{wrong_id}")
+    assert resp.status_code == 404, status_fail_msg(404, resp)
+
+    # fail to get resource without read permissions
+    await ResourceBaseDocument.find_one(
+        ResourceBaseDocument.id == resource_id, with_children=True
+    ).set({ResourceBaseDocument.public: False})
+    await login(is_superuser=False)
     resp = await test_client.get(f"/resources/{wrong_id}")
     assert resp.status_code == 404, status_fail_msg(404, resp)
 
@@ -354,7 +362,7 @@ async def test_propose_unpropose_publish_unpublish_resource(
     test_client: AsyncClient, insert_sample_data, status_fail_msg, login, wrong_id
 ):
     text_id = (await insert_sample_data("texts", "nodes", "resources"))["texts"][0]
-    owner = await login(suffix="super", is_superuser=True)
+    owner = await login(is_superuser=True)
 
     # create new resource (because only owner can update(write))
     payload = {
@@ -461,7 +469,7 @@ async def test_propose_unpropose_publish_unpublish_resource(
     assert resp.status_code == 200, status_fail_msg(200, resp)
 
     # propose resource unauthorized
-    other_user = await login(suffix="other")
+    other_user = await login()
     resp = await test_client.post(
         f"/resources/{resource_id}/propose",
     )
@@ -515,7 +523,7 @@ async def test_delete_resource(
     assert resp.status_code == 404, status_fail_msg(404, resp)
 
     # become non-owner/non-superuser
-    await login(suffix="normalo")
+    await login()
 
     # try to delete resource as non-owner/non-superuser
     resp = await test_client.delete(
@@ -609,7 +617,7 @@ async def test_transfer_resource(
     # register regular test user
     user = await register_test_user(is_superuser=False)
     # register test superuser
-    superuser = await login(suffix="super", is_superuser=True)
+    superuser = await login(is_superuser=True)
 
     # transfer resource that is still public to test user
     resp = await test_client.post(

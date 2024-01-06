@@ -1,7 +1,8 @@
 import pytest
 
 from httpx import AsyncClient
-from tekst.models.common import PydanticObjectId
+from tekst.models.node import NodeDocument
+from tekst.models.resource import ResourceBaseDocument
 from tekst.models.unit import UnitBaseDocument
 
 
@@ -11,85 +12,62 @@ async def test_create_unit(
     insert_sample_data,
     status_fail_msg,
     login,
-    wrong_id,
 ):
-    inserted_ids = await insert_sample_data("texts", "nodes", "resources", "units")
-    text_id = inserted_ids["texts"][0]
-    user = await login()
-
-    # create new resource (because only owner can update(write))
-    payload = {
-        "title": "Foo Bar Baz",
-        "textId": text_id,
-        "level": 0,
-        "resourceType": "plaintext",
-        "ownerId": user.get("id"),
-    }
-    resp = await test_client.post(
-        "/resources",
-        json=payload,
-    )
-    assert resp.status_code == 201, status_fail_msg(201, resp)
-    resource_data = resp.json()
-    assert "id" in resource_data
-    assert "ownerId" in resource_data
-    assert resource_data["ownerId"] == user["id"]
-
-    # get ID of existing test node
-    resp = await test_client.get(
-        "/nodes",
-        params={"textId": text_id, "level": 0},
-    )
-    assert resp.status_code == 200, status_fail_msg(200, resp)
-    assert isinstance(resp.json(), list)
-    assert len(resp.json()) > 0
-    assert "id" in resp.json()[0]
-    node_id = resp.json()[0]["id"]
+    await insert_sample_data("texts", "nodes", "resources")
+    resource = await ResourceBaseDocument.find_one(with_children=True)
+    node = await NodeDocument.find_one(NodeDocument.level == resource.level)
+    await login(is_superuser=True)
 
     # create plaintext resource unit
-    payload = {
-        "resourceId": resource_data["id"],
+    unit_create_data = {
+        "resourceId": str(resource.id),
         "resourceType": "plaintext",
-        "nodeId": node_id,
+        "nodeId": str(node.id),
         "text": "Ein Raabe geht im Feld spazieren.",
         "comment": "This is a comment",
     }
     resp = await test_client.post(
         "/units",
-        json=payload,
+        json=unit_create_data,
     )
     assert resp.status_code == 201, status_fail_msg(201, resp)
     assert isinstance(resp.json(), dict)
-    assert resp.json()["text"] == payload["text"]
-    assert resp.json()["comment"] == payload["comment"]
+    assert resp.json()["text"] == unit_create_data["text"]
+    assert resp.json()["comment"] == unit_create_data["comment"]
     assert "id" in resp.json()
-    unit_id = resp.json()["id"]
 
     # fail to create duplicate
     resp = await test_client.post(
         "/units",
-        json=payload,
+        json=unit_create_data,
     )
     assert resp.status_code == 409, status_fail_msg(409, resp)
 
     # fail to create unit for resource we don't have write access to
-    invalid = payload.copy()
-    invalid["resourceId"] = inserted_ids["resources"][0]
+    await login(is_superuser=False)
     resp = await test_client.post(
         "/units",
-        json=invalid,
+        json=unit_create_data,
     )
     assert resp.status_code == 403, status_fail_msg(403, resp)
 
-    # get unit
+
+@pytest.mark.anyio
+async def test_get_unit(
+    test_client: AsyncClient, insert_sample_data, status_fail_msg, login, wrong_id
+):
+    inserted_ids = await insert_sample_data("texts", "nodes", "resources", "units")
+    unit_id = inserted_ids["units"][0]
+    await login(is_superuser=True)
+
+    # get unit by ID
     resp = await test_client.get(
         f"/units/{unit_id}",
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), dict)
     assert "id" in resp.json()
-    assert resp.json()["text"] == payload["text"]
-    assert resp.json()["comment"] == payload["comment"]
+    assert resp.json()["id"] == unit_id
 
     # fail to get unit with wrong ID
     resp = await test_client.get(
@@ -97,15 +75,36 @@ async def test_create_unit(
     )
     assert resp.status_code == 404, status_fail_msg(404, resp)
 
+    # find all units
+    resp = await test_client.get(
+        "/units",
+        params={"limit": 100},
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) > 0
+
+
+@pytest.mark.anyio
+async def test_update_unit(
+    test_client: AsyncClient, insert_sample_data, status_fail_msg, login, wrong_id
+):
+    await insert_sample_data("texts", "nodes", "resources", "units")
+    resource = await ResourceBaseDocument.find_one(with_children=True)
+    unit = await UnitBaseDocument.find_one(
+        UnitBaseDocument.resource_id == resource.id, with_children=True
+    )
+    await login(is_superuser=True)
+
     # update unit
     resp = await test_client.patch(
-        f"/units/{unit_id}",
+        f"/units/{str(unit.id)}",
         json={"resourceType": "plaintext", "text": "FOO BAR"},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), dict)
     assert "id" in resp.json()
-    assert resp.json()["id"] == unit_id
+    assert resp.json()["id"] == str(unit.id)
     assert resp.json()["text"] == "FOO BAR"
 
     # fail to update unit with wrong ID
@@ -117,7 +116,7 @@ async def test_create_unit(
 
     # fail to update unit with changed resource ID
     resp = await test_client.patch(
-        f"/units/{unit_id}",
+        f"/units/{str(unit.id)}",
         json={
             "resourceType": "plaintext",
             "text": "FOO BAR",
@@ -127,27 +126,44 @@ async def test_create_unit(
     assert resp.status_code == 400, status_fail_msg(400, resp)
 
     # fail to update unit of resource we don't have write access to
-    resource_id = inserted_ids["resources"][0]
-    unit = await UnitBaseDocument.find_one(
-        UnitBaseDocument.resource_id == PydanticObjectId(resource_id),
-        with_children=True,
-    )
+    await login(is_superuser=False)
+    node = await NodeDocument.find_one(NodeDocument.level == resource.level)
     resp = await test_client.patch(
         f"/units/{str(unit.id)}",
         json={
-            "resourceId": resource_id,
-            "nodeId": node_id,
+            "resourceId": str(resource.id),
+            "nodeId": str(node.id),
             "resourceType": "plaintext",
             "text": "FOO BAR",
         },
     )
     assert resp.status_code == 403, status_fail_msg(403, resp)
 
-    # find all units
-    resp = await test_client.get(
-        "/units",
-        params={"limit": 100},
+
+@pytest.mark.anyio
+async def test_delete_unit(
+    test_client: AsyncClient, insert_sample_data, status_fail_msg, login, wrong_id
+):
+    inserted_ids = await insert_sample_data("texts", "nodes", "resources", "units")
+    unit_id = inserted_ids["units"][0]
+    superuser = await login(is_superuser=True)
+
+    # fail to delete with wrong ID
+    resp = await test_client.delete(
+        f"/units/{wrong_id}",
     )
-    assert resp.status_code == 200, status_fail_msg(200, resp)
-    assert isinstance(resp.json(), list)
-    assert len(resp.json()) > 0
+    assert resp.status_code == 404, status_fail_msg(404, resp)
+
+    # fail to delete without write access
+    await login(is_superuser=False)
+    resp = await test_client.delete(
+        f"/units/{unit_id}",
+    )
+    assert resp.status_code == 403, status_fail_msg(403, resp)
+
+    # delete unit
+    await login(user=superuser)
+    resp = await test_client.delete(
+        f"/units/{unit_id}",
+    )
+    assert resp.status_code == 204, status_fail_msg(204, resp)

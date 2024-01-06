@@ -226,6 +226,8 @@ export interface paths {
      * @description A generic route for retrieving a unit by ID from the database
      */
     get: operations['getUnit'];
+    /** Delete unit */
+    delete: operations['deleteUnit'];
     /** Update unit */
     patch: operations['updateUnit'];
   };
@@ -1432,7 +1434,7 @@ export interface components {
        * Text
        * @description Text content of the plaintext unit
        */
-      text?: string | null;
+      text: string;
     };
     /** PlaintextUnitRead */
     PlaintextUnitRead: {
@@ -1467,7 +1469,7 @@ export interface components {
        * Text
        * @description Text content of the plaintext unit
        */
-      text?: string | null;
+      text: string;
       [key: string]: unknown;
     };
     /** PlaintextUnitUpdate */
@@ -1486,10 +1488,7 @@ export interface components {
        * @description Plaintext, potentially multiline comment on this unit
        */
       comment?: string | null;
-      /**
-       * Text
-       * @description Text content of the plaintext unit
-       */
+      /** Text */
       text?: string | null;
     };
     /**
@@ -3449,6 +3448,30 @@ export interface operations {
             | components['schemas']['DebugUnitRead']
             | components['schemas']['PlaintextUnitRead'];
         };
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Delete unit */
+  deleteUnit: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      204: {
+        content: never;
       };
       /** @description Not found */
       404: {

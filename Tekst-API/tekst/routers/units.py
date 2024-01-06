@@ -143,7 +143,7 @@ async def delete_unit(
         with_children=True,
     ).exists():
         raise HTTPException(
-            status.HTTP_400_BAD_REQUEST,
+            status.HTTP_403_FORBIDDEN,
             detail=f"Cannot delete units of resource {unit_doc.resource_id}",
         )
     # all fine, delete unit

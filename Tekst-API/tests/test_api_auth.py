@@ -187,7 +187,7 @@ async def test_update_user(
     status_fail_msg,
 ):
     user = await register_test_user(is_active=False)
-    await login(is_superuser=True, suffix="normalo")
+    await login(is_superuser=True)
     # update user
     resp = await test_client.patch(
         f"/users/{user['id']}",
