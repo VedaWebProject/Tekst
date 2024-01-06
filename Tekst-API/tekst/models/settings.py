@@ -21,26 +21,20 @@ _cfg: TekstConfig = get_config()  # get (possibly cached) config data
 
 class PlatformDescriptionTranslation(TranslationBase):
     translation: Annotated[
-        str, StringConstraints(strip_whitespace=True, min_length=1, max_length=128)
+        str, StringConstraints(strip_whitespace=True, max_length=128)
     ]
 
 
 class PlatformNavInfoEntryTranslation(TranslationBase):
-    translation: Annotated[
-        str, StringConstraints(strip_whitespace=True, min_length=1, max_length=16)
-    ]
+    translation: Annotated[str, StringConstraints(strip_whitespace=True, max_length=16)]
 
 
 class ResourceCategoryTranslation(TranslationBase):
-    translation: Annotated[
-        str, StringConstraints(strip_whitespace=True, min_length=1, max_length=32)
-    ]
+    translation: Annotated[str, StringConstraints(strip_whitespace=True, max_length=32)]
 
 
 class ResourceCategory(TypedDict):
-    key: Annotated[
-        str, StringConstraints(strip_whitespace=True, min_length=1, max_length=16)
-    ]
+    key: Annotated[str, StringConstraints(min_length=1, max_length=16)]
     translations: Translations[ResourceCategoryTranslation]
 
 

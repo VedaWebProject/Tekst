@@ -20,7 +20,6 @@ class ClientSegment(ModelBase, ModelFactoryMixin):
             ),
         ),
         StringConstraints(
-            strip_whitespace=True,
             min_length=1,
             max_length=32,
             pattern=r"[a-zA-Z0-9\-_]+",

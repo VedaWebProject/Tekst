@@ -83,7 +83,6 @@ class Text(ModelBase, ModelFactoryMixin):
     loc_delim: Annotated[
         str,
         Field(
-            ", ",
             min_length=1,
             max_length=3,
             description="Delimiter for displaying text locations",

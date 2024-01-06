@@ -51,7 +51,7 @@ watch(browseLevel, (after, before) => {
   }
 });
 
-// model for location select inputs (local state)
+// interface for location select options (local state)
 interface LocationSelectModel {
   loading: boolean;
   selected: string | null;
@@ -123,8 +123,8 @@ async function updateSelectModelsFromLvl(lvl: number) {
         lsm.nodes = nodes.shift() || [];
         // set selection
         lsm.selected = lsm.nodes[0]?.id || null;
-        // set to no loading
       }
+      // set to no loading
       lsm.loading = false;
     }
   });
@@ -312,7 +312,7 @@ const btnColor = '#fff';
           v-model:value="levelLoc.selected"
           :options="locationSelectOptions[index]"
           filterable
-          placeholder="--"
+          placeholder="–"
           :loading="levelLoc.loading"
           :disabled="
             levelLoc.loading || levelLoc.disabled || locationSelectOptions[index].length === 0

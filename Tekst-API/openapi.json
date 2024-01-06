@@ -5991,7 +5991,6 @@
           "text": {
             "type": "string",
             "maxLength": 102400,
-            "minLength": 1,
             "title": "Text",
             "description": "Text content of the plaintext unit"
           }
@@ -6044,7 +6043,6 @@
           "text": {
             "type": "string",
             "maxLength": 102400,
-            "minLength": 1,
             "title": "Text",
             "description": "Text content of the plaintext unit"
           }
@@ -6197,7 +6195,6 @@
           "translation": {
             "type": "string",
             "maxLength": 128,
-            "minLength": 1,
             "title": "Translation"
           }
         },
@@ -6216,7 +6213,6 @@
           "translation": {
             "type": "string",
             "maxLength": 16,
-            "minLength": 1,
             "title": "Translation"
           }
         },
@@ -6651,7 +6647,6 @@
           "translation": {
             "type": "string",
             "maxLength": 32,
-            "minLength": 1,
             "title": "Translation"
           }
         },
@@ -6670,7 +6665,6 @@
           "translation": {
             "type": "string",
             "maxLength": 2000,
-            "minLength": 1,
             "title": "Translation"
           }
         },
@@ -6689,7 +6683,6 @@
           "translation": {
             "type": "string",
             "maxLength": 512,
-            "minLength": 1,
             "title": "Translation"
           }
         },

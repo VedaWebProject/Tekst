@@ -532,8 +532,8 @@ const commonUnitFormRules: Record<string, FormItemRule[]> = {
 };
 
 export const unitFormRules: Record<string, Record<string, FormItemRule[]>> = {
-  ...commonUnitFormRules,
   plaintext: {
+    ...commonUnitFormRules,
     text: [
       {
         validator: (rule: FormItemRule, value: string) =>

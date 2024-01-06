@@ -1,6 +1,6 @@
 from typing import Annotated, Literal
 
-from pydantic import Field
+from pydantic import Field, StringConstraints
 
 from tekst.models.common import ResourceConfigBase
 from tekst.models.resource import ResourceBase
@@ -40,9 +40,8 @@ class PlaintextUnit(UnitBase):
     resource_type: Literal["plaintext"]  # snake_cased resource type classname
     text: Annotated[
         str,
+        StringConstraints(strip_whitespace=True, max_length=102400),
         Field(
-            min_length=1,
-            max_length=102400,
             description="Text content of the plaintext unit",
         ),
     ]

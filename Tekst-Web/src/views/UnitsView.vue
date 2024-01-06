@@ -1,5 +1,14 @@
 <script setup lang="ts">
-import { NSpace, NForm, NButton, type FormInst, useDialog } from 'naive-ui';
+import {
+  NSpace,
+  NForm,
+  NButton,
+  type FormInst,
+  useDialog,
+  NModal,
+  NFormItem,
+  NSelect,
+} from 'naive-ui';
 import {
   type AnyResourceRead,
   getFullUrl,
@@ -51,15 +60,49 @@ const route = useRoute();
 const { ArrowLeft, ArrowRight } = useMagicKeys();
 const dialog = useDialog();
 
+const showJumpToModal = ref(false);
+watch(showJumpToModal, (show) => show && initSelectModels());
 const loading = ref(false);
 const formRef = ref<FormInst | null>(null);
 const resource = ref<AnyResourceRead>();
-const nodePos = computed<number>(() => Number.parseInt(route.params.pos.toString()));
-const nodeParent = ref<NodeRead>();
-const node = ref<NodeRead>();
+const position = computed<number>(() => Number.parseInt(route.params.pos.toString()));
+const nodePath = ref<NodeRead[]>();
+const node = computed<NodeRead | undefined>(() => nodePath.value?.[resource.value?.level || -1]);
+const nodeParent = computed<NodeRead | undefined>(
+  () => nodePath.value?.[(resource.value?.level || -1) - 1]
+);
 const initialModel = ref<UnitFormModel>();
 const model = ref<UnitFormModel | undefined>(initialModel.value);
 const { changed, reset, getChanges } = useModelChanges(model);
+
+// interface for location select options (local state)
+interface LocationSelectModel {
+  loading: boolean;
+  selected: string | null;
+  nodes: NodeRead[];
+}
+const locationSelectModels = ref<LocationSelectModel[]>(getEmptyLocationSelectModels());
+// generate location select options from select model nodes
+const locationSelectOptions = computed(() =>
+  locationSelectModels.value.map((lsm) =>
+    lsm.nodes.map((n) => ({
+      label: n.label,
+      value: n.id,
+    }))
+  )
+);
+
+function getEmptyLocationSelectModels(): LocationSelectModel[] {
+  if (!nodePath.value) return [];
+  return (
+    nodePath.value.map(() => ({
+      loading: false,
+      selected: null,
+      nodes: [],
+      options: [],
+    })) || []
+  );
+}
 
 // go to resource overview if text changes
 watch(
@@ -71,7 +114,7 @@ watch(
 
 // watch view state
 watch(
-  [() => resources.data, nodePos],
+  [() => resources.data, position],
   async ([newResources, newNodePosition]) => {
     if (!newResources.length || newNodePosition == null) return;
     loading.value = true;
@@ -91,9 +134,8 @@ watch(
       },
     });
     if (!error && data.length) {
-      // requested node exists, set current node and parent
-      node.value = data.reverse()[0];
-      nodeParent.value = data[1];
+      // requested node exists, set current node path
+      nodePath.value = data;
     } else {
       // requested node does not exist, go back to first unit at first node
       router.replace({
@@ -111,7 +153,7 @@ watch(
         params: {
           query: {
             resourceId: [resource.value.id],
-            nodeId: [node.value.id],
+            nodeId: [data[data.length - 1].id],
             limit: 1,
           },
         },
@@ -172,7 +214,7 @@ async function handleSaveClick() {
 }
 
 async function handleJumpToClick() {
-  // TODO
+  showJumpToModal.value = true;
 }
 
 async function handleDownloadTemplateClick() {
@@ -237,9 +279,94 @@ function navigateUnits(step: number) {
     name: 'resourceUnits',
     params: {
       ...route.params,
-      pos: nodePos.value + step,
+      pos: position.value + step,
     },
   });
+}
+
+async function updateSelectModelsFromLvl(lvl: number) {
+  if (!node.value) return;
+  // abort if the highest enabled level was changed (nothing to do)
+  if (lvl >= locationSelectModels.value.length - 1) {
+    return;
+  }
+  // set loading state
+  locationSelectModels.value.forEach((lsm, i) => {
+    // only apply to higher levels
+    if (i > lvl) {
+      lsm.loading = true;
+    }
+  });
+  // load node path options from node selected at lvl as root
+  const { data: nodes, error } = await GET('/browse/nodes/{id}/path/options-by-root', {
+    params: { path: { id: locationSelectModels.value[lvl].selected || '' } },
+  });
+  if (error) {
+    message.error($t('errors.unexpected'), error);
+    return;
+  }
+  // set nodes for all following levels
+  locationSelectModels.value.forEach((lsm, i) => {
+    // only apply to higher levels
+    if (i > lvl) {
+      // only do this if we're <= current level
+      if (i <= (node.value?.level || 0)) {
+        // set nodes
+        lsm.nodes = nodes.shift() || [];
+        // set selection
+        lsm.selected = lsm.nodes[0]?.id || null;
+      }
+      // set to no loading
+      lsm.loading = false;
+    }
+  });
+}
+
+function handleLocationSelect() {
+  // we reverse the actual array here, but it will be created from scratch
+  // anyway as soon as the location select modal opens again
+  const selectedLevel = locationSelectModels.value.reverse().find((lsm) => !!lsm.selected);
+  const selectedNode = selectedLevel?.nodes.find((n) => n.id === selectedLevel.selected);
+
+  router.push({
+    name: 'resourceUnits',
+    params: { ...route.params, pos: selectedNode?.position },
+  });
+  // close location select modal
+  showJumpToModal.value = false;
+}
+
+async function initSelectModels() {
+  if (!resource.value) return;
+  locationSelectModels.value = getEmptyLocationSelectModels();
+  // set all live models to loading
+  locationSelectModels.value.forEach((lsm) => {
+    lsm.loading = true;
+  });
+
+  // fetch nodes from head to root
+  const { data: nodesOptions, error } = await GET('/browse/nodes/{id}/path/options-by-head', {
+    params: { path: { id: node.value?.id || '' } },
+  });
+
+  if (error) {
+    message.error($t('errors.unexpected'), error);
+    return;
+  }
+
+  // manipulate each location select model
+  let index = 0;
+  for (const lsm of locationSelectModels.value) {
+    // set options and selection
+    if (index <= (node.value?.level || 0)) {
+      // remember nodes for these options
+      lsm.nodes = nodesOptions[index];
+      // set selection
+      lsm.selected = nodePath.value?.[index]?.id || null;
+    }
+    index++;
+    lsm.loading = false;
+  }
 }
 
 // react to keyboard for in-/decreasing location
@@ -247,7 +374,7 @@ whenever(ArrowRight, () => {
   navigateUnits(1);
 });
 whenever(ArrowLeft, () => {
-  nodePos.value > 0 && navigateUnits(-1);
+  position.value > 0 && navigateUnits(-1);
 });
 </script>
 
@@ -279,7 +406,7 @@ whenever(ArrowLeft, () => {
     <div style="display: flex; gap: var(--content-gap)">
       <n-button
         type="primary"
-        :disabled="loading || nodePos === 0"
+        :disabled="loading || position === 0"
         :focusable="false"
         @click="navigateUnits(-1)"
       >
@@ -379,4 +506,56 @@ whenever(ArrowLeft, () => {
       </n-space>
     </div>
   </template>
+
+  <!-- "jump to location" modal -->
+  <n-modal
+    v-model:show="showJumpToModal"
+    display-directive="if"
+    preset="card"
+    embedded
+    :auto-focus="false"
+    header-style="padding-bottom: 1.5rem"
+    size="large"
+    class="tekst-modal"
+    to="#app-container"
+  >
+    <template #header>
+      <IconHeading level="2" :icon="MenuBookOutlined" style="margin: 0">
+        {{ $t('browse.location.modalHeading') }}
+        <HelpButtonWidget help-key="browseLocationControls" />
+      </IconHeading>
+    </template>
+
+    <n-form
+      label-placement="left"
+      label-width="auto"
+      :show-feedback="false"
+      :show-require-mark="false"
+    >
+      <n-form-item
+        v-for="(levelLoc, index) in locationSelectModels"
+        :key="`${index}_loc_select`"
+        :label="state.textLevelLabels[index]"
+        class="location-select-item"
+      >
+        <n-select
+          v-model:value="levelLoc.selected"
+          :options="locationSelectOptions[index]"
+          filterable
+          placeholder="–"
+          :loading="levelLoc.loading"
+          :disabled="levelLoc.loading || locationSelectOptions[index].length === 0"
+          @update:value="() => updateSelectModelsFromLvl(index)"
+        />
+      </n-form-item>
+    </n-form>
+    <ButtonFooter>
+      <n-button secondary :focusable="false" @click="showJumpToModal = false">
+        {{ $t('general.cancelAction') }}
+      </n-button>
+      <n-button type="primary" @click="handleLocationSelect">
+        {{ $t('general.selectAction') }}
+      </n-button>
+    </ButtonFooter>
+  </n-modal>
 </template>

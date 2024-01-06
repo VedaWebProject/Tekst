@@ -1,3 +1,5 @@
+import re
+
 from typing import Annotated
 
 from beanie import PydanticObjectId
@@ -39,6 +41,11 @@ class UnitBase(ModelBase, ModelFactoryMixin):
                 f"resource type name (one of {resource_type_names})."
             )
         return v.lower()
+
+    @field_validator("comment", mode="after")
+    @classmethod
+    def strip_comment_whitespaces(cls, v):
+        return re.sub(r"[\n\r]+", "\n", v).strip() if v else None
 
 
 # generate document and update models for this base model,

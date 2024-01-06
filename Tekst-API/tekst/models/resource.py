@@ -26,13 +26,13 @@ from tekst.models.user import UserRead, UserReadPublic
 
 class ResourceDescriptionTranslation(TranslationBase):
     translation: Annotated[
-        str, StringConstraints(strip_whitespace=True, min_length=1, max_length=512)
+        str, StringConstraints(strip_whitespace=True, max_length=512)
     ]
 
 
 class ResourceCommentTranslation(TranslationBase):
     translation: Annotated[
-        str, StringConstraints(strip_whitespace=True, min_length=1, max_length=2000)
+        str, StringConstraints(strip_whitespace=True, max_length=2000)
     ]
 
 
