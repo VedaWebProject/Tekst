@@ -329,6 +329,8 @@ units:
   noUnit: There is no content for this location.
   btnAddUnit: Add content
   msgSaved: The content for this location has been saved.
+  msgDeleted: The content for this location has been deleted.
+  confirmDelete: Are you sure you want to delete the content for this location?
 
 account:
   account: Account

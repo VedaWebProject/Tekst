@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { NSpace, NForm, NButton, type FormInst } from 'naive-ui';
+import { NSpace, NForm, NButton, type FormInst, useDialog } from 'naive-ui';
 import {
   type AnyResourceRead,
   getFullUrl,
@@ -39,6 +39,7 @@ import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
 import FolderOffTwotone from '@vicons/material/FolderOffTwotone';
 import InsertDriveFileOutlined from '@vicons/material/InsertDriveFileOutlined';
 import { defaultUnitModels } from '@/forms/resources/defaultUnitModels';
+import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
 
 type UnitFormModel = AnyUnitCreate & { id: string };
 
@@ -48,11 +49,9 @@ const { message } = useMessages();
 const router = useRouter();
 const route = useRoute();
 const { ArrowLeft, ArrowRight } = useMagicKeys();
+const dialog = useDialog();
 
-const loadingSave = ref(false);
-const loadingUnit = ref(false);
-const loading = computed(() => loadingUnit.value || loadingSave.value);
-
+const loading = ref(false);
 const formRef = ref<FormInst | null>(null);
 const resource = ref<AnyResourceRead>();
 const nodePos = computed<number>(() => Number.parseInt(route.params.pos.toString()));
@@ -75,7 +74,7 @@ watch(
   [() => resources.data, nodePos],
   async ([newResources, newNodePosition]) => {
     if (!newResources.length || newNodePosition == null) return;
-    loadingUnit.value = true;
+    loading.value = true;
     resource.value = newResources.find((l) => l.id === route.params.id.toString());
     if (!resource.value) {
       router.push({ name: 'resources', params: { text: state.text?.slug } });
@@ -119,7 +118,7 @@ watch(
       })
     ).data?.[0];
     resetForm();
-    loadingUnit.value = false;
+    loading.value = false;
   },
   { immediate: true }
 );
@@ -131,7 +130,7 @@ function resetForm() {
 }
 
 async function handleSaveClick() {
-  loadingSave.value = true;
+  loading.value = true;
   formRef.value
     ?.validate(async (validationError) => {
       if (validationError || !model.value) return;
@@ -161,14 +160,14 @@ async function handleSaveClick() {
           message.error($t('errors.unexpected'), error);
         }
       }
-      loadingSave.value = false;
+      loading.value = false;
     })
     .catch(() => {
       message.error($t('errors.followFormRules'));
-      loadingSave.value = false;
+      loading.value = false;
     })
     .finally(() => {
-      loadingSave.value = false;
+      loading.value = false;
     });
 }
 
@@ -188,8 +187,37 @@ async function handleUploadUnitsClick() {
   // TODO: Warn for what happens and get confirmation!!!
 }
 
+async function deleteUnit() {
+  if (!model.value) return;
+  loading.value = true;
+  const { error } = await DELETE('/units/{id}', { params: { path: { id: model.value.id } } });
+  if (!error) {
+    initialModel.value = undefined;
+    resetForm();
+    message.success($t('units.msgDeleted'));
+  } else {
+    message.error($t('errors.unexpected'));
+  }
+  loading.value = false;
+}
+
 async function handleDeleteUnitClick() {
-  const { data, error } = await DELETE('');
+  if (!model.value) return;
+  loading.value = true;
+  dialog.warning({
+    title: $t('general.warning'),
+    content: $t('units.confirmDelete'),
+    positiveText: $t('general.yesAction'),
+    negativeText: $t('general.noAction'),
+    positiveButtonProps,
+    negativeButtonProps,
+    autoFocus: false,
+    closable: false,
+    onPositiveClick: deleteUnit,
+    onAfterLeave: () => {
+      loading.value = false;
+    },
+  });
 }
 
 function handleAddUnitClick() {
@@ -219,7 +247,7 @@ whenever(ArrowRight, () => {
   navigateUnits(1);
 });
 whenever(ArrowLeft, () => {
-  navigateUnits(-1);
+  nodePos.value > 0 && navigateUnits(-1);
 });
 </script>
 

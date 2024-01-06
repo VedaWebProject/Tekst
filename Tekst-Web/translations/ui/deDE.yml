@@ -338,6 +338,8 @@ units:
   noUnit: Für diese Fundstelle liegen keine Inhalte vor.
   btnAddUnit: Inhalt hinzufügen
   msgSaved: Der Inhalt für diese Fundstelle wurde gespeichert.
+  msgDeleted: Der Inhalt für diese Fundstelle wurde gelöscht.
+  confirmDelete: Sind Sie sicher, dass Sie den Inhalt für diese Fundstelle löschen möchten?
 
 account:
   account: Konto
