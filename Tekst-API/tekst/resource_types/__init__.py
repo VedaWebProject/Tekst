@@ -77,7 +77,6 @@ class ResourceTypeABC(ABC):
         )
         template = {
             "_title": "Title of this resource",  # will be overridden
-            "_level": -1,  # will be overridden
             "_unitSchema": {},  # will be populated in the next step
             "units": [],  # will be populated on template request
         }
