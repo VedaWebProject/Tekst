@@ -1,43 +1,72 @@
 <script setup lang="ts">
-import { NForm, NButton, NModal, NFormItem, NSelect } from 'naive-ui';
-import { type NodeRead, GET } from '@/api';
-import { ref } from 'vue';
-import { computed, watch } from 'vue';
-import { $t } from '@/i18n';
+import { ref, computed, watch } from 'vue';
 import { useStateStore } from '@/stores';
-import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
-import IconHeading from '@/components/typography/IconHeading.vue';
-import { useMessages } from '@/messages';
-import { useRoute, useRouter } from 'vue-router';
+import { NButton, NModal, NSelect, NFormItem, NForm, NDivider } from 'naive-ui';
+import type { NodeRead, TextRead } from '@/api';
 import ButtonFooter from '@/components/ButtonFooter.vue';
+import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
+import { GET } from '@/api';
+import { useMessages } from '@/messages';
+import { $t } from '@/i18n';
 
 import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
+import IconHeading from '@/components/typography/IconHeading.vue';
 
-const props = defineProps<{
-  nodePath?: NodeRead[];
-  level: number;
-  show?: boolean;
-}>();
-const emit = defineEmits(['update:show', 'submit']);
+const props = withDefaults(
+  defineProps<{
+    nodePath: NodeRead[];
+    showLevelSelect?: boolean;
+    show?: boolean;
+  }>(),
+  {
+    showLevelSelect: true,
+    show: false,
+  }
+);
+
+const emit = defineEmits(['update:show', 'update:nodePath']);
 
 const state = useStateStore();
 const { message } = useMessages();
-const router = useRouter();
-const route = useRoute();
 
 watch(
   () => props.show,
   (show) => show && initSelectModels()
 );
-const node = computed<NodeRead | undefined>(() => props.nodePath?.[props.level]);
+
+const locationLevel = ref(props.nodePath.length - 1);
+const locationLevelOptions = computed(() =>
+  state.textLevelLabels.map((l, i) => ({
+    value: i,
+    label: l,
+  }))
+);
+// sync browse level in location controls state with actual browse level (if possible)
+watch(
+  () => props.nodePath.length,
+  (after) => {
+    locationLevel.value = after - 1;
+  }
+);
+// react to browse level selection changes
+watch(locationLevel, (after, before) => {
+  if (props.show) {
+    if (after > before) {
+      updateSelectModelsFromLvl(before);
+    }
+    applyBrowseLevel();
+  }
+});
 
 // interface for location select options (local state)
 interface LocationSelectModel {
   loading: boolean;
   selected: string | null;
+  disabled: boolean;
   nodes: NodeRead[];
 }
-const locationSelectModels = ref<LocationSelectModel[]>(getEmptyLocationSelectModels());
+const locationSelectModels = ref<LocationSelectModel[]>(getEmptyModels());
+
 // generate location select options from select model nodes
 const locationSelectOptions = computed(() =>
   locationSelectModels.value.map((lsm) =>
@@ -48,20 +77,26 @@ const locationSelectOptions = computed(() =>
   )
 );
 
-function getEmptyLocationSelectModels(): LocationSelectModel[] {
-  if (!props.nodePath) return [];
+// generate fresh location select models when text changes
+watch(
+  () => state.text,
+  (after) => (locationSelectModels.value = getEmptyModels(after))
+);
+
+function getEmptyModels(text: TextRead | undefined = state.text): LocationSelectModel[] {
+  if (!text) return [];
   return (
-    props.nodePath.map(() => ({
+    text.levels.map((_, i) => ({
       loading: false,
       selected: null,
       nodes: [],
       options: [],
+      disabled: props.showLevelSelect && i > locationLevel.value,
     })) || []
   );
 }
 
 async function updateSelectModelsFromLvl(lvl: number) {
-  if (!node.value) return;
   // abort if the highest enabled level was changed (nothing to do)
   if (lvl >= locationSelectModels.value.length - 1) {
     return;
@@ -85,8 +120,8 @@ async function updateSelectModelsFromLvl(lvl: number) {
   locationSelectModels.value.forEach((lsm, i) => {
     // only apply to higher levels
     if (i > lvl) {
-      // only do this if we're <= current level
-      if (i <= (node.value?.level || 0)) {
+      // only do this if we're <= current browse level
+      if (i <= locationLevel.value) {
         // set nodes
         lsm.nodes = nodes.shift() || [];
         // set selection
@@ -98,22 +133,15 @@ async function updateSelectModelsFromLvl(lvl: number) {
   });
 }
 
-function handleLocationSelect() {
-  // we reverse the actual array here, but it will be created from scratch
-  // anyway as soon as the location select modal opens again
-  const selectedLevel = locationSelectModels.value.reverse()[0];
-  const selectedNode = selectedLevel.nodes.find((n) => n.id === selectedLevel.selected);
-
-  router.push({
-    name: 'resourceUnits',
-    params: { ...route.params, pos: selectedNode?.position },
+function applyBrowseLevel() {
+  locationSelectModels.value.forEach((lsm, i) => {
+    lsm.disabled = props.showLevelSelect && i > locationLevel.value;
+    lsm.nodes = lsm.disabled ? [] : lsm.nodes;
+    lsm.selected = lsm.disabled ? null : lsm.selected;
   });
-  emit('submit', selectedNode?.position || 0);
-  emit('update:show', false);
 }
 
 async function initSelectModels() {
-  locationSelectModels.value = getEmptyLocationSelectModels();
   // set all live models to loading
   locationSelectModels.value.forEach((lsm) => {
     lsm.loading = true;
@@ -121,19 +149,21 @@ async function initSelectModels() {
 
   // fetch nodes from head to root
   const { data: nodesOptions, error } = await GET('/browse/nodes/{id}/path/options-by-head', {
-    params: { path: { id: node.value?.id || '' } },
+    params: { path: { id: props.nodePath[locationLevel.value].id ?? '' } },
   });
 
   if (error) {
     message.error($t('errors.unexpected'), error);
     return;
   }
+  // apply browse level
+  applyBrowseLevel();
 
   // manipulate each location select model
   let index = 0;
   for (const lsm of locationSelectModels.value) {
     // set options and selection
-    if (index <= (node.value?.level || 0)) {
+    if (index <= locationLevel.value) {
       // remember nodes for these options
       lsm.nodes = nodesOptions[index];
       // set selection
@@ -142,6 +172,33 @@ async function initSelectModels() {
     index++;
     lsm.loading = false;
   }
+}
+
+function handleLocationSelect() {
+  // emit selected node path
+  emit(
+    'update:nodePath',
+    locationSelectModels.value
+      .filter((_, i) => i <= locationLevel.value)
+      .map((lsm) => lsm.nodes.find((n) => n.id === lsm.selected))
+  );
+  emit('update:show', false);
+  // // we reverse the actual array here, but it will be created from scratch
+  // // anyway as soon as the location select modal opens again
+  // const selectedLevel = locationSelectModels.value
+  //   .reverse()
+  //   .find((lsm) => !lsm.disabled && !!lsm.selected);
+  // const selectedNode = selectedLevel?.nodes.find((n) => n.id === selectedLevel.selected);
+
+  // router.push({
+  //   name: 'browse',
+  //   params: { ...route.params },
+  //   query: {
+  //     ...route.query,
+  //     lvl: selectedNode?.level,
+  //     pos: selectedNode?.position,
+  //   },
+  // });
 }
 </script>
 
@@ -157,6 +214,7 @@ async function initSelectModels() {
     class="tekst-modal"
     to="#app-container"
     @update:show="emit('update:show', $event)"
+    @mask-click="emit('update:show', false)"
   >
     <template #header>
       <IconHeading level="2" :icon="MenuBookOutlined" style="margin: 0">
@@ -171,11 +229,20 @@ async function initSelectModels() {
       :show-feedback="false"
       :show-require-mark="false"
     >
+      <template v-if="showLevelSelect">
+        <n-form-item :label="$t('browse.location.level')">
+          <n-select v-model:value="locationLevel" :options="locationLevelOptions" />
+        </n-form-item>
+
+        <n-divider />
+      </template>
+
       <n-form-item
         v-for="(levelLoc, index) in locationSelectModels"
         :key="`${index}_loc_select`"
         :label="state.textLevelLabels[index]"
         class="location-select-item"
+        :class="levelLoc.disabled && 'disabled'"
       >
         <n-select
           v-model:value="levelLoc.selected"
@@ -183,7 +250,9 @@ async function initSelectModels() {
           filterable
           placeholder="–"
           :loading="levelLoc.loading"
-          :disabled="levelLoc.loading || locationSelectOptions[index].length === 0"
+          :disabled="
+            levelLoc.loading || levelLoc.disabled || locationSelectOptions[index].length === 0
+          "
           @update:value="() => updateSelectModelsFromLvl(index)"
         />
       </n-form-item>
@@ -198,3 +267,19 @@ async function initSelectModels() {
     </ButtonFooter>
   </n-modal>
 </template>
+
+<style scoped>
+.text-location {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.location-select-item {
+  margin-bottom: 0.5rem;
+}
+
+.location-select-item.disabled {
+  opacity: 0.5;
+}
+</style>

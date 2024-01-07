@@ -83,7 +83,6 @@ routes:
     register: Registrierung
     resources: Ressourcen zu "{text}"
     resourceSettings: Ressourcen-Einstellungen
-    resourceUnits: Ressourcen-Inhalte bearbeiten
     user: Profil von {username}
     accountProfile: Öffentliches Profil
     accountManage: Konto
@@ -295,7 +294,7 @@ resources:
   msgUnpublished: Die Veröffentlichung der Ressource "{title}" wurde aufgehoben.
   msgDeleted: Die Ressource "{title}" wurde gelöscht.
   phSearchUsers: Benutzer suchen...
-  backToOverview: Zurück zur Ressourcen-Übersicht
+  backToOverview: Zurück zu "Ressourcen"
   settings:
     heading: Ressourcen-Einstellungen
     onlyForUnpublished: Nur für nicht veröffentlichte Ressourcen!

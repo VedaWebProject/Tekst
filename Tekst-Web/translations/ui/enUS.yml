@@ -80,7 +80,6 @@ routes:
     register: Register
     resources: Resources on "{text}"
     resourceSettings: Resource Settings
-    resourceUnits: Edit Resource Content
     user: Profile of {username}
     accountProfile: Public Profile
     accountManage: Account
@@ -287,7 +286,7 @@ resources:
   msgUnpublished: The publication of the resource "{title}" has been withdrawn.
   msgDeleted: The resource "{title}" has been deleted.
   phSearchUsers: Search for users...
-  backToOverview: Back to resources overview
+  backToOverview: Back to "Resources"
   settings:
     heading: Resource Settings
     onlyForUnpublished: Only for unpublished resources!

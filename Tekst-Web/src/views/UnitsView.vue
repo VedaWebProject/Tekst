@@ -1,14 +1,5 @@
 <script setup lang="ts">
-import {
-  NSpace,
-  NForm,
-  NButton,
-  type FormInst,
-  useDialog,
-  NModal,
-  NFormItem,
-  NSelect,
-} from 'naive-ui';
+import { NSpace, NForm, NButton, type FormInst, useDialog } from 'naive-ui';
 import {
   type AnyResourceRead,
   getFullUrl,
@@ -36,19 +27,19 @@ import { useModelChanges } from '@/modelChanges';
 import { useMagicKeys, whenever } from '@vueuse/core';
 import { unitFormRules } from '@/forms/formRules';
 import UnitFormItems from '@/forms/resources/UnitFormItems.vue';
+import { defaultUnitModels } from '@/forms/resources/defaultUnitModels';
+import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
+import LocationSelectModal from '@/components/LocationSelectModal.vue';
 
 import EditNoteOutlined from '@vicons/material/EditNoteOutlined';
 import KeyboardArrowLeftOutlined from '@vicons/material/KeyboardArrowLeftOutlined';
 import ArrowBackIosOutlined from '@vicons/material/ArrowBackIosOutlined';
 import ArrowForwardIosOutlined from '@vicons/material/ArrowForwardIosOutlined';
-import RedoOutlined from '@vicons/material/RedoOutlined';
+import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
 import FileDownloadSharp from '@vicons/material/FileDownloadSharp';
 import FileUploadSharp from '@vicons/material/FileUploadSharp';
-import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
 import FolderOffTwotone from '@vicons/material/FolderOffTwotone';
 import InsertDriveFileOutlined from '@vicons/material/InsertDriveFileOutlined';
-import { defaultUnitModels } from '@/forms/resources/defaultUnitModels';
-import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
 
 type UnitFormModel = AnyUnitCreate & { id: string };
 
@@ -61,48 +52,18 @@ const { ArrowLeft, ArrowRight } = useMagicKeys();
 const dialog = useDialog();
 
 const showJumpToModal = ref(false);
-watch(showJumpToModal, (show) => show && initSelectModels());
 const loading = ref(false);
 const formRef = ref<FormInst | null>(null);
 const resource = ref<AnyResourceRead>();
 const position = computed<number>(() => Number.parseInt(route.params.pos.toString()));
 const nodePath = ref<NodeRead[]>();
-const node = computed<NodeRead | undefined>(() => nodePath.value?.[resource.value?.level || -1]);
+const node = computed<NodeRead | undefined>(() => nodePath.value?.[resource.value?.level ?? -1]);
 const nodeParent = computed<NodeRead | undefined>(
-  () => nodePath.value?.[(resource.value?.level || -1) - 1]
+  () => nodePath.value?.[(resource.value?.level ?? -1) - 1]
 );
 const initialModel = ref<UnitFormModel>();
 const model = ref<UnitFormModel | undefined>(initialModel.value);
 const { changed, reset, getChanges } = useModelChanges(model);
-
-// interface for location select options (local state)
-interface LocationSelectModel {
-  loading: boolean;
-  selected: string | null;
-  nodes: NodeRead[];
-}
-const locationSelectModels = ref<LocationSelectModel[]>(getEmptyLocationSelectModels());
-// generate location select options from select model nodes
-const locationSelectOptions = computed(() =>
-  locationSelectModels.value.map((lsm) =>
-    lsm.nodes.map((n) => ({
-      label: n.label,
-      value: n.id,
-    }))
-  )
-);
-
-function getEmptyLocationSelectModels(): LocationSelectModel[] {
-  if (!nodePath.value) return [];
-  return (
-    nodePath.value.map(() => ({
-      loading: false,
-      selected: null,
-      nodes: [],
-      options: [],
-    })) || []
-  );
-}
 
 // go to resource overview if text changes
 watch(
@@ -284,89 +245,11 @@ function navigateUnits(step: number) {
   });
 }
 
-async function updateSelectModelsFromLvl(lvl: number) {
-  if (!node.value) return;
-  // abort if the highest enabled level was changed (nothing to do)
-  if (lvl >= locationSelectModels.value.length - 1) {
-    return;
-  }
-  // set loading state
-  locationSelectModels.value.forEach((lsm, i) => {
-    // only apply to higher levels
-    if (i > lvl) {
-      lsm.loading = true;
-    }
-  });
-  // load node path options from node selected at lvl as root
-  const { data: nodes, error } = await GET('/browse/nodes/{id}/path/options-by-root', {
-    params: { path: { id: locationSelectModels.value[lvl].selected || '' } },
-  });
-  if (error) {
-    message.error($t('errors.unexpected'), error);
-    return;
-  }
-  // set nodes for all following levels
-  locationSelectModels.value.forEach((lsm, i) => {
-    // only apply to higher levels
-    if (i > lvl) {
-      // only do this if we're <= current level
-      if (i <= (node.value?.level || 0)) {
-        // set nodes
-        lsm.nodes = nodes.shift() || [];
-        // set selection
-        lsm.selected = lsm.nodes[0]?.id || null;
-      }
-      // set to no loading
-      lsm.loading = false;
-    }
-  });
-}
-
-function handleLocationSelect() {
-  // we reverse the actual array here, but it will be created from scratch
-  // anyway as soon as the location select modal opens again
-  const selectedLevel = locationSelectModels.value.reverse().find((lsm) => !!lsm.selected);
-  const selectedNode = selectedLevel?.nodes.find((n) => n.id === selectedLevel.selected);
-
+function handleJumpToSubmit(nodePath: NodeRead[]) {
   router.push({
     name: 'resourceUnits',
-    params: { ...route.params, pos: selectedNode?.position },
+    params: { ...route.params, pos: nodePath[nodePath.length - 1].position },
   });
-  // close location select modal
-  showJumpToModal.value = false;
-}
-
-async function initSelectModels() {
-  if (!resource.value) return;
-  locationSelectModels.value = getEmptyLocationSelectModels();
-  // set all live models to loading
-  locationSelectModels.value.forEach((lsm) => {
-    lsm.loading = true;
-  });
-
-  // fetch nodes from head to root
-  const { data: nodesOptions, error } = await GET('/browse/nodes/{id}/path/options-by-head', {
-    params: { path: { id: node.value?.id || '' } },
-  });
-
-  if (error) {
-    message.error($t('errors.unexpected'), error);
-    return;
-  }
-
-  // manipulate each location select model
-  let index = 0;
-  for (const lsm of locationSelectModels.value) {
-    // set options and selection
-    if (index <= (node.value?.level || 0)) {
-      // remember nodes for these options
-      lsm.nodes = nodesOptions[index];
-      // set selection
-      lsm.selected = nodePath.value?.[index]?.id || null;
-    }
-    index++;
-    lsm.loading = false;
-  }
 }
 
 // react to keyboard for in-/decreasing location
@@ -416,7 +299,7 @@ whenever(ArrowLeft, () => {
       </n-button>
       <n-button type="primary" :disabled="loading" :focusable="false" @click="handleJumpToClick()">
         <template #icon>
-          <RedoOutlined />
+          <MenuBookOutlined />
         </template>
       </n-button>
       <n-button type="primary" :disabled="loading" :focusable="false" @click="navigateUnits(1)">
@@ -507,55 +390,11 @@ whenever(ArrowLeft, () => {
     </div>
   </template>
 
-  <!-- "jump to location" modal -->
-  <n-modal
+  <LocationSelectModal
+    v-if="resource && nodePath"
     v-model:show="showJumpToModal"
-    display-directive="if"
-    preset="card"
-    embedded
-    :auto-focus="false"
-    header-style="padding-bottom: 1.5rem"
-    size="large"
-    class="tekst-modal"
-    to="#app-container"
-  >
-    <template #header>
-      <IconHeading level="2" :icon="MenuBookOutlined" style="margin: 0">
-        {{ $t('browse.location.modalHeading') }}
-        <HelpButtonWidget help-key="browseLocationControls" />
-      </IconHeading>
-    </template>
-
-    <n-form
-      label-placement="left"
-      label-width="auto"
-      :show-feedback="false"
-      :show-require-mark="false"
-    >
-      <n-form-item
-        v-for="(levelLoc, index) in locationSelectModels"
-        :key="`${index}_loc_select`"
-        :label="state.textLevelLabels[index]"
-        class="location-select-item"
-      >
-        <n-select
-          v-model:value="levelLoc.selected"
-          :options="locationSelectOptions[index]"
-          filterable
-          placeholder="–"
-          :loading="levelLoc.loading"
-          :disabled="levelLoc.loading || locationSelectOptions[index].length === 0"
-          @update:value="() => updateSelectModelsFromLvl(index)"
-        />
-      </n-form-item>
-    </n-form>
-    <ButtonFooter>
-      <n-button secondary :focusable="false" @click="showJumpToModal = false">
-        {{ $t('general.cancelAction') }}
-      </n-button>
-      <n-button type="primary" @click="handleLocationSelect">
-        {{ $t('general.selectAction') }}
-      </n-button>
-    </ButtonFooter>
-  </n-modal>
+    :node-path="nodePath"
+    :show-level-select="false"
+    @update:node-path="handleJumpToSubmit"
+  />
 </template>
