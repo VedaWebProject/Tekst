@@ -57,9 +57,7 @@ const actionOptions = computed(() => [
           icon: renderIcon(FlagFilled),
           disabled:
             !canPropose.value || props.targetResource.public || props.targetResource.proposed,
-          props: {
-            onClick: () => emit('proposeClick', props.targetResource),
-          },
+          action: () => emit('proposeClick', props.targetResource),
         },
         {
           label: $t('resources.unproposeAction'),
@@ -67,9 +65,7 @@ const actionOptions = computed(() => [
           icon: renderIcon(FlagOutlined),
           disabled:
             !canPropose.value || !props.targetResource.proposed || props.targetResource.public,
-          props: {
-            onClick: () => emit('unproposeClick', props.targetResource),
-          },
+          action: () => emit('unproposeClick', props.targetResource),
         },
         {
           type: 'divider',
@@ -87,18 +83,14 @@ const actionOptions = computed(() => [
             !props.currentUser?.isSuperuser ||
             !props.targetResource.proposed ||
             props.targetResource.public,
-          props: {
-            onClick: () => emit('publishClick', props.targetResource),
-          },
+          action: () => emit('publishClick', props.targetResource),
         },
         {
           label: $t('resources.unpublishAction'),
           key: 'unpublish',
           icon: renderIcon(PublicOffFilled),
           disabled: !props.currentUser?.isSuperuser || !props.targetResource.public,
-          props: {
-            onClick: () => emit('unpublishClick', props.targetResource),
-          },
+          action: () => emit('unpublishClick', props.targetResource),
         },
         {
           type: 'divider',
@@ -111,18 +103,14 @@ const actionOptions = computed(() => [
     key: 'settings',
     icon: renderIcon(SettingsFilled),
     disabled: !props.targetResource.writable,
-    props: {
-      onClick: () => emit('settingsClick', props.targetResource),
-    },
+    action: () => emit('settingsClick', props.targetResource),
   },
   {
     label: $t('resources.unitsAction'),
     key: 'units',
     icon: renderIcon(EditNoteOutlined),
     disabled: !props.targetResource.writable,
-    props: {
-      onClick: () => emit('unitsClick', props.targetResource),
-    },
+    action: () => emit('unitsClick', props.targetResource),
   },
   {
     type: 'divider',
@@ -133,18 +121,14 @@ const actionOptions = computed(() => [
     key: 'transfer',
     icon: renderIcon(PersonPinFilled),
     disabled: !isOwnerOrAdmin.value || props.targetResource.public || props.targetResource.proposed,
-    props: {
-      onClick: () => emit('transferClick', props.targetResource),
-    },
+    action: () => emit('transferClick', props.targetResource),
   },
   {
     label: $t('general.deleteAction'),
     key: 'delete',
     icon: renderIcon(DeleteFilled),
     disabled: !canDelete.value,
-    props: {
-      onClick: () => emit('deleteClick', props.targetResource),
-    },
+    action: () => emit('deleteClick', props.targetResource),
   },
 ]);
 
@@ -154,6 +138,10 @@ const showActionsDropdown = computed(
 
 function renderIcon(icon: Component) {
   return () => h(NIcon, null, { default: () => h(icon) });
+}
+
+function handleActionSelect(key: string) {
+  actionOptions.value.find((o) => o.key === key)?.action?.();
 }
 </script>
 
@@ -172,6 +160,7 @@ function renderIcon(icon: Component) {
             :size="state.dropdownSize"
             to="#app-container"
             trigger="click"
+            @select="handleActionSelect"
           >
             <n-button quaternary circle :focusable="false">
               <template #icon>
