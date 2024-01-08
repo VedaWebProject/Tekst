@@ -117,6 +117,7 @@ export type PlatformStats = components['schemas']['PlatformStats'];
 export type PlatformData = components['schemas']['PlatformData'];
 export type PlatformSettingsRead = components['schemas']['PlatformSettingsRead'];
 export type PlatformSettingsUpdate = components['schemas']['PlatformSettingsUpdate'];
+export type ResourceCoverage = components['schemas']['ResourceCoverage'];
 export type ResourceNodeCoverage = components['schemas']['ResourceNodeCoverage'];
 
 // client segments
@@ -151,6 +152,7 @@ export type AnyResourceCreate = PlaintextResourceCreate | DebugResourceCreate;
 export type AnyResourceRead = (PlaintextResourceRead | DebugResourceRead) & {
   active?: boolean;
   units?: AnyUnitRead[];
+  coverage?: ResourceCoverage;
 };
 export type AnyResourceUpdate = PlaintextResourceUpdate | DebugResourceUpdate;
 

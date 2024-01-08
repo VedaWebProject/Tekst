@@ -56,6 +56,10 @@ export interface paths {
     /** Get resource coverage data */
     get: operations['getResourceCoverageData'];
   };
+  '/browse/resources/{id}/coverage-details': {
+    /** Get detailed resource coverage data */
+    get: operations['getDetailedResourceCoverageData'];
+  };
   '/nodes': {
     /** Find nodes */
     get: operations['findNodes'];
@@ -1796,6 +1800,13 @@ export interface components {
       /** Translation */
       translation: string;
     };
+    /** ResourceCoverage */
+    ResourceCoverage: {
+      /** Covered */
+      covered: number;
+      /** Total */
+      total: number;
+    };
     /** ResourceDescriptionTranslation */
     ResourceDescriptionTranslation: {
       locale: components['schemas']['TranslationLocaleKey'];
@@ -1808,8 +1819,11 @@ export interface components {
       label: string;
       /** Position */
       position: number;
-      /** Covered */
-      covered: boolean;
+      /**
+       * Covered
+       * @default false
+       */
+      covered?: boolean;
     };
     /** TextCreate */
     TextCreate: {
@@ -2332,7 +2346,33 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': components['schemas']['ResourceNodeCoverage'][];
+          'application/json': components['schemas']['ResourceCoverage'];
+        };
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Get detailed resource coverage data */
+  getDetailedResourceCoverageData: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['ResourceNodeCoverage'][][];
         };
       };
       /** @description Not found */

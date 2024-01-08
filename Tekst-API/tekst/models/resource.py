@@ -241,7 +241,12 @@ ResourceBaseRead = create_model(
 ResourceBaseUpdate = ResourceBase.update_model()
 
 
+class ResourceCoverage(ModelBase):
+    covered: int
+    total: int
+
+
 class ResourceNodeCoverage(ModelBase):
     label: str
     position: int
-    covered: bool
+    covered: bool = False

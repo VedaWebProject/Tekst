@@ -9,7 +9,11 @@ from tekst.models.node import (
     NodeDocument,
     NodeRead,
 )
-from tekst.models.resource import ResourceBaseDocument, ResourceNodeCoverage
+from tekst.models.resource import (
+    ResourceBaseDocument,
+    ResourceCoverage,
+    ResourceNodeCoverage,
+)
 from tekst.models.unit import UnitBaseDocument
 from tekst.resource_types import AnyUnitRead, AnyUnitReadBody, resource_types_mgr
 
@@ -178,10 +182,14 @@ async def get_path_options_by_root(
     return options
 
 
-@router.get("/resources/{id}/coverage", status_code=status.HTTP_200_OK)
+@router.get(
+    "/resources/{id}/coverage",
+    status_code=status.HTTP_200_OK,
+    response_model=ResourceCoverage,
+)
 async def get_resource_coverage_data(
     resource_id: Annotated[PydanticObjectId, Path(alias="id")], user: OptionalUserDep
-) -> list[ResourceNodeCoverage]:
+) -> dict:
     resource_doc = await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == resource_id,
         await ResourceBaseDocument.access_conditions_read(user),
@@ -191,7 +199,36 @@ async def get_resource_coverage_data(
         raise HTTPException(
             status.HTTP_404_NOT_FOUND, detail=f"No resource with ID {resource_id}"
         )
-    return (
+    return {
+        "covered": await UnitBaseDocument.find(
+            UnitBaseDocument.resource_id == resource_id,
+            with_children=True,
+        ).count(),
+        "total": await NodeDocument.find(
+            NodeDocument.text_id == resource_doc.text_id,
+            NodeDocument.level == resource_doc.level,
+        ).count(),
+    }
+
+
+@router.get(
+    "/resources/{id}/coverage-details",
+    status_code=status.HTTP_200_OK,
+    response_model=list[list[ResourceNodeCoverage]],
+)
+async def get_detailed_resource_coverage_data(
+    resource_id: Annotated[PydanticObjectId, Path(alias="id")], user: OptionalUserDep
+) -> list[list[dict]]:
+    resource_doc = await ResourceBaseDocument.find_one(
+        ResourceBaseDocument.id == resource_id,
+        await ResourceBaseDocument.access_conditions_read(user),
+        with_children=True,
+    )
+    if not resource_doc:
+        raise HTTPException(
+            status.HTTP_404_NOT_FOUND, detail=f"No resource with ID {resource_id}"
+        )
+    data = (
         await NodeDocument.find(
             NodeDocument.text_id == resource_doc.text_id,
             NodeDocument.level == resource_doc.level,
@@ -225,11 +262,23 @@ async def get_resource_coverage_data(
                     "$project": {
                         "label": 1,
                         "position": 1,
+                        "parent_id": 1,
                         "covered": {"$gt": [{"$size": "$units"}, 0]},
                     }
                 },
             ],
-            projection_model=ResourceNodeCoverage,
         )
         .to_list()
     )
+
+    # group nodes by parent
+    out = []
+    prev_parent_id = "init"
+    for node in data:
+        if node["parent_id"] == prev_parent_id:
+            out[-1].append(node)
+        else:
+            out.append([node])
+        prev_parent_id = node["parent_id"]
+
+    return out

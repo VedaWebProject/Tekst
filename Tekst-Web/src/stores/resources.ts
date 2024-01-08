@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref, watch } from 'vue';
-import { GET, type AnyResourceRead } from '@/api';
+import { GET, type AnyResourceRead, type ResourceCoverage } from '@/api';
 import { useAuthStore, useStateStore } from '@/stores';
 
 export const useResourcesStore = defineStore('resources', () => {
@@ -57,6 +57,19 @@ export const useResourcesStore = defineStore('resources', () => {
       .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0));
   }
 
+  async function getCoverage(resourceId: string): Promise<ResourceCoverage | undefined> {
+    const res = resources.value.find((l) => l.id === resourceId);
+    if (!res) return;
+    const cov = res?.coverage;
+    if (cov) return cov;
+    const { data } = await GET('/browse/resources/{id}/coverage', {
+      params: { path: { id: resourceId } },
+    });
+    if (!data) return;
+    res.coverage = data;
+    return data;
+  }
+
   // watch for events that trigger a reload of resources data
   watch(
     [() => auth.loggedIn, () => state.text],
@@ -73,5 +86,6 @@ export const useResourcesStore = defineStore('resources', () => {
     load,
     replace,
     add,
+    getCoverage,
   };
 });

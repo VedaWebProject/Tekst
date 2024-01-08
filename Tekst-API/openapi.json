@@ -389,11 +389,68 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "$ref": "#/components/schemas/ResourceCoverage"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/browse/resources/{id}/coverage-details": {
+      "get": {
+        "tags": [
+          "browse"
+        ],
+        "summary": "Get detailed resource coverage data",
+        "operationId": "getDetailedResourceCoverageData",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ResourceNodeCoverage"
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/ResourceNodeCoverage"
+                    }
                   },
-                  "title": "Response Get Resource Coverage Data Browse Resources  Id  Coverage Get"
+                  "title": "Response Get Detailed Resource Coverage Data Browse Resources  Id  Coverage Details Get"
                 }
               }
             }
@@ -6722,6 +6779,24 @@
         ],
         "title": "ResourceCommentTranslation"
       },
+      "ResourceCoverage": {
+        "properties": {
+          "covered": {
+            "type": "integer",
+            "title": "Covered"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          }
+        },
+        "type": "object",
+        "required": [
+          "covered",
+          "total"
+        ],
+        "title": "ResourceCoverage"
+      },
       "ResourceDescriptionTranslation": {
         "properties": {
           "locale": {
@@ -6753,14 +6828,14 @@
           },
           "covered": {
             "type": "boolean",
-            "title": "Covered"
+            "title": "Covered",
+            "default": false
           }
         },
         "type": "object",
         "required": [
           "label",
-          "position",
-          "covered"
+          "position"
         ],
         "title": "ResourceNodeCoverage"
       },

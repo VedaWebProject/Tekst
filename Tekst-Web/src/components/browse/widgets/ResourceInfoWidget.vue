@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import { NEllipsis, NDivider, NButton, NModal, NProgress, NSpin } from 'naive-ui';
+import { computed, ref, watch } from 'vue';
+import { NEllipsis, NDivider, NButton, NModal, NProgress } from 'naive-ui';
 import MetadataDisplay from '@/components/browse/MetadataDisplay.vue';
 import ButtonFooter from '@/components/ButtonFooter.vue';
 import IconHeading from '@/components/typography/IconHeading.vue';
 import UnitContainerHeaderWidget from '@/components/browse/UnitContainerHeaderWidget.vue';
-import { useResourceCoverage } from '@/fetchers';
-import { useAuthStore, useStateStore } from '@/stores';
-import type { AnyResourceRead } from '@/api';
+import { useAuthStore, useResourcesStore, useStateStore } from '@/stores';
+import { type AnyResourceRead, type ResourceCoverage } from '@/api';
 import UserDisplay from '@/components/UserDisplay.vue';
 import TranslationDisplay from '@/components/TranslationDisplay.vue';
 import ResourcePublicationStatus from '@/components/ResourcePublicationStatus.vue';
@@ -17,6 +16,7 @@ import ChatBubbleOutlineOutlined from '@vicons/material/ChatBubbleOutlineOutline
 import FormatQuoteFilled from '@vicons/material/FormatQuoteFilled';
 import PercentOutlined from '@vicons/material/PercentOutlined';
 import LabelOutlined from '@vicons/material/LabelOutlined';
+import CoverageDetailsWidget from './CoverageDetailsWidget.vue';
 
 const props = defineProps<{
   resource: AnyResourceRead;
@@ -24,19 +24,20 @@ const props = defineProps<{
 
 const auth = useAuthStore();
 const state = useStateStore();
+const resources = useResourcesStore();
 
+const showCoverageDetailsModal = ref(false);
 const showInfoModal = ref(false);
-const { coverage, error: coverageError } = useResourceCoverage(props.resource.id, showInfoModal); // eslint-disable-line
-const presentNodes = computed(
-  () => coverage.value && coverage.value.filter((n) => n.covered).length
-);
+const coverage = ref<ResourceCoverage>();
 const coveragePercent = computed(
-  () =>
-    (coverage.value &&
-      presentNodes.value &&
-      Math.round((presentNodes.value / coverage.value.length) * 100)) ||
-    0
+  () => Math.round((coverage.value ? coverage.value.covered / coverage.value.total : 0) * 1000) / 10
 );
+
+watch(showInfoModal, async (after) => {
+  if (after && !props.resource.coverage) {
+    coverage.value = await resources.getCoverage(props.resource.id);
+  }
+});
 </script>
 
 <template>
@@ -48,6 +49,7 @@ const coveragePercent = computed(
 
   <n-modal
     v-model:show="showInfoModal"
+    display-directive="if"
     preset="card"
     class="tekst-modal"
     :title="resource.title"
@@ -59,7 +61,9 @@ const coveragePercent = computed(
     embedded
   >
     <template #header>
-      <h2 style="margin: 0">{{ resource.title }}</h2>
+      <IconHeading level="2" :icon="InfoOutlined" style="margin: 0">
+        {{ resource.title }}
+      </IconHeading>
     </template>
 
     <p v-if="resource.description?.length">
@@ -94,30 +98,45 @@ const coveragePercent = computed(
       <IconHeading level="3" :icon="PercentOutlined">
         {{ $t('browse.units.widgets.infoWidget.coverage') }}
       </IconHeading>
-      <p>
-        {{
-          $t('browse.units.widgets.infoWidget.coverageStatement', {
-            present: presentNodes,
-            total: coverage.length,
-            level: state.textLevelLabels[resource.level],
-          })
-        }}
-      </p>
+
+      <div
+        style="
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+          margin-bottom: 0.5rem;
+          gap: 12px;
+        "
+      >
+        <span>
+          {{
+            $t('browse.units.widgets.infoWidget.coverageStatement', {
+              present: coverage.covered,
+              total: coverage.total,
+              level: state.textLevelLabels[resource.level],
+            })
+          }}
+        </span>
+        <span style="flex: 2"></span>
+        <n-button
+          secondary
+          size="small"
+          :focusable="false"
+          @click="showCoverageDetailsModal = true"
+        >
+          {{ $t('general.details') }}
+        </n-button>
+      </div>
       <n-progress
         type="line"
         :percentage="coveragePercent"
-        :height="18"
-        :border-radius="4"
+        :height="22"
+        :border-radius="3"
         indicator-placement="inside"
         color="var(--accent-color)"
         rail-color="var(--accent-color-fade4)"
       />
     </template>
-    <template v-else-if="coverageError">
-      <n-divider />
-      {{ $t('errors.unexpected') }}
-    </template>
-    <n-spin v-else style="width: 100%" />
 
     <template v-if="resource.comment?.length">
       <n-divider />
@@ -137,6 +156,12 @@ const coveragePercent = computed(
       </n-button>
     </ButtonFooter>
   </n-modal>
+
+  <CoverageDetailsWidget
+    v-model:show="showCoverageDetailsModal"
+    :resource="resource"
+    @navigated="showInfoModal = false"
+  />
 </template>
 
 <style scoped>
