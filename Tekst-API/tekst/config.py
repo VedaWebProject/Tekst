@@ -82,6 +82,7 @@ class TekstConfig(BaseSettings):
     dev_mode: bool = False
     dev_host: str = "127.0.0.1"
     dev_port: int = 8000
+    dev_use_xsrf_protection: bool = False
 
     # CORS
     cors_allow_origins: str | list[str] = ["*"]
