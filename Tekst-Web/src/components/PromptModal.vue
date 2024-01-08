@@ -13,7 +13,6 @@ const value = ref('');
       :show="true"
       preset="card"
       class="tekst-modal"
-      size="medium"
       :bordered="false"
       :closable="false"
       to="#app-container"

@@ -50,7 +50,6 @@ const coveragePercent = computed(
     v-model:show="showInfoModal"
     preset="card"
     class="tekst-modal"
-    size="large"
     :title="resource.title"
     :bordered="false"
     :auto-focus="false"

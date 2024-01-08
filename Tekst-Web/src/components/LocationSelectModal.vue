@@ -210,7 +210,6 @@ function handleLocationSelect() {
     embedded
     :auto-focus="false"
     header-style="padding-bottom: 1.5rem"
-    size="large"
     class="tekst-modal"
     to="#app-container"
     @update:show="emit('update:show', $event)"

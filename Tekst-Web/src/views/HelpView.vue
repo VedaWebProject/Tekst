@@ -94,7 +94,6 @@ watch(
     display-directive="if"
     preset="card"
     class="tekst-modal-wide"
-    size="medium"
     :bordered="false"
     :auto-focus="false"
     :closable="true"

@@ -31,7 +31,6 @@ const showModal = ref(false);
     embedded
     header-style="padding-bottom: 1.5rem"
     :auto-focus="false"
-    size="large"
     class="tekst-modal"
     to="#app-container"
   >

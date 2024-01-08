@@ -53,7 +53,6 @@ async function handleSubmit() {
     :show="show"
     preset="card"
     class="tekst-modal"
-    size="large"
     :bordered="false"
     :closable="false"
     to="#app-container"

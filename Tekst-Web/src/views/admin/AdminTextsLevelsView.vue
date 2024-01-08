@@ -220,7 +220,6 @@ async function handleModalSubmit() {
     embedded
     :closable="false"
     :auto-focus="false"
-    size="large"
     class="tekst-modal"
     to="#app-container"
     @after-leave="destroyEditModal"

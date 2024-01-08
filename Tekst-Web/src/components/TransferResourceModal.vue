@@ -67,7 +67,6 @@ function handleOkClick(resolve: (v: UserReadPublic) => void, reject: (v: any) =>
       :show="true"
       preset="card"
       class="tekst-modal"
-      size="medium"
       :bordered="false"
       to="#app-container"
       :title="$t('resources.transferAction')"

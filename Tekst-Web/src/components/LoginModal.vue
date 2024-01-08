@@ -84,7 +84,6 @@ onMounted(() => {
     <n-modal
       show
       preset="card"
-      size="large"
       class="tekst-modal tekst-modal-narrow"
       to="#app-container"
       :closable="false"
