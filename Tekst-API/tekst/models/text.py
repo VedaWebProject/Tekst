@@ -21,11 +21,15 @@ from tekst.models.common import (
 
 
 class TextSubtitleTranslation(TranslationBase):
-    translation: Annotated[str, StringConstraints(min_length=1, max_length=128)]
+    translation: Annotated[
+        str, StringConstraints(min_length=1, max_length=128, strip_whitespace=True)
+    ]
 
 
 class TextLevelTranslation(TranslationBase):
-    translation: Annotated[str, StringConstraints(min_length=1, max_length=32)]
+    translation: Annotated[
+        str, StringConstraints(min_length=1, max_length=32, strip_whitespace=True)
+    ]
 
 
 AccentColor = Annotated[
@@ -37,15 +41,16 @@ class Text(ModelBase, ModelFactoryMixin):
     """A text represented in Tekst"""
 
     title: Annotated[
-        str, Field(min_length=1, max_length=64, description="Title of this text")
+        str,
+        StringConstraints(min_length=1, max_length=64, strip_whitespace=True),
+        Field(description="Title of this text"),
     ]
 
     slug: Annotated[
         str,
+        StringConstraints(min_length=1, max_length=16, strip_whitespace=True),
         Field(
             pattern=r"^[a-z0-9]+$",
-            min_length=1,
-            max_length=16,
             description="A short identifier for use in URLs and internal operations",
         ),
     ]
@@ -82,9 +87,8 @@ class Text(ModelBase, ModelFactoryMixin):
 
     loc_delim: Annotated[
         str,
+        StringConstraints(min_length=1, max_length=3, strip_whitespace=False),
         Field(
-            min_length=1,
-            max_length=3,
             description="Delimiter for displaying text locations",
         ),
     ] = ", "

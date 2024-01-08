@@ -1,7 +1,6 @@
 from typing import (  # noqa: UP035
     Annotated,
     Literal,
-    Optional,
     TypeVar,
     get_args,
 )
@@ -26,8 +25,12 @@ from typing_extensions import TypeAliasType, TypedDict
 
 # class for one arbitrary metadate
 class Metadate(TypedDict):
-    key: Annotated[str, StringConstraints(min_length=1, max_length=16)]
-    value: Annotated[str, StringConstraints(min_length=1, max_length=128)]
+    key: Annotated[
+        str, StringConstraints(min_length=1, max_length=16, strip_whitespace=True)
+    ]
+    value: Annotated[
+        str, StringConstraints(min_length=1, max_length=128, strip_whitespace=True)
+    ]
 
 
 # type alias for collection of arbitrary metadata
@@ -164,7 +167,11 @@ class ModelFactoryMixin:
             fields = {}
             for k, v in cls.model_fields.items():
                 if not str(k).endswith("_type") and v.is_required():
-                    fields[k] = (Optional[v.annotation], None)  # noqa: UP007
+                    fields[k] = (
+                        (Annotated[(v.annotation | None, *v.metadata)], None)
+                        if v.metadata
+                        else (v.annotation | None, None)
+                    )
             cls._update_model = create_model(
                 f"{cls.__name__}Update",
                 __base__=(cls, *cls._to_bases_tuple(bases)),

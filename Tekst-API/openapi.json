@@ -4064,7 +4064,8 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 32
+                "maxLength": 32,
+                "minLength": 1
               },
               {
                 "type": "null"
@@ -4076,6 +4077,7 @@
           "html": {
             "type": "string",
             "maxLength": 1048576,
+            "minLength": 1,
             "title": "Html",
             "description": "HTML content of this segment"
           }
@@ -4165,7 +4167,8 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 32
+                "maxLength": 32,
+                "minLength": 1
               },
               {
                 "type": "null"
@@ -4177,6 +4180,7 @@
           "html": {
             "type": "string",
             "maxLength": 1048576,
+            "minLength": 1,
             "title": "Html",
             "description": "HTML content of this segment"
           }
@@ -4196,7 +4200,10 @@
           "key": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "maxLength": 32,
+                "minLength": 1,
+                "pattern": "[a-zA-Z0-9\\-_]+"
               },
               {
                 "type": "null"
@@ -4234,7 +4241,8 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 32
+                "maxLength": 32,
+                "minLength": 1
               },
               {
                 "type": "null"
@@ -4246,7 +4254,9 @@
           "html": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "maxLength": 1048576,
+                "minLength": 1
               },
               {
                 "type": "null"
@@ -4322,7 +4332,8 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 16
+                "maxLength": 16,
+                "minLength": 1
               },
               {
                 "type": "null"
@@ -4376,7 +4387,8 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 1000
+                "maxLength": 1000,
+                "minLength": 1
               },
               {
                 "type": "null"
@@ -4536,7 +4548,8 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 16
+                "maxLength": 16,
+                "minLength": 1
               },
               {
                 "type": "null"
@@ -4590,7 +4603,8 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 1000
+                "maxLength": 1000,
+                "minLength": 1
               },
               {
                 "type": "null"
@@ -4647,7 +4661,9 @@
           "title": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "maxLength": 64,
+                "minLength": 1
               },
               {
                 "type": "null"
@@ -4680,7 +4696,8 @@
           "level": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "integer",
+                "minimum": 0.0
               },
               {
                 "type": "null"
@@ -4709,7 +4726,8 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 16
+                "maxLength": 16,
+                "minLength": 1
               },
               {
                 "type": "null"
@@ -4763,7 +4781,8 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 1000
+                "maxLength": 1000,
+                "minLength": 1
               },
               {
                 "type": "null"
@@ -4832,7 +4851,8 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 1000
+                "maxLength": 1000,
+                "minLength": 1
               },
               {
                 "type": "null"
@@ -4889,7 +4909,8 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 1000
+                "maxLength": 1000,
+                "minLength": 1
               },
               {
                 "type": "null"
@@ -4955,7 +4976,8 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 1000
+                "maxLength": 1000,
+                "minLength": 1
               },
               {
                 "type": "null"
@@ -5332,7 +5354,9 @@
           "level": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "integer",
+                "exclusiveMaximum": 32.0,
+                "minimum": 0.0
               },
               {
                 "type": "null"
@@ -5343,7 +5367,8 @@
           "position": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "integer",
+                "minimum": 0.0
               },
               {
                 "type": "null"
@@ -5354,7 +5379,9 @@
           "label": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "maxLength": 256,
+                "minLength": 1
               },
               {
                 "type": "null"
@@ -5445,7 +5472,8 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 16
+                "maxLength": 16,
+                "minLength": 1
               },
               {
                 "type": "null"
@@ -5499,7 +5527,8 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 1000
+                "maxLength": 1000,
+                "minLength": 1
               },
               {
                 "type": "null"
@@ -5667,7 +5696,8 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 16
+                "maxLength": 16,
+                "minLength": 1
               },
               {
                 "type": "null"
@@ -5721,7 +5751,8 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 1000
+                "maxLength": 1000,
+                "minLength": 1
               },
               {
                 "type": "null"
@@ -5786,7 +5817,9 @@
           "title": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "maxLength": 64,
+                "minLength": 1
               },
               {
                 "type": "null"
@@ -5819,7 +5852,8 @@
           "level": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "integer",
+                "minimum": 0.0
               },
               {
                 "type": "null"
@@ -5848,7 +5882,8 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 16
+                "maxLength": 16,
+                "minLength": 1
               },
               {
                 "type": "null"
@@ -5902,7 +5937,8 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 1000
+                "maxLength": 1000,
+                "minLength": 1
               },
               {
                 "type": "null"
@@ -5979,7 +6015,8 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 1000
+                "maxLength": 1000,
+                "minLength": 1
               },
               {
                 "type": "null"
@@ -5991,6 +6028,7 @@
           "text": {
             "type": "string",
             "maxLength": 102400,
+            "minLength": 1,
             "title": "Text",
             "description": "Text content of the plaintext unit"
           }
@@ -6031,7 +6069,8 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 1000
+                "maxLength": 1000,
+                "minLength": 1
               },
               {
                 "type": "null"
@@ -6043,6 +6082,7 @@
           "text": {
             "type": "string",
             "maxLength": 102400,
+            "minLength": 1,
             "title": "Text",
             "description": "Text content of the plaintext unit"
           }
@@ -6092,7 +6132,8 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 1000
+                "maxLength": 1000,
+                "minLength": 1
               },
               {
                 "type": "null"
@@ -6104,7 +6145,9 @@
           "text": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "maxLength": 102400,
+                "minLength": 1
               },
               {
                 "type": "null"
@@ -6195,6 +6238,7 @@
           "translation": {
             "type": "string",
             "maxLength": 128,
+            "minLength": 1,
             "title": "Translation"
           }
         },
@@ -6213,6 +6257,7 @@
           "translation": {
             "type": "string",
             "maxLength": 16,
+            "minLength": 1,
             "title": "Translation"
           }
         },
@@ -6647,6 +6692,7 @@
           "translation": {
             "type": "string",
             "maxLength": 32,
+            "minLength": 1,
             "title": "Translation"
           }
         },
@@ -6665,6 +6711,7 @@
           "translation": {
             "type": "string",
             "maxLength": 2000,
+            "minLength": 1,
             "title": "Translation"
           }
         },
@@ -6683,6 +6730,7 @@
           "translation": {
             "type": "string",
             "maxLength": 512,
+            "minLength": 1,
             "title": "Translation"
           }
         },
@@ -6967,7 +7015,9 @@
           "title": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "maxLength": 64,
+                "minLength": 1
               },
               {
                 "type": "null"
@@ -6978,7 +7028,10 @@
           "slug": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "maxLength": 16,
+                "minLength": 1,
+                "pattern": "^[a-z0-9]+$"
               },
               {
                 "type": "null"
@@ -7006,7 +7059,9 @@
                   "type": "array",
                   "maxItems": 3
                 },
-                "type": "array"
+                "type": "array",
+                "maxItems": 32,
+                "minItems": 1
               },
               {
                 "type": "null"
@@ -7357,7 +7412,10 @@
           "username": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "maxLength": 16,
+                "minLength": 4,
+                "pattern": "[a-zA-Z0-9\\-_]+"
               },
               {
                 "type": "null"
@@ -7368,7 +7426,9 @@
           "name": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "maxLength": 64,
+                "minLength": 1
               },
               {
                 "type": "null"
@@ -7379,7 +7439,9 @@
           "affiliation": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "maxLength": 64,
+                "minLength": 1
               },
               {
                 "type": "null"

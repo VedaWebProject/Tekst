@@ -114,6 +114,12 @@ async def update_unit(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Referenced resource ID in unit and updates doesn't match",
         )
+    # check if unit's resource type matches updates' resource type
+    if updates.resource_type != unit_doc.resource_type:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Resource type doesn't match existing unit's resource type",
+        )
     # check if the resource this unit belongs to is writable by user
     resource_write_allowed = await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == unit_doc.resource_id,
@@ -125,7 +131,9 @@ async def update_unit(
             status_code=status.HTTP_403_FORBIDDEN,
             detail=f"No write access for units of resource {unit_doc.resource_id}",
         )
-    return await unit_doc.apply_updates(updates)
+    return await unit_doc.apply_updates(
+        updates, exclude={"id", "resource_id", "node_id", "resource_type"}
+    )
 
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)

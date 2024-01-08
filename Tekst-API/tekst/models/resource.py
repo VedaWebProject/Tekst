@@ -26,13 +26,13 @@ from tekst.models.user import UserRead, UserReadPublic
 
 class ResourceDescriptionTranslation(TranslationBase):
     translation: Annotated[
-        str, StringConstraints(strip_whitespace=True, max_length=512)
+        str, StringConstraints(min_length=1, max_length=512, strip_whitespace=True)
     ]
 
 
 class ResourceCommentTranslation(TranslationBase):
     translation: Annotated[
-        str, StringConstraints(strip_whitespace=True, max_length=2000)
+        str, StringConstraints(min_length=1, max_length=2000, strip_whitespace=True)
     ]
 
 
@@ -40,7 +40,9 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
     """A resource describing a set of data on a text"""
 
     title: Annotated[
-        str, Field(min_length=1, max_length=64, description="Title of this resource")
+        str,
+        StringConstraints(min_length=1, max_length=64, strip_whitespace=True),
+        Field(description="Title of this resource"),
     ]
     description: Annotated[
         Translations[ResourceDescriptionTranslation],
@@ -64,7 +66,8 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
     ] = None
     category: Annotated[
         str | None,
-        Field(description="Resource category key", max_length=16),
+        StringConstraints(min_length=1, max_length=16, strip_whitespace=True),
+        Field(description="Resource category key"),
     ] = None
     shared_read: Annotated[
         list[PydanticObjectId],
@@ -91,7 +94,8 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
     ] = False
     citation: Annotated[
         str | None,
-        Field(description="Citation details for this resource", max_length=1000),
+        StringConstraints(min_length=1, max_length=1000, strip_whitespace=True),
+        Field(description="Citation details for this resource"),
     ] = None
     meta: Metadata = []
     comment: Annotated[

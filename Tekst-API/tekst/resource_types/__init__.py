@@ -133,12 +133,15 @@ def init_resource_types_mgr() -> None:
             # exclude ResourceTypeABC class (which is weirdly picked up here)
             if resource_type_impl[1] is not ResourceTypeABC:
                 resource_type_class = resource_type_impl[1]
-                # init resource type CRUD models (don't init document models here!)
+                # init resource/unit type CRUD models (don't init document models here!)
                 resource_type_class.resource_model().create_model()
                 resource_type_class.resource_model().read_model(
                     (ResourceReadExtras, ReadBase)
                 )
                 resource_type_class.resource_model().update_model()
+                resource_type_class.unit_model().create_model()
+                resource_type_class.unit_model().read_model()
+                resource_type_class.unit_model().update_model()
                 # register resource type instance with resource type manager
                 log.info(f"Registering resource type: {resource_type_class.get_name()}")
                 manager.register(resource_type_class, resource_type_class.get_key())

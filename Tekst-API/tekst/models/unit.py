@@ -3,7 +3,7 @@ import re
 from typing import Annotated
 
 from beanie import PydanticObjectId
-from pydantic import Field, field_validator
+from pydantic import Field, StringConstraints, field_validator
 
 from tekst.models.common import (
     DocumentBase,
@@ -23,9 +23,9 @@ class UnitBase(ModelBase, ModelFactoryMixin):
     node_id: PydanticObjectId = Field(..., description="Parent text node ID")
     comment: Annotated[
         str | None,
+        StringConstraints(min_length=1, max_length=1000, strip_whitespace=True),
         Field(
             description="Plaintext, potentially multiline comment on this unit",
-            max_length=1000,
         ),
     ] = None
 

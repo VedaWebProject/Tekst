@@ -23,6 +23,7 @@ class ClientSegment(ModelBase, ModelFactoryMixin):
             min_length=1,
             max_length=32,
             pattern=r"[a-zA-Z0-9\-_]+",
+            strip_whitespace=True,
         ),
     ]
     is_system_segment: Annotated[
@@ -40,10 +41,14 @@ class ClientSegment(ModelBase, ModelFactoryMixin):
         Field(description="Locale indicating the translation language of this segment"),
     ]
     title: Annotated[
-        str | None, Field(description="Title of this segment", max_length=32)
+        str | None,
+        StringConstraints(min_length=1, max_length=32, strip_whitespace=True),
+        Field(description="Title of this segment"),
     ] = None
     html: Annotated[
-        str, Field(description="HTML content of this segment", max_length=1048576)
+        str,
+        StringConstraints(min_length=1, max_length=1048576, strip_whitespace=True),
+        Field(description="HTML content of this segment"),
     ]
 
     @model_validator(mode="after")

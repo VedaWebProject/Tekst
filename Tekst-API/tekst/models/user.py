@@ -44,10 +44,20 @@ class User(ModelBase, ModelFactoryMixin):
     """This base model defines the custom fields added to FastAPI-User's user model"""
 
     username: Annotated[
-        str, StringConstraints(min_length=4, max_length=16, pattern=r"[a-zA-Z0-9\-_]+")
+        str,
+        StringConstraints(
+            min_length=4,
+            max_length=16,
+            pattern=r"[a-zA-Z0-9\-_]+",
+            strip_whitespace=True,
+        ),
     ]
-    name: Annotated[str, StringConstraints(min_length=1, max_length=64)]
-    affiliation: Annotated[str, StringConstraints(min_length=1, max_length=64)]
+    name: Annotated[
+        str, StringConstraints(min_length=1, max_length=64, strip_whitespace=True)
+    ]
+    affiliation: Annotated[
+        str, StringConstraints(min_length=1, max_length=64, strip_whitespace=True)
+    ]
     locale: LocaleKey | None = None
     public_fields: Annotated[
         list[PublicUserField], Field(description="Data fields set public by this user")

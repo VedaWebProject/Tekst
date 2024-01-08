@@ -8,7 +8,7 @@ from tekst.models.common import ModelBase
 class NodeDefinition(ModelBase):
     label: Annotated[
         str,
-        StringConstraints(min_length=1, max_length=256),
+        StringConstraints(min_length=1, max_length=256, strip_whitespace=True),
     ]
     nodes: list["NodeDefinition"] | None = None
 

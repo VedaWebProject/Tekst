@@ -102,11 +102,12 @@ async def test_client(test_app, config) -> AsyncClient:
     async with AsyncClient(
         app=test_app, base_url=f"{config.server_url}{config.api_path}"
     ) as client:
-        # prepare XSRF token
+        # set XSRF header and cookie if server sends XSRF cookie
         resp = await client.get("/")
         xsrf_token = resp.cookies.get("XSRF-TOKEN")
-        client.headers.setdefault("X-XSRF-TOKEN", xsrf_token)  # set XSRF token header
-        client.cookies.setdefault("XSRF-TOKEN", xsrf_token)  # set XSRF token cookie
+        if xsrf_token:
+            client.headers.setdefault("X-XSRF-TOKEN", xsrf_token)
+            client.cookies.setdefault("XSRF-TOKEN", xsrf_token)
         # yield client instance
         yield client
 

@@ -30,7 +30,7 @@ class Node(ModelBase, ModelFactoryMixin):
     ]
     label: Annotated[
         str,
-        StringConstraints(min_length=1, max_length=256),
+        StringConstraints(min_length=1, max_length=256, strip_whitespace=True),
         Field(description="Label for identifying this text node in level context"),
     ]
 

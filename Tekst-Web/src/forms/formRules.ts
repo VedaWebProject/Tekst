@@ -255,8 +255,9 @@ export const systemSegmentFormRules: Record<string, FormItemRule[]> = {
 export const infoSegmentFormRules: Record<string, FormItemRule[]> = {
   title: [
     {
-      validator: (rule: FormItemRule, value: string) => !value || value.length <= 32,
-      message: () => $t('forms.rulesFeedback.minMaxChars', { min: 0, max: 32 }),
+      validator: (rule: FormItemRule, value: string) =>
+        !value || (value.length >= 1 && value.length <= 32),
+      message: () => $t('forms.rulesFeedback.minMaxChars', { min: 1, max: 32 }),
       trigger: 'blur',
     },
   ],
@@ -317,15 +318,17 @@ export const platformSettingsFormRules: Record<string, FormItemRule[]> = {
   ],
   infoSubtitleTranslation: [
     {
-      validator: (rule: FormItemRule, value: string) => !value || value.length <= 128,
-      message: () => $t('forms.rulesFeedback.minMaxChars', { min: 0, max: 128 }),
+      validator: (rule: FormItemRule, value: string) =>
+        !value || (value.length >= 1 && value.length <= 128),
+      message: () => $t('forms.rulesFeedback.minMaxChars', { min: 1, max: 128 }),
       trigger: 'blur',
     },
   ],
   infoTerms: [
     {
-      validator: (rule: FormItemRule, value: string) => !value || value.length <= 512,
-      message: () => $t('forms.rulesFeedback.minMaxChars', { min: 0, max: 512 }),
+      validator: (rule: FormItemRule, value: string) =>
+        !value || (value.length >= 1 && value.length <= 512),
+      message: () => $t('forms.rulesFeedback.minMaxChars', { min: 1, max: 512 }),
       trigger: 'blur',
     },
   ],
@@ -347,8 +350,9 @@ export const platformSettingsFormRules: Record<string, FormItemRule[]> = {
   ],
   infoContactUrl: [
     {
-      validator: (rule: FormItemRule, value: string) => !value || value.length <= 512,
-      message: () => $t('forms.rulesFeedback.minMaxChars', { min: 0, max: 512 }),
+      validator: (rule: FormItemRule, value: string) =>
+        !value || (value.length >= 1 && value.length <= 512),
+      message: () => $t('forms.rulesFeedback.minMaxChars', { min: 1, max: 512 }),
       trigger: 'blur',
     },
   ],
@@ -363,7 +367,10 @@ export const platformSettingsFormRules: Record<string, FormItemRule[]> = {
   availableLocales: [
     {
       validator: (rule: FormItemRule, value: string[]) =>
-        !!value && value.length >= 1 && value.length <= localeProfiles.length,
+        !!value &&
+        value.length >= 1 &&
+        value.length <= localeProfiles.length &&
+        !value.find((v) => !localeProfiles.filter((lp) => lp.key === v).length),
       message: () => $t('forms.rulesFeedback.minMaxItems', { min: 1, max: localeProfiles.length }),
       trigger: 'blur',
     },

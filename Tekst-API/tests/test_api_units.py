@@ -125,6 +125,28 @@ async def test_update_unit(
     )
     assert resp.status_code == 400, status_fail_msg(400, resp)
 
+    # fail to update unit with bogus resource type
+    resp = await test_client.patch(
+        f"/units/{str(unit.id)}",
+        json={
+            "resourceType": "bogus",
+            "text": "FOO BAR",
+            "resourceId": str(resource.id),
+        },
+    )
+    assert resp.status_code == 422, status_fail_msg(422, resp)
+
+    # fail to update unit with changed resource type
+    resp = await test_client.patch(
+        f"/units/{str(unit.id)}",
+        json={
+            "resourceType": "debug",
+            "text": "FOO BAR",
+            "resourceId": str(resource.id),
+        },
+    )
+    assert resp.status_code == 400, status_fail_msg(400, resp)
+
     # fail to update unit of resource we don't have write access to
     await login(is_superuser=False)
     node = await NodeDocument.find_one(NodeDocument.level == resource.level)

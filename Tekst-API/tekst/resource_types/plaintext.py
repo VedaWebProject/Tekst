@@ -40,7 +40,7 @@ class PlaintextUnit(UnitBase):
     resource_type: Literal["plaintext"]  # snake_cased resource type classname
     text: Annotated[
         str,
-        StringConstraints(strip_whitespace=True, max_length=102400),
+        StringConstraints(min_length=1, max_length=102400, strip_whitespace=True),
         Field(
             description="Text content of the plaintext unit",
         ),

@@ -63,7 +63,7 @@ app = FastAPI(
 )
 
 # add and configure XSRF/CSRF middleware
-if not _cfg.dev_mode or _cfg.dev_use_xsrf_protection:
+if not _cfg.dev_mode or _cfg.dev_use_xsrf_protection:  # pragma: no cover
     app.add_middleware(
         CSRFMiddleware,
         secret=_cfg.security_secret,

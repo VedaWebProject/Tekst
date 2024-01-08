@@ -21,20 +21,26 @@ _cfg: TekstConfig = get_config()  # get (possibly cached) config data
 
 class PlatformDescriptionTranslation(TranslationBase):
     translation: Annotated[
-        str, StringConstraints(strip_whitespace=True, max_length=128)
+        str, StringConstraints(min_length=1, max_length=128, strip_whitespace=True)
     ]
 
 
 class PlatformNavInfoEntryTranslation(TranslationBase):
-    translation: Annotated[str, StringConstraints(strip_whitespace=True, max_length=16)]
+    translation: Annotated[
+        str, StringConstraints(min_length=1, max_length=16, strip_whitespace=True)
+    ]
 
 
 class ResourceCategoryTranslation(TranslationBase):
-    translation: Annotated[str, StringConstraints(strip_whitespace=True, max_length=32)]
+    translation: Annotated[
+        str, StringConstraints(min_length=1, max_length=32, strip_whitespace=True)
+    ]
 
 
 class ResourceCategory(TypedDict):
-    key: Annotated[str, StringConstraints(min_length=1, max_length=16)]
+    key: Annotated[
+        str, StringConstraints(min_length=1, max_length=16, strip_whitespace=True)
+    ]
     translations: Translations[ResourceCategoryTranslation]
 
 
@@ -45,7 +51,7 @@ class PlatformSettings(ModelBase, ModelFactoryMixin):
 
     info_platform_name: Annotated[
         str,
-        StringConstraints(min_length=1, max_length=32),
+        StringConstraints(min_length=1, max_length=32, strip_whitespace=True),
         Field(description="Name of the platform"),
     ] = _cfg.info_platform_name
     info_subtitle: Annotated[
@@ -59,12 +65,12 @@ class PlatformSettings(ModelBase, ModelFactoryMixin):
     ] = None
     info_contact_name: Annotated[
         str | None,
-        StringConstraints(min_length=1, max_length=64),
+        StringConstraints(min_length=1, max_length=64, strip_whitespace=True),
         Field(description="Platform contact name"),
     ] = None
     info_contact_email: Annotated[
         EmailStr | None,
-        StringConstraints(min_length=1, max_length=64),
+        StringConstraints(min_length=1, max_length=64, strip_whitespace=True),
         Field(description="Platform contact email"),
     ] = None
     info_contact_url: Annotated[
