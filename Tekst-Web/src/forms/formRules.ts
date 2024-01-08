@@ -98,14 +98,14 @@ export const accountFormRules: Record<string, FormItemRule[]> = {
     {
       required: true,
       message: () => $t('forms.rulesFeedback.isRequired', { x: $t('models.user.email') }),
-      trigger: 'blur',
+      trigger: 'input',
     },
   ],
   loginPassword: [
     {
       required: true,
       message: () => $t('forms.rulesFeedback.isRequired', { x: $t('models.user.password') }),
-      trigger: 'blur',
+      trigger: 'input',
     },
   ],
 };
