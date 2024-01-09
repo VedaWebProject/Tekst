@@ -324,8 +324,10 @@ units:
   heading: Edit resource content
   lblBtnDownloadTemplate: Template
   tipBtnDownloadTemplate: Download import template
+  lblBtnCompare: Compare
+  lblBtnCompareTip: Select resource to compare contents with
   lblBtnUploadUnits: Import
-  tipBtnUploadUnits: Import content
+  tipBtnUploadUnits: Import content via preprocessed import file
   noUnit: There is no content for this location.
   btnAddUnit: Add content
   msgSaved: The content for this location has been saved.

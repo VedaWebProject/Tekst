@@ -333,8 +333,10 @@ units:
   heading: Ressourcen-Inhalte bearbeiten
   lblBtnDownloadTemplate: Vorlage
   tipBtnDownloadTemplate: Importvorlage herunterladen
+  lblBtnCompare: Vergleichen
+  lblBtnCompareTip: Ressource auswählen, um Inhalte zu vergleichen
   lblBtnUploadUnits: Importieren
-  tipBtnUploadUnits: Inhalte importieren
+  tipBtnUploadUnits: Inhalte über vorverarbeitete Datei importieren
   noUnit: Für diese Fundstelle liegen keine Inhalte vor.
   btnAddUnit: Inhalt hinzufügen
   msgSaved: Der Inhalt für diese Fundstelle wurde gespeichert.

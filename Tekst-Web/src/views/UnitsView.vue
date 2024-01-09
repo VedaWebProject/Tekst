@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { NSpace, NForm, NButton, type FormInst, useDialog } from 'naive-ui';
+import { NDropdown, NSpace, NForm, NButton, type FormInst, useDialog } from 'naive-ui';
 import {
   type AnyResourceRead,
   getFullUrl,
@@ -40,6 +40,7 @@ import FileDownloadSharp from '@vicons/material/FileDownloadSharp';
 import FileUploadSharp from '@vicons/material/FileUploadSharp';
 import FolderOffTwotone from '@vicons/material/FolderOffTwotone';
 import InsertDriveFileOutlined from '@vicons/material/InsertDriveFileOutlined';
+import CompareOutlined from '@vicons/material/CompareOutlined';
 
 type UnitFormModel = AnyUnitCreate & { id: string };
 
@@ -64,6 +65,13 @@ const nodeParent = computed<NodeRead | undefined>(
 const initialModel = ref<UnitFormModel>();
 const model = ref<UnitFormModel | undefined>(initialModel.value);
 const { changed, reset, getChanges } = useModelChanges(model);
+
+const compareResourceOptions = computed(() =>
+  resources.data.map((r) => ({
+    label: r.title,
+    key: r.id,
+  }))
+);
 
 // go to resource overview if text changes
 watch(
@@ -254,6 +262,10 @@ function handleJumpToSubmit(nodePath: NodeRead[]) {
   });
 }
 
+function handleSelectcompareResource(key: string) {
+  alert(key);
+}
+
 // react to keyboard for in-/decreasing location
 whenever(ArrowRight, () => {
   navigateUnits(1);
@@ -311,7 +323,24 @@ whenever(ArrowLeft, () => {
       </n-button>
     </template>
 
-    <template #center> [compare layer select goes here] </template>
+    <n-dropdown
+      trigger="click"
+      :options="compareResourceOptions"
+      to="#app-container"
+      @select="handleSelectcompareResource"
+    >
+      <n-button
+        secondary
+        :disabled="loading"
+        :focusable="false"
+        :title="$t('units.lblBtnCompareTip')"
+      >
+        <template #icon>
+          <CompareOutlined />
+        </template>
+        {{ $t('units.lblBtnCompare') }}
+      </n-button>
+    </n-dropdown>
 
     <n-button
       secondary
