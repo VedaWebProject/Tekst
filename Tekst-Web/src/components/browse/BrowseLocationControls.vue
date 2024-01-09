@@ -38,7 +38,6 @@ function handleLocationSelect(nodePath: NodeRead[]) {
     name: 'browse',
     params: { ...route.params },
     query: {
-      ...route.query,
       lvl: selectedNode.level,
       pos: selectedNode.position,
     },

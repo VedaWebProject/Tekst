@@ -104,9 +104,8 @@ watch(
           :key="node.position"
           :to="{
             name: 'browse',
-            params: { ...route.params },
+            params: { text: route.params.text },
             query: {
-              ...route.query,
               lvl: resource.level,
               pos: node.position,
             },
