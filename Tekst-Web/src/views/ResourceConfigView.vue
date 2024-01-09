@@ -111,30 +111,32 @@ async function handleSaveClick() {
   </h2>
 
   <template v-if="model">
-    <n-form
-      ref="formRef"
-      :model="model"
-      :rules="resourceConfigFormRules"
-      label-placement="top"
-      :disabled="loading"
-      label-width="auto"
-      require-mark-placement="right-hanging"
-    >
-      <ResourceFormItems
-        v-model:model="model"
-        :owner="resource?.owner"
-        :public="resource?.public"
-      />
-    </n-form>
+    <div class="content-block">
+      <n-form
+        ref="formRef"
+        :model="model"
+        :rules="resourceConfigFormRules"
+        label-placement="top"
+        :disabled="loading"
+        label-width="auto"
+        require-mark-placement="right-hanging"
+      >
+        <ResourceFormItems
+          v-model:model="model"
+          :owner="resource?.owner"
+          :public="resource?.public"
+        />
+      </n-form>
 
-    <ButtonFooter style="margin-bottom: var(--layout-gap)">
-      <n-button secondary :disabled="!changed" @click="handleResetClick">
-        {{ $t('general.resetAction') }}
-      </n-button>
-      <n-button type="primary" :disabled="!changed" @click="handleSaveClick">
-        {{ $t('general.saveAction') }}
-      </n-button>
-    </ButtonFooter>
+      <ButtonFooter>
+        <n-button secondary :disabled="!changed" @click="handleResetClick">
+          {{ $t('general.resetAction') }}
+        </n-button>
+        <n-button type="primary" :disabled="!changed" @click="handleSaveClick">
+          {{ $t('general.saveAction') }}
+        </n-button>
+      </ButtonFooter>
+    </div>
   </template>
 
   <n-spin v-else-if="loading" size="large" style="width: 100%" />

@@ -195,11 +195,11 @@ async function handleSave() {
         </n-dynamic-input>
       </n-form-item>
     </n-form>
-  </div>
 
-  <ButtonFooter style="margin-bottom: var(--layout-gap)">
-    <n-button type="primary" :disabled="loading" :loading="loading" @click="handleSave">
-      {{ $t('general.saveAction') }}
-    </n-button>
-  </ButtonFooter>
+    <ButtonFooter>
+      <n-button type="primary" :disabled="loading" :loading="loading" @click="handleSave">
+        {{ $t('general.saveAction') }}
+      </n-button>
+    </ButtonFooter>
+  </div>
 </template>

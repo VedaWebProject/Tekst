@@ -18,6 +18,7 @@ import {
   NSelect,
   NSpace,
   NIcon,
+  NDivider,
   NDynamicInput,
   NFormItem,
   NTag,
@@ -152,161 +153,163 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
 </script>
 
 <template>
-  <div class="content-block">
-    <h3>{{ $t('resources.headingGeneral') }}</h3>
-    <!-- TITLE -->
-    <n-form-item path="title" :label="$t('models.resource.title')" required>
-      <n-input
-        :value="model.title"
-        type="text"
-        :placeholder="$t('models.resource.title')"
-        @update:value="(v) => handleUpdate('title', v)"
-        @keydown.enter.prevent
-      />
-    </n-form-item>
-    <!-- DESCRIPTION -->
-    <TranslationFormItem
-      :value="model.description"
-      parent-form-path-prefix="description"
-      :main-form-label="$t('models.resource.description')"
-      :translation-form-label="$t('models.resource.description')"
-      :translation-form-rule="resourceConfigFormRules.descriptionTranslation"
-      @update:value="(v) => handleUpdate('description', v)"
+  <h3>{{ $t('resources.headingGeneral') }}</h3>
+  <!-- TITLE -->
+  <n-form-item path="title" :label="$t('models.resource.title')" required>
+    <n-input
+      :value="model.title"
+      type="text"
+      :placeholder="$t('models.resource.title')"
+      @update:value="(v) => handleUpdate('title', v)"
+      @keydown.enter.prevent
     />
-    <!-- CITATION -->
-    <n-form-item path="citation" :label="$t('models.resource.citation')">
-      <n-input
-        :value="model.citation"
-        type="text"
-        :placeholder="$t('models.resource.citation')"
-        @keydown.enter.prevent
-        @update:value="(v) => handleUpdate('citation', v)"
-      />
-    </n-form-item>
-    <!-- COMMENT -->
-    <TranslationFormItem
-      :value="model.comment"
-      parent-form-path-prefix="comment"
-      multiline
-      :max-translation-length="2000"
-      :main-form-label="$t('models.resource.comment')"
-      :translation-form-label="$t('models.resource.comment')"
-      :translation-form-rule="resourceConfigFormRules.commentTranslation"
-      @update:value="(v) => handleUpdate('comment', v)"
+  </n-form-item>
+  <!-- DESCRIPTION -->
+  <TranslationFormItem
+    :value="model.description"
+    parent-form-path-prefix="description"
+    :main-form-label="$t('models.resource.description')"
+    :translation-form-label="$t('models.resource.description')"
+    :translation-form-rule="resourceConfigFormRules.descriptionTranslation"
+    @update:value="(v) => handleUpdate('description', v)"
+  />
+  <!-- CITATION -->
+  <n-form-item path="citation" :label="$t('models.resource.citation')">
+    <n-input
+      :value="model.citation"
+      type="text"
+      :placeholder="$t('models.resource.citation')"
+      @keydown.enter.prevent
+      @update:value="(v) => handleUpdate('citation', v)"
     />
-  </div>
+  </n-form-item>
+  <!-- COMMENT -->
+  <TranslationFormItem
+    :value="model.comment"
+    parent-form-path-prefix="comment"
+    multiline
+    :max-translation-length="2000"
+    :main-form-label="$t('models.resource.comment')"
+    :translation-form-label="$t('models.resource.comment')"
+    :translation-form-rule="resourceConfigFormRules.commentTranslation"
+    @update:value="(v) => handleUpdate('comment', v)"
+  />
+
+  <n-divider />
 
   <!-- METADATA -->
-  <div class="content-block">
-    <h3>
-      {{ $t('models.meta.modelLabel') }}
-      <HelpButtonWidget help-key="metadataForm" />
-    </h3>
-    <n-form-item v-if="model.meta" :show-label="false" :show-feedback="false">
-      <n-dynamic-input
-        :value="model.meta"
-        item-style="margin-bottom: 0;"
-        :min="0"
-        :max="64"
-        @create="() => ({ key: '', value: '' })"
-        @update:value="(v) => handleUpdate('meta', v)"
-      >
-        <template #default="{ index, value: metaEntryValue }">
-          <div style="display: flex; align-items: flex-start; gap: 12px; width: 100%">
-            <n-form-item
-              ignore-path-change
-              :show-label="false"
-              :path="`meta[${index}].key`"
-              :rule="resourceConfigFormRules.metaKey"
-              required
-            >
-              <n-select
-                v-model:value="metaEntryValue.key"
-                filterable
-                tag
-                :options="metadataKeysOptions"
-              />
-            </n-form-item>
-            <n-form-item
-              ignore-path-changechange
-              :show-label="false"
-              :path="`meta[${index}].value`"
-              :rule="resourceConfigFormRules.metaValue"
-              style="flex-grow: 2"
-              required
-            >
-              <n-input
-                v-model:value="metaEntryValue.value"
-                :placeholder="$t('models.meta.value')"
-                @keydown.enter.prevent
-              />
-            </n-form-item>
-          </div>
-        </template>
-        <template #action="{ index: indexAction, create, remove, move }">
-          <n-space style="margin-left: 20px; flex-wrap: nowrap">
-            <n-button
-              secondary
-              circle
-              :title="$t('general.removeAction')"
-              @click="() => remove(indexAction)"
-            >
-              <template #icon>
-                <n-icon :component="MinusRound" />
-              </template>
-            </n-button>
-            <n-button
-              secondary
-              circle
-              :title="$t('general.insertAction')"
-              :disabled="model.meta.length >= 64"
-              @click="() => create(indexAction)"
-            >
-              <template #icon>
-                <n-icon :component="AddOutlined" />
-              </template>
-            </n-button>
-            <n-button
-              secondary
-              circle
-              :title="$t('general.moveUpAction')"
-              :disabled="indexAction === 0"
-              :focusable="false"
-              @click="() => move('up', indexAction)"
-            >
-              <template #icon>
-                <n-icon :component="ArrowUpwardOutlined" />
-              </template>
-            </n-button>
-            <n-button
-              secondary
-              circle
-              :title="$t('general.moveDownAction')"
-              :disabled="indexAction === model.meta.length - 1"
-              :focusable="false"
-              @click="() => move('down', indexAction)"
-            >
-              <template #icon>
-                <n-icon :component="ArrowDownwardOutlined" />
-              </template>
-            </n-button>
-          </n-space>
-        </template>
-      </n-dynamic-input>
-    </n-form-item>
-  </div>
+  <h3>
+    {{ $t('models.meta.modelLabel') }}
+    <HelpButtonWidget help-key="metadataForm" />
+  </h3>
+  <n-form-item v-if="model.meta" :show-label="false" :show-feedback="false">
+    <n-dynamic-input
+      :value="model.meta"
+      item-style="margin-bottom: 0;"
+      :min="0"
+      :max="64"
+      @create="() => ({ key: '', value: '' })"
+      @update:value="(v) => handleUpdate('meta', v)"
+    >
+      <template #default="{ index, value: metaEntryValue }">
+        <div style="display: flex; align-items: flex-start; gap: 12px; width: 100%">
+          <n-form-item
+            ignore-path-change
+            :show-label="false"
+            :path="`meta[${index}].key`"
+            :rule="resourceConfigFormRules.metaKey"
+            required
+          >
+            <n-select
+              v-model:value="metaEntryValue.key"
+              filterable
+              tag
+              :options="metadataKeysOptions"
+            />
+          </n-form-item>
+          <n-form-item
+            ignore-path-changechange
+            :show-label="false"
+            :path="`meta[${index}].value`"
+            :rule="resourceConfigFormRules.metaValue"
+            style="flex-grow: 2"
+            required
+          >
+            <n-input
+              v-model:value="metaEntryValue.value"
+              :placeholder="$t('models.meta.value')"
+              @keydown.enter.prevent
+            />
+          </n-form-item>
+        </div>
+      </template>
+      <template #action="{ index: indexAction, create, remove, move }">
+        <n-space style="margin-left: 20px; flex-wrap: nowrap">
+          <n-button
+            secondary
+            circle
+            :title="$t('general.removeAction')"
+            @click="() => remove(indexAction)"
+          >
+            <template #icon>
+              <n-icon :component="MinusRound" />
+            </template>
+          </n-button>
+          <n-button
+            secondary
+            circle
+            :title="$t('general.insertAction')"
+            :disabled="model.meta.length >= 64"
+            @click="() => create(indexAction)"
+          >
+            <template #icon>
+              <n-icon :component="AddOutlined" />
+            </template>
+          </n-button>
+          <n-button
+            secondary
+            circle
+            :title="$t('general.moveUpAction')"
+            :disabled="indexAction === 0"
+            :focusable="false"
+            @click="() => move('up', indexAction)"
+          >
+            <template #icon>
+              <n-icon :component="ArrowUpwardOutlined" />
+            </template>
+          </n-button>
+          <n-button
+            secondary
+            circle
+            :title="$t('general.moveDownAction')"
+            :disabled="indexAction === model.meta.length - 1"
+            :focusable="false"
+            @click="() => move('down', indexAction)"
+          >
+            <template #icon>
+              <n-icon :component="ArrowDownwardOutlined" />
+            </template>
+          </n-button>
+        </n-space>
+      </template>
+    </n-dynamic-input>
+  </n-form-item>
+
+  <n-divider />
 
   <!-- CONFIG -->
-  <div v-if="model.config" class="content-block">
+  <template v-if="model.config">
     <ResourceConfigFormItems
       :model="model.config"
       :resource-type="model.resourceType"
       @update:model="(v: AnyResourceConfig) => handleUpdate('config', v)"
     />
-  </div>
+  </template>
+
+  <n-divider />
 
   <!-- ACCESS SHARES -->
-  <div v-if="sharingAuthorized && model.sharedRead && model.sharedWrite" class="content-block">
+  <template v-if="sharingAuthorized && model.sharedRead && model.sharedWrite">
     <h3>{{ $t('models.resource.share') }}</h3>
     <div
       v-if="public"
@@ -358,5 +361,5 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
         @search="handleUserSearch"
       />
     </n-form-item>
-  </div>
+  </template>
 </template>

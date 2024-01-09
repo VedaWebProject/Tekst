@@ -6,6 +6,7 @@ import {
   NIcon,
   NDynamicInput,
   NCheckbox,
+  NDivider,
   NButton,
   NSpace,
   NButtonGroup,
@@ -99,16 +100,16 @@ function resetForm() {
     <HelpButtonWidget help-key="adminSystemSettingsView" />
   </h2>
 
-  <n-form
-    ref="formRef"
-    :model="formModel"
-    :rules="platformSettingsFormRules"
-    :disabled="loading"
-    label-placement="top"
-    label-width="auto"
-    require-mark-placement="right-hanging"
-  >
-    <div class="content-block">
+  <div class="content-block">
+    <n-form
+      ref="formRef"
+      :model="formModel"
+      :rules="platformSettingsFormRules"
+      :disabled="loading"
+      label-placement="top"
+      label-width="auto"
+      require-mark-placement="right-hanging"
+    >
       <h3>{{ $t('admin.system.platformSettings.headingInfo') }}</h3>
 
       <!-- PLATFORM TITLE -->
@@ -165,9 +166,8 @@ function resetForm() {
           @keydown.enter.prevent
         />
       </n-form-item>
-    </div>
 
-    <div class="content-block">
+      <n-divider />
       <h3>{{ $t('admin.system.platformSettings.headingOptions') }}</h3>
 
       <!-- DEFAULT TEXT -->
@@ -225,11 +225,11 @@ function resetForm() {
           </n-checkbox>
         </n-space>
       </n-form-item>
-    </div>
 
-    <div class="content-block">
-      <h3>{{ $t('models.platformSettings.resourceCategories') }}</h3>
+      <n-divider />
+
       <!-- RESOURCE CATEGORIES-->
+      <h3>{{ $t('models.platformSettings.resourceCategories') }}</h3>
       <n-form-item v-if="formModel.resourceCategories" :show-label="false">
         <n-dynamic-input
           v-model:value="formModel.resourceCategories"
@@ -318,6 +318,7 @@ function resetForm() {
           </template>
         </n-dynamic-input>
       </n-form-item>
+
       <n-form-item :show-label="false">
         <n-space vertical>
           <!-- SHOW RESOURCE CATEGORY HEADINGS -->
@@ -337,14 +338,14 @@ function resetForm() {
           </n-checkbox>
         </n-space>
       </n-form-item>
-    </div>
-  </n-form>
-  <ButtonFooter style="margin-bottom: var(--layout-gap)">
-    <n-button secondary :disabled="!changed" @click="resetForm">{{
-      $t('general.resetAction')
-    }}</n-button>
-    <n-button type="primary" :disabled="!changed" @click="handleSaveClick">{{
-      $t('general.saveAction')
-    }}</n-button>
-  </ButtonFooter>
+    </n-form>
+    <ButtonFooter>
+      <n-button secondary :disabled="!changed" @click="resetForm">{{
+        $t('general.resetAction')
+      }}</n-button>
+      <n-button type="primary" :disabled="!changed" @click="handleSaveClick">{{
+        $t('general.saveAction')
+      }}</n-button>
+    </ButtonFooter>
+  </div>
 </template>

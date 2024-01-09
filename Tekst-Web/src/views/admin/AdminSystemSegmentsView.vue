@@ -330,18 +330,18 @@ async function handleDeleteClick() {
           />
         </n-form-item>
       </n-form>
-    </div>
 
-    <ButtonFooter style="margin-bottom: var(--layout-gap)">
-      <n-button secondary @click="handleCancelClick">{{ $t('general.cancelAction') }}</n-button>
-      <n-button
-        type="primary"
-        :loading="loading"
-        :disabled="!modelChanged"
-        @click="handleSaveClick"
-        >{{ $t('general.saveAction') }}</n-button
-      >
-    </ButtonFooter>
+      <ButtonFooter>
+        <n-button secondary @click="handleCancelClick">{{ $t('general.cancelAction') }}</n-button>
+        <n-button
+          type="primary"
+          :loading="loading"
+          :disabled="!modelChanged"
+          @click="handleSaveClick"
+          >{{ $t('general.saveAction') }}</n-button
+        >
+      </ButtonFooter>
+    </div>
   </template>
 
   <HugeLabeledIcon

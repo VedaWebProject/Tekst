@@ -24,8 +24,8 @@ import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
 import _cloneDeep from 'lodash.clonedeep';
 import TranslationFormItem from '@/forms/TranslationFormItem.vue';
-
 import router from '@/router';
+import ButtonFooter from '@/components/ButtonFooter.vue';
 
 const state = useStateStore();
 const { pfData, loadPlatformData } = usePlatformData();
@@ -230,35 +230,28 @@ async function handleDelete() {
         </n-space>
       </n-form-item>
     </n-form>
-  </div>
 
-  <div
-    style="
-      display: flex;
-      gap: var(--layout-gap);
-      margin-top: 0.5rem;
-      margin-bottom: var(--layout-gap);
-    "
-  >
-    <n-button secondary type="error" :disabled="!textCanBeDeleted" @click="handleDelete">
-      {{ $t('general.deleteAction') }}
-    </n-button>
-    <div style="flex-grow: 2"></div>
-    <n-button
-      secondary
-      :loading="loading"
-      :disabled="loading || !modelChanged"
-      @click="() => handleReset"
-    >
-      {{ $t('general.resetAction') }}
-    </n-button>
-    <n-button
-      type="primary"
-      :loading="loading"
-      :disabled="loading || !modelChanged"
-      @click="handleSave"
-    >
-      {{ $t('general.saveAction') }}
-    </n-button>
+    <ButtonFooter>
+      <n-button secondary type="error" :disabled="!textCanBeDeleted" @click="handleDelete">
+        {{ $t('general.deleteAction') }}
+      </n-button>
+      <div style="flex: 2"></div>
+      <n-button
+        secondary
+        :loading="loading"
+        :disabled="loading || !modelChanged"
+        @click="() => handleReset"
+      >
+        {{ $t('general.resetAction') }}
+      </n-button>
+      <n-button
+        type="primary"
+        :loading="loading"
+        :disabled="loading || !modelChanged"
+        @click="handleSave"
+      >
+        {{ $t('general.saveAction') }}
+      </n-button>
+    </ButtonFooter>
   </div>
 </template>
