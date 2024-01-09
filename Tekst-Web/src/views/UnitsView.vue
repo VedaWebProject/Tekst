@@ -1,5 +1,14 @@
 <script setup lang="ts">
-import { NDropdown, NSpace, NForm, NButton, type FormInst, useDialog } from 'naive-ui';
+import {
+  NIcon,
+  NAlert,
+  NDropdown,
+  NSpace,
+  NForm,
+  NButton,
+  type FormInst,
+  useDialog,
+} from 'naive-ui';
 import {
   type AnyResourceRead,
   getFullUrl,
@@ -30,6 +39,7 @@ import UnitFormItems from '@/forms/resources/UnitFormItems.vue';
 import { defaultUnitModels } from '@/forms/resources/defaultUnitModels';
 import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
 import LocationSelectModal from '@/components/LocationSelectModal.vue';
+import unitComponents from '@/components/browse/units/mappings';
 
 import EditNoteOutlined from '@vicons/material/EditNoteOutlined';
 import KeyboardArrowLeftOutlined from '@vicons/material/KeyboardArrowLeftOutlined';
@@ -40,7 +50,7 @@ import FileDownloadSharp from '@vicons/material/FileDownloadSharp';
 import FileUploadSharp from '@vicons/material/FileUploadSharp';
 import FolderOffTwotone from '@vicons/material/FolderOffTwotone';
 import InsertDriveFileOutlined from '@vicons/material/InsertDriveFileOutlined';
-import CompareOutlined from '@vicons/material/CompareOutlined';
+import CompareArrowsOutlined from '@vicons/material/CompareArrowsOutlined';
 
 type UnitFormModel = AnyUnitCreate & { id: string };
 
@@ -62,15 +72,20 @@ const node = computed<NodeRead | undefined>(() => nodePath.value?.[resource.valu
 const nodeParent = computed<NodeRead | undefined>(
   () => nodePath.value?.[(resource.value?.level ?? -1) - 1]
 );
-const initialModel = ref<UnitFormModel>();
-const model = ref<UnitFormModel | undefined>(initialModel.value);
+const initialUnitModel = ref<UnitFormModel>();
+const model = ref<UnitFormModel | undefined>(initialUnitModel.value);
 const { changed, reset, getChanges } = useModelChanges(model);
 
+const compareResourceId = ref<string>();
+const compareResource = ref<AnyResourceRead>();
 const compareResourceOptions = computed(() =>
-  resources.data.map((r) => ({
-    label: r.title,
-    key: r.id,
-  }))
+  resources.data
+    .filter((r) => r.id !== resource.value?.id && r.level === resource.value?.level)
+    .map((r) => ({
+      label: r.title,
+      key: r.id,
+      disabled: r.id === compareResourceId.value,
+    }))
 );
 
 // go to resource overview if text changes
@@ -81,61 +96,96 @@ watch(
   }
 );
 
-// watch view state
-watch(
-  [() => resources.data, position],
-  async ([newResources, newNodePosition]) => {
-    if (!newResources.length || newNodePosition == null) return;
-    loading.value = true;
-    resource.value = newResources.find((l) => l.id === route.params.id.toString());
-    if (!resource.value) {
-      router.push({ name: 'resources', params: { text: state.text?.slug } });
-      return;
-    }
-    // load current node (and parents) data
-    const { data, error } = await GET('/browse/nodes/path', {
+async function loadNodePath() {
+  if (!resource.value || !Number.isInteger(position.value)) {
+    return;
+  }
+  loading.value = true;
+  const { data, error } = await GET('/browse/nodes/path', {
+    params: {
+      query: {
+        textId: state.text?.id || '',
+        level: resource.value.level,
+        position: position.value,
+      },
+    },
+  });
+  if (!error && data.length) {
+    // requested node exists, set current node path
+    nodePath.value = data;
+    await loadUnits();
+    resetForm();
+  } else {
+    // requested node does not exist, go back to first unit at first node
+    router.replace({
+      name: 'resourceUnits',
       params: {
-        query: {
-          textId: state.text?.id || '',
-          level: resource.value.level,
-          position: newNodePosition,
-        },
+        ...route.params,
+        pos: 0,
       },
     });
-    if (!error && data.length) {
-      // requested node exists, set current node path
-      nodePath.value = data;
-    } else {
-      // requested node does not exist, go back to first unit at first node
-      router.replace({
-        name: 'resourceUnits',
-        params: {
-          ...route.params,
-          pos: 0,
-        },
-      });
+  }
+  loading.value = false;
+}
+
+async function loadUnits() {
+  if (!nodePath.value || !resource.value) {
+    return;
+  }
+  loading.value = true;
+  const { data, error } = await GET('/units', {
+    params: {
+      query: {
+        resourceId: [
+          resource.value.id,
+          ...(compareResourceId.value ? [compareResourceId.value] : []),
+        ],
+        nodeId: [nodePath.value[nodePath.value.length - 1].id],
+        limit: 2,
+      },
+    },
+  });
+  if (!error) {
+    initialUnitModel.value = data.find((u) => u.resourceId === resource.value?.id);
+    const compareUnit = data.find((u) => u.resourceId === compareResourceId.value);
+    if (compareUnit) {
+      compareResource.value = resources.data.find((r) => r.id === compareUnit?.resourceId);
+      if (compareResource.value) {
+        compareResource.value.units = compareUnit ? [compareUnit] : [];
+      }
+    }
+  } else {
+    message.error($t('errors.unexpected'), error);
+  }
+  loading.value = false;
+}
+
+// watch for position change and resources data updates
+watch(
+  [position, () => resources.data],
+  async ([newPosition, newResources]) => {
+    if (!newResources.length || newPosition == null) {
       return;
     }
-    // load unit data
-    initialModel.value = (
-      await GET('/units', {
-        params: {
-          query: {
-            resourceId: [resource.value.id],
-            nodeId: [data[data.length - 1].id],
-            limit: 1,
-          },
-        },
-      })
-    ).data?.[0];
-    resetForm();
-    loading.value = false;
+    if (!resource.value) {
+      resource.value = newResources.find((l) => l.id === route.params.id.toString());
+      if (!resource.value) {
+        router.push({ name: 'resources', params: { text: state.text?.slug } });
+        return;
+      }
+    }
+    await loadNodePath();
   },
   { immediate: true }
 );
 
+// watch for compare resource ID change
+watch(compareResourceId, async () => {
+  await loadUnits();
+});
+
 function resetForm() {
-  model.value = initialModel.value;
+  model.value = initialUnitModel.value;
   reset();
   formRef.value?.restoreValidation();
 }
@@ -152,7 +202,7 @@ async function handleSaveClick() {
           body: getChanges(['resourceType']) as AnyUnitUpdate,
         });
         if (!error) {
-          initialModel.value = data;
+          initialUnitModel.value = data;
           resetForm();
           message.success($t('units.msgSaved'));
         } else {
@@ -165,7 +215,7 @@ async function handleSaveClick() {
         });
         if (!error) {
           resources.resetCoverage(resource.value?.id);
-          initialModel.value = data;
+          initialUnitModel.value = data;
           resetForm();
           message.success($t('units.msgSaved'));
         } else {
@@ -205,7 +255,7 @@ async function deleteUnit() {
   const { error } = await DELETE('/units/{id}', { params: { path: { id: model.value.id } } });
   if (!error) {
     resources.resetCoverage(resource.value?.id);
-    initialModel.value = undefined;
+    initialUnitModel.value = undefined;
     resetForm();
     message.success($t('units.msgDeleted'));
   } else {
@@ -235,13 +285,13 @@ async function handleDeleteUnitClick() {
 
 function handleAddUnitClick() {
   if (resource.value && node.value) {
-    initialModel.value = {
+    initialUnitModel.value = {
       ...defaultUnitModels[resource.value.resourceType],
       resourceId: resource.value.id,
       resourceType: resource.value.resourceType,
       nodeId: node.value.id,
     } as UnitFormModel;
-    model.value = initialModel.value;
+    model.value = initialUnitModel.value;
   }
 }
 
@@ -263,7 +313,12 @@ function handleJumpToSubmit(nodePath: NodeRead[]) {
 }
 
 function handleSelectcompareResource(key: string) {
-  alert(key);
+  compareResourceId.value = key;
+}
+
+function handleCloseComparison() {
+  compareResourceId.value = undefined;
+  compareResource.value = undefined;
 }
 
 // react to keyboard for in-/decreasing location
@@ -336,7 +391,7 @@ whenever(ArrowLeft, () => {
         :title="$t('units.lblBtnCompareTip')"
       >
         <template #icon>
-          <CompareOutlined />
+          <n-icon :component="CompareArrowsOutlined" />
         </template>
         {{ $t('units.lblBtnCompare') }}
       </n-button>
@@ -377,6 +432,26 @@ whenever(ArrowLeft, () => {
           {{ nodeParent.label }})
         </template>
       </IconHeading>
+
+      <n-alert
+        v-if="compareResource"
+        closable
+        type="default"
+        style="margin-bottom: var(--layout-gap); border: 1px dashed var(--main-bg-color)"
+        :title="`${compareResource.title} (${$t('units.forComparison')})`"
+        :bordered="false"
+        @after-leave="handleCloseComparison"
+      >
+        <template #icon>
+          <n-icon :component="CompareArrowsOutlined" />
+        </template>
+        <div style="opacity: 0.8">
+          <component
+            :is="unitComponents[compareResource.resourceType]"
+            :resource="compareResource"
+          />
+        </div>
+      </n-alert>
 
       <template v-if="model">
         <n-form

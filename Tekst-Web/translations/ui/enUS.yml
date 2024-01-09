@@ -325,7 +325,8 @@ units:
   lblBtnDownloadTemplate: Template
   tipBtnDownloadTemplate: Download import template
   lblBtnCompare: Compare
-  lblBtnCompareTip: Select resource to compare contents with
+  lblBtnCompareTip: Select other resource to compare with
+  forComparison: for comparison
   lblBtnUploadUnits: Import
   tipBtnUploadUnits: Import content via preprocessed import file
   noUnit: There is no content for this location.

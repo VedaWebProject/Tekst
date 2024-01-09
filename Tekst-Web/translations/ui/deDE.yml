@@ -334,7 +334,8 @@ units:
   lblBtnDownloadTemplate: Vorlage
   tipBtnDownloadTemplate: Importvorlage herunterladen
   lblBtnCompare: Vergleichen
-  lblBtnCompareTip: Ressource auswählen, um Inhalte zu vergleichen
+  lblBtnCompareTip: Andere Ressource auswählen, um mit ihr zu vergleichen
+  forComparison: zum Vergleich
   lblBtnUploadUnits: Importieren
   tipBtnUploadUnits: Inhalte über vorverarbeitete Datei importieren
   noUnit: Für diese Fundstelle liegen keine Inhalte vor.

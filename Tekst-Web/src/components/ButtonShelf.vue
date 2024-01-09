@@ -35,7 +35,6 @@ const containerStyle = computed<CSSProperties>(() => ({
 <style scoped>
 .sub-group {
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
   gap: var(--content-gap);
 }
