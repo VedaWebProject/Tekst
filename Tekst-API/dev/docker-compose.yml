@@ -1,7 +1,6 @@
 version: "3.9"
 
 services:
-
   caddy:
     image: "caddy:2.6-alpine"
     volumes:
@@ -27,7 +26,7 @@ services:
     command: mongod --setParameter diagnosticDataCollectionEnabled=false
 
   mongo-express:
-    image: mongo-express:1.0.0-alpha.4
+    image: mongo-express:1.0.2
     restart: always
     init: true
     depends_on:
@@ -37,8 +36,8 @@ services:
     environment:
       ME_CONFIG_MONGODB_URL: mongodb://mongo:27017/
       ME_CONFIG_BASICAUTH: false
-      ME_CONFIG_BASICAUTH_USERNAME: ''
-      ME_CONFIG_BASICAUTH_PASSWORD: ''
+      ME_CONFIG_BASICAUTH_USERNAME: ""
+      ME_CONFIG_BASICAUTH_PASSWORD: ""
     networks:
       - devstack
     profiles:
