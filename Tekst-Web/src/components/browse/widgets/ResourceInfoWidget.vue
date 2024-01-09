@@ -119,7 +119,8 @@ watch(showInfoModal, async (after) => {
         </span>
         <span style="flex: 2"></span>
         <n-button
-          secondary
+          quaternary
+          type="primary"
           size="small"
           :focusable="false"
           @click="showCoverageDetailsModal = true"
@@ -130,7 +131,7 @@ watch(showInfoModal, async (after) => {
       <n-progress
         type="line"
         :percentage="coveragePercent"
-        :height="22"
+        :height="16"
         :border-radius="3"
         indicator-placement="inside"
         color="var(--accent-color)"

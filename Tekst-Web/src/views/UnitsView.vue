@@ -386,7 +386,7 @@ whenever(ArrowLeft, () => {
     >
       <n-button
         secondary
-        :disabled="loading"
+        :disabled="loading || !compareResourceOptions.length"
         :focusable="false"
         :title="$t('units.lblBtnCompareTip')"
       >
@@ -445,12 +445,7 @@ whenever(ArrowLeft, () => {
         <template #icon>
           <n-icon :component="CompareArrowsOutlined" />
         </template>
-        <div style="opacity: 0.8">
-          <component
-            :is="unitComponents[compareResource.resourceType]"
-            :resource="compareResource"
-          />
-        </div>
+        <component :is="unitComponents[compareResource.resourceType]" :resource="compareResource" />
       </n-alert>
 
       <template v-if="model">
