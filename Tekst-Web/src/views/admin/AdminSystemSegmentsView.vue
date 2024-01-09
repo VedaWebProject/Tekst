@@ -27,7 +27,7 @@ import AddOutlined from '@vicons/material/AddOutlined';
 import FileOpenOutlined from '@vicons/material/FileOpenOutlined';
 import DeleteOutlined from '@vicons/material/DeleteOutlined';
 import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
-import ButtonFooter from '@/components/ButtonFooter.vue';
+import ButtonShelf from '@/components/ButtonShelf.vue';
 import { useStateStore } from '@/stores';
 
 const state = useStateStore();
@@ -331,7 +331,7 @@ async function handleDeleteClick() {
         </n-form-item>
       </n-form>
 
-      <ButtonFooter>
+      <ButtonShelf top-gap>
         <n-button secondary @click="handleCancelClick">{{ $t('general.cancelAction') }}</n-button>
         <n-button
           type="primary"
@@ -340,7 +340,7 @@ async function handleDeleteClick() {
           @click="handleSaveClick"
           >{{ $t('general.saveAction') }}</n-button
         >
-      </ButtonFooter>
+      </ButtonShelf>
     </div>
   </template>
 

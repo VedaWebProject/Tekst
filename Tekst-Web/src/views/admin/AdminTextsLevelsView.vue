@@ -6,7 +6,7 @@ import { NIcon, NModal, NAlert, NButton, NForm, type FormInst, useDialog } from 
 import { computed, ref } from 'vue';
 import { getLocaleProfile } from '@/i18n';
 import type { Translation } from '@/api';
-import ButtonFooter from '@/components/ButtonFooter.vue';
+import ButtonShelf from '@/components/ButtonShelf.vue';
 import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
 
@@ -255,14 +255,14 @@ async function handleModalSubmit() {
       />
     </n-form>
 
-    <ButtonFooter>
+    <ButtonShelf top-gap>
       <n-button secondary :disabled="loading" @click="showEditModal = false">
         {{ $t('general.cancelAction') }}
       </n-button>
       <n-button type="primary" :loading="loading" :disabled="loading" @click="handleModalSubmit">
         {{ $t('general.saveAction') }}
       </n-button>
-    </ButtonFooter>
+    </ButtonShelf>
   </n-modal>
 </template>
 

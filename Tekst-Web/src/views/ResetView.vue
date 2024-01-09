@@ -9,7 +9,7 @@ import { NInput, NForm, NFormItem, NButton } from 'naive-ui';
 import { useRoute } from 'vue-router';
 import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import ButtonFooter from '@/components/ButtonFooter.vue';
+import ButtonShelf from '@/components/ButtonShelf.vue';
 
 const { message } = useMessages();
 const route = useRoute();
@@ -117,11 +117,11 @@ onMounted(() => {
           />
         </n-form-item>
       </n-form>
-      <ButtonFooter>
+      <ButtonShelf top-gap>
         <n-button type="primary" :loading="loading" :disabled="loading" @click="handlePasswordSave">
           {{ $t('general.saveAction') }}
         </n-button>
-      </ButtonFooter>
+      </ButtonShelf>
     </div>
   </div>
 </template>

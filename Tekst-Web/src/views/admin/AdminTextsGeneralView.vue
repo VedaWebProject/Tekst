@@ -25,7 +25,7 @@ import { negativeButtonProps, positiveButtonProps } from '@/components/dialogBut
 import _cloneDeep from 'lodash.clonedeep';
 import TranslationFormItem from '@/forms/TranslationFormItem.vue';
 import router from '@/router';
-import ButtonFooter from '@/components/ButtonFooter.vue';
+import ButtonShelf from '@/components/ButtonShelf.vue';
 
 const state = useStateStore();
 const { pfData, loadPlatformData } = usePlatformData();
@@ -231,11 +231,12 @@ async function handleDelete() {
       </n-form-item>
     </n-form>
 
-    <ButtonFooter>
-      <n-button secondary type="error" :disabled="!textCanBeDeleted" @click="handleDelete">
-        {{ $t('general.deleteAction') }}
-      </n-button>
-      <div style="flex: 2"></div>
+    <ButtonShelf top-gap>
+      <template #start>
+        <n-button secondary type="error" :disabled="!textCanBeDeleted" @click="handleDelete">
+          {{ $t('general.deleteAction') }}
+        </n-button>
+      </template>
       <n-button
         secondary
         :loading="loading"
@@ -252,6 +253,6 @@ async function handleDelete() {
       >
         {{ $t('general.saveAction') }}
       </n-button>
-    </ButtonFooter>
+    </ButtonShelf>
   </div>
 </template>

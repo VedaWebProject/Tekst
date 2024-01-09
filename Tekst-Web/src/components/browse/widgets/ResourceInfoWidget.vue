@@ -2,7 +2,7 @@
 import { computed, ref, watch } from 'vue';
 import { NEllipsis, NDivider, NButton, NModal, NProgress } from 'naive-ui';
 import MetadataDisplay from '@/components/browse/MetadataDisplay.vue';
-import ButtonFooter from '@/components/ButtonFooter.vue';
+import ButtonShelf from '@/components/ButtonShelf.vue';
 import IconHeading from '@/components/typography/IconHeading.vue';
 import UnitContainerHeaderWidget from '@/components/browse/UnitContainerHeaderWidget.vue';
 import { useAuthStore, useResourcesStore, useStateStore } from '@/stores';
@@ -150,11 +150,11 @@ watch(showInfoModal, async (after) => {
       </div>
     </template>
 
-    <ButtonFooter>
+    <ButtonShelf top-gap>
       <n-button type="primary" @click="() => (showInfoModal = false)">
         {{ $t('general.closeAction') }}
       </n-button>
-    </ButtonFooter>
+    </ButtonShelf>
   </n-modal>
 
   <CoverageDetailsWidget

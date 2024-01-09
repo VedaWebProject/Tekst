@@ -22,7 +22,7 @@ import ResourceInfoWidget from '@/components/browse/widgets/ResourceInfoWidget.v
 import { useMessages } from '@/messages';
 import { useRoute, useRouter } from 'vue-router';
 import { useResourcesStore } from '@/stores';
-import ButtonFooter from '@/components/ButtonFooter.vue';
+import ButtonShelf from '@/components/ButtonShelf.vue';
 import { useModelChanges } from '@/modelChanges';
 import { useMagicKeys, whenever } from '@vueuse/core';
 import { unitFormRules } from '@/forms/formRules';
@@ -287,8 +287,8 @@ whenever(ArrowLeft, () => {
     <ResourceInfoWidget :resource="resource" />
   </h2>
 
-  <div style="display: flex; gap: var(--content-gap); flex-wrap: wrap">
-    <div style="display: flex; gap: var(--content-gap)">
+  <ButtonShelf top-gap bottom-gap wrap-reverse>
+    <template #start>
       <n-button
         type="primary"
         :disabled="loading || position === 0"
@@ -309,35 +309,35 @@ whenever(ArrowLeft, () => {
           <ArrowForwardIosOutlined />
         </template>
       </n-button>
-    </div>
-    <div style="flex: 2"></div>
-    <div style="display: flex; gap: var(--content-gap)">
-      <n-button
-        secondary
-        :title="$t('units.tipBtnDownloadTemplate')"
-        :disabled="loading"
-        :focusable="false"
-        @click="handleDownloadTemplateClick()"
-      >
-        <template #icon>
-          <FileDownloadSharp />
-        </template>
-        {{ $t('units.lblBtnDownloadTemplate') }}
-      </n-button>
-      <n-button
-        secondary
-        :title="$t('units.tipBtnUploadUnits')"
-        :disabled="loading"
-        :focusable="false"
-        @click="handleUploadUnitsClick()"
-      >
-        <template #icon>
-          <FileUploadSharp />
-        </template>
-        {{ $t('units.lblBtnUploadUnits') }}
-      </n-button>
-    </div>
-  </div>
+    </template>
+
+    <template #center> [compare layer select goes here] </template>
+
+    <n-button
+      secondary
+      :title="$t('units.tipBtnDownloadTemplate')"
+      :disabled="loading"
+      :focusable="false"
+      @click="handleDownloadTemplateClick()"
+    >
+      <template #icon>
+        <FileDownloadSharp />
+      </template>
+      {{ $t('units.lblBtnDownloadTemplate') }}
+    </n-button>
+    <n-button
+      secondary
+      :title="$t('units.tipBtnUploadUnits')"
+      :disabled="loading"
+      :focusable="false"
+      @click="handleUploadUnitsClick()"
+    >
+      <template #icon>
+        <FileUploadSharp />
+      </template>
+      {{ $t('units.lblBtnUploadUnits') }}
+    </n-button>
+  </ButtonShelf>
 
   <template v-if="resource && node">
     <div class="content-block">
@@ -362,18 +362,19 @@ whenever(ArrowLeft, () => {
           <UnitFormItems v-model:model="model" />
         </n-form>
 
-        <ButtonFooter>
-          <n-button secondary type="error" :disabled="loading" @click="handleDeleteUnitClick">
-            {{ $t('general.deleteAction') }}
-          </n-button>
-          <div style="flex: 2"></div>
+        <ButtonShelf top-gap>
+          <template #start>
+            <n-button secondary type="error" :disabled="loading" @click="handleDeleteUnitClick">
+              {{ $t('general.deleteAction') }}
+            </n-button>
+          </template>
           <n-button secondary :disabled="!changed || loading" @click="resetForm">
             {{ $t('general.resetAction') }}
           </n-button>
           <n-button type="primary" :disabled="!changed || loading" @click="handleSaveClick">
             {{ $t('general.saveAction') }}
           </n-button>
-        </ButtonFooter>
+        </ButtonShelf>
       </template>
 
       <n-space v-else vertical align="center" style="margin-bottom: var(--layout-gap)">

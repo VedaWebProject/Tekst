@@ -14,7 +14,7 @@ import { useModelChanges } from '@/modelChanges';
 import { useRoute } from 'vue-router';
 import { useRouter } from 'vue-router';
 import ResourceInfoWidget from '@/components/browse/widgets/ResourceInfoWidget.vue';
-import ButtonFooter from '@/components/ButtonFooter.vue';
+import ButtonShelf from '@/components/ButtonShelf.vue';
 import { useResourcesStore } from '@/stores/resources';
 import ResourceFormItems from '@/forms/ResourceFormItems.vue';
 
@@ -128,14 +128,14 @@ async function handleSaveClick() {
         />
       </n-form>
 
-      <ButtonFooter>
+      <ButtonShelf top-gap>
         <n-button secondary :disabled="!changed" @click="handleResetClick">
           {{ $t('general.resetAction') }}
         </n-button>
         <n-button type="primary" :disabled="!changed" @click="handleSaveClick">
           {{ $t('general.saveAction') }}
         </n-button>
-      </ButtonFooter>
+      </ButtonShelf>
     </div>
   </template>
 

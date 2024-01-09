@@ -10,7 +10,7 @@ import { RouterLink } from 'vue-router';
 import { NAlert, NForm, NFormItem, NSelect, NButton, type FormInst } from 'naive-ui';
 import { resourceConfigFormRules } from '@/forms/formRules';
 import { useRouter } from 'vue-router';
-import ButtonFooter from '@/components/ButtonFooter.vue';
+import ButtonShelf from '@/components/ButtonShelf.vue';
 import ResourceFormItems from '@/forms/ResourceFormItems.vue';
 
 import LayersFilled from '@vicons/material/LayersFilled';
@@ -111,48 +111,49 @@ async function handleSaveClick() {
   </router-link>
 
   <template v-if="model">
-    <n-form
-      ref="formRef"
-      :model="model"
-      :rules="resourceConfigFormRules"
-      :disabled="loadingSave"
-      label-placement="top"
-      label-width="auto"
-      require-mark-placement="right-hanging"
-    >
-      <n-alert
-        type="error"
-        :closable="false"
-        :title="$t('general.important') + '!'"
-        :show-icon="false"
-        style="margin: var(--layout-gap) 0"
+    <div class="content-block">
+      <n-form
+        ref="formRef"
+        :model="model"
+        :rules="resourceConfigFormRules"
+        :disabled="loadingSave"
+        label-placement="top"
+        label-width="auto"
+        require-mark-placement="right-hanging"
       >
-        <p>{{ $t('resources.create.warnImmutable') }}</p>
-        <!-- RESOURCE TYPE -->
-        <n-form-item :label="$t('models.resource.resourceType')" path="resourceType">
-          <n-select
-            v-model:value="model.resourceType"
-            :default-value="resourceTypeOptions[0].value"
-            :placeholder="$t('models.resource.resourceType')"
-            :options="resourceTypeOptions"
-          />
-        </n-form-item>
-        <!-- STRUCTURE LEVEL -->
-        <n-form-item :label="$t('models.resource.level')" path="level">
-          <n-select
-            v-model:value="model.level"
-            :placeholder="$t('models.resource.level')"
-            :options="levelOptions"
-          />
-        </n-form-item>
-      </n-alert>
-      <!-- COMMON RESOURCE FORM FIELDS -->
-      <ResourceFormItems v-model:model="model" :owner="auth.user" :public="false" />
-    </n-form>
+        <n-alert
+          type="error"
+          :closable="false"
+          :title="$t('general.important') + '!'"
+          :show-icon="false"
+        >
+          <p>{{ $t('resources.create.warnImmutable') }}</p>
+          <!-- RESOURCE TYPE -->
+          <n-form-item :label="$t('models.resource.resourceType')" path="resourceType">
+            <n-select
+              v-model:value="model.resourceType"
+              :default-value="resourceTypeOptions[0].value"
+              :placeholder="$t('models.resource.resourceType')"
+              :options="resourceTypeOptions"
+            />
+          </n-form-item>
+          <!-- STRUCTURE LEVEL -->
+          <n-form-item :label="$t('models.resource.level')" path="level">
+            <n-select
+              v-model:value="model.level"
+              :placeholder="$t('models.resource.level')"
+              :options="levelOptions"
+            />
+          </n-form-item>
+        </n-alert>
+        <!-- COMMON RESOURCE FORM FIELDS -->
+        <ResourceFormItems v-model:model="model" :owner="auth.user" :public="false" />
+      </n-form>
 
-    <ButtonFooter style="margin-bottom: var(--layout-gap)">
-      <n-button secondary @click="handleResetClick">{{ $t('general.resetAction') }}</n-button>
-      <n-button type="primary" @click="handleSaveClick">{{ $t('general.saveAction') }}</n-button>
-    </ButtonFooter>
+      <ButtonShelf top-gap>
+        <n-button secondary @click="handleResetClick">{{ $t('general.resetAction') }}</n-button>
+        <n-button type="primary" @click="handleSaveClick">{{ $t('general.saveAction') }}</n-button>
+      </ButtonShelf>
+    </div>
   </template>
 </template>

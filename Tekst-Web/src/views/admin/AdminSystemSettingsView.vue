@@ -27,7 +27,7 @@ import AddOutlined from '@vicons/material/AddOutlined';
 import MinusRound from '@vicons/material/MinusRound';
 import ArrowUpwardOutlined from '@vicons/material/ArrowUpwardOutlined';
 import ArrowDownwardOutlined from '@vicons/material/ArrowDownwardOutlined';
-import ButtonFooter from '@/components/ButtonFooter.vue';
+import ButtonShelf from '@/components/ButtonShelf.vue';
 import { useStateStore } from '@/stores';
 
 const state = useStateStore();
@@ -339,13 +339,13 @@ function resetForm() {
         </n-space>
       </n-form-item>
     </n-form>
-    <ButtonFooter>
+    <ButtonShelf top-gap>
       <n-button secondary :disabled="!changed" @click="resetForm">{{
         $t('general.resetAction')
       }}</n-button>
       <n-button type="primary" :disabled="!changed" @click="handleSaveClick">{{
         $t('general.saveAction')
       }}</n-button>
-    </ButtonFooter>
+    </ButtonShelf>
   </div>
 </template>

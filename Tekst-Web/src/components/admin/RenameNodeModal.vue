@@ -3,7 +3,7 @@ import { PATCH } from '@/api';
 import { $t } from '@/i18n';
 import type { NodeTreeOption } from '@/views/admin/AdminTextsNodesView.vue';
 import { NForm, NFormItem, NModal, NButton, NInput, type InputInst, type FormInst } from 'naive-ui';
-import ButtonFooter from '@/components/ButtonFooter.vue';
+import ButtonShelf from '@/components/ButtonShelf.vue';
 import { ref } from 'vue';
 import { nodeFormRules } from '@/forms/formRules';
 import { useModelChanges } from '@/modelChanges';
@@ -87,7 +87,7 @@ async function handleSubmit() {
         />
       </n-form-item>
     </n-form>
-    <ButtonFooter>
+    <ButtonShelf top-gap>
       <n-button secondary :disabled="loading" @click="$emit('update:show', false)">
         {{ $t('general.cancelAction') }}
       </n-button>
@@ -99,6 +99,6 @@ async function handleSubmit() {
       >
         {{ $t('general.saveAction') }}
       </n-button>
-    </ButtonFooter>
+    </ButtonShelf>
   </n-modal>
 </template>

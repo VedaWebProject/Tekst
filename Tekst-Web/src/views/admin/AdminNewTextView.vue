@@ -25,7 +25,7 @@ import IconHeading from '@/components/typography/IconHeading.vue';
 import AddOutlined from '@vicons/material/AddOutlined';
 import MinusRound from '@vicons/material/MinusRound';
 import AddCircleOutlineRound from '@vicons/material/AddCircleOutlineRound';
-import ButtonFooter from '@/components/ButtonFooter.vue';
+import ButtonShelf from '@/components/ButtonShelf.vue';
 
 interface NewTextModel {
   title?: string;
@@ -196,10 +196,10 @@ async function handleSave() {
       </n-form-item>
     </n-form>
 
-    <ButtonFooter>
+    <ButtonShelf top-gap>
       <n-button type="primary" :disabled="loading" :loading="loading" @click="handleSave">
         {{ $t('general.saveAction') }}
       </n-button>
-    </ButtonFooter>
+    </ButtonShelf>
   </div>
 </template>

@@ -17,7 +17,7 @@ import {
 import { usePlatformData } from '@/platformData';
 import { PATCH, type ClientSegmentUpdate, POST, type ClientSegmentCreate, DELETE } from '@/api';
 import HugeLabeledIcon from '@/components/HugeLabeledIcon.vue';
-import ButtonFooter from '@/components/ButtonFooter.vue';
+import ButtonShelf from '@/components/ButtonShelf.vue';
 import { useI18n } from 'vue-i18n';
 import { useModelChanges } from '@/modelChanges';
 import { useMessages } from '@/messages';
@@ -317,7 +317,7 @@ async function handleDeleteClick() {
         </n-form-item>
       </n-form>
 
-      <ButtonFooter>
+      <ButtonShelf top-gap>
         <n-button secondary @click="handleCancelClick">{{ $t('general.cancelAction') }}</n-button>
         <n-button
           type="primary"
@@ -327,7 +327,7 @@ async function handleDeleteClick() {
         >
           {{ $t('general.saveAction') }}
         </n-button>
-      </ButtonFooter>
+      </ButtonShelf>
     </div>
   </template>
 

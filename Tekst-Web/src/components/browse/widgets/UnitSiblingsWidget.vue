@@ -3,7 +3,7 @@ import UnitContainerHeaderWidget from '@/components/browse/UnitContainerHeaderWi
 import MergeRound from '@vicons/material/MergeRound';
 import { ref } from 'vue';
 import { NModal, NButton, NSpin } from 'naive-ui';
-import ButtonFooter from '@/components/ButtonFooter.vue';
+import ButtonShelf from '@/components/ButtonShelf.vue';
 import { GET, type AnyUnitRead, type AnyResourceRead } from '@/api';
 import { useMessages } from '@/messages';
 import { $t } from '@/i18n';
@@ -89,11 +89,11 @@ async function handleClick() {
 
     <span v-else>{{ $t('errors.unexpected') }}</span>
 
-    <ButtonFooter>
+    <ButtonShelf top-gap>
       <n-button type="primary" @click="() => (showModal = false)">
         {{ $t('general.closeAction') }}
       </n-button>
-    </ButtonFooter>
+    </ButtonShelf>
   </n-modal>
 </template>
 

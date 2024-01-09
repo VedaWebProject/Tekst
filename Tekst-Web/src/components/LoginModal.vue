@@ -8,7 +8,7 @@ import { useMessages } from '@/messages';
 import type { RouteLocationRaw } from 'vue-router';
 import { accountFormRules } from '@/forms/formRules';
 import { POST } from '@/api';
-import ButtonFooter from '@/components/ButtonFooter.vue';
+import ButtonShelf from '@/components/ButtonShelf.vue';
 import { LoginTemplatePromise } from '@/templatePromises';
 
 const auth = useAuthStore();
@@ -141,7 +141,7 @@ onMounted(() => {
           </n-button>
         </div>
       </div>
-      <ButtonFooter>
+      <ButtonShelf top-gap>
         <n-button v-if="args[2]" secondary @click="reject(switchToRegistration())">
           {{ $t('account.switchToRegister') }}
         </n-button>
@@ -153,7 +153,7 @@ onMounted(() => {
         >
           {{ $t('account.loginBtn') }}
         </n-button>
-      </ButtonFooter>
+      </ButtonShelf>
     </n-modal>
   </LoginTemplatePromise>
 </template>

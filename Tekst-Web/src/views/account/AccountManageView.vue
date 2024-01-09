@@ -13,7 +13,7 @@ import type { UserUpdate, UserUpdatePublicFields } from '@/api';
 import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
 import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import IconHeading from '@/components/typography/IconHeading.vue';
-import ButtonFooter from '@/components/ButtonFooter.vue';
+import ButtonShelf from '@/components/ButtonShelf.vue';
 
 import ManageAccountsRound from '@vicons/material/ManageAccountsRound';
 
@@ -274,7 +274,7 @@ async function handleDeleteAccount() {
         />
       </n-form-item>
     </n-form>
-    <ButtonFooter>
+    <ButtonShelf top-gap>
       <n-button
         secondary
         :loading="loading"
@@ -291,7 +291,7 @@ async function handleDeleteAccount() {
       >
         {{ $t('general.saveAction') }}
       </n-button>
-    </ButtonFooter>
+    </ButtonShelf>
   </div>
 
   <div class="content-block">
@@ -314,7 +314,7 @@ async function handleDeleteAccount() {
         />
       </n-form-item>
     </n-form>
-    <ButtonFooter>
+    <ButtonShelf top-gap>
       <n-button
         secondary
         :loading="loading"
@@ -331,7 +331,7 @@ async function handleDeleteAccount() {
       >
         {{ $t('general.saveAction') }}
       </n-button>
-    </ButtonFooter>
+    </ButtonShelf>
 
     <h2>{{ $t('models.user.password') }}</h2>
     <n-form
@@ -368,7 +368,7 @@ async function handleDeleteAccount() {
         />
       </n-form-item>
     </n-form>
-    <ButtonFooter>
+    <ButtonShelf top-gap>
       <n-button
         secondary
         :loading="loading"
@@ -385,7 +385,7 @@ async function handleDeleteAccount() {
       >
         {{ $t('general.saveAction') }}
       </n-button>
-    </ButtonFooter>
+    </ButtonShelf>
   </div>
 
   <div class="content-block">
@@ -411,7 +411,7 @@ async function handleDeleteAccount() {
         </template>
       </n-space>
     </n-form>
-    <ButtonFooter>
+    <ButtonShelf top-gap>
       <n-button
         secondary
         :loading="loading"
@@ -428,7 +428,7 @@ async function handleDeleteAccount() {
       >
         {{ $t('general.saveAction') }}
       </n-button>
-    </ButtonFooter>
+    </ButtonShelf>
   </div>
 
   <div class="content-block">
@@ -446,7 +446,7 @@ async function handleDeleteAccount() {
         @keydown.enter.prevent
       />
     </n-form-item>
-    <ButtonFooter>
+    <ButtonShelf top-gap>
       <n-button
         type="error"
         :disabled="loading || deleteAccountSafetyInput !== auth.user?.username"
@@ -454,7 +454,7 @@ async function handleDeleteAccount() {
       >
         {{ $t('account.manage.headingDeleteAccount') }}
       </n-button>
-    </ButtonFooter>
+    </ButtonShelf>
   </div>
 </template>
 

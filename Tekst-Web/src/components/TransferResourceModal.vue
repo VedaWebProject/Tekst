@@ -11,7 +11,7 @@ import {
   type FormInst,
   type FormItemRule,
 } from 'naive-ui';
-import ButtonFooter from './ButtonFooter.vue';
+import ButtonShelf from './ButtonShelf.vue';
 import { computed, h, ref, type VNodeChild } from 'vue';
 import { useUsersSearch } from '@/fetchers';
 import type { UserReadPublic } from '@/api';
@@ -106,14 +106,14 @@ function handleOkClick(resolve: (v: UserReadPublic) => void, reject: (v: any) =>
           />
         </n-form-item>
       </n-form>
-      <ButtonFooter>
+      <ButtonShelf top-gap>
         <n-button secondary @click="reject(null)">
           {{ $t('general.cancelAction') }}
         </n-button>
         <n-button type="primary" @click="handleOkClick(resolve, reject)">
           {{ $t('general.okAction') }}
         </n-button>
-      </ButtonFooter>
+      </ButtonShelf>
     </n-modal>
   </TransferResourceTemplatePromise>
 </template>

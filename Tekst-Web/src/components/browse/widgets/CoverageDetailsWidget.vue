@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { NButton, NModal } from 'naive-ui';
-import ButtonFooter from '@/components/ButtonFooter.vue';
+import ButtonShelf from '@/components/ButtonShelf.vue';
 import { ref } from 'vue';
 import { GET, type AnyResourceRead, type ResourceNodeCoverage, type ResourceCoverage } from '@/api';
 import { watch } from 'vue';
@@ -118,11 +118,11 @@ watch(
       </div>
     </div>
 
-    <ButtonFooter>
+    <ButtonShelf top-gap>
       <n-button type="primary" @click="$emit('update:show', false)">
         {{ $t('general.closeAction') }}
       </n-button>
-    </ButtonFooter>
+    </ButtonShelf>
   </n-modal>
 </template>
 

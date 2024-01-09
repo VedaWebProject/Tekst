@@ -3,7 +3,7 @@ import { ref, computed, watch } from 'vue';
 import { useStateStore } from '@/stores';
 import { NButton, NModal, NSelect, NFormItem, NForm, NDivider } from 'naive-ui';
 import type { NodeRead, TextRead } from '@/api';
-import ButtonFooter from '@/components/ButtonFooter.vue';
+import ButtonShelf from '@/components/ButtonShelf.vue';
 import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import { GET } from '@/api';
 import { useMessages } from '@/messages';
@@ -256,14 +256,14 @@ function handleLocationSelect() {
         />
       </n-form-item>
     </n-form>
-    <ButtonFooter>
+    <ButtonShelf top-gap>
       <n-button secondary :focusable="false" @click="emit('update:show', false)">
         {{ $t('general.cancelAction') }}
       </n-button>
       <n-button type="primary" @click="handleLocationSelect">
         {{ $t('general.selectAction') }}
       </n-button>
-    </ButtonFooter>
+    </ButtonShelf>
   </n-modal>
 </template>
 
