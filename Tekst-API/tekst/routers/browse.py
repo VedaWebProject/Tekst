@@ -15,7 +15,7 @@ from tekst.models.resource import (
     ResourceNodeCoverage,
 )
 from tekst.models.unit import UnitBaseDocument
-from tekst.resource_types import AnyUnitRead, AnyUnitReadBody, resource_types_mgr
+from tekst.resource_types import AnyUnitReadBody
 
 
 # initialize unit router
@@ -47,7 +47,7 @@ async def get_unit_siblings(
             alias="parentNodeId",
         ),
     ] = None,
-) -> list[AnyUnitRead]:
+) -> list[UnitBaseDocument]:
     """
     Returns a list of all resource units belonging to the resource
     with the given ID, associated to nodes that are children of the parent node
@@ -71,24 +71,25 @@ async def get_unit_siblings(
             detail=f"Resource with ID {resource_id} could not be found.",
         )
 
-    nodes = await NodeDocument.find(
-        NodeDocument.text_id == resource.text_id,
-        NodeDocument.level == resource.level,
-        NodeDocument.parent_id == parent_node_id,
-    ).to_list()
+    node_ids = [
+        node.id
+        for node in await NodeDocument.find(
+            NodeDocument.text_id == resource.text_id,
+            NodeDocument.level == resource.level,
+            NodeDocument.parent_id == parent_node_id,
+        )
+        .sort(+NodeDocument.position)
+        .to_list()
+    ]
 
     unit_docs = await UnitBaseDocument.find(
         UnitBaseDocument.resource_id == resource_id,
-        In(UnitBaseDocument.node_id, [node.id for node in nodes]),
+        In(UnitBaseDocument.node_id, node_ids),
         with_children=True,
     ).to_list()
 
-    return [
-        resource_types_mgr.get(unit_doc.resource_type)
-        .unit_model()
-        .read_model()(**unit_doc.model_dump())
-        for unit_doc in unit_docs
-    ]
+    unit_docs.sort(key=lambda u: node_ids.index(u.node_id))
+    return unit_docs
 
 
 @router.get(
