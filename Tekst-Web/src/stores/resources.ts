@@ -79,6 +79,13 @@ export const useResourcesStore = defineStore('resources', () => {
     return data;
   }
 
+  function resetCoverage(resourceId?: string) {
+    if (!resourceId) return;
+    const res = resources.value.find((l) => l.id === resourceId);
+    if (!res) return;
+    res.coverage = undefined;
+  }
+
   // watch for events that trigger a reload of resources data
   watch(
     [() => auth.loggedIn, () => state.text],
@@ -96,5 +103,6 @@ export const useResourcesStore = defineStore('resources', () => {
     replace,
     add,
     getCoverage,
+    resetCoverage,
   };
 });

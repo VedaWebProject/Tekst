@@ -34,7 +34,7 @@ const coveragePercent = computed(
 );
 
 watch(showInfoModal, async (after) => {
-  if (after && !props.resource.coverage) {
+  if (after) {
     coverage.value = await resources.getCoverage(props.resource.id);
   }
 });

@@ -156,6 +156,7 @@ async function handleSaveClick() {
           body: getChanges(['resourceType']) as AnyUnitCreate,
         });
         if (!error) {
+          resources.resetCoverage(resource.value?.id);
           initialModel.value = data;
           resetForm();
           message.success($t('units.msgSaved'));
@@ -195,6 +196,7 @@ async function deleteUnit() {
   loading.value = true;
   const { error } = await DELETE('/units/{id}', { params: { path: { id: model.value.id } } });
   if (!error) {
+    resources.resetCoverage(resource.value?.id);
     initialModel.value = undefined;
     resetForm();
     message.success($t('units.msgDeleted'));
