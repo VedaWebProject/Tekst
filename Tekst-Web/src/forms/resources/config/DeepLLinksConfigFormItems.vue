@@ -48,16 +48,18 @@ function handleUpdate(field: string, value: any) {
 
 <template>
   <h4>
-    {{ $t('resources.config.deeplLinks.title') }}
+    {{ $t('resources.settings.config.deeplLinks.title') }}
   </h4>
+
   <!-- ENABLED -->
   <n-form-item :show-label="false">
     <n-checkbox :checked="model.enabled" @update:checked="(u) => handleUpdate('enabled', u)">
-      {{ $t('resources.config.enabled') }}
+      {{ $t('resources.settings.config.enabled') }}
     </n-checkbox>
   </n-form-item>
+
   <!-- SOURCE LANGUAGE -->
-  <n-form-item :label="$t('resources.config.deeplLinks.sourceLanguage')">
+  <n-form-item :label="$t('resources.settings.config.deeplLinks.sourceLanguage')">
     <n-select
       :disabled="!model.enabled"
       :value="model.sourceLanguage"
@@ -65,8 +67,12 @@ function handleUpdate(field: string, value: any) {
       @update:value="(v) => handleUpdate('sourceLanguage', v)"
     />
   </n-form-item>
+
   <!-- TARGET LANGUAGES -->
-  <n-form-item :label="$t('resources.config.deeplLinks.targetLanguages')" :show-feedback="false">
+  <n-form-item
+    :label="$t('resources.settings.config.deeplLinks.targetLanguages')"
+    :show-feedback="false"
+  >
     <n-select
       :disabled="!model.enabled"
       multiple

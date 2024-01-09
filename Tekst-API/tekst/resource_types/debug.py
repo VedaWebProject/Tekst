@@ -2,8 +2,8 @@ from typing import Literal
 
 from pydantic import Field
 
-from tekst.models.common import ResourceConfigBase
 from tekst.models.resource import ResourceBase
+from tekst.models.resource_configs import ResourceConfigBase
 from tekst.models.unit import UnitBase
 from tekst.resource_types import ResourceTypeABC
 

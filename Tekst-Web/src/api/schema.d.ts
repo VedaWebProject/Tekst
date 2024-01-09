@@ -487,6 +487,23 @@ export interface components {
     /** DebugResourceConfig */
     DebugResourceConfig: {
       /**
+       * Category
+       * @description Resource category key
+       */
+      category?: string | null;
+      /**
+       * Sortorder
+       * @description Sort order for displaying this resource among others
+       * @default 100
+       */
+      sortOrder?: number;
+      /**
+       * Defaultactive
+       * @description Whether this resource is active by default when public
+       * @default true
+       */
+      defaultActive?: boolean;
+      /**
        * Showonparentlevel
        * @description Show combined contents of this resource on the parent level
        * @default false
@@ -528,11 +545,6 @@ export interface components {
        */
       ownerId?: string | null;
       /**
-       * Category
-       * @description Resource category key
-       */
-      category?: string | null;
-      /**
        * Sharedread
        * @description Users with shared read access to this resource
        * @default []
@@ -544,12 +556,6 @@ export interface components {
        * @default []
        */
       sharedWrite?: string[];
-      /**
-       * Sortorder
-       * @description Sort order for displaying this resource among others
-       * @default 100
-       */
-      sortOrder?: number;
       /**
        * Public
        * @description Publication status of this resource
@@ -581,6 +587,8 @@ export interface components {
       comment?: components['schemas']['ResourceCommentTranslation'][];
       /**
        * @default {
+       *   "sortOrder": 100,
+       *   "defaultActive": true,
        *   "showOnParentLevel": false
        * }
        */
@@ -643,11 +651,6 @@ export interface components {
        */
       ownerId?: string | null;
       /**
-       * Category
-       * @description Resource category key
-       */
-      category?: string | null;
-      /**
        * Sharedread
        * @description Users with shared read access to this resource
        * @default []
@@ -659,12 +662,6 @@ export interface components {
        * @default []
        */
       sharedWrite?: string[];
-      /**
-       * Sortorder
-       * @description Sort order for displaying this resource among others
-       * @default 100
-       */
-      sortOrder?: number;
       /**
        * Public
        * @description Publication status of this resource
@@ -696,6 +693,8 @@ export interface components {
       comment?: components['schemas']['ResourceCommentTranslation'][];
       /**
        * @default {
+       *   "sortOrder": 100,
+       *   "defaultActive": true,
        *   "showOnParentLevel": false
        * }
        */
@@ -727,11 +726,6 @@ export interface components {
        */
       ownerId?: string | null;
       /**
-       * Category
-       * @description Resource category key
-       */
-      category?: string | null;
-      /**
        * Sharedread
        * @description Users with shared read access to this resource
        * @default []
@@ -743,12 +737,6 @@ export interface components {
        * @default []
        */
       sharedWrite?: string[];
-      /**
-       * Sortorder
-       * @description Sort order for displaying this resource among others
-       * @default 100
-       */
-      sortOrder?: number;
       /**
        * Public
        * @description Publication status of this resource
@@ -780,6 +768,8 @@ export interface components {
       comment?: components['schemas']['ResourceCommentTranslation'][];
       /**
        * @default {
+       *   "sortOrder": 100,
+       *   "defaultActive": true,
        *   "showOnParentLevel": false
        * }
        */
@@ -1077,6 +1067,23 @@ export interface components {
     /** PlaintextResourceConfig */
     PlaintextResourceConfig: {
       /**
+       * Category
+       * @description Resource category key
+       */
+      category?: string | null;
+      /**
+       * Sortorder
+       * @description Sort order for displaying this resource among others
+       * @default 100
+       */
+      sortOrder?: number;
+      /**
+       * Defaultactive
+       * @description Whether this resource is active by default when public
+       * @default true
+       */
+      defaultActive?: boolean;
+      /**
        * Showonparentlevel
        * @description Show combined contents of this resource on the parent level
        * @default false
@@ -1129,11 +1136,6 @@ export interface components {
        */
       ownerId?: string | null;
       /**
-       * Category
-       * @description Resource category key
-       */
-      category?: string | null;
-      /**
        * Sharedread
        * @description Users with shared read access to this resource
        * @default []
@@ -1145,12 +1147,6 @@ export interface components {
        * @default []
        */
       sharedWrite?: string[];
-      /**
-       * Sortorder
-       * @description Sort order for displaying this resource among others
-       * @default 100
-       */
-      sortOrder?: number;
       /**
        * Public
        * @description Publication status of this resource
@@ -1182,6 +1178,8 @@ export interface components {
       comment?: components['schemas']['ResourceCommentTranslation'][];
       /**
        * @default {
+       *   "sortOrder": 100,
+       *   "defaultActive": true,
        *   "showOnParentLevel": false,
        *   "deeplLinks": {
        *     "enabled": false,
@@ -1252,11 +1250,6 @@ export interface components {
        */
       ownerId?: string | null;
       /**
-       * Category
-       * @description Resource category key
-       */
-      category?: string | null;
-      /**
        * Sharedread
        * @description Users with shared read access to this resource
        * @default []
@@ -1268,12 +1261,6 @@ export interface components {
        * @default []
        */
       sharedWrite?: string[];
-      /**
-       * Sortorder
-       * @description Sort order for displaying this resource among others
-       * @default 100
-       */
-      sortOrder?: number;
       /**
        * Public
        * @description Publication status of this resource
@@ -1305,6 +1292,8 @@ export interface components {
       comment?: components['schemas']['ResourceCommentTranslation'][];
       /**
        * @default {
+       *   "sortOrder": 100,
+       *   "defaultActive": true,
        *   "showOnParentLevel": false,
        *   "deeplLinks": {
        *     "enabled": false,
@@ -1344,11 +1333,6 @@ export interface components {
        */
       ownerId?: string | null;
       /**
-       * Category
-       * @description Resource category key
-       */
-      category?: string | null;
-      /**
        * Sharedread
        * @description Users with shared read access to this resource
        * @default []
@@ -1360,12 +1344,6 @@ export interface components {
        * @default []
        */
       sharedWrite?: string[];
-      /**
-       * Sortorder
-       * @description Sort order for displaying this resource among others
-       * @default 100
-       */
-      sortOrder?: number;
       /**
        * Public
        * @description Publication status of this resource
@@ -1397,6 +1375,8 @@ export interface components {
       comment?: components['schemas']['ResourceCommentTranslation'][];
       /**
        * @default {
+       *   "sortOrder": 100,
+       *   "defaultActive": true,
        *   "showOnParentLevel": false,
        *   "deeplLinks": {
        *     "enabled": false,

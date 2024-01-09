@@ -287,24 +287,25 @@ resources:
   msgDeleted: The resource "{title}" has been deleted.
   phSearchUsers: Search for users...
   backToOverview: Back to "Resources"
+  create:
+    heading: New resource on "{text}"
+    warnImmutable: These settings cannot be changed later!
+    msgSaved: Your new resource "{title}" has been created.
   settings:
     heading: Resource Settings
     onlyForUnpublished: Only for unpublished resources!
     msgSaved: Your changes to the resource "{title}" have been saved.
     status: Status
-  create:
-    heading: New resource on "{text}"
-    warnImmutable: These settings cannot be changed later!
-    msgSaved: Your new resource "{title}" has been created.
-  config:
-    headingConfig: Features
-    status: Status
-    enabled: Enabled
-    showOnParentLevel: Enable viewing combined contents on the parent level
-    deeplLinks:
-      title: DeepL Translation Links
-      sourceLanguage: Source language
-      targetLanguages: Target languages
+    config:
+      headingConfig: Configuration
+      defaultActive: Resource is active by default when public
+      showOnParentLevel: Enable viewing combined contents on the parent level
+      enabled: Enabled
+      visibility: Visibility
+      deeplLinks:
+        title: DeepL Translation Links
+        sourceLanguage: Source language
+        targetLanguages: Target languages
   types:
     common:
       label: Additional Data

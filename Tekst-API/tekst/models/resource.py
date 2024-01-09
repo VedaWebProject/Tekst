@@ -16,10 +16,10 @@ from tekst.models.common import (
     Metadata,
     ModelBase,
     ModelFactoryMixin,
-    ResourceConfigBase,
     TranslationBase,
     Translations,
 )
+from tekst.models.resource_configs import ResourceConfigBase
 from tekst.models.text import TextDocument
 from tekst.models.user import UserRead, UserReadPublic
 
@@ -64,11 +64,6 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
     owner_id: Annotated[
         PydanticObjectId | None, Field(description="User owning this resource")
     ] = None
-    category: Annotated[
-        str | None,
-        StringConstraints(min_length=1, max_length=16, strip_whitespace=True),
-        Field(description="Resource category key"),
-    ] = None
     shared_read: Annotated[
         list[PydanticObjectId],
         Field(
@@ -81,10 +76,6 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
             description="Users with shared write access to this resource", max_length=64
         ),
     ] = []
-    sort_order: Annotated[
-        int,
-        Field(description="Sort order for displaying this resource among others", ge=0),
-    ] = 100
     public: Annotated[
         bool, Field(description="Publication status of this resource")
     ] = False

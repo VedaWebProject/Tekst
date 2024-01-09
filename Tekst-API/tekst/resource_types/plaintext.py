@@ -2,9 +2,8 @@ from typing import Annotated, Literal
 
 from pydantic import Field, StringConstraints
 
-from tekst.models.common import ResourceConfigBase
 from tekst.models.resource import ResourceBase
-from tekst.models.resource_configs import DeepLLinksConfig
+from tekst.models.resource_configs import DeepLLinksConfig, ResourceConfigBase
 from tekst.models.unit import UnitBase
 from tekst.resource_types import ResourceTypeABC
 

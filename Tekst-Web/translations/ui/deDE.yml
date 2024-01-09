@@ -295,25 +295,26 @@ resources:
   msgDeleted: Die Ressource "{title}" wurde gelöscht.
   phSearchUsers: Benutzer suchen...
   backToOverview: Zurück zu "Ressourcen"
+  create:
+    heading: Neue Ressource zu "{text}"
+    warnImmutable: Diese Einstellungen können später nicht mehr geändert werden!
+    msgSaved: Ihre neue Ressource "{title}" wurden erstellt.
   settings:
     heading: Ressourcen-Einstellungen
     onlyForUnpublished: Nur für nicht veröffentlichte Ressourcen!
     msgSaved: Ihre Änderungen an der Ressource "{title}" wurden gespeichert.
     status: Status
-  create:
-    heading: Neue Ressource zu "{text}"
-    warnImmutable: Diese Einstellungen können später nicht mehr geändert werden!
-    msgSaved: Ihre neue Ressource "{title}" wurden erstellt.
-  config:
-    headingConfig: Funktionen
-    specialConfigLabel: Spezielle Konfiguration für Typ "{resourceType}"
-    status: Status
-    enabled: Aktiv
-    showOnParentLevel: Ermögliche das Anzeigen von kombinierten Inhalten auf der übergeordneten Ebene
-    deeplLinks:
-      title: DeepL-Übersetzungs-Links
-      sourceLanguage: Quellsprache
-      targetLanguages: Zielsprachen
+    config:
+      headingConfig: Konfiguration
+      specialConfigLabel: Spezielle Konfiguration für Typ "{resourceType}"
+      defaultActive: Ressource ist standardmäßig aktiviert, wenn sie öffentlich ist
+      showOnParentLevel: Ermögliche das Anzeigen von kombinierten Inhalten auf der übergeordneten Ebene
+      enabled: Aktiv
+      visibility: Sichtbarkeit
+      deeplLinks:
+        title: DeepL-Übersetzungs-Links
+        sourceLanguage: Quellsprache
+        targetLanguages: Zielsprachen
   types:
     common:
       label: Zusätzliche Daten

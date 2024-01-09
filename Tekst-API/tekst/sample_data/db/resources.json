@@ -35,19 +35,25 @@
       }
     ],
     "config": {
+      "category": "versions",
       "showOnParentLevel": true,
       "deeplLinks": {
         "enabled": true,
         "sourceLanguage": "DE",
         "languages": ["EN", "FR"]
       }
-    },
-    "category": "versions"
+    }
   },
   {
     "_id": { "$oid": "654ba3a6ec7833e469dde77a" },
     "_class_id": "ResourceBaseDocument.PlaintextResourceDocument",
     "title": "Japanese Version",
+    "description": [
+      {
+        "locale": "enUS",
+        "translation": "The original text in Japanese language"
+      }
+    ],
     "text_id": { "$oid": "654ba1f3ec7833e469dde765" },
     "level": 0,
     "resource_type": "plaintext",
@@ -62,20 +68,14 @@
       { "key": "language", "value": "JA" }
     ],
     "config": {
+      "category": "versions",
       "deeplLinks": {
         "showOnParentLevel": false,
         "enabled": true,
         "sourceLanguage": "JA",
         "languages": ["EN", "DE", "FR", "ES"]
       }
-    },
-    "category": "versions",
-    "description": [
-      {
-        "locale": "enUS",
-        "translation": "The original text in Japanese language"
-      }
-    ]
+    }
   },
   {
     "_id": { "$oid": "654ba525ec7833e469dde77e" },
@@ -90,12 +90,12 @@
     "public": true,
     "citation": null,
     "config": {
+      "category": "translations",
       "showOnParentLevel": true,
       "deeplLinks": {
         "enabled": false
       }
     },
-    "category": "translations",
     "meta": [
       { "key": "author", "value": "Robert Hass" },
       { "key": "language", "value": "EN" }
@@ -114,13 +114,13 @@
     "public": true,
     "citation": null,
     "config": {
+      "category": "versions",
       "deeplLinks": {
         "enabled": false,
         "sourceLanguage": "BG",
         "languages": ["EN", "DE"]
       }
     },
-    "category": "versions",
     "meta": [{ "key": "language", "value": "Hepburn romanization" }]
   }
 ]

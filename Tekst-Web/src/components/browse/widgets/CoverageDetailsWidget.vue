@@ -2,22 +2,26 @@
 import { NButton, NModal } from 'naive-ui';
 import ButtonFooter from '@/components/ButtonFooter.vue';
 import { ref } from 'vue';
-import { GET, type AnyResourceRead, type ResourceNodeCoverage } from '@/api';
+import { GET, type AnyResourceRead, type ResourceNodeCoverage, type ResourceCoverage } from '@/api';
 import { watch } from 'vue';
 import { RouterLink } from 'vue-router';
 import { useRoute } from 'vue-router';
 import IconHeading from '@/components/typography/IconHeading.vue';
 
 import PercentOutlined from '@vicons/material/PercentOutlined';
+import { useStateStore } from '@/stores';
 
 const props = defineProps<{
   resource: AnyResourceRead;
+  coverageBasic?: ResourceCoverage;
   show?: boolean;
 }>();
 
 const emit = defineEmits(['update:show', 'navigated']);
 
+const state = useStateStore();
 const route = useRoute();
+
 const coverageData = ref<ResourceNodeCoverage[][]>();
 const loading = ref(false);
 const error = ref(false);
@@ -74,6 +78,16 @@ watch(
         {{ $t('browse.units.widgets.infoWidget.coverage') }}
       </IconHeading>
     </template>
+
+    <p v-if="coverageBasic">
+      {{
+        $t('browse.units.widgets.infoWidget.coverageStatement', {
+          present: coverageBasic.covered,
+          total: coverageBasic.total,
+          level: state.textLevelLabels[resource.level],
+        })
+      }}
+    </p>
 
     <p v-if="error">
       {{ $t('errors.unexpected') }}

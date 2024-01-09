@@ -160,6 +160,7 @@ watch(showInfoModal, async (after) => {
   <CoverageDetailsWidget
     v-model:show="showCoverageDetailsModal"
     :resource="resource"
+    :coverage-basic="coverage"
     @navigated="showInfoModal = false"
   />
 </template>

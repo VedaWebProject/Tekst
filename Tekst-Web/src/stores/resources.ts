@@ -12,6 +12,10 @@ export const useResourcesStore = defineStore('resources', () => {
 
   const loading = ref(false);
 
+  function sortResources(res: AnyResourceRead[]) {
+    return res.sort((a, b) => (a.config?.sortOrder ?? 0) - (b.config?.sortOrder ?? 0));
+  }
+
   async function load() {
     if (loading.value || !state.text) {
       return;
@@ -28,16 +32,16 @@ export const useResourcesStore = defineStore('resources', () => {
     });
 
     if (!err) {
-      resources.value = data
-        .map((l) => {
-          const existingResource = resources.value.find((lo) => lo.id === l.id);
+      resources.value = sortResources(
+        data.map((r) => {
+          const existingResource = resources.value.find((re) => re.id === r.id);
           return {
-            ...l,
-            active: !existingResource || existingResource.active,
+            ...r,
+            active: existingResource ? existingResource.active : r.config?.defaultActive,
             units: existingResource?.units || [],
           };
         })
-        .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0));
+      );
       error.value = false;
     } else {
       error.value = true;
@@ -46,15 +50,20 @@ export const useResourcesStore = defineStore('resources', () => {
   }
 
   function replace(resource: AnyResourceRead) {
-    resources.value = resources.value
-      .map((l) => (l.id === resource.id ? resource : l))
-      .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0));
+    if (resources.value.find((re) => re.id === resource.id)) {
+      resources.value = sortResources(
+        resources.value.map((r) =>
+          r.id === resource.id ? { ...resource, active: r.active, units: r.units } : r
+        )
+      );
+    } else {
+      add(resource);
+    }
   }
 
   function add(resource: AnyResourceRead) {
-    resources.value = resources.value
-      .concat([resource])
-      .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0));
+    resource.active = resource.config?.defaultActive;
+    resources.value = sortResources(resources.value.concat([resource]));
   }
 
   async function getCoverage(resourceId: string): Promise<ResourceCoverage | undefined> {

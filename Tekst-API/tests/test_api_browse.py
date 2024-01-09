@@ -62,7 +62,7 @@ async def test_get_node_path(
     # invalid node data
     resp = await test_client.get(
         "/browse/nodes/path",
-        params={"textId": {wrong_id}, "level": 0, "position": 0},
+        params={"textId": wrong_id, "level": 0, "position": 0},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)

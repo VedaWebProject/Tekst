@@ -1,8 +1,30 @@
 from typing import Annotated, Literal
 
-from pydantic import Field
+from pydantic import Field, StringConstraints
 
 from tekst.models.common import ModelBase
+
+
+class ResourceConfigBase(ModelBase):
+    category: Annotated[
+        str | None,
+        StringConstraints(min_length=1, max_length=16, strip_whitespace=True),
+        Field(description="Resource category key"),
+    ] = None
+    sort_order: Annotated[
+        int,
+        Field(description="Sort order for displaying this resource among others", ge=0),
+    ] = 100
+    default_active: Annotated[
+        bool,
+        Field(description="Whether this resource is active by default when public"),
+    ] = True
+    show_on_parent_level: Annotated[
+        bool,
+        Field(
+            description="Show combined contents of this resource on the parent level"
+        ),
+    ] = False
 
 
 class DeepLLinksConfig(ModelBase):

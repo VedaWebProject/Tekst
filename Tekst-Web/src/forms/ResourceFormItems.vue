@@ -7,20 +7,17 @@ import {
 } from '@/api';
 import { resourceConfigFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
-import { useAuthStore, useStateStore } from '@/stores';
+import { useAuthStore } from '@/stores';
 import TranslationFormItem from '@/forms/TranslationFormItem.vue';
 import { computed, h, ref, type VNodeChild } from 'vue';
 import UserDisplayText from '@/components/UserDisplayText.vue';
 import ResourceConfigFormItems from '@/forms/resources/config/ResourceConfigFormItems.vue';
-import { usePlatformData } from '@/platformData';
-import { pickTranslation } from '@/utils';
 import { useUsersSearch } from '@/fetchers';
 import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import {
   NSelect,
   NSpace,
   NIcon,
-  NInputNumber,
   NDynamicInput,
   NFormItem,
   NTag,
@@ -44,9 +41,7 @@ const props = defineProps<{
 
 const emits = defineEmits(['update:model']);
 
-const state = useStateStore();
 const auth = useAuthStore();
-const { pfData } = usePlatformData();
 
 const userSearchQuery = ref<string>();
 const {
@@ -57,14 +52,6 @@ const {
 const addedSharesUsersCache = ref<UserReadPublic[]>([]);
 const sharingAuthorized = computed(
   () => auth.user?.isSuperuser || (auth.user && props.owner && auth.user.id === props.owner.id)
-);
-
-const categoryOptions = computed(
-  () =>
-    pfData.value?.settings.resourceCategories?.map((c) => ({
-      label: pickTranslation(c.translations, state.locale) || c.key,
-      value: c.key,
-    })) || []
 );
 
 const metadataKeysOptions = computed(() =>
@@ -207,26 +194,6 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
       :translation-form-rule="resourceConfigFormRules.commentTranslation"
       @update:value="(v) => handleUpdate('comment', v)"
     />
-    <!-- CATEGORY -->
-    <n-form-item :label="$t('models.resource.category')">
-      <n-select
-        :value="model.category"
-        clearable
-        :placeholder="$t('browse.uncategorized')"
-        :options="categoryOptions"
-        @update:value="(v) => handleUpdate('category', v)"
-      />
-    </n-form-item>
-    <!-- SORT ORDER -->
-    <n-form-item path="sortOrder" :label="$t('models.resource.sortOrder')">
-      <n-input-number
-        :min="0"
-        :value="model.sortOrder"
-        style="width: 100%"
-        @update:value="(v) => handleUpdate('sortOrder', v)"
-      />
-      <HelpButtonWidget help-key="resourceSortOrder" gap-left />
-    </n-form-item>
   </div>
 
   <!-- METADATA -->

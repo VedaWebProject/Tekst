@@ -179,12 +179,3 @@ class ModelFactoryMixin:
                 **fields,
             )
         return cls._update_model
-
-
-class ResourceConfigBase(ModelBase):
-    show_on_parent_level: Annotated[
-        bool,
-        Field(
-            description="Show combined contents of this resource on the parent level"
-        ),
-    ] = False

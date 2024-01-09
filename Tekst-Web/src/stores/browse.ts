@@ -12,7 +12,7 @@ import { useMessages } from '@/messages';
 export const useBrowseStore = defineStore('browse', () => {
   // composables
   const state = useStateStore();
-  const resourcesStore = useResourcesStore();
+  const resources = useResourcesStore();
   const { pfData } = usePlatformData();
   const route = useRoute();
   const router = useRouter();
@@ -24,10 +24,8 @@ export const useBrowseStore = defineStore('browse', () => {
   const reducedView = ref(false);
   const loadingNodePath = ref(true); // this is intentional!
   const loadingUnits = ref(false);
-  const loadingResources = computed(() => resourcesStore.loading);
-  const loading = computed(
-    () => loadingUnits.value || loadingNodePath.value || resourcesStore.loading
-  );
+  const loadingResources = computed(() => resources.loading);
+  const loading = computed(() => loadingUnits.value || loadingNodePath.value || resources.loading);
 
   /* BROWSE LOCATION */
 
@@ -106,9 +104,8 @@ export const useBrowseStore = defineStore('browse', () => {
 
   /* RESOURCES AND UNITS */
 
-  const resources = ref<AnyResourceRead[]>([]);
-  const resourcesCount = computed(() => resources.value.length);
-  const activeResourcesCount = computed(() => resources.value.filter((l) => l.active).length);
+  const resourcesCount = computed(() => resources.data.length);
+  const activeResourcesCount = computed(() => resources.data.filter((r) => r.active).length);
   const resourcesCategorized = computed<
     { category: { key: string | undefined; translation: string }; resources: AnyResourceRead[] }[]
   >(() => {
@@ -116,7 +113,7 @@ export const useBrowseStore = defineStore('browse', () => {
     const categorized =
       pfData.value?.settings.resourceCategories?.map((c) => ({
         category: { key: c.key, translation: pickTranslation(c.translations, state.locale) },
-        resources: resources.value.filter((l) => l.category === c.key),
+        resources: resources.data.filter((r) => r.config?.category === c.key),
       })) || [];
     const uncategorized = [
       {
@@ -124,32 +121,16 @@ export const useBrowseStore = defineStore('browse', () => {
           key: undefined,
           translation: $t('browse.uncategorized'),
         },
-        resources: resources.value.filter(
-          (l) => !categorized.find((c) => c.category.key === l.category)
+        resources: resources.data.filter(
+          (r) => !categorized.find((c) => c.category.key === r.config?.category)
         ),
       },
     ];
     return [...categorized, ...uncategorized].filter((c) => c.resources.length);
   });
 
-  watch(
-    () => resourcesStore.data,
-    (newResources) => {
-      // process changed available resources
-      resources.value =
-        newResources.map((l) => {
-          const existingResource = resources.value.find((el) => l.id === el.id);
-          return {
-            ...l,
-            active: !existingResource || existingResource.active,
-            units: existingResource?.units || [],
-          };
-        }) || [];
-    }
-  );
-
   function setResourceActiveState(resourceId: string, active: boolean) {
-    resources.value = resources.value.map((l) => {
+    resources.data = resources.data.map((l) => {
       if (l.id === resourceId) {
         return {
           ...l,
@@ -170,7 +151,7 @@ export const useBrowseStore = defineStore('browse', () => {
     });
     if (!error) {
       // assign units to resources
-      resources.value.forEach((l: AnyResourceRead) => {
+      resources.data.forEach((l: AnyResourceRead) => {
         l.units = data.filter((u: AnyUnitRead) => u.resourceId == l.id);
       });
     } else {

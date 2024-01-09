@@ -4327,6 +4327,33 @@
       },
       "DebugResourceConfig": {
         "properties": {
+          "category": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 16,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category",
+            "description": "Resource category key"
+          },
+          "sortOrder": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Sortorder",
+            "description": "Sort order for displaying this resource among others",
+            "default": 100
+          },
+          "defaultActive": {
+            "type": "boolean",
+            "title": "Defaultactive",
+            "description": "Whether this resource is active by default when public",
+            "default": true
+          },
           "showOnParentLevel": {
             "type": "boolean",
             "title": "Showonparentlevel",
@@ -4385,20 +4412,6 @@
             "title": "Ownerid",
             "description": "User owning this resource"
           },
-          "category": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 16,
-                "minLength": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Category",
-            "description": "Resource category key"
-          },
           "sharedRead": {
             "items": {
               "type": "string",
@@ -4420,13 +4433,6 @@
             "title": "Sharedwrite",
             "description": "Users with shared write access to this resource",
             "default": []
-          },
-          "sortOrder": {
-            "type": "integer",
-            "minimum": 0.0,
-            "title": "Sortorder",
-            "description": "Sort order for displaying this resource among others",
-            "default": 100
           },
           "public": {
             "type": "boolean",
@@ -4482,6 +4488,8 @@
               }
             ],
             "default": {
+              "sortOrder": 100,
+              "defaultActive": true,
               "showOnParentLevel": false
             }
           }
@@ -4601,20 +4609,6 @@
             "title": "Ownerid",
             "description": "User owning this resource"
           },
-          "category": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 16,
-                "minLength": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Category",
-            "description": "Resource category key"
-          },
           "sharedRead": {
             "items": {
               "type": "string",
@@ -4636,13 +4630,6 @@
             "title": "Sharedwrite",
             "description": "Users with shared write access to this resource",
             "default": []
-          },
-          "sortOrder": {
-            "type": "integer",
-            "minimum": 0.0,
-            "title": "Sortorder",
-            "description": "Sort order for displaying this resource among others",
-            "default": 100
           },
           "public": {
             "type": "boolean",
@@ -4698,6 +4685,8 @@
               }
             ],
             "default": {
+              "sortOrder": 100,
+              "defaultActive": true,
               "showOnParentLevel": false
             }
           }
@@ -4779,20 +4768,6 @@
             "title": "Ownerid",
             "description": "User owning this resource"
           },
-          "category": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 16,
-                "minLength": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Category",
-            "description": "Resource category key"
-          },
           "sharedRead": {
             "items": {
               "type": "string",
@@ -4814,13 +4789,6 @@
             "title": "Sharedwrite",
             "description": "Users with shared write access to this resource",
             "default": []
-          },
-          "sortOrder": {
-            "type": "integer",
-            "minimum": 0.0,
-            "title": "Sortorder",
-            "description": "Sort order for displaying this resource among others",
-            "default": 100
           },
           "public": {
             "type": "boolean",
@@ -4876,6 +4844,8 @@
               }
             ],
             "default": {
+              "sortOrder": 100,
+              "defaultActive": true,
               "showOnParentLevel": false
             }
           }
@@ -5452,6 +5422,33 @@
       },
       "PlaintextResourceConfig": {
         "properties": {
+          "category": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 16,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category",
+            "description": "Resource category key"
+          },
+          "sortOrder": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Sortorder",
+            "description": "Sort order for displaying this resource among others",
+            "default": 100
+          },
+          "defaultActive": {
+            "type": "boolean",
+            "title": "Defaultactive",
+            "description": "Whether this resource is active by default when public",
+            "default": true
+          },
           "showOnParentLevel": {
             "type": "boolean",
             "title": "Showonparentlevel",
@@ -5525,20 +5522,6 @@
             "title": "Ownerid",
             "description": "User owning this resource"
           },
-          "category": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 16,
-                "minLength": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Category",
-            "description": "Resource category key"
-          },
           "sharedRead": {
             "items": {
               "type": "string",
@@ -5560,13 +5543,6 @@
             "title": "Sharedwrite",
             "description": "Users with shared write access to this resource",
             "default": []
-          },
-          "sortOrder": {
-            "type": "integer",
-            "minimum": 0.0,
-            "title": "Sortorder",
-            "description": "Sort order for displaying this resource among others",
-            "default": 100
           },
           "public": {
             "type": "boolean",
@@ -5622,6 +5598,8 @@
               }
             ],
             "default": {
+              "sortOrder": 100,
+              "defaultActive": true,
               "showOnParentLevel": false,
               "deeplLinks": {
                 "enabled": false,
@@ -5749,20 +5727,6 @@
             "title": "Ownerid",
             "description": "User owning this resource"
           },
-          "category": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 16,
-                "minLength": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Category",
-            "description": "Resource category key"
-          },
           "sharedRead": {
             "items": {
               "type": "string",
@@ -5784,13 +5748,6 @@
             "title": "Sharedwrite",
             "description": "Users with shared write access to this resource",
             "default": []
-          },
-          "sortOrder": {
-            "type": "integer",
-            "minimum": 0.0,
-            "title": "Sortorder",
-            "description": "Sort order for displaying this resource among others",
-            "default": 100
           },
           "public": {
             "type": "boolean",
@@ -5846,6 +5803,8 @@
               }
             ],
             "default": {
+              "sortOrder": 100,
+              "defaultActive": true,
               "showOnParentLevel": false,
               "deeplLinks": {
                 "enabled": false,
@@ -5935,20 +5894,6 @@
             "title": "Ownerid",
             "description": "User owning this resource"
           },
-          "category": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 16,
-                "minLength": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Category",
-            "description": "Resource category key"
-          },
           "sharedRead": {
             "items": {
               "type": "string",
@@ -5970,13 +5915,6 @@
             "title": "Sharedwrite",
             "description": "Users with shared write access to this resource",
             "default": []
-          },
-          "sortOrder": {
-            "type": "integer",
-            "minimum": 0.0,
-            "title": "Sortorder",
-            "description": "Sort order for displaying this resource among others",
-            "default": 100
           },
           "public": {
             "type": "boolean",
@@ -6032,6 +5970,8 @@
               }
             ],
             "default": {
+              "sortOrder": 100,
+              "defaultActive": true,
               "showOnParentLevel": false,
               "deeplLinks": {
                 "enabled": false,
