@@ -17,8 +17,8 @@ export function useProfile(
     const unoid = unref(usernameOrId);
     if (!unoid) return;
 
-    const { data, error: err } = await GET('/platform/users/{usernameOrId}', {
-      params: { path: { usernameOrId: unoid } },
+    const { data, error: err } = await GET('/platform/users/{user}', {
+      params: { path: { user: unoid } },
     });
 
     if (!err) {

@@ -71,7 +71,7 @@ async function loadTreeData(node?: TreeOption) {
   loadingData.value = true;
   const { data, error } = await GET('/nodes/children', {
     params: {
-      query: { textId: state.text?.id || '', ...(node ? { parentId: String(node.key) } : {}) },
+      query: { txt: state.text?.id || '', ...(node ? { parent: String(node.key) } : {}) },
     },
   });
   if (error) {

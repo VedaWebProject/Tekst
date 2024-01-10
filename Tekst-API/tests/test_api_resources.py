@@ -308,7 +308,7 @@ async def test_access_private_resource(
     resource_id = inserted_ids["resources"][0]
 
     # get all accessible resources
-    resp = await test_client.get("/resources", params={"textId": text_id})
+    resp = await test_client.get("/resources", params={"txt": text_id})
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
     accessible_unauthorized = len(resp.json())
@@ -324,7 +324,7 @@ async def test_access_private_resource(
 
     # get all accessible resources again, unauthenticated
     await logout()
-    resp = await test_client.get("/resources", params={"textId": text_id})
+    resp = await test_client.get("/resources", params={"txt": text_id})
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) < accessible_unauthorized  # this should be less now
@@ -337,7 +337,7 @@ async def test_get_resources(
     text_id = (await insert_sample_data("texts", "nodes", "resources"))["texts"][0]
     resp = await test_client.get(
         "/resources",
-        params={"textId": text_id, "level": 1, "resourceType": "plaintext"},
+        params={"txt": text_id, "lvl": 1, "type": "plaintext"},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
@@ -401,7 +401,7 @@ async def test_propose_unpropose_publish_unpublish_resource(
     assert resp.status_code == 404, status_fail_msg(404, resp)
 
     # get all accessible resources, check if ours is proposed
-    resp = await test_client.get("/resources", params={"textId": text_id})
+    resp = await test_client.get("/resources", params={"txt": text_id})
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
     for resource in resp.json():
@@ -503,7 +503,7 @@ async def test_delete_resource(
     resource_id = inserted_ids["resources"][0]
 
     # get all accessible resources
-    resp = await test_client.get("/resources", params={"textId": text_id})
+    resp = await test_client.get("/resources", params={"txt": text_id})
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
     resources_count = len(resp.json())
@@ -541,7 +541,7 @@ async def test_delete_resource(
     assert resp.status_code == 204, status_fail_msg(204, resp)
 
     # get all accessible resources again
-    resp = await test_client.get("/resources", params={"textId": text_id})
+    resp = await test_client.get("/resources", params={"txt": text_id})
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == resources_count - 1

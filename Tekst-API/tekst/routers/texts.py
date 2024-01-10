@@ -46,7 +46,7 @@ router = APIRouter(
 
 
 @router.get("", response_model=list[TextRead], status_code=status.HTTP_200_OK)
-async def get_all_texts(ou: OptionalUserDep, limit: int = 100) -> list[TextRead]:
+async def get_all_texts(ou: OptionalUserDep, limit: int = 128) -> list[TextRead]:
     restrictions = {} if (ou and ou.is_superuser) else {"is_active": True}
     return await TextDocument.find(restrictions).limit(limit).to_list()
 

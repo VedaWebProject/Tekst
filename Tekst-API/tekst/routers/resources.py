@@ -170,9 +170,16 @@ async def update_resource(
 )
 async def find_resources(
     user: OptionalUserDep,
-    text_id: Annotated[PydanticObjectId, Query(alias="textId")],
-    level: int = None,
-    resource_type: Annotated[str, Query(alias="resourceType")] = None,
+    text_id: Annotated[
+        PydanticObjectId,
+        Query(alias="txt", description="ID of text to find resources for"),
+    ] = None,
+    level: Annotated[
+        int, Query(alias="lvl", description="Structure level to find resources for")
+    ] = None,
+    resource_type: Annotated[
+        str, Query(alias="type", description="Type of resources to find")
+    ] = None,
     limit: int = 4096,
 ) -> list[AnyResourceRead]:
     """

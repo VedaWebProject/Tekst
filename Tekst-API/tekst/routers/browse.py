@@ -37,15 +37,15 @@ async def get_unit_siblings(
     resource_id: Annotated[
         PydanticObjectId,
         Query(
+            alias="res",
             description="ID of resource the requested units belong to",
-            alias="resourceId",
         ),
     ],
     parent_node_id: Annotated[
         PydanticObjectId | None,
         Query(
+            alias="parent",
             description="ID of node for which siblings to get associated units for",
-            alias="parentNodeId",
         ),
     ] = None,
 ) -> list[UnitBaseDocument]:
@@ -98,24 +98,27 @@ async def get_unit_siblings(
 )
 async def get_location_data(
     user: OptionalUserDep,
-    text_id: Annotated[PydanticObjectId, Query(alias="txt")],
+    text_id: Annotated[
+        PydanticObjectId,
+        Query(alias="txt", description="ID of text to look up data for"),
+    ],
     level: Annotated[int, Query(alias="lvl", description="Location level")],
     position: Annotated[int, Query(alias="pos", description="Location position")],
     resource_ids: Annotated[
         list[PydanticObjectId],
         Query(
-            alias="r",
+            alias="res",
             description="ID (or list of IDs) of resource(s) to return unit data for",
         ),
     ] = [],
     only_head_units: Annotated[
         bool,
         Query(
-            alias="h",
+            alias="head",
             description="Only return units referencing the head node of the node path",
         ),
     ] = False,
-    limit: Annotated[int, Query(description="Return at most <limit> items")] = 1000,
+    limit: Annotated[int, Query(description="Return at most <limit> units")] = 4096,
 ) -> LocationData:
     """
     Returns the node path from the node with the given level/position

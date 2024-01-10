@@ -100,7 +100,7 @@ export interface paths {
      */
     get: operations['getPlatformData'];
   };
-  '/platform/users/{usernameOrId}': {
+  '/platform/users/{user}': {
     /**
      * Get public user
      * @description Returns public information on the user with the specified username or ID
@@ -2211,9 +2211,9 @@ export interface operations {
     parameters: {
       query: {
         /** @description ID of resource the requested units belong to */
-        resourceId: string;
+        res: string;
         /** @description ID of node for which siblings to get associated units for */
-        parentNodeId?: string | null;
+        parent?: string | null;
       };
     };
     responses: {
@@ -2254,9 +2254,9 @@ export interface operations {
         /** @description Location position */
         pos: number;
         /** @description ID (or list of IDs) of resource(s) to return unit data for */
-        r?: string[];
+        res?: string[];
         /** @description Only return units referencing the head node of the node path */
-        h?: boolean;
+        head?: boolean;
         /** @description Return at most <limit> items */
         limit?: number;
       };
@@ -2397,10 +2397,10 @@ export interface operations {
   findNodes: {
     parameters: {
       query: {
-        textId: string;
+        txt: string;
         level?: number;
         position?: number;
-        parentId?: string;
+        parent?: string;
         limit?: number;
       };
     };
@@ -2457,8 +2457,8 @@ export interface operations {
   getChildren: {
     parameters: {
       query?: {
-        parentId?: string | null;
-        textId?: string | null;
+        txt?: string | null;
+        parent?: string | null;
         limit?: number;
       };
     };
@@ -2626,7 +2626,7 @@ export interface operations {
   getPublicUser: {
     parameters: {
       path: {
-        usernameOrId: string;
+        user: string;
       };
     };
     responses: {
@@ -2823,9 +2823,9 @@ export interface operations {
   findResources: {
     parameters: {
       query: {
-        textId: string;
+        txt: string;
         level?: number;
-        resourceType?: string;
+        type?: string;
         limit?: number;
       };
     };
@@ -3409,9 +3409,9 @@ export interface operations {
     parameters: {
       query?: {
         /** @description ID (or list of IDs) of resource(s) to return unit data for */
-        resourceId?: string[];
+        res?: string[];
         /** @description ID (or list of IDs) of node(s) to return unit data for */
-        nodeId?: string[];
+        node?: string[];
         /** @description Return at most <limit> items */
         limit?: number;
       };

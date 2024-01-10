@@ -164,18 +164,18 @@ async def find_units(
     resource_ids: Annotated[
         list[PydanticObjectId],
         Query(
-            alias="resourceId",
+            alias="res",
             description="ID (or list of IDs) of resource(s) to return unit data for",
         ),
     ] = [],
     node_ids: Annotated[
         list[PydanticObjectId],
         Query(
-            alias="nodeId",
+            alias="node",
             description="ID (or list of IDs) of node(s) to return unit data for",
         ),
     ] = [],
-    limit: Annotated[int, Query(description="Return at most <limit> items")] = 1000,
+    limit: Annotated[int, Query(description="Return at most <limit> items")] = 4096,
 ) -> list[AnyUnitRead]:
     """
     Returns a list of all resource units matching the given criteria.

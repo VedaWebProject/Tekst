@@ -30,8 +30,8 @@ async function handleClick() {
   const { data: unitsData, error } = await GET('/browse/unit-siblings', {
     params: {
       query: {
-        resourceId: props.resource.id,
-        parentNodeId: browse.nodePath[props.resource.level - 1]?.id,
+        res: props.resource.id,
+        parent: browse.nodePath[props.resource.level - 1]?.id,
       },
     },
   });

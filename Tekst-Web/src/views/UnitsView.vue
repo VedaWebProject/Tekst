@@ -107,8 +107,8 @@ async function loadLocationData() {
         txt: state.text?.id || '',
         lvl: resource.value.level,
         pos: position.value,
-        r: [resource.value.id, ...(compareResourceId.value ? [compareResourceId.value] : [])],
-        h: true,
+        res: [resource.value.id, ...(compareResourceId.value ? [compareResourceId.value] : [])],
+        head: true,
       },
     },
   });

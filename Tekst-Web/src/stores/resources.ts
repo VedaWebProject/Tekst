@@ -26,7 +26,7 @@ export const useResourcesStore = defineStore('resources', () => {
     const { data, error: err } = await GET('/resources', {
       params: {
         query: {
-          textId: state.text.id,
+          txt: state.text.id,
         },
       },
     });

@@ -103,19 +103,19 @@
         ],
         "parameters": [
           {
-            "name": "resourceId",
+            "name": "res",
             "in": "query",
             "required": true,
             "schema": {
               "type": "string",
               "example": "5eb7cf5a86d9755df3a6c593",
               "description": "ID of resource the requested units belong to",
-              "title": "Resourceid"
+              "title": "Res"
             },
             "description": "ID of resource the requested units belong to"
           },
           {
-            "name": "parentNodeId",
+            "name": "parent",
             "in": "query",
             "required": false,
             "schema": {
@@ -129,7 +129,7 @@
                 }
               ],
               "description": "ID of node for which siblings to get associated units for",
-              "title": "Parentnodeid"
+              "title": "Parent"
             },
             "description": "ID of node for which siblings to get associated units for"
           }
@@ -203,8 +203,10 @@
             "schema": {
               "type": "string",
               "example": "5eb7cf5a86d9755df3a6c593",
+              "description": "ID of text to look up data for",
               "title": "Txt"
-            }
+            },
+            "description": "ID of text to look up data for"
           },
           {
             "name": "lvl",
@@ -229,7 +231,7 @@
             "description": "Location position"
           },
           {
-            "name": "r",
+            "name": "res",
             "in": "query",
             "required": false,
             "schema": {
@@ -240,19 +242,19 @@
               },
               "description": "ID (or list of IDs) of resource(s) to return unit data for",
               "default": [],
-              "title": "R"
+              "title": "Res"
             },
             "description": "ID (or list of IDs) of resource(s) to return unit data for"
           },
           {
-            "name": "h",
+            "name": "head",
             "in": "query",
             "required": false,
             "schema": {
               "type": "boolean",
               "description": "Only return units referencing the head node of the node path",
               "default": false,
-              "title": "H"
+              "title": "Head"
             },
             "description": "Only return units referencing the head node of the node path"
           },
@@ -262,11 +264,11 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "description": "Return at most <limit> items",
-              "default": 1000,
+              "description": "Return at most <limit> units",
+              "default": 4096,
               "title": "Limit"
             },
-            "description": "Return at most <limit> items"
+            "description": "Return at most <limit> units"
           }
         ],
         "responses": {
@@ -579,42 +581,50 @@
         "operationId": "findNodes",
         "parameters": [
           {
-            "name": "textId",
+            "name": "txt",
             "in": "query",
             "required": true,
             "schema": {
               "type": "string",
               "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Textid"
-            }
+              "description": "ID of text to find nodes for",
+              "title": "Txt"
+            },
+            "description": "ID of text to find nodes for"
           },
           {
-            "name": "level",
+            "name": "lvl",
             "in": "query",
             "required": false,
             "schema": {
               "type": "integer",
-              "title": "Level"
-            }
+              "description": "Structure level to find nodes for",
+              "title": "Lvl"
+            },
+            "description": "Structure level to find nodes for"
           },
           {
-            "name": "position",
+            "name": "pos",
             "in": "query",
             "required": false,
             "schema": {
               "type": "integer",
-              "title": "Position"
-            }
+              "description": "Position value of nodes to find",
+              "title": "Pos"
+            },
+            "description": "Position value of nodes to find"
           },
           {
-            "name": "parentId",
+            "name": "parent",
             "in": "query",
             "required": false,
             "schema": {
               "type": "string",
               "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Parentid"
-            }
+              "description": "ID of parent node to find children of",
+              "title": "Parent"
+            },
+            "description": "ID of parent node to find children of"
           },
           {
             "name": "limit",
@@ -622,9 +632,11 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "default": 1000,
+              "description": "Return at most <limit> nodes",
+              "default": 8192,
               "title": "Limit"
-            }
+            },
+            "description": "Return at most <limit> nodes"
           }
         ],
         "responses": {
@@ -675,7 +687,7 @@
         ],
         "parameters": [
           {
-            "name": "parentId",
+            "name": "txt",
             "in": "query",
             "required": false,
             "schema": {
@@ -688,11 +700,13 @@
                   "type": "null"
                 }
               ],
-              "title": "Parentid"
-            }
+              "description": "ID of text to find nodes for",
+              "title": "Txt"
+            },
+            "description": "ID of text to find nodes for"
           },
           {
-            "name": "textId",
+            "name": "parent",
             "in": "query",
             "required": false,
             "schema": {
@@ -705,8 +719,10 @@
                   "type": "null"
                 }
               ],
-              "title": "Textid"
-            }
+              "description": "ID of parent node to find children of",
+              "title": "Parent"
+            },
+            "description": "ID of parent node to find children of"
           },
           {
             "name": "limit",
@@ -714,7 +730,7 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "default": 9999,
+              "default": 8192,
               "title": "Limit"
             }
           }
@@ -1009,7 +1025,7 @@
         ]
       }
     },
-    "/platform/users/{usernameOrId}": {
+    "/platform/users/{user}": {
       "get": {
         "tags": [
           "platform"
@@ -1019,7 +1035,7 @@
         "operationId": "getPublicUser",
         "parameters": [
           {
-            "name": "usernameOrId",
+            "name": "user",
             "in": "path",
             "required": true,
             "schema": {
@@ -1032,8 +1048,10 @@
                   "example": "5eb7cf5a86d9755df3a6c593"
                 }
               ],
-              "title": "Usernameorid"
-            }
+              "description": "Username or ID",
+              "title": "User"
+            },
+            "description": "Username or ID"
           }
         ],
         "responses": {
@@ -1093,8 +1111,10 @@
                   "type": "null"
                 }
               ],
+              "description": "Query string to search in user data",
               "title": "Q"
-            }
+            },
+            "description": "Query string to search in user data"
           }
         ],
         "responses": {
@@ -1483,32 +1503,38 @@
         ],
         "parameters": [
           {
-            "name": "textId",
+            "name": "txt",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
               "type": "string",
               "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Textid"
-            }
+              "description": "ID of text to find resources for",
+              "title": "Txt"
+            },
+            "description": "ID of text to find resources for"
           },
           {
-            "name": "level",
+            "name": "lvl",
             "in": "query",
             "required": false,
             "schema": {
               "type": "integer",
-              "title": "Level"
-            }
+              "description": "Structure level to find resources for",
+              "title": "Lvl"
+            },
+            "description": "Structure level to find resources for"
           },
           {
-            "name": "resourceType",
+            "name": "type",
             "in": "query",
             "required": false,
             "schema": {
               "type": "string",
-              "title": "Resourcetype"
-            }
+              "description": "Type of resources to find",
+              "title": "Type"
+            },
+            "description": "Type of resources to find"
           },
           {
             "name": "limit",
@@ -2205,7 +2231,7 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "default": 100,
+              "default": 128,
               "title": "Limit"
             }
           }
@@ -2813,7 +2839,7 @@
         ],
         "parameters": [
           {
-            "name": "resourceId",
+            "name": "res",
             "in": "query",
             "required": false,
             "schema": {
@@ -2824,12 +2850,12 @@
               },
               "description": "ID (or list of IDs) of resource(s) to return unit data for",
               "default": [],
-              "title": "Resourceid"
+              "title": "Res"
             },
             "description": "ID (or list of IDs) of resource(s) to return unit data for"
           },
           {
-            "name": "nodeId",
+            "name": "node",
             "in": "query",
             "required": false,
             "schema": {
@@ -2840,7 +2866,7 @@
               },
               "description": "ID (or list of IDs) of node(s) to return unit data for",
               "default": [],
-              "title": "Nodeid"
+              "title": "Node"
             },
             "description": "ID (or list of IDs) of node(s) to return unit data for"
           },
@@ -2851,7 +2877,7 @@
             "schema": {
               "type": "integer",
               "description": "Return at most <limit> items",
-              "default": 1000,
+              "default": 4096,
               "title": "Limit"
             },
             "description": "Return at most <limit> items"

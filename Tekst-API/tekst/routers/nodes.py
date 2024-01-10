@@ -109,11 +109,20 @@ async def create_node(su: SuperuserDep, node: NodeCreate) -> NodeRead:
 
 @router.get("", response_model=list[NodeRead], status_code=status.HTTP_200_OK)
 async def find_nodes(
-    text_id: Annotated[PydanticObjectId, Query(alias="textId")],
-    level: int = None,
-    position: int = None,
-    parent_id: Annotated[PydanticObjectId, Query(alias="parentId")] = None,
-    limit: int = 1000,
+    text_id: Annotated[
+        PydanticObjectId, Query(alias="txt", description="ID of text to find nodes for")
+    ],
+    level: Annotated[
+        int, Query(alias="lvl", description="Structure level to find nodes for")
+    ] = None,
+    position: Annotated[
+        int, Query(alias="pos", description="Position value of nodes to find")
+    ] = None,
+    parent_id: Annotated[
+        PydanticObjectId,
+        Query(alias="parent", description="ID of parent node to find children of"),
+    ] = None,
+    limit: Annotated[int, Query(description="Return at most <limit> nodes")] = 8192,
 ) -> list[NodeDocument]:
     if level is None and parent_id is None:
         raise HTTPException(
@@ -138,9 +147,15 @@ async def find_nodes(
 @router.get("/children", response_model=list[NodeRead], status_code=status.HTTP_200_OK)
 async def get_children(
     su: SuperuserDep,
-    parent_id: Annotated[PydanticObjectId | None, Query(alias="parentId")] = None,
-    text_id: Annotated[PydanticObjectId | None, Query(alias="textId")] = None,
-    limit: int = 9999,
+    text_id: Annotated[
+        PydanticObjectId | None,
+        Query(alias="txt", description="ID of text to find nodes for"),
+    ] = None,
+    parent_id: Annotated[
+        PydanticObjectId | None,
+        Query(alias="parent", description="ID of parent node to find children of"),
+    ] = None,
+    limit: int = 8192,
 ) -> list:
     if parent_id is None and text_id is None:
         raise HTTPException(

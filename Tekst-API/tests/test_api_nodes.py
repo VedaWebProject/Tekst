@@ -44,9 +44,7 @@ async def test_create_additional_node(
     await login(is_superuser=True)
 
     # get a parent node
-    resp = await test_client.get(
-        "/nodes", params={"textId": text_id, "level": 0, "position": 0}
-    )
+    resp = await test_client.get("/nodes", params={"txt": text_id, "lvl": 0, "pos": 0})
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 1
@@ -139,7 +137,7 @@ async def test_child_node_io(
 
     # find children by parent ID
     resp = await test_client.get(
-        "/nodes", params={"textId": parent["textId"], "parentId": parent["id"]}
+        "/nodes", params={"txt": parent["textId"], "parent": parent["id"]}
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
@@ -149,7 +147,7 @@ async def test_child_node_io(
     # find children by parent ID using dedicated children endpoint
     resp = await test_client.get(
         "/nodes/children",
-        params={"parentId": child["parentId"]},
+        params={"parent": child["parentId"]},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
@@ -159,7 +157,7 @@ async def test_child_node_io(
     # find children by text ID and null parent ID using dedicated children endpoint
     resp = await test_client.get(
         "/nodes/children",
-        params={"textId": text_id},
+        params={"txt": text_id},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
@@ -204,22 +202,20 @@ async def test_get_nodes(
 
     # test results length limit
     resp = await test_client.get(
-        "/nodes", params={"textId": text_id, "level": 0, "limit": 2}
+        "/nodes", params={"txt": text_id, "lvl": 0, "limit": 2}
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 2
 
     # test empty results with status 200
-    resp = await test_client.get(
-        "/nodes", params={"textId": "5eb7cfb05e32e07750a1756a", "level": 0}
-    )
+    resp = await test_client.get("/nodes", params={"txt": wrong_id, "lvl": 0})
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 0
 
     # test results contain all nodes of level 0
-    resp = await test_client.get("/nodes", params={"textId": text_id, "level": 0})
+    resp = await test_client.get("/nodes", params={"txt": text_id, "lvl": 0})
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == len(
@@ -232,15 +228,13 @@ async def test_get_nodes(
     node_id = resp.json()[0]["id"]
 
     # test specific position
-    resp = await test_client.get(
-        "/nodes", params={"textId": text_id, "level": 0, "position": 0}
-    )
+    resp = await test_client.get("/nodes", params={"txt": text_id, "lvl": 0, "pos": 0})
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 1
 
     # test invalid request
-    resp = await test_client.get("/nodes", params={"textId": text_id})
+    resp = await test_client.get("/nodes", params={"txt": text_id})
     assert resp.status_code == 400, status_fail_msg(400, resp)
 
     # test get specific node by ID
@@ -264,7 +258,7 @@ async def test_update_node(
     text_id = (await insert_sample_data("texts", "nodes"))["texts"][0]
 
     # get node from db
-    resp = await test_client.get("/nodes", params={"textId": text_id, "level": 0})
+    resp = await test_client.get("/nodes", params={"txt": text_id, "lvl": 0})
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) > 0
@@ -312,9 +306,7 @@ async def test_delete_node(
     text_id = (await insert_sample_data("texts", "nodes", "resources"))["texts"][0]
 
     # get node from db
-    resp = await test_client.get(
-        "/nodes", params={"textId": text_id, "level": 0, "position": 0}
-    )
+    resp = await test_client.get("/nodes", params={"txt": text_id, "lvl": 0, "pos": 0})
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) > 0
@@ -324,7 +316,7 @@ async def test_delete_node(
     await login(is_superuser=True)
 
     # get existing resource
-    resp = await test_client.get("/resources", params={"textId": text_id})
+    resp = await test_client.get("/resources", params={"txt": text_id})
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) > 0
@@ -378,7 +370,7 @@ async def test_move_node(
     # get node from db
     resp = await test_client.get(
         "/nodes",
-        params={"textId": text_id, "level": 0, "position": 0},
+        params={"txt": text_id, "lvl": 0, "pos": 0},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
@@ -438,7 +430,7 @@ async def test_move_node_lowest_level(
     # get node from db
     resp = await test_client.get(
         "/nodes",
-        params={"textId": text_id, "level": 1, "position": 0},
+        params={"txt": text_id, "lvl": 1, "pos": 0},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)

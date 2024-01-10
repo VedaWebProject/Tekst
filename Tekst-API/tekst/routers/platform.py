@@ -64,13 +64,15 @@ async def get_platform_data(
 
 
 @router.get(
-    "/users/{usernameOrId}",
+    "/users/{user}",
     response_model=UserReadPublic,
     summary="Get public user info",
     status_code=status.HTTP_200_OK,
 )
 async def get_public_user(
-    username_or_id: Annotated[str | PydanticObjectId, Path(alias="usernameOrId")],
+    username_or_id: Annotated[
+        str | PydanticObjectId, Path(alias="user", description="Username or ID")
+    ],
 ) -> dict:
     """Returns public information on the user with the specified username or ID"""
     if PydanticObjectId.is_valid(username_or_id):
@@ -93,7 +95,10 @@ async def get_public_user(
     "/users", response_model=list[UserReadPublic], status_code=status.HTTP_200_OK
 )
 async def find_public_users(
-    su: UserDep, query: Annotated[str | None, Query(alias="q")] = None
+    su: UserDep,
+    query: Annotated[
+        str | None, Query(alias="q", description="Query string to search in user data")
+    ] = None,
 ) -> list[UserDocument]:
     """
     Returns a list of public users matching the given query.

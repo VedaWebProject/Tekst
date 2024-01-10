@@ -20,7 +20,7 @@ async def test_get_unit_siblings(
 
     resp = await test_client.get(
         "/browse/unit-siblings",
-        params={"resourceId": str(resource.id)},
+        params={"res": str(resource.id)},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
@@ -29,7 +29,7 @@ async def test_get_unit_siblings(
     # wrong resource ID
     resp = await test_client.get(
         "/browse/unit-siblings",
-        params={"resourceId": wrong_id},
+        params={"res": wrong_id},
     )
     assert resp.status_code == 404, status_fail_msg(404, resp)
 
