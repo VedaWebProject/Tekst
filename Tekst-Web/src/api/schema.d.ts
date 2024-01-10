@@ -2248,6 +2248,7 @@ export interface operations {
   getLocationData: {
     parameters: {
       query: {
+        /** @description ID of text to look up data for */
         txt: string;
         /** @description Location level */
         lvl: number;
@@ -2257,7 +2258,7 @@ export interface operations {
         res?: string[];
         /** @description Only return units referencing the head node of the node path */
         head?: boolean;
-        /** @description Return at most <limit> items */
+        /** @description Return at most <limit> units */
         limit?: number;
       };
     };
@@ -2397,10 +2398,15 @@ export interface operations {
   findNodes: {
     parameters: {
       query: {
+        /** @description ID of text to find nodes for */
         txt: string;
-        level?: number;
-        position?: number;
+        /** @description Structure level to find nodes for */
+        lvl?: number;
+        /** @description Position value of nodes to find */
+        pos?: number;
+        /** @description ID of parent node to find children of */
         parent?: string;
+        /** @description Return at most <limit> nodes */
         limit?: number;
       };
     };
@@ -2457,7 +2463,9 @@ export interface operations {
   getChildren: {
     parameters: {
       query?: {
+        /** @description ID of text to find nodes for */
         txt?: string | null;
+        /** @description ID of parent node to find children of */
         parent?: string | null;
         limit?: number;
       };
@@ -2626,6 +2634,7 @@ export interface operations {
   getPublicUser: {
     parameters: {
       path: {
+        /** @description Username or ID */
         user: string;
       };
     };
@@ -2658,6 +2667,7 @@ export interface operations {
   findPublicUsers: {
     parameters: {
       query?: {
+        /** @description Query string to search in user data */
         q?: string | null;
       };
     };
@@ -2822,9 +2832,12 @@ export interface operations {
    */
   findResources: {
     parameters: {
-      query: {
-        txt: string;
-        level?: number;
+      query?: {
+        /** @description ID of text to find resources for */
+        txt?: string;
+        /** @description Structure level to find resources for */
+        lvl?: number;
+        /** @description Type of resources to find */
         type?: string;
         limit?: number;
       };
