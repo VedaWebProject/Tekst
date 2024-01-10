@@ -15,7 +15,7 @@ import FlagFilled from '@vicons/material/FlagFilled';
 import FlagOutlined from '@vicons/material/FlagOutlined';
 import PublicFilled from '@vicons/material/PublicFilled';
 import PublicOffFilled from '@vicons/material/PublicOffFilled';
-import PersonPinFilled from '@vicons/material/PersonPinFilled';
+import PersonFilled from '@vicons/material/PersonFilled';
 import EditNoteOutlined from '@vicons/material/EditNoteOutlined';
 
 const props = defineProps<{
@@ -119,7 +119,7 @@ const actionOptions = computed(() => [
   {
     label: $t('resources.transferAction'),
     key: 'transfer',
-    icon: renderIcon(PersonPinFilled),
+    icon: renderIcon(PersonFilled),
     disabled: !isOwnerOrAdmin.value || props.targetResource.public || props.targetResource.proposed,
     action: () => emit('transferClick', props.targetResource),
   },

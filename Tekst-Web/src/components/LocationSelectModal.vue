@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
 import { useStateStore } from '@/stores';
-import { NButton, NModal, NSelect, NFormItem, NForm, NDivider } from 'naive-ui';
+import { NButton, NSelect, NFormItem, NForm, NDivider } from 'naive-ui';
 import type { NodeRead, TextRead } from '@/api';
 import ButtonShelf from '@/components/ButtonShelf.vue';
 import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import { GET } from '@/api';
 import { useMessages } from '@/messages';
 import { $t } from '@/i18n';
+import GenericModal from './GenericModal.vue';
+import IconHeading from '@/components/typography/IconHeading.vue';
 
 import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
-import IconHeading from '@/components/typography/IconHeading.vue';
 
 const props = withDefaults(
   defineProps<{
@@ -175,7 +176,6 @@ async function initSelectModels() {
 }
 
 function handleLocationSelect() {
-  // emit selected node path
   emit(
     'update:nodePath',
     locationSelectModels.value
@@ -183,38 +183,11 @@ function handleLocationSelect() {
       .map((lsm) => lsm.nodes.find((n) => n.id === lsm.selected))
   );
   emit('update:show', false);
-  // // we reverse the actual array here, but it will be created from scratch
-  // // anyway as soon as the location select modal opens again
-  // const selectedLevel = locationSelectModels.value
-  //   .reverse()
-  //   .find((lsm) => !lsm.disabled && !!lsm.selected);
-  // const selectedNode = selectedLevel?.nodes.find((n) => n.id === selectedLevel.selected);
-
-  // router.push({
-  //   name: 'browse',
-  //   params: { ...route.params },
-  //   query: {
-  //     ...route.query,
-  //     lvl: selectedNode?.level,
-  //     pos: selectedNode?.position,
-  //   },
-  // });
 }
 </script>
 
 <template>
-  <n-modal
-    :show="show"
-    display-directive="if"
-    preset="card"
-    embedded
-    :auto-focus="false"
-    header-style="padding-bottom: 1.5rem"
-    class="tekst-modal"
-    to="#app-container"
-    @update:show="emit('update:show', $event)"
-    @mask-click="emit('update:show', false)"
-  >
+  <GenericModal :show="show" @update:show="emit('update:show', $event)">
     <template #header>
       <IconHeading level="2" :icon="MenuBookOutlined" style="margin: 0">
         {{ $t('browse.location.modalHeading') }}
@@ -264,7 +237,7 @@ function handleLocationSelect() {
         {{ $t('general.selectAction') }}
       </n-button>
     </ButtonShelf>
-  </n-modal>
+  </GenericModal>
 </template>
 
 <style scoped>

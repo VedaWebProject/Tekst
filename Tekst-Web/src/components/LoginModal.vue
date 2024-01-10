@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores';
-import { type FormInst, NForm, NFormItem, NInput, NButton, NModal } from 'naive-ui';
-import { ref, onMounted, nextTick } from 'vue';
+import { type FormInst, NForm, NFormItem, NInput, NButton } from 'naive-ui';
+import { ref } from 'vue';
 import { $t } from '@/i18n';
 import { useMessages } from '@/messages';
 import type { RouteLocationRaw } from 'vue-router';
@@ -10,6 +10,9 @@ import { accountFormRules } from '@/forms/formRules';
 import { POST } from '@/api';
 import ButtonShelf from '@/components/ButtonShelf.vue';
 import { LoginTemplatePromise } from '@/templatePromises';
+import GenericModal from './GenericModal.vue';
+
+import LogInOutlined from '@vicons/material/LogInOutlined';
 
 const auth = useAuthStore();
 const { message } = useMessages();
@@ -22,7 +25,6 @@ const initialFormModel = () => ({
 
 const formModel = ref<Record<string, string | null>>(initialFormModel());
 const formRef = ref<FormInst | null>(null);
-const emailInputRef = ref<HTMLInputElement | null>(null);
 
 function resetForm() {
   formModel.value = initialFormModel();
@@ -71,28 +73,19 @@ async function handleForgotPasswordClick(resolveLogin: (res: boolean | Promise<b
     message.error($t('account.forgotPassword.invalidEmail'));
   }
 }
-
-onMounted(() => {
-  nextTick(() => {
-    emailInputRef.value?.focus();
-  });
-});
 </script>
 
 <template>
   <LoginTemplatePromise v-slot="{ args, resolve, reject, isResolving }">
-    <n-modal
+    <GenericModal
       show
-      preset="card"
-      class="tekst-modal tekst-modal-narrow"
-      to="#app-container"
-      :closable="false"
-      embedded
+      width="narrow"
+      :title="$t('account.login.heading')"
+      :icon="LogInOutlined"
       @close="reject(null)"
       @mask-click="reject(null)"
     >
       <div class="form-container">
-        <h2 style="text-align: center">{{ $t('account.login.heading') }}</h2>
         <div v-show="args[0]" class="login-message">{{ args[0] }}</div>
         <n-form
           ref="formRef"
@@ -107,7 +100,6 @@ onMounted(() => {
             :label="$t('models.user.email')"
           >
             <n-input
-              ref="emailInputRef"
               v-model:value="formModel.email"
               type="text"
               :placeholder="$t('models.user.email')"
@@ -154,7 +146,7 @@ onMounted(() => {
           {{ $t('account.loginBtn') }}
         </n-button>
       </ButtonShelf>
-    </n-modal>
+    </GenericModal>
   </LoginTemplatePromise>
 </template>
 

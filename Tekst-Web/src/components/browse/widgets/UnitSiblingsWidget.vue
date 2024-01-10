@@ -2,7 +2,7 @@
 import UnitContainerHeaderWidget from '@/components/browse/UnitContainerHeaderWidget.vue';
 import MergeRound from '@vicons/material/MergeRound';
 import { ref } from 'vue';
-import { NModal, NButton, NSpin } from 'naive-ui';
+import { NButton, NSpin } from 'naive-ui';
 import ButtonShelf from '@/components/ButtonShelf.vue';
 import { GET, type AnyUnitRead, type AnyResourceRead } from '@/api';
 import { useMessages } from '@/messages';
@@ -11,6 +11,10 @@ import unitComponents from '@/components/browse/units/mappings';
 import LocationLabel from '@/components/browse/LocationLabel.vue';
 import UnitHeaderWidgetBar from '@/components/browse/UnitHeaderWidgetBar.vue';
 import { useBrowseStore } from '@/stores';
+import GenericModal from '@/components/GenericModal.vue';
+import IconHeading from '@/components/typography/IconHeading.vue';
+
+import MergeOutlined from '@vicons/material/MergeOutlined';
 
 const props = defineProps<{
   resource: AnyResourceRead;
@@ -56,25 +60,20 @@ async function handleClick() {
     @click="handleClick"
   />
 
-  <n-modal
-    v-model:show="showModal"
-    preset="card"
-    class="tekst-modal tekst-modal-full"
-    :bordered="false"
-    :auto-focus="false"
-    :closable="false"
-    to="#app-container"
-    embedded
-  >
-    <div class="header">
-      <h2>{{ resource.title }}</h2>
-      <UnitHeaderWidgetBar
-        v-if="!loading && units.length"
-        :resource="{ ...resource, units: units }"
-        :show-deactivate-widget="false"
-        :show-siblings-widget="false"
-      />
-    </div>
+  <GenericModal v-model:show="showModal" :closable="false" width="wide">
+    <template #header>
+      <div class="header">
+        <IconHeading level="2" :icon="MergeOutlined" style="flex: 2">
+          {{ resource.title }}
+        </IconHeading>
+        <UnitHeaderWidgetBar
+          v-if="!loading && units.length"
+          :resource="{ ...resource, units: units }"
+          :show-deactivate-widget="false"
+          :show-siblings-widget="false"
+        />
+      </div>
+    </template>
 
     <div class="parent-location"><LocationLabel :max-level="resource.level - 1" /></div>
 
@@ -94,17 +93,13 @@ async function handleClick() {
         {{ $t('general.closeAction') }}
       </n-button>
     </ButtonShelf>
-  </n-modal>
+  </GenericModal>
 </template>
 
 <style scoped>
 .header {
   display: flex;
   align-items: flex-start;
-}
-
-.header > h2 {
-  flex-grow: 2;
 }
 
 .parent-location {

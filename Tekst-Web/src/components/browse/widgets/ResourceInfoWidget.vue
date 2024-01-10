@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { NEllipsis, NDivider, NButton, NModal, NProgress } from 'naive-ui';
+import { NEllipsis, NDivider, NButton, NProgress } from 'naive-ui';
 import MetadataDisplay from '@/components/browse/MetadataDisplay.vue';
 import ButtonShelf from '@/components/ButtonShelf.vue';
 import IconHeading from '@/components/typography/IconHeading.vue';
@@ -17,6 +17,7 @@ import FormatQuoteFilled from '@vicons/material/FormatQuoteFilled';
 import PercentOutlined from '@vicons/material/PercentOutlined';
 import LabelOutlined from '@vicons/material/LabelOutlined';
 import CoverageDetailsWidget from './CoverageDetailsWidget.vue';
+import GenericModal from '@/components/GenericModal.vue';
 
 const props = defineProps<{
   resource: AnyResourceRead;
@@ -47,25 +48,7 @@ watch(showInfoModal, async (after) => {
     @click="showInfoModal = true"
   />
 
-  <n-modal
-    v-model:show="showInfoModal"
-    display-directive="if"
-    preset="card"
-    class="tekst-modal"
-    :title="resource.title"
-    :bordered="false"
-    :auto-focus="false"
-    :closable="true"
-    header-style="padding-bottom: .25rem"
-    to="#app-container"
-    embedded
-  >
-    <template #header>
-      <IconHeading level="2" :icon="InfoOutlined" style="margin: 0">
-        {{ resource.title }}
-      </IconHeading>
-    </template>
-
+  <GenericModal v-model:show="showInfoModal" :title="resource.title" :icon="InfoOutlined">
     <p v-if="resource.description?.length">
       <TranslationDisplay :value="resource.description" />
     </p>
@@ -156,7 +139,7 @@ watch(showInfoModal, async (after) => {
         {{ $t('general.closeAction') }}
       </n-button>
     </ButtonShelf>
-  </n-modal>
+  </GenericModal>
 
   <CoverageDetailsWidget
     v-model:show="showCoverageDetailsModal"

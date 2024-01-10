@@ -451,7 +451,7 @@ admin:
     levels:
       heading: Ebenen
       tipInsertLevel: Neue Ebene an Position {n} einfügen
-      tipEditLevel: Übersetzungen der Bezeichnung für Ebene "{levelLabel}" bearbeiten
+      tipEditLevel: Bezeichnung für Ebene "{levelLabel}" bearbeiten
       tipDeleteLevel: Ebene "{levelLabel}" löschen
       msgInsertSuccess: Ebene an Position {position} eingefügt
       msgEditSuccess: Änerungen an Ebene auf Position {position} gespeichert

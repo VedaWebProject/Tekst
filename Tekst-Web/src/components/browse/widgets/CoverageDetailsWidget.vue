@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { NButton, NModal } from 'naive-ui';
+import { NButton } from 'naive-ui';
 import ButtonShelf from '@/components/ButtonShelf.vue';
 import { ref } from 'vue';
 import { GET, type AnyResourceRead, type ResourceNodeCoverage, type ResourceCoverage } from '@/api';
@@ -10,6 +10,7 @@ import IconHeading from '@/components/typography/IconHeading.vue';
 
 import PercentOutlined from '@vicons/material/PercentOutlined';
 import { useStateStore } from '@/stores';
+import GenericModal from '@/components/GenericModal.vue';
 
 const props = defineProps<{
   resource: AnyResourceRead;
@@ -57,17 +58,9 @@ watch(
 </script>
 
 <template>
-  <n-modal
+  <GenericModal
     :show="show"
-    display-directive="if"
-    preset="card"
-    class="tekst-modal-wide"
-    :bordered="false"
-    :auto-focus="false"
-    :closable="true"
-    header-style="padding-bottom: .25rem"
-    to="#app-container"
-    embedded
+    width="wide"
     @close="$emit('update:show', false)"
     @mask-click="$emit('update:show', false)"
     @after-leave="handleLeave"
@@ -122,7 +115,7 @@ watch(
         {{ $t('general.closeAction') }}
       </n-button>
     </ButtonShelf>
-  </n-modal>
+  </GenericModal>
 </template>
 
 <style scoped>

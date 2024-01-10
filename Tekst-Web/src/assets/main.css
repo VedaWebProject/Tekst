@@ -112,29 +112,6 @@ strong {
   transition: 0.3s;
 }
 
-.tekst-modal {
-  width: 600px;
-}
-
-.tekst-modal-wide {
-  width: 900px;
-}
-
-.tekst-modal-narrow {
-  width: 480px;
-}
-
-.tekst-modal-full {
-  width: var(--max-app-width);
-}
-
-.tekst-modal,
-.tekst-modal-full,
-.tekst-modal-wide,
-.tekst-modal-narrow {
-  max-width: 95%;
-}
-
 /*
  * NUI overrides
  * Unfortunately, we need to override the default NUI styles in this hacky way

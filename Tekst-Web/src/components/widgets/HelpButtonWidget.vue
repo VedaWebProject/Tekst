@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { NModal, NButton, NIcon, NSpin } from 'naive-ui';
-
-import QuestionMarkOutlined from '@vicons/material/QuestionMarkOutlined';
+import { NButton, NIcon, NSpin } from 'naive-ui';
 import type { Size } from 'naive-ui/es/button/src/interface';
 import { $t } from '@/i18n';
 import { useHelp, type HelpText } from '@/help';
+import GenericModal from '../GenericModal.vue';
+
+import QuestionMarkOutlined from '@vicons/material/QuestionMarkOutlined';
 
 const props = withDefaults(
   defineProps<{
@@ -67,17 +68,12 @@ async function handleHelpButtonClick() {
     </template>
   </n-button>
 
-  <n-modal
+  <GenericModal
     v-model:show="showModal"
-    display-directive="if"
-    preset="card"
-    class="tekst-modal-wide"
-    :bordered="false"
-    :auto-focus="false"
-    :closable="true"
-    to="#app-container"
+    width="wide"
     :title="$t('help.help')"
-    embedded
+    :icon="QuestionMarkOutlined"
+    heading-level="3"
     @after-leave="handleClose"
   >
     <!-- eslint-disable-next-line vue/no-v-html -->
@@ -88,5 +84,5 @@ async function handleHelpButtonClick() {
       style="width: 100%; display: flex; justify-content: center"
     />
     <div v-else>{{ $t('help.errorNotFound') }}</div>
-  </n-modal>
+  </GenericModal>
 </template>

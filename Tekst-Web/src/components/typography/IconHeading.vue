@@ -20,6 +20,7 @@ withDefaults(
 <template>
   <component :is="`h${level}`" style="display: flex; align-items: center; gap: var(--content-gap)">
     <n-icon
+      v-if="icon"
       :component="icon"
       :size="iconSize"
       :color="iconColor === 'accent' ? 'var(--accent-color)' : 'inherit'"

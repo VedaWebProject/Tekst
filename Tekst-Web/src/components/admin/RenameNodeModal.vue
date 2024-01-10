@@ -2,12 +2,13 @@
 import { PATCH } from '@/api';
 import { $t } from '@/i18n';
 import type { NodeTreeOption } from '@/views/admin/AdminTextsNodesView.vue';
-import { NForm, NFormItem, NModal, NButton, NInput, type InputInst, type FormInst } from 'naive-ui';
+import { NForm, NFormItem, NButton, NInput, type InputInst, type FormInst } from 'naive-ui';
 import ButtonShelf from '@/components/ButtonShelf.vue';
 import { ref } from 'vue';
 import { nodeFormRules } from '@/forms/formRules';
 import { useModelChanges } from '@/modelChanges';
 import { useMessages } from '@/messages';
+import GenericModal from '@/components/GenericModal.vue';
 
 const props = withDefaults(defineProps<{ show: boolean; node: NodeTreeOption | null }>(), {
   show: false,
@@ -49,14 +50,8 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <n-modal
+  <GenericModal
     :show="show"
-    preset="card"
-    class="tekst-modal"
-    :bordered="false"
-    :closable="false"
-    to="#app-container"
-    embedded
     @update:show="$emit('update:show', $event)"
     @after-enter="
       () => {
@@ -100,5 +95,5 @@ async function handleSubmit() {
         {{ $t('general.saveAction') }}
       </n-button>
     </ButtonShelf>
-  </n-modal>
+  </GenericModal>
 </template>

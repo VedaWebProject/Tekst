@@ -19,6 +19,9 @@ import { useAuthStore } from '@/stores';
 import { accountFormRules } from '@/forms/formRules';
 import router from '@/router';
 
+import PersonFilled from '@vicons/material/PersonFilled';
+import IconHeading from '@/components/typography/IconHeading.vue';
+
 const auth = useAuthStore();
 const { message } = useMessages();
 const { pfData } = usePlatformData();
@@ -133,9 +136,11 @@ onMounted(() => {
 </script>
 
 <template>
-  <h1 style="text-align: center">{{ $t('register.heading') }}</h1>
   <div class="form-container">
     <div class="content-block">
+      <IconHeading level="1" :icon="PersonFilled">
+        {{ $t('register.heading') }}
+      </IconHeading>
       <n-form
         ref="formRef"
         :model="formModel"

@@ -5,7 +5,6 @@ import {
   NAlert,
   NSelect,
   NButton,
-  NModal,
   NFormItem,
   type SelectOption,
   type FormInst,
@@ -18,6 +17,9 @@ import type { UserReadPublic } from '@/api';
 import UserDisplayText from '@/components/UserDisplayText.vue';
 import { $t } from '@/i18n';
 import { useMessages } from '@/messages';
+import GenericModal from '@/components/GenericModal.vue';
+
+import PersonFilled from '@vicons/material/PersonFilled';
 
 const { message } = useMessages();
 const formModel = ref<{ userId: string | undefined }>({ userId: undefined });
@@ -63,14 +65,10 @@ function handleOkClick(resolve: (v: UserReadPublic) => void, reject: (v: any) =>
 
 <template>
   <TransferResourceTemplatePromise v-slot="{ resolve, reject }">
-    <n-modal
-      :show="true"
-      preset="card"
-      class="tekst-modal"
-      :bordered="false"
-      to="#app-container"
+    <GenericModal
+      show
       :title="$t('resources.transferAction')"
-      embedded
+      :icon="PersonFilled"
       @close="reject(null)"
       @mask-click="reject(null)"
       @esc="reject(null)"
@@ -114,6 +112,6 @@ function handleOkClick(resolve: (v: UserReadPublic) => void, reject: (v: any) =>
           {{ $t('general.okAction') }}
         </n-button>
       </ButtonShelf>
-    </n-modal>
+    </GenericModal>
   </TransferResourceTemplatePromise>
 </template>

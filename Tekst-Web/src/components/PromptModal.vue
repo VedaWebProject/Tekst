@@ -1,23 +1,22 @@
 <script setup lang="ts">
 import { PromptTemplatePromise } from '@/templatePromises';
-import { NButton, NModal, NInput, NFormItem } from 'naive-ui';
+import { NButton, NInput, NFormItem } from 'naive-ui';
 import ButtonShelf from './ButtonShelf.vue';
 import { ref } from 'vue';
+import GenericModal from './GenericModal.vue';
+
+import KeyboardOutlined from '@vicons/material/KeyboardOutlined';
 
 const value = ref('');
 </script>
 
 <template>
   <PromptTemplatePromise v-slot="{ args, resolve, reject }">
-    <n-modal
-      :show="true"
-      preset="card"
-      class="tekst-modal"
-      :bordered="false"
-      :closable="false"
-      to="#app-container"
+    <GenericModal
+      show
       :title="args[0]"
-      embedded
+      :icon="KeyboardOutlined"
+      :closable="false"
       @close="reject(null)"
       @mask-click="reject(null)"
       @vue:mounted="value = args[2] || ''"
@@ -45,6 +44,6 @@ const value = ref('');
           {{ $t('general.okAction') }}
         </n-button>
       </ButtonShelf>
-    </n-modal>
+    </GenericModal>
   </PromptTemplatePromise>
 </template>

@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { NSpin, NModal, NInput, NIcon } from 'naive-ui';
+import { NSpin, NInput, NIcon } from 'naive-ui';
 import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import { useHelp, type HelpText } from '@/help';
 import { computed, onMounted, ref } from 'vue';
 import { watch } from 'vue';
 import { useStateStore } from '@/stores';
 import IconHeading from '@/components/typography/IconHeading.vue';
+import GenericModal from '@/components/GenericModal.vue';
 
 import SearchOutlined from '@vicons/material/SearchOutlined';
 import QuestionMarkOutlined from '@vicons/material/QuestionMarkOutlined';
@@ -89,22 +90,17 @@ watch(
     </div>
   </div>
 
-  <n-modal
+  <GenericModal
     v-model:show="showModal"
-    display-directive="if"
-    preset="card"
-    class="tekst-modal-wide"
-    :bordered="false"
-    :auto-focus="false"
-    :closable="true"
-    to="#app-container"
+    width="wide"
     :title="$t('help.help')"
-    embedded
+    :icon="QuestionMarkOutlined"
+    heading-level="3"
     @after-leave="helpTextContent = undefined"
   >
     <!-- eslint-disable-next-line vue/no-v-html -->
     <div v-html="helpTextContent"></div>
-  </n-modal>
+  </GenericModal>
 </template>
 
 <style scoped></style>

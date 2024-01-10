@@ -2,20 +2,20 @@
 import { useStateStore } from '@/stores';
 import InsertLevelButton from '@/components/admin/InsertLevelButton.vue';
 import { textFormRules } from '@/forms/formRules';
-import { NIcon, NModal, NAlert, NButton, NForm, type FormInst, useDialog } from 'naive-ui';
+import { NIcon, NAlert, NButton, NForm, type FormInst, useDialog } from 'naive-ui';
 import { computed, ref } from 'vue';
 import { getLocaleProfile } from '@/i18n';
 import type { Translation } from '@/api';
 import ButtonShelf from '@/components/ButtonShelf.vue';
 import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
-
 import { useMessages } from '@/messages';
 import { $t } from '@/i18n';
 import { POST, PATCH, DELETE } from '@/api';
 import { usePlatformData } from '@/platformData';
 import { useI18n } from 'vue-i18n';
 import TranslationFormItem from '@/forms/TranslationFormItem.vue';
+import GenericModal from '@/components/GenericModal.vue';
 
 import DeleteRound from '@vicons/material/DeleteRound';
 import EditRound from '@vicons/material/EditRound';
@@ -98,9 +98,8 @@ function handleDeleteClick(level: number) {
 }
 
 function getLevelLabel(lvl: Translation[]) {
-  return (
-    (lvl && lvl.find((t) => t.locale === locale.value)?.translation) || lvl[0]?.translation || ''
-  );
+  if (!lvl?.length) return '';
+  return lvl.find((t) => t.locale === locale.value)?.translation || lvl[0].translation || '';
 }
 
 function destroyEditModal() {
@@ -214,18 +213,12 @@ async function handleModalSubmit() {
     <insert-level-button :level="levels.length" @click="handleInsertClick" />
   </div>
 
-  <n-modal
+  <GenericModal
     v-model:show="showEditModal"
-    preset="card"
-    embedded
-    :closable="false"
-    :auto-focus="false"
-    class="tekst-modal"
-    to="#app-container"
+    :title="editModalTitle"
+    :icon="EditRound"
     @after-leave="destroyEditModal"
   >
-    <h2>{{ editModalTitle }}</h2>
-
     <n-alert
       v-if="editModalWarning"
       closable
@@ -263,7 +256,7 @@ async function handleModalSubmit() {
         {{ $t('general.saveAction') }}
       </n-button>
     </ButtonShelf>
-  </n-modal>
+  </GenericModal>
 </template>
 
 <style scoped>

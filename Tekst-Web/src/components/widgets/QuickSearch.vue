@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { NButton, NIcon, NModal, NInput } from 'naive-ui';
+import { NButton, NIcon, NInput } from 'naive-ui';
 import ButtonShelf from '@/components/ButtonShelf.vue';
 import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import IconHeading from '@/components/typography/IconHeading.vue';
+import GenericModal from '../GenericModal.vue';
 
 import SearchRound from '@vicons/material/SearchRound';
 
@@ -25,15 +26,7 @@ const showModal = ref(false);
     </template>
   </n-button>
 
-  <n-modal
-    v-model:show="showModal"
-    preset="card"
-    embedded
-    header-style="padding-bottom: 1.5rem"
-    :auto-focus="false"
-    class="tekst-modal"
-    to="#app-container"
-  >
+  <GenericModal v-model:show="showModal">
     <template #header>
       <IconHeading level="1" :icon="SearchRound" style="margin: 0">
         {{ $t('search.quickSearch.heading') }}
@@ -56,7 +49,7 @@ const showModal = ref(false);
       </n-button>
       <n-button type="primary">{{ $t('search.searchAction') }}</n-button>
     </ButtonShelf>
-  </n-modal>
+  </GenericModal>
 </template>
 
 <style scoped></style>
