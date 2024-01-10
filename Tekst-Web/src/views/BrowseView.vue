@@ -14,8 +14,10 @@ import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
 import ErrorOutlineOutlined from '@vicons/material/ErrorOutlineOutlined';
 import { usePlatformData } from '@/platformData';
 import { $t } from '@/i18n';
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
+import { useRoute } from 'vue-router';
 
+const route = useRoute();
 const browse = useBrowseStore();
 const { pfData } = usePlatformData();
 
@@ -30,6 +32,15 @@ const activeResourcesCategorized = computed(() =>
       ),
     }))
     .filter((c) => c.resources.length)
+);
+
+// load fresh location data everytime the browse location changes in the URL
+watch(
+  [() => route.query.lvl, () => route.query.pos],
+  async ([newLvl, newPos]) => {
+    await browse.loadLocationData(newLvl?.toString(), newPos?.toString());
+  },
+  { immediate: true }
 );
 </script>
 

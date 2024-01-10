@@ -20,10 +20,9 @@ export const useBrowseStore = defineStore('browse', () => {
 
   const showResourceToggleDrawer = ref(false);
   const reducedView = ref(false);
-  const loadingNodePath = ref(true); // this is intentional!
-  const loadingUnits = ref(false);
+  const loadingLocationData = ref(true); // this is intentional!
   const loadingResources = computed(() => resources.loading);
-  const loading = computed(() => loadingUnits.value || loadingNodePath.value || resources.loading);
+  const loading = computed(() => loadingLocationData.value || resources.loading);
 
   /* BROWSE LOCATION */
 
@@ -37,14 +36,12 @@ export const useBrowseStore = defineStore('browse', () => {
   // update browse node path
   async function loadLocationData(lvl?: string, pos?: string) {
     if (route.name !== 'browse') return;
-    loadingNodePath.value = true;
-    loadingUnits.value = true;
+    loadingLocationData.value = true;
     const qLvl = parseInt(lvl || route.query.lvl?.toString() || '');
     const qPos = parseInt(pos || route.query.pos?.toString() || '');
     if (Number.isInteger(qLvl) && Number.isInteger(qPos)) {
       if (qLvl == nodePathHead.value?.level && qPos == nodePathHead.value?.position) {
-        loadingNodePath.value = false;
-        loadingUnits.value = false;
+        loadingLocationData.value = false;
         return;
       }
       // fill browse node path up to root (no more parent)
@@ -63,13 +60,14 @@ export const useBrowseStore = defineStore('browse', () => {
           l.units = locationData.units?.filter((u: AnyUnitRead) => u.resourceId == l.id);
         });
       } else {
+        loadingLocationData.value = false;
         resetBrowseLocation(level.value);
       }
     } else {
+      loadingLocationData.value = false;
       resetBrowseLocation();
     }
-    loadingNodePath.value = false;
-    loadingUnits.value = false;
+    loadingLocationData.value = false;
   }
 
   // reset browse location (change URI parameters)
@@ -98,17 +96,6 @@ export const useBrowseStore = defineStore('browse', () => {
       route.name === 'browse' && resetBrowseLocation();
       nodePath.value = [];
     }
-  );
-
-  // react to route changes concerning browse state
-  watch(
-    [() => route.query.lvl, () => route.query.pos],
-    async ([newLvl, newPos]) => {
-      if (route.name === 'browse') {
-        await loadLocationData(newLvl?.toString(), newPos?.toString());
-      }
-    },
-    { immediate: true }
   );
 
   /* RESOURCES AND UNITS */
@@ -153,10 +140,9 @@ export const useBrowseStore = defineStore('browse', () => {
   return {
     showResourceToggleDrawer,
     reducedView,
-    loading,
-    loadingNodePath,
-    loadingUnits,
+    loadingLocationData,
     loadingResources,
+    loading,
     resourcesCount,
     activeResourcesCount,
     resourcesCategorized,

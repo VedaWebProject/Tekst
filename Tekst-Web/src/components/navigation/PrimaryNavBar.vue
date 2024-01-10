@@ -6,7 +6,7 @@ import LocaleSwitcher from '@/components/widgets/LocaleSwitcher.vue';
 import UserOptionsButton from '@/components/widgets/UserOptionsButton.vue';
 import QuickSearchWidget from '@/components/widgets/QuickSearch.vue';
 import HelpNavButton from '@/components/widgets/HelpNavButton.vue';
-import { useAuthStore, useStateStore } from '@/stores';
+import { useAuthStore, useBrowseStore, useStateStore } from '@/stores';
 import { useRoute, RouterLink } from 'vue-router';
 import { usePlatformData } from '@/platformData';
 import NavigationMenu from '@/components/navigation/NavigationMenu.vue';
@@ -19,6 +19,7 @@ import TranslationDisplay from '@/components/TranslationDisplay.vue';
 const { pfData, systemHome } = usePlatformData();
 const auth = useAuthStore();
 const state = useStateStore();
+const browse = useBrowseStore();
 const route = useRoute();
 
 const { menuOptions: mainMenuOptions } = useMainMenuOptions(false);
@@ -39,7 +40,18 @@ watch(
   <div class="navbar" :class="state.smallScreen && 'navbar-smallscreen'">
     <img class="navbar-logo" :alt="`${pfData?.settings.infoPlatformName} Logo`" src="/logo.png" />
     <div class="title-container">
-      <RouterLink :to="!!systemHome ? { path: '/' } : { name: 'browse' }" class="navbar-title">
+      <RouterLink
+        :to="
+          !!systemHome
+            ? { path: '/' }
+            : {
+                name: 'browse',
+                params: { text: state.text?.slug },
+                query: { lvl: browse.level, pos: browse.position },
+              }
+        "
+        class="navbar-title"
+      >
         {{ pfData?.settings.infoPlatformName }}
       </RouterLink>
       <div
