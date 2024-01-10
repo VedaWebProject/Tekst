@@ -5,6 +5,7 @@ from beanie.operators import In
 from fastapi import APIRouter, HTTPException, Path, Query, status
 
 from tekst.auth import OptionalUserDep
+from tekst.models.exchange import LocationData
 from tekst.models.node import (
     NodeDocument,
     NodeRead,
@@ -93,17 +94,34 @@ async def get_unit_siblings(
 
 
 @router.get(
-    "/nodes/path", response_model=list[NodeRead], status_code=status.HTTP_200_OK
+    "/location-data", response_model=LocationData, status_code=status.HTTP_200_OK
 )
-async def get_node_path(
-    text_id: Annotated[PydanticObjectId, Query(alias="textId")],
-    level: int,
-    position: int,
-) -> list[NodeDocument]:
+async def get_location_data(
+    user: OptionalUserDep,
+    text_id: Annotated[PydanticObjectId, Query(alias="txt")],
+    level: Annotated[int, Query(alias="lvl", description="Location level")],
+    position: Annotated[int, Query(alias="pos", description="Location position")],
+    resource_ids: Annotated[
+        list[PydanticObjectId],
+        Query(
+            alias="r",
+            description="ID (or list of IDs) of resource(s) to return unit data for",
+        ),
+    ] = [],
+    only_head_units: Annotated[
+        bool,
+        Query(
+            alias="h",
+            description="Only return units referencing the head node of the node path",
+        ),
+    ] = False,
+    limit: Annotated[int, Query(description="Return at most <limit> items")] = 1000,
+) -> LocationData:
     """
-    Returns the text node path from the node with the given level/position
+    Returns the node path from the node with the given level/position
     as the last element, up to its most distant ancestor node
-    on structure level 0 as the first element of an array.
+    on structure level 0 as the first element of an array as well as all units
+    for the given resource(s) referencing the nodes in the node path.
     """
     node_doc = await NodeDocument.find_one(
         NodeDocument.text_id == text_id,
@@ -111,16 +129,39 @@ async def get_node_path(
         NodeDocument.position == position,
     )
     if not node_doc:
-        return []
+        return LocationData()
     # construct path up to root node
-    path = [node_doc]
+    node_path = [node_doc]
     parent_id = node_doc.parent_id
     while parent_id:
         parent_doc = await NodeDocument.get(parent_id)
-        path.insert(0, parent_doc)
+        node_path.insert(0, parent_doc)
         parent_id = parent_doc.parent_id
+    node_ids = (
+        [node.id for node in node_path] if not only_head_units else [node_path[-1].id]
+    )
 
-    return path
+    # collect units
+    readable_resources = await ResourceBaseDocument.find(
+        await ResourceBaseDocument.access_conditions_read(user),
+        with_children=True,
+    ).to_list()
+    unit_docs = (
+        await UnitBaseDocument.find(
+            In(UnitBaseDocument.resource_id, resource_ids) if resource_ids else {},
+            In(UnitBaseDocument.node_id, node_ids) if node_ids else {},
+            In(
+                UnitBaseDocument.resource_id,
+                [resource.id for resource in readable_resources],
+            ),
+            with_children=True,
+        )
+        .limit(limit)
+        .to_list()
+    )
+
+    # return combined data as LocationData
+    return LocationData(node_path=node_path, units=unit_docs)
 
 
 @router.get(

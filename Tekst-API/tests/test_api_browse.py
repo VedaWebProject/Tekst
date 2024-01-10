@@ -35,38 +35,47 @@ async def test_get_unit_siblings(
 
 
 @pytest.mark.anyio
-async def test_get_node_path(
-    test_client: AsyncClient, insert_sample_data, status_fail_msg, wrong_id
+async def test_get_location_data(
+    test_client: AsyncClient,
+    insert_sample_data,
+    get_sample_data,
+    status_fail_msg,
+    wrong_id,
 ):
-    inserted_ids = await insert_sample_data("texts", "nodes")
-    text_id = inserted_ids["texts"][0]
+    await insert_sample_data("texts", "nodes", "resources", "units")
+    texts = get_sample_data("db/texts.json", for_http=True)
+    text_id = next((txt for txt in texts if len(txt["levels"]) == 2), None).get("_id")
+    assert len(text_id) > 0
 
     # get level 0 path
     resp = await test_client.get(
-        "/browse/nodes/path",
-        params={"textId": text_id, "level": 0, "position": 0},
+        "/browse/location-data",
+        params={"txt": text_id, "lvl": 0, "pos": 0},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
-    assert isinstance(resp.json(), list)
-    assert len(resp.json()) > 0
+    assert isinstance(resp.json(), dict)
+    assert len(resp.json()["nodePath"]) > 0
+    assert len(resp.json()["units"]) == 0
 
     # higher level
     resp = await test_client.get(
-        "/browse/nodes/path",
-        params={"textId": text_id, "level": 1, "position": 0},
+        "/browse/location-data",
+        params={"txt": text_id, "lvl": 1, "pos": 0},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
-    assert isinstance(resp.json(), list)
-    assert len(resp.json()) > 0
+    assert isinstance(resp.json(), dict)
+    assert len(resp.json()["nodePath"]) > 0
+    assert len(resp.json()["units"]) > 0
 
     # invalid node data
     resp = await test_client.get(
-        "/browse/nodes/path",
-        params={"textId": wrong_id, "level": 0, "position": 0},
+        "/browse/location-data",
+        params={"txt": wrong_id, "lvl": 1, "pos": 0},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
-    assert isinstance(resp.json(), list)
-    assert len(resp.json()) == 0
+    assert isinstance(resp.json(), dict)
+    assert len(resp.json()["nodePath"]) == 0
+    assert len(resp.json()["units"]) == 0
 
 
 @pytest.mark.anyio

@@ -96,24 +96,34 @@ watch(
   }
 );
 
-async function loadNodePath() {
+async function loadLocationData() {
   if (!resource.value || !Number.isInteger(position.value)) {
     return;
   }
   loading.value = true;
-  const { data, error } = await GET('/browse/nodes/path', {
+  const { data: locationData, error } = await GET('/browse/location-data', {
     params: {
       query: {
-        textId: state.text?.id || '',
-        level: resource.value.level,
-        position: position.value,
+        txt: state.text?.id || '',
+        lvl: resource.value.level,
+        pos: position.value,
+        r: [resource.value.id, ...(compareResourceId.value ? [compareResourceId.value] : [])],
+        h: true,
       },
     },
   });
-  if (!error && data.length) {
+  if (!error && locationData.nodePath?.length) {
     // requested node exists, set current node path
-    nodePath.value = data;
-    await loadUnits();
+    nodePath.value = locationData.nodePath;
+    // process received units
+    initialUnitModel.value = locationData.units?.find((u) => u.resourceId === resource.value?.id);
+    const compareUnit = locationData.units?.find((u) => u.resourceId === compareResourceId.value);
+    if (compareUnit) {
+      compareResource.value = resources.data.find((r) => r.id === compareUnit?.resourceId);
+      if (compareResource.value) {
+        compareResource.value.units = compareUnit ? [compareUnit] : [];
+      }
+    }
     resetForm();
   } else {
     // requested node does not exist, go back to first unit at first node
@@ -124,38 +134,6 @@ async function loadNodePath() {
         pos: 0,
       },
     });
-  }
-  loading.value = false;
-}
-
-async function loadUnits() {
-  if (!nodePath.value || !resource.value) {
-    return;
-  }
-  loading.value = true;
-  const { data, error } = await GET('/units', {
-    params: {
-      query: {
-        resourceId: [
-          resource.value.id,
-          ...(compareResourceId.value ? [compareResourceId.value] : []),
-        ],
-        nodeId: [nodePath.value[nodePath.value.length - 1].id],
-        limit: 2,
-      },
-    },
-  });
-  if (!error) {
-    initialUnitModel.value = data.find((u) => u.resourceId === resource.value?.id);
-    const compareUnit = data.find((u) => u.resourceId === compareResourceId.value);
-    if (compareUnit) {
-      compareResource.value = resources.data.find((r) => r.id === compareUnit?.resourceId);
-      if (compareResource.value) {
-        compareResource.value.units = compareUnit ? [compareUnit] : [];
-      }
-    }
-  } else {
-    message.error($t('errors.unexpected'), error);
   }
   loading.value = false;
 }
@@ -174,14 +152,14 @@ watch(
         return;
       }
     }
-    await loadNodePath();
+    await loadLocationData();
   },
   { immediate: true }
 );
 
 // watch for compare resource ID change
 watch(compareResourceId, async () => {
-  await loadUnits();
+  await loadLocationData();
 });
 
 function resetForm() {
@@ -438,12 +416,21 @@ whenever(ArrowLeft, () => {
         closable
         type="default"
         style="margin-bottom: var(--layout-gap); border: 1px dashed var(--main-bg-color)"
-        :title="`${compareResource.title} (${$t('units.forComparison')})`"
         :bordered="false"
+        :show-icon="false"
         @after-leave="handleCloseComparison"
       >
-        <template #icon>
-          <n-icon :component="CompareArrowsOutlined" />
+        <template #header>
+          <n-space
+            align="center"
+            style="
+              font-size: var(--app-ui-font-size-small);
+              opacity: 0.6;
+              margin-bottom: var(--content-gap);
+            "
+          >
+            <span>"{{ compareResource.title }}" {{ $t('units.forComparison') }}</span>
+          </n-space>
         </template>
         <component :is="unitComponents[compareResource.resourceType]" :resource="compareResource" />
       </n-alert>

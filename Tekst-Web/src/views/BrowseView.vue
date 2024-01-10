@@ -14,7 +14,7 @@ import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
 import ErrorOutlineOutlined from '@vicons/material/ErrorOutlineOutlined';
 import { usePlatformData } from '@/platformData';
 import { $t } from '@/i18n';
-import { computed, onMounted } from 'vue';
+import { computed } from 'vue';
 
 const browse = useBrowseStore();
 const { pfData } = usePlatformData();
@@ -31,10 +31,6 @@ const activeResourcesCategorized = computed(() =>
     }))
     .filter((c) => c.resources.length)
 );
-
-onMounted(() => {
-  browse.updateBrowseNodePath();
-});
 </script>
 
 <template>

@@ -26,14 +26,15 @@ export interface paths {
      */
     get: operations['getUnitSiblings'];
   };
-  '/browse/nodes/path': {
+  '/browse/location-data': {
     /**
-     * Get node path
-     * @description Returns the text node path from the node with the given level/position
+     * Get location data
+     * @description Returns the node path from the node with the given level/position
      * as the last element, up to its most distant ancestor node
-     * on structure level 0 as the first element of an array.
+     * on structure level 0 as the first element of an array as well as all units
+     * for the given resource(s) referencing the nodes in the node path.
      */
-    get: operations['getNodePath'];
+    get: operations['getLocationData'];
   };
   '/browse/nodes/{id}/path/options-by-head': {
     /**
@@ -968,6 +969,22 @@ export interface components {
     };
     /** @enum {string} */
     LocaleKey: 'deDE' | 'enUS';
+    /** LocationData */
+    LocationData: {
+      /**
+       * Nodepath
+       * @default []
+       */
+      nodePath?: components['schemas']['NodeRead'][];
+      /**
+       * Units
+       * @default []
+       */
+      units?: (
+        | components['schemas']['DebugUnitRead']
+        | components['schemas']['PlaintextUnitRead']
+      )[];
+    };
     /** Metadate */
     Metadate: {
       /** Key */
@@ -2222,24 +2239,33 @@ export interface operations {
     };
   };
   /**
-   * Get node path
-   * @description Returns the text node path from the node with the given level/position
+   * Get location data
+   * @description Returns the node path from the node with the given level/position
    * as the last element, up to its most distant ancestor node
-   * on structure level 0 as the first element of an array.
+   * on structure level 0 as the first element of an array as well as all units
+   * for the given resource(s) referencing the nodes in the node path.
    */
-  getNodePath: {
+  getLocationData: {
     parameters: {
       query: {
-        textId: string;
-        level: number;
-        position: number;
+        txt: string;
+        /** @description Location level */
+        lvl: number;
+        /** @description Location position */
+        pos: number;
+        /** @description ID (or list of IDs) of resource(s) to return unit data for */
+        r?: string[];
+        /** @description Only return units referencing the head node of the node path */
+        h?: boolean;
+        /** @description Return at most <limit> items */
+        limit?: number;
       };
     };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': components['schemas']['NodeRead'][];
+          'application/json': components['schemas']['LocationData'];
         };
       };
       /** @description Not found */

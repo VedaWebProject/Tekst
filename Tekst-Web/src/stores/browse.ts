@@ -7,7 +7,6 @@ import { GET } from '@/api';
 import { pickTranslation } from '@/utils';
 import { $t } from '@/i18n';
 import { usePlatformData } from '@/platformData';
-import { useMessages } from '@/messages';
 
 export const useBrowseStore = defineStore('browse', () => {
   // composables
@@ -16,7 +15,6 @@ export const useBrowseStore = defineStore('browse', () => {
   const { pfData } = usePlatformData();
   const route = useRoute();
   const router = useRouter();
-  const { message } = useMessages();
 
   /* BASIC BROWSE UI STATE */
 
@@ -37,22 +35,33 @@ export const useBrowseStore = defineStore('browse', () => {
   const position = computed(() => nodePathHead.value?.position ?? 0);
 
   // update browse node path
-  async function updateBrowseNodePath(lvl?: string, pos?: string) {
+  async function loadLocationData(lvl?: string, pos?: string) {
     if (route.name !== 'browse') return;
     loadingNodePath.value = true;
+    loadingUnits.value = true;
     const qLvl = parseInt(lvl || route.query.lvl?.toString() || '');
     const qPos = parseInt(pos || route.query.pos?.toString() || '');
     if (Number.isInteger(qLvl) && Number.isInteger(qPos)) {
       if (qLvl == nodePathHead.value?.level && qPos == nodePathHead.value?.position) {
         loadingNodePath.value = false;
+        loadingUnits.value = false;
         return;
       }
       // fill browse node path up to root (no more parent)
-      const { data: path, error } = await GET('/browse/nodes/path', {
-        params: { query: { textId: state.text?.id || '', level: qLvl, position: qPos } },
+      const { data: locationData, error } = await GET('/browse/location-data', {
+        params: {
+          query: {
+            txt: state.text?.id || '',
+            lvl: qLvl,
+            pos: qPos,
+          },
+        },
       });
-      if (!error && path && path.length) {
-        nodePath.value = path;
+      if (!error && locationData.nodePath?.length) {
+        nodePath.value = locationData.nodePath;
+        resources.data.forEach((l: AnyResourceRead) => {
+          l.units = locationData.units?.filter((u: AnyUnitRead) => u.resourceId == l.id);
+        });
       } else {
         resetBrowseLocation(level.value);
       }
@@ -60,6 +69,7 @@ export const useBrowseStore = defineStore('browse', () => {
       resetBrowseLocation();
     }
     loadingNodePath.value = false;
+    loadingUnits.value = false;
   }
 
   // reset browse location (change URI parameters)
@@ -95,8 +105,7 @@ export const useBrowseStore = defineStore('browse', () => {
     [() => route.query.lvl, () => route.query.pos],
     async ([newLvl, newPos]) => {
       if (route.name === 'browse') {
-        await updateBrowseNodePath(newLvl?.toString(), newPos?.toString());
-        newLvl && newPos && loadUnits();
+        await loadLocationData(newLvl?.toString(), newPos?.toString());
       }
     },
     { immediate: true }
@@ -141,25 +150,6 @@ export const useBrowseStore = defineStore('browse', () => {
     });
   }
 
-  async function loadUnits(nodeIds: string[] = nodePath.value.map((n) => n.id)) {
-    if (!nodeIds?.length || !state.text) {
-      return;
-    }
-    loadingUnits.value = true;
-    const { data, error } = await GET('/units', {
-      params: { query: { nodeId: nodeIds } },
-    });
-    if (!error) {
-      // assign units to resources
-      resources.data.forEach((l: AnyResourceRead) => {
-        l.units = data.filter((u: AnyUnitRead) => u.resourceId == l.id);
-      });
-    } else {
-      message.error('Error loading resource units for this location', error.detail?.toString());
-    }
-    loadingUnits.value = false;
-  }
-
   return {
     showResourceToggleDrawer,
     reducedView,
@@ -175,7 +165,7 @@ export const useBrowseStore = defineStore('browse', () => {
     nodePathHead,
     level,
     position,
-    updateBrowseNodePath,
+    loadLocationData,
     resetBrowseLocation,
   };
 });

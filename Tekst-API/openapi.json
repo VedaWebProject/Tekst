@@ -179,42 +179,94 @@
         }
       }
     },
-    "/browse/nodes/path": {
+    "/browse/location-data": {
       "get": {
         "tags": [
           "browse"
         ],
-        "summary": "Get node path",
-        "description": "Returns the text node path from the node with the given level/position\nas the last element, up to its most distant ancestor node\non structure level 0 as the first element of an array.",
-        "operationId": "getNodePath",
+        "summary": "Get location data",
+        "description": "Returns the node path from the node with the given level/position\nas the last element, up to its most distant ancestor node\non structure level 0 as the first element of an array as well as all units\nfor the given resource(s) referencing the nodes in the node path.",
+        "operationId": "getLocationData",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
         "parameters": [
           {
-            "name": "textId",
+            "name": "txt",
             "in": "query",
             "required": true,
             "schema": {
               "type": "string",
               "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Textid"
+              "title": "Txt"
             }
           },
           {
-            "name": "level",
+            "name": "lvl",
             "in": "query",
             "required": true,
             "schema": {
               "type": "integer",
-              "title": "Level"
-            }
+              "description": "Location level",
+              "title": "Lvl"
+            },
+            "description": "Location level"
           },
           {
-            "name": "position",
+            "name": "pos",
             "in": "query",
             "required": true,
             "schema": {
               "type": "integer",
-              "title": "Position"
-            }
+              "description": "Location position",
+              "title": "Pos"
+            },
+            "description": "Location position"
+          },
+          {
+            "name": "r",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              "description": "ID (or list of IDs) of resource(s) to return unit data for",
+              "default": [],
+              "title": "R"
+            },
+            "description": "ID (or list of IDs) of resource(s) to return unit data for"
+          },
+          {
+            "name": "h",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Only return units referencing the head node of the node path",
+              "default": false,
+              "title": "H"
+            },
+            "description": "Only return units referencing the head node of the node path"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "description": "Return at most <limit> items",
+              "default": 1000,
+              "title": "Limit"
+            },
+            "description": "Return at most <limit> items"
           }
         ],
         "responses": {
@@ -223,11 +275,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/NodeRead"
-                  },
-                  "title": "Response Get Node Path Browse Nodes Path Get"
+                  "$ref": "#/components/schemas/LocationData"
                 }
               }
             }
@@ -5188,6 +5236,42 @@
           "deDE",
           "enUS"
         ]
+      },
+      "LocationData": {
+        "properties": {
+          "nodePath": {
+            "items": {
+              "$ref": "#/components/schemas/NodeRead"
+            },
+            "type": "array",
+            "title": "Nodepath",
+            "default": []
+          },
+          "units": {
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/DebugUnitRead"
+                },
+                {
+                  "$ref": "#/components/schemas/PlaintextUnitRead"
+                }
+              ],
+              "discriminator": {
+                "propertyName": "resourceType",
+                "mapping": {
+                  "debug": "#/components/schemas/DebugUnitRead",
+                  "plaintext": "#/components/schemas/PlaintextUnitRead"
+                }
+              }
+            },
+            "type": "array",
+            "title": "Units",
+            "default": []
+          }
+        },
+        "type": "object",
+        "title": "LocationData"
       },
       "Metadate": {
         "properties": {
