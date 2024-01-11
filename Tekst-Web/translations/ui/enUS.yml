@@ -256,7 +256,7 @@ resources:
   notPublic: '@:general.not @:models.resource.public'
   proposed: '@:models.resource.proposed'
   notProposed: '@:general.not @:models.resource.proposed'
-  transferAction: Transfer to user
+  transferAction: Transfer resource to user
   settingsAction: Settings
   unitsAction: Edit contents
   proposeAction: Propose for publication
@@ -583,10 +583,10 @@ wysiwyg:
   redo: Redo
   linkPrompt:
     title: Link selected text
-    message: Link URL
+    inputLabel: Link URL
   imagePrompt:
     title: Insert image
-    message: Image URL
+    inputLabel: Image URL
 
 htmlEditor:
   wysiwyg: Visual Editor

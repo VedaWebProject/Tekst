@@ -17,12 +17,12 @@ export const accountFormRules: Record<string, FormItemRule[]> = {
     {
       required: true,
       message: () => $t('forms.rulesFeedback.isRequired', { x: $t('models.user.email') }),
-      trigger: 'blur',
+      trigger: 'input',
     },
     {
-      validator: (rule: FormItemRule, value: string) => /^.+@.+\.\w+$/.test(value),
+      validator: (rule: FormItemRule, value: string) => !!value && /^.+@.+\.\w+$/.test(value),
       message: () => $t('models.user.formRulesFeedback.emailInvalid'),
-      trigger: 'blur',
+      trigger: 'input',
     },
   ],
   username: [

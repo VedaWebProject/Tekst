@@ -37,6 +37,7 @@ const emit = defineEmits([
   'afterLeave',
   'esc',
   'vue:mounted',
+  'close',
 ]);
 
 const modalStyle = computed<CSSProperties>(() => ({
@@ -75,6 +76,7 @@ function handleMaskClick(e: MouseEvent) {
     @vue:mounted="emit('vue:mounted')"
     @after-enter="emit('afterEnter')"
     @after-leave="emit('afterLeave')"
+    @close="emit('close')"
   >
     <template #header>
       <slot name="header">

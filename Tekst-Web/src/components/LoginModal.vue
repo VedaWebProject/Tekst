@@ -1,15 +1,13 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores';
-import { type FormInst, NForm, NFormItem, NInput, NButton } from 'naive-ui';
+import { type FormInst, NForm, NFormItem, NInput, NButton, type InputInst } from 'naive-ui';
 import { ref } from 'vue';
 import { $t } from '@/i18n';
 import { useMessages } from '@/messages';
-import type { RouteLocationRaw } from 'vue-router';
 import { accountFormRules } from '@/forms/formRules';
 import { POST } from '@/api';
 import ButtonShelf from '@/components/ButtonShelf.vue';
-import { LoginTemplatePromise } from '@/templatePromises';
 import GenericModal from './GenericModal.vue';
 
 import LogInOutlined from '@vicons/material/LogInOutlined';
@@ -25,6 +23,7 @@ const initialFormModel = () => ({
 
 const formModel = ref<Record<string, string | null>>(initialFormModel());
 const formRef = ref<FormInst | null>(null);
+const emailInputRef = ref<InputInst | null>(null);
 
 function resetForm() {
   formModel.value = initialFormModel();
@@ -33,19 +32,15 @@ function resetForm() {
 
 function switchToRegistration() {
   resetForm();
+  auth.closeLoginModal(false);
   router.push({ name: 'register' });
 }
 
-async function handleLoginClick(
-  resolveLogin: (res: boolean | Promise<boolean>) => void,
-  nextRoute: RouteLocationRaw | null | undefined
-) {
+async function handleLoginClick() {
   formRef.value
     ?.validate(async (errors) => {
       if (errors) return;
-      resolveLogin(
-        auth.login(formModel.value.email || '', formModel.value.password || '', nextRoute)
-      );
+      auth.login(formModel.value.email || '', formModel.value.password || '');
       resetForm();
     })
     .catch(() => {
@@ -53,7 +48,7 @@ async function handleLoginClick(
     });
 }
 
-async function handleForgotPasswordClick(resolveLogin: (res: boolean | Promise<boolean>) => void) {
+async function handleForgotPasswordClick() {
   if (formModel.value.email && /^.+@.+\.\w+$/.test(formModel.value.email)) {
     const { error } = await POST('/auth/forgot-password', {
       body: { email: formModel.value.email },
@@ -68,7 +63,7 @@ async function handleForgotPasswordClick(resolveLogin: (res: boolean | Promise<b
       );
     }
     resetForm();
-    resolveLogin(false);
+    auth.closeLoginModal(false);
   } else {
     message.error($t('account.forgotPassword.invalidEmail'));
   }
@@ -76,78 +71,84 @@ async function handleForgotPasswordClick(resolveLogin: (res: boolean | Promise<b
 </script>
 
 <template>
-  <LoginTemplatePromise v-slot="{ args, resolve, reject, isResolving }">
-    <GenericModal
-      show
-      width="narrow"
-      :title="$t('account.login.heading')"
-      :icon="LogInOutlined"
-      @close="reject(null)"
-      @mask-click="reject(null)"
-    >
-      <div class="form-container">
-        <div v-show="args[0]" class="login-message">{{ args[0] }}</div>
-        <n-form
-          ref="formRef"
-          :model="formModel"
-          label-placement="top"
-          label-width="auto"
-          require-mark-placement="right-hanging"
-        >
-          <n-form-item
-            path="email"
-            :rule="accountFormRules.loginEmail"
-            :label="$t('models.user.email')"
-          >
-            <n-input
-              v-model:value="formModel.email"
-              type="text"
-              :placeholder="$t('models.user.email')"
-              :disabled="isResolving"
-              @keydown.enter.prevent
-            />
-          </n-form-item>
-          <n-form-item
-            path="password"
-            :rule="accountFormRules.loginPassword"
-            :label="$t('models.user.password')"
-          >
-            <n-input
-              v-model:value="formModel.password"
-              type="password"
-              :placeholder="$t('models.user.password')"
-              :disabled="isResolving"
-              @keyup.enter="handleLoginClick(resolve, args[1])"
-            />
-          </n-form-item>
-        </n-form>
-
-        <div style="display: flex; justify-content: flex-end">
-          <n-button
-            text
-            :focusable="false"
-            style="margin-bottom: 1rem; font-size: var(--app-ui-font-size-mini)"
-            @click="handleForgotPasswordClick(resolve)"
-          >
-            {{ $t('account.forgotPassword.forgotPassword') }}
-          </n-button>
-        </div>
+  <GenericModal
+    v-model:show="auth.loginModalState.show"
+    width="narrow"
+    :title="$t('account.login.heading')"
+    :icon="LogInOutlined"
+    @close="auth.closeLoginModal"
+    @after-enter="emailInputRef?.focus()"
+  >
+    <div class="form-container">
+      <div v-show="auth.loginModalState.message" class="login-message">
+        {{ auth.loginModalState.message }}
       </div>
-      <ButtonShelf top-gap>
-        <n-button v-if="args[2]" secondary @click="reject(switchToRegistration())">
-          {{ $t('account.switchToRegister') }}
-        </n-button>
-        <n-button
-          type="primary"
-          :loading="isResolving"
-          :disabled="isResolving"
-          @click="handleLoginClick(resolve, args[1])"
+      <n-form
+        ref="formRef"
+        :model="formModel"
+        label-placement="top"
+        label-width="auto"
+        require-mark-placement="right-hanging"
+      >
+        <n-form-item
+          path="email"
+          :rule="accountFormRules.loginEmail"
+          :label="$t('models.user.email')"
         >
-          {{ $t('account.loginBtn') }}
+          <n-input
+            ref="emailInputRef"
+            v-model:value="formModel.email"
+            type="text"
+            :placeholder="$t('models.user.email')"
+            :disabled="auth.loginModalState.loading"
+            @keydown.enter.prevent
+          />
+        </n-form-item>
+        <n-form-item
+          path="password"
+          :rule="accountFormRules.loginPassword"
+          :label="$t('models.user.password')"
+        >
+          <n-input
+            v-model:value="formModel.password"
+            type="password"
+            :placeholder="$t('models.user.password')"
+            :disabled="auth.loginModalState.loading"
+            @keyup.enter="handleLoginClick"
+          />
+        </n-form-item>
+      </n-form>
+
+      <div style="display: flex; justify-content: flex-end">
+        <n-button
+          text
+          :focusable="false"
+          :disabled="auth.loginModalState.loading"
+          style="margin-bottom: 1rem; font-size: var(--app-ui-font-size-mini)"
+          @click="handleForgotPasswordClick"
+        >
+          {{ $t('account.forgotPassword.forgotPassword') }}
         </n-button>
-      </ButtonShelf>
-    </GenericModal>
-  </LoginTemplatePromise>
+      </div>
+    </div>
+    <ButtonShelf top-gap>
+      <n-button
+        v-if="auth.loginModalState.showRegisterLink"
+        secondary
+        @click="switchToRegistration"
+      >
+        {{ $t('account.switchToRegister') }}
+      </n-button>
+      <n-button
+        type="primary"
+        :loading="auth.loginModalState.loading"
+        :disabled="auth.loginModalState.loading"
+        @click="handleLoginClick"
+      >
+        {{ $t('account.loginBtn') }}
+      </n-button>
+    </ButtonShelf>
+  </GenericModal>
 </template>
 
 <style scoped>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onUnmounted, h, type Component, type CSSProperties, watch } from 'vue';
+import { computed, onUnmounted, h, type Component, type CSSProperties, watch, ref } from 'vue';
 import { NSelect, NButton, NIcon, type SelectOption } from 'naive-ui';
 import { useEditor, EditorContent } from '@tiptap/vue-3';
 import StarterKit from '@tiptap/starter-kit';
@@ -8,8 +8,8 @@ import CharacterCount from '@tiptap/extension-character-count';
 import Link from '@tiptap/extension-link';
 import Image from '@tiptap/extension-image';
 import PromptModal from '@/components/PromptModal.vue';
-import { PromptTemplatePromise } from '@/templatePromises';
 import { $t } from '@/i18n';
+import type { PromptModalProps } from '@/types';
 
 import FormatBoldOutlined from '@vicons/material/FormatBoldOutlined';
 import FormatItalicOutlined from '@vicons/material/FormatItalicOutlined';
@@ -26,7 +26,7 @@ import FormatAlignLeftOutlined from '@vicons/material/FormatAlignLeftOutlined';
 import FormatAlignCenterOutlined from '@vicons/material/FormatAlignCenterOutlined';
 import FormatAlignRightOutlined from '@vicons/material/FormatAlignRightOutlined';
 import FormatAlignJustifyOutlined from '@vicons/material/FormatAlignJustifyOutlined';
-import InsertLinkOutlined from '@vicons/material/InsertLinkOutlined';
+import LinkOutlined from '@vicons/material/LinkOutlined';
 import FormatSizeOutlined from '@vicons/material/FormatSizeOutlined';
 import ShortTextOutlined from '@vicons/material/ShortTextOutlined';
 import ImageOutlined from '@vicons/material/ImageOutlined';
@@ -45,6 +45,8 @@ const props = withDefaults(
 );
 
 const emit = defineEmits(['update:value', 'blur', 'focus', 'input']);
+
+const promptModalState = ref<PromptModalProps>({});
 
 watch(
   () => props.value,
@@ -204,43 +206,46 @@ function renderBlockTypeOption(option: SelectOption) {
   ];
 }
 
-async function handleAddLinkClick() {
-  try {
-    const url = await PromptTemplatePromise.start(
-      $t('wysiwyg.linkPrompt.title'),
-      $t('wysiwyg.linkPrompt.message'),
-      editor.value?.getAttributes('link').href
-    );
+function handleAddLinkClick() {
+  promptModalState.value = {
+    show: true,
+    actionKey: 'addLink',
+    initialValue: editor.value?.getAttributes('link').href,
+    title: $t('wysiwyg.linkPrompt.title'),
+    inputLabel: $t('wysiwyg.linkPrompt.inputLabel'),
+  };
+}
+
+async function handleAddImageClick() {
+  promptModalState.value = {
+    show: true,
+    actionKey: 'addImage',
+    title: $t('wysiwyg.imagePrompt.title'),
+    inputLabel: $t('wysiwyg.imagePrompt.inputLabel'),
+    disableOkWhenNoValue: true,
+  };
+}
+
+async function handlePromptModalSubmit(actionKey: string, value: string) {
+  if (actionKey === 'addLink') {
     // empty
-    if (url === '') {
+    if (value) {
+      // update link
+      editor.value?.chain().focus().extendMarkRange('link').setLink({ href: value }).run();
+    } else {
       if (editor.value?.isActive('link')) {
         editor.value?.chain().focus().unsetLink().run();
       } else {
         editor.value?.chain().focus().extendMarkRange('link').unsetLink().run();
       }
-      return;
     }
-    // update link
-    editor.value?.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
-  } catch {
-    return;
-  }
-}
-
-async function handleAddImageClick() {
-  try {
-    const url = await PromptTemplatePromise.start(
-      $t('wysiwyg.imagePrompt.title'),
-      $t('wysiwyg.imagePrompt.message'),
-      undefined
-    );
+  } else if (actionKey === 'addImage') {
     // empty
-    if (url === '') return;
+    if (!value) return;
     // update link
-    editor.value?.chain().focus().setImage({ src: url }).run();
-  } catch {
-    return;
+    editor.value?.chain().focus().setImage({ src: value }).run();
   }
+  promptModalState.value = {};
 }
 
 function handleSelectBlockType(value: string, option: SelectOption) {
@@ -293,7 +298,7 @@ onUnmounted(() => {
           :size="toolbarSize"
           :title="$t('wysiwyg.link')"
           :type="(editor.isActive('link') && 'primary') || undefined"
-          :render-icon="renderToolbarIcon(InsertLinkOutlined)"
+          :render-icon="renderToolbarIcon(LinkOutlined)"
           :focusable="false"
           @click="handleAddLinkClick"
         />
@@ -422,7 +427,12 @@ onUnmounted(() => {
     </div>
     <div v-if="editor" class="character-count">{{ editor.getHTML().length }} / {{ maxChars }}</div>
   </div>
-  <PromptModal />
+  <PromptModal
+    v-bind="promptModalState"
+    @submit="handlePromptModalSubmit"
+    @update:show="promptModalState.show = $event"
+    @after-leave="promptModalState = {}"
+  />
 </template>
 
 <style scoped>

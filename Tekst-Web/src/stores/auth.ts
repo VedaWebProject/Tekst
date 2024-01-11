@@ -8,7 +8,6 @@ import { useIntervalFn } from '@vueuse/core';
 import { useRouter, type RouteLocationRaw } from 'vue-router';
 import { usePlatformData } from '@/platformData';
 import { useStateStore } from '@/stores';
-import { LoginTemplatePromise } from '@/templatePromises';
 
 const SESSION_POLL_INTERVAL_S = 60; // check session expiry every n seconds
 const SESSION_EXPIRY_OFFSET_S = 10; // assume session expired n seconds early
@@ -62,9 +61,7 @@ export const useAuthStore = defineStore('auth', () => {
   async function _renewExpiredSession() {
     message.warning($t('account.sessionExpired'));
     _cleanupSession();
-    if (!(await showLoginModal($t('account.renewLogin'), router.currentRoute.value, false))) {
-      router.push({ name: 'home' });
-    }
+    showLoginModal($t('account.renewLogin'), router.currentRoute.value, false);
   }
 
   function _cleanupSession() {
@@ -91,22 +88,27 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function showLoginModal(
-    message: string | undefined = undefined,
+    message?: string,
     nextRoute: RouteLocationRaw = { name: 'home' },
     showRegisterLink: boolean = true
   ) {
-    try {
-      return await LoginTemplatePromise.start(message, nextRoute, showRegisterLink);
-    } catch {
-      return false;
-    }
+    loginModalState.value = {
+      show: true,
+      message: message,
+      nextRoute: nextRoute,
+      showRegisterLink: showRegisterLink,
+    };
   }
 
-  async function login(
-    username: string,
-    password: string,
-    nextRoute: RouteLocationRaw | null | undefined
-  ) {
+  function closeLoginModal(gotoNextRoute: boolean = true) {
+    gotoNextRoute &&
+      loginModalState.value.nextRoute &&
+      router.replace(loginModalState.value.nextRoute);
+    loginModalState.value = {};
+  }
+
+  async function login(username: string, password: string) {
+    loginModalState.value.loading = true;
     // login
     const { error } = await POST('/auth/cookie/login', {
       body: { username, password },
@@ -139,7 +141,7 @@ export const useAuthStore = defineStore('auth', () => {
         );
       }
       message.success($t('general.welcome', { name: userData.name }));
-      nextRoute && router.push(nextRoute);
+      closeLoginModal();
       return true;
     } else {
       if (error.detail === 'LOGIN_BAD_CREDENTIALS') {
@@ -155,6 +157,7 @@ export const useAuthStore = defineStore('auth', () => {
         message.error($t('errors.unexpected'), error);
       }
       _cleanupSession();
+      closeLoginModal(false);
       return false;
     }
   }
@@ -185,10 +188,22 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  // login modal state and handlers
+
+  const loginModalState = ref<{
+    show?: boolean;
+    loading?: boolean;
+    message?: string;
+    nextRoute?: RouteLocationRaw;
+    showRegisterLink?: boolean;
+  }>({});
+
   return {
     user,
     loggedIn,
     showLoginModal,
+    closeLoginModal,
+    loginModalState,
     login,
     logout,
     updateUser,

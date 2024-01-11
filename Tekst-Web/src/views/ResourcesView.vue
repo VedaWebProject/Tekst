@@ -12,7 +12,7 @@ import {
   NCollapseItem,
   useDialog,
 } from 'naive-ui';
-import { POST, type AnyResourceRead, DELETE } from '@/api';
+import { POST, type AnyResourceRead, DELETE, type UserReadPublic } from '@/api';
 import { ref } from 'vue';
 import { computed } from 'vue';
 import { $t } from '@/i18n';
@@ -29,7 +29,6 @@ import SearchRound from '@vicons/material/SearchRound';
 import UndoRound from '@vicons/material/UndoRound';
 import LayersFilled from '@vicons/material/LayersFilled';
 import AddOutlined from '@vicons/material/AddOutlined';
-import { TransferResourceTemplatePromise } from '@/templatePromises';
 import TransferResourceModal from '@/components/TransferResourceModal.vue';
 
 const state = useStateStore();
@@ -41,6 +40,9 @@ const router = useRouter();
 
 const actionsLoading = ref(false);
 const loading = computed(() => actionsLoading.value || resources.loading);
+
+const transferTargetResource = ref<AnyResourceRead>();
+const showTransferModal = ref(false);
 
 const pagination = ref({
   page: 1,
@@ -86,26 +88,29 @@ const paginatedData = computed(() => {
 });
 
 async function handleTransferClick(resource: AnyResourceRead) {
-  try {
-    const targetUser = await TransferResourceTemplatePromise.start();
-    actionsLoading.value = true;
-    const { data, error } = await POST('/resources/{id}/transfer', {
-      params: { path: { id: resource.id } },
-      body: targetUser.id,
-    });
-    if (!error) {
-      resources.replace(data);
-      message.success(
-        $t('resources.msgTransferred', { title: resource.title, username: targetUser.username })
-      );
-    } else {
-      message.error($t('errors.unexpected'), error);
-    }
-    filters.value = initialFilters();
-    actionsLoading.value = false;
-  } catch (error) {
-    return;
+  transferTargetResource.value = resource;
+  showTransferModal.value = true;
+}
+
+async function handleTransferResource(resource?: AnyResourceRead, user?: UserReadPublic) {
+  if (!resource || !user) return;
+  actionsLoading.value = true;
+  const { data, error } = await POST('/resources/{id}/transfer', {
+    params: { path: { id: resource.id } },
+    body: user.id,
+  });
+  if (!error) {
+    resources.replace(data);
+    message.success(
+      $t('resources.msgTransferred', { title: resource.title, username: user.username })
+    );
+  } else {
+    message.error($t('errors.unexpected'), error);
   }
+  filters.value = initialFilters();
+  showTransferModal.value = false;
+  transferTargetResource.value = undefined;
+  actionsLoading.value = false;
 }
 
 function handleProposeClick(resource: AnyResourceRead) {
@@ -371,5 +376,11 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
     {{ $t('errors.error') }}
   </div>
 
-  <TransferResourceModal />
+  <TransferResourceModal
+    :show="showTransferModal"
+    :resource="transferTargetResource"
+    :loading="actionsLoading"
+    @update:show="($event) => (showTransferModal = $event)"
+    @submit="handleTransferResource"
+  />
 </template>

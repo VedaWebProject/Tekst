@@ -257,7 +257,7 @@ resources:
   notPublic: '@:general.not @:models.resource.public'
   proposed: '@:models.resource.proposed'
   notProposed: '@:general.not @:models.resource.proposed'
-  transferAction: An Benutzer übertragen
+  transferAction: Ressource an Benutzer übertragen
   settingsAction: Einstellungen
   unitsAction: Inhalte bearbeiten
   proposeAction: Für Veröffentlichung vorschlagen
@@ -604,10 +604,10 @@ wysiwyg:
   redo: Wiederholen
   linkPrompt:
     title: Ausgewählten Text verlinken
-    message: Link URL
+    inputLabel: Link URL
   imagePrompt:
     title: Bild einfügen
-    message: Bild-URL
+    inputLabel: Bild-URL
 
 htmlEditor:
   wysiwyg: Visueller Editor

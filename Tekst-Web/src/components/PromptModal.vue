@@ -1,49 +1,58 @@
 <script setup lang="ts">
-import { PromptTemplatePromise } from '@/templatePromises';
-import { NButton, NInput, NFormItem } from 'naive-ui';
+import { NButton, NInput, NFormItem, type InputInst } from 'naive-ui';
 import ButtonShelf from './ButtonShelf.vue';
 import { ref } from 'vue';
 import GenericModal from './GenericModal.vue';
+import type { PromptModalProps } from '@/types';
 
-import KeyboardOutlined from '@vicons/material/KeyboardOutlined';
+const props = defineProps<PromptModalProps>();
+const emit = defineEmits(['update:show', 'submit', 'afterLeave']);
 
-const value = ref('');
+const inputRef = ref<InputInst>();
+const value = ref<string>();
+
+function handleSubmit() {
+  emit('submit', props.actionKey, value.value);
+  emit('update:show', false);
+}
 </script>
 
 <template>
-  <PromptTemplatePromise v-slot="{ args, resolve, reject }">
-    <GenericModal
-      show
-      :title="args[0]"
-      :icon="KeyboardOutlined"
-      :closable="false"
-      @close="reject(null)"
-      @mask-click="reject(null)"
-      @vue:mounted="value = args[2] || ''"
-      @esc="reject(null)"
-    >
-      <n-form-item :label="args[1]">
-        <n-input
-          v-model:value="value"
-          type="text"
-          placeholder=""
-          @keydown.enter="
-            (e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              resolve(value);
-            }
-          "
-        />
-      </n-form-item>
-      <ButtonShelf top-gap>
-        <n-button secondary @click="reject(null)">
-          {{ $t('general.cancelAction') }}
-        </n-button>
-        <n-button type="primary" @click="resolve(value)">
-          {{ $t('general.okAction') }}
-        </n-button>
-      </ButtonShelf>
-    </GenericModal>
-  </PromptTemplatePromise>
+  <GenericModal
+    :show="show"
+    :title="title"
+    @update:show="emit('update:show', $event)"
+    @after-leave="
+      () => {
+        value = undefined;
+        emit('afterLeave');
+      }
+    "
+    @after-enter="inputRef?.select()"
+  >
+    <n-form-item :label="inputLabel" :show-label="!!inputLabel">
+      <n-input
+        ref="inputRef"
+        v-model:value="value"
+        :default-value="initialValue"
+        type="text"
+        placeholder=""
+        @keydown.enter="
+          (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            handleSubmit();
+          }
+        "
+      />
+    </n-form-item>
+    <ButtonShelf top-gap>
+      <n-button secondary @click="emit('update:show', false)">
+        {{ $t('general.cancelAction') }}
+      </n-button>
+      <n-button type="primary" :disabled="disableOkWhenNoValue && !value" @click="handleSubmit">
+        {{ $t('general.okAction') }}
+      </n-button>
+    </ButtonShelf>
+  </GenericModal>
 </template>
