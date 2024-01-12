@@ -85,7 +85,7 @@ function renderIcon(icon: Component) {
 }
 
 async function handleLoginClick() {
-  auth.showLoginModal(undefined, { name: 'accountProfile' });
+  auth.showLoginModal();
 }
 
 function handleUserOptionSelect(key: string) {

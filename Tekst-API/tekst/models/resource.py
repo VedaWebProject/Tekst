@@ -61,6 +61,15 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         str,
         Field(description="A string identifying one of the available resource types"),
     ]
+    original_id: Annotated[
+        PydanticObjectId | None,
+        Field(
+            description=(
+                "If this is a version of another resource,"
+                " this ID references the original"
+            )
+        ),
+    ] = None
     owner_id: Annotated[
         PydanticObjectId | None, Field(description="User owning this resource")
     ] = None

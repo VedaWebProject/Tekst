@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { type AnyResourceUpdate, PATCH, type AnyResourceRead } from '@/api';
 import { $t } from '@/i18n';
-import { useStateStore } from '@/stores';
+import { useAuthStore, useStateStore } from '@/stores';
 import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import IconHeading from '@/components/typography/IconHeading.vue';
 import { useMessages } from '@/messages';
 import { computed, ref, watch } from 'vue';
 import _cloneDeep from 'lodash.clonedeep';
 import { RouterLink } from 'vue-router';
-import { NSpin, NForm, NButton, type FormInst } from 'naive-ui';
+import { NAlert, NSpin, NForm, NButton, type FormInst } from 'naive-ui';
 import { resourceConfigFormRules } from '@/forms/formRules';
 import { useModelChanges } from '@/modelChanges';
 import { useRoute } from 'vue-router';
@@ -20,11 +20,13 @@ import ResourceFormItems from '@/forms/ResourceFormItems.vue';
 
 import SettingsFilled from '@vicons/material/SettingsFilled';
 import KeyboardArrowLeftOutlined from '@vicons/material/KeyboardArrowLeftOutlined';
+import LayersFilled from '@vicons/material/LayersFilled';
 
 const { message } = useMessages();
 const route = useRoute();
 const router = useRouter();
 const state = useStateStore();
+const auth = useAuthStore();
 
 const resources = useResourcesStore();
 const resource = ref<AnyResourceRead>();
@@ -105,13 +107,25 @@ async function handleSaveClick() {
     </n-button>
   </router-link>
 
-  <h2 v-if="resource">
+  <IconHeading v-if="resource" level="2" :icon="LayersFilled">
     {{ resource?.title }}
     <ResourceInfoWidget :resource="resource" />
-  </h2>
+  </IconHeading>
 
   <template v-if="model">
     <div class="content-block">
+      <n-alert
+        v-if="
+          model && auth.user?.isSuperuser && resource?.ownerId && resource.ownerId !== auth.user.id
+        "
+        type="warning"
+        closable
+        :title="$t('resources.msgNotYourResourceTitle')"
+        style="margin-bottom: var(--content-gap)"
+      >
+        {{ $t('resources.msgNotYourResourceBody') }}
+      </n-alert>
+
       <n-form
         ref="formRef"
         :model="model"

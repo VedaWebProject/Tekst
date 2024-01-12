@@ -685,10 +685,15 @@ async def test_get_resource_template(
     inserted_ids = await insert_sample_data("texts", "nodes", "resources")
     resource_id = inserted_ids["resources"][0]
 
-    # register regular test user
+    # try to get resource template (only for users with write permission)
     await login(is_superuser=False)
+    resp = await test_client.get(
+        f"/resources/{resource_id}/template",
+    )
+    assert resp.status_code == 403, status_fail_msg(403, resp)
 
     # get resource template
+    await login(is_superuser=True)
     resp = await test_client.get(
         f"/resources/{resource_id}/template",
     )

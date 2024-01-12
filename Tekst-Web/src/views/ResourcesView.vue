@@ -232,6 +232,32 @@ function handleUnitsClick(resource: AnyResourceRead) {
   });
 }
 
+function handleCreateVersionClick(resource: AnyResourceRead) {
+  dialog.warning({
+    title: $t('general.info'),
+    content: $t('resources.infoCreateVersion', { title: resource.title }),
+    positiveText: $t('general.yesAction'),
+    negativeText: $t('general.noAction'),
+    positiveButtonProps,
+    negativeButtonProps,
+    autoFocus: false,
+    closable: false,
+    onPositiveClick: async () => {
+      actionsLoading.value = true;
+      const { data, error } = await POST('/resources/{id}/version', {
+        params: { path: { id: resource.id } },
+      });
+      if (!error) {
+        resources.add(data);
+        message.success($t('resources.msgCreatedVersion', { title: resource.title }));
+      } else {
+        message.error($t('errors.unexpected'), error);
+      }
+      actionsLoading.value = false;
+    },
+  });
+}
+
 function handleDeleteClick(resource: AnyResourceRead) {
   dialog.warning({
     title: $t('general.warning'),
@@ -344,6 +370,7 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
             @unpublish-click="handleUnpublishClick"
             @settings-click="handleSettingsClick"
             @units-click="handleUnitsClick"
+            @create-version-click="handleCreateVersionClick"
             @delete-click="handleDeleteClick"
           />
         </n-list>

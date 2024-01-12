@@ -66,8 +66,12 @@ export const useResourcesStore = defineStore('resources', () => {
     resources.value = sortResources(resources.value.concat([resource]));
   }
 
+  function remove(resourceId: string) {
+    resources.value = resources.value.filter((r) => r.id !== resourceId);
+  }
+
   async function getCoverage(resourceId: string): Promise<ResourceCoverage | undefined> {
-    const res = resources.value.find((l) => l.id === resourceId);
+    const res = resources.value.find((r) => r.id === resourceId);
     if (!res) return;
     const cov = res?.coverage;
     if (cov) return cov;
@@ -102,6 +106,7 @@ export const useResourcesStore = defineStore('resources', () => {
     load,
     replace,
     add,
+    remove,
     getCoverage,
     resetCoverage,
   };

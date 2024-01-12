@@ -1,22 +1,23 @@
 <script setup lang="ts">
 import LocationLabel from '@/components/browse/LocationLabel.vue';
 import BrowseToolbar from '@/components/browse/BrowseToolbar.vue';
-import { useBrowseStore } from '@/stores';
+import { useAuthStore, useBrowseStore } from '@/stores';
 import ResourceToggleDrawer from '@/components/browse/ResourceToggleDrawer.vue';
 import UnitContainer from '@/components/browse/UnitContainer.vue';
 import HugeLabeledIcon from '@/components/HugeLabeledIcon.vue';
 import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import IconHeading from '@/components/typography/IconHeading.vue';
+import { usePlatformData } from '@/platformData';
+import { $t } from '@/i18n';
+import { computed, onMounted, watch } from 'vue';
+import { useRoute } from 'vue-router';
 
 import FolderOffTwotone from '@vicons/material/FolderOffTwotone';
 import HourglassTopTwotone from '@vicons/material/HourglassTopTwotone';
 import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
 import ErrorOutlineOutlined from '@vicons/material/ErrorOutlineOutlined';
-import { usePlatformData } from '@/platformData';
-import { $t } from '@/i18n';
-import { computed, watch } from 'vue';
-import { useRoute } from 'vue-router';
 
+const auth = useAuthStore();
 const route = useRoute();
 const browse = useBrowseStore();
 const { pfData } = usePlatformData();
@@ -42,6 +43,17 @@ watch(
   },
   { immediate: true }
 );
+
+watch(
+  () => auth.loggedIn,
+  () => {
+    browse.loadLocationData(undefined, undefined, true);
+  }
+);
+
+onMounted(() => {
+  browse.loadLocationData(undefined, undefined, true);
+});
 </script>
 
 <template>

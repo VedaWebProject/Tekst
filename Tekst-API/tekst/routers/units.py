@@ -1,7 +1,7 @@
 from typing import Annotated
 
 from beanie import PydanticObjectId
-from beanie.operators import In
+from beanie.operators import Eq, In, Not
 from fastapi import APIRouter, HTTPException, Path, Query, status
 
 from tekst.auth import OptionalUserDep, UserDep
@@ -10,7 +10,6 @@ from tekst.models.unit import UnitBaseDocument
 from tekst.resource_types import (
     AnyUnitCreateBody,
     AnyUnitDocument,
-    AnyUnitRead,
     AnyUnitReadBody,
     AnyUnitUpdateBody,
     resource_types_mgr,
@@ -176,7 +175,7 @@ async def find_units(
         ),
     ] = [],
     limit: Annotated[int, Query(description="Return at most <limit> items")] = 4096,
-) -> list[AnyUnitRead]:
+) -> list[AnyUnitDocument]:
     """
     Returns a list of all resource units matching the given criteria.
 
@@ -185,12 +184,28 @@ async def find_units(
     returned unit objects cannot be typed to their precise resource unit type.
     """
 
+    # preprocess resource_ids to add IDs of original resources in case we have versions
+    if resource_ids:
+        resource_ids.append(
+            [
+                res.original_id
+                for res in await ResourceBaseDocument.find(
+                    In(ResourceBaseDocument.id, resource_ids),
+                    Not(Eq(ResourceBaseDocument.original_id, None)),
+                    with_children=True,
+                ).to_list()
+            ]
+        )
+
+    # get readable resources as a subset of the requested ones (might be all resources)
     readable_resources = await ResourceBaseDocument.find(
+        In(ResourceBaseDocument.id, resource_ids) if resource_ids else {},
         await ResourceBaseDocument.access_conditions_read(user),
         with_children=True,
     ).to_list()
 
-    unit_docs = (
+    # get units matching the given criteria
+    return (
         await UnitBaseDocument.find(
             In(UnitBaseDocument.resource_id, resource_ids) if resource_ids else {},
             In(UnitBaseDocument.node_id, node_ids) if node_ids else {},
@@ -203,10 +218,3 @@ async def find_units(
         .limit(limit)
         .to_list()
     )
-
-    return [
-        resource_types_mgr.get(unit_doc.resource_type)
-        .unit_model()
-        .read_model()(**unit_doc.model_dump())
-        for unit_doc in unit_docs
-    ]

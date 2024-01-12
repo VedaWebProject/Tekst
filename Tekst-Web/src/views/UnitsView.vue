@@ -24,7 +24,7 @@ import { ref } from 'vue';
 import { computed, watch } from 'vue';
 import HugeLabeledIcon from '@/components/HugeLabeledIcon.vue';
 import { $t } from '@/i18n';
-import { useStateStore } from '@/stores';
+import { useAuthStore, useStateStore } from '@/stores';
 import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import IconHeading from '@/components/typography/IconHeading.vue';
 import ResourceInfoWidget from '@/components/browse/widgets/ResourceInfoWidget.vue';
@@ -51,10 +51,13 @@ import FileUploadSharp from '@vicons/material/FileUploadSharp';
 import FolderOffTwotone from '@vicons/material/FolderOffTwotone';
 import InsertDriveFileOutlined from '@vicons/material/InsertDriveFileOutlined';
 import CompareArrowsOutlined from '@vicons/material/CompareArrowsOutlined';
+import AltRouteOutlined from '@vicons/material/AltRouteOutlined';
+import LayersFilled from '@vicons/material/LayersFilled';
 
 type UnitFormModel = AnyUnitCreate & { id: string };
 
 const state = useStateStore();
+const auth = useAuthStore();
 const resources = useResourcesStore();
 const { message } = useMessages();
 const router = useRouter();
@@ -66,6 +69,9 @@ const showJumpToModal = ref(false);
 const loading = ref(false);
 const formRef = ref<FormInst | null>(null);
 const resource = ref<AnyResourceRead>();
+const originalResourceTitle = computed(
+  () => resources.data.find((r) => r.id === resource.value?.originalId)?.title
+);
 const position = computed<number>(() => Number.parseInt(route.params.pos.toString()));
 const nodePath = ref<NodeRead[]>();
 const node = computed<NodeRead | undefined>(() => nodePath.value?.[resource.value?.level ?? -1]);
@@ -107,7 +113,11 @@ async function loadLocationData() {
         txt: state.text?.id || '',
         lvl: resource.value.level,
         pos: position.value,
-        res: [resource.value.id, ...(compareResourceId.value ? [compareResourceId.value] : [])],
+        res: [
+          resource.value.id,
+          ...(compareResourceId.value ? [compareResourceId.value] : []),
+          ...(resource.value.originalId ? [resource.value.originalId] : []),
+        ],
         head: true,
       },
     },
@@ -116,7 +126,11 @@ async function loadLocationData() {
     // requested node exists, set current node path
     nodePath.value = locationData.nodePath;
     // process received units
-    initialUnitModel.value = locationData.units?.find((u) => u.resourceId === resource.value?.id);
+    initialUnitModel.value =
+      locationData.units?.find((u) => u.resourceId === resource.value?.id) ||
+      (!!resource.value?.originalId &&
+        locationData.units?.find((u) => u.resourceId === resource.value?.originalId)) ||
+      undefined;
     const compareUnit = locationData.units?.find((u) => u.resourceId === compareResourceId.value);
     if (compareUnit) {
       compareResource.value = resources.data.find((r) => r.id === compareUnit?.resourceId);
@@ -173,8 +187,8 @@ async function handleSaveClick() {
   formRef.value
     ?.validate(async (validationError) => {
       if (validationError || !model.value) return;
-      if (model.value.id) {
-        // model has ID, so it's an update
+      if (model.value.id && model.value.resourceId === resource.value?.id) {
+        // model has ID and belongs to current resource, so it's an update
         const { data, error } = await PATCH('/units/{id}', {
           params: { path: { id: model.value.id } },
           body: getChanges(['resourceType']) as AnyUnitUpdate,
@@ -187,9 +201,9 @@ async function handleSaveClick() {
           message.error($t('errors.unexpected'), error);
         }
       } else {
-        // model has no ID, so it's an insert
+        // model has no ID or belongs to other resource (original), so it's an insert
         const { data, error } = await POST('/units', {
-          body: getChanges(['resourceType']) as AnyUnitCreate,
+          body: { ...model.value, resourceId: resource.value?.id } as AnyUnitCreate,
         });
         if (!error) {
           resources.resetCoverage(resource.value?.id);
@@ -233,8 +247,7 @@ async function deleteUnit() {
   const { error } = await DELETE('/units/{id}', { params: { path: { id: model.value.id } } });
   if (!error) {
     resources.resetCoverage(resource.value?.id);
-    initialUnitModel.value = undefined;
-    resetForm();
+    await loadLocationData();
     message.success($t('units.msgDeleted'));
   } else {
     message.error($t('errors.unexpected'));
@@ -327,10 +340,14 @@ whenever(ArrowLeft, () => {
     </n-button>
   </router-link>
 
-  <h2 v-if="resource">
+  <IconHeading
+    v-if="resource"
+    level="2"
+    :icon="resource.originalId ? AltRouteOutlined : LayersFilled"
+  >
     {{ resource?.title }}
     <ResourceInfoWidget :resource="resource" />
-  </h2>
+  </IconHeading>
 
   <ButtonShelf top-gap bottom-gap wrap-reverse>
     <template #start>
@@ -412,26 +429,40 @@ whenever(ArrowLeft, () => {
       </IconHeading>
 
       <n-alert
+        v-if="
+          model && auth.user?.isSuperuser && resource.ownerId && resource.ownerId !== auth.user.id
+        "
+        type="warning"
+        closable
+        :title="$t('resources.msgNotYourResourceTitle')"
+        style="margin-bottom: var(--content-gap)"
+      >
+        {{ $t('resources.msgNotYourResourceBody') }}
+      </n-alert>
+
+      <n-alert
+        v-if="
+          model &&
+          resource.originalId &&
+          model.resourceId == resource.originalId &&
+          originalResourceTitle
+        "
+        type="info"
+        closable
+        :title="$t('units.msgNoOwnContentTitle')"
+        style="margin-bottom: var(--content-gap)"
+      >
+        {{ $t('units.msgNoOwnContentBody', { originalResourceTitle }) }}
+      </n-alert>
+
+      <n-alert
         v-if="compareResource"
         closable
         type="default"
-        style="margin-bottom: var(--layout-gap); border: 1px dashed var(--main-bg-color)"
-        :bordered="false"
-        :show-icon="false"
+        :title="$t('units.forComparison', { title: compareResource.title })"
+        style="margin-bottom: var(--layout-gap)"
         @after-leave="handleCloseComparison"
       >
-        <template #header>
-          <n-space
-            align="center"
-            style="
-              font-size: var(--app-ui-font-size-small);
-              opacity: 0.6;
-              margin-bottom: var(--content-gap);
-            "
-          >
-            <span>"{{ compareResource.title }}" {{ $t('units.forComparison') }}</span>
-          </n-space>
-        </template>
         <component :is="unitComponents[compareResource.resourceType]" :resource="compareResource" />
       </n-alert>
 
@@ -450,12 +481,25 @@ whenever(ArrowLeft, () => {
 
         <ButtonShelf top-gap>
           <template #start>
-            <n-button secondary type="error" :disabled="loading" @click="handleDeleteUnitClick">
+            <n-button
+              secondary
+              type="error"
+              :disabled="loading || model.resourceId !== resource.id"
+              @click="handleDeleteUnitClick"
+            >
               {{ $t('general.deleteAction') }}
             </n-button>
           </template>
           <n-button secondary :disabled="!changed || loading" @click="resetForm">
             {{ $t('general.resetAction') }}
+          </n-button>
+          <n-button
+            v-if="resource.originalId && model.resourceId == resource.originalId"
+            type="primary"
+            :disabled="loading || changed"
+            @click="handleSaveClick"
+          >
+            {{ $t('general.copyAction') }}
           </n-button>
           <n-button type="primary" :disabled="!changed || loading" @click="handleSaveClick">
             {{ $t('general.saveAction') }}

@@ -9,10 +9,8 @@ import { useMessages } from '@/messages';
 import { $t } from '@/i18n';
 import unitComponents from '@/components/browse/units/mappings';
 import LocationLabel from '@/components/browse/LocationLabel.vue';
-import UnitHeaderWidgetBar from '@/components/browse/UnitHeaderWidgetBar.vue';
 import { useBrowseStore } from '@/stores';
 import GenericModal from '@/components/GenericModal.vue';
-import IconHeading from '@/components/typography/IconHeading.vue';
 
 import MergeOutlined from '@vicons/material/MergeOutlined';
 
@@ -40,15 +38,12 @@ async function handleClick() {
     },
   });
 
-  if (error) {
+  if (!error) {
+    units.value = unitsData;
+  } else {
     message.error($t('errors.unexpected'), error);
     showModal.value = false;
-    loading.value = false;
-    return;
-  } else {
-    units.value = unitsData;
   }
-
   loading.value = false;
 }
 </script>
@@ -60,22 +55,16 @@ async function handleClick() {
     @click="handleClick"
   />
 
-  <GenericModal v-model:show="showModal" :closable="false" width="wide">
-    <template #header>
-      <div class="header">
-        <IconHeading level="2" :icon="MergeOutlined" style="flex: 2">
-          {{ resource.title }}
-        </IconHeading>
-        <UnitHeaderWidgetBar
-          v-if="!loading && units.length"
-          :resource="{ ...resource, units: units }"
-          :show-deactivate-widget="false"
-          :show-siblings-widget="false"
-        />
-      </div>
-    </template>
-
-    <div class="parent-location"><LocationLabel :max-level="resource.level - 1" /></div>
+  <GenericModal
+    v-model:show="showModal"
+    width="wide"
+    :title="resource.title"
+    :icon="MergeOutlined"
+    heading-level="2"
+  >
+    <div v-if="resource.level > 0" class="parent-location">
+      <LocationLabel :max-level="resource.level - 1" />
+    </div>
 
     <n-spin v-if="loading" style="margin: 3rem 0 2rem 0; width: 100%" />
 
@@ -97,11 +86,6 @@ async function handleClick() {
 </template>
 
 <style scoped>
-.header {
-  display: flex;
-  align-items: flex-start;
-}
-
 .parent-location {
   font-size: var(--app-ui-font-size-large);
   opacity: 0.6;

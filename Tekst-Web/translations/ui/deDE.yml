@@ -18,6 +18,7 @@ general:
   editAction: Bearbeiten
   moveUpAction: Nach oben bewegen
   moveDownAction: Nach unten bewegen
+  copyAction: Kopieren
   quickSearch: Schnellsuche
   textSelect: Wählen Sie den Text, mit dem Sie arbeiten möchten
   info: Information
@@ -251,6 +252,14 @@ resources:
   heading: Ressourcen
   headingGeneral: Allgemein
   msgFoundCount: '{count} Ressourcen gefunden ({total} insgesamt)'
+  versionOf: Version von "{title}"
+  unknownOriginal: Unbekannte Original-Ressource
+  msgNotYourResourceTitle: Das ist nicht Ihre Ressource!
+  msgNotYourResourceBody: |
+    Als Administrator sind sie in der Lage, Ressourcen von anderen Benutzern zu bearbeiten.
+    Das bedeutet nicht, dass es eine gute Idee ist, dies zu tun. Bitte stellen Sie
+    sicher, dass jede Ihrer Änderungen im Einverständnis mit dem Besitzer dieser
+    Ressource geschieht!
   ownedByMe: von mir
   ownedByOthers: von anderen
   public: '@:models.resource.public'
@@ -260,6 +269,7 @@ resources:
   transferAction: Ressource an Benutzer übertragen
   settingsAction: Einstellungen
   unitsAction: Inhalte bearbeiten
+  createVersionAction: Version dieser Ressource erstellen
   proposeAction: Für Veröffentlichung vorschlagen
   unproposeAction: Veröffentlichungsvorschlag zurücknehmen
   publishAction: Veröffentlichen
@@ -287,12 +297,20 @@ resources:
   warnDelete: |
     Sind Sie sicher, dass Sie diese Ressource und alle
     mit ihr verbundenen Daten löschen wollen?
+  infoCreateVersion: |
+    Sie sind dabei, eine neue Version der Ressource "{title}" zu erstellen.
+    Diese neue Version wird für Fundstellen, für die sie keine eigenen Inhalte enthält,
+    die Inhalte der Originalversion anzeigen. Sie enthält zunächst keine eigenen Inhalte.
+    Wenn Sie Korrekturen oder Ergänzungen zu Inhalten der Originalversion angelegt haben,
+    können Sie dem Besitzer vorschlagen, diese oder Teile davon zu übernehmen.
+    Möchten Sie fortfahren?
   msgTransferred: Die Ressource "{title}" wurde an den Benutzer "{username}" übertragen.
   msgProposed: Die Ressource "{title}" wurde zur Veröffentlichung vorgeschlagen.
   msgUnproposed: Die Veröffentlichungsvorschlag für die Ressource "{title}" wurde zurückgezogen.
   msgPublished: Die Ressource "{title}" wurde veröffentlicht.
   msgUnpublished: Die Veröffentlichung der Ressource "{title}" wurde aufgehoben.
   msgDeleted: Die Ressource "{title}" wurde gelöscht.
+  msgCreatedVersion: Eine neue Version der Ressource "{title}" wurde erstellt.
   phSearchUsers: Benutzer suchen...
   backToOverview: Zurück zu "Ressourcen"
   create:
@@ -335,7 +353,7 @@ units:
   tipBtnDownloadTemplate: Importvorlage herunterladen
   lblBtnCompare: Vergleichen
   lblBtnCompareTip: Andere Ressource auswählen, um mit ihr zu vergleichen
-  forComparison: zum Vergleich
+  forComparison: 'Zum Vergleich: "{title}"'
   lblBtnUploadUnits: Importieren
   tipBtnUploadUnits: Inhalte über vorverarbeitete Datei importieren
   noUnit: Für diese Fundstelle liegen keine Inhalte vor.
@@ -343,6 +361,11 @@ units:
   msgSaved: Der Inhalt für diese Fundstelle wurde gespeichert.
   msgDeleted: Der Inhalt für diese Fundstelle wurde gelöscht.
   confirmDelete: Sind Sie sicher, dass Sie den Inhalt für diese Fundstelle löschen möchten?
+  msgNoOwnContentTitle: Kein eigner Inhalt für diese Fundstelle!
+  msgNoOwnContentBody: |
+    Diese Version von "{originalResourceTitle}" hat keinen eignen Inhalt für diese Fundstelle.
+    Sie sehen hier Inhalt der Original-Ressource. Sie können diesen kopieren
+    oder Änderungen vornehmen und sie als Inhalt dieser Ressourcen-Version speichern.
 
 account:
   account: Konto

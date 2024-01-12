@@ -34,13 +34,13 @@ export const useBrowseStore = defineStore('browse', () => {
   const position = computed(() => nodePathHead.value?.position ?? 0);
 
   // update browse node path
-  async function loadLocationData(lvl?: string, pos?: string) {
+  async function loadLocationData(lvl?: string, pos?: string, force: boolean = false) {
     if (route.name !== 'browse') return;
     loadingLocationData.value = true;
     const qLvl = parseInt(lvl || route.query.lvl?.toString() || '');
     const qPos = parseInt(pos || route.query.pos?.toString() || '');
     if (Number.isInteger(qLvl) && Number.isInteger(qPos)) {
-      if (qLvl == nodePathHead.value?.level && qPos == nodePathHead.value?.position) {
+      if (!force && qLvl == nodePathHead.value?.level && qPos == nodePathHead.value?.position) {
         loadingLocationData.value = false;
         return;
       }
@@ -56,8 +56,11 @@ export const useBrowseStore = defineStore('browse', () => {
       });
       if (!error && locationData.nodePath?.length) {
         nodePath.value = locationData.nodePath;
-        resources.data.forEach((l: AnyResourceRead) => {
-          l.units = locationData.units?.filter((u: AnyUnitRead) => u.resourceId == l.id);
+        resources.data.forEach((r: AnyResourceRead) => {
+          const unit =
+            locationData.units?.find((u: AnyUnitRead) => u.resourceId === r.id) ||
+            locationData.units?.find((u: AnyUnitRead) => u.resourceId === r.originalId);
+          r.units = unit ? [unit] : [];
         });
       } else {
         loadingLocationData.value = false;

@@ -145,6 +145,10 @@ export interface paths {
     /** Create resource */
     post: operations['createResource'];
   };
+  '/resources/{id}/version': {
+    /** Create resource version */
+    post: operations['createResourceVersion'];
+  };
   '/resources/{id}': {
     /** Get resource */
     get: operations['getResource'];
@@ -541,6 +545,11 @@ export interface components {
        */
       resourceType: 'debug';
       /**
+       * Originalid
+       * @description If this is a version of another resource, this ID references the original
+       */
+      originalId?: string | null;
+      /**
        * Ownerid
        * @description User owning this resource
        */
@@ -647,6 +656,11 @@ export interface components {
        */
       resourceType: 'debug';
       /**
+       * Originalid
+       * @description If this is a version of another resource, this ID references the original
+       */
+      originalId?: string | null;
+      /**
        * Ownerid
        * @description User owning this resource
        */
@@ -721,6 +735,11 @@ export interface components {
        * @constant
        */
       resourceType: 'debug';
+      /**
+       * Originalid
+       * @description If this is a version of another resource, this ID references the original
+       */
+      originalId?: string | null;
       /**
        * Ownerid
        * @description User owning this resource
@@ -1148,6 +1167,11 @@ export interface components {
        */
       resourceType: 'plaintext';
       /**
+       * Originalid
+       * @description If this is a version of another resource, this ID references the original
+       */
+      originalId?: string | null;
+      /**
        * Ownerid
        * @description User owning this resource
        */
@@ -1262,6 +1286,11 @@ export interface components {
        */
       resourceType: 'plaintext';
       /**
+       * Originalid
+       * @description If this is a version of another resource, this ID references the original
+       */
+      originalId?: string | null;
+      /**
        * Ownerid
        * @description User owning this resource
        */
@@ -1344,6 +1373,11 @@ export interface components {
        * @constant
        */
       resourceType: 'plaintext';
+      /**
+       * Originalid
+       * @description If this is a version of another resource, this ID references the original
+       */
+      originalId?: string | null;
       /**
        * Ownerid
        * @description User owning this resource
@@ -2871,6 +2905,34 @@ export interface operations {
         'application/json':
           | components['schemas']['DebugResourceCreate']
           | components['schemas']['PlaintextResourceCreate'];
+      };
+    };
+    responses: {
+      /** @description Created */
+      201: {
+        content: {
+          'application/json':
+            | components['schemas']['DebugResourceRead']
+            | components['schemas']['PlaintextResourceRead'];
+        };
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Create resource version */
+  createResourceVersion: {
+    parameters: {
+      path: {
+        id: string;
       };
     };
     responses: {

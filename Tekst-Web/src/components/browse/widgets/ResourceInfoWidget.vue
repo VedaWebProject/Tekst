@@ -10,14 +10,15 @@ import { type AnyResourceRead, type ResourceCoverage } from '@/api';
 import UserDisplay from '@/components/UserDisplay.vue';
 import TranslationDisplay from '@/components/TranslationDisplay.vue';
 import ResourcePublicationStatus from '@/components/ResourcePublicationStatus.vue';
+import CoverageDetailsWidget from './CoverageDetailsWidget.vue';
+import GenericModal from '@/components/GenericModal.vue';
+import ResourceIsVersionInfo from '@/components/ResourceIsVersionInfo.vue';
 
 import InfoOutlined from '@vicons/material/InfoOutlined';
 import ChatBubbleOutlineOutlined from '@vicons/material/ChatBubbleOutlineOutlined';
 import FormatQuoteFilled from '@vicons/material/FormatQuoteFilled';
 import PercentOutlined from '@vicons/material/PercentOutlined';
 import LabelOutlined from '@vicons/material/LabelOutlined';
-import CoverageDetailsWidget from './CoverageDetailsWidget.vue';
-import GenericModal from '@/components/GenericModal.vue';
 
 const props = defineProps<{
   resource: AnyResourceRead;
@@ -53,9 +54,10 @@ watch(showInfoModal, async (after) => {
       <TranslationDisplay :value="resource.description" />
     </p>
 
-    <p>
-      <UserDisplay v-if="auth.loggedIn" :user="resource.owner ?? undefined" size="tiny" />
-      <ResourcePublicationStatus v-if="auth.loggedIn" :resource="resource" size="tiny" />
+    <p v-if="auth.loggedIn" class="resource-status-box">
+      <UserDisplay :user="resource.owner ?? undefined" size="tiny" />
+      <ResourcePublicationStatus :resource="resource" size="tiny" />
+      <ResourceIsVersionInfo :resource="resource" size="tiny" />
     </p>
 
     <template v-if="resource.meta && Object.keys(resource.meta).length">
@@ -150,6 +152,11 @@ watch(showInfoModal, async (after) => {
 </template>
 
 <style scoped>
+.resource-status-box {
+  padding: 0.5rem;
+  background-color: var(--main-bg-color);
+  border-radius: var(--app-ui-border-radius);
+}
 .resource-comment {
   white-space: pre-wrap;
   font-weight: var(--app-ui-font-weight-light);

@@ -116,6 +116,67 @@ async def create_resource(
     return await preprocess_resource_read(resource_doc, user)
 
 
+@router.post(
+    "/{id}/version",
+    response_model=AnyResourceReadBody,
+    status_code=status.HTTP_201_CREATED,
+    responses={status.HTTP_201_CREATED: {"description": "Created"}},
+)
+async def create_resource_version(
+    user: UserDep, resource_id: Annotated[PydanticObjectId, Path(alias="id")]
+) -> AnyResourceRead:
+    resource_doc: ResourceBaseDocument = await ResourceBaseDocument.find_one(
+        ResourceBaseDocument.id == resource_id,
+        await ResourceBaseDocument.access_conditions_read(user),
+        with_children=True,
+    )
+    if not resource_doc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Resource with ID {resource_id} does not exist",
+        )
+    if resource_doc.original_id:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=(
+                f"Resource with ID {resource_id} is "
+                "already a version of another resource"
+            ),
+        )
+    # generate version title suffix
+    version_title_suffix = " v" + str(
+        await ResourceBaseDocument.find(
+            ResourceBaseDocument.original_id == resource_id,
+            with_children=True,
+        ).count()
+        + 2
+    )
+    version_title = (
+        resource_doc.title[0 : 64 - len(version_title_suffix)] + version_title_suffix
+    )
+    version_doc = (
+        await resource_types_mgr.get(resource_doc.resource_type)
+        .resource_model()
+        .document_model()
+        .model_from(
+            resource_doc.model_copy(
+                update={
+                    ResourceBaseDocument.id: None,
+                    ResourceBaseDocument.title: version_title,
+                    ResourceBaseDocument.original_id: resource_doc.id,
+                    ResourceBaseDocument.owner_id: user.id,
+                    ResourceBaseDocument.proposed: False,
+                    ResourceBaseDocument.public: False,
+                    ResourceBaseDocument.shared_read: [],
+                    ResourceBaseDocument.shared_write: [],
+                }
+            )
+        )
+        .create()
+    )
+    return await preprocess_resource_read(version_doc, user)
+
+
 @router.patch(
     "/{id}", response_model=AnyResourceReadBody, status_code=status.HTTP_200_OK
 )
@@ -216,13 +277,25 @@ async def find_resources(
 @router.get("/{id}/template", status_code=status.HTTP_200_OK)
 async def get_resource_template(
     user: UserDep,
-    resource_id: Annotated[str, Path(alias="id")],
+    resource_id: Annotated[PydanticObjectId, Path(alias="id")],
 ) -> dict:
-    resource_doc = await ResourceBaseDocument.get(resource_id, with_children=True)
+    resource_doc = await ResourceBaseDocument.get(
+        resource_id,
+        with_children=True,
+    )
     if not resource_doc:
         raise HTTPException(
             status.HTTP_404_NOT_FOUND,
             detail=f"Resource with ID {resource_id} doesn't exist",
+        )
+    if not await ResourceBaseDocument.find_one(
+        ResourceBaseDocument.id == resource_id,
+        await ResourceBaseDocument.access_conditions_write(user),
+        with_children=True,
+    ).exists():
+        raise HTTPException(
+            status.HTTP_403_FORBIDDEN,
+            detail="You have no permission to access this resource",
         )
     text_doc = await TextDocument.get(resource_doc.text_id)
 
@@ -318,12 +391,17 @@ async def delete_resource(
             detail="Cannot delete a proposed resource",
         )
     # all fine
-    # delete units
+    # turn versions of this resource into original resources
+    await ResourceBaseDocument.find(
+        ResourceBaseDocument.original_id == resource_id,
+        with_children=True,
+    ).set({ResourceBaseDocument.original_id: None})
+    # delete units belonging to the resource
     await UnitBaseDocument.find(
         UnitBaseDocument.resource_id == resource_id,
         with_children=True,
     ).delete()
-    # delete resource
+    # delete resource itself
     await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == resource_id,
         with_children=True,
@@ -396,6 +474,11 @@ async def propose_resource(
             status.HTTP_400_BAD_REQUEST,
             detail=f"Resource with ID {resource_id} already public",
         )
+    if resource_doc.original_id:
+        raise HTTPException(
+            status.HTTP_400_BAD_REQUEST,
+            detail="Cannot propose a version of another resource for publication",
+        )
     # all fine, propose resource
     await resource_doc.set(
         {
@@ -421,7 +504,9 @@ async def unpropose_resource(
             status.HTTP_404_NOT_FOUND, detail=f"No resource with ID {resource_id}"
         )
     if not user.is_superuser and user.id != resource_doc.owner_id:
-        raise HTTPException(status.HTTP_403_FORBIDDEN)
+        raise HTTPException(
+            status.HTTP_403_FORBIDDEN, detail="Not allowed to unpropose this resource"
+        )
     # all fine, unpropose resource
     await resource_doc.set(
         {
@@ -447,6 +532,11 @@ async def publish_resource(
         raise HTTPException(
             status.HTTP_400_BAD_REQUEST,
             detail=f"Resource with ID {resource_id} is not proposed for publication",
+        )
+    if resource_doc.original_id:
+        raise HTTPException(
+            status.HTTP_400_BAD_REQUEST,
+            detail="Cannot publish a version of another resource",
         )
     # all fine, publish resource
     await resource_doc.set(

@@ -91,7 +91,7 @@
           "browse"
         ],
         "summary": "Get unit siblings",
-        "description": "Returns a list of all resource units belonging to the resource\nwith the given ID, associated to nodes that are children of the parent node\nwith the given ID.\n\nAs the resulting list may contain units of arbitrary type, the\nreturned unit objects cannot be typed to their precise resource unit type.\nAlso, the returned unit objects have an additional property containing their\nrespective node's label, level and position.",
+        "description": "Returns a list of all resource units belonging to the resource\nwith the given ID, associated to nodes that are children of the parent node\nwith the given ID.\n\nAs the resulting list may contain units of arbitrary type, the\nreturned unit objects cannot be typed to their precise resource unit type.",
         "operationId": "getUnitSiblings",
         "security": [
           {
@@ -1592,6 +1592,75 @@
         }
       }
     },
+    "/resources/{id}/version": {
+      "post": {
+        "tags": [
+          "resources"
+        ],
+        "summary": "Create resource version",
+        "operationId": "createResourceVersion",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/DebugResourceRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PlaintextResourceRead"
+                    }
+                  ],
+                  "discriminator": {
+                    "propertyName": "resourceType",
+                    "mapping": {
+                      "debug": "#/components/schemas/DebugResourceRead",
+                      "plaintext": "#/components/schemas/PlaintextResourceRead"
+                    }
+                  },
+                  "title": "Response Create Resource Version Resources  Id  Version Post"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/resources/{id}": {
       "patch": {
         "tags": [
@@ -1820,6 +1889,7 @@
             "required": true,
             "schema": {
               "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             }
           }
@@ -4473,6 +4543,19 @@
             "const": "debug",
             "title": "Resourcetype"
           },
+          "originalId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Originalid",
+            "description": "If this is a version of another resource, this ID references the original"
+          },
           "ownerId": {
             "anyOf": [
               {
@@ -4670,6 +4753,19 @@
             "const": "debug",
             "title": "Resourcetype"
           },
+          "originalId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Originalid",
+            "description": "If this is a version of another resource, this ID references the original"
+          },
           "ownerId": {
             "anyOf": [
               {
@@ -4828,6 +4924,19 @@
           "resourceType": {
             "const": "debug",
             "title": "Resourcetype"
+          },
+          "originalId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Originalid",
+            "description": "If this is a version of another resource, this ID references the original"
           },
           "ownerId": {
             "anyOf": [
@@ -5619,6 +5728,19 @@
             "const": "plaintext",
             "title": "Resourcetype"
           },
+          "originalId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Originalid",
+            "description": "If this is a version of another resource, this ID references the original"
+          },
           "ownerId": {
             "anyOf": [
               {
@@ -5824,6 +5946,19 @@
             "const": "plaintext",
             "title": "Resourcetype"
           },
+          "originalId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Originalid",
+            "description": "If this is a version of another resource, this ID references the original"
+          },
           "ownerId": {
             "anyOf": [
               {
@@ -5990,6 +6125,19 @@
           "resourceType": {
             "const": "plaintext",
             "title": "Resourcetype"
+          },
+          "originalId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Originalid",
+            "description": "If this is a version of another resource, this ID references the original"
           },
           "ownerId": {
             "anyOf": [

@@ -1,7 +1,7 @@
 from typing import Annotated
 
 from beanie import PydanticObjectId
-from beanie.operators import In
+from beanie.operators import In, NotIn
 from fastapi import APIRouter, HTTPException, Path, Query, status
 
 from tekst.auth import OptionalUserDep
@@ -56,8 +56,6 @@ async def get_unit_siblings(
 
     As the resulting list may contain units of arbitrary type, the
     returned unit objects cannot be typed to their precise resource unit type.
-    Also, the returned unit objects have an additional property containing their
-    respective node's label, level and position.
     """
 
     resource = await ResourceBaseDocument.find_one(
@@ -89,6 +87,20 @@ async def get_unit_siblings(
         with_children=True,
     ).to_list()
 
+    # if the resource is a version, we also have to find the original's units
+    # that are missing in the requested resource version
+    if resource.original_id:
+        original_unit_docs = await UnitBaseDocument.find(
+            UnitBaseDocument.resource_id == resource.original_id,
+            In(UnitBaseDocument.node_id, node_ids),
+            NotIn(UnitBaseDocument.node_id, [u.node_id for u in unit_docs]),
+            with_children=True,
+        ).to_list()
+    else:
+        original_unit_docs = []
+
+    # combine units lists, sort by reference node position, return
+    unit_docs.extend(original_unit_docs)
     unit_docs.sort(key=lambda u: node_ids.index(u.node_id))
     return unit_docs
 

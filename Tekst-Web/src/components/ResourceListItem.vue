@@ -7,6 +7,7 @@ import ResourcePublicationStatus from '@/components/ResourcePublicationStatus.vu
 import TranslationDisplay from './TranslationDisplay.vue';
 import { useStateStore } from '@/stores';
 import { $t } from '@/i18n';
+import ResourceIsVersionInfo from '@/components/ResourceIsVersionInfo.vue';
 
 import MoreVertOutlined from '@vicons/material/MoreVertOutlined';
 import DeleteFilled from '@vicons/material/DeleteFilled';
@@ -17,6 +18,8 @@ import PublicFilled from '@vicons/material/PublicFilled';
 import PublicOffFilled from '@vicons/material/PublicOffFilled';
 import PersonFilled from '@vicons/material/PersonFilled';
 import EditNoteOutlined from '@vicons/material/EditNoteOutlined';
+import AltRouteOutlined from '@vicons/material/AltRouteOutlined';
+import UserDisplay from './UserDisplay.vue';
 
 const props = defineProps<{
   targetResource: AnyResourceRead;
@@ -31,6 +34,7 @@ const emit = defineEmits([
   'unpublishClick',
   'settingsClick',
   'unitsClick',
+  'createVersionClick',
   'deleteClick',
 ]);
 
@@ -56,7 +60,10 @@ const actionOptions = computed(() => [
           key: 'propose',
           icon: renderIcon(FlagFilled),
           disabled:
-            !canPropose.value || props.targetResource.public || props.targetResource.proposed,
+            !canPropose.value ||
+            props.targetResource.public ||
+            props.targetResource.proposed ||
+            !!props.targetResource.originalId,
           action: () => emit('proposeClick', props.targetResource),
         },
         {
@@ -64,7 +71,10 @@ const actionOptions = computed(() => [
           key: 'unpropose',
           icon: renderIcon(FlagOutlined),
           disabled:
-            !canPropose.value || !props.targetResource.proposed || props.targetResource.public,
+            !canPropose.value ||
+            !props.targetResource.proposed ||
+            props.targetResource.public ||
+            !!props.targetResource.originalId,
           action: () => emit('unproposeClick', props.targetResource),
         },
         {
@@ -82,14 +92,18 @@ const actionOptions = computed(() => [
           disabled:
             !props.currentUser?.isSuperuser ||
             !props.targetResource.proposed ||
-            props.targetResource.public,
+            props.targetResource.public ||
+            !!props.targetResource.originalId,
           action: () => emit('publishClick', props.targetResource),
         },
         {
           label: $t('resources.unpublishAction'),
           key: 'unpublish',
           icon: renderIcon(PublicOffFilled),
-          disabled: !props.currentUser?.isSuperuser || !props.targetResource.public,
+          disabled:
+            !props.currentUser?.isSuperuser ||
+            !props.targetResource.public ||
+            !!props.targetResource.originalId,
           action: () => emit('unpublishClick', props.targetResource),
         },
         {
@@ -111,6 +125,13 @@ const actionOptions = computed(() => [
     icon: renderIcon(EditNoteOutlined),
     disabled: !props.targetResource.writable,
     action: () => emit('unitsClick', props.targetResource),
+  },
+  {
+    label: $t('resources.createVersionAction'),
+    key: 'version',
+    icon: renderIcon(AltRouteOutlined),
+    disabled: !!props.targetResource.originalId,
+    action: () => emit('createVersionClick', props.targetResource),
   },
   {
     type: 'divider',
@@ -148,10 +169,6 @@ function handleActionSelect(key: string) {
 <template>
   <n-list-item class="resource-list-item">
     <n-thing :title="targetResource.title" content-style="margin-top: 8px">
-      <template #description>
-        <ResourcePublicationStatus :resource="targetResource" size="tiny" />
-      </template>
-
       <template #header-extra>
         <n-space>
           <n-dropdown
@@ -170,6 +187,12 @@ function handleActionSelect(key: string) {
           </n-dropdown>
           <ResourceInfoWidget :resource="targetResource" />
         </n-space>
+      </template>
+
+      <template #description>
+        <UserDisplay v-if="targetResource.owner" :user="targetResource.owner" size="tiny" />
+        <ResourcePublicationStatus :resource="targetResource" size="tiny" />
+        <ResourceIsVersionInfo :resource="targetResource" size="tiny" />
       </template>
 
       <template v-if="targetResource.description?.length">
