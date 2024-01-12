@@ -48,7 +48,6 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
           <n-button
             :size="buttonSize"
             :title="$t('browse.toolbar.tipReducedView')"
-            :disabled="!browse.nodePath.length"
             :color="browse.reducedView ? btnToggledColor : btnBgColor"
             :style="{ color: btnColor }"
             :focusable="false"
@@ -65,7 +64,6 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
           <n-button
             :size="buttonSize"
             :title="$t('browse.toolbar.tipOpenResourceList')"
-            :disabled="!browse.nodePath.length"
             :color="btnBgColor"
             :style="{ color: btnColor }"
             :focusable="false"

@@ -45,12 +45,12 @@ watch(
 </script>
 
 <template>
-  <IconHeading level="1" :icon="MenuBookOutlined">
+  <IconHeading v-if="browse.nodePath.length" level="1" :icon="MenuBookOutlined">
     <LocationLabel />
     <HelpButtonWidget help-key="browseView" />
   </IconHeading>
 
-  <BrowseToolbar />
+  <BrowseToolbar v-if="browse.nodePath.length" />
 
   <div
     v-if="activeResourcesCategorized.length"

@@ -75,7 +75,7 @@ const btnColor = '#fff';
       custom
     >
       <n-button
-        :disabled="!browse.nodePath.length || browse.position === 0"
+        :disabled="browse.position === 0"
         :focusable="false"
         :title="$t('browse.toolbar.tipPreviousLocation')"
         :size="buttonSize"
@@ -92,7 +92,6 @@ const btnColor = '#fff';
     <n-button
       :title="$t('browse.toolbar.tipSelectLocation')"
       :focusable="false"
-      :disabled="!browse.nodePath.length"
       :size="buttonSize"
       :color="btnBgColor"
       :style="{ color: btnColor }"
@@ -107,7 +106,6 @@ const btnColor = '#fff';
       <n-button
         :focusable="false"
         :title="$t('browse.toolbar.tipNextLocation')"
-        :disabled="!browse.nodePath.length"
         :size="buttonSize"
         :color="btnBgColor"
         :style="{ color: btnColor }"
