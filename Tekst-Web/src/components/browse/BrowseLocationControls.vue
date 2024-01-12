@@ -13,6 +13,13 @@ import ArrowBackIosOutlined from '@vicons/material/ArrowBackIosOutlined';
 import ArrowForwardIosOutlined from '@vicons/material/ArrowForwardIosOutlined';
 import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
 
+withDefaults(
+  defineProps<{
+    buttonSize?: 'small' | 'medium' | 'large';
+  }>(),
+  { buttonSize: 'large' }
+);
+
 const browse = useBrowseStore();
 const route = useRoute();
 const position = computed<number>(() => parseInt(route.query.pos?.toString() || '0'));
@@ -68,10 +75,10 @@ const btnColor = '#fff';
       custom
     >
       <n-button
-        :disabled="browse.position === 0"
+        :disabled="!browse.nodePath.length || browse.position === 0"
         :focusable="false"
         :title="$t('browse.toolbar.tipPreviousLocation')"
-        size="large"
+        :size="buttonSize"
         :color="btnBgColor"
         :style="{ color: btnColor }"
         @click="navigate"
@@ -85,7 +92,8 @@ const btnColor = '#fff';
     <n-button
       :title="$t('browse.toolbar.tipSelectLocation')"
       :focusable="false"
-      size="large"
+      :disabled="!browse.nodePath.length"
+      :size="buttonSize"
       :color="btnBgColor"
       :style="{ color: btnColor }"
       @click="showLocationSelectModal = true"
@@ -99,7 +107,8 @@ const btnColor = '#fff';
       <n-button
         :focusable="false"
         :title="$t('browse.toolbar.tipNextLocation')"
-        size="large"
+        :disabled="!browse.nodePath.length"
+        :size="buttonSize"
         :color="btnBgColor"
         :style="{ color: btnColor }"
         @click="navigate"

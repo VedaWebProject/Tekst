@@ -29,15 +29,16 @@ onMounted(() => {
 const btnBgColor = '#00000015';
 const btnToggledColor = '#ffffff25';
 const btnColor = '#fff';
+const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
 </script>
 
 <template>
   <div ref="affixRef" class="browse-toolbar-container accent-color-bg">
     <div v-show="!!state.text" class="browse-toolbar">
-      <BrowseLocationControls />
+      <BrowseLocationControls :button-size="buttonSize" />
 
-      <div v-show="!state.smallScreen" class="browse-toolbar-middle">
-        <div class="browse-location-label">
+      <div class="browse-toolbar-middle">
+        <div v-show="!state.smallScreen" class="browse-location-label">
           <LocationLabel />
         </div>
       </div>
@@ -45,8 +46,9 @@ const btnColor = '#fff';
       <div class="browse-toolbar-end">
         <n-badge value="!" color="var(--accent-color-inverted-pastel)" :show="browse.reducedView">
           <n-button
-            size="large"
+            :size="buttonSize"
             :title="$t('browse.toolbar.tipReducedView')"
+            :disabled="!browse.nodePath.length"
             :color="browse.reducedView ? btnToggledColor : btnBgColor"
             :style="{ color: btnColor }"
             :focusable="false"
@@ -61,8 +63,9 @@ const btnColor = '#fff';
 
         <n-badge :value="resourceDrawerBadgeLabel" color="var(--accent-color-inverted-pastel)">
           <n-button
-            size="large"
+            :size="buttonSize"
             :title="$t('browse.toolbar.tipOpenResourceList')"
+            :disabled="!browse.nodePath.length"
             :color="btnBgColor"
             :style="{ color: btnColor }"
             :focusable="false"
@@ -117,6 +120,7 @@ const btnColor = '#fff';
   flex-grow: 2;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-align: center;
 }
 
 .browse-toolbar-end {
@@ -130,7 +134,6 @@ const btnColor = '#fff';
 
 .browse-toolbar .browse-location-label {
   display: none;
-  opacity: 0.75;
 }
 
 .browse-toolbar-container.affixed .browse-location-label {

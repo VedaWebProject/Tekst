@@ -93,8 +93,8 @@ export const useBrowseStore = defineStore('browse', () => {
   watch(
     () => state.text,
     () => {
-      route.name === 'browse' && resetBrowseLocation();
       nodePath.value = [];
+      route.name === 'browse' && resetBrowseLocation();
     }
   );
 
