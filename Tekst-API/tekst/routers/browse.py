@@ -305,7 +305,7 @@ async def get_detailed_resource_coverage_data(
                                     "$expr": {
                                         "$and": [
                                             {"$eq": ["$node_id", "$$node_id"]},
-                                            {"$gte": ["$resource_id", "$$resource_id"]},
+                                            {"$eq": ["$resource_id", "$$resource_id"]},
                                         ]
                                     }
                                 }
