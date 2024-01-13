@@ -75,7 +75,26 @@ async def test_get_unit(
     )
     assert resp.status_code == 404, status_fail_msg(404, resp)
 
+
+@pytest.mark.anyio
+async def test_find_units(
+    test_client: AsyncClient, insert_sample_data, status_fail_msg, login, wrong_id
+):
+    resource_id = (await insert_sample_data("texts", "nodes", "resources", "units"))[
+        "resources"
+    ][0]
+    await login(is_superuser=True)
+
     # find all units
+    resp = await test_client.get(
+        "/units",
+        params={"res": [resource_id], "limit": 100},
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) > 0
+
+    # find all units of resource
     resp = await test_client.get(
         "/units",
         params={"limit": 100},

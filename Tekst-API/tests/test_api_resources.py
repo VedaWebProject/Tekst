@@ -1,6 +1,7 @@
 import pytest
 
 from httpx import AsyncClient
+from tekst.models.common import PydanticObjectId
 from tekst.models.resource import ResourceBaseDocument
 
 
@@ -90,6 +91,64 @@ async def test_create_resource_w_wrong_text_id(
     resp = await test_client.post(
         "/resources",
         json=payload,
+    )
+    assert resp.status_code == 400, status_fail_msg(400, resp)
+
+
+@pytest.mark.anyio
+async def test_create_resource_with_forged_owner_id(
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_fail_msg,
+    login,
+):
+    text_id = (await insert_sample_data("texts", "nodes"))["texts"][0]
+    await login()
+
+    # create new resource with made up owner ID
+    payload = {
+        "title": "Foo Bar Baz",
+        "textId": text_id,
+        "level": 0,
+        "resourceType": "plaintext",
+        "ownerId": "643d3cdc21efd6c46ae1527e",
+    }
+    resp = await test_client.post(
+        "/resources",
+        json=payload,
+    )
+    assert resp.status_code == 201, status_fail_msg(201, resp)
+    assert resp.json()["ownerId"] != payload["ownerId"]
+
+
+@pytest.mark.anyio
+async def test_create_resource_version(
+    test_client: AsyncClient, insert_sample_data, status_fail_msg, login, wrong_id
+):
+    resource_id = (await insert_sample_data("texts", "nodes", "resources"))[
+        "resources"
+    ][0]
+    user = await login()
+
+    # create new resource version (fail with wrong resource ID)
+    resp = await test_client.post(
+        f"/resources/{wrong_id}/version",
+    )
+    assert resp.status_code == 404, status_fail_msg(404, resp)
+
+    # create new resource version
+    resp = await test_client.post(
+        f"/resources/{resource_id}/version",
+    )
+    assert resp.status_code == 201, status_fail_msg(201, resp)
+    assert "id" in resp.json()
+    assert "originalId" in resp.json()
+    assert "ownerId" in resp.json()
+    assert resp.json()["ownerId"] == user.get("id")
+
+    # fail to create new resource version of another version
+    resp = await test_client.post(
+        f"/resources/{resp.json()['id']}/version",
     )
     assert resp.status_code == 400, status_fail_msg(400, resp)
 
@@ -242,32 +301,6 @@ async def test_set_shares_for_public_resource(
 
 
 @pytest.mark.anyio
-async def test_create_resource_with_forged_owner_id(
-    test_client: AsyncClient,
-    insert_sample_data,
-    status_fail_msg,
-    login,
-):
-    text_id = (await insert_sample_data("texts", "nodes"))["texts"][0]
-    await login()
-
-    # create new resource with made up owner ID
-    payload = {
-        "title": "Foo Bar Baz",
-        "textId": text_id,
-        "level": 0,
-        "resourceType": "plaintext",
-        "ownerId": "643d3cdc21efd6c46ae1527e",
-    }
-    resp = await test_client.post(
-        "/resources",
-        json=payload,
-    )
-    assert resp.status_code == 201, status_fail_msg(201, resp)
-    assert resp.json()["ownerId"] != payload["ownerId"]
-
-
-@pytest.mark.anyio
 async def test_get_resource(
     test_client: AsyncClient, insert_sample_data, status_fail_msg, wrong_id, login
 ):
@@ -288,10 +321,10 @@ async def test_get_resource(
 
     # fail to get resource without read permissions
     await ResourceBaseDocument.find_one(
-        ResourceBaseDocument.id == resource_id, with_children=True
+        ResourceBaseDocument.id == PydanticObjectId(resource_id), with_children=True
     ).set({ResourceBaseDocument.public: False})
     await login(is_superuser=False)
-    resp = await test_client.get(f"/resources/{wrong_id}")
+    resp = await test_client.get(f"/resources/{resource_id}")
     assert resp.status_code == 404, status_fail_msg(404, resp)
 
 
@@ -400,6 +433,19 @@ async def test_propose_unpropose_publish_unpublish_resource(
     )
     assert resp.status_code == 404, status_fail_msg(404, resp)
 
+    # fail to propose resource version
+    # create new resource version
+    resp = await test_client.post(
+        f"/resources/{resource_id}/version",
+    )
+    assert resp.status_code == 201, status_fail_msg(201, resp)
+    assert "id" in resp.json()
+    version_id = resp.json()["id"]
+    resp = await test_client.post(
+        f"/resources/{version_id}/propose",
+    )
+    assert resp.status_code == 400, status_fail_msg(400, resp)
+
     # get all accessible resources, check if ours is proposed
     resp = await test_client.get("/resources", params={"txt": text_id})
     assert resp.status_code == 200, status_fail_msg(200, resp)
@@ -419,6 +465,18 @@ async def test_propose_unpropose_publish_unpublish_resource(
         f"/resources/{wrong_id}/publish",
     )
     assert resp.status_code == 404, status_fail_msg(404, resp)
+
+    # fail to publish resource version
+    # (this should be actually be impossible anyway,
+    # because we can't even propose a version... so we create
+    # an invalid resource state on purpose, here)
+    await ResourceBaseDocument.find_one(
+        ResourceBaseDocument.id == PydanticObjectId(version_id), with_children=True
+    ).set({ResourceBaseDocument.proposed: True})
+    resp = await test_client.post(
+        f"/resources/{version_id}/publish",
+    )
+    assert resp.status_code == 400, status_fail_msg(400, resp)
 
     # publish resource
     resp = await test_client.post(

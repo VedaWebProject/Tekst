@@ -8,7 +8,7 @@ from tekst.models.text import TextDocument
 
 @pytest.mark.anyio
 async def test_get_unit_siblings(
-    test_client: AsyncClient, insert_sample_data, status_fail_msg, wrong_id
+    test_client: AsyncClient, insert_sample_data, status_fail_msg, wrong_id, login
 ):
     await insert_sample_data("texts", "nodes", "resources", "units")
     text = await TextDocument.find_one(TextDocument.slug == "pond")
@@ -32,6 +32,22 @@ async def test_get_unit_siblings(
         params={"res": wrong_id},
     )
     assert resp.status_code == 404, status_fail_msg(404, resp)
+
+    # siblings of resource version
+    await login()
+    resp = await test_client.post(
+        f"/resources/{str(resource.id)}/version",
+    )
+    assert resp.status_code == 201, status_fail_msg(201, resp)
+    assert "id" in resp.json()
+    version_id = resp.json()["id"]
+    resp = await test_client.get(
+        "/browse/unit-siblings",
+        params={"res": version_id},
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) == 3
 
 
 @pytest.mark.anyio
