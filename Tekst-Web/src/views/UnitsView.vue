@@ -79,11 +79,13 @@ const nodeParent = computed<NodeRead | undefined>(
   () => nodePath.value?.[(resource.value?.level ?? -1) - 1]
 );
 const initialUnitModel = ref<UnitFormModel>();
-const model = ref<UnitFormModel | undefined>(initialUnitModel.value);
-const { changed, reset, getChanges } = useModelChanges(model);
+const unitModel = ref<UnitFormModel | undefined>(initialUnitModel.value);
+const { changed, reset, getChanges } = useModelChanges(unitModel);
 
 const compareResourceId = ref<string>();
-const compareResource = ref<AnyResourceRead>();
+const compareResource = computed<AnyResourceRead | undefined>(() =>
+  resources.data.find((r) => r.id === compareResourceId.value)
+);
 const compareResourceOptions = computed(() =>
   resources.data
     .filter((r) => r.id !== resource.value?.id && r.level === resource.value?.level)
@@ -115,7 +117,7 @@ async function loadLocationData() {
         pos: position.value,
         res: [
           resource.value.id,
-          ...(compareResourceId.value ? [compareResourceId.value] : []),
+          ...(compareResource.value?.id ? [compareResource.value.id] : []),
           ...(resource.value.originalId ? [resource.value.originalId] : []),
         ],
         head: true,
@@ -131,12 +133,9 @@ async function loadLocationData() {
       (!!resource.value?.originalId &&
         locationData.units?.find((u) => u.resourceId === resource.value?.originalId)) ||
       undefined;
-    const compareUnit = locationData.units?.find((u) => u.resourceId === compareResourceId.value);
-    if (compareUnit) {
-      compareResource.value = resources.data.find((r) => r.id === compareUnit?.resourceId);
-      if (compareResource.value) {
-        compareResource.value.units = compareUnit ? [compareUnit] : [];
-      }
+    const compareUnit = locationData.units?.find((u) => u.resourceId === compareResource.value?.id);
+    if (compareResource.value) {
+      compareResource.value.units = compareUnit ? [compareUnit] : [];
     }
     resetForm();
   } else {
@@ -165,19 +164,17 @@ watch(
         router.push({ name: 'resources', params: { text: state.text?.slug } });
         return;
       }
+      if (resource.value.originalId) {
+        compareResourceId.value = resource.value.originalId;
+      }
     }
     await loadLocationData();
   },
   { immediate: true }
 );
 
-// watch for compare resource ID change
-watch(compareResourceId, async () => {
-  await loadLocationData();
-});
-
 function resetForm() {
-  model.value = initialUnitModel.value;
+  unitModel.value = initialUnitModel.value;
   reset();
   formRef.value?.restoreValidation();
 }
@@ -186,11 +183,11 @@ async function handleSaveClick() {
   loading.value = true;
   formRef.value
     ?.validate(async (validationError) => {
-      if (validationError || !model.value) return;
-      if (model.value.id && model.value.resourceId === resource.value?.id) {
+      if (validationError || !unitModel.value) return;
+      if (unitModel.value.id && unitModel.value.resourceId === resource.value?.id) {
         // model has ID and belongs to current resource, so it's an update
         const { data, error } = await PATCH('/units/{id}', {
-          params: { path: { id: model.value.id } },
+          params: { path: { id: unitModel.value.id } },
           body: getChanges(['resourceType']) as AnyUnitUpdate,
         });
         if (!error) {
@@ -203,7 +200,7 @@ async function handleSaveClick() {
       } else {
         // model has no ID or belongs to other resource (original), so it's an insert
         const { data, error } = await POST('/units', {
-          body: { ...model.value, resourceId: resource.value?.id } as AnyUnitCreate,
+          body: { ...unitModel.value, resourceId: resource.value?.id } as AnyUnitCreate,
         });
         if (!error) {
           resources.resetCoverage(resource.value?.id);
@@ -242,9 +239,9 @@ async function handleUploadUnitsClick() {
 }
 
 async function deleteUnit() {
-  if (!model.value) return;
+  if (!unitModel.value) return;
   loading.value = true;
-  const { error } = await DELETE('/units/{id}', { params: { path: { id: model.value.id } } });
+  const { error } = await DELETE('/units/{id}', { params: { path: { id: unitModel.value.id } } });
   if (!error) {
     resources.resetCoverage(resource.value?.id);
     await loadLocationData();
@@ -256,7 +253,7 @@ async function deleteUnit() {
 }
 
 async function handleDeleteUnitClick() {
-  if (!model.value) return;
+  if (!unitModel.value) return;
   loading.value = true;
   dialog.warning({
     title: $t('general.warning'),
@@ -276,13 +273,13 @@ async function handleDeleteUnitClick() {
 
 function handleAddUnitClick() {
   if (resource.value && node.value) {
-    initialUnitModel.value = {
+    unitModel.value = {
       ...defaultUnitModels[resource.value.resourceType],
       resourceId: resource.value.id,
       resourceType: resource.value.resourceType,
       nodeId: node.value.id,
     } as UnitFormModel;
-    model.value = initialUnitModel.value;
+    formRef.value?.restoreValidation();
   }
 }
 
@@ -305,11 +302,7 @@ function handleJumpToSubmit(nodePath: NodeRead[]) {
 
 function handleSelectcompareResource(key: string) {
   compareResourceId.value = key;
-}
-
-function handleCloseComparison() {
-  compareResourceId.value = undefined;
-  compareResource.value = undefined;
+  loadLocationData();
 }
 
 // react to keyboard for in-/decreasing location
@@ -430,7 +423,10 @@ whenever(ArrowLeft, () => {
 
       <n-alert
         v-if="
-          model && auth.user?.isSuperuser && resource.ownerId && resource.ownerId !== auth.user.id
+          unitModel &&
+          auth.user?.isSuperuser &&
+          resource.ownerId &&
+          resource.ownerId !== auth.user.id
         "
         type="warning"
         closable
@@ -442,9 +438,9 @@ whenever(ArrowLeft, () => {
 
       <n-alert
         v-if="
-          model &&
+          unitModel &&
           resource.originalId &&
-          model.resourceId == resource.originalId &&
+          unitModel.resourceId == resource.originalId &&
           originalResourceTitle
         "
         type="info"
@@ -461,22 +457,27 @@ whenever(ArrowLeft, () => {
         type="default"
         :title="$t('units.forComparison', { title: compareResource.title })"
         style="margin-bottom: var(--layout-gap)"
-        @after-leave="handleCloseComparison"
+        @after-leave="compareResourceId = undefined"
       >
-        <component :is="unitComponents[compareResource.resourceType]" :resource="compareResource" />
+        <component
+          :is="unitComponents[compareResource.resourceType]"
+          v-if="compareResource.units?.length"
+          :resource="compareResource"
+        />
+        <span v-else style="opacity: 0.75; font-style: italic">{{ $t('units.noUnit') }}</span>
       </n-alert>
 
-      <template v-if="model">
+      <template v-if="unitModel">
         <n-form
           ref="formRef"
-          :model="model"
+          :model="unitModel"
           :rules="unitFormRules.plaintext"
           label-placement="top"
           :disabled="loading"
           label-width="auto"
           require-mark-placement="right-hanging"
         >
-          <UnitFormItems v-model:model="model" />
+          <UnitFormItems v-model:model="unitModel" />
         </n-form>
 
         <ButtonShelf top-gap>
@@ -484,7 +485,7 @@ whenever(ArrowLeft, () => {
             <n-button
               secondary
               type="error"
-              :disabled="loading || model.resourceId !== resource.id"
+              :disabled="loading || !unitModel.id || unitModel.resourceId !== resource.id"
               @click="handleDeleteUnitClick"
             >
               {{ $t('general.deleteAction') }}
@@ -494,14 +495,15 @@ whenever(ArrowLeft, () => {
             {{ $t('general.resetAction') }}
           </n-button>
           <n-button
-            v-if="resource.originalId && model.resourceId == resource.originalId"
+            v-if="!changed && resource.originalId && unitModel.resourceId == resource.originalId"
             type="primary"
-            :disabled="loading || changed"
+            :title="$t('units.lblBtnCopyOriginalTip')"
+            :disabled="loading"
             @click="handleSaveClick"
           >
-            {{ $t('general.copyAction') }}
+            {{ $t('units.lblBtnCopyOriginal') }}
           </n-button>
-          <n-button type="primary" :disabled="!changed || loading" @click="handleSaveClick">
+          <n-button v-else type="primary" :disabled="loading || !changed" @click="handleSaveClick">
             {{ $t('general.saveAction') }}
           </n-button>
         </ButtonShelf>

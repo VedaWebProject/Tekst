@@ -18,7 +18,6 @@ general:
   editAction: Edit
   moveUpAction: Move up
   moveDownAction: Move down
-  copyAction: Copy
   textSelect: Select the text you want to work with
   info: Information
   warning: Warning
@@ -343,6 +342,8 @@ units:
   tipBtnDownloadTemplate: Download import template
   lblBtnCompare: Compare
   lblBtnCompareTip: Select other resource to compare with
+  lblBtnCopyOriginal: Copy
+  lblBtnCopyOriginalTip: Copy from original resource
   forComparison: 'For comparison: "{title}"'
   lblBtnUploadUnits: Import
   tipBtnUploadUnits: Import content via preprocessed import file
