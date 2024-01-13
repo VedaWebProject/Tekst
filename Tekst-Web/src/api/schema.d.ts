@@ -21,8 +21,6 @@ export interface paths {
      *
      * As the resulting list may contain units of arbitrary type, the
      * returned unit objects cannot be typed to their precise resource unit type.
-     * Also, the returned unit objects have an additional property containing their
-     * respective node's label, level and position.
      */
     get: operations['getUnitSiblings'];
   };
@@ -2238,8 +2236,6 @@ export interface operations {
    *
    * As the resulting list may contain units of arbitrary type, the
    * returned unit objects cannot be typed to their precise resource unit type.
-   * Also, the returned unit objects have an additional property containing their
-   * respective node's label, level and position.
    */
   getUnitSiblings: {
     parameters: {
