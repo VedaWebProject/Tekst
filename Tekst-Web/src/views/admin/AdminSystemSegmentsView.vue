@@ -25,7 +25,6 @@ import { systemSegmentFormRules } from '@/forms/formRules';
 
 import AddOutlined from '@vicons/material/AddOutlined';
 import FileOpenOutlined from '@vicons/material/FileOpenOutlined';
-import DeleteOutlined from '@vicons/material/DeleteOutlined';
 import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
 import ButtonShelf from '@/components/ButtonShelf.vue';
 import { useStateStore } from '@/stores';
@@ -98,7 +97,7 @@ function getSegmentModel(segmentId?: string): ClientSegmentUpdate {
   if (!segmentId) {
     return {
       key: '',
-      title: '',
+      title: null,
       locale: null,
       editorMode: 'wysiwyg',
       html: '',
@@ -167,7 +166,7 @@ async function updateSegment() {
 
 async function createSegment() {
   const { data, error } = await POST('/platform/segments', {
-    body: getModelChanges() as ClientSegmentCreate,
+    body: segmentModel.value as ClientSegmentCreate,
   });
   if (!error) {
     message.success(
@@ -185,7 +184,7 @@ async function createSegment() {
 }
 
 function handleCancelClick() {
-  if (!modelChanged) {
+  if (!modelChanged.value) {
     resetForm();
     return;
   }
@@ -264,11 +263,6 @@ async function handleDeleteClick() {
       style="flex-grow: 2"
       @update:value="handleSelectSegment"
     />
-    <n-button v-if="selectedSegmentId" secondary size="large" @click="handleDeleteClick">
-      <template #icon>
-        <n-icon :component="DeleteOutlined" />
-      </template>
-    </n-button>
     <n-button type="primary" :disabled="modelChanged" size="large" @click="handleAddSegmentClick">
       <template #icon>
         <n-icon :component="AddOutlined" />
@@ -298,7 +292,7 @@ async function handleDeleteClick() {
           />
         </n-form-item>
         <!-- KEY -->
-        <n-form-item path="key" :label="$t('models.segment.key')" required>
+        <n-form-item path="key" :label="$t('models.segment.key')">
           <n-select
             v-model:value="segmentModel.key"
             :options="systemSegmentKeyOptions"
@@ -309,7 +303,7 @@ async function handleDeleteClick() {
           />
         </n-form-item>
         <!-- LOCALE -->
-        <n-form-item :label="$t('models.segment.locale')">
+        <n-form-item path="locale" :label="$t('models.segment.locale')">
           <n-select
             v-model:value="segmentModel.locale"
             :options="localeOptions"
@@ -321,7 +315,7 @@ async function handleDeleteClick() {
           />
         </n-form-item>
         <!-- HTML -->
-        <n-form-item path="html" :label="$t('models.segment.html')" required>
+        <n-form-item path="html" :label="$t('models.segment.html')">
           <HtmlEditor
             v-model:value="segmentModel.html"
             v-model:editor-mode="segmentModel.editorMode"
@@ -332,6 +326,11 @@ async function handleDeleteClick() {
       </n-form>
 
       <ButtonShelf top-gap>
+        <template #start>
+          <n-button v-if="selectedSegmentId" secondary type="error" @click="handleDeleteClick">
+            {{ $t('general.deleteAction') }}
+          </n-button>
+        </template>
         <n-button secondary @click="handleCancelClick">{{ $t('general.cancelAction') }}</n-button>
         <n-button
           type="primary"

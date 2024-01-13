@@ -14,31 +14,19 @@ const props = defineProps<{
 
 const { locale } = useI18n();
 const loading = ref(false);
-const { systemHome, getSegment } = usePlatformData();
+const { getSegment } = usePlatformData();
 const router = useRouter();
 const route = useRoute();
 
 const page = ref<ClientSegmentRead>();
 
-async function loadPage(pageKey: string | undefined, locale: string) {
+watchEffect(async () => {
   loading.value = true;
-  page.value = await getSegment(pageKey, locale);
+  page.value = await getSegment(props.pageKey || String(route.params.p), locale.value);
   if (!page.value) {
     router.replace({ name: 'browse' });
   }
   loading.value = false;
-}
-
-watchEffect(() => {
-  loading.value = true;
-  if (!(route.name === 'info' || route.name === 'home')) {
-    return;
-  }
-  if (route.name === 'home' && !systemHome.value) {
-    router.replace({ name: 'browse' });
-    return;
-  }
-  loadPage(props.pageKey || String(route.params.p), locale.value);
 });
 </script>
 

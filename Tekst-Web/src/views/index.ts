@@ -1,4 +1,3 @@
-export { default as HomeView } from './HomeView.vue';
 export { default as UserView } from './UserView.vue';
 export { default as AccountView } from './account/AccountView.vue';
 export { default as AccountManageView } from './account/AccountManageView.vue';

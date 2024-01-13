@@ -53,7 +53,6 @@ const router = createRouter({
       component: InfoPageView,
       props: {
         pageKey: 'systemHome',
-        icon: InfoOutlined,
       },
     },
     {

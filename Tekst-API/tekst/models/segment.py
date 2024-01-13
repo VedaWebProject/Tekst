@@ -1,7 +1,13 @@
 from typing import Annotated, Literal
 
 from beanie import PydanticObjectId
-from pydantic import BaseModel, Field, StringConstraints, model_validator
+from pydantic import (
+    BaseModel,
+    Field,
+    StringConstraints,
+    field_validator,
+    model_validator,
+)
 
 from tekst.models.common import (
     DocumentBase,
@@ -51,6 +57,11 @@ class ClientSegment(ModelBase, ModelFactoryMixin):
         Field(description="HTML content of this segment"),
     ]
 
+    @field_validator("title", mode="before")
+    @classmethod
+    def force_unset_empty_title(cls, v) -> str | None:
+        return v if v else None
+
     @model_validator(mode="after")
     def set_is_system_segment(self) -> "ClientSegment":
         if self.key and self.key.startswith("system"):
@@ -70,10 +81,10 @@ ClientSegmentUpdate = ClientSegment.update_model()
 
 
 class ClientSegmentHead(BaseModel):
+    class Settings:
+        projection = {"id": "$_id", "key": 1, "title": 1, "locale": 1}
+
     id: PydanticObjectId
     key: str
     title: str | None = None
     locale: TranslationLocaleKey
-
-    class Settings:
-        projection = {"id": "$_id", "key": 1, "title": 1, "locale": 1}

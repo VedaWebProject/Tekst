@@ -237,6 +237,13 @@ export const systemSegmentFormRules: Record<string, FormItemRule[]> = {
       trigger: 'blur',
     },
   ],
+  locale: [
+    {
+      required: true,
+      message: () => $t('forms.rulesFeedback.isRequired', { x: $t('models.segment.locale') }),
+      trigger: 'blur',
+    },
+  ],
   html: [
     {
       required: true,
@@ -281,6 +288,13 @@ export const infoSegmentFormRules: Record<string, FormItemRule[]> = {
     {
       validator: (rule: FormItemRule, value: string) => !!value && !value.startsWith('system'),
       message: () => $t('models.segment.formRulesFeedback.systemPrefixReserved'),
+      trigger: 'blur',
+    },
+  ],
+  locale: [
+    {
+      required: true,
+      message: () => $t('forms.rulesFeedback.isRequired', { x: $t('models.segment.locale') }),
       trigger: 'blur',
     },
   ],

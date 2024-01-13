@@ -5,7 +5,7 @@ import type { RouteLocationNormalized } from 'vue-router';
 import { i18n, setI18nLocale, getAvaliableBrowserLocaleKey, localeProfiles } from '@/i18n';
 import type { LocaleProfile } from '@/i18n';
 import { useRoute } from 'vue-router';
-import type { TextRead } from '@/api';
+import type { TextRead, TranslationLocaleKey } from '@/api';
 import { $t, $te } from '@/i18n';
 import { usePlatformData } from '@/platformData';
 import { useAuthStore } from './auth';
@@ -37,16 +37,21 @@ export const useStateStore = defineStore('state', () => {
     localeProfiles.filter((lp) => !!pfData.value?.settings.availableLocales?.includes(lp.key))
   );
 
-  const translationLocaleOptions = computed(() =>
+  const translationLocaleOptions = computed<
+    {
+      label: string;
+      value: TranslationLocaleKey;
+    }[]
+  >(() =>
     [
       {
         label: `🌐 ${$t('models.locale.allLanguages')}`,
-        value: '*',
+        value: '*' as TranslationLocaleKey,
       },
     ].concat(
-      availableLocales.value.map((lp) => ({
-        label: `${lp.icon} ${lp.displayFull}`,
-        value: lp.key,
+      availableLocales.value.map((locale) => ({
+        label: `${locale.icon} ${locale.displayFull}`,
+        value: locale.key as TranslationLocaleKey,
       }))
     )
   );

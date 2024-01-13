@@ -12,9 +12,7 @@ export function usePlatformData() {
   );
 
   async function _cleanLoadedInfoSegments() {
-    loadedInfoSegments.value = loadedInfoSegments.value.filter(
-      (p) => !!pfData.value?.infoSegments.find((pi) => pi.id === p.id)
-    );
+    loadedInfoSegments.value = [];
   }
 
   async function loadPlatformData() {
