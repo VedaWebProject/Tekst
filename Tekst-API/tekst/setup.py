@@ -3,7 +3,7 @@ from tekst.config import TekstConfig
 from tekst.db import init_odm
 from tekst.dependencies import get_db, get_db_client
 from tekst.logging import log, setup_logging
-from tekst.resource_types import init_resource_types_mgr
+from tekst.resources import init_resource_types_mgr
 from tekst.sample_data import insert_sample_data
 
 

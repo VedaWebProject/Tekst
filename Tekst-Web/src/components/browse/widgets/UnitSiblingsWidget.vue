@@ -11,7 +11,9 @@ import unitComponents from '@/components/browse/units/mappings';
 import LocationLabel from '@/components/browse/LocationLabel.vue';
 import { useBrowseStore } from '@/stores';
 import GenericModal from '@/components/GenericModal.vue';
+import IconHeading from '@/components/typography/IconHeading.vue';
 
+import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
 import MergeOutlined from '@vicons/material/MergeOutlined';
 
 const props = defineProps<{
@@ -62,9 +64,9 @@ async function handleClick() {
     :icon="MergeOutlined"
     heading-level="2"
   >
-    <div v-if="resource.level > 0" class="parent-location">
+    <IconHeading v-if="resource.level > 0" level="3" :icon="MenuBookOutlined">
       <LocationLabel :max-level="resource.level - 1" />
-    </div>
+    </IconHeading>
 
     <n-spin v-if="loading" style="margin: 3rem 0 2rem 0; width: 100%" />
 

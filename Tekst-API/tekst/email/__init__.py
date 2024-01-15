@@ -37,18 +37,17 @@ def _get_email_templates(
 ) -> dict[str, str]:
     templates = dict()
     for template_type in ("subject", "html", "txt"):
-        path = str(_TEMPLATES_DIR / locale / f"{template_id.value}.{template_type}")
+        path = _TEMPLATES_DIR / locale / f"{template_id.value}.{template_type}"
         if not exists(path) and locale != "enUS":  # pragma: no cover
             log.warning(
                 "Missing email translation "
                 f"'{template_id.value}.{template_type}' for locale '{locale}'. "
                 "Falling back to 'enUS'."
             )
-            path = str(_TEMPLATES_DIR / "enUS" / f"{template_id.value}.{template_type}")
+            path = _TEMPLATES_DIR / "enUS" / f"{template_id.value}.{template_type}"
         if not exists(path):  # pragma: no cover
             raise FileNotFoundError(f"{path} does not exist.")
-        with open(path) as fp:
-            templates[template_type] = fp.read()
+        templates[template_type] = path.read_text(encoding="utf-8")
     return templates
 
 

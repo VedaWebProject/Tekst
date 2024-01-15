@@ -12,7 +12,7 @@ from tekst.models.settings import PlatformSettingsDocument
 from tekst.models.text import TextDocument
 from tekst.models.unit import UnitBaseDocument
 from tekst.models.user import UserDocument
-from tekst.resource_types import resource_types_mgr
+from tekst.resources import resource_types_mgr
 
 
 _cfg: TekstConfig = get_config()

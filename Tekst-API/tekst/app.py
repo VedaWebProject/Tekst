@@ -11,7 +11,7 @@ from tekst.db import init_odm
 from tekst.dependencies import get_db, get_db_client
 from tekst.logging import log, setup_logging
 from tekst.openapi import customize_openapi
-from tekst.resource_types import init_resource_types_mgr
+from tekst.resources import init_resource_types_mgr
 from tekst.routers import setup_routes
 from tekst.settings import get_settings
 

@@ -345,12 +345,13 @@ units:
   lblBtnCopyOriginal: Copy
   lblBtnCopyOriginalTip: Copy from original resource
   forComparison: 'For comparison: "{title}"'
-  lblBtnUploadUnits: Import
-  tipBtnUploadUnits: Import content via preprocessed import file
+  lblBtnImport: Import
+  tipBtnImport: Import content via preprocessed import file
   noUnit: There is no content for this location.
   btnAddUnit: Add content
   msgSaved: The content for this location has been saved.
   msgDeleted: The content for this location has been deleted.
+  msgImportSuccess: Imported new contents for {created} locations and modified existing contents for {updated} locations.
   confirmDelete: Are you sure you want to delete the content for this location?
   msgNoOwnContentTitle: No own content for this location!
   msgNoOwnContentBody: |

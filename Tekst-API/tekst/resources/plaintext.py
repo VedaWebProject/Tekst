@@ -5,7 +5,7 @@ from pydantic import Field, StringConstraints
 from tekst.models.resource import ResourceBase
 from tekst.models.resource_configs import DeepLLinksConfig, ResourceConfigBase
 from tekst.models.unit import UnitBase
-from tekst.resource_types import ResourceTypeABC
+from tekst.resources import ResourceTypeABC
 
 
 class Plaintext(ResourceTypeABC):

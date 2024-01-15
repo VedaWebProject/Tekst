@@ -111,7 +111,7 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
   margin-bottom: 0;
 }
 .unit-header {
-  margin-bottom: 0.5rem;
+  margin: 0.25rem 0 0.5rem 0;
   display: flex;
   align-items: center;
   flex-wrap: wrap;

@@ -333,7 +333,7 @@ async def test_fail_delete_level(
 
 
 @pytest.mark.anyio
-async def test_upload_structure(
+async def test_import_text_structure(
     test_client: AsyncClient,
     insert_sample_data,
     get_sample_data_path,

@@ -6,7 +6,7 @@ from tekst.models.platform import PlatformStats, TextStats
 from tekst.models.resource import ResourceBaseDocument
 from tekst.models.text import TextDocument
 from tekst.models.user import UserDocument, UserRead
-from tekst.resource_types import resource_types_mgr
+from tekst.resources import resource_types_mgr
 
 
 router = APIRouter(
@@ -20,7 +20,7 @@ router = APIRouter(
 
 
 @router.get("/stats", response_model=PlatformStats, status_code=status.HTTP_200_OK)
-async def get_stats(su: SuperuserDep) -> PlatformStats:
+async def get_statistics(su: SuperuserDep) -> PlatformStats:
     resource_type_names = resource_types_mgr.list_names()
     texts = await TextDocument.find_all().to_list()
     text_stats = []
@@ -28,14 +28,14 @@ async def get_stats(su: SuperuserDep) -> PlatformStats:
     for text in texts:
         nodes_count = await NodeDocument.find(NodeDocument.text_id == text.id).count()
         resource_types = {
-            lt_name: (
+            rt_name: (
                 await ResourceBaseDocument.find(
                     ResourceBaseDocument.text_id == text.id,
-                    ResourceBaseDocument.resource_type == lt_name,
+                    ResourceBaseDocument.resource_type == rt_name,
                     with_children=True,
                 ).count()
             )
-            for lt_name in resource_type_names
+            for rt_name in resource_type_names
         }
         resources_count = sum(resource_types.values())
         text_stats.append(

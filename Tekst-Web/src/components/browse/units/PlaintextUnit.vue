@@ -13,7 +13,14 @@ withDefaults(
 </script>
 
 <template>
-  <div v-for="unit in resource.units" :key="unit.id" style="white-space: pre-wrap">
-    {{ unit.text }}
-  </div>
+  <p v-for="unit in resource.units" :key="unit.id" style="white-space: pre-wrap">
+    <template v-if="unit.text">
+      <template v-if="!reduced">
+        {{ unit.text }}
+      </template>
+      <template v-else>
+        {{ unit.text.replace(/\n+/g, ' ') }}
+      </template>
+    </template>
+  </p>
 </template>

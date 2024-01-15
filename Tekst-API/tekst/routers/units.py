@@ -7,7 +7,7 @@ from fastapi import APIRouter, HTTPException, Path, Query, status
 from tekst.auth import OptionalUserDep, UserDep
 from tekst.models.resource import ResourceBaseDocument
 from tekst.models.unit import UnitBaseDocument
-from tekst.resource_types import (
+from tekst.resources import (
     AnyUnitCreateBody,
     AnyUnitDocument,
     AnyUnitReadBody,
@@ -120,12 +120,11 @@ async def update_unit(
             detail="Resource type doesn't match existing unit's resource type",
         )
     # check if the resource this unit belongs to is writable by user
-    resource_write_allowed = await ResourceBaseDocument.find_one(
+    if not await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == unit_doc.resource_id,
         await ResourceBaseDocument.access_conditions_write(user),
         with_children=True,
-    ).exists()
-    if not resource_write_allowed:
+    ).exists():
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail=f"No write access for units of resource {unit_doc.resource_id}",

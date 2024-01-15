@@ -118,7 +118,7 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
     @field_validator("resource_type", mode="after")
     @classmethod
     def validate_resource_type_name(cls, v):
-        from tekst.resource_types import resource_types_mgr
+        from tekst.resources import resource_types_mgr
 
         resource_type_names = resource_types_mgr.list_names()
         if v.lower() not in resource_type_names:

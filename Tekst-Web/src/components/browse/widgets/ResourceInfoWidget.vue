@@ -19,6 +19,7 @@ import ChatBubbleOutlineOutlined from '@vicons/material/ChatBubbleOutlineOutline
 import FormatQuoteFilled from '@vicons/material/FormatQuoteFilled';
 import PercentOutlined from '@vicons/material/PercentOutlined';
 import LabelOutlined from '@vicons/material/LabelOutlined';
+import LayersFilled from '@vicons/material/LayersFilled';
 
 const props = defineProps<{
   resource: AnyResourceRead;
@@ -49,7 +50,7 @@ watch(showInfoModal, async (after) => {
     @click="showInfoModal = true"
   />
 
-  <GenericModal v-model:show="showInfoModal" :title="resource.title" :icon="InfoOutlined">
+  <GenericModal v-model:show="showInfoModal" :title="resource.title" :icon="LayersFilled">
     <p v-if="resource.description?.length">
       <TranslationDisplay :value="resource.description" />
     </p>
@@ -102,16 +103,18 @@ watch(showInfoModal, async (after) => {
             })
           }}
         </span>
-        <span style="flex: 2"></span>
-        <n-button
-          quaternary
-          type="primary"
-          size="small"
-          :focusable="false"
-          @click="showCoverageDetailsModal = true"
-        >
-          {{ $t('general.details') }}
-        </n-button>
+        <template v-if="auth.loggedIn">
+          <span style="flex: 2"></span>
+          <n-button
+            quaternary
+            type="primary"
+            size="small"
+            :focusable="false"
+            @click="showCoverageDetailsModal = true"
+          >
+            {{ $t('general.details') }}
+          </n-button>
+        </template>
       </div>
       <n-progress
         type="line"
@@ -144,6 +147,7 @@ watch(showInfoModal, async (after) => {
   </GenericModal>
 
   <CoverageDetailsWidget
+    v-if="auth.loggedIn"
     v-model:show="showCoverageDetailsModal"
     :resource="resource"
     :coverage-basic="coverage"

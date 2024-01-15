@@ -294,13 +294,10 @@ async function handleUploadStructureClick() {
       if (response.ok) {
         message.success($t('admin.text.nodes.upload.msgSuccess'));
       } else {
-        const detail = (await response.json()).detail;
-        const err = new Error(detail);
-        throw err;
+        message.error($t('admin.text.nodes.upload.msgError'), await response.json());
       }
     } catch (error) {
-      const err: Error = error as Error;
-      message.error($t('admin.text.nodes.upload.msgError', err.message));
+      // failed request handled already, nothing to do
     } finally {
       input.remove();
       loadingUpload.value = false;

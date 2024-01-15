@@ -66,7 +66,7 @@ def test_model_field_casing():
 
 def test_resource_description_validator():
     # desc with arbitrary whitespaces
-    from tekst.resource_types.plaintext import PlaintextResource
+    from tekst.resources.plaintext import PlaintextResource
 
     resource = PlaintextResource(
         title="foo",

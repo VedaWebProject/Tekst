@@ -5,22 +5,35 @@ from typing import Annotated
 
 from beanie import PydanticObjectId
 from beanie.operators import In
-from fastapi import APIRouter, Body, HTTPException, Path, Query, status
+from bson.errors import InvalidId
+from fastapi import (
+    APIRouter,
+    Body,
+    File,
+    HTTPException,
+    Path,
+    Query,
+    UploadFile,
+    status,
+)
 from fastapi.responses import FileResponse
+from pydantic import ValidationError
 from starlette.background import BackgroundTask
 
 from tekst.auth import OptionalUserDep, SuperuserDep, UserDep
 from tekst.logging import log
+from tekst.models.exchange import ResourceDataImportResponse, ResourceImportData
 from tekst.models.node import NodeDocument
 from tekst.models.resource import ResourceBaseDocument
 from tekst.models.text import TextDocument
 from tekst.models.unit import UnitBaseDocument
 from tekst.models.user import UserDocument, UserRead, UserReadPublic
-from tekst.resource_types import (
+from tekst.resources import (
     AnyResourceCreateBody,
     AnyResourceRead,
     AnyResourceReadBody,
     AnyResourceUpdateBody,
+    get_resource_template_readme,
     resource_types_mgr,
 )
 
@@ -274,81 +287,6 @@ async def find_resources(
     ]
 
 
-@router.get("/{id}/template", status_code=status.HTTP_200_OK)
-async def get_resource_template(
-    user: UserDep,
-    resource_id: Annotated[PydanticObjectId, Path(alias="id")],
-) -> dict:
-    resource_doc = await ResourceBaseDocument.get(
-        resource_id,
-        with_children=True,
-    )
-    if not resource_doc:
-        raise HTTPException(
-            status.HTTP_404_NOT_FOUND,
-            detail=f"Resource with ID {resource_id} doesn't exist",
-        )
-    if not await ResourceBaseDocument.find_one(
-        ResourceBaseDocument.id == resource_id,
-        await ResourceBaseDocument.access_conditions_write(user),
-        with_children=True,
-    ).exists():
-        raise HTTPException(
-            status.HTTP_403_FORBIDDEN,
-            detail="You have no permission to access this resource",
-        )
-    text_doc = await TextDocument.get(resource_doc.text_id)
-
-    # import unit type for the requested resource
-    template = resource_types_mgr.get(
-        resource_doc.resource_type
-    ).prepare_import_template()
-    # apply data from resource instance
-    template["resourceId"] = str(resource_doc.id)
-    template["_title"] = resource_doc.title
-    template["__READ_ME__"] = (
-        "Properties prefixed with an underscore are purely for informational "
-        "purposes and can be omitted in the actual import file. '_unitSchema' "
-        "gives you a schema and a short description of the properties you must/can "
-        "add to each data unit in 'units'. "
-        "Every unit MUST keep the exact 'nodeId' property from this template! "
-        "To leave out a data unit completely, just remove it from 'units'."
-    )
-
-    # get IDs of all nodes on this structure level as a base for unit templates
-    nodes = (
-        await NodeDocument.find(
-            NodeDocument.text_id == resource_doc.text_id,
-            NodeDocument.level == resource_doc.level,
-        )
-        .sort(+NodeDocument.position)
-        .to_list()
-    )
-
-    # fill in unit templates with IDs
-    template["units"] = [
-        dict(nodeId=str(node.id), _position=node.position, _nodeLabel=node.label)
-        for node in nodes
-    ]
-
-    # create temporary file and stream it as a file response
-    tempfile = NamedTemporaryFile(mode="w")
-    tempfile.write(json.dumps(template, indent=2, sort_keys=True))
-    tempfile.flush()
-
-    # prepare headers
-    filename = f"{text_doc.slug}_resource_{resource_doc.id}" "_template.json"
-    headers = {"Content-Disposition": f'attachment; filename="{filename}"'}
-
-    log.debug(f"Serving resource template as temporary file {tempfile.name}")
-    return FileResponse(
-        path=tempfile.name,
-        headers=headers,
-        media_type="application/json",
-        background=BackgroundTask(tempfile.close),
-    )
-
-
 @router.get("/{id}", status_code=status.HTTP_200_OK, response_model=AnyResourceReadBody)
 async def get_resource(
     user: OptionalUserDep,
@@ -572,3 +510,243 @@ async def unpublish_resource(
         }
     )
     return await preprocess_resource_read(resource_doc, user)
+
+
+@router.get("/{id}/template", status_code=status.HTTP_200_OK)
+async def get_resource_template(
+    user: UserDep,
+    resource_id: Annotated[PydanticObjectId, Path(alias="id")],
+) -> dict:
+    resource_doc = await ResourceBaseDocument.get(
+        resource_id,
+        with_children=True,
+    )
+    if not resource_doc:
+        raise HTTPException(
+            status.HTTP_404_NOT_FOUND,
+            detail=f"Resource with ID {resource_id} doesn't exist",
+        )
+    if not await ResourceBaseDocument.find_one(
+        ResourceBaseDocument.id == resource_id,
+        await ResourceBaseDocument.access_conditions_write(user),
+        with_children=True,
+    ).exists():
+        raise HTTPException(
+            status.HTTP_403_FORBIDDEN,
+            detail="You have no permission to access this resource",
+        )
+    text_doc = await TextDocument.get(resource_doc.text_id)
+
+    # import unit type for the requested resource
+    template = resource_types_mgr.get(
+        resource_doc.resource_type
+    ).prepare_import_template()
+    # apply data from resource instance
+    template["resourceId"] = str(resource_doc.id)
+    template["_resourceTitle"] = resource_doc.title
+    # add resource template README text
+    template["__README"] = get_resource_template_readme()
+
+    # get parent nodes of all nodes on the resource's level
+    parent_nodes = (
+        [None]
+        if resource_doc.level == 0
+        else (
+            await NodeDocument.find(
+                NodeDocument.text_id == resource_doc.text_id,
+                NodeDocument.level == resource_doc.level - 1,
+            )
+            .sort(+NodeDocument.position)
+            .to_list()
+        )
+    )
+
+    # fill in unit templates with IDs and some informational fields
+    template["units"] = []
+    for parent_node in parent_nodes:
+        # get all child nodes (on this structure level) as a base for unit templates
+        nodes = (
+            await NodeDocument.find(
+                NodeDocument.text_id == resource_doc.text_id,
+                NodeDocument.parent_id == parent_node.id,
+            )
+            .sort(+NodeDocument.position)
+            .to_list()
+        )
+        template["units"].extend(
+            [
+                dict(
+                    nodeId=str(node.id),
+                    _position=node.position,
+                    _location=node.label,
+                    _parentLocation=parent_node.label,
+                )
+                for node in nodes
+            ]
+        )
+
+    # create temporary file and stream it as a file response
+    tempfile = NamedTemporaryFile(mode="w")
+    tempfile.write(json.dumps(template, indent=2, sort_keys=True))
+    tempfile.flush()
+
+    # prepare headers
+    filename = f"{text_doc.slug}_resource_{resource_doc.id}" "_template.json"
+    headers = {"Content-Disposition": f'attachment; filename="{filename}"'}
+
+    log.debug(f"Serving resource template as temporary file {tempfile.name}")
+    return FileResponse(
+        path=tempfile.name,
+        headers=headers,
+        media_type="application/json",
+        background=BackgroundTask(tempfile.close),
+    )
+
+
+@router.post("/{id}/import", status_code=status.HTTP_201_CREATED)
+async def import_resource_data(
+    user: UserDep,
+    resource_id: Annotated[PydanticObjectId, Path(alias="id")],
+    file: Annotated[
+        UploadFile, File(description="JSON file containing the resource data")
+    ],
+) -> ResourceDataImportResponse:
+    # test upload file MIME type
+    if not file.content_type.lower() == "application/json":
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid file MIME type (must be 'application/json')",
+        )
+
+    # check if resource exists
+    if not await ResourceBaseDocument.find_one(
+        ResourceBaseDocument.id == resource_id, with_children=True
+    ).exists():
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Could not find resource with ID {resource_id}",
+        )
+
+    # check if user has permission to write to this resource, if so, fetch from DB
+    resource = await ResourceBaseDocument.find_one(
+        ResourceBaseDocument.id == resource_id,
+        await ResourceBaseDocument.access_conditions_write(user),
+        with_children=True,
+    )
+    if not resource:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You have no permission to write to this resource",
+        )
+
+    # validate import file format
+    try:
+        structure_def = ResourceImportData.model_validate_json(await file.read())
+    except ValueError as ve:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=f"Import data is not valid JSON ({str(ve)})",
+        )
+
+    # check if resource_id matches the one in the import file
+    if str(resource_id) != str(structure_def.resource_id):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Resource ID in import file does not match resource ID in URL",
+        )
+
+    # find units that already exist and have to be updated instead of created
+    try:
+        existing_units_dict = {
+            str(unit_doc.node_id): unit_doc
+            for unit_doc in await UnitBaseDocument.find(
+                UnitBaseDocument.resource_id == resource.id,
+                In(
+                    UnitBaseDocument.node_id,
+                    [
+                        PydanticObjectId(unit_data.get("nodeId", ""))
+                        for unit_data in structure_def.units
+                    ],
+                ),
+                with_children=True,
+            ).to_list()
+        }
+    except InvalidId as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=f"Invalid nodeId: {str(e)}",
+        )
+
+    # create lists of validated unit updates/creates depending on whether they exist
+    units = {
+        "updates": [],
+        "creates": [],
+    }
+    update_model = (
+        resource_types_mgr.get(resource.resource_type).unit_model().update_model()
+    )
+    create_model = (
+        resource_types_mgr.get(resource.resource_type).unit_model().create_model()
+    )
+    for unit_data in structure_def.units:
+        is_update = str(unit_data.get("nodeId", "")) in existing_units_dict
+        try:
+            units["updates" if is_update else "creates"].append(
+                (update_model if is_update else create_model)(
+                    resource_id=resource.id,
+                    resource_type=resource.resource_type,
+                    **unit_data,
+                )
+            )
+        except ValidationError as ve:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                detail=f"Invalid unit data: {str(ve)}",
+            )
+
+    # a sacrifice for the GC
+    structure_def = None
+
+    # apply updates to existing units
+    updated_count = 0
+    for update in units["updates"]:
+        unit_doc = existing_units_dict.get(str(update.node_id))
+        if unit_doc:
+            await unit_doc.apply_updates(
+                update, exclude={"id", "resource_id", "node_id", "resource_type"}
+            )
+            updated_count += 1
+        else:
+            log.error(f"Could not find unit with node ID {update.node_id} to update")
+
+    # create new units
+    unit_document_model = (
+        resource_types_mgr.get(resource.resource_type).unit_model().document_model()
+    )
+    # get node IDs from target level to check if the ones in new units are valid
+    node_ids = [
+        n.id
+        for n in await NodeDocument.find(
+            NodeDocument.text_id == resource.text_id,
+            NodeDocument.level == resource.level,
+        ).to_list()
+    ]
+    # filter out units that reference non-existent node IDs
+    units["creates"] = [u for u in units["creates"] if u.node_id in node_ids]
+    # insert new units
+    if len(units["creates"]):
+        insert_many_result = await UnitBaseDocument.insert_many(
+            [unit_document_model.model_from(c) for c in units["creates"]]
+        )
+        if insert_many_result.acknowledged:
+            created_count = len(insert_many_result.inserted_ids)
+        else:
+            created_count = 0
+            log.error(
+                "Could not insert all new units. "
+                f"Inserted: {len(insert_many_result.inserted_ids)}"
+            )
+    else:
+        created_count = 0
+
+    return ResourceDataImportResponse(updated=updated_count, created=created_count)

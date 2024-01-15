@@ -22,8 +22,8 @@
         "tags": [
           "admin"
         ],
-        "summary": "Get stats",
-        "operationId": "getStats",
+        "summary": "Get statistics",
+        "operationId": "getStatistics",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -1867,61 +1867,6 @@
         }
       }
     },
-    "/resources/{id}/template": {
-      "get": {
-        "tags": [
-          "resources"
-        ],
-        "summary": "Get resource template",
-        "operationId": "getResourceTemplate",
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "title": "Response Get Resource Template Resources  Id  Template Get"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/resources/{id}/transfer": {
       "post": {
         "tags": [
@@ -2279,6 +2224,125 @@
         }
       }
     },
+    "/resources/{id}/template": {
+      "get": {
+        "tags": [
+          "resources"
+        ],
+        "summary": "Get resource template",
+        "operationId": "getResourceTemplate",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Response Get Resource Template Resources  Id  Template Get"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/resources/{id}/import": {
+      "post": {
+        "tags": [
+          "resources"
+        ],
+        "summary": "Import resource data",
+        "operationId": "importResourceData",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_import_resource_data_resources__id__import_post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResourceDataImportResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/texts": {
       "get": {
         "tags": [
@@ -2445,9 +2509,9 @@
         "tags": [
           "texts"
         ],
-        "summary": "Upload structure definition",
+        "summary": "Import text structure",
         "description": "Upload the structure definition for a text to apply as a structure of nodes",
-        "operationId": "uploadStructureDefinition",
+        "operationId": "importTextStructure",
         "security": [
           {
             "APIKeyCookie": []
@@ -2473,7 +2537,7 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/Body_upload_structure_definition_texts__id__structure_post"
+                "$ref": "#/components/schemas/Body_import_text_structure_texts__id__structure_post"
               }
             }
           }
@@ -4153,6 +4217,36 @@
         ],
         "title": "Body_auth_jwt_login_auth_jwt_login_post"
       },
+      "Body_import_resource_data_resources__id__import_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "title": "File",
+            "description": "JSON file containing the resource data"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_import_resource_data_resources__id__import_post"
+      },
+      "Body_import_text_structure_texts__id__structure_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "title": "File",
+            "description": "JSON file containing the text's structure"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_import_text_structure_texts__id__structure_post"
+      },
       "Body_reset_forgot_password_auth_forgot_password_post": {
         "properties": {
           "email": {
@@ -4184,21 +4278,6 @@
           "password"
         ],
         "title": "Body_reset_reset_password_auth_reset_password_post"
-      },
-      "Body_upload_structure_definition_texts__id__structure_post": {
-        "properties": {
-          "file": {
-            "type": "string",
-            "format": "binary",
-            "title": "File",
-            "description": "JSON file containing the text's structure"
-          }
-        },
-        "type": "object",
-        "required": [
-          "file"
-        ],
-        "title": "Body_upload_structure_definition_texts__id__structure_post"
       },
       "Body_verify_request_token_auth_request_verify_token_post": {
         "properties": {
@@ -5384,21 +5463,14 @@
           },
           "units": {
             "items": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "$ref": "#/components/schemas/DebugUnitRead"
                 },
                 {
                   "$ref": "#/components/schemas/PlaintextUnitRead"
                 }
-              ],
-              "discriminator": {
-                "propertyName": "resourceType",
-                "mapping": {
-                  "debug": "#/components/schemas/DebugUnitRead",
-                  "plaintext": "#/components/schemas/PlaintextUnitRead"
-                }
-              }
+              ]
             },
             "type": "array",
             "title": "Units",
@@ -6994,6 +7066,24 @@
           "total"
         ],
         "title": "ResourceCoverage"
+      },
+      "ResourceDataImportResponse": {
+        "properties": {
+          "updated": {
+            "type": "integer",
+            "title": "Updated"
+          },
+          "created": {
+            "type": "integer",
+            "title": "Created"
+          }
+        },
+        "type": "object",
+        "required": [
+          "updated",
+          "created"
+        ],
+        "title": "ResourceDataImportResponse"
       },
       "ResourceDescriptionTranslation": {
         "properties": {

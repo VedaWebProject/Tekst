@@ -5,8 +5,8 @@
 
 export interface paths {
   '/admin/stats': {
-    /** Get stats */
-    get: operations['getStats'];
+    /** Get statistics */
+    get: operations['getStatistics'];
   };
   '/admin/users': {
     /** Get users */
@@ -155,10 +155,6 @@ export interface paths {
     /** Update resource */
     patch: operations['updateResource'];
   };
-  '/resources/{id}/template': {
-    /** Get resource template */
-    get: operations['getResourceTemplate'];
-  };
   '/resources/{id}/transfer': {
     /** Transfer resource */
     post: operations['transferResource'];
@@ -179,6 +175,14 @@ export interface paths {
     /** Unpublish resource */
     post: operations['unpublishResource'];
   };
+  '/resources/{id}/template': {
+    /** Get resource template */
+    get: operations['getResourceTemplate'];
+  };
+  '/resources/{id}/import': {
+    /** Import resource data */
+    post: operations['importResourceData'];
+  };
   '/texts': {
     /** Get all texts */
     get: operations['getAllTexts'];
@@ -195,10 +199,10 @@ export interface paths {
   };
   '/texts/{id}/structure': {
     /**
-     * Upload structure definition
+     * Import text structure
      * @description Upload the structure definition for a text to apply as a structure of nodes
      */
-    post: operations['uploadStructureDefinition'];
+    post: operations['importTextStructure'];
   };
   '/texts/{id}/level/{index}': {
     /** Insert level */
@@ -339,6 +343,24 @@ export interface components {
       /** Client Secret */
       client_secret?: string | null;
     };
+    /** Body_import_resource_data_resources__id__import_post */
+    Body_import_resource_data_resources__id__import_post: {
+      /**
+       * File
+       * Format: binary
+       * @description JSON file containing the resource data
+       */
+      file: string;
+    };
+    /** Body_import_text_structure_texts__id__structure_post */
+    Body_import_text_structure_texts__id__structure_post: {
+      /**
+       * File
+       * Format: binary
+       * @description JSON file containing the text's structure
+       */
+      file: string;
+    };
     /** Body_reset_forgot_password_auth_forgot_password_post */
     Body_reset_forgot_password_auth_forgot_password_post: {
       /**
@@ -353,15 +375,6 @@ export interface components {
       token: string;
       /** Password */
       password: string;
-    };
-    /** Body_upload_structure_definition_texts__id__structure_post */
-    Body_upload_structure_definition_texts__id__structure_post: {
-      /**
-       * File
-       * Format: binary
-       * @description JSON file containing the text's structure
-       */
-      file: string;
     };
     /** Body_verify_request_token_auth_request_verify_token_post */
     Body_verify_request_token_auth_request_verify_token_post: {
@@ -1836,6 +1849,13 @@ export interface components {
       /** Total */
       total: number;
     };
+    /** ResourceDataImportResponse */
+    ResourceDataImportResponse: {
+      /** Updated */
+      updated: number;
+      /** Created */
+      created: number;
+    };
     /** ResourceDescriptionTranslation */
     ResourceDescriptionTranslation: {
       locale: components['schemas']['TranslationLocaleKey'];
@@ -2198,8 +2218,8 @@ export type $defs = Record<string, never>;
 export type external = Record<string, never>;
 
 export interface operations {
-  /** Get stats */
-  getStats: {
+  /** Get statistics */
+  getStatistics: {
     responses: {
       /** @description Successful Response */
       200: {
@@ -3039,32 +3059,6 @@ export interface operations {
       };
     };
   };
-  /** Get resource template */
-  getResourceTemplate: {
-    parameters: {
-      path: {
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json': Record<string, never>;
-        };
-      };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
   /** Transfer resource */
   transferResource: {
     parameters: {
@@ -3210,6 +3204,63 @@ export interface operations {
       };
     };
   };
+  /** Get resource template */
+  getResourceTemplate: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': Record<string, never>;
+        };
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Import resource data */
+  importResourceData: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        'multipart/form-data': components['schemas']['Body_import_resource_data_resources__id__import_post'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      201: {
+        content: {
+          'application/json': components['schemas']['ResourceDataImportResponse'];
+        };
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
   /** Get all texts */
   getAllTexts: {
     parameters: {
@@ -3293,10 +3344,10 @@ export interface operations {
     };
   };
   /**
-   * Upload structure definition
+   * Import text structure
    * @description Upload the structure definition for a text to apply as a structure of nodes
    */
-  uploadStructureDefinition: {
+  importTextStructure: {
     parameters: {
       path: {
         id: string;
@@ -3304,7 +3355,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        'multipart/form-data': components['schemas']['Body_upload_structure_definition_texts__id__structure_post'];
+        'multipart/form-data': components['schemas']['Body_import_text_structure_texts__id__structure_post'];
       };
     };
     responses: {

@@ -355,12 +355,13 @@ units:
   lblBtnCopyOriginal: Kopieren
   lblBtnCopyOriginalTip: Aus Original-Ressource kopieren
   forComparison: 'Zum Vergleich: "{title}"'
-  lblBtnUploadUnits: Importieren
-  tipBtnUploadUnits: Inhalte über vorverarbeitete Datei importieren
+  lblBtnImport: Importieren
+  tipBtnImport: Inhalte über vorverarbeitete Datei importieren
   noUnit: Für diese Fundstelle liegen keine Inhalte vor.
   btnAddUnit: Inhalt hinzufügen
   msgSaved: Der Inhalt für diese Fundstelle wurde gespeichert.
   msgDeleted: Der Inhalt für diese Fundstelle wurde gelöscht.
+  msgImportSuccess: Es wurden neue Inhalte für {created} Fundstellen importiert und bestehende Inhalte für {updated} Fundstellen verändert.
   confirmDelete: Sind Sie sicher, dass Sie den Inhalt für diese Fundstelle löschen möchten?
   msgNoOwnContentTitle: Kein eigner Inhalt für diese Fundstelle!
   msgNoOwnContentBody: |

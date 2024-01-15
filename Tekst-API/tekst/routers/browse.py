@@ -4,7 +4,7 @@ from beanie import PydanticObjectId
 from beanie.operators import In, NotIn
 from fastapi import APIRouter, HTTPException, Path, Query, status
 
-from tekst.auth import OptionalUserDep
+from tekst.auth import OptionalUserDep, UserDep
 from tekst.models.exchange import LocationData
 from tekst.models.node import (
     NodeDocument,
@@ -16,7 +16,7 @@ from tekst.models.resource import (
     ResourceNodeCoverage,
 )
 from tekst.models.unit import UnitBaseDocument
-from tekst.resource_types import AnyUnitReadBody
+from tekst.resources import AnyUnitReadBody
 
 
 # initialize unit router
@@ -274,7 +274,7 @@ async def get_resource_coverage_data(
     response_model=list[list[ResourceNodeCoverage]],
 )
 async def get_detailed_resource_coverage_data(
-    resource_id: Annotated[PydanticObjectId, Path(alias="id")], user: OptionalUserDep
+    user: UserDep, resource_id: Annotated[PydanticObjectId, Path(alias="id")]
 ) -> list[list[dict]]:
     resource_doc = await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == resource_id,

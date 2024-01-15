@@ -3,6 +3,9 @@ import inspect
 import pkgutil
 
 from abc import ABC, abstractmethod
+from functools import lru_cache
+from os.path import realpath
+from pathlib import Path
 from typing import Annotated, Union
 
 from fastapi import Body
@@ -68,24 +71,13 @@ class ResourceTypeABC(ABC):
         schema = cls.unit_model().create_model().schema()
         template_fields = cls.template_fields().union({"comment"})
         required = schema.get("required", [])
-        include_resource_props = (
-            "description",
-            "default",
-            "anyOf",
-            "oneOf",
-            "type",
-        )
         template = {
-            "_title": "Title of this resource",  # will be overridden
             "_unitSchema": {},  # will be populated in the next step
-            "units": [],  # will be populated on template request
         }
         # generate unit schema for the template
         for prop, val in schema.get("properties", {}).items():
             if prop in template_fields:
-                prop_schema = {
-                    k: v for k, v in val.items() if k in include_resource_props
-                }
+                prop_schema = {k: v for k, v in val.items()}
                 prop_schema["required"] = prop in required
                 template["_unitSchema"][prop] = prop_schema
         return template
@@ -252,3 +244,16 @@ AnyUnitDocument = Union[  # noqa: UP007
         ]
     )
 ]
+
+
+@lru_cache
+def get_resource_template_readme() -> dict[str, str]:
+    _template_readme_lines = (
+        (Path(realpath(__file__)).parent / "import_template_readme.txt")
+        .read_text(encoding="utf-8")
+        .splitlines()
+    )
+    return {
+        str(i + 1): _template_readme_lines[i]
+        for i in range(len(_template_readme_lines))
+    }

@@ -21,7 +21,7 @@ from tekst.auth import OptionalUserDep, SuperuserDep
 from tekst.dependencies import get_temp_dir
 from tekst.logging import log
 from tekst.models.common import Translations
-from tekst.models.exchange import NodeDefinition, TextStructureDefinition
+from tekst.models.exchange import NodeDefinition, TextStructureImportData
 from tekst.models.node import NodeDocument
 from tekst.models.resource import ResourceBaseDocument
 from tekst.models.text import (
@@ -116,7 +116,7 @@ async def download_structure_template(
             detail=f"Could not find text with ID {text_id}",
         )
     # create template for text
-    structure_def: TextStructureDefinition = TextStructureDefinition()
+    structure_def: TextStructureImportData = TextStructureImportData()
     curr_node_def: NodeDefinition | None = None
     dummy_node = NodeDefinition(
         label="Label for the first node on level '{}' (required!)",
@@ -132,7 +132,7 @@ async def download_structure_template(
         curr_node_def = node
     # validate template
     try:
-        TextStructureDefinition.model_validate(structure_def)
+        TextStructureImportData.model_validate(structure_def)
     except Exception:  # pragma: no cover
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -158,7 +158,7 @@ async def download_structure_template(
 
 
 @router.post("/{id}/structure", status_code=status.HTTP_201_CREATED)
-async def upload_structure_definition(
+async def import_text_structure(
     su: SuperuserDep,
     text_id: Annotated[PydanticObjectId, Path(alias="id")],
     file: Annotated[
@@ -189,7 +189,7 @@ async def upload_structure_definition(
         )
     # validate structure definition
     try:
-        structure_def = TextStructureDefinition.model_validate_json(await file.read())
+        structure_def = TextStructureImportData.model_validate_json(await file.read())
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,

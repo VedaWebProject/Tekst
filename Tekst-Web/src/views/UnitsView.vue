@@ -53,6 +53,7 @@ import InsertDriveFileOutlined from '@vicons/material/InsertDriveFileOutlined';
 import CompareArrowsOutlined from '@vicons/material/CompareArrowsOutlined';
 import AltRouteOutlined from '@vicons/material/AltRouteOutlined';
 import LayersFilled from '@vicons/material/LayersFilled';
+import LocationLabel from '@/components/browse/LocationLabel.vue';
 
 type UnitFormModel = AnyUnitCreate & { id: string };
 
@@ -66,7 +67,6 @@ const { ArrowLeft, ArrowRight } = useMagicKeys();
 const dialog = useDialog();
 
 const showJumpToModal = ref(false);
-const loading = ref(false);
 const formRef = ref<FormInst | null>(null);
 const resource = ref<AnyResourceRead>();
 const originalResourceTitle = computed(
@@ -75,9 +75,6 @@ const originalResourceTitle = computed(
 const position = computed<number>(() => Number.parseInt(route.params.pos.toString()));
 const nodePath = ref<NodeRead[]>();
 const node = computed<NodeRead | undefined>(() => nodePath.value?.[resource.value?.level ?? -1]);
-const nodeParent = computed<NodeRead | undefined>(
-  () => nodePath.value?.[(resource.value?.level ?? -1) - 1]
-);
 const initialUnitModel = ref<UnitFormModel>();
 const unitModel = ref<UnitFormModel | undefined>(initialUnitModel.value);
 const { changed, reset, getChanges } = useModelChanges(unitModel);
@@ -96,6 +93,21 @@ const compareResourceOptions = computed(() =>
     }))
 );
 
+const loadingDelete = ref(false);
+const loadingTemplate = ref(false);
+const loadingImport = ref(false);
+const loadingSave = ref(false);
+const loadingData = ref(false);
+const loading = computed(
+  () =>
+    resources.loading ||
+    loadingDelete.value ||
+    loadingTemplate.value ||
+    loadingImport.value ||
+    loadingSave.value ||
+    loadingData.value
+);
+
 // go to resource overview if text changes
 watch(
   () => state.text,
@@ -108,7 +120,7 @@ async function loadLocationData() {
   if (!resource.value || !Number.isInteger(position.value)) {
     return;
   }
-  loading.value = true;
+  loadingData.value = true;
   const { data: locationData, error } = await GET('/browse/location-data', {
     params: {
       query: {
@@ -148,7 +160,7 @@ async function loadLocationData() {
       },
     });
   }
-  loading.value = false;
+  loadingData.value = false;
 }
 
 // watch for position change and resources data updates
@@ -180,7 +192,7 @@ function resetForm() {
 }
 
 async function handleSaveClick() {
-  loading.value = true;
+  loadingSave.value = true;
   formRef.value
     ?.validate(async (validationError) => {
       if (validationError || !unitModel.value) return;
@@ -211,14 +223,14 @@ async function handleSaveClick() {
           message.error($t('errors.unexpected'), error);
         }
       }
-      loading.value = false;
+      loadingSave.value = false;
     })
     .catch(() => {
       message.error($t('errors.followFormRules'));
-      loading.value = false;
+      loadingSave.value = false;
     })
     .finally(() => {
-      loading.value = false;
+      loadingSave.value = false;
     });
 }
 
@@ -234,13 +246,56 @@ async function handleDownloadTemplateClick() {
   message.info($t('general.downloadStarted'));
 }
 
-async function handleUploadUnitsClick() {
-  // TODO: Warn for what happens and get confirmation!!!
+async function handleImportClick() {
+  // unfortunately, this file upload doesn't work with our generated API client :(
+  const path = `/resources/${resource.value?.id || ''}/import`;
+  const endpointUrl = getFullUrl(path);
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'application/json,.json';
+
+  input.onchange = async () => {
+    if (!input.files) return;
+    loadingImport.value = true;
+    const formData = new FormData();
+    formData.append('file', input.files[0]);
+    try {
+      const response = await fetch(endpointUrl, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+        },
+        body: formData,
+      });
+      if (response.ok) {
+        const resp = await response.json();
+        message.success(
+          $t('units.msgImportSuccess', { updated: resp.updated, created: resp.created }),
+          undefined,
+          10
+        );
+      } else {
+        message.error($t('errors.unexpected'), await response.json());
+      }
+    } catch {
+      // failed request handled already, nothing to do
+    } finally {
+      input.remove();
+      loadingImport.value = false;
+      loadLocationData();
+    }
+  };
+
+  input.onclose = () => {
+    input.remove();
+  };
+
+  input.click();
 }
 
 async function deleteUnit() {
   if (!unitModel.value) return;
-  loading.value = true;
+  loadingDelete.value = true;
   const { error } = await DELETE('/units/{id}', { params: { path: { id: unitModel.value.id } } });
   if (!error) {
     resources.resetCoverage(resource.value?.id);
@@ -249,12 +304,11 @@ async function deleteUnit() {
   } else {
     message.error($t('errors.unexpected'));
   }
-  loading.value = false;
+  loadingDelete.value = false;
 }
 
 async function handleDeleteUnitClick() {
   if (!unitModel.value) return;
-  loading.value = true;
   dialog.warning({
     title: $t('general.warning'),
     content: $t('units.confirmDelete'),
@@ -265,9 +319,6 @@ async function handleDeleteUnitClick() {
     autoFocus: false,
     closable: false,
     onPositiveClick: deleteUnit,
-    onAfterLeave: () => {
-      loading.value = false;
-    },
   });
 }
 
@@ -389,6 +440,7 @@ whenever(ArrowLeft, () => {
       secondary
       :title="$t('units.tipBtnDownloadTemplate')"
       :disabled="loading"
+      :loading="loadingTemplate"
       :focusable="false"
       @click="handleDownloadTemplateClick()"
     >
@@ -399,26 +451,23 @@ whenever(ArrowLeft, () => {
     </n-button>
     <n-button
       secondary
-      :title="$t('units.tipBtnUploadUnits')"
+      :title="$t('units.tipBtnImport')"
       :disabled="loading"
+      :loading="loadingImport"
       :focusable="false"
-      @click="handleUploadUnitsClick()"
+      @click="handleImportClick()"
     >
       <template #icon>
         <FileUploadSharp />
       </template>
-      {{ $t('units.lblBtnUploadUnits') }}
+      {{ $t('units.lblBtnImport') }}
     </n-button>
   </ButtonShelf>
 
-  <template v-if="resource && node">
+  <template v-if="resource && nodePath">
     <div class="content-block">
       <IconHeading level="3" :icon="MenuBookOutlined">
-        {{ state.textLevelLabels[node.level] }}: {{ node.label }}
-        <template v-if="nodeParent">
-          ({{ $t('general.in') }} {{ state.textLevelLabels[nodeParent.level] }}:
-          {{ nodeParent.label }})
-        </template>
+        <LocationLabel :node-path="nodePath" />
       </IconHeading>
 
       <n-alert
@@ -486,6 +535,7 @@ whenever(ArrowLeft, () => {
               secondary
               type="error"
               :disabled="loading || !unitModel.id || unitModel.resourceId !== resource.id"
+              :loading="loadingDelete"
               @click="handleDeleteUnitClick"
             >
               {{ $t('general.deleteAction') }}
@@ -503,7 +553,13 @@ whenever(ArrowLeft, () => {
           >
             {{ $t('units.lblBtnCopyOriginal') }}
           </n-button>
-          <n-button v-else type="primary" :disabled="loading || !changed" @click="handleSaveClick">
+          <n-button
+            v-else
+            type="primary"
+            :disabled="loading || !changed"
+            :loading="loadingSave"
+            @click="handleSaveClick"
+          >
             {{ $t('general.saveAction') }}
           </n-button>
         </ButtonShelf>
