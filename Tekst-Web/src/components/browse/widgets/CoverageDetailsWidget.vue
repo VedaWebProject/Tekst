@@ -123,11 +123,11 @@ watch(
   margin: var(--layout-gap) 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 4px;
 }
 .cov-box {
-  width: 24px;
-  height: 24px;
+  width: 16px;
+  height: 16px;
   background-color: var(--main-bg-color);
   border-radius: var(--app-ui-border-radius);
   opacity: 0.8;
