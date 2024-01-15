@@ -122,22 +122,20 @@ const resourceTypes = computed(() => {
         </div>
 
         <h4>{{ $t('admin.statistics.resourceTypesHeading') }}</h4>
-        <div
-          v-for="(count, resourceType) in text.resourceTypes"
-          :key="resourceType"
-          style="margin: 12px 0"
-        >
-          <div>{{ $t(`resources.types.${resourceType}.label`) }}: {{ count }}</div>
-          <n-progress
-            type="line"
-            :percentage="(count / (text.resourcesCount || 1)) * 100"
-            :height="18"
-            :border-radius="4"
-            indicator-placement="inside"
-            color="var(--accent-color)"
-            rail-color="var(--accent-color-fade4)"
-          />
-        </div>
+        <template v-for="(count, resourceType) in text.resourceTypes" :key="resourceType">
+          <div v-if="count" style="margin: 12px 0">
+            <div>{{ $t(`resources.types.${resourceType}.label`) }}: {{ count }}</div>
+            <n-progress
+              type="line"
+              :percentage="(count / (text.resourcesCount || 1)) * 100"
+              :height="18"
+              :border-radius="4"
+              indicator-placement="inside"
+              color="var(--accent-color)"
+              rail-color="var(--accent-color-fade4)"
+            />
+          </div>
+        </template>
       </div>
     </div>
   </div>
