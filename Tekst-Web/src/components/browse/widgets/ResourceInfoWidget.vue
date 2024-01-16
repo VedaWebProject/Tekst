@@ -103,8 +103,8 @@ watch(showInfoModal, async (after) => {
             })
           }}
         </span>
+        <span style="flex: 2"></span>
         <template v-if="auth.loggedIn">
-          <span style="flex: 2"></span>
           <n-button
             quaternary
             type="primary"

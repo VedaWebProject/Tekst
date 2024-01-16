@@ -11,6 +11,7 @@ from tekst.models.common import (
     ModelBase,
     ModelFactoryMixin,
 )
+from tekst.models.text import TextDocument
 
 
 class Node(ModelBase, ModelFactoryMixin):
@@ -39,6 +40,34 @@ class NodeDocument(Node, DocumentBase):
     class Settings(DocumentBase.Settings):
         name = "nodes"
         indexes = ["text_id", "parent_id", "level", "position"]
+
+    @classmethod
+    async def get_node_locations(
+        cls,
+        text_id: PydanticObjectId,
+        for_level: int | None = None,
+        loc_delim: str | None = ", ",
+    ) -> dict[str, str]:
+        if for_level is not None and for_level < 0:
+            for_level = 0
+        if for_level is None or loc_delim is None:
+            text = await TextDocument.get(text_id)
+            for_level = len(text.levels) - 1 if for_level is None else for_level
+            loc_delim = text.loc_delim if loc_delim is None else loc_delim
+        node_labels = {}
+        for level in range(for_level + 1):
+            node_labels = {
+                str(n.id): loc_delim.join(
+                    [lbl for lbl in [node_labels.get(str(n.parent_id)), n.label] if lbl]
+                )
+                for n in await NodeDocument.find(
+                    NodeDocument.text_id == text_id,
+                    NodeDocument.level == level,
+                )
+                .sort(+NodeDocument.position)
+                .to_list()
+            }
+        return node_labels
 
 
 NodeCreate = Node.create_model()

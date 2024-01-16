@@ -250,3 +250,8 @@ class ResourceNodeCoverage(ModelBase):
     label: str
     position: int
     covered: bool = False
+
+
+class ResourceCoverageDetails(ModelBase):
+    parent_labels: list[str]
+    nodes_coverage: list[list[ResourceNodeCoverage]]

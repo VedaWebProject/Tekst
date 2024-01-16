@@ -123,7 +123,7 @@ browse:
         title: Informationen zu dieser Ressource anzeigen
         citeAs: Zitieren als
         coverage: Abdeckung
-        coverageStatement: '{present} von {total} Knoten auf Ebene "{level}"'
+        coverageStatement: '{present} von {total} Fundstellen auf Ebene "{level}"'
       deactivateWidget:
         title: Diese Ressource ausblenden
         message: Die Ressource "{resourceTitle}" wurde ausgeblendet. Sie können sie wieder aktivieren, indem Sie die Ressourcen-Auswahl rechts in der Toolbar benutzen.

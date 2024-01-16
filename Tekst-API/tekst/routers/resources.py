@@ -549,26 +549,18 @@ async def get_resource_template(
     template["__README"] = get_resource_template_readme()
 
     # construct labels of all nodes on the resource's level
-    node_labels = {}
-    for level in range(resource_doc.level + 1):
-        node_labels = {
-            n.id: text_doc.loc_delim.join(
-                [lbl for lbl in [node_labels.get(n.parent_id), n.label] if lbl]
-            )
-            for n in await NodeDocument.find(
-                NodeDocument.text_id == resource_doc.text_id,
-                NodeDocument.level == level,
-            )
-            .sort(+NodeDocument.position)
-            .to_list()
-        }
+    node_locations = await NodeDocument.get_node_locations(
+        text_id=text_doc.id,
+        for_level=resource_doc.level,
+        loc_delim=text_doc.loc_delim,
+    )
 
     # fill in unit templates with IDs and some informational fields
     template["units"] = [
         dict(
             nodeId=str(node.id),
             _position=node.position,
-            _location=node_labels.get(node.id),
+            _location=node_locations.get(str(node.id)),
         )
         for node in await NodeDocument.find(
             NodeDocument.text_id == resource_doc.text_id,

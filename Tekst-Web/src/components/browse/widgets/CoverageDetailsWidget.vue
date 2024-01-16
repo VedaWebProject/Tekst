@@ -2,7 +2,12 @@
 import { NButton } from 'naive-ui';
 import ButtonShelf from '@/components/ButtonShelf.vue';
 import { ref } from 'vue';
-import { GET, type AnyResourceRead, type ResourceNodeCoverage, type ResourceCoverage } from '@/api';
+import {
+  GET,
+  type AnyResourceRead,
+  type ResourceCoverage,
+  type ResourceCoverageDetails,
+} from '@/api';
 import { watch } from 'vue';
 import { RouterLink } from 'vue-router';
 import { useRoute } from 'vue-router';
@@ -23,7 +28,7 @@ const emit = defineEmits(['update:show', 'navigated']);
 const state = useStateStore();
 const route = useRoute();
 
-const coverageData = ref<ResourceNodeCoverage[][]>();
+const coverageDetails = ref<ResourceCoverageDetails>();
 const loading = ref(false);
 const error = ref(false);
 
@@ -33,7 +38,7 @@ async function handleEnter() {
     params: { path: { id: props.resource.id } },
   });
   if (!e) {
-    coverageData.value = data;
+    coverageDetails.value = data;
   } else {
     error.value = true;
   }
@@ -43,7 +48,7 @@ async function handleEnter() {
 function handleLeave() {
   loading.value = false;
   error.value = false;
-  coverageData.value = undefined;
+  coverageDetails.value = undefined;
 }
 
 function handleNodeClick() {
@@ -91,22 +96,29 @@ watch(
     </p>
 
     <div v-else style="margin: var(--layout-gap) 0">
-      <div v-for="(nodesBlock, index) in coverageData" :key="`block-${index}`" class="cov-block">
-        <router-link
-          v-for="node in nodesBlock"
-          :key="node.position"
-          :to="{
-            name: 'browse',
-            params: { text: route.params.text },
-            query: {
-              lvl: resource.level,
-              pos: node.position,
-            },
-          }"
-          @click="handleNodeClick"
-        >
-          <div class="cov-box" :class="node.covered && 'covered'" :title="node.label"></div>
-        </router-link>
+      <div v-for="(nodesBlock, index) in coverageDetails?.nodesCoverage" :key="`block-${index}`">
+        <h3 v-if="coverageDetails?.parentLabels[index]" style="margin-bottom: 0.5rem">
+          {{ state.textLevelLabels[resource.level - 1] }}:
+          {{ coverageDetails?.parentLabels[index] }}
+        </h3>
+        <div class="cov-block">
+          <router-link
+            v-for="node in nodesBlock"
+            :key="node.position"
+            :to="{
+              name: 'browse',
+              params: { text: route.params.text },
+              query: {
+                lvl: resource.level,
+                pos: node.position,
+              },
+            }"
+            :title="`${state.textLevelLabels[resource.level]}: ${node.label}`"
+            @click="handleNodeClick"
+          >
+            <div class="cov-box" :class="node.covered && 'covered'"></div>
+          </router-link>
+        </div>
       </div>
     </div>
 
@@ -120,7 +132,7 @@ watch(
 
 <style scoped>
 .cov-block {
-  margin: var(--layout-gap) 0;
+  margin: 0.25rem 0 0.75rem 0;
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
@@ -129,8 +141,8 @@ watch(
   width: 16px;
   height: 16px;
   background-color: var(--main-bg-color);
-  border-radius: var(--app-ui-border-radius);
-  opacity: 0.8;
+  border-radius: 2px;
+  opacity: 0.75;
   transition: 0.2s;
 }
 .cov-box:hover {

@@ -13,7 +13,7 @@ from tekst.models.node import (
 from tekst.models.resource import (
     ResourceBaseDocument,
     ResourceCoverage,
-    ResourceNodeCoverage,
+    ResourceCoverageDetails,
 )
 from tekst.models.unit import UnitBaseDocument
 from tekst.resources import AnyUnitReadBody
@@ -271,7 +271,7 @@ async def get_resource_coverage_data(
 @router.get(
     "/resources/{id}/coverage-details",
     status_code=status.HTTP_200_OK,
-    response_model=list[list[ResourceNodeCoverage]],
+    response_model=ResourceCoverageDetails,
 )
 async def get_detailed_resource_coverage_data(
     user: UserDep, resource_id: Annotated[PydanticObjectId, Path(alias="id")]
@@ -285,7 +285,7 @@ async def get_detailed_resource_coverage_data(
         raise HTTPException(
             status.HTTP_404_NOT_FOUND, detail=f"No resource with ID {resource_id}"
         )
-    data = (
+    data: list[dict] = (
         await NodeDocument.find(
             NodeDocument.text_id == resource_doc.text_id,
             NodeDocument.level == resource_doc.level,
@@ -317,6 +317,7 @@ async def get_detailed_resource_coverage_data(
                 },
                 {
                     "$project": {
+                        "id": "$_id",
                         "label": 1,
                         "position": 1,
                         "parent_id": 1,
@@ -328,14 +329,22 @@ async def get_detailed_resource_coverage_data(
         .to_list()
     )
 
+    # get parent level node location labels
+    parent_node_locations = await NodeDocument.get_node_locations(
+        text_id=resource_doc.text_id, for_level=resource_doc.level - 1
+    )
+
     # group nodes by parent
     out = []
+    parent_labels = []
     prev_parent_id = "init"
     for node in data:
         if node["parent_id"] == prev_parent_id:
             out[-1].append(node)
         else:
             out.append([node])
+            if node["parent_id"]:
+                parent_labels.append(parent_node_locations[str(node["parent_id"])])
         prev_parent_id = node["parent_id"]
 
-    return out
+    return ResourceCoverageDetails(nodes_coverage=out, parent_labels=parent_labels)

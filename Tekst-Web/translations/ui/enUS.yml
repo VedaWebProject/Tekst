@@ -120,7 +120,7 @@ browse:
         title: Show information on this resource
         citeAs: Cite as
         coverage: Coverage
-        coverageStatement: '{present} of {total} nodes on level "{level}"'
+        coverageStatement: '{present} of {total} locations on level "{level}"'
       deactivateWidget:
         title: Hide this resource
         message: The resource "{resourceTitle}" has been hidden. You can activate it again using the resource selection tool to the right side of the toolbar.

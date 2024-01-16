@@ -1,7 +1,7 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "Tekst-Dev",
+    "title": "Tekst",
     "description": "An online text research platform",
     "termsOfService": "None",
     "contact": {},
@@ -13,7 +13,7 @@
   },
   "servers": [
     {
-      "url": "http://127.0.0.1/api"
+      "url": "http://127.0.0.1:8000/api"
     }
   ],
   "paths": {
@@ -493,14 +493,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/ResourceNodeCoverage"
-                    }
-                  },
-                  "title": "Response Get Detailed Resource Coverage Data Browse Resources  Id  Coverage Details Get"
+                  "$ref": "#/components/schemas/ResourceCoverageDetails"
                 }
               }
             }
@@ -6524,7 +6517,7 @@
               "usersActiveByDefault": false,
               "enableCookieAuth": true,
               "enableJwtAuth": true,
-              "authCookieLifetime": 10800
+              "authCookieLifetime": 43200
             }
           },
           "systemSegments": {
@@ -6620,7 +6613,7 @@
           "authCookieLifetime": {
             "type": "integer",
             "title": "Authcookielifetime",
-            "default": 10800
+            "default": 43200
           }
         },
         "type": "object",
@@ -6639,7 +6632,7 @@
             "minLength": 1,
             "title": "Infoplatformname",
             "description": "Name of the platform",
-            "default": "Tekst-Dev"
+            "default": "Tekst"
           },
           "infoSubtitle": {
             "items": {
@@ -6808,7 +6801,7 @@
             "minLength": 1,
             "title": "Infoplatformname",
             "description": "Name of the platform",
-            "default": "Tekst-Dev"
+            "default": "Tekst"
           },
           "infoSubtitle": {
             "items": {
@@ -7066,6 +7059,33 @@
           "total"
         ],
         "title": "ResourceCoverage"
+      },
+      "ResourceCoverageDetails": {
+        "properties": {
+          "parentLabels": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Parentlabels"
+          },
+          "nodesCoverage": {
+            "items": {
+              "items": {
+                "$ref": "#/components/schemas/ResourceNodeCoverage"
+              },
+              "type": "array"
+            },
+            "type": "array",
+            "title": "Nodescoverage"
+          }
+        },
+        "type": "object",
+        "required": [
+          "parentLabels",
+          "nodesCoverage"
+        ],
+        "title": "ResourceCoverageDetails"
       },
       "ResourceDataImportResponse": {
         "properties": {

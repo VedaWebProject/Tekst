@@ -118,7 +118,7 @@ export type PlatformData = components['schemas']['PlatformData'];
 export type PlatformSettingsRead = components['schemas']['PlatformSettingsRead'];
 export type PlatformSettingsUpdate = components['schemas']['PlatformSettingsUpdate'];
 export type ResourceCoverage = components['schemas']['ResourceCoverage'];
-export type ResourceNodeCoverage = components['schemas']['ResourceNodeCoverage'];
+export type ResourceCoverageDetails = components['schemas']['ResourceCoverageDetails'];
 
 // client segments
 

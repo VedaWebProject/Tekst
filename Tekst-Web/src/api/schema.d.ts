@@ -1563,7 +1563,7 @@ export interface components {
        *   "usersActiveByDefault": false,
        *   "enableCookieAuth": true,
        *   "enableJwtAuth": true,
-       *   "authCookieLifetime": 10800
+       *   "authCookieLifetime": 43200
        * }
        */
       security?: components['schemas']['PlatformSecurityInfo'];
@@ -1613,7 +1613,7 @@ export interface components {
       enableJwtAuth?: boolean;
       /**
        * Authcookielifetime
-       * @default 10800
+       * @default 43200
        */
       authCookieLifetime?: number;
     };
@@ -1627,7 +1627,7 @@ export interface components {
       /**
        * Infoplatformname
        * @description Name of the platform
-       * @default Tekst-Dev
+       * @default Tekst
        */
       infoPlatformName?: string;
       /**
@@ -1723,7 +1723,7 @@ export interface components {
       /**
        * Infoplatformname
        * @description Name of the platform
-       * @default Tekst-Dev
+       * @default Tekst
        */
       infoPlatformName?: string;
       /**
@@ -1848,6 +1848,13 @@ export interface components {
       covered: number;
       /** Total */
       total: number;
+    };
+    /** ResourceCoverageDetails */
+    ResourceCoverageDetails: {
+      /** Parentlabels */
+      parentLabels: string[];
+      /** Nodescoverage */
+      nodesCoverage: components['schemas']['ResourceNodeCoverage'][][];
     };
     /** ResourceDataImportResponse */
     ResourceDataImportResponse: {
@@ -2431,7 +2438,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': components['schemas']['ResourceNodeCoverage'][][];
+          'application/json': components['schemas']['ResourceCoverageDetails'];
         };
       };
       /** @description Not found */

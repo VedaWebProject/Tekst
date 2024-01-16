@@ -176,7 +176,7 @@ async def test_get_detailed_resource_coverage_data(
         f"/browse/resources/{resource_id}/coverage-details",
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
-    assert isinstance(resp.json(), list)
+    assert isinstance(resp.json(), dict)
 
     # fail with wrong resource ID
     resp = await test_client.get(
