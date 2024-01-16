@@ -361,7 +361,7 @@ units:
   btnAddUnit: Inhalt hinzufügen
   msgSaved: Der Inhalt für diese Fundstelle wurde gespeichert.
   msgDeleted: Der Inhalt für diese Fundstelle wurde gelöscht.
-  msgImportSuccess: Es wurden neue Inhalte für {created} Fundstellen importiert und bestehende Inhalte für {updated} Fundstellen verändert.
+  msgImportSuccess: 'Import abgeschlossen. Inhalte neu erstellt: {created}. Inhalte modifiziert: {updated}. Errors: {errors}.'
   confirmDelete: Sind Sie sicher, dass Sie den Inhalt für diese Fundstelle löschen möchten?
   msgNoOwnContentTitle: Kein eigner Inhalt für diese Fundstelle!
   msgNoOwnContentBody: |

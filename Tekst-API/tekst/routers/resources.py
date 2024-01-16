@@ -4,6 +4,7 @@ from tempfile import NamedTemporaryFile
 from typing import Annotated
 
 from beanie import PydanticObjectId
+from beanie.exceptions import DocumentNotFound
 from beanie.operators import In
 from bson.errors import InvalidId
 from fastapi import (
@@ -547,43 +548,35 @@ async def get_resource_template(
     # add resource template README text
     template["__README"] = get_resource_template_readme()
 
-    # get parent nodes of all nodes on the resource's level
-    parent_nodes = (
-        [None]
-        if resource_doc.level == 0
-        else (
-            await NodeDocument.find(
+    # construct labels of all nodes on the resource's level
+    node_labels = {}
+    for level in range(resource_doc.level + 1):
+        node_labels = {
+            n.id: text_doc.loc_delim.join(
+                [lbl for lbl in [node_labels.get(n.parent_id), n.label] if lbl]
+            )
+            for n in await NodeDocument.find(
                 NodeDocument.text_id == resource_doc.text_id,
-                NodeDocument.level == resource_doc.level - 1,
+                NodeDocument.level == level,
             )
             .sort(+NodeDocument.position)
             .to_list()
-        )
-    )
+        }
 
     # fill in unit templates with IDs and some informational fields
-    template["units"] = []
-    for parent_node in parent_nodes:
-        # get all child nodes (on this structure level) as a base for unit templates
-        nodes = (
-            await NodeDocument.find(
-                NodeDocument.text_id == resource_doc.text_id,
-                NodeDocument.parent_id == parent_node.id,
-            )
-            .sort(+NodeDocument.position)
-            .to_list()
+    template["units"] = [
+        dict(
+            nodeId=str(node.id),
+            _position=node.position,
+            _location=node_labels.get(node.id),
         )
-        template["units"].extend(
-            [
-                dict(
-                    nodeId=str(node.id),
-                    _position=node.position,
-                    _location=node.label,
-                    _parentLocation=parent_node.label,
-                )
-                for node in nodes
-            ]
+        for node in await NodeDocument.find(
+            NodeDocument.text_id == resource_doc.text_id,
+            NodeDocument.level == resource_doc.level,
         )
+        .sort(+NodeDocument.position)
+        .to_list()
+    ]
 
     # create temporary file and stream it as a file response
     tempfile = NamedTemporaryFile(mode="w")
@@ -674,7 +667,7 @@ async def import_resource_data(
     except InvalidId as e:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=f"Invalid nodeId: {str(e)}",
+            detail=f"Invalid nodeId value: {str(e)}",
         )
 
     # create lists of validated unit updates/creates depending on whether they exist
@@ -707,46 +700,51 @@ async def import_resource_data(
     # a sacrifice for the GC
     structure_def = None
 
-    # apply updates to existing units
+    # process updates to existing units
     updated_count = 0
+    errors_count = 0
     for update in units["updates"]:
         unit_doc = existing_units_dict.get(str(update.node_id))
         if unit_doc:
-            await unit_doc.apply_updates(
-                update, exclude={"id", "resource_id", "node_id", "resource_type"}
-            )
-            updated_count += 1
+            try:
+                await unit_doc.apply_updates(
+                    update, exclude={"id", "resource_id", "node_id", "resource_type"}
+                )
+                updated_count += 1
+            except (ValueError, DocumentNotFound) as e:
+                print(e)
+                raise HTTPException(
+                    status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                )
+                errors_count += 1
         else:
-            log.error(f"Could not find unit with node ID {update.node_id} to update")
+            errors_count += 1
 
-    # create new units
+    # process new units
     unit_document_model = (
         resource_types_mgr.get(resource.resource_type).unit_model().document_model()
     )
     # get node IDs from target level to check if the ones in new units are valid
-    node_ids = [
+    existing_node_ids = {
         n.id
         for n in await NodeDocument.find(
             NodeDocument.text_id == resource.text_id,
             NodeDocument.level == resource.level,
         ).to_list()
-    ]
+    }
     # filter out units that reference non-existent node IDs
-    units["creates"] = [u for u in units["creates"] if u.node_id in node_ids]
+    units["creates"] = [u for u in units["creates"] if u.node_id in existing_node_ids]
+
     # insert new units
     if len(units["creates"]):
         insert_many_result = await UnitBaseDocument.insert_many(
-            [unit_document_model.model_from(c) for c in units["creates"]]
+            [unit_document_model.model_from(c) for c in units["creates"]], ordered=False
         )
-        if insert_many_result.acknowledged:
-            created_count = len(insert_many_result.inserted_ids)
-        else:
-            created_count = 0
-            log.error(
-                "Could not insert all new units. "
-                f"Inserted: {len(insert_many_result.inserted_ids)}"
-            )
+        created_count = len(insert_many_result.inserted_ids)
+        errors_count += len(units["creates"]) - created_count
     else:
         created_count = 0
 
-    return ResourceDataImportResponse(updated=updated_count, created=created_count)
+    return ResourceDataImportResponse(
+        updated=updated_count, created=created_count, errors=errors_count
+    )

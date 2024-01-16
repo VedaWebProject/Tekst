@@ -33,3 +33,4 @@ class ResourceImportData(ModelBase):
 class ResourceDataImportResponse(ModelBase):
     updated: int
     created: int
+    errors: int

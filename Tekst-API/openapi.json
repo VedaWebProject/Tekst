@@ -7076,12 +7076,17 @@
           "created": {
             "type": "integer",
             "title": "Created"
+          },
+          "errors": {
+            "type": "integer",
+            "title": "Errors"
           }
         },
         "type": "object",
         "required": [
           "updated",
-          "created"
+          "created",
+          "errors"
         ],
         "title": "ResourceDataImportResponse"
       },

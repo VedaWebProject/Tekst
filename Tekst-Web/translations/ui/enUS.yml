@@ -351,7 +351,7 @@ units:
   btnAddUnit: Add content
   msgSaved: The content for this location has been saved.
   msgDeleted: The content for this location has been deleted.
-  msgImportSuccess: Imported new contents for {created} locations and modified existing contents for {updated} locations.
+  msgImportSuccess: 'Import finished. Contents newly created: {created}. Contents modified: {updated}. Errors: {errors}.'
   confirmDelete: Are you sure you want to delete the content for this location?
   msgNoOwnContentTitle: No own content for this location!
   msgNoOwnContentBody: |

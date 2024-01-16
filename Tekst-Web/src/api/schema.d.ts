@@ -1855,6 +1855,8 @@ export interface components {
       updated: number;
       /** Created */
       created: number;
+      /** Errors */
+      errors: number;
     };
     /** ResourceDescriptionTranslation */
     ResourceDescriptionTranslation: {

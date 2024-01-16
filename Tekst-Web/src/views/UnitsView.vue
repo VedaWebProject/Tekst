@@ -270,12 +270,16 @@ async function handleImportClick() {
       if (response.ok) {
         const resp = await response.json();
         message.success(
-          $t('units.msgImportSuccess', { updated: resp.updated, created: resp.created }),
+          $t('units.msgImportSuccess', {
+            updated: resp.updated,
+            created: resp.created,
+            errors: resp.errors,
+          }),
           undefined,
-          10
+          20
         );
       } else {
-        message.error($t('errors.unexpected'), await response.json());
+        message.error($t('errors.unexpected'), await response.json(), 20);
       }
     } catch {
       // failed request handled already, nothing to do
