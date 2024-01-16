@@ -25,6 +25,13 @@ from tekst.models.unit import UnitBase, UnitBaseDocument, UnitBaseUpdate
 class ResourceTypeABC(ABC):
     """Abstract base class for defining a resource type"""
 
+    __EXCLUDE_FROM_UNIT_TEMPLATES: set[str] = {
+        "id",
+        "resourceId",
+        "resourceType",
+        "nodeId",
+    }
+
     @classmethod
     def get_name(cls) -> str:
         """Returns the name of this resource type"""
@@ -54,29 +61,16 @@ class ResourceTypeABC(ABC):
         )  # pragma: no cover
 
     @classmethod
-    @abstractmethod
-    def template_fields(cls) -> set[str]:
-        """
-        Returns a tuple with the names of the unit model fields
-        that should be part of the import template file for a certain resource type
-        """
-        raise NotImplementedError(
-            "Classmethod 'template_fields' must be "
-            f"implemented in subclasses of {cls.__name__}"
-        )  # pragma: no cover
-
-    @classmethod
     def prepare_import_template(cls) -> dict:
         """Returns the base template for import data for this resource type"""
         schema = cls.unit_model().create_model().schema()
-        template_fields = cls.template_fields().union({"comment"})
         required = schema.get("required", [])
         template = {
             "_unitSchema": {},  # will be populated in the next step
         }
         # generate unit schema for the template
         for prop, val in schema.get("properties", {}).items():
-            if prop in template_fields:
+            if prop not in cls.__EXCLUDE_FROM_UNIT_TEMPLATES:
                 prop_schema = {k: v for k, v in val.items()}
                 prop_schema["required"] = prop in required
                 template["_unitSchema"][prop] = prop_schema

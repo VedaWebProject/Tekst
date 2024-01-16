@@ -19,10 +19,6 @@ class Debug(ResourceTypeABC):  # pragma: no cover
     def unit_model(cls) -> type["DebugUnit"]:
         return DebugUnit
 
-    @classmethod
-    def template_fields(cls) -> set[str]:
-        return {"text"}
-
 
 class DebugResourceConfig(ResourceConfigBase):
     pass
