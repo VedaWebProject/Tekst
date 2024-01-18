@@ -11,7 +11,6 @@ import {
 } from 'naive-ui';
 import {
   type AnyResourceRead,
-  getFullUrl,
   type NodeRead,
   GET,
   type AnyUnitCreate,
@@ -40,21 +39,19 @@ import { defaultUnitModels } from '@/forms/resources/defaultUnitModels';
 import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
 import LocationSelectModal from '@/components/LocationSelectModal.vue';
 import unitComponents from '@/components/browse/units/mappings';
+import LocationLabel from '@/components/browse/LocationLabel.vue';
 
 import EditNoteOutlined from '@vicons/material/EditNoteOutlined';
 import KeyboardArrowLeftOutlined from '@vicons/material/KeyboardArrowLeftOutlined';
 import ArrowBackIosOutlined from '@vicons/material/ArrowBackIosOutlined';
 import ArrowForwardIosOutlined from '@vicons/material/ArrowForwardIosOutlined';
 import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
-import FileDownloadSharp from '@vicons/material/FileDownloadSharp';
-import FileUploadSharp from '@vicons/material/FileUploadSharp';
 import FolderOffTwotone from '@vicons/material/FolderOffTwotone';
 import InsertDriveFileOutlined from '@vicons/material/InsertDriveFileOutlined';
 import CompareArrowsOutlined from '@vicons/material/CompareArrowsOutlined';
 import AltRouteOutlined from '@vicons/material/AltRouteOutlined';
 import LayersFilled from '@vicons/material/LayersFilled';
-import LocationLabel from '@/components/browse/LocationLabel.vue';
-import CheckOutlined from '@vicons/material/CheckOutlined';
+import MoveDownOutlined from '@vicons/material/MoveDownOutlined';
 
 type UnitFormModel = AnyUnitCreate & { id: string };
 
@@ -98,18 +95,10 @@ const compareResourceOptions = computed(() =>
 );
 
 const loadingDelete = ref(false);
-const loadingTemplate = ref(false);
-const loadingImport = ref(false);
 const loadingSave = ref(false);
 const loadingData = ref(false);
 const loading = computed(
-  () =>
-    resources.loading ||
-    loadingDelete.value ||
-    loadingTemplate.value ||
-    loadingImport.value ||
-    loadingSave.value ||
-    loadingData.value
+  () => resources.loading || loadingDelete.value || loadingSave.value || loadingData.value
 );
 
 // go to resource overview if text changes
@@ -207,7 +196,7 @@ function resetForm() {
   formRef.value?.restoreValidation();
 }
 
-function handleAcceptChanges() {
+function handleApplyChanges() {
   const changes = compareResource.value?.units?.[0];
   if (changes && unitModel.value) {
     unitModel.value = {
@@ -266,65 +255,6 @@ async function handleSaveClick() {
 
 async function handleJumpToClick() {
   showJumpToModal.value = true;
-}
-
-async function handleDownloadTemplateClick() {
-  // As we want a proper, direct download, we let the browser handle it
-  // by opening a new tab with the correct URL for the file download.
-  const path = `/resources/${resource.value?.id || ''}/template`;
-  window.open(getFullUrl(path), '_blank');
-  message.info($t('general.downloadStarted'));
-}
-
-async function handleImportClick() {
-  // unfortunately, this file upload doesn't work with our generated API client :(
-  const path = `/resources/${resource.value?.id || ''}/import`;
-  const endpointUrl = getFullUrl(path);
-  const input = document.createElement('input');
-  input.type = 'file';
-  input.accept = 'application/json,.json';
-
-  input.onchange = async () => {
-    if (!input.files) return;
-    loadingImport.value = true;
-    const formData = new FormData();
-    formData.append('file', input.files[0]);
-    try {
-      const response = await fetch(endpointUrl, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-        },
-        body: formData,
-      });
-      if (response.ok) {
-        const resp = await response.json();
-        message.success(
-          $t('units.msgImportSuccess', {
-            updated: resp.updated,
-            created: resp.created,
-            errors: resp.errors,
-          }),
-          undefined,
-          20
-        );
-      } else {
-        message.error($t('errors.unexpected'), await response.json(), 20);
-      }
-    } catch {
-      // failed request handled already, nothing to do
-    } finally {
-      input.remove();
-      loadingImport.value = false;
-      loadLocationData();
-    }
-  };
-
-  input.onclose = () => {
-    input.remove();
-  };
-
-  input.click();
 }
 
 async function deleteUnit() {
@@ -469,33 +399,6 @@ whenever(ArrowLeft, () => {
         {{ $t('units.lblBtnCompare') }}
       </n-button>
     </n-dropdown>
-
-    <n-button
-      secondary
-      :title="$t('units.tipBtnDownloadTemplate')"
-      :disabled="loading"
-      :loading="loadingTemplate"
-      :focusable="false"
-      @click="handleDownloadTemplateClick()"
-    >
-      <template #icon>
-        <FileDownloadSharp />
-      </template>
-      {{ $t('units.lblBtnDownloadTemplate') }}
-    </n-button>
-    <n-button
-      secondary
-      :title="$t('units.tipBtnImport')"
-      :disabled="loading"
-      :loading="loadingImport"
-      :focusable="false"
-      @click="handleImportClick()"
-    >
-      <template #icon>
-        <FileUploadSharp />
-      </template>
-      {{ $t('units.lblBtnImport') }}
-    </n-button>
   </ButtonShelf>
 
   <template v-if="resource && nodePath">
@@ -551,14 +454,14 @@ whenever(ArrowLeft, () => {
 
         <ButtonShelf
           v-if="
+            compareResource.units?.length &&
             compareResource.originalId &&
-            compareResource.originalId == resource.id &&
-            compareResource.units?.length
+            compareResource.originalId == resource.id
           "
         >
-          <n-button secondary :title="$t('units.tipBtnApplyChanges')" @click="handleAcceptChanges">
+          <n-button secondary :title="$t('units.tipBtnApplyChanges')" @click="handleApplyChanges">
             <template #icon>
-              <n-icon :component="CheckOutlined" />
+              <n-icon :component="MoveDownOutlined" />
             </template>
             {{ $t('units.lblBtnApplyChanges') }}
           </n-button>

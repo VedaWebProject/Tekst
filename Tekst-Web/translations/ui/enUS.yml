@@ -267,6 +267,8 @@ resources:
   transferAction: Transfer to user
   settingsAction: Settings
   unitsAction: Contents
+  downloadTemplateAction: Download import template
+  importAction: Upload preprocessed import file
   createVersionAction: Create version of this resource
   proposeAction: Propose for publication
   unproposeAction: Withdraw publication proposal
@@ -340,16 +342,12 @@ resources:
 
 units:
   heading: Edit resource content
-  lblBtnDownloadTemplate: Template
-  tipBtnDownloadTemplate: Download import template
   lblBtnCompare: Compare
   tipBtnCompare: Select other resource to compare with
   lblBtnCopyOriginal: Copy
   tipBtnCopyOriginal: Copy from original resource
   lblBtnApplyChanges: Apply
-  tipBtnApplyChanges: Apply these changes
-  lblBtnImport: Import
-  tipBtnImport: Import content via preprocessed import file
+  tipBtnApplyChanges: Apply this content version to the original resource
   forComparison: 'For comparison: "{title}"'
   noUnit: There is no content for this location.
   btnAddUnit: Add content

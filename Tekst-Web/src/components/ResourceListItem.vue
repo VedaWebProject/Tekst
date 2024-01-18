@@ -29,6 +29,8 @@ import PersonFilled from '@vicons/material/PersonFilled';
 import EditNoteOutlined from '@vicons/material/EditNoteOutlined';
 import AltRouteOutlined from '@vicons/material/AltRouteOutlined';
 import UserDisplay from './UserDisplay.vue';
+import FileDownloadSharp from '@vicons/material/FileDownloadSharp';
+import FileUploadSharp from '@vicons/material/FileUploadSharp';
 
 const props = defineProps<{
   targetResource: AnyResourceRead;
@@ -45,6 +47,8 @@ const emit = defineEmits([
   'unitsClick',
   'createVersionClick',
   'deleteClick',
+  'downloadTemplateClick',
+  'importClick',
 ]);
 
 const state = useStateStore();
@@ -73,6 +77,18 @@ const actionOptions = computed(() => [
               key: 'units',
               icon: renderIcon(EditNoteOutlined),
               action: () => emit('unitsClick', props.targetResource),
+            },
+            {
+              label: $t('resources.downloadTemplateAction'),
+              key: 'template',
+              icon: renderIcon(FileDownloadSharp),
+              action: () => emit('downloadTemplateClick', props.targetResource),
+            },
+            {
+              label: $t('resources.importAction'),
+              key: 'import',
+              icon: renderIcon(FileUploadSharp),
+              action: () => emit('importClick', props.targetResource),
             },
           ],
         },

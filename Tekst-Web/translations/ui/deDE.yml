@@ -269,6 +269,8 @@ resources:
   transferAction: An Benutzer übertragen
   settingsAction: Einstellungen
   unitsAction: Inhalte
+  downloadTemplateAction: Importvorlage herunterladen
+  importAction: Vorverarbeitete Importdatei hochladen
   createVersionAction: Version dieser Ressource erstellen
   proposeAction: Für Veröffentlichung vorschlagen
   unproposeAction: Veröffentlichungsvorschlag zurücknehmen
@@ -350,16 +352,12 @@ resources:
 
 units:
   heading: Ressourcen-Inhalte bearbeiten
-  lblBtnDownloadTemplate: Vorlage
-  tipBtnDownloadTemplate: Importvorlage herunterladen
   lblBtnCompare: Vergleichen
   tipBtnCompare: Andere Ressource auswählen, um mit ihr zu vergleichen
   lblBtnCopyOriginal: Kopieren
   tipBtnCopyOriginal: Aus Original-Ressource kopieren
   lblBtnApplyChanges: Übernehmen
-  tipBtnApplyChanges: Diese Änderungen übernehmen
-  lblBtnImport: Importieren
-  tipBtnImport: Inhalte über vorverarbeitete Datei importieren
+  tipBtnApplyChanges: Diese Version des Inhalts in die Originalressource übernehmen
   forComparison: 'Zum Vergleich: "{title}"'
   noUnit: Für diese Fundstelle liegen keine Inhalte vor.
   btnAddUnit: Inhalt hinzufügen
