@@ -354,6 +354,8 @@ units:
   lblBtnCompareTip: Andere Ressource auswählen, um mit ihr zu vergleichen
   lblBtnCopyOriginal: Kopieren
   lblBtnCopyOriginalTip: Aus Original-Ressource kopieren
+  lblBtnApplyChanges: Übernehmen
+  tipBtnApplyChanges: Diese Änderungen übernehmen
   forComparison: 'Zum Vergleich: "{title}"'
   lblBtnImport: Importieren
   tipBtnImport: Inhalte über vorverarbeitete Datei importieren

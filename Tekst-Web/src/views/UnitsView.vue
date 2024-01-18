@@ -20,8 +20,8 @@ import {
   POST,
   DELETE,
 } from '@/api';
-import { ref } from 'vue';
-import { computed, watch } from 'vue';
+import { ref, type Component } from 'vue';
+import { computed, watch, h } from 'vue';
 import HugeLabeledIcon from '@/components/HugeLabeledIcon.vue';
 import { $t } from '@/i18n';
 import { useAuthStore, useStateStore } from '@/stores';
@@ -54,6 +54,7 @@ import CompareArrowsOutlined from '@vicons/material/CompareArrowsOutlined';
 import AltRouteOutlined from '@vicons/material/AltRouteOutlined';
 import LayersFilled from '@vicons/material/LayersFilled';
 import LocationLabel from '@/components/browse/LocationLabel.vue';
+import CheckOutlined from '@vicons/material/CheckOutlined';
 
 type UnitFormModel = AnyUnitCreate & { id: string };
 
@@ -90,6 +91,9 @@ const compareResourceOptions = computed(() =>
       label: r.title,
       key: r.id,
       disabled: r.id === compareResourceId.value,
+      icon: r.originalId
+        ? renderIcon(AltRouteOutlined, r.originalId === resource.value?.id)
+        : renderIcon(LayersFilled),
     }))
 );
 
@@ -115,6 +119,18 @@ watch(
     router.push({ name: 'resources', params: { text: newText?.slug } });
   }
 );
+
+const renderIcon = (icon: Component, highlighted?: boolean) => {
+  return () => {
+    return h(
+      NIcon,
+      { color: highlighted ? 'var(--accent-color)' : undefined },
+      {
+        default: () => h(icon),
+      }
+    );
+  };
+};
 
 async function loadLocationData() {
   if (!resource.value || !Number.isInteger(position.value)) {
@@ -189,6 +205,20 @@ function resetForm() {
   unitModel.value = initialUnitModel.value;
   reset();
   formRef.value?.restoreValidation();
+}
+
+function handleAcceptChanges() {
+  const changes = compareResource.value?.units?.[0];
+  if (changes && unitModel.value) {
+    unitModel.value = {
+      ...unitModel.value,
+      ...Object.fromEntries(
+        Object.entries(changes).filter(
+          (e) => !['id', 'resourceId', 'resourceType', 'nodeId', 'comment'].includes(e[0])
+        )
+      ),
+    };
+  }
 }
 
 async function handleSaveClick() {
@@ -518,6 +548,21 @@ whenever(ArrowLeft, () => {
           :resource="compareResource"
         />
         <span v-else style="opacity: 0.75; font-style: italic">{{ $t('units.noUnit') }}</span>
+
+        <ButtonShelf
+          v-if="
+            compareResource.originalId &&
+            compareResource.originalId == resource.id &&
+            compareResource.units?.length
+          "
+        >
+          <n-button secondary :title="$t('units.tipBtnApplyChanges')" @click="handleAcceptChanges">
+            <template #icon>
+              <n-icon :component="CheckOutlined" />
+            </template>
+            {{ $t('units.lblBtnApplyChanges') }}
+          </n-button>
+        </ButtonShelf>
       </n-alert>
 
       <template v-if="unitModel">

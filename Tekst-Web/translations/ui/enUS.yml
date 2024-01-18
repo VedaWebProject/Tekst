@@ -344,6 +344,8 @@ units:
   lblBtnCompareTip: Select other resource to compare with
   lblBtnCopyOriginal: Copy
   lblBtnCopyOriginalTip: Copy from original resource
+  lblBtnApplyChanges: Apply
+  tipBtnApplyChanges: Apply these changes
   forComparison: 'For comparison: "{title}"'
   lblBtnImport: Import
   tipBtnImport: Import content via preprocessed import file
