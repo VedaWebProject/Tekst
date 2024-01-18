@@ -356,8 +356,9 @@ units:
   tipBtnCompare: Andere Ressource auswählen, um mit ihr zu vergleichen
   lblBtnCopyOriginal: Kopieren
   tipBtnCopyOriginal: Aus Original-Ressource kopieren
-  lblBtnApplyChanges: Übernehmen
-  tipBtnApplyChanges: Diese Version des Inhalts in die Originalressource übernehmen
+  tipBtnApplyChanges: Diese Version des Inhalts übernehmen
+  tipBtnPrevChange: Zum nächstgelegenen vorhergehenden Inhalt in dieser Version springen
+  tipBtnNextChange: Zum nächstgelegenen nachfolgenden Inhalt in dieser Version springen
   forComparison: 'Zum Vergleich: "{title}"'
   noUnit: Für diese Fundstelle liegen keine Inhalte vor.
   btnAddUnit: Inhalt hinzufügen

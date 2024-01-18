@@ -52,6 +52,8 @@ import CompareArrowsOutlined from '@vicons/material/CompareArrowsOutlined';
 import AltRouteOutlined from '@vicons/material/AltRouteOutlined';
 import LayersFilled from '@vicons/material/LayersFilled';
 import MoveDownOutlined from '@vicons/material/MoveDownOutlined';
+import SkipPreviousFilled from '@vicons/material/SkipPreviousFilled';
+import SkipNextFilled from '@vicons/material/SkipNextFilled';
 
 type UnitFormModel = AnyUnitCreate & { id: string };
 
@@ -459,11 +461,20 @@ whenever(ArrowLeft, () => {
             compareResource.originalId == resource.id
           "
         >
+          <n-button secondary :title="$t('units.tipBtnPrevChange')" @click="handleApplyChanges">
+            <template #icon>
+              <n-icon :component="SkipPreviousFilled" />
+            </template>
+          </n-button>
           <n-button secondary :title="$t('units.tipBtnApplyChanges')" @click="handleApplyChanges">
             <template #icon>
               <n-icon :component="MoveDownOutlined" />
             </template>
-            {{ $t('units.lblBtnApplyChanges') }}
+          </n-button>
+          <n-button secondary :title="$t('units.tipBtnNextChange')" @click="handleApplyChanges">
+            <template #icon>
+              <n-icon :component="SkipNextFilled" />
+            </template>
           </n-button>
         </ButtonShelf>
       </n-alert>

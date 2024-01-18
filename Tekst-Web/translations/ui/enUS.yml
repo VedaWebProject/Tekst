@@ -346,8 +346,9 @@ units:
   tipBtnCompare: Select other resource to compare with
   lblBtnCopyOriginal: Copy
   tipBtnCopyOriginal: Copy from original resource
-  lblBtnApplyChanges: Apply
-  tipBtnApplyChanges: Apply this content version to the original resource
+  tipBtnApplyChanges: Apply this content version
+  tipBtnPrevChange: Skip to nearest preceding content in this version
+  tipBtnNextChange: Skip to nearest subsequent content in this version
   forComparison: 'For comparison: "{title}"'
   noUnit: There is no content for this location.
   btnAddUnit: Add content
