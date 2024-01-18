@@ -461,7 +461,7 @@ whenever(ArrowLeft, () => {
         secondary
         :disabled="loading || !compareResourceOptions.length"
         :focusable="false"
-        :title="$t('units.lblBtnCompareTip')"
+        :title="$t('units.tipBtnCompare')"
       >
         <template #icon>
           <n-icon :component="CompareArrowsOutlined" />
@@ -596,7 +596,7 @@ whenever(ArrowLeft, () => {
           <n-button
             v-if="!changed && resource.originalId && unitModel.resourceId == resource.originalId"
             type="primary"
-            :title="$t('units.lblBtnCopyOriginalTip')"
+            :title="$t('units.tipBtnCopyOriginal')"
             :disabled="loading"
             @click="handleSaveClick"
           >

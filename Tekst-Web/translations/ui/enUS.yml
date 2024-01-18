@@ -341,14 +341,14 @@ units:
   lblBtnDownloadTemplate: Template
   tipBtnDownloadTemplate: Download import template
   lblBtnCompare: Compare
-  lblBtnCompareTip: Select other resource to compare with
+  tipBtnCompare: Select other resource to compare with
   lblBtnCopyOriginal: Copy
-  lblBtnCopyOriginalTip: Copy from original resource
+  tipBtnCopyOriginal: Copy from original resource
   lblBtnApplyChanges: Apply
   tipBtnApplyChanges: Apply these changes
-  forComparison: 'For comparison: "{title}"'
   lblBtnImport: Import
   tipBtnImport: Import content via preprocessed import file
+  forComparison: 'For comparison: "{title}"'
   noUnit: There is no content for this location.
   btnAddUnit: Add content
   msgSaved: The content for this location has been saved.

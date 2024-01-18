@@ -351,14 +351,14 @@ units:
   lblBtnDownloadTemplate: Vorlage
   tipBtnDownloadTemplate: Importvorlage herunterladen
   lblBtnCompare: Vergleichen
-  lblBtnCompareTip: Andere Ressource auswählen, um mit ihr zu vergleichen
+  tipBtnCompare: Andere Ressource auswählen, um mit ihr zu vergleichen
   lblBtnCopyOriginal: Kopieren
-  lblBtnCopyOriginalTip: Aus Original-Ressource kopieren
+  tipBtnCopyOriginal: Aus Original-Ressource kopieren
   lblBtnApplyChanges: Übernehmen
   tipBtnApplyChanges: Diese Änderungen übernehmen
-  forComparison: 'Zum Vergleich: "{title}"'
   lblBtnImport: Importieren
   tipBtnImport: Inhalte über vorverarbeitete Datei importieren
+  forComparison: 'Zum Vergleich: "{title}"'
   noUnit: Für diese Fundstelle liegen keine Inhalte vor.
   btnAddUnit: Inhalt hinzufügen
   msgSaved: Der Inhalt für diese Fundstelle wurde gespeichert.
