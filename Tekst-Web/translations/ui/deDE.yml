@@ -1,6 +1,7 @@
 general:
   welcome: Willkommen, {name}!
   general: Allgemein
+  status: Status
   tipThemeToggleLight: Zu hellem Farbschema wechseln
   tipThemeToggleDark: Zu dunklem Farbschema wechseln
   yesAction: 'Ja'
@@ -265,9 +266,9 @@ resources:
   notPublic: '@:general.not @:models.resource.public'
   proposed: '@:models.resource.proposed'
   notProposed: '@:general.not @:models.resource.proposed'
-  transferAction: Ressource an Benutzer übertragen
+  transferAction: An Benutzer übertragen
   settingsAction: Einstellungen
-  unitsAction: Inhalte bearbeiten
+  unitsAction: Inhalte
   createVersionAction: Version dieser Ressource erstellen
   proposeAction: Für Veröffentlichung vorschlagen
   unproposeAction: Veröffentlichungsvorschlag zurücknehmen

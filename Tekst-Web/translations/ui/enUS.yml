@@ -1,6 +1,7 @@
 general:
   welcome: Welcome, {name}!
   general: General
+  status: Status
   tipThemeToggleLight: Switch to light mode
   tipThemeToggleDark: Switch to dark mode
   yesAction: 'Yes'
@@ -263,9 +264,9 @@ resources:
   notPublic: '@:general.not @:models.resource.public'
   proposed: '@:models.resource.proposed'
   notProposed: '@:general.not @:models.resource.proposed'
-  transferAction: Transfer resource to user
+  transferAction: Transfer to user
   settingsAction: Settings
-  unitsAction: Edit contents
+  unitsAction: Contents
   createVersionAction: Create version of this resource
   proposeAction: Propose for publication
   unproposeAction: Withdraw publication proposal

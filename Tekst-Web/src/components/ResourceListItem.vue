@@ -1,6 +1,15 @@
 <script setup lang="ts">
 import type { AnyResourceRead, UserRead } from '@/api';
-import { NSpace, NDropdown, NEllipsis, NIcon, NListItem, NThing, NButton } from 'naive-ui';
+import {
+  NSpace,
+  NDropdown,
+  NEllipsis,
+  NIcon,
+  NListItem,
+  NThing,
+  NButton,
+  type DropdownOption,
+} from 'naive-ui';
 import { computed, type Component, h } from 'vue';
 import ResourceInfoWidget from '@/components/browse/widgets/ResourceInfoWidget.vue';
 import ResourcePublicationStatus from '@/components/ResourcePublicationStatus.vue';
@@ -46,123 +55,126 @@ const isOwnerOrAdmin = computed(
     (props.currentUser.isSuperuser || props.currentUser.id === props.targetResource.ownerId)
 );
 
-const canDelete = computed(
-  () => isOwnerOrAdmin.value && !props.targetResource.public && !props.targetResource.proposed
-);
-
-const canPropose = computed(() => isOwnerOrAdmin.value && !props.targetResource.public);
-
 const actionOptions = computed(() => [
-  ...(canPropose.value
+  ...(props.targetResource.writable
     ? [
         {
-          label: $t('resources.proposeAction'),
-          key: 'propose',
-          icon: renderIcon(FlagFilled),
-          disabled:
-            !canPropose.value ||
-            props.targetResource.public ||
-            props.targetResource.proposed ||
-            !!props.targetResource.originalId,
-          action: () => emit('proposeClick', props.targetResource),
-        },
-        {
-          label: $t('resources.unproposeAction'),
-          key: 'unpropose',
-          icon: renderIcon(FlagOutlined),
-          disabled:
-            !canPropose.value ||
-            !props.targetResource.proposed ||
-            props.targetResource.public ||
-            !!props.targetResource.originalId,
-          action: () => emit('unproposeClick', props.targetResource),
-        },
-        {
-          type: 'divider',
-          key: 'proposalDivider',
+          type: 'group',
+          label: $t('general.editAction'),
+          children: [
+            {
+              label: $t('resources.settingsAction'),
+              key: 'settings',
+              icon: renderIcon(SettingsFilled),
+              action: () => emit('settingsClick', props.targetResource),
+            },
+            {
+              label: $t('resources.unitsAction'),
+              key: 'units',
+              icon: renderIcon(EditNoteOutlined),
+              action: () => emit('unitsClick', props.targetResource),
+            },
+          ],
         },
       ]
     : []),
-  ...(props.currentUser?.isSuperuser
+  ...(isOwnerOrAdmin.value
     ? [
         {
-          label: $t('resources.publishAction'),
-          key: 'publish',
-          icon: renderIcon(PublicFilled),
-          disabled:
-            !props.currentUser?.isSuperuser ||
-            !props.targetResource.proposed ||
-            props.targetResource.public ||
-            !!props.targetResource.originalId,
-          action: () => emit('publishClick', props.targetResource),
-        },
-        {
-          label: $t('resources.unpublishAction'),
-          key: 'unpublish',
-          icon: renderIcon(PublicOffFilled),
-          disabled:
-            !props.currentUser?.isSuperuser ||
-            !props.targetResource.public ||
-            !!props.targetResource.originalId,
-          action: () => emit('unpublishClick', props.targetResource),
-        },
-        {
-          type: 'divider',
-          key: 'publicationDivider',
+          type: 'group',
+          label: $t('general.status'),
+          children: [
+            ...(!props.targetResource.proposed && !props.targetResource.public
+              ? [
+                  {
+                    label: $t('resources.proposeAction'),
+                    key: 'propose',
+                    disabled: !!props.targetResource.originalId,
+                    icon: renderIcon(FlagFilled),
+                    action: () => emit('proposeClick', props.targetResource),
+                  },
+                ]
+              : []),
+            ...(props.targetResource.proposed && !props.targetResource.public
+              ? [
+                  {
+                    label: $t('resources.unproposeAction'),
+                    key: 'unpropose',
+                    disabled: !!props.targetResource.originalId,
+                    icon: renderIcon(FlagOutlined),
+                    action: () => emit('unproposeClick', props.targetResource),
+                  },
+                ]
+              : []),
+            ...(props.currentUser?.isSuperuser &&
+            !props.targetResource.public &&
+            props.targetResource.proposed
+              ? [
+                  {
+                    label: $t('resources.publishAction'),
+                    key: 'publish',
+                    disabled: !!props.targetResource.originalId,
+                    icon: renderIcon(PublicFilled),
+                    action: () => emit('publishClick', props.targetResource),
+                  },
+                ]
+              : []),
+            ...(props.currentUser?.isSuperuser &&
+            props.targetResource.public &&
+            !props.targetResource.proposed
+              ? [
+                  {
+                    label: $t('resources.unpublishAction'),
+                    key: 'unpublish',
+                    disabled: !!props.targetResource.originalId,
+                    icon: renderIcon(PublicOffFilled),
+                    action: () => emit('unpublishClick', props.targetResource),
+                  },
+                ]
+              : []),
+            {
+              label: $t('resources.transferAction'),
+              key: 'transfer',
+              icon: renderIcon(PersonFilled),
+              disabled: props.targetResource.public || props.targetResource.proposed,
+              action: () => emit('transferClick', props.targetResource),
+            },
+          ],
         },
       ]
     : []),
   {
-    label: $t('resources.settingsAction'),
-    key: 'settings',
-    icon: renderIcon(SettingsFilled),
-    disabled: !props.targetResource.writable,
-    action: () => emit('settingsClick', props.targetResource),
-  },
-  {
-    label: $t('resources.unitsAction'),
-    key: 'units',
-    icon: renderIcon(EditNoteOutlined),
-    disabled: !props.targetResource.writable,
-    action: () => emit('unitsClick', props.targetResource),
-  },
-  {
-    label: $t('resources.createVersionAction'),
-    key: 'version',
-    icon: renderIcon(AltRouteOutlined),
-    disabled: !!props.targetResource.originalId,
-    action: () => emit('createVersionClick', props.targetResource),
-  },
-  {
-    type: 'divider',
-    key: 'editDivider',
-  },
-  {
-    label: $t('resources.transferAction'),
-    key: 'transfer',
-    icon: renderIcon(PersonFilled),
-    disabled: !isOwnerOrAdmin.value || props.targetResource.public || props.targetResource.proposed,
-    action: () => emit('transferClick', props.targetResource),
-  },
-  {
-    label: $t('general.deleteAction'),
-    key: 'delete',
-    icon: renderIcon(DeleteFilled),
-    disabled: !canDelete.value,
-    action: () => emit('deleteClick', props.targetResource),
+    type: 'group',
+    label: $t('general.general'),
+    children: [
+      {
+        label: $t('resources.createVersionAction'),
+        key: 'version',
+        icon: renderIcon(AltRouteOutlined),
+        disabled: !!props.targetResource.originalId,
+        action: () => emit('createVersionClick', props.targetResource),
+      },
+      ...(isOwnerOrAdmin.value
+        ? [
+            {
+              label: $t('general.deleteAction'),
+              key: 'delete',
+              icon: renderIcon(DeleteFilled),
+              disabled: props.targetResource.public || props.targetResource.proposed,
+              action: () => emit('deleteClick', props.targetResource),
+            },
+          ]
+        : []),
+    ],
   },
 ]);
-
-const showActionsDropdown = computed(
-  () => !!actionOptions.value.filter((o) => !!o.label && !o.disabled).length
-);
 
 function renderIcon(icon: Component) {
   return () => h(NIcon, null, { default: () => h(icon) });
 }
 
-function handleActionSelect(key: string) {
-  actionOptions.value.find((o) => o.key === key)?.action?.();
+function handleActionSelect(o: DropdownOption & { action?: () => void }) {
+  o.action?.();
 }
 </script>
 
@@ -172,12 +184,11 @@ function handleActionSelect(key: string) {
       <template #header-extra>
         <n-space>
           <n-dropdown
-            v-if="showActionsDropdown"
             :options="actionOptions"
             :size="state.dropdownSize"
             to="#app-container"
             trigger="click"
-            @select="handleActionSelect"
+            @select="(_, o) => handleActionSelect(o)"
           >
             <n-button quaternary circle :focusable="false">
               <template #icon>
