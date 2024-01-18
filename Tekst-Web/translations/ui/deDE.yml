@@ -296,6 +296,7 @@ resources:
   warnDelete: |
     Sind Sie sicher, dass Sie diese Ressource und alle
     mit ihr verbundenen Daten löschen wollen?
+    Dies kann nicht rückgängig gemacht werden.
   infoCreateVersion: |
     Sie sind dabei, eine neue Version der Ressource "{title}" zu erstellen.
     Diese neue Version wird für Fundstellen, für die sie keine eigenen Inhalte enthält,
@@ -473,6 +474,7 @@ admin:
         Wenn Sie diesen Text ("{title}") löschen, werden alle Daten, die sich auf ihn
         beziehen, ebenfalls gelöscht. Dies schließt die Textstruktur sowie alle
         Ressourcen mit ein – unabhängig von welchem User sie erstellt wurden.
+        Dies kann nicht rückgängig gemacht werden.
         Sind Sie sich sicher?
       msgDeleted: Text "{title}" gelöscht
     levels:
@@ -503,7 +505,9 @@ admin:
         an Ihre Bedürfnisse anpassen müssen.
         Bitte vergewissern Sie sich, dass Sie wissen,
         was Sie tun und machen Sie ein Backup Ihrer Datenbank,
-        bevor Sie diese Aktion durchführen! Sind Sie sich sicher, dass Sie die
+        bevor Sie diese Aktion durchführen!
+        Dies kann nicht rückgängig gemacht werden.
+        Sind Sie sich sicher, dass Sie die
         Textebene "{levelLabel}" löschen möchten?
     nodes:
       heading: Knoten
@@ -535,7 +539,8 @@ admin:
         die von anderen Benutzern angelegt wurden. Falls Sie ihr Ziel auch durch das Verschieben
         des Knotens auf seiner Strukturebene erreichen können, sollten sie das stattdessen tun,
         da auf diese Weise keine Daten gelöscht würden.
-        Nun, sind Sie sich wirklich sicher, dass Sie den ausgewählten Knoten löschen wollen?
+        Dies kann nicht rückgängig gemacht werden.
+        Sind Sie sich wirklich sicher, dass Sie den ausgewählten Knoten löschen wollen?
       tipDeleteNode: Knoten "{node}" löschen
       infoDeletedNode: Knoten "{node}" gelöscht (insgesamt {nodes} Knoten und {units} Daten-Einheiten)
       infoMovedNode: Knoten "{node}" auf position {position} von Ebene "{level}" verschoben

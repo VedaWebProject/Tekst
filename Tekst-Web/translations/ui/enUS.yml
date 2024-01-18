@@ -287,6 +287,7 @@ resources:
     Are you sure you want to withdraw the publication of this resource?
   warnDelete: |
     Are you sure you want to delete this resource and all data associated with it?
+    This cannot be undone.
   infoCreateVersion: |
     You are about to create a new version of the resource "{title}".
     This new version will display contents from the original resource for locations
@@ -462,7 +463,7 @@ admin:
       warnDeleteText: |
         Deleting this text ("{title}") will delete all data associated with it,
         including its configured structure and all resources, regardless of the
-        user who created it. Are you sure?
+        user who created it. This cannot be undone. Are you sure?
       msgDeleted: Text "{title}" deleted
     levels:
       heading: Levels
@@ -485,7 +486,7 @@ admin:
         on this level, regardless of the user who created it!
         The application will try its best to re-connect adjacent levels,
         but you will have to adjust the result to your needs using the text's
-        structure nodes settings afterwards.
+        structure nodes settings afterwards. This cannot be undone.
         Please make sure you know what you are doing and make a backup
         of your database before doing this! Are you sure you want to delete the text
         level "{levelLabel}"?
@@ -515,6 +516,7 @@ admin:
         even ones created by other users. If what you want to do can be achieved by
         merely moving the node within the structure level it is on, you should do
         so instead, as moving nodes works without deleting any data.
+        This cannot be undone.
         Now, are you really sure you want to delete the selected structure node?
       tipDeleteNode: Delete node "{node}"
       infoDeletedNode: Deleted node "{node}" (total of {nodes} nodes and {units} data units)
