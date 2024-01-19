@@ -206,11 +206,11 @@ export const textFormRules: Record<string, FormItemRule[]> = {
   ],
 };
 
-export const nodeFormRules: Record<string, FormItemRule[]> = {
+export const locationFormRules: Record<string, FormItemRule[]> = {
   label: [
     {
       required: true,
-      message: () => $t('forms.rulesFeedback.isRequired', { x: $t('models.node.label') }),
+      message: () => $t('forms.rulesFeedback.isRequired', { x: $t('models.location.label') }),
       trigger: 'blur',
     },
     {

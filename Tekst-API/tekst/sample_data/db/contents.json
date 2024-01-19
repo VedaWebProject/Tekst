@@ -4,7 +4,7 @@
     "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
     "resource_type": "plaintext",
-    "node_id": { "$oid": "654b825533ee5737b297f8e5" },
+    "location_id": { "$oid": "654b825533ee5737b297f8e5" },
     "meta": null,
     "text": "Fuchs, du hast die Gans gestohlen,"
   },
@@ -13,7 +13,7 @@
     "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
     "resource_type": "plaintext",
-    "node_id": { "$oid": "654b825533ee5737b297f8e6" },
+    "location_id": { "$oid": "654b825533ee5737b297f8e6" },
     "meta": null,
     "text": "|: gib sie wieder her! :|"
   },
@@ -22,7 +22,7 @@
     "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
     "resource_type": "plaintext",
-    "node_id": { "$oid": "654b825533ee5737b297f8e7" },
+    "location_id": { "$oid": "654b825533ee5737b297f8e7" },
     "meta": null,
     "text": "|: Sonst wird sie der Jäger holen"
   },
@@ -31,7 +31,7 @@
     "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
     "resource_type": "plaintext",
-    "node_id": { "$oid": "654b825533ee5737b297f8e8" },
+    "location_id": { "$oid": "654b825533ee5737b297f8e8" },
     "meta": null,
     "text": "mit dem Schießgewehr. :|"
   },
@@ -40,7 +40,7 @@
     "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
     "resource_type": "plaintext",
-    "node_id": { "$oid": "654b825533ee5737b297f8ea" },
+    "location_id": { "$oid": "654b825533ee5737b297f8ea" },
     "meta": null,
     "text": "Seine große, lange Flinte"
   },
@@ -49,7 +49,7 @@
     "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
     "resource_type": "plaintext",
-    "node_id": { "$oid": "654b825533ee5737b297f8eb" },
+    "location_id": { "$oid": "654b825533ee5737b297f8eb" },
     "meta": null,
     "text": "|: schießt auf dich den Schrot, :|"
   },
@@ -58,7 +58,7 @@
     "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
     "resource_type": "plaintext",
-    "node_id": { "$oid": "654b825533ee5737b297f8ec" },
+    "location_id": { "$oid": "654b825533ee5737b297f8ec" },
     "meta": null,
     "text": "|: dass dich färbt die rote Tinte"
   },
@@ -67,7 +67,7 @@
     "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
     "resource_type": "plaintext",
-    "node_id": { "$oid": "654b825533ee5737b297f8ed" },
+    "location_id": { "$oid": "654b825533ee5737b297f8ed" },
     "meta": null,
     "text": "und dann bist du tot. :|"
   },
@@ -76,7 +76,7 @@
     "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
     "resource_type": "plaintext",
-    "node_id": { "$oid": "654b825533ee5737b297f8ef" },
+    "location_id": { "$oid": "654b825533ee5737b297f8ef" },
     "meta": null,
     "text": "Liebes Füchslein, lass dir raten,"
   },
@@ -85,7 +85,7 @@
     "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
     "resource_type": "plaintext",
-    "node_id": { "$oid": "654b825533ee5737b297f8f0" },
+    "location_id": { "$oid": "654b825533ee5737b297f8f0" },
     "meta": null,
     "text": "|: sei doch nur kein Dieb; :|"
   },
@@ -93,7 +93,7 @@
     "_id": { "$oid": "654b825533ee5737b297f8fe" },
     "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
-    "node_id": { "$oid": "654b825533ee5737b297f8f1" },
+    "location_id": { "$oid": "654b825533ee5737b297f8f1" },
     "resource_type": "plaintext",
     "meta": null,
     "text": "|: nimm, du brauchst nicht Gänsebraten,"
@@ -103,7 +103,7 @@
     "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
     "resource_type": "plaintext",
-    "node_id": { "$oid": "654b825533ee5737b297f8f2" },
+    "location_id": { "$oid": "654b825533ee5737b297f8f2" },
     "meta": null,
     "text": "mit der Maus vorlieb. :|"
   },
@@ -112,7 +112,7 @@
     "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654ba3a6ec7833e469dde77a" },
     "resource_type": "plaintext",
-    "node_id": { "$oid": "654ba282ec7833e469dde766" },
+    "location_id": { "$oid": "654ba282ec7833e469dde766" },
     "meta": null,
     "text": "古池や"
   },
@@ -121,7 +121,7 @@
     "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654ba3a6ec7833e469dde77a" },
     "resource_type": "plaintext",
-    "node_id": { "$oid": "654ba287ec7833e469dde767" },
+    "location_id": { "$oid": "654ba287ec7833e469dde767" },
     "meta": null,
     "text": "蛙飛び込む"
   },
@@ -130,7 +130,7 @@
     "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654ba3a6ec7833e469dde77a" },
     "resource_type": "plaintext",
-    "node_id": { "$oid": "654ba288ec7833e469dde768" },
+    "location_id": { "$oid": "654ba288ec7833e469dde768" },
     "meta": null,
     "text": "水の音"
   },
@@ -139,7 +139,7 @@
     "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654ba525ec7833e469dde77e" },
     "resource_type": "plaintext",
-    "node_id": { "$oid": "654ba288ec7833e469dde768" },
+    "location_id": { "$oid": "654ba288ec7833e469dde768" },
     "meta": null,
     "text": "sound of water."
   },
@@ -148,7 +148,7 @@
     "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654ba525ec7833e469dde77e" },
     "resource_type": "plaintext",
-    "node_id": { "$oid": "654ba287ec7833e469dde767" },
+    "location_id": { "$oid": "654ba287ec7833e469dde767" },
     "meta": null,
     "text": "a frog jumps in,"
   },
@@ -157,7 +157,7 @@
     "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654ba525ec7833e469dde77e" },
     "resource_type": "plaintext",
-    "node_id": { "$oid": "654ba282ec7833e469dde766" },
+    "location_id": { "$oid": "654ba282ec7833e469dde766" },
     "meta": null,
     "text": "The old pond-"
   },
@@ -166,7 +166,7 @@
     "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654ba678ec7833e469dde782" },
     "resource_type": "plaintext",
-    "node_id": { "$oid": "654ba282ec7833e469dde766" },
+    "location_id": { "$oid": "654ba282ec7833e469dde766" },
     "meta": null,
     "text": "Furu ike ya"
   },
@@ -175,7 +175,7 @@
     "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654ba678ec7833e469dde782" },
     "resource_type": "plaintext",
-    "node_id": { "$oid": "654ba287ec7833e469dde767" },
+    "location_id": { "$oid": "654ba287ec7833e469dde767" },
     "meta": null,
     "text": "kawazu tobikomu"
   },
@@ -184,7 +184,7 @@
     "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654ba678ec7833e469dde782" },
     "resource_type": "plaintext",
-    "node_id": { "$oid": "654ba288ec7833e469dde768" },
+    "location_id": { "$oid": "654ba288ec7833e469dde768" },
     "meta": null,
     "text": "mizu no oto"
   }

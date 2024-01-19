@@ -151,11 +151,11 @@ export function useAdminMenuOptions(showIcons: boolean = true) {
           key: 'adminTextsLevels',
         },
         {
-          label: renderLink(() => $t('admin.text.nodes.heading'), {
-            name: 'adminTextsNodes',
+          label: renderLink(() => $t('admin.text.locations.heading'), {
+            name: 'adminTextsLocations',
             params: { text: state.text?.slug },
           }),
-          key: 'adminTextsNodes',
+          key: 'adminTextsLocations',
         },
       ],
     },

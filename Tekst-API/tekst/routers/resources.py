@@ -25,7 +25,7 @@ from tekst.auth import OptionalUserDep, SuperuserDep, UserDep
 from tekst.logging import log
 from tekst.models.content import ContentBaseDocument
 from tekst.models.exchange import ResourceDataImportResponse, ResourceImportData
-from tekst.models.node import NodeDocument
+from tekst.models.location import LocationDocument
 from tekst.models.resource import ResourceBaseDocument
 from tekst.models.text import TextDocument
 from tekst.models.user import UserDocument, UserRead, UserReadPublic
@@ -548,8 +548,8 @@ async def get_resource_template(
     # add resource template README text
     template["__README"] = get_resource_template_readme()
 
-    # construct labels of all nodes on the resource's level
-    node_locations = await NodeDocument.get_node_locations(
+    # construct labels of all locations on the resource's level
+    location_locations = await LocationDocument.get_location_locations(
         text_id=text_doc.id,
         for_level=resource_doc.level,
         loc_delim=text_doc.loc_delim,
@@ -558,15 +558,15 @@ async def get_resource_template(
     # fill in content templates with IDs and some informational fields
     template["contents"] = [
         dict(
-            nodeId=str(node.id),
-            _position=node.position,
-            _location=node_locations.get(str(node.id)),
+            locationId=str(location.id),
+            _position=location.position,
+            _location=location_locations.get(str(location.id)),
         )
-        for node in await NodeDocument.find(
-            NodeDocument.text_id == resource_doc.text_id,
-            NodeDocument.level == resource_doc.level,
+        for location in await LocationDocument.find(
+            LocationDocument.text_id == resource_doc.text_id,
+            LocationDocument.level == resource_doc.level,
         )
-        .sort(+NodeDocument.position)
+        .sort(+LocationDocument.position)
         .to_list()
     ]
 
@@ -643,13 +643,13 @@ async def import_resource_data(
     # find contents that already exist and have to be updated instead of created
     try:
         existing_contents_dict = {
-            str(content_doc.node_id): content_doc
+            str(content_doc.location_id): content_doc
             for content_doc in await ContentBaseDocument.find(
                 ContentBaseDocument.resource_id == resource.id,
                 In(
-                    ContentBaseDocument.node_id,
+                    ContentBaseDocument.location_id,
                     [
-                        PydanticObjectId(content_data.get("nodeId", ""))
+                        PydanticObjectId(content_data.get("locationId", ""))
                         for content_data in structure_def.contents
                     ],
                 ),
@@ -659,7 +659,7 @@ async def import_resource_data(
     except InvalidId as e:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=f"Invalid nodeId value: {str(e)}",
+            detail=f"Invalid locationId value: {str(e)}",
         )
 
     # create lists of validated content updates/creates depending on whether they exist
@@ -674,7 +674,7 @@ async def import_resource_data(
         resource_types_mgr.get(resource.resource_type).content_model().create_model()
     )
     for content_data in structure_def.contents:
-        is_update = str(content_data.get("nodeId", "")) in existing_contents_dict
+        is_update = str(content_data.get("locationId", "")) in existing_contents_dict
         try:
             contents["updates" if is_update else "creates"].append(
                 (update_model if is_update else create_model)(
@@ -696,11 +696,12 @@ async def import_resource_data(
     updated_count = 0
     errors_count = 0
     for update in contents["updates"]:
-        content_doc = existing_contents_dict.get(str(update.node_id))
+        content_doc = existing_contents_dict.get(str(update.location_id))
         if content_doc:
             try:
                 await content_doc.apply_updates(
-                    update, exclude={"id", "resource_id", "node_id", "resource_type"}
+                    update,
+                    exclude={"id", "resource_id", "location_id", "resource_type"},
                 )
                 updated_count += 1
             except (ValueError, DocumentNotFound) as e:
@@ -716,17 +717,17 @@ async def import_resource_data(
     content_document_model = (
         resource_types_mgr.get(resource.resource_type).content_model().document_model()
     )
-    # get node IDs from target level to check if the ones in new contents are valid
-    existing_node_ids = {
+    # get location IDs from target level to check if the ones in new contents are valid
+    existing_location_ids = {
         n.id
-        for n in await NodeDocument.find(
-            NodeDocument.text_id == resource.text_id,
-            NodeDocument.level == resource.level,
+        for n in await LocationDocument.find(
+            LocationDocument.text_id == resource.text_id,
+            LocationDocument.level == resource.level,
         ).to_list()
     }
-    # filter out contents that reference non-existent node IDs
+    # filter out contents that reference non-existent location IDs
     contents["creates"] = [
-        u for u in contents["creates"] if u.node_id in existing_node_ids
+        u for u in contents["creates"] if u.location_id in existing_location_ids
     ]
 
     # insert new contents

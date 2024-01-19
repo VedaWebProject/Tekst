@@ -7,9 +7,9 @@ from fastapi import APIRouter, HTTPException, Path, Query, status
 from tekst.auth import OptionalUserDep, UserDep
 from tekst.models.content import ContentBaseDocument
 from tekst.models.exchange import LocationData
-from tekst.models.node import (
-    NodeDocument,
-    NodeRead,
+from tekst.models.location import (
+    LocationDocument,
+    LocationRead,
 )
 from tekst.models.resource import (
     ResourceBaseDocument,
@@ -41,17 +41,17 @@ async def get_content_siblings(
             description="ID of resource the requested contents belong to",
         ),
     ],
-    parent_node_id: Annotated[
+    parent_location_id: Annotated[
         PydanticObjectId | None,
         Query(
             alias="parent",
-            description="ID of node for which siblings to get associated contents for",
+            description="ID of location for which siblings to get contents for",
         ),
     ] = None,
 ) -> list[ContentBaseDocument]:
     """
     Returns a list of all resource contents belonging to the resource
-    with the given ID, associated to nodes that are children of the parent node
+    with the given ID, associated to locations that are children of the parent location
     with the given ID.
 
     As the resulting list may contain contents of arbitrary type, the
@@ -70,20 +70,20 @@ async def get_content_siblings(
             detail=f"Resource with ID {resource_id} could not be found.",
         )
 
-    node_ids = [
-        node.id
-        for node in await NodeDocument.find(
-            NodeDocument.text_id == resource.text_id,
-            NodeDocument.level == resource.level,
-            NodeDocument.parent_id == parent_node_id,
+    location_ids = [
+        location.id
+        for location in await LocationDocument.find(
+            LocationDocument.text_id == resource.text_id,
+            LocationDocument.level == resource.level,
+            LocationDocument.parent_id == parent_location_id,
         )
-        .sort(+NodeDocument.position)
+        .sort(+LocationDocument.position)
         .to_list()
     ]
 
     content_docs = await ContentBaseDocument.find(
         ContentBaseDocument.resource_id == resource_id,
-        In(ContentBaseDocument.node_id, node_ids),
+        In(ContentBaseDocument.location_id, location_ids),
         with_children=True,
     ).to_list()
 
@@ -92,16 +92,18 @@ async def get_content_siblings(
     if resource.original_id:
         original_content_docs = await ContentBaseDocument.find(
             ContentBaseDocument.resource_id == resource.original_id,
-            In(ContentBaseDocument.node_id, node_ids),
-            NotIn(ContentBaseDocument.node_id, [u.node_id for u in content_docs]),
+            In(ContentBaseDocument.location_id, location_ids),
+            NotIn(
+                ContentBaseDocument.location_id, [u.location_id for u in content_docs]
+            ),
             with_children=True,
         ).to_list()
     else:
         original_content_docs = []
 
-    # combine contents lists, sort by reference node position, return
+    # combine contents lists, sort by reference location position, return
     content_docs.extend(original_content_docs)
-    content_docs.sort(key=lambda u: node_ids.index(u.node_id))
+    content_docs.sort(key=lambda u: location_ids.index(u.location_id))
     return content_docs
 
 
@@ -127,35 +129,35 @@ async def get_location_data(
         bool,
         Query(
             alias="head",
-            description="Only return contents referencing the head node of the path",
+            description="Only return contents for the head location of the path",
         ),
     ] = False,
     limit: Annotated[int, Query(description="Return at most <limit> contents")] = 4096,
 ) -> LocationData:
     """
-    Returns the node path from the node with the given level/position
-    as the last element, up to its most distant ancestor node
+    Returns the location path from the location with the given level/position
+    as the last element, up to its most distant ancestor location
     on structure level 0 as the first element of an array as well as all contents
-    for the given resource(s) referencing the nodes in the node path.
+    for the given resource(s) referencing the locations in the location path.
     """
-    node_doc = await NodeDocument.find_one(
-        NodeDocument.text_id == text_id,
-        NodeDocument.level == level,
-        NodeDocument.position == position,
+    location_doc = await LocationDocument.find_one(
+        LocationDocument.text_id == text_id,
+        LocationDocument.level == level,
+        LocationDocument.position == position,
     )
-    if not node_doc:
+    if not location_doc:
         return LocationData()
-    # construct path up to root node
-    node_path = [node_doc]
-    parent_id = node_doc.parent_id
+    # construct path up to root location
+    location_path = [location_doc]
+    parent_id = location_doc.parent_id
     while parent_id:
-        parent_doc = await NodeDocument.get(parent_id)
-        node_path.insert(0, parent_doc)
+        parent_doc = await LocationDocument.get(parent_id)
+        location_path.insert(0, parent_doc)
         parent_id = parent_doc.parent_id
-    node_ids = (
-        [node.id for node in node_path]
+    location_ids = (
+        [location.id for location in location_path]
         if not only_head_contents
-        else [node_path[-1].id]
+        else [location_path[-1].id]
     )
 
     # collect contents
@@ -166,7 +168,7 @@ async def get_location_data(
     content_docs = (
         await ContentBaseDocument.find(
             In(ContentBaseDocument.resource_id, resource_ids) if resource_ids else {},
-            In(ContentBaseDocument.node_id, node_ids) if node_ids else {},
+            In(ContentBaseDocument.location_id, location_ids) if location_ids else {},
             In(
                 ContentBaseDocument.resource_id,
                 [resource.id for resource in readable_resources],
@@ -178,7 +180,7 @@ async def get_location_data(
     )
 
     # return combined data as LocationData
-    return LocationData(node_path=node_path, contents=content_docs)
+    return LocationData(location_path=location_path, contents=content_docs)
 
 
 @router.get("/nearest-content", status_code=status.HTTP_200_OK)
@@ -225,17 +227,19 @@ async def get_nearest_content(
             detail=f"No resource with ID {target_resource_id}",
         )
 
-    # get all nodes before/after said location
-    nodes = (
-        await NodeDocument.find(
-            NodeDocument.text_id == resource_doc.text_id,
-            NodeDocument.level == resource_doc.level,
-            (NodeDocument.position < position)
+    # get all locations before/after said location
+    locations = (
+        await LocationDocument.find(
+            LocationDocument.text_id == resource_doc.text_id,
+            LocationDocument.level == resource_doc.level,
+            (LocationDocument.position < position)
             if mode == "preceding"
-            else (NodeDocument.position > position),
+            else (LocationDocument.position > position),
         )
         .sort(
-            +NodeDocument.position if mode == "subsequent" else -NodeDocument.position
+            +LocationDocument.position
+            if mode == "subsequent"
+            else -LocationDocument.position
         )
         .to_list()
     )
@@ -247,84 +251,86 @@ async def get_nearest_content(
             f"position {position} for resource {target_resource_id}."
         ),
     )
-    if not nodes:  # pragma: no cover
+    if not locations:  # pragma: no cover
         raise not_found_exception
 
-    # get contents for these nodes
+    # get contents for these locations
     contents = await ContentBaseDocument.find(
         ContentBaseDocument.resource_id == target_resource_id,
-        In(ContentBaseDocument.node_id, [node.id for node in nodes]),
+        In(ContentBaseDocument.location_id, [location.id for location in locations]),
         with_children=True,
     ).to_list()
     if not contents:  # pragma: no cover
         raise not_found_exception
 
     # find out nearest of those locations with contents
-    nodes = [
-        node for node in nodes if node.id in [content.node_id for content in contents]
+    locations = [
+        location
+        for location in locations
+        if location.id in [content.location_id for content in contents]
     ]
 
-    # return position of nearest node with contents of the target resource
-    return nodes[0].position
+    # return position of nearest location with contents of the target resource
+    return locations[0].position
 
 
 @router.get(
-    "/nodes/{id}/path/options-by-head",
-    response_model=list[list[NodeRead]],
+    "/locations/{id}/path/options-by-head",
+    response_model=list[list[LocationRead]],
     status_code=status.HTTP_200_OK,
 )
 async def get_path_options_by_head_id(
-    node_id: Annotated[PydanticObjectId, Path(alias="id")],
-) -> list[list[NodeDocument]]:
+    location_id: Annotated[PydanticObjectId, Path(alias="id")],
+) -> list[list[LocationDocument]]:
     """
-    Returns the options for selecting text locations derived from the node path of
-    the node with the given ID as head.
+    Returns the options for selecting text locations derived from the location path of
+    the location with the given ID as head.
     """
-    node_doc = await NodeDocument.get(node_id)
-    if not node_doc:
+    location_doc = await LocationDocument.get(location_id)
+    if not location_doc:
         return []
-    # construct options for this path up to root node
+    # construct options for this path up to root location
     options = []
-    while node_doc:
+    while location_doc:
         siblings = (
-            await NodeDocument.find(
-                NodeDocument.text_id == node_doc.text_id,
-                NodeDocument.parent_id == node_doc.parent_id,
+            await LocationDocument.find(
+                LocationDocument.text_id == location_doc.text_id,
+                LocationDocument.parent_id == location_doc.parent_id,
             )
-            .sort(+NodeDocument.position)
+            .sort(+LocationDocument.position)
             .to_list()
         )
         options.insert(0, siblings)
-        node_doc = await NodeDocument.get(node_doc.parent_id)
+        location_doc = await LocationDocument.get(location_doc.parent_id)
     return options
 
 
 @router.get(
-    "/nodes/{id}/path/options-by-root",
-    response_model=list[list[NodeRead]],
+    "/locations/{id}/path/options-by-root",
+    response_model=list[list[LocationRead]],
     status_code=status.HTTP_200_OK,
 )
 async def get_path_options_by_root(
-    node_id: Annotated[PydanticObjectId, Path(alias="id")],
-) -> list[list[NodeDocument]]:
+    location_id: Annotated[PydanticObjectId, Path(alias="id")],
+) -> list[list[LocationDocument]]:
     """
-    Returns the options for selecting text locations derived from the node path of
-    the node with the given ID as root. At each level, the first option is taken
+    Returns the options for selecting text locations derived from the location path of
+    the location with the given ID as root. At each level, the first option is taken
     as the basis for the next level.
     """
-    node_doc = await NodeDocument.get(node_id)
-    if not node_doc:
+    location_doc = await LocationDocument.get(location_id)
+    if not location_doc:
         return []
     # construct options for this path up to max_level
     options = []
-    while node_doc:
-        children = await NodeDocument.find(
-            NodeDocument.parent_id == node_doc.id
+    while location_doc:
+        children = await LocationDocument.find(
+            LocationDocument.parent_id == location_doc.id
         ).to_list()
         if len(children) == 0:
             break
         options.append(children)
-        node_doc = children[0]
+        location_doc = children[0]
     return options
 
 
@@ -350,9 +356,9 @@ async def get_resource_coverage_data(
             ContentBaseDocument.resource_id == resource_id,
             with_children=True,
         ).count(),
-        "total": await NodeDocument.find(
-            NodeDocument.text_id == resource_doc.text_id,
-            NodeDocument.level == resource_doc.level,
+        "total": await LocationDocument.find(
+            LocationDocument.text_id == resource_doc.text_id,
+            LocationDocument.level == resource_doc.level,
         ).count(),
     }
 
@@ -375,25 +381,25 @@ async def get_detailed_resource_coverage_data(
             status.HTTP_404_NOT_FOUND, detail=f"No resource with ID {resource_id}"
         )
     data: list[dict] = (
-        await NodeDocument.find(
-            NodeDocument.text_id == resource_doc.text_id,
-            NodeDocument.level == resource_doc.level,
+        await LocationDocument.find(
+            LocationDocument.text_id == resource_doc.text_id,
+            LocationDocument.level == resource_doc.level,
         )
-        .sort(+NodeDocument.position)
+        .sort(+LocationDocument.position)
         .aggregate(
             [
                 {
                     "$lookup": {
                         "from": "contents",
                         "localField": "_id",
-                        "foreignField": "node_id",
-                        "let": {"node_id": "$_id", "resource_id": resource_id},
+                        "foreignField": "location_id",
+                        "let": {"location_id": "$_id", "resource_id": resource_id},
                         "pipeline": [
                             {
                                 "$match": {
                                     "$expr": {
                                         "$and": [
-                                            {"$eq": ["$node_id", "$$node_id"]},
+                                            {"$eq": ["$location_id", "$$location_id"]},
                                             {"$eq": ["$resource_id", "$$resource_id"]},
                                         ]
                                     }
@@ -418,22 +424,24 @@ async def get_detailed_resource_coverage_data(
         .to_list()
     )
 
-    # get parent level node location labels
-    parent_node_locations = await NodeDocument.get_node_locations(
+    # get parent level location location labels
+    parent_location_locations = await LocationDocument.get_location_locations(
         text_id=resource_doc.text_id, for_level=resource_doc.level - 1
     )
 
-    # group nodes by parent
+    # group locations by parent
     out = []
     parent_labels = []
     prev_parent_id = "init"
-    for node in data:
-        if node["parent_id"] == prev_parent_id:
-            out[-1].append(node)
+    for location in data:
+        if location["parent_id"] == prev_parent_id:
+            out[-1].append(location)
         else:
-            out.append([node])
-            if node["parent_id"]:
-                parent_labels.append(parent_node_locations[str(node["parent_id"])])
-        prev_parent_id = node["parent_id"]
+            out.append([location])
+            if location["parent_id"]:
+                parent_labels.append(
+                    parent_location_locations[str(location["parent_id"])]
+                )
+        prev_parent_id = location["parent_id"]
 
-    return ResourceCoverageDetails(nodes_coverage=out, parent_labels=parent_labels)
+    return ResourceCoverageDetails(locations_coverage=out, parent_labels=parent_labels)

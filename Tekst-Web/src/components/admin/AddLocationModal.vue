@@ -1,42 +1,42 @@
 <script setup lang="ts">
 import { POST } from '@/api';
 import { $t } from '@/i18n';
-import type { NodeTreeOption } from '@/views/admin/AdminTextsNodesView.vue';
+import type { LocationTreeOption } from '@/views/admin/AdminTextsLocationsView.vue';
 import { NForm, NFormItem, NButton, NInput, type InputInst, type FormInst } from 'naive-ui';
 import ButtonShelf from '@/components/ButtonShelf.vue';
 import { nextTick, ref } from 'vue';
-import { nodeFormRules } from '@/forms/formRules';
+import { locationFormRules } from '@/forms/formRules';
 import { useStateStore } from '@/stores';
 import { useMessages } from '@/messages';
 import GenericModal from '@/components/GenericModal.vue';
 
-const props = withDefaults(defineProps<{ show: boolean; parent: NodeTreeOption | null }>(), {
+const props = withDefaults(defineProps<{ show: boolean; parent: LocationTreeOption | null }>(), {
   show: false,
 });
 const emits = defineEmits(['update:show', 'submit']);
 
-const initialNodeModel = () => ({
+const initialLocationModel = () => ({
   label: '',
 });
 
 const state = useStateStore();
 const { message } = useMessages();
 
-const nodeFormRef = ref<FormInst | null>(null);
-const nodeFormModel = ref<Record<string, string | null>>(initialNodeModel());
+const locationFormRef = ref<FormInst | null>(null);
+const locationFormModel = ref<Record<string, string | null>>(initialLocationModel());
 
 const loading = ref(false);
 
-const nodeRenameInputRef = ref<InputInst | null>(null);
+const locationRenameInputRef = ref<InputInst | null>(null);
 
 async function handleSubmit() {
   loading.value = true;
-  nodeFormRef.value
+  locationFormRef.value
     ?.validate(async (validationErrors) => {
       if (!validationErrors) {
-        const { data, error } = await POST('/nodes', {
+        const { data, error } = await POST('/locations', {
           body: {
-            label: nodeFormModel.value.label || '',
+            label: locationFormModel.value.label || '',
             level: (props.parent?.level ?? -1) + 1,
             position: Number.MAX_SAFE_INTEGER,
             textId: state.text?.id || '',
@@ -58,12 +58,12 @@ async function handleSubmit() {
   <GenericModal
     :show="show"
     @update:show="$emit('update:show', $event)"
-    @after-enter="nextTick(() => nodeRenameInputRef?.focus())"
-    @after-leave="nodeFormModel.label = ''"
+    @after-enter="nextTick(() => locationRenameInputRef?.focus())"
+    @after-leave="locationFormModel.label = ''"
   >
     <h2>
       {{
-        $t('admin.text.nodes.add.heading', {
+        $t('admin.text.locations.add.heading', {
           level: state.textLevelLabels[(props.parent?.level ?? -1) + 1],
           parentLabel: props.parent?.label || state.text?.title || '',
         })
@@ -71,18 +71,18 @@ async function handleSubmit() {
     </h2>
 
     <n-form
-      ref="nodeFormRef"
-      :model="nodeFormModel"
-      :rules="nodeFormRules"
+      ref="locationFormRef"
+      :model="locationFormModel"
+      :rules="locationFormRules"
       :disabled="loading"
       label-placement="top"
       label-width="auto"
       require-mark-placement="right-hanging"
     >
-      <n-form-item path="label" :label="$t('models.node.label')">
+      <n-form-item path="label" :label="$t('models.location.label')">
         <n-input
-          ref="nodeRenameInputRef"
-          v-model:value="nodeFormModel.label"
+          ref="locationRenameInputRef"
+          v-model:value="locationFormModel.label"
           type="text"
           :autofocus="true"
           @keydown.enter="handleSubmit"

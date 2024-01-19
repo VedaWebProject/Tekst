@@ -57,12 +57,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <IconHeading v-if="browse.nodePath.length" level="1" :icon="MenuBookOutlined">
+  <IconHeading v-if="browse.locationPath.length" level="1" :icon="MenuBookOutlined">
     <LocationLabel />
     <HelpButtonWidget help-key="browseView" />
   </IconHeading>
 
-  <BrowseToolbar v-if="browse.nodePath.length" />
+  <BrowseToolbar v-if="browse.locationPath.length" />
 
   <div
     v-if="activeResourcesCategorized.length"
@@ -96,8 +96,8 @@ onMounted(() => {
   />
 
   <HugeLabeledIcon
-    v-else-if="!browse.nodePath.length"
-    :message="$t('browse.textNoNodes')"
+    v-else-if="!browse.locationPath.length"
+    :message="$t('browse.textNoLocations')"
     :icon="ErrorOutlineOutlined"
   />
 

@@ -1,7 +1,7 @@
 import pytest
 
 from httpx import AsyncClient
-from tekst.models.node import NodeDocument
+from tekst.models.location import LocationDocument
 from tekst.models.resource import ResourceBaseDocument
 from tekst.models.text import TextDocument
 
@@ -10,7 +10,7 @@ from tekst.models.text import TextDocument
 async def test_get_content_siblings(
     test_client: AsyncClient, insert_sample_data, status_fail_msg, wrong_id, login
 ):
-    await insert_sample_data("texts", "nodes", "resources", "contents")
+    await insert_sample_data("texts", "locations", "resources", "contents")
     text = await TextDocument.find_one(TextDocument.slug == "pond")
     assert text
     resource = await ResourceBaseDocument.find_one(
@@ -58,7 +58,7 @@ async def test_get_location_data(
     status_fail_msg,
     wrong_id,
 ):
-    await insert_sample_data("texts", "nodes", "resources", "contents")
+    await insert_sample_data("texts", "locations", "resources", "contents")
     texts = get_sample_data("db/texts.json", for_http=True)
     text_id = next((txt for txt in texts if len(txt["levels"]) == 2), {}).get("_id", "")
     assert len(text_id) > 0
@@ -70,7 +70,7 @@ async def test_get_location_data(
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), dict)
-    assert len(resp.json()["nodePath"]) > 0
+    assert len(resp.json()["locationPath"]) > 0
     assert len(resp.json()["contents"]) == 0
 
     # higher level
@@ -80,17 +80,17 @@ async def test_get_location_data(
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), dict)
-    assert len(resp.json()["nodePath"]) > 0
+    assert len(resp.json()["locationPath"]) > 0
     assert len(resp.json()["contents"]) > 0
 
-    # invalid node data
+    # invalid location data
     resp = await test_client.get(
         "/browse/location-data",
         params={"txt": wrong_id, "lvl": 1, "pos": 0},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), dict)
-    assert len(resp.json()["nodePath"]) == 0
+    assert len(resp.json()["locationPath"]) == 0
     assert len(resp.json()["contents"]) == 0
 
 
@@ -98,21 +98,21 @@ async def test_get_location_data(
 async def test_get_path_options_by_head(
     test_client: AsyncClient, insert_sample_data, status_fail_msg, wrong_id
 ):
-    await insert_sample_data("texts", "nodes")
+    await insert_sample_data("texts", "locations")
     text = await TextDocument.find_one(TextDocument.slug == "fdhdgg")
-    node = await NodeDocument.find_one(
-        NodeDocument.text_id == text.id, NodeDocument.level == 1
+    location = await LocationDocument.find_one(
+        LocationDocument.text_id == text.id, LocationDocument.level == 1
     )
     resp = await test_client.get(
-        f"/browse/nodes/{str(node.id)}/path/options-by-head",
+        f"/browse/locations/{str(location.id)}/path/options-by-head",
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
     assert isinstance(resp.json()[0], list)
 
-    # invalid node data
+    # invalid location data
     resp = await test_client.get(
-        f"/browse/nodes/{wrong_id}/path/options-by-head",
+        f"/browse/locations/{wrong_id}/path/options-by-head",
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
@@ -123,21 +123,21 @@ async def test_get_path_options_by_head(
 async def test_get_path_options_by_root(
     test_client: AsyncClient, insert_sample_data, status_fail_msg, wrong_id
 ):
-    await insert_sample_data("texts", "nodes")
+    await insert_sample_data("texts", "locations")
     text = await TextDocument.find_one(TextDocument.slug == "fdhdgg")
-    node = await NodeDocument.find_one(
-        NodeDocument.text_id == text.id, NodeDocument.level == 0
+    location = await LocationDocument.find_one(
+        LocationDocument.text_id == text.id, LocationDocument.level == 0
     )
     resp = await test_client.get(
-        f"/browse/nodes/{str(node.id)}/path/options-by-root",
+        f"/browse/locations/{str(location.id)}/path/options-by-root",
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
     assert isinstance(resp.json()[0], list)
 
-    # invalid node data
+    # invalid location data
     resp = await test_client.get(
-        f"/browse/nodes/{wrong_id}/path/options-by-root",
+        f"/browse/locations/{wrong_id}/path/options-by-root",
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
@@ -148,7 +148,9 @@ async def test_get_path_options_by_root(
 async def test_get_resource_coverage_data(
     test_client: AsyncClient, insert_sample_data, status_fail_msg, wrong_id
 ):
-    inserted_ids = await insert_sample_data("texts", "nodes", "resources", "contents")
+    inserted_ids = await insert_sample_data(
+        "texts", "locations", "resources", "contents"
+    )
     resource_id = inserted_ids["resources"][0]
     resp = await test_client.get(
         f"/browse/resources/{resource_id}/coverage",
@@ -156,7 +158,7 @@ async def test_get_resource_coverage_data(
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), dict)
 
-    # invalid node data
+    # invalid location data
     resp = await test_client.get(
         f"/browse/resources/{wrong_id}/coverage",
     )
@@ -167,7 +169,9 @@ async def test_get_resource_coverage_data(
 async def test_get_detailed_resource_coverage_data(
     test_client: AsyncClient, insert_sample_data, status_fail_msg, wrong_id, login
 ):
-    inserted_ids = await insert_sample_data("texts", "nodes", "resources", "contents")
+    inserted_ids = await insert_sample_data(
+        "texts", "locations", "resources", "contents"
+    )
     resource_id = inserted_ids["resources"][0]
     await login()
 

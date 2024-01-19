@@ -2,7 +2,7 @@ import { ref, computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { defineStore } from 'pinia';
 import { useStateStore, useResourcesStore } from '@/stores';
-import type { AnyResourceRead, AnyContentRead, NodeRead } from '@/api';
+import type { AnyResourceRead, AnyContentRead, LocationRead } from '@/api';
 import { GET } from '@/api';
 import { pickTranslation } from '@/utils';
 import { $t } from '@/i18n';
@@ -26,25 +26,29 @@ export const useBrowseStore = defineStore('browse', () => {
 
   /* BROWSE LOCATION */
 
-  const nodePath = ref<NodeRead[]>([]);
-  const nodePathHead = computed<NodeRead | undefined>(
-    () => nodePath.value[nodePath.value.length - 1]
+  const locationPath = ref<LocationRead[]>([]);
+  const locationPathHead = computed<LocationRead | undefined>(
+    () => locationPath.value[locationPath.value.length - 1]
   );
-  const level = computed(() => nodePathHead.value?.level ?? state.text?.defaultLevel ?? 0);
-  const position = computed(() => nodePathHead.value?.position ?? 0);
+  const level = computed(() => locationPathHead.value?.level ?? state.text?.defaultLevel ?? 0);
+  const position = computed(() => locationPathHead.value?.position ?? 0);
 
-  // update browse node path
+  // update browse location path
   async function loadLocationData(lvl?: string, pos?: string, force: boolean = false) {
     if (route.name !== 'browse') return;
     loadingLocationData.value = true;
     const qLvl = parseInt(lvl || route.query.lvl?.toString() || '');
     const qPos = parseInt(pos || route.query.pos?.toString() || '');
     if (Number.isInteger(qLvl) && Number.isInteger(qPos)) {
-      if (!force && qLvl == nodePathHead.value?.level && qPos == nodePathHead.value?.position) {
+      if (
+        !force &&
+        qLvl == locationPathHead.value?.level &&
+        qPos == locationPathHead.value?.position
+      ) {
         loadingLocationData.value = false;
         return;
       }
-      // fill browse node path up to root (no more parent)
+      // fill browse location path up to root (no more parent)
       const { data: locationData, error } = await GET('/browse/location-data', {
         params: {
           query: {
@@ -54,8 +58,8 @@ export const useBrowseStore = defineStore('browse', () => {
           },
         },
       });
-      if (!error && locationData.nodePath?.length) {
-        nodePath.value = locationData.nodePath;
+      if (!error && locationData.locationPath?.length) {
+        locationPath.value = locationData.locationPath;
         resources.data.forEach((r: AnyResourceRead) => {
           const content =
             locationData.contents?.find((u: AnyContentRead) => u.resourceId === r.id) ||
@@ -96,7 +100,7 @@ export const useBrowseStore = defineStore('browse', () => {
   watch(
     () => state.text,
     () => {
-      nodePath.value = [];
+      locationPath.value = [];
       route.name === 'browse' && resetBrowseLocation();
     }
   );
@@ -150,8 +154,8 @@ export const useBrowseStore = defineStore('browse', () => {
     activeResourcesCount,
     resourcesCategorized,
     setResourceActiveState,
-    nodePath,
-    nodePathHead,
+    locationPath,
+    locationPathHead,
     level,
     position,
     loadLocationData,

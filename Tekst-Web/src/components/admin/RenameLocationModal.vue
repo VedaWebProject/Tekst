@@ -1,41 +1,41 @@
 <script setup lang="ts">
 import { PATCH } from '@/api';
 import { $t } from '@/i18n';
-import type { NodeTreeOption } from '@/views/admin/AdminTextsNodesView.vue';
+import type { LocationTreeOption } from '@/views/admin/AdminTextsLocationsView.vue';
 import { NForm, NFormItem, NButton, NInput, type InputInst, type FormInst } from 'naive-ui';
 import ButtonShelf from '@/components/ButtonShelf.vue';
 import { ref } from 'vue';
-import { nodeFormRules } from '@/forms/formRules';
+import { locationFormRules } from '@/forms/formRules';
 import { useModelChanges } from '@/modelChanges';
 import { useMessages } from '@/messages';
 import GenericModal from '@/components/GenericModal.vue';
 
-const props = withDefaults(defineProps<{ show: boolean; node: NodeTreeOption | null }>(), {
+const props = withDefaults(defineProps<{ show: boolean; location: LocationTreeOption | null }>(), {
   show: false,
 });
 const emits = defineEmits(['update:show', 'submit']);
 
-const initialNodeModel = () => ({
+const initialLocationModel = () => ({
   label: '',
 });
 
 const { message } = useMessages();
 
-const nodeFormRef = ref<FormInst | null>(null);
-const nodeFormModel = ref<Record<string, string | null>>(initialNodeModel());
-const { changed, getChanges } = useModelChanges(nodeFormModel);
+const locationFormRef = ref<FormInst | null>(null);
+const locationFormModel = ref<Record<string, string | null>>(initialLocationModel());
+const { changed, getChanges } = useModelChanges(locationFormModel);
 
 const loading = ref(false);
 
-const nodeRenameInputRef = ref<InputInst | null>(null);
+const locationRenameInputRef = ref<InputInst | null>(null);
 
 async function handleSubmit() {
   loading.value = true;
-  nodeFormRef.value
+  locationFormRef.value
     ?.validate(async (validationErrors) => {
       if (!validationErrors) {
-        const { data, error } = await PATCH('/nodes/{id}', {
-          params: { path: { id: props.node?.key?.toString() || '' } },
+        const { data, error } = await PATCH('/locations/{id}', {
+          params: { path: { id: props.location?.key?.toString() || '' } },
           body: getChanges(),
         });
         emits('submit', error ? undefined : data);
@@ -55,27 +55,27 @@ async function handleSubmit() {
     @update:show="$emit('update:show', $event)"
     @after-enter="
       () => {
-        nodeFormModel.label = props.node?.label || '';
-        $nextTick(() => nodeRenameInputRef?.select());
+        locationFormModel.label = props.location?.label || '';
+        $nextTick(() => locationRenameInputRef?.select());
       }
     "
-    @after-leave="nodeFormModel.label = ''"
+    @after-leave="locationFormModel.label = ''"
   >
-    <h2>{{ $t('admin.text.nodes.rename.heading') }}</h2>
+    <h2>{{ $t('admin.text.locations.rename.heading') }}</h2>
 
     <n-form
-      ref="nodeFormRef"
-      :model="nodeFormModel"
-      :rules="nodeFormRules"
+      ref="locationFormRef"
+      :model="locationFormModel"
+      :rules="locationFormRules"
       label-placement="top"
       :disabled="loading"
       label-width="auto"
       require-mark-placement="right-hanging"
     >
-      <n-form-item path="label" :label="$t('models.node.label')">
+      <n-form-item path="label" :label="$t('models.location.label')">
         <n-input
-          ref="nodeRenameInputRef"
-          v-model:value="nodeFormModel.label"
+          ref="locationRenameInputRef"
+          v-model:value="locationFormModel.label"
           type="text"
           :autofocus="true"
           @keydown.enter="handleSubmit"

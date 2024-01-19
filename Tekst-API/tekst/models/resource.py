@@ -246,7 +246,7 @@ class ResourceCoverage(ModelBase):
     total: int
 
 
-class ResourceNodeCoverage(ModelBase):
+class ResourceLocationCoverage(ModelBase):
     label: str
     position: int
     covered: bool = False
@@ -254,4 +254,4 @@ class ResourceNodeCoverage(ModelBase):
 
 class ResourceCoverageDetails(ModelBase):
     parent_labels: list[str]
-    nodes_coverage: list[list[ResourceNodeCoverage]]
+    locations_coverage: list[list[ResourceLocationCoverage]]

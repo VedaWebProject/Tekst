@@ -1,7 +1,7 @@
 from fastapi import APIRouter, status
 
 from tekst.auth import SuperuserDep
-from tekst.models.node import NodeDocument
+from tekst.models.location import LocationDocument
 from tekst.models.platform import PlatformStats, TextStats
 from tekst.models.resource import ResourceBaseDocument
 from tekst.models.text import TextDocument
@@ -26,7 +26,9 @@ async def get_statistics(su: SuperuserDep) -> PlatformStats:
     text_stats = []
 
     for text in texts:
-        nodes_count = await NodeDocument.find(NodeDocument.text_id == text.id).count()
+        locations_count = await LocationDocument.find(
+            LocationDocument.text_id == text.id
+        ).count()
         resource_types = {
             rt_name: (
                 await ResourceBaseDocument.find(
@@ -41,7 +43,7 @@ async def get_statistics(su: SuperuserDep) -> PlatformStats:
         text_stats.append(
             TextStats(
                 id=text.id,
-                nodes_count=nodes_count,
+                locations_count=locations_count,
                 resources_count=resources_count,
                 resource_types=resource_types,
             )

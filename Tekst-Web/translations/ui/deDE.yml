@@ -91,7 +91,7 @@ routes:
     adminSystemUsers: '@:admin.heading - Benutzer'
     adminTextsGeneral: '@:admin.heading - {text}: Allgemein'
     adminTextsLevels: '@:admin.heading - {text}: Ebenen'
-    adminTextsNodes: '@:admin.heading - {text}: Knoten'
+    adminTextsLocations: '@:admin.heading - {text}: Knoten'
     adminNewText: '@:admin.heading - Neuer Text'
     adminSystemSegments: '@:admin.heading - Segmente'
     adminSystemInfoPages: '@:admin.heading - Info-Seiten'
@@ -114,7 +114,7 @@ browse:
     heading: Ressourcen anzeigen
   uncategorized: Unkategorisiert
   locationResourceNoData: Keine Daten für diese Fundstelle
-  textNoNodes: Die Einrichtung dieses Textes scheint unvollständig. Es wurden keine Strukturknoten definiert.
+  textNoLocations: Die Einrichtung dieses Textes scheint unvollständig. Es wurden keine Strukturknoten definiert.
   locationNoData: Die ausgewählten Ressourcen enthalten keine Daten für diese Ebene und Fundstelle. Wählen Sie eine andere Fundstelle oder aktivieren Sie mehr Ressourcen.
   contents:
     widgets:
@@ -190,7 +190,7 @@ models:
     formRulesFeedback:
       slugChars: 'Erlaubte Zeichen: a-z und 0-9'
       defaultLevelRange: 0 oder höher
-  node:
+  location:
     modelLabel: Strukturknoten | Strukturknoten
     label: Bezeichnung
   resource:
@@ -509,19 +509,19 @@ admin:
         Dies kann nicht rückgängig gemacht werden.
         Sind Sie sich sicher, dass Sie die
         Textebene "{levelLabel}" löschen möchten?
-    nodes:
+    locations:
       heading: Knoten
       add:
         heading: Knoten zu "{parentLabel}" auf Ebene "{level}" hinzufügen
         tooltip: Knoten hinzufügen
         msgSuccess: Knoten "{label}" zu "{parentLabel}" hinzugefügt
-      lblBtnAddNodeFirstLevel: Hinzufügen
-      tipBtnAddNodeFirstLevel: Knoten auf oberster Ebene hinzufügen
+      lblBtnAddLocationFirstLevel: Hinzufügen
+      tipBtnAddLocationFirstLevel: Knoten auf oberster Ebene hinzufügen
       lblBtnDownloadTemplate: Vorlage
       tipBtnDownloadTemplate: Strukturdefinitions-Vorlage herunterladen
       lblBtnUploadStructure: Importieren
       tipBtnUploadStructure: Strukturdefinition hochladen (nur bei leerer Struktur!)
-      infoNoNodes: |
+      infoNoLocations: |
         Dieser Text hat noch keine Strukturknoten.
         Fügen Sie den Strukturebenen des Textes Knoten hinzu,
         indem Sie die untenstehenden Werkzeuge verwenden,
@@ -532,7 +532,7 @@ admin:
         Das Neuordnen oder Löschen von Textknoten hat gravierende Auswirkungen auf das
         Datenmodell des Textes. Es ist dringend empfohlen, ein Backup des aktuellen
         Zustands der Datenbank zu erstellen, bevor Änderungen vorgenommen werden.
-      warnDeleteNode: |
+      warnDeleteLocation: |
         Wenn Sie diesen Knoten löschen, werden alle Daten, die mit ihm und allen
         seinen Kind-Knoten verbunden sind, ebenfalls gelöscht.
         Dies kann potenziell alle Ressourcen betreffen – auch jene,
@@ -541,10 +541,10 @@ admin:
         da auf diese Weise keine Daten gelöscht würden.
         Dies kann nicht rückgängig gemacht werden.
         Sind Sie sich wirklich sicher, dass Sie den ausgewählten Knoten löschen wollen?
-      tipDeleteNode: Knoten "{node}" löschen
-      infoDeletedNode: Knoten "{node}" gelöscht (insgesamt {nodes} Knoten und {contents} Daten-Einheiten)
-      infoMovedNode: Knoten "{node}" auf position {position} von Ebene "{level}" verschoben
-      errorNodeLeftLevel: Text-Knoten können nur innerhalb der gleichen Ebene verschoben werden!
+      tipDeleteLocation: Knoten "{location}" löschen
+      infoDeletedLocation: Knoten "{location}" gelöscht (insgesamt {locations} Knoten und {contents} Daten-Einheiten)
+      infoMovedLocation: Knoten "{location}" auf position {position} von Ebene "{level}" verschoben
+      errorLocationLeftLevel: Text-Knoten können nur innerhalb der gleichen Ebene verschoben werden!
       checkShowWarnings: Zeige Warnungen, bevor destruktive Operationen durchgeführt werden
       rename:
         heading: Knoten umbenennen

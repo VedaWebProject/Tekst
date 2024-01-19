@@ -40,7 +40,7 @@ class TextStats(ModelBase):
     """Text statistics data"""
 
     id: PydanticObjectId
-    nodes_count: int
+    locations_count: int
     resources_count: int
     resource_types: dict[str, int]
 

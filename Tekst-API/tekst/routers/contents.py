@@ -50,7 +50,7 @@ async def create_content(
     # check for duplicates
     if await ContentBaseDocument.find_one(
         ContentBaseDocument.resource_id == content.resource_id,
-        ContentBaseDocument.node_id == content.node_id,
+        ContentBaseDocument.location_id == content.location_id,
         with_children=True,
     ).exists():
         raise HTTPException(
@@ -132,7 +132,7 @@ async def update_content(
             detail=f"No write access for resource {content_doc.resource_id}",
         )
     return await content_doc.apply_updates(
-        updates, exclude={"id", "resource_id", "node_id", "resource_type"}
+        updates, exclude={"id", "resource_id", "location_id", "resource_type"}
     )
 
 
@@ -168,11 +168,11 @@ async def find_contents(
             description="ID (or list of IDs) of resource(s) to return content data for",
         ),
     ] = [],
-    node_ids: Annotated[
+    location_ids: Annotated[
         list[PydanticObjectId],
         Query(
-            alias="node",
-            description="ID (or list of IDs) of node(s) to return content data for",
+            alias="location",
+            description="ID (or list of IDs) of location(s) to return content data for",
         ),
     ] = [],
     limit: Annotated[int, Query(description="Return at most <limit> items")] = 4096,
@@ -209,7 +209,7 @@ async def find_contents(
     return (
         await ContentBaseDocument.find(
             In(ContentBaseDocument.resource_id, resource_ids) if resource_ids else {},
-            In(ContentBaseDocument.node_id, node_ids) if node_ids else {},
+            In(ContentBaseDocument.location_id, location_ids) if location_ids else {},
             In(
                 ContentBaseDocument.resource_id,
                 [resource.id for resource in readable_resources],

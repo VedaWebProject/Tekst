@@ -6,7 +6,7 @@ from tekst.auth import AccessToken
 from tekst.config import TekstConfig, get_config
 from tekst.logging import log
 from tekst.models.content import ContentBaseDocument
-from tekst.models.node import NodeDocument
+from tekst.models.location import LocationDocument
 from tekst.models.resource import ResourceBaseDocument
 from tekst.models.segment import ClientSegmentDocument
 from tekst.models.settings import PlatformSettingsDocument
@@ -38,7 +38,7 @@ async def init_odm(db: Database) -> None:
     # collect basic document models
     models = [
         TextDocument,
-        NodeDocument,
+        LocationDocument,
         ResourceBaseDocument,
         ContentBaseDocument,
         PlatformSettingsDocument,

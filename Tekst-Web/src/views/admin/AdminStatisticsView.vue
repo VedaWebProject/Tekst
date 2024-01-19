@@ -18,7 +18,9 @@ const { stats, error } = useStats();
 const counts = computed(() => ({
   users: stats.value?.usersCount,
   texts: stats.value?.texts.length,
-  nodes: stats.value?.texts.map((t) => t.nodesCount).reduce((total, current) => total + current, 0),
+  locations: stats.value?.texts
+    .map((t) => t.locationsCount)
+    .reduce((total, current) => total + current, 0),
   resources: stats.value?.texts
     .map((t) => t.resourcesCount)
     .reduce((total, current) => total + current, 0),
@@ -61,7 +63,7 @@ const resourceTypes = computed(() => {
           </template>
         </n-statistic>
 
-        <n-statistic :label="$t('models.node.modelLabel', 2)" :value="counts.nodes">
+        <n-statistic :label="$t('models.location.modelLabel', 2)" :value="counts.locations">
           <template #prefix>
             <n-icon>
               <AccountTreeRound />
@@ -104,7 +106,7 @@ const resourceTypes = computed(() => {
         <h3>{{ pfData?.texts.find((t) => t.id == text.id)?.title }}</h3>
 
         <div class="statistics-container">
-          <n-statistic :label="$t('models.node.modelLabel', 2)" :value="text.nodesCount">
+          <n-statistic :label="$t('models.location.modelLabel', 2)" :value="text.locationsCount">
             <template #prefix>
               <n-icon>
                 <AccountTreeRound />

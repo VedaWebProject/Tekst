@@ -3,25 +3,25 @@ from typing import Annotated
 from pydantic import ConfigDict, Field, StringConstraints
 
 from tekst.models.common import ModelBase, PydanticObjectId
-from tekst.models.node import NodeRead
+from tekst.models.location import LocationRead
 from tekst.resources import AnyContentRead
 
 
-class NodeDefinition(ModelBase):
+class LocationDefinition(ModelBase):
     label: Annotated[
         str,
         StringConstraints(min_length=1, max_length=256, strip_whitespace=True),
     ]
-    nodes: list["NodeDefinition"] | None = None
+    locations: list["LocationDefinition"] | None = None
 
 
 class TextStructureImportData(ModelBase):
     model_config = ConfigDict(extra="allow")
-    nodes: list[NodeDefinition] = []
+    locations: list[LocationDefinition] = []
 
 
 class LocationData(ModelBase):
-    node_path: list[NodeRead] = []
+    location_path: list[LocationRead] = []
     contents: Annotated[list[AnyContentRead], Field(discriminator="resource_type")] = []
 
 

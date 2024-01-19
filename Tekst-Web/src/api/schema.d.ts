@@ -16,7 +16,7 @@ export interface paths {
     /**
      * Get content siblings
      * @description Returns a list of all resource contents belonging to the resource
-     * with the given ID, associated to nodes that are children of the parent node
+     * with the given ID, associated to locations that are children of the parent location
      * with the given ID.
      *
      * As the resulting list may contain contents of arbitrary type, the
@@ -27,10 +27,10 @@ export interface paths {
   '/browse/location-data': {
     /**
      * Get location data
-     * @description Returns the node path from the node with the given level/position
-     * as the last element, up to its most distant ancestor node
+     * @description Returns the location path from the location with the given level/position
+     * as the last element, up to its most distant ancestor location
      * on structure level 0 as the first element of an array as well as all contents
-     * for the given resource(s) referencing the nodes in the node path.
+     * for the given resource(s) referencing the locations in the location path.
      */
     get: operations['getLocationData'];
   };
@@ -42,19 +42,19 @@ export interface paths {
      */
     get: operations['getNearestContent'];
   };
-  '/browse/nodes/{id}/path/options-by-head': {
+  '/browse/locations/{id}/path/options-by-head': {
     /**
      * Get path options by head id
-     * @description Returns the options for selecting text locations derived from the node path of
-     * the node with the given ID as head.
+     * @description Returns the options for selecting text locations derived from the location path of
+     * the location with the given ID as head.
      */
     get: operations['getPathOptionsByHeadId'];
   };
-  '/browse/nodes/{id}/path/options-by-root': {
+  '/browse/locations/{id}/path/options-by-root': {
     /**
      * Get path options by root
-     * @description Returns the options for selecting text locations derived from the node path of
-     * the node with the given ID as root. At each level, the first option is taken
+     * @description Returns the options for selecting text locations derived from the location path of
+     * the location with the given ID as root. At each level, the first option is taken
      * as the basis for the next level.
      */
     get: operations['getPathOptionsByRoot'];
@@ -91,37 +91,37 @@ export interface paths {
     /** Update content */
     patch: operations['updateContent'];
   };
-  '/nodes': {
-    /** Find nodes */
-    get: operations['findNodes'];
+  '/locations': {
+    /** Find locations */
+    get: operations['findLocations'];
     /**
-     * Create node
-     * @description Creates a new node. The position will be automatically set to the last position
-     * of the node's parent (or the first parent before that has children).
+     * Create location
+     * @description Creates a new location. The position will be automatically set to the last position
+     * of the location's parent (or the first parent before that has children).
      */
-    post: operations['createNode'];
+    post: operations['createLocation'];
   };
-  '/nodes/children': {
+  '/locations/children': {
     /** Get children */
     get: operations['getChildren'];
   };
-  '/nodes/{id}': {
-    /** Get node */
-    get: operations['getNode'];
+  '/locations/{id}': {
+    /** Get location */
+    get: operations['getLocation'];
     /**
-     * Delete node
-     * @description Deletes the specified node. Also deletes any associated contents, child nodes and contents associated with child nodes.
+     * Delete location
+     * @description Deletes the specified location. Also deletes any associated contents, child locations and contents associated with child locations.
      */
-    delete: operations['deleteNode'];
-    /** Update node */
-    patch: operations['updateNode'];
+    delete: operations['deleteLocation'];
+    /** Update location */
+    patch: operations['updateLocation'];
   };
-  '/nodes/{id}/move': {
+  '/locations/{id}/move': {
     /**
-     * Move node
-     * @description Moves the specified node to a new position on its structure level.
+     * Move location
+     * @description Moves the specified location to a new position on its level.
      */
-    post: operations['moveNode'];
+    post: operations['moveLocation'];
   };
   '/platform': {
     /**
@@ -232,7 +232,7 @@ export interface paths {
   '/texts/{id}/structure': {
     /**
      * Import text structure
-     * @description Upload the structure definition for a text to apply as a structure of nodes
+     * @description Upload the structure definition for a text to apply as a structure of locations
      */
     post: operations['importTextStructure'];
   };
@@ -522,11 +522,11 @@ export interface components {
        */
       resourceType: 'debug';
       /**
-       * Nodeid
-       * @description Parent text node ID
+       * Locationid
+       * @description Parent text location ID
        * @example 5eb7cf5a86d9755df3a6c593
        */
-      nodeId: string;
+      locationId: string;
       /**
        * Comment
        * @description Plaintext, potentially multiline comment on this content
@@ -557,11 +557,11 @@ export interface components {
        */
       resourceType: 'debug';
       /**
-       * Nodeid
-       * @description Parent text node ID
+       * Locationid
+       * @description Parent text location ID
        * @example 5eb7cf5a86d9755df3a6c593
        */
-      nodeId: string;
+      locationId: string;
       /**
        * Comment
        * @description Plaintext, potentially multiline comment on this content
@@ -583,8 +583,8 @@ export interface components {
        * @constant
        */
       resourceType: 'debug';
-      /** Nodeid */
-      nodeId?: string | null;
+      /** Locationid */
+      locationId?: string | null;
       /**
        * Comment
        * @description Plaintext, potentially multiline comment on this content
@@ -984,12 +984,12 @@ export interface components {
         | 'ZH'
       )[];
     };
-    /** DeleteNodeResult */
-    DeleteNodeResult: {
+    /** DeleteLocationResult */
+    DeleteLocationResult: {
       /** Contents */
       contents: number;
-      /** Nodes */
-      nodes: number;
+      /** Locations */
+      locations: number;
     };
     /** ErrorModel */
     ErrorModel: {
@@ -1007,13 +1007,42 @@ export interface components {
     };
     /** @enum {string} */
     LocaleKey: 'deDE' | 'enUS';
+    /** LocationCreate */
+    LocationCreate: {
+      /**
+       * Textid
+       * @description ID of the text this location belongs to
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      textId: string;
+      /**
+       * Parentid
+       * @description ID of parent location
+       */
+      parentId?: string | null;
+      /**
+       * Level
+       * @description Index of structure level this location is on
+       */
+      level: number;
+      /**
+       * Position
+       * @description Position among all text locations on this level
+       */
+      position: number;
+      /**
+       * Label
+       * @description Label for identifying this text location in level context
+       */
+      label: string;
+    };
     /** LocationData */
     LocationData: {
       /**
-       * Nodepath
+       * Locationpath
        * @default []
        */
-      nodePath?: components['schemas']['NodeRead'][];
+      locationPath?: components['schemas']['LocationRead'][];
       /**
        * Contents
        * @default []
@@ -1023,53 +1052,8 @@ export interface components {
         | components['schemas']['PlaintextContentRead']
       )[];
     };
-    /** Metadate */
-    Metadate: {
-      /** Key */
-      key: string;
-      /** Value */
-      value: string;
-    };
-    /** MoveNodeRequestBody */
-    MoveNodeRequestBody: {
-      /** Position */
-      position: number;
-      /** After */
-      after: boolean;
-      /** Parentid */
-      parentId: string | null;
-    };
-    /** NodeCreate */
-    NodeCreate: {
-      /**
-       * Textid
-       * @description ID of the text this node belongs to
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      textId: string;
-      /**
-       * Parentid
-       * @description ID of parent node
-       */
-      parentId?: string | null;
-      /**
-       * Level
-       * @description Index of structure level this node is on
-       */
-      level: number;
-      /**
-       * Position
-       * @description Position among all text nodes on this level
-       */
-      position: number;
-      /**
-       * Label
-       * @description Label for identifying this text node in level context
-       */
-      label: string;
-    };
-    /** NodeRead */
-    NodeRead: {
+    /** LocationRead */
+    LocationRead: {
       /**
        * Id
        * @example 5eb7cf5a86d9755df3a6c593
@@ -1077,39 +1061,39 @@ export interface components {
       id: string;
       /**
        * Textid
-       * @description ID of the text this node belongs to
+       * @description ID of the text this location belongs to
        * @example 5eb7cf5a86d9755df3a6c593
        */
       textId: string;
       /**
        * Parentid
-       * @description ID of parent node
+       * @description ID of parent location
        */
       parentId?: string | null;
       /**
        * Level
-       * @description Index of structure level this node is on
+       * @description Index of structure level this location is on
        */
       level: number;
       /**
        * Position
-       * @description Position among all text nodes on this level
+       * @description Position among all text locations on this level
        */
       position: number;
       /**
        * Label
-       * @description Label for identifying this text node in level context
+       * @description Label for identifying this text location in level context
        */
       label: string;
       [key: string]: unknown;
     };
-    /** NodeUpdate */
-    NodeUpdate: {
+    /** LocationUpdate */
+    LocationUpdate: {
       /** Textid */
       textId?: string | null;
       /**
        * Parentid
-       * @description ID of parent node
+       * @description ID of parent location
        */
       parentId?: string | null;
       /** Level */
@@ -1118,6 +1102,22 @@ export interface components {
       position?: number | null;
       /** Label */
       label?: string | null;
+    };
+    /** Metadate */
+    Metadate: {
+      /** Key */
+      key: string;
+      /** Value */
+      value: string;
+    };
+    /** MoveLocationRequestBody */
+    MoveLocationRequestBody: {
+      /** Position */
+      position: number;
+      /** After */
+      after: boolean;
+      /** Parentid */
+      parentId: string | null;
     };
     /** PlaintextContentCreate */
     PlaintextContentCreate: {
@@ -1133,11 +1133,11 @@ export interface components {
        */
       resourceType: 'plaintext';
       /**
-       * Nodeid
-       * @description Parent text node ID
+       * Locationid
+       * @description Parent text location ID
        * @example 5eb7cf5a86d9755df3a6c593
        */
-      nodeId: string;
+      locationId: string;
       /**
        * Comment
        * @description Plaintext, potentially multiline comment on this content
@@ -1168,11 +1168,11 @@ export interface components {
        */
       resourceType: 'plaintext';
       /**
-       * Nodeid
-       * @description Parent text node ID
+       * Locationid
+       * @description Parent text location ID
        * @example 5eb7cf5a86d9755df3a6c593
        */
-      nodeId: string;
+      locationId: string;
       /**
        * Comment
        * @description Plaintext, potentially multiline comment on this content
@@ -1194,8 +1194,8 @@ export interface components {
        * @constant
        */
       resourceType: 'plaintext';
-      /** Nodeid */
-      nodeId?: string | null;
+      /** Locationid */
+      locationId?: string | null;
       /**
        * Comment
        * @description Plaintext, potentially multiline comment on this content
@@ -1861,8 +1861,8 @@ export interface components {
     ResourceCoverageDetails: {
       /** Parentlabels */
       parentLabels: string[];
-      /** Nodescoverage */
-      nodesCoverage: components['schemas']['ResourceNodeCoverage'][][];
+      /** Locationscoverage */
+      locationsCoverage: components['schemas']['ResourceLocationCoverage'][][];
     };
     /** ResourceDataImportResponse */
     ResourceDataImportResponse: {
@@ -1879,8 +1879,8 @@ export interface components {
       /** Translation */
       translation: string;
     };
-    /** ResourceNodeCoverage */
-    ResourceNodeCoverage: {
+    /** ResourceLocationCoverage */
+    ResourceLocationCoverage: {
       /** Label */
       label: string;
       /** Position */
@@ -2023,8 +2023,8 @@ export interface components {
        * @example 5eb7cf5a86d9755df3a6c593
        */
       id: string;
-      /** Nodescount */
-      nodesCount: number;
+      /** Locationscount */
+      locationsCount: number;
       /** Resourcescount */
       resourcesCount: number;
       /** Resourcetypes */
@@ -2268,7 +2268,7 @@ export interface operations {
   /**
    * Get content siblings
    * @description Returns a list of all resource contents belonging to the resource
-   * with the given ID, associated to nodes that are children of the parent node
+   * with the given ID, associated to locations that are children of the parent location
    * with the given ID.
    *
    * As the resulting list may contain contents of arbitrary type, the
@@ -2279,7 +2279,7 @@ export interface operations {
       query: {
         /** @description ID of resource the requested contents belong to */
         res: string;
-        /** @description ID of node for which siblings to get associated contents for */
+        /** @description ID of location for which siblings to get contents for */
         parent?: string | null;
       };
     };
@@ -2307,10 +2307,10 @@ export interface operations {
   };
   /**
    * Get location data
-   * @description Returns the node path from the node with the given level/position
-   * as the last element, up to its most distant ancestor node
+   * @description Returns the location path from the location with the given level/position
+   * as the last element, up to its most distant ancestor location
    * on structure level 0 as the first element of an array as well as all contents
-   * for the given resource(s) referencing the nodes in the node path.
+   * for the given resource(s) referencing the locations in the location path.
    */
   getLocationData: {
     parameters: {
@@ -2323,7 +2323,7 @@ export interface operations {
         pos: number;
         /** @description ID (or list of IDs) of resource(s) to return content data for */
         res?: string[];
-        /** @description Only return contents referencing the head node of the path */
+        /** @description Only return contents for the head location of the path */
         head?: boolean;
         /** @description Return at most <limit> contents */
         limit?: number;
@@ -2389,8 +2389,8 @@ export interface operations {
   };
   /**
    * Get path options by head id
-   * @description Returns the options for selecting text locations derived from the node path of
-   * the node with the given ID as head.
+   * @description Returns the options for selecting text locations derived from the location path of
+   * the location with the given ID as head.
    */
   getPathOptionsByHeadId: {
     parameters: {
@@ -2402,7 +2402,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': components['schemas']['NodeRead'][][];
+          'application/json': components['schemas']['LocationRead'][][];
         };
       };
       /** @description Not found */
@@ -2419,8 +2419,8 @@ export interface operations {
   };
   /**
    * Get path options by root
-   * @description Returns the options for selecting text locations derived from the node path of
-   * the node with the given ID as root. At each level, the first option is taken
+   * @description Returns the options for selecting text locations derived from the location path of
+   * the location with the given ID as root. At each level, the first option is taken
    * as the basis for the next level.
    */
   getPathOptionsByRoot: {
@@ -2433,7 +2433,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': components['schemas']['NodeRead'][][];
+          'application/json': components['schemas']['LocationRead'][][];
         };
       };
       /** @description Not found */
@@ -2513,8 +2513,8 @@ export interface operations {
       query?: {
         /** @description ID (or list of IDs) of resource(s) to return content data for */
         res?: string[];
-        /** @description ID (or list of IDs) of node(s) to return content data for */
-        node?: string[];
+        /** @description ID (or list of IDs) of location(s) to return content data for */
+        location?: string[];
         /** @description Return at most <limit> items */
         limit?: number;
       };
@@ -2677,19 +2677,19 @@ export interface operations {
       };
     };
   };
-  /** Find nodes */
-  findNodes: {
+  /** Find locations */
+  findLocations: {
     parameters: {
       query: {
-        /** @description ID of text to find nodes for */
+        /** @description ID of text to find locations for */
         txt: string;
-        /** @description Structure level to find nodes for */
+        /** @description Structure level to find locations for */
         lvl?: number;
-        /** @description Position value of nodes to find */
+        /** @description Position value of locations to find */
         pos?: number;
-        /** @description ID of parent node to find children of */
+        /** @description ID of parent location to find children of */
         parent?: string;
-        /** @description Return at most <limit> nodes */
+        /** @description Return at most <limit> locations */
         limit?: number;
       };
     };
@@ -2697,7 +2697,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': components['schemas']['NodeRead'][];
+          'application/json': components['schemas']['LocationRead'][];
         };
       };
       /** @description Not found */
@@ -2713,21 +2713,21 @@ export interface operations {
     };
   };
   /**
-   * Create node
-   * @description Creates a new node. The position will be automatically set to the last position
-   * of the node's parent (or the first parent before that has children).
+   * Create location
+   * @description Creates a new location. The position will be automatically set to the last position
+   * of the location's parent (or the first parent before that has children).
    */
-  createNode: {
+  createLocation: {
     requestBody: {
       content: {
-        'application/json': components['schemas']['NodeCreate'];
+        'application/json': components['schemas']['LocationCreate'];
       };
     };
     responses: {
       /** @description Successful Response */
       201: {
         content: {
-          'application/json': components['schemas']['NodeRead'];
+          'application/json': components['schemas']['LocationRead'];
         };
       };
       /** @description Not found */
@@ -2746,9 +2746,9 @@ export interface operations {
   getChildren: {
     parameters: {
       query?: {
-        /** @description ID of text to find nodes for */
+        /** @description ID of text to find locations for */
         txt?: string | null;
-        /** @description ID of parent node to find children of */
+        /** @description ID of parent location to find children of */
         parent?: string | null;
         limit?: number;
       };
@@ -2757,7 +2757,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': components['schemas']['NodeRead'][];
+          'application/json': components['schemas']['LocationRead'][];
         };
       };
       /** @description Not found */
@@ -2772,8 +2772,8 @@ export interface operations {
       };
     };
   };
-  /** Get node */
-  getNode: {
+  /** Get location */
+  getLocation: {
     parameters: {
       path: {
         id: string;
@@ -2783,67 +2783,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': components['schemas']['NodeRead'];
-        };
-      };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  /**
-   * Delete node
-   * @description Deletes the specified node. Also deletes any associated contents, child nodes and contents associated with child nodes.
-   */
-  deleteNode: {
-    parameters: {
-      path: {
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json': components['schemas']['DeleteNodeResult'];
-        };
-      };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  /** Update node */
-  updateNode: {
-    parameters: {
-      path: {
-        id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['NodeUpdate'];
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json': components['schemas']['NodeRead'];
+          'application/json': components['schemas']['LocationRead'];
         };
       };
       /** @description Not found */
@@ -2859,10 +2799,36 @@ export interface operations {
     };
   };
   /**
-   * Move node
-   * @description Moves the specified node to a new position on its structure level.
+   * Delete location
+   * @description Deletes the specified location. Also deletes any associated contents, child locations and contents associated with child locations.
    */
-  moveNode: {
+  deleteLocation: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['DeleteLocationResult'];
+        };
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Update location */
+  updateLocation: {
     parameters: {
       path: {
         id: string;
@@ -2870,14 +2836,48 @@ export interface operations {
     };
     requestBody: {
       content: {
-        'application/json': components['schemas']['MoveNodeRequestBody'];
+        'application/json': components['schemas']['LocationUpdate'];
       };
     };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': components['schemas']['NodeRead'];
+          'application/json': components['schemas']['LocationRead'];
+        };
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /**
+   * Move location
+   * @description Moves the specified location to a new position on its level.
+   */
+  moveLocation: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['MoveLocationRequestBody'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['LocationRead'];
         };
       };
       /** @description Not found */
@@ -3578,7 +3578,7 @@ export interface operations {
   };
   /**
    * Import text structure
-   * @description Upload the structure definition for a text to apply as a structure of nodes
+   * @description Upload the structure definition for a text to apply as a structure of locations
    */
   importTextStructure: {
     parameters: {

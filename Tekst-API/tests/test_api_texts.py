@@ -130,7 +130,7 @@ async def test_update_text(
 async def test_delete_text(
     test_client: AsyncClient, insert_sample_data, status_fail_msg, login, wrong_id
 ):
-    inserted_ids = await insert_sample_data("texts", "nodes", "settings")
+    inserted_ids = await insert_sample_data("texts", "locations", "settings")
     text_id = inserted_ids["texts"][1]
 
     # log in as superuser
@@ -163,7 +163,7 @@ async def test_delete_text(
 async def test_download_structure_template(
     test_client: AsyncClient, insert_sample_data, status_fail_msg, login, wrong_id
 ):
-    inserted_ids = await insert_sample_data("texts", "nodes")
+    inserted_ids = await insert_sample_data("texts", "locations")
     text_id = inserted_ids["texts"][0]
 
     # log in as superuser
@@ -186,7 +186,7 @@ async def test_download_structure_template(
 async def test_insert_level(
     test_client: AsyncClient, insert_sample_data, status_fail_msg, login, wrong_id
 ):
-    await insert_sample_data("texts", "nodes")
+    await insert_sample_data("texts", "locations")
 
     # log in as superuser
     await login(is_superuser=True)
@@ -245,7 +245,7 @@ async def test_delete_top_level(
     status_fail_msg,
     login,
 ):
-    inserted_ids = await insert_sample_data("texts", "nodes")
+    inserted_ids = await insert_sample_data("texts", "locations")
     text_id = inserted_ids["texts"][0]
 
     # log in as superuser
@@ -266,7 +266,7 @@ async def test_delete_bottom_level(
     status_fail_msg,
     login,
 ):
-    inserted_ids = await insert_sample_data("texts", "nodes")
+    inserted_ids = await insert_sample_data("texts", "locations")
     text_id = inserted_ids["texts"][0]
 
     # log in as superuser
@@ -287,7 +287,7 @@ async def test_delete_middle_level(
     status_fail_msg,
     login,
 ):
-    inserted_ids = await insert_sample_data("texts", "nodes")
+    inserted_ids = await insert_sample_data("texts", "locations")
     text_id = inserted_ids["texts"][0]
 
     # log in as superuser
@@ -313,7 +313,7 @@ async def test_delete_middle_level(
 async def test_fail_delete_level(
     test_client: AsyncClient, insert_sample_data, status_fail_msg, login, wrong_id
 ):
-    inserted_ids = await insert_sample_data("texts", "nodes")
+    inserted_ids = await insert_sample_data("texts", "locations")
     text_id = inserted_ids["texts"][0]
 
     # log in as superuser
@@ -377,7 +377,7 @@ async def test_import_text_structure(
         )
         assert resp.status_code == 201, status_fail_msg(201, resp)
 
-    # try it again (should fail because text now already has nodes)
+    # try it again (should fail because text now already has locations)
     with open(get_sample_data_path("structure/fdhdgg.json"), "rb") as f:
         resp = await test_client.post(
             f"/texts/{text_id}/structure",

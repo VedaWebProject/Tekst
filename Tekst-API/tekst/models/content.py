@@ -20,7 +20,7 @@ class ContentBase(ModelBase, ModelFactoryMixin):
         str,
         Field(description="A string identifying one of the available resource types"),
     ]
-    node_id: PydanticObjectId = Field(..., description="Parent text node ID")
+    location_id: PydanticObjectId = Field(..., description="Parent text location ID")
     comment: Annotated[
         str | None,
         StringConstraints(min_length=1, max_length=1000, strip_whitespace=True),
@@ -56,7 +56,7 @@ class ContentBaseDocument(ContentBase, DocumentBase):
     class Settings(DocumentBase.Settings):
         name = "contents"
         is_root = True
-        indexes = ["resource_id", "node_id"]
+        indexes = ["resource_id", "location_id"]
 
 
 ContentBaseUpdate = ContentBase.update_model()

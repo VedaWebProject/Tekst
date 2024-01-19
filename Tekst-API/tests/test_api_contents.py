@@ -2,7 +2,7 @@ import pytest
 
 from httpx import AsyncClient
 from tekst.models.content import ContentBaseDocument
-from tekst.models.node import NodeDocument
+from tekst.models.location import LocationDocument
 from tekst.models.resource import ResourceBaseDocument
 
 
@@ -13,16 +13,16 @@ async def test_create_content(
     status_fail_msg,
     login,
 ):
-    await insert_sample_data("texts", "nodes", "resources")
+    await insert_sample_data("texts", "locations", "resources")
     resource = await ResourceBaseDocument.find_one(with_children=True)
-    node = await NodeDocument.find_one(NodeDocument.level == resource.level)
+    location = await LocationDocument.find_one(LocationDocument.level == resource.level)
     await login(is_superuser=True)
 
     # create plaintext resource content
     content_create_data = {
         "resourceId": str(resource.id),
         "resourceType": "plaintext",
-        "nodeId": str(node.id),
+        "locationId": str(location.id),
         "text": "Ein Raabe geht im Feld spazieren.",
         "comment": "This is a comment",
     }
@@ -56,7 +56,9 @@ async def test_create_content(
 async def test_get_content(
     test_client: AsyncClient, insert_sample_data, status_fail_msg, login, wrong_id
 ):
-    inserted_ids = await insert_sample_data("texts", "nodes", "resources", "contents")
+    inserted_ids = await insert_sample_data(
+        "texts", "locations", "resources", "contents"
+    )
     content_id = inserted_ids["contents"][0]
     await login(is_superuser=True)
 
@@ -80,9 +82,9 @@ async def test_get_content(
 async def test_find_contents(
     test_client: AsyncClient, insert_sample_data, status_fail_msg, login, wrong_id
 ):
-    resource_id = (await insert_sample_data("texts", "nodes", "resources", "contents"))[
-        "resources"
-    ][0]
+    resource_id = (
+        await insert_sample_data("texts", "locations", "resources", "contents")
+    )["resources"][0]
     await login(is_superuser=True)
 
     # find all contents
@@ -108,7 +110,7 @@ async def test_find_contents(
 async def test_update_content(
     test_client: AsyncClient, insert_sample_data, status_fail_msg, login, wrong_id
 ):
-    await insert_sample_data("texts", "nodes", "resources", "contents")
+    await insert_sample_data("texts", "locations", "resources", "contents")
     resource = await ResourceBaseDocument.find_one(with_children=True)
     content = await ContentBaseDocument.find_one(
         ContentBaseDocument.resource_id == resource.id, with_children=True
@@ -168,12 +170,12 @@ async def test_update_content(
 
     # fail to update content of resource we don't have write access to
     await login(is_superuser=False)
-    node = await NodeDocument.find_one(NodeDocument.level == resource.level)
+    location = await LocationDocument.find_one(LocationDocument.level == resource.level)
     resp = await test_client.patch(
         f"/contents/{str(content.id)}",
         json={
             "resourceId": str(resource.id),
-            "nodeId": str(node.id),
+            "locationId": str(location.id),
             "resourceType": "plaintext",
             "text": "FOO BAR",
         },
@@ -185,7 +187,9 @@ async def test_update_content(
 async def test_delete_content(
     test_client: AsyncClient, insert_sample_data, status_fail_msg, login, wrong_id
 ):
-    inserted_ids = await insert_sample_data("texts", "nodes", "resources", "contents")
+    inserted_ids = await insert_sample_data(
+        "texts", "locations", "resources", "contents"
+    )
     content_id = inserted_ids["contents"][0]
     superuser = await login(is_superuser=True)
 

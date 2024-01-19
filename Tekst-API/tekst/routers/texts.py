@@ -22,8 +22,8 @@ from tekst.dependencies import get_temp_dir
 from tekst.logging import log
 from tekst.models.common import Translations
 from tekst.models.content import ContentBaseDocument
-from tekst.models.exchange import NodeDefinition, TextStructureImportData
-from tekst.models.node import NodeDocument
+from tekst.models.exchange import LocationDefinition, TextStructureImportData
+from tekst.models.location import LocationDocument
 from tekst.models.resource import ResourceBaseDocument
 from tekst.models.text import (
     TextCreate,
@@ -117,19 +117,19 @@ async def download_structure_template(
         )
     # create template for text
     structure_def: TextStructureImportData = TextStructureImportData()
-    curr_node_def: NodeDefinition | None = None
-    dummy_node = NodeDefinition(
-        label="Label for the first node on level '{}' (required!)",
+    curr_location_def: LocationDefinition | None = None
+    dummy_location = LocationDefinition(
+        label="Label for the first location on level '{}' (required!)",
     )
     for n in range(len(text.levels)):
-        node = deepcopy(dummy_node)
-        node.label = node.label.format(text.levels[n][0]["translation"])
-        if curr_node_def is None:
-            structure_def.nodes.append(node)
+        location = deepcopy(dummy_location)
+        location.label = location.label.format(text.levels[n][0]["translation"])
+        if curr_location_def is None:
+            structure_def.locations.append(location)
         else:
-            curr_node_def.nodes = []
-            curr_node_def.nodes.append(node)
-        curr_node_def = node
+            curr_location_def.locations = []
+            curr_location_def.locations.append(location)
+        curr_location_def = location
     # validate template
     try:
         TextStructureImportData.model_validate(structure_def)
@@ -166,7 +166,7 @@ async def import_text_structure(
     ],
 ) -> None:
     """
-    Upload the structure definition for a text to apply as a structure of nodes
+    Upload the structure definition for a text to apply as a structure of locations
     """
     # test upload file MIME type
     if not file.content_type.lower() == "application/json":
@@ -181,11 +181,11 @@ async def import_text_structure(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Could not find text with ID {text_id}",
         )
-    # does text already have structure nodes defined?
-    if await NodeDocument.find_one(NodeDocument.text_id == text_id).exists():
+    # does text already have locations defined?
+    if await LocationDocument.find_one(LocationDocument.text_id == text_id).exists():
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail="This text already has structure nodes",
+            detail="This text already has locations",
         )
     # validate structure definition
     try:
@@ -195,38 +195,38 @@ async def import_text_structure(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Invalid structure definition ({str(e)})",
         )
-    # import nodes depth-first
-    nodes = structure_def.model_dump(exclude_none=True, by_alias=False)["nodes"]
+    # import locations depth-first
+    locations = structure_def.model_dump(exclude_none=True, by_alias=False)["locations"]
     structure_def = None  # de-reference structure definition object
-    # apply parent IDs (None) to all 0-level nodes
-    for node in nodes:
-        node["parent_id"] = None
-    # process nodes level by level
+    # apply parent IDs (None) to all 0-level locations
+    for location in locations:
+        location["parent_id"] = None
+    # process locations level by level
     for level in range(len(text.levels)):
-        if len(nodes) == 0:
+        if len(locations) == 0:
             break  # pragma: no cover
-        # create NodeDocument instances for each node definition
-        node_docs = [
-            NodeDocument(
+        # create LocationDocument instances for each location definition
+        location_docs = [
+            LocationDocument(
                 text_id=text_id,
-                parent_id=nodes[i]["parent_id"],
+                parent_id=locations[i]["parent_id"],
                 level=level,
                 position=i,
-                label=nodes[i]["label"],
+                label=locations[i]["label"],
             )
-            for i in range(len(nodes))
+            for i in range(len(locations))
         ]
         # bulk-insert documents
-        inserted_ids = (await NodeDocument.insert_many(node_docs)).inserted_ids
+        inserted_ids = (await LocationDocument.insert_many(location_docs)).inserted_ids
         # collect children and their parents' IDs
         children = []
-        for i in range(len(nodes)):
-            children_temp = nodes[i].get("nodes", [])
+        for i in range(len(locations)):
+            children_temp = locations[i].get("locations", [])
             # apply parent ID
             for c in children_temp:
                 c["parent_id"] = inserted_ids[i]
             children += children_temp
-        nodes = children
+        locations = children
 
 
 @router.post(
@@ -275,12 +275,12 @@ async def insert_level(
         with_children=True,
     ).inc({ResourceBaseDocument.level: 1})
 
-    # update all existing nodes with level >= index
-    await NodeDocument.find(
-        NodeDocument.text_id == text_id, NodeDocument.level >= index
-    ).inc({NodeDocument.level: 1})
+    # update all existing locations with level >= index
+    await LocationDocument.find(
+        LocationDocument.text_id == text_id, LocationDocument.level >= index
+    ).inc({LocationDocument.level: 1})
 
-    # create one dummy node per node on parent level and configure
+    # create one dummy location per location on parent level and configure
     # parent-child-relationships on next lower/higher level
     # (different operation if level == 0, as in this case there is no parent level)
     translations_map = {t.get("locale"): t.get("translation") for t in translations}
@@ -291,43 +291,47 @@ async def insert_level(
         or "???"
     )
     if index == 0:
-        dummy_node = NodeDocument(
+        dummy_location = LocationDocument(
             text_id=text_id,
             parent_id=None,
             level=index,
             position=0,
             label=f"{label_prefix} 1",
         )
-        await dummy_node.create()
-        # make dummy node parent of all nodes on level "index+1" (if exists)
-        await NodeDocument.find(
-            NodeDocument.text_id == text_id, NodeDocument.level == index + 1
-        ).update(Set({NodeDocument.parent_id: dummy_node.id}))
+        await dummy_location.create()
+        # make dummy location parent of all locations on level "index+1" (if exists)
+        await LocationDocument.find(
+            LocationDocument.text_id == text_id, LocationDocument.level == index + 1
+        ).update(Set({LocationDocument.parent_id: dummy_location.id}))
     else:
-        parent_level_nodes = (
-            await NodeDocument.find(
-                NodeDocument.text_id == text_id,
-                NodeDocument.level == index - 1,
+        parent_level_locations = (
+            await LocationDocument.find(
+                LocationDocument.text_id == text_id,
+                LocationDocument.level == index - 1,
             )
-            .sort(+NodeDocument.position)
+            .sort(+LocationDocument.position)
             .to_list()
         )
         # index > 0, so there is a parent level
-        for parent_level_node in parent_level_nodes:
-            # parent of each dummy node is respective node on parent level
-            dummy_node = NodeDocument(**parent_level_node.model_dump(exclude={"id"}))
-            dummy_node.parent_id = parent_level_node.id
-            dummy_node.level = index
-            dummy_node.position = parent_level_node.position
-            dummy_node.label = f"{label_prefix} {parent_level_node.position + 1}"
-            await dummy_node.create()
-            # make dummy node parent of respective nodes on level "index+1" (if exists)
-            # that were previously children of dummy's parent node on level "index-1"
-            await NodeDocument.find(
-                NodeDocument.text_id == text_id,
-                NodeDocument.level == index + 1,
-                NodeDocument.parent_id == parent_level_node.id,
-            ).update(Set({NodeDocument.parent_id: dummy_node.id}))
+        for parent_level_location in parent_level_locations:
+            # parent of each dummy location is respective location on parent level
+            dummy_location = LocationDocument(
+                **parent_level_location.model_dump(exclude={"id"})
+            )
+            dummy_location.parent_id = parent_level_location.id
+            dummy_location.level = index
+            dummy_location.position = parent_level_location.position
+            dummy_location.label = (
+                f"{label_prefix} {parent_level_location.position + 1}"
+            )
+            await dummy_location.create()
+            # make dummy location parent of respective locations on level "index+1"
+            # that were children of dummy's parent location on level "index-1"
+            await LocationDocument.find(
+                LocationDocument.text_id == text_id,
+                LocationDocument.level == index + 1,
+                LocationDocument.parent_id == parent_level_location.id,
+            ).update(Set({LocationDocument.parent_id: dummy_location.id}))
 
     return text_doc
 
@@ -363,31 +367,34 @@ async def delete_level(
             ),
         )
 
-    # make nodes of higher level (if exists) parents of nodes of lower level (if exists)
+    # make locations of higher level (if it exists)
+    # parents of locations of lower level (if it exists)
     if index == 0:
-        # the level to delete is the highest (lowest index) level, so all nodes on
-        # the next lower (higher index) level have no parent node anymore
-        await NodeDocument.find(
-            NodeDocument.text_id == text_id,
-            NodeDocument.level == index + 1,
-        ).update(Unset({NodeDocument.parent_id: None}))
+        # the level to delete is the highest (lowest index) level, so all locations on
+        # the next lower (higher index) level have no parent location anymore
+        await LocationDocument.find(
+            LocationDocument.text_id == text_id,
+            LocationDocument.level == index + 1,
+        ).update(Unset({LocationDocument.parent_id: None}))
     elif index < len(text_doc.levels) - 1:
         # the level to delete is neither the highest (lowest index) nor the
-        # lowest (highest index), so need to connect the adjacent levels' nodes
-        target_level_nodes = await NodeDocument.find(
-            NodeDocument.text_id == text_id,
-            NodeDocument.level == index,
+        # lowest (highest index), so need to connect the adjacent levels' locations
+        target_level_locations = await LocationDocument.find(
+            LocationDocument.text_id == text_id,
+            LocationDocument.level == index,
         ).to_list()
-        for target_level_node in target_level_nodes:
-            target_children = await NodeDocument.find(
-                NodeDocument.text_id == text_id,
-                NodeDocument.level == index + 1,
-                NodeDocument.parent_id == target_level_node.id,
+        for target_level_location in target_level_locations:
+            target_children = await LocationDocument.find(
+                LocationDocument.text_id == text_id,
+                LocationDocument.level == index + 1,
+                LocationDocument.parent_id == target_level_location.id,
             ).to_list()
             for target_child in target_children:
-                lbl = f"{target_child.label[:128]} ({target_level_node.label[:125]})"
+                lbl = (
+                    f"{target_child.label[:128]} ({target_level_location.label[:125]})"
+                )
                 target_child.label = lbl[:256]
-                target_child.parent_id = target_level_node.parent_id
+                target_child.parent_id = target_level_location.parent_id
                 await target_child.save()
 
     # delete all existing resources with level == index
@@ -404,14 +411,14 @@ async def delete_level(
         with_children=True,
     ).inc({ResourceBaseDocument.level: -1})
 
-    # delete all existing nodes with level == index
-    await NodeDocument.find(
-        NodeDocument.text_id == text_id, NodeDocument.level == index
+    # delete all existing locations with level == index
+    await LocationDocument.find(
+        LocationDocument.text_id == text_id, LocationDocument.level == index
     ).delete()
 
-    # update all existing nodes with level >= index
-    await NodeDocument.find(
-        NodeDocument.text_id == text_id, NodeDocument.level >= index
+    # update all existing locations with level >= index
+    await LocationDocument.find(
+        LocationDocument.text_id == text_id, LocationDocument.level >= index
     ).inc({ResourceBaseDocument.level: -1})
 
     # update text itself
@@ -464,9 +471,9 @@ async def delete_text(
     await ResourceBaseDocument.find(
         ResourceBaseDocument.text_id == text_id, with_children=True
     ).delete_many()
-    # delete structure nodes associated with target text
-    await NodeDocument.find(
-        NodeDocument.text_id == text_id,
+    # delete locations associated with target text
+    await LocationDocument.find(
+        LocationDocument.text_id == text_id,
     ).delete_many()
     # delete text itself
     await text.delete()

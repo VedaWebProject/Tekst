@@ -91,7 +91,7 @@
           "browse"
         ],
         "summary": "Get content siblings",
-        "description": "Returns a list of all resource contents belonging to the resource\nwith the given ID, associated to nodes that are children of the parent node\nwith the given ID.\n\nAs the resulting list may contain contents of arbitrary type, the\nreturned content objects cannot be typed to their precise resource content type.",
+        "description": "Returns a list of all resource contents belonging to the resource\nwith the given ID, associated to locations that are children of the parent location\nwith the given ID.\n\nAs the resulting list may contain contents of arbitrary type, the\nreturned content objects cannot be typed to their precise resource content type.",
         "operationId": "getContentSiblings",
         "security": [
           {
@@ -128,10 +128,10 @@
                   "type": "null"
                 }
               ],
-              "description": "ID of node for which siblings to get associated contents for",
+              "description": "ID of location for which siblings to get contents for",
               "title": "Parent"
             },
-            "description": "ID of node for which siblings to get associated contents for"
+            "description": "ID of location for which siblings to get contents for"
           }
         ],
         "responses": {
@@ -185,7 +185,7 @@
           "browse"
         ],
         "summary": "Get location data",
-        "description": "Returns the node path from the node with the given level/position\nas the last element, up to its most distant ancestor node\non structure level 0 as the first element of an array as well as all contents\nfor the given resource(s) referencing the nodes in the node path.",
+        "description": "Returns the location path from the location with the given level/position\nas the last element, up to its most distant ancestor location\non structure level 0 as the first element of an array as well as all contents\nfor the given resource(s) referencing the locations in the location path.",
         "operationId": "getLocationData",
         "security": [
           {
@@ -252,11 +252,11 @@
             "required": false,
             "schema": {
               "type": "boolean",
-              "description": "Only return contents referencing the head node of the path",
+              "description": "Only return contents for the head location of the path",
               "default": false,
               "title": "Head"
             },
-            "description": "Only return contents referencing the head node of the path"
+            "description": "Only return contents for the head location of the path"
           },
           {
             "name": "limit",
@@ -412,13 +412,13 @@
         }
       }
     },
-    "/browse/nodes/{id}/path/options-by-head": {
+    "/browse/locations/{id}/path/options-by-head": {
       "get": {
         "tags": [
           "browse"
         ],
         "summary": "Get path options by head id",
-        "description": "Returns the options for selecting text locations derived from the node path of\nthe node with the given ID as head.",
+        "description": "Returns the options for selecting text locations derived from the location path of\nthe location with the given ID as head.",
         "operationId": "getPathOptionsByHeadId",
         "parameters": [
           {
@@ -442,10 +442,10 @@
                   "items": {
                     "type": "array",
                     "items": {
-                      "$ref": "#/components/schemas/NodeRead"
+                      "$ref": "#/components/schemas/LocationRead"
                     }
                   },
-                  "title": "Response Get Path Options By Head Id Browse Nodes  Id  Path Options By Head Get"
+                  "title": "Response Get Path Options By Head Id Browse Locations  Id  Path Options By Head Get"
                 }
               }
             }
@@ -466,13 +466,13 @@
         }
       }
     },
-    "/browse/nodes/{id}/path/options-by-root": {
+    "/browse/locations/{id}/path/options-by-root": {
       "get": {
         "tags": [
           "browse"
         ],
         "summary": "Get path options by root",
-        "description": "Returns the options for selecting text locations derived from the node path of\nthe node with the given ID as root. At each level, the first option is taken\nas the basis for the next level.",
+        "description": "Returns the options for selecting text locations derived from the location path of\nthe location with the given ID as root. At each level, the first option is taken\nas the basis for the next level.",
         "operationId": "getPathOptionsByRoot",
         "parameters": [
           {
@@ -496,10 +496,10 @@
                   "items": {
                     "type": "array",
                     "items": {
-                      "$ref": "#/components/schemas/NodeRead"
+                      "$ref": "#/components/schemas/LocationRead"
                     }
                   },
-                  "title": "Response Get Path Options By Root Browse Nodes  Id  Path Options By Root Get"
+                  "title": "Response Get Path Options By Root Browse Locations  Id  Path Options By Root Get"
                 }
               }
             }
@@ -748,7 +748,7 @@
             "description": "ID (or list of IDs) of resource(s) to return content data for"
           },
           {
-            "name": "node",
+            "name": "location",
             "in": "query",
             "required": false,
             "schema": {
@@ -757,11 +757,11 @@
                 "type": "string",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
-              "description": "ID (or list of IDs) of node(s) to return content data for",
+              "description": "ID (or list of IDs) of location(s) to return content data for",
               "default": [],
-              "title": "Node"
+              "title": "Location"
             },
-            "description": "ID (or list of IDs) of node(s) to return content data for"
+            "description": "ID (or list of IDs) of location(s) to return content data for"
           },
           {
             "name": "limit",
@@ -1034,14 +1034,14 @@
         }
       }
     },
-    "/nodes": {
+    "/locations": {
       "post": {
         "tags": [
-          "nodes"
+          "locations"
         ],
-        "summary": "Create node",
-        "description": "Creates a new node. The position will be automatically set to the last position\nof the node's parent (or the first parent before that has children).",
-        "operationId": "createNode",
+        "summary": "Create location",
+        "description": "Creates a new location. The position will be automatically set to the last position\nof the location's parent (or the first parent before that has children).",
+        "operationId": "createLocation",
         "security": [
           {
             "APIKeyCookie": []
@@ -1055,7 +1055,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NodeCreate"
+                "$ref": "#/components/schemas/LocationCreate"
               }
             }
           }
@@ -1066,7 +1066,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/NodeRead"
+                  "$ref": "#/components/schemas/LocationRead"
                 }
               }
             }
@@ -1088,10 +1088,10 @@
       },
       "get": {
         "tags": [
-          "nodes"
+          "locations"
         ],
-        "summary": "Find nodes",
-        "operationId": "findNodes",
+        "summary": "Find locations",
+        "operationId": "findLocations",
         "parameters": [
           {
             "name": "txt",
@@ -1100,10 +1100,10 @@
             "schema": {
               "type": "string",
               "example": "5eb7cf5a86d9755df3a6c593",
-              "description": "ID of text to find nodes for",
+              "description": "ID of text to find locations for",
               "title": "Txt"
             },
-            "description": "ID of text to find nodes for"
+            "description": "ID of text to find locations for"
           },
           {
             "name": "lvl",
@@ -1111,10 +1111,10 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "description": "Structure level to find nodes for",
+              "description": "Structure level to find locations for",
               "title": "Lvl"
             },
-            "description": "Structure level to find nodes for"
+            "description": "Structure level to find locations for"
           },
           {
             "name": "pos",
@@ -1122,10 +1122,10 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "description": "Position value of nodes to find",
+              "description": "Position value of locations to find",
               "title": "Pos"
             },
-            "description": "Position value of nodes to find"
+            "description": "Position value of locations to find"
           },
           {
             "name": "parent",
@@ -1134,10 +1134,10 @@
             "schema": {
               "type": "string",
               "example": "5eb7cf5a86d9755df3a6c593",
-              "description": "ID of parent node to find children of",
+              "description": "ID of parent location to find children of",
               "title": "Parent"
             },
-            "description": "ID of parent node to find children of"
+            "description": "ID of parent location to find children of"
           },
           {
             "name": "limit",
@@ -1145,11 +1145,11 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "description": "Return at most <limit> nodes",
+              "description": "Return at most <limit> locations",
               "default": 8192,
               "title": "Limit"
             },
-            "description": "Return at most <limit> nodes"
+            "description": "Return at most <limit> locations"
           }
         ],
         "responses": {
@@ -1160,9 +1160,9 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/NodeRead"
+                    "$ref": "#/components/schemas/LocationRead"
                   },
-                  "title": "Response Find Nodes Nodes Get"
+                  "title": "Response Find Locations Locations Get"
                 }
               }
             }
@@ -1183,10 +1183,10 @@
         }
       }
     },
-    "/nodes/children": {
+    "/locations/children": {
       "get": {
         "tags": [
-          "nodes"
+          "locations"
         ],
         "summary": "Get children",
         "operationId": "getChildren",
@@ -1213,10 +1213,10 @@
                   "type": "null"
                 }
               ],
-              "description": "ID of text to find nodes for",
+              "description": "ID of text to find locations for",
               "title": "Txt"
             },
-            "description": "ID of text to find nodes for"
+            "description": "ID of text to find locations for"
           },
           {
             "name": "parent",
@@ -1232,10 +1232,10 @@
                   "type": "null"
                 }
               ],
-              "description": "ID of parent node to find children of",
+              "description": "ID of parent location to find children of",
               "title": "Parent"
             },
-            "description": "ID of parent node to find children of"
+            "description": "ID of parent location to find children of"
           },
           {
             "name": "limit",
@@ -1256,9 +1256,9 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/NodeRead"
+                    "$ref": "#/components/schemas/LocationRead"
                   },
-                  "title": "Response Get Children Nodes Children Get"
+                  "title": "Response Get Children Locations Children Get"
                 }
               }
             }
@@ -1279,13 +1279,13 @@
         }
       }
     },
-    "/nodes/{id}": {
+    "/locations/{id}": {
       "get": {
         "tags": [
-          "nodes"
+          "locations"
         ],
-        "summary": "Get node",
-        "operationId": "getNode",
+        "summary": "Get location",
+        "operationId": "getLocation",
         "parameters": [
           {
             "name": "id",
@@ -1304,7 +1304,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/NodeRead"
+                  "$ref": "#/components/schemas/LocationRead"
                 }
               }
             }
@@ -1326,10 +1326,10 @@
       },
       "patch": {
         "tags": [
-          "nodes"
+          "locations"
         ],
-        "summary": "Update node",
-        "operationId": "updateNode",
+        "summary": "Update location",
+        "operationId": "updateLocation",
         "security": [
           {
             "APIKeyCookie": []
@@ -1355,7 +1355,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NodeUpdate"
+                "$ref": "#/components/schemas/LocationUpdate"
               }
             }
           }
@@ -1366,7 +1366,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/NodeRead"
+                  "$ref": "#/components/schemas/LocationRead"
                 }
               }
             }
@@ -1388,11 +1388,11 @@
       },
       "delete": {
         "tags": [
-          "nodes"
+          "locations"
         ],
-        "summary": "Delete node",
-        "description": "Deletes the specified node. Also deletes any associated contents, child nodes and contents associated with child nodes.",
-        "operationId": "deleteNode",
+        "summary": "Delete location",
+        "description": "Deletes the specified location. Also deletes any associated contents, child locations and contents associated with child locations.",
+        "operationId": "deleteLocation",
         "security": [
           {
             "APIKeyCookie": []
@@ -1419,7 +1419,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DeleteNodeResult"
+                  "$ref": "#/components/schemas/DeleteLocationResult"
                 }
               }
             }
@@ -1440,14 +1440,14 @@
         }
       }
     },
-    "/nodes/{id}/move": {
+    "/locations/{id}/move": {
       "post": {
         "tags": [
-          "nodes"
+          "locations"
         ],
-        "summary": "Move node",
-        "description": "Moves the specified node to a new position on its structure level.",
-        "operationId": "moveNode",
+        "summary": "Move location",
+        "description": "Moves the specified location to a new position on its level.",
+        "operationId": "moveLocation",
         "security": [
           {
             "APIKeyCookie": []
@@ -1473,7 +1473,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/MoveNodeRequestBody"
+                "$ref": "#/components/schemas/MoveLocationRequestBody"
               }
             }
           }
@@ -1484,7 +1484,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/NodeRead"
+                  "$ref": "#/components/schemas/LocationRead"
                 }
               }
             }
@@ -3023,7 +3023,7 @@
           "texts"
         ],
         "summary": "Import text structure",
-        "description": "Upload the structure definition for a text to apply as a structure of nodes",
+        "description": "Upload the structure definition for a text to apply as a structure of locations",
         "operationId": "importTextStructure",
         "security": [
           {
@@ -4667,10 +4667,10 @@
             "const": "debug",
             "title": "Resourcetype"
           },
-          "nodeId": {
+          "locationId": {
             "type": "string",
-            "title": "Nodeid",
-            "description": "Parent text node ID",
+            "title": "Locationid",
+            "description": "Parent text location ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "comment": {
@@ -4704,7 +4704,7 @@
         "required": [
           "resourceId",
           "resourceType",
-          "nodeId"
+          "locationId"
         ],
         "title": "DebugContentCreate"
       },
@@ -4725,10 +4725,10 @@
             "const": "debug",
             "title": "Resourcetype"
           },
-          "nodeId": {
+          "locationId": {
             "type": "string",
-            "title": "Nodeid",
-            "description": "Parent text node ID",
+            "title": "Locationid",
+            "description": "Parent text location ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "comment": {
@@ -4764,7 +4764,7 @@
           "id",
           "resourceId",
           "resourceType",
-          "nodeId"
+          "locationId"
         ],
         "title": "DebugContentRead"
       },
@@ -4786,7 +4786,7 @@
             "const": "debug",
             "title": "Resourcetype"
           },
-          "nodeId": {
+          "locationId": {
             "anyOf": [
               {
                 "type": "string",
@@ -4796,7 +4796,7 @@
                 "type": "null"
               }
             ],
-            "title": "Nodeid"
+            "title": "Locationid"
           },
           "comment": {
             "anyOf": [
@@ -5497,23 +5497,23 @@
         "type": "object",
         "title": "DeepLLinksConfig"
       },
-      "DeleteNodeResult": {
+      "DeleteLocationResult": {
         "properties": {
           "contents": {
             "type": "integer",
             "title": "Contents"
           },
-          "nodes": {
+          "locations": {
             "type": "integer",
-            "title": "Nodes"
+            "title": "Locations"
           }
         },
         "type": "object",
         "required": [
           "contents",
-          "nodes"
+          "locations"
         ],
-        "title": "DeleteNodeResult"
+        "title": "DeleteLocationResult"
       },
       "ErrorModel": {
         "properties": {
@@ -5558,14 +5558,65 @@
           "enUS"
         ]
       },
+      "LocationCreate": {
+        "properties": {
+          "textId": {
+            "type": "string",
+            "title": "Textid",
+            "description": "ID of the text this location belongs to",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "parentId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parentid",
+            "description": "ID of parent location"
+          },
+          "level": {
+            "type": "integer",
+            "exclusiveMaximum": 32.0,
+            "minimum": 0.0,
+            "title": "Level",
+            "description": "Index of structure level this location is on"
+          },
+          "position": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Position",
+            "description": "Position among all text locations on this level"
+          },
+          "label": {
+            "type": "string",
+            "maxLength": 256,
+            "minLength": 1,
+            "title": "Label",
+            "description": "Label for identifying this text location in level context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "textId",
+          "level",
+          "position",
+          "label"
+        ],
+        "title": "LocationCreate"
+      },
       "LocationData": {
         "properties": {
-          "nodePath": {
+          "locationPath": {
             "items": {
-              "$ref": "#/components/schemas/NodeRead"
+              "$ref": "#/components/schemas/LocationRead"
             },
             "type": "array",
-            "title": "Nodepath",
+            "title": "Locationpath",
             "default": []
           },
           "contents": {
@@ -5587,111 +5638,7 @@
         "type": "object",
         "title": "LocationData"
       },
-      "Metadate": {
-        "properties": {
-          "key": {
-            "type": "string",
-            "maxLength": 16,
-            "minLength": 1,
-            "title": "Key"
-          },
-          "value": {
-            "type": "string",
-            "maxLength": 128,
-            "minLength": 1,
-            "title": "Value"
-          }
-        },
-        "type": "object",
-        "required": [
-          "key",
-          "value"
-        ],
-        "title": "Metadate"
-      },
-      "MoveNodeRequestBody": {
-        "properties": {
-          "position": {
-            "type": "integer",
-            "title": "Position"
-          },
-          "after": {
-            "type": "boolean",
-            "title": "After"
-          },
-          "parentId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Parentid"
-          }
-        },
-        "type": "object",
-        "required": [
-          "position",
-          "after",
-          "parentId"
-        ],
-        "title": "MoveNodeRequestBody"
-      },
-      "NodeCreate": {
-        "properties": {
-          "textId": {
-            "type": "string",
-            "title": "Textid",
-            "description": "ID of the text this node belongs to",
-            "example": "5eb7cf5a86d9755df3a6c593"
-          },
-          "parentId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Parentid",
-            "description": "ID of parent node"
-          },
-          "level": {
-            "type": "integer",
-            "exclusiveMaximum": 32.0,
-            "minimum": 0.0,
-            "title": "Level",
-            "description": "Index of structure level this node is on"
-          },
-          "position": {
-            "type": "integer",
-            "minimum": 0.0,
-            "title": "Position",
-            "description": "Position among all text nodes on this level"
-          },
-          "label": {
-            "type": "string",
-            "maxLength": 256,
-            "minLength": 1,
-            "title": "Label",
-            "description": "Label for identifying this text node in level context"
-          }
-        },
-        "type": "object",
-        "required": [
-          "textId",
-          "level",
-          "position",
-          "label"
-        ],
-        "title": "NodeCreate"
-      },
-      "NodeRead": {
+      "LocationRead": {
         "properties": {
           "id": {
             "type": "string",
@@ -5701,7 +5648,7 @@
           "textId": {
             "type": "string",
             "title": "Textid",
-            "description": "ID of the text this node belongs to",
+            "description": "ID of the text this location belongs to",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "parentId": {
@@ -5715,27 +5662,27 @@
               }
             ],
             "title": "Parentid",
-            "description": "ID of parent node"
+            "description": "ID of parent location"
           },
           "level": {
             "type": "integer",
             "exclusiveMaximum": 32.0,
             "minimum": 0.0,
             "title": "Level",
-            "description": "Index of structure level this node is on"
+            "description": "Index of structure level this location is on"
           },
           "position": {
             "type": "integer",
             "minimum": 0.0,
             "title": "Position",
-            "description": "Position among all text nodes on this level"
+            "description": "Position among all text locations on this level"
           },
           "label": {
             "type": "string",
             "maxLength": 256,
             "minLength": 1,
             "title": "Label",
-            "description": "Label for identifying this text node in level context"
+            "description": "Label for identifying this text location in level context"
           }
         },
         "additionalProperties": true,
@@ -5747,9 +5694,9 @@
           "position",
           "label"
         ],
-        "title": "NodeRead"
+        "title": "LocationRead"
       },
-      "NodeUpdate": {
+      "LocationUpdate": {
         "properties": {
           "textId": {
             "anyOf": [
@@ -5774,7 +5721,7 @@
               }
             ],
             "title": "Parentid",
-            "description": "ID of parent node"
+            "description": "ID of parent location"
           },
           "level": {
             "anyOf": [
@@ -5816,7 +5763,60 @@
           }
         },
         "type": "object",
-        "title": "NodeUpdate"
+        "title": "LocationUpdate"
+      },
+      "Metadate": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "maxLength": 16,
+            "minLength": 1,
+            "title": "Key"
+          },
+          "value": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Value"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "value"
+        ],
+        "title": "Metadate"
+      },
+      "MoveLocationRequestBody": {
+        "properties": {
+          "position": {
+            "type": "integer",
+            "title": "Position"
+          },
+          "after": {
+            "type": "boolean",
+            "title": "After"
+          },
+          "parentId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parentid"
+          }
+        },
+        "type": "object",
+        "required": [
+          "position",
+          "after",
+          "parentId"
+        ],
+        "title": "MoveLocationRequestBody"
       },
       "PlaintextContentCreate": {
         "properties": {
@@ -5830,10 +5830,10 @@
             "const": "plaintext",
             "title": "Resourcetype"
           },
-          "nodeId": {
+          "locationId": {
             "type": "string",
-            "title": "Nodeid",
-            "description": "Parent text node ID",
+            "title": "Locationid",
+            "description": "Parent text location ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "comment": {
@@ -5862,7 +5862,7 @@
         "required": [
           "resourceId",
           "resourceType",
-          "nodeId",
+          "locationId",
           "text"
         ],
         "title": "PlaintextContentCreate"
@@ -5884,10 +5884,10 @@
             "const": "plaintext",
             "title": "Resourcetype"
           },
-          "nodeId": {
+          "locationId": {
             "type": "string",
-            "title": "Nodeid",
-            "description": "Parent text node ID",
+            "title": "Locationid",
+            "description": "Parent text location ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "comment": {
@@ -5918,7 +5918,7 @@
           "id",
           "resourceId",
           "resourceType",
-          "nodeId",
+          "locationId",
           "text"
         ],
         "title": "PlaintextContentRead"
@@ -5941,7 +5941,7 @@
             "const": "plaintext",
             "title": "Resourcetype"
           },
-          "nodeId": {
+          "locationId": {
             "anyOf": [
               {
                 "type": "string",
@@ -5951,7 +5951,7 @@
                 "type": "null"
               }
             ],
-            "title": "Nodeid"
+            "title": "Locationid"
           },
           "comment": {
             "anyOf": [
@@ -7183,21 +7183,21 @@
             "type": "array",
             "title": "Parentlabels"
           },
-          "nodesCoverage": {
+          "locationsCoverage": {
             "items": {
               "items": {
-                "$ref": "#/components/schemas/ResourceNodeCoverage"
+                "$ref": "#/components/schemas/ResourceLocationCoverage"
               },
               "type": "array"
             },
             "type": "array",
-            "title": "Nodescoverage"
+            "title": "Locationscoverage"
           }
         },
         "type": "object",
         "required": [
           "parentLabels",
-          "nodesCoverage"
+          "locationsCoverage"
         ],
         "title": "ResourceCoverageDetails"
       },
@@ -7243,7 +7243,7 @@
         ],
         "title": "ResourceDescriptionTranslation"
       },
-      "ResourceNodeCoverage": {
+      "ResourceLocationCoverage": {
         "properties": {
           "label": {
             "type": "string",
@@ -7264,7 +7264,7 @@
           "label",
           "position"
         ],
-        "title": "ResourceNodeCoverage"
+        "title": "ResourceLocationCoverage"
       },
       "TextCreate": {
         "properties": {
@@ -7467,9 +7467,9 @@
             "title": "Id",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
-          "nodesCount": {
+          "locationsCount": {
             "type": "integer",
-            "title": "Nodescount"
+            "title": "Locationscount"
           },
           "resourcesCount": {
             "type": "integer",
@@ -7486,7 +7486,7 @@
         "type": "object",
         "required": [
           "id",
-          "nodesCount",
+          "locationsCount",
           "resourcesCount",
           "resourceTypes"
         ],

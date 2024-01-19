@@ -2,7 +2,7 @@
 import { ref, computed, watch } from 'vue';
 import { useStateStore } from '@/stores';
 import { NButton, NSelect, NFormItem, NForm, NDivider } from 'naive-ui';
-import type { NodeRead, TextRead } from '@/api';
+import type { LocationRead, TextRead } from '@/api';
 import ButtonShelf from '@/components/ButtonShelf.vue';
 import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import { GET } from '@/api';
@@ -15,7 +15,7 @@ import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
 
 const props = withDefaults(
   defineProps<{
-    nodePath: NodeRead[];
+    locationPath: LocationRead[];
     showLevelSelect?: boolean;
     show?: boolean;
   }>(),
@@ -25,7 +25,7 @@ const props = withDefaults(
   }
 );
 
-const emit = defineEmits(['update:show', 'update:nodePath']);
+const emit = defineEmits(['update:show', 'update:locationPath']);
 
 const state = useStateStore();
 const { message } = useMessages();
@@ -35,7 +35,7 @@ watch(
   (show) => show && initSelectModels()
 );
 
-const locationLevel = ref(props.nodePath.length - 1);
+const locationLevel = ref(props.locationPath.length - 1);
 const locationLevelOptions = computed(() =>
   state.textLevelLabels.map((l, i) => ({
     value: i,
@@ -44,7 +44,7 @@ const locationLevelOptions = computed(() =>
 );
 // sync browse level in location controls state with actual browse level (if possible)
 watch(
-  () => props.nodePath.length,
+  () => props.locationPath.length,
   (after) => {
     locationLevel.value = after - 1;
   }
@@ -64,14 +64,14 @@ interface LocationSelectModel {
   loading: boolean;
   selected: string | null;
   disabled: boolean;
-  nodes: NodeRead[];
+  locations: LocationRead[];
 }
 const locationSelectModels = ref<LocationSelectModel[]>(getEmptyModels());
 
-// generate location select options from select model nodes
+// generate location select options from select model locations
 const locationSelectOptions = computed(() =>
   locationSelectModels.value.map((lsm) =>
-    lsm.nodes.map((n) => ({
+    lsm.locations.map((n) => ({
       label: n.label,
       value: n.id,
     }))
@@ -90,7 +90,7 @@ function getEmptyModels(text: TextRead | undefined = state.text): LocationSelect
     text.levels.map((_, i) => ({
       loading: false,
       selected: null,
-      nodes: [],
+      locations: [],
       options: [],
       disabled: props.showLevelSelect && i > locationLevel.value,
     })) || []
@@ -109,24 +109,24 @@ async function updateSelectModelsFromLvl(lvl: number) {
       lsm.loading = true;
     }
   });
-  // load node path options from node selected at lvl as root
-  const { data: nodes, error } = await GET('/browse/nodes/{id}/path/options-by-root', {
+  // load location path options from location selected at lvl as root
+  const { data: locations, error } = await GET('/browse/locations/{id}/path/options-by-root', {
     params: { path: { id: locationSelectModels.value[lvl].selected || '' } },
   });
   if (error) {
     message.error($t('errors.unexpected'), error);
     return;
   }
-  // set nodes for all following levels
+  // set locations for all following levels
   locationSelectModels.value.forEach((lsm, i) => {
     // only apply to higher levels
     if (i > lvl) {
       // only do this if we're <= current browse level
       if (i <= locationLevel.value) {
-        // set nodes
-        lsm.nodes = nodes.shift() || [];
+        // set locations
+        lsm.locations = locations.shift() || [];
         // set selection
-        lsm.selected = lsm.nodes[0]?.id || null;
+        lsm.selected = lsm.locations[0]?.id || null;
       }
       // set to no loading
       lsm.loading = false;
@@ -137,7 +137,7 @@ async function updateSelectModelsFromLvl(lvl: number) {
 function applyBrowseLevel() {
   locationSelectModels.value.forEach((lsm, i) => {
     lsm.disabled = props.showLevelSelect && i > locationLevel.value;
-    lsm.nodes = lsm.disabled ? [] : lsm.nodes;
+    lsm.locations = lsm.disabled ? [] : lsm.locations;
     lsm.selected = lsm.disabled ? null : lsm.selected;
   });
 }
@@ -148,10 +148,13 @@ async function initSelectModels() {
     lsm.loading = true;
   });
 
-  // fetch nodes from head to root
-  const { data: nodesOptions, error } = await GET('/browse/nodes/{id}/path/options-by-head', {
-    params: { path: { id: props.nodePath[locationLevel.value].id ?? '' } },
-  });
+  // fetch locations from head to root
+  const { data: locationsOptions, error } = await GET(
+    '/browse/locations/{id}/path/options-by-head',
+    {
+      params: { path: { id: props.locationPath[locationLevel.value].id ?? '' } },
+    }
+  );
 
   if (error) {
     message.error($t('errors.unexpected'), error);
@@ -165,10 +168,10 @@ async function initSelectModels() {
   for (const lsm of locationSelectModels.value) {
     // set options and selection
     if (index <= locationLevel.value) {
-      // remember nodes for these options
-      lsm.nodes = nodesOptions[index];
+      // remember locations for these options
+      lsm.locations = locationsOptions[index];
       // set selection
-      lsm.selected = props.nodePath?.[index]?.id || null;
+      lsm.selected = props.locationPath?.[index]?.id || null;
     }
     index++;
     lsm.loading = false;
@@ -177,10 +180,10 @@ async function initSelectModels() {
 
 function handleLocationSelect() {
   emit(
-    'update:nodePath',
+    'update:locationPath',
     locationSelectModels.value
       .filter((_, i) => i <= locationLevel.value)
-      .map((lsm) => lsm.nodes.find((n) => n.id === lsm.selected))
+      .map((lsm) => lsm.locations.find((n) => n.id === lsm.selected))
   );
   emit('update:show', false);
 }

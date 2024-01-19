@@ -35,7 +35,7 @@ async function handleClick() {
     params: {
       query: {
         res: props.resource.id,
-        parent: browse.nodePath[props.resource.level - 1]?.id,
+        parent: browse.locationPath[props.resource.level - 1]?.id,
       },
     },
   });

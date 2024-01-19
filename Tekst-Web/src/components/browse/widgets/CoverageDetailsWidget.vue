@@ -40,12 +40,12 @@ const route = useRoute();
 
 const coverageDetails = ref<ResourceCoverageDetails>();
 const coverageListItems = computed(() =>
-  coverageDetails.value?.nodesCoverage.map((nodes, i) => ({
+  coverageDetails.value?.locationsCoverage.map((locations, i) => ({
     title: `${state.textLevelLabels[props.resource.level - 1]}: ${
       coverageDetails.value?.parentLabels[i]
     }`,
-    extra: `${nodes.filter((n) => n.covered).length}/${nodes.length}`,
-    nodes: nodes,
+    extra: `${locations.filter((n) => n.covered).length}/${locations.length}`,
+    locations: locations,
   }))
 );
 
@@ -72,7 +72,7 @@ function handleLeave() {
   coverageDetails.value = undefined;
 }
 
-function handleNodeClick(level: number, position: number) {
+function handleLocationClick(level: number, position: number) {
   router.push({
     name: 'browse',
     params: { text: route.params.text },
@@ -178,12 +178,12 @@ watch(
             <template #description>
               <div class="cov-block">
                 <div
-                  v-for="node in item.nodes"
-                  :key="node.position"
+                  v-for="location in item.locations"
+                  :key="location.position"
                   class="cov-box"
-                  :class="node.covered && 'covered'"
-                  :title="`${state.textLevelLabels[resource.level]}: ${node.label}`"
-                  @click="() => handleNodeClick(resource.level, node.position)"
+                  :class="location.covered && 'covered'"
+                  :title="`${state.textLevelLabels[resource.level]}: ${location.label}`"
+                  @click="() => handleLocationClick(resource.level, location.position)"
                 ></div>
               </div>
             </template>

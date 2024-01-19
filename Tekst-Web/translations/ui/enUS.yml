@@ -88,7 +88,7 @@ routes:
     adminSystemUsers: '@:admin.heading - Users'
     adminTextsGeneral: '{text}: General'
     adminTextsLevels: '{text}: Levels'
-    adminTextsNodes: '{text}: Nodes'
+    adminTextsLocations: '{text}: Locations'
     adminNewText: '@:admin.heading - New Text'
     adminSystemSegments: '@:admin.heading - Site Segments'
     adminSystemInfoPages: '@:admin.heading - Info Pages'
@@ -111,7 +111,7 @@ browse:
     heading: Show Resources
   uncategorized: Uncategorized
   locationResourceNoData: No data for this location
-  textNoNodes: This text's setup seems incomplete. There are no structure nodes defined.
+  textNoLocations: This text's setup seems incomplete. There are no locations defined.
   locationNoData: The selected resources contain no data for this text level and location. Try choosing a different location or activating more resources.
   contents:
     widgets:
@@ -189,8 +189,8 @@ models:
     formRulesFeedback:
       slugChars: 'Allowed characters: a-z and 0-9'
       defaultLevelRange: 0 or greater
-  node:
-    modelLabel: Structure node | Structure nodes
+  location:
+    modelLabel: Location | Locations
     label: Label
   resource:
     modelLabel: Resource | Resources
@@ -477,7 +477,7 @@ admin:
         Retroactively inserting a text level is an operation with serious
         impact on the text's data model. The application will try its best to embed the
         new level into the existing data structure, but you will have to adjust the
-        result to your needs using the text's structure nodes settings afterwards.
+        result to your needs using the text's locations settings afterwards.
         Also, it is recommended to make a backup of the current state of your database
         before performing this operation.
       warnDeleteLevel: |
@@ -486,46 +486,46 @@ admin:
         on this level, regardless of the user who created it!
         The application will try its best to re-connect adjacent levels,
         but you will have to adjust the result to your needs using the text's
-        structure nodes settings afterwards. This cannot be undone.
+        locations settings afterwards. This cannot be undone.
         Please make sure you know what you are doing and make a backup
         of your database before doing this! Are you sure you want to delete the text
         level "{levelLabel}"?
-    nodes:
-      heading: Nodes
+    locations:
+      heading: Locations
       add:
-        heading: Add node to "{parentLabel}" on level "{level}"
-        tooltip: Add node
-        msgSuccess: Added node "{label}" to "{parentLabel}"
-      lblBtnAddNodeFirstLevel: Add
-      tipBtnAddNodeFirstLevel: Add top-level node
+        heading: Add location to "{parentLabel}" on level "{level}"
+        tooltip: Add location
+        msgSuccess: Added location "{label}" to "{parentLabel}"
+      lblBtnAddLocationFirstLevel: Add
+      tipBtnAddLocationFirstLevel: Add top-level location
       lblBtnDownloadTemplate: Template
       tipBtnDownloadTemplate: Download structure definition template
       lblBtnUploadStructure: Import
       tipBtnUploadStructure: Import structure definition (only if structure is empty!)
-      infoNoNodes: |
-        This text does not have any structure nodes, yet. Add nodes to the text's
+      infoNoLocations: |
+        This text does not have any locations, yet. Add locations to the text's
         structure levels using the interface below or download a structure template
         you can programmatically populate with your data and upload it here.
       warnGeneral: |
-        Rearranging or deleting text nodes has serious impact on the text's data model.
+        Rearranging or deleting text locations has serious impact on the text's data model.
         It is recommended to make a backup of the current state of your
         database before making any changes, here.
-      warnDeleteNode: |
-        If you delete this node, all data associated with it or its child nodes will
+      warnDeleteLocation: |
+        If you delete this location, all data associated with it or its child locations will
         be deleted with it. This can potentially affect all resources,
         even ones created by other users. If what you want to do can be achieved by
-        merely moving the node within the structure level it is on, you should do
-        so instead, as moving nodes works without deleting any data.
+        merely moving the location within the structure level it is on, you should do
+        so instead, as moving locations works without deleting any data.
         This cannot be undone.
-        Now, are you really sure you want to delete the selected structure node?
-      tipDeleteNode: Delete node "{node}"
-      infoDeletedNode: Deleted node "{node}" (total of {nodes} nodes and {contents} contents)
-      infoMovedNode: Moved node "{node}" to position {position} on level "{level}"
-      errorNodeLeftLevel: Text nodes can only be moved on their original structure level!
+        Now, are you really sure you want to delete the selected location?
+      tipDeleteLocation: Delete location "{location}"
+      infoDeletedLocation: Deleted location "{location}" (total of {locations} locations and {contents} contents)
+      infoMovedLocation: Moved location "{location}" to position {position} on level "{level}"
+      errorLocationLeftLevel: Text locations can only be moved on their original structure level!
       checkShowWarnings: Show warnings before performing destructive operations
       rename:
-        heading: Rename Node
-        msgSuccess: Node "{oldName}" renamed to "{newName}"
+        heading: Rename Location
+        msgSuccess: Location "{oldName}" renamed to "{newName}"
       upload:
         msgSuccess: New text structure uploaded and processed successfully
         msgError: 'Error uploading and processing text structure'

@@ -12,15 +12,15 @@ import {
   type TreeDragInfo,
 } from 'naive-ui';
 import { h, ref } from 'vue';
-import { DELETE, GET, POST, getFullUrl, type NodeRead } from '@/api';
+import { DELETE, GET, POST, getFullUrl, type LocationRead } from '@/api';
 import { useStateStore } from '@/stores';
 import { useMessages } from '@/messages';
 import { $t } from '@/i18n';
 import { watch } from 'vue';
 import type { Component, Ref } from 'vue';
 import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
-import RenameNodeModal from '@/components/admin/RenameNodeModal.vue';
-import AddNodeModal from '@/components/admin/AddNodeModal.vue';
+import RenameLocationModal from '@/components/admin/RenameLocationModal.vue';
+import AddLocationModal from '@/components/admin/AddLocationModal.vue';
 
 import AddOutlined from '@vicons/material/AddOutlined';
 import DeleteFilled from '@vicons/material/DeleteFilled';
@@ -31,7 +31,7 @@ import FileDownloadSharp from '@vicons/material/FileDownloadSharp';
 import FileUploadSharp from '@vicons/material/FileUploadSharp';
 import { computed } from 'vue';
 
-export interface NodeTreeOption extends TreeOption {
+export interface LocationTreeOption extends TreeOption {
   level: number;
   position: number;
   parentKey: string | null | undefined;
@@ -41,8 +41,8 @@ const state = useStateStore();
 const { message } = useMessages();
 const dialog = useDialog();
 
-const treeData = ref<NodeTreeOption[]>([]);
-const dragNode = ref<NodeTreeOption | null>(null);
+const treeData = ref<LocationTreeOption[]>([]);
+const dragNode = ref<LocationTreeOption | null>(null);
 const showWarnings = ref(true);
 
 const loadingAdd = ref(false);
@@ -62,16 +62,16 @@ const loading = computed(
 );
 
 const showRenameModal = ref(false);
-const nodeToRename = ref<NodeTreeOption | null>(null);
+const locationToRename = ref<LocationTreeOption | null>(null);
 
 const showAddModal = ref(false);
-const nodeParentToAddTo = ref<NodeTreeOption | null>(null);
+const locationParentToAddTo = ref<LocationTreeOption | null>(null);
 
-async function loadTreeData(node?: TreeOption) {
+async function loadTreeData(location?: TreeOption) {
   loadingData.value = true;
-  const { data, error } = await GET('/nodes/children', {
+  const { data, error } = await GET('/locations/children', {
     params: {
-      query: { txt: state.text?.id || '', ...(node ? { parent: String(node.key) } : {}) },
+      query: { txt: state.text?.id || '', ...(location ? { parent: String(location.key) } : {}) },
     },
   });
   if (error) {
@@ -79,7 +79,7 @@ async function loadTreeData(node?: TreeOption) {
     loadingData.value = false;
     return;
   }
-  const subTreeData: NodeTreeOption[] = data.map((child) => ({
+  const subTreeData: LocationTreeOption[] = data.map((child) => ({
     key: child.id,
     label: child.label,
     isLeaf: child.level >= (state.text?.levels.length || Number.MAX_SAFE_INTEGER) - 1,
@@ -87,10 +87,10 @@ async function loadTreeData(node?: TreeOption) {
     position: child.position,
     parentKey: child.parentId,
   }));
-  if (!node) {
+  if (!location) {
     treeData.value = subTreeData;
   } else {
-    node.children = subTreeData;
+    location.children = subTreeData;
   }
   loadingData.value = false;
 }
@@ -104,27 +104,27 @@ function isDropAllowed(info: {
 }
 
 function handleDragStart(data: TreeDragInfo) {
-  dragNode.value = data.node as NodeTreeOption;
+  dragNode.value = data.node as LocationTreeOption;
 }
 
 function handleDragEnd() {
   dragNode.value = null;
 }
 
-function getTreeNodeByKey(
+function getTreeLocationByKey(
   key: string | null | undefined,
-  tree: NodeTreeOption[] = treeData.value
-): NodeTreeOption | undefined {
+  tree: LocationTreeOption[] = treeData.value
+): LocationTreeOption | undefined {
   if (key === null) return undefined;
-  const targetNode = tree.find((n) => n.key === key);
-  if (targetNode) {
-    return targetNode;
+  const targetLocation = tree.find((n) => n.key === key);
+  if (targetLocation) {
+    return targetLocation;
   } else {
-    for (const node of tree) {
-      if (node.children?.length) {
-        const targetNode = getTreeNodeByKey(key, node.children as NodeTreeOption[]);
-        if (targetNode) {
-          return targetNode;
+    for (const location of tree) {
+      if (location.children?.length) {
+        const targetLocation = getTreeLocationByKey(key, location.children as LocationTreeOption[]);
+        if (targetLocation) {
+          return targetLocation;
         }
       }
     }
@@ -132,8 +132,8 @@ function getTreeNodeByKey(
   }
 }
 
-async function moveNode(dropData: TreeDropInfo) {
-  const { data, error } = await POST('/nodes/{id}/move', {
+async function moveLocation(dropData: TreeDropInfo) {
+  const { data, error } = await POST('/locations/{id}/move', {
     params: {
       path: { id: dropData.dragNode.key?.toString() || '' },
     },
@@ -145,8 +145,8 @@ async function moveNode(dropData: TreeDropInfo) {
   });
   if (!error) {
     message.success(
-      $t('admin.text.nodes.infoMovedNode', {
-        node: data.label,
+      $t('admin.text.locations.infoMovedLocation', {
+        location: data.label,
         position: data.position,
         level: state.textLevelLabels[data.level],
       })
@@ -160,35 +160,35 @@ async function moveNode(dropData: TreeDropInfo) {
     await loadTreeData();
   } else if (dropData.dragNode.parentKey === dropData.node.parentKey) {
     // same parent (load tree data for common parent)
-    await loadTreeData(getTreeNodeByKey(dropData.dragNode.parentKey as string | null));
+    await loadTreeData(getTreeLocationByKey(dropData.dragNode.parentKey as string | null));
   } else {
     // different parent (load tree data for both parents)
-    await loadTreeData(getTreeNodeByKey(dropData.dragNode.parentKey as string | null));
-    await loadTreeData(getTreeNodeByKey(dropData.node.parentKey as string | null));
+    await loadTreeData(getTreeLocationByKey(dropData.dragNode.parentKey as string | null));
+    await loadTreeData(getTreeLocationByKey(dropData.node.parentKey as string | null));
   }
 }
 
 async function handleDrop(dropData: TreeDropInfo) {
   loadingMove.value = true;
   if (dropData.dragNode.level !== dropData.node.level) {
-    message.error($t('admin.text.nodes.errorNodeLeftLevel'));
+    message.error($t('admin.text.locations.errorLocationLeftLevel'));
   } else {
-    await moveNode(dropData);
+    await moveLocation(dropData);
   }
   loadingMove.value = false;
 }
 
-async function deleteNode(node: TreeOption) {
+async function deleteLocation(location: TreeOption) {
   loadingDelete.value = true;
-  const { data: result, error } = await DELETE('/nodes/{id}', {
-    params: { path: { id: node.key?.toString() || '' } },
+  const { data: result, error } = await DELETE('/locations/{id}', {
+    params: { path: { id: location.key?.toString() || '' } },
   });
   if (!error) {
-    loadTreeData(getTreeNodeByKey(node.parentKey as string | null));
+    loadTreeData(getTreeLocationByKey(location.parentKey as string | null));
     message.success(
-      $t('admin.text.nodes.infoDeletedNode', {
-        node: node.label,
-        nodes: result.nodes,
+      $t('admin.text.locations.infoDeletedLocation', {
+        location: location.label,
+        locations: result.locations,
         contents: result.contents,
       })
     );
@@ -198,67 +198,67 @@ async function deleteNode(node: TreeOption) {
   loadingDelete.value = false;
 }
 
-async function handleDeleteClick(node: NodeTreeOption) {
+async function handleDeleteClick(location: LocationTreeOption) {
   if (!showWarnings.value) {
-    deleteNode(node);
+    deleteLocation(location);
     return;
   }
   const d = dialog.warning({
     title: $t('general.warning'),
-    content: $t('admin.text.nodes.warnDeleteNode', { nodeLabel: node.label }),
+    content: $t('admin.text.locations.warnDeleteLocation', { locationLabel: location.label }),
     positiveText: $t('general.deleteAction'),
     positiveButtonProps,
     negativeButtonProps,
     autoFocus: true,
     onPositiveClick: async () => {
       d.loading = true;
-      await deleteNode(node);
+      await deleteLocation(location);
       d.loading = false;
     },
   });
 }
 
-function handleRenameClick(node: NodeTreeOption) {
-  nodeToRename.value = node;
+function handleRenameClick(location: LocationTreeOption) {
+  locationToRename.value = location;
   showRenameModal.value = true;
 }
 
-async function handleRenameResult(node: NodeRead | undefined) {
+async function handleRenameResult(location: LocationRead | undefined) {
   loadingRename.value = true;
-  if (node) {
+  if (location) {
     message.success(
-      $t('admin.text.nodes.rename.msgSuccess', {
-        oldName: nodeToRename.value?.label,
-        newName: node.label,
+      $t('admin.text.locations.rename.msgSuccess', {
+        oldName: locationToRename.value?.label,
+        newName: location.label,
       })
     );
   } else {
     message.error($t('errors.unexpected'));
   }
-  await loadTreeData(getTreeNodeByKey(nodeToRename.value?.parentKey));
-  nodeToRename.value = null;
+  await loadTreeData(getTreeLocationByKey(locationToRename.value?.parentKey));
+  locationToRename.value = null;
   loadingRename.value = false;
 }
 
-function handleAddNodeClick(parent: NodeTreeOption | null = null) {
-  nodeParentToAddTo.value = parent;
+function handleAddLocationClick(parent: LocationTreeOption | null = null) {
+  locationParentToAddTo.value = parent;
   showAddModal.value = true;
 }
 
-async function handleAddResult(node: NodeRead | undefined) {
+async function handleAddResult(location: LocationRead | undefined) {
   loadingAdd.value = true;
-  if (node) {
+  if (location) {
     message.success(
-      $t('admin.text.nodes.add.msgSuccess', {
-        label: node.label,
-        parentLabel: nodeParentToAddTo.value?.label || state.text?.title || '',
+      $t('admin.text.locations.add.msgSuccess', {
+        label: location.label,
+        parentLabel: locationParentToAddTo.value?.label || state.text?.title || '',
       })
     );
   } else {
     message.error($t('errors.unexpected'));
   }
-  await loadTreeData(getTreeNodeByKey(nodeParentToAddTo.value?.key?.toString()));
-  nodeParentToAddTo.value = null;
+  await loadTreeData(getTreeLocationByKey(locationParentToAddTo.value?.key?.toString()));
+  locationParentToAddTo.value = null;
   loadingAdd.value = false;
 }
 
@@ -292,9 +292,9 @@ async function handleUploadStructureClick() {
         body: formData,
       });
       if (response.ok) {
-        message.success($t('admin.text.nodes.upload.msgSuccess'));
+        message.success($t('admin.text.locations.upload.msgSuccess'));
       } else {
-        message.error($t('admin.text.nodes.upload.msgError'), await response.json());
+        message.error($t('admin.text.locations.upload.msgError'), await response.json());
       }
     } catch (error) {
       // failed request handled already, nothing to do
@@ -365,23 +365,23 @@ function renderSuffix(info: { option: TreeOption; checked: boolean; selected: bo
     renderSuffixButton(
       EditTwotone,
       () => {
-        handleRenameClick(info.option as NodeTreeOption);
+        handleRenameClick(info.option as LocationTreeOption);
       },
-      $t('admin.text.nodes.rename.heading'),
+      $t('admin.text.locations.rename.heading'),
       loadingRename
     ),
     renderSuffixButton(
       DeleteFilled,
-      () => handleDeleteClick(info.option as NodeTreeOption),
-      $t('admin.text.nodes.tipDeleteNode', { node: info.option.label || '' }),
+      () => handleDeleteClick(info.option as LocationTreeOption),
+      $t('admin.text.locations.tipDeleteLocation', { location: info.option.label || '' }),
       loadingDelete
     ),
     info.option.isLeaf
       ? null
       : renderSuffixButton(
           AddOutlined,
-          () => handleAddNodeClick(info.option as NodeTreeOption),
-          $t('admin.text.nodes.add.tooltip'),
+          () => handleAddLocationClick(info.option as LocationTreeOption),
+          $t('admin.text.locations.add.tooltip'),
           loadingAdd
         ),
   ]);
@@ -398,16 +398,16 @@ watch(
 
 <template>
   <h2>
-    {{ $t('admin.text.nodes.heading') }}
-    <HelpButtonWidget help-key="adminTextsNodesView" />
+    {{ $t('admin.text.locations.heading') }}
+    <HelpButtonWidget help-key="adminTextsLocationsView" />
   </h2>
 
   <n-alert v-if="treeData.length" closable :title="$t('general.warning')" type="warning">
-    {{ $t('admin.text.nodes.warnGeneral') }}
+    {{ $t('admin.text.locations.warnGeneral') }}
   </n-alert>
 
   <n-alert v-if="!treeData.length && !loadingData" closable :title="$t('general.info')" type="info">
-    {{ $t('admin.text.nodes.infoNoNodes') }}
+    {{ $t('admin.text.locations.infoNoLocations') }}
   </n-alert>
 
   <div
@@ -420,42 +420,42 @@ watch(
     "
   >
     <n-checkbox v-if="treeData.length" v-model:checked="showWarnings">
-      {{ $t('admin.text.nodes.checkShowWarnings') }}
+      {{ $t('admin.text.locations.checkShowWarnings') }}
     </n-checkbox>
     <div style="flex-grow: 2"></div>
     <div style="display: flex; gap: 0.5rem">
       <n-button
         type="primary"
-        :title="$t('admin.text.nodes.tipBtnAddNodeFirstLevel')"
+        :title="$t('admin.text.locations.tipBtnAddLocationFirstLevel')"
         :disabled="loading"
-        @click="handleAddNodeClick(null)"
+        @click="handleAddLocationClick(null)"
       >
         <template #icon>
           <AddOutlined />
         </template>
-        {{ $t('admin.text.nodes.lblBtnAddNodeFirstLevel') }}
+        {{ $t('admin.text.locations.lblBtnAddLocationFirstLevel') }}
       </n-button>
       <n-button
         secondary
-        :title="$t('admin.text.nodes.tipBtnDownloadTemplate')"
+        :title="$t('admin.text.locations.tipBtnDownloadTemplate')"
         :disabled="loading"
         @click="handleDownloadTemplateClick()"
       >
         <template #icon>
           <FileDownloadSharp />
         </template>
-        {{ $t('admin.text.nodes.lblBtnDownloadTemplate') }}
+        {{ $t('admin.text.locations.lblBtnDownloadTemplate') }}
       </n-button>
       <n-button
         secondary
-        :title="$t('admin.text.nodes.tipBtnUploadStructure')"
+        :title="$t('admin.text.locations.tipBtnUploadStructure')"
         :disabled="!!treeData.length || loading"
         @click="handleUploadStructureClick()"
       >
         <template #icon>
           <FileUploadSharp />
         </template>
-        {{ $t('admin.text.nodes.lblBtnUploadStructure') }}
+        {{ $t('admin.text.locations.lblBtnUploadStructure') }}
       </n-button>
     </div>
   </div>
@@ -489,11 +489,15 @@ watch(
     :description="$t('general.loading')"
   />
 
-  <RenameNodeModal
+  <RenameLocationModal
     v-model:show="showRenameModal"
-    :node="nodeToRename"
+    :location="locationToRename"
     @submit="handleRenameResult"
   />
 
-  <AddNodeModal v-model:show="showAddModal" :parent="nodeParentToAddTo" @submit="handleAddResult" />
+  <AddLocationModal
+    v-model:show="showAddModal"
+    :parent="locationParentToAddTo"
+    @submit="handleAddResult"
+  />
 </template>

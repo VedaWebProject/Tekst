@@ -29,7 +29,7 @@ class ResourceTypeABC(ABC):
         "id",
         "resourceId",
         "resourceType",
-        "nodeId",
+        "locationId",
     }
 
     @classmethod

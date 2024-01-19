@@ -11,7 +11,7 @@ import {
 } from 'naive-ui';
 import {
   type AnyResourceRead,
-  type NodeRead,
+  type LocationRead,
   GET,
   type AnyContentCreate,
   PATCH,
@@ -73,8 +73,10 @@ const originalResourceTitle = computed(
   () => resources.data.find((r) => r.id === resource.value?.originalId)?.title
 );
 const position = computed<number>(() => Number.parseInt(route.params.pos.toString()));
-const nodePath = ref<NodeRead[]>();
-const node = computed<NodeRead | undefined>(() => nodePath.value?.[resource.value?.level ?? -1]);
+const locationPath = ref<LocationRead[]>();
+const location = computed<LocationRead | undefined>(
+  () => locationPath.value?.[resource.value?.level ?? -1]
+);
 const initialContentModel = ref<ContentFormModel>();
 const contentModel = ref<ContentFormModel | undefined>(initialContentModel.value);
 const { changed, reset, getChanges } = useModelChanges(contentModel);
@@ -143,9 +145,9 @@ async function loadLocationData() {
       },
     },
   });
-  if (!error && locationData.nodePath?.length) {
-    // requested node exists, set current node path
-    nodePath.value = locationData.nodePath;
+  if (!error && locationData.locationPath?.length) {
+    // requested location exists, set current location path
+    locationPath.value = locationData.locationPath;
     // process received contents
     initialContentModel.value =
       locationData.contents?.find((u) => u.resourceId === resource.value?.id) ||
@@ -160,7 +162,7 @@ async function loadLocationData() {
     }
     resetForm();
   } else {
-    // requested node does not exist, go back to first content at first node
+    // requested location does not exist, go back to first content at first location
     router.replace({
       name: 'resourceContents',
       params: {
@@ -207,7 +209,7 @@ function handleApplyChanges() {
       ...contentModel.value,
       ...Object.fromEntries(
         Object.entries(changes).filter(
-          (e) => !['id', 'resourceId', 'resourceType', 'nodeId', 'comment'].includes(e[0])
+          (e) => !['id', 'resourceId', 'resourceType', 'locationId', 'comment'].includes(e[0])
         )
       ),
     };
@@ -293,12 +295,12 @@ async function handleDeleteContentClick() {
 }
 
 function handleAddContentClick() {
-  if (resource.value && node.value) {
+  if (resource.value && location.value) {
     contentModel.value = {
       ...defaultContentModels[resource.value.resourceType],
       resourceId: resource.value.id,
       resourceType: resource.value.resourceType,
-      nodeId: node.value.id,
+      locationId: location.value.id,
     } as ContentFormModel;
     formRef.value?.restoreValidation();
   }
@@ -314,10 +316,10 @@ function navigateContents(step: number) {
   });
 }
 
-function handleJumpToSubmit(nodePath: NodeRead[]) {
+function handleJumpToSubmit(locationPath: LocationRead[]) {
   router.push({
     name: 'resourceContents',
-    params: { ...route.params, pos: nodePath[nodePath.length - 1].position },
+    params: { ...route.params, pos: locationPath[locationPath.length - 1].position },
   });
 }
 
@@ -425,10 +427,10 @@ whenever(ArrowLeft, () => {
     </n-dropdown>
   </ButtonShelf>
 
-  <template v-if="resource && nodePath">
+  <template v-if="resource && locationPath">
     <div class="content-block">
       <IconHeading level="3" :icon="MenuBookOutlined">
-        <LocationLabel :node-path="nodePath" />
+        <LocationLabel :location-path="locationPath" />
       </IconHeading>
 
       <n-alert
@@ -574,10 +576,10 @@ whenever(ArrowLeft, () => {
   </template>
 
   <LocationSelectModal
-    v-if="resource && nodePath"
+    v-if="resource && locationPath"
     v-model:show="showJumpToModal"
-    :node-path="nodePath"
+    :location-path="locationPath"
     :show-level-select="false"
-    @update:node-path="handleJumpToSubmit"
+    @update:location-path="handleJumpToSubmit"
   />
 </template>

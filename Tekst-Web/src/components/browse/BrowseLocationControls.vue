@@ -3,7 +3,7 @@ import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useBrowseStore } from '@/stores';
 import { NButton } from 'naive-ui';
-import type { NodeRead } from '@/api';
+import type { LocationRead } from '@/api';
 import router from '@/router';
 import { useMagicKeys, whenever } from '@vueuse/core';
 import { $t } from '@/i18n';
@@ -38,15 +38,15 @@ function getPrevNextRoute(step: number) {
   };
 }
 
-function handleLocationSelect(nodePath: NodeRead[]) {
-  const selectedNode = nodePath[nodePath.length - 1];
-  if (!selectedNode) return;
+function handleLocationSelect(locationPath: LocationRead[]) {
+  const selectedLocation = locationPath[locationPath.length - 1];
+  if (!selectedLocation) return;
   router.push({
     name: 'browse',
     params: { ...route.params },
     query: {
-      lvl: selectedNode.level,
-      pos: selectedNode.position,
+      lvl: selectedLocation.level,
+      pos: selectedLocation.position,
     },
   });
 }
@@ -120,8 +120,8 @@ const btnColor = '#fff';
 
   <LocationSelectModal
     v-model:show="showLocationSelectModal"
-    :node-path="browse.nodePath"
-    @update:node-path="handleLocationSelect"
+    :location-path="browse.locationPath"
+    @update:location-path="handleLocationSelect"
   />
 </template>
 

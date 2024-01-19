@@ -110,7 +110,7 @@ export type UserUpdatePublicFields = components['schemas']['UserUpdate']['public
 export type TextCreate = components['schemas']['TextCreate'];
 export type TextRead = components['schemas']['TextRead'];
 export type TextUpdate = components['schemas']['TextUpdate'];
-export type NodeRead = components['schemas']['NodeRead'];
+export type LocationRead = components['schemas']['LocationRead'];
 
 // platform
 

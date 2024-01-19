@@ -12,7 +12,7 @@ async def test_create_resource(
     status_fail_msg,
     login,
 ):
-    text_id = (await insert_sample_data("texts", "nodes"))["texts"][0]
+    text_id = (await insert_sample_data("texts", "locations"))["texts"][0]
     user = await login()
     payload = {
         "title": "A test resource",
@@ -49,7 +49,7 @@ async def test_create_resource_w_invalid_level(
     status_fail_msg,
     login,
 ):
-    text_id = (await insert_sample_data("texts", "nodes"))["texts"][0]
+    text_id = (await insert_sample_data("texts", "locations"))["texts"][0]
     user = await login()
     resp = await test_client.post(
         "/resources",
@@ -78,7 +78,7 @@ async def test_create_resource_w_wrong_text_id(
     login,
     wrong_id,
 ):
-    await insert_sample_data("texts", "nodes")
+    await insert_sample_data("texts", "locations")
     await login()
 
     payload = {
@@ -102,7 +102,7 @@ async def test_create_resource_with_forged_owner_id(
     status_fail_msg,
     login,
 ):
-    text_id = (await insert_sample_data("texts", "nodes"))["texts"][0]
+    text_id = (await insert_sample_data("texts", "locations"))["texts"][0]
     await login()
 
     # create new resource with made up owner ID
@@ -125,7 +125,7 @@ async def test_create_resource_with_forged_owner_id(
 async def test_create_resource_version(
     test_client: AsyncClient, insert_sample_data, status_fail_msg, login, wrong_id
 ):
-    resource_id = (await insert_sample_data("texts", "nodes", "resources"))[
+    resource_id = (await insert_sample_data("texts", "locations", "resources"))[
         "resources"
     ][0]
     user = await login()
@@ -163,7 +163,7 @@ async def test_update_resource(
     wrong_id,
     logout,
 ):
-    text_id = (await insert_sample_data("texts", "nodes", "resources"))["texts"][0]
+    text_id = (await insert_sample_data("texts", "locations", "resources"))["texts"][0]
     superuser = await login(is_superuser=True)
     other_user = await register_test_user()
 
@@ -279,7 +279,7 @@ async def test_set_shares_for_public_resource(
     register_test_user,
     wrong_id,
 ):
-    resource_id = (await insert_sample_data("texts", "nodes", "resources"))[
+    resource_id = (await insert_sample_data("texts", "locations", "resources"))[
         "resources"
     ][0]
     await login(is_superuser=True)
@@ -304,7 +304,7 @@ async def test_set_shares_for_public_resource(
 async def test_get_resource(
     test_client: AsyncClient, insert_sample_data, status_fail_msg, wrong_id, login
 ):
-    resource_id = (await insert_sample_data("texts", "nodes", "resources"))[
+    resource_id = (await insert_sample_data("texts", "locations", "resources"))[
         "resources"
     ][0]
 
@@ -336,7 +336,7 @@ async def test_access_private_resource(
     login,
     logout,
 ):
-    inserted_ids = await insert_sample_data("texts", "nodes", "resources")
+    inserted_ids = await insert_sample_data("texts", "locations", "resources")
     text_id = inserted_ids["texts"][0]
     resource_id = inserted_ids["resources"][0]
 
@@ -367,7 +367,7 @@ async def test_access_private_resource(
 async def test_get_resources(
     test_client: AsyncClient, insert_sample_data, status_fail_msg
 ):
-    text_id = (await insert_sample_data("texts", "nodes", "resources"))["texts"][0]
+    text_id = (await insert_sample_data("texts", "locations", "resources"))["texts"][0]
     resp = await test_client.get(
         "/resources",
         params={"txt": text_id, "lvl": 1, "type": "plaintext"},
@@ -394,7 +394,7 @@ async def test_get_resources(
 async def test_propose_unpropose_publish_unpublish_resource(
     test_client: AsyncClient, insert_sample_data, status_fail_msg, login, wrong_id
 ):
-    text_id = (await insert_sample_data("texts", "nodes", "resources"))["texts"][0]
+    text_id = (await insert_sample_data("texts", "locations", "resources"))["texts"][0]
     owner = await login(is_superuser=True)
 
     # create new resource (because only owner can update(write))
@@ -556,7 +556,7 @@ async def test_delete_resource(
     login,
     wrong_id,
 ):
-    inserted_ids = await insert_sample_data("texts", "nodes", "resources")
+    inserted_ids = await insert_sample_data("texts", "locations", "resources")
     text_id = inserted_ids["texts"][0]
     resource_id = inserted_ids["resources"][0]
 
@@ -612,7 +612,7 @@ async def test_delete_public_resource(
     status_fail_msg,
     login,
 ):
-    inserted_ids = await insert_sample_data("texts", "nodes", "resources")
+    inserted_ids = await insert_sample_data("texts", "locations", "resources")
     resource_id = inserted_ids["resources"][0]
     await login(is_superuser=True)
 
@@ -639,7 +639,7 @@ async def test_delete_proposed_resource(
     status_fail_msg,
     login,
 ):
-    inserted_ids = await insert_sample_data("texts", "nodes", "resources")
+    inserted_ids = await insert_sample_data("texts", "locations", "resources")
     resource_id = inserted_ids["resources"][0]
     await login(is_superuser=True)
 
@@ -669,7 +669,7 @@ async def test_transfer_resource(
     register_test_user,
     wrong_id,
 ):
-    inserted_ids = await insert_sample_data("texts", "nodes", "resources")
+    inserted_ids = await insert_sample_data("texts", "locations", "resources")
     resource_id = inserted_ids["resources"][0]
 
     # register regular test user
@@ -740,7 +740,7 @@ async def test_get_resource_template(
     login,
     wrong_id,
 ):
-    inserted_ids = await insert_sample_data("texts", "nodes", "resources")
+    inserted_ids = await insert_sample_data("texts", "locations", "resources")
     resource_id = inserted_ids["resources"][0]
 
     # try to get resource template (only for users with write permission)
