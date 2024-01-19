@@ -1,7 +1,7 @@
 [
   {
     "_id": { "$oid": "654b825533ee5737b297f8f4" },
-    "_class_id": "UnitBaseDocument.PlaintextUnitDocument",
+    "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
     "resource_type": "plaintext",
     "node_id": { "$oid": "654b825533ee5737b297f8e5" },
@@ -10,7 +10,7 @@
   },
   {
     "_id": { "$oid": "654b825533ee5737b297f8f5" },
-    "_class_id": "UnitBaseDocument.PlaintextUnitDocument",
+    "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
     "resource_type": "plaintext",
     "node_id": { "$oid": "654b825533ee5737b297f8e6" },
@@ -19,7 +19,7 @@
   },
   {
     "_id": { "$oid": "654b825533ee5737b297f8f6" },
-    "_class_id": "UnitBaseDocument.PlaintextUnitDocument",
+    "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
     "resource_type": "plaintext",
     "node_id": { "$oid": "654b825533ee5737b297f8e7" },
@@ -28,7 +28,7 @@
   },
   {
     "_id": { "$oid": "654b825533ee5737b297f8f7" },
-    "_class_id": "UnitBaseDocument.PlaintextUnitDocument",
+    "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
     "resource_type": "plaintext",
     "node_id": { "$oid": "654b825533ee5737b297f8e8" },
@@ -37,7 +37,7 @@
   },
   {
     "_id": { "$oid": "654b825533ee5737b297f8f8" },
-    "_class_id": "UnitBaseDocument.PlaintextUnitDocument",
+    "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
     "resource_type": "plaintext",
     "node_id": { "$oid": "654b825533ee5737b297f8ea" },
@@ -46,7 +46,7 @@
   },
   {
     "_id": { "$oid": "654b825533ee5737b297f8f9" },
-    "_class_id": "UnitBaseDocument.PlaintextUnitDocument",
+    "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
     "resource_type": "plaintext",
     "node_id": { "$oid": "654b825533ee5737b297f8eb" },
@@ -55,7 +55,7 @@
   },
   {
     "_id": { "$oid": "654b825533ee5737b297f8fa" },
-    "_class_id": "UnitBaseDocument.PlaintextUnitDocument",
+    "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
     "resource_type": "plaintext",
     "node_id": { "$oid": "654b825533ee5737b297f8ec" },
@@ -64,7 +64,7 @@
   },
   {
     "_id": { "$oid": "654b825533ee5737b297f8fb" },
-    "_class_id": "UnitBaseDocument.PlaintextUnitDocument",
+    "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
     "resource_type": "plaintext",
     "node_id": { "$oid": "654b825533ee5737b297f8ed" },
@@ -73,7 +73,7 @@
   },
   {
     "_id": { "$oid": "654b825533ee5737b297f8fc" },
-    "_class_id": "UnitBaseDocument.PlaintextUnitDocument",
+    "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
     "resource_type": "plaintext",
     "node_id": { "$oid": "654b825533ee5737b297f8ef" },
@@ -82,7 +82,7 @@
   },
   {
     "_id": { "$oid": "654b825533ee5737b297f8fd" },
-    "_class_id": "UnitBaseDocument.PlaintextUnitDocument",
+    "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
     "resource_type": "plaintext",
     "node_id": { "$oid": "654b825533ee5737b297f8f0" },
@@ -91,7 +91,7 @@
   },
   {
     "_id": { "$oid": "654b825533ee5737b297f8fe" },
-    "_class_id": "UnitBaseDocument.PlaintextUnitDocument",
+    "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
     "node_id": { "$oid": "654b825533ee5737b297f8f1" },
     "resource_type": "plaintext",
@@ -100,7 +100,7 @@
   },
   {
     "_id": { "$oid": "654b825533ee5737b297f8ff" },
-    "_class_id": "UnitBaseDocument.PlaintextUnitDocument",
+    "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
     "resource_type": "plaintext",
     "node_id": { "$oid": "654b825533ee5737b297f8f2" },
@@ -109,7 +109,7 @@
   },
   {
     "_id": { "$oid": "654ba432ec7833e469dde77b" },
-    "_class_id": "UnitBaseDocument.PlaintextUnitDocument",
+    "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654ba3a6ec7833e469dde77a" },
     "resource_type": "plaintext",
     "node_id": { "$oid": "654ba282ec7833e469dde766" },
@@ -118,7 +118,7 @@
   },
   {
     "_id": { "$oid": "654ba486ec7833e469dde77c" },
-    "_class_id": "UnitBaseDocument.PlaintextUnitDocument",
+    "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654ba3a6ec7833e469dde77a" },
     "resource_type": "plaintext",
     "node_id": { "$oid": "654ba287ec7833e469dde767" },
@@ -127,7 +127,7 @@
   },
   {
     "_id": { "$oid": "654ba49eec7833e469dde77d" },
-    "_class_id": "UnitBaseDocument.PlaintextUnitDocument",
+    "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654ba3a6ec7833e469dde77a" },
     "resource_type": "plaintext",
     "node_id": { "$oid": "654ba288ec7833e469dde768" },
@@ -136,7 +136,7 @@
   },
   {
     "_id": { "$oid": "654ba553ec7833e469dde77f" },
-    "_class_id": "UnitBaseDocument.PlaintextUnitDocument",
+    "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654ba525ec7833e469dde77e" },
     "resource_type": "plaintext",
     "node_id": { "$oid": "654ba288ec7833e469dde768" },
@@ -145,7 +145,7 @@
   },
   {
     "_id": { "$oid": "654ba570ec7833e469dde780" },
-    "_class_id": "UnitBaseDocument.PlaintextUnitDocument",
+    "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654ba525ec7833e469dde77e" },
     "resource_type": "plaintext",
     "node_id": { "$oid": "654ba287ec7833e469dde767" },
@@ -154,7 +154,7 @@
   },
   {
     "_id": { "$oid": "654ba587ec7833e469dde781" },
-    "_class_id": "UnitBaseDocument.PlaintextUnitDocument",
+    "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654ba525ec7833e469dde77e" },
     "resource_type": "plaintext",
     "node_id": { "$oid": "654ba282ec7833e469dde766" },
@@ -163,7 +163,7 @@
   },
   {
     "_id": { "$oid": "654ba68eec7833e469dde783" },
-    "_class_id": "UnitBaseDocument.PlaintextUnitDocument",
+    "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654ba678ec7833e469dde782" },
     "resource_type": "plaintext",
     "node_id": { "$oid": "654ba282ec7833e469dde766" },
@@ -172,7 +172,7 @@
   },
   {
     "_id": { "$oid": "654ba6a7ec7833e469dde784" },
-    "_class_id": "UnitBaseDocument.PlaintextUnitDocument",
+    "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654ba678ec7833e469dde782" },
     "resource_type": "plaintext",
     "node_id": { "$oid": "654ba287ec7833e469dde767" },
@@ -181,7 +181,7 @@
   },
   {
     "_id": { "$oid": "654ba6b9ec7833e469dde785" },
-    "_class_id": "UnitBaseDocument.PlaintextUnitDocument",
+    "_class_id": "ContentBaseDocument.PlaintextContentDocument",
     "resource_id": { "$oid": "654ba678ec7833e469dde782" },
     "resource_type": "plaintext",
     "node_id": { "$oid": "654ba288ec7833e469dde768" },

@@ -6,6 +6,7 @@ from fastapi import APIRouter, HTTPException, Path, Query, status
 
 from tekst.auth import SuperuserDep
 from tekst.logging import log
+from tekst.models.content import ContentBaseDocument
 from tekst.models.node import (
     DeleteNodeResult,
     NodeCreate,
@@ -17,7 +18,6 @@ from tekst.models.text import (
     MoveNodeRequestBody,
     TextDocument,
 )
-from tekst.models.unit import UnitBaseDocument
 
 
 router = APIRouter(
@@ -207,8 +207,8 @@ async def update_node(
     response_model=DeleteNodeResult,
     status_code=status.HTTP_200_OK,
     description=(
-        "Deletes the specified node. Also deletes any associated units, "
-        "child nodes and units associated with child nodes."
+        "Deletes the specified node. Also deletes any associated contents, "
+        "child nodes and contents associated with child nodes."
     ),
 )
 async def delete_node(
@@ -224,7 +224,7 @@ async def delete_node(
     text_id = node_doc.text_id
     # delete node and everything associated with it
     to_delete = [[node_doc]]
-    units_deleted = 0
+    contents_deleted = 0
     nodes_deleted = 0
     while to_delete:
         target_nodes = to_delete[0]
@@ -233,10 +233,10 @@ async def delete_node(
             continue
         target_level = target_nodes[0].level
         target_ids = [n.id for n in target_nodes]
-        # delete associated units
-        units_deleted += (
-            await UnitBaseDocument.find(
-                In(UnitBaseDocument.node_id, target_ids), with_children=True
+        # delete associated contents
+        contents_deleted += (
+            await ContentBaseDocument.find(
+                In(ContentBaseDocument.node_id, target_ids), with_children=True
             ).delete()
         ).deleted_count
         # collect child nodes to delete
@@ -258,7 +258,7 @@ async def delete_node(
             await NodeDocument.find(In(NodeDocument.id, target_ids)).delete()
         ).deleted_count
         to_delete.pop(0)
-    return DeleteNodeResult(units=units_deleted, nodes=nodes_deleted)
+    return DeleteNodeResult(contents=contents_deleted, nodes=nodes_deleted)
 
 
 @router.post(

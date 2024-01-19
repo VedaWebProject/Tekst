@@ -2,7 +2,7 @@ const common = {
   comment: undefined,
 };
 
-export const defaultUnitModels = {
+export const defaultContentModels = {
   plaintext: {
     ...common,
     text: '',

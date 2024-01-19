@@ -117,7 +117,7 @@ async def run_before_and_after_each_test_case(get_db_client_override, config):
     """Fixture to execute asserts before and after a test is run"""
     ### before test case
     # clear DB collections
-    for collection in ("texts", "nodes", "resources", "units", "settings", "users"):
+    for collection in ("texts", "nodes", "resources", "contents", "settings", "users"):
         await get_db_client_override[config.db_name][collection].delete_many({})
     ### run test case
     yield  # test case running now

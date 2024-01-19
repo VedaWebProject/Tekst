@@ -13,13 +13,13 @@ withDefaults(
 </script>
 
 <template>
-  <p v-for="unit in resource.units" :key="unit.id" style="white-space: pre-wrap">
-    <template v-if="unit.text">
+  <p v-for="content in resource.contents" :key="content.id" style="white-space: pre-wrap">
+    <template v-if="content.text">
       <template v-if="!reduced">
-        {{ unit.text }}
+        {{ content.text }}
       </template>
       <template v-else>
-        {{ unit.text.replace(/\n+/g, ' ') }}
+        {{ content.text.replace(/\n+/g, ' ') }}
       </template>
     </template>
   </p>

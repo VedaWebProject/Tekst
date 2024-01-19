@@ -116,7 +116,7 @@ browse:
   locationResourceNoData: Keine Daten für diese Fundstelle
   textNoNodes: Die Einrichtung dieses Textes scheint unvollständig. Es wurden keine Strukturknoten definiert.
   locationNoData: Die ausgewählten Ressourcen enthalten keine Daten für diese Ebene und Fundstelle. Wählen Sie eine andere Fundstelle oder aktivieren Sie mehr Ressourcen.
-  units:
+  contents:
     widgets:
       deepLTranslate:
         title: DeepL-Übersetzung öffnen
@@ -209,7 +209,7 @@ models:
     sharedRead: Lesezugriff teilen
     sharedWrite: Schreibzugriff teilen
     config: Konfiguration
-  unit:
+  content:
     modelLabel: Dateneinheit | Dateneinheiten
   meta:
     modelLabel: Metadaten
@@ -268,7 +268,7 @@ resources:
   notProposed: '@:general.not @:models.resource.proposed'
   transferAction: An Benutzer übertragen
   settingsAction: Einstellungen
-  unitsAction: Inhalte
+  contentsAction: Inhalte
   downloadTemplateAction: Importvorlage herunterladen
   importAction: Vorverarbeitete Importdatei hochladen
   createVersionAction: Version dieser Ressource erstellen
@@ -339,7 +339,7 @@ resources:
   types:
     common:
       label: Zusätzliche Daten
-      unitFields:
+      contentFields:
         comment: Kommentar
     plaintext:
       label: Einfacher Text
@@ -347,10 +347,10 @@ resources:
         Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar
         Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar
         Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar
-      unitFields:
+      contentFields:
         text: Text
 
-units:
+contents:
   heading: Ressourcen-Inhalte bearbeiten
   lblBtnCompare: Vergleichen
   tipBtnCompare: Andere Ressource auswählen, um mit ihr zu vergleichen
@@ -360,8 +360,8 @@ units:
   tipBtnPrevChange: Zum nächstgelegenen vorhergehenden Inhalt in dieser Version springen
   tipBtnNextChange: Zum nächstgelegenen nachfolgenden Inhalt in dieser Version springen
   forComparison: 'Zum Vergleich: "{title}"'
-  noUnit: Für diese Fundstelle liegen keine Inhalte vor.
-  btnAddUnit: Inhalt hinzufügen
+  noContent: Für diese Fundstelle liegen keine Inhalte vor.
+  btnAddContent: Inhalt hinzufügen
   msgSaved: Der Inhalt für diese Fundstelle wurde gespeichert.
   msgDeleted: Der Inhalt für diese Fundstelle wurde gelöscht.
   msgImportSuccess: 'Import abgeschlossen. Inhalte neu erstellt: {created}. Inhalte modifiziert: {updated}. Errors: {errors}.'
@@ -542,7 +542,7 @@ admin:
         Dies kann nicht rückgängig gemacht werden.
         Sind Sie sich wirklich sicher, dass Sie den ausgewählten Knoten löschen wollen?
       tipDeleteNode: Knoten "{node}" löschen
-      infoDeletedNode: Knoten "{node}" gelöscht (insgesamt {nodes} Knoten und {units} Daten-Einheiten)
+      infoDeletedNode: Knoten "{node}" gelöscht (insgesamt {nodes} Knoten und {contents} Daten-Einheiten)
       infoMovedNode: Knoten "{node}" auf position {position} von Ebene "{level}" verschoben
       errorNodeLeftLevel: Text-Knoten können nur innerhalb der gleichen Ebene verschoben werden!
       checkShowWarnings: Zeige Warnungen, bevor destruktive Operationen durchgeführt werden

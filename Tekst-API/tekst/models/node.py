@@ -76,5 +76,5 @@ NodeUpdate = Node.update_model()
 
 
 class DeleteNodeResult(ModelBase):
-    units: int
+    contents: int
     nodes: int

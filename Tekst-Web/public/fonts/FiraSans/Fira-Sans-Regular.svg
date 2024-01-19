@@ -4,7 +4,7 @@
 <defs >
 <font id="FiraSans" horiz-adv-x="558" ><font-face
     font-family="Fira Sans"
-    units-per-em="1000"
+    contents-per-em="1000"
     panose-1="2 11 5 3 5 0 0 2 0 4"
     ascent="935"
     descent="-265"

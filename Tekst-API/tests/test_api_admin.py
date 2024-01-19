@@ -10,7 +10,7 @@ async def test_get_stats(
     login,
     insert_sample_data,
 ):
-    await insert_sample_data("texts", "nodes", "resources", "units")
+    await insert_sample_data("texts", "nodes", "resources", "contents")
     await login(is_superuser=True)
     resp = await test_client.get("/admin/stats")
     assert resp.status_code == 200, status_fail_msg(200, resp)

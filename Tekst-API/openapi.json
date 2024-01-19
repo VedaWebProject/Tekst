@@ -85,14 +85,14 @@
         ]
       }
     },
-    "/browse/unit-siblings": {
+    "/browse/content-siblings": {
       "get": {
         "tags": [
           "browse"
         ],
-        "summary": "Get unit siblings",
-        "description": "Returns a list of all resource units belonging to the resource\nwith the given ID, associated to nodes that are children of the parent node\nwith the given ID.\n\nAs the resulting list may contain units of arbitrary type, the\nreturned unit objects cannot be typed to their precise resource unit type.",
-        "operationId": "getUnitSiblings",
+        "summary": "Get content siblings",
+        "description": "Returns a list of all resource contents belonging to the resource\nwith the given ID, associated to nodes that are children of the parent node\nwith the given ID.\n\nAs the resulting list may contain contents of arbitrary type, the\nreturned content objects cannot be typed to their precise resource content type.",
+        "operationId": "getContentSiblings",
         "security": [
           {
             "APIKeyCookie": []
@@ -109,10 +109,10 @@
             "schema": {
               "type": "string",
               "example": "5eb7cf5a86d9755df3a6c593",
-              "description": "ID of resource the requested units belong to",
+              "description": "ID of resource the requested contents belong to",
               "title": "Res"
             },
-            "description": "ID of resource the requested units belong to"
+            "description": "ID of resource the requested contents belong to"
           },
           {
             "name": "parent",
@@ -128,10 +128,10 @@
                   "type": "null"
                 }
               ],
-              "description": "ID of node for which siblings to get associated units for",
+              "description": "ID of node for which siblings to get associated contents for",
               "title": "Parent"
             },
-            "description": "ID of node for which siblings to get associated units for"
+            "description": "ID of node for which siblings to get associated contents for"
           }
         ],
         "responses": {
@@ -144,21 +144,21 @@
                   "items": {
                     "oneOf": [
                       {
-                        "$ref": "#/components/schemas/DebugUnitRead"
+                        "$ref": "#/components/schemas/DebugContentRead"
                       },
                       {
-                        "$ref": "#/components/schemas/PlaintextUnitRead"
+                        "$ref": "#/components/schemas/PlaintextContentRead"
                       }
                     ],
                     "discriminator": {
                       "propertyName": "resourceType",
                       "mapping": {
-                        "debug": "#/components/schemas/DebugUnitRead",
-                        "plaintext": "#/components/schemas/PlaintextUnitRead"
+                        "debug": "#/components/schemas/DebugContentRead",
+                        "plaintext": "#/components/schemas/PlaintextContentRead"
                       }
                     }
                   },
-                  "title": "Response Get Unit Siblings Browse Unit Siblings Get"
+                  "title": "Response Get Content Siblings Browse Content Siblings Get"
                 }
               }
             }
@@ -185,7 +185,7 @@
           "browse"
         ],
         "summary": "Get location data",
-        "description": "Returns the node path from the node with the given level/position\nas the last element, up to its most distant ancestor node\non structure level 0 as the first element of an array as well as all units\nfor the given resource(s) referencing the nodes in the node path.",
+        "description": "Returns the node path from the node with the given level/position\nas the last element, up to its most distant ancestor node\non structure level 0 as the first element of an array as well as all contents\nfor the given resource(s) referencing the nodes in the node path.",
         "operationId": "getLocationData",
         "security": [
           {
@@ -240,11 +240,11 @@
                 "type": "string",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
-              "description": "ID (or list of IDs) of resource(s) to return unit data for",
+              "description": "ID (or list of IDs) of resource(s) to return content data for",
               "default": [],
               "title": "Res"
             },
-            "description": "ID (or list of IDs) of resource(s) to return unit data for"
+            "description": "ID (or list of IDs) of resource(s) to return content data for"
           },
           {
             "name": "head",
@@ -252,11 +252,11 @@
             "required": false,
             "schema": {
               "type": "boolean",
-              "description": "Only return units referencing the head node of the node path",
+              "description": "Only return contents referencing the head node of the path",
               "default": false,
               "title": "Head"
             },
-            "description": "Only return units referencing the head node of the node path"
+            "description": "Only return contents referencing the head node of the path"
           },
           {
             "name": "limit",
@@ -264,11 +264,11 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "description": "Return at most <limit> units",
+              "description": "Return at most <limit> contents",
               "default": 4096,
               "title": "Limit"
             },
-            "description": "Return at most <limit> units"
+            "description": "Return at most <limit> contents"
           }
         ],
         "responses": {
@@ -298,14 +298,14 @@
         }
       }
     },
-    "/browse/nearest-unit": {
+    "/browse/nearest-content": {
       "get": {
         "tags": [
           "browse"
         ],
-        "summary": "Get nearest unit",
+        "summary": "Get nearest content",
         "description": "Finds the nearest location the given resource holds content for and returns\ndata for that location.",
-        "operationId": "getNearestUnit",
+        "operationId": "getNearestContent",
         "security": [
           {
             "APIKeyCookie": []
@@ -349,11 +349,11 @@
                 "type": "string",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
-              "description": "ID (or list of IDs) of resource(s) to return unit data for",
+              "description": "ID (or list of IDs) of resource(s) to return content data for",
               "default": [],
               "title": "Res"
             },
-            "description": "ID (or list of IDs) of resource(s) to return unit data for"
+            "description": "ID (or list of IDs) of resource(s) to return content data for"
           },
           {
             "name": "mode",
@@ -377,11 +377,11 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "description": "Return at most <limit> units",
+              "description": "Return at most <limit> contents",
               "default": 4096,
               "title": "Limit"
             },
-            "description": "Return at most <limit> units"
+            "description": "Return at most <limit> contents"
           }
         ],
         "responses": {
@@ -391,7 +391,7 @@
               "application/json": {
                 "schema": {
                   "type": "integer",
-                  "title": "Response Get Nearest Unit Browse Nearest Unit Get"
+                  "title": "Response Get Nearest Content Browse Nearest Content Get"
                 }
               }
             }
@@ -611,6 +611,412 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contents": {
+      "post": {
+        "tags": [
+          "contents"
+        ],
+        "summary": "Create content",
+        "operationId": "createContent",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/DebugContentCreate"
+                  },
+                  {
+                    "$ref": "#/components/schemas/PlaintextContentCreate"
+                  }
+                ],
+                "discriminator": {
+                  "propertyName": "resourceType",
+                  "mapping": {
+                    "debug": "#/components/schemas/DebugContentCreate",
+                    "plaintext": "#/components/schemas/PlaintextContentCreate"
+                  }
+                },
+                "title": "Content"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/DebugContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PlaintextContentRead"
+                    }
+                  ],
+                  "discriminator": {
+                    "propertyName": "resourceType",
+                    "mapping": {
+                      "debug": "#/components/schemas/DebugContentRead",
+                      "plaintext": "#/components/schemas/PlaintextContentRead"
+                    }
+                  },
+                  "title": "Response Create Content Contents Post"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Conflict"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "contents"
+        ],
+        "summary": "Find contents",
+        "description": "Returns a list of all resource contents matching the given criteria.\n\nRespects restricted resources and inactive texts.\nAs the resulting list may contain contents of different types, the\nreturned content objects cannot be typed to their precise resource content type.",
+        "operationId": "findContents",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "res",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              "description": "ID (or list of IDs) of resource(s) to return content data for",
+              "default": [],
+              "title": "Res"
+            },
+            "description": "ID (or list of IDs) of resource(s) to return content data for"
+          },
+          {
+            "name": "node",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              "description": "ID (or list of IDs) of node(s) to return content data for",
+              "default": [],
+              "title": "Node"
+            },
+            "description": "ID (or list of IDs) of node(s) to return content data for"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "description": "Return at most <limit> items",
+              "default": 4096,
+              "title": "Limit"
+            },
+            "description": "Return at most <limit> items"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/components/schemas/DebugContentRead"
+                      },
+                      {
+                        "$ref": "#/components/schemas/PlaintextContentRead"
+                      }
+                    ],
+                    "discriminator": {
+                      "propertyName": "resourceType",
+                      "mapping": {
+                        "debug": "#/components/schemas/DebugContentRead",
+                        "plaintext": "#/components/schemas/PlaintextContentRead"
+                      }
+                    }
+                  },
+                  "title": "Response Find Contents Contents Get"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contents/{id}": {
+      "get": {
+        "tags": [
+          "contents"
+        ],
+        "summary": "Get content",
+        "description": "A generic route for retrieving a content by ID from the database",
+        "operationId": "getContent",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/DebugContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PlaintextContentRead"
+                    }
+                  ],
+                  "discriminator": {
+                    "propertyName": "resourceType",
+                    "mapping": {
+                      "debug": "#/components/schemas/DebugContentRead",
+                      "plaintext": "#/components/schemas/PlaintextContentRead"
+                    }
+                  },
+                  "title": "Response Get Content Contents  Id  Get"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "contents"
+        ],
+        "summary": "Update content",
+        "operationId": "updateContent",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/DebugContentUpdate"
+                  },
+                  {
+                    "$ref": "#/components/schemas/PlaintextContentUpdate"
+                  }
+                ],
+                "discriminator": {
+                  "propertyName": "resourceType",
+                  "mapping": {
+                    "debug": "#/components/schemas/DebugContentUpdate",
+                    "plaintext": "#/components/schemas/PlaintextContentUpdate"
+                  }
+                },
+                "title": "Updates"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/DebugContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PlaintextContentRead"
+                    }
+                  ],
+                  "discriminator": {
+                    "propertyName": "resourceType",
+                    "mapping": {
+                      "debug": "#/components/schemas/DebugContentRead",
+                      "plaintext": "#/components/schemas/PlaintextContentRead"
+                    }
+                  },
+                  "title": "Response Update Content Contents  Id  Patch"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "contents"
+        ],
+        "summary": "Delete content",
+        "operationId": "deleteContent",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
           },
           "404": {
             "description": "Not found"
@@ -985,7 +1391,7 @@
           "nodes"
         ],
         "summary": "Delete node",
-        "description": "Deletes the specified node. Also deletes any associated units, child nodes and units associated with child nodes.",
+        "description": "Deletes the specified node. Also deletes any associated contents, child nodes and contents associated with child nodes.",
         "operationId": "deleteNode",
         "security": [
           {
@@ -2976,412 +3382,6 @@
         }
       }
     },
-    "/units": {
-      "post": {
-        "tags": [
-          "units"
-        ],
-        "summary": "Create unit",
-        "operationId": "createUnit",
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/DebugUnitCreate"
-                  },
-                  {
-                    "$ref": "#/components/schemas/PlaintextUnitCreate"
-                  }
-                ],
-                "discriminator": {
-                  "propertyName": "resourceType",
-                  "mapping": {
-                    "debug": "#/components/schemas/DebugUnitCreate",
-                    "plaintext": "#/components/schemas/PlaintextUnitCreate"
-                  }
-                },
-                "title": "Unit"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/DebugUnitRead"
-                    },
-                    {
-                      "$ref": "#/components/schemas/PlaintextUnitRead"
-                    }
-                  ],
-                  "discriminator": {
-                    "propertyName": "resourceType",
-                    "mapping": {
-                      "debug": "#/components/schemas/DebugUnitRead",
-                      "plaintext": "#/components/schemas/PlaintextUnitRead"
-                    }
-                  },
-                  "title": "Response Create Unit Units Post"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "409": {
-            "description": "Conflict"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "units"
-        ],
-        "summary": "Find units",
-        "description": "Returns a list of all resource units matching the given criteria.\n\nRespects restricted resources and inactive texts.\nAs the resulting list may contain units of different types, the\nreturned unit objects cannot be typed to their precise resource unit type.",
-        "operationId": "findUnits",
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "res",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              "description": "ID (or list of IDs) of resource(s) to return unit data for",
-              "default": [],
-              "title": "Res"
-            },
-            "description": "ID (or list of IDs) of resource(s) to return unit data for"
-          },
-          {
-            "name": "node",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              "description": "ID (or list of IDs) of node(s) to return unit data for",
-              "default": [],
-              "title": "Node"
-            },
-            "description": "ID (or list of IDs) of node(s) to return unit data for"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "description": "Return at most <limit> items",
-              "default": 4096,
-              "title": "Limit"
-            },
-            "description": "Return at most <limit> items"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "oneOf": [
-                      {
-                        "$ref": "#/components/schemas/DebugUnitRead"
-                      },
-                      {
-                        "$ref": "#/components/schemas/PlaintextUnitRead"
-                      }
-                    ],
-                    "discriminator": {
-                      "propertyName": "resourceType",
-                      "mapping": {
-                        "debug": "#/components/schemas/DebugUnitRead",
-                        "plaintext": "#/components/schemas/PlaintextUnitRead"
-                      }
-                    }
-                  },
-                  "title": "Response Find Units Units Get"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/units/{id}": {
-      "get": {
-        "tags": [
-          "units"
-        ],
-        "summary": "Get unit",
-        "description": "A generic route for retrieving a unit by ID from the database",
-        "operationId": "getUnit",
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/DebugUnitRead"
-                    },
-                    {
-                      "$ref": "#/components/schemas/PlaintextUnitRead"
-                    }
-                  ],
-                  "discriminator": {
-                    "propertyName": "resourceType",
-                    "mapping": {
-                      "debug": "#/components/schemas/DebugUnitRead",
-                      "plaintext": "#/components/schemas/PlaintextUnitRead"
-                    }
-                  },
-                  "title": "Response Get Unit Units  Id  Get"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "units"
-        ],
-        "summary": "Update unit",
-        "operationId": "updateUnit",
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/DebugUnitUpdate"
-                  },
-                  {
-                    "$ref": "#/components/schemas/PlaintextUnitUpdate"
-                  }
-                ],
-                "discriminator": {
-                  "propertyName": "resourceType",
-                  "mapping": {
-                    "debug": "#/components/schemas/DebugUnitUpdate",
-                    "plaintext": "#/components/schemas/PlaintextUnitUpdate"
-                  }
-                },
-                "title": "Updates"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/DebugUnitRead"
-                    },
-                    {
-                      "$ref": "#/components/schemas/PlaintextUnitRead"
-                    }
-                  ],
-                  "discriminator": {
-                    "propertyName": "resourceType",
-                    "mapping": {
-                      "debug": "#/components/schemas/DebugUnitRead",
-                      "plaintext": "#/components/schemas/PlaintextUnitRead"
-                    }
-                  },
-                  "title": "Response Update Unit Units  Id  Patch"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "400": {
-            "description": "Bad request"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "units"
-        ],
-        "summary": "Delete unit",
-        "operationId": "deleteUnit",
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Successful Response"
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/users/me": {
       "get": {
         "tags": [
@@ -4655,6 +4655,182 @@
         "type": "object",
         "title": "ClientSegmentUpdate"
       },
+      "DebugContentCreate": {
+        "properties": {
+          "resourceId": {
+            "type": "string",
+            "title": "Resourceid",
+            "description": "Resource ID",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "resourceType": {
+            "const": "debug",
+            "title": "Resourcetype"
+          },
+          "nodeId": {
+            "type": "string",
+            "title": "Nodeid",
+            "description": "Parent text node ID",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment",
+            "description": "Plaintext, potentially multiline comment on this content"
+          },
+          "text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Text",
+            "description": "Text content of the debug content"
+          }
+        },
+        "type": "object",
+        "required": [
+          "resourceId",
+          "resourceType",
+          "nodeId"
+        ],
+        "title": "DebugContentCreate"
+      },
+      "DebugContentRead": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "resourceId": {
+            "type": "string",
+            "title": "Resourceid",
+            "description": "Resource ID",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "resourceType": {
+            "const": "debug",
+            "title": "Resourcetype"
+          },
+          "nodeId": {
+            "type": "string",
+            "title": "Nodeid",
+            "description": "Parent text node ID",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment",
+            "description": "Plaintext, potentially multiline comment on this content"
+          },
+          "text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Text",
+            "description": "Text content of the debug content"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "id",
+          "resourceId",
+          "resourceType",
+          "nodeId"
+        ],
+        "title": "DebugContentRead"
+      },
+      "DebugContentUpdate": {
+        "properties": {
+          "resourceId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resourceid"
+          },
+          "resourceType": {
+            "const": "debug",
+            "title": "Resourcetype"
+          },
+          "nodeId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nodeid"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment",
+            "description": "Plaintext, potentially multiline comment on this content"
+          },
+          "text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Text",
+            "description": "Text content of the debug content"
+          }
+        },
+        "type": "object",
+        "required": [
+          "resourceType"
+        ],
+        "title": "DebugContentUpdate"
+      },
       "DebugResourceConfig": {
         "properties": {
           "category": {
@@ -5225,182 +5401,6 @@
         ],
         "title": "DebugResourceUpdate"
       },
-      "DebugUnitCreate": {
-        "properties": {
-          "resourceId": {
-            "type": "string",
-            "title": "Resourceid",
-            "description": "Resource ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
-          },
-          "resourceType": {
-            "const": "debug",
-            "title": "Resourcetype"
-          },
-          "nodeId": {
-            "type": "string",
-            "title": "Nodeid",
-            "description": "Parent text node ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
-          },
-          "comment": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 1000,
-                "minLength": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Comment",
-            "description": "Plaintext, potentially multiline comment on this unit"
-          },
-          "text": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Text",
-            "description": "Text content of the debug unit"
-          }
-        },
-        "type": "object",
-        "required": [
-          "resourceId",
-          "resourceType",
-          "nodeId"
-        ],
-        "title": "DebugUnitCreate"
-      },
-      "DebugUnitRead": {
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "Id",
-            "example": "5eb7cf5a86d9755df3a6c593"
-          },
-          "resourceId": {
-            "type": "string",
-            "title": "Resourceid",
-            "description": "Resource ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
-          },
-          "resourceType": {
-            "const": "debug",
-            "title": "Resourcetype"
-          },
-          "nodeId": {
-            "type": "string",
-            "title": "Nodeid",
-            "description": "Parent text node ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
-          },
-          "comment": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 1000,
-                "minLength": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Comment",
-            "description": "Plaintext, potentially multiline comment on this unit"
-          },
-          "text": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Text",
-            "description": "Text content of the debug unit"
-          }
-        },
-        "additionalProperties": true,
-        "type": "object",
-        "required": [
-          "id",
-          "resourceId",
-          "resourceType",
-          "nodeId"
-        ],
-        "title": "DebugUnitRead"
-      },
-      "DebugUnitUpdate": {
-        "properties": {
-          "resourceId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Resourceid"
-          },
-          "resourceType": {
-            "const": "debug",
-            "title": "Resourcetype"
-          },
-          "nodeId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Nodeid"
-          },
-          "comment": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 1000,
-                "minLength": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Comment",
-            "description": "Plaintext, potentially multiline comment on this unit"
-          },
-          "text": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Text",
-            "description": "Text content of the debug unit"
-          }
-        },
-        "type": "object",
-        "required": [
-          "resourceType"
-        ],
-        "title": "DebugUnitUpdate"
-      },
       "DeepLLinksConfig": {
         "properties": {
           "enabled": {
@@ -5499,9 +5499,9 @@
       },
       "DeleteNodeResult": {
         "properties": {
-          "units": {
+          "contents": {
             "type": "integer",
-            "title": "Units"
+            "title": "Contents"
           },
           "nodes": {
             "type": "integer",
@@ -5510,7 +5510,7 @@
         },
         "type": "object",
         "required": [
-          "units",
+          "contents",
           "nodes"
         ],
         "title": "DeleteNodeResult"
@@ -5568,19 +5568,19 @@
             "title": "Nodepath",
             "default": []
           },
-          "units": {
+          "contents": {
             "items": {
               "anyOf": [
                 {
-                  "$ref": "#/components/schemas/DebugUnitRead"
+                  "$ref": "#/components/schemas/DebugContentRead"
                 },
                 {
-                  "$ref": "#/components/schemas/PlaintextUnitRead"
+                  "$ref": "#/components/schemas/PlaintextContentRead"
                 }
               ]
             },
             "type": "array",
-            "title": "Units",
+            "title": "Contents",
             "default": []
           }
         },
@@ -5817,6 +5817,175 @@
         },
         "type": "object",
         "title": "NodeUpdate"
+      },
+      "PlaintextContentCreate": {
+        "properties": {
+          "resourceId": {
+            "type": "string",
+            "title": "Resourceid",
+            "description": "Resource ID",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "resourceType": {
+            "const": "plaintext",
+            "title": "Resourcetype"
+          },
+          "nodeId": {
+            "type": "string",
+            "title": "Nodeid",
+            "description": "Parent text node ID",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment",
+            "description": "Plaintext, potentially multiline comment on this content"
+          },
+          "text": {
+            "type": "string",
+            "maxLength": 102400,
+            "minLength": 1,
+            "title": "Text",
+            "description": "Text content of the plaintext content"
+          }
+        },
+        "type": "object",
+        "required": [
+          "resourceId",
+          "resourceType",
+          "nodeId",
+          "text"
+        ],
+        "title": "PlaintextContentCreate"
+      },
+      "PlaintextContentRead": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "resourceId": {
+            "type": "string",
+            "title": "Resourceid",
+            "description": "Resource ID",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "resourceType": {
+            "const": "plaintext",
+            "title": "Resourcetype"
+          },
+          "nodeId": {
+            "type": "string",
+            "title": "Nodeid",
+            "description": "Parent text node ID",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment",
+            "description": "Plaintext, potentially multiline comment on this content"
+          },
+          "text": {
+            "type": "string",
+            "maxLength": 102400,
+            "minLength": 1,
+            "title": "Text",
+            "description": "Text content of the plaintext content"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "id",
+          "resourceId",
+          "resourceType",
+          "nodeId",
+          "text"
+        ],
+        "title": "PlaintextContentRead"
+      },
+      "PlaintextContentUpdate": {
+        "properties": {
+          "resourceId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resourceid"
+          },
+          "resourceType": {
+            "const": "plaintext",
+            "title": "Resourcetype"
+          },
+          "nodeId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nodeid"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment",
+            "description": "Plaintext, potentially multiline comment on this content"
+          },
+          "text": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 102400,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Text"
+          }
+        },
+        "type": "object",
+        "required": [
+          "resourceType"
+        ],
+        "title": "PlaintextContentUpdate"
       },
       "PlaintextResourceConfig": {
         "properties": {
@@ -6426,175 +6595,6 @@
           "resourceType"
         ],
         "title": "PlaintextResourceUpdate"
-      },
-      "PlaintextUnitCreate": {
-        "properties": {
-          "resourceId": {
-            "type": "string",
-            "title": "Resourceid",
-            "description": "Resource ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
-          },
-          "resourceType": {
-            "const": "plaintext",
-            "title": "Resourcetype"
-          },
-          "nodeId": {
-            "type": "string",
-            "title": "Nodeid",
-            "description": "Parent text node ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
-          },
-          "comment": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 1000,
-                "minLength": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Comment",
-            "description": "Plaintext, potentially multiline comment on this unit"
-          },
-          "text": {
-            "type": "string",
-            "maxLength": 102400,
-            "minLength": 1,
-            "title": "Text",
-            "description": "Text content of the plaintext unit"
-          }
-        },
-        "type": "object",
-        "required": [
-          "resourceId",
-          "resourceType",
-          "nodeId",
-          "text"
-        ],
-        "title": "PlaintextUnitCreate"
-      },
-      "PlaintextUnitRead": {
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "Id",
-            "example": "5eb7cf5a86d9755df3a6c593"
-          },
-          "resourceId": {
-            "type": "string",
-            "title": "Resourceid",
-            "description": "Resource ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
-          },
-          "resourceType": {
-            "const": "plaintext",
-            "title": "Resourcetype"
-          },
-          "nodeId": {
-            "type": "string",
-            "title": "Nodeid",
-            "description": "Parent text node ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
-          },
-          "comment": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 1000,
-                "minLength": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Comment",
-            "description": "Plaintext, potentially multiline comment on this unit"
-          },
-          "text": {
-            "type": "string",
-            "maxLength": 102400,
-            "minLength": 1,
-            "title": "Text",
-            "description": "Text content of the plaintext unit"
-          }
-        },
-        "additionalProperties": true,
-        "type": "object",
-        "required": [
-          "id",
-          "resourceId",
-          "resourceType",
-          "nodeId",
-          "text"
-        ],
-        "title": "PlaintextUnitRead"
-      },
-      "PlaintextUnitUpdate": {
-        "properties": {
-          "resourceId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Resourceid"
-          },
-          "resourceType": {
-            "const": "plaintext",
-            "title": "Resourcetype"
-          },
-          "nodeId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Nodeid"
-          },
-          "comment": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 1000,
-                "minLength": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Comment",
-            "description": "Plaintext, potentially multiline comment on this unit"
-          },
-          "text": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 102400,
-                "minLength": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Text"
-          }
-        },
-        "type": "object",
-        "required": [
-          "resourceType"
-        ],
-        "title": "PlaintextUnitUpdate"
       },
       "PlatformData": {
         "properties": {

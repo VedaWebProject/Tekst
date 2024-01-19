@@ -322,7 +322,7 @@ async def test_delete_node(
     assert len(resp.json()) > 0
     resource = resp.json()[0]
 
-    # create plaintext resource unit
+    # create plaintext resource content
     payload = {
         "resourceId": resource["id"],
         "resourceType": "plaintext",
@@ -331,7 +331,7 @@ async def test_delete_node(
         "comment": "This is a comment",
     }
     resp = await test_client.post(
-        "/units",
+        "/contents",
         json=payload,
     )
     assert resp.status_code == 201, status_fail_msg(201, resp)
@@ -346,7 +346,7 @@ async def test_delete_node(
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert resp.json().get("nodes", None) > 1
-    assert resp.json().get("units", None) == 1
+    assert resp.json().get("contents", None) == 1
 
     # delete node with wrong ID
     resp = await test_client.delete(

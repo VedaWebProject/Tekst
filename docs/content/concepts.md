@@ -9,7 +9,7 @@ Tekst aims to encourage collaboration between parties with common backgrounds or
 - create and propose new resources for publication
 - evaluate, compare and improve data created by other community members
 - publish curated datasets to the broader public (which is a decision of the party operating the platform)
-- offer different ways for accessing the data, like browsing data units along the texts structure, extensive search functionalities or exporting datasets in various formats
+- offer different ways for accessing the data, like browsing contents along the texts structure, extensive search functionalities or exporting datasets in various formats
 - maintain a close network of likeminded researchers
 
 ![collaboration flow](assets/collaboration_flow.png)
@@ -31,7 +31,7 @@ Each structure level *must* be subordinate to *one* parent structure level and c
 The reason for this limitation is the concept of exploratory browsing implemented by Tekst. For being able to skip through the nodes on a certain structure level like you turn the pages of a book, there has to be both a clear hierarchy of structure levels as well as a sequencial order of the nodes on each level.
 
 ![data model](assets/data_model_visualization.png)
-*Data model: Example of a simple song structure modeled for use as a reference work (or "text") in Tekst, with a selection of (partly imaginary) resources associated with each structure level. A resource may provide zero to one data units per node on its respective structure level.*
+*Data model: Example of a simple song structure modeled for use as a reference work (or "text") in Tekst, with a selection of (partly imaginary) resources associated with each structure level. A resource may provide zero to one contents per node on its respective structure level.*
 
 
 ## Resources

@@ -1,13 +1,13 @@
 import pytest
 
 from httpx import AsyncClient
+from tekst.models.content import ContentBaseDocument
 from tekst.models.node import NodeDocument
 from tekst.models.resource import ResourceBaseDocument
-from tekst.models.unit import UnitBaseDocument
 
 
 @pytest.mark.anyio
-async def test_create_unit(
+async def test_create_content(
     test_client: AsyncClient,
     insert_sample_data,
     status_fail_msg,
@@ -18,8 +18,8 @@ async def test_create_unit(
     node = await NodeDocument.find_one(NodeDocument.level == resource.level)
     await login(is_superuser=True)
 
-    # create plaintext resource unit
-    unit_create_data = {
+    # create plaintext resource content
+    content_create_data = {
         "resourceId": str(resource.id),
         "resourceType": "plaintext",
         "nodeId": str(node.id),
@@ -27,76 +27,76 @@ async def test_create_unit(
         "comment": "This is a comment",
     }
     resp = await test_client.post(
-        "/units",
-        json=unit_create_data,
+        "/contents",
+        json=content_create_data,
     )
     assert resp.status_code == 201, status_fail_msg(201, resp)
     assert isinstance(resp.json(), dict)
-    assert resp.json()["text"] == unit_create_data["text"]
-    assert resp.json()["comment"] == unit_create_data["comment"]
+    assert resp.json()["text"] == content_create_data["text"]
+    assert resp.json()["comment"] == content_create_data["comment"]
     assert "id" in resp.json()
 
     # fail to create duplicate
     resp = await test_client.post(
-        "/units",
-        json=unit_create_data,
+        "/contents",
+        json=content_create_data,
     )
     assert resp.status_code == 409, status_fail_msg(409, resp)
 
-    # fail to create unit for resource we don't have write access to
+    # fail to create content for resource we don't have write access to
     await login(is_superuser=False)
     resp = await test_client.post(
-        "/units",
-        json=unit_create_data,
+        "/contents",
+        json=content_create_data,
     )
     assert resp.status_code == 403, status_fail_msg(403, resp)
 
 
 @pytest.mark.anyio
-async def test_get_unit(
+async def test_get_content(
     test_client: AsyncClient, insert_sample_data, status_fail_msg, login, wrong_id
 ):
-    inserted_ids = await insert_sample_data("texts", "nodes", "resources", "units")
-    unit_id = inserted_ids["units"][0]
+    inserted_ids = await insert_sample_data("texts", "nodes", "resources", "contents")
+    content_id = inserted_ids["contents"][0]
     await login(is_superuser=True)
 
-    # get unit by ID
+    # get content by ID
     resp = await test_client.get(
-        f"/units/{unit_id}",
+        f"/contents/{content_id}",
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), dict)
     assert "id" in resp.json()
-    assert resp.json()["id"] == unit_id
+    assert resp.json()["id"] == content_id
 
-    # fail to get unit with wrong ID
+    # fail to get content with wrong ID
     resp = await test_client.get(
-        f"/units/{wrong_id}",
+        f"/contents/{wrong_id}",
     )
     assert resp.status_code == 404, status_fail_msg(404, resp)
 
 
 @pytest.mark.anyio
-async def test_find_units(
+async def test_find_contents(
     test_client: AsyncClient, insert_sample_data, status_fail_msg, login, wrong_id
 ):
-    resource_id = (await insert_sample_data("texts", "nodes", "resources", "units"))[
+    resource_id = (await insert_sample_data("texts", "nodes", "resources", "contents"))[
         "resources"
     ][0]
     await login(is_superuser=True)
 
-    # find all units
+    # find all contents
     resp = await test_client.get(
-        "/units",
+        "/contents",
         params={"res": [resource_id], "limit": 100},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) > 0
 
-    # find all units of resource
+    # find all contents of resource
     resp = await test_client.get(
-        "/units",
+        "/contents",
         params={"limit": 100},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
@@ -105,37 +105,37 @@ async def test_find_units(
 
 
 @pytest.mark.anyio
-async def test_update_unit(
+async def test_update_content(
     test_client: AsyncClient, insert_sample_data, status_fail_msg, login, wrong_id
 ):
-    await insert_sample_data("texts", "nodes", "resources", "units")
+    await insert_sample_data("texts", "nodes", "resources", "contents")
     resource = await ResourceBaseDocument.find_one(with_children=True)
-    unit = await UnitBaseDocument.find_one(
-        UnitBaseDocument.resource_id == resource.id, with_children=True
+    content = await ContentBaseDocument.find_one(
+        ContentBaseDocument.resource_id == resource.id, with_children=True
     )
     await login(is_superuser=True)
 
-    # update unit
+    # update content
     resp = await test_client.patch(
-        f"/units/{str(unit.id)}",
+        f"/contents/{str(content.id)}",
         json={"resourceType": "plaintext", "text": "FOO BAR"},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), dict)
     assert "id" in resp.json()
-    assert resp.json()["id"] == str(unit.id)
+    assert resp.json()["id"] == str(content.id)
     assert resp.json()["text"] == "FOO BAR"
 
-    # fail to update unit with wrong ID
+    # fail to update content with wrong ID
     resp = await test_client.patch(
-        f"/units/{wrong_id}",
+        f"/contents/{wrong_id}",
         json={"resourceType": "plaintext", "text": "FOO BAR"},
     )
     assert resp.status_code == 404, status_fail_msg(404, resp)
 
-    # fail to update unit with changed resource ID
+    # fail to update content with changed resource ID
     resp = await test_client.patch(
-        f"/units/{str(unit.id)}",
+        f"/contents/{str(content.id)}",
         json={
             "resourceType": "plaintext",
             "text": "FOO BAR",
@@ -144,9 +144,9 @@ async def test_update_unit(
     )
     assert resp.status_code == 400, status_fail_msg(400, resp)
 
-    # fail to update unit with bogus resource type
+    # fail to update content with bogus resource type
     resp = await test_client.patch(
-        f"/units/{str(unit.id)}",
+        f"/contents/{str(content.id)}",
         json={
             "resourceType": "bogus",
             "text": "FOO BAR",
@@ -155,9 +155,9 @@ async def test_update_unit(
     )
     assert resp.status_code == 422, status_fail_msg(422, resp)
 
-    # fail to update unit with changed resource type
+    # fail to update content with changed resource type
     resp = await test_client.patch(
-        f"/units/{str(unit.id)}",
+        f"/contents/{str(content.id)}",
         json={
             "resourceType": "debug",
             "text": "FOO BAR",
@@ -166,11 +166,11 @@ async def test_update_unit(
     )
     assert resp.status_code == 400, status_fail_msg(400, resp)
 
-    # fail to update unit of resource we don't have write access to
+    # fail to update content of resource we don't have write access to
     await login(is_superuser=False)
     node = await NodeDocument.find_one(NodeDocument.level == resource.level)
     resp = await test_client.patch(
-        f"/units/{str(unit.id)}",
+        f"/contents/{str(content.id)}",
         json={
             "resourceId": str(resource.id),
             "nodeId": str(node.id),
@@ -182,29 +182,29 @@ async def test_update_unit(
 
 
 @pytest.mark.anyio
-async def test_delete_unit(
+async def test_delete_content(
     test_client: AsyncClient, insert_sample_data, status_fail_msg, login, wrong_id
 ):
-    inserted_ids = await insert_sample_data("texts", "nodes", "resources", "units")
-    unit_id = inserted_ids["units"][0]
+    inserted_ids = await insert_sample_data("texts", "nodes", "resources", "contents")
+    content_id = inserted_ids["contents"][0]
     superuser = await login(is_superuser=True)
 
     # fail to delete with wrong ID
     resp = await test_client.delete(
-        f"/units/{wrong_id}",
+        f"/contents/{wrong_id}",
     )
     assert resp.status_code == 404, status_fail_msg(404, resp)
 
     # fail to delete without write access
     await login(is_superuser=False)
     resp = await test_client.delete(
-        f"/units/{unit_id}",
+        f"/contents/{content_id}",
     )
     assert resp.status_code == 403, status_fail_msg(403, resp)
 
-    # delete unit
+    # delete content
     await login(user=superuser)
     resp = await test_client.delete(
-        f"/units/{unit_id}",
+        f"/contents/{content_id}",
     )
     assert resp.status_code == 204, status_fail_msg(204, resp)

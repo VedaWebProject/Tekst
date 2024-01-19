@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import UnitContainerHeaderWidget from '@/components/browse/UnitContainerHeaderWidget.vue';
+import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
 import MergeRound from '@vicons/material/MergeRound';
 import { ref } from 'vue';
 import { NButton, NSpin } from 'naive-ui';
 import ButtonShelf from '@/components/ButtonShelf.vue';
-import { GET, type AnyUnitRead, type AnyResourceRead } from '@/api';
+import { GET, type AnyContentRead, type AnyResourceRead } from '@/api';
 import { useMessages } from '@/messages';
 import { $t } from '@/i18n';
-import unitComponents from '@/components/browse/units/mappings';
+import contentComponents from '@/components/browse/contents/mappings';
 import LocationLabel from '@/components/browse/LocationLabel.vue';
 import { useBrowseStore } from '@/stores';
 import GenericModal from '@/components/GenericModal.vue';
@@ -25,13 +25,13 @@ const browse = useBrowseStore();
 
 const showModal = ref(false);
 const loading = ref(false);
-const units = ref<AnyUnitRead[]>([]);
+const contents = ref<AnyContentRead[]>([]);
 
 async function handleClick() {
   showModal.value = true;
   loading.value = true;
 
-  const { data: unitsData, error } = await GET('/browse/unit-siblings', {
+  const { data: contentsData, error } = await GET('/browse/content-siblings', {
     params: {
       query: {
         res: props.resource.id,
@@ -41,7 +41,7 @@ async function handleClick() {
   });
 
   if (!error) {
-    units.value = unitsData;
+    contents.value = contentsData;
   } else {
     message.error($t('errors.unexpected'), error);
     showModal.value = false;
@@ -51,8 +51,8 @@ async function handleClick() {
 </script>
 
 <template>
-  <UnitContainerHeaderWidget
-    :title="$t('browse.units.widgets.siblingsWidget.title')"
+  <ContentContainerHeaderWidget
+    :title="$t('browse.contents.widgets.siblingsWidget.title')"
     :icon-component="MergeRound"
     @click="handleClick"
   />
@@ -70,10 +70,10 @@ async function handleClick() {
 
     <n-spin v-if="loading" style="margin: 3rem 0 2rem 0; width: 100%" />
 
-    <div v-else-if="units.length">
+    <div v-else-if="contents.length">
       <component
-        :is="unitComponents[resource.resourceType]"
-        :resource="{ ...resource, units: units }"
+        :is="contentComponents[resource.resourceType]"
+        :resource="{ ...resource, contents: contents }"
       />
     </div>
 

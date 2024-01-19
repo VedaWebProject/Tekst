@@ -5,28 +5,28 @@ from beanie.operators import Eq, In, Not
 from fastapi import APIRouter, HTTPException, Path, Query, status
 
 from tekst.auth import OptionalUserDep, UserDep
+from tekst.models.content import ContentBaseDocument
 from tekst.models.resource import ResourceBaseDocument
-from tekst.models.unit import UnitBaseDocument
 from tekst.resources import (
-    AnyUnitCreateBody,
-    AnyUnitDocument,
-    AnyUnitReadBody,
-    AnyUnitUpdateBody,
+    AnyContentCreateBody,
+    AnyContentDocument,
+    AnyContentReadBody,
+    AnyContentUpdateBody,
     resource_types_mgr,
 )
 
 
-# initialize unit router
+# initialize content router
 router = APIRouter(
-    prefix="/units",
-    tags=["units"],
+    prefix="/contents",
+    tags=["contents"],
     responses={status.HTTP_404_NOT_FOUND: {"description": "Not found"}},
 )
 
 
 @router.post(
     "",
-    response_model=AnyUnitReadBody,
+    response_model=AnyContentReadBody,
     status_code=status.HTTP_201_CREATED,
     responses={
         status.HTTP_201_CREATED: {"description": "Created"},
@@ -34,153 +34,155 @@ router = APIRouter(
         status.HTTP_403_FORBIDDEN: {"description": "Forbidden"},
     },
 )
-async def create_unit(unit: AnyUnitCreateBody, user: UserDep) -> AnyUnitDocument:
-    # check if the resource this unit belongs to is writable by user
+async def create_content(
+    content: AnyContentCreateBody, user: UserDep
+) -> AnyContentDocument:
+    # check if the resource this content belongs to is writable by user
     if not await ResourceBaseDocument.find(
-        ResourceBaseDocument.id == unit.resource_id,
+        ResourceBaseDocument.id == content.resource_id,
         await ResourceBaseDocument.access_conditions_write(user),
         with_children=True,
     ).exists():
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="No write access for units belonging to this resource",
+            detail="No write access for contents belonging to this resource",
         )
     # check for duplicates
-    if await UnitBaseDocument.find_one(
-        UnitBaseDocument.resource_id == unit.resource_id,
-        UnitBaseDocument.node_id == unit.node_id,
+    if await ContentBaseDocument.find_one(
+        ContentBaseDocument.resource_id == content.resource_id,
+        ContentBaseDocument.node_id == content.node_id,
         with_children=True,
     ).exists():
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail="The properties of this unit conflict with another unit",
+            detail="The properties of this content conflict with another content",
         )
 
     return (
-        await resource_types_mgr.get(unit.resource_type)
-        .unit_model()
+        await resource_types_mgr.get(content.resource_type)
+        .content_model()
         .document_model()
-        .model_from(unit)
+        .model_from(content)
         .create()
     )
 
 
-@router.get("/{id}", response_model=AnyUnitReadBody, status_code=status.HTTP_200_OK)
-async def get_unit(
-    unit_id: Annotated[PydanticObjectId, Path(alias="id")], user: OptionalUserDep
-) -> AnyUnitDocument:
-    """A generic route for retrieving a unit by ID from the database"""
-    unit_doc = await UnitBaseDocument.get(unit_id, with_children=True)
-    # check if the resource this unit belongs to is readable by user
-    resource_read_allowed = unit_doc and (
+@router.get("/{id}", response_model=AnyContentReadBody, status_code=status.HTTP_200_OK)
+async def get_content(
+    content_id: Annotated[PydanticObjectId, Path(alias="id")], user: OptionalUserDep
+) -> AnyContentDocument:
+    """A generic route for retrieving a content by ID from the database"""
+    content_doc = await ContentBaseDocument.get(content_id, with_children=True)
+    # check if the resource this content belongs to is readable by user
+    resource_read_allowed = content_doc and (
         await ResourceBaseDocument.find_one(
-            ResourceBaseDocument.id == unit_doc.resource_id,
+            ResourceBaseDocument.id == content_doc.resource_id,
             await ResourceBaseDocument.access_conditions_read(user),
             with_children=True,
         ).exists()
     )
-    if not unit_doc or not resource_read_allowed:
+    if not content_doc or not resource_read_allowed:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Could not find unit with ID {unit_id}",
+            detail=f"Could not find content with ID {content_id}",
         )
-    return unit_doc
+    return content_doc
 
 
 @router.patch(
     "/{id}",
-    response_model=AnyUnitReadBody,
+    response_model=AnyContentReadBody,
     status_code=status.HTTP_200_OK,
     responses={
         status.HTTP_400_BAD_REQUEST: {"description": "Bad request"},
         status.HTTP_403_FORBIDDEN: {"description": "Forbidden"},
     },
 )
-async def update_unit(
-    unit_id: Annotated[PydanticObjectId, Path(alias="id")],
-    updates: AnyUnitUpdateBody,
+async def update_content(
+    content_id: Annotated[PydanticObjectId, Path(alias="id")],
+    updates: AnyContentUpdateBody,
     user: UserDep,
-) -> AnyUnitDocument:
-    unit_doc = await UnitBaseDocument.get(unit_id, with_children=True)
-    if not unit_doc:
+) -> AnyContentDocument:
+    content_doc = await ContentBaseDocument.get(content_id, with_children=True)
+    if not content_doc:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Unit {unit_id} doesn't exist",
+            detail=f"Content {content_id} doesn't exist",
         )
-    # check if unit's resource ID matches updates' resource ID (if it has one specified)
-    if updates.resource_id and unit_doc.resource_id != updates.resource_id:
+    # check if content's resource ID matches updates' resource ID (if any)
+    if updates.resource_id and content_doc.resource_id != updates.resource_id:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Referenced resource ID in unit and updates doesn't match",
+            detail="Referenced resource ID in content and updates doesn't match",
         )
-    # check if unit's resource type matches updates' resource type
-    if updates.resource_type != unit_doc.resource_type:
+    # check if content's resource type matches updates' resource type
+    if updates.resource_type != content_doc.resource_type:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Resource type doesn't match existing unit's resource type",
+            detail="Resource type doesn't match existing content's resource type",
         )
-    # check if the resource this unit belongs to is writable by user
+    # check if the resource this content belongs to is writable by user
     if not await ResourceBaseDocument.find_one(
-        ResourceBaseDocument.id == unit_doc.resource_id,
+        ResourceBaseDocument.id == content_doc.resource_id,
         await ResourceBaseDocument.access_conditions_write(user),
         with_children=True,
     ).exists():
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail=f"No write access for units of resource {unit_doc.resource_id}",
+            detail=f"No write access for resource {content_doc.resource_id}",
         )
-    return await unit_doc.apply_updates(
+    return await content_doc.apply_updates(
         updates, exclude={"id", "resource_id", "node_id", "resource_type"}
     )
 
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_unit(
-    user: UserDep, unit_id: Annotated[PydanticObjectId, Path(alias="id")]
+async def delete_content(
+    user: UserDep, content_id: Annotated[PydanticObjectId, Path(alias="id")]
 ) -> None:
-    unit_doc = await UnitBaseDocument.get(unit_id, with_children=True)
-    if not unit_doc:
+    content_doc = await ContentBaseDocument.get(content_id, with_children=True)
+    if not content_doc:
         raise HTTPException(
-            status.HTTP_404_NOT_FOUND, detail=f"No unit with ID {unit_id}"
+            status.HTTP_404_NOT_FOUND, detail=f"No content with ID {content_id}"
         )
     if not await ResourceBaseDocument.find_one(
-        ResourceBaseDocument.id == unit_doc.resource_id,
+        ResourceBaseDocument.id == content_doc.resource_id,
         await ResourceBaseDocument.access_conditions_write(user),
         with_children=True,
     ).exists():
         raise HTTPException(
             status.HTTP_403_FORBIDDEN,
-            detail=f"Cannot delete units of resource {unit_doc.resource_id}",
+            detail=f"Cannot delete contents of resource {content_doc.resource_id}",
         )
-    # all fine, delete unit
-    await unit_doc.delete()
+    # all fine, delete content
+    await content_doc.delete()
 
 
-@router.get("", response_model=list[AnyUnitReadBody], status_code=status.HTTP_200_OK)
-async def find_units(
+@router.get("", response_model=list[AnyContentReadBody], status_code=status.HTTP_200_OK)
+async def find_contents(
     user: OptionalUserDep,
     resource_ids: Annotated[
         list[PydanticObjectId],
         Query(
             alias="res",
-            description="ID (or list of IDs) of resource(s) to return unit data for",
+            description="ID (or list of IDs) of resource(s) to return content data for",
         ),
     ] = [],
     node_ids: Annotated[
         list[PydanticObjectId],
         Query(
             alias="node",
-            description="ID (or list of IDs) of node(s) to return unit data for",
+            description="ID (or list of IDs) of node(s) to return content data for",
         ),
     ] = [],
     limit: Annotated[int, Query(description="Return at most <limit> items")] = 4096,
-) -> list[AnyUnitDocument]:
+) -> list[AnyContentDocument]:
     """
-    Returns a list of all resource units matching the given criteria.
+    Returns a list of all resource contents matching the given criteria.
 
     Respects restricted resources and inactive texts.
-    As the resulting list may contain units of different types, the
-    returned unit objects cannot be typed to their precise resource unit type.
+    As the resulting list may contain contents of different types, the
+    returned content objects cannot be typed to their precise resource content type.
     """
 
     # preprocess resource_ids to add IDs of original resources in case we have versions
@@ -203,13 +205,13 @@ async def find_units(
         with_children=True,
     ).to_list()
 
-    # get units matching the given criteria
+    # get contents matching the given criteria
     return (
-        await UnitBaseDocument.find(
-            In(UnitBaseDocument.resource_id, resource_ids) if resource_ids else {},
-            In(UnitBaseDocument.node_id, node_ids) if node_ids else {},
+        await ContentBaseDocument.find(
+            In(ContentBaseDocument.resource_id, resource_ids) if resource_ids else {},
+            In(ContentBaseDocument.node_id, node_ids) if node_ids else {},
             In(
-                UnitBaseDocument.resource_id,
+                ContentBaseDocument.resource_id,
                 [resource.id for resource in readable_resources],
             ),
             with_children=True,

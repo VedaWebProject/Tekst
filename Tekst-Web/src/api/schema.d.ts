@@ -12,35 +12,35 @@ export interface paths {
     /** Get users */
     get: operations['getUsers'];
   };
-  '/browse/unit-siblings': {
+  '/browse/content-siblings': {
     /**
-     * Get unit siblings
-     * @description Returns a list of all resource units belonging to the resource
+     * Get content siblings
+     * @description Returns a list of all resource contents belonging to the resource
      * with the given ID, associated to nodes that are children of the parent node
      * with the given ID.
      *
-     * As the resulting list may contain units of arbitrary type, the
-     * returned unit objects cannot be typed to their precise resource unit type.
+     * As the resulting list may contain contents of arbitrary type, the
+     * returned content objects cannot be typed to their precise resource content type.
      */
-    get: operations['getUnitSiblings'];
+    get: operations['getContentSiblings'];
   };
   '/browse/location-data': {
     /**
      * Get location data
      * @description Returns the node path from the node with the given level/position
      * as the last element, up to its most distant ancestor node
-     * on structure level 0 as the first element of an array as well as all units
+     * on structure level 0 as the first element of an array as well as all contents
      * for the given resource(s) referencing the nodes in the node path.
      */
     get: operations['getLocationData'];
   };
-  '/browse/nearest-unit': {
+  '/browse/nearest-content': {
     /**
-     * Get nearest unit
+     * Get nearest content
      * @description Finds the nearest location the given resource holds content for and returns
      * data for that location.
      */
-    get: operations['getNearestUnit'];
+    get: operations['getNearestContent'];
   };
   '/browse/nodes/{id}/path/options-by-head': {
     /**
@@ -67,6 +67,30 @@ export interface paths {
     /** Get detailed resource coverage data */
     get: operations['getDetailedResourceCoverageData'];
   };
+  '/contents': {
+    /**
+     * Find contents
+     * @description Returns a list of all resource contents matching the given criteria.
+     *
+     * Respects restricted resources and inactive texts.
+     * As the resulting list may contain contents of different types, the
+     * returned content objects cannot be typed to their precise resource content type.
+     */
+    get: operations['findContents'];
+    /** Create content */
+    post: operations['createContent'];
+  };
+  '/contents/{id}': {
+    /**
+     * Get content
+     * @description A generic route for retrieving a content by ID from the database
+     */
+    get: operations['getContent'];
+    /** Delete content */
+    delete: operations['deleteContent'];
+    /** Update content */
+    patch: operations['updateContent'];
+  };
   '/nodes': {
     /** Find nodes */
     get: operations['findNodes'];
@@ -86,7 +110,7 @@ export interface paths {
     get: operations['getNode'];
     /**
      * Delete node
-     * @description Deletes the specified node. Also deletes any associated units, child nodes and units associated with child nodes.
+     * @description Deletes the specified node. Also deletes any associated contents, child nodes and contents associated with child nodes.
      */
     delete: operations['deleteNode'];
     /** Update node */
@@ -225,30 +249,6 @@ export interface paths {
     delete: operations['deleteText'];
     /** Update text */
     patch: operations['updateText'];
-  };
-  '/units': {
-    /**
-     * Find units
-     * @description Returns a list of all resource units matching the given criteria.
-     *
-     * Respects restricted resources and inactive texts.
-     * As the resulting list may contain units of different types, the
-     * returned unit objects cannot be typed to their precise resource unit type.
-     */
-    get: operations['findUnits'];
-    /** Create unit */
-    post: operations['createUnit'];
-  };
-  '/units/{id}': {
-    /**
-     * Get unit
-     * @description A generic route for retrieving a unit by ID from the database
-     */
-    get: operations['getUnit'];
-    /** Delete unit */
-    delete: operations['deleteUnit'];
-    /** Update unit */
-    patch: operations['updateUnit'];
   };
   '/users/me': {
     /** Me */
@@ -507,6 +507,94 @@ export interface components {
       title?: string | null;
       /** Html */
       html?: string | null;
+    };
+    /** DebugContentCreate */
+    DebugContentCreate: {
+      /**
+       * Resourceid
+       * @description Resource ID
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      resourceId: string;
+      /**
+       * Resourcetype
+       * @constant
+       */
+      resourceType: 'debug';
+      /**
+       * Nodeid
+       * @description Parent text node ID
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      nodeId: string;
+      /**
+       * Comment
+       * @description Plaintext, potentially multiline comment on this content
+       */
+      comment?: string | null;
+      /**
+       * Text
+       * @description Text content of the debug content
+       */
+      text?: string | null;
+    };
+    /** DebugContentRead */
+    DebugContentRead: {
+      /**
+       * Id
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      id: string;
+      /**
+       * Resourceid
+       * @description Resource ID
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      resourceId: string;
+      /**
+       * Resourcetype
+       * @constant
+       */
+      resourceType: 'debug';
+      /**
+       * Nodeid
+       * @description Parent text node ID
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      nodeId: string;
+      /**
+       * Comment
+       * @description Plaintext, potentially multiline comment on this content
+       */
+      comment?: string | null;
+      /**
+       * Text
+       * @description Text content of the debug content
+       */
+      text?: string | null;
+      [key: string]: unknown;
+    };
+    /** DebugContentUpdate */
+    DebugContentUpdate: {
+      /** Resourceid */
+      resourceId?: string | null;
+      /**
+       * Resourcetype
+       * @constant
+       */
+      resourceType: 'debug';
+      /** Nodeid */
+      nodeId?: string | null;
+      /**
+       * Comment
+       * @description Plaintext, potentially multiline comment on this content
+       */
+      comment?: string | null;
+      /**
+       * Text
+       * @description Text content of the debug content
+       */
+      text?: string | null;
     };
     /** DebugResourceConfig */
     DebugResourceConfig: {
@@ -814,94 +902,6 @@ export interface components {
        */
       config?: components['schemas']['DebugResourceConfig'];
     };
-    /** DebugUnitCreate */
-    DebugUnitCreate: {
-      /**
-       * Resourceid
-       * @description Resource ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      resourceId: string;
-      /**
-       * Resourcetype
-       * @constant
-       */
-      resourceType: 'debug';
-      /**
-       * Nodeid
-       * @description Parent text node ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      nodeId: string;
-      /**
-       * Comment
-       * @description Plaintext, potentially multiline comment on this unit
-       */
-      comment?: string | null;
-      /**
-       * Text
-       * @description Text content of the debug unit
-       */
-      text?: string | null;
-    };
-    /** DebugUnitRead */
-    DebugUnitRead: {
-      /**
-       * Id
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      id: string;
-      /**
-       * Resourceid
-       * @description Resource ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      resourceId: string;
-      /**
-       * Resourcetype
-       * @constant
-       */
-      resourceType: 'debug';
-      /**
-       * Nodeid
-       * @description Parent text node ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      nodeId: string;
-      /**
-       * Comment
-       * @description Plaintext, potentially multiline comment on this unit
-       */
-      comment?: string | null;
-      /**
-       * Text
-       * @description Text content of the debug unit
-       */
-      text?: string | null;
-      [key: string]: unknown;
-    };
-    /** DebugUnitUpdate */
-    DebugUnitUpdate: {
-      /** Resourceid */
-      resourceId?: string | null;
-      /**
-       * Resourcetype
-       * @constant
-       */
-      resourceType: 'debug';
-      /** Nodeid */
-      nodeId?: string | null;
-      /**
-       * Comment
-       * @description Plaintext, potentially multiline comment on this unit
-       */
-      comment?: string | null;
-      /**
-       * Text
-       * @description Text content of the debug unit
-       */
-      text?: string | null;
-    };
     /** DeepLLinksConfig */
     DeepLLinksConfig: {
       /**
@@ -986,8 +986,8 @@ export interface components {
     };
     /** DeleteNodeResult */
     DeleteNodeResult: {
-      /** Units */
-      units: number;
+      /** Contents */
+      contents: number;
       /** Nodes */
       nodes: number;
     };
@@ -1015,12 +1015,12 @@ export interface components {
        */
       nodePath?: components['schemas']['NodeRead'][];
       /**
-       * Units
+       * Contents
        * @default []
        */
-      units?: (
-        | components['schemas']['DebugUnitRead']
-        | components['schemas']['PlaintextUnitRead']
+      contents?: (
+        | components['schemas']['DebugContentRead']
+        | components['schemas']['PlaintextContentRead']
       )[];
     };
     /** Metadate */
@@ -1118,6 +1118,91 @@ export interface components {
       position?: number | null;
       /** Label */
       label?: string | null;
+    };
+    /** PlaintextContentCreate */
+    PlaintextContentCreate: {
+      /**
+       * Resourceid
+       * @description Resource ID
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      resourceId: string;
+      /**
+       * Resourcetype
+       * @constant
+       */
+      resourceType: 'plaintext';
+      /**
+       * Nodeid
+       * @description Parent text node ID
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      nodeId: string;
+      /**
+       * Comment
+       * @description Plaintext, potentially multiline comment on this content
+       */
+      comment?: string | null;
+      /**
+       * Text
+       * @description Text content of the plaintext content
+       */
+      text: string;
+    };
+    /** PlaintextContentRead */
+    PlaintextContentRead: {
+      /**
+       * Id
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      id: string;
+      /**
+       * Resourceid
+       * @description Resource ID
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      resourceId: string;
+      /**
+       * Resourcetype
+       * @constant
+       */
+      resourceType: 'plaintext';
+      /**
+       * Nodeid
+       * @description Parent text node ID
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      nodeId: string;
+      /**
+       * Comment
+       * @description Plaintext, potentially multiline comment on this content
+       */
+      comment?: string | null;
+      /**
+       * Text
+       * @description Text content of the plaintext content
+       */
+      text: string;
+      [key: string]: unknown;
+    };
+    /** PlaintextContentUpdate */
+    PlaintextContentUpdate: {
+      /** Resourceid */
+      resourceId?: string | null;
+      /**
+       * Resourcetype
+       * @constant
+       */
+      resourceType: 'plaintext';
+      /** Nodeid */
+      nodeId?: string | null;
+      /**
+       * Comment
+       * @description Plaintext, potentially multiline comment on this content
+       */
+      comment?: string | null;
+      /** Text */
+      text?: string | null;
     };
     /** PlaintextResourceConfig */
     PlaintextResourceConfig: {
@@ -1459,91 +1544,6 @@ export interface components {
        * }
        */
       config?: components['schemas']['PlaintextResourceConfig'];
-    };
-    /** PlaintextUnitCreate */
-    PlaintextUnitCreate: {
-      /**
-       * Resourceid
-       * @description Resource ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      resourceId: string;
-      /**
-       * Resourcetype
-       * @constant
-       */
-      resourceType: 'plaintext';
-      /**
-       * Nodeid
-       * @description Parent text node ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      nodeId: string;
-      /**
-       * Comment
-       * @description Plaintext, potentially multiline comment on this unit
-       */
-      comment?: string | null;
-      /**
-       * Text
-       * @description Text content of the plaintext unit
-       */
-      text: string;
-    };
-    /** PlaintextUnitRead */
-    PlaintextUnitRead: {
-      /**
-       * Id
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      id: string;
-      /**
-       * Resourceid
-       * @description Resource ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      resourceId: string;
-      /**
-       * Resourcetype
-       * @constant
-       */
-      resourceType: 'plaintext';
-      /**
-       * Nodeid
-       * @description Parent text node ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      nodeId: string;
-      /**
-       * Comment
-       * @description Plaintext, potentially multiline comment on this unit
-       */
-      comment?: string | null;
-      /**
-       * Text
-       * @description Text content of the plaintext unit
-       */
-      text: string;
-      [key: string]: unknown;
-    };
-    /** PlaintextUnitUpdate */
-    PlaintextUnitUpdate: {
-      /** Resourceid */
-      resourceId?: string | null;
-      /**
-       * Resourcetype
-       * @constant
-       */
-      resourceType: 'plaintext';
-      /** Nodeid */
-      nodeId?: string | null;
-      /**
-       * Comment
-       * @description Plaintext, potentially multiline comment on this unit
-       */
-      comment?: string | null;
-      /** Text */
-      text?: string | null;
     };
     /**
      * PlatformData
@@ -2266,20 +2266,20 @@ export interface operations {
     };
   };
   /**
-   * Get unit siblings
-   * @description Returns a list of all resource units belonging to the resource
+   * Get content siblings
+   * @description Returns a list of all resource contents belonging to the resource
    * with the given ID, associated to nodes that are children of the parent node
    * with the given ID.
    *
-   * As the resulting list may contain units of arbitrary type, the
-   * returned unit objects cannot be typed to their precise resource unit type.
+   * As the resulting list may contain contents of arbitrary type, the
+   * returned content objects cannot be typed to their precise resource content type.
    */
-  getUnitSiblings: {
+  getContentSiblings: {
     parameters: {
       query: {
-        /** @description ID of resource the requested units belong to */
+        /** @description ID of resource the requested contents belong to */
         res: string;
-        /** @description ID of node for which siblings to get associated units for */
+        /** @description ID of node for which siblings to get associated contents for */
         parent?: string | null;
       };
     };
@@ -2288,8 +2288,8 @@ export interface operations {
       200: {
         content: {
           'application/json': (
-            | components['schemas']['DebugUnitRead']
-            | components['schemas']['PlaintextUnitRead']
+            | components['schemas']['DebugContentRead']
+            | components['schemas']['PlaintextContentRead']
           )[];
         };
       };
@@ -2309,7 +2309,7 @@ export interface operations {
    * Get location data
    * @description Returns the node path from the node with the given level/position
    * as the last element, up to its most distant ancestor node
-   * on structure level 0 as the first element of an array as well as all units
+   * on structure level 0 as the first element of an array as well as all contents
    * for the given resource(s) referencing the nodes in the node path.
    */
   getLocationData: {
@@ -2321,11 +2321,11 @@ export interface operations {
         lvl: number;
         /** @description Location position */
         pos: number;
-        /** @description ID (or list of IDs) of resource(s) to return unit data for */
+        /** @description ID (or list of IDs) of resource(s) to return content data for */
         res?: string[];
-        /** @description Only return units referencing the head node of the node path */
+        /** @description Only return contents referencing the head node of the path */
         head?: boolean;
-        /** @description Return at most <limit> units */
+        /** @description Return at most <limit> contents */
         limit?: number;
       };
     };
@@ -2349,22 +2349,22 @@ export interface operations {
     };
   };
   /**
-   * Get nearest unit
+   * Get nearest content
    * @description Finds the nearest location the given resource holds content for and returns
    * data for that location.
    */
-  getNearestUnit: {
+  getNearestContent: {
     parameters: {
       query: {
         /** @description Location position */
         pos: number;
         /** @description ID of resource to return nearest location with content for */
         targetRes?: string;
-        /** @description ID (or list of IDs) of resource(s) to return unit data for */
+        /** @description ID (or list of IDs) of resource(s) to return content data for */
         res?: string[];
         /** @description Whether to look for the nearest preceding or subsequent location with content */
         mode?: 'preceding' | 'subsequent';
-        /** @description Return at most <limit> units */
+        /** @description Return at most <limit> contents */
         limit?: number;
       };
     };
@@ -2487,6 +2487,183 @@ export interface operations {
         content: {
           'application/json': components['schemas']['ResourceCoverageDetails'];
         };
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /**
+   * Find contents
+   * @description Returns a list of all resource contents matching the given criteria.
+   *
+   * Respects restricted resources and inactive texts.
+   * As the resulting list may contain contents of different types, the
+   * returned content objects cannot be typed to their precise resource content type.
+   */
+  findContents: {
+    parameters: {
+      query?: {
+        /** @description ID (or list of IDs) of resource(s) to return content data for */
+        res?: string[];
+        /** @description ID (or list of IDs) of node(s) to return content data for */
+        node?: string[];
+        /** @description Return at most <limit> items */
+        limit?: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': (
+            | components['schemas']['DebugContentRead']
+            | components['schemas']['PlaintextContentRead']
+          )[];
+        };
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Create content */
+  createContent: {
+    requestBody: {
+      content: {
+        'application/json':
+          | components['schemas']['DebugContentCreate']
+          | components['schemas']['PlaintextContentCreate'];
+      };
+    };
+    responses: {
+      /** @description Created */
+      201: {
+        content: {
+          'application/json':
+            | components['schemas']['DebugContentRead']
+            | components['schemas']['PlaintextContentRead'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: never;
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Conflict */
+      409: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /**
+   * Get content
+   * @description A generic route for retrieving a content by ID from the database
+   */
+  getContent: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json':
+            | components['schemas']['DebugContentRead']
+            | components['schemas']['PlaintextContentRead'];
+        };
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Delete content */
+  deleteContent: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      204: {
+        content: never;
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Update content */
+  updateContent: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        'application/json':
+          | components['schemas']['DebugContentUpdate']
+          | components['schemas']['PlaintextContentUpdate'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json':
+            | components['schemas']['DebugContentRead']
+            | components['schemas']['PlaintextContentRead'];
+        };
+      };
+      /** @description Bad request */
+      400: {
+        content: never;
+      };
+      /** @description Forbidden */
+      403: {
+        content: never;
       };
       /** @description Not found */
       404: {
@@ -2623,7 +2800,7 @@ export interface operations {
   };
   /**
    * Delete node
-   * @description Deletes the specified node. Also deletes any associated units, child nodes and units associated with child nodes.
+   * @description Deletes the specified node. Also deletes any associated contents, child nodes and contents associated with child nodes.
    */
   deleteNode: {
     parameters: {
@@ -3562,183 +3739,6 @@ export interface operations {
         content: {
           'application/json': components['schemas']['TextRead'];
         };
-      };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  /**
-   * Find units
-   * @description Returns a list of all resource units matching the given criteria.
-   *
-   * Respects restricted resources and inactive texts.
-   * As the resulting list may contain units of different types, the
-   * returned unit objects cannot be typed to their precise resource unit type.
-   */
-  findUnits: {
-    parameters: {
-      query?: {
-        /** @description ID (or list of IDs) of resource(s) to return unit data for */
-        res?: string[];
-        /** @description ID (or list of IDs) of node(s) to return unit data for */
-        node?: string[];
-        /** @description Return at most <limit> items */
-        limit?: number;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json': (
-            | components['schemas']['DebugUnitRead']
-            | components['schemas']['PlaintextUnitRead']
-          )[];
-        };
-      };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  /** Create unit */
-  createUnit: {
-    requestBody: {
-      content: {
-        'application/json':
-          | components['schemas']['DebugUnitCreate']
-          | components['schemas']['PlaintextUnitCreate'];
-      };
-    };
-    responses: {
-      /** @description Created */
-      201: {
-        content: {
-          'application/json':
-            | components['schemas']['DebugUnitRead']
-            | components['schemas']['PlaintextUnitRead'];
-        };
-      };
-      /** @description Forbidden */
-      403: {
-        content: never;
-      };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
-      /** @description Conflict */
-      409: {
-        content: never;
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  /**
-   * Get unit
-   * @description A generic route for retrieving a unit by ID from the database
-   */
-  getUnit: {
-    parameters: {
-      path: {
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json':
-            | components['schemas']['DebugUnitRead']
-            | components['schemas']['PlaintextUnitRead'];
-        };
-      };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  /** Delete unit */
-  deleteUnit: {
-    parameters: {
-      path: {
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      204: {
-        content: never;
-      };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  /** Update unit */
-  updateUnit: {
-    parameters: {
-      path: {
-        id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        'application/json':
-          | components['schemas']['DebugUnitUpdate']
-          | components['schemas']['PlaintextUnitUpdate'];
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json':
-            | components['schemas']['DebugUnitRead']
-            | components['schemas']['PlaintextUnitRead'];
-        };
-      };
-      /** @description Bad request */
-      400: {
-        content: never;
-      };
-      /** @description Forbidden */
-      403: {
-        content: never;
       };
       /** @description Not found */
       404: {

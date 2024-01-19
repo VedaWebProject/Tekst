@@ -225,9 +225,9 @@ function handleSettingsClick(resource: AnyResourceRead) {
   router.push({ name: 'resourceSettings', params: { text: state.text?.slug, id: resource.id } });
 }
 
-function handleUnitsClick(resource: AnyResourceRead) {
+function handleContentsClick(resource: AnyResourceRead) {
   router.push({
-    name: 'resourceUnits',
+    name: 'resourceContents',
     params: { text: state.text?.slug, id: resource.id, pos: 0 },
   });
 }
@@ -316,7 +316,7 @@ async function handleImportClick(resource: AnyResourceRead) {
       if (response.ok) {
         const resp = await response.json();
         message.success(
-          $t('units.msgImportSuccess', {
+          $t('contents.msgImportSuccess', {
             updated: resp.updated,
             created: resp.created,
             errors: resp.errors,
@@ -427,7 +427,7 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
             @publish-click="handlePublishClick"
             @unpublish-click="handleUnpublishClick"
             @settings-click="handleSettingsClick"
-            @units-click="handleUnitsClick"
+            @contents-click="handleContentsClick"
             @create-version-click="handleCreateVersionClick"
             @delete-click="handleDeleteClick"
             @download-template-click="handleDownloadTemplateClick"

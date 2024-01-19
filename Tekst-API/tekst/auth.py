@@ -45,8 +45,8 @@ from humps import decamelize
 from tekst.config import TekstConfig, get_config
 from tekst.email import TemplateIdentifier, send_email
 from tekst.logging import log
+from tekst.models.content import ContentBaseDocument
 from tekst.models.resource import ResourceBaseDocument
-from tekst.models.unit import UnitBaseDocument
 from tekst.models.user import UserCreate, UserDocument, UserRead, UserUpdate
 
 
@@ -233,9 +233,9 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
             ResourceBaseDocument.owner_id == user.id, with_children=True
         ).to_list()
         owned_resources_ids = [resource.id for resource in resources_docs]
-        # delete units of owned resources
-        await UnitBaseDocument.find(
-            In(UnitBaseDocument.resource_id, owned_resources_ids),
+        # delete contents of owned resources
+        await ContentBaseDocument.find(
+            In(ContentBaseDocument.resource_id, owned_resources_ids),
             with_children=True,
         ).delete()
         # delete owned resources

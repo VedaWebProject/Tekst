@@ -23,11 +23,11 @@ from starlette.background import BackgroundTask
 
 from tekst.auth import OptionalUserDep, SuperuserDep, UserDep
 from tekst.logging import log
+from tekst.models.content import ContentBaseDocument
 from tekst.models.exchange import ResourceDataImportResponse, ResourceImportData
 from tekst.models.node import NodeDocument
 from tekst.models.resource import ResourceBaseDocument
 from tekst.models.text import TextDocument
-from tekst.models.unit import UnitBaseDocument
 from tekst.models.user import UserDocument, UserRead, UserReadPublic
 from tekst.resources import (
     AnyResourceCreateBody,
@@ -335,9 +335,9 @@ async def delete_resource(
         ResourceBaseDocument.original_id == resource_id,
         with_children=True,
     ).set({ResourceBaseDocument.original_id: None})
-    # delete units belonging to the resource
-    await UnitBaseDocument.find(
-        UnitBaseDocument.resource_id == resource_id,
+    # delete contents belonging to the resource
+    await ContentBaseDocument.find(
+        ContentBaseDocument.resource_id == resource_id,
         with_children=True,
     ).delete()
     # delete resource itself
@@ -538,7 +538,7 @@ async def get_resource_template(
         )
     text_doc = await TextDocument.get(resource_doc.text_id)
 
-    # import unit type for the requested resource
+    # import content type for the requested resource
     template = resource_types_mgr.get(
         resource_doc.resource_type
     ).prepare_import_template()
@@ -555,8 +555,8 @@ async def get_resource_template(
         loc_delim=text_doc.loc_delim,
     )
 
-    # fill in unit templates with IDs and some informational fields
-    template["units"] = [
+    # fill in content templates with IDs and some informational fields
+    template["contents"] = [
         dict(
             nodeId=str(node.id),
             _position=node.position,
@@ -640,17 +640,17 @@ async def import_resource_data(
             detail="Resource ID in import file does not match resource ID in URL",
         )
 
-    # find units that already exist and have to be updated instead of created
+    # find contents that already exist and have to be updated instead of created
     try:
-        existing_units_dict = {
-            str(unit_doc.node_id): unit_doc
-            for unit_doc in await UnitBaseDocument.find(
-                UnitBaseDocument.resource_id == resource.id,
+        existing_contents_dict = {
+            str(content_doc.node_id): content_doc
+            for content_doc in await ContentBaseDocument.find(
+                ContentBaseDocument.resource_id == resource.id,
                 In(
-                    UnitBaseDocument.node_id,
+                    ContentBaseDocument.node_id,
                     [
-                        PydanticObjectId(unit_data.get("nodeId", ""))
-                        for unit_data in structure_def.units
+                        PydanticObjectId(content_data.get("nodeId", ""))
+                        for content_data in structure_def.contents
                     ],
                 ),
                 with_children=True,
@@ -662,44 +662,44 @@ async def import_resource_data(
             detail=f"Invalid nodeId value: {str(e)}",
         )
 
-    # create lists of validated unit updates/creates depending on whether they exist
-    units = {
+    # create lists of validated content updates/creates depending on whether they exist
+    contents = {
         "updates": [],
         "creates": [],
     }
     update_model = (
-        resource_types_mgr.get(resource.resource_type).unit_model().update_model()
+        resource_types_mgr.get(resource.resource_type).content_model().update_model()
     )
     create_model = (
-        resource_types_mgr.get(resource.resource_type).unit_model().create_model()
+        resource_types_mgr.get(resource.resource_type).content_model().create_model()
     )
-    for unit_data in structure_def.units:
-        is_update = str(unit_data.get("nodeId", "")) in existing_units_dict
+    for content_data in structure_def.contents:
+        is_update = str(content_data.get("nodeId", "")) in existing_contents_dict
         try:
-            units["updates" if is_update else "creates"].append(
+            contents["updates" if is_update else "creates"].append(
                 (update_model if is_update else create_model)(
                     resource_id=resource.id,
                     resource_type=resource.resource_type,
-                    **unit_data,
+                    **content_data,
                 )
             )
         except ValidationError as ve:
             raise HTTPException(
                 status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-                detail=f"Invalid unit data: {str(ve)}",
+                detail=f"Invalid content data: {str(ve)}",
             )
 
     # a sacrifice for the GC
     structure_def = None
 
-    # process updates to existing units
+    # process updates to existing contents
     updated_count = 0
     errors_count = 0
-    for update in units["updates"]:
-        unit_doc = existing_units_dict.get(str(update.node_id))
-        if unit_doc:
+    for update in contents["updates"]:
+        content_doc = existing_contents_dict.get(str(update.node_id))
+        if content_doc:
             try:
-                await unit_doc.apply_updates(
+                await content_doc.apply_updates(
                     update, exclude={"id", "resource_id", "node_id", "resource_type"}
                 )
                 updated_count += 1
@@ -712,11 +712,11 @@ async def import_resource_data(
         else:
             errors_count += 1
 
-    # process new units
-    unit_document_model = (
-        resource_types_mgr.get(resource.resource_type).unit_model().document_model()
+    # process new contents
+    content_document_model = (
+        resource_types_mgr.get(resource.resource_type).content_model().document_model()
     )
-    # get node IDs from target level to check if the ones in new units are valid
+    # get node IDs from target level to check if the ones in new contents are valid
     existing_node_ids = {
         n.id
         for n in await NodeDocument.find(
@@ -724,16 +724,19 @@ async def import_resource_data(
             NodeDocument.level == resource.level,
         ).to_list()
     }
-    # filter out units that reference non-existent node IDs
-    units["creates"] = [u for u in units["creates"] if u.node_id in existing_node_ids]
+    # filter out contents that reference non-existent node IDs
+    contents["creates"] = [
+        u for u in contents["creates"] if u.node_id in existing_node_ids
+    ]
 
-    # insert new units
-    if len(units["creates"]):
-        insert_many_result = await UnitBaseDocument.insert_many(
-            [unit_document_model.model_from(c) for c in units["creates"]], ordered=False
+    # insert new contents
+    if len(contents["creates"]):
+        insert_many_result = await ContentBaseDocument.insert_many(
+            [content_document_model.model_from(c) for c in contents["creates"]],
+            ordered=False,
         )
         created_count = len(insert_many_result.inserted_ids)
-        errors_count += len(units["creates"]) - created_count
+        errors_count += len(contents["creates"]) - created_count
     else:
         created_count = 0
 

@@ -23,7 +23,7 @@ const InfoPageView = () => import('@/views/InfoPageView.vue');
 const ResourcesView = () => import('@/views/ResourcesView.vue');
 const ResourceConfigView = () => import('@/views/ResourceConfigView.vue');
 const ResourceCreateView = () => import('@/views/ResourceCreateView.vue');
-const UnitsView = () => import('@/views/UnitsView.vue');
+const ContentsView = () => import('@/views/ContentsView.vue');
 
 const AccountView = () => import('@/views/account/AccountView.vue');
 const AccountManageView = () => import('@/views/account/AccountManageView.vue');
@@ -150,9 +150,9 @@ const router = createRouter({
       },
     },
     {
-      path: '/text/:text?/resources/:id/units/:pos',
-      name: 'resourceUnits',
-      component: UnitsView,
+      path: '/text/:text?/resources/:id/contents/:pos',
+      name: 'resourceContents',
+      component: ContentsView,
       meta: {
         isTextSpecific: true,
         restricted: 'user',

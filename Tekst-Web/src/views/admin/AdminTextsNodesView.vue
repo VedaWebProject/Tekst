@@ -189,7 +189,7 @@ async function deleteNode(node: TreeOption) {
       $t('admin.text.nodes.infoDeletedNode', {
         node: node.label,
         nodes: result.nodes,
-        units: result.units,
+        contents: result.contents,
       })
     );
   } else {

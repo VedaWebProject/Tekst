@@ -13,19 +13,19 @@ from humps import decamelize
 
 from tekst.logging import log
 from tekst.models.common import ReadBase
+from tekst.models.content import ContentBase, ContentBaseDocument, ContentBaseUpdate
 from tekst.models.resource import (
     ResourceBase,
     ResourceBaseDocument,
     ResourceBaseUpdate,
     ResourceReadExtras,
 )
-from tekst.models.unit import UnitBase, UnitBaseDocument, UnitBaseUpdate
 
 
 class ResourceTypeABC(ABC):
     """Abstract base class for defining a resource type"""
 
-    __EXCLUDE_FROM_UNIT_TEMPLATES: set[str] = {
+    __EXCLUDE_FROM_CONTENT_TEMPLATES: set[str] = {
         "id",
         "resourceId",
         "resourceType",
@@ -53,27 +53,27 @@ class ResourceTypeABC(ABC):
 
     @classmethod
     @abstractmethod
-    def unit_model(cls) -> type[UnitBase]:
-        """Returns the unit base model for units of this type of resource"""
+    def content_model(cls) -> type[ContentBase]:
+        """Returns the content base model for contents of this type of resource"""
         raise NotImplementedError(
-            "Classmethod 'unit_model' must be "
+            "Classmethod 'content_model' must be "
             f"implemented in subclasses of {cls.__name__}"
         )  # pragma: no cover
 
     @classmethod
     def prepare_import_template(cls) -> dict:
         """Returns the base template for import data for this resource type"""
-        schema = cls.unit_model().create_model().schema()
+        schema = cls.content_model().create_model().schema()
         required = schema.get("required", [])
         template = {
-            "_unitSchema": {},  # will be populated in the next step
+            "_contentSchema": {},  # will be populated in the next step
         }
-        # generate unit schema for the template
+        # generate content schema for the template
         for prop, val in schema.get("properties", {}).items():
-            if prop not in cls.__EXCLUDE_FROM_UNIT_TEMPLATES:
+            if prop not in cls.__EXCLUDE_FROM_CONTENT_TEMPLATES:
                 prop_schema = {k: v for k, v in val.items()}
                 prop_schema["required"] = prop in required
-                template["_unitSchema"][prop] = prop_schema
+                template["_contentSchema"][prop] = prop_schema
         return template
 
 
@@ -83,11 +83,11 @@ class ResourceTypesManager:
     def register(
         self, resource_type_class: type[ResourceTypeABC], resource_type_name: str
     ):
-        # create resource/unit document models
+        # create resource/content document models
         resource_type_class.resource_model().document_model(ResourceBaseDocument)
         resource_type_class.resource_model().update_model(ResourceBaseUpdate)
-        resource_type_class.unit_model().document_model(UnitBaseDocument)
-        resource_type_class.unit_model().update_model(UnitBaseUpdate)
+        resource_type_class.content_model().document_model(ContentBaseDocument)
+        resource_type_class.content_model().update_model(ContentBaseUpdate)
         # register instance
         self.__resource_types[resource_type_name.lower()] = resource_type_class()
 
@@ -119,15 +119,16 @@ def init_resource_types_mgr() -> None:
             # exclude ResourceTypeABC class (which is weirdly picked up here)
             if resource_type_impl[1] is not ResourceTypeABC:
                 resource_type_class = resource_type_impl[1]
-                # init resource/unit type CRUD models (don't init document models here!)
+                # init resource/content type CRUD models
+                # (don't init document models here!)
                 resource_type_class.resource_model().create_model()
                 resource_type_class.resource_model().read_model(
                     (ResourceReadExtras, ReadBase)
                 )
                 resource_type_class.resource_model().update_model()
-                resource_type_class.unit_model().create_model()
-                resource_type_class.unit_model().read_model()
-                resource_type_class.unit_model().update_model()
+                resource_type_class.content_model().create_model()
+                resource_type_class.content_model().read_model()
+                resource_type_class.content_model().update_model()
                 # register resource type instance with resource type manager
                 log.info(f"Registering resource type: {resource_type_class.get_name()}")
                 manager.register(resource_type_class, resource_type_class.get_key())
@@ -194,46 +195,55 @@ AnyResourceDocument = Union[  # noqa: UP007
 ]
 
 
-# ### create union type aliases for models of any unit type model
+# ### create union type aliases for models of any content type model
 
 # CREATE
-AnyUnitCreate = Union[  # noqa: UP007
+AnyContentCreate = Union[  # noqa: UP007
     tuple(
-        [lt.unit_model().create_model() for lt in resource_types_mgr.get_all().values()]
+        [
+            lt.content_model().create_model()
+            for lt in resource_types_mgr.get_all().values()
+        ]
     )
 ]
-AnyUnitCreateBody = Annotated[
-    AnyUnitCreate,
+AnyContentCreateBody = Annotated[
+    AnyContentCreate,
     Body(discriminator="resource_type"),
 ]
 
 # READ
-AnyUnitRead = Union[  # noqa: UP007
+AnyContentRead = Union[  # noqa: UP007
     tuple(
-        [lt.unit_model().read_model() for lt in resource_types_mgr.get_all().values()]
+        [
+            lt.content_model().read_model()
+            for lt in resource_types_mgr.get_all().values()
+        ]
     )
 ]
-AnyUnitReadBody = Annotated[
-    AnyUnitRead,
+AnyContentReadBody = Annotated[
+    AnyContentRead,
     Body(discriminator="resource_type"),
 ]
 
 # UPDATE
-AnyUnitUpdate = Union[  # noqa: UP007
+AnyContentUpdate = Union[  # noqa: UP007
     tuple(
-        [lt.unit_model().update_model() for lt in resource_types_mgr.get_all().values()]
+        [
+            lt.content_model().update_model()
+            for lt in resource_types_mgr.get_all().values()
+        ]
     )
 ]
-AnyUnitUpdateBody = Annotated[
-    AnyUnitUpdate,
+AnyContentUpdateBody = Annotated[
+    AnyContentUpdate,
     Body(discriminator="resource_type"),
 ]
 
 # DOCUMENT
-AnyUnitDocument = Union[  # noqa: UP007
+AnyContentDocument = Union[  # noqa: UP007
     tuple(
         [
-            lt.unit_model().document_model()
+            lt.content_model().document_model()
             for lt in resource_types_mgr.get_all().values()
         ]
     )

@@ -4,7 +4,7 @@ from pydantic import ConfigDict, Field, StringConstraints
 
 from tekst.models.common import ModelBase, PydanticObjectId
 from tekst.models.node import NodeRead
-from tekst.resources import AnyUnitRead
+from tekst.resources import AnyContentRead
 
 
 class NodeDefinition(ModelBase):
@@ -22,12 +22,12 @@ class TextStructureImportData(ModelBase):
 
 class LocationData(ModelBase):
     node_path: list[NodeRead] = []
-    units: Annotated[list[AnyUnitRead], Field(discriminator="resource_type")] = []
+    contents: Annotated[list[AnyContentRead], Field(discriminator="resource_type")] = []
 
 
 class ResourceImportData(ModelBase):
     resource_id: PydanticObjectId
-    units: list[dict] = []
+    contents: list[dict] = []
 
 
 class ResourceDataImportResponse(ModelBase):

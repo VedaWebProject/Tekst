@@ -3,7 +3,7 @@ import LocationLabel from '@/components/browse/LocationLabel.vue';
 import BrowseToolbar from '@/components/browse/BrowseToolbar.vue';
 import { useAuthStore, useBrowseStore } from '@/stores';
 import ResourceToggleDrawer from '@/components/browse/ResourceToggleDrawer.vue';
-import UnitContainer from '@/components/browse/UnitContainer.vue';
+import ContentContainer from '@/components/browse/ContentContainer.vue';
 import HugeLabeledIcon from '@/components/HugeLabeledIcon.vue';
 import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import IconHeading from '@/components/typography/IconHeading.vue';
@@ -66,7 +66,7 @@ onMounted(() => {
 
   <div
     v-if="activeResourcesCategorized.length"
-    class="unit-container-container"
+    class="content-container-container"
     :class="browse.reducedView ? 'reduced' : ''"
   >
     <template v-for="category in activeResourcesCategorized" :key="category.key">
@@ -80,7 +80,7 @@ onMounted(() => {
       >
         {{ category.category.translation }}
       </h2>
-      <UnitContainer
+      <ContentContainer
         v-for="resource in category.resources"
         :key="resource.id"
         :loading="browse.loading"
@@ -110,7 +110,7 @@ onMounted(() => {
 .browse-heading-location.smallscreen {
   font-size: 1.3rem;
 }
-.unit-container-container.reduced {
+.content-container-container.reduced {
   box-shadow: var(--app-ui-block-box-shadow);
 }
 </style>

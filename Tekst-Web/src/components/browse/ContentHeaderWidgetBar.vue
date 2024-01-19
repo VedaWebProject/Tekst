@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { StyleValue } from 'vue';
-import unitWidgets from '@/components/browse/widgets/mappings';
-import UnitSiblingsWidget from './widgets/UnitSiblingsWidget.vue';
+import contentWidgets from '@/components/browse/widgets/mappings';
+import ContentSiblingsWidget from './widgets/ContentSiblingsWidget.vue';
 import ResourceInfoWidget from './widgets/ResourceInfoWidget.vue';
 import ResourceDeactivateWidget from './widgets/ResourceDeactivateWidget.vue';
 import { useBrowseStore } from '@/stores';
@@ -24,23 +24,23 @@ const browse = useBrowseStore();
 </script>
 
 <template>
-  <div class="unit-header-widgets" :style="style">
+  <div class="content-header-widgets" :style="style">
     <!-- config-specific widgets -->
-    <template v-if="resource.units?.length">
+    <template v-if="resource.contents?.length">
       <template
         v-for="(configSection, configSectionKey) in resource.config"
         :key="configSectionKey"
       >
         <component
-          :is="unitWidgets[configSectionKey]"
-          v-if="configSectionKey in unitWidgets"
+          :is="contentWidgets[configSectionKey]"
+          v-if="configSectionKey in contentWidgets"
           :resource="resource"
           :widget-config="configSection"
         />
       </template>
     </template>
-    <!-- generic unit widgets -->
-    <UnitSiblingsWidget
+    <!-- generic content widgets -->
+    <ContentSiblingsWidget
       v-if="
         showSiblingsWidget &&
         resource.config?.showOnParentLevel &&
@@ -54,7 +54,7 @@ const browse = useBrowseStore();
 </template>
 
 <style scoped>
-.unit-header-widgets {
+.content-header-widgets {
   display: flex;
   align-items: center;
   flex-wrap: nowrap;

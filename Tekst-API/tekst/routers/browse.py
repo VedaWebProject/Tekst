@@ -5,6 +5,7 @@ from beanie.operators import In, NotIn
 from fastapi import APIRouter, HTTPException, Path, Query, status
 
 from tekst.auth import OptionalUserDep, UserDep
+from tekst.models.content import ContentBaseDocument
 from tekst.models.exchange import LocationData
 from tekst.models.node import (
     NodeDocument,
@@ -15,11 +16,10 @@ from tekst.models.resource import (
     ResourceCoverage,
     ResourceCoverageDetails,
 )
-from tekst.models.unit import UnitBaseDocument
-from tekst.resources import AnyUnitReadBody
+from tekst.resources import AnyContentReadBody
 
 
-# initialize unit router
+# initialize content router
 router = APIRouter(
     prefix="/browse",
     tags=["browse"],
@@ -28,34 +28,34 @@ router = APIRouter(
 
 
 @router.get(
-    "/unit-siblings",
-    response_model=list[AnyUnitReadBody],
+    "/content-siblings",
+    response_model=list[AnyContentReadBody],
     status_code=status.HTTP_200_OK,
 )
-async def get_unit_siblings(
+async def get_content_siblings(
     user: OptionalUserDep,
     resource_id: Annotated[
         PydanticObjectId,
         Query(
             alias="res",
-            description="ID of resource the requested units belong to",
+            description="ID of resource the requested contents belong to",
         ),
     ],
     parent_node_id: Annotated[
         PydanticObjectId | None,
         Query(
             alias="parent",
-            description="ID of node for which siblings to get associated units for",
+            description="ID of node for which siblings to get associated contents for",
         ),
     ] = None,
-) -> list[UnitBaseDocument]:
+) -> list[ContentBaseDocument]:
     """
-    Returns a list of all resource units belonging to the resource
+    Returns a list of all resource contents belonging to the resource
     with the given ID, associated to nodes that are children of the parent node
     with the given ID.
 
-    As the resulting list may contain units of arbitrary type, the
-    returned unit objects cannot be typed to their precise resource unit type.
+    As the resulting list may contain contents of arbitrary type, the
+    returned content objects cannot be typed to their precise resource content type.
     """
 
     resource = await ResourceBaseDocument.find_one(
@@ -81,28 +81,28 @@ async def get_unit_siblings(
         .to_list()
     ]
 
-    unit_docs = await UnitBaseDocument.find(
-        UnitBaseDocument.resource_id == resource_id,
-        In(UnitBaseDocument.node_id, node_ids),
+    content_docs = await ContentBaseDocument.find(
+        ContentBaseDocument.resource_id == resource_id,
+        In(ContentBaseDocument.node_id, node_ids),
         with_children=True,
     ).to_list()
 
-    # if the resource is a version, we also have to find the original's units
+    # if the resource is a version, we also have to find the original's contents
     # that are missing in the requested resource version
     if resource.original_id:
-        original_unit_docs = await UnitBaseDocument.find(
-            UnitBaseDocument.resource_id == resource.original_id,
-            In(UnitBaseDocument.node_id, node_ids),
-            NotIn(UnitBaseDocument.node_id, [u.node_id for u in unit_docs]),
+        original_content_docs = await ContentBaseDocument.find(
+            ContentBaseDocument.resource_id == resource.original_id,
+            In(ContentBaseDocument.node_id, node_ids),
+            NotIn(ContentBaseDocument.node_id, [u.node_id for u in content_docs]),
             with_children=True,
         ).to_list()
     else:
-        original_unit_docs = []
+        original_content_docs = []
 
-    # combine units lists, sort by reference node position, return
-    unit_docs.extend(original_unit_docs)
-    unit_docs.sort(key=lambda u: node_ids.index(u.node_id))
-    return unit_docs
+    # combine contents lists, sort by reference node position, return
+    content_docs.extend(original_content_docs)
+    content_docs.sort(key=lambda u: node_ids.index(u.node_id))
+    return content_docs
 
 
 @router.get(
@@ -120,22 +120,22 @@ async def get_location_data(
         list[PydanticObjectId],
         Query(
             alias="res",
-            description="ID (or list of IDs) of resource(s) to return unit data for",
+            description="ID (or list of IDs) of resource(s) to return content data for",
         ),
     ] = [],
-    only_head_units: Annotated[
+    only_head_contents: Annotated[
         bool,
         Query(
             alias="head",
-            description="Only return units referencing the head node of the node path",
+            description="Only return contents referencing the head node of the path",
         ),
     ] = False,
-    limit: Annotated[int, Query(description="Return at most <limit> units")] = 4096,
+    limit: Annotated[int, Query(description="Return at most <limit> contents")] = 4096,
 ) -> LocationData:
     """
     Returns the node path from the node with the given level/position
     as the last element, up to its most distant ancestor node
-    on structure level 0 as the first element of an array as well as all units
+    on structure level 0 as the first element of an array as well as all contents
     for the given resource(s) referencing the nodes in the node path.
     """
     node_doc = await NodeDocument.find_one(
@@ -153,20 +153,22 @@ async def get_location_data(
         node_path.insert(0, parent_doc)
         parent_id = parent_doc.parent_id
     node_ids = (
-        [node.id for node in node_path] if not only_head_units else [node_path[-1].id]
+        [node.id for node in node_path]
+        if not only_head_contents
+        else [node_path[-1].id]
     )
 
-    # collect units
+    # collect contents
     readable_resources = await ResourceBaseDocument.find(
         await ResourceBaseDocument.access_conditions_read(user),
         with_children=True,
     ).to_list()
-    unit_docs = (
-        await UnitBaseDocument.find(
-            In(UnitBaseDocument.resource_id, resource_ids) if resource_ids else {},
-            In(UnitBaseDocument.node_id, node_ids) if node_ids else {},
+    content_docs = (
+        await ContentBaseDocument.find(
+            In(ContentBaseDocument.resource_id, resource_ids) if resource_ids else {},
+            In(ContentBaseDocument.node_id, node_ids) if node_ids else {},
             In(
-                UnitBaseDocument.resource_id,
+                ContentBaseDocument.resource_id,
                 [resource.id for resource in readable_resources],
             ),
             with_children=True,
@@ -176,11 +178,11 @@ async def get_location_data(
     )
 
     # return combined data as LocationData
-    return LocationData(node_path=node_path, units=unit_docs)
+    return LocationData(node_path=node_path, contents=content_docs)
 
 
-@router.get("/nearest-unit", status_code=status.HTTP_200_OK)
-async def get_nearest_unit(
+@router.get("/nearest-content", status_code=status.HTTP_200_OK)
+async def get_nearest_content(
     user: OptionalUserDep,
     position: Annotated[int, Query(alias="pos", description="Location position")],
     target_resource_id: Annotated[
@@ -194,7 +196,7 @@ async def get_nearest_unit(
         list[PydanticObjectId],
         Query(
             alias="res",
-            description="ID (or list of IDs) of resource(s) to return unit data for",
+            description="ID (or list of IDs) of resource(s) to return content data for",
         ),
     ] = [],
     mode: Annotated[
@@ -206,7 +208,7 @@ async def get_nearest_unit(
             )
         ),
     ] = "subsequent",
-    limit: Annotated[int, Query(description="Return at most <limit> units")] = 4096,
+    limit: Annotated[int, Query(description="Return at most <limit> contents")] = 4096,
 ) -> int:
     """
     Finds the nearest location the given resource holds content for and returns
@@ -248,17 +250,19 @@ async def get_nearest_unit(
     if not nodes:  # pragma: no cover
         raise not_found_exception
 
-    # get units for these nodes
-    units = await UnitBaseDocument.find(
-        UnitBaseDocument.resource_id == target_resource_id,
-        In(UnitBaseDocument.node_id, [node.id for node in nodes]),
+    # get contents for these nodes
+    contents = await ContentBaseDocument.find(
+        ContentBaseDocument.resource_id == target_resource_id,
+        In(ContentBaseDocument.node_id, [node.id for node in nodes]),
         with_children=True,
     ).to_list()
-    if not units:  # pragma: no cover
+    if not contents:  # pragma: no cover
         raise not_found_exception
 
-    # find out nearest of those locations with units
-    nodes = [node for node in nodes if node.id in [unit.node_id for unit in units]]
+    # find out nearest of those locations with contents
+    nodes = [
+        node for node in nodes if node.id in [content.node_id for content in contents]
+    ]
 
     # return position of nearest node with contents of the target resource
     return nodes[0].position
@@ -342,8 +346,8 @@ async def get_resource_coverage_data(
             status.HTTP_404_NOT_FOUND, detail=f"No resource with ID {resource_id}"
         )
     return {
-        "covered": await UnitBaseDocument.find(
-            UnitBaseDocument.resource_id == resource_id,
+        "covered": await ContentBaseDocument.find(
+            ContentBaseDocument.resource_id == resource_id,
             with_children=True,
         ).count(),
         "total": await NodeDocument.find(
@@ -380,7 +384,7 @@ async def get_detailed_resource_coverage_data(
             [
                 {
                     "$lookup": {
-                        "from": "units",
+                        "from": "contents",
                         "localField": "_id",
                         "foreignField": "node_id",
                         "let": {"node_id": "$_id", "resource_id": resource_id},
@@ -397,7 +401,7 @@ async def get_detailed_resource_coverage_data(
                             },
                             {"$project": {"_id": 1}},
                         ],
-                        "as": "units",
+                        "as": "contents",
                     }
                 },
                 {
@@ -406,7 +410,7 @@ async def get_detailed_resource_coverage_data(
                         "label": 1,
                         "position": 1,
                         "parent_id": 1,
-                        "covered": {"$gt": [{"$size": "$units"}, 0]},
+                        "covered": {"$gt": [{"$size": "$contents"}, 0]},
                     }
                 },
             ],

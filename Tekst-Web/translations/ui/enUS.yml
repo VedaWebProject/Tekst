@@ -113,7 +113,7 @@ browse:
   locationResourceNoData: No data for this location
   textNoNodes: This text's setup seems incomplete. There are no structure nodes defined.
   locationNoData: The selected resources contain no data for this text level and location. Try choosing a different location or activating more resources.
-  units:
+  contents:
     widgets:
       deepLTranslate:
         title: Open DeepL translation
@@ -208,8 +208,8 @@ models:
     sharedRead: Share read access
     sharedWrite: Share write access
     config: Configuration
-  unit:
-    modelLabel: Data unit | Data units
+  content:
+    modelLabel: Content | Contents
   meta:
     modelLabel: Metadata
     author: Author
@@ -266,7 +266,7 @@ resources:
   notProposed: '@:general.not @:models.resource.proposed'
   transferAction: Transfer to user
   settingsAction: Settings
-  unitsAction: Contents
+  contentsAction: Contents
   downloadTemplateAction: Download import template
   importAction: Upload preprocessed import file
   createVersionAction: Create version of this resource
@@ -329,7 +329,7 @@ resources:
   types:
     common:
       label: Additional Data
-      unitFields:
+      contentFields:
         comment: Comment
     plaintext:
       label: Plaintext
@@ -337,10 +337,10 @@ resources:
         Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar
         Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar
         Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar
-      unitFields:
+      contentFields:
         text: Text
 
-units:
+contents:
   heading: Edit resource content
   lblBtnCompare: Compare
   tipBtnCompare: Select other resource to compare with
@@ -350,8 +350,8 @@ units:
   tipBtnPrevChange: Skip to nearest preceding content in this version
   tipBtnNextChange: Skip to nearest subsequent content in this version
   forComparison: 'For comparison: "{title}"'
-  noUnit: There is no content for this location.
-  btnAddUnit: Add content
+  noContent: There is no content for this location.
+  btnAddContent: Add content
   msgSaved: The content for this location has been saved.
   msgDeleted: The content for this location has been deleted.
   msgImportSuccess: 'Import finished. Contents newly created: {created}. Contents modified: {updated}. Errors: {errors}.'
@@ -519,7 +519,7 @@ admin:
         This cannot be undone.
         Now, are you really sure you want to delete the selected structure node?
       tipDeleteNode: Delete node "{node}"
-      infoDeletedNode: Deleted node "{node}" (total of {nodes} nodes and {units} data units)
+      infoDeletedNode: Deleted node "{node}" (total of {nodes} nodes and {contents} contents)
       infoMovedNode: Moved node "{node}" to position {position} on level "{level}"
       errorNodeLeftLevel: Text nodes can only be moved on their original structure level!
       checkShowWarnings: Show warnings before performing destructive operations

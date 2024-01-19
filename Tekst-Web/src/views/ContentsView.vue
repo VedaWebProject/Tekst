@@ -13,9 +13,9 @@ import {
   type AnyResourceRead,
   type NodeRead,
   GET,
-  type AnyUnitCreate,
+  type AnyContentCreate,
   PATCH,
-  type AnyUnitUpdate,
+  type AnyContentUpdate,
   POST,
   DELETE,
 } from '@/api';
@@ -33,12 +33,12 @@ import { useResourcesStore } from '@/stores';
 import ButtonShelf from '@/components/ButtonShelf.vue';
 import { useModelChanges } from '@/modelChanges';
 import { useMagicKeys, whenever } from '@vueuse/core';
-import { unitFormRules } from '@/forms/formRules';
-import UnitFormItems from '@/forms/resources/UnitFormItems.vue';
-import { defaultUnitModels } from '@/forms/resources/defaultUnitModels';
+import { contentFormRules } from '@/forms/formRules';
+import ContentFormItems from '@/forms/resources/ContentFormItems.vue';
+import { defaultContentModels } from '@/forms/resources/defaultContentModels';
 import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
 import LocationSelectModal from '@/components/LocationSelectModal.vue';
-import unitComponents from '@/components/browse/units/mappings';
+import contentComponents from '@/components/browse/contents/mappings';
 import LocationLabel from '@/components/browse/LocationLabel.vue';
 
 import EditNoteOutlined from '@vicons/material/EditNoteOutlined';
@@ -55,7 +55,7 @@ import MoveDownOutlined from '@vicons/material/MoveDownOutlined';
 import SkipPreviousFilled from '@vicons/material/SkipPreviousFilled';
 import SkipNextFilled from '@vicons/material/SkipNextFilled';
 
-type UnitFormModel = AnyUnitCreate & { id: string };
+type ContentFormModel = AnyContentCreate & { id: string };
 
 const state = useStateStore();
 const auth = useAuthStore();
@@ -75,9 +75,9 @@ const originalResourceTitle = computed(
 const position = computed<number>(() => Number.parseInt(route.params.pos.toString()));
 const nodePath = ref<NodeRead[]>();
 const node = computed<NodeRead | undefined>(() => nodePath.value?.[resource.value?.level ?? -1]);
-const initialUnitModel = ref<UnitFormModel>();
-const unitModel = ref<UnitFormModel | undefined>(initialUnitModel.value);
-const { changed, reset, getChanges } = useModelChanges(unitModel);
+const initialContentModel = ref<ContentFormModel>();
+const contentModel = ref<ContentFormModel | undefined>(initialContentModel.value);
+const { changed, reset, getChanges } = useModelChanges(contentModel);
 
 const compareResourceId = ref<string>();
 const compareResource = computed<AnyResourceRead | undefined>(() =>
@@ -146,21 +146,23 @@ async function loadLocationData() {
   if (!error && locationData.nodePath?.length) {
     // requested node exists, set current node path
     nodePath.value = locationData.nodePath;
-    // process received units
-    initialUnitModel.value =
-      locationData.units?.find((u) => u.resourceId === resource.value?.id) ||
+    // process received contents
+    initialContentModel.value =
+      locationData.contents?.find((u) => u.resourceId === resource.value?.id) ||
       (!!resource.value?.originalId &&
-        locationData.units?.find((u) => u.resourceId === resource.value?.originalId)) ||
+        locationData.contents?.find((u) => u.resourceId === resource.value?.originalId)) ||
       undefined;
-    const compareUnit = locationData.units?.find((u) => u.resourceId === compareResource.value?.id);
+    const compareContent = locationData.contents?.find(
+      (u) => u.resourceId === compareResource.value?.id
+    );
     if (compareResource.value) {
-      compareResource.value.units = compareUnit ? [compareUnit] : [];
+      compareResource.value.contents = compareContent ? [compareContent] : [];
     }
     resetForm();
   } else {
-    // requested node does not exist, go back to first unit at first node
+    // requested node does not exist, go back to first content at first node
     router.replace({
-      name: 'resourceUnits',
+      name: 'resourceContents',
       params: {
         ...route.params,
         pos: 0,
@@ -193,16 +195,16 @@ watch(
 );
 
 function resetForm() {
-  unitModel.value = initialUnitModel.value;
+  contentModel.value = initialContentModel.value;
   reset();
   formRef.value?.restoreValidation();
 }
 
 function handleApplyChanges() {
-  const changes = compareResource.value?.units?.[0];
-  if (changes && unitModel.value) {
-    unitModel.value = {
-      ...unitModel.value,
+  const changes = compareResource.value?.contents?.[0];
+  if (changes && contentModel.value) {
+    contentModel.value = {
+      ...contentModel.value,
       ...Object.fromEntries(
         Object.entries(changes).filter(
           (e) => !['id', 'resourceId', 'resourceType', 'nodeId', 'comment'].includes(e[0])
@@ -216,30 +218,30 @@ async function handleSaveClick() {
   loadingSave.value = true;
   formRef.value
     ?.validate(async (validationError) => {
-      if (validationError || !unitModel.value) return;
-      if (unitModel.value.id && unitModel.value.resourceId === resource.value?.id) {
+      if (validationError || !contentModel.value) return;
+      if (contentModel.value.id && contentModel.value.resourceId === resource.value?.id) {
         // model has ID and belongs to current resource, so it's an update
-        const { data, error } = await PATCH('/units/{id}', {
-          params: { path: { id: unitModel.value.id } },
-          body: getChanges(['resourceType']) as AnyUnitUpdate,
+        const { data, error } = await PATCH('/contents/{id}', {
+          params: { path: { id: contentModel.value.id } },
+          body: getChanges(['resourceType']) as AnyContentUpdate,
         });
         if (!error) {
-          initialUnitModel.value = data;
+          initialContentModel.value = data;
           resetForm();
-          message.success($t('units.msgSaved'));
+          message.success($t('contents.msgSaved'));
         } else {
           message.error($t('errors.unexpected'), error);
         }
       } else {
         // model has no ID or belongs to other resource (original), so it's an insert
-        const { data, error } = await POST('/units', {
-          body: { ...unitModel.value, resourceId: resource.value?.id } as AnyUnitCreate,
+        const { data, error } = await POST('/contents', {
+          body: { ...contentModel.value, resourceId: resource.value?.id } as AnyContentCreate,
         });
         if (!error) {
           resources.resetCoverage(resource.value?.id);
-          initialUnitModel.value = data;
+          initialContentModel.value = data;
           resetForm();
-          message.success($t('units.msgSaved'));
+          message.success($t('contents.msgSaved'));
         } else {
           message.error($t('errors.unexpected'), error);
         }
@@ -259,50 +261,52 @@ async function handleJumpToClick() {
   showJumpToModal.value = true;
 }
 
-async function deleteUnit() {
-  if (!unitModel.value) return;
+async function deleteContent() {
+  if (!contentModel.value) return;
   loadingDelete.value = true;
-  const { error } = await DELETE('/units/{id}', { params: { path: { id: unitModel.value.id } } });
+  const { error } = await DELETE('/contents/{id}', {
+    params: { path: { id: contentModel.value.id } },
+  });
   if (!error) {
     resources.resetCoverage(resource.value?.id);
     await loadLocationData();
-    message.success($t('units.msgDeleted'));
+    message.success($t('contents.msgDeleted'));
   } else {
     message.error($t('errors.unexpected'));
   }
   loadingDelete.value = false;
 }
 
-async function handleDeleteUnitClick() {
-  if (!unitModel.value) return;
+async function handleDeleteContentClick() {
+  if (!contentModel.value) return;
   dialog.warning({
     title: $t('general.warning'),
-    content: $t('units.confirmDelete'),
+    content: $t('contents.confirmDelete'),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
     positiveButtonProps,
     negativeButtonProps,
     autoFocus: false,
     closable: false,
-    onPositiveClick: deleteUnit,
+    onPositiveClick: deleteContent,
   });
 }
 
-function handleAddUnitClick() {
+function handleAddContentClick() {
   if (resource.value && node.value) {
-    unitModel.value = {
-      ...defaultUnitModels[resource.value.resourceType],
+    contentModel.value = {
+      ...defaultContentModels[resource.value.resourceType],
       resourceId: resource.value.id,
       resourceType: resource.value.resourceType,
       nodeId: node.value.id,
-    } as UnitFormModel;
+    } as ContentFormModel;
     formRef.value?.restoreValidation();
   }
 }
 
-function navigateUnits(step: number) {
+function navigateContents(step: number) {
   router.replace({
-    name: 'resourceUnits',
+    name: 'resourceContents',
     params: {
       ...route.params,
       pos: position.value + step,
@@ -312,7 +316,7 @@ function navigateUnits(step: number) {
 
 function handleJumpToSubmit(nodePath: NodeRead[]) {
   router.push({
-    name: 'resourceUnits',
+    name: 'resourceContents',
     params: { ...route.params, pos: nodePath[nodePath.length - 1].position },
   });
 }
@@ -323,7 +327,7 @@ function handleSelectcompareResource(key: string) {
 }
 
 async function handleNearestChangeClick(mode: 'preceding' | 'subsequent') {
-  const { data: pos, error } = await GET('/browse/nearest-unit', {
+  const { data: pos, error } = await GET('/browse/nearest-content', {
     params: {
       query: {
         pos: position.value,
@@ -334,7 +338,7 @@ async function handleNearestChangeClick(mode: 'preceding' | 'subsequent') {
     },
   });
   if (!error) {
-    navigateUnits(pos - position.value);
+    navigateContents(pos - position.value);
   } else {
     message.info("There's NOTHING!!!!");
   }
@@ -342,17 +346,17 @@ async function handleNearestChangeClick(mode: 'preceding' | 'subsequent') {
 
 // react to keyboard for in-/decreasing location
 whenever(ArrowRight, () => {
-  navigateUnits(1);
+  navigateContents(1);
 });
 whenever(ArrowLeft, () => {
-  position.value > 0 && navigateUnits(-1);
+  position.value > 0 && navigateContents(-1);
 });
 </script>
 
 <template>
   <IconHeading level="1" :icon="EditNoteOutlined">
-    {{ $t('units.heading') }}
-    <HelpButtonWidget help-key="unitsView" />
+    {{ $t('contents.heading') }}
+    <HelpButtonWidget help-key="contentsView" />
   </IconHeading>
 
   <router-link
@@ -383,7 +387,7 @@ whenever(ArrowLeft, () => {
         type="primary"
         :disabled="loading || position === 0"
         :focusable="false"
-        @click="navigateUnits(-1)"
+        @click="navigateContents(-1)"
       >
         <template #icon>
           <ArrowBackIosOutlined />
@@ -394,7 +398,7 @@ whenever(ArrowLeft, () => {
           <MenuBookOutlined />
         </template>
       </n-button>
-      <n-button type="primary" :disabled="loading" :focusable="false" @click="navigateUnits(1)">
+      <n-button type="primary" :disabled="loading" :focusable="false" @click="navigateContents(1)">
         <template #icon>
           <ArrowForwardIosOutlined />
         </template>
@@ -411,12 +415,12 @@ whenever(ArrowLeft, () => {
         secondary
         :disabled="loading || !compareResourceOptions.length"
         :focusable="false"
-        :title="$t('units.tipBtnCompare')"
+        :title="$t('contents.tipBtnCompare')"
       >
         <template #icon>
           <n-icon :component="CompareArrowsOutlined" />
         </template>
-        {{ $t('units.lblBtnCompare') }}
+        {{ $t('contents.lblBtnCompare') }}
       </n-button>
     </n-dropdown>
   </ButtonShelf>
@@ -429,7 +433,7 @@ whenever(ArrowLeft, () => {
 
       <n-alert
         v-if="
-          unitModel &&
+          contentModel &&
           auth.user?.isSuperuser &&
           resource.ownerId &&
           resource.ownerId !== auth.user.id
@@ -444,38 +448,38 @@ whenever(ArrowLeft, () => {
 
       <n-alert
         v-if="
-          unitModel &&
+          contentModel &&
           resource.originalId &&
-          unitModel.resourceId == resource.originalId &&
+          contentModel.resourceId == resource.originalId &&
           originalResourceTitle
         "
         type="info"
         closable
-        :title="$t('units.msgNoOwnContentTitle')"
+        :title="$t('contents.msgNoOwnContentTitle')"
         style="margin-bottom: var(--content-gap)"
       >
-        {{ $t('units.msgNoOwnContentBody', { originalResourceTitle }) }}
+        {{ $t('contents.msgNoOwnContentBody', { originalResourceTitle }) }}
       </n-alert>
 
       <n-alert
         v-if="compareResource"
         closable
         type="default"
-        :title="$t('units.forComparison', { title: compareResource.title })"
+        :title="$t('contents.forComparison', { title: compareResource.title })"
         style="margin-bottom: var(--layout-gap)"
         @after-leave="compareResourceId = undefined"
       >
         <component
-          :is="unitComponents[compareResource.resourceType]"
-          v-if="compareResource.units?.length"
+          :is="contentComponents[compareResource.resourceType]"
+          v-if="compareResource.contents?.length"
           :resource="compareResource"
         />
-        <span v-else style="opacity: 0.75; font-style: italic">{{ $t('units.noUnit') }}</span>
+        <span v-else style="opacity: 0.75; font-style: italic">{{ $t('contents.noContent') }}</span>
 
         <ButtonShelf v-if="compareResource.originalId && compareResource.originalId == resource.id">
           <n-button
             secondary
-            :title="$t('units.tipBtnPrevChange')"
+            :title="$t('contents.tipBtnPrevChange')"
             @click="() => handleNearestChangeClick('preceding')"
           >
             <template #icon>
@@ -484,8 +488,8 @@ whenever(ArrowLeft, () => {
           </n-button>
           <n-button
             secondary
-            :title="$t('units.tipBtnApplyChanges')"
-            :disabled="!compareResource.units?.length"
+            :title="$t('contents.tipBtnApplyChanges')"
+            :disabled="!compareResource.contents?.length"
             @click="handleApplyChanges"
           >
             <template #icon>
@@ -494,7 +498,7 @@ whenever(ArrowLeft, () => {
           </n-button>
           <n-button
             secondary
-            :title="$t('units.tipBtnNextChange')"
+            :title="$t('contents.tipBtnNextChange')"
             @click="() => handleNearestChangeClick('subsequent')"
           >
             <template #icon>
@@ -504,17 +508,17 @@ whenever(ArrowLeft, () => {
         </ButtonShelf>
       </n-alert>
 
-      <template v-if="unitModel">
+      <template v-if="contentModel">
         <n-form
           ref="formRef"
-          :model="unitModel"
-          :rules="unitFormRules.plaintext"
+          :model="contentModel"
+          :rules="contentFormRules.plaintext"
           label-placement="top"
           :disabled="loading"
           label-width="auto"
           require-mark-placement="right-hanging"
         >
-          <UnitFormItems v-model:model="unitModel" />
+          <ContentFormItems v-model:model="contentModel" />
         </n-form>
 
         <ButtonShelf top-gap>
@@ -522,9 +526,9 @@ whenever(ArrowLeft, () => {
             <n-button
               secondary
               type="error"
-              :disabled="loading || !unitModel.id || unitModel.resourceId !== resource.id"
+              :disabled="loading || !contentModel.id || contentModel.resourceId !== resource.id"
               :loading="loadingDelete"
-              @click="handleDeleteUnitClick"
+              @click="handleDeleteContentClick"
             >
               {{ $t('general.deleteAction') }}
             </n-button>
@@ -533,13 +537,13 @@ whenever(ArrowLeft, () => {
             {{ $t('general.resetAction') }}
           </n-button>
           <n-button
-            v-if="!changed && resource.originalId && unitModel.resourceId == resource.originalId"
+            v-if="!changed && resource.originalId && contentModel.resourceId == resource.originalId"
             type="primary"
-            :title="$t('units.tipBtnCopyOriginal')"
+            :title="$t('contents.tipBtnCopyOriginal')"
             :disabled="loading"
             @click="handleSaveClick"
           >
-            {{ $t('units.lblBtnCopyOriginal') }}
+            {{ $t('contents.lblBtnCopyOriginal') }}
           </n-button>
           <n-button
             v-else
@@ -555,15 +559,15 @@ whenever(ArrowLeft, () => {
 
       <n-space v-else vertical align="center" style="margin-bottom: var(--layout-gap)">
         <HugeLabeledIcon
-          :message="$t('units.noUnit')"
+          :message="$t('contents.noContent')"
           :icon="FolderOffTwotone"
           style="padding: 0 0 var(--layout-gap) 0"
         />
-        <n-button type="primary" :disabled="loading" @click="handleAddUnitClick">
+        <n-button type="primary" :disabled="loading" @click="handleAddContentClick">
           <template #icon>
             <InsertDriveFileOutlined />
           </template>
-          {{ $t('units.btnAddUnit') }}
+          {{ $t('contents.btnAddContent') }}
         </n-button>
       </n-space>
     </div>

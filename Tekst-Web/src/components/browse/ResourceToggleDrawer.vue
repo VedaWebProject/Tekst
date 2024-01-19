@@ -47,7 +47,7 @@ const show = computed({
           v-model:active="resource.active"
           :resource="resource"
           :user="auth.user"
-          :disabled="!resource.units?.length"
+          :disabled="!resource.contents?.length"
         />
       </template>
     </n-drawer-content>

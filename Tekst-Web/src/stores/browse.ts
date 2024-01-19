@@ -2,7 +2,7 @@ import { ref, computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { defineStore } from 'pinia';
 import { useStateStore, useResourcesStore } from '@/stores';
-import type { AnyResourceRead, AnyUnitRead, NodeRead } from '@/api';
+import type { AnyResourceRead, AnyContentRead, NodeRead } from '@/api';
 import { GET } from '@/api';
 import { pickTranslation } from '@/utils';
 import { $t } from '@/i18n';
@@ -57,10 +57,10 @@ export const useBrowseStore = defineStore('browse', () => {
       if (!error && locationData.nodePath?.length) {
         nodePath.value = locationData.nodePath;
         resources.data.forEach((r: AnyResourceRead) => {
-          const unit =
-            locationData.units?.find((u: AnyUnitRead) => u.resourceId === r.id) ||
-            locationData.units?.find((u: AnyUnitRead) => u.resourceId === r.originalId);
-          r.units = unit ? [unit] : [];
+          const content =
+            locationData.contents?.find((u: AnyContentRead) => u.resourceId === r.id) ||
+            locationData.contents?.find((u: AnyContentRead) => u.resourceId === r.originalId);
+          r.contents = content ? [content] : [];
         });
       } else {
         loadingLocationData.value = false;
@@ -101,7 +101,7 @@ export const useBrowseStore = defineStore('browse', () => {
     }
   );
 
-  /* RESOURCES AND UNITS */
+  /* RESOURCES AND CONTENTS */
 
   const resourcesCount = computed(() => resources.data.length);
   const activeResourcesCount = computed(() => resources.data.filter((r) => r.active).length);

@@ -134,25 +134,25 @@ export type PlaintextResourceCreate = components['schemas']['PlaintextResourceCr
 export type PlaintextResourceRead = components['schemas']['PlaintextResourceRead'];
 export type PlaintextResourceUpdate = components['schemas']['PlaintextResourceUpdate'];
 export type PlaintextResourceConfig = components['schemas']['PlaintextResourceConfig'];
-export type PlaintextUnitCreate = components['schemas']['PlaintextUnitCreate'];
-export type PlaintextUnitRead = components['schemas']['PlaintextUnitRead'];
-export type PlaintextUnitUpdate = components['schemas']['PlaintextUnitUpdate'];
+export type PlaintextContentCreate = components['schemas']['PlaintextContentCreate'];
+export type PlaintextContentRead = components['schemas']['PlaintextContentRead'];
+export type PlaintextContentUpdate = components['schemas']['PlaintextContentUpdate'];
 
 export type DebugResourceCreate = components['schemas']['DebugResourceCreate'];
 export type DebugResourceRead = components['schemas']['DebugResourceRead'];
 export type DebugResourceUpdate = components['schemas']['DebugResourceUpdate'];
 export type DebugResourceConfig = components['schemas']['DebugResourceConfig'];
-export type DebugUnitCreate = components['schemas']['DebugUnitCreate'];
-export type DebugUnitRead = components['schemas']['DebugUnitRead'];
-export type DebugUnitUpdate = components['schemas']['DebugUnitUpdate'];
+export type DebugContentCreate = components['schemas']['DebugContentCreate'];
+export type DebugContentRead = components['schemas']['DebugContentRead'];
+export type DebugContentUpdate = components['schemas']['DebugContentUpdate'];
 
-export type AnyUnitCreate = PlaintextUnitCreate | DebugUnitCreate;
-export type AnyUnitRead = PlaintextUnitRead | DebugUnitRead;
-export type AnyUnitUpdate = PlaintextUnitUpdate | DebugUnitUpdate;
+export type AnyContentCreate = PlaintextContentCreate | DebugContentCreate;
+export type AnyContentRead = PlaintextContentRead | DebugContentRead;
+export type AnyContentUpdate = PlaintextContentUpdate | DebugContentUpdate;
 export type AnyResourceCreate = PlaintextResourceCreate | DebugResourceCreate;
 export type AnyResourceRead = (PlaintextResourceRead | DebugResourceRead) & {
   active?: boolean;
-  units?: AnyUnitRead[];
+  contents?: AnyContentRead[];
   coverage?: ResourceCoverage;
 };
 export type AnyResourceUpdate = PlaintextResourceUpdate | DebugResourceUpdate;

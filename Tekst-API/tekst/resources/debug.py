@@ -2,9 +2,9 @@ from typing import Literal
 
 from pydantic import Field
 
+from tekst.models.content import ContentBase
 from tekst.models.resource import ResourceBase
 from tekst.models.resource_configs import ResourceConfigBase
-from tekst.models.unit import UnitBase
 from tekst.resources import ResourceTypeABC
 
 
@@ -16,8 +16,8 @@ class Debug(ResourceTypeABC):  # pragma: no cover
         return DebugResource
 
     @classmethod
-    def unit_model(cls) -> type["DebugUnit"]:
-        return DebugUnit
+    def content_model(cls) -> type["DebugContent"]:
+        return DebugContent
 
 
 class DebugResourceConfig(ResourceConfigBase):
@@ -29,11 +29,11 @@ class DebugResource(ResourceBase):
     config: DebugResourceConfig = DebugResourceConfig()
 
 
-class DebugUnit(UnitBase):
-    """A unit of a plaintext resource"""
+class DebugContent(ContentBase):
+    """A content of a plaintext resource"""
 
     resource_type: Literal["debug"]  # snake_cased resource type classname
     text: str | None = Field(
         None,
-        description="Text content of the debug unit",
+        description="Text content of the debug content",
     )

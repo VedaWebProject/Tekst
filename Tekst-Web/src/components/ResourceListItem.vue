@@ -44,7 +44,7 @@ const emit = defineEmits([
   'publishClick',
   'unpublishClick',
   'settingsClick',
-  'unitsClick',
+  'contentsClick',
   'createVersionClick',
   'deleteClick',
   'downloadTemplateClick',
@@ -73,10 +73,10 @@ const actionOptions = computed(() => [
               action: () => emit('settingsClick', props.targetResource),
             },
             {
-              label: $t('resources.unitsAction'),
-              key: 'units',
+              label: $t('resources.contentsAction'),
+              key: 'contents',
               icon: renderIcon(EditNoteOutlined),
-              action: () => emit('unitsClick', props.targetResource),
+              action: () => emit('contentsClick', props.targetResource),
             },
             {
               label: $t('resources.downloadTemplateAction'),

@@ -39,14 +39,14 @@ const state = useStateStore();
 const route = useRoute();
 
 const coverageDetails = ref<ResourceCoverageDetails>();
-const coverageListItems = computed(
-  () =>
-    coverageDetails.value?.nodesCoverage.map((nodes, i) => ({
-      title: `${state.textLevelLabels[props.resource.level - 1]}: ${coverageDetails.value
-        ?.parentLabels[i]}`,
-      extra: `${nodes.filter((n) => n.covered).length}/${nodes.length}`,
-      nodes: nodes,
-    }))
+const coverageListItems = computed(() =>
+  coverageDetails.value?.nodesCoverage.map((nodes, i) => ({
+    title: `${state.textLevelLabels[props.resource.level - 1]}: ${
+      coverageDetails.value?.parentLabels[i]
+    }`,
+    extra: `${nodes.filter((n) => n.covered).length}/${nodes.length}`,
+    nodes: nodes,
+  }))
 );
 
 const loading = ref(false);
@@ -112,7 +112,7 @@ watch(
     <template #header>
       <IconHeading level="2" :icon="PercentOutlined" style="margin: 0" ellipsis>
         {{ resource.title }}:
-        {{ $t('browse.units.widgets.infoWidget.coverage') }}
+        {{ $t('browse.contents.widgets.infoWidget.coverage') }}
       </IconHeading>
     </template>
 
@@ -131,7 +131,7 @@ watch(
         <template v-if="coverageBasic">
           <n-ellipsis>
             {{
-              $t('browse.units.widgets.infoWidget.coverageStatement', {
+              $t('browse.contents.widgets.infoWidget.coverageStatement', {
                 present: coverageBasic.covered,
                 total: coverageBasic.total,
                 level: state.textLevelLabels[resource.level],

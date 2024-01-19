@@ -541,7 +541,7 @@ export const resourceConfigFormRules: Record<string, FormItemRule[]> = {
   ],
 };
 
-const commonUnitFormRules: Record<string, FormItemRule[]> = {
+const commonContentFormRules: Record<string, FormItemRule[]> = {
   comment: [
     {
       validator: (rule: FormItemRule, value: string) =>
@@ -552,9 +552,9 @@ const commonUnitFormRules: Record<string, FormItemRule[]> = {
   ],
 };
 
-export const unitFormRules: Record<string, Record<string, FormItemRule[]>> = {
+export const contentFormRules: Record<string, Record<string, FormItemRule[]>> = {
   plaintext: {
-    ...commonUnitFormRules,
+    ...commonContentFormRules,
     text: [
       {
         validator: (rule: FormItemRule, value: string) =>

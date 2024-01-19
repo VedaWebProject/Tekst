@@ -5,8 +5,8 @@ import { useBrowseStore, useStateStore } from '@/stores';
 import { computed } from 'vue';
 import { $t } from '@/i18n';
 import { useElementHover } from '@vueuse/core';
-import UnitHeaderWidgetBar from '@/components/browse/UnitHeaderWidgetBar.vue';
-import unitComponents from '@/components/browse/units/mappings';
+import ContentHeaderWidgetBar from '@/components/browse/ContentHeaderWidgetBar.vue';
+import contentComponents from '@/components/browse/contents/mappings';
 
 import FolderOffOutlined from '@vicons/material/FolderOffOutlined';
 import type { CSSProperties } from 'vue';
@@ -20,8 +20,11 @@ const props = defineProps<{
 const browse = useBrowseStore();
 const state = useStateStore();
 
-const unitContainerRef = ref();
-const isUnitContainerHovered = useElementHover(unitContainerRef, { delayEnter: 0, delayLeave: 0 });
+const contentContainerRef = ref();
+const isContentContainerHovered = useElementHover(contentContainerRef, {
+  delayEnter: 0,
+  delayLeave: 0,
+});
 
 const headerExtraText = computed(() => {
   if (!browse.loadingResources && props.resource.level !== browse.level) {
@@ -34,83 +37,84 @@ const headerExtraText = computed(() => {
   }
 });
 
-const unitContainerTitle = computed(() =>
-  !props.resource.units?.length ? $t('browse.locationResourceNoData') : undefined
+const contentContainerTitle = computed(() =>
+  !props.resource.contents?.length ? $t('browse.locationResourceNoData') : undefined
 );
 const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
-  opacity: isUnitContainerHovered.value || state.isTouchDevice ? 1 : browse.reducedView ? 0 : 0.2,
+  opacity:
+    isContentContainerHovered.value || state.isTouchDevice ? 1 : browse.reducedView ? 0 : 0.2,
 }));
 </script>
 
 <template>
   <div
-    v-if="resource.active && (resource.units?.length || !browse.reducedView)"
-    ref="unitContainerRef"
-    class="content-block unit-container"
-    :class="{ reduced: browse.reducedView, empty: !resource.units?.length }"
-    :title="unitContainerTitle"
+    v-if="resource.active && (resource.contents?.length || !browse.reducedView)"
+    ref="contentContainerRef"
+    class="content-block content-container"
+    :class="{ reduced: browse.reducedView, empty: !resource.contents?.length }"
+    :title="contentContainerTitle"
   >
-    <div class="unit-header" :class="browse.reducedView ? 'reduced' : ''">
-      <n-icon v-if="!resource.units?.length" :component="FolderOffOutlined" />
-      <div class="unit-header-title-container">
-        <div class="unit-header-title" :class="browse.reducedView ? 'reduced' : ''">
+    <div class="content-header" :class="browse.reducedView ? 'reduced' : ''">
+      <n-icon v-if="!resource.contents?.length" :component="FolderOffOutlined" />
+      <div class="content-header-title-container">
+        <div class="content-header-title" :class="browse.reducedView ? 'reduced' : ''">
           {{ resource.title }}
         </div>
-        <div class="unit-header-title-extra">
+        <div class="content-header-title-extra">
           {{ headerExtraText }}
         </div>
       </div>
-      <UnitHeaderWidgetBar :resource="resource" :style="headerWidgetsVisibilityStyle" />
+      <ContentHeaderWidgetBar :resource="resource" :style="headerWidgetsVisibilityStyle" />
     </div>
-    <!-- unit-specific component (that displays the actual unit data) -->
+    <!-- content-specific component (that displays the actual content data) -->
     <component
-      :is="unitComponents[resource.resourceType]"
-      v-if="resource.units?.length"
+      :is="contentComponents[resource.resourceType]"
+      v-if="resource.contents?.length"
       :resource="resource"
       :reduced="browse.reducedView"
     />
     <Transition>
-      <n-spin v-show="loading" class="unit-loader" />
+      <n-spin v-show="loading" class="content-loader" />
     </Transition>
   </div>
 </template>
 
 <style scoped>
-.unit-container {
+.content-container {
   position: relative;
   font-size: var(--app-ui-font-size);
 }
-.unit-container.reduced {
+.content-container.reduced {
   padding-top: 0.3rem;
   padding-bottom: 0.5rem;
   margin: 0;
   box-shadow: none;
   border-radius: 0;
 }
-.unit-container.reduced:first-child {
+.content-container.reduced:first-child {
   border-top-left-radius: var(--app-ui-border-radius);
   border-top-right-radius: var(--app-ui-border-radius);
   margin-top: var(--layout-gap);
 }
-.unit-container.reduced:last-child {
+.content-container.reduced:last-child {
   border-bottom-left-radius: var(--app-ui-border-radius);
   border-bottom-right-radius: var(--app-ui-border-radius);
   margin-bottom: var(--layout-gap);
 }
-.unit-container.reduced:not(:first-child) {
+.content-container.reduced:not(:first-child) {
   border-top: 1px solid var(--main-bg-color);
   margin-bottom: 0;
 }
-.unit-container.empty {
+.content-container.empty {
   background-color: var(--main-bg-color);
   border: 2px dashed var(--main-bg-color);
   box-shadow: none;
   padding: 12px var(--layout-gap);
 }
-.unit-container.empty > .unit-header {
+.content-container.empty > .content-header {
   margin-bottom: 0;
 }
-.unit-header {
+.content-header {
   margin: 0.25rem 0 0.5rem 0;
   display: flex;
   align-items: center;
@@ -118,11 +122,11 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
   column-gap: 12px;
   row-gap: 0px;
 }
-.unit-header.reduced {
+.content-header.reduced {
   margin-bottom: 0;
 }
 
-.unit-header-title-container {
+.content-header-title-container {
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
@@ -130,7 +134,7 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
   column-gap: 12px;
 }
 
-.unit-header-title {
+.content-header-title {
   color: var(--accent-color);
   font-weight: var(--app-ui-font-weight-normal);
   overflow: hidden;
@@ -138,19 +142,19 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
   white-space: nowrap;
 }
 
-.unit-header-title.reduced {
+.content-header-title.reduced {
   font-size: var(--app-ui-font-size-tiny);
   font-weight: var(--app-ui-font-weight-light);
   opacity: 0.8;
 }
 
-.unit-header-title-extra {
+.content-header-title-extra {
   flex-grow: 2;
   opacity: 0.5;
   font-size: 0.8em;
 }
 
-.unit-loader {
+.content-loader {
   position: absolute;
   top: 0;
   left: 0;
@@ -160,13 +164,13 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
   border-radius: var(--app-ui-border-radius);
 }
 
-.unit-loader.v-enter-active,
-.unit-loader.v-leave-active {
+.content-loader.v-enter-active,
+.content-loader.v-leave-active {
   transition: opacity 0.1s ease;
 }
 
-.unit-loader.v-enter-from,
-.unit-loader.v-leave-to {
+.content-loader.v-enter-from,
+.content-loader.v-leave-to {
   opacity: 0;
 }
 </style>

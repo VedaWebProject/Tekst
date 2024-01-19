@@ -38,7 +38,7 @@ export const useResourcesStore = defineStore('resources', () => {
           return {
             ...r,
             active: existingResource ? existingResource.active : r.config?.defaultActive,
-            units: existingResource?.units || [],
+            contents: existingResource?.contents || [],
           };
         })
       );
@@ -53,7 +53,7 @@ export const useResourcesStore = defineStore('resources', () => {
     if (resources.value.find((re) => re.id === resource.id)) {
       resources.value = sortResources(
         resources.value.map((r) =>
-          r.id === resource.id ? { ...resource, active: r.active, units: r.units } : r
+          r.id === resource.id ? { ...resource, active: r.active, contents: r.contents } : r
         )
       );
     } else {

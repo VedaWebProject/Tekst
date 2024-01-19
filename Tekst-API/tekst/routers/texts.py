@@ -21,6 +21,7 @@ from tekst.auth import OptionalUserDep, SuperuserDep
 from tekst.dependencies import get_temp_dir
 from tekst.logging import log
 from tekst.models.common import Translations
+from tekst.models.content import ContentBaseDocument
 from tekst.models.exchange import NodeDefinition, TextStructureImportData
 from tekst.models.node import NodeDocument
 from tekst.models.resource import ResourceBaseDocument
@@ -31,7 +32,6 @@ from tekst.models.text import (
     TextRead,
     TextUpdate,
 )
-from tekst.models.unit import UnitBaseDocument
 from tekst.settings import get_settings
 
 
@@ -455,9 +455,9 @@ async def delete_text(
     resources = await ResourceBaseDocument.find(
         ResourceBaseDocument.text_id == text_id, with_children=True
     ).to_list()
-    # delete data units of all resources associated with target text
-    await UnitBaseDocument.find(
-        In(UnitBaseDocument.resource_id, [resource.id for resource in resources]),
+    # delete contents of all resources associated with target text
+    await ContentBaseDocument.find(
+        In(ContentBaseDocument.resource_id, [resource.id for resource in resources]),
         with_children=True,
     ).delete_many()
     # delete resources associated with target text

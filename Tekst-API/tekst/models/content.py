@@ -12,8 +12,8 @@ from tekst.models.common import (
 )
 
 
-class UnitBase(ModelBase, ModelFactoryMixin):
-    """A base model for types of data units belonging to a certain resource"""
+class ContentBase(ModelBase, ModelFactoryMixin):
+    """A base model for types of contents belonging to a certain resource"""
 
     resource_id: PydanticObjectId = Field(..., description="Resource ID")
     resource_type: Annotated[
@@ -25,7 +25,7 @@ class UnitBase(ModelBase, ModelFactoryMixin):
         str | None,
         StringConstraints(min_length=1, max_length=1000, strip_whitespace=True),
         Field(
-            description="Plaintext, potentially multiline comment on this unit",
+            description="Plaintext, potentially multiline comment on this content",
         ),
     ] = None
 
@@ -52,11 +52,11 @@ class UnitBase(ModelBase, ModelFactoryMixin):
 # as those have to be used as bases for inheriting model's document/update models
 
 
-class UnitBaseDocument(UnitBase, DocumentBase):
+class ContentBaseDocument(ContentBase, DocumentBase):
     class Settings(DocumentBase.Settings):
-        name = "units"
+        name = "contents"
         is_root = True
         indexes = ["resource_id", "node_id"]
 
 
-UnitBaseUpdate = UnitBase.update_model()
+ContentBaseUpdate = ContentBase.update_model()

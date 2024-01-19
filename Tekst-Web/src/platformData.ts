@@ -7,8 +7,8 @@ const pfData = ref<PlatformData>();
 const loadedInfoSegments = ref<ClientSegmentRead[]>([]);
 
 export function usePlatformData() {
-  const systemHome = computed(
-    () => pfData.value?.systemSegments.find((p) => p.key === 'systemHome')
+  const systemHome = computed(() =>
+    pfData.value?.systemSegments.find((p) => p.key === 'systemHome')
   );
 
   async function _cleanLoadedInfoSegments() {

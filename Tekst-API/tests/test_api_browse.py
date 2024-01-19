@@ -7,10 +7,10 @@ from tekst.models.text import TextDocument
 
 
 @pytest.mark.anyio
-async def test_get_unit_siblings(
+async def test_get_content_siblings(
     test_client: AsyncClient, insert_sample_data, status_fail_msg, wrong_id, login
 ):
-    await insert_sample_data("texts", "nodes", "resources", "units")
+    await insert_sample_data("texts", "nodes", "resources", "contents")
     text = await TextDocument.find_one(TextDocument.slug == "pond")
     assert text
     resource = await ResourceBaseDocument.find_one(
@@ -19,7 +19,7 @@ async def test_get_unit_siblings(
     assert resource
 
     resp = await test_client.get(
-        "/browse/unit-siblings",
+        "/browse/content-siblings",
         params={"res": str(resource.id)},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
@@ -28,7 +28,7 @@ async def test_get_unit_siblings(
 
     # wrong resource ID
     resp = await test_client.get(
-        "/browse/unit-siblings",
+        "/browse/content-siblings",
         params={"res": wrong_id},
     )
     assert resp.status_code == 404, status_fail_msg(404, resp)
@@ -42,7 +42,7 @@ async def test_get_unit_siblings(
     assert "id" in resp.json()
     version_id = resp.json()["id"]
     resp = await test_client.get(
-        "/browse/unit-siblings",
+        "/browse/content-siblings",
         params={"res": version_id},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
@@ -58,7 +58,7 @@ async def test_get_location_data(
     status_fail_msg,
     wrong_id,
 ):
-    await insert_sample_data("texts", "nodes", "resources", "units")
+    await insert_sample_data("texts", "nodes", "resources", "contents")
     texts = get_sample_data("db/texts.json", for_http=True)
     text_id = next((txt for txt in texts if len(txt["levels"]) == 2), {}).get("_id", "")
     assert len(text_id) > 0
@@ -71,7 +71,7 @@ async def test_get_location_data(
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), dict)
     assert len(resp.json()["nodePath"]) > 0
-    assert len(resp.json()["units"]) == 0
+    assert len(resp.json()["contents"]) == 0
 
     # higher level
     resp = await test_client.get(
@@ -81,7 +81,7 @@ async def test_get_location_data(
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), dict)
     assert len(resp.json()["nodePath"]) > 0
-    assert len(resp.json()["units"]) > 0
+    assert len(resp.json()["contents"]) > 0
 
     # invalid node data
     resp = await test_client.get(
@@ -91,7 +91,7 @@ async def test_get_location_data(
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), dict)
     assert len(resp.json()["nodePath"]) == 0
-    assert len(resp.json()["units"]) == 0
+    assert len(resp.json()["contents"]) == 0
 
 
 @pytest.mark.anyio
@@ -148,7 +148,7 @@ async def test_get_path_options_by_root(
 async def test_get_resource_coverage_data(
     test_client: AsyncClient, insert_sample_data, status_fail_msg, wrong_id
 ):
-    inserted_ids = await insert_sample_data("texts", "nodes", "resources", "units")
+    inserted_ids = await insert_sample_data("texts", "nodes", "resources", "contents")
     resource_id = inserted_ids["resources"][0]
     resp = await test_client.get(
         f"/browse/resources/{resource_id}/coverage",
@@ -167,7 +167,7 @@ async def test_get_resource_coverage_data(
 async def test_get_detailed_resource_coverage_data(
     test_client: AsyncClient, insert_sample_data, status_fail_msg, wrong_id, login
 ):
-    inserted_ids = await insert_sample_data("texts", "nodes", "resources", "units")
+    inserted_ids = await insert_sample_data("texts", "nodes", "resources", "contents")
     resource_id = inserted_ids["resources"][0]
     await login()
 

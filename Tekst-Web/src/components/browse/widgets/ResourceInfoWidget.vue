@@ -4,7 +4,7 @@ import { NEllipsis, NDivider, NButton, NProgress } from 'naive-ui';
 import MetadataDisplay from '@/components/browse/MetadataDisplay.vue';
 import ButtonShelf from '@/components/ButtonShelf.vue';
 import IconHeading from '@/components/typography/IconHeading.vue';
-import UnitContainerHeaderWidget from '@/components/browse/UnitContainerHeaderWidget.vue';
+import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
 import { useAuthStore, useResourcesStore, useStateStore } from '@/stores';
 import { type AnyResourceRead, type ResourceCoverage } from '@/api';
 import UserDisplay from '@/components/UserDisplay.vue';
@@ -44,8 +44,8 @@ watch(showInfoModal, async (after) => {
 </script>
 
 <template>
-  <UnitContainerHeaderWidget
-    :title="$t('browse.units.widgets.infoWidget.title')"
+  <ContentContainerHeaderWidget
+    :title="$t('browse.contents.widgets.infoWidget.title')"
     :icon-component="InfoOutlined"
     @click="showInfoModal = true"
   />
@@ -74,7 +74,7 @@ watch(showInfoModal, async (after) => {
 
     <template v-if="resource.citation">
       <IconHeading level="3" :icon="FormatQuoteFilled">
-        {{ $t('browse.units.widgets.infoWidget.citeAs') }}
+        {{ $t('browse.contents.widgets.infoWidget.citeAs') }}
       </IconHeading>
       <div>
         {{ resource.citation }}
@@ -84,7 +84,7 @@ watch(showInfoModal, async (after) => {
 
     <template v-if="coverage">
       <IconHeading level="3" :icon="PercentOutlined">
-        {{ $t('browse.units.widgets.infoWidget.coverage') }}
+        {{ $t('browse.contents.widgets.infoWidget.coverage') }}
       </IconHeading>
 
       <div
@@ -98,7 +98,7 @@ watch(showInfoModal, async (after) => {
       >
         <span>
           {{
-            $t('browse.units.widgets.infoWidget.coverageStatement', {
+            $t('browse.contents.widgets.infoWidget.coverageStatement', {
               present: coverage.covered,
               total: coverage.total,
               level: state.textLevelLabels[resource.level],

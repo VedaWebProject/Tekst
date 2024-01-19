@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import UnitContainerHeaderWidget from '@/components/browse/UnitContainerHeaderWidget.vue';
+import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
 import type { DeepLLinksConfig } from '@/api';
 import { computed, h } from 'vue';
 import type { VNodeChild } from 'vue';
@@ -18,32 +18,31 @@ const props = defineProps<{
 
 const state = useStateStore();
 
-const unitsTextEncoded = computed<string>(() => {
-  const unitsText = props.resource.units
+const contentsTextEncoded = computed<string>(() => {
+  const contentsText = props.resource.contents
     .map((u: Record<string, any>) => u.text as string)
     .join('\n')
     .trim();
   return encodeURIComponent(
-    unitsText
+    contentsText
       .replace(/[^\p{L}\-.?!"\n']+/gu, ' ')
       .replace(/ ?\n ?/g, '\n')
       .trim()
   );
 });
 
-const options = computed(
-  () =>
-    props.widgetConfig?.languages?.map((l) => ({
-      label: l,
-      key: l,
-    }))
+const options = computed(() =>
+  props.widgetConfig?.languages?.map((l) => ({
+    label: l,
+    key: l,
+  }))
 );
 
 function renderOption(option: DropdownOption) {
   return h(
     'a',
     {
-      href: `${DEEPL_TRANSLATOR_URL}#${props.widgetConfig.sourceLanguage}/${option.key}/${unitsTextEncoded.value}`,
+      href: `${DEEPL_TRANSLATOR_URL}#${props.widgetConfig.sourceLanguage}/${option.key}/${contentsTextEncoded.value}`,
       target: '_blank',
     },
     {
@@ -55,7 +54,7 @@ function renderOption(option: DropdownOption) {
 
 <template>
   <n-dropdown
-    v-if="props.widgetConfig?.enabled && unitsTextEncoded && props.widgetConfig"
+    v-if="props.widgetConfig?.enabled && contentsTextEncoded && props.widgetConfig"
     trigger="click"
     :options="options"
     to="#app-container"
@@ -64,8 +63,8 @@ function renderOption(option: DropdownOption) {
     :render-label="renderOption"
     show-arrow
   >
-    <UnitContainerHeaderWidget
-      :title="$t('browse.units.widgets.deepLTranslate.title')"
+    <ContentContainerHeaderWidget
+      :title="$t('browse.contents.widgets.deepLTranslate.title')"
       :icon-component="TranslateOutlined"
     />
   </n-dropdown>
