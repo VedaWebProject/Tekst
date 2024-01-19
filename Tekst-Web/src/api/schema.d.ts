@@ -1571,7 +1571,7 @@ export interface components {
        *   "usersActiveByDefault": false,
        *   "enableCookieAuth": true,
        *   "enableJwtAuth": true,
-       *   "authCookieLifetime": 43200
+       *   "authCookieLifetime": 10800
        * }
        */
       security?: components['schemas']['PlatformSecurityInfo'];
@@ -1621,7 +1621,7 @@ export interface components {
       enableJwtAuth?: boolean;
       /**
        * Authcookielifetime
-       * @default 43200
+       * @default 10800
        */
       authCookieLifetime?: number;
     };
@@ -1635,7 +1635,7 @@ export interface components {
       /**
        * Infoplatformname
        * @description Name of the platform
-       * @default Tekst
+       * @default Tekst-Dev
        */
       infoPlatformName?: string;
       /**
@@ -1731,7 +1731,7 @@ export interface components {
       /**
        * Infoplatformname
        * @description Name of the platform
-       * @default Tekst
+       * @default Tekst-Dev
        */
       infoPlatformName?: string;
       /**

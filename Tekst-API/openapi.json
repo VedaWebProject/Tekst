@@ -1,7 +1,7 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "Tekst",
+    "title": "Tekst-Dev",
     "description": "An online text research platform",
     "termsOfService": "None",
     "contact": {},
@@ -13,7 +13,7 @@
   },
   "servers": [
     {
-      "url": "http://127.0.0.1:8000/api"
+      "url": "http://127.0.0.1/api"
     }
   ],
   "paths": {
@@ -6631,7 +6631,7 @@
               "usersActiveByDefault": false,
               "enableCookieAuth": true,
               "enableJwtAuth": true,
-              "authCookieLifetime": 43200
+              "authCookieLifetime": 10800
             }
           },
           "systemSegments": {
@@ -6727,7 +6727,7 @@
           "authCookieLifetime": {
             "type": "integer",
             "title": "Authcookielifetime",
-            "default": 43200
+            "default": 10800
           }
         },
         "type": "object",
@@ -6746,7 +6746,7 @@
             "minLength": 1,
             "title": "Infoplatformname",
             "description": "Name of the platform",
-            "default": "Tekst"
+            "default": "Tekst-Dev"
           },
           "infoSubtitle": {
             "items": {
@@ -6915,7 +6915,7 @@
             "minLength": 1,
             "title": "Infoplatformname",
             "description": "Name of the platform",
-            "default": "Tekst"
+            "default": "Tekst-Dev"
           },
           "infoSubtitle": {
             "items": {
