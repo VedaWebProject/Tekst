@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { type Component } from 'vue';
-import { NIcon } from 'naive-ui';
+import { NEllipsis, NIcon } from 'naive-ui';
 
 withDefaults(
   defineProps<{
@@ -8,6 +8,7 @@ withDefaults(
     icon?: Component;
     iconSize?: string;
     iconColor?: 'text' | 'accent';
+    ellipsis?: boolean;
   }>(),
   {
     icon: undefined,
@@ -25,6 +26,11 @@ withDefaults(
       :size="iconSize"
       :color="iconColor === 'accent' ? 'var(--accent-color)' : 'inherit'"
     />
-    <slot></slot>
+    <n-ellipsis v-if="ellipsis">
+      <slot></slot>
+    </n-ellipsis>
+    <template v-else>
+      <slot></slot>
+    </template>
   </component>
 </template>
