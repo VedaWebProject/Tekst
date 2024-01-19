@@ -95,6 +95,7 @@ export type Translation = {
   locale: TranslationLocaleKey;
   translation: string;
 };
+export type LocationData = components['schemas']['LocationData'];
 
 // user
 

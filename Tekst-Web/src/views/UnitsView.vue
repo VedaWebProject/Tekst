@@ -322,6 +322,24 @@ function handleSelectcompareResource(key: string) {
   loadLocationData();
 }
 
+async function handleNearestChangeClick(mode: 'preceding' | 'subsequent') {
+  const { data: pos, error } = await GET('/browse/nearest-unit', {
+    params: {
+      query: {
+        pos: position.value,
+        targetRes: compareResourceId.value,
+        res: [resource.value?.id || '', compareResourceId.value || ''],
+        mode,
+      },
+    },
+  });
+  if (!error) {
+    navigateUnits(pos - position.value);
+  } else {
+    message.info("There's NOTHING!!!!");
+  }
+}
+
 // react to keyboard for in-/decreasing location
 whenever(ArrowRight, () => {
   navigateUnits(1);
@@ -359,7 +377,7 @@ whenever(ArrowLeft, () => {
     <ResourceInfoWidget :resource="resource" />
   </IconHeading>
 
-  <ButtonShelf top-gap bottom-gap wrap-reverse>
+  <ButtonShelf top-gap bottom-gap wrap="wrap-reverse">
     <template #start>
       <n-button
         type="primary"
@@ -454,24 +472,31 @@ whenever(ArrowLeft, () => {
         />
         <span v-else style="opacity: 0.75; font-style: italic">{{ $t('units.noUnit') }}</span>
 
-        <ButtonShelf
-          v-if="
-            compareResource.units?.length &&
-            compareResource.originalId &&
-            compareResource.originalId == resource.id
-          "
-        >
-          <n-button secondary :title="$t('units.tipBtnPrevChange')" @click="handleApplyChanges">
+        <ButtonShelf v-if="compareResource.originalId && compareResource.originalId == resource.id">
+          <n-button
+            secondary
+            :title="$t('units.tipBtnPrevChange')"
+            @click="() => handleNearestChangeClick('preceding')"
+          >
             <template #icon>
               <n-icon :component="SkipPreviousFilled" />
             </template>
           </n-button>
-          <n-button secondary :title="$t('units.tipBtnApplyChanges')" @click="handleApplyChanges">
+          <n-button
+            secondary
+            :title="$t('units.tipBtnApplyChanges')"
+            :disabled="!compareResource.units?.length"
+            @click="handleApplyChanges"
+          >
             <template #icon>
               <n-icon :component="MoveDownOutlined" />
             </template>
           </n-button>
-          <n-button secondary :title="$t('units.tipBtnNextChange')" @click="handleApplyChanges">
+          <n-button
+            secondary
+            :title="$t('units.tipBtnNextChange')"
+            @click="() => handleNearestChangeClick('subsequent')"
+          >
             <template #icon>
               <n-icon :component="SkipNextFilled" />
             </template>

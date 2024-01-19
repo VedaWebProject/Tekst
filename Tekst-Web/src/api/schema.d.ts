@@ -34,6 +34,14 @@ export interface paths {
      */
     get: operations['getLocationData'];
   };
+  '/browse/nearest-unit': {
+    /**
+     * Get nearest unit
+     * @description Finds the nearest location the given resource holds content for and returns
+     * data for that location.
+     */
+    get: operations['getNearestUnit'];
+  };
   '/browse/nodes/{id}/path/options-by-head': {
     /**
      * Get path options by head id
@@ -2326,6 +2334,45 @@ export interface operations {
       200: {
         content: {
           'application/json': components['schemas']['LocationData'];
+        };
+      };
+      /** @description Not found */
+      404: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /**
+   * Get nearest unit
+   * @description Finds the nearest location the given resource holds content for and returns
+   * data for that location.
+   */
+  getNearestUnit: {
+    parameters: {
+      query: {
+        /** @description Location position */
+        pos: number;
+        /** @description ID of resource to return nearest location with content for */
+        targetRes?: string;
+        /** @description ID (or list of IDs) of resource(s) to return unit data for */
+        res?: string[];
+        /** @description Whether to look for the nearest preceding or subsequent location with content */
+        mode?: 'preceding' | 'subsequent';
+        /** @description Return at most <limit> units */
+        limit?: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': number;
         };
       };
       /** @description Not found */

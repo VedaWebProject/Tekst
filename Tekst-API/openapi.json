@@ -298,6 +298,120 @@
         }
       }
     },
+    "/browse/nearest-unit": {
+      "get": {
+        "tags": [
+          "browse"
+        ],
+        "summary": "Get nearest unit",
+        "description": "Finds the nearest location the given resource holds content for and returns\ndata for that location.",
+        "operationId": "getNearestUnit",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "pos",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "Location position",
+              "title": "Pos"
+            },
+            "description": "Location position"
+          },
+          {
+            "name": "targetRes",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "description": "ID of resource to return nearest location with content for",
+              "default": [],
+              "title": "Targetres"
+            },
+            "description": "ID of resource to return nearest location with content for"
+          },
+          {
+            "name": "res",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              "description": "ID (or list of IDs) of resource(s) to return unit data for",
+              "default": [],
+              "title": "Res"
+            },
+            "description": "ID (or list of IDs) of resource(s) to return unit data for"
+          },
+          {
+            "name": "mode",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "preceding",
+                "subsequent"
+              ],
+              "type": "string",
+              "description": "Whether to look for the nearest preceding or subsequent location with content",
+              "default": "subsequent",
+              "title": "Mode"
+            },
+            "description": "Whether to look for the nearest preceding or subsequent location with content"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "description": "Return at most <limit> units",
+              "default": 4096,
+              "title": "Limit"
+            },
+            "description": "Return at most <limit> units"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "title": "Response Get Nearest Unit Browse Nearest Unit Get"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/browse/nodes/{id}/path/options-by-head": {
       "get": {
         "tags": [

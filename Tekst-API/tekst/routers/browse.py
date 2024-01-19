@@ -1,4 +1,4 @@
-from typing import Annotated
+from typing import Annotated, Literal
 
 from beanie import PydanticObjectId
 from beanie.operators import In, NotIn
@@ -177,6 +177,91 @@ async def get_location_data(
 
     # return combined data as LocationData
     return LocationData(node_path=node_path, units=unit_docs)
+
+
+@router.get("/nearest-unit", status_code=status.HTTP_200_OK)
+async def get_nearest_unit(
+    user: OptionalUserDep,
+    position: Annotated[int, Query(alias="pos", description="Location position")],
+    target_resource_id: Annotated[
+        PydanticObjectId,
+        Query(
+            alias="targetRes",
+            description="ID of resource to return nearest location with content for",
+        ),
+    ] = [],
+    resource_ids: Annotated[
+        list[PydanticObjectId],
+        Query(
+            alias="res",
+            description="ID (or list of IDs) of resource(s) to return unit data for",
+        ),
+    ] = [],
+    mode: Annotated[
+        Literal["preceding", "subsequent"],
+        Query(
+            description=(
+                "Whether to look for the nearest preceding "
+                "or subsequent location with content"
+            )
+        ),
+    ] = "subsequent",
+    limit: Annotated[int, Query(description="Return at most <limit> units")] = 4096,
+) -> int:
+    """
+    Finds the nearest location the given resource holds content for and returns
+    data for that location.
+    """
+    # we don't check read access here, because are passing data to the location-data
+    # endpoint later anyway and it already checks for permissions
+    resource_doc = await ResourceBaseDocument.get(
+        target_resource_id, with_children=True
+    )
+    if not resource_doc:  # pragma: no cover
+        raise HTTPException(
+            status.HTTP_404_NOT_FOUND,
+            detail=f"No resource with ID {target_resource_id}",
+        )
+
+    # get all nodes before/after said location
+    nodes = (
+        await NodeDocument.find(
+            NodeDocument.text_id == resource_doc.text_id,
+            NodeDocument.level == resource_doc.level,
+            (NodeDocument.position < position)
+            if mode == "preceding"
+            else (NodeDocument.position > position),
+        )
+        .sort(
+            +NodeDocument.position if mode == "subsequent" else -NodeDocument.position
+        )
+        .to_list()
+    )
+    # prepare 404 (we'll reuse it later)
+    not_found_exception = HTTPException(
+        status.HTTP_404_NOT_FOUND,
+        detail=(
+            f"No content found {'before' if mode == 'preceding' else 'after'} "
+            f"position {position} for resource {target_resource_id}."
+        ),
+    )
+    if not nodes:  # pragma: no cover
+        raise not_found_exception
+
+    # get units for these nodes
+    units = await UnitBaseDocument.find(
+        UnitBaseDocument.resource_id == target_resource_id,
+        In(UnitBaseDocument.node_id, [node.id for node in nodes]),
+        with_children=True,
+    ).to_list()
+    if not units:  # pragma: no cover
+        raise not_found_exception
+
+    # find out nearest of those locations with units
+    nodes = [node for node in nodes if node.id in [unit.node_id for unit in units]]
+
+    # return position of nearest node with contents of the target resource
+    return nodes[0].position
 
 
 @router.get(

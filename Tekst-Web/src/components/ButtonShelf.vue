@@ -2,16 +2,25 @@
 import type { CSSProperties } from 'vue';
 import { computed } from 'vue';
 
-const props = defineProps<{
-  topGap?: boolean;
-  bottomGap?: boolean;
-  wrapReverse?: boolean;
-}>();
+const props = withDefaults(
+  defineProps<{
+    topGap?: boolean;
+    bottomGap?: boolean;
+    wrap?: 'nowrap' | 'wrap' | 'wrap-reverse';
+    groupWrap?: 'nowrap' | 'wrap' | 'wrap-reverse';
+  }>(),
+  {
+    topGap: false,
+    bottomGap: false,
+    wrap: 'wrap',
+    groupWrap: 'wrap',
+  }
+);
 
 const containerStyle = computed<CSSProperties>(() => ({
   display: 'flex',
   justifyContent: 'space-between',
-  flexWrap: props.wrapReverse ? 'wrap-reverse' : 'wrap',
+  flexWrap: props.wrap,
   gap: 'var(--content-gap)',
   marginTop: props.topGap ? 'var(--layout-gap)' : undefined,
   marginBottom: props.bottomGap ? 'var(--layout-gap)' : undefined,
@@ -20,13 +29,13 @@ const containerStyle = computed<CSSProperties>(() => ({
 
 <template>
   <div :style="containerStyle">
-    <div class="sub-group">
+    <div class="sub-group" :style="{ flexWrap: groupWrap, justifyContent: 'flex-start' }">
       <slot name="start"></slot>
     </div>
-    <div class="sub-group">
+    <div class="sub-group" :style="{ flexWrap: groupWrap, justifyContent: 'center' }">
       <slot name="center"></slot>
     </div>
-    <div class="sub-group">
+    <div class="sub-group" :style="{ flexWrap: groupWrap, justifyContent: 'flex-end' }">
       <slot></slot>
     </div>
   </div>
@@ -35,7 +44,6 @@ const containerStyle = computed<CSSProperties>(() => ({
 <style scoped>
 .sub-group {
   display: flex;
-  flex-wrap: wrap;
   gap: var(--content-gap);
 }
 </style>
