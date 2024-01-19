@@ -46,14 +46,14 @@ class NodeDocument(Node, DocumentBase):
         cls,
         text_id: PydanticObjectId,
         for_level: int | None = None,
-        loc_delim: str | None = ", ",
+        loc_delim: str | None = None,
     ) -> dict[str, str]:
-        if for_level is not None and for_level < 0:
-            for_level = 0
+        if for_level is not None:
+            for_level = max(0, for_level)
         if for_level is None or loc_delim is None:
             text = await TextDocument.get(text_id)
             for_level = len(text.levels) - 1 if for_level is None else for_level
-            loc_delim = text.loc_delim if loc_delim is None else loc_delim
+            loc_delim = text.loc_delim if loc_delim is None else ", "
         node_labels = {}
         for level in range(for_level + 1):
             node_labels = {
