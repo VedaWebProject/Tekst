@@ -2,19 +2,19 @@
   "files": [],
   "references": [
     {
-      "path": "./tsconfig.node.json"
+      "path": "./tsconfig.node.json",
     },
     {
-      "path": "./tsconfig.app.json"
+      "path": "./tsconfig.app.json",
     },
     {
-      "path": "./tsconfig.cypress-ct.json"
-    }
+      "path": "./tsconfig.cypress-ct.json",
+    },
   ],
   "compilerOptions": {
     "baseUrl": ".", // this must be specified if "paths" is specified.
     "paths": {
-      "@": ["./src"] // this mapping is relative to "baseUrl"
-    }
-  }
+      "@": ["./src"], // this mapping is relative to "baseUrl"
+    },
+  },
 }
