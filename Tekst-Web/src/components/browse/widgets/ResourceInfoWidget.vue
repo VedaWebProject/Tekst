@@ -55,32 +55,34 @@ watch(showInfoModal, async (after) => {
       <TranslationDisplay :value="resource.description" />
     </p>
 
-    <p v-if="auth.loggedIn" class="resource-status-box">
-      <UserDisplay :user="resource.owner ?? undefined" size="tiny" />
-      <ResourcePublicationStatus :resource="resource" size="tiny" />
-      <ResourceIsVersionInfo :resource="resource" size="tiny" />
-    </p>
+    <template v-if="auth.loggedIn">
+      <p class="resource-status-box">
+        <UserDisplay :user="resource.owner ?? undefined" size="tiny" />
+        <ResourcePublicationStatus :resource="resource" size="tiny" />
+        <ResourceIsVersionInfo :resource="resource" size="tiny" />
+      </p>
+      <n-divider />
+    </template>
 
     <template v-if="resource.meta && Object.keys(resource.meta).length">
-      <n-divider />
       <IconHeading level="3" :icon="LabelOutlined">
         {{ $t('models.meta.modelLabel') }}
       </IconHeading>
       <MetadataDisplay :data="resource.meta" />
+      <n-divider />
     </template>
 
     <template v-if="resource.citation">
-      <n-divider />
       <IconHeading level="3" :icon="FormatQuoteFilled">
         {{ $t('browse.units.widgets.infoWidget.citeAs') }}
       </IconHeading>
       <div>
         {{ resource.citation }}
       </div>
+      <n-divider />
     </template>
 
     <template v-if="coverage">
-      <n-divider />
       <IconHeading level="3" :icon="PercentOutlined">
         {{ $t('browse.units.widgets.infoWidget.coverage') }}
       </IconHeading>
@@ -125,10 +127,10 @@ watch(showInfoModal, async (after) => {
         color="var(--accent-color)"
         rail-color="var(--accent-color-fade4)"
       />
+      <n-divider />
     </template>
 
     <template v-if="resource.comment?.length">
-      <n-divider />
       <IconHeading level="3" :icon="ChatBubbleOutlineOutlined">
         {{ $t('models.resource.comment') }}
       </IconHeading>
