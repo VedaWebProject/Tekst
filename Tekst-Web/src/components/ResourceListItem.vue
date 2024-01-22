@@ -30,7 +30,7 @@ import EditNoteOutlined from '@vicons/material/EditNoteOutlined';
 import AltRouteOutlined from '@vicons/material/AltRouteOutlined';
 import UserDisplay from './UserDisplay.vue';
 import FileDownloadSharp from '@vicons/material/FileDownloadSharp';
-import FileUploadSharp from '@vicons/material/FileUploadSharp';
+import UploadFileOutlined from '@vicons/material/UploadFileOutlined';
 
 const props = defineProps<{
   targetResource: AnyResourceRead;
@@ -87,7 +87,7 @@ const actionOptions = computed(() => [
             {
               label: $t('resources.importAction'),
               key: 'import',
-              icon: renderIcon(FileUploadSharp),
+              icon: renderIcon(UploadFileOutlined),
               action: () => emit('importClick', props.targetResource),
             },
           ],

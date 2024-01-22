@@ -270,7 +270,7 @@ resources:
   settingsAction: Einstellungen
   contentsAction: Inhalte
   downloadTemplateAction: Importvorlage herunterladen
-  importAction: Vorverarbeitete Importdatei hochladen
+  importAction: Vorbereitete Inhalte importieren
   createVersionAction: Version dieser Ressource erstellen
   proposeAction: Für Veröffentlichung vorschlagen
   unproposeAction: Veröffentlichungsvorschlag zurücknehmen

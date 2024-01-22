@@ -268,7 +268,7 @@ resources:
   settingsAction: Settings
   contentsAction: Contents
   downloadTemplateAction: Download import template
-  importAction: Upload preprocessed import file
+  importAction: Import prepared contents
   createVersionAction: Create version of this resource
   proposeAction: Propose for publication
   unproposeAction: Withdraw publication proposal
