@@ -35,7 +35,7 @@ general:
   in: in
   details: Details
   loading: Lade...
-  downloadStarted: Download gestartet
+  downloadSaved: Datei gespeichert als {filename}.
   areYouSureHelpTextHint: |
     Bitte vergewissern Sie sich, dass Sie die entsprechende Passage in den
     Hilfetexten zu diesem Thema gelesen und verstanden haben.

@@ -28,8 +28,9 @@ import ArrowForwardIosOutlined from '@vicons/material/ArrowForwardIosOutlined';
 import EditTwotone from '@vicons/material/EditTwotone';
 import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
 import FileDownloadSharp from '@vicons/material/FileDownloadSharp';
-import FileUploadSharp from '@vicons/material/FileUploadSharp';
+import UploadFileOutlined from '@vicons/material/UploadFileOutlined';
 import { computed } from 'vue';
+import { saveDownload } from '@/api';
 
 export interface LocationTreeOption extends TreeOption {
   level: number;
@@ -51,6 +52,7 @@ const loadingDelete = ref(false);
 const loadingMove = ref(false);
 const loadingUpload = ref(false);
 const loadingData = ref(false);
+const loadingTemplate = ref(false);
 const loading = computed(
   () =>
     loadingAdd.value ||
@@ -58,7 +60,8 @@ const loading = computed(
     loadingDelete.value ||
     loadingData.value ||
     loadingMove.value ||
-    loadingUpload.value
+    loadingUpload.value ||
+    loadingTemplate.value
 );
 
 const showRenameModal = ref(false);
@@ -263,11 +266,19 @@ async function handleAddResult(location: LocationRead | undefined) {
 }
 
 async function handleDownloadTemplateClick() {
-  // As we want a proper, direct download, we let the browser handle it
-  // by opening a new tab with the correct URL for the file download.
-  const textId = state.text?.id || '';
-  const path = `/texts/${textId}/template`;
-  window.open(getFullUrl(path), '_blank');
+  loadingTemplate.value = true;
+  const { response, error } = await GET('/texts/{id}/template', {
+    params: { path: { id: state.text?.id || '' } },
+    parseAs: 'blob',
+  });
+  if (!error) {
+    const filename = `${state.text?.slug}_structure_template.json`.toLowerCase();
+    message.info($t('general.downloadSaved', { filename }));
+    saveDownload(await response.blob(), filename);
+  } else {
+    message.error($t('errors.unexpected'), error);
+  }
+  loadingTemplate.value = false;
 }
 
 async function handleUploadStructureClick() {
@@ -439,6 +450,7 @@ watch(
         secondary
         :title="$t('admin.text.locations.tipBtnDownloadTemplate')"
         :disabled="loading"
+        :loading="loadingTemplate"
         @click="handleDownloadTemplateClick()"
       >
         <template #icon>
@@ -453,7 +465,7 @@ watch(
         @click="handleUploadStructureClick()"
       >
         <template #icon>
-          <FileUploadSharp />
+          <UploadFileOutlined />
         </template>
         {{ $t('admin.text.locations.lblBtnUploadStructure') }}
       </n-button>

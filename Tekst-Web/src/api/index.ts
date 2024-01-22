@@ -77,6 +77,16 @@ export function getFullUrl(path: string, query?: Record<string, any>): URL {
   return new URL(relPath + queryString, apiUrl.replace(/\/*$/, '/'));
 }
 
+export function saveDownload(blob: Blob, filename: string) {
+  const a = document.createElement('a');
+  a.href = window.URL.createObjectURL(blob);
+  if (filename) {
+    a.download = filename;
+  }
+  a.click();
+  a.remove();
+}
+
 // export some common platform properties for use throughout codebase
 
 export const resourceTypes = ['plaintext', 'debug'];

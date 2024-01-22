@@ -17,6 +17,7 @@ import TranslationDisplay from './TranslationDisplay.vue';
 import { useStateStore } from '@/stores';
 import { $t } from '@/i18n';
 import ResourceIsVersionInfo from '@/components/ResourceIsVersionInfo.vue';
+import UserDisplay from './UserDisplay.vue';
 
 import MoreVertOutlined from '@vicons/material/MoreVertOutlined';
 import DeleteFilled from '@vicons/material/DeleteFilled';
@@ -28,7 +29,6 @@ import PublicOffFilled from '@vicons/material/PublicOffFilled';
 import PersonFilled from '@vicons/material/PersonFilled';
 import EditNoteOutlined from '@vicons/material/EditNoteOutlined';
 import AltRouteOutlined from '@vicons/material/AltRouteOutlined';
-import UserDisplay from './UserDisplay.vue';
 import FileDownloadSharp from '@vicons/material/FileDownloadSharp';
 import UploadFileOutlined from '@vicons/material/UploadFileOutlined';
 
@@ -49,6 +49,7 @@ const emit = defineEmits([
   'deleteClick',
   'downloadTemplateClick',
   'importClick',
+  'exportClick',
 ]);
 
 const state = useStateStore();
@@ -169,6 +170,12 @@ const actionOptions = computed(() => [
         icon: renderIcon(AltRouteOutlined),
         disabled: !!props.targetResource.originalId,
         action: () => emit('createVersionClick', props.targetResource),
+      },
+      {
+        label: $t('resources.exportContentsAction'),
+        key: 'export',
+        icon: renderIcon(FileDownloadSharp),
+        action: () => emit('exportClick', props.targetResource),
       },
       ...(isOwnerOrAdmin.value
         ? [

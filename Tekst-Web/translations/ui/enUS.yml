@@ -34,7 +34,7 @@ general:
   in: in
   details: Details
   loading: Loading...
-  downloadStarted: Download started
+  downloadSaved: File saved as {filename}.
   areYouSureHelpTextHint: |
     Please make sure you have read and understood the corresponding passage in the
     help texts on this topic. You can find the help texts for any page by clicking the

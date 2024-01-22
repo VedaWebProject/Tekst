@@ -12,7 +12,7 @@ import {
   NCollapseItem,
   useDialog,
 } from 'naive-ui';
-import { POST, type AnyResourceRead, DELETE, type UserReadPublic, getFullUrl } from '@/api';
+import { POST, type AnyResourceRead, DELETE, type UserReadPublic, getFullUrl, GET } from '@/api';
 import { ref } from 'vue';
 import { computed } from 'vue';
 import { $t } from '@/i18n';
@@ -30,6 +30,7 @@ import UndoRound from '@vicons/material/UndoRound';
 import LayersFilled from '@vicons/material/LayersFilled';
 import AddOutlined from '@vicons/material/AddOutlined';
 import TransferResourceModal from '@/components/TransferResourceModal.vue';
+import { saveDownload } from '@/api';
 
 const state = useStateStore();
 const auth = useAuthStore();
@@ -285,11 +286,20 @@ function handleDeleteClick(resource: AnyResourceRead) {
 }
 
 async function handleDownloadTemplateClick(resource: AnyResourceRead) {
-  // As we want a proper, direct download, we let the browser handle it
-  // by opening a new tab with the correct URL for the file download.
-  const path = `/resources/${resource.id || ''}/template`;
-  window.open(getFullUrl(path), '_blank');
-  message.info($t('general.downloadStarted'));
+  actionsLoading.value = true;
+  const { response, error } = await GET('/resources/{id}/template', {
+    params: { path: { id: resource.id } },
+    parseAs: 'blob',
+  });
+  if (!error) {
+    const resSaveName = resource.title.substring(0, 32).trim().replace(/\W+/g, '_');
+    const filename = `${resSaveName}_${resource.id}_template.json`.toLowerCase();
+    message.info($t('general.downloadSaved', { filename }));
+    saveDownload(await response.blob(), filename);
+  } else {
+    message.error($t('errors.unexpected'), error);
+  }
+  actionsLoading.value = false;
 }
 
 async function handleImportClick(resource: AnyResourceRead) {
@@ -341,6 +351,8 @@ async function handleImportClick(resource: AnyResourceRead) {
 
   input.click();
 }
+
+async function handleExportClick() {}
 
 function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }) {
   if (data.name === 'filters' && !data.expanded) {
@@ -432,6 +444,7 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
             @delete-click="handleDeleteClick"
             @download-template-click="handleDownloadTemplateClick"
             @import-click="handleImportClick"
+            @export-click="handleExportClick"
           />
         </n-list>
         <!-- Pagination -->

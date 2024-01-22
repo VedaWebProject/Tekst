@@ -517,7 +517,7 @@ async def unpublish_resource(
 async def get_resource_template(
     user: UserDep,
     resource_id: Annotated[PydanticObjectId, Path(alias="id")],
-) -> dict:
+) -> FileResponse:
     resource_doc = await ResourceBaseDocument.get(
         resource_id,
         with_children=True,
