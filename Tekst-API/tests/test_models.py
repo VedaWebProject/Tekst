@@ -2,7 +2,7 @@ import pytest
 
 from pydantic.error_wrappers import ValidationError
 from tekst.models.resource import ResourceBase
-from tekst.models.text import TextCreate, TextRead
+from tekst.models.text import Text, TextCreate, TextRead
 from tekst.models.user import UserReadPublic
 
 
@@ -108,6 +108,15 @@ def test_text_valid_default_level():
             levels=[[{"locale": "enUS", "translation": "foo"}]],
             default_level=2,
         )
+
+
+def test_text_valid_default_color():
+    t = Text(
+        title="foo",
+        slug="foo",
+        levels=[[{"locale": "enUS", "translation": "foo"}]],
+    )
+    t.model_dump()
 
 
 def test_resource_type_validator():
