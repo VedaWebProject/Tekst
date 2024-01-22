@@ -241,6 +241,7 @@ async def get_nearest_content(
             if mode == "subsequent"
             else -LocationDocument.position
         )
+        .aggregate([{"$project": {"position": 1}}])
         .to_list()
     )
     # prepare 404 (we'll reuse it later)
@@ -255,11 +256,18 @@ async def get_nearest_content(
         raise not_found_exception
 
     # get contents for these locations
-    contents = await ContentBaseDocument.find(
-        ContentBaseDocument.resource_id == target_resource_id,
-        In(ContentBaseDocument.location_id, [location.id for location in locations]),
-        with_children=True,
-    ).to_list()
+    contents = (
+        await ContentBaseDocument.find(
+            ContentBaseDocument.resource_id == target_resource_id,
+            In(
+                ContentBaseDocument.location_id,
+                [location.get("_id") for location in locations],
+            ),
+            with_children=True,
+        )
+        .aggregate([{"$project": {"location_id": 1}}])
+        .to_list()
+    )
     if not contents:  # pragma: no cover
         raise not_found_exception
 
@@ -267,11 +275,11 @@ async def get_nearest_content(
     locations = [
         location
         for location in locations
-        if location.id in [content.location_id for content in contents]
+        if location.get("_id") in [content.get("location_id") for content in contents]
     ]
 
     # return position of nearest location with contents of the target resource
-    return locations[0].position
+    return locations[0].get("position")
 
 
 @router.get(
