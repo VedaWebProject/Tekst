@@ -12,7 +12,14 @@ import {
   NCollapseItem,
   useDialog,
 } from 'naive-ui';
-import { POST, type AnyResourceRead, DELETE, type UserReadPublic, getFullUrl, GET } from '@/api';
+import {
+  POST,
+  type AnyResourceRead,
+  DELETE,
+  type UserReadPublic,
+  GET,
+  withSelectedFile,
+} from '@/api';
 import { ref } from 'vue';
 import { computed } from 'vue';
 import { $t } from '@/i18n';
@@ -303,53 +310,35 @@ async function handleDownloadTemplateClick(resource: AnyResourceRead) {
 }
 
 async function handleImportClick(resource: AnyResourceRead) {
-  // unfortunately, this file upload doesn't work with our generated API client :(
-  const path = `/resources/${resource.id || ''}/import`;
-  const endpointUrl = getFullUrl(path);
-  const input = document.createElement('input');
-  input.type = 'file';
-  input.accept = 'application/json,.json';
-
-  input.onchange = async () => {
-    if (!input.files) return;
+  withSelectedFile(async (file: File | null) => {
+    if (!file) return;
     actionsLoading.value = true;
-    const formData = new FormData();
-    formData.append('file', input.files[0]);
-    try {
-      const response = await fetch(endpointUrl, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-        },
-        body: formData,
-      });
-      if (response.ok) {
-        const resp = await response.json();
-        message.success(
-          $t('contents.msgImportSuccess', {
-            updated: resp.updated,
-            created: resp.created,
-            errors: resp.errors,
-          }),
-          undefined,
-          20
-        );
-      } else {
-        message.error($t('errors.unexpected'), await response.json(), 20);
-      }
-    } catch {
-      // failed request handled already, nothing to do
-    } finally {
-      input.remove();
-      actionsLoading.value = false;
+    const { data, error } = await POST('/resources/{id}/import', {
+      params: { path: { id: resource.id } },
+      body: { file },
+      bodySerializer(body) {
+        const fd = new FormData();
+        for (const [k, v] of Object.entries(body)) {
+          fd.append(k, v);
+        }
+        return fd;
+      },
+    });
+    if (!error) {
+      message.success(
+        $t('contents.msgImportSuccess', {
+          updated: data.updated,
+          created: data.created,
+          errors: data.errors,
+        }),
+        undefined,
+        20
+      );
+    } else {
+      message.error($t('errors.unexpected'), error, 20);
     }
-  };
-
-  input.onclose = () => {
-    input.remove();
-  };
-
-  input.click();
+    actionsLoading.value = false;
+  });
 }
 
 async function handleExportClick() {}

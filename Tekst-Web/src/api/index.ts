@@ -77,6 +77,20 @@ export function getFullUrl(path: string, query?: Record<string, any>): URL {
   return new URL(relPath + queryString, apiUrl.replace(/\/*$/, '/'));
 }
 
+export async function withSelectedFile(
+  cb: (file: File | null) => void | Promise<void>,
+  contentType: string = 'application/json,.json',
+  multiple?: boolean
+) {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = contentType;
+  input.multiple = !!multiple;
+  input.onchange = () => cb(input.files ? input.files[0] : null);
+  input.onclose = input.remove;
+  input.click();
+}
+
 export function saveDownload(blob: Blob, filename: string) {
   const a = document.createElement('a');
   a.href = window.URL.createObjectURL(blob);

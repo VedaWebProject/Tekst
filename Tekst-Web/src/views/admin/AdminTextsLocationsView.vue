@@ -12,7 +12,7 @@ import {
   type TreeDragInfo,
 } from 'naive-ui';
 import { h, ref } from 'vue';
-import { DELETE, GET, POST, getFullUrl, type LocationRead } from '@/api';
+import { DELETE, GET, POST, type LocationRead, withSelectedFile } from '@/api';
 import { useStateStore } from '@/stores';
 import { useMessages } from '@/messages';
 import { $t } from '@/i18n';
@@ -282,45 +282,28 @@ async function handleDownloadTemplateClick() {
 }
 
 async function handleUploadStructureClick() {
-  // unfortunately, this file upload doesn't work with our generated API client :(
-  const path = `/texts/${state.text?.id || ''}/structure`;
-  const endpointUrl = getFullUrl(path);
-  const input = document.createElement('input');
-  input.type = 'file';
-  input.accept = 'application/json,.json';
-
-  input.onchange = async () => {
-    if (!input.files) return;
+  withSelectedFile(async (file: File | null) => {
+    if (!file) return;
     loadingUpload.value = true;
-    const formData = new FormData();
-    formData.append('file', input.files[0]);
-    try {
-      const response = await fetch(endpointUrl, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-        },
-        body: formData,
-      });
-      if (response.ok) {
-        message.success($t('admin.text.locations.upload.msgSuccess'));
-      } else {
-        message.error($t('admin.text.locations.upload.msgError'), await response.json());
-      }
-    } catch (error) {
-      // failed request handled already, nothing to do
-    } finally {
-      input.remove();
-      loadingUpload.value = false;
-      loadTreeData();
+    const { error } = await POST('/texts/{id}/structure', {
+      params: { path: { id: state.text?.id || '' } },
+      body: { file },
+      bodySerializer(body) {
+        const fd = new FormData();
+        for (const [k, v] of Object.entries(body)) {
+          fd.append(k, v);
+        }
+        return fd;
+      },
+    });
+    if (!error) {
+      message.success($t('admin.text.locations.upload.msgSuccess'));
+    } else {
+      message.error($t('admin.text.locations.upload.msgError'), error, 20);
     }
-  };
-
-  input.onclose = () => {
-    input.remove();
-  };
-
-  input.click();
+    loadingUpload.value = false;
+    loadTreeData();
+  });
 }
 
 function renderSwitcherIcon() {
