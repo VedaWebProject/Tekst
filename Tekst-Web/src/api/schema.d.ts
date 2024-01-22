@@ -358,7 +358,7 @@ export interface components {
        * Format: binary
        * @description JSON file containing the resource data
        */
-      file: string;
+      file: Blob;
     };
     /** Body_import_text_structure_texts__id__structure_post */
     Body_import_text_structure_texts__id__structure_post: {
@@ -367,7 +367,7 @@ export interface components {
        * Format: binary
        * @description JSON file containing the text's structure
        */
-      file: string;
+      file: Blob;
     };
     /** Body_reset_forgot_password_auth_forgot_password_post */
     Body_reset_forgot_password_auth_forgot_password_post: {
