@@ -91,7 +91,7 @@ routes:
     adminSystemUsers: '@:admin.heading - Benutzer'
     adminTextsGeneral: '@:admin.heading - {text}: Allgemein'
     adminTextsLevels: '@:admin.heading - {text}: Ebenen'
-    adminTextsLocations: '@:admin.heading - {text}: Knoten'
+    adminTextsLocations: '@:admin.heading - {text}: Fundstellen'
     adminNewText: '@:admin.heading - Neuer Text'
     adminSystemSegments: '@:admin.heading - Segmente'
     adminSystemInfoPages: '@:admin.heading - Info-Seiten'
@@ -114,7 +114,7 @@ browse:
     heading: Ressourcen anzeigen
   uncategorized: Unkategorisiert
   locationResourceNoData: Keine Daten für diese Fundstelle
-  textNoLocations: Die Einrichtung dieses Textes scheint unvollständig. Es wurden keine Strukturknoten definiert.
+  textNoLocations: Die Einrichtung dieses Textes scheint unvollständig. Es wurden keine Fundstellen definiert.
   locationNoData: Die ausgewählten Ressourcen enthalten keine Daten für diese Ebene und Fundstelle. Wählen Sie eine andere Fundstelle oder aktivieren Sie mehr Ressourcen.
   contents:
     widgets:
@@ -191,7 +191,7 @@ models:
       slugChars: 'Erlaubte Zeichen: a-z und 0-9'
       defaultLevelRange: 0 oder höher
   location:
-    modelLabel: Strukturknoten | Strukturknoten
+    modelLabel: Fundstelle | Fundstellen
     label: Bezeichnung
   resource:
     modelLabel: Ressource | Ressourcen
@@ -210,7 +210,7 @@ models:
     sharedWrite: Schreibzugriff teilen
     config: Konfiguration
   content:
-    modelLabel: Dateneinheit | Dateneinheiten
+    modelLabel: Inhalt | Inhalte
   meta:
     modelLabel: Metadaten
     author: Autor
@@ -490,7 +490,7 @@ admin:
         gravierenden Auswirkungen auf das Datenmodell des Textes.
         Die Anwendung wird ihr Bestes tun, um die neue Ebene in die
         bestehende Datenstruktur einzubetten, aber Sie werden das Ergebnis
-        anschließend mit Hilfe der Einstellungen für die Strukturknoten des Textes
+        anschließend mit Hilfe der Einstellungen für die Fundstellen des Textes
         an Ihre Bedürfnisse anpassen müssen.
         Es ist außerdem angeraten, ein Backup des aktuellen Zustands Ihrer
         Datenbank zu erstellen, bevor Sie diesen Schritt durchführen.
@@ -501,7 +501,7 @@ admin:
         Ebene - egal, welcher Benutzer diese erstellt hat!
         Die Anwendung wird ihr Bestes tun, um angrenzende Ebenen sinnvoll miteinander
         zu verbinden, aber Sie werden das Ergebnis
-        anschließend mit Hilfe der Einstellungen für die Strukturknoten des Textes
+        anschließend mit Hilfe der Einstellungen für die Fundstellen des Textes
         an Ihre Bedürfnisse anpassen müssen.
         Bitte vergewissern Sie sich, dass Sie wissen,
         was Sie tun und machen Sie ein Backup Ihrer Datenbank,
@@ -510,45 +510,45 @@ admin:
         Sind Sie sich sicher, dass Sie die
         Textebene "{levelLabel}" löschen möchten?
     locations:
-      heading: Knoten
+      heading: Fundstellen
       add:
-        heading: Knoten zu "{parentLabel}" auf Ebene "{level}" hinzufügen
-        tooltip: Knoten hinzufügen
-        msgSuccess: Knoten "{label}" zu "{parentLabel}" hinzugefügt
+        heading: Fundstelle zu "{parentLabel}" auf Ebene "{level}" hinzufügen
+        tooltip: Fundstelle hinzufügen
+        msgSuccess: Fundstelle "{label}" zu "{parentLabel}" hinzugefügt
       lblBtnAddLocationFirstLevel: Hinzufügen
-      tipBtnAddLocationFirstLevel: Knoten auf oberster Ebene hinzufügen
+      tipBtnAddLocationFirstLevel: Fundstelle auf oberster Ebene hinzufügen
       lblBtnDownloadTemplate: Vorlage
       tipBtnDownloadTemplate: Strukturdefinitions-Vorlage herunterladen
       lblBtnUploadStructure: Importieren
       tipBtnUploadStructure: Strukturdefinition hochladen (nur bei leerer Struktur!)
       infoNoLocations: |
-        Dieser Text hat noch keine Strukturknoten.
-        Fügen Sie den Strukturebenen des Textes Knoten hinzu,
+        Dieser Text hat noch keine Fundstellen.
+        Fügen Sie den Strukturebenen des Textes Fundstellen hinzu,
         indem Sie die untenstehenden Werkzeuge verwenden,
         oder laden Sie eine Strukturvorlage herunter,
         die Sie programmatisch mit Ihren Daten füllen können,
-        und laden Sie diese dann hier hoch.
+        und importieren Sie diese dann hier.
       warnGeneral: |
-        Das Neuordnen oder Löschen von Textknoten hat gravierende Auswirkungen auf das
+        Das Neuordnen oder Löschen von Fundstellen hat gravierende Auswirkungen auf das
         Datenmodell des Textes. Es ist dringend empfohlen, ein Backup des aktuellen
         Zustands der Datenbank zu erstellen, bevor Änderungen vorgenommen werden.
       warnDeleteLocation: |
-        Wenn Sie diesen Knoten löschen, werden alle Daten, die mit ihm und allen
-        seinen Kind-Knoten verbunden sind, ebenfalls gelöscht.
+        Wenn Sie diese Fundstelle löschen, werden alle Daten, die mit ihr und allen
+        untergeordneten Fundstelle verbunden sind, ebenfalls gelöscht.
         Dies kann potenziell alle Ressourcen betreffen – auch jene,
         die von anderen Benutzern angelegt wurden. Falls Sie ihr Ziel auch durch das Verschieben
-        des Knotens auf seiner Strukturebene erreichen können, sollten sie das stattdessen tun,
-        da auf diese Weise keine Daten gelöscht würden.
+        der Fundstelle auf ihrer Strukturebene erreichen können, sollten sie das stattdessen tun,
+        da auf diese Weise keine Daten gelöscht werden.
         Dies kann nicht rückgängig gemacht werden.
-        Sind Sie sich wirklich sicher, dass Sie den ausgewählten Knoten löschen wollen?
-      tipDeleteLocation: Knoten "{location}" löschen
-      infoDeletedLocation: Knoten "{location}" gelöscht (insgesamt {locations} Knoten und {contents} Daten-Einheiten)
-      infoMovedLocation: Knoten "{location}" auf position {position} von Ebene "{level}" verschoben
-      errorLocationLeftLevel: Text-Knoten können nur innerhalb der gleichen Ebene verschoben werden!
+        Sind Sie sich wirklich sicher, dass Sie die ausgewählte Fundstelle löschen wollen?
+      tipDeleteLocation: Fundstelle "{location}" löschen
+      infoDeletedLocation: Fundstelle "{location}" gelöscht (insgesamt {locations} Fundstellen und {contents} Inhalte)
+      infoMovedLocation: Fundstelle "{location}" auf position {position} von Ebene "{level}" verschoben
+      errorLocationLeftLevel: Fundstellen können nur innerhalb der gleichen Ebene verschoben werden!
       checkShowWarnings: Zeige Warnungen, bevor destruktive Operationen durchgeführt werden
       rename:
-        heading: Knoten umbenennen
-        msgSuccess: Knoten "{oldName}" umbenannt zu "{newName}"
+        heading: Fundstelle umbenennen
+        msgSuccess: Fundstelle "{oldName}" umbenannt zu "{newName}"
       upload:
         msgSuccess: Neue Textstruktur erfolgreich hochgeladen und verarbeitet
         msgError: 'Fehler beim Hochladen und Verarbeiten der Textstruktur'
