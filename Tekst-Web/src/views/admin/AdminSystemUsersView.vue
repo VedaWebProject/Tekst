@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
-import { useUsersAdmin } from '@/fetchers';
+import { useUsersAdmin } from '@/composables/fetchers';
 import {
   NButton,
   NInput,
@@ -14,17 +14,17 @@ import {
   NCollapseItem,
   useDialog,
 } from 'naive-ui';
-import UserListItem from '@/components/admin/UserListItem.vue';
-import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
+import UserListItem from '@/components/user/UserListItem.vue';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import type { UserRead, UserUpdate } from '@/api';
 import { ref } from 'vue';
 import { computed } from 'vue';
-import { useMessages } from '@/messages';
+import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
 import { useRoute } from 'vue-router';
 import { POST, PATCH, DELETE } from '@/api';
 import { useAuthStore } from '@/stores';
-import { positiveButtonProps, negativeButtonProps } from '@/components/dialogButtonProps';
+import { dialogProps } from '@/common';
 
 import SearchRound from '@vicons/material/SearchRound';
 import UndoRound from '@vicons/material/UndoRound';
@@ -100,10 +100,9 @@ function handleSuperuserClick(user: UserRead) {
       : $t('admin.users.confirmMsg.setSuperuser', { username: user.username }),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    positiveButtonProps,
-    negativeButtonProps,
     autoFocus: false,
     closable: false,
+    ...dialogProps,
     onPositiveClick: () => updateUser(user, { isSuperuser: !user.isSuperuser }),
   });
 }
@@ -116,10 +115,9 @@ function handleActiveClick(user: UserRead) {
       : $t('admin.users.confirmMsg.setActive', { username: user.username }),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    positiveButtonProps,
-    negativeButtonProps,
     autoFocus: false,
     closable: false,
+    ...dialogProps,
     onPositiveClick: async () => {
       const updatedUser = await updateUser(user, { isActive: !user.isActive });
       // if just activated but still unverified, send verification mail
@@ -147,10 +145,9 @@ function handleVerifiedClick(user: UserRead) {
       : $t('admin.users.confirmMsg.setVerified', { username: user.username }),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    positiveButtonProps,
-    negativeButtonProps,
     autoFocus: false,
     closable: false,
+    ...dialogProps,
     onPositiveClick: async () => {
       const updatedUser = await updateUser(user, { isVerified: !user.isVerified });
       if (updatedUser && !updatedUser.isVerified) {
@@ -175,10 +172,9 @@ function handleDeleteClick(user: UserRead) {
     content: $t('admin.users.confirmMsg.deleteUser', { username: user.username }),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    positiveButtonProps,
-    negativeButtonProps,
     autoFocus: false,
     closable: false,
+    ...dialogProps,
     onPositiveClick: async () => {
       const { error } = await DELETE('/users/{id}', { params: { path: { id: user.id } } });
       if (!error) {

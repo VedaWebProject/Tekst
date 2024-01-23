@@ -6,7 +6,7 @@ import { computed } from 'vue';
 import { $t } from '@/i18n';
 import { useElementHover } from '@vueuse/core';
 import ContentHeaderWidgetBar from '@/components/browse/ContentHeaderWidgetBar.vue';
-import contentComponents from '@/components/browse/contents/mappings';
+import contentComponents from '@/components/content/mappings';
 
 import FolderOffOutlined from '@vicons/material/FolderOffOutlined';
 import type { CSSProperties } from 'vue';

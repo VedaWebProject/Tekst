@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore, useStateStore } from '@/stores';
 import { $t } from '@/i18n';
-import { useMessages } from '@/messages';
+import { useMessages } from '@/composables/messages';
 
 import GavelOutlined from '@vicons/material/GavelOutlined';
 import PrivacyTipOutlined from '@vicons/material/PrivacyTipOutlined';
@@ -21,7 +21,7 @@ const SearchView = () => import('@/views/SearchView.vue');
 const RegisterView = () => import('@/views/RegisterView.vue');
 const InfoPageView = () => import('@/views/InfoPageView.vue');
 const ResourcesView = () => import('@/views/ResourcesView.vue');
-const ResourceConfigView = () => import('@/views/ResourceConfigView.vue');
+const ResourceSettingsView = () => import('@/views/ResourceSettingsView.vue');
 const ResourceCreateView = () => import('@/views/ResourceCreateView.vue');
 const ContentsView = () => import('@/views/ContentsView.vue');
 
@@ -134,7 +134,7 @@ const router = createRouter({
     {
       path: '/text/:text?/resources/:id/settings',
       name: 'resourceSettings',
-      component: ResourceConfigView,
+      component: ResourceSettingsView,
       meta: {
         isTextSpecific: true,
         restricted: 'user',

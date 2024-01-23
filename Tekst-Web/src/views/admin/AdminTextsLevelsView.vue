@@ -1,21 +1,21 @@
 <script setup lang="ts">
 import { useStateStore } from '@/stores';
-import InsertLevelButton from '@/components/admin/InsertLevelButton.vue';
+import InsertLevelButton from '@/components/InsertLevelButton.vue';
 import { textFormRules } from '@/forms/formRules';
 import { NIcon, NAlert, NButton, NForm, type FormInst, useDialog } from 'naive-ui';
 import { computed, ref } from 'vue';
 import { getLocaleProfile } from '@/i18n';
 import type { Translation } from '@/api';
-import ButtonShelf from '@/components/ButtonShelf.vue';
-import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
-import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
-import { useMessages } from '@/messages';
+import ButtonShelf from '@/components/generic/ButtonShelf.vue';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import { dialogProps } from '@/common';
+import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
 import { POST, PATCH, DELETE } from '@/api';
-import { usePlatformData } from '@/platformData';
+import { usePlatformData } from '@/composables/platformData';
 import { useI18n } from 'vue-i18n';
 import TranslationFormItem from '@/forms/TranslationFormItem.vue';
-import GenericModal from '@/components/GenericModal.vue';
+import GenericModal from '@/components/generic/GenericModal.vue';
 
 import DeleteRound from '@vicons/material/DeleteRound';
 import EditRound from '@vicons/material/EditRound';
@@ -73,10 +73,9 @@ function handleDeleteClick(level: number) {
     }),
     positiveText: $t('general.deleteAction'),
     negativeText: $t('general.cancelAction'),
-    positiveButtonProps,
-    negativeButtonProps,
     autoFocus: false,
     closable: false,
+    ...dialogProps,
     onPositiveClick: async () => {
       loading.value = true;
       const { data, error } = await DELETE('/texts/{id}/level/{index}', {

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useStats } from '@/fetchers';
+import { useStats } from '@/composables/fetchers';
 import { computed } from 'vue';
 import { NProgress, NSpin, NStatistic, NIcon } from 'naive-ui';
-import { usePlatformData } from '@/platformData';
-import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
-import IconHeading from '@/components/typography/IconHeading.vue';
+import { usePlatformData } from '@/composables/platformData';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import IconHeading from '@/components/generic/IconHeading.vue';
 
 import SupervisorAccountRound from '@vicons/material/SupervisorAccountRound';
 import LibraryBooksOutlined from '@vicons/material/LibraryBooksOutlined';

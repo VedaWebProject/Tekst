@@ -60,7 +60,7 @@ for (const localeDir of localeDirs) {
 }
 
 // generate index.ts
-const indexFileContent = `import type {HelpText} from '@/help'; export default {${localeImports.join(
+const indexFileContent = `import type {HelpText} from '@/types'; export default {${localeImports.join(
   '\n'
 )}} as Record<string, () => Promise<{ default: Record<string, HelpText> }>>;`;
 

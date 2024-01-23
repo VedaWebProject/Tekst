@@ -2,7 +2,7 @@ import createClient from 'openapi-fetch';
 import type { paths, components } from '@/api/schema';
 import { useAuthStore } from '@/stores';
 import Cookies from 'js-cookie';
-import { useMessages } from '@/messages';
+import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
 
 const serverUrl: string | undefined = import.meta.env.TEKST_SERVER_URL;

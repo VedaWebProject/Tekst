@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { ClientSegmentRead } from '@/api';
-import { usePlatformData } from '@/platformData';
+import { usePlatformData } from '@/composables/platformData';
 import { ref, type Component, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { NSpin } from 'naive-ui';
-import IconHeading from '@/components/typography/IconHeading.vue';
+import IconHeading from '@/components/generic/IconHeading.vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const props = defineProps<{

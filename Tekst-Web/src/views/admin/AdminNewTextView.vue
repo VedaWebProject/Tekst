@@ -13,19 +13,19 @@ import {
 } from 'naive-ui';
 import { textFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
-import { useMessages } from '@/messages';
+import { useMessages } from '@/composables/messages';
 import { POST } from '@/api';
 import { useStateStore } from '@/stores';
-import { usePlatformData } from '@/platformData';
+import { usePlatformData } from '@/composables/platformData';
 import { useRouter } from 'vue-router';
 import type { TextCreate, Translation } from '@/api';
-import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
-import IconHeading from '@/components/typography/IconHeading.vue';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import IconHeading from '@/components/generic/IconHeading.vue';
 
 import AddOutlined from '@vicons/material/AddOutlined';
 import MinusRound from '@vicons/material/MinusRound';
 import AddCircleOutlineRound from '@vicons/material/AddCircleOutlineRound';
-import ButtonShelf from '@/components/ButtonShelf.vue';
+import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 
 interface NewTextModel {
   title?: string;

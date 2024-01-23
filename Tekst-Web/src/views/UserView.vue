@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useProfile } from '@/fetchers';
+import { useProfile } from '@/composables/fetchers';
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { NSpin } from 'naive-ui';
 import { useAuthStore } from '@/stores';
-import IconHeading from '@/components/typography/IconHeading.vue';
+import IconHeading from '@/components/generic/IconHeading.vue';
 
 import PersonFilled from '@vicons/material/PersonFilled';
 

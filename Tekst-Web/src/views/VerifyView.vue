@@ -4,7 +4,7 @@ import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { $t } from '@/i18n';
 import { useRouter } from 'vue-router';
-import HugeLabeledIcon from '@/components/HugeLabeledIcon.vue';
+import HugeLabeledIcon from '@/components/generic/HugeLabeledIcon.vue';
 
 import CheckCircleTwotone from '@vicons/material/CheckCircleTwotone';
 import KeyOffTwotone from '@vicons/material/KeyOffTwotone';

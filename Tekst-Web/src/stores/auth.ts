@@ -1,12 +1,12 @@
 import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
 import type { UserRead, UserUpdate } from '@/api';
-import { useMessages } from '@/messages';
+import { useMessages } from '@/composables/messages';
 import { GET, PATCH, POST, optionsPresets } from '@/api/index';
 import { $t, getLocaleProfile } from '@/i18n';
 import { useIntervalFn } from '@vueuse/core';
 import { useRouter, type RouteLocationRaw } from 'vue-router';
-import { usePlatformData } from '@/platformData';
+import { usePlatformData } from '@/composables/platformData';
 import { useStateStore } from '@/stores';
 
 const SESSION_POLL_INTERVAL_S = 60; // check session expiry every n seconds

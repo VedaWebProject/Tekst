@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import TranslationDisplay from '@/components/TranslationDisplay.vue';
+import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
 import PrimaryNavBar from '@/components/navigation/PrimaryNavBar.vue';
-import TextSelect from '@/components/widgets/TextSelect.vue';
-import { usePlatformData } from '@/platformData';
+import TextSelect from '@/components/navigation/TextSelect.vue';
+import { usePlatformData } from '@/composables/platformData';
 import { useStateStore } from '@/stores';
 import { useRoute } from 'vue-router';
 

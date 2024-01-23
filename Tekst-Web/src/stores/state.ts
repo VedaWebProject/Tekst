@@ -7,9 +7,9 @@ import type { LocaleProfile } from '@/i18n';
 import { useRoute } from 'vue-router';
 import type { TextRead, TranslationLocaleKey } from '@/api';
 import { $t, $te } from '@/i18n';
-import { usePlatformData } from '@/platformData';
+import { usePlatformData } from '@/composables/platformData';
 import { useAuthStore } from './auth';
-import { useMessages } from '@/messages';
+import { useMessages } from '@/composables/messages';
 import { type LocaleKey } from '@/api';
 
 export const useStateStore = defineStore('state', () => {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { usePlatformData } from '@/platformData';
+import { usePlatformData } from '@/composables/platformData';
 import { useStateStore } from '@/stores';
 import { watchEffect, ref } from 'vue';
 

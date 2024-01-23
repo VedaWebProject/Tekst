@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router';
 
-import IconHeading from '@/components/typography/IconHeading.vue';
+import IconHeading from '@/components/generic/IconHeading.vue';
 import SettingsApplicationsOutlined from '@vicons/material/SettingsApplicationsOutlined';
 </script>
 

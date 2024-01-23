@@ -2,7 +2,7 @@
 import { ref, onMounted, computed } from 'vue';
 import { NButton, NBadge } from 'naive-ui';
 import BrowseLocationControls from '@/components/browse/BrowseLocationControls.vue';
-import LocationLabel from '@/components/browse/LocationLabel.vue';
+import LocationLabel from '@/components/LocationLabel.vue';
 import { useBrowseStore, useStateStore } from '@/stores';
 
 import CompressRound from '@vicons/material/CompressRound';

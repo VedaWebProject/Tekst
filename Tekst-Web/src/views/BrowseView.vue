@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import LocationLabel from '@/components/browse/LocationLabel.vue';
+import LocationLabel from '@/components/LocationLabel.vue';
 import BrowseToolbar from '@/components/browse/BrowseToolbar.vue';
 import { useAuthStore, useBrowseStore } from '@/stores';
 import ResourceToggleDrawer from '@/components/browse/ResourceToggleDrawer.vue';
 import ContentContainer from '@/components/browse/ContentContainer.vue';
-import HugeLabeledIcon from '@/components/HugeLabeledIcon.vue';
-import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
-import IconHeading from '@/components/typography/IconHeading.vue';
-import { usePlatformData } from '@/platformData';
+import HugeLabeledIcon from '@/components/generic/HugeLabeledIcon.vue';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import IconHeading from '@/components/generic/IconHeading.vue';
+import { usePlatformData } from '@/composables/platformData';
 import { $t } from '@/i18n';
 import { computed, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';

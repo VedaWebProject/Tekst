@@ -1,19 +1,19 @@
 <script setup lang="ts">
 import { DELETE, POST } from '@/api';
 import { accountFormRules } from '@/forms/formRules';
-import { useMessages } from '@/messages';
-import { usePlatformData } from '@/platformData';
+import { useMessages } from '@/composables/messages';
+import { usePlatformData } from '@/composables/platformData';
 import { useAuthStore } from '@/stores';
 import type { FormInst, FormItemInst, FormItemRule } from 'naive-ui';
 import { NSpace, NCheckbox, NButton, NInput, NFormItem, NForm, useDialog } from 'naive-ui';
 import { ref } from 'vue';
 import { $t } from '@/i18n';
-import { useModelChanges } from '@/modelChanges';
+import { useModelChanges } from '@/composables/modelChanges';
 import type { UserUpdate, UserUpdatePublicFields } from '@/api';
-import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
-import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
-import IconHeading from '@/components/typography/IconHeading.vue';
-import ButtonShelf from '@/components/ButtonShelf.vue';
+import { dialogProps } from '@/common';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import IconHeading from '@/components/generic/IconHeading.vue';
+import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 
 import ManageAccountsRound from '@vicons/material/ManageAccountsRound';
 
@@ -136,10 +136,9 @@ function handleEmailSave() {
             content: $t('account.manage.msgEmailChangeWarning'),
             positiveText: $t('general.saveAction'),
             negativeText: $t('general.cancelAction'),
-            positiveButtonProps,
-            negativeButtonProps,
             autoFocus: false,
             closable: false,
+            ...dialogProps,
             onPositiveClick: updateEmail,
           });
         }
@@ -159,10 +158,9 @@ async function handlePasswordSave() {
           content: $t('account.manage.msgPasswordChangeWarning'),
           positiveText: $t('general.saveAction'),
           negativeText: $t('general.cancelAction'),
-          positiveButtonProps,
-          negativeButtonProps,
           autoFocus: false,
           closable: false,
+          ...dialogProps,
           onPositiveClick: async () => {
             await updateUser({ password: passwordFormModel.value.password || undefined });
             resetPasswordModelChanges();
@@ -209,16 +207,9 @@ async function handleDeleteAccount() {
     content: $t('account.manage.msgDeleteAccountWarning'),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    positiveButtonProps: {
-      ...positiveButtonProps,
-      size: 'tiny',
-    },
-    negativeButtonProps: {
-      ...negativeButtonProps,
-      size: 'large',
-    },
     autoFocus: false,
     closable: false,
+    ...dialogProps,
     onPositiveClick: async () => {
       loading.value = true;
       const { error } = await DELETE('/users/me', {});

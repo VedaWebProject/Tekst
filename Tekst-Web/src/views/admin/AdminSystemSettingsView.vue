@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { $t, localeProfiles } from '@/i18n';
-import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import { computed, ref } from 'vue';
 import {
   NIcon,
@@ -16,10 +16,10 @@ import {
   NInput,
   type FormInst,
 } from 'naive-ui';
-import { usePlatformData } from '@/platformData';
+import { usePlatformData } from '@/composables/platformData';
 import { PATCH, type PlatformSettingsUpdate } from '@/api';
-import { useModelChanges } from '@/modelChanges';
-import { useMessages } from '@/messages';
+import { useModelChanges } from '@/composables/modelChanges';
+import { useMessages } from '@/composables/messages';
 import { platformSettingsFormRules } from '@/forms/formRules';
 import TranslationFormItem from '@/forms/TranslationFormItem.vue';
 
@@ -27,7 +27,7 @@ import AddOutlined from '@vicons/material/AddOutlined';
 import MinusRound from '@vicons/material/MinusRound';
 import ArrowUpwardOutlined from '@vicons/material/ArrowUpwardOutlined';
 import ArrowDownwardOutlined from '@vicons/material/ArrowDownwardOutlined';
-import ButtonShelf from '@/components/ButtonShelf.vue';
+import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import { useStateStore } from '@/stores';
 
 const state = useStateStore();

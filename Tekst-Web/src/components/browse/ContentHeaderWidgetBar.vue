@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { StyleValue } from 'vue';
-import contentWidgets from '@/components/browse/widgets/mappings';
-import ContentSiblingsWidget from './widgets/ContentSiblingsWidget.vue';
-import ResourceInfoWidget from './widgets/ResourceInfoWidget.vue';
-import ResourceDeactivateWidget from './widgets/ResourceDeactivateWidget.vue';
+import contentWidgets from '@/components/content/mappings';
+import LocationContentSiblingsWidget from '@/components/resource/LocationContentSiblingsWidget.vue';
+import ResourceInfoWidget from '@/components/resource/ResourceInfoWidget.vue';
+import ResourceDeactivateWidget from '@/components/resource/ResourceDeactivateWidget.vue';
 import { useBrowseStore } from '@/stores';
 import type { AnyResourceRead } from '@/api';
 
@@ -40,7 +40,7 @@ const browse = useBrowseStore();
       </template>
     </template>
     <!-- generic content widgets -->
-    <ContentSiblingsWidget
+    <LocationContentSiblingsWidget
       v-if="
         showSiblingsWidget &&
         resource.config?.showOnParentLevel &&

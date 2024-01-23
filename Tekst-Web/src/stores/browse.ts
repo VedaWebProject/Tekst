@@ -6,7 +6,7 @@ import type { AnyResourceRead, AnyContentRead, LocationRead } from '@/api';
 import { GET } from '@/api';
 import { pickTranslation } from '@/utils';
 import { $t } from '@/i18n';
-import { usePlatformData } from '@/platformData';
+import { usePlatformData } from '@/composables/platformData';
 
 export const useBrowseStore = defineStore('browse', () => {
   // composables

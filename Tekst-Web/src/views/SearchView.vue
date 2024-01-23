@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
-import IconHeading from '@/components/typography/IconHeading.vue';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import IconHeading from '@/components/generic/IconHeading.vue';
 
 import ManageSearchFilled from '@vicons/material/ManageSearchFilled';
 </script>

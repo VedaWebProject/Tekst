@@ -1,20 +1,20 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import { NButton, NIcon } from 'naive-ui';
-import ThemeModeSwitcher from '@/components/widgets/ThemeModeSwitcher.vue';
-import LocaleSwitcher from '@/components/widgets/LocaleSwitcher.vue';
-import UserOptionsButton from '@/components/widgets/UserOptionsButton.vue';
-import QuickSearchWidget from '@/components/widgets/QuickSearch.vue';
-import HelpNavButton from '@/components/widgets/HelpNavButton.vue';
+import ThemeModeSwitcher from '@/components/navigation/ThemeModeSwitcher.vue';
+import LocaleSwitcher from '@/components/navigation/LocaleSwitcher.vue';
+import UserActionsButton from '@/components/navigation/UserActionsButton.vue';
+import QuickSearchWidget from '@/components/navigation/QuickSearch.vue';
+import HelpNavButton from '@/components/navigation/HelpNavButton.vue';
 import { useAuthStore, useBrowseStore, useStateStore } from '@/stores';
 import { useRoute, RouterLink } from 'vue-router';
-import { usePlatformData } from '@/platformData';
+import { usePlatformData } from '@/composables/platformData';
 import NavigationMenu from '@/components/navigation/NavigationMenu.vue';
 import { useMainMenuOptions } from './navMenuOptions';
 
 import MenuRound from '@vicons/material/MenuRound';
 import DrawerMenu from './DrawerMenu.vue';
-import TranslationDisplay from '@/components/TranslationDisplay.vue';
+import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
 
 const { pfData, systemHome } = usePlatformData();
 const auth = useAuthStore();
@@ -24,7 +24,7 @@ const route = useRoute();
 
 const { menuOptions: mainMenuOptions } = useMainMenuOptions(false);
 const menuOpen = ref(false);
-const showUserOptionsButton = computed(
+const showUserActionsButton = computed(
   () => pfData.value?.security?.closedMode === false || auth.loggedIn
 );
 
@@ -70,7 +70,7 @@ watch(
         <ThemeModeSwitcher />
         <LocaleSwitcher />
         <HelpNavButton />
-        <UserOptionsButton v-if="showUserOptionsButton" />
+        <UserActionsButton v-if="showUserActionsButton" />
       </div>
     </div>
 
@@ -95,7 +95,7 @@ watch(
   <DrawerMenu
     v-if="state.smallScreen"
     v-model:show="menuOpen"
-    :show-user-options-button="showUserOptionsButton"
+    :show-user-options-button="showUserActionsButton"
   />
 </template>
 

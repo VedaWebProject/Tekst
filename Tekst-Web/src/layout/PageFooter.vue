@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import SegmentRenderer from '@/components/SegmentRenderer.vue';
-import TranslationDisplay from '@/components/TranslationDisplay.vue';
-import { usePlatformData } from '@/platformData';
+import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
+import { usePlatformData } from '@/composables/platformData';
 import { computed } from 'vue';
 
 const { pfData } = usePlatformData();

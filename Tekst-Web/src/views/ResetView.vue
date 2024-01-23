@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { POST } from '@/api';
 import { accountFormRules } from '@/forms/formRules';
-import { useMessages } from '@/messages';
+import { useMessages } from '@/composables/messages';
 import type { FormInst, FormItemInst, FormItemRule } from 'naive-ui';
 import { ref } from 'vue';
 import { $t } from '@/i18n';
@@ -9,7 +9,7 @@ import { NInput, NForm, NFormItem, NButton } from 'naive-ui';
 import { useRoute } from 'vue-router';
 import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import ButtonShelf from '@/components/ButtonShelf.vue';
+import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 
 const { message } = useMessages();
 const route = useRoute();

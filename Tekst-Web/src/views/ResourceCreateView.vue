@@ -2,16 +2,16 @@
 import { POST, resourceTypes, type AnyResourceRead } from '@/api';
 import { $t } from '@/i18n';
 import { useAuthStore, useResourcesStore, useStateStore } from '@/stores';
-import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
-import IconHeading from '@/components/typography/IconHeading.vue';
-import { useMessages } from '@/messages';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import IconHeading from '@/components/generic/IconHeading.vue';
+import { useMessages } from '@/composables/messages';
 import { computed, ref, watch } from 'vue';
 import { RouterLink } from 'vue-router';
 import { NAlert, NForm, NFormItem, NSelect, NButton, type FormInst } from 'naive-ui';
 import { resourceConfigFormRules } from '@/forms/formRules';
 import { useRouter } from 'vue-router';
-import ButtonShelf from '@/components/ButtonShelf.vue';
-import ResourceFormItems from '@/forms/ResourceFormItems.vue';
+import ButtonShelf from '@/components/generic/ButtonShelf.vue';
+import ResourceSettingsFormItems from '@/forms/resources/ResourceSettingsFormItems.vue';
 
 import LayersFilled from '@vicons/material/LayersFilled';
 import KeyboardArrowLeftOutlined from '@vicons/material/KeyboardArrowLeftOutlined';
@@ -147,7 +147,7 @@ async function handleSaveClick() {
           </n-form-item>
         </n-alert>
         <!-- COMMON RESOURCE FORM FIELDS -->
-        <ResourceFormItems v-model:model="model" :owner="auth.user" :public="false" />
+        <ResourceSettingsFormItems v-model:model="model" :owner="auth.user" :public="false" />
       </n-form>
 
       <ButtonShelf top-gap>

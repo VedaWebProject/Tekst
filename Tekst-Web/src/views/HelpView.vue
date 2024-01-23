@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { NSpin, NInput, NIcon } from 'naive-ui';
-import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
-import { useHelp, type HelpText } from '@/help';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import { useHelp, type HelpText } from '@/composables/help';
 import { computed, onMounted, ref } from 'vue';
 import { watch } from 'vue';
 import { useStateStore } from '@/stores';
-import IconHeading from '@/components/typography/IconHeading.vue';
-import GenericModal from '@/components/GenericModal.vue';
+import IconHeading from '@/components/generic/IconHeading.vue';
+import GenericModal from '@/components/generic/GenericModal.vue';
 
 import SearchOutlined from '@vicons/material/SearchOutlined';
 import QuestionMarkOutlined from '@vicons/material/QuestionMarkOutlined';

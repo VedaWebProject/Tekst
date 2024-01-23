@@ -7,7 +7,7 @@ import type { LocationRead } from '@/api';
 import router from '@/router';
 import { useMagicKeys, whenever } from '@vueuse/core';
 import { $t } from '@/i18n';
-import LocationSelectModal from '@/components/LocationSelectModal.vue';
+import LocationSelectModal from '@/components/modals/LocationSelectModal.vue';
 
 import ArrowBackIosOutlined from '@vicons/material/ArrowBackIosOutlined';
 import ArrowForwardIosOutlined from '@vicons/material/ArrowForwardIosOutlined';

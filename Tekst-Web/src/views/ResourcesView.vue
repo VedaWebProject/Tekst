@@ -24,11 +24,11 @@ import { ref } from 'vue';
 import { computed } from 'vue';
 import { $t } from '@/i18n';
 import { useAuthStore, useStateStore } from '@/stores';
-import ResourceListItem from '@/components/ResourceListItem.vue';
-import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
-import IconHeading from '@/components/typography/IconHeading.vue';
-import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
-import { useMessages } from '@/messages';
+import ResourceListItem from '@/components/resource/ResourceListItem.vue';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import IconHeading from '@/components/generic/IconHeading.vue';
+import { dialogProps } from '@/common';
+import { useMessages } from '@/composables/messages';
 import { useRouter } from 'vue-router';
 import { useResourcesStore } from '@/stores';
 
@@ -36,7 +36,7 @@ import SearchRound from '@vicons/material/SearchRound';
 import UndoRound from '@vicons/material/UndoRound';
 import LayersFilled from '@vicons/material/LayersFilled';
 import AddOutlined from '@vicons/material/AddOutlined';
-import TransferResourceModal from '@/components/TransferResourceModal.vue';
+import TransferResourceModal from '@/components/modals/TransferResourceModal.vue';
 import { saveDownload } from '@/api';
 
 const state = useStateStore();
@@ -127,10 +127,9 @@ function handleProposeClick(resource: AnyResourceRead) {
     content: $t('resources.warnPropose') + ' ' + $t('general.areYouSureHelpTextHint'),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    positiveButtonProps,
-    negativeButtonProps,
     autoFocus: false,
     closable: false,
+    ...dialogProps,
     onPositiveClick: async () => {
       actionsLoading.value = true;
       const { data, error } = await POST('/resources/{id}/propose', {
@@ -154,10 +153,9 @@ function handleUnproposeClick(resource: AnyResourceRead) {
     content: $t('resources.warnUnpropose'),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    positiveButtonProps,
-    negativeButtonProps,
     autoFocus: false,
     closable: false,
+    ...dialogProps,
     onPositiveClick: async () => {
       actionsLoading.value = true;
       const { data, error } = await POST('/resources/{id}/unpropose', {
@@ -181,10 +179,9 @@ function handlePublishClick(resource: AnyResourceRead) {
     content: $t('resources.warnPublish') + ' ' + $t('general.areYouSureHelpTextHint'),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    positiveButtonProps,
-    negativeButtonProps,
     autoFocus: false,
     closable: false,
+    ...dialogProps,
     onPositiveClick: async () => {
       actionsLoading.value = true;
       const { data, error } = await POST('/resources/{id}/publish', {
@@ -208,10 +205,9 @@ function handleUnpublishClick(resource: AnyResourceRead) {
     content: $t('resources.warnUnpublish'),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    positiveButtonProps,
-    negativeButtonProps,
     autoFocus: false,
     closable: false,
+    ...dialogProps,
     onPositiveClick: async () => {
       actionsLoading.value = true;
       const { data, error } = await POST('/resources/{id}/unpublish', {
@@ -246,10 +242,9 @@ function handleCreateVersionClick(resource: AnyResourceRead) {
     content: $t('resources.infoCreateVersion', { title: resource.title }),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    positiveButtonProps,
-    negativeButtonProps,
     autoFocus: false,
     closable: false,
+    ...dialogProps,
     onPositiveClick: async () => {
       actionsLoading.value = true;
       const { data, error } = await POST('/resources/{id}/version', {
@@ -272,10 +267,9 @@ function handleDeleteClick(resource: AnyResourceRead) {
     content: $t('resources.warnDelete'),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    positiveButtonProps,
-    negativeButtonProps,
     autoFocus: false,
     closable: false,
+    ...dialogProps,
     onPositiveClick: async () => {
       actionsLoading.value = true;
       const { error } = await DELETE('/resources/{id}', {

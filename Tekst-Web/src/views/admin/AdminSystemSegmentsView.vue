@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { $t, getLocaleProfile, renderLanguageOptionLabel } from '@/i18n';
-import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
-import HtmlEditor from '@/components/HtmlEditor.vue';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import HtmlEditor from '@/components/editors/HtmlEditor.vue';
 import { computed, nextTick, ref } from 'vue';
 import {
   NIcon,
@@ -14,19 +14,19 @@ import {
   useDialog,
   type InputInst,
 } from 'naive-ui';
-import { usePlatformData } from '@/platformData';
+import { usePlatformData } from '@/composables/platformData';
 import { PATCH, type ClientSegmentUpdate, POST, type ClientSegmentCreate, DELETE } from '@/api';
-import HugeLabeledIcon from '@/components/HugeLabeledIcon.vue';
+import HugeLabeledIcon from '@/components/generic/HugeLabeledIcon.vue';
 
 import { useI18n } from 'vue-i18n';
-import { useModelChanges } from '@/modelChanges';
-import { useMessages } from '@/messages';
+import { useModelChanges } from '@/composables/modelChanges';
+import { useMessages } from '@/composables/messages';
 import { systemSegmentFormRules } from '@/forms/formRules';
 
 import AddOutlined from '@vicons/material/AddOutlined';
 import FileOpenOutlined from '@vicons/material/FileOpenOutlined';
-import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
-import ButtonShelf from '@/components/ButtonShelf.vue';
+import { dialogProps } from '@/common';
+import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import { useStateStore } from '@/stores';
 
 const state = useStateStore();
@@ -193,10 +193,9 @@ function handleCancelClick() {
     content: $t('admin.system.segments.warnCancel'),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    positiveButtonProps,
-    negativeButtonProps,
     autoFocus: false,
     closable: false,
+    ...dialogProps,
     onPositiveClick: resetForm,
   });
 }
@@ -218,10 +217,9 @@ async function handleDeleteClick() {
     }),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    positiveButtonProps,
-    negativeButtonProps,
     autoFocus: false,
     closable: false,
+    ...dialogProps,
     onPositiveClick: async () => {
       const { error } = await DELETE('/platform/segments/{id}', {
         params: { path: { id: selectedSegmentId.value || '' } },

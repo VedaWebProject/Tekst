@@ -6,3 +6,8 @@ export type PromptModalProps = {
   title?: string;
   disableOkWhenNoValue?: boolean;
 };
+
+export interface HelpText {
+  title: string | null;
+  content: string;
+}

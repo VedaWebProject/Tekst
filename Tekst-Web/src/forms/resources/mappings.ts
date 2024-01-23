@@ -1,8 +1,8 @@
 import { type Component } from 'vue';
-import PlaintextFormItems from '@/forms/resources/PlaintextFormItems.vue';
+import DeepLLinksConfigFormItems from '@/forms/resources/DeepLLinksConfigFormItems.vue';
 
-const resourceContentFormItems: Record<string, Component> = {
-  plaintext: PlaintextFormItems,
+const specialConfigFormItems: Record<string, Component> = {
+  deeplLinks: DeepLLinksConfigFormItems,
 };
 
-export default resourceContentFormItems;
+export default specialConfigFormItems;

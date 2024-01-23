@@ -14,19 +14,19 @@ import {
 import { h, ref } from 'vue';
 import { DELETE, GET, POST, type LocationRead, withSelectedFile } from '@/api';
 import { useStateStore } from '@/stores';
-import { useMessages } from '@/messages';
+import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
 import { watch } from 'vue';
 import type { Component, Ref } from 'vue';
-import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
-import RenameLocationModal from '@/components/admin/RenameLocationModal.vue';
-import AddLocationModal from '@/components/admin/AddLocationModal.vue';
+import { dialogProps } from '@/common';
+import RenameLocationModal from '@/components/modals/RenameLocationModal.vue';
+import AddLocationModal from '@/components/modals/AddLocationModal.vue';
 
 import AddOutlined from '@vicons/material/AddOutlined';
 import DeleteFilled from '@vicons/material/DeleteFilled';
 import ArrowForwardIosOutlined from '@vicons/material/ArrowForwardIosOutlined';
 import EditTwotone from '@vicons/material/EditTwotone';
-import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import FileDownloadSharp from '@vicons/material/FileDownloadSharp';
 import UploadFileOutlined from '@vicons/material/UploadFileOutlined';
 import { computed } from 'vue';
@@ -210,9 +210,8 @@ async function handleDeleteClick(location: LocationTreeOption) {
     title: $t('general.warning'),
     content: $t('admin.text.locations.warnDeleteLocation', { locationLabel: location.label }),
     positiveText: $t('general.deleteAction'),
-    positiveButtonProps,
-    negativeButtonProps,
     autoFocus: true,
+    ...dialogProps,
     onPositiveClick: async () => {
       d.loading = true;
       await deleteLocation(location);

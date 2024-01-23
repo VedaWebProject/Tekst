@@ -21,25 +21,25 @@ import {
 } from '@/api';
 import { ref, type Component } from 'vue';
 import { computed, watch, h } from 'vue';
-import HugeLabeledIcon from '@/components/HugeLabeledIcon.vue';
+import HugeLabeledIcon from '@/components/generic/HugeLabeledIcon.vue';
 import { $t } from '@/i18n';
 import { useAuthStore, useStateStore } from '@/stores';
-import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
-import IconHeading from '@/components/typography/IconHeading.vue';
-import ResourceInfoWidget from '@/components/browse/widgets/ResourceInfoWidget.vue';
-import { useMessages } from '@/messages';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import IconHeading from '@/components/generic/IconHeading.vue';
+import ResourceInfoWidget from '@/components/resource/ResourceInfoWidget.vue';
+import { useMessages } from '@/composables/messages';
 import { useRoute, useRouter } from 'vue-router';
 import { useResourcesStore } from '@/stores';
-import ButtonShelf from '@/components/ButtonShelf.vue';
-import { useModelChanges } from '@/modelChanges';
+import ButtonShelf from '@/components/generic/ButtonShelf.vue';
+import { useModelChanges } from '@/composables/modelChanges';
 import { useMagicKeys, whenever } from '@vueuse/core';
 import { contentFormRules } from '@/forms/formRules';
-import ContentFormItems from '@/forms/resources/ContentFormItems.vue';
-import { defaultContentModels } from '@/forms/resources/defaultContentModels';
-import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
-import LocationSelectModal from '@/components/LocationSelectModal.vue';
-import contentComponents from '@/components/browse/contents/mappings';
-import LocationLabel from '@/components/browse/LocationLabel.vue';
+import ContentFormItems from '@/forms/contents/ContentFormItems.vue';
+import { defaultContentModels } from '@/forms/contents/defaultContentModels';
+import { dialogProps } from '@/common';
+import LocationSelectModal from '@/components/modals/LocationSelectModal.vue';
+import contentComponents from '@/components/content/mappings';
+import LocationLabel from '@/components/LocationLabel.vue';
 
 import EditNoteOutlined from '@vicons/material/EditNoteOutlined';
 import KeyboardArrowLeftOutlined from '@vicons/material/KeyboardArrowLeftOutlined';
@@ -286,10 +286,9 @@ async function handleDeleteContentClick() {
     content: $t('contents.confirmDelete'),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    positiveButtonProps,
-    negativeButtonProps,
     autoFocus: false,
     closable: false,
+    ...dialogProps,
     onPositiveClick: deleteContent,
   });
 }

@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import { NSwitch, NIcon } from 'naive-ui';
 import { $t } from '@/i18n';
-import MetadataDisplayMinimal from '@/components/browse/MetadataDisplayMinimal.vue';
+import MetadataDisplayMinimal from '@/components/resource/MetadataDisplayMinimal.vue';
 import { useStateStore } from '@/stores';
 import type { AnyResourceRead, UserRead } from '@/api';
 

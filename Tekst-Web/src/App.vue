@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router';
 import InitLoader from '@/components/InitLoader.vue';
-import GlobalMessenger from '@/components/GlobalMessenger.vue';
+import GlobalMessenger from '@/components/messages/GlobalMessenger.vue';
 import { computed } from 'vue';
 import { getLocaleProfile } from '@/i18n';
 import { useStateStore } from '@/stores';
@@ -13,12 +13,12 @@ import {
   NBackTop,
   useThemeVars,
 } from 'naive-ui';
-import { useThemeStore } from '@/theme';
+import { useThemeStore } from '@/stores/theme';
 import PageHeader from './layout/PageHeader.vue';
 import PageFooter from './layout/PageFooter.vue';
-import { useInitializeApp } from '@/init';
-import LoginModal from '@/components/LoginModal.vue';
-import HugeLabeledIcon from '@/components/HugeLabeledIcon.vue';
+import { useInitializeApp } from '@/composables/init';
+import LoginModal from '@/components/modals/LoginModal.vue';
+import HugeLabeledIcon from '@/components/generic/HugeLabeledIcon.vue';
 import ErrorTwotone from '@vicons/material/ErrorTwotone';
 
 const state = useStateStore();

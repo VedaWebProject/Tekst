@@ -13,14 +13,14 @@ import {
 } from 'naive-ui';
 import type { UserCreate } from '@/api';
 import { POST } from '@/api';
-import { useMessages } from '@/messages';
-import { usePlatformData } from '@/platformData';
+import { useMessages } from '@/composables/messages';
+import { usePlatformData } from '@/composables/platformData';
 import { useAuthStore } from '@/stores';
 import { accountFormRules } from '@/forms/formRules';
 import router from '@/router';
 
 import PersonFilled from '@vicons/material/PersonFilled';
-import IconHeading from '@/components/typography/IconHeading.vue';
+import IconHeading from '@/components/generic/IconHeading.vue';
 
 const auth = useAuthStore();
 const { message } = useMessages();

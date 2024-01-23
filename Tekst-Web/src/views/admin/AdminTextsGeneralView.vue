@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { textFormRules } from '@/forms/formRules';
-import { useMessages } from '@/messages';
+import { useMessages } from '@/composables/messages';
 import { useStateStore } from '@/stores';
 import {
   NCheckbox,
@@ -18,14 +18,14 @@ import { computed, ref, watch } from 'vue';
 import { DELETE, PATCH } from '@/api';
 import { $t } from '@/i18n';
 import type { TextCreate } from '@/api';
-import { useModelChanges } from '@/modelChanges';
-import { usePlatformData } from '@/platformData';
-import HelpButtonWidget from '@/components/widgets/HelpButtonWidget.vue';
-import { negativeButtonProps, positiveButtonProps } from '@/components/dialogButtonProps';
+import { useModelChanges } from '@/composables/modelChanges';
+import { usePlatformData } from '@/composables/platformData';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import { dialogProps } from '@/common';
 import _cloneDeep from 'lodash.clonedeep';
 import TranslationFormItem from '@/forms/TranslationFormItem.vue';
 import router from '@/router';
-import ButtonShelf from '@/components/ButtonShelf.vue';
+import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 
 const state = useStateStore();
 const { pfData, loadPlatformData } = usePlatformData();
@@ -110,10 +110,9 @@ async function handleDelete() {
     content: $t('admin.text.general.warnDeleteText', { title: state.text?.title || '?' }),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    positiveButtonProps,
-    negativeButtonProps,
     autoFocus: false,
     closable: false,
+    ...dialogProps,
     onPositiveClick: async () => {
       const { error } = await DELETE('/texts/{id}', {
         params: { path: { id: state.text?.id || '' } },

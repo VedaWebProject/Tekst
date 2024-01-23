@@ -3,7 +3,7 @@ import { computed } from 'vue';
 import { NDrawer, NDrawerContent } from 'naive-ui';
 import { useAuthStore, useBrowseStore } from '@/stores';
 import ResourceToggleDrawerItem from '@/components/browse/ResourceToggleDrawerItem.vue';
-import IconHeading from '../typography/IconHeading.vue';
+import IconHeading from '@/components/generic/IconHeading.vue';
 
 import LayersFilled from '@vicons/material/LayersFilled';
 

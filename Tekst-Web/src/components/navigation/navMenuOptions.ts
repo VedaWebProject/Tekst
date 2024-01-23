@@ -3,7 +3,7 @@ import { h, type Component, computed } from 'vue';
 import { RouterLink, type RouteLocationRaw } from 'vue-router';
 import { $t } from '@/i18n';
 import { useBrowseStore, useStateStore } from '@/stores';
-import { usePlatformData } from '@/platformData';
+import { usePlatformData } from '@/composables/platformData';
 import type { ClientSegmentHead } from '@/api';
 
 import RemoveRedEyeRound from '@vicons/material/RemoveRedEyeRound';

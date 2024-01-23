@@ -2,7 +2,7 @@
 import { useStateStore } from '@/stores';
 import { RouterView } from 'vue-router';
 
-import IconHeading from '@/components/typography/IconHeading.vue';
+import IconHeading from '@/components/generic/IconHeading.vue';
 import LibraryBooksOutlined from '@vicons/material/LibraryBooksOutlined';
 
 const state = useStateStore();
