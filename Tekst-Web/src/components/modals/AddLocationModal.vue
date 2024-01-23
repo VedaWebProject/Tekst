@@ -9,6 +9,7 @@ import { locationFormRules } from '@/forms/formRules';
 import { useStateStore } from '@/stores';
 import { useMessages } from '@/composables/messages';
 import GenericModal from '@/components/generic/GenericModal.vue';
+import { AddIcon } from '@/icons';
 
 const props = withDefaults(defineProps<{ show: boolean; parent: LocationTreeOption | null }>(), {
   show: false,
@@ -57,19 +58,17 @@ async function handleSubmit() {
 <template>
   <GenericModal
     :show="show"
+    :title="
+      $t('admin.text.locations.add.heading', {
+        level: state.textLevelLabels[(props.parent?.level ?? -1) + 1],
+        parentLabel: props.parent?.label || state.text?.title || '',
+      })
+    "
+    :icon="AddIcon"
     @update:show="$emit('update:show', $event)"
     @after-enter="nextTick(() => locationRenameInputRef?.focus())"
     @after-leave="locationFormModel.label = ''"
   >
-    <h2>
-      {{
-        $t('admin.text.locations.add.heading', {
-          level: state.textLevelLabels[(props.parent?.level ?? -1) + 1],
-          parentLabel: props.parent?.label || state.text?.title || '',
-        })
-      }}
-    </h2>
-
     <n-form
       ref="locationFormRef"
       :model="locationFormModel"

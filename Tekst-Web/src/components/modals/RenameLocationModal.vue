@@ -9,6 +9,7 @@ import { locationFormRules } from '@/forms/formRules';
 import { useModelChanges } from '@/composables/modelChanges';
 import { useMessages } from '@/composables/messages';
 import GenericModal from '@/components/generic/GenericModal.vue';
+import { EditIcon } from '@/icons';
 
 const props = withDefaults(defineProps<{ show: boolean; location: LocationTreeOption | null }>(), {
   show: false,
@@ -52,6 +53,8 @@ async function handleSubmit() {
 <template>
   <GenericModal
     :show="show"
+    :title="$t('admin.text.locations.rename.heading')"
+    :icon="EditIcon"
     @update:show="$emit('update:show', $event)"
     @after-enter="
       () => {
@@ -61,8 +64,6 @@ async function handleSubmit() {
     "
     @after-leave="locationFormModel.label = ''"
   >
-    <h2>{{ $t('admin.text.locations.rename.heading') }}</h2>
-
     <n-form
       ref="locationFormRef"
       :model="locationFormModel"

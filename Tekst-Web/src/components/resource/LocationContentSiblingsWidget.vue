@@ -12,7 +12,7 @@ import { useBrowseStore } from '@/stores';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 
-import { MergeIcon, BookIcon } from '@/icons';
+import { MergeIcon, BookIcon, ResourceIcon } from '@/icons';
 
 const props = defineProps<{
   resource: AnyResourceRead;
@@ -59,7 +59,7 @@ async function handleClick() {
     v-model:show="showModal"
     width="wide"
     :title="resource.title"
-    :icon="MergeIcon"
+    :icon="ResourceIcon"
     heading-level="2"
   >
     <IconHeading v-if="resource.level > 0" level="3" :icon="BookIcon">
