@@ -15,7 +15,7 @@ import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 
-import ManageAccountsRound from '@vicons/material/ManageAccountsRound';
+import { ManageAccountIcon } from '@/icons';
 
 const dialog = useDialog();
 const auth = useAuthStore();
@@ -225,7 +225,7 @@ async function handleDeleteAccount() {
 </script>
 
 <template>
-  <IconHeading level="1" :icon="ManageAccountsRound">
+  <IconHeading level="1" :icon="ManageAccountIcon">
     {{ $t('account.manage.heading', { username: auth.user?.username }) }}
     <HelpButtonWidget help-key="accountManageView" />
   </IconHeading>

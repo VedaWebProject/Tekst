@@ -10,7 +10,7 @@ import { POST } from '@/api';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
 
-import LogInOutlined from '@vicons/material/LogInOutlined';
+import { LogInIcon } from '@/icons';
 
 const auth = useAuthStore();
 const { message } = useMessages();
@@ -75,7 +75,7 @@ async function handleForgotPasswordClick() {
     v-model:show="auth.loginModalState.show"
     width="narrow"
     :title="$t('account.login.heading')"
-    :icon="LogInOutlined"
+    :icon="LogInIcon"
     @close="auth.closeLoginModal"
     @after-enter="emailInputRef?.focus()"
   >

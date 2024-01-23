@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router';
-
 import IconHeading from '@/components/generic/IconHeading.vue';
-import SettingsApplicationsOutlined from '@vicons/material/SettingsApplicationsOutlined';
+
+import { SettingsIcon } from '@/icons';
 </script>
 
 <template>
-  <IconHeading level="1" :icon="SettingsApplicationsOutlined">
+  <IconHeading level="1" :icon="SettingsIcon">
     {{ $t('admin.system.heading') }}
   </IconHeading>
   <router-view></router-view>

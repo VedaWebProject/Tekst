@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { NIcon } from 'naive-ui';
 import type { Component } from 'vue';
-import HourglassTopTwotone from '@vicons/material/HourglassTopTwotone';
+
+import { HourglassIcon } from '@/icons';
 
 const props = defineProps<{
   message: string;
@@ -12,7 +13,7 @@ const props = defineProps<{
 
 <template>
   <div class="huge-labeled-icon">
-    <n-icon :size="128" :component="props.loading ? HourglassTopTwotone : props.icon" />
+    <n-icon :size="128" :component="props.loading ? HourglassIcon : props.icon" />
     <div style="font-size: var(--app-ui-font-size-huge)">
       {{ !props.loading && props.message }}
     </div>

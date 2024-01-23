@@ -3,7 +3,7 @@ import type { TextRead } from '@/api';
 import { NIcon } from 'naive-ui';
 import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
 
-import DisabledVisibleRound from '@vicons/material/DisabledVisibleRound';
+import { DisabledVisibleIcon } from '@/icons';
 
 defineProps<{
   text: TextRead;
@@ -29,7 +29,7 @@ defineProps<{
         v-if="!text.isActive"
         style="font-size: var(--app-ui-font-size-small); font-style: italic; opacity: 0.5"
       >
-        <n-icon :component="DisabledVisibleRound" />
+        <n-icon :component="DisabledVisibleIcon" />
         {{ $t('models.text.isInactive') }}
       </div>
     </div>

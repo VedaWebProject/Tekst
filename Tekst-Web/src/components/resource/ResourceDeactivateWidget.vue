@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import ClearRound from '@vicons/material/ClearRound';
 import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
 import { useBrowseStore } from '@/stores';
 import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
 import type { AnyResourceRead } from '@/api';
+
+import { ClearIcon } from '@/icons';
 
 const props = defineProps<{
   resource: AnyResourceRead;
@@ -24,7 +25,7 @@ function handleClick() {
 <template>
   <ContentContainerHeaderWidget
     :title="$t('browse.contents.widgets.deactivateWidget.title')"
-    :icon-component="ClearRound"
+    :icon-component="ClearIcon"
     @click="handleClick"
   />
 </template>

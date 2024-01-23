@@ -27,12 +27,7 @@ import {
   type SelectOption,
 } from 'naive-ui';
 
-import MinusRound from '@vicons/material/MinusRound';
-import AddOutlined from '@vicons/material/AddOutlined';
-import PersonFilled from '@vicons/material/PersonFilled';
-import TranslateOutlined from '@vicons/material/TranslateOutlined';
-import ArrowUpwardOutlined from '@vicons/material/ArrowUpwardOutlined';
-import ArrowDownwardOutlined from '@vicons/material/ArrowDownwardOutlined';
+import { MinusIcon, AddIcon, UserIcon, TranslateIcon, ArrowUpIcon, ArrowDownIcon } from '@/icons';
 
 const props = defineProps<{
   model: AnyResourceRead;
@@ -59,7 +54,7 @@ const metadataKeysOptions = computed(() =>
   prioritizedMetadataKeys.map((k) => ({
     label: () =>
       h('div', { style: 'display: flex; align-items: center; gap: 4px; padding: 4px' }, [
-        h(NIcon, { component: TranslateOutlined }),
+        h(NIcon, { component: TranslateIcon }),
         $t(`models.meta.${k}`),
       ]),
     value: k,
@@ -146,7 +141,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
     },
     {
       default: () => `@${(props.option.user as UserReadPublic).username}`,
-      icon: () => h(NIcon, null, { default: () => h(PersonFilled) }),
+      icon: () => h(NIcon, null, { default: () => h(UserIcon) }),
     }
   );
 }
@@ -252,7 +247,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
               @click="() => remove(indexAction)"
             >
               <template #icon>
-                <n-icon :component="MinusRound" />
+                <n-icon :component="MinusIcon" />
               </template>
             </n-button>
             <n-button
@@ -263,7 +258,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
               @click="() => create(indexAction)"
             >
               <template #icon>
-                <n-icon :component="AddOutlined" />
+                <n-icon :component="AddIcon" />
               </template>
             </n-button>
             <n-button
@@ -275,7 +270,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
               @click="() => move('up', indexAction)"
             >
               <template #icon>
-                <n-icon :component="ArrowUpwardOutlined" />
+                <n-icon :component="ArrowUpIcon" />
               </template>
             </n-button>
             <n-button
@@ -287,7 +282,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
               @click="() => move('down', indexAction)"
             >
               <template #icon>
-                <n-icon :component="ArrowDownwardOutlined" />
+                <n-icon :component="ArrowDownIcon" />
               </template>
             </n-button>
           </n-space>

@@ -26,8 +26,7 @@ import { POST, PATCH, DELETE } from '@/api';
 import { useAuthStore } from '@/stores';
 import { dialogProps } from '@/common';
 
-import SearchRound from '@vicons/material/SearchRound';
-import UndoRound from '@vicons/material/UndoRound';
+import { SearchIcon, UndoIcon } from '@/icons';
 
 const { users, error, load: loadUsers } = useUsersAdmin();
 const { message } = useMessages();
@@ -220,7 +219,7 @@ onMounted(() => {
           round
         >
           <template #prefix>
-            <n-icon :component="SearchRound" />
+            <n-icon :component="SearchIcon" />
           </template>
         </n-input>
         <n-space vertical justify="space-between" style="padding-left: var(--layout-gap)">
@@ -247,7 +246,7 @@ onMounted(() => {
           >
             {{ $t('general.resetAction') }}
             <template #icon>
-              <n-icon :component="UndoRound" />
+              <n-icon :component="UndoIcon" />
             </template>
           </n-button>
         </n-space>

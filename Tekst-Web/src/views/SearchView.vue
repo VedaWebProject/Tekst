@@ -2,11 +2,11 @@
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 
-import ManageSearchFilled from '@vicons/material/ManageSearchFilled';
+import { AdvancedSearchIcon } from '@/icons';
 </script>
 
 <template>
-  <IconHeading level="1" :icon="ManageSearchFilled">
+  <IconHeading level="1" :icon="AdvancedSearchIcon">
     {{ $t('search.heading') }}
     <HelpButtonWidget help-key="searchView" />
   </IconHeading>

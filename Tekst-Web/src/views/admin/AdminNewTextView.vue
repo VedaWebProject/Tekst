@@ -21,11 +21,9 @@ import { useRouter } from 'vue-router';
 import type { TextCreate, Translation } from '@/api';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
-
-import AddOutlined from '@vicons/material/AddOutlined';
-import MinusRound from '@vicons/material/MinusRound';
-import AddCircleOutlineRound from '@vicons/material/AddCircleOutlineRound';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
+
+import { AddIcon, MinusIcon, AddCircleIcon } from '@/icons';
 
 interface NewTextModel {
   title?: string;
@@ -97,7 +95,7 @@ async function handleSave() {
 </script>
 
 <template>
-  <IconHeading level="1" :icon="AddCircleOutlineRound">
+  <IconHeading level="1" :icon="AddCircleIcon">
     {{ $t('admin.newText.heading') }}
     <HelpButtonWidget help-key="adminNewTextView" />
   </IconHeading>
@@ -176,7 +174,7 @@ async function handleSave() {
                 @click="() => remove(indexAction)"
               >
                 <template #icon>
-                  <n-icon :component="MinusRound" />
+                  <n-icon :component="MinusIcon" />
                 </template>
               </n-button>
               <n-button
@@ -187,7 +185,7 @@ async function handleSave() {
                 @click="() => create(indexAction)"
               >
                 <template #icon>
-                  <n-icon :component="AddOutlined" />
+                  <n-icon :component="AddIcon" />
                 </template>
               </n-button>
             </n-space>

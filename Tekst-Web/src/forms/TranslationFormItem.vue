@@ -13,10 +13,9 @@ import {
 } from 'naive-ui';
 import { computed } from 'vue';
 import { translationFormRules } from '@/forms/formRules';
-
-import AddOutlined from '@vicons/material/AddOutlined';
-import MinusRound from '@vicons/material/MinusRound';
 import { useStateStore } from '@/stores';
+
+import { AddIcon, MinusIcon } from '@/icons';
 
 const props = withDefaults(
   defineProps<{
@@ -122,7 +121,7 @@ const localeOptions = computed(() =>
             @click="() => remove(actionIndex)"
           >
             <template #icon>
-              <n-icon :component="MinusRound" />
+              <n-icon :component="MinusIcon" />
             </template>
           </n-button>
           <n-button
@@ -133,7 +132,7 @@ const localeOptions = computed(() =>
             @click="() => create(actionIndex)"
           >
             <template #icon>
-              <n-icon :component="AddOutlined" />
+              <n-icon :component="AddIcon" />
             </template>
           </n-button>
         </n-space>

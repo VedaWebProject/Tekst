@@ -7,7 +7,7 @@ import { useStateStore } from '@/stores';
 import { NDropdown } from 'naive-ui';
 import type { DropdownOption } from 'naive-ui';
 
-import TranslateOutlined from '@vicons/material/TranslateOutlined';
+import { TranslateIcon } from '@/icons';
 
 const DEEPL_TRANSLATOR_URL = 'https://www.deepl.com/translator';
 
@@ -65,7 +65,7 @@ function renderOption(option: DropdownOption) {
   >
     <ContentContainerHeaderWidget
       :title="$t('browse.contents.widgets.deepLTranslate.title')"
-      :icon-component="TranslateOutlined"
+      :icon-component="TranslateIcon"
     />
   </n-dropdown>
 </template>

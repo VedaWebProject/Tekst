@@ -19,7 +19,8 @@ import PageFooter from './layout/PageFooter.vue';
 import { useInitializeApp } from '@/composables/init';
 import LoginModal from '@/components/modals/LoginModal.vue';
 import HugeLabeledIcon from '@/components/generic/HugeLabeledIcon.vue';
-import ErrorTwotone from '@vicons/material/ErrorTwotone';
+
+import { ErrorIcon } from '@/icons';
 
 const state = useStateStore();
 const theme = useThemeStore();
@@ -45,7 +46,7 @@ const nUiDateLocale = computed(() => getLocaleProfile(state.locale)?.nUiDateLoca
             v-if="initialized && error"
             :message="$t('init.error')"
             :loading="!error && !initialized"
-            :icon="ErrorTwotone"
+            :icon="ErrorIcon"
           />
 
           <template v-else-if="initialized">

@@ -23,9 +23,7 @@ import { useStateStore } from '@/stores';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import router from '@/router';
 
-import PercentOutlined from '@vicons/material/PercentOutlined';
-import VerticalAlignTopOutlined from '@vicons/material/VerticalAlignTopOutlined';
-import VerticalAlignBottomOutlined from '@vicons/material/VerticalAlignBottomOutlined';
+import { CoverageIcon, TopIcon, BottomIcon } from '@/icons';
 
 const props = defineProps<{
   resource: AnyResourceRead;
@@ -110,7 +108,7 @@ watch(
     @after-leave="handleLeave"
   >
     <template #header>
-      <IconHeading level="2" :icon="PercentOutlined" style="margin: 0" ellipsis>
+      <IconHeading level="2" :icon="CoverageIcon" style="margin: 0" ellipsis>
         {{ resource.title }}:
         {{ $t('browse.contents.widgets.infoWidget.coverage') }}
       </IconHeading>
@@ -142,12 +140,12 @@ watch(
         <ButtonShelf bottom-gap wrap="nowrap" group-wrap="nowrap">
           <n-button secondary size="small" :focusable="false" @click="handleScrollClick('top')">
             <template #icon>
-              <n-icon :component="VerticalAlignTopOutlined" />
+              <n-icon :component="TopIcon" />
             </template>
           </n-button>
           <n-button secondary size="small" :focusable="false" @click="handleScrollClick('bottom')">
             <template #icon>
-              <n-icon :component="VerticalAlignBottomOutlined" />
+              <n-icon :component="BottomIcon" />
             </template>
           </n-button>
         </ButtonShelf>

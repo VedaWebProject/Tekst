@@ -1,15 +1,17 @@
 <script setup lang="ts">
 import type { UserRead } from '@/api';
 import { NIcon, NTime, NListItem, NThing, NSpace, NButton } from 'naive-ui';
-
-import StarRound from '@vicons/material/StarRound';
-import VerifiedUserRound from '@vicons/material/VerifiedUserRound';
-import BlockRound from '@vicons/material/BlockRound';
-import PersonFilled from '@vicons/material/PersonFilled';
-import CheckCircleRound from '@vicons/material/CheckCircleRound';
-import QuestionMarkOutlined from '@vicons/material/QuestionMarkOutlined';
-import ClearRound from '@vicons/material/ClearRound';
 import { usePlatformData } from '@/composables/platformData';
+
+import {
+  AdminIcon,
+  VerifiedUserIcon,
+  BlockIcon,
+  UserIcon,
+  CheckCircleIcon,
+  QuestionMarkIcon,
+  ClearIcon,
+} from '@/icons';
 
 defineProps<{
   targetUser: UserRead;
@@ -63,7 +65,7 @@ const statusBtnMinWidth = '128px';
               targetUser.isSuperuser ? $t('models.user.isSuperuser') : $t('models.user.modelLabel')
             }}
             <template #icon>
-              <n-icon :component="targetUser.isSuperuser ? StarRound : PersonFilled" />
+              <n-icon :component="targetUser.isSuperuser ? AdminIcon : UserIcon" />
             </template>
           </n-button>
           <!-- isActive -->
@@ -83,7 +85,7 @@ const statusBtnMinWidth = '128px';
           >
             {{ targetUser.isActive ? $t('models.user.isActive') : $t('models.user.isInactive') }}
             <template #icon>
-              <n-icon :component="targetUser.isActive ? CheckCircleRound : BlockRound" />
+              <n-icon :component="targetUser.isActive ? CheckCircleIcon : BlockIcon" />
             </template>
           </n-button>
           <!-- isVerified -->
@@ -105,9 +107,7 @@ const statusBtnMinWidth = '128px';
               targetUser.isVerified ? $t('models.user.isVerified') : $t('models.user.isUnverified')
             }}
             <template #icon>
-              <n-icon
-                :component="targetUser.isVerified ? VerifiedUserRound : QuestionMarkOutlined"
-              />
+              <n-icon :component="targetUser.isVerified ? VerifiedUserIcon : QuestionMarkIcon" />
             </template>
           </n-button>
           <!-- delete user -->
@@ -121,7 +121,7 @@ const statusBtnMinWidth = '128px';
             @click="$emit('deleteClick', targetUser)"
           >
             <template #icon>
-              <n-icon :component="ClearRound" />
+              <n-icon :component="ClearIcon" />
             </template>
           </n-button>
         </n-space>

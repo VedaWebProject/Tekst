@@ -41,19 +41,20 @@ import LocationSelectModal from '@/components/modals/LocationSelectModal.vue';
 import contentComponents from '@/components/content/mappings';
 import LocationLabel from '@/components/LocationLabel.vue';
 
-import EditNoteOutlined from '@vicons/material/EditNoteOutlined';
-import KeyboardArrowLeftOutlined from '@vicons/material/KeyboardArrowLeftOutlined';
-import ArrowBackIosOutlined from '@vicons/material/ArrowBackIosOutlined';
-import ArrowForwardIosOutlined from '@vicons/material/ArrowForwardIosOutlined';
-import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
-import FolderOffTwotone from '@vicons/material/FolderOffTwotone';
-import InsertDriveFileOutlined from '@vicons/material/InsertDriveFileOutlined';
-import CompareArrowsOutlined from '@vicons/material/CompareArrowsOutlined';
-import AltRouteOutlined from '@vicons/material/AltRouteOutlined';
-import LayersFilled from '@vicons/material/LayersFilled';
-import MoveDownOutlined from '@vicons/material/MoveDownOutlined';
-import SkipPreviousFilled from '@vicons/material/SkipPreviousFilled';
-import SkipNextFilled from '@vicons/material/SkipNextFilled';
+import {
+  EditNoteIcon,
+  ArrowBackIcon,
+  ArrowForwardIcon,
+  BookIcon,
+  NoContentIcon,
+  AddIcon,
+  CompareIcon,
+  VersionIcon,
+  ResourceIcon,
+  MoveDownIcon,
+  SkipPreviousIcon,
+  SkipNextIcon,
+} from '@/icons';
 
 type ContentFormModel = AnyContentCreate & { id: string };
 
@@ -93,8 +94,8 @@ const compareResourceOptions = computed(() =>
       key: r.id,
       disabled: r.id === compareResourceId.value,
       icon: r.originalId
-        ? renderIcon(AltRouteOutlined, r.originalId === resource.value?.id)
-        : renderIcon(LayersFilled),
+        ? renderIcon(VersionIcon, r.originalId === resource.value?.id)
+        : renderIcon(ResourceIcon),
     }))
 );
 
@@ -355,7 +356,7 @@ whenever(ArrowLeft, () => {
 </script>
 
 <template>
-  <IconHeading level="1" :icon="EditNoteOutlined">
+  <IconHeading level="1" :icon="EditNoteIcon">
     {{ $t('contents.heading') }}
     <HelpButtonWidget help-key="contentsView" />
   </IconHeading>
@@ -367,17 +368,13 @@ whenever(ArrowLeft, () => {
   >
     <n-button text :focusable="false" @click="navigate">
       <template #icon>
-        <KeyboardArrowLeftOutlined />
+        <n-icon :component="ArrowBackIcon" />
       </template>
       {{ $t('resources.backToOverview') }}
     </n-button>
   </router-link>
 
-  <IconHeading
-    v-if="resource"
-    level="2"
-    :icon="resource.originalId ? AltRouteOutlined : LayersFilled"
-  >
+  <IconHeading v-if="resource" level="2" :icon="resource.originalId ? VersionIcon : ResourceIcon">
     {{ resource?.title }}
     <ResourceInfoWidget :resource="resource" />
   </IconHeading>
@@ -391,17 +388,17 @@ whenever(ArrowLeft, () => {
         @click="navigateContents(-1)"
       >
         <template #icon>
-          <ArrowBackIosOutlined />
+          <ArrowBackIcon />
         </template>
       </n-button>
       <n-button type="primary" :disabled="loading" :focusable="false" @click="handleJumpToClick()">
         <template #icon>
-          <MenuBookOutlined />
+          <n-icon :component="BookIcon" />
         </template>
       </n-button>
       <n-button type="primary" :disabled="loading" :focusable="false" @click="navigateContents(1)">
         <template #icon>
-          <ArrowForwardIosOutlined />
+          <n-icon :component="ArrowForwardIcon" />
         </template>
       </n-button>
     </template>
@@ -419,7 +416,7 @@ whenever(ArrowLeft, () => {
         :title="$t('contents.tipBtnCompare')"
       >
         <template #icon>
-          <n-icon :component="CompareArrowsOutlined" />
+          <n-icon :component="CompareIcon" />
         </template>
         {{ $t('contents.lblBtnCompare') }}
       </n-button>
@@ -428,7 +425,7 @@ whenever(ArrowLeft, () => {
 
   <template v-if="resource && locationPath">
     <div class="content-block">
-      <IconHeading level="3" :icon="MenuBookOutlined">
+      <IconHeading level="3" :icon="BookIcon">
         <LocationLabel :location-path="locationPath" />
       </IconHeading>
 
@@ -484,7 +481,7 @@ whenever(ArrowLeft, () => {
             @click="() => handleNearestChangeClick('preceding')"
           >
             <template #icon>
-              <n-icon :component="SkipPreviousFilled" />
+              <n-icon :component="SkipPreviousIcon" />
             </template>
           </n-button>
           <n-button
@@ -494,7 +491,7 @@ whenever(ArrowLeft, () => {
             @click="handleApplyChanges"
           >
             <template #icon>
-              <n-icon :component="MoveDownOutlined" />
+              <n-icon :component="MoveDownIcon" />
             </template>
           </n-button>
           <n-button
@@ -503,7 +500,7 @@ whenever(ArrowLeft, () => {
             @click="() => handleNearestChangeClick('subsequent')"
           >
             <template #icon>
-              <n-icon :component="SkipNextFilled" />
+              <n-icon :component="SkipNextIcon" />
             </template>
           </n-button>
         </ButtonShelf>
@@ -561,12 +558,12 @@ whenever(ArrowLeft, () => {
       <n-space v-else vertical align="center" style="margin-bottom: var(--layout-gap)">
         <HugeLabeledIcon
           :message="$t('contents.noContent')"
-          :icon="FolderOffTwotone"
+          :icon="NoContentIcon"
           style="padding: 0 0 var(--layout-gap) 0"
         />
         <n-button type="primary" :disabled="loading" @click="handleAddContentClick">
           <template #icon>
-            <InsertDriveFileOutlined />
+            <n-icon :component="AddIcon" />
           </template>
           {{ $t('contents.btnAddContent') }}
         </n-button>

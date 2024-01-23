@@ -8,7 +8,7 @@ import { useMessages } from '@/composables/messages';
 import { computed, ref, watch } from 'vue';
 import _cloneDeep from 'lodash.clonedeep';
 import { RouterLink } from 'vue-router';
-import { NAlert, NSpin, NForm, NButton, type FormInst } from 'naive-ui';
+import { NIcon, NAlert, NSpin, NForm, NButton, type FormInst } from 'naive-ui';
 import { resourceConfigFormRules } from '@/forms/formRules';
 import { useModelChanges } from '@/composables/modelChanges';
 import { useRoute } from 'vue-router';
@@ -18,9 +18,7 @@ import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import { useResourcesStore } from '@/stores/resources';
 import ResourceSettingsFormItems from '@/forms/resources/ResourceSettingsFormItems.vue';
 
-import SettingsFilled from '@vicons/material/SettingsFilled';
-import KeyboardArrowLeftOutlined from '@vicons/material/KeyboardArrowLeftOutlined';
-import LayersFilled from '@vicons/material/LayersFilled';
+import { SettingsIcon, ArrowBackIcon, ResourceIcon } from '@/icons';
 
 const { message } = useMessages();
 const route = useRoute();
@@ -89,7 +87,7 @@ async function handleSaveClick() {
 </script>
 
 <template>
-  <IconHeading v-if="resource" level="1" :icon="SettingsFilled">
+  <IconHeading v-if="resource" level="1" :icon="SettingsIcon">
     {{ $t('resources.settings.heading') }}
     <HelpButtonWidget help-key="ResourceSettingsView" />
   </IconHeading>
@@ -101,13 +99,13 @@ async function handleSaveClick() {
   >
     <n-button text :focusable="false" @click="navigate">
       <template #icon>
-        <KeyboardArrowLeftOutlined />
+        <n-icon :component="ArrowBackIcon" />
       </template>
       {{ $t('resources.backToOverview') }}
     </n-button>
   </router-link>
 
-  <IconHeading v-if="resource" level="2" :icon="LayersFilled">
+  <IconHeading v-if="resource" level="2" :icon="ResourceIcon">
     {{ resource?.title }}
     <ResourceInfoWidget :resource="resource" />
   </IconHeading>

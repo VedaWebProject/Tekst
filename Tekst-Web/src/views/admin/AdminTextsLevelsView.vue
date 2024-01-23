@@ -17,8 +17,7 @@ import { useI18n } from 'vue-i18n';
 import TranslationFormItem from '@/forms/TranslationFormItem.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
 
-import DeleteRound from '@vicons/material/DeleteRound';
-import EditRound from '@vicons/material/EditRound';
+import { DeleteIcon, EditIcon } from '@/icons';
 
 const state = useStateStore();
 const { loadPlatformData } = usePlatformData();
@@ -194,7 +193,7 @@ async function handleModalSubmit() {
             :focusable="false"
             @click="() => handleEditClick(lvlIndex)"
           >
-            <n-icon :component="EditRound" />
+            <n-icon :component="EditIcon" />
           </n-button>
           <n-button
             secondary
@@ -203,7 +202,7 @@ async function handleModalSubmit() {
             :focusable="false"
             @click="() => handleDeleteClick(lvlIndex)"
           >
-            <n-icon :component="DeleteRound" />
+            <n-icon :component="DeleteIcon" />
           </n-button>
         </div>
       </div>
@@ -215,7 +214,7 @@ async function handleModalSubmit() {
   <GenericModal
     v-model:show="showEditModal"
     :title="editModalTitle"
-    :icon="EditRound"
+    :icon="EditIcon"
     @after-leave="destroyEditModal"
   >
     <n-alert

@@ -11,7 +11,7 @@ import { $t } from '@/i18n';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 
-import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
+import { BookIcon } from '@/icons';
 
 const props = withDefaults(
   defineProps<{
@@ -192,7 +192,7 @@ function handleLocationSelect() {
 <template>
   <GenericModal :show="show" @update:show="emit('update:show', $event)">
     <template #header>
-      <IconHeading level="2" :icon="MenuBookOutlined" style="margin: 0">
+      <IconHeading level="2" :icon="BookIcon" style="margin: 0">
         {{ $t('browse.location.modalHeading') }}
         <HelpButtonWidget help-key="browseLocationControls" />
       </IconHeading>

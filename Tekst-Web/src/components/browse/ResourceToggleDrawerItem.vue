@@ -6,9 +6,7 @@ import MetadataDisplayMinimal from '@/components/resource/MetadataDisplayMinimal
 import { useStateStore } from '@/stores';
 import type { AnyResourceRead, UserRead } from '@/api';
 
-import PublicFilled from '@vicons/material/PublicFilled';
-import FlagFilled from '@vicons/material/FlagFilled';
-import PersonFilled from '@vicons/material/PersonFilled';
+import { PublicIcon, ProposedIcon, UserIcon } from '@/icons';
 
 const props = defineProps<{
   active?: boolean;
@@ -50,17 +48,17 @@ const infoTooltip = computed(() =>
     <div v-if="user" class="item-extra">
       <n-icon
         v-if="resource.ownerId === user.id"
-        :component="PersonFilled"
+        :component="UserIcon"
         :title="$t('resources.ownedByMe')"
       />
       <n-icon
         v-if="resource.public"
-        :component="PublicFilled"
+        :component="PublicIcon"
         :title="$t('models.resource.public')"
       />
       <n-icon
         v-else-if="resource.proposed"
-        :component="FlagFilled"
+        :component="ProposedIcon"
         :title="$t('models.resource.proposed')"
       />
     </div>

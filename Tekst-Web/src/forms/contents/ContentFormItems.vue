@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { AnyContentCreate } from '@/api';
 import { NCollapse, NCollapseItem, NInput, NFormItem } from 'naive-ui';
-import resourceContentFormItems from '@/forms/resources/mappings';
+import resourceContentFormItems from '@/forms/contents/mappings';
 
 const props = defineProps<{
   model?: AnyContentCreate;

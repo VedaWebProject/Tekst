@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
-import { NButton, NBadge } from 'naive-ui';
+import { NButton, NBadge, NIcon } from 'naive-ui';
 import BrowseLocationControls from '@/components/browse/BrowseLocationControls.vue';
 import LocationLabel from '@/components/LocationLabel.vue';
 import { useBrowseStore, useStateStore } from '@/stores';
 
-import CompressRound from '@vicons/material/CompressRound';
-import ExpandRound from '@vicons/material/ExpandRound';
-import LayersFilled from '@vicons/material/LayersFilled';
+import { ReducedViewOnIcon, ReducedViewOffIcon, ResourceIcon } from '@/icons';
 
 const state = useStateStore();
 const browse = useBrowseStore();
@@ -54,8 +52,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
             @click="browse.reducedView = !browse.reducedView"
           >
             <template #icon>
-              <CompressRound v-if="!browse.reducedView" />
-              <ExpandRound v-else />
+              <n-icon :component="browse.reducedView ? ReducedViewOnIcon : ReducedViewOffIcon" />
             </template>
           </n-button>
         </n-badge>
@@ -70,7 +67,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
             @click="browse.showResourceToggleDrawer = true"
           >
             <template #icon>
-              <LayersFilled />
+              <n-icon :component="ResourceIcon" />
             </template>
           </n-button>
         </n-badge>

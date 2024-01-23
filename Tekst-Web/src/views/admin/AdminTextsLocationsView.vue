@@ -21,16 +21,18 @@ import type { Component, Ref } from 'vue';
 import { dialogProps } from '@/common';
 import RenameLocationModal from '@/components/modals/RenameLocationModal.vue';
 import AddLocationModal from '@/components/modals/AddLocationModal.vue';
-
-import AddOutlined from '@vicons/material/AddOutlined';
-import DeleteFilled from '@vicons/material/DeleteFilled';
-import ArrowForwardIosOutlined from '@vicons/material/ArrowForwardIosOutlined';
-import EditTwotone from '@vicons/material/EditTwotone';
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
-import FileDownloadSharp from '@vicons/material/FileDownloadSharp';
-import UploadFileOutlined from '@vicons/material/UploadFileOutlined';
 import { computed } from 'vue';
 import { saveDownload } from '@/api';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+
+import {
+  AddIcon,
+  DeleteIcon,
+  ExpandArrowRightIcon,
+  EditIcon,
+  DownloadIcon,
+  UploadIcon,
+} from '@/icons';
 
 export interface LocationTreeOption extends TreeOption {
   level: number;
@@ -310,7 +312,7 @@ function renderSwitcherIcon() {
     NIcon,
     { size: 'var(--app-ui-font-size-medium)', style: 'align-self: center' },
     {
-      default: () => h(ArrowForwardIosOutlined),
+      default: () => h(ExpandArrowRightIcon),
     }
   );
 }
@@ -356,7 +358,7 @@ function renderSuffix(info: { option: TreeOption; checked: boolean; selected: bo
   if (!info.selected) return null;
   return h('div', { style: 'display: flex; gap: 4px; padding: 4px' }, [
     renderSuffixButton(
-      EditTwotone,
+      EditIcon,
       () => {
         handleRenameClick(info.option as LocationTreeOption);
       },
@@ -364,7 +366,7 @@ function renderSuffix(info: { option: TreeOption; checked: boolean; selected: bo
       loadingRename
     ),
     renderSuffixButton(
-      DeleteFilled,
+      DeleteIcon,
       () => handleDeleteClick(info.option as LocationTreeOption),
       $t('admin.text.locations.tipDeleteLocation', { location: info.option.label || '' }),
       loadingDelete
@@ -372,7 +374,7 @@ function renderSuffix(info: { option: TreeOption; checked: boolean; selected: bo
     info.option.isLeaf
       ? null
       : renderSuffixButton(
-          AddOutlined,
+          AddIcon,
           () => handleAddLocationClick(info.option as LocationTreeOption),
           $t('admin.text.locations.add.tooltip'),
           loadingAdd
@@ -424,7 +426,7 @@ watch(
         @click="handleAddLocationClick(null)"
       >
         <template #icon>
-          <AddOutlined />
+          <n-icon :component="AddIcon" />
         </template>
         {{ $t('admin.text.locations.lblBtnAddLocationFirstLevel') }}
       </n-button>
@@ -436,7 +438,7 @@ watch(
         @click="handleDownloadTemplateClick()"
       >
         <template #icon>
-          <FileDownloadSharp />
+          <n-icon :component="DownloadIcon" />
         </template>
         {{ $t('admin.text.locations.lblBtnDownloadTemplate') }}
       </n-button>
@@ -447,7 +449,7 @@ watch(
         @click="handleUploadStructureClick()"
       >
         <template #icon>
-          <UploadFileOutlined />
+          <n-icon :component="UploadIcon" />
         </template>
         {{ $t('admin.text.locations.lblBtnUploadStructure') }}
       </n-button>

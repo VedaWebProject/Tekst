@@ -4,7 +4,7 @@ import { RouterLink } from 'vue-router';
 import type { UserReadPublic } from '@/api';
 import UserDisplayText from '@/components/user/UserDisplayText.vue';
 
-import PersonFilled from '@vicons/material/PersonFilled';
+import { UserIcon } from '@/icons';
 
 withDefaults(
   defineProps<{
@@ -25,7 +25,7 @@ withDefaults(
     style="display: flex; align-items: center"
     :style="size ? `font-size: var(--app-ui-font-size-${size})` : ''"
   >
-    <n-icon v-if="showIcon" :component="PersonFilled" style="margin-right: 0.25rem" />
+    <n-icon v-if="showIcon" :component="UserIcon" style="margin-right: 0.25rem" />
     <RouterLink v-if="user" :to="{ name: 'user', params: { username: user.username } }">
       <UserDisplayText :user="user" />
     </RouterLink>

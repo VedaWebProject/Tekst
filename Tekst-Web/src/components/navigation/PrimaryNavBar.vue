@@ -11,10 +11,10 @@ import { useRoute, RouterLink } from 'vue-router';
 import { usePlatformData } from '@/composables/platformData';
 import NavigationMenu from '@/components/navigation/NavigationMenu.vue';
 import { useMainMenuOptions } from './navMenuOptions';
-
-import MenuRound from '@vicons/material/MenuRound';
 import DrawerMenu from './DrawerMenu.vue';
 import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
+
+import { HamburgerMenuIcon } from '@/icons';
 
 const { pfData, systemHome } = usePlatformData();
 const auth = useAuthStore();
@@ -86,7 +86,7 @@ watch(
     >
       <template #icon>
         <n-icon size="32">
-          <MenuRound />
+          <n-icon :component="HamburgerMenuIcon" />
         </n-icon>
       </template>
     </n-button>

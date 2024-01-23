@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { AnyResourceRead } from '@/api';
 import { NIcon } from 'naive-ui';
-
-import AltRouteOutlined from '@vicons/material/AltRouteOutlined';
 import { useResourcesStore } from '@/stores';
+
+import { VersionIcon } from '@/icons';
 
 const props = withDefaults(
   defineProps<{
@@ -27,7 +27,7 @@ const originalTitle = resources.data.find((r) => r.id == props.resource.original
     class="resource-is-version-info"
     :style="size ? `font-size: var(--app-ui-font-size-${size})` : ''"
   >
-    <n-icon v-if="showIcon" :component="AltRouteOutlined" />
+    <n-icon v-if="showIcon" :component="VersionIcon" />
     {{ $t('resources.versionOf', { title: originalTitle || $t('resources.unknownOriginal') }) }}
   </div>
 </template>

@@ -2,9 +2,7 @@
 import type { AnyResourceRead } from '@/api';
 import { NIcon } from 'naive-ui';
 
-import PublicFilled from '@vicons/material/PublicFilled';
-import FlagFilled from '@vicons/material/FlagFilled';
-import PublicOffFilled from '@vicons/material/PublicOffFilled';
+import { PublicIcon, ProposedIcon, PublicOffIcon } from '@/icons';
 
 withDefaults(
   defineProps<{
@@ -25,15 +23,15 @@ withDefaults(
     :style="size ? `font-size: var(--app-ui-font-size-${size})` : ''"
   >
     <template v-if="resource.public">
-      <n-icon v-if="showIcon" :component="PublicFilled" />
+      <n-icon v-if="showIcon" :component="PublicIcon" />
       {{ $t('resources.public') }}
     </template>
     <template v-else-if="resource.proposed">
-      <n-icon v-if="showIcon" :component="FlagFilled" />
+      <n-icon v-if="showIcon" :component="ProposedIcon" />
       {{ $t('resources.proposed') }}
     </template>
     <template v-else>
-      <n-icon v-if="showIcon" :component="PublicOffFilled" />
+      <n-icon v-if="showIcon" :component="PublicOffIcon" />
       {{ $t('resources.notPublic') }}
     </template>
   </div>

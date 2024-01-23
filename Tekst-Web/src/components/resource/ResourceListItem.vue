@@ -19,18 +19,20 @@ import { $t } from '@/i18n';
 import ResourceIsVersionInfo from '@/components/resource/ResourceIsVersionInfo.vue';
 import UserDisplay from '@/components/user/UserDisplay.vue';
 
-import MoreVertOutlined from '@vicons/material/MoreVertOutlined';
-import DeleteFilled from '@vicons/material/DeleteFilled';
-import SettingsFilled from '@vicons/material/SettingsFilled';
-import FlagFilled from '@vicons/material/FlagFilled';
-import FlagOutlined from '@vicons/material/FlagOutlined';
-import PublicFilled from '@vicons/material/PublicFilled';
-import PublicOffFilled from '@vicons/material/PublicOffFilled';
-import PersonFilled from '@vicons/material/PersonFilled';
-import EditNoteOutlined from '@vicons/material/EditNoteOutlined';
-import AltRouteOutlined from '@vicons/material/AltRouteOutlined';
-import FileDownloadSharp from '@vicons/material/FileDownloadSharp';
-import UploadFileOutlined from '@vicons/material/UploadFileOutlined';
+import {
+  MoreIcon,
+  DeleteIcon,
+  SettingsIcon,
+  ProposedIcon,
+  UnproposedIcon,
+  PublicIcon,
+  PublicOffIcon,
+  UserIcon,
+  EditNoteIcon,
+  VersionIcon,
+  DownloadIcon,
+  UploadIcon,
+} from '@/icons';
 
 const props = defineProps<{
   targetResource: AnyResourceRead;
@@ -70,25 +72,25 @@ const actionOptions = computed(() => [
             {
               label: $t('resources.settingsAction'),
               key: 'settings',
-              icon: renderIcon(SettingsFilled),
+              icon: renderIcon(SettingsIcon),
               action: () => emit('settingsClick', props.targetResource),
             },
             {
               label: $t('resources.contentsAction'),
               key: 'contents',
-              icon: renderIcon(EditNoteOutlined),
+              icon: renderIcon(EditNoteIcon),
               action: () => emit('contentsClick', props.targetResource),
             },
             {
               label: $t('resources.downloadTemplateAction'),
               key: 'template',
-              icon: renderIcon(FileDownloadSharp),
+              icon: renderIcon(DownloadIcon),
               action: () => emit('downloadTemplateClick', props.targetResource),
             },
             {
               label: $t('resources.importAction'),
               key: 'import',
-              icon: renderIcon(UploadFileOutlined),
+              icon: renderIcon(UploadIcon),
               action: () => emit('importClick', props.targetResource),
             },
           ],
@@ -107,7 +109,7 @@ const actionOptions = computed(() => [
                     label: $t('resources.proposeAction'),
                     key: 'propose',
                     disabled: !!props.targetResource.originalId,
-                    icon: renderIcon(FlagFilled),
+                    icon: renderIcon(ProposedIcon),
                     action: () => emit('proposeClick', props.targetResource),
                   },
                 ]
@@ -118,7 +120,7 @@ const actionOptions = computed(() => [
                     label: $t('resources.unproposeAction'),
                     key: 'unpropose',
                     disabled: !!props.targetResource.originalId,
-                    icon: renderIcon(FlagOutlined),
+                    icon: renderIcon(UnproposedIcon),
                     action: () => emit('unproposeClick', props.targetResource),
                   },
                 ]
@@ -131,7 +133,7 @@ const actionOptions = computed(() => [
                     label: $t('resources.publishAction'),
                     key: 'publish',
                     disabled: !!props.targetResource.originalId,
-                    icon: renderIcon(PublicFilled),
+                    icon: renderIcon(PublicIcon),
                     action: () => emit('publishClick', props.targetResource),
                   },
                 ]
@@ -144,7 +146,7 @@ const actionOptions = computed(() => [
                     label: $t('resources.unpublishAction'),
                     key: 'unpublish',
                     disabled: !!props.targetResource.originalId,
-                    icon: renderIcon(PublicOffFilled),
+                    icon: renderIcon(PublicOffIcon),
                     action: () => emit('unpublishClick', props.targetResource),
                   },
                 ]
@@ -152,7 +154,7 @@ const actionOptions = computed(() => [
             {
               label: $t('resources.transferAction'),
               key: 'transfer',
-              icon: renderIcon(PersonFilled),
+              icon: renderIcon(UserIcon),
               disabled: props.targetResource.public || props.targetResource.proposed,
               action: () => emit('transferClick', props.targetResource),
             },
@@ -167,22 +169,16 @@ const actionOptions = computed(() => [
       {
         label: $t('resources.createVersionAction'),
         key: 'version',
-        icon: renderIcon(AltRouteOutlined),
+        icon: renderIcon(VersionIcon),
         disabled: !!props.targetResource.originalId,
         action: () => emit('createVersionClick', props.targetResource),
-      },
-      {
-        label: $t('resources.exportContentsAction'),
-        key: 'export',
-        icon: renderIcon(FileDownloadSharp),
-        action: () => emit('exportClick', props.targetResource),
       },
       ...(isOwnerOrAdmin.value
         ? [
             {
               label: $t('general.deleteAction'),
               key: 'delete',
-              icon: renderIcon(DeleteFilled),
+              icon: renderIcon(DeleteIcon),
               disabled: props.targetResource.public || props.targetResource.proposed,
               action: () => emit('deleteClick', props.targetResource),
             },
@@ -215,7 +211,7 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
           >
             <n-button quaternary circle :focusable="false">
               <template #icon>
-                <n-icon :component="MoreVertOutlined" />
+                <n-icon :component="MoreIcon" />
               </template>
             </n-button>
           </n-dropdown>

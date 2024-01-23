@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
-import MergeRound from '@vicons/material/MergeRound';
 import { ref } from 'vue';
 import { NButton, NSpin } from 'naive-ui';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
@@ -13,8 +12,7 @@ import { useBrowseStore } from '@/stores';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 
-import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
-import MergeOutlined from '@vicons/material/MergeOutlined';
+import { MergeIcon, BookIcon } from '@/icons';
 
 const props = defineProps<{
   resource: AnyResourceRead;
@@ -53,7 +51,7 @@ async function handleClick() {
 <template>
   <ContentContainerHeaderWidget
     :title="$t('browse.contents.widgets.siblingsWidget.title')"
-    :icon-component="MergeRound"
+    :icon-component="MergeIcon"
     @click="handleClick"
   />
 
@@ -61,10 +59,10 @@ async function handleClick() {
     v-model:show="showModal"
     width="wide"
     :title="resource.title"
-    :icon="MergeOutlined"
+    :icon="MergeIcon"
     heading-level="2"
   >
-    <IconHeading v-if="resource.level > 0" level="3" :icon="MenuBookOutlined">
+    <IconHeading v-if="resource.level > 0" level="3" :icon="BookIcon">
       <LocationLabel :max-level="resource.level - 1" />
     </IconHeading>
 

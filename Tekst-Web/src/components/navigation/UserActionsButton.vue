@@ -6,11 +6,7 @@ import { NButton, NIcon, NDropdown } from 'naive-ui';
 import { $t } from '@/i18n';
 import { useThemeStore } from '@/stores/theme';
 
-import LogInRound from '@vicons/material/LogInRound';
-import LogOutRound from '@vicons/material/LogOutRound';
-import PersonFilled from '@vicons/material/PersonFilled';
-import ShieldOutlined from '@vicons/material/ShieldOutlined';
-import LayersFilled from '@vicons/material/LayersFilled';
+import { LogInIcon, LogOutIcon, UserIcon, AdminIcon, ResourceIcon } from '@/icons';
 
 const auth = useAuthStore();
 const state = useStateStore();
@@ -30,7 +26,7 @@ const userOptions = computed(() => [
       name: 'account',
     }),
     key: 'account',
-    icon: renderIcon(PersonFilled),
+    icon: renderIcon(UserIcon),
   },
   {
     label: renderLink(() => $t('resources.heading'), {
@@ -40,7 +36,7 @@ const userOptions = computed(() => [
       },
     }),
     key: 'resources',
-    icon: renderIcon(LayersFilled),
+    icon: renderIcon(ResourceIcon),
   },
   ...(auth.user?.isSuperuser
     ? [
@@ -49,7 +45,7 @@ const userOptions = computed(() => [
             name: 'admin',
           }),
           key: 'admin',
-          icon: renderIcon(ShieldOutlined),
+          icon: renderIcon(AdminIcon),
         },
       ]
     : []),
@@ -60,7 +56,7 @@ const userOptions = computed(() => [
   {
     label: $t('account.logoutBtn'),
     key: 'logout',
-    icon: renderIcon(LogOutRound),
+    icon: renderIcon(LogOutIcon),
   },
 ]);
 
@@ -116,7 +112,7 @@ function handleUserOptionSelect(key: string) {
       class="user-options-button"
     >
       <template #icon>
-        <n-icon :component="PersonFilled" />
+        <n-icon :component="UserIcon" />
       </template>
     </n-button>
   </n-dropdown>
@@ -132,7 +128,7 @@ function handleUserOptionSelect(key: string) {
     @click="handleLoginClick"
   >
     <template #icon>
-      <n-icon :component="LogInRound" />
+      <n-icon :component="LogInIcon" />
     </template>
   </n-button>
 </template>

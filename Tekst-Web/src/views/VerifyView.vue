@@ -6,8 +6,7 @@ import { $t } from '@/i18n';
 import { useRouter } from 'vue-router';
 import HugeLabeledIcon from '@/components/generic/HugeLabeledIcon.vue';
 
-import CheckCircleTwotone from '@vicons/material/CheckCircleTwotone';
-import KeyOffTwotone from '@vicons/material/KeyOffTwotone';
+import { KeyOffIcon, CheckCircleIcon } from '@/icons';
 
 const route = useRoute();
 const router = useRouter();
@@ -39,6 +38,6 @@ onMounted(async () => {
   <HugeLabeledIcon
     :message="error ? error : $t('account.verify.success')"
     :loading="!error && !verified"
-    :icon="error ? KeyOffTwotone : CheckCircleTwotone"
+    :icon="error ? KeyOffIcon : CheckCircleIcon"
   />
 </template>

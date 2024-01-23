@@ -6,11 +6,7 @@ import { usePlatformData } from '@/composables/platformData';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 
-import SupervisorAccountRound from '@vicons/material/SupervisorAccountRound';
-import LibraryBooksOutlined from '@vicons/material/LibraryBooksOutlined';
-import AccountTreeRound from '@vicons/material/AccountTreeRound';
-import LayersFilled from '@vicons/material/LayersFilled';
-import BarChartRound from '@vicons/material/BarChartRound';
+import { UsersIcon, TextsIcon, AccountTreeIcon, ResourceIcon, BarChartIcon } from '@/icons';
 
 const { pfData } = usePlatformData();
 const { stats, error } = useStats();
@@ -38,7 +34,7 @@ const resourceTypes = computed(() => {
 </script>
 
 <template>
-  <IconHeading level="1" :icon="BarChartRound">
+  <IconHeading level="1" :icon="BarChartIcon">
     {{ $t('admin.statistics.heading') }}
     <HelpButtonWidget help-key="adminStatisticsView" />
   </IconHeading>
@@ -49,33 +45,25 @@ const resourceTypes = computed(() => {
       <div class="statistics-container">
         <n-statistic :label="$t('models.user.modelLabel', 2)" :value="counts.users">
           <template #prefix>
-            <n-icon>
-              <SupervisorAccountRound />
-            </n-icon>
+            <n-icon :component="UsersIcon" />
           </template>
         </n-statistic>
 
         <n-statistic :label="$t('models.text.modelLabel', 2)" :value="counts.texts">
           <template #prefix>
-            <n-icon>
-              <LibraryBooksOutlined />
-            </n-icon>
+            <n-icon :component="TextsIcon" />
           </template>
         </n-statistic>
 
         <n-statistic :label="$t('models.location.modelLabel', 2)" :value="counts.locations">
           <template #prefix>
-            <n-icon>
-              <AccountTreeRound />
-            </n-icon>
+            <n-icon :component="AccountTreeIcon" />
           </template>
         </n-statistic>
 
         <n-statistic :label="$t('models.resource.modelLabel', 2)" :value="counts.resources">
           <template #prefix>
-            <n-icon>
-              <LayersFilled />
-            </n-icon>
+            <n-icon :component="ResourceIcon" />
           </template>
         </n-statistic>
       </div>
@@ -108,17 +96,13 @@ const resourceTypes = computed(() => {
         <div class="statistics-container">
           <n-statistic :label="$t('models.location.modelLabel', 2)" :value="text.locationsCount">
             <template #prefix>
-              <n-icon>
-                <AccountTreeRound />
-              </n-icon>
+              <n-icon :component="AccountTreeIcon" />
             </template>
           </n-statistic>
 
           <n-statistic :label="$t('models.resource.modelLabel', 2)" :value="text.resourcesCount">
             <template #prefix>
-              <n-icon>
-                <LayersFilled />
-              </n-icon>
+              <n-icon :component="ResourceIcon" />
             </template>
           </n-statistic>
         </div>

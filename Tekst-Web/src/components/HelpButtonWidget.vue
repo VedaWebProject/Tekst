@@ -7,7 +7,7 @@ import { useHelp } from '@/composables/help';
 import type { HelpText } from '@/types';
 import GenericModal from '@/components/generic/GenericModal.vue';
 
-import QuestionMarkOutlined from '@vicons/material/QuestionMarkOutlined';
+import { QuestionMarkIcon } from '@/icons';
 
 const props = withDefaults(
   defineProps<{
@@ -65,7 +65,7 @@ async function handleHelpButtonClick() {
     @click="handleHelpButtonClick"
   >
     <template #icon>
-      <n-icon :component="QuestionMarkOutlined" />
+      <n-icon :component="QuestionMarkIcon" />
     </template>
   </n-button>
 
@@ -73,7 +73,7 @@ async function handleHelpButtonClick() {
     v-model:show="showModal"
     width="wide"
     :title="$t('help.help')"
-    :icon="QuestionMarkOutlined"
+    :icon="QuestionMarkIcon"
     heading-level="3"
     @after-leave="handleClose"
   >

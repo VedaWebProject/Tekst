@@ -5,17 +5,19 @@ import { $t } from '@/i18n';
 import { useBrowseStore, useStateStore } from '@/stores';
 import { usePlatformData } from '@/composables/platformData';
 import type { ClientSegmentHead } from '@/api';
-
-import RemoveRedEyeRound from '@vicons/material/RemoveRedEyeRound';
-import ManageAccountsRound from '@vicons/material/ManageAccountsRound';
-import LibraryBooksOutlined from '@vicons/material/LibraryBooksOutlined';
-import BarChartRound from '@vicons/material/BarChartRound';
-import AddCircleOutlineRound from '@vicons/material/AddCircleOutlineRound';
-import SettingsFilled from '@vicons/material/SettingsFilled';
-import InfoOutlined from '@vicons/material/InfoOutlined';
-import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
-import SearchOutlined from '@vicons/material/SearchOutlined';
 import { pickTranslation } from '@/utils';
+
+import {
+  EyeIcon,
+  ManageAccountIcon,
+  TextsIcon,
+  BarChartIcon,
+  AddCircleIcon,
+  SettingsIcon,
+  InfoIcon,
+  BookIcon,
+  SearchIcon,
+} from '@/icons';
 
 function renderIcon(icon: Component, noop: boolean = false) {
   return noop ? undefined : () => h(NIcon, undefined, { default: () => h(icon) });
@@ -64,7 +66,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
     return pages.map((p) => ({
       label: renderLink(() => p.title || p.key, { name: 'info', params: { p: p.key } }),
       key: `page_${p.key}`,
-      icon: renderIcon(InfoOutlined, !showIcons),
+      icon: renderIcon(InfoIcon, !showIcons),
     }));
   });
 
@@ -76,7 +78,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
         query: { lvl: browse.level, pos: browse.position },
       }),
       key: 'browse',
-      icon: renderIcon(MenuBookOutlined, !showIcons),
+      icon: renderIcon(BookIcon, !showIcons),
     },
     {
       label: renderLink(() => $t('nav.search'), {
@@ -84,7 +86,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
         params: { text: state.text?.slug },
       }),
       key: 'search',
-      icon: renderIcon(SearchOutlined, !showIcons),
+      icon: renderIcon(SearchIcon, !showIcons),
     },
     ...(infoPagesOptions.value.length
       ? [
@@ -108,12 +110,12 @@ export function useAccountMenuOptions(showIcons: boolean = true) {
     {
       label: renderLink(() => $t('account.profile'), { name: 'accountProfile' }),
       key: 'accountProfile',
-      icon: renderIcon(RemoveRedEyeRound, !showIcons),
+      icon: renderIcon(EyeIcon, !showIcons),
     },
     {
       label: renderLink(() => $t('account.account'), { name: 'accountManage' }),
       key: 'accountManage',
-      icon: renderIcon(ManageAccountsRound, !showIcons),
+      icon: renderIcon(ManageAccountIcon, !showIcons),
     },
   ];
 
@@ -129,12 +131,12 @@ export function useAdminMenuOptions(showIcons: boolean = true) {
     {
       label: renderLink(() => $t('admin.statistics.heading'), { name: 'adminStatistics' }),
       key: 'adminStatistics',
-      icon: renderIcon(BarChartRound, !showIcons),
+      icon: renderIcon(BarChartIcon, !showIcons),
     },
     {
       label: $t('admin.text.heading'),
       key: 'adminText',
-      icon: renderIcon(LibraryBooksOutlined, !showIcons),
+      icon: renderIcon(TextsIcon, !showIcons),
       children: [
         {
           label: renderLink(() => $t('admin.text.general.heading'), {
@@ -162,12 +164,12 @@ export function useAdminMenuOptions(showIcons: boolean = true) {
     {
       label: renderLink(() => $t('admin.newText.heading'), { name: 'adminNewText' }),
       key: 'adminNewText',
-      icon: renderIcon(AddCircleOutlineRound, !showIcons),
+      icon: renderIcon(AddCircleIcon, !showIcons),
     },
     {
       label: $t('admin.system.heading'),
       key: 'adminSystem',
-      icon: renderIcon(SettingsFilled, !showIcons),
+      icon: renderIcon(SettingsIcon, !showIcons),
       children: [
         {
           label: renderLink(() => $t('admin.system.platformSettings.heading'), {

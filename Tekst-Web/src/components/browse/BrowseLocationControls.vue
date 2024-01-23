@@ -2,16 +2,14 @@
 import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useBrowseStore } from '@/stores';
-import { NButton } from 'naive-ui';
+import { NButton, NIcon } from 'naive-ui';
 import type { LocationRead } from '@/api';
 import router from '@/router';
 import { useMagicKeys, whenever } from '@vueuse/core';
 import { $t } from '@/i18n';
 import LocationSelectModal from '@/components/modals/LocationSelectModal.vue';
 
-import ArrowBackIosOutlined from '@vicons/material/ArrowBackIosOutlined';
-import ArrowForwardIosOutlined from '@vicons/material/ArrowForwardIosOutlined';
-import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
+import { ArrowBackIcon, ArrowForwardIcon, BookIcon } from '@/icons';
 
 withDefaults(
   defineProps<{
@@ -84,7 +82,7 @@ const btnColor = '#fff';
         @click="navigate"
       >
         <template #icon>
-          <ArrowBackIosOutlined />
+          <n-icon :component="ArrowBackIcon" />
         </template>
       </n-button>
     </router-link>
@@ -98,7 +96,7 @@ const btnColor = '#fff';
       @click="showLocationSelectModal = true"
     >
       <template #icon>
-        <MenuBookOutlined />
+        <n-icon :component="BookIcon" />
       </template>
     </n-button>
 
@@ -112,7 +110,7 @@ const btnColor = '#fff';
         @click="navigate"
       >
         <template #icon>
-          <ArrowForwardIosOutlined />
+          <n-icon :component="ArrowForwardIcon" />
         </template>
       </n-button>
     </router-link>

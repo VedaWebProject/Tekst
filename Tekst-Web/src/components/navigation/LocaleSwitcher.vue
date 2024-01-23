@@ -2,9 +2,10 @@
 import { computed } from 'vue';
 import { useStateStore } from '@/stores';
 import { NButton, NDropdown, NIcon } from 'naive-ui';
-import LanguageOutlined from '@vicons/material/LanguageOutlined';
 import { $t } from '@/i18n';
 import type { LocaleKey } from '@/api';
+
+import { LanguageIcon } from '@/icons';
 
 const state = useStateStore();
 
@@ -43,7 +44,7 @@ function handleLanguageSelect(localeCode: LocaleKey) {
       :focusable="false"
     >
       <template #icon>
-        <n-icon :component="LanguageOutlined" />
+        <n-icon :component="LanguageIcon" />
       </template>
     </n-button>
   </n-dropdown>

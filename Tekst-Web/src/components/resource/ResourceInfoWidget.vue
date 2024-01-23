@@ -14,12 +14,14 @@ import CoverageDetailsWidget from './CoverageDetailsWidget.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import ResourceIsVersionInfo from '@/components/resource/ResourceIsVersionInfo.vue';
 
-import InfoOutlined from '@vicons/material/InfoOutlined';
-import ChatBubbleOutlineOutlined from '@vicons/material/ChatBubbleOutlineOutlined';
-import FormatQuoteFilled from '@vicons/material/FormatQuoteFilled';
-import PercentOutlined from '@vicons/material/PercentOutlined';
-import LabelOutlined from '@vicons/material/LabelOutlined';
-import LayersFilled from '@vicons/material/LayersFilled';
+import {
+  InfoIcon,
+  CommentIcon,
+  FormatQuoteIcon,
+  CoverageIcon,
+  MetadataIcon,
+  ResourceIcon,
+} from '@/icons';
 
 const props = defineProps<{
   resource: AnyResourceRead;
@@ -46,11 +48,11 @@ watch(showInfoModal, async (after) => {
 <template>
   <ContentContainerHeaderWidget
     :title="$t('browse.contents.widgets.infoWidget.title')"
-    :icon-component="InfoOutlined"
+    :icon-component="InfoIcon"
     @click="showInfoModal = true"
   />
 
-  <GenericModal v-model:show="showInfoModal" :title="resource.title" :icon="LayersFilled">
+  <GenericModal v-model:show="showInfoModal" :title="resource.title" :icon="ResourceIcon">
     <p v-if="resource.description?.length">
       <TranslationDisplay :value="resource.description" />
     </p>
@@ -65,7 +67,7 @@ watch(showInfoModal, async (after) => {
     </template>
 
     <template v-if="resource.meta && Object.keys(resource.meta).length">
-      <IconHeading level="3" :icon="LabelOutlined">
+      <IconHeading level="3" :icon="MetadataIcon">
         {{ $t('models.meta.modelLabel') }}
       </IconHeading>
       <MetadataDisplay :data="resource.meta" />
@@ -73,7 +75,7 @@ watch(showInfoModal, async (after) => {
     </template>
 
     <template v-if="resource.citation">
-      <IconHeading level="3" :icon="FormatQuoteFilled">
+      <IconHeading level="3" :icon="FormatQuoteIcon">
         {{ $t('browse.contents.widgets.infoWidget.citeAs') }}
       </IconHeading>
       <div>
@@ -83,7 +85,7 @@ watch(showInfoModal, async (after) => {
     </template>
 
     <template v-if="coverage">
-      <IconHeading level="3" :icon="PercentOutlined">
+      <IconHeading level="3" :icon="CoverageIcon">
         {{ $t('browse.contents.widgets.infoWidget.coverage') }}
       </IconHeading>
 
@@ -131,7 +133,7 @@ watch(showInfoModal, async (after) => {
     </template>
 
     <template v-if="resource.comment?.length">
-      <IconHeading level="3" :icon="ChatBubbleOutlineOutlined">
+      <IconHeading level="3" :icon="CommentIcon">
         {{ $t('models.resource.comment') }}
       </IconHeading>
       <div class="resource-comment">

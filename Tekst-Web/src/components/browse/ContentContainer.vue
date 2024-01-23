@@ -7,10 +7,10 @@ import { $t } from '@/i18n';
 import { useElementHover } from '@vueuse/core';
 import ContentHeaderWidgetBar from '@/components/browse/ContentHeaderWidgetBar.vue';
 import contentComponents from '@/components/content/mappings';
-
-import FolderOffOutlined from '@vicons/material/FolderOffOutlined';
 import type { CSSProperties } from 'vue';
 import type { AnyResourceRead } from '@/api';
+
+import { NoContentIcon } from '@/icons';
 
 const props = defineProps<{
   loading?: boolean;
@@ -55,7 +55,7 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
     :title="contentContainerTitle"
   >
     <div class="content-header" :class="browse.reducedView ? 'reduced' : ''">
-      <n-icon v-if="!resource.contents?.length" :component="FolderOffOutlined" />
+      <n-icon v-if="!resource.contents?.length" :component="NoContentIcon" />
       <div class="content-header-title-container">
         <div class="content-header-title" :class="browse.reducedView ? 'reduced' : ''">
           {{ resource.title }}

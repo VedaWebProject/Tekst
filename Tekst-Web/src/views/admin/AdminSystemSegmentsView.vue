@@ -22,12 +22,11 @@ import { useI18n } from 'vue-i18n';
 import { useModelChanges } from '@/composables/modelChanges';
 import { useMessages } from '@/composables/messages';
 import { systemSegmentFormRules } from '@/forms/formRules';
-
-import AddOutlined from '@vicons/material/AddOutlined';
-import FileOpenOutlined from '@vicons/material/FileOpenOutlined';
 import { dialogProps } from '@/common';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import { useStateStore } from '@/stores';
+
+import { AddIcon, FileOpenIcon } from '@/icons';
 
 const state = useStateStore();
 const { pfData, loadPlatformData } = usePlatformData();
@@ -263,7 +262,7 @@ async function handleDeleteClick() {
     />
     <n-button type="primary" :disabled="modelChanged" size="large" @click="handleAddSegmentClick">
       <template #icon>
-        <n-icon :component="AddOutlined" />
+        <n-icon :component="AddIcon" />
       </template>
     </n-button>
   </div>
@@ -341,9 +340,5 @@ async function handleDeleteClick() {
     </div>
   </template>
 
-  <HugeLabeledIcon
-    v-else
-    :message="$t('admin.system.segments.noSegment')"
-    :icon="FileOpenOutlined"
-  />
+  <HugeLabeledIcon v-else :message="$t('admin.system.segments.noSegment')" :icon="FileOpenIcon" />
 </template>

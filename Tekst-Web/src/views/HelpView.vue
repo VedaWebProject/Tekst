@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { NSpin, NInput, NIcon } from 'naive-ui';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
-import { useHelp, type HelpText } from '@/composables/help';
+import { useHelp } from '@/composables/help';
 import { computed, onMounted, ref } from 'vue';
 import { watch } from 'vue';
 import { useStateStore } from '@/stores';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
 
-import SearchOutlined from '@vicons/material/SearchOutlined';
-import QuestionMarkOutlined from '@vicons/material/QuestionMarkOutlined';
+import { SearchIcon, QuestionMarkIcon } from '@/icons';
+import type { HelpText } from '@/types';
 
 const { getHelpTexts } = useHelp();
 
@@ -57,14 +57,14 @@ watch(
 </script>
 
 <template>
-  <IconHeading level="1" :icon="QuestionMarkOutlined">
+  <IconHeading level="1" :icon="QuestionMarkIcon">
     {{ $t('help.help') }}
     <HelpButtonWidget help-key="helpView" />
   </IconHeading>
 
   <NInput v-model:value="filter" round :placeholder="$t('search.searchAction')" clearable>
     <template #prefix>
-      <n-icon :component="SearchOutlined" />
+      <n-icon :component="SearchIcon" />
     </template>
   </NInput>
   <div style="margin-top: 0.5rem">
@@ -94,7 +94,7 @@ watch(
     v-model:show="showModal"
     width="wide"
     :title="$t('help.help')"
-    :icon="QuestionMarkOutlined"
+    :icon="QuestionMarkIcon"
     heading-level="3"
     @after-leave="helpTextContent = undefined"
   >

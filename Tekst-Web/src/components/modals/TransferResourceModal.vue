@@ -18,7 +18,7 @@ import { $t } from '@/i18n';
 import { useMessages } from '@/composables/messages';
 import GenericModal from '@/components/generic/GenericModal.vue';
 
-import PersonFilled from '@vicons/material/PersonFilled';
+import { UserIcon } from '@/icons';
 
 const props = defineProps<{ show?: boolean; resource?: AnyResourceRead; loading?: boolean }>();
 const emit = defineEmits(['update:show', 'submit']);
@@ -71,7 +71,7 @@ async function handleOkClick() {
   <GenericModal
     :show="show && !!resource"
     :title="$t('resources.transferAction')"
-    :icon="PersonFilled"
+    :icon="UserIcon"
     @update:show="emit('update:show', $event)"
   >
     <n-alert type="warning" :title="$t('general.warning')" style="margin-bottom: var(--layout-gap)">

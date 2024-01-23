@@ -23,10 +23,9 @@ import { useModelChanges } from '@/composables/modelChanges';
 import { useMessages } from '@/composables/messages';
 import { infoSegmentFormRules } from '@/forms/formRules';
 import { dialogProps } from '@/common';
-
-import AddOutlined from '@vicons/material/AddOutlined';
-import FileOpenOutlined from '@vicons/material/FileOpenOutlined';
 import { useStateStore } from '@/stores';
+
+import { AddIcon, FileOpenIcon } from '@/icons';
 
 const state = useStateStore();
 const { pfData, loadPlatformData, getSegment } = usePlatformData();
@@ -251,7 +250,7 @@ async function handleDeleteClick() {
     />
     <n-button type="primary" :disabled="modelChanged" size="large" @click="handleAddSegmentClick">
       <template #icon>
-        <n-icon :component="AddOutlined" />
+        <n-icon :component="AddIcon" />
       </template>
     </n-button>
   </div>
@@ -328,9 +327,5 @@ async function handleDeleteClick() {
     </div>
   </template>
 
-  <HugeLabeledIcon
-    v-else
-    :message="$t('admin.system.segments.noSegment')"
-    :icon="FileOpenOutlined"
-  />
+  <HugeLabeledIcon v-else :message="$t('admin.system.segments.noSegment')" :icon="FileOpenIcon" />
 </template>

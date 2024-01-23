@@ -31,13 +31,10 @@ import { dialogProps } from '@/common';
 import { useMessages } from '@/composables/messages';
 import { useRouter } from 'vue-router';
 import { useResourcesStore } from '@/stores';
-
-import SearchRound from '@vicons/material/SearchRound';
-import UndoRound from '@vicons/material/UndoRound';
-import LayersFilled from '@vicons/material/LayersFilled';
-import AddOutlined from '@vicons/material/AddOutlined';
 import TransferResourceModal from '@/components/modals/TransferResourceModal.vue';
 import { saveDownload } from '@/api';
+
+import { SearchIcon, UndoIcon, ResourceIcon, AddIcon } from '@/icons';
 
 const state = useStateStore();
 const auth = useAuthStore();
@@ -345,7 +342,7 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
 </script>
 
 <template>
-  <IconHeading level="1" :icon="LayersFilled">
+  <IconHeading level="1" :icon="ResourceIcon">
     {{ $t('resources.heading') }}
     <HelpButtonWidget help-key="resourcesView" />
   </IconHeading>
@@ -361,7 +358,7 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
           round
         >
           <template #prefix>
-            <n-icon :component="SearchRound" />
+            <n-icon :component="SearchIcon" />
           </template>
         </n-input>
         <n-space vertical justify="space-between" style="padding-left: 12px">
@@ -382,7 +379,7 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
           >
             {{ $t('general.resetAction') }}
             <template #icon>
-              <n-icon :component="UndoRound" />
+              <n-icon :component="UndoIcon" />
             </template>
           </n-button>
         </n-space>
@@ -401,7 +398,7 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
       </div>
       <n-button v-if="auth.user" type="primary" @click="router.push({ name: 'resourceCreate' })">
         <template #icon>
-          <n-icon :component="AddOutlined" />
+          <n-icon :component="AddIcon" />
         </template>
         {{ $t('general.new') }}
       </n-button>

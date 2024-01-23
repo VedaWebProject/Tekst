@@ -3,9 +3,7 @@ import { useAuthStore, useStateStore } from '@/stores';
 import { $t } from '@/i18n';
 import { useMessages } from '@/composables/messages';
 
-import GavelOutlined from '@vicons/material/GavelOutlined';
-import PrivacyTipOutlined from '@vicons/material/PrivacyTipOutlined';
-import InfoOutlined from '@vicons/material/InfoOutlined';
+import { SiteNoticeIcon, PrivacyIcon, InfoIcon } from '@/icons';
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -26,7 +24,7 @@ const ResourceCreateView = () => import('@/views/ResourceCreateView.vue');
 const ContentsView = () => import('@/views/ContentsView.vue');
 
 const AccountView = () => import('@/views/account/AccountView.vue');
-const AccountManageView = () => import('@/views/account/AccountManageView.vue');
+const ManageAccountView = () => import('@/views/account/AccountManageView.vue');
 const VerifyView = () => import('@/views/VerifyView.vue');
 const ResetView = () => import('@/views/ResetView.vue');
 
@@ -87,7 +85,7 @@ const router = createRouter({
       component: InfoPageView,
       props: {
         pageKey: 'systemSiteNotice',
-        icon: GavelOutlined,
+        icon: SiteNoticeIcon,
       },
     },
     {
@@ -96,7 +94,7 @@ const router = createRouter({
       component: InfoPageView,
       props: {
         pageKey: 'systemPrivacyPolicy',
-        icon: PrivacyTipOutlined,
+        icon: PrivacyIcon,
       },
     },
     {
@@ -104,7 +102,7 @@ const router = createRouter({
       name: 'info',
       component: InfoPageView,
       props: {
-        icon: InfoOutlined,
+        icon: InfoIcon,
       },
     },
     {
@@ -175,7 +173,7 @@ const router = createRouter({
         {
           path: 'manage',
           name: 'accountManage',
-          component: AccountManageView,
+          component: ManageAccountView,
         },
       ],
     },

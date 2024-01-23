@@ -6,7 +6,7 @@ import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
 
-import SearchRound from '@vicons/material/SearchRound';
+import { SearchIcon } from '@/icons';
 
 const showModal = ref(false);
 </script>
@@ -22,13 +22,13 @@ const showModal = ref(false);
     @click="showModal = true"
   >
     <template #icon>
-      <n-icon :component="SearchRound" />
+      <n-icon :component="SearchIcon" />
     </template>
   </n-button>
 
   <GenericModal v-model:show="showModal">
     <template #header>
-      <IconHeading level="1" :icon="SearchRound" style="margin: 0">
+      <IconHeading level="1" :icon="SearchIcon" style="margin: 0">
         {{ $t('search.quickSearch.heading') }}
         <HelpButtonWidget help-key="quickSearch" />
       </IconHeading>
@@ -36,7 +36,7 @@ const showModal = ref(false);
 
     <n-input round size="large" placeholder="...">
       <template #prefix>
-        <n-icon :component="SearchRound" />
+        <n-icon :component="SearchIcon" />
       </template>
     </n-input>
 

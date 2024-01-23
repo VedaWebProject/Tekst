@@ -12,10 +12,7 @@ import { $t } from '@/i18n';
 import { computed, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
-import FolderOffTwotone from '@vicons/material/FolderOffTwotone';
-import HourglassTopTwotone from '@vicons/material/HourglassTopTwotone';
-import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
-import ErrorOutlineOutlined from '@vicons/material/ErrorOutlineOutlined';
+import { NoContentIcon, HourglassIcon, BookIcon, ErrorIcon } from '@/icons';
 
 const auth = useAuthStore();
 const route = useRoute();
@@ -57,7 +54,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <IconHeading v-if="browse.locationPath.length" level="1" :icon="MenuBookOutlined">
+  <IconHeading v-if="browse.locationPath.length" level="1" :icon="BookIcon">
     <LocationLabel />
     <HelpButtonWidget help-key="browseView" />
   </IconHeading>
@@ -92,16 +89,16 @@ onMounted(() => {
   <HugeLabeledIcon
     v-else-if="browse.loading"
     :message="$t('general.loading')"
-    :icon="HourglassTopTwotone"
+    :icon="HourglassIcon"
   />
 
   <HugeLabeledIcon
     v-else-if="!browse.locationPath.length"
     :message="$t('browse.textNoLocations')"
-    :icon="ErrorOutlineOutlined"
+    :icon="ErrorIcon"
   />
 
-  <HugeLabeledIcon v-else :message="$t('browse.locationNoData')" :icon="FolderOffTwotone" />
+  <HugeLabeledIcon v-else :message="$t('browse.locationNoData')" :icon="NoContentIcon" />
 
   <ResourceToggleDrawer v-model:show="browse.showResourceToggleDrawer" />
 </template>

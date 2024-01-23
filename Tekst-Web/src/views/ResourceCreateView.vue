@@ -7,14 +7,13 @@ import IconHeading from '@/components/generic/IconHeading.vue';
 import { useMessages } from '@/composables/messages';
 import { computed, ref, watch } from 'vue';
 import { RouterLink } from 'vue-router';
-import { NAlert, NForm, NFormItem, NSelect, NButton, type FormInst } from 'naive-ui';
+import { NIcon, NAlert, NForm, NFormItem, NSelect, NButton, type FormInst } from 'naive-ui';
 import { resourceConfigFormRules } from '@/forms/formRules';
 import { useRouter } from 'vue-router';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import ResourceSettingsFormItems from '@/forms/resources/ResourceSettingsFormItems.vue';
 
-import LayersFilled from '@vicons/material/LayersFilled';
-import KeyboardArrowLeftOutlined from '@vicons/material/KeyboardArrowLeftOutlined';
+import { ResourceIcon, ArrowBackIcon } from '@/icons';
 
 const { message } = useMessages();
 const router = useRouter();
@@ -92,7 +91,7 @@ async function handleSaveClick() {
 </script>
 
 <template>
-  <IconHeading level="1" :icon="LayersFilled">
+  <IconHeading level="1" :icon="ResourceIcon">
     {{ $t('resources.create.heading', { text: state.text?.title }) }}
     <HelpButtonWidget help-key="resourceCreateView" />
   </IconHeading>
@@ -104,7 +103,7 @@ async function handleSaveClick() {
   >
     <n-button text :focusable="false" @click="navigate">
       <template #icon>
-        <KeyboardArrowLeftOutlined />
+        <n-icon :component="ArrowBackIcon" />
       </template>
       {{ $t('resources.backToOverview') }}
     </n-button>

@@ -6,7 +6,7 @@ import { NSpin } from 'naive-ui';
 import { useAuthStore } from '@/stores';
 import IconHeading from '@/components/generic/IconHeading.vue';
 
-import PersonFilled from '@vicons/material/PersonFilled';
+import { UserIcon } from '@/icons';
 
 const route = useRoute();
 
@@ -25,7 +25,7 @@ const { user, error } = useProfile(username);
 </script>
 
 <template>
-  <IconHeading level="1" :icon="PersonFilled">
+  <IconHeading level="1" :icon="UserIcon">
     {{ $t('account.profileHeading', { username }) }}
   </IconHeading>
 

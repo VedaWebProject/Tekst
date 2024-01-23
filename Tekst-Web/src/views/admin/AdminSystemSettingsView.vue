@@ -22,13 +22,10 @@ import { useModelChanges } from '@/composables/modelChanges';
 import { useMessages } from '@/composables/messages';
 import { platformSettingsFormRules } from '@/forms/formRules';
 import TranslationFormItem from '@/forms/TranslationFormItem.vue';
-
-import AddOutlined from '@vicons/material/AddOutlined';
-import MinusRound from '@vicons/material/MinusRound';
-import ArrowUpwardOutlined from '@vicons/material/ArrowUpwardOutlined';
-import ArrowDownwardOutlined from '@vicons/material/ArrowDownwardOutlined';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import { useStateStore } from '@/stores';
+
+import { AddIcon, MinusIcon, ArrowUpIcon, ArrowDownIcon } from '@/icons';
 
 const state = useStateStore();
 const { pfData, patchPfData } = usePlatformData();
@@ -275,7 +272,7 @@ function resetForm() {
                 @click="() => remove(indexAction)"
               >
                 <template #icon>
-                  <n-icon :component="MinusRound" />
+                  <n-icon :component="MinusIcon" />
                 </template>
               </n-button>
               <n-button
@@ -287,7 +284,7 @@ function resetForm() {
                 @click="() => create(indexAction)"
               >
                 <template #icon>
-                  <n-icon :component="AddOutlined" />
+                  <n-icon :component="AddIcon" />
                 </template>
               </n-button>
               <n-button
@@ -299,7 +296,7 @@ function resetForm() {
                 @click="() => move('up', indexAction)"
               >
                 <template #icon>
-                  <n-icon :component="ArrowUpwardOutlined" />
+                  <n-icon :component="ArrowUpIcon" />
                 </template>
               </n-button>
               <n-button
@@ -311,7 +308,7 @@ function resetForm() {
                 @click="() => move('down', indexAction)"
               >
                 <template #icon>
-                  <n-icon :component="ArrowDownwardOutlined" />
+                  <n-icon :component="ArrowDownIcon" />
                 </template>
               </n-button>
             </n-button-group>
