@@ -436,18 +436,19 @@ admin:
     msgUserDeleted: The user {username} has been deleted and informed via email.
     mailtoLinkTitle: Send email to {username}
     mailtoSubject: Your {platform} account
-    statusBtnTitle:
-      setUser: Downgrade {username} to normal user
-      setSuperuser: Promote {username} to administrator
-      setInactive: Deactivate account of {username}
-      setActive: Activate account of {username}
-      setUnverified: Reset email verification of {username}
-      setVerified: Set email of {username} to verified
-      deleteUser: Delete user {username}
+    userItemActions:
+      lblGroupAccountStatus: Account Status
+      setActive: Activate account
+      setInactive: Deactivate account
+      setVerified: Mark email as verified
+      setUnverified: Reset email verification
+      setSuperuser: Promote to administrator
+      unsetSuperuser: Downgrade to normal user
+      deleteUser: Delete user
     confirmMsg:
       areYouSure: Are you sure you want to
       setUser: '@:admin.users.confirmMsg.areYouSure downgrade {username} to a normal user?'
-      setSuperuser: '@:admin.users.confirmMsg.areYouSure grant administrator permissions to {username}?'
+      setSuperuser: '@:admin.users.confirmMsg.areYouSure grant administrator privileges to {username}?'
       setInactive: '@:admin.users.confirmMsg.areYouSure deactivate the account of {username}?'
       setActive: '@:admin.users.confirmMsg.areYouSure activate the account of {username}?'
       setUnverified: '@:admin.users.confirmMsg.areYouSure reset the email verification status of {username}?'

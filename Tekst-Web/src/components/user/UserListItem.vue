@@ -1,37 +1,176 @@
 <script setup lang="ts">
 import type { UserRead } from '@/api';
-import { NIcon, NTime, NListItem, NThing, NSpace, NButton } from 'naive-ui';
+import {
+  NIcon,
+  NTime,
+  NBadge,
+  NListItem,
+  NThing,
+  NSpace,
+  NButton,
+  NDropdown,
+  type DropdownOption,
+} from 'naive-ui';
 import { usePlatformData } from '@/composables/platformData';
+import { computed, type Component, h } from 'vue';
+import { $t } from '@/i18n';
+import { useStateStore } from '@/stores';
 
 import {
-  AdminIcon,
   VerifiedUserIcon,
-  BlockIcon,
-  UserIcon,
+  MoreIcon,
+  DeleteIcon,
   CheckCircleIcon,
-  QuestionMarkIcon,
-  ClearIcon,
+  BlockCircleIcon,
+  UserPromoteIcon,
+  UserDowngradeIcon,
+  StarIcon,
 } from '@/icons';
 
-defineProps<{
+const props = defineProps<{
   targetUser: UserRead;
   currentUser?: UserRead;
 }>();
 
-defineEmits(['superuserClick', 'activeClick', 'verifiedClick', 'deleteClick']);
+const emit = defineEmits([
+  'setSuperuserClick',
+  'unsetSuperuserClick',
+  'activateClick',
+  'verifyClick',
+  'deleteClick',
+]);
 
+const state = useStateStore();
 const { pfData } = usePlatformData();
 
-const statusBtnMinWidth = '128px';
+const targetUserIsCurrentUser = computed(() => props.targetUser.id === props.currentUser?.id);
+
+const actionOptions = computed(() => [
+  {
+    type: 'group',
+    label: $t('admin.users.userItemActions.lblGroupAccountStatus'),
+    children: [
+      ...(props.targetUser.isActive
+        ? [
+            {
+              label: $t('admin.users.userItemActions.setInactive'),
+              key: 'setInactive',
+              icon: renderIcon(BlockCircleIcon, 'var(--col-error)'),
+              disabled: targetUserIsCurrentUser.value,
+              action: () => emit('activateClick', props.targetUser, false),
+            },
+          ]
+        : [
+            {
+              label: $t('admin.users.userItemActions.setActive'),
+              key: 'setVerified',
+              icon: renderIcon(CheckCircleIcon, 'var(--col-success'),
+              disabled: targetUserIsCurrentUser.value,
+              action: () => emit('activateClick', props.targetUser, true),
+            },
+          ]),
+      ...(props.targetUser.isVerified
+        ? [
+            {
+              label: $t('admin.users.userItemActions.setUnverified'),
+              key: 'setUnverified',
+              icon: renderIcon(VerifiedUserIcon, 'var(--col-error'),
+              disabled: targetUserIsCurrentUser.value,
+              action: () => emit('verifyClick', props.targetUser, false),
+            },
+          ]
+        : [
+            {
+              label: $t('admin.users.userItemActions.setVerified'),
+              key: 'setVerified',
+              icon: renderIcon(VerifiedUserIcon, 'var(--col-success'),
+              disabled: targetUserIsCurrentUser.value,
+              action: () => emit('verifyClick', props.targetUser, true),
+            },
+          ]),
+      ...(props.targetUser.isSuperuser
+        ? [
+            {
+              label: $t('admin.users.userItemActions.unsetSuperuser'),
+              key: 'setUser',
+              icon: renderIcon(UserDowngradeIcon, 'var(--col-error'),
+              disabled: targetUserIsCurrentUser.value,
+              action: () => emit('setSuperuserClick', props.targetUser, false),
+            },
+          ]
+        : [
+            {
+              label: $t('admin.users.userItemActions.setSuperuser'),
+              key: 'setSuperuser',
+              icon: renderIcon(UserPromoteIcon, 'var(--col-info'),
+              disabled: targetUserIsCurrentUser.value,
+              action: () => emit('setSuperuserClick', props.targetUser, true),
+            },
+          ]),
+    ],
+  },
+  {
+    type: 'divider',
+    key: 'divider',
+  },
+  {
+    label: $t('admin.users.userItemActions.deleteUser'),
+    key: 'deleteUser',
+    icon: renderIcon(DeleteIcon),
+    disabled: targetUserIsCurrentUser.value,
+    action: () => emit('deleteClick', props.targetUser),
+  },
+]);
+
+function renderIcon(icon: Component, color?: string) {
+  return () => h(NIcon, { color }, { default: () => h(icon) });
+}
+
+function handleActionSelect(o: DropdownOption & { action?: () => void }) {
+  o.action?.();
+}
 </script>
 
 <template>
-  <n-list-item>
-    <n-thing
-      :title="targetUser.username"
-      description-style="font-size: var(--app-ui-font-size-tiny);"
-      content-style="margin-top: 8px"
-    >
+  <n-list-item class="user-list-item">
+    <n-thing description-style="font-size: var(--app-ui-font-size-tiny);">
+      <template #header>
+        <n-space align="center">
+          {{ targetUser.name }}
+          <n-badge
+            :type="targetUser.isActive ? 'success' : 'error'"
+            :processing="!targetUser.isActive"
+            :title="targetUser.isActive ? $t('models.user.isActive') : $t('models.user.isInactive')"
+            :offset="[12, -2]"
+          >
+            <template #value>
+              <n-icon :component="targetUser.isActive ? CheckCircleIcon : BlockCircleIcon" />
+            </template>
+          </n-badge>
+          <n-badge
+            :type="targetUser.isVerified ? 'success' : 'warning'"
+            :processing="!targetUser.isVerified"
+            :title="
+              targetUser.isVerified ? $t('models.user.isVerified') : $t('models.user.isUnverified')
+            "
+            :offset="[12, -2]"
+          >
+            <template #value>
+              <n-icon :component="VerifiedUserIcon" />
+            </template>
+          </n-badge>
+          <n-badge
+            v-if="targetUser.isSuperuser"
+            type="info"
+            :title="$t('models.user.isSuperuser')"
+            :offset="[12, -2]"
+          >
+            <template #value>
+              <n-icon :component="StarIcon" />
+            </template>
+          </n-badge>
+        </n-space>
+      </template>
       <template #description>
         <a
           :href="`mailto:${targetUser.email}?subject=${$t('admin.users.mailtoSubject', {
@@ -45,85 +184,20 @@ const statusBtnMinWidth = '128px';
         <n-time :time="new Date(targetUser.createdAt)" type="date" />
       </template>
       <template #header-extra>
-        <n-space size="small">
-          <!-- isSuperuser -->
-          <n-button
-            strong
-            secondary
-            :type="targetUser.isSuperuser ? 'info' : 'default'"
-            :title="
-              targetUser.isSuperuser
-                ? $t('admin.users.statusBtnTitle.setUser', { username: targetUser.username })
-                : $t('admin.users.statusBtnTitle.setSuperuser', { username: targetUser.username })
-            "
-            size="tiny"
-            :style="{ minWidth: statusBtnMinWidth }"
-            :disabled="currentUser && currentUser.id === targetUser.id"
-            @click="$emit('superuserClick', targetUser)"
+        <n-space>
+          <n-dropdown
+            :options="actionOptions"
+            :size="state.dropdownSize"
+            to="#app-container"
+            trigger="click"
+            @select="(_, o) => handleActionSelect(o)"
           >
-            {{
-              targetUser.isSuperuser ? $t('models.user.isSuperuser') : $t('models.user.modelLabel')
-            }}
-            <template #icon>
-              <n-icon :component="targetUser.isSuperuser ? AdminIcon : UserIcon" />
-            </template>
-          </n-button>
-          <!-- isActive -->
-          <n-button
-            strong
-            secondary
-            :type="targetUser.isActive ? 'success' : 'error'"
-            :title="
-              targetUser.isActive
-                ? $t('admin.users.statusBtnTitle.setInactive', { username: targetUser.username })
-                : $t('admin.users.statusBtnTitle.setActive', { username: targetUser.username })
-            "
-            size="tiny"
-            :style="{ minWidth: statusBtnMinWidth }"
-            :disabled="currentUser && currentUser.id === targetUser.id"
-            @click="$emit('activeClick', targetUser)"
-          >
-            {{ targetUser.isActive ? $t('models.user.isActive') : $t('models.user.isInactive') }}
-            <template #icon>
-              <n-icon :component="targetUser.isActive ? CheckCircleIcon : BlockIcon" />
-            </template>
-          </n-button>
-          <!-- isVerified -->
-          <n-button
-            strong
-            secondary
-            :type="targetUser.isVerified ? 'success' : 'warning'"
-            :title="
-              targetUser.isVerified
-                ? $t('admin.users.statusBtnTitle.setUnverified', { username: targetUser.username })
-                : $t('admin.users.statusBtnTitle.setVerified', { username: targetUser.username })
-            "
-            size="tiny"
-            :style="{ minWidth: statusBtnMinWidth }"
-            :disabled="currentUser && currentUser.id === targetUser.id"
-            @click="$emit('verifiedClick', targetUser)"
-          >
-            {{
-              targetUser.isVerified ? $t('models.user.isVerified') : $t('models.user.isUnverified')
-            }}
-            <template #icon>
-              <n-icon :component="targetUser.isVerified ? VerifiedUserIcon : QuestionMarkIcon" />
-            </template>
-          </n-button>
-          <!-- delete user -->
-          <n-button
-            strong
-            secondary
-            type="error"
-            :title="$t('admin.users.statusBtnTitle.deleteUser', { username: targetUser.username })"
-            size="tiny"
-            :disabled="currentUser && currentUser.id === targetUser.id"
-            @click="$emit('deleteClick', targetUser)"
-          >
-            <template #icon>
-              <n-icon :component="ClearIcon" />
-            </template>
-          </n-button>
+            <n-button quaternary circle :focusable="false">
+              <template #icon>
+                <n-icon :component="MoreIcon" />
+              </template>
+            </n-button>
+          </n-dropdown>
         </n-space>
       </template>
       <div style="font-size: var(--app-ui-font-size-small)">
@@ -132,3 +206,12 @@ const statusBtnMinWidth = '128px';
     </n-thing>
   </n-list-item>
 </template>
+
+<style>
+.user-list-item:first-child {
+  padding-top: 0;
+}
+.user-list-item:last-child {
+  padding-bottom: 0;
+}
+</style>

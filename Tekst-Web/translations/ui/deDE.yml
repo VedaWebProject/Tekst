@@ -446,14 +446,15 @@ admin:
     msgUserDeleted: Der Benutzer {username} wurde gelöscht und darüber per Email benachrichtigt.
     mailtoLinkTitle: Email an {username} senden
     mailtoSubject: Ihr {platform}-Konto
-    statusBtnTitle:
-      setUser: '{username} zu normalem Benutzer herabstufen'
-      setSuperuser: '{username} zu Administrator befördern'
-      setInactive: Konto von {username} deaktivieren
-      setActive: Konto von {username} aktivieren
-      setUnverified: Email-Verifizierung von {username} zurücksetzen
-      setVerified: Email-Adresse von {username} als verifiziert markieren
-      deleteUser: Benutzer {username} löschen
+    userItemActions:
+      lblGroupAccountStatus: Konto-Status
+      setActive: Konto aktivieren
+      setInactive: Konto deaktivieren
+      setVerified: Email als verifiziert markieren
+      setUnverified: Email-Verifizierung zurücksetzen
+      setSuperuser: Zu Administrator befördern
+      unsetSuperuser: Zu normalem Benutzer herabstufen
+      deleteUser: Benutzer löschen
     confirmMsg:
       areYouSure: Sind Sie sicher, dass Sie
       setUser: '@:admin.users.confirmMsg.areYouSure {username} zu einem normalen Benutzer herabstufen möchten?'

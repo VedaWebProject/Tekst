@@ -91,7 +91,7 @@ async function updateUser(user: UserRead, updates: UserUpdate) {
   }
 }
 
-function handleSuperuserClick(user: UserRead) {
+function handleSetSuperuserClick(user: UserRead, setSuperuser: boolean) {
   dialog.warning({
     title: $t('general.warning'),
     content: user.isSuperuser
@@ -102,11 +102,11 @@ function handleSuperuserClick(user: UserRead) {
     autoFocus: false,
     closable: false,
     ...dialogProps,
-    onPositiveClick: () => updateUser(user, { isSuperuser: !user.isSuperuser }),
+    onPositiveClick: () => updateUser(user, { isSuperuser: setSuperuser }),
   });
 }
 
-function handleActiveClick(user: UserRead) {
+function handleActiveClick(user: UserRead, setActive: boolean) {
   dialog.warning({
     title: $t('general.warning'),
     content: user.isActive
@@ -118,7 +118,7 @@ function handleActiveClick(user: UserRead) {
     closable: false,
     ...dialogProps,
     onPositiveClick: async () => {
-      const updatedUser = await updateUser(user, { isActive: !user.isActive });
+      const updatedUser = await updateUser(user, { isActive: setActive });
       // if just activated but still unverified, send verification mail
       if (updatedUser && updatedUser.isActive && !updatedUser.isVerified) {
         const { error } = await POST('/auth/request-verify-token', {
@@ -136,7 +136,7 @@ function handleActiveClick(user: UserRead) {
   });
 }
 
-function handleVerifiedClick(user: UserRead) {
+function handleVerifiedClick(user: UserRead, setVerified: boolean) {
   dialog.warning({
     title: $t('general.warning'),
     content: user.isVerified
@@ -148,7 +148,7 @@ function handleVerifiedClick(user: UserRead) {
     closable: false,
     ...dialogProps,
     onPositiveClick: async () => {
-      const updatedUser = await updateUser(user, { isVerified: !user.isVerified });
+      const updatedUser = await updateUser(user, { isVerified: setVerified });
       if (updatedUser && !updatedUser.isVerified) {
         const { error } = await POST('/auth/request-verify-token', {
           body: { email: updatedUser.email },
@@ -266,9 +266,9 @@ onMounted(() => {
             :key="user.id"
             :target-user="user"
             :current-user="auth.user"
-            @active-click="handleActiveClick"
-            @verified-click="handleVerifiedClick"
-            @superuser-click="handleSuperuserClick"
+            @activate-click="handleActiveClick"
+            @verify-click="handleVerifiedClick"
+            @set-superuser-click="handleSetSuperuserClick"
             @delete-click="handleDeleteClick"
           />
         </n-list>

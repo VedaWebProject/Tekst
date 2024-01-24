@@ -83,6 +83,10 @@ import VerifiedUserOutlined from '@vicons/material/VerifiedUserOutlined';
 import AltRouteOutlined from '@vicons/material/AltRouteOutlined';
 import KeyboardArrowDownOutlined from '@vicons/material/KeyboardArrowDownOutlined';
 import KeyboardArrowRightOutlined from '@vicons/material/KeyboardArrowRightOutlined';
+import RemoveCircleOutlineOutlined from '@vicons/material/RemoveCircleOutlineOutlined';
+import PersonAddFilled from '@vicons/material/PersonAddFilled';
+import PersonRemoveFilled from '@vicons/material/PersonRemoveFilled';
+import StarOutlined from '@vicons/material/StarOutlined';
 
 export {
   AccountTreeFilled as AccountTreeIcon,
@@ -99,6 +103,7 @@ export {
   MenuBookOutlined as BookIcon,
   VerticalAlignBottomOutlined as BottomIcon,
   CheckCircleOutlined as CheckCircleIcon,
+  RemoveCircleOutlineOutlined as BlockCircleIcon,
   ClearOutlined as ClearIcon,
   CodeOutlined as CodeIcon,
   ChatBubbleOutlineOutlined as CommentIcon,
@@ -157,6 +162,8 @@ export {
   SearchOutlined as SearchIcon,
   SettingsFilled as SettingsIcon,
   ShortTextOutlined as ShortTextIcon,
+  PersonAddFilled as UserPromoteIcon,
+  PersonRemoveFilled as UserDowngradeIcon,
   GavelOutlined as SiteNoticeIcon,
   SkipNextFilled as SkipNextIcon,
   SkipPreviousFilled as SkipPreviousIcon,
@@ -170,4 +177,5 @@ export {
   SupervisorAccountRound as UsersIcon,
   VerifiedUserOutlined as VerifiedUserIcon,
   AltRouteOutlined as VersionIcon,
+  StarOutlined as StarIcon,
 };
