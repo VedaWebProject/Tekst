@@ -144,7 +144,10 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
             :offset="[12, -2]"
           >
             <template #value>
-              <n-icon :component="targetUser.isActive ? CheckCircleIcon : BlockCircleIcon" />
+              <n-icon
+                :component="targetUser.isActive ? CheckCircleIcon : BlockCircleIcon"
+                color="#fff"
+              />
             </template>
           </n-badge>
           <n-badge
@@ -156,7 +159,7 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
             :offset="[12, -2]"
           >
             <template #value>
-              <n-icon :component="VerifiedUserIcon" />
+              <n-icon :component="VerifiedUserIcon" color="#fff" />
             </template>
           </n-badge>
           <n-badge
@@ -166,7 +169,7 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
             :offset="[12, -2]"
           >
             <template #value>
-              <n-icon :component="StarIcon" />
+              <n-icon :component="StarIcon" color="#fff" />
             </template>
           </n-badge>
         </n-space>
