@@ -110,6 +110,14 @@ browse:
     tipNextLocation: Nächste Fundstelle auf dieser Ebene
     tipReducedView: Reduzierte Leseansicht umschalten
     tipOpenResourceList: Anzuzeigende Ressourcen wählen
+  bookmarks:
+    bookmarks: Lesezeichen
+    lblCreate: Neues Lesezeichen erstellen
+    commentModalTitle: Persönlicher Kommentar
+    commentModalInputLabel: Kommentar (optional)
+    createSuccess: Lesezeichen erstellt für Fundstelle "{locationLabel}"
+    deleteSuccess: Lesezeichen gelöscht
+    errorBookmarkExists: Sie haben bereits ein Lesezeichen für diese Fundstelle erstellt!
   resourceToggleDrawer:
     heading: Ressourcen anzeigen
   uncategorized: Unkategorisiert

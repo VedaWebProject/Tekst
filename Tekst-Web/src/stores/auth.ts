@@ -13,16 +13,6 @@ const SESSION_POLL_INTERVAL_S = 60; // check session expiry every n seconds
 const SESSION_EXPIRY_OFFSET_S = 10; // assume session expired n seconds early
 const SESSION_WARN_AHEAD_S = 600; // start showing warnings n seconds before expiry
 
-function getUserFromLocalStorage() {
-  const storageData = localStorage.getItem('user');
-  if (!storageData) return;
-  try {
-    return JSON.parse(storageData) as UserRead;
-  } catch {
-    localStorage.removeItem('user');
-  }
-}
-
 const { pause: _stopSessionCheck, resume: _startSessionCheck } = useIntervalFn(
   () => {
     const { checkSession } = useAuthStore();
@@ -38,12 +28,23 @@ export const useAuthStore = defineStore('auth', () => {
   const { message } = useMessages();
   const state = useStateStore();
 
-  const user = ref(getUserFromLocalStorage());
+  const user = ref<UserRead | undefined>();
   const loggedIn = computed(() => !!user.value);
 
   const sessionExpiryTsSec = ref(
     Number(localStorage.getItem('sessionExpiryS') || Number.MAX_SAFE_INTEGER)
   );
+
+  (() => {
+    const storageData = localStorage.getItem('user');
+    if (!storageData) return;
+    try {
+      user.value = JSON.parse(storageData) as UserRead;
+      loadUserData();
+    } catch {
+      localStorage.removeItem('user');
+    }
+  })();
 
   function _setCookieExpiry() {
     sessionExpiryTsSec.value =
@@ -67,6 +68,7 @@ export const useAuthStore = defineStore('auth', () => {
   function _cleanupSession() {
     user.value = undefined;
     localStorage.removeItem('user');
+    localStorage.removeItem('bookmarks');
     _unsetCookieExpiry();
     _stopSessionCheck();
   }
@@ -107,6 +109,31 @@ export const useAuthStore = defineStore('auth', () => {
     loginModalState.value = {};
   }
 
+  async function loadUserData() {
+    // load core user data
+    const { data, error } = await GET('/users/me', {});
+    if (!error) {
+      user.value = data;
+      await _loadUserBookmarks();
+      localStorage.setItem('user', JSON.stringify(user.value));
+      return user.value;
+    } else {
+      message.error($t('errors.unexpected'), error);
+      _cleanupSession();
+    }
+  }
+
+  async function _loadUserBookmarks() {
+    if (!user.value) return;
+    const { data, error } = await GET('/bookmarks', {});
+    if (!error) {
+      user.value.bookmarks = data;
+      localStorage.setItem('user', JSON.stringify(user.value));
+    } else {
+      message.error($t('errors.unexpected'), error);
+    }
+  }
+
   async function login(username: string, password: string) {
     loginModalState.value.loading = true;
     // login
@@ -119,15 +146,8 @@ export const useAuthStore = defineStore('auth', () => {
       // init session
       _setCookieExpiry();
       _startSessionCheck();
-      // load user data
-      const { data: userData, error: userError } = await GET('/users/me', {});
-      if (userError) {
-        message.error($t('errors.unexpected'), error);
-        _cleanupSession();
-        return false;
-      }
-      localStorage.setItem('user', JSON.stringify(userData));
-      user.value = userData;
+      const userData = await loadUserData();
+      if (!userData) return;
       await loadPlatformData(); // load platform data
       // process user locale
       if (!userData.locale) {

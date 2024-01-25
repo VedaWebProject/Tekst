@@ -121,10 +121,15 @@ export type Translation = {
 };
 export type LocationData = components['schemas']['LocationData'];
 
+// bookmark
+
+export type BookmarkRead = components['schemas']['BookmarkRead'];
+export type BookmarkCreate = components['schemas']['BookmarkCreate'];
+
 // user
 
 export type UserCreate = components['schemas']['UserCreate'];
-export type UserRead = components['schemas']['UserRead'];
+export type UserRead = components['schemas']['UserRead'] & { bookmarks?: BookmarkRead[] };
 export type UserUpdate = components['schemas']['UserUpdate'];
 export type UserReadPublic = components['schemas']['UserReadPublic'];
 export type UserUpdatePublicFields = components['schemas']['UserUpdate']['publicFields'];

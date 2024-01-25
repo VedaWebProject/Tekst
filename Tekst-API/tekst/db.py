@@ -5,6 +5,7 @@ from motor.motor_asyncio import AsyncIOMotorDatabase as Database
 from tekst.auth import AccessToken
 from tekst.config import TekstConfig, get_config
 from tekst.logging import log
+from tekst.models.bookmark import BookmarkDocument
 from tekst.models.content import ContentBaseDocument
 from tekst.models.location import LocationDocument
 from tekst.models.resource import ResourceBaseDocument
@@ -44,6 +45,7 @@ async def init_odm(db: Database) -> None:
         PlatformSettingsDocument,
         ClientSegmentDocument,
         UserDocument,
+        BookmarkDocument,
         AccessToken,
     ]
     # add all resource types' resource and content document models

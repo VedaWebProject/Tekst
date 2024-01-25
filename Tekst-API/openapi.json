@@ -85,6 +85,132 @@
         ]
       }
     },
+    "/bookmarks/{id}": {
+      "delete": {
+        "tags": [
+          "bookmarks"
+        ],
+        "summary": "Delete bookmark",
+        "operationId": "deleteBookmark",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bookmarks": {
+      "get": {
+        "tags": [
+          "bookmarks"
+        ],
+        "summary": "Get user bookmarks",
+        "description": "Returns all bookmarks that belong to the requesting user",
+        "operationId": "getUserBookmarks",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/BookmarkRead"
+                  },
+                  "type": "array",
+                  "title": "Response Get User Bookmarks Bookmarks Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "bookmarks"
+        ],
+        "summary": "Create bookmark",
+        "description": "Creates a bookmark for the requesting user",
+        "operationId": "createBookmark",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookmarkCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookmarkRead"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
     "/browse/content-siblings": {
       "get": {
         "tags": [
@@ -4409,6 +4535,92 @@
           "token"
         ],
         "title": "Body_verify_verify_auth_verify_post"
+      },
+      "BookmarkCreate": {
+        "properties": {
+          "locationId": {
+            "type": "string",
+            "title": "Locationid",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment"
+          }
+        },
+        "type": "object",
+        "required": [
+          "locationId"
+        ],
+        "title": "BookmarkCreate"
+      },
+      "BookmarkRead": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "userId": {
+            "type": "string",
+            "title": "Userid",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "textId": {
+            "type": "string",
+            "title": "Textid",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "locationId": {
+            "type": "string",
+            "title": "Locationid",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "level": {
+            "type": "integer",
+            "title": "Level"
+          },
+          "position": {
+            "type": "integer",
+            "title": "Position"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "id",
+          "userId",
+          "textId",
+          "locationId",
+          "level",
+          "position",
+          "label"
+        ],
+        "title": "BookmarkRead"
       },
       "ClientSegmentCreate": {
         "properties": {

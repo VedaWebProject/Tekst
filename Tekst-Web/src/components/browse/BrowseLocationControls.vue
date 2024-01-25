@@ -1,23 +1,31 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { useBrowseStore } from '@/stores';
+import { useAuthStore, useBrowseStore } from '@/stores';
 import { NButton, NIcon } from 'naive-ui';
 import type { LocationRead } from '@/api';
 import router from '@/router';
 import { useMagicKeys, whenever } from '@vueuse/core';
 import { $t } from '@/i18n';
 import LocationSelectModal from '@/components/modals/LocationSelectModal.vue';
+import BookmarksWidget from '@/components/browse/BookmarksWidget.vue';
 
 import { ArrowBackIcon, ArrowForwardIcon, BookIcon } from '@/icons';
 
 withDefaults(
   defineProps<{
     buttonSize?: 'small' | 'medium' | 'large';
+    btnColor?: string;
+    btnBgColor?: string;
   }>(),
-  { buttonSize: 'large' }
+  {
+    buttonSize: 'large',
+    btnColor: undefined,
+    btnBgColor: undefined,
+  }
 );
 
+const auth = useAuthStore();
 const browse = useBrowseStore();
 const route = useRoute();
 const position = computed<number>(() => parseInt(route.query.pos?.toString() || '0'));
@@ -56,9 +64,6 @@ whenever(ArrowRight, () => {
 whenever(ArrowLeft, () => {
   router.replace(getPrevNextRoute(-1));
 });
-
-const btnBgColor = '#00000015';
-const btnColor = '#fff';
 </script>
 
 <template>
@@ -99,6 +104,13 @@ const btnColor = '#fff';
         <n-icon :component="BookIcon" />
       </template>
     </n-button>
+
+    <BookmarksWidget
+      v-if="auth.loggedIn"
+      :size="buttonSize"
+      :color="btnColor"
+      :bg-color="btnBgColor"
+    />
 
     <router-link v-slot="{ navigate }" :to="getPrevNextRoute(1)" custom>
       <n-button

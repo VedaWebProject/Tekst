@@ -12,6 +12,22 @@ export interface paths {
     /** Get users */
     get: operations['getUsers'];
   };
+  '/bookmarks/{id}': {
+    /** Delete bookmark */
+    delete: operations['deleteBookmark'];
+  };
+  '/bookmarks': {
+    /**
+     * Get user bookmarks
+     * @description Returns all bookmarks that belong to the requesting user
+     */
+    get: operations['getUserBookmarks'];
+    /**
+     * Create bookmark
+     * @description Creates a bookmark for the requesting user
+     */
+    post: operations['createBookmark'];
+  };
   '/browse/content-siblings': {
     /**
      * Get content siblings
@@ -396,6 +412,48 @@ export interface components {
     Body_verify_verify_auth_verify_post: {
       /** Token */
       token: string;
+    };
+    /** BookmarkCreate */
+    BookmarkCreate: {
+      /**
+       * Locationid
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      locationId: string;
+      /** Comment */
+      comment?: string | null;
+    };
+    /** BookmarkRead */
+    BookmarkRead: {
+      /**
+       * Id
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      id: string;
+      /**
+       * Userid
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      userId: string;
+      /**
+       * Textid
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      textId: string;
+      /**
+       * Locationid
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      locationId: string;
+      /** Level */
+      level: number;
+      /** Position */
+      position: number;
+      /** Label */
+      label: string;
+      /** Comment */
+      comment?: string | null;
+      [key: string]: unknown;
     };
     /** ClientSegmentCreate */
     ClientSegmentCreate: {
@@ -2259,6 +2317,65 @@ export interface operations {
       /** @description Not found */
       404: {
         content: never;
+      };
+    };
+  };
+  /** Delete bookmark */
+  deleteBookmark: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      204: {
+        content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /**
+   * Get user bookmarks
+   * @description Returns all bookmarks that belong to the requesting user
+   */
+  getUserBookmarks: {
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['BookmarkRead'][];
+        };
+      };
+    };
+  };
+  /**
+   * Create bookmark
+   * @description Creates a bookmark for the requesting user
+   */
+  createBookmark: {
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['BookmarkCreate'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      201: {
+        content: {
+          'application/json': components['schemas']['BookmarkRead'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
       };
     };
   };

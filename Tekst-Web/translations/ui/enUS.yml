@@ -107,6 +107,14 @@ browse:
     tipNextLocation: Next location on this level
     tipReducedView: Toggle reduced reading view
     tipOpenResourceList: Select resources to display
+  bookmarks:
+    bookmarks: Bookmarks
+    lblCreate: Create new bookmark
+    commentModalTitle: Personal Comment
+    commentModalInputLabel: Comment (optional)
+    createSuccess: Bookmark created for location "{locationLabel}"
+    deleteSuccess: Bookmark deleted
+    errorBookmarkExists: You have already created a bookmark for this location!
   resourceToggleDrawer:
     heading: Show Resources
   uncategorized: Uncategorized

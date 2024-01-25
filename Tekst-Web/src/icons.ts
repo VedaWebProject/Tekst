@@ -11,7 +11,7 @@ import BarChartOutlined from '@vicons/material/BarChartOutlined';
 import BlockOutlined from '@vicons/material/BlockOutlined';
 import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
 import VerticalAlignBottomOutlined from '@vicons/material/VerticalAlignBottomOutlined';
-import CheckCircleOutlined from '@vicons/material/CheckCircleOutlined';
+import CheckCircleFilled from '@vicons/material/CheckCircleFilled';
 import ClearOutlined from '@vicons/material/ClearOutlined';
 import CodeOutlined from '@vicons/material/CodeOutlined';
 import ChatBubbleOutlineOutlined from '@vicons/material/ChatBubbleOutlineOutlined';
@@ -79,19 +79,23 @@ import FlagOutlined from '@vicons/material/FlagOutlined';
 import FileUploadOutlined from '@vicons/material/FileUploadOutlined';
 import PersonFilled from '@vicons/material/PersonFilled';
 import SupervisorAccountRound from '@vicons/material/SupervisorAccountRound';
-import VerifiedUserOutlined from '@vicons/material/VerifiedUserOutlined';
+import VerifiedUserFilled from '@vicons/material/VerifiedUserFilled';
 import AltRouteOutlined from '@vicons/material/AltRouteOutlined';
 import KeyboardArrowDownOutlined from '@vicons/material/KeyboardArrowDownOutlined';
 import KeyboardArrowRightOutlined from '@vicons/material/KeyboardArrowRightOutlined';
-import RemoveCircleOutlineOutlined from '@vicons/material/RemoveCircleOutlineOutlined';
+import RemoveCircleFilled from '@vicons/material/RemoveCircleFilled';
 import PersonAddFilled from '@vicons/material/PersonAddFilled';
 import PersonRemoveFilled from '@vicons/material/PersonRemoveFilled';
 import StarOutlined from '@vicons/material/StarOutlined';
+import BookmarkBorderOutlined from '@vicons/material/BookmarkBorderOutlined';
+import BookmarkFilled from '@vicons/material/BookmarkFilled';
 
 export {
   AccountTreeFilled as AccountTreeIcon,
   AddOutlined as AddIcon,
   AddCircleOutlineOutlined as AddCircleIcon,
+  BookmarkBorderOutlined as BookmarkIcon,
+  BookmarkFilled as BookmarkFilledIcon,
   ShieldOutlined as AdminIcon,
   ManageSearchOutlined as AdvancedSearchIcon,
   ArrowBackOutlined as ArrowBackIcon,
@@ -102,8 +106,8 @@ export {
   BlockOutlined as BlockIcon,
   MenuBookOutlined as BookIcon,
   VerticalAlignBottomOutlined as BottomIcon,
-  CheckCircleOutlined as CheckCircleIcon,
-  RemoveCircleOutlineOutlined as BlockCircleIcon,
+  CheckCircleFilled as CheckCircleIcon,
+  RemoveCircleFilled as BlockCircleIcon,
   ClearOutlined as ClearIcon,
   CodeOutlined as CodeIcon,
   ChatBubbleOutlineOutlined as CommentIcon,
@@ -175,7 +179,7 @@ export {
   FileUploadOutlined as UploadIcon,
   PersonFilled as UserIcon,
   SupervisorAccountRound as UsersIcon,
-  VerifiedUserOutlined as VerifiedUserIcon,
+  VerifiedUserFilled as VerifiedUserIcon,
   AltRouteOutlined as VersionIcon,
   StarOutlined as StarIcon,
 };
