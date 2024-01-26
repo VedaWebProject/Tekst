@@ -7,18 +7,19 @@ import ResourceDeactivateWidget from '@/components/resource/ResourceDeactivateWi
 import { useBrowseStore } from '@/stores';
 import type { AnyResourceRead } from '@/api';
 
-interface Props {
-  resource: AnyResourceRead;
-  style?: StyleValue;
-  showDeactivateWidget?: boolean;
-  showSiblingsWidget?: boolean;
-}
-
-withDefaults(defineProps<Props>(), {
-  showDeactivateWidget: true,
-  showSiblingsWidget: true,
-  style: undefined,
-});
+withDefaults(
+  defineProps<{
+    resource: AnyResourceRead;
+    style?: StyleValue;
+    showDeactivateWidget?: boolean;
+    showSiblingsWidget?: boolean;
+  }>(),
+  {
+    showDeactivateWidget: true,
+    showSiblingsWidget: true,
+    style: undefined,
+  }
+);
 
 const browse = useBrowseStore();
 </script>
