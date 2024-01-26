@@ -273,14 +273,14 @@
                         "$ref": "#/components/schemas/DebugContentRead"
                       },
                       {
-                        "$ref": "#/components/schemas/PlaintextContentRead"
+                        "$ref": "#/components/schemas/PlainTextContentRead"
                       }
                     ],
                     "discriminator": {
                       "propertyName": "resourceType",
                       "mapping": {
                         "debug": "#/components/schemas/DebugContentRead",
-                        "plaintext": "#/components/schemas/PlaintextContentRead"
+                        "plain_text": "#/components/schemas/PlainTextContentRead"
                       }
                     }
                   },
@@ -779,14 +779,14 @@
                     "$ref": "#/components/schemas/DebugContentCreate"
                   },
                   {
-                    "$ref": "#/components/schemas/PlaintextContentCreate"
+                    "$ref": "#/components/schemas/PlainTextContentCreate"
                   }
                 ],
                 "discriminator": {
                   "propertyName": "resourceType",
                   "mapping": {
                     "debug": "#/components/schemas/DebugContentCreate",
-                    "plaintext": "#/components/schemas/PlaintextContentCreate"
+                    "plain_text": "#/components/schemas/PlainTextContentCreate"
                   }
                 },
                 "title": "Content"
@@ -805,14 +805,14 @@
                       "$ref": "#/components/schemas/DebugContentRead"
                     },
                     {
-                      "$ref": "#/components/schemas/PlaintextContentRead"
+                      "$ref": "#/components/schemas/PlainTextContentRead"
                     }
                   ],
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
                       "debug": "#/components/schemas/DebugContentRead",
-                      "plaintext": "#/components/schemas/PlaintextContentRead"
+                      "plain_text": "#/components/schemas/PlainTextContentRead"
                     }
                   },
                   "title": "Response Create Content Contents Post"
@@ -915,14 +915,14 @@
                         "$ref": "#/components/schemas/DebugContentRead"
                       },
                       {
-                        "$ref": "#/components/schemas/PlaintextContentRead"
+                        "$ref": "#/components/schemas/PlainTextContentRead"
                       }
                     ],
                     "discriminator": {
                       "propertyName": "resourceType",
                       "mapping": {
                         "debug": "#/components/schemas/DebugContentRead",
-                        "plaintext": "#/components/schemas/PlaintextContentRead"
+                        "plain_text": "#/components/schemas/PlainTextContentRead"
                       }
                     }
                   },
@@ -986,14 +986,14 @@
                       "$ref": "#/components/schemas/DebugContentRead"
                     },
                     {
-                      "$ref": "#/components/schemas/PlaintextContentRead"
+                      "$ref": "#/components/schemas/PlainTextContentRead"
                     }
                   ],
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
                       "debug": "#/components/schemas/DebugContentRead",
-                      "plaintext": "#/components/schemas/PlaintextContentRead"
+                      "plain_text": "#/components/schemas/PlainTextContentRead"
                     }
                   },
                   "title": "Response Get Content Contents  Id  Get"
@@ -1052,14 +1052,14 @@
                     "$ref": "#/components/schemas/DebugContentUpdate"
                   },
                   {
-                    "$ref": "#/components/schemas/PlaintextContentUpdate"
+                    "$ref": "#/components/schemas/PlainTextContentUpdate"
                   }
                 ],
                 "discriminator": {
                   "propertyName": "resourceType",
                   "mapping": {
                     "debug": "#/components/schemas/DebugContentUpdate",
-                    "plaintext": "#/components/schemas/PlaintextContentUpdate"
+                    "plain_text": "#/components/schemas/PlainTextContentUpdate"
                   }
                 },
                 "title": "Updates"
@@ -1078,14 +1078,14 @@
                       "$ref": "#/components/schemas/DebugContentRead"
                     },
                     {
-                      "$ref": "#/components/schemas/PlaintextContentRead"
+                      "$ref": "#/components/schemas/PlainTextContentRead"
                     }
                   ],
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
                       "debug": "#/components/schemas/DebugContentRead",
-                      "plaintext": "#/components/schemas/PlaintextContentRead"
+                      "plain_text": "#/components/schemas/PlainTextContentRead"
                     }
                   },
                   "title": "Response Update Content Contents  Id  Patch"
@@ -2069,14 +2069,14 @@
                     "$ref": "#/components/schemas/DebugResourceCreate"
                   },
                   {
-                    "$ref": "#/components/schemas/PlaintextResourceCreate"
+                    "$ref": "#/components/schemas/PlainTextResourceCreate"
                   }
                 ],
                 "discriminator": {
                   "propertyName": "resourceType",
                   "mapping": {
                     "debug": "#/components/schemas/DebugResourceCreate",
-                    "plaintext": "#/components/schemas/PlaintextResourceCreate"
+                    "plain_text": "#/components/schemas/PlainTextResourceCreate"
                   }
                 },
                 "title": "Resource"
@@ -2095,14 +2095,14 @@
                       "$ref": "#/components/schemas/DebugResourceRead"
                     },
                     {
-                      "$ref": "#/components/schemas/PlaintextResourceRead"
+                      "$ref": "#/components/schemas/PlainTextResourceRead"
                     }
                   ],
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
                       "debug": "#/components/schemas/DebugResourceRead",
-                      "plaintext": "#/components/schemas/PlaintextResourceRead"
+                      "plain_text": "#/components/schemas/PlainTextResourceRead"
                     }
                   },
                   "title": "Response Create Resource Resources Post"
@@ -2199,14 +2199,14 @@
                         "$ref": "#/components/schemas/DebugResourceRead"
                       },
                       {
-                        "$ref": "#/components/schemas/PlaintextResourceRead"
+                        "$ref": "#/components/schemas/PlainTextResourceRead"
                       }
                     ],
                     "discriminator": {
                       "propertyName": "resourceType",
                       "mapping": {
                         "debug": "#/components/schemas/DebugResourceRead",
-                        "plaintext": "#/components/schemas/PlaintextResourceRead"
+                        "plain_text": "#/components/schemas/PlainTextResourceRead"
                       }
                     }
                   },
@@ -2269,14 +2269,14 @@
                       "$ref": "#/components/schemas/DebugResourceRead"
                     },
                     {
-                      "$ref": "#/components/schemas/PlaintextResourceRead"
+                      "$ref": "#/components/schemas/PlainTextResourceRead"
                     }
                   ],
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
                       "debug": "#/components/schemas/DebugResourceRead",
-                      "plaintext": "#/components/schemas/PlaintextResourceRead"
+                      "plain_text": "#/components/schemas/PlainTextResourceRead"
                     }
                   },
                   "title": "Response Create Resource Version Resources  Id  Version Post"
@@ -2337,14 +2337,14 @@
                     "$ref": "#/components/schemas/DebugResourceUpdate"
                   },
                   {
-                    "$ref": "#/components/schemas/PlaintextResourceUpdate"
+                    "$ref": "#/components/schemas/PlainTextResourceUpdate"
                   }
                 ],
                 "discriminator": {
                   "propertyName": "resourceType",
                   "mapping": {
                     "debug": "#/components/schemas/DebugResourceUpdate",
-                    "plaintext": "#/components/schemas/PlaintextResourceUpdate"
+                    "plain_text": "#/components/schemas/PlainTextResourceUpdate"
                   }
                 },
                 "title": "Updates"
@@ -2363,14 +2363,14 @@
                       "$ref": "#/components/schemas/DebugResourceRead"
                     },
                     {
-                      "$ref": "#/components/schemas/PlaintextResourceRead"
+                      "$ref": "#/components/schemas/PlainTextResourceRead"
                     }
                   ],
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
                       "debug": "#/components/schemas/DebugResourceRead",
-                      "plaintext": "#/components/schemas/PlaintextResourceRead"
+                      "plain_text": "#/components/schemas/PlainTextResourceRead"
                     }
                   },
                   "title": "Response Update Resource Resources  Id  Patch"
@@ -2430,14 +2430,14 @@
                       "$ref": "#/components/schemas/DebugResourceRead"
                     },
                     {
-                      "$ref": "#/components/schemas/PlaintextResourceRead"
+                      "$ref": "#/components/schemas/PlainTextResourceRead"
                     }
                   ],
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
                       "debug": "#/components/schemas/DebugResourceRead",
-                      "plaintext": "#/components/schemas/PlaintextResourceRead"
+                      "plain_text": "#/components/schemas/PlainTextResourceRead"
                     }
                   },
                   "title": "Response Get Resource Resources  Id  Get"
@@ -2556,14 +2556,14 @@
                       "$ref": "#/components/schemas/DebugResourceRead"
                     },
                     {
-                      "$ref": "#/components/schemas/PlaintextResourceRead"
+                      "$ref": "#/components/schemas/PlainTextResourceRead"
                     }
                   ],
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
                       "debug": "#/components/schemas/DebugResourceRead",
-                      "plaintext": "#/components/schemas/PlaintextResourceRead"
+                      "plain_text": "#/components/schemas/PlainTextResourceRead"
                     }
                   },
                   "title": "Response Transfer Resource Resources  Id  Transfer Post"
@@ -2625,14 +2625,14 @@
                       "$ref": "#/components/schemas/DebugResourceRead"
                     },
                     {
-                      "$ref": "#/components/schemas/PlaintextResourceRead"
+                      "$ref": "#/components/schemas/PlainTextResourceRead"
                     }
                   ],
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
                       "debug": "#/components/schemas/DebugResourceRead",
-                      "plaintext": "#/components/schemas/PlaintextResourceRead"
+                      "plain_text": "#/components/schemas/PlainTextResourceRead"
                     }
                   },
                   "title": "Response Propose Resource Resources  Id  Propose Post"
@@ -2694,14 +2694,14 @@
                       "$ref": "#/components/schemas/DebugResourceRead"
                     },
                     {
-                      "$ref": "#/components/schemas/PlaintextResourceRead"
+                      "$ref": "#/components/schemas/PlainTextResourceRead"
                     }
                   ],
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
                       "debug": "#/components/schemas/DebugResourceRead",
-                      "plaintext": "#/components/schemas/PlaintextResourceRead"
+                      "plain_text": "#/components/schemas/PlainTextResourceRead"
                     }
                   },
                   "title": "Response Unpropose Resource Resources  Id  Unpropose Post"
@@ -2763,14 +2763,14 @@
                       "$ref": "#/components/schemas/DebugResourceRead"
                     },
                     {
-                      "$ref": "#/components/schemas/PlaintextResourceRead"
+                      "$ref": "#/components/schemas/PlainTextResourceRead"
                     }
                   ],
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
                       "debug": "#/components/schemas/DebugResourceRead",
-                      "plaintext": "#/components/schemas/PlaintextResourceRead"
+                      "plain_text": "#/components/schemas/PlainTextResourceRead"
                     }
                   },
                   "title": "Response Publish Resource Resources  Id  Publish Post"
@@ -2832,14 +2832,14 @@
                       "$ref": "#/components/schemas/DebugResourceRead"
                     },
                     {
-                      "$ref": "#/components/schemas/PlaintextResourceRead"
+                      "$ref": "#/components/schemas/PlainTextResourceRead"
                     }
                   ],
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
                       "debug": "#/components/schemas/DebugResourceRead",
-                      "plaintext": "#/components/schemas/PlaintextResourceRead"
+                      "plain_text": "#/components/schemas/PlainTextResourceRead"
                     }
                   },
                   "title": "Response Unpublish Resource Resources  Id  Unpublish Post"
@@ -4893,7 +4893,7 @@
               }
             ],
             "title": "Comment",
-            "description": "Plaintext, potentially multiline comment that will be displayed with the content"
+            "description": "Plain text, potentially multiline comment that will be displayed with the content"
           },
           "notes": {
             "anyOf": [
@@ -4906,7 +4906,7 @@
               }
             ],
             "title": "Notes",
-            "description": "Plaintext, potentially multiline working notes on this content meant as an aid for people editing this content"
+            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
           },
           "text": {
             "anyOf": [
@@ -4963,7 +4963,7 @@
               }
             ],
             "title": "Comment",
-            "description": "Plaintext, potentially multiline comment that will be displayed with the content"
+            "description": "Plain text, potentially multiline comment that will be displayed with the content"
           },
           "notes": {
             "anyOf": [
@@ -4976,7 +4976,7 @@
               }
             ],
             "title": "Notes",
-            "description": "Plaintext, potentially multiline working notes on this content meant as an aid for people editing this content"
+            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
           },
           "text": {
             "anyOf": [
@@ -5042,7 +5042,7 @@
               }
             ],
             "title": "Comment",
-            "description": "Plaintext, potentially multiline comment that will be displayed with the content"
+            "description": "Plain text, potentially multiline comment that will be displayed with the content"
           },
           "notes": {
             "anyOf": [
@@ -5055,7 +5055,7 @@
               }
             ],
             "title": "Notes",
-            "description": "Plaintext, potentially multiline working notes on this content meant as an aid for people editing this content"
+            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
           },
           "text": {
             "anyOf": [
@@ -5240,7 +5240,7 @@
             "type": "array",
             "maxItems": 3,
             "title": "Comment",
-            "description": "Plaintext, potentially multiline comment on this resource",
+            "description": "Plain text, potentially multiline comment on this resource",
             "default": []
           },
           "config": {
@@ -5449,7 +5449,7 @@
             "type": "array",
             "maxItems": 3,
             "title": "Comment",
-            "description": "Plaintext, potentially multiline comment on this resource",
+            "description": "Plain text, potentially multiline comment on this resource",
             "default": []
           },
           "config": {
@@ -5620,7 +5620,7 @@
             "type": "array",
             "maxItems": 3,
             "title": "Comment",
-            "description": "Plaintext, potentially multiline comment on this resource",
+            "description": "Plain text, potentially multiline comment on this resource",
             "default": []
           },
           "config": {
@@ -5867,7 +5867,7 @@
                   "$ref": "#/components/schemas/DebugContentRead"
                 },
                 {
-                  "$ref": "#/components/schemas/PlaintextContentRead"
+                  "$ref": "#/components/schemas/PlainTextContentRead"
                 }
               ]
             },
@@ -6059,7 +6059,7 @@
         ],
         "title": "MoveLocationRequestBody"
       },
-      "PlaintextContentCreate": {
+      "PlainTextContentCreate": {
         "properties": {
           "resourceId": {
             "type": "string",
@@ -6068,7 +6068,7 @@
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "resourceType": {
-            "const": "plaintext",
+            "const": "plain_text",
             "title": "Resourcetype"
           },
           "locationId": {
@@ -6088,7 +6088,7 @@
               }
             ],
             "title": "Comment",
-            "description": "Plaintext, potentially multiline comment that will be displayed with the content"
+            "description": "Plain text, potentially multiline comment that will be displayed with the content"
           },
           "notes": {
             "anyOf": [
@@ -6101,14 +6101,14 @@
               }
             ],
             "title": "Notes",
-            "description": "Plaintext, potentially multiline working notes on this content meant as an aid for people editing this content"
+            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
           },
           "text": {
             "type": "string",
             "maxLength": 102400,
             "minLength": 1,
             "title": "Text",
-            "description": "Text content of the plaintext content"
+            "description": "Text content of the plain text content"
           }
         },
         "type": "object",
@@ -6118,9 +6118,9 @@
           "locationId",
           "text"
         ],
-        "title": "PlaintextContentCreate"
+        "title": "PlainTextContentCreate"
       },
-      "PlaintextContentRead": {
+      "PlainTextContentRead": {
         "properties": {
           "id": {
             "type": "string",
@@ -6134,7 +6134,7 @@
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "resourceType": {
-            "const": "plaintext",
+            "const": "plain_text",
             "title": "Resourcetype"
           },
           "locationId": {
@@ -6154,7 +6154,7 @@
               }
             ],
             "title": "Comment",
-            "description": "Plaintext, potentially multiline comment that will be displayed with the content"
+            "description": "Plain text, potentially multiline comment that will be displayed with the content"
           },
           "notes": {
             "anyOf": [
@@ -6167,14 +6167,14 @@
               }
             ],
             "title": "Notes",
-            "description": "Plaintext, potentially multiline working notes on this content meant as an aid for people editing this content"
+            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
           },
           "text": {
             "type": "string",
             "maxLength": 102400,
             "minLength": 1,
             "title": "Text",
-            "description": "Text content of the plaintext content"
+            "description": "Text content of the plain text content"
           }
         },
         "additionalProperties": true,
@@ -6186,9 +6186,9 @@
           "locationId",
           "text"
         ],
-        "title": "PlaintextContentRead"
+        "title": "PlainTextContentRead"
       },
-      "PlaintextContentUpdate": {
+      "PlainTextContentUpdate": {
         "properties": {
           "resourceId": {
             "anyOf": [
@@ -6203,7 +6203,7 @@
             "title": "Resourceid"
           },
           "resourceType": {
-            "const": "plaintext",
+            "const": "plain_text",
             "title": "Resourcetype"
           },
           "locationId": {
@@ -6229,7 +6229,7 @@
               }
             ],
             "title": "Comment",
-            "description": "Plaintext, potentially multiline comment that will be displayed with the content"
+            "description": "Plain text, potentially multiline comment that will be displayed with the content"
           },
           "notes": {
             "anyOf": [
@@ -6242,7 +6242,7 @@
               }
             ],
             "title": "Notes",
-            "description": "Plaintext, potentially multiline working notes on this content meant as an aid for people editing this content"
+            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
           },
           "text": {
             "anyOf": [
@@ -6262,9 +6262,9 @@
         "required": [
           "resourceType"
         ],
-        "title": "PlaintextContentUpdate"
+        "title": "PlainTextContentUpdate"
       },
-      "PlaintextResourceConfig": {
+      "PlainTextResourceConfig": {
         "properties": {
           "category": {
             "anyOf": [
@@ -6315,9 +6315,9 @@
           }
         },
         "type": "object",
-        "title": "PlaintextResourceConfig"
+        "title": "PlainTextResourceConfig"
       },
-      "PlaintextResourceCreate": {
+      "PlainTextResourceCreate": {
         "properties": {
           "title": {
             "type": "string",
@@ -6349,7 +6349,7 @@
             "description": "Text level this resource belongs to"
           },
           "resourceType": {
-            "const": "plaintext",
+            "const": "plain_text",
             "title": "Resourcetype"
           },
           "originalId": {
@@ -6443,13 +6443,13 @@
             "type": "array",
             "maxItems": 3,
             "title": "Comment",
-            "description": "Plaintext, potentially multiline comment on this resource",
+            "description": "Plain text, potentially multiline comment on this resource",
             "default": []
           },
           "config": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/PlaintextResourceConfig"
+                "$ref": "#/components/schemas/PlainTextResourceConfig"
               }
             ],
             "default": {
@@ -6474,9 +6474,9 @@
           "level",
           "resourceType"
         ],
-        "title": "PlaintextResourceCreate"
+        "title": "PlainTextResourceCreate"
       },
-      "PlaintextResourceRead": {
+      "PlainTextResourceRead": {
         "properties": {
           "id": {
             "type": "string",
@@ -6566,7 +6566,7 @@
             "description": "Text level this resource belongs to"
           },
           "resourceType": {
-            "const": "plaintext",
+            "const": "plain_text",
             "title": "Resourcetype"
           },
           "originalId": {
@@ -6660,13 +6660,13 @@
             "type": "array",
             "maxItems": 3,
             "title": "Comment",
-            "description": "Plaintext, potentially multiline comment on this resource",
+            "description": "Plain text, potentially multiline comment on this resource",
             "default": []
           },
           "config": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/PlaintextResourceConfig"
+                "$ref": "#/components/schemas/PlainTextResourceConfig"
               }
             ],
             "default": {
@@ -6693,9 +6693,9 @@
           "level",
           "resourceType"
         ],
-        "title": "PlaintextResourceRead"
+        "title": "PlainTextResourceRead"
       },
-      "PlaintextResourceUpdate": {
+      "PlainTextResourceUpdate": {
         "properties": {
           "title": {
             "anyOf": [
@@ -6745,7 +6745,7 @@
             "title": "Level"
           },
           "resourceType": {
-            "const": "plaintext",
+            "const": "plain_text",
             "title": "Resourcetype"
           },
           "originalId": {
@@ -6839,13 +6839,13 @@
             "type": "array",
             "maxItems": 3,
             "title": "Comment",
-            "description": "Plaintext, potentially multiline comment on this resource",
+            "description": "Plain text, potentially multiline comment on this resource",
             "default": []
           },
           "config": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/PlaintextResourceConfig"
+                "$ref": "#/components/schemas/PlainTextResourceConfig"
               }
             ],
             "default": {
@@ -6867,7 +6867,7 @@
         "required": [
           "resourceType"
         ],
-        "title": "PlaintextResourceUpdate"
+        "title": "PlainTextResourceUpdate"
       },
       "PlatformData": {
         "properties": {

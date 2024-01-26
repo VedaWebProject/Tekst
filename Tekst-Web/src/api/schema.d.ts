@@ -587,12 +587,12 @@ export interface components {
       locationId: string;
       /**
        * Comment
-       * @description Plaintext, potentially multiline comment that will be displayed with the content
+       * @description Plain text, potentially multiline comment that will be displayed with the content
        */
       comment?: string | null;
       /**
        * Notes
-       * @description Plaintext, potentially multiline working notes on this content meant as an aid for people editing this content
+       * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
        */
       notes?: string | null;
       /**
@@ -627,12 +627,12 @@ export interface components {
       locationId: string;
       /**
        * Comment
-       * @description Plaintext, potentially multiline comment that will be displayed with the content
+       * @description Plain text, potentially multiline comment that will be displayed with the content
        */
       comment?: string | null;
       /**
        * Notes
-       * @description Plaintext, potentially multiline working notes on this content meant as an aid for people editing this content
+       * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
        */
       notes?: string | null;
       /**
@@ -655,12 +655,12 @@ export interface components {
       locationId?: string | null;
       /**
        * Comment
-       * @description Plaintext, potentially multiline comment that will be displayed with the content
+       * @description Plain text, potentially multiline comment that will be displayed with the content
        */
       comment?: string | null;
       /**
        * Notes
-       * @description Plaintext, potentially multiline working notes on this content meant as an aid for people editing this content
+       * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
        */
       notes?: string | null;
       /**
@@ -771,7 +771,7 @@ export interface components {
       meta?: components['schemas']['Metadate'][];
       /**
        * Comment
-       * @description Plaintext, potentially multiline comment on this resource
+       * @description Plain text, potentially multiline comment on this resource
        * @default []
        */
       comment?: components['schemas']['ResourceCommentTranslation'][];
@@ -882,7 +882,7 @@ export interface components {
       meta?: components['schemas']['Metadate'][];
       /**
        * Comment
-       * @description Plaintext, potentially multiline comment on this resource
+       * @description Plain text, potentially multiline comment on this resource
        * @default []
        */
       comment?: components['schemas']['ResourceCommentTranslation'][];
@@ -962,7 +962,7 @@ export interface components {
       meta?: components['schemas']['Metadate'][];
       /**
        * Comment
-       * @description Plaintext, potentially multiline comment on this resource
+       * @description Plain text, potentially multiline comment on this resource
        * @default []
        */
       comment?: components['schemas']['ResourceCommentTranslation'][];
@@ -1122,7 +1122,7 @@ export interface components {
        */
       contents?: (
         | components['schemas']['DebugContentRead']
-        | components['schemas']['PlaintextContentRead']
+        | components['schemas']['PlainTextContentRead']
       )[];
     };
     /** LocationRead */
@@ -1192,8 +1192,8 @@ export interface components {
       /** Parentid */
       parentId: string | null;
     };
-    /** PlaintextContentCreate */
-    PlaintextContentCreate: {
+    /** PlainTextContentCreate */
+    PlainTextContentCreate: {
       /**
        * Resourceid
        * @description Resource ID
@@ -1204,7 +1204,7 @@ export interface components {
        * Resourcetype
        * @constant
        */
-      resourceType: 'plaintext';
+      resourceType: 'plain_text';
       /**
        * Locationid
        * @description Parent text location ID
@@ -1213,22 +1213,22 @@ export interface components {
       locationId: string;
       /**
        * Comment
-       * @description Plaintext, potentially multiline comment that will be displayed with the content
+       * @description Plain text, potentially multiline comment that will be displayed with the content
        */
       comment?: string | null;
       /**
        * Notes
-       * @description Plaintext, potentially multiline working notes on this content meant as an aid for people editing this content
+       * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
        */
       notes?: string | null;
       /**
        * Text
-       * @description Text content of the plaintext content
+       * @description Text content of the plain text content
        */
       text: string;
     };
-    /** PlaintextContentRead */
-    PlaintextContentRead: {
+    /** PlainTextContentRead */
+    PlainTextContentRead: {
       /**
        * Id
        * @example 5eb7cf5a86d9755df3a6c593
@@ -1244,7 +1244,7 @@ export interface components {
        * Resourcetype
        * @constant
        */
-      resourceType: 'plaintext';
+      resourceType: 'plain_text';
       /**
        * Locationid
        * @description Parent text location ID
@@ -1253,47 +1253,47 @@ export interface components {
       locationId: string;
       /**
        * Comment
-       * @description Plaintext, potentially multiline comment that will be displayed with the content
+       * @description Plain text, potentially multiline comment that will be displayed with the content
        */
       comment?: string | null;
       /**
        * Notes
-       * @description Plaintext, potentially multiline working notes on this content meant as an aid for people editing this content
+       * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
        */
       notes?: string | null;
       /**
        * Text
-       * @description Text content of the plaintext content
+       * @description Text content of the plain text content
        */
       text: string;
       [key: string]: unknown;
     };
-    /** PlaintextContentUpdate */
-    PlaintextContentUpdate: {
+    /** PlainTextContentUpdate */
+    PlainTextContentUpdate: {
       /** Resourceid */
       resourceId?: string | null;
       /**
        * Resourcetype
        * @constant
        */
-      resourceType: 'plaintext';
+      resourceType: 'plain_text';
       /** Locationid */
       locationId?: string | null;
       /**
        * Comment
-       * @description Plaintext, potentially multiline comment that will be displayed with the content
+       * @description Plain text, potentially multiline comment that will be displayed with the content
        */
       comment?: string | null;
       /**
        * Notes
-       * @description Plaintext, potentially multiline working notes on this content meant as an aid for people editing this content
+       * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
        */
       notes?: string | null;
       /** Text */
       text?: string | null;
     };
-    /** PlaintextResourceConfig */
-    PlaintextResourceConfig: {
+    /** PlainTextResourceConfig */
+    PlainTextResourceConfig: {
       /**
        * Category
        * @description Resource category key
@@ -1329,8 +1329,8 @@ export interface components {
        */
       deeplLinks?: components['schemas']['DeepLLinksConfig'];
     };
-    /** PlaintextResourceCreate */
-    PlaintextResourceCreate: {
+    /** PlainTextResourceCreate */
+    PlainTextResourceCreate: {
       /**
        * Title
        * @description Title of this resource
@@ -1357,7 +1357,7 @@ export interface components {
        * Resourcetype
        * @constant
        */
-      resourceType: 'plaintext';
+      resourceType: 'plain_text';
       /**
        * Originalid
        * @description If this is a version of another resource, this ID references the original
@@ -1405,7 +1405,7 @@ export interface components {
       meta?: components['schemas']['Metadate'][];
       /**
        * Comment
-       * @description Plaintext, potentially multiline comment on this resource
+       * @description Plain text, potentially multiline comment on this resource
        * @default []
        */
       comment?: components['schemas']['ResourceCommentTranslation'][];
@@ -1424,10 +1424,10 @@ export interface components {
        *   }
        * }
        */
-      config?: components['schemas']['PlaintextResourceConfig'];
+      config?: components['schemas']['PlainTextResourceConfig'];
     };
-    /** PlaintextResourceRead */
-    PlaintextResourceRead: {
+    /** PlainTextResourceRead */
+    PlainTextResourceRead: {
       /**
        * Id
        * @example 5eb7cf5a86d9755df3a6c593
@@ -1476,7 +1476,7 @@ export interface components {
        * Resourcetype
        * @constant
        */
-      resourceType: 'plaintext';
+      resourceType: 'plain_text';
       /**
        * Originalid
        * @description If this is a version of another resource, this ID references the original
@@ -1524,7 +1524,7 @@ export interface components {
       meta?: components['schemas']['Metadate'][];
       /**
        * Comment
-       * @description Plaintext, potentially multiline comment on this resource
+       * @description Plain text, potentially multiline comment on this resource
        * @default []
        */
       comment?: components['schemas']['ResourceCommentTranslation'][];
@@ -1543,11 +1543,11 @@ export interface components {
        *   }
        * }
        */
-      config?: components['schemas']['PlaintextResourceConfig'];
+      config?: components['schemas']['PlainTextResourceConfig'];
       [key: string]: unknown;
     };
-    /** PlaintextResourceUpdate */
-    PlaintextResourceUpdate: {
+    /** PlainTextResourceUpdate */
+    PlainTextResourceUpdate: {
       /** Title */
       title?: string | null;
       /**
@@ -1564,7 +1564,7 @@ export interface components {
        * Resourcetype
        * @constant
        */
-      resourceType: 'plaintext';
+      resourceType: 'plain_text';
       /**
        * Originalid
        * @description If this is a version of another resource, this ID references the original
@@ -1612,7 +1612,7 @@ export interface components {
       meta?: components['schemas']['Metadate'][];
       /**
        * Comment
-       * @description Plaintext, potentially multiline comment on this resource
+       * @description Plain text, potentially multiline comment on this resource
        * @default []
        */
       comment?: components['schemas']['ResourceCommentTranslation'][];
@@ -1631,7 +1631,7 @@ export interface components {
        *   }
        * }
        */
-      config?: components['schemas']['PlaintextResourceConfig'];
+      config?: components['schemas']['PlainTextResourceConfig'];
     };
     /**
      * PlatformData
@@ -2433,7 +2433,7 @@ export interface operations {
         content: {
           'application/json': (
             | components['schemas']['DebugContentRead']
-            | components['schemas']['PlaintextContentRead']
+            | components['schemas']['PlainTextContentRead']
           )[];
         };
       };
@@ -2669,7 +2669,7 @@ export interface operations {
         content: {
           'application/json': (
             | components['schemas']['DebugContentRead']
-            | components['schemas']['PlaintextContentRead']
+            | components['schemas']['PlainTextContentRead']
           )[];
         };
       };
@@ -2691,7 +2691,7 @@ export interface operations {
       content: {
         'application/json':
           | components['schemas']['DebugContentCreate']
-          | components['schemas']['PlaintextContentCreate'];
+          | components['schemas']['PlainTextContentCreate'];
       };
     };
     responses: {
@@ -2700,7 +2700,7 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['DebugContentRead']
-            | components['schemas']['PlaintextContentRead'];
+            | components['schemas']['PlainTextContentRead'];
         };
       };
       /** @description Forbidden */
@@ -2739,7 +2739,7 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['DebugContentRead']
-            | components['schemas']['PlaintextContentRead'];
+            | components['schemas']['PlainTextContentRead'];
         };
       };
       /** @description Not found */
@@ -2789,7 +2789,7 @@ export interface operations {
       content: {
         'application/json':
           | components['schemas']['DebugContentUpdate']
-          | components['schemas']['PlaintextContentUpdate'];
+          | components['schemas']['PlainTextContentUpdate'];
       };
     };
     responses: {
@@ -2798,7 +2798,7 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['DebugContentRead']
-            | components['schemas']['PlaintextContentRead'];
+            | components['schemas']['PlainTextContentRead'];
         };
       };
       /** @description Bad request */
@@ -3275,7 +3275,7 @@ export interface operations {
         content: {
           'application/json': (
             | components['schemas']['DebugResourceRead']
-            | components['schemas']['PlaintextResourceRead']
+            | components['schemas']['PlainTextResourceRead']
           )[];
         };
       };
@@ -3297,7 +3297,7 @@ export interface operations {
       content: {
         'application/json':
           | components['schemas']['DebugResourceCreate']
-          | components['schemas']['PlaintextResourceCreate'];
+          | components['schemas']['PlainTextResourceCreate'];
       };
     };
     responses: {
@@ -3306,7 +3306,7 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['DebugResourceRead']
-            | components['schemas']['PlaintextResourceRead'];
+            | components['schemas']['PlainTextResourceRead'];
         };
       };
       /** @description Not found */
@@ -3334,7 +3334,7 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['DebugResourceRead']
-            | components['schemas']['PlaintextResourceRead'];
+            | components['schemas']['PlainTextResourceRead'];
         };
       };
       /** @description Not found */
@@ -3362,7 +3362,7 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['DebugResourceRead']
-            | components['schemas']['PlaintextResourceRead'];
+            | components['schemas']['PlainTextResourceRead'];
         };
       };
       /** @description Not found */
@@ -3412,7 +3412,7 @@ export interface operations {
       content: {
         'application/json':
           | components['schemas']['DebugResourceUpdate']
-          | components['schemas']['PlaintextResourceUpdate'];
+          | components['schemas']['PlainTextResourceUpdate'];
       };
     };
     responses: {
@@ -3421,7 +3421,7 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['DebugResourceRead']
-            | components['schemas']['PlaintextResourceRead'];
+            | components['schemas']['PlainTextResourceRead'];
         };
       };
       /** @description Not found */
@@ -3454,7 +3454,7 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['DebugResourceRead']
-            | components['schemas']['PlaintextResourceRead'];
+            | components['schemas']['PlainTextResourceRead'];
         };
       };
       /** @description Not found */
@@ -3482,7 +3482,7 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['DebugResourceRead']
-            | components['schemas']['PlaintextResourceRead'];
+            | components['schemas']['PlainTextResourceRead'];
         };
       };
       /** @description Not found */
@@ -3510,7 +3510,7 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['DebugResourceRead']
-            | components['schemas']['PlaintextResourceRead'];
+            | components['schemas']['PlainTextResourceRead'];
         };
       };
       /** @description Not found */
@@ -3538,7 +3538,7 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['DebugResourceRead']
-            | components['schemas']['PlaintextResourceRead'];
+            | components['schemas']['PlainTextResourceRead'];
         };
       };
       /** @description Not found */
@@ -3566,7 +3566,7 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['DebugResourceRead']
-            | components['schemas']['PlaintextResourceRead'];
+            | components['schemas']['PlainTextResourceRead'];
         };
       };
       /** @description Not found */

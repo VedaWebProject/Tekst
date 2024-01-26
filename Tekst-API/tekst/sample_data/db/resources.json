@@ -1,7 +1,7 @@
 [
   {
     "_id": { "$oid": "654b825533ee5737b297f8f3" },
-    "_class_id": "ResourceBaseDocument.PlaintextResourceDocument",
+    "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
     "title": "Originalfassung",
     "description": [
       {
@@ -11,7 +11,7 @@
     ],
     "text_id": { "$oid": "654b825533ee5737b297f8e3" },
     "level": 1,
-    "resource_type": "plaintext",
+    "resource_type": "plain_text",
     "owner_id": null,
     "shared_read": [],
     "shared_write": [],
@@ -46,7 +46,7 @@
   },
   {
     "_id": { "$oid": "654ba3a6ec7833e469dde77a" },
-    "_class_id": "ResourceBaseDocument.PlaintextResourceDocument",
+    "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
     "title": "Japanese Version",
     "description": [
       {
@@ -56,7 +56,7 @@
     ],
     "text_id": { "$oid": "654ba1f3ec7833e469dde765" },
     "level": 0,
-    "resource_type": "plaintext",
+    "resource_type": "plain_text",
     "shared_read": [],
     "shared_write": [],
     "proposed": false,
@@ -79,11 +79,11 @@
   },
   {
     "_id": { "$oid": "654ba525ec7833e469dde77e" },
-    "_class_id": "ResourceBaseDocument.PlaintextResourceDocument",
+    "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
     "title": "English Translation",
     "text_id": { "$oid": "654ba1f3ec7833e469dde765" },
     "level": 0,
-    "resource_type": "plaintext",
+    "resource_type": "plain_text",
     "shared_read": [],
     "shared_write": [],
     "proposed": false,
@@ -103,11 +103,11 @@
   },
   {
     "_id": { "$oid": "654ba678ec7833e469dde782" },
-    "_class_id": "ResourceBaseDocument.PlaintextResourceDocument",
+    "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
     "title": "Romanic Transliteration",
     "text_id": { "$oid": "654ba1f3ec7833e469dde765" },
     "level": 0,
-    "resource_type": "plaintext",
+    "resource_type": "plain_text",
     "shared_read": [],
     "shared_write": [],
     "proposed": false,

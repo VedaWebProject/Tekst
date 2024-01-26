@@ -105,7 +105,7 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
     comment: Annotated[
         Translations[ResourceCommentTranslation],
         Field(
-            description="Plaintext, potentially multiline comment on this resource",
+            description="Plain text, potentially multiline comment on this resource",
         ),
     ] = []
     config: ResourceConfigBase = ResourceConfigBase()

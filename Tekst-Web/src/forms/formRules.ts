@@ -208,10 +208,10 @@ const commonContentFormRules: Record<string, FormItemRule[]> = {
 };
 
 export const contentFormRules: Record<string, Record<string, FormItemRule[]>> = {
-  plaintext: {
+  plainText: {
     ...commonContentFormRules,
     text: [
-      requiredRule($t('resources.types.plaintext.contentFields.text'), 'blur'),
+      requiredRule($t('resources.types.plainText.contentFields.text'), 'blur'),
       minMaxCharsRule(1, 102400, 'blur'),
     ],
   },

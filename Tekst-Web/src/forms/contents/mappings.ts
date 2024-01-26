@@ -1,8 +1,8 @@
 import { type Component } from 'vue';
-import PlaintextFormItems from '@/forms/contents/PlaintextFormItems.vue';
+import PlainTextFormItems from '@/forms/contents/PlainTextFormItems.vue';
 
 const resourceContentFormItems: Record<string, Component> = {
-  plaintext: PlaintextFormItems,
+  plainText: PlainTextFormItems,
 };
 
 export default resourceContentFormItems;

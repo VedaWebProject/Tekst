@@ -24,7 +24,7 @@ async def test_create_resource(
         ],
         "textId": text_id,
         "level": 0,
-        "resourceType": "plaintext",
+        "resourceType": "plain_text",
         "ownerId": user["id"],
     }
 
@@ -63,7 +63,7 @@ async def test_create_resource_w_invalid_level(
             ],
             "textId": text_id,
             "level": 4,
-            "resourceType": "plaintext",
+            "resourceType": "plain_text",
             "ownerId": user["id"],
         },
     )
@@ -85,7 +85,7 @@ async def test_create_resource_w_wrong_text_id(
         "title": "A test resource",
         "textId": wrong_id,
         "level": 0,
-        "resourceType": "plaintext",
+        "resourceType": "plain_text",
     }
 
     resp = await test_client.post(
@@ -110,7 +110,7 @@ async def test_create_resource_with_forged_owner_id(
         "title": "Foo Bar Baz",
         "textId": text_id,
         "level": 0,
-        "resourceType": "plaintext",
+        "resourceType": "plain_text",
         "ownerId": "643d3cdc21efd6c46ae1527e",
     }
     resp = await test_client.post(
@@ -172,7 +172,7 @@ async def test_update_resource(
         "title": "Foo Bar Baz",
         "textId": text_id,
         "level": 0,
-        "resourceType": "plaintext",
+        "resourceType": "plain_text",
         "public": True,
     }
     resp = await test_client.post(
@@ -187,7 +187,7 @@ async def test_update_resource(
     assert resource_data.get("public") is False
 
     # update resource
-    updates = {"title": "This Title Changed", "resourceType": "plaintext"}
+    updates = {"title": "This Title Changed", "resourceType": "plain_text"}
     resp = await test_client.patch(
         f"/resources/{resource_data['id']}",
         json=updates,
@@ -199,7 +199,7 @@ async def test_update_resource(
     assert resp.json()["title"] == updates["title"]
 
     # update resource w/ wrong ID
-    updates = {"title": "This Title Changed", "resourceType": "plaintext"}
+    updates = {"title": "This Title Changed", "resourceType": "plain_text"}
     resp = await test_client.patch(
         f"/resources/{wrong_id}",
         json=updates,
@@ -207,7 +207,7 @@ async def test_update_resource(
     assert resp.status_code == 404, status_fail_msg(404, resp)
 
     # update resource's read shares
-    updates = {"sharedRead": [other_user["id"]], "resourceType": "plaintext"}
+    updates = {"sharedRead": [other_user["id"]], "resourceType": "plain_text"}
     resp = await test_client.patch(
         f"/resources/{resource_data['id']}",
         json=updates,
@@ -220,7 +220,7 @@ async def test_update_resource(
     updates = {
         "sharedRead": [],
         "sharedWrite": [other_user["id"]],
-        "resourceType": "plaintext",
+        "resourceType": "plain_text",
     }
     resp = await test_client.patch(
         f"/resources/{resource_data['id']}",
@@ -232,7 +232,7 @@ async def test_update_resource(
     assert resp.json()["sharedWrite"][0] == other_user["id"]
 
     # update resource's write shares using wrong user ID
-    updates = {"sharedWrite": [wrong_id], "resourceType": "plaintext"}
+    updates = {"sharedWrite": [wrong_id], "resourceType": "plain_text"}
     resp = await test_client.patch(
         f"/resources/{resource_data['id']}",
         json=updates,
@@ -240,7 +240,7 @@ async def test_update_resource(
     assert resp.status_code == 400, status_fail_msg(400, resp)
 
     # check if updating public/proposed has no effect (as intended)
-    updates = {"public": True, "proposed": True, "resourceType": "plaintext"}
+    updates = {"public": True, "proposed": True, "resourceType": "plain_text"}
     resp = await test_client.patch(
         f"/resources/{resource_data['id']}",
         json=updates,
@@ -252,7 +252,7 @@ async def test_update_resource(
 
     # update resource unauthenticated
     await logout()
-    updates = {"title": "This Title Changed Again", "resourceType": "plaintext"}
+    updates = {"title": "This Title Changed Again", "resourceType": "plain_text"}
     resp = await test_client.patch(
         f"/resources/{resource_data['id']}",
         json=updates,
@@ -261,7 +261,7 @@ async def test_update_resource(
 
     # update resource shares as non-owner/non-admin
     await login(user=other_user)
-    updates = {"sharedRead": [wrong_id], "resourceType": "plaintext"}
+    updates = {"sharedRead": [wrong_id], "resourceType": "plain_text"}
     resp = await test_client.patch(
         f"/resources/{resource_data['id']}",
         json=updates,
@@ -290,7 +290,7 @@ async def test_set_shares_for_public_resource(
     await res.set({ResourceBaseDocument.public: True})
 
     # update shares
-    updates = {"sharedRead": [other_user["id"]], "resourceType": "plaintext"}
+    updates = {"sharedRead": [other_user["id"]], "resourceType": "plain_text"}
     resp = await test_client.patch(
         f"/resources/{resource_id}",
         json=updates,
@@ -370,7 +370,7 @@ async def test_get_resources(
     text_id = (await insert_sample_data("texts", "locations", "resources"))["texts"][0]
     resp = await test_client.get(
         "/resources",
-        params={"txt": text_id, "lvl": 1, "type": "plaintext"},
+        params={"txt": text_id, "lvl": 1, "type": "plain_text"},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
@@ -402,7 +402,7 @@ async def test_propose_unpropose_publish_unpublish_resource(
         "title": "Foo Bar Baz",
         "textId": text_id,
         "level": 0,
-        "resourceType": "plaintext",
+        "resourceType": "plain_text",
         "ownerId": owner.get("id"),
     }
     resp = await test_client.post(

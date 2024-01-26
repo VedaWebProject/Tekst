@@ -28,7 +28,7 @@ const getInitialModel = () =>
     description: [],
     textId: state.text?.id || '',
     level: state.text?.defaultLevel || 0,
-    resourceType: 'plaintext',
+    resourceType: 'plain_text',
     ownerId: auth.user?.id || null,
     category: null,
     public: false,

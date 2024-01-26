@@ -27,7 +27,7 @@ class ContentBase(ModelBase, ModelFactoryMixin):
         val.EmtpyStringToNone,
         Field(
             description=(
-                "Plaintext, potentially multiline comment "
+                "Plain text, potentially multiline comment "
                 "that will be displayed with the content"
             ),
         ),
@@ -39,7 +39,7 @@ class ContentBase(ModelBase, ModelFactoryMixin):
         val.EmtpyStringToNone,
         Field(
             description=(
-                "Plaintext, potentially multiline working notes on this content "
+                "Plain text, potentially multiline working notes on this content "
                 "meant as an aid for people editing this content"
             ),
         ),

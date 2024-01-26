@@ -103,7 +103,7 @@ export function saveDownload(blob: Blob, filename: string) {
 
 // export some common platform properties for use throughout codebase
 
-export const resourceTypes = ['plaintext', 'debug'];
+export const resourceTypes = ['plain_text', 'debug'];
 export const prioritizedMetadataKeys = ['author', 'year', 'language'];
 
 // export components types for use throughout codebase
@@ -159,13 +159,13 @@ export type ClientSegmentHead = components['schemas']['ClientSegmentHead'];
 
 // resources
 
-export type PlaintextResourceCreate = components['schemas']['PlaintextResourceCreate'];
-export type PlaintextResourceRead = components['schemas']['PlaintextResourceRead'];
-export type PlaintextResourceUpdate = components['schemas']['PlaintextResourceUpdate'];
-export type PlaintextResourceConfig = components['schemas']['PlaintextResourceConfig'];
-export type PlaintextContentCreate = components['schemas']['PlaintextContentCreate'];
-export type PlaintextContentRead = components['schemas']['PlaintextContentRead'];
-export type PlaintextContentUpdate = components['schemas']['PlaintextContentUpdate'];
+export type PlainTextResourceCreate = components['schemas']['PlainTextResourceCreate'];
+export type PlainTextResourceRead = components['schemas']['PlainTextResourceRead'];
+export type PlainTextResourceUpdate = components['schemas']['PlainTextResourceUpdate'];
+export type PlainTextResourceConfig = components['schemas']['PlainTextResourceConfig'];
+export type PlainTextContentCreate = components['schemas']['PlainTextContentCreate'];
+export type PlainTextContentRead = components['schemas']['PlainTextContentRead'];
+export type PlainTextContentUpdate = components['schemas']['PlainTextContentUpdate'];
 
 export type DebugResourceCreate = components['schemas']['DebugResourceCreate'];
 export type DebugResourceRead = components['schemas']['DebugResourceRead'];
@@ -175,18 +175,18 @@ export type DebugContentCreate = components['schemas']['DebugContentCreate'];
 export type DebugContentRead = components['schemas']['DebugContentRead'];
 export type DebugContentUpdate = components['schemas']['DebugContentUpdate'];
 
-export type AnyContentCreate = PlaintextContentCreate | DebugContentCreate;
-export type AnyContentRead = PlaintextContentRead | DebugContentRead;
-export type AnyContentUpdate = PlaintextContentUpdate | DebugContentUpdate;
-export type AnyResourceCreate = PlaintextResourceCreate | DebugResourceCreate;
-export type AnyResourceRead = (PlaintextResourceRead | DebugResourceRead) & {
+export type AnyContentCreate = PlainTextContentCreate | DebugContentCreate;
+export type AnyContentRead = PlainTextContentRead | DebugContentRead;
+export type AnyContentUpdate = PlainTextContentUpdate | DebugContentUpdate;
+export type AnyResourceCreate = PlainTextResourceCreate | DebugResourceCreate;
+export type AnyResourceRead = (PlainTextResourceRead | DebugResourceRead) & {
   active?: boolean;
   contents?: AnyContentRead[];
   coverage?: ResourceCoverage;
 };
-export type AnyResourceUpdate = PlaintextResourceUpdate | DebugResourceUpdate;
+export type AnyResourceUpdate = PlainTextResourceUpdate | DebugResourceUpdate;
 
 // common resource config types
 
-export type AnyResourceConfig = PlaintextResourceConfig | DebugResourceConfig;
+export type AnyResourceConfig = PlainTextResourceConfig | DebugResourceConfig;
 export type DeepLLinksConfig = components['schemas']['DeepLLinksConfig'];

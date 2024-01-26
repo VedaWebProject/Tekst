@@ -18,10 +18,10 @@ async def test_create_content(
     location = await LocationDocument.find_one(LocationDocument.level == resource.level)
     await login(is_superuser=True)
 
-    # create plaintext resource content
+    # create plain text resource content
     content_create_data = {
         "resourceId": str(resource.id),
-        "resourceType": "plaintext",
+        "resourceType": "plain_text",
         "locationId": str(location.id),
         "text": "Ein Raabe geht im Feld spazieren.",
         "comment": "This is a comment",
@@ -120,7 +120,7 @@ async def test_update_content(
     # update content
     resp = await test_client.patch(
         f"/contents/{str(content.id)}",
-        json={"resourceType": "plaintext", "text": "FOO BAR"},
+        json={"resourceType": "plain_text", "text": "FOO BAR"},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), dict)
@@ -131,7 +131,7 @@ async def test_update_content(
     # fail to update content with wrong ID
     resp = await test_client.patch(
         f"/contents/{wrong_id}",
-        json={"resourceType": "plaintext", "text": "FOO BAR"},
+        json={"resourceType": "plain_text", "text": "FOO BAR"},
     )
     assert resp.status_code == 404, status_fail_msg(404, resp)
 
@@ -139,7 +139,7 @@ async def test_update_content(
     resp = await test_client.patch(
         f"/contents/{str(content.id)}",
         json={
-            "resourceType": "plaintext",
+            "resourceType": "plain_text",
             "text": "FOO BAR",
             "resourceId": wrong_id,
         },
@@ -176,7 +176,7 @@ async def test_update_content(
         json={
             "resourceId": str(resource.id),
             "locationId": str(location.id),
-            "resourceType": "plaintext",
+            "resourceType": "plain_text",
             "text": "FOO BAR",
         },
     )

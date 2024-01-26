@@ -343,8 +343,8 @@ resources:
       contentFields:
         comment: Comment
         notes: Working Notes
-    plaintext:
-      label: Plaintext
+    plainText:
+      label: Plain Text
       description: |
         Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar
         Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar

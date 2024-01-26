@@ -66,24 +66,24 @@ def test_model_field_casing():
 
 def test_resource_description_validator():
     # desc with arbitrary whitespaces
-    from tekst.resources.plaintext import PlaintextResource
+    from tekst.resources.plain_text import PlainTextResource
 
-    resource = PlaintextResource(
+    resource = PlainTextResource(
         title="foo",
         text_id="5eb7cfb05e32e07750a1756a",
         level=0,
-        resource_type="plaintext",
+        resource_type="plain_text",
         description=[
             {"locale": "enUS", "translation": "foo      bar\t\t   baz\n \ttest"}
         ],
     )
     assert resource.description[0]["translation"] == "foo bar baz test"
     # desc = None
-    resource = PlaintextResource(
+    resource = PlainTextResource(
         title="foo",
         text_id="5eb7cfb05e32e07750a1756a",
         level=0,
-        resource_type="plaintext",
+        resource_type="plain_text",
     )
     assert isinstance(resource.description, list)
     assert len(resource.description) == 0

@@ -335,10 +335,10 @@ async def test_delete_location(
     assert len(resp.json()) > 0
     resource = resp.json()[0]
 
-    # create plaintext resource content
+    # create plain text resource content
     payload = {
         "resourceId": resource["id"],
-        "resourceType": "plaintext",
+        "resourceType": "plain_text",
         "locationId": location["id"],
         "text": "Ein Raabe geht im Feld spazieren.",
         "comment": "This is a comment",

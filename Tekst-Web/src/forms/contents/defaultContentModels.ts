@@ -4,7 +4,7 @@ const common = {
 };
 
 export const defaultContentModels = {
-  plaintext: {
+  plainText: {
     ...common,
     text: '',
   },

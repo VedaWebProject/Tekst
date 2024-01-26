@@ -510,7 +510,7 @@ whenever(ArrowLeft, () => {
         <n-form
           ref="formRef"
           :model="contentModel"
-          :rules="contentFormRules.plaintext"
+          :rules="contentFormRules.plainText"
           label-placement="top"
           :disabled="loading"
           label-width="auto"

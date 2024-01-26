@@ -9,7 +9,7 @@ from tekst.resources import ResourceTypeABC
 
 
 class Debug(ResourceTypeABC):  # pragma: no cover
-    """A simple plaintext resource type"""
+    """A simple plain text resource type"""
 
     @classmethod
     def resource_model(cls) -> type["DebugResource"]:
@@ -30,7 +30,7 @@ class DebugResource(ResourceBase):
 
 
 class DebugContent(ContentBase):
-    """A content of a plaintext resource"""
+    """A content of a plain text resource"""
 
     resource_type: Literal["debug"]  # snake_cased resource type classname
     text: str | None = Field(

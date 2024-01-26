@@ -353,7 +353,7 @@ resources:
       contentFields:
         comment: Kommentar
         notes: Arbeitsnotizen
-    plaintext:
+    plainText:
       label: Einfacher Text
       description: |
         Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar
