@@ -9,7 +9,6 @@ import Link from '@tiptap/extension-link';
 import Image from '@tiptap/extension-image';
 import PromptModal from '@/components/generic/PromptModal.vue';
 import { $t } from '@/i18n';
-import type { PromptModalProps } from '@/components/generic/PromptModal.vue';
 
 import {
   FormatBoldIcon,
@@ -32,6 +31,7 @@ import {
   ShortTextIcon,
   ImageIcon,
 } from '@/icons';
+import { wysiwygEditorFormRules } from '@/forms/formRules';
 
 const props = withDefaults(
   defineProps<{
@@ -48,7 +48,7 @@ const props = withDefaults(
 
 const emit = defineEmits(['update:value', 'blur', 'focus', 'input']);
 
-const promptModalState = ref<PromptModalProps>({});
+const promptModalRef = ref();
 
 watch(
   () => props.value,
@@ -209,23 +209,23 @@ function renderBlockTypeOption(option: SelectOption) {
 }
 
 function handleAddLinkClick() {
-  promptModalState.value = {
-    show: true,
+  promptModalRef.value.open({
     actionKey: 'addLink',
     initialValue: editor.value?.getAttributes('link').href,
     title: $t('wysiwyg.linkPrompt.title'),
     inputLabel: $t('wysiwyg.linkPrompt.inputLabel'),
-  };
+    validationRules: wysiwygEditorFormRules.linkUrl,
+  });
 }
 
 async function handleAddImageClick() {
-  promptModalState.value = {
-    show: true,
+  promptModalRef.value.open({
     actionKey: 'addImage',
     title: $t('wysiwyg.imagePrompt.title'),
     inputLabel: $t('wysiwyg.imagePrompt.inputLabel'),
     disableOkWhenNoValue: true,
-  };
+    validationRules: wysiwygEditorFormRules.imageUrl,
+  });
 }
 
 async function handlePromptModalSubmit(actionKey: string, value: string) {
@@ -242,12 +242,12 @@ async function handlePromptModalSubmit(actionKey: string, value: string) {
       }
     }
   } else if (actionKey === 'addImage') {
+    console.log(value);
     // empty
     if (!value) return;
     // update link
     editor.value?.chain().focus().setImage({ src: value }).run();
   }
-  promptModalState.value = {};
 }
 
 function handleSelectBlockType(value: string, option: SelectOption) {
@@ -429,12 +429,7 @@ onUnmounted(() => {
     </div>
     <div v-if="editor" class="character-count">{{ editor.getHTML().length }} / {{ maxChars }}</div>
   </div>
-  <PromptModal
-    v-bind="promptModalState"
-    @submit="handlePromptModalSubmit"
-    @update:show="promptModalState.show = $event"
-    @after-leave="promptModalState = {}"
-  />
+  <PromptModal ref="promptModalRef" @submit="handlePromptModalSubmit" />
 </template>
 
 <style scoped>

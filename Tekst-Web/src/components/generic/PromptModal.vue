@@ -1,33 +1,79 @@
 <script setup lang="ts">
-import { NButton, NInput, NFormItem, type InputInst } from 'naive-ui';
+import {
+  NButton,
+  NInput,
+  NFormItem,
+  type InputInst,
+  type FormItemRule,
+  NForm,
+  type FormItemInst,
+} from 'naive-ui';
 import ButtonShelf from './ButtonShelf.vue';
 import { ref } from 'vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
+import { $t } from '@/i18n';
+import { useMessages } from '@/composables/messages';
 
 export interface PromptModalProps {
-  show?: boolean;
   actionKey?: string;
   initialValue?: string;
   inputLabel?: string;
   title?: string;
   multiline?: boolean;
+  placeholder?: string;
   rows?: number;
   disableOkWhenNoValue?: boolean;
+  validationRules?: FormItemRule[];
 }
 
-const props = defineProps<PromptModalProps>();
-const emit = defineEmits(['update:show', 'submit', 'afterLeave']);
+const props = withDefaults(defineProps<PromptModalProps>(), {
+  actionKey: undefined,
+  initialValue: undefined,
+  inputLabel: undefined,
+  title: undefined,
+  multiline: false,
+  placeholder: '',
+  rows: undefined,
+  disableOkWhenNoValue: false,
+  validationRules: undefined,
+});
+const liveProps = ref<PromptModalProps>(props);
+const emit = defineEmits(['submit', 'afterLeave']);
+defineExpose({ open });
 
+const show = ref(false);
+
+const { message } = useMessages();
 const inputRef = ref<InputInst>();
-const value = ref<string>();
+const formItemRef = ref<FormItemInst | null>(null);
+const formModel = ref<{ inputString: string | undefined }>({ inputString: undefined });
+
+function open(propsOverrides: PromptModalProps) {
+  liveProps.value = { ...props, ...propsOverrides };
+  formModel.value.inputString = liveProps.value.initialValue;
+  show.value = true;
+}
+
+function close() {
+  formModel.value.inputString = undefined;
+  liveProps.value = props;
+  show.value = false;
+}
 
 function handleSubmit() {
-  emit('submit', props.actionKey, value.value);
-  emit('update:show', false);
+  formItemRef.value
+    ?.validate()
+    .then(() => {
+      emit('submit', liveProps.value.actionKey, formModel.value.inputString);
+      close();
+    })
+    .catch(() => {
+      message.error($t('errors.followFormRules'));
+    });
 }
 
 function handleInputReturn(e: KeyboardEvent) {
-  if (!props.multiline) {
+  if (!liveProps.value.multiline) {
     e.preventDefault();
     e.stopPropagation();
     handleSubmit();
@@ -37,33 +83,44 @@ function handleInputReturn(e: KeyboardEvent) {
 
 <template>
   <GenericModal
-    :show="show"
-    :title="title"
-    @update:show="emit('update:show', $event)"
+    v-model:show="show"
+    :title="liveProps.title"
     @after-leave="
       () => {
-        value = undefined;
+        close();
         emit('afterLeave');
       }
     "
     @after-enter="inputRef?.select()"
   >
-    <n-form-item :label="inputLabel" :show-label="!!inputLabel">
-      <n-input
-        ref="inputRef"
-        v-model:value="value"
-        :type="multiline ? 'textarea' : 'text'"
-        :rows="multiline && rows ? rows : multiline ? 3 : undefined"
-        :default-value="initialValue"
-        placeholder=""
-        @keydown.enter="handleInputReturn"
-      />
-    </n-form-item>
+    <n-form :model="formModel">
+      <n-form-item
+        ref="formItemRef"
+        path="inputString"
+        :label="liveProps.inputLabel"
+        :show-label="!!liveProps.inputLabel"
+        :rule="liveProps.validationRules"
+      >
+        <n-input
+          ref="inputRef"
+          v-model:value="formModel.inputString"
+          :type="liveProps.multiline ? 'textarea' : 'text'"
+          :rows="liveProps.rows"
+          :default-value="liveProps.initialValue"
+          :placeholder="liveProps.placeholder"
+          @keydown.enter="handleInputReturn"
+        />
+      </n-form-item>
+    </n-form>
     <ButtonShelf top-gap>
-      <n-button secondary @click="emit('update:show', false)">
+      <n-button secondary @click="close">
         {{ $t('general.cancelAction') }}
       </n-button>
-      <n-button type="primary" :disabled="disableOkWhenNoValue && !value" @click="handleSubmit">
+      <n-button
+        type="primary"
+        :disabled="liveProps.disableOkWhenNoValue && !formModel.inputString"
+        @click="handleSubmit"
+      >
         {{ $t('general.okAction') }}
       </n-button>
     </ButtonShelf>

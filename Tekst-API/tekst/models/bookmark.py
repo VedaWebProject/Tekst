@@ -24,8 +24,8 @@ class Bookmark(ModelBase, ModelFactoryMixin):
 
     @field_validator("comment", mode="after")
     @classmethod
-    def format_comment(cls, v):
-        return remove_excess_spaces(v)
+    def format_comment(cls, v) -> str | None:
+        return remove_excess_spaces(v) or None
 
 
 class BookmarkDocument(Bookmark, DocumentBase):

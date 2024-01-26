@@ -565,3 +565,27 @@ export const contentFormRules: Record<string, Record<string, FormItemRule[]>> = 
     ],
   },
 };
+
+export const bookmarkFormRules: Record<string, FormItemRule[]> = {
+  comment: [
+    {
+      validator: (rule: FormItemRule, value: string) => !value || value.length <= 1000,
+      message: () => $t('forms.rulesFeedback.minMaxChars', { min: 0, max: 1000 }),
+    },
+  ],
+};
+
+export const wysiwygEditorFormRules: Record<string, FormItemRule[]> = {
+  imageUrl: [
+    {
+      validator: (rule: FormItemRule, value: string) => !value || value.length <= 5000,
+      message: () => $t('forms.rulesFeedback.minMaxChars', { min: 0, max: 5000 }),
+    },
+  ],
+  linkUrl: [
+    {
+      validator: (rule: FormItemRule, value: string) => !value || value.length <= 5000,
+      message: () => $t('forms.rulesFeedback.minMaxChars', { min: 0, max: 5000 }),
+    },
+  ],
+};

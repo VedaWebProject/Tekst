@@ -2,7 +2,6 @@
 import { type BookmarkRead } from '@/api';
 import { usePlatformData } from '@/composables/platformData';
 import { useBrowseStore, useStateStore } from '@/stores';
-import type { PromptModalProps } from '@/components/generic/PromptModal.vue';
 import { NThing, NIcon, NButton, NList, NListItem } from 'naive-ui';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -11,9 +10,9 @@ import { $t } from '@/i18n';
 import { useMessages } from '@/composables/messages';
 import GenericModal from '../generic/GenericModal.vue';
 import LocationLabel from '@/components/LocationLabel.vue';
-
-import { AddIcon, BookIcon, BookmarkFilledIcon, DeleteIcon } from '@/icons';
 import { useBookmarks } from '@/composables/bookmarks';
+import { bookmarkFormRules } from '@/forms/formRules';
+import { AddIcon, BookIcon, BookmarkFilledIcon, DeleteIcon } from '@/icons';
 
 defineProps<{
   size?: 'small' | 'medium' | 'large';
@@ -29,12 +28,12 @@ const { bookmarks, createBookmark, deleteBookmark } = useBookmarks();
 const router = useRouter();
 
 const showModal = ref(false);
+const promptModalRef = ref();
 const loading = ref(false);
 const currentBookmarks = computed(
   () => bookmarks.value.filter((b) => b.textId === state.text?.id) || []
 );
 const maxCountReached = computed(() => bookmarks.value.length >= 1000);
-const promptModalState = ref<PromptModalProps>({});
 
 async function handleDeleteBookmark(e: MouseEvent, bookmarkId: string) {
   e.preventDefault();
@@ -49,13 +48,7 @@ function handleCreateBookmarkClick() {
     message.error($t('browse.bookmarks.errorBookmarkExists'));
     return;
   }
-  promptModalState.value = {
-    show: true,
-    actionKey: 'createBookmark',
-    initialValue: '',
-    title: $t('browse.bookmarks.commentModalTitle'),
-    inputLabel: $t('browse.bookmarks.commentModalInputLabel'),
-  };
+  promptModalRef.value.open();
 }
 
 async function handleCreateModalSubmit(comment: string) {
@@ -129,21 +122,23 @@ async function handleBookmarkSelect(bookmark: BookmarkRead) {
             </span>
           </template>
           <template #header-extra>
-            <n-button
-              secondary
-              size="small"
-              :focusable="false"
-              :disabled="loading"
-              :loading="loading"
-              :title="$t('general.deleteAction')"
-              @click="(e) => handleDeleteBookmark(e, bookmark.id)"
-            >
-              <template #icon>
-                <n-icon :component="DeleteIcon" />
-              </template>
-            </n-button>
+            <div style="height: 100%; display: flex; align-items: center">
+              <n-button
+                secondary
+                size="small"
+                :focusable="false"
+                :disabled="loading"
+                :loading="loading"
+                :title="$t('general.deleteAction')"
+                @click="(e) => handleDeleteBookmark(e, bookmark.id)"
+              >
+                <template #icon>
+                  <n-icon :component="DeleteIcon" />
+                </template>
+              </n-button>
+            </div>
           </template>
-          <template #description>
+          <template v-if="bookmark.comment" #description>
             <div style="white-space: pre-wrap">
               {{ bookmark.comment }}
             </div>
@@ -154,12 +149,14 @@ async function handleBookmarkSelect(bookmark: BookmarkRead) {
   </GenericModal>
 
   <PromptModal
+    ref="promptModalRef"
     multiline
+    action-key="createBookmark"
+    :title="$t('browse.bookmarks.commentModalTitle')"
+    :input-label="$t('browse.bookmarks.commentModalInputLabel')"
     :rows="3"
-    v-bind="promptModalState"
+    :validation-rules="bookmarkFormRules.comment"
     @submit="(_, v) => handleCreateModalSubmit(v)"
-    @update:show="promptModalState.show = $event"
-    @after-leave="promptModalState = {}"
   />
 </template>
 
