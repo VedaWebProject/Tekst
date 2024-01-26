@@ -270,17 +270,17 @@
                   "items": {
                     "oneOf": [
                       {
-                        "$ref": "#/components/schemas/DebugContentRead"
+                        "$ref": "#/components/schemas/PlainTextContentRead"
                       },
                       {
-                        "$ref": "#/components/schemas/PlainTextContentRead"
+                        "$ref": "#/components/schemas/RichTextContentRead"
                       }
                     ],
                     "discriminator": {
                       "propertyName": "resourceType",
                       "mapping": {
-                        "debug": "#/components/schemas/DebugContentRead",
-                        "plain_text": "#/components/schemas/PlainTextContentRead"
+                        "plainText": "#/components/schemas/PlainTextContentRead",
+                        "richText": "#/components/schemas/RichTextContentRead"
                       }
                     }
                   },
@@ -776,17 +776,17 @@
               "schema": {
                 "oneOf": [
                   {
-                    "$ref": "#/components/schemas/DebugContentCreate"
+                    "$ref": "#/components/schemas/PlainTextContentCreate"
                   },
                   {
-                    "$ref": "#/components/schemas/PlainTextContentCreate"
+                    "$ref": "#/components/schemas/RichTextContentCreate"
                   }
                 ],
                 "discriminator": {
                   "propertyName": "resourceType",
                   "mapping": {
-                    "debug": "#/components/schemas/DebugContentCreate",
-                    "plain_text": "#/components/schemas/PlainTextContentCreate"
+                    "plainText": "#/components/schemas/PlainTextContentCreate",
+                    "richText": "#/components/schemas/RichTextContentCreate"
                   }
                 },
                 "title": "Content"
@@ -802,17 +802,17 @@
                 "schema": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/DebugContentRead"
+                      "$ref": "#/components/schemas/PlainTextContentRead"
                     },
                     {
-                      "$ref": "#/components/schemas/PlainTextContentRead"
+                      "$ref": "#/components/schemas/RichTextContentRead"
                     }
                   ],
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
-                      "debug": "#/components/schemas/DebugContentRead",
-                      "plain_text": "#/components/schemas/PlainTextContentRead"
+                      "plainText": "#/components/schemas/PlainTextContentRead",
+                      "richText": "#/components/schemas/RichTextContentRead"
                     }
                   },
                   "title": "Response Create Content Contents Post"
@@ -912,17 +912,17 @@
                   "items": {
                     "oneOf": [
                       {
-                        "$ref": "#/components/schemas/DebugContentRead"
+                        "$ref": "#/components/schemas/PlainTextContentRead"
                       },
                       {
-                        "$ref": "#/components/schemas/PlainTextContentRead"
+                        "$ref": "#/components/schemas/RichTextContentRead"
                       }
                     ],
                     "discriminator": {
                       "propertyName": "resourceType",
                       "mapping": {
-                        "debug": "#/components/schemas/DebugContentRead",
-                        "plain_text": "#/components/schemas/PlainTextContentRead"
+                        "plainText": "#/components/schemas/PlainTextContentRead",
+                        "richText": "#/components/schemas/RichTextContentRead"
                       }
                     }
                   },
@@ -983,17 +983,17 @@
                 "schema": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/DebugContentRead"
+                      "$ref": "#/components/schemas/PlainTextContentRead"
                     },
                     {
-                      "$ref": "#/components/schemas/PlainTextContentRead"
+                      "$ref": "#/components/schemas/RichTextContentRead"
                     }
                   ],
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
-                      "debug": "#/components/schemas/DebugContentRead",
-                      "plain_text": "#/components/schemas/PlainTextContentRead"
+                      "plainText": "#/components/schemas/PlainTextContentRead",
+                      "richText": "#/components/schemas/RichTextContentRead"
                     }
                   },
                   "title": "Response Get Content Contents  Id  Get"
@@ -1049,17 +1049,17 @@
               "schema": {
                 "oneOf": [
                   {
-                    "$ref": "#/components/schemas/DebugContentUpdate"
+                    "$ref": "#/components/schemas/PlainTextContentUpdate"
                   },
                   {
-                    "$ref": "#/components/schemas/PlainTextContentUpdate"
+                    "$ref": "#/components/schemas/RichTextContentUpdate"
                   }
                 ],
                 "discriminator": {
                   "propertyName": "resourceType",
                   "mapping": {
-                    "debug": "#/components/schemas/DebugContentUpdate",
-                    "plain_text": "#/components/schemas/PlainTextContentUpdate"
+                    "plainText": "#/components/schemas/PlainTextContentUpdate",
+                    "richText": "#/components/schemas/RichTextContentUpdate"
                   }
                 },
                 "title": "Updates"
@@ -1075,17 +1075,17 @@
                 "schema": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/DebugContentRead"
+                      "$ref": "#/components/schemas/PlainTextContentRead"
                     },
                     {
-                      "$ref": "#/components/schemas/PlainTextContentRead"
+                      "$ref": "#/components/schemas/RichTextContentRead"
                     }
                   ],
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
-                      "debug": "#/components/schemas/DebugContentRead",
-                      "plain_text": "#/components/schemas/PlainTextContentRead"
+                      "plainText": "#/components/schemas/PlainTextContentRead",
+                      "richText": "#/components/schemas/RichTextContentRead"
                     }
                   },
                   "title": "Response Update Content Contents  Id  Patch"
@@ -2066,17 +2066,17 @@
               "schema": {
                 "oneOf": [
                   {
-                    "$ref": "#/components/schemas/DebugResourceCreate"
+                    "$ref": "#/components/schemas/PlainTextResourceCreate"
                   },
                   {
-                    "$ref": "#/components/schemas/PlainTextResourceCreate"
+                    "$ref": "#/components/schemas/RichTextResourceCreate"
                   }
                 ],
                 "discriminator": {
                   "propertyName": "resourceType",
                   "mapping": {
-                    "debug": "#/components/schemas/DebugResourceCreate",
-                    "plain_text": "#/components/schemas/PlainTextResourceCreate"
+                    "plainText": "#/components/schemas/PlainTextResourceCreate",
+                    "richText": "#/components/schemas/RichTextResourceCreate"
                   }
                 },
                 "title": "Resource"
@@ -2092,17 +2092,17 @@
                 "schema": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/DebugResourceRead"
+                      "$ref": "#/components/schemas/PlainTextResourceRead"
                     },
                     {
-                      "$ref": "#/components/schemas/PlainTextResourceRead"
+                      "$ref": "#/components/schemas/RichTextResourceRead"
                     }
                   ],
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
-                      "debug": "#/components/schemas/DebugResourceRead",
-                      "plain_text": "#/components/schemas/PlainTextResourceRead"
+                      "plainText": "#/components/schemas/PlainTextResourceRead",
+                      "richText": "#/components/schemas/RichTextResourceRead"
                     }
                   },
                   "title": "Response Create Resource Resources Post"
@@ -2196,17 +2196,17 @@
                   "items": {
                     "oneOf": [
                       {
-                        "$ref": "#/components/schemas/DebugResourceRead"
+                        "$ref": "#/components/schemas/PlainTextResourceRead"
                       },
                       {
-                        "$ref": "#/components/schemas/PlainTextResourceRead"
+                        "$ref": "#/components/schemas/RichTextResourceRead"
                       }
                     ],
                     "discriminator": {
                       "propertyName": "resourceType",
                       "mapping": {
-                        "debug": "#/components/schemas/DebugResourceRead",
-                        "plain_text": "#/components/schemas/PlainTextResourceRead"
+                        "plainText": "#/components/schemas/PlainTextResourceRead",
+                        "richText": "#/components/schemas/RichTextResourceRead"
                       }
                     }
                   },
@@ -2266,17 +2266,17 @@
                 "schema": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/DebugResourceRead"
+                      "$ref": "#/components/schemas/PlainTextResourceRead"
                     },
                     {
-                      "$ref": "#/components/schemas/PlainTextResourceRead"
+                      "$ref": "#/components/schemas/RichTextResourceRead"
                     }
                   ],
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
-                      "debug": "#/components/schemas/DebugResourceRead",
-                      "plain_text": "#/components/schemas/PlainTextResourceRead"
+                      "plainText": "#/components/schemas/PlainTextResourceRead",
+                      "richText": "#/components/schemas/RichTextResourceRead"
                     }
                   },
                   "title": "Response Create Resource Version Resources  Id  Version Post"
@@ -2334,17 +2334,17 @@
               "schema": {
                 "oneOf": [
                   {
-                    "$ref": "#/components/schemas/DebugResourceUpdate"
+                    "$ref": "#/components/schemas/PlainTextResourceUpdate"
                   },
                   {
-                    "$ref": "#/components/schemas/PlainTextResourceUpdate"
+                    "$ref": "#/components/schemas/RichTextResourceUpdate"
                   }
                 ],
                 "discriminator": {
                   "propertyName": "resourceType",
                   "mapping": {
-                    "debug": "#/components/schemas/DebugResourceUpdate",
-                    "plain_text": "#/components/schemas/PlainTextResourceUpdate"
+                    "plainText": "#/components/schemas/PlainTextResourceUpdate",
+                    "richText": "#/components/schemas/RichTextResourceUpdate"
                   }
                 },
                 "title": "Updates"
@@ -2360,17 +2360,17 @@
                 "schema": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/DebugResourceRead"
+                      "$ref": "#/components/schemas/PlainTextResourceRead"
                     },
                     {
-                      "$ref": "#/components/schemas/PlainTextResourceRead"
+                      "$ref": "#/components/schemas/RichTextResourceRead"
                     }
                   ],
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
-                      "debug": "#/components/schemas/DebugResourceRead",
-                      "plain_text": "#/components/schemas/PlainTextResourceRead"
+                      "plainText": "#/components/schemas/PlainTextResourceRead",
+                      "richText": "#/components/schemas/RichTextResourceRead"
                     }
                   },
                   "title": "Response Update Resource Resources  Id  Patch"
@@ -2427,17 +2427,17 @@
                 "schema": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/DebugResourceRead"
+                      "$ref": "#/components/schemas/PlainTextResourceRead"
                     },
                     {
-                      "$ref": "#/components/schemas/PlainTextResourceRead"
+                      "$ref": "#/components/schemas/RichTextResourceRead"
                     }
                   ],
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
-                      "debug": "#/components/schemas/DebugResourceRead",
-                      "plain_text": "#/components/schemas/PlainTextResourceRead"
+                      "plainText": "#/components/schemas/PlainTextResourceRead",
+                      "richText": "#/components/schemas/RichTextResourceRead"
                     }
                   },
                   "title": "Response Get Resource Resources  Id  Get"
@@ -2553,17 +2553,17 @@
                 "schema": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/DebugResourceRead"
+                      "$ref": "#/components/schemas/PlainTextResourceRead"
                     },
                     {
-                      "$ref": "#/components/schemas/PlainTextResourceRead"
+                      "$ref": "#/components/schemas/RichTextResourceRead"
                     }
                   ],
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
-                      "debug": "#/components/schemas/DebugResourceRead",
-                      "plain_text": "#/components/schemas/PlainTextResourceRead"
+                      "plainText": "#/components/schemas/PlainTextResourceRead",
+                      "richText": "#/components/schemas/RichTextResourceRead"
                     }
                   },
                   "title": "Response Transfer Resource Resources  Id  Transfer Post"
@@ -2622,17 +2622,17 @@
                 "schema": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/DebugResourceRead"
+                      "$ref": "#/components/schemas/PlainTextResourceRead"
                     },
                     {
-                      "$ref": "#/components/schemas/PlainTextResourceRead"
+                      "$ref": "#/components/schemas/RichTextResourceRead"
                     }
                   ],
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
-                      "debug": "#/components/schemas/DebugResourceRead",
-                      "plain_text": "#/components/schemas/PlainTextResourceRead"
+                      "plainText": "#/components/schemas/PlainTextResourceRead",
+                      "richText": "#/components/schemas/RichTextResourceRead"
                     }
                   },
                   "title": "Response Propose Resource Resources  Id  Propose Post"
@@ -2691,17 +2691,17 @@
                 "schema": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/DebugResourceRead"
+                      "$ref": "#/components/schemas/PlainTextResourceRead"
                     },
                     {
-                      "$ref": "#/components/schemas/PlainTextResourceRead"
+                      "$ref": "#/components/schemas/RichTextResourceRead"
                     }
                   ],
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
-                      "debug": "#/components/schemas/DebugResourceRead",
-                      "plain_text": "#/components/schemas/PlainTextResourceRead"
+                      "plainText": "#/components/schemas/PlainTextResourceRead",
+                      "richText": "#/components/schemas/RichTextResourceRead"
                     }
                   },
                   "title": "Response Unpropose Resource Resources  Id  Unpropose Post"
@@ -2760,17 +2760,17 @@
                 "schema": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/DebugResourceRead"
+                      "$ref": "#/components/schemas/PlainTextResourceRead"
                     },
                     {
-                      "$ref": "#/components/schemas/PlainTextResourceRead"
+                      "$ref": "#/components/schemas/RichTextResourceRead"
                     }
                   ],
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
-                      "debug": "#/components/schemas/DebugResourceRead",
-                      "plain_text": "#/components/schemas/PlainTextResourceRead"
+                      "plainText": "#/components/schemas/PlainTextResourceRead",
+                      "richText": "#/components/schemas/RichTextResourceRead"
                     }
                   },
                   "title": "Response Publish Resource Resources  Id  Publish Post"
@@ -2829,17 +2829,17 @@
                 "schema": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/DebugResourceRead"
+                      "$ref": "#/components/schemas/PlainTextResourceRead"
                     },
                     {
-                      "$ref": "#/components/schemas/PlainTextResourceRead"
+                      "$ref": "#/components/schemas/RichTextResourceRead"
                     }
                   ],
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
-                      "debug": "#/components/schemas/DebugResourceRead",
-                      "plain_text": "#/components/schemas/PlainTextResourceRead"
+                      "plainText": "#/components/schemas/PlainTextResourceRead",
+                      "richText": "#/components/schemas/RichTextResourceRead"
                     }
                   },
                   "title": "Response Unpublish Resource Resources  Id  Unpublish Post"
@@ -4864,784 +4864,6 @@
         "type": "object",
         "title": "ClientSegmentUpdate"
       },
-      "DebugContentCreate": {
-        "properties": {
-          "resourceId": {
-            "type": "string",
-            "title": "Resourceid",
-            "description": "Resource ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
-          },
-          "resourceType": {
-            "const": "debug",
-            "title": "Resourcetype"
-          },
-          "locationId": {
-            "type": "string",
-            "title": "Locationid",
-            "description": "Parent text location ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
-          },
-          "comment": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 50000
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment that will be displayed with the content"
-          },
-          "notes": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 1000
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Notes",
-            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
-          },
-          "text": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Text",
-            "description": "Text content of the debug content"
-          }
-        },
-        "type": "object",
-        "required": [
-          "resourceId",
-          "resourceType",
-          "locationId"
-        ],
-        "title": "DebugContentCreate"
-      },
-      "DebugContentRead": {
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "Id",
-            "example": "5eb7cf5a86d9755df3a6c593"
-          },
-          "resourceId": {
-            "type": "string",
-            "title": "Resourceid",
-            "description": "Resource ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
-          },
-          "resourceType": {
-            "const": "debug",
-            "title": "Resourcetype"
-          },
-          "locationId": {
-            "type": "string",
-            "title": "Locationid",
-            "description": "Parent text location ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
-          },
-          "comment": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 50000
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment that will be displayed with the content"
-          },
-          "notes": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 1000
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Notes",
-            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
-          },
-          "text": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Text",
-            "description": "Text content of the debug content"
-          }
-        },
-        "additionalProperties": true,
-        "type": "object",
-        "required": [
-          "id",
-          "resourceId",
-          "resourceType",
-          "locationId"
-        ],
-        "title": "DebugContentRead"
-      },
-      "DebugContentUpdate": {
-        "properties": {
-          "resourceId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Resourceid"
-          },
-          "resourceType": {
-            "const": "debug",
-            "title": "Resourcetype"
-          },
-          "locationId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Locationid"
-          },
-          "comment": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 50000
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment that will be displayed with the content"
-          },
-          "notes": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 1000
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Notes",
-            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
-          },
-          "text": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Text",
-            "description": "Text content of the debug content"
-          }
-        },
-        "type": "object",
-        "required": [
-          "resourceType"
-        ],
-        "title": "DebugContentUpdate"
-      },
-      "DebugResourceConfig": {
-        "properties": {
-          "category": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 16
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Category",
-            "description": "Resource category key"
-          },
-          "sortOrder": {
-            "type": "integer",
-            "minimum": 0.0,
-            "title": "Sortorder",
-            "description": "Sort order for displaying this resource among others",
-            "default": 100
-          },
-          "defaultActive": {
-            "type": "boolean",
-            "title": "Defaultactive",
-            "description": "Whether this resource is active by default when public",
-            "default": true
-          },
-          "showOnParentLevel": {
-            "type": "boolean",
-            "title": "Showonparentlevel",
-            "description": "Show combined contents of this resource on the parent level",
-            "default": false
-          }
-        },
-        "type": "object",
-        "title": "DebugResourceConfig"
-      },
-      "DebugResourceCreate": {
-        "properties": {
-          "title": {
-            "type": "string",
-            "maxLength": 64,
-            "minLength": 1,
-            "title": "Title",
-            "description": "Title of this resource"
-          },
-          "description": {
-            "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
-            "title": "Description",
-            "description": "Short, concise description of this resource",
-            "default": []
-          },
-          "textId": {
-            "type": "string",
-            "title": "Textid",
-            "description": "ID of the text this resource belongs to",
-            "example": "5eb7cf5a86d9755df3a6c593"
-          },
-          "level": {
-            "type": "integer",
-            "minimum": 0.0,
-            "title": "Level",
-            "description": "Text level this resource belongs to"
-          },
-          "resourceType": {
-            "const": "debug",
-            "title": "Resourcetype"
-          },
-          "originalId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Originalid",
-            "description": "If this is a version of another resource, this ID references the original"
-          },
-          "ownerId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Ownerid",
-            "description": "User owning this resource"
-          },
-          "sharedRead": {
-            "items": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
-            "maxItems": 64,
-            "title": "Sharedread",
-            "description": "Users with shared read access to this resource",
-            "default": []
-          },
-          "sharedWrite": {
-            "items": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
-            "maxItems": 64,
-            "title": "Sharedwrite",
-            "description": "Users with shared write access to this resource",
-            "default": []
-          },
-          "public": {
-            "type": "boolean",
-            "title": "Public",
-            "description": "Publication status of this resource",
-            "default": false
-          },
-          "proposed": {
-            "type": "boolean",
-            "title": "Proposed",
-            "description": "Whether this resource has been proposed for publication",
-            "default": false
-          },
-          "citation": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 1000
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Citation",
-            "description": "Citation details for this resource"
-          },
-          "meta": {
-            "items": {
-              "$ref": "#/components/schemas/Metadate"
-            },
-            "type": "array",
-            "maxItems": 64,
-            "minItems": 0,
-            "title": "Meta",
-            "description": "Arbitrary metadata",
-            "default": []
-          },
-          "comment": {
-            "items": {
-              "$ref": "#/components/schemas/ResourceCommentTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment on this resource",
-            "default": []
-          },
-          "config": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/DebugResourceConfig"
-              }
-            ],
-            "default": {
-              "sortOrder": 100,
-              "defaultActive": true,
-              "showOnParentLevel": false
-            }
-          }
-        },
-        "type": "object",
-        "required": [
-          "title",
-          "textId",
-          "level",
-          "resourceType"
-        ],
-        "title": "DebugResourceCreate"
-      },
-      "DebugResourceRead": {
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "Id",
-            "example": "5eb7cf5a86d9755df3a6c593"
-          },
-          "writable": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Writable",
-            "description": "Whether this resource is writable for the requesting user"
-          },
-          "owner": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/UserReadPublic"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Public user data for user owning this resource"
-          },
-          "sharedReadUsers": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/UserReadPublic"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Sharedreadusers",
-            "description": "Public user data for users allowed to read this resource"
-          },
-          "sharedWriteUsers": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/UserReadPublic"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Sharedwriteusers",
-            "description": "Public user data for users allowed to write this resource"
-          },
-          "title": {
-            "type": "string",
-            "maxLength": 64,
-            "minLength": 1,
-            "title": "Title",
-            "description": "Title of this resource"
-          },
-          "description": {
-            "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
-            "title": "Description",
-            "description": "Short, concise description of this resource",
-            "default": []
-          },
-          "textId": {
-            "type": "string",
-            "title": "Textid",
-            "description": "ID of the text this resource belongs to",
-            "example": "5eb7cf5a86d9755df3a6c593"
-          },
-          "level": {
-            "type": "integer",
-            "minimum": 0.0,
-            "title": "Level",
-            "description": "Text level this resource belongs to"
-          },
-          "resourceType": {
-            "const": "debug",
-            "title": "Resourcetype"
-          },
-          "originalId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Originalid",
-            "description": "If this is a version of another resource, this ID references the original"
-          },
-          "ownerId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Ownerid",
-            "description": "User owning this resource"
-          },
-          "sharedRead": {
-            "items": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
-            "maxItems": 64,
-            "title": "Sharedread",
-            "description": "Users with shared read access to this resource",
-            "default": []
-          },
-          "sharedWrite": {
-            "items": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
-            "maxItems": 64,
-            "title": "Sharedwrite",
-            "description": "Users with shared write access to this resource",
-            "default": []
-          },
-          "public": {
-            "type": "boolean",
-            "title": "Public",
-            "description": "Publication status of this resource",
-            "default": false
-          },
-          "proposed": {
-            "type": "boolean",
-            "title": "Proposed",
-            "description": "Whether this resource has been proposed for publication",
-            "default": false
-          },
-          "citation": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 1000
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Citation",
-            "description": "Citation details for this resource"
-          },
-          "meta": {
-            "items": {
-              "$ref": "#/components/schemas/Metadate"
-            },
-            "type": "array",
-            "maxItems": 64,
-            "minItems": 0,
-            "title": "Meta",
-            "description": "Arbitrary metadata",
-            "default": []
-          },
-          "comment": {
-            "items": {
-              "$ref": "#/components/schemas/ResourceCommentTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment on this resource",
-            "default": []
-          },
-          "config": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/DebugResourceConfig"
-              }
-            ],
-            "default": {
-              "sortOrder": 100,
-              "defaultActive": true,
-              "showOnParentLevel": false
-            }
-          }
-        },
-        "additionalProperties": true,
-        "type": "object",
-        "required": [
-          "id",
-          "title",
-          "textId",
-          "level",
-          "resourceType"
-        ],
-        "title": "DebugResourceRead"
-      },
-      "DebugResourceUpdate": {
-        "properties": {
-          "title": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 64,
-                "minLength": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Title"
-          },
-          "description": {
-            "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
-            "title": "Description",
-            "description": "Short, concise description of this resource",
-            "default": []
-          },
-          "textId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Textid"
-          },
-          "level": {
-            "anyOf": [
-              {
-                "type": "integer",
-                "minimum": 0.0
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Level"
-          },
-          "resourceType": {
-            "const": "debug",
-            "title": "Resourcetype"
-          },
-          "originalId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Originalid",
-            "description": "If this is a version of another resource, this ID references the original"
-          },
-          "ownerId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Ownerid",
-            "description": "User owning this resource"
-          },
-          "sharedRead": {
-            "items": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
-            "maxItems": 64,
-            "title": "Sharedread",
-            "description": "Users with shared read access to this resource",
-            "default": []
-          },
-          "sharedWrite": {
-            "items": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
-            "maxItems": 64,
-            "title": "Sharedwrite",
-            "description": "Users with shared write access to this resource",
-            "default": []
-          },
-          "public": {
-            "type": "boolean",
-            "title": "Public",
-            "description": "Publication status of this resource",
-            "default": false
-          },
-          "proposed": {
-            "type": "boolean",
-            "title": "Proposed",
-            "description": "Whether this resource has been proposed for publication",
-            "default": false
-          },
-          "citation": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 1000
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Citation",
-            "description": "Citation details for this resource"
-          },
-          "meta": {
-            "items": {
-              "$ref": "#/components/schemas/Metadate"
-            },
-            "type": "array",
-            "maxItems": 64,
-            "minItems": 0,
-            "title": "Meta",
-            "description": "Arbitrary metadata",
-            "default": []
-          },
-          "comment": {
-            "items": {
-              "$ref": "#/components/schemas/ResourceCommentTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment on this resource",
-            "default": []
-          },
-          "config": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/DebugResourceConfig"
-              }
-            ],
-            "default": {
-              "sortOrder": 100,
-              "defaultActive": true,
-              "showOnParentLevel": false
-            }
-          }
-        },
-        "type": "object",
-        "required": [
-          "resourceType"
-        ],
-        "title": "DebugResourceUpdate"
-      },
       "DeepLLinksConfig": {
         "properties": {
           "enabled": {
@@ -5864,10 +5086,10 @@
             "items": {
               "anyOf": [
                 {
-                  "$ref": "#/components/schemas/DebugContentRead"
+                  "$ref": "#/components/schemas/PlainTextContentRead"
                 },
                 {
-                  "$ref": "#/components/schemas/PlainTextContentRead"
+                  "$ref": "#/components/schemas/RichTextContentRead"
                 }
               ]
             },
@@ -6068,7 +5290,7 @@
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "resourceType": {
-            "const": "plain_text",
+            "const": "plainText",
             "title": "Resourcetype"
           },
           "locationId": {
@@ -6108,7 +5330,7 @@
             "maxLength": 102400,
             "minLength": 1,
             "title": "Text",
-            "description": "Text content of the plain text content"
+            "description": "Text content of the plain text content object"
           }
         },
         "type": "object",
@@ -6134,7 +5356,7 @@
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "resourceType": {
-            "const": "plain_text",
+            "const": "plainText",
             "title": "Resourcetype"
           },
           "locationId": {
@@ -6174,7 +5396,7 @@
             "maxLength": 102400,
             "minLength": 1,
             "title": "Text",
-            "description": "Text content of the plain text content"
+            "description": "Text content of the plain text content object"
           }
         },
         "additionalProperties": true,
@@ -6203,7 +5425,7 @@
             "title": "Resourceid"
           },
           "resourceType": {
-            "const": "plain_text",
+            "const": "plainText",
             "title": "Resourcetype"
           },
           "locationId": {
@@ -6349,7 +5571,7 @@
             "description": "Text level this resource belongs to"
           },
           "resourceType": {
-            "const": "plain_text",
+            "const": "plainText",
             "title": "Resourcetype"
           },
           "originalId": {
@@ -6566,7 +5788,7 @@
             "description": "Text level this resource belongs to"
           },
           "resourceType": {
-            "const": "plain_text",
+            "const": "plainText",
             "title": "Resourcetype"
           },
           "originalId": {
@@ -6745,7 +5967,7 @@
             "title": "Level"
           },
           "resourceType": {
-            "const": "plain_text",
+            "const": "plainText",
             "title": "Resourcetype"
           },
           "originalId": {
@@ -7534,6 +6756,777 @@
           "position"
         ],
         "title": "ResourceLocationCoverage"
+      },
+      "RichTextContentCreate": {
+        "properties": {
+          "resourceId": {
+            "type": "string",
+            "title": "Resourceid",
+            "description": "Resource ID",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "resourceType": {
+            "const": "richText",
+            "title": "Resourcetype"
+          },
+          "locationId": {
+            "type": "string",
+            "title": "Locationid",
+            "description": "Parent text location ID",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 50000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment",
+            "description": "Plain text, potentially multiline comment that will be displayed with the content"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes",
+            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
+          },
+          "html": {
+            "type": "string",
+            "maxLength": 102400,
+            "minLength": 1,
+            "title": "Html",
+            "description": "HTML content of the rich text content object"
+          }
+        },
+        "type": "object",
+        "required": [
+          "resourceId",
+          "resourceType",
+          "locationId",
+          "html"
+        ],
+        "title": "RichTextContentCreate"
+      },
+      "RichTextContentRead": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "resourceId": {
+            "type": "string",
+            "title": "Resourceid",
+            "description": "Resource ID",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "resourceType": {
+            "const": "richText",
+            "title": "Resourcetype"
+          },
+          "locationId": {
+            "type": "string",
+            "title": "Locationid",
+            "description": "Parent text location ID",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 50000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment",
+            "description": "Plain text, potentially multiline comment that will be displayed with the content"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes",
+            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
+          },
+          "html": {
+            "type": "string",
+            "maxLength": 102400,
+            "minLength": 1,
+            "title": "Html",
+            "description": "HTML content of the rich text content object"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "id",
+          "resourceId",
+          "resourceType",
+          "locationId",
+          "html"
+        ],
+        "title": "RichTextContentRead"
+      },
+      "RichTextContentUpdate": {
+        "properties": {
+          "resourceId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resourceid"
+          },
+          "resourceType": {
+            "const": "richText",
+            "title": "Resourcetype"
+          },
+          "locationId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Locationid"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 50000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment",
+            "description": "Plain text, potentially multiline comment that will be displayed with the content"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes",
+            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
+          },
+          "html": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 102400,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Html"
+          }
+        },
+        "type": "object",
+        "required": [
+          "resourceType"
+        ],
+        "title": "RichTextContentUpdate"
+      },
+      "RichTextResourceConfig": {
+        "properties": {
+          "category": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 16
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category",
+            "description": "Resource category key"
+          },
+          "sortOrder": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Sortorder",
+            "description": "Sort order for displaying this resource among others",
+            "default": 100
+          },
+          "defaultActive": {
+            "type": "boolean",
+            "title": "Defaultactive",
+            "description": "Whether this resource is active by default when public",
+            "default": true
+          },
+          "showOnParentLevel": {
+            "type": "boolean",
+            "title": "Showonparentlevel",
+            "description": "Show combined contents of this resource on the parent level",
+            "default": false
+          }
+        },
+        "type": "object",
+        "title": "RichTextResourceConfig"
+      },
+      "RichTextResourceCreate": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Title",
+            "description": "Title of this resource"
+          },
+          "description": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Description",
+            "description": "Short, concise description of this resource",
+            "default": []
+          },
+          "textId": {
+            "type": "string",
+            "title": "Textid",
+            "description": "ID of the text this resource belongs to",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "level": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Level",
+            "description": "Text level this resource belongs to"
+          },
+          "resourceType": {
+            "const": "richText",
+            "title": "Resourcetype"
+          },
+          "originalId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Originalid",
+            "description": "If this is a version of another resource, this ID references the original"
+          },
+          "ownerId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ownerid",
+            "description": "User owning this resource"
+          },
+          "sharedRead": {
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Sharedread",
+            "description": "Users with shared read access to this resource",
+            "default": []
+          },
+          "sharedWrite": {
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Sharedwrite",
+            "description": "Users with shared write access to this resource",
+            "default": []
+          },
+          "public": {
+            "type": "boolean",
+            "title": "Public",
+            "description": "Publication status of this resource",
+            "default": false
+          },
+          "proposed": {
+            "type": "boolean",
+            "title": "Proposed",
+            "description": "Whether this resource has been proposed for publication",
+            "default": false
+          },
+          "citation": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Citation",
+            "description": "Citation details for this resource"
+          },
+          "meta": {
+            "items": {
+              "$ref": "#/components/schemas/Metadate"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "minItems": 0,
+            "title": "Meta",
+            "description": "Arbitrary metadata",
+            "default": []
+          },
+          "comment": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceCommentTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Comment",
+            "description": "Plain text, potentially multiline comment on this resource",
+            "default": []
+          },
+          "config": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RichTextResourceConfig"
+              }
+            ],
+            "default": {
+              "sortOrder": 100,
+              "defaultActive": true,
+              "showOnParentLevel": false
+            }
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "textId",
+          "level",
+          "resourceType"
+        ],
+        "title": "RichTextResourceCreate"
+      },
+      "RichTextResourceRead": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "writable": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Writable",
+            "description": "Whether this resource is writable for the requesting user"
+          },
+          "owner": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/UserReadPublic"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Public user data for user owning this resource"
+          },
+          "sharedReadUsers": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/UserReadPublic"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sharedreadusers",
+            "description": "Public user data for users allowed to read this resource"
+          },
+          "sharedWriteUsers": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/UserReadPublic"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sharedwriteusers",
+            "description": "Public user data for users allowed to write this resource"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Title",
+            "description": "Title of this resource"
+          },
+          "description": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Description",
+            "description": "Short, concise description of this resource",
+            "default": []
+          },
+          "textId": {
+            "type": "string",
+            "title": "Textid",
+            "description": "ID of the text this resource belongs to",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "level": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Level",
+            "description": "Text level this resource belongs to"
+          },
+          "resourceType": {
+            "const": "richText",
+            "title": "Resourcetype"
+          },
+          "originalId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Originalid",
+            "description": "If this is a version of another resource, this ID references the original"
+          },
+          "ownerId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ownerid",
+            "description": "User owning this resource"
+          },
+          "sharedRead": {
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Sharedread",
+            "description": "Users with shared read access to this resource",
+            "default": []
+          },
+          "sharedWrite": {
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Sharedwrite",
+            "description": "Users with shared write access to this resource",
+            "default": []
+          },
+          "public": {
+            "type": "boolean",
+            "title": "Public",
+            "description": "Publication status of this resource",
+            "default": false
+          },
+          "proposed": {
+            "type": "boolean",
+            "title": "Proposed",
+            "description": "Whether this resource has been proposed for publication",
+            "default": false
+          },
+          "citation": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Citation",
+            "description": "Citation details for this resource"
+          },
+          "meta": {
+            "items": {
+              "$ref": "#/components/schemas/Metadate"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "minItems": 0,
+            "title": "Meta",
+            "description": "Arbitrary metadata",
+            "default": []
+          },
+          "comment": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceCommentTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Comment",
+            "description": "Plain text, potentially multiline comment on this resource",
+            "default": []
+          },
+          "config": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RichTextResourceConfig"
+              }
+            ],
+            "default": {
+              "sortOrder": 100,
+              "defaultActive": true,
+              "showOnParentLevel": false
+            }
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "textId",
+          "level",
+          "resourceType"
+        ],
+        "title": "RichTextResourceRead"
+      },
+      "RichTextResourceUpdate": {
+        "properties": {
+          "title": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 64,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          },
+          "description": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Description",
+            "description": "Short, concise description of this resource",
+            "default": []
+          },
+          "textId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Textid"
+          },
+          "level": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Level"
+          },
+          "resourceType": {
+            "const": "richText",
+            "title": "Resourcetype"
+          },
+          "originalId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Originalid",
+            "description": "If this is a version of another resource, this ID references the original"
+          },
+          "ownerId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ownerid",
+            "description": "User owning this resource"
+          },
+          "sharedRead": {
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Sharedread",
+            "description": "Users with shared read access to this resource",
+            "default": []
+          },
+          "sharedWrite": {
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Sharedwrite",
+            "description": "Users with shared write access to this resource",
+            "default": []
+          },
+          "public": {
+            "type": "boolean",
+            "title": "Public",
+            "description": "Publication status of this resource",
+            "default": false
+          },
+          "proposed": {
+            "type": "boolean",
+            "title": "Proposed",
+            "description": "Whether this resource has been proposed for publication",
+            "default": false
+          },
+          "citation": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Citation",
+            "description": "Citation details for this resource"
+          },
+          "meta": {
+            "items": {
+              "$ref": "#/components/schemas/Metadate"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "minItems": 0,
+            "title": "Meta",
+            "description": "Arbitrary metadata",
+            "default": []
+          },
+          "comment": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceCommentTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Comment",
+            "description": "Plain text, potentially multiline comment on this resource",
+            "default": []
+          },
+          "config": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RichTextResourceConfig"
+              }
+            ],
+            "default": {
+              "sortOrder": 100,
+              "defaultActive": true,
+              "showOnParentLevel": false
+            }
+          }
+        },
+        "type": "object",
+        "required": [
+          "resourceType"
+        ],
+        "title": "RichTextResourceUpdate"
       },
       "TextCreate": {
         "properties": {

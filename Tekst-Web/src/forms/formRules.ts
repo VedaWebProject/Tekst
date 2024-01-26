@@ -199,7 +199,17 @@ export const resourceConfigFormRules: Record<string, FormItemRule[]> = {
       trigger: 'blur',
     },
   ],
-  level: [requiredRule($t('models.resource.level'), 'blur')],
+  level: [
+    {
+      required: true,
+      type: 'number',
+      message: () =>
+        $t('forms.rulesFeedback.isRequired', {
+          x: $t('models.resource.level'),
+        }),
+      trigger: 'blur',
+    },
+  ],
 };
 
 const commonContentFormRules: Record<string, FormItemRule[]> = {
@@ -212,6 +222,13 @@ export const contentFormRules: Record<string, Record<string, FormItemRule[]>> = 
     ...commonContentFormRules,
     text: [
       requiredRule($t('resources.types.plainText.contentFields.text'), 'blur'),
+      minMaxCharsRule(1, 102400, 'blur'),
+    ],
+  },
+  richText: {
+    ...commonContentFormRules,
+    html: [
+      requiredRule($t('resources.types.richText.contentFields.html'), 'blur'),
       minMaxCharsRule(1, 102400, 'blur'),
     ],
   },

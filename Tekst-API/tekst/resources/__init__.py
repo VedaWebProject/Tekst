@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Annotated, Union
 
 from fastapi import Body
-from humps import decamelize
+from humps import camelize
 
 from tekst.logging import log
 from tekst.models.common import ReadBase
@@ -40,7 +40,7 @@ class ResourceTypeABC(ABC):
     @classmethod
     def get_key(cls) -> str:
         """Returns the key identifying this resource type"""
-        return decamelize(cls.__name__)
+        return camelize(cls.__name__)
 
     @classmethod
     @abstractmethod
@@ -89,10 +89,10 @@ class ResourceTypesManager:
         resource_type_class.content_model().document_model(ContentBaseDocument)
         resource_type_class.content_model().update_model(ContentBaseUpdate)
         # register instance
-        self.__resource_types[resource_type_name.lower()] = resource_type_class()
+        self.__resource_types[resource_type_name] = resource_type_class()
 
     def get(self, resource_type_name: str) -> ResourceTypeABC:
-        return self.__resource_types.get(resource_type_name.lower())
+        return self.__resource_types.get(resource_type_name)
 
     def get_all(self) -> dict[str, ResourceTypeABC]:
         return self.__resource_types
@@ -109,9 +109,9 @@ def init_resource_types_mgr() -> None:
     # init manager
     manager = ResourceTypesManager()
     # get internal resource type module names
-    lt_modules = [mod.name.lower() for mod in pkgutil.iter_modules(__path__)]
+    lt_modules = [mod.name for mod in pkgutil.iter_modules(__path__)]
     for lt_module in lt_modules:
-        module = importlib.import_module(f"{__name__}.{lt_module.lower()}")
+        module = importlib.import_module(f"{__name__}.{lt_module}")
         resource_types_from_module = inspect.getmembers(
             module, lambda o: inspect.isclass(o) and issubclass(o, ResourceTypeABC)
         )

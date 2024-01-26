@@ -25,18 +25,18 @@ class PlainTextResourceConfig(ResourceConfigBase):
 
 
 class PlainTextResource(ResourceBase):
-    resource_type: Literal["plain_text"]  # snake_cased resource type classname
+    resource_type: Literal["plainText"]  # camelCased resource type classname
     config: PlainTextResourceConfig = PlainTextResourceConfig()
 
 
 class PlainTextContent(ContentBase):
     """A content of a plain text resource"""
 
-    resource_type: Literal["plain_text"]  # snake_cased resource type classname
+    resource_type: Literal["plainText"]  # camelCased resource type classname
     text: Annotated[
         str,
         StringConstraints(min_length=1, max_length=102400, strip_whitespace=True),
         Field(
-            description="Text content of the plain text content",
+            description="Text content of the plain text content object",
         ),
     ]

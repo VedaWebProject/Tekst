@@ -566,415 +566,6 @@ export interface components {
       /** Html */
       html?: string | null;
     };
-    /** DebugContentCreate */
-    DebugContentCreate: {
-      /**
-       * Resourceid
-       * @description Resource ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      resourceId: string;
-      /**
-       * Resourcetype
-       * @constant
-       */
-      resourceType: 'debug';
-      /**
-       * Locationid
-       * @description Parent text location ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      locationId: string;
-      /**
-       * Comment
-       * @description Plain text, potentially multiline comment that will be displayed with the content
-       */
-      comment?: string | null;
-      /**
-       * Notes
-       * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
-       */
-      notes?: string | null;
-      /**
-       * Text
-       * @description Text content of the debug content
-       */
-      text?: string | null;
-    };
-    /** DebugContentRead */
-    DebugContentRead: {
-      /**
-       * Id
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      id: string;
-      /**
-       * Resourceid
-       * @description Resource ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      resourceId: string;
-      /**
-       * Resourcetype
-       * @constant
-       */
-      resourceType: 'debug';
-      /**
-       * Locationid
-       * @description Parent text location ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      locationId: string;
-      /**
-       * Comment
-       * @description Plain text, potentially multiline comment that will be displayed with the content
-       */
-      comment?: string | null;
-      /**
-       * Notes
-       * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
-       */
-      notes?: string | null;
-      /**
-       * Text
-       * @description Text content of the debug content
-       */
-      text?: string | null;
-      [key: string]: unknown;
-    };
-    /** DebugContentUpdate */
-    DebugContentUpdate: {
-      /** Resourceid */
-      resourceId?: string | null;
-      /**
-       * Resourcetype
-       * @constant
-       */
-      resourceType: 'debug';
-      /** Locationid */
-      locationId?: string | null;
-      /**
-       * Comment
-       * @description Plain text, potentially multiline comment that will be displayed with the content
-       */
-      comment?: string | null;
-      /**
-       * Notes
-       * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
-       */
-      notes?: string | null;
-      /**
-       * Text
-       * @description Text content of the debug content
-       */
-      text?: string | null;
-    };
-    /** DebugResourceConfig */
-    DebugResourceConfig: {
-      /**
-       * Category
-       * @description Resource category key
-       */
-      category?: string | null;
-      /**
-       * Sortorder
-       * @description Sort order for displaying this resource among others
-       * @default 100
-       */
-      sortOrder?: number;
-      /**
-       * Defaultactive
-       * @description Whether this resource is active by default when public
-       * @default true
-       */
-      defaultActive?: boolean;
-      /**
-       * Showonparentlevel
-       * @description Show combined contents of this resource on the parent level
-       * @default false
-       */
-      showOnParentLevel?: boolean;
-    };
-    /** DebugResourceCreate */
-    DebugResourceCreate: {
-      /**
-       * Title
-       * @description Title of this resource
-       */
-      title: string;
-      /**
-       * Description
-       * @description Short, concise description of this resource
-       * @default []
-       */
-      description?: components['schemas']['ResourceDescriptionTranslation'][];
-      /**
-       * Textid
-       * @description ID of the text this resource belongs to
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      textId: string;
-      /**
-       * Level
-       * @description Text level this resource belongs to
-       */
-      level: number;
-      /**
-       * Resourcetype
-       * @constant
-       */
-      resourceType: 'debug';
-      /**
-       * Originalid
-       * @description If this is a version of another resource, this ID references the original
-       */
-      originalId?: string | null;
-      /**
-       * Ownerid
-       * @description User owning this resource
-       */
-      ownerId?: string | null;
-      /**
-       * Sharedread
-       * @description Users with shared read access to this resource
-       * @default []
-       */
-      sharedRead?: string[];
-      /**
-       * Sharedwrite
-       * @description Users with shared write access to this resource
-       * @default []
-       */
-      sharedWrite?: string[];
-      /**
-       * Public
-       * @description Publication status of this resource
-       * @default false
-       */
-      public?: boolean;
-      /**
-       * Proposed
-       * @description Whether this resource has been proposed for publication
-       * @default false
-       */
-      proposed?: boolean;
-      /**
-       * Citation
-       * @description Citation details for this resource
-       */
-      citation?: string | null;
-      /**
-       * Meta
-       * @description Arbitrary metadata
-       * @default []
-       */
-      meta?: components['schemas']['Metadate'][];
-      /**
-       * Comment
-       * @description Plain text, potentially multiline comment on this resource
-       * @default []
-       */
-      comment?: components['schemas']['ResourceCommentTranslation'][];
-      /**
-       * @default {
-       *   "sortOrder": 100,
-       *   "defaultActive": true,
-       *   "showOnParentLevel": false
-       * }
-       */
-      config?: components['schemas']['DebugResourceConfig'];
-    };
-    /** DebugResourceRead */
-    DebugResourceRead: {
-      /**
-       * Id
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      id: string;
-      /**
-       * Writable
-       * @description Whether this resource is writable for the requesting user
-       */
-      writable?: boolean | null;
-      /** @description Public user data for user owning this resource */
-      owner?: components['schemas']['UserReadPublic'] | null;
-      /**
-       * Sharedreadusers
-       * @description Public user data for users allowed to read this resource
-       */
-      sharedReadUsers?: components['schemas']['UserReadPublic'][] | null;
-      /**
-       * Sharedwriteusers
-       * @description Public user data for users allowed to write this resource
-       */
-      sharedWriteUsers?: components['schemas']['UserReadPublic'][] | null;
-      /**
-       * Title
-       * @description Title of this resource
-       */
-      title: string;
-      /**
-       * Description
-       * @description Short, concise description of this resource
-       * @default []
-       */
-      description?: components['schemas']['ResourceDescriptionTranslation'][];
-      /**
-       * Textid
-       * @description ID of the text this resource belongs to
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      textId: string;
-      /**
-       * Level
-       * @description Text level this resource belongs to
-       */
-      level: number;
-      /**
-       * Resourcetype
-       * @constant
-       */
-      resourceType: 'debug';
-      /**
-       * Originalid
-       * @description If this is a version of another resource, this ID references the original
-       */
-      originalId?: string | null;
-      /**
-       * Ownerid
-       * @description User owning this resource
-       */
-      ownerId?: string | null;
-      /**
-       * Sharedread
-       * @description Users with shared read access to this resource
-       * @default []
-       */
-      sharedRead?: string[];
-      /**
-       * Sharedwrite
-       * @description Users with shared write access to this resource
-       * @default []
-       */
-      sharedWrite?: string[];
-      /**
-       * Public
-       * @description Publication status of this resource
-       * @default false
-       */
-      public?: boolean;
-      /**
-       * Proposed
-       * @description Whether this resource has been proposed for publication
-       * @default false
-       */
-      proposed?: boolean;
-      /**
-       * Citation
-       * @description Citation details for this resource
-       */
-      citation?: string | null;
-      /**
-       * Meta
-       * @description Arbitrary metadata
-       * @default []
-       */
-      meta?: components['schemas']['Metadate'][];
-      /**
-       * Comment
-       * @description Plain text, potentially multiline comment on this resource
-       * @default []
-       */
-      comment?: components['schemas']['ResourceCommentTranslation'][];
-      /**
-       * @default {
-       *   "sortOrder": 100,
-       *   "defaultActive": true,
-       *   "showOnParentLevel": false
-       * }
-       */
-      config?: components['schemas']['DebugResourceConfig'];
-      [key: string]: unknown;
-    };
-    /** DebugResourceUpdate */
-    DebugResourceUpdate: {
-      /** Title */
-      title?: string | null;
-      /**
-       * Description
-       * @description Short, concise description of this resource
-       * @default []
-       */
-      description?: components['schemas']['ResourceDescriptionTranslation'][];
-      /** Textid */
-      textId?: string | null;
-      /** Level */
-      level?: number | null;
-      /**
-       * Resourcetype
-       * @constant
-       */
-      resourceType: 'debug';
-      /**
-       * Originalid
-       * @description If this is a version of another resource, this ID references the original
-       */
-      originalId?: string | null;
-      /**
-       * Ownerid
-       * @description User owning this resource
-       */
-      ownerId?: string | null;
-      /**
-       * Sharedread
-       * @description Users with shared read access to this resource
-       * @default []
-       */
-      sharedRead?: string[];
-      /**
-       * Sharedwrite
-       * @description Users with shared write access to this resource
-       * @default []
-       */
-      sharedWrite?: string[];
-      /**
-       * Public
-       * @description Publication status of this resource
-       * @default false
-       */
-      public?: boolean;
-      /**
-       * Proposed
-       * @description Whether this resource has been proposed for publication
-       * @default false
-       */
-      proposed?: boolean;
-      /**
-       * Citation
-       * @description Citation details for this resource
-       */
-      citation?: string | null;
-      /**
-       * Meta
-       * @description Arbitrary metadata
-       * @default []
-       */
-      meta?: components['schemas']['Metadate'][];
-      /**
-       * Comment
-       * @description Plain text, potentially multiline comment on this resource
-       * @default []
-       */
-      comment?: components['schemas']['ResourceCommentTranslation'][];
-      /**
-       * @default {
-       *   "sortOrder": 100,
-       *   "defaultActive": true,
-       *   "showOnParentLevel": false
-       * }
-       */
-      config?: components['schemas']['DebugResourceConfig'];
-    };
     /** DeepLLinksConfig */
     DeepLLinksConfig: {
       /**
@@ -1121,8 +712,8 @@ export interface components {
        * @default []
        */
       contents?: (
-        | components['schemas']['DebugContentRead']
         | components['schemas']['PlainTextContentRead']
+        | components['schemas']['RichTextContentRead']
       )[];
     };
     /** LocationRead */
@@ -1204,7 +795,7 @@ export interface components {
        * Resourcetype
        * @constant
        */
-      resourceType: 'plain_text';
+      resourceType: 'plainText';
       /**
        * Locationid
        * @description Parent text location ID
@@ -1223,7 +814,7 @@ export interface components {
       notes?: string | null;
       /**
        * Text
-       * @description Text content of the plain text content
+       * @description Text content of the plain text content object
        */
       text: string;
     };
@@ -1244,7 +835,7 @@ export interface components {
        * Resourcetype
        * @constant
        */
-      resourceType: 'plain_text';
+      resourceType: 'plainText';
       /**
        * Locationid
        * @description Parent text location ID
@@ -1263,7 +854,7 @@ export interface components {
       notes?: string | null;
       /**
        * Text
-       * @description Text content of the plain text content
+       * @description Text content of the plain text content object
        */
       text: string;
       [key: string]: unknown;
@@ -1276,7 +867,7 @@ export interface components {
        * Resourcetype
        * @constant
        */
-      resourceType: 'plain_text';
+      resourceType: 'plainText';
       /** Locationid */
       locationId?: string | null;
       /**
@@ -1357,7 +948,7 @@ export interface components {
        * Resourcetype
        * @constant
        */
-      resourceType: 'plain_text';
+      resourceType: 'plainText';
       /**
        * Originalid
        * @description If this is a version of another resource, this ID references the original
@@ -1476,7 +1067,7 @@ export interface components {
        * Resourcetype
        * @constant
        */
-      resourceType: 'plain_text';
+      resourceType: 'plainText';
       /**
        * Originalid
        * @description If this is a version of another resource, this ID references the original
@@ -1564,7 +1155,7 @@ export interface components {
        * Resourcetype
        * @constant
        */
-      resourceType: 'plain_text';
+      resourceType: 'plainText';
       /**
        * Originalid
        * @description If this is a version of another resource, this ID references the original
@@ -1978,6 +1569,412 @@ export interface components {
        * @default false
        */
       covered?: boolean;
+    };
+    /** RichTextContentCreate */
+    RichTextContentCreate: {
+      /**
+       * Resourceid
+       * @description Resource ID
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      resourceId: string;
+      /**
+       * Resourcetype
+       * @constant
+       */
+      resourceType: 'richText';
+      /**
+       * Locationid
+       * @description Parent text location ID
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      locationId: string;
+      /**
+       * Comment
+       * @description Plain text, potentially multiline comment that will be displayed with the content
+       */
+      comment?: string | null;
+      /**
+       * Notes
+       * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
+       */
+      notes?: string | null;
+      /**
+       * Html
+       * @description HTML content of the rich text content object
+       */
+      html: string;
+    };
+    /** RichTextContentRead */
+    RichTextContentRead: {
+      /**
+       * Id
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      id: string;
+      /**
+       * Resourceid
+       * @description Resource ID
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      resourceId: string;
+      /**
+       * Resourcetype
+       * @constant
+       */
+      resourceType: 'richText';
+      /**
+       * Locationid
+       * @description Parent text location ID
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      locationId: string;
+      /**
+       * Comment
+       * @description Plain text, potentially multiline comment that will be displayed with the content
+       */
+      comment?: string | null;
+      /**
+       * Notes
+       * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
+       */
+      notes?: string | null;
+      /**
+       * Html
+       * @description HTML content of the rich text content object
+       */
+      html: string;
+      [key: string]: unknown;
+    };
+    /** RichTextContentUpdate */
+    RichTextContentUpdate: {
+      /** Resourceid */
+      resourceId?: string | null;
+      /**
+       * Resourcetype
+       * @constant
+       */
+      resourceType: 'richText';
+      /** Locationid */
+      locationId?: string | null;
+      /**
+       * Comment
+       * @description Plain text, potentially multiline comment that will be displayed with the content
+       */
+      comment?: string | null;
+      /**
+       * Notes
+       * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
+       */
+      notes?: string | null;
+      /** Html */
+      html?: string | null;
+    };
+    /** RichTextResourceConfig */
+    RichTextResourceConfig: {
+      /**
+       * Category
+       * @description Resource category key
+       */
+      category?: string | null;
+      /**
+       * Sortorder
+       * @description Sort order for displaying this resource among others
+       * @default 100
+       */
+      sortOrder?: number;
+      /**
+       * Defaultactive
+       * @description Whether this resource is active by default when public
+       * @default true
+       */
+      defaultActive?: boolean;
+      /**
+       * Showonparentlevel
+       * @description Show combined contents of this resource on the parent level
+       * @default false
+       */
+      showOnParentLevel?: boolean;
+    };
+    /** RichTextResourceCreate */
+    RichTextResourceCreate: {
+      /**
+       * Title
+       * @description Title of this resource
+       */
+      title: string;
+      /**
+       * Description
+       * @description Short, concise description of this resource
+       * @default []
+       */
+      description?: components['schemas']['ResourceDescriptionTranslation'][];
+      /**
+       * Textid
+       * @description ID of the text this resource belongs to
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      textId: string;
+      /**
+       * Level
+       * @description Text level this resource belongs to
+       */
+      level: number;
+      /**
+       * Resourcetype
+       * @constant
+       */
+      resourceType: 'richText';
+      /**
+       * Originalid
+       * @description If this is a version of another resource, this ID references the original
+       */
+      originalId?: string | null;
+      /**
+       * Ownerid
+       * @description User owning this resource
+       */
+      ownerId?: string | null;
+      /**
+       * Sharedread
+       * @description Users with shared read access to this resource
+       * @default []
+       */
+      sharedRead?: string[];
+      /**
+       * Sharedwrite
+       * @description Users with shared write access to this resource
+       * @default []
+       */
+      sharedWrite?: string[];
+      /**
+       * Public
+       * @description Publication status of this resource
+       * @default false
+       */
+      public?: boolean;
+      /**
+       * Proposed
+       * @description Whether this resource has been proposed for publication
+       * @default false
+       */
+      proposed?: boolean;
+      /**
+       * Citation
+       * @description Citation details for this resource
+       */
+      citation?: string | null;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       * @default []
+       */
+      meta?: components['schemas']['Metadate'][];
+      /**
+       * Comment
+       * @description Plain text, potentially multiline comment on this resource
+       * @default []
+       */
+      comment?: components['schemas']['ResourceCommentTranslation'][];
+      /**
+       * @default {
+       *   "sortOrder": 100,
+       *   "defaultActive": true,
+       *   "showOnParentLevel": false
+       * }
+       */
+      config?: components['schemas']['RichTextResourceConfig'];
+    };
+    /** RichTextResourceRead */
+    RichTextResourceRead: {
+      /**
+       * Id
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      id: string;
+      /**
+       * Writable
+       * @description Whether this resource is writable for the requesting user
+       */
+      writable?: boolean | null;
+      /** @description Public user data for user owning this resource */
+      owner?: components['schemas']['UserReadPublic'] | null;
+      /**
+       * Sharedreadusers
+       * @description Public user data for users allowed to read this resource
+       */
+      sharedReadUsers?: components['schemas']['UserReadPublic'][] | null;
+      /**
+       * Sharedwriteusers
+       * @description Public user data for users allowed to write this resource
+       */
+      sharedWriteUsers?: components['schemas']['UserReadPublic'][] | null;
+      /**
+       * Title
+       * @description Title of this resource
+       */
+      title: string;
+      /**
+       * Description
+       * @description Short, concise description of this resource
+       * @default []
+       */
+      description?: components['schemas']['ResourceDescriptionTranslation'][];
+      /**
+       * Textid
+       * @description ID of the text this resource belongs to
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      textId: string;
+      /**
+       * Level
+       * @description Text level this resource belongs to
+       */
+      level: number;
+      /**
+       * Resourcetype
+       * @constant
+       */
+      resourceType: 'richText';
+      /**
+       * Originalid
+       * @description If this is a version of another resource, this ID references the original
+       */
+      originalId?: string | null;
+      /**
+       * Ownerid
+       * @description User owning this resource
+       */
+      ownerId?: string | null;
+      /**
+       * Sharedread
+       * @description Users with shared read access to this resource
+       * @default []
+       */
+      sharedRead?: string[];
+      /**
+       * Sharedwrite
+       * @description Users with shared write access to this resource
+       * @default []
+       */
+      sharedWrite?: string[];
+      /**
+       * Public
+       * @description Publication status of this resource
+       * @default false
+       */
+      public?: boolean;
+      /**
+       * Proposed
+       * @description Whether this resource has been proposed for publication
+       * @default false
+       */
+      proposed?: boolean;
+      /**
+       * Citation
+       * @description Citation details for this resource
+       */
+      citation?: string | null;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       * @default []
+       */
+      meta?: components['schemas']['Metadate'][];
+      /**
+       * Comment
+       * @description Plain text, potentially multiline comment on this resource
+       * @default []
+       */
+      comment?: components['schemas']['ResourceCommentTranslation'][];
+      /**
+       * @default {
+       *   "sortOrder": 100,
+       *   "defaultActive": true,
+       *   "showOnParentLevel": false
+       * }
+       */
+      config?: components['schemas']['RichTextResourceConfig'];
+      [key: string]: unknown;
+    };
+    /** RichTextResourceUpdate */
+    RichTextResourceUpdate: {
+      /** Title */
+      title?: string | null;
+      /**
+       * Description
+       * @description Short, concise description of this resource
+       * @default []
+       */
+      description?: components['schemas']['ResourceDescriptionTranslation'][];
+      /** Textid */
+      textId?: string | null;
+      /** Level */
+      level?: number | null;
+      /**
+       * Resourcetype
+       * @constant
+       */
+      resourceType: 'richText';
+      /**
+       * Originalid
+       * @description If this is a version of another resource, this ID references the original
+       */
+      originalId?: string | null;
+      /**
+       * Ownerid
+       * @description User owning this resource
+       */
+      ownerId?: string | null;
+      /**
+       * Sharedread
+       * @description Users with shared read access to this resource
+       * @default []
+       */
+      sharedRead?: string[];
+      /**
+       * Sharedwrite
+       * @description Users with shared write access to this resource
+       * @default []
+       */
+      sharedWrite?: string[];
+      /**
+       * Public
+       * @description Publication status of this resource
+       * @default false
+       */
+      public?: boolean;
+      /**
+       * Proposed
+       * @description Whether this resource has been proposed for publication
+       * @default false
+       */
+      proposed?: boolean;
+      /**
+       * Citation
+       * @description Citation details for this resource
+       */
+      citation?: string | null;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       * @default []
+       */
+      meta?: components['schemas']['Metadate'][];
+      /**
+       * Comment
+       * @description Plain text, potentially multiline comment on this resource
+       * @default []
+       */
+      comment?: components['schemas']['ResourceCommentTranslation'][];
+      /**
+       * @default {
+       *   "sortOrder": 100,
+       *   "defaultActive": true,
+       *   "showOnParentLevel": false
+       * }
+       */
+      config?: components['schemas']['RichTextResourceConfig'];
     };
     /** TextCreate */
     TextCreate: {
@@ -2432,8 +2429,8 @@ export interface operations {
       200: {
         content: {
           'application/json': (
-            | components['schemas']['DebugContentRead']
             | components['schemas']['PlainTextContentRead']
+            | components['schemas']['RichTextContentRead']
           )[];
         };
       };
@@ -2668,8 +2665,8 @@ export interface operations {
       200: {
         content: {
           'application/json': (
-            | components['schemas']['DebugContentRead']
             | components['schemas']['PlainTextContentRead']
+            | components['schemas']['RichTextContentRead']
           )[];
         };
       };
@@ -2690,8 +2687,8 @@ export interface operations {
     requestBody: {
       content: {
         'application/json':
-          | components['schemas']['DebugContentCreate']
-          | components['schemas']['PlainTextContentCreate'];
+          | components['schemas']['PlainTextContentCreate']
+          | components['schemas']['RichTextContentCreate'];
       };
     };
     responses: {
@@ -2699,8 +2696,8 @@ export interface operations {
       201: {
         content: {
           'application/json':
-            | components['schemas']['DebugContentRead']
-            | components['schemas']['PlainTextContentRead'];
+            | components['schemas']['PlainTextContentRead']
+            | components['schemas']['RichTextContentRead'];
         };
       };
       /** @description Forbidden */
@@ -2738,8 +2735,8 @@ export interface operations {
       200: {
         content: {
           'application/json':
-            | components['schemas']['DebugContentRead']
-            | components['schemas']['PlainTextContentRead'];
+            | components['schemas']['PlainTextContentRead']
+            | components['schemas']['RichTextContentRead'];
         };
       };
       /** @description Not found */
@@ -2788,8 +2785,8 @@ export interface operations {
     requestBody: {
       content: {
         'application/json':
-          | components['schemas']['DebugContentUpdate']
-          | components['schemas']['PlainTextContentUpdate'];
+          | components['schemas']['PlainTextContentUpdate']
+          | components['schemas']['RichTextContentUpdate'];
       };
     };
     responses: {
@@ -2797,8 +2794,8 @@ export interface operations {
       200: {
         content: {
           'application/json':
-            | components['schemas']['DebugContentRead']
-            | components['schemas']['PlainTextContentRead'];
+            | components['schemas']['PlainTextContentRead']
+            | components['schemas']['RichTextContentRead'];
         };
       };
       /** @description Bad request */
@@ -3274,8 +3271,8 @@ export interface operations {
       200: {
         content: {
           'application/json': (
-            | components['schemas']['DebugResourceRead']
             | components['schemas']['PlainTextResourceRead']
+            | components['schemas']['RichTextResourceRead']
           )[];
         };
       };
@@ -3296,8 +3293,8 @@ export interface operations {
     requestBody: {
       content: {
         'application/json':
-          | components['schemas']['DebugResourceCreate']
-          | components['schemas']['PlainTextResourceCreate'];
+          | components['schemas']['PlainTextResourceCreate']
+          | components['schemas']['RichTextResourceCreate'];
       };
     };
     responses: {
@@ -3305,8 +3302,8 @@ export interface operations {
       201: {
         content: {
           'application/json':
-            | components['schemas']['DebugResourceRead']
-            | components['schemas']['PlainTextResourceRead'];
+            | components['schemas']['PlainTextResourceRead']
+            | components['schemas']['RichTextResourceRead'];
         };
       };
       /** @description Not found */
@@ -3333,8 +3330,8 @@ export interface operations {
       201: {
         content: {
           'application/json':
-            | components['schemas']['DebugResourceRead']
-            | components['schemas']['PlainTextResourceRead'];
+            | components['schemas']['PlainTextResourceRead']
+            | components['schemas']['RichTextResourceRead'];
         };
       };
       /** @description Not found */
@@ -3361,8 +3358,8 @@ export interface operations {
       200: {
         content: {
           'application/json':
-            | components['schemas']['DebugResourceRead']
-            | components['schemas']['PlainTextResourceRead'];
+            | components['schemas']['PlainTextResourceRead']
+            | components['schemas']['RichTextResourceRead'];
         };
       };
       /** @description Not found */
@@ -3411,8 +3408,8 @@ export interface operations {
     requestBody: {
       content: {
         'application/json':
-          | components['schemas']['DebugResourceUpdate']
-          | components['schemas']['PlainTextResourceUpdate'];
+          | components['schemas']['PlainTextResourceUpdate']
+          | components['schemas']['RichTextResourceUpdate'];
       };
     };
     responses: {
@@ -3420,8 +3417,8 @@ export interface operations {
       200: {
         content: {
           'application/json':
-            | components['schemas']['DebugResourceRead']
-            | components['schemas']['PlainTextResourceRead'];
+            | components['schemas']['PlainTextResourceRead']
+            | components['schemas']['RichTextResourceRead'];
         };
       };
       /** @description Not found */
@@ -3453,8 +3450,8 @@ export interface operations {
       200: {
         content: {
           'application/json':
-            | components['schemas']['DebugResourceRead']
-            | components['schemas']['PlainTextResourceRead'];
+            | components['schemas']['PlainTextResourceRead']
+            | components['schemas']['RichTextResourceRead'];
         };
       };
       /** @description Not found */
@@ -3481,8 +3478,8 @@ export interface operations {
       200: {
         content: {
           'application/json':
-            | components['schemas']['DebugResourceRead']
-            | components['schemas']['PlainTextResourceRead'];
+            | components['schemas']['PlainTextResourceRead']
+            | components['schemas']['RichTextResourceRead'];
         };
       };
       /** @description Not found */
@@ -3509,8 +3506,8 @@ export interface operations {
       200: {
         content: {
           'application/json':
-            | components['schemas']['DebugResourceRead']
-            | components['schemas']['PlainTextResourceRead'];
+            | components['schemas']['PlainTextResourceRead']
+            | components['schemas']['RichTextResourceRead'];
         };
       };
       /** @description Not found */
@@ -3537,8 +3534,8 @@ export interface operations {
       200: {
         content: {
           'application/json':
-            | components['schemas']['DebugResourceRead']
-            | components['schemas']['PlainTextResourceRead'];
+            | components['schemas']['PlainTextResourceRead']
+            | components['schemas']['RichTextResourceRead'];
         };
       };
       /** @description Not found */
@@ -3565,8 +3562,8 @@ export interface operations {
       200: {
         content: {
           'application/json':
-            | components['schemas']['DebugResourceRead']
-            | components['schemas']['PlainTextResourceRead'];
+            | components['schemas']['PlainTextResourceRead']
+            | components['schemas']['RichTextResourceRead'];
         };
       };
       /** @description Not found */

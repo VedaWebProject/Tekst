@@ -242,7 +242,6 @@ async function handlePromptModalSubmit(actionKey: string, value: string) {
       }
     }
   } else if (actionKey === 'addImage') {
-    console.log(value);
     // empty
     if (!value) return;
     // update link

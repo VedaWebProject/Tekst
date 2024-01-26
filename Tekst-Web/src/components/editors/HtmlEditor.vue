@@ -9,7 +9,7 @@ withDefaults(
     value?: string | null;
     toolbarSize?: 'small' | 'medium' | 'large';
     maxChars?: number;
-    editorMode: 'wysiwyg' | 'html';
+    editorMode?: 'wysiwyg' | 'html';
   }>(),
   {
     value: '',

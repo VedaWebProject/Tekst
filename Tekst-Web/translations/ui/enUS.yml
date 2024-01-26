@@ -345,12 +345,14 @@ resources:
         notes: Working Notes
     plainText:
       label: Plain Text
-      description: |
-        Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar
-        Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar
-        Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar
+      parenthesis: unstyled plain text content
       contentFields:
         text: Text
+    richText:
+      label: Formatted Text
+      parenthesis: styled, formatted text
+      contentFields:
+        html: Text
 
 contents:
   heading: Edit resource content

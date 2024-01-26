@@ -5,15 +5,24 @@ import { useAuthStore, useResourcesStore, useStateStore } from '@/stores';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import { useMessages } from '@/composables/messages';
-import { computed, ref, watch } from 'vue';
+import { computed, ref, watch, type VNodeChild, h } from 'vue';
 import { RouterLink } from 'vue-router';
-import { NIcon, NAlert, NForm, NFormItem, NSelect, NButton, type FormInst } from 'naive-ui';
+import {
+  NIcon,
+  NAlert,
+  NForm,
+  NFormItem,
+  NSelect,
+  NButton,
+  type FormInst,
+  type SelectOption,
+} from 'naive-ui';
 import { resourceConfigFormRules } from '@/forms/formRules';
 import { useRouter } from 'vue-router';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import ResourceSettingsFormItems from '@/forms/resources/ResourceSettingsFormItems.vue';
-
 import { ResourceIcon, ArrowBackIcon } from '@/icons';
+import ResourceTypeOptionLabel from '@/components/resource/ResourceTypeOptionLabel.vue';
 
 const { message } = useMessages();
 const router = useRouter();
@@ -28,7 +37,7 @@ const getInitialModel = () =>
     description: [],
     textId: state.text?.id || '',
     level: state.text?.defaultLevel || 0,
-    resourceType: 'plain_text',
+    resourceType: 'plainText',
     ownerId: auth.user?.id || null,
     category: null,
     public: false,
@@ -61,6 +70,13 @@ watch(
     router.push({ name: 'resources', params: { text: newText?.slug } });
   }
 );
+
+function renderResourceTypeOptionLabel(o: SelectOption): VNodeChild {
+  return h(ResourceTypeOptionLabel, {
+    label: $t(`resources.types.${o.value}.label`),
+    extra: $t(`resources.types.${o.value}.parenthesis`),
+  });
+}
 
 function handleResetClick() {
   model.value = getInitialModel();
@@ -134,6 +150,7 @@ async function handleSaveClick() {
               :default-value="resourceTypeOptions[0].value"
               :placeholder="$t('models.resource.resourceType')"
               :options="resourceTypeOptions"
+              :render-label="renderResourceTypeOptionLabel"
             />
           </n-form-item>
           <!-- STRUCTURE LEVEL -->

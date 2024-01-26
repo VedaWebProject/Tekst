@@ -103,7 +103,7 @@ export function saveDownload(blob: Blob, filename: string) {
 
 // export some common platform properties for use throughout codebase
 
-export const resourceTypes = ['plain_text', 'debug'];
+export const resourceTypes = ['plainText', 'richText'];
 export const prioritizedMetadataKeys = ['author', 'year', 'language'];
 
 // export components types for use throughout codebase
@@ -159,34 +159,37 @@ export type ClientSegmentHead = components['schemas']['ClientSegmentHead'];
 
 // resources
 
-export type PlainTextResourceCreate = components['schemas']['PlainTextResourceCreate'];
-export type PlainTextResourceRead = components['schemas']['PlainTextResourceRead'];
-export type PlainTextResourceUpdate = components['schemas']['PlainTextResourceUpdate'];
-export type PlainTextResourceConfig = components['schemas']['PlainTextResourceConfig'];
+type ResourceRead = {
+  active?: boolean;
+  coverage?: ResourceCoverage;
+};
+
 export type PlainTextContentCreate = components['schemas']['PlainTextContentCreate'];
 export type PlainTextContentRead = components['schemas']['PlainTextContentRead'];
 export type PlainTextContentUpdate = components['schemas']['PlainTextContentUpdate'];
+export type PlainTextResourceCreate = components['schemas']['PlainTextResourceCreate'];
+export type PlainTextResourceUpdate = components['schemas']['PlainTextResourceUpdate'];
+export type PlainTextResourceConfig = components['schemas']['PlainTextResourceConfig'];
+export type PlainTextResourceRead = components['schemas']['PlainTextResourceRead'] &
+  ResourceRead & { contents?: PlainTextContentRead[] };
 
-export type DebugResourceCreate = components['schemas']['DebugResourceCreate'];
-export type DebugResourceRead = components['schemas']['DebugResourceRead'];
-export type DebugResourceUpdate = components['schemas']['DebugResourceUpdate'];
-export type DebugResourceConfig = components['schemas']['DebugResourceConfig'];
-export type DebugContentCreate = components['schemas']['DebugContentCreate'];
-export type DebugContentRead = components['schemas']['DebugContentRead'];
-export type DebugContentUpdate = components['schemas']['DebugContentUpdate'];
+export type RichTextContentCreate = components['schemas']['RichTextContentCreate'];
+export type RichTextContentRead = components['schemas']['RichTextContentRead'];
+export type RichTextContentUpdate = components['schemas']['RichTextContentUpdate'];
+export type RichTextResourceCreate = components['schemas']['RichTextResourceCreate'];
+export type RichTextResourceUpdate = components['schemas']['RichTextResourceUpdate'];
+export type RichTextResourceConfig = components['schemas']['RichTextResourceConfig'];
+export type RichTextResourceRead = components['schemas']['RichTextResourceRead'] &
+  ResourceRead & { contents?: RichTextContentRead[] };
 
-export type AnyContentCreate = PlainTextContentCreate | DebugContentCreate;
-export type AnyContentRead = PlainTextContentRead | DebugContentRead;
-export type AnyContentUpdate = PlainTextContentUpdate | DebugContentUpdate;
-export type AnyResourceCreate = PlainTextResourceCreate | DebugResourceCreate;
-export type AnyResourceRead = (PlainTextResourceRead | DebugResourceRead) & {
-  active?: boolean;
-  contents?: AnyContentRead[];
-  coverage?: ResourceCoverage;
-};
-export type AnyResourceUpdate = PlainTextResourceUpdate | DebugResourceUpdate;
+export type AnyContentCreate = PlainTextContentCreate | RichTextContentCreate;
+export type AnyContentRead = PlainTextContentRead | RichTextContentRead;
+export type AnyContentUpdate = PlainTextContentUpdate | RichTextContentUpdate;
+export type AnyResourceCreate = PlainTextResourceCreate | RichTextResourceCreate;
+export type AnyResourceRead = PlainTextResourceRead | RichTextResourceRead;
+export type AnyResourceUpdate = PlainTextResourceUpdate | RichTextResourceUpdate;
 
 // common resource config types
 
-export type AnyResourceConfig = PlainTextResourceConfig | DebugResourceConfig;
+export type AnyResourceConfig = PlainTextResourceConfig | RichTextResourceConfig;
 export type DeepLLinksConfig = components['schemas']['DeepLLinksConfig'];

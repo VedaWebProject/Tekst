@@ -338,7 +338,7 @@ async def test_delete_location(
     # create plain text resource content
     payload = {
         "resourceId": resource["id"],
-        "resourceType": "plain_text",
+        "resourceType": "plainText",
         "locationId": location["id"],
         "text": "Ein Raabe geht im Feld spazieren.",
         "comment": "This is a comment",

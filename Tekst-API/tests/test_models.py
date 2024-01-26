@@ -72,7 +72,7 @@ def test_resource_description_validator():
         title="foo",
         text_id="5eb7cfb05e32e07750a1756a",
         level=0,
-        resource_type="plain_text",
+        resource_type="plainText",
         description=[
             {"locale": "enUS", "translation": "foo      bar\t\t   baz\n \ttest"}
         ],
@@ -83,7 +83,7 @@ def test_resource_description_validator():
         title="foo",
         text_id="5eb7cfb05e32e07750a1756a",
         level=0,
-        resource_type="plain_text",
+        resource_type="plainText",
     )
     assert isinstance(resource.description, list)
     assert len(resource.description) == 0

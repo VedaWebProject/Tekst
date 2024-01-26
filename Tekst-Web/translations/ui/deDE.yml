@@ -355,12 +355,14 @@ resources:
         notes: Arbeitsnotizen
     plainText:
       label: Einfacher Text
-      description: |
-        Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar
-        Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar
-        Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar Foo Bar
+      parenthesis: ungestalteter, einfacher Text
       contentFields:
         text: Text
+    richText:
+      label: Formatierter Text
+      parenthesis: gestalteter, formatierter Text
+      contentFields:
+        html: Text
 
 contents:
   heading: Ressourcen-Inhalte bearbeiten

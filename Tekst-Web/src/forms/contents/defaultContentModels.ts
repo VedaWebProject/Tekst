@@ -8,8 +8,8 @@ export const defaultContentModels = {
     ...common,
     text: '',
   },
-  debug: {
+  richText: {
     ...common,
-    text: '',
+    html: '',
   },
 };

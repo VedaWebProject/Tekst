@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { AnyResourceRead } from '@/api';
+import type { PlainTextResourceRead } from '@/api';
 
 withDefaults(
   defineProps<{
-    resource: AnyResourceRead;
+    resource: PlainTextResourceRead;
     reduced?: boolean;
   }>(),
   {

@@ -125,12 +125,12 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         from tekst.resources import resource_types_mgr
 
         resource_type_names = resource_types_mgr.list_names()
-        if v.lower() not in resource_type_names:
+        if v not in resource_type_names:
             raise ValueError(
                 f"Given resource type ({v}) is not a valid "
                 f"resource type name (one of {resource_type_names})."
             )
-        return v.lower()
+        return v
 
     @field_validator("comment", mode="after")
     @classmethod
