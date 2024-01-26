@@ -14,6 +14,7 @@ from tekst.models.common import (
     TranslationBase,
     Translations,
 )
+from tekst.utils import validators as val
 
 
 _cfg: TekstConfig = get_config()  # get (possibly cached) config data
@@ -65,17 +66,23 @@ class PlatformSettings(ModelBase, ModelFactoryMixin):
     ] = None
     info_contact_name: Annotated[
         str | None,
-        StringConstraints(min_length=1, max_length=64, strip_whitespace=True),
+        StringConstraints(max_length=64),
+        val.CleanupOneline,
+        val.EmtpyStringToNone,
         Field(description="Platform contact name"),
     ] = None
     info_contact_email: Annotated[
         EmailStr | None,
-        StringConstraints(min_length=1, max_length=64, strip_whitespace=True),
+        StringConstraints(max_length=64),
+        val.CleanupOneline,
+        val.EmtpyStringToNone,
         Field(description="Platform contact email"),
     ] = None
     info_contact_url: Annotated[
         CustomHttpUrl | None,
         StringConstraints(max_length=512),
+        val.CleanupOneline,
+        val.EmtpyStringToNone,
         Field(description="URL to page with contact info"),
     ] = None
 

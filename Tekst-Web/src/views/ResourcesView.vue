@@ -68,19 +68,19 @@ const filters = ref(initialFilters());
 
 function filterData(resourcesData: AnyResourceRead[]) {
   pagination.value.page = 1;
-  return resourcesData.filter((l) => {
+  return resourcesData.filter((r) => {
     const resourceStringContent = filters.value.search
-      ? [l.title, l.description, l.ownerId, l.comment, l.citation, JSON.stringify(l.meta)]
+      ? [r.title, r.description, r.ownerId, r.comment, r.citation, JSON.stringify(r.meta)]
           .filter((prop) => prop)
           .join(' ')
       : '';
     return (
       (!filters.value.search ||
         resourceStringContent.toLowerCase().includes(filters.value.search.toLowerCase())) &&
-      ((filters.value.proposed && l.proposed) || (filters.value.notProposed && !l.proposed)) &&
-      ((filters.value.public && l.public) || (filters.value.notPublic && !l.public)) &&
-      ((filters.value.ownedByMe && l.ownerId === auth.user?.id) ||
-        (filters.value.ownedByOthers && l.ownerId !== auth.user?.id))
+      ((filters.value.proposed && r.proposed) || (filters.value.notProposed && !r.proposed)) &&
+      ((filters.value.public && r.public) || (filters.value.notPublic && !r.public)) &&
+      ((filters.value.ownedByMe && r.ownerId === auth.user?.id) ||
+        (filters.value.ownedByOthers && r.ownerId !== auth.user?.id))
     );
   });
 }

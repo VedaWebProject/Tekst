@@ -587,9 +587,14 @@ export interface components {
       locationId: string;
       /**
        * Comment
-       * @description Plaintext, potentially multiline comment on this content
+       * @description Plaintext, potentially multiline comment that will be displayed with the content
        */
       comment?: string | null;
+      /**
+       * Notes
+       * @description Plaintext, potentially multiline working notes on this content meant as an aid for people editing this content
+       */
+      notes?: string | null;
       /**
        * Text
        * @description Text content of the debug content
@@ -622,9 +627,14 @@ export interface components {
       locationId: string;
       /**
        * Comment
-       * @description Plaintext, potentially multiline comment on this content
+       * @description Plaintext, potentially multiline comment that will be displayed with the content
        */
       comment?: string | null;
+      /**
+       * Notes
+       * @description Plaintext, potentially multiline working notes on this content meant as an aid for people editing this content
+       */
+      notes?: string | null;
       /**
        * Text
        * @description Text content of the debug content
@@ -645,9 +655,14 @@ export interface components {
       locationId?: string | null;
       /**
        * Comment
-       * @description Plaintext, potentially multiline comment on this content
+       * @description Plaintext, potentially multiline comment that will be displayed with the content
        */
       comment?: string | null;
+      /**
+       * Notes
+       * @description Plaintext, potentially multiline working notes on this content meant as an aid for people editing this content
+       */
+      notes?: string | null;
       /**
        * Text
        * @description Text content of the debug content
@@ -1198,9 +1213,14 @@ export interface components {
       locationId: string;
       /**
        * Comment
-       * @description Plaintext, potentially multiline comment on this content
+       * @description Plaintext, potentially multiline comment that will be displayed with the content
        */
       comment?: string | null;
+      /**
+       * Notes
+       * @description Plaintext, potentially multiline working notes on this content meant as an aid for people editing this content
+       */
+      notes?: string | null;
       /**
        * Text
        * @description Text content of the plaintext content
@@ -1233,9 +1253,14 @@ export interface components {
       locationId: string;
       /**
        * Comment
-       * @description Plaintext, potentially multiline comment on this content
+       * @description Plaintext, potentially multiline comment that will be displayed with the content
        */
       comment?: string | null;
+      /**
+       * Notes
+       * @description Plaintext, potentially multiline working notes on this content meant as an aid for people editing this content
+       */
+      notes?: string | null;
       /**
        * Text
        * @description Text content of the plaintext content
@@ -1256,9 +1281,14 @@ export interface components {
       locationId?: string | null;
       /**
        * Comment
-       * @description Plaintext, potentially multiline comment on this content
+       * @description Plaintext, potentially multiline comment that will be displayed with the content
        */
       comment?: string | null;
+      /**
+       * Notes
+       * @description Plaintext, potentially multiline working notes on this content meant as an aid for people editing this content
+       */
+      notes?: string | null;
       /** Text */
       text?: string | null;
     };

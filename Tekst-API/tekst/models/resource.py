@@ -22,7 +22,8 @@ from tekst.models.common import (
 from tekst.models.resource_configs import ResourceConfigBase
 from tekst.models.text import TextDocument
 from tekst.models.user import UserRead, UserReadPublic
-from tekst.utils.strings import remove_excess_spaces
+from tekst.utils import validators as val
+from tekst.utils.strings import cleanup_spaces_multiline
 
 
 class ResourceDescriptionTranslation(TranslationBase):
@@ -95,7 +96,9 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
     ] = False
     citation: Annotated[
         str | None,
-        StringConstraints(min_length=1, max_length=1000, strip_whitespace=True),
+        StringConstraints(max_length=1000),
+        val.CleanupOneline,
+        val.EmtpyStringToNone,
         Field(description="Citation details for this resource"),
     ] = None
     meta: Metadata = []
@@ -133,7 +136,7 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
     @classmethod
     def format_comment(cls, v):
         for comment in v:
-            comment["translation"] = remove_excess_spaces(comment["translation"])
+            comment["translation"] = cleanup_spaces_multiline(comment["translation"])
         return v
 
     def restricted_fields(self, user: UserRead | None = None) -> set[str] | None:

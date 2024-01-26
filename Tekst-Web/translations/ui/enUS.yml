@@ -124,6 +124,8 @@ browse:
   locationNoData: The selected resources contain no data for this text level and location. Try choosing a different location or activating more resources.
   contents:
     widgets:
+      contentComment:
+        title: Comment
       deepLTranslate:
         title: Open DeepL translation
       infoWidget:
@@ -337,9 +339,10 @@ resources:
         targetLanguages: Target languages
   types:
     common:
-      label: Additional Data
+      label: Extended
       contentFields:
         comment: Comment
+        notes: Working Notes
     plaintext:
       label: Plaintext
       description: |

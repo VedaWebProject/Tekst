@@ -10,6 +10,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from tekst import pkg_meta
 from tekst.models.common import CustomHttpUrl
+from tekst.utils import validators as val
 from tekst.utils.strings import safe_name
 
 
@@ -136,19 +137,34 @@ class TekstConfig(BaseSettings):
         str, StringConstraints(min_length=1, max_length=32)
     ] = "Tekst"
     info_subtitle: Annotated[
-        str | None, StringConstraints(max_length=128)
+        str | None,
+        StringConstraints(max_length=128),
+        val.CleanupOneline,
+        val.EmtpyStringToNone,
     ] = "An online text research platform"
     info_terms: Annotated[
-        CustomHttpUrl | None, StringConstraints(max_length=512)
+        CustomHttpUrl | None,
+        StringConstraints(max_length=512),
+        val.CleanupOneline,
+        val.EmtpyStringToNone,
     ] = None
     info_contact_name: Annotated[
-        str | None, StringConstraints(min_length=1, max_length=64)
+        str | None,
+        StringConstraints(max_length=64),
+        val.CleanupOneline,
+        val.EmtpyStringToNone,
     ] = "Tekst Administrator"
     info_contact_email: Annotated[
-        EmailStr | None, StringConstraints(min_length=1, max_length=64)
+        EmailStr | None,
+        StringConstraints(max_length=64),
+        val.CleanupOneline,
+        val.EmtpyStringToNone,
     ] = "noreply@tekst-contact-email-not-set.com"
     info_contact_url: Annotated[
-        CustomHttpUrl | None, StringConstraints(max_length=512)
+        CustomHttpUrl | None,
+        StringConstraints(max_length=512),
+        val.CleanupOneline,
+        val.EmtpyStringToNone,
     ] = None
 
     # Tekst information config
@@ -181,7 +197,7 @@ class TekstConfig(BaseSettings):
             return [e.strip() for e in v.split(",")]
         return v
 
-    @field_validator("log_level")
+    @field_validator("log_level", mode="after")
     @classmethod
     def uppercase_log_lvl(cls, v: str) -> str:
         return v.upper()

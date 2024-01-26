@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
-import type { DeepLLinksConfig } from '@/api';
+import type { AnyResourceRead, DeepLLinksConfig } from '@/api';
 import { computed, h } from 'vue';
 import type { VNodeChild } from 'vue';
 import { useStateStore } from '@/stores';
@@ -13,21 +13,21 @@ const DEEPL_TRANSLATOR_URL = 'https://www.deepl.com/translator';
 
 const props = defineProps<{
   widgetConfig: DeepLLinksConfig;
-  resource: Record<string, any>;
+  resource: AnyResourceRead;
 }>();
 
 const state = useStateStore();
 
 const contentsTextEncoded = computed<string>(() => {
   const contentsText = props.resource.contents
-    .map((u: Record<string, any>) => u.text as string)
+    ?.map((c: Record<string, any>) => c.text as string)
     .join('\n')
     .trim();
   return encodeURIComponent(
     contentsText
-      .replace(/[^\p{L}\-.?!"\n']+/gu, ' ')
+      ?.replace(/[^\p{L}\-.?!"\n']+/gu, ' ')
       .replace(/ ?\n ?/g, '\n')
-      .trim()
+      .trim() || ''
   );
 });
 

@@ -3,12 +3,14 @@ from typing import Annotated, Literal
 from pydantic import Field, StringConstraints
 
 from tekst.models.common import ModelBase
+from tekst.utils import validators as val
 
 
 class ResourceConfigBase(ModelBase):
     category: Annotated[
         str | None,
-        StringConstraints(min_length=1, max_length=16, strip_whitespace=True),
+        StringConstraints(max_length=16, strip_whitespace=True),
+        val.EmtpyStringToNone,
         Field(description="Resource category key"),
     ] = None
     sort_order: Annotated[

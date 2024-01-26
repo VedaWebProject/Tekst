@@ -1,5 +1,6 @@
 const common = {
   comment: undefined,
+  notes: undefined,
 };
 
 export const defaultContentModels = {

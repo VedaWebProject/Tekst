@@ -4663,8 +4663,7 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 32,
-                "minLength": 1
+                "maxLength": 32
               },
               {
                 "type": "null"
@@ -4766,8 +4765,7 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 32,
-                "minLength": 1
+                "maxLength": 32
               },
               {
                 "type": "null"
@@ -4840,8 +4838,7 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 32,
-                "minLength": 1
+                "maxLength": 32
               },
               {
                 "type": "null"
@@ -4889,15 +4886,27 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 1000,
-                "minLength": 1
+                "maxLength": 50000
               },
               {
                 "type": "null"
               }
             ],
             "title": "Comment",
-            "description": "Plaintext, potentially multiline comment on this content"
+            "description": "Plaintext, potentially multiline comment that will be displayed with the content"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes",
+            "description": "Plaintext, potentially multiline working notes on this content meant as an aid for people editing this content"
           },
           "text": {
             "anyOf": [
@@ -4947,15 +4956,27 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 1000,
-                "minLength": 1
+                "maxLength": 50000
               },
               {
                 "type": "null"
               }
             ],
             "title": "Comment",
-            "description": "Plaintext, potentially multiline comment on this content"
+            "description": "Plaintext, potentially multiline comment that will be displayed with the content"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes",
+            "description": "Plaintext, potentially multiline working notes on this content meant as an aid for people editing this content"
           },
           "text": {
             "anyOf": [
@@ -5014,15 +5035,27 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 1000,
-                "minLength": 1
+                "maxLength": 50000
               },
               {
                 "type": "null"
               }
             ],
             "title": "Comment",
-            "description": "Plaintext, potentially multiline comment on this content"
+            "description": "Plaintext, potentially multiline comment that will be displayed with the content"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes",
+            "description": "Plaintext, potentially multiline working notes on this content meant as an aid for people editing this content"
           },
           "text": {
             "anyOf": [
@@ -5049,8 +5082,7 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 16,
-                "minLength": 1
+                "maxLength": 16
               },
               {
                 "type": "null"
@@ -5181,8 +5213,7 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 1000,
-                "minLength": 1
+                "maxLength": 1000
               },
               {
                 "type": "null"
@@ -5391,8 +5422,7 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 1000,
-                "minLength": 1
+                "maxLength": 1000
               },
               {
                 "type": "null"
@@ -5563,8 +5593,7 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 1000,
-                "minLength": 1
+                "maxLength": 1000
               },
               {
                 "type": "null"
@@ -6052,15 +6081,27 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 1000,
-                "minLength": 1
+                "maxLength": 50000
               },
               {
                 "type": "null"
               }
             ],
             "title": "Comment",
-            "description": "Plaintext, potentially multiline comment on this content"
+            "description": "Plaintext, potentially multiline comment that will be displayed with the content"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes",
+            "description": "Plaintext, potentially multiline working notes on this content meant as an aid for people editing this content"
           },
           "text": {
             "type": "string",
@@ -6106,15 +6147,27 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 1000,
-                "minLength": 1
+                "maxLength": 50000
               },
               {
                 "type": "null"
               }
             ],
             "title": "Comment",
-            "description": "Plaintext, potentially multiline comment on this content"
+            "description": "Plaintext, potentially multiline comment that will be displayed with the content"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes",
+            "description": "Plaintext, potentially multiline working notes on this content meant as an aid for people editing this content"
           },
           "text": {
             "type": "string",
@@ -6169,15 +6222,27 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 1000,
-                "minLength": 1
+                "maxLength": 50000
               },
               {
                 "type": "null"
               }
             ],
             "title": "Comment",
-            "description": "Plaintext, potentially multiline comment on this content"
+            "description": "Plaintext, potentially multiline comment that will be displayed with the content"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes",
+            "description": "Plaintext, potentially multiline working notes on this content meant as an aid for people editing this content"
           },
           "text": {
             "anyOf": [
@@ -6205,8 +6270,7 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 16,
-                "minLength": 1
+                "maxLength": 16
               },
               {
                 "type": "null"
@@ -6352,8 +6416,7 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 1000,
-                "minLength": 1
+                "maxLength": 1000
               },
               {
                 "type": "null"
@@ -6570,8 +6633,7 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 1000,
-                "minLength": 1
+                "maxLength": 1000
               },
               {
                 "type": "null"
@@ -6750,8 +6812,7 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 1000,
-                "minLength": 1
+                "maxLength": 1000
               },
               {
                 "type": "null"
@@ -6994,8 +7055,7 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 64,
-                "minLength": 1
+                "maxLength": 64
               },
               {
                 "type": "null"
@@ -7009,7 +7069,6 @@
               {
                 "type": "string",
                 "maxLength": 64,
-                "minLength": 1,
                 "format": "email"
               },
               {
@@ -7163,8 +7222,7 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 64,
-                "minLength": 1
+                "maxLength": 64
               },
               {
                 "type": "null"
@@ -7178,7 +7236,6 @@
               {
                 "type": "string",
                 "maxLength": 64,
-                "minLength": 1,
                 "format": "email"
               },
               {

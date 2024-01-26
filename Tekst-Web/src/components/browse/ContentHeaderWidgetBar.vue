@@ -6,6 +6,7 @@ import ResourceInfoWidget from '@/components/resource/ResourceInfoWidget.vue';
 import ResourceDeactivateWidget from '@/components/resource/ResourceDeactivateWidget.vue';
 import { useBrowseStore } from '@/stores';
 import type { AnyResourceRead } from '@/api';
+import ContentCommentWidget from '../resource/ContentCommentWidget.vue';
 
 withDefaults(
   defineProps<{
@@ -49,6 +50,7 @@ const browse = useBrowseStore();
       "
       :resource="resource"
     />
+    <ContentCommentWidget :resource="resource" />
     <ResourceInfoWidget :resource="resource" />
     <ResourceDeactivateWidget v-if="showDeactivateWidget ?? true" :resource="resource" />
   </div>

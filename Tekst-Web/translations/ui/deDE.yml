@@ -127,6 +127,8 @@ browse:
   locationNoData: Die ausgewählten Ressourcen enthalten keine Daten für diese Ebene und Fundstelle. Wählen Sie eine andere Fundstelle oder aktivieren Sie mehr Ressourcen.
   contents:
     widgets:
+      contentComment:
+        title: Kommentar
       deepLTranslate:
         title: DeepL-Übersetzung öffnen
       infoWidget:
@@ -347,9 +349,10 @@ resources:
         targetLanguages: Zielsprachen
   types:
     common:
-      label: Zusätzliche Daten
+      label: Erweitert
       contentFields:
         comment: Kommentar
+        notes: Arbeitsnotizen
     plaintext:
       label: Einfacher Text
       description: |

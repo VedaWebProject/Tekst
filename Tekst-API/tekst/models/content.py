@@ -8,7 +8,7 @@ from tekst.models.common import (
     ModelBase,
     ModelFactoryMixin,
 )
-from tekst.utils.strings import remove_excess_spaces
+from tekst.utils import validators as val
 
 
 class ContentBase(ModelBase, ModelFactoryMixin):
@@ -22,9 +22,26 @@ class ContentBase(ModelBase, ModelFactoryMixin):
     location_id: PydanticObjectId = Field(..., description="Parent text location ID")
     comment: Annotated[
         str | None,
-        StringConstraints(min_length=1, max_length=1000, strip_whitespace=True),
+        StringConstraints(max_length=50000, strip_whitespace=True),
+        val.CleanupMultiline,
+        val.EmtpyStringToNone,
         Field(
-            description="Plaintext, potentially multiline comment on this content",
+            description=(
+                "Plaintext, potentially multiline comment "
+                "that will be displayed with the content"
+            ),
+        ),
+    ] = None
+    notes: Annotated[
+        str | None,
+        StringConstraints(max_length=1000, strip_whitespace=True),
+        val.CleanupMultiline,
+        val.EmtpyStringToNone,
+        Field(
+            description=(
+                "Plaintext, potentially multiline working notes on this content "
+                "meant as an aid for people editing this content"
+            ),
         ),
     ] = None
 
@@ -40,11 +57,6 @@ class ContentBase(ModelBase, ModelFactoryMixin):
                 f"resource type name (one of {resource_type_names})."
             )
         return v.lower()
-
-    @field_validator("comment", mode="after")
-    @classmethod
-    def format_comment(cls, v) -> str | None:
-        return remove_excess_spaces(v) or None
 
 
 # generate document and update models for this base model,

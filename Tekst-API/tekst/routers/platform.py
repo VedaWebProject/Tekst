@@ -27,6 +27,7 @@ from tekst.models.settings import (
 from tekst.models.user import UserDocument, UserReadPublic
 from tekst.routers.texts import get_all_texts
 from tekst.settings import get_settings
+from tekst.utils import validators as val
 
 
 router = APIRouter(
@@ -97,7 +98,10 @@ async def get_public_user(
 async def find_public_users(
     su: UserDep,
     query: Annotated[
-        str | None, Query(alias="q", description="Query string to search in user data")
+        str | None,
+        val.CleanupOneline,
+        val.EmtpyStringToNone,
+        Query(alias="q", description="Query string to search in user data"),
     ] = None,
 ) -> list[UserDocument]:
     """

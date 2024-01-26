@@ -15,6 +15,7 @@ from tekst.models.common import (
     ModelFactoryMixin,
     TranslationLocaleKey,
 )
+from tekst.utils import validators as val
 
 
 class ClientSegment(ModelBase, ModelFactoryMixin):
@@ -48,7 +49,9 @@ class ClientSegment(ModelBase, ModelFactoryMixin):
     ]
     title: Annotated[
         str | None,
-        StringConstraints(min_length=1, max_length=32, strip_whitespace=True),
+        StringConstraints(max_length=32),
+        val.CleanupOneline,
+        val.EmtpyStringToNone,
         Field(description="Title of this segment"),
     ] = None
     html: Annotated[

@@ -30,10 +30,20 @@ function handleUpdate(field: string, value: any) {
         <n-form-item :label="$t('resources.types.common.contentFields.comment')" path="comment">
           <n-input
             type="textarea"
-            :rows="2"
+            :rows="3"
             :value="model.comment"
             :placeholder="$t('resources.types.common.contentFields.comment')"
             @update:value="(v) => handleUpdate('comment', v)"
+          />
+        </n-form-item>
+        <!-- NOTES -->
+        <n-form-item :label="$t('resources.types.common.contentFields.notes')" path="notes">
+          <n-input
+            type="textarea"
+            :rows="2"
+            :value="model.notes"
+            :placeholder="$t('resources.types.common.contentFields.notes')"
+            @update:value="(v) => handleUpdate('notes', v)"
           />
         </n-form-item>
       </n-collapse-item>

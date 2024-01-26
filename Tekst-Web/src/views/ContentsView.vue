@@ -210,7 +210,7 @@ function handleApplyChanges() {
       ...contentModel.value,
       ...Object.fromEntries(
         Object.entries(changes).filter(
-          (e) => !['id', 'resourceId', 'resourceType', 'locationId', 'comment'].includes(e[0])
+          (e) => !['id', 'resourceId', 'resourceType', 'locationId', 'notes'].includes(e[0])
         )
       ),
     };
