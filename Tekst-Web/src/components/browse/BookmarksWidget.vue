@@ -1,17 +1,19 @@
 <script setup lang="ts">
-import { POST, DELETE, type BookmarkRead } from '@/api';
+import { type BookmarkRead } from '@/api';
 import { usePlatformData } from '@/composables/platformData';
-import { AddIcon, BookmarkFilledIcon, BookmarkIcon } from '@/icons';
-import { useAuthStore, useBrowseStore, useStateStore } from '@/stores';
+import { useBrowseStore, useStateStore } from '@/stores';
 import type { PromptModalProps } from '@/types';
-import { NIcon, NDropdown, NButton, type DropdownOption } from 'naive-ui';
-import type { VNodeChild } from 'vue';
-import { h, computed, type Component, ref } from 'vue';
+import { NThing, NIcon, NButton, NList, NListItem } from 'naive-ui';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import PromptModal from '@/components/generic/PromptModal.vue';
 import { $t } from '@/i18n';
 import { useMessages } from '@/composables/messages';
-import BookmarkOptionLabel from './BookmarkOptionLabel.vue';
+import GenericModal from '../generic/GenericModal.vue';
+import LocationLabel from '@/components/LocationLabel.vue';
+
+import { AddIcon, BookIcon, BookmarkFilledIcon, DeleteIcon } from '@/icons';
+import { useBookmarks } from '@/composables/bookmarks';
 
 defineProps<{
   size?: 'small' | 'medium' | 'large';
@@ -19,78 +21,31 @@ defineProps<{
   bgColor?: string;
 }>();
 
-const auth = useAuthStore();
 const browse = useBrowseStore();
 const state = useStateStore();
 const { pfData } = usePlatformData();
 const { message } = useMessages();
+const { bookmarks, createBookmark, deleteBookmark } = useBookmarks();
 const router = useRouter();
 
+const showModal = ref(false);
 const loading = ref(false);
+const currentBookmarks = computed(
+  () => bookmarks.value.filter((b) => b.textId === state.text?.id) || []
+);
+const maxCountReached = computed(() => bookmarks.value.length >= 1000);
 const promptModalState = ref<PromptModalProps>({});
 
-const bookmarksOptions = computed<DropdownOption[]>(() => {
-  const bookmarks = auth.user?.bookmarks || [];
-  return [
-    {
-      label: $t('browse.bookmarks.lblCreate'),
-      key: 'create',
-      icon: renderIcon(AddIcon),
-      action: handleCreateBookmark,
-    },
-    ...(bookmarks.length
-      ? [
-          {
-            type: 'divider',
-            key: 'divider',
-          },
-          {
-            label: `${$t('browse.bookmarks.bookmarks')}: ${state.text?.title}`,
-            type: 'group',
-            key: 'bookmarksGroup',
-            children: [
-              ...bookmarks.map((bookmark) => ({
-                key: bookmark.locationId,
-                bookmark: bookmark,
-                show: bookmark.textId === state.text?.id,
-                icon: renderIcon(BookmarkIcon),
-                action: () => handleBookmarkSelect(bookmark),
-              })),
-            ],
-          },
-        ]
-      : []),
-  ];
-});
-
-function renderOptionLabel(o: DropdownOption): VNodeChild {
-  if (!o.bookmark) {
-    return o.label as VNodeChild;
-  }
-  const bookmark = o.bookmark as BookmarkRead;
-  return h(BookmarkOptionLabel, {
-    bookmark,
-    levelLabel: state.textLevelLabels[bookmark.level],
-    onDelete: () => handleDeleteBookmark(bookmark.id),
-  });
+async function handleDeleteBookmark(e: MouseEvent, bookmarkId: string) {
+  e.preventDefault();
+  e.stopPropagation();
+  loading.value = true;
+  await deleteBookmark(bookmarkId);
+  loading.value = false;
 }
 
-async function handleDeleteBookmark(bookmarkId: string) {
-  const { error } = await DELETE('/bookmarks/{id}', {
-    params: { path: { id: bookmarkId } },
-  });
-  if (!error) {
-    if (auth.user) {
-      auth.user.bookmarks = auth.user.bookmarks?.filter((b) => b.id !== bookmarkId);
-    }
-    message.success($t('browse.bookmarks.deleteSuccess'));
-  } else {
-    message.error($t('errors.unexpected'), error);
-  }
-}
-
-function handleCreateBookmark() {
-  if (auth.user?.bookmarks?.find((b) => b.locationId === browse.locationPathHead?.id)) {
+function handleCreateBookmarkClick() {
+  if (currentBookmarks.value.find((b) => b.locationId === browse.locationPathHead?.id)) {
     message.error($t('browse.bookmarks.errorBookmarkExists'));
     return;
   }
@@ -105,69 +60,112 @@ function handleCreateBookmark() {
 
 async function handleCreateModalSubmit(comment: string) {
   loading.value = true;
-  const { data, error, response } = await POST('/bookmarks', {
-    body: {
-      locationId: browse.locationPathHead?.id || '',
-      comment,
-    },
-  });
-  if (!error) {
-    auth.user?.bookmarks?.push(data);
-    message.success(
-      $t('browse.bookmarks.createSuccess', { locationLabel: browse.locationPathHead?.label })
-    );
-  } else if (response.status == 409) {
-    message.error($t('browse.bookmarks.errorBookmarkExists'));
-  } else {
-    message.error($t('errors.unexpected'), error);
-  }
+  await createBookmark(browse.locationPathHead?.id || '', comment);
   loading.value = false;
 }
 
 async function handleBookmarkSelect(bookmark: BookmarkRead) {
+  showModal.value = false;
   router.replace({
     name: 'browse',
     params: { text: pfData.value?.texts.find((t) => t.id === bookmark.textId)?.slug || '' },
     query: { lvl: bookmark.level, pos: bookmark.position },
   });
 }
-
-function renderIcon(icon: Component) {
-  return () => h(NIcon, null, { default: () => h(icon) });
-}
-
-function handleActionSelect(o: DropdownOption & { action?: () => void }) {
-  o.action?.();
-}
 </script>
 
 <template>
-  <n-dropdown
-    :options="bookmarksOptions"
-    :render-label="renderOptionLabel"
-    to="#app-container"
-    trigger="click"
-    @select="(_, o) => handleActionSelect(o)"
+  <n-button
+    :size="size"
+    :color="bgColor"
+    :style="{ color: color }"
+    :focusable="false"
+    :title="$t('browse.bookmarks.bookmarks')"
+    @click="showModal = true"
   >
-    <n-button
-      :size="size"
-      :color="bgColor"
-      :style="{ color: color }"
-      :focusable="false"
-      :title="$t('browse.bookmarks.bookmarks')"
-      :disabled="loading"
-      :loading="loading"
-    >
-      <template #icon>
-        <n-icon :component="BookmarkFilledIcon" />
-      </template>
-    </n-button>
-  </n-dropdown>
+    <template #icon>
+      <n-icon :component="BookmarkFilledIcon" />
+    </template>
+  </n-button>
+
+  <GenericModal
+    v-model:show="showModal"
+    :auto-focus="false"
+    width="wide"
+    :title="$t('browse.bookmarks.bookmarks')"
+    :icon="BookmarkFilledIcon"
+  >
+    <n-list hoverable clickable style="background-color: transparent">
+      <n-list-item
+        :class="{ disabled: loading || maxCountReached }"
+        @click="!loading && handleCreateBookmarkClick()"
+      >
+        <n-thing content-indented>
+          <template #avatar>
+            <n-icon :component="AddIcon" size="large" />
+          </template>
+          <template #header>
+            <div style="font-weight: var(--app-ui-font-weight-light)">
+              <span v-if="!maxCountReached">
+                {{ $t('browse.bookmarks.lblCreate') }}
+              </span>
+              <span v-else> ({{ $t('browse.bookmarks.maxCountReached') }}) </span>
+            </div>
+          </template>
+        </n-thing>
+      </n-list-item>
+      <n-list-item
+        v-for="bookmark in currentBookmarks"
+        :key="bookmark.id"
+        @click="handleBookmarkSelect(bookmark)"
+      >
+        <n-thing content-indented description-style="font-size: var(--app-ui-font-size-tiny)">
+          <template #avatar>
+            <n-icon :component="BookIcon" size="large" />
+          </template>
+          <template #header>
+            <span style="font-weight: var(--app-ui-font-weight-light)">
+              <LocationLabel :location-labels="bookmark.locationLabels" />
+            </span>
+          </template>
+          <template #header-extra>
+            <n-button
+              secondary
+              size="small"
+              :focusable="false"
+              :disabled="loading"
+              :loading="loading"
+              :title="$t('general.deleteAction')"
+              @click="(e) => handleDeleteBookmark(e, bookmark.id)"
+            >
+              <template #icon>
+                <n-icon :component="DeleteIcon" />
+              </template>
+            </n-button>
+          </template>
+          <template #description>
+            <div style="white-space: pre-wrap">
+              {{ bookmark.comment }}
+            </div>
+          </template>
+        </n-thing>
+      </n-list-item>
+    </n-list>
+  </GenericModal>
 
   <PromptModal
+    multiline
+    :rows="3"
     v-bind="promptModalState"
     @submit="(_, v) => handleCreateModalSubmit(v)"
     @update:show="promptModalState.show = $event"
     @after-leave="promptModalState = {}"
   />
 </template>
+
+<style scoped>
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed !important;
+}
+</style>

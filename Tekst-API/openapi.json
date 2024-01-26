@@ -4592,9 +4592,12 @@
             "type": "integer",
             "title": "Position"
           },
-          "label": {
-            "type": "string",
-            "title": "Label"
+          "locationLabels": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Locationlabels"
           },
           "comment": {
             "anyOf": [
@@ -4618,7 +4621,7 @@
           "locationId",
           "level",
           "position",
-          "label"
+          "locationLabels"
         ],
         "title": "BookmarkRead"
       },

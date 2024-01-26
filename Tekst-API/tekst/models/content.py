@@ -1,5 +1,3 @@
-import re
-
 from typing import Annotated
 
 from beanie import PydanticObjectId
@@ -10,6 +8,7 @@ from tekst.models.common import (
     ModelBase,
     ModelFactoryMixin,
 )
+from tekst.utils.strings import remove_excess_spaces
 
 
 class ContentBase(ModelBase, ModelFactoryMixin):
@@ -44,8 +43,8 @@ class ContentBase(ModelBase, ModelFactoryMixin):
 
     @field_validator("comment", mode="after")
     @classmethod
-    def strip_comment_whitespaces(cls, v):
-        return re.sub(r"[\n\r]+", "\n", v).strip() if v else None
+    def format_comment(cls, v):
+        return remove_excess_spaces(v)
 
 
 # generate document and update models for this base model,

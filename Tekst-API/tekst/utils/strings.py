@@ -40,3 +40,12 @@ def remove_diacritics(string: str) -> str:
         for c in ucdata.normalize("NFD", string)
         if ucdata.category(c) != "Mn"
     )
+
+
+def remove_excess_spaces(string: str | None) -> str | None:
+    """Reduces newline chars and whitespaces to one at a time and strips whitespaces"""
+    if string is None:
+        return None
+    string = re.sub(r"[\n\r]+", "\n", string)
+    string = re.sub(r"[\t ]+", " ", string)
+    return string.strip()

@@ -28,12 +28,10 @@ export const useAuthStore = defineStore('auth', () => {
   const { message } = useMessages();
   const state = useStateStore();
 
-  const user = ref<UserRead | undefined>();
+  const user = ref<UserRead>();
   const loggedIn = computed(() => !!user.value);
 
-  const sessionExpiryTsSec = ref(
-    Number(localStorage.getItem('sessionExpiryS') || Number.MAX_SAFE_INTEGER)
-  );
+  const sessionExpiryTsSec = ref(Number(localStorage.getItem('sessionExpiryS')) || null);
 
   (() => {
     const storageData = localStorage.getItem('user');
@@ -42,7 +40,7 @@ export const useAuthStore = defineStore('auth', () => {
       user.value = JSON.parse(storageData) as UserRead;
       loadUserData();
     } catch {
-      localStorage.removeItem('user');
+      logout();
     }
   })();
 
@@ -55,7 +53,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   function _unsetCookieExpiry() {
-    sessionExpiryTsSec.value = Number.MAX_SAFE_INTEGER;
+    sessionExpiryTsSec.value = null;
     localStorage.removeItem('sessionExpiryS');
   }
 
@@ -68,13 +66,12 @@ export const useAuthStore = defineStore('auth', () => {
   function _cleanupSession() {
     user.value = undefined;
     localStorage.removeItem('user');
-    localStorage.removeItem('bookmarks');
     _unsetCookieExpiry();
     _stopSessionCheck();
   }
 
   function _sessionExpiresInS() {
-    return sessionExpiryTsSec.value - Date.now() / 1000;
+    return sessionExpiryTsSec.value ? sessionExpiryTsSec.value - Date.now() / 1000 : 0;
   }
 
   function checkSession() {
@@ -114,23 +111,10 @@ export const useAuthStore = defineStore('auth', () => {
     const { data, error } = await GET('/users/me', {});
     if (!error) {
       user.value = data;
-      await _loadUserBookmarks();
       localStorage.setItem('user', JSON.stringify(user.value));
       return user.value;
     } else {
-      message.error($t('errors.unexpected'), error);
-      _cleanupSession();
-    }
-  }
-
-  async function _loadUserBookmarks() {
-    if (!user.value) return;
-    const { data, error } = await GET('/bookmarks', {});
-    if (!error) {
-      user.value.bookmarks = data;
-      localStorage.setItem('user', JSON.stringify(user.value));
-    } else {
-      message.error($t('errors.unexpected'), error);
+      logout();
     }
   }
 

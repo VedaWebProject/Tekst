@@ -109,12 +109,13 @@ browse:
     tipOpenResourceList: Select resources to display
   bookmarks:
     bookmarks: Bookmarks
-    lblCreate: Create new bookmark
+    lblCreate: Create new bookmark for this location
     commentModalTitle: Personal Comment
     commentModalInputLabel: Comment (optional)
-    createSuccess: Bookmark created for location "{locationLabel}"
+    createSuccess: Bookmark created
     deleteSuccess: Bookmark deleted
     errorBookmarkExists: You have already created a bookmark for this location!
+    maxCountReached: You have reached the maximum number of 1000 bookmarks!
   resourceToggleDrawer:
     heading: Show Resources
   uncategorized: Uncategorized

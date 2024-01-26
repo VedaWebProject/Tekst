@@ -39,24 +39,34 @@ async def delete_bookmark(
 @router.get("", response_model=list[BookmarkRead], status_code=status.HTTP_200_OK)
 async def get_user_bookmarks(user: UserDep) -> list[BookmarkDocument]:
     """Returns all bookmarks that belong to the requesting user"""
-    return await BookmarkDocument.find(BookmarkDocument.user_id == user.id).to_list()
+    return (
+        await BookmarkDocument.find(BookmarkDocument.user_id == user.id)
+        .sort(
+            +BookmarkDocument.text_id,
+            +BookmarkDocument.level,
+            +BookmarkDocument.position,
+        )
+        .to_list()
+    )
 
 
 @router.post("", response_model=BookmarkRead, status_code=status.HTTP_201_CREATED)
 async def create_bookmark(user: UserDep, bookmark: BookmarkCreate) -> BookmarkDocument:
     """Creates a bookmark for the requesting user"""
-    user_bookmarks = await BookmarkDocument.find(
-        BookmarkDocument.user_id == user.id
-    ).to_list()
-    if len(user_bookmarks) >= 100:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="User cannot have more than 100 bookmarks",
-        )
-    if bookmark.location_id in [bm.location_id for bm in user_bookmarks]:
+    if await BookmarkDocument.find(
+        BookmarkDocument.user_id == user.id,
+        BookmarkDocument.location_id == bookmark.location_id,
+    ).exists():
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="A bookmark for this location already exists",
+        )
+    if (
+        await BookmarkDocument.find(BookmarkDocument.user_id == user.id).count()
+    ) >= 1000:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="User cannot have more than 100 bookmarks",
         )
 
     location_doc = await LocationDocument.get(bookmark.location_id)
@@ -73,6 +83,14 @@ async def create_bookmark(user: UserDep, bookmark: BookmarkCreate) -> BookmarkDo
             detail=f"Text with ID {location_doc.text_id} not found",
         )
 
+    # construct full label
+    location_labels = [location_doc.label]
+    parent_location_id = location_doc.parent_id
+    while parent_location_id:
+        parent_location = await LocationDocument.get(parent_location_id)
+        location_labels.insert(0, parent_location.label)
+        parent_location_id = parent_location.parent_id
+
     return await BookmarkDocument(
         user_id=user.id,
         text_id=location_doc.text_id,
@@ -80,5 +98,6 @@ async def create_bookmark(user: UserDep, bookmark: BookmarkCreate) -> BookmarkDo
         level=location_doc.level,
         position=location_doc.position,
         label=location_doc.label,
+        location_labels=location_labels,
         comment=bookmark.comment,
     ).create()

@@ -15,6 +15,14 @@ function handleSubmit() {
   emit('submit', props.actionKey, value.value);
   emit('update:show', false);
 }
+
+function handleInputReturn(e: KeyboardEvent) {
+  if (!props.multiline) {
+    e.preventDefault();
+    e.stopPropagation();
+    handleSubmit();
+  }
+}
 </script>
 
 <template>
@@ -34,16 +42,11 @@ function handleSubmit() {
       <n-input
         ref="inputRef"
         v-model:value="value"
+        :type="multiline ? 'textarea' : 'text'"
+        :rows="multiline && rows ? rows : multiline ? 3 : undefined"
         :default-value="initialValue"
-        type="text"
         placeholder=""
-        @keydown.enter="
-          (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            handleSubmit();
-          }
-        "
+        @keydown.enter="handleInputReturn"
       />
     </n-form-item>
     <ButtonShelf top-gap>

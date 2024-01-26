@@ -129,7 +129,7 @@ export type BookmarkCreate = components['schemas']['BookmarkCreate'];
 // user
 
 export type UserCreate = components['schemas']['UserCreate'];
-export type UserRead = components['schemas']['UserRead'] & { bookmarks?: BookmarkRead[] };
+export type UserRead = components['schemas']['UserRead'];
 export type UserUpdate = components['schemas']['UserUpdate'];
 export type UserReadPublic = components['schemas']['UserReadPublic'];
 export type UserUpdatePublicFields = components['schemas']['UserUpdate']['publicFields'];

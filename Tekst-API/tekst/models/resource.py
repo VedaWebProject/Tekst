@@ -22,6 +22,7 @@ from tekst.models.common import (
 from tekst.models.resource_configs import ResourceConfigBase
 from tekst.models.text import TextDocument
 from tekst.models.user import UserRead, UserReadPublic
+from tekst.utils.strings import remove_excess_spaces
 
 
 class ResourceDescriptionTranslation(TranslationBase):
@@ -130,11 +131,9 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
 
     @field_validator("comment", mode="after")
     @classmethod
-    def strip_comment_whitespaces(cls, v):
+    def format_comment(cls, v):
         for comment in v:
-            comment["translation"] = re.sub(
-                r"[\n\r]+", "\n", comment["translation"]
-            ).strip()
+            comment["translation"] = remove_excess_spaces(comment["translation"])
         return v
 
     def restricted_fields(self, user: UserRead | None = None) -> set[str] | None:

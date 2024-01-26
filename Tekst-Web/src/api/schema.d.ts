@@ -449,8 +449,8 @@ export interface components {
       level: number;
       /** Position */
       position: number;
-      /** Label */
-      label: string;
+      /** Locationlabels */
+      locationLabels: string[];
       /** Comment */
       comment?: string | null;
       [key: string]: unknown;
