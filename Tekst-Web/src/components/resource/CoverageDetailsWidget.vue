@@ -39,9 +39,11 @@ const route = useRoute();
 const coverageDetails = ref<ResourceCoverageDetails>();
 const coverageListItems = computed(() =>
   coverageDetails.value?.locationsCoverage.map((locations, i) => ({
-    title: `${state.textLevelLabels[props.resource.level - 1]}: ${
-      coverageDetails.value?.parentLabels[i]
-    }`,
+    title: state.textLevelLabels[props.resource.level - 1]
+      ? `${state.textLevelLabels[props.resource.level - 1]}: ${
+          coverageDetails.value?.parentLabels[i]
+        }`
+      : props.resource.title,
     extra: `${locations.filter((n) => n.covered).length}/${locations.length}`,
     locations: locations,
   }))
@@ -161,7 +163,9 @@ watch(
         <template #default="{ item }">
           <n-thing>
             <template #header>
-              <span style="font-weight: var(--app-ui-font-weight-light)">{{ item.title }}</span>
+              <span style="font-weight: var(--app-ui-font-weight-light)">
+                {{ item.title }}
+              </span>
             </template>
             <template #header-extra>
               <span
