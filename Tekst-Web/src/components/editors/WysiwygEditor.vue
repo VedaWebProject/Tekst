@@ -9,7 +9,7 @@ import Link from '@tiptap/extension-link';
 import Image from '@tiptap/extension-image';
 import PromptModal from '@/components/generic/PromptModal.vue';
 import { $t } from '@/i18n';
-import type { PromptModalProps } from '@/types';
+import type { PromptModalProps } from '@/components/generic/PromptModal.vue';
 
 import {
   FormatBoldIcon,

@@ -9,7 +9,7 @@ import IconHeading from '@/components/generic/IconHeading.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
 
 import { SearchIcon, QuestionMarkIcon } from '@/icons';
-import type { HelpText } from '@/types';
+import type { HelpText } from '@/composables/help';
 
 const { getHelpTexts } = useHelp();
 

@@ -2,7 +2,7 @@
 import { type BookmarkRead } from '@/api';
 import { usePlatformData } from '@/composables/platformData';
 import { useBrowseStore, useStateStore } from '@/stores';
-import type { PromptModalProps } from '@/types';
+import type { PromptModalProps } from '@/components/generic/PromptModal.vue';
 import { NThing, NIcon, NButton, NList, NListItem } from 'naive-ui';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';

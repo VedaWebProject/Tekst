@@ -1,6 +1,10 @@
 import helpTranslationsModules from '@/assets/help';
 import { useStateStore } from '@/stores';
-import type { HelpText } from '@/types';
+
+export interface HelpText {
+  title: string | null;
+  content: string;
+}
 
 const helpTexts: Record<string, Record<string, HelpText>> = {};
 

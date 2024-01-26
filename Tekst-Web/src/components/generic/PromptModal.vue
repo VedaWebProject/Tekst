@@ -3,7 +3,17 @@ import { NButton, NInput, NFormItem, type InputInst } from 'naive-ui';
 import ButtonShelf from './ButtonShelf.vue';
 import { ref } from 'vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
-import type { PromptModalProps } from '@/types';
+
+export interface PromptModalProps {
+  show?: boolean;
+  actionKey?: string;
+  initialValue?: string;
+  inputLabel?: string;
+  title?: string;
+  multiline?: boolean;
+  rows?: number;
+  disableOkWhenNoValue?: boolean;
+}
 
 const props = defineProps<PromptModalProps>();
 const emit = defineEmits(['update:show', 'submit', 'afterLeave']);
