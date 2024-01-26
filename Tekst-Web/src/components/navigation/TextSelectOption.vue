@@ -45,6 +45,7 @@ defineProps<{
   margin: 2px 6px;
   border-radius: 3px;
   cursor: pointer;
+  transition: 0.2s;
 }
 
 .text-select-option:hover {

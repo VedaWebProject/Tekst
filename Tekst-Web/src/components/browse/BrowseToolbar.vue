@@ -33,7 +33,11 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
 <template>
   <div ref="affixRef" class="browse-toolbar-container accent-color-bg">
     <div v-show="!!state.text" class="browse-toolbar">
-      <BrowseLocationControls :button-size="buttonSize" />
+      <BrowseLocationControls
+        :button-size="buttonSize"
+        :btn-color="btnColor"
+        :btn-bg-color="btnBgColor"
+      />
 
       <div class="browse-toolbar-middle">
         <div v-show="!state.smallScreen" class="browse-location-label">

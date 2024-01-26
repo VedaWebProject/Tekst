@@ -4,6 +4,8 @@ export type PromptModalProps = {
   initialValue?: string;
   inputLabel?: string;
   title?: string;
+  multiline?: boolean;
+  rows?: number;
   disableOkWhenNoValue?: boolean;
 };
 

@@ -121,6 +121,11 @@ export type Translation = {
 };
 export type LocationData = components['schemas']['LocationData'];
 
+// bookmark
+
+export type BookmarkRead = components['schemas']['BookmarkRead'];
+export type BookmarkCreate = components['schemas']['BookmarkCreate'];
+
 // user
 
 export type UserCreate = components['schemas']['UserCreate'];

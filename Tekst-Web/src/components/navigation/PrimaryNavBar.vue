@@ -85,9 +85,7 @@ watch(
       @click="() => (menuOpen = !menuOpen)"
     >
       <template #icon>
-        <n-icon size="32">
-          <n-icon :component="HamburgerMenuIcon" />
-        </n-icon>
+        <n-icon size="32" :component="HamburgerMenuIcon" />
       </template>
     </n-button>
   </div>

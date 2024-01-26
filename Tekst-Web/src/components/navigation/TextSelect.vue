@@ -60,7 +60,6 @@ function handleSelect(key: string) {
     :disabled="disabled"
     placement="bottom-start"
     :size="state.dropdownSize"
-    show-arrow
   >
     <n-button
       text
