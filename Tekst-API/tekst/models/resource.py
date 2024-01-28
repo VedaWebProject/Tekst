@@ -19,7 +19,7 @@ from tekst.models.common import (
     TranslationBase,
     Translations,
 )
-from tekst.models.resource_configs import ResourceConfigBase
+from tekst.models.resource_configs import CommonResourceConfig
 from tekst.models.text import TextDocument
 from tekst.models.user import UserRead, UserReadPublic
 from tekst.utils import validators as val
@@ -108,7 +108,7 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
             description="Plain text, potentially multiline comment on this resource",
         ),
     ] = []
-    config: ResourceConfigBase = ResourceConfigBase()
+    config: CommonResourceConfig = CommonResourceConfig()
 
     @field_validator("description", mode="after")
     @classmethod

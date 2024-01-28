@@ -210,8 +210,6 @@ models:
     description: Beschreibung
     level: Ebene
     resourceType: Datenschichttyp
-    category: Kategorie
-    sortOrder: Sortierreihenfolge
     public: öffentlich
     proposed: vorgeschlagen für Veröffentlichung
     citation: Zitation
@@ -337,14 +335,21 @@ resources:
     msgSaved: Ihre Änderungen an der Ressource "{title}" wurden gespeichert.
     status: Status
     config:
-      headingConfig: Konfiguration
-      specialConfigLabel: Spezielle Konfiguration für Typ "{resourceType}"
-      defaultActive: Ressource ist standardmäßig aktiviert, wenn sie öffentlich ist
-      showOnParentLevel: Ermögliche das Anzeigen von kombinierten Inhalten auf der übergeordneten Ebene
+      heading: Konfiguration
       enabled: Aktiv
-      visibility: Sichtbarkeit
+      common:
+        heading: '??????'
+        visibility: Sichtbarkeit
+        category: Kategorie
+        sortOrder: Sortierreihenfolge
+        defaultActive: Ressource ist standardmäßig aktiviert, wenn sie öffentlich ist
+        showOnParentLevel: Ermögliche das Anzeigen von kombinierten Inhalten auf der übergeordneten Ebene
+      general:
+        heading: Allgemein
+        defaultCollapsed: Inhalte sind standardmäßig eingeklappt
+        reducedViewOneline: Inhalte in reduzierter Ansicht in einer einzigen Zeile darstellen
       deeplLinks:
-        title: DeepL-Übersetzungs-Links
+        heading: DeepL-Übersetzungs-Links
         sourceLanguage: Quellsprache
         targetLanguages: Zielsprachen
   types:

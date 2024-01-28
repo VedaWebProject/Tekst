@@ -13,7 +13,9 @@ export const useResourcesStore = defineStore('resources', () => {
   const loading = ref(false);
 
   function sortResources(res: AnyResourceRead[]) {
-    return res.sort((a, b) => (a.config?.sortOrder ?? 0) - (b.config?.sortOrder ?? 0));
+    return res.sort(
+      (a, b) => (a.config?.common?.sortOrder ?? 0) - (b.config?.common?.sortOrder ?? 0)
+    );
   }
 
   async function load() {
@@ -37,7 +39,7 @@ export const useResourcesStore = defineStore('resources', () => {
           const existingResource = resources.value.find((re) => re.id === r.id);
           return {
             ...r,
-            active: existingResource ? existingResource.active : r.config?.defaultActive,
+            active: !!existingResource?.active || !!r.config?.common?.defaultActive,
             contents: existingResource?.contents || [],
           };
         })
@@ -62,7 +64,7 @@ export const useResourcesStore = defineStore('resources', () => {
   }
 
   function add(resource: AnyResourceRead) {
-    resource.active = resource.config?.defaultActive;
+    resource.active = resource.config?.common?.defaultActive;
     resources.value = sortResources(resources.value.concat([resource]));
   }
 

@@ -45,7 +45,7 @@ const browse = useBrowseStore();
     <LocationContentSiblingsWidget
       v-if="
         showSiblingsWidget &&
-        resource.config?.showOnParentLevel &&
+        resource.config?.common?.showOnParentLevel &&
         (browse.level == resource.level || browse.level == resource.level - 1)
       "
       :resource="resource"

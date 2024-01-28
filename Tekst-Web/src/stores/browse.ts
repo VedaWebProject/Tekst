@@ -116,7 +116,7 @@ export const useBrowseStore = defineStore('browse', () => {
     const categorized =
       pfData.value?.settings.resourceCategories?.map((c) => ({
         category: { key: c.key, translation: pickTranslation(c.translations, state.locale) },
-        resources: resources.data.filter((r) => r.config?.category === c.key),
+        resources: resources.data.filter((r) => r.config?.common?.category === c.key),
       })) || [];
     const uncategorized = [
       {
@@ -125,7 +125,7 @@ export const useBrowseStore = defineStore('browse', () => {
           translation: $t('browse.uncategorized'),
         },
         resources: resources.data.filter(
-          (r) => !categorized.find((c) => c.category.key === r.config?.category)
+          (r) => !categorized.find((c) => c.category.key === r.config?.common?.category)
         ),
       },
     ];

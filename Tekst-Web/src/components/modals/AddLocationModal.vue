@@ -14,7 +14,7 @@ import { AddIcon } from '@/icons';
 const props = withDefaults(defineProps<{ show: boolean; parent: LocationTreeOption | null }>(), {
   show: false,
 });
-const emits = defineEmits(['update:show', 'submit']);
+const emit = defineEmits(['update:show', 'submit']);
 
 const initialLocationModel = () => ({
   label: '',
@@ -44,8 +44,8 @@ async function handleSubmit() {
             parentId: props.parent?.key?.toString() || null,
           },
         });
-        emits('submit', error ? undefined : data);
-        emits('update:show', false);
+        emit('submit', error ? undefined : data);
+        emit('update:show', false);
       }
     })
     .catch(() => {

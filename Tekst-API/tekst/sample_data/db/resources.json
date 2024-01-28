@@ -35,8 +35,10 @@
       }
     ],
     "config": {
-      "category": "versions",
-      "showOnParentLevel": true,
+      "common": {
+        "category": "versions",
+        "showOnParentLevel": true
+      },
       "deeplLinks": {
         "enabled": true,
         "sourceLanguage": "DE",
@@ -68,7 +70,9 @@
       { "key": "language", "value": "JA" }
     ],
     "config": {
-      "category": "versions",
+      "common": {
+        "category": "versions"
+      },
       "deeplLinks": {
         "showOnParentLevel": false,
         "enabled": true,
@@ -90,8 +94,10 @@
     "public": true,
     "citation": null,
     "config": {
-      "category": "translations",
-      "showOnParentLevel": true,
+      "common": {
+        "category": "translations",
+        "showOnParentLevel": true
+      },
       "deeplLinks": {
         "enabled": false
       }
@@ -114,7 +120,9 @@
     "public": true,
     "citation": null,
     "config": {
-      "category": "versions",
+      "common": {
+        "category": "versions"
+      },
       "deeplLinks": {
         "enabled": false,
         "sourceLanguage": "BG",

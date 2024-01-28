@@ -35,7 +35,7 @@ const props = defineProps<{
   public?: boolean;
 }>();
 
-const emits = defineEmits(['update:model']);
+const emit = defineEmits(['update:model']);
 
 const auth = useAuthStore();
 
@@ -101,7 +101,7 @@ const usersOptionsWrite = computed(() => {
 });
 
 function handleUpdate(field: string, value: any) {
-  emits('update:model', {
+  emit('update:model', {
     ...props.model,
     [field]: value,
   });

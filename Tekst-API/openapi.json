@@ -4864,6 +4864,44 @@
         "type": "object",
         "title": "ClientSegmentUpdate"
       },
+      "CommonResourceConfig": {
+        "properties": {
+          "category": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 16
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category",
+            "description": "Resource category key"
+          },
+          "sortOrder": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Sortorder",
+            "description": "Sort order for displaying this resource among others",
+            "default": 100
+          },
+          "defaultActive": {
+            "type": "boolean",
+            "title": "Defaultactive",
+            "description": "Whether this resource is active by default when public",
+            "default": true
+          },
+          "showOnParentLevel": {
+            "type": "boolean",
+            "title": "Showonparentlevel",
+            "description": "Show combined contents of this resource on the parent level",
+            "default": false
+          }
+        },
+        "type": "object",
+        "title": "CommonResourceConfig"
+      },
       "DeepLLinksConfig": {
         "properties": {
           "enabled": {
@@ -5000,6 +5038,36 @@
           "detail"
         ],
         "title": "ErrorModel"
+      },
+      "GeneralPlainTextResourceConfig": {
+        "properties": {
+          "defaultCollapsed": {
+            "type": "boolean",
+            "title": "Defaultcollapsed",
+            "description": "Whether contents of this resource should be collapsed by default",
+            "default": false
+          },
+          "reducedViewOneline": {
+            "type": "boolean",
+            "title": "Reducedviewoneline",
+            "description": "Show contents as single line of text when in reduced view",
+            "default": false
+          }
+        },
+        "type": "object",
+        "title": "GeneralPlainTextResourceConfig"
+      },
+      "GeneralRichTextResourceConfig": {
+        "properties": {
+          "defaultCollapsed": {
+            "type": "boolean",
+            "title": "Defaultcollapsed",
+            "description": "Whether contents of this resource should be collapsed by default",
+            "default": true
+          }
+        },
+        "type": "object",
+        "title": "GeneralRichTextResourceConfig"
       },
       "HTTPValidationError": {
         "properties": {
@@ -5488,37 +5556,28 @@
       },
       "PlainTextResourceConfig": {
         "properties": {
-          "category": {
-            "anyOf": [
+          "common": {
+            "allOf": [
               {
-                "type": "string",
-                "maxLength": 16
-              },
-              {
-                "type": "null"
+                "$ref": "#/components/schemas/CommonResourceConfig"
               }
             ],
-            "title": "Category",
-            "description": "Resource category key"
+            "default": {
+              "sortOrder": 100,
+              "defaultActive": true,
+              "showOnParentLevel": false
+            }
           },
-          "sortOrder": {
-            "type": "integer",
-            "minimum": 0.0,
-            "title": "Sortorder",
-            "description": "Sort order for displaying this resource among others",
-            "default": 100
-          },
-          "defaultActive": {
-            "type": "boolean",
-            "title": "Defaultactive",
-            "description": "Whether this resource is active by default when public",
-            "default": true
-          },
-          "showOnParentLevel": {
-            "type": "boolean",
-            "title": "Showonparentlevel",
-            "description": "Show combined contents of this resource on the parent level",
-            "default": false
+          "general": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GeneralPlainTextResourceConfig"
+              }
+            ],
+            "default": {
+              "defaultCollapsed": false,
+              "reducedViewOneline": false
+            }
           },
           "deeplLinks": {
             "allOf": [
@@ -5675,9 +5734,15 @@
               }
             ],
             "default": {
-              "sortOrder": 100,
-              "defaultActive": true,
-              "showOnParentLevel": false,
+              "common": {
+                "defaultActive": true,
+                "showOnParentLevel": false,
+                "sortOrder": 100
+              },
+              "general": {
+                "defaultCollapsed": false,
+                "reducedViewOneline": false
+              },
               "deeplLinks": {
                 "enabled": false,
                 "languages": [
@@ -5892,9 +5957,15 @@
               }
             ],
             "default": {
-              "sortOrder": 100,
-              "defaultActive": true,
-              "showOnParentLevel": false,
+              "common": {
+                "defaultActive": true,
+                "showOnParentLevel": false,
+                "sortOrder": 100
+              },
+              "general": {
+                "defaultCollapsed": false,
+                "reducedViewOneline": false
+              },
               "deeplLinks": {
                 "enabled": false,
                 "languages": [
@@ -6071,9 +6142,15 @@
               }
             ],
             "default": {
-              "sortOrder": 100,
-              "defaultActive": true,
-              "showOnParentLevel": false,
+              "common": {
+                "defaultActive": true,
+                "showOnParentLevel": false,
+                "sortOrder": 100
+              },
+              "general": {
+                "defaultCollapsed": false,
+                "reducedViewOneline": false
+              },
               "deeplLinks": {
                 "enabled": false,
                 "languages": [
@@ -6964,37 +7041,27 @@
       },
       "RichTextResourceConfig": {
         "properties": {
-          "category": {
-            "anyOf": [
+          "common": {
+            "allOf": [
               {
-                "type": "string",
-                "maxLength": 16
-              },
-              {
-                "type": "null"
+                "$ref": "#/components/schemas/CommonResourceConfig"
               }
             ],
-            "title": "Category",
-            "description": "Resource category key"
+            "default": {
+              "sortOrder": 100,
+              "defaultActive": true,
+              "showOnParentLevel": false
+            }
           },
-          "sortOrder": {
-            "type": "integer",
-            "minimum": 0.0,
-            "title": "Sortorder",
-            "description": "Sort order for displaying this resource among others",
-            "default": 100
-          },
-          "defaultActive": {
-            "type": "boolean",
-            "title": "Defaultactive",
-            "description": "Whether this resource is active by default when public",
-            "default": true
-          },
-          "showOnParentLevel": {
-            "type": "boolean",
-            "title": "Showonparentlevel",
-            "description": "Show combined contents of this resource on the parent level",
-            "default": false
+          "general": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GeneralRichTextResourceConfig"
+              }
+            ],
+            "default": {
+              "defaultCollapsed": true
+            }
           }
         },
         "type": "object",
@@ -7136,9 +7203,14 @@
               }
             ],
             "default": {
-              "sortOrder": 100,
-              "defaultActive": true,
-              "showOnParentLevel": false
+              "common": {
+                "defaultActive": true,
+                "showOnParentLevel": false,
+                "sortOrder": 100
+              },
+              "general": {
+                "defaultCollapsed": true
+              }
             }
           }
         },
@@ -7345,9 +7417,14 @@
               }
             ],
             "default": {
-              "sortOrder": 100,
-              "defaultActive": true,
-              "showOnParentLevel": false
+              "common": {
+                "defaultActive": true,
+                "showOnParentLevel": false,
+                "sortOrder": 100
+              },
+              "general": {
+                "defaultCollapsed": true
+              }
             }
           }
         },
@@ -7516,9 +7593,14 @@
               }
             ],
             "default": {
-              "sortOrder": 100,
-              "defaultActive": true,
-              "showOnParentLevel": false
+              "common": {
+                "defaultActive": true,
+                "showOnParentLevel": false,
+                "sortOrder": 100
+              },
+              "general": {
+                "defaultCollapsed": true
+              }
             }
           }
         },

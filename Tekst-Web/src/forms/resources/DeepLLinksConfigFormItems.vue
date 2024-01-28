@@ -6,7 +6,7 @@ const props = defineProps<{
   model: DeepLLinksConfig;
 }>();
 
-const emits = defineEmits(['update:model']);
+const emit = defineEmits(['update:model']);
 
 const languageOptions = [
   'BG',
@@ -39,7 +39,7 @@ const languageOptions = [
 ].map((l) => ({ label: l, value: l }));
 
 function handleUpdate(field: string, value: any) {
-  emits('update:model', {
+  emit('update:model', {
     ...props.model,
     [field]: value,
   });
@@ -48,7 +48,7 @@ function handleUpdate(field: string, value: any) {
 
 <template>
   <h4>
-    {{ $t('resources.settings.config.deeplLinks.title') }}
+    {{ $t('resources.settings.config.deeplLinks.heading') }}
   </h4>
 
   <!-- ENABLED -->

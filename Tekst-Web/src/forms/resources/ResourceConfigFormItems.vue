@@ -1,12 +1,7 @@
 <script setup lang="ts">
 import type { AnyResourceConfig } from '@/api';
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
-import { NSpace, NFormItem, NCheckbox, NInputNumber, NSelect } from 'naive-ui';
-import specialConfigFormItems from '@/forms/resources/mappings';
-import { useStateStore } from '@/stores';
-import { usePlatformData } from '@/composables/platformData';
-import { computed } from 'vue';
-import { pickTranslation } from '@/utils';
+import { generalConfigFormItems, specialConfigFormItems } from '@/forms/resources/mappings';
+import CommonResourceConfigFormItems from './CommonResourceConfigFormItems.vue';
 
 const props = withDefaults(
   defineProps<{
@@ -15,27 +10,24 @@ const props = withDefaults(
     loading?: boolean;
   }>(),
   {
-    model: () => ({
-      showOnParentLevel: false,
-    }),
+    model: () => ({}),
   }
 );
 
-const emits = defineEmits(['update:model']);
+const emit = defineEmits(['update:model']);
 
-const state = useStateStore();
-const { pfData } = usePlatformData();
+function handleUpdateGeneralConfig(field: string, value: any) {
+  emit('update:model', {
+    ...props.model,
+    general: {
+      ...props.model.general,
+      [field]: value,
+    },
+  });
+}
 
-const categoryOptions = computed(
-  () =>
-    pfData.value?.settings.resourceCategories?.map((c) => ({
-      label: pickTranslation(c.translations, state.locale) || c.key,
-      value: c.key,
-    })) || []
-);
-
-function handleUpdate(field: string, value: any) {
-  emits('update:model', {
+function handleUpdateSpecialConfig(field: string, value: any) {
+  emit('update:model', {
     ...props.model,
     [field]: value,
   });
@@ -43,60 +35,36 @@ function handleUpdate(field: string, value: any) {
 </script>
 
 <template>
-  <!---- GENERAL RESOURCE CONFIG ---->
-  <h3>{{ $t('resources.settings.config.headingConfig') }}</h3>
-  <h4>{{ $t('resources.headingGeneral') }}</h4>
+  <h3>{{ $t('resources.settings.config.heading') }}</h3>
 
-  <!-- CATEGORY -->
-  <n-form-item :label="$t('models.resource.category')">
-    <n-select
-      :value="model.category"
-      clearable
-      :placeholder="$t('browse.uncategorized')"
-      :options="categoryOptions"
-      @update:value="(v) => handleUpdate('category', v)"
-    />
-  </n-form-item>
-
-  <!-- SORT ORDER -->
-  <n-form-item path="sortOrder" :label="$t('models.resource.sortOrder')">
-    <n-input-number
-      :min="0"
-      :value="model.sortOrder"
-      style="width: 100%"
-      @update:value="(v) => handleUpdate('sortOrder', v)"
-    />
-    <HelpButtonWidget help-key="resourceSortOrder" gap-left />
-  </n-form-item>
-
-  <n-form-item :label="$t('resources.settings.config.visibility')" :show-feedback="false">
-    <!-- DEFAULT ACTIVE -->
-    <n-space vertical>
-      <n-checkbox
-        :checked="model.defaultActive"
-        @update:checked="(u) => handleUpdate('defaultActive', u)"
-      >
-        {{ $t('resources.settings.config.defaultActive') }}
-      </n-checkbox>
-      <n-space>
-        <n-checkbox
-          :checked="model.showOnParentLevel"
-          @update:checked="(u) => handleUpdate('showOnParentLevel', u)"
-        >
-          {{ $t('resources.settings.config.showOnParentLevel') }}
-        </n-checkbox>
-        <HelpButtonWidget help-key="resourceConfigCombinedSiblings" />
-      </n-space>
-    </n-space>
-  </n-form-item>
+  <!---- COMMON RESOURCE CONFIG ---->
+  <CommonResourceConfigFormItems
+    v-if="model.common"
+    :model="model.common"
+    @update:model="(u: any) => $emit('update:model', { ...model, common: u })"
+  />
 
   <!---- RESOURCE TYPE-SPECIFIC CONFIG ---->
+  <!-- GENERAL -->
+  <h4>
+    {{ $t('resources.settings.config.general.heading') }}:
+    {{ $t('resources.types.' + resourceType + '.label') }}
+  </h4>
+  <template v-for="(configValue, key) in model.general" :key="key">
+    <component
+      :is="generalConfigFormItems[key]"
+      v-if="key in generalConfigFormItems"
+      :value="configValue"
+      @update:value="(u: any) => handleUpdateGeneralConfig(key, u)"
+    />
+  </template>
+  <!-- SPECIAL -->
   <template v-for="(configModel, key) in model" :key="key">
     <component
       :is="specialConfigFormItems[key]"
       v-if="key in specialConfigFormItems"
       :model="configModel"
-      @update:model="(u: any) => handleUpdate(key, u)"
+      @update:model="(u: any) => handleUpdateSpecialConfig(key, u)"
     />
   </template>
 </template>

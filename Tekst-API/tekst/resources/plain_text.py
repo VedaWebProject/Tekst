@@ -2,6 +2,7 @@ from typing import Annotated, Literal
 
 from pydantic import Field, StringConstraints
 
+from tekst.models.common import ModelBase
 from tekst.models.content import ContentBase
 from tekst.models.resource import ResourceBase
 from tekst.models.resource_configs import DeepLLinksConfig, ResourceConfigBase
@@ -20,7 +21,23 @@ class PlainText(ResourceTypeABC):
         return PlainTextContent
 
 
+class GeneralPlainTextResourceConfig(ModelBase):
+    default_collapsed: Annotated[
+        bool,
+        Field(
+            description=(
+                "Whether contents of this resource should be collapsed by default"
+            )
+        ),
+    ] = False
+    reduced_view_oneline: Annotated[
+        bool,
+        Field(description="Show contents as single line of text when in reduced view"),
+    ] = False
+
+
 class PlainTextResourceConfig(ResourceConfigBase):
+    general: GeneralPlainTextResourceConfig = GeneralPlainTextResourceConfig()
     deepl_links: DeepLLinksConfig = DeepLLinksConfig()
 
 
