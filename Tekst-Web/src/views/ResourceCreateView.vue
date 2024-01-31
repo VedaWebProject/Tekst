@@ -107,10 +107,10 @@ async function handleSaveClick() {
 </script>
 
 <template>
-  <IconHeading level="1" :icon="ResourceIcon">
+  <icon-heading level="1" :icon="ResourceIcon">
     {{ $t('resources.create.heading', { text: state.text?.title }) }}
-    <HelpButtonWidget help-key="resourceCreateView" />
-  </IconHeading>
+    <help-button-widget help-key="resourceCreateView" />
+  </icon-heading>
 
   <router-link
     v-slot="{ navigate }"
@@ -163,13 +163,13 @@ async function handleSaveClick() {
           </n-form-item>
         </n-alert>
         <!-- COMMON RESOURCE FORM FIELDS -->
-        <ResourceSettingsFormItems v-model:model="model" :owner="auth.user" :public="false" />
+        <resource-settings-form-items v-model:model="model" :owner="auth.user" :public="false" />
       </n-form>
 
-      <ButtonShelf top-gap>
+      <button-shelf top-gap>
         <n-button secondary @click="handleResetClick">{{ $t('general.resetAction') }}</n-button>
         <n-button type="primary" @click="handleSaveClick">{{ $t('general.saveAction') }}</n-button>
-      </ButtonShelf>
+      </button-shelf>
     </div>
   </template>
 </template>

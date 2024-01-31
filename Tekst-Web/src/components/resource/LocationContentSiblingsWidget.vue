@@ -49,22 +49,22 @@ async function handleClick() {
 </script>
 
 <template>
-  <ContentContainerHeaderWidget
+  <content-container-header-widget
     :title="$t('browse.contents.widgets.siblingsWidget.title')"
     :icon-component="MergeIcon"
     @click="handleClick"
   />
 
-  <GenericModal
+  <generic-modal
     v-model:show="showModal"
     width="wide"
     :title="resource.title"
     :icon="ResourceIcon"
     heading-level="2"
   >
-    <IconHeading v-if="resource.level > 0" level="3" :icon="BookIcon">
-      <LocationLabel :max-level="resource.level - 1" />
-    </IconHeading>
+    <icon-heading v-if="resource.level > 0" level="3" :icon="BookIcon">
+      <location-label :max-level="resource.level - 1" />
+    </icon-heading>
 
     <n-spin v-if="loading" style="margin: 3rem 0 2rem 0; width: 100%" />
 
@@ -77,12 +77,12 @@ async function handleClick() {
 
     <span v-else>{{ $t('errors.unexpected') }}</span>
 
-    <ButtonShelf top-gap>
+    <button-shelf top-gap>
       <n-button type="primary" @click="() => (showModal = false)">
         {{ $t('general.closeAction') }}
       </n-button>
-    </ButtonShelf>
-  </GenericModal>
+    </button-shelf>
+  </generic-modal>
 </template>
 
 <style scoped>

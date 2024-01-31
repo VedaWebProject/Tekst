@@ -60,24 +60,24 @@ function handleUpdate(field: string, value: any) {
       style="width: 100%"
       @update:value="(v) => handleUpdate('sortOrder', v)"
     />
-    <HelpButtonWidget help-key="resourceSortOrder" gap-left />
+    <help-button-widget help-key="resourceSortOrder" gap-left />
   </n-form-item>
 
   <n-form-item :show-label="false" :show-feedback="false">
     <!-- DEFAULT ACTIVE -->
     <n-space vertical>
-      <LabelledSwitch
+      <labelled-switch
         :value="model.defaultActive"
         :label="$t('resources.settings.config.common.defaultActive')"
         @update:value="(v) => handleUpdate('defaultActive', v)"
       />
       <n-space :wrap="false">
-        <LabelledSwitch
+        <labelled-switch
           :value="model.showOnParentLevel"
           :label="$t('resources.settings.config.common.showOnParentLevel')"
           @update:value="(u) => handleUpdate('showOnParentLevel', u)"
         />
-        <HelpButtonWidget help-key="resourceConfigCombinedSiblings" />
+        <help-button-widget help-key="resourceConfigCombinedSiblings" />
       </n-space>
     </n-space>
   </n-form-item>

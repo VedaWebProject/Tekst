@@ -21,7 +21,7 @@ function handleUpdate(field: string, value: any) {
   <template v-if="model">
     <!-- HTML -->
     <n-form-item :label="$t('resources.types.richText.contentFields.html')" path="html">
-      <HtmlEditor
+      <html-editor
         :value="model.html"
         :editor-mode="model.editorMode ?? 'wysiwyg'"
         toolbar-size="medium"

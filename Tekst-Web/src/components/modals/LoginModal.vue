@@ -71,7 +71,7 @@ async function handleForgotPasswordClick() {
 </script>
 
 <template>
-  <GenericModal
+  <generic-modal
     v-model:show="auth.loginModalState.show"
     width="narrow"
     :title="$t('account.login.heading')"
@@ -131,7 +131,7 @@ async function handleForgotPasswordClick() {
         </n-button>
       </div>
     </div>
-    <ButtonShelf top-gap>
+    <button-shelf top-gap>
       <n-button
         v-if="auth.loginModalState.showRegisterLink"
         secondary
@@ -147,8 +147,8 @@ async function handleForgotPasswordClick() {
       >
         {{ $t('account.loginBtn') }}
       </n-button>
-    </ButtonShelf>
-  </GenericModal>
+    </button-shelf>
+  </generic-modal>
 </template>
 
 <style scoped>

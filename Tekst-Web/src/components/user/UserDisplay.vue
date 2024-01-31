@@ -26,9 +26,9 @@ withDefaults(
     :style="size ? `font-size: var(--app-ui-font-size-${size})` : ''"
   >
     <n-icon v-if="showIcon" :component="UserIcon" style="margin-right: 0.25rem" />
-    <RouterLink v-if="user" :to="{ name: 'user', params: { username: user.username } }">
-      <UserDisplayText :user="user" />
-    </RouterLink>
+    <router-link v-if="user" :to="{ name: 'user', params: { username: user.username } }">
+      <user-display-text :user="user" />
+    </router-link>
     <span v-else>–</span>
   </div>
 </template>

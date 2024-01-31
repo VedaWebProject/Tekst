@@ -201,7 +201,7 @@ onMounted(() => {
 <template>
   <h2>
     {{ $t('admin.users.heading') }}
-    <HelpButtonWidget help-key="adminSystemUsersView" />
+    <help-button-widget help-key="adminSystemUsersView" />
   </h2>
 
   <template v-if="users && !error">
@@ -223,24 +223,24 @@ onMounted(() => {
             </template>
           </n-input>
 
-          <LabelledSwitch v-model:value="filters.isActive" :label="$t('models.user.isActive')" />
-          <LabelledSwitch
+          <labelled-switch v-model:value="filters.isActive" :label="$t('models.user.isActive')" />
+          <labelled-switch
             v-model:value="filters.isInactive"
             :label="$t('models.user.isInactive')"
           />
-          <LabelledSwitch
+          <labelled-switch
             v-model:value="filters.isVerified"
             :label="$t('models.user.isVerified')"
           />
-          <LabelledSwitch
+          <labelled-switch
             v-model:value="filters.isUnverified"
             :label="$t('models.user.isUnverified')"
           />
-          <LabelledSwitch
+          <labelled-switch
             v-model:value="filters.isSuperuser"
             :label="$t('models.user.isSuperuser')"
           />
-          <LabelledSwitch
+          <labelled-switch
             v-model:value="filters.isNoSuperuser"
             :label="$t('models.user.modelLabel')"
           />

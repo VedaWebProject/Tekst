@@ -428,7 +428,7 @@ onUnmounted(() => {
     </div>
     <div v-if="editor" class="character-count">{{ editor.getHTML().length }} / {{ maxChars }}</div>
   </div>
-  <PromptModal ref="promptModalRef" @submit="handlePromptModalSubmit" />
+  <prompt-modal ref="promptModalRef" @submit="handlePromptModalSubmit" />
 </template>
 
 <style scoped>

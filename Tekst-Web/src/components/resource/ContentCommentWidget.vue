@@ -15,14 +15,14 @@ const showModal = ref(false);
 </script>
 
 <template>
-  <ContentContainerHeaderWidget
+  <content-container-header-widget
     v-if="!!resource.contents?.[0]?.comment"
     :title="$t('browse.contents.widgets.contentComment.title')"
     :icon-component="CommentIcon"
     @click="showModal = true"
   />
 
-  <GenericModal
+  <generic-modal
     v-model:show="showModal"
     width="wide"
     :title="$t('browse.contents.widgets.contentComment.title')"
@@ -31,10 +31,10 @@ const showModal = ref(false);
     <p v-if="resource.contents?.[0]?.comment" style="white-space: pre-wrap">
       {{ resource.contents[0].comment }}
     </p>
-    <ButtonShelf top-gap>
+    <button-shelf top-gap>
       <n-button type="primary" @click="showModal = false">
         {{ $t('general.closeAction') }}
       </n-button>
-    </ButtonShelf>
-  </GenericModal>
+    </button-shelf>
+  </generic-modal>
 </template>

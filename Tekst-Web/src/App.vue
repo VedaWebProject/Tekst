@@ -18,7 +18,7 @@ import PageHeader from './layout/PageHeader.vue';
 import PageFooter from './layout/PageFooter.vue';
 import { useInitializeApp } from '@/composables/init';
 import LoginModal from '@/components/modals/LoginModal.vue';
-import HugeLabeledIcon from '@/components/generic/HugeLabeledIcon.vue';
+import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 
 import { ErrorIcon } from '@/icons';
 
@@ -42,7 +42,7 @@ const nUiDateLocale = computed(() => getLocaleProfile(state.locale)?.nUiDateLoca
     <n-loading-bar-provider>
       <n-dialog-provider>
         <div id="app-container">
-          <HugeLabeledIcon
+          <huge-labelled-icon
             v-if="initialized && error"
             :message="$t('init.error')"
             :loading="!error && !initialized"
@@ -50,24 +50,24 @@ const nUiDateLocale = computed(() => getLocaleProfile(state.locale)?.nUiDateLoca
           />
 
           <template v-else-if="initialized">
-            <PageHeader />
+            <page-header />
             <main>
               <div id="main-content">
-                <RouterView />
+                <router-view />
               </div>
             </main>
-            <PageFooter />
+            <page-footer />
           </template>
 
-          <InitLoader
+          <init-loader
             :show="state.initLoading"
             transition="0.2s"
             :text="state.initLoadingMsg"
             :dark-mode="theme.darkMode"
           />
-          <GlobalMessenger />
+          <global-messenger />
         </div>
-        <LoginModal />
+        <login-modal />
         <n-back-top :visibility-height="200" style="z-index: 2" />
         <n-global-style />
       </n-dialog-provider>

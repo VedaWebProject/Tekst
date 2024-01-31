@@ -95,10 +95,10 @@ async function handleSave() {
 </script>
 
 <template>
-  <IconHeading level="1" :icon="AddCircleIcon">
+  <icon-heading level="1" :icon="AddCircleIcon">
     {{ $t('admin.newText.heading') }}
-    <HelpButtonWidget help-key="adminNewTextView" />
-  </IconHeading>
+    <help-button-widget help-key="adminNewTextView" />
+  </icon-heading>
 
   <n-alert :title="$t('general.info')" type="info" closable>
     {{ $t('admin.newText.headerInfoAlert') }}
@@ -194,10 +194,10 @@ async function handleSave() {
       </n-form-item>
     </n-form>
 
-    <ButtonShelf top-gap>
+    <button-shelf top-gap>
       <n-button type="primary" :disabled="loading" :loading="loading" @click="handleSave">
         {{ $t('general.saveAction') }}
       </n-button>
-    </ButtonShelf>
+    </button-shelf>
   </div>
 </template>

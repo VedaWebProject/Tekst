@@ -105,7 +105,7 @@ whenever(ArrowLeft, () => {
       </template>
     </n-button>
 
-    <BookmarksWidget
+    <bookmarks-widget
       v-if="auth.loggedIn"
       :size="buttonSize"
       :color="btnColor"
@@ -128,7 +128,7 @@ whenever(ArrowLeft, () => {
     </router-link>
   </div>
 
-  <LocationSelectModal
+  <location-select-modal
     v-model:show="showLocationSelectModal"
     :location-path="browse.locationPath"
     @update:location-path="handleLocationSelect"

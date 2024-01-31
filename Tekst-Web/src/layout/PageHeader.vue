@@ -13,18 +13,18 @@ const { pfData } = usePlatformData();
 
 <template>
   <header>
-    <PrimaryNavBar />
+    <primary-nav-bar />
     <div class="accent-color-bg" style="min-height: 12px">
       <div
         v-if="route.meta.isTextSpecific || pfData?.settings.alwaysShowTextInfo"
         id="current-text"
       >
-        <TextSelect />
+        <text-select />
         <span
           v-if="!state.smallScreen && state.text?.subtitle?.length"
           class="current-text-subtitle"
         >
-          <TranslationDisplay :value="state.text?.subtitle" />
+          <translation-display :value="state.text?.subtitle" />
         </span>
       </div>
     </div>

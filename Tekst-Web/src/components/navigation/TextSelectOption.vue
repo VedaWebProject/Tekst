@@ -23,7 +23,7 @@ defineProps<{
         v-if="text.subtitle?.length"
         style="font-size: var(--app-ui-font-size-tiny); opacity: 0.8"
       >
-        <TranslationDisplay :value="text.subtitle" />
+        <translation-display :value="text.subtitle" />
       </div>
       <div
         v-if="!text.isActive"

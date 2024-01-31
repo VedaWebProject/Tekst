@@ -46,38 +46,38 @@ watch(showInfoModal, async (after) => {
 </script>
 
 <template>
-  <ContentContainerHeaderWidget
+  <content-container-header-widget
     :title="$t('browse.contents.widgets.infoWidget.title')"
     :icon-component="InfoIcon"
     @click="showInfoModal = true"
   />
 
-  <GenericModal v-model:show="showInfoModal" :title="resource.title" :icon="ResourceIcon">
+  <generic-modal v-model:show="showInfoModal" :title="resource.title" :icon="ResourceIcon">
     <p v-if="resource.description?.length">
-      <TranslationDisplay :value="resource.description" />
+      <translation-display :value="resource.description" />
     </p>
 
     <template v-if="auth.loggedIn">
       <p class="resource-status-box">
-        <UserDisplay :user="resource.owner ?? undefined" size="tiny" />
-        <ResourcePublicationStatus :resource="resource" size="tiny" />
-        <ResourceIsVersionInfo :resource="resource" size="tiny" />
+        <user-display :user="resource.owner ?? undefined" size="tiny" />
+        <resource-publication-status :resource="resource" size="tiny" />
+        <resource-is-version-info :resource="resource" size="tiny" />
       </p>
       <n-divider />
     </template>
 
     <template v-if="resource.meta && Object.keys(resource.meta).length">
-      <IconHeading level="3" :icon="MetadataIcon">
+      <icon-heading level="3" :icon="MetadataIcon">
         {{ $t('models.meta.modelLabel') }}
-      </IconHeading>
-      <MetadataDisplay :data="resource.meta" />
+      </icon-heading>
+      <metadata-display :data="resource.meta" />
       <n-divider />
     </template>
 
     <template v-if="resource.citation">
-      <IconHeading level="3" :icon="FormatQuoteIcon">
+      <icon-heading level="3" :icon="FormatQuoteIcon">
         {{ $t('browse.contents.widgets.infoWidget.citeAs') }}
-      </IconHeading>
+      </icon-heading>
       <div>
         {{ resource.citation }}
       </div>
@@ -85,9 +85,9 @@ watch(showInfoModal, async (after) => {
     </template>
 
     <template v-if="coverage">
-      <IconHeading level="3" :icon="CoverageIcon">
+      <icon-heading level="3" :icon="CoverageIcon">
         {{ $t('browse.contents.widgets.infoWidget.coverage') }}
-      </IconHeading>
+      </icon-heading>
 
       <div
         style="
@@ -133,24 +133,24 @@ watch(showInfoModal, async (after) => {
     </template>
 
     <template v-if="resource.comment?.length">
-      <IconHeading level="3" :icon="CommentIcon">
+      <icon-heading level="3" :icon="CommentIcon">
         {{ $t('models.resource.comment') }}
-      </IconHeading>
+      </icon-heading>
       <div class="resource-comment">
         <n-ellipsis :tooltip="false" :line-clamp="2" expand-trigger="click">
-          <TranslationDisplay :value="resource.comment" />
+          <translation-display :value="resource.comment" />
         </n-ellipsis>
       </div>
     </template>
 
-    <ButtonShelf top-gap>
+    <button-shelf top-gap>
       <n-button type="primary" @click="() => (showInfoModal = false)">
         {{ $t('general.closeAction') }}
       </n-button>
-    </ButtonShelf>
-  </GenericModal>
+    </button-shelf>
+  </generic-modal>
 
-  <CoverageDetailsWidget
+  <coverage-details-widget
     v-if="auth.loggedIn"
     v-model:show="showCoverageDetailsModal"
     :resource="resource"

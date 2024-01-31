@@ -21,7 +21,7 @@ import {
 } from '@/api';
 import { ref, type Component } from 'vue';
 import { computed, watch, h } from 'vue';
-import HugeLabeledIcon from '@/components/generic/HugeLabeledIcon.vue';
+import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import { $t } from '@/i18n';
 import { useAuthStore, useStateStore } from '@/stores';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
@@ -356,10 +356,10 @@ whenever(ArrowLeft, () => {
 </script>
 
 <template>
-  <IconHeading level="1" :icon="EditNoteIcon">
+  <icon-heading level="1" :icon="EditNoteIcon">
     {{ $t('contents.heading') }}
-    <HelpButtonWidget help-key="contentsView" />
-  </IconHeading>
+    <help-button-widget help-key="contentsView" />
+  </icon-heading>
 
   <router-link
     v-slot="{ navigate }"
@@ -374,12 +374,12 @@ whenever(ArrowLeft, () => {
     </n-button>
   </router-link>
 
-  <IconHeading v-if="resource" level="2" :icon="resource.originalId ? VersionIcon : ResourceIcon">
+  <icon-heading v-if="resource" level="2" :icon="resource.originalId ? VersionIcon : ResourceIcon">
     {{ resource?.title }}
-    <ResourceInfoWidget :resource="resource" />
-  </IconHeading>
+    <resource-info-widget :resource="resource" />
+  </icon-heading>
 
-  <ButtonShelf top-gap bottom-gap wrap="wrap-reverse">
+  <button-shelf top-gap bottom-gap wrap="wrap-reverse">
     <template #start>
       <n-button
         type="primary"
@@ -388,7 +388,7 @@ whenever(ArrowLeft, () => {
         @click="navigateContents(-1)"
       >
         <template #icon>
-          <ArrowBackIcon />
+          <n-icon :component="ArrowBackIcon" />
         </template>
       </n-button>
       <n-button type="primary" :disabled="loading" :focusable="false" @click="handleJumpToClick()">
@@ -421,13 +421,13 @@ whenever(ArrowLeft, () => {
         {{ $t('contents.lblBtnCompare') }}
       </n-button>
     </n-dropdown>
-  </ButtonShelf>
+  </button-shelf>
 
   <template v-if="resource && locationPath">
     <div class="content-block">
-      <IconHeading level="3" :icon="BookIcon">
-        <LocationLabel :location-path="locationPath" />
-      </IconHeading>
+      <icon-heading level="3" :icon="BookIcon">
+        <location-label :location-path="locationPath" />
+      </icon-heading>
 
       <n-alert
         v-if="
@@ -474,7 +474,9 @@ whenever(ArrowLeft, () => {
         />
         <span v-else style="opacity: 0.75; font-style: italic">{{ $t('contents.noContent') }}</span>
 
-        <ButtonShelf v-if="compareResource.originalId && compareResource.originalId == resource.id">
+        <button-shelf
+          v-if="compareResource.originalId && compareResource.originalId == resource.id"
+        >
           <n-button
             secondary
             :title="$t('contents.tipBtnPrevChange')"
@@ -503,7 +505,7 @@ whenever(ArrowLeft, () => {
               <n-icon :component="SkipNextIcon" />
             </template>
           </n-button>
-        </ButtonShelf>
+        </button-shelf>
       </n-alert>
 
       <template v-if="contentModel">
@@ -516,10 +518,10 @@ whenever(ArrowLeft, () => {
           label-width="auto"
           require-mark-placement="right-hanging"
         >
-          <ContentFormItems v-model:model="contentModel" />
+          <content-form-items v-model:model="contentModel" />
         </n-form>
 
-        <ButtonShelf top-gap>
+        <button-shelf top-gap>
           <template #start>
             <n-button
               secondary
@@ -552,11 +554,11 @@ whenever(ArrowLeft, () => {
           >
             {{ $t('general.saveAction') }}
           </n-button>
-        </ButtonShelf>
+        </button-shelf>
       </template>
 
       <n-space v-else vertical align="center" style="margin-bottom: var(--layout-gap)">
-        <HugeLabeledIcon
+        <huge-labelled-icon
           :message="$t('contents.noContent')"
           :icon="NoContentIcon"
           style="padding: 0 0 var(--layout-gap) 0"
@@ -571,7 +573,7 @@ whenever(ArrowLeft, () => {
     </div>
   </template>
 
-  <LocationSelectModal
+  <location-select-modal
     v-if="resource && locationPath"
     v-model:show="showJumpToModal"
     :location-path="locationPath"

@@ -6,8 +6,8 @@ import { SettingsIcon } from '@/icons';
 </script>
 
 <template>
-  <IconHeading level="1" :icon="SettingsIcon">
+  <icon-heading level="1" :icon="SettingsIcon">
     {{ $t('admin.system.heading') }}
-  </IconHeading>
+  </icon-heading>
   <router-view></router-view>
 </template>

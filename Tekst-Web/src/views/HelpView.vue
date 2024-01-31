@@ -57,16 +57,16 @@ watch(
 </script>
 
 <template>
-  <IconHeading level="1" :icon="QuestionMarkIcon">
+  <icon-heading level="1" :icon="QuestionMarkIcon">
     {{ $t('help.help') }}
-    <HelpButtonWidget help-key="helpView" />
-  </IconHeading>
+    <help-button-widget help-key="helpView" />
+  </icon-heading>
 
-  <NInput v-model:value="filter" round :placeholder="$t('search.searchAction')" clearable>
+  <n-input v-model:value="filter" round :placeholder="$t('search.searchAction')" clearable>
     <template #prefix>
       <n-icon :component="SearchIcon" />
     </template>
-  </NInput>
+  </n-input>
   <div style="margin-top: 0.5rem">
     {{ $t('help.msgFoundCount', { count: helpTextsFiltered?.length }) }}
   </div>
@@ -90,7 +90,7 @@ watch(
     </div>
   </div>
 
-  <GenericModal
+  <generic-modal
     v-model:show="showModal"
     width="wide"
     :title="$t('help.help')"
@@ -100,7 +100,7 @@ watch(
   >
     <!-- eslint-disable-next-line vue/no-v-html -->
     <div v-html="helpTextContent"></div>
-  </GenericModal>
+  </generic-modal>
 </template>
 
 <style scoped></style>

@@ -52,6 +52,6 @@ const MessageDispatcher = defineComponent({
 
 <template>
   <n-message-provider placement="bottom" :max="5" keep-alive-on-hover closable>
-    <MessageDispatcher />
+    <message-dispatcher />
   </n-message-provider>
 </template>

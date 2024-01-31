@@ -9,8 +9,8 @@ const state = useStateStore();
 </script>
 
 <template>
-  <IconHeading level="1" :icon="TextsIcon">
+  <icon-heading level="1" :icon="TextsIcon">
     {{ state.text?.title }}
-  </IconHeading>
+  </icon-heading>
   <router-view></router-view>
 </template>

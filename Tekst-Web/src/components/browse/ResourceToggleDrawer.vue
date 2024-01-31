@@ -33,15 +33,15 @@ const show = computed({
   >
     <n-drawer-content closable header-style="border: none">
       <template #header>
-        <IconHeading level="2" :icon="ResourceIcon" style="margin: 0">
+        <icon-heading level="2" :icon="ResourceIcon" style="margin: 0">
           {{ $t('browse.resourceToggleDrawer.heading') }}
-        </IconHeading>
+        </icon-heading>
       </template>
       <template v-for="category in browse.resourcesCategorized" :key="category.category.key">
         <div v-if="browse.resourcesCategorized.length > 1" class="category-label">
           {{ category.category.translation }}
         </div>
-        <ResourceToggleDrawerItem
+        <resource-toggle-drawer-item
           v-for="resource in category.resources"
           :key="`${resource.id}`"
           v-model:active="resource.active"

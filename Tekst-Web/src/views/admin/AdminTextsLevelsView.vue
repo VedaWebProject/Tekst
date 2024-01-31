@@ -161,7 +161,7 @@ async function handleModalSubmit() {
 <template>
   <h2>
     {{ $t('admin.text.levels.heading') }}
-    <HelpButtonWidget help-key="adminTextsLevelsView" />
+    <help-button-widget help-key="adminTextsLevelsView" />
   </h2>
 
   <div class="content-block">
@@ -211,7 +211,7 @@ async function handleModalSubmit() {
     <insert-level-button :level="levels.length" @click="handleInsertClick" />
   </div>
 
-  <GenericModal
+  <generic-modal
     v-model:show="showEditModal"
     :title="editModalTitle"
     :icon="EditIcon"
@@ -236,7 +236,7 @@ async function handleModalSubmit() {
       require-mark-placement="right-hanging"
     >
       <!-- STRUCTURE LEVEL -->
-      <TranslationFormItem
+      <translation-form-item
         v-model:value="formModel.translations"
         parent-form-path-prefix="translations"
         :loading="loading"
@@ -246,15 +246,15 @@ async function handleModalSubmit() {
       />
     </n-form>
 
-    <ButtonShelf top-gap>
+    <button-shelf top-gap>
       <n-button secondary :disabled="loading" @click="showEditModal = false">
         {{ $t('general.cancelAction') }}
       </n-button>
       <n-button type="primary" :loading="loading" :disabled="loading" @click="handleModalSubmit">
         {{ $t('general.saveAction') }}
       </n-button>
-    </ButtonShelf>
-  </GenericModal>
+    </button-shelf>
+  </generic-modal>
 </template>
 
 <style scoped>

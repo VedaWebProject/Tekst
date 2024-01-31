@@ -15,22 +15,22 @@ const privacyPolicy = computed(
 
 <template>
   <footer>
-    <SegmentRenderer segment-key="systemFooter" />
+    <segment-renderer segment-key="systemFooter" />
     <div v-if="pfData?.settings.showFooterInfo">
       <span>
         {{ pfData?.settings.infoPlatformName }}
       </span>
       <span v-if="pfData?.settings.infoSubtitle?.length" style="font-style: italic">
-        – <TranslationDisplay :value="pfData?.settings.infoSubtitle" />
+        – <translation-display :value="pfData?.settings.infoSubtitle" />
       </span>
     </div>
     <div v-if="siteNotice || privacyPolicy" id="legal-container">
-      <RouterLink v-if="siteNotice" :to="{ name: 'siteNotice' }">
+      <router-link v-if="siteNotice" :to="{ name: 'siteNotice' }">
         {{ $t('admin.system.segments.systemKeys.systemSiteNotice') }}
-      </RouterLink>
-      <RouterLink v-if="privacyPolicy" :to="{ name: 'privacyPolicy' }">
+      </router-link>
+      <router-link v-if="privacyPolicy" :to="{ name: 'privacyPolicy' }">
         {{ $t('admin.system.segments.systemKeys.systemPrivacyPolicy') }}
-      </RouterLink>
+      </router-link>
     </div>
   </footer>
 </template>

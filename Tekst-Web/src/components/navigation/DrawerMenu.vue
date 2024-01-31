@@ -69,14 +69,14 @@ const allMenuOptions = computed(() => [
     <n-drawer-content closable header-style="background-color: var(--accent-color-fade5);">
       <template #header>
         <div class="header-buttons">
-          <QuickSearchWidget />
-          <ThemeModeSwitcher />
-          <LocaleSwitcher />
-          <HelpNavButton />
-          <UserActionsButton v-if="showUserActionsButton" />
+          <quick-search-widget />
+          <theme-mode-switcher />
+          <locale-switcher />
+          <help-nav-button />
+          <user-actions-button v-if="showUserActionsButton" />
         </div>
       </template>
-      <NavigationMenu mode="vertical" :options="allMenuOptions" />
+      <navigation-menu mode="vertical" :options="allMenuOptions" />
     </n-drawer-content>
   </n-drawer>
 </template>

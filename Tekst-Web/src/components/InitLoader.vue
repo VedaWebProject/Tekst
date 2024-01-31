@@ -48,7 +48,7 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <Transition name="fade">
+  <transition name="fade">
     <div v-if="props.show" class="global-loader-container">
       <div class="global-loader" :style="dynamicStyle">
         <div
@@ -59,7 +59,7 @@ onBeforeMount(() => {
         </div>
       </div>
     </div>
-  </Transition>
+  </transition>
 </template>
 
 <style scoped>

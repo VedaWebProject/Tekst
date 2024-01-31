@@ -160,7 +160,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
     />
   </n-form-item>
   <!-- DESCRIPTION -->
-  <TranslationFormItem
+  <translation-form-item
     :value="model.description"
     parent-form-path-prefix="description"
     :main-form-label="$t('models.resource.description')"
@@ -179,7 +179,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
     />
   </n-form-item>
   <!-- COMMENT -->
-  <TranslationFormItem
+  <translation-form-item
     :value="model.comment"
     parent-form-path-prefix="comment"
     multiline
@@ -195,7 +195,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
     <n-divider />
     <h3>
       {{ $t('models.meta.modelLabel') }}
-      <HelpButtonWidget help-key="metadataForm" />
+      <help-button-widget help-key="metadataForm" />
     </h3>
     <n-form-item :show-label="false" :show-feedback="false">
       <n-dynamic-input
@@ -294,7 +294,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
   <!-- CONFIG -->
   <template v-if="model.config">
     <n-divider />
-    <ResourceConfigFormItems
+    <resource-config-form-items
       :model="model.config"
       :resource-type="model.resourceType"
       @update:model="(v: AnyResourceConfig) => handleUpdate('config', v)"

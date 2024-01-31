@@ -42,7 +42,7 @@ const infoTooltip = computed(() =>
         </div>
       </div>
       <div class="item-meta">
-        <MetadataDisplayMinimal :data="resource.meta" :resource-type="resource.resourceType" />
+        <metadata-display-minimal :data="resource.meta" :resource-type="resource.resourceType" />
       </div>
     </div>
     <div v-if="user" class="item-extra">

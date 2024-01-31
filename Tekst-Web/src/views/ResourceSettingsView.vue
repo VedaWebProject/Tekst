@@ -87,10 +87,10 @@ async function handleSaveClick() {
 </script>
 
 <template>
-  <IconHeading v-if="resource" level="1" :icon="SettingsIcon">
+  <icon-heading v-if="resource" level="1" :icon="SettingsIcon">
     {{ $t('resources.settings.heading') }}
-    <HelpButtonWidget help-key="ResourceSettingsView" />
-  </IconHeading>
+    <help-button-widget help-key="ResourceSettingsView" />
+  </icon-heading>
 
   <router-link
     v-slot="{ navigate }"
@@ -105,10 +105,10 @@ async function handleSaveClick() {
     </n-button>
   </router-link>
 
-  <IconHeading v-if="resource" level="2" :icon="ResourceIcon">
+  <icon-heading v-if="resource" level="2" :icon="ResourceIcon">
     {{ resource?.title }}
-    <ResourceInfoWidget :resource="resource" />
-  </IconHeading>
+    <resource-info-widget :resource="resource" />
+  </icon-heading>
 
   <template v-if="model">
     <div class="content-block">
@@ -133,21 +133,21 @@ async function handleSaveClick() {
         label-width="auto"
         require-mark-placement="right-hanging"
       >
-        <ResourceSettingsFormItems
+        <resource-settings-form-items
           v-model:model="model"
           :owner="resource?.owner"
           :public="resource?.public"
         />
       </n-form>
 
-      <ButtonShelf top-gap>
+      <button-shelf top-gap>
         <n-button secondary :disabled="!changed" @click="handleResetClick">
           {{ $t('general.resetAction') }}
         </n-button>
         <n-button type="primary" :disabled="!changed" @click="handleSaveClick">
           {{ $t('general.saveAction') }}
         </n-button>
-      </ButtonShelf>
+      </button-shelf>
     </div>
   </template>
 

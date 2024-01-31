@@ -135,7 +135,7 @@ async function handleDelete() {
 <template>
   <h2>
     {{ $t('admin.text.settings.heading') }}
-    <HelpButtonWidget help-key="adminTextsSettingsView" />
+    <help-button-widget help-key="adminTextsSettingsView" />
   </h2>
 
   <div v-if="model" class="content-block">
@@ -159,7 +159,7 @@ async function handleDelete() {
       </n-form-item>
 
       <!-- SUBTITLE -->
-      <TranslationFormItem
+      <translation-form-item
         v-model:value="model.subtitle"
         parent-form-path-prefix="subtitle"
         :main-form-label="$t('models.text.subtitle')"
@@ -219,17 +219,17 @@ async function handleDelete() {
       <n-form-item :label="$t('general.flags')">
         <n-space vertical>
           <!-- LABELED LOCATION -->
-          <LabelledSwitch
+          <labelled-switch
             v-model:value="model.labeledLocation"
             :label="$t('models.text.labeledLocation')"
           />
           <!-- ACTIVE -->
-          <LabelledSwitch v-model:value="model.isActive" :label="$t('models.text.isActive')" />
+          <labelled-switch v-model:value="model.isActive" :label="$t('models.text.isActive')" />
         </n-space>
       </n-form-item>
     </n-form>
 
-    <ButtonShelf top-gap>
+    <button-shelf top-gap>
       <template #start>
         <n-button secondary type="error" :disabled="!textCanBeDeleted" @click="handleDelete">
           {{ $t('general.deleteAction') }}
@@ -251,6 +251,6 @@ async function handleDelete() {
       >
         {{ $t('general.saveAction') }}
       </n-button>
-    </ButtonShelf>
+    </button-shelf>
   </div>
 </template>

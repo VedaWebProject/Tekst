@@ -63,7 +63,7 @@ function renderOption(option: DropdownOption) {
     :render-label="renderOption"
     show-arrow
   >
-    <ContentContainerHeaderWidget
+    <content-container-header-widget
       :title="$t('browse.contents.widgets.deepLTranslate.title')"
       :icon-component="TranslateIcon"
     />

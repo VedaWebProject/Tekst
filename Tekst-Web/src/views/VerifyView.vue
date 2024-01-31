@@ -4,7 +4,7 @@ import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { $t } from '@/i18n';
 import { useRouter } from 'vue-router';
-import HugeLabeledIcon from '@/components/generic/HugeLabeledIcon.vue';
+import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 
 import { KeyOffIcon, CheckCircleIcon } from '@/icons';
 
@@ -35,7 +35,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <HugeLabeledIcon
+  <huge-labelled-icon
     :message="error ? error : $t('account.verify.success')"
     :loading="!error && !verified"
     :icon="error ? KeyOffIcon : CheckCircleIcon"

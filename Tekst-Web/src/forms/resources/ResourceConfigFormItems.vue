@@ -38,7 +38,7 @@ function handleUpdateSpecialConfig(field: string, value: any) {
   <h3>{{ $t('resources.settings.config.heading') }}</h3>
 
   <!-- COMMON RESOURCE CONFIG -->
-  <CommonResourceConfigFormItems
+  <common-resource-config-form-items
     v-if="model.common"
     :model="model.common"
     @update:model="(u: any) => $emit('update:model', { ...model, common: u })"

@@ -25,9 +25,9 @@ const { user, error } = useProfile(username);
 </script>
 
 <template>
-  <IconHeading level="1" :icon="UserIcon">
+  <icon-heading level="1" :icon="UserIcon">
     {{ $t('account.profileHeading', { username }) }}
-  </IconHeading>
+  </icon-heading>
 
   <div v-if="user && !error" class="content-block">
     <ul>

@@ -51,7 +51,7 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <GenericModal
+  <generic-modal
     :show="show"
     :title="$t('admin.text.locations.rename.heading')"
     :icon="EditIcon"
@@ -83,7 +83,7 @@ async function handleSubmit() {
         />
       </n-form-item>
     </n-form>
-    <ButtonShelf top-gap>
+    <button-shelf top-gap>
       <n-button secondary :disabled="loading" @click="$emit('update:show', false)">
         {{ $t('general.cancelAction') }}
       </n-button>
@@ -95,6 +95,6 @@ async function handleSubmit() {
       >
         {{ $t('general.saveAction') }}
       </n-button>
-    </ButtonShelf>
-  </GenericModal>
+    </button-shelf>
+  </generic-modal>
 </template>

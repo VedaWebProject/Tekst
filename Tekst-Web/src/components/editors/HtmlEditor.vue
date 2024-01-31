@@ -52,7 +52,7 @@ function handleChangeTab(value: 'wysiwyg' | 'html') {
     @update:value="handleChangeTab"
   >
     <n-tab-pane name="wysiwyg" :tab="$t('htmlEditor.wysiwyg')">
-      <WysiwygEditor
+      <wysiwyg-editor
         :value="value"
         :max-chars="maxChars"
         @update:value="emit('update:value', $event)"

@@ -37,9 +37,9 @@ watchEffect(async () => {
     style="width: 100%; display: flex; justify-content: center; padding: var(--layout-gap) 0"
   />
   <template v-else-if="page">
-    <IconHeading v-if="page.title" level="1" :icon="icon">
+    <icon-heading v-if="page.title" level="1" :icon="icon">
       {{ page.title }}
-    </IconHeading>
+    </icon-heading>
     <!-- eslint-disable-next-line vue/no-v-html -->
     <div class="content-block" v-html="page.html"></div>
   </template>

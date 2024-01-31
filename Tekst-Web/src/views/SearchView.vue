@@ -6,10 +6,10 @@ import { AdvancedSearchIcon } from '@/icons';
 </script>
 
 <template>
-  <IconHeading level="1" :icon="AdvancedSearchIcon">
+  <icon-heading level="1" :icon="AdvancedSearchIcon">
     {{ $t('search.heading') }}
-    <HelpButtonWidget help-key="searchView" />
-  </IconHeading>
+    <help-button-widget help-key="searchView" />
+  </icon-heading>
   <div class="content-block">
     <p>...</p>
   </div>

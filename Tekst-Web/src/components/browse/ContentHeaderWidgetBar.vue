@@ -38,16 +38,16 @@ const browse = useBrowseStore();
       </template>
     </template>
     <!-- generic content widgets -->
-    <LocationContentSiblingsWidget
+    <location-content-siblings-widget
       v-if="
         resource.config?.common?.showOnParentLevel &&
         (browse.level == resource.level || browse.level == resource.level - 1)
       "
       :resource="resource"
     />
-    <ContentCommentWidget :resource="resource" />
-    <ResourceInfoWidget :resource="resource" />
-    <ResourceDeactivateWidget :resource="resource" />
+    <content-comment-widget :resource="resource" />
+    <resource-info-widget :resource="resource" />
+    <resource-deactivate-widget :resource="resource" />
   </div>
 </template>
 

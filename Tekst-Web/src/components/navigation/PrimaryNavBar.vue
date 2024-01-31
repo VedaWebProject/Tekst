@@ -40,7 +40,7 @@ watch(
   <div class="navbar" :class="state.smallScreen && 'navbar-smallscreen'">
     <img class="navbar-logo" :alt="`${pfData?.settings.infoPlatformName} Logo`" src="/logo.png" />
     <div class="title-container">
-      <RouterLink
+      <router-link
         :to="
           !!systemHome
             ? { path: '/' }
@@ -53,24 +53,24 @@ watch(
         class="navbar-title"
       >
         {{ pfData?.settings.infoPlatformName }}
-      </RouterLink>
+      </router-link>
       <div
         v-if="pfData?.settings.showHeaderInfo && pfData?.settings.infoSubtitle?.length"
         class="navbar-description"
       >
-        <TranslationDisplay :value="pfData?.settings.infoSubtitle" />
+        <translation-display :value="pfData?.settings.infoSubtitle" />
       </div>
     </div>
 
     <div v-if="!state.smallScreen" class="navbar-menu">
-      <NavigationMenu :options="mainMenuOptions" />
+      <navigation-menu :options="mainMenuOptions" />
       <div class="navbar-menu-divider"></div>
       <div class="navbar-menu-extra">
-        <QuickSearchWidget />
-        <ThemeModeSwitcher />
-        <LocaleSwitcher />
-        <HelpNavButton />
-        <UserActionsButton v-if="showUserActionsButton" />
+        <quick-search-widget />
+        <theme-mode-switcher />
+        <locale-switcher />
+        <help-nav-button />
+        <user-actions-button v-if="showUserActionsButton" />
       </div>
     </div>
 
@@ -90,7 +90,7 @@ watch(
     </n-button>
   </div>
 
-  <DrawerMenu
+  <drawer-menu
     v-if="state.smallScreen"
     v-model:show="menuOpen"
     :show-user-options-button="showUserActionsButton"

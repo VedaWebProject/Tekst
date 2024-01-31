@@ -80,9 +80,9 @@ function handleMaskClick(e: MouseEvent) {
   >
     <template #header>
       <slot name="header">
-        <IconHeading v-if="title" :level="headingLevel" :icon="icon" style="margin: 0">
+        <icon-heading v-if="title" :level="headingLevel" :icon="icon" style="margin: 0">
           {{ title }}
-        </IconHeading>
+        </icon-heading>
       </slot>
     </template>
     <slot></slot>

@@ -215,19 +215,19 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
               </template>
             </n-button>
           </n-dropdown>
-          <ResourceInfoWidget :resource="targetResource" />
+          <resource-info-widget :resource="targetResource" />
         </n-space>
       </template>
 
       <template #description>
-        <UserDisplay v-if="targetResource.owner" :user="targetResource.owner" size="tiny" />
-        <ResourcePublicationStatus :resource="targetResource" size="tiny" />
-        <ResourceIsVersionInfo :resource="targetResource" size="tiny" />
+        <user-display v-if="targetResource.owner" :user="targetResource.owner" size="tiny" />
+        <resource-publication-status :resource="targetResource" size="tiny" />
+        <resource-is-version-info :resource="targetResource" size="tiny" />
       </template>
 
       <template v-if="targetResource.description?.length">
         <n-ellipsis :tooltip="false" :line-clamp="2" expand-trigger="click">
-          <TranslationDisplay :value="targetResource.description" />
+          <translation-display :value="targetResource.description" />
         </n-ellipsis>
       </template>
     </n-thing>

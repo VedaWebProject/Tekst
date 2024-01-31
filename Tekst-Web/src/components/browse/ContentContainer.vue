@@ -71,7 +71,7 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
           {{ headerExtraText }}
         </div>
       </div>
-      <ContentHeaderWidgetBar :resource="resource" :style="headerWidgetsVisibilityStyle" />
+      <content-header-widget-bar :resource="resource" :style="headerWidgetsVisibilityStyle" />
     </div>
 
     <div v-if="resource.contents?.length" :class="{ 'content-body-collapsed': contentCollapsed }">
@@ -83,9 +83,9 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
       />
     </div>
 
-    <Transition>
+    <transition>
       <n-spin v-show="loading" class="content-loader" />
-    </Transition>
+    </transition>
 
     <n-button
       v-if="resource.config?.general?.defaultCollapsed && resource.contents?.length"

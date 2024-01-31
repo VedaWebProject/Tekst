@@ -117,11 +117,11 @@ onMounted(() => {
           />
         </n-form-item>
       </n-form>
-      <ButtonShelf top-gap>
+      <button-shelf top-gap>
         <n-button type="primary" :loading="loading" :disabled="loading" @click="handlePasswordSave">
           {{ $t('general.saveAction') }}
         </n-button>
-      </ButtonShelf>
+      </button-shelf>
     </div>
   </div>
 </template>

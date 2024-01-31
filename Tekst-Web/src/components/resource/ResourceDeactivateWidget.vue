@@ -23,7 +23,7 @@ function handleClick() {
 </script>
 
 <template>
-  <ContentContainerHeaderWidget
+  <content-container-header-widget
     :title="$t('browse.contents.widgets.deactivateWidget.title')"
     :icon-component="ClearIcon"
     @click="handleClick"

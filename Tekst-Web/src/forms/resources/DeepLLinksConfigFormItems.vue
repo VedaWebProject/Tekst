@@ -54,7 +54,7 @@ function handleUpdate(field: string, value: any) {
 
   <!-- ENABLED -->
   <n-form-item :show-label="false">
-    <LabelledSwitch
+    <labelled-switch
       :value="model.enabled"
       :label="$t('resources.settings.config.enabled')"
       @update:value="(v) => handleUpdate('enabled', v)"

@@ -138,9 +138,9 @@ onMounted(() => {
 <template>
   <div class="form-container">
     <div class="content-block">
-      <IconHeading level="1" :icon="UserIcon">
+      <icon-heading level="1" :icon="UserIcon">
         {{ $t('register.heading') }}
-      </IconHeading>
+      </icon-heading>
       <n-form
         ref="formRef"
         :model="formModel"

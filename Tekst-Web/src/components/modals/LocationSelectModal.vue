@@ -190,12 +190,12 @@ function handleLocationSelect() {
 </script>
 
 <template>
-  <GenericModal :show="show" @update:show="emit('update:show', $event)">
+  <generic-modal :show="show" @update:show="emit('update:show', $event)">
     <template #header>
-      <IconHeading level="2" :icon="BookIcon" style="margin: 0">
+      <icon-heading level="2" :icon="BookIcon" style="margin: 0">
         {{ $t('browse.location.modalHeading') }}
-        <HelpButtonWidget help-key="browseLocationControls" />
-      </IconHeading>
+        <help-button-widget help-key="browseLocationControls" />
+      </icon-heading>
     </template>
 
     <n-form
@@ -232,15 +232,15 @@ function handleLocationSelect() {
         />
       </n-form-item>
     </n-form>
-    <ButtonShelf top-gap>
+    <button-shelf top-gap>
       <n-button secondary :focusable="false" @click="emit('update:show', false)">
         {{ $t('general.cancelAction') }}
       </n-button>
       <n-button type="primary" @click="handleLocationSelect">
         {{ $t('general.selectAction') }}
       </n-button>
-    </ButtonShelf>
-  </GenericModal>
+    </button-shelf>
+  </generic-modal>
 </template>
 
 <style scoped>

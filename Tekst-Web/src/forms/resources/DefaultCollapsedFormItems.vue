@@ -11,7 +11,7 @@ defineEmits(['update:value']);
 
 <template>
   <n-form-item :show-label="false" :show-feedback="false">
-    <LabelledSwitch
+    <labelled-switch
       :value="value"
       :label="$t('resources.settings.config.general.defaultCollapsed')"
       @update:value="(v) => $emit('update:value', v)"

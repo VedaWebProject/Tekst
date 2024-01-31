@@ -342,10 +342,10 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
 </script>
 
 <template>
-  <IconHeading level="1" :icon="ResourceIcon">
+  <icon-heading level="1" :icon="ResourceIcon">
     {{ $t('resources.heading') }}
-    <HelpButtonWidget help-key="resourcesView" />
-  </IconHeading>
+    <help-button-widget help-key="resourcesView" />
+  </icon-heading>
 
   <template v-if="resources.data && !resources.error && !loading">
     <!-- Filters -->
@@ -362,15 +362,15 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
               <n-icon :component="SearchIcon" />
             </template>
           </n-input>
-          <LabelledSwitch v-model:value="filters.public" :label="$t('resources.public')" />
-          <LabelledSwitch v-model:value="filters.notPublic" :label="$t('resources.notPublic')" />
-          <LabelledSwitch v-model:value="filters.proposed" :label="$t('resources.proposed')" />
-          <LabelledSwitch
+          <labelled-switch v-model:value="filters.public" :label="$t('resources.public')" />
+          <labelled-switch v-model:value="filters.notPublic" :label="$t('resources.notPublic')" />
+          <labelled-switch v-model:value="filters.proposed" :label="$t('resources.proposed')" />
+          <labelled-switch
             v-model:value="filters.notProposed"
             :label="$t('resources.notProposed')"
           />
-          <LabelledSwitch v-model:value="filters.ownedByMe" :label="$t('resources.ownedByMe')" />
-          <LabelledSwitch
+          <labelled-switch v-model:value="filters.ownedByMe" :label="$t('resources.ownedByMe')" />
+          <labelled-switch
             v-model:value="filters.ownedByOthers"
             :label="$t('resources.ownedByOthers')"
           />
@@ -459,7 +459,7 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
     {{ $t('errors.error') }}
   </div>
 
-  <TransferResourceModal
+  <transfer-resource-modal
     :show="showTransferModal"
     :resource="transferTargetResource"
     :loading="actionsLoading"

@@ -94,7 +94,7 @@ function resetForm() {
 <template>
   <h2>
     {{ $t('admin.system.platformSettings.heading') }}
-    <HelpButtonWidget help-key="adminSystemSettingsView" />
+    <help-button-widget help-key="adminSystemSettingsView" />
   </h2>
 
   <div class="content-block">
@@ -119,7 +119,7 @@ function resetForm() {
         />
       </n-form-item>
       <!-- PLATFORM DESCRIPTION -->
-      <TranslationFormItem
+      <translation-form-item
         v-model:value="formModel.infoSubtitle"
         parent-form-path-prefix="infoSubtitle"
         :loading="loading"
@@ -196,7 +196,7 @@ function resetForm() {
       </n-form-item>
 
       <!-- TRANSLATE MAIN NAV INFO ENTRY -->
-      <TranslationFormItem
+      <translation-form-item
         v-model:value="formModel.navInfoEntry"
         parent-form-path-prefix="navInfoEntry"
         :loading="loading"
@@ -209,17 +209,17 @@ function resetForm() {
       <n-form-item :label="$t('admin.system.platformSettings.formLabelDisplay')">
         <n-space vertical>
           <!-- ALWAY SHOW TEXT INFO, ALSO ON NON-TEXT-SPECIFIC PAGES? -->
-          <LabelledSwitch
+          <labelled-switch
             v-model:value="formModel.alwaysShowTextInfo"
             :label="$t('models.platformSettings.alwaysShowTextInfo')"
           />
           <!-- SHOW DESCIPTION IN HEADER? -->
-          <LabelledSwitch
+          <labelled-switch
             v-model:value="formModel.showHeaderInfo"
             :label="$t('models.platformSettings.showHeaderInfo')"
           />
           <!-- SHOW TITLE AND DESCIPTION IN FOOTER? -->
-          <LabelledSwitch
+          <labelled-switch
             v-model:value="formModel.showFooterInfo"
             :label="$t('models.platformSettings.showFooterInfo')"
           />
@@ -254,7 +254,7 @@ function resetForm() {
                   @keydown.enter.prevent
                 />
               </n-form-item>
-              <TranslationFormItem
+              <translation-form-item
                 v-model:value="formModel.resourceCategories[index].translations"
                 :parent-form-path-prefix="`resourceCategories[${index}].translations`"
                 required
@@ -322,25 +322,25 @@ function resetForm() {
       <n-form-item :show-label="false">
         <n-space vertical>
           <!-- SHOW RESOURCE CATEGORY HEADINGS -->
-          <LabelledSwitch
+          <labelled-switch
             v-model:value="formModel.showResourceCategoryHeadings"
             :label="$t('models.platformSettings.showResourceCategoryHeadings')"
           />
           <!-- ALWAYS SHOW RESOURCE CATEGORY HEADINGS -->
-          <LabelledSwitch
+          <labelled-switch
             v-model:value="formModel.alwaysShowResourceCategoryHeadings"
             :label="$t('models.platformSettings.alwaysShowResourceCategoryHeadings')"
           />
         </n-space>
       </n-form-item>
     </n-form>
-    <ButtonShelf top-gap>
+    <button-shelf top-gap>
       <n-button secondary :disabled="!changed" @click="resetForm">{{
         $t('general.resetAction')
       }}</n-button>
       <n-button type="primary" :disabled="!changed" @click="handleSaveClick">{{
         $t('general.saveAction')
       }}</n-button>
-    </ButtonShelf>
+    </button-shelf>
   </div>
 </template>

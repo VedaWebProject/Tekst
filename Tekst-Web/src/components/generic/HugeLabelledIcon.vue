@@ -12,7 +12,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <div class="huge-labeled-icon">
+  <div class="huge-labelled-icon">
     <n-icon :size="128" :component="props.loading ? HourglassIcon : props.icon" />
     <div style="font-size: var(--app-ui-font-size-huge)">
       {{ !props.loading && props.message }}
@@ -21,7 +21,7 @@ const props = defineProps<{
 </template>
 
 <style scoped>
-.huge-labeled-icon {
+.huge-labelled-icon {
   width: 768px;
   max-width: 100%;
   margin: 0 auto;
@@ -31,7 +31,7 @@ const props = defineProps<{
   font-size: var(--app-ui-font-size-huge);
 }
 
-.huge-labeled-icon > * {
+.huge-labelled-icon > * {
   text-align: center;
 }
 </style>

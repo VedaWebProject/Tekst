@@ -82,7 +82,7 @@ function handleInputReturn(e: KeyboardEvent) {
 </script>
 
 <template>
-  <GenericModal
+  <generic-modal
     v-model:show="show"
     :title="liveProps.title"
     @after-leave="
@@ -112,7 +112,7 @@ function handleInputReturn(e: KeyboardEvent) {
         />
       </n-form-item>
     </n-form>
-    <ButtonShelf top-gap>
+    <button-shelf top-gap>
       <n-button secondary @click="close">
         {{ $t('general.cancelAction') }}
       </n-button>
@@ -123,6 +123,6 @@ function handleInputReturn(e: KeyboardEvent) {
       >
         {{ $t('general.okAction') }}
       </n-button>
-    </ButtonShelf>
-  </GenericModal>
+    </button-shelf>
+  </generic-modal>
 </template>

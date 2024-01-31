@@ -102,7 +102,7 @@ watch(
 </script>
 
 <template>
-  <GenericModal
+  <generic-modal
     :show="show"
     width="wide"
     @close="$emit('update:show', false)"
@@ -110,10 +110,10 @@ watch(
     @after-leave="handleLeave"
   >
     <template #header>
-      <IconHeading level="2" :icon="CoverageIcon" style="margin: 0" ellipsis>
+      <icon-heading level="2" :icon="CoverageIcon" style="margin: 0" ellipsis>
         {{ resource.title }}:
         {{ $t('browse.contents.widgets.infoWidget.coverage') }}
-      </IconHeading>
+      </icon-heading>
     </template>
 
     <p v-if="error">
@@ -139,7 +139,7 @@ watch(
             }}
           </n-ellipsis>
         </template>
-        <ButtonShelf bottom-gap wrap="nowrap" group-wrap="nowrap">
+        <button-shelf bottom-gap wrap="nowrap" group-wrap="nowrap">
           <n-button secondary size="small" :focusable="false" @click="handleScrollClick('top')">
             <template #icon>
               <n-icon :component="TopIcon" />
@@ -150,7 +150,7 @@ watch(
               <n-icon :component="BottomIcon" />
             </template>
           </n-button>
-        </ButtonShelf>
+        </button-shelf>
       </div>
 
       <n-virtual-list
@@ -194,12 +194,12 @@ watch(
       </n-virtual-list>
     </template>
 
-    <ButtonShelf top-gap>
+    <button-shelf top-gap>
       <n-button type="primary" @click="$emit('update:show', false)">
         {{ $t('general.closeAction') }}
       </n-button>
-    </ButtonShelf>
-  </GenericModal>
+    </button-shelf>
+  </generic-modal>
 </template>
 
 <style scoped>

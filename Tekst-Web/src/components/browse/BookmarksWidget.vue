@@ -81,7 +81,7 @@ async function handleBookmarkSelect(bookmark: BookmarkRead) {
     </template>
   </n-button>
 
-  <GenericModal
+  <generic-modal
     v-model:show="showModal"
     :auto-focus="false"
     width="wide"
@@ -118,7 +118,7 @@ async function handleBookmarkSelect(bookmark: BookmarkRead) {
           </template>
           <template #header>
             <span style="font-weight: var(--app-ui-font-weight-light)">
-              <LocationLabel :location-labels="bookmark.locationLabels" />
+              <location-label :location-labels="bookmark.locationLabels" />
             </span>
           </template>
           <template #header-extra>
@@ -146,9 +146,9 @@ async function handleBookmarkSelect(bookmark: BookmarkRead) {
         </n-thing>
       </n-list-item>
     </n-list>
-  </GenericModal>
+  </generic-modal>
 
-  <PromptModal
+  <prompt-modal
     ref="promptModalRef"
     multiline
     action-key="createBookmark"

@@ -34,10 +34,10 @@ const resourceTypes = computed(() => {
 </script>
 
 <template>
-  <IconHeading level="1" :icon="BarChartIcon">
+  <icon-heading level="1" :icon="BarChartIcon">
     {{ $t('admin.statistics.heading') }}
-    <HelpButtonWidget help-key="adminStatisticsView" />
-  </IconHeading>
+    <help-button-widget help-key="adminStatisticsView" />
+  </icon-heading>
 
   <div v-if="stats && !error" style="margin-top: 1rem">
     <h2>{{ $t('admin.statistics.globalHeading') }}</h2>

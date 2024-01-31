@@ -4,7 +4,7 @@ import BrowseToolbar from '@/components/browse/BrowseToolbar.vue';
 import { useAuthStore, useBrowseStore } from '@/stores';
 import ResourceToggleDrawer from '@/components/browse/ResourceToggleDrawer.vue';
 import ContentContainer from '@/components/browse/ContentContainer.vue';
-import HugeLabeledIcon from '@/components/generic/HugeLabeledIcon.vue';
+import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import { usePlatformData } from '@/composables/platformData';
@@ -55,12 +55,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <IconHeading v-if="browse.locationPath.length" level="1" :icon="BookIcon">
-    <LocationLabel />
-    <HelpButtonWidget help-key="browseView" />
-  </IconHeading>
+  <icon-heading v-if="browse.locationPath.length" level="1" :icon="BookIcon">
+    <location-label />
+    <help-button-widget help-key="browseView" />
+  </icon-heading>
 
-  <BrowseToolbar v-if="browse.locationPath.length" />
+  <browse-toolbar v-if="browse.locationPath.length" />
 
   <div
     v-if="activeResourcesCategorized.length"
@@ -78,7 +78,7 @@ onMounted(() => {
       >
         {{ category.category.translation }}
       </h2>
-      <ContentContainer
+      <content-container
         v-for="resource in category.resources"
         :key="resource.id"
         :loading="browse.loading"
@@ -87,21 +87,21 @@ onMounted(() => {
     </template>
   </div>
 
-  <HugeLabeledIcon
+  <huge-labelled-icon
     v-else-if="browse.loading"
     :message="$t('general.loading')"
     :icon="HourglassIcon"
   />
 
-  <HugeLabeledIcon
+  <huge-labelled-icon
     v-else-if="!browse.locationPath.length"
     :message="$t('browse.textNoLocations')"
     :icon="ErrorIcon"
   />
 
-  <HugeLabeledIcon v-else :message="$t('browse.locationNoData')" :icon="NoContentIcon" />
+  <huge-labelled-icon v-else :message="$t('browse.locationNoData')" :icon="NoContentIcon" />
 
-  <ResourceToggleDrawer v-model:show="browse.showResourceToggleDrawer" />
+  <resource-toggle-drawer v-model:show="browse.showResourceToggleDrawer" />
 </template>
 
 <style scoped>

@@ -69,7 +69,7 @@ async function handleHelpButtonClick() {
     </template>
   </n-button>
 
-  <GenericModal
+  <generic-modal
     v-model:show="showModal"
     width="wide"
     :title="$t('help.help')"
@@ -85,5 +85,5 @@ async function handleHelpButtonClick() {
       style="width: 100%; display: flex; justify-content: center"
     />
     <div v-else>{{ $t('help.errorNotFound') }}</div>
-  </GenericModal>
+  </generic-modal>
 </template>

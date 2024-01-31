@@ -226,10 +226,10 @@ async function handleDeleteAccount() {
 </script>
 
 <template>
-  <IconHeading level="1" :icon="ManageAccountIcon">
+  <icon-heading level="1" :icon="ManageAccountIcon">
     {{ $t('account.manage.heading', { username: auth.user?.username }) }}
-    <HelpButtonWidget help-key="accountManageView" />
-  </IconHeading>
+    <help-button-widget help-key="accountManageView" />
+  </icon-heading>
 
   <div class="content-block">
     <h2>{{ $t('account.manage.headingChangeUserData') }}</h2>
@@ -266,7 +266,7 @@ async function handleDeleteAccount() {
         />
       </n-form-item>
     </n-form>
-    <ButtonShelf top-gap>
+    <button-shelf top-gap>
       <n-button
         secondary
         :loading="loading"
@@ -283,7 +283,7 @@ async function handleDeleteAccount() {
       >
         {{ $t('general.saveAction') }}
       </n-button>
-    </ButtonShelf>
+    </button-shelf>
   </div>
 
   <div class="content-block">
@@ -306,7 +306,7 @@ async function handleDeleteAccount() {
         />
       </n-form-item>
     </n-form>
-    <ButtonShelf top-gap>
+    <button-shelf top-gap>
       <n-button
         secondary
         :loading="loading"
@@ -323,7 +323,7 @@ async function handleDeleteAccount() {
       >
         {{ $t('general.saveAction') }}
       </n-button>
-    </ButtonShelf>
+    </button-shelf>
 
     <h2>{{ $t('models.user.password') }}</h2>
     <n-form
@@ -360,7 +360,7 @@ async function handleDeleteAccount() {
         />
       </n-form-item>
     </n-form>
-    <ButtonShelf top-gap>
+    <button-shelf top-gap>
       <n-button
         secondary
         :loading="loading"
@@ -377,13 +377,13 @@ async function handleDeleteAccount() {
       >
         {{ $t('general.saveAction') }}
       </n-button>
-    </ButtonShelf>
+    </button-shelf>
   </div>
 
   <div class="content-block">
     <h2>
       {{ $t('account.manage.headingChangePublicFields') }}
-      <HelpButtonWidget help-key="accountManagePublicFields" />
+      <help-button-widget help-key="accountManagePublicFields" />
     </h2>
     <n-form
       ref="publicFieldsFormRef"
@@ -393,14 +393,14 @@ async function handleDeleteAccount() {
       require-mark-placement="right-hanging"
     >
       <n-space vertical>
-        <LabelledSwitch
+        <labelled-switch
           :value="true"
           disabled
           :focusable="false"
           :label="$t('models.user.username')"
         />
         <template v-for="(_, field) in publicFieldsFormModel" :key="field">
-          <LabelledSwitch
+          <labelled-switch
             v-model:value="publicFieldsFormModel[field]"
             :label="$t(`models.user.${field}`)"
             :disabled="loading"
@@ -408,7 +408,7 @@ async function handleDeleteAccount() {
         </template>
       </n-space>
     </n-form>
-    <ButtonShelf top-gap>
+    <button-shelf top-gap>
       <n-button
         secondary
         :loading="loading"
@@ -425,7 +425,7 @@ async function handleDeleteAccount() {
       >
         {{ $t('general.saveAction') }}
       </n-button>
-    </ButtonShelf>
+    </button-shelf>
   </div>
 
   <div class="content-block">
@@ -443,7 +443,7 @@ async function handleDeleteAccount() {
         @keydown.enter.prevent
       />
     </n-form-item>
-    <ButtonShelf top-gap>
+    <button-shelf top-gap>
       <n-button
         type="error"
         :disabled="loading || deleteAccountSafetyInput !== auth.user?.username"
@@ -451,7 +451,7 @@ async function handleDeleteAccount() {
       >
         {{ $t('account.manage.headingDeleteAccount') }}
       </n-button>
-    </ButtonShelf>
+    </button-shelf>
   </div>
 </template>
 

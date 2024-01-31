@@ -26,12 +26,12 @@ const showModal = ref(false);
     </template>
   </n-button>
 
-  <GenericModal v-model:show="showModal">
+  <generic-modal v-model:show="showModal">
     <template #header>
-      <IconHeading level="1" :icon="SearchIcon" style="margin: 0">
+      <icon-heading level="1" :icon="SearchIcon" style="margin: 0">
         {{ $t('search.quickSearch.heading') }}
-        <HelpButtonWidget help-key="quickSearch" />
-      </IconHeading>
+        <help-button-widget help-key="quickSearch" />
+      </icon-heading>
     </template>
 
     <n-input round size="large" placeholder="...">
@@ -43,13 +43,13 @@ const showModal = ref(false);
     <h3>{{ $t('search.settings.heading') }}</h3>
     <p>Quick Search settings go here...</p>
 
-    <ButtonShelf top-gap>
+    <button-shelf top-gap>
       <n-button secondary :focusable="false" @click="showModal = false">
         {{ $t('general.cancelAction') }}
       </n-button>
       <n-button type="primary">{{ $t('search.searchAction') }}</n-button>
-    </ButtonShelf>
-  </GenericModal>
+    </button-shelf>
+  </generic-modal>
 </template>
 
 <style scoped></style>

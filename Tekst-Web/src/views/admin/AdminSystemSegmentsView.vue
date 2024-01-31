@@ -16,7 +16,7 @@ import {
 } from 'naive-ui';
 import { usePlatformData } from '@/composables/platformData';
 import { PATCH, type ClientSegmentUpdate, POST, type ClientSegmentCreate, DELETE } from '@/api';
-import HugeLabeledIcon from '@/components/generic/HugeLabeledIcon.vue';
+import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 
 import { useI18n } from 'vue-i18n';
 import { useModelChanges } from '@/composables/modelChanges';
@@ -242,7 +242,7 @@ async function handleDeleteClick() {
 <template>
   <h2>
     {{ $t('admin.system.segments.heading') }}
-    <HelpButtonWidget help-key="adminSystemSegmentsView" />
+    <help-button-widget help-key="adminSystemSegmentsView" />
   </h2>
 
   <div style="display: flex; gap: var(--layout-gap)">
@@ -313,7 +313,7 @@ async function handleDeleteClick() {
         </n-form-item>
         <!-- HTML -->
         <n-form-item path="html" :label="$t('models.segment.html')">
-          <HtmlEditor
+          <html-editor
             v-model:value="segmentModel.html"
             v-model:editor-mode="segmentModel.editorMode"
             :max-chars="1048576"
@@ -322,7 +322,7 @@ async function handleDeleteClick() {
         </n-form-item>
       </n-form>
 
-      <ButtonShelf top-gap>
+      <button-shelf top-gap>
         <template #start>
           <n-button v-if="selectedSegmentId" secondary type="error" @click="handleDeleteClick">
             {{ $t('general.deleteAction') }}
@@ -336,9 +336,13 @@ async function handleDeleteClick() {
           @click="handleSaveClick"
           >{{ $t('general.saveAction') }}</n-button
         >
-      </ButtonShelf>
+      </button-shelf>
     </div>
   </template>
 
-  <HugeLabeledIcon v-else :message="$t('admin.system.segments.noSegment')" :icon="FileOpenIcon" />
+  <huge-labelled-icon
+    v-else
+    :message="$t('admin.system.segments.noSegment')"
+    :icon="FileOpenIcon"
+  />
 </template>

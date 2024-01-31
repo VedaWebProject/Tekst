@@ -68,7 +68,7 @@ async function handleOkClick() {
 </script>
 
 <template>
-  <GenericModal
+  <generic-modal
     :show="show && !!resource"
     :title="$t('resources.transferAction')"
     :icon="UserIcon"
@@ -105,7 +105,7 @@ async function handleOkClick() {
         />
       </n-form-item>
     </n-form>
-    <ButtonShelf top-gap>
+    <button-shelf top-gap>
       <n-button secondary :disabled="loading" @click="emit('update:show', false)">
         {{ $t('general.cancelAction') }}
       </n-button>
@@ -117,6 +117,6 @@ async function handleOkClick() {
       >
         {{ $t('general.okAction') }}
       </n-button>
-    </ButtonShelf>
-  </GenericModal>
+    </button-shelf>
+  </generic-modal>
 </template>

@@ -7,7 +7,7 @@ const { menuOptions } = useAccountMenuOptions();
 </script>
 
 <template>
-  <NavigationMenu :options="menuOptions" embed center />
+  <navigation-menu :options="menuOptions" embed center />
   <router-view></router-view>
 </template>
 

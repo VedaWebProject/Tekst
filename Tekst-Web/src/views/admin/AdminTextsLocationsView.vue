@@ -394,7 +394,7 @@ watch(
 <template>
   <h2>
     {{ $t('admin.text.locations.heading') }}
-    <HelpButtonWidget help-key="adminTextsLocationsView" />
+    <help-button-widget help-key="adminTextsLocationsView" />
   </h2>
 
   <n-alert v-if="treeData.length" closable :title="$t('general.warning')" type="warning">
@@ -414,7 +414,7 @@ watch(
       margin-top: var(--layout-gap);
     "
   >
-    <LabelledSwitch
+    <labelled-switch
       v-if="treeData.length"
       v-model:value="showWarnings"
       :label="$t('admin.text.locations.checkShowWarnings')"
@@ -487,13 +487,13 @@ watch(
     :description="$t('general.loading')"
   />
 
-  <RenameLocationModal
+  <rename-location-modal
     v-model:show="showRenameModal"
     :location="locationToRename"
     @submit="handleRenameResult"
   />
 
-  <AddLocationModal
+  <add-location-modal
     v-model:show="showAddModal"
     :parent="locationParentToAddTo"
     @submit="handleAddResult"
