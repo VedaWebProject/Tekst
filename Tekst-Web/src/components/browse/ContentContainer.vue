@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { NSpin, NIcon, NButton } from 'naive-ui';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useBrowseStore, useStateStore } from '@/stores';
 import { computed } from 'vue';
 import { $t } from '@/i18n';
@@ -24,7 +24,14 @@ const isContentContainerHovered = useElementHover(contentContainerRef, {
   delayEnter: 0,
   delayLeave: 0,
 });
+
 const contentCollapsed = ref(!!props.resource.config?.general?.defaultCollapsed);
+watch(
+  () => browse.reducedView,
+  () => {
+    contentCollapsed.value = true;
+  }
+);
 
 const headerExtraText = computed(() => {
   if (!browse.loadingResources && props.resource.level !== browse.level) {
