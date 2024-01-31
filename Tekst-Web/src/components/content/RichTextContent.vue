@@ -34,9 +34,3 @@ withDefaults(
   border-bottom: none;
 }
 </style>
-
-<style>
-.rich-text-content img {
-  max-width: 100%;
-}
-</style>

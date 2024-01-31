@@ -91,6 +91,10 @@ strong {
   font-weight: normal;
 }
 
+img {
+  max-width: 100%;
+}
+
 .form-container {
   max-width: 440px;
   margin: 0 auto;
