@@ -37,6 +37,7 @@ from tekst.resources import (
     get_resource_template_readme,
     resource_types_mgr,
 )
+from tekst.utils.html import sanitize_user_dict_html
 
 
 async def preprocess_resource_read(
@@ -696,6 +697,7 @@ async def import_resource_data(
     updated_count = 0
     errors_count = 0
     for update in contents["updates"]:
+        update = sanitize_user_dict_html(update)
         content_doc = existing_contents_dict.get(str(update.location_id))
         if content_doc:
             try:
@@ -729,6 +731,8 @@ async def import_resource_data(
     contents["creates"] = [
         u for u in contents["creates"] if u.location_id in existing_location_ids
     ]
+    # sanitize content HTML if any
+    contents["creates"] = sanitize_user_dict_html(contents["creates"])
 
     # insert new contents
     if len(contents["creates"]):

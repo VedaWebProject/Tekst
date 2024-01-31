@@ -32,7 +32,6 @@ import { useRoute, useRouter } from 'vue-router';
 import { useResourcesStore } from '@/stores';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import { useModelChanges } from '@/composables/modelChanges';
-import { useMagicKeys, whenever } from '@vueuse/core';
 import { contentFormRules } from '@/forms/formRules';
 import ContentFormItems from '@/forms/contents/ContentFormItems.vue';
 import { defaultContentModels } from '@/forms/contents/defaultContentModels';
@@ -64,7 +63,6 @@ const resources = useResourcesStore();
 const { message } = useMessages();
 const router = useRouter();
 const route = useRoute();
-const { ArrowLeft, ArrowRight } = useMagicKeys();
 const dialog = useDialog();
 
 const showJumpToModal = ref(false);
@@ -345,14 +343,6 @@ async function handleNearestChangeClick(mode: 'preceding' | 'subsequent') {
     message.info("There's NOTHING!!!!");
   }
 }
-
-// react to keyboard for in-/decreasing location
-whenever(ArrowRight, () => {
-  navigateContents(1);
-});
-whenever(ArrowLeft, () => {
-  position.value > 0 && navigateContents(-1);
-});
 </script>
 
 <template>

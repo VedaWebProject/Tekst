@@ -25,21 +25,30 @@ const dialog = useDialog();
 
 function handleChangeTab(value: 'wysiwyg' | 'html') {
   if (value === 'html') {
-    // no harm in switching to HTML
-    emit('update:editorMode', value);
-    return;
+    // show info about HTML sanitization when switching to HTML mode
+    dialog.warning({
+      title: $t('general.warning'),
+      content: $t('htmlEditor.warnSwitchToHTML'),
+      positiveText: $t('general.okAction'),
+      negativeText: $t('general.cancelAction'),
+      autoFocus: false,
+      closable: false,
+      ...dialogProps,
+      onPositiveClick: () => emit('update:editorMode', value),
+    });
+  } else {
+    // switching to WYSIWYG is a potentially destructive operation
+    dialog.warning({
+      title: $t('general.warning'),
+      content: $t('htmlEditor.warnSwitchToWysiwyg'),
+      positiveText: $t('general.yesAction'),
+      negativeText: $t('general.noAction'),
+      autoFocus: false,
+      closable: false,
+      ...dialogProps,
+      onPositiveClick: () => emit('update:editorMode', value),
+    });
   }
-  // switching to WYSIWYG is a potentially destructive operation
-  dialog.warning({
-    title: $t('general.warning'),
-    content: $t('htmlEditor.warnSwitchToWysiwyg'),
-    positiveText: $t('general.yesAction'),
-    negativeText: $t('general.noAction'),
-    autoFocus: false,
-    closable: false,
-    ...dialogProps,
-    onPositiveClick: () => emit('update:editorMode', value),
-  });
 }
 </script>
 

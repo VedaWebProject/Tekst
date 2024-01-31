@@ -14,6 +14,7 @@ from tekst.resources import (
     AnyContentUpdateBody,
     resource_types_mgr,
 )
+from tekst.utils.html import sanitize_user_model_html
 
 
 # initialize content router
@@ -57,6 +58,9 @@ async def create_content(
             status_code=status.HTTP_409_CONFLICT,
             detail="The properties of this content conflict with another content",
         )
+
+    # if the content has a "html" field, sanitize it
+    content = sanitize_user_model_html(content)
 
     return (
         await resource_types_mgr.get(content.resource_type)
@@ -131,6 +135,10 @@ async def update_content(
             status_code=status.HTTP_403_FORBIDDEN,
             detail=f"No write access for resource {content_doc.resource_id}",
         )
+
+    # if the updated content has a "html" field, sanitize it
+    updates = sanitize_user_model_html(updates)
+
     return await content_doc.apply_updates(
         updates, exclude={"id", "resource_id", "location_id", "resource_type"}
     )

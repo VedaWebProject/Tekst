@@ -6881,7 +6881,6 @@
           "html": {
             "type": "string",
             "maxLength": 102400,
-            "minLength": 1,
             "title": "Html",
             "description": "HTML content of the rich text content object"
           },
@@ -6892,7 +6891,8 @@
               "html"
             ],
             "title": "Editormode",
-            "description": "Last used editor mode for this content"
+            "description": "Last used editor mode for this content",
+            "default": "wysiwyg"
           }
         },
         "type": "object",
@@ -6900,8 +6900,7 @@
           "resourceId",
           "resourceType",
           "locationId",
-          "html",
-          "editorMode"
+          "html"
         ],
         "title": "RichTextContentCreate"
       },
@@ -6957,7 +6956,6 @@
           "html": {
             "type": "string",
             "maxLength": 102400,
-            "minLength": 1,
             "title": "Html",
             "description": "HTML content of the rich text content object"
           },
@@ -6968,7 +6966,8 @@
               "html"
             ],
             "title": "Editormode",
-            "description": "Last used editor mode for this content"
+            "description": "Last used editor mode for this content",
+            "default": "wysiwyg"
           }
         },
         "additionalProperties": true,
@@ -6978,8 +6977,7 @@
           "resourceId",
           "resourceType",
           "locationId",
-          "html",
-          "editorMode"
+          "html"
         ],
         "title": "RichTextContentRead"
       },
@@ -7043,8 +7041,7 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 102400,
-                "minLength": 1
+                "maxLength": 102400
               },
               {
                 "type": "null"
@@ -7053,19 +7050,14 @@
             "title": "Html"
           },
           "editorMode": {
-            "anyOf": [
-              {
-                "type": "string",
-                "enum": [
-                  "wysiwyg",
-                  "html"
-                ]
-              },
-              {
-                "type": "null"
-              }
+            "type": "string",
+            "enum": [
+              "wysiwyg",
+              "html"
             ],
-            "title": "Editormode"
+            "title": "Editormode",
+            "description": "Last used editor mode for this content",
+            "default": "wysiwyg"
           }
         },
         "type": "object",

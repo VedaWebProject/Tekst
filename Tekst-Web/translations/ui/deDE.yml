@@ -353,7 +353,7 @@ resources:
         targetLanguages: Zielsprachen
   types:
     common:
-      label: Erweitert
+      label: Erweiterter Inhalt
       contentFields:
         comment: Kommentar
         notes: Arbeitsnotizen
@@ -667,6 +667,10 @@ htmlEditor:
   warnSwitchToWysiwyg: |
     Beim Wechsel vom HTML-Editor zum visuellen Editor gehen alle HTML-Tags verloren,
     die vom visuellen Editor nicht unterstützt werden. Sind Sie sicher?
+  warnSwitchToHTML: |
+    Sie können zwar beliebiges HTML einfügen, aber beim Speichern werden die Inhalte
+    aus Sicherheitsgründen recht streng vom Server bereinigt. Vergewissern Sie sich
+    deshalb nach dem Speichern, ob ihr HTML-Code noch einwandfrei ist.
 
 translationFormItem:
   tipBtnRemove: Eintrag entfernen

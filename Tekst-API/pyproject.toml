@@ -32,6 +32,7 @@ starlette-csrf = "^3.0.0"
 pydantic-settings = "^2.0.2"
 pydantic-extra-types = "^2.0.0"
 setuptools = "^68.2.2"
+bleach = "^6.1.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.2"

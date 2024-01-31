@@ -1667,9 +1667,10 @@ export interface components {
       /**
        * Editormode
        * @description Last used editor mode for this content
+       * @default wysiwyg
        * @enum {string}
        */
-      editorMode: 'wysiwyg' | 'html';
+      editorMode?: 'wysiwyg' | 'html';
     };
     /** RichTextContentRead */
     RichTextContentRead: {
@@ -1713,9 +1714,10 @@ export interface components {
       /**
        * Editormode
        * @description Last used editor mode for this content
+       * @default wysiwyg
        * @enum {string}
        */
-      editorMode: 'wysiwyg' | 'html';
+      editorMode?: 'wysiwyg' | 'html';
       [key: string]: unknown;
     };
     /** RichTextContentUpdate */
@@ -1741,8 +1743,13 @@ export interface components {
       notes?: string | null;
       /** Html */
       html?: string | null;
-      /** Editormode */
-      editorMode?: ('wysiwyg' | 'html') | null;
+      /**
+       * Editormode
+       * @description Last used editor mode for this content
+       * @default wysiwyg
+       * @enum {string}
+       */
+      editorMode?: 'wysiwyg' | 'html';
     };
     /** RichTextResourceConfig */
     RichTextResourceConfig: {

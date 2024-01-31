@@ -344,7 +344,7 @@ resources:
         targetLanguages: Target languages
   types:
     common:
-      label: Extended
+      label: Extended Content
       contentFields:
         comment: Comment
         notes: Working Notes
@@ -643,6 +643,10 @@ htmlEditor:
   warnSwitchToWysiwyg: |
     Switching from the HTML editor to the visual editor will remove all HTML tags
     the visual editor doesn't support. Are you sure you want to switch?
+  warnSwitchToHTML: |
+    While you can input arbitrary HTML here, when saving this content it will
+    be sanitized quite strictly by the server for security reasons. Make sure to check
+    your HTML content for any errors after saving.
 
 translationFormItem:
   tipBtnRemove: Remove entry

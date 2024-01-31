@@ -47,7 +47,7 @@ class RichTextContent(ContentBase):
     resource_type: Literal["richText"]  # camelCased resource type classname
     html: Annotated[
         str,
-        StringConstraints(min_length=1, max_length=102400, strip_whitespace=True),
+        StringConstraints(max_length=102400, strip_whitespace=True),
         Field(
             description="HTML content of the rich text content object",
         ),
