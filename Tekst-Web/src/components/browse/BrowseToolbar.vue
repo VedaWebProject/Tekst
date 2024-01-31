@@ -56,7 +56,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
             @click="browse.reducedView = !browse.reducedView"
           >
             <template #icon>
-              <n-icon :component="browse.reducedView ? CompressIcon : ExpandIcon" />
+              <n-icon :component="browse.reducedView ? ExpandIcon : CompressIcon" />
             </template>
           </n-button>
         </n-badge>
