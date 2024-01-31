@@ -389,6 +389,7 @@ contents:
     Diese Version von "{originalResourceTitle}" hat keinen eignen Inhalt für diese Fundstelle.
     Sie sehen hier Inhalt der Original-Ressource. Sie können diesen kopieren
     oder Änderungen vornehmen und sie als Inhalt dieser Ressourcen-Version speichern.
+  msgContentNoReducedView: Dieser Inhalt kann in der reduzierten Leseansicht nicht angezeigt werden.
 
 account:
   account: Konto

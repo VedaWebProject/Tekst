@@ -9,7 +9,6 @@ import ContentHeaderWidgetBar from '@/components/browse/ContentHeaderWidgetBar.v
 import contentComponents from '@/components/content/mappings';
 import type { CSSProperties } from 'vue';
 import type { AnyResourceRead } from '@/api';
-
 import { NoContentIcon, ExpandIcon, CompressIcon } from '@/icons';
 
 const props = defineProps<{
@@ -68,7 +67,7 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
       <ContentHeaderWidgetBar :resource="resource" :style="headerWidgetsVisibilityStyle" />
     </div>
 
-    <div v-if="resource.contents?.length" :class="{ 'content-body-limited': contentCollapsed }">
+    <div v-if="resource.contents?.length" :class="{ 'content-body-collapsed': contentCollapsed }">
       <!-- content-specific component (that displays the actual content data) -->
       <component
         :is="contentComponents[resource.resourceType]"
@@ -170,7 +169,7 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
   font-size: 0.8em;
 }
 
-.content-body-limited {
+.content-body-collapsed {
   -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
   mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
   max-height: 150px;

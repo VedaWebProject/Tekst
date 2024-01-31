@@ -380,6 +380,7 @@ contents:
     This version of "{originalResourceTitle}" has no own content for this location.
     You are shown content from the original resource. You may copy it
     or make changes and save them as content of this resource version.
+  msgContentNoReducedView: This content cannot be displayed in reduced reading view.
 
 account:
   account: Account

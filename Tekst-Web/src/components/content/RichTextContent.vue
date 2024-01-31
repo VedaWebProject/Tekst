@@ -21,7 +21,10 @@ withDefaults(
     }"
   >
     <!-- eslint-disable-next-line vue/no-v-html -->
-    <div class="rich-text-content" v-html="content.html"></div>
+    <div v-if="!reduced" class="rich-text-content" v-html="content.html"></div>
+    <p v-else class="translucent i">
+      {{ $t('contents.msgContentNoReducedView') }}
+    </p>
   </div>
 </template>
 

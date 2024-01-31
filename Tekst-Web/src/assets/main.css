@@ -120,6 +120,14 @@ img {
   opacity: 0.5;
 }
 
+.i {
+  font-style: italic;
+}
+
+.b {
+  font-weight: bold;
+}
+
 /*
  * NUI overrides
  * Unfortunately, we need to override the default NUI styles in this hacky way
