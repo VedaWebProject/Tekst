@@ -3,7 +3,6 @@ import {
   NButton,
   NInput,
   NIcon,
-  NCheckbox,
   NSpace,
   NSpin,
   NPagination,
@@ -35,6 +34,7 @@ import TransferResourceModal from '@/components/modals/TransferResourceModal.vue
 import { saveDownload } from '@/api';
 
 import { SearchIcon, UndoIcon, ResourceIcon, AddIcon } from '@/icons';
+import LabelledSwitch from '@/components/LabelledSwitch.vue';
 
 const state = useStateStore();
 const auth = useAuthStore();
@@ -351,24 +351,27 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
     <!-- Filters -->
     <n-collapse @item-header-click="handleFilterCollapseItemClick">
       <n-collapse-item :title="$t('general.filters')" name="filters">
-        <n-input
-          v-model:value="filters.search"
-          :placeholder="$t('search.searchAction')"
-          style="margin-bottom: 1rem"
-          round
-        >
-          <template #prefix>
-            <n-icon :component="SearchIcon" />
-          </template>
-        </n-input>
-        <n-space vertical justify="space-between" style="padding-left: 12px">
-          <n-checkbox v-model:checked="filters.public" :label="$t('resources.public')" />
-          <n-checkbox v-model:checked="filters.notPublic" :label="$t('resources.notPublic')" />
-          <n-checkbox v-model:checked="filters.proposed" :label="$t('resources.proposed')" />
-          <n-checkbox v-model:checked="filters.notProposed" :label="$t('resources.notProposed')" />
-          <n-checkbox v-model:checked="filters.ownedByMe" :label="$t('resources.ownedByMe')" />
-          <n-checkbox
-            v-model:checked="filters.ownedByOthers"
+        <n-space vertical style="padding-left: var(--layout-gap)">
+          <n-input
+            v-model:value="filters.search"
+            :placeholder="$t('search.searchAction')"
+            style="margin-bottom: var(--content-gap)"
+            round
+          >
+            <template #prefix>
+              <n-icon :component="SearchIcon" />
+            </template>
+          </n-input>
+          <LabelledSwitch v-model:value="filters.public" :label="$t('resources.public')" />
+          <LabelledSwitch v-model:value="filters.notPublic" :label="$t('resources.notPublic')" />
+          <LabelledSwitch v-model:value="filters.proposed" :label="$t('resources.proposed')" />
+          <LabelledSwitch
+            v-model:value="filters.notProposed"
+            :label="$t('resources.notProposed')"
+          />
+          <LabelledSwitch v-model:value="filters.ownedByMe" :label="$t('resources.ownedByMe')" />
+          <LabelledSwitch
+            v-model:value="filters.ownedByOthers"
             :label="$t('resources.ownedByOthers')"
           />
           <n-button

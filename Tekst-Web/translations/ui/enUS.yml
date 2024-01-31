@@ -86,7 +86,7 @@ routes:
     accountManage: Account
     adminStatistics: '@:admin.heading - Statistics'
     adminSystemUsers: '@:admin.heading - Users'
-    adminTextsGeneral: '{text}: General'
+    adminTextsSettings: '{text}: General'
     adminTextsLevels: '{text}: Levels'
     adminTextsLocations: '{text}: Locations'
     adminNewText: '@:admin.heading - New Text'
@@ -209,8 +209,6 @@ models:
     description: Description
     level: Level
     resourceType: Resource Type
-    category: Category
-    sortOrder: Sort order
     public: public
     proposed: proposed for publication
     citation: Citation
@@ -260,7 +258,7 @@ models:
 
 resources:
   heading: Resources
-  headingGeneral: General
+  headingBasic: Basic Information
   msgFoundCount: Found {count} resources ({total} total)
   versionOf: Version of "{title}"
   unknownOriginal: Unknown original resource
@@ -328,13 +326,20 @@ resources:
     msgSaved: Your changes to the resource "{title}" have been saved.
     status: Status
     config:
-      headingConfig: Configuration
-      defaultActive: Resource is active by default when public
-      showOnParentLevel: Enable viewing combined contents on the parent level
+      heading: Configuration
       enabled: Enabled
-      visibility: Visibility
+      common:
+        heading: Common
+        category: Category
+        sortOrder: Sort order
+        defaultActive: Resource is active by default when public
+        showOnParentLevel: Enable viewing combined contents on the parent level
+      general:
+        heading: General
+        defaultCollapsed: Collapse contents by default
+        reducedViewOneline: Show contents as single line of text in reduced view
       deeplLinks:
-        title: DeepL Translation Links
+        heading: DeepL Translation Links
         sourceLanguage: Source language
         targetLanguages: Target languages
   types:
@@ -472,8 +477,8 @@ admin:
         {username} and all the data associated with it?'
   text:
     heading: Text
-    general:
-      heading: General
+    settings:
+      heading: Settings
       msgSaved: Text settings saved.
       warnDeleteText: |
         Deleting this text ("{title}") will delete all data associated with it,
@@ -558,7 +563,7 @@ admin:
     heading: System
     platformSettings:
       heading: Settings
-      headingInfo: Information
+      headingInfo: Platform Information
       headingOptions: Options
       msgSaved: |
         Platform settings saved. Please note that it may take up to {cacheTTL} seconds for the changes to take effect on subsequent page loads.

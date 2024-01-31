@@ -38,7 +38,7 @@ const props = withDefaults(
   }
 );
 
-const emits = defineEmits(['update:value']);
+const emit = defineEmits(['update:value']);
 
 const state = useStateStore();
 
@@ -70,7 +70,7 @@ const localeOptions = computed(() =>
           translation: '',
         })
       "
-      @update:value="(value) => emits('update:value', value)"
+      @update:value="(value) => emit('update:value', value)"
     >
       <template #default="{ value: translationValue, index: translationIndex }">
         <div style="display: flex; align-items: flex-start; gap: 12px; width: 100%">

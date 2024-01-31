@@ -89,7 +89,7 @@ routes:
     accountManage: Konto
     adminStatistics: '@:admin.heading - Statistiken'
     adminSystemUsers: '@:admin.heading - Benutzer'
-    adminTextsGeneral: '@:admin.heading - {text}: Allgemein'
+    adminTextsSettings: '@:admin.heading - {text}: Allgemein'
     adminTextsLevels: '@:admin.heading - {text}: Ebenen'
     adminTextsLocations: '@:admin.heading - {text}: Fundstellen'
     adminNewText: '@:admin.heading - Neuer Text'
@@ -210,8 +210,6 @@ models:
     description: Beschreibung
     level: Ebene
     resourceType: Datenschichttyp
-    category: Kategorie
-    sortOrder: Sortierreihenfolge
     public: öffentlich
     proposed: vorgeschlagen für Veröffentlichung
     citation: Zitation
@@ -261,7 +259,7 @@ models:
 
 resources:
   heading: Ressourcen
-  headingGeneral: Allgemein
+  headingBasic: Basisinformationen
   msgFoundCount: '{count} Ressourcen gefunden ({total} insgesamt)'
   versionOf: Version von "{title}"
   unknownOriginal: Unbekannte Original-Ressource
@@ -337,14 +335,20 @@ resources:
     msgSaved: Ihre Änderungen an der Ressource "{title}" wurden gespeichert.
     status: Status
     config:
-      headingConfig: Konfiguration
-      specialConfigLabel: Spezielle Konfiguration für Typ "{resourceType}"
-      defaultActive: Ressource ist standardmäßig aktiviert, wenn sie öffentlich ist
-      showOnParentLevel: Ermögliche das Anzeigen von kombinierten Inhalten auf der übergeordneten Ebene
+      heading: Konfiguration
       enabled: Aktiv
-      visibility: Sichtbarkeit
+      common:
+        heading: Allgemein
+        category: Kategorie
+        sortOrder: Sortierreihenfolge
+        defaultActive: Ressource ist standardmäßig aktiviert, wenn sie öffentlich ist
+        showOnParentLevel: Ermögliche das Anzeigen von kombinierten Inhalten auf der übergeordneten Ebene
+      general:
+        heading: Allgemein
+        defaultCollapsed: Inhalte sind standardmäßig eingeklappt
+        reducedViewOneline: Inhalte in reduzierter Ansicht in einer einzigen Zeile darstellen
       deeplLinks:
-        title: DeepL-Übersetzungs-Links
+        heading: DeepL-Übersetzungs-Links
         sourceLanguage: Quellsprache
         targetLanguages: Zielsprachen
   types:
@@ -482,8 +486,8 @@ admin:
          und alle damit verknüpften Daten löschen möchten?'
   text:
     heading: Text
-    general:
-      heading: Allgemein
+    settings:
+      heading: Einstellungen
       msgSaved: Text-Einstellungen gespeichert.
       warnDeleteText: |
         Wenn Sie diesen Text ("{title}") löschen, werden alle Daten, die sich auf ihn
@@ -581,7 +585,7 @@ admin:
     heading: System
     platformSettings:
       heading: Einstellungen
-      headingInfo: Informationen
+      headingInfo: Plattform-Informationen
       headingOptions: Optionen
       msgSaved: |
         Plattform-Einstellungen gespeichert.

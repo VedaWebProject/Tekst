@@ -5,7 +5,6 @@ import { computed, ref } from 'vue';
 import {
   NIcon,
   NDynamicInput,
-  NCheckbox,
   NDivider,
   NButton,
   NSpace,
@@ -26,6 +25,7 @@ import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import { useStateStore } from '@/stores';
 
 import { AddIcon, MinusIcon, ArrowUpIcon, ArrowDownIcon } from '@/icons';
+import LabelledSwitch from '@/components/LabelledSwitch.vue';
 
 const state = useStateStore();
 const { pfData, patchPfData } = usePlatformData();
@@ -209,17 +209,20 @@ function resetForm() {
       <n-form-item :label="$t('admin.system.platformSettings.formLabelDisplay')">
         <n-space vertical>
           <!-- ALWAY SHOW TEXT INFO, ALSO ON NON-TEXT-SPECIFIC PAGES? -->
-          <n-checkbox v-model:checked="formModel.alwaysShowTextInfo" @keydown.enter.prevent>
-            {{ $t('models.platformSettings.alwaysShowTextInfo') }}
-          </n-checkbox>
+          <LabelledSwitch
+            v-model:value="formModel.alwaysShowTextInfo"
+            :label="$t('models.platformSettings.alwaysShowTextInfo')"
+          />
           <!-- SHOW DESCIPTION IN HEADER? -->
-          <n-checkbox v-model:checked="formModel.showHeaderInfo" @keydown.enter.prevent>
-            {{ $t('models.platformSettings.showHeaderInfo') }}
-          </n-checkbox>
+          <LabelledSwitch
+            v-model:value="formModel.showHeaderInfo"
+            :label="$t('models.platformSettings.showHeaderInfo')"
+          />
           <!-- SHOW TITLE AND DESCIPTION IN FOOTER? -->
-          <n-checkbox v-model:checked="formModel.showFooterInfo" @keydown.enter.prevent>
-            {{ $t('models.platformSettings.showFooterInfo') }}
-          </n-checkbox>
+          <LabelledSwitch
+            v-model:value="formModel.showFooterInfo"
+            :label="$t('models.platformSettings.showFooterInfo')"
+          />
         </n-space>
       </n-form-item>
 
@@ -319,20 +322,15 @@ function resetForm() {
       <n-form-item :show-label="false">
         <n-space vertical>
           <!-- SHOW RESOURCE CATEGORY HEADINGS -->
-          <n-checkbox
-            v-model:checked="formModel.showResourceCategoryHeadings"
-            @keydown.enter.prevent
-          >
-            {{ $t('models.platformSettings.showResourceCategoryHeadings') }}
-          </n-checkbox>
+          <LabelledSwitch
+            v-model:value="formModel.showResourceCategoryHeadings"
+            :label="$t('models.platformSettings.showResourceCategoryHeadings')"
+          />
           <!-- ALWAYS SHOW RESOURCE CATEGORY HEADINGS -->
-          <n-checkbox
-            v-model:checked="formModel.alwaysShowResourceCategoryHeadings"
-            :disabled="!formModel.showResourceCategoryHeadings"
-            @keydown.enter.prevent
-          >
-            {{ $t('models.platformSettings.alwaysShowResourceCategoryHeadings') }}
-          </n-checkbox>
+          <LabelledSwitch
+            v-model:value="formModel.alwaysShowResourceCategoryHeadings"
+            :label="$t('models.platformSettings.alwaysShowResourceCategoryHeadings')"
+          />
         </n-space>
       </n-form-item>
     </n-form>

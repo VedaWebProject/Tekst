@@ -5,7 +5,7 @@ import BrowseLocationControls from '@/components/browse/BrowseLocationControls.v
 import LocationLabel from '@/components/LocationLabel.vue';
 import { useBrowseStore, useStateStore } from '@/stores';
 
-import { ReducedViewOnIcon, ReducedViewOffIcon, ResourceIcon } from '@/icons';
+import { CompressIcon, ExpandIcon, ResourceIcon } from '@/icons';
 
 const state = useStateStore();
 const browse = useBrowseStore();
@@ -56,7 +56,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
             @click="browse.reducedView = !browse.reducedView"
           >
             <template #icon>
-              <n-icon :component="browse.reducedView ? ReducedViewOnIcon : ReducedViewOffIcon" />
+              <n-icon :component="browse.reducedView ? CompressIcon : ExpandIcon" />
             </template>
           </n-button>
         </n-badge>

@@ -15,7 +15,7 @@ withDefaults(
 <template>
   <p v-for="content in resource.contents" :key="content.id" style="white-space: pre-wrap">
     <template v-if="content.text">
-      <template v-if="!reduced">
+      <template v-if="!reduced || !resource.config?.general?.reducedViewOneline">
         {{ content.text }}
       </template>
       <template v-else>

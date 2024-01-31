@@ -13,5 +13,6 @@
     "paths": {
       "@": ["./src"], // this mapping is relative to "baseUrl"
     },
+    "noErrorTruncation": true,
   },
 }

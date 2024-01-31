@@ -7,10 +7,10 @@ const props = defineProps<{
   model?: RichTextContentCreate;
 }>();
 
-const emits = defineEmits(['update:model']);
+const emit = defineEmits(['update:model']);
 
 function handleUpdate(field: string, value: any) {
-  emits('update:model', {
+  emit('update:model', {
     ...props.model,
     [field]: value,
   });

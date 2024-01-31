@@ -2,6 +2,7 @@ from typing import Annotated, Literal
 
 from pydantic import Field, StringConstraints
 
+from tekst.models.common import ModelBase
 from tekst.models.content import ContentBase
 from tekst.models.resource import ResourceBase
 from tekst.models.resource_configs import ResourceConfigBase
@@ -20,8 +21,19 @@ class RichText(ResourceTypeABC):
         return RichTextContent
 
 
+class GeneralRichTextResourceConfig(ModelBase):
+    default_collapsed: Annotated[
+        bool,
+        Field(
+            description=(
+                "Whether contents of this resource should be collapsed by default"
+            )
+        ),
+    ] = True
+
+
 class RichTextResourceConfig(ResourceConfigBase):
-    pass
+    general: GeneralRichTextResourceConfig = GeneralRichTextResourceConfig()
 
 
 class RichTextResource(ResourceBase):

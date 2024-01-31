@@ -75,7 +75,7 @@ async function handleSave() {
             texts: [...(pfData.value?.texts || []), createdText],
           });
           state.text = createdText || state.text;
-          router.push({ name: 'adminTextsGeneral', params: { text: createdText.slug } });
+          router.push({ name: 'adminTextsSettings', params: { text: createdText.slug } });
           message.success($t('admin.newText.msgSaveSuccess', { title: createdText.title }));
         } else {
           if (response.status === 409) {

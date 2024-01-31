@@ -3,7 +3,6 @@ import { textFormRules } from '@/forms/formRules';
 import { useMessages } from '@/composables/messages';
 import { useStateStore } from '@/stores';
 import {
-  NCheckbox,
   NSelect,
   NSpace,
   NButton,
@@ -26,6 +25,7 @@ import _cloneDeep from 'lodash.clonedeep';
 import TranslationFormItem from '@/forms/TranslationFormItem.vue';
 import router from '@/router';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
+import LabelledSwitch from '@/components/LabelledSwitch.vue';
 
 const state = useStateStore();
 const { pfData, loadPlatformData } = usePlatformData();
@@ -87,7 +87,7 @@ function handleSave() {
         await loadPlatformData();
         state.text = updatedText;
         resetModelChanges();
-        message.success($t('admin.text.general.msgSaved'));
+        message.success($t('admin.text.settings.msgSaved'));
       } else {
         /**
          * This will be either an app-level error (e.g. buggy validation, server down, 401)
@@ -107,7 +107,7 @@ async function handleDelete() {
   loading.value = true;
   dialog.warning({
     title: $t('general.warning'),
-    content: $t('admin.text.general.warnDeleteText', { title: state.text?.title || '?' }),
+    content: $t('admin.text.settings.warnDeleteText', { title: state.text?.title || '?' }),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
     autoFocus: false,
@@ -118,7 +118,7 @@ async function handleDelete() {
         params: { path: { id: state.text?.id || '' } },
       });
       if (!error) {
-        message.success($t('admin.text.general.msgDeleted', { title: state.text?.title || '?' }));
+        message.success($t('admin.text.settings.msgDeleted', { title: state.text?.title || '?' }));
         await loadPlatformData();
         state.text =
           pfData.value?.texts.find((t) => t.id == pfData.value?.settings.defaultTextId) ||
@@ -134,8 +134,8 @@ async function handleDelete() {
 
 <template>
   <h2>
-    {{ $t('admin.text.general.heading') }}
-    <HelpButtonWidget help-key="adminTextsGeneralView" />
+    {{ $t('admin.text.settings.heading') }}
+    <HelpButtonWidget help-key="adminTextsSettingsView" />
   </h2>
 
   <div v-if="model" class="content-block">
@@ -219,13 +219,12 @@ async function handleDelete() {
       <n-form-item :label="$t('general.flags')">
         <n-space vertical>
           <!-- LABELED LOCATION -->
-          <n-checkbox v-model:checked="model.labeledLocation">
-            {{ $t('models.text.labeledLocation') }}
-          </n-checkbox>
+          <LabelledSwitch
+            v-model:value="model.labeledLocation"
+            :label="$t('models.text.labeledLocation')"
+          />
           <!-- ACTIVE -->
-          <n-checkbox v-model:checked="model.isActive">
-            {{ $t('models.text.isActive') }}
-          </n-checkbox>
+          <LabelledSwitch v-model:value="model.isActive" :label="$t('models.text.isActive')" />
         </n-space>
       </n-form-item>
     </n-form>

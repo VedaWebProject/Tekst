@@ -24,9 +24,10 @@ const activeResourcesCategorized = computed(() =>
     .map((c) => ({
       ...c,
       resources: c.resources.filter(
-        (l) =>
-          l.active &&
-          (l.level <= browse.level || (l.config?.showOnParentLevel && l.level == browse.level + 1))
+        (r) =>
+          r.active &&
+          (r.level <= browse.level ||
+            (r.config?.common?.showOnParentLevel && r.level == browse.level + 1))
       ),
     }))
     .filter((c) => c.resources.length)

@@ -14,14 +14,14 @@ const props = defineProps<{
   disabled?: boolean;
   user?: UserRead;
 }>();
-const emits = defineEmits<{ (e: 'update:active', active: boolean): void }>();
+const emit = defineEmits<{ (e: 'update:active', active: boolean): void }>();
 
 const active = computed({
   get() {
     return props.active;
   },
   set(value: boolean) {
-    emits('update:active', value);
+    emit('update:active', value);
   },
 });
 

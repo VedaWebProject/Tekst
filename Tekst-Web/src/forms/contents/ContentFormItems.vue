@@ -7,10 +7,10 @@ const props = defineProps<{
   model?: AnyContentCreate;
 }>();
 
-const emits = defineEmits(['update:model']);
+const emit = defineEmits(['update:model']);
 
 function handleUpdate(field: string, value: any) {
-  emits('update:model', {
+  emit('update:model', {
     ...props.model,
     [field]: value,
   });
@@ -22,7 +22,7 @@ function handleUpdate(field: string, value: any) {
     <component
       :is="resourceContentFormItems[model.resourceType]"
       :model="model"
-      @update:model="(m: Record<string, any>) => emits('update:model', { ...props.model, ...m })"
+      @update:model="(m: Record<string, any>) => emit('update:model', { ...props.model, ...m })"
     />
     <n-collapse style="margin-bottom: var(--layout-gap)">
       <n-collapse-item :title="$t('resources.types.common.label')" name="common">

@@ -566,6 +566,32 @@ export interface components {
       /** Html */
       html?: string | null;
     };
+    /** CommonResourceConfig */
+    CommonResourceConfig: {
+      /**
+       * Category
+       * @description Resource category key
+       */
+      category?: string | null;
+      /**
+       * Sortorder
+       * @description Sort order for displaying this resource among others
+       * @default 100
+       */
+      sortOrder?: number;
+      /**
+       * Defaultactive
+       * @description Whether this resource is active by default when public
+       * @default true
+       */
+      defaultActive?: boolean;
+      /**
+       * Showonparentlevel
+       * @description Show combined contents of this resource on the parent level
+       * @default false
+       */
+      showOnParentLevel?: boolean;
+    };
     /** DeepLLinksConfig */
     DeepLLinksConfig: {
       /**
@@ -663,6 +689,30 @@ export interface components {
         | {
             [key: string]: string;
           };
+    };
+    /** GeneralPlainTextResourceConfig */
+    GeneralPlainTextResourceConfig: {
+      /**
+       * Defaultcollapsed
+       * @description Whether contents of this resource should be collapsed by default
+       * @default false
+       */
+      defaultCollapsed?: boolean;
+      /**
+       * Reducedviewoneline
+       * @description Show contents as single line of text when in reduced view
+       * @default false
+       */
+      reducedViewOneline?: boolean;
+    };
+    /** GeneralRichTextResourceConfig */
+    GeneralRichTextResourceConfig: {
+      /**
+       * Defaultcollapsed
+       * @description Whether contents of this resource should be collapsed by default
+       * @default true
+       */
+      defaultCollapsed?: boolean;
     };
     /** HTTPValidationError */
     HTTPValidationError: {
@@ -886,28 +936,20 @@ export interface components {
     /** PlainTextResourceConfig */
     PlainTextResourceConfig: {
       /**
-       * Category
-       * @description Resource category key
+       * @default {
+       *   "sortOrder": 100,
+       *   "defaultActive": true,
+       *   "showOnParentLevel": false
+       * }
        */
-      category?: string | null;
+      common?: components['schemas']['CommonResourceConfig'];
       /**
-       * Sortorder
-       * @description Sort order for displaying this resource among others
-       * @default 100
+       * @default {
+       *   "defaultCollapsed": false,
+       *   "reducedViewOneline": false
+       * }
        */
-      sortOrder?: number;
-      /**
-       * Defaultactive
-       * @description Whether this resource is active by default when public
-       * @default true
-       */
-      defaultActive?: boolean;
-      /**
-       * Showonparentlevel
-       * @description Show combined contents of this resource on the parent level
-       * @default false
-       */
-      showOnParentLevel?: boolean;
+      general?: components['schemas']['GeneralPlainTextResourceConfig'];
       /**
        * @default {
        *   "enabled": false,
@@ -1002,9 +1044,15 @@ export interface components {
       comment?: components['schemas']['ResourceCommentTranslation'][];
       /**
        * @default {
-       *   "sortOrder": 100,
-       *   "defaultActive": true,
-       *   "showOnParentLevel": false,
+       *   "common": {
+       *     "defaultActive": true,
+       *     "showOnParentLevel": false,
+       *     "sortOrder": 100
+       *   },
+       *   "general": {
+       *     "defaultCollapsed": false,
+       *     "reducedViewOneline": false
+       *   },
        *   "deeplLinks": {
        *     "enabled": false,
        *     "languages": [
@@ -1121,9 +1169,15 @@ export interface components {
       comment?: components['schemas']['ResourceCommentTranslation'][];
       /**
        * @default {
-       *   "sortOrder": 100,
-       *   "defaultActive": true,
-       *   "showOnParentLevel": false,
+       *   "common": {
+       *     "defaultActive": true,
+       *     "showOnParentLevel": false,
+       *     "sortOrder": 100
+       *   },
+       *   "general": {
+       *     "defaultCollapsed": false,
+       *     "reducedViewOneline": false
+       *   },
        *   "deeplLinks": {
        *     "enabled": false,
        *     "languages": [
@@ -1209,9 +1263,15 @@ export interface components {
       comment?: components['schemas']['ResourceCommentTranslation'][];
       /**
        * @default {
-       *   "sortOrder": 100,
-       *   "defaultActive": true,
-       *   "showOnParentLevel": false,
+       *   "common": {
+       *     "defaultActive": true,
+       *     "showOnParentLevel": false,
+       *     "sortOrder": 100
+       *   },
+       *   "general": {
+       *     "defaultCollapsed": false,
+       *     "reducedViewOneline": false
+       *   },
        *   "deeplLinks": {
        *     "enabled": false,
        *     "languages": [
@@ -1673,28 +1733,19 @@ export interface components {
     /** RichTextResourceConfig */
     RichTextResourceConfig: {
       /**
-       * Category
-       * @description Resource category key
+       * @default {
+       *   "sortOrder": 100,
+       *   "defaultActive": true,
+       *   "showOnParentLevel": false
+       * }
        */
-      category?: string | null;
+      common?: components['schemas']['CommonResourceConfig'];
       /**
-       * Sortorder
-       * @description Sort order for displaying this resource among others
-       * @default 100
+       * @default {
+       *   "defaultCollapsed": true
+       * }
        */
-      sortOrder?: number;
-      /**
-       * Defaultactive
-       * @description Whether this resource is active by default when public
-       * @default true
-       */
-      defaultActive?: boolean;
-      /**
-       * Showonparentlevel
-       * @description Show combined contents of this resource on the parent level
-       * @default false
-       */
-      showOnParentLevel?: boolean;
+      general?: components['schemas']['GeneralRichTextResourceConfig'];
     };
     /** RichTextResourceCreate */
     RichTextResourceCreate: {
@@ -1778,9 +1829,14 @@ export interface components {
       comment?: components['schemas']['ResourceCommentTranslation'][];
       /**
        * @default {
-       *   "sortOrder": 100,
-       *   "defaultActive": true,
-       *   "showOnParentLevel": false
+       *   "common": {
+       *     "defaultActive": true,
+       *     "showOnParentLevel": false,
+       *     "sortOrder": 100
+       *   },
+       *   "general": {
+       *     "defaultCollapsed": true
+       *   }
        * }
        */
       config?: components['schemas']['RichTextResourceConfig'];
@@ -1889,9 +1945,14 @@ export interface components {
       comment?: components['schemas']['ResourceCommentTranslation'][];
       /**
        * @default {
-       *   "sortOrder": 100,
-       *   "defaultActive": true,
-       *   "showOnParentLevel": false
+       *   "common": {
+       *     "defaultActive": true,
+       *     "showOnParentLevel": false,
+       *     "sortOrder": 100
+       *   },
+       *   "general": {
+       *     "defaultCollapsed": true
+       *   }
        * }
        */
       config?: components['schemas']['RichTextResourceConfig'];
@@ -1969,9 +2030,14 @@ export interface components {
       comment?: components['schemas']['ResourceCommentTranslation'][];
       /**
        * @default {
-       *   "sortOrder": 100,
-       *   "defaultActive": true,
-       *   "showOnParentLevel": false
+       *   "common": {
+       *     "defaultActive": true,
+       *     "showOnParentLevel": false,
+       *     "sortOrder": 100
+       *   },
+       *   "general": {
+       *     "defaultCollapsed": true
+       *   }
        * }
        */
       config?: components['schemas']['RichTextResourceConfig'];

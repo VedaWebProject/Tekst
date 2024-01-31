@@ -5,7 +5,7 @@ import { useMessages } from '@/composables/messages';
 import { usePlatformData } from '@/composables/platformData';
 import { useAuthStore } from '@/stores';
 import type { FormInst, FormItemInst, FormItemRule } from 'naive-ui';
-import { NSpace, NCheckbox, NButton, NInput, NFormItem, NForm, useDialog } from 'naive-ui';
+import { NSpace, NButton, NInput, NFormItem, NForm, useDialog } from 'naive-ui';
 import { ref } from 'vue';
 import { $t } from '@/i18n';
 import { useModelChanges } from '@/composables/modelChanges';
@@ -16,6 +16,7 @@ import IconHeading from '@/components/generic/IconHeading.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 
 import { ManageAccountIcon } from '@/icons';
+import LabelledSwitch from '@/components/LabelledSwitch.vue';
 
 const dialog = useDialog();
 const auth = useAuthStore();
@@ -392,13 +393,18 @@ async function handleDeleteAccount() {
       require-mark-placement="right-hanging"
     >
       <n-space vertical>
-        <n-checkbox checked disabled aria-readonly :focusable="false">
-          {{ $t(`models.user.username`) }}
-        </n-checkbox>
+        <LabelledSwitch
+          :value="true"
+          disabled
+          :focusable="false"
+          :label="$t('models.user.username')"
+        />
         <template v-for="(_, field) in publicFieldsFormModel" :key="field">
-          <n-checkbox v-model:checked="publicFieldsFormModel[field]" :disabled="loading">
-            {{ $t(`models.user.${field}`) }}
-          </n-checkbox>
+          <LabelledSwitch
+            v-model:value="publicFieldsFormModel[field]"
+            :label="$t(`models.user.${field}`)"
+            :disabled="loading"
+          />
         </template>
       </n-space>
     </n-form>

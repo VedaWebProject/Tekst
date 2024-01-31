@@ -6,7 +6,7 @@ from tekst.models.common import ModelBase
 from tekst.utils import validators as val
 
 
-class ResourceConfigBase(ModelBase):
+class CommonResourceConfig(ModelBase):
     category: Annotated[
         str | None,
         StringConstraints(max_length=16, strip_whitespace=True),
@@ -27,6 +27,10 @@ class ResourceConfigBase(ModelBase):
             description="Show combined contents of this resource on the parent level"
         ),
     ] = False
+
+
+class ResourceConfigBase(ModelBase):
+    common: CommonResourceConfig = CommonResourceConfig()
 
 
 class DeepLLinksConfig(ModelBase):

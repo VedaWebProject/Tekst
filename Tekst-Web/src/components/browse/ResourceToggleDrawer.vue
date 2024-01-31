@@ -8,7 +8,7 @@ import IconHeading from '@/components/generic/IconHeading.vue';
 import { ResourceIcon } from '@/icons';
 
 const props = defineProps<{ show: boolean }>();
-const emits = defineEmits<{ (e: 'update:show', show: boolean): void }>();
+const emit = defineEmits<{ (e: 'update:show', show: boolean): void }>();
 
 const auth = useAuthStore();
 const browse = useBrowseStore();
@@ -18,7 +18,7 @@ const show = computed({
     return props.show;
   },
   set(value: boolean) {
-    emits('update:show', value);
+    emit('update:show', value);
   },
 });
 </script>
