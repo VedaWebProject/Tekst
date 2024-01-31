@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { NSpin, NIcon } from 'naive-ui';
+import { NSpin, NIcon, NButton } from 'naive-ui';
 import { ref } from 'vue';
 import { useBrowseStore, useStateStore } from '@/stores';
 import { computed } from 'vue';
@@ -10,7 +10,7 @@ import contentComponents from '@/components/content/mappings';
 import type { CSSProperties } from 'vue';
 import type { AnyResourceRead } from '@/api';
 
-import { NoContentIcon } from '@/icons';
+import { NoContentIcon, ExpandIcon, CompressIcon } from '@/icons';
 
 const props = defineProps<{
   loading?: boolean;
@@ -25,6 +25,7 @@ const isContentContainerHovered = useElementHover(contentContainerRef, {
   delayEnter: 0,
   delayLeave: 0,
 });
+const contentCollapsed = ref(!!props.resource.config?.general?.defaultCollapsed);
 
 const headerExtraText = computed(() => {
   if (!browse.loadingResources && props.resource.level !== browse.level) {
@@ -66,16 +67,31 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
       </div>
       <ContentHeaderWidgetBar :resource="resource" :style="headerWidgetsVisibilityStyle" />
     </div>
-    <!-- content-specific component (that displays the actual content data) -->
-    <component
-      :is="contentComponents[resource.resourceType]"
-      v-if="resource.contents?.length"
-      :resource="resource"
-      :reduced="browse.reducedView"
-    />
+
+    <div v-if="resource.contents?.length" :class="{ 'content-body-limited': contentCollapsed }">
+      <!-- content-specific component (that displays the actual content data) -->
+      <component
+        :is="contentComponents[resource.resourceType]"
+        :resource="resource"
+        :reduced="browse.reducedView"
+      />
+    </div>
+
     <Transition>
       <n-spin v-show="loading" class="content-loader" />
     </Transition>
+
+    <n-button
+      v-if="resource.config?.general?.defaultCollapsed && resource.contents?.length"
+      text
+      :focusable="false"
+      class="content-body-collapse-btn"
+      @click="contentCollapsed = !contentCollapsed"
+    >
+      <template #icon>
+        <n-icon :component="contentCollapsed ? ExpandIcon : CompressIcon" />
+      </template>
+    </n-button>
   </div>
 </template>
 
@@ -152,6 +168,19 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
   flex-grow: 2;
   opacity: 0.5;
   font-size: 0.8em;
+}
+
+.content-body-limited {
+  -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+  max-height: 150px;
+  overflow-y: scroll;
+}
+
+.content-body-collapse-btn {
+  position: absolute;
+  bottom: 0.4rem;
+  right: 50%;
 }
 
 .content-loader {

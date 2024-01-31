@@ -112,6 +112,10 @@ strong {
   transition: 0.3s;
 }
 
+.translucent {
+  opacity: 0.5;
+}
+
 /*
  * NUI overrides
  * Unfortunately, we need to override the default NUI styles in this hacky way

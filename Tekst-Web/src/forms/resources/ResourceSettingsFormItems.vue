@@ -148,7 +148,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
 </script>
 
 <template>
-  <h3>{{ $t('resources.headingGeneral') }}</h3>
+  <h3>{{ $t('resources.headingBasic') }}</h3>
   <!-- TITLE -->
   <n-form-item path="title" :label="$t('models.resource.title')" required>
     <n-input

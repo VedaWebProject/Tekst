@@ -5,7 +5,6 @@ import {
   NIcon,
   NTree,
   NAlert,
-  NCheckbox,
   useDialog,
   type TreeDropInfo,
   type TreeOption,
@@ -33,6 +32,7 @@ import {
   DownloadIcon,
   UploadIcon,
 } from '@/icons';
+import LabelledSwitch from '@/components/LabelledSwitch.vue';
 
 export interface LocationTreeOption extends TreeOption {
   level: number;
@@ -414,9 +414,11 @@ watch(
       margin-top: var(--layout-gap);
     "
   >
-    <n-checkbox v-if="treeData.length" v-model:checked="showWarnings">
-      {{ $t('admin.text.locations.checkShowWarnings') }}
-    </n-checkbox>
+    <LabelledSwitch
+      v-if="treeData.length"
+      v-model:value="showWarnings"
+      :label="$t('admin.text.locations.checkShowWarnings')"
+    />
     <div style="flex-grow: 2"></div>
     <div style="display: flex; gap: 0.5rem">
       <n-button

@@ -16,7 +16,6 @@ from tekst.models.common import ReadBase
 from tekst.models.content import ContentBase, ContentBaseDocument, ContentBaseUpdate
 from tekst.models.resource import (
     ResourceBase,
-    ResourceBaseRead,
     ResourceBaseDocument,
     ResourceBaseUpdate,
     ResourceReadExtras,
@@ -161,7 +160,7 @@ AnyResourceCreateBody = Annotated[
 AnyResourceRead = Union[  # noqa: UP007
     tuple(
         [
-            lt.resource_model().read_model(ResourceBaseRead)
+            lt.resource_model().read_model()
             for lt in resource_types_mgr.get_all().values()
         ]
     )

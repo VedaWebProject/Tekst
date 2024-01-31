@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { NCheckbox, NFormItem } from 'naive-ui';
+import LabelledSwitch from '@/components/LabelledSwitch.vue';
+import { NFormItem } from 'naive-ui';
 
 defineProps<{
   value?: boolean;
@@ -10,8 +11,10 @@ defineEmits(['update:value']);
 
 <template>
   <n-form-item :show-label="false" :show-feedback="false">
-    <n-checkbox :checked="value" @update:checked="(v) => $emit('update:value', v)">
-      {{ $t('resources.settings.config.general.reducedViewOneline') }}
-    </n-checkbox>
+    <LabelledSwitch
+      :value="value"
+      :label="$t('resources.settings.config.general.reducedViewOneline')"
+      @update:value="(v) => $emit('update:value', v)"
+    />
   </n-form-item>
 </template>

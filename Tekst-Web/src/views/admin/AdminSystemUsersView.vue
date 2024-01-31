@@ -5,7 +5,6 @@ import {
   NButton,
   NInput,
   NIcon,
-  NCheckbox,
   NSpace,
   NSpin,
   NPagination,
@@ -25,8 +24,8 @@ import { useRoute } from 'vue-router';
 import { POST, PATCH, DELETE } from '@/api';
 import { useAuthStore } from '@/stores';
 import { dialogProps } from '@/common';
-
 import { SearchIcon, UndoIcon } from '@/icons';
+import LabelledSwitch from '@/components/LabelledSwitch.vue';
 
 const { users, error, load: loadUsers } = useUsersAdmin();
 const { message } = useMessages();
@@ -212,32 +211,40 @@ onMounted(() => {
       @item-header-click="handleFilterCollapseItemClick"
     >
       <n-collapse-item :title="$t('general.filters')" name="filters">
-        <n-input
-          v-model:value="filters.search"
-          :placeholder="$t('search.searchAction')"
-          style="margin-bottom: var(--layout-gap)"
-          round
-        >
-          <template #prefix>
-            <n-icon :component="SearchIcon" />
-          </template>
-        </n-input>
-        <n-space vertical justify="space-between" style="padding-left: var(--layout-gap)">
-          <n-checkbox v-model:checked="filters.isActive" :label="$t('models.user.isActive')" />
-          <n-checkbox v-model:checked="filters.isInactive" :label="$t('models.user.isInactive')" />
-          <n-checkbox v-model:checked="filters.isVerified" :label="$t('models.user.isVerified')" />
-          <n-checkbox
-            v-model:checked="filters.isUnverified"
+        <n-space vertical style="padding-left: var(--layout-gap)">
+          <n-input
+            v-model:value="filters.search"
+            :placeholder="$t('search.searchAction')"
+            style="margin-bottom: var(--content-gap)"
+            round
+          >
+            <template #prefix>
+              <n-icon :component="SearchIcon" />
+            </template>
+          </n-input>
+
+          <LabelledSwitch v-model:value="filters.isActive" :label="$t('models.user.isActive')" />
+          <LabelledSwitch
+            v-model:value="filters.isInactive"
+            :label="$t('models.user.isInactive')"
+          />
+          <LabelledSwitch
+            v-model:value="filters.isVerified"
+            :label="$t('models.user.isVerified')"
+          />
+          <LabelledSwitch
+            v-model:value="filters.isUnverified"
             :label="$t('models.user.isUnverified')"
           />
-          <n-checkbox
-            v-model:checked="filters.isSuperuser"
+          <LabelledSwitch
+            v-model:value="filters.isSuperuser"
             :label="$t('models.user.isSuperuser')"
           />
-          <n-checkbox
-            v-model:checked="filters.isNoSuperuser"
+          <LabelledSwitch
+            v-model:value="filters.isNoSuperuser"
             :label="$t('models.user.modelLabel')"
           />
+
           <n-button
             secondary
             round

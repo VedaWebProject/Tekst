@@ -32,7 +32,7 @@ const AdminView = () => import('@/views/admin/AdminView.vue');
 const AdminStatisticsView = () => import('@/views/admin/AdminStatisticsView.vue');
 const AdminSystemUsersView = () => import('@/views/admin/AdminSystemUsersView.vue');
 const AdminTextsView = () => import('@/views/admin/AdminTextsView.vue');
-const AdminTextsGeneralView = () => import('@/views/admin/AdminTextsGeneralView.vue');
+const AdminTextsSettingsView = () => import('@/views/admin/AdminTextsSettingsView.vue');
 const AdminTextsLevelsView = () => import('@/views/admin/AdminTextsLevelsView.vue');
 const AdminTextsLocationsView = () => import('@/views/admin/AdminTextsLocationsView.vue');
 const AdminNewTextView = () => import('@/views/admin/AdminNewTextView.vue');
@@ -194,7 +194,7 @@ const router = createRouter({
         {
           path: 'texts/:text',
           name: 'adminTexts',
-          redirect: { name: 'adminTextsGeneral' },
+          redirect: { name: 'adminTextsSettings' },
           component: AdminTextsView,
           meta: {
             isTextSpecific: true,
@@ -202,8 +202,8 @@ const router = createRouter({
           children: [
             {
               path: 'general',
-              name: 'adminTextsGeneral',
-              component: AdminTextsGeneralView,
+              name: 'adminTextsSettings',
+              component: AdminTextsSettingsView,
             },
             {
               path: 'levels',

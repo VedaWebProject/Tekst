@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import type { CommonResourceConfig } from '@/api';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
-import { NSpace, NFormItem, NCheckbox, NInputNumber, NSelect } from 'naive-ui';
+import { NSpace, NFormItem, NInputNumber, NSelect } from 'naive-ui';
 import { useStateStore } from '@/stores';
 import { usePlatformData } from '@/composables/platformData';
 import { computed } from 'vue';
 import { pickTranslation } from '@/utils';
+import LabelledSwitch from '@/components/LabelledSwitch.vue';
 
 const props = withDefaults(
   defineProps<{
@@ -62,22 +63,20 @@ function handleUpdate(field: string, value: any) {
     <HelpButtonWidget help-key="resourceSortOrder" gap-left />
   </n-form-item>
 
-  <n-form-item :label="$t('resources.settings.config.common.visibility')" :show-feedback="false">
+  <n-form-item :show-label="false" :show-feedback="false">
     <!-- DEFAULT ACTIVE -->
     <n-space vertical>
-      <n-checkbox
-        :checked="model.defaultActive"
-        @update:checked="(u) => handleUpdate('defaultActive', u)"
-      >
-        {{ $t('resources.settings.config.common.defaultActive') }}
-      </n-checkbox>
-      <n-space>
-        <n-checkbox
-          :checked="model.showOnParentLevel"
-          @update:checked="(u) => handleUpdate('showOnParentLevel', u)"
-        >
-          {{ $t('resources.settings.config.common.showOnParentLevel') }}
-        </n-checkbox>
+      <LabelledSwitch
+        :value="model.defaultActive"
+        :label="$t('resources.settings.config.common.defaultActive')"
+        @update:value="(v) => handleUpdate('defaultActive', v)"
+      />
+      <n-space :wrap="false">
+        <LabelledSwitch
+          :value="model.showOnParentLevel"
+          :label="$t('resources.settings.config.common.showOnParentLevel')"
+          @update:value="(u) => handleUpdate('showOnParentLevel', u)"
+        />
         <HelpButtonWidget help-key="resourceConfigCombinedSiblings" />
       </n-space>
     </n-space>

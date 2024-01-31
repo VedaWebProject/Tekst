@@ -139,11 +139,11 @@ export function useAdminMenuOptions(showIcons: boolean = true) {
       icon: renderIcon(TextsIcon, !showIcons),
       children: [
         {
-          label: renderLink(() => $t('admin.text.general.heading'), {
-            name: 'adminTextsGeneral',
+          label: renderLink(() => $t('admin.text.settings.heading'), {
+            name: 'adminTextsSettings',
             params: { text: state.text?.slug },
           }),
-          key: 'adminTextsGeneral',
+          key: 'adminTextsSettings',
         },
         {
           label: renderLink(() => $t('admin.text.levels.heading'), {

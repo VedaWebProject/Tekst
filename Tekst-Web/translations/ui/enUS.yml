@@ -86,7 +86,7 @@ routes:
     accountManage: Account
     adminStatistics: '@:admin.heading - Statistics'
     adminSystemUsers: '@:admin.heading - Users'
-    adminTextsGeneral: '{text}: General'
+    adminTextsSettings: '{text}: General'
     adminTextsLevels: '{text}: Levels'
     adminTextsLocations: '{text}: Locations'
     adminNewText: '@:admin.heading - New Text'
@@ -258,7 +258,7 @@ models:
 
 resources:
   heading: Resources
-  headingGeneral: General
+  headingBasic: Basic Information
   msgFoundCount: Found {count} resources ({total} total)
   versionOf: Version of "{title}"
   unknownOriginal: Unknown original resource
@@ -330,7 +330,6 @@ resources:
       enabled: Enabled
       common:
         heading: Common
-        visibility: Visibility
         category: Category
         sortOrder: Sort order
         defaultActive: Resource is active by default when public
@@ -478,8 +477,8 @@ admin:
         {username} and all the data associated with it?'
   text:
     heading: Text
-    general:
-      heading: General
+    settings:
+      heading: Settings
       msgSaved: Text settings saved.
       warnDeleteText: |
         Deleting this text ("{title}") will delete all data associated with it,
@@ -564,7 +563,7 @@ admin:
     heading: System
     platformSettings:
       heading: Settings
-      headingInfo: Information
+      headingInfo: Platform Information
       headingOptions: Options
       msgSaved: |
         Platform settings saved. Please note that it may take up to {cacheTTL} seconds for the changes to take effect on subsequent page loads.

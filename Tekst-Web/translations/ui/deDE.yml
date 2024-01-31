@@ -89,7 +89,7 @@ routes:
     accountManage: Konto
     adminStatistics: '@:admin.heading - Statistiken'
     adminSystemUsers: '@:admin.heading - Benutzer'
-    adminTextsGeneral: '@:admin.heading - {text}: Allgemein'
+    adminTextsSettings: '@:admin.heading - {text}: Allgemein'
     adminTextsLevels: '@:admin.heading - {text}: Ebenen'
     adminTextsLocations: '@:admin.heading - {text}: Fundstellen'
     adminNewText: '@:admin.heading - Neuer Text'
@@ -259,7 +259,7 @@ models:
 
 resources:
   heading: Ressourcen
-  headingGeneral: Allgemein
+  headingBasic: Basisinformationen
   msgFoundCount: '{count} Ressourcen gefunden ({total} insgesamt)'
   versionOf: Version von "{title}"
   unknownOriginal: Unbekannte Original-Ressource
@@ -338,8 +338,7 @@ resources:
       heading: Konfiguration
       enabled: Aktiv
       common:
-        heading: '??????'
-        visibility: Sichtbarkeit
+        heading: Allgemein
         category: Kategorie
         sortOrder: Sortierreihenfolge
         defaultActive: Ressource ist standardmäßig aktiviert, wenn sie öffentlich ist
@@ -487,8 +486,8 @@ admin:
          und alle damit verknüpften Daten löschen möchten?'
   text:
     heading: Text
-    general:
-      heading: Allgemein
+    settings:
+      heading: Einstellungen
       msgSaved: Text-Einstellungen gespeichert.
       warnDeleteText: |
         Wenn Sie diesen Text ("{title}") löschen, werden alle Daten, die sich auf ihn
@@ -586,7 +585,7 @@ admin:
     heading: System
     platformSettings:
       heading: Einstellungen
-      headingInfo: Informationen
+      headingInfo: Plattform-Informationen
       headingOptions: Optionen
       msgSaved: |
         Plattform-Einstellungen gespeichert.

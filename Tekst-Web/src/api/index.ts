@@ -164,30 +164,38 @@ type ResourceReadExtras = {
   coverage?: ResourceCoverage;
 };
 
-export type PlainTextContentCreate = components['schemas']['PlainTextContentCreate'];
 export type PlainTextContentRead = components['schemas']['PlainTextContentRead'];
-export type PlainTextContentUpdate = components['schemas']['PlainTextContentUpdate'];
+export type PlainTextContentCreate = components['schemas']['PlainTextContentCreate'];
 export type PlainTextResourceCreate = components['schemas']['PlainTextResourceCreate'];
-export type PlainTextResourceUpdate = components['schemas']['PlainTextResourceUpdate'];
-export type PlainTextResourceRead = components['schemas']['PlainTextResourceRead'] & {
-  contents?: PlainTextContentRead[];
-} & ResourceReadExtras;
+export type PlainTextResourceRead = components['schemas']['PlainTextResourceRead'] &
+  ResourceReadExtras & {
+    contents?: PlainTextContentRead[];
+  };
 
-export type RichTextContentCreate = components['schemas']['RichTextContentCreate'];
 export type RichTextContentRead = components['schemas']['RichTextContentRead'];
-export type RichTextContentUpdate = components['schemas']['RichTextContentUpdate'];
+export type RichTextContentCreate = components['schemas']['RichTextContentCreate'];
 export type RichTextResourceCreate = components['schemas']['RichTextResourceCreate'];
-export type RichTextResourceUpdate = components['schemas']['RichTextResourceUpdate'];
-export type RichTextResourceRead = components['schemas']['RichTextResourceRead'] & {
-  contents?: RichTextContentRead[];
-} & ResourceReadExtras;
+export type RichTextResourceRead = components['schemas']['RichTextResourceRead'] &
+  ResourceReadExtras & {
+    contents?: RichTextContentRead[];
+  };
 
-export type AnyContentCreate = PlainTextContentCreate | RichTextContentCreate;
-export type AnyContentRead = PlainTextContentRead | RichTextContentRead;
-export type AnyContentUpdate = PlainTextContentUpdate | RichTextContentUpdate;
-export type AnyResourceCreate = PlainTextResourceCreate | RichTextResourceCreate;
-export type AnyResourceRead = PlainTextResourceRead | RichTextResourceRead;
-export type AnyResourceUpdate = PlainTextResourceUpdate | RichTextResourceUpdate;
+export type AnyContentCreate =
+  paths['/contents']['post']['requestBody']['content']['application/json'];
+export type AnyContentRead =
+  paths['/contents/{id}']['get']['responses']['200']['content']['application/json'];
+export type AnyContentUpdate =
+  paths['/contents/{id}']['patch']['requestBody']['content']['application/json'];
+
+export type AnyResourceCreate =
+  paths['/resources']['post']['requestBody']['content']['application/json'];
+export type AnyResourceRead =
+  paths['/resources/{id}']['get']['responses']['200']['content']['application/json'] &
+    ResourceReadExtras & {
+      contents?: AnyContentRead[];
+    };
+export type AnyResourceUpdate =
+  paths['/resources/{id}']['patch']['requestBody']['content']['application/json'];
 
 // resource config types
 
@@ -195,5 +203,5 @@ export type PlainTextResourceConfig = components['schemas']['PlainTextResourceCo
 export type RichTextResourceConfig = components['schemas']['RichTextResourceConfig'];
 
 export type CommonResourceConfig = components['schemas']['CommonResourceConfig'];
-export type AnyResourceConfig = PlainTextResourceConfig | RichTextResourceConfig;
+export type AnyResourceConfig = AnyResourceRead['config'];
 export type DeepLLinksConfig = components['schemas']['DeepLLinksConfig'];

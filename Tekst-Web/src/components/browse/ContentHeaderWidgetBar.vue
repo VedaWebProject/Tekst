@@ -12,12 +12,8 @@ withDefaults(
   defineProps<{
     resource: AnyResourceRead;
     style?: StyleValue;
-    showDeactivateWidget?: boolean;
-    showSiblingsWidget?: boolean;
   }>(),
   {
-    showDeactivateWidget: true,
-    showSiblingsWidget: true,
     style: undefined,
   }
 );
@@ -44,7 +40,6 @@ const browse = useBrowseStore();
     <!-- generic content widgets -->
     <LocationContentSiblingsWidget
       v-if="
-        showSiblingsWidget &&
         resource.config?.common?.showOnParentLevel &&
         (browse.level == resource.level || browse.level == resource.level - 1)
       "
@@ -52,7 +47,7 @@ const browse = useBrowseStore();
     />
     <ContentCommentWidget :resource="resource" />
     <ResourceInfoWidget :resource="resource" />
-    <ResourceDeactivateWidget v-if="showDeactivateWidget ?? true" :resource="resource" />
+    <ResourceDeactivateWidget :resource="resource" />
   </div>
 </template>
 

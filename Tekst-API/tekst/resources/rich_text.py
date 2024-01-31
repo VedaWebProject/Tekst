@@ -2,8 +2,8 @@ from typing import Annotated, Literal
 
 from pydantic import Field, StringConstraints
 
-from tekst.models.content import ContentBase
 from tekst.models.common import ModelBase
+from tekst.models.content import ContentBase
 from tekst.models.resource import ResourceBase
 from tekst.models.resource_configs import ResourceConfigBase
 from tekst.resources import ResourceTypeABC

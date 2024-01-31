@@ -40,7 +40,7 @@ export const useResourcesStore = defineStore('resources', () => {
           return {
             ...r,
             active: !!existingResource?.active || !!r.config?.common?.defaultActive,
-            contents: existingResource?.contents || [],
+            contents: existingResource?.contents ?? [],
           };
         })
       );

@@ -7,7 +7,6 @@ from beanie.operators import And, Eq, In, Or
 from pydantic import (
     Field,
     StringConstraints,
-    create_model,
     field_validator,
 )
 
@@ -237,9 +236,6 @@ class ResourceReadExtras(ModelBase):
     ] = None
 
 
-ResourceBaseRead = create_model(
-    "ResourceBaseRead", __base__=(ResourceBase.read_model(), ResourceReadExtras)
-)
 ResourceBaseUpdate = ResourceBase.update_model()
 
 

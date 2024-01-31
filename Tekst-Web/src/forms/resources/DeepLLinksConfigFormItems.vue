@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { DeepLLinksConfig } from '@/api';
-import { NCheckbox, NFormItem, NSelect } from 'naive-ui';
+import LabelledSwitch from '@/components/LabelledSwitch.vue';
+import { NFormItem, NSelect } from 'naive-ui';
 
 const props = defineProps<{
   model: DeepLLinksConfig;
@@ -53,9 +54,11 @@ function handleUpdate(field: string, value: any) {
 
   <!-- ENABLED -->
   <n-form-item :show-label="false">
-    <n-checkbox :checked="model.enabled" @update:checked="(u) => handleUpdate('enabled', u)">
-      {{ $t('resources.settings.config.enabled') }}
-    </n-checkbox>
+    <LabelledSwitch
+      :value="model.enabled"
+      :label="$t('resources.settings.config.enabled')"
+      @update:value="(v) => handleUpdate('enabled', v)"
+    />
   </n-form-item>
 
   <!-- SOURCE LANGUAGE -->

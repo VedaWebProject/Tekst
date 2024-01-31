@@ -37,17 +37,15 @@ function handleUpdateSpecialConfig(field: string, value: any) {
 <template>
   <h3>{{ $t('resources.settings.config.heading') }}</h3>
 
-  <!---- COMMON RESOURCE CONFIG ---->
+  <!-- COMMON RESOURCE CONFIG -->
   <CommonResourceConfigFormItems
     v-if="model.common"
     :model="model.common"
     @update:model="(u: any) => $emit('update:model', { ...model, common: u })"
   />
 
-  <!---- RESOURCE TYPE-SPECIFIC CONFIG ---->
-  <!-- GENERAL -->
+  <!-- GENERAL RESOURCE TYPE-SPECIFIC CONFIG -->
   <h4>
-    {{ $t('resources.settings.config.general.heading') }}:
     {{ $t('resources.types.' + resourceType + '.label') }}
   </h4>
   <template v-for="(configValue, key) in model.general" :key="key">
@@ -58,7 +56,8 @@ function handleUpdateSpecialConfig(field: string, value: any) {
       @update:value="(u: any) => handleUpdateGeneralConfig(key, u)"
     />
   </template>
-  <!-- SPECIAL -->
+
+  <!-- SPECIAL RESOURCE TYPE-SPECIFIC CONFIG -->
   <template v-for="(configModel, key) in model" :key="key">
     <component
       :is="specialConfigFormItems[key]"
