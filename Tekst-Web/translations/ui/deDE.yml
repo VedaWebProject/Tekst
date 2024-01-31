@@ -361,12 +361,12 @@ resources:
       label: Einfacher Text
       parenthesis: ungestalteter, einfacher Text
       contentFields:
-        text: Text
+        text: Einfacher Text
     richText:
       label: Formatierter Text
       parenthesis: gestalteter, formatierter Text
       contentFields:
-        html: Text
+        html: Formatierter Text
 
 contents:
   heading: Ressourcen-Inhalte bearbeiten

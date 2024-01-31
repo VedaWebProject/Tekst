@@ -352,12 +352,12 @@ resources:
       label: Plain Text
       parenthesis: unstyled plain text content
       contentFields:
-        text: Text
+        text: Plain Text
     richText:
       label: Formatted Text
       parenthesis: styled, formatted text
       contentFields:
-        html: Text
+        html: Formatted Text
 
 contents:
   heading: Edit resource content

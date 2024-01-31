@@ -6884,6 +6884,15 @@
             "minLength": 1,
             "title": "Html",
             "description": "HTML content of the rich text content object"
+          },
+          "editorMode": {
+            "type": "string",
+            "enum": [
+              "wysiwyg",
+              "html"
+            ],
+            "title": "Editormode",
+            "description": "Last used editor mode for this content"
           }
         },
         "type": "object",
@@ -6891,7 +6900,8 @@
           "resourceId",
           "resourceType",
           "locationId",
-          "html"
+          "html",
+          "editorMode"
         ],
         "title": "RichTextContentCreate"
       },
@@ -6950,6 +6960,15 @@
             "minLength": 1,
             "title": "Html",
             "description": "HTML content of the rich text content object"
+          },
+          "editorMode": {
+            "type": "string",
+            "enum": [
+              "wysiwyg",
+              "html"
+            ],
+            "title": "Editormode",
+            "description": "Last used editor mode for this content"
           }
         },
         "additionalProperties": true,
@@ -6959,7 +6978,8 @@
           "resourceId",
           "resourceType",
           "locationId",
-          "html"
+          "html",
+          "editorMode"
         ],
         "title": "RichTextContentRead"
       },
@@ -7031,6 +7051,21 @@
               }
             ],
             "title": "Html"
+          },
+          "editorMode": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "wysiwyg",
+                  "html"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Editormode"
           }
         },
         "type": "object",

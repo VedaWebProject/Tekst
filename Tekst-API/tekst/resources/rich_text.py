@@ -52,3 +52,7 @@ class RichTextContent(ContentBase):
             description="HTML content of the rich text content object",
         ),
     ]
+    editor_mode: Annotated[
+        Literal["wysiwyg", "html"],
+        Field(description="Last used editor mode for this content"),
+    ] = "wysiwyg"

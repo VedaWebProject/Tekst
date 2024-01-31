@@ -23,9 +23,11 @@ function handleUpdate(field: string, value: any) {
     <n-form-item :label="$t('resources.types.richText.contentFields.html')" path="html">
       <HtmlEditor
         :value="model.html"
+        :editor-mode="model.editorMode ?? 'wysiwyg'"
         toolbar-size="medium"
         :max-chars="102400"
         @update:value="(v) => handleUpdate('html', v)"
+        @update:editor-mode="(v) => handleUpdate('editorMode', v)"
       />
     </n-form-item>
   </template>
