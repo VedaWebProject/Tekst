@@ -4,7 +4,10 @@
     "title": "Tekst-Dev",
     "description": "An online text research platform",
     "termsOfService": "None",
-    "contact": {},
+    "contact": {
+      "name": "Tekst Administrator",
+      "email": "noreply@tekst-contact-email-not-set.com"
+    },
     "license": {
       "name": "AGPL-3.0-or-later",
       "url": "https://www.gnu.org/licenses/agpl-3.0.txt"
@@ -6170,18 +6173,6 @@
       },
       "PlatformData": {
         "properties": {
-          "tekst": {
-            "type": "object",
-            "title": "Tekst",
-            "default": {
-              "name": "Tekst",
-              "version": "0.0.1",
-              "description": "An online text research platform",
-              "website": "https://github.com/VedaWebProject/Tekst",
-              "license": "AGPL-3.0-or-later",
-              "licenseUrl": "https://www.gnu.org/licenses/agpl-3.0.txt"
-            }
-          },
           "texts": {
             "items": {
               "$ref": "#/components/schemas/TextRead"
@@ -6224,6 +6215,18 @@
             "type": "integer",
             "title": "Settingscachettl",
             "default": 60
+          },
+          "tekst": {
+            "type": "object",
+            "title": "Tekst",
+            "default": {
+              "name": "Tekst",
+              "version": "0.0.1",
+              "description": "An online text research platform",
+              "website": "https://github.com/VedaWebProject/Tekst",
+              "license": "AGPL-3.0-or-later",
+              "licenseUrl": "https://www.gnu.org/licenses/agpl-3.0.txt"
+            }
           }
         },
         "type": "object",
@@ -6361,7 +6364,8 @@
               }
             ],
             "title": "Infocontactname",
-            "description": "Platform contact name"
+            "description": "Platform contact name",
+            "default": "Tekst Administrator"
           },
           "infoContactEmail": {
             "anyOf": [
@@ -6375,7 +6379,8 @@
               }
             ],
             "title": "Infocontactemail",
-            "description": "Platform contact email"
+            "description": "Platform contact email",
+            "default": "noreply@tekst-contact-email-not-set.com"
           },
           "infoContactUrl": {
             "anyOf": [
@@ -6528,7 +6533,8 @@
               }
             ],
             "title": "Infocontactname",
-            "description": "Platform contact name"
+            "description": "Platform contact name",
+            "default": "Tekst Administrator"
           },
           "infoContactEmail": {
             "anyOf": [
@@ -6542,7 +6548,8 @@
               }
             ],
             "title": "Infocontactemail",
-            "description": "Platform contact email"
+            "description": "Platform contact email",
+            "default": "noreply@tekst-contact-email-not-set.com"
           },
           "infoContactUrl": {
             "anyOf": [

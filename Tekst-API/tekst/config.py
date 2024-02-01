@@ -85,6 +85,14 @@ class TekstConfig(BaseSettings):
     dev_port: int = 8000
     dev_use_xsrf_protection: bool = False
 
+    # db-related config (MongoDB)
+    db_protocol: str = "mongodb"
+    db_host: str = "127.0.0.1"
+    db_port: int = 27017
+    db_user: str | None = None
+    db_password: str | None = None
+    db_name: str = "tekst"
+
     # CORS
     cors_allow_origins: str | list[str] = ["*"]
     cors_allow_credentials: bool = True
@@ -119,20 +127,13 @@ class TekstConfig(BaseSettings):
     security_init_admin_email: str | None = None
     security_init_admin_password: str | None = None
 
-    # db-related config (MongoDB)
-    db_protocol: str = "mongodb"
-    db_host: str = "127.0.0.1"
-    db_port: int = 27017
-    db_user: str | None = None
-    db_password: str | None = None
-    db_name: str = "tekst"
-
     # documentation-related config (OpenAPI, Redoc)
     doc_openapi_url: str = "/openapi.json"
     doc_swaggerui_url: str = "/docs"
     doc_redoc_url: str = "/redoc"
 
     # general platform information config
+    # (these are used as defaults in the platform settings)
     info_platform_name: Annotated[
         str, StringConstraints(min_length=1, max_length=32)
     ] = "Tekst"

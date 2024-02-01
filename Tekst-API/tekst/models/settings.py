@@ -63,28 +63,28 @@ class PlatformSettings(ModelBase, ModelFactoryMixin):
         CustomHttpUrl | None,
         StringConstraints(max_length=512),
         Field(description="URL to page with terms and conditions for API usage"),
-    ] = None
+    ] = _cfg.info_terms
     info_contact_name: Annotated[
         str | None,
         StringConstraints(max_length=64),
         val.CleanupOneline,
         val.EmtpyStringToNone,
         Field(description="Platform contact name"),
-    ] = None
+    ] = _cfg.info_contact_name
     info_contact_email: Annotated[
         EmailStr | None,
         StringConstraints(max_length=64),
         val.CleanupOneline,
         val.EmtpyStringToNone,
         Field(description="Platform contact email"),
-    ] = None
+    ] = _cfg.info_contact_email
     info_contact_url: Annotated[
         CustomHttpUrl | None,
         StringConstraints(max_length=512),
         val.CleanupOneline,
         val.EmtpyStringToNone,
         Field(description="URL to page with contact info"),
-    ] = None
+    ] = _cfg.info_contact_url
 
     # OPTIONS
     default_text_id: Annotated[

@@ -1289,18 +1289,6 @@ export interface components {
      * @description Platform data used by the web client
      */
     PlatformData: {
-      /**
-       * Tekst
-       * @default {
-       *   "name": "Tekst",
-       *   "version": "0.0.1",
-       *   "description": "An online text research platform",
-       *   "website": "https://github.com/VedaWebProject/Tekst",
-       *   "license": "AGPL-3.0-or-later",
-       *   "licenseUrl": "https://www.gnu.org/licenses/agpl-3.0.txt"
-       * }
-       */
-      tekst?: Record<string, never>;
       /** Texts */
       texts: components['schemas']['TextRead'][];
       settings: components['schemas']['PlatformSettingsRead'];
@@ -1323,6 +1311,18 @@ export interface components {
        * @default 60
        */
       settingsCacheTtl?: number;
+      /**
+       * Tekst
+       * @default {
+       *   "name": "Tekst",
+       *   "version": "0.0.1",
+       *   "description": "An online text research platform",
+       *   "website": "https://github.com/VedaWebProject/Tekst",
+       *   "license": "AGPL-3.0-or-later",
+       *   "licenseUrl": "https://www.gnu.org/licenses/agpl-3.0.txt"
+       * }
+       */
+      tekst?: Record<string, never>;
     };
     /** PlatformDescriptionTranslation */
     PlatformDescriptionTranslation: {
@@ -1396,11 +1396,13 @@ export interface components {
       /**
        * Infocontactname
        * @description Platform contact name
+       * @default Tekst Administrator
        */
       infoContactName?: string | null;
       /**
        * Infocontactemail
        * @description Platform contact email
+       * @default noreply@tekst-contact-email-not-set.com
        */
       infoContactEmail?: string | null;
       /**
@@ -1492,11 +1494,13 @@ export interface components {
       /**
        * Infocontactname
        * @description Platform contact name
+       * @default Tekst Administrator
        */
       infoContactName?: string | null;
       /**
        * Infocontactemail
        * @description Platform contact email
+       * @default noreply@tekst-contact-email-not-set.com
        */
       infoContactEmail?: string | null;
       /**

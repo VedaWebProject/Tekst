@@ -478,7 +478,7 @@ async def delete_text(
     # delete text itself
     await text.delete()
     # check if deleted text was default text, correct if necessary
-    pf_settings_doc = await get_settings(nocache=True)
+    pf_settings_doc = await get_settings()
     if pf_settings_doc.default_text_id == text_id:
         pf_settings_doc.default_text_id = (await TextDocument.find_one()).id
         await pf_settings_doc.replace()
