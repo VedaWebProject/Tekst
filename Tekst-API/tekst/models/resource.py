@@ -210,6 +210,15 @@ class ResourceBaseDocument(ResourceBase, DocumentBase):
             ),
         )
 
+    @classmethod
+    async def user_resource_count(cls, user_id: PydanticObjectId | None) -> int:
+        if not user_id:
+            return 0
+        return await ResourceBaseDocument.find(
+            ResourceBaseDocument.owner_id == user_id,
+            with_children=True,
+        ).count()
+
 
 class ResourceReadExtras(ModelBase):
     writable: Annotated[

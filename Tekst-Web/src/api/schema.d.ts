@@ -1323,6 +1323,15 @@ export interface components {
        * }
        */
       tekst?: Record<string, never>;
+      /**
+       * Limits
+       * @default {
+       *   "maxResourcesPerUser": 10
+       * }
+       */
+      limits?: {
+        [key: string]: number;
+      };
     };
     /** PlatformDescriptionTranslation */
     PlatformDescriptionTranslation: {

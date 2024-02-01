@@ -34,6 +34,9 @@ class PlatformData(ModelBase):
     tekst: dict[str, Any] = camelize(
         _cfg.model_dump(include_keys_prefix="tekst_", strip_include_keys_prefix=True)
     )
+    limits: dict[str, int] = camelize(
+        _cfg.model_dump(include_keys_prefix="limits_", strip_include_keys_prefix=True)
+    )
 
 
 class TextStats(ModelBase):

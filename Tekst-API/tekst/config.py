@@ -5,6 +5,7 @@ from secrets import token_hex
 from typing import Annotated
 from urllib.parse import quote
 
+from fastapi import Depends
 from pydantic import EmailStr, Field, StringConstraints, computed_field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -127,6 +128,9 @@ class TekstConfig(BaseSettings):
     security_init_admin_email: str | None = None
     security_init_admin_password: str | None = None
 
+    # limits
+    limits_max_resources_per_user: int = 10
+
     # documentation-related config (OpenAPI, Redoc)
     doc_openapi_url: str = "/openapi.json"
     doc_swaggerui_url: str = "/docs"
@@ -228,3 +232,6 @@ class TekstConfig(BaseSettings):
 @cache
 def get_config() -> TekstConfig:
     return TekstConfig()
+
+
+ConfigDep = Annotated[TekstConfig, Depends(get_config)]

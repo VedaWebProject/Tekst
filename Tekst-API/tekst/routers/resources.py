@@ -22,6 +22,7 @@ from pydantic import ValidationError
 from starlette.background import BackgroundTask
 
 from tekst.auth import OptionalUserDep, SuperuserDep, UserDep
+from tekst.config import ConfigDep
 from tekst.logging import log
 from tekst.models.content import ContentBaseDocument
 from tekst.models.exchange import ResourceDataImportResponse, ResourceImportData
@@ -101,8 +102,24 @@ router = APIRouter(
     responses={status.HTTP_201_CREATED: {"description": "Created"}},
 )
 async def create_resource(
-    resource: AnyResourceCreateBody, user: UserDep
+    resource: AnyResourceCreateBody, user: UserDep, cfg: ConfigDep
 ) -> AnyResourceRead:
+    # check user resources limit
+    if (
+        not user.is_superuser
+        and await ResourceBaseDocument.user_resource_count(user.id)
+        >= cfg.limits_max_resources_per_user
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=[
+                {
+                    "msg": "RESOURCES_LIMIT_REACHED",
+                }
+            ],
+        )
+
+    # check text integrity
     text = await TextDocument.get(resource.text_id)
     if not text:
         raise HTTPException(
@@ -114,12 +131,14 @@ async def create_resource(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Text '{text.title}' only has {len(text.levels)} levels",
         )
+
     # force some values on creation
     resource.owner_id = user.id
     resource.proposed = False
     resource.public = False
     resource.shared_read = []
     resource.shared_write = []
+
     # find document model for this resource type, instantiate, create
     resource_doc = (
         await resource_types_mgr.get(resource.resource_type)
@@ -138,8 +157,26 @@ async def create_resource(
     responses={status.HTTP_201_CREATED: {"description": "Created"}},
 )
 async def create_resource_version(
-    user: UserDep, resource_id: Annotated[PydanticObjectId, Path(alias="id")]
+    user: UserDep,
+    cfg: ConfigDep,
+    resource_id: Annotated[PydanticObjectId, Path(alias="id")],
 ) -> AnyResourceRead:
+    # check user resources limit
+    if (
+        not user.is_superuser
+        and await ResourceBaseDocument.user_resource_count(user.id)
+        >= cfg.limits_max_resources_per_user
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=[
+                {
+                    "msg": "RESOURCES_LIMIT_REACHED",
+                }
+            ],
+        )
+
+    # check if resource exists
     resource_doc: ResourceBaseDocument = await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == resource_id,
         await ResourceBaseDocument.access_conditions_read(user),
@@ -150,6 +187,8 @@ async def create_resource_version(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Resource with ID {resource_id} does not exist",
         )
+
+    # check if resource is already a version
     if resource_doc.original_id:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -158,7 +197,8 @@ async def create_resource_version(
                 "already a version of another resource"
             ),
         )
-    # generate version title suffix
+
+    # generate version title
     version_title_suffix = " v" + str(
         await ResourceBaseDocument.find(
             ResourceBaseDocument.original_id == resource_id,
@@ -169,6 +209,8 @@ async def create_resource_version(
     version_title = (
         resource_doc.title[0 : 64 - len(version_title_suffix)] + version_title_suffix
     )
+
+    # create version
     version_doc = (
         await resource_types_mgr.get(resource_doc.resource_type)
         .resource_model()
@@ -264,9 +306,10 @@ async def find_resources(
     As the resulting list of resources may contain resources of different types, the
     returned resource objects cannot be typed to their precise resource type.
     """
-    example = {"text_id": text_id}
-
-    # add to example
+    # construct search example
+    example = {}
+    if text_id is not None:
+        example["text_id"] = text_id
     if level is not None:
         example["level"] = level
     if resource_type:
@@ -353,14 +396,18 @@ async def delete_resource(
 )
 async def transfer_resource(
     user: UserDep,
+    cfg: ConfigDep,
     resource_id: Annotated[PydanticObjectId, Path(alias="id")],
     target_user_id: Annotated[PydanticObjectId, Body()],
 ) -> AnyResourceRead:
+    # check if resource exists
     resource_doc = await ResourceBaseDocument.get(resource_id, with_children=True)
     if not resource_doc:
         raise HTTPException(
             status.HTTP_404_NOT_FOUND, detail=f"No resource with ID {resource_id}"
         )
+
+    # check if user is allowed to transfer resource
     if not user.is_superuser and user.id != resource_doc.owner_id:
         raise HTTPException(status.HTTP_403_FORBIDDEN)
     if resource_doc.public or resource_doc.proposed:
@@ -371,12 +418,33 @@ async def transfer_resource(
                 "published or proposed for publication"
             ),
         )
-    if not await UserDocument.find_one(UserDocument.id == target_user_id).exists():
+
+    # check if target user exists
+    target_user: UserDocument = await UserDocument.get(target_user_id)
+    if not target_user:
         raise HTTPException(
-            status.HTTP_400_BAD_REQUEST, detail=f"No user with ID {target_user_id}"
+            status.HTTP_400_BAD_REQUEST, detail=f"No user with ID {str(target_user_id)}"
         )
+
+    # if the target user is already the owner, return the resource
     if target_user_id == resource_doc.owner_id:
         return await preprocess_resource_read(resource_doc, user)
+
+    # check user resources limit
+    if (
+        not target_user.is_superuser
+        and await ResourceBaseDocument.user_resource_count(target_user_id)
+        >= cfg.limits_max_resources_per_user
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=[
+                {
+                    "msg": "RESOURCES_LIMIT_REACHED",
+                }
+            ],
+        )
+
     # all fine, transfer resource and remove target user ID from resource shares
     await resource_doc.set(
         {

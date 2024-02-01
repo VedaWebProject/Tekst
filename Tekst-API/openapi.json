@@ -6227,6 +6227,16 @@
               "license": "AGPL-3.0-or-later",
               "licenseUrl": "https://www.gnu.org/licenses/agpl-3.0.txt"
             }
+          },
+          "limits": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "Limits",
+            "default": {
+              "maxResourcesPerUser": 10
+            }
           }
         },
         "type": "object",

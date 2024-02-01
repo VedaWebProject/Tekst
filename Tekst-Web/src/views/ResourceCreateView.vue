@@ -23,8 +23,10 @@ import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import ResourceSettingsFormItems from '@/forms/resources/ResourceSettingsFormItems.vue';
 import { ResourceIcon, ArrowBackIcon } from '@/icons';
 import ResourceTypeOptionLabel from '@/components/resource/ResourceTypeOptionLabel.vue';
+import { usePlatformData } from '@/composables/platformData';
 
 const { message } = useMessages();
+const { pfData } = usePlatformData();
 const router = useRouter();
 const state = useStateStore();
 const auth = useAuthStore();
@@ -95,7 +97,15 @@ async function handleSaveClick() {
         resources.add(data);
         router.push({ name: 'resources', params: { text: state.text?.slug } });
       } else {
-        message.error($t('errors.unexpected'), error);
+        if (error.detail?.[0]?.msg === 'RESOURCES_LIMIT_REACHED') {
+          message.error(
+            $t('resources.msgLimitReached', {
+              limit: pfData.value?.limits?.maxResourcesPerUser ?? '???',
+            })
+          );
+        } else {
+          message.error($t('errors.unexpected'), error);
+        }
       }
       loadingSave.value = false;
     })
