@@ -76,7 +76,8 @@ async function handleForgotPasswordClick() {
     width="narrow"
     :title="$t('account.login.heading')"
     :icon="LogInIcon"
-    @close="auth.closeLoginModal"
+    @close="auth.closeLoginModal(false)"
+    @mask-click="auth.closeLoginModal(false)"
     @after-enter="emailInputRef?.focus()"
   >
     <div class="form-container">
