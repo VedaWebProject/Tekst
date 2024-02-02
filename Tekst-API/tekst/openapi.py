@@ -77,7 +77,7 @@ async def generate_openapi_schema(
         async with AsyncClient(app=app, base_url="http://test") as client:
             resp = await client.get(f"{cfg.doc_openapi_url}")
             if resp.status_code != 200:
-                raise HTTPException(resp.status_code)
+                raise HTTPException(resp.status_code, detail=resp.json())
             else:
                 schema = resp.json()
                 json_dump_args = {

@@ -681,6 +681,17 @@ export interface components {
       /** Locations */
       locations: number;
     };
+    /** ErrorDetail */
+    ErrorDetail: {
+      /** Key */
+      key: string;
+      /** Msg */
+      msg?: string | null;
+      /** Values */
+      values?: {
+        [key: string]: string | number | boolean;
+      } | null;
+    };
     /** ErrorModel */
     ErrorModel: {
       /** Detail */
@@ -1323,15 +1334,6 @@ export interface components {
        * }
        */
       tekst?: Record<string, never>;
-      /**
-       * Limits
-       * @default {
-       *   "maxResourcesPerUser": 10
-       * }
-       */
-      limits?: {
-        [key: string]: number;
-      };
     };
     /** PlatformDescriptionTranslation */
     PlatformDescriptionTranslation: {
@@ -2075,6 +2077,10 @@ export interface components {
        * }
        */
       config?: components['schemas']['RichTextResourceConfig'];
+    };
+    /** TekstErrorModel */
+    TekstErrorModel: {
+      detail: components['schemas']['ErrorDetail'];
     };
     /** TextCreate */
     TextCreate: {
@@ -3376,10 +3382,6 @@ export interface operations {
           )[];
         };
       };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
       /** @description Validation Error */
       422: {
         content: {
@@ -3398,17 +3400,13 @@ export interface operations {
       };
     };
     responses: {
-      /** @description Created */
+      /** @description Successful Response */
       201: {
         content: {
           'application/json':
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead'];
         };
-      };
-      /** @description Not found */
-      404: {
-        content: never;
       };
       /** @description Validation Error */
       422: {
@@ -3434,10 +3432,6 @@ export interface operations {
             | components['schemas']['RichTextResourceRead'];
         };
       };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
       /** @description Validation Error */
       422: {
         content: {
@@ -3462,9 +3456,11 @@ export interface operations {
             | components['schemas']['RichTextResourceRead'];
         };
       };
-      /** @description Not found */
+      /** @description Not Found */
       404: {
-        content: never;
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -3484,10 +3480,6 @@ export interface operations {
     responses: {
       /** @description Successful Response */
       204: {
-        content: never;
-      };
-      /** @description Not found */
-      404: {
         content: never;
       };
       /** @description Validation Error */
@@ -3521,10 +3513,6 @@ export interface operations {
             | components['schemas']['RichTextResourceRead'];
         };
       };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
       /** @description Validation Error */
       422: {
         content: {
@@ -3554,9 +3542,11 @@ export interface operations {
             | components['schemas']['RichTextResourceRead'];
         };
       };
-      /** @description Not found */
-      404: {
-        content: never;
+      /** @description Conflict */
+      409: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -3582,10 +3572,6 @@ export interface operations {
             | components['schemas']['RichTextResourceRead'];
         };
       };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
       /** @description Validation Error */
       422: {
         content: {
@@ -3609,10 +3595,6 @@ export interface operations {
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead'];
         };
-      };
-      /** @description Not found */
-      404: {
-        content: never;
       };
       /** @description Validation Error */
       422: {
@@ -3638,10 +3620,6 @@ export interface operations {
             | components['schemas']['RichTextResourceRead'];
         };
       };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
       /** @description Validation Error */
       422: {
         content: {
@@ -3666,10 +3644,6 @@ export interface operations {
             | components['schemas']['RichTextResourceRead'];
         };
       };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
       /** @description Validation Error */
       422: {
         content: {
@@ -3691,10 +3665,6 @@ export interface operations {
         content: {
           'application/json': unknown;
         };
-      };
-      /** @description Not found */
-      404: {
-        content: never;
       };
       /** @description Validation Error */
       422: {
@@ -3722,10 +3692,6 @@ export interface operations {
         content: {
           'application/json': components['schemas']['ResourceDataImportResponse'];
         };
-      };
-      /** @description Not found */
-      404: {
-        content: never;
       };
       /** @description Validation Error */
       422: {

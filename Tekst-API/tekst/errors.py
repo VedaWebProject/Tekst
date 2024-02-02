@@ -1,0 +1,219 @@
+from typing import Any, Literal
+
+from fastapi import HTTPException, status
+
+from tekst.config import TekstConfig, get_config
+from tekst.models.common import ModelBase
+
+
+_cfg: TekstConfig = get_config()
+
+
+class ErrorDetail(ModelBase):
+    key: str
+    msg: str | None = None
+    values: dict[str, str | int | float | bool] | None = None
+
+
+class TekstErrorModel(ModelBase):
+    detail: ErrorDetail
+
+
+class TekstHTTPException(HTTPException):
+    def __init__(
+        self,
+        status_code: int,
+        detail: TekstErrorModel | None = None,
+        headers: dict[str, str] | None = None,
+    ) -> None:
+        super().__init__(status_code=status_code, detail=detail, headers=headers)
+
+
+def responses(
+    errors: list[TekstHTTPException],
+) -> dict[int, dict[Literal["model"], type[TekstErrorModel]]]:
+    d = {}
+    for error in errors:
+        if error.status_code not in d:
+            d[error.status_code] = {}
+        d[error.status_code]["model"] = TekstErrorModel
+    return d
+
+
+def error_instance(
+    status_code: int,
+    key: str,
+    msg: str | None = None,
+    values: dict[str, Any] | None = None,
+    headers: dict[str, str] | None = None,
+):
+    return TekstHTTPException(
+        status_code=status_code,
+        headers=headers,
+        detail=TekstErrorModel(
+            detail=ErrorDetail(
+                key=key,
+                msg=msg,
+                values=values,
+            )
+        ),
+    )
+
+
+# PLATFORM API HTTP ERRORS DEFINED BELOW
+
+E_409_RESOURCES_LIMIT_REACHED = error_instance(
+    status_code=status.HTTP_409_CONFLICT,
+    key="resourcesLimitReached",
+    msg="Resources limit reached for this user",
+    values={
+        "limit": _cfg.limits_max_resources_per_user,
+    },
+)
+
+E_404_NOT_FOUND = error_instance(
+    status_code=status.HTTP_404_NOT_FOUND,
+    key="notFound",
+    msg="Whatever was requested could not be found",
+)
+
+E_404_RESOURCE_NOT_FOUND = error_instance(
+    status_code=status.HTTP_404_NOT_FOUND,
+    key="resourceNotFound",
+    msg="The resource could not be found",
+)
+
+E_404_BOOKMARK_NOT_FOUND = error_instance(
+    status_code=status.HTTP_404_NOT_FOUND,
+    key="bookmarkNotFound",
+    msg="The bookmark could not be found",
+)
+
+E_409_BOOKMARK_EXISTS = error_instance(
+    status_code=status.HTTP_409_CONFLICT,
+    key="bookmarkExists",
+    msg="A bookmark for this location already exists",
+)
+
+E_409_BOOKMARKS_LIMIT_REACHED = error_instance(
+    status_code=status.HTTP_409_CONFLICT,
+    key="bookmarksLimitReached",
+    msg="User cannot have more than 1000 bookmarks",
+    values={
+        "limit": 1000,
+    },
+)
+
+E_404_LOCATION_NOT_FOUND = error_instance(
+    status_code=status.HTTP_404_NOT_FOUND,
+    key="locationNotFound",
+    msg="The location could not be found",
+)
+
+E_404_TEXT_NOT_FOUND = error_instance(
+    status_code=status.HTTP_404_NOT_FOUND,
+    key="textNotFound",
+    msg="The text could not be found",
+)
+
+E_400_RESOURCE_INVALID_LEVEL = error_instance(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    key="resourceInvalidLevel",
+    msg="The level of the resource is invalid",
+)
+
+E_400_RESOURCE_VERSION_OF_VERSION = error_instance(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    key="resourceVersionOfVersion",
+    msg="The resource is already a version of another resource",
+)
+
+E_400_SHARED_WITH_USER_NON_EXISTENT = error_instance(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    key="sharedWithUserNonExistent",
+    msg="Shared-with user doesn't exist",
+)
+
+E_400_RESOURCE_PUBLIC_DELETE = error_instance(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    key="resourcePublicDelete",
+    msg="Cannot delete a published resource",
+)
+
+E_400_RESOURCE_PROPOSED_DELETE = error_instance(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    key="resourceProposedDelete",
+    msg="Cannot delete a proposed resource",
+)
+
+E_400_RESOURCE_PUBLIC_PROPOSED_TRANSFER = error_instance(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    key="resourcePublishedProposedTransfer",
+    msg="Resource is published or proposed for publication and cannot be deleted",
+)
+
+E_400_TARGET_USER_NON_EXISTENT = error_instance(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    key="targetUserNonExistent",
+    msg="Target user doesn't exist",
+)
+
+E_403_FORBIDDEN = error_instance(
+    status_code=status.HTTP_403_FORBIDDEN,
+    key="forbidden",
+    msg="You have no permission to perform this action",
+)
+
+E_400_RESOURCE_VERSION_PROPOSE = error_instance(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    key="resourceVersionPropose",
+    msg="Cannot propose a resource version",
+)
+
+E_400_RESOURCE_PUBLISH_UNPROPOSED = error_instance(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    key="resourcePublishUnproposed",
+    msg="Cannot publish an unproposed resource",
+)
+
+E_400_RESOUCE_VERSION_PUBLISH = error_instance(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    key="resourceVersionPublish",
+    msg="Cannot publish a resource version",
+)
+
+E_400_UPLOAD_INVALID_MIME_TYPE_NOT_JSON = error_instance(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    key="uploadInvalidMimeTypeNotJson",
+    msg="Invalid file MIME type (must be 'application/json')",
+)
+
+E_422_UPLOAD_INVALID_JSON = error_instance(
+    status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+    key="uploadInvalidJson",
+    msg="Import data is not valid JSON",
+)
+
+E_400_IMPORT_ID_MISMATCH = error_instance(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    key="importIdMismatch",
+    msg="Import data ID does not match the ID in the request",
+)
+
+E_400_IMPORT_ID_NON_EXISTENT = error_instance(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    key="importIdNonExistent",
+    msg="An ID in the import data does not exist",
+)
+
+E_400_IMPORT_INVALID_CONTENT_DATA = error_instance(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    key="importInvalidContentData",
+    msg="Invalid content data in import data",
+)
+
+E_500_INTERNAL_SERVER_ERROR = error_instance(
+    status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+    key="internalServerError",
+    msg="An internal server error occurred. How embarrassing :(",
+)

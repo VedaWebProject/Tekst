@@ -11,7 +11,6 @@ from fastapi import (
     APIRouter,
     Body,
     File,
-    HTTPException,
     Path,
     Query,
     UploadFile,
@@ -21,6 +20,7 @@ from fastapi.responses import FileResponse
 from pydantic import ValidationError
 from starlette.background import BackgroundTask
 
+from tekst import errors
 from tekst.auth import OptionalUserDep, SuperuserDep, UserDep
 from tekst.config import ConfigDep
 from tekst.logging import log
@@ -89,9 +89,6 @@ async def preprocess_resource_read(
 router = APIRouter(
     prefix="/resources",
     tags=["resources"],
-    responses={
-        status.HTTP_404_NOT_FOUND: {"description": "Not found"},
-    },
 )
 
 
@@ -99,7 +96,13 @@ router = APIRouter(
     "",
     response_model=AnyResourceReadBody,
     status_code=status.HTTP_201_CREATED,
-    responses={status.HTTP_201_CREATED: {"description": "Created"}},
+    responses=errors.responses(
+        [
+            errors.E_409_RESOURCES_LIMIT_REACHED,
+            errors.E_404_TEXT_NOT_FOUND,
+            errors.E_400_RESOURCE_INVALID_LEVEL,
+        ]
+    ),
 )
 async def create_resource(
     resource: AnyResourceCreateBody, user: UserDep, cfg: ConfigDep
@@ -110,27 +113,14 @@ async def create_resource(
         and await ResourceBaseDocument.user_resource_count(user.id)
         >= cfg.limits_max_resources_per_user
     ):
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=[
-                {
-                    "msg": "RESOURCES_LIMIT_REACHED",
-                }
-            ],
-        )
+        raise errors.E_409_RESOURCES_LIMIT_REACHED
 
     # check text integrity
     text = await TextDocument.get(resource.text_id)
     if not text:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Resource refers to non-existent text '{resource.text_id}'",
-        )
+        raise errors.E_404_TEXT_NOT_FOUND
     if resource.level > len(text.levels) - 1:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Text '{text.title}' only has {len(text.levels)} levels",
-        )
+        raise errors.E_400_RESOURCE_INVALID_LEVEL
 
     # force some values on creation
     resource.owner_id = user.id
@@ -154,7 +144,13 @@ async def create_resource(
     "/{id}/version",
     response_model=AnyResourceReadBody,
     status_code=status.HTTP_201_CREATED,
-    responses={status.HTTP_201_CREATED: {"description": "Created"}},
+    responses=errors.responses(
+        [
+            errors.E_409_RESOURCES_LIMIT_REACHED,
+            errors.E_404_RESOURCE_NOT_FOUND,
+            errors.E_400_RESOURCE_VERSION_OF_VERSION,
+        ]
+    ),
 )
 async def create_resource_version(
     user: UserDep,
@@ -167,14 +163,7 @@ async def create_resource_version(
         and await ResourceBaseDocument.user_resource_count(user.id)
         >= cfg.limits_max_resources_per_user
     ):
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=[
-                {
-                    "msg": "RESOURCES_LIMIT_REACHED",
-                }
-            ],
-        )
+        raise errors.E_409_RESOURCES_LIMIT_REACHED
 
     # check if resource exists
     resource_doc: ResourceBaseDocument = await ResourceBaseDocument.find_one(
@@ -183,20 +172,11 @@ async def create_resource_version(
         with_children=True,
     )
     if not resource_doc:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Resource with ID {resource_id} does not exist",
-        )
+        raise errors.E_404_RESOURCE_NOT_FOUND
 
     # check if resource is already a version
     if resource_doc.original_id:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=(
-                f"Resource with ID {resource_id} is "
-                "already a version of another resource"
-            ),
-        )
+        raise errors.E_400_RESOURCE_VERSION_OF_VERSION
 
     # generate version title
     version_title_suffix = " v" + str(
@@ -235,7 +215,15 @@ async def create_resource_version(
 
 
 @router.patch(
-    "/{id}", response_model=AnyResourceReadBody, status_code=status.HTTP_200_OK
+    "/{id}",
+    response_model=AnyResourceReadBody,
+    status_code=status.HTTP_200_OK,
+    responses=errors.responses(
+        [
+            errors.E_404_RESOURCE_NOT_FOUND,
+            errors.E_400_SHARED_WITH_USER_NON_EXISTENT,
+        ]
+    ),
 )
 async def update_resource(
     resource_id: Annotated[PydanticObjectId, Path(alias="id")],
@@ -248,10 +236,7 @@ async def update_resource(
         with_children=True,
     )
     if not resource_doc:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Resource {resource_id} doesn't exist",
-        )
+        raise errors.E_404_RESOURCE_NOT_FOUND
     # only allow shares modification for owner or superuser
     if not user.is_superuser and resource_doc.owner_id != user.id:
         updates.shared_read = resource_doc.shared_read
@@ -264,10 +249,7 @@ async def update_resource(
     if updates.shared_read or updates.shared_write:
         for user_id in updates.shared_read + updates.shared_write:
             if not await UserDocument.find_one(UserDocument.id == user_id).exists():
-                raise HTTPException(
-                    status_code=status.HTTP_400_BAD_REQUEST,
-                    detail=f"Shared-with user {user_id} doesn't exist",
-                )
+                raise errors.E_400_SHARED_WITH_USER_NON_EXISTENT
     # update document with reduced updates
     await resource_doc.apply_updates(
         updates,
@@ -284,7 +266,9 @@ async def update_resource(
 
 
 @router.get(
-    "", response_model=list[AnyResourceReadBody], status_code=status.HTTP_200_OK
+    "",
+    response_model=list[AnyResourceReadBody],
+    status_code=status.HTTP_200_OK,
 )
 async def find_resources(
     user: OptionalUserDep,
@@ -332,7 +316,16 @@ async def find_resources(
     ]
 
 
-@router.get("/{id}", status_code=status.HTTP_200_OK, response_model=AnyResourceReadBody)
+@router.get(
+    "/{id}",
+    status_code=status.HTTP_200_OK,
+    response_model=AnyResourceReadBody,
+    responses=errors.responses(
+        [
+            errors.E_404_RESOURCE_NOT_FOUND,
+        ]
+    ),
+)
 async def get_resource(
     user: OptionalUserDep,
     resource_id: Annotated[PydanticObjectId, Path(alias="id")],
@@ -343,36 +336,34 @@ async def get_resource(
         with_children=True,
     )
     if not resource_doc:
-        raise HTTPException(
-            status.HTTP_404_NOT_FOUND, detail=f"No resource with ID {resource_id}"
-        )
+        raise errors.E_404_RESOURCE_NOT_FOUND
     return await preprocess_resource_read(resource_doc, user)
 
 
-@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete(
+    "/{id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    responses=errors.responses(
+        [
+            errors.E_404_RESOURCE_NOT_FOUND,
+            errors.E_403_FORBIDDEN,
+            errors.E_400_RESOURCE_PUBLIC_DELETE,
+            errors.E_400_RESOURCE_PROPOSED_DELETE,
+        ]
+    ),
+)
 async def delete_resource(
     user: UserDep, resource_id: Annotated[PydanticObjectId, Path(alias="id")]
 ) -> None:
     resource_doc = await ResourceBaseDocument.get(resource_id, with_children=True)
     if not resource_doc:
-        raise HTTPException(
-            status.HTTP_404_NOT_FOUND, detail=f"No resource with ID {resource_id}"
-        )
+        raise errors.E_404_RESOURCE_NOT_FOUND
     if not user.is_superuser and user.id != resource_doc.owner_id:
-        raise HTTPException(
-            status.HTTP_403_FORBIDDEN,
-            detail="You have no permission to delete this resource",
-        )
+        raise errors.E_403_FORBIDDEN
     if resource_doc.public:
-        raise HTTPException(
-            status.HTTP_400_BAD_REQUEST,
-            detail="Cannot delete a published resource",
-        )
+        raise errors.E_400_RESOURCE_PUBLIC_DELETE
     if resource_doc.proposed:
-        raise HTTPException(
-            status.HTTP_400_BAD_REQUEST,
-            detail="Cannot delete a proposed resource",
-        )
+        raise errors.E_400_RESOURCE_PROPOSED_DELETE
     # all fine
     # turn versions of this resource into original resources
     await ResourceBaseDocument.find(
@@ -392,7 +383,18 @@ async def delete_resource(
 
 
 @router.post(
-    "/{id}/transfer", response_model=AnyResourceReadBody, status_code=status.HTTP_200_OK
+    "/{id}/transfer",
+    response_model=AnyResourceReadBody,
+    status_code=status.HTTP_200_OK,
+    responses=errors.responses(
+        [
+            errors.E_409_RESOURCES_LIMIT_REACHED,
+            errors.E_404_RESOURCE_NOT_FOUND,
+            errors.E_400_RESOURCE_PUBLIC_PROPOSED_TRANSFER,
+            errors.E_403_FORBIDDEN,
+            errors.E_400_TARGET_USER_NON_EXISTENT,
+        ]
+    ),
 )
 async def transfer_resource(
     user: UserDep,
@@ -403,28 +405,18 @@ async def transfer_resource(
     # check if resource exists
     resource_doc = await ResourceBaseDocument.get(resource_id, with_children=True)
     if not resource_doc:
-        raise HTTPException(
-            status.HTTP_404_NOT_FOUND, detail=f"No resource with ID {resource_id}"
-        )
+        raise errors.E_404_RESOURCE_NOT_FOUND
 
     # check if user is allowed to transfer resource
     if not user.is_superuser and user.id != resource_doc.owner_id:
-        raise HTTPException(status.HTTP_403_FORBIDDEN)
+        raise errors.E_403_FORBIDDEN
     if resource_doc.public or resource_doc.proposed:
-        raise HTTPException(
-            status.HTTP_400_BAD_REQUEST,
-            detail=(
-                f"Resource with ID {resource_id} is "
-                "published or proposed for publication"
-            ),
-        )
+        raise errors.E_400_RESOURCE_PUBLIC_PROPOSED_TRANSFER
 
     # check if target user exists
     target_user: UserDocument = await UserDocument.get(target_user_id)
     if not target_user:
-        raise HTTPException(
-            status.HTTP_400_BAD_REQUEST, detail=f"No user with ID {str(target_user_id)}"
-        )
+        raise errors.E_400_TARGET_USER_NON_EXISTENT
 
     # if the target user is already the owner, return the resource
     if target_user_id == resource_doc.owner_id:
@@ -436,14 +428,7 @@ async def transfer_resource(
         and await ResourceBaseDocument.user_resource_count(target_user_id)
         >= cfg.limits_max_resources_per_user
     ):
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=[
-                {
-                    "msg": "RESOURCES_LIMIT_REACHED",
-                }
-            ],
-        )
+        raise errors.E_409_RESOURCES_LIMIT_REACHED
 
     # all fine, transfer resource and remove target user ID from resource shares
     await resource_doc.set(
@@ -465,28 +450,29 @@ async def transfer_resource(
 
 
 @router.post(
-    "/{id}/propose", response_model=AnyResourceReadBody, status_code=status.HTTP_200_OK
+    "/{id}/propose",
+    response_model=AnyResourceReadBody,
+    status_code=status.HTTP_200_OK,
+    responses=errors.responses(
+        [
+            errors.E_404_RESOURCE_NOT_FOUND,
+            errors.E_403_FORBIDDEN,
+            errors.E_400_RESOURCE_VERSION_PROPOSE,
+        ]
+    ),
 )
 async def propose_resource(
     user: UserDep, resource_id: Annotated[PydanticObjectId, Path(alias="id")]
 ) -> AnyResourceRead:
     resource_doc = await ResourceBaseDocument.get(resource_id, with_children=True)
     if not resource_doc:
-        raise HTTPException(
-            status.HTTP_404_NOT_FOUND, detail=f"No resource with ID {resource_id}"
-        )
+        raise errors.E_404_RESOURCE_NOT_FOUND
     if not user.is_superuser and user.id != resource_doc.owner_id:
-        raise HTTPException(status.HTTP_403_FORBIDDEN)
+        raise errors.E_403_FORBIDDEN
     if resource_doc.public:
-        raise HTTPException(
-            status.HTTP_400_BAD_REQUEST,
-            detail=f"Resource with ID {resource_id} already public",
-        )
+        return await preprocess_resource_read(resource_doc, user)
     if resource_doc.original_id:
-        raise HTTPException(
-            status.HTTP_400_BAD_REQUEST,
-            detail="Cannot propose a version of another resource for publication",
-        )
+        raise errors.E_400_RESOURCE_VERSION_PROPOSE
     # all fine, propose resource
     await resource_doc.set(
         {
@@ -502,19 +488,21 @@ async def propose_resource(
     "/{id}/unpropose",
     response_model=AnyResourceReadBody,
     status_code=status.HTTP_200_OK,
+    responses=errors.responses(
+        [
+            errors.E_404_RESOURCE_NOT_FOUND,
+            errors.E_403_FORBIDDEN,
+        ]
+    ),
 )
 async def unpropose_resource(
     user: UserDep, resource_id: Annotated[PydanticObjectId, Path(alias="id")]
 ) -> AnyResourceRead:
     resource_doc = await ResourceBaseDocument.get(resource_id, with_children=True)
     if not resource_doc:
-        raise HTTPException(
-            status.HTTP_404_NOT_FOUND, detail=f"No resource with ID {resource_id}"
-        )
+        raise errors.E_404_RESOURCE_NOT_FOUND
     if not user.is_superuser and user.id != resource_doc.owner_id:
-        raise HTTPException(
-            status.HTTP_403_FORBIDDEN, detail="Not allowed to unpropose this resource"
-        )
+        raise errors.E_403_FORBIDDEN
     # all fine, unpropose resource
     await resource_doc.set(
         {
@@ -526,26 +514,27 @@ async def unpropose_resource(
 
 
 @router.post(
-    "/{id}/publish", response_model=AnyResourceReadBody, status_code=status.HTTP_200_OK
+    "/{id}/publish",
+    response_model=AnyResourceReadBody,
+    status_code=status.HTTP_200_OK,
+    responses=errors.responses(
+        [
+            errors.E_404_RESOURCE_NOT_FOUND,
+            errors.E_400_RESOURCE_PUBLISH_UNPROPOSED,
+            errors.E_400_RESOUCE_VERSION_PUBLISH,
+        ]
+    ),
 )
 async def publish_resource(
     user: SuperuserDep, resource_id: Annotated[PydanticObjectId, Path(alias="id")]
 ) -> AnyResourceRead:
     resource_doc = await ResourceBaseDocument.get(resource_id, with_children=True)
     if not resource_doc:
-        raise HTTPException(
-            status.HTTP_404_NOT_FOUND, detail=f"No resource with ID {resource_id}"
-        )
+        raise errors.E_404_RESOURCE_NOT_FOUND
     if not resource_doc.proposed:
-        raise HTTPException(
-            status.HTTP_400_BAD_REQUEST,
-            detail=f"Resource with ID {resource_id} is not proposed for publication",
-        )
+        raise errors.E_400_RESOURCE_PUBLISH_UNPROPOSED
     if resource_doc.original_id:
-        raise HTTPException(
-            status.HTTP_400_BAD_REQUEST,
-            detail="Cannot publish a version of another resource",
-        )
+        raise errors.E_400_RESOUCE_VERSION_PUBLISH
     # all fine, publish resource
     await resource_doc.set(
         {
@@ -563,15 +552,18 @@ async def publish_resource(
     "/{id}/unpublish",
     response_model=AnyResourceReadBody,
     status_code=status.HTTP_200_OK,
+    responses=errors.responses(
+        [
+            errors.E_404_RESOURCE_NOT_FOUND,
+        ]
+    ),
 )
 async def unpublish_resource(
     user: SuperuserDep, resource_id: Annotated[PydanticObjectId, Path(alias="id")]
 ) -> AnyResourceRead:
     resource_doc = await ResourceBaseDocument.get(resource_id, with_children=True)
     if not resource_doc:
-        raise HTTPException(
-            status.HTTP_404_NOT_FOUND, detail=f"No resource with ID {resource_id}"
-        )
+        raise errors.E_404_RESOURCE_NOT_FOUND
     # all fine, unpublish resource
     await resource_doc.set(
         {
@@ -582,7 +574,16 @@ async def unpublish_resource(
     return await preprocess_resource_read(resource_doc, user)
 
 
-@router.get("/{id}/template", status_code=status.HTTP_200_OK)
+@router.get(
+    "/{id}/template",
+    status_code=status.HTTP_200_OK,
+    responses=errors.responses(
+        [
+            errors.E_404_RESOURCE_NOT_FOUND,
+            errors.E_403_FORBIDDEN,
+        ]
+    ),
+)
 async def get_resource_template(
     user: UserDep,
     resource_id: Annotated[PydanticObjectId, Path(alias="id")],
@@ -592,19 +593,13 @@ async def get_resource_template(
         with_children=True,
     )
     if not resource_doc:
-        raise HTTPException(
-            status.HTTP_404_NOT_FOUND,
-            detail=f"Resource with ID {resource_id} doesn't exist",
-        )
+        raise errors.E_404_RESOURCE_NOT_FOUND
     if not await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == resource_id,
         await ResourceBaseDocument.access_conditions_write(user),
         with_children=True,
     ).exists():
-        raise HTTPException(
-            status.HTTP_403_FORBIDDEN,
-            detail="You have no permission to access this resource",
-        )
+        raise errors.E_403_FORBIDDEN
     text_doc = await TextDocument.get(resource_doc.text_id)
 
     # import content type for the requested resource
@@ -657,7 +652,21 @@ async def get_resource_template(
     )
 
 
-@router.post("/{id}/import", status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/{id}/import",
+    status_code=status.HTTP_201_CREATED,
+    responses=errors.responses(
+        [
+            errors.E_400_UPLOAD_INVALID_MIME_TYPE_NOT_JSON,
+            errors.E_404_RESOURCE_NOT_FOUND,
+            errors.E_403_FORBIDDEN,
+            errors.E_422_UPLOAD_INVALID_JSON,
+            errors.E_400_IMPORT_ID_MISMATCH,
+            errors.E_400_IMPORT_ID_NON_EXISTENT,
+            errors.E_400_IMPORT_INVALID_CONTENT_DATA,
+        ]
+    ),
+)
 async def import_resource_data(
     user: UserDep,
     resource_id: Annotated[PydanticObjectId, Path(alias="id")],
@@ -667,19 +676,13 @@ async def import_resource_data(
 ) -> ResourceDataImportResponse:
     # test upload file MIME type
     if not file.content_type.lower() == "application/json":
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Invalid file MIME type (must be 'application/json')",
-        )
+        raise errors.E_400_UPLOAD_INVALID_MIME_TYPE_NOT_JSON
 
     # check if resource exists
     if not await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == resource_id, with_children=True
     ).exists():
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Could not find resource with ID {resource_id}",
-        )
+        raise errors.E_404_RESOURCE_NOT_FOUND
 
     # check if user has permission to write to this resource, if so, fetch from DB
     resource = await ResourceBaseDocument.find_one(
@@ -688,26 +691,17 @@ async def import_resource_data(
         with_children=True,
     )
     if not resource:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="You have no permission to write to this resource",
-        )
+        raise errors.E_403_FORBIDDEN
 
     # validate import file format
     try:
         structure_def = ResourceImportData.model_validate_json(await file.read())
-    except ValueError as ve:
-        raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=f"Import data is not valid JSON ({str(ve)})",
-        )
+    except ValueError:
+        raise errors.E_422_UPLOAD_INVALID_JSON
 
     # check if resource_id matches the one in the import file
     if str(resource_id) != str(structure_def.resource_id):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Resource ID in import file does not match resource ID in URL",
-        )
+        raise errors.E_400_IMPORT_ID_MISMATCH
 
     # find contents that already exist and have to be updated instead of created
     try:
@@ -725,11 +719,8 @@ async def import_resource_data(
                 with_children=True,
             ).to_list()
         }
-    except InvalidId as e:
-        raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=f"Invalid locationId value: {str(e)}",
-        )
+    except InvalidId:
+        raise errors.E_400_IMPORT_ID_NON_EXISTENT
 
     # create lists of validated content updates/creates depending on whether they exist
     contents = {
@@ -752,11 +743,8 @@ async def import_resource_data(
                     **content_data,
                 )
             )
-        except ValidationError as ve:
-            raise HTTPException(
-                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-                detail=f"Invalid content data: {str(ve)}",
-            )
+        except ValidationError:
+            raise errors.E_400_IMPORT_INVALID_CONTENT_DATA
 
     # a sacrifice for the GC
     structure_def = None
@@ -776,9 +764,7 @@ async def import_resource_data(
                 updated_count += 1
             except (ValueError, DocumentNotFound) as e:
                 print(e)
-                raise HTTPException(
-                    status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                )
+                raise errors.E_500_INTERNAL_SERVER_ERROR
                 errors_count += 1
         else:
             errors_count += 1

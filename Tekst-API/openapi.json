@@ -2089,7 +2089,7 @@
         },
         "responses": {
           "201": {
-            "description": "Created",
+            "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
@@ -2112,9 +2112,6 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "Not found"
           },
           "422": {
             "description": "Validation Error",
@@ -2218,9 +2215,6 @@
               }
             }
           },
-          "404": {
-            "description": "Not found"
-          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -2286,9 +2280,6 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "Not found"
           },
           "422": {
             "description": "Validation Error",
@@ -2381,9 +2372,6 @@
               }
             }
           },
-          "404": {
-            "description": "Not found"
-          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -2449,7 +2437,14 @@
             }
           },
           "404": {
-            "description": "Not found"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Not Found"
           },
           "422": {
             "description": "Validation Error",
@@ -2492,9 +2487,6 @@
         "responses": {
           "204": {
             "description": "Successful Response"
-          },
-          "404": {
-            "description": "Not found"
           },
           "422": {
             "description": "Validation Error",
@@ -2574,8 +2566,15 @@
               }
             }
           },
-          "404": {
-            "description": "Not found"
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Conflict"
           },
           "422": {
             "description": "Validation Error",
@@ -2643,9 +2642,6 @@
               }
             }
           },
-          "404": {
-            "description": "Not found"
-          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -2711,9 +2707,6 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "Not found"
           },
           "422": {
             "description": "Validation Error",
@@ -2781,9 +2774,6 @@
               }
             }
           },
-          "404": {
-            "description": "Not found"
-          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -2850,9 +2840,6 @@
               }
             }
           },
-          "404": {
-            "description": "Not found"
-          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -2901,9 +2888,6 @@
                 "schema": {}
               }
             }
-          },
-          "404": {
-            "description": "Not found"
           },
           "422": {
             "description": "Validation Error",
@@ -2965,9 +2949,6 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "Not found"
           },
           "422": {
             "description": "Validation Error",
@@ -5019,6 +5000,57 @@
         ],
         "title": "DeleteLocationResult"
       },
+      "ErrorDetail": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "msg": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Msg"
+          },
+          "values": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "boolean"
+                    }
+                  ]
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Values"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key"
+        ],
+        "title": "ErrorDetail"
+      },
       "ErrorModel": {
         "properties": {
           "detail": {
@@ -6226,16 +6258,6 @@
               "website": "https://github.com/VedaWebProject/Tekst",
               "license": "AGPL-3.0-or-later",
               "licenseUrl": "https://www.gnu.org/licenses/agpl-3.0.txt"
-            }
-          },
-          "limits": {
-            "additionalProperties": {
-              "type": "integer"
-            },
-            "type": "object",
-            "title": "Limits",
-            "default": {
-              "maxResourcesPerUser": 10
             }
           }
         },
@@ -7653,6 +7675,18 @@
           "resourceType"
         ],
         "title": "RichTextResourceUpdate"
+      },
+      "TekstErrorModel": {
+        "properties": {
+          "detail": {
+            "$ref": "#/components/schemas/ErrorDetail"
+          }
+        },
+        "type": "object",
+        "required": [
+          "detail"
+        ],
+        "title": "TekstErrorModel"
       },
       "TextCreate": {
         "properties": {

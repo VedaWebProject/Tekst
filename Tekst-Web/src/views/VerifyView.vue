@@ -5,11 +5,12 @@ import { useRoute } from 'vue-router';
 import { $t } from '@/i18n';
 import { useRouter } from 'vue-router';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
-
 import { KeyOffIcon, CheckCircleIcon } from '@/icons';
+import { useErrors } from '@/composables/errors';
 
 const route = useRoute();
 const router = useRouter();
+const errors = useErrors();
 const token = route.query.token?.toString();
 const verified = ref(false);
 const error = ref<string | null>(null);
@@ -20,13 +21,7 @@ onMounted(async () => {
     if (!apiError) {
       verified.value = true;
     } else {
-      if (apiError.detail === 'VERIFY_USER_BAD_TOKEN') {
-        error.value = $t('account.verify.badToken');
-      } else if (apiError.detail === 'VERIFY_USER_ALREADY_VERIFIED') {
-        error.value = $t('account.verify.alreadyVerified');
-      } else {
-        error.value = $t('errors.unexpected');
-      }
+      error.value = errors.msg(apiError, false);
     }
   } else {
     router.push({ name: 'home' });

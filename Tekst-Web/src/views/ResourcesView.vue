@@ -35,12 +35,10 @@ import { saveDownload } from '@/api';
 
 import { SearchIcon, UndoIcon, ResourceIcon, AddIcon } from '@/icons';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
-import { usePlatformData } from '@/composables/platformData';
 
 const state = useStateStore();
 const auth = useAuthStore();
 const resources = useResourcesStore();
-const { pfData } = usePlatformData();
 const dialog = useDialog();
 const { message } = useMessages();
 const router = useRouter();
@@ -111,16 +109,6 @@ async function handleTransferResource(resource?: AnyResourceRead, user?: UserRea
     message.success(
       $t('resources.msgTransferred', { title: resource.title, username: user.username })
     );
-  } else {
-    if (error.detail?.[0]?.msg === 'RESOURCES_LIMIT_REACHED') {
-      message.error(
-        $t('resources.msgLimitReached', {
-          limit: pfData.value?.limits?.maxResourcesPerUser ?? '???',
-        })
-      );
-    } else {
-      message.error($t('errors.unexpected'), error);
-    }
   }
   filters.value = initialFilters();
   showTransferModal.value = false;
@@ -260,16 +248,6 @@ function handleCreateVersionClick(resource: AnyResourceRead) {
       if (!error) {
         resources.add(data);
         message.success($t('resources.msgCreatedVersion', { title: resource.title }));
-      } else {
-        if (error.detail?.[0]?.msg === 'RESOURCES_LIMIT_REACHED') {
-          message.error(
-            $t('resources.msgLimitReached', {
-              limit: pfData.value?.limits?.maxResourcesPerUser ?? '???',
-            })
-          );
-        } else {
-          message.error($t('errors.unexpected'), error);
-        }
       }
       actionsLoading.value = false;
     },

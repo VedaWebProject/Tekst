@@ -338,9 +338,11 @@ async function handleNearestChangeClick(mode: 'preceding' | 'subsequent') {
     },
   });
   if (!error) {
-    navigateContents(pos - position.value);
-  } else {
-    message.info("There's NOTHING!!!!");
+    if (pos >= 0) {
+      navigateContents(pos - position.value);
+    } else {
+      message.info($t('contents.msgNoNearest'));
+    }
   }
 }
 </script>

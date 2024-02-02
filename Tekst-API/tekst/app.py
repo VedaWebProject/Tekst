@@ -2,8 +2,11 @@ import re
 
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
+from fastapi.exception_handlers import http_exception_handler
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette_csrf import CSRFMiddleware
 
 from tekst.config import TekstConfig, get_config
@@ -86,3 +89,17 @@ app.add_middleware(
     allow_methods=_cfg.cors_allow_methods,
     allow_headers=_cfg.cors_allow_headers,
 )
+
+
+@app.exception_handler(StarletteHTTPException)
+async def custom_http_exception_handler(request, exc):
+    return await http_exception_handler(
+        request,
+        HTTPException(
+            status_code=exc.status_code,
+            detail=exc.detail.model_dump(),
+            headers=exc.headers,
+        )
+        if isinstance(exc.detail, BaseModel)
+        else exc,
+    )
