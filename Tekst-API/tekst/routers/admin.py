@@ -1,5 +1,6 @@
 from fastapi import APIRouter, status
 
+from tekst import errors
 from tekst.auth import SuperuserDep
 from tekst.models.location import LocationDocument
 from tekst.models.platform import PlatformStats, TextStats
@@ -12,6 +13,12 @@ from tekst.resources import resource_types_mgr
 router = APIRouter(
     prefix="/admin",
     tags=["admin"],
+    responses=errors.responses(
+        [
+            errors.E_401_UNAUTHORIZED,
+            errors.E_403_FORBIDDEN,
+        ]
+    ),
 )
 
 

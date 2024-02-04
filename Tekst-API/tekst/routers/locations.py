@@ -37,6 +37,8 @@ router = APIRouter(
         [
             errors.E_400_INVALID_TEXT,
             errors.E_400_INVALID_LEVEL,
+            errors.E_401_UNAUTHORIZED,
+            errors.E_403_FORBIDDEN,
         ]
     ),
 )
@@ -163,6 +165,8 @@ async def find_locations(
     responses=errors.responses(
         [
             errors.E_400_LOCATION_CHILDREN_NO_PARENT_NOR_TEXT,
+            errors.E_401_UNAUTHORIZED,
+            errors.E_403_FORBIDDEN,
         ]
     ),
 )
@@ -219,6 +223,8 @@ async def get_location(
     responses=errors.responses(
         [
             errors.E_404_LOCATION_NOT_FOUND,
+            errors.E_401_UNAUTHORIZED,
+            errors.E_403_FORBIDDEN,
         ]
     ),
 )
@@ -240,6 +246,8 @@ async def update_location(
     responses=errors.responses(
         [
             errors.E_404_LOCATION_NOT_FOUND,
+            errors.E_401_UNAUTHORIZED,
+            errors.E_403_FORBIDDEN,
         ]
     ),
 )
@@ -301,6 +309,8 @@ async def delete_location(
     responses=errors.responses(
         [
             errors.E_404_LOCATION_NOT_FOUND,
+            errors.E_401_UNAUTHORIZED,
+            errors.E_403_FORBIDDEN,
         ]
     ),
 )

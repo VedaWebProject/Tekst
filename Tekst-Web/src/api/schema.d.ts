@@ -2437,6 +2437,18 @@ export interface operations {
           'application/json': components['schemas']['PlatformStats'];
         };
       };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
     };
   };
   /** Get users */
@@ -2446,6 +2458,18 @@ export interface operations {
       200: {
         content: {
           'application/json': components['schemas']['UserRead'][];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
         };
       };
     };
@@ -3014,6 +3038,18 @@ export interface operations {
           'application/json': components['schemas']['TekstErrorModel'];
         };
       };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
       /** @description Validation Error */
       422: {
         content: {
@@ -3042,6 +3078,18 @@ export interface operations {
       };
       /** @description Bad Request */
       400: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
         content: {
           'application/json': components['schemas']['TekstErrorModel'];
         };
@@ -3100,6 +3148,18 @@ export interface operations {
           'application/json': components['schemas']['DeleteLocationResult'];
         };
       };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
       /** @description Not Found */
       404: {
         content: {
@@ -3131,6 +3191,18 @@ export interface operations {
       200: {
         content: {
           'application/json': components['schemas']['LocationRead'];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
         };
       };
       /** @description Not Found */
@@ -3167,6 +3239,18 @@ export interface operations {
       200: {
         content: {
           'application/json': components['schemas']['LocationRead'];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
         };
       };
       /** @description Not Found */
@@ -3272,6 +3356,18 @@ export interface operations {
           'application/json': components['schemas']['PlatformSettingsRead'];
         };
       };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
       /** @description Validation Error */
       422: {
         content: {
@@ -3320,6 +3416,18 @@ export interface operations {
       204: {
         content: never;
       };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
       /** @description Not Found */
       404: {
         content: {
@@ -3353,6 +3461,18 @@ export interface operations {
           'application/json': components['schemas']['ClientSegmentRead'];
         };
       };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
       /** @description Not Found */
       404: {
         content: {
@@ -3379,6 +3499,18 @@ export interface operations {
       201: {
         content: {
           'application/json': components['schemas']['ClientSegmentRead'];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
         };
       };
       /** @description Conflict */
@@ -3782,6 +3914,18 @@ export interface operations {
           'application/json': components['schemas']['TekstErrorModel'];
         };
       };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
       /** @description Not Found */
       404: {
         content: {
@@ -3810,6 +3954,18 @@ export interface operations {
           'application/json':
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead'];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
         };
       };
       /** @description Not Found */
@@ -3945,6 +4101,18 @@ export interface operations {
           'application/json': components['schemas']['TextRead'];
         };
       };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
       /** @description Conflict */
       409: {
         content: {
@@ -3975,6 +4143,18 @@ export interface operations {
       200: {
         content: {
           'application/json': unknown;
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
         };
       };
       /** @description Not Found */
@@ -4015,6 +4195,18 @@ export interface operations {
       };
       /** @description Bad Request */
       400: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
         content: {
           'application/json': components['schemas']['TekstErrorModel'];
         };
@@ -4066,6 +4258,18 @@ export interface operations {
           'application/json': components['schemas']['TekstErrorModel'];
         };
       };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
       /** @description Not Found */
       404: {
         content: {
@@ -4098,6 +4302,18 @@ export interface operations {
       };
       /** @description Bad Request */
       400: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
         content: {
           'application/json': components['schemas']['TekstErrorModel'];
         };
@@ -4162,6 +4378,18 @@ export interface operations {
           'application/json': components['schemas']['TekstErrorModel'];
         };
       };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
       /** @description Not Found */
       404: {
         content: {
@@ -4193,6 +4421,18 @@ export interface operations {
       200: {
         content: {
           'application/json': components['schemas']['TextRead'];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
         };
       };
       /** @description Not Found */

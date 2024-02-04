@@ -524,6 +524,8 @@ async def unpropose_resource(
             errors.E_404_RESOURCE_NOT_FOUND,
             errors.E_400_RESOURCE_PUBLISH_UNPROPOSED,
             errors.E_400_RESOUCE_VERSION_PUBLISH,
+            errors.E_401_UNAUTHORIZED,
+            errors.E_403_FORBIDDEN,
         ]
     ),
 )
@@ -559,6 +561,8 @@ async def publish_resource(
     responses=errors.responses(
         [
             errors.E_404_RESOURCE_NOT_FOUND,
+            errors.E_401_UNAUTHORIZED,
+            errors.E_403_FORBIDDEN,
         ]
     ),
 )

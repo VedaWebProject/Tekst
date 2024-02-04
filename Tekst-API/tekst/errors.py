@@ -62,6 +62,12 @@ def error_instance(
 
 # PLATFORM API HTTP ERRORS DEFINED BELOW
 
+E_401_UNAUTHORIZED = error_instance(
+    status_code=status.HTTP_401_UNAUTHORIZED,
+    key="unauthorized",
+    msg="Authentication required",
+)
+
 E_409_RESOURCES_LIMIT_REACHED = error_instance(
     status_code=status.HTTP_409_CONFLICT,
     key="resourcesLimitReached",

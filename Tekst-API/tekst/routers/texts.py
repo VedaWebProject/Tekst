@@ -61,6 +61,8 @@ async def get_all_texts(ou: OptionalUserDep, limit: int = 128) -> list[TextRead]
     responses=errors.responses(
         [
             errors.E_409_TEXT_SAME_TITLE_OR_SLUG,
+            errors.E_401_UNAUTHORIZED,
+            errors.E_403_FORBIDDEN,
         ]
     ),
 )
@@ -78,6 +80,8 @@ async def create_text(su: SuperuserDep, text: TextCreate) -> TextRead:
     responses=errors.responses(
         [
             errors.E_404_TEXT_NOT_FOUND,
+            errors.E_401_UNAUTHORIZED,
+            errors.E_403_FORBIDDEN,
         ]
     ),
 )
@@ -142,6 +146,8 @@ async def download_structure_template(
             errors.E_400_UPLOAD_INVALID_MIME_TYPE_NOT_JSON,
             errors.E_400_UPLOAD_INVALID_JSON,
             errors.E_404_TEXT_NOT_FOUND,
+            errors.E_401_UNAUTHORIZED,
+            errors.E_403_FORBIDDEN,
         ]
     ),
 )
@@ -212,6 +218,8 @@ async def import_text_structure(
         [
             errors.E_404_TEXT_NOT_FOUND,
             errors.E_400_INVALID_LEVEL,
+            errors.E_401_UNAUTHORIZED,
+            errors.E_403_FORBIDDEN,
         ]
     ),
 )
@@ -315,7 +323,12 @@ async def insert_level(
     response_model=TextRead,
     status_code=status.HTTP_200_OK,
     responses=errors.responses(
-        [errors.E_404_TEXT_NOT_FOUND, errors.E_400_INVALID_LEVEL]
+        [
+            errors.E_404_TEXT_NOT_FOUND,
+            errors.E_400_INVALID_LEVEL,
+            errors.E_401_UNAUTHORIZED,
+            errors.E_403_FORBIDDEN,
+        ]
     ),
 )
 async def delete_level(
@@ -414,6 +427,8 @@ async def delete_level(
         [
             errors.E_404_TEXT_NOT_FOUND,
             errors.E_400_TEXT_DELETE_LAST_TEXT,
+            errors.E_401_UNAUTHORIZED,
+            errors.E_403_FORBIDDEN,
         ]
     ),
 )
@@ -476,6 +491,8 @@ async def get_text(text_id: Annotated[PydanticObjectId, Path(alias="id")]) -> Te
     responses=errors.responses(
         [
             errors.E_404_TEXT_NOT_FOUND,
+            errors.E_401_UNAUTHORIZED,
+            errors.E_403_FORBIDDEN,
         ]
     ),
 )

@@ -125,7 +125,15 @@ async def find_public_users(
 
 
 @router.patch(
-    "/settings", response_model=PlatformSettingsRead, status_code=status.HTTP_200_OK
+    "/settings",
+    response_model=PlatformSettingsRead,
+    status_code=status.HTTP_200_OK,
+    responses=errors.responses(
+        [
+            errors.E_401_UNAUTHORIZED,
+            errors.E_403_FORBIDDEN,
+        ]
+    ),
 )
 async def update_platform_settings(
     su: SuperuserDep,
@@ -173,6 +181,8 @@ async def get_segment(
     responses=errors.responses(
         [
             errors.E_409_SEGMENT_KEY_LOCALE_CONFLICT,
+            errors.E_401_UNAUTHORIZED,
+            errors.E_403_FORBIDDEN,
         ]
     ),
 )
@@ -195,6 +205,8 @@ async def create_segment(
     responses=errors.responses(
         [
             errors.E_404_SEGMENT_NOT_FOUND,
+            errors.E_401_UNAUTHORIZED,
+            errors.E_403_FORBIDDEN,
         ]
     ),
 )
@@ -215,6 +227,8 @@ async def update_segment(
     responses=errors.responses(
         [
             errors.E_404_SEGMENT_NOT_FOUND,
+            errors.E_401_UNAUTHORIZED,
+            errors.E_403_FORBIDDEN,
         ]
     ),
 )
