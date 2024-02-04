@@ -6,7 +6,6 @@ html {
 }
 
 body {
-  line-height: 1.6;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -14,7 +13,7 @@ body {
 
 #app {
   font-family: var(--font-family);
-  font-weight: var(--font-weight-light);
+  font-weight: var(--font-weight-normal);
 }
 
 a,
@@ -34,31 +33,31 @@ strong {
 
 h1 {
   font-size: 1.5rem;
-  font-weight: 300;
+  font-weight: var(--font-weight-normal);
   margin-bottom: 1.25rem;
 }
 
 h2 {
   font-size: 1.3rem;
-  font-weight: 300;
+  font-weight: var(--font-weight-normal);
   margin-bottom: 1rem;
 }
 
 h3 {
   font-size: 1.125rem;
-  font-weight: 300;
+  font-weight: var(--font-weight-normal);
   margin-bottom: 0.9rem;
 }
 
 h4 {
   font-size: 1rem;
-  font-weight: 300;
+  font-weight: var(--font-weight-normal);
   margin-bottom: 0.8rem;
 }
 
 h5 {
   font-size: 0.8rem;
-  font-weight: 400;
+  font-weight: var(--font-weight-bold);
   margin-bottom: 0.5rem;
 }
 
@@ -136,10 +135,6 @@ img {
 .n-select,
 .n-select-menu {
   font-weight: var(--font-weight-normal);
-}
-
-.n-dialog {
-  font-weight: var(--font-weight-light);
 }
 
 .n-drawer-header__main {

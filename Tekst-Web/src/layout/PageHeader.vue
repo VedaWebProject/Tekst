@@ -47,7 +47,6 @@ const { pfData } = usePlatformData();
 }
 
 #current-text .current-text-subtitle {
-  font-weight: var(--font-weight-light);
   filter: opacity(0.6);
 }
 </style>

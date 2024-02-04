@@ -166,7 +166,6 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
 
 .content-header-title.reduced {
   font-size: var(--font-size-tiny);
-  font-weight: var(--font-weight-light);
   opacity: 0.8;
 }
 

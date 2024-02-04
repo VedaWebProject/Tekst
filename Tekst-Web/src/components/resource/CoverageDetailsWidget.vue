@@ -163,14 +163,10 @@ watch(
         <template #default="{ item }">
           <n-thing>
             <template #header>
-              <span style="font-weight: var(--font-weight-light)">
-                {{ item.title }}
-              </span>
+              {{ item.title }}
             </template>
             <template #header-extra>
-              <span style="font-weight: var(--font-weight-light); margin-right: var(--layout-gap)">
-                ({{ item.extra }})
-              </span>
+              <span style="margin-right: var(--layout-gap)"> ({{ item.extra }}) </span>
             </template>
             <template #description>
               <div class="cov-block">

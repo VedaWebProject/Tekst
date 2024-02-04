@@ -98,12 +98,10 @@ async function handleBookmarkSelect(bookmark: BookmarkRead) {
             <n-icon :component="AddIcon" size="large" />
           </template>
           <template #header>
-            <div style="font-weight: var(--font-weight-light)">
-              <span v-if="!maxCountReached">
-                {{ $t('browse.bookmarks.lblCreate') }}
-              </span>
-              <span v-else> ({{ $t('browse.bookmarks.maxCountReached') }}) </span>
-            </div>
+            <span v-if="!maxCountReached">
+              {{ $t('browse.bookmarks.lblCreate') }}
+            </span>
+            <span v-else> ({{ $t('browse.bookmarks.maxCountReached') }}) </span>
           </template>
         </n-thing>
       </n-list-item>
@@ -117,9 +115,7 @@ async function handleBookmarkSelect(bookmark: BookmarkRead) {
             <n-icon :component="BookIcon" size="large" />
           </template>
           <template #header>
-            <span style="font-weight: var(--font-weight-light)">
-              <location-label :location-labels="bookmark.locationLabels" />
-            </span>
+            <location-label :location-labels="bookmark.locationLabels" />
           </template>
           <template #header-extra>
             <div style="height: 100%; display: flex; align-items: center">

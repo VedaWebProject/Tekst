@@ -121,12 +121,6 @@ watch(
   color: var(--accent-color);
 }
 
-.navbar *,
-.navbar *::before,
-.navbar *::after {
-  font-weight: 300;
-}
-
 .title-container {
   display: inline-flex;
   flex-direction: column;

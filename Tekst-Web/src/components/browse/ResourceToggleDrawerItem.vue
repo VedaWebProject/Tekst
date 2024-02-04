@@ -108,7 +108,6 @@ const infoTooltip = computed(() =>
 .item .item-meta {
   opacity: 0.75;
   font-size: var(--font-size-mini);
-  font-weight: var(--font-weight-light);
 }
 
 .item .item-title,

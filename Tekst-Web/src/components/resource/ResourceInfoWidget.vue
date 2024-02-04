@@ -167,6 +167,5 @@ watch(showInfoModal, async (after) => {
 }
 .resource-comment {
   white-space: pre-wrap;
-  font-weight: var(--font-weight-light);
 }
 </style>

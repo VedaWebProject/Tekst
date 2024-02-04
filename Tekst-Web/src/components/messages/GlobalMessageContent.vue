@@ -14,7 +14,6 @@ import { NCollapse, NCollapseItem } from 'naive-ui';
         style="
           font-family: monospace;
           font-size: var(--font-size-mini);
-          font-weight: var(--font-weight-light);
           white-space: pre-wrap;
           line-height: 1;
         "

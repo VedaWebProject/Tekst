@@ -51,15 +51,12 @@ const metaExtra = computed<string[][] | null>(() => {
 .metadata {
   display: grid;
   grid-template-columns: auto 1fr;
-  font-weight: var(--font-weight-light);
 }
 
 .metadata > .metadata-category {
   text-transform: capitalize;
-}
-
-.metadata > .metadata-category {
   padding-right: 1rem;
+  font-weight: var(--font-weight-bold);
 }
 
 .metadata > .metadata-category-other {

@@ -12,7 +12,7 @@ export declare type ThemeMode = 'light' | 'dark';
 const commonOverrides: GlobalThemeOverrides = {
   common: {
     fontFamily: 'var(--font-family)',
-    fontWeight: 'var(--font-weight-light)',
+    fontWeight: 'var(--font-weight-normal)',
     fontSize: 'var(--font-size)',
     fontSizeMini: 'var(--font-size-mini)',
     fontSizeTiny: 'var(--font-size-tiny)',
