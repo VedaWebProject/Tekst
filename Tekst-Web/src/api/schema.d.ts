@@ -50,13 +50,13 @@ export interface paths {
      */
     get: operations['getLocationData'];
   };
-  '/browse/nearest-content': {
+  '/browse/nearest-content-position': {
     /**
-     * Get nearest content
+     * Get nearest content position
      * @description Finds the nearest location the given resource holds content for and returns
-     * data for that location.
+     * its position index or -1 if no content was found.
      */
-    get: operations['getNearestContent'];
+    get: operations['getNearestContentPosition'];
   };
   '/browse/locations/{id}/path/options-by-head': {
     /**
@@ -126,7 +126,8 @@ export interface paths {
     get: operations['getLocation'];
     /**
      * Delete location
-     * @description Deletes the specified location. Also deletes any associated contents, child locations and contents associated with child locations.
+     * @description Deletes the specified location. Also deletes any associated contents,
+     * child locations and contents associated with child locations.
      */
     delete: operations['deleteLocation'];
     /** Update location */
@@ -232,7 +233,11 @@ export interface paths {
     post: operations['importResourceData'];
   };
   '/texts': {
-    /** Get all texts */
+    /**
+     * Get all texts
+     * @description Returns a list of all texts.
+     * Only users with admin permissions will see inactive texts.
+     */
     get: operations['getAllTexts'];
     /** Create text */
     post: operations['createText'];
@@ -680,6 +685,17 @@ export interface components {
       contents: number;
       /** Locations */
       locations: number;
+    };
+    /** ErrorDetail */
+    ErrorDetail: {
+      /** Key */
+      key: string;
+      /** Msg */
+      msg?: string | null;
+      /** Values */
+      values?: {
+        [key: string]: string | number | boolean;
+      } | null;
     };
     /** ErrorModel */
     ErrorModel: {
@@ -1323,15 +1339,6 @@ export interface components {
        * }
        */
       tekst?: Record<string, never>;
-      /**
-       * Limits
-       * @default {
-       *   "maxResourcesPerUser": 10
-       * }
-       */
-      limits?: {
-        [key: string]: number;
-      };
     };
     /** PlatformDescriptionTranslation */
     PlatformDescriptionTranslation: {
@@ -2076,6 +2083,10 @@ export interface components {
        */
       config?: components['schemas']['RichTextResourceConfig'];
     };
+    /** TekstErrorModel */
+    TekstErrorModel: {
+      detail: components['schemas']['ErrorDetail'];
+    };
     /** TextCreate */
     TextCreate: {
       /**
@@ -2426,10 +2437,6 @@ export interface operations {
           'application/json': components['schemas']['PlatformStats'];
         };
       };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
     };
   };
   /** Get users */
@@ -2440,10 +2447,6 @@ export interface operations {
         content: {
           'application/json': components['schemas']['UserRead'][];
         };
-      };
-      /** @description Not found */
-      404: {
-        content: never;
       };
     };
   };
@@ -2458,6 +2461,18 @@ export interface operations {
       /** @description Successful Response */
       204: {
         content: never;
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -2498,6 +2513,18 @@ export interface operations {
           'application/json': components['schemas']['BookmarkRead'];
         };
       };
+      /** @description Not Found */
+      404: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Conflict */
+      409: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
       /** @description Validation Error */
       422: {
         content: {
@@ -2534,9 +2561,11 @@ export interface operations {
           )[];
         };
       };
-      /** @description Not found */
+      /** @description Not Found */
       404: {
-        content: never;
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -2577,10 +2606,6 @@ export interface operations {
           'application/json': components['schemas']['LocationData'];
         };
       };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
       /** @description Validation Error */
       422: {
         content: {
@@ -2590,11 +2615,11 @@ export interface operations {
     };
   };
   /**
-   * Get nearest content
+   * Get nearest content position
    * @description Finds the nearest location the given resource holds content for and returns
-   * data for that location.
+   * its position index or -1 if no content was found.
    */
-  getNearestContent: {
+  getNearestContentPosition: {
     parameters: {
       query: {
         /** @description Location position */
@@ -2616,9 +2641,11 @@ export interface operations {
           'application/json': number;
         };
       };
-      /** @description Not found */
+      /** @description Not Found */
       404: {
-        content: never;
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -2645,10 +2672,6 @@ export interface operations {
         content: {
           'application/json': components['schemas']['LocationRead'][][];
         };
-      };
-      /** @description Not found */
-      404: {
-        content: never;
       };
       /** @description Validation Error */
       422: {
@@ -2677,10 +2700,6 @@ export interface operations {
           'application/json': components['schemas']['LocationRead'][][];
         };
       };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
       /** @description Validation Error */
       422: {
         content: {
@@ -2703,9 +2722,11 @@ export interface operations {
           'application/json': components['schemas']['ResourceCoverage'];
         };
       };
-      /** @description Not found */
+      /** @description Not Found */
       404: {
-        content: never;
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -2729,9 +2750,11 @@ export interface operations {
           'application/json': components['schemas']['ResourceCoverageDetails'];
         };
       };
-      /** @description Not found */
+      /** @description Not Found */
       404: {
-        content: never;
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -2770,10 +2793,6 @@ export interface operations {
           )[];
         };
       };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
       /** @description Validation Error */
       422: {
         content: {
@@ -2792,7 +2811,7 @@ export interface operations {
       };
     };
     responses: {
-      /** @description Created */
+      /** @description Successful Response */
       201: {
         content: {
           'application/json':
@@ -2802,15 +2821,15 @@ export interface operations {
       };
       /** @description Forbidden */
       403: {
-        content: never;
-      };
-      /** @description Not found */
-      404: {
-        content: never;
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Conflict */
       409: {
-        content: never;
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -2839,9 +2858,11 @@ export interface operations {
             | components['schemas']['RichTextContentRead'];
         };
       };
-      /** @description Not found */
+      /** @description Not Found */
       404: {
-        content: never;
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -2863,9 +2884,17 @@ export interface operations {
       204: {
         content: never;
       };
-      /** @description Not found */
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Not Found */
       404: {
-        content: never;
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -2898,17 +2927,23 @@ export interface operations {
             | components['schemas']['RichTextContentRead'];
         };
       };
-      /** @description Bad request */
+      /** @description Bad Request */
       400: {
-        content: never;
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Forbidden */
       403: {
-        content: never;
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
-      /** @description Not found */
+      /** @description Not Found */
       404: {
-        content: never;
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -2941,9 +2976,11 @@ export interface operations {
           'application/json': components['schemas']['LocationRead'][];
         };
       };
-      /** @description Not found */
-      404: {
-        content: never;
+      /** @description Bad Request */
+      400: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -2971,9 +3008,11 @@ export interface operations {
           'application/json': components['schemas']['LocationRead'];
         };
       };
-      /** @description Not found */
-      404: {
-        content: never;
+      /** @description Bad Request */
+      400: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -3001,9 +3040,11 @@ export interface operations {
           'application/json': components['schemas']['LocationRead'][];
         };
       };
-      /** @description Not found */
-      404: {
-        content: never;
+      /** @description Bad Request */
+      400: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -3027,9 +3068,11 @@ export interface operations {
           'application/json': components['schemas']['LocationRead'];
         };
       };
-      /** @description Not found */
+      /** @description Not Found */
       404: {
-        content: never;
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -3041,7 +3084,8 @@ export interface operations {
   };
   /**
    * Delete location
-   * @description Deletes the specified location. Also deletes any associated contents, child locations and contents associated with child locations.
+   * @description Deletes the specified location. Also deletes any associated contents,
+   * child locations and contents associated with child locations.
    */
   deleteLocation: {
     parameters: {
@@ -3056,9 +3100,11 @@ export interface operations {
           'application/json': components['schemas']['DeleteLocationResult'];
         };
       };
-      /** @description Not found */
+      /** @description Not Found */
       404: {
-        content: never;
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -3087,9 +3133,11 @@ export interface operations {
           'application/json': components['schemas']['LocationRead'];
         };
       };
-      /** @description Not found */
+      /** @description Not Found */
       404: {
-        content: never;
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -3121,9 +3169,11 @@ export interface operations {
           'application/json': components['schemas']['LocationRead'];
         };
       };
-      /** @description Not found */
+      /** @description Not Found */
       404: {
-        content: never;
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -3145,10 +3195,6 @@ export interface operations {
           'application/json': components['schemas']['PlatformData'];
         };
       };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
     };
   };
   /**
@@ -3169,9 +3215,11 @@ export interface operations {
           'application/json': components['schemas']['UserReadPublic'];
         };
       };
-      /** @description Not found */
+      /** @description Not Found */
       404: {
-        content: never;
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -3202,10 +3250,6 @@ export interface operations {
           'application/json': components['schemas']['UserReadPublic'][];
         };
       };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
       /** @description Validation Error */
       422: {
         content: {
@@ -3227,10 +3271,6 @@ export interface operations {
         content: {
           'application/json': components['schemas']['PlatformSettingsRead'];
         };
-      };
-      /** @description Not found */
-      404: {
-        content: never;
       };
       /** @description Validation Error */
       422: {
@@ -3254,9 +3294,11 @@ export interface operations {
           'application/json': components['schemas']['ClientSegmentRead'];
         };
       };
-      /** @description Not found */
+      /** @description Not Found */
       404: {
-        content: never;
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -3278,9 +3320,11 @@ export interface operations {
       204: {
         content: never;
       };
-      /** @description Not found */
+      /** @description Not Found */
       404: {
-        content: never;
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -3309,9 +3353,11 @@ export interface operations {
           'application/json': components['schemas']['ClientSegmentRead'];
         };
       };
-      /** @description Not found */
+      /** @description Not Found */
       404: {
-        content: never;
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -3335,9 +3381,11 @@ export interface operations {
           'application/json': components['schemas']['ClientSegmentRead'];
         };
       };
-      /** @description Not found */
-      404: {
-        content: never;
+      /** @description Conflict */
+      409: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -3376,10 +3424,6 @@ export interface operations {
           )[];
         };
       };
-      /** @description Not found */
-      404: {
-        content: never;
-      };
       /** @description Validation Error */
       422: {
         content: {
@@ -3398,7 +3442,7 @@ export interface operations {
       };
     };
     responses: {
-      /** @description Created */
+      /** @description Successful Response */
       201: {
         content: {
           'application/json':
@@ -3406,9 +3450,23 @@ export interface operations {
             | components['schemas']['RichTextResourceRead'];
         };
       };
-      /** @description Not found */
+      /** @description Bad Request */
+      400: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Not Found */
       404: {
-        content: never;
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Conflict */
+      409: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -3426,7 +3484,7 @@ export interface operations {
       };
     };
     responses: {
-      /** @description Created */
+      /** @description Successful Response */
       201: {
         content: {
           'application/json':
@@ -3434,9 +3492,23 @@ export interface operations {
             | components['schemas']['RichTextResourceRead'];
         };
       };
-      /** @description Not found */
+      /** @description Bad Request */
+      400: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Not Found */
       404: {
-        content: never;
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Conflict */
+      409: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -3462,9 +3534,11 @@ export interface operations {
             | components['schemas']['RichTextResourceRead'];
         };
       };
-      /** @description Not found */
+      /** @description Not Found */
       404: {
-        content: never;
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -3486,9 +3560,23 @@ export interface operations {
       204: {
         content: never;
       };
-      /** @description Not found */
+      /** @description Bad Request */
+      400: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Not Found */
       404: {
-        content: never;
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -3521,9 +3609,17 @@ export interface operations {
             | components['schemas']['RichTextResourceRead'];
         };
       };
-      /** @description Not found */
+      /** @description Bad Request */
+      400: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Not Found */
       404: {
-        content: never;
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -3554,9 +3650,29 @@ export interface operations {
             | components['schemas']['RichTextResourceRead'];
         };
       };
-      /** @description Not found */
+      /** @description Bad Request */
+      400: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Not Found */
       404: {
-        content: never;
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Conflict */
+      409: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -3582,9 +3698,23 @@ export interface operations {
             | components['schemas']['RichTextResourceRead'];
         };
       };
-      /** @description Not found */
+      /** @description Bad Request */
+      400: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Not Found */
       404: {
-        content: never;
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -3610,9 +3740,17 @@ export interface operations {
             | components['schemas']['RichTextResourceRead'];
         };
       };
-      /** @description Not found */
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Not Found */
       404: {
-        content: never;
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -3638,9 +3776,17 @@ export interface operations {
             | components['schemas']['RichTextResourceRead'];
         };
       };
-      /** @description Not found */
+      /** @description Bad Request */
+      400: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Not Found */
       404: {
-        content: never;
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -3666,9 +3812,11 @@ export interface operations {
             | components['schemas']['RichTextResourceRead'];
         };
       };
-      /** @description Not found */
+      /** @description Not Found */
       404: {
-        content: never;
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -3692,9 +3840,17 @@ export interface operations {
           'application/json': unknown;
         };
       };
-      /** @description Not found */
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Not Found */
       404: {
-        content: never;
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -3723,9 +3879,23 @@ export interface operations {
           'application/json': components['schemas']['ResourceDataImportResponse'];
         };
       };
-      /** @description Not found */
+      /** @description Bad Request */
+      400: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Not Found */
       404: {
-        content: never;
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -3735,7 +3905,11 @@ export interface operations {
       };
     };
   };
-  /** Get all texts */
+  /**
+   * Get all texts
+   * @description Returns a list of all texts.
+   * Only users with admin permissions will see inactive texts.
+   */
   getAllTexts: {
     parameters: {
       query?: {
@@ -3748,10 +3922,6 @@ export interface operations {
         content: {
           'application/json': components['schemas']['TextRead'][];
         };
-      };
-      /** @description Not found */
-      404: {
-        content: never;
       };
       /** @description Validation Error */
       422: {
@@ -3775,9 +3945,11 @@ export interface operations {
           'application/json': components['schemas']['TextRead'];
         };
       };
-      /** @description Not found */
-      404: {
-        content: never;
+      /** @description Conflict */
+      409: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -3805,9 +3977,11 @@ export interface operations {
           'application/json': unknown;
         };
       };
-      /** @description Not found */
+      /** @description Not Found */
       404: {
-        content: never;
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -3839,9 +4013,23 @@ export interface operations {
           'application/json': unknown;
         };
       };
-      /** @description Not found */
+      /** @description Bad Request */
+      400: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Not Found */
       404: {
-        content: never;
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Conflict */
+      409: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -3872,9 +4060,17 @@ export interface operations {
           'application/json': components['schemas']['TextRead'];
         };
       };
-      /** @description Not found */
+      /** @description Bad Request */
+      400: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Not Found */
       404: {
-        content: never;
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -3900,9 +4096,17 @@ export interface operations {
           'application/json': components['schemas']['TextRead'];
         };
       };
-      /** @description Not found */
+      /** @description Bad Request */
+      400: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Not Found */
       404: {
-        content: never;
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -3926,9 +4130,11 @@ export interface operations {
           'application/json': components['schemas']['TextRead'];
         };
       };
-      /** @description Not found */
+      /** @description Not Found */
       404: {
-        content: never;
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -3950,9 +4156,17 @@ export interface operations {
       204: {
         content: never;
       };
-      /** @description Not found */
+      /** @description Bad Request */
+      400: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Not Found */
       404: {
-        content: never;
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {
@@ -3981,9 +4195,11 @@ export interface operations {
           'application/json': components['schemas']['TextRead'];
         };
       };
-      /** @description Not found */
+      /** @description Not Found */
       404: {
-        content: never;
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {

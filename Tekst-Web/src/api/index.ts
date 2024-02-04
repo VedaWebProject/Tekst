@@ -4,6 +4,7 @@ import { useAuthStore } from '@/stores';
 import Cookies from 'js-cookie';
 import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
+import { useErrors } from '@/composables/errors';
 
 const serverUrl: string | undefined = import.meta.env.TEKST_SERVER_URL;
 const apiPath: string | undefined = import.meta.env.TEKST_API_PATH;
@@ -43,9 +44,13 @@ const customFetch = async (input: RequestInfo | URL, init?: RequestInit | undefi
     // show CSRF/XSRF error on 403 response mentioning CSRF
     const { message } = useMessages();
     message.error($t('errors.csrf'));
-  } else if (response.status === 403) {
-    const { message } = useMessages();
-    message.error($t('errors.forbidden'));
+  } else if (response.status >= 400) {
+    // it's some kind of error, so pass the response body to the error message util
+    try {
+      useErrors().msg(await response.clone().json());
+    } catch (e) {
+      console.error(e);
+    }
   }
   return response;
 };
@@ -110,7 +115,11 @@ export const prioritizedMetadataKeys = ['author', 'year', 'language'];
 
 // general
 
+export type TekstErrorModel = components['schemas']['TekstErrorModel'];
+export type ErrorDetail = components['schemas']['ErrorDetail'];
 export type ErrorModel = components['schemas']['ErrorModel'];
+export type HTTPValidationError = components['schemas']['HTTPValidationError'];
+
 export type Metadate = components['schemas']['Metadate'];
 export type Metadata = Metadate[];
 export type LocaleKey = components['schemas']['LocaleKey'];
@@ -119,7 +128,6 @@ export type Translation = {
   locale: TranslationLocaleKey;
   translation: string;
 };
-export type LocationData = components['schemas']['LocationData'];
 
 // bookmark
 
@@ -140,6 +148,7 @@ export type TextCreate = components['schemas']['TextCreate'];
 export type TextRead = components['schemas']['TextRead'];
 export type TextUpdate = components['schemas']['TextUpdate'];
 export type LocationRead = components['schemas']['LocationRead'];
+export type LocationData = components['schemas']['LocationData'];
 
 // platform
 

@@ -31,7 +31,9 @@ export const useAuthStore = defineStore('auth', () => {
   const user = ref<UserRead>();
   const loggedIn = computed(() => !!user.value);
 
-  const sessionExpiryTsSec = ref(Number(localStorage.getItem('sessionExpiryS')) || null);
+  const sessionExpiryTsSec = ref(
+    Number(localStorage.getItem('sessionExpiryS')) || Number.MAX_SAFE_INTEGER
+  );
 
   (() => {
     const storageData = localStorage.getItem('user');
@@ -53,7 +55,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   function _unsetCookieExpiry() {
-    sessionExpiryTsSec.value = null;
+    sessionExpiryTsSec.value = Number.MAX_SAFE_INTEGER;
     localStorage.removeItem('sessionExpiryS');
   }
 
@@ -148,17 +150,8 @@ export const useAuthStore = defineStore('auth', () => {
       closeLoginModal();
       return true;
     } else {
-      if (error.detail === 'LOGIN_BAD_CREDENTIALS') {
-        message.error($t('account.errors.badCreds'));
-      } else if (error.detail === 'LOGIN_USER_NOT_VERIFIED') {
-        const { error } = await POST('/auth/request-verify-token', { body: { email: username } });
-        if (!error) {
-          message.error($t('account.errors.notVerified'));
-        } else {
-          message.error($t('errors.unexpected'), error);
-        }
-      } else {
-        message.error($t('errors.unexpected'), error);
+      if (error.detail === 'LOGIN_USER_NOT_VERIFIED') {
+        await POST('/auth/request-verify-token', { body: { email: username } });
       }
       _cleanupSession();
       closeLoginModal(false);

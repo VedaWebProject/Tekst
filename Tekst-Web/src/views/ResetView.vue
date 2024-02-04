@@ -44,28 +44,19 @@ function handlePasswordInput() {
 async function handlePasswordSave() {
   loading.value = true;
   passwordFormRef.value
-    ?.validate(async (errors) => {
-      !errors &&
-        (async () => {
-          const { error } = await POST('/auth/reset-password', {
-            body: {
-              password: passwordFormModel.value.password || '',
-              token: token || '',
-            },
-          });
-          if (!error) {
-            message.success($t('account.resetPassword.success'), undefined, 10);
-            router.push({ name: 'home' });
-          } else {
-            if (error.detail === 'RESET_PASSWORD_BAD_TOKEN') {
-              message.error($t('account.resetPassword.badToken'));
-            } else {
-              message.error($t('errors.unexpected'), error);
-            }
-            router.push({ name: 'home' });
-          }
-          loading.value = false;
-        })();
+    ?.validate(async (validationErrors) => {
+      if (validationErrors) return;
+      const { error } = await POST('/auth/reset-password', {
+        body: {
+          password: passwordFormModel.value.password || '',
+          token: token || '',
+        },
+      });
+      if (!error) {
+        message.success($t('account.resetPassword.success'), undefined, 10);
+      }
+      router.push({ name: 'home' });
+      loading.value = false;
     })
     .catch(() => {
       message.error($t('errors.followFormRules'));

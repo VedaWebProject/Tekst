@@ -2,8 +2,9 @@ from typing import Annotated, Literal
 
 from beanie import PydanticObjectId
 from beanie.operators import In, NotIn
-from fastapi import APIRouter, HTTPException, Path, Query, status
+from fastapi import APIRouter, Path, Query, status
 
+from tekst import errors
 from tekst.auth import OptionalUserDep, UserDep
 from tekst.models.content import ContentBaseDocument
 from tekst.models.exchange import LocationData
@@ -23,7 +24,6 @@ from tekst.resources import AnyContentReadBody
 router = APIRouter(
     prefix="/browse",
     tags=["browse"],
-    responses={status.HTTP_404_NOT_FOUND: {"description": "Not found"}},
 )
 
 
@@ -31,6 +31,11 @@ router = APIRouter(
     "/content-siblings",
     response_model=list[AnyContentReadBody],
     status_code=status.HTTP_200_OK,
+    responses=errors.responses(
+        [
+            errors.E_404_RESOURCE_NOT_FOUND,
+        ]
+    ),
 )
 async def get_content_siblings(
     user: OptionalUserDep,
@@ -65,10 +70,7 @@ async def get_content_siblings(
     )
 
     if not resource:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Resource with ID {resource_id} could not be found.",
-        )
+        raise errors.E_404_RESOURCE_NOT_FOUND
 
     location_ids = [
         location.id
@@ -183,8 +185,16 @@ async def get_location_data(
     return LocationData(location_path=location_path, contents=content_docs)
 
 
-@router.get("/nearest-content", status_code=status.HTTP_200_OK)
-async def get_nearest_content(
+@router.get(
+    "/nearest-content-position",
+    status_code=status.HTTP_200_OK,
+    responses=errors.responses(
+        [
+            errors.E_404_RESOURCE_NOT_FOUND,
+        ]
+    ),
+)
+async def get_nearest_content_position(
     user: OptionalUserDep,
     position: Annotated[int, Query(alias="pos", description="Location position")],
     target_resource_id: Annotated[
@@ -214,7 +224,7 @@ async def get_nearest_content(
 ) -> int:
     """
     Finds the nearest location the given resource holds content for and returns
-    data for that location.
+    its position index or -1 if no content was found.
     """
     # we don't check read access here, because are passing data to the location-data
     # endpoint later anyway and it already checks for permissions
@@ -222,10 +232,7 @@ async def get_nearest_content(
         target_resource_id, with_children=True
     )
     if not resource_doc:  # pragma: no cover
-        raise HTTPException(
-            status.HTTP_404_NOT_FOUND,
-            detail=f"No resource with ID {target_resource_id}",
-        )
+        raise errors.E_404_RESOURCE_NOT_FOUND
 
     # get all locations before/after said location
     locations = (
@@ -244,16 +251,8 @@ async def get_nearest_content(
         .aggregate([{"$project": {"position": 1}}])
         .to_list()
     )
-    # prepare 404 (we'll reuse it later)
-    not_found_exception = HTTPException(
-        status.HTTP_404_NOT_FOUND,
-        detail=(
-            f"No content found {'before' if mode == 'preceding' else 'after'} "
-            f"position {position} for resource {target_resource_id}."
-        ),
-    )
     if not locations:  # pragma: no cover
-        raise not_found_exception
+        return -1
 
     # get contents for these locations
     contents = (
@@ -269,7 +268,7 @@ async def get_nearest_content(
         .to_list()
     )
     if not contents:  # pragma: no cover
-        raise not_found_exception
+        return -1
 
     # find out nearest of those locations with contents
     locations = [
@@ -346,6 +345,11 @@ async def get_path_options_by_root(
     "/resources/{id}/coverage",
     status_code=status.HTTP_200_OK,
     response_model=ResourceCoverage,
+    responses=errors.responses(
+        [
+            errors.E_404_RESOURCE_NOT_FOUND,
+        ]
+    ),
 )
 async def get_resource_coverage_data(
     resource_id: Annotated[PydanticObjectId, Path(alias="id")], user: OptionalUserDep
@@ -356,9 +360,7 @@ async def get_resource_coverage_data(
         with_children=True,
     )
     if not resource_doc:
-        raise HTTPException(
-            status.HTTP_404_NOT_FOUND, detail=f"No resource with ID {resource_id}"
-        )
+        raise errors.E_404_RESOURCE_NOT_FOUND
     return {
         "covered": await ContentBaseDocument.find(
             ContentBaseDocument.resource_id == resource_id,
@@ -375,6 +377,11 @@ async def get_resource_coverage_data(
     "/resources/{id}/coverage-details",
     status_code=status.HTTP_200_OK,
     response_model=ResourceCoverageDetails,
+    responses=errors.responses(
+        [
+            errors.E_404_RESOURCE_NOT_FOUND,
+        ]
+    ),
 )
 async def get_detailed_resource_coverage_data(
     user: UserDep, resource_id: Annotated[PydanticObjectId, Path(alias="id")]
@@ -385,9 +392,7 @@ async def get_detailed_resource_coverage_data(
         with_children=True,
     )
     if not resource_doc:
-        raise HTTPException(
-            status.HTTP_404_NOT_FOUND, detail=f"No resource with ID {resource_id}"
-        )
+        raise errors.E_404_RESOURCE_NOT_FOUND
     data: list[dict] = (
         await LocationDocument.find(
             LocationDocument.text_id == resource_doc.text_id,

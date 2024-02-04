@@ -327,7 +327,7 @@ function handleSelectcompareResource(key: string) {
 }
 
 async function handleNearestChangeClick(mode: 'preceding' | 'subsequent') {
-  const { data: pos, error } = await GET('/browse/nearest-content', {
+  const { data: pos, error } = await GET('/browse/nearest-content-position', {
     params: {
       query: {
         pos: position.value,
@@ -338,9 +338,11 @@ async function handleNearestChangeClick(mode: 'preceding' | 'subsequent') {
     },
   });
   if (!error) {
-    navigateContents(pos - position.value);
-  } else {
-    message.info("There's NOTHING!!!!");
+    if (pos >= 0) {
+      navigateContents(pos - position.value);
+    } else {
+      message.info($t('contents.msgNoNearest'));
+    }
   }
 }
 </script>

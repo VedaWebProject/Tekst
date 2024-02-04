@@ -1,7 +1,8 @@
 from typing import Annotated
 
-from fastapi import APIRouter, HTTPException, Path, status
+from fastapi import APIRouter, Path, status
 
+from tekst import errors
 from tekst.auth import (
     UserDep,
 )
@@ -17,22 +18,25 @@ router = APIRouter(
 )
 
 
-@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete(
+    "/{id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    responses=errors.responses(
+        [
+            errors.E_404_BOOKMARK_NOT_FOUND,
+            errors.E_403_FORBIDDEN,
+        ]
+    ),
+)
 async def delete_bookmark(
     user: UserDep,
     bookmark_id: Annotated[PydanticObjectId, Path(alias="id")],
 ) -> None:
     bookmark_doc = await BookmarkDocument.get(bookmark_id)
     if not bookmark_doc:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"No bookmark with ID {bookmark_id}",
-        )
+        errors.E_404_BOOKMARK_NOT_FOUND
     if user.id != bookmark_doc.user_id:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Not allowed to delete this bookmark",
-        )
+        errors.E_403_FORBIDDEN
     await bookmark_doc.delete()
 
 
@@ -50,38 +54,38 @@ async def get_user_bookmarks(user: UserDep) -> list[BookmarkDocument]:
     )
 
 
-@router.post("", response_model=BookmarkRead, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "",
+    response_model=BookmarkRead,
+    status_code=status.HTTP_201_CREATED,
+    responses=errors.responses(
+        [
+            errors.E_409_BOOKMARK_EXISTS,
+            errors.E_409_BOOKMARKS_LIMIT_REACHED,
+            errors.E_404_LOCATION_NOT_FOUND,
+            errors.E_404_TEXT_NOT_FOUND,
+        ]
+    ),
+)
 async def create_bookmark(user: UserDep, bookmark: BookmarkCreate) -> BookmarkDocument:
     """Creates a bookmark for the requesting user"""
     if await BookmarkDocument.find(
         BookmarkDocument.user_id == user.id,
         BookmarkDocument.location_id == bookmark.location_id,
     ).exists():
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="A bookmark for this location already exists",
-        )
+        raise errors.E_409_BOOKMARK_EXISTS
     if (
         await BookmarkDocument.find(BookmarkDocument.user_id == user.id).count()
     ) >= 1000:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="User cannot have more than 100 bookmarks",
-        )
+        raise errors.E_409_BOOKMARKS_LIMIT_REACHED
 
     location_doc = await LocationDocument.get(bookmark.location_id)
     if not location_doc:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Location with ID {bookmark.location_id} not found",
-        )
+        raise errors.E_404_LOCATION_NOT_FOUND
 
     text_doc = await TextDocument.get(location_doc.text_id)
     if not text_doc:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Text with ID {location_doc.text_id} not found",
-        )
+        raise errors.E_404_TEXT_NOT_FOUND
 
     # construct full label
     location_labels = [location_doc.label]

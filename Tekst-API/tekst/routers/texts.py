@@ -9,7 +9,6 @@ from fastapi import (
     Body,
     Depends,
     File,
-    HTTPException,
     Path,
     UploadFile,
     status,
@@ -17,6 +16,7 @@ from fastapi import (
 from fastapi.responses import FileResponse
 from starlette.background import BackgroundTask
 
+from tekst import errors
 from tekst.auth import OptionalUserDep, SuperuserDep
 from tekst.dependencies import get_temp_dir
 from tekst.logging import log
@@ -38,7 +38,6 @@ from tekst.settings import get_settings
 router = APIRouter(
     prefix="/texts",
     tags=["texts"],
-    responses={status.HTTP_404_NOT_FOUND: {"description": "Not found"}},
 )
 
 
@@ -47,58 +46,41 @@ router = APIRouter(
 
 @router.get("", response_model=list[TextRead], status_code=status.HTTP_200_OK)
 async def get_all_texts(ou: OptionalUserDep, limit: int = 128) -> list[TextRead]:
+    """
+    Returns a list of all texts.
+    Only users with admin permissions will see inactive texts.
+    """
     restrictions = {} if (ou and ou.is_superuser) else {"is_active": True}
     return await TextDocument.find(restrictions).limit(limit).to_list()
 
 
-@router.post("", response_model=TextRead, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "",
+    response_model=TextRead,
+    status_code=status.HTTP_201_CREATED,
+    responses=errors.responses(
+        [
+            errors.E_409_TEXT_SAME_TITLE_OR_SLUG,
+        ]
+    ),
+)
 async def create_text(su: SuperuserDep, text: TextCreate) -> TextRead:
     if await TextDocument.find_one(
         Or({"title": text.title}, {"slug": text.slug})
     ).exists():
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="An equal text already exists (same title or slug)",
-        )
+        raise errors.E_409_TEXT_SAME_TITLE_OR_SLUG
     return await TextDocument.model_from(text).create()
 
 
-# @router.post(
-#     "/import",
-#     response_model=TextRead,
-#     status_code=status.HTTP_201_CREATED,
-#     include_in_schema=_cfg.dev_mode,
-# )
-# async def import_text(
-#     file: UploadFile,
-#     cfg: TekstConfig = Depends(get_cfg),
-# ) -> TextRead:  # pragma: no cover
-#     if not cfg.dev_mode:
-#         raise HTTPException(
-#             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-#             detail="Endpoint not available in production system",
-#         )
-
-#     log.debug(f'Importing text data from uploaded file "{file.filename}" ...')
-
-#     try:
-#         text = await importer.import_text(json.loads(await file.read()))
-#     except HTTPException as e:
-#         log.error(e.detail)
-#         raise e
-#     except Exception as e:
-#         log.error(e)
-#         raise HTTPException(
-#             status_code=status.HTTP_400_BAD_REQUEST,
-#             detail=f"Invalid import data: {str(e)}",
-#         )
-#     finally:
-#         await file.close()
-
-#     return text
-
-
-@router.get("/{id}/template", status_code=status.HTTP_200_OK)
+@router.get(
+    "/{id}/template",
+    status_code=status.HTTP_200_OK,
+    responses=errors.responses(
+        [
+            errors.E_404_TEXT_NOT_FOUND,
+        ]
+    ),
+)
 async def download_structure_template(
     su: SuperuserDep,
     text_id: Annotated[PydanticObjectId, Path(alias="id")],
@@ -111,10 +93,7 @@ async def download_structure_template(
     # find text
     text = await TextDocument.get(text_id)
     if not text:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Could not find text with ID {text_id}",
-        )
+        raise errors.E_404_TEXT_NOT_FOUND
     # create template for text
     structure_def: TextStructureImportData = TextStructureImportData()
     curr_location_def: LocationDefinition | None = None
@@ -134,10 +113,7 @@ async def download_structure_template(
     try:
         TextStructureImportData.model_validate(structure_def)
     except Exception:  # pragma: no cover
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Error creating template",
-        )
+        raise errors.E_500_INTERNAL_SERVER_ERROR
     # create temporary file and stream it as a file response
     tempfile = NamedTemporaryFile(mode="w")
     tempfile.write(
@@ -157,7 +133,18 @@ async def download_structure_template(
     )
 
 
-@router.post("/{id}/structure", status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/{id}/structure",
+    status_code=status.HTTP_201_CREATED,
+    responses=errors.responses(
+        [
+            errors.E_409_TEXT_IMPORT_LOCATIONS_EXIST,
+            errors.E_400_UPLOAD_INVALID_MIME_TYPE_NOT_JSON,
+            errors.E_400_UPLOAD_INVALID_JSON,
+            errors.E_404_TEXT_NOT_FOUND,
+        ]
+    ),
+)
 async def import_text_structure(
     su: SuperuserDep,
     text_id: Annotated[PydanticObjectId, Path(alias="id")],
@@ -170,31 +157,19 @@ async def import_text_structure(
     """
     # test upload file MIME type
     if not file.content_type.lower() == "application/json":
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Invalid file MIME type (must be 'application/json')",
-        )
+        raise errors.E_400_UPLOAD_INVALID_MIME_TYPE_NOT_JSON
     # find text
     text = await TextDocument.get(text_id)
     if not text:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Could not find text with ID {text_id}",
-        )
+        raise errors.E_404_TEXT_NOT_FOUND
     # does text already have locations defined?
     if await LocationDocument.find_one(LocationDocument.text_id == text_id).exists():
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="This text already has locations",
-        )
+        raise errors.E_409_TEXT_IMPORT_LOCATIONS_EXIST
     # validate structure definition
     try:
         structure_def = TextStructureImportData.model_validate_json(await file.read())
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Invalid structure definition ({str(e)})",
-        )
+    except Exception:
+        raise errors.E_400_UPLOAD_INVALID_JSON
     # import locations depth-first
     locations = structure_def.model_dump(exclude_none=True, by_alias=False)["locations"]
     structure_def = None  # de-reference structure definition object
@@ -230,7 +205,15 @@ async def import_text_structure(
 
 
 @router.post(
-    "/{id}/level/{index}", response_model=TextRead, status_code=status.HTTP_200_OK
+    "/{id}/level/{index}",
+    response_model=TextRead,
+    status_code=status.HTTP_200_OK,
+    responses=errors.responses(
+        [
+            errors.E_404_TEXT_NOT_FOUND,
+            errors.E_400_INVALID_LEVEL,
+        ]
+    ),
 )
 async def insert_level(
     su: SuperuserDep,
@@ -247,20 +230,11 @@ async def insert_level(
     text_doc: TextDocument = await TextDocument.get(text_id)
 
     if not text_doc:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Could not find text with ID {text_id}",
-        )
+        raise errors.E_404_TEXT_NOT_FOUND
 
     # index valid?
     if index < 0 or index > len(text_doc.levels):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=(
-                f"Invalid level index {index}: "
-                f"Text has {len(text_doc.levels)} levels."
-            ),
-        )
+        raise errors.E_400_INVALID_LEVEL
 
     # update text itself
     text_doc.levels.insert(index, translations)
@@ -340,6 +314,9 @@ async def insert_level(
     "/{id}/level/{index}",
     response_model=TextRead,
     status_code=status.HTTP_200_OK,
+    responses=errors.responses(
+        [errors.E_404_TEXT_NOT_FOUND, errors.E_400_INVALID_LEVEL]
+    ),
 )
 async def delete_level(
     su: SuperuserDep,
@@ -352,20 +329,11 @@ async def delete_level(
     text_doc: TextDocument = await TextDocument.get(text_id)
 
     if not text_doc:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Could not find text with ID {text_id}",
-        )
+        raise errors.E_404_TEXT_NOT_FOUND
 
     # index valid?
     if index < 0 or index >= len(text_doc.levels):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=(
-                f"Invalid level index {index}: "
-                f"Text has {len(text_doc.levels)} levels."
-            ),
-        )
+        raise errors.E_400_INVALID_LEVEL
 
     # make locations of higher level (if it exists)
     # parents of locations of lower level (if it exists)
@@ -442,6 +410,12 @@ async def delete_level(
 @router.delete(
     "/{id}",
     status_code=status.HTTP_204_NO_CONTENT,
+    responses=errors.responses(
+        [
+            errors.E_404_TEXT_NOT_FOUND,
+            errors.E_400_TEXT_DELETE_LAST_TEXT,
+        ]
+    ),
 )
 async def delete_text(
     su: SuperuserDep,
@@ -449,15 +423,9 @@ async def delete_text(
 ) -> None:
     text = await TextDocument.get(text_id)
     if not text:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Could not find text with ID {text_id}",
-        )
+        raise errors.E_404_TEXT_NOT_FOUND
     if await TextDocument.find_all().count() <= 1:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Cannot delete the only text",
-        )
+        raise errors.E_400_TEXT_DELETE_LAST_TEXT
     # get resources associated with target text
     resources = await ResourceBaseDocument.find(
         ResourceBaseDocument.text_id == text_id, with_children=True
@@ -484,18 +452,33 @@ async def delete_text(
         await pf_settings_doc.replace()
 
 
-@router.get("/{id}", response_model=TextRead, status_code=status.HTTP_200_OK)
+@router.get(
+    "/{id}",
+    response_model=TextRead,
+    status_code=status.HTTP_200_OK,
+    responses=errors.responses(
+        [
+            errors.E_404_TEXT_NOT_FOUND,
+        ]
+    ),
+)
 async def get_text(text_id: Annotated[PydanticObjectId, Path(alias="id")]) -> TextRead:
     text = await TextDocument.get(text_id)
     if not text:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Could not find text with ID {text_id}",
-        )
+        raise errors.E_404_TEXT_NOT_FOUND
     return text
 
 
-@router.patch("/{id}", response_model=TextRead, status_code=status.HTTP_200_OK)
+@router.patch(
+    "/{id}",
+    response_model=TextRead,
+    status_code=status.HTTP_200_OK,
+    responses=errors.responses(
+        [
+            errors.E_404_TEXT_NOT_FOUND,
+        ]
+    ),
+)
 async def update_text(
     su: SuperuserDep,
     text_id: Annotated[PydanticObjectId, Path(alias="id")],
@@ -503,8 +486,5 @@ async def update_text(
 ) -> TextDocument:
     text = await TextDocument.get(text_id)
     if not text:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Text {text_id} doesn't exist",
-        )
+        raise errors.E_404_TEXT_NOT_FOUND
     return await text.apply_updates(updates)

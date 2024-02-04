@@ -263,6 +263,7 @@ async def test_update_location(
     insert_sample_data,
     status_fail_msg,
     login,
+    wrong_id,
 ):
     text_id = (await insert_sample_data("texts", "locations"))["texts"][0]
 
@@ -297,13 +298,8 @@ async def test_update_location(
 
     # update invalid location
     location_update = {"label": "Brand new label"}
-    resp = await test_client.patch(
-        "/locations/637b9ad396d541a505e5439b", json=location_update
-    )
-    assert resp.status_code == 400, status_fail_msg(
-        400,
-        resp,
-    )
+    resp = await test_client.patch(f"/locations/{wrong_id}", json=location_update)
+    assert resp.status_code == 404, status_fail_msg(404, resp)
 
 
 @pytest.mark.anyio

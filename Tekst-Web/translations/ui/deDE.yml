@@ -66,6 +66,23 @@ errors:
   logInToAccess: Melden Sie sich an, um auf die angefragte Ressource zuzugreifen!
   logoutAfter401: Sie wurden abgemeldet, nachdem Sie unbefugt auf eine geschützte Ressource zugreifen wollten.
   csrf: Ihre Anfrage hat die CSRF-Tests nicht bestanden. Löschen Sie ihre Cookies zu dieser Website und laden Sie sie neu.
+  loginBadCredentials: Falsche Email-Adresse/Passwort oder Konto noch nicht aktiviert
+  loginUserNotVerified: Ihre Email-Adresse ist noch nicht verifiziert. Wir haben Ihnen einen Verifizierungs-Link geschickt.
+  registerEmailAlreadyExists: Diese Email-Adresse ist bereits registriert.
+  registerUsernameAlreadyExists: Dieser Benutzername ist bereits vergeben.
+  registerInvalidPassword: Das eingegebene Passwort entspricht nicht den Sicherheitsanforderungen.
+  verifyUserBadToken: Dieser Verifizierungs-Link ist entweder ungültig oder bereits abgelaufen.
+  verifyUserAlreadyVerified: Diese Email-Adresse ist bereits verifiziert.
+  resourcesLimitReached: Maximum von {limit} Ressourcen für diesen Benutzer erreicht
+  bookmarkExists: Sie haben bereits ein Lesezeichen für diese Fundstelle angelegt.
+  bookmarksLimitReached: Sie haben die Höchstmenge von {limit} Lesezeichen erreicht!
+  uploadInvalidMimeTypeNotJson: Ungültiger Dateityp. Nur JSON-Dateien sind erlaubt.
+  uploadInvalidJson: Die hochgeladene JSON-Datei ist ungültig.
+  importIdMismatch: Eine ID in den Importdaten stimmt nicht mit der entsprechenden ID in der Anfrage überein.
+  importIdNonExistent: Eine ID in den Importdaten konnte nicht in der Datenbank gefunden werden.
+  importInvalidContentData: Einige Inhalte in den Importdaten entsprechen nicht dem erforderlichen Schema.
+  segmentKeyLocaleConflict: Ein Segment mit der gleichen Kombination aus Schlüssel und Sprache existiert bereits.
+  textSameTitleOrSlug: Ein Text mit diesem Titel oder Identifikator existiert bereits.
 
 nav:
   about: Über
@@ -117,8 +134,6 @@ browse:
     commentModalInputLabel: Kommentar (optional)
     createSuccess: Lesezeichen erstellt
     deleteSuccess: Lesezeichen gelöscht
-    errorBookmarkExists: Sie haben bereits ein Lesezeichen für diese Fundstelle erstellt!
-    maxCountReached: Sie haben die Höchstmenge von 1000 Lesezeichen erreicht!
   resourceToggleDrawer:
     heading: Ressourcen anzeigen
   uncategorized: Unkategorisiert
@@ -158,10 +173,6 @@ register:
   activationNeededHint: Sie werden sich erst anmelden können, wenn Ihr Konto von uns aktiviert wurde. Sie werden darüber per Email benachrichtigt.
   activationNotNeededHint: Sie können sich jetzt anmelden.
   repeatPassword: '@:models.user.password wiederholen'
-  errors:
-    emailAlreadyRegistered: Diese Email-Adresse ist bereits registriert.
-    usernameAlreadyRegistered: Dieser Benutzername ist bereits vergeben.
-    weakPassword: Das eingegebene Passwort entspricht nicht den Sicherheitsanforderungen.
 
 models:
   locale:
@@ -269,7 +280,6 @@ resources:
     Das bedeutet nicht, dass es eine gute Idee ist, dies zu tun. Bitte stellen Sie
     sicher, dass jede Ihrer Änderungen im Einverständnis mit dem Besitzer dieser
     Ressource geschieht!
-  msgLimitReached: Maximum von {limit} Ressourcen für diesen Benutzer erreicht
   ownedByMe: von mir
   ownedByOthers: von anderen
   public: '@:models.resource.public'
@@ -384,6 +394,7 @@ contents:
   msgSaved: Der Inhalt für diese Fundstelle wurde gespeichert.
   msgDeleted: Der Inhalt für diese Fundstelle wurde gelöscht.
   msgImportSuccess: 'Import abgeschlossen. Inhalte neu erstellt: {created}. Inhalte modifiziert: {updated}. Errors: {errors}.'
+  msgNoNearest: Es gibt keine weiteren Fundstellen mit Inhalt in dieser Richtung.
   confirmDelete: Sind Sie sicher, dass Sie den Inhalt für diese Fundstelle löschen möchten?
   msgNoOwnContentTitle: Kein eigner Inhalt für diese Fundstelle!
   msgNoOwnContentBody: |
@@ -410,8 +421,6 @@ account:
   localeApplied: Das Gebietsschema wurde entsprechend Ihrer Account-Einstellungen zu {locale} geändert.
   verify:
     success: Ihre Email-Adresse wurde erfolgreich verifiziert! Sie können sich jetzt in Ihrem Konto anmelden.
-    badToken: Dieser Verifizierungs-Link ist entweder ungültig oder bereits abgelaufen.
-    alreadyVerified: Diese Email-Adresse ist bereits verifiziert.
   forgotPassword:
     forgotPassword: Ich habe mein Passwort vergessen
     sentResetLink: Wir haben einen Link zum Zurücksetzen des Passworts an {email} gesendet
@@ -422,9 +431,6 @@ account:
     badToken: Der benutzte Passwort-Zurücksetzen-Link ist entweder ungültig oder bereits abgelaufen.
   login:
     heading: Anmelden
-  errors:
-    badCreds: Falsche Email-Adresse/Passwort oder Konto noch nicht aktiviert
-    notVerified: Ihre Email-Adresse ist noch nicht verifiziert. Wir haben Ihnen einen Verifizierungs-Link geschickt.
   autoLogout: Ihre Sitzung endet automatisch in {minutes} Minuten und {seconds} Sekunden. Melden Sie sich ab und wieder an, um Ihre Sitzung jetzt zu erneuern.
   sessionExpired: Ihre Sitzung ist abgelaufen. Sie wurden abgemeldet.
   renewLogin: Melden Sie sich wieder an, um Ihre Sitzung zu erneuern.

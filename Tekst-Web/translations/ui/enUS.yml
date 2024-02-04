@@ -57,12 +57,29 @@ errors:
   notFound: This resource could not be found.
   unexpected: An unexpected error occurred. This should not happen.
   conflict: There is a conflict with already existing data.
-  forbidden: You are not authorized to perform this action.
+  forbidden: You have no permission to perform this action.
   followFormRules: Please correct your inputs according to the form rules!
   noAccess: You don't have access to {resource}.
   logInToAccess: Log in to access the requested resource!
   logoutAfter401: You have been logged out after trying to access a restricted resource without authorization.
   csrf: Your request didn't pass the CSRF checks. Delete your cookies for this website and refresh the page.
+  loginBadCredentials: Incorrect email/password or account isn't activated, yet
+  loginUserNotVerified: Your email address is not verified, yet. We just sent you a verification link.
+  registerEmailAlreadyExists: This email address is already registered.
+  registerUsernameAlreadyExists: This username is already taken.
+  registerInvalidPassword: The given password doesn't meet the security requirements.
+  verifyUserBadToken: This verification link is either invalid or already expired.
+  verifyUserAlreadyVerified: This email address is already verified.
+  resourcesLimitReached: Reached limit of {limit} resources for this user
+  bookmarkExists: You already have a bookmark for this location.
+  bookmarksLimitReached: You have reached the maximum number of {limit} bookmarks!
+  uploadInvalidMimeTypeNotJson: Invalid file type. Only JSON files are allowed.
+  uploadInvalidJson: The uploaded file is not a valid JSON file.
+  importIdMismatch: An ID in the import data does not match the respective ID in the request.
+  importIdNonExistent: An ID in the import data could not be found in the database.
+  importInvalidContentData: Some contents in the import data don't follow the required schema.
+  segmentKeyLocaleConflict: A segment with this key and language already exists.
+  textSameTitleOrSlug: There is already a text with the same title or slug.
 
 nav:
   about: About
@@ -114,8 +131,6 @@ browse:
     commentModalInputLabel: Comment (optional)
     createSuccess: Bookmark created
     deleteSuccess: Bookmark deleted
-    errorBookmarkExists: You have already created a bookmark for this location!
-    maxCountReached: You have reached the maximum number of 1000 bookmarks!
   resourceToggleDrawer:
     heading: Show Resources
   uncategorized: Uncategorized
@@ -157,10 +172,6 @@ register:
     We will send you an email when that happens.
   activationNotNeededHint: You can now log in.
   repeatPassword: 'Repeat @:models.user.password'
-  errors:
-    emailAlreadyRegistered: This email address is already registered.
-    usernameAlreadyRegistered: This username is already taken.
-    weakPassword: The given password doesn't meet the security requirements.
 
 models:
   locale:
@@ -267,7 +278,6 @@ resources:
     As an administrator, you are able to modify resources owned by other users.
     This doesn't mean it is a good idea to do so. Please make sure that whatever you
     do happens in agreement with the owner of this resource!
-  msgLimitReached: Reached limit of {limit} resources for this user
   ownedByMe: by me
   ownedByOthers: by others
   public: '@:models.resource.public'
@@ -375,6 +385,7 @@ contents:
   msgSaved: The content for this location has been saved.
   msgDeleted: The content for this location has been deleted.
   msgImportSuccess: 'Import finished. Contents newly created: {created}. Contents modified: {updated}. Errors: {errors}.'
+  msgNoNearest: There are no more locations holding content in this direction.
   confirmDelete: Are you sure you want to delete the content for this location?
   msgNoOwnContentTitle: No own content for this location!
   msgNoOwnContentBody: |
@@ -401,8 +412,6 @@ account:
   localeApplied: The locale has been changed to {locale} according to your account settings.
   verify:
     success: Your email address has been successfully verified! You can now log into your account.
-    badToken: This verification link is either invalid or already expired.
-    alreadyVerified: This email address is already verified.
   forgotPassword:
     forgotPassword: I forgot my password
     sentResetLink: We sent a password reset link to {email}
@@ -413,9 +422,6 @@ account:
     badToken: The used password reset link is either invalid or already expired.
   login:
     heading: Login
-  errors:
-    badCreds: Incorrect email/password or account isn't activated, yet
-    notVerified: Your email address is not verified, yet. We just sent you a verification link.
   autoLogout: Your session will automatically end in {minutes} minutes and {seconds} seconds. You can log out and log back in to renew your session now.
   sessionExpired: Your session has expired. You have been logged out.
   renewLogin: Log in again to renew your session.

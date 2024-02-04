@@ -2,8 +2,9 @@ from typing import Annotated
 
 from beanie import PydanticObjectId
 from beanie.operators import Eq, In, Not
-from fastapi import APIRouter, HTTPException, Path, Query, status
+from fastapi import APIRouter, Path, Query, status
 
+from tekst import errors
 from tekst.auth import OptionalUserDep, UserDep
 from tekst.models.content import ContentBaseDocument
 from tekst.models.resource import ResourceBaseDocument
@@ -21,7 +22,6 @@ from tekst.utils.html import sanitize_user_model_html
 router = APIRouter(
     prefix="/contents",
     tags=["contents"],
-    responses={status.HTTP_404_NOT_FOUND: {"description": "Not found"}},
 )
 
 
@@ -29,11 +29,12 @@ router = APIRouter(
     "",
     response_model=AnyContentReadBody,
     status_code=status.HTTP_201_CREATED,
-    responses={
-        status.HTTP_201_CREATED: {"description": "Created"},
-        status.HTTP_409_CONFLICT: {"description": "Conflict"},
-        status.HTTP_403_FORBIDDEN: {"description": "Forbidden"},
-    },
+    responses=errors.responses(
+        [
+            errors.E_403_FORBIDDEN,
+            errors.E_409_CONTENT_CONFLICT,
+        ]
+    ),
 )
 async def create_content(
     content: AnyContentCreateBody, user: UserDep
@@ -44,20 +45,14 @@ async def create_content(
         await ResourceBaseDocument.access_conditions_write(user),
         with_children=True,
     ).exists():
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="No write access for contents belonging to this resource",
-        )
+        raise errors.E_403_FORBIDDEN
     # check for duplicates
     if await ContentBaseDocument.find_one(
         ContentBaseDocument.resource_id == content.resource_id,
         ContentBaseDocument.location_id == content.location_id,
         with_children=True,
     ).exists():
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="The properties of this content conflict with another content",
-        )
+        raise errors.E_409_CONTENT_CONFLICT
 
     # if the content has a "html" field, sanitize it
     content = sanitize_user_model_html(content)
@@ -71,7 +66,16 @@ async def create_content(
     )
 
 
-@router.get("/{id}", response_model=AnyContentReadBody, status_code=status.HTTP_200_OK)
+@router.get(
+    "/{id}",
+    response_model=AnyContentReadBody,
+    status_code=status.HTTP_200_OK,
+    responses=errors.responses(
+        [
+            errors.E_404_CONTENT_NOT_FOUND,
+        ]
+    ),
+)
 async def get_content(
     content_id: Annotated[PydanticObjectId, Path(alias="id")], user: OptionalUserDep
 ) -> AnyContentDocument:
@@ -86,10 +90,7 @@ async def get_content(
         ).exists()
     )
     if not content_doc or not resource_read_allowed:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Could not find content with ID {content_id}",
-        )
+        raise errors.E_404_CONTENT_NOT_FOUND
     return content_doc
 
 
@@ -97,10 +98,14 @@ async def get_content(
     "/{id}",
     response_model=AnyContentReadBody,
     status_code=status.HTTP_200_OK,
-    responses={
-        status.HTTP_400_BAD_REQUEST: {"description": "Bad request"},
-        status.HTTP_403_FORBIDDEN: {"description": "Forbidden"},
-    },
+    responses=errors.responses(
+        [
+            errors.E_404_CONTENT_NOT_FOUND,
+            errors.E_400_CONTENT_ID_MISMATCH,
+            errors.E_400_CONTENT_TYPE_MISMATCH,
+            errors.E_403_FORBIDDEN,
+        ]
+    ),
 )
 async def update_content(
     content_id: Annotated[PydanticObjectId, Path(alias="id")],
@@ -109,32 +114,20 @@ async def update_content(
 ) -> AnyContentDocument:
     content_doc = await ContentBaseDocument.get(content_id, with_children=True)
     if not content_doc:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Content {content_id} doesn't exist",
-        )
+        raise errors.E_404_CONTENT_NOT_FOUND
     # check if content's resource ID matches updates' resource ID (if any)
     if updates.resource_id and content_doc.resource_id != updates.resource_id:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Referenced resource ID in content and updates doesn't match",
-        )
+        raise errors.E_400_CONTENT_ID_MISMATCH
     # check if content's resource type matches updates' resource type
     if updates.resource_type != content_doc.resource_type:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Resource type doesn't match existing content's resource type",
-        )
+        raise errors.E_400_CONTENT_TYPE_MISMATCH
     # check if the resource this content belongs to is writable by user
     if not await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == content_doc.resource_id,
         await ResourceBaseDocument.access_conditions_write(user),
         with_children=True,
     ).exists():
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail=f"No write access for resource {content_doc.resource_id}",
-        )
+        raise errors.E_403_FORBIDDEN
 
     # if the updated content has a "html" field, sanitize it
     updates = sanitize_user_model_html(updates)
@@ -144,24 +137,28 @@ async def update_content(
     )
 
 
-@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete(
+    "/{id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    responses=errors.responses(
+        [
+            errors.E_404_CONTENT_NOT_FOUND,
+            errors.E_403_FORBIDDEN,
+        ]
+    ),
+)
 async def delete_content(
     user: UserDep, content_id: Annotated[PydanticObjectId, Path(alias="id")]
 ) -> None:
     content_doc = await ContentBaseDocument.get(content_id, with_children=True)
     if not content_doc:
-        raise HTTPException(
-            status.HTTP_404_NOT_FOUND, detail=f"No content with ID {content_id}"
-        )
+        raise errors.E_404_CONTENT_NOT_FOUND
     if not await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == content_doc.resource_id,
         await ResourceBaseDocument.access_conditions_write(user),
         with_children=True,
     ).exists():
-        raise HTTPException(
-            status.HTTP_403_FORBIDDEN,
-            detail=f"Cannot delete contents of resource {content_doc.resource_id}",
-        )
+        raise errors.E_403_FORBIDDEN
     # all fine, delete content
     await content_doc.delete()
 

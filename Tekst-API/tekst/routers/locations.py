@@ -2,10 +2,10 @@ from typing import Annotated
 
 from beanie import PydanticObjectId
 from beanie.operators import And, In, NotIn
-from fastapi import APIRouter, HTTPException, Path, Query, status
+from fastapi import APIRouter, Path, Query, status
 
+from tekst import errors
 from tekst.auth import SuperuserDep
-from tekst.logging import log
 from tekst.models.content import ContentBaseDocument
 from tekst.models.location import (
     DeleteLocationResult,
@@ -23,14 +23,23 @@ from tekst.models.text import (
 router = APIRouter(
     prefix="/locations",
     tags=["locations"],
-    responses={status.HTTP_404_NOT_FOUND: {"description": "Not found"}},
 )
 
 
 # ROUTES DEFINITIONS...
 
 
-@router.post("", response_model=LocationRead, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "",
+    response_model=LocationRead,
+    status_code=status.HTTP_201_CREATED,
+    responses=errors.responses(
+        [
+            errors.E_400_INVALID_TEXT,
+            errors.E_400_INVALID_LEVEL,
+        ]
+    ),
+)
 async def create_location(su: SuperuserDep, location: LocationCreate) -> LocationRead:
     """
     Creates a new location. The position will be automatically set to the last position
@@ -39,16 +48,10 @@ async def create_location(su: SuperuserDep, location: LocationCreate) -> Locatio
     # find text the location belongs to
     text = await TextDocument.find_one(TextDocument.id == location.text_id)
     if not text:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Corresponding text '{location.text_id}' does not exist",
-        )
+        raise errors.E_400_INVALID_TEXT
     # check if level is valid
     if not location.level < len(text.levels):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Invalid level {location.level}",
-        )
+        raise errors.E_400_INVALID_LEVEL
     # determine location position:
     # check if there is a parent
     if location.parent_id is None:
@@ -107,7 +110,16 @@ async def create_location(su: SuperuserDep, location: LocationCreate) -> Locatio
     return await LocationDocument.model_from(location).create()
 
 
-@router.get("", response_model=list[LocationRead], status_code=status.HTTP_200_OK)
+@router.get(
+    "",
+    response_model=list[LocationRead],
+    status_code=status.HTTP_200_OK,
+    responses=errors.responses(
+        [
+            errors.E_400_LOCATION_NO_LEVEL_NOR_PARENT,
+        ]
+    ),
+)
 async def find_locations(
     text_id: Annotated[
         PydanticObjectId,
@@ -123,13 +135,12 @@ async def find_locations(
         PydanticObjectId,
         Query(alias="parent", description="ID of parent location to find children of"),
     ] = None,
-    limit: Annotated[int, Query(description="Return at most <limit> locations")] = 8192,
+    limit: Annotated[
+        int, Query(description="Return at most <limit> locations")
+    ] = 16384,
 ) -> list[LocationDocument]:
     if level is None and parent_id is None:
-        raise HTTPException(
-            status.HTTP_400_BAD_REQUEST,
-            detail="Request must contain either 'level' or 'parentId'",
-        )
+        raise errors.E_400_LOCATION_NO_LEVEL_NOR_PARENT
 
     example = {"text_id": text_id}
 
@@ -146,7 +157,14 @@ async def find_locations(
 
 
 @router.get(
-    "/children", response_model=list[LocationRead], status_code=status.HTTP_200_OK
+    "/children",
+    response_model=list[LocationRead],
+    status_code=status.HTTP_200_OK,
+    responses=errors.responses(
+        [
+            errors.E_400_LOCATION_CHILDREN_NO_PARENT_NOR_TEXT,
+        ]
+    ),
 )
 async def get_children(
     su: SuperuserDep,
@@ -161,18 +179,13 @@ async def get_children(
     limit: int = 8192,
 ) -> list:
     if parent_id is None and text_id is None:
-        raise HTTPException(
-            status.HTTP_400_BAD_REQUEST,
-            detail="Request must contain either 'parentId' or 'textId'",
-        )
+        raise errors.E_400_LOCATION_CHILDREN_NO_PARENT_NOR_TEXT
     return (
         await LocationDocument.find(
             And(
-                LocationDocument.text_id == text_id,
+                (LocationDocument.text_id == text_id) if text_id else {},
                 LocationDocument.parent_id == parent_id,
             )
-            if text_id
-            else (LocationDocument.parent_id == parent_id),
         )
         .limit(limit)
         .sort(+LocationDocument.position)
@@ -180,20 +193,35 @@ async def get_children(
     )
 
 
-@router.get("/{id}", response_model=LocationRead, status_code=status.HTTP_200_OK)
+@router.get(
+    "/{id}",
+    response_model=LocationRead,
+    status_code=status.HTTP_200_OK,
+    responses=errors.responses(
+        [
+            errors.E_404_LOCATION_NOT_FOUND,
+        ]
+    ),
+)
 async def get_location(
     location_id: Annotated[PydanticObjectId, Path(alias="id")],
 ) -> LocationDocument:
     location_doc = await LocationDocument.get(location_id)
     if not location_doc:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Location with ID {location_id} not found",
-        )
+        raise errors.E_404_LOCATION_NOT_FOUND
     return location_doc
 
 
-@router.patch("/{id}", response_model=LocationRead, status_code=status.HTTP_200_OK)
+@router.patch(
+    "/{id}",
+    response_model=LocationRead,
+    status_code=status.HTTP_200_OK,
+    responses=errors.responses(
+        [
+            errors.E_404_LOCATION_NOT_FOUND,
+        ]
+    ),
+)
 async def update_location(
     su: SuperuserDep,
     location_id: Annotated[PydanticObjectId, Path(alias="id")],
@@ -201,10 +229,7 @@ async def update_location(
 ) -> LocationDocument:
     location_doc = await LocationDocument.get(location_id)
     if not location_doc:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Location {location_id} doesn't exist",
-        )
+        raise errors.E_404_LOCATION_NOT_FOUND
     return await location_doc.apply_updates(updates)
 
 
@@ -212,21 +237,23 @@ async def update_location(
     "/{id}",
     response_model=DeleteLocationResult,
     status_code=status.HTTP_200_OK,
-    description=(
-        "Deletes the specified location. Also deletes any associated contents, "
-        "child locations and contents associated with child locations."
+    responses=errors.responses(
+        [
+            errors.E_404_LOCATION_NOT_FOUND,
+        ]
     ),
 )
 async def delete_location(
     su: SuperuserDep,
     location_id: Annotated[PydanticObjectId, Path(alias="id")],
 ) -> DeleteLocationResult:
+    """
+    Deletes the specified location. Also deletes any associated contents,
+    child locations and contents associated with child locations.
+    """
     location_doc = await LocationDocument.get(location_id)
     if not location_doc:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Location {location_id} doesn't exist",
-        )
+        raise errors.E_404_LOCATION_NOT_FOUND
     text_id = location_doc.text_id
     # delete location and everything associated with it
     to_delete = [[location_doc]]
@@ -271,20 +298,22 @@ async def delete_location(
     "/{id}/move",
     response_model=LocationRead,
     status_code=status.HTTP_200_OK,
-    description="Moves the specified location to a new position on its level.",
+    responses=errors.responses(
+        [
+            errors.E_404_LOCATION_NOT_FOUND,
+        ]
+    ),
 )
 async def move_location(
     su: SuperuserDep,
     location_id: Annotated[PydanticObjectId, Path(alias="id")],
     target: MoveLocationRequestBody,
 ) -> LocationRead:
+    """Moves the specified location to a new position on its level."""
     # get location document
     location: LocationDocument = await LocationDocument.get(location_id)
     if not location:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Location {location_id} doesn't exist",
-        )
+        raise errors.E_404_LOCATION_NOT_FOUND
     # define initial working vars
     text_levels = len((await TextDocument.get(location.text_id)).levels)
     forward = target.position > location.position
@@ -305,7 +334,7 @@ async def move_location(
             else (to_move[0].position - distance)
         )
         shift_end = shift_start + distance - 1
-        log.debug(f"shift: {shift_start}-{shift_end} on level {level}")
+        # log.debug(f"shift: {shift_start}-{shift_end} on level {level}")
         to_shift = (
             await LocationDocument.find(
                 LocationDocument.text_id == location.text_id,
