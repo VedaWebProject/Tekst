@@ -56,7 +56,6 @@ const metaExtra = computed<string[][] | null>(() => {
 .metadata > .metadata-category {
   text-transform: capitalize;
   padding-right: 1rem;
-  font-weight: var(--font-weight-bold);
 }
 
 .metadata > .metadata-category-other {
