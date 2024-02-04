@@ -83,7 +83,7 @@ onBeforeMount(() => {
 }
 
 .global-loader-text {
-  font-size: var(--app-ui-font-size-small);
+  font-size: var(--font-size-small);
   height: 2em;
   width: 100%;
   text-align: center;

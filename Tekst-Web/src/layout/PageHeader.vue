@@ -43,11 +43,11 @@ const { pfData } = usePlatformData();
   padding: 0 var(--layout-gap);
   max-width: var(--max-app-width);
   margin: 0 auto;
-  font-size: var(--app-ui-font-size-large);
+  font-size: var(--font-size-large);
 }
 
 #current-text .current-text-subtitle {
-  font-weight: var(--app-ui-font-weight-light);
+  font-weight: var(--font-weight-light);
   filter: opacity(0.6);
 }
 </style>

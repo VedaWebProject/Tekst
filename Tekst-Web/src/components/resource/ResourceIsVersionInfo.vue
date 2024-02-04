@@ -25,7 +25,7 @@ const originalTitle = resources.data.find((r) => r.id == props.resource.original
   <div
     v-if="resource.originalId"
     class="resource-is-version-info"
-    :style="size ? `font-size: var(--app-ui-font-size-${size})` : ''"
+    :style="size ? `font-size: var(--font-size-${size})` : ''"
   >
     <n-icon v-if="showIcon" :component="VersionIcon" />
     {{ $t('resources.versionOf', { title: originalTitle || $t('resources.unknownOriginal') }) }}

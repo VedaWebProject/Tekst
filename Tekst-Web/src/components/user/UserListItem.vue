@@ -133,7 +133,7 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
 
 <template>
   <n-list-item class="user-list-item">
-    <n-thing description-style="font-size: var(--app-ui-font-size-tiny);">
+    <n-thing description-style="font-size: var(--font-size-tiny);">
       <template #header>
         <n-space align="center">
           {{ targetUser.name }}
@@ -203,7 +203,7 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
           </n-dropdown>
         </n-space>
       </template>
-      <div style="font-size: var(--app-ui-font-size-small)">
+      <div style="font-size: var(--font-size-small)">
         {{ targetUser.name }} ({{ targetUser.affiliation }})
       </div>
     </n-thing>

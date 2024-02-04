@@ -84,13 +84,13 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
 .browse-toolbar-container {
   position: sticky;
   top: -1px;
-  border-radius: var(--app-ui-border-radius);
-  box-shadow: var(--app-ui-block-box-shadow);
+  border-radius: var(--border-radius);
+  box-shadow: var(--block-box-shadow);
   width: 100%;
   max-width: var(--max-app-width);
   padding: 12px 0;
-  border-radius: var(--app-ui-border-radius);
-  box-shadow: var(--app-ui-block-box-shadow);
+  border-radius: var(--border-radius);
+  box-shadow: var(--block-box-shadow);
   transition: none;
   margin-bottom: var(--layout-gap);
 }
@@ -101,7 +101,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
   max-width: unset;
   /* width: 100vw; */
   left: 0px;
-  box-shadow: var(--app-ui-fixed-box-shadow);
+  box-shadow: var(--fixed-box-shadow);
   z-index: 2;
 }
 

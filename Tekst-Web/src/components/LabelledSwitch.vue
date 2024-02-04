@@ -33,7 +33,7 @@ defineEmits(['update:value']);
       :focusable="focusable"
       @update:value="(v) => $emit('update:value', v)"
     />
-    <span style="font-size: var(--app-ui-font-size-medium)" :class="{ translucent: disabled }">{{
+    <span style="font-size: var(--font-size-medium)" :class="{ translucent: disabled }">{{
       label
     }}</span>
   </n-space>

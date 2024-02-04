@@ -35,7 +35,7 @@ function renderLink(
         ...props,
         to,
         style: {
-          fontSize: 'var(--app-ui-font-size)',
+          fontSize: 'var(--font-size)',
         },
       },
       { default: label }

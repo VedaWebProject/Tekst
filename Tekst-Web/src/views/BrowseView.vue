@@ -109,6 +109,6 @@ onMounted(() => {
   font-size: 1.3rem;
 }
 .content-container-container.reduced {
-  box-shadow: var(--app-ui-block-box-shadow);
+  box-shadow: var(--block-box-shadow);
 }
 </style>

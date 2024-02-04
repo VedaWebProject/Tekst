@@ -32,7 +32,7 @@ const themeVars = useThemeVars();
     >
       <div
         :style="{
-          fontSize: 'var(--app-ui-font-size-small)',
+          fontSize: 'var(--font-size-small)',
           margin: '-5px 0', // a dirty, but effective hack
         }"
       >

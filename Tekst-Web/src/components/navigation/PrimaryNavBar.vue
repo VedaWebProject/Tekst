@@ -106,7 +106,7 @@ watch(
   max-width: var(--max-app-width);
   margin: 0 auto;
   padding: var(--layout-gap);
-  font-size: var(--app-ui-font-size-small);
+  font-size: var(--font-size-small);
 }
 
 .navbar-smallscreen {
@@ -140,7 +140,7 @@ watch(
 }
 
 .navbar-title {
-  font-size: var(--app-ui-font-size-huge);
+  font-size: var(--font-size-huge);
   white-space: nowrap;
   min-width: 120px;
 }
@@ -151,7 +151,7 @@ watch(
 
 .navbar-description {
   opacity: 1;
-  font-size: var(--app-ui-font-size-mini);
+  font-size: var(--font-size-mini);
   width: 0;
   min-width: 100%;
   line-height: 1.2;

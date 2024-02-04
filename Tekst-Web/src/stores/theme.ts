@@ -11,15 +11,15 @@ export declare type ThemeMode = 'light' | 'dark';
 
 const commonOverrides: GlobalThemeOverrides = {
   common: {
-    fontFamily: 'var(--app-ui-font-family)',
-    fontWeight: 'var(--app-ui-font-weight-light)',
-    fontSize: 'var(--app-ui-font-size)',
-    fontSizeMini: 'var(--app-ui-font-size-mini)',
-    fontSizeTiny: 'var(--app-ui-font-size-tiny)',
-    fontSizeSmall: 'var(--app-ui-font-size-small)',
-    fontSizeMedium: 'var(--app-ui-font-size-medium)',
-    fontSizeLarge: 'var(--app-ui-font-size-large)',
-    fontSizeHuge: 'var(--app-ui-font-size-huge)',
+    fontFamily: 'var(--font-family)',
+    fontWeight: 'var(--font-weight-light)',
+    fontSize: 'var(--font-size)',
+    fontSizeMini: 'var(--font-size-mini)',
+    fontSizeTiny: 'var(--font-size-tiny)',
+    fontSizeSmall: 'var(--font-size-small)',
+    fontSizeMedium: 'var(--font-size-medium)',
+    fontSizeLarge: 'var(--font-size-large)',
+    fontSizeHuge: 'var(--font-size-huge)',
   },
   Form: {
     feedbackPadding: '4px 0 8px 2px',
@@ -28,7 +28,7 @@ const commonOverrides: GlobalThemeOverrides = {
     feedbackHeightLarge: '20px',
   },
   Badge: {
-    fontSize: 'var(--app-ui-font-size-mini)',
+    fontSize: 'var(--font-size-mini)',
   },
 };
 

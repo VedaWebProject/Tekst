@@ -70,7 +70,7 @@ function handleSelect(key: string) {
       :title="$t('general.textSelect')"
       :style="{
         fontSize: 'inherit',
-        fontWeight: 'var(--app-ui-font-weight-normal)',
+        fontWeight: 'var(--font-weight-normal)',
         cursor: !disabled ? 'pointer' : 'default',
       }"
     >

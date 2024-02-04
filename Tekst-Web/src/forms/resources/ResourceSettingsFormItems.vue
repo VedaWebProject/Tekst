@@ -308,7 +308,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
     <div
       v-if="public"
       style="
-        font-size: var(--app-ui-font-size-tiny);
+        font-size: var(--font-size-tiny);
         color: var(--col-error);
         margin-bottom: var(--content-gap);
       "

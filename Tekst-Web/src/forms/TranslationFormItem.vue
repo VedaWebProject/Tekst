@@ -88,7 +88,7 @@ const localeOptions = computed(() =>
               :placeholder="$t('general.language')"
               :consistent-menu-width="false"
               :render-label="(o) => renderLanguageOptionLabel(localeOptions, o)"
-              style="min-width: 200px; font-weight: var(--app-ui-font-weight-normal)"
+              style="min-width: 200px; font-weight: var(--font-weight-normal)"
               @keydown.enter.prevent
             />
           </n-form-item>

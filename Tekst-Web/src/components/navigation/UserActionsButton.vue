@@ -135,7 +135,7 @@ function handleUserOptionSelect(key: string) {
 
 <style scoped>
 .user-options-button {
-  font-size: var(--app-ui-font-size-mini) !important;
-  font-weight: var(--app-ui-font-weight-normal) !important;
+  font-size: var(--font-size-mini) !important;
+  font-weight: var(--font-weight-normal) !important;
 }
 </style>

@@ -20,7 +20,7 @@ withDefaults(
 <template>
   <div
     class="resource-publication-status"
-    :style="size ? `font-size: var(--app-ui-font-size-${size})` : ''"
+    :style="size ? `font-size: var(--font-size-${size})` : ''"
   >
     <template v-if="resource.public">
       <n-icon v-if="showIcon" :component="PublicIcon" />

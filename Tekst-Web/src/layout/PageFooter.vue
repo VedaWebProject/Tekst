@@ -42,7 +42,7 @@ footer {
   align-items: center;
   gap: var(--content-gap);
   padding: var(--layout-gap);
-  font-size: var(--app-ui-font-size-small);
+  font-size: var(--font-size-small);
 }
 
 footer > * {

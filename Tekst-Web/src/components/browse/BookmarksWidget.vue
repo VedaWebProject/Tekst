@@ -98,7 +98,7 @@ async function handleBookmarkSelect(bookmark: BookmarkRead) {
             <n-icon :component="AddIcon" size="large" />
           </template>
           <template #header>
-            <div style="font-weight: var(--app-ui-font-weight-light)">
+            <div style="font-weight: var(--font-weight-light)">
               <span v-if="!maxCountReached">
                 {{ $t('browse.bookmarks.lblCreate') }}
               </span>
@@ -112,12 +112,12 @@ async function handleBookmarkSelect(bookmark: BookmarkRead) {
         :key="bookmark.id"
         @click="handleBookmarkSelect(bookmark)"
       >
-        <n-thing content-indented description-style="font-size: var(--app-ui-font-size-tiny)">
+        <n-thing content-indented description-style="font-size: var(--font-size-tiny)">
           <template #avatar>
             <n-icon :component="BookIcon" size="large" />
           </template>
           <template #header>
-            <span style="font-weight: var(--app-ui-font-weight-light)">
+            <span style="font-weight: var(--font-weight-light)">
               <location-label :location-labels="bookmark.locationLabels" />
             </span>
           </template>

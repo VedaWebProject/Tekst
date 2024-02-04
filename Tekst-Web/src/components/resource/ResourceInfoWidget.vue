@@ -163,10 +163,10 @@ watch(showInfoModal, async (after) => {
 .resource-status-box {
   padding: 0.5rem;
   background-color: var(--main-bg-color);
-  border-radius: var(--app-ui-border-radius);
+  border-radius: var(--border-radius);
 }
 .resource-comment {
   white-space: pre-wrap;
-  font-weight: var(--app-ui-font-weight-light);
+  font-weight: var(--font-weight-light);
 }
 </style>

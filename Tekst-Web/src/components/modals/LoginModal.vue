@@ -125,7 +125,7 @@ async function handleForgotPasswordClick() {
           text
           :focusable="false"
           :disabled="auth.loginModalState.loading"
-          style="margin-bottom: 1rem; font-size: var(--app-ui-font-size-mini)"
+          style="margin-bottom: 1rem; font-size: var(--font-size-mini)"
           @click="handleForgotPasswordClick"
         >
           {{ $t('account.forgotPassword.forgotPassword') }}

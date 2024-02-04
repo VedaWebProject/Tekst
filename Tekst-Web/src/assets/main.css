@@ -2,7 +2,7 @@ html {
   overflow-y: scroll;
   box-sizing: border-box;
   margin: 0;
-  font-size: var(--app-ui-font-size);
+  font-size: var(--font-size);
 }
 
 body {
@@ -13,8 +13,8 @@ body {
 }
 
 #app {
-  font-family: var(--app-ui-font-family);
-  font-weight: var(--app-ui-font-weight-light);
+  font-family: var(--font-family);
+  font-weight: var(--font-weight-light);
 }
 
 a,
@@ -105,9 +105,9 @@ img {
   max-width: 100%;
   margin: var(--layout-gap) 0;
   padding: var(--content-gap) var(--layout-gap);
-  border-radius: var(--app-ui-border-radius);
+  border-radius: var(--border-radius);
   background-color: var(--content-bg-color);
-  box-shadow: var(--app-ui-block-box-shadow);
+  box-shadow: var(--block-box-shadow);
 }
 
 .accent-color-bg {
@@ -135,11 +135,11 @@ img {
 
 .n-select,
 .n-select-menu {
-  font-weight: var(--app-ui-font-weight-normal);
+  font-weight: var(--font-weight-normal);
 }
 
 .n-dialog {
-  font-weight: var(--app-ui-font-weight-light);
+  font-weight: var(--font-weight-light);
 }
 
 .n-drawer-header__main {
@@ -152,6 +152,6 @@ img {
 }
 
 .n-thing-header__title {
-  font-size: var(--app-ui-font-size) !important;
-  font-weight: var(--app-ui-font-weight-normal) !important;
+  font-size: var(--font-size) !important;
+  font-weight: var(--font-weight-normal) !important;
 }

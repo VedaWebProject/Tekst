@@ -156,11 +156,11 @@ async function handleSaveClick() {
 
 <style scoped>
 table.resource-info-table {
-  font-size: var(--app-ui-font-size-tiny);
+  font-size: var(--font-size-tiny);
   margin-bottom: var(--layout-gap);
 }
 table.resource-info-table td.row-key {
-  font-weight: var(--app-ui-font-weight-normal);
+  font-weight: var(--font-weight-normal);
   padding-right: var(--content-gap);
 }
 </style>

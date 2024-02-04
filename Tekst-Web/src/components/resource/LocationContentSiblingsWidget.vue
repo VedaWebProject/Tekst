@@ -87,7 +87,7 @@ async function handleClick() {
 
 <style scoped>
 .parent-location {
-  font-size: var(--app-ui-font-size-large);
+  font-size: var(--font-size-large);
   opacity: 0.6;
   margin-bottom: 1rem;
 }

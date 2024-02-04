@@ -310,7 +310,7 @@ async function handleUploadStructureClick() {
 function renderSwitcherIcon() {
   return h(
     NIcon,
-    { size: 'var(--app-ui-font-size-medium)', style: 'align-self: center' },
+    { size: 'var(--font-size-medium)', style: 'align-self: center' },
     {
       default: () => h(ExpandArrowRightIcon),
     }

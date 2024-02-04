@@ -419,7 +419,7 @@ onUnmounted(() => {
         margin: 0.5rem 0;
         padding: 4px var(--content-gap);
         border: 1px solid var(--text-color-fade);
-        border-radius: var(--app-ui-border-radius);
+        border-radius: var(--border-radius);
         max-height: 50vh;
         overflow-y: scroll;
       "
@@ -441,7 +441,7 @@ onUnmounted(() => {
 }
 
 .toolbar * {
-  font-weight: var(--app-ui-font-weight-bold) !important;
+  font-weight: var(--font-weight-bold) !important;
 }
 
 .toolbar > .toolbar-group {
@@ -452,7 +452,7 @@ onUnmounted(() => {
 
 .character-count {
   text-align: right;
-  font-size: var(--app-ui-font-size-tiny);
+  font-size: var(--font-size-tiny);
   color: var(--text-color-fade);
 }
 </style>

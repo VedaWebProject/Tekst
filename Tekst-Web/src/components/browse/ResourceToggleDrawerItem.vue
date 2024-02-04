@@ -93,8 +93,8 @@ const infoTooltip = computed(() =>
 
 .item .item-title {
   color: var(--accent-color);
-  font-size: var(--app-ui-font-size-medium);
-  font-weight: var(--app-ui-font-weight-normal);
+  font-size: var(--font-size-medium);
+  font-weight: var(--font-weight-normal);
 }
 
 .item .item-title-extra {
@@ -107,8 +107,8 @@ const infoTooltip = computed(() =>
 
 .item .item-meta {
   opacity: 0.75;
-  font-size: var(--app-ui-font-size-mini);
-  font-weight: var(--app-ui-font-weight-light);
+  font-size: var(--font-size-mini);
+  font-weight: var(--font-weight-light);
 }
 
 .item .item-title,

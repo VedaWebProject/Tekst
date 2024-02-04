@@ -19,15 +19,12 @@ defineProps<{
       <div>
         {{ text.title }}
       </div>
-      <div
-        v-if="text.subtitle?.length"
-        style="font-size: var(--app-ui-font-size-tiny); opacity: 0.8"
-      >
+      <div v-if="text.subtitle?.length" style="font-size: var(--font-size-tiny); opacity: 0.8">
         <translation-display :value="text.subtitle" />
       </div>
       <div
         v-if="!text.isActive"
-        style="font-size: var(--app-ui-font-size-small); font-style: italic; opacity: 0.5"
+        style="font-size: var(--font-size-small); font-style: italic; opacity: 0.5"
       >
         <n-icon :component="DisabledVisibleIcon" />
         {{ $t('models.text.isInactive') }}

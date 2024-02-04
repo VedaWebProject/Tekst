@@ -104,7 +104,7 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
 <style scoped>
 .content-container {
   position: relative;
-  font-size: var(--app-ui-font-size);
+  font-size: var(--font-size);
 }
 .content-container.reduced {
   padding-top: 0.3rem;
@@ -114,13 +114,13 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
   border-radius: 0;
 }
 .content-container.reduced:first-child {
-  border-top-left-radius: var(--app-ui-border-radius);
-  border-top-right-radius: var(--app-ui-border-radius);
+  border-top-left-radius: var(--border-radius);
+  border-top-right-radius: var(--border-radius);
   margin-top: var(--layout-gap);
 }
 .content-container.reduced:last-child {
-  border-bottom-left-radius: var(--app-ui-border-radius);
-  border-bottom-right-radius: var(--app-ui-border-radius);
+  border-bottom-left-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
   margin-bottom: var(--layout-gap);
 }
 .content-container.reduced:not(:first-child) {
@@ -158,15 +158,15 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
 
 .content-header-title {
   color: var(--accent-color);
-  font-weight: var(--app-ui-font-weight-normal);
+  font-weight: var(--font-weight-normal);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .content-header-title.reduced {
-  font-size: var(--app-ui-font-size-tiny);
-  font-weight: var(--app-ui-font-weight-light);
+  font-size: var(--font-size-tiny);
+  font-weight: var(--font-weight-light);
   opacity: 0.8;
 }
 
@@ -196,7 +196,7 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
   width: 100%;
   height: 100%;
   background-color: var(--content-bg-color);
-  border-radius: var(--app-ui-border-radius);
+  border-radius: var(--border-radius);
 }
 
 .content-loader.v-enter-active,

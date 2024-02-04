@@ -8,13 +8,13 @@ import { NCollapse, NCollapseItem } from 'naive-ui';
     <n-collapse-item
       :title="$t('general.details')"
       name="details"
-      style="margin: 0; font-size: var(--app-ui-font-size-mini)"
+      style="margin: 0; font-size: var(--font-size-mini)"
     >
       <pre
         style="
           font-family: monospace;
-          font-size: var(--app-ui-font-size-mini);
-          font-weight: var(--app-ui-font-weight-light);
+          font-size: var(--font-size-mini);
+          font-weight: var(--font-weight-light);
           white-space: pre-wrap;
           line-height: 1;
         "
