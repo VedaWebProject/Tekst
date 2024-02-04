@@ -9,7 +9,6 @@ from fastapi import (
     Body,
     Depends,
     File,
-    HTTPException,
     Path,
     UploadFile,
     status,
@@ -17,6 +16,7 @@ from fastapi import (
 from fastapi.responses import FileResponse
 from starlette.background import BackgroundTask
 
+from tekst import errors
 from tekst.auth import OptionalUserDep, SuperuserDep
 from tekst.dependencies import get_temp_dir
 from tekst.logging import log
@@ -33,7 +33,6 @@ from tekst.models.text import (
     TextUpdate,
 )
 from tekst.settings import get_settings
-from tekst import errors
 
 
 router = APIRouter(

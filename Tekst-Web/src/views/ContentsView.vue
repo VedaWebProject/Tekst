@@ -327,7 +327,7 @@ function handleSelectcompareResource(key: string) {
 }
 
 async function handleNearestChangeClick(mode: 'preceding' | 'subsequent') {
-  const { data: pos, error } = await GET('/browse/nearest-content', {
+  const { data: pos, error } = await GET('/browse/nearest-content-position', {
     params: {
       query: {
         pos: position.value,

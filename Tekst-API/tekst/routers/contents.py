@@ -29,14 +29,12 @@ router = APIRouter(
     "",
     response_model=AnyContentReadBody,
     status_code=status.HTTP_201_CREATED,
-    responses={
-        errors.responses(
-            [
-                errors.E_403_FORBIDDEN,
-                errors.E_409_CONTENT_CONFLICT,
-            ]
-        )
-    },
+    responses=errors.responses(
+        [
+            errors.E_403_FORBIDDEN,
+            errors.E_409_CONTENT_CONFLICT,
+        ]
+    ),
 )
 async def create_content(
     content: AnyContentCreateBody, user: UserDep

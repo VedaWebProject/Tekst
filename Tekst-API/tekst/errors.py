@@ -176,6 +176,12 @@ E_400_RESOURCE_PUBLISH_UNPROPOSED = error_instance(
     msg="Cannot publish an unproposed resource",
 )
 
+E_400_RESOURCE_PROPOSE_PUBLIC = error_instance(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    key="resourceProposePublic",
+    msg="Cannot propose a published resource",
+)
+
 E_400_RESOUCE_VERSION_PUBLISH = error_instance(
     status_code=status.HTTP_400_BAD_REQUEST,
     key="resourceVersionPublish",
@@ -242,10 +248,10 @@ E_400_CONTENT_TYPE_MISMATCH = error_instance(
     msg="Referenced resource type in updates doesn't match the one in target content",
 )
 
-E_400_LOCATION_INVALID_TEXT = error_instance(
+E_400_INVALID_TEXT = error_instance(
     status_code=status.HTTP_400_BAD_REQUEST,
-    key="locationInvalidText",
-    msg="Text ID in location doesn't reference an existing text",
+    key="referencedInvalidText",
+    msg="Text ID in in request data doesn't reference an existing text",
 )
 
 E_400_INVALID_LEVEL = error_instance(

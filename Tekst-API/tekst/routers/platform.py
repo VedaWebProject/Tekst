@@ -3,6 +3,7 @@ from typing import Annotated
 from beanie import PydanticObjectId
 from beanie.operators import NotIn, Or, Text
 from fastapi import APIRouter, Depends, Path, Query, status
+
 from tekst import errors
 from tekst.auth import (
     OptionalUserDep,

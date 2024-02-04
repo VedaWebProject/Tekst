@@ -2,10 +2,10 @@ from typing import Annotated
 
 from beanie import PydanticObjectId
 from beanie.operators import And, In, NotIn
-from fastapi import APIRouter, HTTPException, Path, Query, status
+from fastapi import APIRouter, Path, Query, status
 
+from tekst import errors
 from tekst.auth import SuperuserDep
-from tekst.logging import log
 from tekst.models.content import ContentBaseDocument
 from tekst.models.location import (
     DeleteLocationResult,
@@ -14,7 +14,6 @@ from tekst.models.location import (
     LocationRead,
     LocationUpdate,
 )
-from tekst import errors
 from tekst.models.text import (
     MoveLocationRequestBody,
     TextDocument,
@@ -36,7 +35,7 @@ router = APIRouter(
     status_code=status.HTTP_201_CREATED,
     responses=errors.responses(
         [
-            errors.E_400_LOCATION_INVALID_TEXT,
+            errors.E_400_INVALID_TEXT,
             errors.E_400_INVALID_LEVEL,
         ]
     ),
@@ -49,7 +48,7 @@ async def create_location(su: SuperuserDep, location: LocationCreate) -> Locatio
     # find text the location belongs to
     text = await TextDocument.find_one(TextDocument.id == location.text_id)
     if not text:
-        raise errors.E_400_LOCATION_INVALID_TEXT
+        raise errors.E_400_INVALID_TEXT
     # check if level is valid
     if not location.level < len(text.levels):
         raise errors.E_400_INVALID_LEVEL

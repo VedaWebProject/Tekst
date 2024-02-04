@@ -80,6 +80,7 @@ async def test_update_text(
     insert_sample_data,
     status_fail_msg,
     login,
+    wrong_id,
 ):
     await insert_sample_data("texts")
 
@@ -120,10 +121,10 @@ async def test_update_text(
     # update invalid text
     text_update = {"title": "Yet another text"}
     resp = await test_client.patch(
-        "/texts/637b9ad396d541a505e5439b",
+        f"/texts/{wrong_id}",
         json=text_update,
     )
-    assert resp.status_code == 400, status_fail_msg(400, resp)
+    assert resp.status_code == 404, status_fail_msg(404, resp)
 
 
 @pytest.mark.anyio

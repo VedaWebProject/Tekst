@@ -118,7 +118,7 @@ async def create_resource(
     # check text integrity
     text = await TextDocument.get(resource.text_id)
     if not text:
-        raise errors.E_404_TEXT_NOT_FOUND
+        raise errors.E_400_INVALID_TEXT
     if resource.level > len(text.levels) - 1:
         raise errors.E_400_RESOURCE_INVALID_LEVEL
 
@@ -469,8 +469,10 @@ async def propose_resource(
         raise errors.E_404_RESOURCE_NOT_FOUND
     if not user.is_superuser and user.id != resource_doc.owner_id:
         raise errors.E_403_FORBIDDEN
-    if resource_doc.public:
+    if resource_doc.proposed:
         return await preprocess_resource_read(resource_doc, user)
+    if resource_doc.public:
+        raise errors.E_400_RESOURCE_PROPOSE_PUBLIC
     if resource_doc.original_id:
         raise errors.E_400_RESOURCE_VERSION_PROPOSE
     # all fine, propose resource
@@ -531,6 +533,8 @@ async def publish_resource(
     resource_doc = await ResourceBaseDocument.get(resource_id, with_children=True)
     if not resource_doc:
         raise errors.E_404_RESOURCE_NOT_FOUND
+    if resource_doc.public:
+        return await preprocess_resource_read(resource_doc, user)
     if not resource_doc.proposed:
         raise errors.E_400_RESOURCE_PUBLISH_UNPROPOSED
     if resource_doc.original_id:
