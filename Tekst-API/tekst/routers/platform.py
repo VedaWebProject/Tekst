@@ -2,8 +2,8 @@ from typing import Annotated
 
 from beanie import PydanticObjectId
 from beanie.operators import NotIn, Or, Text
-from fastapi import APIRouter, Depends, HTTPException, Path, Query, status
-
+from fastapi import APIRouter, Depends, Path, Query, status
+from tekst import errors
 from tekst.auth import (
     OptionalUserDep,
     SuperuserDep,
@@ -33,7 +33,6 @@ from tekst.utils import validators as val
 router = APIRouter(
     prefix="/platform",
     tags=["platform"],
-    responses={404: {"description": "Not found"}},
 )
 
 
@@ -69,6 +68,11 @@ async def get_platform_data(
     response_model=UserReadPublic,
     summary="Get public user info",
     status_code=status.HTTP_200_OK,
+    responses=errors.responses(
+        [
+            errors.E_404_USER_NOT_FOUND,
+        ]
+    ),
 )
 async def get_public_user(
     username_or_id: Annotated[
@@ -85,10 +89,7 @@ async def get_public_user(
         )
     )
     if not user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"User '{username_or_id}' does not exist",
-        )
+        raise errors.E_404_USER_NOT_FOUND
     return UserReadPublic(**user.model_dump())
 
 
@@ -149,21 +150,30 @@ async def update_platform_settings(
     "/segments/{id}",
     response_model=ClientSegmentRead,
     status_code=status.HTTP_200_OK,
+    responses=errors.responses(
+        [
+            errors.E_404_SEGMENT_NOT_FOUND,
+        ]
+    ),
 )
 async def get_segment(
     segment_id: Annotated[PydanticObjectId, Path(alias="id")],
 ) -> ClientSegmentDocument:
     segment = await ClientSegmentDocument.get(segment_id)
     if not segment:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Client segment with ID {segment_id} doesn't exist",
-        )
+        raise errors.E_404_SEGMENT_NOT_FOUND
     return segment
 
 
 @router.post(
-    "/segments", response_model=ClientSegmentRead, status_code=status.HTTP_201_CREATED
+    "/segments",
+    response_model=ClientSegmentRead,
+    status_code=status.HTTP_201_CREATED,
+    responses=errors.responses(
+        [
+            errors.E_409_SEGMENT_KEY_LOCALE_CONFLICT,
+        ]
+    ),
 )
 async def create_segment(
     su: SuperuserDep,
@@ -173,15 +183,19 @@ async def create_segment(
         ClientSegmentDocument.key == segment.key,
         ClientSegmentDocument.locale == segment.locale,
     ).exists():
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="An equal segment already exists (same key and locale)",
-        )
+        raise errors.E_409_SEGMENT_KEY_LOCALE_CONFLICT
     return await ClientSegmentDocument.model_from(segment).create()
 
 
 @router.patch(
-    "/segments/{id}", response_model=ClientSegmentRead, status_code=status.HTTP_200_OK
+    "/segments/{id}",
+    response_model=ClientSegmentRead,
+    status_code=status.HTTP_200_OK,
+    responses=errors.responses(
+        [
+            errors.E_404_SEGMENT_NOT_FOUND,
+        ]
+    ),
 )
 async def update_segment(
     su: SuperuserDep,
@@ -190,14 +204,19 @@ async def update_segment(
 ) -> ClientSegmentDocument:
     segment_doc = await ClientSegmentDocument.get(segment_id)
     if not segment_doc:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Client segment {segment_doc} doesn't exist",
-        )
+        raise errors.E_404_SEGMENT_NOT_FOUND
     return await segment_doc.apply_updates(updates)
 
 
-@router.delete("/segments/{id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete(
+    "/segments/{id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    responses=errors.responses(
+        [
+            errors.E_404_SEGMENT_NOT_FOUND,
+        ]
+    ),
+)
 async def delete_segment(
     su: SuperuserDep,
     segment_id: Annotated[PydanticObjectId, Path(alias="id")],
@@ -205,16 +224,11 @@ async def delete_segment(
     if not await ClientSegmentDocument.find_one(
         ClientSegmentDocument.id == segment_id
     ).exists():
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Client segment {segment_id} doesn't exist",
-        )
-    if not (
-        await ClientSegmentDocument.find_one(
-            ClientSegmentDocument.id == segment_id
-        ).delete()
-    ).acknowledged:  # pragma: no cover
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Something went wrong deleting the segment",
-        )
+        raise errors.E_404_SEGMENT_NOT_FOUND
+    delete_result = await ClientSegmentDocument.find_one(
+        ClientSegmentDocument.id == segment_id
+    ).delete()
+    if (
+        not delete_result.acknowledged or not delete_result.deleted_count
+    ):  # pragma: no cover
+        raise errors.E_500_INTERNAL_SERVER_ERROR

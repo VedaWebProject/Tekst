@@ -293,6 +293,9 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
         if await UserDocument.find_one(
             UserDocument.username == user_create.username
         ).exists():
+            # We're not using the prepared errors from tekst.errors because
+            # the auth-related endpoints from fastapi-users have a different error model
+            # that we want to follow here.
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="REGISTER_USERNAME_ALREADY_EXISTS",

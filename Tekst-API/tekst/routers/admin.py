@@ -12,7 +12,6 @@ from tekst.resources import resource_types_mgr
 router = APIRouter(
     prefix="/admin",
     tags=["admin"],
-    responses={status.HTTP_404_NOT_FOUND: {"description": "Not found"}},
 )
 
 

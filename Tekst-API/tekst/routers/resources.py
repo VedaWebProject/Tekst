@@ -660,7 +660,7 @@ async def get_resource_template(
             errors.E_400_UPLOAD_INVALID_MIME_TYPE_NOT_JSON,
             errors.E_404_RESOURCE_NOT_FOUND,
             errors.E_403_FORBIDDEN,
-            errors.E_422_UPLOAD_INVALID_JSON,
+            errors.E_400_UPLOAD_INVALID_JSON,
             errors.E_400_IMPORT_ID_MISMATCH,
             errors.E_400_IMPORT_ID_NON_EXISTENT,
             errors.E_400_IMPORT_INVALID_CONTENT_DATA,
@@ -697,7 +697,7 @@ async def import_resource_data(
     try:
         structure_def = ResourceImportData.model_validate_json(await file.read())
     except ValueError:
-        raise errors.E_422_UPLOAD_INVALID_JSON
+        raise errors.E_400_UPLOAD_INVALID_JSON
 
     # check if resource_id matches the one in the import file
     if str(resource_id) != str(structure_def.resource_id):

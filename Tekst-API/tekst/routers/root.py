@@ -9,7 +9,7 @@ from tekst.dependencies import get_cfg
 
 router = APIRouter(
     responses={
-        status.HTTP_307_TEMPORARY_REDIRECT: {"description": "Moved permanently"}
+        status.HTTP_307_TEMPORARY_REDIRECT: {"description": "Temporary Redirect"}
     },
 )
 

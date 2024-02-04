@@ -188,8 +188,8 @@ E_400_UPLOAD_INVALID_MIME_TYPE_NOT_JSON = error_instance(
     msg="Invalid file MIME type (must be 'application/json')",
 )
 
-E_422_UPLOAD_INVALID_JSON = error_instance(
-    status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+E_400_UPLOAD_INVALID_JSON = error_instance(
+    status_code=status.HTTP_400_BAD_REQUEST,
     key="uploadInvalidJson",
     msg="Import data is not valid JSON",
 )
@@ -216,4 +216,88 @@ E_500_INTERNAL_SERVER_ERROR = error_instance(
     status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
     key="internalServerError",
     msg="An internal server error occurred. How embarrassing :(",
+)
+
+E_409_CONTENT_CONFLICT = error_instance(
+    status_code=status.HTTP_409_CONFLICT,
+    key="contentConflict",
+    msg="The properties of this content conflict with another content",
+)
+
+E_404_CONTENT_NOT_FOUND = error_instance(
+    status_code=status.HTTP_404_NOT_FOUND,
+    key="contentNotFound",
+    msg="The requested content could not be found",
+)
+
+E_400_CONTENT_ID_MISMATCH = error_instance(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    key="contentIdMismatch",
+    msg="Referenced resource ID in updates doesn't match the one in target content",
+)
+
+E_400_CONTENT_TYPE_MISMATCH = error_instance(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    key="contentTypeMismatch",
+    msg="Referenced resource type in updates doesn't match the one in target content",
+)
+
+E_400_LOCATION_INVALID_TEXT = error_instance(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    key="locationInvalidText",
+    msg="Text ID in location doesn't reference an existing text",
+)
+
+E_400_INVALID_LEVEL = error_instance(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    key="locationInvalidLevel",
+    msg="The level index passed does not exist in target text",
+)
+
+E_400_LOCATION_NO_LEVEL_NOR_PARENT = error_instance(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    key="locationNoLevelNorParent",
+    msg="Must have either 'level' or 'parentId' set",
+)
+
+E_400_LOCATION_CHILDREN_NO_PARENT_NOR_TEXT = error_instance(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    key="locationChildrenNoParentNorText",
+    msg="Must have either 'parentId' or 'textId' set",
+)
+
+E_404_USER_NOT_FOUND = error_instance(
+    status_code=status.HTTP_404_NOT_FOUND,
+    key="userNotFound",
+    msg="The requested user could not be found",
+)
+
+E_404_SEGMENT_NOT_FOUND = error_instance(
+    status_code=status.HTTP_404_NOT_FOUND,
+    key="segmentNotFound",
+    msg="The requested segment could not be found",
+)
+
+E_409_SEGMENT_KEY_LOCALE_CONFLICT = error_instance(
+    status_code=status.HTTP_409_CONFLICT,
+    key="segmentKeyLocaleConflict",
+    msg="A segment with this key and language already exists",
+)
+
+E_409_TEXT_SAME_TITLE_OR_SLUG = error_instance(
+    status_code=status.HTTP_409_CONFLICT,
+    key="textSameTitleOrSlug",
+    msg="An equal text already exists (same title or slug)",
+)
+
+E_409_TEXT_IMPORT_LOCATIONS_EXIST = error_instance(
+    status_code=status.HTTP_409_CONFLICT,
+    key="textImportLocationsExist",
+    msg="Text already has locations",
+)
+
+E_400_TEXT_DELETE_LAST_TEXT = error_instance(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    key="textDeleteLastText",
+    msg="Cannot delete the last text",
 )

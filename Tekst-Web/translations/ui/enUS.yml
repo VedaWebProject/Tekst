@@ -78,6 +78,8 @@ errors:
   importIdMismatch: An ID in the import data does not match the respective ID in the request.
   importIdNonExistent: An ID in the import data could not be found in the database.
   importInvalidContentData: Some contents in the import data don't follow the required schema.
+  segmentKeyLocaleConflict: A segment with this key and language already exists.
+  textSameTitleOrSlug: There is already a text with the same title or slug.
 
 nav:
   about: About

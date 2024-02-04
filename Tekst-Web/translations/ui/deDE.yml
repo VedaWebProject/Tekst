@@ -81,6 +81,8 @@ errors:
   importIdMismatch: Eine ID in den Importdaten stimmt nicht mit der entsprechenden ID in der Anfrage überein.
   importIdNonExistent: Eine ID in den Importdaten konnte nicht in der Datenbank gefunden werden.
   importInvalidContentData: Einige Inhalte in den Importdaten entsprechen nicht dem erforderlichen Schema.
+  segmentKeyLocaleConflict: Ein Segment mit der gleichen Kombination aus Schlüssel und Sprache existiert bereits.
+  textSameTitleOrSlug: Ein Text mit diesem Titel oder Identifikator existiert bereits.
 
 nav:
   about: Über
