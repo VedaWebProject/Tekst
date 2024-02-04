@@ -110,7 +110,9 @@ async def get_content_siblings(
 
 
 @router.get(
-    "/location-data", response_model=LocationData, status_code=status.HTTP_200_OK
+    "/location-data",
+    response_model=LocationData,
+    status_code=status.HTTP_200_OK,
 )
 async def get_location_data(
     user: OptionalUserDep,

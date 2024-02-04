@@ -163,7 +163,11 @@ async def delete_content(
     await content_doc.delete()
 
 
-@router.get("", response_model=list[AnyContentReadBody], status_code=status.HTTP_200_OK)
+@router.get(
+    "",
+    response_model=list[AnyContentReadBody],
+    status_code=status.HTTP_200_OK,
+)
 async def find_contents(
     user: OptionalUserDep,
     resource_ids: Annotated[

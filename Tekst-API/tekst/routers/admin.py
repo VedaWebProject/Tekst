@@ -25,7 +25,11 @@ router = APIRouter(
 # ROUTES DEFINITIONS...
 
 
-@router.get("/stats", response_model=PlatformStats, status_code=status.HTTP_200_OK)
+@router.get(
+    "/stats",
+    response_model=PlatformStats,
+    status_code=status.HTTP_200_OK,
+)
 async def get_statistics(su: SuperuserDep) -> PlatformStats:
     resource_type_names = resource_types_mgr.list_names()
     texts = await TextDocument.find_all().to_list()
@@ -61,6 +65,10 @@ async def get_statistics(su: SuperuserDep) -> PlatformStats:
     )
 
 
-@router.get("/users", response_model=list[UserRead], status_code=status.HTTP_200_OK)
+@router.get(
+    "/users",
+    response_model=list[UserRead],
+    status_code=status.HTTP_200_OK,
+)
 async def get_users(su: SuperuserDep) -> list[UserDocument]:
     return await UserDocument.find_all().to_list()

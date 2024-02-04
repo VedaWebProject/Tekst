@@ -95,7 +95,9 @@ async def get_public_user(
 
 
 @router.get(
-    "/users", response_model=list[UserReadPublic], status_code=status.HTTP_200_OK
+    "/users",
+    response_model=list[UserReadPublic],
+    status_code=status.HTTP_200_OK,
 )
 async def find_public_users(
     su: UserDep,

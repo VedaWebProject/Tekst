@@ -40,7 +40,11 @@ async def delete_bookmark(
     await bookmark_doc.delete()
 
 
-@router.get("", response_model=list[BookmarkRead], status_code=status.HTTP_200_OK)
+@router.get(
+    "",
+    response_model=list[BookmarkRead],
+    status_code=status.HTTP_200_OK,
+)
 async def get_user_bookmarks(user: UserDep) -> list[BookmarkDocument]:
     """Returns all bookmarks that belong to the requesting user"""
     return (

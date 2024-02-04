@@ -16,7 +16,10 @@ router = APIRouter(
 
 
 # extra endpoint for users to delete their own account
-@router.delete("/me", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete(
+    "/me",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
 async def delete_me(
     user: UserDep,
     user_mgr: Annotated[UserManager, Depends(get_user_manager)],
