@@ -5935,7 +5935,8 @@
           }
         },
         "type": "object",
-        "title": "DeepLLinksConfig"
+        "title": "DeepLLinksConfig",
+        "description": "Resource configuration model for DeepL translation links.\nThe corresponding field MUST be named `deepl_links`!"
       },
       "DeleteLocationResult": {
         "properties": {
@@ -6042,6 +6043,18 @@
             "title": "Reducedviewoneline",
             "description": "Show contents as single line of text when in reduced view",
             "default": false
+          },
+          "font": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Font",
+            "description": "Name of the font to use for this resource."
           }
         },
         "type": "object",
@@ -6054,6 +6067,18 @@
             "title": "Defaultcollapsed",
             "description": "Whether contents of this resource should be collapsed by default",
             "default": true
+          },
+          "font": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Font",
+            "description": "Name of the font to use for this resource."
           }
         },
         "type": "object",
@@ -7417,6 +7442,18 @@
             "description": "Resource categories to categorize resources in",
             "default": []
           },
+          "resourceFonts": {
+            "items": {
+              "type": "string",
+              "maxLength": 32,
+              "minLength": 1
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Resourcefonts",
+            "description": "CSS font family names for use in resources",
+            "default": []
+          },
           "showResourceCategoryHeadings": {
             "type": "boolean",
             "title": "Showresourcecategoryheadings",
@@ -7584,6 +7621,18 @@
             "maxItems": 32,
             "title": "Resourcecategories",
             "description": "Resource categories to categorize resources in",
+            "default": []
+          },
+          "resourceFonts": {
+            "items": {
+              "type": "string",
+              "maxLength": 32,
+              "minLength": 1
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Resourcefonts",
+            "description": "CSS font family names for use in resources",
             "default": []
           },
           "showResourceCategoryHeadings": {

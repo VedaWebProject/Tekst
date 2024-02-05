@@ -257,6 +257,8 @@ models:
     resourceCategoryTranslation: Label
     showResourceCategoryHeadings: Show resource category headings in browse view
     alwaysShowResourceCategoryHeadings: Show resource category headings even for the only category with resources
+    resourceFonts: Custom resource fonts
+    resourceFontName: Name
   segment:
     modelLabel: Segment
     key: Key
@@ -349,6 +351,7 @@ resources:
         heading: General
         defaultCollapsed: Collapse contents by default
         reducedViewOneline: Show contents as single line of text in reduced view
+        font: Font (will use platform default font if not set)
       deeplLinks:
         heading: DeepL Translation Links
         sourceLanguage: Source language

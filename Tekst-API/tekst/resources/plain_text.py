@@ -5,7 +5,10 @@ from pydantic import Field, StringConstraints
 from tekst.models.common import ModelBase
 from tekst.models.content import ContentBase
 from tekst.models.resource import ResourceBase
-from tekst.models.resource_configs import DeepLLinksConfig, ResourceConfigBase
+from tekst.models.resource_configs import (
+    DeepLLinksConfig,
+    ResourceConfigBase,
+)
 from tekst.resources import ResourceTypeABC
 
 
@@ -34,6 +37,9 @@ class GeneralPlainTextResourceConfig(ModelBase):
         bool,
         Field(description="Show contents as single line of text when in reduced view"),
     ] = False
+    font: Annotated[
+        str | None, Field(description=("Name of the font to use for this resource."))
+    ] = None
 
 
 class PlainTextResourceConfig(ResourceConfigBase):

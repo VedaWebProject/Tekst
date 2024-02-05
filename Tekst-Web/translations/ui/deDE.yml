@@ -258,6 +258,8 @@ models:
     resourceCategoryTranslation: Beschriftung
     showResourceCategoryHeadings: Zeige Überschriften für Ressourcen-Kategorien in der Blättern-Ansicht
     alwaysShowResourceCategoryHeadings: Zeige Überschrift auch für die einzige Kategorie mit Ressourcen
+    resourceFonts: Individuelle Ressourcen-Schriftarten
+    resourceFontName: Name
   segment:
     modelLabel: Segment
     key: Schlüssel
@@ -358,6 +360,7 @@ resources:
         heading: Allgemein
         defaultCollapsed: Inhalte sind standardmäßig eingeklappt
         reducedViewOneline: Inhalte in reduzierter Ansicht in einer einzigen Zeile darstellen
+        font: Schriftart (nutzt Standard-Schriftart wenn nicht festgelegt)
       deeplLinks:
         heading: DeepL-Übersetzungs-Links
         sourceLanguage: Quellsprache

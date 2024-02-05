@@ -144,7 +144,7 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
   margin-bottom: 0;
 }
 .content-header {
-  margin: 0.25rem 0 0.5rem 0;
+  margin-bottom: 0.5rem;
   display: flex;
   align-items: center;
   flex-wrap: wrap;

@@ -5,16 +5,6 @@
 
 */
 
-
-
-
-
-
-
-
-
-
-
 /*
 
   THE FONT DEFINITIONS BELOW SHOULD NOT BE CHANGED,
@@ -22,18 +12,18 @@
 
 */
 
-
 @font-face {
   font-family: 'Tekst UI Font';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
   src: url('/fonts/Roboto/Roboto-300.eot'); /* IE9 */
-  src: url('/fonts/Roboto/Roboto-300.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-    url('/fonts/Roboto/Roboto-300.woff2') format('woff2'), /* Modern Browsers */
-    url('/fonts/Roboto/Roboto-300.woff') format('woff'), /* Modern Browsers */
-    url('/fonts/Roboto/Roboto-300.ttf') format('truetype'), /* Safari, Android, iOS */
-    url('/fonts/Roboto/Roboto-300.svg#Roboto') format('svg'); /* Legacy iOS */
+  src:
+    url('/fonts/Roboto/Roboto-300.eot?#iefix') format('embedded-opentype'),
+    /* IE6-IE8 */ url('/fonts/Roboto/Roboto-300.woff2') format('woff2'),
+    /* Modern Browsers */ url('/fonts/Roboto/Roboto-300.woff') format('woff'),
+    /* Modern Browsers */ url('/fonts/Roboto/Roboto-300.ttf') format('truetype'),
+    /* Safari, Android, iOS */ url('/fonts/Roboto/Roboto-300.svg#Roboto') format('svg'); /* Legacy iOS */
 }
 
 @font-face {
@@ -42,11 +32,12 @@
   font-weight: 400;
   font-display: swap;
   src: url('/fonts/Roboto/Roboto-300italic.eot'); /* IE9 */
-  src: url('/fonts/Roboto/Roboto-300italic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-    url('/fonts/Roboto/Roboto-300italic.woff2') format('woff2'), /* Modern Browsers */
-    url('/fonts/Roboto/Roboto-300italic.woff') format('woff'), /* Modern Browsers */
-    url('/fonts/Roboto/Roboto-300italic.ttf') format('truetype'), /* Safari, Android, iOS */
-    url('/fonts/Roboto/Roboto-300italic.svg#Roboto') format('svg'); /* Legacy iOS */
+  src:
+    url('/fonts/Roboto/Roboto-300italic.eot?#iefix') format('embedded-opentype'),
+    /* IE6-IE8 */ url('/fonts/Roboto/Roboto-300italic.woff2') format('woff2'),
+    /* Modern Browsers */ url('/fonts/Roboto/Roboto-300italic.woff') format('woff'),
+    /* Modern Browsers */ url('/fonts/Roboto/Roboto-300italic.ttf') format('truetype'),
+    /* Safari, Android, iOS */ url('/fonts/Roboto/Roboto-300italic.svg#Roboto') format('svg'); /* Legacy iOS */
 }
 
 @font-face {
@@ -55,11 +46,12 @@
   font-weight: 500;
   font-display: swap;
   src: url('/fonts/Roboto/Roboto-Regular.eot'); /* IE9 */
-  src: url('/fonts/Roboto/Roboto-Regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-    url('/fonts/Roboto/Roboto-Regular.woff2') format('woff2'), /* Modern Browsers */
-    url('/fonts/Roboto/Roboto-Regular.woff') format('woff'), /* Modern Browsers */
-    url('/fonts/Roboto/Roboto-Regular.ttf') format('truetype'), /* Safari, Android, iOS */
-    url('/fonts/Roboto/Roboto-Regular.svg#Roboto') format('svg'); /* Legacy iOS */
+  src:
+    url('/fonts/Roboto/Roboto-Regular.eot?#iefix') format('embedded-opentype'),
+    /* IE6-IE8 */ url('/fonts/Roboto/Roboto-Regular.woff2') format('woff2'),
+    /* Modern Browsers */ url('/fonts/Roboto/Roboto-Regular.woff') format('woff'),
+    /* Modern Browsers */ url('/fonts/Roboto/Roboto-Regular.ttf') format('truetype'),
+    /* Safari, Android, iOS */ url('/fonts/Roboto/Roboto-Regular.svg#Roboto') format('svg'); /* Legacy iOS */
 }
 
 @font-face {
@@ -68,11 +60,13 @@
   font-weight: 400;
   font-display: swap;
   src: url('/fonts/Noto-Serif/Noto-Serif-Regular.eot'); /* IE9 */
-  src: url('/fonts/Noto-Serif/Noto-Serif-Regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-    url('/fonts/Noto-Serif/Noto-Serif-Regular.woff2') format('woff2'), /* Modern Browsers */
-    url('/fonts/Noto-Serif/Noto-Serif-Regular.woff') format('woff'), /* Modern Browsers */
-    url('/fonts/Noto-Serif/Noto-Serif-Regular.ttf') format('truetype'), /* Safari, Android, iOS */
-    url('/fonts/Noto-Serif/Noto-Serif-Regular.svg#NotoSerif') format('svg'); /* Legacy iOS */
+  src:
+    url('/fonts/Noto-Serif/Noto-Serif-Regular.eot?#iefix') format('embedded-opentype'),
+    /* IE6-IE8 */ url('/fonts/Noto-Serif/Noto-Serif-Regular.woff2') format('woff2'),
+    /* Modern Browsers */ url('/fonts/Noto-Serif/Noto-Serif-Regular.woff') format('woff'),
+    /* Modern Browsers */ url('/fonts/Noto-Serif/Noto-Serif-Regular.ttf') format('truetype'),
+    /* Safari, Android, iOS */ url('/fonts/Noto-Serif/Noto-Serif-Regular.svg#NotoSerif')
+      format('svg'); /* Legacy iOS */
 }
 
 @font-face {
@@ -81,11 +75,13 @@
   font-weight: 400;
   font-display: swap;
   src: url('/fonts/Noto-Serif/Noto-Serif-Italic.eot'); /* IE9 */
-  src: url('/fonts/Noto-Serif/Noto-Serif-Italic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-    url('/fonts/Noto-Serif/Noto-Serif-Italic.woff2') format('woff2'), /* Modern Browsers */
-    url('/fonts/Noto-Serif/Noto-Serif-Italic.woff') format('woff'), /* Modern Browsers */
-    url('/fonts/Noto-Serif/Noto-Serif-Italic.ttf') format('truetype'), /* Safari, Android, iOS */
-    url('/fonts/Noto-Serif/Noto-Serif-Italic.svg#NotoSerif') format('svg'); /* Legacy iOS */
+  src:
+    url('/fonts/Noto-Serif/Noto-Serif-Italic.eot?#iefix') format('embedded-opentype'),
+    /* IE6-IE8 */ url('/fonts/Noto-Serif/Noto-Serif-Italic.woff2') format('woff2'),
+    /* Modern Browsers */ url('/fonts/Noto-Serif/Noto-Serif-Italic.woff') format('woff'),
+    /* Modern Browsers */ url('/fonts/Noto-Serif/Noto-Serif-Italic.ttf') format('truetype'),
+    /* Safari, Android, iOS */ url('/fonts/Noto-Serif/Noto-Serif-Italic.svg#NotoSerif')
+      format('svg'); /* Legacy iOS */
 }
 
 @font-face {
@@ -94,9 +90,10 @@
   font-weight: 500;
   font-display: swap;
   src: url('/fonts/Noto-Serif/Noto-Serif-500.eot'); /* IE9 */
-  src: url('/fonts/Noto-Serif/Noto-Serif-500.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-    url('/fonts/Noto-Serif/Noto-Serif-500.woff2') format('woff2'), /* Modern Browsers */
-    url('/fonts/Noto-Serif/Noto-Serif-500.woff') format('woff'), /* Modern Browsers */
-    url('/fonts/Noto-Serif/Noto-Serif-500.ttf') format('truetype'), /* Safari, Android, iOS */
-    url('/fonts/Noto-Serif/Noto-Serif-500.svg#NotoSerif') format('svg'); /* Legacy iOS */
+  src:
+    url('/fonts/Noto-Serif/Noto-Serif-500.eot?#iefix') format('embedded-opentype'),
+    /* IE6-IE8 */ url('/fonts/Noto-Serif/Noto-Serif-500.woff2') format('woff2'),
+    /* Modern Browsers */ url('/fonts/Noto-Serif/Noto-Serif-500.woff') format('woff'),
+    /* Modern Browsers */ url('/fonts/Noto-Serif/Noto-Serif-500.ttf') format('truetype'),
+    /* Safari, Android, iOS */ url('/fonts/Noto-Serif/Noto-Serif-500.svg#NotoSerif') format('svg'); /* Legacy iOS */
 }

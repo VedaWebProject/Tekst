@@ -34,6 +34,11 @@ class ResourceConfigBase(ModelBase):
 
 
 class DeepLLinksConfig(ModelBase):
+    """
+    Resource configuration model for DeepL translation links.
+    The corresponding field MUST be named `deepl_links`!
+    """
+
     _DEEPL_LANGUAGES: tuple = (
         "BG", "CS", "DA", "DE", "EL", "EN", "ES", "ET", "FI",
         "FR", "HU", "ID", "IT", "JA", "LT", "LV", "NL", "PL",

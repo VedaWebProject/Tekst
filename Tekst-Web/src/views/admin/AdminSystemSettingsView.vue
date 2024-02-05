@@ -236,7 +236,7 @@ function resetForm() {
           item-style="margin-bottom: 0;"
           show-sort-button
           :min="0"
-          :max="64"
+          :max="32"
           @create="() => ({ key: '', translations: [{ locale: '*', translation: '' }] })"
         >
           <template #default="{ index }">
@@ -282,7 +282,7 @@ function resetForm() {
                 type="primary"
                 secondary
                 :title="$t('general.insertAction')"
-                :disabled="(formModel.resourceCategories?.length || 0) >= 64"
+                :disabled="(formModel.resourceCategories?.length || 0) >= 32"
                 :focusable="false"
                 @click="() => create(indexAction)"
               >
@@ -332,6 +332,64 @@ function resetForm() {
             :label="$t('models.platformSettings.alwaysShowResourceCategoryHeadings')"
           />
         </n-space>
+      </n-form-item>
+
+      <n-divider />
+
+      <!-- RESOURCE CATEGORIES-->
+      <h3>{{ $t('models.platformSettings.resourceFonts') }}</h3>
+      <n-form-item v-if="formModel.resourceFonts" :show-label="false">
+        <n-dynamic-input
+          v-model:value="formModel.resourceFonts"
+          item-style="margin-bottom: 0;"
+          show-sort-button
+          :min="0"
+          :max="64"
+          @create="() => ''"
+        >
+          <template #default="{ index }">
+            <n-form-item
+              ignore-path-change
+              :label="$t('models.platformSettings.resourceFontName')"
+              :path="`resourceFonts[${index}]`"
+              :rule="platformSettingsFormRules.resourceFontName"
+              style="flex-grow: 2"
+            >
+              <n-input
+                v-model:value="formModel.resourceFonts[index]"
+                :placeholder="$t('models.platformSettings.resourceFontName')"
+                @keydown.enter.prevent
+              />
+            </n-form-item>
+          </template>
+          <template #action="{ index: indexAction, create, remove }">
+            <n-button-group style="margin-left: var(--layout-gap); padding-top: 26px">
+              <n-button
+                type="primary"
+                secondary
+                :title="$t('general.removeAction')"
+                :focusable="false"
+                @click="() => remove(indexAction)"
+              >
+                <template #icon>
+                  <n-icon :component="MinusIcon" />
+                </template>
+              </n-button>
+              <n-button
+                type="primary"
+                secondary
+                :title="$t('general.insertAction')"
+                :disabled="(formModel.resourceFonts?.length || 0) >= 64"
+                :focusable="false"
+                @click="() => create(indexAction)"
+              >
+                <template #icon>
+                  <n-icon :component="AddIcon" />
+                </template>
+              </n-button>
+            </n-button-group>
+          </template>
+        </n-dynamic-input>
       </n-form-item>
     </n-form>
     <button-shelf top-gap>

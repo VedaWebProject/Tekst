@@ -20,11 +20,13 @@ withDefaults(
       'rich-text-content-wrapper': resource.contents?.length && resource.contents?.length > 1,
     }"
   >
-    <!-- eslint-disable-next-line vue/no-v-html -->
-    <div v-if="!reduced" class="rich-text-content" v-html="content.html"></div>
-    <p v-else class="translucent i">
+    <div v-if="!reduced" :style="{ fontFamily: resource.config?.general?.font || undefined }">
+      <!-- eslint-disable-next-line vue/no-v-html -->
+      <div v-html="content.html"></div>
+    </div>
+    <div v-else class="translucent i ui-font">
       {{ $t('contents.msgContentNoReducedView') }}
-    </p>
+    </div>
   </div>
 </template>
 

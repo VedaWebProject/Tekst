@@ -30,6 +30,9 @@ class GeneralRichTextResourceConfig(ModelBase):
             )
         ),
     ] = True
+    font: Annotated[
+        str | None, Field(description=("Name of the font to use for this resource."))
+    ] = None
 
 
 class RichTextResourceConfig(ResourceConfigBase):

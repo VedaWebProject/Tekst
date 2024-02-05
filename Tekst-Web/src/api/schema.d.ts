@@ -597,7 +597,11 @@ export interface components {
        */
       showOnParentLevel?: boolean;
     };
-    /** DeepLLinksConfig */
+    /**
+     * DeepLLinksConfig
+     * @description Resource configuration model for DeepL translation links.
+     * The corresponding field MUST be named `deepl_links`!
+     */
     DeepLLinksConfig: {
       /**
        * Enabled
@@ -720,6 +724,11 @@ export interface components {
        * @default false
        */
       reducedViewOneline?: boolean;
+      /**
+       * Font
+       * @description Name of the font to use for this resource.
+       */
+      font?: string | null;
     };
     /** GeneralRichTextResourceConfig */
     GeneralRichTextResourceConfig: {
@@ -729,6 +738,11 @@ export interface components {
        * @default true
        */
       defaultCollapsed?: boolean;
+      /**
+       * Font
+       * @description Name of the font to use for this resource.
+       */
+      font?: string | null;
     };
     /** HTTPValidationError */
     HTTPValidationError: {
@@ -1444,6 +1458,12 @@ export interface components {
        */
       resourceCategories?: components['schemas']['ResourceCategory'][];
       /**
+       * Resourcefonts
+       * @description CSS font family names for use in resources
+       * @default []
+       */
+      resourceFonts?: string[];
+      /**
        * Showresourcecategoryheadings
        * @description Show resource category headings in browse view
        * @default true
@@ -1541,6 +1561,12 @@ export interface components {
        * @default []
        */
       resourceCategories?: components['schemas']['ResourceCategory'][];
+      /**
+       * Resourcefonts
+       * @description CSS font family names for use in resources
+       * @default []
+       */
+      resourceFonts?: string[];
       /**
        * Showresourcecategoryheadings
        * @description Show resource category headings in browse view

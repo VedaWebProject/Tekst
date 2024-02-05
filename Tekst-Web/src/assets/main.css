@@ -27,7 +27,6 @@ strong,
   font-weight: var(--font-weight-bold);
 }
 
-
 em,
 .i {
   font-style: italic;
@@ -115,6 +114,10 @@ img {
 
 .translucent {
   opacity: 0.5;
+}
+
+.ui-font {
+  font-family: var(--font-family-ui);
 }
 
 /*

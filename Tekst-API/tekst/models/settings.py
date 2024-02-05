@@ -100,6 +100,15 @@ class PlatformSettings(ModelBase, ModelFactoryMixin):
             description="Resource categories to categorize resources in", max_length=32
         ),
     ] = []
+    resource_fonts: Annotated[
+        list[
+            Annotated[
+                str,
+                StringConstraints(min_length=1, max_length=32, strip_whitespace=True),
+            ]
+        ],
+        Field(description="CSS font family names for use in resources", max_length=64),
+    ] = []
     show_resource_category_headings: Annotated[
         bool, Field(description="Show resource category headings in browse view")
     ] = True

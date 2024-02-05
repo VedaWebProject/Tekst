@@ -175,6 +175,10 @@ export const platformSettingsFormRules: Record<string, FormItemRule[]> = {
     requiredRule($t('models.platformSettings.resourceCategoryTranslation'), 'blur'),
     minMaxCharsRule(1, 32, 'blur'),
   ],
+  resourceFontName: [
+    requiredRule($t('models.platformSettings.resourceFontName'), 'blur'),
+    minMaxCharsRule(1, 32, 'blur'),
+  ],
 };
 
 export const resourceConfigFormRules: Record<string, FormItemRule[]> = {
