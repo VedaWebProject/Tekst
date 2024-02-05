@@ -62,7 +62,8 @@ function handleSelect(key: string) {
     :size="state.dropdownSize"
   >
     <n-button
-      text
+      :quaternary="!disabled"
+      :text="disabled"
       icon-placement="right"
       color="#fffe"
       :focusable="false"
@@ -70,7 +71,7 @@ function handleSelect(key: string) {
       :title="$t('general.textSelect')"
       :style="{
         fontSize: 'inherit',
-        fontWeight: 'var(--font-weight-normal)',
+        fontWeight: 'var(--font-weight-bold)',
         cursor: !disabled ? 'pointer' : 'default',
       }"
     >

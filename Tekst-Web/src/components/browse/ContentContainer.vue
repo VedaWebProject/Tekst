@@ -29,7 +29,7 @@ const contentCollapsed = ref(!!props.resource.config?.general?.defaultCollapsed)
 watch(
   () => browse.reducedView,
   () => {
-    contentCollapsed.value = true;
+    contentCollapsed.value = !!props.resource.config?.general?.defaultCollapsed;
   }
 );
 
@@ -64,7 +64,10 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
     <div class="content-header" :class="browse.reducedView ? 'reduced' : ''">
       <n-icon v-if="!resource.contents?.length" :component="NoContentIcon" />
       <div class="content-header-title-container">
-        <div class="content-header-title" :class="browse.reducedView ? 'reduced' : ''">
+        <div
+          class="content-header-title"
+          :class="{ reduced: browse.reducedView, b: browse.reducedView }"
+        >
           {{ resource.title }}
         </div>
         <div class="content-header-title-extra">
@@ -74,7 +77,11 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
       <content-header-widget-bar :resource="resource" :style="headerWidgetsVisibilityStyle" />
     </div>
 
-    <div v-if="resource.contents?.length" :class="{ 'content-body-collapsed': contentCollapsed }">
+    <div
+      v-if="resource.contents?.length"
+      class="content-body"
+      :class="{ 'content-body-collapsed': contentCollapsed }"
+    >
       <!-- content-specific component (that displays the actual content data) -->
       <component
         :is="contentComponents[resource.resourceType]"
@@ -158,7 +165,6 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
 
 .content-header-title {
   color: var(--accent-color);
-  font-weight: var(--font-weight-normal);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -173,6 +179,10 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
   flex-grow: 2;
   opacity: 0.5;
   font-size: 0.8em;
+}
+
+.content-body {
+  font-family: var(--font-family-content);
 }
 
 .content-body-collapsed {

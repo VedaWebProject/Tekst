@@ -173,7 +173,7 @@ async function handleModalSubmit() {
           <template v-for="lvlTranslation in lvl" :key="lvlTranslation.locale">
             <div>
               {{ getLocaleProfile(lvlTranslation.locale)?.icon || '🌐' }}
-              <span style="font-weight: normal">
+              <span class="b">
                 {{
                   getLocaleProfile(lvlTranslation.locale)?.displayFull ||
                   $t('models.locale.allLanguages')
@@ -271,7 +271,7 @@ async function handleModalSubmit() {
 .level-index {
   min-width: 28px;
   color: var(--accent-color);
-  font-weight: bold;
+  font-weight: var(--font-weight-bold);
 }
 
 .level-translations {

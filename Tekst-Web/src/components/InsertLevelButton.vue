@@ -15,6 +15,7 @@ defineEmits(['click']);
     <n-button
       secondary
       circle
+      size="small"
       :title="$t('admin.text.levels.tipInsertLevel', { n: level + 1 })"
       :focusable="false"
       @click="$emit('click', level)"

@@ -11,11 +11,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-#app {
-  font-family: var(--font-family);
-  font-weight: var(--font-weight-normal);
-}
-
 a,
 a:any-link {
   text-decoration: none;
@@ -27,8 +22,15 @@ p {
 }
 
 b,
-strong {
-  font-weight: bold;
+strong,
+.b {
+  font-weight: var(--font-weight-bold);
+}
+
+
+em,
+.i {
+  font-style: italic;
 }
 
 h1 {
@@ -86,10 +88,6 @@ blockquote {
   font-style: italic;
 }
 
-strong {
-  font-weight: normal;
-}
-
 img {
   max-width: 100%;
 }
@@ -119,23 +117,10 @@ img {
   opacity: 0.5;
 }
 
-.i {
-  font-style: italic;
-}
-
-.b {
-  font-weight: bold;
-}
-
 /*
  * NUI overrides
  * Unfortunately, we need to override the default NUI styles in this hacky way
  */
-
-.n-select,
-.n-select-menu {
-  font-weight: var(--font-weight-normal);
-}
 
 .n-drawer-header__main {
   flex-grow: 2;
@@ -148,5 +133,4 @@ img {
 
 .n-thing-header__title {
   font-size: var(--font-size) !important;
-  font-weight: var(--font-weight-normal) !important;
 }

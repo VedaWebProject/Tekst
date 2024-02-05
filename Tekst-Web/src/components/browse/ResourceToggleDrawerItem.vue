@@ -94,7 +94,6 @@ const infoTooltip = computed(() =>
 .item .item-title {
   color: var(--accent-color);
   font-size: var(--font-size-medium);
-  font-weight: var(--font-weight-normal);
 }
 
 .item .item-title-extra {

@@ -440,10 +440,6 @@ onUnmounted(() => {
   align-items: flex-end;
 }
 
-.toolbar * {
-  font-weight: var(--font-weight-bold) !important;
-}
-
 .toolbar > .toolbar-group {
   display: flex;
   flex-wrap: nowrap;

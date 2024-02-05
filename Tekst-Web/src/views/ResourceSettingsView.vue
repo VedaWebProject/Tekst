@@ -160,7 +160,6 @@ table.resource-info-table {
   margin-bottom: var(--layout-gap);
 }
 table.resource-info-table td.row-key {
-  font-weight: var(--font-weight-normal);
   padding-right: var(--content-gap);
 }
 </style>

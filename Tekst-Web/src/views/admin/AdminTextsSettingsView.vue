@@ -183,7 +183,6 @@ async function handleDelete() {
           v-model:value="model.defaultLevel"
           :options="defaultLevelOptions"
           :disabled="loading || !defaultLevelOptions.length"
-          style="font-weight: var(--font-weight-normal)"
         />
       </n-form-item>
 

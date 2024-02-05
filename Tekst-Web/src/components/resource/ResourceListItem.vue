@@ -196,7 +196,12 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
 
 <template>
   <n-list-item class="resource-list-item">
-    <n-thing :title="targetResource.title" content-style="margin-top: 8px">
+    <n-thing content-style="margin-top: 8px">
+      <template #header>
+        <span class="b">
+          {{ targetResource.title }}
+        </span>
+      </template>
       <template #header-extra>
         <n-space>
           <n-dropdown

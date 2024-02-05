@@ -136,7 +136,9 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
     <n-thing description-style="font-size: var(--font-size-tiny);">
       <template #header>
         <n-space align="center">
-          {{ targetUser.name }}
+          <span class="b">
+            {{ targetUser.name }}
+          </span>
           <n-badge
             :type="targetUser.isActive ? 'success' : 'error'"
             :processing="!targetUser.isActive"
