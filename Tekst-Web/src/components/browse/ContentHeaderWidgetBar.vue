@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { StyleValue } from 'vue';
-import contentWidgets from '@/components/content/mappings';
+import contentWidgets from '@/components/resource/mappings';
 import LocationContentSiblingsWidget from '@/components/resource/LocationContentSiblingsWidget.vue';
 import ResourceInfoWidget from '@/components/resource/ResourceInfoWidget.vue';
 import ResourceDeactivateWidget from '@/components/resource/ResourceDeactivateWidget.vue';
@@ -23,7 +23,7 @@ const browse = useBrowseStore();
 
 <template>
   <div class="content-header-widgets" :style="style">
-    <!-- config-specific widgets -->
+    <!-- resource-type-specific widgets -->
     <template v-if="resource.contents?.length">
       <template
         v-for="(configSection, configSectionKey) in resource.config"

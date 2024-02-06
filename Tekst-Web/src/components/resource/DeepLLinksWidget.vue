@@ -38,6 +38,14 @@ const options = computed(() =>
   }))
 );
 
+const show = computed(
+  () =>
+    props.widgetConfig?.enabled &&
+    props.widgetConfig?.sourceLanguage &&
+    props.widgetConfig?.languages?.length &&
+    contentsTextEncoded
+);
+
 function renderOption(option: DropdownOption) {
   return h(
     'a',
@@ -54,7 +62,7 @@ function renderOption(option: DropdownOption) {
 
 <template>
   <n-dropdown
-    v-if="props.widgetConfig?.enabled && contentsTextEncoded && props.widgetConfig"
+    v-if="show"
     trigger="click"
     :options="options"
     to="#app-container"
