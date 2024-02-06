@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { NDrawer, NDrawerContent, NSwitch, NSpace } from 'naive-ui';
+import { NDrawer, NDrawerContent, NButton, NSpace, NIcon } from 'naive-ui';
 import { useAuthStore, useBrowseStore } from '@/stores';
 import ResourceToggleDrawerItem from '@/components/browse/ResourceToggleDrawerItem.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 
-import { ResourceIcon } from '@/icons';
+import { DeselectAllIcon, ResourceIcon, SelectAllIcon } from '@/icons';
 
 const props = defineProps<{ show: boolean }>();
 const emit = defineEmits<{ (e: 'update:show', show: boolean): void }>();
@@ -14,7 +14,7 @@ const auth = useAuthStore();
 const browse = useBrowseStore();
 
 const categoryActivationState = computed(() =>
-  browse.resourcesCategorized.map((c) => !c.resources.every((r) => !r.active))
+  browse.resourcesCategorized.map((c) => c.resources.every((r) => r.active))
 );
 
 const show = computed({
@@ -34,13 +34,7 @@ function toggleCategory(index: number, activate: boolean) {
 </script>
 
 <template>
-  <n-drawer
-    v-model:show="show"
-    :width="680"
-    :auto-focus="false"
-    to="#app-container"
-    style="max-width: 90%"
-  >
+  <n-drawer v-model:show="show" :width="680" :auto-focus="false" style="max-width: 90%">
     <n-drawer-content closable header-style="border: none">
       <template #header>
         <icon-heading level="2" :icon="ResourceIcon" style="margin: 0">
@@ -55,14 +49,21 @@ function toggleCategory(index: number, activate: boolean) {
           v-if="browse.resourcesCategorized.length > 1"
           class="category-header"
           align="center"
+          justify="space-between"
         >
-          <n-switch
-            :value="categoryActivationState[index]"
-            :round="false"
-            size="large"
-            @update:value="(v) => toggleCategory(index, v)"
-          />
           <h3 style="margin: 0">{{ category.category.translation }}</h3>
+          <n-button
+            quaternary
+            circle
+            :focusable="false"
+            @click="toggleCategory(index, !categoryActivationState[index])"
+          >
+            <template #icon>
+              <n-icon
+                :component="!categoryActivationState[index] ? SelectAllIcon : DeselectAllIcon"
+              />
+            </template>
+          </n-button>
         </n-space>
         <resource-toggle-drawer-item
           v-for="resource in category.resources"
@@ -79,8 +80,8 @@ function toggleCategory(index: number, activate: boolean) {
 
 <style scoped>
 .category-header {
-  padding-bottom: var(--content-gap);
-  margin: 2rem 0 var(--content-gap) 0;
+  padding-bottom: 0.5rem;
+  margin: 1.5rem 0 var(--content-gap) 0;
   border-bottom: 1px solid var(--main-bg-color);
 }
 

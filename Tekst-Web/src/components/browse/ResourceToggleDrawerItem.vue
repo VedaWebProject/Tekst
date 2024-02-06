@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { NSwitch, NIcon, NSpace } from 'naive-ui';
+import { NSwitch, NIcon } from 'naive-ui';
 import { $t } from '@/i18n';
 import MetadataDisplayMinimal from '@/components/resource/MetadataDisplayMinimal.vue';
 import { useStateStore } from '@/stores';
@@ -32,7 +32,7 @@ const infoTooltip = computed(() =>
 </script>
 
 <template>
-  <n-space class="item" :class="disabled && 'disabled'" :title="infoTooltip" align="center">
+  <div class="item" :class="disabled && 'disabled'" :title="infoTooltip">
     <n-switch v-model:value="active" :round="false" />
     <div class="item-main">
       <div class="item-title-container">
@@ -62,13 +62,15 @@ const infoTooltip = computed(() =>
         :title="$t('models.resource.proposed')"
       />
     </div>
-  </n-space>
+  </div>
 </template>
 
 <style scoped>
 .item {
+  display: flex;
+  align-items: center;
+  gap: var(--layout-gap);
   margin-bottom: var(--layout-gap);
-  padding-left: 0.5rem;
 }
 
 .item > .item-main {
@@ -109,8 +111,7 @@ const infoTooltip = computed(() =>
 }
 
 .item-extra {
-  display: flex;
-  gap: 0.5rem;
   opacity: 0.5;
+  padding-right: 0.25rem;
 }
 </style>

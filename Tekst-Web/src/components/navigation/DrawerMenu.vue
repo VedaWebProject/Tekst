@@ -62,7 +62,6 @@ const allMenuOptions = computed(() => [
     :show="show"
     :width="600"
     :auto-focus="false"
-    to="#app-container"
     style="max-width: 90%"
     @update:show="$emit('update:show', $event)"
   >

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { type Component } from 'vue';
 import { NEllipsis, NIcon } from 'naive-ui';
+import { useThemeStore } from '@/stores/theme';
 
 withDefaults(
   defineProps<{
@@ -16,6 +17,8 @@ withDefaults(
     iconColor: 'accent',
   }
 );
+
+const theme = useThemeStore();
 </script>
 
 <template>
@@ -24,7 +27,7 @@ withDefaults(
       v-if="icon"
       :component="icon"
       :size="iconSize"
-      :color="iconColor === 'accent' ? 'var(--accent-color)' : 'inherit'"
+      :color="iconColor === 'accent' ? theme.accentColors.base : 'inherit'"
     />
     <n-ellipsis v-if="ellipsis">
       <slot></slot>

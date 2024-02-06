@@ -89,8 +89,12 @@ import PersonRemoveFilled from '@vicons/material/PersonRemoveFilled';
 import StarOutlined from '@vicons/material/StarOutlined';
 import BookmarkBorderOutlined from '@vicons/material/BookmarkBorderOutlined';
 import BookmarkFilled from '@vicons/material/BookmarkFilled';
+import SelectAllOutlined from '@vicons/material/SelectAllOutlined';
+import DeselectOutlined from '@vicons/material/DeselectOutlined';
 
 export {
+  SelectAllOutlined as SelectAllIcon,
+  DeselectOutlined as DeselectAllIcon,
   AccountTreeFilled as AccountTreeIcon,
   AddOutlined as AddIcon,
   AddCircleOutlineOutlined as AddCircleIcon,
