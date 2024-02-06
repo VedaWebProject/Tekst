@@ -230,8 +230,6 @@ async function handleSaveClick() {
           initialContentModel.value = data;
           resetForm();
           message.success($t('contents.msgSaved'));
-        } else {
-          message.error($t('errors.unexpected'), error);
         }
       } else {
         // model has no ID or belongs to other resource (original), so it's an insert
@@ -243,8 +241,6 @@ async function handleSaveClick() {
           initialContentModel.value = data;
           resetForm();
           message.success($t('contents.msgSaved'));
-        } else {
-          message.error($t('errors.unexpected'), error);
         }
       }
       loadingSave.value = false;
@@ -272,8 +268,6 @@ async function deleteContent() {
     resources.resetCoverage(resource.value?.id);
     await loadLocationData();
     message.success($t('contents.msgDeleted'));
-  } else {
-    message.error($t('errors.unexpected'));
   }
   loadingDelete.value = false;
 }

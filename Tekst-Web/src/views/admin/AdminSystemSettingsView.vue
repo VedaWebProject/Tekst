@@ -71,7 +71,6 @@ async function handleSaveClick() {
           10
         );
       } else {
-        message.error($t('errors.unexpected'), error);
         resetForm();
       }
       reset();

@@ -462,7 +462,6 @@ admin:
       accountStatus: Account status
       adminWarning: Careful! You better know what you are doing!
     msgSentVerificationLink: A verification email was sent to "{username}".
-    msgSentVerificationLinkError: Error sending verification link via email.
     msgUserDeleted: The user {username} has been deleted and informed via email.
     mailtoLinkTitle: Send email to {username}
     mailtoSubject: Your {platform} account
@@ -559,7 +558,6 @@ admin:
         msgSuccess: Location "{oldName}" renamed to "{newName}"
       upload:
         msgSuccess: New text structure uploaded and processed successfully
-        msgError: 'Error uploading and processing text structure'
   newText:
     heading: New Text
     headerInfoAlert: |

@@ -88,12 +88,6 @@ function handleSave() {
         state.text = updatedText;
         resetModelChanges();
         message.success($t('admin.text.settings.msgSaved'));
-      } else {
-        /**
-         * This will be either an app-level error (e.g. buggy validation, server down, 401)
-         * or the provided email already exists, which we don't want to actively disclose.
-         */
-        message.error($t('errors.unexpected'));
       }
       loading.value = false;
     })
@@ -124,8 +118,6 @@ async function handleDelete() {
           pfData.value?.texts.find((t) => t.id == pfData.value?.settings.defaultTextId) ||
           pfData.value?.texts[0];
         router.push({ name: 'home' });
-      } else {
-        message.error($t('errors.unexpected'), error);
       }
     },
   });

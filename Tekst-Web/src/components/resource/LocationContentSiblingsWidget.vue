@@ -4,7 +4,6 @@ import { ref } from 'vue';
 import { NButton, NSpin } from 'naive-ui';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import { GET, type AnyContentRead, type AnyResourceRead } from '@/api';
-import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
 import contentComponents from '@/components/content/mappings';
 import LocationLabel from '@/components/LocationLabel.vue';
@@ -18,7 +17,6 @@ const props = defineProps<{
   resource: AnyResourceRead;
 }>();
 
-const { message } = useMessages();
 const browse = useBrowseStore();
 
 const showModal = ref(false);
@@ -41,7 +39,6 @@ async function handleClick() {
   if (!error) {
     contents.value = contentsData;
   } else {
-    message.error($t('errors.unexpected'), error);
     showModal.value = false;
   }
   loading.value = false;

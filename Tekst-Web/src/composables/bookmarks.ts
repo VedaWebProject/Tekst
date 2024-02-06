@@ -25,7 +25,7 @@ export function useBookmarks() {
   }
 
   async function createBookmark(locationId: string, comment: string) {
-    const { error, response } = await POST('/bookmarks', {
+    const { error } = await POST('/bookmarks', {
       body: {
         locationId,
         comment,
@@ -34,10 +34,6 @@ export function useBookmarks() {
     if (!error) {
       await loadBookmarks();
       message.success($t('browse.bookmarks.createSuccess'));
-    } else if (response.status == 409) {
-      message.error($t('browse.bookmarks.errorBookmarkExists'));
-    } else {
-      message.error($t('errors.unexpected'), error);
     }
   }
 

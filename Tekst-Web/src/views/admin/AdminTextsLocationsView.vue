@@ -79,23 +79,20 @@ async function loadTreeData(location?: TreeOption) {
       query: { txt: state.text?.id || '', ...(location ? { parent: String(location.key) } : {}) },
     },
   });
-  if (error) {
-    message.error($t('errors.unexpected'), error);
-    loadingData.value = false;
-    return;
-  }
-  const subTreeData: LocationTreeOption[] = data.map((child) => ({
-    key: child.id,
-    label: child.label,
-    isLeaf: child.level >= (state.text?.levels.length || Number.MAX_SAFE_INTEGER) - 1,
-    level: child.level,
-    position: child.position,
-    parentKey: child.parentId,
-  }));
-  if (!location) {
-    treeData.value = subTreeData;
-  } else {
-    location.children = subTreeData;
+  if (!error) {
+    const subTreeData: LocationTreeOption[] = data.map((child) => ({
+      key: child.id,
+      label: child.label,
+      isLeaf: child.level >= (state.text?.levels.length || Number.MAX_SAFE_INTEGER) - 1,
+      level: child.level,
+      position: child.position,
+      parentKey: child.parentId,
+    }));
+    if (!location) {
+      treeData.value = subTreeData;
+    } else {
+      location.children = subTreeData;
+    }
   }
   loadingData.value = false;
 }
@@ -156,8 +153,6 @@ async function moveLocation(dropData: TreeDropInfo) {
         level: state.textLevelLabels[data.level],
       })
     );
-  } else {
-    message.error($t('errors.unexpected'), error);
   }
   // update tree data
   if (dropData.dragNode.parentKey === null) {
@@ -197,8 +192,6 @@ async function deleteLocation(location: TreeOption) {
         contents: result.contents,
       })
     );
-  } else {
-    message.error($t('errors.unexpected'), error);
   }
   loadingDelete.value = false;
 }
@@ -236,8 +229,6 @@ async function handleRenameResult(location: LocationRead | undefined) {
         newName: location.label,
       })
     );
-  } else {
-    message.error($t('errors.unexpected'));
   }
   await loadTreeData(getTreeLocationByKey(locationToRename.value?.parentKey));
   locationToRename.value = null;
@@ -258,8 +249,6 @@ async function handleAddResult(location: LocationRead | undefined) {
         parentLabel: locationParentToAddTo.value?.label || state.text?.title || '',
       })
     );
-  } else {
-    message.error($t('errors.unexpected'));
   }
   await loadTreeData(getTreeLocationByKey(locationParentToAddTo.value?.key?.toString()));
   locationParentToAddTo.value = null;
@@ -276,8 +265,6 @@ async function handleDownloadTemplateClick() {
     const filename = `${state.text?.slug}_structure_template.json`.toLowerCase();
     message.info($t('general.downloadSaved', { filename }));
     saveDownload(await response.blob(), filename);
-  } else {
-    message.error($t('errors.unexpected'), error);
   }
   loadingTemplate.value = false;
 }
@@ -299,8 +286,6 @@ async function handleUploadStructureClick() {
     });
     if (!error) {
       message.success($t('admin.text.locations.upload.msgSuccess'));
-    } else {
-      message.error($t('admin.text.locations.upload.msgError'), error, 20);
     }
     loadingUpload.value = false;
     loadTreeData();

@@ -471,7 +471,6 @@ admin:
       accountStatus: Konto-Status
       adminWarning: Vorsicht! Sie sollten wissen, was Sie tun!
     msgSentVerificationLink: Eine Verifizierungs-Email wurde an "{username}" gesendet.
-    msgSentVerificationLinkError: Beim Senden der Email mit dem Verifizierungs-Link ist ein Fehler aufgetreten.
     msgUserDeleted: Der Benutzer {username} wurde gelöscht und darüber per Email benachrichtigt.
     mailtoLinkTitle: Email an {username} senden
     mailtoSubject: Ihr {platform}-Konto
@@ -581,7 +580,6 @@ admin:
         msgSuccess: Fundstelle "{oldName}" umbenannt zu "{newName}"
       upload:
         msgSuccess: Neue Textstruktur erfolgreich hochgeladen und verarbeitet
-        msgError: 'Fehler beim Hochladen und Verarbeiten der Textstruktur'
   newText:
     heading: Neuer Text
     headerInfoAlert: |

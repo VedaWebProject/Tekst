@@ -158,8 +158,6 @@ async function updateSegment() {
     segmentModel.value = data;
     resetModelChanges();
     loadPlatformData();
-  } else {
-    message.error($t('errors.unexpected'), error);
   }
 }
 
@@ -177,8 +175,6 @@ async function createSegment() {
     segmentModel.value = data;
     resetModelChanges();
     loadPlatformData();
-  } else {
-    message.error($t('errors.unexpected'), error);
   }
 }
 
@@ -229,8 +225,6 @@ async function handleDeleteClick() {
             title: segmentModel.value?.title || segmentModel.value?.key || '',
           })
         );
-      } else {
-        message.error($t('errors.unexpected'), error);
       }
       resetForm();
       loadPlatformData();

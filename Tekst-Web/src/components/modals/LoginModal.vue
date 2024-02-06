@@ -53,9 +53,7 @@ async function handleForgotPasswordClick() {
     const { error } = await POST('/auth/forgot-password', {
       body: { email: formModel.value.email },
     });
-    if (error) {
-      message.error($t('errors.unexpected'), error, 10);
-    } else {
+    if (!error) {
       message.info(
         $t('account.forgotPassword.sentResetLink', { email: formModel.value.email }),
         undefined,

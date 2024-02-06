@@ -114,7 +114,6 @@ async function updateSelectModelsFromLvl(lvl: number) {
     params: { path: { id: locationSelectModels.value[lvl].selected || '' } },
   });
   if (error) {
-    message.error($t('errors.unexpected'), error);
     return;
   }
   // set locations for all following levels

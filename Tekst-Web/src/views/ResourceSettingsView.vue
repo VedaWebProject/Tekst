@@ -73,8 +73,6 @@ async function handleSaveClick() {
       if (!error) {
         message.success($t('resources.settings.msgSaved', { title: data.title }));
         resources.replace(data);
-      } else {
-        message.error($t('errors.unexpected'), error);
       }
       loadingSave.value = false;
     })

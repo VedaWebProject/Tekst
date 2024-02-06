@@ -65,11 +65,9 @@ async function handleSave() {
     formRef.value
       ?.validate(async (validationError) => {
         if (validationError) return;
-        const {
-          data: createdText,
-          error,
-          response,
-        } = await POST('/texts', { body: model.value as TextCreate });
+        const { data: createdText, error } = await POST('/texts', {
+          body: model.value as TextCreate,
+        });
         if (!error) {
           patchPfData({
             texts: [...(pfData.value?.texts || []), createdText],
@@ -77,12 +75,6 @@ async function handleSave() {
           state.text = createdText || state.text;
           router.push({ name: 'adminTextsSettings', params: { text: createdText.slug } });
           message.success($t('admin.newText.msgSaveSuccess', { title: createdText.title }));
-        } else {
-          if (response.status === 409) {
-            message.error($t('errors.conflict'));
-          } else {
-            message.error($t('errors.unexpected'), error);
-          }
         }
       })
       .catch(() => {

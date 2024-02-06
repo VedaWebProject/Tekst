@@ -92,12 +92,6 @@ async function updateUser(userUpdate: UserUpdate) {
     await auth.updateUser(userUpdate);
     return true;
   } catch {
-    /**
-     * This will be either an app-level error (e.g. buggy validation, server down),
-     * the provided email already exists (which we don't want to actively disclose)
-     * or we got a 403 for a failed CSRF check.
-     */
-    message.error($t('errors.unexpected'));
     return false;
   } finally {
     loading.value = false;
@@ -115,8 +109,6 @@ async function updateEmail() {
   });
   if (!error) {
     message.warning($t('account.manage.msgVerifyEmailWarning'), undefined, 20);
-  } else {
-    message.error($t('errors.unexpected'), error);
   }
   auth.showLoginModal(
     $t('account.manage.msgVerifyEmailWarning'),
@@ -216,8 +208,6 @@ async function handleDeleteAccount() {
       const { error } = await DELETE('/users/me', {});
       if (!error) {
         await auth.logout();
-      } else {
-        message.error($t('errors.unexpected'), error);
       }
       loading.value = false;
     },

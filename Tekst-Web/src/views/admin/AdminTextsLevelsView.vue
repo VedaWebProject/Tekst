@@ -87,8 +87,6 @@ function handleDeleteClick(level: number) {
             levelLabel: targetLevelLabel,
           })
         );
-      } else {
-        message.error($t('errors.unexpected'), error);
       }
       loading.value = false;
     },
@@ -122,8 +120,6 @@ async function handleModalSubmit() {
           message.success(
             $t('admin.text.levels.msgInsertSuccess', { position: editModalLevel.value + 1 })
           );
-        } else {
-          message.error($t('errors.unexpected'), error);
         }
       } else if (editModalAction.value === 'edit') {
         const textUpdates = {
@@ -144,8 +140,6 @@ async function handleModalSubmit() {
           message.success(
             $t('admin.text.levels.msgEditSuccess', { position: editModalLevel.value + 1 })
           );
-        } else {
-          message.error($t('errors.unexpected'), error);
         }
       }
       await loadPlatformData();
