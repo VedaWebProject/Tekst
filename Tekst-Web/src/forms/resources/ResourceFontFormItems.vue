@@ -22,6 +22,7 @@ const options = computed(
 
 <template>
   <n-form-item
+    v-if="options.length"
     :label="$t('resources.settings.config.general.font')"
     :show-feedback="false"
     style="margin-top: var(--layout-gap)"
