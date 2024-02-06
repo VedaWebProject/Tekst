@@ -30,6 +30,9 @@ const commonOverrides: GlobalThemeOverrides = {
   Badge: {
     fontSize: 'var(--font-size-mini)',
   },
+  Thing: {
+    titleFontWeight: 'var(--font-weight-bold)',
+  },
 };
 
 const lightOverrides: GlobalThemeOverrides = {
