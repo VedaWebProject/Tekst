@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { NSwitch, NIcon } from 'naive-ui';
+import { NSwitch, NIcon, NSpace } from 'naive-ui';
 import { $t } from '@/i18n';
 import MetadataDisplayMinimal from '@/components/resource/MetadataDisplayMinimal.vue';
 import { useStateStore } from '@/stores';
@@ -32,11 +32,11 @@ const infoTooltip = computed(() =>
 </script>
 
 <template>
-  <div class="item" :class="disabled && 'disabled'" :title="infoTooltip">
-    <n-switch v-model:value="active" size="large" :round="false" />
+  <n-space class="item" :class="disabled && 'disabled'" :title="infoTooltip" align="center">
+    <n-switch v-model:value="active" :round="false" />
     <div class="item-main">
       <div class="item-title-container">
-        <div class="item-title">{{ resource.title }}</div>
+        <div class="item-title accent-color-text">{{ resource.title }}</div>
         <div class="item-title-extra">
           ({{ $t('browse.location.level') }}: {{ state.textLevelLabels[resource.level] }})
         </div>
@@ -62,16 +62,13 @@ const infoTooltip = computed(() =>
         :title="$t('models.resource.proposed')"
       />
     </div>
-  </div>
+  </n-space>
 </template>
 
 <style scoped>
 .item {
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  gap: 24px;
-  margin-bottom: 1rem;
+  margin-bottom: var(--layout-gap);
+  padding-left: 0.5rem;
 }
 
 .item > .item-main {
@@ -89,11 +86,6 @@ const infoTooltip = computed(() =>
   flex-wrap: wrap;
   align-items: baseline;
   column-gap: 12px;
-}
-
-.item .item-title {
-  color: var(--accent-color);
-  font-size: var(--font-size-medium);
 }
 
 .item .item-title-extra {

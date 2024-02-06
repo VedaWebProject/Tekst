@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { NDrawer, NDrawerContent } from 'naive-ui';
+import { NDrawer, NDrawerContent, NSwitch, NSpace } from 'naive-ui';
 import { useAuthStore, useBrowseStore } from '@/stores';
 import ResourceToggleDrawerItem from '@/components/browse/ResourceToggleDrawerItem.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
@@ -13,6 +13,10 @@ const emit = defineEmits<{ (e: 'update:show', show: boolean): void }>();
 const auth = useAuthStore();
 const browse = useBrowseStore();
 
+const categoryActivationState = computed(() =>
+  browse.resourcesCategorized.map((c) => !c.resources.every((r) => !r.active))
+);
+
 const show = computed({
   get() {
     return props.show;
@@ -21,6 +25,12 @@ const show = computed({
     emit('update:show', value);
   },
 });
+
+function toggleCategory(index: number, activate: boolean) {
+  browse.resourcesCategorized[index].resources.forEach((r) => {
+    r.active = activate;
+  });
+}
 </script>
 
 <template>
@@ -37,10 +47,23 @@ const show = computed({
           {{ $t('browse.resourceToggleDrawer.heading') }}
         </icon-heading>
       </template>
-      <template v-for="category in browse.resourcesCategorized" :key="category.category.key">
-        <div v-if="browse.resourcesCategorized.length > 1" class="category-label">
-          {{ category.category.translation }}
-        </div>
+      <template
+        v-for="(category, index) in browse.resourcesCategorized"
+        :key="category.category.key"
+      >
+        <n-space
+          v-if="browse.resourcesCategorized.length > 1"
+          class="category-header"
+          align="center"
+        >
+          <n-switch
+            :value="categoryActivationState[index]"
+            :round="false"
+            size="large"
+            @update:value="(v) => toggleCategory(index, v)"
+          />
+          <h3 style="margin: 0">{{ category.category.translation }}</h3>
+        </n-space>
         <resource-toggle-drawer-item
           v-for="resource in category.resources"
           :key="`${resource.id}`"
@@ -55,9 +78,13 @@ const show = computed({
 </template>
 
 <style scoped>
-.category-label {
-  padding-bottom: 0.25rem;
-  margin-bottom: 0.5rem;
+.category-header {
+  padding-bottom: var(--content-gap);
+  margin: 2rem 0 var(--content-gap) 0;
   border-bottom: 1px solid var(--main-bg-color);
+}
+
+.category-header:first-child {
+  margin-top: var(--content-gap);
 }
 </style>

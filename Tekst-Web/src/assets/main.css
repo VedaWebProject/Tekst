@@ -112,6 +112,10 @@ img {
   transition: 0.3s;
 }
 
+.accent-color-text {
+  color: var(--accent-color);
+}
+
 .translucent {
   opacity: 0.5;
 }
