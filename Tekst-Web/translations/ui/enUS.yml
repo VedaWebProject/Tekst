@@ -330,7 +330,7 @@ resources:
   phSearchUsers: Search for users...
   backToOverview: Back to "Resources"
   create:
-    heading: New resource on "{text}"
+    heading: New Resource on "{text}"
     warnImmutable: These settings cannot be changed later!
     msgSaved: Your new resource "{title}" has been created.
   settings:
@@ -374,7 +374,7 @@ resources:
         html: Formatted Text
 
 contents:
-  heading: Edit resource content
+  heading: Edit Resource Content
   lblBtnCompare: Compare
   tipBtnCompare: Select other resource to compare with
   lblBtnCopyOriginal: Copy
@@ -524,7 +524,7 @@ admin:
     locations:
       heading: Locations
       add:
-        heading: Add location to "{parentLabel}" on level "{level}"
+        heading: Add Location to "{parentLabel}" on Level "{level}"
         tooltip: Add location
         msgSuccess: Added location "{label}" to "{parentLabel}"
       lblBtnAddLocationFirstLevel: Add
