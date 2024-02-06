@@ -7,6 +7,9 @@ from tekst.models.content import ContentBase
 from tekst.models.resource import ResourceBase
 from tekst.models.resource_configs import (
     DeepLLinksConfig,
+    DefaultCollapsedConfigType,
+    FontConfigType,
+    ReducedViewOnelineConfigType,
     ResourceConfigBase,
 )
 from tekst.resources import ResourceTypeABC
@@ -25,21 +28,9 @@ class PlainText(ResourceTypeABC):
 
 
 class GeneralPlainTextResourceConfig(ModelBase):
-    default_collapsed: Annotated[
-        bool,
-        Field(
-            description=(
-                "Whether contents of this resource should be collapsed by default"
-            )
-        ),
-    ] = False
-    reduced_view_oneline: Annotated[
-        bool,
-        Field(description="Show contents as single line of text when in reduced view"),
-    ] = False
-    font: Annotated[
-        str | None, Field(description=("Name of the font to use for this resource."))
-    ] = None
+    default_collapsed: DefaultCollapsedConfigType = False
+    reduced_view_oneline: ReducedViewOnelineConfigType = False
+    font: FontConfigType = None
 
 
 class PlainTextResourceConfig(ResourceConfigBase):

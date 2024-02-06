@@ -5,7 +5,11 @@ from pydantic import Field, StringConstraints
 from tekst.models.common import ModelBase
 from tekst.models.content import ContentBase
 from tekst.models.resource import ResourceBase
-from tekst.models.resource_configs import ResourceConfigBase
+from tekst.models.resource_configs import (
+    DefaultCollapsedConfigType,
+    FontConfigType,
+    ResourceConfigBase,
+)
 from tekst.resources import ResourceTypeABC
 
 
@@ -22,17 +26,8 @@ class RichText(ResourceTypeABC):
 
 
 class GeneralRichTextResourceConfig(ModelBase):
-    default_collapsed: Annotated[
-        bool,
-        Field(
-            description=(
-                "Whether contents of this resource should be collapsed by default"
-            )
-        ),
-    ] = True
-    font: Annotated[
-        str | None, Field(description=("Name of the font to use for this resource."))
-    ] = None
+    default_collapsed: DefaultCollapsedConfigType = True
+    font: FontConfigType = None
 
 
 class RichTextResourceConfig(ResourceConfigBase):

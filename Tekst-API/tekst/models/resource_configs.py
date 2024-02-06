@@ -33,6 +33,29 @@ class ResourceConfigBase(ModelBase):
     common: CommonResourceConfig = CommonResourceConfig()
 
 
+# TYPE ANNOTATIONS FOR FIELD THAT CAN BE PART OF
+# THE GENERAL TYPE-SPECIFIC RESOURCE CONFIGURATION
+
+DefaultCollapsedConfigType = Annotated[
+    bool,
+    Field(
+        description=("Whether contents of this resource should be collapsed by default")
+    ),
+]
+
+ReducedViewOnelineConfigType = Annotated[
+    bool,
+    Field(description="Show contents as single line of text when in reduced view"),
+]
+
+FontConfigType = Annotated[
+    str | None,
+    Field(
+        description=("Name of the font to use for this resource."),
+    ),
+]
+
+
 class DeepLLinksConfig(ModelBase):
     """
     Resource configuration model for DeepL translation links.
