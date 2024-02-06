@@ -9,7 +9,7 @@ import { computed, ref, watch } from 'vue';
 import _cloneDeep from 'lodash.clonedeep';
 import { RouterLink } from 'vue-router';
 import { NIcon, NAlert, NSpin, NForm, NButton, type FormInst } from 'naive-ui';
-import { resourceConfigFormRules } from '@/forms/formRules';
+import { resourceSettingsFormRules } from '@/forms/formRules';
 import { useModelChanges } from '@/composables/modelChanges';
 import { useRoute } from 'vue-router';
 import { useRouter } from 'vue-router';
@@ -126,7 +126,7 @@ async function handleSaveClick() {
       <n-form
         ref="formRef"
         :model="model"
-        :rules="resourceConfigFormRules"
+        :rules="resourceSettingsFormRules"
         label-placement="top"
         :disabled="loading"
         label-width="auto"

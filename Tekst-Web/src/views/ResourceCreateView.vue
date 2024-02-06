@@ -17,7 +17,7 @@ import {
   type FormInst,
   type SelectOption,
 } from 'naive-ui';
-import { resourceConfigFormRules } from '@/forms/formRules';
+import { resourceSettingsFormRules } from '@/forms/formRules';
 import { useRouter } from 'vue-router';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import ResourceSettingsFormItems from '@/forms/resources/ResourceSettingsFormItems.vue';
@@ -140,7 +140,7 @@ async function handleSaveClick() {
       <n-form
         ref="formRef"
         :model="model"
-        :rules="resourceConfigFormRules"
+        :rules="resourceSettingsFormRules"
         :disabled="loadingSave"
         label-placement="top"
         label-width="auto"

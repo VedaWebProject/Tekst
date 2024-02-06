@@ -7,6 +7,7 @@ import { usePlatformData } from '@/composables/platformData';
 import { computed } from 'vue';
 import { pickTranslation } from '@/utils';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
+import { commonResourceConfigFormRules } from '../formRules';
 
 const props = withDefaults(
   defineProps<{
@@ -53,7 +54,11 @@ function handleUpdate(field: string, value: any) {
   </n-form-item>
 
   <!-- SORT ORDER -->
-  <n-form-item path="sortOrder" :label="$t('resources.settings.config.common.sortOrder')">
+  <n-form-item
+    :label="$t('resources.settings.config.common.sortOrder')"
+    path="config.common.sortOrder"
+    :rule="commonResourceConfigFormRules.sortOrder"
+  >
     <n-input-number
       :min="0"
       :max="999999"

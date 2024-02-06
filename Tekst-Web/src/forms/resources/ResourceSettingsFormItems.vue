@@ -5,7 +5,7 @@ import {
   type UserReadPublic,
   type AnyResourceRead,
 } from '@/api';
-import { resourceConfigFormRules } from '@/forms/formRules';
+import { resourceSettingsFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
 import { useAuthStore } from '@/stores';
 import TranslationFormItem from '@/forms/TranslationFormItem.vue';
@@ -165,7 +165,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
     parent-form-path-prefix="description"
     :main-form-label="$t('models.resource.description')"
     :translation-form-label="$t('models.resource.description')"
-    :translation-form-rule="resourceConfigFormRules.descriptionTranslation"
+    :translation-form-rule="resourceSettingsFormRules.descriptionTranslation"
     @update:value="(v) => handleUpdate('description', v)"
   />
   <!-- CITATION -->
@@ -186,7 +186,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
     :max-translation-length="2000"
     :main-form-label="$t('models.resource.comment')"
     :translation-form-label="$t('models.resource.comment')"
-    :translation-form-rule="resourceConfigFormRules.commentTranslation"
+    :translation-form-rule="resourceSettingsFormRules.commentTranslation"
     @update:value="(v) => handleUpdate('comment', v)"
   />
 
@@ -212,7 +212,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
               ignore-path-change
               :show-label="false"
               :path="`meta[${index}].key`"
-              :rule="resourceConfigFormRules.metaKey"
+              :rule="resourceSettingsFormRules.metaKey"
               required
             >
               <n-select
@@ -226,7 +226,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
               ignore-path-changechange
               :show-label="false"
               :path="`meta[${index}].value`"
-              :rule="resourceConfigFormRules.metaValue"
+              :rule="resourceSettingsFormRules.metaValue"
               style="flex-grow: 2"
               required
             >

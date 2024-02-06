@@ -181,7 +181,7 @@ export const platformSettingsFormRules: Record<string, FormItemRule[]> = {
   ],
 };
 
-export const resourceConfigFormRules: Record<string, FormItemRule[]> = {
+export const resourceSettingsFormRules: Record<string, FormItemRule[]> = {
   title: [requiredRule($t('models.resource.title'), 'blur'), minMaxCharsRule(1, 64, 'blur')],
   descriptionTranslation: [
     requiredRule($t('models.resource.description'), 'blur'),
@@ -211,6 +211,26 @@ export const resourceConfigFormRules: Record<string, FormItemRule[]> = {
         $t('forms.rulesFeedback.isRequired', {
           x: $t('models.resource.level'),
         }),
+      trigger: 'blur',
+    },
+  ],
+};
+
+export const commonResourceConfigFormRules: Record<string, FormItemRule[]> = {
+  sortOrder: [
+    {
+      required: true,
+      type: 'number',
+      message: () =>
+        $t('forms.rulesFeedback.isRequired', {
+          x: $t('resources.settings.config.common.sortOrder'),
+        }),
+      trigger: 'blur',
+    },
+    {
+      validator: (rule: FormItemRule, value: number) =>
+        Number.isInteger(value) && value >= 0 && value <= 999999,
+      message: '0-999999',
       trigger: 'blur',
     },
   ],
