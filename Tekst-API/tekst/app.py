@@ -5,13 +5,13 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException
 from fastapi.exception_handlers import http_exception_handler
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette_csrf import CSRFMiddleware
 
 from tekst.config import TekstConfig, get_config
 from tekst.db import init_odm
 from tekst.dependencies import get_db, get_db_client
+from tekst.errors import TekstHTTPException
 from tekst.logging import log, setup_logging
 from tekst.openapi import customize_openapi
 from tekst.resources import init_resource_types_mgr
@@ -97,9 +97,9 @@ async def custom_http_exception_handler(request, exc):
         request,
         HTTPException(
             status_code=exc.status_code,
-            detail=exc.detail.model_dump(),
+            detail=exc.detail.model_dump().get("detail", None),
             headers=exc.headers,
         )
-        if isinstance(exc.detail, BaseModel)
+        if isinstance(exc, TekstHTTPException)
         else exc,
     )
