@@ -15,7 +15,11 @@ class CommonResourceConfig(ModelBase):
     ] = None
     sort_order: Annotated[
         int,
-        Field(description="Sort order for displaying this resource among others", ge=0),
+        Field(
+            description="Sort order for displaying this resource among others",
+            ge=0,
+            le=999999,
+        ),
     ] = 100
     default_active: Annotated[
         bool,

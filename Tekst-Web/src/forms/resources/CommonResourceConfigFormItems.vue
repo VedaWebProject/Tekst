@@ -56,6 +56,7 @@ function handleUpdate(field: string, value: any) {
   <n-form-item path="sortOrder" :label="$t('resources.settings.config.common.sortOrder')">
     <n-input-number
       :min="0"
+      :max="999999"
       :value="model.sortOrder"
       style="width: 100%"
       @update:value="(v) => handleUpdate('sortOrder', v)"
