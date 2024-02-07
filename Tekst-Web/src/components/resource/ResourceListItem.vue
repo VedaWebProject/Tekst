@@ -57,7 +57,7 @@ const emit = defineEmits([
 const state = useStateStore();
 
 const isOwner = computed(() => (props.currentUser?.id ?? 'noid') === props.targetResource.ownerId);
-const isOwnerOrAdmin = computed(() => isOwner.value && !!props.currentUser?.isSuperuser);
+const isOwnerOrAdmin = computed(() => isOwner.value || !!props.currentUser?.isSuperuser);
 
 const actionOptions = computed(() => [
   ...(props.targetResource.writable
