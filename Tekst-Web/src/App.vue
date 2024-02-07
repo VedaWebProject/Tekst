@@ -103,6 +103,7 @@ const nUiDateLocale = computed(() => getLocaleProfile(state.locale)?.nUiDateLoca
 }
 
 main {
+  padding: var(--layout-gap) 0;
   background-color: var(--main-bg-color);
   box-shadow:
     inset 0 12px 12px -12px rgba(0, 0, 0, 0.4),
