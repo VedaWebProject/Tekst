@@ -51,7 +51,7 @@ class ClientSegment(ModelBase, ModelFactoryMixin):
         str | None,
         StringConstraints(max_length=32),
         val.CleanupOneline,
-        val.EmtpyStringToNone,
+        val.EmptyStringToNone,
         Field(description="Title of this segment"),
     ] = None
     html: Annotated[

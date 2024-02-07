@@ -68,21 +68,21 @@ class PlatformSettings(ModelBase, ModelFactoryMixin):
         str | None,
         StringConstraints(max_length=64),
         val.CleanupOneline,
-        val.EmtpyStringToNone,
+        val.EmptyStringToNone,
         Field(description="Platform contact name"),
     ] = _cfg.info_contact_name
     info_contact_email: Annotated[
         EmailStr | None,
         StringConstraints(max_length=64),
         val.CleanupOneline,
-        val.EmtpyStringToNone,
+        val.EmptyStringToNone,
         Field(description="Platform contact email"),
     ] = _cfg.info_contact_email
     info_contact_url: Annotated[
         CustomHttpUrl | None,
         StringConstraints(max_length=512),
         val.CleanupOneline,
-        val.EmtpyStringToNone,
+        val.EmptyStringToNone,
         Field(description="URL to page with contact info"),
     ] = _cfg.info_contact_url
 

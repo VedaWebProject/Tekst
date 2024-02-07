@@ -184,6 +184,8 @@ models:
     password: Password
     name: Name
     affiliation: Affiliation
+    avatarUrl: Avatar Image URL
+    bio: Biography
     isActive: active
     isInactive: inactive
     isVerified: verified
@@ -403,9 +405,9 @@ account:
   loginBtn: Login
   logoutBtn: Logout
   profile: Profile
-  profileHeading: '{username}: Public Profile'
+  profileHeading: Public Profile
   profileNotFound: The user profile "{username}" could not be found.
-  profileFieldNotPublic: not public
+  profileNoBio: User didn't set a public profile bio.
   logoutSuccessful: You are now logged out.
   tipUserBtn: Show user actions for {username}
   tipLoginBtn: Log into your account

@@ -24,7 +24,7 @@ class ContentBase(ModelBase, ModelFactoryMixin):
         str | None,
         StringConstraints(max_length=50000, strip_whitespace=True),
         val.CleanupMultiline,
-        val.EmtpyStringToNone,
+        val.EmptyStringToNone,
         Field(
             description=(
                 "Plain text, potentially multiline comment "
@@ -36,7 +36,7 @@ class ContentBase(ModelBase, ModelFactoryMixin):
         str | None,
         StringConstraints(max_length=1000, strip_whitespace=True),
         val.CleanupMultiline,
-        val.EmtpyStringToNone,
+        val.EmptyStringToNone,
         Field(
             description=(
                 "Plain text, potentially multiline working notes on this content "

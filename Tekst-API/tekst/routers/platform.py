@@ -104,7 +104,7 @@ async def find_public_users(
     query: Annotated[
         str | None,
         val.CleanupOneline,
-        val.EmtpyStringToNone,
+        val.EmptyStringToNone,
         Query(alias="q", description="Query string to search in user data"),
     ] = None,
 ) -> list[UserDocument]:

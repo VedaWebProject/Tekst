@@ -180,8 +180,6 @@ export const useAuthStore = defineStore('auth', () => {
       user.value = updatedUser;
       localStorage.setItem('user', JSON.stringify(updatedUser));
       return updatedUser;
-    } else {
-      throw error;
     }
   }
 

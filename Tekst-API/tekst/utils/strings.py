@@ -43,10 +43,10 @@ def remove_diacritics(string: str) -> str:
 
 
 def cleanup_spaces_multiline(string: str | None) -> str | None:
-    """Reduces newline chars and whitespaces to one at a time and strips whitespaces"""
+    """Reduces excessive newline chars and whitespaces and strips whitespaces"""
     if string is None:
         return None
-    string = re.sub(r"[\n\r]+", "\n", string)
+    string = re.sub(r"[\n\r]{3,}", "\n\n", string)
     string = re.sub(r"[\t ]+", " ", string)
     return string.strip()
 

@@ -15,11 +15,16 @@ from pymongo import IndexModel
 
 from tekst.config import TekstConfig, get_config
 from tekst.models.common import LocaleKey, ModelBase, ModelFactoryMixin
+from tekst.utils.validators import CleanupMultiline, CleanupOneline, EmptyStringToNone
 
 
 _cfg: TekstConfig = get_config()
 
-PublicUserField = Literal["name", "affiliation"]
+MaybePrivateUserFields = Literal["name", "affiliation", "bio"]
+MaybePrivateUserFieldsType = Annotated[
+    list[MaybePrivateUserFields],
+    Field(description="Data fields set public by this user", max_length=64),
+]
 
 
 class UserReadPublic(ModelBase):
@@ -27,14 +32,14 @@ class UserReadPublic(ModelBase):
     username: str
     name: str | None = None
     affiliation: str | None = None
-    public_fields: Annotated[
-        list[PublicUserField],
-        Field(description="Data fields set public by this user", max_length=64),
-    ] = []
+    avatar_url: str | None = None
+    bio: str | None = None
+    is_superuser: bool
+    public_fields: MaybePrivateUserFieldsType = []
 
     @model_validator(mode="after")
     def model_postprocess(self):
-        for pf in get_args(PublicUserField):
+        for pf in get_args(MaybePrivateUserFields):
             if pf not in self.public_fields:
                 setattr(self, pf, None)
         return self
@@ -52,16 +57,24 @@ class User(ModelBase, ModelFactoryMixin):
             strip_whitespace=True,
         ),
     ]
-    name: Annotated[
-        str, StringConstraints(min_length=1, max_length=64, strip_whitespace=True)
-    ]
+    name: Annotated[str, StringConstraints(min_length=1, max_length=64), CleanupOneline]
     affiliation: Annotated[
-        str, StringConstraints(min_length=1, max_length=64, strip_whitespace=True)
+        str, StringConstraints(min_length=1, max_length=180), CleanupOneline
     ]
     locale: LocaleKey | None = None
-    public_fields: Annotated[
-        list[PublicUserField], Field(description="Data fields set public by this user")
-    ] = []
+    avatar_url: Annotated[
+        str | None,
+        StringConstraints(max_length=1024),
+        CleanupOneline,
+        EmptyStringToNone,
+    ] = None
+    bio: Annotated[
+        str | None,
+        StringConstraints(max_length=2000),
+        CleanupMultiline,
+        EmptyStringToNone,
+    ] = None
+    public_fields: MaybePrivateUserFieldsType = []
 
 
 class UserDocument(User, BeanieBaseUser, Document):

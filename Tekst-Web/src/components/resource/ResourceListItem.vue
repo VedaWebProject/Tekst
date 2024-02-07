@@ -222,9 +222,16 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
       </template>
 
       <template #description>
-        <user-display v-if="targetResource.owner" :user="targetResource.owner" size="tiny" />
-        <resource-publication-status :resource="targetResource" size="tiny" />
-        <resource-is-version-info :resource="targetResource" size="tiny" />
+        <user-display
+          v-if="targetResource.owner"
+          :user="targetResource.owner"
+          size="tiny"
+          style="margin-bottom: var(--layout-gap)"
+        />
+        <n-space vertical>
+          <resource-publication-status :resource="targetResource" size="tiny" />
+          <resource-is-version-info :resource="targetResource" size="tiny" />
+        </n-space>
       </template>
 
       <template v-if="targetResource.description?.length">

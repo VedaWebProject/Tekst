@@ -23,7 +23,7 @@ class Bookmark(ModelBase, ModelFactoryMixin):
         str | None,
         StringConstraints(max_length=1000, strip_whitespace=True),
         val.CleanupMultiline,
-        val.EmtpyStringToNone,
+        val.EmptyStringToNone,
     ] = None
 
     @field_validator("comment", mode="after")
@@ -47,5 +47,5 @@ class BookmarkCreate(ModelBase):
         str | None,
         StringConstraints(max_length=1000),
         val.CleanupMultiline,
-        val.EmtpyStringToNone,
+        val.EmptyStringToNone,
     ] = None

@@ -2339,12 +2339,16 @@ export interface components {
       /** Affiliation */
       affiliation: string;
       locale?: components['schemas']['LocaleKey'] | null;
+      /** Avatarurl */
+      avatarUrl?: string | null;
+      /** Bio */
+      bio?: string | null;
       /**
        * Publicfields
        * @description Data fields set public by this user
        * @default []
        */
-      publicFields?: ('name' | 'affiliation')[];
+      publicFields?: ('name' | 'affiliation' | 'bio')[];
     };
     /**
      * UserRead
@@ -2374,12 +2378,16 @@ export interface components {
       /** Affiliation */
       affiliation: string;
       locale?: components['schemas']['LocaleKey'] | null;
+      /** Avatarurl */
+      avatarUrl?: string | null;
+      /** Bio */
+      bio?: string | null;
       /**
        * Publicfields
        * @description Data fields set public by this user
        * @default []
        */
-      publicFields?: ('name' | 'affiliation')[];
+      publicFields?: ('name' | 'affiliation' | 'bio')[];
       /**
        * Createdat
        * Format: date-time
@@ -2399,12 +2407,18 @@ export interface components {
       name?: string | null;
       /** Affiliation */
       affiliation?: string | null;
+      /** Avatarurl */
+      avatarUrl?: string | null;
+      /** Bio */
+      bio?: string | null;
+      /** Issuperuser */
+      isSuperuser: boolean;
       /**
        * Publicfields
        * @description Data fields set public by this user
        * @default []
        */
-      publicFields?: ('name' | 'affiliation')[];
+      publicFields?: ('name' | 'affiliation' | 'bio')[];
     };
     /** UserUpdate */
     UserUpdate: {
@@ -2425,12 +2439,16 @@ export interface components {
       /** Affiliation */
       affiliation?: string | null;
       locale?: components['schemas']['LocaleKey'] | null;
+      /** Avatarurl */
+      avatarUrl?: string | null;
+      /** Bio */
+      bio?: string | null;
       /**
        * Publicfields
        * @description Data fields set public by this user
        * @default []
        */
-      publicFields?: ('name' | 'affiliation')[];
+      publicFields?: ('name' | 'affiliation' | 'bio')[];
     };
     /** ValidationError */
     ValidationError: {

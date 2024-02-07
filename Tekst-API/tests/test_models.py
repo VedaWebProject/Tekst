@@ -95,6 +95,7 @@ def test_user_read_public():
         username="fooBar",
         name="Foo Bar",
         affiliation="Baz",
+        is_superuser=False,
         public_fields=["name"],
     )
     assert not urp.affiliation

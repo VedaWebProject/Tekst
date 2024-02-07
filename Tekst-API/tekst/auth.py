@@ -456,9 +456,10 @@ async def create_sample_users():
             password=pw,
             name="Beth Smith",
             affiliation="Rick's daughter",
+            avatar_url="https://www.animeclick.it/immagini/personaggio/Beth_Sanchez_In_Smith/cover/51990-Beth_Sanchez_In_Smith-foto.jpg",
             is_verified=True,
             is_active=False,
-            public_fields=["name", "affiliation"],
+            public_fields=["name", "affiliation", "bio"],
         )
     )
     # unverified user
@@ -468,9 +469,10 @@ async def create_sample_users():
             username="jerr_unif",
             password=pw,
             name="Jerry Smith",
+            avatar_url="https://kkasbarian.com/30Days30Sites/TV-Show/images/Jerry%20Smith.jpg",
             affiliation="Rick's son-in-law",
             is_active=True,
-            public_fields=["name", "affiliation"],
+            public_fields=["name", "affiliation", "bio"],
         )
     )
     # just a normal user, active and verified
@@ -481,9 +483,10 @@ async def create_sample_users():
             password=pw,
             name="Morty Smith",
             affiliation="Rick's grandson",
+            avatar_url="https://openpsychometrics.org/tests/characters/test-resources/pics/RM/2.jpg",
             is_verified=True,
             is_active=True,
-            public_fields=["name", "affiliation"],
+            public_fields=["name", "affiliation", "bio"],
         )
     )
     # superuser
@@ -494,9 +497,10 @@ async def create_sample_users():
             password=pw,
             name="Rick Sanchez",
             affiliation="Mad scientist",
+            avatar_url="https://c.tenor.com/cGKIMHrIezUAAAAC/tenor.gif",
             is_verified=True,
             is_superuser=True,
             is_active=True,
-            public_fields=["name", "affiliation"],
+            public_fields=["name", "affiliation", "bio"],
         )
     )

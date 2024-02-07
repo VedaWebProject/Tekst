@@ -15,7 +15,8 @@ import { usePlatformData } from '@/composables/platformData';
 import { computed, type Component, h } from 'vue';
 import { $t } from '@/i18n';
 import { useStateStore } from '@/stores';
-
+import UserAvatar from '@/components/user/UserAvatar.vue';
+import { RouterLink } from 'vue-router';
 import {
   VerifiedUserIcon,
   MoreIcon,
@@ -133,12 +134,15 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
 
 <template>
   <n-list-item class="user-list-item">
-    <n-thing description-style="font-size: var(--font-size-tiny);">
+    <n-thing description-style="font-size: var(--font-size-tiny);" content-indented>
+      <template #avatar>
+        <user-avatar :avatar-url="targetUser.avatarUrl || undefined" :size="64" />
+      </template>
       <template #header>
         <n-space align="center">
-          <span class="b">
+          <router-link :to="{ name: 'user', params: { username: targetUser.username } }" class="b">
             {{ targetUser.name }}
-          </span>
+          </router-link>
           <n-badge
             :type="targetUser.isActive ? 'success' : 'error'"
             :processing="!targetUser.isActive"
@@ -205,9 +209,7 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
           </n-dropdown>
         </n-space>
       </template>
-      <div style="font-size: var(--font-size-small)">
-        {{ targetUser.name }} ({{ targetUser.affiliation }})
-      </div>
+      <div class="text-small">{{ targetUser.name }} ({{ targetUser.affiliation }})</div>
     </n-thing>
   </n-list-item>
 </template>

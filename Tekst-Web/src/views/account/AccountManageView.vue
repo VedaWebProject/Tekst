@@ -5,7 +5,7 @@ import { useMessages } from '@/composables/messages';
 import { usePlatformData } from '@/composables/platformData';
 import { useAuthStore } from '@/stores';
 import type { FormInst, FormItemInst, FormItemRule } from 'naive-ui';
-import { NSpace, NButton, NInput, NFormItem, NForm, useDialog } from 'naive-ui';
+import { NButton, NInput, NFormItem, NForm, useDialog, NSpace } from 'naive-ui';
 import { ref } from 'vue';
 import { $t } from '@/i18n';
 import { useModelChanges } from '@/composables/modelChanges';
@@ -14,8 +14,8 @@ import { dialogProps } from '@/common';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
-
-import { ManageAccountIcon } from '@/icons';
+import UserAvatar from '@/components/user/UserAvatar.vue';
+import { ManageAccountIcon, NoImageIcon } from '@/icons';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
 
 const dialog = useDialog();
@@ -36,11 +36,14 @@ const initialUserDataModel = () => ({
   username: auth.user?.username || null,
   name: auth.user?.name || null,
   affiliation: auth.user?.affiliation || null,
+  avatarUrl: auth.user?.avatarUrl || null,
+  bio: auth.user?.bio || null,
 });
 
 const initialPublicFieldsModel = () => ({
   name: auth.user?.publicFields?.includes('name') || false,
   affiliation: auth.user?.publicFields?.includes('affiliation') || false,
+  bio: auth.user?.publicFields?.includes('bio') || false,
 });
 
 const emailFormRef = ref<FormInst | null>(null);
@@ -88,18 +91,14 @@ function handlePasswordInput() {
 
 async function updateUser(userUpdate: UserUpdate) {
   loading.value = true;
-  try {
-    await auth.updateUser(userUpdate);
-    return true;
-  } catch {
-    return false;
-  } finally {
-    loading.value = false;
-  }
+  const updatedUser = await auth.updateUser(userUpdate);
+  loading.value = false;
+  return updatedUser;
 }
 
 async function updateEmail() {
   if (!(await updateUser(getEmailModelChanges()))) return;
+  emailFormModel.value = initialEmailModel();
   resetEmailModelChanges();
   message.success($t('account.manage.msgEmailSaveSuccess'));
   if (pfData.value?.security?.closedMode === true) return;
@@ -155,7 +154,13 @@ async function handlePasswordSave() {
           closable: false,
           ...dialogProps,
           onPositiveClick: async () => {
-            await updateUser({ password: passwordFormModel.value.password || undefined });
+            if (
+              !(await updateUser({
+                password: passwordFormModel.value.password || undefined,
+              }))
+            )
+              return;
+            passwordFormModel.value = initialPasswordModel();
             resetPasswordModelChanges();
             message.success($t('account.manage.msgPasswordSaveSuccess'));
             await auth.logout();
@@ -171,7 +176,9 @@ async function handlePasswordSave() {
 async function handleUserDataSave() {
   userDataFormRef.value
     ?.validate(async (validationErrors) => {
-      if (!validationErrors && (await updateUser(getUserDataModelChanges()))) {
+      if (!validationErrors) {
+        if (!(await updateUser(getUserDataModelChanges()))) return;
+        userDataFormModel.value = initialUserDataModel();
         resetUserDataModelChanges();
         message.success($t('account.manage.msgUserDataSaveSuccess'));
       }
@@ -189,6 +196,7 @@ async function handlepublicFieldsSave() {
       ) as UserUpdatePublicFields,
     })
   ) {
+    publicFieldsFormModel.value = initialPublicFieldsModel();
     resetPublicFieldsModelChanges();
     message.success($t('account.manage.msgUserDataSaveSuccess'));
   }
@@ -202,7 +210,8 @@ async function handleDeleteAccount() {
     negativeText: $t('general.noAction'),
     autoFocus: false,
     closable: false,
-    ...dialogProps,
+    positiveButtonProps: { ...dialogProps.positiveButtonProps, type: 'error' },
+    negativeButtonProps: { ...dialogProps.negativeButtonProps, type: 'success' },
     onPositiveClick: async () => {
       loading.value = true;
       const { error } = await DELETE('/users/me', {});
@@ -253,6 +262,27 @@ async function handleDeleteAccount() {
           v-model:value="userDataFormModel.affiliation"
           type="text"
           :placeholder="$t('models.user.affiliation')"
+        />
+      </n-form-item>
+      <n-form-item path="avatarUrl" :label="$t('models.user.avatarUrl')">
+        <n-input
+          v-model:value="userDataFormModel.avatarUrl"
+          type="text"
+          :placeholder="$t('models.user.avatarUrl')"
+        />
+        <user-avatar
+          :avatar-url="auth.user?.avatarUrl || undefined"
+          :size="32"
+          :fallback-icon="NoImageIcon"
+          style="margin-left: var(--content-gap)"
+        />
+      </n-form-item>
+      <n-form-item path="bio" :label="$t('models.user.bio')">
+        <n-input
+          v-model:value="userDataFormModel.bio"
+          type="textarea"
+          :maxlength="2000"
+          :placeholder="$t('models.user.bio')"
         />
       </n-form-item>
     </n-form>
@@ -436,6 +466,7 @@ async function handleDeleteAccount() {
     <button-shelf top-gap>
       <n-button
         type="error"
+        :focusable="false"
         :disabled="loading || deleteAccountSafetyInput !== auth.user?.username"
         @click="handleDeleteAccount"
       >

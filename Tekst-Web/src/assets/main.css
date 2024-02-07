@@ -21,6 +21,26 @@ p {
   margin: 0.5em 0;
 }
 
+.text-small {
+  font-size: var(--font-size-small);
+}
+
+.text-medium {
+  font-size: var(--font-size-medium);
+}
+
+.text-large {
+  font-size: var(--font-size-large);
+}
+
+.text-huge {
+  font-size: var(--font-size-huge);
+}
+
+.n {
+  font-weight: var(--font-weight-normal);
+}
+
 b,
 strong,
 .b {

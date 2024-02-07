@@ -5820,6 +5820,7 @@
           },
           "sortOrder": {
             "type": "integer",
+            "maximum": 999999.0,
             "minimum": 0.0,
             "title": "Sortorder",
             "description": "Sort order for displaying this resource among others",
@@ -9095,7 +9096,7 @@
           },
           "affiliation": {
             "type": "string",
-            "maxLength": 64,
+            "maxLength": 180,
             "minLength": 1,
             "title": "Affiliation"
           },
@@ -9109,15 +9110,41 @@
               }
             ]
           },
+          "avatarUrl": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1024
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avatarurl"
+          },
+          "bio": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 2000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bio"
+          },
           "publicFields": {
             "items": {
               "type": "string",
               "enum": [
                 "name",
-                "affiliation"
+                "affiliation",
+                "bio"
               ]
             },
             "type": "array",
+            "maxItems": 64,
             "title": "Publicfields",
             "description": "Data fields set public by this user",
             "default": []
@@ -9173,7 +9200,7 @@
           },
           "affiliation": {
             "type": "string",
-            "maxLength": 64,
+            "maxLength": 180,
             "minLength": 1,
             "title": "Affiliation"
           },
@@ -9187,15 +9214,41 @@
               }
             ]
           },
+          "avatarUrl": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1024
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avatarurl"
+          },
+          "bio": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 2000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bio"
+          },
           "publicFields": {
             "items": {
               "type": "string",
               "enum": [
                 "name",
-                "affiliation"
+                "affiliation",
+                "bio"
               ]
             },
             "type": "array",
+            "maxItems": 64,
             "title": "Publicfields",
             "description": "Data fields set public by this user",
             "default": []
@@ -9254,12 +9307,39 @@
             ],
             "title": "Affiliation"
           },
+          "avatarUrl": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avatarurl"
+          },
+          "bio": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bio"
+          },
+          "isSuperuser": {
+            "type": "boolean",
+            "title": "Issuperuser"
+          },
           "publicFields": {
             "items": {
               "type": "string",
               "enum": [
                 "name",
-                "affiliation"
+                "affiliation",
+                "bio"
               ]
             },
             "type": "array",
@@ -9272,7 +9352,8 @@
         "type": "object",
         "required": [
           "id",
-          "username"
+          "username",
+          "isSuperuser"
         ],
         "title": "UserReadPublic"
       },
@@ -9365,7 +9446,7 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 64,
+                "maxLength": 180,
                 "minLength": 1
               },
               {
@@ -9384,15 +9465,41 @@
               }
             ]
           },
+          "avatarUrl": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1024
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avatarurl"
+          },
+          "bio": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 2000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bio"
+          },
           "publicFields": {
             "items": {
               "type": "string",
               "enum": [
                 "name",
-                "affiliation"
+                "affiliation",
+                "bio"
               ]
             },
             "type": "array",
+            "maxItems": 64,
             "title": "Publicfields",
             "description": "Data fields set public by this user",
             "default": []

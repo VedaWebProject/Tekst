@@ -10,7 +10,7 @@ class CommonResourceConfig(ModelBase):
     category: Annotated[
         str | None,
         StringConstraints(max_length=16, strip_whitespace=True),
-        val.EmtpyStringToNone,
+        val.EmptyStringToNone,
         Field(description="Resource category key"),
     ] = None
     sort_order: Annotated[

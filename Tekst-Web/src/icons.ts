@@ -91,8 +91,10 @@ import BookmarkBorderOutlined from '@vicons/material/BookmarkBorderOutlined';
 import BookmarkFilled from '@vicons/material/BookmarkFilled';
 import SelectAllOutlined from '@vicons/material/SelectAllOutlined';
 import DeselectOutlined from '@vicons/material/DeselectOutlined';
+import HideImageOutlined from '@vicons/material/HideImageOutlined';
 
 export {
+  HideImageOutlined as NoImageIcon,
   SelectAllOutlined as SelectAllIcon,
   DeselectOutlined as DeselectAllIcon,
   AccountTreeFilled as AccountTreeIcon,

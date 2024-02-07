@@ -72,8 +72,10 @@ export const accountFormRules: Record<string, FormItemRule[]> = {
   name: [requiredRule($t('models.user.name'), 'blur'), minMaxCharsRule(1, 64, 'blur')],
   affiliation: [
     requiredRule($t('models.user.affiliation'), 'blur'),
-    minMaxCharsRule(4, 64, 'blur'),
+    minMaxCharsRule(1, 180, 'blur'),
   ],
+  avatarUrl: [minMaxCharsRule(0, 1024, 'blur')],
+  bio: [minMaxCharsRule(0, 2000, 'blur')],
   loginEmail: [requiredRule($t('models.user.email'), 'input')],
   loginPassword: [requiredRule($t('models.user.password'), 'input')],
 };

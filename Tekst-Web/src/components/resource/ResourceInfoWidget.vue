@@ -53,18 +53,23 @@ watch(showInfoModal, async (after) => {
   />
 
   <generic-modal v-model:show="showInfoModal" :title="resource.title" :icon="ResourceIcon">
+    <user-display
+      v-if="auth.loggedIn"
+      :user="resource.owner ?? undefined"
+      size="tiny"
+      style="margin-bottom: var(--layout-gap)"
+    />
+
+    <div v-if="auth.loggedIn" class="resource-status-box">
+      <n-space vertical>
+        <resource-publication-status :resource="resource" size="tiny" />
+        <resource-is-version-info :resource="resource" size="tiny" />
+      </n-space>
+    </div>
+
     <p v-if="resource.description?.length">
       <translation-display :value="resource.description" />
     </p>
-
-    <template v-if="auth.loggedIn">
-      <p class="resource-status-box">
-        <user-display :user="resource.owner ?? undefined" size="tiny" />
-        <resource-publication-status :resource="resource" size="tiny" />
-        <resource-is-version-info :resource="resource" size="tiny" />
-      </p>
-      <n-divider />
-    </template>
 
     <template v-if="resource.meta && Object.keys(resource.meta).length">
       <icon-heading level="3" :icon="MetadataIcon">
@@ -162,6 +167,7 @@ watch(showInfoModal, async (after) => {
 <style scoped>
 .resource-status-box {
   padding: 0.5rem;
+  margin-bottom: var(--content-gap);
   background-color: var(--main-bg-color);
   border-radius: var(--border-radius);
 }

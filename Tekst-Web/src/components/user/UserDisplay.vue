@@ -1,31 +1,40 @@
 <script setup lang="ts">
-import { NIcon } from 'naive-ui';
 import { RouterLink } from 'vue-router';
 import type { UserReadPublic } from '@/api';
 import UserDisplayText from '@/components/user/UserDisplayText.vue';
-
-import { UserIcon } from '@/icons';
+import UserAvatar from '@/components/user/UserAvatar.vue';
 
 withDefaults(
   defineProps<{
     user?: UserReadPublic & Record<string, any>;
-    showIcon?: boolean;
-    size?: 'large' | 'medium' | 'small' | 'tiny' | 'mini';
+    showAvatar?: boolean;
+    size?: 'large' | 'medium' | 'small' | 'tiny';
   }>(),
   {
     user: undefined,
-    showIcon: true,
-    size: undefined,
+    showAvatar: true,
+    size: 'medium',
   }
 );
+
+const iconSizes = {
+  large: 36,
+  medium: 32,
+  small: 28,
+  tiny: 24,
+};
 </script>
 
 <template>
   <div
-    style="display: flex; align-items: center"
+    style="display: flex; align-items: center; gap: 0.5rem"
     :style="size ? `font-size: var(--font-size-${size})` : ''"
   >
-    <n-icon v-if="showIcon" :component="UserIcon" style="margin-right: 0.25rem" />
+    <user-avatar
+      v-if="showAvatar"
+      :avatar-url="user?.avatarUrl || undefined"
+      :size="iconSizes[size]"
+    />
     <router-link v-if="user" :to="{ name: 'user', params: { username: user.username } }">
       <user-display-text :user="user" />
     </router-link>

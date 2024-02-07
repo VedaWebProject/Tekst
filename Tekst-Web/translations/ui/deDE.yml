@@ -185,6 +185,8 @@ models:
     password: Passwort
     name: Name
     affiliation: Zugehörigkeit
+    avatarUrl: Avatar-Grafik-URL
+    bio: Biographie
     isActive: aktiv
     isInactive: inaktiv
     isVerified: verifiziert
@@ -412,9 +414,9 @@ account:
   loginBtn: Anmelden
   logoutBtn: Abmelden
   profile: Profil
-  profileHeading: '{username}: Öffentliches Profil'
+  profileHeading: Öffentliches Profil
   profileNotFound: Das Benutzerprofil "{username}" konnte nicht gefunden werden.
-  profileFieldNotPublic: nicht öffentlich
+  profileNoBio: Benutzer hat keine Biographie angegeben
   logoutSuccessful: Sie sind jetzt ausgeloggt.
   tipUserBtn: Benutzer-Aktionen für {username} anzeigen
   tipLoginBtn: In Ihrem Konto anmelden

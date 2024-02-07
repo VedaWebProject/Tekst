@@ -97,7 +97,7 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         str | None,
         StringConstraints(max_length=1000),
         val.CleanupOneline,
-        val.EmtpyStringToNone,
+        val.EmptyStringToNone,
         Field(description="Citation details for this resource"),
     ] = None
     meta: Metadata = []

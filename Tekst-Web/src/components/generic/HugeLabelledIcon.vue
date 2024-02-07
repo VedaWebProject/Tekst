@@ -14,7 +14,7 @@ const props = defineProps<{
 <template>
   <div class="huge-labelled-icon">
     <n-icon :size="128" :component="props.loading ? HourglassIcon : props.icon" />
-    <div style="font-size: var(--font-size-huge)">
+    <div class="text-huge">
       {{ !props.loading && props.message }}
     </div>
   </div>

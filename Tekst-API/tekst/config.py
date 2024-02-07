@@ -145,31 +145,31 @@ class TekstConfig(BaseSettings):
         str | None,
         StringConstraints(max_length=128),
         val.CleanupOneline,
-        val.EmtpyStringToNone,
+        val.EmptyStringToNone,
     ] = "An online text research platform"
     info_terms: Annotated[
         CustomHttpUrl | None,
         StringConstraints(max_length=512),
         val.CleanupOneline,
-        val.EmtpyStringToNone,
+        val.EmptyStringToNone,
     ] = None
     info_contact_name: Annotated[
         str | None,
         StringConstraints(max_length=64),
         val.CleanupOneline,
-        val.EmtpyStringToNone,
+        val.EmptyStringToNone,
     ] = "Tekst Administrator"
     info_contact_email: Annotated[
         EmailStr | None,
         StringConstraints(max_length=64),
         val.CleanupOneline,
-        val.EmtpyStringToNone,
+        val.EmptyStringToNone,
     ] = "noreply@tekst-contact-email-not-set.com"
     info_contact_url: Annotated[
         CustomHttpUrl | None,
         StringConstraints(max_length=512),
         val.CleanupOneline,
-        val.EmtpyStringToNone,
+        val.EmptyStringToNone,
     ] = None
 
     # Tekst information config
