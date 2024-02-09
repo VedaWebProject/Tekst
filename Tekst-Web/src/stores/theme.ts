@@ -72,7 +72,6 @@ export const useThemeStore = defineStore('theme', () => {
     const lighten = darkMode.value ? 0.25 : 0.0;
     const baseStatic = Color(state.text ? state.text.accentColor : '#7A7A7A');
     const base = baseStatic.lighten(lighten);
-    const inverted = baseStatic.negate().darken(0.1);
     return {
       base: base.hex(),
       fade1: base.fade(0.2).hexa(),
@@ -80,9 +79,8 @@ export const useThemeStore = defineStore('theme', () => {
       fade3: base.fade(0.6).hexa(),
       fade4: base.fade(0.8).hexa(),
       fade5: base.fade(0.9).hexa(),
-      inverted: inverted.hex(),
-      invertedPastel: inverted.saturate(0.9).lighten(0.5).hex(),
-      invertedDark: inverted.darken(0.75).hex(),
+      dark: base.darken(0.6).hex(),
+      pastel: base.saturate(0.9).lighten(1.3).hex(),
     };
   });
 

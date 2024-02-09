@@ -46,7 +46,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
       </div>
 
       <div class="browse-toolbar-end">
-        <n-badge value="!" color="var(--accent-color-inverted-pastel)" :show="browse.reducedView">
+        <n-badge value="!" color="var(--accent-color-pastel)" :show="browse.reducedView">
           <n-button
             :size="buttonSize"
             :title="$t('browse.toolbar.tipReducedView')"
@@ -61,7 +61,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
           </n-button>
         </n-badge>
 
-        <n-badge :value="resourceDrawerBadgeLabel" color="var(--accent-color-inverted-pastel)">
+        <n-badge :value="resourceDrawerBadgeLabel" color="var(--accent-color-pastel)">
           <n-button
             :size="buttonSize"
             :title="$t('browse.toolbar.tipOpenResourceList')"
@@ -145,6 +145,6 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
 
 <style>
 .n-badge > .n-badge-sup {
-  color: var(--accent-color-inverted-dark);
+  color: var(--accent-color-dark);
 }
 </style>
