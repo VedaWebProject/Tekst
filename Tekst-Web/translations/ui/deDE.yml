@@ -136,6 +136,7 @@ browse:
     deleteSuccess: Lesezeichen gelöscht
   resourceToggleDrawer:
     heading: Ressourcen anzeigen
+    showNonPublicResources: Zeige nicht veröffentlichte Ressourcen
   uncategorized: Unkategorisiert
   locationResourceNoData: Keine Daten für diese Fundstelle
   textNoLocations: Die Einrichtung dieses Textes scheint unvollständig. Es wurden keine Fundstellen definiert.

@@ -133,6 +133,7 @@ browse:
     deleteSuccess: Bookmark deleted
   resourceToggleDrawer:
     heading: Show Resources
+    showNonPublicResources: Show unpublished resources
   uncategorized: Uncategorized
   locationResourceNoData: No data for this location
   textNoLocations: This text's setup seems incomplete. There are no locations defined.

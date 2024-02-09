@@ -6,12 +6,15 @@ import ResourceToggleDrawerItem from '@/components/browse/ResourceToggleDrawerIt
 import IconHeading from '@/components/generic/IconHeading.vue';
 
 import { DeselectAllIcon, ResourceIcon, SelectAllIcon } from '@/icons';
+import LabelledSwitch from '../LabelledSwitch.vue';
+import { useThemeStore } from '@/stores/theme';
 
 const props = defineProps<{ show: boolean }>();
 const emit = defineEmits<{ (e: 'update:show', show: boolean): void }>();
 
 const auth = useAuthStore();
 const browse = useBrowseStore();
+const theme = useThemeStore();
 
 const categoryActivationState = computed(() =>
   browse.resourcesCategorized.map((c) => c.resources.every((r) => r.active))
@@ -27,9 +30,10 @@ const show = computed({
 });
 
 function toggleCategory(index: number, activate: boolean) {
-  browse.resourcesCategorized[index].resources.forEach((r) => {
-    r.active = activate;
-  });
+  browse.setResourcesActiveState(
+    browse.resourcesCategorized[index].resources.map((r) => r.id),
+    activate
+  );
 }
 </script>
 
@@ -41,6 +45,19 @@ function toggleCategory(index: number, activate: boolean) {
           {{ $t('browse.resourceToggleDrawer.heading') }}
         </icon-heading>
       </template>
+
+      <div
+        v-if="auth.loggedIn && !!browse.nonPublicResourcesCount"
+        class="gray-box"
+        :style="{ backgroundColor: theme.mainBgColor, marginTop: 0 }"
+      >
+        <labelled-switch
+          v-model:value="browse.showNonPublicResources"
+          :label="$t('browse.resourceToggleDrawer.showNonPublicResources')"
+          size="small"
+        />
+      </div>
+
       <template
         v-for="(category, index) in browse.resourcesCategorized"
         :key="category.category.key"
@@ -53,7 +70,7 @@ function toggleCategory(index: number, activate: boolean) {
         >
           <h3 style="margin: 0">{{ category.category.translation }}</h3>
           <n-button
-            quaternary
+            secondary
             circle
             :focusable="false"
             @click="toggleCategory(index, !categoryActivationState[index])"

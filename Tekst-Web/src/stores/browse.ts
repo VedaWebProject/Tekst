@@ -19,6 +19,7 @@ export const useBrowseStore = defineStore('browse', () => {
   /* BASIC BROWSE UI STATE */
 
   const showResourceToggleDrawer = ref(false);
+  const showNonPublicResources = ref(false);
   const reducedView = ref(false);
   const loadingLocationData = ref(true); // this is intentional!
   const loadingResources = computed(() => resources.loading);
@@ -108,6 +109,7 @@ export const useBrowseStore = defineStore('browse', () => {
   /* RESOURCES AND CONTENTS */
 
   const resourcesCount = computed(() => resources.data.length);
+  const nonPublicResourcesCount = computed(() => resources.data.filter((r) => !r.public).length);
   const activeResourcesCount = computed(() => resources.data.filter((r) => r.active).length);
   const resourcesCategorized = computed<
     { category: { key: string | undefined; translation: string }; resources: AnyResourceRead[] }[]
@@ -116,7 +118,9 @@ export const useBrowseStore = defineStore('browse', () => {
     const categorized =
       pfData.value?.settings.resourceCategories?.map((c) => ({
         category: { key: c.key, translation: pickTranslation(c.translations, state.locale) },
-        resources: resources.data.filter((r) => r.config?.common?.category === c.key),
+        resources: resources.data.filter(
+          (r) => r.config?.common?.category === c.key && (showNonPublicResources.value || r.public)
+        ),
       })) || [];
     const uncategorized = [
       {
@@ -132,28 +136,18 @@ export const useBrowseStore = defineStore('browse', () => {
     return [...categorized, ...uncategorized].filter((c) => c.resources.length);
   });
 
-  function setResourceActiveState(resourceId: string, active: boolean) {
-    resources.data = resources.data.map((l) => {
-      if (l.id === resourceId) {
-        return {
-          ...l,
-          active,
-        };
-      }
-      return l;
-    });
-  }
-
   return {
     showResourceToggleDrawer,
     reducedView,
+    showNonPublicResources,
+    nonPublicResourcesCount,
     loadingLocationData,
     loadingResources,
     loading,
     resourcesCount,
     activeResourcesCount,
     resourcesCategorized,
-    setResourceActiveState,
+    setResourcesActiveState: resources.setResourcesActiveState,
     locationPath,
     locationPathHead,
     level,

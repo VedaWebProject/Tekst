@@ -15,7 +15,7 @@ const browse = useBrowseStore();
 const { message } = useMessages();
 
 function handleClick() {
-  browse.setResourceActiveState(props.resource.id, false);
+  browse.setResourcesActiveState([props.resource.id], false);
   message.info(
     $t('browse.contents.widgets.deactivateWidget.message', { resourceTitle: props.resource.title })
   );

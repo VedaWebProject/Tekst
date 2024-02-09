@@ -60,7 +60,7 @@ watch(showInfoModal, async (after) => {
       style="margin-bottom: var(--layout-gap)"
     />
 
-    <div v-if="auth.loggedIn" class="resource-status-box">
+    <div v-if="auth.loggedIn" class="gray-box">
       <n-space vertical>
         <resource-publication-status :resource="resource" size="tiny" />
         <resource-is-version-info :resource="resource" size="tiny" />
@@ -165,12 +165,6 @@ watch(showInfoModal, async (after) => {
 </template>
 
 <style scoped>
-.resource-status-box {
-  padding: 0.5rem;
-  margin-bottom: var(--content-gap);
-  background-color: var(--main-bg-color);
-  border-radius: var(--border-radius);
-}
 .resource-comment {
   white-space: pre-wrap;
 }

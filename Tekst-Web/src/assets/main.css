@@ -151,6 +151,13 @@ img {
   padding: 2rem 0;
 }
 
+.gray-box {
+  padding: var(--content-gap);
+  margin: var(--layout-gap) 0;
+  background-color: var(--main-bg-color);
+  border-radius: var(--border-radius);
+}
+
 /*
  * NUI overrides
  * Unfortunately, we need to override the default NUI styles in this hacky way

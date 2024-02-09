@@ -92,6 +92,18 @@ export const useResourcesStore = defineStore('resources', () => {
     res.coverage = undefined;
   }
 
+  function setResourcesActiveState(resourceIds: string[], active: boolean) {
+    resources.value = resources.value.map((r) => {
+      if (resourceIds.includes(r.id)) {
+        return {
+          ...r,
+          active,
+        };
+      }
+      return r;
+    });
+  }
+
   // watch for events that trigger a reload of resources data
   watch(
     [() => auth.loggedIn, () => state.text],
@@ -111,5 +123,6 @@ export const useResourcesStore = defineStore('resources', () => {
     remove,
     getCoverage,
     resetCoverage,
+    setResourcesActiveState,
   };
 });
