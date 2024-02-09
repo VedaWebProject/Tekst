@@ -120,11 +120,7 @@ watch(
       {{ $t('errors.unexpected') }}
     </p>
 
-    <n-spin
-      v-else-if="loading"
-      :description="$t('general.loading')"
-      style="width: 100%; display: flex; justify-content: center; margin: 2rem 0"
-    />
+    <n-spin v-else-if="loading" :description="$t('general.loading')" class="centered-spinner" />
 
     <template v-else-if="coverageListItems?.length">
       <div style="display: flex; justify-content: space-between">

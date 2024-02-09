@@ -61,7 +61,7 @@ const { user, error } = useProfile(username);
     </n-thing>
   </div>
 
-  <n-spin v-else-if="!error" :description="$t('general.loading')" />
+  <n-spin v-else-if="!error" :description="$t('general.loading')" class="centered-spinner" />
 
   <div v-else class="content-block">
     <h1>Oops... {{ $t('errors.error') }}!</h1>

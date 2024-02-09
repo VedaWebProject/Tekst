@@ -126,11 +126,7 @@ const resourceTypes = computed(() => {
     </div>
   </div>
 
-  <n-spin
-    v-else-if="!error"
-    :description="$t('general.loading')"
-    style="width: 100%; padding: 2rem 0"
-  />
+  <n-spin v-else-if="!error" :description="$t('general.loading')" class="centered-spinner" />
 
   <div v-else>
     {{ $t('errors.error') }}

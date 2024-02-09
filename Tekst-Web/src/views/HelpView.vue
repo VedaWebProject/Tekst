@@ -84,7 +84,7 @@ watch(
         <a href="#" @click="(e) => handleClick(e, textKey)">{{ text.title || textKey }}</a>
       </li>
     </ul>
-    <n-spin v-else-if="loading" />
+    <n-spin v-else-if="loading" class="centered-spinner" />
     <div v-else>
       {{ $t('help.msgNoHelpTextsFound') }}
     </div>

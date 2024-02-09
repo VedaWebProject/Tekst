@@ -466,11 +466,7 @@ watch(
     />
   </div>
 
-  <n-spin
-    v-else-if="loading"
-    style="margin: 3rem 0 2rem 0; width: 100%"
-    :description="$t('general.loading')"
-  />
+  <n-spin v-else-if="loading" class="centered-spinner" :description="$t('general.loading')" />
 
   <rename-location-modal
     v-model:show="showRenameModal"

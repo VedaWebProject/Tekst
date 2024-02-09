@@ -63,7 +63,7 @@ async function handleClick() {
       <location-label :max-level="resource.level - 1" />
     </icon-heading>
 
-    <n-spin v-if="loading" style="margin: 3rem 0 2rem 0; width: 100%" />
+    <n-spin v-if="loading" class="centered-spinner" />
 
     <div v-else-if="contents.length">
       <component

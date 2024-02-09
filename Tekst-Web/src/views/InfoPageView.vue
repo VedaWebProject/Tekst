@@ -31,11 +31,7 @@ watchEffect(async () => {
 </script>
 
 <template>
-  <n-spin
-    v-if="loading"
-    :description="$t('general.loading')"
-    style="width: 100%; display: flex; justify-content: center; padding: var(--layout-gap) 0"
-  />
+  <n-spin v-if="loading" :description="$t('general.loading')" class="centered-spinner" />
   <template v-else-if="page">
     <icon-heading v-if="page.title" level="1" :icon="icon">
       {{ page.title }}

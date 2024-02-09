@@ -144,6 +144,13 @@ img {
   font-family: var(--font-family-ui);
 }
 
+.centered-spinner {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
 /*
  * NUI overrides
  * Unfortunately, we need to override the default NUI styles in this hacky way
