@@ -15,9 +15,11 @@ import DrawerMenu from './DrawerMenu.vue';
 import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
 
 import { HamburgerMenuIcon } from '@/icons';
+import { useThemeStore } from '@/stores/theme';
 
 const { pfData, systemHome } = usePlatformData();
 const auth = useAuthStore();
+const theme = useThemeStore();
 const state = useStateStore();
 const browse = useBrowseStore();
 const route = useRoute();
@@ -27,6 +29,19 @@ const menuOpen = ref(false);
 const showUserActionsButton = computed(
   () => pfData.value?.security?.closedMode === false || auth.loggedIn
 );
+
+const logoPath = computed(() => (theme.darkMode ? '/logo-darkmode.png' : '/logo.png'));
+const titleLinkTo = computed(() => {
+  if (systemHome.value) {
+    return '/';
+  } else {
+    return {
+      name: 'browse',
+      params: { text: state.text?.slug },
+      query: { lvl: browse.level, pos: browse.position },
+    };
+  }
+});
 
 watch(
   () => route.name,
@@ -38,21 +53,10 @@ watch(
 
 <template>
   <div class="navbar" :class="state.smallScreen && 'navbar-smallscreen'">
-    <img class="navbar-logo" :alt="`${pfData?.settings.infoPlatformName} Logo`" src="/logo.png" />
+    <img class="navbar-logo" :alt="`${pfData?.settings.infoPlatformName} Logo`" :src="logoPath" />
     <div class="title-container">
-      <router-link
-        :to="
-          !!systemHome
-            ? { path: '/' }
-            : {
-                name: 'browse',
-                params: { text: state.text?.slug },
-                query: { lvl: browse.level, pos: browse.position },
-              }
-        "
-        class="navbar-title"
-      >
-        {{ pfData?.settings.infoPlatformName }}
+      <router-link :to="titleLinkTo">
+        <div class="navbar-title">{{ pfData?.settings.infoPlatformName }}</div>
       </router-link>
       <div
         v-if="pfData?.settings.showHeaderInfo && pfData?.settings.infoSubtitle?.length"
@@ -125,10 +129,11 @@ watch(
   display: inline-flex;
   flex-direction: column;
   margin-right: var(--layout-gap);
+  margin-top: -4px;
 }
 
 .navbar-logo {
-  height: 48px;
+  height: 72px;
   width: auto;
   margin-right: var(--content-gap);
 }
