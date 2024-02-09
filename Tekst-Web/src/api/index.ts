@@ -140,6 +140,8 @@ export type UserCreate = components['schemas']['UserCreate'];
 export type UserRead = components['schemas']['UserRead'];
 export type UserUpdate = components['schemas']['UserUpdate'];
 export type UserReadPublic = components['schemas']['UserReadPublic'];
+export type UserUpdateAdminNotificationTriggers =
+  components['schemas']['UserUpdate']['adminNotificationTriggers'];
 export type UserUpdatePublicFields = components['schemas']['UserUpdate']['publicFields'];
 
 // text and text structure

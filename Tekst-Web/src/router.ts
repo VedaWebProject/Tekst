@@ -24,7 +24,7 @@ const ResourceCreateView = () => import('@/views/ResourceCreateView.vue');
 const ContentsView = () => import('@/views/ContentsView.vue');
 
 const AccountView = () => import('@/views/account/AccountView.vue');
-const ManageAccountView = () => import('@/views/account/AccountManageView.vue');
+const AccountSettingsView = () => import('@/views/account/AccountSettingsView.vue');
 const VerifyView = () => import('@/views/VerifyView.vue');
 const ResetView = () => import('@/views/ResetView.vue');
 
@@ -171,9 +171,9 @@ const router = createRouter({
           component: UserView,
         },
         {
-          path: 'manage',
-          name: 'accountManage',
-          component: ManageAccountView,
+          path: 'settings',
+          name: 'accountSettings',
+          component: AccountSettingsView,
         },
       ],
     },

@@ -8,9 +8,11 @@ from os.path import exists, realpath
 from pathlib import Path
 from urllib.parse import urljoin
 
+from beanie.operators import Eq
+
 from tekst.config import TekstConfig, get_config
 from tekst.logging import log
-from tekst.models.user import UserRead
+from tekst.models.user import AdminNotificationTrigger, UserDocument, UserRead
 
 
 _cfg: TekstConfig = get_config()  # get (possibly cached) config data
@@ -21,7 +23,7 @@ class TemplateIdentifier(Enum):
     TEST = "test"
     VERIFY = "verify"
     VERIFIED = "verified"
-    ACTIVATE_TODO = "activate_todo"
+    USER_AWAITS_ACTIVATION = "user_awaits_activation"
     ACTIVATED = "activated"
     DEACTIVATED = "deactivated"
     DELETED = "deleted"
@@ -112,6 +114,25 @@ def send_email(
         txt=email_contents.get("txt", ""),
         html=email_contents.get("html", ""),
     )
+
+
+async def send_admin_notification_email(
+    to_user: UserRead,
+    template_id: TemplateIdentifier,
+    *,
+    admin_notification_trigger: AdminNotificationTrigger,
+    **kwargs,
+):
+    admins = await UserDocument.find(
+        Eq(UserDocument.is_superuser, True),
+        Eq(UserDocument.admin_notification_triggers, admin_notification_trigger),
+    ).to_list()
+    for admin in admins:
+        send_email(
+            to_user=to_user,
+            template_id=template_id,
+            alternate_recepient=admin.email,
+        )
 
 
 def send_test_email(to_user: UserRead):

@@ -1,10 +1,5 @@
 To the administrator(s) of {platform_name},
 
 the user "{username}" ({name}, {affiliation}) registered on {platform_name} and is awaiting account activation.
-Click this link to directly go to the user management page to activate {username}:
-
-{web_url}/admin/users?search={username}
-
-This email has been sent to all administrators.
 
 See you on {platform_name}!

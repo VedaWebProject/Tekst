@@ -9,7 +9,11 @@ import { NButton, NInput, NFormItem, NForm, useDialog, NSpace } from 'naive-ui';
 import { ref } from 'vue';
 import { $t } from '@/i18n';
 import { useModelChanges } from '@/composables/modelChanges';
-import type { UserUpdate, UserUpdatePublicFields } from '@/api';
+import type {
+  UserUpdate,
+  UserUpdatePublicFields,
+  UserUpdateAdminNotificationTriggers,
+} from '@/api';
 import { dialogProps } from '@/common';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
@@ -40,6 +44,11 @@ const initialUserDataModel = () => ({
   bio: auth.user?.bio || null,
 });
 
+const initialAdminNotificationTriggersModel = () => ({
+  userAwaitsActivation:
+    auth.user?.adminNotificationTriggers?.includes('userAwaitsActivation') || false,
+});
+
 const initialPublicFieldsModel = () => ({
   name: auth.user?.publicFields?.includes('name') || false,
   affiliation: auth.user?.publicFields?.includes('affiliation') || false,
@@ -66,6 +75,15 @@ const {
   getChanges: getUserDataModelChanges,
   reset: resetUserDataModelChanges,
 } = useModelChanges(userDataFormModel);
+
+const adminNotificationTriggersFormRef = ref<FormInst | null>(null);
+const adminNotificationTriggersFormModel = ref<Record<string, boolean>>(
+  initialAdminNotificationTriggersModel()
+);
+const {
+  changed: adminNotificationTriggersModelChanged,
+  reset: resetAdminNotificationTriggersModelChanges,
+} = useModelChanges(adminNotificationTriggersFormModel);
 
 const publicFieldsFormRef = ref<FormInst | null>(null);
 const publicFieldsFormModel = ref<Record<string, boolean>>(initialPublicFieldsModel());
@@ -100,17 +118,17 @@ async function updateEmail() {
   if (!(await updateUser(getEmailModelChanges()))) return;
   emailFormModel.value = initialEmailModel();
   resetEmailModelChanges();
-  message.success($t('account.manage.msgEmailSaveSuccess'));
+  message.success($t('account.settings.msgEmailSaveSuccess'));
   if (pfData.value?.security?.closedMode === true) return;
   await auth.logout();
   const { error } = await POST('/auth/request-verify-token', {
     body: { email: emailFormModel.value.email || '' },
   });
   if (!error) {
-    message.warning($t('account.manage.msgVerifyEmailWarning'), undefined, 20);
+    message.warning($t('account.settings.msgVerifyEmailWarning'), undefined, 20);
   }
   auth.showLoginModal(
-    $t('account.manage.msgVerifyEmailWarning'),
+    $t('account.settings.msgVerifyEmailWarning'),
     { name: 'accountProfile' },
     false
   );
@@ -125,7 +143,7 @@ function handleEmailSave() {
         } else {
           dialog.warning({
             title: $t('general.warning'),
-            content: $t('account.manage.msgEmailChangeWarning'),
+            content: $t('account.settings.msgEmailChangeWarning'),
             positiveText: $t('general.saveAction'),
             negativeText: $t('general.cancelAction'),
             autoFocus: false,
@@ -147,7 +165,7 @@ async function handlePasswordSave() {
       !errors &&
         dialog.warning({
           title: $t('general.warning'),
-          content: $t('account.manage.msgPasswordChangeWarning'),
+          content: $t('account.settings.msgPasswordChangeWarning'),
           positiveText: $t('general.saveAction'),
           negativeText: $t('general.cancelAction'),
           autoFocus: false,
@@ -162,7 +180,7 @@ async function handlePasswordSave() {
               return;
             passwordFormModel.value = initialPasswordModel();
             resetPasswordModelChanges();
-            message.success($t('account.manage.msgPasswordSaveSuccess'));
+            message.success($t('account.settings.msgPasswordSaveSuccess'));
             await auth.logout();
             auth.showLoginModal(undefined, { name: 'accountProfile' }, false);
           },
@@ -180,7 +198,7 @@ async function handleUserDataSave() {
         if (!(await updateUser(getUserDataModelChanges()))) return;
         userDataFormModel.value = initialUserDataModel();
         resetUserDataModelChanges();
-        message.success($t('account.manage.msgUserDataSaveSuccess'));
+        message.success($t('account.settings.msgUserDataSaveSuccess'));
       }
     })
     .catch(() => {
@@ -188,7 +206,21 @@ async function handleUserDataSave() {
     });
 }
 
-async function handlepublicFieldsSave() {
+async function handleAdminNotificationTriggersSave() {
+  if (
+    await updateUser({
+      adminNotificationTriggers: Object.keys(adminNotificationTriggersFormModel.value).filter(
+        (k) => adminNotificationTriggersFormModel.value[k]
+      ) as UserUpdateAdminNotificationTriggers,
+    })
+  ) {
+    adminNotificationTriggersFormModel.value = initialAdminNotificationTriggersModel();
+    resetAdminNotificationTriggersModelChanges();
+    message.success($t('account.settings.adminNotificationTriggers.msgSaveSuccess'));
+  }
+}
+
+async function handlePublicFieldsSave() {
   if (
     await updateUser({
       publicFields: Object.keys(publicFieldsFormModel.value).filter(
@@ -198,14 +230,14 @@ async function handlepublicFieldsSave() {
   ) {
     publicFieldsFormModel.value = initialPublicFieldsModel();
     resetPublicFieldsModelChanges();
-    message.success($t('account.manage.msgUserDataSaveSuccess'));
+    message.success($t('account.settings.msgUserDataSaveSuccess'));
   }
 }
 
 async function handleDeleteAccount() {
   dialog.warning({
     title: $t('general.warning'),
-    content: $t('account.manage.msgDeleteAccountWarning'),
+    content: $t('account.settings.msgDeleteAccountWarning'),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
     autoFocus: false,
@@ -226,12 +258,12 @@ async function handleDeleteAccount() {
 
 <template>
   <icon-heading level="1" :icon="ManageAccountIcon">
-    {{ $t('account.manage.heading', { username: auth.user?.username }) }}
-    <help-button-widget help-key="accountManageView" />
+    {{ $t('account.settings.heading') }}
+    <help-button-widget help-key="accountSettingsView" />
   </icon-heading>
 
   <div class="content-block">
-    <h2>{{ $t('account.manage.headingChangeUserData') }}</h2>
+    <h2>{{ $t('account.settings.headingChangeUserData') }}</h2>
     <n-form
       ref="userDataFormRef"
       :model="userDataFormModel"
@@ -402,8 +434,8 @@ async function handleDeleteAccount() {
 
   <div class="content-block">
     <h2>
-      {{ $t('account.manage.headingChangePublicFields') }}
-      <help-button-widget help-key="accountManagePublicFields" />
+      {{ $t('account.settings.headingChangePublicFields') }}
+      <help-button-widget help-key="accountSettingsPublicFields" />
     </h2>
     <n-form
       ref="publicFieldsFormRef"
@@ -441,7 +473,7 @@ async function handleDeleteAccount() {
         type="primary"
         :loading="loading"
         :disabled="loading || !publicFieldsModelChanged"
-        @click="handlepublicFieldsSave"
+        @click="handlePublicFieldsSave"
       >
         {{ $t('general.saveAction') }}
       </n-button>
@@ -450,14 +482,58 @@ async function handleDeleteAccount() {
 
   <div class="content-block">
     <h2>
-      {{ $t('account.manage.headingDeleteAccount') }}
+      {{ $t('account.settings.adminNotificationTriggers.heading') }}
+    </h2>
+    <p>{{ $t('account.settings.adminNotificationTriggers.intro') }}</p>
+    <n-form
+      ref="adminNotificationTriggersFormRef"
+      :model="adminNotificationTriggersFormModel"
+      :show-label="false"
+      :disabled="loading"
+      require-mark-placement="right-hanging"
+    >
+      <n-space vertical>
+        <template v-for="(_, field) in adminNotificationTriggersFormModel" :key="field">
+          <labelled-switch
+            v-model:value="adminNotificationTriggersFormModel[field]"
+            :label="$t(`account.settings.adminNotificationTriggers.${field}`)"
+            :disabled="loading"
+          />
+        </template>
+      </n-space>
+    </n-form>
+    <button-shelf top-gap>
+      <n-button
+        secondary
+        :loading="loading"
+        :disabled="loading || !adminNotificationTriggersModelChanged"
+        @click="
+          () => (adminNotificationTriggersFormModel = initialAdminNotificationTriggersModel())
+        "
+      >
+        {{ $t('general.resetAction') }}
+      </n-button>
+      <n-button
+        type="primary"
+        :loading="loading"
+        :disabled="loading || !adminNotificationTriggersModelChanged"
+        @click="handleAdminNotificationTriggersSave"
+      >
+        {{ $t('general.saveAction') }}
+      </n-button>
+    </button-shelf>
+  </div>
+
+  <div class="content-block">
+    <h2>
+      {{ $t('account.settings.headingDeleteAccount') }}
     </h2>
     <n-form-item :label="$t('models.user.username')" required>
       <n-input
         v-model:value="deleteAccountSafetyInput"
         type="text"
         :placeholder="
-          $t('account.manage.phDeleteAccountSafetyInput', { username: auth.user?.username })
+          $t('account.settings.phDeleteAccountSafetyInput', { username: auth.user?.username })
         "
         :disabled="loading"
         @keydown.enter.prevent
@@ -470,7 +546,7 @@ async function handleDeleteAccount() {
         :disabled="loading || deleteAccountSafetyInput !== auth.user?.username"
         @click="handleDeleteAccount"
       >
-        {{ $t('account.manage.headingDeleteAccount') }}
+        {{ $t('account.settings.headingDeleteAccount') }}
       </n-button>
     </button-shelf>
   </div>

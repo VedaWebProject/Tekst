@@ -74,7 +74,7 @@ async function registerUser() {
         body: { email: formModel.value.email || '' },
       });
       if (!verifyTokenError) {
-        message.warning($t('account.manage.msgVerifyEmailWarning'));
+        message.warning($t('account.settings.msgVerifyEmailWarning'));
       }
     }
     switchToLogin();

@@ -100,7 +100,7 @@ routes:
     resourceSettings: Resource Settings
     user: Profile of {username}
     accountProfile: Public Profile
-    accountManage: Account
+    accountSettings: Account
     adminStatistics: '@:admin.heading - Statistics'
     adminSystemUsers: '@:admin.heading - Users'
     adminTextsSettings: '{text}: General'
@@ -431,11 +431,16 @@ account:
   autoLogout: Your session will automatically end in {minutes} minutes and {seconds} seconds. You can log out and log back in to renew your session now.
   sessionExpired: Your session has expired. You have been logged out.
   renewLogin: Log in again to renew your session.
-  manage:
-    heading: '{username}: Account'
+  settings:
+    heading: Account Settings
     headingChangeUserData: General User Data
     headingChangePublicFields: Public Profile Data
     headingDeleteAccount: Delete Account
+    adminNotificationTriggers:
+      heading: Administrator Notifications
+      intro: Notify me via email when...
+      userAwaitsActivation: a user is waiting for account activation
+      msgSaveSuccess: Administrator notifications settings saved.
     msgEmailSaveSuccess: '@:models.user.email saved.'
     msgEmailChangeWarning: Make sure you entered a valid email address you have access to! If you proceed, you will be logged out and have to verify your changed email address before you can log in again.
     msgVerifyEmailWarning: Please verify your changed email address before logging in! We just sent you a verification link.

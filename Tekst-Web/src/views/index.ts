@@ -1,6 +1,6 @@
 export { default as UserView } from './UserView.vue';
 export { default as AccountView } from './account/AccountView.vue';
-export { default as ManageAccountView } from './account/AccountManageView.vue';
+export { default as AccountSettingsView } from './account/AccountSettingsView.vue';
 export { default as RegisterView } from './RegisterView.vue';
 export { default as BrowseView } from './BrowseView.vue';
 export { default as HelpView } from './HelpView.vue';

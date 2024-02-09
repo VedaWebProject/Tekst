@@ -5254,6 +5254,9 @@
   },
   "components": {
     "schemas": {
+      "AdminNotificationTrigger": {
+        "const": "userAwaitsActivation"
+      },
       "BearerResponse": {
         "properties": {
           "access_token": {
@@ -6311,6 +6314,21 @@
         },
         "type": "object",
         "title": "LocationUpdate"
+      },
+      "MaybePrivateUserField": {
+        "type": "string",
+        "enum": [
+          "name",
+          "affiliation",
+          "bio"
+        ]
+      },
+      "MaybePrivateUserFields": {
+        "items": {
+          "$ref": "#/components/schemas/MaybePrivateUserField"
+        },
+        "type": "array",
+        "maxItems": 3
       },
       "Metadate": {
         "properties": {
@@ -9135,19 +9153,24 @@
             "title": "Bio"
           },
           "publicFields": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MaybePrivateUserFields"
+              }
+            ],
+            "default": []
+          },
+          "adminNotificationTriggers": {
             "items": {
-              "type": "string",
-              "enum": [
-                "name",
-                "affiliation",
-                "bio"
-              ]
+              "$ref": "#/components/schemas/AdminNotificationTrigger"
             },
             "type": "array",
-            "maxItems": 64,
-            "title": "Publicfields",
-            "description": "Data fields set public by this user",
-            "default": []
+            "maxItems": 1,
+            "title": "Adminnotificationtriggers",
+            "description": "Events that trigger admin notifications for this user",
+            "default": [
+              "userAwaitsActivation"
+            ]
           }
         },
         "type": "object",
@@ -9239,19 +9262,24 @@
             "title": "Bio"
           },
           "publicFields": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MaybePrivateUserFields"
+              }
+            ],
+            "default": []
+          },
+          "adminNotificationTriggers": {
             "items": {
-              "type": "string",
-              "enum": [
-                "name",
-                "affiliation",
-                "bio"
-              ]
+              "$ref": "#/components/schemas/AdminNotificationTrigger"
             },
             "type": "array",
-            "maxItems": 64,
-            "title": "Publicfields",
-            "description": "Data fields set public by this user",
-            "default": []
+            "maxItems": 1,
+            "title": "Adminnotificationtriggers",
+            "description": "Events that trigger admin notifications for this user",
+            "default": [
+              "userAwaitsActivation"
+            ]
           },
           "createdAt": {
             "type": "string",
@@ -9334,18 +9362,11 @@
             "title": "Issuperuser"
           },
           "publicFields": {
-            "items": {
-              "type": "string",
-              "enum": [
-                "name",
-                "affiliation",
-                "bio"
-              ]
-            },
-            "type": "array",
-            "maxItems": 64,
-            "title": "Publicfields",
-            "description": "Data fields set public by this user",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MaybePrivateUserFields"
+              }
+            ],
             "default": []
           }
         },
@@ -9490,19 +9511,24 @@
             "title": "Bio"
           },
           "publicFields": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MaybePrivateUserFields"
+              }
+            ],
+            "default": []
+          },
+          "adminNotificationTriggers": {
             "items": {
-              "type": "string",
-              "enum": [
-                "name",
-                "affiliation",
-                "bio"
-              ]
+              "$ref": "#/components/schemas/AdminNotificationTrigger"
             },
             "type": "array",
-            "maxItems": 64,
-            "title": "Publicfields",
-            "description": "Data fields set public by this user",
-            "default": []
+            "maxItems": 1,
+            "title": "Adminnotificationtriggers",
+            "description": "Events that trigger admin notifications for this user",
+            "default": [
+              "userAwaitsActivation"
+            ]
           }
         },
         "type": "object",

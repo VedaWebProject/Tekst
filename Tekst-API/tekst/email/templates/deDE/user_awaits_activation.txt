@@ -1,10 +1,5 @@
 An die Administratoren von {platform_name},
 
 der Benutzer "{username}" ({name}, {affiliation}) hat sich auf {platform_name} registriert und wartet auf die Aktivierung des Kontos.
-Klicken Sie auf diesen Link, um direkt zur Benutzerverwaltung zu gelangen, wo Sie {username} aktivieren können:
-
-{web_url}/admin/users?search={username}
-
-Diese Email wurde an alle Administratoren versandt.
 
 Bis bald auf {platform_name}!

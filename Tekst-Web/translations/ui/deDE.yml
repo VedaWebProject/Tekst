@@ -66,13 +66,13 @@ errors:
   logInToAccess: Melden Sie sich an, um auf die angefragte Ressource zuzugreifen!
   logoutAfter401: Sie wurden abgemeldet, nachdem Sie unbefugt auf eine geschützte Ressource zugreifen wollten.
   csrf: Ihre Anfrage hat die CSRF-Tests nicht bestanden. Löschen Sie ihre Cookies zu dieser Website und laden Sie sie neu.
-  loginBadCredentials: Falsche Email-Adresse/Passwort oder Konto noch nicht aktiviert
-  loginUserNotVerified: Ihre Email-Adresse ist noch nicht verifiziert. Wir haben Ihnen einen Verifizierungs-Link geschickt.
-  registerEmailAlreadyExists: Diese Email-Adresse ist bereits registriert.
+  loginBadCredentials: Falsche E-Mail-Adresse/Passwort oder Konto noch nicht aktiviert
+  loginUserNotVerified: Ihre E-Mail-Adresse ist noch nicht verifiziert. Wir haben Ihnen einen Verifizierungs-Link geschickt.
+  registerEmailAlreadyExists: Diese E-Mail-Adresse ist bereits registriert.
   registerUsernameAlreadyExists: Dieser Benutzername ist bereits vergeben.
   registerInvalidPassword: Das eingegebene Passwort entspricht nicht den Sicherheitsanforderungen.
   verifyUserBadToken: Dieser Verifizierungs-Link ist entweder ungültig oder bereits abgelaufen.
-  verifyUserAlreadyVerified: Diese Email-Adresse ist bereits verifiziert.
+  verifyUserAlreadyVerified: Diese E-Mail-Adresse ist bereits verifiziert.
   resourcesLimitReached: Maximum von {limit} Ressourcen für diesen Benutzer erreicht
   bookmarkExists: Sie haben bereits ein Lesezeichen für diese Fundstelle angelegt.
   bookmarksLimitReached: Sie haben die Höchstmenge von {limit} Lesezeichen erreicht!
@@ -103,7 +103,7 @@ routes:
     resourceSettings: Ressourcen-Einstellungen
     user: Profil von {username}
     accountProfile: Öffentliches Profil
-    accountManage: Konto
+    accountSettings: Konto
     adminStatistics: '@:admin.heading - Statistiken'
     adminSystemUsers: '@:admin.heading - Benutzer'
     adminTextsSettings: '@:admin.heading - {text}: Allgemein'
@@ -171,7 +171,7 @@ register:
   switchToLogin: Mit bestehendem Konto anmelden
   heading: Registrieren
   success: Erfolgreich registriert.
-  activationNeededHint: Sie werden sich erst anmelden können, wenn Ihr Konto von uns aktiviert wurde. Sie werden darüber per Email benachrichtigt.
+  activationNeededHint: Sie werden sich erst anmelden können, wenn Ihr Konto von uns aktiviert wurde. Sie werden darüber per E-Mail benachrichtigt.
   activationNotNeededHint: Sie können sich jetzt anmelden.
   repeatPassword: '@:models.user.password wiederholen'
 
@@ -181,7 +181,7 @@ models:
     allLanguages: Alle Sprachen
   user:
     modelLabel: Benutzer | Benutzer
-    email: Email-Adresse
+    email: E-Mail-Adresse
     username: Benutzername
     password: Passwort
     name: Name
@@ -248,7 +248,7 @@ models:
     infoSubtitle: Untertitel der Plattform
     infoTerms: API Nutzungsbedingungen (URL)
     infoContactName: Name Kontaktperson
-    infoContactEmail: Email Kontaktperson
+    infoContactEmail: E-Mail Kontaktperson
     infoContactUrl: URL Kontaktperson
     defaultText: Standard-Text
     availableLocales: Verfügbare Gebietsschemata
@@ -426,11 +426,11 @@ account:
   localeUpdated: Das Gebietsschema für Ihren Account wurde zu {locale} geändert.
   localeApplied: Das Gebietsschema wurde entsprechend Ihrer Account-Einstellungen zu {locale} geändert.
   verify:
-    success: Ihre Email-Adresse wurde erfolgreich verifiziert! Sie können sich jetzt in Ihrem Konto anmelden.
+    success: Ihre E-Mail-Adresse wurde erfolgreich verifiziert! Sie können sich jetzt in Ihrem Konto anmelden.
   forgotPassword:
     forgotPassword: Ich habe mein Passwort vergessen
     sentResetLink: Wir haben einen Link zum Zurücksetzen des Passworts an {email} gesendet
-    invalidEmail: Bitte tragen Sie eine gültige Email-Adresse in das Anmeldeformular ein!
+    invalidEmail: Bitte tragen Sie eine gültige E-Mail-Adresse in das Anmeldeformular ein!
   resetPassword:
     heading: Neues Passwort
     success: Ihr neues Passwort wurde gespeichert. Sie können sich jetzt einloggen.
@@ -440,11 +440,16 @@ account:
   autoLogout: Ihre Sitzung endet automatisch in {minutes} Minuten und {seconds} Sekunden. Melden Sie sich ab und wieder an, um Ihre Sitzung jetzt zu erneuern.
   sessionExpired: Ihre Sitzung ist abgelaufen. Sie wurden abgemeldet.
   renewLogin: Melden Sie sich wieder an, um Ihre Sitzung zu erneuern.
-  manage:
-    heading: '{username}: Konto'
+  settings:
+    heading: Konto-Einstellungen
     headingChangeUserData: Allgemeine Benutzerdaten
     headingChangePublicFields: Öffentliche Profildaten
     headingDeleteAccount: Konto löschen
+    adminNotificationTriggers:
+      heading: Administrator-Benachrichtigungen
+      intro: Benachrichtige mich per E-Mail, wenn...
+      userAwaitsActivation: ein Benutzer auf die Aktivierung des Kontos wartet
+      msgSaveSuccess: Einstellungen zu Administrator-Benachrichtigungen gespeichert.
     msgEmailSaveSuccess: '@:models.user.email gespeichert.'
     msgEmailChangeWarning: Stellen Sie sicher, dass Sie eine gültige @:models.user.email eingeben, auf die Sie Zugriff haben! Wenn Sie fortfahren, werden Sie abgemeldet und müssen Ihre geänderte @:models.users.email verifizieren, bevor Sie sich wieder anmelden können.
     msgVerifyEmailWarning: Bitte verifizieren Sie Ihre geänderte @:models.user.email bevor Sie sich anmelden! Wir haben Ihnen einen Verifizierungs-Link gesendet.
@@ -467,22 +472,22 @@ admin:
     save: Benutzer "{username}" gespeichert
     msgFoundCount: '{count} Benutzer gefunden ({total} insgesamt)'
     checkLabelActive: Konto ist aktiv
-    checkLabelVerified: Email ist verifiziert
+    checkLabelVerified: E-Mail ist verifiziert
     checkLabelSuperuser: Benutzer ist Administrator
     registeredAt: registriert am
     editModal:
       accountStatus: Konto-Status
       adminWarning: Vorsicht! Sie sollten wissen, was Sie tun!
-    msgSentVerificationLink: Eine Verifizierungs-Email wurde an "{username}" gesendet.
-    msgUserDeleted: Der Benutzer {username} wurde gelöscht und darüber per Email benachrichtigt.
-    mailtoLinkTitle: Email an {username} senden
+    msgSentVerificationLink: Eine Verifizierungs-E-Mail wurde an "{username}" gesendet.
+    msgUserDeleted: Der Benutzer {username} wurde gelöscht und darüber per E-Mail benachrichtigt.
+    mailtoLinkTitle: E-Mail an {username} senden
     mailtoSubject: Ihr {platform}-Konto
     userItemActions:
       lblGroupAccountStatus: Konto-Status
       setActive: Konto aktivieren
       setInactive: Konto deaktivieren
-      setVerified: Email als verifiziert markieren
-      setUnverified: Email-Verifizierung zurücksetzen
+      setVerified: E-Mail als verifiziert markieren
+      setUnverified: E-Mail-Verifizierung zurücksetzen
       setSuperuser: Zu Administrator befördern
       unsetSuperuser: Zu normalem Benutzer herabstufen
       deleteUser: Benutzer löschen
@@ -492,8 +497,8 @@ admin:
       setSuperuser: '@:admin.users.confirmMsg.areYouSure {username} Administratorenrechte zuteilen möchten?'
       setInactive: '@:admin.users.confirmMsg.areYouSure das Konto von {username} deaktivieren möchten?'
       setActive: '@:admin.users.confirmMsg.areYouSure das Konto von {username} aktivieren möchten?'
-      setUnverified: '@:admin.users.confirmMsg.areYouSure die Email-Verifizierung von {username} zurücksetzen möchten?'
-      setVerified: '@:admin.users.confirmMsg.areYouSure die Email-Adresse von {username} als verifiziert markieren möchten?'
+      setUnverified: '@:admin.users.confirmMsg.areYouSure die E-Mail-Verifizierung von {username} zurücksetzen möchten?'
+      setVerified: '@:admin.users.confirmMsg.areYouSure die E-Mail-Adresse von {username} als verifiziert markieren möchten?'
       deleteUser: |
         '@:admin.users.confirmMsg.areYouSure den Benutzeraccount {username}
          und alle damit verknüpften Daten löschen möchten?'

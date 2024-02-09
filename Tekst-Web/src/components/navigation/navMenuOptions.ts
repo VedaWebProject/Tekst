@@ -113,8 +113,8 @@ export function useAccountMenuOptions(showIcons: boolean = true) {
       icon: renderIcon(EyeIcon, !showIcons),
     },
     {
-      label: renderLink(() => $t('account.account'), { name: 'accountManage' }),
-      key: 'accountManage',
+      label: renderLink(() => $t('account.account'), { name: 'accountSettings' }),
+      key: 'accountSettings',
       icon: renderIcon(ManageAccountIcon, !showIcons),
     },
   ];

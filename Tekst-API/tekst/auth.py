@@ -43,7 +43,7 @@ from fastapi_users_db_beanie.access_token import (
 from humps import decamelize
 
 from tekst.config import TekstConfig, get_config
-from tekst.email import TemplateIdentifier, send_email
+from tekst.email import TemplateIdentifier, send_admin_notification_email, send_email
 from tekst.logging import log
 from tekst.models.content import ContentBaseDocument
 from tekst.models.resource import ResourceBaseDocument
@@ -150,17 +150,11 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
         self, user: UserDocument, request: Request | None = None
     ):
         if not _cfg.security_users_active_by_default:
-            admins = (
-                await UserDocument.find(UserDocument.is_superuser == True)  # noqa: E712
-                .limit(10)
-                .to_list()
+            await send_admin_notification_email(
+                user,
+                TemplateIdentifier.USER_AWAITS_ACTIVATION,
+                admin_notification_trigger="userAwaitsActivation",
             )
-            for admin in admins:
-                send_email(
-                    user,
-                    TemplateIdentifier.ACTIVATE_TODO,
-                    alternate_recepient=admin.email,
-                )
 
     async def on_after_update(
         self,

@@ -329,6 +329,8 @@ export type webhooks = Record<string, never>;
 
 export interface components {
   schemas: {
+    /** @constant */
+    AdminNotificationTrigger: 'userAwaitsActivation';
     /** BearerResponse */
     BearerResponse: {
       /** Access Token */
@@ -847,6 +849,9 @@ export interface components {
       /** Label */
       label?: string | null;
     };
+    /** @enum {string} */
+    MaybePrivateUserField: 'name' | 'affiliation' | 'bio';
+    MaybePrivateUserFields: components['schemas']['MaybePrivateUserField'][];
     /** Metadate */
     Metadate: {
       /** Key */
@@ -2343,12 +2348,16 @@ export interface components {
       avatarUrl?: string | null;
       /** Bio */
       bio?: string | null;
+      /** @default [] */
+      publicFields?: components['schemas']['MaybePrivateUserFields'];
       /**
-       * Publicfields
-       * @description Data fields set public by this user
-       * @default []
+       * Adminnotificationtriggers
+       * @description Events that trigger admin notifications for this user
+       * @default [
+       *   "userAwaitsActivation"
+       * ]
        */
-      publicFields?: ('name' | 'affiliation' | 'bio')[];
+      adminNotificationTriggers?: components['schemas']['AdminNotificationTrigger'][];
     };
     /**
      * UserRead
@@ -2382,12 +2391,16 @@ export interface components {
       avatarUrl?: string | null;
       /** Bio */
       bio?: string | null;
+      /** @default [] */
+      publicFields?: components['schemas']['MaybePrivateUserFields'];
       /**
-       * Publicfields
-       * @description Data fields set public by this user
-       * @default []
+       * Adminnotificationtriggers
+       * @description Events that trigger admin notifications for this user
+       * @default [
+       *   "userAwaitsActivation"
+       * ]
        */
-      publicFields?: ('name' | 'affiliation' | 'bio')[];
+      adminNotificationTriggers?: components['schemas']['AdminNotificationTrigger'][];
       /**
        * Createdat
        * Format: date-time
@@ -2413,12 +2426,8 @@ export interface components {
       bio?: string | null;
       /** Issuperuser */
       isSuperuser: boolean;
-      /**
-       * Publicfields
-       * @description Data fields set public by this user
-       * @default []
-       */
-      publicFields?: ('name' | 'affiliation' | 'bio')[];
+      /** @default [] */
+      publicFields?: components['schemas']['MaybePrivateUserFields'];
     };
     /** UserUpdate */
     UserUpdate: {
@@ -2443,12 +2452,16 @@ export interface components {
       avatarUrl?: string | null;
       /** Bio */
       bio?: string | null;
+      /** @default [] */
+      publicFields?: components['schemas']['MaybePrivateUserFields'];
       /**
-       * Publicfields
-       * @description Data fields set public by this user
-       * @default []
+       * Adminnotificationtriggers
+       * @description Events that trigger admin notifications for this user
+       * @default [
+       *   "userAwaitsActivation"
+       * ]
        */
-      publicFields?: ('name' | 'affiliation' | 'bio')[];
+      adminNotificationTriggers?: components['schemas']['AdminNotificationTrigger'][];
     };
     /** ValidationError */
     ValidationError: {

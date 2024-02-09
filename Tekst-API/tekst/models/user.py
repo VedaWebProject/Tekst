@@ -12,6 +12,7 @@ from fastapi_users_db_beanie import (
 )
 from pydantic import Field, StringConstraints, model_validator
 from pymongo import IndexModel
+from typing_extensions import TypeAliasType
 
 from tekst.config import TekstConfig, get_config
 from tekst.models.common import LocaleKey, ModelBase, ModelFactoryMixin
@@ -20,10 +21,29 @@ from tekst.utils.validators import CleanupMultiline, CleanupOneline, EmptyString
 
 _cfg: TekstConfig = get_config()
 
-MaybePrivateUserFields = Literal["name", "affiliation", "bio"]
-MaybePrivateUserFieldsType = Annotated[
-    list[MaybePrivateUserFields],
-    Field(description="Data fields set public by this user", max_length=64),
+MaybePrivateUserField = TypeAliasType(
+    "MaybePrivateUserField", Literal["name", "affiliation", "bio"]
+)
+MaybePrivateUserFields = TypeAliasType(
+    "MaybePrivateUserFields",
+    Annotated[
+        list[MaybePrivateUserField],
+        Field(
+            description="Data fields set public by this user",
+            max_length=len(get_args(MaybePrivateUserField.__value__)),
+        ),
+    ],
+)
+
+AdminNotificationTrigger = TypeAliasType(
+    "AdminNotificationTrigger", Literal["userAwaitsActivation"]
+)
+AdminNotificationTriggers = Annotated[
+    list[AdminNotificationTrigger],
+    Field(
+        description="Events that trigger admin notifications for this user",
+        max_length=len(get_args(AdminNotificationTrigger.__value__)),
+    ),
 ]
 
 
@@ -35,11 +55,11 @@ class UserReadPublic(ModelBase):
     avatar_url: str | None = None
     bio: str | None = None
     is_superuser: bool
-    public_fields: MaybePrivateUserFieldsType = []
+    public_fields: MaybePrivateUserFields = []
 
     @model_validator(mode="after")
     def model_postprocess(self):
-        for pf in get_args(MaybePrivateUserFields):
+        for pf in get_args(MaybePrivateUserField.__value__):
             if pf not in self.public_fields:
                 setattr(self, pf, None)
         return self
@@ -74,7 +94,10 @@ class User(ModelBase, ModelFactoryMixin):
         CleanupMultiline,
         EmptyStringToNone,
     ] = None
-    public_fields: MaybePrivateUserFieldsType = []
+    public_fields: MaybePrivateUserFields = []
+    admin_notification_triggers: AdminNotificationTriggers = list(
+        get_args(AdminNotificationTrigger.__value__)
+    )
 
 
 class UserDocument(User, BeanieBaseUser, Document):
