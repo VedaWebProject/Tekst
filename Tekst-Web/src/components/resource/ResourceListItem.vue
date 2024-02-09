@@ -230,7 +230,11 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
         />
         <n-space vertical>
           <resource-publication-status :resource="targetResource" size="tiny" />
-          <resource-is-version-info :resource="targetResource" size="tiny" />
+          <resource-is-version-info
+            v-if="targetResource.originalId"
+            :resource="targetResource"
+            size="tiny"
+          />
         </n-space>
       </template>
 
