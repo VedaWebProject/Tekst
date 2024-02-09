@@ -5,7 +5,7 @@ import { useAuthStore, useBrowseStore } from '@/stores';
 import ResourceToggleDrawerItem from '@/components/browse/ResourceToggleDrawerItem.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 
-import { ChecklistIcon, ClearIcon, ResourceIcon } from '@/icons';
+import { CheckAllIcon, ResourceIcon, UncheckAllIcon } from '@/icons';
 import LabelledSwitch from '../LabelledSwitch.vue';
 import { useThemeStore } from '@/stores/theme';
 
@@ -72,11 +72,14 @@ function toggleCategory(index: number, activate: boolean) {
           <n-button
             secondary
             circle
+            size="small"
             :focusable="false"
             @click="toggleCategory(index, !categoryActivationState[index])"
           >
             <template #icon>
-              <n-icon :component="!categoryActivationState[index] ? ChecklistIcon : ClearIcon" />
+              <n-icon
+                :component="!categoryActivationState[index] ? CheckAllIcon : UncheckAllIcon"
+              />
             </template>
           </n-button>
         </n-space>

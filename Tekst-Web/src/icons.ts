@@ -90,10 +90,12 @@ import StarOutlined from '@vicons/material/StarOutlined';
 import BookmarkBorderOutlined from '@vicons/material/BookmarkBorderOutlined';
 import BookmarkFilled from '@vicons/material/BookmarkFilled';
 import HideImageOutlined from '@vicons/material/HideImageOutlined';
-import ChecklistOutlined from '@vicons/material/ChecklistOutlined';
+import PlaylistAddCheckOutlined from '@vicons/material/PlaylistAddCheckOutlined';
+import PlaylistRemoveOutlined from '@vicons/material/PlaylistRemoveOutlined';
 
 export {
-  ChecklistOutlined as ChecklistIcon,
+  PlaylistAddCheckOutlined as CheckAllIcon,
+  PlaylistRemoveOutlined as UncheckAllIcon,
   HideImageOutlined as NoImageIcon,
   AccountTreeFilled as AccountTreeIcon,
   AddOutlined as AddIcon,
