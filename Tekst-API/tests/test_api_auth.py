@@ -2,7 +2,7 @@ import pytest
 
 from fastapi.exceptions import HTTPException
 from httpx import AsyncClient
-from tekst.auth import create_initial_superuser, create_sample_users
+from tekst.auth import create_initial_superuser
 
 
 @pytest.mark.anyio
@@ -204,12 +204,6 @@ async def test_update_user(
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert resp.json()["isActive"] is False
     assert resp.json()["isSuperuser"] is False
-
-
-@pytest.mark.anyio
-async def test_create_sample_users():
-    await create_sample_users()
-    await create_sample_users()
 
 
 @pytest.mark.anyio

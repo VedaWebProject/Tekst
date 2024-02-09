@@ -14,6 +14,8 @@ _SAMPLE_DATA_DIR = Path(realpath(__file__)).parent / "db"
 
 async def insert_sample_data():
     target_collections = ("texts", "locations", "resources", "contents", "settings")
+    if _cfg.dev_mode:
+        target_collections += ("users",)
     db = get_db_client()[_cfg.db_name]
     # check if any of the target collections contains data
     for collection in target_collections:

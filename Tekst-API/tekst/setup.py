@@ -1,4 +1,4 @@
-from tekst.auth import create_initial_superuser, create_sample_users
+from tekst.auth import create_initial_superuser
 from tekst.config import TekstConfig
 from tekst.db import init_odm
 from tekst.dependencies import get_db, get_db_client
@@ -18,7 +18,6 @@ async def app_setup(cfg: TekstConfig):
     init_resource_types_mgr()
     await init_odm(get_db(get_db_client(cfg), cfg))
 
-    await create_sample_users()  # happens only when in DEV mode
     await insert_sample_data()
     await create_initial_superuser()  # happens only when not in DEV mode
     log.info("Finished Tekst pre-launch app setup.")
