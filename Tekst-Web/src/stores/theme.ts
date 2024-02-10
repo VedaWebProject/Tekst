@@ -26,6 +26,7 @@ const commonOverrides: GlobalThemeOverrides = {
     feedbackHeightSmall: '18px',
     feedbackHeightMedium: '18px',
     feedbackHeightLarge: '20px',
+    labelFontWeight: 'var(--font-weight-bold)',
   },
   Badge: {
     fontSize: 'var(--font-size-mini)',
