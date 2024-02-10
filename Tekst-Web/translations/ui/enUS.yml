@@ -41,7 +41,7 @@ general:
     little '?' icon next to the heading of each page. Are you sure you want to proceed?
 
 i18n:
-  tipSwitcher: Choose locale (language and number/date formatting)
+  tipSwitcher: Choose language for user interface
   invalidLanguage: Invalid
 
 init:

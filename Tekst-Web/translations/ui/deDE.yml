@@ -44,7 +44,7 @@ general:
     Sind Sie sicher, dass Sie fortfahren möchten?
 
 i18n:
-  tipSwitcher: Gebietsschema auswählen (Sprache und Zahlen-/Datumsformat)
+  tipSwitcher: Sprache für Bedienoberfläche auswählen
   invalidLanguage: Ungültig
 
 init:
