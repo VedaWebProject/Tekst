@@ -2706,13 +2706,9 @@ export interface operations {
         /** @description Location position */
         pos: number;
         /** @description ID of resource to return nearest location with content for */
-        targetRes?: string;
-        /** @description ID (or list of IDs) of resource(s) to return content data for */
-        res?: string[];
+        res: string;
         /** @description Whether to look for the nearest preceding or subsequent location with content */
         mode?: 'preceding' | 'subsequent';
-        /** @description Return at most <limit> contents */
-        limit?: number;
       };
     };
     responses: {

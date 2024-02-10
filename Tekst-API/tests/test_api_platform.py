@@ -18,6 +18,7 @@ async def test_platform_find_users(
     login,
 ):
     user = await login(is_superuser=True)
+
     # legitimate search
     resp = await test_client.get(
         "/platform/users",
@@ -30,6 +31,7 @@ async def test_platform_find_users(
     assert "id" in resp.json()[0]
     assert "name" in resp.json()[0]
     assert "isActive" not in resp.json()[0]
+
     # nonsense search
     resp = await test_client.get(
         "/platform/users",
@@ -38,6 +40,7 @@ async def test_platform_find_users(
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 0
+
     # no query
     resp = await test_client.get(
         "/platform/users",
@@ -45,7 +48,8 @@ async def test_platform_find_users(
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 0
-    # empty query
+
+    # query of whitespaces
     resp = await test_client.get(
         "/platform/users",
         params={"q": "      "},

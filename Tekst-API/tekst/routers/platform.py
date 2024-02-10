@@ -116,9 +116,6 @@ async def find_public_users(
     """
     if not query:
         return []
-    query = query.strip(" \t\n\r")
-    if len(query) == 0:
-        return []
     return [
         UserReadPublic(**user.model_dump())
         for user in await UserDocument.find(Text(query)).to_list()

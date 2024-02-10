@@ -1,3 +1,5 @@
+import json
+
 import pytest
 
 from httpx import AsyncClient
@@ -40,6 +42,35 @@ async def test_create_resource(
         == "This is a string with some space chars"
     )
     assert resp.json()["ownerId"] == user.get("id")
+
+
+@pytest.mark.anyio
+async def test_create_too_many_resources(
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_fail_msg,
+    login,
+):
+    text_id = (await insert_sample_data("texts", "locations"))["texts"][0]
+    user = await login()
+
+    error = None
+    for i in range(100):
+        resp = await test_client.post(
+            "/resources",
+            json={
+                "title": f"A test resource {i}",
+                "textId": text_id,
+                "level": 0,
+                "resourceType": "plainText",
+                "ownerId": user["id"],
+            },
+        )
+        if resp.status_code == 409:
+            error = resp.json()
+            break
+    assert error is not None
+    assert error["detail"]["key"] == "resourcesLimitReached"
 
 
 @pytest.mark.anyio
@@ -151,6 +182,30 @@ async def test_create_resource_version(
         f"/resources/{resp.json()['id']}/version",
     )
     assert resp.status_code == 400, status_fail_msg(400, resp)
+
+
+@pytest.mark.anyio
+async def test_create_too_many_resource_versions(
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_fail_msg,
+    login,
+):
+    resource_id = (await insert_sample_data("texts", "locations", "resources"))[
+        "resources"
+    ][0]
+    await login()
+
+    error = None
+    for i in range(100):
+        resp = await test_client.post(
+            f"/resources/{resource_id}/version",
+        )
+        if resp.status_code == 409:
+            error = resp.json()
+            break
+    assert error is not None
+    assert error["detail"]["key"] == "resourcesLimitReached"
 
 
 @pytest.mark.anyio
@@ -483,6 +538,14 @@ async def test_propose_unpropose_publish_unpublish_resource(
         f"/resources/{resource_id}/publish",
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert resp.json()["id"] == resource_id
+
+    # publish already public resource again (should just go through)
+    resp = await test_client.post(
+        f"/resources/{resource_id}/publish",
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert resp.json()["id"] == resource_id
 
     # propose public resource
     resp = await test_client.post(
@@ -763,3 +826,114 @@ async def test_get_resource_template(
         f"/resources/{wrong_id}/template",
     )
     assert resp.status_code == 404, status_fail_msg(404, resp)
+
+
+@pytest.mark.anyio
+async def test_import_resource_data(
+    test_client: AsyncClient,
+    insert_sample_data,
+    get_sample_data_path,
+    status_fail_msg,
+    login,
+    wrong_id,
+):
+    inserted_ids = await insert_sample_data(
+        "texts", "locations", "resources", "contents"
+    )
+    text_id = inserted_ids["texts"][1]
+    superuser = await login(is_superuser=True)
+
+    # create an additional location (so we can import new content for it and
+    # don't only have updates to existing content)
+    resp = await test_client.post(
+        "/locations",
+        json={"textId": text_id, "label": "Location!!", "level": 0, "position": 3},
+    )
+    assert resp.status_code == 201, status_fail_msg(201, resp)
+    additional_location_id = resp.json()["id"]
+
+    # define sample data
+    resource_id = "654ba525ec7833e469dde77e"
+    sample_data = {
+        "contents": [
+            {"locationId": "654ba282ec7833e469dde766", "text": "FOO"},
+            {"locationId": "654ba288ec7833e469dde768", "text": "BAR"},
+            {"locationId": additional_location_id, "text": "BAZ"},
+        ],
+        "resourceId": resource_id,
+    }
+    sample_data_string = json.dumps(sample_data)
+
+    # upload invalid resource data file (give wrong MIME type)
+    resp = await test_client.post(
+        f"/resources/{resource_id}/import",
+        files={"file": ("foo.json", sample_data_string, "text/plain")},
+    )
+    assert resp.status_code == 400, status_fail_msg(400, resp)
+
+    # upload invalid structure definition file (invalid JSON)
+    resp = await test_client.post(
+        f"/resources/{resource_id}/import",
+        files={"file": ("foo.json", r"{foo: bar}", "application/json")},
+    )
+    assert resp.status_code == 400, status_fail_msg(400, resp)
+
+    # fail to upload structure definition file for wrong resource ID
+    resp = await test_client.post(
+        f"/resources/{wrong_id}/import",
+        files={"file": ("foo.json", sample_data_string, "application/json")},
+    )
+    assert resp.status_code == 404, status_fail_msg(404, resp)
+
+    # upload valid structure definition file
+    resp = await test_client.post(
+        f"/resources/{resource_id}/import",
+        files={"file": ("foo.json", sample_data_string, "application/json")},
+    )
+    assert resp.status_code == 201, status_fail_msg(201, resp)
+    assert isinstance(resp.json(), dict)
+    assert resp.json()["updated"] == 2
+    assert resp.json()["created"] == 1
+    assert resp.json()["errors"] == 0
+
+    # do the same again
+    resp = await test_client.post(
+        f"/resources/{resource_id}/import",
+        files={"file": ("foo.json", sample_data_string, "application/json")},
+    )
+    assert resp.status_code == 201, status_fail_msg(201, resp)
+    assert isinstance(resp.json(), dict)
+    assert resp.json()["updated"] == 3
+    assert resp.json()["created"] == 0
+    assert resp.json()["errors"] == 0
+
+    # fail to upload resource data without write permissions
+    await login()
+    resp = await test_client.post(
+        f"/resources/{resource_id}/import",
+        files={"file": ("foo.json", sample_data_string, "application/json")},
+    )
+    assert resp.status_code == 403, status_fail_msg(403, resp)
+    await login(user=superuser)
+
+    # upload incomplete content data (one content without location ID)
+    invalid_sample_data = sample_data.copy()
+    del invalid_sample_data["contents"][0]["locationId"]
+    resp = await test_client.post(
+        f"/resources/{resource_id}/import",
+        files={
+            "file": ("foo.json", json.dumps(invalid_sample_data), "application/json")
+        },
+    )
+    assert resp.status_code == 400, status_fail_msg(400, resp)
+
+    # upload invalid content data (text is list[int])
+    invalid_sample_data = sample_data.copy()
+    invalid_sample_data["contents"][0]["text"] = [1, 2, 3]
+    resp = await test_client.post(
+        f"/resources/{resource_id}/import",
+        files={
+            "file": ("foo.json", json.dumps(invalid_sample_data), "application/json")
+        },
+    )
+    assert resp.status_code == 400, status_fail_msg(400, resp)

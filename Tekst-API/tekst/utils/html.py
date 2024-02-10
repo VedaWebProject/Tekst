@@ -22,7 +22,7 @@ _ALLOWED_ATTRIBUTES = {
 }
 
 
-def sanitize_user_html(html: str | None) -> str:
+def sanitize_html(html: str | None = None) -> str:
     if html is None:
         return None
     return bleach.clean(
@@ -34,11 +34,11 @@ def sanitize_user_html(html: str | None) -> str:
     )
 
 
-def sanitize_user_model_html(
+def sanitize_model_html(
     models: BaseModel | list[BaseModel],
 ) -> BaseModel | list[BaseModel]:
     """
-    Sanitizes HTML in user models.
+    Sanitizes HTML in user-provided models' data.
     Only operates on fields explicitly named 'html'.
     """
     passed_list = True
@@ -47,11 +47,11 @@ def sanitize_user_model_html(
         models = [models]
     for model in models:
         if getattr(model, "html", None):
-            model.html = sanitize_user_html(model.html)
+            model.html = sanitize_html(model.html)
     return models if passed_list else models[0]
 
 
-def sanitize_user_dict_html(
+def sanitize_dict_html(
     data: dict | list[dict],
 ) -> dict | list[dict]:
     """
@@ -64,5 +64,5 @@ def sanitize_user_dict_html(
         data = [data]
     for d in data:
         if "html" in d and d["html"]:
-            d["html"] = sanitize_user_html(d["html"])
+            d["html"] = sanitize_html(d["html"])
     return data if passed_list else data[0]

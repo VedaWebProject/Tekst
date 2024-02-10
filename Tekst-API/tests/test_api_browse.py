@@ -187,3 +187,30 @@ async def test_get_detailed_resource_coverage_data(
         f"/browse/resources/{wrong_id}/coverage-details",
     )
     assert resp.status_code == 404, status_fail_msg(404, resp)
+
+
+@pytest.mark.anyio
+async def test_get_nearest_content_position(
+    test_client: AsyncClient, insert_sample_data, status_fail_msg, wrong_id, login
+):
+    inserted_ids = await insert_sample_data(
+        "texts", "locations", "resources", "contents"
+    )
+    resource_id = inserted_ids["resources"][0]
+    await login()
+
+    # get nearest content position
+    resp = await test_client.get(
+        "/browse/nearest-content-position",
+        params={"res": resource_id, "pos": 0, "mode": "subsequent"},
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert isinstance(resp.json(), int)
+    assert resp.json() == 1
+
+    # fail to get nearest content position with wrong resource ID
+    resp = await test_client.get(
+        "/browse/nearest-content-position",
+        params={"res": wrong_id, "pos": 0, "mode": "subsequent"},
+    )
+    assert resp.status_code == 404, status_fail_msg(404, resp)

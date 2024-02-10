@@ -343,12 +343,11 @@ async def test_import_text_structure(
     wrong_id,
 ):
     text_id = (await insert_sample_data("texts"))["texts"][0]
-
-    # log in as superuser
     await login(is_superuser=True)
+    sample_data_path = get_sample_data_path("import/structure_fdhdgg.json")
 
     # upload invalid structure definition file (give wrong MIME type)
-    with open(get_sample_data_path("structure/fdhdgg.json"), "rb") as f:
+    with open(sample_data_path, "rb") as f:
         resp = await test_client.post(
             f"/texts/{text_id}/structure",
             files={"file": (f.name, f, "text/plain")},
@@ -363,7 +362,7 @@ async def test_import_text_structure(
     assert resp.status_code == 400, status_fail_msg(400, resp)
 
     # upload structure definition file for wrong text ID
-    with open(get_sample_data_path("structure/fdhdgg.json"), "rb") as f:
+    with open(sample_data_path, "rb") as f:
         resp = await test_client.post(
             f"/texts/{wrong_id}/structure",
             files={"file": (f.name, f, "application/json")},
@@ -371,7 +370,7 @@ async def test_import_text_structure(
         assert resp.status_code == 404, status_fail_msg(404, resp)
 
     # upload valid structure definition file
-    with open(get_sample_data_path("structure/fdhdgg.json"), "rb") as f:
+    with open(sample_data_path, "rb") as f:
         resp = await test_client.post(
             f"/texts/{text_id}/structure",
             files={"file": (f.name, f, "application/json")},
@@ -379,7 +378,7 @@ async def test_import_text_structure(
         assert resp.status_code == 201, status_fail_msg(201, resp)
 
     # try it again (should fail because text now already has locations)
-    with open(get_sample_data_path("structure/fdhdgg.json"), "rb") as f:
+    with open(sample_data_path, "rb") as f:
         resp = await test_client.post(
             f"/texts/{text_id}/structure",
             files={"file": (f.name, f, "application/json")},

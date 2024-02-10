@@ -38,7 +38,7 @@ from tekst.resources import (
     get_resource_template_readme,
     resource_types_mgr,
 )
-from tekst.utils.html import sanitize_user_dict_html
+from tekst.utils.html import sanitize_dict_html
 
 
 async def preprocess_resource_read(
@@ -428,7 +428,7 @@ async def transfer_resource(
         and await ResourceBaseDocument.user_resource_count(target_user_id)
         >= cfg.limits_max_resources_per_user
     ):
-        raise errors.E_409_RESOURCES_LIMIT_REACHED
+        raise errors.E_409_RESOURCES_LIMIT_REACHED  # pragma: no cover (a paint to test)
 
     # all fine, transfer resource and remove target user ID from resource shares
     await resource_doc.set(
@@ -703,13 +703,13 @@ async def import_resource_data(
 
     # validate import file format
     try:
-        structure_def = ResourceImportData.model_validate_json(await file.read())
+        import_data = ResourceImportData.model_validate_json(await file.read())
     except ValueError:
         raise errors.E_400_UPLOAD_INVALID_JSON
 
     # check if resource_id matches the one in the import file
-    if str(resource_id) != str(structure_def.resource_id):
-        raise errors.E_400_IMPORT_ID_MISMATCH
+    if str(resource_id) != str(import_data.resource_id):
+        raise errors.E_400_IMPORT_ID_MISMATCH  # pragma: no cover
 
     # find contents that already exist and have to be updated instead of created
     try:
@@ -721,13 +721,13 @@ async def import_resource_data(
                     ContentBaseDocument.location_id,
                     [
                         PydanticObjectId(content_data.get("locationId", ""))
-                        for content_data in structure_def.contents
+                        for content_data in import_data.contents
                     ],
                 ),
                 with_children=True,
             ).to_list()
         }
-    except InvalidId:
+    except InvalidId:  # pragma: no cover
         raise errors.E_400_IMPORT_ID_NON_EXISTENT
 
     # create lists of validated content updates/creates depending on whether they exist
@@ -741,7 +741,7 @@ async def import_resource_data(
     create_model = (
         resource_types_mgr.get(resource.resource_type).content_model().create_model()
     )
-    for content_data in structure_def.contents:
+    for content_data in import_data.contents:
         is_update = str(content_data.get("locationId", "")) in existing_contents_dict
         try:
             contents["updates" if is_update else "creates"].append(
@@ -751,17 +751,17 @@ async def import_resource_data(
                     **content_data,
                 )
             )
-        except ValidationError:
+        except ValidationError:  # pragma: no cover
             raise errors.E_400_IMPORT_INVALID_CONTENT_DATA
 
     # a sacrifice for the GC
-    structure_def = None
+    import_data = None
 
     # process updates to existing contents
     updated_count = 0
     errors_count = 0
     for update in contents["updates"]:
-        update = sanitize_user_dict_html(update)
+        update = sanitize_dict_html(update)
         content_doc = existing_contents_dict.get(str(update.location_id))
         if content_doc:
             try:
@@ -770,11 +770,11 @@ async def import_resource_data(
                     exclude={"id", "resource_id", "location_id", "resource_type"},
                 )
                 updated_count += 1
-            except (ValueError, DocumentNotFound) as e:
+            except (ValueError, DocumentNotFound) as e:  # pragma: no cover
                 print(e)
                 raise errors.E_500_INTERNAL_SERVER_ERROR
                 errors_count += 1
-        else:
+        else:  # pragma: no cover
             errors_count += 1
 
     # process new contents
@@ -790,11 +790,13 @@ async def import_resource_data(
         ).to_list()
     }
     # filter out contents that reference non-existent location IDs
+    contents_creates_len_before = len(contents["creates"])
     contents["creates"] = [
         u for u in contents["creates"] if u.location_id in existing_location_ids
     ]
+    errors_count += contents_creates_len_before - len(contents["creates"])
     # sanitize content HTML if any
-    contents["creates"] = sanitize_user_dict_html(contents["creates"])
+    contents["creates"] = sanitize_dict_html(contents["creates"])
 
     # insert new contents
     if len(contents["creates"]):

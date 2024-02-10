@@ -15,7 +15,7 @@ from tekst.resources import (
     AnyContentUpdateBody,
     resource_types_mgr,
 )
-from tekst.utils.html import sanitize_user_model_html
+from tekst.utils.html import sanitize_model_html
 
 
 # initialize content router
@@ -55,7 +55,7 @@ async def create_content(
         raise errors.E_409_CONTENT_CONFLICT
 
     # if the content has a "html" field, sanitize it
-    content = sanitize_user_model_html(content)
+    content = sanitize_model_html(content)
 
     return (
         await resource_types_mgr.get(content.resource_type)
@@ -130,7 +130,7 @@ async def update_content(
         raise errors.E_403_FORBIDDEN
 
     # if the updated content has a "html" field, sanitize it
-    updates = sanitize_user_model_html(updates)
+    updates = sanitize_model_html(updates)
 
     return await content_doc.apply_updates(
         updates, exclude={"id", "resource_id", "location_id", "resource_type"}

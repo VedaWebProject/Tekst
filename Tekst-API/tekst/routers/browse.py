@@ -199,20 +199,13 @@ async def get_location_data(
 async def get_nearest_content_position(
     user: OptionalUserDep,
     position: Annotated[int, Query(alias="pos", description="Location position")],
-    target_resource_id: Annotated[
+    resource_id: Annotated[
         PydanticObjectId,
         Query(
-            alias="targetRes",
+            alias="res",
             description="ID of resource to return nearest location with content for",
         ),
-    ] = [],
-    resource_ids: Annotated[
-        list[PydanticObjectId],
-        Query(
-            alias="res",
-            description="ID (or list of IDs) of resource(s) to return content data for",
-        ),
-    ] = [],
+    ],
     mode: Annotated[
         Literal["preceding", "subsequent"],
         Query(
@@ -222,7 +215,6 @@ async def get_nearest_content_position(
             )
         ),
     ] = "subsequent",
-    limit: Annotated[int, Query(description="Return at most <limit> contents")] = 4096,
 ) -> int:
     """
     Finds the nearest location the given resource holds content for and returns
@@ -230,10 +222,8 @@ async def get_nearest_content_position(
     """
     # we don't check read access here, because are passing data to the location-data
     # endpoint later anyway and it already checks for permissions
-    resource_doc = await ResourceBaseDocument.get(
-        target_resource_id, with_children=True
-    )
-    if not resource_doc:  # pragma: no cover
+    resource_doc = await ResourceBaseDocument.get(resource_id, with_children=True)
+    if not resource_doc:
         raise errors.E_404_RESOURCE_NOT_FOUND
 
     # get all locations before/after said location
@@ -259,7 +249,7 @@ async def get_nearest_content_position(
     # get contents for these locations
     contents = (
         await ContentBaseDocument.find(
-            ContentBaseDocument.resource_id == target_resource_id,
+            ContentBaseDocument.resource_id == resource_id,
             In(
                 ContentBaseDocument.location_id,
                 [location.get("_id") for location in locations],

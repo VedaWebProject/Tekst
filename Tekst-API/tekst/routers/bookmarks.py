@@ -34,9 +34,9 @@ async def delete_bookmark(
 ) -> None:
     bookmark_doc = await BookmarkDocument.get(bookmark_id)
     if not bookmark_doc:
-        errors.E_404_BOOKMARK_NOT_FOUND
+        raise errors.E_404_BOOKMARK_NOT_FOUND
     if user.id != bookmark_doc.user_id:
-        errors.E_403_FORBIDDEN
+        raise errors.E_403_FORBIDDEN
     await bookmark_doc.delete()
 
 
@@ -73,15 +73,17 @@ async def get_user_bookmarks(user: UserDep) -> list[BookmarkDocument]:
 )
 async def create_bookmark(user: UserDep, bookmark: BookmarkCreate) -> BookmarkDocument:
     """Creates a bookmark for the requesting user"""
+
     if await BookmarkDocument.find(
         BookmarkDocument.user_id == user.id,
         BookmarkDocument.location_id == bookmark.location_id,
     ).exists():
         raise errors.E_409_BOOKMARK_EXISTS
+
     if (
         await BookmarkDocument.find(BookmarkDocument.user_id == user.id).count()
     ) >= 1000:
-        raise errors.E_409_BOOKMARKS_LIMIT_REACHED
+        raise errors.E_409_BOOKMARKS_LIMIT_REACHED  # pragma: no cover
 
     location_doc = await LocationDocument.get(bookmark.location_id)
     if not location_doc:
@@ -89,7 +91,7 @@ async def create_bookmark(user: UserDep, bookmark: BookmarkCreate) -> BookmarkDo
 
     text_doc = await TextDocument.get(location_doc.text_id)
     if not text_doc:
-        raise errors.E_404_TEXT_NOT_FOUND
+        raise errors.E_404_TEXT_NOT_FOUND  # pragma: no cover
 
     # construct full label
     location_labels = [location_doc.label]

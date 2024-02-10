@@ -534,33 +534,16 @@
             "description": "Location position"
           },
           {
-            "name": "targetRes",
+            "name": "res",
             "in": "query",
-            "required": false,
+            "required": true,
             "schema": {
               "type": "string",
               "example": "5eb7cf5a86d9755df3a6c593",
               "description": "ID of resource to return nearest location with content for",
-              "default": [],
-              "title": "Targetres"
-            },
-            "description": "ID of resource to return nearest location with content for"
-          },
-          {
-            "name": "res",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              "description": "ID (or list of IDs) of resource(s) to return content data for",
-              "default": [],
               "title": "Res"
             },
-            "description": "ID (or list of IDs) of resource(s) to return content data for"
+            "description": "ID of resource to return nearest location with content for"
           },
           {
             "name": "mode",
@@ -577,18 +560,6 @@
               "title": "Mode"
             },
             "description": "Whether to look for the nearest preceding or subsequent location with content"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "description": "Return at most <limit> contents",
-              "default": 4096,
-              "title": "Limit"
-            },
-            "description": "Return at most <limit> contents"
           }
         ],
         "responses": {
