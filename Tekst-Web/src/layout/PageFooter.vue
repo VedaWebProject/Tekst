@@ -25,8 +25,14 @@ const privacyPolicy = computed(
     </div>
     <div v-if="pfData?.settings.showTekstFooterHint" style="font-size: var(--font-size-tiny)">
       {{ $t('general.tekstFooterHint') }}
-      <a href="http://github.com/VedaWebProject/Tekst" _target="blank" rel="external nofollow">
-        Tekst
+      <a
+        href="http://github.com/VedaWebProject/Tekst"
+        target="_blank"
+        rel="external nofollow"
+        style="font-weight: var(--font-weight-bold)"
+        :title="`${pfData.tekst?.name} – ${pfData.tekst?.description}`"
+      >
+        {{ pfData.tekst?.name }}
       </a>
     </div>
   </footer>
