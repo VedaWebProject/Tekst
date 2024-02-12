@@ -30,7 +30,17 @@ const showUserActionsButton = computed(
   () => pfData.value?.security?.closedMode === false || auth.loggedIn
 );
 
-const logoPath = computed(() => (theme.darkMode ? '/logo-darkmode.png' : '/logo.png'));
+const customLogoError = ref(false);
+const logoPath = computed(() =>
+  customLogoError.value
+    ? theme.darkMode
+      ? '/tekst-logo-darkmode.png'
+      : '/tekst-logo.png'
+    : theme.darkMode
+      ? '/logo-darkmode.png'
+      : '/logo.png'
+);
+
 const titleLinkTo = computed(() => {
   if (systemHome.value) {
     return '/';
@@ -53,7 +63,7 @@ watch(
 
 <template>
   <div class="navbar" :class="state.smallScreen && 'navbar-smallscreen'">
-    <img class="navbar-logo" :alt="`${pfData?.settings.infoPlatformName} Logo`" :src="logoPath" />
+    <img class="navbar-logo" alt="" :src="logoPath" @error="customLogoError = true" />
     <div class="title-container">
       <router-link :to="titleLinkTo">
         <div class="navbar-title">{{ pfData?.settings.infoPlatformName }}</div>
