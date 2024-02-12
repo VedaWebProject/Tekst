@@ -32,12 +32,12 @@ const customFetch = async (input: RequestInfo | URL, init?: RequestInit | undefi
     // automatically log out on a 401 response
     if (!response.url.endsWith('/logout')) {
       const { message } = useMessages();
-      message.error($t('errors.logInToAccess'));
+      message.warning($t('account.sessionExpired'));
       console.log("Oh no! You don't seem to have access to this resource!");
       const auth = useAuthStore();
       if (auth.loggedIn) {
         console.log('Running logout sequence in reaction to 401/403 response...');
-        await auth.logout();
+        await auth.logout(true);
       }
     }
   } else if (response.status === 403 && bodyText.includes('CSRF')) {

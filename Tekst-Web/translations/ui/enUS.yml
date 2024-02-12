@@ -61,7 +61,6 @@ errors:
   forbidden: You have no permission to perform this action.
   followFormRules: Please correct your inputs according to the form rules!
   noAccess: You don't have access to {resource}.
-  logInToAccess: Log in to access the requested resource!
   logoutAfter401: You have been logged out after trying to access a restricted resource without authorization.
   csrf: Your request didn't pass the CSRF checks. Delete your cookies for this website and refresh the page.
   loginBadCredentials: Incorrect email/password or account isn't activated, yet
@@ -431,7 +430,7 @@ account:
   login:
     heading: Login
   autoLogout: Your session will automatically end in {minutes} minutes and {seconds} seconds. You can log out and log back in to renew your session now.
-  sessionExpired: Your session has expired. You have been logged out.
+  sessionExpired: Your session has expired. Please log in again to use your account.
   renewLogin: Log in again to renew your session.
   settings:
     heading: Account Settings

@@ -159,10 +159,10 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  async function logout() {
+  async function logout(noMsg?: boolean) {
     router.push({ name: 'home' });
     if (!(await POST('/auth/cookie/logout', {})).error) {
-      message.success($t('account.logoutSuccessful'));
+      !noMsg && message.success($t('account.logoutSuccessful'));
     }
     _cleanupSession();
     await loadPlatformData(); // reload platform data as some resources might not be accessible anymore

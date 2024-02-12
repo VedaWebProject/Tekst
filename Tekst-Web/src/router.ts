@@ -274,7 +274,7 @@ router.beforeEach(async (to, from, next) => {
         next({ name: 'home' });
       } else {
         next(from || { name: 'home' });
-        auth.showLoginModal($t('errors.logInToAccess'), to.fullPath, false);
+        auth.showLoginModal($t('account.sessionExpired'), to.fullPath, false);
       }
       return; // this is important!
     }

@@ -50,7 +50,7 @@ export function useBookmarks() {
   }
 
   watchEffect(() => {
-    if (auth.user?.id !== lastUserId.value) {
+    if (auth.loggedIn && auth.user?.id !== lastUserId.value) {
       lastUserId.value = auth.user?.id;
       loadBookmarks();
     }
