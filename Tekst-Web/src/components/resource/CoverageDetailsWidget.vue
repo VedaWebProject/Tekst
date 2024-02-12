@@ -159,7 +159,9 @@ watch(
         <template #default="{ item }">
           <n-thing>
             <template #header>
-              {{ item.title }}
+              <span style="font-weight: var(--font-weight-normal)">
+                {{ item.title }}
+              </span>
             </template>
             <template #header-extra>
               <span style="margin-right: var(--layout-gap)"> ({{ item.extra }}) </span>
