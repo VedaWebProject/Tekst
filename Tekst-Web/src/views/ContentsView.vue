@@ -316,8 +316,7 @@ async function handleNearestChangeClick(mode: 'preceding' | 'subsequent') {
     params: {
       query: {
         pos: position.value,
-        targetRes: compareResourceId.value,
-        res: [resource.value?.id || '', compareResourceId.value || ''],
+        res: compareResourceId.value || '',
         mode,
       },
     },
