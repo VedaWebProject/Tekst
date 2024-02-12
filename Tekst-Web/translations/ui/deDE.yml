@@ -253,7 +253,7 @@ models:
     infoContactEmail: E-Mail Kontaktperson
     infoContactUrl: URL Kontaktperson
     defaultText: Standard-Text
-    availableLocales: Verfügbare Gebietsschemata
+    availableLocales: Verfügbare Sprachen
     navInfoEntry: Eigene Beschriftung für Info-Eintrag in Hauptnavigation
     alwaysShowTextInfo: Zeige Textinformationen und -auswahl auch auf nicht-textspezifischen Seiten
     showTekstFooterHint: Zeige einen kleinen Hinweis auf die Tekst-Software in der Fußzeile (Danke!)
@@ -424,8 +424,8 @@ account:
   tipLoginBtn: In Ihrem Konto anmelden
   tipLogoutBtn: Von Ihrem Konto abmelden
   switchToRegister: Neues Konto registrieren
-  localeUpdated: Das Gebietsschema für Ihren Account wurde zu {locale} geändert.
-  localeApplied: Das Gebietsschema wurde entsprechend Ihrer Account-Einstellungen zu {locale} geändert.
+  localeUpdated: Die Sprache für Ihren Account wurde zu {locale} geändert.
+  localeApplied: Die Sprache wurde entsprechend Ihrer Account-Einstellungen zu {locale} geändert.
   verify:
     success: Ihre E-Mail-Adresse wurde erfolgreich verifiziert! Sie können sich jetzt in Ihrem Konto anmelden.
   forgotPassword:

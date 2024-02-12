@@ -43,7 +43,7 @@ footer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--content-gap);
+  gap: var(--layout-gap);
   padding: var(--layout-gap);
   font-size: var(--font-size-small);
 }

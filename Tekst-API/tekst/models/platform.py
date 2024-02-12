@@ -1,4 +1,4 @@
-from typing import Annotated, Any
+from typing import Annotated
 
 from beanie import PydanticObjectId
 from humps import camelize

@@ -55,7 +55,7 @@ _cfg: TekstConfig = get_config()
 
 class AccessToken(BeanieBaseAccessToken, Document):
     class Settings(BeanieBaseAccessToken.Settings):
-        name = "access_tokens"
+        name = "tokens"
 
 
 _cookie_transport = CookieTransport(

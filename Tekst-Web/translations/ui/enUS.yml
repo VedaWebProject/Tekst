@@ -252,7 +252,7 @@ models:
     infoContactEmail: Contact Email
     infoContactUrl: Contact URL
     defaultText: Default Text
-    availableLocales: Available Locales
+    availableLocales: Available Languages
     navInfoEntry: Custom label for info entry in main navigation
     alwaysShowTextInfo: Show text info and selector in header even on non-text-specific pages
     showTekstFooterHint: Show a small hint to the Tekst software in the footer (Thank you!)
@@ -415,8 +415,8 @@ account:
   tipLoginBtn: Log into your account
   tipLogoutBtn: Log out of your account
   switchToRegister: Register New User
-  localeUpdated: Your account locale has been changed to {locale}.
-  localeApplied: The locale has been changed to {locale} according to your account settings.
+  localeUpdated: Your account language has been changed to {locale}.
+  localeApplied: The language has been changed to {locale} according to your account settings.
   verify:
     success: Your email address has been successfully verified! You can now log into your account.
   forgotPassword:
