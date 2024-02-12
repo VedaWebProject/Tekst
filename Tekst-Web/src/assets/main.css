@@ -158,6 +158,14 @@ img {
   border-radius: var(--border-radius);
 }
 
+.gray-box:first-child {
+  margin-top: 0;
+}
+
+.gray-box:last-child {
+  margin-bottom: 0;
+}
+
 /*
  * NUI overrides
  * Unfortunately, we need to override the default NUI styles in this hacky way

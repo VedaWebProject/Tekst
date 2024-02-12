@@ -6,7 +6,8 @@ import MetadataDisplayMinimal from '@/components/resource/MetadataDisplayMinimal
 import { useStateStore } from '@/stores';
 import type { AnyResourceRead, UserRead } from '@/api';
 
-import { PublicIcon, ProposedIcon, UserIcon } from '@/icons';
+import { PublicIcon, ProposedIcon } from '@/icons';
+import { PublicOffIcon } from '@/icons';
 
 const props = defineProps<{
   active?: boolean;
@@ -46,21 +47,13 @@ const infoTooltip = computed(() =>
       </div>
     </div>
     <div v-if="user" class="item-extra">
-      <n-icon
-        v-if="resource.ownerId === user.id"
-        :component="UserIcon"
-        :title="$t('resources.ownedByMe')"
-      />
-      <n-icon
-        v-if="resource.public"
-        :component="PublicIcon"
-        :title="$t('models.resource.public')"
-      />
+      <n-icon v-if="resource.public" :component="PublicIcon" :title="$t('resources.public')" />
       <n-icon
         v-else-if="resource.proposed"
         :component="ProposedIcon"
-        :title="$t('models.resource.proposed')"
+        :title="$t('resources.proposed')"
       />
+      <n-icon v-else :component="PublicOffIcon" :title="$t('resources.notPublic')" />
     </div>
   </div>
 </template>
@@ -111,7 +104,7 @@ const infoTooltip = computed(() =>
 }
 
 .item-extra {
-  opacity: 0.5;
+  opacity: 0.4;
   padding-right: 0.25rem;
 }
 </style>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { NDrawer, NDrawerContent, NButton, NSpace, NIcon } from 'naive-ui';
-import { useAuthStore, useBrowseStore } from '@/stores';
+import { useAuthStore, useBrowseStore, useResourcesStore } from '@/stores';
 import ResourceToggleDrawerItem from '@/components/browse/ResourceToggleDrawerItem.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 
@@ -14,8 +14,12 @@ const emit = defineEmits<{ (e: 'update:show', show: boolean): void }>();
 
 const auth = useAuthStore();
 const browse = useBrowseStore();
+const resources = useResourcesStore();
 const theme = useThemeStore();
 
+const showNonPublicResourcesToggle = computed(
+  () => !!resources.data.filter((r) => !r.public).length
+);
 const categoryActivationState = computed(() =>
   browse.resourcesCategorized.map((c) => c.resources.every((r) => r.active))
 );
@@ -47,7 +51,7 @@ function toggleCategory(index: number, activate: boolean) {
       </template>
 
       <div
-        v-if="auth.loggedIn && !!browse.nonPublicResourcesCount"
+        v-if="auth.loggedIn && showNonPublicResourcesToggle"
         class="gray-box"
         :style="{ backgroundColor: theme.mainBgColor, marginTop: 0 }"
       >

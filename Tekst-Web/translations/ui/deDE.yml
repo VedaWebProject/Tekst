@@ -286,7 +286,6 @@ resources:
     Das bedeutet nicht, dass es eine gute Idee ist, dies zu tun. Bitte stellen Sie
     sicher, dass jede Ihrer Änderungen im Einverständnis mit dem Besitzer dieser
     Ressource geschieht!
-  ownedByMe: von mir
   ownedByOthers: von anderen
   public: '@:models.resource.public'
   notPublic: '@:general.not @:models.resource.public'

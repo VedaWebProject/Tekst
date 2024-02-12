@@ -54,8 +54,8 @@ watch(showInfoModal, async (after) => {
 
   <generic-modal v-model:show="showInfoModal" :title="resource.title" :icon="ResourceIcon">
     <user-display
-      v-if="auth.loggedIn"
-      :user="resource.owner ?? undefined"
+      v-if="auth.loggedIn && !!resource.owner"
+      :user="resource.owner"
       size="tiny"
       style="margin-bottom: var(--layout-gap)"
     />

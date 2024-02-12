@@ -284,7 +284,6 @@ resources:
     As an administrator, you are able to modify resources owned by other users.
     This doesn't mean it is a good idea to do so. Please make sure that whatever you
     do happens in agreement with the owner of this resource!
-  ownedByMe: by me
   ownedByOthers: by others
   public: '@:models.resource.public'
   notPublic: '@:general.not @:models.resource.public'

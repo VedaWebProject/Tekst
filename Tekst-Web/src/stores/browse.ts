@@ -108,9 +108,6 @@ export const useBrowseStore = defineStore('browse', () => {
 
   /* RESOURCES AND CONTENTS */
 
-  const resourcesCount = computed(() => resources.data.length);
-  const nonPublicResourcesCount = computed(() => resources.data.filter((r) => !r.public).length);
-  const activeResourcesCount = computed(() => resources.data.filter((r) => r.active).length);
   const resourcesCategorized = computed<
     { category: { key: string | undefined; translation: string }; resources: AnyResourceRead[] }[]
   >(() => {
@@ -129,7 +126,9 @@ export const useBrowseStore = defineStore('browse', () => {
           translation: $t('browse.uncategorized'),
         },
         resources: resources.data.filter(
-          (r) => !categorized.find((c) => c.category.key === r.config?.common?.category)
+          (r) =>
+            !categorized.find((c) => c.category.key === r.config?.common?.category) &&
+            (showNonPublicResources.value || r.public)
         ),
       },
     ];
@@ -140,12 +139,9 @@ export const useBrowseStore = defineStore('browse', () => {
     showResourceToggleDrawer,
     reducedView,
     showNonPublicResources,
-    nonPublicResourcesCount,
     loadingLocationData,
     loadingResources,
     loading,
-    resourcesCount,
-    activeResourcesCount,
     resourcesCategorized,
     setResourcesActiveState: resources.setResourcesActiveState,
     locationPath,

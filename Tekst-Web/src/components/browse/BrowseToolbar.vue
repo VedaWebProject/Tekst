@@ -11,8 +11,18 @@ const state = useStateStore();
 const browse = useBrowseStore();
 
 const affixRef = ref(null);
+const resourcesCount = computed(
+  () => browse.resourcesCategorized.map((c) => c.resources).flat().length
+);
+const activeResourcesCount = computed(
+  () =>
+    browse.resourcesCategorized
+      .map((c) => c.resources)
+      .flat()
+      .filter((r) => r.active).length
+);
 const resourceDrawerBadgeLabel = computed(() =>
-  browse.resourcesCount ? browse.activeResourcesCount + '/' + browse.resourcesCount : '...'
+  resourcesCount.value ? activeResourcesCount.value + '/' + resourcesCount.value : '...'
 );
 
 onMounted(() => {
