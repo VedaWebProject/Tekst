@@ -137,6 +137,8 @@ browse:
   resourceToggleDrawer:
     heading: Ressourcen anzeigen
     showNonPublicResources: Zeige nicht veröffentlichte Ressourcen
+    activateCategory: Zeige alle Ressourcen dieser Kategorie
+    deactivateCategory: Verstecke alle Ressourcen dieser Kategorie
   uncategorized: Unkategorisiert
   locationResourceNoData: Keine Daten für diese Fundstelle
   textNoLocations: Die Einrichtung dieses Textes scheint unvollständig. Es wurden keine Fundstellen definiert.

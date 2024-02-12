@@ -67,13 +67,21 @@ function toggleCategory(index: number, activate: boolean) {
           class="category-header"
           align="center"
           justify="space-between"
+          :style="{ borderBottom: `1px solid ${theme.mainBgColor}` }"
         >
-          <h3 style="margin: 0">{{ category.category.translation }}</h3>
+          <h3 style="margin: 0">
+            {{ category.category.translation }}
+          </h3>
           <n-button
-            secondary
+            quaternary
             circle
             size="small"
             :focusable="false"
+            :title="
+              categoryActivationState[index]
+                ? $t('browse.resourceToggleDrawer.deactivateCategory')
+                : $t('browse.resourceToggleDrawer.activateCategory')
+            "
             @click="toggleCategory(index, !categoryActivationState[index])"
           >
             <template #icon>
@@ -98,9 +106,9 @@ function toggleCategory(index: number, activate: boolean) {
 
 <style scoped>
 .category-header {
-  padding-bottom: 0.5rem;
-  margin: 1.5rem 0 var(--content-gap) 0;
-  border-bottom: 1px solid var(--main-bg-color);
+  margin: 1.5rem 0 0.8rem;
+  padding-bottom: 0.25rem;
+  border: 10px solid var(--accent-color);
 }
 
 .category-header:first-child {

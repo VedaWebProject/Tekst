@@ -76,31 +76,6 @@ const nUiDateLocale = computed(() => getLocaleProfile(state.locale)?.nUiDateLoca
 </template>
 
 <style scoped>
-#app-container {
-  --accent-color: v-bind(theme.accentColors.base);
-  --accent-color-fade1: v-bind(theme.accentColors.fade1);
-  --accent-color-fade2: v-bind(theme.accentColors.fade2);
-  --accent-color-fade3: v-bind(theme.accentColors.fade3);
-  --accent-color-fade4: v-bind(theme.accentColors.fade4);
-  --accent-color-fade5: v-bind(theme.accentColors.fade5);
-  --accent-color-dark: v-bind(theme.accentColors.dark);
-  --accent-color-pastel: v-bind(theme.accentColors.pastel);
-
-  --link-color: v-bind(theme.accentColors.base);
-  --link-color-hover: v-bind(theme.accentColors.fade1);
-
-  --main-bg-color: v-bind(theme.mainBgColor);
-  --content-bg-color: v-bind(theme.contentBgColor);
-  --text-color: v-bind(themeVars.textColor1);
-  --text-color-fade: v-bind(themeVars.textColor3);
-
-  /* NaiveUI feedback colors */
-  --col-info: v-bind(themeVars.infoColor);
-  --col-success: v-bind(themeVars.successColor);
-  --col-warning: v-bind(themeVars.warningColor);
-  --col-error: v-bind(themeVars.errorColor);
-}
-
 main {
   padding: var(--layout-gap) 0;
   background-color: var(--main-bg-color);
@@ -125,5 +100,30 @@ a:any-link {
 
 a:hover {
   color: var(--link-color-hover);
+}
+
+#app-container {
+  --accent-color: v-bind(theme.accentColors.base);
+  --accent-color-fade1: v-bind(theme.accentColors.fade1);
+  --accent-color-fade2: v-bind(theme.accentColors.fade2);
+  --accent-color-fade3: v-bind(theme.accentColors.fade3);
+  --accent-color-fade4: v-bind(theme.accentColors.fade4);
+  --accent-color-fade5: v-bind(theme.accentColors.fade5);
+  --accent-color-dark: v-bind(theme.accentColors.dark);
+  --accent-color-pastel: v-bind(theme.accentColors.pastel);
+
+  --link-color: v-bind(theme.accentColors.base);
+  --link-color-hover: v-bind(theme.accentColors.fade1);
+
+  --main-bg-color: v-bind(theme.mainBgColor);
+  --content-bg-color: v-bind(theme.contentBgColor);
+  --text-color: v-bind(themeVars.textColor1);
+  --text-color-fade: v-bind(themeVars.textColor3);
+
+  /* NaiveUI feedback colors */
+  --col-info: v-bind(themeVars.infoColor);
+  --col-success: v-bind(themeVars.successColor);
+  --col-warning: v-bind(themeVars.warningColor);
+  --col-error: v-bind(themeVars.errorColor);
 }
 </style>

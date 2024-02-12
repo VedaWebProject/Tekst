@@ -134,6 +134,8 @@ browse:
   resourceToggleDrawer:
     heading: Show Resources
     showNonPublicResources: Show unpublished resources
+    activateCategory: Show all resources in this category
+    deactivateCategory: Hide all resources in this category
   uncategorized: Uncategorized
   locationResourceNoData: No data for this location
   textNoLocations: This text's setup seems incomplete. There are no locations defined.
