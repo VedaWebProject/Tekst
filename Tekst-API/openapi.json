@@ -7219,6 +7219,9 @@
             "default": 60
           },
           "tekst": {
+            "additionalProperties": {
+              "type": "string"
+            },
             "type": "object",
             "title": "Tekst",
             "default": {

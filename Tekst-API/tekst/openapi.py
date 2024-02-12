@@ -46,7 +46,7 @@ def generate_schema(app: FastAPI, cfg: TekstConfig, settings: PlatformSettings):
         },
         license_info={
             "name": cfg.tekst_info["license"],
-            "url": cfg.tekst_info["licenseUrl"],
+            "url": cfg.tekst_info["license_url"],
         },
         separate_input_output_schemas=False,
     )

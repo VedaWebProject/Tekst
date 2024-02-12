@@ -1357,7 +1357,9 @@ export interface components {
        *   "licenseUrl": "https://www.gnu.org/licenses/agpl-3.0.txt"
        * }
        */
-      tekst?: Record<string, never>;
+      tekst?: {
+        [key: string]: string;
+      };
     };
     /** PlatformDescriptionTranslation */
     PlatformDescriptionTranslation: {
