@@ -23,7 +23,7 @@ import { platformSettingsFormRules } from '@/forms/formRules';
 import TranslationFormItem from '@/forms/TranslationFormItem.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import { useStateStore } from '@/stores';
-
+import _cloneDeep from 'lodash.clonedeep';
 import { AddIcon, MinusIcon, ArrowUpIcon, ArrowDownIcon } from '@/icons';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
 
@@ -31,7 +31,7 @@ const state = useStateStore();
 const { pfData, patchPfData } = usePlatformData();
 const { message } = useMessages();
 
-const getFormModel = (): PlatformSettingsUpdate => Object.assign({}, pfData.value?.settings || {});
+const getFormModel = (): PlatformSettingsUpdate => _cloneDeep(pfData.value?.settings || {});
 
 const loading = ref(false);
 const formRef = ref<FormInst | null>(null);
@@ -212,15 +212,10 @@ function resetForm() {
             v-model:value="formModel.alwaysShowTextInfo"
             :label="$t('models.platformSettings.alwaysShowTextInfo')"
           />
-          <!-- SHOW DESCIPTION IN HEADER? -->
+          <!-- SHOW TEKST FOOTER HINT -->
           <labelled-switch
-            v-model:value="formModel.showHeaderInfo"
-            :label="$t('models.platformSettings.showHeaderInfo')"
-          />
-          <!-- SHOW TITLE AND DESCIPTION IN FOOTER? -->
-          <labelled-switch
-            v-model:value="formModel.showFooterInfo"
-            :label="$t('models.platformSettings.showFooterInfo')"
+            v-model:value="formModel.showTekstFooterHint"
+            :label="$t('models.platformSettings.showTekstFooterHint')"
           />
         </n-space>
       </n-form-item>

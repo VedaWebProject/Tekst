@@ -7462,16 +7462,10 @@
             "description": "Always show text info and selector in header, even on non-text-specific pages",
             "default": true
           },
-          "showHeaderInfo": {
+          "showTekstFooterHint": {
             "type": "boolean",
-            "title": "Showheaderinfo",
-            "description": "Show platform description in header",
-            "default": true
-          },
-          "showFooterInfo": {
-            "type": "boolean",
-            "title": "Showfooterinfo",
-            "description": "Show platform title and description in footer",
+            "title": "Showtekstfooterhint",
+            "description": "Show a small hint to the Tekst software in the footer",
             "default": true
           },
           "availableLocales": {
@@ -7643,16 +7637,10 @@
             "description": "Always show text info and selector in header, even on non-text-specific pages",
             "default": true
           },
-          "showHeaderInfo": {
+          "showTekstFooterHint": {
             "type": "boolean",
-            "title": "Showheaderinfo",
-            "description": "Show platform description in header",
-            "default": true
-          },
-          "showFooterInfo": {
-            "type": "boolean",
-            "title": "Showfooterinfo",
-            "description": "Show platform title and description in footer",
+            "title": "Showtekstfooterhint",
+            "description": "Show a small hint to the Tekst software in the footer",
             "default": true
           },
           "availableLocales": {

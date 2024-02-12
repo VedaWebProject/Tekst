@@ -39,6 +39,7 @@ general:
     Please make sure you have read and understood the corresponding passage in the
     help texts on this topic. You can find the help texts for any page by clicking the
     little '?' icon next to the heading of each page. Are you sure you want to proceed?
+  tekstFooterHint: This website is based on
 
 i18n:
   tipSwitcher: Choose language for user interface
@@ -255,8 +256,7 @@ models:
     availableLocales: Available Locales
     navInfoEntry: Custom label for info entry in main navigation
     alwaysShowTextInfo: Show text info and selector in header even on non-text-specific pages
-    showHeaderInfo: Show platform subtitle in header
-    showFooterInfo: Show platform title and subtitle in footer
+    showTekstFooterHint: Show a small hint to the Tekst software in the footer (Thank you!)
     resourceCategories: Resource categories
     resourceCategoryKey: Key
     resourceCategoryTranslation: Label

@@ -1487,17 +1487,11 @@ export interface components {
        */
       alwaysShowTextInfo?: boolean;
       /**
-       * Showheaderinfo
-       * @description Show platform description in header
+       * Showtekstfooterhint
+       * @description Show a small hint to the Tekst software in the footer
        * @default true
        */
-      showHeaderInfo?: boolean;
-      /**
-       * Showfooterinfo
-       * @description Show platform title and description in footer
-       * @default true
-       */
-      showFooterInfo?: boolean;
+      showTekstFooterHint?: boolean;
       /**
        * Availablelocales
        * @default [
@@ -1591,17 +1585,11 @@ export interface components {
        */
       alwaysShowTextInfo?: boolean;
       /**
-       * Showheaderinfo
-       * @description Show platform description in header
+       * Showtekstfooterhint
+       * @description Show a small hint to the Tekst software in the footer
        * @default true
        */
-      showHeaderInfo?: boolean;
-      /**
-       * Showfooterinfo
-       * @description Show platform title and description in footer
-       * @default true
-       */
-      showFooterInfo?: boolean;
+      showTekstFooterHint?: boolean;
       /**
        * Availablelocales
        * @default [

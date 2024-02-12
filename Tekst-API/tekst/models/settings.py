@@ -125,11 +125,8 @@ class PlatformSettings(ModelBase, ModelFactoryMixin):
             )
         ),
     ] = True
-    show_header_info: Annotated[
-        bool, Field(description="Show platform description in header")
-    ] = True
-    show_footer_info: Annotated[
-        bool, Field(description="Show platform title and description in footer")
+    show_tekst_footer_hint: Annotated[
+        bool, Field(description="Show a small hint to the Tekst software in the footer")
     ] = True
     available_locales: Annotated[
         list[LocaleKey],

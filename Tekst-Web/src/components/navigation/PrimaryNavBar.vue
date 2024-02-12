@@ -68,10 +68,7 @@ watch(
       <router-link :to="titleLinkTo">
         <div class="navbar-title">{{ pfData?.settings.infoPlatformName }}</div>
       </router-link>
-      <div
-        v-if="pfData?.settings.showHeaderInfo && pfData?.settings.infoSubtitle?.length"
-        class="navbar-description"
-      >
+      <div v-if="pfData?.settings.infoSubtitle?.length" class="navbar-description">
         <translation-display :value="pfData?.settings.infoSubtitle" />
       </div>
     </div>
