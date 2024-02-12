@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { ref, computed, h, type Component } from 'vue';
+import { ref, computed, h } from 'vue';
 import { useAuthStore, useStateStore } from '@/stores';
 import { type RouteLocationRaw, RouterLink } from 'vue-router';
 import { NButton, NIcon, NDropdown } from 'naive-ui';
 import { $t } from '@/i18n';
 import { useThemeStore } from '@/stores/theme';
-
 import { LogInIcon, LogOutIcon, UserIcon, AdminIcon, ResourceIcon } from '@/icons';
+import { renderIcon } from '@/utils';
 
 const auth = useAuthStore();
 const state = useStateStore();
@@ -74,10 +74,6 @@ function renderLink(
       },
       { default: label }
     );
-}
-
-function renderIcon(icon: Component) {
-  return () => h(NIcon, null, { default: () => h(icon) });
 }
 
 async function handleLoginClick() {

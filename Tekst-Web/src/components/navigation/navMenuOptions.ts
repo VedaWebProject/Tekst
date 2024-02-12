@@ -1,11 +1,11 @@
-import { NIcon, type MenuOption } from 'naive-ui';
-import { h, type Component, computed } from 'vue';
+import { type MenuOption } from 'naive-ui';
+import { h, computed } from 'vue';
 import { RouterLink, type RouteLocationRaw } from 'vue-router';
 import { $t } from '@/i18n';
 import { useBrowseStore, useStateStore } from '@/stores';
 import { usePlatformData } from '@/composables/platformData';
 import type { ClientSegmentHead } from '@/api';
-import { pickTranslation } from '@/utils';
+import { pickTranslation, renderIcon } from '@/utils';
 
 import {
   EyeIcon,
@@ -18,10 +18,6 @@ import {
   BookIcon,
   SearchIcon,
 } from '@/icons';
-
-function renderIcon(icon: Component, noop: boolean = false) {
-  return noop ? undefined : () => h(NIcon, undefined, { default: () => h(icon) });
-}
 
 function renderLink(
   label: string | (() => string),
@@ -66,7 +62,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
     return pages.map((p) => ({
       label: renderLink(() => p.title || p.key, { name: 'info', params: { p: p.key } }),
       key: `page_${p.key}`,
-      icon: renderIcon(InfoIcon, !showIcons),
+      icon: (showIcons && renderIcon(InfoIcon)) || undefined,
     }));
   });
 
@@ -78,7 +74,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
         query: { lvl: browse.level, pos: browse.position },
       }),
       key: 'browse',
-      icon: renderIcon(BookIcon, !showIcons),
+      icon: (showIcons && renderIcon(BookIcon)) || undefined,
     },
     {
       label: renderLink(() => $t('nav.search'), {
@@ -86,7 +82,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
         params: { text: state.text?.slug },
       }),
       key: 'search',
-      icon: renderIcon(SearchIcon, !showIcons),
+      icon: (showIcons && renderIcon(SearchIcon)) || undefined,
     },
     ...(infoPagesOptions.value.length
       ? [
@@ -110,12 +106,12 @@ export function useAccountMenuOptions(showIcons: boolean = true) {
     {
       label: renderLink(() => $t('account.profile'), { name: 'accountProfile' }),
       key: 'accountProfile',
-      icon: renderIcon(EyeIcon, !showIcons),
+      icon: (showIcons && renderIcon(EyeIcon)) || undefined,
     },
     {
       label: renderLink(() => $t('account.account'), { name: 'accountSettings' }),
       key: 'accountSettings',
-      icon: renderIcon(ManageAccountIcon, !showIcons),
+      icon: (showIcons && renderIcon(ManageAccountIcon)) || undefined,
     },
   ];
 
@@ -131,12 +127,12 @@ export function useAdminMenuOptions(showIcons: boolean = true) {
     {
       label: renderLink(() => $t('admin.statistics.heading'), { name: 'adminStatistics' }),
       key: 'adminStatistics',
-      icon: renderIcon(BarChartIcon, !showIcons),
+      icon: (showIcons && renderIcon(BarChartIcon)) || undefined,
     },
     {
       label: $t('admin.text.heading'),
       key: 'adminText',
-      icon: renderIcon(TextsIcon, !showIcons),
+      icon: (showIcons && renderIcon(TextsIcon)) || undefined,
       children: [
         {
           label: renderLink(() => $t('admin.text.settings.heading'), {
@@ -164,12 +160,12 @@ export function useAdminMenuOptions(showIcons: boolean = true) {
     {
       label: renderLink(() => $t('admin.newText.heading'), { name: 'adminNewText' }),
       key: 'adminNewText',
-      icon: renderIcon(AddCircleIcon, !showIcons),
+      icon: (showIcons && renderIcon(AddCircleIcon)) || undefined,
     },
     {
       label: $t('admin.system.heading'),
       key: 'adminSystem',
-      icon: renderIcon(SettingsIcon, !showIcons),
+      icon: (showIcons && renderIcon(SettingsIcon)) || undefined,
       children: [
         {
           label: renderLink(() => $t('admin.system.platformSettings.heading'), {

@@ -12,7 +12,7 @@ import {
   type DropdownOption,
 } from 'naive-ui';
 import { usePlatformData } from '@/composables/platformData';
-import { computed, type Component, h } from 'vue';
+import { computed } from 'vue';
 import { $t } from '@/i18n';
 import { useStateStore } from '@/stores';
 import UserAvatar from '@/components/user/UserAvatar.vue';
@@ -27,6 +27,7 @@ import {
   UserDowngradeIcon,
   StarIcon,
 } from '@/icons';
+import { renderIcon } from '@/utils';
 
 const props = defineProps<{
   targetUser: UserRead;
@@ -122,10 +123,6 @@ const actionOptions = computed(() => [
     action: () => emit('deleteClick', props.targetUser),
   },
 ]);
-
-function renderIcon(icon: Component, color?: string) {
-  return () => h(NIcon, { color }, { default: () => h(icon) });
-}
 
 function handleActionSelect(o: DropdownOption & { action?: () => void }) {
   o.action?.();

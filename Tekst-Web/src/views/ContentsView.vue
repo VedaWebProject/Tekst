@@ -19,8 +19,7 @@ import {
   POST,
   DELETE,
 } from '@/api';
-import { ref, type Component } from 'vue';
-import { computed, watch, h } from 'vue';
+import { ref, computed, watch } from 'vue';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import { $t } from '@/i18n';
 import { useAuthStore, useStateStore } from '@/stores';
@@ -54,6 +53,7 @@ import {
   SkipPreviousIcon,
   SkipNextIcon,
 } from '@/icons';
+import { renderIcon } from '@/utils';
 
 type ContentFormModel = AnyContentCreate & { id: string };
 
@@ -92,7 +92,10 @@ const compareResourceOptions = computed(() =>
       key: r.id,
       disabled: r.id === compareResourceId.value,
       icon: r.originalId
-        ? renderIcon(VersionIcon, r.originalId === resource.value?.id)
+        ? renderIcon(
+            VersionIcon,
+            r.originalId === resource.value?.id ? 'var(--accent-color)' : undefined
+          )
         : renderIcon(ResourceIcon),
     }))
 );
@@ -111,18 +114,6 @@ watch(
     router.push({ name: 'resources', params: { text: newText?.slug } });
   }
 );
-
-const renderIcon = (icon: Component, highlighted?: boolean) => {
-  return () => {
-    return h(
-      NIcon,
-      { color: highlighted ? 'var(--accent-color)' : undefined },
-      {
-        default: () => h(icon),
-      }
-    );
-  };
-};
 
 async function loadLocationData() {
   if (!resource.value || !Number.isInteger(position.value)) {

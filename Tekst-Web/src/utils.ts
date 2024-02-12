@@ -1,4 +1,6 @@
+import { h, type Component } from 'vue';
 import type { Translation } from './api';
+import { NIcon } from 'naive-ui';
 
 export function hashCode(obj: any) {
   const string = JSON.stringify(obj);
@@ -23,4 +25,8 @@ export function pickTranslation(translations?: Translation[], localeKey: string 
       translations[0]
     )?.translation || ''
   );
+}
+
+export function renderIcon(icon: Component, color?: string) {
+  return () => h(NIcon, { color }, { default: () => h(icon) });
 }

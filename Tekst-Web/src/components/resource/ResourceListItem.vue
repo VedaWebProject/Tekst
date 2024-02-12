@@ -10,7 +10,7 @@ import {
   NButton,
   type DropdownOption,
 } from 'naive-ui';
-import { computed, type Component, h } from 'vue';
+import { computed } from 'vue';
 import ResourceInfoWidget from '@/components/resource/ResourceInfoWidget.vue';
 import ResourcePublicationStatus from '@/components/resource/ResourcePublicationStatus.vue';
 import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
@@ -33,6 +33,7 @@ import {
   DownloadIcon,
   UploadIcon,
 } from '@/icons';
+import { renderIcon } from '@/utils';
 
 const props = defineProps<{
   targetResource: AnyResourceRead;
@@ -184,10 +185,6 @@ const actionOptions = computed(() => [
     ],
   },
 ]);
-
-function renderIcon(icon: Component) {
-  return () => h(NIcon, null, { default: () => h(icon) });
-}
 
 function handleActionSelect(o: DropdownOption & { action?: () => void }) {
   o.action?.();

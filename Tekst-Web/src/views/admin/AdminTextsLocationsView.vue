@@ -33,6 +33,7 @@ import {
   UploadIcon,
 } from '@/icons';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
+import { renderIcon } from '@/utils';
 
 export interface LocationTreeOption extends TreeOption {
   level: number;
@@ -327,10 +328,7 @@ function renderSuffixButton(
     circle: true,
     loading: loadingState?.value ?? loading.value,
     disabled: loading.value,
-    renderIcon: () =>
-      h(NIcon, null, {
-        default: () => h(icon),
-      }),
+    renderIcon: renderIcon(icon),
     onClick: (e) => {
       e.preventDefault();
       e.stopPropagation();
