@@ -172,18 +172,22 @@ class TekstConfig(BaseSettings):
         val.EmptyStringToNone,
     ] = None
 
-    # Tekst information config
-    tekst_name: str = "Tekst"
-    tekst_version: str = pkg_meta["version"]
-    tekst_description: str = pkg_meta["description"]
-    tekst_website: CustomHttpUrl = pkg_meta["website"]
-    tekst_license: str = pkg_meta["license"]
-    tekst_license_url: CustomHttpUrl = pkg_meta["license_url"]
-
     @field_validator("db_name", mode="after")
     @classmethod
     def generate_db_name(cls, v: str) -> str:
         return safe_name(v)
+
+    @computed_field
+    @property
+    def tekst_info(self) -> dict[str, str]:
+        return {
+            "name": "Tekst",
+            "version": pkg_meta["version"],
+            "description": pkg_meta["description"],
+            "website": pkg_meta["website"],
+            "license": pkg_meta["license"],
+            "license_url": pkg_meta["license_url"],
+        }
 
     @computed_field
     @property

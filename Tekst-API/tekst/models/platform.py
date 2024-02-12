@@ -31,9 +31,7 @@ class PlatformData(ModelBase):
     system_segments: Annotated[list[ClientSegmentRead], Field(alias="systemSegments")]
     info_segments: Annotated[list[ClientSegmentHead], Field(alias="infoSegments")]
     settings_cache_ttl: int = _cfg.settings_cache_ttl
-    tekst: dict[str, Any] = camelize(
-        _cfg.model_dump(include_keys_prefix="tekst_", strip_include_keys_prefix=True)
-    )
+    tekst: dict[str, str] = camelize(_cfg.tekst_info)
 
 
 class TextStats(ModelBase):

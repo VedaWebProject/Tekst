@@ -33,7 +33,7 @@ def customize_openapi(app: FastAPI, cfg: TekstConfig, settings: PlatformSettings
 def generate_schema(app: FastAPI, cfg: TekstConfig, settings: PlatformSettings):
     schema = get_openapi(
         title=settings.info_platform_name,
-        version=cfg.tekst_version,
+        version=cfg.tekst_info["version"],
         description=pick_translation(settings.info_subtitle),
         routes=app.routes,
         servers=[{"url": urljoin(str(cfg.server_url), str(cfg.api_path))}],
@@ -45,8 +45,8 @@ def generate_schema(app: FastAPI, cfg: TekstConfig, settings: PlatformSettings):
             "email": settings.info_contact_email,
         },
         license_info={
-            "name": cfg.tekst_license,
-            "url": cfg.tekst_license_url,
+            "name": cfg.tekst_info["license"],
+            "url": cfg.tekst_info["licenseUrl"],
         },
         separate_input_output_schemas=False,
     )

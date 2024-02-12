@@ -37,14 +37,14 @@ async def startup_routine(app: FastAPI) -> None:
 
     # Hello World!
     log.info(
-        f"{settings.info_platform_name} ({_cfg.tekst_name} "
-        f"Server v{_cfg.tekst_version}) "
+        f"{settings.info_platform_name} ({_cfg.tekst_info['name']} "
+        f"Server v{_cfg.tekst_info['version']}) "
         f"running in {'DEVELOPMENT' if _cfg.dev_mode else 'PRODUCTION'} MODE"
     )
 
 
 async def shutdown_routine(app: FastAPI) -> None:
-    log.info(f"{_cfg.tekst_name} cleaning up and shutting down...")
+    log.info(f"{_cfg.tekst_info['name']} cleaning up and shutting down...")
     get_db_client(_cfg).close()  # again, no DI possible here :(
 
 

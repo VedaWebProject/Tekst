@@ -30,7 +30,7 @@ const privacyPolicy = computed(
         target="_blank"
         rel="external nofollow"
         style="font-weight: var(--font-weight-bold)"
-        :title="`${pfData.tekst?.name} – ${pfData.tekst?.description}`"
+        :title="`${pfData.tekst?.name} – ${pfData.tekst?.description} (${pfData.tekst?.version})`"
       >
         {{ pfData.tekst?.name }}
       </a>
