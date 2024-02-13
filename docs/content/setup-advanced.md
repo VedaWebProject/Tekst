@@ -6,7 +6,8 @@ You can provide yourself and other users with the option to use alternative font
 
 To add additional fonts for resources, you need administrative access to the server on which the platform application is deployed. The setup of additional fonts is precisely described below. It is always recommended to create a backup of all application data before performing these steps.
 
-### Deployment with Docker
+
+<h3>Deployment with Docker</h3>
 
 1. In the `.env` file, set the value for `TEKST_WEB_STATIC_FILES` to a path under which you want to make additional static files available for the web client (e.g., `/var/www/tekst/static/`) and create the corresponding directories.
 2. Create a file `fonts.css` under this path.
@@ -15,7 +16,8 @@ To add additional fonts for resources, you need administrative access to the ser
 5. For the application to recognize the changed value in `.env`, it needs to be restarted (`docker-compose restart client`).
 6. The value used for `font-family` in the `@font-face` definition can now be entered as an additional font in the platform's system settings. Pay attention to identical spelling! This font can now be selected as a different font in the settings for each text-based resource.
 
-### Deployment without Docker
+
+<h3>Deployment without Docker</h3>
 
 1. Create a directory where you want to make additional static files available for the web client (e.g., `/var/www/tekst/static/`).
 2. Ensure that your web server makes this directory available as `/static` at the same address as the application, for example, `www.tekst-platform.org/static`.
