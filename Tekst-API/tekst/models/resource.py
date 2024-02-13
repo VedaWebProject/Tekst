@@ -157,7 +157,12 @@ class ResourceBaseDocument(ResourceBase, DocumentBase):
     class Settings(DocumentBase.Settings):
         name = "resources"
         is_root = True
-        indexes = ["text_id", "level", "resource_type", "owner_id"]
+        indexes = [
+            "text_id",
+            "level",
+            "resource_type",
+            "owner_id",
+        ]
 
     @classmethod
     async def access_conditions_read(cls, user: UserRead | None) -> dict:

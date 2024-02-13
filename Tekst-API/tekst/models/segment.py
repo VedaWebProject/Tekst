@@ -75,7 +75,11 @@ class ClientSegment(ModelBase, ModelFactoryMixin):
 class ClientSegmentDocument(ClientSegment, DocumentBase):
     class Settings(DocumentBase.Settings):
         name = "segments"
-        indexes = ["key", "is_system_segment", "locale"]
+        indexes = [
+            "key",
+            "is_system_segment",
+            "locale",
+        ]
 
 
 ClientSegmentCreate = ClientSegment.create_model()
@@ -85,7 +89,12 @@ ClientSegmentUpdate = ClientSegment.update_model()
 
 class ClientSegmentHead(BaseModel):
     class Settings:
-        projection = {"id": "$_id", "key": 1, "title": 1, "locale": 1}
+        projection = {
+            "id": "$_id",
+            "key": 1,
+            "title": 1,
+            "locale": 1,
+        }
 
     id: PydanticObjectId
     key: str

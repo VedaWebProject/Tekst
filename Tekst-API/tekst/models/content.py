@@ -67,7 +67,10 @@ class ContentBaseDocument(ContentBase, DocumentBase):
     class Settings(DocumentBase.Settings):
         name = "contents"
         is_root = True
-        indexes = ["resource_id", "location_id"]
+        indexes = [
+            "resource_id",
+            "location_id",
+        ]
 
 
 ContentBaseUpdate = ContentBase.update_model()

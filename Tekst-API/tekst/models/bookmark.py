@@ -35,7 +35,9 @@ class Bookmark(ModelBase, ModelFactoryMixin):
 class BookmarkDocument(Bookmark, DocumentBase):
     class Settings(DocumentBase.Settings):
         name = "bookmarks"
-        indexes = ["user_id"]
+        indexes = [
+            "user_id",
+        ]
 
 
 BookmarkRead = Bookmark.read_model()

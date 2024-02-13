@@ -40,7 +40,12 @@ class Location(ModelBase, ModelFactoryMixin):
 class LocationDocument(Location, DocumentBase):
     class Settings(DocumentBase.Settings):
         name = "locations"
-        indexes = ["text_id", "parent_id", "level", "position"]
+        indexes = [
+            "text_id",
+            "parent_id",
+            "level",
+            "position",
+        ]
 
     @classmethod
     async def get_location_locations(
