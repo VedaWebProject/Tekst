@@ -8,6 +8,7 @@ nav:
   - 'index.md'
   - 'concepts.md'
   - 'setup.md'
+  - 'setup-advanced.md'
   - Usage:
     - 'Resources': 'usage/resources.md'
 

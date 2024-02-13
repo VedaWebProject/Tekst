@@ -1,0 +1,22 @@
+/*
+
+DEFINE ADDITIONAL FONT FAMILIES HERE IN THIS FILE.
+PLEASE MAKE SURE THE PUBLIC PATH TO THE FONT FILES IS CORRECT. YOU SHOULD PLACE YOUR
+FONT FILES IN <WEB_STATIC_FILES>/FONTS/ AND REFERENCE THEM VIA THE PUBLIC PATH
+/static/fonts/... LIKE BELOW:
+
+@font-face {
+  font-family: 'Noto Serif';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/Noto-Serif/Noto-Serif-Regular.eot');
+  src:
+    url('/static/fonts/Noto-Serif/Noto-Serif-Regular.eot?#iefix') format('embedded-opentype'),
+    url('/static/fonts/Noto-Serif/Noto-Serif-Regular.woff2') format('woff2'),
+    url('/static/fonts/Noto-Serif/Noto-Serif-Regular.woff') format('woff'),
+    url('/static/fonts/Noto-Serif/Noto-Serif-Regular.ttf') format('truetype'),
+    url('/static/fonts/Noto-Serif/Noto-Serif-Regular.svg#NotoSerif') format('svg');
+}
+
+*/

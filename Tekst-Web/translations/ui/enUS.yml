@@ -256,12 +256,12 @@ models:
     navInfoEntry: Custom label for info entry in main navigation
     alwaysShowTextInfo: Show text info and selector in header even on non-text-specific pages
     showTekstFooterHint: Show a small hint to the Tekst software in the footer (Thank you!)
-    resourceCategories: Resource categories
+    resourceCategories: Resource Categories
     resourceCategoryKey: Key
     resourceCategoryTranslation: Label
     showResourceCategoryHeadings: Show resource category headings in browse view
     alwaysShowResourceCategoryHeadings: Show resource category headings even for the only category with resources
-    resourceFonts: Custom resource fonts
+    resourceFonts: Custom Resource Fonts
     resourceFontName: Name
   segment:
     modelLabel: Segment

@@ -4,7 +4,8 @@ services:
   caddy:
     image: "caddy:2.6-alpine"
     volumes:
-      - "./:/etc/caddy/:ro"
+      - "./caddy:/etc/caddy/:ro"
+      - "./static:/var/www/tekst/static/:ro"
     network_mode: "host"
     profiles:
       - dev

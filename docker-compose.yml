@@ -17,6 +17,8 @@ services:
     environment:
       TEKST_SERVER_URL: ${TEKST_SERVER_URL}
       TEKST_API_PATH: ${TEKST_API_PATH}
+    volumes:
+      - ${TEKST_WEB_STATIC_FILES}:/var/www/tekst/static/:ro
     restart: always
     init: true
     ports:

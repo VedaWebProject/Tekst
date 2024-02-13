@@ -6,9 +6,14 @@
 :80 {
 	redir {$TEKST_API_PATH:/api} {$TEKST_API_PATH:/api}/
 
-	handle {$TEKST_API_PATH:/api}/* {
-		uri strip_prefix {$TEKST_API_PATH:/api}
+	handle_path {$TEKST_API_PATH:/api}/* {
 		reverse_proxy http://server:8000
+	}
+
+	handle_path /static/* {
+        encode gzip
+		root * /var/www/tekst/static
+		file_server
 	}
 
 	handle * {

@@ -34,11 +34,11 @@ const customLogoError = ref(false);
 const logoPath = computed(() =>
   customLogoError.value
     ? theme.darkMode
-      ? '/tekst-logo-darkmode.png'
-      : '/tekst-logo.png'
-    : theme.darkMode
       ? '/logo-darkmode.png'
       : '/logo.png'
+    : theme.darkMode
+      ? '/static/logo-darkmode.png'
+      : '/static/logo.png'
 );
 
 const titleLinkTo = computed(() => {

@@ -6,7 +6,13 @@ from typing import Annotated
 from urllib.parse import quote
 
 from fastapi import Depends
-from pydantic import EmailStr, Field, StringConstraints, computed_field, field_validator
+from pydantic import (
+    EmailStr,
+    Field,
+    StringConstraints,
+    computed_field,
+    field_validator,
+)
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from tekst import pkg_meta
@@ -76,7 +82,6 @@ class TekstConfig(BaseSettings):
     api_path: str = "/api"
 
     log_level: str = "warning"
-    user_files_dir: str = "userfiles"
 
     settings_cache_ttl: int = 60
 

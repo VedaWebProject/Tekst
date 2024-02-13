@@ -1,0 +1,14 @@
+127.0.0.1:80 {
+	redir /api /api/
+	handle_path /api/* {
+		reverse_proxy 127.0.0.1:8000
+	}
+
+	handle_path /static/* {
+		encode gzip
+		root * /var/www/tekst/static
+		file_server
+	}
+
+	reverse_proxy * 127.0.0.1:5173
+}

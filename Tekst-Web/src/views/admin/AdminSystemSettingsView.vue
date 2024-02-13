@@ -331,8 +331,11 @@ function resetForm() {
 
       <n-divider />
 
-      <!-- RESOURCE CATEGORIES-->
-      <h3>{{ $t('models.platformSettings.resourceFonts') }}</h3>
+      <!-- RESOURCE FONTS-->
+      <icon-heading level="3">
+        {{ $t('models.platformSettings.resourceFonts') }}
+        <help-button-widget help-key="adminSystemSettingsResourceFonts" />
+      </icon-heading>
       <n-form-item v-if="formModel.resourceFonts" :show-label="false">
         <n-dynamic-input
           v-model:value="formModel.resourceFonts"
