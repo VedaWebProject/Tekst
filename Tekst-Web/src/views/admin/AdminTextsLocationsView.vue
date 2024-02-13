@@ -34,6 +34,7 @@ import {
 } from '@/icons';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
 import { renderIcon } from '@/utils';
+import IconHeading from '@/components/generic/IconHeading.vue';
 
 export interface LocationTreeOption extends TreeOption {
   level: number;
@@ -375,10 +376,10 @@ watch(
 </script>
 
 <template>
-  <h2>
+  <icon-heading level="2">
     {{ $t('admin.text.locations.heading') }}
     <help-button-widget help-key="adminTextsLocationsView" />
-  </h2>
+  </icon-heading>
 
   <n-alert v-if="treeData.length" closable :title="$t('general.warning')" type="warning">
     {{ $t('admin.text.locations.warnGeneral') }}

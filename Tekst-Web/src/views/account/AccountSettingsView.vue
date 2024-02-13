@@ -433,10 +433,10 @@ async function handleDeleteAccount() {
   </div>
 
   <div class="content-block">
-    <h2>
+    <icon-heading level="2">
       {{ $t('account.settings.headingChangePublicFields') }}
       <help-button-widget help-key="accountSettingsPublicFields" />
-    </h2>
+    </icon-heading>
     <n-form
       ref="publicFieldsFormRef"
       :model="publicFieldsFormModel"

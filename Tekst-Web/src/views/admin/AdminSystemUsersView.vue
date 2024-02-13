@@ -26,6 +26,7 @@ import { useAuthStore } from '@/stores';
 import { dialogProps } from '@/common';
 import { SearchIcon, UndoIcon } from '@/icons';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
+import IconHeading from '@/components/generic/IconHeading.vue';
 
 const { users, error, load: loadUsers } = useUsersAdmin();
 const { message } = useMessages();
@@ -191,10 +192,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <h2>
+  <icon-heading level="2">
     {{ $t('admin.users.heading') }}
     <help-button-widget help-key="adminSystemUsersView" />
-  </h2>
+  </icon-heading>
 
   <template v-if="users && !error">
     <!-- Filters -->

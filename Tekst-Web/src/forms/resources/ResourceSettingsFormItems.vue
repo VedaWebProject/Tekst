@@ -28,6 +28,7 @@ import {
 } from 'naive-ui';
 
 import { MinusIcon, AddIcon, UserIcon, TranslateIcon, ArrowUpIcon, ArrowDownIcon } from '@/icons';
+import IconHeading from '@/components/generic/IconHeading.vue';
 
 const props = defineProps<{
   model: AnyResourceRead;
@@ -193,10 +194,10 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
   <!-- METADATA -->
   <template v-if="model.meta">
     <n-divider />
-    <h3>
+    <icon-heading level="3">
       {{ $t('models.meta.modelLabel') }}
       <help-button-widget help-key="metadataForm" />
-    </h3>
+    </icon-heading>
     <n-form-item :show-label="false" :show-feedback="false">
       <n-dynamic-input
         :value="model.meta"

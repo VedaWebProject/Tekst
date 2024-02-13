@@ -70,14 +70,15 @@ function handleUpdate(field: string, value: any) {
   </n-form-item>
 
   <n-form-item :show-label="false" :show-feedback="false">
-    <!-- DEFAULT ACTIVE -->
     <n-space vertical>
+      <!-- DEFAULT ACTIVE -->
       <labelled-switch
         :value="model.defaultActive"
         :label="$t('resources.settings.config.common.defaultActive')"
         @update:value="(v) => handleUpdate('defaultActive', v)"
       />
-      <n-space :wrap="false">
+      <!-- SHOW ON PARENT LEVEL -->
+      <n-space :wrap="false" align="center">
         <labelled-switch
           :value="model.showOnParentLevel"
           :label="$t('resources.settings.config.common.showOnParentLevel')"

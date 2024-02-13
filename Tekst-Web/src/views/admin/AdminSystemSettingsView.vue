@@ -26,6 +26,7 @@ import { useStateStore } from '@/stores';
 import _cloneDeep from 'lodash.clonedeep';
 import { AddIcon, MinusIcon, ArrowUpIcon, ArrowDownIcon } from '@/icons';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
+import IconHeading from '@/components/generic/IconHeading.vue';
 
 const state = useStateStore();
 const { pfData, patchPfData } = usePlatformData();
@@ -91,10 +92,10 @@ function resetForm() {
 </script>
 
 <template>
-  <h2>
+  <icon-heading level="2">
     {{ $t('admin.system.platformSettings.heading') }}
     <help-button-widget help-key="adminSystemSettingsView" />
-  </h2>
+  </icon-heading>
 
   <div class="content-block">
     <n-form

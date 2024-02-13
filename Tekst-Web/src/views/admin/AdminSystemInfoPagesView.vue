@@ -26,6 +26,7 @@ import { dialogProps } from '@/common';
 import { useStateStore } from '@/stores';
 
 import { AddIcon, FileOpenIcon } from '@/icons';
+import IconHeading from '@/components/generic/IconHeading.vue';
 
 const state = useStateStore();
 const { pfData, loadPlatformData, getSegment } = usePlatformData();
@@ -222,10 +223,10 @@ async function handleDeleteClick() {
 </script>
 
 <template>
-  <h2>
+  <icon-heading level="2">
     {{ $t('admin.system.infoPages.heading') }}
     <help-button-widget help-key="adminSystemInfoPagesView" />
-  </h2>
+  </icon-heading>
 
   <div style="display: flex; gap: var(--layout-gap)">
     <n-select
