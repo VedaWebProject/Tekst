@@ -1,4 +1,4 @@
-# Display combined content on the next higher level
+## Combined Contents
 
 If this function is activated for a resource, its contents are also visible on the next higher structure level. A button is then added to the display of the resource that enables the combined display of all content that is assigned to the same higher-level location. In addition, the resource is then also displayed at the higher level so that this function is also directly accessible there.
 

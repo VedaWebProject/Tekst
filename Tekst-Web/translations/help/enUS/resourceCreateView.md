@@ -1,1 +1,1 @@
-# Create a new resource
+## Creating a new resource

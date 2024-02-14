@@ -1,4 +1,4 @@
-# Setup
+# Installation
 
 
 ## General Requirements
@@ -10,7 +10,7 @@ The follwing requirements apply to either deployment strategy. Each deployment s
 - Access to a working, reliable **SMTP server** to send out emails containing verification links, password reset links, etc. It is important that this SMTP server is well-configured so the emails it sends actually reach their recepients. Whether you use a third-party SMTP server (like the one of your email provider) or your own self-hosted one is up to you. If you plan to run Tekst in [closed mode](index.md#closed-mode) (only one or more administrators, no public users who can create content), this requirement is **not strictly necessary**.
 
 
-## Setup Configuration
+## Initial Configuration
 
 The following values can be configured in an `.env` file to match your deployment environment and needed features. Use the below list for guidance. The configuration defaults to values for a full-featured, Docker-based production environment served at `/` (root path). There *are* things you *have to* configure for them to work, though. By default, the application will later be available locally on port `8087` at `127.0.0.1`.
 
@@ -165,7 +165,7 @@ The following steps are just a rough outline of the deployment process:
 2. Copy `Tekst-Web/.env` to `Tekst-Web/.env.production`
 3. Configure the client (Tekst-Web) via the `Tekst-Web/.env.production` file
 4. Build the client: `npm run build-only`
-5. Make your webserver serve the built client files (in `Tekst-Web/dist`) at the URL you configured in step 2
+5. Make your webserver serve the built client files (in `Tekst-Web/dist`) at the URL you configured in step 3
 6. Copy `Tekst-API/.env` to `Tekst-API/.env.prod`
 7. Configure the server (Tekst-API) via `Tekst-API/.env.prod`
 8. Run the server (Tekst-API) via the WSGI you have installed, using ASGI workers

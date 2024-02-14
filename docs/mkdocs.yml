@@ -5,12 +5,15 @@ repo_name: VedaWebProject/Tekst
 site_description: A tool for creating open collaborative text research platforms
 
 nav:
-  - 'index.md'
-  - 'concepts.md'
-  - 'setup.md'
-  - 'setup-advanced.md'
-  - Usage:
-    - 'Resources': 'usage/resources.md'
+  - Introduction:
+    - index.md
+    - introduction/concepts.md
+  - Setup:
+    - setup/installation.md
+    - setup/configuration.md
+    - setup/customization.md
+  - User Guide:
+    - usage/resources.md
 
 plugins:
   - search
@@ -34,8 +37,11 @@ theme:
   favicon: assets/logo.png
   features:
     - navigation.instant
+    - navigation.instant.progress
     - navigation.sections
     - navigation.expand
+    - navigation.tabs
+    - navigation.top
     - content.code.copy
     - search.suggest
     - search.highlight
@@ -43,14 +49,14 @@ theme:
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: indigo
+      primary: white
       accent: indigo
       toggle:
         icon: material/weather-night
         name: Switch to dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: indigo
+      primary: black
       accent: indigo
       toggle:
         icon: material/weather-sunny

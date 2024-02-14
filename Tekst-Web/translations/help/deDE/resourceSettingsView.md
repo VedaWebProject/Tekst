@@ -1,3 +1,3 @@
-# Ressourcen-Einstellungen
+## Ressourcen-Einstellungen
 
 ...

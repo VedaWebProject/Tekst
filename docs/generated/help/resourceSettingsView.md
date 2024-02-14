@@ -1,1 +1,1 @@
-# Resource Settings
+## Resource Settings

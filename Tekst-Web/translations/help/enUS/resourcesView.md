@@ -1,6 +1,4 @@
-# Resources
-
-## Propose for publication
+## Proposal for publication
 
 By proposing a resource you created for publication, you make it available to all registered users of the platform for them to review your work, comment on it and propose changes or additions. The platform administrators will be informed about your proposal and may publish your resource on the platform to also make it accessible to non-registered users.
 

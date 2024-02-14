@@ -47,7 +47,7 @@ for (const localeDir of localeDirs) {
       copyFileSync(sourceFilePath, path.join(DOCS_PATH, mdFile.name));
     }
     const data = readFileSync(sourceFilePath, 'utf8');
-    const title = data.match(/(?<=^# ).*$/m)[0]; // ugly, but simple!
+    const title = data.match(/(?<=^#+ ).*$/m)[0]; // ugly, but simple!
     const html = DOMPurify.sanitize(marked.parse(data));
     helpTranslations[mdFile.name.replace(/.md$/, '')] = { title: title, content: html };
     // console.log(`  🗸 ${localeDir.name}/${mdFile.name}`);

@@ -1,22 +1,6 @@
 # Concepts
 
 
-## Collaboration
-
-Tekst aims to encourage collaboration between parties with common backgrounds or interests, like researchers working with data on the same reference text. The goal of this collaboration is the creation of a common, central platform for relevant data resources concerning one or multiple (related) texts. With Tekst, research communities are able to:
-
-- accumulate relevant resources on one online platform
-- create and propose new resources for publication
-- evaluate, compare and improve data created by other community members
-- publish curated datasets to the broader public (which is a decision of the party operating the platform)
-- offer different ways for accessing the data, like browsing contents along the texts structure, extensive search functionalities or exporting datasets in various formats
-- maintain a close network of likeminded researchers
-
-![collaboration flow](assets/collaboration_flow.png)
-*Collaboration flow between administrators, registered users and visitors of the platform.*
-
-The administrator(s) operating the platform curate the resources that are visible to public visitors. A selected community of registered users is able to create and share datasets with each other, propose corrections or additions, stay up to date on each other's progress and maintain a cooperative relationship to other representatives of their field.
-
 ## Texts and Structure
 
 One instance of Tekst can handle one or more reference texts that can be selected from the user interface. Switching to a different reference text changes the working context of Tekst, including available resources, settings, etc.
@@ -57,3 +41,20 @@ Similar to [Plain Text](#plain-text) but with added text formatting/styling capa
 
 ### Audio
 (WIP)
+
+
+## Collaboration
+
+Tekst aims to encourage collaboration between parties with common backgrounds or interests, like researchers working with data on the same reference text. The goal of this collaboration is the creation of a common, central platform for relevant data resources concerning one or multiple (related) texts. With Tekst, research communities are able to:
+
+- accumulate relevant resources on one online platform
+- create and propose new resources for publication
+- evaluate, compare and improve data created by other community members
+- publish curated datasets to the broader public (which is a decision of the party operating the platform)
+- offer different ways for accessing the data, like browsing contents along the texts structure, extensive search functionalities or exporting datasets in various formats
+- maintain a close network of likeminded researchers
+
+![collaboration flow](assets/collaboration_flow.png)
+*Collaboration flow between administrators, registered users and visitors of the platform.*
+
+The administrator(s) operating the platform curate the resources that are visible to public visitors. A selected community of registered users is able to create and share datasets with each other, propose corrections or additions, stay up to date on each other's progress and maintain a cooperative relationship to other representatives of their field.
