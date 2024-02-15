@@ -14,7 +14,7 @@ Each structure level *must* be subordinate to *one* parent structure level and c
 
 The reason for this limitation is the concept of exploratory browsing implemented by Tekst. For being able to skip through the locations on a certain structure level like you turn the pages of a book, there has to be both a clear hierarchy of structure levels as well as a sequencial order of the locations on each level.
 
-![data model](assets/data_model_visualization.png)
+![data model](../assets/data_model_visualization.png)
 *Data model: Example of a simple song structure modeled for use as a reference work (or "text") in Tekst, with a selection of (partly imaginary) resources associated with each structure level. A resource may provide zero to one contents per location on its respective structure level.*
 
 
@@ -54,7 +54,7 @@ Tekst aims to encourage collaboration between parties with common backgrounds or
 - offer different ways for accessing the data, like browsing contents along the texts structure, extensive search functionalities or exporting datasets in various formats
 - maintain a close network of likeminded researchers
 
-![collaboration flow](assets/collaboration_flow.png)
+![collaboration flow](../assets/collaboration_flow.png)
 *Collaboration flow between administrators, registered users and visitors of the platform.*
 
 The administrator(s) operating the platform curate the resources that are visible to public visitors. A selected community of registered users is able to create and share datasets with each other, propose corrections or additions, stay up to date on each other's progress and maintain a cooperative relationship to other representatives of their field.

@@ -40,7 +40,6 @@ theme:
     - navigation.instant.progress
     - navigation.sections
     - navigation.expand
-    - navigation.tabs
     - navigation.top
     - content.code.copy
     - search.suggest
@@ -52,12 +51,12 @@ theme:
       primary: white
       accent: indigo
       toggle:
-        icon: material/weather-night
+        icon: material/brightness-4
         name: Switch to dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
       primary: black
       accent: indigo
       toggle:
-        icon: material/weather-sunny
+        icon: material/brightness-7
         name: Switch to light mode
