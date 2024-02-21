@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { PlainTextContentCreate } from '@/api';
-import { NInput, NFormItem } from 'naive-ui';
+import NInputOsk from '@/components/NInputOsk.vue';
+import { NFormItem } from 'naive-ui';
 
 const props = defineProps<{
   model?: PlainTextContentCreate;
@@ -20,7 +21,7 @@ function handleUpdate(field: string, value: any) {
   <template v-if="model">
     <!-- TEXT -->
     <n-form-item :label="$t('resources.types.plainText.contentFields.text')" path="text">
-      <n-input
+      <n-input-osk
         type="textarea"
         :rows="3"
         :value="model.text"

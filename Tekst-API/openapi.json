@@ -6354,6 +6354,41 @@
         ],
         "title": "MoveLocationRequestBody"
       },
+      "OskMode": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 1,
+            "title": "Key"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 1,
+            "title": "Name"
+          },
+          "font": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 32,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Font"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "name"
+        ],
+        "title": "OskMode"
+      },
       "PlainTextContentCreate": {
         "properties": {
           "resourceId": {
@@ -7435,7 +7470,7 @@
             "description": "Resource categories to categorize resources in",
             "default": []
           },
-          "resourceFonts": {
+          "customFonts": {
             "items": {
               "type": "string",
               "maxLength": 32,
@@ -7443,7 +7478,7 @@
             },
             "type": "array",
             "maxItems": 64,
-            "title": "Resourcefonts",
+            "title": "Customfonts",
             "description": "CSS font family names for use in resources",
             "default": []
           },
@@ -7484,6 +7519,15 @@
               "enUS"
             ],
             "descriptions": "Locales available for use in platform client"
+          },
+          "oskModes": {
+            "items": {
+              "$ref": "#/components/schemas/OskMode"
+            },
+            "type": "array",
+            "title": "Oskmodes",
+            "description": "OSK modes available for use in platform client",
+            "default": []
           }
         },
         "additionalProperties": true,
@@ -7610,7 +7654,7 @@
             "description": "Resource categories to categorize resources in",
             "default": []
           },
-          "resourceFonts": {
+          "customFonts": {
             "items": {
               "type": "string",
               "maxLength": 32,
@@ -7618,7 +7662,7 @@
             },
             "type": "array",
             "maxItems": 64,
-            "title": "Resourcefonts",
+            "title": "Customfonts",
             "description": "CSS font family names for use in resources",
             "default": []
           },
@@ -7659,6 +7703,15 @@
               "enUS"
             ],
             "descriptions": "Locales available for use in platform client"
+          },
+          "oskModes": {
+            "items": {
+              "$ref": "#/components/schemas/OskMode"
+            },
+            "type": "array",
+            "title": "Oskmodes",
+            "description": "OSK modes available for use in platform client",
+            "default": []
           }
         },
         "type": "object",

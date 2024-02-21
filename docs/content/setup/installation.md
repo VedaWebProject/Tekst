@@ -1,7 +1,7 @@
 # Installation
 
 
-## General Requirements
+## General requirements
 
 The follwing requirements apply to either deployment strategy. Each deployment strategy then comes with its own respective additional requirements.
 
@@ -10,7 +10,7 @@ The follwing requirements apply to either deployment strategy. Each deployment s
 - Access to a working, reliable **SMTP server** to send out emails containing verification links, password reset links, etc. It is important that this SMTP server is well-configured so the emails it sends actually reach their recepients. Whether you use a third-party SMTP server (like the one of your email provider) or your own self-hosted one is up to you. If you plan to run Tekst in [closed mode](../index.md#closed-mode) (only one or more administrators, no public users who can create content), this requirement is **not strictly necessary**.
 
 
-## Initial Configuration
+## Initial configuration
 
 The following values can be configured in an `.env` file to match your deployment environment and needed features. Use the below list for guidance. The configuration defaults to values for a full-featured, Docker-based production environment served at `/` (root path). There *are* things you *have to* configure for them to work, though. By default, the application will later be available locally on port `8087` at `127.0.0.1`.
 
@@ -110,7 +110,7 @@ docker compose build server client
 
 ... now grab a (small) coffee ☕
 
-!!! warning
+!!! note
 
     Whenever you decide to change one of `TEKST_WEB_PATH`, `TEKST_SERVER_URL` or `TEKST_API_PATH` in your `.env` file, you'll have to build the image for **Tekst-Web** (client) again (`docker compose build tekst-web`), as these values are statically replaced in the code during the build process!
 
@@ -119,31 +119,26 @@ docker compose build server client
 Run the complete application stack via
 
 ```sh
-docker compose up
+docker compose up -d
 ```
 
-!!! info "Please note"
+!!! tip
 
-    The above command will keep your shell attached to the running process. To run the stack in the background (which is usually what you'd want in production), add the `-d` flag to the command above:
-
-    ```sh
-    docker compose up -d
-    ```
-
-    For checking the log output of the running stack, call this from the same directory (the one containing the `docker-compose.yml`):
+    The above command will detach the process of running the stack from your terminal and run it in the background (which is usually what you'd want in production). This is what the `-d` flag does. For checking the log output of the running stack, call this from the same directory (the one containing the `docker-compose.yml`):
 
     ```sh
     docker compose logs
     ```
 
-Read [this](https://docs.docker.com/engine/reference/commandline/compose/) to learn how to stop, start, reset (...) the application stack using Docker Compose.
+!!! note
+    Read the [Docker Compose documentation](https://docs.docker.com/engine/reference/commandline/compose/) to learn how to stop, start, reset (...) the application stack using Docker Compose.
 
 
 ## Deploy directly on host system ("bare-metal")
 
 Please be aware that taking this approach is considerably more difficult and requires much more manual maintenance than deploying via Docker. The expertise needed to install and configure all these services will surely also suffice for extrapolating from the Docker-based setup a bit. For a big part, the process depends on the environment you want to deploy in.
 
-!!! info "About secrets/credentials"
+!!! note "About secrets/credentials"
 
     One thing to note for a bare-metal deployment is that without Docker, the values passed as secrets can also be directly set in the environment file and will be read and used by Tekst. That is, you don't *have to* use secret files. It may still be a good idea to use them, but you'll have to give the respective processes reading rights for those files while restricting access for anyone else.
 

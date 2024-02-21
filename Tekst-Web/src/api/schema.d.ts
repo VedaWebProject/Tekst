@@ -868,6 +868,15 @@ export interface components {
       /** Parentid */
       parentId: string | null;
     };
+    /** OskMode */
+    OskMode: {
+      /** Key */
+      key: string;
+      /** Name */
+      name: string;
+      /** Font */
+      font?: string | null;
+    };
     /** PlainTextContentCreate */
     PlainTextContentCreate: {
       /**
@@ -1465,11 +1474,11 @@ export interface components {
        */
       resourceCategories?: components['schemas']['ResourceCategory'][];
       /**
-       * Resourcefonts
+       * Customfonts
        * @description CSS font family names for use in resources
        * @default []
        */
-      resourceFonts?: string[];
+      customFonts?: string[];
       /**
        * Showresourcecategoryheadings
        * @description Show resource category headings in browse view
@@ -1502,6 +1511,12 @@ export interface components {
        * ]
        */
       availableLocales?: components['schemas']['LocaleKey'][];
+      /**
+       * Oskmodes
+       * @description OSK modes available for use in platform client
+       * @default []
+       */
+      oskModes?: components['schemas']['OskMode'][];
       [key: string]: unknown;
     };
     /** PlatformSettingsUpdate */
@@ -1563,11 +1578,11 @@ export interface components {
        */
       resourceCategories?: components['schemas']['ResourceCategory'][];
       /**
-       * Resourcefonts
+       * Customfonts
        * @description CSS font family names for use in resources
        * @default []
        */
-      resourceFonts?: string[];
+      customFonts?: string[];
       /**
        * Showresourcecategoryheadings
        * @description Show resource category headings in browse view
@@ -1600,6 +1615,12 @@ export interface components {
        * ]
        */
       availableLocales?: components['schemas']['LocaleKey'][];
+      /**
+       * Oskmodes
+       * @description OSK modes available for use in platform client
+       * @default []
+       */
+      oskModes?: components['schemas']['OskMode'][];
     };
     /**
      * PlatformStats

@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { NButton, NIcon, NInput } from 'naive-ui';
+import { NButton, NIcon } from 'naive-ui';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
-
 import { SearchIcon } from '@/icons';
+import NInputOsk from '@/components/NInputOsk.vue';
 
 const showModal = ref(false);
 </script>
@@ -34,11 +34,11 @@ const showModal = ref(false);
       </icon-heading>
     </template>
 
-    <n-input round size="large" placeholder="...">
+    <n-input-osk round placeholder="...">
       <template #prefix>
         <n-icon :component="SearchIcon" />
       </template>
-    </n-input>
+    </n-input-osk>
 
     <h3>{{ $t('search.settings.heading') }}</h3>
     <p>Quick Search settings go here...</p>

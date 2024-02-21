@@ -3,6 +3,7 @@ import type { Translation, LocaleKey } from '@/api';
 import { $t, renderLanguageOptionLabel } from '@/i18n';
 import {
   NButton,
+  NButtonGroup,
   NSpace,
   NIcon,
   NFormItem,
@@ -112,29 +113,29 @@ const localeOptions = computed(() =>
         </div>
       </template>
       <template #action="{ index: actionIndex, create, remove }">
-        <n-space style="margin-left: 20px; flex-wrap: nowrap">
-          <n-button
-            secondary
-            circle
-            :title="$t('translationFormItem.tipBtnRemove')"
-            :disabled="!value || value.length === minItems"
-            @click="() => remove(actionIndex)"
-          >
-            <template #icon>
-              <n-icon :component="MinusIcon" />
-            </template>
-          </n-button>
-          <n-button
-            secondary
-            circle
-            :title="$t('translationFormItem.tipBtnAdd')"
-            :disabled="value && value.length >= localeOptions.length"
-            @click="() => create(actionIndex)"
-          >
-            <template #icon>
-              <n-icon :component="AddIcon" />
-            </template>
-          </n-button>
+        <n-space style="margin-left: 12px; flex-wrap: nowrap">
+          <n-button-group>
+            <n-button
+              quaternary
+              :title="$t('translationFormItem.tipBtnRemove')"
+              :disabled="!value || value.length === minItems"
+              @click="() => remove(actionIndex)"
+            >
+              <template #icon>
+                <n-icon :component="MinusIcon" />
+              </template>
+            </n-button>
+            <n-button
+              quaternary
+              :title="$t('translationFormItem.tipBtnAdd')"
+              :disabled="value && value.length >= localeOptions.length"
+              @click="() => create(actionIndex)"
+            >
+              <template #icon>
+                <n-icon :component="AddIcon" />
+              </template>
+            </n-button>
+          </n-button-group>
         </n-space>
       </template>
     </n-dynamic-input>

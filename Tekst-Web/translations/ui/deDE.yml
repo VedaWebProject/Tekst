@@ -91,6 +91,11 @@ nav:
   help: Hilfe
   info: Info
 
+osk:
+  inputBtnTip: Bildschirmtastatur öffnen
+  inputPlaceholder: Tippen Sie auf der Bildschirmtastatur und drücken Sie Enter, um Ihre Eingabe einzufügen...
+  msgErrorLoading: 'Fehler beim Laden des Layouts für die Bildschirmtastatur: {layout}'
+
 routes:
   pageTitle:
     home: Startseite
@@ -260,9 +265,13 @@ models:
     resourceCategories: Ressourcen-Kategorien
     resourceCategoryKey: Schlüssel
     resourceCategoryTranslation: Beschriftung
+    oskModes: Bildschirmtastatur-Modi
+    oskModeKey: Schlüssel
+    oskModeName: Name
+    oskModeFont: Tastatur-Schriftart
     showResourceCategoryHeadings: Zeige Überschriften für Ressourcen-Kategorien in der Blättern-Ansicht
     alwaysShowResourceCategoryHeadings: Zeige Überschrift auch für die einzige Kategorie mit Ressourcen
-    resourceFonts: Individuelle Ressourcen-Schriftarten
+    customFonts: Zusätzliche, individuelle Schriftarten
     resourceFontName: Name
   segment:
     modelLabel: Segment

@@ -22,27 +22,46 @@ _cfg: TekstConfig = get_config()  # get (possibly cached) config data
 
 class PlatformDescriptionTranslation(TranslationBase):
     translation: Annotated[
-        str, StringConstraints(min_length=1, max_length=128, strip_whitespace=True)
+        str,
+        StringConstraints(min_length=1, max_length=128, strip_whitespace=True),
     ]
 
 
 class PlatformNavInfoEntryTranslation(TranslationBase):
     translation: Annotated[
-        str, StringConstraints(min_length=1, max_length=16, strip_whitespace=True)
+        str,
+        StringConstraints(min_length=1, max_length=16, strip_whitespace=True),
     ]
 
 
 class ResourceCategoryTranslation(TranslationBase):
     translation: Annotated[
-        str, StringConstraints(min_length=1, max_length=32, strip_whitespace=True)
+        str,
+        StringConstraints(min_length=1, max_length=32, strip_whitespace=True),
     ]
 
 
 class ResourceCategory(TypedDict):
     key: Annotated[
-        str, StringConstraints(min_length=1, max_length=16, strip_whitespace=True)
+        str,
+        StringConstraints(min_length=1, max_length=16, strip_whitespace=True),
     ]
     translations: Translations[ResourceCategoryTranslation]
+
+
+class OskMode(ModelBase):
+    key: Annotated[
+        str,
+        StringConstraints(min_length=1, max_length=32, strip_whitespace=True),
+    ]
+    name: Annotated[
+        str,
+        StringConstraints(min_length=1, max_length=32, strip_whitespace=True),
+    ]
+    font: Annotated[
+        str | None,
+        StringConstraints(min_length=1, max_length=32, strip_whitespace=True),
+    ] = None
 
 
 class PlatformSettings(ModelBase, ModelFactoryMixin):
@@ -100,7 +119,7 @@ class PlatformSettings(ModelBase, ModelFactoryMixin):
             description="Resource categories to categorize resources in", max_length=32
         ),
     ] = []
-    resource_fonts: Annotated[
+    custom_fonts: Annotated[
         list[
             Annotated[
                 str,
@@ -136,6 +155,10 @@ class PlatformSettings(ModelBase, ModelFactoryMixin):
             min_length=1,
         ),
     ] = list(get_args(LocaleKey.__value__))
+    osk_modes: Annotated[
+        list[OskMode],
+        Field(description="OSK modes available for use in platform client"),
+    ] = []
 
 
 class PlatformSettingsDocument(PlatformSettings, DocumentBase):

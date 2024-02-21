@@ -13,7 +13,7 @@ const { pfData } = usePlatformData();
 
 const options = computed(
   () =>
-    pfData.value?.settings.resourceFonts?.map((f) => ({
+    pfData.value?.settings.customFonts?.map((f) => ({
       label: f,
       value: f,
     })) || []

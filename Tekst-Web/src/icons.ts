@@ -92,8 +92,14 @@ import BookmarkFilled from '@vicons/material/BookmarkFilled';
 import HideImageOutlined from '@vicons/material/HideImageOutlined';
 import PlaylistAddCheckOutlined from '@vicons/material/PlaylistAddCheckOutlined';
 import PlaylistRemoveOutlined from '@vicons/material/PlaylistRemoveOutlined';
+import KeyboardAltOutlined from '@vicons/material/KeyboardAltOutlined';
+import KeyboardCapslockOutlined from '@vicons/material/KeyboardCapslockOutlined';
+import KeyboardArrowUpOutlined from '@vicons/material/KeyboardArrowUpOutlined';
 
 export {
+  KeyboardArrowUpOutlined as ShiftIcon,
+  KeyboardCapslockOutlined as CapsLockIcon,
+  KeyboardAltOutlined as KeyboardIcon,
   PlaylistAddCheckOutlined as CheckAllIcon,
   PlaylistRemoveOutlined as UncheckAllIcon,
   HideImageOutlined as NoImageIcon,

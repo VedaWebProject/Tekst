@@ -2,6 +2,9 @@ import { ref, isRef, unref, watchEffect, type Ref } from 'vue';
 import { GET } from '@/api';
 import type { UserReadPublic, PlatformStats, UserRead } from '@/api';
 import { useDebounceFn } from '@vueuse/core';
+import { STATIC_PATH } from '@/common';
+import { useMessages } from './messages';
+import { $t } from '@/i18n';
 
 export function useProfile(
   usernameOrId: string | Ref<string>,
@@ -126,5 +129,48 @@ export function useUsersSearch(queryRef: Ref<string | null | undefined>) {
     loading,
     error,
     load,
+  };
+}
+
+export function useOskLayout(oskModeKey: Ref<string | null | undefined>) {
+  const oskLayout = ref<{ char: string; shift?: string }[][][]>();
+  const error = ref(false);
+  const loading = ref(false);
+
+  async function load(key?: string | null) {
+    oskLayout.value = undefined;
+
+    if (key == null) {
+      loading.value = false;
+      error.value = true;
+      return;
+    }
+
+    loading.value = true;
+    error.value = false;
+    const path = `${STATIC_PATH}/osk/${key}.json`;
+
+    try {
+      const response = await fetch(path);
+      oskLayout.value = await response.json();
+    } catch {
+      oskLayout.value = undefined;
+      error.value = true;
+      const { message } = useMessages();
+      message.error($t('osk.msgErrorLoading', { layout: key }), path);
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  watchEffect(() => {
+    loading.value = true;
+    load(unref(oskModeKey));
+  });
+
+  return {
+    oskLayout,
+    loading,
+    error,
   };
 }

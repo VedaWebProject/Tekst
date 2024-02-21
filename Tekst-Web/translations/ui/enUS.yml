@@ -88,6 +88,11 @@ nav:
   help: Help
   info: Info
 
+osk:
+  inputBtnTip: Open on-screen keyboard
+  inputPlaceholder: Type on the on-screen keyboard and press Enter to insert your input...
+  msgErrorLoading: 'Error loading on-screen keyboard layout: {layout}'
+
 routes:
   pageTitle:
     home: Home
@@ -259,9 +264,13 @@ models:
     resourceCategories: Resource Categories
     resourceCategoryKey: Key
     resourceCategoryTranslation: Label
+    oskModes: On-screen keyboard modes
+    oskModeKey: Key
+    oskModeName: Name
+    oskModeFont: Keyboard font
     showResourceCategoryHeadings: Show resource category headings in browse view
     alwaysShowResourceCategoryHeadings: Show resource category headings even for the only category with resources
-    resourceFonts: Custom Resource Fonts
+    customFonts: Additional custom fonts
     resourceFontName: Name
   segment:
     modelLabel: Segment

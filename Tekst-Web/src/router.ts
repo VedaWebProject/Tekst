@@ -4,6 +4,7 @@ import { $t } from '@/i18n';
 import { useMessages } from '@/composables/messages';
 
 import { SiteNoticeIcon, PrivacyIcon, InfoIcon } from '@/icons';
+import { WEB_PATH } from './common';
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -42,7 +43,7 @@ const AdminSystemSegmentsView = () => import('@/views/admin/AdminSystemSegmentsV
 const AdminSystemInfoPagesView = () => import('@/views/admin/AdminSystemInfoPagesView.vue');
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(WEB_PATH),
   linkActiveClass: 'active',
   routes: [
     {

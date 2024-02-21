@@ -177,6 +177,14 @@ export const platformSettingsFormRules: Record<string, FormItemRule[]> = {
     requiredRule($t('models.platformSettings.resourceCategoryTranslation'), 'blur'),
     minMaxCharsRule(1, 32, 'blur'),
   ],
+  oskModeKey: [
+    requiredRule($t('models.platformSettings.oskModeKey'), 'blur'),
+    minMaxCharsRule(1, 32, 'blur'),
+  ],
+  oskModeName: [
+    requiredRule($t('models.platformSettings.oskModeName'), 'blur'),
+    minMaxCharsRule(1, 32, 'blur'),
+  ],
   resourceFontName: [
     requiredRule($t('models.platformSettings.resourceFontName'), 'blur'),
     minMaxCharsRule(1, 32, 'blur'),

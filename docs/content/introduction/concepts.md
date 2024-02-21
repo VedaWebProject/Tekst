@@ -1,7 +1,7 @@
 # Concepts
 
 
-## Texts and Structure
+## Texts and structure
 
 One instance of Tekst can handle one or more reference texts that can be selected from the user interface. Switching to a different reference text changes the working context of Tekst, including available resources, settings, etc.
 

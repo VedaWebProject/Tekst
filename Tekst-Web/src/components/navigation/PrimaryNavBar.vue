@@ -13,9 +13,11 @@ import NavigationMenu from '@/components/navigation/NavigationMenu.vue';
 import { useMainMenuOptions } from './navMenuOptions';
 import DrawerMenu from './DrawerMenu.vue';
 import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
-
+import logo from '@/assets/logo.png';
+import logoDarkmode from '@/assets/logo-darkmode.png';
 import { HamburgerMenuIcon } from '@/icons';
 import { useThemeStore } from '@/stores/theme';
+import { STATIC_PATH } from '@/common';
 
 const { pfData, systemHome } = usePlatformData();
 const auth = useAuthStore();
@@ -34,11 +36,11 @@ const customLogoError = ref(false);
 const logoPath = computed(() =>
   customLogoError.value
     ? theme.darkMode
-      ? '/logo-darkmode.png'
-      : '/logo.png'
+      ? logoDarkmode
+      : logo
     : theme.darkMode
-      ? '/static/logo-darkmode.png'
-      : '/static/logo.png'
+      ? `${STATIC_PATH}/logo-darkmode.png`
+      : `${STATIC_PATH}/logo.png`
 );
 
 const titleLinkTo = computed(() => {

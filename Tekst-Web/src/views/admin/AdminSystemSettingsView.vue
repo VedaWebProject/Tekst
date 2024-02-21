@@ -49,6 +49,10 @@ const localeOptions = computed(() =>
   localeProfiles.map((lp) => ({ label: `${lp.icon} ${lp.displayFull}`, value: lp.key }))
 );
 
+const oskFontOptions = computed(
+  () => pfData.value?.settings.customFonts?.map((f) => ({ label: f, value: f })) || []
+);
+
 async function handleSaveClick() {
   loading.value = true;
   formRef.value
@@ -253,7 +257,7 @@ function resetForm() {
                 v-model:value="formModel.resourceCategories[index].translations"
                 :parent-form-path-prefix="`resourceCategories[${index}].translations`"
                 required
-                style="flex-grow: 2; padding: 0 var(--layout-gap)"
+                style="flex-grow: 2"
                 :main-form-label="$t('models.platformSettings.resourceCategoryTranslation')"
                 :translation-form-label="$t('models.platformSettings.resourceCategoryTranslation')"
                 :translation-form-rule="platformSettingsFormRules.resourceCategoryTranslation"
@@ -331,14 +335,14 @@ function resetForm() {
 
       <n-divider />
 
-      <!-- RESOURCE FONTS-->
+      <!-- RESOURCE FONTS -->
       <icon-heading level="3">
-        {{ $t('models.platformSettings.resourceFonts') }}
+        {{ $t('models.platformSettings.customFonts') }}
         <help-button-widget help-key="adminSystemSettingsResourceFonts" />
       </icon-heading>
-      <n-form-item v-if="formModel.resourceFonts" :show-label="false">
+      <n-form-item v-if="formModel.customFonts" :show-label="false">
         <n-dynamic-input
-          v-model:value="formModel.resourceFonts"
+          v-model:value="formModel.customFonts"
           item-style="margin-bottom: 0;"
           show-sort-button
           :min="0"
@@ -349,12 +353,12 @@ function resetForm() {
             <n-form-item
               ignore-path-change
               :label="$t('models.platformSettings.resourceFontName')"
-              :path="`resourceFonts[${index}]`"
+              :path="`customFonts[${index}]`"
               :rule="platformSettingsFormRules.resourceFontName"
               style="flex-grow: 2"
             >
               <n-input
-                v-model:value="formModel.resourceFonts[index]"
+                v-model:value="formModel.customFonts[index]"
                 :placeholder="$t('models.platformSettings.resourceFontName')"
                 @keydown.enter.prevent
               />
@@ -377,12 +381,125 @@ function resetForm() {
                 type="primary"
                 secondary
                 :title="$t('general.insertAction')"
-                :disabled="(formModel.resourceFonts?.length || 0) >= 64"
+                :disabled="(formModel.customFonts?.length || 0) >= 64"
                 :focusable="false"
                 @click="() => create(indexAction)"
               >
                 <template #icon>
                   <n-icon :component="AddIcon" />
+                </template>
+              </n-button>
+            </n-button-group>
+          </template>
+        </n-dynamic-input>
+      </n-form-item>
+
+      <!-- OSK MODES -->
+      <icon-heading level="3">
+        {{ $t('models.platformSettings.oskModes') }}
+        <help-button-widget help-key="adminSystemSettingsOskModes" />
+      </icon-heading>
+      <n-form-item v-if="formModel.oskModes" :show-label="false">
+        <n-dynamic-input
+          v-model:value="formModel.oskModes"
+          item-style="margin-bottom: 0;"
+          show-sort-button
+          :min="0"
+          :max="64"
+          @create="() => ''"
+        >
+          <template #default="{ index }">
+            <div style="display: flex; align-items: flex-start; gap: 12px; width: 100%">
+              <n-form-item
+                ignore-path-change
+                :label="$t('models.platformSettings.oskModeKey')"
+                :path="`oskModes[${index}].key`"
+                :rule="platformSettingsFormRules.oskModeKey"
+              >
+                <n-input
+                  v-model:value="formModel.oskModes[index].key"
+                  :placeholder="$t('models.platformSettings.oskModeKey')"
+                  @keydown.enter.prevent
+                />
+              </n-form-item>
+              <n-form-item
+                ignore-path-change
+                :label="$t('models.platformSettings.oskModeName')"
+                :path="`oskModes[${index}].name`"
+                :rule="platformSettingsFormRules.oskModeName"
+                style="flex-grow: 2"
+              >
+                <n-input
+                  v-model:value="formModel.oskModes[index].name"
+                  :placeholder="$t('models.platformSettings.oskModeName')"
+                  @keydown.enter.prevent
+                />
+              </n-form-item>
+              <n-form-item
+                v-if="!!oskFontOptions.length"
+                ignore-path-change
+                :path="`oskModes[${index}].font`"
+                :label="$t('models.platformSettings.oskModeFont')"
+              >
+                <n-select
+                  v-model:value="formModel.oskModes[index].font"
+                  clearable
+                  :options="oskFontOptions"
+                  :placeholder="$t('models.platformSettings.oskModeFont')"
+                  :consistent-menu-width="false"
+                  style="min-width: 200px"
+                  @keydown.enter.prevent
+                />
+              </n-form-item>
+            </div>
+          </template>
+          <template #action="{ index: indexAction, create, remove, move }">
+            <n-button-group style="margin-left: var(--layout-gap); padding-top: 26px">
+              <n-button
+                type="primary"
+                secondary
+                :title="$t('general.removeAction')"
+                :focusable="false"
+                @click="() => remove(indexAction)"
+              >
+                <template #icon>
+                  <n-icon :component="MinusIcon" />
+                </template>
+              </n-button>
+              <n-button
+                type="primary"
+                secondary
+                :title="$t('general.insertAction')"
+                :disabled="(formModel.customFonts?.length || 0) >= 64"
+                :focusable="false"
+                @click="() => create(indexAction)"
+              >
+                <template #icon>
+                  <n-icon :component="AddIcon" />
+                </template>
+              </n-button>
+              <n-button
+                type="primary"
+                secondary
+                :title="$t('general.moveUpAction')"
+                :disabled="indexAction === 0"
+                :focusable="false"
+                @click="() => move('up', indexAction)"
+              >
+                <template #icon>
+                  <n-icon :component="ArrowUpIcon" />
+                </template>
+              </n-button>
+              <n-button
+                type="primary"
+                secondary
+                :title="$t('general.moveDownAction')"
+                :disabled="indexAction === formModel.oskModes?.length - 1"
+                :focusable="false"
+                @click="() => move('down', indexAction)"
+              >
+                <template #icon>
+                  <n-icon :component="ArrowDownIcon" />
                 </template>
               </n-button>
             </n-button-group>

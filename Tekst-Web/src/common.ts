@@ -1,5 +1,8 @@
 import type { ButtonProps } from 'naive-ui';
 
+export const WEB_PATH = import.meta.env.BASE_URL;
+export const STATIC_PATH = WEB_PATH.replace(/\/$/, '') + '/static';
+
 const dialogButtonPropsCommon: ButtonProps = {
   size: 'medium',
 };
