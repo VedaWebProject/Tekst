@@ -142,7 +142,7 @@ watch(
 }
 
 .navbar-logo {
-  height: 72px;
+  height: 64px;
   width: auto;
   margin-right: var(--content-gap);
 }
