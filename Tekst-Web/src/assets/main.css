@@ -132,7 +132,7 @@ img {
   transition: 0.3s;
 }
 
-.accent-color-text {
+.text-color-accent {
   color: var(--accent-color);
 }
 

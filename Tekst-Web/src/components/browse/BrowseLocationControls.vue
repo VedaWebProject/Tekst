@@ -15,13 +15,9 @@ import { ArrowBackIcon, ArrowForwardIcon, BookIcon } from '@/icons';
 withDefaults(
   defineProps<{
     buttonSize?: 'small' | 'medium' | 'large';
-    btnColor?: string;
-    btnBgColor?: string;
   }>(),
   {
     buttonSize: 'large',
-    btnColor: undefined,
-    btnBgColor: undefined,
   }
 );
 
@@ -78,12 +74,11 @@ whenever(ArrowLeft, () => {
       custom
     >
       <n-button
+        type="primary"
         :disabled="browse.position === 0"
         :focusable="false"
         :title="$t('browse.toolbar.tipPreviousLocation')"
         :size="buttonSize"
-        :color="btnBgColor"
-        :style="{ color: btnColor }"
         @click="navigate"
       >
         <template #icon>
@@ -93,11 +88,10 @@ whenever(ArrowLeft, () => {
     </router-link>
 
     <n-button
+      type="primary"
       :title="$t('browse.toolbar.tipSelectLocation')"
       :focusable="false"
       :size="buttonSize"
-      :color="btnBgColor"
-      :style="{ color: btnColor }"
       @click="showLocationSelectModal = true"
     >
       <template #icon>
@@ -105,20 +99,14 @@ whenever(ArrowLeft, () => {
       </template>
     </n-button>
 
-    <bookmarks-widget
-      v-if="auth.loggedIn"
-      :size="buttonSize"
-      :color="btnColor"
-      :bg-color="btnBgColor"
-    />
+    <bookmarks-widget v-if="auth.loggedIn" :size="buttonSize" />
 
     <router-link v-slot="{ navigate }" :to="getPrevNextRoute(1)" custom>
       <n-button
+        type="primary"
         :focusable="false"
         :title="$t('browse.toolbar.tipNextLocation')"
         :size="buttonSize"
-        :color="btnBgColor"
-        :style="{ color: btnColor }"
         @click="navigate"
       >
         <template #icon>

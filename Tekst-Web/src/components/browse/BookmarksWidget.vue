@@ -16,8 +16,6 @@ import { AddIcon, BookIcon, BookmarkFilledIcon, DeleteIcon } from '@/icons';
 
 defineProps<{
   size?: 'small' | 'medium' | 'large';
-  color?: string;
-  bgColor?: string;
 }>();
 
 const browse = useBrowseStore();
@@ -69,9 +67,8 @@ async function handleBookmarkSelect(bookmark: BookmarkRead) {
 
 <template>
   <n-button
+    type="primary"
     :size="size"
-    :color="bgColor"
-    :style="{ color: color }"
     :focusable="false"
     :title="$t('browse.bookmarks.bookmarks')"
     @click="showModal = true"

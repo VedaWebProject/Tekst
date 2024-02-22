@@ -4,17 +4,19 @@ import PrimaryNavBar from '@/components/navigation/PrimaryNavBar.vue';
 import TextSelect from '@/components/navigation/TextSelect.vue';
 import { usePlatformData } from '@/composables/platformData';
 import { useStateStore } from '@/stores';
+import { useThemeVars } from 'naive-ui';
 import { useRoute } from 'vue-router';
 
 const state = useStateStore();
 const route = useRoute();
 const { pfData } = usePlatformData();
+const themeVars = useThemeVars();
 </script>
 
 <template>
   <header>
     <primary-nav-bar />
-    <div class="accent-color-bg" style="min-height: 12px">
+    <div class="accent-color-bg" style="min-height: 12px" :style="{ color: themeVars.baseColor }">
       <div
         v-if="route.meta.isTextSpecific || pfData?.settings.alwaysShowTextInfo"
         id="current-text"

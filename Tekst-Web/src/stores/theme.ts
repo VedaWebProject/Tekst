@@ -46,6 +46,9 @@ const darkOverrides: GlobalThemeOverrides = {
   common: {
     bodyColor: '#232323',
   },
+  Button: {
+    textColorPrimary: '#232323FF',
+  },
   Card: {
     colorEmbedded: '#2a2a2a',
   },
@@ -68,10 +71,12 @@ export const useThemeStore = defineStore('theme', () => {
   const mainBgColor = computed(() => (darkMode.value ? '#ffffff10' : '#00000010'));
   const contentBgColor = computed(() => (darkMode.value ? '#00000044' : '#ffffffcc'));
 
-  // current text accent color variants
-  const accentColors = computed(() => {
-    const lighten = darkMode.value ? 0.25 : 0.0;
-    const baseStatic = Color(state.text ? state.text.accentColor : '#7A7A7A');
+  function generateAccentColorVariants(
+    baseColor: string = state.text?.accentColor || '#7A7A7A',
+    dark: boolean = darkMode.value
+  ) {
+    const lighten = dark ? 0.8 : 0.0;
+    const baseStatic = Color(baseColor);
     const base = baseStatic.lighten(lighten);
     return {
       base: base.hex(),
@@ -81,8 +86,13 @@ export const useThemeStore = defineStore('theme', () => {
       fade4: base.fade(0.8).hexa(),
       fade5: base.fade(0.9).hexa(),
       dark: baseStatic.darken(0.6).hex(),
-      pastel: baseStatic.saturate(0.9).lighten(1.3).hex(),
+      pastel: baseStatic.saturate(0.9).lighten(1.4).hex(),
     };
+  }
+
+  // current text accent color variants
+  const accentColors = computed(() => {
+    return generateAccentColorVariants(state.text?.accentColor || '#7A7A7A', darkMode.value);
   });
 
   const overrides = computed(() => {
@@ -108,6 +118,7 @@ export const useThemeStore = defineStore('theme', () => {
     overrides,
     mainBgColor,
     contentBgColor,
+    generateAccentColorVariants,
     accentColors,
   };
 });

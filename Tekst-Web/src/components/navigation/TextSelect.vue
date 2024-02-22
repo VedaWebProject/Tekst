@@ -3,7 +3,7 @@ import type { TextRead } from '@/api';
 import { computed, h, ref } from 'vue';
 import { useStateStore } from '@/stores';
 import { useRouter } from 'vue-router';
-import { NDropdown, NButton, NIcon } from 'naive-ui';
+import { NDropdown, NButton, NIcon, useThemeVars } from 'naive-ui';
 import TextSelectOption from '@/components/navigation/TextSelectOption.vue';
 import { usePlatformData } from '@/composables/platformData';
 import { useI18n } from 'vue-i18n';
@@ -12,6 +12,7 @@ import { ExpandArrowDownIcon } from '@/icons';
 
 const router = useRouter();
 const state = useStateStore();
+const themeVars = useThemeVars();
 const { locale } = useI18n();
 const { pfData } = usePlatformData();
 
@@ -65,7 +66,7 @@ function handleSelect(key: string) {
       :quaternary="!disabled"
       :text="disabled"
       icon-placement="right"
-      color="#fffe"
+      :color="themeVars.baseColor"
       :focusable="false"
       :keyboard="false"
       :title="$t('general.textSelect')"

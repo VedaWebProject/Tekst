@@ -104,7 +104,6 @@ function handleUserOptionSelect(key: string) {
       :title="tooltip"
       :focusable="false"
       :color="theme.accentColors.base"
-      style="color: #fff"
       class="user-options-button"
     >
       <template #icon>

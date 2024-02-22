@@ -37,7 +37,7 @@ const infoTooltip = computed(() =>
     <n-switch v-model:value="active" :round="false" />
     <div class="item-main">
       <div class="item-title-container">
-        <div class="item-title accent-color-text">{{ resource.title }}</div>
+        <div class="item-title text-color-accent">{{ resource.title }}</div>
         <div class="item-title-extra">
           ({{ $t('browse.location.level') }}: {{ state.textLevelLabels[resource.level] }})
         </div>

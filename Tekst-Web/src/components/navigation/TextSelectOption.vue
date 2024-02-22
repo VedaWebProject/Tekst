@@ -4,17 +4,24 @@ import { NIcon } from 'naive-ui';
 import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
 
 import { DisabledVisibleIcon } from '@/icons';
+import { useThemeStore } from '@/stores/theme';
+import { computed } from 'vue';
 
-defineProps<{
+const props = defineProps<{
   text: TextRead;
   locale: string;
   selected?: boolean;
 }>();
+
+const theme = useThemeStore();
+const indicatorStyle = computed(() => ({
+  backgroundColor: theme.generateAccentColorVariants(props.text.accentColor).base,
+}));
 </script>
 
 <template>
   <div class="text-select-option">
-    <div class="text-select-option-indicator" :style="{ backgroundColor: text.accentColor }"></div>
+    <div class="text-select-option-indicator" :style="indicatorStyle"></div>
     <div>
       <div>
         {{ text.title }}

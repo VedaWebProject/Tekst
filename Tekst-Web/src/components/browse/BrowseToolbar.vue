@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
-import { NButton, NBadge, NIcon } from 'naive-ui';
+import { NButton, NBadge, NIcon, useThemeVars } from 'naive-ui';
 import BrowseLocationControls from '@/components/browse/BrowseLocationControls.vue';
 import LocationLabel from '@/components/LocationLabel.vue';
 import { useBrowseStore, useStateStore } from '@/stores';
@@ -9,6 +9,7 @@ import { CompressIcon, ExpandIcon, ResourceIcon } from '@/icons';
 
 const state = useStateStore();
 const browse = useBrowseStore();
+const themeVars = useThemeVars();
 
 const affixRef = ref(null);
 const resourcesCount = computed(
@@ -34,20 +35,13 @@ onMounted(() => {
   }
 });
 
-const btnBgColor = '#00000015';
-const btnToggledColor = '#ffffff25';
-const btnColor = '#fff';
 const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
 </script>
 
 <template>
   <div ref="affixRef" class="browse-toolbar-container accent-color-bg">
     <div v-show="!!state.text" class="browse-toolbar">
-      <browse-location-controls
-        :button-size="buttonSize"
-        :btn-color="btnColor"
-        :btn-bg-color="btnBgColor"
-      />
+      <browse-location-controls :button-size="buttonSize" />
 
       <div class="browse-toolbar-middle">
         <div v-show="!state.smallScreen" class="browse-location-label">
@@ -58,11 +52,11 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
       <div class="browse-toolbar-end">
         <n-badge value="!" color="var(--accent-color-pastel)" :show="browse.reducedView">
           <n-button
+            type="primary"
             :size="buttonSize"
             :title="$t('browse.toolbar.tipReducedView')"
-            :color="browse.reducedView ? btnToggledColor : btnBgColor"
-            :style="{ color: btnColor }"
             :focusable="false"
+            :color="browse.reducedView ? themeVars.primaryColorHover : undefined"
             @click="browse.reducedView = !browse.reducedView"
           >
             <template #icon>
@@ -73,10 +67,9 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
 
         <n-badge :value="resourceDrawerBadgeLabel" color="var(--accent-color-pastel)">
           <n-button
+            type="primary"
             :size="buttonSize"
             :title="$t('browse.toolbar.tipOpenResourceList')"
-            :color="btnBgColor"
-            :style="{ color: btnColor }"
             :focusable="false"
             @click="browse.showResourceToggleDrawer = true"
           >
