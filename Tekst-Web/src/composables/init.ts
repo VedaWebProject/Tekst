@@ -2,10 +2,11 @@ import { ref } from 'vue';
 import { $t } from '@/i18n';
 import { useRoute, useRouter } from 'vue-router';
 import { useStateStore } from '@/stores';
-import { useAsyncQueue } from '@vueuse/core';
+import { useAsyncQueue, useStyleTag } from '@vueuse/core';
 import { useMessages } from '@/composables/messages';
 import { usePlatformData } from '@/composables/platformData';
 import { computed } from 'vue';
+import { STATIC_PATH } from '@/common';
 
 interface InitStep {
   info: () => string;
@@ -79,6 +80,20 @@ export function useInitializeApp() {
         // HTML head end
         const headEnd = await getSegment('systemHeadEnd');
         if (headEnd) document.head.insertAdjacentHTML('beforeend', headEnd.html);
+        return success;
+      },
+    },
+    // load custom fontface definitions
+    {
+      info: () => $t('init.customFonts'),
+      action: async (success: boolean) => {
+        try {
+          const response = await fetch(`${STATIC_PATH}/fonts.css`);
+          useStyleTag(await response.text(), { id: 'custom-fonts' });
+        } catch {
+          // do sweet FA
+        }
+        // it's okay if this didn't work - the CSS file might or might not exist
         return success;
       },
     },
