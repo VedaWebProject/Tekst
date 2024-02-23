@@ -699,5 +699,5 @@ htmlEditor:
     deshalb nach dem Speichern, ob ihr HTML-Code noch einwandfrei ist.
 
 translationFormItem:
-  tipBtnRemove: Eintrag entfernen
-  tipBtnAdd: Eintrag hinzufügen
+  tipBtnRemove: Übersetzung entfernen
+  tipBtnAdd: Übersetzung hinzufügen

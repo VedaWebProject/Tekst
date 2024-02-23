@@ -675,5 +675,5 @@ htmlEditor:
     your HTML content for any errors after saving.
 
 translationFormItem:
-  tipBtnRemove: Remove entry
-  tipBtnAdd: Add entry
+  tipBtnRemove: Remove translation
+  tipBtnAdd: Add translation

@@ -280,7 +280,7 @@ function resetForm() {
               <n-button
                 type="primary"
                 secondary
-                :title="$t('general.insertAction')"
+                :title="$t('general.addAction')"
                 :disabled="(formModel.resourceCategories?.length || 0) >= 32"
                 :focusable="false"
                 @click="() => create(indexAction)"
@@ -393,6 +393,8 @@ function resetForm() {
           </template>
         </n-dynamic-input>
       </n-form-item>
+
+      <n-divider />
 
       <!-- OSK MODES -->
       <icon-heading level="3">
