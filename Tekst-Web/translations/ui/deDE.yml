@@ -128,7 +128,7 @@ browse:
     modalHeading: Fundstelle
     level: Ebene
   toolbar:
-    tipSelectLocation: Ebene und Fundstelle wählen
+    tipSelectLocation: Fundstelle auswählen
     tipPreviousLocation: Vorherige Fundstelle auf dieser Ebene
     tipNextLocation: Nächste Fundstelle auf dieser Ebene
     tipReducedView: Reduzierte Leseansicht umschalten
