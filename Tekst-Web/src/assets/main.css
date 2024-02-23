@@ -120,7 +120,7 @@ img {
 .content-block {
   max-width: 100%;
   margin: var(--layout-gap) 0;
-  padding: var(--content-gap) var(--layout-gap);
+  padding: 1.2rem;
   border-radius: var(--border-radius);
   background-color: var(--content-bg-color);
   box-shadow: var(--block-box-shadow);
