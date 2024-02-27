@@ -18,7 +18,7 @@ from starlette.background import BackgroundTask
 
 from tekst import errors
 from tekst.auth import OptionalUserDep, SuperuserDep
-from tekst.dependencies import get_temp_dir
+from tekst.utils import get_temp_dir
 from tekst.logging import log
 from tekst.models.common import Translations
 from tekst.models.content import ContentBaseDocument

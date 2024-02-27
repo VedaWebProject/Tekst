@@ -42,6 +42,7 @@ services:
     networks:
       - api
       - db
+      - es
     secrets:
       - tekst_security_init_admin_email
       - tekst_security_init_admin_password
@@ -65,13 +66,39 @@ services:
       - tekst_db_password
     command: mongod --setParameter diagnosticDataCollectionEnabled=false
 
+  es:
+    image: elasticsearch:8.12.2
+    deploy:
+      resources:
+        limits:
+          cpus: "0.80"
+          memory: 2G
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    restart: always
+    init: true
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    networks:
+      - es
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: false
+
 volumes:
   mongo_configdb:
   mongo_db:
+  es_data:
 
 networks:
   api:
   db:
+  es:
 
 secrets:
   tekst_security_init_admin_email:

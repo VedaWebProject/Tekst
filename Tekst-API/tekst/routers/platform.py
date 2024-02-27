@@ -10,8 +10,7 @@ from tekst.auth import (
     SuperuserDep,
     UserDep,
 )
-from tekst.config import TekstConfig
-from tekst.dependencies import get_cfg
+from tekst.config import TekstConfig, get_config
 from tekst.models.platform import PlatformData
 from tekst.models.segment import (
     ClientSegmentCreate,
@@ -47,7 +46,7 @@ router = APIRouter(
     status_code=status.HTTP_200_OK,
 )
 async def get_platform_data(
-    ou: OptionalUserDep, cfg: Annotated[TekstConfig, Depends(get_cfg)]
+    ou: OptionalUserDep, cfg: Annotated[TekstConfig, Depends(get_config)]
 ) -> dict:
     """Returns data the client needs to initialize"""
     return PlatformData(
