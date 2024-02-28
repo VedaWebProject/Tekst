@@ -105,7 +105,7 @@ class TekstConfig(BaseSettings):
     es_protocol: str = "http"
     es_host: str = "127.0.0.1"
     es_port: int = 9200
-    es_index_name: str = "tekst"
+    es_prefix: str = "tekst"
     es_init_timeout_s: int = 120
 
     # CORS
