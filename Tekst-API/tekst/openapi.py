@@ -1,7 +1,7 @@
 from typing import Any
 from urllib.parse import urljoin
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
 
 from tekst.config import TekstConfig
@@ -69,23 +69,34 @@ async def generate_openapi_schema(
     import json
 
     from asgi_lifespan import LifespanManager
-    from httpx import AsyncClient
 
+    # from httpx import AsyncClient
     from tekst.app import app
 
     async with LifespanManager(app):  # noqa: SIM117
-        async with AsyncClient(app=app, base_url="http://test") as client:
-            resp = await client.get(f"{cfg.doc_openapi_url}")
-            if resp.status_code != 200:
-                raise HTTPException(resp.status_code, detail=resp.json())
-            else:
-                schema = resp.json()
-                json_dump_args = {
-                    "skipkeys": True,
-                    "indent": indent or None,
-                    "sort_keys": sort_keys,
-                }
-                if to_file:
-                    with open(output_file, "w") as f:
-                        json.dump(schema, f, **json_dump_args)
-                return json.dumps(schema, **json_dump_args)
+        schema = app.openapi()
+        json_dump_args = {
+            "skipkeys": True,
+            "indent": indent or None,
+            "sort_keys": sort_keys,
+        }
+        if to_file:
+            with open(output_file, "w") as f:
+                json.dump(schema, f, **json_dump_args)
+        return json.dumps(schema, **json_dump_args)
+
+        # async with AsyncClient(app=app, base_url="http://test") as client:
+        #     resp = await client.get(f"{cfg.doc_openapi_url}")
+        #     if resp.status_code != 200:
+        #         raise HTTPException(resp.status_code, detail=resp.json())
+        #     else:
+        #         schema = resp.json()
+        #         json_dump_args = {
+        #             "skipkeys": True,
+        #             "indent": indent or None,
+        #             "sort_keys": sort_keys,
+        #         }
+        #         if to_file:
+        #             with open(output_file, "w") as f:
+        #                 json.dump(schema, f, **json_dump_args)
+        #         return json.dumps(schema, **json_dump_args)

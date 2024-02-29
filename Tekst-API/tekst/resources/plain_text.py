@@ -1,4 +1,4 @@
-from typing import Annotated, Literal
+from typing import Annotated, Any, Literal
 
 from pydantic import Field, StringConstraints
 
@@ -25,6 +25,20 @@ class PlainText(ResourceTypeABC):
     @classmethod
     def content_model(cls) -> type["PlainTextContent"]:
         return PlainTextContent
+
+    @classmethod
+    def index_doc_properties(cls) -> dict[str, Any]:
+        return {
+            "text": {"type": "text"},
+        }
+
+    @classmethod
+    def index_doc_data(cls, content: "PlainTextContent") -> dict[str, Any]:
+        return content.model_dump(
+            include={
+                "text",
+            }
+        )
 
 
 class GeneralPlainTextResourceConfig(ModelBase):

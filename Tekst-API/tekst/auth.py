@@ -399,6 +399,7 @@ async def create_initial_superuser(force: bool = False):
     if _cfg.dev_mode and not force:
         return
     # check if initial admin account is properly configured
+    log.info("Creating initial superuser account...")
     if (
         not _cfg.security_init_admin_email or not _cfg.security_init_admin_password
     ):  # pragma: no cover

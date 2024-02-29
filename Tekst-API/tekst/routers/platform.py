@@ -2,7 +2,7 @@ from typing import Annotated
 
 from beanie import PydanticObjectId
 from beanie.operators import NotIn, Or, Text
-from fastapi import APIRouter, Depends, Path, Query, status
+from fastapi import APIRouter, Path, Query, status
 
 from tekst import errors
 from tekst.auth import (
@@ -10,8 +10,7 @@ from tekst.auth import (
     SuperuserDep,
     UserDep,
 )
-from tekst.config import TekstConfig
-from tekst.dependencies import get_cfg
+from tekst.config import ConfigDep
 from tekst.models.platform import PlatformData
 from tekst.models.segment import (
     ClientSegmentCreate,
@@ -46,9 +45,7 @@ router = APIRouter(
     summary="Get platform data",
     status_code=status.HTTP_200_OK,
 )
-async def get_platform_data(
-    ou: OptionalUserDep, cfg: Annotated[TekstConfig, Depends(get_cfg)]
-) -> dict:
+async def get_platform_data(ou: OptionalUserDep, cfg: ConfigDep) -> dict:
     """Returns data the client needs to initialize"""
     return PlatformData(
         texts=await get_all_texts(ou),

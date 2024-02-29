@@ -90,6 +90,8 @@ class TekstConfig(BaseSettings):
     dev_host: str = "127.0.0.1"
     dev_port: int = 8000
     dev_use_xsrf_protection: bool = False
+    dev_use_db: bool = True  # used internally for app init in different environments
+    dev_use_es: bool = True  # used internally for app init in different environments
 
     # db-related config (MongoDB)
     db_protocol: str = "mongodb"
@@ -98,6 +100,13 @@ class TekstConfig(BaseSettings):
     db_user: str | None = None
     db_password: str | None = None
     db_name: str = "tekst"
+
+    # Elasticsearch-related config
+    es_protocol: str = "http"
+    es_host: str = "127.0.0.1"
+    es_port: int = 9200
+    es_prefix: str = "tekst"
+    es_init_timeout_s: int = 120
 
     # CORS
     cors_allow_origins: str | list[str] = ["*"]
@@ -197,10 +206,23 @@ class TekstConfig(BaseSettings):
     @computed_field
     @property
     def db_uri(self) -> str:
-        db_host = quote(str(self.db_host).encode("utf8"), safe="")
         db_password = quote(str(self.db_password).encode("utf8"), safe="")
         creds = f"{self.db_user}:{db_password}@" if self.db_user and db_password else ""
-        return f"{self.db_protocol}://{creds}{db_host}:{str(self.db_port)}"
+        return "{protocol}://{creds}{host}:{port}".format(
+            protocol=self.db_protocol,
+            creds=creds,
+            host=quote(str(self.db_host).encode("utf8"), safe=""),
+            port=str(self.db_port),
+        )
+
+    @computed_field
+    @property
+    def es_uri(self) -> str:
+        return "{protocol}://{host}:{port}".format(
+            protocol=self.es_protocol,
+            host=quote(str(self.db_host).encode("utf8"), safe=""),
+            port=str(self.es_port),
+        )
 
     @field_validator(
         "cors_allow_origins", "cors_allow_methods", "cors_allow_headers", mode="after"

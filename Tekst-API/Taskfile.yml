@@ -42,9 +42,10 @@ tasks:
       - poetry run ruff check . --extend-select N
 
   tests:
-    desc: Run test categories separately, start and stop services stack
+    desc: Run tests, start and stop services stack
+    dotenv: [".env.test"]
     cmds:
-      - defer: {task: test-stack-down}
+      - defer: { task: test-stack-down }
       - task: test-stack-up
       - task: wait-for-mongodb
       - poetry run coverage run -m pytest {{.CLI_ARGS}}
@@ -61,7 +62,7 @@ tasks:
   dev:
     desc: Run dev services stack and dev server, clean up afterwards
     cmds:
-      - defer: {task: dev-stack-down}
+      - defer: { task: dev-stack-down }
       - task: dev-stack-up
       - task: print-dev-uris
       - task: run-dev
@@ -70,11 +71,10 @@ tasks:
     desc: Export (development) OpenAPI schema to file openapi.json
     env:
       TEKST_DEV_MODE: true
+      TEKST_DEV_USE_DB: false
+      TEKST_DEV_USE_ES: false
       TEKST_LOG_LEVEL: ERROR
     cmds:
-      - defer: {task: test-stack-down}
-      - task: test-stack-up
-      - task: wait-for-mongodb
       - poetry run python3 -m tekst schema -f
 
   pre-commit:
@@ -153,6 +153,11 @@ tasks:
     internal: true
     silent: true
     cmd: printf "Waiting for MongoDB service"; while ! $(curl -f http://127.0.0.1:27017 > /dev/null 2>&1); do sleep 1; printf "."; done; printf "\n"
+
+  wait-for-elasticsearch:
+    internal: true
+    silent: true
+    cmd: printf "Waiting for Elasticsearch service"; while ! $(curl -f http://127.0.0.1:9200 > /dev/null 2>&1); do sleep 1; printf "."; done; printf "\n"
 
   gen-smtp-ssl-cert:
     internal: true

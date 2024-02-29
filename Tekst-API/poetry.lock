@@ -487,6 +487,42 @@ trio = ["trio (>=0.14)"]
 wmi = ["wmi (>=1.5.1)"]
 
 [[package]]
+name = "elastic-transport"
+version = "8.12.0"
+description = "Transport classes and utilities shared among Python Elastic client libraries"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "elastic-transport-8.12.0.tar.gz", hash = "sha256:48839b942fcce199eece1558ecea6272e116c58da87ca8d495ef12eb61effaf7"},
+    {file = "elastic_transport-8.12.0-py3-none-any.whl", hash = "sha256:87d9dc9dee64a05235e7624ed7e6ab6e5ca16619aa7a6d22e853273b9f1cfbee"},
+]
+
+[package.dependencies]
+certifi = "*"
+urllib3 = ">=1.26.2,<3"
+
+[package.extras]
+develop = ["aiohttp", "furo", "mock", "pytest", "pytest-asyncio", "pytest-cov", "pytest-httpserver", "pytest-mock", "requests", "sphinx (>2)", "sphinx-autodoc-typehints", "trustme"]
+
+[[package]]
+name = "elasticsearch"
+version = "8.12.1"
+description = "Python client for Elasticsearch"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "elasticsearch-8.12.1-py3-none-any.whl", hash = "sha256:cc459b7e0fb88dc85b43b9d7d254cffad552b0063a3e0a12290c8fa5f138c038"},
+    {file = "elasticsearch-8.12.1.tar.gz", hash = "sha256:00c997720fbd0f2afe5417c8193cf65d116817a0250de0521e30c3e81f00b8ac"},
+]
+
+[package.dependencies]
+elastic-transport = ">=8,<9"
+
+[package.extras]
+async = ["aiohttp (>=3,<4)"]
+requests = ["requests (>=2.4.0,<3.0.0)"]
+
+[[package]]
 name = "email-validator"
 version = "2.0.0.post2"
 description = "A robust email address syntax and deliverability validation library."
@@ -1401,4 +1437,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "d0a97134037d66641bbe61cbc3f02612a6028043b0be2bdd22968d5a312eb560"
+content-hash = "1c02122fbb921b562632c83301af714b6d5ff491ed9539f3f4847b616a70b5b8"

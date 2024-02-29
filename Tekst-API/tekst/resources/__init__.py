@@ -6,7 +6,7 @@ from abc import ABC, abstractmethod
 from functools import lru_cache
 from os.path import realpath
 from pathlib import Path
-from typing import Annotated, Union
+from typing import Annotated, Any, Union
 
 from fastapi import Body
 from humps import camelize
@@ -57,6 +57,30 @@ class ResourceTypeABC(ABC):
         """Returns the content base model for contents of this type of resource"""
         raise NotImplementedError(
             "Classmethod 'content_model' must be "
+            f"implemented in subclasses of {cls.__name__}"
+        )  # pragma: no cover
+
+    @classmethod
+    @abstractmethod
+    def index_doc_properties(cls) -> dict[str, Any]:
+        """
+        Returns the mappings properties for ES search index
+        documents for this type of resource content
+        """
+        raise NotImplementedError(
+            "Classmethod 'index_doc_properties' must be "
+            f"implemented in subclasses of {cls.__name__}"
+        )  # pragma: no cover
+
+    @classmethod
+    @abstractmethod
+    def index_doc_data(cls, content: ContentBase) -> dict[str, Any]:
+        """
+        Returns the the content for the ES index document
+        for this type of resource content
+        """
+        raise NotImplementedError(
+            "Classmethod 'index_doc_data' must be "
             f"implemented in subclasses of {cls.__name__}"
         )  # pragma: no cover
 

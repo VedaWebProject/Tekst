@@ -8,11 +8,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette_csrf import CSRFMiddleware
 
+from tekst import db, search
 from tekst.config import TekstConfig, get_config
-from tekst.db import init_odm
-from tekst.dependencies import get_db, get_db_client
 from tekst.errors import TekstHTTPException
 from tekst.logging import log, setup_logging
+from tekst.models.settings import PlatformSettings
 from tekst.openapi import customize_openapi
 from tekst.resources import init_resource_types_mgr
 from tekst.routers import setup_routes
@@ -26,14 +26,16 @@ setup_logging()  # set up logging to match prod/dev requirements
 async def startup_routine(app: FastAPI) -> None:
     init_resource_types_mgr()
     setup_routes(app)
+    if not _cfg.dev_mode or _cfg.dev_use_db:
+        await db.init_odm()
+    if not _cfg.dev_mode or _cfg.dev_use_es:
+        await search.init_es_client(overwrite_existing_index=_cfg.dev_mode)
 
-    # this is ugly, but unfortunately we don't have access to FastAPI's
-    # dependency injection system in these lifecycle routines, so we have to
-    # pass all these things by hand...
-    await init_odm(get_db(get_db_client(_cfg), _cfg))
+    settings = await get_settings() if _cfg.dev_use_db else PlatformSettings()
+    customize_openapi(app=app, cfg=_cfg, settings=settings)
 
-    settings = await get_settings()
-    customize_openapi(app, _cfg, settings)
+    if not _cfg.email_smtp_server:
+        log.warning("No SMTP server configured")  # pragma: no cover
 
     # Hello World!
     log.info(
@@ -45,7 +47,10 @@ async def startup_routine(app: FastAPI) -> None:
 
 async def shutdown_routine(app: FastAPI) -> None:
     log.info(f"{_cfg.tekst_info['name']} cleaning up and shutting down...")
-    get_db_client(_cfg).close()  # again, no DI possible here :(
+    if not _cfg.dev_mode or _cfg.dev_use_db:
+        db.close()
+    if not _cfg.dev_mode or _cfg.dev_use_es:
+        search.close()
 
 
 @asynccontextmanager

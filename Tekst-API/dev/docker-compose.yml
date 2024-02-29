@@ -44,6 +44,32 @@ services:
     profiles:
       - dev
 
+  es:
+    image: elasticsearch:8.12.2
+    deploy:
+      resources:
+        limits:
+          cpus: "0.80"
+          memory: 2G
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    restart: always
+    init: true
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    ports:
+      - 127.0.0.1:9200:9200
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: false
+    profiles:
+      - dev
+
   mailpit:
     image: axllent/mailpit:v1.11
     restart: always
@@ -60,11 +86,11 @@ services:
       MP_SMTP_TLS_KEY: /smtp-ssl/localhost.key
     profiles:
       - dev
-      - test
 
 volumes:
   mongo_configdb:
   mongo_db:
+  es_data:
 
 networks:
   devstack:

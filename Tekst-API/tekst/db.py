@@ -16,26 +16,28 @@ from tekst.models.user import UserDocument
 from tekst.resources import resource_types_mgr
 
 
-_cfg: TekstConfig = get_config()
 _db_client: DatabaseClient = None
 
-# _ID_KEY_PATTERN = r"^(id|_id|.*?Id|.*?_id)$"
 
-
-def _init_client(db_uri: str = None) -> None:
+def _init_db_client(db_uri: str | None = None) -> DatabaseClient:
     global _db_client
     if _db_client is None:
         log.info("Initializing database client...")
-        _db_client = DatabaseClient(db_uri or _cfg.db_uri)
-
-
-def get_client(db_uri: str) -> DatabaseClient:
-    global _db_client
-    _init_client(db_uri)
+        _db_client = DatabaseClient(db_uri or get_config().db_uri)
     return _db_client
 
 
-async def init_odm(db: Database) -> None:
+def get_db_client(db_uri: str | None = None) -> DatabaseClient:
+    return _init_db_client(db_uri)
+
+
+def get_db(
+    db_client: Database = get_db_client(), cfg: TekstConfig = get_config()
+) -> Database:
+    return db_client[cfg.db_name]
+
+
+async def init_odm(db: Database = get_db()) -> None:
     # collect basic document models
     models = [
         TextDocument,
@@ -53,4 +55,14 @@ async def init_odm(db: Database) -> None:
         models.append(lt_class.resource_model().document_model())
         models.append(lt_class.content_model().document_model())
     # init beanie ODM
-    await init_beanie(database=db, allow_index_dropping=True, document_models=models)
+    await init_beanie(
+        database=db,
+        allow_index_dropping=True,
+        document_models=models,
+    )
+
+
+def close() -> None:
+    global _db_client
+    if _db_client is not None:
+        _db_client.close()

@@ -8,11 +8,11 @@ from asgi_lifespan import LifespanManager
 from bson import ObjectId, json_util
 from httpx import AsyncClient, Response
 from humps import camelize
+from tekst import db
 from tekst.app import app
 from tekst.auth import _create_user
 from tekst.config import TekstConfig, get_config
 from tekst.db import DatabaseClient
-from tekst.dependencies import get_db_client
 from tekst.models.user import UserCreate
 
 
@@ -89,7 +89,7 @@ async def get_db_client_override(config) -> DatabaseClient:
 @pytest.fixture(scope="session")
 async def test_app(config, get_db_client_override):
     """Provides an app instance with overridden dependencies"""
-    app.dependency_overrides[get_db_client] = lambda: get_db_client_override
+    app.dependency_overrides[db.get_db_client] = lambda: get_db_client_override
     async with LifespanManager(app):
         yield app
     # cleanup data
@@ -140,10 +140,10 @@ async def insert_sample_data(config, get_sample_data) -> Callable:
     """
 
     async def _insert_sample_data(*collections: str) -> dict[str, list[str]]:
-        db = get_db_client()[config.db_name]
+        database = db.get_db(db.get_db_client(), config)
         ids = dict()
         for collection in collections:
-            result = await db[collection].insert_many(
+            result = await database[collection].insert_many(
                 get_sample_data(f"db/{collection}.json")
             )
             if not result.acknowledged:
