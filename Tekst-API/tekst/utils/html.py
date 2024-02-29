@@ -22,6 +22,18 @@ _ALLOWED_ATTRIBUTES = {
 }
 
 
+def get_html_text(html: str | None = None) -> str:
+    if html is None:
+        return None
+    return bleach.clean(
+        html,
+        tags=set(),
+        attributes=dict(),
+        strip=True,
+        strip_comments=True,
+    )
+
+
 def sanitize_html(html: str | None = None) -> str:
     if html is None:
         return None

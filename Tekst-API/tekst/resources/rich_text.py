@@ -1,4 +1,4 @@
-from typing import Annotated, Literal
+from typing import Annotated, Any, Literal
 
 from pydantic import Field, StringConstraints
 
@@ -23,6 +23,20 @@ class RichText(ResourceTypeABC):
     @classmethod
     def content_model(cls) -> type["RichTextContent"]:
         return RichTextContent
+
+    @classmethod
+    def index_doc_properties(cls) -> dict[str, Any]:
+        return {
+            "html": {"type": "text", "analyzer": "htmlStripAnalyzer"},
+        }
+
+    @classmethod
+    def index_doc_data(cls, content: "RichTextContent") -> dict[str, Any]:
+        return content.model_dump(
+            include={
+                "html",
+            }
+        )
 
 
 class GeneralRichTextResourceConfig(ModelBase):

@@ -9,6 +9,8 @@ from tekst.logging import log
 from tekst.models.content import ContentBaseDocument
 from tekst.models.location import LocationDocument
 from tekst.models.resource import ResourceBaseDocument
+from tekst.resources import resource_types_mgr
+from tekst.search.template import INDEX_TEMPLATE
 
 
 _cfg: TekstConfig = get_config()
@@ -72,21 +74,9 @@ async def _setup_index_template() -> None:
     client.indices.put_index_template(
         name=_IDX_TEMPLATE_NAME,
         index_patterns=_IDX_NAME_PATTERN,
-        template=_get_index_template(),
+        template=INDEX_TEMPLATE,
         priority=500,
     )
-
-
-def _get_index_template() -> dict:
-    return {
-        "mappings": {
-            "properties": {
-                "text_id": {"type": "keyword"},
-                "level": {"type": "short"},
-                "position": {"type": "integer"},
-            }
-        }
-    }
 
 
 async def create_index(*, overwrite_existing_index: bool = True) -> None:
@@ -126,9 +116,9 @@ async def _populate_index(index_name: str) -> None:
         lazy_parse=True,
     ).to_list():
         extra_properties[str(res.id)] = {
-            "properties": {
-                "text": {"type": "text"},
-            }
+            "properties": resource_types_mgr.get(
+                res.resource_type
+            ).index_doc_properties()
         }
     resp = client.indices.put_mapping(
         index=index_name,
@@ -149,11 +139,11 @@ async def _populate_index(index_name: str) -> None:
         for content in await ContentBaseDocument.find(
             Eq(ContentBaseDocument.location_id, location.id),
             with_children=True,
-            lazy_parse=True,
         ).to_list():
-            location_index_doc[str(content.resource_id)] = {
-                "text": content.text,
-            }
+            location_index_doc[str(content.resource_id)] = resource_types_mgr.get(
+                content.resource_type
+            ).index_doc_data(content)
+
         bulk_body.append({"index": {"_index": index_name, "_id": str(location.id)}})
         bulk_body.append(location_index_doc)
 
