@@ -12,6 +12,10 @@ export interface paths {
     /** Get users */
     get: operations['getUsers'];
   };
+  '/admin/index/create': {
+    /** Create search index */
+    get: operations['createSearchIndex'];
+  };
   '/bookmarks/{id}': {
     /** Delete bookmark */
     delete: operations['deleteBookmark'];
@@ -2526,6 +2530,29 @@ export interface operations {
       200: {
         content: {
           'application/json': components['schemas']['UserRead'][];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+    };
+  };
+  /** Create search index */
+  createSearchIndex: {
+    responses: {
+      /** @description Successful Response */
+      202: {
+        content: {
+          'application/json': unknown;
         };
       };
       /** @description Unauthorized */

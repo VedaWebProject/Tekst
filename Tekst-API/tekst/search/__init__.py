@@ -80,18 +80,18 @@ async def _setup_index_template() -> None:
 
 
 async def create_index(*, overwrite_existing_index: bool = True) -> None:
+    new_index_name = _IDX_NAME_PREFIX + uuid4().hex
+    log.info(f'Creating index "{new_index_name}"...')
     client: Elasticsearch = await _get_es_client()
     # get existing search indices
     existing_indices = [idx for idx in client.indices.get(index=_IDX_NAME_PATTERN_ANY)]
     if existing_indices:
         if overwrite_existing_index:
-            log.warning("The new index will overwrite the existing one.")
+            log.debug("The new index will overwrite the existing one...")
         else:
             log.warning("An index already exists. Aborting index creation.")
             return
     # create new index
-    new_index_name = _IDX_NAME_PREFIX + uuid4().hex
-    log.debug(f'Creating index "{new_index_name}"...')
     # create index (index template will be applied!)
     client.indices.create(
         index=new_index_name,

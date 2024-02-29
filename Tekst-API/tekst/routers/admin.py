@@ -1,6 +1,6 @@
-from fastapi import APIRouter, status
+from fastapi import APIRouter, BackgroundTasks, status
 
-from tekst import errors
+from tekst import errors, search
 from tekst.auth import SuperuserDep
 from tekst.models.location import LocationDocument
 from tekst.models.platform import PlatformStats, TextStats
@@ -72,3 +72,13 @@ async def get_statistics(su: SuperuserDep) -> PlatformStats:
 )
 async def get_users(su: SuperuserDep) -> list[UserDocument]:
     return await UserDocument.find_all().to_list()
+
+
+@router.get(
+    "/index/create",
+    status_code=status.HTTP_202_ACCEPTED,
+)
+async def create_search_index(
+    su: SuperuserDep, background_tasks: BackgroundTasks
+) -> None:
+    background_tasks.add_task(search.create_index)
