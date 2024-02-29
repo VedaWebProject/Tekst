@@ -1,9 +1,7 @@
-from typing import Annotated
-
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, status
 from fastapi.responses import RedirectResponse
 
-from tekst.config import TekstConfig, get_config
+from tekst.config import ConfigDep
 
 
 router = APIRouter(
@@ -19,5 +17,5 @@ router = APIRouter(
     status_code=307,
     include_in_schema=False,
 )
-async def root_redirect(cfg: Annotated[TekstConfig, Depends(get_config)]):
+async def root_redirect(cfg: ConfigDep):
     return cfg.api_path + (cfg.doc_redoc_url or cfg.doc_swaggerui_url or "/platform")

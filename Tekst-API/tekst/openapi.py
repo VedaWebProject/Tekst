@@ -1,7 +1,7 @@
 from typing import Any
 from urllib.parse import urljoin
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
 
 from tekst.config import TekstConfig
@@ -69,8 +69,8 @@ async def generate_openapi_schema(
     import json
 
     from asgi_lifespan import LifespanManager
-    # from httpx import AsyncClient
 
+    # from httpx import AsyncClient
     from tekst.app import app
 
     async with LifespanManager(app):  # noqa: SIM117

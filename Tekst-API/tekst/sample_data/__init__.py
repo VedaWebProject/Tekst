@@ -13,6 +13,7 @@ _SAMPLE_DATA_DIR = Path(realpath(__file__)).parent / "db"
 
 
 async def insert_sample_data():
+    log.info("Inserting sample data...")
     target_collections = ("texts", "locations", "resources", "contents", "settings")
     if _cfg.dev_mode:
         target_collections += ("users",)
@@ -27,7 +28,7 @@ async def insert_sample_data():
             return
     # insert sample data
     for collection in target_collections:
-        log.info(f"Populating collection with sample data: {collection}...")
+        log.debug(f"Populating collection with sample data: {collection}...")
         path = _SAMPLE_DATA_DIR / f"{collection}.json"
         data = json_util.loads(path.read_text())
         result = await database[collection].insert_many(data)

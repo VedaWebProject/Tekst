@@ -1,14 +1,14 @@
 from time import sleep
 from uuid import uuid4
 
-from elasticsearch import Elasticsearch
 from beanie.operators import Eq
+from elasticsearch import Elasticsearch
 
 from tekst.config import TekstConfig, get_config
 from tekst.logging import log
+from tekst.models.content import ContentBaseDocument
 from tekst.models.location import LocationDocument
 from tekst.models.resource import ResourceBaseDocument
-from tekst.models.content import ContentBaseDocument
 
 
 _cfg: TekstConfig = get_config()
@@ -91,59 +91,78 @@ def _get_index_template() -> dict:
 
 async def create_index(*, overwrite_existing_index: bool = True) -> None:
     client: Elasticsearch = await _get_es_client()
-    # check if index already exists
-    if client.indices.exists(index=_IDX_NAME_PATTERN_ANY):
+    # get existing search indices
+    existing_indices = [idx for idx in client.indices.get(index=_IDX_NAME_PATTERN_ANY)]
+    if existing_indices:
         if overwrite_existing_index:
             log.warning("The new index will overwrite the existing one.")
         else:
             log.warning("An index already exists. Aborting index creation.")
             return
+    # create new index
     new_index_name = _IDX_NAME_PREFIX + uuid4().hex
     log.debug(f'Creating index "{new_index_name}"...')
     # create index (index template will be applied!)
     client.indices.create(
         index=new_index_name,
         aliases={_IDX_ALIAS: {}},
-        mappings={
-            "properties": {
-                "bar": {"type": "keyword"},
-            }
-        },
     )
     # populate newly created index
     await _populate_index(new_index_name)
     # delete all other/old indices matching the used index naming pattern
-    client.indices.delete(
-        index=[
-            idx
-            for idx in client.indices.get(index=_IDX_NAME_PATTERN_ANY)
-            if idx != new_index_name
-        ]
-    )
+    if existing_indices:
+        client.indices.delete(index=existing_indices)
 
 
-async def _populate_index(name: str) -> None:
+async def _populate_index(index_name: str) -> None:
     client: Elasticsearch = await _get_es_client()
-    log.debug(f'Populating index "{name}"...')
+    log.debug(f'Populating index "{index_name}"...')
 
     # extend index mappings adding one extra field for each existing public resource
-    resources = {
-        res.id: res
-        for res in await ResourceBaseDocument.find(
-            Eq(ResourceBaseDocument.public, True),
-            with_children=True,
-            lazy_parse=True,
-        ).to_list()
-    }
-    # TODO ...
+    extra_properties = {}
+    for res in await ResourceBaseDocument.find(
+        Eq(ResourceBaseDocument.public, True),
+        with_children=True,
+        lazy_parse=True,
+    ).to_list():
+        extra_properties[str(res.id)] = {
+            "properties": {
+                "text": {"type": "text"},
+            }
+        }
+    resp = client.indices.put_mapping(
+        index=index_name,
+        body={"properties": extra_properties},
+    )
+    if not resp or not resp.get("acknowledged"):
+        raise RuntimeError("Failed to extend index mappings!")
 
     # create one index document per location,
     # with data from resource contents for each respective location
+    bulk_body = []
     for location in await LocationDocument.find_all(lazy_parse=True).to_list():
+        location_index_doc = {
+            "text_id": str(location.text_id),
+            "level": location.level,
+            "position": location.position,
+        }
         for content in await ContentBaseDocument.find(
             Eq(ContentBaseDocument.location_id, location.id),
             with_children=True,
             lazy_parse=True,
         ).to_list():
-            # TODO!
-            log.debug(content.text)
+            location_index_doc[str(content.resource_id)] = {
+                "text": content.text,
+            }
+        bulk_body.append({"index": {"_index": index_name, "_id": str(location.id)}})
+        bulk_body.append(location_index_doc)
+
+    # bulk index
+    resp = client.bulk(body=bulk_body)
+    if resp and not resp.get("errors", False):
+        log.debug(
+            f'Successfully populated "{index_name}" (took {resp["took"]/1000} seconds).'
+        )
+    else:
+        log.error(f"There were errors populating index '{index_name}'.")
+        raise RuntimeError("Failed to populate index without errors!")

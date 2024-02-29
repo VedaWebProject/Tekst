@@ -18,7 +18,6 @@ from starlette.background import BackgroundTask
 
 from tekst import errors
 from tekst.auth import OptionalUserDep, SuperuserDep
-from tekst.utils import get_temp_dir
 from tekst.logging import log
 from tekst.models.common import Translations
 from tekst.models.content import ContentBaseDocument
@@ -33,6 +32,7 @@ from tekst.models.text import (
     TextUpdate,
 )
 from tekst.settings import get_settings
+from tekst.utils import get_temp_dir
 
 
 router = APIRouter(
