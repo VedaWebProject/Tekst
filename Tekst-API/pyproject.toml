@@ -53,25 +53,25 @@ line-length = 88
 indent-width = 4
 respect-gitignore = false
 src = ["tekst", "tests"]
+
+[tool.ruff.lint]
 fixable = ["ALL"]
 unfixable = []
-
-
 ignore = ["F722"]
 select = ["E", "F", "W", "I", "UP", "SIM"]
+
+[tool.ruff.lint.pep8-naming]
+classmethod-decorators = ["classmethod", "pydantic.validator"]
+
+[tool.ruff.lint.isort]
+lines-after-imports = 2
+lines-between-types = 1
 
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
 line-ending = "lf"
 skip-magic-trailing-comma = false
-
-[tool.ruff.lint.isort]
-lines-after-imports = 2
-lines-between-types = 1
-
-[tool.ruff.pep8-naming]
-classmethod-decorators = ["classmethod", "pydantic.validator"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

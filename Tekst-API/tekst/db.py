@@ -4,6 +4,7 @@ from motor.motor_asyncio import AsyncIOMotorDatabase as Database
 
 from tekst.auth import AccessToken
 from tekst.config import TekstConfig, get_config
+from tekst.locks import LocksStatus
 from tekst.logging import log
 from tekst.models.bookmark import BookmarkDocument
 from tekst.models.content import ContentBaseDocument
@@ -14,7 +15,6 @@ from tekst.models.settings import PlatformSettingsDocument
 from tekst.models.text import TextDocument
 from tekst.models.user import UserDocument
 from tekst.resources import resource_types_mgr
-from tekst.locks import LocksStatus
 
 
 _db_client: DatabaseClient = None

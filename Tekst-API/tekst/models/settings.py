@@ -7,10 +7,10 @@ from typing_extensions import TypedDict
 from tekst.config import TekstConfig, get_config
 from tekst.models.common import (
     CustomHttpUrl,
-    PlatformStateDocumentBase,
     LocaleKey,
     ModelBase,
     ModelFactoryMixin,
+    PlatformStateDocumentBase,
     TranslationBase,
     Translations,
 )

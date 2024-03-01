@@ -4,15 +4,15 @@ from uuid import uuid4
 from beanie.operators import Eq
 from elasticsearch import Elasticsearch
 
+from tekst import locks
 from tekst.config import TekstConfig, get_config
 from tekst.logging import log
 from tekst.models.content import ContentBaseDocument
 from tekst.models.location import LocationDocument
 from tekst.models.resource import ResourceBaseDocument
 from tekst.resources import resource_types_mgr
-from tekst.search.template import INDEX_TEMPLATE
 from tekst.search.responses import IndexInfoResponse
-from tekst import locks
+from tekst.search.template import INDEX_TEMPLATE
 
 
 _cfg: TekstConfig = get_config()

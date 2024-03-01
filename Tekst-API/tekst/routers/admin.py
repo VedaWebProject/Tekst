@@ -1,6 +1,8 @@
-from fastapi import APIRouter, BackgroundTasks, status, Path
 from typing import Annotated
-from tekst import errors, search
+
+from fastapi import APIRouter, BackgroundTasks, Path, status
+
+from tekst import errors, locks, search
 from tekst.auth import SuperuserDep
 from tekst.models.location import LocationDocument
 from tekst.models.platform import PlatformStats, TextStats
@@ -9,7 +11,6 @@ from tekst.models.text import TextDocument
 from tekst.models.user import UserDocument, UserRead
 from tekst.resources import resource_types_mgr
 from tekst.search.responses import IndexInfoResponse
-from tekst import locks
 
 
 router = APIRouter(

@@ -16,7 +16,7 @@ from fastapi import (
 from fastapi.responses import FileResponse
 from starlette.background import BackgroundTask
 
-from tekst import errors
+from tekst import errors, locks
 from tekst.auth import OptionalUserDep, SuperuserDep
 from tekst.logging import log
 from tekst.models.common import Translations
@@ -33,7 +33,6 @@ from tekst.models.text import (
 )
 from tekst.settings import get_settings
 from tekst.utils import get_temp_dir
-from tekst import locks
 
 
 router = APIRouter(

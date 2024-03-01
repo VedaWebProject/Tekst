@@ -1,6 +1,8 @@
 from enum import Enum
-from tekst.models.common import PlatformStateDocumentBase
+
 from humps import dekebabize
+
+from tekst.models.common import PlatformStateDocumentBase
 
 
 class LockKey(Enum):
