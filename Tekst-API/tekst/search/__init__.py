@@ -11,6 +11,8 @@ from tekst.models.location import LocationDocument
 from tekst.models.resource import ResourceBaseDocument
 from tekst.resources import resource_types_mgr
 from tekst.search.template import INDEX_TEMPLATE
+from tekst.search.responses import IndexInfoResponse
+from tekst import locks
 
 
 _cfg: TekstConfig = get_config()
@@ -80,10 +82,26 @@ async def _setup_index_template() -> None:
 
 
 async def create_index(*, overwrite_existing_index: bool = True) -> None:
+    # prepare
     new_index_name = _IDX_NAME_PREFIX + uuid4().hex
     log.info(f'Creating index "{new_index_name}"...')
-    client: Elasticsearch = await _get_es_client()
+
+    # check and set lock
+    if await locks.is_locked(locks.LockKey.INDEX_CREATE_UPDATE):
+        log.warning(
+            'Aborting index creation because of active lock "index_create_update"'
+        )
+        return
+    else:
+        await locks.lock(locks.LockKey.INDEX_CREATE_UPDATE)
+
+    # TEMP DEV
+    from time import sleep
+
+    sleep(10)
+
     # get existing search indices
+    client: Elasticsearch = await _get_es_client()
     existing_indices = [idx for idx in client.indices.get(index=_IDX_NAME_PATTERN_ANY)]
     if existing_indices:
         if overwrite_existing_index:
@@ -102,6 +120,8 @@ async def create_index(*, overwrite_existing_index: bool = True) -> None:
     # delete all other/old indices matching the used index naming pattern
     if existing_indices:
         client.indices.delete(index=existing_indices)
+    # realse lock
+    await locks.unlock(locks.LockKey.INDEX_CREATE_UPDATE)
 
 
 async def _populate_index(index_name: str) -> None:
@@ -156,3 +176,14 @@ async def _populate_index(index_name: str) -> None:
     else:
         log.error(f"There were errors populating index '{index_name}'.")
         raise RuntimeError("Failed to populate index without errors!")
+
+
+async def get_index_info():
+    client: Elasticsearch = await _get_es_client()
+    info = client.indices.stats(index=_IDX_ALIAS, human=True).body
+    index_info = list(info["indices"].values())[0]["total"]
+    return IndexInfoResponse(
+        documents=index_info["docs"]["count"],
+        size=index_info["store"]["size"],
+        searches=index_info["search"]["query_total"],
+    )

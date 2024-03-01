@@ -7,7 +7,7 @@ from typing_extensions import TypedDict
 from tekst.config import TekstConfig, get_config
 from tekst.models.common import (
     CustomHttpUrl,
-    DocumentBase,
+    PlatformStateDocumentBase,
     LocaleKey,
     ModelBase,
     ModelFactoryMixin,
@@ -161,9 +161,8 @@ class PlatformSettings(ModelBase, ModelFactoryMixin):
     ] = []
 
 
-class PlatformSettingsDocument(PlatformSettings, DocumentBase):
-    class Settings(DocumentBase.Settings):
-        name = "settings"
+class PlatformSettingsDocument(PlatformSettings, PlatformStateDocumentBase):
+    pass
 
 
 PlatformSettingsRead = PlatformSettings.read_model()

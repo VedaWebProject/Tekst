@@ -596,6 +596,15 @@ admin:
         Platform settings saved. Please note that it may take up to {cacheTTL} seconds for the changes to take effect on subsequent page loads.
       defaultTextPlaceholder: Automatic
       formLabelDisplay: Display
+    maintenance:
+      heading: Maintenance
+      headingSearchIndex: Search Index
+      headingSearchIndexActions: Actions
+      actionCreateIndex: Update search index
+      actionCreateIndexStarted: The search index will be updated in the background. This might take a while.
+      actionCreateIndexSuccess: Search index has been updated
+      actionGetIndexInfo: Request search index information
+      actionGetIndexInfoDiagTitle: Search index information
     segments:
       heading: Site Segments
       systemKeys:

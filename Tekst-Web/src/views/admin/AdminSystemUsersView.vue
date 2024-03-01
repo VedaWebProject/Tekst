@@ -24,7 +24,7 @@ import { useRoute } from 'vue-router';
 import { POST, PATCH, DELETE } from '@/api';
 import { useAuthStore } from '@/stores';
 import { dialogProps } from '@/common';
-import { SearchIcon, UndoIcon } from '@/icons';
+import { SearchIcon, UndoIcon, UsersIcon } from '@/icons';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 
@@ -192,7 +192,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <icon-heading level="2">
+  <icon-heading level="2" :icon="UsersIcon">
     {{ $t('admin.users.heading') }}
     <help-button-widget help-key="adminSystemUsersView" />
   </icon-heading>

@@ -313,3 +313,9 @@ E_400_TEXT_DELETE_LAST_TEXT = error_instance(
     key="textDeleteLastText",
     msg="Cannot delete the last text",
 )
+
+E_409_ACTION_LOCKED = error_instance(
+    status_code=status.HTTP_409_CONFLICT,
+    key="locked",
+    msg="The operation cannot be executed right now because of an active lock",
+)

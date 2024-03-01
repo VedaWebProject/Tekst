@@ -157,6 +157,16 @@
                 }
               }
             }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -167,6 +177,125 @@
             "OAuth2PasswordBearer": []
           }
         ]
+      }
+    },
+    "/admin/index/info": {
+      "get": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "Get search index info",
+        "operationId": "getSearchIndexInfo",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IndexInfoResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/admin/locks/{key}": {
+      "get": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "Get lock status",
+        "operationId": "getLockStatus",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/LockKey"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean",
+                  "title": "Response Get Lock Status Admin Locks  Key  Get"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/bookmarks/{id}": {
@@ -6119,6 +6248,29 @@
         "type": "object",
         "title": "HTTPValidationError"
       },
+      "IndexInfoResponse": {
+        "properties": {
+          "documents": {
+            "type": "integer",
+            "title": "Documents"
+          },
+          "size": {
+            "type": "string",
+            "title": "Size"
+          },
+          "searches": {
+            "type": "integer",
+            "title": "Searches"
+          }
+        },
+        "type": "object",
+        "required": [
+          "documents",
+          "size",
+          "searches"
+        ],
+        "title": "IndexInfoResponse"
+      },
       "LocaleKey": {
         "type": "string",
         "enum": [
@@ -6332,6 +6484,14 @@
         },
         "type": "object",
         "title": "LocationUpdate"
+      },
+      "LockKey": {
+        "type": "string",
+        "enum": [
+          "index-create-update",
+          "text-structure-import"
+        ],
+        "title": "LockKey"
       },
       "MaybePrivateUserField": {
         "type": "string",

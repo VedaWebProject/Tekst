@@ -17,6 +17,12 @@ import {
   InfoIcon,
   BookIcon,
   SearchIcon,
+  MaintenanceIcon,
+  SystemIcon,
+  SegmentsIcon,
+  UsersIcon,
+  LevelsIcon,
+  TreeIcon,
 } from '@/icons';
 
 function renderLink(
@@ -140,6 +146,7 @@ export function useAdminMenuOptions(showIcons: boolean = true) {
             params: { text: state.text?.slug },
           }),
           key: 'adminTextsSettings',
+          icon: (showIcons && renderIcon(SettingsIcon)) || undefined,
         },
         {
           label: renderLink(() => $t('admin.text.levels.heading'), {
@@ -147,6 +154,7 @@ export function useAdminMenuOptions(showIcons: boolean = true) {
             params: { text: state.text?.slug },
           }),
           key: 'adminTextsLevels',
+          icon: (showIcons && renderIcon(LevelsIcon)) || undefined,
         },
         {
           label: renderLink(() => $t('admin.text.locations.heading'), {
@@ -154,6 +162,7 @@ export function useAdminMenuOptions(showIcons: boolean = true) {
             params: { text: state.text?.slug },
           }),
           key: 'adminTextsLocations',
+          icon: (showIcons && renderIcon(TreeIcon)) || undefined,
         },
       ],
     },
@@ -165,29 +174,40 @@ export function useAdminMenuOptions(showIcons: boolean = true) {
     {
       label: $t('admin.system.heading'),
       key: 'adminSystem',
-      icon: (showIcons && renderIcon(SettingsIcon)) || undefined,
+      icon: (showIcons && renderIcon(SystemIcon)) || undefined,
       children: [
         {
           label: renderLink(() => $t('admin.system.platformSettings.heading'), {
             name: 'adminSystemSettings',
           }),
           key: 'adminSystemSettings',
+          icon: (showIcons && renderIcon(SettingsIcon)) || undefined,
+        },
+        {
+          label: renderLink(() => $t('admin.system.maintenance.heading'), {
+            name: 'adminSystemMaintenance',
+          }),
+          key: 'adminSystemMaintenance',
+          icon: (showIcons && renderIcon(MaintenanceIcon)) || undefined,
         },
         {
           label: renderLink(() => $t('admin.system.infoPages.heading'), {
             name: 'adminSystemInfoPages',
           }),
           key: 'adminSystemInfoPages',
+          icon: (showIcons && renderIcon(InfoIcon)) || undefined,
         },
         {
           label: renderLink(() => $t('admin.system.segments.heading'), {
             name: 'adminSystemSegments',
           }),
           key: 'adminSystemSegments',
+          icon: (showIcons && renderIcon(SegmentsIcon)) || undefined,
         },
         {
           label: renderLink(() => $t('admin.users.heading'), { name: 'adminSystemUsers' }),
           key: 'adminSystemUsers',
+          icon: (showIcons && renderIcon(UsersIcon)) || undefined,
         },
       ],
     },

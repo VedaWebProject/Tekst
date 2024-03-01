@@ -119,6 +119,7 @@ export type TekstErrorModel = components['schemas']['TekstErrorModel'];
 export type ErrorDetail = components['schemas']['ErrorDetail'];
 export type ErrorModel = components['schemas']['ErrorModel'];
 export type HTTPValidationError = components['schemas']['HTTPValidationError'];
+export type LockKey = components['schemas']['LockKey'];
 
 export type Metadate = components['schemas']['Metadate'];
 export type Metadata = Metadate[];

@@ -179,3 +179,9 @@ class ModelFactoryMixin:
                 **fields,
             )
         return cls._update_model
+
+
+class PlatformStateDocumentBase(DocumentBase):
+    class Settings(DocumentBase.Settings):
+        name = "state"
+        is_root = True

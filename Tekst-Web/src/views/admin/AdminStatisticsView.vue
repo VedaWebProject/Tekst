@@ -6,7 +6,7 @@ import { usePlatformData } from '@/composables/platformData';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 
-import { UsersIcon, TextsIcon, AccountTreeIcon, ResourceIcon, BarChartIcon } from '@/icons';
+import { UsersIcon, TextsIcon, TreeIcon, ResourceIcon, BarChartIcon } from '@/icons';
 
 const { pfData } = usePlatformData();
 const { stats, error } = useStats();
@@ -57,7 +57,7 @@ const resourceTypes = computed(() => {
 
         <n-statistic :label="$t('models.location.modelLabel', 2)" :value="counts.locations">
           <template #prefix>
-            <n-icon :component="AccountTreeIcon" />
+            <n-icon :component="TreeIcon" />
           </template>
         </n-statistic>
 
@@ -96,7 +96,7 @@ const resourceTypes = computed(() => {
         <div class="statistics-container">
           <n-statistic :label="$t('models.location.modelLabel', 2)" :value="text.locationsCount">
             <template #prefix>
-              <n-icon :component="AccountTreeIcon" />
+              <n-icon :component="TreeIcon" />
             </template>
           </n-statistic>
 

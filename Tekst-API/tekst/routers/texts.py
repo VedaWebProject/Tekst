@@ -33,6 +33,7 @@ from tekst.models.text import (
 )
 from tekst.settings import get_settings
 from tekst.utils import get_temp_dir
+from tekst import locks
 
 
 router = APIRouter(
@@ -148,6 +149,7 @@ async def download_structure_template(
             errors.E_404_TEXT_NOT_FOUND,
             errors.E_401_UNAUTHORIZED,
             errors.E_403_FORBIDDEN,
+            errors.E_409_ACTION_LOCKED,
         ]
     ),
 )
@@ -161,6 +163,11 @@ async def import_text_structure(
     """
     Upload the structure definition for a text to apply as a structure of locations
     """
+    # check and set lock
+    if await locks.is_locked(locks.LockKey.TEXT_STRUCTURE_IMPORT):
+        raise errors.E_409_ACTION_LOCKED
+    else:
+        await locks.lock(locks.LockKey.TEXT_STRUCTURE_IMPORT)
     # test upload file MIME type
     if not file.content_type.lower() == "application/json":
         raise errors.E_400_UPLOAD_INVALID_MIME_TYPE_NOT_JSON
@@ -208,6 +215,8 @@ async def import_text_structure(
                 c["parent_id"] = inserted_ids[i]
             children += children_temp
         locations = children
+    # release lock
+    await locks.unlock(locks.LockKey.TEXT_STRUCTURE_IMPORT)
 
 
 @router.post(

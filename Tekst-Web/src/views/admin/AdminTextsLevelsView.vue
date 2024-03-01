@@ -17,7 +17,7 @@ import { useI18n } from 'vue-i18n';
 import TranslationFormItem from '@/forms/TranslationFormItem.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
 
-import { DeleteIcon, EditIcon } from '@/icons';
+import { DeleteIcon, EditIcon, LevelsIcon } from '@/icons';
 import IconHeading from '@/components/generic/IconHeading.vue';
 
 const state = useStateStore();
@@ -154,7 +154,7 @@ async function handleModalSubmit() {
 </script>
 
 <template>
-  <icon-heading level="2">
+  <icon-heading level="2" :icon="LevelsIcon">
     {{ $t('admin.text.levels.heading') }}
     <help-button-widget help-key="adminTextsLevelsView" />
   </icon-heading>

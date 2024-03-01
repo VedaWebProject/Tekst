@@ -1,5 +1,5 @@
-from fastapi import APIRouter, BackgroundTasks, status
-
+from fastapi import APIRouter, BackgroundTasks, status, Path
+from typing import Annotated
 from tekst import errors, search
 from tekst.auth import SuperuserDep
 from tekst.models.location import LocationDocument
@@ -8,6 +8,8 @@ from tekst.models.resource import ResourceBaseDocument
 from tekst.models.text import TextDocument
 from tekst.models.user import UserDocument, UserRead
 from tekst.resources import resource_types_mgr
+from tekst.search.responses import IndexInfoResponse
+from tekst import locks
 
 
 router = APIRouter(
@@ -77,8 +79,34 @@ async def get_users(su: SuperuserDep) -> list[UserDocument]:
 @router.get(
     "/index/create",
     status_code=status.HTTP_202_ACCEPTED,
+    responses=errors.responses(
+        [
+            errors.E_409_ACTION_LOCKED,
+        ]
+    ),
 )
 async def create_search_index(
     su: SuperuserDep, background_tasks: BackgroundTasks
 ) -> None:
+    if await locks.is_locked(locks.LockKey.INDEX_CREATE_UPDATE):
+        raise errors.E_409_ACTION_LOCKED
     background_tasks.add_task(search.create_index)
+
+
+@router.get(
+    "/index/info",
+    response_model=IndexInfoResponse,
+    status_code=status.HTTP_200_OK,
+)
+async def get_search_index_info(su: SuperuserDep) -> IndexInfoResponse:
+    return await search.get_index_info()
+
+
+@router.get(
+    "/locks/{key}",
+    status_code=status.HTTP_200_OK,
+)
+async def get_lock_status(
+    su: SuperuserDep, lock_key: Annotated[locks.LockKey, Path(alias="key")]
+) -> bool:
+    return await locks.is_locked(lock_key)

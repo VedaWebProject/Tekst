@@ -31,6 +31,7 @@ import {
   EditIcon,
   DownloadIcon,
   UploadIcon,
+  TreeIcon,
 } from '@/icons';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
 import { renderIcon } from '@/utils';
@@ -376,7 +377,7 @@ watch(
 </script>
 
 <template>
-  <icon-heading level="2">
+  <icon-heading level="2" :icon="TreeIcon">
     {{ $t('admin.text.locations.heading') }}
     <help-button-widget help-key="adminTextsLocationsView" />
   </icon-heading>

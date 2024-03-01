@@ -39,6 +39,7 @@ const AdminTextsLocationsView = () => import('@/views/admin/AdminTextsLocationsV
 const AdminNewTextView = () => import('@/views/admin/AdminNewTextView.vue');
 const AdminSystemView = () => import('@/views/admin/AdminSystemView.vue');
 const AdminSystemSettingsView = () => import('@/views/admin/AdminSystemSettingsView.vue');
+const AdminSystemMaintenanceView = () => import('@/views/admin/AdminSystemMaintenanceView.vue');
 const AdminSystemSegmentsView = () => import('@/views/admin/AdminSystemSegmentsView.vue');
 const AdminSystemInfoPagesView = () => import('@/views/admin/AdminSystemInfoPagesView.vue');
 
@@ -233,6 +234,11 @@ const router = createRouter({
               path: 'settings',
               name: 'adminSystemSettings',
               component: AdminSystemSettingsView,
+            },
+            {
+              path: 'maintenance',
+              name: 'adminSystemMaintenance',
+              component: AdminSystemMaintenanceView,
             },
             {
               path: 'pages',

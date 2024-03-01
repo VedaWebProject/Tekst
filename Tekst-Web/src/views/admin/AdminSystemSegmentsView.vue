@@ -25,7 +25,7 @@ import { systemSegmentFormRules } from '@/forms/formRules';
 import { dialogProps } from '@/common';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import { useStateStore } from '@/stores';
-import { AddIcon, FileOpenIcon } from '@/icons';
+import { AddIcon, FileOpenIcon, SegmentsIcon } from '@/icons';
 import IconHeading from '@/components/generic/IconHeading.vue';
 
 const state = useStateStore();
@@ -234,7 +234,7 @@ async function handleDeleteClick() {
 </script>
 
 <template>
-  <icon-heading level="2">
+  <icon-heading level="2" :icon="SegmentsIcon">
     {{ $t('admin.system.segments.heading') }}
     <help-button-widget help-key="adminSystemSegmentsView" />
   </icon-heading>

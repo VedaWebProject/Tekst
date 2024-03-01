@@ -16,6 +16,14 @@ export interface paths {
     /** Create search index */
     get: operations['createSearchIndex'];
   };
+  '/admin/index/info': {
+    /** Get search index info */
+    get: operations['getSearchIndexInfo'];
+  };
+  '/admin/locks/{key}': {
+    /** Get lock status */
+    get: operations['getLockStatus'];
+  };
   '/bookmarks/{id}': {
     /** Delete bookmark */
     delete: operations['deleteBookmark'];
@@ -755,6 +763,15 @@ export interface components {
       /** Detail */
       detail?: components['schemas']['ValidationError'][];
     };
+    /** IndexInfoResponse */
+    IndexInfoResponse: {
+      /** Documents */
+      documents: number;
+      /** Size */
+      size: string;
+      /** Searches */
+      searches: number;
+    };
     /** @enum {string} */
     LocaleKey: 'deDE' | 'enUS';
     /** LocationCreate */
@@ -853,6 +870,11 @@ export interface components {
       /** Label */
       label?: string | null;
     };
+    /**
+     * LockKey
+     * @enum {string}
+     */
+    LockKey: 'index-create-update' | 'text-structure-import';
     /** @enum {string} */
     MaybePrivateUserField: 'name' | 'affiliation' | 'bio';
     MaybePrivateUserFields: components['schemas']['MaybePrivateUserField'][];
@@ -2565,6 +2587,69 @@ export interface operations {
       403: {
         content: {
           'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Conflict */
+      409: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+    };
+  };
+  /** Get search index info */
+  getSearchIndexInfo: {
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['IndexInfoResponse'];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+    };
+  };
+  /** Get lock status */
+  getLockStatus: {
+    parameters: {
+      path: {
+        key: components['schemas']['LockKey'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': boolean;
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };

@@ -25,7 +25,7 @@ import { infoSegmentFormRules } from '@/forms/formRules';
 import { dialogProps } from '@/common';
 import { useStateStore } from '@/stores';
 
-import { AddIcon, FileOpenIcon } from '@/icons';
+import { AddIcon, FileOpenIcon, InfoIcon } from '@/icons';
 import IconHeading from '@/components/generic/IconHeading.vue';
 
 const state = useStateStore();
@@ -223,7 +223,7 @@ async function handleDeleteClick() {
 </script>
 
 <template>
-  <icon-heading level="2">
+  <icon-heading level="2" :icon="InfoIcon">
     {{ $t('admin.system.infoPages.heading') }}
     <help-button-widget help-key="adminSystemInfoPagesView" />
   </icon-heading>

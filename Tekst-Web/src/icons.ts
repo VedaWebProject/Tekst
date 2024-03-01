@@ -95,15 +95,23 @@ import PlaylistRemoveOutlined from '@vicons/material/PlaylistRemoveOutlined';
 import KeyboardAltOutlined from '@vicons/material/KeyboardAltOutlined';
 import KeyboardCapslockOutlined from '@vicons/material/KeyboardCapslockOutlined';
 import KeyboardArrowUpOutlined from '@vicons/material/KeyboardArrowUpOutlined';
+import ConstructionOutlined from '@vicons/material/ConstructionOutlined';
+import MiscellaneousServicesOutlined from '@vicons/material/MiscellaneousServicesOutlined';
+import AutoAwesomeMosaicOutlined from '@vicons/material/AutoAwesomeMosaicOutlined';
+import PlayArrowFilled from '@vicons/material/PlayArrowFilled';
 
 export {
+  PlayArrowFilled as PlayIcon,
+  AutoAwesomeMosaicOutlined as SegmentsIcon,
+  MiscellaneousServicesOutlined as SystemIcon,
+  ConstructionOutlined as MaintenanceIcon,
   KeyboardArrowUpOutlined as ShiftIcon,
   KeyboardCapslockOutlined as CapsLockIcon,
   KeyboardAltOutlined as KeyboardIcon,
   PlaylistAddCheckOutlined as CheckAllIcon,
   PlaylistRemoveOutlined as UncheckAllIcon,
   HideImageOutlined as NoImageIcon,
-  AccountTreeFilled as AccountTreeIcon,
+  AccountTreeFilled as TreeIcon,
   AddOutlined as AddIcon,
   AddCircleOutlineOutlined as AddCircleIcon,
   BookmarkBorderOutlined as BookmarkIcon,
@@ -145,6 +153,7 @@ export {
   FormatItalicOutlined as FormatItalicIcon,
   FormatListBulletedOutlined as FormatListBulletedIcon,
   FormatListNumberedOutlined as FormatListNumberedIcon,
+  FormatListNumberedOutlined as LevelsIcon,
   FormatQuoteFilled as FormatQuoteIcon,
   FormatSizeOutlined as FormatSizeIcon,
   MenuOutlined as HamburgerMenuIcon,

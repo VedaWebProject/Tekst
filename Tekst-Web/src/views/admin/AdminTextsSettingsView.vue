@@ -27,6 +27,7 @@ import router from '@/router';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
+import { SettingsIcon } from '@/icons';
 
 const state = useStateStore();
 const { pfData, loadPlatformData } = usePlatformData();
@@ -126,7 +127,7 @@ async function handleDelete() {
 </script>
 
 <template>
-  <icon-heading level="2">
+  <icon-heading level="2" :icon="SettingsIcon">
     {{ $t('admin.text.settings.heading') }}
     <help-button-widget help-key="adminTextsSettingsView" />
   </icon-heading>

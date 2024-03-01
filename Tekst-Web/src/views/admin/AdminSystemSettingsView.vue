@@ -24,7 +24,7 @@ import TranslationFormItem from '@/forms/TranslationFormItem.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import { useStateStore } from '@/stores';
 import _cloneDeep from 'lodash.clonedeep';
-import { AddIcon, MinusIcon, ArrowUpIcon, ArrowDownIcon } from '@/icons';
+import { AddIcon, MinusIcon, ArrowUpIcon, ArrowDownIcon, SettingsIcon } from '@/icons';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 
@@ -96,7 +96,7 @@ function resetForm() {
 </script>
 
 <template>
-  <icon-heading level="2">
+  <icon-heading level="2" :icon="SettingsIcon">
     {{ $t('admin.system.platformSettings.heading') }}
     <help-button-widget help-key="adminSystemSettingsView" />
   </icon-heading>
