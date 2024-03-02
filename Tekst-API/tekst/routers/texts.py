@@ -162,13 +162,8 @@ async def import_text_structure(
     """
     Upload the structure definition for a text to apply as a structure of locations
     """
-    # check and set lock
-    if await locks.is_locked(locks.LockKey.TEXT_STRUCTURE_IMPORT):
-        raise errors.E_409_ACTION_LOCKED
-    else:
-        await locks.lock(locks.LockKey.TEXT_STRUCTURE_IMPORT)
     # test upload file MIME type
-    if not file.content_type.lower() == "application/json":
+    if file.content_type.lower() != "application/json":
         raise errors.E_400_UPLOAD_INVALID_MIME_TYPE_NOT_JSON
     # find text
     text = await TextDocument.get(text_id)
@@ -182,40 +177,51 @@ async def import_text_structure(
         structure_def = TextStructureImportData.model_validate_json(await file.read())
     except Exception:
         raise errors.E_400_UPLOAD_INVALID_JSON
-    # import locations depth-first
-    locations = structure_def.model_dump(exclude_none=True, by_alias=False)["locations"]
-    structure_def = None  # de-reference structure definition object
-    # apply parent IDs (None) to all 0-level locations
-    for location in locations:
-        location["parent_id"] = None
-    # process locations level by level
-    for level in range(len(text.levels)):
-        if len(locations) == 0:
-            break  # pragma: no cover
-        # create LocationDocument instances for each location definition
-        location_docs = [
-            LocationDocument(
-                text_id=text_id,
-                parent_id=locations[i]["parent_id"],
-                level=level,
-                position=i,
-                label=locations[i]["label"],
-            )
-            for i in range(len(locations))
+    # check and set lock
+    if await locks.is_locked(locks.LockKey.TEXT_STRUCTURE_IMPORT):
+        raise errors.E_409_ACTION_LOCKED
+    else:
+        await locks.lock(locks.LockKey.TEXT_STRUCTURE_IMPORT)
+    try:
+        # import locations depth-first
+        locations = structure_def.model_dump(exclude_none=True, by_alias=False)[
+            "locations"
         ]
-        # bulk-insert documents
-        inserted_ids = (await LocationDocument.insert_many(location_docs)).inserted_ids
-        # collect children and their parents' IDs
-        children = []
-        for i in range(len(locations)):
-            children_temp = locations[i].get("locations", [])
-            # apply parent ID
-            for c in children_temp:
-                c["parent_id"] = inserted_ids[i]
-            children += children_temp
-        locations = children
-    # release lock
-    await locks.unlock(locks.LockKey.TEXT_STRUCTURE_IMPORT)
+        structure_def = None  # de-reference structure definition object
+        # apply parent IDs (None) to all 0-level locations
+        for location in locations:
+            location["parent_id"] = None
+        # process locations level by level
+        for level in range(len(text.levels)):
+            if len(locations) == 0:
+                break  # pragma: no cover
+            # create LocationDocument instances for each location definition
+            location_docs = [
+                LocationDocument(
+                    text_id=text_id,
+                    parent_id=locations[i]["parent_id"],
+                    level=level,
+                    position=i,
+                    label=locations[i]["label"],
+                )
+                for i in range(len(locations))
+            ]
+            # bulk-insert documents
+            inserted_ids = (
+                await LocationDocument.insert_many(location_docs)
+            ).inserted_ids
+            # collect children and their parents' IDs
+            children = []
+            for i in range(len(locations)):
+                children_temp = locations[i].get("locations", [])
+                # apply parent ID
+                for c in children_temp:
+                    c["parent_id"] = inserted_ids[i]
+                children += children_temp
+            locations = children
+    finally:
+        # release lock
+        await locks.unlock(locks.LockKey.TEXT_STRUCTURE_IMPORT)
 
 
 @router.post(

@@ -599,12 +599,15 @@ admin:
     maintenance:
       heading: Maintenance
       headingSearchIndex: Search Index
+      indexInfo:
+        heading: Information
+        documents: Documents
+        size: Size
+        searches: Searches
       headingSearchIndexActions: Actions
       actionCreateIndex: Update search index
       actionCreateIndexStarted: The search index will be updated in the background. This might take a while.
       actionCreateIndexSuccess: Search index has been updated
-      actionGetIndexInfo: Request search index information
-      actionGetIndexInfoDiagTitle: Search index information
     segments:
       heading: Site Segments
       systemKeys:

@@ -4,15 +4,14 @@ import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 
 import IconHeading from '@/components/generic/IconHeading.vue';
 import { MaintenanceIcon, PlayIcon } from '@/icons';
-import { NSpace, NButton, NIcon, useDialog } from 'naive-ui';
-import { GET } from '@/api';
+import { NSpace, NButton, NIcon, NTable } from 'naive-ui';
+import { GET, type IndexInfoResponse } from '@/api';
 import { useMessages } from '@/composables/messages';
-import { onBeforeUnmount } from 'vue';
+import { onBeforeMount, onBeforeUnmount, ref } from 'vue';
 import { useLocks } from '@/composables/locks';
 import { watch } from 'vue';
 
 const { message } = useMessages();
-const dialog = useDialog();
 
 const {
   locked: indexLocked,
@@ -26,6 +25,8 @@ watch(indexLocked, (after) => {
   !after && message.success($t('admin.system.maintenance.actionCreateIndexSuccess'));
 });
 
+const indexInfo = ref<IndexInfoResponse>();
+
 async function handleActionSearchIndexCreate() {
   indexLocked.value = true;
   const { error } = await GET('/admin/index/create');
@@ -35,17 +36,14 @@ async function handleActionSearchIndexCreate() {
   startIndexLockPolling();
 }
 
-async function handleActionGetIndexInfo() {
+async function loadIndexInfo() {
   const { data, error } = await GET('/admin/index/info');
   if (!error) {
-    dialog.info({
-      title: $t('admin.system.maintenance.actionGetIndexInfoDiagTitle'),
-      content: JSON.stringify(data, null, 2),
-      positiveText: $t('general.okAction'),
-    });
+    indexInfo.value = data;
   }
 }
 
+onBeforeMount(() => loadIndexInfo());
 onBeforeUnmount(() => stopIndexLockPolling());
 </script>
 
@@ -58,6 +56,17 @@ onBeforeUnmount(() => stopIndexLockPolling());
   <div class="content-block">
     <!-- SEARCH INDEX -->
     <h3>{{ $t('admin.system.maintenance.headingSearchIndex') }}</h3>
+    <tempalte v-if="indexInfo">
+      <h4>{{ $t('admin.system.maintenance.indexInfo.heading') }}</h4>
+      <n-table :bordered="true" size="small">
+        <tbody>
+          <tr v-for="(value, key) in indexInfo" :key="key">
+            <th>{{ $t(`admin.system.maintenance.indexInfo.${key}`) }}</th>
+            <td>{{ value }}</td>
+          </tr>
+        </tbody>
+      </n-table>
+    </tempalte>
     <h4>{{ $t('admin.system.maintenance.headingSearchIndexActions') }}</h4>
     <n-space vertical>
       <n-space align="center">
@@ -65,7 +74,6 @@ onBeforeUnmount(() => stopIndexLockPolling());
           type="primary"
           size="small"
           :title="$t('admin.system.maintenance.actionCreateIndex')"
-          circle
           :disabled="indexLocked"
           :loading="indexLocked"
           @click="handleActionSearchIndexCreate"
@@ -75,22 +83,6 @@ onBeforeUnmount(() => stopIndexLockPolling());
           </template>
         </n-button>
         <div>{{ $t('admin.system.maintenance.actionCreateIndex') }}</div>
-      </n-space>
-      <n-space align="center">
-        <n-button
-          type="primary"
-          size="small"
-          :title="$t('admin.system.maintenance.actionGetIndexInfo')"
-          circle
-          :disabled="indexLocked"
-          :loading="indexLocked"
-          @click="handleActionGetIndexInfo"
-        >
-          <template #icon>
-            <n-icon :component="PlayIcon" />
-          </template>
-        </n-button>
-        <div>{{ $t('admin.system.maintenance.actionGetIndexInfo') }}</div>
       </n-space>
     </n-space>
   </div>

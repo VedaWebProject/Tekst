@@ -623,12 +623,15 @@ admin:
     maintenance:
       heading: Wartung
       headingSearchIndex: Such-Index
+      indexInfo:
+        heading: Informationen
+        documents: Dokumente
+        size: Größe
+        searches: Suchen
       headingSearchIndexActions: Aktionen
       actionCreateIndex: Such-Index aktualisieren
       actionCreateIndexStarted: Der Such-Index wird im Hintergrund aktualisiert. Dies kann einen Moment dauern.
       actionCreateIndexSuccess: Such-Index wurde aktualisiert
-      actionGetIndexInfo: Informationen zum Such-Index abfragen
-      actionGetIndexInfoDiagTitle: Informationen zum Such-Index
     segments:
       heading: Seitensegmente
       systemKeys:

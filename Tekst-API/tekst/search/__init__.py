@@ -1,4 +1,5 @@
-from time import sleep
+import asyncio
+
 from uuid import uuid4
 
 from beanie.operators import Eq
@@ -44,7 +45,7 @@ async def init_es_client(
                     "Waiting for Elasticsearch service "
                     f"({i}/{_cfg.es_init_timeout_s} seconds)..."
                 )
-            sleep(1)
+            await asyncio.sleep(1)
         else:
             raise RuntimeError("Timed out waiting for Elasticsearch service!")
         await _setup_index_template()
@@ -94,11 +95,6 @@ async def create_index(*, overwrite_existing_index: bool = True) -> None:
         return
     else:
         await locks.lock(locks.LockKey.INDEX_CREATE_UPDATE)
-
-    # TEMP DEV
-    from time import sleep
-
-    sleep(10)
 
     # get existing search indices
     client: Elasticsearch = await _get_es_client()

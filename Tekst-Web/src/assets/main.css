@@ -55,31 +55,36 @@ em,
 h1 {
   font-size: 1.5rem;
   font-weight: var(--font-weight-normal);
+  margin-top: 1.2rem;
   margin-bottom: 1.25rem;
 }
 
 h2 {
   font-size: 1.35rem;
   font-weight: var(--font-weight-normal);
+  margin-top: 1.1rem;
   margin-bottom: 1rem;
 }
 
 h3 {
   font-size: 1.2rem;
   font-weight: var(--font-weight-normal);
+  margin-top: 1rem;
   margin-bottom: 0.9rem;
 }
 
 h4 {
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: var(--font-weight-normal);
   margin-bottom: 0.8rem;
+  margin-top: .9rem;
 }
 
 h5 {
-  font-size: 0.8rem;
+  font-size: 1rem;
   font-weight: var(--font-weight-bold);
   margin-bottom: 0.5rem;
+  margin-top: .8rem;
 }
 
 h1,
@@ -88,7 +93,6 @@ h3,
 h4,
 h5 {
   line-height: 1.25;
-  margin-top: 1.25rem;
 }
 
 h1:first-child,
