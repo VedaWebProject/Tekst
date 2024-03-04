@@ -100,7 +100,6 @@ function handleSave() {
 }
 
 async function handleDelete() {
-  loading.value = true;
   dialog.warning({
     title: $t('general.warning'),
     content: $t('admin.text.settings.warnDeleteText', { title: state.text?.title || '?' }),
@@ -110,6 +109,7 @@ async function handleDelete() {
     closable: false,
     ...dialogProps,
     onPositiveClick: async () => {
+      loading.value = true;
       const { error } = await DELETE('/texts/{id}', {
         params: { path: { id: state.text?.id || '' } },
       });
@@ -121,6 +121,7 @@ async function handleDelete() {
           pfData.value?.texts[0];
         router.push({ name: 'home' });
       }
+      loading.value = false;
     },
   });
 }
