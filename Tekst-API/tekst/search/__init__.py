@@ -2,7 +2,7 @@ import asyncio
 
 from uuid import uuid4
 
-from beanie.operators import Eq
+from beanie.operators import Eq, In
 from elasticsearch import Elasticsearch
 
 from tekst import locks
@@ -11,6 +11,7 @@ from tekst.logging import log
 from tekst.models.content import ContentBaseDocument
 from tekst.models.location import LocationDocument
 from tekst.models.resource import ResourceBaseDocument
+from tekst.models.text import TextDocument
 from tekst.resources import resource_types_mgr
 from tekst.search.responses import IndexInfoResponse
 from tekst.search.template import INDEX_TEMPLATE
@@ -119,6 +120,8 @@ async def create_index(*, overwrite_existing_index: bool = True) -> None:
         # delete all other/old indices matching the used index naming pattern
         if existing_indices:
             client.indices.delete(index=existing_indices)
+        # perform initial search
+        client.search(index=_IDX_ALIAS, query={"match_all": {}})
     finally:
         # release lock
         await locks.release(locks.LockKey.INDEX_CREATE_UPDATE)
@@ -130,11 +133,12 @@ async def _populate_index(index_name: str) -> None:
 
     # extend index mappings adding one extra field for each existing public resource
     extra_properties = {}
-    for res in await ResourceBaseDocument.find(
+    public_resources = await ResourceBaseDocument.find(
         Eq(ResourceBaseDocument.public, True),
         with_children=True,
         lazy_parse=True,
-    ).to_list():
+    ).to_list()
+    for res in public_resources:
         extra_properties[str(res.id)] = {
             "properties": resource_types_mgr.get(
                 res.resource_type
@@ -147,35 +151,49 @@ async def _populate_index(index_name: str) -> None:
     if not resp or not resp.get("acknowledged"):
         raise RuntimeError("Failed to extend index mappings!")
 
-    # create one index document per location,
-    # with data from resource contents for each respective location
-    bulk_body = []
-    for location in await LocationDocument.find_all(lazy_parse=True).to_list():
-        location_index_doc = {
-            "text_id": str(location.text_id),
-            "level": location.level,
-            "position": location.position,
-        }
-        for content in await ContentBaseDocument.find(
-            Eq(ContentBaseDocument.location_id, location.id),
-            with_children=True,
+    # populate index
+    for text in await TextDocument.find_all(lazy_parse=True).to_list():
+        bulk_req_body = []
+        text_resources = [res for res in public_resources if res.text_id == text.id]
+        # skip texts without public resources
+        if not text_resources:
+            continue
+        # create one index document per location
+        for location in await LocationDocument.find(
+            LocationDocument.text_id == text.id,
+            lazy_parse=True,
         ).to_list():
-            location_index_doc[str(content.resource_id)] = resource_types_mgr.get(
-                content.resource_type
-            ).index_doc_data(content)
+            location_index_doc = {
+                "text_id": str(location.text_id),
+                "level": location.level,
+                "position": location.position,
+            }
+            for content in await ContentBaseDocument.find(
+                Eq(ContentBaseDocument.location_id, location.id),
+                In(
+                    ContentBaseDocument.resource_id,
+                    [res.id for res in text_resources],
+                ),
+                with_children=True,
+            ).to_list():
+                location_index_doc[str(content.resource_id)] = resource_types_mgr.get(
+                    content.resource_type
+                ).index_doc_data(content)
 
-        bulk_body.append({"index": {"_index": index_name, "_id": str(location.id)}})
-        bulk_body.append(location_index_doc)
+            bulk_req_body.append(
+                {"index": {"_index": index_name, "_id": str(location.id)}}
+            )
+            bulk_req_body.append(location_index_doc)
 
-    # bulk index
-    resp = client.bulk(body=bulk_body)
-    if resp and not resp.get("errors", False):
-        log.debug(
-            f'Successfully populated "{index_name}" (took {resp["took"]/1000} seconds).'
-        )
-    else:
-        log.error(f"There were errors populating index '{index_name}'.")
-        raise RuntimeError("Failed to populate index without errors!")
+        # bulk index documents representing this text's locations
+        resp = client.bulk(body=bulk_req_body)
+        if resp and not resp.get("errors", False):
+            log.debug(f'Indexing finished for "{text.title}".')
+        else:
+            log.error(
+                f"There were errors populating index '{index_name}' "
+                f"with documents for text '{text.title}'."
+            )
 
 
 async def get_index_info():

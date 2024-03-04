@@ -122,7 +122,6 @@ async def run_before_and_after_each_test_case(get_db_client_override, config):
         "locations",
         "resources",
         "contents",
-        "settings",
         "users",
     ):
         await get_db_client_override[config.db_name][collection].delete_many({})

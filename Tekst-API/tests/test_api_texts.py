@@ -131,7 +131,7 @@ async def test_update_text(
 async def test_delete_text(
     test_client: AsyncClient, insert_sample_data, status_fail_msg, login, wrong_id
 ):
-    inserted_ids = await insert_sample_data("texts", "locations", "settings")
+    inserted_ids = await insert_sample_data("texts", "locations")
     text_id = inserted_ids["texts"][1]
 
     # log in as superuser

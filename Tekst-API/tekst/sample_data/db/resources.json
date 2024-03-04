@@ -36,7 +36,6 @@
     ],
     "config": {
       "common": {
-        "category": "versions",
         "showOnParentLevel": true
       },
       "deeplLinks": {
@@ -70,9 +69,6 @@
       { "key": "language", "value": "JA" }
     ],
     "config": {
-      "common": {
-        "category": "versions"
-      },
       "deeplLinks": {
         "showOnParentLevel": false,
         "enabled": true,
@@ -95,7 +91,6 @@
     "citation": null,
     "config": {
       "common": {
-        "category": "translations",
         "showOnParentLevel": true
       },
       "deeplLinks": {
@@ -120,9 +115,6 @@
     "public": true,
     "citation": null,
     "config": {
-      "common": {
-        "category": "versions"
-      },
       "deeplLinks": {
         "enabled": false,
         "sourceLanguage": "BG",

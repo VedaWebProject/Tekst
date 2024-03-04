@@ -25,6 +25,7 @@ watch(
   (after, before) => {
     if (before !== undefined && after === false) {
       message.success($t('admin.system.maintenance.index.actionCreateSuccess'));
+      loadIndexInfo();
     }
   }
 );
