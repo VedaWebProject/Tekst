@@ -184,13 +184,6 @@ export function useAdminMenuOptions(showIcons: boolean = true) {
           icon: (showIcons && renderIcon(SettingsIcon)) || undefined,
         },
         {
-          label: renderLink(() => $t('admin.system.maintenance.heading'), {
-            name: 'adminSystemMaintenance',
-          }),
-          key: 'adminSystemMaintenance',
-          icon: (showIcons && renderIcon(MaintenanceIcon)) || undefined,
-        },
-        {
           label: renderLink(() => $t('admin.system.infoPages.heading'), {
             name: 'adminSystemInfoPages',
           }),
@@ -208,6 +201,13 @@ export function useAdminMenuOptions(showIcons: boolean = true) {
           label: renderLink(() => $t('admin.users.heading'), { name: 'adminSystemUsers' }),
           key: 'adminSystemUsers',
           icon: (showIcons && renderIcon(UsersIcon)) || undefined,
+        },
+        {
+          label: renderLink(() => $t('admin.system.maintenance.heading'), {
+            name: 'adminSystemMaintenance',
+          }),
+          key: 'adminSystemMaintenance',
+          icon: (showIcons && renderIcon(MaintenanceIcon)) || undefined,
         },
       ],
     },

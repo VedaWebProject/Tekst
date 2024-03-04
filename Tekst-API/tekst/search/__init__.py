@@ -96,6 +96,8 @@ async def create_index(*, overwrite_existing_index: bool = True) -> None:
     else:
         await locks.lock(locks.LockKey.INDEX_CREATE_UPDATE)
 
+    await asyncio.sleep(10)
+
     # get existing search indices
     client: Elasticsearch = await _get_es_client()
     existing_indices = [idx for idx in client.indices.get(index=_IDX_NAME_PATTERN_ANY)]
@@ -117,7 +119,7 @@ async def create_index(*, overwrite_existing_index: bool = True) -> None:
     if existing_indices:
         client.indices.delete(index=existing_indices)
     # realse lock
-    await locks.unlock(locks.LockKey.INDEX_CREATE_UPDATE)
+    await locks.release(locks.LockKey.INDEX_CREATE_UPDATE)
 
 
 async def _populate_index(index_name: str) -> None:

@@ -24,6 +24,12 @@ export interface paths {
     /** Get lock status */
     get: operations['getLockStatus'];
   };
+  '/admin/locks': {
+    /** Get locks status */
+    get: operations['getLocksStatus'];
+    /** Release locks */
+    delete: operations['releaseLocks'];
+  };
   '/bookmarks/{id}': {
     /** Delete bookmark */
     delete: operations['deleteBookmark'];
@@ -874,7 +880,7 @@ export interface components {
      * LockKey
      * @enum {string}
      */
-    LockKey: 'index-create-update' | 'text-structure-import';
+    LockKey: 'index_create_update' | 'text_structure_import';
     /** @enum {string} */
     MaybePrivateUserField: 'name' | 'affiliation' | 'bio';
     MaybePrivateUserFields: components['schemas']['MaybePrivateUserField'][];
@@ -2650,6 +2656,54 @@ export interface operations {
       422: {
         content: {
           'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Get locks status */
+  getLocksStatus: {
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': {
+            [key: string]: boolean;
+          };
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+    };
+  };
+  /** Release locks */
+  releaseLocks: {
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': unknown;
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
         };
       };
     };

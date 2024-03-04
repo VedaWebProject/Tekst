@@ -98,10 +98,14 @@ import KeyboardArrowUpOutlined from '@vicons/material/KeyboardArrowUpOutlined';
 import ConstructionOutlined from '@vicons/material/ConstructionOutlined';
 import MiscellaneousServicesOutlined from '@vicons/material/MiscellaneousServicesOutlined';
 import AutoAwesomeMosaicOutlined from '@vicons/material/AutoAwesomeMosaicOutlined';
-import PlayArrowFilled from '@vicons/material/PlayArrowFilled';
+import UpdateOutlined from '@vicons/material/UpdateOutlined';
+import LockClockOutlined from '@vicons/material/LockClockOutlined';
+import LockOpenOutlined from '@vicons/material/LockOpenOutlined';
 
 export {
-  PlayArrowFilled as PlayIcon,
+  LockClockOutlined as LockIcon,
+  LockOpenOutlined as LockOpenIcon,
+  UpdateOutlined as UpdateIcon,
   AutoAwesomeMosaicOutlined as SegmentsIcon,
   MiscellaneousServicesOutlined as SystemIcon,
   ConstructionOutlined as MaintenanceIcon,

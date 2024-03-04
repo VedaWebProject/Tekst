@@ -111,3 +111,20 @@ async def get_lock_status(
     su: SuperuserDep, lock_key: Annotated[locks.LockKey, Path(alias="key")]
 ) -> bool:
     return await locks.is_locked(lock_key)
+
+
+@router.get(
+    "/locks",
+    status_code=status.HTTP_200_OK,
+)
+async def get_locks_status(su: SuperuserDep) -> dict[str, bool]:
+    return await locks.get_locks_status()
+
+
+@router.delete(
+    "/locks",
+    status_code=status.HTTP_200_OK,
+)
+async def release_locks(su: SuperuserDep) -> None:
+    for lk in locks.LockKey:
+        await locks.release(lk)

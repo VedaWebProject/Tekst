@@ -598,16 +598,22 @@ admin:
       formLabelDisplay: Display
     maintenance:
       heading: Maintenance
-      headingSearchIndex: Search Index
-      indexInfo:
-        heading: Information
+      index:
+        heading: Search Index
         documents: Documents
         size: Size
         searches: Searches
-      headingSearchIndexActions: Actions
-      actionCreateIndex: Update search index
-      actionCreateIndexStarted: The search index will be updated in the background. This might take a while.
-      actionCreateIndexSuccess: Search index has been updated
+        actionCreate: Re-create search index
+        actionCreateStarted: The search index will be updated in the background. This might take a while.
+        actionCreateSuccess: Search index has been updated
+      locks:
+        heading: System Locks
+        locked: locked
+        unlocked: not locked
+        actionRelease: Release all system locks
+        actionReleaseSuccess: All system locks have been released
+        index_create_update: Creating/updating search index
+        text_structure_import: Importing text structure
     segments:
       heading: Site Segments
       systemKeys:

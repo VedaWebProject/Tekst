@@ -221,7 +221,7 @@ async def import_text_structure(
             locations = children
     finally:
         # release lock
-        await locks.unlock(locks.LockKey.TEXT_STRUCTURE_IMPORT)
+        await locks.release(locks.LockKey.TEXT_STRUCTURE_IMPORT)
 
 
 @router.post(

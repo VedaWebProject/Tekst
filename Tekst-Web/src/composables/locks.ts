@@ -3,7 +3,23 @@ import { GET } from '@/api';
 import type { LockKey } from '@/api';
 import { useTimeoutPoll } from '@vueuse/core';
 
-export function useLocks(
+export function useLocks(options?: { interval?: number; immediate?: boolean }) {
+  const locks = ref<{ [key: string]: boolean }>({});
+  const { resume, pause } = useTimeoutPoll(
+    async () => {
+      const { data, error } = await GET('/admin/locks');
+      if (!error) {
+        locks.value = data;
+      }
+    },
+    options?.interval || 3000,
+    { immediate: options?.immediate }
+  );
+
+  return { locks, start: resume, stop: pause };
+}
+
+export function useLock(
   lockKey: LockKey,
   options?: {
     initiallyLocked?: boolean;
@@ -31,7 +47,7 @@ export function useLocks(
         options?.onUnlocked?.();
       }
     },
-    options?.interval || 2000,
+    options?.interval || 3000,
     { immediate: options?.immediate }
   );
 
