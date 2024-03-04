@@ -199,12 +199,12 @@ async function handleDelete() {
           :show-alpha="false"
           :swatches="[
             '#305D97',
-            '#097F86',
+            '#3C8589',
             '#43895F',
-            '#D49101',
-            '#D26E2B',
-            '#D43A35',
-            '#B83E63',
+            '#CC9618',
+            '#BA5614',
+            '#C62B26',
+            '#B52651',
             '#88447F',
           ]"
         />
