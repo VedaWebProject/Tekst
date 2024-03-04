@@ -2394,6 +2394,16 @@ export interface components {
       /** @default [] */
       publicFields?: components['schemas']['MaybePrivateUserFields'];
       /**
+       * Usernotificationtriggers
+       * @description Events that trigger notifications for this user
+       * @default [
+       *   "messageReceived",
+       *   "resourceProposed",
+       *   "resourcePublished"
+       * ]
+       */
+      userNotificationTriggers?: components['schemas']['UserNotificationTrigger'][];
+      /**
        * Adminnotificationtriggers
        * @description Events that trigger admin notifications for this user
        * @default [
@@ -2402,6 +2412,8 @@ export interface components {
        */
       adminNotificationTriggers?: components['schemas']['AdminNotificationTrigger'][];
     };
+    /** @enum {string} */
+    UserNotificationTrigger: 'messageReceived' | 'resourceProposed' | 'resourcePublished';
     /**
      * UserRead
      * @description A user registered in the system
@@ -2436,6 +2448,16 @@ export interface components {
       bio?: string | null;
       /** @default [] */
       publicFields?: components['schemas']['MaybePrivateUserFields'];
+      /**
+       * Usernotificationtriggers
+       * @description Events that trigger notifications for this user
+       * @default [
+       *   "messageReceived",
+       *   "resourceProposed",
+       *   "resourcePublished"
+       * ]
+       */
+      userNotificationTriggers?: components['schemas']['UserNotificationTrigger'][];
       /**
        * Adminnotificationtriggers
        * @description Events that trigger admin notifications for this user
@@ -2497,6 +2519,16 @@ export interface components {
       bio?: string | null;
       /** @default [] */
       publicFields?: components['schemas']['MaybePrivateUserFields'];
+      /**
+       * Usernotificationtriggers
+       * @description Events that trigger notifications for this user
+       * @default [
+       *   "messageReceived",
+       *   "resourceProposed",
+       *   "resourcePublished"
+       * ]
+       */
+      userNotificationTriggers?: components['schemas']['UserNotificationTrigger'][];
       /**
        * Adminnotificationtriggers
        * @description Events that trigger admin notifications for this user

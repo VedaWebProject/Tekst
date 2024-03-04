@@ -1,4 +1,4 @@
-Hallo, {name}!
+Hallo, {to_user_name}!
 
 Ihr Konto auf {platform_name} wurde aktiviert!
 Gegebenenfalls müssen Sie Ihre Email-Adresse verifizieren, bevor Sie sich anmelden können.

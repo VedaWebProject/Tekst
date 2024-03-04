@@ -13,6 +13,7 @@ import type {
   UserUpdate,
   UserUpdatePublicFields,
   UserUpdateAdminNotificationTriggers,
+  UserUpdateUserNotificationTriggers,
 } from '@/api';
 import { dialogProps } from '@/common';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
@@ -44,15 +45,20 @@ const initialUserDataModel = () => ({
   bio: auth.user?.bio || null,
 });
 
+const initialUserNotificationTriggersModel = () => ({
+  resourceProposed: !!auth.user?.userNotificationTriggers?.includes('resourceProposed'),
+  resourcePublished: !!auth.user?.userNotificationTriggers?.includes('resourcePublished'),
+  messageReceived: !!auth.user?.userNotificationTriggers?.includes('messageReceived'),
+});
+
 const initialAdminNotificationTriggersModel = () => ({
-  userAwaitsActivation:
-    auth.user?.adminNotificationTriggers?.includes('userAwaitsActivation') || false,
+  userAwaitsActivation: !!auth.user?.adminNotificationTriggers?.includes('userAwaitsActivation'),
 });
 
 const initialPublicFieldsModel = () => ({
-  name: auth.user?.publicFields?.includes('name') || false,
-  affiliation: auth.user?.publicFields?.includes('affiliation') || false,
-  bio: auth.user?.publicFields?.includes('bio') || false,
+  name: !!auth.user?.publicFields?.includes('name'),
+  affiliation: !!auth.user?.publicFields?.includes('affiliation'),
+  bio: !!auth.user?.publicFields?.includes('bio'),
 });
 
 const emailFormRef = ref<FormInst | null>(null);
@@ -75,6 +81,15 @@ const {
   getChanges: getUserDataModelChanges,
   reset: resetUserDataModelChanges,
 } = useModelChanges(userDataFormModel);
+
+const userNotificationTriggersFormRef = ref<FormInst | null>(null);
+const userNotificationTriggersFormModel = ref<Record<string, boolean>>(
+  initialUserNotificationTriggersModel()
+);
+const {
+  changed: userNotificationTriggersModelChanged,
+  reset: resetUserNotificationTriggersModelChanges,
+} = useModelChanges(userNotificationTriggersFormModel);
 
 const adminNotificationTriggersFormRef = ref<FormInst | null>(null);
 const adminNotificationTriggersFormModel = ref<Record<string, boolean>>(
@@ -206,6 +221,20 @@ async function handleUserDataSave() {
     });
 }
 
+async function handleUserNotificationTriggersSave() {
+  if (
+    await updateUser({
+      userNotificationTriggers: Object.keys(userNotificationTriggersFormModel.value).filter(
+        (k) => userNotificationTriggersFormModel.value[k]
+      ) as UserUpdateUserNotificationTriggers,
+    })
+  ) {
+    userNotificationTriggersFormModel.value = initialUserNotificationTriggersModel();
+    resetUserNotificationTriggersModelChanges();
+    message.success($t('account.settings.userNotificationTriggers.msgSaveSuccess'));
+  }
+}
+
 async function handleAdminNotificationTriggersSave() {
   if (
     await updateUser({
@@ -262,6 +291,7 @@ async function handleDeleteAccount() {
     <help-button-widget help-key="accountSettingsView" />
   </icon-heading>
 
+  <!-- GENERAL USER DATA -->
   <div class="content-block">
     <h2>{{ $t('account.settings.headingChangeUserData') }}</h2>
     <n-form
@@ -338,6 +368,7 @@ async function handleDeleteAccount() {
     </button-shelf>
   </div>
 
+  <!-- EMAIL AND PASSWORD -->
   <div class="content-block">
     <h2>{{ $t('models.user.email') }}</h2>
     <n-form
@@ -432,6 +463,7 @@ async function handleDeleteAccount() {
     </button-shelf>
   </div>
 
+  <!-- PUBLIC PROFILE DATA -->
   <div class="content-block">
     <icon-heading level="2">
       {{ $t('account.settings.headingChangePublicFields') }}
@@ -480,11 +512,55 @@ async function handleDeleteAccount() {
     </button-shelf>
   </div>
 
+  <!-- USER NOTIFICATION TRIGGERS -->
   <div class="content-block">
+    <h2>
+      {{ $t('account.settings.userNotificationTriggers.heading') }}
+    </h2>
+    <p>{{ $t('account.settings.notifyMe') }}</p>
+    <n-form
+      ref="userNotificationTriggersFormRef"
+      :model="userNotificationTriggersFormModel"
+      :show-label="false"
+      :disabled="loading"
+      require-mark-placement="right-hanging"
+    >
+      <n-space vertical>
+        <template v-for="(_, field) in userNotificationTriggersFormModel" :key="field">
+          <labelled-switch
+            v-model:value="userNotificationTriggersFormModel[field]"
+            :label="$t(`account.settings.userNotificationTriggers.${field}`)"
+            :disabled="loading"
+          />
+        </template>
+      </n-space>
+    </n-form>
+    <button-shelf top-gap>
+      <n-button
+        secondary
+        :loading="loading"
+        :disabled="loading || !userNotificationTriggersModelChanged"
+        @click="() => (userNotificationTriggersFormModel = initialUserNotificationTriggersModel())"
+      >
+        {{ $t('general.resetAction') }}
+      </n-button>
+      <n-button
+        type="primary"
+        :loading="loading"
+        :disabled="loading || !userNotificationTriggersModelChanged"
+        @click="handleUserNotificationTriggersSave"
+      >
+        {{ $t('general.saveAction') }}
+      </n-button>
+    </button-shelf>
+  </div>
+
+  <!-- ADMIN NOTIFICATION TRIGGERS -->
+  <div v-if="auth.user?.isSuperuser" class="content-block">
     <h2>
       {{ $t('account.settings.adminNotificationTriggers.heading') }}
     </h2>
-    <p>{{ $t('account.settings.adminNotificationTriggers.intro') }}</p>
+    <p>{{ $t('account.settings.notifyMe') }}</p>
     <n-form
       ref="adminNotificationTriggersFormRef"
       :model="adminNotificationTriggersFormModel"
@@ -524,6 +600,7 @@ async function handleDeleteAccount() {
     </button-shelf>
   </div>
 
+  <!-- DELETE ACCOUNT -->
   <div class="content-block">
     <h2>
       {{ $t('account.settings.headingDeleteAccount') }}

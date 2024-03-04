@@ -1,4 +1,4 @@
-Hallo, {name}!
+Hallo, {to_user_name}!
 
 Ihnen wurde Administratorenstatus auf {platform_name} zugewiesen.
 

@@ -1,0 +1,6 @@
+Hello, {to_user_name}!
+
+A new resource has been published on {platform_name}.
+The title of the resource is "{resource_title}".
+
+See you on {platform_name}!

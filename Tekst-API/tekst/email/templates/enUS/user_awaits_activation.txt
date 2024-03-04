@@ -1,5 +1,6 @@
-To the administrator(s) of {platform_name},
+Hello, {to_user_name}!
 
-the user "{username}" ({name}, {affiliation}) registered on {platform_name} and is awaiting account activation.
+This is a message to the administrator(s) of {platform_name}.
+The user "{username}" ({name}, {affiliation}) registered on {platform_name} and is awaiting account activation.
 
 See you on {platform_name}!

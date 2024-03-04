@@ -9480,6 +9480,20 @@
             ],
             "default": []
           },
+          "userNotificationTriggers": {
+            "items": {
+              "$ref": "#/components/schemas/UserNotificationTrigger"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Usernotificationtriggers",
+            "description": "Events that trigger notifications for this user",
+            "default": [
+              "messageReceived",
+              "resourceProposed",
+              "resourcePublished"
+            ]
+          },
           "adminNotificationTriggers": {
             "items": {
               "$ref": "#/components/schemas/AdminNotificationTrigger"
@@ -9503,6 +9517,14 @@
         ],
         "title": "UserCreate",
         "description": "Dataset for creating a new user"
+      },
+      "UserNotificationTrigger": {
+        "type": "string",
+        "enum": [
+          "messageReceived",
+          "resourceProposed",
+          "resourcePublished"
+        ]
       },
       "UserRead": {
         "properties": {
@@ -9588,6 +9610,20 @@
               }
             ],
             "default": []
+          },
+          "userNotificationTriggers": {
+            "items": {
+              "$ref": "#/components/schemas/UserNotificationTrigger"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Usernotificationtriggers",
+            "description": "Events that trigger notifications for this user",
+            "default": [
+              "messageReceived",
+              "resourceProposed",
+              "resourcePublished"
+            ]
           },
           "adminNotificationTriggers": {
             "items": {
@@ -9837,6 +9873,20 @@
               }
             ],
             "default": []
+          },
+          "userNotificationTriggers": {
+            "items": {
+              "$ref": "#/components/schemas/UserNotificationTrigger"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Usernotificationtriggers",
+            "description": "Events that trigger notifications for this user",
+            "default": [
+              "messageReceived",
+              "resourceProposed",
+              "resourcePublished"
+            ]
           },
           "adminNotificationTriggers": {
             "items": {

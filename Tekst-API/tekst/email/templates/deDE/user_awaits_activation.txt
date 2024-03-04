@@ -1,5 +1,6 @@
-An die Administratoren von {platform_name},
+Hallo, {to_user_name}!
 
-der Benutzer "{username}" ({name}, {affiliation}) hat sich auf {platform_name} registriert und wartet auf die Aktivierung des Kontos.
+Dies ist eine Nachricht an die Administratoren von {platform_name}.
+Der Benutzer "{username}" ({name}, {affiliation}) hat sich auf {platform_name} registriert und wartet auf die Aktivierung des Kontos.
 
 Bis bald auf {platform_name}!

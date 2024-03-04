@@ -1,4 +1,4 @@
-Dear {name},
+Dear {to_user_name},
 
 you have been granted administrator permissions on {platform_name}.
 

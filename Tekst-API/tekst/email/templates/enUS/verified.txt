@@ -1,4 +1,4 @@
-Dear {name},
+Dear {to_user_name},
 
 thank you for verifying this email address!
 You may now log into your {platform_name} account.

@@ -1,52 +1,44 @@
+import asyncio
 import smtplib
 
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from enum import Enum
 from functools import lru_cache
 from os.path import exists, realpath
 from pathlib import Path
 from urllib.parse import urljoin
 
 from beanie.operators import Eq
+from humps import decamelize
 
 from tekst.config import TekstConfig, get_config
 from tekst.logging import log
-from tekst.models.user import AdminNotificationTrigger, UserDocument, UserRead
+from tekst.models.email import TemplateIdentifier
+from tekst.models.user import (
+    UserDocument,
+    UserRead,
+)
 
 
 _cfg: TekstConfig = get_config()  # get (possibly cached) config data
 _TEMPLATES_DIR = Path(realpath(__file__)).parent / "templates"
 
 
-class TemplateIdentifier(Enum):
-    TEST = "test"
-    VERIFY = "verify"
-    VERIFIED = "verified"
-    USER_AWAITS_ACTIVATION = "user_awaits_activation"
-    ACTIVATED = "activated"
-    DEACTIVATED = "deactivated"
-    DELETED = "deleted"
-    PASSWORD_FORGOT = "password_forgot"
-    PASSWORD_RESET = "password_reset"
-    SUPERUSER_SET = "superuser_set"
-    SUPERUSER_UNSET = "superuser_unset"
-
-
 @lru_cache(maxsize=128)
 def _get_email_templates(
     template_id: TemplateIdentifier, locale: str = "enUS"
 ) -> dict[str, str]:
+    template_id = decamelize(template_id.value)
     templates = dict()
     for template_type in ("subject", "html", "txt"):
-        path = _TEMPLATES_DIR / locale / f"{template_id.value}.{template_type}"
+        path = _TEMPLATES_DIR / locale / f"{template_id}.{template_type}"
         if not exists(path) and locale != "enUS":  # pragma: no cover
             log.warning(
                 "Missing email translation "
-                f"'{template_id.value}.{template_type}' for locale '{locale}'. "
+                f"'{template_id}.{template_type}' for locale '{locale}'. "
                 "Falling back to 'enUS'."
             )
-            path = _TEMPLATES_DIR / "enUS" / f"{template_id.value}.{template_type}"
+            path = _TEMPLATES_DIR / "enUS" / f"{template_id}.{template_type}"
         if not exists(path):  # pragma: no cover
             raise FileNotFoundError(f"{path} does not exist.")
         templates[template_type] = path.read_text(encoding="utf-8")
@@ -103,7 +95,7 @@ def send_email(
                 **_cfg.model_dump(
                     include_keys_prefix="info_", strip_include_keys_prefix=True
                 ),
-                **to_user.model_dump(),
+                **{f"to_user_{k}": v for k, v in to_user.model_dump().items()},
                 **kwargs,
             )
             .strip()
@@ -116,23 +108,51 @@ def send_email(
     )
 
 
-async def send_admin_notification_email(
-    to_user: UserRead,
+async def _broadcast_user_notification(
     template_id: TemplateIdentifier,
-    *,
-    admin_notification_trigger: AdminNotificationTrigger,
     **kwargs,
 ):
-    admins = await UserDocument.find(
-        Eq(UserDocument.is_superuser, True),
-        Eq(UserDocument.admin_notification_triggers, admin_notification_trigger),
-    ).to_list()
-    for admin in admins:
+    for user in await UserDocument.find(
+        Eq(UserDocument.user_notification_triggers, template_id.value),
+        Eq(UserDocument.is_active, True),
+        Eq(UserDocument.is_verified, True),
+    ).to_list():
+        await asyncio.sleep(1)
         send_email(
-            to_user=to_user,
+            to_user=user,
             template_id=template_id,
-            alternate_recepient=admin.email,
+            **kwargs,
         )
+
+
+async def broadcast_user_notification(
+    template_id: TemplateIdentifier,
+    **kwargs,
+):
+    asyncio.create_task(_broadcast_user_notification(template_id, **kwargs))
+
+
+async def _broadcast_admin_notification(
+    template_id: TemplateIdentifier,
+    **kwargs,
+):
+    for admin in await UserDocument.find(
+        Eq(UserDocument.is_superuser, True),
+        Eq(UserDocument.admin_notification_triggers, template_id.value),
+    ).to_list():
+        await asyncio.sleep(1)
+        send_email(
+            to_user=admin,
+            template_id=template_id,
+            **kwargs,
+        )
+
+
+async def broadcast_admin_notification(
+    template_id: TemplateIdentifier,
+    **kwargs,
+):
+    asyncio.create_task(_broadcast_admin_notification(template_id, **kwargs))
 
 
 def send_test_email(to_user: UserRead):

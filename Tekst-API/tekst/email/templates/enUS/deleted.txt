@@ -1,4 +1,4 @@
-Dear {name},
+Dear {to_user_name},
 
 your account on {platform_name} has been deleted!
 

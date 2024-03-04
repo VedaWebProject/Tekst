@@ -1,0 +1,8 @@
+Hello, {to_user_name}!
+
+The user "{username}" just proposed a new resource for publication on {platform_name}.
+The title of the proposed resource is "{resource_title}".
+As a registered user of {platform_name}, you can access the contents of proposed resources and
+create modified versions of them to ask the original resource owner to incorporate your modifications!
+
+See you on {platform_name}!

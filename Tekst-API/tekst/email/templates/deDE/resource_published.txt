@@ -1,0 +1,6 @@
+Hallo, {to_user_name}!
+
+Eine neue Ressource wurde auf {platform_name} veröffentlicht. Der Titel der
+Ressource lautet "{resource_title}".
+
+Bis bald auf {platform_name}!

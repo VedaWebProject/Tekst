@@ -1,4 +1,4 @@
-Dear {name},
+Dear {to_user_name},
 
 your administrator permissions on {platform_name} have been revoked.
 

@@ -16,6 +16,7 @@ from typing_extensions import TypeAliasType
 
 from tekst.config import TekstConfig, get_config
 from tekst.models.common import LocaleKey, ModelBase, ModelFactoryMixin
+from tekst.models.email import TemplateIdentifier
 from tekst.utils.validators import CleanupMultiline, CleanupOneline, EmptyStringToNone
 
 
@@ -35,8 +36,26 @@ MaybePrivateUserFields = TypeAliasType(
     ],
 )
 
+
+UserNotificationTrigger = TypeAliasType(
+    "UserNotificationTrigger",
+    Literal[
+        TemplateIdentifier.MESSAGE_RECEIVED.value,
+        TemplateIdentifier.RESOURCE_PROPOSED.value,
+        TemplateIdentifier.RESOURCE_PUBLISHED.value,
+    ],
+)
+UserNotificationTriggers = Annotated[
+    list[UserNotificationTrigger],
+    Field(
+        description="Events that trigger notifications for this user",
+        max_length=len(get_args(UserNotificationTrigger.__value__)),
+    ),
+]
+
 AdminNotificationTrigger = TypeAliasType(
-    "AdminNotificationTrigger", Literal["userAwaitsActivation"]
+    "AdminNotificationTrigger",
+    Literal[TemplateIdentifier.USER_AWAITS_ACTIVATION.value],
 )
 AdminNotificationTriggers = Annotated[
     list[AdminNotificationTrigger],
@@ -95,6 +114,9 @@ class User(ModelBase, ModelFactoryMixin):
         EmptyStringToNone,
     ] = None
     public_fields: MaybePrivateUserFields = []
+    user_notification_triggers: UserNotificationTriggers = list(
+        get_args(UserNotificationTrigger.__value__)
+    )
     admin_notification_triggers: AdminNotificationTriggers = list(
         get_args(AdminNotificationTrigger.__value__)
     )

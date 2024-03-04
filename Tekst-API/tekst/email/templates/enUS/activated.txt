@@ -1,4 +1,4 @@
-Dear {name},
+Dear {to_user_name},
 
 your account on {platform_name} has been activated!
 You may have to verify your email address before you can log in.
