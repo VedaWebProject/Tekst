@@ -96,30 +96,32 @@ async def create_index(*, overwrite_existing_index: bool = True) -> None:
     else:
         await locks.lock(locks.LockKey.INDEX_CREATE_UPDATE)
 
-    await asyncio.sleep(10)
-
-    # get existing search indices
-    client: Elasticsearch = await _get_es_client()
-    existing_indices = [idx for idx in client.indices.get(index=_IDX_NAME_PATTERN_ANY)]
-    if existing_indices:
-        if overwrite_existing_index:
-            log.debug("The new index will overwrite the existing one...")
-        else:
-            log.warning("An index already exists. Aborting index creation.")
-            return
-    # create new index
-    # create index (index template will be applied!)
-    client.indices.create(
-        index=new_index_name,
-        aliases={_IDX_ALIAS: {}},
-    )
-    # populate newly created index
-    await _populate_index(new_index_name)
-    # delete all other/old indices matching the used index naming pattern
-    if existing_indices:
-        client.indices.delete(index=existing_indices)
-    # realse lock
-    await locks.release(locks.LockKey.INDEX_CREATE_UPDATE)
+    try:
+        # get existing search indices
+        client: Elasticsearch = await _get_es_client()
+        existing_indices = [
+            idx for idx in client.indices.get(index=_IDX_NAME_PATTERN_ANY)
+        ]
+        if existing_indices:
+            if overwrite_existing_index:
+                log.debug("The new index will overwrite the existing one...")
+            else:
+                log.warning("An index already exists. Aborting index creation.")
+                return
+        # create new index
+        # create index (index template will be applied!)
+        client.indices.create(
+            index=new_index_name,
+            aliases={_IDX_ALIAS: {}},
+        )
+        # populate newly created index
+        await _populate_index(new_index_name)
+        # delete all other/old indices matching the used index naming pattern
+        if existing_indices:
+            client.indices.delete(index=existing_indices)
+    finally:
+        # release lock
+        await locks.release(locks.LockKey.INDEX_CREATE_UPDATE)
 
 
 async def _populate_index(index_name: str) -> None:
