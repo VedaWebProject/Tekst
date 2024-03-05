@@ -124,6 +124,7 @@ browse:
   location:
     modalHeading: Location
     level: Level
+    submitBtn: Go to location
   toolbar:
     tipSelectLocation: Select location
     tipPreviousLocation: Previous location on this level

@@ -127,6 +127,7 @@ browse:
   location:
     modalHeading: Fundstelle
     level: Ebene
+    submitBtn: Gehe zu Fundstelle
   toolbar:
     tipSelectLocation: Fundstelle auswählen
     tipPreviousLocation: Vorherige Fundstelle auf dieser Ebene

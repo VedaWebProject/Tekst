@@ -232,11 +232,8 @@ function handleLocationSelect() {
       </n-form-item>
     </n-form>
     <button-shelf top-gap>
-      <n-button secondary :focusable="false" @click="emit('update:show', false)">
-        {{ $t('general.cancelAction') }}
-      </n-button>
       <n-button type="primary" @click="handleLocationSelect">
-        {{ $t('general.selectAction') }}
+        {{ $t('browse.location.submitBtn') }}
       </n-button>
     </button-shelf>
   </generic-modal>
