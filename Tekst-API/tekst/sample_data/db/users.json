@@ -13,7 +13,13 @@
     "avatar_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Beaver_%28PSF%29.jpg/287px-Beaver_%28PSF%29.jpg",
     "bio": "Beavers (genus Castor) are large, semiaquatic rodents of the Northern Hemisphere. There are two existing species: the North American beaver (Castor canadensis) and the Eurasian beaver (C. fiber). Beavers are the second-largest living rodents, after capybaras, weighing up to 50 kg (110 lb). They have stout bodies with large heads, long chisel-like incisors, brown or gray fur, hand-like front feet, webbed back feet, and tails that are flat and scaly. The two species differ in skull and tail shape and fur color. Beavers can be found in a number of freshwater habitats, such as rivers, streams, lakes and ponds. They are herbivorous, consuming tree bark, aquatic plants, grasses and sedges. (Wikipedia)",
     "public_fields": ["name", "affiliation", "bio"],
-    "created_at": { "$date": "2024-02-09T10:27:22.844Z" }
+    "created_at": { "$date": "2024-02-09T10:27:22.844Z" },
+    "admin_notification_triggers": ["userAwaitsActivation"],
+    "user_notification_triggers": [
+      "messageReceived",
+      "resourceProposed",
+      "resourcePublished"
+    ]
   },
   {
     "_id": { "$oid": "65c5fe0c691066aabd498237" },
@@ -29,7 +35,13 @@
     "avatar_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Zebra_eating.JPG/306px-Zebra_eating.JPG",
     "bio": "Zebras (subgenus Hippotigris) are African equines with distinctive black-and-white striped coats. There are three living species: Grévy's zebra (Equus grevyi), the plains zebra (E. quagga), and the mountain zebra (E. zebra). Zebras share the genus Equus with horses and asses, the three groups being the only living members of the family Equidae. Zebra stripes come in different patterns, unique to each individual. Several theories have been proposed for the function of these stripes, with most evidence supporting them as a deterrent for biting flies. Zebras inhabit eastern and southern Africa and can be found in a variety of habitats such as savannahs, grasslands, woodlands, shrublands, and mountainous areas. (Wikipedia)",
     "public_fields": ["name", "affiliation", "bio"],
-    "created_at": { "$date": "2024-02-09T10:27:22.844Z" }
+    "created_at": { "$date": "2024-02-09T10:27:22.844Z" },
+    "admin_notification_triggers": ["userAwaitsActivation"],
+    "user_notification_triggers": [
+      "messageReceived",
+      "resourceProposed",
+      "resourcePublished"
+    ]
   },
   {
     "_id": { "$oid": "65c5fe0c691066aabd498238" },
@@ -45,7 +57,13 @@
     "avatar_url": "https://upload.wikimedia.org/wikipedia/commons/3/32/Star_Sturnus_vulgaris.jpg",
     "bio": "Starlings are small to medium-sized passerine birds in the family Sturnidae. The Sturnidae are named for the genus Sturnus, which in turn comes from the Latin word for starling, sturnus. The family contains 128 species which are divided into 36 genera. Many Asian species, particularly the larger ones, are called mynas, and many African species are known as glossy starlings because of their iridescent plumage. Starlings are native to Europe, Asia, and Africa, as well as northern Australia and the islands of the tropical Pacific. Several European and Asian species have been introduced to these areas, as well as North America, Hawaii, and New Zealand, where they generally compete for habitats with native birds and are considered to be invasive species. The starling species familiar to most people in Europe and North America is the common starling, and throughout much of Asia and the Pacific, the common myna is indeed common. (Wikipedia)",
     "public_fields": ["name", "affiliation", "bio"],
-    "created_at": { "$date": "2024-02-09T10:27:22.844Z" }
+    "created_at": { "$date": "2024-02-09T10:27:22.844Z" },
+    "admin_notification_triggers": ["userAwaitsActivation"],
+    "user_notification_triggers": [
+      "messageReceived",
+      "resourceProposed",
+      "resourcePublished"
+    ]
   },
   {
     "_id": { "$oid": "65c5fe0c691066aabd498239" },
@@ -61,6 +79,12 @@
     "avatar_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Peacock.displaying.better.800pix.jpg/301px-Peacock.displaying.better.800pix.jpg",
     "bio": "Peafowl is a common name for two bird species in the genera Pavo and Afropavo within the tribe Pavonini of the family Phasianidae (the pheasants and their allies). Male peafowl are referred to as peacocks, and female peafowl are referred to as peahens, although peafowl of either sex are often referred to colloquially as \"peacocks\". (Wikipedia)",
     "public_fields": ["name", "affiliation", "bio"],
-    "created_at": { "$date": "2024-02-09T10:27:22.844Z" }
+    "created_at": { "$date": "2024-02-09T10:27:22.844Z" },
+    "admin_notification_triggers": ["userAwaitsActivation"],
+    "user_notification_triggers": [
+      "messageReceived",
+      "resourceProposed",
+      "resourcePublished"
+    ]
   }
 ]
