@@ -76,7 +76,7 @@ class ResourceTypeABC(ABC):
     @abstractmethod
     def index_doc_data(cls, content: ContentBase) -> dict[str, Any]:
         """
-        Returns the the content for the ES index document
+        Returns the content for the ES index document
         for this type of resource content
         """
         raise NotImplementedError(

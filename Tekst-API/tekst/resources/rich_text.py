@@ -27,7 +27,13 @@ class RichText(ResourceTypeABC):
     @classmethod
     def index_doc_properties(cls) -> dict[str, Any]:
         return {
-            "html": {"type": "text", "analyzer": "htmlStripAnalyzer"},
+            "html": {
+                "type": "text",
+                "analyzer": "standard_htmlstrip_asciifolding",
+                "fields": {
+                    "strict": {"type": "text", "analyzer": "standard_htmlstrip"}
+                },
+            },
         }
 
     @classmethod

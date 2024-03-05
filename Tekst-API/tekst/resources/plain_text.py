@@ -29,16 +29,16 @@ class PlainText(ResourceTypeABC):
     @classmethod
     def index_doc_properties(cls) -> dict[str, Any]:
         return {
-            "text": {"type": "text"},
+            "text": {
+                "type": "text",
+                "analyzer": "standard_asciifolding",
+                "fields": {"strict": {"type": "text"}},
+            },
         }
 
     @classmethod
     def index_doc_data(cls, content: "PlainTextContent") -> dict[str, Any]:
-        return content.model_dump(
-            include={
-                "text",
-            }
-        )
+        return content.model_dump(include={"text"})
 
 
 class GeneralPlainTextResourceConfig(ModelBase):
