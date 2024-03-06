@@ -8,6 +8,7 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+node_modules_BU
 .DS_Store
 dist
 dist-ssr
@@ -25,3 +26,5 @@ coverage
 
 # rollup-plugin-visualizer generated stats
 /stats.html
+
+vite.config.ts.*

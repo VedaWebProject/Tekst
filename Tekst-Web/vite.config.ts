@@ -3,7 +3,6 @@ import { resolve, dirname } from 'node:path';
 
 import { defineConfig, PluginOption } from 'vite';
 import vue from '@vitejs/plugin-vue';
-import checker from 'vite-plugin-checker';
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 import { visualizer } from 'rollup-plugin-visualizer';
 
@@ -16,14 +15,6 @@ export default defineConfig({
   },
   plugins: [
     vue(),
-    checker({
-      typescript: true,
-      vueTsc: true,
-      eslint: {
-        lintCommand:
-          'eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --ignore-path .gitignore',
-      },
-    }),
     VueI18nPlugin({
       include: resolve(dirname(fileURLToPath(import.meta.url)), './translations/ui/**'),
     }),

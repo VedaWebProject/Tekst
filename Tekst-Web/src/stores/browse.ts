@@ -85,7 +85,7 @@ export const useBrowseStore = defineStore('browse', () => {
     text: string = state.fallbackText?.slug || ''
   ) {
     router.replace({
-      ...route,
+      name: 'browse',
       params: {
         text: text,
       },

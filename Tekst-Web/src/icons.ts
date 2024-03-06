@@ -121,7 +121,7 @@ export {
   BookmarkBorderOutlined as BookmarkIcon,
   BookmarkFilled as BookmarkFilledIcon,
   ShieldOutlined as AdminIcon,
-  ManageSearchOutlined as AdvancedSearchIcon,
+  ManageSearchOutlined as SearchResultsIcon,
   ArrowBackOutlined as ArrowBackIcon,
   ArrowDownwardOutlined as ArrowDownIcon,
   ArrowForwardOutlined as ArrowForwardIcon,

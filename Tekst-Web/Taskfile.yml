@@ -46,6 +46,12 @@ tasks:
     cmds:
       - npm run lint
 
+  fix:
+    desc: Format and lint code
+    cmds:
+      - task: format
+      - task: lint
+
   build:
     desc: Build project
     cmds:
