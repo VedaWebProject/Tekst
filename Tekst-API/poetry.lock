@@ -918,20 +918,20 @@ typing-extensions = ">=4.6.0,<4.7.0 || >4.7.0"
 
 [[package]]
 name = "pydantic-extra-types"
-version = "2.5.0"
+version = "2.6.0"
 description = "Extra Pydantic types."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pydantic_extra_types-2.5.0-py3-none-any.whl", hash = "sha256:7346873019cac32061b471adf2cdac711664ddb7a6ede04219bed2da34888c4d"},
-    {file = "pydantic_extra_types-2.5.0.tar.gz", hash = "sha256:46b85240093dc63ad4a8f3cab49e03d76ae0577e4f99e2bbff7d32f99d009bf9"},
+    {file = "pydantic_extra_types-2.6.0-py3-none-any.whl", hash = "sha256:d291d521c2e2bf2e6f11971caf8d639518124ae26a76d2e712599e98c4ef2b2b"},
+    {file = "pydantic_extra_types-2.6.0.tar.gz", hash = "sha256:e9a93cfb245158462acb76621785219f80ad112303a0a7784d2ada65e6ed6cba"},
 ]
 
 [package.dependencies]
 pydantic = ">=2.5.2"
 
 [package.extras]
-all = ["pendulum (>=3.0.0,<4.0.0)", "phonenumbers (>=8,<9)", "pycountry (>=23,<24)", "python-ulid (>=1,<2)"]
+all = ["pendulum (>=3.0.0,<4.0.0)", "phonenumbers (>=8,<9)", "pycountry (>=23)", "python-ulid (>=1,<2)", "python-ulid (>=1,<3)"]
 
 [[package]]
 name = "pydantic-settings"
