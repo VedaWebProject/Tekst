@@ -102,14 +102,15 @@ routes:
     home: Startseite
     browse: Lesen in "{text}"
     search: Suchen in "{text}"
+    searchResults: '@:search.results.heading'
     help: Hilfe
     login: Anmeldung
-    register: Registrierung
+    register: '@:register.heading'
     resources: Ressourcen zu "{text}"
-    resourceSettings: Ressourcen-Einstellungen
+    resourceSettings: '@:resources.settings.heading'
     user: Profil von {username}
-    accountProfile: Öffentliches Profil
-    accountSettings: Konto
+    accountProfile: '@:account.profileHeading'
+    accountSettings: '@:account.settings.heading'
     adminStatistics: '@:admin.heading - Statistiken'
     adminSystemUsers: '@:admin.heading - Benutzer'
     adminTextsSettings: '@:admin.heading - {text}: Allgemein'
@@ -674,6 +675,8 @@ search:
     heading: Schnellsuche
   settings:
     heading: Globale Sucheinstellungen
+  results:
+    heading: Suchergebnisse
   nothingFound: Nichts gefunden
 
 help:

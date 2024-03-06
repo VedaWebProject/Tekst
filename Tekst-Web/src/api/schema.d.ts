@@ -250,6 +250,10 @@ export interface paths {
     /** Import resource data */
     post: operations['importResourceData'];
   };
+  '/search/quick': {
+    /** Quick search */
+    get: operations['quickSearch'];
+  };
   '/texts': {
     /**
      * Get all texts
@@ -2156,6 +2160,43 @@ export interface components {
        * }
        */
       config?: components['schemas']['RichTextResourceConfig'];
+    };
+    /** SearchHit */
+    SearchHit: {
+      /**
+       * Id
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      id: string;
+      /** Label */
+      label: string;
+      /**
+       * Textid
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      textId: string;
+      /** Level */
+      level: number;
+      /** Position */
+      position: number;
+      /** Score */
+      score: number;
+    };
+    /** SearchResults */
+    SearchResults: {
+      /** Hits */
+      hits: components['schemas']['SearchHit'][];
+      /** Took */
+      took: number;
+      /** Totalhits */
+      totalHits: number;
+      /**
+       * Totalhitsrelation
+       * @enum {string}
+       */
+      totalHitsRelation: 'eq' | 'gte';
+      /** Maxscore */
+      maxScore: number | null;
     };
     /** TekstErrorModel */
     TekstErrorModel: {
@@ -4313,6 +4354,33 @@ export interface operations {
       404: {
         content: {
           'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Quick search */
+  quickSearch: {
+    parameters: {
+      query?: {
+        /** @description Query string */
+        q?: string;
+        /** @description Strict search */
+        strict?: boolean;
+        /** @description Default operator */
+        op?: 'AND' | 'OR' | 'and' | 'or';
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['SearchResults'];
         };
       };
       /** @description Validation Error */

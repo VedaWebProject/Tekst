@@ -6,7 +6,11 @@ from tekst.models.common import ModelBase, PydanticObjectId
 
 
 class SearchHit(ModelBase):
-    location: PydanticObjectId
+    id: PydanticObjectId
+    label: str
+    text_id: PydanticObjectId
+    level: int
+    position: int
     score: float
 
 
@@ -21,7 +25,14 @@ class SearchResults(ModelBase):
     def from_es_results(cls, res: dict[str, Any]) -> "SearchResults":
         return cls(
             hits=[
-                SearchHit(location=hit["_id"], score=hit["_score"])
+                SearchHit(
+                    id=hit["_id"],
+                    label=hit["_source"]["label"],
+                    text_id=hit["_source"]["text_id"],
+                    level=hit["_source"]["level"],
+                    position=hit["_source"]["position"],
+                    score=hit["_score"],
+                )
                 for hit in res["hits"]["hits"]
             ],
             took=res["took"],

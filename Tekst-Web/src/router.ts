@@ -17,6 +17,7 @@ const UserView = () => import('@/views/UserView.vue');
 const HelpView = () => import('@/views/HelpView.vue');
 const BrowseView = () => import('@/views/BrowseView.vue');
 const SearchView = () => import('@/views/SearchView.vue');
+const SearchResultsView = () => import('@/views/SearchResultsView.vue');
 const RegisterView = () => import('@/views/RegisterView.vue');
 const InfoPageView = () => import('@/views/InfoPageView.vue');
 const ResourcesView = () => import('@/views/ResourcesView.vue');
@@ -70,6 +71,11 @@ const router = createRouter({
       meta: {
         isTextSpecific: true,
       },
+    },
+    {
+      path: '/search',
+      name: 'searchResults',
+      component: SearchResultsView,
     },
     {
       path: '/help',

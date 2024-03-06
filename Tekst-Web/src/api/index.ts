@@ -136,6 +136,11 @@ export type Translation = {
 export type BookmarkRead = components['schemas']['BookmarkRead'];
 export type BookmarkCreate = components['schemas']['BookmarkCreate'];
 
+// search
+
+export type SearchResults = components['schemas']['SearchResults'];
+export type SearchHit = components['schemas']['SearchHit'];
+
 // user
 
 export type UserCreate = components['schemas']['UserCreate'];

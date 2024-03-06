@@ -3919,6 +3919,81 @@
         }
       }
     },
+    "/search/quick": {
+      "get": {
+        "tags": [
+          "search"
+        ],
+        "summary": "Quick search",
+        "operationId": "quickSearch",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Query string",
+              "default": "*",
+              "title": "Q"
+            },
+            "description": "Query string"
+          },
+          {
+            "name": "strict",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Strict search",
+              "default": true,
+              "title": "Strict"
+            },
+            "description": "Strict search"
+          },
+          {
+            "name": "op",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "AND",
+                "OR",
+                "and",
+                "or"
+              ],
+              "type": "string",
+              "description": "Default operator",
+              "default": "OR",
+              "title": "Op"
+            },
+            "description": "Default operator"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResults"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/texts": {
       "get": {
         "tags": [
@@ -9018,6 +9093,93 @@
           "resourceType"
         ],
         "title": "RichTextResourceUpdate"
+      },
+      "SearchHit": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "textId": {
+            "type": "string",
+            "title": "Textid",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "level": {
+            "type": "integer",
+            "title": "Level"
+          },
+          "position": {
+            "type": "integer",
+            "title": "Position"
+          },
+          "score": {
+            "type": "number",
+            "title": "Score"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "label",
+          "textId",
+          "level",
+          "position",
+          "score"
+        ],
+        "title": "SearchHit"
+      },
+      "SearchResults": {
+        "properties": {
+          "hits": {
+            "items": {
+              "$ref": "#/components/schemas/SearchHit"
+            },
+            "type": "array",
+            "title": "Hits"
+          },
+          "took": {
+            "type": "integer",
+            "title": "Took"
+          },
+          "totalHits": {
+            "type": "integer",
+            "title": "Totalhits"
+          },
+          "totalHitsRelation": {
+            "type": "string",
+            "enum": [
+              "eq",
+              "gte"
+            ],
+            "title": "Totalhitsrelation"
+          },
+          "maxScore": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Maxscore"
+          }
+        },
+        "type": "object",
+        "required": [
+          "hits",
+          "took",
+          "totalHits",
+          "totalHitsRelation",
+          "maxScore"
+        ],
+        "title": "SearchResults"
       },
       "TekstErrorModel": {
         "properties": {

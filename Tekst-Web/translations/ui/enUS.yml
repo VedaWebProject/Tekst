@@ -99,19 +99,20 @@ routes:
     home: Home
     browse: Browse "{text}"
     search: Search "{text}"
+    searchResults: '@:search.results.heading'
     help: Help
     login: Login
-    register: Register
+    register: '@:register.heading'
     resources: Resources on "{text}"
-    resourceSettings: Resource Settings
+    resourceSettings: '@:resources.settings.heading'
     user: Profile of {username}
-    accountProfile: Public Profile
-    accountSettings: Account
+    accountProfile: '@:account.profileHeading'
+    accountSettings: '@:account.settings.heading'
     adminStatistics: '@:admin.heading - Statistics'
     adminSystemUsers: '@:admin.heading - Users'
-    adminTextsSettings: '{text}: General'
-    adminTextsLevels: '{text}: Levels'
-    adminTextsLocations: '{text}: Locations'
+    adminTextsSettings: '@:admin.heading - {text}: General'
+    adminTextsLevels: '@:admin.heading - {text}: Levels'
+    adminTextsLocations: '@:admin.heading - {text}: Locations'
     adminNewText: '@:admin.heading - New Text'
     adminSystemSegments: '@:admin.heading - Site Segments'
     adminSystemInfoPages: '@:admin.heading - Info Pages'
@@ -650,6 +651,8 @@ search:
     heading: Quick Search
   settings:
     heading: Global Search Settings
+  results:
+    heading: Search Results
   nothingFound: Nothing found
 
 help:

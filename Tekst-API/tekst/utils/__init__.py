@@ -5,8 +5,10 @@ from tekst.models.common import Translations
 
 
 def pick_translation(translations: Translations, locale_key: str = "enUS") -> str:
+    prio = [locale_key, "*", "enUS"]
     sorted_translations = sorted(
-        translations, key=lambda x: [locale_key, "*", "enUS"].index(x.get("locale"))
+        translations,
+        key=lambda x: prio.index(x.get("locale")) if x.get("locale") in prio else 999,
     )
     return (
         sorted_translations[0].get("translation", "")
