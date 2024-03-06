@@ -2,17 +2,17 @@
   "files": [],
   "references": [
     {
-      "path": "./tsconfig.node.json",
+      "path": "./tsconfig.node.json"
     },
     {
-      "path": "./tsconfig.app.json",
-    },
+      "path": "./tsconfig.app.json"
+    }
   ],
   "compilerOptions": {
     "baseUrl": ".", // this must be specified if "paths" is specified.
     "paths": {
-      "@": ["./src"], // this mapping is relative to "baseUrl"
+      "@": ["./src"] // this mapping is relative to "baseUrl"
     },
-    "noErrorTruncation": true,
-  },
+    "noErrorTruncation": true
+  }
 }
