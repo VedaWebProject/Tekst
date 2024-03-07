@@ -9105,6 +9105,10 @@
             "type": "string",
             "title": "Label"
           },
+          "fullLabel": {
+            "type": "string",
+            "title": "Fulllabel"
+          },
           "textId": {
             "type": "string",
             "title": "Textid",
@@ -9127,6 +9131,7 @@
         "required": [
           "id",
           "label",
+          "fullLabel",
           "textId",
           "level",
           "position",
@@ -9169,6 +9174,11 @@
               }
             ],
             "title": "Maxscore"
+          },
+          "indexCreationTime": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Indexcreationtime"
           }
         },
         "type": "object",
@@ -9177,7 +9187,8 @@
           "took",
           "totalHits",
           "totalHitsRelation",
-          "maxScore"
+          "maxScore",
+          "indexCreationTime"
         ],
         "title": "SearchResults"
       },
