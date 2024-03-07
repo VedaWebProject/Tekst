@@ -653,6 +653,8 @@ search:
     heading: Global Search Settings
   results:
     heading: Search Results
+    results: '{count} results in {ms} milliseconds'
+    indexCreationTime: State of data for this search
   nothingFound: Nothing found
 
 help:

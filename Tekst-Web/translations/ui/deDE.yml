@@ -677,6 +677,8 @@ search:
     heading: Globale Sucheinstellungen
   results:
     heading: Suchergebnisse
+    results: '{count} Ergebnisse in {ms} Millisekunden'
+    indexCreationTime: Stand der Daten für diese Suche
   nothingFound: Nichts gefunden
 
 help:

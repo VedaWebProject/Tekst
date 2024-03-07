@@ -2170,6 +2170,8 @@ export interface components {
       id: string;
       /** Label */
       label: string;
+      /** Fulllabel */
+      fullLabel: string;
       /**
        * Textid
        * @example 5eb7cf5a86d9755df3a6c593
@@ -2197,6 +2199,11 @@ export interface components {
       totalHitsRelation: 'eq' | 'gte';
       /** Maxscore */
       maxScore: number | null;
+      /**
+       * Indexcreationtime
+       * Format: date-time
+       */
+      indexCreationTime: string;
     };
     /** TekstErrorModel */
     TekstErrorModel: {

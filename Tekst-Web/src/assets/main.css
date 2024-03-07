@@ -187,3 +187,7 @@ img {
 .n-thing-header__title {
   font-size: var(--font-size) !important;
 }
+
+.n-list-item__main {
+  min-width: 0;
+}
