@@ -26,7 +26,7 @@ const results = computed<SearchResultProps[]>(
         text: text?.title || '',
         textColor: text?.accentColor || '#000',
         level: r.level,
-        levelLabel: state.textLevelLabels[r.level] || '',
+        levelLabel: state.getTextLevelLabel(r.textId, r.level) || '',
         position: r.position,
         scorePercent: resultsData.value?.maxScore
           ? (r.score / resultsData.value?.maxScore) * 100
@@ -53,7 +53,7 @@ onBeforeMount(async () => {
   const { data, error } = await GET('/search/quick', {
     params: {
       query: {
-        q: '*',
+        q: 'der',
       },
     },
   });

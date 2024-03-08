@@ -11,6 +11,7 @@ import { usePlatformData } from '@/composables/platformData';
 import { useAuthStore } from './auth';
 import { useMessages } from '@/composables/messages';
 import { type LocaleKey } from '@/api';
+import { pickTranslation } from '@/utils';
 
 export const useStateStore = defineStore('state', () => {
   // define resources
@@ -111,16 +112,12 @@ export const useStateStore = defineStore('state', () => {
 
   // text level labels
 
+  function getTextLevelLabel(textId: string, level: number) {
+    return pickTranslation(pfData.value?.texts.find((t) => t.id === textId)?.levels[level]) || '';
+  }
+
   const textLevelLabels = computed(
-    () =>
-      text.value?.levels.map(
-        (l) =>
-          l.find((l) => l.locale === locale.value)?.translation ||
-          l.find((l) => l.locale === '*')?.translation ||
-          l.find((l) => l.locale === 'enUS')?.translation ||
-          (l.length > 0 && l[0].translation) ||
-          ''
-      ) || []
+    () => text.value?.levels.map((l) => pickTranslation(l, locale.value)) || []
   );
 
   // init loading state
@@ -183,6 +180,7 @@ export const useStateStore = defineStore('state', () => {
     text,
     fallbackText,
     textLevelLabels,
+    getTextLevelLabel,
     setLocale,
   };
 });

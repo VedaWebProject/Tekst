@@ -19,19 +19,19 @@ export interface SearchResultProps {
 
 const props = defineProps<SearchResultProps>();
 const emit = defineEmits(['click']);
-const textTagColor = computed(() => Color(props.textColor).fade(0.75).rgb().string());
+const textTagColor = computed(() => Color(props.textColor).fade(0.6).rgb().string());
+const scorePercentDisplay = computed(() => props.scorePercent.toFixed(1) + '%');
 const scoreTagColor = computed(
-  () => `rgba(${180 - props.scorePercent * 1.8}, ${props.scorePercent * 1.8}, 0, 0.2)`
+  () => `rgba(${180 - props.scorePercent * 1.8}, ${props.scorePercent * 1.8}, 0, 0.3)`
 );
 </script>
 
 <template>
-  <n-list-item class="sr-item" :title="fullLabel" @click="emit('click', props)">
+  <n-list-item class="sr-item" @click="emit('click', props)">
     <div class="sr-container">
-      <div class="sr-header ellipsis">
-        {{ fullLabel }} bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar
-        foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo
-        bar foo bar foo bar foo bar foo bar foo bar foo bar
+      <div class="sr-header" :title="fullLabel">{{ levelLabel }}: {{ label }}</div>
+      <div v-if="label !== fullLabel" class="text-small i translucent">
+        {{ fullLabel }}
       </div>
       <div class="sr-body">
         <div class="ellipsis">
@@ -43,7 +43,7 @@ const scoreTagColor = computed(
           bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar
         </div>
       </div>
-      <div class="sr-footer">
+      <div class="sr-tags">
         <n-tag size="small" :bordered="false" :color="{ color: textTagColor }">
           {{ text }}
         </n-tag>
@@ -51,7 +51,7 @@ const scoreTagColor = computed(
           {{ levelLabel }}
         </n-tag>
         <n-tag size="small" :bordered="false" :color="{ color: scoreTagColor }">
-          Relevance: {{ scorePercent }}%
+          Relevance: {{ scorePercentDisplay }}
         </n-tag>
       </div>
     </div>
@@ -62,7 +62,7 @@ const scoreTagColor = computed(
 .sr-container {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.3rem;
 }
 .sr-header {
   font-weight: var(--font-weight-bold);
@@ -71,7 +71,7 @@ const scoreTagColor = computed(
   display: flex;
   flex-direction: column;
 }
-.sr-footer {
+.sr-tags {
   display: flex;
   justify-content: flex-end;
   gap: var(--content-gap);

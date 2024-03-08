@@ -678,7 +678,7 @@ search:
   results:
     heading: Suchergebnisse
     results: '{count} Ergebnisse in {ms} Millisekunden'
-    indexCreationTime: Stand der Daten für diese Suche
+    indexCreationTime: Letztes update der Suchdaten
   nothingFound: Nichts gefunden
 
 help:

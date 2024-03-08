@@ -654,7 +654,7 @@ search:
   results:
     heading: Search Results
     results: '{count} results in {ms} milliseconds'
-    indexCreationTime: State of data for this search
+    indexCreationTime: Last update of search data
   nothingFound: Nothing found
 
 help:
