@@ -141,11 +141,15 @@ img {
 }
 
 .translucent {
-  opacity: 0.5;
+  opacity: 0.6;
 }
 
 .ui-font {
   font-family: var(--font-family-ui);
+}
+
+.content-font {
+  font-family: var(--font-family-content);
 }
 
 .centered-spinner {

@@ -14,6 +14,7 @@ class SearchHit(ModelBase):
     level: int
     position: int
     score: float
+    highlight: dict[str, list[str]] = {}
 
 
 class SearchResults(ModelBase):
@@ -23,6 +24,22 @@ class SearchResults(ModelBase):
     total_hits_relation: Literal["eq", "gte"]
     max_score: float | None
     index_creation_time: datetime
+
+    @classmethod
+    def __transform_highlights(cls, hit: dict[str, Any]) -> dict[str, list[str]]:
+        if not hit.get("highlight"):
+            return {}
+        highlights = {}
+        for k, v in hit["highlight"].items():
+            try:
+                res_id = k.split(".")[0]
+                hl_key = hit["_source"][res_id]["resource_title"]
+                if hl_key not in highlights:
+                    highlights[hl_key] = []
+                highlights[hl_key].extend(v)
+            except Exception:
+                highlights[k] = v
+        return highlights
 
     @classmethod
     def from_es_results(
@@ -38,6 +55,7 @@ class SearchResults(ModelBase):
                     level=hit["_source"]["level"],
                     position=hit["_source"]["position"],
                     score=hit["_score"],
+                    highlight=cls.__transform_highlights(hit),
                 )
                 for hit in results["hits"]["hits"]
             ],

@@ -679,6 +679,7 @@ search:
     heading: Suchergebnisse
     results: '{count} Ergebnisse in {ms} Millisekunden'
     indexCreationTime: Letztes update der Suchdaten
+    relevance: Relevanz
   nothingFound: Nichts gefunden
 
 help:

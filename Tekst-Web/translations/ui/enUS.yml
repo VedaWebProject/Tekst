@@ -655,6 +655,7 @@ search:
     heading: Search Results
     results: '{count} results in {ms} milliseconds'
     indexCreationTime: Last update of search data
+    relevance: Relevance
   nothingFound: Nothing found
 
 help:

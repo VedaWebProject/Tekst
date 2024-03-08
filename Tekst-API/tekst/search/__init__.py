@@ -126,9 +126,10 @@ async def create_index(*, overwrite_existing_index: bool = True) -> None:
             lazy_parse=True,
         ).to_list():
             extra_properties[str(res.id)] = {
+                "type": "object",
                 "properties": resource_types_mgr.get(
                     res.resource_type
-                ).index_doc_properties()
+                ).index_doc_properties(),
             }
         resp = client.indices.put_mapping(
             index=new_index_name,
@@ -151,72 +152,21 @@ async def create_index(*, overwrite_existing_index: bool = True) -> None:
         await locks.release(locks.LockKey.INDEX_CREATE_UPDATE)
 
 
-# async def _populate_index(index_name: str) -> None:
-#     client: Elasticsearch = await _get_es_client()
-#     log.debug(f'Populating index "{index_name}"...')
-
-#     # populate index
-#     for text in await TextDocument.find_all(lazy_parse=True).to_list():
-#         for level in range(len(text.levels)):
-#             bulk_req_body = []
-#             # get resources for this text and level
-#             resources = await ResourceBaseDocument.find(
-#                 ResourceBaseDocument.text_id == text.id,
-#                 ResourceBaseDocument.level == level,
-#                 with_children=True,
-#                 lazy_parse=True,
-#             ).to_list()
-#             # create one index document per location
-#             for location in await LocationDocument.find(
-#                 LocationDocument.text_id == text.id,
-#                 LocationDocument.level == level,
-#                 lazy_parse=True,
-#             ).to_list():
-#                 location_index_doc = {
-#                     "label": location.label,
-#                     "text_id": str(location.text_id),
-#                     "level": location.level,
-#                     "position": location.position,
-#                 }
-#                 # add data for each content for this location
-#                 for content in await ContentBaseDocument.find(
-#                     Eq(ContentBaseDocument.location_id, location.id),
-#                     In(
-#                         ContentBaseDocument.resource_id,
-#                         [res.id for res in resources],
-#                     ),
-#                     with_children=True,
-#                 ).to_list():
-#                     location_index_doc[str(content.resource_id)] = (
-#                         resource_types_mgr.get(
-#                             content.resource_type
-#                         ).index_doc_data(content)
-#                     )
-
-#                 bulk_req_body.append(
-#                     {"index": {"_index": index_name, "_id": str(location.id)}}
-#                 )
-#                 bulk_req_body.append(location_index_doc)
-
-#             # bulk index documents representing this text's locations
-#             resp = client.bulk(body=bulk_req_body)
-#             if resp and not resp.get("errors", False):
-#                 log.debug(
-#                     f'Indexing finished for "{text.title}", '
-#                     f'level "{pick_translation(text.levels[level])}".'
-#                 )
-#             else:
-#                 log.error(
-#                     f"There were errors populating index '{index_name}' "
-#                     f"with documents for text '{text.title}'."
-#                 )
-
-
 async def _populate_index(index_name: str) -> None:
     client: Elasticsearch = await _get_es_client()
     bulk_index_max_size = 1000
     bulk_index_body = []
     errors = False
+
+    # get all resources and map them from their ID
+    # so we can easily access their title later
+    resources = {
+        res.id: res
+        for res in await ResourceBaseDocument.find_all(
+            with_children=True,
+            lazy_parse=True,
+        ).to_list()
+    }
 
     for text in await TextDocument.find_all(lazy_parse=True).to_list():
         # Initialize stack with all level 0 locations (sorted) of the current text.
@@ -255,9 +205,14 @@ async def _populate_index(index_name: str) -> None:
                 Eq(ContentBaseDocument.location_id, location.id),
                 with_children=True,
             ).to_list():
+                # add resource content to index document
                 location_index_doc[str(content.resource_id)] = resource_types_mgr.get(
                     content.resource_type
                 ).index_doc_data(content)
+                # add resource title to index document
+                location_index_doc[str(content.resource_id)]["resource_title"] = (
+                    resources[content.resource_id].title
+                )
 
             # add index document to bulk index request body
             bulk_index_body.append(
@@ -337,6 +292,9 @@ def search_quick(
                     "fields": ["*.strict" if settings.strict else "*"],
                     "default_operator": settings.default_operator,
                 }
+            },
+            highlight={
+                "fields": {"*": {}},
             },
         ),
         index_creation_time=get_index_creation_time(),

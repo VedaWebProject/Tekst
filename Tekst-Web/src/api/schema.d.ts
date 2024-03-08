@@ -2183,6 +2183,10 @@ export interface components {
       position: number;
       /** Score */
       score: number;
+      /** Highlight */
+      highlight: {
+        [key: string]: string[];
+      };
     };
     /** SearchResults */
     SearchResults: {

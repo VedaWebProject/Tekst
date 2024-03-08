@@ -23,7 +23,7 @@ export const useStateStore = defineStore('state', () => {
 
   // locale
 
-  const locale = ref(
+  const locale = ref<LocaleKey>(
     (auth.user?.locale ||
       localStorage.getItem('locale') ||
       getAvaliableBrowserLocaleKey() ||
@@ -112,8 +112,11 @@ export const useStateStore = defineStore('state', () => {
 
   // text level labels
 
-  function getTextLevelLabel(textId: string, level: number) {
-    return pickTranslation(pfData.value?.texts.find((t) => t.id === textId)?.levels[level]) || '';
+  function getTextLevelLabel(textId: string, level: number, localeKey: LocaleKey = locale.value) {
+    return (
+      pickTranslation(pfData.value?.texts.find((t) => t.id === textId)?.levels[level], localeKey) ||
+      ''
+    );
   }
 
   const textLevelLabels = computed(

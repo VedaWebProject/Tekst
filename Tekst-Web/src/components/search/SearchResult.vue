@@ -1,60 +1,80 @@
 <script setup lang="ts">
 import type { SearchHit } from '@/api';
+import { BookIcon } from '@/icons';
 import Color from 'color';
-import { NListItem, NTag } from 'naive-ui';
+import { NListItem, NTag, NIcon } from 'naive-ui';
 import { computed } from 'vue';
+import { RouterLink } from 'vue-router';
 
-export interface SearchResultProps {
+const props = defineProps<{
   id: SearchHit['id'];
   label: SearchHit['label'];
   fullLabel: SearchHit['fullLabel'];
-  text: string;
+  textTitle: string;
+  textSlug: string;
   textColor: string;
   level: SearchHit['level'];
   levelLabel: string;
   position: SearchHit['position'];
   scorePercent: number;
+  highlight?: Record<string, string[]>;
   smallScreen?: boolean;
-}
+}>();
+export type SearchResultProps = typeof props;
 
-const props = defineProps<SearchResultProps>();
-const emit = defineEmits(['click']);
-const textTagColor = computed(() => Color(props.textColor).fade(0.6).rgb().string());
+const textTagColor = computed(() => Color(props.textColor).fade(0.75).rgb().string());
 const scorePercentDisplay = computed(() => props.scorePercent.toFixed(1) + '%');
 const scoreTagColor = computed(
-  () => `rgba(${180 - props.scorePercent * 1.8}, ${props.scorePercent * 1.8}, 0, 0.3)`
+  () => `rgba(${180 - props.scorePercent * 1.8}, ${props.scorePercent * 1.8}, 0, 0.25)`
 );
+const linkTargetRoute = computed(() => ({
+  name: 'browse',
+  params: { text: props.textSlug },
+  query: { lvl: props.level, pos: props.position },
+}));
+const highlightsProcessed = computed<Record<string, string>>(() => {
+  if (!props.highlight) return {};
+  return Object.fromEntries(Object.entries(props.highlight).map(([k, v]) => [k, v.join(' ... ')]));
+});
 </script>
 
 <template>
-  <n-list-item class="sr-item" @click="emit('click', props)">
-    <div class="sr-container">
-      <div class="sr-header" :title="fullLabel">{{ levelLabel }}: {{ label }}</div>
-      <div v-if="label !== fullLabel" class="text-small i translucent">
-        {{ fullLabel }}
-      </div>
-      <div class="sr-body">
-        <div class="ellipsis">
-          foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo
-          foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo
+  <n-list-item style="padding: 0">
+    <router-link :to="linkTargetRoute" class="sr-link">
+      <div class="sr-container">
+        <div class="sr-header" :title="fullLabel">
+          <div class="sr-header-title" :style="{ color: textColor }">
+            {{ label }}
+          </div>
+          <div class="sr-header-tags">
+            <n-tag size="small" :bordered="false" :color="{ color: textTagColor }">
+              {{ textTitle }}
+            </n-tag>
+            <n-tag size="small" :bordered="false">
+              {{ levelLabel }}
+            </n-tag>
+            <n-tag size="small" :bordered="false" :color="{ color: scoreTagColor }">
+              {{ $t('search.results.relevance') }}: {{ scorePercentDisplay }}
+            </n-tag>
+          </div>
         </div>
-        <div class="ellipsis">
-          bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar
-          bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar
+        <div
+          v-if="label !== fullLabel"
+          class="sr-location text-small translucent ellipsis"
+          :title="fullLabel"
+        >
+          <n-icon :component="BookIcon" />
+          {{ fullLabel }}
+        </div>
+        <div class="sr-highlights">
+          <div v-for="(hl, key) in highlightsProcessed" :key="key" :title="key">
+            <span class="b" :style="{ color: textColor }">{{ key }}: </span>
+            <!-- eslint-disable-next-line vue/no-v-html -->
+            <span class="content-font" v-html="hl"></span>
+          </div>
         </div>
       </div>
-      <div class="sr-tags">
-        <n-tag size="small" :bordered="false" :color="{ color: textTagColor }">
-          {{ text }}
-        </n-tag>
-        <n-tag size="small" :bordered="false">
-          {{ levelLabel }}
-        </n-tag>
-        <n-tag size="small" :bordered="false" :color="{ color: scoreTagColor }">
-          Relevance: {{ scorePercentDisplay }}
-        </n-tag>
-      </div>
-    </div>
+    </router-link>
   </n-list-item>
 </template>
 
@@ -63,22 +83,52 @@ const scoreTagColor = computed(
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
+  padding: var(--content-gap);
+}
+.sr-link {
+  color: inherit;
+  text-decoration: inherit;
+  font-style: inherit;
+  font-weight: inherit;
 }
 .sr-header {
-  font-weight: var(--font-weight-bold);
+  display: flex;
+  align-items: center;
+  column-gap: var(--content-gap);
+  row-gap: 0.25rem;
+  flex-wrap: wrap;
 }
-.sr-body {
+.sr-header-title {
+  font-weight: var(--font-weight-bold);
+  flex-grow: 2;
+}
+.sr-header-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.sr-location {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  column-gap: 0.5rem;
+}
+.sr-highlights {
   display: flex;
   flex-direction: column;
-}
-.sr-tags {
-  display: flex;
-  justify-content: flex-end;
-  gap: var(--content-gap);
+  font-size: var(--font-size-medium);
+  gap: 0.3rem;
 }
 .ellipsis {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+</style>
+
+<style>
+.sr-highlights em {
+  font-weight: bold;
+  font-style: normal;
 }
 </style>

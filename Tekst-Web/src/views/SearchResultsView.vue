@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import IconHeading from '@/components/generic/IconHeading.vue';
-import { SearchResultsIcon } from '@/icons';
+import { NoContentIcon, SearchResultsIcon } from '@/icons';
 import SearchResult from '@/components/search/SearchResult.vue';
 import { NList, NTime } from 'naive-ui';
 import { usePlatformData } from '@/composables/platformData';
@@ -8,11 +8,10 @@ import { computed, onBeforeMount, ref } from 'vue';
 import { GET, type SearchResults } from '@/api';
 import type { SearchResultProps } from '@/components/search/SearchResult.vue';
 import { useStateStore } from '@/stores';
-import { useRouter } from 'vue-router';
+import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 
 const { pfData } = usePlatformData();
 const state = useStateStore();
-const router = useRouter();
 
 const resultsData = ref<SearchResults>();
 const results = computed<SearchResultProps[]>(
@@ -23,7 +22,8 @@ const results = computed<SearchResultProps[]>(
         id: r.id,
         label: r.label,
         fullLabel: r.fullLabel,
-        text: text?.title || '',
+        textSlug: text?.slug || '',
+        textTitle: text?.title || '',
         textColor: text?.accentColor || '#000',
         level: r.level,
         levelLabel: state.getTextLevelLabel(r.textId, r.level) || '',
@@ -31,29 +31,17 @@ const results = computed<SearchResultProps[]>(
         scorePercent: resultsData.value?.maxScore
           ? (r.score / resultsData.value?.maxScore) * 100
           : 0,
+        highlight: r.highlight,
         smallScreen: state.smallScreen,
       };
     }) || []
 );
 
-function handleResultClick(result: SearchResultProps) {
-  router.push({
-    name: 'browse',
-    params: {
-      text: pfData.value?.texts.find((t) => t.id === result.id)?.slug,
-    },
-    query: {
-      lvl: result.level,
-      pos: result.position,
-    },
-  });
-}
-
 onBeforeMount(async () => {
   const { data, error } = await GET('/search/quick', {
     params: {
       query: {
-        q: 'der',
+        q: 'f*',
       },
     },
   });
@@ -95,12 +83,8 @@ onBeforeMount(async () => {
 
   <div class="content-block">
     <n-list v-if="results.length" clickable hoverable style="background-color: transparent">
-      <search-result
-        v-for="result in results"
-        :key="result.id"
-        v-bind="result"
-        @click="handleResultClick"
-      />
+      <search-result v-for="result in results" :key="result.id" v-bind="result" />
     </n-list>
+    <huge-labelled-icon v-else :icon="NoContentIcon" :message="$t('search.nothingFound')" />
   </div>
 </template>

@@ -9125,6 +9125,16 @@
           "score": {
             "type": "number",
             "title": "Score"
+          },
+          "highlight": {
+            "additionalProperties": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "type": "object",
+            "title": "Highlight"
           }
         },
         "type": "object",
@@ -9135,7 +9145,8 @@
           "textId",
           "level",
           "position",
-          "score"
+          "score",
+          "highlight"
         ],
         "title": "SearchHit"
       },
