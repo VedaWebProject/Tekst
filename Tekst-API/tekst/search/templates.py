@@ -17,13 +17,13 @@ IDX_TEMPLATE = {
     "mappings": {
         "dynamic": "false",
         "properties": {
-            "full_label": {"type": "text", "analyzer": "standard_asciifolding"},
             "text_id": {"type": "keyword"},
             "level": {"type": "short"},
             "position": {"type": "integer"},
         },
     },
     "settings": {
+        "index": {"number_of_shards": 1, "number_of_replicas": 0},
         "analysis": {
             "analyzer": {
                 "standard_asciifolding": {
@@ -47,6 +47,6 @@ IDX_TEMPLATE = {
                     "preserve_original": True,
                 }
             },
-        }
+        },
     },
 }
