@@ -6752,8 +6752,7 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 32,
-                "minLength": 1
+                "maxLength": 32
               },
               {
                 "type": "null"
@@ -9134,7 +9133,8 @@
               "type": "array"
             },
             "type": "object",
-            "title": "Highlight"
+            "title": "Highlight",
+            "default": {}
           }
         },
         "type": "object",
@@ -9145,8 +9145,7 @@
           "textId",
           "level",
           "position",
-          "score",
-          "highlight"
+          "score"
         ],
         "title": "SearchHit"
       },
