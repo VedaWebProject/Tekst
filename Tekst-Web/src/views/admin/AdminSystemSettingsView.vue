@@ -408,7 +408,7 @@ function resetForm() {
           show-sort-button
           :min="0"
           :max="64"
-          @create="() => ''"
+          @create="() => ({ key: '', name: '', font: '' })"
         >
           <template #default="{ index }">
             <div style="display: flex; align-items: flex-start; gap: 12px; width: 100%">

@@ -60,7 +60,8 @@ class OskMode(ModelBase):
     ]
     font: Annotated[
         str | None,
-        StringConstraints(min_length=1, max_length=32, strip_whitespace=True),
+        StringConstraints(max_length=32, strip_whitespace=True),
+        val.EmptyStringToNone,
     ] = None
 
 

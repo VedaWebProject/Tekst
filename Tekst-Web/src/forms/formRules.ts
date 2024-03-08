@@ -165,7 +165,6 @@ export const platformSettingsFormRules: Record<string, FormItemRule[]> = {
   infoContactName: [minMaxCharsRule(0, 64, 'blur')],
   infoContactEmail: [minMaxCharsRule(0, 64, 'blur')],
   infoContactUrl: [minMaxCharsRule(0, 512, 'blur')],
-  defaultTextId: [requiredRule(() => $t('models.platformSettings.defaultText'), 'blur')],
   availableLocales: [
     {
       validator: (rule: FormItemRule, value: string[]) =>
