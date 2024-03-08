@@ -18,6 +18,7 @@ import { useOskLayout } from '@/composables/fetchers';
 import type { CSSProperties } from 'vue';
 import { ShiftIcon } from '@/icons';
 import { watch } from 'vue';
+import { useStateStore } from '@/stores';
 
 const props = defineProps<{
   value?: string;
@@ -27,6 +28,7 @@ const props = defineProps<{
 const emit = defineEmits(['update:value']);
 
 const { pfData } = usePlatformData();
+const state = useStateStore();
 
 const showOsk = ref(false);
 const oskInput = ref<string>('');
@@ -201,7 +203,7 @@ watch(capsLock, () => (shift.value = false));
                   :key="keyIndex"
                   :focusable="false"
                   secondary
-                  size="large"
+                  :size="state.smallScreen ? undefined : 'large'"
                   :style="fontStyle"
                   @click="handleInput(shiftActive && key.shift ? key.shift : key.char)"
                 >
