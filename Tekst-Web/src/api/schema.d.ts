@@ -252,7 +252,11 @@ export interface paths {
   };
   '/search/quick': {
     /** Quick search */
-    get: operations['quickSearch'];
+    post: operations['quickSearch'];
+  };
+  '/search/advanced': {
+    /** Advanced search */
+    post: operations['advancedSearch'];
   };
   '/texts': {
     /**
@@ -353,6 +357,20 @@ export interface components {
   schemas: {
     /** @constant */
     AdminNotificationTrigger: 'userAwaitsActivation';
+    /** AdvancedSearchQuery */
+    AdvancedSearchQuery: Record<string, never>;
+    /** AdvancedSearchRequestBody */
+    AdvancedSearchRequestBody: {
+      /** @default {} */
+      query?: components['schemas']['AdvancedSearchQuery'];
+      /**
+       * @default {
+       *   "strict": true,
+       *   "defaultOperator": "OR"
+       * }
+       */
+      settings?: components['schemas']['SearchSettings'];
+    };
     /** BearerResponse */
     BearerResponse: {
       /** Access Token */
@@ -1668,6 +1686,21 @@ export interface components {
       /** Texts */
       texts: components['schemas']['TextStats'][];
     };
+    /** QuickSearchRequestBody */
+    QuickSearchRequestBody: {
+      /**
+       * Query
+       * @default *
+       */
+      query?: string;
+      /**
+       * @default {
+       *   "strict": true,
+       *   "defaultOperator": "OR"
+       * }
+       */
+      settings?: components['schemas']['SearchSettings'];
+    };
     /** ResourceCategory */
     ResourceCategory: {
       /** Key */
@@ -2211,6 +2244,20 @@ export interface components {
        * Format: date-time
        */
       indexCreationTime: string;
+    };
+    /** SearchSettings */
+    SearchSettings: {
+      /**
+       * Strict
+       * @default true
+       */
+      strict?: boolean;
+      /**
+       * Defaultoperator
+       * @default OR
+       * @enum {string}
+       */
+      defaultOperator?: 'AND' | 'OR';
     };
     /** TekstErrorModel */
     TekstErrorModel: {
@@ -4380,14 +4427,31 @@ export interface operations {
   };
   /** Quick search */
   quickSearch: {
-    parameters: {
-      query?: {
-        /** @description Query string */
-        q?: string;
-        /** @description Strict search */
-        strict?: boolean;
-        /** @description Default operator */
-        op?: 'AND' | 'OR' | 'and' | 'or';
+    requestBody?: {
+      content: {
+        'application/json': components['schemas']['QuickSearchRequestBody'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['SearchResults'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Advanced search */
+  advancedSearch: {
+    requestBody?: {
+      content: {
+        'application/json': components['schemas']['AdvancedSearchRequestBody'];
       };
     };
     responses: {

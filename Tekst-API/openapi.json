@@ -3920,56 +3920,85 @@
       }
     },
     "/search/quick": {
-      "get": {
+      "post": {
         "tags": [
           "search"
         ],
         "summary": "Quick search",
         "operationId": "quickSearch",
-        "parameters": [
-          {
-            "name": "q",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "description": "Query string",
-              "default": "*",
-              "title": "Q"
-            },
-            "description": "Query string"
-          },
-          {
-            "name": "strict",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "description": "Strict search",
-              "default": true,
-              "title": "Strict"
-            },
-            "description": "Strict search"
-          },
-          {
-            "name": "op",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "enum": [
-                "AND",
-                "OR",
-                "and",
-                "or"
-              ],
-              "type": "string",
-              "description": "Default operator",
-              "default": "OR",
-              "title": "Op"
-            },
-            "description": "Default operator"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/QuickSearchRequestBody"
+                  }
+                ],
+                "title": "Body",
+                "default": {
+                  "query": "*",
+                  "settings": {
+                    "strict": true,
+                    "defaultOperator": "OR"
+                  }
+                }
+              }
+            }
           }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResults"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/search/advanced": {
+      "post": {
+        "tags": [
+          "search"
         ],
+        "summary": "Advanced search",
+        "operationId": "advancedSearch",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/AdvancedSearchRequestBody"
+                  }
+                ],
+                "title": "Body",
+                "default": {
+                  "query": {},
+                  "settings": {
+                    "strict": true,
+                    "defaultOperator": "OR"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -5576,6 +5605,36 @@
     "schemas": {
       "AdminNotificationTrigger": {
         "const": "userAwaitsActivation"
+      },
+      "AdvancedSearchQuery": {
+        "properties": {},
+        "type": "object",
+        "title": "AdvancedSearchQuery"
+      },
+      "AdvancedSearchRequestBody": {
+        "properties": {
+          "query": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AdvancedSearchQuery"
+              }
+            ],
+            "default": {}
+          },
+          "settings": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SearchSettings"
+              }
+            ],
+            "default": {
+              "strict": true,
+              "defaultOperator": "OR"
+            }
+          }
+        },
+        "type": "object",
+        "title": "AdvancedSearchRequestBody"
       },
       "BearerResponse": {
         "properties": {
@@ -8118,6 +8177,28 @@
         "title": "PlatformStats",
         "description": "Platform statistics data"
       },
+      "QuickSearchRequestBody": {
+        "properties": {
+          "query": {
+            "type": "string",
+            "title": "Query",
+            "default": "*"
+          },
+          "settings": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SearchSettings"
+              }
+            ],
+            "default": {
+              "strict": true,
+              "defaultOperator": "OR"
+            }
+          }
+        },
+        "type": "object",
+        "title": "QuickSearchRequestBody"
+      },
       "ResourceCategory": {
         "properties": {
           "key": {
@@ -9201,6 +9282,26 @@
           "indexCreationTime"
         ],
         "title": "SearchResults"
+      },
+      "SearchSettings": {
+        "properties": {
+          "strict": {
+            "type": "boolean",
+            "title": "Strict",
+            "default": true
+          },
+          "defaultOperator": {
+            "type": "string",
+            "enum": [
+              "AND",
+              "OR"
+            ],
+            "title": "Defaultoperator",
+            "default": "OR"
+          }
+        },
+        "type": "object",
+        "title": "SearchSettings"
       },
       "TekstErrorModel": {
         "properties": {

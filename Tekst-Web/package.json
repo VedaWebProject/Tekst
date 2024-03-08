@@ -26,6 +26,7 @@
     "@tiptap/vue-3": "^2.1.12",
     "@vueuse/core": "^10.3.0",
     "color": "^4.2.3",
+    "js-base64": "^3.7.7",
     "js-cookie": "^3.0.5",
     "lodash.clonedeep": "^4.5.0",
     "lodash.mergewith": "^4.6.2",

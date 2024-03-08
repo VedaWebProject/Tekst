@@ -1,9 +1,13 @@
-from typing import Annotated, Literal
+from typing import Annotated
 
-from fastapi import APIRouter, Query, status
+from fastapi import APIRouter, status, Body
 
 from tekst import search
-from tekst.models.search import SearchResults, SearchSettings
+from tekst.models.search import (
+    SearchResults,
+    AdvancedSearchRequestBody,
+    QuickSearchRequestBody,
+)
 
 
 router = APIRouter(
@@ -12,23 +16,29 @@ router = APIRouter(
 )
 
 
-@router.get(
+@router.post(
     "/quick",
     response_model=SearchResults,
     status_code=status.HTTP_200_OK,
 )
 async def quick_search(
-    q: Annotated[str, Query(description="Query string")] = "*",
-    strict: Annotated[bool, Query(description="Strict search")] = True,
-    default_operator: Annotated[
-        Literal["AND", "OR", "and", "or"],
-        Query(description="Default operator", alias="op"),
-    ] = "OR",
+    body: QuickSearchRequestBody = QuickSearchRequestBody(),
 ) -> SearchResults:
     return search.search_quick(
-        query=q,
-        settings=SearchSettings(
-            strict=strict,
-            default_operator=default_operator,
-        ),
+        query=body.query,
+        settings=body.settings,
+    )
+
+
+@router.post(
+    "/advanced",
+    response_model=SearchResults,
+    status_code=status.HTTP_200_OK,
+)
+async def advanced_search(
+    body: AdvancedSearchRequestBody = AdvancedSearchRequestBody(),
+) -> SearchResults:
+    return search.search_advanced(
+        query=body.query,
+        settings=body.settings,
     )

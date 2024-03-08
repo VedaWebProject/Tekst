@@ -75,3 +75,23 @@ class SearchSettings(ModelBase):
     @classmethod
     def default_operator_upper(cls, v: Any) -> Literal["AND", "OR"]:
         return str(v).upper()
+
+
+class QuickSearchRequestBody(ModelBase):
+    query: str = "*"
+    settings: SearchSettings = SearchSettings()
+
+
+class AdvancedSearchQuery(ModelBase):
+    pass
+
+
+class AdvancedSearchRequestBody(ModelBase):
+    query: AdvancedSearchQuery = AdvancedSearchQuery()
+    settings: SearchSettings = SearchSettings()
+
+
+class IndexInfoResponse(ModelBase):
+    documents: int
+    size: str
+    searches: int

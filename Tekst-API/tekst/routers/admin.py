@@ -10,7 +10,7 @@ from tekst.models.resource import ResourceBaseDocument
 from tekst.models.text import TextDocument
 from tekst.models.user import UserDocument, UserRead
 from tekst.resources import resource_types_mgr
-from tekst.search.responses import IndexInfoResponse
+from tekst.models.search import IndexInfoResponse
 
 
 router = APIRouter(
