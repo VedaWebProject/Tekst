@@ -680,6 +680,7 @@ search:
     results: '{count} Ergebnisse in {ms} Millisekunden'
     indexCreationTime: Letztes update der Suchdaten
     relevance: Relevanz
+    msgInvalidRequest: Ungültige Suchanfrage. Haben Sie vielleicht einen Link zu dieser Seite kopiert und dabei ein paar Zeichen übersehen?
   nothingFound: Nichts gefunden
 
 help:

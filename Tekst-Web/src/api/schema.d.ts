@@ -250,13 +250,9 @@ export interface paths {
     /** Import resource data */
     post: operations['importResourceData'];
   };
-  '/search/quick': {
-    /** Quick search */
-    post: operations['quickSearch'];
-  };
-  '/search/advanced': {
-    /** Advanced search */
-    post: operations['advancedSearch'];
+  '/search': {
+    /** Do search */
+    post: operations['doSearch'];
   };
   '/texts': {
     /**
@@ -361,11 +357,16 @@ export interface components {
     AdvancedSearchQuery: Record<string, never>;
     /** AdvancedSearchRequestBody */
     AdvancedSearchRequestBody: {
+      /**
+       * Searchtype
+       * @constant
+       */
+      searchType: 'advanced';
       /** @default {} */
       query?: components['schemas']['AdvancedSearchQuery'];
       /**
        * @default {
-       *   "strict": true,
+       *   "strict": false,
        *   "defaultOperator": "OR"
        * }
        */
@@ -1689,13 +1690,18 @@ export interface components {
     /** QuickSearchRequestBody */
     QuickSearchRequestBody: {
       /**
+       * Searchtype
+       * @constant
+       */
+      searchType: 'quick';
+      /**
        * Query
        * @default *
        */
       query?: string;
       /**
        * @default {
-       *   "strict": true,
+       *   "strict": false,
        *   "defaultOperator": "OR"
        * }
        */
@@ -2249,7 +2255,7 @@ export interface components {
     SearchSettings: {
       /**
        * Strict
-       * @default true
+       * @default false
        */
       strict?: boolean;
       /**
@@ -4425,33 +4431,13 @@ export interface operations {
       };
     };
   };
-  /** Quick search */
-  quickSearch: {
-    requestBody?: {
+  /** Do search */
+  doSearch: {
+    requestBody: {
       content: {
-        'application/json': components['schemas']['QuickSearchRequestBody'];
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json': components['schemas']['SearchResults'];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  /** Advanced search */
-  advancedSearch: {
-    requestBody?: {
-      content: {
-        'application/json': components['schemas']['AdvancedSearchRequestBody'];
+        'application/json':
+          | components['schemas']['QuickSearchRequestBody']
+          | components['schemas']['AdvancedSearchRequestBody'];
       };
     };
     responses: {

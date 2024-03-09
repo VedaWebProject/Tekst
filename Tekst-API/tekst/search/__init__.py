@@ -13,7 +13,7 @@ from tekst.logging import log
 from tekst.models.content import ContentBaseDocument
 from tekst.models.location import LocationDocument
 from tekst.models.resource import ResourceBaseDocument
-from tekst.models.search import SearchResults, SearchSettings, IndexInfoResponse
+from tekst.models.search import IndexInfoResponse, SearchResults, SearchSettings
 from tekst.models.text import TextDocument
 from tekst.resources import resource_types_mgr
 from tekst.search.templates import (

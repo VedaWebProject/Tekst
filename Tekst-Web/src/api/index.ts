@@ -226,4 +226,6 @@ export type DeepLLinksConfig = components['schemas']['DeepLLinksConfig'];
 export type SearchResults = components['schemas']['SearchResults'];
 export type SearchHit = components['schemas']['SearchHit'];
 export type SearchSettings = components['schemas']['SearchSettings'];
-export type AdvancedSearchQuery = components['schemas']['AdvancedSearchQuery'];
+export type QuickSearchRequestBody = components['schemas']['QuickSearchRequestBody'];
+export type AdvancedSearchRequestBody = components['schemas']['AdvancedSearchRequestBody'];
+export type SearchRequestBody = QuickSearchRequestBody | AdvancedSearchRequestBody;

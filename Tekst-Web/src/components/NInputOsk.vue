@@ -63,6 +63,18 @@ const fontStyle = computed<CSSProperties>(() => ({
     .join(', '),
 }));
 
+function focusTargetInput() {
+  nextTick().then(() => {
+    targetInputRef.value?.focus();
+  });
+}
+
+function selectTargetInput() {
+  nextTick().then(() => {
+    targetInputRef.value?.select();
+  });
+}
+
 function captureTargetSelectionRange() {
   const start =
     targetInputRef.value?.inputElRef?.selectionStart ??
@@ -131,6 +143,7 @@ function handleOskModeChange(oskModeKey: string) {
 }
 
 watch(capsLock, () => (shift.value = false));
+defineExpose({ focus: focusTargetInput, select: selectTargetInput });
 </script>
 
 <template>

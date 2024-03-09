@@ -3919,85 +3919,37 @@
         }
       }
     },
-    "/search/quick": {
+    "/search": {
       "post": {
         "tags": [
           "search"
         ],
-        "summary": "Quick search",
-        "operationId": "quickSearch",
+        "summary": "Do search",
+        "operationId": "doSearch",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "allOf": [
+                "oneOf": [
                   {
                     "$ref": "#/components/schemas/QuickSearchRequestBody"
-                  }
-                ],
-                "title": "Body",
-                "default": {
-                  "query": "*",
-                  "settings": {
-                    "strict": true,
-                    "defaultOperator": "OR"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SearchResults"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/search/advanced": {
-      "post": {
-        "tags": [
-          "search"
-        ],
-        "summary": "Advanced search",
-        "operationId": "advancedSearch",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "allOf": [
+                  },
                   {
                     "$ref": "#/components/schemas/AdvancedSearchRequestBody"
                   }
                 ],
                 "title": "Body",
-                "default": {
-                  "query": {},
-                  "settings": {
-                    "strict": true,
-                    "defaultOperator": "OR"
+                "discriminator": {
+                  "propertyName": "searchType",
+                  "mapping": {
+                    "quick": "#/components/schemas/QuickSearchRequestBody",
+                    "advanced": "#/components/schemas/AdvancedSearchRequestBody"
                   }
                 }
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -5613,6 +5565,10 @@
       },
       "AdvancedSearchRequestBody": {
         "properties": {
+          "searchType": {
+            "const": "advanced",
+            "title": "Searchtype"
+          },
           "query": {
             "allOf": [
               {
@@ -5628,12 +5584,15 @@
               }
             ],
             "default": {
-              "strict": true,
+              "strict": false,
               "defaultOperator": "OR"
             }
           }
         },
         "type": "object",
+        "required": [
+          "searchType"
+        ],
         "title": "AdvancedSearchRequestBody"
       },
       "BearerResponse": {
@@ -8179,6 +8138,10 @@
       },
       "QuickSearchRequestBody": {
         "properties": {
+          "searchType": {
+            "const": "quick",
+            "title": "Searchtype"
+          },
           "query": {
             "type": "string",
             "title": "Query",
@@ -8191,12 +8154,15 @@
               }
             ],
             "default": {
-              "strict": true,
+              "strict": false,
               "defaultOperator": "OR"
             }
           }
         },
         "type": "object",
+        "required": [
+          "searchType"
+        ],
         "title": "QuickSearchRequestBody"
       },
       "ResourceCategory": {
@@ -9288,7 +9254,7 @@
           "strict": {
             "type": "boolean",
             "title": "Strict",
-            "default": true
+            "default": false
           },
           "defaultOperator": {
             "type": "string",

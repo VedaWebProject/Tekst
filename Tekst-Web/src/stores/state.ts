@@ -10,7 +10,7 @@ import { $t, $te } from '@/i18n';
 import { usePlatformData } from '@/composables/platformData';
 import { useAuthStore } from './auth';
 import { useMessages } from '@/composables/messages';
-import { type LocaleKey } from '@/api';
+import type { SearchSettings, LocaleKey } from '@/api';
 import { pickTranslation } from '@/utils';
 
 export const useStateStore = defineStore('state', () => {
@@ -123,6 +123,13 @@ export const useStateStore = defineStore('state', () => {
     () => text.value?.levels.map((l) => pickTranslation(l, locale.value)) || []
   );
 
+  // search settings
+
+  const searchSettings = ref<SearchSettings>({
+    strict: false,
+    defaultOperator: 'OR',
+  });
+
   // init loading state
 
   const initLoading = ref(false);
@@ -178,12 +185,13 @@ export const useStateStore = defineStore('state', () => {
     isTouchDevice,
     setPageTitle,
     locale,
+    setLocale,
     availableLocales,
     translationLocaleOptions,
     text,
     fallbackText,
     textLevelLabels,
     getTextLevelLabel,
-    setLocale,
+    searchSettings,
   };
 });

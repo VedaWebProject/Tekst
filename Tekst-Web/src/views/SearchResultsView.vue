@@ -5,16 +5,19 @@ import SearchResult from '@/components/search/SearchResult.vue';
 import { NList, NTime } from 'naive-ui';
 import { usePlatformData } from '@/composables/platformData';
 import { computed, onBeforeMount, ref, watch } from 'vue';
-import { POST, type AdvancedSearchQuery, type SearchResults } from '@/api';
+import { POST, type SearchRequestBody, type SearchResults } from '@/api';
 import type { SearchResultProps } from '@/components/search/SearchResult.vue';
 import { useStateStore } from '@/stores';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import { useRoute } from 'vue-router';
 import { Base64 } from 'js-base64';
+import { useMessages } from '@/composables/messages';
+import { $t } from '@/i18n';
 
 const { pfData } = usePlatformData();
 const state = useStateStore();
 const route = useRoute();
+const { message } = useMessages();
 
 const loading = ref(false);
 const resultsData = ref<SearchResults>();
@@ -41,44 +44,30 @@ const results = computed<SearchResultProps[]>(
     }) || []
 );
 
-async function runQuickSearch(query: string) {
-  const { data, error } = await POST('/search/quick', {
-    body: {
-      query,
-    },
-  });
-  if (!error) {
-    resultsData.value = data;
-  }
-}
-
-async function runAdvancedSearch(query: AdvancedSearchQuery) {
-  const { data, error } = await POST('/search/advanced', {
-    body: {
-      query: query,
-    },
-  });
-  if (!error) {
-    resultsData.value = data;
-  }
-}
-
 async function processQuery() {
   loading.value = true;
-  const queryDecoded = Base64.decode(route.params.query?.toString() || '');
-  let query;
   try {
-    query = JSON.parse(queryDecoded);
-    if (query && typeof query === 'object' && query.constructor === Object) {
-      await runAdvancedSearch(query);
+    const searchReqBody: SearchRequestBody = JSON.parse(
+      Base64.decode(route.params.req?.toString() || '')
+    );
+    if (!['quick', 'advanced'].includes(searchReqBody.searchType)) {
+      throw new Error();
     }
+    const { data, error } = await POST('/search', {
+      body: searchReqBody,
+    });
+    if (!error) {
+      resultsData.value = data;
+    }
+  } catch {
+    message.error($t('search.results.msgInvalidRequest'));
   } finally {
     loading.value = false;
   }
 }
 
 watch(
-  () => route.params.query,
+  () => route.params.req,
   () => processQuery()
 );
 
