@@ -4,15 +4,22 @@ import { NoContentIcon, SearchResultsIcon } from '@/icons';
 import SearchResult from '@/components/search/SearchResult.vue';
 import { NList, NTime } from 'naive-ui';
 import { usePlatformData } from '@/composables/platformData';
-import { computed, onBeforeMount, ref } from 'vue';
-import { GET, type SearchResults } from '@/api';
+import { computed, onBeforeMount, ref, watch } from 'vue';
+import { POST, type SearchRequestBody, type SearchResults } from '@/api';
 import type { SearchResultProps } from '@/components/search/SearchResult.vue';
 import { useStateStore } from '@/stores';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
+import { useRoute } from 'vue-router';
+import { Base64 } from 'js-base64';
+import { useMessages } from '@/composables/messages';
+import { $t } from '@/i18n';
 
 const { pfData } = usePlatformData();
 const state = useStateStore();
+const route = useRoute();
+const { message } = useMessages();
 
+const loading = ref(false);
 const resultsData = ref<SearchResults>();
 const results = computed<SearchResultProps[]>(
   () =>
@@ -37,18 +44,34 @@ const results = computed<SearchResultProps[]>(
     }) || []
 );
 
-onBeforeMount(async () => {
-  const { data, error } = await GET('/search/quick', {
-    params: {
-      query: {
-        q: 'f*',
-      },
-    },
-  });
-  if (!error) {
-    resultsData.value = data;
+async function processQuery() {
+  loading.value = true;
+  try {
+    const searchReqBody: SearchRequestBody = JSON.parse(
+      Base64.decode(route.params.req?.toString() || '')
+    );
+    if (!['quick', 'advanced'].includes(searchReqBody.searchType)) {
+      throw new Error();
+    }
+    const { data, error } = await POST('/search', {
+      body: searchReqBody,
+    });
+    if (!error) {
+      resultsData.value = data;
+    }
+  } catch {
+    message.error($t('search.results.msgInvalidRequest'));
+  } finally {
+    loading.value = false;
   }
-});
+}
+
+watch(
+  () => route.params.req,
+  () => processQuery()
+);
+
+onBeforeMount(() => processQuery());
 </script>
 
 <template>

@@ -250,9 +250,9 @@ export interface paths {
     /** Import resource data */
     post: operations['importResourceData'];
   };
-  '/search/quick': {
-    /** Quick search */
-    get: operations['quickSearch'];
+  '/search': {
+    /** Do search */
+    post: operations['doSearch'];
   };
   '/texts': {
     /**
@@ -353,6 +353,25 @@ export interface components {
   schemas: {
     /** @constant */
     AdminNotificationTrigger: 'userAwaitsActivation';
+    /** AdvancedSearchQuery */
+    AdvancedSearchQuery: Record<string, never>;
+    /** AdvancedSearchRequestBody */
+    AdvancedSearchRequestBody: {
+      /**
+       * Searchtype
+       * @constant
+       */
+      searchType: 'advanced';
+      /** @default {} */
+      query?: components['schemas']['AdvancedSearchQuery'];
+      /**
+       * @default {
+       *   "strict": false,
+       *   "defaultOperator": "OR"
+       * }
+       */
+      settings?: components['schemas']['SearchSettings'];
+    };
     /** BearerResponse */
     BearerResponse: {
       /** Access Token */
@@ -1668,6 +1687,26 @@ export interface components {
       /** Texts */
       texts: components['schemas']['TextStats'][];
     };
+    /** QuickSearchRequestBody */
+    QuickSearchRequestBody: {
+      /**
+       * Searchtype
+       * @constant
+       */
+      searchType: 'quick';
+      /**
+       * Query
+       * @default *
+       */
+      query?: string;
+      /**
+       * @default {
+       *   "strict": false,
+       *   "defaultOperator": "OR"
+       * }
+       */
+      settings?: components['schemas']['SearchSettings'];
+    };
     /** ResourceCategory */
     ResourceCategory: {
       /** Key */
@@ -2211,6 +2250,20 @@ export interface components {
        * Format: date-time
        */
       indexCreationTime: string;
+    };
+    /** SearchSettings */
+    SearchSettings: {
+      /**
+       * Strict
+       * @default false
+       */
+      strict?: boolean;
+      /**
+       * Defaultoperator
+       * @default OR
+       * @enum {string}
+       */
+      defaultOperator?: 'AND' | 'OR';
     };
     /** TekstErrorModel */
     TekstErrorModel: {
@@ -4378,16 +4431,13 @@ export interface operations {
       };
     };
   };
-  /** Quick search */
-  quickSearch: {
-    parameters: {
-      query?: {
-        /** @description Query string */
-        q?: string;
-        /** @description Strict search */
-        strict?: boolean;
-        /** @description Default operator */
-        op?: 'AND' | 'OR' | 'and' | 'or';
+  /** Do search */
+  doSearch: {
+    requestBody: {
+      content: {
+        'application/json':
+          | components['schemas']['QuickSearchRequestBody']
+          | components['schemas']['AdvancedSearchRequestBody'];
       };
     };
     responses: {

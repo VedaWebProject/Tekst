@@ -136,11 +136,6 @@ export type Translation = {
 export type BookmarkRead = components['schemas']['BookmarkRead'];
 export type BookmarkCreate = components['schemas']['BookmarkCreate'];
 
-// search
-
-export type SearchResults = components['schemas']['SearchResults'];
-export type SearchHit = components['schemas']['SearchHit'];
-
 // user
 
 export type UserCreate = components['schemas']['UserCreate'];
@@ -225,3 +220,12 @@ export type RichTextResourceConfig = components['schemas']['RichTextResourceConf
 export type CommonResourceConfig = components['schemas']['CommonResourceConfig'];
 export type AnyResourceConfig = AnyResourceRead['config'];
 export type DeepLLinksConfig = components['schemas']['DeepLLinksConfig'];
+
+// search
+
+export type SearchResults = components['schemas']['SearchResults'];
+export type SearchHit = components['schemas']['SearchHit'];
+export type SearchSettings = components['schemas']['SearchSettings'];
+export type QuickSearchRequestBody = components['schemas']['QuickSearchRequestBody'];
+export type AdvancedSearchRequestBody = components['schemas']['AdvancedSearchRequestBody'];
+export type SearchRequestBody = QuickSearchRequestBody | AdvancedSearchRequestBody;

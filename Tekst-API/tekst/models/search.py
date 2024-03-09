@@ -1,6 +1,7 @@
 from datetime import datetime
-from typing import Any, Literal
+from typing import Annotated, Any, Literal, Union
 
+from fastapi import Body
 from pydantic import field_validator
 
 from tekst.models.common import ModelBase, PydanticObjectId
@@ -68,10 +69,41 @@ class SearchResults(ModelBase):
 
 
 class SearchSettings(ModelBase):
-    strict: bool = True
+    strict: bool = False
     default_operator: Literal["AND", "OR"] = "OR"
 
     @field_validator("default_operator", mode="before")
     @classmethod
-    def default_operator_upper(cls, v: Any) -> Literal["AND", "OR"]:
+    def default_operator_upper(cls, v: Any) -> str:
         return str(v).upper()
+
+
+class QuickSearchRequestBody(ModelBase):
+    search_type: Literal["quick"]
+    query: str = "*"
+    settings: SearchSettings = SearchSettings()
+
+
+class AdvancedSearchQuery(ModelBase):
+    pass
+
+
+class AdvancedSearchRequestBody(ModelBase):
+    search_type: Literal["advanced"]
+    query: AdvancedSearchQuery = AdvancedSearchQuery()
+    settings: SearchSettings = SearchSettings()
+
+
+SearchRequestBody = Annotated[
+    Union[  # noqa: UP007
+        QuickSearchRequestBody,
+        AdvancedSearchRequestBody,
+    ],
+    Body(discriminator="search_type"),
+]
+
+
+class IndexInfoResponse(ModelBase):
+    documents: int
+    size: str
+    searches: int

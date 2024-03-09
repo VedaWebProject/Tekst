@@ -54,7 +54,7 @@ init:
   systemSegments: Füge Seitensegmente ein...
   customFonts: Lade individuelle Schriftarten-Definitionen...
   ready: Fertig.
-  error: Es sind Fehler beim Starten der Anwendung aufgetreten.
+  error: Es sind Fehler beim Starten der Anwendung aufgetreten. Der Server scheint nicht erreichbar zu sein.
 
 errors:
   error: Fehler
@@ -680,6 +680,7 @@ search:
     results: '{count} Ergebnisse in {ms} Millisekunden'
     indexCreationTime: Letztes update der Suchdaten
     relevance: Relevanz
+    msgInvalidRequest: Ungültige Suchanfrage. Haben Sie vielleicht einen Link zu dieser Seite kopiert und dabei ein paar Zeichen übersehen?
   nothingFound: Nichts gefunden
 
 help:

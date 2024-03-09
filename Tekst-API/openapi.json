@@ -3919,57 +3919,38 @@
         }
       }
     },
-    "/search/quick": {
-      "get": {
+    "/search": {
+      "post": {
         "tags": [
           "search"
         ],
-        "summary": "Quick search",
-        "operationId": "quickSearch",
-        "parameters": [
-          {
-            "name": "q",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "description": "Query string",
-              "default": "*",
-              "title": "Q"
-            },
-            "description": "Query string"
+        "summary": "Do search",
+        "operationId": "doSearch",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/QuickSearchRequestBody"
+                  },
+                  {
+                    "$ref": "#/components/schemas/AdvancedSearchRequestBody"
+                  }
+                ],
+                "title": "Body",
+                "discriminator": {
+                  "propertyName": "searchType",
+                  "mapping": {
+                    "quick": "#/components/schemas/QuickSearchRequestBody",
+                    "advanced": "#/components/schemas/AdvancedSearchRequestBody"
+                  }
+                }
+              }
+            }
           },
-          {
-            "name": "strict",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "description": "Strict search",
-              "default": true,
-              "title": "Strict"
-            },
-            "description": "Strict search"
-          },
-          {
-            "name": "op",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "enum": [
-                "AND",
-                "OR",
-                "and",
-                "or"
-              ],
-              "type": "string",
-              "description": "Default operator",
-              "default": "OR",
-              "title": "Op"
-            },
-            "description": "Default operator"
-          }
-        ],
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -5576,6 +5557,43 @@
     "schemas": {
       "AdminNotificationTrigger": {
         "const": "userAwaitsActivation"
+      },
+      "AdvancedSearchQuery": {
+        "properties": {},
+        "type": "object",
+        "title": "AdvancedSearchQuery"
+      },
+      "AdvancedSearchRequestBody": {
+        "properties": {
+          "searchType": {
+            "const": "advanced",
+            "title": "Searchtype"
+          },
+          "query": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AdvancedSearchQuery"
+              }
+            ],
+            "default": {}
+          },
+          "settings": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SearchSettings"
+              }
+            ],
+            "default": {
+              "strict": false,
+              "defaultOperator": "OR"
+            }
+          }
+        },
+        "type": "object",
+        "required": [
+          "searchType"
+        ],
+        "title": "AdvancedSearchRequestBody"
       },
       "BearerResponse": {
         "properties": {
@@ -8118,6 +8136,35 @@
         "title": "PlatformStats",
         "description": "Platform statistics data"
       },
+      "QuickSearchRequestBody": {
+        "properties": {
+          "searchType": {
+            "const": "quick",
+            "title": "Searchtype"
+          },
+          "query": {
+            "type": "string",
+            "title": "Query",
+            "default": "*"
+          },
+          "settings": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SearchSettings"
+              }
+            ],
+            "default": {
+              "strict": false,
+              "defaultOperator": "OR"
+            }
+          }
+        },
+        "type": "object",
+        "required": [
+          "searchType"
+        ],
+        "title": "QuickSearchRequestBody"
+      },
       "ResourceCategory": {
         "properties": {
           "key": {
@@ -9201,6 +9248,26 @@
           "indexCreationTime"
         ],
         "title": "SearchResults"
+      },
+      "SearchSettings": {
+        "properties": {
+          "strict": {
+            "type": "boolean",
+            "title": "Strict",
+            "default": false
+          },
+          "defaultOperator": {
+            "type": "string",
+            "enum": [
+              "AND",
+              "OR"
+            ],
+            "title": "Defaultoperator",
+            "default": "OR"
+          }
+        },
+        "type": "object",
+        "title": "SearchSettings"
       },
       "TekstErrorModel": {
         "properties": {

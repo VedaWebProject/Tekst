@@ -7,10 +7,10 @@ from tekst.auth import SuperuserDep
 from tekst.models.location import LocationDocument
 from tekst.models.platform import PlatformStats, TextStats
 from tekst.models.resource import ResourceBaseDocument
+from tekst.models.search import IndexInfoResponse
 from tekst.models.text import TextDocument
 from tekst.models.user import UserDocument, UserRead
 from tekst.resources import resource_types_mgr
-from tekst.search.responses import IndexInfoResponse
 
 
 router = APIRouter(
