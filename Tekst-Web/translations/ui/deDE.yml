@@ -54,7 +54,7 @@ init:
   systemSegments: Füge Seitensegmente ein...
   customFonts: Lade individuelle Schriftarten-Definitionen...
   ready: Fertig.
-  error: Es sind Fehler beim Starten der Anwendung aufgetreten.
+  error: Es sind Fehler beim Starten der Anwendung aufgetreten. Der Server scheint nicht erreichbar zu sein.
 
 errors:
   error: Fehler
