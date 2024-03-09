@@ -44,7 +44,11 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
       <browse-location-controls :button-size="buttonSize" />
 
       <div class="browse-toolbar-middle">
-        <div v-show="!state.smallScreen" class="browse-location-label">
+        <div
+          v-show="!state.smallScreen"
+          class="browse-location-label"
+          :style="{ color: themeVars.bodyColor }"
+        >
           <location-label />
         </div>
       </div>
