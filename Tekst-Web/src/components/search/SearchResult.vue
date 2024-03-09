@@ -128,7 +128,8 @@ const highlightsProcessed = computed<Record<string, string>>(() => {
 
 <style>
 .sr-highlights em {
-  font-weight: bold;
   font-style: normal;
+  padding: 0 2px;
+  background-color: v-bind(textTagColor);
 }
 </style>

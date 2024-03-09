@@ -13,10 +13,12 @@ import { useRoute } from 'vue-router';
 import { Base64 } from 'js-base64';
 import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
+import { useThemeStore } from '@/stores/theme';
 
 const { pfData } = usePlatformData();
 const state = useStateStore();
 const route = useRoute();
+const theme = useThemeStore();
 const { message } = useMessages();
 
 const loading = ref(false);
@@ -31,7 +33,7 @@ const results = computed<SearchResultProps[]>(
         fullLabel: r.fullLabel,
         textSlug: text?.slug || '',
         textTitle: text?.title || '',
-        textColor: text?.accentColor || '#000',
+        textColor: theme.generateAccentColorVariants(text?.accentColor).base,
         level: r.level,
         levelLabel: state.getTextLevelLabel(r.textId, r.level) || '',
         position: r.position,
