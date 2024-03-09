@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { NSpin, NIcon, NButton } from 'naive-ui';
+import { NSpin, NIcon, NButton, useThemeVars } from 'naive-ui';
 import { ref, watch } from 'vue';
 import { useBrowseStore, useStateStore } from '@/stores';
 import { computed } from 'vue';
@@ -18,6 +18,7 @@ const props = defineProps<{
 
 const browse = useBrowseStore();
 const state = useStateStore();
+const themeVars = useThemeVars();
 
 const contentContainerRef = ref();
 const isContentContainerHovered = useElementHover(contentContainerRef, {
@@ -96,7 +97,9 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
 
     <n-button
       v-if="resource.config?.general?.defaultCollapsed && resource.contents?.length"
-      text
+      circle
+      :color="themeVars.bodyColor"
+      :style="{ color: themeVars.textColor1 }"
       :focusable="false"
       class="content-body-collapse-btn"
       @click="contentCollapsed = !contentCollapsed"
@@ -194,8 +197,12 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
 
 .content-body-collapse-btn {
   position: absolute;
-  bottom: 0.4rem;
+  bottom: -16px;
   right: 50%;
+}
+
+.content-body-collapse-btn:hover {
+  color: var(--accent-color) !important;
 }
 
 .content-loader {
