@@ -1,6 +1,7 @@
 import asyncio
 
 from datetime import datetime
+from time import process_time
 from typing import Any
 from uuid import uuid4
 
@@ -168,6 +169,7 @@ async def _populate_index(index_name: str) -> None:
     }
 
     for text in await TextDocument.find_all(lazy_parse=True).to_list():
+        start_time = process_time()
         # Initialize stack with all level 0 locations (sorted) of the current text.
         # Each item on the stack is a tuple containing (1) the location labels from the
         # root level up to the current location and (2) the location itself.
@@ -176,7 +178,6 @@ async def _populate_index(index_name: str) -> None:
             for location in await LocationDocument.find(
                 LocationDocument.text_id == text.id,
                 LocationDocument.level == 0,
-                lazy_parse=True,
             )
             .sort(+LocationDocument.position)
             .to_list()
@@ -230,7 +231,6 @@ async def _populate_index(index_name: str) -> None:
                     (labels + [child.label], child)
                     for child in await LocationDocument.find(
                         LocationDocument.parent_id == location.id,
-                        lazy_parse=True,
                     )
                     .sort(+LocationDocument.position)
                     .to_list()
@@ -245,7 +245,10 @@ async def _populate_index(index_name: str) -> None:
         if errors:
             log.error(f"There were errors populating index for '{text.title}'.")
         else:
-            log.debug(f"Indexing finished for '{text.title}'.")
+            log.debug(
+                f"Indexing finished for '{text.title}' in "
+                f"{(process_time() - start_time):.2f} seconds."
+            )
         errors = False
 
 
