@@ -141,35 +141,49 @@ export function useAdminMenuOptions(showIcons: boolean = true) {
       icon: (showIcons && renderIcon(TextsIcon)) || undefined,
       children: [
         {
-          label: renderLink(() => $t('admin.text.settings.heading'), {
-            name: 'adminTextsSettings',
-            params: { text: state.text?.slug },
-          }),
-          key: 'adminTextsSettings',
-          icon: (showIcons && renderIcon(SettingsIcon)) || undefined,
+          key: 'currentTextGroup',
+          type: 'group',
+          label: state.text?.title || '',
+          children: [
+            {
+              label: renderLink(() => $t('admin.text.settings.heading'), {
+                name: 'adminTextsSettings',
+                params: { text: state.text?.slug },
+              }),
+              key: 'adminTextsSettings',
+              icon: (showIcons && renderIcon(SettingsIcon)) || undefined,
+            },
+            {
+              label: renderLink(() => $t('admin.text.levels.heading'), {
+                name: 'adminTextsLevels',
+                params: { text: state.text?.slug },
+              }),
+              key: 'adminTextsLevels',
+              icon: (showIcons && renderIcon(LevelsIcon)) || undefined,
+            },
+            {
+              label: renderLink(() => $t('admin.text.locations.heading'), {
+                name: 'adminTextsLocations',
+                params: { text: state.text?.slug },
+              }),
+              key: 'adminTextsLocations',
+              icon: (showIcons && renderIcon(TreeIcon)) || undefined,
+            },
+          ],
         },
         {
-          label: renderLink(() => $t('admin.text.levels.heading'), {
-            name: 'adminTextsLevels',
-            params: { text: state.text?.slug },
-          }),
-          key: 'adminTextsLevels',
-          icon: (showIcons && renderIcon(LevelsIcon)) || undefined,
-        },
-        {
-          label: renderLink(() => $t('admin.text.locations.heading'), {
-            name: 'adminTextsLocations',
-            params: { text: state.text?.slug },
-          }),
-          key: 'adminTextsLocations',
-          icon: (showIcons && renderIcon(TreeIcon)) || undefined,
+          key: 'textGeneralGroup',
+          type: 'group',
+          label: $t('general.general'),
+          children: [
+            {
+              label: renderLink(() => $t('admin.newText.heading'), { name: 'adminNewText' }),
+              key: 'adminNewText',
+              icon: (showIcons && renderIcon(AddCircleIcon)) || undefined,
+            },
+          ],
         },
       ],
-    },
-    {
-      label: renderLink(() => $t('admin.newText.heading'), { name: 'adminNewText' }),
-      key: 'adminNewText',
-      icon: (showIcons && renderIcon(AddCircleIcon)) || undefined,
     },
     {
       label: $t('admin.system.heading'),
