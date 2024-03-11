@@ -34,6 +34,7 @@
         "translation": "Diese Version enthält Wiederholungszeichen."
       }
     ],
+    "category": "version",
     "config": {
       "common": {
         "showOnParentLevel": true
@@ -63,6 +64,7 @@
     "proposed": false,
     "public": true,
     "citation": null,
+    "category": "version",
     "meta": [
       { "key": "author", "value": "Matsuo Bashō" },
       { "key": "year", "value": "1686" },
@@ -89,6 +91,7 @@
     "proposed": false,
     "public": true,
     "citation": null,
+    "category": "translation",
     "config": {
       "common": {
         "showOnParentLevel": true
@@ -114,6 +117,7 @@
     "proposed": false,
     "public": true,
     "citation": null,
+    "category": "version",
     "config": {
       "deeplLinks": {
         "enabled": false,
