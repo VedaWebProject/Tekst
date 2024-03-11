@@ -251,8 +251,8 @@ export interface paths {
     post: operations['importResourceData'];
   };
   '/search': {
-    /** Do search */
-    post: operations['doSearch'];
+    /** Perform search */
+    post: operations['performSearch'];
   };
   '/texts': {
     /**
@@ -366,12 +366,15 @@ export interface components {
       query?: components['schemas']['AdvancedSearchQuery'];
       /**
        * @default {
-       *   "strict": false,
-       *   "defaultOperator": "OR"
+       *   "strict": false
        * }
        */
-      settings?: components['schemas']['SearchSettings'];
+      settingsGeneral?: components['schemas']['GeneralSearchSettings'];
+      /** @default {} */
+      settingsAdvanced?: components['schemas']['AdvancedSearchSettings'];
     };
+    /** AdvancedSearchSettings */
+    AdvancedSearchSettings: Record<string, never>;
     /** BearerResponse */
     BearerResponse: {
       /** Access Token */
@@ -786,6 +789,14 @@ export interface components {
        * @description Name of the font to use for this resource.
        */
       font?: string | null;
+    };
+    /** GeneralSearchSettings */
+    GeneralSearchSettings: {
+      /**
+       * Strict
+       * @default false
+       */
+      strict?: boolean;
     };
     /** HTTPValidationError */
     HTTPValidationError: {
@@ -1701,11 +1712,27 @@ export interface components {
       query?: string;
       /**
        * @default {
-       *   "strict": false,
+       *   "strict": false
+       * }
+       */
+      settingsGeneral?: components['schemas']['GeneralSearchSettings'];
+      /**
+       * @default {
        *   "defaultOperator": "OR"
        * }
        */
-      settings?: components['schemas']['SearchSettings'];
+      settingsQuick?: components['schemas']['QuickSearchSettings'];
+    };
+    /** QuickSearchSettings */
+    QuickSearchSettings: {
+      /**
+       * Defaultoperator
+       * @default OR
+       * @enum {string}
+       */
+      defaultOperator?: 'AND' | 'OR';
+      /** Texts */
+      texts?: string[] | null;
     };
     /** ResourceCategory */
     ResourceCategory: {
@@ -2250,20 +2277,6 @@ export interface components {
        * Format: date-time
        */
       indexCreationTime: string;
-    };
-    /** SearchSettings */
-    SearchSettings: {
-      /**
-       * Strict
-       * @default false
-       */
-      strict?: boolean;
-      /**
-       * Defaultoperator
-       * @default OR
-       * @enum {string}
-       */
-      defaultOperator?: 'AND' | 'OR';
     };
     /** TekstErrorModel */
     TekstErrorModel: {
@@ -4431,8 +4444,8 @@ export interface operations {
       };
     };
   };
-  /** Do search */
-  doSearch: {
+  /** Perform search */
+  performSearch: {
     requestBody: {
       content: {
         'application/json':

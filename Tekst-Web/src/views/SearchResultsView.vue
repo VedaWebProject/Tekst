@@ -78,7 +78,7 @@ onBeforeMount(() => processQuery());
 
 <template>
   <icon-heading level="1" :icon="SearchResultsIcon">
-    {{ $t('search.results.heading') }}
+    {{ !loading ? $t('search.results.heading') : $t('search.results.searching') }}
   </icon-heading>
 
   <div
@@ -107,11 +107,7 @@ onBeforeMount(() => processQuery());
   </div>
 
   <div class="content-block">
-    <n-spin
-      v-if="loading"
-      class="centered-spinner"
-      :description="`${$t('search.results.searching')}...`"
-    />
+    <n-spin v-if="loading" class="centered-spinner" :description="$t('search.results.searching')" />
     <n-list v-else-if="results.length" clickable hoverable style="background-color: transparent">
       <search-result v-for="result in results" :key="result.id" v-bind="result" />
     </n-list>

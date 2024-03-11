@@ -10,12 +10,16 @@ withDefaults(
     disabled?: boolean;
     loading?: boolean;
     focusable?: boolean;
+    checkedValue?: string;
+    uncheckedValue?: string;
   }>(),
   {
     value: undefined,
     label: undefined,
     round: false,
     size: undefined,
+    checkedValue: undefined,
+    uncheckedValue: undefined,
   }
 );
 
@@ -31,6 +35,8 @@ defineEmits(['update:value']);
       :disabled="disabled"
       :loading="loading"
       :focusable="focusable"
+      :checked-value="checkedValue"
+      :unchecked-value="uncheckedValue"
       @update:value="(v) => $emit('update:value', v)"
     />
     <span class="text-medium" :class="{ translucent: disabled }">

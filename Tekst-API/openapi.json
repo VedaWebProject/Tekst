@@ -3924,8 +3924,8 @@
         "tags": [
           "search"
         ],
-        "summary": "Do search",
-        "operationId": "doSearch",
+        "summary": "Perform search",
+        "operationId": "performSearch",
         "requestBody": {
           "content": {
             "application/json": {
@@ -3972,7 +3972,15 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
       }
     },
     "/texts": {
@@ -5577,16 +5585,23 @@
             ],
             "default": {}
           },
-          "settings": {
+          "settingsGeneral": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/SearchSettings"
+                "$ref": "#/components/schemas/GeneralSearchSettings"
               }
             ],
             "default": {
-              "strict": false,
-              "defaultOperator": "OR"
+              "strict": false
             }
+          },
+          "settingsAdvanced": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AdvancedSearchSettings"
+              }
+            ],
+            "default": {}
           }
         },
         "type": "object",
@@ -5594,6 +5609,11 @@
           "searchType"
         ],
         "title": "AdvancedSearchRequestBody"
+      },
+      "AdvancedSearchSettings": {
+        "properties": {},
+        "type": "object",
+        "title": "AdvancedSearchSettings"
       },
       "BearerResponse": {
         "properties": {
@@ -6425,6 +6445,17 @@
         },
         "type": "object",
         "title": "GeneralRichTextResourceConfig"
+      },
+      "GeneralSearchSettings": {
+        "properties": {
+          "strict": {
+            "type": "boolean",
+            "title": "Strict",
+            "default": false
+          }
+        },
+        "type": "object",
+        "title": "GeneralSearchSettings"
       },
       "HTTPValidationError": {
         "properties": {
@@ -8147,14 +8178,23 @@
             "title": "Query",
             "default": "*"
           },
-          "settings": {
+          "settingsGeneral": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/SearchSettings"
+                "$ref": "#/components/schemas/GeneralSearchSettings"
               }
             ],
             "default": {
-              "strict": false,
+              "strict": false
+            }
+          },
+          "settingsQuick": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QuickSearchSettings"
+              }
+            ],
+            "default": {
               "defaultOperator": "OR"
             }
           }
@@ -8164,6 +8204,38 @@
           "searchType"
         ],
         "title": "QuickSearchRequestBody"
+      },
+      "QuickSearchSettings": {
+        "properties": {
+          "defaultOperator": {
+            "type": "string",
+            "enum": [
+              "AND",
+              "OR"
+            ],
+            "title": "Defaultoperator",
+            "default": "OR"
+          },
+          "texts": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                "type": "array",
+                "minItems": 1,
+                "description": "IDs of texts to search in"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Texts"
+          }
+        },
+        "type": "object",
+        "title": "QuickSearchSettings"
       },
       "ResourceCategory": {
         "properties": {
@@ -9248,26 +9320,6 @@
           "indexCreationTime"
         ],
         "title": "SearchResults"
-      },
-      "SearchSettings": {
-        "properties": {
-          "strict": {
-            "type": "boolean",
-            "title": "Strict",
-            "default": false
-          },
-          "defaultOperator": {
-            "type": "string",
-            "enum": [
-              "AND",
-              "OR"
-            ],
-            "title": "Defaultoperator",
-            "default": "OR"
-          }
-        },
-        "type": "object",
-        "title": "SearchSettings"
       },
       "TekstErrorModel": {
         "properties": {

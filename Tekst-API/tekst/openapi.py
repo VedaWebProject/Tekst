@@ -50,11 +50,11 @@ def generate_schema(app: FastAPI, cfg: TekstConfig, settings: PlatformSettings):
         },
         separate_input_output_schemas=False,
     )
-    return process_openapi_schema(schema)
+    return process_openapi_schema(schema=schema, cfg=cfg)
 
 
-def process_openapi_schema(schema: dict[str, Any]) -> dict[str, Any]:
-    # nothing happening here, yet
+def process_openapi_schema(schema: dict[str, Any], cfg: TekstConfig) -> dict[str, Any]:
+    # schema["components"]["schemas"]["Foo"] = PlatformSettings.schema()
     return schema
 
 

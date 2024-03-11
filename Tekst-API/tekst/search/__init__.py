@@ -5,7 +5,7 @@ from time import process_time
 from typing import Any
 from uuid import uuid4
 
-from beanie.operators import Eq
+from beanie.operators import Eq, In
 from elasticsearch import Elasticsearch
 
 from tekst import locks
@@ -14,8 +14,16 @@ from tekst.logging import log
 from tekst.models.content import ContentBaseDocument
 from tekst.models.location import LocationDocument
 from tekst.models.resource import ResourceBaseDocument
-from tekst.models.search import IndexInfoResponse, SearchResults, SearchSettings
+from tekst.models.search import (
+    AdvancedSearchQuery,
+    AdvancedSearchSettings,
+    GeneralSearchSettings,
+    IndexInfoResponse,
+    QuickSearchSettings,
+    SearchResults,
+)
 from tekst.models.text import TextDocument
+from tekst.models.user import UserRead
 from tekst.resources import resource_types_mgr
 from tekst.search.templates import (
     IDX_ALIAS,
@@ -280,19 +288,41 @@ async def get_index_info():
     )
 
 
-def search_quick(
+async def search_quick(
+    user: UserRead | None,
     query: str,
-    settings: SearchSettings = SearchSettings(),
+    settings_general: GeneralSearchSettings = GeneralSearchSettings(),
+    settings_quick: QuickSearchSettings = QuickSearchSettings(),
 ) -> SearchResults:
     client: Elasticsearch = _es_client
+
+    # find out what resources we are supposed to search in ...
+    resource_ids = [
+        str(res.id)
+        for res in await ResourceBaseDocument.find(
+            In(ResourceBaseDocument.text_id, settings_quick.texts)
+            if settings_quick.texts
+            else {},
+            await ResourceBaseDocument.access_conditions_read(user),
+            with_children=True,
+        ).to_list()
+    ]
+
+    # ... and compose a list of target index fields based on that:
+    field_pattern_suffix = ".*.strict" if settings_general.strict else ".*"
+    fields = [f"{res_id}{field_pattern_suffix}" for res_id in resource_ids]
+
+    print(fields)
+
+    # perform the search
     return SearchResults.from_es_results(
         results=client.search(
             index=IDX_ALIAS,
             query={
                 "simple_query_string": {
                     "query": query,
-                    "fields": ["*.strict" if settings.strict else "*"],
-                    "default_operator": settings.default_operator,
+                    "fields": fields,
+                    "default_operator": settings_quick.default_operator,
                 }
             },
             highlight={
@@ -301,3 +331,14 @@ def search_quick(
         ),
         index_creation_time=get_index_creation_time(),
     )
+
+
+async def search_advanced(
+    user: UserRead | None,
+    query: AdvancedSearchQuery,
+    settings_general: GeneralSearchSettings = GeneralSearchSettings(),
+    settings_advanced: AdvancedSearchSettings = AdvancedSearchSettings(),
+) -> SearchResults:
+    # client: Elasticsearch = _es_client
+    # TODO
+    pass

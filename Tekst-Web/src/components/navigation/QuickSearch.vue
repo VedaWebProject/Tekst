@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { NButton, NIcon, type InputInst } from 'naive-ui';
+import { NCollapse, NCollapseItem, NButton, NIcon, type InputInst } from 'naive-ui';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
@@ -11,6 +11,8 @@ import { useRouter } from 'vue-router';
 import { Base64 } from 'js-base64';
 import { useStateStore } from '@/stores';
 import type { SearchRequestBody } from '@/api';
+import GeneralSearchSettingsForm from '@/forms/search/GeneralSearchSettingsForm.vue';
+import QuickSearchSettingsForm from '@/forms/search/QuickSearchSettingsForm.vue';
 
 const showModal = ref(false);
 const searchInput = ref<string>('');
@@ -18,6 +20,7 @@ const router = useRouter();
 const state = useStateStore();
 
 const inputRef = ref<InputInst>();
+const settingsExpanded = ref<string[]>([]);
 
 function handleSubmit(e: UIEvent) {
   e.preventDefault();
@@ -26,7 +29,8 @@ function handleSubmit(e: UIEvent) {
   const reqBody: SearchRequestBody = {
     searchType: 'quick',
     query: searchInput.value,
-    settings: state.searchSettings,
+    settingsGeneral: state.searchSettingsGeneral,
+    settingsQuick: state.searchSettingsQuick,
   };
   router.push({
     name: 'searchResults',
@@ -65,6 +69,8 @@ function handleSubmit(e: UIEvent) {
       v-model:value="searchInput"
       round
       placeholder="..."
+      size="large"
+      style="margin-bottom: var(--layout-gap)"
       @keydown.enter="handleSubmit"
     >
       <template #prefix>
@@ -72,8 +78,12 @@ function handleSubmit(e: UIEvent) {
       </template>
     </n-input-osk>
 
-    <h3>{{ $t('search.settings.heading') }}</h3>
-    <p>Quick Search settings go here...</p>
+    <n-collapse v-model:expanded-names="settingsExpanded">
+      <n-collapse-item :title="$t('search.settings.heading')" name="settings">
+        <quick-search-settings-form />
+        <general-search-settings-form />
+      </n-collapse-item>
+    </n-collapse>
 
     <button-shelf top-gap>
       <n-button secondary @click="showModal = false">

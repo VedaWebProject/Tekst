@@ -650,10 +650,17 @@ search:
   quickSearch:
     heading: Quick Search
   settings:
-    heading: Global Search Settings
+    heading: Settings
+    general:
+      heading: '@:general.general'
+      strict: respect diacritics
+    quick:
+      defaultOperator: results must contain all search terms
+      texts: Texts
+      textsPlaceholder: All texts
   results:
     heading: Search Results
-    searching: Searching
+    searching: Searching...
     results: '{count} results in {ms} milliseconds'
     indexCreationTime: Last update of search data
     relevance: Relevance

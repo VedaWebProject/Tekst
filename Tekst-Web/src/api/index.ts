@@ -225,7 +225,9 @@ export type DeepLLinksConfig = components['schemas']['DeepLLinksConfig'];
 
 export type SearchResults = components['schemas']['SearchResults'];
 export type SearchHit = components['schemas']['SearchHit'];
-export type SearchSettings = components['schemas']['SearchSettings'];
+export type GeneralSearchSettings = components['schemas']['GeneralSearchSettings'];
+export type QuickSearchSettings = components['schemas']['QuickSearchSettings'];
 export type QuickSearchRequestBody = components['schemas']['QuickSearchRequestBody'];
+export type AdvancedSearchSettings = components['schemas']['AdvancedSearchSettings'];
 export type AdvancedSearchRequestBody = components['schemas']['AdvancedSearchRequestBody'];
 export type SearchRequestBody = QuickSearchRequestBody | AdvancedSearchRequestBody;

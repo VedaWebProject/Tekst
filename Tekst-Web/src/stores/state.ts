@@ -5,12 +5,12 @@ import type { RouteLocationNormalized } from 'vue-router';
 import { i18n, setI18nLocale, getAvaliableBrowserLocaleKey, localeProfiles } from '@/i18n';
 import type { LocaleProfile } from '@/i18n';
 import { useRoute } from 'vue-router';
-import type { TextRead, TranslationLocaleKey } from '@/api';
+import type { GeneralSearchSettings, TextRead, TranslationLocaleKey } from '@/api';
 import { $t, $te } from '@/i18n';
 import { usePlatformData } from '@/composables/platformData';
 import { useAuthStore } from './auth';
 import { useMessages } from '@/composables/messages';
-import type { SearchSettings, LocaleKey } from '@/api';
+import type { QuickSearchSettings, AdvancedSearchSettings, LocaleKey } from '@/api';
 import { pickTranslation } from '@/utils';
 
 export const useStateStore = defineStore('state', () => {
@@ -125,10 +125,13 @@ export const useStateStore = defineStore('state', () => {
 
   // search settings
 
-  const searchSettings = ref<SearchSettings>({
+  const searchSettingsGeneral = ref<GeneralSearchSettings>({
     strict: false,
+  });
+  const searchSettingsQuick = ref<QuickSearchSettings>({
     defaultOperator: 'OR',
   });
+  const searchSettingsAdvanced = ref<AdvancedSearchSettings>({});
 
   // init loading state
 
@@ -192,6 +195,8 @@ export const useStateStore = defineStore('state', () => {
     fallbackText,
     textLevelLabels,
     getTextLevelLabel,
-    searchSettings,
+    searchSettingsGeneral,
+    searchSettingsQuick,
+    searchSettingsAdvanced,
   };
 });

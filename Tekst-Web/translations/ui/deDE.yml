@@ -674,10 +674,17 @@ search:
   quickSearch:
     heading: Schnellsuche
   settings:
-    heading: Globale Sucheinstellungen
+    heading: Einstellungen
+    general:
+      heading: '@:general.general'
+      strict: berücksichtige Diakritika
+    quick:
+      defaultOperator: Ergebnisse müssen alle Suchbegriffe enthalten
+      texts: Texte
+      textsPlaceholder: Alle Texte
   results:
     heading: Suchergebnisse
-    searching: Suche
+    searching: Suche...
     results: '{count} Ergebnisse in {ms} Millisekunden'
     indexCreationTime: Letztes update der Suchdaten
     relevance: Relevanz
