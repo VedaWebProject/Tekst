@@ -101,8 +101,12 @@ import AutoAwesomeMosaicOutlined from '@vicons/material/AutoAwesomeMosaicOutline
 import UpdateOutlined from '@vicons/material/UpdateOutlined';
 import LockClockOutlined from '@vicons/material/LockClockOutlined';
 import LockOpenOutlined from '@vicons/material/LockOpenOutlined';
+import SortOutlined from '@vicons/material/SortOutlined';
+import FilterAltOutlined from '@vicons/material/FilterAltOutlined';
 
 export {
+  FilterAltOutlined as FilterIcon,
+  SortOutlined as SortIcon,
   LockClockOutlined as LockIcon,
   LockOpenOutlined as LockOpenIcon,
   UpdateOutlined as UpdateIcon,

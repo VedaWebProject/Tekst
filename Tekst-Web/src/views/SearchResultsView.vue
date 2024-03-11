@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import IconHeading from '@/components/generic/IconHeading.vue';
-import { NoContentIcon, SearchResultsIcon } from '@/icons';
+import { FilterIcon, NoContentIcon, SearchResultsIcon, SortIcon } from '@/icons';
 import SearchResult from '@/components/search/SearchResult.vue';
-import { NSpace, NList, NTime, NSpin, NPagination } from 'naive-ui';
+import { NSpace, NList, NTime, NSpin, NPagination, NButton, NIcon } from 'naive-ui';
 import { usePlatformData } from '@/composables/platformData';
 import { computed, onBeforeMount, ref, watch } from 'vue';
 import { POST, type SearchRequestBody, type SearchResults } from '@/api';
@@ -29,6 +29,9 @@ const paginationDefaults = () => ({
   pageSize: 10,
 });
 const pagination = ref(paginationDefaults());
+const paginationSlots = computed(() => (state.smallScreen ? 4 : 9));
+const paginationSize = computed(() => (state.smallScreen ? undefined : 'large'));
+const paginationExtrasSize = computed(() => (state.smallScreen ? 'small' : undefined));
 
 const loading = ref(false);
 const resultsData = ref<SearchResults>();
@@ -46,9 +49,10 @@ const results = computed<SearchResultProps[]>(
         level: r.level,
         levelLabel: state.getTextLevelLabel(r.textId, r.level) || '',
         position: r.position,
-        scorePercent: resultsData.value?.maxScore
-          ? (r.score / resultsData.value?.maxScore) * 100
-          : 0,
+        scorePercent:
+          resultsData.value?.maxScore && r.score
+            ? (r.score / resultsData.value?.maxScore) * 100
+            : undefined,
         highlight: r.highlight,
         smallScreen: state.smallScreen,
       };
@@ -111,13 +115,26 @@ onBeforeMount(() => processQuery());
         v-model:page-size="pagination.pageSize"
         :page-sizes="[10, 25, 50]"
         :default-page-size="10"
-        :page-slot="state.smallScreen ? 5 : 12"
+        :page-slot="paginationSlots"
         :item-count="resultsData.totalHits"
         :disabled="loading"
+        :size="paginationSize"
         show-size-picker
         @update:page="() => search()"
         @update:page-size="() => search(true)"
       />
+      <n-space :wrap="false">
+        <n-button secondary :focusable="false" :size="paginationExtrasSize">
+          <template #icon>
+            <n-icon :component="SortIcon" />
+          </template>
+        </n-button>
+        <n-button secondary :focusable="false" :size="paginationExtrasSize">
+          <template #icon>
+            <n-icon :component="FilterIcon" />
+          </template>
+        </n-button>
+      </n-space>
     </n-space>
   </define-template>
 
