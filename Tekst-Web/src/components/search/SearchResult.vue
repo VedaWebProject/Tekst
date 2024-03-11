@@ -22,7 +22,7 @@ const props = defineProps<{
 }>();
 export type SearchResultProps = typeof props;
 
-const textTagColor = computed(() => Color(props.textColor).fade(0.75).rgb().string());
+const textTagColor = computed(() => Color(props.textColor).fade(0.6).rgb().string());
 const scorePercentDisplay = computed(() => props.scorePercent.toFixed(1) + '%');
 const scoreTagColor = computed(
   () => `rgba(${180 - props.scorePercent * 1.8}, ${props.scorePercent * 1.8}, 0, 0.25)`
@@ -130,6 +130,6 @@ const highlightsProcessed = computed<Record<string, string>>(() => {
 .sr-highlights em {
   font-style: normal;
   padding: 0 2px;
-  background-color: v-bind(textTagColor);
+  background-color: #9994;
 }
 </style>
