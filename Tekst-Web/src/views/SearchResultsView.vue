@@ -2,7 +2,7 @@
 import IconHeading from '@/components/generic/IconHeading.vue';
 import { NoContentIcon, SearchResultsIcon } from '@/icons';
 import SearchResult from '@/components/search/SearchResult.vue';
-import { NList, NTime } from 'naive-ui';
+import { NList, NTime, NSpin } from 'naive-ui';
 import { usePlatformData } from '@/composables/platformData';
 import { computed, onBeforeMount, ref, watch } from 'vue';
 import { POST, type SearchRequestBody, type SearchResults } from '@/api';
@@ -107,7 +107,12 @@ onBeforeMount(() => processQuery());
   </div>
 
   <div class="content-block">
-    <n-list v-if="results.length" clickable hoverable style="background-color: transparent">
+    <n-spin
+      v-if="loading"
+      class="centered-spinner"
+      :description="`${$t('search.results.searching')}...`"
+    />
+    <n-list v-else-if="results.length" clickable hoverable style="background-color: transparent">
       <search-result v-for="result in results" :key="result.id" v-bind="result" />
     </n-list>
     <huge-labelled-icon v-else :icon="NoContentIcon" :message="$t('search.nothingFound')" />

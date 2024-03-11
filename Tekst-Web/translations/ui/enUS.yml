@@ -653,6 +653,7 @@ search:
     heading: Global Search Settings
   results:
     heading: Search Results
+    searching: Searching
     results: '{count} results in {ms} milliseconds'
     indexCreationTime: Last update of search data
     relevance: Relevance

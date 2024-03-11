@@ -677,6 +677,7 @@ search:
     heading: Globale Sucheinstellungen
   results:
     heading: Suchergebnisse
+    searching: Suche
     results: '{count} Ergebnisse in {ms} Millisekunden'
     indexCreationTime: Letztes update der Suchdaten
     relevance: Relevanz
