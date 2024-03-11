@@ -635,6 +635,7 @@ admin:
         documents: Dokumente
         size: Größe
         searches: Suchen
+        lastIndexed: Zeitpunkt der letzten Indexierung
         actionCreate: Suchindex neu erzeugen
         actionCreateStarted: Der Suchindex wird im Hintergrund aktualisiert. Dies kann einen Moment dauern.
         actionCreateSuccess: Suchindex wurde aktualisiert

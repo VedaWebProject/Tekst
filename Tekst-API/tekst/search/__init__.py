@@ -285,6 +285,7 @@ async def get_index_info():
         documents=index_info["docs"]["count"],
         size=index_info["store"]["size"],
         searches=index_info["search"]["query_total"],
+        last_indexed=get_index_creation_time(),
     )
 
 

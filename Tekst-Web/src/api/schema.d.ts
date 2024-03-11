@@ -811,6 +811,11 @@ export interface components {
       size: string;
       /** Searches */
       searches: number;
+      /**
+       * Lastindexed
+       * Format: date-time
+       */
+      lastIndexed: string;
     };
     /** @enum {string} */
     LocaleKey: 'deDE' | 'enUS';

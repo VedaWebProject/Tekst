@@ -4,7 +4,7 @@ import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 
 import IconHeading from '@/components/generic/IconHeading.vue';
 import { LockIcon, LockOpenIcon, MaintenanceIcon, UpdateIcon } from '@/icons';
-import { NSpace, NButton, NIcon, NTable } from 'naive-ui';
+import { NTime, NSpace, NButton, NIcon, NTable } from 'naive-ui';
 import { DELETE, GET, type IndexInfoResponse } from '@/api';
 import { useMessages } from '@/composables/messages';
 import { onBeforeMount, onBeforeUnmount, ref } from 'vue';
@@ -76,9 +76,17 @@ onBeforeUnmount(() => stopLockPolling());
     <template v-if="indexInfo">
       <n-table :bordered="false" size="small" style="table-layout: fixed">
         <tbody>
-          <tr v-for="(value, key) in indexInfo" :key="key">
-            <td>{{ $t(`admin.system.maintenance.index.${key}`) }}</td>
-            <td>{{ value }}</td>
+          <template v-for="(value, key) in indexInfo" :key="key">
+            <tr v-if="!['lastIndexed'].includes(key)">
+              <td>{{ $t(`admin.system.maintenance.index.${key}`) }}</td>
+              <td>{{ value }}</td>
+            </tr>
+          </template>
+          <tr>
+            <td>{{ $t(`admin.system.maintenance.index.lastIndexed`) }}</td>
+            <td>
+              <n-time :time="new Date(indexInfo.lastIndexed)" type="datetime" />
+            </td>
           </tr>
         </tbody>
       </n-table>

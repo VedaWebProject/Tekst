@@ -125,3 +125,4 @@ class IndexInfoResponse(ModelBase):
     documents: int
     size: str
     searches: int
+    last_indexed: datetime
