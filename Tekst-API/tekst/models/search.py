@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Annotated, Any, Literal, Union
 
 from fastapi import Body
-from pydantic import Field, field_validator
+from pydantic import Field, field_validator, StringConstraints
 
 from tekst.models.common import ModelBase, PydanticObjectId
 
@@ -96,7 +96,10 @@ class AdvancedSearchSettings(ModelBase):
 
 class QuickSearchRequestBody(ModelBase):
     search_type: Literal["quick"]
-    query: str = "*"
+    query: Annotated[
+        str,
+        StringConstraints(max_length=512, strip_whitespace=True),
+    ] = "*"
     settings_general: GeneralSearchSettings = GeneralSearchSettings()
     settings_quick: QuickSearchSettings = QuickSearchSettings()
 

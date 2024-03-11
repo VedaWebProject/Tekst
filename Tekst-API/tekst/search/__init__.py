@@ -313,15 +313,13 @@ async def search_quick(
     field_pattern_suffix = ".*.strict" if settings_general.strict else ".*"
     fields = [f"{res_id}{field_pattern_suffix}" for res_id in resource_ids]
 
-    print(fields)
-
     # perform the search
     return SearchResults.from_es_results(
         results=client.search(
             index=IDX_ALIAS,
             query={
                 "simple_query_string": {
-                    "query": query,
+                    "query": query or "*",
                     "fields": fields,
                     "default_operator": settings_quick.default_operator,
                 }

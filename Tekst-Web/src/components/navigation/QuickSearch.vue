@@ -70,11 +70,12 @@ function handleSubmit(e: UIEvent) {
       round
       placeholder="..."
       size="large"
+      :max-length="512"
       style="margin-bottom: var(--layout-gap)"
       @keydown.enter="handleSubmit"
     >
       <template #prefix>
-        <n-icon :component="SearchIcon" />
+        <n-icon :component="SearchIcon" size="large" />
       </template>
     </n-input-osk>
 
