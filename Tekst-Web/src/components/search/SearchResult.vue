@@ -131,5 +131,6 @@ const highlightsProcessed = computed<Record<string, string>>(() => {
   font-style: normal;
   padding: 0 2px;
   background-color: #9994;
+  border-radius: 2px;
 }
 </style>
