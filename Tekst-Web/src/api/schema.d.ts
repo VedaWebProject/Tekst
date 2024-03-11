@@ -366,6 +366,8 @@ export interface components {
       query?: components['schemas']['AdvancedSearchQuery'];
       /**
        * @default {
+       *   "page": 1,
+       *   "pageSize": 10,
        *   "strict": false
        * }
        */
@@ -792,6 +794,16 @@ export interface components {
     };
     /** GeneralSearchSettings */
     GeneralSearchSettings: {
+      /**
+       * Page
+       * @default 1
+       */
+      page?: number;
+      /**
+       * Pagesize
+       * @default 10
+       */
+      pageSize?: number;
       /**
        * Strict
        * @default false
@@ -1717,6 +1729,8 @@ export interface components {
       query?: string;
       /**
        * @default {
+       *   "page": 1,
+       *   "pageSize": 10,
        *   "strict": false
        * }
        */

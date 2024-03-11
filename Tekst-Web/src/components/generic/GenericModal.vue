@@ -26,6 +26,7 @@ const props = withDefaults(
     icon: undefined,
     headingLevel: '2',
     closable: true,
+    autoFocus: false,
     nuiModalProps: undefined,
   }
 );

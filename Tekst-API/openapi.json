@@ -5592,6 +5592,8 @@
               }
             ],
             "default": {
+              "page": 1,
+              "pageSize": 10,
               "strict": false
             }
           },
@@ -6448,6 +6450,16 @@
       },
       "GeneralSearchSettings": {
         "properties": {
+          "page": {
+            "type": "integer",
+            "title": "Page",
+            "default": 1
+          },
+          "pageSize": {
+            "type": "integer",
+            "title": "Pagesize",
+            "default": 10
+          },
           "strict": {
             "type": "boolean",
             "title": "Strict",
@@ -8181,6 +8193,7 @@
           },
           "query": {
             "type": "string",
+            "maxLength": 512,
             "title": "Query",
             "default": "*"
           },
@@ -8191,6 +8204,8 @@
               }
             ],
             "default": {
+              "page": 1,
+              "pageSize": 10,
               "strict": false
             }
           },

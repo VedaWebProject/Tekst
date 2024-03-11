@@ -327,6 +327,8 @@ async def search_quick(
             highlight={
                 "fields": {"*": {}},
             },
+            from_=(settings_general.page - 1) * settings_general.page_size,
+            size=settings_general.page_size,
         ),
         index_creation_time=get_index_creation_time(),
     )

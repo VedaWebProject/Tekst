@@ -319,3 +319,9 @@ E_409_ACTION_LOCKED = error_instance(
     key="locked",
     msg="The operation cannot be executed right now because of an active lock",
 )
+
+E_400_REQUESTED_TOO_MANY_SEARCH_RESULTS = error_instance(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    key="requestedTooManySearchResults",
+    msg="Maximum number of requested search results exceeded: 10000",
+)

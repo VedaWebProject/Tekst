@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Annotated, Any, Literal, Union
 
 from fastapi import Body
-from pydantic import Field, field_validator, StringConstraints
+from pydantic import Field, StringConstraints, conint, field_validator
 
 from tekst.models.common import ModelBase, PydanticObjectId
 
@@ -69,6 +69,8 @@ class SearchResults(ModelBase):
 
 
 class GeneralSearchSettings(ModelBase):
+    page: Annotated[int, conint(ge=1)] = 1
+    page_size: Annotated[int, Literal[10, 25, 50]] = 10
     strict: bool = False
 
 
