@@ -6,8 +6,7 @@ import MetadataDisplayMinimal from '@/components/resource/MetadataDisplayMinimal
 import { useStateStore } from '@/stores';
 import type { AnyResourceRead, UserRead } from '@/api';
 
-import { PublicIcon, ProposedIcon } from '@/icons';
-import { PublicOffIcon } from '@/icons';
+import { PublicIcon, ProposedIcon, PublicOffIcon } from '@/icons';
 
 const props = defineProps<{
   active?: boolean;

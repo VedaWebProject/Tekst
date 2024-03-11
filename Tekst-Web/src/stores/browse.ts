@@ -19,7 +19,7 @@ export const useBrowseStore = defineStore('browse', () => {
   /* BASIC BROWSE UI STATE */
 
   const showResourceToggleDrawer = ref(false);
-  const showNonPublicResources = ref(false);
+  const showNonPublicResources = ref(true);
   const reducedView = ref(false);
   const loadingLocationData = ref(true); // this is intentional!
   const loadingResources = computed(() => resources.loading);

@@ -9,7 +9,7 @@ import ContentHeaderWidgetBar from '@/components/browse/ContentHeaderWidgetBar.v
 import contentComponents from '@/components/content/mappings';
 import type { CSSProperties } from 'vue';
 import type { AnyResourceRead } from '@/api';
-import { NoContentIcon, ExpandIcon, CompressIcon } from '@/icons';
+import { NoContentIcon, ExpandIcon, CompressIcon, PublicOffIcon } from '@/icons';
 
 const props = defineProps<{
   loading?: boolean;
@@ -70,6 +70,12 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
           :class="{ reduced: browse.reducedView, b: browse.reducedView }"
         >
           {{ resource.title }}
+          <n-icon
+            v-if="!resource.public"
+            :component="PublicOffIcon"
+            :color="themeVars.textColorDisabled"
+            :title="$t('resources.notPublic')"
+          />
         </div>
         <div class="content-header-title-extra">
           {{ headerExtraText }}
@@ -167,6 +173,9 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
 }
 
 .content-header-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   color: var(--accent-color);
   overflow: hidden;
   text-overflow: ellipsis;
