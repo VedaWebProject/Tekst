@@ -3962,6 +3962,16 @@
               }
             }
           },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            }
+          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -6459,6 +6469,17 @@
             "type": "integer",
             "title": "Pagesize",
             "default": 10
+          },
+          "sortingPreset": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SortingPreset"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Sorting preset"
           },
           "strict": {
             "type": "boolean",
@@ -9261,7 +9282,14 @@
             "title": "Position"
           },
           "score": {
-            "type": "number",
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Score"
           },
           "highlight": {
@@ -9340,6 +9368,14 @@
           "indexCreationTime"
         ],
         "title": "SearchResults"
+      },
+      "SortingPreset": {
+        "type": "string",
+        "enum": [
+          "relevance",
+          "text_level_position",
+          "text_level_relevance"
+        ]
       },
       "TekstErrorModel": {
         "properties": {

@@ -3,6 +3,7 @@ from typing import Annotated, Any, Literal, Union
 
 from fastapi import Body
 from pydantic import Field, StringConstraints, conint, field_validator
+from typing_extensions import TypeAliasType
 
 from tekst.models.common import ModelBase, PydanticObjectId
 
@@ -14,7 +15,7 @@ class SearchHit(ModelBase):
     text_id: PydanticObjectId
     level: int
     position: int
-    score: float
+    score: float | None
     highlight: dict[str, list[str]] = {}
 
 
@@ -68,9 +69,17 @@ class SearchResults(ModelBase):
         )
 
 
+SortingPreset = TypeAliasType(
+    "SortingPreset", Literal["relevance", "text_level_position", "text_level_relevance"]
+)
+
+
 class GeneralSearchSettings(ModelBase):
     page: Annotated[int, conint(ge=1)] = 1
     page_size: Annotated[int, Literal[10, 25, 50]] = 10
+    sorting_preset: Annotated[
+        SortingPreset | None, Field(description="Sorting preset")
+    ] = None
     strict: bool = False
 
 

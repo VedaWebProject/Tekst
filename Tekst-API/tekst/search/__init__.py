@@ -33,6 +33,7 @@ from tekst.search.templates import (
     IDX_TEMPLATE,
     IDX_TEMPLATE_NAME,
     IDX_TEMPLATE_NAME_PATTERN,
+    SORTING_PRESETS,
 )
 
 
@@ -329,6 +330,10 @@ async def search_quick(
             },
             from_=(settings_general.page - 1) * settings_general.page_size,
             size=settings_general.page_size,
+            track_scores=True,
+            sort=SORTING_PRESETS.get(settings_general.sorting_preset, None)
+            if settings_general.sorting_preset
+            else None,
         ),
         index_creation_time=get_index_creation_time(),
     )

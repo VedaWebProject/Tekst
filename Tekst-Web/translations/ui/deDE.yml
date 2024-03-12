@@ -690,6 +690,11 @@ search:
     indexCreationTime: Letztes update der Suchdaten
     relevance: Relevanz
     msgInvalidRequest: Ungültige Suchanfrage. Haben Sie vielleicht einen Link zu dieser Seite kopiert und dabei ein paar Zeichen übersehen?
+    sortingPresets:
+      tooltip: Suchergebnisse sortieren
+      relevance: Relevanz
+      textLevelPosition: Text / Ebene / Position
+      textLevelRelevance: Text / Ebene / Relevanz
   nothingFound: Nichts gefunden
 
 help:

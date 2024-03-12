@@ -50,3 +50,17 @@ IDX_TEMPLATE = {
         },
     },
 }
+
+SORTING_PRESETS = {
+    "relevance": None,
+    "text_level_position": [
+        {"text_id": {"order": "desc"}},
+        {"level": {"order": "asc"}},
+        {"position": {"order": "asc"}},
+    ],
+    "text_level_relevance": [
+        {"text_id": {"order": "desc"}},
+        {"level": {"order": "asc"}},
+        "_score",
+    ],
+}

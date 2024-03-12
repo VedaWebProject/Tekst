@@ -666,6 +666,11 @@ search:
     indexCreationTime: Last update of search data
     relevance: Relevance
     msgInvalidRequest: Invalid search request. Maybe you copied a link to this page and missed some characters?
+    sortingPresets:
+      tooltip: Sort search results
+      relevance: Relevance
+      textLevelPosition: Text / Level / Position
+      textLevelRelevance: Text / Level / Relevance
   nothingFound: Nothing found
 
 help:

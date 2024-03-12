@@ -1,24 +1,26 @@
 <script setup lang="ts">
 import IconHeading from '@/components/generic/IconHeading.vue';
-import { FilterIcon, NoContentIcon, SearchResultsIcon, SortIcon } from '@/icons';
+import { NoContentIcon, SearchResultsIcon } from '@/icons';
 import SearchResult from '@/components/search/SearchResult.vue';
-import { NSpace, NList, NTime, NSpin, NPagination, NButton, NIcon } from 'naive-ui';
+import { NSpace, NList, NTime, NSpin, NPagination } from 'naive-ui';
 import { usePlatformData } from '@/composables/platformData';
 import { computed, onBeforeMount, ref, watch } from 'vue';
-import { POST, type SearchRequestBody, type SearchResults } from '@/api';
+import { POST, type SearchRequestBody, type SearchResults, type SortingPreset } from '@/api';
 import type { SearchResultProps } from '@/components/search/SearchResult.vue';
 import { useStateStore } from '@/stores';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { Base64 } from 'js-base64';
 import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
 import { useThemeStore } from '@/stores/theme';
 import { createReusableTemplate } from '@vueuse/core';
+import SearchResultsSortWidget from '@/components/search/SearchResultsSortWidget.vue';
 
 const { pfData } = usePlatformData();
 const state = useStateStore();
 const route = useRoute();
+const router = useRouter();
 const theme = useThemeStore();
 const { message } = useMessages();
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate();
@@ -32,6 +34,7 @@ const pagination = ref(paginationDefaults());
 const paginationSlots = computed(() => (state.smallScreen ? 4 : 9));
 const paginationSize = computed(() => (state.smallScreen ? undefined : 'large'));
 const paginationExtrasSize = computed(() => (state.smallScreen ? 'small' : undefined));
+const sortingPreset = ref<SortingPreset>();
 
 const loading = ref(false);
 const resultsData = ref<SearchResults>();
@@ -72,6 +75,7 @@ async function search(resetPage?: boolean) {
         ...searchReq.value?.settingsGeneral,
         page: pagination.value.page,
         pageSize: pagination.value.pageSize,
+        sortingPreset: sortingPreset.value,
       },
     },
   });
@@ -90,12 +94,30 @@ async function processQuery() {
     if (!searchReq.value || !['quick', 'advanced'].includes(searchReq.value.searchType)) {
       throw new Error();
     }
+    sortingPreset.value = searchReq.value.settingsGeneral?.sortingPreset || undefined;
     await search();
   } catch {
     message.error($t('search.results.msgInvalidRequest'));
   } finally {
     loading.value = false;
   }
+}
+
+function handleSortingChange() {
+  router.push({
+    name: 'searchResults',
+    params: {
+      req: Base64.encodeURI(
+        JSON.stringify({
+          ...searchReq.value,
+          settingsGeneral: {
+            ...searchReq.value?.settingsGeneral,
+            sortingPreset: sortingPreset.value,
+          },
+        })
+      ),
+    },
+  });
 }
 
 watch(
@@ -108,7 +130,7 @@ onBeforeMount(() => processQuery());
 
 <template>
   <define-template>
-    <n-space justify="end" class="pagination-container">
+    <n-space justify="end" class="pagination-container" align="center">
       <n-pagination
         v-if="resultsData?.hits.length"
         v-model:page="pagination.page"
@@ -122,19 +144,15 @@ onBeforeMount(() => processQuery());
         show-size-picker
         @update:page="() => search()"
         @update:page-size="() => search(true)"
-      />
-      <n-space :wrap="false">
-        <n-button secondary :focusable="false" :size="paginationExtrasSize">
-          <template #icon>
-            <n-icon :component="SortIcon" />
-          </template>
-        </n-button>
-        <n-button secondary :focusable="false" :size="paginationExtrasSize">
-          <template #icon>
-            <n-icon :component="FilterIcon" />
-          </template>
-        </n-button>
-      </n-space>
+      >
+        <template #suffix>
+          <search-results-sort-widget
+            v-model:value="sortingPreset"
+            :size="paginationExtrasSize"
+            @update:value="handleSortingChange"
+          />
+        </template>
+      </n-pagination>
     </n-space>
   </define-template>
 

@@ -231,3 +231,4 @@ export type QuickSearchRequestBody = components['schemas']['QuickSearchRequestBo
 export type AdvancedSearchSettings = components['schemas']['AdvancedSearchSettings'];
 export type AdvancedSearchRequestBody = components['schemas']['AdvancedSearchRequestBody'];
 export type SearchRequestBody = QuickSearchRequestBody | AdvancedSearchRequestBody;
+export type SortingPreset = components['schemas']['SortingPreset'];

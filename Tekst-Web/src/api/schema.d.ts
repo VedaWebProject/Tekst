@@ -804,6 +804,8 @@ export interface components {
        * @default 10
        */
       pageSize?: number;
+      /** @description Sorting preset */
+      sortingPreset?: components['schemas']['SortingPreset'] | null;
       /**
        * Strict
        * @default false
@@ -2267,7 +2269,7 @@ export interface components {
       /** Position */
       position: number;
       /** Score */
-      score: number;
+      score: number | null;
       /**
        * Highlight
        * @default {}
@@ -2297,6 +2299,8 @@ export interface components {
        */
       indexCreationTime: string;
     };
+    /** @enum {string} */
+    SortingPreset: 'relevance' | 'text_level_position' | 'text_level_relevance';
     /** TekstErrorModel */
     TekstErrorModel: {
       detail: components['schemas']['ErrorDetail'];
@@ -4477,6 +4481,12 @@ export interface operations {
       200: {
         content: {
           'application/json': components['schemas']['SearchResults'];
+        };
+      };
+      /** @description Bad Request */
+      400: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
         };
       };
       /** @description Validation Error */
