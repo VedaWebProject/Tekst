@@ -100,7 +100,11 @@ class Text(ModelBase, ModelFactoryMixin):
 
     accent_color: Annotated[
         Color,
-        PlainSerializer(lambda c: c.as_hex(), return_type=str, when_used="unless-none"),
+        PlainSerializer(
+            lambda c: c.as_hex() if isinstance(c, Color) else str(c),
+            return_type=str,
+            when_used="unless-none",
+        ),
         Field(
             description="Accent color used for this text in the client UI",
         ),
