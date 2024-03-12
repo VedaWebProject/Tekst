@@ -37,8 +37,8 @@ class SearchResults(ModelBase):
                 res_id = k.split(".")[0]
                 hl_key = hit["_source"][res_id]["resource_title"]
                 if hl_key not in highlights:
-                    highlights[hl_key] = []
-                highlights[hl_key].extend(v)
+                    highlights[hl_key] = set()
+                highlights[hl_key].update(v)
             except Exception:
                 highlights[k] = v
         return highlights
