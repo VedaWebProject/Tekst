@@ -32,11 +32,6 @@ class TextLevelTranslation(TranslationBase):
     ]
 
 
-AccentColor = Annotated[
-    Color, PlainSerializer(lambda c: c.as_hex(), return_type=str, when_used="always")
-]
-
-
 class Text(ModelBase, ModelFactoryMixin):
     """A text represented in Tekst"""
 
@@ -104,7 +99,8 @@ class Text(ModelBase, ModelFactoryMixin):
     ] = True
 
     accent_color: Annotated[
-        AccentColor,
+        Color,
+        PlainSerializer(lambda c: c.as_hex(), return_type=str, when_used="unless-none"),
         Field(
             description="Accent color used for this text in the client UI",
         ),
