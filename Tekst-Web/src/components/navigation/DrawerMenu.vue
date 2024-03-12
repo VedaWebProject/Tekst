@@ -42,18 +42,26 @@ const allMenuOptions = computed(() => [
       .concat(mainMenuOptions.value.find((o) => o.key === 'info')?.children || [])
       .filter((o) => o.key !== 'info'),
   },
-  {
-    type: 'group',
-    key: 'account-group',
-    label: auth.user?.name || auth.user?.username,
-    children: accountMenuOptions,
-  },
-  {
-    type: 'group',
-    key: 'admin-group',
-    label: $t('admin.heading'),
-    children: adminMenuOptions.value,
-  },
+  ...(auth.loggedIn
+    ? [
+        {
+          type: 'group',
+          key: 'account-group',
+          label: auth.user?.name || auth.user?.username,
+          children: accountMenuOptions,
+        },
+      ]
+    : []),
+  ...(auth.loggedIn && auth.user?.isSuperuser
+    ? [
+        {
+          type: 'group',
+          key: 'admin-group',
+          label: $t('admin.heading'),
+          children: adminMenuOptions.value,
+        },
+      ]
+    : []),
 ]);
 </script>
 

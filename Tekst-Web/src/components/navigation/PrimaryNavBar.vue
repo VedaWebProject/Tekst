@@ -106,7 +106,7 @@ watch(
   <drawer-menu
     v-if="state.smallScreen"
     v-model:show="menuOpen"
-    :show-user-options-button="showUserActionsButton"
+    :show-user-actions-button="showUserActionsButton"
   />
 </template>
 
