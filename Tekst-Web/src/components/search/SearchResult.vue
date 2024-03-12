@@ -24,10 +24,10 @@ export type SearchResultProps = typeof props;
 
 const textTagColor = computed(() => Color(props.textColor).fade(0.6).rgb().string());
 const scorePercentDisplay = computed(() =>
-  props.scorePercent != null ? props.scorePercent.toFixed(1) + '%' : undefined
+  props.scorePercent ? props.scorePercent.toFixed(1) + '%' : '–'
 );
 const scoreTagColor = computed(() =>
-  props.scorePercent != null
+  props.scorePercent
     ? `rgba(${180 - props.scorePercent * 1.8}, ${props.scorePercent * 1.8}, 0, 0.25)`
     : undefined
 );
@@ -57,12 +57,7 @@ const highlightsProcessed = computed<Record<string, string>>(() => {
             <n-tag size="small" :bordered="false">
               {{ levelLabel }}
             </n-tag>
-            <n-tag
-              v-if="scorePercentDisplay"
-              size="small"
-              :bordered="false"
-              :color="{ color: scoreTagColor }"
-            >
+            <n-tag size="small" :bordered="false" :color="{ color: scoreTagColor }">
               {{ $t('search.results.relevance') }}: {{ scorePercentDisplay }}
             </n-tag>
           </div>
