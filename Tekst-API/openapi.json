@@ -9455,7 +9455,8 @@
             "type": "string",
             "format": "color",
             "title": "Accentcolor",
-            "description": "Accent color used for this text in the client UI"
+            "description": "Accent color used for this text in the client UI",
+            "default": "#305D97"
           },
           "isActive": {
             "type": "boolean",
@@ -9562,7 +9563,8 @@
             "type": "string",
             "format": "color",
             "title": "Accentcolor",
-            "description": "Accent color used for this text in the client UI"
+            "description": "Accent color used for this text in the client UI",
+            "default": "#305D97"
           },
           "isActive": {
             "type": "boolean",
@@ -9717,7 +9719,8 @@
             "type": "string",
             "format": "color",
             "title": "Accentcolor",
-            "description": "Accent color used for this text in the client UI"
+            "description": "Accent color used for this text in the client UI",
+            "default": "#305D97"
           },
           "isActive": {
             "type": "boolean",

@@ -2350,6 +2350,7 @@ export interface components {
        * Accentcolor
        * Format: color
        * @description Accent color used for this text in the client UI
+       * @default #305D97
        */
       accentColor?: string;
       /**
@@ -2415,6 +2416,7 @@ export interface components {
        * Accentcolor
        * Format: color
        * @description Accent color used for this text in the client UI
+       * @default #305D97
        */
       accentColor?: string;
       /**
@@ -2486,6 +2488,7 @@ export interface components {
        * Accentcolor
        * Format: color
        * @description Accent color used for this text in the client UI
+       * @default #305D97
        */
       accentColor?: string;
       /**
