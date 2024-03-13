@@ -29,14 +29,15 @@ async def startup_routine(app: FastAPI) -> None:
     if not _cfg.dev_mode or _cfg.dev_use_db:
         await db.init_odm()
     if not _cfg.dev_mode or _cfg.dev_use_es:
-        await search.init_es_client(overwrite_existing_index=_cfg.dev_mode)
+        pass
+        # await search.init_es_client(overwrite_existing_index=_cfg.dev_mode)
         # # TEMP DEV
         # await search.init_es_client(
         #     overwrite_existing_index=False
         # )
 
     settings = await get_settings() if _cfg.dev_use_db else PlatformSettings()
-    customize_openapi(app=app, cfg=_cfg, settings=settings)
+    customize_openapi(app=app, settings=settings)
 
     if not _cfg.email_smtp_server:
         log.warning("No SMTP server configured")  # pragma: no cover

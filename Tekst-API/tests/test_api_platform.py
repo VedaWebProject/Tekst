@@ -1,14 +1,14 @@
 import pytest
 
 from httpx import AsyncClient
-from tekst import pkg_meta
+from tekst import package_metadata
 
 
 @pytest.mark.anyio
 async def test_platform_data(test_client: AsyncClient, status_fail_msg):
     resp = await test_client.get("/platform")
     assert resp.status_code == 200, status_fail_msg(200, resp)
-    assert resp.json()["tekst"]["version"] == pkg_meta["version"]
+    assert resp.json()["tekst"]["version"] == package_metadata["version"]
 
 
 @pytest.mark.anyio

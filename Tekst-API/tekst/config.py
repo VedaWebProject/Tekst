@@ -15,7 +15,7 @@ from pydantic import (
 )
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-from tekst import pkg_meta
+from tekst import package_metadata
 from tekst.models.common import CustomHttpUrl
 from tekst.utils import validators as val
 from tekst.utils.strings import safe_name
@@ -194,14 +194,9 @@ class TekstConfig(BaseSettings):
     @computed_field
     @property
     def tekst_info(self) -> dict[str, str]:
-        return {
-            "name": "Tekst",
-            "version": pkg_meta["version"],
-            "description": pkg_meta["description"],
-            "website": pkg_meta["website"],
-            "license": pkg_meta["license"],
-            "license_url": pkg_meta["license_url"],
-        }
+        info_data = {"name": "Tekst"}
+        info_data.update(package_metadata)
+        return info_data
 
     @computed_field
     @property

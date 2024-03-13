@@ -1,22 +1,24 @@
 from importlib import metadata
 
 
-data = metadata.metadata(__package__)
+_package_metadata = metadata.metadata(__package__)
 
 # whyyyyy
-license_url = [
-    e for e in data.get_all("Project-URL", failobj="") if e.startswith("License")
-][0].split(", ")[1]
+_project_urls = _package_metadata.get_all("Project-URL", failobj="")
+license_url = [e for e in _project_urls if e.startswith("License, ")][0].split(", ")[1]
+documentation = [e for e in _project_urls if e.startswith("Documentation, ")][0].split(
+    ", "
+)[1]
 
-pkg_meta = dict(
-    version=data["Version"],
-    description=data["Summary"],
-    long_description=data["Description"],
-    license=data["License"],
+package_metadata = dict(
+    version=_package_metadata["Version"],
+    description=_package_metadata["Summary"],
+    license=_package_metadata["License"],
     license_url=license_url,
-    website=data["Home-page"],
+    website=_package_metadata["Home-page"],
+    documentation=documentation,
 )
 
-__version__ = pkg_meta["version"]
+__version__ = package_metadata["version"]
 
-del metadata, data
+del metadata, _package_metadata
