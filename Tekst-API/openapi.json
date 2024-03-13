@@ -3,7 +3,6 @@
   "info": {
     "title": "Tekst-Dev",
     "description": "An online text research platform",
-    "termsOfService": "None",
     "contact": {
       "name": "Tekst Administrator",
       "email": "noreply@tekst-contact-email-not-set.com"
@@ -7750,9 +7749,10 @@
               "name": "Tekst",
               "version": "0.0.1",
               "description": "An online text research platform",
-              "website": "https://github.com/VedaWebProject/Tekst",
               "license": "AGPL-3.0-or-later",
-              "licenseUrl": "https://www.gnu.org/licenses/agpl-3.0.txt"
+              "licenseUrl": "https://www.gnu.org/licenses/agpl-3.0.txt",
+              "website": "https://github.com/VedaWebProject/Tekst",
+              "documentation": "https://vedawebproject.github.io/Tekst"
             }
           }
         },
@@ -10339,7 +10339,79 @@
   "tags": [
     {
       "name": "texts",
-      "description": "Text-related operations",
+      "description": "Texts configured on this platform",
+      "externalDocs": {
+        "description": "View full documentation",
+        "url": "https://vedawebproject.github.io/Tekst"
+      }
+    },
+    {
+      "name": "locations",
+      "description": "Text locations (the structural units of a text)",
+      "externalDocs": {
+        "description": "View full documentation",
+        "url": "https://vedawebproject.github.io/Tekst"
+      }
+    },
+    {
+      "name": "resources",
+      "description": "Resources related to certain texts",
+      "externalDocs": {
+        "description": "View full documentation",
+        "url": "https://vedawebproject.github.io/Tekst"
+      }
+    },
+    {
+      "name": "contents",
+      "description": "Contents of resources",
+      "externalDocs": {
+        "description": "View full documentation",
+        "url": "https://vedawebproject.github.io/Tekst"
+      }
+    },
+    {
+      "name": "search",
+      "description": "Search operations and search index maintenance",
+      "externalDocs": {
+        "description": "View full documentation",
+        "url": "https://vedawebproject.github.io/Tekst"
+      }
+    },
+    {
+      "name": "browse",
+      "description": "Endpoints for effectively browsing the plaform data",
+      "externalDocs": {
+        "description": "View full documentation",
+        "url": "https://vedawebproject.github.io/Tekst"
+      }
+    },
+    {
+      "name": "platform",
+      "description": "Platform-specific data, infos and operations",
+      "externalDocs": {
+        "description": "View full documentation",
+        "url": "https://vedawebproject.github.io/Tekst"
+      }
+    },
+    {
+      "name": "users",
+      "description": "Registered users and their accounts",
+      "externalDocs": {
+        "description": "View full documentation",
+        "url": "https://vedawebproject.github.io/Tekst"
+      }
+    },
+    {
+      "name": "bookmarks",
+      "description": "The current user's bookmarks",
+      "externalDocs": {
+        "description": "View full documentation",
+        "url": "https://vedawebproject.github.io/Tekst"
+      }
+    },
+    {
+      "name": "auth",
+      "description": "Rregistration, authentication and security",
       "externalDocs": {
         "description": "View full documentation",
         "url": "https://vedawebproject.github.io/Tekst"

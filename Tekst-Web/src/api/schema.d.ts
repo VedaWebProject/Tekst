@@ -1446,9 +1446,10 @@ export interface components {
        *   "name": "Tekst",
        *   "version": "0.0.1",
        *   "description": "An online text research platform",
-       *   "website": "https://github.com/VedaWebProject/Tekst",
        *   "license": "AGPL-3.0-or-later",
-       *   "licenseUrl": "https://www.gnu.org/licenses/agpl-3.0.txt"
+       *   "licenseUrl": "https://www.gnu.org/licenses/agpl-3.0.txt",
+       *   "website": "https://github.com/VedaWebProject/Tekst",
+       *   "documentation": "https://vedawebproject.github.io/Tekst"
        * }
        */
       tekst?: {
