@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import IconHeading from '@/components/generic/IconHeading.vue';
-import { NoContentIcon, SearchResultsIcon } from '@/icons';
+import { NothingFoundIcon, SearchResultsIcon } from '@/icons';
 import SearchResult from '@/components/search/SearchResult.vue';
 import { NSpace, NList, NTime, NSpin, NPagination } from 'naive-ui';
 import { usePlatformData } from '@/composables/platformData';
@@ -37,6 +37,7 @@ const paginationExtrasSize = computed(() => (state.smallScreen ? 'small' : undef
 const sortingPreset = ref<SortingPreset>();
 
 const loading = ref(false);
+const searchError = ref(false);
 const resultsData = ref<SearchResults>();
 const results = computed<SearchResultProps[]>(
   () =>
@@ -68,6 +69,7 @@ async function search(resetPage?: boolean) {
     pagination.value.page = paginationDefaults().page;
   }
   loading.value = true;
+  searchError.value = false;
   const { data, error } = await POST('/search', {
     body: {
       ...searchReq.value,
@@ -81,12 +83,15 @@ async function search(resetPage?: boolean) {
   });
   if (!error) {
     resultsData.value = data;
+  } else {
+    searchError.value = true;
   }
   loading.value = false;
 }
 
 async function processQuery() {
   loading.value = true;
+  searchError.value = false;
   resultsData.value = undefined;
   pagination.value.page = 1;
   try {
@@ -185,8 +190,11 @@ onBeforeMount(() => processQuery());
         <n-time :time="new Date(resultsData.indexCreationTime)" type="datetime" />
       </div>
     </template>
-    <template v-else>
+    <template v-else-if="loading">
       {{ $t('search.results.searching') }}
+    </template>
+    <template v-else-if="searchError">
+      {{ $t('errors.unexpected') }}
     </template>
   </div>
 
@@ -196,7 +204,7 @@ onBeforeMount(() => processQuery());
     <n-list v-else-if="results.length" clickable hoverable style="background-color: transparent">
       <search-result v-for="result in results" :key="result.id" v-bind="result" />
     </n-list>
-    <huge-labelled-icon v-else :icon="NoContentIcon" :message="$t('search.nothingFound')" />
+    <huge-labelled-icon v-else :icon="NothingFoundIcon" :message="$t('search.nothingFound')" />
     <reuse-template />
   </div>
 </template>

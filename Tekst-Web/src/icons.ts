@@ -103,8 +103,10 @@ import LockClockOutlined from '@vicons/material/LockClockOutlined';
 import LockOpenOutlined from '@vicons/material/LockOpenOutlined';
 import SortOutlined from '@vicons/material/SortOutlined';
 import FilterAltOutlined from '@vicons/material/FilterAltOutlined';
+import FindInPageOutlined from '@vicons/material/FindInPageOutlined';
 
 export {
+  FindInPageOutlined as NothingFoundIcon,
   FilterAltOutlined as FilterIcon,
   SortOutlined as SortIcon,
   LockClockOutlined as LockIcon,

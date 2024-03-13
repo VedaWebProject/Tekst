@@ -29,8 +29,7 @@ async def startup_routine(app: FastAPI) -> None:
     if not _cfg.dev_mode or _cfg.dev_use_db:
         await db.init_odm()
     if not _cfg.dev_mode or _cfg.dev_use_es:
-        pass
-        # await search.init_es_client(overwrite_existing_index=_cfg.dev_mode)
+        await search.init_es_client(overwrite_existing_index=_cfg.dev_mode)
         # # TEMP DEV
         # await search.init_es_client(
         #     overwrite_existing_index=False
