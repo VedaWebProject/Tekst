@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { AnyResourceConfig } from '@/api';
-import { generalConfigFormItems, specialConfigFormItems } from '@/forms/resources/mappings';
+import { generalConfigFormItems, specialConfigFormItems } from '@/forms/resources/config/mappings';
 import CommonResourceConfigFormItems from './CommonResourceConfigFormItems.vue';
 
 const props = withDefaults(

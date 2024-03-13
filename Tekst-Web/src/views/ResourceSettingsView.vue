@@ -16,7 +16,7 @@ import { useRouter } from 'vue-router';
 import ResourceInfoWidget from '@/components/resource/ResourceInfoWidget.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import { useResourcesStore } from '@/stores/resources';
-import ResourceSettingsFormItems from '@/forms/resources/ResourceSettingsFormItems.vue';
+import ResourceSettingsFormItems from '@/forms/resources/config/ResourceSettingsFormItems.vue';
 
 import { SettingsIcon, ArrowBackIcon, ResourceIcon } from '@/icons';
 

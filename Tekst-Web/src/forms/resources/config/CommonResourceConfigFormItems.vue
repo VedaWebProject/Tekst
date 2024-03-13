@@ -7,7 +7,7 @@ import { usePlatformData } from '@/composables/platformData';
 import { computed } from 'vue';
 import { pickTranslation } from '@/utils';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
-import { commonResourceConfigFormRules } from '../formRules';
+import { commonResourceConfigFormRules } from '@/forms/formRules';
 
 const props = withDefaults(
   defineProps<{

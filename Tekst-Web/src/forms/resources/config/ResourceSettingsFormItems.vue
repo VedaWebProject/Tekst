@@ -11,7 +11,7 @@ import { useAuthStore } from '@/stores';
 import TranslationFormItem from '@/forms/TranslationFormItem.vue';
 import { computed, h, ref, type VNodeChild } from 'vue';
 import UserDisplayText from '@/components/user/UserDisplayText.vue';
-import ResourceConfigFormItems from '@/forms/resources/ResourceConfigFormItems.vue';
+import ResourceConfigFormItems from '@/forms/resources/config/ResourceConfigFormItems.vue';
 import { useUsersSearch } from '@/composables/fetchers';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import {

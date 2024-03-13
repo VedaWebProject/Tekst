@@ -20,7 +20,7 @@ import {
 import { resourceSettingsFormRules } from '@/forms/formRules';
 import { useRouter } from 'vue-router';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
-import ResourceSettingsFormItems from '@/forms/resources/ResourceSettingsFormItems.vue';
+import ResourceSettingsFormItems from '@/forms/resources/config/ResourceSettingsFormItems.vue';
 import { ResourceIcon, ArrowBackIcon } from '@/icons';
 import ResourceTypeOptionLabel from '@/components/resource/ResourceTypeOptionLabel.vue';
 
