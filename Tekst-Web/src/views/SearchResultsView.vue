@@ -149,6 +149,7 @@ onBeforeMount(() => processQuery());
           <search-results-sort-widget
             v-model:value="sortingPreset"
             :size="paginationExtrasSize"
+            :disabled="loading"
             @update:value="handleSortingChange"
           />
         </template>

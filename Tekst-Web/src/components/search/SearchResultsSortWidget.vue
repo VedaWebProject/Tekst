@@ -6,7 +6,7 @@ import { NDropdown, NButton, NIcon, NBadge, useThemeVars } from 'naive-ui';
 import type { Size } from 'naive-ui/es/button/src/interface';
 import { computed } from 'vue';
 
-const props = defineProps<{ value?: string; size?: Size }>();
+const props = defineProps<{ value?: string; size?: Size; disabled?: boolean }>();
 const emit = defineEmits(['update:value']);
 
 const themeVars = useThemeVars();
@@ -35,13 +35,14 @@ const showDot = computed(() => !!props.value && props.value !== 'relevance');
   <n-dropdown
     trigger="click"
     :options="sortingPresetOptions"
-    placement="bottom-start"
+    placement="bottom-end"
     @select="(v) => emit('update:value', v)"
   >
     <n-badge :show="showDot" :offset="[-1, 4]" dot>
       <n-button
         :focusable="false"
         :size="size"
+        :disabled="disabled"
         :title="$t('search.results.sortingPresets.tooltip')"
       >
         <template #icon>
