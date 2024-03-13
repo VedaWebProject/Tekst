@@ -64,7 +64,6 @@ def schema(to_file: bool, output_file: str, indent: int, sort_keys: bool, quiet:
             output_file=output_file,
             indent=indent,
             sort_keys=sort_keys,
-            cfg=_cfg,
         )
     )
     if to_file and not quiet:
