@@ -17,7 +17,7 @@ from fastapi import (
     status,
 )
 from fastapi.responses import FileResponse
-from pydantic import ValidationError
+from pydantic import StringConstraints, ValidationError
 from starlette.background import BackgroundTask
 
 from tekst import email, errors
@@ -280,7 +280,9 @@ async def find_resources(
         int, Query(alias="lvl", description="Structure level to find resources for")
     ] = None,
     resource_type: Annotated[
-        str, Query(alias="type", description="Type of resources to find")
+        str,
+        StringConstraints(min_length=1, max_length=32, strip_whitespace=True),
+        Query(alias="type", description="Type of resources to find"),
     ] = None,
     limit: int = 4096,
 ) -> list[AnyResourceRead]:

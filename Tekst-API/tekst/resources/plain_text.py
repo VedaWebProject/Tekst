@@ -4,7 +4,7 @@ from pydantic import Field, StringConstraints
 
 from tekst.models.common import ModelBase
 from tekst.models.content import ContentBase
-from tekst.models.resource import ResourceBase
+from tekst.models.resource import ResourceBase, ResourceSearchQueryBase
 from tekst.models.resource_configs import (
     DeepLLinksConfig,
     DefaultCollapsedConfigType,
@@ -13,6 +13,7 @@ from tekst.models.resource_configs import (
     ResourceConfigBase,
 )
 from tekst.resources import ResourceTypeABC
+from tekst.utils import validators as val
 
 
 class PlainText(ResourceTypeABC):
@@ -25,6 +26,10 @@ class PlainText(ResourceTypeABC):
     @classmethod
     def content_model(cls) -> type["PlainTextContent"]:
         return PlainTextContent
+
+    @classmethod
+    def search_query_model(cls) -> type["PlainTextSearchRequest"]:
+        return PlainTextSearchRequest
 
     @classmethod
     def index_doc_properties(cls) -> dict[str, Any]:
@@ -68,3 +73,16 @@ class PlainTextContent(ContentBase):
             description="Text content of the plain text content object",
         ),
     ]
+
+
+class PlainTextSearchRequest(ResourceSearchQueryBase):
+    text: Annotated[
+        str | None,
+        StringConstraints(max_length=512, strip_whitespace=True),
+        val.CleanupOneline,
+    ] = None
+    comment: Annotated[
+        str | None,
+        StringConstraints(max_length=512, strip_whitespace=True),
+        val.CleanupOneline,
+    ] = None

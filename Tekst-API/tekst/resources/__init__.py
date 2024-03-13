@@ -19,6 +19,7 @@ from tekst.models.resource import (
     ResourceBaseDocument,
     ResourceBaseUpdate,
     ResourceReadExtras,
+    ResourceSearchQueryBase,
 )
 
 
@@ -45,7 +46,7 @@ class ResourceTypeABC(ABC):
     @classmethod
     @abstractmethod
     def resource_model(cls) -> type[ResourceBase]:
-        """Returns the resource base model for this type of resource"""
+        """Returns the resource model for this type of resource"""
         raise NotImplementedError(
             "Classmethod 'resource_model' must be "
             f"implemented in subclasses of {cls.__name__}"
@@ -54,9 +55,21 @@ class ResourceTypeABC(ABC):
     @classmethod
     @abstractmethod
     def content_model(cls) -> type[ContentBase]:
-        """Returns the content base model for contents of this type of resource"""
+        """Returns the content model for contents of this type of resource"""
         raise NotImplementedError(
             "Classmethod 'content_model' must be "
+            f"implemented in subclasses of {cls.__name__}"
+        )  # pragma: no cover
+
+    @classmethod
+    @abstractmethod
+    def search_query_model(cls) -> type[ResourceSearchQueryBase] | None:
+        """
+        Returns the search query model for search
+        queries targeting this type of resource
+        """
+        raise NotImplementedError(
+            "Classmethod 'search_query_model' must be "
             f"implemented in subclasses of {cls.__name__}"
         )  # pragma: no cover
 
@@ -170,8 +183,8 @@ init_resource_types_mgr()
 AnyResourceCreate = Union[  # noqa: UP007
     tuple(
         [
-            lt.resource_model().create_model()
-            for lt in resource_types_mgr.get_all().values()
+            rt.resource_model().create_model()
+            for rt in resource_types_mgr.get_all().values()
         ]
     )
 ]
@@ -184,8 +197,8 @@ AnyResourceCreateBody = Annotated[
 AnyResourceRead = Union[  # noqa: UP007
     tuple(
         [
-            lt.resource_model().read_model()
-            for lt in resource_types_mgr.get_all().values()
+            rt.resource_model().read_model()
+            for rt in resource_types_mgr.get_all().values()
         ]
     )
 ]
@@ -198,8 +211,8 @@ AnyResourceReadBody = Annotated[
 AnyResourceUpdate = Union[  # noqa: UP007
     tuple(
         [
-            lt.resource_model().update_model()
-            for lt in resource_types_mgr.get_all().values()
+            rt.resource_model().update_model()
+            for rt in resource_types_mgr.get_all().values()
         ]
     )
 ]
@@ -212,8 +225,8 @@ AnyResourceUpdateBody = Annotated[
 AnyResourceDocument = Union[  # noqa: UP007
     tuple(
         [
-            lt.resource_model().document_model()
-            for lt in resource_types_mgr.get_all().values()
+            rt.resource_model().document_model()
+            for rt in resource_types_mgr.get_all().values()
         ]
     )
 ]
@@ -225,8 +238,8 @@ AnyResourceDocument = Union[  # noqa: UP007
 AnyContentCreate = Union[  # noqa: UP007
     tuple(
         [
-            lt.content_model().create_model()
-            for lt in resource_types_mgr.get_all().values()
+            rt.content_model().create_model()
+            for rt in resource_types_mgr.get_all().values()
         ]
     )
 ]
@@ -239,8 +252,8 @@ AnyContentCreateBody = Annotated[
 AnyContentRead = Union[  # noqa: UP007
     tuple(
         [
-            lt.content_model().read_model()
-            for lt in resource_types_mgr.get_all().values()
+            rt.content_model().read_model()
+            for rt in resource_types_mgr.get_all().values()
         ]
     )
 ]
@@ -253,8 +266,8 @@ AnyContentReadBody = Annotated[
 AnyContentUpdate = Union[  # noqa: UP007
     tuple(
         [
-            lt.content_model().update_model()
-            for lt in resource_types_mgr.get_all().values()
+            rt.content_model().update_model()
+            for rt in resource_types_mgr.get_all().values()
         ]
     )
 ]
@@ -267,10 +280,15 @@ AnyContentUpdateBody = Annotated[
 AnyContentDocument = Union[  # noqa: UP007
     tuple(
         [
-            lt.content_model().document_model()
-            for lt in resource_types_mgr.get_all().values()
+            rt.content_model().document_model()
+            for rt in resource_types_mgr.get_all().values()
         ]
     )
+]
+
+# SEARCH REQUEST
+AnyResourceSearchQuery = Union[  # noqa: UP007
+    tuple([rt.search_query_model() for rt in resource_types_mgr.get_all().values()])
 ]
 
 

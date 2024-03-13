@@ -4,13 +4,14 @@ from pydantic import Field, StringConstraints
 
 from tekst.models.common import ModelBase
 from tekst.models.content import ContentBase
-from tekst.models.resource import ResourceBase
+from tekst.models.resource import ResourceBase, ResourceSearchQueryBase
 from tekst.models.resource_configs import (
     DefaultCollapsedConfigType,
     FontConfigType,
     ResourceConfigBase,
 )
 from tekst.resources import ResourceTypeABC
+from tekst.utils import validators as val
 
 
 class RichText(ResourceTypeABC):
@@ -23,6 +24,10 @@ class RichText(ResourceTypeABC):
     @classmethod
     def content_model(cls) -> type["RichTextContent"]:
         return RichTextContent
+
+    @classmethod
+    def search_query_model(cls) -> type["RichTextSearchRequest"]:
+        return RichTextSearchRequest
 
     @classmethod
     def index_doc_properties(cls) -> dict[str, Any]:
@@ -74,3 +79,16 @@ class RichTextContent(ContentBase):
         Literal["wysiwyg", "html"],
         Field(description="Last used editor mode for this content"),
     ] = "wysiwyg"
+
+
+class RichTextSearchRequest(ResourceSearchQueryBase):
+    html: Annotated[
+        str | None,
+        StringConstraints(max_length=512, strip_whitespace=True),
+        val.CleanupOneline,
+    ] = None
+    comment: Annotated[
+        str | None,
+        StringConstraints(max_length=512, strip_whitespace=True),
+        val.CleanupOneline,
+    ] = None

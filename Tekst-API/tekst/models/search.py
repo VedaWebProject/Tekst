@@ -6,6 +6,7 @@ from pydantic import Field, StringConstraints, conint, field_validator
 from typing_extensions import TypeAliasType
 
 from tekst.models.common import ModelBase, PydanticObjectId
+from tekst.resources import AnyResourceSearchQuery
 
 
 class SearchHit(ModelBase):
@@ -116,7 +117,10 @@ class QuickSearchRequestBody(ModelBase):
 
 
 class AdvancedSearchQuery(ModelBase):
-    pass
+    resource_queries: Annotated[
+        list[AnyResourceSearchQuery],
+        Field(discriminator="resource_type", max_length=64),
+    ] = []
 
 
 class AdvancedSearchRequestBody(ModelBase):

@@ -2559,6 +2559,8 @@
             "required": false,
             "schema": {
               "type": "string",
+              "minLength": 1,
+              "maxLength": 32,
               "description": "Type of resources to find",
               "title": "Type"
             },
@@ -5596,7 +5598,24 @@
         "const": "userAwaitsActivation"
       },
       "AdvancedSearchQuery": {
-        "properties": {},
+        "properties": {
+          "resourceQueries": {
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/PlainTextSearchRequest"
+                },
+                {
+                  "$ref": "#/components/schemas/RichTextSearchRequest"
+                }
+              ]
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Resourcequeries",
+            "default": []
+          }
+        },
         "type": "object",
         "title": "AdvancedSearchQuery"
       },
@@ -5612,7 +5631,9 @@
                 "$ref": "#/components/schemas/AdvancedSearchQuery"
               }
             ],
-            "default": {}
+            "default": {
+              "resourceQueries": []
+            }
           },
           "settingsGeneral": {
             "allOf": [
@@ -7694,6 +7715,52 @@
         ],
         "title": "PlainTextResourceUpdate"
       },
+      "PlainTextSearchRequest": {
+        "properties": {
+          "resourceId": {
+            "type": "string",
+            "title": "Resourceid",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "resourceType": {
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 1,
+            "title": "Resourcetype",
+            "description": "A string identifying one of the available resource types"
+          },
+          "text": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 512
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Text"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 512
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment"
+          }
+        },
+        "type": "object",
+        "required": [
+          "resourceId",
+          "resourceType"
+        ],
+        "title": "PlainTextSearchRequest"
+      },
       "PlatformData": {
         "properties": {
           "texts": {
@@ -9272,6 +9339,52 @@
           "resourceType"
         ],
         "title": "RichTextResourceUpdate"
+      },
+      "RichTextSearchRequest": {
+        "properties": {
+          "resourceId": {
+            "type": "string",
+            "title": "Resourceid",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "resourceType": {
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 1,
+            "title": "Resourcetype",
+            "description": "A string identifying one of the available resource types"
+          },
+          "html": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 512
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Html"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 512
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment"
+          }
+        },
+        "type": "object",
+        "required": [
+          "resourceId",
+          "resourceType"
+        ],
+        "title": "RichTextSearchRequest"
       },
       "SearchHit": {
         "properties": {

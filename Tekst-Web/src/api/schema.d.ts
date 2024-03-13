@@ -354,7 +354,16 @@ export interface components {
     /** @constant */
     AdminNotificationTrigger: 'userAwaitsActivation';
     /** AdvancedSearchQuery */
-    AdvancedSearchQuery: Record<string, never>;
+    AdvancedSearchQuery: {
+      /**
+       * Resourcequeries
+       * @default []
+       */
+      resourceQueries?: (
+        | components['schemas']['PlainTextSearchRequest']
+        | components['schemas']['RichTextSearchRequest']
+      )[];
+    };
     /** AdvancedSearchRequestBody */
     AdvancedSearchRequestBody: {
       /**
@@ -362,7 +371,11 @@ export interface components {
        * @constant
        */
       searchType: 'advanced';
-      /** @default {} */
+      /**
+       * @default {
+       *   "resourceQueries": []
+       * }
+       */
       query?: components['schemas']['AdvancedSearchQuery'];
       /**
        * @default {
@@ -1413,6 +1426,23 @@ export interface components {
        */
       config?: components['schemas']['PlainTextResourceConfig'];
     };
+    /** PlainTextSearchRequest */
+    PlainTextSearchRequest: {
+      /**
+       * Resourceid
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      resourceId: string;
+      /**
+       * Resourcetype
+       * @description A string identifying one of the available resource types
+       */
+      resourceType: string;
+      /** Text */
+      text?: string | null;
+      /** Comment */
+      comment?: string | null;
+    };
     /**
      * PlatformData
      * @description Platform data used by the web client
@@ -2248,6 +2278,23 @@ export interface components {
        * }
        */
       config?: components['schemas']['RichTextResourceConfig'];
+    };
+    /** RichTextSearchRequest */
+    RichTextSearchRequest: {
+      /**
+       * Resourceid
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      resourceId: string;
+      /**
+       * Resourcetype
+       * @description A string identifying one of the available resource types
+       */
+      resourceType: string;
+      /** Html */
+      html?: string | null;
+      /** Comment */
+      comment?: string | null;
     };
     /** SearchHit */
     SearchHit: {
