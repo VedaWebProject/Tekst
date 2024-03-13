@@ -7,7 +7,7 @@ export function useLocks(options?: { interval?: number; immediate?: boolean }) {
   const locks = ref<{ [key: string]: boolean }>({});
   const { resume, pause } = useTimeoutPoll(
     async () => {
-      const { data, error } = await GET('/admin/locks');
+      const { data, error } = await GET('/platform/locks');
       if (!error) {
         locks.value = data;
       }
@@ -32,7 +32,7 @@ export function useLock(
   const locked = ref(!!options?.initiallyLocked);
   const { resume, pause } = useTimeoutPoll(
     async () => {
-      const { data } = await GET('/admin/locks/{key}', {
+      const { data } = await GET('/platform/locks/{key}', {
         params: {
           path: {
             key: lockKey,

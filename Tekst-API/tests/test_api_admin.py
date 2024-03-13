@@ -12,7 +12,7 @@ async def test_get_stats(
 ):
     await insert_sample_data("texts", "locations", "resources", "contents")
     await login(is_superuser=True)
-    resp = await test_client.get("/admin/stats")
+    resp = await test_client.get("/platform/stats")
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert "usersCount" in resp.json()
     assert resp.json()["usersCount"] == 1
@@ -25,7 +25,7 @@ async def test_get_users(
     login,
 ):
     superuser = await login(is_superuser=True)
-    resp = await test_client.get("/admin/users")
+    resp = await test_client.get("/users")
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 1

@@ -4,32 +4,6 @@
  */
 
 export interface paths {
-  '/admin/stats': {
-    /** Get statistics */
-    get: operations['getStatistics'];
-  };
-  '/admin/users': {
-    /** Get users */
-    get: operations['getUsers'];
-  };
-  '/admin/index/create': {
-    /** Create search index */
-    get: operations['createSearchIndex'];
-  };
-  '/admin/index/info': {
-    /** Get search index info */
-    get: operations['getSearchIndexInfo'];
-  };
-  '/admin/locks/{key}': {
-    /** Get lock status */
-    get: operations['getLockStatus'];
-  };
-  '/admin/locks': {
-    /** Get locks status */
-    get: operations['getLocksStatus'];
-    /** Release locks */
-    delete: operations['releaseLocks'];
-  };
   '/bookmarks/{id}': {
     /** Delete bookmark */
     delete: operations['deleteBookmark'];
@@ -165,23 +139,6 @@ export interface paths {
      */
     get: operations['getPlatformData'];
   };
-  '/platform/users/{user}': {
-    /**
-     * Get public user
-     * @description Returns public information on the user with the specified username or ID
-     */
-    get: operations['getPublicUser'];
-  };
-  '/platform/users': {
-    /**
-     * Find public users
-     * @description Returns a list of public users matching the given query.
-     *
-     * Only returns active user accounts. The query is considered to match a full token
-     * (e.g. first name, last name, username, a word in the affiliation field).
-     */
-    get: operations['findPublicUsers'];
-  };
   '/platform/settings': {
     /** Update platform settings */
     patch: operations['updatePlatformSettings'];
@@ -197,6 +154,20 @@ export interface paths {
   '/platform/segments': {
     /** Create segment */
     post: operations['createSegment'];
+  };
+  '/platform/stats': {
+    /** Get statistics */
+    get: operations['getStatistics'];
+  };
+  '/platform/locks/{key}': {
+    /** Get lock status */
+    get: operations['getLockStatus'];
+  };
+  '/platform/locks': {
+    /** Get locks status */
+    get: operations['getLocksStatus'];
+    /** Release locks */
+    delete: operations['releaseLocks'];
   };
   '/resources': {
     /**
@@ -254,6 +225,14 @@ export interface paths {
     /** Perform search */
     post: operations['performSearch'];
   };
+  '/search/index/create': {
+    /** Create search index */
+    get: operations['createSearchIndex'];
+  };
+  '/search/index/info': {
+    /** Get search index info */
+    get: operations['getSearchIndexInfo'];
+  };
   '/texts': {
     /**
      * Get all texts
@@ -300,6 +279,27 @@ export interface paths {
     delete: operations['deleteMe'];
     /** Update me */
     patch: operations['users:patchCurrentUser'];
+  };
+  '/users': {
+    /** Get users */
+    get: operations['getUsers'];
+  };
+  '/users/public/{user}': {
+    /**
+     * Get public user
+     * @description Returns public information on the user with the specified username or ID
+     */
+    get: operations['getPublicUser'];
+  };
+  '/users/public': {
+    /**
+     * Find public users
+     * @description Returns a list of public users matching the given query.
+     *
+     * Only returns active user accounts. The query is considered to match a full token
+     * (e.g. first name, last name, username, a word in the affiliation field).
+     */
+    get: operations['findPublicUsers'];
   };
   '/auth/cookie/login': {
     /** Login */
@@ -2707,186 +2707,6 @@ export type $defs = Record<string, never>;
 export type external = Record<string, never>;
 
 export interface operations {
-  /** Get statistics */
-  getStatistics: {
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json': components['schemas']['PlatformStats'];
-        };
-      };
-      /** @description Unauthorized */
-      401: {
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-      /** @description Forbidden */
-      403: {
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-    };
-  };
-  /** Get users */
-  getUsers: {
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json': components['schemas']['UserRead'][];
-        };
-      };
-      /** @description Unauthorized */
-      401: {
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-      /** @description Forbidden */
-      403: {
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-    };
-  };
-  /** Create search index */
-  createSearchIndex: {
-    responses: {
-      /** @description Successful Response */
-      202: {
-        content: {
-          'application/json': unknown;
-        };
-      };
-      /** @description Unauthorized */
-      401: {
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-      /** @description Forbidden */
-      403: {
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-      /** @description Conflict */
-      409: {
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-    };
-  };
-  /** Get search index info */
-  getSearchIndexInfo: {
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json': components['schemas']['IndexInfoResponse'];
-        };
-      };
-      /** @description Unauthorized */
-      401: {
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-      /** @description Forbidden */
-      403: {
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-    };
-  };
-  /** Get lock status */
-  getLockStatus: {
-    parameters: {
-      path: {
-        key: components['schemas']['LockKey'];
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json': boolean;
-        };
-      };
-      /** @description Unauthorized */
-      401: {
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-      /** @description Forbidden */
-      403: {
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  /** Get locks status */
-  getLocksStatus: {
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json': {
-            [key: string]: boolean;
-          };
-        };
-      };
-      /** @description Unauthorized */
-      401: {
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-      /** @description Forbidden */
-      403: {
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-    };
-  };
-  /** Release locks */
-  releaseLocks: {
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json': unknown;
-        };
-      };
-      /** @description Unauthorized */
-      401: {
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-      /** @description Forbidden */
-      403: {
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-    };
-  };
   /** Delete bookmark */
   deleteBookmark: {
     parameters: {
@@ -3690,67 +3510,6 @@ export interface operations {
       };
     };
   };
-  /**
-   * Get public user
-   * @description Returns public information on the user with the specified username or ID
-   */
-  getPublicUser: {
-    parameters: {
-      path: {
-        /** @description Username or ID */
-        user: string;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json': components['schemas']['UserReadPublic'];
-        };
-      };
-      /** @description Not Found */
-      404: {
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  /**
-   * Find public users
-   * @description Returns a list of public users matching the given query.
-   *
-   * Only returns active user accounts. The query is considered to match a full token
-   * (e.g. first name, last name, username, a word in the affiliation field).
-   */
-  findPublicUsers: {
-    parameters: {
-      query?: {
-        /** @description Query string to search in user data */
-        q?: string | null;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json': components['schemas']['UserReadPublic'][];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
   /** Update platform settings */
   updatePlatformSettings: {
     requestBody: {
@@ -3932,6 +3691,111 @@ export interface operations {
       422: {
         content: {
           'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Get statistics */
+  getStatistics: {
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['PlatformStats'];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+    };
+  };
+  /** Get lock status */
+  getLockStatus: {
+    parameters: {
+      path: {
+        key: components['schemas']['LockKey'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': boolean;
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Get locks status */
+  getLocksStatus: {
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': {
+            [key: string]: boolean;
+          };
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+    };
+  };
+  /** Release locks */
+  releaseLocks: {
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': unknown;
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
         };
       };
     };
@@ -4500,6 +4364,58 @@ export interface operations {
       };
     };
   };
+  /** Create search index */
+  createSearchIndex: {
+    responses: {
+      /** @description Successful Response */
+      202: {
+        content: {
+          'application/json': unknown;
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Conflict */
+      409: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+    };
+  };
+  /** Get search index info */
+  getSearchIndexInfo: {
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['IndexInfoResponse'];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+    };
+  };
   /**
    * Get all texts
    * @description Returns a list of all texts.
@@ -4910,6 +4826,12 @@ export interface operations {
       204: {
         content: never;
       };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
     };
   };
   /** Update me */
@@ -4935,6 +4857,96 @@ export interface operations {
       /** @description Missing token or inactive user. */
       401: {
         content: never;
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Get users */
+  getUsers: {
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['UserRead'][];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+    };
+  };
+  /**
+   * Get public user
+   * @description Returns public information on the user with the specified username or ID
+   */
+  getPublicUser: {
+    parameters: {
+      path: {
+        /** @description Username or ID */
+        user: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['UserReadPublic'];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /**
+   * Find public users
+   * @description Returns a list of public users matching the given query.
+   *
+   * Only returns active user accounts. The query is considered to match a full token
+   * (e.g. first name, last name, username, a word in the affiliation field).
+   */
+  findPublicUsers: {
+    parameters: {
+      query?: {
+        /** @description Query string to search in user data */
+        q?: string | null;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['UserReadPublic'][];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
       };
       /** @description Validation Error */
       422: {

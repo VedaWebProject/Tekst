@@ -35,7 +35,7 @@ const locksReleaseLoading = ref(false);
 
 async function handleActionCreateIndex() {
   locks.value['index_create_update'] = true;
-  const { error } = await GET('/admin/index/create');
+  const { error } = await GET('/search/index/create');
   if (!error) {
     message.info($t('admin.system.maintenance.index.actionCreateStarted'));
   }
@@ -43,7 +43,7 @@ async function handleActionCreateIndex() {
 
 async function handleActionReleaseLocks() {
   locksReleaseLoading.value = true;
-  const { error } = await DELETE('/admin/locks');
+  const { error } = await DELETE('/platform/locks');
   if (!error) {
     message.success($t('admin.system.maintenance.locks.actionReleaseSuccess'));
   }
@@ -51,7 +51,7 @@ async function handleActionReleaseLocks() {
 }
 
 async function loadIndexInfo() {
-  const { data, error } = await GET('/admin/index/info');
+  const { data, error } = await GET('/search/index/info');
   if (!error) {
     indexInfo.value = data;
   }

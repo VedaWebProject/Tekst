@@ -21,7 +21,7 @@ async def test_platform_find_users(
 
     # legitimate search
     resp = await test_client.get(
-        "/platform/users",
+        "/users/public",
         params={"q": user.get("username")},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
@@ -34,7 +34,7 @@ async def test_platform_find_users(
 
     # nonsense search
     resp = await test_client.get(
-        "/platform/users",
+        "/users/public",
         params={"q": "nonsense"},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
@@ -43,7 +43,7 @@ async def test_platform_find_users(
 
     # no query
     resp = await test_client.get(
-        "/platform/users",
+        "/users/public",
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
@@ -51,7 +51,7 @@ async def test_platform_find_users(
 
     # query of whitespaces
     resp = await test_client.get(
-        "/platform/users",
+        "/users/public",
         params={"q": "      "},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
@@ -82,7 +82,7 @@ async def test_get_public_user_info(
     test_client: AsyncClient, status_fail_msg, login, wrong_id
 ):
     user = await login()
-    resp = await test_client.get(f"/platform/users/{user.get('id')}")
+    resp = await test_client.get(f"/users/public/{user.get('id')}")
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), dict)
     assert "username" in resp.json()

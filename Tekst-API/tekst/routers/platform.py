@@ -1,17 +1,18 @@
 from typing import Annotated
 
 from beanie import PydanticObjectId
-from beanie.operators import NotIn, Or, Text
-from fastapi import APIRouter, Path, Query, status
+from beanie.operators import NotIn
+from fastapi import APIRouter, Path, status
 
-from tekst import errors
+from tekst import errors, locks
 from tekst.auth import (
     OptionalUserDep,
     SuperuserDep,
-    UserDep,
 )
 from tekst.config import ConfigDep
-from tekst.models.platform import PlatformData
+from tekst.models.location import LocationDocument
+from tekst.models.platform import PlatformData, PlatformStats, TextStats
+from tekst.models.resource import ResourceBaseDocument
 from tekst.models.segment import (
     ClientSegmentCreate,
     ClientSegmentDocument,
@@ -24,10 +25,11 @@ from tekst.models.settings import (
     PlatformSettingsRead,
     PlatformSettingsUpdate,
 )
-from tekst.models.user import UserDocument, UserReadPublic
+from tekst.models.text import TextDocument
+from tekst.models.user import UserDocument
+from tekst.resources import resource_types_mgr
 from tekst.routers.texts import get_all_texts
 from tekst.settings import get_settings
-from tekst.utils import validators as val
 
 
 router = APIRouter(
@@ -59,65 +61,6 @@ async def get_platform_data(ou: OptionalUserDep, cfg: ConfigDep) -> dict:
         .project(ClientSegmentHead)
         .to_list(),
     )
-
-
-@router.get(
-    "/users/{user}",
-    response_model=UserReadPublic,
-    summary="Get public user info",
-    status_code=status.HTTP_200_OK,
-    responses=errors.responses(
-        [
-            errors.E_404_USER_NOT_FOUND,
-        ]
-    ),
-)
-async def get_public_user(
-    username_or_id: Annotated[
-        str | PydanticObjectId, Path(alias="user", description="Username or ID")
-    ],
-) -> dict:
-    """Returns public information on the user with the specified username or ID"""
-    if PydanticObjectId.is_valid(username_or_id):
-        username_or_id = PydanticObjectId(username_or_id)
-    user = await UserDocument.find_one(
-        Or(
-            UserDocument.id == username_or_id,
-            UserDocument.username == username_or_id,
-        )
-    )
-    if not user:
-        raise errors.E_404_USER_NOT_FOUND
-    return UserReadPublic(**user.model_dump())
-
-
-@router.get(
-    "/users",
-    response_model=list[UserReadPublic],
-    status_code=status.HTTP_200_OK,
-)
-async def find_public_users(
-    su: UserDep,
-    query: Annotated[
-        str | None,
-        val.CleanupOneline,
-        val.EmptyStringToNone,
-        Query(alias="q", description="Query string to search in user data"),
-    ] = None,
-) -> list[UserDocument]:
-    """
-    Returns a list of public users matching the given query.
-
-    Only returns active user accounts. The query is considered to match a full token
-    (e.g. first name, last name, username, a word in the affiliation field).
-    """
-    if not query:
-        return []
-    return [
-        UserReadPublic(**user.model_dump())
-        for user in await UserDocument.find(Text(query)).to_list()
-        if user.is_active
-    ]
 
 
 @router.patch(
@@ -243,3 +186,94 @@ async def delete_segment(
         not delete_result.acknowledged or not delete_result.deleted_count
     ):  # pragma: no cover
         raise errors.E_500_INTERNAL_SERVER_ERROR
+
+
+@router.get(
+    "/stats",
+    response_model=PlatformStats,
+    status_code=status.HTTP_200_OK,
+    responses=errors.responses(
+        [
+            errors.E_401_UNAUTHORIZED,
+            errors.E_403_FORBIDDEN,
+        ]
+    ),
+)
+async def get_statistics(su: SuperuserDep) -> PlatformStats:
+    resource_type_names = resource_types_mgr.list_names()
+    texts = await TextDocument.find_all().to_list()
+    text_stats = []
+
+    for text in texts:
+        locations_count = await LocationDocument.find(
+            LocationDocument.text_id == text.id
+        ).count()
+        resource_types = {
+            rt_name: (
+                await ResourceBaseDocument.find(
+                    ResourceBaseDocument.text_id == text.id,
+                    ResourceBaseDocument.resource_type == rt_name,
+                    with_children=True,
+                ).count()
+            )
+            for rt_name in resource_type_names
+        }
+        resources_count = sum(resource_types.values())
+        text_stats.append(
+            TextStats(
+                id=text.id,
+                locations_count=locations_count,
+                resources_count=resources_count,
+                resource_types=resource_types,
+            )
+        )
+
+    return PlatformStats(
+        users_count=await UserDocument.find_all().count(),
+        texts=text_stats,
+    )
+
+
+@router.get(
+    "/locks/{key}",
+    status_code=status.HTTP_200_OK,
+    responses=errors.responses(
+        [
+            errors.E_401_UNAUTHORIZED,
+            errors.E_403_FORBIDDEN,
+        ]
+    ),
+)
+async def get_lock_status(
+    su: SuperuserDep, lock_key: Annotated[locks.LockKey, Path(alias="key")]
+) -> bool:
+    return await locks.is_locked(lock_key)
+
+
+@router.get(
+    "/locks",
+    status_code=status.HTTP_200_OK,
+    responses=errors.responses(
+        [
+            errors.E_401_UNAUTHORIZED,
+            errors.E_403_FORBIDDEN,
+        ]
+    ),
+)
+async def get_locks_status(su: SuperuserDep) -> dict[str, bool]:
+    return await locks.get_locks_status()
+
+
+@router.delete(
+    "/locks",
+    status_code=status.HTTP_200_OK,
+    responses=errors.responses(
+        [
+            errors.E_401_UNAUTHORIZED,
+            errors.E_403_FORBIDDEN,
+        ]
+    ),
+)
+async def release_locks(su: SuperuserDep) -> None:
+    for lk in locks.LockKey:
+        await locks.release(lk)

@@ -20,7 +20,7 @@ export function useProfile(
     const unoid = unref(usernameOrId);
     if (!unoid) return;
 
-    const { data, error: err } = await GET('/platform/users/{user}', {
+    const { data, error: err } = await GET('/users/public/{user}', {
       params: { path: { user: unoid } },
     });
 
@@ -48,7 +48,7 @@ export function useStats() {
     stats.value = null;
     error.value = false;
 
-    const { data, error: err } = await GET('/admin/stats', {});
+    const { data, error: err } = await GET('/platform/stats', {});
 
     if (!err) {
       stats.value = data;
@@ -72,7 +72,7 @@ export function useUsersAdmin() {
     users.value = null;
     error.value = false;
 
-    const { data, error: err } = await GET('/admin/users', {});
+    const { data, error: err } = await GET('/users', {});
 
     if (!err) {
       users.value = data;
@@ -108,7 +108,7 @@ export function useUsersSearch(queryRef: Ref<string | null | undefined>) {
     users.value = [];
     error.value = false;
 
-    const { data, error: err } = await GET('/platform/users', { params: { query: { q: query } } });
+    const { data, error: err } = await GET('/users/public', { params: { query: { q: query } } });
 
     if (!err) {
       users.value = data;

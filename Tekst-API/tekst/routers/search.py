@@ -1,8 +1,9 @@
-from fastapi import APIRouter, status
+from fastapi import APIRouter, BackgroundTasks, status
 
-from tekst import errors, search
-from tekst.auth import OptionalUserDep
+from tekst import errors, locks, search
+from tekst.auth import OptionalUserDep, SuperuserDep
 from tekst.models.search import (
+    IndexInfoResponse,
     SearchRequestBody,
     SearchResults,
 )
@@ -46,3 +47,37 @@ async def perform_search(
             settings_general=body.settings_general,
             settings_advanced=body.settings_advanced,
         )
+
+
+@router.get(
+    "/index/create",
+    status_code=status.HTTP_202_ACCEPTED,
+    responses=errors.responses(
+        [
+            errors.E_409_ACTION_LOCKED,
+            errors.E_401_UNAUTHORIZED,
+            errors.E_403_FORBIDDEN,
+        ]
+    ),
+)
+async def create_search_index(
+    su: SuperuserDep, background_tasks: BackgroundTasks
+) -> None:
+    if await locks.is_locked(locks.LockKey.INDEX_CREATE_UPDATE):
+        raise errors.E_409_ACTION_LOCKED
+    background_tasks.add_task(search.create_index)
+
+
+@router.get(
+    "/index/info",
+    response_model=IndexInfoResponse,
+    status_code=status.HTTP_200_OK,
+    responses=errors.responses(
+        [
+            errors.E_401_UNAUTHORIZED,
+            errors.E_403_FORBIDDEN,
+        ]
+    ),
+)
+async def get_search_index_info(su: SuperuserDep) -> IndexInfoResponse:
+    return await search.get_index_info()
