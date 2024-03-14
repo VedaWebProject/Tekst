@@ -26,8 +26,8 @@ class RichText(ResourceTypeABC):
         return RichTextContent
 
     @classmethod
-    def search_query_model(cls) -> type["RichTextSearchRequest"]:
-        return RichTextSearchRequest
+    def search_query_model(cls) -> type["RichTextSearchQuery"]:
+        return RichTextSearchQuery
 
     @classmethod
     def index_doc_properties(cls) -> dict[str, Any]:
@@ -81,7 +81,7 @@ class RichTextContent(ContentBase):
     ] = "wysiwyg"
 
 
-class RichTextSearchRequest(ResourceSearchQueryBase):
+class RichTextSearchQuery(ResourceSearchQueryBase):
     html: Annotated[
         str | None,
         StringConstraints(max_length=512, strip_whitespace=True),

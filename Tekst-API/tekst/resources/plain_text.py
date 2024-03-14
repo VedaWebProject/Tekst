@@ -28,8 +28,8 @@ class PlainText(ResourceTypeABC):
         return PlainTextContent
 
     @classmethod
-    def search_query_model(cls) -> type["PlainTextSearchRequest"]:
-        return PlainTextSearchRequest
+    def search_query_model(cls) -> type["PlainTextSearchQuery"]:
+        return PlainTextSearchQuery
 
     @classmethod
     def index_doc_properties(cls) -> dict[str, Any]:
@@ -75,7 +75,7 @@ class PlainTextContent(ContentBase):
     ]
 
 
-class PlainTextSearchRequest(ResourceSearchQueryBase):
+class PlainTextSearchQuery(ResourceSearchQueryBase):
     text: Annotated[
         str | None,
         StringConstraints(max_length=512, strip_whitespace=True),
