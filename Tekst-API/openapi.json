@@ -3655,7 +3655,7 @@
                 ],
                 "title": "Body",
                 "discriminator": {
-                  "propertyName": "searchType",
+                  "propertyName": "type",
                   "mapping": {
                     "quick": "#/components/schemas/QuickSearchRequestBody",
                     "advanced": "#/components/schemas/AdvancedSearchRequestBody"
@@ -5597,68 +5597,63 @@
       "AdminNotificationTrigger": {
         "const": "userAwaitsActivation"
       },
-      "AdvancedSearchQuery": {
+      "AdvancedSearchRequestBody": {
         "properties": {
-          "resourceQueries": {
+          "type": {
+            "const": "advanced",
+            "title": "Type",
+            "description": "Search type"
+          },
+          "q": {
             "items": {
-              "anyOf": [
+              "oneOf": [
                 {
-                  "$ref": "#/components/schemas/PlainTextSearchRequest"
+                  "$ref": "#/components/schemas/PlainTextSearchQuery"
                 },
                 {
-                  "$ref": "#/components/schemas/RichTextSearchRequest"
+                  "$ref": "#/components/schemas/RichTextSearchQuery"
                 }
-              ]
+              ],
+              "discriminator": {
+                "propertyName": "type",
+                "mapping": {
+                  "plainText": "#/components/schemas/PlainTextSearchQuery",
+                  "richText": "#/components/schemas/RichTextSearchQuery"
+                }
+              }
             },
             "type": "array",
             "maxItems": 64,
-            "title": "Resourcequeries",
-            "default": []
-          }
-        },
-        "type": "object",
-        "title": "AdvancedSearchQuery"
-      },
-      "AdvancedSearchRequestBody": {
-        "properties": {
-          "searchType": {
-            "const": "advanced",
-            "title": "Searchtype"
+            "title": "Q",
+            "description": "Resource-specific queries"
           },
-          "query": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AdvancedSearchQuery"
-              }
-            ],
-            "default": {
-              "resourceQueries": []
-            }
-          },
-          "settingsGeneral": {
+          "gen": {
             "allOf": [
               {
                 "$ref": "#/components/schemas/GeneralSearchSettings"
               }
             ],
+            "description": "General search settings",
             "default": {
-              "page": 1,
-              "pageSize": 10,
+              "pg": 1,
+              "pgs": 10,
               "strict": false
             }
           },
-          "settingsAdvanced": {
+          "adv": {
             "allOf": [
               {
                 "$ref": "#/components/schemas/AdvancedSearchSettings"
               }
             ],
+            "description": "Advanced search settings",
             "default": {}
           }
         },
         "type": "object",
         "required": [
-          "searchType"
+          "type",
+          "q"
         ],
         "title": "AdvancedSearchRequestBody"
       },
@@ -6500,17 +6495,19 @@
       },
       "GeneralSearchSettings": {
         "properties": {
-          "page": {
+          "pg": {
             "type": "integer",
-            "title": "Page",
+            "title": "Pg",
+            "description": "Page number",
             "default": 1
           },
-          "pageSize": {
+          "pgs": {
             "type": "integer",
-            "title": "Pagesize",
+            "title": "Pgs",
+            "description": "Page size",
             "default": 10
           },
-          "sortingPreset": {
+          "sort": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/SortingPreset"
@@ -7715,51 +7712,38 @@
         ],
         "title": "PlainTextResourceUpdate"
       },
-      "PlainTextSearchRequest": {
+      "PlainTextSearchQuery": {
         "properties": {
-          "resourceId": {
+          "res": {
             "type": "string",
-            "title": "Resourceid",
+            "title": "Res",
+            "description": "ID of the resource to search in",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
-          "resourceType": {
-            "type": "string",
-            "maxLength": 32,
-            "minLength": 1,
-            "title": "Resourcetype",
-            "description": "A string identifying one of the available resource types"
+          "type": {
+            "const": "plainText",
+            "title": "Type",
+            "description": "Type of the resource to search in"
           },
           "text": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 512
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Text"
+            "type": "string",
+            "maxLength": 512,
+            "title": "Text",
+            "default": ""
           },
           "comment": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 512
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Comment"
+            "type": "string",
+            "maxLength": 512,
+            "title": "Comment",
+            "default": ""
           }
         },
         "type": "object",
         "required": [
-          "resourceId",
-          "resourceType"
+          "res",
+          "type"
         ],
-        "title": "PlainTextSearchRequest"
+        "title": "PlainTextSearchQuery"
       },
       "PlatformData": {
         "properties": {
@@ -8295,54 +8279,59 @@
       },
       "QuickSearchRequestBody": {
         "properties": {
-          "searchType": {
+          "type": {
             "const": "quick",
-            "title": "Searchtype"
+            "title": "Type",
+            "description": "Search type"
           },
-          "query": {
+          "q": {
             "type": "string",
             "maxLength": 512,
-            "title": "Query",
+            "title": "Q",
+            "description": "Query string",
             "default": "*"
           },
-          "settingsGeneral": {
+          "gen": {
             "allOf": [
               {
                 "$ref": "#/components/schemas/GeneralSearchSettings"
               }
             ],
+            "description": "General search settings",
             "default": {
-              "page": 1,
-              "pageSize": 10,
+              "pg": 1,
+              "pgs": 10,
               "strict": false
             }
           },
-          "settingsQuick": {
+          "qck": {
             "allOf": [
               {
                 "$ref": "#/components/schemas/QuickSearchSettings"
               }
             ],
+            "description": "Quick search settings",
             "default": {
-              "defaultOperator": "OR"
+              "op": "OR"
             }
           }
         },
         "type": "object",
         "required": [
-          "searchType"
+          "type"
         ],
         "title": "QuickSearchRequestBody"
       },
       "QuickSearchSettings": {
         "properties": {
-          "defaultOperator": {
+          "op": {
             "type": "string",
             "enum": [
               "AND",
               "OR"
             ],
-            "title": "Defaultoperator",
+            "title": "Op",
+            "description": "Default operator",
             "default": "OR"
           },
           "texts": {
@@ -9340,51 +9329,38 @@
         ],
         "title": "RichTextResourceUpdate"
       },
-      "RichTextSearchRequest": {
+      "RichTextSearchQuery": {
         "properties": {
-          "resourceId": {
+          "res": {
             "type": "string",
-            "title": "Resourceid",
+            "title": "Res",
+            "description": "ID of the resource to search in",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
-          "resourceType": {
-            "type": "string",
-            "maxLength": 32,
-            "minLength": 1,
-            "title": "Resourcetype",
-            "description": "A string identifying one of the available resource types"
+          "type": {
+            "const": "richText",
+            "title": "Type",
+            "description": "Type of the resource to search in"
           },
           "html": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 512
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Html"
+            "type": "string",
+            "maxLength": 512,
+            "title": "Html",
+            "default": ""
           },
           "comment": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 512
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Comment"
+            "type": "string",
+            "maxLength": 512,
+            "title": "Comment",
+            "default": ""
           }
         },
         "type": "object",
         "required": [
-          "resourceId",
-          "resourceType"
+          "res",
+          "type"
         ],
-        "title": "RichTextSearchRequest"
+        "title": "RichTextSearchQuery"
       },
       "SearchHit": {
         "properties": {

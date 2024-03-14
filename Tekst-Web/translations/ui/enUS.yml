@@ -382,11 +382,15 @@ resources:
       parenthesis: unstyled plain text content
       contentFields:
         text: Plain Text
+      searchFields:
+        text: Text
     richText:
       label: Formatted Text
       parenthesis: styled, formatted text
       contentFields:
         html: Formatted Text
+      searchFields:
+        html: Text
 
 contents:
   heading: Edit Resource Content
@@ -650,6 +654,9 @@ search:
   searchAction: Search
   quickSearch:
     heading: Quick Search
+  advancedSearch:
+    btnAddSearchItem: Add search item
+    msgNoResources: There are no resources associated with this text to search in.
   settings:
     heading: Settings
     general:

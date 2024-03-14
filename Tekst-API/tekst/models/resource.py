@@ -271,9 +271,17 @@ class ResourceCoverageDetails(ModelBase):
 
 
 class ResourceSearchQueryBase(ModelBase):
-    resource_id: PydanticObjectId
-    resource_type: Annotated[
-        str,
-        StringConstraints(min_length=1, max_length=32, strip_whitespace=True),
-        Field(description="A string identifying one of the available resource types"),
+    resource_id: Annotated[
+        PydanticObjectId,
+        Field(
+            alias="res",
+            description="ID of the resource to search in",
+        ),
     ]
+
+    def get_set_fields(self) -> set[str]:
+        return {
+            field
+            for field in self.model_fields_set
+            if field not in ["resource_id", "resource_type"]
+        }

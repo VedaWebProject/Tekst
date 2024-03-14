@@ -76,27 +76,55 @@ SortingPreset = TypeAliasType(
 
 
 class GeneralSearchSettings(ModelBase):
-    page: Annotated[int, conint(ge=1)] = 1
-    page_size: Annotated[int, Literal[10, 25, 50]] = 10
+    page: Annotated[
+        int,
+        conint(ge=1),
+        Field(
+            alias="pg",
+            description="Page number",
+        ),
+    ] = 1
+    page_size: Annotated[
+        int,
+        Literal[10, 25, 50],
+        Field(
+            alias="pgs",
+            description="Page size",
+        ),
+    ] = 10
     sorting_preset: Annotated[
-        SortingPreset | None, Field(description="Sorting preset")
+        SortingPreset | None,
+        Field(
+            alias="sort",
+            description="Sorting preset",
+        ),
     ] = None
     strict: bool = False
 
 
 class QuickSearchSettings(ModelBase):
-    default_operator: Literal["AND", "OR"] = "OR"
+    default_operator: Annotated[
+        Literal["AND", "OR"],
+        Field(
+            alias="op",
+            description="Default operator",
+        ),
+    ] = "OR"
     texts: (
         Annotated[
             list[PydanticObjectId],
             Field(
+                alias="txt",
                 description="IDs of texts to search in",
             ),
         ]
         | None
     ) = None
 
-    @field_validator("default_operator", mode="before")
+    @field_validator(
+        "default_operator",
+        mode="before",
+    )
     @classmethod
     def default_operator_upper(cls, v: Any) -> str:
         return str(v).upper()
@@ -107,27 +135,70 @@ class AdvancedSearchSettings(ModelBase):
 
 
 class QuickSearchRequestBody(ModelBase):
-    search_type: Literal["quick"]
+    search_type: Annotated[
+        Literal["quick"],
+        Field(
+            alias="type",
+            description="Search type",
+        ),
+    ]
     query: Annotated[
         str,
-        StringConstraints(max_length=512, strip_whitespace=True),
+        StringConstraints(
+            max_length=512,
+            strip_whitespace=True,
+        ),
+        Field(
+            alias="q",
+            description="Query string",
+        ),
     ] = "*"
-    settings_general: GeneralSearchSettings = GeneralSearchSettings()
-    settings_quick: QuickSearchSettings = QuickSearchSettings()
-
-
-class AdvancedSearchQuery(ModelBase):
-    resource_queries: Annotated[
-        list[AnyResourceSearchQuery],
-        Field(discriminator="resource_type", max_length=64),
-    ] = []
+    settings_general: Annotated[
+        GeneralSearchSettings,
+        Field(
+            alias="gen",
+            description="General search settings",
+        ),
+    ] = GeneralSearchSettings()
+    settings_quick: Annotated[
+        QuickSearchSettings,
+        Field(
+            alias="qck",
+            description="Quick search settings",
+        ),
+    ] = QuickSearchSettings()
 
 
 class AdvancedSearchRequestBody(ModelBase):
-    search_type: Literal["advanced"]
-    query: AdvancedSearchQuery = AdvancedSearchQuery()
-    settings_general: GeneralSearchSettings = GeneralSearchSettings()
-    settings_advanced: AdvancedSearchSettings = AdvancedSearchSettings()
+    search_type: Annotated[
+        Literal["advanced"],
+        Field(
+            alias="type",
+            description="Search type",
+        ),
+    ]
+    query: Annotated[
+        list[AnyResourceSearchQuery],
+        Field(
+            alias="q",
+            max_length=64,
+            description="Resource-specific queries",
+        ),
+    ]
+    settings_general: Annotated[
+        GeneralSearchSettings,
+        Field(
+            alias="gen",
+            description="General search settings",
+        ),
+    ] = GeneralSearchSettings()
+    settings_advanced: Annotated[
+        AdvancedSearchSettings,
+        Field(
+            alias="adv",
+            description="Advanced search settings",
+        ),
+    ] = AdvancedSearchSettings()
 
 
 SearchRequestBody = Annotated[

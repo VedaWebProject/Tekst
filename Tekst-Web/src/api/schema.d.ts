@@ -353,40 +353,36 @@ export interface components {
   schemas: {
     /** @constant */
     AdminNotificationTrigger: 'userAwaitsActivation';
-    /** AdvancedSearchQuery */
-    AdvancedSearchQuery: {
-      /**
-       * Resourcequeries
-       * @default []
-       */
-      resourceQueries?: (
-        | components['schemas']['PlainTextSearchRequest']
-        | components['schemas']['RichTextSearchRequest']
-      )[];
-    };
     /** AdvancedSearchRequestBody */
     AdvancedSearchRequestBody: {
       /**
-       * Searchtype
+       * Type
+       * @description Search type
        * @constant
        */
-      searchType: 'advanced';
+      type: 'advanced';
       /**
-       * @default {
-       *   "resourceQueries": []
-       * }
+       * Q
+       * @description Resource-specific queries
        */
-      query?: components['schemas']['AdvancedSearchQuery'];
+      q: (
+        | components['schemas']['PlainTextSearchQuery']
+        | components['schemas']['RichTextSearchQuery']
+      )[];
       /**
+       * @description General search settings
        * @default {
-       *   "page": 1,
-       *   "pageSize": 10,
+       *   "pg": 1,
+       *   "pgs": 10,
        *   "strict": false
        * }
        */
-      settingsGeneral?: components['schemas']['GeneralSearchSettings'];
-      /** @default {} */
-      settingsAdvanced?: components['schemas']['AdvancedSearchSettings'];
+      gen?: components['schemas']['GeneralSearchSettings'];
+      /**
+       * @description Advanced search settings
+       * @default {}
+       */
+      adv?: components['schemas']['AdvancedSearchSettings'];
     };
     /** AdvancedSearchSettings */
     AdvancedSearchSettings: Record<string, never>;
@@ -808,17 +804,19 @@ export interface components {
     /** GeneralSearchSettings */
     GeneralSearchSettings: {
       /**
-       * Page
+       * Pg
+       * @description Page number
        * @default 1
        */
-      page?: number;
+      pg?: number;
       /**
-       * Pagesize
+       * Pgs
+       * @description Page size
        * @default 10
        */
-      pageSize?: number;
+      pgs?: number;
       /** @description Sorting preset */
-      sortingPreset?: components['schemas']['SortingPreset'] | null;
+      sort?: components['schemas']['SortingPreset'] | null;
       /**
        * Strict
        * @default false
@@ -1426,22 +1424,30 @@ export interface components {
        */
       config?: components['schemas']['PlainTextResourceConfig'];
     };
-    /** PlainTextSearchRequest */
-    PlainTextSearchRequest: {
+    /** PlainTextSearchQuery */
+    PlainTextSearchQuery: {
       /**
-       * Resourceid
+       * Res
+       * @description ID of the resource to search in
        * @example 5eb7cf5a86d9755df3a6c593
        */
-      resourceId: string;
+      res: string;
       /**
-       * Resourcetype
-       * @description A string identifying one of the available resource types
+       * Type
+       * @description Type of the resource to search in
+       * @constant
        */
-      resourceType: string;
-      /** Text */
-      text?: string | null;
-      /** Comment */
-      comment?: string | null;
+      type: 'plainText';
+      /**
+       * Text
+       * @default
+       */
+      text?: string;
+      /**
+       * Comment
+       * @default
+       */
+      comment?: string;
     };
     /**
      * PlatformData
@@ -1751,38 +1757,43 @@ export interface components {
     /** QuickSearchRequestBody */
     QuickSearchRequestBody: {
       /**
-       * Searchtype
+       * Type
+       * @description Search type
        * @constant
        */
-      searchType: 'quick';
+      type: 'quick';
       /**
-       * Query
+       * Q
+       * @description Query string
        * @default *
        */
-      query?: string;
+      q?: string;
       /**
+       * @description General search settings
        * @default {
-       *   "page": 1,
-       *   "pageSize": 10,
+       *   "pg": 1,
+       *   "pgs": 10,
        *   "strict": false
        * }
        */
-      settingsGeneral?: components['schemas']['GeneralSearchSettings'];
+      gen?: components['schemas']['GeneralSearchSettings'];
       /**
+       * @description Quick search settings
        * @default {
-       *   "defaultOperator": "OR"
+       *   "op": "OR"
        * }
        */
-      settingsQuick?: components['schemas']['QuickSearchSettings'];
+      qck?: components['schemas']['QuickSearchSettings'];
     };
     /** QuickSearchSettings */
     QuickSearchSettings: {
       /**
-       * Defaultoperator
+       * Op
+       * @description Default operator
        * @default OR
        * @enum {string}
        */
-      defaultOperator?: 'AND' | 'OR';
+      op?: 'AND' | 'OR';
       /** Texts */
       texts?: string[] | null;
     };
@@ -2279,22 +2290,30 @@ export interface components {
        */
       config?: components['schemas']['RichTextResourceConfig'];
     };
-    /** RichTextSearchRequest */
-    RichTextSearchRequest: {
+    /** RichTextSearchQuery */
+    RichTextSearchQuery: {
       /**
-       * Resourceid
+       * Res
+       * @description ID of the resource to search in
        * @example 5eb7cf5a86d9755df3a6c593
        */
-      resourceId: string;
+      res: string;
       /**
-       * Resourcetype
-       * @description A string identifying one of the available resource types
+       * Type
+       * @description Type of the resource to search in
+       * @constant
        */
-      resourceType: string;
-      /** Html */
-      html?: string | null;
-      /** Comment */
-      comment?: string | null;
+      type: 'richText';
+      /**
+       * Html
+       * @default
+       */
+      html?: string;
+      /**
+       * Comment
+       * @default
+       */
+      comment?: string;
     };
     /** SearchHit */
     SearchHit: {

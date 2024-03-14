@@ -30,6 +30,33 @@ class RichText(ResourceTypeABC):
         return RichTextSearchQuery
 
     @classmethod
+    def construct_es_queries(
+        cls, query: ResourceSearchQueryBase, *, strict: bool = False
+    ) -> list[dict[str, Any]]:
+        queries = []
+        set_fields = query.get_set_fields()
+        strict_suffix = ".strict" if strict else ""
+        if "html" in set_fields:
+            queries.append(
+                {
+                    "simple_query_string": {
+                        "fields": [f"{query.resource_id}.html{strict_suffix}"],
+                        "query": query.html,
+                    }
+                }
+            )
+        if "comment" in set_fields:
+            queries.append(
+                {
+                    "simple_query_string": {
+                        "fields": [f"{query.resource_id}.comment{strict_suffix}"],
+                        "query": query.comment,
+                    }
+                }
+            )
+        return queries
+
+    @classmethod
     def index_doc_properties(cls) -> dict[str, Any]:
         return {
             "html": {
@@ -82,13 +109,20 @@ class RichTextContent(ContentBase):
 
 
 class RichTextSearchQuery(ResourceSearchQueryBase):
+    resource_type: Annotated[
+        Literal["richText"],
+        Field(
+            alias="type",
+            description="Type of the resource to search in",
+        ),
+    ]
     html: Annotated[
-        str | None,
+        str,
         StringConstraints(max_length=512, strip_whitespace=True),
         val.CleanupOneline,
-    ] = None
+    ] = ""
     comment: Annotated[
-        str | None,
+        str,
         StringConstraints(max_length=512, strip_whitespace=True),
         val.CleanupOneline,
-    ] = None
+    ] = ""

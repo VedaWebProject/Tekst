@@ -10,6 +10,7 @@ from typing import Annotated, Any, Union
 
 from fastapi import Body
 from humps import camelize
+from pydantic import Field
 
 from tekst.logging import log
 from tekst.models.common import ReadBase
@@ -70,6 +71,20 @@ class ResourceTypeABC(ABC):
         """
         raise NotImplementedError(
             "Classmethod 'search_query_model' must be "
+            f"implemented in subclasses of {cls.__name__}"
+        )  # pragma: no cover
+
+    @classmethod
+    @abstractmethod
+    def construct_es_queries(
+        cls, query: ResourceSearchQueryBase, *, strict: bool = False
+    ) -> list[dict[str, Any]]:
+        """
+        Constructs an Elasticsearch search query for each field
+        in the given resource search query model instance
+        """
+        raise NotImplementedError(
+            "Classmethod 'construct_es_query' must be "
             f"implemented in subclasses of {cls.__name__}"
         )  # pragma: no cover
 
@@ -287,8 +302,11 @@ AnyContentDocument = Union[  # noqa: UP007
 ]
 
 # SEARCH REQUEST
-AnyResourceSearchQuery = Union[  # noqa: UP007
-    tuple([rt.search_query_model() for rt in resource_types_mgr.get_all().values()])
+AnyResourceSearchQuery = Annotated[
+    Union[  # noqa: UP007
+        tuple([rt.search_query_model() for rt in resource_types_mgr.get_all().values()])
+    ],
+    Field(discriminator="resource_type"),
 ]
 
 
