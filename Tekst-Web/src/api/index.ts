@@ -174,7 +174,8 @@ export type ClientSegmentHead = components['schemas']['ClientSegmentHead'];
 
 // resources
 
-export type ResourceType = components['schemas']['AdvancedSearchRequestBody']['q'][number]['type'];
+export type ResourceType =
+  components['schemas']['AdvancedSearchRequestBody']['q'][number]['rts']['type'];
 type ResourceReadExtras = {
   active?: boolean;
   coverage?: ResourceCoverage;

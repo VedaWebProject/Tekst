@@ -4,13 +4,13 @@ from pydantic import Field, StringConstraints
 
 from tekst.models.common import ModelBase
 from tekst.models.content import ContentBase
-from tekst.models.resource import ResourceBase, ResourceSearchQueryBase
+from tekst.models.resource import ResourceBase
 from tekst.models.resource_configs import (
     DefaultCollapsedConfigType,
     FontConfigType,
     ResourceConfigBase,
 )
-from tekst.resources import ResourceTypeABC
+from tekst.resources import ResourceSearchQuery, ResourceTypeABC
 from tekst.utils import validators as val
 
 
@@ -31,7 +31,7 @@ class RichText(ResourceTypeABC):
 
     @classmethod
     def construct_es_queries(
-        cls, query: ResourceSearchQueryBase, *, strict: bool = False
+        cls, query: ResourceSearchQuery, *, strict: bool = False
     ) -> list[dict[str, Any]]:
         queries = []
         set_fields = query.get_set_fields()
@@ -108,7 +108,7 @@ class RichTextContent(ContentBase):
     ] = "wysiwyg"
 
 
-class RichTextSearchQuery(ResourceSearchQueryBase):
+class RichTextSearchQuery(ModelBase):
     resource_type: Annotated[
         Literal["richText"],
         Field(

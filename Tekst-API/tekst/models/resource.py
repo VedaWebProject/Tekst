@@ -268,39 +268,3 @@ class ResourceLocationCoverage(ModelBase):
 class ResourceCoverageDetails(ModelBase):
     parent_labels: list[str]
     locations_coverage: list[list[ResourceLocationCoverage]]
-
-
-class ResourceSearchQueryBase(ModelBase):
-    required: Annotated[
-        bool,
-        Field(
-            alias="req",
-            description=(
-                "Whether this query is required to match for the "
-                "location to be considered a search hit"
-            ),
-        ),
-    ] = False
-    resource_id: Annotated[
-        PydanticObjectId,
-        Field(
-            alias="res",
-            description="ID of the resource to search in",
-        ),
-    ]
-    comment: Annotated[
-        str,
-        Field(
-            alias="cmt",
-            description="Comment",
-        ),
-        StringConstraints(max_length=512, strip_whitespace=True),
-        val.CleanupOneline,
-    ] = ""
-
-    def get_set_fields(self) -> set[str]:
-        return {
-            field
-            for field in self.model_fields_set
-            if field not in ["resource_id", "resource_type"]
-        }

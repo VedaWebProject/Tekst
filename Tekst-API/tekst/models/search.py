@@ -1,12 +1,11 @@
 from datetime import datetime
-from typing import Annotated, Any, Literal, Union
+from typing import Annotated, Any, Literal
 
-from fastapi import Body
 from pydantic import Field, StringConstraints, conint, field_validator
 from typing_extensions import TypeAliasType
 
 from tekst.models.common import ModelBase, PydanticObjectId
-from tekst.resources import AnyResourceSearchQuery
+from tekst.resources import ResourceSearchQuery
 
 
 class SearchHit(ModelBase):
@@ -178,7 +177,7 @@ class AdvancedSearchRequestBody(ModelBase):
         ),
     ]
     query: Annotated[
-        list[AnyResourceSearchQuery],
+        list[ResourceSearchQuery],
         Field(
             alias="q",
             max_length=64,
@@ -199,15 +198,6 @@ class AdvancedSearchRequestBody(ModelBase):
             description="Advanced search settings",
         ),
     ] = AdvancedSearchSettings()
-
-
-SearchRequestBody = Annotated[
-    Union[  # noqa: UP007
-        QuickSearchRequestBody,
-        AdvancedSearchRequestBody,
-    ],
-    Body(discriminator="search_type"),
-]
 
 
 class IndexInfoResponse(ModelBase):

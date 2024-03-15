@@ -5606,21 +5606,7 @@
           },
           "q": {
             "items": {
-              "oneOf": [
-                {
-                  "$ref": "#/components/schemas/PlainTextSearchQuery"
-                },
-                {
-                  "$ref": "#/components/schemas/RichTextSearchQuery"
-                }
-              ],
-              "discriminator": {
-                "propertyName": "type",
-                "mapping": {
-                  "plainText": "#/components/schemas/PlainTextSearchQuery",
-                  "richText": "#/components/schemas/RichTextSearchQuery"
-                }
-              }
+              "$ref": "#/components/schemas/ResourceSearchQuery"
             },
             "type": "array",
             "maxItems": 64,
@@ -6249,6 +6235,34 @@
         },
         "type": "object",
         "title": "CommonResourceConfig"
+      },
+      "CommonResourceSearchQueryData": {
+        "properties": {
+          "req": {
+            "type": "boolean",
+            "title": "Req",
+            "description": "Whether this query is required to match for the location to be considered a search hit",
+            "default": false
+          },
+          "res": {
+            "type": "string",
+            "title": "Res",
+            "description": "ID of the resource to search in",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "cmt": {
+            "type": "string",
+            "maxLength": 512,
+            "title": "Cmt",
+            "description": "Comment",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "required": [
+          "res"
+        ],
+        "title": "CommonResourceSearchQueryData"
       },
       "DeepLLinksConfig": {
         "properties": {
@@ -7714,25 +7728,6 @@
       },
       "PlainTextSearchQuery": {
         "properties": {
-          "req": {
-            "type": "boolean",
-            "title": "Req",
-            "description": "Whether this query is required to match for the location to be considered a search hit",
-            "default": false
-          },
-          "res": {
-            "type": "string",
-            "title": "Res",
-            "description": "ID of the resource to search in",
-            "example": "5eb7cf5a86d9755df3a6c593"
-          },
-          "cmt": {
-            "type": "string",
-            "maxLength": 512,
-            "title": "Cmt",
-            "description": "Comment",
-            "default": ""
-          },
           "type": {
             "const": "plainText",
             "title": "Type",
@@ -7747,7 +7742,6 @@
         },
         "type": "object",
         "required": [
-          "res",
           "type"
         ],
         "title": "PlainTextSearchQuery"
@@ -8532,6 +8526,43 @@
           "position"
         ],
         "title": "ResourceLocationCoverage"
+      },
+      "ResourceSearchQuery": {
+        "properties": {
+          "cmn": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CommonResourceSearchQueryData"
+              }
+            ],
+            "description": "Common resource search query data"
+          },
+          "rts": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PlainTextSearchQuery"
+              },
+              {
+                "$ref": "#/components/schemas/RichTextSearchQuery"
+              }
+            ],
+            "title": "Rts",
+            "description": "Resource type-specific search query data",
+            "discriminator": {
+              "propertyName": "type",
+              "mapping": {
+                "plainText": "#/components/schemas/PlainTextSearchQuery",
+                "richText": "#/components/schemas/RichTextSearchQuery"
+              }
+            }
+          }
+        },
+        "type": "object",
+        "required": [
+          "cmn",
+          "rts"
+        ],
+        "title": "ResourceSearchQuery"
       },
       "RichTextContentCreate": {
         "properties": {
@@ -9338,25 +9369,6 @@
       },
       "RichTextSearchQuery": {
         "properties": {
-          "req": {
-            "type": "boolean",
-            "title": "Req",
-            "description": "Whether this query is required to match for the location to be considered a search hit",
-            "default": false
-          },
-          "res": {
-            "type": "string",
-            "title": "Res",
-            "description": "ID of the resource to search in",
-            "example": "5eb7cf5a86d9755df3a6c593"
-          },
-          "cmt": {
-            "type": "string",
-            "maxLength": 512,
-            "title": "Cmt",
-            "description": "Comment",
-            "default": ""
-          },
           "type": {
             "const": "richText",
             "title": "Type",
@@ -9371,7 +9383,6 @@
         },
         "type": "object",
         "required": [
-          "res",
           "type"
         ],
         "title": "RichTextSearchQuery"

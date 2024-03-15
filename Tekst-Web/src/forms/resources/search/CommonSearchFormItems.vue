@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { NFormItem } from 'naive-ui';
 import NInputOsk from '@/components/NInputOsk.vue';
-import type { PlainTextSearchQuery } from '@/api';
+import type { AdvancedSearchRequestBody } from '@/api';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
 
 defineProps<{
-  comment?: PlainTextSearchQuery['cmt'];
-  required?: PlainTextSearchQuery['req'];
+  comment?: AdvancedSearchRequestBody['q'][number]['cmn']['cmt'];
+  required?: AdvancedSearchRequestBody['q'][number]['cmn']['req'];
 }>();
 defineEmits(['update:comment', 'update:required']);
 </script>

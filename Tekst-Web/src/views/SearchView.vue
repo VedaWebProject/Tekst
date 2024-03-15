@@ -30,18 +30,18 @@ const resourceOptions = computed(() =>
 
 function handleResourceChange(resQueryIndex: number, resId: string, resType: ResourceType) {
   if (!queries.value[resQueryIndex]) return;
-  if (queries.value[resQueryIndex].res !== resId) {
+  if (queries.value[resQueryIndex].cmn.res !== resId) {
     queries.value[resQueryIndex] = {
-      res: resId,
-      type: resType,
+      cmn: { res: resId },
+      rts: { ...queries.value[resQueryIndex].rts, type: resType },
     };
   }
 }
 
-function getNewSearchItem() {
+function getNewSearchItem(): AdvancedSearchRequestBody['q'][number] {
   return {
-    res: resources.data[0].id,
-    type: resources.data[0].resourceType,
+    cmn: { res: resources.data[0].id },
+    rts: { type: resources.data[0].resourceType },
   };
 }
 
@@ -62,7 +62,6 @@ function handleSearch(e: UIEvent) {
     gen: state.searchSettingsGeneral,
     adv: state.searchSettingsAdvanced,
   };
-  console.log(reqBody);
   router.push({
     name: 'searchResults',
     params: {
@@ -74,7 +73,7 @@ function handleSearch(e: UIEvent) {
 watch(
   () => resources.data,
   () => {
-    queries.value = [];
+    queries.value = [getNewSearchItem()];
   }
 );
 </script>
@@ -109,7 +108,7 @@ watch(
             <div style="flex-grow: 2">
               <n-form-item :label="$t('search.advancedSearch.targetResource')">
                 <n-select
-                  :value="resourceQuery.res"
+                  :value="resourceQuery.cmn.res"
                   :options="resourceOptions"
                   :consistent-menu-width="false"
                   @update:value="
@@ -119,12 +118,12 @@ watch(
                 />
               </n-form-item>
               <component
-                :is="resourceTypeSearchForms[resourceQuery.type]"
-                v-model:value="queries[index]"
+                :is="resourceTypeSearchForms[resourceQuery.rts.type]"
+                v-model:value="resourceQuery.rts"
               />
               <common-search-form-items
-                v-model:comment="queries[index].cmt"
-                v-model:required="queries[index].req"
+                v-model:comment="resourceQuery.cmn.cmt"
+                v-model:required="resourceQuery.cmn.req"
               />
             </div>
             <div
@@ -166,10 +165,6 @@ watch(
           <div>
             <!-- this is needed so the default action buttons don't show -->
           </div>
-        </template>
-        <!-- "CREATE INITIAL ITEM" BUTTON -->
-        <template #create-button-default>
-          {{ $t('search.advancedSearch.btnAddSearchItem') }}
         </template>
       </n-dynamic-input>
     </n-form>

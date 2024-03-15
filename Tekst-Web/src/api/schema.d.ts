@@ -365,10 +365,7 @@ export interface components {
        * Q
        * @description Resource-specific queries
        */
-      q: (
-        | components['schemas']['PlainTextSearchQuery']
-        | components['schemas']['RichTextSearchQuery']
-      )[];
+      q: components['schemas']['ResourceSearchQuery'][];
       /**
        * @description General search settings
        * @default {
@@ -653,6 +650,27 @@ export interface components {
        * @default false
        */
       showOnParentLevel?: boolean;
+    };
+    /** CommonResourceSearchQueryData */
+    CommonResourceSearchQueryData: {
+      /**
+       * Req
+       * @description Whether this query is required to match for the location to be considered a search hit
+       * @default false
+       */
+      req?: boolean;
+      /**
+       * Res
+       * @description ID of the resource to search in
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      res: string;
+      /**
+       * Cmt
+       * @description Comment
+       * @default
+       */
+      cmt?: string;
     };
     /**
      * DeepLLinksConfig
@@ -1427,24 +1445,6 @@ export interface components {
     /** PlainTextSearchQuery */
     PlainTextSearchQuery: {
       /**
-       * Req
-       * @description Whether this query is required to match for the location to be considered a search hit
-       * @default false
-       */
-      req?: boolean;
-      /**
-       * Res
-       * @description ID of the resource to search in
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      res: string;
-      /**
-       * Cmt
-       * @description Comment
-       * @default
-       */
-      cmt?: string;
-      /**
        * Type
        * @description Type of the resource to search in
        * @constant
@@ -1863,6 +1863,18 @@ export interface components {
        * @default false
        */
       covered?: boolean;
+    };
+    /** ResourceSearchQuery */
+    ResourceSearchQuery: {
+      /** @description Common resource search query data */
+      cmn: components['schemas']['CommonResourceSearchQueryData'];
+      /**
+       * Rts
+       * @description Resource type-specific search query data
+       */
+      rts:
+        | components['schemas']['PlainTextSearchQuery']
+        | components['schemas']['RichTextSearchQuery'];
     };
     /** RichTextContentCreate */
     RichTextContentCreate: {
@@ -2299,24 +2311,6 @@ export interface components {
     };
     /** RichTextSearchQuery */
     RichTextSearchQuery: {
-      /**
-       * Req
-       * @description Whether this query is required to match for the location to be considered a search hit
-       * @default false
-       */
-      req?: boolean;
-      /**
-       * Res
-       * @description ID of the resource to search in
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      res: string;
-      /**
-       * Cmt
-       * @description Comment
-       * @default
-       */
-      cmt?: string;
       /**
        * Type
        * @description Type of the resource to search in

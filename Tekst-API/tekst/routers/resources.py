@@ -784,7 +784,7 @@ async def import_resource_data(
                 )
                 updated_count += 1
             except (ValueError, DocumentNotFound) as e:  # pragma: no cover
-                print(e)
+                log.error(e)
                 raise errors.E_500_INTERNAL_SERVER_ERROR
                 errors_count += 1
         else:  # pragma: no cover

@@ -4,7 +4,7 @@ from pydantic import Field, StringConstraints
 
 from tekst.models.common import ModelBase
 from tekst.models.content import ContentBase
-from tekst.models.resource import ResourceBase, ResourceSearchQueryBase
+from tekst.models.resource import ResourceBase
 from tekst.models.resource_configs import (
     DeepLLinksConfig,
     DefaultCollapsedConfigType,
@@ -12,7 +12,7 @@ from tekst.models.resource_configs import (
     ReducedViewOnelineConfigType,
     ResourceConfigBase,
 )
-from tekst.resources import ResourceTypeABC
+from tekst.resources import ResourceSearchQuery, ResourceTypeABC
 from tekst.utils import validators as val
 
 
@@ -33,30 +33,32 @@ class PlainText(ResourceTypeABC):
 
     @classmethod
     def construct_es_queries(
-        cls, query: ResourceSearchQueryBase, *, strict: bool = False
+        cls, query: ResourceSearchQuery, *, strict: bool = False
     ) -> list[dict[str, Any]]:
-        queries = []
+        es_queries = []
         set_fields = query.get_set_fields()
         strict_suffix = ".strict" if strict else ""
         if "text" in set_fields:
-            queries.append(
+            es_queries.append(
                 {
                     "simple_query_string": {
-                        "fields": [f"{query.resource_id}.text{strict_suffix}"],
-                        "query": query.text,
+                        "fields": [f"{query.common.resource_id}.text{strict_suffix}"],
+                        "query": query.resource_type_specific.text,
                     }
                 }
             )
         if "comment" in set_fields:
-            queries.append(
+            es_queries.append(
                 {
                     "simple_query_string": {
-                        "fields": [f"{query.resource_id}.comment{strict_suffix}"],
-                        "query": query.comment,
+                        "fields": [
+                            f"{query.common.resource_id}.comment{strict_suffix}"
+                        ],
+                        "query": query.common.comment,
                     }
                 }
             )
-        return queries
+        return es_queries
 
     @classmethod
     def index_doc_properties(cls) -> dict[str, Any]:
@@ -102,7 +104,7 @@ class PlainTextContent(ContentBase):
     ]
 
 
-class PlainTextSearchQuery(ResourceSearchQueryBase):
+class PlainTextSearchQuery(ModelBase):
     resource_type: Annotated[
         Literal["plainText"],
         Field(

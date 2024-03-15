@@ -348,24 +348,25 @@ async def search_quick(
 
 async def search_advanced(
     user: UserRead | None,
-    query: list[AnyResourceSearchQuery],
+    queries: list[AnyResourceSearchQuery],
     settings_general: GeneralSearchSettings = GeneralSearchSettings(),
     settings_advanced: AdvancedSearchSettings = AdvancedSearchSettings(),
 ) -> SearchResults:
     client: Elasticsearch = _es_client
     readable_resource_ids = await _get_target_resource_ids(user=user)
-    print(query)
 
     # construct all the sub-queries
     sub_queries_must = []
     sub_queries_should = []
-    for q in query:
-        if str(q.resource_id) in readable_resource_ids:
-            es_queries = resource_types_mgr.get(q.resource_type).construct_es_queries(
+    for q in queries:
+        if str(q.common.resource_id) in readable_resource_ids:
+            es_queries = resource_types_mgr.get(
+                q.resource_type_specific.resource_type
+            ).construct_es_queries(
                 query=q,
                 strict=settings_general.strict,
             )
-            if q.required:
+            if q.common.required:
                 sub_queries_must.extend(es_queries)
             else:
                 sub_queries_should.extend(es_queries)
