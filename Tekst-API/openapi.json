@@ -7714,11 +7714,24 @@
       },
       "PlainTextSearchQuery": {
         "properties": {
+          "req": {
+            "type": "boolean",
+            "title": "Req",
+            "description": "Whether this query is required to match for the location to be considered a search hit",
+            "default": false
+          },
           "res": {
             "type": "string",
             "title": "Res",
             "description": "ID of the resource to search in",
             "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "cmt": {
+            "type": "string",
+            "maxLength": 512,
+            "title": "Cmt",
+            "description": "Comment",
+            "default": ""
           },
           "type": {
             "const": "plainText",
@@ -7729,12 +7742,6 @@
             "type": "string",
             "maxLength": 512,
             "title": "Text",
-            "default": ""
-          },
-          "comment": {
-            "type": "string",
-            "maxLength": 512,
-            "title": "Comment",
             "default": ""
           }
         },
@@ -9331,11 +9338,24 @@
       },
       "RichTextSearchQuery": {
         "properties": {
+          "req": {
+            "type": "boolean",
+            "title": "Req",
+            "description": "Whether this query is required to match for the location to be considered a search hit",
+            "default": false
+          },
           "res": {
             "type": "string",
             "title": "Res",
             "description": "ID of the resource to search in",
             "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "cmt": {
+            "type": "string",
+            "maxLength": 512,
+            "title": "Cmt",
+            "description": "Comment",
+            "default": ""
           },
           "type": {
             "const": "richText",
@@ -9346,12 +9366,6 @@
             "type": "string",
             "maxLength": 512,
             "title": "Html",
-            "default": ""
-          },
-          "comment": {
-            "type": "string",
-            "maxLength": 512,
-            "title": "Comment",
             "default": ""
           }
         },

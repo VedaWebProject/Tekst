@@ -657,6 +657,8 @@ search:
   advancedSearch:
     btnAddSearchItem: Add search item
     msgNoResources: There are no resources associated with this text to search in.
+    required: required
+    targetResource: Resource to search in
   settings:
     heading: Settings
     general:

@@ -1427,11 +1427,23 @@ export interface components {
     /** PlainTextSearchQuery */
     PlainTextSearchQuery: {
       /**
+       * Req
+       * @description Whether this query is required to match for the location to be considered a search hit
+       * @default false
+       */
+      req?: boolean;
+      /**
        * Res
        * @description ID of the resource to search in
        * @example 5eb7cf5a86d9755df3a6c593
        */
       res: string;
+      /**
+       * Cmt
+       * @description Comment
+       * @default
+       */
+      cmt?: string;
       /**
        * Type
        * @description Type of the resource to search in
@@ -1443,11 +1455,6 @@ export interface components {
        * @default
        */
       text?: string;
-      /**
-       * Comment
-       * @default
-       */
-      comment?: string;
     };
     /**
      * PlatformData
@@ -2293,11 +2300,23 @@ export interface components {
     /** RichTextSearchQuery */
     RichTextSearchQuery: {
       /**
+       * Req
+       * @description Whether this query is required to match for the location to be considered a search hit
+       * @default false
+       */
+      req?: boolean;
+      /**
        * Res
        * @description ID of the resource to search in
        * @example 5eb7cf5a86d9755df3a6c593
        */
       res: string;
+      /**
+       * Cmt
+       * @description Comment
+       * @default
+       */
+      cmt?: string;
       /**
        * Type
        * @description Type of the resource to search in
@@ -2309,11 +2328,6 @@ export interface components {
        * @default
        */
       html?: string;
-      /**
-       * Comment
-       * @default
-       */
-      comment?: string;
     };
     /** SearchHit */
     SearchHit: {

@@ -4,13 +4,13 @@ import NInputOsk from '@/components/NInputOsk.vue';
 import type { PlainTextSearchQuery } from '@/api';
 
 const props = defineProps<{
-  model: PlainTextSearchQuery;
+  value: PlainTextSearchQuery;
 }>();
-const emit = defineEmits(['update:model']);
+const emit = defineEmits(['update:value']);
 
 function handleUpdate(field: string, value: any) {
-  emit('update:model', {
-    ...props.model,
+  emit('update:value', {
+    ...props.value,
     [field]: value,
   });
 }
@@ -19,16 +19,9 @@ function handleUpdate(field: string, value: any) {
 <template>
   <n-form-item :label="$t('resources.types.plainText.searchFields.text')">
     <n-input-osk
-      :value="model.text"
+      :value="value.text"
       :placeholder="$t('resources.types.plainText.searchFields.text')"
       @update:value="(v) => handleUpdate('text', v)"
-    />
-  </n-form-item>
-  <n-form-item :label="$t('resources.types.common.contentFields.comment')">
-    <n-input-osk
-      :value="model.comment"
-      :placeholder="$t('resources.types.common.contentFields.comment')"
-      @update:value="(v) => handleUpdate('comment', v)"
     />
   </n-form-item>
 </template>

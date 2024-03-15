@@ -73,11 +73,11 @@ async function search(resetPage?: boolean) {
   const { data, error } = await POST('/search', {
     body: {
       ...searchReq.value,
-      settingsGeneral: {
-        ...searchReq.value?.settingsGeneral,
-        page: pagination.value.page,
-        pageSize: pagination.value.pageSize,
-        sortingPreset: sortingPreset.value,
+      gen: {
+        ...searchReq.value?.gen,
+        pg: pagination.value.page,
+        pgs: pagination.value.pageSize,
+        sort: sortingPreset.value,
       },
     },
   });
@@ -96,10 +96,10 @@ async function processQuery() {
   pagination.value.page = 1;
   try {
     searchReq.value = JSON.parse(Base64.decode(route.params.req?.toString() || ''));
-    if (!searchReq.value || !['quick', 'advanced'].includes(searchReq.value.searchType)) {
+    if (!searchReq.value || !['quick', 'advanced'].includes(searchReq.value.type)) {
       throw new Error();
     }
-    sortingPreset.value = searchReq.value.settingsGeneral?.sortingPreset || undefined;
+    sortingPreset.value = searchReq.value.gen?.sort || undefined;
     await search();
   } catch {
     message.error($t('search.results.msgInvalidRequest'));
@@ -116,7 +116,7 @@ function handleSortingChange() {
         JSON.stringify({
           ...searchReq.value,
           settingsGeneral: {
-            ...searchReq.value?.settingsGeneral,
+            ...searchReq.value?.gen,
             sortingPreset: sortingPreset.value,
           },
         })

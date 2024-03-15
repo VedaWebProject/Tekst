@@ -354,23 +354,32 @@ async def search_advanced(
 ) -> SearchResults:
     client: Elasticsearch = _es_client
     readable_resource_ids = await _get_target_resource_ids(user=user)
+    print(query)
 
     # construct all the sub-queries
-    sub_queries = []
-    for q in query.resource_queries:
+    sub_queries_must = []
+    sub_queries_should = []
+    for q in query:
         if str(q.resource_id) in readable_resource_ids:
-            sub_queries.extend(
-                resource_types_mgr.get(q.resource_type).construct_es_queries(
-                    query=q,
-                    strict=settings_general.strict,
-                )
+            es_queries = resource_types_mgr.get(q.resource_type).construct_es_queries(
+                query=q,
+                strict=settings_general.strict,
             )
+            if q.required:
+                sub_queries_must.extend(es_queries)
+            else:
+                sub_queries_should.extend(es_queries)
 
     # perform the search
     return SearchResults.from_es_results(
         results=client.search(
             index=IDX_ALIAS,
-            query={"bool": {"must": sub_queries}},
+            query={
+                "bool": {
+                    "must": sub_queries_must,
+                    "should": sub_queries_should,
+                }
+            },
             highlight={
                 "fields": {"*": {}},
             },

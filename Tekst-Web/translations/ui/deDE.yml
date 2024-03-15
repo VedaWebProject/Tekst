@@ -681,6 +681,8 @@ search:
   advancedSearch:
     btnAddSearchItem: Such-Eintrag hinzufügen
     msgNoResources: Es gibt keine Ressourcen zu diesem Text, in denen gesucht werden könnte.
+    required: erfordert
+    targetResource: Ressource, in der gesucht werden soll
   settings:
     heading: Einstellungen
     general:

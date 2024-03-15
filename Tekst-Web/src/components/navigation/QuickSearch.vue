@@ -22,15 +22,15 @@ const state = useStateStore();
 const inputRef = ref<InputInst>();
 const settingsExpanded = ref<string[]>([]);
 
-function handleSubmit(e: UIEvent) {
+function handleSearch(e: UIEvent) {
   e.preventDefault();
   e.stopPropagation();
   showModal.value = false;
   const reqBody: SearchRequestBody = {
-    searchType: 'quick',
-    query: searchInput.value,
-    settingsGeneral: state.searchSettingsGeneral,
-    settingsQuick: state.searchSettingsQuick,
+    type: 'quick',
+    q: searchInput.value,
+    gen: state.searchSettingsGeneral,
+    qck: state.searchSettingsQuick,
   };
   router.push({
     name: 'searchResults',
@@ -72,7 +72,7 @@ function handleSubmit(e: UIEvent) {
       size="large"
       :max-length="512"
       style="margin-bottom: var(--layout-gap)"
-      @keydown.enter="handleSubmit"
+      @keydown.enter="handleSearch"
     >
       <template #prefix>
         <n-icon :component="SearchIcon" size="large" />
@@ -90,7 +90,7 @@ function handleSubmit(e: UIEvent) {
       <n-button secondary @click="showModal = false">
         {{ $t('general.cancelAction') }}
       </n-button>
-      <n-button type="primary" @click="handleSubmit">{{ $t('search.searchAction') }}</n-button>
+      <n-button type="primary" @click="handleSearch">{{ $t('search.searchAction') }}</n-button>
     </button-shelf>
   </generic-modal>
 </template>

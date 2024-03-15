@@ -115,8 +115,3 @@ class PlainTextSearchQuery(ResourceSearchQueryBase):
         StringConstraints(max_length=512, strip_whitespace=True),
         val.CleanupOneline,
     ] = ""
-    comment: Annotated[
-        str,
-        StringConstraints(max_length=512, strip_whitespace=True),
-        val.CleanupOneline,
-    ] = ""
