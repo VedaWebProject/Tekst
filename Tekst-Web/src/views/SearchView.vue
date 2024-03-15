@@ -86,7 +86,13 @@ watch(
   </icon-heading>
 
   <div class="content-block">
-    <n-form v-if="!!resources.data.length">
+    <n-form
+      v-if="!!resources.data.length"
+      :model="queries"
+      label-placement="top"
+      label-width="auto"
+      require-mark-placement="right-hanging"
+    >
       <n-dynamic-input
         v-model:value="queries"
         :min="1"
