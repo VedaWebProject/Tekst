@@ -10,7 +10,8 @@ from tekst.models.resource_configs import (
     FontConfigType,
     ResourceConfigBase,
 )
-from tekst.resources import ResourceTypeABC
+from tekst.resources import ResourceSearchQuery, ResourceTypeABC
+from tekst.utils import validators as val
 
 
 class RichText(ResourceTypeABC):
@@ -23,6 +24,37 @@ class RichText(ResourceTypeABC):
     @classmethod
     def content_model(cls) -> type["RichTextContent"]:
         return RichTextContent
+
+    @classmethod
+    def search_query_model(cls) -> type["RichTextSearchQuery"]:
+        return RichTextSearchQuery
+
+    @classmethod
+    def construct_es_queries(
+        cls, query: ResourceSearchQuery, *, strict: bool = False
+    ) -> list[dict[str, Any]]:
+        queries = []
+        set_fields = query.get_set_fields()
+        strict_suffix = ".strict" if strict else ""
+        if "html" in set_fields:
+            queries.append(
+                {
+                    "simple_query_string": {
+                        "fields": [f"{query.resource_id}.html{strict_suffix}"],
+                        "query": query.html,
+                    }
+                }
+            )
+        if "comment" in set_fields:
+            queries.append(
+                {
+                    "simple_query_string": {
+                        "fields": [f"{query.resource_id}.comment{strict_suffix}"],
+                        "query": query.comment,
+                    }
+                }
+            )
+        return queries
 
     @classmethod
     def index_doc_properties(cls) -> dict[str, Any]:
@@ -74,3 +106,18 @@ class RichTextContent(ContentBase):
         Literal["wysiwyg", "html"],
         Field(description="Last used editor mode for this content"),
     ] = "wysiwyg"
+
+
+class RichTextSearchQuery(ModelBase):
+    resource_type: Annotated[
+        Literal["richText"],
+        Field(
+            alias="type",
+            description="Type of the resource to search in",
+        ),
+    ]
+    html: Annotated[
+        str,
+        StringConstraints(max_length=512, strip_whitespace=True),
+        val.CleanupOneline,
+    ] = ""

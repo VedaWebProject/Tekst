@@ -391,11 +391,15 @@ resources:
       parenthesis: ungestalteter, einfacher Text
       contentFields:
         text: Einfacher Text
+      searchFields:
+        text: Text
     richText:
       label: Formatierter Text
       parenthesis: gestalteter, formatierter Text
       contentFields:
         html: Formatierter Text
+      searchFields:
+        text: Text
 
 contents:
   heading: Ressourcen-Inhalte bearbeiten
@@ -674,6 +678,10 @@ search:
   searchAction: Suchen
   quickSearch:
     heading: Schnellsuche
+  advancedSearch:
+    msgNoResources: Es gibt keine Ressourcen zu diesem Text, in denen gesucht werden könnte.
+    required: erfordert
+    targetResource: Ressource, in der gesucht werden soll
   settings:
     heading: Einstellungen
     general:

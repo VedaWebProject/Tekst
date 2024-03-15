@@ -174,6 +174,8 @@ export type ClientSegmentHead = components['schemas']['ClientSegmentHead'];
 
 // resources
 
+export type ResourceType =
+  components['schemas']['AdvancedSearchRequestBody']['q'][number]['rts']['type'];
 type ResourceReadExtras = {
   active?: boolean;
   coverage?: ResourceCoverage;
@@ -232,3 +234,6 @@ export type AdvancedSearchSettings = components['schemas']['AdvancedSearchSettin
 export type AdvancedSearchRequestBody = components['schemas']['AdvancedSearchRequestBody'];
 export type SearchRequestBody = QuickSearchRequestBody | AdvancedSearchRequestBody;
 export type SortingPreset = components['schemas']['SortingPreset'];
+
+export type PlainTextSearchQuery = components['schemas']['PlainTextSearchQuery'];
+export type RichTextSearchQuery = components['schemas']['RichTextSearchQuery'];

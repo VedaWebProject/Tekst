@@ -12,7 +12,8 @@ from tekst.models.resource_configs import (
     ReducedViewOnelineConfigType,
     ResourceConfigBase,
 )
-from tekst.resources import ResourceTypeABC
+from tekst.resources import ResourceSearchQuery, ResourceTypeABC
+from tekst.utils import validators as val
 
 
 class PlainText(ResourceTypeABC):
@@ -25,6 +26,39 @@ class PlainText(ResourceTypeABC):
     @classmethod
     def content_model(cls) -> type["PlainTextContent"]:
         return PlainTextContent
+
+    @classmethod
+    def search_query_model(cls) -> type["PlainTextSearchQuery"]:
+        return PlainTextSearchQuery
+
+    @classmethod
+    def construct_es_queries(
+        cls, query: ResourceSearchQuery, *, strict: bool = False
+    ) -> list[dict[str, Any]]:
+        es_queries = []
+        set_fields = query.get_set_fields()
+        strict_suffix = ".strict" if strict else ""
+        if "text" in set_fields:
+            es_queries.append(
+                {
+                    "simple_query_string": {
+                        "fields": [f"{query.common.resource_id}.text{strict_suffix}"],
+                        "query": query.resource_type_specific.text,
+                    }
+                }
+            )
+        if "comment" in set_fields:
+            es_queries.append(
+                {
+                    "simple_query_string": {
+                        "fields": [
+                            f"{query.common.resource_id}.comment{strict_suffix}"
+                        ],
+                        "query": query.common.comment,
+                    }
+                }
+            )
+        return es_queries
 
     @classmethod
     def index_doc_properties(cls) -> dict[str, Any]:
@@ -68,3 +102,18 @@ class PlainTextContent(ContentBase):
             description="Text content of the plain text content object",
         ),
     ]
+
+
+class PlainTextSearchQuery(ModelBase):
+    resource_type: Annotated[
+        Literal["plainText"],
+        Field(
+            alias="type",
+            description="Type of the resource to search in",
+        ),
+    ]
+    text: Annotated[
+        str,
+        StringConstraints(max_length=512, strip_whitespace=True),
+        val.CleanupOneline,
+    ] = ""

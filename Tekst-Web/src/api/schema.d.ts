@@ -353,27 +353,33 @@ export interface components {
   schemas: {
     /** @constant */
     AdminNotificationTrigger: 'userAwaitsActivation';
-    /** AdvancedSearchQuery */
-    AdvancedSearchQuery: Record<string, never>;
     /** AdvancedSearchRequestBody */
     AdvancedSearchRequestBody: {
       /**
-       * Searchtype
+       * Type
+       * @description Search type
        * @constant
        */
-      searchType: 'advanced';
-      /** @default {} */
-      query?: components['schemas']['AdvancedSearchQuery'];
+      type: 'advanced';
       /**
+       * Q
+       * @description Resource-specific queries
+       */
+      q: components['schemas']['ResourceSearchQuery'][];
+      /**
+       * @description General search settings
        * @default {
-       *   "page": 1,
-       *   "pageSize": 10,
+       *   "pg": 1,
+       *   "pgs": 10,
        *   "strict": false
        * }
        */
-      settingsGeneral?: components['schemas']['GeneralSearchSettings'];
-      /** @default {} */
-      settingsAdvanced?: components['schemas']['AdvancedSearchSettings'];
+      gen?: components['schemas']['GeneralSearchSettings'];
+      /**
+       * @description Advanced search settings
+       * @default {}
+       */
+      adv?: components['schemas']['AdvancedSearchSettings'];
     };
     /** AdvancedSearchSettings */
     AdvancedSearchSettings: Record<string, never>;
@@ -645,6 +651,27 @@ export interface components {
        */
       showOnParentLevel?: boolean;
     };
+    /** CommonResourceSearchQueryData */
+    CommonResourceSearchQueryData: {
+      /**
+       * Req
+       * @description Whether this query is required to match for the location to be considered a search hit
+       * @default false
+       */
+      req?: boolean;
+      /**
+       * Res
+       * @description ID of the resource to search in
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      res: string;
+      /**
+       * Cmt
+       * @description Comment
+       * @default
+       */
+      cmt?: string;
+    };
     /**
      * DeepLLinksConfig
      * @description Resource configuration model for DeepL translation links.
@@ -795,17 +822,19 @@ export interface components {
     /** GeneralSearchSettings */
     GeneralSearchSettings: {
       /**
-       * Page
+       * Pg
+       * @description Page number
        * @default 1
        */
-      page?: number;
+      pg?: number;
       /**
-       * Pagesize
+       * Pgs
+       * @description Page size
        * @default 10
        */
-      pageSize?: number;
+      pgs?: number;
       /** @description Sorting preset */
-      sortingPreset?: components['schemas']['SortingPreset'] | null;
+      sort?: components['schemas']['SortingPreset'] | null;
       /**
        * Strict
        * @default false
@@ -1413,6 +1442,20 @@ export interface components {
        */
       config?: components['schemas']['PlainTextResourceConfig'];
     };
+    /** PlainTextSearchQuery */
+    PlainTextSearchQuery: {
+      /**
+       * Type
+       * @description Type of the resource to search in
+       * @constant
+       */
+      type: 'plainText';
+      /**
+       * Text
+       * @default
+       */
+      text?: string;
+    };
     /**
      * PlatformData
      * @description Platform data used by the web client
@@ -1721,38 +1764,43 @@ export interface components {
     /** QuickSearchRequestBody */
     QuickSearchRequestBody: {
       /**
-       * Searchtype
+       * Type
+       * @description Search type
        * @constant
        */
-      searchType: 'quick';
+      type: 'quick';
       /**
-       * Query
+       * Q
+       * @description Query string
        * @default *
        */
-      query?: string;
+      q?: string;
       /**
+       * @description General search settings
        * @default {
-       *   "page": 1,
-       *   "pageSize": 10,
+       *   "pg": 1,
+       *   "pgs": 10,
        *   "strict": false
        * }
        */
-      settingsGeneral?: components['schemas']['GeneralSearchSettings'];
+      gen?: components['schemas']['GeneralSearchSettings'];
       /**
+       * @description Quick search settings
        * @default {
-       *   "defaultOperator": "OR"
+       *   "op": "OR"
        * }
        */
-      settingsQuick?: components['schemas']['QuickSearchSettings'];
+      qck?: components['schemas']['QuickSearchSettings'];
     };
     /** QuickSearchSettings */
     QuickSearchSettings: {
       /**
-       * Defaultoperator
+       * Op
+       * @description Default operator
        * @default OR
        * @enum {string}
        */
-      defaultOperator?: 'AND' | 'OR';
+      op?: 'AND' | 'OR';
       /** Texts */
       texts?: string[] | null;
     };
@@ -1815,6 +1863,18 @@ export interface components {
        * @default false
        */
       covered?: boolean;
+    };
+    /** ResourceSearchQuery */
+    ResourceSearchQuery: {
+      /** @description Common resource search query data */
+      cmn: components['schemas']['CommonResourceSearchQueryData'];
+      /**
+       * Rts
+       * @description Resource type-specific search query data
+       */
+      rts:
+        | components['schemas']['PlainTextSearchQuery']
+        | components['schemas']['RichTextSearchQuery'];
     };
     /** RichTextContentCreate */
     RichTextContentCreate: {
@@ -2248,6 +2308,20 @@ export interface components {
        * }
        */
       config?: components['schemas']['RichTextResourceConfig'];
+    };
+    /** RichTextSearchQuery */
+    RichTextSearchQuery: {
+      /**
+       * Type
+       * @description Type of the resource to search in
+       * @constant
+       */
+      type: 'richText';
+      /**
+       * Html
+       * @default
+       */
+      html?: string;
     };
     /** SearchHit */
     SearchHit: {

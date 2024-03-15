@@ -11,11 +11,11 @@ from elasticsearch import Elasticsearch
 from tekst import locks
 from tekst.config import TekstConfig, get_config
 from tekst.logging import log
+from tekst.models.common import PydanticObjectId
 from tekst.models.content import ContentBaseDocument
 from tekst.models.location import LocationDocument
 from tekst.models.resource import ResourceBaseDocument
 from tekst.models.search import (
-    AdvancedSearchQuery,
     AdvancedSearchSettings,
     GeneralSearchSettings,
     IndexInfoResponse,
@@ -24,7 +24,7 @@ from tekst.models.search import (
 )
 from tekst.models.text import TextDocument
 from tekst.models.user import UserRead
-from tekst.resources import resource_types_mgr
+from tekst.resources import AnyResourceSearchQuery, resource_types_mgr
 from tekst.search.templates import (
     IDX_ALIAS,
     IDX_NAME_PATTERN,
@@ -290,6 +290,21 @@ async def get_index_info():
     )
 
 
+async def _get_target_resource_ids(
+    *,
+    user: UserRead | None = None,
+    text_ids: list[PydanticObjectId] | None = None,
+) -> list[str]:
+    return [
+        str(res.id)
+        for res in await ResourceBaseDocument.find(
+            In(ResourceBaseDocument.text_id, text_ids) if text_ids else {},
+            await ResourceBaseDocument.access_conditions_read(user),
+            with_children=True,
+        ).to_list()
+    ]
+
+
 async def search_quick(
     user: UserRead | None,
     query: str,
@@ -297,22 +312,14 @@ async def search_quick(
     settings_quick: QuickSearchSettings = QuickSearchSettings(),
 ) -> SearchResults:
     client: Elasticsearch = _es_client
+    target_resource_ids = await _get_target_resource_ids(
+        user=user,
+        text_ids=settings_quick.texts,
+    )
 
-    # find out what resources we are supposed to search in ...
-    resource_ids = [
-        str(res.id)
-        for res in await ResourceBaseDocument.find(
-            In(ResourceBaseDocument.text_id, settings_quick.texts)
-            if settings_quick.texts
-            else {},
-            await ResourceBaseDocument.access_conditions_read(user),
-            with_children=True,
-        ).to_list()
-    ]
-
-    # ... and compose a list of target index fields based on that:
+    # compose a list of target index fields based on the resources to search:
     field_pattern_suffix = ".*.strict" if settings_general.strict else ".*"
-    fields = [f"{res_id}{field_pattern_suffix}" for res_id in resource_ids]
+    fields = [f"{res_id}{field_pattern_suffix}" for res_id in target_resource_ids]
 
     # perform the search
     return SearchResults.from_es_results(
@@ -341,10 +348,48 @@ async def search_quick(
 
 async def search_advanced(
     user: UserRead | None,
-    query: AdvancedSearchQuery,
+    queries: list[AnyResourceSearchQuery],
     settings_general: GeneralSearchSettings = GeneralSearchSettings(),
     settings_advanced: AdvancedSearchSettings = AdvancedSearchSettings(),
 ) -> SearchResults:
-    # client: Elasticsearch = _es_client
-    # TODO
-    pass
+    client: Elasticsearch = _es_client
+    readable_resource_ids = await _get_target_resource_ids(user=user)
+
+    # construct all the sub-queries
+    sub_queries_must = []
+    sub_queries_should = []
+    for q in queries:
+        if str(q.common.resource_id) in readable_resource_ids:
+            es_queries = resource_types_mgr.get(
+                q.resource_type_specific.resource_type
+            ).construct_es_queries(
+                query=q,
+                strict=settings_general.strict,
+            )
+            if q.common.required:
+                sub_queries_must.extend(es_queries)
+            else:
+                sub_queries_should.extend(es_queries)
+
+    # perform the search
+    return SearchResults.from_es_results(
+        results=client.search(
+            index=IDX_ALIAS,
+            query={
+                "bool": {
+                    "must": sub_queries_must,
+                    "should": sub_queries_should,
+                }
+            },
+            highlight={
+                "fields": {"*": {}},
+            },
+            from_=(settings_general.page - 1) * settings_general.page_size,
+            size=settings_general.page_size,
+            track_scores=True,
+            sort=SORTING_PRESETS.get(settings_general.sorting_preset, None)
+            if settings_general.sorting_preset
+            else None,
+        ),
+        index_creation_time=get_index_creation_time(),
+    )

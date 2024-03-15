@@ -1,10 +1,13 @@
-from fastapi import APIRouter, BackgroundTasks, status
+from typing import Annotated, Union
+
+from fastapi import APIRouter, BackgroundTasks, Body, status
 
 from tekst import errors, locks, search
 from tekst.auth import OptionalUserDep, SuperuserDep
 from tekst.models.search import (
+    AdvancedSearchRequestBody,
     IndexInfoResponse,
-    SearchRequestBody,
+    QuickSearchRequestBody,
     SearchResults,
 )
 
@@ -27,7 +30,13 @@ router = APIRouter(
 )
 async def perform_search(
     user: OptionalUserDep,
-    body: SearchRequestBody,
+    body: Annotated[
+        Union[  # noqa: UP007
+            QuickSearchRequestBody,
+            AdvancedSearchRequestBody,
+        ],
+        Body(discriminator="search_type"),
+    ],
 ) -> SearchResults:
     if (
         (body.settings_general.page - 1) * body.settings_general.page_size
@@ -43,7 +52,7 @@ async def perform_search(
     elif body.search_type == "advanced":
         return await search.search_advanced(
             user=user,
-            query=body.query,
+            queries=body.query,
             settings_general=body.settings_general,
             settings_advanced=body.settings_advanced,
         )

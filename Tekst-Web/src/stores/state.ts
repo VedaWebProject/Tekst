@@ -129,7 +129,7 @@ export const useStateStore = defineStore('state', () => {
     strict: false,
   });
   const searchSettingsQuick = ref<QuickSearchSettings>({
-    defaultOperator: 'OR',
+    op: 'OR',
   });
   const searchSettingsAdvanced = ref<AdvancedSearchSettings>({});
 

@@ -10,9 +10,10 @@ from typing import Annotated, Any, Union
 
 from fastapi import Body
 from humps import camelize
+from pydantic import Field, StringConstraints
 
 from tekst.logging import log
-from tekst.models.common import ReadBase
+from tekst.models.common import ModelBase, PydanticObjectId, ReadBase
 from tekst.models.content import ContentBase, ContentBaseDocument, ContentBaseUpdate
 from tekst.models.resource import (
     ResourceBase,
@@ -20,6 +21,80 @@ from tekst.models.resource import (
     ResourceBaseUpdate,
     ResourceReadExtras,
 )
+from tekst.utils import validators as val
+
+
+# global variable to hold resource type manager instance
+resource_types_mgr: "ResourceTypesManager" = None
+
+
+@lru_cache
+def get_resource_template_readme() -> dict[str, str]:
+    _template_readme_lines = (
+        (Path(realpath(__file__)).parent / "import_template_readme.txt")
+        .read_text(encoding="utf-8")
+        .splitlines()
+    )
+    return {
+        str(i + 1): _template_readme_lines[i]
+        for i in range(len(_template_readme_lines))
+    }
+
+
+class CommonResourceSearchQueryData(ModelBase):
+    required: Annotated[
+        bool,
+        Field(
+            alias="req",
+            description=(
+                "Whether this query is required to match for the "
+                "location to be considered a search hit"
+            ),
+        ),
+    ] = False
+    resource_id: Annotated[
+        PydanticObjectId,
+        Field(
+            alias="res",
+            description="ID of the resource to search in",
+        ),
+    ]
+    comment: Annotated[
+        str,
+        Field(
+            alias="cmt",
+            description="Comment",
+        ),
+        StringConstraints(max_length=512, strip_whitespace=True),
+        val.CleanupOneline,
+    ] = ""
+
+
+class ResourceSearchQuery(ModelBase):
+    common: Annotated[
+        CommonResourceSearchQueryData,
+        Field(
+            alias="cmn",
+            description="Common resource search query data",
+        ),
+    ]
+    resource_type_specific: Annotated[
+        "AnyResourceSearchQuery",
+        Field(
+            alias="rts",
+            description="Resource type-specific search query data",
+        ),
+    ]
+
+    def get_set_fields(self) -> set[str]:
+        set_fields = self.common.model_fields_set.union(
+            self.resource_type_specific.model_fields_set
+        )
+        return {
+            field
+            for field in set_fields
+            if field not in ["resource_id", "resource_type"]
+        }
 
 
 class ResourceTypeABC(ABC):
@@ -45,7 +120,7 @@ class ResourceTypeABC(ABC):
     @classmethod
     @abstractmethod
     def resource_model(cls) -> type[ResourceBase]:
-        """Returns the resource base model for this type of resource"""
+        """Returns the resource model for this type of resource"""
         raise NotImplementedError(
             "Classmethod 'resource_model' must be "
             f"implemented in subclasses of {cls.__name__}"
@@ -54,9 +129,35 @@ class ResourceTypeABC(ABC):
     @classmethod
     @abstractmethod
     def content_model(cls) -> type[ContentBase]:
-        """Returns the content base model for contents of this type of resource"""
+        """Returns the content model for contents of this type of resource"""
         raise NotImplementedError(
             "Classmethod 'content_model' must be "
+            f"implemented in subclasses of {cls.__name__}"
+        )  # pragma: no cover
+
+    @classmethod
+    @abstractmethod
+    def search_query_model(cls) -> type["ResourceSearchQuery"] | None:
+        """
+        Returns the search query model for search
+        queries targeting this type of resource
+        """
+        raise NotImplementedError(
+            "Classmethod 'search_query_model' must be "
+            f"implemented in subclasses of {cls.__name__}"
+        )  # pragma: no cover
+
+    @classmethod
+    @abstractmethod
+    def construct_es_queries(
+        cls, query: "ResourceSearchQuery", *, strict: bool = False
+    ) -> list[dict[str, Any]]:
+        """
+        Constructs an Elasticsearch search query for each field
+        in the given resource search query model instance
+        """
+        raise NotImplementedError(
+            "Classmethod 'construct_es_query' must be "
             f"implemented in subclasses of {cls.__name__}"
         )  # pragma: no cover
 
@@ -93,9 +194,9 @@ class ResourceTypeABC(ABC):
             "_contentSchema": {},  # will be populated in the next step
         }
         # generate content schema for the template
-        for prop, val in schema.get("properties", {}).items():
+        for prop, value in schema.get("properties", {}).items():
             if prop not in cls.__EXCLUDE_FROM_CONTENT_TEMPLATES:
-                prop_schema = {k: v for k, v in val.items()}
+                prop_schema = {k: v for k, v in value.items()}
                 prop_schema["required"] = prop in required
                 template["_contentSchema"][prop] = prop_schema
         return template
@@ -159,8 +260,6 @@ def init_resource_types_mgr() -> None:
     resource_types_mgr = manager
 
 
-# global variable to hold resource type manager instance
-resource_types_mgr: ResourceTypesManager = None
 init_resource_types_mgr()
 
 
@@ -170,8 +269,8 @@ init_resource_types_mgr()
 AnyResourceCreate = Union[  # noqa: UP007
     tuple(
         [
-            lt.resource_model().create_model()
-            for lt in resource_types_mgr.get_all().values()
+            rt.resource_model().create_model()
+            for rt in resource_types_mgr.get_all().values()
         ]
     )
 ]
@@ -184,8 +283,8 @@ AnyResourceCreateBody = Annotated[
 AnyResourceRead = Union[  # noqa: UP007
     tuple(
         [
-            lt.resource_model().read_model()
-            for lt in resource_types_mgr.get_all().values()
+            rt.resource_model().read_model()
+            for rt in resource_types_mgr.get_all().values()
         ]
     )
 ]
@@ -198,8 +297,8 @@ AnyResourceReadBody = Annotated[
 AnyResourceUpdate = Union[  # noqa: UP007
     tuple(
         [
-            lt.resource_model().update_model()
-            for lt in resource_types_mgr.get_all().values()
+            rt.resource_model().update_model()
+            for rt in resource_types_mgr.get_all().values()
         ]
     )
 ]
@@ -212,8 +311,8 @@ AnyResourceUpdateBody = Annotated[
 AnyResourceDocument = Union[  # noqa: UP007
     tuple(
         [
-            lt.resource_model().document_model()
-            for lt in resource_types_mgr.get_all().values()
+            rt.resource_model().document_model()
+            for rt in resource_types_mgr.get_all().values()
         ]
     )
 ]
@@ -225,8 +324,8 @@ AnyResourceDocument = Union[  # noqa: UP007
 AnyContentCreate = Union[  # noqa: UP007
     tuple(
         [
-            lt.content_model().create_model()
-            for lt in resource_types_mgr.get_all().values()
+            rt.content_model().create_model()
+            for rt in resource_types_mgr.get_all().values()
         ]
     )
 ]
@@ -239,8 +338,8 @@ AnyContentCreateBody = Annotated[
 AnyContentRead = Union[  # noqa: UP007
     tuple(
         [
-            lt.content_model().read_model()
-            for lt in resource_types_mgr.get_all().values()
+            rt.content_model().read_model()
+            for rt in resource_types_mgr.get_all().values()
         ]
     )
 ]
@@ -253,8 +352,8 @@ AnyContentReadBody = Annotated[
 AnyContentUpdate = Union[  # noqa: UP007
     tuple(
         [
-            lt.content_model().update_model()
-            for lt in resource_types_mgr.get_all().values()
+            rt.content_model().update_model()
+            for rt in resource_types_mgr.get_all().values()
         ]
     )
 ]
@@ -267,21 +366,16 @@ AnyContentUpdateBody = Annotated[
 AnyContentDocument = Union[  # noqa: UP007
     tuple(
         [
-            lt.content_model().document_model()
-            for lt in resource_types_mgr.get_all().values()
+            rt.content_model().document_model()
+            for rt in resource_types_mgr.get_all().values()
         ]
     )
 ]
 
-
-@lru_cache
-def get_resource_template_readme() -> dict[str, str]:
-    _template_readme_lines = (
-        (Path(realpath(__file__)).parent / "import_template_readme.txt")
-        .read_text(encoding="utf-8")
-        .splitlines()
-    )
-    return {
-        str(i + 1): _template_readme_lines[i]
-        for i in range(len(_template_readme_lines))
-    }
+# ANY RESOURCE SEARCH QUERY
+AnyResourceSearchQuery = Annotated[
+    Union[  # noqa: UP007
+        tuple([rt.search_query_model() for rt in resource_types_mgr.get_all().values()])
+    ],
+    Field(discriminator="resource_type"),
+]

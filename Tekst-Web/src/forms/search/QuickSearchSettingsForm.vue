@@ -28,7 +28,7 @@ const textOptions = computed(() =>
     <!-- DEFAULT OPERATOR -->
     <n-form-item path="texts" :show-label="false" :show-feedback="false">
       <labelled-switch
-        v-model:value="state.searchSettingsQuick.defaultOperator"
+        v-model:value="state.searchSettingsQuick.op"
         checked-value="AND"
         unchecked-value="OR"
         :label="$t('search.settings.quick.defaultOperator')"
