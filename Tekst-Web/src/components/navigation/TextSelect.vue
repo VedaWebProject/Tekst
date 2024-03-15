@@ -20,6 +20,13 @@ const availableTexts = computed(() => pfData.value?.texts || []);
 const disabled = computed(() => availableTexts.value.length <= 1);
 const textSelectDropdownRef = ref();
 
+const btnStyle = computed(() => ({
+  fontSize: 'inherit',
+  fontWeight: 'var(--font-weight-bold)',
+  cursor: !disabled.value ? 'pointer' : 'default',
+  maxWidth: '100%',
+}));
+
 const renderLabel = (t: TextRead) => {
   return () =>
     h(TextSelectOption, {
@@ -63,6 +70,7 @@ function handleSelect(key: string) {
     :size="state.dropdownSize"
   >
     <n-button
+      id="text-select-btn"
       :quaternary="!disabled"
       :text="disabled"
       icon-placement="right"
@@ -70,16 +78,14 @@ function handleSelect(key: string) {
       :focusable="false"
       :keyboard="false"
       :title="$t('general.textSelect')"
-      :style="{
-        fontSize: 'inherit',
-        fontWeight: 'var(--font-weight-bold)',
-        cursor: !disabled ? 'pointer' : 'default',
-      }"
+      :style="btnStyle"
     >
       <template v-if="!disabled" #icon>
         <n-icon :component="ExpandArrowDownIcon" />
       </template>
-      {{ state.text.title }}
+      <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
+        {{ state.text.title }}
+      </div>
     </n-button>
   </n-dropdown>
 </template>
