@@ -180,7 +180,7 @@ class AdvancedSearchRequestBody(ModelBase):
         list[ResourceSearchQuery],
         Field(
             alias="q",
-            max_length=64,
+            max_length=32,
             description="Resource-specific queries",
         ),
     ]

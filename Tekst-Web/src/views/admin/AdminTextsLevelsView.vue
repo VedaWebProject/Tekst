@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useStateStore } from '@/stores';
-import InsertLevelButton from '@/components/InsertLevelButton.vue';
+import InsertItemSeparator from '@/components/InsertItemSeparator.vue';
 import { textFormRules } from '@/forms/formRules';
 import { NIcon, NAlert, NButton, NForm, type FormInst, useDialog } from 'naive-ui';
 import { computed, ref } from 'vue';
@@ -161,7 +161,11 @@ async function handleModalSubmit() {
 
   <div class="content-block">
     <div v-for="(lvl, lvlIndex) in levels" :key="`lvl_${lvlIndex}`">
-      <insert-level-button :level="lvlIndex" @click="handleInsertClick" />
+      <insert-item-separator
+        :title="$t('admin.text.levels.tipInsertLevel', { n: lvlIndex + 1 })"
+        :disabled="levels.length >= 32"
+        @click="() => handleInsertClick(lvlIndex)"
+      />
       <div class="level">
         <div class="level-index">{{ lvlIndex + 1 }}.</div>
         <div class="level-translations">
@@ -203,7 +207,11 @@ async function handleModalSubmit() {
       </div>
     </div>
 
-    <insert-level-button :level="levels.length" @click="handleInsertClick" />
+    <insert-item-separator
+      :title="$t('admin.text.levels.tipInsertLevel', { n: levels.length + 1 })"
+      :disabled="levels.length >= 32"
+      @click="() => handleInsertClick(levels.length)"
+    />
   </div>
 
   <generic-modal

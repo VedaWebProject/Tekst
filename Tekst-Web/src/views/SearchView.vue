@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
-import { AddIcon, MinusIcon, NoContentIcon, SearchIcon } from '@/icons';
+import { ClearIcon, NoContentIcon, SearchIcon } from '@/icons';
 import { resourceTypeSearchForms } from '@/forms/resources/search/mappings';
 import { NForm, NButton, NDynamicInput, NIcon, NSelect, NFormItem } from 'naive-ui';
 import { computed, ref, watch } from 'vue';
@@ -14,6 +14,7 @@ import CommonSearchFormItems from '@/forms/resources/search/CommonSearchFormItem
 import { $t } from '@/i18n';
 import { useRouter } from 'vue-router';
 import { Base64 } from 'js-base64';
+import InsertItemSeparator from '@/components/InsertItemSeparator.vue';
 
 const state = useStateStore();
 const resources = useResourcesStore();
@@ -85,108 +86,84 @@ watch(
     <help-button-widget help-key="searchView" />
   </icon-heading>
 
-  <div class="content-block">
-    <n-form
-      v-if="!!resources.data.length"
-      :model="queries"
-      label-placement="top"
-      label-width="auto"
-      require-mark-placement="right-hanging"
+  <n-form
+    v-if="!!resources.data.length"
+    :model="queries"
+    label-placement="top"
+    label-width="auto"
+    require-mark-placement="right-hanging"
+  >
+    <n-dynamic-input
+      v-model:value="queries"
+      :min="1"
+      :max="32"
+      item-class="advanced-search-item"
+      item-style="flex-direction: column; margin: 0"
+      @create="getNewSearchItem"
     >
-      <n-dynamic-input
-        v-model:value="queries"
-        :min="1"
-        :max="64"
-        item-class="dynamic-input-item"
-        @create="getNewSearchItem"
-      >
-        <!-- SEARCH ITEM -->
-        <template #default="{ value: resourceQuery, index }">
-          <div
-            style="display: flex; gap: var(--layout-gap); flex-wrap: nowrap; width: 100%"
-            :style="{ flexDirection: state.smallScreen ? 'column' : 'row' }"
-          >
-            <div style="flex-grow: 2">
-              <n-form-item :label="$t('search.advancedSearch.targetResource')">
-                <n-select
-                  :value="resourceQuery.cmn.res"
-                  :options="resourceOptions"
-                  :consistent-menu-width="false"
-                  @update:value="
-                    (v, o: SelectMixedOption) =>
-                      handleResourceChange(index, v, o.resourceType as ResourceType)
-                  "
-                />
-              </n-form-item>
-              <component
-                :is="resourceTypeSearchForms[resourceQuery.rts.type]"
-                v-model:value="resourceQuery.rts"
+      <!-- SEARCH ITEM -->
+      <template #default="{ value: resourceQuery, index }">
+        <div style="flex-grow: 2" class="content-block">
+          <div style="display: flex; gap: 0.5rem">
+            <n-form-item :show-label="false" style="flex-grow: 2">
+              <n-select
+                :value="resourceQuery.cmn.res"
+                :options="resourceOptions"
+                :consistent-menu-width="false"
+                size="large"
+                @update:value="
+                  (v, o: SelectMixedOption) =>
+                    handleResourceChange(index, v, o.resourceType as ResourceType)
+                "
               />
-              <common-search-form-items
-                v-model:comment="resourceQuery.cmn.cmt"
-                v-model:required="resourceQuery.cmn.req"
-              />
-            </div>
-            <div
-              style="display: flex; gap: var(--layout-gap)"
-              :style="{
-                flexDirection: state.smallScreen ? 'row' : 'column',
-                padding: state.smallScreen ? '0 0 0.25rem 0' : 'var(--layout-gap) 0',
-              }"
+            </n-form-item>
+            <n-button
+              class="btn-search-item-remove"
+              style="padding: 0.5rem"
+              quaternary
+              size="large"
+              :title="$t('general.removeAction')"
+              :disabled="queries.length <= 1"
+              @click="removeSearchItem(index)"
             >
-              <n-button
-                secondary
-                type="primary"
-                :title="$t('general.removeAction')"
-                :disabled="queries.length <= 1"
-                style="flex-grow: 2"
-                @click="removeSearchItem(index)"
-              >
-                <template #icon>
-                  <n-icon :component="MinusIcon" />
-                </template>
-              </n-button>
-              <n-button
-                secondary
-                type="primary"
-                :title="$t('general.insertAction')"
-                :disabled="queries.length >= 64"
-                style="flex-grow: 2"
-                @click="addSearchItem(index)"
-              >
-                <template #icon>
-                  <n-icon :component="AddIcon" />
-                </template>
-              </n-button>
-            </div>
+              <template #icon>
+                <n-icon :component="ClearIcon" />
+              </template>
+            </n-button>
           </div>
-        </template>
-        <!-- ADD / REMOVE ACTION BUTTONS -->
-        <template #action>
-          <div>
-            <!-- this is needed so the default action buttons don't show -->
-          </div>
-        </template>
-      </n-dynamic-input>
-    </n-form>
+          <component
+            :is="resourceTypeSearchForms[resourceQuery.rts.type]"
+            v-model:value="resourceQuery.rts"
+          />
+          <common-search-form-items
+            v-model:comment="resourceQuery.cmn.cmt"
+            v-model:required="resourceQuery.cmn.req"
+          />
+        </div>
+        <insert-item-separator
+          :title="$t('general.insertAction')"
+          :disabled="queries.length >= 32"
+          @click="addSearchItem(index)"
+        />
+      </template>
+      <!-- ADD / REMOVE ACTION BUTTONS -->
+      <template #action>
+        <div>
+          <!-- this is needed so the default action buttons don't show -->
+        </div>
+      </template>
+    </n-dynamic-input>
+  </n-form>
 
-    <huge-labelled-icon
-      v-else
-      :message="$t('search.advancedSearch.msgNoResources')"
-      :icon="NoContentIcon"
-    />
+  <huge-labelled-icon
+    v-else
+    :message="$t('search.advancedSearch.msgNoResources')"
+    :icon="NoContentIcon"
+  />
 
-    <button-shelf v-if="!!resources.data.length" top-gap>
-      <n-button type="primary" :disabled="!queries.length" @click="handleSearch">
-        {{ $t('search.searchAction') }}
-      </n-button>
-    </button-shelf>
-  </div>
+  <button-shelf v-if="!!resources.data.length">
+    <n-button type="primary" :disabled="!queries.length" @click="handleSearch">
+      {{ $t('search.searchAction') }}
+    </n-button>
+  </button-shelf>
 </template>
-
-<style>
-.dynamic-input-item:not(:first-child) {
-  border-top: 1px solid var(--main-bg-color);
-  padding: var(--content-gap) 0;
-}
-</style>

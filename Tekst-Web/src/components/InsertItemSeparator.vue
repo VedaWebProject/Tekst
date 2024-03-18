@@ -4,7 +4,8 @@ import { NButton, NIcon } from 'naive-ui';
 import { AddIcon } from '@/icons';
 
 defineProps<{
-  level: number;
+  title?: string;
+  disabled?: boolean;
 }>();
 defineEmits(['click']);
 </script>
@@ -15,10 +16,10 @@ defineEmits(['click']);
     <n-button
       secondary
       circle
-      size="small"
-      :title="$t('admin.text.levels.tipInsertLevel', { n: level + 1 })"
+      :title="title"
+      :disabled="disabled"
       :focusable="false"
-      @click="$emit('click', level)"
+      @click="$emit('click')"
     >
       <template #icon>
         <n-icon :component="AddIcon" />

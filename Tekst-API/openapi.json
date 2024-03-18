@@ -5609,7 +5609,7 @@
               "$ref": "#/components/schemas/ResourceSearchQuery"
             },
             "type": "array",
-            "maxItems": 64,
+            "maxItems": 32,
             "title": "Q",
             "description": "Resource-specific queries"
           },
