@@ -321,6 +321,7 @@ async def search_quick(
     # compose a list of target index fields based on the resources to search:
     field_pattern_suffix = ".*.strict" if settings_general.strict else ".*"
     fields = [f"{res_id}{field_pattern_suffix}" for res_id in target_resource_ids]
+    source_includes = [f"{res_id}.resource_title" for res_id in target_resource_ids]
 
     # perform the search
     return SearchResults.from_es_results(
@@ -342,7 +343,7 @@ async def search_quick(
             sort=SORTING_PRESETS.get(settings_general.sorting_preset, None)
             if settings_general.sorting_preset
             else None,
-            source={"includes": get_source_includes(fields)},
+            source={"includes": get_source_includes(source_includes)},
         ),
         index_creation_time=get_index_creation_time(),
     )
@@ -360,10 +361,11 @@ async def search_advanced(
     # construct all the sub-queries
     sub_queries_must = []
     sub_queries_should = []
-    search_fields = []
+    source_includes = [f"{res_id}.resource_title" for res_id in readable_resource_ids]
+
     for q in queries:
         if str(q.common.resource_id) in readable_resource_ids:
-            es_queries, fields = resource_types_mgr.get(
+            es_queries = resource_types_mgr.get(
                 q.resource_type_specific.resource_type
             ).construct_es_queries(
                 query=q,
@@ -373,8 +375,6 @@ async def search_advanced(
                 sub_queries_should.extend(es_queries)
             else:
                 sub_queries_must.extend(es_queries)
-            # collect names/patterns of fields we're searching
-            search_fields += fields
 
     # perform the search
     return SearchResults.from_es_results(
@@ -395,7 +395,7 @@ async def search_advanced(
             sort=SORTING_PRESETS.get(settings_general.sorting_preset, None)
             if settings_general.sorting_preset
             else None,
-            source={"includes": get_source_includes(search_fields)},
+            source={"includes": get_source_includes(source_includes)},
         ),
         index_creation_time=get_index_creation_time(),
     )

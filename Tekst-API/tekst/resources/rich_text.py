@@ -32,32 +32,29 @@ class RichText(ResourceTypeABC):
     @classmethod
     def construct_es_queries(
         cls, query: ResourceSearchQuery, *, strict: bool = False
-    ) -> tuple[list[dict[str, Any]], list[str]]:
+    ) -> list[dict[str, Any]]:
         es_queries = []
-        fields = []
         set_fields = query.get_set_fields()
         strict_suffix = ".strict" if strict else ""
         if "html" in set_fields:
-            fields = [f"{query.resource_id}.html{strict_suffix}"]
             es_queries.append(
                 {
                     "simple_query_string": {
-                        "fields": fields,
+                        "fields": [f"{query.resource_id}.html{strict_suffix}"],
                         "query": query.html,
                     }
                 }
             )
         if "comment" in set_fields:
-            fields = [f"{query.resource_id}.comment{strict_suffix}"]
             es_queries.append(
                 {
                     "simple_query_string": {
-                        "fields": fields,
+                        "fields": [f"{query.resource_id}.comment{strict_suffix}"],
                         "query": query.comment,
                     }
                 }
             )
-        return es_queries, fields
+        return es_queries
 
     @classmethod
     def index_doc_properties(cls) -> dict[str, Any]:
