@@ -160,7 +160,7 @@ img {
 }
 
 .gray-box {
-  padding: var(--content-gap);
+  padding: var(--layout-gap);
   margin: var(--layout-gap) 0;
   background-color: var(--main-bg-color);
   border-radius: var(--border-radius);

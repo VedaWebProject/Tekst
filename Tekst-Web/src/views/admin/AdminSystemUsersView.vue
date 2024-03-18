@@ -204,7 +204,7 @@ onMounted(() => {
       @item-header-click="handleFilterCollapseItemClick"
     >
       <n-collapse-item :title="$t('general.filters')" name="filters">
-        <n-space vertical style="padding-left: var(--layout-gap)">
+        <n-space vertical class="gray-box" style="padding-left: var(--layout-gap)">
           <n-input
             v-model:value="filters.search"
             :placeholder="$t('search.searchAction')"
@@ -238,12 +238,7 @@ onMounted(() => {
             :label="$t('models.user.modelLabel')"
           />
 
-          <n-button
-            secondary
-            round
-            style="margin-top: var(--content-gap)"
-            @click="filters = initialFilters()"
-          >
+          <n-button style="margin-top: var(--content-gap)" @click="filters = initialFilters()">
             {{ $t('general.resetAction') }}
             <template #icon>
               <n-icon :component="UndoIcon" />
@@ -253,7 +248,7 @@ onMounted(() => {
       </n-collapse-item>
     </n-collapse>
 
-    <div style="margin-top: 0.5rem">
+    <div class="text-small translucent">
       {{ $t('admin.users.msgFoundCount', { count: filteredData.length, total: users.length }) }}
     </div>
 

@@ -331,9 +331,12 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
 
   <template v-if="resources.data && !resources.error && !loading">
     <!-- Filters -->
-    <n-collapse @item-header-click="handleFilterCollapseItemClick">
+    <n-collapse
+      style="margin-bottom: var(--layout-gap)"
+      @item-header-click="handleFilterCollapseItemClick"
+    >
       <n-collapse-item :title="$t('general.filters')" name="filters">
-        <n-space vertical style="padding-left: var(--layout-gap)">
+        <n-space vertical class="gray-box">
           <n-input
             v-model:value="filters.search"
             :placeholder="$t('search.searchAction')"
@@ -356,12 +359,7 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
             v-model:value="filters.ownedByOthers"
             :label="$t('resources.ownedByOthers')"
           />
-          <n-button
-            secondary
-            round
-            style="margin-top: var(--content-gap)"
-            @click="filters = initialFilters()"
-          >
+          <n-button style="margin-top: var(--content-gap)" @click="filters = initialFilters()">
             {{ $t('general.resetAction') }}
             <template #icon>
               <n-icon :component="UndoIcon" />
@@ -372,7 +370,12 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
     </n-collapse>
 
     <!-- Create new resource button -->
-    <n-space justify="space-between" align="center" style="margin-top: 0.5rem">
+    <n-space
+      justify="space-between"
+      align="center"
+      style="margin-top: 0.5rem"
+      class="text-small translucent"
+    >
       <div style="margin-top: 0.5rem">
         {{
           $t('resources.msgFoundCount', {
