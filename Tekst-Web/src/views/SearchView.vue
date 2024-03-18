@@ -41,7 +41,7 @@ function handleResourceChange(resQueryIndex: number, resId: string, resType: Res
 
 function getNewSearchItem(): AdvancedSearchRequestBody['q'][number] {
   return {
-    cmn: { res: resources.data[0].id },
+    cmn: { res: resources.data[0].id, opt: true },
     rts: { type: resources.data[0].resourceType },
   };
 }
@@ -137,7 +137,7 @@ watch(
           />
           <common-search-form-items
             v-model:comment="resourceQuery.cmn.cmt"
-            v-model:required="resourceQuery.cmn.req"
+            v-model:optional="resourceQuery.cmn.opt"
           />
         </div>
         <insert-item-separator

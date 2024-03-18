@@ -6,9 +6,9 @@ import LabelledSwitch from '@/components/LabelledSwitch.vue';
 
 defineProps<{
   comment?: AdvancedSearchRequestBody['q'][number]['cmn']['cmt'];
-  required?: AdvancedSearchRequestBody['q'][number]['cmn']['req'];
+  optional?: AdvancedSearchRequestBody['q'][number]['cmn']['opt'];
 }>();
-defineEmits(['update:comment', 'update:required']);
+defineEmits(['update:comment', 'update:optional']);
 </script>
 
 <template>
@@ -21,9 +21,9 @@ defineEmits(['update:comment', 'update:required']);
   </n-form-item>
   <n-form-item :show-label="false" :show-feedback="false">
     <labelled-switch
-      :value="required"
-      :label="$t('search.advancedSearch.required')"
-      @update:value="(v) => $emit('update:required', v)"
+      :value="optional"
+      :label="$t('search.advancedSearch.optional')"
+      @update:value="(v) => $emit('update:optional', v)"
     />
   </n-form-item>
 </template>

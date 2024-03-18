@@ -680,7 +680,7 @@ search:
     heading: Schnellsuche
   advancedSearch:
     msgNoResources: Es gibt keine Ressourcen zu diesem Text, in denen gesucht werden könnte.
-    required: erfordert
+    optional: optional
   settings:
     heading: Einstellungen
     general:

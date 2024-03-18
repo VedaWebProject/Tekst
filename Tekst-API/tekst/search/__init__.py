@@ -369,10 +369,10 @@ async def search_advanced(
                 query=q,
                 strict=settings_general.strict,
             )
-            if q.common.required:
-                sub_queries_must.extend(es_queries)
-            else:
+            if q.common.optional:
                 sub_queries_should.extend(es_queries)
+            else:
+                sub_queries_must.extend(es_queries)
             # collect names/patterns of fields we're searching
             search_fields += fields
 

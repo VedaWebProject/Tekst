@@ -656,7 +656,7 @@ search:
     heading: Quick Search
   advancedSearch:
     msgNoResources: There are no resources associated with this text to search in.
-    required: required
+    optional: optional
   settings:
     heading: Settings
     general:

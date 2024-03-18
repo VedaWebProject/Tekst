@@ -42,16 +42,16 @@ def get_resource_template_readme() -> dict[str, str]:
 
 
 class CommonResourceSearchQueryData(ModelBase):
-    required: Annotated[
+    optional: Annotated[
         bool,
         Field(
-            alias="req",
+            alias="opt",
             description=(
-                "Whether this query is required to match for the "
+                "Whether this query matching is optional for the "
                 "location to be considered a search hit"
             ),
         ),
-    ] = False
+    ] = True
     resource_id: Annotated[
         PydanticObjectId,
         Field(

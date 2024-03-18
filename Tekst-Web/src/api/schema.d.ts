@@ -654,11 +654,11 @@ export interface components {
     /** CommonResourceSearchQueryData */
     CommonResourceSearchQueryData: {
       /**
-       * Req
-       * @description Whether this query is required to match for the location to be considered a search hit
-       * @default false
+       * Opt
+       * @description Whether this query matching is optional for the location to be considered a search hit
+       * @default true
        */
-      req?: boolean;
+      opt?: boolean;
       /**
        * Res
        * @description ID of the resource to search in
