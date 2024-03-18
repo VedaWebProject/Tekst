@@ -34,31 +34,32 @@ class PlainText(ResourceTypeABC):
     @classmethod
     def construct_es_queries(
         cls, query: ResourceSearchQuery, *, strict: bool = False
-    ) -> list[dict[str, Any]]:
+    ) -> tuple[list[dict[str, Any]], list[str]]:
         es_queries = []
+        fields = []
         set_fields = query.get_set_fields()
         strict_suffix = ".strict" if strict else ""
         if "text" in set_fields:
-            es_queries.append(
+            fields = [f"{query.common.resource_id}.text{strict_suffix}"]
+            es_queries = [
                 {
                     "simple_query_string": {
-                        "fields": [f"{query.common.resource_id}.text{strict_suffix}"],
+                        "fields": fields,
                         "query": query.resource_type_specific.text,
                     }
                 }
-            )
+            ]
         if "comment" in set_fields:
-            es_queries.append(
+            fields = [f"{query.common.resource_id}.comment{strict_suffix}"]
+            es_queries = [
                 {
                     "simple_query_string": {
-                        "fields": [
-                            f"{query.common.resource_id}.comment{strict_suffix}"
-                        ],
+                        "fields": fields,
                         "query": query.common.comment,
                     }
                 }
-            )
-        return es_queries
+            ]
+        return es_queries, fields
 
     @classmethod
     def index_doc_properties(cls) -> dict[str, Any]:

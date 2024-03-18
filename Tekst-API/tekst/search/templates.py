@@ -51,6 +51,14 @@ IDX_TEMPLATE = {
     },
 }
 
+_GENERAL_SOURCE_INCLUDES = [
+    "text_id",
+    "level",
+    "position",
+    "label",
+    "full_label",
+]
+
 SORTING_PRESETS = {
     "relevance": None,
     "text_level_position": [
@@ -64,3 +72,7 @@ SORTING_PRESETS = {
         "_score",
     ],
 }
+
+
+def get_source_includes(fields: list[str] = []) -> list[str]:
+    return _GENERAL_SOURCE_INCLUDES + fields

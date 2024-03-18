@@ -34,6 +34,7 @@ from tekst.search.templates import (
     IDX_TEMPLATE_NAME,
     IDX_TEMPLATE_NAME_PATTERN,
     SORTING_PRESETS,
+    get_source_includes,
 )
 
 
@@ -341,6 +342,7 @@ async def search_quick(
             sort=SORTING_PRESETS.get(settings_general.sorting_preset, None)
             if settings_general.sorting_preset
             else None,
+            source={"includes": get_source_includes(fields)},
         ),
         index_creation_time=get_index_creation_time(),
     )
@@ -358,9 +360,10 @@ async def search_advanced(
     # construct all the sub-queries
     sub_queries_must = []
     sub_queries_should = []
+    search_fields = []
     for q in queries:
         if str(q.common.resource_id) in readable_resource_ids:
-            es_queries = resource_types_mgr.get(
+            es_queries, fields = resource_types_mgr.get(
                 q.resource_type_specific.resource_type
             ).construct_es_queries(
                 query=q,
@@ -370,6 +373,8 @@ async def search_advanced(
                 sub_queries_must.extend(es_queries)
             else:
                 sub_queries_should.extend(es_queries)
+            # collect names/patterns of fields we're searching
+            search_fields += fields
 
     # perform the search
     return SearchResults.from_es_results(
@@ -390,6 +395,7 @@ async def search_advanced(
             sort=SORTING_PRESETS.get(settings_general.sorting_preset, None)
             if settings_general.sorting_preset
             else None,
+            source={"includes": get_source_includes(search_fields)},
         ),
         index_creation_time=get_index_creation_time(),
     )

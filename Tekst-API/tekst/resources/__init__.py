@@ -151,10 +151,11 @@ class ResourceTypeABC(ABC):
     @abstractmethod
     def construct_es_queries(
         cls, query: "ResourceSearchQuery", *, strict: bool = False
-    ) -> list[dict[str, Any]]:
+    ) -> tuple[list[dict[str, Any]], list[str]]:
         """
         Constructs an Elasticsearch search query for each field
-        in the given resource search query model instance
+        in the given resource search query model instance and returns
+        a tuple of said queries and a list of the relevant field names
         """
         raise NotImplementedError(
             "Classmethod 'construct_es_query' must be "
