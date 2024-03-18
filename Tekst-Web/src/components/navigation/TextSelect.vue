@@ -83,9 +83,18 @@ function handleSelect(key: string) {
       <template v-if="!disabled" #icon>
         <n-icon :component="ExpandArrowDownIcon" />
       </template>
-      <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
+      <div class="text-select-label">
         {{ state.text.title }}
       </div>
     </n-button>
   </n-dropdown>
 </template>
+
+<style scoped>
+.text-select-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 200%;
+}
+</style>
