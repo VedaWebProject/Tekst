@@ -7,18 +7,17 @@ import { usePlatformData } from '@/composables/platformData';
 import { computed, onBeforeMount, ref, watch } from 'vue';
 import { POST, type SearchRequestBody, type SearchResults, type SortingPreset } from '@/api';
 import type { SearchResultProps } from '@/components/search/SearchResult.vue';
-import { useStateStore } from '@/stores';
+import { useSearchStore, useStateStore, useThemeStore } from '@/stores';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import { useRoute, useRouter } from 'vue-router';
-import { Base64 } from 'js-base64';
 import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
-import { useThemeStore } from '@/stores/theme';
 import { createReusableTemplate } from '@vueuse/core';
 import SearchResultsSortWidget from '@/components/search/SearchResultsSortWidget.vue';
 
 const { pfData } = usePlatformData();
 const state = useStateStore();
+const search = useSearchStore();
 const route = useRoute();
 const router = useRouter();
 const theme = useThemeStore();
@@ -63,7 +62,7 @@ const results = computed<SearchResultProps[]>(
     }) || []
 );
 
-async function search(resetPage?: boolean) {
+async function execSearch(resetPage?: boolean) {
   if (!searchReq.value) return;
   if (resetPage) {
     pagination.value.page = paginationDefaults().page;
@@ -95,12 +94,13 @@ async function processQuery() {
   resultsData.value = undefined;
   pagination.value.page = 1;
   try {
-    searchReq.value = JSON.parse(Base64.decode(route.params.req?.toString() || ''));
+    searchReq.value = search.decodeQueryParam();
     if (!searchReq.value || !['quick', 'advanced'].includes(searchReq.value.type)) {
       throw new Error();
     }
+    search.lastReq = searchReq.value;
     sortingPreset.value = searchReq.value.gen?.sort || undefined;
-    await search();
+    await execSearch();
   } catch {
     message.error($t('search.results.msgInvalidRequest'));
   } finally {
@@ -109,24 +109,22 @@ async function processQuery() {
 }
 
 function handleSortingChange() {
-  router.push({
+  router.replace({
     name: 'searchResults',
-    params: {
-      req: Base64.encodeURI(
-        JSON.stringify({
-          ...searchReq.value,
-          settingsGeneral: {
-            ...searchReq.value?.gen,
-            sortingPreset: sortingPreset.value,
-          },
-        })
-      ),
+    query: {
+      q: search.encodeQueryParam({
+        ...searchReq.value,
+        gen: {
+          ...searchReq.value?.gen,
+          sort: sortingPreset.value,
+        },
+      } as SearchRequestBody),
     },
   });
 }
 
 watch(
-  () => route.params.req,
+  () => route.query.q,
   () => processQuery()
 );
 
@@ -147,8 +145,8 @@ onBeforeMount(() => processQuery());
         :disabled="loading"
         :size="paginationSize"
         show-size-picker
-        @update:page="() => search()"
-        @update:page-size="() => search(true)"
+        @update:page="() => execSearch()"
+        @update:page-size="() => execSearch(true)"
       >
         <template #suffix>
           <search-results-sort-widget

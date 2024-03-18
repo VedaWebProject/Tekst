@@ -2,9 +2,9 @@
 import { NButton, NIcon } from 'naive-ui';
 import { computed } from 'vue';
 import { $t } from '@/i18n';
-import { useThemeStore } from '@/stores/theme';
 
 import { LightModeIcon, DarkModeIcon } from '@/icons';
+import { useThemeStore } from '@/stores';
 
 const theme = useThemeStore();
 

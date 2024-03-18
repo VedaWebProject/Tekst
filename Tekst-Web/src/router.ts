@@ -73,7 +73,7 @@ const router = createRouter({
       },
     },
     {
-      path: '/search/:req',
+      path: '/search',
       name: 'searchResults',
       component: SearchResultsView,
     },

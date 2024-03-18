@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type AnyResourceUpdate, PATCH, type AnyResourceRead } from '@/api';
 import { $t } from '@/i18n';
-import { useAuthStore, useStateStore } from '@/stores';
+import { useAuthStore, useResourcesStore, useStateStore } from '@/stores';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import { useMessages } from '@/composables/messages';
@@ -15,7 +15,6 @@ import { useRoute } from 'vue-router';
 import { useRouter } from 'vue-router';
 import ResourceInfoWidget from '@/components/resource/ResourceInfoWidget.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
-import { useResourcesStore } from '@/stores/resources';
 import ResourceSettingsFormItems from '@/forms/resources/config/ResourceSettingsFormItems.vue';
 
 import { SettingsIcon, ArrowBackIcon, ResourceIcon } from '@/icons';
@@ -25,8 +24,8 @@ const route = useRoute();
 const router = useRouter();
 const state = useStateStore();
 const auth = useAuthStore();
-
 const resources = useResourcesStore();
+
 const resource = ref<AnyResourceRead>();
 const getInitialModel = () => _cloneDeep(resource.value);
 

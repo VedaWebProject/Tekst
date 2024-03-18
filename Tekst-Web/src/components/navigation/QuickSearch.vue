@@ -8,17 +8,15 @@ import GenericModal from '@/components/generic/GenericModal.vue';
 import { SearchIcon } from '@/icons';
 import NInputOsk from '@/components/NInputOsk.vue';
 import { useRouter } from 'vue-router';
-import { Base64 } from 'js-base64';
-import { useStateStore } from '@/stores';
-import type { SearchRequestBody } from '@/api';
 import GeneralSearchSettingsForm from '@/forms/search/GeneralSearchSettingsForm.vue';
 import QuickSearchSettingsForm from '@/forms/search/QuickSearchSettingsForm.vue';
+import { useSearchStore } from '@/stores';
+
+const search = useSearchStore();
+const router = useRouter();
 
 const showModal = ref(false);
 const searchInput = ref<string>('');
-const router = useRouter();
-const state = useStateStore();
-
 const inputRef = ref<InputInst>();
 const settingsExpanded = ref<string[]>([]);
 
@@ -26,16 +24,15 @@ function handleSearch(e: UIEvent) {
   e.preventDefault();
   e.stopPropagation();
   showModal.value = false;
-  const reqBody: SearchRequestBody = {
-    type: 'quick',
-    q: searchInput.value,
-    gen: state.searchSettingsGeneral,
-    qck: state.searchSettingsQuick,
-  };
   router.push({
     name: 'searchResults',
-    params: {
-      req: Base64.encode(JSON.stringify(reqBody), true),
+    query: {
+      q: search.encodeQueryParam({
+        type: 'quick',
+        q: searchInput.value,
+        gen: search.settingsGeneral,
+        qck: search.settingsQuick,
+      }),
     },
   });
 }

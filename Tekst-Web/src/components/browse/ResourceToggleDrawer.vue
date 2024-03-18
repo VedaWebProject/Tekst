@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { NDrawer, NDrawerContent, NButton, NSpace, NIcon } from 'naive-ui';
-import { useAuthStore, useBrowseStore, useResourcesStore } from '@/stores';
+import { useAuthStore, useBrowseStore, useResourcesStore, useThemeStore } from '@/stores';
 import ResourceToggleDrawerItem from '@/components/browse/ResourceToggleDrawerItem.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 
 import { CheckAllIcon, ResourceIcon, UncheckAllIcon } from '@/icons';
 import LabelledSwitch from '../LabelledSwitch.vue';
-import { useThemeStore } from '@/stores/theme';
 
 const props = defineProps<{ show: boolean }>();
 const emit = defineEmits<{ (e: 'update:show', show: boolean): void }>();

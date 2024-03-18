@@ -4,8 +4,8 @@ import { NIcon } from 'naive-ui';
 import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
 
 import { DisabledVisibleIcon } from '@/icons';
-import { useThemeStore } from '@/stores/theme';
 import { computed } from 'vue';
+import { useThemeStore } from '@/stores';
 
 const props = defineProps<{
   text: TextRead;

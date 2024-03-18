@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { ref, computed, h } from 'vue';
-import { useAuthStore, useStateStore } from '@/stores';
+import { useAuthStore, useStateStore, useThemeStore } from '@/stores';
 import { type RouteLocationRaw, RouterLink } from 'vue-router';
 import { NButton, NIcon, NDropdown } from 'naive-ui';
 import { $t } from '@/i18n';
-import { useThemeStore } from '@/stores/theme';
 import { LogInIcon, LogOutIcon, UserIcon, AdminIcon, ResourceIcon } from '@/icons';
 import { renderIcon } from '@/utils';
 

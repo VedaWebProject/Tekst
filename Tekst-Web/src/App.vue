@@ -4,7 +4,7 @@ import InitLoader from '@/components/InitLoader.vue';
 import GlobalMessenger from '@/components/messages/GlobalMessenger.vue';
 import { computed } from 'vue';
 import { getLocaleProfile } from '@/i18n';
-import { useStateStore } from '@/stores';
+import { useStateStore, useThemeStore } from '@/stores';
 import {
   NLoadingBarProvider,
   NConfigProvider,
@@ -13,7 +13,6 @@ import {
   NBackTop,
   useThemeVars,
 } from 'naive-ui';
-import { useThemeStore } from '@/stores/theme';
 import PageHeader from './layout/PageHeader.vue';
 import PageFooter from './layout/PageFooter.vue';
 import { useInitializeApp } from '@/composables/init';

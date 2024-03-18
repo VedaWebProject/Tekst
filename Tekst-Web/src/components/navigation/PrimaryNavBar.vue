@@ -6,7 +6,7 @@ import LocaleSwitcher from '@/components/navigation/LocaleSwitcher.vue';
 import UserActionsButton from '@/components/navigation/UserActionsButton.vue';
 import QuickSearchWidget from '@/components/navigation/QuickSearch.vue';
 import HelpNavButton from '@/components/navigation/HelpNavButton.vue';
-import { useAuthStore, useBrowseStore, useStateStore } from '@/stores';
+import { useAuthStore, useBrowseStore, useStateStore, useThemeStore } from '@/stores';
 import { useRoute, RouterLink } from 'vue-router';
 import { usePlatformData } from '@/composables/platformData';
 import NavigationMenu from '@/components/navigation/NavigationMenu.vue';
@@ -16,7 +16,6 @@ import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
 import logo from '@/assets/logo.png';
 import logoDarkmode from '@/assets/logo-darkmode.png';
 import { HamburgerMenuIcon } from '@/icons';
-import { useThemeStore } from '@/stores/theme';
 import { STATIC_PATH } from '@/common';
 
 const { pfData, systemHome } = usePlatformData();

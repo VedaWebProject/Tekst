@@ -5,18 +5,17 @@ import { ClearIcon, NoContentIcon, SearchIcon } from '@/icons';
 import { resourceTypeSearchForms } from '@/forms/resources/search/mappings';
 import { NForm, NButton, NDynamicInput, NIcon, NSelect, NFormItem } from 'naive-ui';
 import { computed, ref, watch } from 'vue';
-import type { AdvancedSearchRequestBody, ResourceType, SearchRequestBody } from '@/api';
-import { useResourcesStore, useStateStore } from '@/stores';
+import type { AdvancedSearchRequestBody, ResourceType } from '@/api';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import type { SelectMixedOption } from 'naive-ui/es/select/src/interface';
 import CommonSearchFormItems from '@/forms/resources/search/CommonSearchFormItems.vue';
 import { $t } from '@/i18n';
 import { useRouter } from 'vue-router';
-import { Base64 } from 'js-base64';
 import InsertItemSeparator from '@/components/InsertItemSeparator.vue';
+import { useResourcesStore, useSearchStore } from '@/stores';
 
-const state = useStateStore();
+const search = useSearchStore();
 const resources = useResourcesStore();
 const router = useRouter();
 const queries = ref<AdvancedSearchRequestBody['q']>([]);
@@ -33,7 +32,7 @@ function handleResourceChange(resQueryIndex: number, resId: string, resType: Res
   if (!queries.value[resQueryIndex]) return;
   if (queries.value[resQueryIndex].cmn.res !== resId) {
     queries.value[resQueryIndex] = {
-      cmn: { res: resId },
+      cmn: { res: resId, opt: true },
       rts: { ...queries.value[resQueryIndex].rts, type: resType },
     };
   }
@@ -57,24 +56,31 @@ function removeSearchItem(index: number) {
 function handleSearch(e: UIEvent) {
   e.preventDefault();
   e.stopPropagation();
-  const reqBody: SearchRequestBody = {
-    type: 'advanced',
-    q: queries.value,
-    gen: state.searchSettingsGeneral,
-    adv: state.searchSettingsAdvanced,
-  };
   router.push({
     name: 'searchResults',
-    params: {
-      req: Base64.encode(JSON.stringify(reqBody), true),
+    query: {
+      q: search.encodeQueryParam({
+        type: 'advanced',
+        q: queries.value,
+        gen: search.settingsGeneral,
+        adv: search.settingsAdvanced,
+      }),
     },
   });
+}
+
+function initQueries() {
+  if (search.lastReq?.type === 'advanced') {
+    queries.value = search.lastReq.q;
+  } else {
+    queries.value = resources.data.length ? [getNewSearchItem()] : [];
+  }
 }
 
 watch(
   () => resources.data,
   () => {
-    queries.value = resources.data.length ? [getNewSearchItem()] : [];
+    initQueries();
   },
   { immediate: true }
 );
