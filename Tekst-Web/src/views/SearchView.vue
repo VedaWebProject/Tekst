@@ -3,7 +3,16 @@ import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import { ClearIcon, NoContentIcon, SearchIcon } from '@/icons';
 import { resourceTypeSearchForms } from '@/forms/resources/search/mappings';
-import { NForm, NButton, NDynamicInput, NIcon, NSelect, NFormItem } from 'naive-ui';
+import {
+  NCollapse,
+  NCollapseItem,
+  NForm,
+  NButton,
+  NDynamicInput,
+  NIcon,
+  NSelect,
+  NFormItem,
+} from 'naive-ui';
 import { computed, ref, watch } from 'vue';
 import type { AdvancedSearchRequestBody, ResourceType } from '@/api';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
@@ -14,10 +23,12 @@ import { $t } from '@/i18n';
 import { useRouter } from 'vue-router';
 import InsertItemSeparator from '@/components/InsertItemSeparator.vue';
 import { useResourcesStore, useSearchStore } from '@/stores';
+import GeneralSearchSettingsForm from '@/forms/search/GeneralSearchSettingsForm.vue';
 
 const search = useSearchStore();
 const resources = useResourcesStore();
 const router = useRouter();
+
 const queries = ref<AdvancedSearchRequestBody['q']>([]);
 
 const resourceOptions = computed(() =>
@@ -91,6 +102,14 @@ watch(
     {{ $t('search.heading') }}
     <help-button-widget help-key="searchView" />
   </icon-heading>
+
+  <n-collapse style="margin-bottom: var(--layout-gap)">
+    <n-collapse-item :title="$t('search.settings.heading')" name="settings">
+      <div class="gray-box">
+        <general-search-settings-form />
+      </div>
+    </n-collapse-item>
+  </n-collapse>
 
   <n-form
     v-if="!!resources.data.length"

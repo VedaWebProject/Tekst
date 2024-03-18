@@ -687,7 +687,7 @@ search:
       heading: '@:general.general'
       strict: berücksichtige Diakritika
     quick:
-      defaultOperator: Ergebnisse müssen alle Suchbegriffe enthalten
+      defaultOperator: finde alle Suchbegriffe
       texts: Texte
       textsPlaceholder: Alle Texte
   results:

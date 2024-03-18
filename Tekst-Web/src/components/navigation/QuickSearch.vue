@@ -78,8 +78,10 @@ function handleSearch(e: UIEvent) {
 
     <n-collapse v-model:expanded-names="settingsExpanded">
       <n-collapse-item :title="$t('search.settings.heading')" name="settings">
-        <quick-search-settings-form />
-        <general-search-settings-form />
+        <div class="gray-box">
+          <quick-search-settings-form />
+          <general-search-settings-form />
+        </div>
       </n-collapse-item>
     </n-collapse>
 

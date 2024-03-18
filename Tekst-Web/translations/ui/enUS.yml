@@ -663,7 +663,7 @@ search:
       heading: '@:general.general'
       strict: respect diacritics
     quick:
-      defaultOperator: results must contain all search terms
+      defaultOperator: find all search terms
       texts: Texts
       textsPlaceholder: All texts
   results:
