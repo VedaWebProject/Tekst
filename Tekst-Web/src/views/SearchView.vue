@@ -73,8 +73,9 @@ function handleSearch(e: UIEvent) {
 watch(
   () => resources.data,
   () => {
-    queries.value = [getNewSearchItem()];
-  }
+    queries.value = resources.data.length ? [getNewSearchItem()] : [];
+  },
+  { immediate: true }
 );
 </script>
 
