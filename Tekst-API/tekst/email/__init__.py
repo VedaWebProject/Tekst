@@ -81,8 +81,6 @@ def _send_email(*, to: str, subject: str, txt: str, html: str):
 def send_email(
     to_user: UserRead,
     template_id: TemplateIdentifier,
-    *,
-    alternate_recepient: UserRead | None = None,
     **kwargs,
 ):
     templates = _get_email_templates(template_id, to_user.locale or "enUS")
@@ -101,7 +99,7 @@ def send_email(
             .strip()
         )
     _send_email(
-        to=alternate_recepient or to_user.email,
+        to=to_user.email,
         subject=email_contents.get("subject", ""),
         txt=email_contents.get("txt", ""),
         html=email_contents.get("html", ""),
