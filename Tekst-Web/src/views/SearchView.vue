@@ -12,6 +12,7 @@ import {
   NIcon,
   NSelect,
   NFormItem,
+  useThemeVars,
 } from 'naive-ui';
 import { computed, ref, watch } from 'vue';
 import type { AdvancedSearchRequestBody, ResourceType } from '@/api';
@@ -27,6 +28,7 @@ import GeneralSearchSettingsForm from '@/forms/search/GeneralSearchSettingsForm.
 const search = useSearchStore();
 const resources = useResourcesStore();
 const router = useRouter();
+const themeVars = useThemeVars();
 
 const queries = ref<AdvancedSearchRequestBody['q']>([]);
 
@@ -152,9 +154,11 @@ watch(
             <n-button
               v-if="queries.length < 32"
               circle
-              type="primary"
+              :color="themeVars.bodyColor"
+              :style="{ color: themeVars.textColor1 }"
               :title="$t('general.insertAction')"
               :focusable="false"
+              class="action-button-insert"
               @click="addSearchItem(index)"
             >
               <n-icon :component="AddIcon" />
@@ -162,9 +166,11 @@ watch(
             <n-button
               v-if="queries.length > 1"
               circle
-              type="primary"
-              :focusable="false"
+              :color="themeVars.bodyColor"
+              :style="{ color: themeVars.textColor1 }"
               :title="$t('general.removeAction')"
+              :focusable="false"
+              class="action-button-remove"
               @click="removeSearchItem(index)"
             >
               <n-icon :component="ClearIcon" />
@@ -202,12 +208,18 @@ watch(
 .search-item-action-buttons {
   position: absolute;
   left: 0;
-  bottom: -18px;
+  bottom: -16px;
   width: 100%;
   display: flex;
   flex-wrap: nowrap;
   justify-content: center;
   gap: var(--layout-gap);
+}
+.search-item-action-buttons .action-button-insert:hover {
+  color: var(--col-success) !important;
+}
+.search-item-action-buttons .action-button-remove:hover {
+  color: var(--col-error) !important;
 }
 .search-item-action-button-wrapper {
   border-radius: 3px;
