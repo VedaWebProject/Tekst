@@ -12,6 +12,7 @@ from tekst.models.resource_configs import (
 )
 from tekst.resources import ResourceSearchQuery, ResourceTypeABC
 from tekst.utils import validators as val
+from tekst.utils.html import get_html_text
 
 
 class RichText(ResourceTypeABC):
@@ -40,8 +41,8 @@ class RichText(ResourceTypeABC):
             es_queries.append(
                 {
                     "simple_query_string": {
-                        "fields": [f"{query.resource_id}.html{strict_suffix}"],
-                        "query": query.html,
+                        "fields": [f"{query.common.resource_id}.html{strict_suffix}"],
+                        "query": query.resource_type_specific.html,
                     }
                 }
             )
@@ -49,8 +50,10 @@ class RichText(ResourceTypeABC):
             es_queries.append(
                 {
                     "simple_query_string": {
-                        "fields": [f"{query.resource_id}.comment{strict_suffix}"],
-                        "query": query.comment,
+                        "fields": [
+                            f"{query.common.resource_id}.comment{strict_suffix}"
+                        ],
+                        "query": query.common.comment,
                     }
                 }
             )
@@ -61,20 +64,16 @@ class RichText(ResourceTypeABC):
         return {
             "html": {
                 "type": "text",
-                "analyzer": "standard_htmlstrip_asciifolding",
-                "fields": {
-                    "strict": {"type": "text", "analyzer": "standard_htmlstrip"}
-                },
+                "analyzer": "standard_asciifolding",
+                "fields": {"strict": {"type": "text"}},
             },
         }
 
     @classmethod
     def index_doc_data(cls, content: "RichTextContent") -> dict[str, Any]:
-        return content.model_dump(
-            include={
-                "html",
-            }
-        )
+        data = content.model_dump(include={"html", "comment"})
+        data["html"] = get_html_text(data["html"])  # strip HTML tags before indexing
+        return data
 
 
 class GeneralRichTextResourceConfig(ModelBase):

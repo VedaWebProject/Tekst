@@ -72,7 +72,7 @@ class PlainText(ResourceTypeABC):
 
     @classmethod
     def index_doc_data(cls, content: "PlainTextContent") -> dict[str, Any]:
-        return content.model_dump(include={"text"})
+        return content.model_dump(include={"text", "comment"})
 
 
 class GeneralPlainTextResourceConfig(ModelBase):

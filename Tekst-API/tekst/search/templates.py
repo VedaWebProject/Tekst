@@ -30,16 +30,6 @@ IDX_TEMPLATE = {
                     "tokenizer": "standard",
                     "filter": ["asciifolding", "lowercase"],
                 },
-                "standard_htmlstrip": {
-                    "tokenizer": "standard",
-                    "filter": ["lowercase"],
-                    "char_filter": ["html_strip"],
-                },
-                "standard_htmlstrip_asciifolding": {
-                    "tokenizer": "standard",
-                    "filter": ["asciifolding", "lowercase"],
-                    "char_filter": ["html_strip"],
-                },
             },
             "filter": {
                 "asciifolding_preserve": {
