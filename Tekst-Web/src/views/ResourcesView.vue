@@ -369,14 +369,8 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
       </n-collapse-item>
     </n-collapse>
 
-    <!-- Create new resource button -->
-    <n-space
-      justify="space-between"
-      align="center"
-      style="margin-top: 0.5rem"
-      class="text-small translucent"
-    >
-      <div style="margin-top: 0.5rem">
+    <div class="resource-list-header">
+      <div class="text-small translucent ellipsis">
         {{
           $t('resources.msgFoundCount', {
             count: filteredData.length,
@@ -384,13 +378,14 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
           })
         }}
       </div>
+      <!-- Create new resource button -->
       <n-button v-if="auth.user" type="primary" @click="router.push({ name: 'resourceCreate' })">
         <template #icon>
           <n-icon :component="AddIcon" />
         </template>
         {{ $t('general.new') }}
       </n-button>
-    </n-space>
+    </div>
 
     <!-- Resources List -->
     <div class="content-block">
@@ -452,3 +447,13 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
     @submit="handleTransferResource"
   />
 </template>
+
+<style scoped>
+.resource-list-header {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  align-items: flex-end;
+  max-width: 100%;
+}
+</style>

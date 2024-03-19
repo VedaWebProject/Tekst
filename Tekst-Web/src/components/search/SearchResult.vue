@@ -123,11 +123,6 @@ const highlightsProcessed = computed<Record<string, string>>(() => {
   font-size: var(--font-size-medium);
   gap: 0.3rem;
 }
-.ellipsis {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
 </style>
 
 <style>

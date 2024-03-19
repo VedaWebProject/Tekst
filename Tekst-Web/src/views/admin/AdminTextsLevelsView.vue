@@ -168,7 +168,7 @@ async function handleModalSubmit() {
       />
       <div class="level">
         <div class="level-index">{{ lvlIndex + 1 }}.</div>
-        <div class="level-translations">
+        <div class="level-translations ellipsis">
           <template v-for="lvlTranslation in lvl" :key="lvlTranslation.locale">
             <div>
               {{ getLocaleProfile(lvlTranslation.locale)?.icon || '🌐' }}
@@ -285,9 +285,6 @@ async function handleModalSubmit() {
 
 .level-translations > * {
   padding-right: 28px;
-  white-space: nowrap;
-  overflow-x: hidden;
-  text-overflow: ellipsis;
 }
 
 .level-buttons {
