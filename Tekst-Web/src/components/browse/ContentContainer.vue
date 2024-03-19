@@ -87,7 +87,7 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
     <div
       v-if="resource.contents?.length"
       class="content-body"
-      :class="{ 'content-body-collapsed': contentCollapsed }"
+      :class="{ 'content-collapsed': contentCollapsed }"
     >
       <!-- content-specific component (that displays the actual content data) -->
       <component
@@ -101,19 +101,21 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
       <n-spin v-show="loading" class="content-loader" />
     </transition>
 
-    <n-button
-      v-if="resource.config?.general?.defaultCollapsed && resource.contents?.length"
-      circle
-      :color="themeVars.bodyColor"
-      :style="{ color: themeVars.textColor1 }"
-      :focusable="false"
-      class="content-body-collapse-btn"
-      @click="contentCollapsed = !contentCollapsed"
-    >
-      <template #icon>
-        <n-icon :component="contentCollapsed ? ExpandIcon : CompressIcon" />
-      </template>
-    </n-button>
+    <div class="content-collapse-btn-wrapper">
+      <n-button
+        v-if="resource.config?.general?.defaultCollapsed && resource.contents?.length"
+        circle
+        :color="themeVars.bodyColor"
+        :style="{ color: themeVars.textColor1 }"
+        :focusable="false"
+        class="content-collapse-btn"
+        @click="contentCollapsed = !contentCollapsed"
+      >
+        <template #icon>
+          <n-icon :component="contentCollapsed ? ExpandIcon : CompressIcon" />
+        </template>
+      </n-button>
+    </div>
   </div>
 </template>
 
@@ -197,20 +199,25 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
   font-family: var(--font-family-content);
 }
 
-.content-body-collapsed {
+.content-collapsed {
   -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
   mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
   max-height: 150px;
   overflow-y: scroll;
 }
 
-.content-body-collapse-btn {
+.content-collapse-btn-wrapper {
   position: absolute;
+  left: 0;
   bottom: -16px;
-  right: 50%;
+  width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: var(--layout-gap);
 }
 
-.content-body-collapse-btn:hover {
+.content-collapse-btn:hover {
   color: var(--accent-color) !important;
 }
 
