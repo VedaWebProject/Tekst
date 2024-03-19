@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
-import { ClearIcon, NoContentIcon, SearchIcon } from '@/icons';
+import { AddIcon, ClearIcon, NoContentIcon, SearchIcon } from '@/icons';
 import { resourceTypeSearchForms } from '@/forms/resources/search/mappings';
 import {
   NCollapse,
@@ -21,7 +21,6 @@ import type { SelectMixedOption } from 'naive-ui/es/select/src/interface';
 import CommonSearchFormItems from '@/forms/resources/search/CommonSearchFormItems.vue';
 import { $t } from '@/i18n';
 import { useRouter } from 'vue-router';
-import InsertItemSeparator from '@/components/InsertItemSeparator.vue';
 import { useResourcesStore, useSearchStore } from '@/stores';
 import GeneralSearchSettingsForm from '@/forms/search/GeneralSearchSettingsForm.vue';
 
@@ -103,7 +102,7 @@ watch(
     <help-button-widget help-key="searchView" />
   </icon-heading>
 
-  <n-collapse style="margin-bottom: var(--layout-gap)">
+  <n-collapse>
     <n-collapse-item :title="$t('search.settings.heading')" name="settings">
       <div class="gray-box">
         <general-search-settings-form />
@@ -128,34 +127,19 @@ watch(
     >
       <!-- SEARCH ITEM -->
       <template #default="{ value: resourceQuery, index }">
-        <div style="flex-grow: 2" class="content-block">
-          <div style="display: flex; gap: 0.5rem">
-            <n-form-item :show-label="false" style="flex-grow: 2">
-              <n-select
-                :value="resourceQuery.cmn.res"
-                :options="resourceOptions"
-                :consistent-menu-width="false"
-                size="large"
-                @update:value="
-                  (v, o: SelectMixedOption) =>
-                    handleResourceChange(index, v, o.resourceType as ResourceType)
-                "
-              />
-            </n-form-item>
-            <n-button
-              class="btn-search-item-remove"
-              style="padding: 0.5rem"
-              quaternary
+        <div style="flex-grow: 2" class="search-item content-block">
+          <n-form-item :show-label="false" style="flex-grow: 2">
+            <n-select
+              :value="resourceQuery.cmn.res"
+              :options="resourceOptions"
+              :consistent-menu-width="false"
               size="large"
-              :title="$t('general.removeAction')"
-              :disabled="queries.length <= 1"
-              @click="removeSearchItem(index)"
-            >
-              <template #icon>
-                <n-icon :component="ClearIcon" />
-              </template>
-            </n-button>
-          </div>
+              @update:value="
+                (v, o: SelectMixedOption) =>
+                  handleResourceChange(index, v, o.resourceType as ResourceType)
+              "
+            />
+          </n-form-item>
           <component
             :is="resourceTypeSearchForms[resourceQuery.rts.type]"
             v-model:value="resourceQuery.rts"
@@ -164,12 +148,29 @@ watch(
             v-model:comment="resourceQuery.cmn.cmt"
             v-model:optional="resourceQuery.cmn.opt"
           />
+          <div class="search-item-action-buttons">
+            <n-button
+              v-if="queries.length < 32"
+              circle
+              type="primary"
+              :title="$t('general.insertAction')"
+              :focusable="false"
+              @click="addSearchItem(index)"
+            >
+              <n-icon :component="AddIcon" />
+            </n-button>
+            <n-button
+              v-if="queries.length > 1"
+              circle
+              type="primary"
+              :focusable="false"
+              :title="$t('general.removeAction')"
+              @click="removeSearchItem(index)"
+            >
+              <n-icon :component="ClearIcon" />
+            </n-button>
+          </div>
         </div>
-        <insert-item-separator
-          :title="$t('general.insertAction')"
-          :disabled="queries.length >= 32"
-          @click="addSearchItem(index)"
-        />
       </template>
       <!-- ADD / REMOVE ACTION BUTTONS -->
       <template #action>
@@ -186,9 +187,29 @@ watch(
     :icon="NoContentIcon"
   />
 
-  <button-shelf v-if="!!resources.data.length">
+  <button-shelf v-if="!!resources.data.length" top-gap>
     <n-button type="primary" :disabled="!queries.length" @click="handleSearch">
       {{ $t('search.searchAction') }}
     </n-button>
   </button-shelf>
 </template>
+
+<style scoped>
+.search-item {
+  position: relative;
+}
+
+.search-item-action-buttons {
+  position: absolute;
+  left: 0;
+  bottom: -18px;
+  width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: var(--layout-gap);
+}
+.search-item-action-button-wrapper {
+  border-radius: 3px;
+}
+</style>
