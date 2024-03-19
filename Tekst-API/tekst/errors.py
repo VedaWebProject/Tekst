@@ -248,6 +248,12 @@ E_400_CONTENT_ID_MISMATCH = error_instance(
     msg="Referenced resource ID in updates doesn't match the one in target content",
 )
 
+E_400_MESSAGE_TO_SELF = error_instance(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    key="messageToSelf",
+    msg="You're not supposed to send a message to yourself",
+)
+
 E_400_CONTENT_TYPE_MISMATCH = error_instance(
     status_code=status.HTTP_400_BAD_REQUEST,
     key="contentTypeMismatch",

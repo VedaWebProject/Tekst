@@ -73,7 +73,7 @@ class UserReadPublic(ModelBase):
     affiliation: str | None = None
     avatar_url: str | None = None
     bio: str | None = None
-    is_superuser: bool
+    is_superuser: bool = False
     public_fields: MaybePrivateUserFields = []
 
     @model_validator(mode="after")

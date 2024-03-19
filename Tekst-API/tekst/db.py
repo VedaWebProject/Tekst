@@ -14,6 +14,7 @@ from tekst.models.segment import ClientSegmentDocument
 from tekst.models.settings import PlatformSettingsDocument
 from tekst.models.text import TextDocument
 from tekst.models.user import UserDocument
+from tekst.models.message import MessageDocument
 from tekst.resources import resource_types_mgr
 
 
@@ -48,6 +49,7 @@ async def init_odm(db: Database = get_db()) -> None:
         PlatformSettingsDocument,
         ClientSegmentDocument,
         UserDocument,
+        MessageDocument,
         BookmarkDocument,
         AccessToken,
         LocksStatus,
