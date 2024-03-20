@@ -481,6 +481,16 @@ account:
     msgDeleteAccountWarning: Wenn Sie Ihr Konto löschen, werden alle Daten, die damit verbunden sind, emenfalls gelöscht. Sind Sie sich sicher?
     msgUserDataSaveSuccess: Benutzerdaten gespeichert.
     phDeleteAccountSafetyInput: Geben Sie "{username}" ein, um Ihre Entscheidung zu bestätigen
+  messages:
+    heading: Nachrichten
+    msgUnreadCount: 'Sie haben keine ungelesenen Nachrichten | Sie haben eine ungelesenen Nachricht | Sie haben {count} ungelesenen Nachrichten'
+    createSuccess: Nachricht gesendet
+    deleteSuccess: Nachricht gelöscht
+    read: Nachricht wurde gelesen
+    unread: Nachricht ist ungelesen
+    inputPlaceholder: Schreiben Sie Ihre Nachricht hier...
+    btnSend: Senden
+    msgNoMessages: Sie haben keine Nachrichten gesendet oder erhalten.
 
 admin:
   heading: Administration

@@ -472,6 +472,16 @@ account:
     msgDeleteAccountWarning: If you delete your account, all data associated with it will be deleted, too. Are you sure you want to delete your account?
     msgUserDataSaveSuccess: User data saved.
     phDeleteAccountSafetyInput: Type "{username}" to confirm your decision
+  messages:
+    heading: Messages
+    msgUnreadCount: 'You have no unread messages | You have one unread message | You have {count} unread messages'
+    createSuccess: Message sent
+    deleteSuccess: Message deleted
+    read: Message has been read
+    unread: Message is unread
+    inputPlaceholder: Type your message here...
+    btnSend: Send
+    msgNoMessages: You haven't sent or received any messages.
 
 admin:
   heading: Administration

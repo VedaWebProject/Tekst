@@ -132,7 +132,7 @@ export interface paths {
      */
     post: operations['moveLocation'];
   };
-  '/messages/messages': {
+  '/messages': {
     /**
      * Get messages
      * @description Returns all messages for/from the requesting user
@@ -144,12 +144,27 @@ export interface paths {
      */
     post: operations['sendMessage'];
   };
-  '/messages/messages/{id}': {
+  '/messages/{id}': {
     /**
      * Delete message
      * @description Deletes the message with the given ID
      */
     delete: operations['deleteMessage'];
+  };
+  '/messages/threads/{id}': {
+    /**
+     * Delete thread
+     * @description Marks all received messages from the given user as deleted or actually deletes them,
+     * depending on the current deletion status
+     */
+    delete: operations['deleteThread'];
+  };
+  '/messages/threads/{id}/read': {
+    /**
+     * Mark thread read
+     * @description Marks all received messages from the given user as read
+     */
+    post: operations['markThreadRead'];
   };
   '/platform': {
     /**
@@ -1007,13 +1022,15 @@ export interface components {
        * Time
        * Format: date-time
        * @description Time when the message was sent
+       * @default 2024-03-20T16:40:56.509092
        */
-      time: string;
+      time?: string;
       /**
-       * Threadid
-       * @description ID of the message thread this message belongs to
+       * Read
+       * @description Whether the message has been read by the recipient
+       * @default false
        */
-      threadId?: string | null;
+      read?: boolean;
       /**
        * Deleted
        * @description ID of the user who deleted the message or None if not deleted
@@ -1047,19 +1064,21 @@ export interface components {
        * Time
        * Format: date-time
        * @description Time when the message was sent
+       * @default 2024-03-20T16:40:56.509092
        */
-      time: string;
+      time?: string;
       /**
-       * Threadid
-       * @description ID of the message thread this message belongs to
+       * Read
+       * @description Whether the message has been read by the recipient
+       * @default false
        */
-      threadId?: string | null;
+      read?: boolean;
       /**
        * Deleted
        * @description ID of the user who deleted the message or None if not deleted
        */
       deleted?: string | null;
-      senderUser: components['schemas']['UserReadPublic'];
+      senderUser: components['schemas']['UserReadPublic'] | null;
       recipientUser: components['schemas']['UserReadPublic'];
       [key: string]: unknown;
     };
@@ -3703,8 +3722,10 @@ export interface operations {
     };
     responses: {
       /** @description Successful Response */
-      204: {
-        content: never;
+      200: {
+        content: {
+          'application/json': components['schemas']['MessageRead'][];
+        };
       };
       /** @description Unauthorized */
       401: {
@@ -3738,8 +3759,10 @@ export interface operations {
     };
     responses: {
       /** @description Successful Response */
-      204: {
-        content: never;
+      200: {
+        content: {
+          'application/json': components['schemas']['MessageRead'][];
+        };
       };
       /** @description Unauthorized */
       401: {
@@ -3755,6 +3778,69 @@ export interface operations {
       };
       /** @description Not Found */
       404: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /**
+   * Delete thread
+   * @description Marks all received messages from the given user as deleted or actually deletes them,
+   * depending on the current deletion status
+   */
+  deleteThread: {
+    parameters: {
+      path: {
+        id: string | 'system';
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['MessageRead'][];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /**
+   * Mark thread read
+   * @description Marks all received messages from the given user as read
+   */
+  markThreadRead: {
+    parameters: {
+      path: {
+        id: string | 'system';
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['MessageRead'][];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
         content: {
           'application/json': components['schemas']['TekstErrorModel'];
         };

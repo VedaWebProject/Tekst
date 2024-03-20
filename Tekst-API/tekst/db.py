@@ -9,12 +9,12 @@ from tekst.logging import log
 from tekst.models.bookmark import BookmarkDocument
 from tekst.models.content import ContentBaseDocument
 from tekst.models.location import LocationDocument
+from tekst.models.message import MessageDocument
 from tekst.models.resource import ResourceBaseDocument
 from tekst.models.segment import ClientSegmentDocument
 from tekst.models.settings import PlatformSettingsDocument
 from tekst.models.text import TextDocument
 from tekst.models.user import UserDocument
-from tekst.models.message import MessageDocument
 from tekst.resources import resource_types_mgr
 
 

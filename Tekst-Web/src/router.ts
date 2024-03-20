@@ -27,6 +27,7 @@ const ContentsView = () => import('@/views/ContentsView.vue');
 
 const AccountView = () => import('@/views/account/AccountView.vue');
 const AccountSettingsView = () => import('@/views/account/AccountSettingsView.vue');
+const AccountMessagesView = () => import('@/views/account/AccountMessagesView.vue');
 const VerifyView = () => import('@/views/VerifyView.vue');
 const ResetView = () => import('@/views/ResetView.vue');
 
@@ -182,6 +183,11 @@ const router = createRouter({
           path: 'settings',
           name: 'accountSettings',
           component: AccountSettingsView,
+        },
+        {
+          path: 'messages',
+          name: 'accountMessages',
+          component: AccountMessagesView,
         },
       ],
     },

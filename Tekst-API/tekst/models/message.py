@@ -31,7 +31,7 @@ class Message(ModelBase, ModelFactoryMixin):
         str,
         StringConstraints(
             min_length=1,
-            max_length=8000,
+            max_length=1000,
             strip_whitespace=True,
         ),
         val.CleanupMultiline,
@@ -44,13 +44,13 @@ class Message(ModelBase, ModelFactoryMixin):
         Field(
             description="Time when the message was sent",
         ),
-    ]
-    thread_id: Annotated[
-        PydanticObjectId | None,
+    ] = datetime.utcnow()
+    read: Annotated[
+        bool,
         Field(
-            description="ID of the message thread this message belongs to",
+            description="Whether the message has been read by the recipient",
         ),
-    ] = None
+    ] = False
     deleted: Annotated[
         PydanticObjectId | None,
         Field(
@@ -65,12 +65,11 @@ class MessageDocument(Message, DocumentBase):
         indexes = [
             "recipient",
             "sender",
-            "thread_id",
         ]
 
 
 class MessageRead(Message, ReadBase):
-    sender_user: UserReadPublic
+    sender_user: UserReadPublic | None
     recipient_user: UserReadPublic
 
 

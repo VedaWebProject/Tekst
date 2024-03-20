@@ -9,11 +9,13 @@ withDefaults(
     user?: UserReadPublic & Record<string, any>;
     showAvatar?: boolean;
     size?: 'large' | 'medium' | 'small' | 'tiny';
+    link?: boolean;
   }>(),
   {
     user: undefined,
     showAvatar: true,
     size: 'medium',
+    link: true,
   }
 );
 
@@ -34,10 +36,14 @@ const iconSizes = {
       v-if="showAvatar"
       :avatar-url="user?.avatarUrl || undefined"
       :size="iconSizes[size]"
+      style="flex-shrink: 0"
     />
-    <router-link v-if="user" :to="{ name: 'user', params: { username: user.username } }">
-      <user-display-text :user="user" />
-    </router-link>
+    <template v-if="user">
+      <router-link v-if="link" :to="{ name: 'user', params: { username: user.username } }">
+        <user-display-text :user="user" />
+      </router-link>
+      <user-display-text v-else :user="user" />
+    </template>
     <span v-else>–</span>
   </div>
 </template>

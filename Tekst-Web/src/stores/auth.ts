@@ -8,6 +8,7 @@ import { useIntervalFn } from '@vueuse/core';
 import { useRouter, type RouteLocationRaw } from 'vue-router';
 import { usePlatformData } from '@/composables/platformData';
 import { useStateStore } from '@/stores';
+import { useUserMessages } from '@/composables/userMessages';
 
 const SESSION_POLL_INTERVAL_S = 60; // check session expiry every n seconds
 const SESSION_EXPIRY_OFFSET_S = 10; // assume session expired n seconds early
@@ -27,6 +28,7 @@ export const useAuthStore = defineStore('auth', () => {
   const { pfData, loadPlatformData } = usePlatformData();
   const { message } = useMessages();
   const state = useStateStore();
+  const { unreadCount: unreadUserMessagesCount } = useUserMessages();
 
   const user = ref<UserRead>();
   const loggedIn = computed(() => !!user.value);
@@ -146,7 +148,12 @@ export const useAuthStore = defineStore('auth', () => {
           })
         );
       }
-      message.success($t('general.welcome', { name: userData.name }));
+      message.success(
+        $t('general.welcome', { name: userData.name }) +
+          (unreadUserMessagesCount.value
+            ? ` ${$t('account.messages.msgUnreadCount', { count: unreadUserMessagesCount })}!`
+            : '')
+      );
       closeLoginModal();
       return true;
     } else {

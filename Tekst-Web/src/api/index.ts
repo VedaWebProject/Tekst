@@ -148,6 +148,11 @@ export type UserUpdateAdminNotificationTriggers =
   components['schemas']['UserUpdate']['adminNotificationTriggers'];
 export type UserUpdatePublicFields = components['schemas']['UserUpdate']['publicFields'];
 
+// user messages
+
+export type UserMessageCreate = components['schemas']['MessageCreate'];
+export type UserMessageRead = components['schemas']['MessageRead'];
+
 // text and text structure
 
 export type TextCreate = components['schemas']['TextCreate'];
