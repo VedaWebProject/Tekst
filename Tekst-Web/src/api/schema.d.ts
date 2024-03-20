@@ -132,6 +132,25 @@ export interface paths {
      */
     post: operations['moveLocation'];
   };
+  '/messages/messages': {
+    /**
+     * Get messages
+     * @description Returns all messages for/from the requesting user
+     */
+    get: operations['getMessages'];
+    /**
+     * Send message
+     * @description Creates a message for the specified recipient
+     */
+    post: operations['sendMessage'];
+  };
+  '/messages/messages/{id}': {
+    /**
+     * Delete message
+     * @description Deletes the message with the given ID
+     */
+    delete: operations['deleteMessage'];
+  };
   '/platform': {
     /**
      * Get platform data
@@ -966,6 +985,84 @@ export interface components {
     /** @enum {string} */
     MaybePrivateUserField: 'name' | 'affiliation' | 'bio';
     MaybePrivateUserFields: components['schemas']['MaybePrivateUserField'][];
+    /** MessageCreate */
+    MessageCreate: {
+      /**
+       * Sender
+       * @description ID of the sender or None if this is a system message
+       */
+      sender?: string | null;
+      /**
+       * Recipient
+       * @description ID of the recipient
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      recipient: string;
+      /**
+       * Content
+       * @description Content of the message
+       */
+      content: string;
+      /**
+       * Time
+       * Format: date-time
+       * @description Time when the message was sent
+       */
+      time: string;
+      /**
+       * Threadid
+       * @description ID of the message thread this message belongs to
+       */
+      threadId?: string | null;
+      /**
+       * Deleted
+       * @description ID of the user who deleted the message or None if not deleted
+       */
+      deleted?: string | null;
+    };
+    /** MessageRead */
+    MessageRead: {
+      /**
+       * Id
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      id: string;
+      /**
+       * Sender
+       * @description ID of the sender or None if this is a system message
+       */
+      sender?: string | null;
+      /**
+       * Recipient
+       * @description ID of the recipient
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      recipient: string;
+      /**
+       * Content
+       * @description Content of the message
+       */
+      content: string;
+      /**
+       * Time
+       * Format: date-time
+       * @description Time when the message was sent
+       */
+      time: string;
+      /**
+       * Threadid
+       * @description ID of the message thread this message belongs to
+       */
+      threadId?: string | null;
+      /**
+       * Deleted
+       * @description ID of the user who deleted the message or None if not deleted
+       */
+      deleted?: string | null;
+      senderUser: components['schemas']['UserReadPublic'];
+      recipientUser: components['schemas']['UserReadPublic'];
+      [key: string]: unknown;
+    };
     /** Metadate */
     Metadate: {
       /** Key */
@@ -2711,8 +2808,11 @@ export interface components {
       avatarUrl?: string | null;
       /** Bio */
       bio?: string | null;
-      /** Issuperuser */
-      isSuperuser: boolean;
+      /**
+       * Issuperuser
+       * @default false
+       */
+      isSuperuser?: boolean;
       /** @default [] */
       publicFields?: components['schemas']['MaybePrivateUserFields'];
     };
@@ -3544,6 +3644,102 @@ export interface operations {
         content: {
           'application/json': components['schemas']['LocationRead'];
         };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /**
+   * Get messages
+   * @description Returns all messages for/from the requesting user
+   */
+  getMessages: {
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['MessageRead'][];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+    };
+  };
+  /**
+   * Send message
+   * @description Creates a message for the specified recipient
+   */
+  sendMessage: {
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['MessageCreate'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      204: {
+        content: never;
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /**
+   * Delete message
+   * @description Deletes the message with the given ID
+   */
+  deleteMessage: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      204: {
+        content: never;
       };
       /** @description Unauthorized */
       401: {

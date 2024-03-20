@@ -1797,6 +1797,186 @@
         }
       }
     },
+    "/messages/messages": {
+      "get": {
+        "tags": [
+          "messages"
+        ],
+        "summary": "Get messages",
+        "description": "Returns all messages for/from the requesting user",
+        "operationId": "getMessages",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/MessageRead"
+                  },
+                  "type": "array",
+                  "title": "Response Get Messages Messages Messages Get"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "messages"
+        ],
+        "summary": "Send message",
+        "description": "Creates a message for the specified recipient",
+        "operationId": "sendMessage",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MessageCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/messages/messages/{id}": {
+      "delete": {
+        "tags": [
+          "messages"
+        ],
+        "summary": "Delete message",
+        "description": "Deletes the message with the given ID",
+        "operationId": "deleteMessage",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/platform": {
       "get": {
         "tags": [
@@ -6820,6 +7000,159 @@
         "type": "array",
         "maxItems": 3
       },
+      "MessageCreate": {
+        "properties": {
+          "sender": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sender",
+            "description": "ID of the sender or None if this is a system message"
+          },
+          "recipient": {
+            "type": "string",
+            "title": "Recipient",
+            "description": "ID of the recipient",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "content": {
+            "type": "string",
+            "maxLength": 8000,
+            "minLength": 1,
+            "title": "Content",
+            "description": "Content of the message"
+          },
+          "time": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Time",
+            "description": "Time when the message was sent"
+          },
+          "threadId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Threadid",
+            "description": "ID of the message thread this message belongs to"
+          },
+          "deleted": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Deleted",
+            "description": "ID of the user who deleted the message or None if not deleted"
+          }
+        },
+        "type": "object",
+        "required": [
+          "recipient",
+          "content",
+          "time"
+        ],
+        "title": "MessageCreate"
+      },
+      "MessageRead": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "sender": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sender",
+            "description": "ID of the sender or None if this is a system message"
+          },
+          "recipient": {
+            "type": "string",
+            "title": "Recipient",
+            "description": "ID of the recipient",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "content": {
+            "type": "string",
+            "maxLength": 8000,
+            "minLength": 1,
+            "title": "Content",
+            "description": "Content of the message"
+          },
+          "time": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Time",
+            "description": "Time when the message was sent"
+          },
+          "threadId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Threadid",
+            "description": "ID of the message thread this message belongs to"
+          },
+          "deleted": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Deleted",
+            "description": "ID of the user who deleted the message or None if not deleted"
+          },
+          "senderUser": {
+            "$ref": "#/components/schemas/UserReadPublic"
+          },
+          "recipientUser": {
+            "$ref": "#/components/schemas/UserReadPublic"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "id",
+          "recipient",
+          "content",
+          "time",
+          "senderUser",
+          "recipientUser"
+        ],
+        "title": "MessageRead"
+      },
       "Metadate": {
         "properties": {
           "key": {
@@ -10210,7 +10543,8 @@
           },
           "isSuperuser": {
             "type": "boolean",
-            "title": "Issuperuser"
+            "title": "Issuperuser",
+            "default": false
           },
           "publicFields": {
             "allOf": [
@@ -10224,8 +10558,7 @@
         "type": "object",
         "required": [
           "id",
-          "username",
-          "isSuperuser"
+          "username"
         ],
         "title": "UserReadPublic"
       },
@@ -10510,6 +10843,14 @@
     {
       "name": "users",
       "description": "Registered users and their accounts",
+      "externalDocs": {
+        "description": "View full documentation",
+        "url": "https://vedawebproject.github.io/Tekst"
+      }
+    },
+    {
+      "name": "messages",
+      "description": "Messages users send and receive on the platform",
       "externalDocs": {
         "description": "View full documentation",
         "url": "https://vedawebproject.github.io/Tekst"
