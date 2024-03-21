@@ -67,7 +67,7 @@ watch(
       <n-icon :component="SearchIcon" />
     </template>
   </n-input>
-  <div style="margin-top: 0.5rem">
+  <div class="text-small translucent" style="margin-top: var(--layout-gap)">
     {{ $t('help.msgFoundCount', { count: helpTextsFiltered?.length }) }}
   </div>
 
