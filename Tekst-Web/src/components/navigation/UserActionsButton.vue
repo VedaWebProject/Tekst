@@ -1,15 +1,14 @@
 <script setup lang="ts">
 import { ref, computed, h } from 'vue';
-import { useAuthStore, useStateStore, useThemeStore } from '@/stores';
+import { useAuthStore, useStateStore, useThemeStore, useUserMessagesStore } from '@/stores';
 import { type RouteLocationRaw, RouterLink } from 'vue-router';
 import { NBadge, NButton, NIcon, NDropdown } from 'naive-ui';
 import { $t } from '@/i18n';
 import { LogInIcon, LogOutIcon, UserIcon, AdminIcon, ResourceIcon } from '@/icons';
 import { renderIcon } from '@/utils';
-import { useUserMessages } from '@/composables/userMessages';
 
 const auth = useAuthStore();
-const { unreadCount: unreadUserMessagesCount } = useUserMessages();
+const userMessages = useUserMessagesStore();
 const state = useStateStore();
 const theme = useThemeStore();
 
@@ -27,11 +26,7 @@ const userOptions = computed(() => [
       () =>
         h('div', null, [
           auth.user?.name,
-          h(
-            NBadge,
-            { dot: true, offset: [4, -10], show: !!unreadUserMessagesCount.value },
-            undefined
-          ),
+          h(NBadge, { dot: true, offset: [4, -10], show: !!userMessages.unreadCount }, undefined),
         ]),
       {
         name: 'account',
@@ -105,7 +100,7 @@ function handleUserOptionSelect(key: string) {
     trigger="click"
     @select="handleUserOptionSelect"
   >
-    <n-badge :value="unreadUserMessagesCount">
+    <n-badge :value="userMessages.unreadCount">
       <n-button
         :secondary="!auth.loggedIn"
         circle

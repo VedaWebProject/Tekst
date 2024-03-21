@@ -3,11 +3,12 @@ import { DELETE, GET, POST } from '@/api';
 import type { UserMessageCreate, UserMessageRead, UserReadPublic } from '@/api';
 import { useAuthStore } from '@/stores';
 import { watchEffect } from 'vue';
-import { useMessages } from './messages';
+import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
-import { usePlatformData } from './platformData';
+import { usePlatformData } from '@/composables/platformData';
+import { defineStore } from 'pinia';
 
-export interface MessageThread {
+export interface UserMessageThread {
   id: string;
   contact?: UserReadPublic;
   contactLabel: string;
@@ -15,24 +16,25 @@ export interface MessageThread {
   unreadCount: number;
 }
 
-const userMessages = ref<UserMessageRead[]>([]);
-const lastUserId = ref<string>();
-
-export function useUserMessages() {
+export const useUserMessagesStore = defineStore('userMessages', () => {
   const auth = useAuthStore();
   const { pfData } = usePlatformData();
   const { message } = useMessages();
 
+  const messages = ref<UserMessageRead[]>([]);
+  const lastUserId = ref<string>();
   const loading = ref(false);
+  const openThread = ref<UserMessageThread>();
+  const showMessagingModal = ref(false);
 
   const unreadCount = computed<number>(
-    () => userMessages.value.filter((m) => (auth.user?.id || '–') === m.recipient && !m.read).length
+    () => messages.value.filter((m) => (auth.user?.id || '–') === m.recipient && !m.read).length
   );
 
-  const threads = computed<MessageThread[]>(() => {
+  const threads = computed<UserMessageThread[]>(() => {
     if (!auth.user?.id) return [];
-    const result: MessageThread[] = [];
-    for (const message of userMessages.value) {
+    const result: UserMessageThread[] = [];
+    for (const message of messages.value) {
       const contact: UserReadPublic | undefined =
         (message.recipientUser.id !== auth.user.id ? message.recipientUser : message.senderUser) ||
         undefined;
@@ -69,40 +71,40 @@ export function useUserMessages() {
     return result;
   });
 
-  async function loadUserMessages() {
+  async function load() {
     loading.value = true;
     if (auth.user?.id) {
       const { data, error } = await GET('/messages');
       if (!error) {
-        userMessages.value = data;
+        messages.value = data;
       } else {
-        userMessages.value = [];
+        messages.value = [];
       }
     } else {
-      userMessages.value = [];
+      messages.value = [];
     }
     loading.value = false;
   }
 
-  async function createUserMessage(msg: UserMessageCreate) {
+  async function send(msg: UserMessageCreate) {
     loading.value = true;
     const { data, error } = await POST('/messages', {
       body: msg,
     });
     if (!error) {
-      userMessages.value = data;
+      messages.value = data;
       message.success($t('account.messages.createSuccess'), undefined, 1);
     }
     loading.value = false;
   }
 
-  async function deleteUserMessage(id: string) {
+  async function deleteMessage(id: string) {
     loading.value = true;
     const { data, error } = await DELETE('/messages/{id}', {
       params: { path: { id } },
     });
     if (!error) {
-      userMessages.value = data;
+      messages.value = data;
       message.success($t('account.messages.deleteSuccess'));
     } else {
       auth.logout();
@@ -110,13 +112,13 @@ export function useUserMessages() {
     loading.value = false;
   }
 
-  async function deleteUserMessageThread(id: string) {
+  async function deleteThread(id: string) {
     loading.value = true;
     const { data, error } = await DELETE('/messages/threads/{id}', {
       params: { path: { id } },
     });
     if (!error) {
-      userMessages.value = data;
+      messages.value = data;
       message.success($t('account.messages.deleteSuccess'));
     } else {
       auth.logout();
@@ -127,18 +129,20 @@ export function useUserMessages() {
   watchEffect(() => {
     if (auth.loggedIn && auth.user?.id !== lastUserId.value) {
       lastUserId.value = auth.user?.id;
-      loadUserMessages();
+      load();
     }
   });
 
   return {
-    userMessages,
+    messages,
     threads,
+    openThread,
     loading,
     unreadCount,
-    loadUserMessages,
-    createUserMessage,
-    deleteUserMessage,
-    deleteUserMessageThread,
+    showMessagingModal,
+    load,
+    send,
+    deleteMessage,
+    deleteThread,
   };
-}
+});

@@ -6,7 +6,7 @@ import ResourceInfoWidget from '@/components/resource/ResourceInfoWidget.vue';
 import ResourceDeactivateWidget from '@/components/resource/ResourceDeactivateWidget.vue';
 import { useBrowseStore } from '@/stores';
 import type { AnyResourceRead } from '@/api';
-import ContentCommentWidget from '../resource/ContentCommentWidget.vue';
+import ContentCommentWidget from '@/components/resource/ContentCommentWidget.vue';
 
 withDefaults(
   defineProps<{

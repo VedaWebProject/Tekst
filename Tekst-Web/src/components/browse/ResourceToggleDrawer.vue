@@ -6,7 +6,7 @@ import ResourceToggleDrawerItem from '@/components/browse/ResourceToggleDrawerIt
 import IconHeading from '@/components/generic/IconHeading.vue';
 
 import { CheckAllIcon, ResourceIcon, UncheckAllIcon } from '@/icons';
-import LabelledSwitch from '../LabelledSwitch.vue';
+import LabelledSwitch from '@/components/LabelledSwitch.vue';
 
 const props = defineProps<{ show: boolean }>();
 const emit = defineEmits<{ (e: 'update:show', show: boolean): void }>();

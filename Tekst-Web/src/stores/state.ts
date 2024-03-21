@@ -156,11 +156,14 @@ export const useStateStore = defineStore('state', () => {
   );
 
   // set page title
-  function setPageTitle(forRoute: RouteLocationNormalized = route) {
+  function setPageTitle(
+    forRoute: RouteLocationNormalized = route,
+    variables: Record<string, string> = {}
+  ) {
     const title = $te(`routes.pageTitle.${String(forRoute.name)}`)
       ? $t(`routes.pageTitle.${String(forRoute.name)}`, {
           text: text.value?.title,
-          username: auth.user?.username,
+          ...variables,
         })
       : undefined;
     const pfName = pfData.value?.settings.infoPlatformName;

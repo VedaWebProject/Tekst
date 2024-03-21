@@ -483,6 +483,7 @@ account:
     phDeleteAccountSafetyInput: Geben Sie "{username}" ein, um Ihre Entscheidung zu bestätigen
   messages:
     heading: Nachrichten
+    headingThreads: Unterhaltungen
     msgUnreadCount: 'Sie haben keine ungelesenen Nachrichten | Sie haben eine ungelesenen Nachricht | Sie haben {count} ungelesenen Nachrichten'
     createSuccess: Nachricht gesendet
     deleteSuccess: Nachricht gelöscht

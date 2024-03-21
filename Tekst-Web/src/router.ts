@@ -2,9 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore, useStateStore } from '@/stores';
 import { $t } from '@/i18n';
 import { useMessages } from '@/composables/messages';
-
 import { SiteNoticeIcon, PrivacyIcon, InfoIcon } from '@/icons';
-import { WEB_PATH } from './common';
+import { WEB_PATH } from '@/common';
 
 declare module 'vue-router' {
   interface RouteMeta {

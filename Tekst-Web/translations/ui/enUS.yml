@@ -474,6 +474,7 @@ account:
     phDeleteAccountSafetyInput: Type "{username}" to confirm your decision
   messages:
     heading: Messages
+    headingThreads: Conversations
     msgUnreadCount: 'You have no unread messages | You have one unread message | You have {count} unread messages'
     createSuccess: Message sent
     deleteSuccess: Message deleted

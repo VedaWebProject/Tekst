@@ -113,7 +113,7 @@ export {
   SendFilled as SendIcon,
   MarkChatReadRound as MarkChatReadIcon,
   MarkChatUnreadRound as MarkChatUnreadIcon,
-  MessageOutlined as MesssageIcon,
+  MessageOutlined as MessageIcon,
   FindInPageOutlined as NothingFoundIcon,
   FilterAltOutlined as FilterIcon,
   SortOutlined as SortIcon,
