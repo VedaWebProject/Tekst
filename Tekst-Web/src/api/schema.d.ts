@@ -403,8 +403,10 @@ export interface components {
       /**
        * @description General search settings
        * @default {
-       *   "pg": 1,
-       *   "pgs": 10,
+       *   "pgn": {
+       *     "pg": 1,
+       *     "pgs": 10
+       *   },
        *   "strict": false
        * }
        */
@@ -856,17 +858,13 @@ export interface components {
     /** GeneralSearchSettings */
     GeneralSearchSettings: {
       /**
-       * Pg
-       * @description Page number
-       * @default 1
+       * @description Pagination settings
+       * @default {
+       *   "pg": 1,
+       *   "pgs": 10
+       * }
        */
-      pg?: number;
-      /**
-       * Pgs
-       * @description Page size
-       * @default 10
-       */
-      pgs?: number;
+      pgn?: components['schemas']['PaginationSettings'];
       /** @description Sorting preset */
       sort?: components['schemas']['SortingPreset'] | null;
       /**
@@ -1022,7 +1020,7 @@ export interface components {
        * Time
        * Format: date-time
        * @description Time when the message was sent
-       * @default 2024-03-20T16:40:56.509092
+       * @default 2024-03-21T09:43:31.186946
        */
       time?: string;
       /**
@@ -1064,7 +1062,7 @@ export interface components {
        * Time
        * Format: date-time
        * @description Time when the message was sent
-       * @default 2024-03-20T16:40:56.509092
+       * @default 2024-03-21T09:43:31.186946
        */
       time?: string;
       /**
@@ -1106,6 +1104,21 @@ export interface components {
       name: string;
       /** Font */
       font?: string | null;
+    };
+    /** PaginationSettings */
+    PaginationSettings: {
+      /**
+       * Pg
+       * @description Page number
+       * @default 1
+       */
+      pg?: number;
+      /**
+       * Pgs
+       * @description Page size
+       * @default 10
+       */
+      pgs?: number;
     };
     /** PlainTextContentCreate */
     PlainTextContentCreate: {
@@ -1894,8 +1907,10 @@ export interface components {
       /**
        * @description General search settings
        * @default {
-       *   "pg": 1,
-       *   "pgs": 10,
+       *   "pgn": {
+       *     "pg": 1,
+       *     "pgs": 10
+       *   },
        *   "strict": false
        * }
        */

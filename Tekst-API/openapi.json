@@ -5969,8 +5969,10 @@
             ],
             "description": "General search settings",
             "default": {
-              "pg": 1,
-              "pgs": 10,
+              "pgn": {
+                "pg": 1,
+                "pgs": 10
+              },
               "strict": false
             }
           },
@@ -6857,17 +6859,17 @@
       },
       "GeneralSearchSettings": {
         "properties": {
-          "pg": {
-            "type": "integer",
-            "title": "Pg",
-            "description": "Page number",
-            "default": 1
-          },
-          "pgs": {
-            "type": "integer",
-            "title": "Pgs",
-            "description": "Page size",
-            "default": 10
+          "pgn": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PaginationSettings"
+              }
+            ],
+            "description": "Pagination settings",
+            "default": {
+              "pg": 1,
+              "pgs": 10
+            }
           },
           "sort": {
             "anyOf": [
@@ -7201,7 +7203,7 @@
             "format": "date-time",
             "title": "Time",
             "description": "Time when the message was sent",
-            "default": "2024-03-20T16:40:56.509092"
+            "default": "2024-03-21T09:43:31.186946"
           },
           "read": {
             "type": "boolean",
@@ -7268,7 +7270,7 @@
             "format": "date-time",
             "title": "Time",
             "description": "Time when the message was sent",
-            "default": "2024-03-20T16:40:56.509092"
+            "default": "2024-03-21T09:43:31.186946"
           },
           "read": {
             "type": "boolean",
@@ -7400,6 +7402,24 @@
           "name"
         ],
         "title": "OskMode"
+      },
+      "PaginationSettings": {
+        "properties": {
+          "pg": {
+            "type": "integer",
+            "title": "Pg",
+            "description": "Page number",
+            "default": 1
+          },
+          "pgs": {
+            "type": "integer",
+            "title": "Pgs",
+            "description": "Page size",
+            "default": 10
+          }
+        },
+        "type": "object",
+        "title": "PaginationSettings"
       },
       "PlainTextContentCreate": {
         "properties": {
@@ -8794,8 +8814,10 @@
             ],
             "description": "General search settings",
             "default": {
-              "pg": 1,
-              "pgs": 10,
+              "pgn": {
+                "pg": 1,
+                "pgs": 10
+              },
               "strict": false
             }
           },

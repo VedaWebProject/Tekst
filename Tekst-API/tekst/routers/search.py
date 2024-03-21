@@ -39,8 +39,9 @@ async def perform_search(
     ],
 ) -> SearchResults:
     if (
-        (body.settings_general.page - 1) * body.settings_general.page_size
-    ) + body.settings_general.page_size > 10000:
+        body.settings_general.pagination.es_from()
+        + body.settings_general.pagination.es_size()
+    ) > 10000:
         raise errors.E_400_REQUESTED_TOO_MANY_SEARCH_RESULTS
     if body.search_type == "quick":
         return await search.search_quick(

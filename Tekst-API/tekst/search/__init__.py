@@ -337,8 +337,8 @@ async def search_quick(
             highlight={
                 "fields": {"*": {}},
             },
-            from_=(settings_general.page - 1) * settings_general.page_size,
-            size=settings_general.page_size,
+            from_=settings_general.pagination.es_from(),
+            size=settings_general.pagination.es_size(),
             track_scores=True,
             sort=SORTING_PRESETS.get(settings_general.sorting_preset, None)
             if settings_general.sorting_preset
@@ -389,8 +389,8 @@ async def search_advanced(
             highlight={
                 "fields": {"*": {}},
             },
-            from_=(settings_general.page - 1) * settings_general.page_size,
-            size=settings_general.page_size,
+            from_=settings_general.pagination.es_from(),
+            size=settings_general.pagination.es_size(),
             track_scores=True,
             sort=SORTING_PRESETS.get(settings_general.sorting_preset, None)
             if settings_general.sorting_preset
