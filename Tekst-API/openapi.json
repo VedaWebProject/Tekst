@@ -5333,6 +5333,42 @@
               "title": "Q"
             },
             "description": "Query string to search in user data"
+          },
+          {
+            "name": "pg",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "description": "Page number",
+              "default": 1,
+              "title": "Pg"
+            },
+            "description": "Page number"
+          },
+          {
+            "name": "pgs",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "description": "Page size",
+              "default": 10,
+              "title": "Pgs"
+            },
+            "description": "Page size"
+          },
+          {
+            "name": "emptyOk",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Empty query returns all users",
+              "default": true,
+              "title": "Emptyok"
+            },
+            "description": "Empty query returns all users"
           }
         ],
         "responses": {
@@ -5341,11 +5377,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/UserReadPublic"
-                  },
-                  "title": "Response Find Public Users Users Public Get"
+                  "$ref": "#/components/schemas/PublicUsersSearchResult"
                 }
               }
             }
@@ -7315,7 +7347,7 @@
             "format": "date-time",
             "title": "Time",
             "description": "Time when the message was sent",
-            "default": "2024-03-22T08:31:07.924124"
+            "default": "2024-03-22T09:37:05.802597"
           },
           "read": {
             "type": "boolean",
@@ -7382,7 +7414,7 @@
             "format": "date-time",
             "title": "Time",
             "description": "Time when the message was sent",
-            "default": "2024-03-22T08:31:07.924124"
+            "default": "2024-03-22T09:37:05.802597"
           },
           "read": {
             "type": "boolean",
@@ -8903,6 +8935,27 @@
         ],
         "title": "PlatformStats",
         "description": "Platform statistics data"
+      },
+      "PublicUsersSearchResult": {
+        "properties": {
+          "users": {
+            "items": {
+              "$ref": "#/components/schemas/UserReadPublic"
+            },
+            "type": "array",
+            "title": "Users",
+            "description": "Paginated public users data",
+            "default": []
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total",
+            "description": "Total number of search hits",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "title": "PublicUsersSearchResult"
       },
       "QuickSearchRequestBody": {
         "properties": {
@@ -11040,19 +11093,17 @@
             },
             "type": "array",
             "title": "Users",
-            "description": "Paginated users data"
+            "description": "Paginated users data",
+            "default": []
           },
           "total": {
             "type": "integer",
             "title": "Total",
-            "description": "Total number of search hits"
+            "description": "Total number of search hits",
+            "default": 0
           }
         },
         "type": "object",
-        "required": [
-          "users",
-          "total"
-        ],
         "title": "UsersSearchResult"
       },
       "ValidationError": {

@@ -13,6 +13,7 @@ from tekst.auth import (
 from tekst.models.common import PydanticObjectId
 from tekst.models.search import PaginationSettings
 from tekst.models.user import (
+    PublicUsersSearchResult,
     UserDocument,
     UserReadPublic,
     UsersSearchResult,
@@ -189,7 +190,7 @@ async def get_public_user(
 
 @router.get(
     "/public",
-    response_model=list[UserReadPublic],
+    response_model=PublicUsersSearchResult,
     status_code=status.HTTP_200_OK,
     responses=errors.responses(
         [
@@ -208,16 +209,55 @@ async def find_public_users(
             max_length=128,
         ),
     ] = "",
-) -> list[UserDocument]:
+    page: Annotated[
+        int,
+        Query(
+            alias="pg",
+            description="Page number",
+        ),
+    ] = 1,
+    page_size: Annotated[
+        int,
+        Query(
+            alias="pgs",
+            description="Page size",
+        ),
+    ] = 10,
+    allow_empty_query: Annotated[
+        bool,
+        Query(
+            alias="emptyOk",
+            description="Empty query returns all users",
+        ),
+    ] = True,
+) -> PublicUsersSearchResult:
     """
     Returns a list of public users matching the given query.
 
     Only returns active user accounts. The query is considered to match a full token
     (e.g. first name, last name, username, a word in the affiliation field).
     """
-    if not query:
-        return []
-    return await UserDocument.find(
-        Text(query),
+    if not query and not allow_empty_query:
+        return PublicUsersSearchResult()
+
+    # construct DB query
+    db_query = [
+        Text(query) if query else {},
         Eq(UserDocument.is_active, True),
-    ).to_list()
+    ]
+
+    # count total possible hits
+    total = await UserDocument.find(*db_query).count()
+
+    # return actual paginated, sorted restults
+    pgn = PaginationSettings(page=page, page_size=page_size)
+    return PublicUsersSearchResult(
+        users=(
+            await UserDocument.find(*db_query)
+            .sort(+UserDocument.username)
+            .skip(pgn.mongo_skip())
+            .limit(pgn.mongo_limit())
+            .to_list()
+        ),
+        total=total,
+    )

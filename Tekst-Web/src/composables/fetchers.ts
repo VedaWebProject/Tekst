@@ -1,6 +1,12 @@
 import { ref, isRef, unref, watchEffect, type Ref, watch } from 'vue';
 import { GET } from '@/api';
-import type { UserReadPublic, PlatformStats, UserRead, UserSearchFilters } from '@/api';
+import type {
+  UserReadPublic,
+  PlatformStats,
+  UserRead,
+  UserSearchFilters,
+  PublicUserSearchFilters,
+} from '@/api';
 import { useDebounceFn } from '@vueuse/core';
 import { STATIC_PATH } from '@/common';
 import { useMessages } from './messages';
@@ -80,8 +86,8 @@ export function useUsersAdmin(filtersRef: Ref<UserSearchFilters>) {
     });
 
     if (!e) {
-      users.value = data.users;
-      total.value = data.total;
+      users.value = data.users || [];
+      total.value = data.total || 0;
     } else {
       error.value = true;
     }
@@ -89,6 +95,7 @@ export function useUsersAdmin(filtersRef: Ref<UserSearchFilters>) {
   }
 
   const debouncedLoad = useDebounceFn(load, 500);
+
   watch(
     filtersRef,
     (newFilters) => {
@@ -107,13 +114,14 @@ export function useUsersAdmin(filtersRef: Ref<UserSearchFilters>) {
   };
 }
 
-export function useUsersSearch(queryRef: Ref<string | null | undefined>) {
+export function useUsersSearch(queryRef: Ref<PublicUserSearchFilters>) {
   const users = ref<UserReadPublic[]>([]);
   const error = ref(false);
   const loading = ref(false);
+  const total = ref(0);
 
-  async function load(query?: string | null) {
-    if (query == null) {
+  async function load(query: PublicUserSearchFilters) {
+    if (!query.q && !query.emptyOk) {
       users.value = [];
       loading.value = false;
       return;
@@ -123,10 +131,11 @@ export function useUsersSearch(queryRef: Ref<string | null | undefined>) {
     users.value = [];
     error.value = false;
 
-    const { data, error: err } = await GET('/users/public', { params: { query: { q: query } } });
+    const { data, error: err } = await GET('/users/public', { params: { query: query } });
 
     if (!err) {
-      users.value = data;
+      users.value = data.users || [];
+      total.value = data.total || 0;
     } else {
       error.value = true;
     }
@@ -134,13 +143,19 @@ export function useUsersSearch(queryRef: Ref<string | null | undefined>) {
   }
 
   const debouncedLoad = useDebounceFn(load, 500);
-  watchEffect(() => {
-    loading.value = true;
-    debouncedLoad(queryRef.value);
-  });
+
+  watch(
+    queryRef,
+    (newQuery) => {
+      loading.value = true;
+      debouncedLoad(newQuery);
+    },
+    { immediate: true, deep: true }
+  );
 
   return {
     users,
+    total,
     loading,
     error,
     load,

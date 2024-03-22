@@ -1020,7 +1020,7 @@ export interface components {
        * Time
        * Format: date-time
        * @description Time when the message was sent
-       * @default 2024-03-22T08:31:07.924124
+       * @default 2024-03-22T09:37:05.802597
        */
       time?: string;
       /**
@@ -1062,7 +1062,7 @@ export interface components {
        * Time
        * Format: date-time
        * @description Time when the message was sent
-       * @default 2024-03-22T08:31:07.924124
+       * @default 2024-03-22T09:37:05.802597
        */
       time?: string;
       /**
@@ -1889,6 +1889,21 @@ export interface components {
       usersCount: number;
       /** Texts */
       texts: components['schemas']['TextStats'][];
+    };
+    /** PublicUsersSearchResult */
+    PublicUsersSearchResult: {
+      /**
+       * Users
+       * @description Paginated public users data
+       * @default []
+       */
+      users?: components['schemas']['UserReadPublic'][];
+      /**
+       * Total
+       * @description Total number of search hits
+       * @default 0
+       */
+      total?: number;
     };
     /** QuickSearchRequestBody */
     QuickSearchRequestBody: {
@@ -2897,13 +2912,15 @@ export interface components {
       /**
        * Users
        * @description Paginated users data
+       * @default []
        */
-      users: components['schemas']['UserRead'][];
+      users?: components['schemas']['UserRead'][];
       /**
        * Total
        * @description Total number of search hits
+       * @default 0
        */
-      total: number;
+      total?: number;
     };
     /** ValidationError */
     ValidationError: {
@@ -5344,13 +5361,19 @@ export interface operations {
       query?: {
         /** @description Query string to search in user data */
         q?: string;
+        /** @description Page number */
+        pg?: number;
+        /** @description Page size */
+        pgs?: number;
+        /** @description Empty query returns all users */
+        emptyOk?: boolean;
       };
     };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': components['schemas']['UserReadPublic'][];
+          'application/json': components['schemas']['PublicUsersSearchResult'];
         };
       };
       /** @description Unauthorized */

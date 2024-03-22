@@ -12,7 +12,7 @@ import {
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import { computed, h, ref, type VNodeChild } from 'vue';
 import { useUsersSearch } from '@/composables/fetchers';
-import type { AnyResourceRead, UserReadPublic } from '@/api';
+import type { AnyResourceRead, PublicUserSearchFilters, UserReadPublic } from '@/api';
 import UserDisplayText from '@/components/user/UserDisplayText.vue';
 import { $t } from '@/i18n';
 import { useMessages } from '@/composables/messages';
@@ -24,9 +24,16 @@ const props = defineProps<{ show?: boolean; resource?: AnyResourceRead; loading?
 const emit = defineEmits(['update:show', 'submit']);
 
 const { message } = useMessages();
+
+const initialUserSearchQuery = (): PublicUserSearchFilters => ({
+  pg: 1,
+  pgs: 9999,
+  emptyOk: false,
+});
+
 const formModel = ref<{ userId: string | undefined }>({ userId: undefined });
 const formRef = ref<FormInst | null>(null);
-const userSearchQuery = ref<string>();
+const userSearchQuery = ref<PublicUserSearchFilters>(initialUserSearchQuery());
 const { users, loading: loadingSearch, error } = useUsersSearch(userSearchQuery);
 
 const usersOptions = computed(() => users.value.map((u) => ({ value: u.id, user: u })));
@@ -63,7 +70,7 @@ async function handleOkClick() {
       message.error($t('errors.followFormRules'));
     });
   formModel.value = { userId: undefined };
-  userSearchQuery.value = undefined;
+  userSearchQuery.value = initialUserSearchQuery();
 }
 </script>
 
@@ -101,7 +108,7 @@ async function handleOkClick() {
           :status="error ? 'error' : undefined"
           :options="usersOptions"
           :placeholder="$t('resources.phSearchUsers')"
-          @search="(q) => (userSearchQuery = q)"
+          @search="(q) => (userSearchQuery.q = q)"
         />
       </n-form-item>
     </n-form>

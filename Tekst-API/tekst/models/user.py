@@ -165,5 +165,12 @@ UserUpdate = User.update_model(schemas.BaseUserUpdate)
 
 
 class UsersSearchResult(ModelBase):
-    users: Annotated[list[UserRead], Field(description="Paginated users data")]
-    total: Annotated[int, Field(description="Total number of search hits")]
+    users: Annotated[list[UserRead], Field(description="Paginated users data")] = []
+    total: Annotated[int, Field(description="Total number of search hits")] = 0
+
+
+class PublicUsersSearchResult(ModelBase):
+    users: Annotated[
+        list[UserReadPublic], Field(description="Paginated public users data")
+    ] = []
+    total: Annotated[int, Field(description="Total number of search hits")] = 0
