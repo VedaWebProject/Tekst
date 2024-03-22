@@ -74,7 +74,7 @@ SortingPreset = TypeAliasType(
 )
 
 
-class GeneralSearchSettings(ModelBase):
+class PaginationSettings(ModelBase):
     page: Annotated[
         int,
         conint(ge=1),
@@ -91,6 +91,28 @@ class GeneralSearchSettings(ModelBase):
             description="Page size",
         ),
     ] = 10
+
+    def es_from(self) -> int:
+        return (self.page - 1) * self.page_size
+
+    def es_size(self) -> int:
+        return self.page_size
+
+    def mongo_skip(self) -> int:
+        return (self.page - 1) * self.page_size if self.page > 0 else 0
+
+    def mongo_limit(self) -> int:
+        return self.page_size
+
+
+class GeneralSearchSettings(ModelBase):
+    pagination: Annotated[
+        PaginationSettings,
+        Field(
+            alias="pgn",
+            description="Pagination settings",
+        ),
+    ] = PaginationSettings()
     sorting_preset: Annotated[
         SortingPreset | None,
         Field(

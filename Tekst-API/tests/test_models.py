@@ -96,6 +96,9 @@ def test_user_read_public():
         name="Foo Bar",
         affiliation="Baz",
         is_superuser=False,
+        is_active=True,
+        avatar_url=None,
+        bio=None,
         public_fields=["name"],
     )
     assert not urp.affiliation

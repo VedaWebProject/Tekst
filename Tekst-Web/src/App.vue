@@ -18,7 +18,7 @@ import PageFooter from './layout/PageFooter.vue';
 import { useInitializeApp } from '@/composables/init';
 import LoginModal from '@/components/modals/LoginModal.vue';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
-
+import MessagingModal from '@/components/userMessages/MessagingModal.vue';
 import { ErrorIcon } from '@/icons';
 
 const state = useStateStore();
@@ -66,6 +66,7 @@ const nUiDateLocale = computed(() => getLocaleProfile(state.locale)?.nUiDateLoca
           />
           <global-messenger />
         </div>
+        <messaging-modal />
         <login-modal />
         <n-back-top :visibility-height="200" style="z-index: 2" />
         <n-global-style />

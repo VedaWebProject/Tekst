@@ -1797,6 +1797,354 @@
         }
       }
     },
+    "/messages": {
+      "get": {
+        "tags": [
+          "messages"
+        ],
+        "summary": "Get messages",
+        "description": "Returns all messages for/from the requesting user",
+        "operationId": "getMessages",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/MessageRead"
+                  },
+                  "type": "array",
+                  "title": "Response Get Messages Messages Get"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "messages"
+        ],
+        "summary": "Send message",
+        "description": "Creates a message for the specified recipient",
+        "operationId": "sendMessage",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MessageCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/MessageRead"
+                  },
+                  "type": "array",
+                  "title": "Response Send Message Messages Post"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/messages/{id}": {
+      "delete": {
+        "tags": [
+          "messages"
+        ],
+        "summary": "Delete message",
+        "description": "Deletes the message with the given ID",
+        "operationId": "deleteMessage",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MessageRead"
+                  },
+                  "title": "Response Delete Message Messages  Id  Delete"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/messages/threads/{id}": {
+      "delete": {
+        "tags": [
+          "messages"
+        ],
+        "summary": "Delete thread",
+        "description": "Marks all received messages from the given user as deleted or actually deletes them,\ndepending on the current deletion status",
+        "operationId": "deleteThread",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                {
+                  "const": "system"
+                }
+              ],
+              "title": "Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MessageRead"
+                  },
+                  "title": "Response Delete Thread Messages Threads  Id  Delete"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/messages/threads/{id}/read": {
+      "post": {
+        "tags": [
+          "messages"
+        ],
+        "summary": "Mark thread read",
+        "description": "Marks all received messages from the given user as read",
+        "operationId": "markThreadRead",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                {
+                  "const": "system"
+                }
+              ],
+              "title": "Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MessageRead"
+                  },
+                  "title": "Response Mark Thread Read Messages Threads  Id  Read Post"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/platform": {
       "get": {
         "tags": [
@@ -4728,44 +5076,8 @@
         "tags": [
           "users"
         ],
-        "summary": "Get users",
-        "operationId": "getUsers",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "items": {
-                    "$ref": "#/components/schemas/UserRead"
-                  },
-                  "type": "array",
-                  "title": "Response Get Users Users Get"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            }
-          }
-        },
+        "summary": "Find users",
+        "operationId": "findUsers",
         "security": [
           {
             "APIKeyCookie": []
@@ -4773,7 +5085,160 @@
           {
             "OAuth2PasswordBearer": []
           }
-        ]
+        ],
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128,
+              "description": "Query string to search in user data",
+              "default": "",
+              "title": "Q"
+            },
+            "description": "Query string to search in user data"
+          },
+          {
+            "name": "active",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Include active users",
+              "default": true,
+              "title": "Active"
+            },
+            "description": "Include active users"
+          },
+          {
+            "name": "inactive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Include inactive users",
+              "default": true,
+              "title": "Inactive"
+            },
+            "description": "Include inactive users"
+          },
+          {
+            "name": "verified",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Include verified users",
+              "default": true,
+              "title": "Verified"
+            },
+            "description": "Include verified users"
+          },
+          {
+            "name": "unverified",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Include unverified users",
+              "default": true,
+              "title": "Unverified"
+            },
+            "description": "Include unverified users"
+          },
+          {
+            "name": "admin",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Include administrators",
+              "default": true,
+              "title": "Admin"
+            },
+            "description": "Include administrators"
+          },
+          {
+            "name": "user",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Include regular users",
+              "default": true,
+              "title": "User"
+            },
+            "description": "Include regular users"
+          },
+          {
+            "name": "pg",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "description": "Page number",
+              "default": 1,
+              "title": "Pg"
+            },
+            "description": "Page number"
+          },
+          {
+            "name": "pgs",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "description": "Page size",
+              "default": 10,
+              "title": "Pgs"
+            },
+            "description": "Page size"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsersSearchResult"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/users/public/{user}": {
@@ -4861,18 +5326,49 @@
             "in": "query",
             "required": false,
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
+              "type": "string",
+              "maxLength": 128,
               "description": "Query string to search in user data",
+              "default": "",
               "title": "Q"
             },
             "description": "Query string to search in user data"
+          },
+          {
+            "name": "pg",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "description": "Page number",
+              "default": 1,
+              "title": "Pg"
+            },
+            "description": "Page number"
+          },
+          {
+            "name": "pgs",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "description": "Page size",
+              "default": 10,
+              "title": "Pgs"
+            },
+            "description": "Page size"
+          },
+          {
+            "name": "emptyOk",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Empty query returns all users",
+              "default": true,
+              "title": "Emptyok"
+            },
+            "description": "Empty query returns all users"
           }
         ],
         "responses": {
@@ -4881,11 +5377,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/UserReadPublic"
-                  },
-                  "title": "Response Find Public Users Users Public Get"
+                  "$ref": "#/components/schemas/PublicUsersSearchResult"
                 }
               }
             }
@@ -5621,8 +6113,10 @@
             ],
             "description": "General search settings",
             "default": {
-              "pg": 1,
-              "pgs": 10,
+              "pgn": {
+                "pg": 1,
+                "pgs": 10
+              },
               "strict": false
             }
           },
@@ -6509,17 +7003,17 @@
       },
       "GeneralSearchSettings": {
         "properties": {
-          "pg": {
-            "type": "integer",
-            "title": "Pg",
-            "description": "Page number",
-            "default": 1
-          },
-          "pgs": {
-            "type": "integer",
-            "title": "Pgs",
-            "description": "Page size",
-            "default": 10
+          "pgn": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PaginationSettings"
+              }
+            ],
+            "description": "Pagination settings",
+            "default": {
+              "pg": 1,
+              "pgs": 10
+            }
           },
           "sort": {
             "anyOf": [
@@ -6820,6 +7314,164 @@
         "type": "array",
         "maxItems": 3
       },
+      "MessageCreate": {
+        "properties": {
+          "sender": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sender",
+            "description": "ID of the sender or None if this is a system message"
+          },
+          "recipient": {
+            "type": "string",
+            "title": "Recipient",
+            "description": "ID of the recipient",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "content": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Content",
+            "description": "Content of the message"
+          },
+          "time": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Time",
+            "description": "Time when the message was sent"
+          },
+          "read": {
+            "type": "boolean",
+            "title": "Read",
+            "description": "Whether the message has been read by the recipient",
+            "default": false
+          },
+          "deleted": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Deleted",
+            "description": "ID of the user who deleted the message or None if not deleted"
+          }
+        },
+        "type": "object",
+        "required": [
+          "recipient",
+          "content"
+        ],
+        "title": "MessageCreate"
+      },
+      "MessageRead": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "sender": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sender",
+            "description": "ID of the sender or None if this is a system message"
+          },
+          "recipient": {
+            "type": "string",
+            "title": "Recipient",
+            "description": "ID of the recipient",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "content": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Content",
+            "description": "Content of the message"
+          },
+          "time": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Time",
+            "description": "Time when the message was sent"
+          },
+          "read": {
+            "type": "boolean",
+            "title": "Read",
+            "description": "Whether the message has been read by the recipient",
+            "default": false
+          },
+          "deleted": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Deleted",
+            "description": "ID of the user who deleted the message or None if not deleted"
+          },
+          "senderUser": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/UserReadPublic"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "recipientUser": {
+            "$ref": "#/components/schemas/UserReadPublic"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "id",
+          "recipient",
+          "content",
+          "senderUser",
+          "recipientUser"
+        ],
+        "title": "MessageRead"
+      },
       "Metadate": {
         "properties": {
           "key": {
@@ -6906,6 +7558,24 @@
           "name"
         ],
         "title": "OskMode"
+      },
+      "PaginationSettings": {
+        "properties": {
+          "pg": {
+            "type": "integer",
+            "title": "Pg",
+            "description": "Page number",
+            "default": 1
+          },
+          "pgs": {
+            "type": "integer",
+            "title": "Pgs",
+            "description": "Page size",
+            "default": 10
+          }
+        },
+        "type": "object",
+        "title": "PaginationSettings"
       },
       "PlainTextContentCreate": {
         "properties": {
@@ -8278,6 +8948,27 @@
         "title": "PlatformStats",
         "description": "Platform statistics data"
       },
+      "PublicUsersSearchResult": {
+        "properties": {
+          "users": {
+            "items": {
+              "$ref": "#/components/schemas/UserReadPublic"
+            },
+            "type": "array",
+            "title": "Users",
+            "description": "Paginated public users data",
+            "default": []
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total",
+            "description": "Total number of search hits",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "title": "PublicUsersSearchResult"
+      },
       "QuickSearchRequestBody": {
         "properties": {
           "type": {
@@ -8300,8 +8991,10 @@
             ],
             "description": "General search settings",
             "default": {
-              "pg": 1,
-              "pgs": 10,
+              "pgn": {
+                "pg": 1,
+                "pgs": 10
+              },
               "strict": false
             }
           },
@@ -10208,24 +10901,29 @@
             ],
             "title": "Bio"
           },
+          "isActive": {
+            "type": "boolean",
+            "title": "Isactive"
+          },
           "isSuperuser": {
             "type": "boolean",
             "title": "Issuperuser"
           },
           "publicFields": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/MaybePrivateUserFields"
-              }
-            ],
-            "default": []
+            "$ref": "#/components/schemas/MaybePrivateUserFields"
           }
         },
         "type": "object",
         "required": [
           "id",
           "username",
-          "isSuperuser"
+          "name",
+          "affiliation",
+          "avatarUrl",
+          "bio",
+          "isActive",
+          "isSuperuser",
+          "publicFields"
         ],
         "title": "UserReadPublic"
       },
@@ -10399,6 +11097,27 @@
         "type": "object",
         "title": "UserUpdate"
       },
+      "UsersSearchResult": {
+        "properties": {
+          "users": {
+            "items": {
+              "$ref": "#/components/schemas/UserRead"
+            },
+            "type": "array",
+            "title": "Users",
+            "description": "Paginated users data",
+            "default": []
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total",
+            "description": "Total number of search hits",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "title": "UsersSearchResult"
+      },
       "ValidationError": {
         "properties": {
           "loc": {
@@ -10510,6 +11229,14 @@
     {
       "name": "users",
       "description": "Registered users and their accounts",
+      "externalDocs": {
+        "description": "View full documentation",
+        "url": "https://vedawebproject.github.io/Tekst"
+      }
+    },
+    {
+      "name": "messages",
+      "description": "Messages users send and receive on the platform",
       "externalDocs": {
         "description": "View full documentation",
         "url": "https://vedawebproject.github.io/Tekst"

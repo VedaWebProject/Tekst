@@ -4,3 +4,4 @@ export * from './browse';
 export * from './resources';
 export * from './search';
 export * from './theme';
+export * from './userMessages';

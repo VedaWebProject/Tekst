@@ -3,9 +3,9 @@ import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHe
 import { ref } from 'vue';
 import { NButton } from 'naive-ui';
 import { CommentIcon } from '@/icons';
-import GenericModal from '../generic/GenericModal.vue';
+import GenericModal from '@/components/generic/GenericModal.vue';
 import type { AnyResourceRead } from '@/api';
-import ButtonShelf from '../generic/ButtonShelf.vue';
+import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 
 defineProps<{
   resource: AnyResourceRead;

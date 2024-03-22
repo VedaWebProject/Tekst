@@ -8,7 +8,7 @@ import { useRouter } from 'vue-router';
 import PromptModal from '@/components/generic/PromptModal.vue';
 import { $t } from '@/i18n';
 import { useMessages } from '@/composables/messages';
-import GenericModal from '../generic/GenericModal.vue';
+import GenericModal from '@/components/generic/GenericModal.vue';
 import LocationLabel from '@/components/LocationLabel.vue';
 import { useBookmarks } from '@/composables/bookmarks';
 import { bookmarkFormRules } from '@/forms/formRules';

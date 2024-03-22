@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useUsersAdmin } from '@/composables/fetchers';
 import {
   NButton,
@@ -15,66 +15,49 @@ import {
 } from 'naive-ui';
 import UserListItem from '@/components/user/UserListItem.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
-import type { UserRead, UserUpdate } from '@/api';
+import type { UserRead, UserSearchFilters, UserUpdate } from '@/api';
 import { ref } from 'vue';
-import { computed } from 'vue';
 import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
 import { useRoute } from 'vue-router';
 import { POST, PATCH, DELETE } from '@/api';
-import { useAuthStore } from '@/stores';
+import { useAuthStore, useStateStore } from '@/stores';
 import { dialogProps } from '@/common';
-import { SearchIcon, UndoIcon, UsersIcon } from '@/icons';
+import { ErrorIcon, NoContentIcon, SearchIcon, UndoIcon, UsersIcon } from '@/icons';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
+import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
+import { createReusableTemplate } from '@vueuse/core';
 
-const { users, error, load: loadUsers } = useUsersAdmin();
 const { message } = useMessages();
 const dialog = useDialog();
 const route = useRoute();
 const auth = useAuthStore();
+const state = useStateStore();
+const [DefineTemplate, ReuseTemplate] = createReusableTemplate();
 
-const pagination = ref({
-  page: 1,
-  pageSize: 10,
+const defaultPage = 1;
+const paginationSlots = computed(() => (state.smallScreen ? 4 : 9));
+const paginationSize = computed(() => (state.smallScreen ? undefined : 'large'));
+
+const initialFilters = (): UserSearchFilters => ({
+  q: '',
+  active: true,
+  inactive: true,
+  verified: true,
+  unverified: true,
+  admin: true,
+  user: true,
+  pg: defaultPage,
+  pgs: 10,
 });
 
-const initialFilters = () => ({
-  search: '',
-  isActive: true,
-  isInactive: true,
-  isVerified: true,
-  isUnverified: true,
-  isSuperuser: true,
-  isNoSuperuser: true,
-});
+const filters = ref<UserSearchFilters>(initialFilters());
+const { users, total, error, loading } = useUsersAdmin(filters);
 
-const filters = ref(initialFilters());
-
-function filterData(users: UserRead[]) {
-  pagination.value.page = 1;
-  return users.filter((u) => {
-    const userStringContent = filters.value.search
-      ? [u.username, u.email, u.name, u.affiliation, u.createdAt].join(' ')
-      : '';
-    return (
-      (!filters.value.search ||
-        userStringContent.toLowerCase().includes(filters.value.search.toLowerCase())) &&
-      ((filters.value.isActive && u.isActive) || (filters.value.isInactive && !u.isActive)) &&
-      ((filters.value.isVerified && u.isVerified) ||
-        (filters.value.isUnverified && !u.isVerified)) &&
-      ((filters.value.isSuperuser && u.isSuperuser) ||
-        (filters.value.isNoSuperuser && !u.isSuperuser))
-    );
-  });
+function resetPagination() {
+  filters.value.pg = defaultPage;
 }
-
-const filteredData = computed(() => filterData(users.value || []));
-const paginatedData = computed(() => {
-  const start = (pagination.value.page - 1) * pagination.value.pageSize;
-  const end = start + pagination.value.pageSize;
-  return filteredData.value.slice(start, end);
-});
 
 async function updateUser(user: UserRead, updates: UserUpdate) {
   const { data: updatedUser, error } = await PATCH('/users/{id}', {
@@ -83,7 +66,6 @@ async function updateUser(user: UserRead, updates: UserUpdate) {
   });
   if (!error) {
     message.success($t('admin.users.save', { username: user.username }));
-    loadUsers();
     filters.value = initialFilters();
     return updatedUser;
   }
@@ -172,7 +154,7 @@ function handleDeleteClick(user: UserRead) {
       const { error } = await DELETE('/users/{id}', { params: { path: { id: user.id } } });
       if (!error) {
         message.success($t('admin.users.msgUserDeleted', { username: user.username }));
-        loadUsers();
+        filters.value = initialFilters();
       }
     },
   });
@@ -186,7 +168,7 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
 
 onMounted(() => {
   if (route.query.search) {
-    filters.value.search = route.query.search?.toString();
+    filters.value.q = route.query.search?.toString();
   }
 });
 </script>
@@ -197,67 +179,106 @@ onMounted(() => {
     <help-button-widget help-key="adminSystemUsersView" />
   </icon-heading>
 
-  <template v-if="users && !error">
-    <!-- Filters -->
-    <n-collapse
-      style="margin-bottom: var(--layout-gap)"
-      @item-header-click="handleFilterCollapseItemClick"
-    >
-      <n-collapse-item :title="$t('general.filters')" name="filters">
-        <n-space vertical class="gray-box" style="padding-left: var(--layout-gap)">
-          <n-input
-            v-model:value="filters.search"
-            :placeholder="$t('search.searchAction')"
-            style="margin-bottom: var(--content-gap)"
-            round
-          >
-            <template #prefix>
-              <n-icon :component="SearchIcon" />
-            </template>
-          </n-input>
+  <define-template>
+    <!-- Pagination -->
+    <n-space v-if="!!total" justify="end">
+      <n-pagination
+        v-model:page="filters.pg"
+        v-model:page-size="filters.pgs"
+        :default-page-size="10"
+        :page-slot="paginationSlots"
+        :size="paginationSize"
+        :disabled="loading"
+        :item-count="total"
+        :page-sizes="[10, 25, 50]"
+        show-size-picker
+      />
+    </n-space>
+  </define-template>
 
-          <labelled-switch v-model:value="filters.isActive" :label="$t('models.user.isActive')" />
-          <labelled-switch
-            v-model:value="filters.isInactive"
-            :label="$t('models.user.isInactive')"
-          />
-          <labelled-switch
-            v-model:value="filters.isVerified"
-            :label="$t('models.user.isVerified')"
-          />
-          <labelled-switch
-            v-model:value="filters.isUnverified"
-            :label="$t('models.user.isUnverified')"
-          />
-          <labelled-switch
-            v-model:value="filters.isSuperuser"
-            :label="$t('models.user.isSuperuser')"
-          />
-          <labelled-switch
-            v-model:value="filters.isNoSuperuser"
-            :label="$t('models.user.modelLabel')"
-          />
+  <!-- Filters -->
+  <n-collapse
+    style="margin-bottom: var(--layout-gap)"
+    @item-header-click="handleFilterCollapseItemClick"
+  >
+    <n-collapse-item :title="$t('general.filters')" name="filters">
+      <n-space vertical class="gray-box" style="padding-left: var(--layout-gap)">
+        <n-input
+          v-model:value="filters.q"
+          :placeholder="$t('search.searchAction')"
+          style="margin-bottom: var(--content-gap)"
+          round
+          clearable
+          @update:value="resetPagination"
+        >
+          <template #prefix>
+            <n-icon :component="SearchIcon" />
+          </template>
+        </n-input>
 
-          <n-button style="margin-top: var(--content-gap)" @click="filters = initialFilters()">
-            {{ $t('general.resetAction') }}
-            <template #icon>
-              <n-icon :component="UndoIcon" />
-            </template>
-          </n-button>
-        </n-space>
-      </n-collapse-item>
-    </n-collapse>
+        <labelled-switch
+          v-model:value="filters.active"
+          :label="$t('models.user.isActive')"
+          @update:value="resetPagination"
+        />
+        <labelled-switch
+          v-model:value="filters.inactive"
+          :label="$t('models.user.isInactive')"
+          @update:value="resetPagination"
+        />
+        <labelled-switch
+          v-model:value="filters.verified"
+          :label="$t('models.user.isVerified')"
+          @update:value="resetPagination"
+        />
+        <labelled-switch
+          v-model:value="filters.unverified"
+          :label="$t('models.user.isUnverified')"
+          @update:value="resetPagination"
+        />
+        <labelled-switch
+          v-model:value="filters.admin"
+          :label="$t('models.user.isSuperuser')"
+          @update:value="resetPagination"
+        />
+        <labelled-switch
+          v-model:value="filters.user"
+          :label="$t('models.user.modelLabel')"
+          @update:value="resetPagination"
+        />
 
+        <n-button style="margin-top: var(--content-gap)" @click="filters = initialFilters()">
+          {{ $t('general.resetAction') }}
+          <template #icon>
+            <n-icon :component="UndoIcon" />
+          </template>
+        </n-button>
+      </n-space>
+    </n-collapse-item>
+  </n-collapse>
+
+  <n-spin
+    v-if="loading"
+    size="large"
+    class="centered-spinner"
+    :description="$t('general.loading')"
+  />
+
+  <huge-labelled-icon v-else-if="error" :message="$t('errors.unexpected')" :icon="ErrorIcon" />
+
+  <template v-else-if="total">
     <div class="text-small translucent">
-      {{ $t('admin.users.msgFoundCount', { count: filteredData.length, total: users.length }) }}
+      {{ $t('admin.users.msgFoundCount', { count: total }) }}
     </div>
 
     <!-- Users List -->
     <div class="content-block">
-      <template v-if="paginatedData.length > 0">
-        <n-list style="background-color: transparent">
+      <template v-if="!!total">
+        <!-- Pagination -->
+        <reuse-template />
+        <n-list style="background-color: transparent; margin: var(--layout-gap) 0">
           <user-list-item
-            v-for="user in paginatedData"
+            v-for="user in users"
             :key="user.id"
             :target-user="user"
             :current-user="auth.user"
@@ -268,16 +289,7 @@ onMounted(() => {
           />
         </n-list>
         <!-- Pagination -->
-        <div style="display: flex; justify-content: flex-end; padding-top: 12px">
-          <n-pagination
-            v-model:page-size="pagination.pageSize"
-            v-model:page="pagination.page"
-            :page-sizes="[10, 20, 50, 100]"
-            :default-page-size="10"
-            :item-count="filteredData.length"
-            show-size-picker
-          />
-        </div>
+        <reuse-template />
       </template>
       <template v-else>
         {{ $t('search.nothingFound') }}
@@ -285,14 +297,9 @@ onMounted(() => {
     </div>
   </template>
 
-  <n-spin
-    v-else-if="!users && !error"
-    size="large"
-    class="centered-spinner"
-    :description="$t('general.loading')"
+  <huge-labelled-icon
+    v-else
+    :message="$t('admin.users.msgFoundCount', { count: total })"
+    :icon="NoContentIcon"
   />
-
-  <div v-else>
-    {{ $t('errors.error') }}
-  </div>
 </template>

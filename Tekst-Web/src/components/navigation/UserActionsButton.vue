@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { ref, computed, h } from 'vue';
-import { useAuthStore, useStateStore, useThemeStore } from '@/stores';
+import { useAuthStore, useStateStore, useThemeStore, useUserMessagesStore } from '@/stores';
 import { type RouteLocationRaw, RouterLink } from 'vue-router';
-import { NButton, NIcon, NDropdown } from 'naive-ui';
+import { NBadge, NButton, NIcon, NDropdown } from 'naive-ui';
 import { $t } from '@/i18n';
-import { LogInIcon, LogOutIcon, UserIcon, AdminIcon, ResourceIcon } from '@/icons';
+import { LogInIcon, LogOutIcon, UserIcon, AdminIcon, ResourceIcon, CommunityIcon } from '@/icons';
 import { renderIcon } from '@/utils';
 
 const auth = useAuthStore();
+const userMessages = useUserMessagesStore();
 const state = useStateStore();
 const theme = useThemeStore();
 
@@ -21,11 +22,25 @@ const showUserDropdown = ref(false);
 
 const userOptions = computed(() => [
   {
-    label: renderLink(() => `${auth.user?.name}`, {
-      name: 'account',
-    }),
+    label: renderLink(
+      () =>
+        h('div', null, [
+          auth.user?.name,
+          h(NBadge, { dot: true, offset: [4, -10], show: !!userMessages.unreadCount }, undefined),
+        ]),
+      {
+        name: 'account',
+      }
+    ),
     key: 'account',
     icon: renderIcon(UserIcon),
+  },
+  {
+    label: renderLink(() => $t('community.heading'), {
+      name: 'community',
+    }),
+    key: 'community',
+    icon: renderIcon(CommunityIcon),
   },
   {
     label: renderLink(() => $t('resources.heading'), {
@@ -59,11 +74,7 @@ const userOptions = computed(() => [
   },
 ]);
 
-function renderLink(
-  label: string | (() => string),
-  to: RouteLocationRaw,
-  props?: Record<string, unknown>
-) {
+function renderLink(label: unknown, to: RouteLocationRaw, props?: Record<string, unknown>) {
   return () =>
     h(
       RouterLink,
@@ -96,19 +107,21 @@ function handleUserOptionSelect(key: string) {
     trigger="click"
     @select="handleUserOptionSelect"
   >
-    <n-button
-      :secondary="!auth.loggedIn"
-      circle
-      size="large"
-      :title="tooltip"
-      :focusable="false"
-      :color="theme.accentColors.base"
-      class="user-options-button"
-    >
-      <template #icon>
-        <n-icon :component="UserIcon" />
-      </template>
-    </n-button>
+    <n-badge :value="userMessages.unreadCount">
+      <n-button
+        :secondary="!auth.loggedIn"
+        circle
+        size="large"
+        :title="tooltip"
+        :focusable="false"
+        :color="theme.accentColors.base"
+        class="user-options-button"
+      >
+        <template #icon>
+          <n-icon :component="UserIcon" />
+        </template>
+      </n-button>
+    </n-badge>
   </n-dropdown>
 
   <n-button

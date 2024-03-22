@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from beanie.operators import Or, Text
+from beanie.operators import NE, Eq, Or, Text
 from fastapi import APIRouter, Depends, Path, Query, Request, status
 
 from tekst import errors
@@ -11,7 +11,13 @@ from tekst.auth import (
     get_user_manager,
 )
 from tekst.models.common import PydanticObjectId
-from tekst.models.user import UserDocument, UserRead, UserReadPublic
+from tekst.models.search import PaginationSettings
+from tekst.models.user import (
+    PublicUsersSearchResult,
+    UserDocument,
+    UserReadPublic,
+    UsersSearchResult,
+)
 from tekst.utils import validators as val
 
 
@@ -42,7 +48,7 @@ async def delete_me(
 
 @router.get(
     "",
-    response_model=list[UserRead],
+    response_model=UsersSearchResult,
     status_code=status.HTTP_200_OK,
     responses=errors.responses(
         [
@@ -51,8 +57,105 @@ async def delete_me(
         ]
     ),
 )
-async def get_users(su: SuperuserDep) -> list[UserDocument]:
-    return await UserDocument.find_all().to_list()
+async def find_users(
+    su: SuperuserDep,
+    query: Annotated[
+        str,
+        Query(
+            alias="q",
+            description="Query string to search in user data",
+            max_length=128,
+        ),
+    ] = "",
+    is_active: Annotated[
+        bool,
+        Query(
+            alias="active",
+            description="Include active users",
+        ),
+    ] = True,
+    is_inactive: Annotated[
+        bool,
+        Query(
+            alias="inactive",
+            description="Include inactive users",
+        ),
+    ] = True,
+    is_verified: Annotated[
+        bool,
+        Query(
+            alias="verified",
+            description="Include verified users",
+        ),
+    ] = True,
+    is_unverified: Annotated[
+        bool,
+        Query(
+            alias="unverified",
+            description="Include unverified users",
+        ),
+    ] = True,
+    is_superuser: Annotated[
+        bool,
+        Query(
+            alias="admin",
+            description="Include administrators",
+        ),
+    ] = True,
+    is_no_superuser: Annotated[
+        bool,
+        Query(
+            alias="user",
+            description="Include regular users",
+        ),
+    ] = True,
+    page: Annotated[
+        int,
+        Query(
+            alias="pg",
+            description="Page number",
+        ),
+    ] = 1,
+    page_size: Annotated[
+        int,
+        Query(
+            alias="pgs",
+            description="Page size",
+        ),
+    ] = 10,
+) -> UsersSearchResult:
+    # construct DB query
+    db_query = [
+        Text(query) if query else {},
+        Or(
+            Eq(UserDocument.is_active, is_active),
+            NE(UserDocument.is_active, is_inactive),
+        ),
+        Or(
+            Eq(UserDocument.is_verified, is_verified),
+            NE(UserDocument.is_verified, is_unverified),
+        ),
+        Or(
+            Eq(UserDocument.is_superuser, is_superuser),
+            NE(UserDocument.is_superuser, is_no_superuser),
+        ),
+    ]
+
+    # count total possible hits
+    total = await UserDocument.find(*db_query).count()
+
+    # return actual paginated, sorted restults
+    pgn = PaginationSettings(page=page, page_size=page_size)
+    return UsersSearchResult(
+        users=(
+            await UserDocument.find(*db_query)
+            .sort(+UserDocument.username)
+            .skip(pgn.mongo_skip())
+            .limit(pgn.mongo_limit())
+            .to_list()
+        ),
+        total=total,
+    )
 
 
 @router.get(
@@ -87,7 +190,7 @@ async def get_public_user(
 
 @router.get(
     "/public",
-    response_model=list[UserReadPublic],
+    response_model=PublicUsersSearchResult,
     status_code=status.HTTP_200_OK,
     responses=errors.responses(
         [
@@ -98,22 +201,63 @@ async def get_public_user(
 async def find_public_users(
     su: UserDep,
     query: Annotated[
-        str | None,
+        str,
         val.CleanupOneline,
-        val.EmptyStringToNone,
-        Query(alias="q", description="Query string to search in user data"),
-    ] = None,
-) -> list[UserDocument]:
+        Query(
+            alias="q",
+            description="Query string to search in user data",
+            max_length=128,
+        ),
+    ] = "",
+    page: Annotated[
+        int,
+        Query(
+            alias="pg",
+            description="Page number",
+        ),
+    ] = 1,
+    page_size: Annotated[
+        int,
+        Query(
+            alias="pgs",
+            description="Page size",
+        ),
+    ] = 10,
+    allow_empty_query: Annotated[
+        bool,
+        Query(
+            alias="emptyOk",
+            description="Empty query returns all users",
+        ),
+    ] = True,
+) -> PublicUsersSearchResult:
     """
     Returns a list of public users matching the given query.
 
     Only returns active user accounts. The query is considered to match a full token
     (e.g. first name, last name, username, a word in the affiliation field).
     """
-    if not query:
-        return []
-    return [
-        UserReadPublic(**user.model_dump())
-        for user in await UserDocument.find(Text(query)).to_list()
-        if user.is_active
+    if not query and not allow_empty_query:
+        return PublicUsersSearchResult()
+
+    # construct DB query
+    db_query = [
+        Text(query) if query else {},
+        Eq(UserDocument.is_active, True),
     ]
+
+    # count total possible hits
+    total = await UserDocument.find(*db_query).count()
+
+    # return actual paginated, sorted restults
+    pgn = PaginationSettings(page=page, page_size=page_size)
+    return PublicUsersSearchResult(
+        users=(
+            await UserDocument.find(*db_query)
+            .sort(+UserDocument.username)
+            .skip(pgn.mongo_skip())
+            .limit(pgn.mongo_limit())
+            .to_list()
+        ),
+        total=total,
+    )

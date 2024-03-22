@@ -1,8 +1,8 @@
-import { type MenuOption } from 'naive-ui';
+import { NBadge, type MenuOption } from 'naive-ui';
 import { h, computed } from 'vue';
 import { RouterLink, type RouteLocationRaw } from 'vue-router';
 import { $t } from '@/i18n';
-import { useBrowseStore, useStateStore } from '@/stores';
+import { useBrowseStore, useStateStore, useUserMessagesStore } from '@/stores';
 import { usePlatformData } from '@/composables/platformData';
 import type { ClientSegmentHead } from '@/api';
 import { pickTranslation, renderIcon } from '@/utils';
@@ -23,13 +23,10 @@ import {
   UsersIcon,
   LevelsIcon,
   TreeIcon,
+  MessageIcon,
 } from '@/icons';
 
-function renderLink(
-  label: string | (() => string),
-  to: RouteLocationRaw,
-  props?: Record<string, unknown>
-) {
+function renderLink(label: unknown, to: RouteLocationRaw, props?: Record<string, unknown>) {
   return () =>
     h(
       RouterLink,
@@ -108,6 +105,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
 }
 
 export function useAccountMenuOptions(showIcons: boolean = true) {
+  const userMessages = useUserMessagesStore();
   const menuOptions: MenuOption[] = [
     {
       label: renderLink(() => $t('account.profile'), { name: 'accountProfile' }),
@@ -118,6 +116,20 @@ export function useAccountMenuOptions(showIcons: boolean = true) {
       label: renderLink(() => $t('account.account'), { name: 'accountSettings' }),
       key: 'accountSettings',
       icon: (showIcons && renderIcon(ManageAccountIcon)) || undefined,
+    },
+    {
+      label: renderLink(
+        () =>
+          h('div', null, [
+            $t('account.messages.heading'),
+            h(NBadge, { dot: true, offset: [4, -10], show: !!userMessages.unreadCount }, undefined),
+          ]),
+        {
+          name: 'accountMessages',
+        }
+      ),
+      key: 'accountMessages',
+      icon: (showIcons && renderIcon(MessageIcon)) || undefined,
     },
   ];
 

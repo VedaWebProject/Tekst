@@ -109,6 +109,7 @@ routes:
     resources: Ressourcen zu "{text}"
     resourceSettings: '@:resources.settings.heading'
     user: Profil von {username}
+    community: Gemeinschaft
     accountProfile: '@:account.profileHeading'
     accountSettings: '@:account.settings.heading'
     adminStatistics: '@:admin.heading - Statistiken'
@@ -481,6 +482,21 @@ account:
     msgDeleteAccountWarning: Wenn Sie Ihr Konto löschen, werden alle Daten, die damit verbunden sind, emenfalls gelöscht. Sind Sie sich sicher?
     msgUserDataSaveSuccess: Benutzerdaten gespeichert.
     phDeleteAccountSafetyInput: Geben Sie "{username}" ein, um Ihre Entscheidung zu bestätigen
+  messages:
+    heading: Nachrichten
+    message: Nachricht
+    headingThreads: Unterhaltungen
+    msgUnreadCount: 'Sie haben keine ungelesenen Nachrichten | Sie haben eine ungelesenen Nachricht | Sie haben {count} ungelesenen Nachrichten'
+    createSuccess: Nachricht gesendet
+    deleteSuccess: Nachricht gelöscht
+    read: Nachricht wurde gelesen
+    unread: Nachricht ist ungelesen
+    btnSend: Senden
+    msgNoMessages: Sie haben keine Nachrichten gesendet oder erhalten.
+    btnSendMessageToUser: Nachricht an {'@'}{username} senden
+
+community:
+  heading: Gemeinschaft
 
 admin:
   heading: Administration
@@ -493,14 +509,8 @@ admin:
   users:
     heading: Benutzer
     save: Benutzer "{username}" gespeichert
-    msgFoundCount: '{count} Benutzer gefunden ({total} insgesamt)'
-    checkLabelActive: Konto ist aktiv
-    checkLabelVerified: E-Mail ist verifiziert
-    checkLabelSuperuser: Benutzer ist Administrator
+    msgFoundCount: 'Keine Benutzer entsprechen den eingestellten Filterregeln | Einen Benutzer gefunden | {count} Benutzer gefunden'
     registeredAt: registriert am
-    editModal:
-      accountStatus: Konto-Status
-      adminWarning: Vorsicht! Sie sollten wissen, was Sie tun!
     msgSentVerificationLink: Eine Verifizierungs-E-Mail wurde an "{username}" gesendet.
     msgUserDeleted: Der Benutzer {username} wurde gelöscht und darüber per E-Mail benachrichtigt.
     mailtoLinkTitle: E-Mail an {username} senden

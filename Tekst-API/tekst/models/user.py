@@ -73,8 +73,9 @@ class UserReadPublic(ModelBase):
     affiliation: str | None = None
     avatar_url: str | None = None
     bio: str | None = None
+    is_active: bool
     is_superuser: bool
-    public_fields: MaybePrivateUserFields = []
+    public_fields: MaybePrivateUserFields
 
     @model_validator(mode="after")
     def model_postprocess(self):
@@ -161,3 +162,15 @@ class UserCreate(User, schemas.BaseUserCreate):
 
 
 UserUpdate = User.update_model(schemas.BaseUserUpdate)
+
+
+class UsersSearchResult(ModelBase):
+    users: Annotated[list[UserRead], Field(description="Paginated users data")] = []
+    total: Annotated[int, Field(description="Total number of search hits")] = 0
+
+
+class PublicUsersSearchResult(ModelBase):
+    users: Annotated[
+        list[UserReadPublic], Field(description="Paginated public users data")
+    ] = []
+    total: Annotated[int, Field(description="Total number of search hits")] = 0

@@ -1,6 +1,12 @@
-import { ref, isRef, unref, watchEffect, type Ref } from 'vue';
+import { ref, isRef, unref, watchEffect, type Ref, watch } from 'vue';
 import { GET } from '@/api';
-import type { UserReadPublic, PlatformStats, UserRead } from '@/api';
+import type {
+  UserReadPublic,
+  PlatformStats,
+  UserRead,
+  UserSearchFilters,
+  PublicUserSearchFilters,
+} from '@/api';
 import { useDebounceFn } from '@vueuse/core';
 import { STATIC_PATH } from '@/common';
 import { useMessages } from './messages';
@@ -62,56 +68,27 @@ export function useStats() {
   return { stats, error, load };
 }
 
-export function useUsersAdmin() {
-  const users = ref<Array<UserRead> | null>(null);
+export function useUsersAdmin(filtersRef: Ref<UserSearchFilters>) {
+  const users = ref<Array<UserRead>>([]);
+  const total = ref(0);
   const error = ref(false);
   const loading = ref(false);
 
-  async function load() {
-    loading.value = true;
-    users.value = null;
-    error.value = false;
-
-    const { data, error: err } = await GET('/users', {});
-
-    if (!err) {
-      users.value = data;
-    } else {
-      error.value = true;
-    }
-    loading.value = false;
-  }
-
-  load();
-
-  return {
-    users,
-    loading,
-    error,
-    load,
-  };
-}
-
-export function useUsersSearch(queryRef: Ref<string | null | undefined>) {
-  const users = ref<UserReadPublic[]>([]);
-  const error = ref(false);
-  const loading = ref(false);
-
-  async function load(query?: string | null) {
-    if (query == null) {
-      users.value = [];
-      loading.value = false;
-      return;
-    }
-
+  async function load(filters: UserSearchFilters) {
     loading.value = true;
     users.value = [];
+    total.value = 0;
     error.value = false;
 
-    const { data, error: err } = await GET('/users/public', { params: { query: { q: query } } });
+    const { data, error: e } = await GET('/users', {
+      params: {
+        query: filters,
+      },
+    });
 
-    if (!err) {
-      users.value = data;
+    if (!e) {
+      users.value = data.users || [];
+      total.value = data.total || 0;
     } else {
       error.value = true;
     }
@@ -119,13 +96,68 @@ export function useUsersSearch(queryRef: Ref<string | null | undefined>) {
   }
 
   const debouncedLoad = useDebounceFn(load, 500);
-  watchEffect(() => {
-    loading.value = true;
-    debouncedLoad(unref(queryRef));
-  });
+
+  watch(
+    filtersRef,
+    (newFilters) => {
+      loading.value = true;
+      debouncedLoad(newFilters);
+    },
+    { immediate: true, deep: true }
+  );
 
   return {
     users,
+    total,
+    loading,
+    error,
+    load,
+  };
+}
+
+export function useUsersSearch(queryRef: Ref<PublicUserSearchFilters>) {
+  const users = ref<UserReadPublic[]>([]);
+  const error = ref(false);
+  const loading = ref(false);
+  const total = ref(0);
+
+  async function load(query: PublicUserSearchFilters) {
+    users.value = [];
+    total.value = 0;
+    error.value = false;
+
+    if (!query.q && !query.emptyOk) {
+      loading.value = false;
+      return;
+    }
+
+    loading.value = true;
+
+    const { data, error: err } = await GET('/users/public', { params: { query: query } });
+
+    if (!err) {
+      users.value = data.users || [];
+      total.value = data.total || 0;
+    } else {
+      error.value = true;
+    }
+    loading.value = false;
+  }
+
+  const debouncedLoad = useDebounceFn(load, 500);
+
+  watch(
+    queryRef,
+    (newQuery) => {
+      loading.value = true;
+      debouncedLoad(newQuery);
+    },
+    { immediate: true, deep: true }
+  );
+
+  return {
+    users,
+    total,
     loading,
     error,
     load,

@@ -106,6 +106,7 @@ routes:
     resources: Resources on "{text}"
     resourceSettings: '@:resources.settings.heading'
     user: Profile of {username}
+    community: Community
     accountProfile: '@:account.profileHeading'
     accountSettings: '@:account.settings.heading'
     adminStatistics: '@:admin.heading - Statistics'
@@ -472,6 +473,21 @@ account:
     msgDeleteAccountWarning: If you delete your account, all data associated with it will be deleted, too. Are you sure you want to delete your account?
     msgUserDataSaveSuccess: User data saved.
     phDeleteAccountSafetyInput: Type "{username}" to confirm your decision
+  messages:
+    heading: Messages
+    message: Message
+    headingThreads: Conversations
+    msgUnreadCount: 'You have no unread messages | You have one unread message | You have {count} unread messages'
+    createSuccess: Message sent
+    deleteSuccess: Message deleted
+    read: Message has been read
+    unread: Message is unread
+    btnSend: Send
+    msgNoMessages: You haven't sent or received any messages.
+    btnSendMessageToUser: Send message to {'@'}{username}
+
+community:
+  heading: Community
 
 admin:
   heading: Administration
@@ -484,14 +500,8 @@ admin:
   users:
     heading: Users
     save: Saved user "{username}"
-    msgFoundCount: Found {count} users ({total} total)
-    checkLabelActive: Account is active
-    checkLabelVerified: Email is verified
-    checkLabelSuperuser: User is administrator
+    msgFoundCount: 'No users match the given filters | Found one user | Found {count} users'
     registeredAt: registered at
-    editModal:
-      accountStatus: Account status
-      adminWarning: Careful! You better know what you are doing!
     msgSentVerificationLink: A verification email was sent to "{username}".
     msgUserDeleted: The user {username} has been deleted and informed via email.
     mailtoLinkTitle: Send email to {username}

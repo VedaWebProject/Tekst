@@ -151,7 +151,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
 </style>
 
 <style>
-.n-badge > .n-badge-sup {
+.browse-toolbar .n-badge > .n-badge-sup {
   color: var(--accent-color-dark);
 }
 </style>

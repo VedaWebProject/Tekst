@@ -148,6 +148,11 @@ export type UserUpdateAdminNotificationTriggers =
   components['schemas']['UserUpdate']['adminNotificationTriggers'];
 export type UserUpdatePublicFields = components['schemas']['UserUpdate']['publicFields'];
 
+// user messages
+
+export type UserMessageCreate = components['schemas']['MessageCreate'];
+export type UserMessageRead = components['schemas']['MessageRead'];
+
 // text and text structure
 
 export type TextCreate = components['schemas']['TextCreate'];
@@ -237,3 +242,9 @@ export type SortingPreset = components['schemas']['SortingPreset'];
 
 export type PlainTextSearchQuery = components['schemas']['PlainTextSearchQuery'];
 export type RichTextSearchQuery = components['schemas']['RichTextSearchQuery'];
+
+export type PublicUserSearchFilters = NonNullable<
+  paths['/users/public']['get']['parameters']['query']
+>;
+export type UserSearchFilters = NonNullable<paths['/users']['get']['parameters']['query']>;
+export type UsersSearchResult = components['schemas']['UsersSearchResult'];

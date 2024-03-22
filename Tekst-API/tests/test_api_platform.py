@@ -25,12 +25,13 @@ async def test_platform_find_users(
         params={"q": user.get("username")},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
-    assert isinstance(resp.json(), list)
-    assert len(resp.json()) == 1
-    assert resp.json()[0]["username"] == user["username"]
-    assert "id" in resp.json()[0]
-    assert "name" in resp.json()[0]
-    assert "isActive" not in resp.json()[0]
+    assert isinstance(resp.json(), dict)
+    assert "users" in resp.json()
+    assert len(resp.json()["users"]) == 1
+    assert resp.json()["users"][0]["username"] == user["username"]
+    assert "id" in resp.json()["users"][0]
+    assert "name" in resp.json()["users"][0]
+    assert "isVerified" not in resp.json()["users"][0]
 
     # nonsense search
     resp = await test_client.get(
@@ -38,25 +39,39 @@ async def test_platform_find_users(
         params={"q": "nonsense"},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
-    assert isinstance(resp.json(), list)
-    assert len(resp.json()) == 0
+    assert isinstance(resp.json(), dict)
+    assert "users" in resp.json()
+    assert len(resp.json()["users"]) == 0
 
-    # no query
+    # no query, empty query = no results
     resp = await test_client.get(
         "/users/public",
+        params={"emptyOk": False},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
-    assert isinstance(resp.json(), list)
-    assert len(resp.json()) == 0
+    assert isinstance(resp.json(), dict)
+    assert "users" in resp.json()
+    assert len(resp.json()["users"]) == 0
+
+    # no query, empty query = all users
+    resp = await test_client.get(
+        "/users/public",
+        params={"emptyOk": True},
+    )
+    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert isinstance(resp.json(), dict)
+    assert "users" in resp.json()
+    assert len(resp.json()["users"]) > 0
 
     # query of whitespaces
     resp = await test_client.get(
         "/users/public",
-        params={"q": "      "},
+        params={"q": "      ", "emptyOk": False},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
-    assert isinstance(resp.json(), list)
-    assert len(resp.json()) == 0
+    assert isinstance(resp.json(), dict)
+    assert "users" in resp.json()
+    assert len(resp.json()["users"]) == 0
 
 
 @pytest.mark.anyio

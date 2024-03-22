@@ -132,6 +132,40 @@ export interface paths {
      */
     post: operations['moveLocation'];
   };
+  '/messages': {
+    /**
+     * Get messages
+     * @description Returns all messages for/from the requesting user
+     */
+    get: operations['getMessages'];
+    /**
+     * Send message
+     * @description Creates a message for the specified recipient
+     */
+    post: operations['sendMessage'];
+  };
+  '/messages/{id}': {
+    /**
+     * Delete message
+     * @description Deletes the message with the given ID
+     */
+    delete: operations['deleteMessage'];
+  };
+  '/messages/threads/{id}': {
+    /**
+     * Delete thread
+     * @description Marks all received messages from the given user as deleted or actually deletes them,
+     * depending on the current deletion status
+     */
+    delete: operations['deleteThread'];
+  };
+  '/messages/threads/{id}/read': {
+    /**
+     * Mark thread read
+     * @description Marks all received messages from the given user as read
+     */
+    post: operations['markThreadRead'];
+  };
   '/platform': {
     /**
      * Get platform data
@@ -281,8 +315,8 @@ export interface paths {
     patch: operations['users:patchCurrentUser'];
   };
   '/users': {
-    /** Get users */
-    get: operations['getUsers'];
+    /** Find users */
+    get: operations['findUsers'];
   };
   '/users/public/{user}': {
     /**
@@ -369,8 +403,10 @@ export interface components {
       /**
        * @description General search settings
        * @default {
-       *   "pg": 1,
-       *   "pgs": 10,
+       *   "pgn": {
+       *     "pg": 1,
+       *     "pgs": 10
+       *   },
        *   "strict": false
        * }
        */
@@ -822,17 +858,13 @@ export interface components {
     /** GeneralSearchSettings */
     GeneralSearchSettings: {
       /**
-       * Pg
-       * @description Page number
-       * @default 1
+       * @description Pagination settings
+       * @default {
+       *   "pg": 1,
+       *   "pgs": 10
+       * }
        */
-      pg?: number;
-      /**
-       * Pgs
-       * @description Page size
-       * @default 10
-       */
-      pgs?: number;
+      pgn?: components['schemas']['PaginationSettings'];
       /** @description Sorting preset */
       sort?: components['schemas']['SortingPreset'] | null;
       /**
@@ -966,6 +998,84 @@ export interface components {
     /** @enum {string} */
     MaybePrivateUserField: 'name' | 'affiliation' | 'bio';
     MaybePrivateUserFields: components['schemas']['MaybePrivateUserField'][];
+    /** MessageCreate */
+    MessageCreate: {
+      /**
+       * Sender
+       * @description ID of the sender or None if this is a system message
+       */
+      sender?: string | null;
+      /**
+       * Recipient
+       * @description ID of the recipient
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      recipient: string;
+      /**
+       * Content
+       * @description Content of the message
+       */
+      content: string;
+      /**
+       * Time
+       * @description Time when the message was sent
+       */
+      time?: string | null;
+      /**
+       * Read
+       * @description Whether the message has been read by the recipient
+       * @default false
+       */
+      read?: boolean;
+      /**
+       * Deleted
+       * @description ID of the user who deleted the message or None if not deleted
+       */
+      deleted?: string | null;
+    };
+    /** MessageRead */
+    MessageRead: {
+      /**
+       * Id
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      id: string;
+      /**
+       * Sender
+       * @description ID of the sender or None if this is a system message
+       */
+      sender?: string | null;
+      /**
+       * Recipient
+       * @description ID of the recipient
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      recipient: string;
+      /**
+       * Content
+       * @description Content of the message
+       */
+      content: string;
+      /**
+       * Time
+       * @description Time when the message was sent
+       */
+      time?: string | null;
+      /**
+       * Read
+       * @description Whether the message has been read by the recipient
+       * @default false
+       */
+      read?: boolean;
+      /**
+       * Deleted
+       * @description ID of the user who deleted the message or None if not deleted
+       */
+      deleted?: string | null;
+      senderUser: components['schemas']['UserReadPublic'] | null;
+      recipientUser: components['schemas']['UserReadPublic'];
+      [key: string]: unknown;
+    };
     /** Metadate */
     Metadate: {
       /** Key */
@@ -990,6 +1100,21 @@ export interface components {
       name: string;
       /** Font */
       font?: string | null;
+    };
+    /** PaginationSettings */
+    PaginationSettings: {
+      /**
+       * Pg
+       * @description Page number
+       * @default 1
+       */
+      pg?: number;
+      /**
+       * Pgs
+       * @description Page size
+       * @default 10
+       */
+      pgs?: number;
     };
     /** PlainTextContentCreate */
     PlainTextContentCreate: {
@@ -1761,6 +1886,21 @@ export interface components {
       /** Texts */
       texts: components['schemas']['TextStats'][];
     };
+    /** PublicUsersSearchResult */
+    PublicUsersSearchResult: {
+      /**
+       * Users
+       * @description Paginated public users data
+       * @default []
+       */
+      users?: components['schemas']['UserReadPublic'][];
+      /**
+       * Total
+       * @description Total number of search hits
+       * @default 0
+       */
+      total?: number;
+    };
     /** QuickSearchRequestBody */
     QuickSearchRequestBody: {
       /**
@@ -1778,8 +1918,10 @@ export interface components {
       /**
        * @description General search settings
        * @default {
-       *   "pg": 1,
-       *   "pgs": 10,
+       *   "pgn": {
+       *     "pg": 1,
+       *     "pgs": 10
+       *   },
        *   "strict": false
        * }
        */
@@ -2704,17 +2846,18 @@ export interface components {
       /** Username */
       username: string;
       /** Name */
-      name?: string | null;
+      name: string | null;
       /** Affiliation */
-      affiliation?: string | null;
+      affiliation: string | null;
       /** Avatarurl */
-      avatarUrl?: string | null;
+      avatarUrl: string | null;
       /** Bio */
-      bio?: string | null;
+      bio: string | null;
+      /** Isactive */
+      isActive: boolean;
       /** Issuperuser */
       isSuperuser: boolean;
-      /** @default [] */
-      publicFields?: components['schemas']['MaybePrivateUserFields'];
+      publicFields: components['schemas']['MaybePrivateUserFields'];
     };
     /** UserUpdate */
     UserUpdate: {
@@ -2759,6 +2902,21 @@ export interface components {
        * ]
        */
       adminNotificationTriggers?: components['schemas']['AdminNotificationTrigger'][];
+    };
+    /** UsersSearchResult */
+    UsersSearchResult: {
+      /**
+       * Users
+       * @description Paginated users data
+       * @default []
+       */
+      users?: components['schemas']['UserRead'][];
+      /**
+       * Total
+       * @description Total number of search hits
+       * @default 0
+       */
+      total?: number;
     };
     /** ValidationError */
     ValidationError: {
@@ -3559,6 +3717,169 @@ export interface operations {
       };
       /** @description Not Found */
       404: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /**
+   * Get messages
+   * @description Returns all messages for/from the requesting user
+   */
+  getMessages: {
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['MessageRead'][];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+    };
+  };
+  /**
+   * Send message
+   * @description Creates a message for the specified recipient
+   */
+  sendMessage: {
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['MessageCreate'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['MessageRead'][];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /**
+   * Delete message
+   * @description Deletes the message with the given ID
+   */
+  deleteMessage: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['MessageRead'][];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /**
+   * Delete thread
+   * @description Marks all received messages from the given user as deleted or actually deletes them,
+   * depending on the current deletion status
+   */
+  deleteThread: {
+    parameters: {
+      path: {
+        id: string | 'system';
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['MessageRead'][];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /**
+   * Mark thread read
+   * @description Marks all received messages from the given user as read
+   */
+  markThreadRead: {
+    parameters: {
+      path: {
+        id: string | 'system';
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['MessageRead'][];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
         content: {
           'application/json': components['schemas']['TekstErrorModel'];
         };
@@ -4941,13 +5262,35 @@ export interface operations {
       };
     };
   };
-  /** Get users */
-  getUsers: {
+  /** Find users */
+  findUsers: {
+    parameters: {
+      query?: {
+        /** @description Query string to search in user data */
+        q?: string;
+        /** @description Include active users */
+        active?: boolean;
+        /** @description Include inactive users */
+        inactive?: boolean;
+        /** @description Include verified users */
+        verified?: boolean;
+        /** @description Include unverified users */
+        unverified?: boolean;
+        /** @description Include administrators */
+        admin?: boolean;
+        /** @description Include regular users */
+        user?: boolean;
+        /** @description Page number */
+        pg?: number;
+        /** @description Page size */
+        pgs?: number;
+      };
+    };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': components['schemas']['UserRead'][];
+          'application/json': components['schemas']['UsersSearchResult'];
         };
       };
       /** @description Unauthorized */
@@ -4960,6 +5303,12 @@ export interface operations {
       403: {
         content: {
           'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };
@@ -5007,14 +5356,20 @@ export interface operations {
     parameters: {
       query?: {
         /** @description Query string to search in user data */
-        q?: string | null;
+        q?: string;
+        /** @description Page number */
+        pg?: number;
+        /** @description Page size */
+        pgs?: number;
+        /** @description Empty query returns all users */
+        emptyOk?: boolean;
       };
     };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': components['schemas']['UserReadPublic'][];
+          'application/json': components['schemas']['PublicUsersSearchResult'];
         };
       };
       /** @description Unauthorized */

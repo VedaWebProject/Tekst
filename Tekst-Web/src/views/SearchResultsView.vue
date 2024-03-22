@@ -74,8 +74,10 @@ async function execSearch(resetPage?: boolean) {
       ...searchReq.value,
       gen: {
         ...searchReq.value?.gen,
-        pg: pagination.value.page,
-        pgs: pagination.value.pageSize,
+        pgn: {
+          pg: pagination.value.page,
+          pgs: pagination.value.pageSize,
+        },
         sort: sortingPreset.value,
       },
     },

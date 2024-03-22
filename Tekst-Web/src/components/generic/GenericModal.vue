@@ -43,6 +43,8 @@ const emit = defineEmits([
 
 const modalStyle = computed<CSSProperties>(() => ({
   maxWidth: '95%',
+  marginTop: 'var(--layout-gap)',
+  marginBottom: 'var(--layout-gap)',
   width: {
     narrow: '480px',
     medium: '600px',
@@ -86,6 +88,18 @@ function handleMaskClick(e: MouseEvent) {
         </icon-heading>
       </slot>
     </template>
+    <template #header-extra>
+      <slot name="header-extra"></slot>
+    </template>
     <slot></slot>
+    <template #cover>
+      <slot name="cover"></slot>
+    </template>
+    <template #footer>
+      <slot name="footer"></slot>
+    </template>
+    <template #action>
+      <slot name="action"></slot>
+    </template>
   </n-modal>
 </template>

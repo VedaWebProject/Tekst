@@ -2,9 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore, useStateStore } from '@/stores';
 import { $t } from '@/i18n';
 import { useMessages } from '@/composables/messages';
-
 import { SiteNoticeIcon, PrivacyIcon, InfoIcon } from '@/icons';
-import { WEB_PATH } from './common';
+import { WEB_PATH } from '@/common';
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -24,9 +23,11 @@ const ResourcesView = () => import('@/views/ResourcesView.vue');
 const ResourceSettingsView = () => import('@/views/ResourceSettingsView.vue');
 const ResourceCreateView = () => import('@/views/ResourceCreateView.vue');
 const ContentsView = () => import('@/views/ContentsView.vue');
+const CommunityView = () => import('@/views/CommunityView.vue');
 
 const AccountView = () => import('@/views/account/AccountView.vue');
 const AccountSettingsView = () => import('@/views/account/AccountSettingsView.vue');
+const AccountMessagesView = () => import('@/views/account/AccountMessagesView.vue');
 const VerifyView = () => import('@/views/VerifyView.vue');
 const ResetView = () => import('@/views/ResetView.vue');
 
@@ -138,6 +139,14 @@ const router = createRouter({
       },
     },
     {
+      path: '/community',
+      name: 'community',
+      component: CommunityView,
+      meta: {
+        restricted: 'user',
+      },
+    },
+    {
       path: '/text/:text?/resources/:id/settings',
       name: 'resourceSettings',
       component: ResourceSettingsView,
@@ -182,6 +191,11 @@ const router = createRouter({
           path: 'settings',
           name: 'accountSettings',
           component: AccountSettingsView,
+        },
+        {
+          path: 'messages',
+          name: 'accountMessages',
+          component: AccountMessagesView,
         },
       ],
     },

@@ -104,8 +104,18 @@ import LockOpenOutlined from '@vicons/material/LockOpenOutlined';
 import SortOutlined from '@vicons/material/SortOutlined';
 import FilterAltOutlined from '@vicons/material/FilterAltOutlined';
 import FindInPageOutlined from '@vicons/material/FindInPageOutlined';
+import MessageOutlined from '@vicons/material/MessageOutlined';
+import MarkChatReadRound from '@vicons/material/MarkChatReadRound';
+import MarkChatUnreadRound from '@vicons/material/MarkChatUnreadRound';
+import SendFilled from '@vicons/material/SendFilled';
+import GroupsFilled from '@vicons/material/GroupsFilled';
 
 export {
+  GroupsFilled as CommunityIcon,
+  SendFilled as SendIcon,
+  MarkChatReadRound as MarkChatReadIcon,
+  MarkChatUnreadRound as MarkChatUnreadIcon,
+  MessageOutlined as MessageIcon,
   FindInPageOutlined as NothingFoundIcon,
   FilterAltOutlined as FilterIcon,
   SortOutlined as SortIcon,

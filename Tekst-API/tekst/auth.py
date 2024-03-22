@@ -46,6 +46,7 @@ from tekst.config import TekstConfig, get_config
 from tekst.email import TemplateIdentifier, broadcast_admin_notification, send_email
 from tekst.logging import log
 from tekst.models.content import ContentBaseDocument
+from tekst.models.message import MessageDocument
 from tekst.models.resource import ResourceBaseDocument
 from tekst.models.user import UserCreate, UserDocument, UserRead, UserUpdate
 
@@ -228,16 +229,19 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
             ResourceBaseDocument.owner_id == user.id, with_children=True
         ).to_list()
         owned_resources_ids = [resource.id for resource in resources_docs]
+
         # delete contents of owned resources
         await ContentBaseDocument.find(
             In(ContentBaseDocument.resource_id, owned_resources_ids),
             with_children=True,
         ).delete()
+
         # delete owned resources
         await ResourceBaseDocument.find_one(
             In(ResourceBaseDocument.id, owned_resources_ids),
             with_children=True,
         ).delete()
+
         # remove user ID from resource shares
         await ResourceBaseDocument.find(
             ResourceBaseDocument.shared_read == user.id,
@@ -251,6 +255,9 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
         ).update(
             Pull(ResourceBaseDocument.shared_write == user.id),
         )
+
+        # delete user messages sent by user
+        await MessageDocument.find(MessageDocument.sender == user.id).delete()
 
     async def on_after_delete(self, user: UserDocument, request: Request | None = None):
         send_email(

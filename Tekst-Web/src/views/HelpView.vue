@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { NSpin, NInput, NIcon } from 'naive-ui';
+import { NButton, NSpin, NInput, NIcon } from 'naive-ui';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import { useHelp } from '@/composables/help';
 import { computed, onMounted, ref } from 'vue';
@@ -67,21 +67,29 @@ watch(
       <n-icon :component="SearchIcon" />
     </template>
   </n-input>
-  <div style="margin-top: 0.5rem">
+
+  <div class="text-small translucent" style="margin-top: var(--layout-gap)">
     {{ $t('help.msgFoundCount', { count: helpTextsFiltered?.length }) }}
   </div>
 
   <div class="content-block">
     <ul
       v-if="helpTextsFiltered"
-      style="display: flex; flex-direction: column; list-style-type: circle"
+      style="
+        display: flex;
+        flex-direction: column;
+        list-style-type: circle;
+        margin: var(--content-gap) 0;
+      "
     >
       <li
         v-for="[textKey, text] of helpTextsFiltered"
         :key="textKey"
         :title="text.title || textKey"
       >
-        <a href="#" @click="(e) => handleClick(e, textKey)">{{ text.title || textKey }}</a>
+        <n-button text @click="(e) => handleClick(e, textKey)">
+          {{ text.title || textKey }}
+        </n-button>
       </li>
     </ul>
     <n-spin v-else-if="loading" class="centered-spinner" />

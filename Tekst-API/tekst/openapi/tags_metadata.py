@@ -68,6 +68,14 @@ def get_tags_metadata(documentation_url: str) -> list[dict[str, Any]]:
             },
         },
         {
+            "name": "messages",
+            "description": "Messages users send and receive on the platform",
+            "externalDocs": {
+                "description": "View full documentation",
+                "url": documentation_url,
+            },
+        },
+        {
             "name": "bookmarks",
             "description": "The current user's bookmarks",
             "externalDocs": {

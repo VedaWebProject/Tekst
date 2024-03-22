@@ -21,6 +21,8 @@ export function useBookmarks() {
       } else {
         bookmarks.value = [];
       }
+    } else {
+      bookmarks.value = [];
     }
   }
 
