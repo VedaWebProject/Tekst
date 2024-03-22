@@ -67,26 +67,26 @@ async function scrollDownMessageContainer(delayMs: number = 0) {
     <template #default>
       <div style="display: flex; flex-direction: column; gap: var(--layout-gap)">
         <div
-          v-for="message in userMessages.openThread?.messages"
-          :key="message.id"
+          v-for="msg in userMessages.openThread?.messages"
+          :key="msg.id"
           class="message-content"
           :class="{
-            'from-me': message.sender === auth.user?.id,
-            'from-them': message.sender !== auth.user?.id,
+            'from-me': msg.sender === auth.user?.id,
+            'from-them': msg.sender !== auth.user?.id,
           }"
           style="white-space: pre-wrap"
         >
-          {{ message.content }}
+          {{ msg.content }}
           <div
             style="display: flex; align-items: center; gap: var(--content-gap)"
             class="message-meta"
           >
-            <n-time :time="new Date(message.time || '')" type="datetime" />
+            <n-time :time="new Date(msg.time || '')" type="datetime" />
             <n-icon
-              v-if="message.sender === auth.user?.id"
-              :component="message.read ? MarkChatReadIcon : MarkChatUnreadIcon"
-              :title="$t(message.read ? 'account.messages.read' : 'account.messages.unread')"
-              :color="message.read ? 'var(--col-success)' : 'inherit'"
+              v-if="msg.sender === auth.user?.id"
+              :component="msg.read ? MarkChatReadIcon : MarkChatUnreadIcon"
+              :title="$t(msg.read ? 'account.messages.read' : 'account.messages.unread')"
+              :color="msg.read ? 'var(--col-success)' : 'inherit'"
             />
           </div>
         </div>
@@ -107,20 +107,21 @@ async function scrollDownMessageContainer(delayMs: number = 0) {
           ref="messageInputRef"
           v-model:value="messageInput"
           type="textarea"
-          style="flex-grow: 2"
-          :placeholder="$t('account.messages.inputPlaceholder')"
+          :placeholder="$t('account.messages.message')"
           :resizable="false"
           :autosize="{ minRows: 1, maxRows: 3 }"
           show-count
           :minlength="1"
           :maxlength="1000"
+          :allow-input="(v) => v.length == 0 || v.replace(/[\s\n\t]+/g, '').length > 0"
           :disabled="loadingSend"
+          style="flex-grow: 2"
         />
         <n-button
           type="primary"
           :title="$t('account.messages.btnSend')"
           :loading="loadingSend"
-          :disabled="loadingSend || !messageInput || messageInput.length <= 1"
+          :disabled="loadingSend || !messageInput || messageInput.length < 1"
           @click="
             handleSendMessage({
               content: messageInput || '',

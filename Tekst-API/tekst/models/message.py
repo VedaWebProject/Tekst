@@ -40,11 +40,11 @@ class Message(ModelBase, ModelFactoryMixin):
         ),
     ]
     time: Annotated[
-        datetime,
+        datetime | None,
         Field(
             description="Time when the message was sent",
         ),
-    ] = datetime.utcnow()
+    ] = None
     read: Annotated[
         bool,
         Field(

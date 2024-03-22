@@ -69,10 +69,10 @@ AdminNotificationTriggers = Annotated[
 class UserReadPublic(ModelBase):
     id: PydanticObjectId
     username: str
-    name: str | None
-    affiliation: str | None
-    avatar_url: str | None
-    bio: str | None
+    name: str | None = None
+    affiliation: str | None = None
+    avatar_url: str | None = None
+    bio: str | None = None
     is_active: bool
     is_superuser: bool
     public_fields: MaybePrivateUserFields

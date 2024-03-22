@@ -27,6 +27,7 @@ async def test_get_users(
     superuser = await login(is_superuser=True)
     resp = await test_client.get("/users")
     assert resp.status_code == 200, status_fail_msg(200, resp)
-    assert isinstance(resp.json(), list)
-    assert len(resp.json()) == 1
-    assert resp.json()[0]["username"] == superuser["username"]
+    assert isinstance(resp.json(), dict)
+    assert "users" in resp.json()
+    assert len(resp.json()["users"]) == 1
+    assert resp.json()["users"][0]["username"] == superuser["username"]

@@ -3,7 +3,7 @@ const state = useStateStore();
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate();
 import { computed } from 'vue';
 import { useUsersSearch } from '@/composables/fetchers';
-import { NThing, NListItem, NInput, NIcon, NSpace, NSpin, NPagination, NList } from 'naive-ui';
+import { NListItem, NInput, NIcon, NSpace, NSpin, NPagination, NList } from 'naive-ui';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import type { PublicUserSearchFilters } from '@/api';
 import { ref } from 'vue';

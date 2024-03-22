@@ -2,20 +2,19 @@
 import { $t } from '@/i18n';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
-import { DeleteIcon, MessageIcon, NoContentIcon } from '@/icons';
-import { NButton, NIcon, NBadge, NSpace, NList, NListItem } from 'naive-ui';
-import { useUserMessagesStore } from '@/stores';
+import { MessageIcon, NoContentIcon } from '@/icons';
+import { NList } from 'naive-ui';
+import { useUserMessagesStore, type UserMessageThread } from '@/stores';
 import { usePlatformData } from '@/composables/platformData';
-import UserDisplay from '@/components/user/UserDisplay.vue';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
+import MessageThreadListItem from '@/components/userMessages/MessageThreadListItem.vue';
 
 const { pfData } = usePlatformData();
 const userMessages = useUserMessagesStore();
 
-async function handleDeleteThread(e: UIEvent, id: string) {
-  e.preventDefault();
-  e.stopPropagation();
-  await userMessages.deleteThread(id);
+function handleThreadClick(thread: UserMessageThread) {
+  userMessages.openThread = thread;
+  userMessages.showMessagingModal = true;
 }
 </script>
 
@@ -40,35 +39,14 @@ async function handleDeleteThread(e: UIEvent, id: string) {
         'pointer-events': userMessages.loading ? 'none' : 'auto',
       }"
     >
-      <n-list-item
+      <message-thread-list-item
         v-for="thread in userMessages.threads"
         :key="thread.id"
-        @click="
-          () => {
-            userMessages.openThread = thread;
-            userMessages.showMessagingModal = true;
-          }
-        "
-      >
-        <n-space align="center">
-          <n-badge :value="thread.unreadCount" :offset="[10, 0]">
-            <user-display v-if="thread.contact" :user="thread.contact" :link="false" />
-            <span v-else>{{ pfData?.settings.infoPlatformName || 'System' }}</span>
-          </n-badge>
-        </n-space>
-
-        <template #suffix>
-          <n-button
-            secondary
-            :title="$t('general.deleteAction')"
-            @click="(e) => handleDeleteThread(e, thread.id)"
-          >
-            <template #icon>
-              <n-icon :component="DeleteIcon" />
-            </template>
-          </n-button>
-        </template>
-      </n-list-item>
+        :thread="thread"
+        :platform-name="pfData?.settings.infoPlatformName"
+        @delete-thread="(id) => userMessages.deleteThread(id)"
+        @click="handleThreadClick(thread)"
+      />
     </n-list>
   </div>
 

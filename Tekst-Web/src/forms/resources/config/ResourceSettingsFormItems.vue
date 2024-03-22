@@ -4,6 +4,8 @@ import {
   type AnyResourceConfig,
   type UserReadPublic,
   type AnyResourceRead,
+  type PublicUserSearchFilters,
+  type UserRead,
 } from '@/api';
 import { resourceSettingsFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
@@ -32,7 +34,7 @@ import IconHeading from '@/components/generic/IconHeading.vue';
 
 const props = defineProps<{
   model: AnyResourceRead;
-  owner?: UserReadPublic | null;
+  owner?: UserRead | UserReadPublic | null;
   public?: boolean;
 }>();
 
@@ -40,7 +42,12 @@ const emit = defineEmits(['update:model']);
 
 const auth = useAuthStore();
 
-const userSearchQuery = ref<string>();
+const initialUserSearchQuery = (): PublicUserSearchFilters => ({
+  pg: 1,
+  pgs: 9999,
+  emptyOk: false,
+});
+const userSearchQuery = ref<PublicUserSearchFilters>(initialUserSearchQuery());
 const {
   users: searchedUsers,
   loading: loadingUsers,
@@ -115,11 +122,12 @@ function handleSharesUpdate(field: string, value: string[]) {
       props.model.sharedWrite?.includes(u.id) ||
       value.includes(u.id)
   );
+  userSearchQuery.value = initialUserSearchQuery();
   handleUpdate(field, value);
 }
 
 function handleUserSearch(query: string) {
-  userSearchQuery.value = query;
+  userSearchQuery.value.q = query;
 }
 
 function renderUserSelectLabel(option: SelectOption): VNodeChild {

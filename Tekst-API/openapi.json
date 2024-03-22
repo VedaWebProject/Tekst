@@ -7343,11 +7343,17 @@
             "description": "Content of the message"
           },
           "time": {
-            "type": "string",
-            "format": "date-time",
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Time",
-            "description": "Time when the message was sent",
-            "default": "2024-03-22T09:37:05.802597"
+            "description": "Time when the message was sent"
           },
           "read": {
             "type": "boolean",
@@ -7410,11 +7416,17 @@
             "description": "Content of the message"
           },
           "time": {
-            "type": "string",
-            "format": "date-time",
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Time",
-            "description": "Time when the message was sent",
-            "default": "2024-03-22T09:37:05.802597"
+            "description": "Time when the message was sent"
           },
           "read": {
             "type": "boolean",

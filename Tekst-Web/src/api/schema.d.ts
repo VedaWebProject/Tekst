@@ -1018,11 +1018,9 @@ export interface components {
       content: string;
       /**
        * Time
-       * Format: date-time
        * @description Time when the message was sent
-       * @default 2024-03-22T09:37:05.802597
        */
-      time?: string;
+      time?: string | null;
       /**
        * Read
        * @description Whether the message has been read by the recipient
@@ -1060,11 +1058,9 @@ export interface components {
       content: string;
       /**
        * Time
-       * Format: date-time
        * @description Time when the message was sent
-       * @default 2024-03-22T09:37:05.802597
        */
-      time?: string;
+      time?: string | null;
       /**
        * Read
        * @description Whether the message has been read by the recipient
