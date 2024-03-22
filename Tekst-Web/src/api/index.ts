@@ -242,3 +242,6 @@ export type SortingPreset = components['schemas']['SortingPreset'];
 
 export type PlainTextSearchQuery = components['schemas']['PlainTextSearchQuery'];
 export type RichTextSearchQuery = components['schemas']['RichTextSearchQuery'];
+
+export type UserSearchFilters = NonNullable<paths['/users']['get']['parameters']['query']>;
+export type UsersSearchResult = components['schemas']['UsersSearchResult'];

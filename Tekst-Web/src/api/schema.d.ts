@@ -315,8 +315,8 @@ export interface paths {
     patch: operations['users:patchCurrentUser'];
   };
   '/users': {
-    /** Get users */
-    get: operations['getUsers'];
+    /** Find users */
+    get: operations['findUsers'];
   };
   '/users/public/{user}': {
     /**
@@ -1020,7 +1020,7 @@ export interface components {
        * Time
        * Format: date-time
        * @description Time when the message was sent
-       * @default 2024-03-21T09:43:31.186946
+       * @default 2024-03-22T08:31:07.924124
        */
       time?: string;
       /**
@@ -1062,7 +1062,7 @@ export interface components {
        * Time
        * Format: date-time
        * @description Time when the message was sent
-       * @default 2024-03-21T09:43:31.186946
+       * @default 2024-03-22T08:31:07.924124
        */
       time?: string;
       /**
@@ -2835,20 +2835,18 @@ export interface components {
       /** Username */
       username: string;
       /** Name */
-      name?: string | null;
+      name: string | null;
       /** Affiliation */
-      affiliation?: string | null;
+      affiliation: string | null;
       /** Avatarurl */
-      avatarUrl?: string | null;
+      avatarUrl: string | null;
       /** Bio */
-      bio?: string | null;
-      /**
-       * Issuperuser
-       * @default false
-       */
-      isSuperuser?: boolean;
-      /** @default [] */
-      publicFields?: components['schemas']['MaybePrivateUserFields'];
+      bio: string | null;
+      /** Isactive */
+      isActive: boolean;
+      /** Issuperuser */
+      isSuperuser: boolean;
+      publicFields: components['schemas']['MaybePrivateUserFields'];
     };
     /** UserUpdate */
     UserUpdate: {
@@ -2893,6 +2891,19 @@ export interface components {
        * ]
        */
       adminNotificationTriggers?: components['schemas']['AdminNotificationTrigger'][];
+    };
+    /** UsersSearchResult */
+    UsersSearchResult: {
+      /**
+       * Users
+       * @description Paginated users data
+       */
+      users: components['schemas']['UserRead'][];
+      /**
+       * Total
+       * @description Total number of search hits
+       */
+      total: number;
     };
     /** ValidationError */
     ValidationError: {
@@ -5238,13 +5249,35 @@ export interface operations {
       };
     };
   };
-  /** Get users */
-  getUsers: {
+  /** Find users */
+  findUsers: {
+    parameters: {
+      query?: {
+        /** @description Query string to search in user data */
+        q?: string;
+        /** @description Include active users */
+        active?: boolean;
+        /** @description Include inactive users */
+        inactive?: boolean;
+        /** @description Include verified users */
+        verified?: boolean;
+        /** @description Include unverified users */
+        unverified?: boolean;
+        /** @description Include administrators */
+        admin?: boolean;
+        /** @description Include regular users */
+        user?: boolean;
+        /** @description Page number */
+        pg?: number;
+        /** @description Page size */
+        pgs?: number;
+      };
+    };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': components['schemas']['UserRead'][];
+          'application/json': components['schemas']['UsersSearchResult'];
         };
       };
       /** @description Unauthorized */
@@ -5257,6 +5290,12 @@ export interface operations {
       403: {
         content: {
           'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };
@@ -5304,7 +5343,7 @@ export interface operations {
     parameters: {
       query?: {
         /** @description Query string to search in user data */
-        q?: string | null;
+        q?: string;
       };
     };
     responses: {

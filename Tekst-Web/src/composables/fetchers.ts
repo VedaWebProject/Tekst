@@ -1,6 +1,6 @@
-import { ref, isRef, unref, watchEffect, type Ref } from 'vue';
+import { ref, isRef, unref, watchEffect, type Ref, watch } from 'vue';
 import { GET } from '@/api';
-import type { UserReadPublic, PlatformStats, UserRead } from '@/api';
+import type { UserReadPublic, PlatformStats, UserRead, UserSearchFilters } from '@/api';
 import { useDebounceFn } from '@vueuse/core';
 import { STATIC_PATH } from '@/common';
 import { useMessages } from './messages';
@@ -62,30 +62,45 @@ export function useStats() {
   return { stats, error, load };
 }
 
-export function useUsersAdmin() {
-  const users = ref<Array<UserRead> | null>(null);
+export function useUsersAdmin(filtersRef: Ref<UserSearchFilters>) {
+  const users = ref<Array<UserRead>>([]);
+  const total = ref(0);
   const error = ref(false);
   const loading = ref(false);
 
-  async function load() {
+  async function load(filters: UserSearchFilters) {
     loading.value = true;
-    users.value = null;
+    users.value = [];
     error.value = false;
 
-    const { data, error: err } = await GET('/users', {});
+    const { data, error: e } = await GET('/users', {
+      params: {
+        query: filters,
+      },
+    });
 
-    if (!err) {
-      users.value = data;
+    if (!e) {
+      users.value = data.users;
+      total.value = data.total;
     } else {
       error.value = true;
     }
     loading.value = false;
   }
 
-  load();
+  const debouncedLoad = useDebounceFn(load, 500);
+  watch(
+    filtersRef,
+    (newFilters) => {
+      loading.value = true;
+      debouncedLoad(newFilters);
+    },
+    { immediate: true, deep: true }
+  );
 
   return {
     users,
+    total,
     loading,
     error,
     load,
@@ -121,7 +136,7 @@ export function useUsersSearch(queryRef: Ref<string | null | undefined>) {
   const debouncedLoad = useDebounceFn(load, 500);
   watchEffect(() => {
     loading.value = true;
-    debouncedLoad(unref(queryRef));
+    debouncedLoad(queryRef.value);
   });
 
   return {

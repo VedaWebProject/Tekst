@@ -483,6 +483,10 @@ account:
     inputPlaceholder: Type your message here...
     btnSend: Send
     msgNoMessages: You haven't sent or received any messages.
+    btnSendMessageToUser: Send message to {'@'}{username}
+
+community:
+  heading: Community
 
 admin:
   heading: Administration
@@ -495,7 +499,7 @@ admin:
   users:
     heading: Users
     save: Saved user "{username}"
-    msgFoundCount: Found {count} users ({total} total)
+    msgFoundCount: 'No users match the given filters | Found one user | Found {count} users'
     checkLabelActive: Account is active
     checkLabelVerified: Email is verified
     checkLabelSuperuser: User is administrator

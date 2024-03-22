@@ -492,6 +492,10 @@ account:
     inputPlaceholder: Schreiben Sie Ihre Nachricht hier...
     btnSend: Senden
     msgNoMessages: Sie haben keine Nachrichten gesendet oder erhalten.
+    btnSendMessageToUser: Nachricht an {'@'}{username} senden
+
+community:
+  heading: Community
 
 admin:
   heading: Administration
@@ -504,7 +508,7 @@ admin:
   users:
     heading: Benutzer
     save: Benutzer "{username}" gespeichert
-    msgFoundCount: '{count} Benutzer gefunden ({total} insgesamt)'
+    msgFoundCount: 'Keine Benutzer entsprechen den eingestellten Filterregeln | Einen Benutzer gefunden | {count} Benutzer gefunden'
     checkLabelActive: Konto ist aktiv
     checkLabelVerified: E-Mail ist verifiziert
     checkLabelSuperuser: Benutzer ist Administrator

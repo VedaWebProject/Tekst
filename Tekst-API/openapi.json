@@ -5076,44 +5076,8 @@
         "tags": [
           "users"
         ],
-        "summary": "Get users",
-        "operationId": "getUsers",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "items": {
-                    "$ref": "#/components/schemas/UserRead"
-                  },
-                  "type": "array",
-                  "title": "Response Get Users Users Get"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            }
-          }
-        },
+        "summary": "Find users",
+        "operationId": "findUsers",
         "security": [
           {
             "APIKeyCookie": []
@@ -5121,7 +5085,160 @@
           {
             "OAuth2PasswordBearer": []
           }
-        ]
+        ],
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128,
+              "description": "Query string to search in user data",
+              "default": "",
+              "title": "Q"
+            },
+            "description": "Query string to search in user data"
+          },
+          {
+            "name": "active",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Include active users",
+              "default": true,
+              "title": "Active"
+            },
+            "description": "Include active users"
+          },
+          {
+            "name": "inactive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Include inactive users",
+              "default": true,
+              "title": "Inactive"
+            },
+            "description": "Include inactive users"
+          },
+          {
+            "name": "verified",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Include verified users",
+              "default": true,
+              "title": "Verified"
+            },
+            "description": "Include verified users"
+          },
+          {
+            "name": "unverified",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Include unverified users",
+              "default": true,
+              "title": "Unverified"
+            },
+            "description": "Include unverified users"
+          },
+          {
+            "name": "admin",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Include administrators",
+              "default": true,
+              "title": "Admin"
+            },
+            "description": "Include administrators"
+          },
+          {
+            "name": "user",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Include regular users",
+              "default": true,
+              "title": "User"
+            },
+            "description": "Include regular users"
+          },
+          {
+            "name": "pg",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "description": "Page number",
+              "default": 1,
+              "title": "Pg"
+            },
+            "description": "Page number"
+          },
+          {
+            "name": "pgs",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "description": "Page size",
+              "default": 10,
+              "title": "Pgs"
+            },
+            "description": "Page size"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsersSearchResult"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/users/public/{user}": {
@@ -5209,15 +5326,10 @@
             "in": "query",
             "required": false,
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
+              "type": "string",
+              "maxLength": 128,
               "description": "Query string to search in user data",
+              "default": "",
               "title": "Q"
             },
             "description": "Query string to search in user data"
@@ -7203,7 +7315,7 @@
             "format": "date-time",
             "title": "Time",
             "description": "Time when the message was sent",
-            "default": "2024-03-21T09:43:31.186946"
+            "default": "2024-03-22T08:31:07.924124"
           },
           "read": {
             "type": "boolean",
@@ -7270,7 +7382,7 @@
             "format": "date-time",
             "title": "Time",
             "description": "Time when the message was sent",
-            "default": "2024-03-21T09:43:31.186946"
+            "default": "2024-03-22T08:31:07.924124"
           },
           "read": {
             "type": "boolean",
@@ -10724,24 +10836,29 @@
             ],
             "title": "Bio"
           },
+          "isActive": {
+            "type": "boolean",
+            "title": "Isactive"
+          },
           "isSuperuser": {
             "type": "boolean",
-            "title": "Issuperuser",
-            "default": false
+            "title": "Issuperuser"
           },
           "publicFields": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/MaybePrivateUserFields"
-              }
-            ],
-            "default": []
+            "$ref": "#/components/schemas/MaybePrivateUserFields"
           }
         },
         "type": "object",
         "required": [
           "id",
-          "username"
+          "username",
+          "name",
+          "affiliation",
+          "avatarUrl",
+          "bio",
+          "isActive",
+          "isSuperuser",
+          "publicFields"
         ],
         "title": "UserReadPublic"
       },
@@ -10914,6 +11031,29 @@
         },
         "type": "object",
         "title": "UserUpdate"
+      },
+      "UsersSearchResult": {
+        "properties": {
+          "users": {
+            "items": {
+              "$ref": "#/components/schemas/UserRead"
+            },
+            "type": "array",
+            "title": "Users",
+            "description": "Paginated users data"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total",
+            "description": "Total number of search hits"
+          }
+        },
+        "type": "object",
+        "required": [
+          "users",
+          "total"
+        ],
+        "title": "UsersSearchResult"
       },
       "ValidationError": {
         "properties": {

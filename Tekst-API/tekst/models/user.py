@@ -69,12 +69,13 @@ AdminNotificationTriggers = Annotated[
 class UserReadPublic(ModelBase):
     id: PydanticObjectId
     username: str
-    name: str | None = None
-    affiliation: str | None = None
-    avatar_url: str | None = None
-    bio: str | None = None
-    is_superuser: bool = False
-    public_fields: MaybePrivateUserFields = []
+    name: str | None
+    affiliation: str | None
+    avatar_url: str | None
+    bio: str | None
+    is_active: bool
+    is_superuser: bool
+    public_fields: MaybePrivateUserFields
 
     @model_validator(mode="after")
     def model_postprocess(self):
@@ -161,3 +162,8 @@ class UserCreate(User, schemas.BaseUserCreate):
 
 
 UserUpdate = User.update_model(schemas.BaseUserUpdate)
+
+
+class UsersSearchResult(ModelBase):
+    users: Annotated[list[UserRead], Field(description="Paginated users data")]
+    total: Annotated[int, Field(description="Total number of search hits")]
