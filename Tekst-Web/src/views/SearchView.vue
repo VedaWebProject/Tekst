@@ -14,7 +14,7 @@ import {
   NFormItem,
   useThemeVars,
 } from 'naive-ui';
-import { computed, ref, watch } from 'vue';
+import { computed, h, ref, watch } from 'vue';
 import type { AdvancedSearchRequestBody, ResourceType } from '@/api';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
@@ -89,6 +89,10 @@ function initQueries() {
   }
 }
 
+function renderResourceOptionLabel(option: SelectMixedOption) {
+  return h('span', { style: { color: 'var(--accent-color)' } }, { default: () => option.label });
+}
+
 watch(
   () => resources.data,
   () => {
@@ -135,7 +139,8 @@ watch(
               :value="resourceQuery.cmn.res"
               :options="resourceOptions"
               :consistent-menu-width="false"
-              size="large"
+              :render-label="renderResourceOptionLabel"
+              style="font-weight: var(--font-weight-bold)"
               @update:value="
                 (v, o: SelectMixedOption) =>
                   handleResourceChange(index, v, o.resourceType as ResourceType)
