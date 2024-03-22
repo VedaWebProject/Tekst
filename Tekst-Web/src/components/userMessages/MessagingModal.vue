@@ -2,14 +2,17 @@
 import { $t } from '@/i18n';
 import { MarkChatReadIcon, MarkChatUnreadIcon, SendIcon } from '@/icons';
 import { ref } from 'vue';
-import { POST, type UserMessageCreate } from '@/api';
+import { POST } from '@/api';
 import { NButton, NInput, NIcon, NTime, type InputInst } from 'naive-ui';
 import { useAuthStore, useUserMessagesStore } from '@/stores';
 import UserDisplay from '@/components/user/UserDisplay.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
+import { useMagicKeys, whenever } from '@vueuse/core';
 
 const userMessages = useUserMessagesStore();
 const auth = useAuthStore();
+const keys = useMagicKeys();
+const ctrlSpace = keys['Ctrl+Space'];
 
 const messageInput = ref<string>();
 const messageInputRef = ref<InputInst>();
@@ -25,13 +28,19 @@ async function markThreadRead(threadId?: string) {
   }
 }
 
-async function handleSendMessage(msg: UserMessageCreate) {
+async function handleSendMessage() {
+  if (!messageInput.value || loadingSend.value) return;
   loadingSend.value = true;
-  await userMessages.send(msg);
+  await userMessages.send({
+    content: messageInput.value || '',
+    sender: auth.user?.id,
+    recipient: userMessages.openThread?.contact?.id || '',
+  });
   userMessages.openThread = userMessages.threads.find((t) => t.id === userMessages.openThread?.id);
   messageInput.value = '';
   await scrollDownMessageContainer(300);
   loadingSend.value = false;
+  messageInputRef.value?.focus();
 }
 
 function handleModalEnter() {
@@ -47,6 +56,10 @@ async function scrollDownMessageContainer(delayMs: number = 0) {
     messageContainerElm.scroll({ top: messageContainerElm.scrollHeight, behavior: 'smooth' });
   }
 }
+
+whenever(ctrlSpace, () => {
+  handleSendMessage();
+});
 </script>
 
 <template>
@@ -111,10 +124,8 @@ async function scrollDownMessageContainer(delayMs: number = 0) {
           :resizable="false"
           :autosize="{ minRows: 1, maxRows: 3 }"
           show-count
-          :minlength="1"
           :maxlength="1000"
           :allow-input="(v) => v.length == 0 || v.replace(/[\s\n\t]+/g, '').length > 0"
-          :disabled="loadingSend"
           style="flex-grow: 2"
         />
         <n-button
@@ -122,13 +133,7 @@ async function scrollDownMessageContainer(delayMs: number = 0) {
           :title="$t('account.messages.btnSend')"
           :loading="loadingSend"
           :disabled="loadingSend || !messageInput || messageInput.length < 1"
-          @click="
-            handleSendMessage({
-              content: messageInput || '',
-              sender: auth.user?.id,
-              recipient: userMessages.openThread?.contact.id,
-            })
-          "
+          @click="handleSendMessage"
         >
           <template #icon>
             <n-icon :component="SendIcon" />
