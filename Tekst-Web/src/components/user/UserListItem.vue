@@ -46,6 +46,12 @@ const state = useStateStore();
 const { pfData } = usePlatformData();
 
 const targetUserIsCurrentUser = computed(() => props.targetUser.id === props.currentUser?.id);
+const emailLink = computed(
+  () =>
+    `mailto:${props.targetUser.email}?subject=${$t('admin.users.mailtoSubject', {
+      platform: pfData.value?.settings.infoPlatformName,
+    })}`
+);
 
 const actionOptions = computed(() => [
   {
@@ -177,18 +183,6 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
           </n-badge>
         </n-space>
       </template>
-      <template #description>
-        <a
-          :href="`mailto:${targetUser.email}?subject=${$t('admin.users.mailtoSubject', {
-            platform: pfData?.settings.infoPlatformName,
-          })}`"
-          :title="$t('admin.users.mailtoLinkTitle', { username: targetUser.username })"
-        >
-          {{ targetUser.email }}
-        </a>
-        – {{ $t('admin.users.registeredAt') }}
-        <n-time :time="new Date(targetUser.createdAt)" type="date" />
-      </template>
       <template #header-extra>
         <n-space>
           <n-dropdown
@@ -206,7 +200,22 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
           </n-dropdown>
         </n-space>
       </template>
-      <div class="text-small">{{ targetUser.name }} ({{ targetUser.affiliation }})</div>
+      <template #description>
+        <div class="text-small">
+          {{ targetUser.affiliation }}
+          –
+          <a
+            :href="emailLink"
+            :title="$t('admin.users.mailtoLinkTitle', { username: targetUser.username })"
+          >
+            {{ targetUser.email }}
+          </a>
+          –
+          {{ $t('admin.users.registeredAt') }}
+          <n-time :time="new Date(targetUser.createdAt)" type="date" />
+        </div>
+      </template>
+      <template #footer> </template>
     </n-thing>
   </n-list-item>
 </template>
