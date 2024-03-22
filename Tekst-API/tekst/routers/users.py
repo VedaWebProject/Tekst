@@ -128,16 +128,28 @@ async def find_users(
     db_query = [
         Text(query) if query else {},
         Or(
-            Eq(UserDocument.is_active, is_active),
-            NE(UserDocument.is_active, is_inactive),
+            Eq(UserDocument.is_active, is_active)
+            if is_active
+            else Eq(UserDocument.id, 0),
+            NE(UserDocument.is_active, is_inactive)
+            if is_inactive
+            else Eq(UserDocument.id, 0),
         ),
         Or(
-            Eq(UserDocument.is_verified, is_verified),
-            NE(UserDocument.is_verified, is_unverified),
+            Eq(UserDocument.is_verified, is_verified)
+            if is_verified
+            else Eq(UserDocument.id, 0),
+            NE(UserDocument.is_verified, is_unverified)
+            if is_unverified
+            else Eq(UserDocument.id, 0),
         ),
         Or(
-            Eq(UserDocument.is_superuser, is_superuser),
-            NE(UserDocument.is_superuser, is_no_superuser),
+            Eq(UserDocument.is_superuser, is_superuser)
+            if is_superuser
+            else Eq(UserDocument.id, 0),
+            NE(UserDocument.is_superuser, is_no_superuser)
+            if is_no_superuser
+            else Eq(UserDocument.id, 0),
         ),
     ]
 
