@@ -208,6 +208,7 @@ onMounted(() => {
           :placeholder="$t('search.searchAction')"
           style="margin-bottom: var(--content-gap)"
           round
+          clearable
           @update:value="resetPagination"
         >
           <template #prefix>

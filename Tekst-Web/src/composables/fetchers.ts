@@ -77,6 +77,7 @@ export function useUsersAdmin(filtersRef: Ref<UserSearchFilters>) {
   async function load(filters: UserSearchFilters) {
     loading.value = true;
     users.value = [];
+    total.value = 0;
     error.value = false;
 
     const { data, error: e } = await GET('/users', {
@@ -121,15 +122,16 @@ export function useUsersSearch(queryRef: Ref<PublicUserSearchFilters>) {
   const total = ref(0);
 
   async function load(query: PublicUserSearchFilters) {
+    users.value = [];
+    total.value = 0;
+    error.value = false;
+
     if (!query.q && !query.emptyOk) {
-      users.value = [];
       loading.value = false;
       return;
     }
 
     loading.value = true;
-    users.value = [];
-    error.value = false;
 
     const { data, error: err } = await GET('/users/public', { params: { query: query } });
 

@@ -23,6 +23,7 @@ const ResourcesView = () => import('@/views/ResourcesView.vue');
 const ResourceSettingsView = () => import('@/views/ResourceSettingsView.vue');
 const ResourceCreateView = () => import('@/views/ResourceCreateView.vue');
 const ContentsView = () => import('@/views/ContentsView.vue');
+const CommunityView = () => import('@/views/CommunityView.vue');
 
 const AccountView = () => import('@/views/account/AccountView.vue');
 const AccountSettingsView = () => import('@/views/account/AccountSettingsView.vue');
@@ -134,6 +135,14 @@ const router = createRouter({
       component: ResourcesView,
       meta: {
         isTextSpecific: true,
+        restricted: 'user',
+      },
+    },
+    {
+      path: '/community',
+      name: 'community',
+      component: CommunityView,
+      meta: {
         restricted: 'user',
       },
     },

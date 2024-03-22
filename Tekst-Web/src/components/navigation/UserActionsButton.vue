@@ -4,7 +4,7 @@ import { useAuthStore, useStateStore, useThemeStore, useUserMessagesStore } from
 import { type RouteLocationRaw, RouterLink } from 'vue-router';
 import { NBadge, NButton, NIcon, NDropdown } from 'naive-ui';
 import { $t } from '@/i18n';
-import { LogInIcon, LogOutIcon, UserIcon, AdminIcon, ResourceIcon } from '@/icons';
+import { LogInIcon, LogOutIcon, UserIcon, AdminIcon, ResourceIcon, CommunityIcon } from '@/icons';
 import { renderIcon } from '@/utils';
 
 const auth = useAuthStore();
@@ -34,6 +34,13 @@ const userOptions = computed(() => [
     ),
     key: 'account',
     icon: renderIcon(UserIcon),
+  },
+  {
+    label: renderLink(() => $t('community.heading'), {
+      name: 'community',
+    }),
+    key: 'community',
+    icon: renderIcon(CommunityIcon),
   },
   {
     label: renderLink(() => $t('resources.heading'), {

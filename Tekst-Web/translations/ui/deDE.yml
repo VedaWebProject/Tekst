@@ -109,6 +109,7 @@ routes:
     resources: Ressourcen zu "{text}"
     resourceSettings: '@:resources.settings.heading'
     user: Profil von {username}
+    community: Gemeinschaft
     accountProfile: '@:account.profileHeading'
     accountSettings: '@:account.settings.heading'
     adminStatistics: '@:admin.heading - Statistiken'
@@ -495,7 +496,7 @@ account:
     btnSendMessageToUser: Nachricht an {'@'}{username} senden
 
 community:
-  heading: Community
+  heading: Gemeinschaft
 
 admin:
   heading: Administration
@@ -509,13 +510,7 @@ admin:
     heading: Benutzer
     save: Benutzer "{username}" gespeichert
     msgFoundCount: 'Keine Benutzer entsprechen den eingestellten Filterregeln | Einen Benutzer gefunden | {count} Benutzer gefunden'
-    checkLabelActive: Konto ist aktiv
-    checkLabelVerified: E-Mail ist verifiziert
-    checkLabelSuperuser: Benutzer ist Administrator
     registeredAt: registriert am
-    editModal:
-      accountStatus: Konto-Status
-      adminWarning: Vorsicht! Sie sollten wissen, was Sie tun!
     msgSentVerificationLink: Eine Verifizierungs-E-Mail wurde an "{username}" gesendet.
     msgUserDeleted: Der Benutzer {username} wurde gelöscht und darüber per E-Mail benachrichtigt.
     mailtoLinkTitle: E-Mail an {username} senden

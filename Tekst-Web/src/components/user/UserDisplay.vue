@@ -3,6 +3,8 @@ import { RouterLink } from 'vue-router';
 import type { UserReadPublic } from '@/api';
 import UserDisplayText from '@/components/user/UserDisplayText.vue';
 import UserAvatar from '@/components/user/UserAvatar.vue';
+import { AdminIcon } from '@/icons';
+import { NIcon } from 'naive-ui';
 
 withDefaults(
   defineProps<{
@@ -43,6 +45,12 @@ const iconSizes = {
         <user-display-text :user="user" />
       </router-link>
       <user-display-text v-else :user="user" />
+      <n-icon
+        v-if="user.isSuperuser"
+        :component="AdminIcon"
+        color="var(--accent-color)"
+        :title="$t('models.user.isSuperuser')"
+      />
     </template>
     <span v-else>–</span>
   </div>

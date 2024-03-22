@@ -337,12 +337,8 @@ async function handleNearestChangeClick(mode: 'preceding' | 'subsequent') {
     <help-button-widget help-key="contentsView" />
   </icon-heading>
 
-  <router-link
-    v-slot="{ navigate }"
-    :to="{ name: 'resources', params: { text: state.text?.slug } }"
-    custom
-  >
-    <n-button text :focusable="false" @click="navigate">
+  <router-link :to="{ name: 'resources', params: { text: state.text?.slug } }">
+    <n-button text :focusable="false">
       <template #icon>
         <n-icon :component="ArrowBackIcon" />
       </template>
