@@ -79,8 +79,15 @@ watch(
         </div>
       </template>
 
-      <template v-if="auth.user && user.id !== auth.user.id" #header-extra>
-        <n-button type="primary" circle size="large" @click="handleSendUserMessage">
+      <template v-if="auth.user" #header-extra>
+        <n-button
+          type="primary"
+          circle
+          size="large"
+          :disabled="user.id === auth.user.id || !user.isActive"
+          :title="$t('account.messages.btnSendMessageToUser', { username: user.username })"
+          @click="handleSendUserMessage"
+        >
           <template #icon>
             <n-icon :component="MessageIcon" />
           </template>
