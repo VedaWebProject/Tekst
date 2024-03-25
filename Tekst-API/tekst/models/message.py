@@ -8,13 +8,12 @@ from tekst.models.common import (
     ModelBase,
     ModelFactoryMixin,
     PydanticObjectId,
-    ReadBase,
 )
 from tekst.models.user import UserReadPublic
 from tekst.utils import validators as val
 
 
-class Message(ModelBase, ModelFactoryMixin):
+class UserMessage(ModelBase, ModelFactoryMixin):
     sender: Annotated[
         PydanticObjectId | None,
         Field(
@@ -59,7 +58,7 @@ class Message(ModelBase, ModelFactoryMixin):
     ] = None
 
 
-class MessageDocument(Message, DocumentBase):
+class UserMessageDocument(UserMessage, DocumentBase):
     class Settings(DocumentBase.Settings):
         name = "messages"
         indexes = [
@@ -68,9 +67,32 @@ class MessageDocument(Message, DocumentBase):
         ]
 
 
-class MessageRead(Message, ReadBase):
-    sender_user: UserReadPublic | None
-    recipient_user: UserReadPublic
+UserMessageRead = UserMessage.read_model()
+UserMessageCreate = UserMessage.create_model()
 
 
-MessageCreate = Message.create_model()
+class UserMessageThread(ModelBase):
+    id: Annotated[
+        PydanticObjectId | None,
+        Field(
+            description="ID of the thread or None if the message is a system message"
+        ),
+    ]
+    title: Annotated[
+        str,
+        Field(
+            description="Title of the thread",
+        ),
+    ]
+    contact: Annotated[
+        UserReadPublic | None,
+        Field(
+            description="User data for the other user participating in this thread",
+        ),
+    ]
+    unread: Annotated[
+        int,
+        Field(
+            description="Number of unread messages in this thread",
+        ),
+    ]

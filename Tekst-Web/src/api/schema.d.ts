@@ -134,22 +134,22 @@ export interface paths {
   };
   '/messages': {
     /**
-     * Get messages
-     * @description Returns all messages for/from the requesting user
+     * Get thread messages
+     * @description Returns all messages belonging to the specified thread
      */
-    get: operations['getMessages'];
+    get: operations['getThreadMessages'];
     /**
      * Send message
      * @description Creates a message for the specified recipient
      */
     post: operations['sendMessage'];
   };
-  '/messages/{id}': {
+  '/messages/threads': {
     /**
-     * Delete message
-     * @description Deletes the message with the given ID
+     * Get threads
+     * @description Returns all message threads involving the requesting user
      */
-    delete: operations['deleteMessage'];
+    get: operations['getThreads'];
   };
   '/messages/threads/{id}': {
     /**
@@ -158,13 +158,6 @@ export interface paths {
      * depending on the current deletion status
      */
     delete: operations['deleteThread'];
-  };
-  '/messages/threads/{id}/read': {
-    /**
-     * Mark thread read
-     * @description Marks all received messages from the given user as read
-     */
-    post: operations['markThreadRead'];
   };
   '/platform': {
     /**
@@ -998,84 +991,6 @@ export interface components {
     /** @enum {string} */
     MaybePrivateUserField: 'name' | 'affiliation' | 'bio';
     MaybePrivateUserFields: components['schemas']['MaybePrivateUserField'][];
-    /** MessageCreate */
-    MessageCreate: {
-      /**
-       * Sender
-       * @description ID of the sender or None if this is a system message
-       */
-      sender?: string | null;
-      /**
-       * Recipient
-       * @description ID of the recipient
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      recipient: string;
-      /**
-       * Content
-       * @description Content of the message
-       */
-      content: string;
-      /**
-       * Time
-       * @description Time when the message was sent
-       */
-      time?: string | null;
-      /**
-       * Read
-       * @description Whether the message has been read by the recipient
-       * @default false
-       */
-      read?: boolean;
-      /**
-       * Deleted
-       * @description ID of the user who deleted the message or None if not deleted
-       */
-      deleted?: string | null;
-    };
-    /** MessageRead */
-    MessageRead: {
-      /**
-       * Id
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      id: string;
-      /**
-       * Sender
-       * @description ID of the sender or None if this is a system message
-       */
-      sender?: string | null;
-      /**
-       * Recipient
-       * @description ID of the recipient
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      recipient: string;
-      /**
-       * Content
-       * @description Content of the message
-       */
-      content: string;
-      /**
-       * Time
-       * @description Time when the message was sent
-       */
-      time?: string | null;
-      /**
-       * Read
-       * @description Whether the message has been read by the recipient
-       * @default false
-       */
-      read?: boolean;
-      /**
-       * Deleted
-       * @description ID of the user who deleted the message or None if not deleted
-       */
-      deleted?: string | null;
-      senderUser: components['schemas']['UserReadPublic'] | null;
-      recipientUser: components['schemas']['UserReadPublic'];
-      [key: string]: unknown;
-    };
     /** Metadate */
     Metadate: {
       /** Key */
@@ -2776,6 +2691,102 @@ export interface components {
        */
       adminNotificationTriggers?: components['schemas']['AdminNotificationTrigger'][];
     };
+    /** UserMessageCreate */
+    UserMessageCreate: {
+      /**
+       * Sender
+       * @description ID of the sender or None if this is a system message
+       */
+      sender?: string | null;
+      /**
+       * Recipient
+       * @description ID of the recipient
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      recipient: string;
+      /**
+       * Content
+       * @description Content of the message
+       */
+      content: string;
+      /**
+       * Time
+       * @description Time when the message was sent
+       */
+      time?: string | null;
+      /**
+       * Read
+       * @description Whether the message has been read by the recipient
+       * @default false
+       */
+      read?: boolean;
+      /**
+       * Deleted
+       * @description ID of the user who deleted the message or None if not deleted
+       */
+      deleted?: string | null;
+    };
+    /** UserMessageRead */
+    UserMessageRead: {
+      /**
+       * Id
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      id: string;
+      /**
+       * Sender
+       * @description ID of the sender or None if this is a system message
+       */
+      sender?: string | null;
+      /**
+       * Recipient
+       * @description ID of the recipient
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      recipient: string;
+      /**
+       * Content
+       * @description Content of the message
+       */
+      content: string;
+      /**
+       * Time
+       * @description Time when the message was sent
+       */
+      time?: string | null;
+      /**
+       * Read
+       * @description Whether the message has been read by the recipient
+       * @default false
+       */
+      read?: boolean;
+      /**
+       * Deleted
+       * @description ID of the user who deleted the message or None if not deleted
+       */
+      deleted?: string | null;
+      [key: string]: unknown;
+    };
+    /** UserMessageThread */
+    UserMessageThread: {
+      /**
+       * Id
+       * @description ID of the thread or None if the message is a system message
+       */
+      id: string | null;
+      /**
+       * Title
+       * @description Title of the thread
+       */
+      title: string;
+      /** @description User data for the other user participating in this thread */
+      contact: components['schemas']['UserReadPublic'] | null;
+      /**
+       * Unread
+       * @description Number of unread messages in this thread
+       */
+      unread: number;
+    };
     /** @enum {string} */
     UserNotificationTrigger: 'messageReceived' | 'resourceProposed' | 'resourcePublished';
     /**
@@ -2846,13 +2857,13 @@ export interface components {
       /** Username */
       username: string;
       /** Name */
-      name: string | null;
+      name?: string | null;
       /** Affiliation */
-      affiliation: string | null;
+      affiliation?: string | null;
       /** Avatarurl */
-      avatarUrl: string | null;
+      avatarUrl?: string | null;
       /** Bio */
-      bio: string | null;
+      bio?: string | null;
       /** Isactive */
       isActive: boolean;
       /** Issuperuser */
@@ -3730,21 +3741,33 @@ export interface operations {
     };
   };
   /**
-   * Get messages
-   * @description Returns all messages for/from the requesting user
+   * Get thread messages
+   * @description Returns all messages belonging to the specified thread
    */
-  getMessages: {
+  getThreadMessages: {
+    parameters: {
+      query?: {
+        /** @description ID of the thread to return messages for */
+        thread?: string | null;
+      };
+    };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': components['schemas']['MessageRead'][];
+          'application/json': components['schemas']['UserMessageRead'][];
         };
       };
       /** @description Unauthorized */
       401: {
         content: {
           'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };
@@ -3756,14 +3779,14 @@ export interface operations {
   sendMessage: {
     requestBody: {
       content: {
-        'application/json': components['schemas']['MessageCreate'];
+        'application/json': components['schemas']['UserMessageCreate'];
       };
     };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': components['schemas']['MessageRead'][];
+          'application/json': components['schemas']['UserMessageRead'];
         };
       };
       /** @description Unauthorized */
@@ -3787,21 +3810,40 @@ export interface operations {
     };
   };
   /**
-   * Delete message
-   * @description Deletes the message with the given ID
+   * Get threads
+   * @description Returns all message threads involving the requesting user
    */
-  deleteMessage: {
-    parameters: {
-      path: {
-        id: string;
-      };
-    };
+  getThreads: {
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': components['schemas']['MessageRead'][];
+          'application/json': components['schemas']['UserMessageThread'][];
         };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+    };
+  };
+  /**
+   * Delete thread
+   * @description Marks all received messages from the given user as deleted or actually deletes them,
+   * depending on the current deletion status
+   */
+  deleteThread: {
+    parameters: {
+      path: {
+        id: string | null;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      204: {
+        content: never;
       };
       /** @description Unauthorized */
       401: {
@@ -3817,69 +3859,6 @@ export interface operations {
       };
       /** @description Not Found */
       404: {
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  /**
-   * Delete thread
-   * @description Marks all received messages from the given user as deleted or actually deletes them,
-   * depending on the current deletion status
-   */
-  deleteThread: {
-    parameters: {
-      path: {
-        id: string | 'system';
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json': components['schemas']['MessageRead'][];
-        };
-      };
-      /** @description Unauthorized */
-      401: {
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  /**
-   * Mark thread read
-   * @description Marks all received messages from the given user as read
-   */
-  markThreadRead: {
-    parameters: {
-      path: {
-        id: string | 'system';
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json': components['schemas']['MessageRead'][];
-        };
-      };
-      /** @description Unauthorized */
-      401: {
         content: {
           'application/json': components['schemas']['TekstErrorModel'];
         };

@@ -46,7 +46,7 @@ from tekst.config import TekstConfig, get_config
 from tekst.email import TemplateIdentifier, broadcast_admin_notification, send_email
 from tekst.logging import log
 from tekst.models.content import ContentBaseDocument
-from tekst.models.message import MessageDocument
+from tekst.models.message import UserMessageDocument
 from tekst.models.resource import ResourceBaseDocument
 from tekst.models.user import UserCreate, UserDocument, UserRead, UserUpdate
 
@@ -257,7 +257,7 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
         )
 
         # delete user messages sent by user
-        await MessageDocument.find(MessageDocument.sender == user.id).delete()
+        await UserMessageDocument.find(UserMessageDocument.sender == user.id).delete()
 
     async def on_after_delete(self, user: UserDocument, request: Request | None = None):
         send_email(

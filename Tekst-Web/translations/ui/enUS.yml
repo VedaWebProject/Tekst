@@ -479,7 +479,8 @@ account:
     headingThreads: Conversations
     msgUnreadCount: 'You have no unread messages | You have one unread message | You have {count} unread messages'
     createSuccess: Message sent
-    deleteSuccess: Message deleted
+    deleteThread: Delete this message thread
+    deleteThreadSuccess: Message thread deleted
     read: Message has been read
     unread: Message is unread
     btnSend: Send

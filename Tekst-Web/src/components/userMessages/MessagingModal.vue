@@ -2,51 +2,47 @@
 import { $t } from '@/i18n';
 import { MarkChatReadIcon, MarkChatUnreadIcon, SendIcon } from '@/icons';
 import { ref } from 'vue';
-import { POST } from '@/api';
 import { NButton, NInput, NIcon, NTime, type InputInst } from 'naive-ui';
 import { useAuthStore, useUserMessagesStore } from '@/stores';
 import UserDisplay from '@/components/user/UserDisplay.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import { useMagicKeys, whenever } from '@vueuse/core';
+import type { UserMessageRead } from '@/api';
 
 const userMessages = useUserMessagesStore();
 const auth = useAuthStore();
 const keys = useMagicKeys();
-const ctrlSpace = keys['Ctrl+Space'];
+const ctrlEnter = keys['Ctrl+Enter'];
 
+const messages = ref<UserMessageRead[]>();
 const messageInput = ref<string>();
 const messageInputRef = ref<InputInst>();
 const loadingSend = ref(false);
 
-async function markThreadRead(threadId?: string) {
-  if (!threadId) return;
-  const { data: updatedUserMessages, error } = await POST('/messages/threads/{id}/read', {
-    params: { path: { id: threadId } },
-  });
-  if (!error) {
-    userMessages.messages = updatedUserMessages;
-  }
-}
-
 async function handleSendMessage() {
   if (!messageInput.value || loadingSend.value) return;
   loadingSend.value = true;
-  await userMessages.send({
+  const msg = await userMessages.send({
     content: messageInput.value || '',
     sender: auth.user?.id,
     recipient: userMessages.openThread?.contact?.id || '',
   });
-  userMessages.openThread = userMessages.threads.find((t) => t.id === userMessages.openThread?.id);
+  msg && messages.value?.push(msg);
   messageInput.value = '';
   await scrollDownMessageContainer(300);
   loadingSend.value = false;
   messageInputRef.value?.focus();
 }
 
-function handleModalEnter() {
+async function handleModalEnter() {
   messageInputRef.value?.focus();
+  messages.value = await userMessages.loadMessages(userMessages.openThread?.id);
   scrollDownMessageContainer();
-  markThreadRead(userMessages.openThread?.id);
+}
+
+function handleModalLeave() {
+  userMessages.openThread = undefined;
+  messages.value = undefined;
 }
 
 async function scrollDownMessageContainer(delayMs: number = 0) {
@@ -57,7 +53,7 @@ async function scrollDownMessageContainer(delayMs: number = 0) {
   }
 }
 
-whenever(ctrlSpace, () => {
+whenever(ctrlEnter, () => {
   handleSendMessage();
 });
 </script>
@@ -70,17 +66,24 @@ whenever(ctrlSpace, () => {
     style="max-height: 93vh"
     content-style="overflow: hidden scroll; padding-bottom: 0"
     content-class="messages-scroll-container"
-    @after-leave="userMessages.openThread = undefined"
+    @after-leave="handleModalLeave"
     @after-enter="handleModalEnter"
   >
     <template #header>
-      <user-display :user="userMessages.openThread?.contact" :link="false" size="large" />
+      <user-display
+        :user="userMessages.openThread?.contact || undefined"
+        :link="false"
+        size="large"
+      />
     </template>
 
     <template #default>
-      <div style="display: flex; flex-direction: column; gap: var(--layout-gap)">
+      <div
+        v-if="!!messages?.length"
+        style="display: flex; flex-direction: column; gap: var(--layout-gap)"
+      >
         <div
-          v-for="msg in userMessages.openThread?.messages"
+          v-for="msg in messages"
           :key="msg.id"
           class="message-content"
           :class="{

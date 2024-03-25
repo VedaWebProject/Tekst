@@ -488,7 +488,8 @@ account:
     headingThreads: Unterhaltungen
     msgUnreadCount: 'Sie haben keine ungelesenen Nachrichten | Sie haben eine ungelesenen Nachricht | Sie haben {count} ungelesenen Nachrichten'
     createSuccess: Nachricht gesendet
-    deleteSuccess: Nachricht gelöscht
+    deleteThread: Diese Unterhaltung löschen
+    deleteThreadSuccess: Unterhaltung gelöscht
     read: Nachricht wurde gelesen
     unread: Nachricht ist ungelesen
     btnSend: Senden

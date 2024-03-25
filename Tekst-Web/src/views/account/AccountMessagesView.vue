@@ -3,11 +3,13 @@ import { $t } from '@/i18n';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import { MessageIcon, NoContentIcon } from '@/icons';
-import { NList } from 'naive-ui';
-import { useUserMessagesStore, type UserMessageThread } from '@/stores';
+import { NSpin, NList } from 'naive-ui';
+import { useUserMessagesStore } from '@/stores';
 import { usePlatformData } from '@/composables/platformData';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import MessageThreadListItem from '@/components/userMessages/MessageThreadListItem.vue';
+import type { UserMessageThread } from '@/api';
+import { onMounted } from 'vue';
 
 const { pfData } = usePlatformData();
 const userMessages = useUserMessagesStore();
@@ -16,6 +18,10 @@ function handleThreadClick(thread: UserMessageThread) {
   userMessages.openThread = thread;
   userMessages.showMessagingModal = true;
 }
+
+onMounted(() => {
+  userMessages.loadThreads();
+});
 </script>
 
 <template>
@@ -40,8 +46,8 @@ function handleThreadClick(thread: UserMessageThread) {
       }"
     >
       <message-thread-list-item
-        v-for="thread in userMessages.threads"
-        :key="thread.id"
+        v-for="(thread, index) in userMessages.threads"
+        :key="`thread-${index}-${thread.id}`"
         :thread="thread"
         :platform-name="pfData?.settings.infoPlatformName"
         @delete-thread="(id) => userMessages.deleteThread(id)"
@@ -49,6 +55,12 @@ function handleThreadClick(thread: UserMessageThread) {
       />
     </n-list>
   </div>
+
+  <n-spin
+    v-else-if="userMessages.loading"
+    :description="$t('general.loading')"
+    class="centered-spinner"
+  />
 
   <huge-labelled-icon
     v-else

@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import type { UserMessageThread } from '@/api';
 import { DeleteIcon } from '@/icons';
-import type { UserMessageThread } from '@/stores';
 import { NListItem, NSpace, NBadge, NButton, NIcon } from 'naive-ui';
+import UserDisplay from '@/components/user/UserDisplay.vue';
 
 const props = defineProps<{
   thread: UserMessageThread;
@@ -20,14 +21,14 @@ function handleDeleteClick(e: UIEvent) {
 <template>
   <n-list-item>
     <n-space align="center">
-      <n-badge :value="thread.unreadCount" :offset="[10, 0]">
+      <n-badge :value="thread.unread" :offset="[10, 0]">
         <user-display v-if="thread.contact" :user="thread.contact" :link="false" />
         <span v-else>{{ platformName || 'System' }}</span>
       </n-badge>
     </n-space>
 
     <template #suffix>
-      <n-button secondary :title="$t('general.deleteAction')" @click="handleDeleteClick">
+      <n-button secondary :title="$t('account.messages.deleteThread')" @click="handleDeleteClick">
         <template #icon>
           <n-icon :component="DeleteIcon" />
         </template>

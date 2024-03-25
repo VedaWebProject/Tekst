@@ -150,8 +150,9 @@ export type UserUpdatePublicFields = components['schemas']['UserUpdate']['public
 
 // user messages
 
-export type UserMessageCreate = components['schemas']['MessageCreate'];
-export type UserMessageRead = components['schemas']['MessageRead'];
+export type UserMessageCreate = components['schemas']['UserMessageCreate'];
+export type UserMessageRead = components['schemas']['UserMessageRead'];
+export type UserMessageThread = components['schemas']['UserMessageThread'];
 
 // text and text structure
 

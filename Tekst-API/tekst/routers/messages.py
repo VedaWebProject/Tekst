@@ -1,16 +1,23 @@
-from datetime import datetime
-from typing import Annotated, Literal
+from datetime import datetime, timedelta
+from typing import Annotated
 
-from beanie.operators import And, Eq, In, Or, Set
-from fastapi import APIRouter, Path, status
+from beanie.operators import LT, And, Eq, In, Or, Set
+from fastapi import APIRouter, Depends, Path, Query, status
 
 from tekst import errors
 from tekst.auth import (
     UserDep,
 )
+from tekst.config import TekstConfig, get_config
 from tekst.models.common import PydanticObjectId
-from tekst.models.message import MessageCreate, MessageDocument, MessageRead
+from tekst.models.message import (
+    UserMessageCreate,
+    UserMessageDocument,
+    UserMessageRead,
+    UserMessageThread,
+)
 from tekst.models.user import UserDocument, UserReadPublic
+from tekst.settings import get_settings
 
 
 router = APIRouter(
@@ -22,7 +29,7 @@ router = APIRouter(
 @router.post(
     "",
     status_code=status.HTTP_200_OK,
-    response_model=list[MessageRead],
+    response_model=UserMessageRead,
     responses=errors.responses(
         [
             errors.E_401_UNAUTHORIZED,
@@ -32,8 +39,8 @@ router = APIRouter(
 )
 async def send_message(
     user: UserDep,
-    message: MessageCreate,
-) -> list[MessageRead]:
+    message: UserMessageCreate,
+) -> UserMessageRead:
     """Creates a message for the specified recipient"""
     # check if sender == recipient
     if user.id == message.recipient:
@@ -53,28 +60,88 @@ async def send_message(
     message.read = False
 
     # create message
-    await MessageDocument.model_from(message).create()
-    return await get_messages(user)
+    return await UserMessageDocument.model_from(message).create()
 
 
 @router.get(
     "",
     status_code=status.HTTP_200_OK,
-    response_model=list[MessageRead],
+    response_model=list[UserMessageRead],
     responses=errors.responses(
         [
             errors.E_401_UNAUTHORIZED,
         ]
     ),
 )
-async def get_messages(user: UserDep) -> list[MessageRead]:
-    """Returns all messages for/from the requesting user"""
-    messages = await MessageDocument.find(
-        Or(
-            MessageDocument.recipient == user.id,
-            MessageDocument.sender == user.id,
+async def get_thread_messages(
+    user: UserDep,
+    cfg: Annotated[TekstConfig, Depends(get_config)],
+    thread_id: Annotated[
+        PydanticObjectId | None,
+        Query(
+            alias="thread",
+            description="ID of the thread to return messages for",
         ),
-        MessageDocument.deleted != user.id,
+    ] = None,
+) -> list[UserMessageRead]:
+    """Returns all messages belonging to the specified thread"""
+
+    # trigger housekeeping: delete old messages according to config (for all users!)
+    await UserMessageDocument.find(
+        LT(
+            UserMessageDocument.time,
+            datetime.utcnow() - timedelta(days=cfg.msg_force_delete_after_days),
+        ),
+    ).delete()
+
+    # find messages belonging to this thread
+    messages = (
+        await UserMessageDocument.find(
+            Or(
+                And(
+                    UserMessageDocument.recipient == user.id,
+                    UserMessageDocument.sender == thread_id,
+                ),
+                And(
+                    UserMessageDocument.recipient == thread_id,
+                    UserMessageDocument.sender == user.id,
+                ),
+            ),
+            UserMessageDocument.deleted != user.id,
+        )
+        .sort(+UserMessageDocument.time)
+        .to_list()
+    )
+
+    # mark received messages in this thread as read
+    await UserMessageDocument.find(
+        Eq(UserMessageDocument.sender, thread_id),
+        Eq(UserMessageDocument.recipient, user.id),
+    ).update(Set({UserMessageDocument.read: True}))
+
+    return messages
+
+
+@router.get(
+    "/threads",
+    status_code=status.HTTP_200_OK,
+    response_model=list[UserMessageThread],
+    responses=errors.responses(
+        [
+            errors.E_401_UNAUTHORIZED,
+        ]
+    ),
+)
+async def get_threads(
+    user: UserDep,
+) -> list[UserMessageThread]:
+    """Returns all message threads involving the requesting user"""
+    messages = await UserMessageDocument.find(
+        Or(
+            UserMessageDocument.recipient == user.id,
+            UserMessageDocument.sender == user.id,
+        ),
+        UserMessageDocument.deleted != user.id,
     ).to_list()
 
     # get user IDs of all senders/recipients
@@ -90,25 +157,35 @@ async def get_messages(user: UserDep) -> list[MessageRead]:
         ).to_list()
     }
 
-    # make messages list contain MessageRead instaces with user data
-    messages: list[MessageRead] = [
-        MessageRead(
-            **dict(
-                sender_user=users.get(m.sender, "system"),
-                recipient_user=users.get(m.recipient, None),
-                **m.model_dump(),
+    # group messages as threads by contact
+    threads = dict()
+    platform_name = (await get_settings()).info_platform_name
+    for msg_doc in messages:
+        msg = UserMessageRead.model_from(msg_doc)
+        contact_id = msg.sender if msg.sender != user.id else msg.recipient
+        if contact_id not in threads:
+            contact: UserReadPublic = users.get(contact_id)
+            threads[contact_id] = UserMessageThread(
+                id=contact_id,
+                title=(
+                    (contact.name or contact.username)
+                    if contact
+                    else (platform_name or "System")
+                ),
+                contact=contact,
+                unread=1 if msg.recipient == user.id and not msg.read else 0,
             )
-        )
-        for m in messages
-    ]
+        else:
+            threads[contact_id].unread += (
+                1 if msg.recipient == user.id and not msg.read else 0
+            )
 
-    return messages
+    return threads.values()
 
 
 @router.delete(
-    "/{id}",
-    status_code=status.HTTP_200_OK,
-    response_model=list[MessageRead],
+    "/threads/{id}",
+    status_code=status.HTTP_204_NO_CONTENT,
     responses=errors.responses(
         [
             errors.E_401_UNAUTHORIZED,
@@ -117,83 +194,41 @@ async def get_messages(user: UserDep) -> list[MessageRead]:
         ]
     ),
 )
-async def delete_message(
-    user: UserDep, message_id: Annotated[PydanticObjectId, Path(alias="id")]
-) -> list[MessageRead]:
-    """Deletes the message with the given ID"""
-    msg: MessageDocument = await MessageDocument.get(message_id)
-
-    # check if message exists
-    if not msg:
-        raise errors.E_404_NOT_FOUND
-
-    # check if requesting user can delete message
-    if user.id != msg.sender and user.id != msg.recipient:
-        raise errors.E_403_FORBIDDEN
-
-    # mark message as deleted or actually delete it depending on current deletion status
-    if not msg.sender or (msg.deleted and msg.deleted != user.id):
-        await msg.delete()
-    else:
-        msg.deleted = user.id
-        await msg.replace()
-
-    return await get_messages(user)
-
-
-@router.delete(
-    "/threads/{id}",
-    status_code=status.HTTP_200_OK,
-    response_model=list[MessageRead],
-    responses=errors.responses(
-        [
-            errors.E_401_UNAUTHORIZED,
-        ]
-    ),
-)
 async def delete_thread(
     user: UserDep,
-    sender_id: Annotated[PydanticObjectId | Literal["system"], Path(alias="id")],
-) -> list[MessageRead]:
+    thread_id: Annotated[PydanticObjectId | None, Path(alias="id")],
+) -> None:
     """
     Marks all received messages from the given user as deleted or actually deletes them,
     depending on the current deletion status
     """
-    for msg in await MessageDocument.find(
+    for msg in await UserMessageDocument.find(
         Or(
             And(
                 Eq(
-                    MessageDocument.sender, None if sender_id == "system" else sender_id
+                    UserMessageDocument.sender,
+                    thread_id,
                 ),
-                Eq(MessageDocument.recipient, user.id),
+                Eq(UserMessageDocument.recipient, user.id),
             ),
             And(
-                Eq(MessageDocument.sender, user.id),
-                Eq(MessageDocument.recipient, sender_id),
+                Eq(UserMessageDocument.sender, user.id),
+                Eq(UserMessageDocument.recipient, thread_id),
             ),
         )
     ).to_list():
-        await delete_message(user, msg.id)
-    return await get_messages(user)
+        # check if message exists
+        if not msg:
+            raise errors.E_404_NOT_FOUND
 
+        # check if requesting user can delete message
+        if user.id != msg.sender and user.id != msg.recipient:
+            raise errors.E_403_FORBIDDEN
 
-@router.post(
-    "/threads/{id}/read",
-    status_code=status.HTTP_200_OK,
-    response_model=list[MessageRead],
-    responses=errors.responses(
-        [
-            errors.E_401_UNAUTHORIZED,
-        ]
-    ),
-)
-async def mark_thread_read(
-    user: UserDep,
-    sender_id: Annotated[PydanticObjectId | Literal["system"], Path(alias="id")],
-) -> list[MessageRead]:
-    """Marks all received messages from the given user as read"""
-    await MessageDocument.find(
-        Eq(MessageDocument.sender, None if sender_id == "system" else sender_id),
-        Eq(MessageDocument.recipient, user.id),
-    ).update(Set({MessageDocument.read: True}))
-    return await get_messages(user)
+        # mark message as deleted or actually
+        # delete it depending on current deletion status
+        if not msg.sender or (msg.deleted and msg.deleted != user.id):
+            await msg.delete()
+        else:
+            msg.deleted = user.id
+            await msg.replace()

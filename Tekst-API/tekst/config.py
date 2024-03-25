@@ -122,6 +122,9 @@ class TekstConfig(BaseSettings):
     email_smtp_starttls: bool = True
     email_from_address: str = "noreply@example-tekst-instance.org"
 
+    # user messages config
+    msg_force_delete_after_days: int = 365
+
     # security-related config
     security_secret: str = Field(default_factory=lambda: token_hex(32), min_length=16)
     security_closed_mode: bool = False

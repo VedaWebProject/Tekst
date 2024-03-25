@@ -3,16 +3,12 @@ import { useProfile } from '@/composables/fetchers';
 import { computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { NButton, NSpin, NThing, NIcon } from 'naive-ui';
-import {
-  useAuthStore,
-  useUserMessagesStore,
-  type UserMessageThread,
-  useStateStore,
-} from '@/stores';
+import { useAuthStore, useUserMessagesStore, useStateStore } from '@/stores';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import UserAvatar from '@/components/user/UserAvatar.vue';
 import UserThingHeader from '@/components/user/UserThingHeader.vue';
 import { MessageIcon, UserIcon } from '@/icons';
+import type { UserMessageThread } from '@/api';
 
 const route = useRoute();
 const auth = useAuthStore();
@@ -37,10 +33,9 @@ function handleSendUserMessage() {
     (t) => user.value && t.id === user.value.id
   ) || {
     id: user.value.id,
-    contactLabel: user.value.name || user.value.username,
+    title: user.value.name || user.value.username,
     contact: user.value,
-    messages: [],
-    unreadCount: 0,
+    unread: 0,
   };
   userMessages.openThread = thread;
   userMessages.showMessagingModal = true;
