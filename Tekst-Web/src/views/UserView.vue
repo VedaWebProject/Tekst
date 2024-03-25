@@ -11,8 +11,8 @@ import {
 } from '@/stores';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import UserAvatar from '@/components/user/UserAvatar.vue';
-
-import { AdminIcon, MessageIcon, UserIcon } from '@/icons';
+import UserThingHeader from '@/components/user/UserThingHeader.vue';
+import { MessageIcon, UserIcon } from '@/icons';
 
 const route = useRoute();
 const auth = useAuthStore();
@@ -67,19 +67,7 @@ watch(
       </template>
 
       <template #header>
-        <div style="display: flex; flex-direction: column" class="n">
-          <div style="display: flex; align-items: center; gap: 0.5rem">
-            <span class="text-large">{{ user.name || `@${user.username}` }}</span>
-            <span v-if="user.name" class="translucent text-small n"> @{{ user.username }} </span>
-            <n-icon
-              v-if="user.isSuperuser"
-              :component="AdminIcon"
-              color="var(--accent-color)"
-              :title="$t('models.user.isSuperuser')"
-            />
-          </div>
-          <span class="translucent text-small">{{ user.affiliation }}</span>
-        </div>
+        <user-thing-header :user="user" />
       </template>
 
       <template v-if="auth.user" #header-extra>

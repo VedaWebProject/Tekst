@@ -15,6 +15,7 @@ import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import { createReusableTemplate } from '@vueuse/core';
 import UserAvatar from '@/components/user/UserAvatar.vue';
 import { RouterLink } from 'vue-router';
+import UserThingHeader from '@/components/user/UserThingHeader.vue';
 
 const defaultPage = 1;
 const paginationSlots = computed(() => (state.smallScreen ? 4 : 9));
@@ -105,10 +106,7 @@ function resetPagination() {
             <n-list-item @click="navigate">
               <div style="display: flex; align-items: center; gap: var(--content-gap)">
                 <user-avatar :avatar-url="user.avatarUrl || undefined" :size="64" />
-                <div style="display: flex; flex-direction: column">
-                  <span>{{ user.name }}</span>
-                  <span class="translucent text-small">{{ user.affiliation }}</span>
-                </div>
+                <user-thing-header :user="user" />
               </div>
             </n-list-item>
           </router-link>
