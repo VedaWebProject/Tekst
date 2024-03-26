@@ -40,9 +40,9 @@ MaybePrivateUserFields = TypeAliasType(
 UserNotificationTrigger = TypeAliasType(
     "UserNotificationTrigger",
     Literal[
-        TemplateIdentifier.MESSAGE_RECEIVED.value,
-        TemplateIdentifier.RESOURCE_PROPOSED.value,
-        TemplateIdentifier.RESOURCE_PUBLISHED.value,
+        TemplateIdentifier.EMAIL_MESSAGE_RECEIVED.value,
+        TemplateIdentifier.USRMSG_RESOURCE_PROPOSED.value,
+        TemplateIdentifier.USRMSG_RESOURCE_PUBLISHED.value,
     ],
 )
 UserNotificationTriggers = Annotated[
@@ -55,7 +55,7 @@ UserNotificationTriggers = Annotated[
 
 AdminNotificationTrigger = TypeAliasType(
     "AdminNotificationTrigger",
-    Literal[TemplateIdentifier.USER_AWAITS_ACTIVATION.value],
+    Literal[TemplateIdentifier.EMAIL_USER_AWAITS_ACTIVATION.value],
 )
 AdminNotificationTriggers = Annotated[
     list[AdminNotificationTrigger],

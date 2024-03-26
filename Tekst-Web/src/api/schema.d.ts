@@ -2774,11 +2774,6 @@ export interface components {
        * @description ID of the thread or None if the message is a system message
        */
       id: string | null;
-      /**
-       * Title
-       * @description Title of the thread
-       */
-      title: string;
       /** @description User data for the other user participating in this thread */
       contact: components['schemas']['UserReadPublic'] | null;
       /**

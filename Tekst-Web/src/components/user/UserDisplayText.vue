@@ -12,7 +12,7 @@ defineProps<{
     <span v-if="user.affiliation && user.name" style="margin-right: 0.25rem; font-size: 85%"
       >({{ user.affiliation }})</span
     >
-    <span v-if="!(user.affiliation && user.name)">@{{ user.username }}</span>
+    <span v-if="!user.name">@{{ user.username }}</span>
     <span v-if="user.affiliation && !user.name" style="margin-left: 0.25rem"
       >({{ user.affiliation }})</span
     >

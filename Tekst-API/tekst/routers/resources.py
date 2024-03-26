@@ -20,7 +20,7 @@ from fastapi.responses import FileResponse
 from pydantic import StringConstraints, ValidationError
 from starlette.background import BackgroundTask
 
-from tekst import email, errors
+from tekst import errors, notifications
 from tekst.auth import OptionalUserDep, SuperuserDep, UserDep
 from tekst.config import ConfigDep
 from tekst.logging import log
@@ -486,9 +486,9 @@ async def propose_resource(
         }
     )
     # notify users about the new proposal
-    await email.broadcast_user_notification(
-        email.TemplateIdentifier.RESOURCE_PROPOSED,
-        username=user.username,
+    await notifications.broadcast_user_notification(
+        notifications.TemplateIdentifier.USRMSG_RESOURCE_PROPOSED,
+        username=user.name if "name" in user.public_fields else user.username,
         resource_title=resource_doc.title,
     )
     return await preprocess_resource_read(resource_doc, user)
@@ -560,8 +560,8 @@ async def publish_resource(
         }
     )
     # notify users about the new publication
-    await email.broadcast_user_notification(
-        email.TemplateIdentifier.RESOURCE_PUBLISHED,
+    await notifications.broadcast_user_notification(
+        notifications.TemplateIdentifier.USRMSG_RESOURCE_PUBLISHED,
         resource_title=resource_doc.title,
     )
     return await preprocess_resource_read(resource_doc, user)

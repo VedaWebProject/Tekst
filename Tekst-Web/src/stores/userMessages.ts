@@ -37,7 +37,7 @@ export const useUserMessagesStore = defineStore('userMessages', () => {
   }
 
   async function loadMessages(threadId?: string | null): Promise<UserMessageRead[] | undefined> {
-    if (!threadId) return;
+    threadId = threadId || null;
     loading.value = true;
     if (auth.user?.id) {
       const { data, error } = await GET('/messages', {

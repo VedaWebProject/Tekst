@@ -2,8 +2,8 @@ from datetime import datetime
 
 import pytest
 
-from tekst.email import send_test_email
 from tekst.models.user import UserRead
+from tekst.notifications import send_test_email
 
 
 @pytest.mark.anyio

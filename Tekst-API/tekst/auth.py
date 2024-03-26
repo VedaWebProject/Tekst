@@ -43,12 +43,16 @@ from fastapi_users_db_beanie.access_token import (
 from humps import decamelize
 
 from tekst.config import TekstConfig, get_config
-from tekst.email import TemplateIdentifier, broadcast_admin_notification, send_email
 from tekst.logging import log
 from tekst.models.content import ContentBaseDocument
 from tekst.models.message import UserMessageDocument
 from tekst.models.resource import ResourceBaseDocument
 from tekst.models.user import UserCreate, UserDocument, UserRead, UserUpdate
+from tekst.notifications import (
+    TemplateIdentifier,
+    broadcast_admin_notification,
+    send_notification,
+)
 
 
 _cfg: TekstConfig = get_config()
@@ -152,7 +156,7 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
     ):
         if not _cfg.security_users_active_by_default:
             await broadcast_admin_notification(
-                TemplateIdentifier.USER_AWAITS_ACTIVATION,
+                TemplateIdentifier.EMAIL_USER_AWAITS_ACTIVATION,
                 username=user.username,
                 name=user.name,
                 affiliation=user.affiliation,
@@ -166,18 +170,18 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
     ):
         if "is_active" in update_dict:
             if update_dict.get("is_active"):
-                send_email(user, TemplateIdentifier.ACTIVATED)
+                await send_notification(user, TemplateIdentifier.EMAIL_ACTIVATED)
             else:
-                send_email(user, TemplateIdentifier.DEACTIVATED)
+                await send_notification(user, TemplateIdentifier.EMAIL_DEACTIVATED)
         if "is_superuser" in update_dict:
             if update_dict.get("is_superuser"):
-                send_email(user, TemplateIdentifier.SUPERUSER_SET)
+                await send_notification(user, TemplateIdentifier.EMAIL_SUPERUSER_SET)
             else:
-                send_email(user, TemplateIdentifier.SUPERUSER_UNSET)
+                await send_notification(user, TemplateIdentifier.EMAIL_SUPERUSER_UNSET)
         if "password" in update_dict:
-            send_email(
+            await send_notification(
                 user,
-                TemplateIdentifier.PASSWORD_RESET,
+                TemplateIdentifier.EMAIL_PASSWORD_RESET,
             )
 
     async def on_after_login(
@@ -191,9 +195,9 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
     async def on_after_request_verify(
         self, user: UserDocument, token: str, request: Request | None = None
     ):
-        send_email(  # pragma: no cover
+        await send_notification(  # pragma: no cover
             user,
-            TemplateIdentifier.VERIFY,
+            TemplateIdentifier.EMAIL_VERIFY,
             token=token,
             token_lifetime_hours=int(
                 _cfg.security_verification_token_lifetime / 60 / 60
@@ -201,14 +205,16 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
         )
 
     async def on_after_verify(self, user: UserDocument, request: Request | None = None):
-        send_email(user, TemplateIdentifier.VERIFIED)  # pragma: no cover
+        await send_notification(
+            user, TemplateIdentifier.EMAIL_VERIFIED
+        )  # pragma: no cover
 
     async def on_after_forgot_password(
         self, user: UserDocument, token: str, request: Request | None = None
     ):
-        send_email(
+        await send_notification(
             user,
-            TemplateIdentifier.PASSWORD_FORGOT,
+            TemplateIdentifier.EMAIL_PASSWORD_FORGOT,
             token=token,
             token_lifetime_hours=int(_cfg.security_reset_pw_token_lifetime / 60 / 60),
         )
@@ -216,9 +222,9 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
     async def on_after_reset_password(
         self, user: UserDocument, request: Request | None = None
     ):
-        send_email(  # pragma: no cover
+        await send_notification(  # pragma: no cover
             user,
-            TemplateIdentifier.PASSWORD_RESET,
+            TemplateIdentifier.EMAIL_PASSWORD_RESET,
         )
 
     async def on_before_delete(
@@ -260,9 +266,9 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
         await UserMessageDocument.find(UserMessageDocument.sender == user.id).delete()
 
     async def on_after_delete(self, user: UserDocument, request: Request | None = None):
-        send_email(
+        await send_notification(
             user,
-            TemplateIdentifier.DELETED,
+            TemplateIdentifier.EMAIL_DELETED,
         )
         pass
 

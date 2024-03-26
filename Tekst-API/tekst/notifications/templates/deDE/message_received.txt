@@ -1,0 +1,12 @@
+Hallo {to_user_name},
+
+Sie haben die folgende Nachricht von {username} auf {platform_name} erhalten:
+
+-----------------------------
+{message_content}
+-----------------------------
+
+Um auf diese Nachricht zu antworten, öffnen Sie bitte ihren Posteingang auf
+{platform_name}.
+
+Bis bald auf {platform_name}!

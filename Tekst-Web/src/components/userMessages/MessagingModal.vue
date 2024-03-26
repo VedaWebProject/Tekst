@@ -111,7 +111,6 @@ whenever(ctrlEnter, () => {
 
     <template #footer>
       <div
-        v-if="userMessages.openThread?.contact"
         style="
           display: flex;
           gap: var(--layout-gap);
@@ -128,6 +127,7 @@ whenever(ctrlEnter, () => {
           :autosize="{ minRows: 1, maxRows: 3 }"
           show-count
           :maxlength="1000"
+          :disabled="!userMessages.openThread?.id"
           :allow-input="(v) => v.length == 0 || v.replace(/[\s\n\t]+/g, '').length > 0"
           style="flex-grow: 2"
         />
@@ -135,7 +135,9 @@ whenever(ctrlEnter, () => {
           type="primary"
           :title="$t('account.messages.btnSend')"
           :loading="loadingSend"
-          :disabled="loadingSend || !messageInput || messageInput.length < 1"
+          :disabled="
+            loadingSend || !messageInput || messageInput.length < 1 || !userMessages.openThread?.id
+          "
           @click="handleSendMessage"
         >
           <template #icon>

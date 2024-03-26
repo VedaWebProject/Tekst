@@ -6,7 +6,6 @@ import UserDisplay from '@/components/user/UserDisplay.vue';
 
 const props = defineProps<{
   thread: UserMessageThread;
-  platformName?: string;
 }>();
 
 const emits = defineEmits(['deleteThread']);
@@ -23,7 +22,7 @@ function handleDeleteClick(e: UIEvent) {
     <n-space align="center">
       <n-badge :value="thread.unread" :offset="[10, 0]">
         <user-display v-if="thread.contact" :user="thread.contact" :link="false" />
-        <span v-else>{{ platformName || 'System' }}</span>
+        <span v-else>???</span>
       </n-badge>
     </n-space>
 

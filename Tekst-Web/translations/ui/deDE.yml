@@ -465,14 +465,14 @@ account:
     headingDeleteAccount: Konto löschen
     notifyMe: Benachrichtige mich per Email, wenn...
     userNotificationTriggers:
-      heading: Email-Benachrichtigungen
-      resourceProposed: jemand eine neue Ressource zur Veröffentlichung vorschlägt
-      resourcePublished: eine neue Ressource veröffentlicht wird
-      messageReceived: ich eine Nachricht von einem anderen Benutzer erhalte
+      heading: Benachrichtigungen
+      resourceProposed: jemand eine Ressource zur Veröffentlichung vorschlägt (per Plattform-Nachricht)
+      resourcePublished: eine Ressource veröffentlicht wird (per Plattform-Nachricht)
+      messageReceived: ich eine Nachricht von einem anderen Benutzer erhalte (per Email)
       msgSaveSuccess: Einstellungen zu Email-Benachrichtigungen gespeichert.
     adminNotificationTriggers:
-      heading: Email-Benachrichtigungen für Administratoren
-      userAwaitsActivation: ein Benutzer auf die Aktivierung des Kontos wartet
+      heading: Benachrichtigungen für Administratoren
+      userAwaitsActivation: ein Benutzer auf die Aktivierung des Kontos wartet (per Email)
       msgSaveSuccess: Einstellungen zu Benutzer-Email-Benachrichtigungen gespeichert.
     msgEmailSaveSuccess: '@:models.user.email gespeichert.'
     msgEmailChangeWarning: Stellen Sie sicher, dass Sie eine gültige @:models.user.email eingeben, auf die Sie Zugriff haben! Wenn Sie fortfahren, werden Sie abgemeldet und müssen Ihre geänderte @:models.users.email verifizieren, bevor Sie sich wieder anmelden können.

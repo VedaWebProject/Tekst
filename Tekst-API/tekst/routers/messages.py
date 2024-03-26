@@ -16,7 +16,8 @@ from tekst.models.message import (
     UserMessageRead,
     UserMessageThread,
 )
-from tekst.models.user import UserDocument, UserReadPublic
+from tekst.models.user import UserDocument, UserRead, UserReadPublic
+from tekst.notifications import TemplateIdentifier, send_notification
 from tekst.settings import get_settings
 
 
@@ -60,7 +61,22 @@ async def send_message(
     message.read = False
 
     # create message
-    return await UserMessageDocument.model_from(message).create()
+    message_doc = await UserMessageDocument.model_from(message).create()
+
+    # send notification email to recipient
+    if (
+        TemplateIdentifier.EMAIL_MESSAGE_RECEIVED.value
+        in user.user_notification_triggers
+    ):
+        await send_notification(
+            to_user=UserRead.model_from(await UserDocument.get(message.recipient)),
+            template_id=TemplateIdentifier.EMAIL_MESSAGE_RECEIVED,
+            username=user.name if "name" in user.public_fields else user.username,
+            message_content=message.content,
+        )
+
+    # return created message
+    return message_doc
 
 
 @router.get(
@@ -164,14 +180,16 @@ async def get_threads(
         msg = UserMessageRead.model_from(msg_doc)
         contact_id = msg.sender if msg.sender != user.id else msg.recipient
         if contact_id not in threads:
-            contact: UserReadPublic = users.get(contact_id)
+            contact: UserReadPublic = users.get(contact_id) or UserReadPublic(
+                id=PydanticObjectId(),
+                username="system",
+                name=platform_name,
+                is_active=True,
+                is_superuser=False,
+                public_fields=["name"],
+            )
             threads[contact_id] = UserMessageThread(
                 id=contact_id,
-                title=(
-                    (contact.name or contact.username)
-                    if contact
-                    else (platform_name or "System")
-                ),
                 contact=contact,
                 unread=1 if msg.recipient == user.id and not msg.read else 0,
             )

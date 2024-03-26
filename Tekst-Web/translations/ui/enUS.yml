@@ -456,14 +456,14 @@ account:
     headingDeleteAccount: Delete Account
     notifyMe: Notify me via email when...
     userNotificationTriggers:
-      heading: Email Notifications
-      resourceProposed: someone proposes a new resource for publication
-      resourcePublished: a new resource is published
-      messageReceived: I receive a message from another user
+      heading: Notifications
+      resourceProposed: someone proposes a resource for publication (via platform message)
+      resourcePublished: a resource is published (via platform message)
+      messageReceived: I receive a message from another user (via email)
       msgSaveSuccess: User notifications settings saved.
     adminNotificationTriggers:
-      heading: Email Notifications for Administrators
-      userAwaitsActivation: a user is waiting for account activation
+      heading: Notifications for Administrators
+      userAwaitsActivation: a user is waiting for account activation (via email)
       msgSaveSuccess: Administrator notifications settings saved.
     msgEmailSaveSuccess: '@:models.user.email saved.'
     msgEmailChangeWarning: Make sure you entered a valid email address you have access to! If you proceed, you will be logged out and have to verify your changed email address before you can log in again.

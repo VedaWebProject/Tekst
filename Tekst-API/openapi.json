@@ -10627,11 +10627,6 @@
             "title": "Id",
             "description": "ID of the thread or None if the message is a system message"
           },
-          "title": {
-            "type": "string",
-            "title": "Title",
-            "description": "Title of the thread"
-          },
           "contact": {
             "anyOf": [
               {
@@ -10652,7 +10647,6 @@
         "type": "object",
         "required": [
           "id",
-          "title",
           "contact",
           "unread"
         ],

@@ -78,12 +78,6 @@ class UserMessageThread(ModelBase):
             description="ID of the thread or None if the message is a system message"
         ),
     ]
-    title: Annotated[
-        str,
-        Field(
-            description="Title of the thread",
-        ),
-    ]
     contact: Annotated[
         UserReadPublic | None,
         Field(

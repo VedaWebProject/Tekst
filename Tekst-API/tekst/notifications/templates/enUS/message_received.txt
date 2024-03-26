@@ -1,0 +1,9 @@
+Dear {to_user_name},
+
+you received the following message from {username} on {platform_name}:
+
+{message_content}
+
+To answer this message just go to {platform_name} and visit your message inbox.
+
+See you on {platform_name}!

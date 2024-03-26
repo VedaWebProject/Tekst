@@ -5,17 +5,15 @@ import IconHeading from '@/components/generic/IconHeading.vue';
 import { MessageIcon, NoContentIcon } from '@/icons';
 import { NSpin, NList } from 'naive-ui';
 import { useUserMessagesStore } from '@/stores';
-import { usePlatformData } from '@/composables/platformData';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import MessageThreadListItem from '@/components/userMessages/MessageThreadListItem.vue';
-import type { UserMessageThread } from '@/api';
+import type { UserMessageThread, UserReadPublic } from '@/api';
 import { onMounted } from 'vue';
 
-const { pfData } = usePlatformData();
 const userMessages = useUserMessagesStore();
 
-function handleThreadClick(thread: UserMessageThread) {
-  userMessages.openThread = thread;
+function handleThreadClick(thread: UserMessageThread, altContact?: UserReadPublic) {
+  userMessages.openThread = { ...thread, contact: altContact || thread.contact };
   userMessages.showMessagingModal = true;
 }
 
@@ -49,7 +47,6 @@ onMounted(() => {
         v-for="(thread, index) in userMessages.threads"
         :key="`thread-${index}-${thread.id}`"
         :thread="thread"
-        :platform-name="pfData?.settings.infoPlatformName"
         @delete-thread="(id) => userMessages.deleteThread(id)"
         @click="handleThreadClick(thread)"
       />

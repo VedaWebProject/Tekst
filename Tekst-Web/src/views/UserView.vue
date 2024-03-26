@@ -33,7 +33,6 @@ function handleSendUserMessage() {
     (t) => user.value && t.id === user.value.id
   ) || {
     id: user.value.id,
-    title: user.value.name || user.value.username,
     contact: user.value,
     unread: 0,
   };

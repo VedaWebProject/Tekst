@@ -1,6 +1,7 @@
 import asyncio
 import smtplib
 
+from datetime import datetime
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from functools import lru_cache
@@ -14,6 +15,7 @@ from humps import decamelize
 from tekst.config import TekstConfig, get_config
 from tekst.logging import log
 from tekst.models.email import TemplateIdentifier
+from tekst.models.message import UserMessageDocument
 from tekst.models.user import (
     UserDocument,
     UserRead,
@@ -25,7 +27,7 @@ _TEMPLATES_DIR = Path(realpath(__file__)).parent / "templates"
 
 
 @lru_cache(maxsize=128)
-def _get_email_templates(
+def _get_notification_templates(
     template_id: TemplateIdentifier, locale: str = "enUS"
 ) -> dict[str, str]:
     template_id = decamelize(template_id.value)
@@ -78,15 +80,15 @@ def _send_email(*, to: str, subject: str, txt: str, html: str):
         log.error(e)
 
 
-def send_email(
+async def send_notification(
     to_user: UserRead,
     template_id: TemplateIdentifier,
     **kwargs,
 ):
-    templates = _get_email_templates(template_id, to_user.locale or "enUS")
-    email_contents = dict()
+    templates = _get_notification_templates(template_id, to_user.locale or "enUS")
+    msg_parts = dict()
     for key in templates:
-        email_contents[key] = (
+        msg_parts[key] = (
             templates[key]
             .format(
                 web_url=urljoin(str(_cfg.server_url), _cfg.web_path).strip("/"),
@@ -98,25 +100,41 @@ def send_email(
             )
             .strip()
         )
-    _send_email(
-        to=to_user.email,
-        subject=email_contents.get("subject", ""),
-        txt=email_contents.get("txt", ""),
-        html=email_contents.get("html", ""),
-    )
+    # send
+    if template_id.name.startswith("EMAIL_"):
+        # send as email
+        _send_email(
+            to=to_user.email,
+            subject=msg_parts.get("subject", ""),
+            txt=msg_parts.get("txt", ""),
+            html=msg_parts.get("html", ""),
+        )
+    elif template_id.name.startswith("USRMSG_"):
+        # send as user message
+        msg = f"{msg_parts.get('subject', '')}\n\n{msg_parts.get('txt', '')}"
+        await UserMessageDocument(
+            recipient=to_user.id,
+            content=msg,
+            time=datetime.utcnow(),
+        ).create()
 
 
 async def _broadcast_user_notification(
     template_id: TemplateIdentifier,
     **kwargs,
 ):
+    if not template_id.name.startswith("USRMSG_"):
+        log.error(
+            "Only user messages can be broadcasted to regular users "
+            f"({template_id.name} is not a user message template!)."
+        )
+        return
     for user in await UserDocument.find(
         Eq(UserDocument.user_notification_triggers, template_id.value),
         Eq(UserDocument.is_active, True),
         Eq(UserDocument.is_verified, True),
     ).to_list():
-        await asyncio.sleep(1)
-        send_email(
+        await send_notification(
             to_user=user,
             template_id=template_id,
             **kwargs,
@@ -138,8 +156,8 @@ async def _broadcast_admin_notification(
         Eq(UserDocument.is_superuser, True),
         Eq(UserDocument.admin_notification_triggers, template_id.value),
     ).to_list():
-        await asyncio.sleep(1)
-        send_email(
+        await asyncio.sleep(5)
+        await send_notification(
             to_user=admin,
             template_id=template_id,
             **kwargs,
@@ -153,5 +171,5 @@ async def broadcast_admin_notification(
     asyncio.create_task(_broadcast_admin_notification(template_id, **kwargs))
 
 
-def send_test_email(to_user: UserRead):
-    send_email(to_user, TemplateIdentifier.TEST)
+async def send_test_email(to_user: UserRead):
+    await send_notification(to_user, TemplateIdentifier.EMAIL_TEST)
