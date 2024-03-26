@@ -77,7 +77,9 @@ SortingPreset = TypeAliasType(
 class PaginationSettings(ModelBase):
     page: Annotated[
         int,
-        conint(ge=1),
+        conint(
+            ge=1,
+        ),
         Field(
             alias="pg",
             description="Page number",

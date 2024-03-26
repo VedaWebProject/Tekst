@@ -41,23 +41,38 @@ class ClientSegment(ModelBase, ModelFactoryMixin):
         ),
     ] = False
     editor_mode: Annotated[
-        Literal["wysiwyg", "html"], Field(description="Last used editor mode")
+        Literal["wysiwyg", "html"],
+        Field(
+            description="Last used editor mode",
+        ),
     ] = "wysiwyg"
     locale: Annotated[
         TranslationLocaleKey,
-        Field(description="Locale indicating the translation language of this segment"),
+        Field(
+            description="Locale indicating the translation language of this segment",
+        ),
     ]
     title: Annotated[
         str | None,
-        StringConstraints(max_length=32),
+        StringConstraints(
+            max_length=32,
+        ),
         val.CleanupOneline,
         val.EmptyStringToNone,
-        Field(description="Title of this segment"),
+        Field(
+            description="Title of this segment",
+        ),
     ] = None
     html: Annotated[
         str,
-        StringConstraints(min_length=1, max_length=1048576, strip_whitespace=True),
-        Field(description="HTML content of this segment"),
+        StringConstraints(
+            min_length=1,
+            max_length=1048576,
+            strip_whitespace=True,
+        ),
+        Field(
+            description="HTML content of this segment",
+        ),
     ]
 
     @field_validator("title", mode="before")

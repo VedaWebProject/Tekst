@@ -10,7 +10,11 @@ from tekst.resources import AnyContentRead
 class LocationDefinition(ModelBase):
     label: Annotated[
         str,
-        StringConstraints(min_length=1, max_length=256, strip_whitespace=True),
+        StringConstraints(
+            min_length=1,
+            max_length=256,
+            strip_whitespace=True,
+        ),
     ]
     locations: list["LocationDefinition"] | None = None
 
@@ -22,7 +26,12 @@ class TextStructureImportData(ModelBase):
 
 class LocationData(ModelBase):
     location_path: list[LocationRead] = []
-    contents: Annotated[list[AnyContentRead], Field(discriminator="resource_type")] = []
+    contents: Annotated[
+        list[AnyContentRead],
+        Field(
+            discriminator="resource_type",
+        ),
+    ] = []
 
 
 class ResourceImportData(ModelBase):

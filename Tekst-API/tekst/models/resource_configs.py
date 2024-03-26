@@ -9,9 +9,14 @@ from tekst.utils import validators as val
 class CommonResourceConfig(ModelBase):
     category: Annotated[
         str | None,
-        StringConstraints(max_length=16, strip_whitespace=True),
+        StringConstraints(
+            max_length=16,
+            strip_whitespace=True,
+        ),
         val.EmptyStringToNone,
-        Field(description="Resource category key"),
+        Field(
+            description="Resource category key",
+        ),
     ] = None
     sort_order: Annotated[
         int,
@@ -23,12 +28,14 @@ class CommonResourceConfig(ModelBase):
     ] = 100
     default_active: Annotated[
         bool,
-        Field(description="Whether this resource is active by default when public"),
+        Field(
+            description="Whether this resource is active by default when public",
+        ),
     ] = True
     show_on_parent_level: Annotated[
         bool,
         Field(
-            description="Show combined contents of this resource on the parent level"
+            description="Show combined contents of this resource on the parent level",
         ),
     ] = False
 
@@ -43,19 +50,23 @@ class ResourceConfigBase(ModelBase):
 DefaultCollapsedConfigType = Annotated[
     bool,
     Field(
-        description=("Whether contents of this resource should be collapsed by default")
+        description=(
+            "Whether contents of this resource should be collapsed by default"
+        ),
     ),
 ]
 
 ReducedViewOnelineConfigType = Annotated[
     bool,
-    Field(description="Show contents as single line of text when in reduced view"),
+    Field(
+        description="Show contents as single line of text when in reduced view",
+    ),
 ]
 
 FontConfigType = Annotated[
     str | None,
     Field(
-        description=("Name of the font to use for this resource."),
+        description=("Name of the font to use for this resource.",),
     ),
 ]
 
@@ -73,13 +84,21 @@ class DeepLLinksConfig(ModelBase):
     )  # fmt: skip
 
     enabled: Annotated[
-        bool, Field(description="Enable/disable quick translation links to DeepL")
+        bool,
+        Field(
+            description="Enable/disable quick translation links to DeepL",
+        ),
     ] = False
     source_language: Annotated[
         Literal[_DEEPL_LANGUAGES] | None,
-        Field(description="Source language"),
+        Field(
+            description="Source language",
+        ),
     ] = _DEEPL_LANGUAGES[0]
     languages: Annotated[
         list[Literal[_DEEPL_LANGUAGES]],
-        Field(description="Target languages to display links for", max_length=32),
+        Field(
+            description="Target languages to display links for",
+            max_length=32,
+        ),
     ] = ["EN", "DE"]
