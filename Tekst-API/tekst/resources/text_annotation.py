@@ -10,7 +10,8 @@ from tekst.models.resource_configs import (
     DefaultCollapsedConfigType,
     ResourceConfigBase,
 )
-from tekst.resources import ResourceSearchQuery, ResourceTypeABC
+from tekst.resources import ResourceTypeABC
+from tekst.utils import validators as val
 
 
 class TextAnnotation(ResourceTypeABC):
@@ -29,21 +30,69 @@ class TextAnnotation(ResourceTypeABC):
         return TextAnnotationSearchQuery
 
     @classmethod
-    def construct_es_queries(
-        cls, query: ResourceSearchQuery, *, strict: bool = False
+    def rtype_es_queries(
+        cls, *, query: "TextAnnotationSearchQuery", strict: bool = False
     ) -> list[dict[str, Any]]:
-        # TODO: implement
-        pass
+        es_queries = []
+        if "tokens" in query.get_set_fields():
+            token_query = {
+                "term": {f"{query.common.resource_id}.tokens.token": query.token}
+            }
+            annotation_queries = [
+                {
+                    "term": {
+                        f"{query.common.resource_id}.tokens.annotations.{key}": value
+                    }
+                }
+                for key, value in query.annotations.items()
+            ]
+            es_queries.append(
+                {
+                    "nested": {
+                        "path": f"{query.common.resource_id}.tokens",
+                        "query": {
+                            "bool": {
+                                "must": [
+                                    token_query,
+                                    *annotation_queries,
+                                ],
+                            },
+                        },
+                    }
+                }
+            )
+        return es_queries
 
     @classmethod
-    def index_doc_properties(cls) -> dict[str, Any]:
-        # TODO: implement
-        pass
+    def rtype_index_doc_props(cls) -> dict[str, Any]:
+        return {
+            "tokens": {
+                "type": "nested",
+                "dynamic": True,
+                "properties": {
+                    "token": {
+                        "type": "keyword",
+                        "normalizer": "asciifolding_normalizer",
+                        "fields": {"strict": {"type": "keyword"}},
+                    }
+                },
+            },
+        }
 
     @classmethod
-    def index_doc_data(cls, content: "TextAnnotationContent") -> dict[str, Any]:
-        # TODO: implement
-        pass
+    def rtype_index_doc_data(cls, content: "TextAnnotationContent") -> dict[str, Any]:
+        return {
+            "tokens": [
+                {
+                    "token": token.get("token", ""),
+                    "annotations": {
+                        anno["key"]: anno["value"]
+                        for anno in token.get("annotations", [])
+                    },
+                }
+                for token in content.tokens
+            ],
+        }
 
 
 class GeneralTextAnnotationResourceConfig(ModelBase):
@@ -86,7 +135,7 @@ class TextAnnotationEntry(TypedDict):
     ]
 
 
-class TextAnnotationToken(ModelBase):
+class TextAnnotationToken(TypedDict):
     token: Annotated[
         str,
         Field(
@@ -128,4 +177,18 @@ class TextAnnotationSearchQuery(ModelBase):
             description="Type of the resource to search in",
         ),
     ]
-    # TODO: implement
+    token: Annotated[
+        str,
+        StringConstraints(
+            max_length=512,
+            strip_whitespace=True,
+        ),
+        val.CleanupOneline,
+    ] = ""
+    annotations: Annotated[
+        list[TextAnnotationEntry],
+        Field(
+            alias="anno",
+            description="List of annotations to match",
+        ),
+    ] = ""

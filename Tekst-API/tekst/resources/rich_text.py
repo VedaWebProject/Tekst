@@ -31,8 +31,24 @@ class RichText(ResourceTypeABC):
         return RichTextSearchQuery
 
     @classmethod
-    def construct_es_queries(
-        cls, query: ResourceSearchQuery, *, strict: bool = False
+    def rtype_index_doc_props(cls) -> dict[str, Any]:
+        return {
+            "html": {
+                "type": "text",
+                "analyzer": "standard_asciifolding",
+                "fields": {"strict": {"type": "text"}},
+            },
+        }
+
+    @classmethod
+    def rtype_index_doc_data(cls, content: "RichTextContent") -> dict[str, Any]:
+        return {
+            "html": get_html_text(content.html),
+        }
+
+    @classmethod
+    def rtype_es_queries(
+        cls, *, query: "RichTextSearchQuery", strict: bool = False
     ) -> list[dict[str, Any]]:
         es_queries = []
         set_fields = query.get_set_fields()
@@ -46,34 +62,7 @@ class RichText(ResourceTypeABC):
                     }
                 }
             )
-        if "comment" in set_fields:
-            es_queries.append(
-                {
-                    "simple_query_string": {
-                        "fields": [
-                            f"{query.common.resource_id}.comment{strict_suffix}"
-                        ],
-                        "query": query.common.comment,
-                    }
-                }
-            )
         return es_queries
-
-    @classmethod
-    def index_doc_properties(cls) -> dict[str, Any]:
-        return {
-            "html": {
-                "type": "text",
-                "analyzer": "standard_asciifolding",
-                "fields": {"strict": {"type": "text"}},
-            },
-        }
-
-    @classmethod
-    def index_doc_data(cls, content: "RichTextContent") -> dict[str, Any]:
-        data = content.model_dump(include={"html", "comment"})
-        data["html"] = get_html_text(data["html"])  # strip HTML tags before indexing
-        return data
 
 
 class GeneralRichTextResourceConfig(ModelBase):

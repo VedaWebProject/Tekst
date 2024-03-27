@@ -66,7 +66,7 @@ ReducedViewOnelineConfigType = Annotated[
 FontConfigType = Annotated[
     str | None,
     Field(
-        description=("Name of the font to use for this resource.",),
+        description="Name of the font to use for this resource.",
     ),
 ]
 

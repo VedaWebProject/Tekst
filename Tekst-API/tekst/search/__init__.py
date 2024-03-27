@@ -139,7 +139,7 @@ async def create_index(*, overwrite_existing_index: bool = True) -> None:
                 "type": "object",
                 "properties": resource_types_mgr.get(
                     res.resource_type
-                ).index_doc_properties(),
+                ).index_doc_props(),
             }
         resp = client.indices.put_mapping(
             index=new_index_name,
@@ -367,7 +367,7 @@ async def search_advanced(
         if str(q.common.resource_id) in readable_resource_ids:
             es_queries = resource_types_mgr.get(
                 q.resource_type_specific.resource_type
-            ).construct_es_queries(
+            ).es_queries(
                 query=q,
                 strict=settings_general.strict,
             )

@@ -402,6 +402,12 @@ resources:
         html: Formatierter Text
       searchFields:
         text: Text
+    textAnnotation:
+      label: Text-Annotation
+      parenthesis: tokenisierter, annotierter Text
+      contentFields:
+        tokens: Tokens
+        annotations: Annotationen
 
 contents:
   heading: Ressourcen-Inhalte bearbeiten

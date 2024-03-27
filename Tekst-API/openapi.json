@@ -248,13 +248,17 @@
                       },
                       {
                         "$ref": "#/components/schemas/RichTextContentRead"
+                      },
+                      {
+                        "$ref": "#/components/schemas/TextAnnotationContentRead"
                       }
                     ],
                     "discriminator": {
                       "propertyName": "resourceType",
                       "mapping": {
                         "plainText": "#/components/schemas/PlainTextContentRead",
-                        "richText": "#/components/schemas/RichTextContentRead"
+                        "richText": "#/components/schemas/RichTextContentRead",
+                        "textAnnotation": "#/components/schemas/TextAnnotationContentRead"
                       }
                     }
                   },
@@ -744,13 +748,17 @@
                   },
                   {
                     "$ref": "#/components/schemas/RichTextContentCreate"
+                  },
+                  {
+                    "$ref": "#/components/schemas/TextAnnotationContentCreate"
                   }
                 ],
                 "discriminator": {
                   "propertyName": "resourceType",
                   "mapping": {
                     "plainText": "#/components/schemas/PlainTextContentCreate",
-                    "richText": "#/components/schemas/RichTextContentCreate"
+                    "richText": "#/components/schemas/RichTextContentCreate",
+                    "textAnnotation": "#/components/schemas/TextAnnotationContentCreate"
                   }
                 },
                 "title": "Content"
@@ -770,13 +778,17 @@
                     },
                     {
                       "$ref": "#/components/schemas/RichTextContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/TextAnnotationContentRead"
                     }
                   ],
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
                       "plainText": "#/components/schemas/PlainTextContentRead",
-                      "richText": "#/components/schemas/RichTextContentRead"
+                      "richText": "#/components/schemas/RichTextContentRead",
+                      "textAnnotation": "#/components/schemas/TextAnnotationContentRead"
                     }
                   },
                   "title": "Response Create Content Contents Post"
@@ -891,13 +903,17 @@
                       },
                       {
                         "$ref": "#/components/schemas/RichTextContentRead"
+                      },
+                      {
+                        "$ref": "#/components/schemas/TextAnnotationContentRead"
                       }
                     ],
                     "discriminator": {
                       "propertyName": "resourceType",
                       "mapping": {
                         "plainText": "#/components/schemas/PlainTextContentRead",
-                        "richText": "#/components/schemas/RichTextContentRead"
+                        "richText": "#/components/schemas/RichTextContentRead",
+                        "textAnnotation": "#/components/schemas/TextAnnotationContentRead"
                       }
                     }
                   },
@@ -959,13 +975,17 @@
                     },
                     {
                       "$ref": "#/components/schemas/RichTextContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/TextAnnotationContentRead"
                     }
                   ],
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
                       "plainText": "#/components/schemas/PlainTextContentRead",
-                      "richText": "#/components/schemas/RichTextContentRead"
+                      "richText": "#/components/schemas/RichTextContentRead",
+                      "textAnnotation": "#/components/schemas/TextAnnotationContentRead"
                     }
                   },
                   "title": "Response Get Content Contents  Id  Get"
@@ -1032,13 +1052,17 @@
                   },
                   {
                     "$ref": "#/components/schemas/RichTextContentUpdate"
+                  },
+                  {
+                    "$ref": "#/components/schemas/TextAnnotationContentUpdate"
                   }
                 ],
                 "discriminator": {
                   "propertyName": "resourceType",
                   "mapping": {
                     "plainText": "#/components/schemas/PlainTextContentUpdate",
-                    "richText": "#/components/schemas/RichTextContentUpdate"
+                    "richText": "#/components/schemas/RichTextContentUpdate",
+                    "textAnnotation": "#/components/schemas/TextAnnotationContentUpdate"
                   }
                 },
                 "title": "Updates"
@@ -1058,13 +1082,17 @@
                     },
                     {
                       "$ref": "#/components/schemas/RichTextContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/TextAnnotationContentRead"
                     }
                   ],
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
                       "plainText": "#/components/schemas/PlainTextContentRead",
-                      "richText": "#/components/schemas/RichTextContentRead"
+                      "richText": "#/components/schemas/RichTextContentRead",
+                      "textAnnotation": "#/components/schemas/TextAnnotationContentRead"
                     }
                   },
                   "title": "Response Update Content Contents  Id  Patch"
@@ -2701,13 +2729,17 @@
                   },
                   {
                     "$ref": "#/components/schemas/RichTextResourceCreate"
+                  },
+                  {
+                    "$ref": "#/components/schemas/TextAnnotationResourceCreate"
                   }
                 ],
                 "discriminator": {
                   "propertyName": "resourceType",
                   "mapping": {
                     "plainText": "#/components/schemas/PlainTextResourceCreate",
-                    "richText": "#/components/schemas/RichTextResourceCreate"
+                    "richText": "#/components/schemas/RichTextResourceCreate",
+                    "textAnnotation": "#/components/schemas/TextAnnotationResourceCreate"
                   }
                 },
                 "title": "Resource"
@@ -2727,13 +2759,17 @@
                     },
                     {
                       "$ref": "#/components/schemas/RichTextResourceRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/TextAnnotationResourceRead"
                     }
                   ],
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
                       "plainText": "#/components/schemas/PlainTextResourceRead",
-                      "richText": "#/components/schemas/RichTextResourceRead"
+                      "richText": "#/components/schemas/RichTextResourceRead",
+                      "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
                     }
                   },
                   "title": "Response Create Resource Resources Post"
@@ -2860,13 +2896,17 @@
                       },
                       {
                         "$ref": "#/components/schemas/RichTextResourceRead"
+                      },
+                      {
+                        "$ref": "#/components/schemas/TextAnnotationResourceRead"
                       }
                     ],
                     "discriminator": {
                       "propertyName": "resourceType",
                       "mapping": {
                         "plainText": "#/components/schemas/PlainTextResourceRead",
-                        "richText": "#/components/schemas/RichTextResourceRead"
+                        "richText": "#/components/schemas/RichTextResourceRead",
+                        "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
                       }
                     }
                   },
@@ -2927,13 +2967,17 @@
                     },
                     {
                       "$ref": "#/components/schemas/RichTextResourceRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/TextAnnotationResourceRead"
                     }
                   ],
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
                       "plainText": "#/components/schemas/PlainTextResourceRead",
-                      "richText": "#/components/schemas/RichTextResourceRead"
+                      "richText": "#/components/schemas/RichTextResourceRead",
+                      "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
                     }
                   },
                   "title": "Response Create Resource Version Resources  Id  Version Post"
@@ -3022,13 +3066,17 @@
                   },
                   {
                     "$ref": "#/components/schemas/RichTextResourceUpdate"
+                  },
+                  {
+                    "$ref": "#/components/schemas/TextAnnotationResourceUpdate"
                   }
                 ],
                 "discriminator": {
                   "propertyName": "resourceType",
                   "mapping": {
                     "plainText": "#/components/schemas/PlainTextResourceUpdate",
-                    "richText": "#/components/schemas/RichTextResourceUpdate"
+                    "richText": "#/components/schemas/RichTextResourceUpdate",
+                    "textAnnotation": "#/components/schemas/TextAnnotationResourceUpdate"
                   }
                 },
                 "title": "Updates"
@@ -3048,13 +3096,17 @@
                     },
                     {
                       "$ref": "#/components/schemas/RichTextResourceRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/TextAnnotationResourceRead"
                     }
                   ],
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
                       "plainText": "#/components/schemas/PlainTextResourceRead",
-                      "richText": "#/components/schemas/RichTextResourceRead"
+                      "richText": "#/components/schemas/RichTextResourceRead",
+                      "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
                     }
                   },
                   "title": "Response Update Resource Resources  Id  Patch"
@@ -3132,13 +3184,17 @@
                     },
                     {
                       "$ref": "#/components/schemas/RichTextResourceRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/TextAnnotationResourceRead"
                     }
                   ],
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
                       "plainText": "#/components/schemas/PlainTextResourceRead",
-                      "richText": "#/components/schemas/RichTextResourceRead"
+                      "richText": "#/components/schemas/RichTextResourceRead",
+                      "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
                     }
                   },
                   "title": "Response Get Resource Resources  Id  Get"
@@ -3292,13 +3348,17 @@
                     },
                     {
                       "$ref": "#/components/schemas/RichTextResourceRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/TextAnnotationResourceRead"
                     }
                   ],
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
                       "plainText": "#/components/schemas/PlainTextResourceRead",
-                      "richText": "#/components/schemas/RichTextResourceRead"
+                      "richText": "#/components/schemas/RichTextResourceRead",
+                      "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
                     }
                   },
                   "title": "Response Transfer Resource Resources  Id  Transfer Post"
@@ -3398,13 +3458,17 @@
                     },
                     {
                       "$ref": "#/components/schemas/RichTextResourceRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/TextAnnotationResourceRead"
                     }
                   ],
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
                       "plainText": "#/components/schemas/PlainTextResourceRead",
-                      "richText": "#/components/schemas/RichTextResourceRead"
+                      "richText": "#/components/schemas/RichTextResourceRead",
+                      "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
                     }
                   },
                   "title": "Response Propose Resource Resources  Id  Propose Post"
@@ -3494,13 +3558,17 @@
                     },
                     {
                       "$ref": "#/components/schemas/RichTextResourceRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/TextAnnotationResourceRead"
                     }
                   ],
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
                       "plainText": "#/components/schemas/PlainTextResourceRead",
-                      "richText": "#/components/schemas/RichTextResourceRead"
+                      "richText": "#/components/schemas/RichTextResourceRead",
+                      "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
                     }
                   },
                   "title": "Response Unpropose Resource Resources  Id  Unpropose Post"
@@ -3580,13 +3648,17 @@
                     },
                     {
                       "$ref": "#/components/schemas/RichTextResourceRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/TextAnnotationResourceRead"
                     }
                   ],
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
                       "plainText": "#/components/schemas/PlainTextResourceRead",
-                      "richText": "#/components/schemas/RichTextResourceRead"
+                      "richText": "#/components/schemas/RichTextResourceRead",
+                      "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
                     }
                   },
                   "title": "Response Publish Resource Resources  Id  Publish Post"
@@ -3686,13 +3758,17 @@
                     },
                     {
                       "$ref": "#/components/schemas/RichTextResourceRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/TextAnnotationResourceRead"
                     }
                   ],
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
                       "plainText": "#/components/schemas/PlainTextResourceRead",
-                      "richText": "#/components/schemas/RichTextResourceRead"
+                      "richText": "#/components/schemas/RichTextResourceRead",
+                      "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
                     }
                   },
                   "title": "Response Unpublish Resource Resources  Id  Unpublish Post"
@@ -6289,6 +6365,7 @@
           "locationId": {
             "type": "string",
             "title": "Locationid",
+            "description": "ID of the text location this bookmark refers to",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "comment": {
@@ -6301,7 +6378,8 @@
                 "type": "null"
               }
             ],
-            "title": "Comment"
+            "title": "Comment",
+            "description": "Comment associated with this bookmark"
           }
         },
         "type": "object",
@@ -6320,32 +6398,40 @@
           "userId": {
             "type": "string",
             "title": "Userid",
+            "description": "ID of user who created this bookmark",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "textId": {
             "type": "string",
             "title": "Textid",
+            "description": "ID of text this bookmark belongs to",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "locationId": {
             "type": "string",
             "title": "Locationid",
+            "description": "ID of the text location this bookmark refers to",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "level": {
             "type": "integer",
-            "title": "Level"
+            "minimum": 0.0,
+            "title": "Level",
+            "description": "Text level this bookmark refers to"
           },
           "position": {
             "type": "integer",
-            "title": "Position"
+            "minimum": 0.0,
+            "title": "Position",
+            "description": "Position of the text location this bookmark refers to"
           },
           "locationLabels": {
             "items": {
               "type": "string"
             },
             "type": "array",
-            "title": "Locationlabels"
+            "title": "Locationlabels",
+            "description": "Text location labels from root to target location"
           },
           "comment": {
             "anyOf": [
@@ -6357,7 +6443,8 @@
                 "type": "null"
               }
             ],
-            "title": "Comment"
+            "title": "Comment",
+            "description": "Comment associated with this bookmark"
           }
         },
         "additionalProperties": true,
@@ -6956,6 +7043,18 @@
         "type": "object",
         "title": "GeneralSearchSettings"
       },
+      "GeneralTextAnnotationResourceConfig": {
+        "properties": {
+          "defaultCollapsed": {
+            "type": "boolean",
+            "title": "Defaultcollapsed",
+            "description": "Whether contents of this resource should be collapsed by default",
+            "default": false
+          }
+        },
+        "type": "object",
+        "title": "GeneralTextAnnotationResourceConfig"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -7074,6 +7173,9 @@
                 },
                 {
                   "$ref": "#/components/schemas/RichTextContentRead"
+                },
+                {
+                  "$ref": "#/components/schemas/TextAnnotationContentRead"
                 }
               ]
             },
@@ -7355,7 +7457,7 @@
           "locationId": {
             "type": "string",
             "title": "Locationid",
-            "description": "Parent text location ID",
+            "description": "Text location ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "comment": {
@@ -7421,7 +7523,7 @@
           "locationId": {
             "type": "string",
             "title": "Locationid",
-            "description": "Parent text location ID",
+            "description": "Text location ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "comment": {
@@ -9000,6 +9102,9 @@
               },
               {
                 "$ref": "#/components/schemas/RichTextSearchQuery"
+              },
+              {
+                "$ref": "#/components/schemas/TextAnnotationSearchQuery"
               }
             ],
             "title": "Rts",
@@ -9008,7 +9113,8 @@
               "propertyName": "type",
               "mapping": {
                 "plainText": "#/components/schemas/PlainTextSearchQuery",
-                "richText": "#/components/schemas/RichTextSearchQuery"
+                "richText": "#/components/schemas/RichTextSearchQuery",
+                "textAnnotation": "#/components/schemas/TextAnnotationSearchQuery"
               }
             }
           }
@@ -9035,7 +9141,7 @@
           "locationId": {
             "type": "string",
             "title": "Locationid",
-            "description": "Parent text location ID",
+            "description": "Text location ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "comment": {
@@ -9110,7 +9216,7 @@
           "locationId": {
             "type": "string",
             "title": "Locationid",
-            "description": "Parent text location ID",
+            "description": "Text location ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "comment": {
@@ -9978,6 +10084,867 @@
           "detail"
         ],
         "title": "TekstErrorModel"
+      },
+      "TextAnnotationContentCreate": {
+        "properties": {
+          "resourceId": {
+            "type": "string",
+            "title": "Resourceid",
+            "description": "Resource ID",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "resourceType": {
+            "const": "textAnnotation",
+            "title": "Resourcetype"
+          },
+          "locationId": {
+            "type": "string",
+            "title": "Locationid",
+            "description": "Text location ID",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 50000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment",
+            "description": "Plain text, potentially multiline comment that will be displayed with the content"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes",
+            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
+          },
+          "tokens": {
+            "items": {
+              "$ref": "#/components/schemas/TextAnnotationToken"
+            },
+            "type": "array",
+            "maxItems": 4096,
+            "title": "Tokens",
+            "description": "List of annotated tokens in this content object"
+          }
+        },
+        "type": "object",
+        "required": [
+          "resourceId",
+          "resourceType",
+          "locationId",
+          "tokens"
+        ],
+        "title": "TextAnnotationContentCreate"
+      },
+      "TextAnnotationContentRead": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "resourceId": {
+            "type": "string",
+            "title": "Resourceid",
+            "description": "Resource ID",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "resourceType": {
+            "const": "textAnnotation",
+            "title": "Resourcetype"
+          },
+          "locationId": {
+            "type": "string",
+            "title": "Locationid",
+            "description": "Text location ID",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 50000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment",
+            "description": "Plain text, potentially multiline comment that will be displayed with the content"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes",
+            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
+          },
+          "tokens": {
+            "items": {
+              "$ref": "#/components/schemas/TextAnnotationToken"
+            },
+            "type": "array",
+            "maxItems": 4096,
+            "title": "Tokens",
+            "description": "List of annotated tokens in this content object"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "id",
+          "resourceId",
+          "resourceType",
+          "locationId",
+          "tokens"
+        ],
+        "title": "TextAnnotationContentRead"
+      },
+      "TextAnnotationContentUpdate": {
+        "properties": {
+          "resourceId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resourceid"
+          },
+          "resourceType": {
+            "const": "textAnnotation",
+            "title": "Resourcetype"
+          },
+          "locationId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Locationid"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 50000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment",
+            "description": "Plain text, potentially multiline comment that will be displayed with the content"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes",
+            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
+          },
+          "tokens": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/TextAnnotationToken"
+                },
+                "type": "array",
+                "maxItems": 4096
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tokens"
+          }
+        },
+        "type": "object",
+        "required": [
+          "resourceType"
+        ],
+        "title": "TextAnnotationContentUpdate"
+      },
+      "TextAnnotationEntry": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 1,
+            "title": "Key",
+            "description": "Key of the annotation"
+          },
+          "value": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Value",
+            "description": "Value of the annotation"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "value"
+        ],
+        "title": "TextAnnotationEntry"
+      },
+      "TextAnnotationResourceConfig": {
+        "properties": {
+          "common": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CommonResourceConfig"
+              }
+            ],
+            "default": {
+              "sortOrder": 100,
+              "defaultActive": true,
+              "showOnParentLevel": false
+            }
+          },
+          "general": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GeneralTextAnnotationResourceConfig"
+              }
+            ],
+            "default": {
+              "defaultCollapsed": false
+            }
+          }
+        },
+        "type": "object",
+        "title": "TextAnnotationResourceConfig"
+      },
+      "TextAnnotationResourceCreate": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Title",
+            "description": "Title of this resource"
+          },
+          "description": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Description",
+            "description": "Short, concise description of this resource",
+            "default": []
+          },
+          "textId": {
+            "type": "string",
+            "title": "Textid",
+            "description": "ID of the text this resource belongs to",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "level": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Level",
+            "description": "Text level this resource belongs to"
+          },
+          "resourceType": {
+            "const": "textAnnotation",
+            "title": "Resourcetype"
+          },
+          "originalId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Originalid",
+            "description": "If this is a version of another resource, this ID references the original"
+          },
+          "ownerId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ownerid",
+            "description": "User owning this resource"
+          },
+          "sharedRead": {
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Sharedread",
+            "description": "Users with shared read access to this resource",
+            "default": []
+          },
+          "sharedWrite": {
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Sharedwrite",
+            "description": "Users with shared write access to this resource",
+            "default": []
+          },
+          "public": {
+            "type": "boolean",
+            "title": "Public",
+            "description": "Publication status of this resource",
+            "default": false
+          },
+          "proposed": {
+            "type": "boolean",
+            "title": "Proposed",
+            "description": "Whether this resource has been proposed for publication",
+            "default": false
+          },
+          "citation": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Citation",
+            "description": "Citation details for this resource"
+          },
+          "meta": {
+            "items": {
+              "$ref": "#/components/schemas/Metadate"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "minItems": 0,
+            "title": "Meta",
+            "description": "Arbitrary metadata",
+            "default": []
+          },
+          "comment": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceCommentTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Comment",
+            "description": "Plain text, potentially multiline comment on this resource",
+            "default": []
+          },
+          "config": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TextAnnotationResourceConfig"
+              }
+            ],
+            "default": {
+              "common": {
+                "defaultActive": true,
+                "showOnParentLevel": false,
+                "sortOrder": 100
+              },
+              "general": {
+                "defaultCollapsed": false
+              }
+            }
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "textId",
+          "level",
+          "resourceType"
+        ],
+        "title": "TextAnnotationResourceCreate"
+      },
+      "TextAnnotationResourceRead": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "writable": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Writable",
+            "description": "Whether this resource is writable for the requesting user"
+          },
+          "owner": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/UserReadPublic"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Public user data for user owning this resource"
+          },
+          "sharedReadUsers": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/UserReadPublic"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sharedreadusers",
+            "description": "Public user data for users allowed to read this resource"
+          },
+          "sharedWriteUsers": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/UserReadPublic"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sharedwriteusers",
+            "description": "Public user data for users allowed to write this resource"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Title",
+            "description": "Title of this resource"
+          },
+          "description": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Description",
+            "description": "Short, concise description of this resource",
+            "default": []
+          },
+          "textId": {
+            "type": "string",
+            "title": "Textid",
+            "description": "ID of the text this resource belongs to",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "level": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Level",
+            "description": "Text level this resource belongs to"
+          },
+          "resourceType": {
+            "const": "textAnnotation",
+            "title": "Resourcetype"
+          },
+          "originalId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Originalid",
+            "description": "If this is a version of another resource, this ID references the original"
+          },
+          "ownerId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ownerid",
+            "description": "User owning this resource"
+          },
+          "sharedRead": {
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Sharedread",
+            "description": "Users with shared read access to this resource",
+            "default": []
+          },
+          "sharedWrite": {
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Sharedwrite",
+            "description": "Users with shared write access to this resource",
+            "default": []
+          },
+          "public": {
+            "type": "boolean",
+            "title": "Public",
+            "description": "Publication status of this resource",
+            "default": false
+          },
+          "proposed": {
+            "type": "boolean",
+            "title": "Proposed",
+            "description": "Whether this resource has been proposed for publication",
+            "default": false
+          },
+          "citation": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Citation",
+            "description": "Citation details for this resource"
+          },
+          "meta": {
+            "items": {
+              "$ref": "#/components/schemas/Metadate"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "minItems": 0,
+            "title": "Meta",
+            "description": "Arbitrary metadata",
+            "default": []
+          },
+          "comment": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceCommentTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Comment",
+            "description": "Plain text, potentially multiline comment on this resource",
+            "default": []
+          },
+          "config": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TextAnnotationResourceConfig"
+              }
+            ],
+            "default": {
+              "common": {
+                "defaultActive": true,
+                "showOnParentLevel": false,
+                "sortOrder": 100
+              },
+              "general": {
+                "defaultCollapsed": false
+              }
+            }
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "textId",
+          "level",
+          "resourceType"
+        ],
+        "title": "TextAnnotationResourceRead"
+      },
+      "TextAnnotationResourceUpdate": {
+        "properties": {
+          "title": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 64,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          },
+          "description": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Description",
+            "description": "Short, concise description of this resource",
+            "default": []
+          },
+          "textId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Textid"
+          },
+          "level": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Level"
+          },
+          "resourceType": {
+            "const": "textAnnotation",
+            "title": "Resourcetype"
+          },
+          "originalId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Originalid",
+            "description": "If this is a version of another resource, this ID references the original"
+          },
+          "ownerId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ownerid",
+            "description": "User owning this resource"
+          },
+          "sharedRead": {
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Sharedread",
+            "description": "Users with shared read access to this resource",
+            "default": []
+          },
+          "sharedWrite": {
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Sharedwrite",
+            "description": "Users with shared write access to this resource",
+            "default": []
+          },
+          "public": {
+            "type": "boolean",
+            "title": "Public",
+            "description": "Publication status of this resource",
+            "default": false
+          },
+          "proposed": {
+            "type": "boolean",
+            "title": "Proposed",
+            "description": "Whether this resource has been proposed for publication",
+            "default": false
+          },
+          "citation": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Citation",
+            "description": "Citation details for this resource"
+          },
+          "meta": {
+            "items": {
+              "$ref": "#/components/schemas/Metadate"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "minItems": 0,
+            "title": "Meta",
+            "description": "Arbitrary metadata",
+            "default": []
+          },
+          "comment": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceCommentTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Comment",
+            "description": "Plain text, potentially multiline comment on this resource",
+            "default": []
+          },
+          "config": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TextAnnotationResourceConfig"
+              }
+            ],
+            "default": {
+              "common": {
+                "defaultActive": true,
+                "showOnParentLevel": false,
+                "sortOrder": 100
+              },
+              "general": {
+                "defaultCollapsed": false
+              }
+            }
+          }
+        },
+        "type": "object",
+        "required": [
+          "resourceType"
+        ],
+        "title": "TextAnnotationResourceUpdate"
+      },
+      "TextAnnotationSearchQuery": {
+        "properties": {
+          "type": {
+            "const": "textAnnotation",
+            "title": "Type",
+            "description": "Type of the resource to search in"
+          },
+          "token": {
+            "type": "string",
+            "maxLength": 512,
+            "title": "Token",
+            "default": ""
+          },
+          "anno": {
+            "items": {
+              "$ref": "#/components/schemas/TextAnnotationEntry"
+            },
+            "type": "array",
+            "title": "Anno",
+            "description": "List of annotations to match",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "title": "TextAnnotationSearchQuery"
+      },
+      "TextAnnotationToken": {
+        "properties": {
+          "token": {
+            "type": "string",
+            "maxLength": 4096,
+            "minLength": 1,
+            "title": "Token",
+            "description": "Text token"
+          },
+          "annotations": {
+            "items": {
+              "$ref": "#/components/schemas/TextAnnotationEntry"
+            },
+            "type": "array",
+            "maxItems": 128,
+            "title": "Annotations",
+            "description": "List of annotations on this token"
+          }
+        },
+        "type": "object",
+        "required": [
+          "token",
+          "annotations"
+        ],
+        "title": "TextAnnotationToken"
       },
       "TextCreate": {
         "properties": {

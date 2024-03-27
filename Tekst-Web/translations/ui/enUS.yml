@@ -393,6 +393,12 @@ resources:
         html: Formatted Text
       searchFields:
         html: Text
+    textAnnotation:
+      label: Text Annotation
+      parenthesis: tokenized, annotated text
+      contentFields:
+        tokens: Tokens
+        annotations: Annotations
 
 contents:
   heading: Edit Resource Content

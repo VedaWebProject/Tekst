@@ -108,7 +108,7 @@ export function saveDownload(blob: Blob, filename: string) {
 
 // export some common platform properties for use throughout codebase
 
-export const resourceTypes = ['plainText', 'richText'];
+export const resourceTypes = ['plainText', 'richText', 'textAnnotation'];
 export const prioritizedMetadataKeys = ['author', 'year', 'language'];
 
 // export components types for use throughout codebase
@@ -203,6 +203,14 @@ export type RichTextResourceRead = components['schemas']['RichTextResourceRead']
     contents?: RichTextContentRead[];
   };
 
+export type TextAnnotationContentRead = components['schemas']['TextAnnotationContentRead'];
+export type TextAnnotationContentCreate = components['schemas']['TextAnnotationContentCreate'];
+export type TextAnnotationResourceCreate = components['schemas']['TextAnnotationResourceCreate'];
+export type TextAnnotationResourceRead = components['schemas']['TextAnnotationResourceRead'] &
+  ResourceReadExtras & {
+    contents?: TextAnnotationContentRead[];
+  };
+
 export type AnyContentCreate =
   paths['/contents']['post']['requestBody']['content']['application/json'];
 export type AnyContentRead =
@@ -224,6 +232,7 @@ export type AnyResourceUpdate =
 
 export type PlainTextResourceConfig = components['schemas']['PlainTextResourceConfig'];
 export type RichTextResourceConfig = components['schemas']['RichTextResourceConfig'];
+export type TextAnnotationResourceConfig = components['schemas']['TextAnnotationResourceConfig'];
 
 export type CommonResourceConfig = components['schemas']['CommonResourceConfig'];
 export type AnyResourceConfig = AnyResourceRead['config'];
@@ -243,6 +252,7 @@ export type SortingPreset = components['schemas']['SortingPreset'];
 
 export type PlainTextSearchQuery = components['schemas']['PlainTextSearchQuery'];
 export type RichTextSearchQuery = components['schemas']['RichTextSearchQuery'];
+export type TextAnnotationSearchQuery = components['schemas']['TextAnnotationSearchQuery'];
 
 export type PublicUserSearchFilters = NonNullable<
   paths['/users/public']['get']['parameters']['query']

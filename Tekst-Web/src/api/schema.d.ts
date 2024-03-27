@@ -505,10 +505,14 @@ export interface components {
     BookmarkCreate: {
       /**
        * Locationid
+       * @description ID of the text location this bookmark refers to
        * @example 5eb7cf5a86d9755df3a6c593
        */
       locationId: string;
-      /** Comment */
+      /**
+       * Comment
+       * @description Comment associated with this bookmark
+       */
       comment?: string | null;
     };
     /** BookmarkRead */
@@ -520,26 +524,41 @@ export interface components {
       id: string;
       /**
        * Userid
+       * @description ID of user who created this bookmark
        * @example 5eb7cf5a86d9755df3a6c593
        */
       userId: string;
       /**
        * Textid
+       * @description ID of text this bookmark belongs to
        * @example 5eb7cf5a86d9755df3a6c593
        */
       textId: string;
       /**
        * Locationid
+       * @description ID of the text location this bookmark refers to
        * @example 5eb7cf5a86d9755df3a6c593
        */
       locationId: string;
-      /** Level */
+      /**
+       * Level
+       * @description Text level this bookmark refers to
+       */
       level: number;
-      /** Position */
+      /**
+       * Position
+       * @description Position of the text location this bookmark refers to
+       */
       position: number;
-      /** Locationlabels */
+      /**
+       * Locationlabels
+       * @description Text location labels from root to target location
+       */
       locationLabels: string[];
-      /** Comment */
+      /**
+       * Comment
+       * @description Comment associated with this bookmark
+       */
       comment?: string | null;
       [key: string]: unknown;
     };
@@ -866,6 +885,15 @@ export interface components {
        */
       strict?: boolean;
     };
+    /** GeneralTextAnnotationResourceConfig */
+    GeneralTextAnnotationResourceConfig: {
+      /**
+       * Defaultcollapsed
+       * @description Whether contents of this resource should be collapsed by default
+       * @default false
+       */
+      defaultCollapsed?: boolean;
+    };
     /** HTTPValidationError */
     HTTPValidationError: {
       /** Detail */
@@ -930,6 +958,7 @@ export interface components {
       contents?: (
         | components['schemas']['PlainTextContentRead']
         | components['schemas']['RichTextContentRead']
+        | components['schemas']['TextAnnotationContentRead']
       )[];
     };
     /** LocationRead */
@@ -1046,7 +1075,7 @@ export interface components {
       resourceType: 'plainText';
       /**
        * Locationid
-       * @description Parent text location ID
+       * @description Text location ID
        * @example 5eb7cf5a86d9755df3a6c593
        */
       locationId: string;
@@ -1086,7 +1115,7 @@ export interface components {
       resourceType: 'plainText';
       /**
        * Locationid
-       * @description Parent text location ID
+       * @description Text location ID
        * @example 5eb7cf5a86d9755df3a6c593
        */
       locationId: string;
@@ -1931,7 +1960,8 @@ export interface components {
        */
       rts:
         | components['schemas']['PlainTextSearchQuery']
-        | components['schemas']['RichTextSearchQuery'];
+        | components['schemas']['RichTextSearchQuery']
+        | components['schemas']['TextAnnotationSearchQuery'];
     };
     /** RichTextContentCreate */
     RichTextContentCreate: {
@@ -1948,7 +1978,7 @@ export interface components {
       resourceType: 'richText';
       /**
        * Locationid
-       * @description Parent text location ID
+       * @description Text location ID
        * @example 5eb7cf5a86d9755df3a6c593
        */
       locationId: string;
@@ -1995,7 +2025,7 @@ export interface components {
       resourceType: 'richText';
       /**
        * Locationid
-       * @description Parent text location ID
+       * @description Text location ID
        * @example 5eb7cf5a86d9755df3a6c593
        */
       locationId: string;
@@ -2436,6 +2466,464 @@ export interface components {
     /** TekstErrorModel */
     TekstErrorModel: {
       detail: components['schemas']['ErrorDetail'];
+    };
+    /** TextAnnotationContentCreate */
+    TextAnnotationContentCreate: {
+      /**
+       * Resourceid
+       * @description Resource ID
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      resourceId: string;
+      /**
+       * Resourcetype
+       * @constant
+       */
+      resourceType: 'textAnnotation';
+      /**
+       * Locationid
+       * @description Text location ID
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      locationId: string;
+      /**
+       * Comment
+       * @description Plain text, potentially multiline comment that will be displayed with the content
+       */
+      comment?: string | null;
+      /**
+       * Notes
+       * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
+       */
+      notes?: string | null;
+      /**
+       * Tokens
+       * @description List of annotated tokens in this content object
+       */
+      tokens: components['schemas']['TextAnnotationToken'][];
+    };
+    /** TextAnnotationContentRead */
+    TextAnnotationContentRead: {
+      /**
+       * Id
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      id: string;
+      /**
+       * Resourceid
+       * @description Resource ID
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      resourceId: string;
+      /**
+       * Resourcetype
+       * @constant
+       */
+      resourceType: 'textAnnotation';
+      /**
+       * Locationid
+       * @description Text location ID
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      locationId: string;
+      /**
+       * Comment
+       * @description Plain text, potentially multiline comment that will be displayed with the content
+       */
+      comment?: string | null;
+      /**
+       * Notes
+       * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
+       */
+      notes?: string | null;
+      /**
+       * Tokens
+       * @description List of annotated tokens in this content object
+       */
+      tokens: components['schemas']['TextAnnotationToken'][];
+      [key: string]: unknown;
+    };
+    /** TextAnnotationContentUpdate */
+    TextAnnotationContentUpdate: {
+      /** Resourceid */
+      resourceId?: string | null;
+      /**
+       * Resourcetype
+       * @constant
+       */
+      resourceType: 'textAnnotation';
+      /** Locationid */
+      locationId?: string | null;
+      /**
+       * Comment
+       * @description Plain text, potentially multiline comment that will be displayed with the content
+       */
+      comment?: string | null;
+      /**
+       * Notes
+       * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
+       */
+      notes?: string | null;
+      /** Tokens */
+      tokens?: components['schemas']['TextAnnotationToken'][] | null;
+    };
+    /** TextAnnotationEntry */
+    TextAnnotationEntry: {
+      /**
+       * Key
+       * @description Key of the annotation
+       */
+      key: string;
+      /**
+       * Value
+       * @description Value of the annotation
+       */
+      value: string;
+    };
+    /** TextAnnotationResourceConfig */
+    TextAnnotationResourceConfig: {
+      /**
+       * @default {
+       *   "sortOrder": 100,
+       *   "defaultActive": true,
+       *   "showOnParentLevel": false
+       * }
+       */
+      common?: components['schemas']['CommonResourceConfig'];
+      /**
+       * @default {
+       *   "defaultCollapsed": false
+       * }
+       */
+      general?: components['schemas']['GeneralTextAnnotationResourceConfig'];
+    };
+    /** TextAnnotationResourceCreate */
+    TextAnnotationResourceCreate: {
+      /**
+       * Title
+       * @description Title of this resource
+       */
+      title: string;
+      /**
+       * Description
+       * @description Short, concise description of this resource
+       * @default []
+       */
+      description?: components['schemas']['ResourceDescriptionTranslation'][];
+      /**
+       * Textid
+       * @description ID of the text this resource belongs to
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      textId: string;
+      /**
+       * Level
+       * @description Text level this resource belongs to
+       */
+      level: number;
+      /**
+       * Resourcetype
+       * @constant
+       */
+      resourceType: 'textAnnotation';
+      /**
+       * Originalid
+       * @description If this is a version of another resource, this ID references the original
+       */
+      originalId?: string | null;
+      /**
+       * Ownerid
+       * @description User owning this resource
+       */
+      ownerId?: string | null;
+      /**
+       * Sharedread
+       * @description Users with shared read access to this resource
+       * @default []
+       */
+      sharedRead?: string[];
+      /**
+       * Sharedwrite
+       * @description Users with shared write access to this resource
+       * @default []
+       */
+      sharedWrite?: string[];
+      /**
+       * Public
+       * @description Publication status of this resource
+       * @default false
+       */
+      public?: boolean;
+      /**
+       * Proposed
+       * @description Whether this resource has been proposed for publication
+       * @default false
+       */
+      proposed?: boolean;
+      /**
+       * Citation
+       * @description Citation details for this resource
+       */
+      citation?: string | null;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       * @default []
+       */
+      meta?: components['schemas']['Metadate'][];
+      /**
+       * Comment
+       * @description Plain text, potentially multiline comment on this resource
+       * @default []
+       */
+      comment?: components['schemas']['ResourceCommentTranslation'][];
+      /**
+       * @default {
+       *   "common": {
+       *     "defaultActive": true,
+       *     "showOnParentLevel": false,
+       *     "sortOrder": 100
+       *   },
+       *   "general": {
+       *     "defaultCollapsed": false
+       *   }
+       * }
+       */
+      config?: components['schemas']['TextAnnotationResourceConfig'];
+    };
+    /** TextAnnotationResourceRead */
+    TextAnnotationResourceRead: {
+      /**
+       * Id
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      id: string;
+      /**
+       * Writable
+       * @description Whether this resource is writable for the requesting user
+       */
+      writable?: boolean | null;
+      /** @description Public user data for user owning this resource */
+      owner?: components['schemas']['UserReadPublic'] | null;
+      /**
+       * Sharedreadusers
+       * @description Public user data for users allowed to read this resource
+       */
+      sharedReadUsers?: components['schemas']['UserReadPublic'][] | null;
+      /**
+       * Sharedwriteusers
+       * @description Public user data for users allowed to write this resource
+       */
+      sharedWriteUsers?: components['schemas']['UserReadPublic'][] | null;
+      /**
+       * Title
+       * @description Title of this resource
+       */
+      title: string;
+      /**
+       * Description
+       * @description Short, concise description of this resource
+       * @default []
+       */
+      description?: components['schemas']['ResourceDescriptionTranslation'][];
+      /**
+       * Textid
+       * @description ID of the text this resource belongs to
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      textId: string;
+      /**
+       * Level
+       * @description Text level this resource belongs to
+       */
+      level: number;
+      /**
+       * Resourcetype
+       * @constant
+       */
+      resourceType: 'textAnnotation';
+      /**
+       * Originalid
+       * @description If this is a version of another resource, this ID references the original
+       */
+      originalId?: string | null;
+      /**
+       * Ownerid
+       * @description User owning this resource
+       */
+      ownerId?: string | null;
+      /**
+       * Sharedread
+       * @description Users with shared read access to this resource
+       * @default []
+       */
+      sharedRead?: string[];
+      /**
+       * Sharedwrite
+       * @description Users with shared write access to this resource
+       * @default []
+       */
+      sharedWrite?: string[];
+      /**
+       * Public
+       * @description Publication status of this resource
+       * @default false
+       */
+      public?: boolean;
+      /**
+       * Proposed
+       * @description Whether this resource has been proposed for publication
+       * @default false
+       */
+      proposed?: boolean;
+      /**
+       * Citation
+       * @description Citation details for this resource
+       */
+      citation?: string | null;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       * @default []
+       */
+      meta?: components['schemas']['Metadate'][];
+      /**
+       * Comment
+       * @description Plain text, potentially multiline comment on this resource
+       * @default []
+       */
+      comment?: components['schemas']['ResourceCommentTranslation'][];
+      /**
+       * @default {
+       *   "common": {
+       *     "defaultActive": true,
+       *     "showOnParentLevel": false,
+       *     "sortOrder": 100
+       *   },
+       *   "general": {
+       *     "defaultCollapsed": false
+       *   }
+       * }
+       */
+      config?: components['schemas']['TextAnnotationResourceConfig'];
+      [key: string]: unknown;
+    };
+    /** TextAnnotationResourceUpdate */
+    TextAnnotationResourceUpdate: {
+      /** Title */
+      title?: string | null;
+      /**
+       * Description
+       * @description Short, concise description of this resource
+       * @default []
+       */
+      description?: components['schemas']['ResourceDescriptionTranslation'][];
+      /** Textid */
+      textId?: string | null;
+      /** Level */
+      level?: number | null;
+      /**
+       * Resourcetype
+       * @constant
+       */
+      resourceType: 'textAnnotation';
+      /**
+       * Originalid
+       * @description If this is a version of another resource, this ID references the original
+       */
+      originalId?: string | null;
+      /**
+       * Ownerid
+       * @description User owning this resource
+       */
+      ownerId?: string | null;
+      /**
+       * Sharedread
+       * @description Users with shared read access to this resource
+       * @default []
+       */
+      sharedRead?: string[];
+      /**
+       * Sharedwrite
+       * @description Users with shared write access to this resource
+       * @default []
+       */
+      sharedWrite?: string[];
+      /**
+       * Public
+       * @description Publication status of this resource
+       * @default false
+       */
+      public?: boolean;
+      /**
+       * Proposed
+       * @description Whether this resource has been proposed for publication
+       * @default false
+       */
+      proposed?: boolean;
+      /**
+       * Citation
+       * @description Citation details for this resource
+       */
+      citation?: string | null;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       * @default []
+       */
+      meta?: components['schemas']['Metadate'][];
+      /**
+       * Comment
+       * @description Plain text, potentially multiline comment on this resource
+       * @default []
+       */
+      comment?: components['schemas']['ResourceCommentTranslation'][];
+      /**
+       * @default {
+       *   "common": {
+       *     "defaultActive": true,
+       *     "showOnParentLevel": false,
+       *     "sortOrder": 100
+       *   },
+       *   "general": {
+       *     "defaultCollapsed": false
+       *   }
+       * }
+       */
+      config?: components['schemas']['TextAnnotationResourceConfig'];
+    };
+    /** TextAnnotationSearchQuery */
+    TextAnnotationSearchQuery: {
+      /**
+       * Type
+       * @description Type of the resource to search in
+       * @constant
+       */
+      type: 'textAnnotation';
+      /**
+       * Token
+       * @default
+       */
+      token?: string;
+      /**
+       * Anno
+       * @description List of annotations to match
+       * @default
+       */
+      anno?: components['schemas']['TextAnnotationEntry'][];
+    };
+    /** TextAnnotationToken */
+    TextAnnotationToken: {
+      /**
+       * Token
+       * @description Text token
+       */
+      token: string;
+      /**
+       * Annotations
+       * @description List of annotations on this token
+       */
+      annotations: components['schemas']['TextAnnotationEntry'][];
     };
     /** TextCreate */
     TextCreate: {
@@ -3054,6 +3542,7 @@ export interface operations {
           'application/json': (
             | components['schemas']['PlainTextContentRead']
             | components['schemas']['RichTextContentRead']
+            | components['schemas']['TextAnnotationContentRead']
           )[];
         };
       };
@@ -3282,6 +3771,7 @@ export interface operations {
           'application/json': (
             | components['schemas']['PlainTextContentRead']
             | components['schemas']['RichTextContentRead']
+            | components['schemas']['TextAnnotationContentRead']
           )[];
         };
       };
@@ -3299,7 +3789,8 @@ export interface operations {
       content: {
         'application/json':
           | components['schemas']['PlainTextContentCreate']
-          | components['schemas']['RichTextContentCreate'];
+          | components['schemas']['RichTextContentCreate']
+          | components['schemas']['TextAnnotationContentCreate'];
       };
     };
     responses: {
@@ -3308,7 +3799,8 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['PlainTextContentRead']
-            | components['schemas']['RichTextContentRead'];
+            | components['schemas']['RichTextContentRead']
+            | components['schemas']['TextAnnotationContentRead'];
         };
       };
       /** @description Forbidden */
@@ -3347,7 +3839,8 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['PlainTextContentRead']
-            | components['schemas']['RichTextContentRead'];
+            | components['schemas']['RichTextContentRead']
+            | components['schemas']['TextAnnotationContentRead'];
         };
       };
       /** @description Not Found */
@@ -3407,7 +3900,8 @@ export interface operations {
       content: {
         'application/json':
           | components['schemas']['PlainTextContentUpdate']
-          | components['schemas']['RichTextContentUpdate'];
+          | components['schemas']['RichTextContentUpdate']
+          | components['schemas']['TextAnnotationContentUpdate'];
       };
     };
     responses: {
@@ -3416,7 +3910,8 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['PlainTextContentRead']
-            | components['schemas']['RichTextContentRead'];
+            | components['schemas']['RichTextContentRead']
+            | components['schemas']['TextAnnotationContentRead'];
         };
       };
       /** @description Bad Request */
@@ -4196,6 +4691,7 @@ export interface operations {
           'application/json': (
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
+            | components['schemas']['TextAnnotationResourceRead']
           )[];
         };
       };
@@ -4213,7 +4709,8 @@ export interface operations {
       content: {
         'application/json':
           | components['schemas']['PlainTextResourceCreate']
-          | components['schemas']['RichTextResourceCreate'];
+          | components['schemas']['RichTextResourceCreate']
+          | components['schemas']['TextAnnotationResourceCreate'];
       };
     };
     responses: {
@@ -4222,7 +4719,8 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['PlainTextResourceRead']
-            | components['schemas']['RichTextResourceRead'];
+            | components['schemas']['RichTextResourceRead']
+            | components['schemas']['TextAnnotationResourceRead'];
         };
       };
       /** @description Bad Request */
@@ -4264,7 +4762,8 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['PlainTextResourceRead']
-            | components['schemas']['RichTextResourceRead'];
+            | components['schemas']['RichTextResourceRead']
+            | components['schemas']['TextAnnotationResourceRead'];
         };
       };
       /** @description Bad Request */
@@ -4306,7 +4805,8 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['PlainTextResourceRead']
-            | components['schemas']['RichTextResourceRead'];
+            | components['schemas']['RichTextResourceRead']
+            | components['schemas']['TextAnnotationResourceRead'];
         };
       };
       /** @description Not Found */
@@ -4372,7 +4872,8 @@ export interface operations {
       content: {
         'application/json':
           | components['schemas']['PlainTextResourceUpdate']
-          | components['schemas']['RichTextResourceUpdate'];
+          | components['schemas']['RichTextResourceUpdate']
+          | components['schemas']['TextAnnotationResourceUpdate'];
       };
     };
     responses: {
@@ -4381,7 +4882,8 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['PlainTextResourceRead']
-            | components['schemas']['RichTextResourceRead'];
+            | components['schemas']['RichTextResourceRead']
+            | components['schemas']['TextAnnotationResourceRead'];
         };
       };
       /** @description Bad Request */
@@ -4422,7 +4924,8 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['PlainTextResourceRead']
-            | components['schemas']['RichTextResourceRead'];
+            | components['schemas']['RichTextResourceRead']
+            | components['schemas']['TextAnnotationResourceRead'];
         };
       };
       /** @description Bad Request */
@@ -4470,7 +4973,8 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['PlainTextResourceRead']
-            | components['schemas']['RichTextResourceRead'];
+            | components['schemas']['RichTextResourceRead']
+            | components['schemas']['TextAnnotationResourceRead'];
         };
       };
       /** @description Bad Request */
@@ -4512,7 +5016,8 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['PlainTextResourceRead']
-            | components['schemas']['RichTextResourceRead'];
+            | components['schemas']['RichTextResourceRead']
+            | components['schemas']['TextAnnotationResourceRead'];
         };
       };
       /** @description Forbidden */
@@ -4548,7 +5053,8 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['PlainTextResourceRead']
-            | components['schemas']['RichTextResourceRead'];
+            | components['schemas']['RichTextResourceRead']
+            | components['schemas']['TextAnnotationResourceRead'];
         };
       };
       /** @description Bad Request */
@@ -4596,7 +5102,8 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['PlainTextResourceRead']
-            | components['schemas']['RichTextResourceRead'];
+            | components['schemas']['RichTextResourceRead']
+            | components['schemas']['TextAnnotationResourceRead'];
         };
       };
       /** @description Unauthorized */
