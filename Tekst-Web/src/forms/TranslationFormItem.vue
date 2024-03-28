@@ -74,14 +74,18 @@ const localeOptions = computed(() =>
       @update:value="(value) => emit('update:value', value)"
     >
       <template #default="{ value: translationValue, index: translationIndex }">
-        <div style="display: flex; align-items: flex-start; gap: 12px; width: 100%">
+        <div
+          style="display: flex; align-items: flex-start; gap: 12px; flex-grow: 2; flex-wrap: wrap"
+        >
           <!-- LOCALE -->
           <n-form-item
             v-if="value"
             ignore-path-change
             :show-label="false"
+            :show-feedback="false"
             :path="`${parentFormPathPrefix}[${translationIndex}].locale`"
             :rule="translationFormRules.locale"
+            style="flex-grow: 1; flex-basis: 100px"
           >
             <n-select
               v-model:value="translationValue.locale"
@@ -89,7 +93,6 @@ const localeOptions = computed(() =>
               :placeholder="$t('general.language')"
               :consistent-menu-width="false"
               :render-label="(o) => renderLanguageOptionLabel(localeOptions, o)"
-              style="min-width: 200px"
               @keydown.enter.prevent
             />
           </n-form-item>
