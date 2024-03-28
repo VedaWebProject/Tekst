@@ -271,6 +271,14 @@ export const contentFormRules: Record<string, Record<string, FormItemRule[]>> = 
       minMaxCharsRule(1, 102400, 'blur'),
     ],
   },
+  textAnnotation: {
+    token: [
+      requiredRule(() => $t('resources.types.textAnnotation.contentFields.token'), 'blur'),
+      minMaxCharsRule(1, 4096, 'blur'),
+    ],
+    annotationKey: [minMaxCharsRule(1, 32, 'blur')],
+    annotationValue: [minMaxCharsRule(1, 64, 'blur')],
+  },
 };
 
 export const bookmarkFormRules: Record<string, FormItemRule[]> = {

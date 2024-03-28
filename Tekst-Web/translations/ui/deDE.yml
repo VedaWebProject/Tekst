@@ -357,6 +357,7 @@ resources:
   backToOverview: Zurück zu "Ressourcen"
   create:
     heading: Neue Ressource zu "{text}"
+    headingTypeAndLevel: Ressourcen-Typ und Ebene
     warnImmutable: Diese Einstellungen können später nicht mehr geändert werden!
     msgSaved: Ihre neue Ressource "{title}" wurden erstellt.
   settings:
@@ -406,8 +407,10 @@ resources:
       label: Text-Annotation
       parenthesis: tokenisierter, annotierter Text
       contentFields:
-        tokens: Tokens
+        token: Token
         annotations: Annotationen
+        annotationKey: Schlüssel
+        annotationValue: Wert
 
 contents:
   heading: Ressourcen-Inhalte bearbeiten

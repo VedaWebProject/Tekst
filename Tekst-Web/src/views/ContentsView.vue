@@ -19,6 +19,7 @@ import {
   POST,
   DELETE,
 } from '@/api';
+import _cloneDeep from 'lodash.clonedeep';
 import { ref, computed, watch } from 'vue';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import { $t } from '@/i18n';
@@ -186,7 +187,7 @@ watch(
 );
 
 function resetForm() {
-  contentModel.value = initialContentModel.value;
+  contentModel.value = _cloneDeep(initialContentModel.value);
   reset();
   formRef.value?.restoreValidation();
 }

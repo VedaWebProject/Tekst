@@ -164,7 +164,7 @@ class TextAnnotationContent(ContentBase):
         list[TextAnnotationToken],
         Field(
             description="List of annotated tokens in this content object",
-            max_length=4096,
+            max_length=1024,
         ),
     ]
 

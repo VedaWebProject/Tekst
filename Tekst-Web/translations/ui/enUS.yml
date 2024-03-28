@@ -348,6 +348,7 @@ resources:
   backToOverview: Back to "Resources"
   create:
     heading: New Resource on "{text}"
+    headingTypeAndLevel: Resource Type and Level
     warnImmutable: These settings cannot be changed later!
     msgSaved: Your new resource "{title}" has been created.
   settings:
@@ -397,8 +398,10 @@ resources:
       label: Text Annotation
       parenthesis: tokenized, annotated text
       contentFields:
-        tokens: Tokens
+        token: Token
         annotations: Annotations
+        annotationKey: Key
+        annotationValue: Value
 
 contents:
   heading: Edit Resource Content

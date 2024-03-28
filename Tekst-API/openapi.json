@@ -10134,7 +10134,7 @@
               "$ref": "#/components/schemas/TextAnnotationToken"
             },
             "type": "array",
-            "maxItems": 4096,
+            "maxItems": 1024,
             "title": "Tokens",
             "description": "List of annotated tokens in this content object"
           }
@@ -10202,7 +10202,7 @@
               "$ref": "#/components/schemas/TextAnnotationToken"
             },
             "type": "array",
-            "maxItems": 4096,
+            "maxItems": 1024,
             "title": "Tokens",
             "description": "List of annotated tokens in this content object"
           }
@@ -10281,7 +10281,7 @@
                   "$ref": "#/components/schemas/TextAnnotationToken"
                 },
                 "type": "array",
-                "maxItems": 4096
+                "maxItems": 1024
               },
               {
                 "type": "null"

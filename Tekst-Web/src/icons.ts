@@ -109,8 +109,10 @@ import MarkChatReadRound from '@vicons/material/MarkChatReadRound';
 import MarkChatUnreadRound from '@vicons/material/MarkChatUnreadRound';
 import SendFilled from '@vicons/material/SendFilled';
 import GroupsFilled from '@vicons/material/GroupsFilled';
+import WarningOutlined from '@vicons/material/WarningOutlined';
 
 export {
+  WarningOutlined as WarningIcon,
   GroupsFilled as CommunityIcon,
   SendFilled as SendIcon,
   MarkChatReadRound as MarkChatReadIcon,
