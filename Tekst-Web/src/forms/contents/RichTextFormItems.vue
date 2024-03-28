@@ -2,6 +2,7 @@
 import type { RichTextContentCreate } from '@/api';
 import HtmlEditor from '@/components/editors/HtmlEditor.vue';
 import { NFormItem } from 'naive-ui';
+import { contentFormRules } from '../formRules';
 
 const props = defineProps<{
   model?: RichTextContentCreate;
@@ -20,7 +21,11 @@ function handleUpdate(field: string, value: any) {
 <template>
   <template v-if="model">
     <!-- HTML -->
-    <n-form-item :label="$t('resources.types.richText.contentFields.html')" path="html">
+    <n-form-item
+      :label="$t('resources.types.richText.contentFields.html')"
+      path="html"
+      :rule="contentFormRules.richText.html"
+    >
       <html-editor
         :value="model.html"
         :editor-mode="model.editorMode ?? 'wysiwyg'"

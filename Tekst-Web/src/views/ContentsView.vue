@@ -31,7 +31,6 @@ import { useRoute, useRouter } from 'vue-router';
 import { useResourcesStore } from '@/stores';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import { useModelChanges } from '@/composables/modelChanges';
-import { contentFormRules } from '@/forms/formRules';
 import ContentFormItems from '@/forms/contents/ContentFormItems.vue';
 import { defaultContentModels } from '@/forms/contents/defaultContentModels';
 import { dialogProps } from '@/common';
@@ -484,7 +483,6 @@ async function handleNearestChangeClick(mode: 'preceding' | 'subsequent') {
         <n-form
           ref="formRef"
           :model="contentModel"
-          :rules="contentFormRules.plainText"
           label-placement="top"
           :disabled="loading"
           label-width="auto"
