@@ -2,16 +2,7 @@
 import type { TextAnnotationContentCreate, TextAnnotationResourceRead } from '@/api';
 import NInputOsk from '@/components/NInputOsk.vue';
 import { AddIcon, ArrowDownIcon, ArrowUpIcon, MinusIcon } from '@/icons';
-import {
-  NAlert,
-  NSelect,
-  NFormItem,
-  NButton,
-  NDynamicInput,
-  NSpace,
-  NIcon,
-  NButtonGroup,
-} from 'naive-ui';
+import { NSelect, NFormItem, NButton, NDynamicInput, NSpace, NIcon, NButtonGroup } from 'naive-ui';
 import { contentFormRules } from '../formRules';
 import { useStateStore } from '@/stores';
 
@@ -34,18 +25,6 @@ function handleUpdate(field: string, value: any) {
 
 <template>
   <template v-if="model">
-    <!-- TOKENIZE UTIL -->
-    <n-alert style="margin-bottom: var(--layout-gap)">
-      <n-space justify="end">
-        <n-button secondary title="TOKENIZE">
-          <template #icon>
-            <n-icon :component="MinusIcon" />
-            <!-- <n-icon :component="HorizontalDistributeOutlined" /> -->
-          </template>
-          TOKENIZE!!
-        </n-button>
-      </n-space>
-    </n-alert>
     <!-- TOKENS -->
     <n-form-item :show-label="false" :show-feedback="false">
       <n-dynamic-input
