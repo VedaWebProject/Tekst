@@ -10,12 +10,14 @@ withDefaults(
     toolbarSize?: 'small' | 'medium' | 'large';
     maxChars?: number;
     editorMode?: 'wysiwyg' | 'html';
+    wysiwygFont?: string;
   }>(),
   {
     value: '',
     toolbarSize: 'small',
     maxChars: undefined,
     editorMode: 'wysiwyg',
+    wysiwygFont: undefined,
   }
 );
 
@@ -64,6 +66,7 @@ function handleChangeTab(value: 'wysiwyg' | 'html') {
       <wysiwyg-editor
         :value="value"
         :max-chars="maxChars"
+        :font="wysiwygFont"
         @update:value="emit('update:value', $event)"
         @blur="emit('blur')"
         @focus="emit('focus')"

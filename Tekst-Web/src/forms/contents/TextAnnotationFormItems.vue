@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { TextAnnotationContentCreate } from '@/api';
+import type { TextAnnotationContentCreate, TextAnnotationResourceRead } from '@/api';
 import NInputOsk from '@/components/NInputOsk.vue';
 import { AddIcon, ArrowDownIcon, ArrowUpIcon, MinusIcon } from '@/icons';
 import {
@@ -17,6 +17,7 @@ import { useStateStore } from '@/stores';
 
 const props = defineProps<{
   model?: TextAnnotationContentCreate;
+  resource: TextAnnotationResourceRead;
 }>();
 
 const emit = defineEmits(['update:model']);
@@ -74,6 +75,7 @@ function handleUpdate(field: string, value: any) {
             >
               <n-input-osk
                 v-model:value="tokenItem.token"
+                :font="resource.config?.general?.font || undefined"
                 :placeholder="$t('resources.types.textAnnotation.contentFields.token')"
               />
             </n-form-item>

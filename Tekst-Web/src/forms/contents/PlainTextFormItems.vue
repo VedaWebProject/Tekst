@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import type { PlainTextContentCreate } from '@/api';
+import type { PlainTextContentCreate, PlainTextResourceRead } from '@/api';
 import NInputOsk from '@/components/NInputOsk.vue';
 import { NFormItem } from 'naive-ui';
 import { contentFormRules } from '../formRules';
 
 const props = defineProps<{
   model?: PlainTextContentCreate;
+  resource: PlainTextResourceRead;
 }>();
 
 const emit = defineEmits(['update:model']);
@@ -30,6 +31,7 @@ function handleUpdate(field: string, value: any) {
         type="textarea"
         :rows="3"
         :value="model.text"
+        :font="resource.config?.general?.font || undefined"
         :placeholder="$t('resources.types.plainText.contentFields.text')"
         @update:value="(v) => handleUpdate('text', v)"
       />

@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import type { AnyContentCreate } from '@/api';
+import type { AnyContentCreate, AnyResourceRead } from '@/api';
 import { NCollapse, NCollapseItem, NInput, NFormItem } from 'naive-ui';
 import resourceContentFormItems from '@/forms/contents/mappings';
 import { contentFormRules } from '../formRules';
 
 const props = defineProps<{
   model?: AnyContentCreate;
+  resource: AnyResourceRead;
 }>();
 
 const emit = defineEmits(['update:model']);
@@ -23,6 +24,7 @@ function handleUpdate(field: string, value: any) {
     <component
       :is="resourceContentFormItems[model.resourceType]"
       :model="model"
+      :resource="resource"
       @update:model="(m: Record<string, any>) => emit('update:model', { ...props.model, ...m })"
     />
     <n-collapse style="margin-bottom: var(--layout-gap)">

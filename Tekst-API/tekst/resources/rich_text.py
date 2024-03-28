@@ -10,7 +10,7 @@ from tekst.models.resource_configs import (
     FontConfigType,
     ResourceConfigBase,
 )
-from tekst.resources import ResourceSearchQuery, ResourceTypeABC
+from tekst.resources import ResourceTypeABC
 from tekst.utils import validators as val
 from tekst.utils.html import get_html_text
 
@@ -67,7 +67,7 @@ class RichText(ResourceTypeABC):
 
 class GeneralRichTextResourceConfig(ModelBase):
     default_collapsed: DefaultCollapsedConfigType = True
-    font: FontConfigType = None
+    font: FontConfigType | None = None
 
 
 class RichTextResourceConfig(ResourceConfigBase):

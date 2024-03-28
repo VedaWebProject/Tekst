@@ -67,7 +67,7 @@ class PlainText(ResourceTypeABC):
 class GeneralPlainTextResourceConfig(ModelBase):
     default_collapsed: DefaultCollapsedConfigType = False
     reduced_view_oneline: ReducedViewOnelineConfigType = False
-    font: FontConfigType = None
+    font: FontConfigType | None = None
 
 
 class PlainTextResourceConfig(ResourceConfigBase):

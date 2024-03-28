@@ -847,11 +847,8 @@ export interface components {
        * @default false
        */
       reducedViewOneline?: boolean;
-      /**
-       * Font
-       * @description Name of the font to use for this resource.
-       */
-      font?: string | null;
+      /** Font */
+      font?: (string | null) | null;
     };
     /** GeneralRichTextResourceConfig */
     GeneralRichTextResourceConfig: {
@@ -861,11 +858,8 @@ export interface components {
        * @default true
        */
       defaultCollapsed?: boolean;
-      /**
-       * Font
-       * @description Name of the font to use for this resource.
-       */
-      font?: string | null;
+      /** Font */
+      font?: (string | null) | null;
     };
     /** GeneralSearchSettings */
     GeneralSearchSettings: {
@@ -893,6 +887,8 @@ export interface components {
        * @default false
        */
       defaultCollapsed?: boolean;
+      /** Font */
+      font?: (string | null) | null;
     };
     /** HTTPValidationError */
     HTTPValidationError: {

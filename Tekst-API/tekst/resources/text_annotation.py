@@ -8,6 +8,7 @@ from tekst.models.content import ContentBase
 from tekst.models.resource import ResourceBase
 from tekst.models.resource_configs import (
     DefaultCollapsedConfigType,
+    FontConfigType,
     ResourceConfigBase,
 )
 from tekst.resources import ResourceTypeABC
@@ -97,7 +98,7 @@ class TextAnnotation(ResourceTypeABC):
 
 class GeneralTextAnnotationResourceConfig(ModelBase):
     default_collapsed: DefaultCollapsedConfigType = False
-    # TODO: implement
+    font: FontConfigType | None = None
 
 
 class TextAnnotationResourceConfig(ResourceConfigBase):

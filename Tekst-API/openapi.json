@@ -6972,14 +6972,21 @@
           "font": {
             "anyOf": [
               {
-                "type": "string"
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Name of the font to use for this resource."
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Font",
-            "description": "Name of the font to use for this resource."
+            "title": "Font"
           }
         },
         "type": "object",
@@ -6996,14 +7003,21 @@
           "font": {
             "anyOf": [
               {
-                "type": "string"
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Name of the font to use for this resource."
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Font",
-            "description": "Name of the font to use for this resource."
+            "title": "Font"
           }
         },
         "type": "object",
@@ -7050,6 +7064,25 @@
             "title": "Defaultcollapsed",
             "description": "Whether contents of this resource should be collapsed by default",
             "default": false
+          },
+          "font": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Name of the font to use for this resource."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Font"
           }
         },
         "type": "object",
