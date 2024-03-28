@@ -228,6 +228,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
                 v-model:value="metaEntryValue.key"
                 filterable
                 tag
+                clearable
                 :options="metadataKeysOptions"
               />
             </n-form-item>
