@@ -269,29 +269,6 @@ function resetForm() {
               <n-button
                 type="primary"
                 secondary
-                :title="$t('general.removeAction')"
-                :focusable="false"
-                @click="() => remove(indexAction)"
-              >
-                <template #icon>
-                  <n-icon :component="MinusIcon" />
-                </template>
-              </n-button>
-              <n-button
-                type="primary"
-                secondary
-                :title="$t('general.addAction')"
-                :disabled="(formModel.resourceCategories?.length || 0) >= 32"
-                :focusable="false"
-                @click="() => create(indexAction)"
-              >
-                <template #icon>
-                  <n-icon :component="AddIcon" />
-                </template>
-              </n-button>
-              <n-button
-                type="primary"
-                secondary
                 :title="$t('general.moveUpAction')"
                 :disabled="indexAction === 0"
                 :focusable="false"
@@ -311,6 +288,29 @@ function resetForm() {
               >
                 <template #icon>
                   <n-icon :component="ArrowDownIcon" />
+                </template>
+              </n-button>
+              <n-button
+                type="primary"
+                secondary
+                :title="$t('general.removeAction')"
+                :focusable="false"
+                @click="() => remove(indexAction)"
+              >
+                <template #icon>
+                  <n-icon :component="MinusIcon" />
+                </template>
+              </n-button>
+              <n-button
+                type="primary"
+                secondary
+                :title="$t('general.addAction')"
+                :disabled="(formModel.resourceCategories?.length || 0) >= 32"
+                :focusable="false"
+                @click="() => create(indexAction)"
+              >
+                <template #icon>
+                  <n-icon :component="AddIcon" />
                 </template>
               </n-button>
             </n-button-group>
