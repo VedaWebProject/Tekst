@@ -1,19 +1,16 @@
 <script setup lang="ts">
 import type { TextAnnotationContentCreate, TextAnnotationResourceRead } from '@/api';
 import NInputOsk from '@/components/NInputOsk.vue';
-import { AddIcon, ArrowDownIcon, ArrowUpIcon, MinusIcon } from '@/icons';
-import { NSelect, NFormItem, NButton, NDynamicInput, NSpace, NIcon, NButtonGroup } from 'naive-ui';
-import { contentFormRules } from '../formRules';
-import { useStateStore } from '@/stores';
+import { NSelect, NFormItem, NDynamicInput } from 'naive-ui';
+import { contentFormRules } from '@/forms/formRules';
+import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 
 const props = defineProps<{
-  model?: TextAnnotationContentCreate;
+  model: TextAnnotationContentCreate;
   resource: TextAnnotationResourceRead;
 }>();
 
 const emit = defineEmits(['update:model']);
-
-const state = useStateStore();
 
 function handleUpdate(field: string, value: any) {
   emit('update:model', {
@@ -24,200 +21,138 @@ function handleUpdate(field: string, value: any) {
 </script>
 
 <template>
-  <template v-if="model">
-    <!-- TOKENS -->
-    <n-form-item :show-label="false" :show-feedback="false">
-      <n-dynamic-input
-        :value="model.tokens"
-        :min="1"
-        :max="1024"
-        @create="() => ({ token: undefined, annotations: [] })"
-        @update:value="(value) => handleUpdate('tokens', value)"
-      >
-        <template #default="{ value: tokenItem, index: tokenItemIndex }">
-          <div
-            style="
-              display: flex;
-              align-items: flex-start;
-              gap: var(--content-gap);
-              flex-grow: 2;
-              flex-wrap: wrap;
-            "
-          >
-            <!-- TOKEN -->
-            <n-form-item
-              :label="$t('resources.types.textAnnotation.contentFields.token')"
-              :path="`tokens[${tokenItemIndex}].token`"
-              :rule="contentFormRules.textAnnotation.token"
-              ignore-path-change
-              style="flex-grow: 1; flex-basis: 200px"
-            >
-              <n-input-osk
-                v-model:value="tokenItem.token"
-                :font="resource.config?.general?.font || undefined"
-                :placeholder="$t('resources.types.textAnnotation.contentFields.token')"
-              />
-            </n-form-item>
-            <!-- ANNOTATIONS -->
-            <n-form-item
-              :label="$t('resources.types.textAnnotation.contentFields.annotations')"
-              :show-feedback="false"
-              :path="`tokens[${tokenItemIndex}].annotations`"
-              style="flex-grow: 2; flex-basis: 400px"
-            >
-              <n-dynamic-input
-                v-model:value="tokenItem.annotations"
-                :max="128"
-                @create="() => ({ key: undefined, value: undefined })"
-              >
-                <template #default="{ value: annotationItem, index: annotationItemIndex }">
-                  <div
-                    style="
-                      display: flex;
-                      flex-wrap: nowrap;
-                      flex-grow: 2;
-                      gap: var(--content-gap);
-                      align-items: flex-start;
-                    "
-                  >
-                    <n-form-item
-                      style="flex-grow: 2; flex-basis: 100px"
-                      :show-label="false"
-                      :path="`tokens[${tokenItemIndex}].annotations[${annotationItemIndex}].key`"
-                      :rule="contentFormRules.textAnnotation.annotationKey"
-                      ignore-path-change
-                    >
-                      <n-select
-                        v-model:value="annotationItem.key"
-                        filterable
-                        tag
-                        clearable
-                        :options="[]"
-                        :placeholder="
-                          $t('resources.types.textAnnotation.contentFields.annotationKey')
-                        "
-                      />
-                    </n-form-item>
-                    <n-form-item
-                      style="flex-grow: 2; flex-basis: 100px"
-                      :show-label="false"
-                      :path="`tokens[${tokenItemIndex}].annotations[${annotationItemIndex}].value`"
-                      :rule="contentFormRules.textAnnotation.annotationValue"
-                      ignore-path-change
-                    >
-                      <n-select
-                        v-model:value="annotationItem.value"
-                        filterable
-                        tag
-                        clearable
-                        :disabled="!annotationItem.key"
-                        :options="[]"
-                        :placeholder="
-                          $t('resources.types.textAnnotation.contentFields.annotationValue')
-                        "
-                      />
-                    </n-form-item>
-                  </div>
-                </template>
-                <template
-                  #action="{
-                    index: annotationActionIndex,
-                    create: createAnnotation,
-                    remove: removeAnnotation,
-                  }"
-                >
-                  <n-space style="margin-left: var(--content-gap)">
-                    <n-button-group>
-                      <n-button
-                        quaternary
-                        :focusable="false"
-                        :title="$t('general.removeAction')"
-                        @click="() => removeAnnotation(annotationActionIndex)"
-                      >
-                        <template #icon>
-                          <n-icon :component="MinusIcon" />
-                        </template>
-                      </n-button>
-                      <n-button
-                        quaternary
-                        :focusable="false"
-                        :title="$t('general.insertAction')"
-                        @click="() => createAnnotation(annotationActionIndex)"
-                      >
-                        <template #icon>
-                          <n-icon :component="AddIcon" />
-                        </template>
-                      </n-button>
-                    </n-button-group>
-                  </n-space>
-                </template>
-              </n-dynamic-input>
-            </n-form-item>
-          </div>
-        </template>
-        <template
-          #action="{
-            index: tokenActionIndex,
-            create: createTokenItem,
-            remove: removeTokenItem,
-            move: moveTokenItem,
-          }"
+  <!-- TOKENS -->
+  <n-form-item :show-label="false" :show-feedback="false">
+    <n-dynamic-input
+      :value="model.tokens"
+      :min="1"
+      :max="1024"
+      @create="() => ({ token: undefined, annotations: [] })"
+      @update:value="(value) => handleUpdate('tokens', value)"
+    >
+      <template #default="{ value: tokenItem, index: tokenItemIndex }">
+        <div
+          style="
+            display: flex;
+            align-items: flex-start;
+            gap: var(--content-gap);
+            flex-grow: 2;
+            flex-wrap: wrap;
+          "
         >
-          <n-button-group
-            :vertical="state.smallScreen"
-            style="margin-left: var(--content-gap); padding-top: 26px"
+          <!-- TOKEN -->
+          <n-form-item
+            :label="$t('resources.types.textAnnotation.contentFields.token')"
+            :path="`tokens[${tokenItemIndex}].token`"
+            :rule="contentFormRules.textAnnotation.token"
+            ignore-path-change
+            style="flex-grow: 1; flex-basis: 200px"
           >
-            <n-button
-              type="primary"
-              secondary
-              :title="$t('general.moveUpAction')"
-              :disabled="tokenActionIndex === 0"
-              :focusable="false"
-              @click="() => moveTokenItem('up', tokenActionIndex)"
+            <n-input-osk
+              v-model:value="tokenItem.token"
+              :font="resource.config?.general?.font || undefined"
+              :placeholder="$t('resources.types.textAnnotation.contentFields.token')"
+            />
+          </n-form-item>
+          <!-- ANNOTATIONS -->
+          <n-form-item
+            :label="$t('resources.types.textAnnotation.contentFields.annotations')"
+            :show-feedback="false"
+            :path="`tokens[${tokenItemIndex}].annotations`"
+            style="flex-grow: 2; flex-basis: 400px"
+          >
+            <n-dynamic-input
+              v-model:value="tokenItem.annotations"
+              @create="() => ({ key: undefined, value: undefined })"
             >
-              <template #icon>
-                <n-icon :component="ArrowUpIcon" />
+              <template #default="{ value: annotationItem, index: annotationItemIndex }">
+                <div
+                  style="
+                    display: flex;
+                    flex-wrap: nowrap;
+                    flex-grow: 2;
+                    gap: var(--content-gap);
+                    align-items: flex-start;
+                  "
+                >
+                  <n-form-item
+                    style="flex-grow: 2; flex-basis: 100px"
+                    :show-label="false"
+                    :path="`tokens[${tokenItemIndex}].annotations[${annotationItemIndex}].key`"
+                    :rule="contentFormRules.textAnnotation.annotationKey"
+                    ignore-path-change
+                  >
+                    <n-select
+                      v-model:value="annotationItem.key"
+                      filterable
+                      tag
+                      clearable
+                      :options="[]"
+                      :placeholder="
+                        $t('resources.types.textAnnotation.contentFields.annotationKey')
+                      "
+                    />
+                  </n-form-item>
+                  <n-form-item
+                    style="flex-grow: 2; flex-basis: 100px"
+                    :show-label="false"
+                    :path="`tokens[${tokenItemIndex}].annotations[${annotationItemIndex}].value`"
+                    :rule="contentFormRules.textAnnotation.annotationValue"
+                    ignore-path-change
+                  >
+                    <n-select
+                      v-model:value="annotationItem.value"
+                      filterable
+                      tag
+                      clearable
+                      :disabled="!annotationItem.key"
+                      :options="[]"
+                      :placeholder="
+                        $t('resources.types.textAnnotation.contentFields.annotationValue')
+                      "
+                    />
+                  </n-form-item>
+                </div>
               </template>
-            </n-button>
-            <n-button
-              type="primary"
-              secondary
-              :title="$t('general.moveDownAction')"
-              :disabled="tokenActionIndex === model.tokens.length - 1"
-              :focusable="false"
-              @click="() => moveTokenItem('down', tokenActionIndex)"
-            >
-              <template #icon>
-                <n-icon :component="ArrowDownIcon" />
+              <template
+                #action="{
+                  index: annotationActionIndex,
+                  create: createAnnotation,
+                  remove: removeAnnotation,
+                }"
+              >
+                <dynamic-input-controls
+                  secondary
+                  :movable="false"
+                  :insert-disabled="annotationActionIndex >= 127"
+                  @remove="() => removeAnnotation(annotationActionIndex)"
+                  @insert="() => createAnnotation(annotationActionIndex)"
+                />
               </template>
-            </n-button>
-            <n-button
-              type="primary"
-              secondary
-              :title="$t('general.removeAction')"
-              :disabled="model.tokens.length <= 1"
-              :focusable="false"
-              @click="() => removeTokenItem(tokenActionIndex)"
-            >
-              <template #icon>
-                <n-icon :component="MinusIcon" />
-              </template>
-            </n-button>
-            <n-button
-              type="primary"
-              secondary
-              :title="$t('general.insertAction')"
-              :disabled="model.tokens.length >= 1024"
-              :focusable="false"
-              @click="() => createTokenItem(tokenActionIndex)"
-            >
-              <template #icon>
-                <n-icon :component="AddIcon" />
-              </template>
-            </n-button>
-          </n-button-group>
-        </template>
-      </n-dynamic-input>
-    </n-form-item>
-  </template>
+            </n-dynamic-input>
+          </n-form-item>
+        </div>
+      </template>
+      <template
+        #action="{
+          index: tokenActionIndex,
+          create: createTokenItem,
+          remove: removeTokenItem,
+          move: moveTokenItem,
+        }"
+      >
+        <dynamic-input-controls
+          top-offset
+          :move-up-disabled="tokenActionIndex === 0"
+          :move-down-disabled="tokenActionIndex === model.tokens.length - 1"
+          :remove-disabled="model.tokens.length <= 1"
+          :insert-disabled="model.tokens.length >= 1024"
+          @move-up="() => moveTokenItem('up', tokenActionIndex)"
+          @move-down="() => moveTokenItem('down', tokenActionIndex)"
+          @remove="() => removeTokenItem(tokenActionIndex)"
+          @insert="() => createTokenItem(tokenActionIndex)"
+        />
+      </template>
+    </n-dynamic-input>
+  </n-form-item>
 </template>

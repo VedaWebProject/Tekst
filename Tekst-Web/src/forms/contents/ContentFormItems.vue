@@ -2,7 +2,7 @@
 import type { AnyContentCreate, AnyResourceRead } from '@/api';
 import { NCollapse, NCollapseItem, NInput, NFormItem } from 'naive-ui';
 import resourceContentFormItems from '@/forms/contents/mappings';
-import { contentFormRules } from '../formRules';
+import { contentFormRules } from '@/forms/formRules';
 
 const props = defineProps<{
   model?: AnyContentCreate;

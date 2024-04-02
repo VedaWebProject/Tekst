@@ -1,22 +1,11 @@
 <script setup lang="ts">
 import type { Translation, LocaleKey } from '@/api';
 import { $t, renderLanguageOptionLabel } from '@/i18n';
-import {
-  NButton,
-  NButtonGroup,
-  NSpace,
-  NIcon,
-  NFormItem,
-  NSelect,
-  NDynamicInput,
-  NInput,
-  type FormItemRule,
-} from 'naive-ui';
+import { NFormItem, NSelect, NDynamicInput, NInput, type FormItemRule } from 'naive-ui';
 import { computed } from 'vue';
 import { translationFormRules } from '@/forms/formRules';
 import { useStateStore } from '@/stores';
-
-import { AddIcon, MinusIcon } from '@/icons';
+import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 
 const props = withDefaults(
   defineProps<{
@@ -28,6 +17,7 @@ const props = withDefaults(
     multiline?: boolean;
     maxTranslationLength?: number;
     minItems?: number;
+    secondary?: boolean;
   }>(),
   {
     mainFormLabel: undefined,
@@ -85,7 +75,7 @@ const localeOptions = computed(() =>
             :show-feedback="false"
             :path="`${parentFormPathPrefix}[${translationIndex}].locale`"
             :rule="translationFormRules.locale"
-            style="flex-grow: 1; flex-basis: 100px"
+            style="flex-grow: 1; flex-basis: 200px"
           >
             <n-select
               v-model:value="translationValue.locale"
@@ -116,30 +106,16 @@ const localeOptions = computed(() =>
         </div>
       </template>
       <template #action="{ index: actionIndex, create, remove }">
-        <n-space style="margin-left: 12px; flex-wrap: nowrap">
-          <n-button-group>
-            <n-button
-              quaternary
-              :title="$t('translationFormItem.tipBtnRemove')"
-              :disabled="!value || value.length === minItems"
-              @click="() => remove(actionIndex)"
-            >
-              <template #icon>
-                <n-icon :component="MinusIcon" />
-              </template>
-            </n-button>
-            <n-button
-              quaternary
-              :title="$t('translationFormItem.tipBtnAdd')"
-              :disabled="value && value.length >= localeOptions.length"
-              @click="() => create(actionIndex)"
-            >
-              <template #icon>
-                <n-icon :component="AddIcon" />
-              </template>
-            </n-button>
-          </n-button-group>
-        </n-space>
+        <dynamic-input-controls
+          :secondary="secondary"
+          :movable="false"
+          :remove-title="$t('translationFormItem.tipBtnRemove')"
+          :remove-disabled="!value || value.length === minItems"
+          :insert-title="$t('translationFormItem.tipBtnAdd')"
+          :insert-disabled="value && value.length >= localeOptions.length"
+          @remove="() => remove(actionIndex)"
+          @insert="() => create(actionIndex)"
+        />
       </template>
     </n-dynamic-input>
   </n-form-item>

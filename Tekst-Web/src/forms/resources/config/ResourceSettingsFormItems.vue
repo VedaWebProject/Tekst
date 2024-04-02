@@ -18,18 +18,16 @@ import { useUsersSearch } from '@/composables/fetchers';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import {
   NSelect,
-  NButtonGroup,
   NIcon,
   NDivider,
   NDynamicInput,
   NFormItem,
   NTag,
   NInput,
-  NButton,
   type SelectOption,
 } from 'naive-ui';
-
-import { MinusIcon, AddIcon, UserIcon, TranslateIcon, ArrowUpIcon, ArrowDownIcon } from '@/icons';
+import DynamicInputControls from '@/forms/DynamicInputControls.vue';
+import { UserIcon, TranslateIcon } from '@/icons';
 import IconHeading from '@/components/generic/IconHeading.vue';
 
 const props = defineProps<{
@@ -251,53 +249,15 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
           </div>
         </template>
         <template #action="{ index: indexAction, create, remove, move }">
-          <div style="display: flex; margin-left: 12px; flex-wrap: wrap; flex-shrink: 20">
-            <n-button-group>
-              <n-button
-                quaternary
-                :title="$t('general.moveUpAction')"
-                :disabled="indexAction === 0"
-                :focusable="false"
-                @click="() => move('up', indexAction)"
-              >
-                <template #icon>
-                  <n-icon :component="ArrowUpIcon" />
-                </template>
-              </n-button>
-              <n-button
-                quaternary
-                :title="$t('general.moveDownAction')"
-                :disabled="indexAction === model.meta.length - 1"
-                :focusable="false"
-                @click="() => move('down', indexAction)"
-              >
-                <template #icon>
-                  <n-icon :component="ArrowDownIcon" />
-                </template>
-              </n-button>
-            </n-button-group>
-            <n-button-group>
-              <n-button
-                quaternary
-                :title="$t('general.removeAction')"
-                @click="() => remove(indexAction)"
-              >
-                <template #icon>
-                  <n-icon :component="MinusIcon" />
-                </template>
-              </n-button>
-              <n-button
-                quaternary
-                :title="$t('general.insertAction')"
-                :disabled="model.meta.length >= 64"
-                @click="() => create(indexAction)"
-              >
-                <template #icon>
-                  <n-icon :component="AddIcon" />
-                </template>
-              </n-button>
-            </n-button-group>
-          </div>
+          <dynamic-input-controls
+            :move-up-disabled="indexAction === 0"
+            :move-down-disabled="indexAction === model.meta.length - 1"
+            :insert-disabled="model.meta.length >= 64"
+            @move-up="() => move('up', indexAction)"
+            @move-down="() => move('down', indexAction)"
+            @remove="() => remove(indexAction)"
+            @insert="() => create(indexAction)"
+          />
         </template>
       </n-dynamic-input>
     </n-form-item>
