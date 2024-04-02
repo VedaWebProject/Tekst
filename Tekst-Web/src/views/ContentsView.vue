@@ -280,7 +280,7 @@ async function handleDeleteContentClick() {
 function handleAddContentClick() {
   if (resource.value && location.value) {
     contentModel.value = {
-      ...defaultContentModels[resource.value.resourceType],
+      ..._cloneDeep(defaultContentModels[resource.value.resourceType]),
       resourceId: resource.value.id,
       resourceType: resource.value.resourceType,
       locationId: location.value.id,
