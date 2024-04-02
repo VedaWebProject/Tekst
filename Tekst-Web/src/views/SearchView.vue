@@ -15,7 +15,7 @@ import {
   useThemeVars,
 } from 'naive-ui';
 import { computed, h, ref, watch } from 'vue';
-import type { AdvancedSearchRequestBody, ResourceType } from '@/api';
+import type { AdvancedSearchRequestBody, AnyResourceRead, ResourceType } from '@/api';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import type { SelectMixedOption } from 'naive-ui/es/select/src/interface';
@@ -25,12 +25,17 @@ import { useRouter } from 'vue-router';
 import { useResourcesStore, useSearchStore } from '@/stores';
 import GeneralSearchSettingsForm from '@/forms/search/GeneralSearchSettingsForm.vue';
 
+type AdvancedSearchRequestQuery = AdvancedSearchRequestBody['q'][number];
+interface AdvancedSearchFormModelItem extends AdvancedSearchRequestQuery {
+  resource?: AnyResourceRead;
+}
+
 const search = useSearchStore();
 const resources = useResourcesStore();
 const router = useRouter();
 const themeVars = useThemeVars();
 
-const queries = ref<AdvancedSearchRequestBody['q']>([]);
+const queries = ref<AdvancedSearchFormModelItem[]>([]);
 
 const resourceOptions = computed(() =>
   resources.data.map((r) => ({
@@ -46,14 +51,16 @@ function handleResourceChange(resQueryIndex: number, resId: string, resType: Res
     queries.value[resQueryIndex] = {
       cmn: { res: resId, opt: true },
       rts: { ...queries.value[resQueryIndex].rts, type: resType },
+      resource: resources.data.find((r) => r.id === resId),
     };
   }
 }
 
-function getNewSearchItem(): AdvancedSearchRequestBody['q'][number] {
+function getNewSearchItem(): AdvancedSearchFormModelItem {
   return {
     cmn: { res: resources.data[0].id, opt: true },
     rts: { type: resources.data[0].resourceType },
+    resource: resources.data[0],
   };
 }
 
@@ -73,7 +80,11 @@ function handleSearch(e: UIEvent) {
     query: {
       q: search.encodeQueryParam({
         type: 'advanced',
-        q: queries.value,
+        q: queries.value.map((q) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { resource, ...query } = q; // remove "resource" q
+          return query;
+        }),
         gen: search.settingsGeneral,
         adv: search.settingsAdvanced,
       }),
@@ -83,7 +94,10 @@ function handleSearch(e: UIEvent) {
 
 function initQueries() {
   if (search.lastReq?.type === 'advanced') {
-    queries.value = search.lastReq.q;
+    queries.value = search.lastReq.q.map((q) => ({
+      ...q,
+      resource: resources.data.find((r) => r.id === q.cmn.res),
+    }));
   } else {
     queries.value = resources.data.length ? [getNewSearchItem()] : [];
   }
@@ -150,6 +164,7 @@ watch(
           <component
             :is="resourceTypeSearchForms[resourceQuery.rts.type]"
             v-model:value="resourceQuery.rts"
+            :resource="resourceQuery.resource"
           />
           <common-search-form-items
             v-model:comment="resourceQuery.cmn.cmt"

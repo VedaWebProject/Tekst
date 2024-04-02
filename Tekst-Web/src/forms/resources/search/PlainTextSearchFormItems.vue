@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { NFormItem } from 'naive-ui';
 import NInputOsk from '@/components/NInputOsk.vue';
-import type { PlainTextSearchQuery } from '@/api';
+import type { PlainTextResourceRead, PlainTextSearchQuery } from '@/api';
 
 const props = defineProps<{
   value: PlainTextSearchQuery;
+  resource: PlainTextResourceRead;
 }>();
 const emit = defineEmits(['update:value']);
 

@@ -191,5 +191,6 @@ class TextAnnotationSearchQuery(ModelBase):
         Field(
             alias="anno",
             description="List of annotations to match",
+            max_length=64,
         ),
     ] = ""

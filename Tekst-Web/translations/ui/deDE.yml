@@ -409,7 +409,7 @@ resources:
       contentFields:
         token: Token
         annotations: Annotationen
-        annotationKey: Schlüssel
+        annotationKey: Annotation
         annotationValue: Wert
 
 contents:

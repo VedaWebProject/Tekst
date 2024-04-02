@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { NFormItem } from 'naive-ui';
 import NInputOsk from '@/components/NInputOsk.vue';
-import type { RichTextSearchQuery } from '@/api';
+import type { RichTextResourceRead, RichTextSearchQuery } from '@/api';
 
 const props = defineProps<{
   value: RichTextSearchQuery;
+  resource: RichTextResourceRead;
 }>();
 const emit = defineEmits(['update:value']);
 
