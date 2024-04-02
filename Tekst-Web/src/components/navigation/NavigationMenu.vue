@@ -30,7 +30,7 @@ const menuStyle = computed(() => ({
   backgroundColor: props.embed ? 'var(--main-bg-color)' : 'transparent',
   borderRadius: props.embed ? 'var(--border-radius)' : undefined,
   justifyContent: props.center ? 'center' : undefined,
-  width: state.smallScreen ? '100%' : 'auto',
+  width: '100%',
 }));
 </script>
 
