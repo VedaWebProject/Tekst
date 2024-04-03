@@ -194,7 +194,7 @@ class TextAnnotationResourceConfig(ResourceConfigBase):
                 "client, in the form of e.g. `${k}:${v}` for `key:value`"
             ),
         ),
-    ] = "k:v"
+    ] = r"${k}:${v}"
     display_delimiter: Annotated[
         str,
         Field(

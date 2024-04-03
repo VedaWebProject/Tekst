@@ -38,24 +38,40 @@ function applyAnnotationDisplayTemplate(
 </script>
 
 <template>
-  <div v-for="content in contents" :key="content.id" class="annotation-container">
-    <div v-for="(token, tokenIndex) in content.tokens" :key="tokenIndex">
-      <div :style="fontStyle">
+  <div v-for="content in contents" :key="content.id" class="content-container">
+    <div v-for="(token, tokenIndex) in content.tokens" :key="tokenIndex" class="token-container">
+      <div class="token b i" :style="fontStyle">
         {{ token.token }}
       </div>
-      <div v-for="(annotation, annotationIndex) in token.annotations" :key="annotationIndex">
-        {{ annotation }}
+      <div class="annotation">
+        {{ token.annotations }}
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.plain-text-content {
-  white-space: pre-wrap;
-  margin-top: var(--content-gap);
+.content-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
 }
-.plain-text-content:first-child {
-  margin-top: inherit;
+
+.content-container:not(:last-child) {
+  margin-bottom: var(--layout-gap);
+}
+
+.token-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+
+.token {
+  line-height: 1.5em;
+}
+
+.annotation {
+  font-size: var(--font-size-small);
 }
 </style>
