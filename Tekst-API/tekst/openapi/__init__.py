@@ -46,7 +46,6 @@ def generate_schema(app: FastAPI, settings: PlatformSettings):
 
 
 def process_openapi_schema(schema: dict[str, Any]) -> dict[str, Any]:
-    # schema["components"]["schemas"]["Foo"] = PlatformSettings.schema()
     return schema
 
 

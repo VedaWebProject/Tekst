@@ -184,7 +184,25 @@ class GeneralTextAnnotationResourceConfig(ModelBase):
 
 class TextAnnotationResourceConfig(ResourceConfigBase):
     general: GeneralTextAnnotationResourceConfig = GeneralTextAnnotationResourceConfig()
-    # TODO: implement
+    display_template: Annotated[
+        str,
+        Field(
+            min_length=1,
+            max_length=32,
+            description=(
+                "Template used for displaying a single annotation in the web "
+                "client, in the form of e.g. `${k}:${v}` for `key:value`"
+            ),
+        ),
+    ] = "k:v"
+    display_delimiter: Annotated[
+        str,
+        Field(
+            description=(
+                "Delimiter to use for the individual annotations in the web client"
+            ),
+        ),
+    ] = "; "
 
 
 class AnnotationGroup(TypedDict):

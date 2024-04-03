@@ -18,10 +18,14 @@ const contents = computed(() =>
     text: props.reduced ? c.text.replace(/\n+/g, ' ') : c.text,
   }))
 );
+
+const fontStyle = {
+  fontFamily: props.resource.config?.general?.font || 'Tekst Content Font',
+};
 </script>
 
 <template>
-  <div :style="{ fontFamily: resource.config?.general?.font || undefined }">
+  <div :style="fontStyle">
     <div
       v-for="content in contents"
       :key="content.id"

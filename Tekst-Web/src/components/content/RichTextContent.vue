@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { RichTextResourceRead } from '@/api';
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     resource: RichTextResourceRead;
     reduced?: boolean;
@@ -10,6 +10,10 @@ withDefaults(
     reduced: false,
   }
 );
+
+const fontStyle = {
+  fontFamily: props.resource.config?.general?.font || 'Tekst Content Font',
+};
 </script>
 
 <template>
@@ -20,7 +24,7 @@ withDefaults(
       'rich-text-content-wrapper': resource.contents?.length && resource.contents?.length > 1,
     }"
   >
-    <div v-if="!reduced" :style="{ fontFamily: resource.config?.general?.font || undefined }">
+    <div v-if="!reduced" :style="fontStyle">
       <!-- eslint-disable-next-line vue/no-v-html -->
       <div v-html="content.html"></div>
     </div>

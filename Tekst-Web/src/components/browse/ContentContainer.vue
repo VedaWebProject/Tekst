@@ -84,11 +84,7 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
       <content-header-widget-bar :resource="resource" :style="headerWidgetsVisibilityStyle" />
     </div>
 
-    <div
-      v-if="resource.contents?.length"
-      class="content-body"
-      :class="{ 'content-collapsed': contentCollapsed }"
-    >
+    <div v-if="resource.contents?.length" :class="{ 'content-collapsed': contentCollapsed }">
       <!-- content-specific component (that displays the actual content data) -->
       <component
         :is="contentComponents[resource.resourceType]"
@@ -193,10 +189,6 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
   flex-grow: 2;
   opacity: 0.5;
   font-size: 0.8em;
-}
-
-.content-body {
-  font-family: var(--font-family-content);
 }
 
 .content-collapsed {

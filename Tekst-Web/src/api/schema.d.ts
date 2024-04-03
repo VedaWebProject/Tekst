@@ -2612,6 +2612,18 @@ export interface components {
        * }
        */
       general?: components['schemas']['GeneralTextAnnotationResourceConfig'];
+      /**
+       * Displaytemplate
+       * @description Template used for displaying a single annotation in the web client, in the form of e.g. `${k}:${v}` for `key:value`
+       * @default k:v
+       */
+      displayTemplate?: string;
+      /**
+       * Displaydelimiter
+       * @description Delimiter to use for the individual annotations in the web client
+       * @default ;
+       */
+      displayDelimiter?: string;
     };
     /** TextAnnotationResourceCreate */
     TextAnnotationResourceCreate: {
@@ -2702,7 +2714,9 @@ export interface components {
        *   },
        *   "general": {
        *     "defaultCollapsed": false
-       *   }
+       *   },
+       *   "displayTemplate": "k:v",
+       *   "displayDelimiter": "; "
        * }
        */
       config?: components['schemas']['TextAnnotationResourceConfig'];
@@ -2828,7 +2842,9 @@ export interface components {
        *   },
        *   "general": {
        *     "defaultCollapsed": false
-       *   }
+       *   },
+       *   "displayTemplate": "k:v",
+       *   "displayDelimiter": "; "
        * }
        */
       config?: components['schemas']['TextAnnotationResourceConfig'];
@@ -2923,7 +2939,9 @@ export interface components {
        *   },
        *   "general": {
        *     "defaultCollapsed": false
-       *   }
+       *   },
+       *   "displayTemplate": "k:v",
+       *   "displayDelimiter": "; "
        * }
        */
       config?: components['schemas']['TextAnnotationResourceConfig'];

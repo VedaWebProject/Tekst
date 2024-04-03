@@ -10433,6 +10433,20 @@
             "default": {
               "defaultCollapsed": false
             }
+          },
+          "displayTemplate": {
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 1,
+            "title": "Displaytemplate",
+            "description": "Template used for displaying a single annotation in the web client, in the form of e.g. `${k}:${v}` for `key:value`",
+            "default": "k:v"
+          },
+          "displayDelimiter": {
+            "type": "string",
+            "title": "Displaydelimiter",
+            "description": "Delimiter to use for the individual annotations in the web client",
+            "default": "; "
           }
         },
         "type": "object",
@@ -10581,7 +10595,9 @@
               },
               "general": {
                 "defaultCollapsed": false
-              }
+              },
+              "displayTemplate": "k:v",
+              "displayDelimiter": "; "
             }
           },
           "aggregationsDb": {
@@ -10825,7 +10841,9 @@
               },
               "general": {
                 "defaultCollapsed": false
-              }
+              },
+              "displayTemplate": "k:v",
+              "displayDelimiter": "; "
             }
           },
           "aggregationsDb": {
@@ -11031,7 +11049,9 @@
               },
               "general": {
                 "defaultCollapsed": false
-              }
+              },
+              "displayTemplate": "k:v",
+              "displayDelimiter": "; "
             }
           },
           "aggregationsDb": {
