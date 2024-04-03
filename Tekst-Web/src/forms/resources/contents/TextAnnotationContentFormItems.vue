@@ -18,6 +18,19 @@ function handleUpdate(field: string, value: any) {
     [field]: value,
   });
 }
+
+function getAnnotationKeyOptions() {
+  return props.resource.aggregationsIndex?.map((agg) => ({ label: agg.key, value: agg.key })) || [];
+}
+
+function getAnnotationValueOptions(key?: string) {
+  if (!key) return [];
+  return (
+    props.resource.aggregationsIndex
+      ?.find((agg) => agg.key === key)
+      ?.values.map((v) => ({ label: v, value: v })) || []
+  );
+}
 </script>
 
 <template>
@@ -87,7 +100,7 @@ function handleUpdate(field: string, value: any) {
                       filterable
                       tag
                       clearable
-                      :options="[]"
+                      :options="getAnnotationKeyOptions()"
                       :placeholder="
                         $t('resources.types.textAnnotation.contentFields.annotationKey')
                       "
@@ -106,7 +119,7 @@ function handleUpdate(field: string, value: any) {
                       tag
                       clearable
                       :disabled="!annotationItem.key"
-                      :options="[]"
+                      :options="getAnnotationValueOptions(annotationItem.key)"
                       :placeholder="
                         $t('resources.types.textAnnotation.contentFields.annotationValue')
                       "

@@ -1,6 +1,6 @@
 import pytest
 
-from pydantic.error_wrappers import ValidationError
+from pydantic import ValidationError
 from tekst.models.resource import ResourceBase
 from tekst.models.text import Text, TextCreate, TextRead
 from tekst.models.user import UserReadPublic

@@ -96,6 +96,13 @@ async def _setup_index_template() -> None:
     )
 
 
+async def _call_index_updated_hooks() -> None:
+    for resource in await ResourceBaseDocument.find_all(with_children=True).to_list():
+        await resource_types_mgr.get(resource.resource_type).index_updated_hook(
+            resource.id
+        )
+
+
 async def create_index(*, overwrite_existing_index: bool = True) -> None:
     # prepare
     new_index_name = IDX_NAME_PREFIX + uuid4().hex
@@ -160,6 +167,8 @@ async def create_index(*, overwrite_existing_index: bool = True) -> None:
     finally:
         # release lock
         await locks.release(locks.LockKey.INDEX_CREATE_UPDATE)
+        # create background task for calling resource type hooks for updated index
+        asyncio.create_task(_call_index_updated_hooks())
 
 
 async def _populate_index(index_name: str) -> None:
@@ -267,7 +276,7 @@ def _bulk_index(client: Elasticsearch, reqest_body: dict[str, Any]) -> bool:
     return bool(resp) and not resp.get("errors", False)
 
 
-def get_index_creation_time() -> datetime:
+def _get_index_creation_time() -> datetime:
     client: Elasticsearch = _es_client
     idx_settings = client.indices.get_settings(
         index=IDX_ALIAS, name="index.creation_date", flat_settings=True
@@ -287,7 +296,7 @@ async def get_index_info():
         documents=index_info["docs"]["count"],
         size=index_info["store"]["size"],
         searches=index_info["search"]["query_total"],
-        last_indexed=get_index_creation_time(),
+        last_indexed=_get_index_creation_time(),
     )
 
 
@@ -345,7 +354,7 @@ async def search_quick(
             else None,
             source={"includes": get_source_includes(source_includes)},
         ),
-        index_creation_time=get_index_creation_time(),
+        index_creation_time=_get_index_creation_time(),
     )
 
 
@@ -397,5 +406,5 @@ async def search_advanced(
             else None,
             source={"includes": get_source_includes(source_includes)},
         ),
-        index_creation_time=get_index_creation_time(),
+        index_creation_time=_get_index_creation_time(),
     )

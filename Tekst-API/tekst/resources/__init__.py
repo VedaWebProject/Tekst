@@ -8,6 +8,8 @@ from os.path import realpath
 from pathlib import Path
 from typing import Annotated, Any, Union
 
+import jsonref
+
 from fastapi import Body
 from humps import camelize
 from pydantic import Field, StringConstraints
@@ -171,7 +173,9 @@ class ResourceTypeABC(ABC):
     @classmethod
     def prepare_import_template(cls) -> dict:
         """Returns the base template for import data for this resource type"""
-        schema = cls.content_model().create_model().schema()
+        schema = jsonref.replace_refs(
+            cls.content_model().create_model().model_json_schema()
+        )
         required = schema.get("required", [])
         template = {
             "_contentSchema": {},  # will be populated in the next step
@@ -183,6 +187,24 @@ class ResourceTypeABC(ABC):
                 prop_schema["required"] = prop in required
                 template["_contentSchema"][prop] = prop_schema
         return template
+
+    @classmethod
+    async def content_changed_hook(cls, resource_id: PydanticObjectId) -> None:
+        """
+        Will be called whenever the contents of the resource with the given ID changes.
+        This may be overridden by concrete resource implementations to run arbitrary
+        maintenance procedures. Otherwise it is juust a no-op.
+        """
+        pass
+
+    @classmethod
+    async def index_updated_hook(cls, resource_id: PydanticObjectId) -> None:
+        """
+        Will be called for each resource whenever the search index is created/updated.
+        This may be overridden by concrete resource implementations to run arbitrary
+        maintenance procedures. Otherwise it is juust a no-op.
+        """
+        pass
 
     @classmethod
     @abstractmethod

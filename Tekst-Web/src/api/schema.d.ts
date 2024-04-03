@@ -412,6 +412,13 @@ export interface components {
     };
     /** AdvancedSearchSettings */
     AdvancedSearchSettings: Record<string, never>;
+    /** AnnotationGroup */
+    AnnotationGroup: {
+      /** Key */
+      key: string;
+      /** Values */
+      values: string[];
+    };
     /** BearerResponse */
     BearerResponse: {
       /** Access Token */
@@ -2576,6 +2583,19 @@ export interface components {
        */
       value: string;
     };
+    /** TextAnnotationQueryEntry */
+    TextAnnotationQueryEntry: {
+      /**
+       * Key
+       * @description Key of the annotation
+       */
+      key: string | null;
+      /**
+       * Value
+       * @description Value of the annotation
+       */
+      value: string | null;
+    };
     /** TextAnnotationResourceConfig */
     TextAnnotationResourceConfig: {
       /**
@@ -2686,6 +2706,16 @@ export interface components {
        * }
        */
       config?: components['schemas']['TextAnnotationResourceConfig'];
+      /**
+       * Aggregationsdb
+       * @description Aggregated groups for this resource's annotations, in sync with the database
+       */
+      aggregationsDb?: components['schemas']['AnnotationGroup'][] | null;
+      /**
+       * Aggregationsindex
+       * @description Aggregated groups for this resource's annotations, in sync with the search index
+       */
+      aggregationsIndex?: components['schemas']['AnnotationGroup'][] | null;
     };
     /** TextAnnotationResourceRead */
     TextAnnotationResourceRead: {
@@ -2802,6 +2832,16 @@ export interface components {
        * }
        */
       config?: components['schemas']['TextAnnotationResourceConfig'];
+      /**
+       * Aggregationsdb
+       * @description Aggregated groups for this resource's annotations, in sync with the database
+       */
+      aggregationsDb?: components['schemas']['AnnotationGroup'][] | null;
+      /**
+       * Aggregationsindex
+       * @description Aggregated groups for this resource's annotations, in sync with the search index
+       */
+      aggregationsIndex?: components['schemas']['AnnotationGroup'][] | null;
       [key: string]: unknown;
     };
     /** TextAnnotationResourceUpdate */
@@ -2887,6 +2927,16 @@ export interface components {
        * }
        */
       config?: components['schemas']['TextAnnotationResourceConfig'];
+      /**
+       * Aggregationsdb
+       * @description Aggregated groups for this resource's annotations, in sync with the database
+       */
+      aggregationsDb?: components['schemas']['AnnotationGroup'][] | null;
+      /**
+       * Aggregationsindex
+       * @description Aggregated groups for this resource's annotations, in sync with the search index
+       */
+      aggregationsIndex?: components['schemas']['AnnotationGroup'][] | null;
     };
     /** TextAnnotationSearchQuery */
     TextAnnotationSearchQuery: {
@@ -2906,7 +2956,7 @@ export interface components {
        * @description List of annotations to match
        * @default
        */
-      anno?: components['schemas']['TextAnnotationEntry'][];
+      anno?: components['schemas']['TextAnnotationQueryEntry'][];
     };
     /** TextAnnotationToken */
     TextAnnotationToken: {

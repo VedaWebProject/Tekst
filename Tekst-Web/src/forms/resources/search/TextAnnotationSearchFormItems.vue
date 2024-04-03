@@ -17,6 +17,23 @@ function handleUpdate(field: string, value: any) {
     [field]: value,
   });
 }
+
+function getAnnotationKeyOptions() {
+  return (
+    props.resource.aggregationsIndex
+      ?.filter((agg) => !props.value.anno?.find((ann) => ann.key === agg.key))
+      .map((agg) => ({ label: agg.key, value: agg.key })) || []
+  );
+}
+
+function getAnnotationValueOptions(key: string) {
+  if (!key) return [];
+  return (
+    props.resource.aggregationsIndex
+      ?.find((agg) => agg.key === key)
+      ?.values.map((v) => ({ label: v, value: v })) || []
+  );
+}
 </script>
 
 <template>
@@ -38,7 +55,6 @@ function handleUpdate(field: string, value: any) {
   <!-- ANNOTATIONS -->
   <n-form-item
     :label="$t('resources.types.textAnnotation.contentFields.annotations')"
-    :show-feedback="false"
     style="flex-grow: 2; flex-basis: 400px"
   >
     <n-dynamic-input
@@ -67,7 +83,7 @@ function handleUpdate(field: string, value: any) {
               v-model:value="annotationItem.key"
               filterable
               clearable
-              :options="[]"
+              :options="getAnnotationKeyOptions()"
               :placeholder="$t('resources.types.textAnnotation.contentFields.annotationKey')"
             />
           </n-form-item>
@@ -82,7 +98,7 @@ function handleUpdate(field: string, value: any) {
               filterable
               clearable
               :disabled="!annotationItem.key"
-              :options="[]"
+              :options="getAnnotationValueOptions(annotationItem.key)"
               :placeholder="$t('resources.types.textAnnotation.contentFields.annotationValue')"
             />
           </n-form-item>

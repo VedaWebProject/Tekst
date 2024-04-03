@@ -6139,6 +6139,27 @@
         "type": "object",
         "title": "AdvancedSearchSettings"
       },
+      "AnnotationGroup": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "values": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Values"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "values"
+        ],
+        "title": "AnnotationGroup"
+      },
       "BearerResponse": {
         "properties": {
           "access_token": {
@@ -10353,6 +10374,42 @@
         ],
         "title": "TextAnnotationEntry"
       },
+      "TextAnnotationQueryEntry": {
+        "properties": {
+          "key": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 32
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Key",
+            "description": "Key of the annotation"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 64
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value",
+            "description": "Value of the annotation"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "value"
+        ],
+        "title": "TextAnnotationQueryEntry"
+      },
       "TextAnnotationResourceConfig": {
         "properties": {
           "common": {
@@ -10526,6 +10583,36 @@
                 "defaultCollapsed": false
               }
             }
+          },
+          "aggregationsDb": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/AnnotationGroup"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Aggregationsdb",
+            "description": "Aggregated groups for this resource's annotations, in sync with the database"
+          },
+          "aggregationsIndex": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/AnnotationGroup"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Aggregationsindex",
+            "description": "Aggregated groups for this resource's annotations, in sync with the search index"
           }
         },
         "type": "object",
@@ -10740,6 +10827,36 @@
                 "defaultCollapsed": false
               }
             }
+          },
+          "aggregationsDb": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/AnnotationGroup"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Aggregationsdb",
+            "description": "Aggregated groups for this resource's annotations, in sync with the database"
+          },
+          "aggregationsIndex": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/AnnotationGroup"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Aggregationsindex",
+            "description": "Aggregated groups for this resource's annotations, in sync with the search index"
           }
         },
         "additionalProperties": true,
@@ -10916,6 +11033,36 @@
                 "defaultCollapsed": false
               }
             }
+          },
+          "aggregationsDb": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/AnnotationGroup"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Aggregationsdb",
+            "description": "Aggregated groups for this resource's annotations, in sync with the database"
+          },
+          "aggregationsIndex": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/AnnotationGroup"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Aggregationsindex",
+            "description": "Aggregated groups for this resource's annotations, in sync with the search index"
           }
         },
         "type": "object",
@@ -10939,7 +11086,7 @@
           },
           "anno": {
             "items": {
-              "$ref": "#/components/schemas/TextAnnotationEntry"
+              "$ref": "#/components/schemas/TextAnnotationQueryEntry"
             },
             "type": "array",
             "maxItems": 64,
