@@ -6146,10 +6146,17 @@
             "title": "Key"
           },
           "values": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Values"
           }
         },
@@ -10440,7 +10447,7 @@
             "minLength": 1,
             "title": "Displaytemplate",
             "description": "Template used for displaying a single annotation in the web client, in the form of e.g. `${k}:${v}` for `key:value`",
-            "default": "k:v"
+            "default": "${k}:${v}"
           },
           "displayDelimiter": {
             "type": "string",
@@ -10596,11 +10603,11 @@
               "general": {
                 "defaultCollapsed": false
               },
-              "displayTemplate": "k:v",
+              "displayTemplate": "${k}:${v}",
               "displayDelimiter": "; "
             }
           },
-          "aggregationsDb": {
+          "aggregations": {
             "anyOf": [
               {
                 "items": {
@@ -10612,23 +10619,8 @@
                 "type": "null"
               }
             ],
-            "title": "Aggregationsdb",
-            "description": "Aggregated groups for this resource's annotations, in sync with the database"
-          },
-          "aggregationsIndex": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/AnnotationGroup"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Aggregationsindex",
-            "description": "Aggregated groups for this resource's annotations, in sync with the search index"
+            "title": "Aggregations",
+            "description": "Aggregated groups for this resource's annotations"
           }
         },
         "type": "object",
@@ -10842,11 +10834,11 @@
               "general": {
                 "defaultCollapsed": false
               },
-              "displayTemplate": "k:v",
+              "displayTemplate": "${k}:${v}",
               "displayDelimiter": "; "
             }
           },
-          "aggregationsDb": {
+          "aggregations": {
             "anyOf": [
               {
                 "items": {
@@ -10858,23 +10850,8 @@
                 "type": "null"
               }
             ],
-            "title": "Aggregationsdb",
-            "description": "Aggregated groups for this resource's annotations, in sync with the database"
-          },
-          "aggregationsIndex": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/AnnotationGroup"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Aggregationsindex",
-            "description": "Aggregated groups for this resource's annotations, in sync with the search index"
+            "title": "Aggregations",
+            "description": "Aggregated groups for this resource's annotations"
           }
         },
         "additionalProperties": true,
@@ -11050,11 +11027,11 @@
               "general": {
                 "defaultCollapsed": false
               },
-              "displayTemplate": "k:v",
+              "displayTemplate": "${k}:${v}",
               "displayDelimiter": "; "
             }
           },
-          "aggregationsDb": {
+          "aggregations": {
             "anyOf": [
               {
                 "items": {
@@ -11066,23 +11043,8 @@
                 "type": "null"
               }
             ],
-            "title": "Aggregationsdb",
-            "description": "Aggregated groups for this resource's annotations, in sync with the database"
-          },
-          "aggregationsIndex": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/AnnotationGroup"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Aggregationsindex",
-            "description": "Aggregated groups for this resource's annotations, in sync with the search index"
+            "title": "Aggregations",
+            "description": "Aggregated groups for this resource's annotations"
           }
         },
         "type": "object",

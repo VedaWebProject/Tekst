@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { TextAnnotationResourceRead, TextAnnotationSearchQuery } from '@/api';
 import NInputOsk from '@/components/NInputOsk.vue';
-import { NSelect, NFormItem, NDynamicInput } from 'naive-ui';
+import { NInput, NSelect, NFormItem, NDynamicInput } from 'naive-ui';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 
 const props = defineProps<{
@@ -20,7 +20,7 @@ function handleUpdate(field: string, value: any) {
 
 function getAnnotationKeyOptions() {
   return (
-    props.resource.aggregationsIndex
+    props.resource.aggregations
       ?.filter((agg) => !props.value.anno?.find((ann) => ann.key === agg.key))
       .map((agg) => ({ label: agg.key, value: agg.key })) || []
   );
@@ -29,9 +29,9 @@ function getAnnotationKeyOptions() {
 function getAnnotationValueOptions(key: string) {
   if (!key) return [];
   return (
-    props.resource.aggregationsIndex
+    props.resource.aggregations
       ?.find((agg) => agg.key === key)
-      ?.values.map((v) => ({ label: v, value: v })) || []
+      ?.values?.map((v) => ({ label: v, value: v })) || []
   );
 }
 </script>
@@ -94,11 +94,18 @@ function getAnnotationValueOptions(key: string) {
             ignore-path-change
           >
             <n-select
+              v-if="!!resource.aggregations?.find((agg) => agg.key === annotationItem.key)?.values"
               v-model:value="annotationItem.value"
               filterable
               clearable
               :disabled="!annotationItem.key"
               :options="getAnnotationValueOptions(annotationItem.key)"
+              :placeholder="$t('resources.types.textAnnotation.contentFields.annotationValue')"
+            />
+            <n-input
+              v-else
+              v-model:value="annotationItem.value"
+              :disabled="!annotationItem.key"
               :placeholder="$t('resources.types.textAnnotation.contentFields.annotationValue')"
             />
           </n-form-item>

@@ -60,7 +60,7 @@ async def create_content(
     # create background task that calls the
     # content's resource's hook for updated content
     background_tasks.add_task(
-        resource_types_mgr.get(content.resource_type).content_changed_hook,
+        resource_types_mgr.get(content.resource_type).contents_changed_hook,
         content.resource_id,
     )
 
@@ -144,7 +144,7 @@ async def update_content(
     # create background task that calls the
     # content's resource's hook for updated content
     background_tasks.add_task(
-        resource_types_mgr.get(content_doc.resource_type).content_changed_hook,
+        resource_types_mgr.get(content_doc.resource_type).contents_changed_hook,
         content_doc.resource_id,
     )
 
@@ -182,7 +182,7 @@ async def delete_content(
     # create background task that calls the
     # content's resource's hook for updated content
     background_tasks.add_task(
-        resource_types_mgr.get(content_doc.resource_type).content_changed_hook,
+        resource_types_mgr.get(content_doc.resource_type).contents_changed_hook,
         content_doc.resource_id,
     )
 

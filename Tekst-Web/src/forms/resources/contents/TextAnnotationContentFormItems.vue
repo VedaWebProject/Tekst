@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { TextAnnotationContentCreate, TextAnnotationResourceRead } from '@/api';
 import NInputOsk from '@/components/NInputOsk.vue';
-import { NSelect, NFormItem, NDynamicInput } from 'naive-ui';
+import { NInput, NSelect, NFormItem, NDynamicInput } from 'naive-ui';
 import { contentFormRules } from '@/forms/formRules';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 
@@ -20,15 +20,15 @@ function handleUpdate(field: string, value: any) {
 }
 
 function getAnnotationKeyOptions() {
-  return props.resource.aggregationsIndex?.map((agg) => ({ label: agg.key, value: agg.key })) || [];
+  return props.resource.aggregations?.map((agg) => ({ label: agg.key, value: agg.key })) || [];
 }
 
 function getAnnotationValueOptions(key?: string) {
   if (!key) return [];
   return (
-    props.resource.aggregationsIndex
+    props.resource.aggregations
       ?.find((agg) => agg.key === key)
-      ?.values.map((v) => ({ label: v, value: v })) || []
+      ?.values?.map((v) => ({ label: v, value: v })) || []
   );
 }
 </script>
@@ -114,12 +114,24 @@ function getAnnotationValueOptions(key?: string) {
                     ignore-path-change
                   >
                     <n-select
+                      v-if="
+                        !!resource.aggregations?.find((agg) => agg.key === annotationItem.key)
+                          ?.values
+                      "
                       v-model:value="annotationItem.value"
                       filterable
                       tag
                       clearable
                       :disabled="!annotationItem.key"
                       :options="getAnnotationValueOptions(annotationItem.key)"
+                      :placeholder="
+                        $t('resources.types.textAnnotation.contentFields.annotationValue')
+                      "
+                    />
+                    <n-input
+                      v-else
+                      v-model:value="annotationItem.value"
+                      :disabled="!annotationItem.key"
                       :placeholder="
                         $t('resources.types.textAnnotation.contentFields.annotationValue')
                       "

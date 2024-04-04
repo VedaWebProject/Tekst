@@ -32,26 +32,13 @@ class TextAnnotation(ResourceTypeABC):
         return TextAnnotationSearchQuery
 
     @classmethod
-    async def _update_aggregations(
-        cls,
-        resource_id: PydanticObjectId,
-        in_sync_with: Literal["db", "index"] = "db",
-    ) -> None:
-        log.debug(
-            "Updating aggregations for resource "
-            f"{resource_id} (sync: {in_sync_with})..."
-        )
+    async def _update_aggregations(cls, resource_id: PydanticObjectId) -> None:
+        log.debug(f"Updating aggregations for resource {resource_id}...")
 
         # get resource document
         rs_doc_model = cls.resource_model().document_model()
         resource_doc = await rs_doc_model.get(resource_id)
         if not resource_doc:
-            return
-
-        # check if we can reuse aggregations based on last db change
-        if resource_doc.aggregations_db and in_sync_with == "index":
-            resource_doc.aggregations_index = resource_doc.aggregations_db
-            await resource_doc.replace()
             return
 
         # group annotations
@@ -78,8 +65,20 @@ class TextAnnotation(ResourceTypeABC):
                         "$project": {
                             "_id": 0,
                             "key": "$_id",
-                            "values": 1,
-                            "collected": 1,
+                            "values": {
+                                "$cond": {  # exclude if count of distict values > 100
+                                    "if": {"$gt": [{"$size": "$values"}, 3]},
+                                    "then": "$$REMOVE",
+                                    "else": "$values",
+                                }
+                            },
+                            "collected": {
+                                "$cond": {  # exclude if count of distict values > 100
+                                    "if": {"$gt": [{"$size": "$values"}, 3]},
+                                    "then": "$$REMOVE",
+                                    "else": "$collected",
+                                }
+                            },
                         },
                     },
                 ]
@@ -90,26 +89,21 @@ class TextAnnotation(ResourceTypeABC):
         # sort annotation values ("values") by occurrence count (from "collected")
         # (couldn't manage to do that in DB aggregations)
         for anno in anno_aggs:
-            anno["values"].sort(
-                reverse=True,
-                key=lambda v: anno.get("collected", []).count(v),
-            )
-            del anno["collected"]
+            if "values" in anno:
+                anno["values"].sort(
+                    reverse=True,
+                    key=lambda v: anno.get("collected", []).count(v),
+                )
+            if "collected" in anno:
+                del anno["collected"]
 
         # update aggregations in DB
-        if in_sync_with == "db":
-            resource_doc.aggregations_db = anno_aggs
-        elif in_sync_with == "index":
-            resource_doc.aggregations_index = anno_aggs
+        resource_doc.aggregations = anno_aggs
         await resource_doc.replace()
 
     @classmethod
-    async def content_changed_hook(cls, resource_id: PydanticObjectId) -> None:
-        await cls._update_aggregations(resource_id, "db")
-
-    @classmethod
-    async def index_updated_hook(cls, resource_id: PydanticObjectId) -> None:
-        await cls._update_aggregations(resource_id, "index")
+    async def contents_changed_hook(cls, resource_id: PydanticObjectId) -> None:
+        await cls._update_aggregations(resource_id)
 
     @classmethod
     def rtype_es_queries(
@@ -205,30 +199,18 @@ class TextAnnotationResourceConfig(ResourceConfigBase):
     ] = "; "
 
 
-class AnnotationGroup(TypedDict):
+class AnnotationAggregationGroup(ModelBase):
     key: str
-    values: list[str]
+    values: list[str] | None = None
 
 
 class TextAnnotationResource(ResourceBase):
     resource_type: Literal["textAnnotation"]  # camelCased resource type classname
     config: TextAnnotationResourceConfig = TextAnnotationResourceConfig()
-    aggregations_db: Annotated[
-        list[AnnotationGroup] | None,
+    aggregations: Annotated[
+        list[AnnotationAggregationGroup] | None,
         Field(
-            description=(
-                "Aggregated groups for this resource's "
-                "annotations, in sync with the database"
-            ),
-        ),
-    ] = None
-    aggregations_index: Annotated[
-        list[AnnotationGroup] | None,
-        Field(
-            description=(
-                "Aggregated groups for this resource's "
-                "annotations, in sync with the search index"
-            ),
+            description="Aggregated groups for this resource's annotations",
         ),
     ] = None
 

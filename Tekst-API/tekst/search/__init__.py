@@ -96,13 +96,6 @@ async def _setup_index_template() -> None:
     )
 
 
-async def _call_index_updated_hooks() -> None:
-    for resource in await ResourceBaseDocument.find_all(with_children=True).to_list():
-        await resource_types_mgr.get(resource.resource_type).index_updated_hook(
-            resource.id
-        )
-
-
 async def create_index(*, overwrite_existing_index: bool = True) -> None:
     # prepare
     new_index_name = IDX_NAME_PREFIX + uuid4().hex
@@ -167,8 +160,6 @@ async def create_index(*, overwrite_existing_index: bool = True) -> None:
     finally:
         # release lock
         await locks.release(locks.LockKey.INDEX_CREATE_UPDATE)
-        # create background task for calling resource type hooks for updated index
-        asyncio.create_task(_call_index_updated_hooks())
 
 
 async def _populate_index(index_name: str) -> None:

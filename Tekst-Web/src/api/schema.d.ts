@@ -417,7 +417,7 @@ export interface components {
       /** Key */
       key: string;
       /** Values */
-      values: string[];
+      values: string[] | null;
     };
     /** BearerResponse */
     BearerResponse: {
@@ -2615,7 +2615,7 @@ export interface components {
       /**
        * Displaytemplate
        * @description Template used for displaying a single annotation in the web client, in the form of e.g. `${k}:${v}` for `key:value`
-       * @default k:v
+       * @default ${k}:${v}
        */
       displayTemplate?: string;
       /**
@@ -2715,21 +2715,16 @@ export interface components {
        *   "general": {
        *     "defaultCollapsed": false
        *   },
-       *   "displayTemplate": "k:v",
+       *   "displayTemplate": "${k}:${v}",
        *   "displayDelimiter": "; "
        * }
        */
       config?: components['schemas']['TextAnnotationResourceConfig'];
       /**
-       * Aggregationsdb
-       * @description Aggregated groups for this resource's annotations, in sync with the database
+       * Aggregations
+       * @description Aggregated groups for this resource's annotations
        */
-      aggregationsDb?: components['schemas']['AnnotationGroup'][] | null;
-      /**
-       * Aggregationsindex
-       * @description Aggregated groups for this resource's annotations, in sync with the search index
-       */
-      aggregationsIndex?: components['schemas']['AnnotationGroup'][] | null;
+      aggregations?: components['schemas']['AnnotationGroup'][] | null;
     };
     /** TextAnnotationResourceRead */
     TextAnnotationResourceRead: {
@@ -2843,21 +2838,16 @@ export interface components {
        *   "general": {
        *     "defaultCollapsed": false
        *   },
-       *   "displayTemplate": "k:v",
+       *   "displayTemplate": "${k}:${v}",
        *   "displayDelimiter": "; "
        * }
        */
       config?: components['schemas']['TextAnnotationResourceConfig'];
       /**
-       * Aggregationsdb
-       * @description Aggregated groups for this resource's annotations, in sync with the database
+       * Aggregations
+       * @description Aggregated groups for this resource's annotations
        */
-      aggregationsDb?: components['schemas']['AnnotationGroup'][] | null;
-      /**
-       * Aggregationsindex
-       * @description Aggregated groups for this resource's annotations, in sync with the search index
-       */
-      aggregationsIndex?: components['schemas']['AnnotationGroup'][] | null;
+      aggregations?: components['schemas']['AnnotationGroup'][] | null;
       [key: string]: unknown;
     };
     /** TextAnnotationResourceUpdate */
@@ -2940,21 +2930,16 @@ export interface components {
        *   "general": {
        *     "defaultCollapsed": false
        *   },
-       *   "displayTemplate": "k:v",
+       *   "displayTemplate": "${k}:${v}",
        *   "displayDelimiter": "; "
        * }
        */
       config?: components['schemas']['TextAnnotationResourceConfig'];
       /**
-       * Aggregationsdb
-       * @description Aggregated groups for this resource's annotations, in sync with the database
+       * Aggregations
+       * @description Aggregated groups for this resource's annotations
        */
-      aggregationsDb?: components['schemas']['AnnotationGroup'][] | null;
-      /**
-       * Aggregationsindex
-       * @description Aggregated groups for this resource's annotations, in sync with the search index
-       */
-      aggregationsIndex?: components['schemas']['AnnotationGroup'][] | null;
+      aggregations?: components['schemas']['AnnotationGroup'][] | null;
     };
     /** TextAnnotationSearchQuery */
     TextAnnotationSearchQuery: {

@@ -189,18 +189,9 @@ class ResourceTypeABC(ABC):
         return template
 
     @classmethod
-    async def content_changed_hook(cls, resource_id: PydanticObjectId) -> None:
+    async def contents_changed_hook(cls, resource_id: PydanticObjectId) -> None:
         """
         Will be called whenever the contents of the resource with the given ID changes.
-        This may be overridden by concrete resource implementations to run arbitrary
-        maintenance procedures. Otherwise it is juust a no-op.
-        """
-        pass
-
-    @classmethod
-    async def index_updated_hook(cls, resource_id: PydanticObjectId) -> None:
-        """
-        Will be called for each resource whenever the search index is created/updated.
         This may be overridden by concrete resource implementations to run arbitrary
         maintenance procedures. Otherwise it is juust a no-op.
         """

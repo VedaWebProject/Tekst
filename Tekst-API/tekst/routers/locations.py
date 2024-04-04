@@ -2,7 +2,7 @@ from typing import Annotated
 
 from beanie import PydanticObjectId
 from beanie.operators import And, In, NotIn
-from fastapi import APIRouter, Path, Query, status
+from fastapi import APIRouter, BackgroundTasks, Path, Query, status
 
 from tekst import errors
 from tekst.auth import SuperuserDep
@@ -14,10 +14,12 @@ from tekst.models.location import (
     LocationRead,
     LocationUpdate,
 )
+from tekst.models.resource import ResourceBaseDocument
 from tekst.models.text import (
     MoveLocationRequestBody,
     TextDocument,
 )
+from tekst.resources import resource_types_mgr
 
 
 router = APIRouter(
@@ -254,6 +256,7 @@ async def update_location(
 async def delete_location(
     su: SuperuserDep,
     location_id: Annotated[PydanticObjectId, Path(alias="id")],
+    background_tasks: BackgroundTasks,
 ) -> DeleteLocationResult:
     """
     Deletes the specified location. Also deletes any associated contents,
@@ -299,6 +302,18 @@ async def delete_location(
             await LocationDocument.find(In(LocationDocument.id, target_ids)).delete()
         ).deleted_count
         to_delete.pop(0)
+
+    # create background task that calls the
+    # content's resource's hook for updated content
+    if contents_deleted > 0:
+        for resource in await ResourceBaseDocument.find_all(
+            with_children=True
+        ).to_list():
+            background_tasks.add_task(
+                resource_types_mgr.get(resource.resource_type).contents_changed_hook,
+                resource.id,
+            )
+
     return DeleteLocationResult(contents=contents_deleted, locations=locations_deleted)
 
 
