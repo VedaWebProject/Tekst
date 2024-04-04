@@ -463,7 +463,7 @@ account:
     headingChangeUserData: General User Data
     headingChangePublicFields: Public Profile Data
     headingDeleteAccount: Delete Account
-    notifyMe: Notify me via email when...
+    notifyMe: Notify me when...
     userNotificationTriggers:
       heading: Notifications
       resourceProposed: someone proposes a resource for publication (via platform message)

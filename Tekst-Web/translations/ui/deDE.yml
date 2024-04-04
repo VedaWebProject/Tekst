@@ -472,7 +472,7 @@ account:
     headingChangeUserData: Allgemeine Benutzerdaten
     headingChangePublicFields: Öffentliche Profildaten
     headingDeleteAccount: Konto löschen
-    notifyMe: Benachrichtige mich per Email, wenn...
+    notifyMe: Benachrichtige mich, wenn...
     userNotificationTriggers:
       heading: Benachrichtigungen
       resourceProposed: jemand eine Ressource zur Veröffentlichung vorschlägt (per Plattform-Nachricht)
