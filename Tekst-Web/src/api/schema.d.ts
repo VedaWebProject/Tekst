@@ -412,12 +412,12 @@ export interface components {
     };
     /** AdvancedSearchSettings */
     AdvancedSearchSettings: Record<string, never>;
-    /** AnnotationGroup */
-    AnnotationGroup: {
+    /** AnnotationAggregationGroup */
+    AnnotationAggregationGroup: {
       /** Key */
       key: string;
       /** Values */
-      values: string[] | null;
+      values?: string[] | null;
     };
     /** BearerResponse */
     BearerResponse: {
@@ -2614,16 +2614,9 @@ export interface components {
       general?: components['schemas']['GeneralTextAnnotationResourceConfig'];
       /**
        * Displaytemplate
-       * @description Template used for displaying a single annotation in the web client, in the form of e.g. `${k}:${v}` for `key:value`
-       * @default ${k}:${v}
+       * @description Template string used for displaying the annotations in the web client (if missing, all annotations are displayed with key and value, separated by commas)
        */
-      displayTemplate?: string;
-      /**
-       * Displaydelimiter
-       * @description Delimiter to use for the individual annotations in the web client
-       * @default ;
-       */
-      displayDelimiter?: string;
+      displayTemplate?: string | null;
     };
     /** TextAnnotationResourceCreate */
     TextAnnotationResourceCreate: {
@@ -2714,9 +2707,7 @@ export interface components {
        *   },
        *   "general": {
        *     "defaultCollapsed": false
-       *   },
-       *   "displayTemplate": "${k}:${v}",
-       *   "displayDelimiter": "; "
+       *   }
        * }
        */
       config?: components['schemas']['TextAnnotationResourceConfig'];
@@ -2724,7 +2715,7 @@ export interface components {
        * Aggregations
        * @description Aggregated groups for this resource's annotations
        */
-      aggregations?: components['schemas']['AnnotationGroup'][] | null;
+      aggregations?: components['schemas']['AnnotationAggregationGroup'][] | null;
     };
     /** TextAnnotationResourceRead */
     TextAnnotationResourceRead: {
@@ -2837,9 +2828,7 @@ export interface components {
        *   },
        *   "general": {
        *     "defaultCollapsed": false
-       *   },
-       *   "displayTemplate": "${k}:${v}",
-       *   "displayDelimiter": "; "
+       *   }
        * }
        */
       config?: components['schemas']['TextAnnotationResourceConfig'];
@@ -2847,7 +2836,7 @@ export interface components {
        * Aggregations
        * @description Aggregated groups for this resource's annotations
        */
-      aggregations?: components['schemas']['AnnotationGroup'][] | null;
+      aggregations?: components['schemas']['AnnotationAggregationGroup'][] | null;
       [key: string]: unknown;
     };
     /** TextAnnotationResourceUpdate */
@@ -2929,9 +2918,7 @@ export interface components {
        *   },
        *   "general": {
        *     "defaultCollapsed": false
-       *   },
-       *   "displayTemplate": "${k}:${v}",
-       *   "displayDelimiter": "; "
+       *   }
        * }
        */
       config?: components['schemas']['TextAnnotationResourceConfig'];
@@ -2939,7 +2926,7 @@ export interface components {
        * Aggregations
        * @description Aggregated groups for this resource's annotations
        */
-      aggregations?: components['schemas']['AnnotationGroup'][] | null;
+      aggregations?: components['schemas']['AnnotationAggregationGroup'][] | null;
     };
     /** TextAnnotationSearchQuery */
     TextAnnotationSearchQuery: {

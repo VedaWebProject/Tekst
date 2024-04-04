@@ -6139,7 +6139,7 @@
         "type": "object",
         "title": "AdvancedSearchSettings"
       },
-      "AnnotationGroup": {
+      "AnnotationAggregationGroup": {
         "properties": {
           "key": {
             "type": "string",
@@ -6162,10 +6162,9 @@
         },
         "type": "object",
         "required": [
-          "key",
-          "values"
+          "key"
         ],
-        "title": "AnnotationGroup"
+        "title": "AnnotationAggregationGroup"
       },
       "BearerResponse": {
         "properties": {
@@ -10442,18 +10441,18 @@
             }
           },
           "displayTemplate": {
-            "type": "string",
-            "maxLength": 32,
-            "minLength": 1,
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "maxLength": 2048,
+            "minLength": 8,
             "title": "Displaytemplate",
-            "description": "Template used for displaying a single annotation in the web client, in the form of e.g. `${k}:${v}` for `key:value`",
-            "default": "${k}:${v}"
-          },
-          "displayDelimiter": {
-            "type": "string",
-            "title": "Displaydelimiter",
-            "description": "Delimiter to use for the individual annotations in the web client",
-            "default": "; "
+            "description": "Template string used for displaying the annotations in the web client (if missing, all annotations are displayed with key and value, separated by commas)"
           }
         },
         "type": "object",
@@ -10602,16 +10601,14 @@
               },
               "general": {
                 "defaultCollapsed": false
-              },
-              "displayTemplate": "${k}:${v}",
-              "displayDelimiter": "; "
+              }
             }
           },
           "aggregations": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/AnnotationGroup"
+                  "$ref": "#/components/schemas/AnnotationAggregationGroup"
                 },
                 "type": "array"
               },
@@ -10833,16 +10830,14 @@
               },
               "general": {
                 "defaultCollapsed": false
-              },
-              "displayTemplate": "${k}:${v}",
-              "displayDelimiter": "; "
+              }
             }
           },
           "aggregations": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/AnnotationGroup"
+                  "$ref": "#/components/schemas/AnnotationAggregationGroup"
                 },
                 "type": "array"
               },
@@ -11026,16 +11021,14 @@
               },
               "general": {
                 "defaultCollapsed": false
-              },
-              "displayTemplate": "${k}:${v}",
-              "displayDelimiter": "; "
+              }
             }
           },
           "aggregations": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/AnnotationGroup"
+                  "$ref": "#/components/schemas/AnnotationAggregationGroup"
                 },
                 "type": "array"
               },
