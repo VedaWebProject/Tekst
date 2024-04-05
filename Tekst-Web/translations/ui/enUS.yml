@@ -684,7 +684,7 @@ search:
       heading: '@:general.general'
       strict: respect diacritics
     quick:
-      defaultOperator: find all search terms
+      defaultOperator: all search expressions must match
       texts: Texts
       textsPlaceholder: All texts
   results:
