@@ -50,7 +50,7 @@ function handleResourceChange(resQueryIndex: number, resId: string, resType: Res
   if (queries.value[resQueryIndex].cmn.res !== resId) {
     queries.value[resQueryIndex] = {
       cmn: { res: resId, opt: true },
-      rts: { ...queries.value[resQueryIndex].rts, type: resType },
+      rts: { type: resType },
       resource: resources.data.find((r) => r.id === resId),
     };
   }
