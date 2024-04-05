@@ -1,22 +1,26 @@
 <script setup lang="ts">
 import type { TextAnnotationContentRead, TextAnnotationResourceRead } from '@/api';
+import type { CSSProperties } from 'vue';
 import { computed } from 'vue';
+
+interface AnnotationDisplayFormatFlags {
+  bold?: boolean;
+  italic?: boolean;
+  caps?: boolean;
+  font?: boolean; // whether to use the resource's font / content font
+}
 
 interface AnnotationDisplayTemplate {
   key?: string;
   prefix?: string;
   content?: string;
   suffix?: string;
-  bold?: boolean;
-  italic?: boolean;
-  caps?: boolean;
+  format?: AnnotationDisplayFormatFlags;
 }
 
 interface AnnotationDisplayStructure {
   display: string;
-  bold?: boolean;
-  italic?: boolean;
-  caps?: boolean;
+  format?: AnnotationDisplayFormatFlags;
 }
 
 const PAT_TMPL_ITEM = /{{((?!}}).+?)}}/g;
@@ -37,7 +41,7 @@ const annotationDisplayTemplates = computed<AnnotationDisplayTemplate[]>(() => {
   const out: AnnotationDisplayTemplate[] = [];
   // iterate over template items
   const items = [...props.resource.config.displayTemplate.matchAll(PAT_TMPL_ITEM)];
-  items.forEach((a, i) => {
+  items.forEach((a) => {
     const item: AnnotationDisplayTemplate = {};
     // iterate over template item parts
     [...a[1].matchAll(PAT_TMPL_ITEM_PARTS)].forEach((p) => {
@@ -55,17 +59,14 @@ const annotationDisplayTemplates = computed<AnnotationDisplayTemplate[]>(() => {
           item.suffix = p[2];
           break;
         case 'f':
-          item.bold = p[2].toLowerCase().includes('b');
-          item.italic = p[2].toLowerCase().includes('i');
-          item.caps = p[2].toLowerCase().includes('c');
+          item.format = {
+            bold: p[2].toLowerCase().includes('b'),
+            italic: p[2].toLowerCase().includes('i'),
+            caps: p[2].toLowerCase().includes('c'),
+            font: p[2].toLowerCase().includes('f'),
+          };
       }
     });
-    // remove prefix/suffix if item is first/last
-    if (i === 0) {
-      item.prefix = undefined;
-    } else if (i === items.length - 1) {
-      item.suffix = undefined;
-    }
     out.push(item);
   });
   return out;
@@ -88,16 +89,47 @@ const fontStyle = {
 function applyAnnotationDisplayTemplate(
   annotations: TextAnnotationContentRead['tokens'][number]['annotations']
 ): AnnotationDisplayStructure[] {
-  return annotationDisplayTemplates.value.map((t) => {
-    const a = annotations.find((a) => a.key === t.key);
-    const c = t.content?.replace(/k/g, a?.key || '').replace(/v/g, a?.value || '');
+  // if there are no annotation display templates, just return the annotations in a
+  // default form (k:v, k:v, etc.) without any styling flags set
+  if (!annotationDisplayTemplates.value.length) {
+    return annotations.map((a, i) => ({
+      display: `${a.key}:${a.value}` + (i < annotations.length - 1 ? '; ' : ''),
+    }));
+  }
+
+  // associate templates with annotations data
+  const items = annotationDisplayTemplates.value
+    .map((template) => {
+      return {
+        template,
+        data: annotations.find((a) => a.key === template.key),
+      };
+    })
+    .filter((item) => item.template.content && (item.template.key ? !!item.data : true));
+
+  // apply templates, compute content
+  return items.map((item, i) => {
+    const content =
+      item.template.content
+        ?.replace(/k/g, item.data?.key || '')
+        .replace(/v/g, item.data?.value || '') || '';
+    const prefix = i > 0 ? item.template.prefix || '' : '';
+    const suffix = i < items.length - 1 ? item.template.suffix || '' : '';
     return {
-      display: `${t.prefix || ''}${c || ''}${t.suffix || ''}`,
-      bold: t.bold,
-      italic: t.italic,
-      caps: t.caps,
+      display: `${prefix}${content}${suffix}`,
+      format: item.template.format,
     };
   });
+}
+
+function getAnnotationStyle(fmtFlags?: AnnotationDisplayFormatFlags): CSSProperties | undefined {
+  if (!fmtFlags) return;
+  return {
+    fontWeight: fmtFlags.bold ? 'bold' : undefined,
+    fontStyle: fmtFlags.italic ? 'italic' : undefined,
+    fontVariant: fmtFlags.caps ? 'small-caps' : undefined,
+    fontFamily: fmtFlags.font ? fontStyle.fontFamily : undefined,
+  };
 }
 </script>
 
@@ -107,8 +139,14 @@ function applyAnnotationDisplayTemplate(
       <div class="token b i" :style="fontStyle">
         {{ token.token }}
       </div>
-      <div class="annotation">
-        {{ token.annotations }}
+      <div class="annotations">
+        <span
+          v-for="(annotation, index) in token.annotations"
+          :key="index"
+          :style="getAnnotationStyle(annotation.format)"
+        >
+          {{ annotation.display }}
+        </span>
       </div>
     </div>
   </div>
@@ -132,10 +170,10 @@ function applyAnnotationDisplayTemplate(
 }
 
 .token {
-  line-height: 1.5em;
+  line-height: 1.25em;
 }
 
-.annotation {
+.annotations {
   font-size: var(--font-size-small);
 }
 </style>

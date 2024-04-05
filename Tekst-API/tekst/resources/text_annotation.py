@@ -179,8 +179,7 @@ class GeneralTextAnnotationResourceConfig(ModelBase):
 class TextAnnotationResourceConfig(ResourceConfigBase):
     general: GeneralTextAnnotationResourceConfig = GeneralTextAnnotationResourceConfig()
     display_template: Annotated[
-        str,
-        val.CleanupOneline,
+        str | None,
         Field(
             min_length=8,
             max_length=2048,
@@ -190,7 +189,9 @@ class TextAnnotationResourceConfig(ResourceConfigBase):
                 "separated by commas)"
             ),
         ),
-    ] = ""
+        val.CleanupOneline,
+        val.EmptyStringToNone,
+    ] = None
 
 
 class AnnotationAggregationGroup(ModelBase):
