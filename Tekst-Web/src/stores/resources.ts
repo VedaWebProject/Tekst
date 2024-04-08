@@ -1,13 +1,15 @@
 import { defineStore } from 'pinia';
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { GET, type AnyResourceRead, type ResourceCoverage } from '@/api';
 import { useAuthStore, useStateStore } from '@/stores';
+import { hashCode } from '@/utils';
 
 export const useResourcesStore = defineStore('resources', () => {
   const state = useStateStore();
   const auth = useAuthStore();
 
   const resources = ref<AnyResourceRead[]>([]);
+  const dataHash = computed(() => hashCode(resources.value));
   const error = ref(false);
 
   const loading = ref(false);
@@ -115,6 +117,7 @@ export const useResourcesStore = defineStore('resources', () => {
 
   return {
     data: resources,
+    dataHash,
     error,
     loading,
     load,

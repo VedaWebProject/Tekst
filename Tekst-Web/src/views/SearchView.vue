@@ -108,7 +108,7 @@ function renderResourceOptionLabel(option: SelectMixedOption) {
 }
 
 watch(
-  () => resources.data,
+  () => resources.dataHash,
   () => {
     initQueries();
   },

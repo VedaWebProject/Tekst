@@ -8,12 +8,14 @@ import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
 import { Base64 } from 'js-base64';
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
+import { useResourcesStore } from './resources';
 
 export const useSearchStore = defineStore('search', () => {
   const router = useRouter();
   const { message } = useMessages();
+  const resources = useResourcesStore();
 
   const lastReq = ref<SearchRequestBody>();
 
@@ -50,6 +52,13 @@ export const useSearchStore = defineStore('search', () => {
       return undefined;
     }
   }
+
+  watch(
+    () => resources.dataHash,
+    () => {
+      lastReq.value = undefined;
+    }
+  );
 
   return {
     settingsGeneral,
