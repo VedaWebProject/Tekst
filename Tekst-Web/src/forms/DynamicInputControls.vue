@@ -59,7 +59,6 @@ const btnProps = computed<ButtonProps>(() => ({
         v-bind="btnProps"
         :title="moveUpTitle"
         :disabled="moveUpDisabled"
-        :focusable="false"
         @click="$emit('moveUp')"
       >
         <template #icon>
@@ -70,7 +69,6 @@ const btnProps = computed<ButtonProps>(() => ({
         v-bind="btnProps"
         :title="moveDownTitle"
         :disabled="moveDownDisabled"
-        :focusable="false"
         @click="$emit('moveDown')"
       >
         <template #icon>
@@ -83,7 +81,6 @@ const btnProps = computed<ButtonProps>(() => ({
         v-bind="btnProps"
         :title="removeTitle"
         :disabled="removeDisabled"
-        :focusable="false"
         @click="$emit('remove')"
       >
         <template #icon>
@@ -94,7 +91,6 @@ const btnProps = computed<ButtonProps>(() => ({
         v-bind="btnProps"
         :title="insertTitle"
         :disabled="insertDisabled"
-        :focusable="false"
         @click="$emit('insert')"
       >
         <template #icon>
