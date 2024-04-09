@@ -439,6 +439,9 @@ async function handleNearestChangeClick(mode: 'preceding' | 'subsequent') {
         style="margin-bottom: var(--layout-gap)"
         @after-leave="compareResourceId = undefined"
       >
+        <template #icon>
+          <n-icon :component="CompareIcon" />
+        </template>
         <component
           :is="contentComponents[compareResource.resourceType]"
           v-if="compareResource.contents?.length"
