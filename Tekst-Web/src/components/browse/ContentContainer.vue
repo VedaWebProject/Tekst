@@ -30,7 +30,7 @@ const contentCollapsed = ref(!!props.resource.config?.general?.defaultCollapsed)
 watch(
   () => browse.reducedView,
   (reduced) => {
-    contentCollapsed.value = !reduced;
+    contentCollapsed.value = !reduced && !!props.resource.config?.general?.defaultCollapsed;
   }
 );
 
@@ -97,7 +97,10 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
       <n-spin v-show="loading" class="content-loader" />
     </transition>
 
-    <div class="content-collapse-btn-wrapper">
+    <div
+      v-if="resource.config?.general?.defaultCollapsed != null"
+      class="content-collapse-btn-wrapper"
+    >
       <n-button
         v-if="resource.config?.general?.defaultCollapsed && resource.contents?.length"
         circle
