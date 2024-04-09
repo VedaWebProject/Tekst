@@ -3,12 +3,10 @@ import { $t, localeProfiles } from '@/i18n';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import { computed, ref } from 'vue';
 import {
-  NIcon,
   NDynamicInput,
   NDivider,
   NButton,
   NSpace,
-  NButtonGroup,
   NSelect,
   NForm,
   NFormItem,
@@ -24,9 +22,10 @@ import TranslationFormItem from '@/forms/TranslationFormItem.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import { useStateStore } from '@/stores';
 import _cloneDeep from 'lodash.clonedeep';
-import { AddIcon, MinusIcon, ArrowUpIcon, ArrowDownIcon, SettingsIcon } from '@/icons';
+import { SettingsIcon } from '@/icons';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
+import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 
 const state = useStateStore();
 const { pfData, patchPfData } = usePlatformData();
@@ -232,7 +231,6 @@ function resetForm() {
       <n-form-item v-if="formModel.resourceCategories" :show-label="false">
         <n-dynamic-input
           v-model:value="formModel.resourceCategories"
-          item-style="margin-bottom: 0;"
           show-sort-button
           :min="0"
           :max="32"
@@ -255,6 +253,7 @@ function resetForm() {
               </n-form-item>
               <translation-form-item
                 v-model:value="formModel.resourceCategories[index].translations"
+                secondary
                 :parent-form-path-prefix="`resourceCategories[${index}].translations`"
                 required
                 style="flex-grow: 2"
@@ -265,55 +264,16 @@ function resetForm() {
             </div>
           </template>
           <template #action="{ index: indexAction, create, remove, move }">
-            <n-button-group style="margin-left: var(--layout-gap); padding-top: 26px">
-              <n-button
-                type="primary"
-                secondary
-                :title="$t('general.removeAction')"
-                :focusable="false"
-                @click="() => remove(indexAction)"
-              >
-                <template #icon>
-                  <n-icon :component="MinusIcon" />
-                </template>
-              </n-button>
-              <n-button
-                type="primary"
-                secondary
-                :title="$t('general.addAction')"
-                :disabled="(formModel.resourceCategories?.length || 0) >= 32"
-                :focusable="false"
-                @click="() => create(indexAction)"
-              >
-                <template #icon>
-                  <n-icon :component="AddIcon" />
-                </template>
-              </n-button>
-              <n-button
-                type="primary"
-                secondary
-                :title="$t('general.moveUpAction')"
-                :disabled="indexAction === 0"
-                :focusable="false"
-                @click="() => move('up', indexAction)"
-              >
-                <template #icon>
-                  <n-icon :component="ArrowUpIcon" />
-                </template>
-              </n-button>
-              <n-button
-                type="primary"
-                secondary
-                :title="$t('general.moveDownAction')"
-                :disabled="indexAction === formModel.resourceCategories?.length - 1"
-                :focusable="false"
-                @click="() => move('down', indexAction)"
-              >
-                <template #icon>
-                  <n-icon :component="ArrowDownIcon" />
-                </template>
-              </n-button>
-            </n-button-group>
+            <dynamic-input-controls
+              top-offset
+              :move-up-disabled="indexAction === 0"
+              :move-down-disabled="indexAction === formModel.resourceCategories?.length - 1"
+              :insert-disabled="(formModel.resourceCategories?.length || 0) >= 32"
+              @move-up="() => move('up', indexAction)"
+              @move-down="() => move('down', indexAction)"
+              @remove="() => remove(indexAction)"
+              @insert="() => create(indexAction)"
+            />
           </template>
         </n-dynamic-input>
       </n-form-item>
@@ -343,7 +303,6 @@ function resetForm() {
       <n-form-item v-if="formModel.customFonts" :show-label="false">
         <n-dynamic-input
           v-model:value="formModel.customFonts"
-          item-style="margin-bottom: 0;"
           show-sort-button
           :min="0"
           :max="64"
@@ -365,31 +324,13 @@ function resetForm() {
             </n-form-item>
           </template>
           <template #action="{ index: indexAction, create, remove }">
-            <n-button-group style="margin-left: var(--layout-gap); padding-top: 26px">
-              <n-button
-                type="primary"
-                secondary
-                :title="$t('general.removeAction')"
-                :focusable="false"
-                @click="() => remove(indexAction)"
-              >
-                <template #icon>
-                  <n-icon :component="MinusIcon" />
-                </template>
-              </n-button>
-              <n-button
-                type="primary"
-                secondary
-                :title="$t('general.insertAction')"
-                :disabled="(formModel.customFonts?.length || 0) >= 64"
-                :focusable="false"
-                @click="() => create(indexAction)"
-              >
-                <template #icon>
-                  <n-icon :component="AddIcon" />
-                </template>
-              </n-button>
-            </n-button-group>
+            <dynamic-input-controls
+              top-offset
+              :movable="false"
+              :insert-disabled="(formModel.customFonts?.length || 0) >= 64"
+              @remove="() => remove(indexAction)"
+              @insert="() => create(indexAction)"
+            />
           </template>
         </n-dynamic-input>
       </n-form-item>
@@ -404,19 +345,27 @@ function resetForm() {
       <n-form-item v-if="formModel.oskModes" :show-label="false">
         <n-dynamic-input
           v-model:value="formModel.oskModes"
-          item-style="margin-bottom: 0;"
           show-sort-button
           :min="0"
           :max="64"
           @create="() => ({ key: '', name: '', font: '' })"
         >
           <template #default="{ index }">
-            <div style="display: flex; align-items: flex-start; gap: 12px; width: 100%">
+            <div
+              style="
+                display: flex;
+                align-items: flex-start;
+                gap: 12px;
+                flex-grow: 2;
+                flex-wrap: wrap;
+              "
+            >
               <n-form-item
                 ignore-path-change
                 :label="$t('models.platformSettings.oskModeKey')"
                 :path="`oskModes[${index}].key`"
                 :rule="platformSettingsFormRules.oskModeKey"
+                style="flex-grow: 1"
               >
                 <n-input
                   v-model:value="formModel.oskModes[index].key"
@@ -456,55 +405,16 @@ function resetForm() {
             </div>
           </template>
           <template #action="{ index: indexAction, create, remove, move }">
-            <n-button-group style="margin-left: var(--layout-gap); padding-top: 26px">
-              <n-button
-                type="primary"
-                secondary
-                :title="$t('general.removeAction')"
-                :focusable="false"
-                @click="() => remove(indexAction)"
-              >
-                <template #icon>
-                  <n-icon :component="MinusIcon" />
-                </template>
-              </n-button>
-              <n-button
-                type="primary"
-                secondary
-                :title="$t('general.insertAction')"
-                :disabled="(formModel.customFonts?.length || 0) >= 64"
-                :focusable="false"
-                @click="() => create(indexAction)"
-              >
-                <template #icon>
-                  <n-icon :component="AddIcon" />
-                </template>
-              </n-button>
-              <n-button
-                type="primary"
-                secondary
-                :title="$t('general.moveUpAction')"
-                :disabled="indexAction === 0"
-                :focusable="false"
-                @click="() => move('up', indexAction)"
-              >
-                <template #icon>
-                  <n-icon :component="ArrowUpIcon" />
-                </template>
-              </n-button>
-              <n-button
-                type="primary"
-                secondary
-                :title="$t('general.moveDownAction')"
-                :disabled="indexAction === formModel.oskModes?.length - 1"
-                :focusable="false"
-                @click="() => move('down', indexAction)"
-              >
-                <template #icon>
-                  <n-icon :component="ArrowDownIcon" />
-                </template>
-              </n-button>
-            </n-button-group>
+            <dynamic-input-controls
+              top-offset
+              :move-up-disabled="indexAction === 0"
+              :move-down-disabled="indexAction === formModel.oskModes?.length - 1"
+              :insert-disabled="(formModel.customFonts?.length || 0) >= 64"
+              @move-up="() => move('up', indexAction)"
+              @move-down="() => move('down', indexAction)"
+              @remove="() => remove(indexAction)"
+              @insert="() => create(indexAction)"
+            />
           </template>
         </n-dynamic-input>
       </n-form-item>

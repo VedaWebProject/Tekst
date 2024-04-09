@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import type { AnyContentCreate } from '@/api';
+import type { AnyContentCreate, AnyResourceRead } from '@/api';
 import { NCollapse, NCollapseItem, NInput, NFormItem } from 'naive-ui';
-import resourceContentFormItems from '@/forms/contents/mappings';
+import resourceContentFormItems from '@/forms/resources/contents/mappings';
+import { contentFormRules } from '@/forms/formRules';
 
 const props = defineProps<{
   model?: AnyContentCreate;
+  resource: AnyResourceRead;
 }>();
 
 const emit = defineEmits(['update:model']);
@@ -22,12 +24,17 @@ function handleUpdate(field: string, value: any) {
     <component
       :is="resourceContentFormItems[model.resourceType]"
       :model="model"
+      :resource="resource"
       @update:model="(m: Record<string, any>) => emit('update:model', { ...props.model, ...m })"
     />
     <n-collapse style="margin-bottom: var(--layout-gap)">
       <n-collapse-item :title="$t('resources.types.common.label')" name="common">
         <!-- COMMENT -->
-        <n-form-item :label="$t('resources.types.common.contentFields.comment')" path="comment">
+        <n-form-item
+          :label="$t('resources.types.common.contentFields.comment')"
+          path="comment"
+          :rule="contentFormRules.common.comment"
+        >
           <n-input
             type="textarea"
             :rows="3"
@@ -37,7 +44,11 @@ function handleUpdate(field: string, value: any) {
           />
         </n-form-item>
         <!-- NOTES -->
-        <n-form-item :label="$t('resources.types.common.contentFields.notes')" path="notes">
+        <n-form-item
+          :label="$t('resources.types.common.contentFields.notes')"
+          path="notes"
+          :rule="contentFormRules.common.notes"
+        >
           <n-input
             type="textarea"
             :rows="2"

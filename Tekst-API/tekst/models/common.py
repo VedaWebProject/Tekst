@@ -26,17 +26,31 @@ from typing_extensions import TypeAliasType, TypedDict
 # class for one arbitrary metadate
 class Metadate(TypedDict):
     key: Annotated[
-        str, StringConstraints(min_length=1, max_length=16, strip_whitespace=True)
+        str,
+        StringConstraints(
+            min_length=1,
+            max_length=16,
+            strip_whitespace=True,
+        ),
     ]
     value: Annotated[
-        str, StringConstraints(min_length=1, max_length=128, strip_whitespace=True)
+        str,
+        StringConstraints(
+            min_length=1,
+            max_length=128,
+            strip_whitespace=True,
+        ),
     ]
 
 
 # type alias for collection of arbitrary metadata
 Metadata = Annotated[
     list[Metadate],
-    Field(description="Arbitrary metadata", min_length=0, max_length=64),
+    Field(
+        description="Arbitrary metadata",
+        min_length=0,
+        max_length=64,
+    ),
 ]
 
 
@@ -49,7 +63,12 @@ TranslationLocaleKey = TypeAliasType(
 
 # Pydantic HttpUrl with string serialization
 CustomHttpUrl = Annotated[
-    HttpUrl, PlainSerializer(lambda url: str(url), return_type=str, when_used="always")
+    HttpUrl,
+    PlainSerializer(
+        lambda url: str(url),
+        return_type=str,
+        when_used="always",
+    ),
 ]
 
 
@@ -59,7 +78,10 @@ class TranslationBase(TypedDict):
 
 
 T = TypeVar("T", bound=TranslationBase)
-Translations = conlist(T, max_length=len(get_args(TranslationLocaleKey.__value__)))
+Translations = conlist(
+    T,
+    max_length=len(get_args(TranslationLocaleKey.__value__)),
+)
 
 
 class ModelTransformerMixin:
@@ -70,7 +92,9 @@ class ModelTransformerMixin:
 
 class ModelBase(ModelTransformerMixin, BaseModel):
     model_config = ConfigDict(
-        alias_generator=camelize, populate_by_name=True, from_attributes=True
+        alias_generator=camelize,
+        populate_by_name=True,
+        from_attributes=True,
     )
 
 

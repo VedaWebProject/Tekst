@@ -1,8 +1,5 @@
-from typing import Annotated
-
 from beanie import PydanticObjectId
 from humps import camelize
-from pydantic import Field
 
 from tekst.config import TekstConfig, get_config
 from tekst.models.common import ModelBase
@@ -28,8 +25,8 @@ class PlatformData(ModelBase):
     texts: list[TextRead]
     settings: PlatformSettingsRead
     security: PlatformSecurityInfo = PlatformSecurityInfo()
-    system_segments: Annotated[list[ClientSegmentRead], Field(alias="systemSegments")]
-    info_segments: Annotated[list[ClientSegmentHead], Field(alias="infoSegments")]
+    system_segments: list[ClientSegmentRead]
+    info_segments: list[ClientSegmentHead]
     settings_cache_ttl: int = _cfg.settings_cache_ttl
     tekst: dict[str, str] = camelize(_cfg.tekst_info)
 

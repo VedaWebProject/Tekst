@@ -22,13 +22,23 @@ from tekst.models.common import (
 
 class TextSubtitleTranslation(TranslationBase):
     translation: Annotated[
-        str, StringConstraints(min_length=1, max_length=128, strip_whitespace=True)
+        str,
+        StringConstraints(
+            min_length=1,
+            max_length=128,
+            strip_whitespace=True,
+        ),
     ]
 
 
 class TextLevelTranslation(TranslationBase):
     translation: Annotated[
-        str, StringConstraints(min_length=1, max_length=32, strip_whitespace=True)
+        str,
+        StringConstraints(
+            min_length=1,
+            max_length=32,
+            strip_whitespace=True,
+        ),
     ]
 
 
@@ -37,13 +47,21 @@ class Text(ModelBase, ModelFactoryMixin):
 
     title: Annotated[
         str,
-        StringConstraints(min_length=1, max_length=64, strip_whitespace=True),
+        StringConstraints(
+            min_length=1,
+            max_length=64,
+            strip_whitespace=True,
+        ),
         Field(description="Title of this text"),
     ]
 
     slug: Annotated[
         str,
-        StringConstraints(min_length=1, max_length=16, strip_whitespace=True),
+        StringConstraints(
+            min_length=1,
+            max_length=16,
+            strip_whitespace=True,
+        ),
         Field(
             pattern=r"^[a-z0-9]+$",
             description="A short identifier for use in URLs and internal operations",
@@ -82,7 +100,11 @@ class Text(ModelBase, ModelFactoryMixin):
 
     loc_delim: Annotated[
         str,
-        StringConstraints(min_length=1, max_length=3, strip_whitespace=False),
+        StringConstraints(
+            min_length=1,
+            max_length=3,
+            strip_whitespace=False,
+        ),
         Field(
             description="Delimiter for displaying text locations",
         ),
@@ -167,11 +189,18 @@ TextUpdate = Text.update_model()
 class InsertLevelRequest(ModelBase):
     translations: Annotated[
         Translations[TextLevelTranslation],
-        Field(description="Translation(s) for the label of the level to insert"),
+        Field(
+            description="Translation(s) for the label of the level to insert",
+        ),
     ]
 
 
 class MoveLocationRequestBody(ModelBase):
     position: int
     after: bool
-    parent_id: Annotated[PydanticObjectId | None, Field(alias="parentId")]
+    parent_id: Annotated[
+        PydanticObjectId | None,
+        Field(
+            alias="parentId",
+        ),
+    ]

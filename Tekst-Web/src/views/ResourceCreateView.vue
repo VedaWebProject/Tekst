@@ -21,7 +21,7 @@ import { resourceSettingsFormRules } from '@/forms/formRules';
 import { useRouter } from 'vue-router';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import ResourceSettingsFormItems from '@/forms/resources/config/ResourceSettingsFormItems.vue';
-import { ResourceIcon, ArrowBackIcon } from '@/icons';
+import { ResourceIcon, ArrowBackIcon, WarningIcon } from '@/icons';
 import ResourceTypeOptionLabel from '@/components/resource/ResourceTypeOptionLabel.vue';
 
 const { message } = useMessages();
@@ -134,13 +134,16 @@ async function handleSaveClick() {
         label-width="auto"
         require-mark-placement="right-hanging"
       >
-        <n-alert
-          type="error"
-          :closable="false"
-          :title="$t('general.important') + '!'"
-          :show-icon="false"
-        >
-          <p>{{ $t('resources.create.warnImmutable') }}</p>
+        <h3>{{ $t('resources.create.headingTypeAndLevel') }}</h3>
+        <n-alert type="warning" :closable="false">
+          <template #icon>
+            <n-icon :component="WarningIcon" />
+          </template>
+          <template #header>
+            <div style="margin-bottom: var(--layout-gap)">
+              {{ $t('resources.create.warnImmutable') }}
+            </div>
+          </template>
           <!-- RESOURCE TYPE -->
           <n-form-item :label="$t('models.resource.resourceType')" path="resourceType">
             <n-select

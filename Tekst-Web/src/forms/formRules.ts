@@ -254,25 +254,65 @@ export const commonResourceConfigFormRules: Record<string, FormItemRule[]> = {
   ],
 };
 
-const commonContentFormRules: Record<string, FormItemRule[]> = {
-  comment: [minMaxCharsRule(0, 50000, 'blur')],
-  notes: [minMaxCharsRule(0, 1000, 'blur')],
+export const typeSpecificResourceConfigFormRules: Record<string, Record<string, FormItemRule[]>> = {
+  textAnnotation: {
+    displayTemplate: [minMaxCharsRule(8, 2048, 'blur')],
+  },
 };
 
 export const contentFormRules: Record<string, Record<string, FormItemRule[]>> = {
+  common: {
+    comment: [minMaxCharsRule(0, 50000, 'blur')],
+    notes: [minMaxCharsRule(0, 1000, 'blur')],
+  },
   plainText: {
-    ...commonContentFormRules,
     text: [
       requiredRule(() => $t('resources.types.plainText.contentFields.text'), 'blur'),
       minMaxCharsRule(1, 102400, 'blur'),
     ],
   },
   richText: {
-    ...commonContentFormRules,
     html: [
       requiredRule(() => $t('resources.types.richText.contentFields.html'), 'blur'),
       minMaxCharsRule(1, 102400, 'blur'),
     ],
+  },
+  textAnnotation: {
+    token: [
+      requiredRule(() => $t('resources.types.textAnnotation.contentFields.token'), 'blur'),
+      minMaxCharsRule(1, 4096, 'blur'),
+    ],
+    annotationKey: [
+      requiredRule(() => $t('resources.types.textAnnotation.contentFields.annotationKey'), 'blur'),
+      minMaxCharsRule(1, 32, 'blur'),
+    ],
+    annotationValue: [
+      requiredRule(
+        () => $t('resources.types.textAnnotation.contentFields.annotationValue'),
+        'blur'
+      ),
+      minMaxCharsRule(1, 64, 'blur'),
+    ],
+  },
+};
+
+export const searchFormRules: Record<string, Record<string, FormItemRule[]>> = {
+  common: {
+    comment: [minMaxCharsRule(0, 512, 'blur')],
+  },
+  plainText: {
+    text: [minMaxCharsRule(0, 512, 'blur')],
+  },
+  richText: {
+    html: [minMaxCharsRule(0, 512, 'blur')],
+  },
+  textAnnotation: {
+    token: [minMaxCharsRule(0, 512, 'blur')],
+    annotationKey: [
+      requiredRule(() => $t('resources.types.textAnnotation.contentFields.annotationKey'), 'blur'),
+      minMaxCharsRule(1, 32, 'blur'),
+    ],
+    annotationValue: [minMaxCharsRule(0, 64, 'blur')],
   },
 };
 

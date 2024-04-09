@@ -8,6 +8,8 @@ from os.path import realpath
 from pathlib import Path
 from typing import Annotated, Any, Union
 
+import jsonref
+
 from fastapi import Body
 from humps import camelize
 from pydantic import Field, StringConstraints
@@ -118,6 +120,84 @@ class ResourceTypeABC(ABC):
         return camelize(cls.__name__)
 
     @classmethod
+    def index_doc_props(cls) -> dict[str, Any]:
+        """
+        Returns the mappings properties for ES search index
+        documents for contents of this resource type
+        """
+        return dict(
+            comment={
+                "type": "text",
+                "analyzer": "standard_asciifolding",
+                "fields": {"strict": {"type": "text"}},
+            },
+            **cls.rtype_index_doc_props(),
+        )
+
+    @classmethod
+    def index_doc_data(cls, content: ContentBase) -> dict[str, Any]:
+        """
+        Returns the content for the ES index document for this type of resource content
+        """
+        return dict(
+            comment=content.comment,
+            **cls.rtype_index_doc_data(content),
+        )
+
+    @classmethod
+    def es_queries(
+        cls,
+        *,
+        query: "ResourceSearchQuery",
+        strict: bool = False,
+    ) -> list[dict[str, Any]]:
+        es_queries = []
+        set_fields = query.get_set_fields()
+        strict_suffix = ".strict" if strict else ""
+        if "comment" in set_fields:
+            es_queries.append(
+                {
+                    "simple_query_string": {
+                        "fields": [
+                            f"resources.{query.common.resource_id}.comment{strict_suffix}"
+                        ],
+                        "query": query.common.comment,
+                    }
+                }
+            )
+        return [
+            *es_queries,
+            *cls.rtype_es_queries(query=query, strict=strict),
+        ]
+
+    @classmethod
+    def prepare_import_template(cls) -> dict:
+        """Returns the base template for import data for this resource type"""
+        schema = jsonref.replace_refs(
+            cls.content_model().create_model().model_json_schema()
+        )
+        required = schema.get("required", [])
+        template = {
+            "_contentSchema": {},  # will be populated in the next step
+        }
+        # generate content schema for the template
+        for prop, value in schema.get("properties", {}).items():
+            if prop not in cls.__EXCLUDE_FROM_CONTENT_TEMPLATES:
+                prop_schema = {k: v for k, v in value.items()}
+                prop_schema["required"] = prop in required
+                template["_contentSchema"][prop] = prop_schema
+        return template
+
+    @classmethod
+    async def contents_changed_hook(cls, resource_id: PydanticObjectId) -> None:
+        """
+        Will be called whenever the contents of the resource with the given ID changes.
+        This may be overridden by concrete resource implementations to run arbitrary
+        maintenance procedures. Otherwise it is juust a no-op.
+        """
+        pass
+
+    @classmethod
     @abstractmethod
     def resource_model(cls) -> type[ResourceBase]:
         """Returns the resource model for this type of resource"""
@@ -149,25 +229,10 @@ class ResourceTypeABC(ABC):
 
     @classmethod
     @abstractmethod
-    def construct_es_queries(
-        cls, query: "ResourceSearchQuery", *, strict: bool = False
-    ) -> list[dict[str, Any]]:
-        """
-        Constructs an Elasticsearch search query for each field
-        in the given resource search query model instance and returns
-        a tuple of said queries and a list of the relevant field names
-        """
-        raise NotImplementedError(
-            "Classmethod 'construct_es_query' must be "
-            f"implemented in subclasses of {cls.__name__}"
-        )  # pragma: no cover
-
-    @classmethod
-    @abstractmethod
-    def index_doc_properties(cls) -> dict[str, Any]:
+    def rtype_index_doc_props(cls) -> dict[str, Any]:
         """
         Returns the mappings properties for ES search index
-        documents for this type of resource content
+        documents unique for this type of resource content
         """
         raise NotImplementedError(
             "Classmethod 'index_doc_properties' must be "
@@ -176,10 +241,10 @@ class ResourceTypeABC(ABC):
 
     @classmethod
     @abstractmethod
-    def index_doc_data(cls, content: ContentBase) -> dict[str, Any]:
+    def rtype_index_doc_data(cls, content: ContentBase) -> dict[str, Any]:
         """
         Returns the content for the ES index document
-        for this type of resource content
+        for this type of resource content that is unique to this resource type
         """
         raise NotImplementedError(
             "Classmethod 'index_doc_data' must be "
@@ -187,20 +252,19 @@ class ResourceTypeABC(ABC):
         )  # pragma: no cover
 
     @classmethod
-    def prepare_import_template(cls) -> dict:
-        """Returns the base template for import data for this resource type"""
-        schema = cls.content_model().create_model().schema()
-        required = schema.get("required", [])
-        template = {
-            "_contentSchema": {},  # will be populated in the next step
-        }
-        # generate content schema for the template
-        for prop, value in schema.get("properties", {}).items():
-            if prop not in cls.__EXCLUDE_FROM_CONTENT_TEMPLATES:
-                prop_schema = {k: v for k, v in value.items()}
-                prop_schema["required"] = prop in required
-                template["_contentSchema"][prop] = prop_schema
-        return template
+    @abstractmethod
+    def rtype_es_queries(
+        cls, *, query: "ResourceSearchQuery", strict: bool = False
+    ) -> list[dict[str, Any]]:
+        """
+        Constructs an Elasticsearch search query for each field
+        in the given resource search query instance.
+        Common content fields are not included in the returned queries.
+        """
+        raise NotImplementedError(
+            "Classmethod 'construct_es_query' must be "
+            f"implemented in subclasses of {cls.__name__}"
+        )  # pragma: no cover
 
 
 class ResourceTypesManager:

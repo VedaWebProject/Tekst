@@ -15,12 +15,25 @@ IDX_TEMPLATE_NAME_PATTERN = f"*_{IDX_NAME_CORE}_template"
 IDX_TEMPLATE = {
     "aliases": {IDX_ALIAS: {}},
     "mappings": {
-        "dynamic": "false",
+        "dynamic": False,
         "properties": {
             "text_id": {"type": "keyword"},
             "level": {"type": "short"},
             "position": {"type": "integer"},
+            "resources": {"type": "object"},
         },
+        "dynamic_templates": [
+            {
+                "annotations": {
+                    "path_match": "*.annotations.*",
+                    "mapping": {
+                        "type": "keyword",
+                        "normalizer": "asciifolding_normalizer_preserve_case",
+                        "fields": {"strict": {"type": "keyword"}},
+                    },
+                }
+            }
+        ],
     },
     "settings": {
         "index": {"number_of_shards": 1, "number_of_replicas": 0},
@@ -36,6 +49,18 @@ IDX_TEMPLATE = {
                     "type": "asciifolding",
                     "preserve_original": True,
                 }
+            },
+            "normalizer": {
+                "asciifolding_normalizer": {
+                    "type": "custom",
+                    "char_filter": [],
+                    "filter": ["asciifolding", "lowercase"],
+                },
+                "asciifolding_normalizer_preserve_case": {
+                    "type": "custom",
+                    "char_filter": [],
+                    "filter": ["asciifolding"],
+                },
             },
         },
     },

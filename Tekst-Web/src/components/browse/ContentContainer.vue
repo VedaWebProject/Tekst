@@ -29,8 +29,8 @@ const isContentContainerHovered = useElementHover(contentContainerRef, {
 const contentCollapsed = ref(!!props.resource.config?.general?.defaultCollapsed);
 watch(
   () => browse.reducedView,
-  () => {
-    contentCollapsed.value = !!props.resource.config?.general?.defaultCollapsed;
+  (reduced) => {
+    contentCollapsed.value = !reduced && !!props.resource.config?.general?.defaultCollapsed;
   }
 );
 
@@ -84,11 +84,7 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
       <content-header-widget-bar :resource="resource" :style="headerWidgetsVisibilityStyle" />
     </div>
 
-    <div
-      v-if="resource.contents?.length"
-      class="content-body"
-      :class="{ 'content-collapsed': contentCollapsed }"
-    >
+    <div v-if="resource.contents?.length" :class="{ 'content-collapsed': contentCollapsed }">
       <!-- content-specific component (that displays the actual content data) -->
       <component
         :is="contentComponents[resource.resourceType]"
@@ -101,7 +97,10 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
       <n-spin v-show="loading" class="content-loader" />
     </transition>
 
-    <div class="content-collapse-btn-wrapper">
+    <div
+      v-if="resource.config?.general?.defaultCollapsed != null"
+      class="content-collapse-btn-wrapper"
+    >
       <n-button
         v-if="resource.config?.general?.defaultCollapsed && resource.contents?.length"
         circle
@@ -195,10 +194,6 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
   font-size: 0.8em;
 }
 
-.content-body {
-  font-family: var(--font-family-content);
-}
-
 .content-collapsed {
   -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
   mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
@@ -215,6 +210,10 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
   flex-wrap: nowrap;
   justify-content: center;
   gap: var(--layout-gap);
+}
+
+.reduced > .content-collapse-btn-wrapper {
+  display: none;
 }
 
 .content-collapse-btn:hover {

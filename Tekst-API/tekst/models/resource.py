@@ -27,13 +27,23 @@ from tekst.utils.strings import cleanup_spaces_multiline
 
 class ResourceDescriptionTranslation(TranslationBase):
     translation: Annotated[
-        str, StringConstraints(min_length=1, max_length=512, strip_whitespace=True)
+        str,
+        StringConstraints(
+            min_length=1,
+            max_length=512,
+            strip_whitespace=True,
+        ),
     ]
 
 
 class ResourceCommentTranslation(TranslationBase):
     translation: Annotated[
-        str, StringConstraints(min_length=1, max_length=2000, strip_whitespace=True)
+        str,
+        StringConstraints(
+            min_length=1,
+            max_length=2000,
+            strip_whitespace=True,
+        ),
     ]
 
 
@@ -42,8 +52,14 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
 
     title: Annotated[
         str,
-        StringConstraints(min_length=1, max_length=64, strip_whitespace=True),
-        Field(description="Title of this resource"),
+        StringConstraints(
+            min_length=1,
+            max_length=64,
+            strip_whitespace=True,
+        ),
+        Field(
+            description="Title of this resource",
+        ),
     ]
     description: Annotated[
         Translations[ResourceDescriptionTranslation],
@@ -53,15 +69,27 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
     ] = []
     text_id: Annotated[
         PydanticObjectId,
-        Field(description="ID of the text this resource belongs to"),
+        Field(
+            description="ID of the text this resource belongs to",
+        ),
     ]
     level: Annotated[
-        int, Field(ge=0, description="Text level this resource belongs to")
+        int,
+        Field(
+            ge=0,
+            description="Text level this resource belongs to",
+        ),
     ]
     resource_type: Annotated[
         str,
-        StringConstraints(min_length=1, max_length=32, strip_whitespace=True),
-        Field(description="A string identifying one of the available resource types"),
+        StringConstraints(
+            min_length=1,
+            max_length=32,
+            strip_whitespace=True,
+        ),
+        Field(
+            description="A string identifying one of the available resource types",
+        ),
     ]
     original_id: Annotated[
         PydanticObjectId | None,
@@ -69,37 +97,51 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
             description=(
                 "If this is a version of another resource,"
                 " this ID references the original"
-            )
+            ),
         ),
     ] = None
     owner_id: Annotated[
-        PydanticObjectId | None, Field(description="User owning this resource")
+        PydanticObjectId | None,
+        Field(
+            description="User owning this resource",
+        ),
     ] = None
     shared_read: Annotated[
         list[PydanticObjectId],
         Field(
-            description="Users with shared read access to this resource", max_length=64
+            description="Users with shared read access to this resource",
+            max_length=64,
         ),
     ] = []
     shared_write: Annotated[
         list[PydanticObjectId],
         Field(
-            description="Users with shared write access to this resource", max_length=64
+            description="Users with shared write access to this resource",
+            max_length=64,
         ),
     ] = []
     public: Annotated[
-        bool, Field(description="Publication status of this resource")
+        bool,
+        Field(
+            description="Publication status of this resource",
+        ),
     ] = False
     proposed: Annotated[
         bool,
-        Field(description="Whether this resource has been proposed for publication"),
+        Field(
+            description="Whether this resource has been proposed for publication",
+        ),
     ] = False
     citation: Annotated[
         str | None,
-        StringConstraints(max_length=1000),
+        StringConstraints(
+            max_length=1000,
+        ),
         val.CleanupOneline,
         val.EmptyStringToNone,
-        Field(description="Citation details for this resource"),
+        Field(
+            description="Citation details for this resource",
+        ),
     ] = None
     meta: Metadata = []
     comment: Annotated[
@@ -229,7 +271,9 @@ class ResourceBaseDocument(ResourceBase, DocumentBase):
 class ResourceReadExtras(ModelBase):
     writable: Annotated[
         bool | None,
-        Field(description="Whether this resource is writable for the requesting user"),
+        Field(
+            description="Whether this resource is writable for the requesting user",
+        ),
     ] = None
     owner: Annotated[
         UserReadPublic | None,

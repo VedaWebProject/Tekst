@@ -77,7 +77,7 @@ const resourceTypes = computed(() => {
         <div>{{ $t(`resources.types.${resourceType}.label`) }}: {{ count }}</div>
         <n-progress
           type="line"
-          :percentage="(count / (counts.resources || 1)) * 100"
+          :percentage="parseFloat(((count / (counts.resources || 1)) * 100).toFixed(2))"
           :height="18"
           :border-radius="4"
           indicator-placement="inside"
@@ -113,7 +113,7 @@ const resourceTypes = computed(() => {
             <div>{{ $t(`resources.types.${resourceType}.label`) }}: {{ count }}</div>
             <n-progress
               type="line"
-              :percentage="(count / (text.resourcesCount || 1)) * 100"
+              :percentage="parseFloat(((count / (text.resourcesCount || 1)) * 100).toFixed(2))"
               :height="18"
               :border-radius="4"
               indicator-placement="inside"

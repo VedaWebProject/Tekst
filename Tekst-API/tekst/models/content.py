@@ -14,16 +14,35 @@ from tekst.utils import validators as val
 class ContentBase(ModelBase, ModelFactoryMixin):
     """A base model for types of contents belonging to a certain resource"""
 
-    resource_id: PydanticObjectId = Field(..., description="Resource ID")
+    resource_id: Annotated[
+        PydanticObjectId,
+        Field(
+            description="Resource ID",
+        ),
+    ]
     resource_type: Annotated[
         str,
-        StringConstraints(min_length=1, max_length=32, strip_whitespace=True),
-        Field(description="A string identifying one of the available resource types"),
+        StringConstraints(
+            min_length=1,
+            max_length=32,
+            strip_whitespace=True,
+        ),
+        Field(
+            description="A string identifying one of the available resource types",
+        ),
     ]
-    location_id: PydanticObjectId = Field(..., description="Parent text location ID")
+    location_id: Annotated[
+        PydanticObjectId,
+        Field(
+            description="Text location ID",
+        ),
+    ]
     comment: Annotated[
         str | None,
-        StringConstraints(max_length=50000, strip_whitespace=True),
+        StringConstraints(
+            max_length=50000,
+            strip_whitespace=True,
+        ),
         val.CleanupMultiline,
         val.EmptyStringToNone,
         Field(
@@ -35,7 +54,10 @@ class ContentBase(ModelBase, ModelFactoryMixin):
     ] = None
     notes: Annotated[
         str | None,
-        StringConstraints(max_length=1000, strip_whitespace=True),
+        StringConstraints(
+            max_length=1000,
+            strip_whitespace=True,
+        ),
         val.CleanupMultiline,
         val.EmptyStringToNone,
         Field(

@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from pydantic import StringConstraints, field_validator
+from pydantic import Field, StringConstraints, field_validator
 
 from tekst.models.common import (
     DocumentBase,
@@ -13,15 +13,53 @@ from tekst.utils.strings import cleanup_spaces_multiline
 
 
 class Bookmark(ModelBase, ModelFactoryMixin):
-    user_id: PydanticObjectId
-    text_id: PydanticObjectId
-    location_id: PydanticObjectId
-    level: int
-    position: int
-    location_labels: list[str]
+    user_id: Annotated[
+        PydanticObjectId,
+        Field(
+            description="ID of user who created this bookmark",
+        ),
+    ]
+    text_id: Annotated[
+        PydanticObjectId,
+        Field(
+            description="ID of text this bookmark belongs to",
+        ),
+    ]
+    location_id: Annotated[
+        PydanticObjectId,
+        Field(
+            description="ID of the text location this bookmark refers to",
+        ),
+    ]
+    level: Annotated[
+        int,
+        Field(
+            ge=0,
+            description="Text level this bookmark refers to",
+        ),
+    ]
+    position: Annotated[
+        int,
+        Field(
+            ge=0,
+            description="Position of the text location this bookmark refers to",
+        ),
+    ]
+    location_labels: Annotated[
+        list[str],
+        Field(
+            description="Text location labels from root to target location",
+        ),
+    ]
     comment: Annotated[
         str | None,
-        StringConstraints(max_length=1000, strip_whitespace=True),
+        Field(
+            description="Comment associated with this bookmark",
+        ),
+        StringConstraints(
+            max_length=1000,
+            strip_whitespace=True,
+        ),
         val.CleanupMultiline,
         val.EmptyStringToNone,
     ] = None
@@ -44,10 +82,21 @@ BookmarkRead = Bookmark.read_model()
 
 
 class BookmarkCreate(ModelBase):
-    location_id: PydanticObjectId
+    location_id: Annotated[
+        PydanticObjectId,
+        Field(
+            description="ID of the text location this bookmark refers to",
+        ),
+    ]
     comment: Annotated[
         str | None,
-        StringConstraints(max_length=1000),
+        Field(
+            description="Comment associated with this bookmark",
+        ),
+        StringConstraints(
+            max_length=1000,
+            strip_whitespace=True,
+        ),
         val.CleanupMultiline,
         val.EmptyStringToNone,
     ] = None

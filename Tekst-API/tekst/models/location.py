@@ -18,22 +18,42 @@ class Location(ModelBase, ModelFactoryMixin):
     """A location in a text structure (e.g. chapter, paragraph, ...)"""
 
     text_id: Annotated[
-        PydanticObjectId, Field(description="ID of the text this location belongs to")
+        PydanticObjectId,
+        Field(
+            description="ID of the text this location belongs to",
+        ),
     ]
     parent_id: Annotated[
-        PydanticObjectId | None, Field(description="ID of parent location")
+        PydanticObjectId | None,
+        Field(
+            description="ID of parent location",
+        ),
     ] = None
     level: Annotated[
         int,
-        Field(ge=0, lt=32, description="Index of structure level this location is on"),
+        Field(
+            ge=0,
+            lt=32,
+            description="Index of structure level this location is on",
+        ),
     ]
     position: Annotated[
-        int, Field(ge=0, description="Position among all text locations on this level")
+        int,
+        Field(
+            ge=0,
+            description="Position among all text locations on this level",
+        ),
     ]
     label: Annotated[
         str,
-        StringConstraints(min_length=1, max_length=256, strip_whitespace=True),
-        Field(description="Label for identifying this text location in level context"),
+        StringConstraints(
+            min_length=1,
+            max_length=256,
+            strip_whitespace=True,
+        ),
+        Field(
+            description="Label for identifying this text location in level context",
+        ),
     ]
 
 

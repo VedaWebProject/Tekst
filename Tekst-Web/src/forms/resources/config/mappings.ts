@@ -3,6 +3,7 @@ import DeepLLinksConfigFormItems from '@/forms/resources/config/DeepLLinksConfig
 import ReducedViewOnelineFormItems from '@/forms/resources/config/ReducedViewOnelineFormItems.vue';
 import DefaultCollapsedFormItems from '@/forms/resources/config/DefaultCollapsedFormItems.vue';
 import ResourceFontFormItems from '@/forms/resources/config/ResourceFontFormItems.vue';
+import DisplayTemplateConfigFormItems from '@/forms/resources/config/DisplayTemplateConfigFormItems.vue';
 
 export const generalConfigFormItems: Record<string, Component> = {
   defaultCollapsed: DefaultCollapsedFormItems,
@@ -12,4 +13,5 @@ export const generalConfigFormItems: Record<string, Component> = {
 
 export const specialConfigFormItems: Record<string, Component> = {
   deeplLinks: DeepLLinksConfigFormItems,
+  displayTemplate: DisplayTemplateConfigFormItems,
 };

@@ -1,16 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import {
-  NDynamicInput,
-  NForm,
-  NInput,
-  NFormItem,
-  NSpace,
-  NButton,
-  NIcon,
-  NAlert,
-  type FormInst,
-} from 'naive-ui';
+import { NDynamicInput, NForm, NInput, NFormItem, NButton, NAlert, type FormInst } from 'naive-ui';
 import { textFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
 import { useMessages } from '@/composables/messages';
@@ -22,8 +12,8 @@ import type { TextCreate, Translation } from '@/api';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
-
-import { AddIcon, MinusIcon, AddCircleIcon } from '@/icons';
+import DynamicInputControls from '@/forms/DynamicInputControls.vue';
+import { AddCircleIcon } from '@/icons';
 
 interface NewTextModel {
   title?: string;
@@ -157,30 +147,13 @@ async function handleSave() {
             </div>
           </template>
           <template #action="{ index: indexAction, create, remove }">
-            <n-space style="margin-left: 20px; flex-wrap: nowrap">
-              <n-button
-                secondary
-                circle
-                :title="$t('general.removeAction')"
-                :disabled="model.levels.length === 1"
-                @click="() => remove(indexAction)"
-              >
-                <template #icon>
-                  <n-icon :component="MinusIcon" />
-                </template>
-              </n-button>
-              <n-button
-                secondary
-                circle
-                :title="$t('general.insertAction')"
-                :disabled="model.levels.length >= 32"
-                @click="() => create(indexAction)"
-              >
-                <template #icon>
-                  <n-icon :component="AddIcon" />
-                </template>
-              </n-button>
-            </n-space>
+            <dynamic-input-controls
+              :movable="false"
+              :remove-disabled="model.levels.length === 1"
+              :insert-disabled="model.levels.length >= 32"
+              @remove="() => remove(indexAction)"
+              @insert="() => create(indexAction)"
+            />
           </template>
         </n-dynamic-input>
       </n-form-item>

@@ -348,6 +348,7 @@ resources:
   backToOverview: Back to "Resources"
   create:
     heading: New Resource on "{text}"
+    headingTypeAndLevel: Resource Type and Level
     warnImmutable: These settings cannot be changed later!
     msgSaved: Your new resource "{title}" has been created.
   settings:
@@ -393,6 +394,16 @@ resources:
         html: Formatted Text
       searchFields:
         html: Text
+    textAnnotation:
+      label: Text Annotation
+      parenthesis: tokenized, annotated text
+      contentFields:
+        token: Token
+        annotations: Annotations
+        annotationKey: Annotation
+        annotationValue: Value
+      config:
+        displayTemplate: Display Template
 
 contents:
   heading: Edit Resource Content
@@ -454,7 +465,7 @@ account:
     headingChangeUserData: General User Data
     headingChangePublicFields: Public Profile Data
     headingDeleteAccount: Delete Account
-    notifyMe: Notify me via email when...
+    notifyMe: Notify me when...
     userNotificationTriggers:
       heading: Notifications
       resourceProposed: someone proposes a resource for publication (via platform message)
@@ -675,7 +686,7 @@ search:
       heading: '@:general.general'
       strict: respect diacritics
     quick:
-      defaultOperator: find all search terms
+      defaultOperator: all search expressions must match
       texts: Texts
       textsPlaceholder: All texts
   results:

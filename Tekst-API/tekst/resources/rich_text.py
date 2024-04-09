@@ -31,36 +31,7 @@ class RichText(ResourceTypeABC):
         return RichTextSearchQuery
 
     @classmethod
-    def construct_es_queries(
-        cls, query: ResourceSearchQuery, *, strict: bool = False
-    ) -> list[dict[str, Any]]:
-        es_queries = []
-        set_fields = query.get_set_fields()
-        strict_suffix = ".strict" if strict else ""
-        if "html" in set_fields:
-            es_queries.append(
-                {
-                    "simple_query_string": {
-                        "fields": [f"{query.common.resource_id}.html{strict_suffix}"],
-                        "query": query.resource_type_specific.html,
-                    }
-                }
-            )
-        if "comment" in set_fields:
-            es_queries.append(
-                {
-                    "simple_query_string": {
-                        "fields": [
-                            f"{query.common.resource_id}.comment{strict_suffix}"
-                        ],
-                        "query": query.common.comment,
-                    }
-                }
-            )
-        return es_queries
-
-    @classmethod
-    def index_doc_properties(cls) -> dict[str, Any]:
+    def rtype_index_doc_props(cls) -> dict[str, Any]:
         return {
             "html": {
                 "type": "text",
@@ -70,15 +41,48 @@ class RichText(ResourceTypeABC):
         }
 
     @classmethod
-    def index_doc_data(cls, content: "RichTextContent") -> dict[str, Any]:
-        data = content.model_dump(include={"html", "comment"})
-        data["html"] = get_html_text(data["html"])  # strip HTML tags before indexing
-        return data
+    def rtype_index_doc_data(cls, content: "RichTextContent") -> dict[str, Any]:
+        return {
+            "html": get_html_text(content.html),
+        }
+
+    @classmethod
+    def rtype_es_queries(
+        cls, *, query: ResourceSearchQuery, strict: bool = False
+    ) -> list[dict[str, Any]]:
+        es_queries = []
+        strict_suffix = ".strict" if strict else ""
+
+        if not query.resource_type_specific.html.strip("*"):
+            # handle empty/match-all query (query for existing target field)
+            es_queries.append(
+                {
+                    "exists": {
+                        "field": f"resources.{query.common.resource_id}",
+                    }
+                }
+            )
+        else:
+            # handle actual query with content
+            es_queries.append(
+                {
+                    "simple_query_string": {
+                        "fields": [
+                            (
+                                f"resources.{query.common.resource_id}"
+                                f".html{strict_suffix}"
+                            )
+                        ],
+                        "query": query.resource_type_specific.html,
+                    }
+                }
+            )
+        return es_queries
 
 
 class GeneralRichTextResourceConfig(ModelBase):
     default_collapsed: DefaultCollapsedConfigType = True
-    font: FontConfigType = None
+    font: FontConfigType | None = None
 
 
 class RichTextResourceConfig(ResourceConfigBase):

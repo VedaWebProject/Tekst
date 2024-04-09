@@ -12,4 +12,13 @@ export const defaultContentModels = {
     ...common,
     html: '',
   },
+  textAnnotation: {
+    ...common,
+    tokens: [
+      {
+        token: undefined,
+        annotations: [],
+      },
+    ],
+  },
 };

@@ -19,6 +19,7 @@ import {
   POST,
   DELETE,
 } from '@/api';
+import _cloneDeep from 'lodash.clonedeep';
 import { ref, computed, watch } from 'vue';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import { $t } from '@/i18n';
@@ -31,9 +32,8 @@ import { useRoute, useRouter } from 'vue-router';
 import { useResourcesStore } from '@/stores';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import { useModelChanges } from '@/composables/modelChanges';
-import { contentFormRules } from '@/forms/formRules';
-import ContentFormItems from '@/forms/contents/ContentFormItems.vue';
-import { defaultContentModels } from '@/forms/contents/defaultContentModels';
+import ContentFormItems from '@/forms/resources/contents/ContentFormItems.vue';
+import { defaultContentModels } from '@/forms/resources/contents/defaultContentModels';
 import { dialogProps } from '@/common';
 import LocationSelectModal from '@/components/modals/LocationSelectModal.vue';
 import contentComponents from '@/components/content/mappings';
@@ -187,7 +187,7 @@ watch(
 );
 
 function resetForm() {
-  contentModel.value = initialContentModel.value;
+  contentModel.value = _cloneDeep(initialContentModel.value);
   reset();
   formRef.value?.restoreValidation();
 }
@@ -280,7 +280,7 @@ async function handleDeleteContentClick() {
 function handleAddContentClick() {
   if (resource.value && location.value) {
     contentModel.value = {
-      ...defaultContentModels[resource.value.resourceType],
+      ..._cloneDeep(defaultContentModels[resource.value.resourceType]),
       resourceId: resource.value.id,
       resourceType: resource.value.resourceType,
       locationId: location.value.id,
@@ -439,6 +439,9 @@ async function handleNearestChangeClick(mode: 'preceding' | 'subsequent') {
         style="margin-bottom: var(--layout-gap)"
         @after-leave="compareResourceId = undefined"
       >
+        <template #icon>
+          <n-icon :component="CompareIcon" />
+        </template>
         <component
           :is="contentComponents[compareResource.resourceType]"
           v-if="compareResource.contents?.length"
@@ -484,13 +487,12 @@ async function handleNearestChangeClick(mode: 'preceding' | 'subsequent') {
         <n-form
           ref="formRef"
           :model="contentModel"
-          :rules="contentFormRules.plainText"
           label-placement="top"
           :disabled="loading"
           label-width="auto"
           require-mark-placement="right-hanging"
         >
-          <content-form-items v-model:model="contentModel" />
+          <content-form-items v-model:model="contentModel" :resource="resource" />
         </n-form>
 
         <button-shelf top-gap>

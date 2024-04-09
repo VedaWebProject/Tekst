@@ -105,12 +105,9 @@ function handleOpen() {
 function handleSubmit(e: UIEvent) {
   e.preventDefault();
   e.stopPropagation();
-  emit(
-    'update:value',
-    props.value?.substring(0, targetSelectionRange.value[0]) +
-      oskInput.value +
-      props.value?.substring(targetSelectionRange.value[1])
-  );
+  const preOskValue = props.value?.substring(0, targetSelectionRange.value[0]) || '';
+  const postOskValue = props.value?.substring(targetSelectionRange.value[1]) || '';
+  emit('update:value', preOskValue + oskInput.value + postOskValue);
   const newCaretPos = targetSelectionRange.value[0] + oskInput.value.length;
   showOsk.value = false;
   nextTick().then(() => {

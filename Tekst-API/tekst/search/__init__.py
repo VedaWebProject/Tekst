@@ -136,14 +136,13 @@ async def create_index(*, overwrite_existing_index: bool = True) -> None:
             lazy_parse=True,
         ).to_list():
             extra_properties[str(res.id)] = {
-                "type": "object",
                 "properties": resource_types_mgr.get(
                     res.resource_type
-                ).index_doc_properties(),
+                ).index_doc_props(),
             }
         resp = client.indices.put_mapping(
             index=new_index_name,
-            body={"properties": extra_properties},
+            body={"properties": {"resources": {"properties": extra_properties}}},
         )
         if not resp or not resp.get("acknowledged"):
             raise RuntimeError("Failed to extend index mappings!")
@@ -208,6 +207,7 @@ async def _populate_index(index_name: str) -> None:
                 "text_id": str(location.text_id),
                 "level": location.level,
                 "position": location.position,
+                "resources": {},
             }
 
             # add data for each content for this location
@@ -215,13 +215,16 @@ async def _populate_index(index_name: str) -> None:
                 Eq(ContentBaseDocument.location_id, location.id),
                 with_children=True,
             ).to_list():
-                # add resource content to index document
-                location_index_doc[str(content.resource_id)] = resource_types_mgr.get(
+                content_index_doc = resource_types_mgr.get(
                     content.resource_type
                 ).index_doc_data(content)
                 # add resource title to index document
-                location_index_doc[str(content.resource_id)]["resource_title"] = (
-                    resources[content.resource_id].title
+                content_index_doc["resource_title"] = resources[
+                    content.resource_id
+                ].title
+                # add resource content document to location index document
+                location_index_doc["resources"][str(content.resource_id)] = (
+                    content_index_doc
                 )
 
             # add index document to bulk index request body
@@ -267,7 +270,7 @@ def _bulk_index(client: Elasticsearch, reqest_body: dict[str, Any]) -> bool:
     return bool(resp) and not resp.get("errors", False)
 
 
-def get_index_creation_time() -> datetime:
+def _get_index_creation_time() -> datetime:
     client: Elasticsearch = _es_client
     idx_settings = client.indices.get_settings(
         index=IDX_ALIAS, name="index.creation_date", flat_settings=True
@@ -287,7 +290,7 @@ async def get_index_info():
         documents=index_info["docs"]["count"],
         size=index_info["store"]["size"],
         searches=index_info["search"]["query_total"],
-        last_indexed=get_index_creation_time(),
+        last_indexed=_get_index_creation_time(),
     )
 
 
@@ -295,11 +298,19 @@ async def _get_target_resource_ids(
     *,
     user: UserRead | None = None,
     text_ids: list[PydanticObjectId] | None = None,
+    resource_types: list[str] | None = None,
 ) -> list[str]:
+    """
+    Returns a contrained list of IDs for the target resources for a search request,
+    based on the requesting user's permissions, target texts and resource types.
+    """
     return [
         str(res.id)
         for res in await ResourceBaseDocument.find(
             In(ResourceBaseDocument.text_id, text_ids) if text_ids else {},
+            In(ResourceBaseDocument.resource_type, resource_types)
+            if resource_types
+            else {},
             await ResourceBaseDocument.access_conditions_read(user),
             with_children=True,
         ).to_list()
@@ -308,44 +319,66 @@ async def _get_target_resource_ids(
 
 async def search_quick(
     user: UserRead | None,
-    query: str,
+    query_string: str | None = None,
     settings_general: GeneralSearchSettings = GeneralSearchSettings(),
     settings_quick: QuickSearchSettings = QuickSearchSettings(),
 ) -> SearchResults:
     client: Elasticsearch = _es_client
     target_resource_ids = await _get_target_resource_ids(
         user=user,
-        text_ids=settings_quick.texts,
+        text_ids=settings_quick.texts,  # constrain target texts
+        resource_types=["plainText", "richText"],  # contrain target resource types
     )
 
     # compose a list of target index fields based on the resources to search:
     field_pattern_suffix = ".*.strict" if settings_general.strict else ".*"
-    fields = [f"{res_id}{field_pattern_suffix}" for res_id in target_resource_ids]
-    source_includes = [f"{res_id}.resource_title" for res_id in target_resource_ids]
+    fields = [
+        f"resources.{res_id}{field_pattern_suffix}" for res_id in target_resource_ids
+    ]
+    source_includes = [
+        f"resources.{res_id}.resource_title" for res_id in target_resource_ids
+    ]
+
+    # compose the query
+    es_query = {
+        "bool": {
+            "must": [
+                {
+                    "terms": {
+                        "text_id": [str(text_id) for text_id in settings_quick.texts],
+                    }
+                }
+                if settings_quick.texts
+                else None,
+                {
+                    "simple_query_string": {
+                        "query": query_string or "*",  # fall back to '*' if empty
+                        "fields": fields,
+                        "default_operator": settings_quick.default_operator,
+                        "analyze_wildcard": True,
+                    }
+                },
+            ],
+        }
+    }
+
+    log.critical(es_query)
 
     # perform the search
     return SearchResults.from_es_results(
         results=client.search(
             index=IDX_ALIAS,
-            query={
-                "simple_query_string": {
-                    "query": query or "*",
-                    "fields": fields,
-                    "default_operator": settings_quick.default_operator,
-                }
-            },
+            query=es_query,
             highlight={
-                "fields": {"*": {}},
+                "fields": {"resources.*": {}},
             },
             from_=settings_general.pagination.es_from(),
             size=settings_general.pagination.es_size(),
             track_scores=True,
-            sort=SORTING_PRESETS.get(settings_general.sorting_preset, None)
-            if settings_general.sorting_preset
-            else None,
+            sort=SORTING_PRESETS.get(settings_general.sorting_preset),
             source={"includes": get_source_includes(source_includes)},
         ),
-        index_creation_time=get_index_creation_time(),
+        index_creation_time=_get_index_creation_time(),
     )
 
 
@@ -356,46 +389,54 @@ async def search_advanced(
     settings_advanced: AdvancedSearchSettings = AdvancedSearchSettings(),
 ) -> SearchResults:
     client: Elasticsearch = _es_client
-    readable_resource_ids = await _get_target_resource_ids(user=user)
+    target_resource_ids = await _get_target_resource_ids(user=user)
 
     # construct all the sub-queries
     sub_queries_must = []
     sub_queries_should = []
-    source_includes = [f"{res_id}.resource_title" for res_id in readable_resource_ids]
-
+    source_includes = [
+        f"resources.{res_id}.resource_title" for res_id in target_resource_ids
+    ]
     for q in queries:
-        if str(q.common.resource_id) in readable_resource_ids:
-            es_queries = resource_types_mgr.get(
+        if str(q.common.resource_id) in target_resource_ids:
+            resource_es_queries = resource_types_mgr.get(
                 q.resource_type_specific.resource_type
-            ).construct_es_queries(
+            ).es_queries(
                 query=q,
                 strict=settings_general.strict,
             )
             if q.common.optional:
-                sub_queries_should.extend(es_queries)
+                sub_queries_should.extend(resource_es_queries)
             else:
-                sub_queries_must.extend(es_queries)
+                sub_queries_must.extend(resource_es_queries)
+
+    # compose the overall compound query
+    es_query = {
+        "bool": dict(
+            **({"must": sub_queries_must} if sub_queries_must else {}),
+            **({"should": sub_queries_should} if sub_queries_should else {}),
+        )
+    }
+
+    # if the search request didn't resolve to any valid ES queries, match nothing
+    if not es_query.get("bool"):
+        es_query = {"match_none": {}}
+
+    log.critical(es_query)
 
     # perform the search
     return SearchResults.from_es_results(
         results=client.search(
             index=IDX_ALIAS,
-            query={
-                "bool": {
-                    "must": sub_queries_must,
-                    "should": sub_queries_should,
-                }
-            },
+            query=es_query,
             highlight={
                 "fields": {"*": {}},
             },
             from_=settings_general.pagination.es_from(),
             size=settings_general.pagination.es_size(),
             track_scores=True,
-            sort=SORTING_PRESETS.get(settings_general.sorting_preset, None)
-            if settings_general.sorting_preset
-            else None,
+            sort=SORTING_PRESETS.get(settings_general.sorting_preset),
             source={"includes": get_source_includes(source_includes)},
         ),
-        index_creation_time=get_index_creation_time(),
+        index_creation_time=_get_index_creation_time(),
     )

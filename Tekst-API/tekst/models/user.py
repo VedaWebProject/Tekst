@@ -97,20 +97,36 @@ class User(ModelBase, ModelFactoryMixin):
             strip_whitespace=True,
         ),
     ]
-    name: Annotated[str, StringConstraints(min_length=1, max_length=64), CleanupOneline]
+    name: Annotated[
+        str,
+        StringConstraints(
+            min_length=1,
+            max_length=64,
+        ),
+        CleanupOneline,
+    ]
     affiliation: Annotated[
-        str, StringConstraints(min_length=1, max_length=180), CleanupOneline
+        str,
+        StringConstraints(
+            min_length=1,
+            max_length=180,
+        ),
+        CleanupOneline,
     ]
     locale: LocaleKey | None = None
     avatar_url: Annotated[
         str | None,
-        StringConstraints(max_length=1024),
+        StringConstraints(
+            max_length=1024,
+        ),
         CleanupOneline,
         EmptyStringToNone,
     ] = None
     bio: Annotated[
         str | None,
-        StringConstraints(max_length=2000),
+        StringConstraints(
+            max_length=2000,
+        ),
         CleanupMultiline,
         EmptyStringToNone,
     ] = None
@@ -165,12 +181,30 @@ UserUpdate = User.update_model(schemas.BaseUserUpdate)
 
 
 class UsersSearchResult(ModelBase):
-    users: Annotated[list[UserRead], Field(description="Paginated users data")] = []
-    total: Annotated[int, Field(description="Total number of search hits")] = 0
+    users: Annotated[
+        list[UserRead],
+        Field(
+            description="Paginated users data",
+        ),
+    ] = []
+    total: Annotated[
+        int,
+        Field(
+            description="Total number of search hits",
+        ),
+    ] = 0
 
 
 class PublicUsersSearchResult(ModelBase):
     users: Annotated[
-        list[UserReadPublic], Field(description="Paginated public users data")
+        list[UserReadPublic],
+        Field(
+            description="Paginated public users data",
+        ),
     ] = []
-    total: Annotated[int, Field(description="Total number of search hits")] = 0
+    total: Annotated[
+        int,
+        Field(
+            description="Total number of search hits",
+        ),
+    ] = 0
