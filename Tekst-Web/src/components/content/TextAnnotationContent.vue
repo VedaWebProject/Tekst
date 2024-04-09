@@ -136,7 +136,7 @@ function getAnnotationStyle(fmtFlags?: AnnotationDisplayFormatFlags): CSSPropert
 </script>
 
 <template>
-  <div v-for="content in contents" :key="content.id" class="content-container">
+  <div v-for="content in contents" :key="content.id" class="content-container" :class="{ reduced }">
     <div v-for="(token, tokenIndex) in content.tokens" :key="tokenIndex" class="token-container">
       <div class="token b i" :style="fontStyle">
         {{ token.token }}
@@ -173,11 +173,25 @@ function getAnnotationStyle(fmtFlags?: AnnotationDisplayFormatFlags): CSSPropert
   padding-left: 8px;
 }
 
+.reduced .token-container {
+  border-left: none;
+  padding-left: 0;
+}
+
 .token {
   line-height: 1.25em;
 }
 
+.reduced .token {
+  line-height: 1em;
+}
+
 .annotations {
   font-size: var(--font-size-small);
+}
+
+.reduced .annotations {
+  font-size: var(--font-size-tiny);
+  opacity: 0.75;
 }
 </style>
