@@ -29,8 +29,8 @@ const isContentContainerHovered = useElementHover(contentContainerRef, {
 const contentCollapsed = ref(!!props.resource.config?.general?.defaultCollapsed);
 watch(
   () => browse.reducedView,
-  () => {
-    contentCollapsed.value = !!props.resource.config?.general?.defaultCollapsed;
+  (reduced) => {
+    contentCollapsed.value = !reduced;
   }
 );
 
@@ -207,6 +207,10 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
   flex-wrap: nowrap;
   justify-content: center;
   gap: var(--layout-gap);
+}
+
+.reduced > .content-collapse-btn-wrapper {
+  display: none;
 }
 
 .content-collapse-btn:hover {
