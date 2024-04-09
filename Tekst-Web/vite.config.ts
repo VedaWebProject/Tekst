@@ -38,5 +38,6 @@ export default defineConfig({
         chunkFileNames: 'assets/js/chunk-[hash].js',
       },
     },
+    chunkSizeWarningLimit: 1200,
   },
 });
