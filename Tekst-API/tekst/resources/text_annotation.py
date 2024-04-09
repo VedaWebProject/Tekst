@@ -1,7 +1,6 @@
 from typing import Annotated, Any, Literal
 
-from pydantic import Field, StringConstraints
-from typing_extensions import TypedDict
+from pydantic import Field, StringConstraints, field_validator
 
 from tekst.logging import log
 from tekst.models.common import ModelBase, PydanticObjectId
@@ -12,7 +11,7 @@ from tekst.models.resource_configs import (
     FontConfigType,
     ResourceConfigBase,
 )
-from tekst.resources import ResourceTypeABC
+from tekst.resources import ResourceSearchQuery, ResourceTypeABC
 from tekst.utils import validators as val
 
 
@@ -67,14 +66,14 @@ class TextAnnotation(ResourceTypeABC):
                             "key": "$_id",
                             "values": {
                                 "$cond": {  # exclude if count of distict values > 100
-                                    "if": {"$gt": [{"$size": "$values"}, 3]},
+                                    "if": {"$gt": [{"$size": "$values"}, 100]},
                                     "then": "$$REMOVE",
                                     "else": "$values",
                                 }
                             },
                             "collected": {
                                 "$cond": {  # exclude if count of distict values > 100
-                                    "if": {"$gt": [{"$size": "$values"}, 3]},
+                                    "if": {"$gt": [{"$size": "$values"}, 100]},
                                     "then": "$$REMOVE",
                                     "else": "$collected",
                                 }
@@ -101,35 +100,84 @@ class TextAnnotation(ResourceTypeABC):
         resource_doc.aggregations = anno_aggs
         await resource_doc.replace()
 
+        log.debug(f"Finished updating aggregations for resource {resource_id}...")
+
     @classmethod
     async def contents_changed_hook(cls, resource_id: PydanticObjectId) -> None:
         await cls._update_aggregations(resource_id)
 
     @classmethod
     def rtype_es_queries(
-        cls, *, query: "TextAnnotationSearchQuery", strict: bool = False
+        cls, *, query: ResourceSearchQuery, strict: bool = False
     ) -> list[dict[str, Any]]:
         es_queries = []
-        if "tokens" in query.get_set_fields():
-            token_query = {
-                "term": {f"{query.common.resource_id}.tokens.token": query.token}
-            }
-            annotation_queries = [
+        strict_suffix = ".strict" if strict else ""
+
+        if (
+            not query.resource_type_specific.token
+            and not query.resource_type_specific.annotations
+        ):
+            # handle empty/match-all query (query for existing target resource field)
+            es_queries.append(
                 {
-                    "term": {
-                        f"{query.common.resource_id}.tokens.annotations.{key}": value
+                    "exists": {
+                        "field": f"resources.{query.common.resource_id}",
                     }
                 }
-                for key, value in query.annotations.items()
-            ]
+            )
+        else:
+            # contruct token query
+            token_query = (
+                {
+                    "term": {
+                        (
+                            f"resources.{query.common.resource_id}"
+                            f".tokens.token{strict_suffix}"
+                        ): query.resource_type_specific.token
+                    }
+                }
+                if query.resource_type_specific.token
+                else None
+            )
+            # construct annotation queries
+            annotation_queries = []
+            for anno in query.resource_type_specific.annotations:
+                if not anno.value:
+                    # if only key is set (and no value),
+                    # query for the existence of the key
+                    annotation_queries.append(
+                        {
+                            "exists": {
+                                "field": (
+                                    f"resources.{query.common.resource_id}"
+                                    f".tokens.annotations.{anno.key}"
+                                ),
+                            }
+                        }
+                    )
+                else:
+                    # if both key and value are set,
+                    # query for the specific key/value combination
+                    annotation_queries.append(
+                        {
+                            "term": {
+                                (
+                                    f"resources.{query.common.resource_id}"
+                                    f".tokens.annotations.{anno.key}"
+                                ): anno.value
+                            }
+                        }
+                    )
+
+            # add token and annotation queries to the ES query
             es_queries.append(
                 {
                     "nested": {
-                        "path": f"{query.common.resource_id}.tokens",
+                        "path": f"resources.{query.common.resource_id}.tokens",
                         "query": {
                             "bool": {
                                 "must": [
-                                    token_query,
+                                    *([token_query] if token_query else []),
                                     *annotation_queries,
                                 ],
                             },
@@ -137,6 +185,7 @@ class TextAnnotation(ResourceTypeABC):
                     }
                 }
             )
+
         return es_queries
 
     @classmethod
@@ -160,10 +209,9 @@ class TextAnnotation(ResourceTypeABC):
         return {
             "tokens": [
                 {
-                    "token": token.get("token", ""),
+                    "token": token.token or "",
                     "annotations": {
-                        anno["key"]: anno["value"]
-                        for anno in token.get("annotations", [])
+                        anno.key: anno.value for anno in token.annotations or []
                     },
                 }
                 for token in content.tokens
@@ -210,7 +258,7 @@ class TextAnnotationResource(ResourceBase):
     ] = None
 
 
-class TextAnnotationEntry(TypedDict):
+class TextAnnotationEntry(ModelBase):
     key: Annotated[
         str,
         Field(
@@ -235,20 +283,23 @@ class TextAnnotationEntry(TypedDict):
     ]
 
 
-class TextAnnotationQueryEntry(TypedDict):
+class TextAnnotationQueryEntry(ModelBase):
     key: Annotated[
-        str | None,
+        str,
         Field(
+            alias="k",
             description="Key of the annotation",
         ),
         StringConstraints(
+            min_length=1,
             max_length=32,
             strip_whitespace=True,
         ),
-    ] = None
+    ]
     value: Annotated[
         str | None,
         Field(
+            alias="v",
             description="Value of the annotation",
         ),
         StringConstraints(
@@ -257,8 +308,12 @@ class TextAnnotationQueryEntry(TypedDict):
         ),
     ] = None
 
+    @field_validator("key", "value", mode="before")
+    def strip_whitespace(cls, v) -> str:
+        return str(v) if v else ""
 
-class TextAnnotationToken(TypedDict):
+
+class TextAnnotationToken(ModelBase):
     token: Annotated[
         str,
         Field(
@@ -315,4 +370,4 @@ class TextAnnotationSearchQuery(ModelBase):
             description="List of annotations to match",
             max_length=64,
         ),
-    ] = ""
+    ] = []

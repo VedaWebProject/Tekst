@@ -3,16 +3,22 @@ import { NFormItem } from 'naive-ui';
 import NInputOsk from '@/components/NInputOsk.vue';
 import type { AdvancedSearchRequestBody } from '@/api';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
+import { searchFormRules } from '@/forms/formRules';
 
 defineProps<{
   comment?: AdvancedSearchRequestBody['q'][number]['cmn']['cmt'];
   optional?: AdvancedSearchRequestBody['q'][number]['cmn']['opt'];
+  queryIndex: number;
 }>();
 defineEmits(['update:comment', 'update:optional']);
 </script>
 
 <template>
-  <n-form-item :label="$t('resources.types.common.contentFields.comment')">
+  <n-form-item
+    :label="$t('resources.types.common.contentFields.comment')"
+    :path="`queries[${queryIndex}].cmn.comment`"
+    :rule="searchFormRules.common.comment"
+  >
     <n-input-osk
       :value="comment"
       :placeholder="$t('resources.types.common.contentFields.comment')"

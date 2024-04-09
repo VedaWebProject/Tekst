@@ -402,6 +402,8 @@ resources:
         annotations: Annotations
         annotationKey: Annotation
         annotationValue: Value
+      config:
+        displayTemplate: Display Template
 
 contents:
   heading: Edit Resource Content

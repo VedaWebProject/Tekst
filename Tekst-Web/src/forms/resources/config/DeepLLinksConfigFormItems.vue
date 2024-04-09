@@ -48,9 +48,9 @@ function handleUpdate(field: string, value: any) {
 </script>
 
 <template>
-  <h4>
+  <h5>
     {{ $t('resources.settings.config.deeplLinks.heading') }}
-  </h4>
+  </h5>
 
   <!-- ENABLED -->
   <n-form-item :show-label="false">

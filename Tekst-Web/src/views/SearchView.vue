@@ -13,6 +13,7 @@ import {
   NSelect,
   NFormItem,
   useThemeVars,
+  type FormInst,
 } from 'naive-ui';
 import { computed, h, ref, watch } from 'vue';
 import type { AdvancedSearchRequestBody, AnyResourceRead, ResourceType } from '@/api';
@@ -24,18 +25,24 @@ import { $t } from '@/i18n';
 import { useRouter } from 'vue-router';
 import { useResourcesStore, useSearchStore } from '@/stores';
 import GeneralSearchSettingsForm from '@/forms/search/GeneralSearchSettingsForm.vue';
+import { useMessages } from '@/composables/messages';
 
 type AdvancedSearchRequestQuery = AdvancedSearchRequestBody['q'][number];
 interface AdvancedSearchFormModelItem extends AdvancedSearchRequestQuery {
   resource?: AnyResourceRead;
+}
+interface AdvancedSearchFormModel {
+  queries: AdvancedSearchFormModelItem[];
 }
 
 const search = useSearchStore();
 const resources = useResourcesStore();
 const router = useRouter();
 const themeVars = useThemeVars();
+const { message } = useMessages();
 
-const queries = ref<AdvancedSearchFormModelItem[]>([]);
+const formModel = ref<AdvancedSearchFormModel>({ queries: [] });
+const formRef = ref<FormInst | null>(null);
 
 const resourceOptions = computed(() =>
   resources.data.map((r) => ({
@@ -46,9 +53,9 @@ const resourceOptions = computed(() =>
 );
 
 function handleResourceChange(resQueryIndex: number, resId: string, resType: ResourceType) {
-  if (!queries.value[resQueryIndex]) return;
-  if (queries.value[resQueryIndex].cmn.res !== resId) {
-    queries.value[resQueryIndex] = {
+  if (!formModel.value.queries[resQueryIndex]) return;
+  if (formModel.value.queries[resQueryIndex].cmn.res !== resId) {
+    formModel.value.queries[resQueryIndex] = {
       cmn: { res: resId, opt: true },
       rts: { type: resType },
       resource: resources.data.find((r) => r.id === resId),
@@ -65,41 +72,48 @@ function getNewSearchItem(): AdvancedSearchFormModelItem {
 }
 
 function addSearchItem(index: number) {
-  queries.value.splice(index + 1, 0, getNewSearchItem());
+  formModel.value.queries.splice(index + 1, 0, getNewSearchItem());
 }
 
 function removeSearchItem(index: number) {
-  queries.value.splice(index, 1);
+  formModel.value.queries.splice(index, 1);
 }
 
 function handleSearch(e: UIEvent) {
   e.preventDefault();
   e.stopPropagation();
-  router.push({
-    name: 'searchResults',
-    query: {
-      q: search.encodeQueryParam({
-        type: 'advanced',
-        q: queries.value.map((q) => {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { resource, ...query } = q; // remove "resource" q
-          return query;
-        }),
-        gen: search.settingsGeneral,
-        adv: search.settingsAdvanced,
-      }),
-    },
-  });
+  formRef.value
+    ?.validate(async (validationError) => {
+      if (validationError) return;
+      router.push({
+        name: 'searchResults',
+        query: {
+          q: search.encodeQueryParam({
+            type: 'advanced',
+            q: formModel.value.queries.map((q) => {
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
+              const { resource, ...query } = q; // remove "resource" q
+              return query;
+            }),
+            gen: search.settingsGeneral,
+            adv: search.settingsAdvanced,
+          }),
+        },
+      });
+    })
+    .catch(() => {
+      message.error($t('errors.followFormRules'));
+    });
 }
 
 function initQueries() {
   if (search.lastReq?.type === 'advanced') {
-    queries.value = search.lastReq.q.map((q) => ({
+    formModel.value.queries = search.lastReq.q.map((q) => ({
       ...q,
       resource: resources.data.find((r) => r.id === q.cmn.res),
     }));
   } else {
-    queries.value = resources.data.length ? [getNewSearchItem()] : [];
+    formModel.value.queries = resources.data.length ? [getNewSearchItem()] : [];
   }
 }
 
@@ -132,13 +146,14 @@ watch(
 
   <n-form
     v-if="!!resources.data.length"
-    :model="queries"
+    ref="formRef"
+    :model="formModel"
     label-placement="top"
     label-width="auto"
     require-mark-placement="right-hanging"
   >
     <n-dynamic-input
-      v-model:value="queries"
+      v-model:value="formModel.queries"
       :min="1"
       :max="32"
       item-class="advanced-search-item"
@@ -146,52 +161,54 @@ watch(
       @create="getNewSearchItem"
     >
       <!-- SEARCH ITEM -->
-      <template #default="{ value: resourceQuery, index }">
+      <template #default="{ value: query, index: queryIndex }">
         <div style="flex-grow: 2" class="search-item content-block">
           <n-form-item :show-label="false" style="flex-grow: 2">
             <n-select
-              :value="resourceQuery.cmn.res"
+              :value="query.cmn.res"
               :options="resourceOptions"
               :consistent-menu-width="false"
               :render-label="renderResourceOptionLabel"
               style="font-weight: var(--font-weight-bold)"
               @update:value="
                 (v, o: SelectMixedOption) =>
-                  handleResourceChange(index, v, o.resourceType as ResourceType)
+                  handleResourceChange(queryIndex, v, o.resourceType as ResourceType)
               "
             />
           </n-form-item>
           <component
-            :is="resourceTypeSearchForms[resourceQuery.rts.type]"
-            v-model:value="resourceQuery.rts"
-            :resource="resourceQuery.resource"
+            :is="resourceTypeSearchForms[query.rts.type]"
+            v-model:value="query.rts"
+            :resource="query.resource"
+            :query-index="queryIndex"
           />
           <common-search-form-items
-            v-model:comment="resourceQuery.cmn.cmt"
-            v-model:optional="resourceQuery.cmn.opt"
+            v-model:comment="query.cmn.cmt"
+            v-model:optional="query.cmn.opt"
+            :query-index="queryIndex"
           />
           <div class="search-item-action-buttons">
             <n-button
-              v-if="queries.length < 32"
+              v-if="formModel.queries.length < 32"
               circle
               :color="themeVars.bodyColor"
               :style="{ color: themeVars.textColor1 }"
               :title="$t('general.insertAction')"
               :focusable="false"
               class="action-button-insert"
-              @click="addSearchItem(index)"
+              @click="addSearchItem(queryIndex)"
             >
               <n-icon :component="AddIcon" />
             </n-button>
             <n-button
-              v-if="queries.length > 1"
+              v-if="formModel.queries.length > 1"
               circle
               :color="themeVars.bodyColor"
               :style="{ color: themeVars.textColor1 }"
               :title="$t('general.removeAction')"
               :focusable="false"
               class="action-button-remove"
-              @click="removeSearchItem(index)"
+              @click="removeSearchItem(queryIndex)"
             >
               <n-icon :component="ClearIcon" />
             </n-button>
@@ -214,7 +231,7 @@ watch(
   />
 
   <button-shelf v-if="!!resources.data.length" top-gap>
-    <n-button type="primary" :disabled="!queries.length" @click="handleSearch">
+    <n-button type="primary" :disabled="!formModel.queries.length" @click="handleSearch">
       {{ $t('search.searchAction') }}
     </n-button>
   </button-shelf>

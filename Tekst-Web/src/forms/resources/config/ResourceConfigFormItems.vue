@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { AnyResourceConfig } from '@/api';
 import { generalConfigFormItems, specialConfigFormItems } from '@/forms/resources/config/mappings';
-import CommonResourceConfigFormItems from './CommonResourceConfigFormItems.vue';
+import CommonResourceConfigFormItems from '@/forms/resources/config/CommonResourceConfigFormItems.vue';
 
 const props = withDefaults(
   defineProps<{
@@ -48,6 +48,9 @@ function handleUpdateSpecialConfig(field: string, value: any) {
   <h4>
     {{ $t('resources.types.' + resourceType + '.label') }}
   </h4>
+  <h5>
+    {{ $t('general.general') }}
+  </h5>
   <template v-for="(configValue, key) in model.general" :key="key">
     <component
       :is="generalConfigFormItems[key]"

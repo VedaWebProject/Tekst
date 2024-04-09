@@ -2,10 +2,12 @@
 import { NFormItem } from 'naive-ui';
 import NInputOsk from '@/components/NInputOsk.vue';
 import type { PlainTextResourceRead, PlainTextSearchQuery } from '@/api';
+import { searchFormRules } from '@/forms/formRules';
 
 const props = defineProps<{
   value: PlainTextSearchQuery;
   resource: PlainTextResourceRead;
+  queryIndex: number;
 }>();
 const emit = defineEmits(['update:value']);
 
@@ -18,7 +20,12 @@ function handleUpdate(field: string, value: any) {
 </script>
 
 <template>
-  <n-form-item :label="$t('resources.types.plainText.searchFields.text')">
+  <n-form-item
+    ignore-path-change
+    :label="$t('resources.types.plainText.searchFields.text')"
+    :path="`queries[${queryIndex}].rts.text`"
+    :rule="searchFormRules.plainText.text"
+  >
     <n-input-osk
       :value="value.text"
       :placeholder="$t('resources.types.plainText.searchFields.text')"

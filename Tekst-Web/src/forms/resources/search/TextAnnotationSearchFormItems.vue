@@ -3,10 +3,12 @@ import type { TextAnnotationResourceRead, TextAnnotationSearchQuery } from '@/ap
 import NInputOsk from '@/components/NInputOsk.vue';
 import { NInput, NSelect, NFormItem, NDynamicInput } from 'naive-ui';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
+import { searchFormRules } from '@/forms/formRules';
 
 const props = defineProps<{
   value: TextAnnotationSearchQuery;
   resource: TextAnnotationResourceRead;
+  queryIndex: number;
 }>();
 
 const emit = defineEmits(['update:value']);
@@ -21,7 +23,7 @@ function handleUpdate(field: string, value: any) {
 function getAnnotationKeyOptions() {
   return (
     props.resource.aggregations
-      ?.filter((agg) => !props.value.anno?.find((ann) => ann.key === agg.key))
+      ?.filter((agg) => !props.value.anno?.find((ann) => ann.k === agg.key))
       .map((agg) => ({ label: agg.key, value: agg.key })) || []
   );
 }
@@ -41,6 +43,8 @@ function getAnnotationValueOptions(key: string) {
   <n-form-item
     :label="$t('resources.types.textAnnotation.contentFields.token')"
     ignore-path-change
+    :path="`queries[${queryIndex}].rts.token`"
+    :rule="searchFormRules.textAnnotation.token"
     style="flex-grow: 1; flex-basis: 200px"
   >
     <n-input-osk
@@ -59,11 +63,10 @@ function getAnnotationValueOptions(key: string) {
   >
     <n-dynamic-input
       :value="value.anno"
-      item-style="margin-bottom: var(--content-gap)"
       @update-value="(v) => handleUpdate('anno', v)"
-      @create="() => ({ key: undefined, value: undefined })"
+      @create="() => ({ k: undefined, v: undefined })"
     >
-      <template #default="{ value: annotationItem }">
+      <template #default="{ value: annotationItem, index: annotationItemIndex }">
         <div
           style="
             display: flex;
@@ -76,36 +79,42 @@ function getAnnotationValueOptions(key: string) {
           <n-form-item
             style="flex-grow: 2; flex-basis: 200px"
             :show-label="false"
-            :show-feedback="false"
             ignore-path-change
+            :path="`queries[${queryIndex}].rts.anno[${annotationItemIndex}].k`"
+            :rule="searchFormRules.textAnnotation.annotationKey"
           >
             <n-select
-              v-model:value="annotationItem.key"
+              v-model:value="annotationItem.k"
               filterable
               clearable
               :options="getAnnotationKeyOptions()"
               :placeholder="$t('resources.types.textAnnotation.contentFields.annotationKey')"
+              @update:value="
+                (v) =>
+                  (annotationItem.v =
+                    resource.aggregations?.find((agg) => agg.key === annotationItem.k)
+                      ?.values?.[0] || undefined)
+              "
             />
           </n-form-item>
           <n-form-item
             style="flex-grow: 2; flex-basis: 200px"
             :show-label="false"
-            :show-feedback="false"
             ignore-path-change
+            :path="`queries[${queryIndex}].rts.anno[${annotationItemIndex}].v`"
+            :rule="searchFormRules.textAnnotation.annotationValue"
           >
             <n-select
-              v-if="!!resource.aggregations?.find((agg) => agg.key === annotationItem.key)?.values"
-              v-model:value="annotationItem.value"
+              v-if="!!resource.aggregations?.find((agg) => agg.key === annotationItem.k)?.values"
+              v-model:value="annotationItem.v"
               filterable
               clearable
-              :disabled="!annotationItem.key"
-              :options="getAnnotationValueOptions(annotationItem.key)"
+              :options="getAnnotationValueOptions(annotationItem.k)"
               :placeholder="$t('resources.types.textAnnotation.contentFields.annotationValue')"
             />
             <n-input
               v-else
-              v-model:value="annotationItem.value"
-              :disabled="!annotationItem.key"
+              v-model:value="annotationItem.v"
               :placeholder="$t('resources.types.textAnnotation.contentFields.annotationValue')"
             />
           </n-form-item>

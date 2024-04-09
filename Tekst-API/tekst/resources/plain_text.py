@@ -12,7 +12,7 @@ from tekst.models.resource_configs import (
     ReducedViewOnelineConfigType,
     ResourceConfigBase,
 )
-from tekst.resources import ResourceTypeABC
+from tekst.resources import ResourceSearchQuery, ResourceTypeABC
 from tekst.utils import validators as val
 
 
@@ -47,16 +47,28 @@ class PlainText(ResourceTypeABC):
 
     @classmethod
     def rtype_es_queries(
-        cls, *, query: "PlainTextSearchQuery", strict: bool = False
+        cls, *, query: ResourceSearchQuery, strict: bool = False
     ) -> list[dict[str, Any]]:
         es_queries = []
-        set_fields = query.get_set_fields()
         strict_suffix = ".strict" if strict else ""
-        if "text" in set_fields:
+
+        if not query.resource_type_specific.text.strip("*"):
+            # handle empty/match-all query (query for existing target field)
+            es_queries.append(
+                {
+                    "exists": {
+                        "field": f"resources.{query.common.resource_id}",
+                    }
+                }
+            )
+        else:
+            # handle actual query with content
             es_queries.append(
                 {
                     "simple_query_string": {
-                        "fields": [f"{query.common.resource_id}.text{strict_suffix}"],
+                        "fields": [
+                            f"resources.{query.common.resource_id}.text{strict_suffix}"
+                        ],
                         "query": query.resource_type_specific.text,
                     }
                 }

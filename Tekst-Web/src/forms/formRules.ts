@@ -254,6 +254,12 @@ export const commonResourceConfigFormRules: Record<string, FormItemRule[]> = {
   ],
 };
 
+export const typeSpecificResourceConfigFormRules: Record<string, Record<string, FormItemRule[]>> = {
+  textAnnotation: {
+    displayTemplate: [minMaxCharsRule(8, 2048, 'blur')],
+  },
+};
+
 export const contentFormRules: Record<string, Record<string, FormItemRule[]>> = {
   common: {
     comment: [minMaxCharsRule(0, 50000, 'blur')],
@@ -276,8 +282,37 @@ export const contentFormRules: Record<string, Record<string, FormItemRule[]>> = 
       requiredRule(() => $t('resources.types.textAnnotation.contentFields.token'), 'blur'),
       minMaxCharsRule(1, 4096, 'blur'),
     ],
-    annotationKey: [minMaxCharsRule(1, 32, 'blur')],
-    annotationValue: [minMaxCharsRule(1, 64, 'blur')],
+    annotationKey: [
+      requiredRule(() => $t('resources.types.textAnnotation.contentFields.annotationKey'), 'blur'),
+      minMaxCharsRule(1, 32, 'blur'),
+    ],
+    annotationValue: [
+      requiredRule(
+        () => $t('resources.types.textAnnotation.contentFields.annotationValue'),
+        'blur'
+      ),
+      minMaxCharsRule(1, 64, 'blur'),
+    ],
+  },
+};
+
+export const searchFormRules: Record<string, Record<string, FormItemRule[]>> = {
+  common: {
+    comment: [minMaxCharsRule(0, 512, 'blur')],
+  },
+  plainText: {
+    text: [minMaxCharsRule(0, 512, 'blur')],
+  },
+  richText: {
+    html: [minMaxCharsRule(0, 512, 'blur')],
+  },
+  textAnnotation: {
+    token: [minMaxCharsRule(0, 512, 'blur')],
+    annotationKey: [
+      requiredRule(() => $t('resources.types.textAnnotation.contentFields.annotationKey'), 'blur'),
+      minMaxCharsRule(1, 32, 'blur'),
+    ],
+    annotationValue: [minMaxCharsRule(0, 64, 'blur')],
   },
 };
 

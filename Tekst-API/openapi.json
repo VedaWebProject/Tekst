@@ -10382,20 +10382,14 @@
       },
       "TextAnnotationQueryEntry": {
         "properties": {
-          "key": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 32
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Key",
+          "k": {
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 1,
+            "title": "K",
             "description": "Key of the annotation"
           },
-          "value": {
+          "v": {
             "anyOf": [
               {
                 "type": "string",
@@ -10405,14 +10399,13 @@
                 "type": "null"
               }
             ],
-            "title": "Value",
+            "title": "V",
             "description": "Value of the annotation"
           }
         },
         "type": "object",
         "required": [
-          "key",
-          "value"
+          "k"
         ],
         "title": "TextAnnotationQueryEntry"
       },
@@ -10443,14 +10436,14 @@
           "displayTemplate": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "maxLength": 2048,
+                "minLength": 8
               },
               {
                 "type": "null"
               }
             ],
-            "maxLength": 2048,
-            "minLength": 8,
             "title": "Displaytemplate",
             "description": "Template string used for displaying the annotations in the web client (if missing, all annotations are displayed with key and value, separated by commas)"
           }
@@ -11067,7 +11060,7 @@
             "maxItems": 64,
             "title": "Anno",
             "description": "List of annotations to match",
-            "default": ""
+            "default": []
           }
         },
         "type": "object",
@@ -11092,13 +11085,13 @@
             "type": "array",
             "maxItems": 128,
             "title": "Annotations",
-            "description": "List of annotations on this token"
+            "description": "List of annotations on this token",
+            "default": []
           }
         },
         "type": "object",
         "required": [
-          "token",
-          "annotations"
+          "token"
         ],
         "title": "TextAnnotationToken"
       },

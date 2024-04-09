@@ -411,6 +411,8 @@ resources:
         annotations: Annotationen
         annotationKey: Annotation
         annotationValue: Wert
+      config:
+        displayTemplate: Darstellungsvorlage
 
 contents:
   heading: Ressourcen-Inhalte bearbeiten

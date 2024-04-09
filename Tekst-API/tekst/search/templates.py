@@ -20,6 +20,7 @@ IDX_TEMPLATE = {
             "text_id": {"type": "keyword"},
             "level": {"type": "short"},
             "position": {"type": "integer"},
+            "resources": {"type": "object"},
         },
         "dynamic_templates": [
             {
@@ -27,6 +28,8 @@ IDX_TEMPLATE = {
                     "path_match": "*.annotations.*",
                     "mapping": {
                         "type": "keyword",
+                        "normalizer": "asciifolding_normalizer_preserve_case",
+                        "fields": {"strict": {"type": "keyword"}},
                     },
                 }
             }
@@ -52,7 +55,12 @@ IDX_TEMPLATE = {
                     "type": "custom",
                     "char_filter": [],
                     "filter": ["asciifolding", "lowercase"],
-                }
+                },
+                "asciifolding_normalizer_preserve_case": {
+                    "type": "custom",
+                    "char_filter": [],
+                    "filter": ["asciifolding"],
+                },
             },
         },
     },

@@ -2586,15 +2586,15 @@ export interface components {
     /** TextAnnotationQueryEntry */
     TextAnnotationQueryEntry: {
       /**
-       * Key
+       * K
        * @description Key of the annotation
        */
-      key: string | null;
+      k: string;
       /**
-       * Value
+       * V
        * @description Value of the annotation
        */
-      value: string | null;
+      v?: string | null;
     };
     /** TextAnnotationResourceConfig */
     TextAnnotationResourceConfig: {
@@ -2944,7 +2944,7 @@ export interface components {
       /**
        * Anno
        * @description List of annotations to match
-       * @default
+       * @default []
        */
       anno?: components['schemas']['TextAnnotationQueryEntry'][];
     };
@@ -2958,8 +2958,9 @@ export interface components {
       /**
        * Annotations
        * @description List of annotations on this token
+       * @default []
        */
-      annotations: components['schemas']['TextAnnotationEntry'][];
+      annotations?: components['schemas']['TextAnnotationEntry'][];
     };
     /** TextCreate */
     TextCreate: {

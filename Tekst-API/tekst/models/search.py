@@ -34,8 +34,8 @@ class SearchResults(ModelBase):
         highlights = {}
         for k, v in hit["highlight"].items():
             try:
-                res_id = k.split(".")[0]
-                hl_key = hit["_source"][res_id]["resource_title"]
+                res_id = k.split(".")[1]
+                hl_key = hit["_source"]["resources"][res_id]["resource_title"]
                 if hl_key not in highlights:
                     highlights[hl_key] = set()
                 highlights[hl_key].update(v)
