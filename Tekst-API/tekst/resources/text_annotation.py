@@ -309,6 +309,7 @@ class TextAnnotationQueryEntry(ModelBase):
     ] = None
 
     @field_validator("key", "value", mode="before")
+    @classmethod
     def strip_whitespace(cls, v) -> str:
         return str(v) if v else ""
 
