@@ -9,6 +9,7 @@ from beanie.operators import In
 from bson.errors import InvalidId
 from fastapi import (
     APIRouter,
+    BackgroundTasks,
     Body,
     File,
     Path,
@@ -694,6 +695,7 @@ async def import_resource_data(
     file: Annotated[
         UploadFile, File(description="JSON file containing the resource data")
     ],
+    background_tasks: BackgroundTasks,
 ) -> ResourceDataImportResponse:
     # test upload file MIME type
     if not file.content_type.lower() == "application/json":
@@ -821,6 +823,13 @@ async def import_resource_data(
         errors_count += len(contents["creates"]) - created_count
     else:
         created_count = 0
+
+    # create background task that calls the
+    # content's resource's hook for updated content
+    background_tasks.add_task(
+        resource_types_mgr.get(resource.resource_type).contents_changed_hook,
+        resource_id,
+    )
 
     return ResourceDataImportResponse(
         updated=updated_count, created=created_count, errors=errors_count
