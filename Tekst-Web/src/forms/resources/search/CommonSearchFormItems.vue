@@ -16,7 +16,7 @@ defineEmits(['update:comment', 'update:optional']);
 <template>
   <n-form-item
     :label="$t('resources.types.common.contentFields.comment')"
-    :path="`queries[${queryIndex}].cmn.comment`"
+    :path="`queries[${queryIndex}].cmn.cmt`"
     :rule="searchFormRules.common.comment"
   >
     <n-input-osk

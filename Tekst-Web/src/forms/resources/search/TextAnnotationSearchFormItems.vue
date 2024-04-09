@@ -51,7 +51,6 @@ function getAnnotationValueOptions(key: string) {
       :value="value.token"
       :font="resource.config?.general?.font || undefined"
       :placeholder="$t('resources.types.textAnnotation.contentFields.token')"
-      :maxlength="512"
       @update:value="(v) => handleUpdate('token', v)"
     />
   </n-form-item>
