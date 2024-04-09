@@ -15,7 +15,10 @@ const props = withDefaults(
 const contents = computed(() =>
   props.resource.contents?.map((c) => ({
     ...c,
-    text: props.reduced ? c.text.replace(/\n+/g, ' ') : c.text,
+    text:
+      props.reduced && props.resource.config?.general?.reducedViewOneline
+        ? c.text.replace(/\n+/g, ' ')
+        : c.text,
   }))
 );
 
@@ -33,12 +36,7 @@ const fontStyle = {
       :title="content.comment || undefined"
     >
       <template v-if="content.text">
-        <template v-if="!reduced || !resource.config?.general?.reducedViewOneline">
-          {{ content.text }}
-        </template>
-        <template v-else>
-          {{ content.text }}
-        </template>
+        {{ content.text }}
       </template>
     </div>
   </div>
