@@ -92,9 +92,11 @@ function applyAnnotationDisplayTemplate(
   // if there are no annotation display templates, just return the annotations in a
   // default form (k:v, k:v, etc.) without any styling flags set
   if (!annotationDisplayTemplates.value.length) {
-    return annotations.map((a, i) => ({
-      display: `${a.key}:${a.value}` + (i < annotations.length - 1 ? '; ' : ''),
-    }));
+    return (
+      annotations?.map((a, i) => ({
+        display: `${a.key}:${a.value}` + (i < annotations.length - 1 ? '; ' : ''),
+      })) || []
+    );
   }
 
   // associate templates with annotations data
@@ -102,7 +104,7 @@ function applyAnnotationDisplayTemplate(
     .map((template) => {
       return {
         template,
-        data: annotations.find((a) => a.key === template.key),
+        data: annotations?.find((a) => a.key === template.key),
       };
     })
     .filter((item) => item.template.content && (item.template.key ? !!item.data : true));
@@ -156,7 +158,7 @@ function getAnnotationStyle(fmtFlags?: AnnotationDisplayFormatFlags): CSSPropert
 .content-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: 8px;
 }
 
 .content-container:not(:last-child) {
@@ -167,6 +169,8 @@ function getAnnotationStyle(fmtFlags?: AnnotationDisplayFormatFlags): CSSPropert
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
+  border-left: 2px solid var(--main-bg-color);
+  padding-left: 8px;
 }
 
 .token {
