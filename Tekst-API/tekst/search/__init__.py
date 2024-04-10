@@ -362,8 +362,6 @@ async def search_quick(
         }
     }
 
-    log.critical(es_query)
-
     # perform the search
     return SearchResults.from_es_results(
         results=client.search(
@@ -421,8 +419,6 @@ async def search_advanced(
     # if the search request didn't resolve to any valid ES queries, match nothing
     if not es_query.get("bool"):
         es_query = {"match_none": {}}
-
-    log.critical(es_query)
 
     # perform the search
     return SearchResults.from_es_results(
