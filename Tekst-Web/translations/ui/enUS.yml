@@ -218,7 +218,7 @@ models:
     levelLabel: Label
     defaultLevel: Default level
     locDelim: Location delimiter
-    labeledLocation: Labeled location
+    labeledLocation: Labelled location
     accentColor: Accent color
     isActive: Active, publicly listed
     isInactive: Inactive, not publicly listed

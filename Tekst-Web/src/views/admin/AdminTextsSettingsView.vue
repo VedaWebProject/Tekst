@@ -212,7 +212,7 @@ async function handleDelete() {
 
       <n-form-item :label="$t('general.flags')">
         <n-space vertical>
-          <!-- LABELED LOCATION -->
+          <!-- LABELLED LOCATION -->
           <labelled-switch
             v-model:value="model.labeledLocation"
             :label="$t('models.text.labeledLocation')"
