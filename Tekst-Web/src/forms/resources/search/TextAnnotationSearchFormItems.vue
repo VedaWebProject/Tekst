@@ -58,7 +58,7 @@ function getAnnotationValueOptions(key: string) {
   <!-- ANNOTATIONS -->
   <n-form-item
     :label="$t('resources.types.textAnnotation.contentFields.annotations')"
-    :show-feedback="false"
+    :show-feedback="!value.anno?.length"
     style="flex-grow: 2; flex-basis: 400px"
   >
     <n-dynamic-input
