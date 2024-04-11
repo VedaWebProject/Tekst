@@ -1,6 +1,6 @@
 from typing import Annotated, Any, Literal
 
-from pydantic import Field, StringConstraints, field_validator
+from pydantic import BeforeValidator, Field, StringConstraints, field_validator
 
 from tekst.logging import log
 from tekst.models.common import ModelBase, PydanticObjectId
@@ -264,6 +264,7 @@ class TextAnnotationEntry(ModelBase):
         Field(
             description="Key of the annotation",
         ),
+        BeforeValidator(lambda v: str(v) if v is not None else None),
         StringConstraints(
             min_length=1,
             max_length=32,
@@ -275,6 +276,7 @@ class TextAnnotationEntry(ModelBase):
         Field(
             description="Value of the annotation",
         ),
+        BeforeValidator(lambda v: str(v) if v is not None else None),
         StringConstraints(
             min_length=1,
             max_length=64,
