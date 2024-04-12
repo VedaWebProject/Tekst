@@ -5,10 +5,7 @@ from beanie.operators import NotIn
 from fastapi import APIRouter, Path, status
 
 from tekst import errors, locks
-from tekst.auth import (
-    OptionalUserDep,
-    SuperuserDep,
-)
+from tekst.auth import OptionalUserDep, SuperuserDep, UserDep
 from tekst.config import ConfigDep
 from tekst.models.location import LocationDocument
 from tekst.models.platform import PlatformData, PlatformStats, TextStats
@@ -30,6 +27,7 @@ from tekst.models.user import UserDocument
 from tekst.resources import resource_types_mgr
 from tekst.routers.texts import get_all_texts
 from tekst.settings import get_settings
+from tekst.tasks import Task, TaskDocument, TaskRead
 
 
 router = APIRouter(
@@ -277,3 +275,17 @@ async def get_locks_status(su: SuperuserDep) -> dict[str, bool]:
 async def release_locks(su: SuperuserDep) -> None:
     for lk in locks.LockKey:
         await locks.release(lk)
+
+
+@router.get(
+    "/tasks",
+    status_code=status.HTTP_200_OK,
+    response_model=list[TaskRead],
+    responses=errors.responses(
+        [
+            errors.E_401_UNAUTHORIZED,
+        ]
+    ),
+)
+async def get_tasks_status(user: UserDep) -> list[TaskDocument]:
+    return await Task.get_tasks(user.id)

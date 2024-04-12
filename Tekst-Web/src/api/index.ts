@@ -121,6 +121,7 @@ export type ErrorModel = components['schemas']['ErrorModel'];
 export type HTTPValidationError = components['schemas']['HTTPValidationError'];
 export type LockKey = components['schemas']['LockKey'];
 export type IndexInfoResponse = components['schemas']['IndexInfoResponse'];
+export type TaskRead = components['schemas']['TaskRead'];
 
 export type Metadate = components['schemas']['Metadate'];
 export type Metadata = Metadate[];

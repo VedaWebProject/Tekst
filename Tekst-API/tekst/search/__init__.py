@@ -178,7 +178,7 @@ async def _populate_index(index_name: str) -> None:
     }
 
     for text in await TextDocument.find_all(lazy_parse=True).to_list():
-        log.debug(f"Indexing resources for text '{text.title}' ...")
+        log.debug(f"Indexing resources for text '{text.title}'...")
         start_time = process_time()
         # Initialize stack with all level 0 locations (sorted) of the current text.
         # Each item on the stack is a tuple containing (1) the location labels from the

@@ -196,6 +196,10 @@ export interface paths {
     /** Release locks */
     delete: operations['releaseLocks'];
   };
+  '/platform/tasks': {
+    /** Get tasks status */
+    get: operations['getTasksStatus'];
+  };
   '/resources': {
     /**
      * Find resources
@@ -2466,6 +2470,53 @@ export interface components {
     };
     /** @enum {string} */
     SortingPreset: 'relevance' | 'text_level_position' | 'text_level_relevance';
+    /** TaskRead */
+    TaskRead: {
+      /**
+       * Id
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      id: string;
+      /**
+       * Userid
+       * @description ID of user who created this task
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      userId: string;
+      /**
+       * Label
+       * @description Label of the task
+       */
+      label: string;
+      /**
+       * Status
+       * @description Status of the task
+       * @default waiting
+       * @enum {string}
+       */
+      status?: 'waiting' | 'running' | 'done' | 'failed';
+      /**
+       * Starttime
+       * @description Time when the task was started
+       */
+      startTime?: string | null;
+      /**
+       * Endtime
+       * @description Time when the task has ended
+       */
+      endTime?: string | null;
+      /**
+       * Durationseconds
+       * @description Duration of the finished task in seconds
+       */
+      durationSeconds?: number | null;
+      /**
+       * Error
+       * @description Error message if the task failed
+       */
+      error?: string | null;
+      [key: string]: unknown;
+    };
     /** TekstErrorModel */
     TekstErrorModel: {
       detail: components['schemas']['ErrorDetail'];
@@ -4708,6 +4759,23 @@ export interface operations {
       };
     };
   };
+  /** Get tasks status */
+  getTasksStatus: {
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['TaskRead'][];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+    };
+  };
   /**
    * Find resources
    * @description Returns a list of all resources matching the given criteria.
@@ -5290,7 +5358,7 @@ export interface operations {
       /** @description Successful Response */
       202: {
         content: {
-          'application/json': unknown;
+          'application/json': components['schemas']['TaskRead'];
         };
       };
       /** @description Unauthorized */

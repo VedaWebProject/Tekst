@@ -2703,6 +2703,49 @@
         ]
       }
     },
+    "/platform/tasks": {
+      "get": {
+        "tags": [
+          "platform"
+        ],
+        "summary": "Get tasks status",
+        "operationId": "getTasksStatus",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/TaskRead"
+                  },
+                  "type": "array",
+                  "title": "Response Get Tasks Status Platform Tasks Get"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
     "/resources": {
       "post": {
         "tags": [
@@ -4065,7 +4108,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/TaskRead"
+                }
               }
             }
           },
@@ -10132,6 +10177,96 @@
           "text_level_position",
           "text_level_relevance"
         ]
+      },
+      "TaskRead": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "userId": {
+            "type": "string",
+            "title": "Userid",
+            "description": "ID of user who created this task",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label",
+            "description": "Label of the task"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "waiting",
+              "running",
+              "done",
+              "failed"
+            ],
+            "title": "Status",
+            "description": "Status of the task",
+            "default": "waiting"
+          },
+          "startTime": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Starttime",
+            "description": "Time when the task was started"
+          },
+          "endTime": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Endtime",
+            "description": "Time when the task has ended"
+          },
+          "durationSeconds": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Durationseconds",
+            "description": "Duration of the finished task in seconds"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error",
+            "description": "Error message if the task failed"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "id",
+          "userId",
+          "label"
+        ],
+        "title": "TaskRead"
       },
       "TekstErrorModel": {
         "properties": {
