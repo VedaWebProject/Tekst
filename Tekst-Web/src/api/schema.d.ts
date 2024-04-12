@@ -2961,6 +2961,12 @@ export interface components {
        * @default []
        */
       annotations?: components['schemas']['TextAnnotationEntry'][];
+      /**
+       * Lb
+       * @description Whether this token ends a line
+       * @default false
+       */
+      lb?: boolean;
     };
     /** TextCreate */
     TextCreate: {

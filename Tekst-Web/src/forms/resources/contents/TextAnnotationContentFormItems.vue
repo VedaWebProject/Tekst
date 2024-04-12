@@ -4,6 +4,8 @@ import NInputOsk from '@/components/NInputOsk.vue';
 import { NInput, NSelect, NFormItem, NDynamicInput } from 'naive-ui';
 import { contentFormRules } from '@/forms/formRules';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
+import LabelledSwitch from '@/components/LabelledSwitch.vue';
+import { KeyboardReturnIcon } from '@/icons';
 
 const props = defineProps<{
   model: TextAnnotationContentCreate;
@@ -53,20 +55,41 @@ function getAnnotationValueOptions(key?: string) {
             flex-wrap: wrap;
           "
         >
-          <!-- TOKEN -->
-          <n-form-item
-            :label="$t('resources.types.textAnnotation.contentFields.token')"
-            :path="`tokens[${tokenItemIndex}].token`"
-            :rule="contentFormRules.textAnnotation.token"
-            ignore-path-change
-            style="flex-grow: 1; flex-basis: 200px"
+          <div
+            style="
+              flex-grow: 1;
+              flex-basis: 250px;
+              display: flex;
+              align-items: flex-start;
+              gap: var(--content-gap);
+              flex-wrap: nowrap;
+            "
           >
-            <n-input-osk
-              v-model:value="tokenItem.token"
-              :font="resource.config?.general?.font || undefined"
-              :placeholder="$t('resources.types.textAnnotation.contentFields.token')"
-            />
-          </n-form-item>
+            <!-- TOKEN -->
+            <n-form-item
+              :label="$t('resources.types.textAnnotation.contentFields.token')"
+              :path="`tokens[${tokenItemIndex}].token`"
+              :rule="contentFormRules.textAnnotation.token"
+              ignore-path-change
+              style="flex-grow: 2"
+            >
+              <n-input-osk
+                v-model:value="tokenItem.token"
+                :font="resource.config?.general?.font || undefined"
+                :placeholder="$t('resources.types.textAnnotation.contentFields.token')"
+              />
+            </n-form-item>
+            <!-- LINEBREAK -->
+            <n-form-item ignore-path-change>
+              <labelled-switch
+                v-model:value="tokenItem.lb"
+                size="large"
+                :icon-on="KeyboardReturnIcon"
+                :icon-off="KeyboardReturnIcon"
+                :title="$t('resources.types.textAnnotation.contentFields.lb')"
+              />
+            </n-form-item>
+          </div>
           <!-- ANNOTATIONS -->
           <n-form-item
             :label="$t('resources.types.textAnnotation.contentFields.annotations')"

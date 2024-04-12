@@ -399,6 +399,7 @@ resources:
       parenthesis: tokenized, annotated text
       contentFields:
         token: Token
+        lb: This token concludes a line
         annotations: Annotations
         annotationKey: Annotation
         annotationValue: Value

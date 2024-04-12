@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import { NSwitch, NSpace } from 'naive-ui';
+import { NIcon, NSwitch, NSpace } from 'naive-ui';
+import type { Component } from 'vue';
 
 withDefaults(
   defineProps<{
     value?: string | number | boolean | undefined;
     label?: string;
+    iconOn?: Component;
+    iconOff?: Component;
     round?: boolean;
     size?: 'small' | 'medium' | 'large';
     disabled?: boolean;
@@ -16,6 +19,8 @@ withDefaults(
   {
     value: undefined,
     label: undefined,
+    iconOn: undefined,
+    iconOff: undefined,
     round: false,
     size: undefined,
     checkedValue: undefined,
@@ -38,7 +43,14 @@ defineEmits(['update:value']);
       :checked-value="checkedValue"
       :unchecked-value="uncheckedValue"
       @update:value="(v) => $emit('update:value', v)"
-    />
+    >
+      <template #checked-icon>
+        <n-icon :component="iconOn" />
+      </template>
+      <template #unchecked-icon>
+        <n-icon :component="iconOff" />
+      </template>
+    </n-switch>
     <span class="text-medium" :class="{ translucent: disabled }">
       {{ label }}
     </span>

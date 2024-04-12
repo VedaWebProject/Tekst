@@ -10437,8 +10437,7 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 2048,
-                "minLength": 8
+                "maxLength": 2048
               },
               {
                 "type": "null"
@@ -11087,6 +11086,12 @@
             "title": "Annotations",
             "description": "List of annotations on this token",
             "default": []
+          },
+          "lb": {
+            "type": "boolean",
+            "title": "Lb",
+            "description": "Whether this token ends a line",
+            "default": false
           }
         },
         "type": "object",

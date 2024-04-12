@@ -77,6 +77,7 @@ const contents = computed(() =>
     ...c,
     tokens: c.tokens.map((t) => ({
       token: t.token,
+      lb: t.lb,
       annotations: applyAnnotationDisplayTemplate(t.annotations),
     })),
   }))
@@ -137,20 +138,23 @@ function getAnnotationStyle(fmtFlags?: AnnotationDisplayFormatFlags): CSSPropert
 
 <template>
   <div v-for="content in contents" :key="content.id" class="content-container" :class="{ reduced }">
-    <div v-for="(token, tokenIndex) in content.tokens" :key="tokenIndex" class="token-container">
-      <div class="token b i" :style="fontStyle">
-        {{ token.token }}
+    <template v-for="(token, tokenIndex) in content.tokens" :key="tokenIndex">
+      <div class="token-container">
+        <div class="token b i" :style="fontStyle">
+          {{ token.token }}
+        </div>
+        <div class="annotations">
+          <span
+            v-for="(annotation, index) in token.annotations"
+            :key="index"
+            :style="getAnnotationStyle(annotation.format)"
+          >
+            {{ annotation.display }}
+          </span>
+        </div>
       </div>
-      <div class="annotations">
-        <span
-          v-for="(annotation, index) in token.annotations"
-          :key="index"
-          :style="getAnnotationStyle(annotation.format)"
-        >
-          {{ annotation.display }}
-        </span>
-      </div>
-    </div>
+      <hr v-if="token.lb" class="token-lb" />
+    </template>
   </div>
 </template>
 
@@ -162,14 +166,20 @@ function getAnnotationStyle(fmtFlags?: AnnotationDisplayFormatFlags): CSSPropert
 }
 
 .content-container:not(:last-child) {
-  margin-bottom: var(--layout-gap);
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--main-bg-color);
+}
+
+.reduced .content-container {
+  column-gap: 12px;
 }
 
 .token-container {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  border-left: 2px solid var(--main-bg-color);
+  border-left: 1px solid var(--main-bg-color);
   padding-left: 8px;
 }
 
@@ -178,12 +188,15 @@ function getAnnotationStyle(fmtFlags?: AnnotationDisplayFormatFlags): CSSPropert
   padding-left: 0;
 }
 
-.token {
-  line-height: 1.25em;
+.token-lb {
+  width: 100%;
+  border: none;
+  height: 0px;
+  margin: 4px 0;
 }
 
-.reduced .token {
-  line-height: 1em;
+.reduced .token-lb {
+  display: none;
 }
 
 .annotations {

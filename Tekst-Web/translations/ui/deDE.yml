@@ -408,6 +408,7 @@ resources:
       parenthesis: tokenisierter, annotierter Text
       contentFields:
         token: Token
+        lb: Dieses Token schließt eine Zeile ab
         annotations: Annotationen
         annotationKey: Annotation
         annotationValue: Wert

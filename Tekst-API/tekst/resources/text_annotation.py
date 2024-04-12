@@ -229,7 +229,6 @@ class TextAnnotationResourceConfig(ResourceConfigBase):
     display_template: Annotated[
         str | None,
         Field(
-            min_length=8,
             max_length=2048,
             description=(
                 "Template string used for displaying the annotations in the web client "
@@ -335,6 +334,10 @@ class TextAnnotationToken(ModelBase):
             max_length=128,
         ),
     ] = []
+    lb: Annotated[
+        bool,
+        Field(description="Whether this token ends a line"),
+    ] = False
 
 
 class TextAnnotationContent(ContentBase):
