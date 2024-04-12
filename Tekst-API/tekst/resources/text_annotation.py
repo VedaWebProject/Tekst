@@ -236,7 +236,7 @@ class TextAnnotationResourceConfig(ResourceConfigBase):
                 "separated by commas)"
             ),
         ),
-        val.CleanupOneline,
+        val.CleanupMultiline,
         val.EmptyStringToNone,
     ] = None
 
