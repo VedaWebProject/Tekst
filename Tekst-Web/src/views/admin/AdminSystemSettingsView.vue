@@ -6,7 +6,7 @@ import {
   NDynamicInput,
   NDivider,
   NButton,
-  NSpace,
+  NFlex,
   NSelect,
   NForm,
   NFormItem,
@@ -210,7 +210,7 @@ function resetForm() {
 
       <!-- DISPLAY OPTIONS -->
       <n-form-item :label="$t('admin.system.platformSettings.formLabelDisplay')">
-        <n-space vertical>
+        <n-flex vertical>
           <!-- ALWAY SHOW TEXT INFO, ALSO ON NON-TEXT-SPECIFIC PAGES? -->
           <labelled-switch
             v-model:value="formModel.alwaysShowTextInfo"
@@ -221,7 +221,7 @@ function resetForm() {
             v-model:value="formModel.showTekstFooterHint"
             :label="$t('models.platformSettings.showTekstFooterHint')"
           />
-        </n-space>
+        </n-flex>
       </n-form-item>
 
       <n-divider />
@@ -279,7 +279,7 @@ function resetForm() {
       </n-form-item>
 
       <n-form-item :show-label="false">
-        <n-space vertical>
+        <n-flex vertical>
           <!-- SHOW RESOURCE CATEGORY HEADINGS -->
           <labelled-switch
             v-model:value="formModel.showResourceCategoryHeadings"
@@ -290,7 +290,7 @@ function resetForm() {
             v-model:value="formModel.alwaysShowResourceCategoryHeadings"
             :label="$t('models.platformSettings.alwaysShowResourceCategoryHeadings')"
           />
-        </n-space>
+        </n-flex>
       </n-form-item>
 
       <n-divider />

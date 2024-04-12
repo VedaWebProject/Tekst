@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { NEllipsis, NDivider, NButton, NProgress, NSpace } from 'naive-ui';
+import { NEllipsis, NDivider, NButton, NProgress, NFlex } from 'naive-ui';
 import MetadataDisplay from '@/components/resource/MetadataDisplay.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
@@ -61,10 +61,10 @@ watch(showInfoModal, async (after) => {
     />
 
     <div v-if="auth.loggedIn" class="gray-box">
-      <n-space vertical>
+      <n-flex vertical>
         <resource-publication-status :resource="resource" size="tiny" />
         <resource-is-version-info v-if="resource.originalId" :resource="resource" size="tiny" />
-      </n-space>
+      </n-flex>
     </div>
 
     <p v-if="resource.description?.length">

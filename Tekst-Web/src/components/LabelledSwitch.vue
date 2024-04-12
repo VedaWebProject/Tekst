@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { NIcon, NSwitch, NSpace } from 'naive-ui';
+import { NIcon, NSwitch, NFlex } from 'naive-ui';
 import type { Component } from 'vue';
 
 withDefaults(
@@ -32,7 +32,7 @@ defineEmits(['update:value']);
 </script>
 
 <template>
-  <n-space align="center" :wrap="false">
+  <n-flex align="center" :wrap="false">
     <n-switch
       :value="value"
       :round="round"
@@ -54,5 +54,5 @@ defineEmits(['update:value']);
     <span class="text-medium" :class="{ translucent: disabled }">
       {{ label }}
     </span>
-  </n-space>
+  </n-flex>
 </template>

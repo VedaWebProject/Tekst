@@ -5,7 +5,7 @@ import {
   NButton,
   NInput,
   NIcon,
-  NSpace,
+  NFlex,
   NSpin,
   NPagination,
   NList,
@@ -181,7 +181,7 @@ onMounted(() => {
 
   <define-template>
     <!-- Pagination -->
-    <n-space v-if="!!total" justify="end">
+    <n-flex v-if="!!total" justify="end">
       <n-pagination
         v-model:page="filters.pg"
         v-model:page-size="filters.pgs"
@@ -193,7 +193,7 @@ onMounted(() => {
         :page-sizes="[10, 25, 50]"
         show-size-picker
       />
-    </n-space>
+    </n-flex>
   </define-template>
 
   <!-- Filters -->
@@ -202,7 +202,7 @@ onMounted(() => {
     @item-header-click="handleFilterCollapseItemClick"
   >
     <n-collapse-item :title="$t('general.filters')" name="filters">
-      <n-space vertical class="gray-box" style="padding-left: var(--layout-gap)">
+      <n-flex vertical class="gray-box" style="padding-left: var(--layout-gap)">
         <n-input
           v-model:value="filters.q"
           :placeholder="$t('search.searchAction')"
@@ -253,7 +253,7 @@ onMounted(() => {
             <n-icon :component="UndoIcon" />
           </template>
         </n-button>
-      </n-space>
+      </n-flex>
     </n-collapse-item>
   </n-collapse>
 

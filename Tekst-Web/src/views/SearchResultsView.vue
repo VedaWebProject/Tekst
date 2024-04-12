@@ -2,7 +2,7 @@
 import IconHeading from '@/components/generic/IconHeading.vue';
 import { NothingFoundIcon, SearchResultsIcon } from '@/icons';
 import SearchResult from '@/components/search/SearchResult.vue';
-import { NSpace, NList, NTime, NSpin, NPagination } from 'naive-ui';
+import { NFlex, NList, NTime, NSpin, NPagination } from 'naive-ui';
 import { usePlatformData } from '@/composables/platformData';
 import { computed, onBeforeMount, ref, watch } from 'vue';
 import { POST, type SearchRequestBody, type SearchResults, type SortingPreset } from '@/api';
@@ -135,7 +135,7 @@ onBeforeMount(() => processQuery());
 
 <template>
   <define-template>
-    <n-space justify="end" class="pagination-container" align="center">
+    <n-flex justify="end" class="pagination-container" align="center">
       <n-pagination
         v-if="resultsData?.hits.length"
         v-model:page="pagination.page"
@@ -159,7 +159,7 @@ onBeforeMount(() => processQuery());
           />
         </template>
       </n-pagination>
-    </n-space>
+    </n-flex>
   </define-template>
 
   <icon-heading level="1" :icon="SearchResultsIcon">

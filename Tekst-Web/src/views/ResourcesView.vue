@@ -3,7 +3,7 @@ import {
   NButton,
   NInput,
   NIcon,
-  NSpace,
+  NFlex,
   NSpin,
   NPagination,
   NList,
@@ -336,7 +336,7 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
       @item-header-click="handleFilterCollapseItemClick"
     >
       <n-collapse-item :title="$t('general.filters')" name="filters">
-        <n-space vertical class="gray-box">
+        <n-flex vertical class="gray-box">
           <n-input
             v-model:value="filters.search"
             :placeholder="$t('search.searchAction')"
@@ -365,7 +365,7 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
               <n-icon :component="UndoIcon" />
             </template>
           </n-button>
-        </n-space>
+        </n-flex>
       </n-collapse-item>
     </n-collapse>
 

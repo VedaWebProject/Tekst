@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { AnyResourceRead, UserRead } from '@/api';
 import {
-  NSpace,
+  NFlex,
   NDropdown,
   NEllipsis,
   NIcon,
@@ -200,7 +200,7 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
         </span>
       </template>
       <template #header-extra>
-        <n-space>
+        <n-flex>
           <n-dropdown
             :options="actionOptions"
             :size="state.dropdownSize"
@@ -215,7 +215,7 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
             </n-button>
           </n-dropdown>
           <resource-info-widget :resource="targetResource" />
-        </n-space>
+        </n-flex>
       </template>
 
       <template #description>
@@ -225,14 +225,14 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
           size="tiny"
           style="margin-bottom: var(--layout-gap)"
         />
-        <n-space vertical>
+        <n-flex vertical>
           <resource-publication-status :resource="targetResource" size="tiny" />
           <resource-is-version-info
             v-if="targetResource.originalId"
             :resource="targetResource"
             size="tiny"
           />
-        </n-space>
+        </n-flex>
       </template>
 
       <template v-if="targetResource.description?.length">

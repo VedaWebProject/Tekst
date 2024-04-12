@@ -4,7 +4,7 @@ import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 
 import IconHeading from '@/components/generic/IconHeading.vue';
 import { LockIcon, LockOpenIcon, MaintenanceIcon, UpdateIcon } from '@/icons';
-import { NTime, NSpace, NButton, NIcon, NTable } from 'naive-ui';
+import { NTime, NFlex, NButton, NIcon, NTable } from 'naive-ui';
 import { DELETE, GET, type IndexInfoResponse } from '@/api';
 import { useMessages } from '@/composables/messages';
 import { onBeforeMount, onBeforeUnmount, ref } from 'vue';
@@ -91,8 +91,8 @@ onBeforeUnmount(() => stopLockPolling());
         </tbody>
       </n-table>
     </template>
-    <n-space vertical style="margin-top: var(--layout-gap)">
-      <n-space align="center">
+    <n-flex vertical style="margin-top: var(--layout-gap)">
+      <n-flex align="center">
         <n-button
           type="primary"
           size="small"
@@ -106,8 +106,8 @@ onBeforeUnmount(() => stopLockPolling());
           </template>
         </n-button>
         <div>{{ $t('admin.system.maintenance.index.actionCreate') }}</div>
-      </n-space>
-    </n-space>
+      </n-flex>
+    </n-flex>
 
     <!-- SYSTEM LOCKS -->
     <h3>{{ $t('admin.system.maintenance.locks.heading') }}</h3>
@@ -117,7 +117,7 @@ onBeforeUnmount(() => stopLockPolling());
           <tr v-for="(value, key) in locks" :key="key">
             <td>{{ $t(`admin.system.maintenance.locks.${key}`) }}</td>
             <td :style="{ color: value ? 'var(--col-error)' : 'var(--col-success)' }">
-              <n-space align="center">
+              <n-flex align="center">
                 <n-icon :component="value ? LockIcon : LockOpenIcon" />
                 <div>
                   {{
@@ -126,14 +126,14 @@ onBeforeUnmount(() => stopLockPolling());
                       : $t('admin.system.maintenance.locks.unlocked')
                   }}
                 </div>
-              </n-space>
+              </n-flex>
             </td>
           </tr>
         </tbody>
       </n-table>
     </template>
-    <n-space vertical style="margin-top: var(--layout-gap)">
-      <n-space align="center">
+    <n-flex vertical style="margin-top: var(--layout-gap)">
+      <n-flex align="center">
         <n-button
           type="primary"
           size="small"
@@ -147,7 +147,7 @@ onBeforeUnmount(() => stopLockPolling());
           </template>
         </n-button>
         <div>{{ $t('admin.system.maintenance.locks.actionRelease') }}</div>
-      </n-space>
-    </n-space>
+      </n-flex>
+    </n-flex>
   </div>
 </template>

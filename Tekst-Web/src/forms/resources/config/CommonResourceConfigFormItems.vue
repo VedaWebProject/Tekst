@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { CommonResourceConfig } from '@/api';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
-import { NSpace, NFormItem, NInputNumber, NSelect } from 'naive-ui';
+import { NFlex, NFormItem, NInputNumber, NSelect } from 'naive-ui';
 import { useStateStore } from '@/stores';
 import { usePlatformData } from '@/composables/platformData';
 import { computed } from 'vue';
@@ -70,7 +70,7 @@ function handleUpdate(field: string, value: any) {
   </n-form-item>
 
   <n-form-item :show-label="false" :show-feedback="false">
-    <n-space vertical>
+    <n-flex vertical>
       <!-- DEFAULT ACTIVE -->
       <labelled-switch
         :value="model.defaultActive"
@@ -78,14 +78,14 @@ function handleUpdate(field: string, value: any) {
         @update:value="(v) => handleUpdate('defaultActive', v)"
       />
       <!-- SHOW ON PARENT LEVEL -->
-      <n-space :wrap="false" align="center">
+      <n-flex :wrap="false" align="center">
         <labelled-switch
           :value="model.showOnParentLevel"
           :label="$t('resources.settings.config.common.showOnParentLevel')"
           @update:value="(u) => handleUpdate('showOnParentLevel', u)"
         />
         <help-button-widget help-key="resourceConfigCombinedSiblings" />
-      </n-space>
-    </n-space>
+      </n-flex>
+    </n-flex>
   </n-form-item>
 </template>

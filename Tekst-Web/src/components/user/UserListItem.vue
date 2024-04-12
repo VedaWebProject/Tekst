@@ -6,7 +6,7 @@ import {
   NBadge,
   NListItem,
   NThing,
-  NSpace,
+  NFlex,
   NButton,
   NDropdown,
   type DropdownOption,
@@ -142,7 +142,7 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
         <user-avatar :avatar-url="targetUser.avatarUrl || undefined" :size="64" />
       </template>
       <template #header>
-        <n-space align="center">
+        <n-flex align="center">
           <router-link :to="{ name: 'user', params: { username: targetUser.username } }" class="b">
             {{ targetUser.name }}
           </router-link>
@@ -181,10 +181,10 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
               <n-icon :component="StarIcon" color="#fff" />
             </template>
           </n-badge>
-        </n-space>
+        </n-flex>
       </template>
       <template #header-extra>
-        <n-space>
+        <n-flex>
           <n-dropdown
             :options="actionOptions"
             :size="state.dropdownSize"
@@ -198,7 +198,7 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
               </template>
             </n-button>
           </n-dropdown>
-        </n-space>
+        </n-flex>
       </template>
       <template #description>
         <div class="text-small">

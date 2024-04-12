@@ -9,7 +9,7 @@ import {
   NFormItem,
   NInput,
   NButton,
-  NSpace,
+  NFlex,
 } from 'naive-ui';
 import type { UserCreate } from '@/api';
 import { POST } from '@/api';
@@ -192,7 +192,7 @@ onMounted(() => {
         </n-form-item>
       </n-form>
 
-      <n-space vertical :size="12" style="margin-top: 1rem">
+      <n-flex vertical :size="12" style="margin-top: 1rem">
         <n-button
           block
           type="primary"
@@ -205,7 +205,7 @@ onMounted(() => {
         <n-button secondary block @click="switchToLogin">
           {{ $t('register.switchToLogin') }}
         </n-button>
-      </n-space>
+      </n-flex>
     </div>
   </div>
 </template>

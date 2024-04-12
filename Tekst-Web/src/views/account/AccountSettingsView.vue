@@ -5,7 +5,7 @@ import { useMessages } from '@/composables/messages';
 import { usePlatformData } from '@/composables/platformData';
 import { useAuthStore } from '@/stores';
 import type { FormInst, FormItemInst, FormItemRule } from 'naive-ui';
-import { NButton, NInput, NFormItem, NForm, useDialog, NSpace } from 'naive-ui';
+import { NButton, NInput, NFormItem, NForm, useDialog, NFlex } from 'naive-ui';
 import { ref } from 'vue';
 import { $t } from '@/i18n';
 import { useModelChanges } from '@/composables/modelChanges';
@@ -476,7 +476,7 @@ async function handleDeleteAccount() {
       :disabled="loading"
       require-mark-placement="right-hanging"
     >
-      <n-space vertical>
+      <n-flex vertical>
         <labelled-switch
           :value="true"
           disabled
@@ -490,7 +490,7 @@ async function handleDeleteAccount() {
             :disabled="loading"
           />
         </template>
-      </n-space>
+      </n-flex>
     </n-form>
     <button-shelf top-gap>
       <n-button
@@ -525,7 +525,7 @@ async function handleDeleteAccount() {
       :disabled="loading"
       require-mark-placement="right-hanging"
     >
-      <n-space vertical>
+      <n-flex vertical>
         <template v-for="(_, field) in userNotificationTriggersFormModel" :key="field">
           <labelled-switch
             v-model:value="userNotificationTriggersFormModel[field]"
@@ -533,7 +533,7 @@ async function handleDeleteAccount() {
             :disabled="loading"
           />
         </template>
-      </n-space>
+      </n-flex>
     </n-form>
     <button-shelf top-gap>
       <n-button
@@ -568,7 +568,7 @@ async function handleDeleteAccount() {
       :disabled="loading"
       require-mark-placement="right-hanging"
     >
-      <n-space vertical>
+      <n-flex vertical>
         <template v-for="(_, field) in adminNotificationTriggersFormModel" :key="field">
           <labelled-switch
             v-model:value="adminNotificationTriggersFormModel[field]"
@@ -576,7 +576,7 @@ async function handleDeleteAccount() {
             :disabled="loading"
           />
         </template>
-      </n-space>
+      </n-flex>
     </n-form>
     <button-shelf top-gap>
       <n-button

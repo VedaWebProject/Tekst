@@ -3,7 +3,7 @@ import {
   NIcon,
   NAlert,
   NDropdown,
-  NSpace,
+  NFlex,
   NForm,
   NButton,
   type FormInst,
@@ -531,7 +531,7 @@ async function handleNearestChangeClick(mode: 'preceding' | 'subsequent') {
         </button-shelf>
       </template>
 
-      <n-space v-else vertical align="center" style="margin-bottom: var(--layout-gap)">
+      <n-flex v-else vertical align="center" style="margin-bottom: var(--layout-gap)">
         <huge-labelled-icon
           :message="$t('contents.noContent')"
           :icon="NoContentIcon"
@@ -543,7 +543,7 @@ async function handleNearestChangeClick(mode: 'preceding' | 'subsequent') {
           </template>
           {{ $t('contents.btnAddContent') }}
         </n-button>
-      </n-space>
+      </n-flex>
     </div>
   </template>
 

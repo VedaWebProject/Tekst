@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { NDrawer, NDrawerContent, NButton, NSpace, NIcon } from 'naive-ui';
+import { NDrawer, NDrawerContent, NButton, NFlex, NIcon } from 'naive-ui';
 import { useAuthStore, useBrowseStore, useResourcesStore, useThemeStore } from '@/stores';
 import ResourceToggleDrawerItem from '@/components/browse/ResourceToggleDrawerItem.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
@@ -65,7 +65,7 @@ function toggleCategory(index: number, activate: boolean) {
         v-for="(category, index) in browse.resourcesCategorized"
         :key="category.category.key"
       >
-        <n-space
+        <n-flex
           v-if="browse.resourcesCategorized.length > 1"
           class="category-header"
           align="center"
@@ -93,7 +93,7 @@ function toggleCategory(index: number, activate: boolean) {
               />
             </template>
           </n-button>
-        </n-space>
+        </n-flex>
         <resource-toggle-drawer-item
           v-for="resource in category.resources"
           :key="`${resource.id}`"

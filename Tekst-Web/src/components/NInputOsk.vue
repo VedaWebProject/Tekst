@@ -3,7 +3,7 @@ import { usePlatformData } from '@/composables/platformData';
 import { CapsLockIcon, KeyboardIcon } from '@/icons';
 import {
   NSpin,
-  NSpace,
+  NFlex,
   NSelect,
   NInput,
   NButton,
@@ -191,16 +191,16 @@ defineExpose({ focus: focusTargetInput, select: selectTargetInput });
         </div>
       </template>
 
-      <n-space align="center" justify="center" style="min-height: 100%">
-        <n-space v-if="oskLayout" vertical justify="center" align="center" :size="18">
-          <n-space
+      <n-flex align="center" justify="center" style="min-height: 100%">
+        <n-flex v-if="oskLayout" vertical justify="center" align="center" :size="18">
+          <n-flex
             v-for="(line, lineIndex) in oskLayout"
             :key="lineIndex"
             justify="center"
             align="center"
             size="large"
           >
-            <n-space
+            <n-flex
               v-for="(group, groupIndex) in line"
               :key="groupIndex"
               justify="center"
@@ -220,11 +220,11 @@ defineExpose({ focus: focusTargetInput, select: selectTargetInput });
                   {{ shiftActive && key.shift ? key.shift : key.char }}
                 </n-button>
               </template>
-            </n-space>
-          </n-space>
+            </n-flex>
+          </n-flex>
 
           <!-- SHIFT / CAPSLOCK -->
-          <n-space v-if="shiftCharsPresent" justify="center" align="center" size="small">
+          <n-flex v-if="shiftCharsPresent" justify="center" align="center" size="small">
             <n-button
               type="primary"
               size="large"
@@ -248,8 +248,8 @@ defineExpose({ focus: focusTargetInput, select: selectTargetInput });
                 <n-icon :component="ShiftIcon" />
               </template>
             </n-button>
-          </n-space>
-        </n-space>
+          </n-flex>
+        </n-flex>
 
         <n-spin v-else-if="loading" class="content-loader" />
 
@@ -260,7 +260,7 @@ defineExpose({ focus: focusTargetInput, select: selectTargetInput });
             })
           }}
         </div>
-      </n-space>
+      </n-flex>
 
       <template #footer>
         <button-shelf>

@@ -3,7 +3,7 @@ const state = useStateStore();
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate();
 import { computed } from 'vue';
 import { useUsersSearch } from '@/composables/fetchers';
-import { NListItem, NInput, NIcon, NSpace, NSpin, NPagination, NList } from 'naive-ui';
+import { NListItem, NInput, NIcon, NFlex, NSpin, NPagination, NList } from 'naive-ui';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import type { PublicUserSearchFilters } from '@/api';
 import { ref } from 'vue';
@@ -44,7 +44,7 @@ function resetPagination() {
 
   <define-template>
     <!-- Pagination -->
-    <n-space v-if="!!total" justify="end">
+    <n-flex v-if="!!total" justify="end">
       <n-pagination
         v-model:page="filters.pg"
         v-model:page-size="filters.pgs"
@@ -56,7 +56,7 @@ function resetPagination() {
         :page-sizes="[10, 25, 50]"
         show-size-picker
       />
-    </n-space>
+    </n-flex>
   </define-template>
 
   <n-input

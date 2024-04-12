@@ -4,7 +4,7 @@ import { useMessages } from '@/composables/messages';
 import { useStateStore } from '@/stores';
 import {
   NSelect,
-  NSpace,
+  NFlex,
   NButton,
   NForm,
   NFormItem,
@@ -211,7 +211,7 @@ async function handleDelete() {
       </n-form-item>
 
       <n-form-item :label="$t('general.flags')">
-        <n-space vertical>
+        <n-flex vertical>
           <!-- LABELLED LOCATION -->
           <labelled-switch
             v-model:value="model.labeledLocation"
@@ -219,7 +219,7 @@ async function handleDelete() {
           />
           <!-- ACTIVE -->
           <labelled-switch v-model:value="model.isActive" :label="$t('models.text.isActive')" />
-        </n-space>
+        </n-flex>
       </n-form-item>
     </n-form>
 
