@@ -18,7 +18,7 @@ from fastapi import (
     status,
 )
 from fastapi.responses import FileResponse
-from pydantic import StringConstraints
+from pydantic import StringConstraints, ValidationError
 from starlette.background import BackgroundTask
 
 from tekst import errors, notifications
@@ -758,13 +758,20 @@ async def import_resource_data(
     )
     for content_data in import_data.contents:
         is_update = str(content_data.get("locationId", "")) in existing_contents_dict
-        contents["updates" if is_update else "creates"].append(
-            (update_model if is_update else create_model)(
-                resource_id=resource.id,
-                resource_type=resource.resource_type,
-                **content_data,
+        try:
+            contents["updates" if is_update else "creates"].append(
+                (update_model if is_update else create_model)(
+                    resource_id=resource.id,
+                    resource_type=resource.resource_type,
+                    **content_data,
+                )
             )
-        )
+        except ValidationError as e:
+            http_err = errors.update_values(
+                exc=errors.E_400_IMPORT_INVALID_CONTENT_DATA,
+                values={"errors": e.errors()},
+            )
+            raise http_err
 
     # a sacrifice for the GC
     import_data = None

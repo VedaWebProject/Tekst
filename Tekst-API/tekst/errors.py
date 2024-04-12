@@ -60,6 +60,14 @@ def error_instance(
     )
 
 
+def update_values(exc: TekstHTTPException, values: dict[str, Any]):
+    if "values" in exc.detail.detail:
+        exc.detail.detail.values.update(values)
+    else:
+        exc.detail.detail.values = values
+    return exc
+
+
 # PLATFORM API HTTP ERRORS DEFINED BELOW
 
 E_401_UNAUTHORIZED = error_instance(

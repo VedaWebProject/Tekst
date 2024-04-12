@@ -59,7 +59,7 @@ export function useErrors() {
     // show error message
     if ($te(`errors.${detail.key}`)) {
       const m = $t(`errors.${detail.key}`, (detail.values as Record<string, unknown>) || undefined);
-      displayMessage && message.error(m, undefined, 10);
+      displayMessage && message.error(m, detail.values || undefined, 10);
       return m;
     } else {
       const m = $t('errors.unexpected');
