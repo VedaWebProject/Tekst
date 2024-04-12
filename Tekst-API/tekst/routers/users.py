@@ -1,5 +1,6 @@
 from typing import Annotated
 
+from beanie import PydanticObjectId
 from beanie.operators import NE, Eq, Or, Text
 from fastapi import APIRouter, Depends, Path, Query, Request, status
 
@@ -10,7 +11,6 @@ from tekst.auth import (
     UserManager,
     get_user_manager,
 )
-from tekst.models.common import PydanticObjectId
 from tekst.models.search import PaginationSettings
 from tekst.models.user import (
     PublicUsersSearchResult,

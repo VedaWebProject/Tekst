@@ -2,8 +2,8 @@ import json
 
 import pytest
 
+from beanie import PydanticObjectId
 from httpx import AsyncClient
-from tekst.models.common import PydanticObjectId
 from tekst.models.resource import ResourceBaseDocument
 
 

@@ -5,13 +5,13 @@ from time import process_time
 from typing import Any
 from uuid import uuid4
 
+from beanie import PydanticObjectId
 from beanie.operators import Eq, In
 from elasticsearch import Elasticsearch
 
 from tekst import locks
 from tekst.config import TekstConfig, get_config
 from tekst.logging import log
-from tekst.models.common import PydanticObjectId
 from tekst.models.content import ContentBaseDocument
 from tekst.models.location import LocationDocument
 from tekst.models.resource import ResourceBaseDocument

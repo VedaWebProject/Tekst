@@ -1,5 +1,6 @@
 from typing import Annotated
 
+from beanie import PydanticObjectId
 from fastapi import APIRouter, Path, status
 
 from tekst import errors
@@ -7,7 +8,6 @@ from tekst.auth import (
     UserDep,
 )
 from tekst.models.bookmark import BookmarkCreate, BookmarkDocument, BookmarkRead
-from tekst.models.common import PydanticObjectId
 from tekst.models.location import LocationDocument
 from tekst.models.text import TextDocument
 

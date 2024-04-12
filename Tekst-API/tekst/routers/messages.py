@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from typing import Annotated
 
+from beanie import PydanticObjectId
 from beanie.operators import LT, And, Eq, In, Or, Set
 from fastapi import APIRouter, Depends, Path, Query, status
 
@@ -9,7 +10,6 @@ from tekst.auth import (
     UserDep,
 )
 from tekst.config import TekstConfig, get_config
-from tekst.models.common import PydanticObjectId
 from tekst.models.message import (
     UserMessageCreate,
     UserMessageDocument,
