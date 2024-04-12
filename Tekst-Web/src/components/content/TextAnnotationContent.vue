@@ -172,7 +172,7 @@ function getAnnotationStyle(fmtFlags?: AnnotationDisplayFormatFlags): CSSPropert
 }
 
 .reduced .content-container {
-  column-gap: 12px;
+  column-gap: 6px;
 }
 
 .token-container {
@@ -184,8 +184,7 @@ function getAnnotationStyle(fmtFlags?: AnnotationDisplayFormatFlags): CSSPropert
 }
 
 .reduced .token-container {
-  border-left: none;
-  padding-left: 0;
+  padding-left: 4px;
 }
 
 .token-lb {
