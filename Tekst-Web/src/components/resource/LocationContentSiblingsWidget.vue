@@ -54,7 +54,7 @@ async function handleClick() {
 
   <generic-modal
     v-model:show="showModal"
-    width="wide"
+    width="full"
     :title="resource.title"
     :icon="ResourceIcon"
     heading-level="2"
