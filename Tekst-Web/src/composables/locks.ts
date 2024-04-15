@@ -12,7 +12,7 @@ export function useLocks(options?: { interval?: number; immediate?: boolean }) {
         locks.value = data;
       }
     },
-    options?.interval || 3000,
+    options?.interval || 5000,
     { immediate: options?.immediate }
   );
 
