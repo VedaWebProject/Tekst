@@ -37,9 +37,3 @@ class LocationData(ModelBase):
 class ResourceImportData(ModelBase):
     resource_id: PydanticObjectId
     contents: list[dict] = []
-
-
-class ResourceDataImportResponse(ModelBase):
-    updated: int
-    created: int
-    errors: int

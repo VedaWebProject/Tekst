@@ -32,6 +32,7 @@ general:
   not: not
   new: New
   in: in
+  system: System
   details: Details
   loading: Loading...
   downloadSaved: File saved as {filename}.
@@ -81,6 +82,7 @@ errors:
   importInvalidContentData: Some contents in the import data don't follow the required schema.
   segmentKeyLocaleConflict: A segment with this key and language already exists.
   textSameTitleOrSlug: There is already a text with the same title or slug.
+  locked: There is already an active background task for this operation.
 
 nav:
   about: About
@@ -93,6 +95,21 @@ osk:
   inputBtnTip: Open on-screen keyboard
   inputPlaceholder: Type on the on-screen keyboard and press Enter to insert your input...
   msgErrorLoading: 'Error loading on-screen keyboard layout: {layout}'
+
+tasks:
+  title: Background Tasks
+  successful: Background task finished successfully
+  failed: Background task failed
+  statuses:
+    running: running
+    done: successful
+    failed: failed
+  types:
+    index_create_update: '@:admin.system.maintenance.index.actionCreate'
+    resource_import: Import resource data
+    broadcast_user_ntfc: Broadcast user notifications
+    broadcast_admin_ntfc: Broadcast admin notifications
+    contents_changed_hook: Update resource after changed contents
 
 routes:
   pageTitle:
@@ -420,7 +437,7 @@ contents:
   btnAddContent: Add content
   msgSaved: The content for this location has been saved.
   msgDeleted: The content for this location has been deleted.
-  msgImportSuccess: 'Import finished. Contents newly created: {created}. Contents modified: {updated}. Errors: {errors}.'
+  msgImportInfo: The import will be processed in the background. This might take a while.
   msgNoNearest: There are no more locations holding content in this direction.
   confirmDelete: Are you sure you want to delete the content for this location?
   msgNoOwnContentTitle: No own content for this location!
@@ -643,14 +660,18 @@ admin:
         actionCreate: Re-create search index
         actionCreateStarted: The search index will be updated in the background. This might take a while.
         actionCreateSuccess: Search index has been updated
-      locks:
-        heading: System Locks
-        locked: locked
-        unlocked: not locked
-        actionRelease: Release all system locks
-        actionReleaseSuccess: All system locks have been released
-        index_create_update: Creating/updating search index
-        text_structure_import: Importing text structure
+      tasks:
+        noTasks: No active background tasks
+        type: Type
+        status: Status
+        started: Started
+        ended: Ended
+        duration: Duration
+        seconds: '{seconds} sec'
+        startedBy: Started by
+        actionUpdate: Update list of system background tasks
+        actionDelete: Delete all background tasks
+        actionDeleteSuccess: All background tasks have been deleted
     segments:
       heading: Site Segments
       systemKeys:

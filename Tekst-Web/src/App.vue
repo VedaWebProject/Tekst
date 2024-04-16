@@ -11,7 +11,6 @@ import {
   NDialogProvider,
   NGlobalStyle,
   NBackTop,
-  useThemeVars,
 } from 'naive-ui';
 import PageHeader from './layout/PageHeader.vue';
 import PageFooter from './layout/PageFooter.vue';
@@ -25,7 +24,6 @@ import TasksWidget from '@/components/TasksWidget.vue';
 const auth = useAuthStore();
 const state = useStateStore();
 const theme = useThemeStore();
-const themeVars = useThemeVars();
 const { initialized, error } = useInitializeApp();
 
 // i18n
@@ -124,13 +122,14 @@ a:hover {
 
   --main-bg-color: v-bind(theme.mainBgColor);
   --content-bg-color: v-bind(theme.contentBgColor);
-  --text-color: v-bind(themeVars.textColor1);
-  --text-color-fade: v-bind(themeVars.textColor3);
+  --base-color: v-bind(theme.theme.common.baseColor);
+  --text-color: v-bind(theme.theme.common.textColor1);
+  --text-color-fade: v-bind(theme.theme.common.textColor3);
 
   /* NaiveUI feedback colors */
-  --col-info: v-bind(themeVars.infoColor);
-  --col-success: v-bind(themeVars.successColor);
-  --col-warning: v-bind(themeVars.warningColor);
-  --col-error: v-bind(themeVars.errorColor);
+  --col-info: v-bind(theme.theme.common.infoColor);
+  --col-success: v-bind(theme.theme.common.successColor);
+  --col-warning: v-bind(theme.theme.common.warningColor);
+  --col-error: v-bind(theme.theme.common.errorColor);
 }
 </style>

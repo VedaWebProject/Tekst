@@ -8,6 +8,7 @@ import UserDisplay from '@/components/user/UserDisplay.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import { useMagicKeys, whenever } from '@vueuse/core';
 import type { UserMessageRead } from '@/api';
+import { toLocalTime } from '@/utils';
 
 const userMessages = useUserMessagesStore();
 const auth = useAuthStore();
@@ -97,7 +98,7 @@ whenever(ctrlEnter, () => {
             style="display: flex; align-items: center; gap: var(--content-gap)"
             class="message-meta"
           >
-            <n-time :time="new Date(msg.time || '')" type="datetime" />
+            <n-time v-if="msg.time" :time="toLocalTime(msg.time)" type="datetime" />
             <n-icon
               v-if="msg.sender === auth.user?.id"
               :component="msg.read ? MarkChatReadIcon : MarkChatUnreadIcon"

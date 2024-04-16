@@ -4,7 +4,7 @@ from beanie import PydanticObjectId
 from beanie.operators import NotIn
 from fastapi import APIRouter, Path, status
 
-from tekst import errors, locks
+from tekst import errors, tasks
 from tekst.auth import OptionalUserDep, SuperuserDep, UserDep
 from tekst.config import ConfigDep
 from tekst.models.location import LocationDocument
@@ -27,7 +27,6 @@ from tekst.models.user import UserDocument
 from tekst.resources import resource_types_mgr
 from tekst.routers.texts import get_all_texts
 from tekst.settings import get_settings
-from tekst.tasks import Task, TaskDocument, TaskRead
 
 
 router = APIRouter(
@@ -233,38 +232,36 @@ async def get_statistics(su: SuperuserDep) -> PlatformStats:
 
 
 @router.get(
-    "/locks/{key}",
+    "/tasks",
     status_code=status.HTTP_200_OK,
+    response_model=list[tasks.TaskRead],
     responses=errors.responses(
         [
             errors.E_401_UNAUTHORIZED,
-            errors.E_403_FORBIDDEN,
         ]
     ),
 )
-async def get_lock_status(
-    su: SuperuserDep, lock_key: Annotated[locks.LockKey, Path(alias="key")]
-) -> bool:
-    return await locks.is_locked(lock_key)
+async def get_user_tasks_status(user: UserDep) -> list[tasks.TaskDocument]:
+    return await tasks.get_tasks(user, delete_finished=True)
 
 
 @router.get(
-    "/locks",
+    "/tasks/all",
     status_code=status.HTTP_200_OK,
+    response_model=list[tasks.TaskRead],
     responses=errors.responses(
         [
             errors.E_401_UNAUTHORIZED,
-            errors.E_403_FORBIDDEN,
         ]
     ),
 )
-async def get_locks_status(su: SuperuserDep) -> dict[str, bool]:
-    return await locks.get_locks_status()
+async def get_all_tasks_status(su: SuperuserDep) -> list[tasks.TaskDocument]:
+    return await tasks.get_tasks(su, get_all=True)
 
 
 @router.delete(
-    "/locks",
-    status_code=status.HTTP_200_OK,
+    "/tasks",
+    status_code=status.HTTP_204_NO_CONTENT,
     responses=errors.responses(
         [
             errors.E_401_UNAUTHORIZED,
@@ -272,20 +269,5 @@ async def get_locks_status(su: SuperuserDep) -> dict[str, bool]:
         ]
     ),
 )
-async def release_locks(su: SuperuserDep) -> None:
-    for lk in locks.LockKey:
-        await locks.release(lk)
-
-
-@router.get(
-    "/tasks",
-    status_code=status.HTTP_200_OK,
-    response_model=list[TaskRead],
-    responses=errors.responses(
-        [
-            errors.E_401_UNAUTHORIZED,
-        ]
-    ),
-)
-async def get_tasks_status(user: UserDep) -> list[TaskDocument]:
-    return await Task.get_tasks(user.id)
+async def delete_all_tasks(su: SuperuserDep) -> None:
+    await tasks.TaskDocument.delete_all()

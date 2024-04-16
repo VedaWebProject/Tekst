@@ -2535,110 +2535,30 @@
         ]
       }
     },
-    "/platform/locks/{key}": {
+    "/platform/tasks": {
       "get": {
         "tags": [
           "platform"
         ],
-        "summary": "Get lock status",
-        "operationId": "getLockStatus",
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "key",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/LockKey"
-            }
-          }
-        ],
+        "summary": "Get user tasks status",
+        "operationId": "getUserTasksStatus",
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "boolean",
-                  "title": "Response Get Lock Status Platform Locks  Key  Get"
-                }
-              }
-            }
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            },
-            "description": "Unauthorized"
-          },
-          "403": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            },
-            "description": "Forbidden"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/platform/locks": {
-      "get": {
-        "tags": [
-          "platform"
-        ],
-        "summary": "Get locks status",
-        "operationId": "getLocksStatus",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "additionalProperties": {
-                    "type": "boolean"
+                  "items": {
+                    "$ref": "#/components/schemas/TaskRead"
                   },
-                  "type": "object",
-                  "title": "Response Get Locks Status Platform Locks Get"
+                  "type": "array",
+                  "title": "Response Get User Tasks Status Platform Tasks Get"
                 }
               }
             }
           },
           "401": {
             "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -2661,16 +2581,11 @@
         "tags": [
           "platform"
         ],
-        "summary": "Release locks",
-        "operationId": "releaseLocks",
+        "summary": "Delete all tasks",
+        "operationId": "deleteAllTasks",
         "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
+          "204": {
+            "description": "Successful Response"
           },
           "401": {
             "description": "Unauthorized",
@@ -2703,13 +2618,13 @@
         ]
       }
     },
-    "/platform/tasks": {
+    "/platform/tasks/all": {
       "get": {
         "tags": [
           "platform"
         ],
-        "summary": "Get tasks status",
-        "operationId": "getTasksStatus",
+        "summary": "Get all tasks status",
+        "operationId": "getAllTasksStatus",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -2720,7 +2635,7 @@
                     "$ref": "#/components/schemas/TaskRead"
                   },
                   "type": "array",
-                  "title": "Response Get Tasks Status Platform Tasks Get"
+                  "title": "Response Get All Tasks Status Platform Tasks All Get"
                 }
               }
             }
@@ -4456,11 +4371,13 @@
           }
         },
         "responses": {
-          "201": {
+          "202": {
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/TaskRead"
+                }
               }
             }
           },
@@ -7419,14 +7336,6 @@
         "type": "object",
         "title": "LocationUpdate"
       },
-      "LockKey": {
-        "type": "string",
-        "enum": [
-          "index_create_update",
-          "text_structure_import"
-        ],
-        "title": "LockKey"
-      },
       "MaybePrivateUserField": {
         "type": "string",
         "enum": [
@@ -10185,16 +10094,39 @@
             "title": "Id",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
-          "userId": {
-            "type": "string",
-            "title": "Userid",
-            "description": "ID of user who created this task",
-            "example": "5eb7cf5a86d9755df3a6c593"
+          "type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TaskType"
+              }
+            ],
+            "description": "Type of the task"
           },
-          "label": {
-            "type": "string",
-            "title": "Label",
-            "description": "Label of the task"
+          "targetId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Targetid",
+            "description": "ID of the target of the task or None if there is no target"
+          },
+          "userId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Userid",
+            "description": "ID of user who created this task"
           },
           "status": {
             "type": "string",
@@ -10263,10 +10195,20 @@
         "type": "object",
         "required": [
           "id",
-          "userId",
-          "label"
+          "type"
         ],
         "title": "TaskRead"
+      },
+      "TaskType": {
+        "type": "string",
+        "enum": [
+          "index_create_update",
+          "text_structure_import",
+          "resource_import",
+          "broadcast_user_ntfc",
+          "broadcast_admin_ntfc"
+        ],
+        "title": "TaskType"
       },
       "TekstErrorModel": {
         "properties": {

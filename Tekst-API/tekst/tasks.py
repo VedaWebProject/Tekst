@@ -2,27 +2,45 @@ import asyncio
 
 from collections.abc import Awaitable
 from datetime import datetime
+from enum import Enum
 from typing import Annotated, Literal
 
 from beanie import PydanticObjectId
+from beanie.operators import Eq, In
 from pydantic import Field
 
 from tekst.models.common import DocumentBase, ModelBase, ModelFactoryMixin
+from tekst.models.user import UserRead
+
+
+class TaskType(Enum):
+    INDEX_CREATE_UPDATE = "index_create_update"
+    RESOURCE_IMPORT = "resource_import"
+    BROADCAST_USER_NTFC = "broadcast_user_ntfc"
+    BROADCAST_ADMIN_NTFC = "broadcast_admin_ntfc"
+    CONTENTS_CHANGED_HOOK = "contents_changed_hook"
 
 
 class Task(ModelBase, ModelFactoryMixin):
+    task_type: Annotated[
+        TaskType,
+        Field(
+            description="Type of the task",
+            alias="type",
+        ),
+    ]
+    target_id: Annotated[
+        PydanticObjectId | None,
+        Field(
+            description="ID of the target of the task or None if there is no target",
+        ),
+    ] = None
     user_id: Annotated[
-        PydanticObjectId,
+        PydanticObjectId | None,
         Field(
             description="ID of user who created this task",
         ),
-    ]
-    label: Annotated[
-        str,
-        Field(
-            description="Label of the task",
-        ),
-    ]
+    ] = None
     status: Annotated[
         Literal["waiting", "running", "done", "failed"],
         Field(
@@ -62,12 +80,14 @@ class TaskDocument(Task, DocumentBase):
     class Settings(DocumentBase.Settings):
         name = "tasks"
         indexes = [
+            "task_type",
             "user_id",
+            "target_id",
         ]
 
 
 async def _run_task(
-    task_id: PydanticObjectId, task: Awaitable, *args, **kwargs
+    task_id: PydanticObjectId, task: Awaitable, /, *args, **kwargs
 ) -> None:
     try:
         task_doc: TaskDocument = await TaskDocument.get(task_id)
@@ -86,25 +106,52 @@ async def _run_task(
 
 async def create_task(
     task: Awaitable,
-    user_id: PydanticObjectId,
-    label: str,
+    task_type: TaskType,
+    target_id: PydanticObjectId | None,
+    user_id: PydanticObjectId | None,
+    /,
     *args,
     **kwargs,
 ) -> TaskDocument:
     task_doc = await TaskDocument(
+        task_type=task_type,
+        target_id=target_id,
         user_id=user_id,
-        label=label,
         status="running",
         start_time=datetime.utcnow(),
     ).create()
     asyncio.create_task(_run_task(task_doc.id, task, *args, **kwargs))
+    return task_doc
 
 
-async def get_tasks(user_id: PydanticObjectId) -> list[TaskDocument]:
-    tasks = await TaskDocument.find(TaskDocument.user_id == user_id).to_list()
-    # delete the tasks that are done / have failed
-    for task in tasks:
-        if task.status == "done" or task.status == "failed":
-            await task.delete()
-    # return all user tasks
+async def get_tasks(
+    user: UserRead | None,
+    *,
+    get_all: bool = False,
+    delete_finished: bool = False,
+) -> list[TaskDocument]:
+    # select tasks: get user-specific tasks if initiated by a regular user,
+    # get all tasks if initiated by a superuser or None (system-internal)
+    tasks = await TaskDocument.find(
+        Eq(TaskDocument.user_id, user.id)
+        if not get_all or (user and not user.is_superuser)
+        else {}
+    ).to_list()
+    # delete the tasks that are done if delete_finished is True
+    if delete_finished:
+        for task in tasks:
+            if task.status == "done" or task.status == "failed":
+                await task.delete()
+    # return user tasks
     return tasks
+
+
+async def is_active(
+    task_type: TaskType,
+    target_id: PydanticObjectId | None = None,
+) -> bool:
+    return await TaskDocument.find_one(
+        Eq(TaskDocument.task_type, task_type),
+        Eq(TaskDocument.target_id, target_id) if target_id else {},
+        In(TaskDocument.status, ["waiting", "running"]),
+    ).exists()

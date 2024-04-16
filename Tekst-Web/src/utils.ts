@@ -30,3 +30,7 @@ export function pickTranslation(translations?: Translation[], localeKey: string 
 export function renderIcon(icon: Component, color?: string) {
   return () => h(NIcon, { color }, { default: () => h(icon) });
 }
+
+export function toLocalTime(dateTimeString: string): Date {
+  return new Date(dateTimeString + 'Z');
+}

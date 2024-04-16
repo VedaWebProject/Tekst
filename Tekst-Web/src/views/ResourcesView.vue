@@ -35,6 +35,7 @@ import { saveDownload } from '@/api';
 
 import { SearchIcon, UndoIcon, ResourceIcon, AddIcon } from '@/icons';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
+import { useTasks } from '@/composables/tasks';
 
 const state = useStateStore();
 const auth = useAuthStore();
@@ -42,6 +43,7 @@ const resources = useResourcesStore();
 const dialog = useDialog();
 const { message } = useMessages();
 const router = useRouter();
+const { start: startTasksPolling } = useTasks();
 
 const actionsLoading = ref(false);
 const loading = computed(() => actionsLoading.value || resources.loading);
@@ -288,7 +290,7 @@ async function handleImportClick(resource: AnyResourceRead) {
   withSelectedFile(async (file: File | null) => {
     if (!file) return;
     actionsLoading.value = true;
-    const { data, error } = await POST('/resources/{id}/import', {
+    const { error } = await POST('/resources/{id}/import', {
       params: { path: { id: resource.id } },
       body: { file },
       bodySerializer(body) {
@@ -300,15 +302,8 @@ async function handleImportClick(resource: AnyResourceRead) {
       },
     });
     if (!error) {
-      message.success(
-        $t('contents.msgImportSuccess', {
-          updated: data.updated,
-          created: data.created,
-          errors: data.errors,
-        }),
-        undefined,
-        20
-      );
+      startTasksPolling();
+      message.info($t('contents.msgImportInfo'), undefined, 20);
     }
     actionsLoading.value = false;
   });

@@ -99,8 +99,6 @@ import ConstructionOutlined from '@vicons/material/ConstructionOutlined';
 import MiscellaneousServicesOutlined from '@vicons/material/MiscellaneousServicesOutlined';
 import AutoAwesomeMosaicOutlined from '@vicons/material/AutoAwesomeMosaicOutlined';
 import UpdateOutlined from '@vicons/material/UpdateOutlined';
-import LockClockOutlined from '@vicons/material/LockClockOutlined';
-import LockOpenOutlined from '@vicons/material/LockOpenOutlined';
 import SortOutlined from '@vicons/material/SortOutlined';
 import FilterAltOutlined from '@vicons/material/FilterAltOutlined';
 import FindInPageOutlined from '@vicons/material/FindInPageOutlined';
@@ -121,8 +119,6 @@ export {
   FindInPageOutlined as NothingFoundIcon,
   FilterAltOutlined as FilterIcon,
   SortOutlined as SortIcon,
-  LockClockOutlined as LockIcon,
-  LockOpenOutlined as LockOpenIcon,
   UpdateOutlined as UpdateIcon,
   AutoAwesomeMosaicOutlined as SegmentsIcon,
   MiscellaneousServicesOutlined as SystemIcon,

@@ -2,9 +2,9 @@ from typing import Annotated
 
 from beanie import PydanticObjectId
 from beanie.operators import And, In, NotIn
-from fastapi import APIRouter, BackgroundTasks, Path, Query, status
+from fastapi import APIRouter, Path, Query, status
 
-from tekst import errors
+from tekst import errors, tasks
 from tekst.auth import SuperuserDep
 from tekst.models.content import ContentBaseDocument
 from tekst.models.location import (
@@ -256,7 +256,6 @@ async def update_location(
 async def delete_location(
     su: SuperuserDep,
     location_id: Annotated[PydanticObjectId, Path(alias="id")],
-    background_tasks: BackgroundTasks,
 ) -> DeleteLocationResult:
     """
     Deletes the specified location. Also deletes any associated contents,
@@ -309,9 +308,12 @@ async def delete_location(
         for resource in await ResourceBaseDocument.find_all(
             with_children=True
         ).to_list():
-            background_tasks.add_task(
+            await tasks.create_task(
                 resource_types_mgr.get(resource.resource_type).contents_changed_hook,
+                tasks.TaskType.CONTENTS_CHANGED_HOOK,
                 resource.id,
+                None,
+                resource.id,  # will be passed to contents_changed_hook
             )
 
     return DeleteLocationResult(contents=contents_deleted, locations=locations_deleted)

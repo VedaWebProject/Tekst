@@ -272,7 +272,7 @@ async function handleDownloadTemplateClick() {
   loadingTemplate.value = false;
 }
 
-async function handleUploadStructureClick() {
+async function handleImportClick() {
   withSelectedFile(async (file: File | null) => {
     if (!file) return;
     loadingUpload.value = true;
@@ -433,7 +433,7 @@ watch(
         secondary
         :title="$t('admin.text.locations.tipBtnUploadStructure')"
         :disabled="!!treeData.length || loading"
-        @click="handleUploadStructureClick()"
+        @click="handleImportClick()"
       >
         <template #icon>
           <n-icon :component="UploadIcon" />

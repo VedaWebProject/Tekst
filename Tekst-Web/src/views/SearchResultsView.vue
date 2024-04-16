@@ -14,6 +14,7 @@ import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
 import { createReusableTemplate } from '@vueuse/core';
 import SearchResultsSortWidget from '@/components/search/SearchResultsSortWidget.vue';
+import { toLocalTime } from '@/utils';
 
 const { pfData } = usePlatformData();
 const state = useStateStore();
@@ -187,7 +188,7 @@ onBeforeMount(() => processQuery());
       </div>
       <div>
         {{ $t('search.results.indexCreationTime') }}:
-        <n-time :time="new Date(resultsData.indexCreationTime)" type="datetime" />
+        <n-time :time="toLocalTime(resultsData.indexCreationTime)" type="datetime" />
       </div>
     </template>
     <template v-else-if="loading">

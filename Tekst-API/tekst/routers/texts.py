@@ -16,7 +16,7 @@ from fastapi import (
 from fastapi.responses import FileResponse
 from starlette.background import BackgroundTask
 
-from tekst import errors, locks
+from tekst import errors
 from tekst.auth import OptionalUserDep, SuperuserDep
 from tekst.logging import log
 from tekst.models.common import Translations
@@ -165,63 +165,60 @@ async def import_text_structure(
     # test upload file MIME type
     if file.content_type.lower() != "application/json":
         raise errors.E_400_UPLOAD_INVALID_MIME_TYPE_NOT_JSON
+
     # find text
     text = await TextDocument.get(text_id)
     if not text:
         raise errors.E_404_TEXT_NOT_FOUND
+
     # does text already have locations defined?
     if await LocationDocument.find_one(LocationDocument.text_id == text_id).exists():
         raise errors.E_409_TEXT_IMPORT_LOCATIONS_EXIST
+
     # validate structure definition
     try:
         structure_def = TextStructureImportData.model_validate_json(await file.read())
     except Exception:
         raise errors.E_400_UPLOAD_INVALID_JSON
-    # check and set lock
-    if await locks.is_locked(locks.LockKey.TEXT_STRUCTURE_IMPORT):
-        raise errors.E_409_ACTION_LOCKED
-    else:
-        await locks.lock(locks.LockKey.TEXT_STRUCTURE_IMPORT)
-    try:
-        # import locations depth-first
-        locations = structure_def.model_dump(exclude_none=True, by_alias=False)[
-            "locations"
+
+    # import locations depth-first
+    locations = structure_def.model_dump(exclude_none=True, by_alias=False)["locations"]
+    structure_def = None  # de-reference structure definition object
+
+    # apply parent IDs (None) to all 0-level locations
+    for location in locations:
+        location["parent_id"] = None
+
+    # process locations level by level
+    for level in range(len(text.levels)):
+        if len(locations) == 0:
+            break  # pragma: no cover
+
+        # create LocationDocument instances for each location definition
+        location_docs = [
+            LocationDocument(
+                text_id=text_id,
+                parent_id=locations[i]["parent_id"],
+                level=level,
+                position=i,
+                label=locations[i]["label"],
+            )
+            for i in range(len(locations))
         ]
-        structure_def = None  # de-reference structure definition object
-        # apply parent IDs (None) to all 0-level locations
-        for location in locations:
-            location["parent_id"] = None
-        # process locations level by level
-        for level in range(len(text.levels)):
-            if len(locations) == 0:
-                break  # pragma: no cover
-            # create LocationDocument instances for each location definition
-            location_docs = [
-                LocationDocument(
-                    text_id=text_id,
-                    parent_id=locations[i]["parent_id"],
-                    level=level,
-                    position=i,
-                    label=locations[i]["label"],
-                )
-                for i in range(len(locations))
-            ]
-            # bulk-insert documents
-            inserted_ids = (
-                await LocationDocument.insert_many(location_docs)
-            ).inserted_ids
-            # collect children and their parents' IDs
-            children = []
-            for i in range(len(locations)):
-                children_temp = locations[i].get("locations", [])
-                # apply parent ID
-                for c in children_temp:
-                    c["parent_id"] = inserted_ids[i]
-                children += children_temp
-            locations = children
-    finally:
-        # release lock
-        await locks.release(locks.LockKey.TEXT_STRUCTURE_IMPORT)
+
+        # bulk-insert documents
+        inserted_ids = (await LocationDocument.insert_many(location_docs)).inserted_ids
+
+        # collect children and their parents' IDs
+        children = []
+        for i in range(len(locations)):
+            children_temp = locations[i].get("locations", [])
+
+            # apply parent ID
+            for c in children_temp:
+                c["parent_id"] = inserted_ids[i]
+            children += children_temp
+        locations = children
 
 
 @router.post(

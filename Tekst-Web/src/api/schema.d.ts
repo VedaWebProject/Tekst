@@ -186,19 +186,15 @@ export interface paths {
     /** Get statistics */
     get: operations['getStatistics'];
   };
-  '/platform/locks/{key}': {
-    /** Get lock status */
-    get: operations['getLockStatus'];
-  };
-  '/platform/locks': {
-    /** Get locks status */
-    get: operations['getLocksStatus'];
-    /** Release locks */
-    delete: operations['releaseLocks'];
-  };
   '/platform/tasks': {
-    /** Get tasks status */
-    get: operations['getTasksStatus'];
+    /** Get user tasks status */
+    get: operations['getUserTasksStatus'];
+    /** Delete all tasks */
+    delete: operations['deleteAllTasks'];
+  };
+  '/platform/tasks/all': {
+    /** Get all tasks status */
+    get: operations['getAllTasksStatus'];
   };
   '/resources': {
     /**
@@ -1019,11 +1015,6 @@ export interface components {
       /** Label */
       label?: string | null;
     };
-    /**
-     * LockKey
-     * @enum {string}
-     */
-    LockKey: 'index_create_update' | 'text_structure_import';
     /** @enum {string} */
     MaybePrivateUserField: 'name' | 'affiliation' | 'bio';
     MaybePrivateUserFields: components['schemas']['MaybePrivateUserField'][];
@@ -2477,17 +2468,18 @@ export interface components {
        * @example 5eb7cf5a86d9755df3a6c593
        */
       id: string;
+      /** @description Type of the task */
+      type: components['schemas']['TaskType'];
+      /**
+       * Targetid
+       * @description ID of the target of the task or None if there is no target
+       */
+      targetId?: string | null;
       /**
        * Userid
        * @description ID of user who created this task
-       * @example 5eb7cf5a86d9755df3a6c593
        */
-      userId: string;
-      /**
-       * Label
-       * @description Label of the task
-       */
-      label: string;
+      userId?: string | null;
       /**
        * Status
        * @description Status of the task
@@ -2517,6 +2509,16 @@ export interface components {
       error?: string | null;
       [key: string]: unknown;
     };
+    /**
+     * TaskType
+     * @enum {string}
+     */
+    TaskType:
+      | 'index_create_update'
+      | 'text_structure_import'
+      | 'resource_import'
+      | 'broadcast_user_ntfc'
+      | 'broadcast_admin_ntfc';
     /** TekstErrorModel */
     TekstErrorModel: {
       detail: components['schemas']['ErrorDetail'];
@@ -4677,18 +4679,13 @@ export interface operations {
       };
     };
   };
-  /** Get lock status */
-  getLockStatus: {
-    parameters: {
-      path: {
-        key: components['schemas']['LockKey'];
-      };
-    };
+  /** Get user tasks status */
+  getUserTasksStatus: {
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': boolean;
+          'application/json': components['schemas']['TaskRead'][];
         };
       };
       /** @description Unauthorized */
@@ -4697,30 +4694,14 @@ export interface operations {
           'application/json': components['schemas']['TekstErrorModel'];
         };
       };
-      /** @description Forbidden */
-      403: {
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
     };
   };
-  /** Get locks status */
-  getLocksStatus: {
+  /** Delete all tasks */
+  deleteAllTasks: {
     responses: {
       /** @description Successful Response */
-      200: {
-        content: {
-          'application/json': {
-            [key: string]: boolean;
-          };
-        };
+      204: {
+        content: never;
       };
       /** @description Unauthorized */
       401: {
@@ -4736,31 +4717,8 @@ export interface operations {
       };
     };
   };
-  /** Release locks */
-  releaseLocks: {
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json': unknown;
-        };
-      };
-      /** @description Unauthorized */
-      401: {
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-      /** @description Forbidden */
-      403: {
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-    };
-  };
-  /** Get tasks status */
-  getTasksStatus: {
+  /** Get all tasks status */
+  getAllTasksStatus: {
     responses: {
       /** @description Successful Response */
       200: {
@@ -5531,9 +5489,9 @@ export interface operations {
     };
     responses: {
       /** @description Successful Response */
-      201: {
+      202: {
         content: {
-          'application/json': unknown;
+          'application/json': components['schemas']['TaskRead'];
         };
       };
       /** @description Bad Request */
