@@ -159,9 +159,10 @@ async def create_index(
     return await tasks.create_task(
         _create_index,
         tasks.TaskType.INDEX_CREATE_UPDATE,
-        None,
-        user.id if user else None,
-        overwrite_existing_index=overwrite_existing_index,
+        user_id=user.id if user else None,
+        task_kwargs={
+            "overwrite_existing_index": overwrite_existing_index,
+        },
     )
 
 

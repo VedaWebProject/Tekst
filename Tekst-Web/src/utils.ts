@@ -31,6 +31,6 @@ export function renderIcon(icon: Component, color?: string) {
   return () => h(NIcon, { color }, { default: () => h(icon) });
 }
 
-export function toLocalTime(dateTimeString: string): Date {
-  return new Date(dateTimeString + 'Z');
+export function utcToLocalTime(utcDateTimeString: string): Date {
+  return new Date(utcDateTimeString + (!utcDateTimeString.toUpperCase().endsWith('Z') ? 'Z' : ''));
 }

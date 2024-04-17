@@ -3,7 +3,7 @@ import asyncio
 from collections.abc import Awaitable
 from datetime import datetime
 from enum import Enum
-from typing import Annotated, Literal
+from typing import Annotated, Literal, Any
 
 from beanie import PydanticObjectId
 from beanie.operators import Eq, In
@@ -87,11 +87,12 @@ class TaskDocument(Task, DocumentBase):
 
 
 async def _run_task(
-    task_id: PydanticObjectId, task: Awaitable, /, *args, **kwargs
+    task: Awaitable,
+    task_doc: TaskDocument,
+    task_kwargs: dict[str, Any],
 ) -> None:
     try:
-        task_doc: TaskDocument = await TaskDocument.get(task_id)
-        await task(*args, **kwargs)
+        await task(**task_kwargs)
         task_doc.status = "done"
     except Exception as e:
         task_doc.status = "failed"
@@ -107,11 +108,10 @@ async def _run_task(
 async def create_task(
     task: Awaitable,
     task_type: TaskType,
-    target_id: PydanticObjectId | None,
-    user_id: PydanticObjectId | None,
-    /,
-    *args,
-    **kwargs,
+    *,
+    target_id: PydanticObjectId | None = None,
+    user_id: PydanticObjectId | None = None,
+    task_kwargs: dict[str, Any] = {},
 ) -> TaskDocument:
     task_doc = await TaskDocument(
         task_type=task_type,
@@ -120,7 +120,13 @@ async def create_task(
         status="running",
         start_time=datetime.utcnow(),
     ).create()
-    asyncio.create_task(_run_task(task_doc.id, task, *args, **kwargs))
+    asyncio.create_task(
+        _run_task(
+            task,
+            task_doc,
+            task_kwargs,
+        )
+    )
     return task_doc
 
 

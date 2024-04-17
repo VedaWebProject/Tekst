@@ -196,6 +196,10 @@ export interface paths {
     /** Get all tasks status */
     get: operations['getAllTasksStatus'];
   };
+  '/platform/tasks/{id}': {
+    /** Delete task */
+    delete: operations['deleteTask'];
+  };
   '/resources': {
     /**
      * Find resources
@@ -1921,15 +1925,6 @@ export interface components {
       /** Locationscoverage */
       locationsCoverage: components['schemas']['ResourceLocationCoverage'][][];
     };
-    /** ResourceDataImportResponse */
-    ResourceDataImportResponse: {
-      /** Updated */
-      updated: number;
-      /** Created */
-      created: number;
-      /** Errors */
-      errors: number;
-    };
     /** ResourceDescriptionTranslation */
     ResourceDescriptionTranslation: {
       locale: components['schemas']['TranslationLocaleKey'];
@@ -2515,10 +2510,10 @@ export interface components {
      */
     TaskType:
       | 'index_create_update'
-      | 'text_structure_import'
       | 'resource_import'
       | 'broadcast_user_ntfc'
-      | 'broadcast_admin_ntfc';
+      | 'broadcast_admin_ntfc'
+      | 'contents_changed_hook';
     /** TekstErrorModel */
     TekstErrorModel: {
       detail: components['schemas']['ErrorDetail'];
@@ -4734,6 +4729,38 @@ export interface operations {
       };
     };
   };
+  /** Delete task */
+  deleteTask: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      204: {
+        content: never;
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
   /**
    * Find resources
    * @description Returns a list of all resources matching the given criteria.
@@ -5251,7 +5278,7 @@ export interface operations {
       /** @description Successful Response */
       201: {
         content: {
-          'application/json': components['schemas']['ResourceDataImportResponse'];
+          'application/json': components['schemas']['TaskRead'];
         };
       };
       /** @description Bad Request */
@@ -5489,9 +5516,9 @@ export interface operations {
     };
     responses: {
       /** @description Successful Response */
-      202: {
+      201: {
         content: {
-          'application/json': components['schemas']['TaskRead'];
+          'application/json': unknown;
         };
       };
       /** @description Bad Request */

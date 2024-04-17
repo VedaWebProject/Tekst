@@ -108,6 +108,7 @@ import MarkChatUnreadRound from '@vicons/material/MarkChatUnreadRound';
 import SendFilled from '@vicons/material/SendFilled';
 import GroupsFilled from '@vicons/material/GroupsFilled';
 import WarningOutlined from '@vicons/material/WarningOutlined';
+import RefreshOutlined from '@vicons/material/RefreshOutlined';
 
 export {
   WarningOutlined as WarningIcon,
@@ -119,6 +120,7 @@ export {
   FindInPageOutlined as NothingFoundIcon,
   FilterAltOutlined as FilterIcon,
   SortOutlined as SortIcon,
+  RefreshOutlined as RefreshIcon,
   UpdateOutlined as UpdateIcon,
   AutoAwesomeMosaicOutlined as SegmentsIcon,
   MiscellaneousServicesOutlined as SystemIcon,

@@ -12,6 +12,7 @@ from urllib.parse import urljoin
 from beanie.operators import Eq
 from humps import decamelize
 
+from tekst import tasks
 from tekst.config import TekstConfig, get_config
 from tekst.logging import log
 from tekst.models.email import TemplateIdentifier
@@ -145,7 +146,14 @@ async def broadcast_user_notification(
     template_id: TemplateIdentifier,
     **kwargs,
 ):
-    asyncio.create_task(_broadcast_user_notification(template_id, **kwargs))
+    tasks.create_task(
+        _broadcast_user_notification,
+        tasks.TaskType.BROADCAST_USER_NTFC,
+        task_kwargs={
+            "template_id": template_id,
+            **kwargs,
+        },
+    )
 
 
 async def _broadcast_admin_notification(
@@ -168,7 +176,14 @@ async def broadcast_admin_notification(
     template_id: TemplateIdentifier,
     **kwargs,
 ):
-    asyncio.create_task(_broadcast_admin_notification(template_id, **kwargs))
+    tasks.create_task(
+        _broadcast_admin_notification,
+        tasks.TaskType.BROADCAST_ADMIN_NTFC,
+        task_kwargs={
+            "template_id": template_id,
+            **kwargs,
+        },
+    )
 
 
 async def send_test_email(to_user: UserRead):

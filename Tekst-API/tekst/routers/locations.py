@@ -4,7 +4,7 @@ from beanie import PydanticObjectId
 from beanie.operators import And, In, NotIn
 from fastapi import APIRouter, Path, Query, status
 
-from tekst import errors, tasks
+from tekst import errors
 from tekst.auth import SuperuserDep
 from tekst.models.content import ContentBaseDocument
 from tekst.models.location import (
@@ -302,18 +302,13 @@ async def delete_location(
         ).deleted_count
         to_delete.pop(0)
 
-    # create background task that calls the
-    # content's resource's hook for updated content
+    # call each potentially affected resource's hook for updated content
     if contents_deleted > 0:
-        for resource in await ResourceBaseDocument.find_all(
-            with_children=True
+        for resource in await ResourceBaseDocument.find(
+            ResourceBaseDocument.text_id == text_id, with_children=True
         ).to_list():
-            await tasks.create_task(
-                resource_types_mgr.get(resource.resource_type).contents_changed_hook,
-                tasks.TaskType.CONTENTS_CHANGED_HOOK,
-                resource.id,
-                None,
-                resource.id,  # will be passed to contents_changed_hook
+            await resource_types_mgr.get(resource.resource_type).contents_changed_hook(
+                resource.id
             )
 
     return DeleteLocationResult(contents=contents_deleted, locations=locations_deleted)

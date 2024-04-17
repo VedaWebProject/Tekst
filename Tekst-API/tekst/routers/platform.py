@@ -260,6 +260,23 @@ async def get_all_tasks_status(su: SuperuserDep) -> list[tasks.TaskDocument]:
 
 
 @router.delete(
+    "/tasks/{id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    responses=errors.responses(
+        [
+            errors.E_401_UNAUTHORIZED,
+            errors.E_403_FORBIDDEN,
+        ]
+    ),
+)
+async def delete_task(
+    task_id: Annotated[PydanticObjectId, Path(alias="id")],
+    su: SuperuserDep,
+) -> None:
+    await tasks.TaskDocument.find_one(tasks.TaskDocument.id == task_id).delete()
+
+
+@router.delete(
     "/tasks",
     status_code=status.HTTP_204_NO_CONTENT,
     responses=errors.responses(

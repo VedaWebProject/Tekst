@@ -63,9 +63,10 @@ async def create_content(
     await tasks.create_task(
         resource_types_mgr.get(content.resource_type).contents_changed_hook,
         tasks.TaskType.CONTENTS_CHANGED_HOOK,
-        content.resource_id,
-        None,
-        content.resource_id,  # will be passed to contents_changed_hook
+        target_id=content.resource_id,
+        task_kwargs={
+            "resource_id": content.resource_id,
+        },
     )
 
     # create the content document and return it
@@ -149,9 +150,10 @@ async def update_content(
     await tasks.create_task(
         resource_types_mgr.get(content_doc.resource_type).contents_changed_hook,
         tasks.TaskType.CONTENTS_CHANGED_HOOK,
-        content_doc.resource_id,
-        None,
-        content_doc.resource_id,  # will be passed to contents_changed_hook
+        target_id=content_doc.resource_id,
+        task_kwargs={
+            "resource_id": content_doc.resource_id,
+        },
     )
 
     # apply updates, return the updated document
@@ -189,9 +191,10 @@ async def delete_content(
     await tasks.create_task(
         resource_types_mgr.get(content_doc.resource_type).contents_changed_hook,
         tasks.TaskType.CONTENTS_CHANGED_HOOK,
-        content_doc.resource_id,
-        None,
-        content_doc.resource_id,  # will be passed to contents_changed_hook
+        target_id=content_doc.resource_id,
+        task_kwargs={
+            "resource_id": content_doc.resource_id,
+        },
     )
 
     # all fine, delete content

@@ -2661,6 +2661,70 @@
         ]
       }
     },
+    "/platform/tasks/{id}": {
+      "delete": {
+        "tags": [
+          "platform"
+        ],
+        "summary": "Delete task",
+        "operationId": "deleteTask",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/resources": {
       "post": {
         "tags": [
@@ -3889,7 +3953,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ResourceDataImportResponse"
+                  "$ref": "#/components/schemas/TaskRead"
                 }
               }
             }
@@ -4371,13 +4435,11 @@
           }
         },
         "responses": {
-          "202": {
+          "201": {
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TaskRead"
-                }
+                "schema": {}
               }
             }
           },
@@ -9034,29 +9096,6 @@
         ],
         "title": "ResourceCoverageDetails"
       },
-      "ResourceDataImportResponse": {
-        "properties": {
-          "updated": {
-            "type": "integer",
-            "title": "Updated"
-          },
-          "created": {
-            "type": "integer",
-            "title": "Created"
-          },
-          "errors": {
-            "type": "integer",
-            "title": "Errors"
-          }
-        },
-        "type": "object",
-        "required": [
-          "updated",
-          "created",
-          "errors"
-        ],
-        "title": "ResourceDataImportResponse"
-      },
       "ResourceDescriptionTranslation": {
         "properties": {
           "locale": {
@@ -10203,10 +10242,10 @@
         "type": "string",
         "enum": [
           "index_create_update",
-          "text_structure_import",
           "resource_import",
           "broadcast_user_ntfc",
-          "broadcast_admin_ntfc"
+          "broadcast_admin_ntfc",
+          "contents_changed_hook"
         ],
         "title": "TaskType"
       },

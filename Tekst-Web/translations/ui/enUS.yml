@@ -19,6 +19,7 @@ general:
   editAction: Edit
   moveUpAction: Move up
   moveDownAction: Move down
+  refreshAction: Refresh
   textSelect: Select the text you want to work with
   info: Information
   warning: Warning
@@ -105,7 +106,7 @@ tasks:
     done: successful
     failed: failed
   types:
-    index_create_update: '@:admin.system.maintenance.index.actionCreate'
+    index_create_update: Re-create search index
     resource_import: Import resource data
     broadcast_user_ntfc: Broadcast user notifications
     broadcast_admin_ntfc: Broadcast admin notifications
@@ -657,7 +658,7 @@ admin:
         size: Size
         searches: Searches
         lastIndexed: Time of last indexing
-        actionCreate: Re-create search index
+        actionCreate: Reindex
         actionCreateStarted: The search index will be updated in the background. This might take a while.
         actionCreateSuccess: Search index has been updated
       tasks:
@@ -669,9 +670,8 @@ admin:
         duration: Duration
         seconds: '{seconds} sec'
         startedBy: Started by
-        actionUpdate: Update list of system background tasks
-        actionDelete: Delete all background tasks
-        actionDeleteSuccess: All background tasks have been deleted
+        actionDeleteAll: Delete all
+        actionDeleteAllSuccess: All background tasks have been deleted
     segments:
       heading: Site Segments
       systemKeys:

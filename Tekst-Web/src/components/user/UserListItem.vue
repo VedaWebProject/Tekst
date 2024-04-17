@@ -27,7 +27,7 @@ import {
   UserDowngradeIcon,
   StarIcon,
 } from '@/icons';
-import { renderIcon, toLocalTime } from '@/utils';
+import { renderIcon, utcToLocalTime } from '@/utils';
 
 const props = defineProps<{
   targetUser: UserRead;
@@ -212,7 +212,7 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
           </a>
           –
           {{ $t('admin.users.registeredAt') }}
-          <n-time :time="toLocalTime(targetUser.createdAt)" type="datetime" />
+          <n-time :time="utcToLocalTime(targetUser.createdAt)" type="datetime" />
         </div>
       </template>
       <template #footer> </template>

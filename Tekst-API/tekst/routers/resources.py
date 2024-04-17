@@ -805,14 +805,9 @@ async def _import_resource_data(
     else:
         created_count = 0
 
-    # create background task that calls the
-    # content's resource's hook for updated content
-    await tasks.create_task(
-        resource_types_mgr.get(resource.resource_type).contents_changed_hook,
-        tasks.TaskType.CONTENTS_CHANGED_HOOK,
-        resource_id,
-        user.id,
-        resource_id,  # will be passed to contents_changed_hook
+    # call content's resource's hook for updated content
+    await resource_types_mgr.get(resource.resource_type).contents_changed_hook(
+        resource_id
     )
 
 
@@ -846,9 +841,11 @@ async def import_resource_data(
     return await tasks.create_task(
         _import_resource_data,
         tasks.TaskType.RESOURCE_IMPORT,
-        resource_id,
-        user.id,
-        resource_id,  # will be passed to _import_resource_data
-        await file.read(),  # will be passed to _import_resource_data
-        user,  # will be passed to _import_resource_data
+        target_id=resource_id,
+        user_id=user.id,
+        task_kwargs={
+            "resource_id": resource_id,
+            "file_bytes": await file.read(),
+            "user": user,
+        },
     )
