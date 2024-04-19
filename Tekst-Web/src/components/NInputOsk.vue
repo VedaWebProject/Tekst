@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { usePlatformData } from '@/composables/platformData';
-import { CapsLockIcon, KeyboardIcon } from '@/icons';
+import { CapsLockIcon, KeyboardIcon, ShiftIcon } from '@/icons';
 import {
   NSpin,
   NFlex,
@@ -16,7 +16,6 @@ import { computed, nextTick, ref } from 'vue';
 import ButtonShelf from './generic/ButtonShelf.vue';
 import { useOskLayout } from '@/composables/fetchers';
 import type { CSSProperties } from 'vue';
-import { ShiftIcon } from '@/icons';
 import { watch } from 'vue';
 import { useStateStore } from '@/stores';
 

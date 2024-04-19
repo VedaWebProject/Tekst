@@ -1,27 +1,23 @@
 [
   {
-    "_id": {
-      "$oid": "66223dee5d0407ae401d7422"
-    },
+    "_id": { "$oid": "66223dee5d0407ae401d7422" },
     "info_platform_name": "Tekst-Dev",
     "info_subtitle": [
-      {
-        "locale": "*",
-        "translation": "An online text research platform"
-      }
+      { "locale": "enUS", "translation": "An online text research platform" },
+      { "locale": "deDE", "translation": "Eine Forschungsplattform für Texte" }
     ],
     "info_terms": null,
     "info_contact_name": "Tekst Administrator",
     "info_contact_email": "noreply@tekst-contact-email-not-set.com",
     "info_contact_url": null,
-    "default_text_id": null,
+    "default_text_id": { "$oid": "654ba1f3ec7833e469dde765" },
     "nav_info_entry": [],
     "custom_fonts": [],
     "show_resource_category_headings": true,
-    "always_show_resource_category_headings": true,
+    "always_show_resource_category_headings": false,
     "always_show_text_info": true,
     "show_tekst_footer_hint": true,
     "available_locales": ["deDE", "enUS"],
-    "osk_modes": []
+    "osk_modes": [{ "key": "example", "name": "Example Keymap", "font": null }]
   }
 ]
