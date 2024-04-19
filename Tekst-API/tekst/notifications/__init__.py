@@ -146,7 +146,7 @@ async def broadcast_user_notification(
     template_id: TemplateIdentifier,
     **kwargs,
 ):
-    tasks.create_task(
+    await tasks.create_task(
         _broadcast_user_notification,
         tasks.TaskType.BROADCAST_USER_NTFC,
         task_kwargs={
@@ -176,7 +176,7 @@ async def broadcast_admin_notification(
     template_id: TemplateIdentifier,
     **kwargs,
 ):
-    tasks.create_task(
+    await tasks.create_task(
         _broadcast_admin_notification,
         tasks.TaskType.BROADCAST_ADMIN_NTFC,
         task_kwargs={
