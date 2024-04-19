@@ -5281,7 +5281,7 @@ export interface operations {
     };
     responses: {
       /** @description Successful Response */
-      201: {
+      202: {
         content: {
           'application/json': components['schemas']['TaskRead'];
         };

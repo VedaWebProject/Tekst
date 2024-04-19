@@ -819,7 +819,7 @@ async def _import_resource_data(
 
 @router.post(
     "/{id}/import",
-    status_code=status.HTTP_201_CREATED,
+    status_code=status.HTTP_202_ACCEPTED,
     response_model=tasks.TaskRead,
     responses=errors.responses(
         [
