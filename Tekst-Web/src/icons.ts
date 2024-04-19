@@ -99,8 +99,6 @@ import ConstructionOutlined from '@vicons/material/ConstructionOutlined';
 import MiscellaneousServicesOutlined from '@vicons/material/MiscellaneousServicesOutlined';
 import AutoAwesomeMosaicOutlined from '@vicons/material/AutoAwesomeMosaicOutlined';
 import UpdateOutlined from '@vicons/material/UpdateOutlined';
-import LockClockOutlined from '@vicons/material/LockClockOutlined';
-import LockOpenOutlined from '@vicons/material/LockOpenOutlined';
 import SortOutlined from '@vicons/material/SortOutlined';
 import FilterAltOutlined from '@vicons/material/FilterAltOutlined';
 import FindInPageOutlined from '@vicons/material/FindInPageOutlined';
@@ -110,6 +108,7 @@ import MarkChatUnreadRound from '@vicons/material/MarkChatUnreadRound';
 import SendFilled from '@vicons/material/SendFilled';
 import GroupsFilled from '@vicons/material/GroupsFilled';
 import WarningOutlined from '@vicons/material/WarningOutlined';
+import RefreshOutlined from '@vicons/material/RefreshOutlined';
 
 export {
   WarningOutlined as WarningIcon,
@@ -121,8 +120,7 @@ export {
   FindInPageOutlined as NothingFoundIcon,
   FilterAltOutlined as FilterIcon,
   SortOutlined as SortIcon,
-  LockClockOutlined as LockIcon,
-  LockOpenOutlined as LockOpenIcon,
+  RefreshOutlined as RefreshIcon,
   UpdateOutlined as UpdateIcon,
   AutoAwesomeMosaicOutlined as SegmentsIcon,
   MiscellaneousServicesOutlined as SystemIcon,

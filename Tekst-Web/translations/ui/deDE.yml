@@ -19,6 +19,7 @@ general:
   editAction: Bearbeiten
   moveUpAction: Nach oben bewegen
   moveDownAction: Nach unten bewegen
+  refreshAction: Aktualisieren
   quickSearch: Schnellsuche
   textSelect: Wählen Sie den Text, mit dem Sie arbeiten möchten
   info: Information
@@ -33,6 +34,7 @@ general:
   not: nicht
   new: New
   in: in
+  system: System
   details: Details
   loading: Lade...
   downloadSaved: Datei gespeichert als {filename}.
@@ -84,6 +86,7 @@ errors:
   importInvalidContentData: Einige Inhalte in den Importdaten entsprechen nicht dem erforderlichen Schema.
   segmentKeyLocaleConflict: Ein Segment mit der gleichen Kombination aus Schlüssel und Sprache existiert bereits.
   textSameTitleOrSlug: Ein Text mit diesem Titel oder Identifikator existiert bereits.
+  locked: Es läuft bereits ein aktiver Hintergrundprozess für diese operation.
 
 nav:
   about: Über
@@ -96,6 +99,25 @@ osk:
   inputBtnTip: Bildschirmtastatur öffnen
   inputPlaceholder: Tippen Sie auf der Bildschirmtastatur und drücken Sie Enter, um Ihre Eingabe einzufügen...
   msgErrorLoading: 'Fehler beim Laden des Layouts für die Bildschirmtastatur: {layout}'
+
+tasks:
+  title: Hintergrundprozesse
+  successful: Hintergrundprozess "{name}" erfolgreich beendet.
+  failed: Hintergrundprozess "{name}" fehlgeschlagen.
+  statuses:
+    waiting: wartend
+    running: laufend
+    done: erfolgreich
+    failed: fehlgeschlagen
+  types:
+    index_create_update: Suchindex neu erzeugen
+    resource_import: Ressourcen-Inhalte importieren
+    broadcast_user_ntfc: Benutzer-Benachrichtigungen versenden
+    broadcast_admin_ntfc: Administratoren-Benachrichtigungen versenden
+    contents_changed_hook: Ressource nach Änderung von Inhalten aktualisieren
+  results:
+    index_create_update: Suchindex erzeugt in {took} Sekunden.
+    resource_import: '{created} Inhalte erzeugt, {updated} Inhalte aktualisiert, {errors} Fehler.'
 
 routes:
   pageTitle:
@@ -429,7 +451,7 @@ contents:
   btnAddContent: Inhalt hinzufügen
   msgSaved: Der Inhalt für diese Fundstelle wurde gespeichert.
   msgDeleted: Der Inhalt für diese Fundstelle wurde gelöscht.
-  msgImportSuccess: 'Import abgeschlossen. Inhalte neu erstellt: {created}. Inhalte modifiziert: {updated}. Errors: {errors}.'
+  msgImportInfo: Der Import wird im Hintergrund verarbeitet. Dies kann eine Weile dauern.
   msgNoNearest: Es gibt keine weiteren Fundstellen mit Inhalt in dieser Richtung.
   confirmDelete: Sind Sie sicher, dass Sie den Inhalt für diese Fundstelle löschen möchten?
   msgNoOwnContentTitle: Kein eigner Inhalt für diese Fundstelle!
@@ -664,17 +686,20 @@ admin:
         size: Größe
         searches: Suchen
         lastIndexed: Zeitpunkt der letzten Indexierung
-        actionCreate: Suchindex neu erzeugen
+        actionCreate: Neuindexierung
         actionCreateStarted: Der Suchindex wird im Hintergrund aktualisiert. Dies kann einen Moment dauern.
         actionCreateSuccess: Suchindex wurde aktualisiert
-      locks:
-        heading: System-Locks
-        locked: blockiert
-        unlocked: nicht blockiert
-        actionRelease: Alle System-Locks freigeben
-        actionReleaseSuccess: Alle System-Locks wurden freigegeben
-        index_create_update: Suchindex erzeugen/aktualisieren
-        text_structure_import: Textstruktur importieren
+      tasks:
+        noTasks: Keine aktiven @:tasks.title
+        type: Typ
+        status: Status
+        started: Gestartet
+        ended: Beendet
+        duration: Dauer
+        seconds: '{seconds} Sek.'
+        startedBy: Gestartet durch
+        actionDeleteAll: Alle löschen
+        actionDeleteAllSuccess: Alle @:tasks.title wurden gelöscht
     segments:
       heading: Seitensegmente
       systemKeys:

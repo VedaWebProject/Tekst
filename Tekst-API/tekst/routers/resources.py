@@ -1,7 +1,7 @@
 import json
 
 from tempfile import NamedTemporaryFile
-from typing import Annotated
+from typing import Annotated, Any
 
 from beanie import PydanticObjectId
 from beanie.exceptions import DocumentNotFound
@@ -9,7 +9,6 @@ from beanie.operators import In
 from bson.errors import InvalidId
 from fastapi import (
     APIRouter,
-    BackgroundTasks,
     Body,
     File,
     Path,
@@ -21,12 +20,12 @@ from fastapi.responses import FileResponse
 from pydantic import StringConstraints, ValidationError
 from starlette.background import BackgroundTask
 
-from tekst import errors, notifications
+from tekst import errors, notifications, tasks
 from tekst.auth import OptionalUserDep, SuperuserDep, UserDep
 from tekst.config import ConfigDep
 from tekst.logging import log
 from tekst.models.content import ContentBaseDocument
-from tekst.models.exchange import ResourceDataImportResponse, ResourceImportData
+from tekst.models.exchange import ResourceImportData
 from tekst.models.location import LocationDocument
 from tekst.models.resource import ResourceBaseDocument
 from tekst.models.text import TextDocument
@@ -674,33 +673,11 @@ async def get_resource_template(
     )
 
 
-@router.post(
-    "/{id}/import",
-    status_code=status.HTTP_201_CREATED,
-    responses=errors.responses(
-        [
-            errors.E_400_UPLOAD_INVALID_MIME_TYPE_NOT_JSON,
-            errors.E_404_RESOURCE_NOT_FOUND,
-            errors.E_403_FORBIDDEN,
-            errors.E_400_UPLOAD_INVALID_JSON,
-            errors.E_400_IMPORT_ID_MISMATCH,
-            errors.E_400_IMPORT_ID_NON_EXISTENT,
-            errors.E_400_IMPORT_INVALID_CONTENT_DATA,
-        ]
-    ),
-)
-async def import_resource_data(
-    user: UserDep,
-    resource_id: Annotated[PydanticObjectId, Path(alias="id")],
-    file: Annotated[
-        UploadFile, File(description="JSON file containing the resource data")
-    ],
-    background_tasks: BackgroundTasks,
-) -> ResourceDataImportResponse:
-    # test upload file MIME type
-    if not file.content_type.lower() == "application/json":
-        raise errors.E_400_UPLOAD_INVALID_MIME_TYPE_NOT_JSON
-
+async def _import_resource_data(
+    resource_id: PydanticObjectId,
+    file_bytes: bytes,
+    user: UserRead,
+) -> dict[str, Any]:
     # check if resource exists
     if not await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == resource_id, with_children=True
@@ -718,7 +695,7 @@ async def import_resource_data(
 
     # validate import file format
     try:
-        import_data = ResourceImportData.model_validate_json(await file.read())
+        import_data = ResourceImportData.model_validate_json(file_bytes)
     except ValueError:
         raise errors.E_400_UPLOAD_INVALID_JSON
 
@@ -828,13 +805,53 @@ async def import_resource_data(
     else:
         created_count = 0
 
-    # create background task that calls the
-    # content's resource's hook for updated content
-    background_tasks.add_task(
-        resource_types_mgr.get(resource.resource_type).contents_changed_hook,
-        resource_id,
+    # call content's resource's hook for updated content
+    await resource_types_mgr.get(resource.resource_type).contents_changed_hook(
+        resource_id
     )
 
-    return ResourceDataImportResponse(
-        updated=updated_count, created=created_count, errors=errors_count
+    return {
+        "created": created_count,
+        "updated": updated_count,
+        "errors": errors_count,
+    }
+
+
+@router.post(
+    "/{id}/import",
+    status_code=status.HTTP_202_ACCEPTED,
+    response_model=tasks.TaskRead,
+    responses=errors.responses(
+        [
+            errors.E_400_UPLOAD_INVALID_MIME_TYPE_NOT_JSON,
+            errors.E_404_RESOURCE_NOT_FOUND,
+            errors.E_403_FORBIDDEN,
+            errors.E_400_UPLOAD_INVALID_JSON,
+            errors.E_400_IMPORT_ID_MISMATCH,
+            errors.E_400_IMPORT_ID_NON_EXISTENT,
+            errors.E_400_IMPORT_INVALID_CONTENT_DATA,
+        ]
+    ),
+)
+async def import_resource_data(
+    user: UserDep,
+    resource_id: Annotated[PydanticObjectId, Path(alias="id")],
+    file: Annotated[
+        UploadFile,
+        File(
+            description="JSON file containing the resource data",
+            media_type="application/json",
+        ),
+    ],
+) -> tasks.TaskDocument:
+    return await tasks.create_task(
+        _import_resource_data,
+        tasks.TaskType.RESOURCE_IMPORT,
+        target_id=resource_id,
+        user_id=user.id,
+        task_kwargs={
+            "resource_id": resource_id,
+            "file_bytes": await file.read(),
+            "user": user,
+        },
     )

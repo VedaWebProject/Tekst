@@ -1,3 +1,5 @@
+import asyncio
+
 from collections.abc import Callable
 from pathlib import Path
 from typing import Any
@@ -5,10 +7,11 @@ from typing import Any
 import pytest
 
 from asgi_lifespan import LifespanManager
+from beanie import PydanticObjectId
 from bson import ObjectId, json_util
 from httpx import AsyncClient, Response
 from humps import camelize
-from tekst import db
+from tekst import db, tasks
 from tekst.app import app
 from tekst.auth import _create_user
 from tekst.config import TekstConfig, get_config
@@ -230,6 +233,29 @@ def status_fail_msg() -> Callable:
         )
 
     return _status_fail_msg
+
+
+@pytest.fixture(scope="session")
+def wait_for_task_success():
+    async def _wait_for_task_success(
+        task_id: str,
+        tries: int = 10,
+        interval_s: int = 1,
+    ) -> bool:
+        for _ in range(tries):
+            task = await tasks.TaskDocument.get(PydanticObjectId(task_id))
+            if task:
+                if task.status == "done":
+                    return True
+                elif task.status == "failed":
+                    return False
+            await asyncio.sleep(interval_s)
+        if task:
+            return False
+        else:
+            raise Exception(f"Task {task_id} not found")
+
+    return _wait_for_task_success
 
 
 # @pytest.fixture(autouse=True)

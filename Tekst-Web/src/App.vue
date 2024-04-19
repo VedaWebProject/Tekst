@@ -4,14 +4,13 @@ import InitLoader from '@/components/InitLoader.vue';
 import GlobalMessenger from '@/components/messages/GlobalMessenger.vue';
 import { computed } from 'vue';
 import { getLocaleProfile } from '@/i18n';
-import { useStateStore, useThemeStore } from '@/stores';
+import { useAuthStore, useStateStore, useThemeStore } from '@/stores';
 import {
   NLoadingBarProvider,
   NConfigProvider,
   NDialogProvider,
   NGlobalStyle,
   NBackTop,
-  useThemeVars,
 } from 'naive-ui';
 import PageHeader from './layout/PageHeader.vue';
 import PageFooter from './layout/PageFooter.vue';
@@ -20,10 +19,11 @@ import LoginModal from '@/components/modals/LoginModal.vue';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import MessagingModal from '@/components/userMessages/MessagingModal.vue';
 import { ErrorIcon } from '@/icons';
+import TasksWidget from '@/components/TasksWidget.vue';
 
+const auth = useAuthStore();
 const state = useStateStore();
 const theme = useThemeStore();
-const themeVars = useThemeVars();
 const { initialized, error } = useInitializeApp();
 
 // i18n
@@ -65,10 +65,15 @@ const nUiDateLocale = computed(() => getLocaleProfile(state.locale)?.nUiDateLoca
             :dark-mode="theme.darkMode"
           />
           <global-messenger />
+          <tasks-widget v-if="auth.user?.id" :user-id="auth.user.id" />
         </div>
         <messaging-modal />
         <login-modal />
-        <n-back-top :visibility-height="200" style="z-index: 2" />
+        <n-back-top
+          v-model:show="state.backtopVisible"
+          :visibility-height="200"
+          style="z-index: 2"
+        />
         <n-global-style />
       </n-dialog-provider>
     </n-loading-bar-provider>
@@ -117,13 +122,14 @@ a:hover {
 
   --main-bg-color: v-bind(theme.mainBgColor);
   --content-bg-color: v-bind(theme.contentBgColor);
-  --text-color: v-bind(themeVars.textColor1);
-  --text-color-fade: v-bind(themeVars.textColor3);
+  --base-color: v-bind(theme.theme.common.baseColor);
+  --text-color: v-bind(theme.theme.common.textColor1);
+  --text-color-fade: v-bind(theme.theme.common.textColor3);
 
   /* NaiveUI feedback colors */
-  --col-info: v-bind(themeVars.infoColor);
-  --col-success: v-bind(themeVars.successColor);
-  --col-warning: v-bind(themeVars.warningColor);
-  --col-error: v-bind(themeVars.errorColor);
+  --col-info: v-bind(theme.theme.common.infoColor);
+  --col-success: v-bind(theme.theme.common.successColor);
+  --col-warning: v-bind(theme.theme.common.warningColor);
+  --col-error: v-bind(theme.theme.common.errorColor);
 }
 </style>

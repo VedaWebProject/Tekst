@@ -12,6 +12,7 @@ from urllib.parse import urljoin
 from beanie.operators import Eq
 from humps import decamelize
 
+from tekst import tasks
 from tekst.config import TekstConfig, get_config
 from tekst.logging import log
 from tekst.models.email import TemplateIdentifier
@@ -122,7 +123,7 @@ async def send_notification(
 async def _broadcast_user_notification(
     template_id: TemplateIdentifier,
     **kwargs,
-):
+) -> None:
     if not template_id.name.startswith("USRMSG_"):
         log.error(
             "Only user messages can be broadcasted to regular users "
@@ -145,13 +146,20 @@ async def broadcast_user_notification(
     template_id: TemplateIdentifier,
     **kwargs,
 ):
-    asyncio.create_task(_broadcast_user_notification(template_id, **kwargs))
+    await tasks.create_task(
+        _broadcast_user_notification,
+        tasks.TaskType.BROADCAST_USER_NTFC,
+        task_kwargs={
+            "template_id": template_id,
+            **kwargs,
+        },
+    )
 
 
 async def _broadcast_admin_notification(
     template_id: TemplateIdentifier,
     **kwargs,
-):
+) -> None:
     for admin in await UserDocument.find(
         Eq(UserDocument.is_superuser, True),
         Eq(UserDocument.admin_notification_triggers, template_id.value),
@@ -168,7 +176,14 @@ async def broadcast_admin_notification(
     template_id: TemplateIdentifier,
     **kwargs,
 ):
-    asyncio.create_task(_broadcast_admin_notification(template_id, **kwargs))
+    await tasks.create_task(
+        _broadcast_admin_notification,
+        tasks.TaskType.BROADCAST_ADMIN_NTFC,
+        task_kwargs={
+            "template_id": template_id,
+            **kwargs,
+        },
+    )
 
 
 async def send_test_email(to_user: UserRead):

@@ -1,8 +1,8 @@
 from typing import Annotated, Union
 
-from fastapi import APIRouter, BackgroundTasks, Body, status
+from fastapi import APIRouter, Body, status
 
-from tekst import errors, locks, search
+from tekst import errors, search, tasks
 from tekst.auth import OptionalUserDep, SuperuserDep
 from tekst.models.search import (
     AdvancedSearchRequestBody,
@@ -62,6 +62,7 @@ async def perform_search(
 @router.get(
     "/index/create",
     status_code=status.HTTP_202_ACCEPTED,
+    response_model=tasks.TaskRead,
     responses=errors.responses(
         [
             errors.E_409_ACTION_LOCKED,
@@ -70,12 +71,10 @@ async def perform_search(
         ]
     ),
 )
-async def create_search_index(
-    su: SuperuserDep, background_tasks: BackgroundTasks
-) -> None:
-    if await locks.is_locked(locks.LockKey.INDEX_CREATE_UPDATE):
+async def create_search_index(su: SuperuserDep) -> tasks.TaskDocument:
+    if await tasks.is_active(tasks.TaskType.INDEX_CREATE_UPDATE):
         raise errors.E_409_ACTION_LOCKED
-    background_tasks.add_task(search.create_index)
+    return await search.create_index(user=su)
 
 
 @router.get(

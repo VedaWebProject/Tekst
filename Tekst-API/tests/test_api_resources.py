@@ -836,6 +836,7 @@ async def test_import_resource_data(
     status_fail_msg,
     login,
     wrong_id,
+    wait_for_task_success,
 ):
     inserted_ids = await insert_sample_data(
         "texts", "locations", "resources", "contents"
@@ -864,48 +865,32 @@ async def test_import_resource_data(
     }
     sample_data_string = json.dumps(sample_data)
 
-    # upload invalid resource data file (give wrong MIME type)
-    resp = await test_client.post(
-        f"/resources/{resource_id}/import",
-        files={"file": ("foo.json", sample_data_string, "text/plain")},
-    )
-    assert resp.status_code == 400, status_fail_msg(400, resp)
-
     # upload invalid structure definition file (invalid JSON)
     resp = await test_client.post(
         f"/resources/{resource_id}/import",
         files={"file": ("foo.json", r"{foo: bar}", "application/json")},
     )
-    assert resp.status_code == 400, status_fail_msg(400, resp)
+    assert resp.status_code == 202, status_fail_msg(202, resp)
+    assert "id" in resp.json()
+    assert not await wait_for_task_success(resp.json()["id"])
 
     # fail to upload structure definition file for wrong resource ID
     resp = await test_client.post(
         f"/resources/{wrong_id}/import",
         files={"file": ("foo.json", sample_data_string, "application/json")},
     )
-    assert resp.status_code == 404, status_fail_msg(404, resp)
+    assert resp.status_code == 202, status_fail_msg(202, resp)
+    assert "id" in resp.json()
+    assert not await wait_for_task_success(resp.json()["id"])
 
     # upload valid structure definition file
     resp = await test_client.post(
         f"/resources/{resource_id}/import",
         files={"file": ("foo.json", sample_data_string, "application/json")},
     )
-    assert resp.status_code == 201, status_fail_msg(201, resp)
-    assert isinstance(resp.json(), dict)
-    assert resp.json()["updated"] == 2
-    assert resp.json()["created"] == 1
-    assert resp.json()["errors"] == 0
-
-    # do the same again
-    resp = await test_client.post(
-        f"/resources/{resource_id}/import",
-        files={"file": ("foo.json", sample_data_string, "application/json")},
-    )
-    assert resp.status_code == 201, status_fail_msg(201, resp)
-    assert isinstance(resp.json(), dict)
-    assert resp.json()["updated"] == 3
-    assert resp.json()["created"] == 0
-    assert resp.json()["errors"] == 0
+    assert resp.status_code == 202, status_fail_msg(202, resp)
+    assert "id" in resp.json()
+    assert await wait_for_task_success(resp.json()["id"])
 
     # fail to upload resource data without write permissions
     await login()
@@ -913,7 +898,9 @@ async def test_import_resource_data(
         f"/resources/{resource_id}/import",
         files={"file": ("foo.json", sample_data_string, "application/json")},
     )
-    assert resp.status_code == 403, status_fail_msg(403, resp)
+    assert resp.status_code == 202, status_fail_msg(202, resp)
+    assert "id" in resp.json()
+    assert not await wait_for_task_success(resp.json()["id"])
     await login(user=superuser)
 
     # upload incomplete content data (one content without location ID)
@@ -925,7 +912,9 @@ async def test_import_resource_data(
             "file": ("foo.json", json.dumps(invalid_sample_data), "application/json")
         },
     )
-    assert resp.status_code == 400, status_fail_msg(400, resp)
+    assert resp.status_code == 202, status_fail_msg(202, resp)
+    assert "id" in resp.json()
+    assert not await wait_for_task_success(resp.json()["id"])
 
     # upload invalid content data (text is list[int])
     invalid_sample_data = sample_data.copy()
@@ -936,4 +925,6 @@ async def test_import_resource_data(
             "file": ("foo.json", json.dumps(invalid_sample_data), "application/json")
         },
     )
-    assert resp.status_code == 400, status_fail_msg(400, resp)
+    assert resp.status_code == 202, status_fail_msg(202, resp)
+    assert "id" in resp.json()
+    assert not await wait_for_task_success(resp.json()["id"])

@@ -9,7 +9,7 @@ from beanie import PydanticObjectId
 from beanie.operators import Eq, In
 from elasticsearch import Elasticsearch
 
-from tekst import locks
+from tekst import tasks
 from tekst.config import TekstConfig, get_config
 from tekst.logging import log
 from tekst.models.content import ContentBaseDocument
@@ -96,69 +96,79 @@ async def _setup_index_template() -> None:
     )
 
 
-async def create_index(*, overwrite_existing_index: bool = True) -> None:
+async def _create_index(overwrite_existing_index: bool = True) -> dict[str, Any]:
     # prepare
+    start_time = process_time()
     new_index_name = IDX_NAME_PREFIX + uuid4().hex
-    log.info(f'Creating index "{new_index_name}"...')
 
-    # check and set lock
-    if await locks.is_locked(locks.LockKey.INDEX_CREATE_UPDATE):
+    # get existing search indices
+    client: Elasticsearch = await _get_es_client()
+    existing_indices = [idx for idx in client.indices.get(index=IDX_NAME_PATTERN_ANY)]
+    if existing_indices:
+        if overwrite_existing_index:
+            log.debug("The new index will overwrite the existing one...")
+        else:
+            log.warning("An index already exists. Aborting index creation.")
+            return
+
+    # create index (index template will be applied!)
+    client.indices.create(
+        index=new_index_name,
+        aliases={IDX_ALIAS: {}},
+    )
+
+    # extend index mappings adding one extra field for each existing resource
+    extra_properties = {}
+    for res in await ResourceBaseDocument.find_all(
+        with_children=True,
+        lazy_parse=True,
+    ).to_list():
+        extra_properties[str(res.id)] = {
+            "properties": resource_types_mgr.get(res.resource_type).index_doc_props(),
+        }
+    resp = client.indices.put_mapping(
+        index=new_index_name,
+        body={"properties": {"resources": {"properties": extra_properties}}},
+    )
+    if not resp or not resp.get("acknowledged"):
+        raise RuntimeError("Failed to extend index mappings!")
+
+    # populate newly created index
+    await _populate_index(new_index_name)
+
+    # delete all other/old indices matching the used index naming pattern
+    if existing_indices:
+        client.indices.delete(index=existing_indices)
+
+    # perform initial bogus search (to initialize index stats)
+    client.search(index=IDX_ALIAS, query={"match_all": {}})
+
+    return {
+        "took": f"{round(process_time() - start_time, 2)}",
+    }
+
+
+async def create_index(
+    *,
+    user: UserRead | None = None,
+    overwrite_existing_index: bool = True,
+) -> tasks.TaskDocument:
+    log.info("Creating search index ...")
+    # check if index task is already active
+    if await tasks.is_active(tasks.TaskType.INDEX_CREATE_UPDATE):
         log.warning(
-            'Aborting index creation because of active lock "index_create_update"'
+            "Aborting index creation because of active index creation background task."
         )
         return
-    else:
-        await locks.lock(locks.LockKey.INDEX_CREATE_UPDATE)
-
-    try:
-        # get existing search indices
-        client: Elasticsearch = await _get_es_client()
-        existing_indices = [
-            idx for idx in client.indices.get(index=IDX_NAME_PATTERN_ANY)
-        ]
-        if existing_indices:
-            if overwrite_existing_index:
-                log.debug("The new index will overwrite the existing one...")
-            else:
-                log.warning("An index already exists. Aborting index creation.")
-                return
-
-        # create index (index template will be applied!)
-        client.indices.create(
-            index=new_index_name,
-            aliases={IDX_ALIAS: {}},
-        )
-
-        # extend index mappings adding one extra field for each existing resource
-        extra_properties = {}
-        for res in await ResourceBaseDocument.find_all(
-            with_children=True,
-            lazy_parse=True,
-        ).to_list():
-            extra_properties[str(res.id)] = {
-                "properties": resource_types_mgr.get(
-                    res.resource_type
-                ).index_doc_props(),
-            }
-        resp = client.indices.put_mapping(
-            index=new_index_name,
-            body={"properties": {"resources": {"properties": extra_properties}}},
-        )
-        if not resp or not resp.get("acknowledged"):
-            raise RuntimeError("Failed to extend index mappings!")
-
-        # populate newly created index
-        await _populate_index(new_index_name)
-
-        # delete all other/old indices matching the used index naming pattern
-        if existing_indices:
-            client.indices.delete(index=existing_indices)
-
-        # perform initial bogus search (to initialize index stats)
-        client.search(index=IDX_ALIAS, query={"match_all": {}})
-    finally:
-        # release lock
-        await locks.release(locks.LockKey.INDEX_CREATE_UPDATE)
+    # create index task
+    return await tasks.create_task(
+        _create_index,
+        tasks.TaskType.INDEX_CREATE_UPDATE,
+        user_id=user.id if user else None,
+        task_kwargs={
+            "overwrite_existing_index": overwrite_existing_index,
+        },
+    )
 
 
 async def _populate_index(index_name: str) -> None:
@@ -178,7 +188,7 @@ async def _populate_index(index_name: str) -> None:
     }
 
     for text in await TextDocument.find_all(lazy_parse=True).to_list():
-        log.debug(f"Indexing resources for text '{text.title}' ...")
+        log.debug(f"Indexing resources for text '{text.title}'...")
         start_time = process_time()
         # Initialize stack with all level 0 locations (sorted) of the current text.
         # Each item on the stack is a tuple containing (1) the location labels from the

@@ -155,6 +155,9 @@ export const useStateStore = defineStore('state', () => {
     { once: true }
   );
 
+  // tasks widget visibility
+  const backtopVisible = ref(false);
+
   // set page title
   function setPageTitle(
     forRoute: RouteLocationNormalized = route,
@@ -179,6 +182,7 @@ export const useStateStore = defineStore('state', () => {
     smallScreen,
     dropdownSize,
     isTouchDevice,
+    backtopVisible,
     setPageTitle,
     locale,
     setLocale,

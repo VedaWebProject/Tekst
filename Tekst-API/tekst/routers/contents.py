@@ -2,9 +2,9 @@ from typing import Annotated
 
 from beanie import PydanticObjectId
 from beanie.operators import Eq, In, Not
-from fastapi import APIRouter, BackgroundTasks, Path, Query, status
+from fastapi import APIRouter, Path, Query, status
 
-from tekst import errors
+from tekst import errors, tasks
 from tekst.auth import OptionalUserDep, UserDep
 from tekst.models.content import ContentBaseDocument
 from tekst.models.resource import ResourceBaseDocument
@@ -37,7 +37,8 @@ router = APIRouter(
     ),
 )
 async def create_content(
-    content: AnyContentCreateBody, user: UserDep, background_tasks: BackgroundTasks
+    content: AnyContentCreateBody,
+    user: UserDep,
 ) -> AnyContentDocument:
     # check if the resource this content belongs to is writable by user
     if not await ResourceBaseDocument.find_one(
@@ -59,9 +60,13 @@ async def create_content(
 
     # create background task that calls the
     # content's resource's hook for updated content
-    background_tasks.add_task(
+    await tasks.create_task(
         resource_types_mgr.get(content.resource_type).contents_changed_hook,
-        content.resource_id,
+        tasks.TaskType.CONTENTS_CHANGED_HOOK,
+        target_id=content.resource_id,
+        task_kwargs={
+            "resource_id": content.resource_id,
+        },
     )
 
     # create the content document and return it
@@ -119,7 +124,6 @@ async def update_content(
     content_id: Annotated[PydanticObjectId, Path(alias="id")],
     updates: AnyContentUpdateBody,
     user: UserDep,
-    background_tasks: BackgroundTasks,
 ) -> AnyContentDocument:
     content_doc = await ContentBaseDocument.get(content_id, with_children=True)
     if not content_doc:
@@ -143,9 +147,13 @@ async def update_content(
 
     # create background task that calls the
     # content's resource's hook for updated content
-    background_tasks.add_task(
+    await tasks.create_task(
         resource_types_mgr.get(content_doc.resource_type).contents_changed_hook,
-        content_doc.resource_id,
+        tasks.TaskType.CONTENTS_CHANGED_HOOK,
+        target_id=content_doc.resource_id,
+        task_kwargs={
+            "resource_id": content_doc.resource_id,
+        },
     )
 
     # apply updates, return the updated document
@@ -167,7 +175,6 @@ async def update_content(
 async def delete_content(
     user: UserDep,
     content_id: Annotated[PydanticObjectId, Path(alias="id")],
-    background_tasks: BackgroundTasks,
 ) -> None:
     content_doc = await ContentBaseDocument.get(content_id, with_children=True)
     if not content_doc:
@@ -181,9 +188,13 @@ async def delete_content(
 
     # create background task that calls the
     # content's resource's hook for updated content
-    background_tasks.add_task(
+    await tasks.create_task(
         resource_types_mgr.get(content_doc.resource_type).contents_changed_hook,
-        content_doc.resource_id,
+        tasks.TaskType.CONTENTS_CHANGED_HOOK,
+        target_id=content_doc.resource_id,
+        task_kwargs={
+            "resource_id": content_doc.resource_id,
+        },
     )
 
     # all fine, delete content
