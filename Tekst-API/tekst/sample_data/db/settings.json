@@ -1,0 +1,27 @@
+[
+  {
+    "_id": {
+      "$oid": "66223dee5d0407ae401d7422"
+    },
+    "info_platform_name": "Tekst-Dev",
+    "info_subtitle": [
+      {
+        "locale": "*",
+        "translation": "An online text research platform"
+      }
+    ],
+    "info_terms": null,
+    "info_contact_name": "Tekst Administrator",
+    "info_contact_email": "noreply@tekst-contact-email-not-set.com",
+    "info_contact_url": null,
+    "default_text_id": null,
+    "nav_info_entry": [],
+    "custom_fonts": [],
+    "show_resource_category_headings": true,
+    "always_show_resource_category_headings": true,
+    "always_show_text_info": true,
+    "show_tekst_footer_hint": true,
+    "available_locales": ["deDE", "enUS"],
+    "osk_modes": []
+  }
+]

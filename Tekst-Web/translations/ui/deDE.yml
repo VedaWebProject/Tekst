@@ -243,6 +243,9 @@ models:
     locDelim: Fundstellentrennzeichen
     labeledLocation: Beschriftete Fundstelle
     accentColor: Akzentfarbe
+    resourceCategories: Ressourcen-Kategorien
+    resourceCategoryKey: Schlüssel
+    resourceCategoryTranslation: Beschriftung
     isActive: Aktiv, öffentlich gelistet
     isInactive: Inaktiv, nicht öffentlich gelistet
     formRulesFeedback:
@@ -288,9 +291,6 @@ models:
     navInfoEntry: Eigene Beschriftung für Info-Eintrag in Hauptnavigation
     alwaysShowTextInfo: Zeige Textinformationen und -auswahl auch auf nicht-textspezifischen Seiten
     showTekstFooterHint: Zeige einen kleinen Hinweis auf die Tekst-Software in der Fußzeile (Danke!)
-    resourceCategories: Ressourcen-Kategorien
-    resourceCategoryKey: Schlüssel
-    resourceCategoryTranslation: Beschriftung
     oskModes: Bildschirmtastatur-Modi
     oskModeKey: Schlüssel
     oskModeName: Name

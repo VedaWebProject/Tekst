@@ -8610,16 +8610,6 @@
             "description": "Custom label for main navigation info entry",
             "default": []
           },
-          "resourceCategories": {
-            "items": {
-              "$ref": "#/components/schemas/ResourceCategory"
-            },
-            "type": "array",
-            "maxItems": 32,
-            "title": "Resourcecategories",
-            "description": "Resource categories to categorize resources in",
-            "default": []
-          },
           "customFonts": {
             "items": {
               "type": "string",
@@ -8792,16 +8782,6 @@
             "maxItems": 3,
             "title": "Navinfoentry",
             "description": "Custom label for main navigation info entry",
-            "default": []
-          },
-          "resourceCategories": {
-            "items": {
-              "$ref": "#/components/schemas/ResourceCategory"
-            },
-            "type": "array",
-            "maxItems": 32,
-            "title": "Resourcecategories",
-            "description": "Resource categories to categorize resources in",
             "default": []
           },
           "customFonts": {
@@ -11302,6 +11282,16 @@
             "title": "Isactive",
             "description": "Whether the text should be listed for non-admin users in the web client",
             "default": false
+          },
+          "resourceCategories": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceCategory"
+            },
+            "type": "array",
+            "maxItems": 32,
+            "title": "Resourcecategories",
+            "description": "Resource categories to categorize resources in",
+            "default": []
           }
         },
         "type": "object",
@@ -11410,6 +11400,16 @@
             "title": "Isactive",
             "description": "Whether the text should be listed for non-admin users in the web client",
             "default": false
+          },
+          "resourceCategories": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceCategory"
+            },
+            "type": "array",
+            "maxItems": 32,
+            "title": "Resourcecategories",
+            "description": "Resource categories to categorize resources in",
+            "default": []
           }
         },
         "additionalProperties": true,
@@ -11566,6 +11566,16 @@
             "title": "Isactive",
             "description": "Whether the text should be listed for non-admin users in the web client",
             "default": false
+          },
+          "resourceCategories": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceCategory"
+            },
+            "type": "array",
+            "maxItems": 32,
+            "title": "Resourcecategories",
+            "description": "Resource categories to categorize resources in",
+            "default": []
           }
         },
         "type": "object",

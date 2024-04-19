@@ -3,7 +3,6 @@ import type { CommonResourceConfig } from '@/api';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import { NFlex, NFormItem, NInputNumber, NSelect } from 'naive-ui';
 import { useStateStore } from '@/stores';
-import { usePlatformData } from '@/composables/platformData';
 import { computed } from 'vue';
 import { pickTranslation } from '@/utils';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
@@ -21,11 +20,10 @@ const props = withDefaults(
 const emit = defineEmits(['update:model']);
 
 const state = useStateStore();
-const { pfData } = usePlatformData();
 
 const categoryOptions = computed(
   () =>
-    pfData.value?.settings.resourceCategories?.map((c) => ({
+    state.text?.resourceCategories?.map((c) => ({
       label: pickTranslation(c.translations, state.locale) || c.key,
       value: c.key,
     })) || []

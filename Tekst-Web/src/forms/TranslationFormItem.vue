@@ -18,6 +18,7 @@ const props = withDefaults(
     maxTranslationLength?: number;
     minItems?: number;
     secondary?: boolean;
+    ignorePathChange?: boolean;
   }>(),
   {
     mainFormLabel: undefined,
@@ -48,6 +49,8 @@ const localeOptions = computed(() =>
     :show-label="!!mainFormLabel"
     :label="mainFormLabel"
     :show-feedback="!value || !value.length"
+    :path="parentFormPathPrefix"
+    :ignore-path-change="ignorePathChange"
   >
     <n-dynamic-input
       :value="value"

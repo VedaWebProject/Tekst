@@ -6,13 +6,11 @@ import type { AnyResourceRead, AnyContentRead, LocationRead } from '@/api';
 import { GET } from '@/api';
 import { pickTranslation } from '@/utils';
 import { $t } from '@/i18n';
-import { usePlatformData } from '@/composables/platformData';
 
 export const useBrowseStore = defineStore('browse', () => {
   // composables
   const state = useStateStore();
   const resources = useResourcesStore();
-  const { pfData } = usePlatformData();
   const route = useRoute();
   const router = useRouter();
 
@@ -113,7 +111,7 @@ export const useBrowseStore = defineStore('browse', () => {
   >(() => {
     // compute categorized resources
     const categorized =
-      pfData.value?.settings.resourceCategories?.map((c) => ({
+      state.text?.resourceCategories?.map((c) => ({
         category: { key: c.key, translation: pickTranslation(c.translations, state.locale) },
         resources: resources.data.filter(
           (r) => r.config?.common?.category === c.key && (showNonPublicResources.value || r.public)

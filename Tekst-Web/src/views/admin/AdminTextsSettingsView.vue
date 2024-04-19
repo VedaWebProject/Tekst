@@ -9,6 +9,7 @@ import {
   NForm,
   NFormItem,
   NInput,
+  NDynamicInput,
   NColorPicker,
   type FormInst,
   useDialog,
@@ -28,6 +29,7 @@ import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import { SettingsIcon } from '@/icons';
+import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 
 const state = useStateStore();
 const { pfData, loadPlatformData } = usePlatformData();
@@ -66,14 +68,14 @@ const textCanBeDeleted = computed(() => {
 watch(
   () => state.text,
   () => {
-    model.value = initialModel();
-    resetModelChanges();
+    resetForm();
   }
 );
 
-function handleReset() {
+function resetForm() {
   model.value = initialModel();
   resetModelChanges();
+  formRef.value?.restoreValidation();
 }
 
 function handleSave() {
@@ -221,6 +223,57 @@ async function handleDelete() {
           <labelled-switch v-model:value="model.isActive" :label="$t('models.text.isActive')" />
         </n-flex>
       </n-form-item>
+
+      <!-- RESOURCE CATEGORIES-->
+      <n-form-item v-if="model.resourceCategories" :label="$t('models.text.resourceCategories')">
+        <n-dynamic-input
+          v-model:value="model.resourceCategories"
+          show-sort-button
+          :min="0"
+          :max="32"
+          @create="() => ({ key: '', translations: [{ locale: '*', translation: '' }] })"
+        >
+          <template #default="{ index }">
+            <div style="display: flex; align-items: flex-start; gap: 12px; width: 100%">
+              <n-form-item
+                ignore-path-change
+                :label="$t('models.text.resourceCategoryKey')"
+                :path="`resourceCategories[${index}].key`"
+                :rule="textFormRules.resourceCategoryKey"
+              >
+                <n-input
+                  v-model:value="model.resourceCategories[index].key"
+                  :placeholder="$t('models.text.resourceCategoryKey')"
+                  @keydown.enter.prevent
+                />
+              </n-form-item>
+              <translation-form-item
+                v-model:value="model.resourceCategories[index].translations"
+                ignore-path-change
+                secondary
+                required
+                :parent-form-path-prefix="`resourceCategories[${index}].translations`"
+                style="flex-grow: 2"
+                :main-form-label="$t('models.text.resourceCategoryTranslation')"
+                :translation-form-label="$t('models.text.resourceCategoryTranslation')"
+                :translation-form-rule="textFormRules.resourceCategoryTranslation"
+              />
+            </div>
+          </template>
+          <template #action="{ index: indexAction, create, remove, move }">
+            <dynamic-input-controls
+              top-offset
+              :move-up-disabled="indexAction === 0"
+              :move-down-disabled="indexAction === model.resourceCategories?.length - 1"
+              :insert-disabled="(model.resourceCategories?.length || 0) >= 32"
+              @move-up="() => move('up', indexAction)"
+              @move-down="() => move('down', indexAction)"
+              @remove="() => remove(indexAction)"
+              @insert="() => create(indexAction)"
+            />
+          </template>
+        </n-dynamic-input>
+      </n-form-item>
     </n-form>
 
     <button-shelf top-gap>
@@ -233,7 +286,7 @@ async function handleDelete() {
         secondary
         :loading="loading"
         :disabled="loading || !modelChanged"
-        @click="() => handleReset"
+        @click="resetForm"
       >
         {{ $t('general.resetAction') }}
       </n-button>

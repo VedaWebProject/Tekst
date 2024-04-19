@@ -241,6 +241,9 @@ models:
     locDelim: Location delimiter
     labeledLocation: Labelled location
     accentColor: Accent color
+    resourceCategories: Resource Categories
+    resourceCategoryKey: Key
+    resourceCategoryTranslation: Label
     isActive: Active, publicly listed
     isInactive: Inactive, not publicly listed
     formRulesFeedback:
@@ -286,9 +289,6 @@ models:
     navInfoEntry: Custom label for info entry in main navigation
     alwaysShowTextInfo: Show text info and selector in header even on non-text-specific pages
     showTekstFooterHint: Show a small hint to the Tekst software in the footer (Thank you!)
-    resourceCategories: Resource Categories
-    resourceCategoryKey: Key
-    resourceCategoryTranslation: Label
     oskModes: On-screen keyboard modes
     oskModeKey: Key
     oskModeName: Name

@@ -1,6 +1,8 @@
 [
   {
-    "_id": { "$oid": "654b825533ee5737b297f8f3" },
+    "_id": {
+      "$oid": "654b825533ee5737b297f8f3"
+    },
     "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
     "title": "Originalfassung",
     "description": [
@@ -9,20 +11,35 @@
         "translation": "Die deutschsprachige Originalfassung von 1824"
       }
     ],
-    "text_id": { "$oid": "654b825533ee5737b297f8e3" },
+    "text_id": {
+      "$oid": "654b825533ee5737b297f8e3"
+    },
     "level": 1,
     "resource_type": "plainText",
+    "original_id": null,
     "owner_id": null,
     "shared_read": [],
     "shared_write": [],
-    "proposed": false,
     "public": true,
+    "proposed": false,
     "citation": "Anschütz, Ernst. Warnung. 1824.",
     "meta": [
-      { "key": "author", "value": "Ernst Anschütz" },
-      { "key": "year", "value": "1824" },
-      { "key": "Original Title", "value": "Warnung" },
-      { "key": "language", "value": "DE" }
+      {
+        "key": "author",
+        "value": "Ernst Anschütz"
+      },
+      {
+        "key": "year",
+        "value": "1824"
+      },
+      {
+        "key": "Original Title",
+        "value": "Warnung"
+      },
+      {
+        "key": "language",
+        "value": "DE"
+      }
     ],
     "comment": [
       {
@@ -34,20 +51,29 @@
         "translation": "Diese Version enthält Wiederholungszeichen."
       }
     ],
-    "category": "version",
     "config": {
       "common": {
+        "category": "versions",
+        "sortOrder": 100,
+        "defaultActive": true,
         "showOnParentLevel": true
+      },
+      "general": {
+        "defaultCollapsed": false,
+        "reducedViewOneline": true,
+        "font": null
       },
       "deeplLinks": {
         "enabled": true,
         "sourceLanguage": "DE",
-        "languages": ["EN", "FR"]
+        "languages": ["EN", "DE"]
       }
     }
   },
   {
-    "_id": { "$oid": "654ba3a6ec7833e469dde77a" },
+    "_id": {
+      "$oid": "654ba3a6ec7833e469dde77a"
+    },
     "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
     "title": "Japanese Version",
     "description": [
@@ -56,23 +82,46 @@
         "translation": "The original text in Japanese language"
       }
     ],
-    "text_id": { "$oid": "654ba1f3ec7833e469dde765" },
+    "text_id": {
+      "$oid": "654ba1f3ec7833e469dde765"
+    },
     "level": 0,
     "resource_type": "plainText",
+    "original_id": null,
+    "owner_id": null,
     "shared_read": [],
     "shared_write": [],
-    "proposed": false,
     "public": true,
-    "citation": null,
-    "category": "version",
+    "proposed": false,
+    "citation": "Bashō, Matsuo (1686)",
     "meta": [
-      { "key": "author", "value": "Matsuo Bashō" },
-      { "key": "year", "value": "1686" },
-      { "key": "language", "value": "JA" }
+      {
+        "key": "author",
+        "value": "Matsuo Bashō"
+      },
+      {
+        "key": "year",
+        "value": "1686"
+      },
+      {
+        "key": "language",
+        "value": "JA"
+      }
     ],
+    "comment": [],
     "config": {
+      "common": {
+        "category": "versions",
+        "sortOrder": 100,
+        "defaultActive": true,
+        "showOnParentLevel": true
+      },
+      "general": {
+        "defaultCollapsed": false,
+        "reducedViewOneline": true,
+        "font": null
+      },
       "deeplLinks": {
-        "showOnParentLevel": false,
         "enabled": true,
         "sourceLanguage": "JA",
         "languages": ["EN", "DE", "FR", "ES"]
@@ -80,51 +129,97 @@
     }
   },
   {
-    "_id": { "$oid": "654ba525ec7833e469dde77e" },
+    "_id": {
+      "$oid": "654ba525ec7833e469dde77e"
+    },
     "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
     "title": "English Translation",
-    "text_id": { "$oid": "654ba1f3ec7833e469dde765" },
+    "description": [],
+    "text_id": {
+      "$oid": "654ba1f3ec7833e469dde765"
+    },
     "level": 0,
     "resource_type": "plainText",
+    "original_id": null,
+    "owner_id": null,
     "shared_read": [],
     "shared_write": [],
-    "proposed": false,
     "public": true,
+    "proposed": false,
     "citation": null,
-    "category": "translation",
+    "meta": [
+      {
+        "key": "author",
+        "value": "Robert Hass"
+      },
+      {
+        "key": "language",
+        "value": "EN"
+      }
+    ],
+    "comment": [],
     "config": {
       "common": {
+        "category": "translations",
+        "sortOrder": 100,
+        "defaultActive": true,
         "showOnParentLevel": true
       },
-      "deeplLinks": {
-        "enabled": false
-      }
-    },
-    "meta": [
-      { "key": "author", "value": "Robert Hass" },
-      { "key": "language", "value": "EN" }
-    ]
-  },
-  {
-    "_id": { "$oid": "654ba678ec7833e469dde782" },
-    "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
-    "title": "Romanic Transliteration",
-    "text_id": { "$oid": "654ba1f3ec7833e469dde765" },
-    "level": 0,
-    "resource_type": "plainText",
-    "shared_read": [],
-    "shared_write": [],
-    "proposed": false,
-    "public": true,
-    "citation": null,
-    "category": "version",
-    "config": {
+      "general": {
+        "defaultCollapsed": false,
+        "reducedViewOneline": true,
+        "font": null
+      },
       "deeplLinks": {
         "enabled": false,
         "sourceLanguage": "BG",
         "languages": ["EN", "DE"]
       }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "654ba678ec7833e469dde782"
     },
-    "meta": [{ "key": "language", "value": "Hepburn romanization" }]
+    "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
+    "title": "Romanic Transliteration",
+    "description": [],
+    "text_id": {
+      "$oid": "654ba1f3ec7833e469dde765"
+    },
+    "level": 0,
+    "resource_type": "plainText",
+    "original_id": null,
+    "owner_id": null,
+    "shared_read": [],
+    "shared_write": [],
+    "public": true,
+    "proposed": false,
+    "citation": null,
+    "meta": [
+      {
+        "key": "language",
+        "value": "Hepburn romanization"
+      }
+    ],
+    "comment": [],
+    "config": {
+      "common": {
+        "category": "versions",
+        "sortOrder": 100,
+        "defaultActive": true,
+        "showOnParentLevel": true
+      },
+      "general": {
+        "defaultCollapsed": false,
+        "reducedViewOneline": true,
+        "font": null
+      },
+      "deeplLinks": {
+        "enabled": false,
+        "sourceLanguage": "BG",
+        "languages": ["EN", "DE"]
+      }
+    }
   }
 ]

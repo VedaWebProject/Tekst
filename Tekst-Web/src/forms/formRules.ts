@@ -116,6 +116,14 @@ export const textFormRules: Record<string, FormItemRule[]> = {
     },
   ],
   locDelim: [requiredRule(() => $t('models.text.locDelim'), 'blur'), minMaxCharsRule(1, 3, 'blur')],
+  resourceCategoryKey: [
+    requiredRule(() => $t('models.text.resourceCategoryKey'), 'blur'),
+    minMaxCharsRule(1, 16, 'blur'),
+  ],
+  resourceCategoryTranslation: [
+    requiredRule(() => $t('models.text.resourceCategoryTranslation'), 'blur'),
+    minMaxCharsRule(1, 32, 'blur'),
+  ],
 };
 
 export const locationFormRules: Record<string, FormItemRule[]> = {
@@ -177,14 +185,6 @@ export const platformSettingsFormRules: Record<string, FormItemRule[]> = {
     },
   ],
   navInfoEntryTranslation: [minMaxCharsRule(1, 42, 'blur')],
-  resourceCategoryKey: [
-    requiredRule(() => $t('models.platformSettings.resourceCategoryKey'), 'blur'),
-    minMaxCharsRule(1, 16, 'blur'),
-  ],
-  resourceCategoryTranslation: [
-    requiredRule(() => $t('models.platformSettings.resourceCategoryTranslation'), 'blur'),
-    minMaxCharsRule(1, 32, 'blur'),
-  ],
   oskModeKey: [
     requiredRule(() => $t('models.platformSettings.oskModeKey'), 'blur'),
     minMaxCharsRule(1, 32, 'blur'),

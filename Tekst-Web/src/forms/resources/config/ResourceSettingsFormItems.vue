@@ -156,6 +156,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
 
 <template>
   <h3>{{ $t('resources.headingBasic') }}</h3>
+
   <!-- TITLE -->
   <n-form-item path="title" :label="$t('models.resource.title')" required>
     <n-input
@@ -166,6 +167,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
       @keydown.enter.prevent
     />
   </n-form-item>
+
   <!-- DESCRIPTION -->
   <translation-form-item
     :value="model.description"
@@ -175,6 +177,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
     :translation-form-rule="resourceSettingsFormRules.descriptionTranslation"
     @update:value="(v) => handleUpdate('description', v)"
   />
+
   <!-- CITATION -->
   <n-form-item path="citation" :label="$t('models.resource.citation')">
     <n-input
@@ -185,6 +188,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
       @update:value="(v) => handleUpdate('citation', v)"
     />
   </n-form-item>
+
   <!-- COMMENT -->
   <translation-form-item
     :value="model.comment"

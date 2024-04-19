@@ -10,6 +10,7 @@ from pydantic import (
     field_validator,
 )
 from pydantic_extra_types.color import Color
+from typing_extensions import TypedDict
 
 from tekst.models.common import (
     DocumentBase,
@@ -40,6 +41,29 @@ class TextLevelTranslation(TranslationBase):
             strip_whitespace=True,
         ),
     ]
+
+
+class ResourceCategoryTranslation(TranslationBase):
+    translation: Annotated[
+        str,
+        StringConstraints(
+            min_length=1,
+            max_length=32,
+            strip_whitespace=True,
+        ),
+    ]
+
+
+class ResourceCategory(TypedDict):
+    key: Annotated[
+        str,
+        StringConstraints(
+            min_length=1,
+            max_length=16,
+            strip_whitespace=True,
+        ),
+    ]
+    translations: Translations[ResourceCategoryTranslation]
 
 
 class Text(ModelBase, ModelFactoryMixin):
@@ -141,6 +165,14 @@ class Text(ModelBase, ModelFactoryMixin):
             ),
         ),
     ] = False
+
+    resource_categories: Annotated[
+        list[ResourceCategory],
+        Field(
+            description="Resource categories to categorize resources in",
+            max_length=32,
+        ),
+    ] = []
 
     @field_validator("subtitle", mode="after")
     @classmethod

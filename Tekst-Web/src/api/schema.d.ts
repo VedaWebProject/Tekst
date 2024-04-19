@@ -1668,12 +1668,6 @@ export interface components {
        */
       navInfoEntry?: components['schemas']['PlatformNavInfoEntryTranslation'][];
       /**
-       * Resourcecategories
-       * @description Resource categories to categorize resources in
-       * @default []
-       */
-      resourceCategories?: components['schemas']['ResourceCategory'][];
-      /**
        * Customfonts
        * @description CSS font family names for use in resources
        * @default []
@@ -1771,12 +1765,6 @@ export interface components {
        * @default []
        */
       navInfoEntry?: components['schemas']['PlatformNavInfoEntryTranslation'][];
-      /**
-       * Resourcecategories
-       * @description Resource categories to categorize resources in
-       * @default []
-       */
-      resourceCategories?: components['schemas']['ResourceCategory'][];
       /**
        * Customfonts
        * @description CSS font family names for use in resources
@@ -3075,6 +3063,12 @@ export interface components {
        * @default false
        */
       isActive?: boolean;
+      /**
+       * Resourcecategories
+       * @description Resource categories to categorize resources in
+       * @default []
+       */
+      resourceCategories?: components['schemas']['ResourceCategory'][];
     };
     /** TextLevelTranslation */
     TextLevelTranslation: {
@@ -3141,6 +3135,12 @@ export interface components {
        * @default false
        */
       isActive?: boolean;
+      /**
+       * Resourcecategories
+       * @description Resource categories to categorize resources in
+       * @default []
+       */
+      resourceCategories?: components['schemas']['ResourceCategory'][];
       [key: string]: unknown;
     };
     /**
@@ -3213,6 +3213,12 @@ export interface components {
        * @default false
        */
       isActive?: boolean;
+      /**
+       * Resourcecategories
+       * @description Resource categories to categorize resources in
+       * @default []
+       */
+      resourceCategories?: components['schemas']['ResourceCategory'][];
     };
     /** @enum {string} */
     TranslationLocaleKey: 'deDE' | 'enUS' | '*';

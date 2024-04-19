@@ -2,7 +2,6 @@ from typing import Annotated, get_args
 
 from beanie import PydanticObjectId
 from pydantic import EmailStr, Field, StringConstraints
-from typing_extensions import TypedDict
 
 from tekst.config import TekstConfig, get_config
 from tekst.models.common import (
@@ -40,29 +39,6 @@ class PlatformNavInfoEntryTranslation(TranslationBase):
             strip_whitespace=True,
         ),
     ]
-
-
-class ResourceCategoryTranslation(TranslationBase):
-    translation: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
-            max_length=32,
-            strip_whitespace=True,
-        ),
-    ]
-
-
-class ResourceCategory(TypedDict):
-    key: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
-            max_length=16,
-            strip_whitespace=True,
-        ),
-    ]
-    translations: Translations[ResourceCategoryTranslation]
 
 
 class OskMode(ModelBase):
@@ -166,13 +142,6 @@ class PlatformSettings(ModelBase, ModelFactoryMixin):
         Translations[PlatformNavInfoEntryTranslation],
         Field(
             description="Custom label for main navigation info entry",
-        ),
-    ] = []
-    resource_categories: Annotated[
-        list[ResourceCategory],
-        Field(
-            description="Resource categories to categorize resources in",
-            max_length=32,
         ),
     ] = []
     custom_fonts: Annotated[

@@ -16,7 +16,7 @@ async def insert_sample_data():
     log.info("Inserting sample data...")
     target_collections = ("texts", "locations", "resources", "contents")
     if _cfg.dev_mode:
-        target_collections += ("users", "state")
+        target_collections += ("users", "settings")
     database = db.get_db()
     # check if any of the target collections contains data
     for collection in target_collections:

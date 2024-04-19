@@ -224,60 +224,6 @@ function resetForm() {
         </n-flex>
       </n-form-item>
 
-      <n-divider />
-
-      <!-- RESOURCE CATEGORIES-->
-      <h3>{{ $t('models.platformSettings.resourceCategories') }}</h3>
-      <n-form-item v-if="formModel.resourceCategories" :show-label="false">
-        <n-dynamic-input
-          v-model:value="formModel.resourceCategories"
-          show-sort-button
-          :min="0"
-          :max="32"
-          @create="() => ({ key: '', translations: [{ locale: '*', translation: '' }] })"
-        >
-          <template #default="{ index }">
-            <div style="display: flex; align-items: flex-start; gap: 12px; width: 100%">
-              <n-form-item
-                ignore-path-change
-                :label="$t('models.platformSettings.resourceCategoryKey')"
-                :path="`resourceCategories[${index}].key`"
-                :rule="platformSettingsFormRules.resourceCategoryKey"
-                required
-              >
-                <n-input
-                  v-model:value="formModel.resourceCategories[index].key"
-                  :placeholder="$t('models.platformSettings.resourceCategoryKey')"
-                  @keydown.enter.prevent
-                />
-              </n-form-item>
-              <translation-form-item
-                v-model:value="formModel.resourceCategories[index].translations"
-                secondary
-                :parent-form-path-prefix="`resourceCategories[${index}].translations`"
-                required
-                style="flex-grow: 2"
-                :main-form-label="$t('models.platformSettings.resourceCategoryTranslation')"
-                :translation-form-label="$t('models.platformSettings.resourceCategoryTranslation')"
-                :translation-form-rule="platformSettingsFormRules.resourceCategoryTranslation"
-              />
-            </div>
-          </template>
-          <template #action="{ index: indexAction, create, remove, move }">
-            <dynamic-input-controls
-              top-offset
-              :move-up-disabled="indexAction === 0"
-              :move-down-disabled="indexAction === formModel.resourceCategories?.length - 1"
-              :insert-disabled="(formModel.resourceCategories?.length || 0) >= 32"
-              @move-up="() => move('up', indexAction)"
-              @move-down="() => move('down', indexAction)"
-              @remove="() => remove(indexAction)"
-              @insert="() => create(indexAction)"
-            />
-          </template>
-        </n-dynamic-input>
-      </n-form-item>
-
       <n-form-item :show-label="false">
         <n-flex vertical>
           <!-- SHOW RESOURCE CATEGORY HEADINGS -->
