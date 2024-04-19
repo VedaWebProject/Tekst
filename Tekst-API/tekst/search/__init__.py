@@ -96,8 +96,9 @@ async def _setup_index_template() -> None:
     )
 
 
-async def _create_index(overwrite_existing_index: bool = True) -> None:
+async def _create_index(overwrite_existing_index: bool = True) -> dict[str, Any]:
     # prepare
+    start_time = process_time()
     new_index_name = IDX_NAME_PREFIX + uuid4().hex
 
     # get existing search indices
@@ -141,6 +142,10 @@ async def _create_index(overwrite_existing_index: bool = True) -> None:
 
     # perform initial bogus search (to initialize index stats)
     client.search(index=IDX_ALIAS, query={"match_all": {}})
+
+    return {
+        "took": f"{round(process_time() - start_time, 2)}",
+    }
 
 
 async def create_index(

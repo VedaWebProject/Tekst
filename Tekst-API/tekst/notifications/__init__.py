@@ -123,7 +123,7 @@ async def send_notification(
 async def _broadcast_user_notification(
     template_id: TemplateIdentifier,
     **kwargs,
-):
+) -> None:
     if not template_id.name.startswith("USRMSG_"):
         log.error(
             "Only user messages can be broadcasted to regular users "
@@ -159,7 +159,7 @@ async def broadcast_user_notification(
 async def _broadcast_admin_notification(
     template_id: TemplateIdentifier,
     **kwargs,
-):
+) -> None:
     for admin in await UserDocument.find(
         Eq(UserDocument.is_superuser, True),
         Eq(UserDocument.admin_notification_triggers, template_id.value),

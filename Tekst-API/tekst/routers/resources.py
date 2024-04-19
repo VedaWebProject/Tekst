@@ -1,7 +1,7 @@
 import json
 
 from tempfile import NamedTemporaryFile
-from typing import Annotated
+from typing import Annotated, Any
 
 from beanie import PydanticObjectId
 from beanie.exceptions import DocumentNotFound
@@ -677,7 +677,7 @@ async def _import_resource_data(
     resource_id: PydanticObjectId,
     file_bytes: bytes,
     user: UserRead,
-) -> None:
+) -> dict[str, Any]:
     # check if resource exists
     if not await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == resource_id, with_children=True
@@ -809,6 +809,12 @@ async def _import_resource_data(
     await resource_types_mgr.get(resource.resource_type).contents_changed_hook(
         resource_id
     )
+
+    return {
+        "created": created_count,
+        "updated": updated_count,
+        "errors": errors_count,
+    }
 
 
 @router.post(

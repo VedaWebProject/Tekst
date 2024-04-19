@@ -99,8 +99,8 @@ osk:
 
 tasks:
   title: Background Tasks
-  successful: Background task finished successfully
-  failed: Background task failed
+  successful: Background task "{name}" finished successfully.
+  failed: 'Background task "{name}" failed.'
   statuses:
     running: running
     done: successful
@@ -111,6 +111,9 @@ tasks:
     broadcast_user_ntfc: Broadcast user notifications
     broadcast_admin_ntfc: Broadcast admin notifications
     contents_changed_hook: Update resource after changed contents
+  results:
+    index_create_update: Search index created in {took} seconds.
+    resource_import: Created {created} contents, updated {updated} contents, encountered {errors} errors.
 
 routes:
   pageTitle:

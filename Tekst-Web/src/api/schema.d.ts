@@ -2498,6 +2498,11 @@ export interface components {
        */
       durationSeconds?: number | null;
       /**
+       * Result
+       * @description Result data of the task
+       */
+      result?: Record<string, never> | null;
+      /**
        * Error
        * @description Error message if the task failed
        */

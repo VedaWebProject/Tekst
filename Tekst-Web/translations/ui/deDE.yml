@@ -102,8 +102,8 @@ osk:
 
 tasks:
   title: Hintergrundprozesse
-  successful: Hintergrundprozess erfolgreich beendet
-  failed: Hintergrundprozess fehlgeschlagen
+  successful: Hintergrundprozess "{name}" erfolgreich beendet.
+  failed: Hintergrundprozess "{name}" fehlgeschlagen.
   statuses:
     waiting: wartend
     running: laufend
@@ -115,6 +115,9 @@ tasks:
     broadcast_user_ntfc: Benutzer-Benachrichtigungen versenden
     broadcast_admin_ntfc: Administratoren-Benachrichtigungen versenden
     contents_changed_hook: Ressource nach Änderung von Inhalten aktualisieren
+  results:
+    index_create_update: Suchindex erzeugt in {took} Sekunden.
+    resource_import: '{created} Inhalte erzeugt, {updated} Inhalte aktualisiert, {errors} Fehler.'
 
 routes:
   pageTitle:

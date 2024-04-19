@@ -10217,6 +10217,18 @@
             "title": "Durationseconds",
             "description": "Duration of the finished task in seconds"
           },
+          "result": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Result",
+            "description": "Result data of the task"
+          },
           "error": {
             "anyOf": [
               {

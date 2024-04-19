@@ -7,8 +7,10 @@ from typing import Annotated, Any, Literal
 
 from beanie import PydanticObjectId
 from beanie.operators import Eq, In
+from fastapi.encoders import jsonable_encoder
 from pydantic import Field
 
+from tekst.logging import log
 from tekst.models.common import DocumentBase, ModelBase, ModelFactoryMixin
 from tekst.models.user import UserRead
 
@@ -65,6 +67,12 @@ class Task(ModelBase, ModelFactoryMixin):
             description="Duration of the finished task in seconds",
         ),
     ] = None
+    result: Annotated[
+        dict[str, Any] | None,
+        Field(
+            description="Result data of the task",
+        ),
+    ] = None
     error: Annotated[
         str | None,
         Field(
@@ -92,8 +100,12 @@ async def _run_task(
     task_kwargs: dict[str, Any],
 ) -> None:
     try:
-        await task(**task_kwargs)
+        result = await task(**task_kwargs)
         task_doc.status = "done"
+        try:
+            task_doc.result = jsonable_encoder(result)
+        except Exception as _:
+            log.debug(f"Could not encode task result for task: {str(task)}")
     except Exception as e:
         task_doc.status = "failed"
         task_doc.error = str(e)

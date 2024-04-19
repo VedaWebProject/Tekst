@@ -2,7 +2,7 @@ import { ref } from 'vue';
 import { GET, type TaskRead } from '@/api';
 import { useTimeoutPoll } from '@vueuse/core';
 import { useMessages } from '@/composables/messages';
-import { $t } from '@/i18n';
+import { $t, $te } from '@/i18n';
 
 const tasks = ref<TaskRead[]>([]);
 const { message } = useMessages();
@@ -21,9 +21,17 @@ const { resume, pause } = useTimeoutPoll(
           // pop up message if task is finished
           if (['running', 'waiting'].includes(existing.status || '')) {
             if (task.status === 'done') {
-              message.success($t('tasks.successful') + ': ' + $t(`tasks.types.${task.type}`));
+              const result = $te(`tasks.results.${task.type}`)
+                ? $t(`tasks.results.${task.type}`, task.result || {})
+                : '';
+              message.success(
+                $t('tasks.successful', { name: $t(`tasks.types.${task.type}`) }) + ' ' + result
+              );
             } else if (task.status === 'failed') {
-              message.error($t('tasks.failed') + ': ' + $t(`tasks.types.${task.type}`));
+              message.error(
+                $t('tasks.failed', { name: $t(`tasks.types.${task.type}`) }),
+                task.error || undefined
+              );
             }
           }
           // exchange old task object against updated one
