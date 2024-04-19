@@ -1,3 +1,4 @@
+from time import process_time
 from typing import Annotated, Any, Literal
 
 from pydantic import BeforeValidator, Field, StringConstraints, field_validator
@@ -33,6 +34,7 @@ class TextAnnotation(ResourceTypeABC):
     @classmethod
     async def _update_aggregations(cls, resource_id: PydanticObjectId) -> None:
         log.debug(f"Updating aggregations for resource {resource_id}...")
+        start_time = process_time()
 
         # get resource document
         rs_doc_model = cls.resource_model().document_model()
@@ -100,7 +102,10 @@ class TextAnnotation(ResourceTypeABC):
         resource_doc.aggregations = anno_aggs
         await resource_doc.replace()
 
-        log.debug(f"Finished updating aggregations for resource {resource_id}...")
+        log.debug(
+            f"Finished updating aggregations for resource {resource_id} "
+            f"in {(process_time() - start_time):.2f} seconds...."
+        )
 
     @classmethod
     async def contents_changed_hook(cls, resource_id: PydanticObjectId) -> None:
