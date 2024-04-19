@@ -3,7 +3,7 @@ import asyncio
 from collections.abc import Awaitable
 from datetime import datetime
 from enum import Enum
-from typing import Annotated, Literal, Any
+from typing import Annotated, Any, Literal
 
 from beanie import PydanticObjectId
 from beanie.operators import Eq, In
