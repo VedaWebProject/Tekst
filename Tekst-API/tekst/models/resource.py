@@ -1,6 +1,6 @@
 import re
 
-from typing import Annotated
+from typing import Annotated, Literal
 
 from beanie import PydanticObjectId
 from beanie.operators import And, Eq, In, Or
@@ -312,3 +312,12 @@ class ResourceLocationCoverage(ModelBase):
 class ResourceCoverageDetails(ModelBase):
     parent_labels: list[str]
     locations_coverage: list[list[ResourceLocationCoverage]]
+
+
+ResourceExportFormat = Literal["json", "csv", "txt", "html"]
+res_exp_fmt_mimes = {
+    "json": "application/json",
+    "csv": "text/csv",
+    "txt": "text/plain",
+    "html": "text/html",
+}

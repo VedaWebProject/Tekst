@@ -1,10 +1,13 @@
+import json
+
 from typing import Annotated, Any, Literal
 
+from humps import camelize
 from pydantic import Field, StringConstraints
 
 from tekst.models.common import ModelBase
 from tekst.models.content import ContentBase
-from tekst.models.resource import ResourceBase
+from tekst.models.resource import ResourceBase, ResourceExportFormat
 from tekst.models.resource_configs import (
     DeepLLinksConfig,
     DefaultCollapsedConfigType,
@@ -74,6 +77,26 @@ class PlainText(ResourceTypeABC):
                 }
             )
         return es_queries
+
+    @classmethod
+    def export(
+        cls, export_format: ResourceExportFormat, contents: list["PlainTextContent"]
+    ) -> str:
+        if export_format not in {"json"}:
+            raise ValueError(
+                f"Unsupported export format '{export_format}' "
+                f"for resource type '{cls.get_key()}'"
+            )
+        contents = [
+            camelize(
+                c.model_dump(
+                    exclude_unset=True,
+                    exclude=cls._EXCLUDE_FIELDS_FROM_EXPORT_DATA,
+                )
+            )
+            for c in contents
+        ]
+        return json.dumps(contents, indent=2, ensure_ascii=False)
 
 
 class GeneralPlainTextResourceConfig(ModelBase):

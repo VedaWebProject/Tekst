@@ -21,6 +21,7 @@ from tekst.models.resource import (
     ResourceBase,
     ResourceBaseDocument,
     ResourceBaseUpdate,
+    ResourceExportFormat,
     ResourceReadExtras,
 )
 from tekst.utils import validators as val
@@ -111,11 +112,18 @@ class ResourceSearchQuery(ModelBase):
 class ResourceTypeABC(ABC):
     """Abstract base class for defining a resource type"""
 
-    __EXCLUDE_FROM_CONTENT_TEMPLATES: set[str] = {
+    _EXCLUDE_FIELDS_FROM_IMPORT_SCHEMA: set[str] = {
         "id",
         "resourceId",
         "resourceType",
         "locationId",
+    }
+
+    _EXCLUDE_FIELDS_FROM_EXPORT_DATA: set[str] = {
+        "_id",
+        "id",
+        "resource_id",
+        "resource_type",
     }
 
     @classmethod
@@ -191,7 +199,7 @@ class ResourceTypeABC(ABC):
         }
         # generate content schema for the template
         for prop, value in schema.get("properties", {}).items():
-            if prop not in cls.__EXCLUDE_FROM_CONTENT_TEMPLATES:
+            if prop not in cls._EXCLUDE_FIELDS_FROM_IMPORT_SCHEMA:
                 prop_schema = {k: v for k, v in value.items()}
                 prop_schema["required"] = prop in required
                 template["_contentSchema"][prop] = prop_schema
@@ -204,25 +212,16 @@ class ResourceTypeABC(ABC):
         This may be overridden by concrete resource implementations to run arbitrary
         maintenance procedures. Otherwise it is juust a no-op.
         """
-        pass
 
     @classmethod
     @abstractmethod
     def resource_model(cls) -> type[ResourceBase]:
         """Returns the resource model for this type of resource"""
-        raise NotImplementedError(
-            "Classmethod 'resource_model' must be "
-            f"implemented in subclasses of {cls.__name__}"
-        )  # pragma: no cover
 
     @classmethod
     @abstractmethod
     def content_model(cls) -> type[ContentBase]:
         """Returns the content model for contents of this type of resource"""
-        raise NotImplementedError(
-            "Classmethod 'content_model' must be "
-            f"implemented in subclasses of {cls.__name__}"
-        )  # pragma: no cover
 
     @classmethod
     @abstractmethod
@@ -231,10 +230,6 @@ class ResourceTypeABC(ABC):
         Returns the search query model for search
         queries targeting this type of resource
         """
-        raise NotImplementedError(
-            "Classmethod 'search_query_model' must be "
-            f"implemented in subclasses of {cls.__name__}"
-        )  # pragma: no cover
 
     @classmethod
     @abstractmethod
@@ -243,10 +238,6 @@ class ResourceTypeABC(ABC):
         Returns the mappings properties for ES search index
         documents unique for this type of resource content
         """
-        raise NotImplementedError(
-            "Classmethod 'index_doc_properties' must be "
-            f"implemented in subclasses of {cls.__name__}"
-        )  # pragma: no cover
 
     @classmethod
     @abstractmethod
@@ -255,10 +246,6 @@ class ResourceTypeABC(ABC):
         Returns the content for the ES index document
         for this type of resource content that is unique to this resource type
         """
-        raise NotImplementedError(
-            "Classmethod 'index_doc_data' must be "
-            f"implemented in subclasses of {cls.__name__}"
-        )  # pragma: no cover
 
     @classmethod
     @abstractmethod
@@ -270,10 +257,16 @@ class ResourceTypeABC(ABC):
         in the given resource search query instance.
         Common content fields are not included in the returned queries.
         """
-        raise NotImplementedError(
-            "Classmethod 'construct_es_query' must be "
-            f"implemented in subclasses of {cls.__name__}"
-        )  # pragma: no cover
+
+    @classmethod
+    @abstractmethod
+    def export(
+        cls, export_format: ResourceExportFormat, contents: list[ContentBaseDocument]
+    ) -> str:
+        """
+        Prepares export data and returns a temporary file object.
+        Raises ValueError if the export format is not supported by this resource type.
+        """
 
 
 class ResourceTypesManager:

@@ -6,7 +6,7 @@ from pydantic import BeforeValidator, Field, StringConstraints, field_validator
 from tekst.logging import log
 from tekst.models.common import ModelBase, PydanticObjectId
 from tekst.models.content import ContentBase, ContentBaseDocument
-from tekst.models.resource import ResourceBase
+from tekst.models.resource import ResourceBase, ResourceExportFormat
 from tekst.models.resource_configs import (
     DefaultCollapsedConfigType,
     FontConfigType,
@@ -222,6 +222,18 @@ class TextAnnotation(ResourceTypeABC):
                 for token in content.tokens
             ],
         }
+
+    @classmethod
+    def export(
+        cls,
+        export_format: ResourceExportFormat,
+        contents: list["TextAnnotationContent"],
+    ) -> str:
+        if export_format not in {"json"}:
+            raise ValueError(
+                f"Unsupported export format '{export_format}' "
+                f"for resource type '{cls.get_key()}'"
+            )
 
 
 class GeneralTextAnnotationResourceConfig(ModelBase):

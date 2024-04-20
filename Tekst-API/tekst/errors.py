@@ -142,6 +142,18 @@ E_400_RESOURCE_VERSION_OF_VERSION = error_instance(
     msg="The resource is already a version of another resource",
 )
 
+E_400_LOCATION_RANGE_INVALID = error_instance(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    key="locationRangeInvalid",
+    msg="The passed location range is invalid",
+)
+
+E_400_UNSUPPORTED_EXPORT_FORMAT = error_instance(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    key="unsupportedExportFormat",
+    msg="The requested export format is not supported by this type of resource",
+)
+
 E_400_SHARED_WITH_USER_NON_EXISTENT = error_instance(
     status_code=status.HTTP_400_BAD_REQUEST,
     key="sharedWithUserNonExistent",

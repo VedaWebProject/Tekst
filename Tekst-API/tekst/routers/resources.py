@@ -5,7 +5,7 @@ from typing import Annotated, Any
 
 from beanie import PydanticObjectId
 from beanie.exceptions import DocumentNotFound
-from beanie.operators import In
+from beanie.operators import GTE, LTE, In
 from bson.errors import InvalidId
 from fastapi import (
     APIRouter,
@@ -27,7 +27,11 @@ from tekst.logging import log
 from tekst.models.content import ContentBaseDocument
 from tekst.models.exchange import ResourceImportData
 from tekst.models.location import LocationDocument
-from tekst.models.resource import ResourceBaseDocument
+from tekst.models.resource import (
+    ResourceBaseDocument,
+    ResourceExportFormat,
+    res_exp_fmt_mimes,
+)
 from tekst.models.text import TextDocument
 from tekst.models.user import UserDocument, UserRead, UserReadPublic
 from tekst.resources import (
@@ -661,7 +665,7 @@ async def get_resource_template(
     tempfile.flush()
 
     # prepare headers
-    filename = f"{text_doc.slug}_resource_{resource_doc.id}" "_template.json"
+    filename = f"{text_doc.slug}_{resource_doc.id}_template.json"
     headers = {"Content-Disposition": f'attachment; filename="{filename}"'}
 
     log.debug(f"Serving resource template as temporary file {tempfile.name}")
@@ -823,23 +827,20 @@ async def _import_resource_data(
     response_model=tasks.TaskRead,
     responses=errors.responses(
         [
-            errors.E_400_UPLOAD_INVALID_MIME_TYPE_NOT_JSON,
-            errors.E_404_RESOURCE_NOT_FOUND,
-            errors.E_403_FORBIDDEN,
-            errors.E_400_UPLOAD_INVALID_JSON,
-            errors.E_400_IMPORT_ID_MISMATCH,
-            errors.E_400_IMPORT_ID_NON_EXISTENT,
-            errors.E_400_IMPORT_INVALID_CONTENT_DATA,
+            errors.E_401_UNAUTHORIZED,
         ]
     ),
 )
-async def import_resource_data(
+async def import_resource_contents(
     user: UserDep,
-    resource_id: Annotated[PydanticObjectId, Path(alias="id")],
+    resource_id: Annotated[
+        PydanticObjectId,
+        Path(alias="id"),
+    ],
     file: Annotated[
         UploadFile,
         File(
-            description="JSON file containing the resource data",
+            description="JSON file containing the resource content data",
             media_type="application/json",
         ),
     ],
@@ -854,4 +855,129 @@ async def import_resource_data(
             "file_bytes": await file.read(),
             "user": user,
         },
+    )
+
+
+@router.get(
+    "/{id}/export",
+    status_code=status.HTTP_200_OK,
+    responses=errors.responses(
+        [
+            errors.E_401_UNAUTHORIZED,
+            errors.E_403_FORBIDDEN,
+            errors.E_404_RESOURCE_NOT_FOUND,
+            errors.E_400_UNSUPPORTED_EXPORT_FORMAT,
+            errors.E_400_LOCATION_RANGE_INVALID,
+        ]
+    ),
+)
+async def export_resource_contents(
+    user: UserDep,
+    resource_id: Annotated[
+        PydanticObjectId,
+        Path(alias="id"),
+    ],
+    export_format: Annotated[
+        ResourceExportFormat,
+        Query(
+            description="Export format",
+            alias="format",
+        ),
+    ] = "json",
+    location_from_id: Annotated[
+        PydanticObjectId | None,
+        Query(
+            description="ID of the location to start the export's location range from",
+            alias="from",
+        ),
+    ] = None,
+    location_to_id: Annotated[
+        PydanticObjectId | None,
+        Query(
+            description="ID of the location to end the export's location range at",
+            alias="to",
+        ),
+    ] = None,
+) -> FileResponse:
+    # check if resource exists
+    if not await ResourceBaseDocument.find_one(
+        ResourceBaseDocument.id == resource_id,
+        with_children=True,
+    ).exists():
+        raise errors.E_404_RESOURCE_NOT_FOUND
+
+    # check if user has permission to read this resource, if so, fetch from DB
+    resource: ResourceBaseDocument = await ResourceBaseDocument.find_one(
+        ResourceBaseDocument.id == resource_id,
+        await ResourceBaseDocument.access_conditions_read(user),
+        with_children=True,
+    )
+    if not resource:
+        raise errors.E_403_FORBIDDEN
+
+    # check if location range is valid
+    loc_from: LocationDocument = (
+        await LocationDocument.get(location_from_id) if location_from_id else None
+    )
+    loc_to: LocationDocument = (
+        await LocationDocument.get(location_to_id) if location_to_id else None
+    )
+    if (
+        (loc_from and loc_from.text_id != resource.text_id)
+        or (loc_to and loc_to.text_id != resource.text_id)
+        or (loc_from and loc_from.level != resource.level)
+        or (loc_to and loc_to.level != resource.level)
+        or (loc_from and loc_to and loc_from.position > loc_to.position)
+    ):
+        raise errors.E_400_LOCATION_RANGE_INVALID
+
+    text = await TextDocument.get(resource.text_id)
+    target_resource_type = resource_types_mgr.get(resource.resource_type)
+
+    # get target location IDs from range
+    target_location_ids = {
+        loc.id: loc.position
+        for loc in await LocationDocument.find(
+            LocationDocument.text_id == resource.text_id,
+            LocationDocument.level == resource.level,
+            GTE(LocationDocument.position, loc_from.position) if loc_from else {},
+            LTE(LocationDocument.position, loc_to.position) if loc_to else {},
+        )
+        .sort(+LocationDocument.position)
+        .to_list()
+    }
+
+    # get target contents
+    content_doc_model = target_resource_type.content_model().document_model()
+    contents = await content_doc_model.find(
+        content_doc_model.resource_id == resource.id,
+        In(content_doc_model.location_id, target_location_ids.keys()),
+        with_children=True,
+    ).to_list()
+
+    # sort target contents
+    contents.sort(key=lambda c: target_location_ids[c.location_id])
+    target_location_ids = None
+
+    # create export data
+    try:
+        data = target_resource_type.export(export_format, contents) or ""
+    except ValueError:
+        raise errors.E_400_UNSUPPORTED_EXPORT_FORMAT
+
+    # create temporary file and stream it as a file response
+    tempfile = NamedTemporaryFile(mode="w")
+    tempfile.write(data)
+    tempfile.flush()
+
+    # prepare headers
+    filename = f"{text.slug}_{resource.id}_export.{export_format}"
+    headers = {"Content-Disposition": f'attachment; filename="{filename}"'}
+
+    log.debug(f"Serving export data as temporary file {tempfile.name}")
+    return FileResponse(
+        path=tempfile.name,
+        headers=headers,
+        media_type=res_exp_fmt_mimes[export_format],
+        background=BackgroundTask(tempfile.close),
     )
