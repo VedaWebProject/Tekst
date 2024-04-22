@@ -78,7 +78,6 @@ errors:
   verifyUserAlreadyVerified: Diese E-Mail-Adresse ist bereits verifiziert.
   resourcesLimitReached: Maximum von {limit} Ressourcen für diesen Benutzer erreicht
   bookmarkExists: Sie haben bereits ein Lesezeichen für diese Fundstelle angelegt.
-  bookmarksLimitReached: Sie haben die Höchstmenge von {limit} Lesezeichen erreicht!
   uploadInvalidMimeTypeNotJson: Ungültiger Dateityp. Nur JSON-Dateien sind erlaubt.
   uploadInvalidJson: Die hochgeladene JSON-Datei ist ungültig.
   importIdMismatch: Eine ID in den Importdaten stimmt nicht mit der entsprechenden ID in der Anfrage überein.
@@ -165,6 +164,7 @@ browse:
     commentModalInputLabel: Kommentar (optional)
     createSuccess: Lesezeichen erstellt
     deleteSuccess: Lesezeichen gelöscht
+    maxCountReached: Sie haben die maximale Anzahl von 1000 Lesezeichen erreicht!
   resourceToggleDrawer:
     heading: Ressourcen anzeigen
     showNonPublicResources: Zeige nicht veröffentlichte Ressourcen

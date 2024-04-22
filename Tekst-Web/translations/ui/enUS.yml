@@ -75,7 +75,6 @@ errors:
   verifyUserAlreadyVerified: This email address is already verified.
   resourcesLimitReached: Reached limit of {limit} resources for this user
   bookmarkExists: You already have a bookmark for this location.
-  bookmarksLimitReached: You have reached the maximum number of {limit} bookmarks!
   uploadInvalidMimeTypeNotJson: Invalid file type. Only JSON files are allowed.
   uploadInvalidJson: The uploaded file is not a valid JSON file.
   importIdMismatch: An ID in the import data does not match the respective ID in the request.
@@ -161,6 +160,7 @@ browse:
     commentModalInputLabel: Comment (optional)
     createSuccess: Bookmark created
     deleteSuccess: Bookmark deleted
+    maxCountReached: You have reached the maximum number of 1000 bookmarks!
   resourceToggleDrawer:
     heading: Show Resources
     showNonPublicResources: Show unpublished resources

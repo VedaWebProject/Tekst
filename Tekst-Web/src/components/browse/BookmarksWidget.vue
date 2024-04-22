@@ -42,6 +42,9 @@ async function handleDeleteBookmark(e: MouseEvent, bookmarkId: string) {
 }
 
 function handleCreateBookmarkClick() {
+  if (maxCountReached.value) {
+    return;
+  }
   if (currentBookmarks.value.find((b) => b.locationId === browse.locationPathHead?.id)) {
     message.error($t('errors.bookmarkExists'));
     return;
@@ -97,7 +100,7 @@ async function handleBookmarkSelect(bookmark: BookmarkRead) {
           <span v-if="!maxCountReached">
             {{ $t('browse.bookmarks.lblCreate') }}
           </span>
-          <span v-else> ({{ $t('browse.bookmarks.maxCountReached') }}) </span>
+          <span v-else>{{ $t('browse.bookmarks.maxCountReached') }}</span>
         </n-thing>
       </n-list-item>
       <n-list-item
