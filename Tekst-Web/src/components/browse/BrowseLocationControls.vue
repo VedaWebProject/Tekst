@@ -118,8 +118,8 @@ whenever(ArrowLeft, () => {
 
   <location-select-modal
     v-model:show="showLocationSelectModal"
-    :location-path="browse.locationPath"
-    @update:location-path="handleLocationSelect"
+    :initial-location-path="browse.locationPath"
+    @submit="handleLocationSelect"
   />
 </template>
 

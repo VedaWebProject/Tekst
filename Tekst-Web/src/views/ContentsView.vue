@@ -550,8 +550,8 @@ async function handleNearestChangeClick(mode: 'preceding' | 'subsequent') {
   <location-select-modal
     v-if="resource && locationPath"
     v-model:show="showJumpToModal"
-    :location-path="locationPath"
+    :initial-location-path="locationPath"
     :show-level-select="false"
-    @update:location-path="handleJumpToSubmit"
+    @submit="handleJumpToSubmit"
   />
 </template>
