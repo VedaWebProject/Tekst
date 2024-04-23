@@ -63,7 +63,7 @@ function handleSearch(e: UIEvent) {
 
     <n-input-osk
       ref="inputRef"
-      v-model:value="searchInput"
+      v-model="searchInput"
       round
       placeholder="..."
       size="large"

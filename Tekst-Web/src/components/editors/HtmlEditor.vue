@@ -6,14 +6,11 @@ import { dialogProps } from '@/common';
 
 withDefaults(
   defineProps<{
-    value?: string | null;
     toolbarSize?: 'small' | 'medium' | 'large';
     maxChars?: number;
-    editorMode?: 'wysiwyg' | 'html';
     wysiwygFont?: string;
   }>(),
   {
-    value: '',
     toolbarSize: 'small',
     maxChars: undefined,
     editorMode: 'wysiwyg',
@@ -21,7 +18,10 @@ withDefaults(
   }
 );
 
-const emit = defineEmits(['update:value', 'update:editorMode', 'blur', 'focus', 'input']);
+const emit = defineEmits(['blur', 'focus', 'input']);
+
+const value = defineModel<string | null>('value');
+const editorMode = defineModel<'wysiwyg' | 'html'>('editorMode');
 
 const dialog = useDialog();
 
@@ -36,7 +36,7 @@ function handleChangeTab(value: 'wysiwyg' | 'html') {
       autoFocus: false,
       closable: false,
       ...dialogProps,
-      onPositiveClick: () => emit('update:editorMode', value),
+      onPositiveClick: () => (editorMode.value = value),
     });
   } else {
     // switching to WYSIWYG is a potentially destructive operation
@@ -48,7 +48,7 @@ function handleChangeTab(value: 'wysiwyg' | 'html') {
       autoFocus: false,
       closable: false,
       ...dialogProps,
-      onPositiveClick: () => emit('update:editorMode', value),
+      onPositiveClick: () => (editorMode.value = value),
     });
   }
 }
@@ -64,10 +64,9 @@ function handleChangeTab(value: 'wysiwyg' | 'html') {
   >
     <n-tab-pane name="wysiwyg" :tab="$t('htmlEditor.wysiwyg')">
       <wysiwyg-editor
-        :value="value"
+        v-model:value="value"
         :max-chars="maxChars"
         :font="wysiwygFont"
-        @update:value="emit('update:value', $event)"
         @blur="emit('blur')"
         @focus="emit('focus')"
         @input="emit('input')"
@@ -75,14 +74,13 @@ function handleChangeTab(value: 'wysiwyg' | 'html') {
     </n-tab-pane>
     <n-tab-pane name="html" :tab="$t('htmlEditor.html')">
       <n-input
-        :value="value"
+        v-model:value="value"
         type="textarea"
         :rows="8"
         placeholder=""
         :maxlength="maxChars"
         show-count
         style="font-family: 'Courier New', Courier, monospace"
-        @update:value="emit('update:value', $event)"
         @blur="emit('blur')"
         @focus="emit('focus')"
         @input="emit('input')"

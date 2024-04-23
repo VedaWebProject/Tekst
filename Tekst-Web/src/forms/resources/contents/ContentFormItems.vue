@@ -4,18 +4,17 @@ import { NCollapse, NCollapseItem, NInput, NFormItem } from 'naive-ui';
 import resourceContentFormItems from '@/forms/resources/contents/mappings';
 import { contentFormRules } from '@/forms/formRules';
 
-const props = defineProps<{
-  model?: AnyContentCreate;
+defineProps<{
   resource: AnyResourceRead;
 }>();
 
-const emit = defineEmits(['update:model']);
+const model = defineModel<AnyContentCreate>({ required: true });
 
 function handleUpdate(field: string, value: any) {
-  emit('update:model', {
-    ...props.model,
+  model.value = {
+    ...model.value,
     [field]: value,
-  });
+  };
 }
 </script>
 
@@ -23,9 +22,8 @@ function handleUpdate(field: string, value: any) {
   <template v-if="model">
     <component
       :is="resourceContentFormItems[model.resourceType]"
-      :model="model"
+      v-model="model"
       :resource="resource"
-      @update:model="(m: Record<string, any>) => emit('update:model', { ...props.model, ...m })"
     />
     <n-collapse style="margin-bottom: var(--layout-gap)">
       <n-collapse-item :title="$t('resources.types.common.label')" name="common">

@@ -401,7 +401,7 @@ watch(
   >
     <labelled-switch
       v-if="treeData.length"
-      v-model:value="showWarnings"
+      v-model="showWarnings"
       :label="$t('admin.text.locations.checkShowWarnings')"
     />
     <div style="flex-grow: 2"></div>

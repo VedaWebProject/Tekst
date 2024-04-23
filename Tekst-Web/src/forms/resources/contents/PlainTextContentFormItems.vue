@@ -4,18 +4,17 @@ import NInputOsk from '@/components/NInputOsk.vue';
 import { NFormItem } from 'naive-ui';
 import { contentFormRules } from '@/forms/formRules';
 
-const props = defineProps<{
-  model: PlainTextContentCreate;
+defineProps<{
   resource: PlainTextResourceRead;
 }>();
 
-const emit = defineEmits(['update:model']);
+const model = defineModel<PlainTextContentCreate>({ required: true });
 
 function handleUpdate(field: string, value: any) {
-  emit('update:model', {
-    ...props.model,
+  model.value = {
+    ...model.value,
     [field]: value,
-  });
+  };
 }
 </script>
 
@@ -29,10 +28,10 @@ function handleUpdate(field: string, value: any) {
     <n-input-osk
       type="textarea"
       :rows="3"
-      :value="model.text"
+      :model-value="model.text"
       :font="resource.config?.general?.font || undefined"
       :placeholder="$t('resources.types.plainText.contentFields.text')"
-      @update:value="(v) => handleUpdate('text', v)"
+      @update:model-value="(v) => handleUpdate('text', v)"
     />
   </n-form-item>
 </template>

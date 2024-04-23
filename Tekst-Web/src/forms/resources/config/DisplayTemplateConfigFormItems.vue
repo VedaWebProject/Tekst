@@ -5,11 +5,7 @@ import { typeSpecificResourceConfigFormRules } from '@/forms/formRules';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 
-defineProps<{
-  model: TextAnnotationResourceConfig['displayTemplate'];
-}>();
-
-const emit = defineEmits(['update:model']);
+const model = defineModel<TextAnnotationResourceConfig['displayTemplate']>();
 </script>
 
 <template>
@@ -23,12 +19,6 @@ const emit = defineEmits(['update:model']);
     :rule="typeSpecificResourceConfigFormRules.textAnnotation.displayTemplate"
     path="config.displayTemplate"
   >
-    <n-input
-      :value="model"
-      type="textarea"
-      rows="3"
-      style="font-family: monospace"
-      @update:value="(v) => emit('update:model', v)"
-    />
+    <n-input v-model:value="model" type="textarea" rows="3" style="font-family: monospace" />
   </n-form-item>
 </template>

@@ -16,7 +16,6 @@ import {
   type ResourceCoverage,
   type ResourceCoverageDetails,
 } from '@/api';
-import { watch } from 'vue';
 import { useRoute } from 'vue-router';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import { useStateStore } from '@/stores';
@@ -28,10 +27,10 @@ import { CoverageIcon, TopIcon, BottomIcon } from '@/icons';
 const props = defineProps<{
   resource: AnyResourceRead;
   coverageBasic?: ResourceCoverage;
-  show?: boolean;
 }>();
 
-const emit = defineEmits(['update:show', 'navigated']);
+const emit = defineEmits(['navigated']);
+const show = defineModel<boolean>('show');
 
 const state = useStateStore();
 const route = useRoute();
@@ -81,7 +80,7 @@ function handleLocationClick(level: number, position: number) {
       pos: position,
     },
   });
-  emit('update:show', false);
+  show.value = false;
   emit('navigated');
 }
 
@@ -94,19 +93,13 @@ function handleScrollClick(scrollType: 'up' | 'down' | 'top' | 'bottom') {
   }[scrollType];
   virtualListInst.value?.scrollTo({ index: index, behavior: 'smooth', debounce: true });
 }
-
-watch(
-  () => props.show,
-  (after) => after && handleEnter()
-);
 </script>
 
 <template>
   <generic-modal
-    :show="show"
+    v-model:show="show"
     width="wide"
-    @close="$emit('update:show', false)"
-    @mask-click="$emit('update:show', false)"
+    @after-enter="handleEnter"
     @after-leave="handleLeave"
   >
     <template #header>
@@ -184,7 +177,7 @@ watch(
     </template>
 
     <button-shelf top-gap>
-      <n-button type="primary" @click="$emit('update:show', false)">
+      <n-button type="primary" @click="show = false">
         {{ $t('general.closeAction') }}
       </n-button>
     </button-shelf>

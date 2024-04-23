@@ -157,7 +157,7 @@ async function handleDelete() {
 
       <!-- SUBTITLE -->
       <translation-form-item
-        v-model:value="model.subtitle"
+        v-model="model.subtitle"
         parent-form-path-prefix="subtitle"
         :main-form-label="$t('models.text.subtitle')"
         :translation-form-label="$t('models.text.subtitle')"
@@ -216,11 +216,11 @@ async function handleDelete() {
         <n-flex vertical>
           <!-- LABELLED LOCATION -->
           <labelled-switch
-            v-model:value="model.labeledLocation"
+            v-model="model.labeledLocation"
             :label="$t('models.text.labeledLocation')"
           />
           <!-- ACTIVE -->
-          <labelled-switch v-model:value="model.isActive" :label="$t('models.text.isActive')" />
+          <labelled-switch v-model="model.isActive" :label="$t('models.text.isActive')" />
         </n-flex>
       </n-form-item>
 
@@ -248,7 +248,7 @@ async function handleDelete() {
                 />
               </n-form-item>
               <translation-form-item
-                v-model:value="model.resourceCategories[index].translations"
+                v-model="model.resourceCategories[index].translations"
                 ignore-path-change
                 secondary
                 required

@@ -4,18 +4,17 @@ import HtmlEditor from '@/components/editors/HtmlEditor.vue';
 import { NFormItem } from 'naive-ui';
 import { contentFormRules } from '@/forms/formRules';
 
-const props = defineProps<{
-  model: RichTextContentCreate;
+defineProps<{
   resource: RichTextResourceRead;
 }>();
 
-const emit = defineEmits(['update:model']);
+const model = defineModel<RichTextContentCreate>({ required: true });
 
 function handleUpdate(field: string, value: any) {
-  emit('update:model', {
-    ...props.model,
+  model.value = {
+    ...model.value,
     [field]: value,
-  });
+  };
 }
 </script>
 
@@ -32,8 +31,8 @@ function handleUpdate(field: string, value: any) {
       toolbar-size="medium"
       :max-chars="102400"
       :wysiwyg-font="resource.config?.general?.font || undefined"
-      @update:value="(v) => handleUpdate('html', v)"
-      @update:editor-mode="(v) => handleUpdate('editorMode', v)"
+      @update:value="(v: string | null) => handleUpdate('html', v)"
+      @update:editor-mode="(v: string) => handleUpdate('editorMode', v)"
     />
   </n-form-item>
 </template>

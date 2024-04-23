@@ -8,8 +8,7 @@ import IconHeading from '@/components/generic/IconHeading.vue';
 import { CheckAllIcon, ResourceIcon, UncheckAllIcon } from '@/icons';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
 
-const props = defineProps<{ show: boolean }>();
-const emit = defineEmits<{ (e: 'update:show', show: boolean): void }>();
+const show = defineModel<boolean>('show');
 
 const auth = useAuthStore();
 const browse = useBrowseStore();
@@ -22,15 +21,6 @@ const showNonPublicResourcesToggle = computed(
 const categoryActivationState = computed(() =>
   browse.resourcesCategorized.map((c) => c.resources.every((r) => r.active))
 );
-
-const show = computed({
-  get() {
-    return props.show;
-  },
-  set(value: boolean) {
-    emit('update:show', value);
-  },
-});
 
 function toggleCategory(index: number, activate: boolean) {
   browse.setResourcesActiveState(
@@ -55,7 +45,7 @@ function toggleCategory(index: number, activate: boolean) {
         :style="{ backgroundColor: theme.mainBgColor, marginTop: 0 }"
       >
         <labelled-switch
-          v-model:value="browse.showNonPublicResources"
+          v-model="browse.showNonPublicResources"
           :label="$t('browse.resourceToggleDrawer.showNonPublicResources')"
           size="small"
         />

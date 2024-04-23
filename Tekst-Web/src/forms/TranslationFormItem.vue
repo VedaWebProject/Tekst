@@ -7,9 +7,8 @@ import { translationFormRules } from '@/forms/formRules';
 import { useStateStore } from '@/stores';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 
-const props = withDefaults(
+withDefaults(
   defineProps<{
-    value: Translation[] | undefined;
     parentFormPathPrefix: string;
     mainFormLabel?: string;
     translationFormLabel?: string;
@@ -30,14 +29,14 @@ const props = withDefaults(
   }
 );
 
-const emit = defineEmits(['update:value']);
+const model = defineModel<Translation[]>();
 
 const state = useStateStore();
 
 const localeOptions = computed(() =>
   state.translationLocaleOptions.map((tlo) => ({
     ...tlo,
-    disabled: !!props.value
+    disabled: !!model.value
       ?.map((lvlTrans: Translation) => lvlTrans.locale)
       .includes(tlo.value as LocaleKey),
   }))
@@ -48,23 +47,22 @@ const localeOptions = computed(() =>
   <n-form-item
     :show-label="!!mainFormLabel"
     :label="mainFormLabel"
-    :show-feedback="!value || !value.length"
+    :show-feedback="!model || !model.length"
     :path="parentFormPathPrefix"
     :ignore-path-change="ignorePathChange"
   >
     <n-dynamic-input
-      :value="value"
+      v-model="model"
       :min="minItems"
       :max="localeOptions.length"
       item-style="margin-bottom: 0;"
       :default-value="[]"
       @create="
         () => ({
-          locale: localeOptions.find((o) => !value?.find((t) => t.locale === o.value))?.value,
+          locale: localeOptions.find((o) => !model?.find((t) => t.locale === o.value))?.value,
           translation: '',
         })
       "
-      @update:value="(value) => emit('update:value', value)"
     >
       <template #default="{ value: translationValue, index: translationIndex }">
         <div
@@ -72,7 +70,7 @@ const localeOptions = computed(() =>
         >
           <!-- LOCALE -->
           <n-form-item
-            v-if="value"
+            v-if="model"
             ignore-path-change
             :show-label="false"
             :show-feedback="false"
@@ -91,7 +89,7 @@ const localeOptions = computed(() =>
           </n-form-item>
           <!-- TRANSLATION -->
           <n-form-item
-            v-if="value"
+            v-if="model"
             ignore-path-change
             :show-label="false"
             :path="`${parentFormPathPrefix}[${translationIndex}].translation`"
@@ -113,9 +111,9 @@ const localeOptions = computed(() =>
           :secondary="secondary"
           :movable="false"
           :remove-title="$t('translationFormItem.tipBtnRemove')"
-          :remove-disabled="!value || value.length === minItems"
+          :remove-disabled="!model || model.length === minItems"
           :insert-title="$t('translationFormItem.tipBtnAdd')"
-          :insert-disabled="value && value.length >= localeOptions.length"
+          :insert-disabled="model && model.length >= localeOptions.length"
           @remove="() => remove(actionIndex)"
           @insert="() => create(actionIndex)"
         />

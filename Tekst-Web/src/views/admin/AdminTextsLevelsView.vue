@@ -240,7 +240,7 @@ async function handleModalSubmit() {
     >
       <!-- STRUCTURE LEVEL -->
       <translation-form-item
-        v-model:value="formModel.translations"
+        v-model="formModel.translations"
         parent-form-path-prefix="translations"
         :loading="loading"
         :main-form-label="$t('models.text.level')"

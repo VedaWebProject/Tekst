@@ -130,7 +130,7 @@ async function handleSaveClick() {
         require-mark-placement="right-hanging"
       >
         <resource-settings-form-items
-          v-model:model="model"
+          v-model="model"
           :owner="resource?.owner"
           :public="resource?.public"
         />

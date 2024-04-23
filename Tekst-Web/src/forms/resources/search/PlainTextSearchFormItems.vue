@@ -4,18 +4,18 @@ import NInputOsk from '@/components/NInputOsk.vue';
 import type { PlainTextResourceRead, PlainTextSearchQuery } from '@/api';
 import { searchFormRules } from '@/forms/formRules';
 
-const props = defineProps<{
-  value: PlainTextSearchQuery;
+defineProps<{
   resource: PlainTextResourceRead;
   queryIndex: number;
 }>();
-const emit = defineEmits(['update:value']);
+
+const model = defineModel<PlainTextSearchQuery>({ required: true });
 
 function handleUpdate(field: string, value: any) {
-  emit('update:value', {
-    ...props.value,
+  model.value = {
+    ...model.value,
     [field]: value,
-  });
+  };
 }
 </script>
 
@@ -27,9 +27,9 @@ function handleUpdate(field: string, value: any) {
     :rule="searchFormRules.plainText.text"
   >
     <n-input-osk
-      :value="value.text"
+      :model-value="model.text"
       :placeholder="$t('resources.types.plainText.searchFields.text')"
-      @update:value="(v) => handleUpdate('text', v)"
+      @update:model-value="(v) => handleUpdate('text', v)"
     />
   </n-form-item>
 </template>

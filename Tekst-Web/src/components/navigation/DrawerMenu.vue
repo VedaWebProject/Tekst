@@ -17,16 +17,14 @@ import { useAuthStore } from '@/stores';
 
 withDefaults(
   defineProps<{
-    show?: boolean;
     showUserActionsButton?: boolean;
   }>(),
   {
-    show: false,
     showUserActionsButton: false,
   }
 );
 
-defineEmits(['update:show']);
+const show = defineModel<boolean>('show');
 
 const auth = useAuthStore();
 const { menuOptions: mainMenuOptions } = useMainMenuOptions();
@@ -66,13 +64,7 @@ const allMenuOptions = computed(() => [
 </script>
 
 <template>
-  <n-drawer
-    :show="show"
-    :width="600"
-    :auto-focus="false"
-    style="max-width: 90%"
-    @update:show="$emit('update:show', $event)"
-  >
+  <n-drawer v-model:show="show" :width="600" :auto-focus="false" style="max-width: 90%">
     <n-drawer-content closable header-style="background-color: var(--accent-color-fade5);">
       <template #header>
         <div class="header-buttons">

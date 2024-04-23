@@ -197,7 +197,9 @@ export const useAuthStore = defineStore('auth', () => {
     message?: string;
     nextRoute?: RouteLocationRaw;
     showRegisterLink?: boolean;
-  }>({});
+  }>({
+    show: false,
+  });
 
   return {
     user,

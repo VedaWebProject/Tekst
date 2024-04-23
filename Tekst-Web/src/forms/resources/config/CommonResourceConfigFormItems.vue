@@ -8,17 +8,7 @@ import { pickTranslation } from '@/utils';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
 import { commonResourceConfigFormRules } from '@/forms/formRules';
 
-const props = withDefaults(
-  defineProps<{
-    model?: CommonResourceConfig;
-  }>(),
-  {
-    model: () => ({}),
-  }
-);
-
-const emit = defineEmits(['update:model']);
-
+const model = defineModel<CommonResourceConfig>({ default: {} });
 const state = useStateStore();
 
 const categoryOptions = computed(
@@ -30,10 +20,10 @@ const categoryOptions = computed(
 );
 
 function handleUpdate(field: string, value: any) {
-  emit('update:model', {
-    ...props.model,
+  model.value = {
+    ...model.value,
     [field]: value,
-  });
+  };
 }
 </script>
 
@@ -71,16 +61,16 @@ function handleUpdate(field: string, value: any) {
     <n-flex vertical>
       <!-- DEFAULT ACTIVE -->
       <labelled-switch
-        :value="model.defaultActive"
+        :model-value="model.defaultActive"
         :label="$t('resources.settings.config.common.defaultActive')"
-        @update:value="(v) => handleUpdate('defaultActive', v)"
+        @update:model-value="(v) => handleUpdate('defaultActive', v)"
       />
       <!-- SHOW ON PARENT LEVEL -->
       <n-flex :wrap="false" align="center">
         <labelled-switch
-          :value="model.showOnParentLevel"
+          :model-value="model.showOnParentLevel"
           :label="$t('resources.settings.config.common.showOnParentLevel')"
-          @update:value="(u) => handleUpdate('showOnParentLevel', u)"
+          @update:model-value="(u) => handleUpdate('showOnParentLevel', u)"
         />
         <help-button-widget help-key="resourceConfigCombinedSiblings" />
       </n-flex>

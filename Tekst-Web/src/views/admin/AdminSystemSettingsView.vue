@@ -123,7 +123,7 @@ function resetForm() {
       </n-form-item>
       <!-- PLATFORM DESCRIPTION -->
       <translation-form-item
-        v-model:value="formModel.infoSubtitle"
+        v-model="formModel.infoSubtitle"
         parent-form-path-prefix="infoSubtitle"
         :loading="loading"
         :main-form-label="$t('models.platformSettings.infoSubtitle')"
@@ -200,7 +200,7 @@ function resetForm() {
 
       <!-- TRANSLATE MAIN NAV INFO ENTRY -->
       <translation-form-item
-        v-model:value="formModel.navInfoEntry"
+        v-model="formModel.navInfoEntry"
         parent-form-path-prefix="navInfoEntry"
         :loading="loading"
         :main-form-label="$t('models.platformSettings.navInfoEntry')"
@@ -213,12 +213,12 @@ function resetForm() {
         <n-flex vertical>
           <!-- ALWAY SHOW TEXT INFO, ALSO ON NON-TEXT-SPECIFIC PAGES? -->
           <labelled-switch
-            v-model:value="formModel.alwaysShowTextInfo"
+            v-model="formModel.alwaysShowTextInfo"
             :label="$t('models.platformSettings.alwaysShowTextInfo')"
           />
           <!-- SHOW TEKST FOOTER HINT -->
           <labelled-switch
-            v-model:value="formModel.showTekstFooterHint"
+            v-model="formModel.showTekstFooterHint"
             :label="$t('models.platformSettings.showTekstFooterHint')"
           />
         </n-flex>
@@ -228,12 +228,12 @@ function resetForm() {
         <n-flex vertical>
           <!-- SHOW RESOURCE CATEGORY HEADINGS -->
           <labelled-switch
-            v-model:value="formModel.showResourceCategoryHeadings"
+            v-model="formModel.showResourceCategoryHeadings"
             :label="$t('models.platformSettings.showResourceCategoryHeadings')"
           />
           <!-- ALWAYS SHOW RESOURCE CATEGORY HEADINGS -->
           <labelled-switch
-            v-model:value="formModel.alwaysShowResourceCategoryHeadings"
+            v-model="formModel.alwaysShowResourceCategoryHeadings"
             :label="$t('models.platformSettings.alwaysShowResourceCategoryHeadings')"
           />
         </n-flex>

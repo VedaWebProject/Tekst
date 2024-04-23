@@ -31,12 +31,11 @@ import { UserIcon, TranslateIcon } from '@/icons';
 import IconHeading from '@/components/generic/IconHeading.vue';
 
 const props = defineProps<{
-  model: AnyResourceRead;
   owner?: UserRead | UserReadPublic | null;
   public?: boolean;
 }>();
 
-const emit = defineEmits(['update:model']);
+const model = defineModel<AnyResourceRead>({ required: true });
 
 const auth = useAuthStore();
 
@@ -64,7 +63,7 @@ const metadataKeysOptions = computed(() =>
         $t(`models.meta.${k}`),
       ]),
     value: k,
-    disabled: props.model.meta && !!props.model.meta.find((m) => m.key === k),
+    disabled: model.value.meta && !!model.value.meta.find((m) => m.key === k),
   }))
 );
 
@@ -77,12 +76,12 @@ function postprocessUserOptions(
     .map((id) => ({
       value: id,
       user:
-        props.model.sharedReadUsers?.find((u) => u.id === id) ||
-        props.model.sharedWriteUsers?.find((u) => u.id === id) ||
+        model.value.sharedReadUsers?.find((u) => u.id === id) ||
+        model.value.sharedWriteUsers?.find((u) => u.id === id) ||
         searchedUsers.value?.find((u) => u.id === id) ||
         addedSharesUsersCache.value.find((u) => u.id === id),
       disabled:
-        id === props.model.ownerId ||
+        id === model.value.ownerId ||
         (id === auth.user?.id && !auth.user?.isSuperuser) ||
         disabledIds.includes(id),
     }))
@@ -92,32 +91,32 @@ function postprocessUserOptions(
 
 const usersOptionsRead = computed(() => {
   return postprocessUserOptions(
-    props.model.sharedRead,
-    props.model.sharedWrite,
+    model.value.sharedRead,
+    model.value.sharedWrite,
     searchedUsers.value.map((u) => u.id)
   );
 });
 
 const usersOptionsWrite = computed(() => {
   return postprocessUserOptions(
-    props.model.sharedWrite,
-    props.model.sharedRead,
+    model.value.sharedWrite,
+    model.value.sharedRead,
     searchedUsers.value.map((u) => u.id)
   );
 });
 
 function handleUpdate(field: string, value: any) {
-  emit('update:model', {
-    ...props.model,
+  model.value = {
+    ...model.value,
     [field]: value,
-  });
+  };
 }
 
 function handleSharesUpdate(field: string, value: string[]) {
   addedSharesUsersCache.value = [...addedSharesUsersCache.value, ...searchedUsers.value].filter(
     (u) =>
-      props.model.sharedRead?.includes(u.id) ||
-      props.model.sharedWrite?.includes(u.id) ||
+      model.value.sharedRead?.includes(u.id) ||
+      model.value.sharedWrite?.includes(u.id) ||
       value.includes(u.id)
   );
   userSearchQuery.value = initialUserSearchQuery();
@@ -170,12 +169,12 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
 
   <!-- DESCRIPTION -->
   <translation-form-item
-    :value="model.description"
+    :model-value="model.description"
     parent-form-path-prefix="description"
     :main-form-label="$t('models.resource.description')"
     :translation-form-label="$t('models.resource.description')"
     :translation-form-rule="resourceSettingsFormRules.descriptionTranslation"
-    @update:value="(v) => handleUpdate('description', v)"
+    @update:model-value="(v) => handleUpdate('description', v)"
   />
 
   <!-- CITATION -->
@@ -191,14 +190,14 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
 
   <!-- COMMENT -->
   <translation-form-item
-    :value="model.comment"
+    :model-value="model.comment"
     parent-form-path-prefix="comment"
     multiline
     :max-translation-length="2000"
     :main-form-label="$t('models.resource.comment')"
     :translation-form-label="$t('models.resource.comment')"
     :translation-form-rule="resourceSettingsFormRules.commentTranslation"
-    @update:value="(v) => handleUpdate('comment', v)"
+    @update:model-value="(v) => handleUpdate('comment', v)"
   />
 
   <!-- METADATA -->

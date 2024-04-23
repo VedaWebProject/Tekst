@@ -3,11 +3,7 @@ import type { DeepLLinksConfig } from '@/api';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
 import { NFormItem, NSelect } from 'naive-ui';
 
-const props = defineProps<{
-  model: DeepLLinksConfig;
-}>();
-
-const emit = defineEmits(['update:model']);
+const model = defineModel<DeepLLinksConfig>({ required: true });
 
 const languageOptions = [
   'BG',
@@ -40,10 +36,10 @@ const languageOptions = [
 ].map((l) => ({ label: l, value: l }));
 
 function handleUpdate(field: string, value: any) {
-  emit('update:model', {
-    ...props.model,
+  model.value = {
+    ...model.value,
     [field]: value,
-  });
+  };
 }
 </script>
 
@@ -55,9 +51,9 @@ function handleUpdate(field: string, value: any) {
   <!-- ENABLED -->
   <n-form-item :show-label="false">
     <labelled-switch
-      :value="model.enabled"
+      :model-value="model.enabled"
       :label="$t('resources.settings.config.enabled')"
-      @update:value="(v) => handleUpdate('enabled', v)"
+      @update:model-value="(v) => handleUpdate('enabled', v)"
     />
   </n-form-item>
 

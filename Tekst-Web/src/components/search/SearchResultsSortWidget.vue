@@ -6,8 +6,8 @@ import { NDropdown, NButton, NIcon, NBadge, useThemeVars } from 'naive-ui';
 import type { Size } from 'naive-ui/es/button/src/interface';
 import { computed } from 'vue';
 
-const props = defineProps<{ value?: string; size?: Size; disabled?: boolean }>();
-const emit = defineEmits(['update:value']);
+defineProps<{ size?: Size; disabled?: boolean }>();
+const model = defineModel<string>();
 
 const themeVars = useThemeVars();
 const selectedIcon = renderIcon(CheckCircleIcon, themeVars.value.primaryColor);
@@ -15,20 +15,20 @@ const sortingPresetOptions = computed(() => [
   {
     label: () => $t('search.results.sortingPresets.relevance'),
     key: 'relevance',
-    icon: !props.value || props.value === 'relevance' ? selectedIcon : undefined,
+    icon: !model.value || model.value === 'relevance' ? selectedIcon : undefined,
   },
   {
     label: () => $t('search.results.sortingPresets.textLevelPosition'),
     key: 'text_level_position',
-    icon: props.value === 'text_level_position' ? selectedIcon : undefined,
+    icon: model.value === 'text_level_position' ? selectedIcon : undefined,
   },
   {
     label: () => $t('search.results.sortingPresets.textLevelRelevance'),
     key: 'text_level_relevance',
-    icon: props.value === 'text_level_relevance' ? selectedIcon : undefined,
+    icon: model.value === 'text_level_relevance' ? selectedIcon : undefined,
   },
 ]);
-const showDot = computed(() => !!props.value && props.value !== 'relevance');
+const showDot = computed(() => !!model.value && model.value !== 'relevance');
 </script>
 
 <template>
@@ -36,7 +36,7 @@ const showDot = computed(() => !!props.value && props.value !== 'relevance');
     trigger="click"
     :options="sortingPresetOptions"
     placement="bottom-end"
-    @select="(v) => emit('update:value', v)"
+    @select="(v) => (model = v)"
   >
     <n-badge :show="showDot" :offset="[-1, 4]" dot>
       <n-button

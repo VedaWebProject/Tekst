@@ -11,10 +11,9 @@ import { useMessages } from '@/composables/messages';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import { AddIcon } from '@/icons';
 
-const props = withDefaults(defineProps<{ show: boolean; parent: LocationTreeOption | null }>(), {
-  show: false,
-});
-const emit = defineEmits(['update:show', 'submit']);
+const props = defineProps<{ parent: LocationTreeOption | null }>();
+const emit = defineEmits(['submit']);
+const show = defineModel<boolean>('show');
 
 const initialLocationModel = () => ({
   label: '',
@@ -45,7 +44,7 @@ async function handleSubmit() {
           },
         });
         emit('submit', error ? undefined : data);
-        emit('update:show', false);
+        show.value = false;
       }
     })
     .catch(() => {
@@ -57,7 +56,7 @@ async function handleSubmit() {
 
 <template>
   <generic-modal
-    :show="show"
+    v-model:show="show"
     :title="
       $t('admin.text.locations.add.heading', {
         level: state.textLevelLabels[(props.parent?.level ?? -1) + 1],
@@ -65,7 +64,6 @@ async function handleSubmit() {
       })
     "
     :icon="AddIcon"
-    @update:show="$emit('update:show', $event)"
     @after-enter="nextTick(() => locationRenameInputRef?.focus())"
     @after-leave="locationFormModel.label = ''"
   >
@@ -89,7 +87,7 @@ async function handleSubmit() {
       </n-form-item>
     </n-form>
     <button-shelf top-gap>
-      <n-button secondary :disabled="loading" @click="$emit('update:show', false)">
+      <n-button secondary :disabled="loading" @click="show = false">
         {{ $t('general.cancelAction') }}
       </n-button>
       <n-button type="primary" :loading="loading" :disabled="loading" @click="handleSubmit">

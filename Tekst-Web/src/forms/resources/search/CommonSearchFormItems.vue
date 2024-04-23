@@ -6,11 +6,11 @@ import LabelledSwitch from '@/components/LabelledSwitch.vue';
 import { searchFormRules } from '@/forms/formRules';
 
 defineProps<{
-  comment?: AdvancedSearchRequestBody['q'][number]['cmn']['cmt'];
-  optional?: AdvancedSearchRequestBody['q'][number]['cmn']['opt'];
   queryIndex: number;
 }>();
-defineEmits(['update:comment', 'update:optional']);
+
+const comment = defineModel<AdvancedSearchRequestBody['q'][number]['cmn']['cmt']>('comment');
+const optional = defineModel<AdvancedSearchRequestBody['q'][number]['cmn']['opt']>('optional');
 </script>
 
 <template>
@@ -20,16 +20,11 @@ defineEmits(['update:comment', 'update:optional']);
     :rule="searchFormRules.common.comment"
   >
     <n-input-osk
-      :value="comment"
+      v-model="comment"
       :placeholder="$t('resources.types.common.contentFields.comment')"
-      @update:value="(v) => $emit('update:comment', v)"
     />
   </n-form-item>
   <n-form-item :show-label="false" :show-feedback="false">
-    <labelled-switch
-      :value="optional"
-      :label="$t('search.advancedSearch.optional')"
-      @update:value="(v) => $emit('update:optional', v)"
-    />
+    <labelled-switch v-model="optional" :label="$t('search.advancedSearch.optional')" />
   </n-form-item>
 </template>

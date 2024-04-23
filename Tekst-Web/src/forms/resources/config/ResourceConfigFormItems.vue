@@ -3,34 +3,28 @@ import type { AnyResourceConfig } from '@/api';
 import { generalConfigFormItems, specialConfigFormItems } from '@/forms/resources/config/mappings';
 import CommonResourceConfigFormItems from '@/forms/resources/config/CommonResourceConfigFormItems.vue';
 
-const props = withDefaults(
-  defineProps<{
-    model?: AnyResourceConfig;
-    resourceType: string;
-    loading?: boolean;
-  }>(),
-  {
-    model: () => ({}),
-  }
-);
+defineProps<{
+  resourceType: string;
+  loading?: boolean;
+}>();
 
-const emit = defineEmits(['update:model']);
+const model = defineModel<AnyResourceConfig>({ default: {} });
 
 function handleUpdateGeneralConfig(field: string, value: any) {
-  emit('update:model', {
-    ...props.model,
+  model.value = {
+    ...model.value,
     general: {
-      ...props.model.general,
+      ...model.value?.general,
       [field]: value,
     },
-  });
+  };
 }
 
 function handleUpdateSpecialConfig(field: string, value: any) {
-  emit('update:model', {
-    ...props.model,
+  model.value = {
+    ...model.value,
     [field]: value,
-  });
+  };
 }
 </script>
 
@@ -39,9 +33,9 @@ function handleUpdateSpecialConfig(field: string, value: any) {
 
   <!-- COMMON RESOURCE CONFIG -->
   <common-resource-config-form-items
-    v-if="model.common"
+    v-if="model?.common"
     :model="model.common"
-    @update:model="(u: any) => $emit('update:model', { ...model, common: u })"
+    @update:model="(u: any) => (model = { ...model, common: u })"
   />
 
   <!-- GENERAL RESOURCE TYPE-SPECIFIC CONFIG -->
@@ -51,12 +45,12 @@ function handleUpdateSpecialConfig(field: string, value: any) {
   <h5>
     {{ $t('general.general') }}
   </h5>
-  <template v-for="(configValue, key) in model.general" :key="key">
+  <template v-for="(configValue, key) in model?.general" :key="key">
     <component
       :is="generalConfigFormItems[key]"
       v-if="key in generalConfigFormItems"
-      :value="configValue"
-      @update:value="(u: any) => handleUpdateGeneralConfig(key, u)"
+      :model-value="configValue"
+      @update:model-value="(u: any) => handleUpdateGeneralConfig(key, u)"
     />
   </template>
 
@@ -65,8 +59,8 @@ function handleUpdateSpecialConfig(field: string, value: any) {
     <component
       :is="specialConfigFormItems[key]"
       v-if="key in specialConfigFormItems"
-      :model="configModel"
-      @update:model="(u: any) => handleUpdateSpecialConfig(key, u)"
+      :model-value="configModel"
+      @update:model-value="(u: any) => handleUpdateSpecialConfig(key, u)"
     />
   </template>
 </template>

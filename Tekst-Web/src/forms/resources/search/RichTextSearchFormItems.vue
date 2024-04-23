@@ -4,18 +4,18 @@ import NInputOsk from '@/components/NInputOsk.vue';
 import type { RichTextResourceRead, RichTextSearchQuery } from '@/api';
 import { searchFormRules } from '@/forms/formRules';
 
-const props = defineProps<{
-  value: RichTextSearchQuery;
+defineProps<{
   resource: RichTextResourceRead;
   queryIndex: number;
 }>();
-const emit = defineEmits(['update:value']);
+
+const model = defineModel<RichTextSearchQuery>({ required: true });
 
 function handleUpdate(field: string, value: any) {
-  emit('update:value', {
-    ...props.value,
+  model.value = {
+    ...model.value,
     [field]: value,
-  });
+  };
 }
 </script>
 
@@ -27,9 +27,9 @@ function handleUpdate(field: string, value: any) {
     :rule="searchFormRules.richText.html"
   >
     <n-input-osk
-      :value="value.html"
+      :model-value="model.html"
       :placeholder="$t('resources.types.richText.searchFields.html')"
-      @update:value="(v) => handleUpdate('html', v)"
+      @update:model-value="(v) => handleUpdate('html', v)"
     />
   </n-form-item>
 </template>

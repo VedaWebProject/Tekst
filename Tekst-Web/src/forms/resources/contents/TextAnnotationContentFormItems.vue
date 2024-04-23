@@ -8,17 +8,16 @@ import LabelledSwitch from '@/components/LabelledSwitch.vue';
 import { KeyboardReturnIcon } from '@/icons';
 
 const props = defineProps<{
-  model: TextAnnotationContentCreate;
   resource: TextAnnotationResourceRead;
 }>();
 
-const emit = defineEmits(['update:model']);
+const model = defineModel<TextAnnotationContentCreate>({ required: true });
 
 function handleUpdate(field: string, value: any) {
-  emit('update:model', {
-    ...props.model,
+  model.value = {
+    ...model.value,
     [field]: value,
-  });
+  };
 }
 
 function getAnnotationKeyOptions() {
@@ -74,7 +73,7 @@ function getAnnotationValueOptions(key?: string) {
               style="flex-grow: 2"
             >
               <n-input-osk
-                v-model:value="tokenItem.token"
+                v-model="tokenItem.token"
                 :font="resource.config?.general?.font || undefined"
                 :placeholder="$t('resources.types.textAnnotation.contentFields.token')"
               />
@@ -82,7 +81,7 @@ function getAnnotationValueOptions(key?: string) {
             <!-- LINEBREAK -->
             <n-form-item ignore-path-change>
               <labelled-switch
-                v-model:value="tokenItem.lb"
+                v-model="tokenItem.lb"
                 size="large"
                 :icon-on="KeyboardReturnIcon"
                 :icon-off="KeyboardReturnIcon"

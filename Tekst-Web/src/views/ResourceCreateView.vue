@@ -164,7 +164,7 @@ async function handleSaveClick() {
           </n-form-item>
         </n-alert>
         <!-- COMMON RESOURCE FORM FIELDS -->
-        <resource-settings-form-items v-model:model="model" :owner="auth.user" :public="false" />
+        <resource-settings-form-items v-model="model" :owner="auth.user" :public="false" />
       </n-form>
 
       <button-shelf top-gap>

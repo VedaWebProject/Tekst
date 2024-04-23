@@ -11,7 +11,7 @@ const search = useSearchStore();
     <!-- STRICT SEARCH MODE -->
     <n-form-item path="strict" :show-label="false" :show-feedback="false">
       <labelled-switch
-        v-model:value="search.settingsGeneral.strict"
+        v-model="search.settingsGeneral.strict"
         :label="$t('search.settings.general.strict')"
       />
     </n-form-item>

@@ -20,11 +20,10 @@ import { watch } from 'vue';
 import { useStateStore } from '@/stores';
 
 const props = defineProps<{
-  value?: string;
   font?: string;
 }>();
 
-const emit = defineEmits(['update:value']);
+const model = defineModel<string>();
 
 const { pfData } = usePlatformData();
 const state = useStateStore();
@@ -82,8 +81,8 @@ function captureTargetSelectionRange() {
     targetInputRef.value?.inputElRef?.selectionEnd ??
     targetInputRef.value?.textareaElRef?.selectionEnd;
   targetSelectionRange.value = [
-    (start ?? props.value?.length) || 0,
-    (end ?? props.value?.length) || 0,
+    (start ?? model.value?.length) || 0,
+    (end ?? model.value?.length) || 0,
   ];
 }
 
@@ -104,9 +103,9 @@ function handleOpen() {
 function handleSubmit(e: UIEvent) {
   e.preventDefault();
   e.stopPropagation();
-  const preOskValue = props.value?.substring(0, targetSelectionRange.value[0]) || '';
-  const postOskValue = props.value?.substring(targetSelectionRange.value[1]) || '';
-  emit('update:value', preOskValue + oskInput.value + postOskValue);
+  const preOskValue = model.value?.substring(0, targetSelectionRange.value[0]) || '';
+  const postOskValue = model.value?.substring(targetSelectionRange.value[1]) || '';
+  model.value = preOskValue + oskInput.value + postOskValue;
   const newCaretPos = targetSelectionRange.value[0] + oskInput.value.length;
   showOsk.value = false;
   nextTick().then(() => {
@@ -146,9 +145,8 @@ defineExpose({ focus: focusTargetInput, select: selectTargetInput });
   <n-input
     ref="targetInputRef"
     v-bind="$attrs"
-    :value="value"
+    v-model:value="model"
     :input-props="{ style: fontStyle }"
-    @update:value="(v) => $emit('update:value', v)"
   >
     <template #prefix>
       <slot name="prefix"></slot>

@@ -20,8 +20,9 @@ import GenericModal from '@/components/generic/GenericModal.vue';
 
 import { UserIcon } from '@/icons';
 
-const props = defineProps<{ show?: boolean; resource?: AnyResourceRead; loading?: boolean }>();
-const emit = defineEmits(['update:show', 'submit']);
+const props = defineProps<{ resource?: AnyResourceRead; loading?: boolean }>();
+const emit = defineEmits(['submit']);
+const show = defineModel<boolean>('show');
 
 const { message } = useMessages();
 
@@ -63,7 +64,7 @@ async function handleOkClick() {
       if (user) {
         emit('submit', props.resource, user);
       } else {
-        emit('update:show', false);
+        show.value = false;
       }
     })
     .catch(() => {
@@ -79,7 +80,7 @@ async function handleOkClick() {
     :show="show && !!resource"
     :title="$t('resources.transferAction')"
     :icon="UserIcon"
-    @update:show="emit('update:show', $event)"
+    @update:show="(v) => (show = v)"
   >
     <n-alert type="warning" :title="$t('general.warning')" style="margin-bottom: var(--layout-gap)">
       {{ $t('resources.warnTransfer') }}
@@ -113,7 +114,7 @@ async function handleOkClick() {
       </n-form-item>
     </n-form>
     <button-shelf top-gap>
-      <n-button secondary :disabled="loading" @click="emit('update:show', false)">
+      <n-button secondary :disabled="loading" @click="show = false">
         {{ $t('general.cancelAction') }}
       </n-button>
       <n-button

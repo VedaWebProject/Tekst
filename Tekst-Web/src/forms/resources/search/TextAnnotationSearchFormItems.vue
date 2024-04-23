@@ -6,24 +6,23 @@ import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { searchFormRules } from '@/forms/formRules';
 
 const props = defineProps<{
-  value: TextAnnotationSearchQuery;
   resource: TextAnnotationResourceRead;
   queryIndex: number;
 }>();
 
-const emit = defineEmits(['update:value']);
+const model = defineModel<TextAnnotationSearchQuery>({ required: true });
 
 function handleUpdate(field: string, value: any) {
-  emit('update:value', {
-    ...props.value,
+  model.value = {
+    ...model.value,
     [field]: value,
-  });
+  };
 }
 
 function getAnnotationKeyOptions() {
   return (
     props.resource.aggregations
-      ?.filter((agg) => !props.value.anno?.find((ann) => ann.k === agg.key))
+      ?.filter((agg) => !model.value.anno?.find((ann) => ann.k === agg.key))
       .map((agg) => ({ label: agg.key, value: agg.key })) || []
   );
 }
@@ -48,21 +47,21 @@ function getAnnotationValueOptions(key: string) {
     style="flex-grow: 1; flex-basis: 200px"
   >
     <n-input-osk
-      :value="value.token"
+      :model-value="model.token"
       :font="resource.config?.general?.font || undefined"
       :placeholder="$t('resources.types.textAnnotation.contentFields.token')"
-      @update:value="(v) => handleUpdate('token', v)"
+      @update:model-value="(v) => handleUpdate('token', v)"
     />
   </n-form-item>
 
   <!-- ANNOTATIONS -->
   <n-form-item
     :label="$t('resources.types.textAnnotation.contentFields.annotations')"
-    :show-feedback="!value.anno?.length"
+    :show-feedback="!model.anno?.length"
     style="flex-grow: 2; flex-basis: 400px"
   >
     <n-dynamic-input
-      :value="value.anno"
+      :value="model.anno"
       @update-value="(v) => handleUpdate('anno', v)"
       @create="() => ({ k: undefined, v: undefined })"
     >

@@ -15,26 +15,25 @@ const props = withDefaults(
   defineProps<{
     initialLocationPath: LocationRead[];
     showLevelSelect?: boolean;
-    show?: boolean;
   }>(),
   {
     showLevelSelect: true,
-    show: false,
   }
 );
 
-const emit = defineEmits(['update:show', 'submit']);
+const emit = defineEmits(['submit']);
+const show = defineModel<boolean>('show');
 
 const locationPath = ref<LocationRead[]>(props.initialLocationPath);
 
 function submit() {
   emit('submit', locationPath.value);
-  emit('update:show', false);
+  show.value = false;
 }
 </script>
 
 <template>
-  <generic-modal :show="show" @update:show="emit('update:show', $event)">
+  <generic-modal v-model:show="show">
     <template #header>
       <icon-heading level="2" :icon="BookIcon" style="margin: 0">
         {{ $t('browse.location.modalHeading') }}
@@ -42,10 +41,7 @@ function submit() {
       </icon-heading>
     </template>
 
-    <location-select-form
-      v-model:location-path="locationPath"
-      :show-level-select="showLevelSelect"
-    />
+    <location-select-form v-model="locationPath" :show-level-select="showLevelSelect" />
 
     <button-shelf top-gap>
       <n-button type="primary" @click="submit">

@@ -492,7 +492,7 @@ async function handleNearestChangeClick(mode: 'preceding' | 'subsequent') {
           label-width="auto"
           require-mark-placement="right-hanging"
         >
-          <content-form-items v-model:model="contentModel" :resource="resource" />
+          <content-form-items v-model="contentModel" :resource="resource" />
         </n-form>
 
         <button-shelf top-gap>

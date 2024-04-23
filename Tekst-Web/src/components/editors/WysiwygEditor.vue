@@ -35,34 +35,32 @@ import { wysiwygEditorFormRules } from '@/forms/formRules';
 
 const props = withDefaults(
   defineProps<{
-    value?: string | null;
     toolbarSize?: 'small' | 'medium' | 'large';
     maxChars?: number;
     font?: string;
   }>(),
   {
-    value: '',
     toolbarSize: 'small',
     maxChars: undefined,
     font: undefined,
   }
 );
-
-const emit = defineEmits(['update:value', 'blur', 'focus', 'input']);
+const emit = defineEmits(['blur', 'focus', 'input']);
+const value = defineModel<string | null>('value', { default: '' });
 
 const promptModalRef = ref();
 
 watch(
-  () => props.value,
+  () => value.value,
   (newDocument) => {
     if (newDocument !== editor.value?.getHTML()) {
-      editor.value?.commands.setContent(props.value);
+      editor.value?.commands.setContent(value.value);
     }
   }
 );
 
 const editor = useEditor({
-  content: props.value,
+  content: value.value,
   extensions: [
     StarterKit.configure({
       heading: {
@@ -86,7 +84,7 @@ const editor = useEditor({
   ],
   injectCSS: false,
   onUpdate: () => {
-    emit('update:value', editor.value?.getHTML());
+    value.value = editor.value?.getHTML() || '';
   },
   onBlur: () => {
     emit('blur');

@@ -9,21 +9,12 @@ import type { AnyResourceRead, UserRead } from '@/api';
 import { PublicIcon, ProposedIcon, PublicOffIcon } from '@/icons';
 
 const props = defineProps<{
-  active?: boolean;
   resource: AnyResourceRead;
   disabled?: boolean;
   user?: UserRead;
 }>();
-const emit = defineEmits<{ (e: 'update:active', active: boolean): void }>();
 
-const active = computed({
-  get() {
-    return props.active;
-  },
-  set(value: boolean) {
-    emit('update:active', value);
-  },
-});
+const active = defineModel<boolean>('active');
 
 const state = useStateStore();
 const infoTooltip = computed(() =>

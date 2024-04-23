@@ -342,18 +342,12 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
               <n-icon :component="SearchIcon" />
             </template>
           </n-input>
-          <labelled-switch v-model:value="filters.public" :label="$t('resources.public')" />
-          <labelled-switch v-model:value="filters.notPublic" :label="$t('resources.notPublic')" />
-          <labelled-switch v-model:value="filters.proposed" :label="$t('resources.proposed')" />
-          <labelled-switch
-            v-model:value="filters.notProposed"
-            :label="$t('resources.notProposed')"
-          />
-          <labelled-switch v-model:value="filters.ownedByMe" :label="$t('resources.ownedByMe')" />
-          <labelled-switch
-            v-model:value="filters.ownedByOthers"
-            :label="$t('resources.ownedByOthers')"
-          />
+          <labelled-switch v-model="filters.public" :label="$t('resources.public')" />
+          <labelled-switch v-model="filters.notPublic" :label="$t('resources.notPublic')" />
+          <labelled-switch v-model="filters.proposed" :label="$t('resources.proposed')" />
+          <labelled-switch v-model="filters.notProposed" :label="$t('resources.notProposed')" />
+          <labelled-switch v-model="filters.ownedByMe" :label="$t('resources.ownedByMe')" />
+          <labelled-switch v-model="filters.ownedByOthers" :label="$t('resources.ownedByOthers')" />
           <n-button style="margin-top: var(--content-gap)" @click="filters = initialFilters()">
             {{ $t('general.resetAction') }}
             <template #icon>
@@ -438,7 +432,7 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
     :show="showTransferModal"
     :resource="transferTargetResource"
     :loading="actionsLoading"
-    @update:show="($event) => (showTransferModal = $event)"
+    @update:show="($event: boolean) => (showTransferModal = $event)"
     @submit="handleTransferResource"
   />
 </template>

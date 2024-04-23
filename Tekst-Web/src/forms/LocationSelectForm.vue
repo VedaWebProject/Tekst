@@ -16,12 +16,12 @@ const props = withDefaults(
   }
 );
 
-const locationPath = defineModel<LocationRead[]>('locationPath', { required: true });
+const model = defineModel<LocationRead[]>({ required: true });
 
 const state = useStateStore();
 const { message } = useMessages();
 
-const lvl = ref(Math.max(0, locationPath.value.length - 1));
+const lvl = ref(Math.max(0, model.value.length - 1));
 const lvlOptions = computed(() =>
   state.textLevelLabels.map((l, i) => ({
     value: i,
@@ -125,7 +125,7 @@ async function initSelectModels() {
   const { data: locationsOptions, error } = await GET(
     '/browse/locations/{id}/path/options-by-head',
     {
-      params: { path: { id: locationPath.value[lvl.value].id ?? '' } },
+      params: { path: { id: model.value[lvl.value].id ?? '' } },
     }
   );
 
@@ -144,7 +144,7 @@ async function initSelectModels() {
       // remember locations for these options
       lsm.locations = locationsOptions[index];
       // set selection
-      lsm.selected = locationPath.value[index]?.id || null;
+      lsm.selected = model.value[index]?.id || null;
     }
     index++;
     lsm.loading = false;
@@ -152,7 +152,7 @@ async function initSelectModels() {
 }
 
 function updateModel() {
-  locationPath.value = locationSelectModels.value
+  model.value = locationSelectModels.value
     .filter((_, i) => i <= lvl.value)
     .map((lsm) => lsm.locations.find((n) => n.id === lsm.selected) || lsm.locations[0]);
 }

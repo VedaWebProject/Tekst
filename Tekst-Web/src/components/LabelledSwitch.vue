@@ -4,7 +4,6 @@ import type { Component } from 'vue';
 
 withDefaults(
   defineProps<{
-    value?: string | number | boolean | undefined;
     label?: string;
     iconOn?: Component;
     iconOff?: Component;
@@ -17,7 +16,6 @@ withDefaults(
     uncheckedValue?: string;
   }>(),
   {
-    value: undefined,
     label: undefined,
     iconOn: undefined,
     iconOff: undefined,
@@ -28,13 +26,13 @@ withDefaults(
   }
 );
 
-defineEmits(['update:value']);
+const model = defineModel<string | number | boolean>();
 </script>
 
 <template>
   <n-flex align="center" :wrap="false">
     <n-switch
-      :value="value"
+      v-model:value="model"
       :round="round"
       :size="size"
       :disabled="disabled"
@@ -42,7 +40,6 @@ defineEmits(['update:value']);
       :focusable="focusable"
       :checked-value="checkedValue"
       :unchecked-value="uncheckedValue"
-      @update:value="(v) => $emit('update:value', v)"
     >
       <template #checked-icon>
         <n-icon :component="iconOn" />

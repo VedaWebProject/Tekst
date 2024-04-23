@@ -178,7 +178,7 @@ watch(
           </n-form-item>
           <component
             :is="resourceTypeSearchForms[query.rts.type]"
-            v-model:value="query.rts"
+            v-model="query.rts"
             :resource="query.resource"
             :query-index="queryIndex"
           />

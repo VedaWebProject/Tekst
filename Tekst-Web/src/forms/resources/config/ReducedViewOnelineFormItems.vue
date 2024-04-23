@@ -2,19 +2,14 @@
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
 import { NFormItem } from 'naive-ui';
 
-defineProps<{
-  value?: boolean;
-}>();
-
-defineEmits(['update:value']);
+const model = defineModel<boolean>();
 </script>
 
 <template>
   <n-form-item :show-label="false" :show-feedback="false">
     <labelled-switch
-      :value="value"
+      v-model="model"
       :label="$t('resources.settings.config.general.reducedViewOneline')"
-      @update:value="(v) => $emit('update:value', v)"
     />
   </n-form-item>
 </template>

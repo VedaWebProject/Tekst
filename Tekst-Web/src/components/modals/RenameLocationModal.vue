@@ -11,10 +11,9 @@ import { useMessages } from '@/composables/messages';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import { EditIcon } from '@/icons';
 
-const props = withDefaults(defineProps<{ show: boolean; location: LocationTreeOption | null }>(), {
-  show: false,
-});
-const emit = defineEmits(['update:show', 'submit']);
+const props = defineProps<{ location: LocationTreeOption | null }>();
+const emit = defineEmits(['submit']);
+const show = defineModel<boolean>('show');
 
 const initialLocationModel = () => ({
   label: '',
@@ -40,7 +39,7 @@ async function handleSubmit() {
           body: getChanges(),
         });
         emit('submit', error ? undefined : data);
-        emit('update:show', false);
+        show.value = false;
       }
     })
     .catch(() => {
@@ -52,10 +51,9 @@ async function handleSubmit() {
 
 <template>
   <generic-modal
-    :show="show"
+    v-model:show="show"
     :title="$t('admin.text.locations.rename.heading')"
     :icon="EditIcon"
-    @update:show="$emit('update:show', $event)"
     @after-enter="
       () => {
         locationFormModel.label = props.location?.label || '';
@@ -84,7 +82,7 @@ async function handleSubmit() {
       </n-form-item>
     </n-form>
     <button-shelf top-gap>
-      <n-button secondary :disabled="loading" @click="$emit('update:show', false)">
+      <n-button secondary :disabled="loading" @click="show = false">
         {{ $t('general.cancelAction') }}
       </n-button>
       <n-button

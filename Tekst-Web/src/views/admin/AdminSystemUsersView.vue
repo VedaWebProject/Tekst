@@ -217,34 +217,34 @@ onMounted(() => {
         </n-input>
 
         <labelled-switch
-          v-model:value="filters.active"
+          v-model="filters.active"
           :label="$t('models.user.isActive')"
-          @update:value="resetPagination"
+          @update:model-value="resetPagination"
         />
         <labelled-switch
-          v-model:value="filters.inactive"
+          v-model="filters.inactive"
           :label="$t('models.user.isInactive')"
-          @update:value="resetPagination"
+          @update:model-value="resetPagination"
         />
         <labelled-switch
-          v-model:value="filters.verified"
+          v-model="filters.verified"
           :label="$t('models.user.isVerified')"
-          @update:value="resetPagination"
+          @update:model-value="resetPagination"
         />
         <labelled-switch
-          v-model:value="filters.unverified"
+          v-model="filters.unverified"
           :label="$t('models.user.isUnverified')"
-          @update:value="resetPagination"
+          @update:model-value="resetPagination"
         />
         <labelled-switch
-          v-model:value="filters.admin"
+          v-model="filters.admin"
           :label="$t('models.user.isSuperuser')"
-          @update:value="resetPagination"
+          @update:model-value="resetPagination"
         />
         <labelled-switch
-          v-model:value="filters.user"
+          v-model="filters.user"
           :label="$t('models.user.modelLabel')"
-          @update:value="resetPagination"
+          @update:model-value="resetPagination"
         />
 
         <n-button style="margin-top: var(--content-gap)" @click="filters = initialFilters()">

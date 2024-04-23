@@ -485,7 +485,7 @@ async function handleDeleteAccount() {
         />
         <template v-for="(_, field) in publicFieldsFormModel" :key="field">
           <labelled-switch
-            v-model:value="publicFieldsFormModel[field]"
+            v-model="publicFieldsFormModel[field]"
             :label="$t(`models.user.${field}`)"
             :disabled="loading"
           />
@@ -528,7 +528,7 @@ async function handleDeleteAccount() {
       <n-flex vertical>
         <template v-for="(_, field) in userNotificationTriggersFormModel" :key="field">
           <labelled-switch
-            v-model:value="userNotificationTriggersFormModel[field]"
+            v-model="userNotificationTriggersFormModel[field]"
             :label="$t(`account.settings.userNotificationTriggers.${field}`)"
             :disabled="loading"
           />
@@ -571,7 +571,7 @@ async function handleDeleteAccount() {
       <n-flex vertical>
         <template v-for="(_, field) in adminNotificationTriggersFormModel" :key="field">
           <labelled-switch
-            v-model:value="adminNotificationTriggersFormModel[field]"
+            v-model="adminNotificationTriggersFormModel[field]"
             :label="$t(`account.settings.adminNotificationTriggers.${field}`)"
             :disabled="loading"
           />
