@@ -488,7 +488,14 @@ async def delete_text(
         ]
     ),
 )
-async def get_text(text_id: Annotated[PydanticObjectId, Path(alias="id")]) -> TextRead:
+async def get_text(
+    text_id: Annotated[
+        PydanticObjectId,
+        Path(
+            alias="id",
+        ),
+    ],
+) -> TextRead:
     text = await TextDocument.get(text_id)
     if not text:
         raise errors.E_404_TEXT_NOT_FOUND

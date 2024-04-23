@@ -130,6 +130,9 @@ export type Translation = {
   locale: TranslationLocaleKey;
   translation: string;
 };
+export type ResourceExportFormat = NonNullable<
+  NonNullable<paths['/resources/{id}/export']['get']['parameters']['query']>['format']
+>;
 
 // bookmark
 

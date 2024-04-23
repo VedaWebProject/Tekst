@@ -20,6 +20,7 @@ general:
   moveUpAction: Move up
   moveDownAction: Move down
   refreshAction: Refresh
+  exportAction: Export
   textSelect: Select the text you want to work with
   info: Information
   warning: Warning
@@ -186,6 +187,11 @@ browse:
         message: The resource "{resourceTitle}" has been hidden. You can activate it again using the resource selection tool to the right side of the toolbar.
       siblingsWidget:
         title: Open merged view with all data of the parent location
+      exportWidget:
+        title: Export
+        format: Format
+        from: From
+        to: To
 
 forms:
   rulesFeedback:

@@ -132,6 +132,10 @@ export interface paths {
      */
     post: operations['moveLocation'];
   };
+  '/locations/first-last-paths': {
+    /** Get first and last locations paths */
+    get: operations['getFirstAndLastLocationsPaths'];
+  };
   '/messages': {
     /**
      * Get thread messages
@@ -249,8 +253,12 @@ export interface paths {
     get: operations['getResourceTemplate'];
   };
   '/resources/{id}/import': {
-    /** Import resource data */
-    post: operations['importResourceData'];
+    /** Import resource contents */
+    post: operations['importResourceContents'];
+  };
+  '/resources/{id}/export': {
+    /** Export resource contents */
+    get: operations['exportResourceContents'];
   };
   '/search': {
     /** Perform search */
@@ -466,12 +474,12 @@ export interface components {
       /** Client Secret */
       client_secret?: string | null;
     };
-    /** Body_import_resource_data_resources__id__import_post */
-    Body_import_resource_data_resources__id__import_post: {
+    /** Body_import_resource_contents_resources__id__import_post */
+    Body_import_resource_contents_resources__id__import_post: {
       /**
        * File
        * Format: binary
-       * @description JSON file containing the resource data
+       * @description JSON file containing the resource content data
        */
       file: Blob;
     };
@@ -4332,6 +4340,37 @@ export interface operations {
       };
     };
   };
+  /** Get first and last locations paths */
+  getFirstAndLastLocationsPaths: {
+    parameters: {
+      query: {
+        /** @description Target text ID */
+        txt: string;
+        /** @description Structure level to find first and last locations for */
+        lvl?: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['LocationRead'][][];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
   /**
    * Get thread messages
    * @description Returns all messages belonging to the specified thread
@@ -5273,8 +5312,8 @@ export interface operations {
       };
     };
   };
-  /** Import resource data */
-  importResourceData: {
+  /** Import resource contents */
+  importResourceContents: {
     parameters: {
       path: {
         id: string;
@@ -5282,7 +5321,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        'multipart/form-data': components['schemas']['Body_import_resource_data_resources__id__import_post'];
+        'multipart/form-data': components['schemas']['Body_import_resource_contents_resources__id__import_post'];
       };
     };
     responses: {
@@ -5292,8 +5331,50 @@ export interface operations {
           'application/json': components['schemas']['TaskRead'];
         };
       };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Export resource contents */
+  exportResourceContents: {
+    parameters: {
+      query?: {
+        /** @description Export format */
+        format?: 'json' | 'csv' | 'txt' | 'html';
+        /** @description ID of the location to start the export's location range from */
+        from?: string | null;
+        /** @description ID of the location to end the export's location range at */
+        to?: string | null;
+      };
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': unknown;
+        };
+      };
       /** @description Bad Request */
       400: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
         content: {
           'application/json': components['schemas']['TekstErrorModel'];
         };

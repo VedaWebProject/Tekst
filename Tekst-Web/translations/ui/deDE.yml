@@ -20,6 +20,7 @@ general:
   moveUpAction: Nach oben bewegen
   moveDownAction: Nach unten bewegen
   refreshAction: Aktualisieren
+  exportAction: Export
   quickSearch: Schnellsuche
   textSelect: Wählen Sie den Text, mit dem Sie arbeiten möchten
   info: Information
@@ -190,6 +191,11 @@ browse:
         message: Die Ressource "{resourceTitle}" wurde ausgeblendet. Sie können sie wieder aktivieren, indem Sie die Ressourcen-Auswahl rechts in der Toolbar benutzen.
       siblingsWidget:
         title: Zusammengeführte Ansicht mit allen Daten der übergeordneten Fundstelle öffnen
+      exportWidget:
+        title: Export
+        format: Format
+        from: Von
+        to: Bis
 
 forms:
   rulesFeedback:

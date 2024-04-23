@@ -3,6 +3,7 @@ from typing import Annotated
 from beanie import PydanticObjectId
 from beanie.operators import And, In, NotIn
 from fastapi import APIRouter, Path, Query, status
+from pydantic import Field
 
 from tekst import errors, tasks
 from tekst.auth import SuperuserDep
@@ -157,6 +158,76 @@ async def find_locations(
         example["parent_id"] = parent_id
 
     return await LocationDocument.find(example).limit(limit).to_list()
+
+
+@router.get(
+    "/first-last-paths",
+    response_model=Annotated[
+        list[list[LocationRead]],
+        Field(
+            min_length=2,
+            max_length=2,
+        ),
+    ],
+    status_code=status.HTTP_200_OK,
+    responses=errors.responses(
+        [
+            errors.E_404_TEXT_NOT_FOUND,
+        ]
+    ),
+)
+async def get_first_and_last_locations_paths(
+    text_id: Annotated[
+        PydanticObjectId,
+        Query(
+            alias="txt",
+            description="Target text ID",
+        ),
+    ],
+    level: Annotated[
+        int,
+        Query(
+            alias="lvl",
+            description="Structure level to find first and last locations for",
+        ),
+    ] = 0,
+) -> list[list[LocationDocument]]:
+    # check if text exists
+    if not await TextDocument.find_one(TextDocument.id == text_id).exists():
+        raise errors.E_404_TEXT_NOT_FOUND
+
+    # get first and last locations on the given level
+    from_location = (
+        await LocationDocument.find(
+            LocationDocument.text_id == text_id,
+            LocationDocument.level == level,
+        )
+        .sort(+LocationDocument.position)
+        .first_or_none()
+    )
+    to_location = (
+        await LocationDocument.find(
+            LocationDocument.text_id == text_id,
+            LocationDocument.level == level,
+        )
+        .sort(-LocationDocument.position)
+        .first_or_none()
+    )
+
+    # check if we found both
+    if not from_location or not to_location:
+        raise errors.E_404_LOCATION_NOT_FOUND
+
+    # find full location path for both first and last location
+    from_to = [from_location, to_location]
+    from_to_path = []
+    for location in from_to:
+        path = [location]
+        while path[0].parent_id:
+            path.insert(0, await LocationDocument.get(path[0].parent_id))
+        from_to_path.append(path)
+
+    return from_to_path
 
 
 @router.get(

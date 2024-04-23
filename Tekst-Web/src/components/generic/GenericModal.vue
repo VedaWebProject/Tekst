@@ -38,6 +38,7 @@ const modalStyle = computed<CSSProperties>(() => ({
 <template>
   <n-modal
     v-model:show="show"
+    :auto-focus="false"
     v-bind="$attrs"
     :to="to"
     embedded

@@ -1825,6 +1825,82 @@
         }
       }
     },
+    "/locations/first-last-paths": {
+      "get": {
+        "tags": [
+          "locations"
+        ],
+        "summary": "Get first and last locations paths",
+        "operationId": "getFirstAndLastLocationsPaths",
+        "parameters": [
+          {
+            "name": "txt",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "description": "Target text ID",
+              "title": "Txt"
+            },
+            "description": "Target text ID"
+          },
+          {
+            "name": "lvl",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "description": "Structure level to find first and last locations for",
+              "default": 0,
+              "title": "Lvl"
+            },
+            "description": "Structure level to find first and last locations for"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/LocationRead"
+                    }
+                  },
+                  "minItems": 2,
+                  "maxItems": 2,
+                  "title": "Response Get First And Last Locations Paths Locations First Last Paths Get"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/messages": {
       "post": {
         "tags": [
@@ -3915,8 +3991,8 @@
         "tags": [
           "resources"
         ],
-        "summary": "Import resource data",
-        "operationId": "importResourceData",
+        "summary": "Import resource contents",
+        "operationId": "importResourceContents",
         "security": [
           {
             "APIKeyCookie": []
@@ -3942,7 +4018,7 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/Body_import_resource_data_resources__id__import_post"
+                "$ref": "#/components/schemas/Body_import_resource_contents_resources__id__import_post"
               }
             }
           }
@@ -3958,7 +4034,7 @@
               }
             }
           },
-          "400": {
+          "401": {
             "content": {
               "application/json": {
                 "schema": {
@@ -3966,7 +4042,132 @@
                 }
               }
             },
-            "description": "Bad Request"
+            "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/resources/{id}/export": {
+      "get": {
+        "tags": [
+          "resources"
+        ],
+        "summary": "Export resource contents",
+        "operationId": "exportResourceContents",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "json",
+                "csv",
+                "txt",
+                "html"
+              ],
+              "type": "string",
+              "description": "Export format",
+              "default": "json",
+              "title": "Format"
+            },
+            "description": "Export format"
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "ID of the location to start the export's location range from",
+              "title": "From"
+            },
+            "description": "ID of the location to start the export's location range from"
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "ID of the location to end the export's location range at",
+              "title": "To"
+            },
+            "description": "ID of the location to end the export's location range at"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Forbidden"
           },
           "404": {
             "content": {
@@ -3978,7 +4179,7 @@
             },
             "description": "Not Found"
           },
-          "403": {
+          "400": {
             "content": {
               "application/json": {
                 "schema": {
@@ -3986,7 +4187,7 @@
                 }
               }
             },
-            "description": "Forbidden"
+            "description": "Bad Request"
           },
           "422": {
             "description": "Validation Error",
@@ -6322,20 +6523,20 @@
         ],
         "title": "Body_auth_jwt_login_auth_jwt_login_post"
       },
-      "Body_import_resource_data_resources__id__import_post": {
+      "Body_import_resource_contents_resources__id__import_post": {
         "properties": {
           "file": {
             "type": "string",
             "format": "binary",
             "title": "File",
-            "description": "JSON file containing the resource data"
+            "description": "JSON file containing the resource content data"
           }
         },
         "type": "object",
         "required": [
           "file"
         ],
-        "title": "Body_import_resource_data_resources__id__import_post"
+        "title": "Body_import_resource_contents_resources__id__import_post"
       },
       "Body_import_text_structure_texts__id__structure_post": {
         "properties": {
