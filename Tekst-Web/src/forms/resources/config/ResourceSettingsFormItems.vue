@@ -270,9 +270,9 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
   <template v-if="model.config">
     <n-divider />
     <resource-config-form-items
-      :model="model.config"
+      :model-value="model.config"
       :resource-type="model.resourceType"
-      @update:model="(v: AnyResourceConfig) => handleUpdate('config', v)"
+      @update:model-value="(v: AnyResourceConfig) => handleUpdate('config', v)"
     />
   </template>
 

@@ -36,9 +36,7 @@ const state = useStateStore();
 const localeOptions = computed(() =>
   state.translationLocaleOptions.map((tlo) => ({
     ...tlo,
-    disabled: !!model.value
-      ?.map((lvlTrans: Translation) => lvlTrans.locale)
-      .includes(tlo.value as LocaleKey),
+    disabled: model.value?.map((t: Translation) => t.locale).includes(tlo.value as LocaleKey),
   }))
 );
 </script>
@@ -52,7 +50,7 @@ const localeOptions = computed(() =>
     :ignore-path-change="ignorePathChange"
   >
     <n-dynamic-input
-      v-model="model"
+      v-model:value="model"
       :min="minItems"
       :max="localeOptions.length"
       item-style="margin-bottom: 0;"

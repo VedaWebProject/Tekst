@@ -34,8 +34,8 @@ function handleUpdateSpecialConfig(field: string, value: any) {
   <!-- COMMON RESOURCE CONFIG -->
   <common-resource-config-form-items
     v-if="model?.common"
-    :model="model.common"
-    @update:model="(u: any) => (model = { ...model, common: u })"
+    :model-value="model.common"
+    @update:model-value="(u: any) => (model = { ...model, common: u })"
   />
 
   <!-- GENERAL RESOURCE TYPE-SPECIFIC CONFIG -->
