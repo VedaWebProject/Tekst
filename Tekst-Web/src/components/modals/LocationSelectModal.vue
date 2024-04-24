@@ -44,7 +44,7 @@ function submit() {
     <location-select-form v-model="locationPath" :show-level-select="showLevelSelect" />
 
     <button-shelf top-gap>
-      <n-button type="primary" @click="submit">
+      <n-button type="primary" :disabled="!locationPath.length" @click="submit">
         {{ $t('browse.location.submitBtn') }}
       </n-button>
     </button-shelf>

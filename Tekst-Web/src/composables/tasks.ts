@@ -15,28 +15,29 @@ const { resume, pause } = useTimeoutPoll(
       // add new/updated tasks, don't remove any (only happens via user interaction)
       data.forEach((task) => {
         const existing = tasks.value.find((et) => et.id === task.id);
+        // apply updated/new tasks
         if (!existing) {
           tasks.value.push(task);
         } else if (existing.status !== task.status) {
-          // pop up message if task is finished
-          if (['running', 'waiting'].includes(existing.status || '')) {
-            if (task.status === 'done') {
-              const result = $te(`tasks.results.${task.type}`)
-                ? $t(`tasks.results.${task.type}`, task.result || {})
-                : '';
-              message.success(
-                $t('tasks.successful', { name: $t(`tasks.types.${task.type}`) }) + ' ' + result
-              );
-            } else if (task.status === 'failed') {
-              message.error(
-                $t('tasks.failed', { name: $t(`tasks.types.${task.type}`) }),
-                task.error || undefined
-              );
-            }
-          }
           // exchange old task object against updated one
           tasks.value = tasks.value.filter((et) => et.id !== task.id);
           tasks.value.push(task);
+        }
+        // pop up message if task is finished
+        if (!existing || existing.status !== task.status) {
+          if (task.status === 'done') {
+            const result = $te(`tasks.results.${task.type}`)
+              ? $t(`tasks.results.${task.type}`, task.result || {})
+              : '';
+            message.success(
+              $t('tasks.successful', { name: $t(`tasks.types.${task.type}`) }) + ' ' + result
+            );
+          } else if (task.status === 'failed') {
+            message.error(
+              $t('tasks.failed', { name: $t(`tasks.types.${task.type}`) }),
+              task.error || undefined
+            );
+          }
         }
       });
       // stop polling if there are no active tasks

@@ -148,7 +148,6 @@ async def download_structure_template(
             errors.E_404_TEXT_NOT_FOUND,
             errors.E_401_UNAUTHORIZED,
             errors.E_403_FORBIDDEN,
-            errors.E_409_ACTION_LOCKED,
         ]
     ),
 )

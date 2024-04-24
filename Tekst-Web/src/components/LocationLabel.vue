@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import { useStateStore, useBrowseStore } from '@/stores';
 import type { LocationRead } from '@/api';
+import { getFullLocationLabel } from '@/utils';
 
 const props = defineProps<{
   locationPath?: LocationRead[];
@@ -26,15 +27,11 @@ const locationPath = computed<LocationRead[]>(
 );
 
 const locationLabel = computed(() =>
-  locationPath.value
-    .filter((n) => n.level <= (props.maxLevel ?? Number.MAX_SAFE_INTEGER))
-    .map((n) => {
-      if (!n.label) return '';
-      const lvlLabel = state.textLevelLabels[n.level];
-      const locationPrefix = state.text?.labeledLocation && lvlLabel ? `${lvlLabel}: ` : '';
-      return locationPrefix + n.label;
-    })
-    .join(state.text?.locDelim || ', ')
+  getFullLocationLabel(
+    locationPath.value.filter((n) => n.level <= (props.maxLevel ?? Number.MAX_SAFE_INTEGER)),
+    state.textLevelLabels,
+    state.text
+  )
 );
 </script>
 

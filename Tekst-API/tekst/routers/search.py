@@ -65,15 +65,12 @@ async def perform_search(
     response_model=tasks.TaskRead,
     responses=errors.responses(
         [
-            errors.E_409_ACTION_LOCKED,
             errors.E_401_UNAUTHORIZED,
             errors.E_403_FORBIDDEN,
         ]
     ),
 )
 async def create_search_index(su: SuperuserDep) -> tasks.TaskDocument:
-    if await tasks.is_active(tasks.TaskType.INDEX_CREATE_UPDATE):
-        raise errors.E_409_ACTION_LOCKED
     return await search.create_index(user=su)
 
 

@@ -1,5 +1,6 @@
 import importlib
 import inspect
+import json
 import pkgutil
 
 from abc import ABC, abstractmethod
@@ -17,6 +18,7 @@ from pydantic import Field, StringConstraints
 from tekst.logging import log
 from tekst.models.common import ModelBase, PydanticObjectId, ReadBase
 from tekst.models.content import ContentBase, ContentBaseDocument, ContentBaseUpdate
+from tekst.models.location import LocationDocument
 from tekst.models.resource import (
     ResourceBase,
     ResourceBaseDocument,
@@ -24,6 +26,7 @@ from tekst.models.resource import (
     ResourceExportFormat,
     ResourceReadExtras,
 )
+from tekst.models.text import TextDocument
 from tekst.utils import validators as val
 
 
@@ -112,14 +115,16 @@ class ResourceSearchQuery(ModelBase):
 class ResourceTypeABC(ABC):
     """Abstract base class for defining a resource type"""
 
-    _EXCLUDE_FIELDS_FROM_IMPORT_SCHEMA: set[str] = {
+    # fields to exclude from content import schema
+    _EXCLUDE_FROM_CONTENT_IMPORT_SCHEMA: set[str] = {
         "id",
-        "resourceId",
-        "resourceType",
-        "locationId",
+        "resource_id",
+        "resource_type",
+        "location_id",
     }
 
-    _EXCLUDE_FIELDS_FROM_EXPORT_DATA: set[str] = {
+    # fields to exclude from content export data
+    _EXCLUDE_FROM_CONTENT_EXPORT_DATA: set[str] = {
         "_id",
         "id",
         "resource_id",
@@ -198,12 +203,107 @@ class ResourceTypeABC(ABC):
             "_contentSchema": {},  # will be populated in the next step
         }
         # generate content schema for the template
+        excludes = camelize(cls._EXCLUDE_FROM_CONTENT_IMPORT_SCHEMA)
         for prop, value in schema.get("properties", {}).items():
-            if prop not in cls._EXCLUDE_FIELDS_FROM_IMPORT_SCHEMA:
+            if prop not in excludes:
                 prop_schema = {k: v for k, v in value.items()}
                 prop_schema["required"] = prop in required
                 template["_contentSchema"][prop] = prop_schema
         return template
+
+    @classmethod
+    async def export_tekst_json(
+        cls,
+        *,
+        resource: ResourceBaseDocument,
+        contents: list[ContentBaseDocument],
+    ) -> str:
+        """
+        Exports the given contents of the given resource as JSON, compatible for
+        re-import in Tekst.
+        """
+        return json.dumps(
+            {
+                "resourceId": str(resource.id),
+                "contents": [
+                    c.model_dump(
+                        by_alias=True,
+                        exclude_unset=True,
+                        exclude_none=True,
+                        exclude=cls._EXCLUDE_FROM_CONTENT_EXPORT_DATA,
+                    )
+                    for c in contents
+                ],
+            },
+            ensure_ascii=False,
+        )
+
+    @classmethod
+    async def export_universal_json(
+        cls,
+        *,
+        resource: ResourceBaseDocument,
+        contents: list[ContentBaseDocument],
+    ) -> str:
+        """
+        Exports the given contents of the given resource as JSON, in a form that
+        aims to be as comprehensive as possible.
+        """
+        # prepare (root) resource object
+        text: TextDocument = await TextDocument.get(resource.text_id)
+        res = camelize(
+            resource.model_dump(
+                include={
+                    "title",
+                    "description",
+                    "level",
+                    "citation",
+                    "meta",
+                    "comment",
+                },
+                exclude_none=True,
+                exclude_unset=True,
+            )
+        )
+        res["description"] = {
+            desc_trans["locale"]: desc_trans["translation"]
+            for desc_trans in res["description"]
+        }
+        res["level"] = {
+            lvl_trans["locale"]: lvl_trans["translation"]
+            for lvl_trans in text.levels[res["level"]]
+        }
+        res["comment"] = {
+            comment["locale"]: comment["translation"] for comment in res["comment"]
+        }
+        res["meta"] = {meta["key"]: meta["value"] for meta in res["meta"]}
+
+        # construct content objects
+        contents = [
+            camelize(
+                c.model_dump(
+                    by_alias=True,
+                    exclude_unset=True,
+                    exclude_none=True,
+                    exclude=cls._EXCLUDE_FROM_CONTENT_EXPORT_DATA,
+                )
+            )
+            for c in contents
+        ]
+        # construct labels of all locations on the resource's level
+        full_location_labels = await LocationDocument.full_location_labels(
+            text_id=resource.text_id,
+            for_level=resource.level,
+        )
+        for content in contents:
+            content["location"] = full_location_labels[content["locationId"]]
+            del content["locationId"]
+        res["contents"] = contents
+
+        return json.dumps(
+            res,
+            ensure_ascii=False,
+        )
 
     @classmethod
     async def contents_changed_hook(cls, resource_id: PydanticObjectId) -> None:
@@ -260,8 +360,12 @@ class ResourceTypeABC(ABC):
 
     @classmethod
     @abstractmethod
-    def export(
-        cls, export_format: ResourceExportFormat, contents: list[ContentBaseDocument]
+    async def export(
+        cls,
+        *,
+        resource: ResourceBaseDocument,
+        contents: list[ContentBaseDocument],
+        export_format: ResourceExportFormat,
     ) -> str:
         """
         Prepares export data and returns a temporary file object.

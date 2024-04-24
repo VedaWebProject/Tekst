@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { NCollapse, NCollapseItem, NButton, NFormItem, NSelect } from 'naive-ui';
+import { NAlert, NCollapse, NCollapseItem, NButton, NFormItem, NSelect } from 'naive-ui';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
-import { useStateStore } from '@/stores';
+import { useBrowseStore, useStateStore } from '@/stores';
 import {
   GET,
   type AnyResourceRead,
@@ -16,22 +16,16 @@ import { DownloadIcon } from '@/icons';
 import LocationSelectForm from '@/forms/LocationSelectForm.vue';
 import { $t } from '@/i18n';
 import { useMessages } from '@/composables/messages';
+import { getFullLocationLabel } from '@/utils';
 
-const props = defineProps<{
-  resource: AnyResourceRead;
-}>();
-
-const state = useStateStore();
-const { message } = useMessages();
-
-const showExportModal = ref(false);
-const loadingExport = ref(false);
-
-const format = ref<ResourceExportFormat>('json');
-const formatOptions = [
+const allFormatOptions = [
   {
     label: 'JSON',
     value: 'json',
+  },
+  {
+    label: 'Tekst-JSON',
+    value: 'tekst-json',
   },
   {
     label: 'HTML',
@@ -47,8 +41,38 @@ const formatOptions = [
   },
 ];
 
+const supportedExportFormats = {
+  plainText: ['json', 'tekst-json'],
+  richText: ['json', 'tekst-json'],
+  textAnnotation: ['json', 'tekst-json'],
+};
+
+const props = defineProps<{
+  resource: AnyResourceRead;
+}>();
+
+const state = useStateStore();
+const browse = useBrowseStore();
+const { message } = useMessages();
+
+const showExportModal = ref(false);
+const loadingExport = ref(false);
+
+const format = ref<ResourceExportFormat>('json');
+const formatOptions = computed(() =>
+  allFormatOptions.filter((o) =>
+    supportedExportFormats[props.resource.resourceType].includes(o.value)
+  )
+);
+
 const fromLocationPath = ref<LocationRead[]>([]);
 const toLocationPath = ref<LocationRead[]>([]);
+const fromLocation = computed<LocationRead | undefined>(
+  () => fromLocationPath.value[fromLocationPath.value.length - 1]
+);
+const toLocation = computed<LocationRead | undefined>(
+  () => toLocationPath.value[toLocationPath.value.length - 1]
+);
 
 const fromLocationTitle = computed(() => {
   if (!fromLocationPath.value.length) {
@@ -57,10 +81,7 @@ const fromLocationTitle = computed(() => {
     return (
       $t('browse.contents.widgets.exportWidget.from') +
       ': ' +
-      state.textLevelLabels[props.resource.level] +
-      ' "' +
-      fromLocationPath.value[fromLocationPath.value.length - 1].label +
-      '"'
+      getFullLocationLabel(fromLocationPath.value, state.textLevelLabels, state.text)
     );
   }
 });
@@ -72,23 +93,27 @@ const toLocationTitle = computed(() => {
     return (
       $t('browse.contents.widgets.exportWidget.to') +
       ': ' +
-      state.textLevelLabels[props.resource.level] +
-      ' "' +
-      toLocationPath.value[toLocationPath.value.length - 1].label +
-      '"'
+      getFullLocationLabel(toLocationPath.value, state.textLevelLabels, state.text)
     );
   }
 });
 
-async function handleExportClick() {
+const isLocationRangeValid = computed(
+  () =>
+    !fromLocation.value ||
+    !toLocation.value ||
+    fromLocation.value.position <= toLocation.value.position
+);
+
+async function startExport() {
   loadingExport.value = true;
   const { response, error } = await GET('/resources/{id}/export', {
     params: {
       path: { id: props.resource.id },
       query: {
         format: format.value,
-        from: fromLocationPath.value[fromLocationPath.value.length - 1].id,
-        to: toLocationPath.value[toLocationPath.value.length - 1].id,
+        from: fromLocation.value?.id || null,
+        to: toLocation.value?.id || null,
       },
     },
     parseAs: 'blob',
@@ -105,13 +130,24 @@ async function handleExportClick() {
 }
 
 async function handleModalEnter() {
-  const { data, error } = await GET('/locations/first-last-paths', {
-    params: { query: { txt: props.resource.textId, lvl: props.resource.level } },
-  });
-  if (!error) {
-    fromLocationPath.value = data[0];
-    toLocationPath.value = data[1];
+  if (browse.locationPath.length === props.resource.level + 1) {
+    fromLocationPath.value = browse.locationPath;
+    toLocationPath.value = browse.locationPath;
+  } else {
+    const { data, error } = await GET('/locations/first-last-paths', {
+      params: { query: { txt: props.resource.textId, lvl: props.resource.level } },
+    });
+    if (!error) {
+      fromLocationPath.value = data[0];
+      toLocationPath.value = data[1];
+    }
   }
+}
+
+function handleModalLeave() {
+  format.value = 'json';
+  fromLocationPath.value = [];
+  toLocationPath.value = [];
 }
 </script>
 
@@ -127,6 +163,7 @@ async function handleModalEnter() {
     :title="`${$t('browse.contents.widgets.exportWidget.title')}: ${resource.title}`"
     :icon="DownloadIcon"
     @after-enter="handleModalEnter"
+    @after-leave="handleModalLeave"
   >
     <n-form-item :label="$t('browse.contents.widgets.exportWidget.format')">
       <n-select v-model:value="format" :options="formatOptions" />
@@ -149,12 +186,27 @@ async function handleModalEnter() {
       </n-collapse-item>
     </n-collapse>
 
+    <n-alert
+      v-if="!isLocationRangeValid"
+      type="error"
+      :title="$t('general.error')"
+      :closable="false"
+      style="margin-top: var(--layout-gap)"
+    >
+      {{ $t('browse.contents.widgets.exportWidget.rangeError') }}
+    </n-alert>
+
     <button-shelf top-gap>
       <n-button
         type="primary"
         :loading="loadingExport"
-        :disabled="loadingExport"
-        @click="handleExportClick"
+        :disabled="
+          loadingExport ||
+          !isLocationRangeValid ||
+          !fromLocationPath.length ||
+          !toLocationPath.length
+        "
+        @click="startExport"
       >
         {{ $t('general.exportAction') }}
       </n-button>

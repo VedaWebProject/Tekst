@@ -10,7 +10,7 @@ from tekst.models.resource_configs import (
     FontConfigType,
     ResourceConfigBase,
 )
-from tekst.resources import ResourceSearchQuery, ResourceTypeABC
+from tekst.resources import ResourceBaseDocument, ResourceSearchQuery, ResourceTypeABC
 from tekst.utils import validators as val
 from tekst.utils.html import get_html_text
 
@@ -80,8 +80,12 @@ class RichText(ResourceTypeABC):
         return es_queries
 
     @classmethod
-    def export(
-        cls, export_format: ResourceExportFormat, contents: list["RichTextContent"]
+    async def export(
+        cls,
+        *,
+        resource: ResourceBaseDocument,
+        contents: list["RichTextContent"],
+        export_format: ResourceExportFormat,
     ) -> str:
         if export_format not in {"json"}:
             raise ValueError(

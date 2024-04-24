@@ -196,6 +196,7 @@ browse:
         format: Format
         from: Von
         to: Bis
+        rangeError: Der ausgewählte Fundstellenbereich ist ungültig!
 
 forms:
   rulesFeedback:

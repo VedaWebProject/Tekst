@@ -30,7 +30,7 @@ from tekst.models.location import LocationDocument
 from tekst.models.resource import (
     ResourceBaseDocument,
     ResourceExportFormat,
-    res_exp_fmt_mimes,
+    res_exp_fmt_info,
 )
 from tekst.models.text import TextDocument
 from tekst.models.user import UserDocument, UserRead, UserReadPublic
@@ -638,10 +638,9 @@ async def get_resource_template(
     template["__README"] = get_resource_template_readme()
 
     # construct labels of all locations on the resource's level
-    location_locations = await LocationDocument.get_location_locations(
+    full_location_labels = await LocationDocument.full_location_labels(
         text_id=text_doc.id,
         for_level=resource_doc.level,
-        loc_delim=text_doc.loc_delim,
     )
 
     # fill in content templates with IDs and some informational fields
@@ -649,7 +648,7 @@ async def get_resource_template(
         dict(
             locationId=str(location.id),
             _position=location.position,
-            _location=location_locations.get(str(location.id)),
+            _location=full_location_labels.get(str(location.id)),
         )
         for location in await LocationDocument.find(
             LocationDocument.text_id == resource_doc.text_id,
@@ -872,7 +871,7 @@ async def import_resource_contents(
     ),
 )
 async def export_resource_contents(
-    user: UserDep,
+    user: OptionalUserDep,
     resource_id: Annotated[
         PydanticObjectId,
         Path(alias="id"),
@@ -960,10 +959,28 @@ async def export_resource_contents(
     target_location_ids = None
 
     # create export data
-    try:
-        data = target_resource_type.export(export_format, contents) or ""
-    except ValueError:
-        raise errors.E_400_UNSUPPORTED_EXPORT_FORMAT
+    if export_format == "tekst-json":
+        data = await target_resource_type.export_tekst_json(
+            resource=resource,
+            contents=contents,
+        )
+    elif export_format == "json":
+        data = await target_resource_type.export_universal_json(
+            resource=resource,
+            contents=contents,
+        )
+    else:
+        try:
+            data = (
+                await target_resource_type.export(
+                    resource=resource,
+                    contents=contents,
+                    export_format=export_format,
+                )
+                or ""
+            )
+        except ValueError:
+            raise errors.E_400_UNSUPPORTED_EXPORT_FORMAT
 
     # create temporary file and stream it as a file response
     tempfile = NamedTemporaryFile(mode="w")
@@ -971,13 +988,14 @@ async def export_resource_contents(
     tempfile.flush()
 
     # prepare headers
-    filename = f"{text.slug}_{resource.id}_export.{export_format}"
+    fmt = res_exp_fmt_info[export_format]
+    filename = f"{text.slug}_{resource.id}_export.{fmt['extension']}"
     headers = {"Content-Disposition": f'attachment; filename="{filename}"'}
 
     log.debug(f"Serving export data as temporary file {tempfile.name}")
     return FileResponse(
         path=tempfile.name,
         headers=headers,
-        media_type=res_exp_fmt_mimes[export_format],
+        media_type=fmt["mimetype"],
         background=BackgroundTask(tempfile.close),
     )

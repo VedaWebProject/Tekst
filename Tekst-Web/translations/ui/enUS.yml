@@ -192,6 +192,7 @@ browse:
         format: Format
         from: From
         to: To
+        rangeError: The selected location range is invalid!
 
 forms:
   rulesFeedback:

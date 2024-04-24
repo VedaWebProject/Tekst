@@ -12,7 +12,7 @@ from tekst.models.resource_configs import (
     FontConfigType,
     ResourceConfigBase,
 )
-from tekst.resources import ResourceSearchQuery, ResourceTypeABC
+from tekst.resources import ResourceBaseDocument, ResourceSearchQuery, ResourceTypeABC
 from tekst.utils import validators as val
 
 
@@ -224,10 +224,12 @@ class TextAnnotation(ResourceTypeABC):
         }
 
     @classmethod
-    def export(
+    async def export(
         cls,
-        export_format: ResourceExportFormat,
+        *,
+        resource: ResourceBaseDocument,
         contents: list["TextAnnotationContent"],
+        export_format: ResourceExportFormat,
     ) -> str:
         if export_format not in {"json"}:
             raise ValueError(

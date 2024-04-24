@@ -68,18 +68,19 @@ class LocationDocument(Location, DocumentBase):
         ]
 
     @classmethod
-    async def get_location_locations(
+    async def full_location_labels(
         cls,
         text_id: PydanticObjectId,
         for_level: int | None = None,
-        loc_delim: str | None = None,
     ) -> dict[str, str]:
-        if for_level is not None:
-            for_level = max(0, for_level)
-        if for_level is None or loc_delim is None:
-            text = await TextDocument.get(text_id)
-            for_level = len(text.levels) - 1 if for_level is None else for_level
-            loc_delim = text.loc_delim if loc_delim is None else ", "
+        """
+        Returns the full concatenated location labels for all locations on the
+        given level of the text wwith the given ID. Location label parts are delimited
+        by the text's location delimiter or ", " if no delimiter is set.
+        """
+        text = await TextDocument.get(text_id)
+        for_level = max(0, for_level) if for_level is not None else len(text.levels) - 1
+        loc_delim = text.loc_delim or ", "
         location_labels = {}
         for level in range(for_level + 1):
             location_labels = {
@@ -91,7 +92,7 @@ class LocationDocument(Location, DocumentBase):
                     ]
                 )
                 for n in await LocationDocument.find(
-                    LocationDocument.text_id == text_id,
+                    LocationDocument.text_id == text.id,
                     LocationDocument.level == level,
                 )
                 .sort(+LocationDocument.position)

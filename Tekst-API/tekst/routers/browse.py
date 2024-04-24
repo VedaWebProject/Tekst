@@ -429,8 +429,8 @@ async def get_detailed_resource_coverage_data(
         .to_list()
     )
 
-    # get parent level location location labels
-    parent_location_locations = await LocationDocument.get_location_locations(
+    # get parent level location labels
+    parent_location_locations = await LocationDocument.full_location_labels(
         text_id=resource_doc.text_id, for_level=resource_doc.level - 1
     )
 

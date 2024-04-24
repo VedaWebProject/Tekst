@@ -109,6 +109,10 @@ export interface paths {
      */
     post: operations['createLocation'];
   };
+  '/locations/first-last-paths': {
+    /** Get first and last locations paths */
+    get: operations['getFirstAndLastLocationsPaths'];
+  };
   '/locations/children': {
     /** Get children */
     get: operations['getChildren'];
@@ -131,10 +135,6 @@ export interface paths {
      * @description Moves the specified location to a new position on its level.
      */
     post: operations['moveLocation'];
-  };
-  '/locations/first-last-paths': {
-    /** Get first and last locations paths */
-    get: operations['getFirstAndLastLocationsPaths'];
   };
   '/messages': {
     /**
@@ -4131,6 +4131,37 @@ export interface operations {
       };
     };
   };
+  /** Get first and last locations paths */
+  getFirstAndLastLocationsPaths: {
+    parameters: {
+      query: {
+        /** @description Target text ID */
+        txt: string;
+        /** @description Structure level to find first and last locations for */
+        lvl?: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['LocationRead'][][];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
   /** Get children */
   getChildren: {
     parameters: {
@@ -4324,37 +4355,6 @@ export interface operations {
       403: {
         content: {
           'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-      /** @description Not Found */
-      404: {
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  /** Get first and last locations paths */
-  getFirstAndLastLocationsPaths: {
-    parameters: {
-      query: {
-        /** @description Target text ID */
-        txt: string;
-        /** @description Structure level to find first and last locations for */
-        lvl?: number;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json': components['schemas']['LocationRead'][][];
         };
       };
       /** @description Not Found */
@@ -5350,7 +5350,7 @@ export interface operations {
     parameters: {
       query?: {
         /** @description Export format */
-        format?: 'json' | 'csv' | 'txt' | 'html';
+        format?: 'json' | 'tekst-json' | 'csv' | 'txt' | 'html';
         /** @description ID of the location to start the export's location range from */
         from?: string | null;
         /** @description ID of the location to end the export's location range at */
@@ -5446,12 +5446,6 @@ export interface operations {
       };
       /** @description Forbidden */
       403: {
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-      /** @description Conflict */
-      409: {
         content: {
           'application/json': components['schemas']['TekstErrorModel'];
         };

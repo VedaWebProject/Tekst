@@ -314,10 +314,27 @@ class ResourceCoverageDetails(ModelBase):
     locations_coverage: list[list[ResourceLocationCoverage]]
 
 
-ResourceExportFormat = Literal["json", "csv", "txt", "html"]
-res_exp_fmt_mimes = {
-    "json": "application/json",
-    "csv": "text/csv",
-    "txt": "text/plain",
-    "html": "text/html",
+ResourceExportFormat = Literal["json", "tekst-json", "csv", "txt", "html"]
+
+res_exp_fmt_info = {
+    "json": {
+        "extension": "json",
+        "mimetype": "application/json",
+    },
+    "tekst-json": {
+        "extension": "json",
+        "mimetype": "application/json",
+    },
+    "csv": {
+        "extension": "csv",
+        "mimetype": "text/csv",
+    },
+    "txt": {
+        "extension": "txt",
+        "mimetype": "text/plain",
+    },
+    "html": {
+        "extension": "html",
+        "mimetype": "text/html",
+    },
 }

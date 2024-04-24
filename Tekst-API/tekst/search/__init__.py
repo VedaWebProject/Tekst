@@ -154,12 +154,6 @@ async def create_index(
     overwrite_existing_index: bool = True,
 ) -> tasks.TaskDocument:
     log.info("Creating search index ...")
-    # check if index task is already active
-    if await tasks.is_active(tasks.TaskType.INDEX_CREATE_UPDATE):
-        log.warning(
-            "Aborting index creation because of active index creation background task."
-        )
-        return
     # create index task
     return await tasks.create_task(
         _create_index,

@@ -44,6 +44,7 @@ interface LocationSelectModel {
   locations: LocationRead[];
 }
 const locationSelectModels = ref<LocationSelectModel[]>(getEmptyModels());
+const loading = computed(() => locationSelectModels.value.some((lsm) => lsm.loading));
 
 // generate location select options from select model locations
 const locationSelectOptions = computed(() =>
@@ -122,10 +123,14 @@ async function initSelectModels() {
   });
 
   // fetch locations from head to root
+  const reqLocId = model.value[lvl.value]?.id;
+  if (!reqLocId) {
+    return;
+  }
   const { data: locationsOptions, error } = await GET(
     '/browse/locations/{id}/path/options-by-head',
     {
-      params: { path: { id: model.value[lvl.value].id ?? '' } },
+      params: { path: { id: reqLocId } },
     }
   );
 
@@ -171,7 +176,13 @@ onMounted(() => {
   >
     <template v-if="props.showLevelSelect">
       <n-form-item :label="$t('browse.location.level')" :show-feedback="false">
-        <n-select v-model:value="lvl" :options="lvlOptions" @update:value="updateSelectModels" />
+        <n-select
+          v-model:value="lvl"
+          :options="lvlOptions"
+          :disabled="loading"
+          :loading="loading"
+          @update:value="updateSelectModels"
+        />
       </n-form-item>
 
       <n-divider />
@@ -190,10 +201,8 @@ onMounted(() => {
         :options="locationSelectOptions[index]"
         filterable
         placeholder="–"
-        :loading="levelLoc.loading"
-        :disabled="
-          levelLoc.loading || levelLoc.disabled || locationSelectOptions[index].length === 0
-        "
+        :loading="loading"
+        :disabled="loading || levelLoc.disabled || locationSelectOptions[index].length === 0"
         @update:value="() => updateSelectModels(index)"
       />
     </n-form-item>

@@ -20,7 +20,7 @@ const props = withDefaults(
   }
 );
 
-const show = defineModel<boolean>('show');
+const show = defineModel<boolean>('show', { default: false });
 
 const modalStyle = computed<CSSProperties>(() => ({
   maxWidth: '95%',

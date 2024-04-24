@@ -1388,6 +1388,82 @@
         }
       }
     },
+    "/locations/first-last-paths": {
+      "get": {
+        "tags": [
+          "locations"
+        ],
+        "summary": "Get first and last locations paths",
+        "operationId": "getFirstAndLastLocationsPaths",
+        "parameters": [
+          {
+            "name": "txt",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "description": "Target text ID",
+              "title": "Txt"
+            },
+            "description": "Target text ID"
+          },
+          {
+            "name": "lvl",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "description": "Structure level to find first and last locations for",
+              "default": 0,
+              "title": "Lvl"
+            },
+            "description": "Structure level to find first and last locations for"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/LocationRead"
+                    }
+                  },
+                  "minItems": 2,
+                  "maxItems": 2,
+                  "title": "Response Get First And Last Locations Paths Locations First Last Paths Get"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/locations/children": {
       "get": {
         "tags": [
@@ -1811,82 +1887,6 @@
               }
             },
             "description": "Forbidden"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/locations/first-last-paths": {
-      "get": {
-        "tags": [
-          "locations"
-        ],
-        "summary": "Get first and last locations paths",
-        "operationId": "getFirstAndLastLocationsPaths",
-        "parameters": [
-          {
-            "name": "txt",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "description": "Target text ID",
-              "title": "Txt"
-            },
-            "description": "Target text ID"
-          },
-          {
-            "name": "lvl",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "description": "Structure level to find first and last locations for",
-              "default": 0,
-              "title": "Lvl"
-            },
-            "description": "Structure level to find first and last locations for"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/LocationRead"
-                    }
-                  },
-                  "minItems": 2,
-                  "maxItems": 2,
-                  "title": "Response Get First And Last Locations Paths Locations First Last Paths Get"
-                }
-              }
-            }
-          },
-          "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            },
-            "description": "Not Found"
           },
           "422": {
             "description": "Validation Error",
@@ -4090,6 +4090,7 @@
             "schema": {
               "enum": [
                 "json",
+                "tekst-json",
                 "csv",
                 "txt",
                 "html"
@@ -4290,16 +4291,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/TaskRead"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Conflict",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
                 }
               }
             }

@@ -6,10 +6,11 @@ from enum import Enum
 from typing import Annotated, Any, Literal
 
 from beanie import PydanticObjectId
-from beanie.operators import Eq, In
+from beanie.operators import NE, Eq, In
 from fastapi.encoders import jsonable_encoder
 from pydantic import Field
 
+from tekst import errors
 from tekst.logging import log
 from tekst.models.common import DocumentBase, ModelBase, ModelFactoryMixin
 from tekst.models.user import UserRead
@@ -95,11 +96,20 @@ class TaskDocument(Task, DocumentBase):
 
 
 async def _run_task(
+    *,
     task: Awaitable,
+    task_type: TaskType,
     task_doc: TaskDocument,
-    task_kwargs: dict[str, Any],
+    target_id: PydanticObjectId | None = None,
+    task_kwargs: dict[str, Any] = {},
 ) -> None:
     try:
+        if await is_active(task_type, task_doc.id, target_id):
+            log.warning(
+                f"Task of type '{task_type.value}' with target ID "
+                f"'{target_id}' already running. Task will be ended as 'failed'."
+            )
+            raise errors.E_409_ACTION_LOCKED
         result = await task(**task_kwargs)
         task_doc.status = "done"
         try:
@@ -114,7 +124,7 @@ async def _run_task(
         task_doc.duration_seconds = (
             task_doc.end_time - task_doc.start_time
         ).total_seconds()
-        await task_doc.replace()
+        await task_doc.save()
 
 
 async def create_task(
@@ -134,9 +144,11 @@ async def create_task(
     ).create()
     asyncio.create_task(
         _run_task(
-            task,
-            task_doc,
-            task_kwargs,
+            task=task,
+            task_type=task_type,
+            task_doc=task_doc,
+            target_id=target_id,
+            task_kwargs=task_kwargs,
         )
     )
     return task_doc
@@ -166,9 +178,11 @@ async def get_tasks(
 
 async def is_active(
     task_type: TaskType,
+    task_id: PydanticObjectId,
     target_id: PydanticObjectId | None = None,
 ) -> bool:
     return await TaskDocument.find_one(
+        NE(TaskDocument.id, task_id),
         Eq(TaskDocument.task_type, task_type),
         Eq(TaskDocument.target_id, target_id) if target_id else {},
         In(TaskDocument.status, ["waiting", "running"]),

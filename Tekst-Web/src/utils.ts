@@ -1,5 +1,5 @@
 import { h, type Component } from 'vue';
-import type { Translation } from './api';
+import type { LocationRead, TextRead, Translation } from './api';
 import { NIcon } from 'naive-ui';
 
 export function hashCode(obj: any) {
@@ -33,4 +33,19 @@ export function renderIcon(icon: Component, color?: string) {
 
 export function utcToLocalTime(utcDateTimeString: string): Date {
   return new Date(utcDateTimeString + (!utcDateTimeString.toUpperCase().endsWith('Z') ? 'Z' : ''));
+}
+
+export function getFullLocationLabel(
+  locationPath: LocationRead[] = [],
+  textLevelLabels: string[] = [],
+  text?: TextRead
+) {
+  return locationPath
+    .map((n) => {
+      if (!n.label) return '';
+      const lvlLabel = textLevelLabels[n.level] || '';
+      const locationPrefix = text?.labeledLocation && lvlLabel ? `${lvlLabel}: ` : '';
+      return locationPrefix + n.label;
+    })
+    .join(text?.locDelim || ', ');
 }

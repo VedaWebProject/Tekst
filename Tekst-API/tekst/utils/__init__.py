@@ -1,10 +1,10 @@
 from collections.abc import Iterator
 from tempfile import TemporaryDirectory
 
-from tekst.models.common import Translations
+from tekst.models.common import LocaleKey, Translations
 
 
-def pick_translation(translations: Translations, locale_key: str = "enUS") -> str:
+def pick_translation(translations: Translations, locale_key: LocaleKey = "enUS") -> str:
     prio = [locale_key, "*", "enUS"]
     sorted_translations = sorted(
         translations,
