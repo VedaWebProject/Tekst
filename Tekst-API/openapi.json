@@ -2618,32 +2618,6 @@
         ],
         "summary": "Get user tasks status",
         "operationId": "getUserTasksStatus",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "items": {
-                    "$ref": "#/components/schemas/TaskRead"
-                  },
-                  "type": "array",
-                  "title": "Response Get User Tasks Status Platform Tasks Get"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            }
-          }
-        },
         "security": [
           {
             "APIKeyCookie": []
@@ -2651,7 +2625,67 @@
           {
             "OAuth2PasswordBearer": []
           }
-        ]
+        ],
+        "parameters": [
+          {
+            "name": "pickup-keys",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "uuid4"
+                  }
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Pickup keys for accessing the tasks in case they are requested by a non-authenticated user",
+              "title": "Pickup-Keys"
+            },
+            "description": "Pickup keys for accessing the tasks in case they are requested by a non-authenticated user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TaskRead"
+                  },
+                  "title": "Response Get User Tasks Status Platform Tasks Get"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       },
       "delete": {
         "tags": [
@@ -2659,31 +2693,6 @@
         ],
         "summary": "Delete all tasks",
         "operationId": "deleteAllTasks",
-        "responses": {
-          "204": {
-            "description": "Successful Response"
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            }
-          }
-        },
         "security": [
           {
             "APIKeyCookie": []
@@ -2691,7 +2700,32 @@
           {
             "OAuth2PasswordBearer": []
           }
-        ]
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Forbidden"
+          }
+        }
       }
     },
     "/platform/tasks/all": {
@@ -10339,6 +10373,12 @@
             "title": "Userid",
             "description": "ID of user who created this task"
           },
+          "pickupKey": {
+            "type": "string",
+            "format": "uuid4",
+            "title": "Pickupkey",
+            "description": "Pickup key for accessing the task in case tasks are requested by a non-authenticated user"
+          },
           "status": {
             "type": "string",
             "enum": [
@@ -10348,19 +10388,11 @@
               "failed"
             ],
             "title": "Status",
-            "description": "Status of the task",
-            "default": "waiting"
+            "description": "Status of the task"
           },
           "startTime": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "format": "date-time",
             "title": "Starttime",
             "description": "Time when the task was started"
           },
@@ -10418,7 +10450,10 @@
         "type": "object",
         "required": [
           "id",
-          "type"
+          "type",
+          "pickupKey",
+          "status",
+          "startTime"
         ],
         "title": "TaskRead"
       },

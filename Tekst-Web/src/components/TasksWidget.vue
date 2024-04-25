@@ -7,7 +7,7 @@ import { useTasks } from '@/composables/tasks';
 import { $t } from '@/i18n';
 
 const state = useStateStore();
-const { tasks, remove } = useTasks();
+const { tasks, removeTask } = useTasks();
 const dialog = useDialog();
 
 const iconsMap: Record<string, Component> = {
@@ -41,7 +41,7 @@ function handleTaskClick(id: string) {
 
   // remove if task is done or has failed
   if (t.status === 'done' || t.status === 'failed') {
-    remove(id);
+    removeTask(id);
   }
 }
 </script>

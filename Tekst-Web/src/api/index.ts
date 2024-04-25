@@ -55,10 +55,12 @@ const customFetch = async (input: RequestInfo | URL, init?: RequestInit | undefi
   return response;
 };
 
-export const { GET, POST, PUT, PATCH, DELETE } = createClient<paths>({
+const client = createClient<paths>({
   baseUrl: apiUrl,
   fetch: customFetch,
 });
+
+export const { GET, POST, PUT, PATCH, DELETE } = client;
 
 export const optionsPresets = {
   formUrlEncoded: {

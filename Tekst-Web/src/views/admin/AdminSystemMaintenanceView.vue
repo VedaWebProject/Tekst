@@ -12,7 +12,7 @@ import { useTasks } from '@/composables/tasks';
 import { utcToLocalTime } from '@/utils';
 
 const { message } = useMessages();
-const { start: startTasksPolling } = useTasks();
+const { addTask, startTasksPolling } = useTasks();
 
 const allTasks = ref<TaskRead[]>([]);
 const indexInfo = ref<IndexInfoResponse>();
@@ -26,8 +26,9 @@ const statusColors: Record<string, string> = {
 };
 
 async function createIndex() {
-  const { error } = await GET('/search/index/create');
+  const { data, error } = await GET('/search/index/create');
   if (!error) {
+    addTask(data);
     message.info($t('admin.system.maintenance.index.actionCreateStarted'));
     startTasksPolling();
   }

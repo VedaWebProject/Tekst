@@ -2472,17 +2472,23 @@ export interface components {
        */
       userId?: string | null;
       /**
+       * Pickupkey
+       * Format: uuid4
+       * @description Pickup key for accessing the task in case tasks are requested by a non-authenticated user
+       */
+      pickupKey: string;
+      /**
        * Status
        * @description Status of the task
-       * @default waiting
        * @enum {string}
        */
-      status?: 'waiting' | 'running' | 'done' | 'failed';
+      status: 'waiting' | 'running' | 'done' | 'failed';
       /**
        * Starttime
+       * Format: date-time
        * @description Time when the task was started
        */
-      startTime?: string | null;
+      startTime: string;
       /**
        * Endtime
        * @description Time when the task has ended
@@ -4726,6 +4732,12 @@ export interface operations {
   };
   /** Get user tasks status */
   getUserTasksStatus: {
+    parameters: {
+      header?: {
+        /** @description Pickup keys for accessing the tasks in case they are requested by a non-authenticated user */
+        'pickup-keys'?: string[] | null;
+      };
+    };
     responses: {
       /** @description Successful Response */
       200: {
@@ -4737,6 +4749,12 @@ export interface operations {
       401: {
         content: {
           'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };

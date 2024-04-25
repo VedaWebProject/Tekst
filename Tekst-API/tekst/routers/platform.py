@@ -2,10 +2,10 @@ from typing import Annotated
 
 from beanie import PydanticObjectId
 from beanie.operators import NotIn
-from fastapi import APIRouter, Path, status
+from fastapi import APIRouter, Header, Path, status
 
 from tekst import errors, tasks
-from tekst.auth import OptionalUserDep, SuperuserDep, UserDep
+from tekst.auth import OptionalUserDep, SuperuserDep
 from tekst.config import ConfigDep
 from tekst.models.location import LocationDocument
 from tekst.models.platform import PlatformData, PlatformStats, TextStats
@@ -241,8 +241,26 @@ async def get_statistics(su: SuperuserDep) -> PlatformStats:
         ]
     ),
 )
-async def get_user_tasks_status(user: UserDep) -> list[tasks.TaskDocument]:
-    return await tasks.get_tasks(user, delete_finished=True)
+async def get_user_tasks_status(
+    user: OptionalUserDep,
+    pickup_keys: Annotated[
+        str | None,
+        Header(
+            description=(
+                "Pickup keys for accessing the tasks in case they "
+                "are requested by a non-authenticated user"
+            ),
+            max_length=1024,
+        ),
+    ] = None,
+) -> list[tasks.TaskDocument]:
+    return await tasks.get_tasks(
+        user,
+        pickup_keys=[pk.strip() for pk in pickup_keys.split(",")]
+        if pickup_keys
+        else [],
+        delete_finished=True,
+    )
 
 
 @router.get(

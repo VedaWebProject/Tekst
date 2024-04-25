@@ -10,7 +10,9 @@ const { message } = useMessages();
 // configure tasks polling
 const { resume, pause } = useTimeoutPoll(
   async () => {
-    const { data, error } = await GET('/platform/tasks');
+    const { data, error } = await GET('/platform/tasks', {
+      headers: new Headers(tasks.value.map((t) => ['Pickup-Keys', t.pickupKey])),
+    });
     if (!error) {
       // add new/updated tasks, don't remove any (only happens via user interaction)
       data.forEach((task) => {
@@ -56,9 +58,12 @@ const { resume, pause } = useTimeoutPoll(
 );
 
 export function useTasks() {
-  const remove = (id: string) => {
+  const addTask = (task: TaskRead) => {
+    tasks.value.push(task);
+  };
+  const removeTask = (id: string) => {
     tasks.value = tasks.value.filter((t) => t.id !== id);
   };
 
-  return { tasks, remove, start: resume, stop: pause };
+  return { tasks, addTask, removeTask, startTasksPolling: resume, stopTasksPolling: pause };
 }
