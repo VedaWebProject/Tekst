@@ -36,7 +36,7 @@ const dynamicStyle = computed(() => ({
 // hook in loading bar
 onBeforeMount(() => {
   router.beforeEach(() => {
-    loadingBar.start();
+    !state.initLoading && loadingBar.start();
   });
   router.afterEach(() => {
     loadingBar.finish();
