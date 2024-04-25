@@ -1,3 +1,8 @@
+{
+	admin off
+	auto_https off
+}
+
 127.0.0.1:80 {
 	redir /api /api/
 	handle_path /api/* {
@@ -5,7 +10,6 @@
 	}
 
 	handle_path /static/* {
-		encode gzip
 		root * /var/www/tekst/static
 		file_server
 	}
