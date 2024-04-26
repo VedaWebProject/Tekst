@@ -1,5 +1,6 @@
 import json
 
+from operator import itemgetter
 from tempfile import NamedTemporaryFile
 from typing import Annotated, Any
 
@@ -676,7 +677,7 @@ async def get_resource_template(
     )
 
 
-async def _import_resource_data(
+async def _task_import_resource_contents(
     resource_id: PydanticObjectId,
     file_bytes: bytes,
     user: UserRead,
@@ -845,7 +846,7 @@ async def import_resource_contents(
     ],
 ) -> tasks.TaskDocument:
     return await tasks.create_task(
-        _import_resource_data,
+        _task_import_resource_contents,
         tasks.TaskType.RESOURCE_IMPORT,
         target_id=resource_id,
         user_id=user.id,
@@ -857,47 +858,13 @@ async def import_resource_contents(
     )
 
 
-@router.get(
-    "/{id}/export",
-    status_code=status.HTTP_200_OK,
-    responses=errors.responses(
-        [
-            errors.E_401_UNAUTHORIZED,
-            errors.E_403_FORBIDDEN,
-            errors.E_404_RESOURCE_NOT_FOUND,
-            errors.E_400_UNSUPPORTED_EXPORT_FORMAT,
-            errors.E_400_LOCATION_RANGE_INVALID,
-        ]
-    ),
-)
-async def export_resource_contents(
+async def _task_export_resource_contents(
     user: OptionalUserDep,
-    resource_id: Annotated[
-        PydanticObjectId,
-        Path(alias="id"),
-    ],
-    export_format: Annotated[
-        ResourceExportFormat,
-        Query(
-            description="Export format",
-            alias="format",
-        ),
-    ] = "json",
-    location_from_id: Annotated[
-        PydanticObjectId | None,
-        Query(
-            description="ID of the location to start the export's location range from",
-            alias="from",
-        ),
-    ] = None,
-    location_to_id: Annotated[
-        PydanticObjectId | None,
-        Query(
-            description="ID of the location to end the export's location range at",
-            alias="to",
-        ),
-    ] = None,
-) -> FileResponse:
+    resource_id: PydanticObjectId,
+    export_format: ResourceExportFormat,
+    location_from_id: PydanticObjectId | None,
+    location_to_id: PydanticObjectId | None,
+) -> dict[str, Any]:
     # check if resource exists
     if not await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == resource_id,
@@ -983,19 +950,117 @@ async def export_resource_contents(
             raise errors.E_400_UNSUPPORTED_EXPORT_FORMAT
 
     # create temporary file and stream it as a file response
-    tempfile = NamedTemporaryFile(mode="w")
+    tempfile = NamedTemporaryFile(mode="w", delete=False)
     tempfile.write(data)
     tempfile.flush()
 
     # prepare headers
     fmt = res_exp_fmt_info[export_format]
     filename = f"{text.slug}_{resource.id}_export.{fmt['extension']}"
+
+    return {
+        "filename": filename,
+        "artifact": tempfile.name,
+        "mimetype": fmt["mimetype"],
+    }
+
+
+@router.get(
+    "/{id}/export",
+    response_model=tasks.TaskRead,
+    status_code=status.HTTP_200_OK,
+)
+async def export_resource_contents(
+    user: OptionalUserDep,
+    resource_id: Annotated[
+        PydanticObjectId,
+        Path(
+            alias="id",
+            description="ID of the resource to export",
+        ),
+    ],
+    export_format: Annotated[
+        ResourceExportFormat,
+        Query(
+            alias="format",
+            description="Export format",
+        ),
+    ] = "json",
+    location_from_id: Annotated[
+        PydanticObjectId | None,
+        Query(
+            alias="from",
+            description="ID of the location to start the export's location range from",
+        ),
+    ] = None,
+    location_to_id: Annotated[
+        PydanticObjectId | None,
+        Query(
+            alias="to",
+            description="ID of the location to end the export's location range at",
+        ),
+    ] = None,
+) -> tasks.TaskDocument:
+    return await tasks.create_task(
+        _task_export_resource_contents,
+        tasks.TaskType.RESOURCE_EXPORT,
+        user_id=user.id if user else None,
+        task_kwargs={
+            "user": user,
+            "resource_id": resource_id,
+            "export_format": export_format,
+            "location_from_id": location_from_id,
+            "location_to_id": location_to_id,
+        },
+    )
+
+
+@router.get(
+    "/{id}/export/download",
+    status_code=status.HTTP_200_OK,
+    responses=errors.responses(
+        [
+            errors.E_404_EXPORT_NOT_FOUND,
+        ]
+    ),
+)
+async def download_resource_export(
+    user: OptionalUserDep,
+    pickup_key: Annotated[
+        str,
+        Query(
+            description=("Pickup key for accessing the export file"),
+            alias="pickupKey",
+            max_length=64,
+        ),
+    ],
+) -> FileResponse:
+    try:
+        task: tasks.TaskDocument = (
+            await tasks.get_tasks(None, pickup_keys=[pickup_key])
+        )[0]
+    except Exception:
+        raise errors.E_404_EXPORT_NOT_FOUND
+
+    if (
+        not task
+        or task.task_type != tasks.TaskType.RESOURCE_EXPORT
+        or task.status != "done"
+        or not task.result
+        or not task.result.get("filename")
+        or not task.result.get("artifact")
+        or not task.result.get("mimetype")
+    ):
+        raise errors.E_404_EXPORT_NOT_FOUND
+
+    filename, tempfile_path, mimetype = itemgetter("filename", "artifact", "mimetype")(
+        task.result
+    )
     headers = {"Content-Disposition": f'attachment; filename="{filename}"'}
 
-    log.debug(f"Serving export data as temporary file {tempfile.name}")
     return FileResponse(
-        path=tempfile.name,
+        path=tempfile_path,
         headers=headers,
-        media_type=fmt["mimetype"],
-        background=BackgroundTask(tempfile.close),
+        media_type=mimetype,
+        background=BackgroundTask(tasks.delete_task, task),
     )

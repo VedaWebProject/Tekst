@@ -4,7 +4,7 @@ import InitLoader from '@/components/InitLoader.vue';
 import GlobalMessenger from '@/components/messages/GlobalMessenger.vue';
 import { computed } from 'vue';
 import { getLocaleProfile } from '@/i18n';
-import { useAuthStore, useStateStore, useThemeStore } from '@/stores';
+import { useStateStore, useThemeStore } from '@/stores';
 import {
   NLoadingBarProvider,
   NConfigProvider,
@@ -21,7 +21,6 @@ import MessagingModal from '@/components/userMessages/MessagingModal.vue';
 import { ErrorIcon } from '@/icons';
 import TasksWidget from '@/components/TasksWidget.vue';
 
-const auth = useAuthStore();
 const state = useStateStore();
 const theme = useThemeStore();
 const { initialized, error } = useInitializeApp();
@@ -65,7 +64,7 @@ const nUiDateLocale = computed(() => getLocaleProfile(state.locale)?.nUiDateLoca
             :dark-mode="theme.darkMode"
           />
           <global-messenger />
-          <tasks-widget v-if="auth.user?.id" :user-id="auth.user.id" />
+          <tasks-widget />
         </div>
         <messaging-modal />
         <login-modal />

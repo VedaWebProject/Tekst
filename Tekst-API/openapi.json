@@ -2611,7 +2611,7 @@
         ]
       }
     },
-    "/platform/tasks": {
+    "/platform/tasks/user": {
       "get": {
         "tags": [
           "platform"
@@ -2634,11 +2634,8 @@
             "schema": {
               "anyOf": [
                 {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "format": "uuid4"
-                  }
+                  "type": "string",
+                  "maxLength": 1024
                 },
                 {
                   "type": "null"
@@ -2660,7 +2657,7 @@
                   "items": {
                     "$ref": "#/components/schemas/TaskRead"
                   },
-                  "title": "Response Get User Tasks Status Platform Tasks Get"
+                  "title": "Response Get User Tasks Status Platform Tasks User Get"
                 }
               }
             }
@@ -2686,49 +2683,9 @@
             }
           }
         }
-      },
-      "delete": {
-        "tags": [
-          "platform"
-        ],
-        "summary": "Delete all tasks",
-        "operationId": "deleteAllTasks",
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Successful Response"
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            },
-            "description": "Unauthorized"
-          },
-          "403": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            },
-            "description": "Forbidden"
-          }
-        }
       }
     },
-    "/platform/tasks/all": {
+    "/platform/tasks": {
       "get": {
         "tags": [
           "platform"
@@ -2745,13 +2702,108 @@
                     "$ref": "#/components/schemas/TaskRead"
                   },
                   "type": "array",
-                  "title": "Response Get All Tasks Status Platform Tasks All Get"
+                  "title": "Response Get All Tasks Status Platform Tasks Get"
                 }
               }
             }
           },
           "401": {
             "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/platform/tasks/system": {
+      "delete": {
+        "tags": [
+          "platform"
+        ],
+        "summary": "Delete system tasks",
+        "operationId": "deleteSystemTasks",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/TaskRead"
+                  },
+                  "type": "array",
+                  "title": "Response Delete System Tasks Platform Tasks System Delete"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/platform/tasks/all": {
+      "delete": {
+        "tags": [
+          "platform"
+        ],
+        "summary": "Delete all tasks",
+        "operationId": "deleteAllTasks",
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -4114,8 +4166,10 @@
             "schema": {
               "type": "string",
               "example": "5eb7cf5a86d9755df3a6c593",
+              "description": "ID of the resource to export",
               "title": "Id"
-            }
+            },
+            "description": "ID of the resource to export"
           },
           {
             "name": "format",
@@ -4180,29 +4234,62 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/TaskRead"
+                }
               }
             }
           },
-          "401": {
+          "422": {
+            "description": "Validation Error",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
+                  "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
-            },
-            "description": "Unauthorized"
+            }
+          }
+        }
+      }
+    },
+    "/resources/{id}/export/download": {
+      "get": {
+        "tags": [
+          "resources"
+        ],
+        "summary": "Download resource export",
+        "operationId": "downloadResourceExport",
+        "security": [
+          {
+            "APIKeyCookie": []
           },
-          "403": {
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "pickupKey",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 64,
+              "description": "Pickup key for accessing the export file",
+              "title": "Pickupkey"
+            },
+            "description": "Pickup key for accessing the export file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
+                "schema": {}
               }
-            },
-            "description": "Forbidden"
+            }
           },
           "404": {
             "content": {
@@ -4213,16 +4300,6 @@
               }
             },
             "description": "Not Found"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            },
-            "description": "Bad Request"
           },
           "422": {
             "description": "Validation Error",
@@ -10375,7 +10452,8 @@
           },
           "pickupKey": {
             "type": "string",
-            "format": "uuid4",
+            "maxLength": 64,
+            "minLength": 1,
             "title": "Pickupkey",
             "description": "Pickup key for accessing the task in case tasks are requested by a non-authenticated user"
           },
@@ -10462,6 +10540,7 @@
         "enum": [
           "index_create_update",
           "resource_import",
+          "resource_export",
           "broadcast_user_ntfc",
           "broadcast_admin_ntfc",
           "contents_changed_hook"

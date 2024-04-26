@@ -232,7 +232,7 @@ async def get_statistics(su: SuperuserDep) -> PlatformStats:
 
 
 @router.get(
-    "/tasks",
+    "/tasks/user",
     status_code=status.HTTP_200_OK,
     response_model=list[tasks.TaskRead],
     responses=errors.responses(
@@ -259,12 +259,11 @@ async def get_user_tasks_status(
         pickup_keys=[pk.strip() for pk in pickup_keys.split(",")]
         if pickup_keys
         else [],
-        delete_finished=True,
     )
 
 
 @router.get(
-    "/tasks/all",
+    "/tasks",
     status_code=status.HTTP_200_OK,
     response_model=list[tasks.TaskRead],
     responses=errors.responses(
@@ -275,6 +274,36 @@ async def get_user_tasks_status(
 )
 async def get_all_tasks_status(su: SuperuserDep) -> list[tasks.TaskDocument]:
     return await tasks.get_tasks(su, get_all=True)
+
+
+@router.delete(
+    "/tasks/system",
+    status_code=status.HTTP_200_OK,
+    response_model=list[tasks.TaskRead],
+    responses=errors.responses(
+        [
+            errors.E_401_UNAUTHORIZED,
+            errors.E_403_FORBIDDEN,
+        ]
+    ),
+)
+async def delete_system_tasks(su: SuperuserDep) -> None:
+    await tasks.delete_system_tasks()
+    return await tasks.get_tasks(su, get_all=True)
+
+
+@router.delete(
+    "/tasks/all",
+    status_code=status.HTTP_204_NO_CONTENT,
+    responses=errors.responses(
+        [
+            errors.E_401_UNAUTHORIZED,
+            errors.E_403_FORBIDDEN,
+        ]
+    ),
+)
+async def delete_all_tasks(su: SuperuserDep) -> None:
+    await tasks.delete_all_tasks()
 
 
 @router.delete(
@@ -291,18 +320,4 @@ async def delete_task(
     task_id: Annotated[PydanticObjectId, Path(alias="id")],
     su: SuperuserDep,
 ) -> None:
-    await tasks.TaskDocument.find_one(tasks.TaskDocument.id == task_id).delete()
-
-
-@router.delete(
-    "/tasks",
-    status_code=status.HTTP_204_NO_CONTENT,
-    responses=errors.responses(
-        [
-            errors.E_401_UNAUTHORIZED,
-            errors.E_403_FORBIDDEN,
-        ]
-    ),
-)
-async def delete_all_tasks(su: SuperuserDep) -> None:
-    await tasks.TaskDocument.delete_all()
+    await tasks.delete_task(await tasks.TaskDocument.get(task_id))

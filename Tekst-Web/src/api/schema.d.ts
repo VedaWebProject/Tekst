@@ -190,15 +190,21 @@ export interface paths {
     /** Get statistics */
     get: operations['getStatistics'];
   };
-  '/platform/tasks': {
+  '/platform/tasks/user': {
     /** Get user tasks status */
     get: operations['getUserTasksStatus'];
-    /** Delete all tasks */
-    delete: operations['deleteAllTasks'];
   };
-  '/platform/tasks/all': {
+  '/platform/tasks': {
     /** Get all tasks status */
     get: operations['getAllTasksStatus'];
+  };
+  '/platform/tasks/system': {
+    /** Delete system tasks */
+    delete: operations['deleteSystemTasks'];
+  };
+  '/platform/tasks/all': {
+    /** Delete all tasks */
+    delete: operations['deleteAllTasks'];
   };
   '/platform/tasks/{id}': {
     /** Delete task */
@@ -259,6 +265,10 @@ export interface paths {
   '/resources/{id}/export': {
     /** Export resource contents */
     get: operations['exportResourceContents'];
+  };
+  '/resources/{id}/export/download': {
+    /** Download resource export */
+    get: operations['downloadResourceExport'];
   };
   '/search': {
     /** Perform search */
@@ -2473,7 +2483,6 @@ export interface components {
       userId?: string | null;
       /**
        * Pickupkey
-       * Format: uuid4
        * @description Pickup key for accessing the task in case tasks are requested by a non-authenticated user
        */
       pickupKey: string;
@@ -2518,6 +2527,7 @@ export interface components {
     TaskType:
       | 'index_create_update'
       | 'resource_import'
+      | 'resource_export'
       | 'broadcast_user_ntfc'
       | 'broadcast_admin_ntfc'
       | 'contents_changed_hook';
@@ -4735,7 +4745,7 @@ export interface operations {
     parameters: {
       header?: {
         /** @description Pickup keys for accessing the tasks in case they are requested by a non-authenticated user */
-        'pickup-keys'?: string[] | null;
+        'pickup-keys'?: string | null;
       };
     };
     responses: {
@@ -4759,12 +4769,31 @@ export interface operations {
       };
     };
   };
-  /** Delete all tasks */
-  deleteAllTasks: {
+  /** Get all tasks status */
+  getAllTasksStatus: {
     responses: {
       /** @description Successful Response */
-      204: {
-        content: never;
+      200: {
+        content: {
+          'application/json': components['schemas']['TaskRead'][];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+    };
+  };
+  /** Delete system tasks */
+  deleteSystemTasks: {
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['TaskRead'][];
+        };
       };
       /** @description Unauthorized */
       401: {
@@ -4780,17 +4809,21 @@ export interface operations {
       };
     };
   };
-  /** Get all tasks status */
-  getAllTasksStatus: {
+  /** Delete all tasks */
+  deleteAllTasks: {
     responses: {
       /** @description Successful Response */
-      200: {
-        content: {
-          'application/json': components['schemas']['TaskRead'][];
-        };
+      204: {
+        content: never;
       };
       /** @description Unauthorized */
       401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
         content: {
           'application/json': components['schemas']['TekstErrorModel'];
         };
@@ -5375,6 +5408,7 @@ export interface operations {
         to?: string | null;
       };
       path: {
+        /** @description ID of the resource to export */
         id: string;
       };
     };
@@ -5382,25 +5416,30 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
+          'application/json': components['schemas']['TaskRead'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Download resource export */
+  downloadResourceExport: {
+    parameters: {
+      query: {
+        /** @description Pickup key for accessing the export file */
+        pickupKey: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
           'application/json': unknown;
-        };
-      };
-      /** @description Bad Request */
-      400: {
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-      /** @description Unauthorized */
-      401: {
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-      /** @description Forbidden */
-      403: {
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
         };
       };
       /** @description Not Found */

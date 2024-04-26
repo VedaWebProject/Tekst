@@ -1,13 +1,14 @@
 import asyncio
 
 from collections.abc import Awaitable
-from datetime import datetime
+from datetime import datetime, timedelta
 from enum import Enum
+from pathlib import Path
 from typing import Annotated, Any, Literal
 from uuid import uuid4
 
 from beanie import PydanticObjectId
-from beanie.operators import NE, Eq, In
+from beanie.operators import LT, NE, Eq, In
 from fastapi.encoders import jsonable_encoder
 from pydantic import Field, StringConstraints
 
@@ -20,6 +21,7 @@ from tekst.models.user import UserRead
 class TaskType(Enum):
     INDEX_CREATE_UPDATE = "index_create_update"
     RESOURCE_IMPORT = "resource_import"
+    RESOURCE_EXPORT = "resource_export"
     BROADCAST_USER_NTFC = "broadcast_user_ntfc"
     BROADCAST_ADMIN_NTFC = "broadcast_admin_ntfc"
     CONTENTS_CHANGED_HOOK = "contents_changed_hook"
@@ -175,8 +177,9 @@ async def get_tasks(
     *,
     pickup_keys: list[str] = [],
     get_all: bool = False,
-    delete_finished: bool = False,
 ) -> list[TaskDocument]:
+    # run tasks cleanup first
+    await cleanup_tasks()
     # select tasks: get user-specific tasks if initiated by a regular user,
     # get all tasks if initiated by a superuser or None (system-internal)
     if not user:
@@ -184,16 +187,11 @@ async def get_tasks(
         query = In(TaskDocument.pickup_key, pickup_keys)
     elif user.is_superuser and get_all:
         # superuser that wants ALL tasks: just return everything
-        query = True
+        query = {}
     else:
         # regular user or superuser that wants only user-specific tasks
         query = Eq(TaskDocument.user_id, user.id)
     tasks = await TaskDocument.find(query).to_list()
-    # delete the tasks that are done if delete_finished is True
-    if delete_finished:
-        for task in tasks:
-            if task.status == "done" or task.status == "failed":
-                await task.delete()
     # return user tasks
     return tasks
 
@@ -209,3 +207,36 @@ async def is_active(
         Eq(TaskDocument.target_id, target_id) if target_id else {},
         In(TaskDocument.status, ["waiting", "running"]),
     ).exists()
+
+
+async def delete_task(task: TaskDocument) -> None:
+    if not task:
+        return
+    if task.result and "artifact" in task.result:
+        Path(task.result["artifact"]).unlink(missing_ok=True)
+    await task.delete()
+
+
+async def delete_system_tasks() -> None:
+    for task in await TaskDocument.find(Eq(TaskDocument.user_id, None)).to_list():
+        await delete_task(task)
+
+
+async def delete_all_tasks() -> None:
+    for task in await TaskDocument.find_all().to_list():
+        await delete_task(task)
+
+
+async def cleanup_tasks() -> None:
+    # delete export tasks that started min. 30 minutes ago
+    for task in await TaskDocument.find(
+        Eq(TaskDocument.task_type, TaskType.RESOURCE_EXPORT),
+        LT(TaskDocument.start_time, datetime.utcnow() - timedelta(minutes=30)),
+    ).to_list():
+        await delete_task(task)
+    # delete all other tasks that started more than 1 week ago
+    for task in await TaskDocument.find(
+        NE(TaskDocument.task_type, TaskType.RESOURCE_EXPORT),
+        LT(TaskDocument.start_time, datetime.utcnow() - timedelta(weeks=1)),
+    ).to_list():
+        await delete_task(task)

@@ -43,9 +43,19 @@ async function deleteTask(id: string) {
   tasksLoading.value = false;
 }
 
+async function deleteSystemTasks() {
+  tasksLoading.value = true;
+  const { data, error } = await DELETE('/platform/tasks/system');
+  if (!error) {
+    message.success($t('admin.system.maintenance.tasks.actionDeleteAllSuccess'));
+    allTasks.value = data;
+  }
+  tasksLoading.value = false;
+}
+
 async function deleteAllTasks() {
   tasksLoading.value = true;
-  const { error } = await DELETE('/platform/tasks');
+  const { error } = await DELETE('/platform/tasks/all');
   if (!error) {
     message.success($t('admin.system.maintenance.tasks.actionDeleteAllSuccess'));
     allTasks.value = [];
@@ -55,7 +65,7 @@ async function deleteAllTasks() {
 
 async function updateAllTasksData() {
   tasksLoading.value = true;
-  const { data, error } = await GET('/platform/tasks/all');
+  const { data, error } = await GET('/platform/tasks');
   if (!error) {
     allTasks.value = data.sort(
       (a, b) =>
@@ -143,6 +153,18 @@ onBeforeMount(() => {
         type="primary"
         :disabled="tasksLoading"
         :loading="tasksLoading"
+        @click="deleteSystemTasks"
+      >
+        <template #icon>
+          <n-icon :component="DeleteIcon" />
+        </template>
+        {{ $t('admin.system.maintenance.tasks.actionDeleteSystem') }}
+      </n-button>
+      <n-button
+        secondary
+        type="error"
+        :disabled="tasksLoading"
+        :loading="tasksLoading"
         @click="deleteAllTasks"
       >
         <template #icon>
@@ -193,7 +215,7 @@ onBeforeMount(() => {
               }}
             </td>
             <td class="nowrap">
-              {{ task.userId || $t('general.system') }}
+              {{ task.userId ? $t('models.user.modelLabel') : $t('general.system') }}
             </td>
             <td class="nowrap">
               <n-button
