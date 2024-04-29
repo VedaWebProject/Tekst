@@ -949,7 +949,7 @@ async def _task_export_resource_contents(
         except ValueError:
             raise errors.E_400_UNSUPPORTED_EXPORT_FORMAT
 
-    # create temporary file and stream it as a file response
+    # create and write temporary file
     tempfile = NamedTemporaryFile(mode="w", delete=False)
     tempfile.write(data)
     tempfile.flush()

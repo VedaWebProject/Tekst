@@ -27,6 +27,16 @@ class TaskType(Enum):
     CONTENTS_CHANGED_HOOK = "contents_changed_hook"
 
 
+_task_type_props = {
+    TaskType.INDEX_CREATE_UPDATE: {"locking": True},
+    TaskType.RESOURCE_IMPORT: {"locking": True},
+    TaskType.RESOURCE_EXPORT: {"locking": False},
+    TaskType.BROADCAST_USER_NTFC: {"locking": False},
+    TaskType.BROADCAST_ADMIN_NTFC: {"locking": False},
+    TaskType.CONTENTS_CHANGED_HOOK: {"locking": False},
+}
+
+
 class Task(ModelBase, ModelFactoryMixin):
     task_type: Annotated[
         TaskType,
@@ -121,7 +131,7 @@ async def _run_task(
     task_kwargs: dict[str, Any] = {},
 ) -> None:
     try:
-        if await is_active(task_type, task_doc.id, target_id):
+        if await is_locked(task_type, task_doc.id, target_id):
             log.warning(
                 f"Task of type '{task_type.value}' with target ID "
                 f"'{target_id}' already running. Task will be ended as 'failed'."
@@ -192,15 +202,30 @@ async def get_tasks(
         # regular user or superuser that wants only user-specific tasks
         query = Eq(TaskDocument.user_id, user.id)
     tasks = await TaskDocument.find(query).to_list()
-    # return user tasks
+    # delete retrieved user tasks that are done/failed
+    # (excluding successful exports, because these are still
+    # needed for locating generated files)
+    if user and not get_all:
+        for task in tasks:
+            if (
+                task.status in ["done", "failed"]
+                and task.user_id is not None
+                and (
+                    task.task_type != TaskType.RESOURCE_EXPORT
+                    or task.status == "failed"
+                )
+            ):
+                await delete_task(task)
     return tasks
 
 
-async def is_active(
+async def is_locked(
     task_type: TaskType,
     task_id: PydanticObjectId,
     target_id: PydanticObjectId | None = None,
 ) -> bool:
+    if not _task_type_props[task_type]["locking"]:
+        return False
     return await TaskDocument.find_one(
         NE(TaskDocument.id, task_id),
         Eq(TaskDocument.task_type, task_type),
