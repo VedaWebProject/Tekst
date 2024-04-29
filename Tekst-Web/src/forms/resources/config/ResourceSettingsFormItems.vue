@@ -282,11 +282,8 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
     <h3>{{ $t('models.resource.share') }}</h3>
     <div
       v-if="public"
-      style="
-        font-size: var(--font-size-tiny);
-        color: var(--col-error);
-        margin-bottom: var(--content-gap);
-      "
+      class="text-tiny"
+      style="color: var(--col-error); margin-bottom: var(--content-gap)"
     >
       {{ $t('resources.settings.onlyForUnpublished') }}
     </div>

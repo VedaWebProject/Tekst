@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { NSwitch, NIcon } from 'naive-ui';
+import { NFlex, NSwitch, NIcon } from 'naive-ui';
 import { $t } from '@/i18n';
 import MetadataDisplayMinimal from '@/components/resource/MetadataDisplayMinimal.vue';
 import { useStateStore } from '@/stores';
@@ -26,13 +26,13 @@ const infoTooltip = computed(() =>
   <div class="item" :class="disabled && 'disabled'" :title="infoTooltip">
     <n-switch v-model:value="active" :round="false" />
     <div class="item-main">
-      <div class="item-title-container">
+      <n-flex align="baseline">
         <div class="item-title text-color-accent">{{ resource.title }}</div>
         <div class="item-title-extra">
           ({{ $t('browse.location.level') }}: {{ state.textLevelLabels[resource.level] }})
         </div>
-      </div>
-      <div class="item-meta">
+      </n-flex>
+      <div class="text-mini translucent ellipsis">
         <metadata-display-minimal :data="resource.meta" :resource-type="resource.resourceType" />
       </div>
     </div>
@@ -66,28 +66,9 @@ const infoTooltip = computed(() =>
   cursor: help;
 }
 
-.item .item-title-container {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  column-gap: 12px;
-}
-
 .item .item-title-extra {
   opacity: 0.75;
   font-size: 0.8em;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.item .item-meta {
-  opacity: 0.75;
-  font-size: var(--font-size-mini);
-}
-
-.item .item-title,
-.item .item-meta {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

@@ -149,13 +149,3 @@ async function handleSaveClick() {
 
   <n-spin v-else-if="loading" size="large" class="centered-spinner" />
 </template>
-
-<style scoped>
-table.resource-info-table {
-  font-size: var(--font-size-tiny);
-  margin-bottom: var(--layout-gap);
-}
-table.resource-info-table td.row-key {
-  padding-right: var(--content-gap);
-}
-</style>

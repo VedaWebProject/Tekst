@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { NButton, NIcon } from 'naive-ui';
+import { NFlex, NButton, NIcon } from 'naive-ui';
 import ThemeModeSwitcher from '@/components/navigation/ThemeModeSwitcher.vue';
 import LocaleSwitcher from '@/components/navigation/LocaleSwitcher.vue';
 import UserActionsButton from '@/components/navigation/UserActionsButton.vue';
@@ -25,7 +25,7 @@ const state = useStateStore();
 const browse = useBrowseStore();
 const route = useRoute();
 
-const { menuOptions: mainMenuOptions } = useMainMenuOptions(false);
+const { menuOptions: mainMenuOptions } = useMainMenuOptions(true);
 const menuOpen = ref(false);
 const showUserActionsButton = computed(
   () => pfData.value?.security?.closedMode === false || auth.loggedIn
@@ -63,20 +63,26 @@ watch(
 </script>
 
 <template>
-  <div class="navbar" :class="state.smallScreen && 'navbar-smallscreen'">
+  <n-flex
+    align="center"
+    :wrap="false"
+    class="navbar"
+    :class="state.smallScreen && 'navbar-smallscreen'"
+  >
     <img class="navbar-logo" alt="" :src="logoPath" @error="customLogoError = true" />
-    <div class="title-container">
-      <router-link :to="titleLinkTo">
-        <div class="navbar-title">{{ pfData?.settings.infoPlatformName }}</div>
-      </router-link>
-      <div v-if="pfData?.settings.infoSubtitle?.length" class="navbar-description">
-        <translation-display :value="pfData?.settings.infoSubtitle" />
-      </div>
-    </div>
+    <n-flex vertical style="flex-grow: 2">
+      <n-flex align="baseline" style="gap: 0px">
+        <router-link :to="titleLinkTo">
+          <div class="navbar-title">{{ pfData?.settings.infoPlatformName }}</div>
+        </router-link>
+        <div v-if="pfData?.settings.infoSubtitle?.length" class="translucent text-tiny">
+          <translation-display :value="pfData?.settings.infoSubtitle" />
+        </div>
+      </n-flex>
+      <navigation-menu v-if="!state.smallScreen" :options="mainMenuOptions" />
+    </n-flex>
 
     <div v-if="!state.smallScreen" class="navbar-menu">
-      <navigation-menu :options="mainMenuOptions" />
-      <div class="navbar-menu-divider"></div>
       <div class="navbar-menu-extra">
         <quick-search-widget />
         <theme-mode-switcher />
@@ -86,7 +92,6 @@ watch(
       </div>
     </div>
 
-    <div v-if="state.smallScreen" style="flex-grow: 2"></div>
     <n-button
       v-if="state.smallScreen"
       quaternary
@@ -100,7 +105,7 @@ watch(
         <n-icon size="32" :component="HamburgerMenuIcon" />
       </template>
     </n-button>
-  </div>
+  </n-flex>
 
   <drawer-menu
     v-if="state.smallScreen"
@@ -111,13 +116,10 @@ watch(
 
 <style scoped>
 .navbar {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  flex-wrap: wrap;
+  gap: 1.5rem !important;
   max-width: var(--max-app-width);
   margin: 0 auto;
-  padding: var(--layout-gap);
+  padding: var(--content-gap) var(--layout-gap);
   font-size: var(--font-size-small);
 }
 
@@ -133,17 +135,9 @@ watch(
   color: var(--accent-color);
 }
 
-.title-container {
-  display: inline-flex;
-  flex-direction: column;
-  margin-right: var(--layout-gap);
-  margin-top: -4px;
-}
-
 .navbar-logo {
-  height: 64px;
+  max-height: 64px;
   width: auto;
-  margin-right: var(--content-gap);
 }
 
 .navbar-title {
@@ -156,16 +150,7 @@ watch(
   flex-grow: 2;
 }
 
-.navbar-description {
-  opacity: 1;
-  font-size: var(--font-size-mini);
-  width: 0;
-  min-width: 100%;
-  line-height: 1.2;
-}
-
 .navbar-menu {
-  flex-grow: 4;
   display: flex;
   flex-direction: row;
   align-items: center;

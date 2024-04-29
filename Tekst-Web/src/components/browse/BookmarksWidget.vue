@@ -12,7 +12,7 @@ import GenericModal from '@/components/generic/GenericModal.vue';
 import LocationLabel from '@/components/LocationLabel.vue';
 import { useBookmarks } from '@/composables/bookmarks';
 import { bookmarkFormRules } from '@/forms/formRules';
-import { AddIcon, BookIcon, BookmarkFilledIcon, DeleteIcon } from '@/icons';
+import { AddIcon, BookIcon, BookmarksIcon, DeleteIcon } from '@/icons';
 
 defineProps<{
   size?: 'small' | 'medium' | 'large';
@@ -77,7 +77,7 @@ async function handleBookmarkSelect(bookmark: BookmarkRead) {
     @click="showModal = true"
   >
     <template #icon>
-      <n-icon :component="BookmarkFilledIcon" />
+      <n-icon :component="BookmarksIcon" />
     </template>
   </n-button>
 
@@ -86,7 +86,7 @@ async function handleBookmarkSelect(bookmark: BookmarkRead) {
     :auto-focus="false"
     width="wide"
     :title="$t('browse.bookmarks.bookmarks')"
-    :icon="BookmarkFilledIcon"
+    :icon="BookmarksIcon"
   >
     <n-list hoverable clickable style="background-color: transparent">
       <n-list-item
