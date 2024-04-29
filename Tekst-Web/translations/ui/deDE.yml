@@ -710,7 +710,7 @@ admin:
         duration: Dauer
         seconds: '{seconds} Sek.'
         startedBy: Gestartet durch
-        actionDeleteSystem: System-Prozesse löschen
+        actionDeleteSystem: Systemprozesse löschen
         actionDeleteAll: Alle Prozesse löschen
         actionDeleteAllSuccess: Alle @:tasks.title wurden gelöscht
     segments:
