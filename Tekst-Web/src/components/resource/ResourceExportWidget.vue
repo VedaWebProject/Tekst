@@ -122,18 +122,22 @@ async function startExport() {
   showExportModal.value = false;
 }
 
+async function selectFullLocationRange() {
+  const { data, error } = await GET('/locations/first-last-paths', {
+    params: { query: { txt: props.resource.textId, lvl: props.resource.level } },
+  });
+  if (!error) {
+    fromLocationPath.value = data[0];
+    toLocationPath.value = data[1];
+  }
+}
+
 async function handleModalEnter() {
   if (browse.locationPath.length === props.resource.level + 1) {
     fromLocationPath.value = browse.locationPath;
     toLocationPath.value = browse.locationPath;
   } else {
-    const { data, error } = await GET('/locations/first-last-paths', {
-      params: { query: { txt: props.resource.textId, lvl: props.resource.level } },
-    });
-    if (!error) {
-      fromLocationPath.value = data[0];
-      toLocationPath.value = data[1];
-    }
+    selectFullLocationRange();
   }
 }
 
@@ -190,6 +194,21 @@ function handleModalLeave() {
     </n-alert>
 
     <button-shelf top-gap>
+      <template #start>
+        <n-button
+          secondary
+          :disabled="
+            loadingExport ||
+            !isLocationRangeValid ||
+            !fromLocationPath.length ||
+            !toLocationPath.length
+          "
+          :title="$t('browse.contents.widgets.exportWidget.fullLocationRangeTip')"
+          @click="selectFullLocationRange"
+        >
+          {{ $t('browse.contents.widgets.exportWidget.fullLocationRange') }}
+        </n-button>
+      </template>
       <n-button
         type="primary"
         :loading="loadingExport"

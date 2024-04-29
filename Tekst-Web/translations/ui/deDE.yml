@@ -199,6 +199,8 @@ browse:
         from: Von
         to: Bis
         rangeError: Der ausgewählte Fundstellenbereich ist ungültig!
+        fullLocationRange: Alle Fundstellen
+        fullLocationRangeTip: Vollständigen Fundstellenbereich auswählen
         msgExportStarted: Der Export wird im Hintergrund vorbereitet und wird heruntergeladen, sobalt er fertig ist.
 
 forms:

@@ -195,6 +195,8 @@ browse:
         from: From
         to: To
         rangeError: The selected location range is invalid!
+        fullLocationRange: All locations
+        fullLocationRangeTip: Select full location range
         msgExportStarted: The export will be prepared in the background and will start when it is ready.
 
 forms:
