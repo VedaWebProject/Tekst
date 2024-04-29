@@ -38,6 +38,7 @@ services:
     init: true
     depends_on:
       - mongo
+      - es
     env_file: .env
     networks:
       - api
