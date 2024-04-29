@@ -11,7 +11,9 @@ const { message } = useMessages();
 const { resume, pause } = useTimeoutPoll(
   async () => {
     const { data, error } = await GET('/platform/tasks/user', {
-      headers: new Headers(tasks.value.map((t) => ['Pickup-Keys', t.pickupKey])),
+      headers: {
+        'Pickup-Keys': tasks.value.map((t) => t.pickupKey).join(','),
+      },
     });
     if (!error) {
       // add new/updated tasks, don't remove any (only happens via user interaction)
@@ -40,7 +42,7 @@ const { resume, pause } = useTimeoutPoll(
               task.error || undefined
             );
           }
-          // check if task is a completed export task
+          // check if task is a completed export task, if so: download
           if (task.type === 'resource_export' && task.status === 'done') {
             const { response, error } = await GET('/resources/{id}/export/download', {
               params: {
