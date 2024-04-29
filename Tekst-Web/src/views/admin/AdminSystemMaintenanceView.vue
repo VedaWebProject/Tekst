@@ -99,13 +99,13 @@ onBeforeMount(() => {
     <h3>{{ $t('admin.system.maintenance.index.heading') }}</h3>
 
     <n-flex style="margin: var(--layout-gap) 0">
-      <n-button secondary type="primary" @click="loadIndexInfo">
+      <n-button secondary @click="loadIndexInfo">
         <template #icon>
           <n-icon :component="RefreshIcon" />
         </template>
         {{ $t('general.refreshAction') }}
       </n-button>
-      <n-button secondary type="primary" @click="createIndex">
+      <n-button secondary @click="createIndex">
         <template #icon>
           <n-icon :component="UpdateIcon" />
         </template>
@@ -126,7 +126,7 @@ onBeforeMount(() => {
         <tr>
           <th>{{ $t(`admin.system.maintenance.index.lastIndexed`) }}</th>
           <td>
-            <n-time :time="new Date(indexInfo.lastIndexed)" type="datetime" />
+            <n-time :time="utcToLocalTime(indexInfo.lastIndexed)" type="datetime" />
           </td>
         </tr>
       </n-table>
@@ -138,7 +138,6 @@ onBeforeMount(() => {
     <n-flex style="margin: var(--layout-gap) 0">
       <n-button
         secondary
-        type="primary"
         :disabled="tasksLoading"
         :loading="tasksLoading"
         @click="updateAllTasksData"
@@ -150,7 +149,6 @@ onBeforeMount(() => {
       </n-button>
       <n-button
         secondary
-        type="primary"
         :disabled="tasksLoading"
         :loading="tasksLoading"
         @click="deleteSystemTasks"
