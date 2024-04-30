@@ -740,6 +740,7 @@ search:
   searchAction: Suchen
   quickSearch:
     heading: Schnellsuche
+    gotoAdvancedSearch: Gehe zur Erweiterten Suche
   advancedSearch:
     msgNoResources: Es gibt keine Ressourcen zu diesem Text, in denen gesucht werden könnte.
     optional: optional

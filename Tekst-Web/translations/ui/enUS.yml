@@ -715,6 +715,7 @@ search:
   searchAction: Search
   quickSearch:
     heading: Quick Search
+    gotoAdvancedSearch: Go to Advanced Search
   advancedSearch:
     msgNoResources: There are no resources associated with this text to search in.
     optional: optional

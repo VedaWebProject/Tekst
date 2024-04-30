@@ -10,8 +10,9 @@ import NInputOsk from '@/components/NInputOsk.vue';
 import { useRouter } from 'vue-router';
 import GeneralSearchSettingsForm from '@/forms/search/GeneralSearchSettingsForm.vue';
 import QuickSearchSettingsForm from '@/forms/search/QuickSearchSettingsForm.vue';
-import { useSearchStore } from '@/stores';
+import { useSearchStore, useStateStore } from '@/stores';
 
+const state = useStateStore();
 const search = useSearchStore();
 const router = useRouter();
 
@@ -34,6 +35,14 @@ function handleSearch(e: UIEvent) {
         qck: search.settingsQuick,
       }),
     },
+  });
+}
+
+function gotoAdvancedSearch() {
+  showModal.value = false;
+  router.push({
+    name: 'search',
+    params: { text: state.text?.slug },
   });
 }
 </script>
@@ -86,9 +95,11 @@ function handleSearch(e: UIEvent) {
     </n-collapse>
 
     <button-shelf top-gap>
-      <n-button secondary @click="showModal = false">
-        {{ $t('general.cancelAction') }}
-      </n-button>
+      <template #start>
+        <n-button text @click="gotoAdvancedSearch">
+          {{ $t('search.quickSearch.gotoAdvancedSearch') }}
+        </n-button>
+      </template>
       <n-button type="primary" @click="handleSearch">{{ $t('search.searchAction') }}</n-button>
     </button-shelf>
   </generic-modal>
