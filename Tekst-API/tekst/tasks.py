@@ -145,7 +145,10 @@ async def _run_task(
             log.debug(f"Could not encode task result for task: {str(task)}")
     except Exception as e:
         task_doc.status = "failed"
-        task_doc.error = str(e)
+        try:
+            task_doc.error = e.detail.detail.key
+        except Exception:
+            task_doc.error = str(e)
     finally:
         task_doc.end_time = datetime.utcnow()
         task_doc.duration_seconds = (

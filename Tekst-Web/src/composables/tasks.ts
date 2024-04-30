@@ -39,7 +39,7 @@ const { resume, pause } = useTimeoutPoll(
           } else if (task.status === 'failed') {
             message.error(
               $t('tasks.failed', { name: $t(`tasks.types.${task.type}`) }),
-              task.error || undefined
+              $te(`errors.${task.error}`) ? $t(`errors.${task.error}`) : undefined
             );
           }
           // check if task is a completed export task, if so: download
