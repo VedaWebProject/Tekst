@@ -9,7 +9,7 @@ import ArrowForwardOutlined from '@vicons/material/ArrowForwardOutlined';
 import ArrowUpwardOutlined from '@vicons/material/ArrowUpwardOutlined';
 import BarChartOutlined from '@vicons/material/BarChartOutlined';
 import BlockOutlined from '@vicons/material/BlockOutlined';
-import MenuBookTwotone from '@vicons/material/MenuBookTwotone';
+import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
 import VerticalAlignBottomOutlined from '@vicons/material/VerticalAlignBottomOutlined';
 import CheckCircleFilled from '@vicons/material/CheckCircleFilled';
 import ClearOutlined from '@vicons/material/ClearOutlined';
@@ -64,7 +64,7 @@ import QuestionMarkOutlined from '@vicons/material/QuestionMarkOutlined';
 import RedoOutlined from '@vicons/material/RedoOutlined';
 import ExpandOutlined from '@vicons/material/ExpandOutlined';
 import CompressOutlined from '@vicons/material/CompressOutlined';
-import LayersTwotone from '@vicons/material/LayersTwotone';
+import LayersFilled from '@vicons/material/LayersFilled';
 import SearchOutlined from '@vicons/material/SearchOutlined';
 import SettingsFilled from '@vicons/material/SettingsFilled';
 import ShortTextOutlined from '@vicons/material/ShortTextOutlined';
@@ -87,7 +87,7 @@ import RemoveCircleFilled from '@vicons/material/RemoveCircleFilled';
 import PersonAddFilled from '@vicons/material/PersonAddFilled';
 import PersonRemoveFilled from '@vicons/material/PersonRemoveFilled';
 import StarOutlined from '@vicons/material/StarOutlined';
-import BookmarksTwotone from '@vicons/material/BookmarksTwotone';
+import BookmarksFilled from '@vicons/material/BookmarksFilled';
 import HideImageOutlined from '@vicons/material/HideImageOutlined';
 import PlaylistAddCheckOutlined from '@vicons/material/PlaylistAddCheckOutlined';
 import PlaylistRemoveOutlined from '@vicons/material/PlaylistRemoveOutlined';
@@ -133,7 +133,7 @@ export {
   AccountTreeFilled as TreeIcon,
   AddOutlined as AddIcon,
   AddCircleOutlineOutlined as AddCircleIcon,
-  BookmarksTwotone as BookmarksIcon,
+  BookmarksFilled as BookmarksIcon,
   ShieldOutlined as AdminIcon,
   ManageSearchOutlined as SearchResultsIcon,
   ArrowBackOutlined as ArrowBackIcon,
@@ -142,7 +142,7 @@ export {
   ArrowUpwardOutlined as ArrowUpIcon,
   BarChartOutlined as BarChartIcon,
   BlockOutlined as BlockIcon,
-  MenuBookTwotone as BookIcon,
+  MenuBookOutlined as BookIcon,
   VerticalAlignBottomOutlined as BottomIcon,
   CheckCircleFilled as CheckCircleIcon,
   RemoveCircleFilled as BlockCircleIcon,
@@ -201,7 +201,7 @@ export {
   RedoOutlined as RedoIcon,
   ExpandOutlined as ExpandIcon,
   CompressOutlined as CompressIcon,
-  LayersTwotone as ResourceIcon,
+  LayersFilled as ResourceIcon,
   SearchOutlined as SearchIcon,
   SettingsFilled as SettingsIcon,
   ShortTextOutlined as ShortTextIcon,

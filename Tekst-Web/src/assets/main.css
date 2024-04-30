@@ -45,6 +45,10 @@ p {
   font-size: var(--font-size-huge);
 }
 
+.text-gigantic {
+  font-size: var(--font-size-gigantic);
+}
+
 .n {
   font-weight: var(--font-weight-normal);
 }

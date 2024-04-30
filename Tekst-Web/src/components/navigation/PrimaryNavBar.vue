@@ -25,7 +25,7 @@ const state = useStateStore();
 const browse = useBrowseStore();
 const route = useRoute();
 
-const { menuOptions: mainMenuOptions } = useMainMenuOptions(true);
+const { menuOptions: mainMenuOptions } = useMainMenuOptions(false);
 const menuOpen = ref(false);
 const showUserActionsButton = computed(
   () => pfData.value?.security?.closedMode === false || auth.loggedIn
@@ -70,10 +70,10 @@ watch(
     :class="state.smallScreen && 'navbar-smallscreen'"
   >
     <img class="navbar-logo" alt="" :src="logoPath" @error="customLogoError = true" />
-    <n-flex vertical style="flex-grow: 2">
-      <n-flex align="baseline" style="gap: 0px">
+    <n-flex vertical style="flex-grow: 2; gap: 0">
+      <n-flex align="baseline">
         <router-link :to="titleLinkTo">
-          <div class="navbar-title">{{ pfData?.settings.infoPlatformName }}</div>
+          <div class="text-gigantic">{{ pfData?.settings.infoPlatformName }}</div>
         </router-link>
         <div v-if="pfData?.settings.infoSubtitle?.length" class="translucent text-tiny">
           <translation-display :value="pfData?.settings.infoSubtitle" />
@@ -138,16 +138,6 @@ watch(
 .navbar-logo {
   max-height: 64px;
   width: auto;
-}
-
-.navbar-title {
-  font-size: var(--font-size-huge);
-  white-space: nowrap;
-  min-width: 120px;
-}
-
-.navbar-smallscreen .navbar-title {
-  flex-grow: 2;
 }
 
 .navbar-menu {
