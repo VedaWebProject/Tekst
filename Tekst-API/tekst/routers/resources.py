@@ -1,8 +1,10 @@
 import json
 
 from operator import itemgetter
+from pathlib import Path as PathObj
 from tempfile import NamedTemporaryFile
 from typing import Annotated, Any
+from uuid import uuid4
 
 from beanie import PydanticObjectId
 from beanie.exceptions import DocumentNotFound
@@ -23,7 +25,7 @@ from starlette.background import BackgroundTask
 
 from tekst import errors, notifications, tasks
 from tekst.auth import OptionalUserDep, SuperuserDep, UserDep
-from tekst.config import ConfigDep
+from tekst.config import ConfigDep, TekstConfig
 from tekst.logging import log
 from tekst.models.content import ContentBaseDocument
 from tekst.models.exchange import ResourceImportData
@@ -677,7 +679,7 @@ async def get_resource_template(
     )
 
 
-async def _task_import_resource_contents(
+async def _import_resource_contents_task(
     resource_id: PydanticObjectId,
     file_bytes: bytes,
     user: UserRead,
@@ -846,7 +848,7 @@ async def import_resource_contents(
     ],
 ) -> tasks.TaskDocument:
     return await tasks.create_task(
-        _task_import_resource_contents,
+        _import_resource_contents_task,
         tasks.TaskType.RESOURCE_IMPORT,
         target_id=resource_id,
         user_id=user.id,
@@ -858,8 +860,9 @@ async def import_resource_contents(
     )
 
 
-async def _task_export_resource_contents(
+async def _export_resource_contents_task(
     user: OptionalUserDep,
+    cfg: TekstConfig,
     resource_id: PydanticObjectId,
     export_format: ResourceExportFormat,
     location_from_id: PydanticObjectId | None,
@@ -950,9 +953,9 @@ async def _task_export_resource_contents(
             raise errors.E_400_UNSUPPORTED_EXPORT_FORMAT
 
     # create and write temporary file
-    tempfile = NamedTemporaryFile(mode="w", delete=False)
-    tempfile.write(data)
-    tempfile.flush()
+    tempfile_name = str(uuid4())
+    tempfile_path: PathObj = cfg.temp_files_dir / tempfile_name
+    tempfile_path.write_text(data, encoding="utf-8")
 
     # prepare headers
     fmt = res_exp_fmt_info[export_format]
@@ -960,7 +963,7 @@ async def _task_export_resource_contents(
 
     return {
         "filename": filename,
-        "artifact": tempfile.name,
+        "artifact": tempfile_name,
         "mimetype": fmt["mimetype"],
     }
 
@@ -972,6 +975,7 @@ async def _task_export_resource_contents(
 )
 async def export_resource_contents(
     user: OptionalUserDep,
+    cfg: ConfigDep,
     resource_id: Annotated[
         PydanticObjectId,
         Path(
@@ -1002,11 +1006,12 @@ async def export_resource_contents(
     ] = None,
 ) -> tasks.TaskDocument:
     return await tasks.create_task(
-        _task_export_resource_contents,
+        _export_resource_contents_task,
         tasks.TaskType.RESOURCE_EXPORT,
         user_id=user.id if user else None,
         task_kwargs={
             "user": user,
+            "cfg": cfg,
             "resource_id": resource_id,
             "export_format": export_format,
             "location_from_id": location_from_id,
@@ -1026,6 +1031,7 @@ async def export_resource_contents(
 )
 async def download_resource_export(
     user: OptionalUserDep,
+    cfg: ConfigDep,
     pickup_key: Annotated[
         str,
         Query(
@@ -1053,13 +1059,13 @@ async def download_resource_export(
     ):
         raise errors.E_404_EXPORT_NOT_FOUND
 
-    filename, tempfile_path, mimetype = itemgetter("filename", "artifact", "mimetype")(
+    filename, tempfile_name, mimetype = itemgetter("filename", "artifact", "mimetype")(
         task.result
     )
     headers = {"Content-Disposition": f'attachment; filename="{filename}"'}
 
     return FileResponse(
-        path=tempfile_path,
+        path=cfg.temp_files_dir / tempfile_name,
         headers=headers,
         media_type=mimetype,
         background=BackgroundTask(tasks.delete_task, task),

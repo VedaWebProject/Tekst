@@ -3,7 +3,6 @@ import asyncio
 from collections.abc import Awaitable
 from datetime import datetime, timedelta
 from enum import Enum
-from pathlib import Path
 from typing import Annotated, Any, Literal
 from uuid import uuid4
 
@@ -13,6 +12,7 @@ from fastapi.encoders import jsonable_encoder
 from pydantic import Field, StringConstraints
 
 from tekst import errors
+from tekst.config import TekstConfig, get_config
 from tekst.logging import log
 from tekst.models.common import DocumentBase, ModelBase, ModelFactoryMixin
 from tekst.models.user import UserRead
@@ -238,7 +238,9 @@ async def delete_task(task: TaskDocument) -> None:
     if not task:
         return
     if task.result and "artifact" in task.result:
-        Path(task.result["artifact"]).unlink(missing_ok=True)
+        cfg: TekstConfig = get_config()
+        tempfile_path = cfg.temp_files_dir / task.result["artifact"]
+        tempfile_path.unlink(missing_ok=True)
     await task.delete()
 
 
