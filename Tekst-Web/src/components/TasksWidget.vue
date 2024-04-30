@@ -4,10 +4,10 @@ import { CheckCircleIcon, ErrorIcon, HourglassIcon } from '@/icons';
 import { useStateStore } from '@/stores';
 import type { Component } from 'vue';
 import { useTasks } from '@/composables/tasks';
-import { $t } from '@/i18n';
+import { $t, $te } from '@/i18n';
 
 const state = useStateStore();
-const { tasks, remove } = useTasks();
+const { tasks, removeTask } = useTasks();
 const dialog = useDialog();
 
 const iconsMap: Record<string, Component> = {
@@ -31,7 +31,7 @@ function handleTaskClick(id: string) {
   if (t.status === 'failed') {
     const title =
       $t(`tasks.types.${t.type}`) + ' – ' + $t(`tasks.statuses.${t.status || 'running'}`);
-    const content = t.error || '';
+    const content = $te(`errors.${t.error}`) ? $t(`errors.${t.error}`) : t.error || '';
     dialog.create({
       type: dialogTypeMap[t.status || 'running'],
       title,
@@ -41,7 +41,7 @@ function handleTaskClick(id: string) {
 
   // remove if task is done or has failed
   if (t.status === 'done' || t.status === 'failed') {
-    remove(id);
+    removeTask(id);
   }
 }
 </script>

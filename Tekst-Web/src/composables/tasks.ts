@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { GET, type TaskRead } from '@/api';
+import { GET, saveDownload, type TaskRead } from '@/api';
 import { useTimeoutPoll } from '@vueuse/core';
 import { useMessages } from '@/composables/messages';
 import { $t, $te } from '@/i18n';
@@ -10,10 +10,14 @@ const { message } = useMessages();
 // configure tasks polling
 const { resume, pause } = useTimeoutPoll(
   async () => {
-    const { data, error } = await GET('/platform/tasks');
+    const { data, error } = await GET('/platform/tasks/user', {
+      headers: {
+        'Pickup-Keys': tasks.value.map((t) => t.pickupKey).join(','),
+      },
+    });
     if (!error) {
       // add new/updated tasks, don't remove any (only happens via user interaction)
-      data.forEach((task) => {
+      data.forEach(async (task) => {
         const existing = tasks.value.find((et) => et.id === task.id);
         // apply updated/new tasks
         if (!existing) {
@@ -23,7 +27,7 @@ const { resume, pause } = useTimeoutPoll(
           tasks.value = tasks.value.filter((et) => et.id !== task.id);
           tasks.value.push(task);
         }
-        // pop up message if task is finished
+        // handle updated/new tasks
         if (!existing || existing.status !== task.status) {
           if (task.status === 'done') {
             const result = $te(`tasks.results.${task.type}`)
@@ -35,8 +39,27 @@ const { resume, pause } = useTimeoutPoll(
           } else if (task.status === 'failed') {
             message.error(
               $t('tasks.failed', { name: $t(`tasks.types.${task.type}`) }),
-              task.error || undefined
+              $te(`errors.${task.error}`) ? $t(`errors.${task.error}`) : undefined
             );
+          }
+          // check if task is a completed export task, if so: download
+          if (task.type === 'resource_export' && task.status === 'done') {
+            const { response, error } = await GET('/resources/{id}/export/download', {
+              params: {
+                query: {
+                  pickupKey: task.pickupKey,
+                },
+              },
+              parseAs: 'blob',
+            });
+            if (!error) {
+              const filename =
+                response.clone().headers.get('content-disposition')?.split('filename=')[1] ||
+                task.result?.filename ||
+                'export';
+              message.info($t('general.downloadSaved', { filename }));
+              saveDownload(await response.blob(), filename);
+            }
           }
         }
       });
@@ -56,9 +79,12 @@ const { resume, pause } = useTimeoutPoll(
 );
 
 export function useTasks() {
-  const remove = (id: string) => {
+  const addTask = (task: TaskRead) => {
+    tasks.value.push(task);
+  };
+  const removeTask = (id: string) => {
     tasks.value = tasks.value.filter((t) => t.id !== id);
   };
 
-  return { tasks, remove, start: resume, stop: pause };
+  return { tasks, addTask, removeTask, startTasksPolling: resume, stopTasksPolling: pause };
 }

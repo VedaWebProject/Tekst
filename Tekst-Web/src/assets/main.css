@@ -21,6 +21,14 @@ p {
   margin: 0.5em 0;
 }
 
+.text-mini {
+  font-size: var(--font-size-mini);
+}
+
+.text-tiny {
+  font-size: var(--font-size-tiny);
+}
+
 .text-small {
   font-size: var(--font-size-small);
 }
@@ -35,6 +43,10 @@ p {
 
 .text-huge {
   font-size: var(--font-size-huge);
+}
+
+.text-gigantic {
+  font-size: var(--font-size-gigantic);
 }
 
 .n {
@@ -141,7 +153,7 @@ img {
 }
 
 .translucent {
-  opacity: 0.6;
+  opacity: 0.7;
 }
 
 .ui-font {

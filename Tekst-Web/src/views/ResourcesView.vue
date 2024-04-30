@@ -43,7 +43,7 @@ const resources = useResourcesStore();
 const dialog = useDialog();
 const { message } = useMessages();
 const router = useRouter();
-const { start: startTasksPolling } = useTasks();
+const { addTask, startTasksPolling } = useTasks();
 
 const actionsLoading = ref(false);
 const loading = computed(() => actionsLoading.value || resources.loading);
@@ -290,7 +290,7 @@ async function handleImportClick(resource: AnyResourceRead) {
   withSelectedFile(async (file: File | null) => {
     if (!file) return;
     actionsLoading.value = true;
-    const { error } = await POST('/resources/{id}/import', {
+    const { data, error } = await POST('/resources/{id}/import', {
       params: { path: { id: resource.id } },
       body: { file },
       bodySerializer(body) {
@@ -302,8 +302,9 @@ async function handleImportClick(resource: AnyResourceRead) {
       },
     });
     if (!error) {
-      startTasksPolling();
+      addTask(data);
       message.info($t('contents.msgImportInfo'), undefined, 20);
+      startTasksPolling();
     }
     actionsLoading.value = false;
   });

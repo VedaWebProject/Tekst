@@ -115,7 +115,6 @@ function handleUserOptionSelect(key: string) {
         :title="tooltip"
         :focusable="false"
         :color="theme.accentColors.base"
-        class="user-options-button"
       >
         <template #icon>
           <n-icon :component="UserIcon" />
@@ -131,7 +130,6 @@ function handleUserOptionSelect(key: string) {
     size="large"
     :title="tooltip"
     :focusable="false"
-    class="user-options-button"
     @click="handleLoginClick"
   >
     <template #icon>
@@ -139,9 +137,3 @@ function handleUserOptionSelect(key: string) {
     </template>
   </n-button>
 </template>
-
-<style scoped>
-.user-options-button {
-  font-size: var(--font-size-mini) !important;
-}
-</style>

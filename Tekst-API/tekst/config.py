@@ -1,12 +1,15 @@
 import os
 
 from functools import cache
+from pathlib import Path
 from secrets import token_hex
-from typing import Annotated
+from typing import Annotated, Any
 from urllib.parse import quote
+from uuid import uuid4
 
 from fastapi import Depends
 from pydantic import (
+    DirectoryPath,
     EmailStr,
     Field,
     StringConstraints,
@@ -82,8 +85,8 @@ class TekstConfig(BaseSettings):
     api_path: str = "/api"
 
     log_level: str = "warning"
-
     settings_cache_ttl: int = 60
+    temp_files_dir: DirectoryPath = "/tmp/tekst_tmp"
 
     # development
     dev_mode: bool = False
@@ -188,6 +191,21 @@ class TekstConfig(BaseSettings):
         val.CleanupOneline,
         val.EmptyStringToNone,
     ] = None
+
+    @field_validator("temp_files_dir", mode="before")
+    @classmethod
+    def temp_dir_to_existing_path_obj(cls, v: Any) -> Path:
+        path = Path(str(v))
+        path.mkdir(parents=True, exist_ok=True)
+        test_file_path = path / (str(uuid4()) + ".tmp")
+        try:
+            test_file_path.unlink(missing_ok=True)
+            test_file_path.write_text(data="test")
+            test_file_path.unlink(missing_ok=True)
+        except Exception as e:
+            print(e)
+            raise ValueError(f"Temporary directoy is not writable: {path}") from e
+        return path
 
     @field_validator("db_name", mode="after")
     @classmethod

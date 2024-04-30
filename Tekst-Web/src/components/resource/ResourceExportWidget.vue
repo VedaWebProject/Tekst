@@ -4,19 +4,14 @@ import { NAlert, NCollapse, NCollapseItem, NButton, NFormItem, NSelect } from 'n
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
 import { useBrowseStore, useStateStore } from '@/stores';
-import {
-  GET,
-  type AnyResourceRead,
-  type LocationRead,
-  type ResourceExportFormat,
-  saveDownload,
-} from '@/api';
+import { GET, type AnyResourceRead, type LocationRead, type ResourceExportFormat } from '@/api';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import { DownloadIcon } from '@/icons';
 import LocationSelectForm from '@/forms/LocationSelectForm.vue';
 import { $t } from '@/i18n';
 import { useMessages } from '@/composables/messages';
 import { getFullLocationLabel } from '@/utils';
+import { useTasks } from '@/composables/tasks';
 
 const allFormatOptions = [
   {
@@ -53,6 +48,7 @@ const props = defineProps<{
 
 const state = useStateStore();
 const browse = useBrowseStore();
+const { addTask, startTasksPolling } = useTasks();
 const { message } = useMessages();
 
 const showExportModal = ref(false);
@@ -107,7 +103,7 @@ const isLocationRangeValid = computed(
 
 async function startExport() {
   loadingExport.value = true;
-  const { response, error } = await GET('/resources/{id}/export', {
+  const { data, error } = await GET('/resources/{id}/export', {
     params: {
       path: { id: props.resource.id },
       query: {
@@ -116,17 +112,24 @@ async function startExport() {
         to: toLocation.value?.id || null,
       },
     },
-    parseAs: 'blob',
   });
   if (!error) {
-    const filename =
-      response.clone().headers.get('content-disposition')?.split('filename=')[1] ||
-      `${state.text?.slug || 'text'}_${props.resource.id}_export.${format.value}`;
-    message.info($t('general.downloadSaved', { filename }));
-    saveDownload(await response.blob(), filename);
+    addTask(data);
+    message.info($t('browse.contents.widgets.exportWidget.msgExportStarted'));
+    startTasksPolling();
   }
   loadingExport.value = false;
   showExportModal.value = false;
+}
+
+async function selectFullLocationRange() {
+  const { data, error } = await GET('/locations/first-last-paths', {
+    params: { query: { txt: props.resource.textId, lvl: props.resource.level } },
+  });
+  if (!error) {
+    fromLocationPath.value = data[0];
+    toLocationPath.value = data[1];
+  }
 }
 
 async function handleModalEnter() {
@@ -134,13 +137,7 @@ async function handleModalEnter() {
     fromLocationPath.value = browse.locationPath;
     toLocationPath.value = browse.locationPath;
   } else {
-    const { data, error } = await GET('/locations/first-last-paths', {
-      params: { query: { txt: props.resource.textId, lvl: props.resource.level } },
-    });
-    if (!error) {
-      fromLocationPath.value = data[0];
-      toLocationPath.value = data[1];
-    }
+    selectFullLocationRange();
   }
 }
 
@@ -197,6 +194,21 @@ function handleModalLeave() {
     </n-alert>
 
     <button-shelf top-gap>
+      <template #start>
+        <n-button
+          secondary
+          :disabled="
+            loadingExport ||
+            !isLocationRangeValid ||
+            !fromLocationPath.length ||
+            !toLocationPath.length
+          "
+          :title="$t('browse.contents.widgets.exportWidget.fullLocationRangeTip')"
+          @click="selectFullLocationRange"
+        >
+          {{ $t('browse.contents.widgets.exportWidget.fullLocationRange') }}
+        </n-button>
+      </template>
       <n-button
         type="primary"
         :loading="loadingExport"

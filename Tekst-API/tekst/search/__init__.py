@@ -1,6 +1,6 @@
 import asyncio
 
-from datetime import datetime
+from datetime import datetime, timezone
 from time import process_time
 from typing import Any
 from uuid import uuid4
@@ -276,13 +276,14 @@ def _bulk_index(client: Elasticsearch, reqest_body: dict[str, Any]) -> bool:
 
 
 def _get_index_creation_time() -> datetime:
+    """Returns the creation date of the index as a UTC datetime."""
     client: Elasticsearch = _es_client
     idx_settings = client.indices.get_settings(
         index=IDX_ALIAS, name="index.creation_date", flat_settings=True
     )
     try:
         ts = int(list(idx_settings.body.values())[0]["settings"]["index.creation_date"])
-        return datetime.fromtimestamp(ts / 1000)
+        return datetime.fromtimestamp(ts / 1000, tz=timezone.utc)
     except Exception:
         return datetime.now()
 

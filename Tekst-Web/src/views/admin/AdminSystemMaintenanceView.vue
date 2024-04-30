@@ -12,7 +12,7 @@ import { useTasks } from '@/composables/tasks';
 import { utcToLocalTime } from '@/utils';
 
 const { message } = useMessages();
-const { start: startTasksPolling } = useTasks();
+const { addTask, startTasksPolling } = useTasks();
 
 const allTasks = ref<TaskRead[]>([]);
 const indexInfo = ref<IndexInfoResponse>();
@@ -26,8 +26,9 @@ const statusColors: Record<string, string> = {
 };
 
 async function createIndex() {
-  const { error } = await GET('/search/index/create');
+  const { data, error } = await GET('/search/index/create');
   if (!error) {
+    addTask(data);
     message.info($t('admin.system.maintenance.index.actionCreateStarted'));
     startTasksPolling();
   }
@@ -42,9 +43,19 @@ async function deleteTask(id: string) {
   tasksLoading.value = false;
 }
 
+async function deleteSystemTasks() {
+  tasksLoading.value = true;
+  const { data, error } = await DELETE('/platform/tasks/system');
+  if (!error) {
+    message.success($t('admin.system.maintenance.tasks.actionDeleteAllSuccess'));
+    allTasks.value = data;
+  }
+  tasksLoading.value = false;
+}
+
 async function deleteAllTasks() {
   tasksLoading.value = true;
-  const { error } = await DELETE('/platform/tasks');
+  const { error } = await DELETE('/platform/tasks/all');
   if (!error) {
     message.success($t('admin.system.maintenance.tasks.actionDeleteAllSuccess'));
     allTasks.value = [];
@@ -54,7 +65,7 @@ async function deleteAllTasks() {
 
 async function updateAllTasksData() {
   tasksLoading.value = true;
-  const { data, error } = await GET('/platform/tasks/all');
+  const { data, error } = await GET('/platform/tasks');
   if (!error) {
     allTasks.value = data.sort(
       (a, b) =>
@@ -88,13 +99,13 @@ onBeforeMount(() => {
     <h3>{{ $t('admin.system.maintenance.index.heading') }}</h3>
 
     <n-flex style="margin: var(--layout-gap) 0">
-      <n-button secondary type="primary" @click="loadIndexInfo">
+      <n-button secondary @click="loadIndexInfo">
         <template #icon>
           <n-icon :component="RefreshIcon" />
         </template>
         {{ $t('general.refreshAction') }}
       </n-button>
-      <n-button secondary type="primary" @click="createIndex">
+      <n-button secondary @click="createIndex">
         <template #icon>
           <n-icon :component="UpdateIcon" />
         </template>
@@ -115,7 +126,7 @@ onBeforeMount(() => {
         <tr>
           <th>{{ $t(`admin.system.maintenance.index.lastIndexed`) }}</th>
           <td>
-            <n-time :time="new Date(indexInfo.lastIndexed)" type="datetime" />
+            <n-time :time="utcToLocalTime(indexInfo.lastIndexed)" type="datetime" />
           </td>
         </tr>
       </n-table>
@@ -127,7 +138,6 @@ onBeforeMount(() => {
     <n-flex style="margin: var(--layout-gap) 0">
       <n-button
         secondary
-        type="primary"
         :disabled="tasksLoading"
         :loading="tasksLoading"
         @click="updateAllTasksData"
@@ -139,7 +149,18 @@ onBeforeMount(() => {
       </n-button>
       <n-button
         secondary
-        type="primary"
+        :disabled="tasksLoading"
+        :loading="tasksLoading"
+        @click="deleteSystemTasks"
+      >
+        <template #icon>
+          <n-icon :component="DeleteIcon" />
+        </template>
+        {{ $t('admin.system.maintenance.tasks.actionDeleteSystem') }}
+      </n-button>
+      <n-button
+        secondary
+        type="error"
         :disabled="tasksLoading"
         :loading="tasksLoading"
         @click="deleteAllTasks"
@@ -192,7 +213,7 @@ onBeforeMount(() => {
               }}
             </td>
             <td class="nowrap">
-              {{ task.userId || $t('general.system') }}
+              {{ task.userId ? $t('models.user.modelLabel') : $t('general.system') }}
             </td>
             <td class="nowrap">
               <n-button

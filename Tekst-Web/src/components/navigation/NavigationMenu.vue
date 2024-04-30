@@ -50,3 +50,9 @@ const menuStyle = computed(() => ({
     />
   </div>
 </template>
+
+<style scoped>
+:deep(.n-menu .n-menu-item:first-of-type .n-menu-item-content) {
+  padding-left: 0px;
+}
+</style>

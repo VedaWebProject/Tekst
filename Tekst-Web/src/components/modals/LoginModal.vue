@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores';
-import { type FormInst, NForm, NFormItem, NInput, NButton, type InputInst } from 'naive-ui';
+import { type FormInst, NFlex, NForm, NFormItem, NInput, NButton, type InputInst } from 'naive-ui';
 import { ref } from 'vue';
 import { $t } from '@/i18n';
 import { useMessages } from '@/composables/messages';
@@ -118,17 +118,18 @@ async function handleForgotPasswordClick() {
         </n-form-item>
       </n-form>
 
-      <div style="display: flex; justify-content: flex-end">
+      <n-flex justify="end">
         <n-button
           text
           :focusable="false"
           :disabled="auth.loginModalState.loading"
-          style="margin-bottom: 1rem; font-size: var(--font-size-mini)"
+          class="text-tiny"
+          style="margin-bottom: var(--layout-gap)"
           @click="handleForgotPasswordClick"
         >
           {{ $t('account.forgotPassword.forgotPassword') }}
         </n-button>
-      </div>
+      </n-flex>
     </div>
     <button-shelf top-gap>
       <n-button

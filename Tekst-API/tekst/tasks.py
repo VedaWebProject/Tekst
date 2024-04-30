@@ -1,16 +1,18 @@
 import asyncio
 
 from collections.abc import Awaitable
-from datetime import datetime
+from datetime import datetime, timedelta
 from enum import Enum
 from typing import Annotated, Any, Literal
+from uuid import uuid4
 
 from beanie import PydanticObjectId
-from beanie.operators import NE, Eq, In
+from beanie.operators import LT, NE, Eq, In
 from fastapi.encoders import jsonable_encoder
-from pydantic import Field
+from pydantic import Field, StringConstraints
 
 from tekst import errors
+from tekst.config import TekstConfig, get_config
 from tekst.logging import log
 from tekst.models.common import DocumentBase, ModelBase, ModelFactoryMixin
 from tekst.models.user import UserRead
@@ -19,9 +21,20 @@ from tekst.models.user import UserRead
 class TaskType(Enum):
     INDEX_CREATE_UPDATE = "index_create_update"
     RESOURCE_IMPORT = "resource_import"
+    RESOURCE_EXPORT = "resource_export"
     BROADCAST_USER_NTFC = "broadcast_user_ntfc"
     BROADCAST_ADMIN_NTFC = "broadcast_admin_ntfc"
     CONTENTS_CHANGED_HOOK = "contents_changed_hook"
+
+
+_task_type_props = {
+    TaskType.INDEX_CREATE_UPDATE: {"locking": True},
+    TaskType.RESOURCE_IMPORT: {"locking": True},
+    TaskType.RESOURCE_EXPORT: {"locking": False},
+    TaskType.BROADCAST_USER_NTFC: {"locking": False},
+    TaskType.BROADCAST_ADMIN_NTFC: {"locking": False},
+    TaskType.CONTENTS_CHANGED_HOOK: {"locking": False},
+}
 
 
 class Task(ModelBase, ModelFactoryMixin):
@@ -44,18 +57,31 @@ class Task(ModelBase, ModelFactoryMixin):
             description="ID of user who created this task",
         ),
     ] = None
+    pickup_key: Annotated[
+        str,
+        StringConstraints(
+            min_length=1,
+            max_length=64,
+        ),
+        Field(
+            description=(
+                "Pickup key for accessing the task in case tasks "
+                "are requested by a non-authenticated user"
+            ),
+        ),
+    ]
     status: Annotated[
         Literal["waiting", "running", "done", "failed"],
         Field(
             description="Status of the task",
         ),
-    ] = "waiting"
+    ]
     start_time: Annotated[
-        datetime | None,
+        datetime,
         Field(
             description="Time when the task was started",
         ),
-    ] = None
+    ]
     end_time: Annotated[
         datetime | None,
         Field(
@@ -91,6 +117,7 @@ class TaskDocument(Task, DocumentBase):
         indexes = [
             "task_type",
             "user_id",
+            "pickup_key",
             "target_id",
         ]
 
@@ -104,7 +131,7 @@ async def _run_task(
     task_kwargs: dict[str, Any] = {},
 ) -> None:
     try:
-        if await is_active(task_type, task_doc.id, target_id):
+        if await is_locked(task_type, task_doc.id, target_id):
             log.warning(
                 f"Task of type '{task_type.value}' with target ID "
                 f"'{target_id}' already running. Task will be ended as 'failed'."
@@ -118,7 +145,10 @@ async def _run_task(
             log.debug(f"Could not encode task result for task: {str(task)}")
     except Exception as e:
         task_doc.status = "failed"
-        task_doc.error = str(e)
+        try:
+            task_doc.error = e.detail.detail.key
+        except Exception:
+            task_doc.error = str(e)
     finally:
         task_doc.end_time = datetime.utcnow()
         task_doc.duration_seconds = (
@@ -139,6 +169,7 @@ async def create_task(
         task_type=task_type,
         target_id=target_id,
         user_id=user_id,
+        pickup_key=str(uuid4()),
         status="running",
         start_time=datetime.utcnow(),
     ).create()
@@ -157,33 +188,85 @@ async def create_task(
 async def get_tasks(
     user: UserRead | None,
     *,
+    pickup_keys: list[str] = [],
     get_all: bool = False,
-    delete_finished: bool = False,
 ) -> list[TaskDocument]:
+    # run tasks cleanup first
+    await cleanup_tasks()
     # select tasks: get user-specific tasks if initiated by a regular user,
     # get all tasks if initiated by a superuser or None (system-internal)
-    tasks = await TaskDocument.find(
-        Eq(TaskDocument.user_id, user.id)
-        if not get_all or (user and not user.is_superuser)
-        else {}
-    ).to_list()
-    # delete the tasks that are done if delete_finished is True
-    if delete_finished:
+    if not user:
+        # non-authenticated user: needs pickup key(s)
+        query = In(TaskDocument.pickup_key, pickup_keys)
+    elif user.is_superuser and get_all:
+        # superuser that wants ALL tasks: just return everything
+        query = {}
+    else:
+        # regular user or superuser that wants only user-specific tasks
+        query = Eq(TaskDocument.user_id, user.id)
+    tasks = await TaskDocument.find(query).to_list()
+    # delete retrieved user tasks that are done/failed
+    # (excluding successful exports, because these are still
+    # needed for locating generated files)
+    if user and not get_all:
         for task in tasks:
-            if task.status == "done" or task.status == "failed":
-                await task.delete()
-    # return user tasks
+            if (
+                task.status in ["done", "failed"]
+                and task.user_id is not None
+                and (
+                    task.task_type != TaskType.RESOURCE_EXPORT
+                    or task.status == "failed"
+                )
+            ):
+                await delete_task(task)
     return tasks
 
 
-async def is_active(
+async def is_locked(
     task_type: TaskType,
     task_id: PydanticObjectId,
     target_id: PydanticObjectId | None = None,
 ) -> bool:
+    if not _task_type_props[task_type]["locking"]:
+        return False
     return await TaskDocument.find_one(
         NE(TaskDocument.id, task_id),
         Eq(TaskDocument.task_type, task_type),
         Eq(TaskDocument.target_id, target_id) if target_id else {},
         In(TaskDocument.status, ["waiting", "running"]),
     ).exists()
+
+
+async def delete_task(task: TaskDocument) -> None:
+    if not task:
+        return
+    if task.result and "artifact" in task.result:
+        cfg: TekstConfig = get_config()
+        tempfile_path = cfg.temp_files_dir / task.result["artifact"]
+        tempfile_path.unlink(missing_ok=True)
+    await task.delete()
+
+
+async def delete_system_tasks() -> None:
+    for task in await TaskDocument.find(Eq(TaskDocument.user_id, None)).to_list():
+        await delete_task(task)
+
+
+async def delete_all_tasks() -> None:
+    for task in await TaskDocument.find_all().to_list():
+        await delete_task(task)
+
+
+async def cleanup_tasks() -> None:
+    # delete export tasks that started min. 30 minutes ago
+    for task in await TaskDocument.find(
+        Eq(TaskDocument.task_type, TaskType.RESOURCE_EXPORT),
+        LT(TaskDocument.start_time, datetime.utcnow() - timedelta(minutes=30)),
+    ).to_list():
+        await delete_task(task)
+    # delete all other tasks that started more than 1 week ago
+    for task in await TaskDocument.find(
+        NE(TaskDocument.task_type, TaskType.RESOURCE_EXPORT),
+        LT(TaskDocument.start_time, datetime.utcnow() - timedelta(weeks=1)),
+    ).to_list():
+        await delete_task(task)

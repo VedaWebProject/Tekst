@@ -87,6 +87,7 @@ errors:
   segmentKeyLocaleConflict: Ein Segment mit der gleichen Kombination aus Schlüssel und Sprache existiert bereits.
   textSameTitleOrSlug: Ein Text mit diesem Titel oder Identifikator existiert bereits.
   locked: Es läuft bereits ein aktiver Hintergrundprozess für diese operation.
+  exportNotFound: Der angefragte Export konnte nicht gefunden werden.
 
 nav:
   about: Über
@@ -112,6 +113,7 @@ tasks:
   types:
     index_create_update: Suchindex neu erzeugen
     resource_import: Ressourcen-Inhalte importieren
+    resource_export: Ressourcen-Export erstellen
     broadcast_user_ntfc: Benutzer-Benachrichtigungen versenden
     broadcast_admin_ntfc: Administratoren-Benachrichtigungen versenden
     contents_changed_hook: Ressource nach Änderung von Inhalten aktualisieren
@@ -197,6 +199,9 @@ browse:
         from: Von
         to: Bis
         rangeError: Der ausgewählte Fundstellenbereich ist ungültig!
+        fullLocationRange: Alle Fundstellen
+        fullLocationRangeTip: Vollständigen Fundstellenbereich auswählen
+        msgExportStarted: Der Export wird im Hintergrund vorbereitet und wird heruntergeladen, sobalt er fertig ist.
 
 forms:
   rulesFeedback:
@@ -705,7 +710,8 @@ admin:
         duration: Dauer
         seconds: '{seconds} Sek.'
         startedBy: Gestartet durch
-        actionDeleteAll: Alle löschen
+        actionDeleteSystem: Systemprozesse löschen
+        actionDeleteAll: Alle Prozesse löschen
         actionDeleteAllSuccess: Alle @:tasks.title wurden gelöscht
     segments:
       heading: Seitensegmente

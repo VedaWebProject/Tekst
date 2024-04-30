@@ -87,8 +87,7 @@ import RemoveCircleFilled from '@vicons/material/RemoveCircleFilled';
 import PersonAddFilled from '@vicons/material/PersonAddFilled';
 import PersonRemoveFilled from '@vicons/material/PersonRemoveFilled';
 import StarOutlined from '@vicons/material/StarOutlined';
-import BookmarkBorderOutlined from '@vicons/material/BookmarkBorderOutlined';
-import BookmarkFilled from '@vicons/material/BookmarkFilled';
+import BookmarksFilled from '@vicons/material/BookmarksFilled';
 import HideImageOutlined from '@vicons/material/HideImageOutlined';
 import PlaylistAddCheckOutlined from '@vicons/material/PlaylistAddCheckOutlined';
 import PlaylistRemoveOutlined from '@vicons/material/PlaylistRemoveOutlined';
@@ -134,8 +133,7 @@ export {
   AccountTreeFilled as TreeIcon,
   AddOutlined as AddIcon,
   AddCircleOutlineOutlined as AddCircleIcon,
-  BookmarkBorderOutlined as BookmarkIcon,
-  BookmarkFilled as BookmarkFilledIcon,
+  BookmarksFilled as BookmarksIcon,
   ShieldOutlined as AdminIcon,
   ManageSearchOutlined as SearchResultsIcon,
   ArrowBackOutlined as ArrowBackIcon,

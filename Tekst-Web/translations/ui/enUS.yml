@@ -84,6 +84,7 @@ errors:
   segmentKeyLocaleConflict: A segment with this key and language already exists.
   textSameTitleOrSlug: There is already a text with the same title or slug.
   locked: There is already an active background task for this operation.
+  exportNotFound: The requested export could not be found.
 
 nav:
   about: About
@@ -108,6 +109,7 @@ tasks:
   types:
     index_create_update: Re-create search index
     resource_import: Import resource data
+    resource_export: Generate resource export data
     broadcast_user_ntfc: Broadcast user notifications
     broadcast_admin_ntfc: Broadcast admin notifications
     contents_changed_hook: Update resource after changed contents
@@ -193,6 +195,9 @@ browse:
         from: From
         to: To
         rangeError: The selected location range is invalid!
+        fullLocationRange: All locations
+        fullLocationRangeTip: Select full location range
+        msgExportStarted: The export will be prepared in the background and will start when it is ready.
 
 forms:
   rulesFeedback:
@@ -680,7 +685,8 @@ admin:
         duration: Duration
         seconds: '{seconds} sec'
         startedBy: Started by
-        actionDeleteAll: Delete all
+        actionDeleteSystem: Delete system tasks
+        actionDeleteAll: Delete all tasks
         actionDeleteAllSuccess: All background tasks have been deleted
     segments:
       heading: Site Segments

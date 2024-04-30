@@ -175,7 +175,7 @@ onMounted(() => {
     :show-require-mark="false"
   >
     <template v-if="props.showLevelSelect">
-      <n-form-item :label="$t('browse.location.level')" :show-feedback="false">
+      <n-form-item :label="$t('browse.location.level')">
         <n-select
           v-model:value="lvl"
           :options="lvlOptions"
@@ -194,7 +194,6 @@ onMounted(() => {
       :label="state.textLevelLabels[index]"
       class="location-select-item"
       :class="levelLoc.disabled && 'disabled'"
-      :show-feedback="false"
     >
       <n-select
         v-model:value="levelLoc.selected"

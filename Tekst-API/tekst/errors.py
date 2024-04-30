@@ -97,6 +97,12 @@ E_404_RESOURCE_NOT_FOUND = error_instance(
     msg="The resource could not be found",
 )
 
+E_404_EXPORT_NOT_FOUND = error_instance(
+    status_code=status.HTTP_404_NOT_FOUND,
+    key="exportNotFound",
+    msg="The requested export could not be found",
+)
+
 E_404_BOOKMARK_NOT_FOUND = error_instance(
     status_code=status.HTTP_404_NOT_FOUND,
     key="bookmarkNotFound",
