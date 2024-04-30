@@ -28,7 +28,7 @@ IDX_TEMPLATE = {
                     "path_match": "*.annotations.*",
                     "mapping": {
                         "type": "keyword",
-                        "normalizer": "asciifolding_normalizer_preserve_case",
+                        "normalizer": "asciifolding_normalizer",
                         "fields": {"strict": {"type": "keyword"}},
                     },
                 }

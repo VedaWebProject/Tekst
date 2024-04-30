@@ -131,14 +131,15 @@ class TextAnnotation(ResourceTypeABC):
                 }
             )
         else:
-            # contruct token query
+            # construct token query
             token_query = (
                 {
-                    "term": {
-                        (
+                    "simple_query_string": {
+                        "fields": [
                             f"resources.{query.common.resource_id}"
                             f".tokens.token{strict_suffix}"
-                        ): query.resource_type_specific.token
+                        ],
+                        "query": query.resource_type_specific.token,
                     }
                 }
                 if query.resource_type_specific.token
