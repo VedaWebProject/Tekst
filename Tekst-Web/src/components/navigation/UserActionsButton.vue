@@ -6,6 +6,7 @@ import { NBadge, NButton, NIcon, NDropdown } from 'naive-ui';
 import { $t } from '@/i18n';
 import { LogInIcon, LogOutIcon, UserIcon, AdminIcon, ResourceIcon, CommunityIcon } from '@/icons';
 import { renderIcon } from '@/utils';
+import UserAvatar from '@/components/user/UserAvatar.vue';
 
 const auth = useAuthStore();
 const userMessages = useUserMessagesStore();
@@ -108,7 +109,14 @@ function handleUserOptionSelect(key: string) {
     @select="handleUserOptionSelect"
   >
     <n-badge :value="userMessages.unreadCount">
+      <user-avatar
+        v-if="auth.user?.avatarUrl"
+        :avatar-url="auth.user.avatarUrl"
+        size="large"
+        class="avatar-btn"
+      />
       <n-button
+        v-else
         :secondary="!auth.loggedIn"
         circle
         size="large"
@@ -137,3 +145,14 @@ function handleUserOptionSelect(key: string) {
     </template>
   </n-button>
 </template>
+
+<style scoped>
+.avatar-btn {
+  cursor: pointer;
+  border: 3px solid var(--accent-color);
+  transition: filter 0.2s ease-in-out;
+}
+.avatar-btn:hover {
+  filter: brightness(1.2) saturate(1.1);
+}
+</style>
