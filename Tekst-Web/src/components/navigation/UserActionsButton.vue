@@ -132,7 +132,7 @@ function handleUserOptionSelect(key: string) {
 
   <n-button
     v-else
-    quaternary
+    secondary
     circle
     size="large"
     :title="tooltip"

@@ -16,7 +16,7 @@ const title = computed(() =>
 
 <template>
   <n-button
-    quaternary
+    secondary
     circle
     size="large"
     icon-placement="left"
