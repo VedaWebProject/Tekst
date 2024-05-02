@@ -93,6 +93,9 @@ const router = createRouter({
       path: '/logout',
       name: 'logout',
       component: LogoutView,
+      meta: {
+        restricted: 'user',
+      },
     },
     {
       path: '/site-notice',
@@ -294,7 +297,7 @@ router.beforeEach(async (to, from, next) => {
   if (to.meta?.restricted) {
     const auth = useAuthStore();
     const ru = to.meta.restricted === 'user'; // route is restricted to users
-    const rsu = to.meta.restricted === 'superuser'; // route is restricted to to superusers
+    const rsu = to.meta.restricted === 'superuser'; // route is restricted to superusers
     const l = auth.loggedIn; // a user is logged in
     const u = auth.user?.isActive && auth.user?.isVerified; // the user is a verified, active user
     const su = auth.user?.isSuperuser; // the user is a superuser
@@ -303,10 +306,8 @@ router.beforeEach(async (to, from, next) => {
     if (!authorized) {
       const { message } = useMessages();
       message.warning($t('errors.noAccess', { resource: to.path }));
-      if (auth.loggedIn) {
-        next({ name: 'home' });
-      } else {
-        next(from || { name: 'home' });
+      next({ name: 'home' });
+      if (!auth.loggedIn) {
         auth.showLoginModal(undefined, to.fullPath, false);
       }
       return; // this is important!
