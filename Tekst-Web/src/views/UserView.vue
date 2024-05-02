@@ -55,7 +55,7 @@ watch(
   </icon-heading>
 
   <div v-if="user && !error" class="content-block">
-    <n-thing content-indented>
+    <n-thing :content-indented="!state.smallScreen">
       <template #avatar>
         <user-avatar :avatar-url="user.avatarUrl || undefined" :size="64" />
       </template>

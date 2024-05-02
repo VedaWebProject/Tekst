@@ -93,7 +93,7 @@ async function handleBookmarkSelect(bookmark: BookmarkRead) {
         :class="{ disabled: loading || maxCountReached }"
         @click="!loading && handleCreateBookmarkClick()"
       >
-        <n-thing content-indented>
+        <n-thing :content-indented="!state.smallScreen">
           <template #avatar>
             <n-icon :component="AddIcon" size="large" />
           </template>
@@ -108,7 +108,10 @@ async function handleBookmarkSelect(bookmark: BookmarkRead) {
         :key="bookmark.id"
         @click="handleBookmarkSelect(bookmark)"
       >
-        <n-thing content-indented description-style="font-size: var(--font-size-tiny)">
+        <n-thing
+          :content-indented="!state.smallScreen"
+          description-style="font-size: var(--font-size-tiny)"
+        >
           <template #avatar>
             <n-icon :component="BookIcon" size="large" />
           </template>
