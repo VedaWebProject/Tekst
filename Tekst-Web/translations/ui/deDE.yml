@@ -91,7 +91,7 @@ errors:
 
 nav:
   about: Über
-  browse: Blättern
+  browse: Lesen
   search: Suche
   help: Hilfe
   info: Info
@@ -307,7 +307,7 @@ models:
     oskModeKey: Schlüssel
     oskModeName: Name
     oskModeFont: Tastatur-Schriftart
-    showResourceCategoryHeadings: Zeige Überschriften für Ressourcen-Kategorien in der Blättern-Ansicht
+    showResourceCategoryHeadings: Zeige Überschriften für Kategorien in der Leseansicht
     alwaysShowResourceCategoryHeadings: Zeige Überschrift auch für die einzige Kategorie mit Ressourcen
     customFonts: Zusätzliche, individuelle Schriftarten
     resourceFontName: Name
@@ -750,7 +750,7 @@ search:
       heading: '@:general.general'
       strict: berücksichtige Diakritika
     quick:
-      defaultOperator: alle Such-Ausdrücke müssen zutreffen
+      defaultOperator: alle Suchausdrücke müssen Treffer sein
       texts: Texte
       textsPlaceholder: Alle Texte
   results:

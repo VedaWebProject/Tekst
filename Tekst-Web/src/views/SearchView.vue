@@ -138,7 +138,7 @@ watch(
 
   <n-collapse>
     <n-collapse-item :title="$t('search.settings.heading')" name="settings">
-      <div class="gray-box">
+      <div class="gray-box" style="margin-bottom: var(--layout-gap)">
         <general-search-settings-form />
       </div>
     </n-collapse-item>

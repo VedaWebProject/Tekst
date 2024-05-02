@@ -305,8 +305,8 @@ models:
     oskModeKey: Key
     oskModeName: Name
     oskModeFont: Keyboard font
-    showResourceCategoryHeadings: Show resource category headings in browse view
-    alwaysShowResourceCategoryHeadings: Show resource category headings even for the only category with resources
+    showResourceCategoryHeadings: Show category headings in browse view
+    alwaysShowResourceCategoryHeadings: Show category headings even for the only category with resources
     customFonts: Additional custom fonts
     resourceFontName: Name
   segment:
