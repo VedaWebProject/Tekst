@@ -5,7 +5,7 @@ import { QuestionMarkIcon } from '@/icons';
 
 <template>
   <n-button
-    secondary
+    quaternary
     circle
     size="large"
     :title="$t('nav.help')"
@@ -17,5 +17,3 @@ import { QuestionMarkIcon } from '@/icons';
     </template>
   </n-button>
 </template>
-
-<style scoped></style>

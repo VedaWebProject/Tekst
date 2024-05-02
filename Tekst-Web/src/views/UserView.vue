@@ -64,12 +64,11 @@ watch(
         <user-thing-header :user="user" />
       </template>
 
-      <template v-if="auth.user" #header-extra>
+      <template v-if="auth.user && user.id !== auth.user.id && user.isActive" #header-extra>
         <n-button
           type="primary"
           circle
           size="large"
-          :disabled="user.id === auth.user.id || !user.isActive"
           :title="$t('account.messages.btnSendMessageToUser', { username: user.username })"
           @click="handleSendUserMessage"
         >

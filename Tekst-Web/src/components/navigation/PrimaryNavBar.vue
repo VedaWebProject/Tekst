@@ -70,25 +70,12 @@ watch(
     :class="state.smallScreen && 'navbar-smallscreen'"
   >
     <img class="navbar-logo" alt="" :src="logoPath" @error="customLogoError = true" />
-    <n-flex vertical style="flex-grow: 2; gap: 0">
-      <n-flex align="baseline">
-        <router-link :to="titleLinkTo">
-          <div class="text-gigantic">{{ pfData?.settings.infoPlatformName }}</div>
-        </router-link>
-        <div v-if="pfData?.settings.infoSubtitle?.length" class="translucent text-tiny">
-          <translation-display :value="pfData?.settings.infoSubtitle" />
-        </div>
-      </n-flex>
-      <navigation-menu v-if="!state.smallScreen" :options="mainMenuOptions" />
-    </n-flex>
-
-    <div v-if="!state.smallScreen" class="navbar-menu">
-      <div class="navbar-menu-extra">
-        <quick-search-widget />
-        <theme-mode-switcher />
-        <locale-switcher />
-        <help-nav-button />
-        <user-actions-button v-if="showUserActionsButton" />
+    <div class="navbar-title">
+      <router-link :to="titleLinkTo">
+        <div class="text-gigantic">{{ pfData?.settings.infoPlatformName }}</div>
+      </router-link>
+      <div v-if="pfData?.settings.infoSubtitle?.length" class="translucent text-tiny">
+        <translation-display :value="pfData?.settings.infoSubtitle" />
       </div>
     </div>
 
@@ -107,6 +94,17 @@ watch(
     </n-button>
   </n-flex>
 
+  <n-flex v-if="!state.smallScreen" class="navbar-menu">
+    <navigation-menu :options="mainMenuOptions" />
+    <n-flex justify="end" style="flex-grow: 2">
+      <quick-search-widget />
+      <theme-mode-switcher />
+      <locale-switcher />
+      <help-nav-button />
+      <user-actions-button v-if="showUserActionsButton" />
+    </n-flex>
+  </n-flex>
+
   <drawer-menu
     v-if="state.smallScreen"
     v-model:show="menuOpen"
@@ -116,10 +114,9 @@ watch(
 
 <style scoped>
 .navbar {
-  gap: 1.5rem !important;
   max-width: var(--max-app-width);
   margin: 0 auto;
-  padding: var(--content-gap) var(--layout-gap);
+  padding: var(--layout-gap);
   font-size: var(--font-size-small);
 }
 
@@ -140,17 +137,17 @@ watch(
   width: auto;
 }
 
-.navbar-menu {
+.navbar-title {
+  flex-grow: 2;
   display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-.navbar-smallscreen .navbar-menu {
   flex-direction: column;
-  align-items: stretch;
-  flex-basis: 100%;
-  padding-top: 0.75rem;
-  gap: 0.5rem;
+  justify-content: center;
+}
+
+.navbar-menu {
+  max-width: var(--max-app-width);
+  margin: 0 auto var(--content-gap) auto;
+  padding: 0 var(--layout-gap);
 }
 
 .navbar-menu-divider {
@@ -162,18 +159,5 @@ watch(
   flex-grow: 1;
   width: 100%;
   margin: 0;
-}
-
-.navbar-menu-extra {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.navbar-smallscreen .navbar-menu-extra {
-  justify-content: space-around;
-  width: 100%;
-  max-width: 320px;
-  margin: 0 auto 0 auto;
 }
 </style>

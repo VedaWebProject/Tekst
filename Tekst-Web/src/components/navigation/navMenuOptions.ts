@@ -2,7 +2,7 @@ import { NBadge, type MenuOption } from 'naive-ui';
 import { h, computed } from 'vue';
 import { RouterLink, type RouteLocationRaw } from 'vue-router';
 import { $t } from '@/i18n';
-import { useBrowseStore, useStateStore, useUserMessagesStore } from '@/stores';
+import { useAuthStore, useBrowseStore, useStateStore, useUserMessagesStore } from '@/stores';
 import { usePlatformData } from '@/composables/platformData';
 import type { ClientSegmentHead } from '@/api';
 import { pickTranslation, renderIcon } from '@/utils';
@@ -24,6 +24,9 @@ import {
   LevelsIcon,
   TreeIcon,
   MessageIcon,
+  CommunityIcon,
+  ResourceIcon,
+  LogOutIcon,
 } from '@/icons';
 
 function renderLink(label: unknown, to: RouteLocationRaw, props?: Record<string, unknown>) {
@@ -44,6 +47,7 @@ function renderLink(label: unknown, to: RouteLocationRaw, props?: Record<string,
 export function useMainMenuOptions(showIcons: boolean = true) {
   const { pfData } = usePlatformData();
   const state = useStateStore();
+  const auth = useAuthStore();
   const browse = useBrowseStore();
 
   const infoPagesOptions = computed(() => {
@@ -87,6 +91,27 @@ export function useMainMenuOptions(showIcons: boolean = true) {
       key: 'search',
       icon: (showIcons && renderIcon(SearchIcon)) || undefined,
     },
+    ...(state.smallScreen && auth.loggedIn
+      ? [
+          {
+            label: renderLink(() => $t('resources.heading'), {
+              name: 'resources',
+              params: {
+                text: state.text?.slug || '',
+              },
+            }),
+            key: 'resources',
+            icon: (showIcons && renderIcon(ResourceIcon)) || undefined,
+          },
+          {
+            label: renderLink(() => $t('community.heading'), {
+              name: 'community',
+            }),
+            key: 'community',
+            icon: (showIcons && renderIcon(CommunityIcon)) || undefined,
+          },
+        ]
+      : []),
     ...(infoPagesOptions.value.length
       ? [
           {
@@ -105,6 +130,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
 }
 
 export function useAccountMenuOptions(showIcons: boolean = true) {
+  const state = useStateStore();
   const userMessages = useUserMessagesStore();
   const menuOptions: MenuOption[] = [
     {
@@ -131,6 +157,15 @@ export function useAccountMenuOptions(showIcons: boolean = true) {
       key: 'accountMessages',
       icon: (showIcons && renderIcon(MessageIcon)) || undefined,
     },
+    ...(state.smallScreen
+      ? [
+          {
+            label: renderLink(() => $t('account.logoutBtn'), { name: 'logout' }),
+            key: 'logout',
+            icon: (showIcons && renderIcon(LogOutIcon)) || undefined,
+          },
+        ]
+      : []),
   ];
 
   return {

@@ -18,6 +18,7 @@ const BrowseView = () => import('@/views/BrowseView.vue');
 const SearchView = () => import('@/views/SearchView.vue');
 const SearchResultsView = () => import('@/views/SearchResultsView.vue');
 const RegisterView = () => import('@/views/RegisterView.vue');
+const LogoutView = () => import('@/views/LogoutView.vue');
 const InfoPageView = () => import('@/views/InfoPageView.vue');
 const ResourcesView = () => import('@/views/ResourcesView.vue');
 const ResourceSettingsView = () => import('@/views/ResourceSettingsView.vue');
@@ -87,6 +88,11 @@ const router = createRouter({
       path: '/register',
       name: 'register',
       component: RegisterView,
+    },
+    {
+      path: '/logout',
+      name: 'logout',
+      component: LogoutView,
     },
     {
       path: '/site-notice',

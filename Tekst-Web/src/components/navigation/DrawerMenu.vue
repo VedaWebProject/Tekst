@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { NDrawer, NDrawerContent } from 'naive-ui';
+import { NFlex, NDrawer, NDrawerContent } from 'naive-ui';
 import { computed } from 'vue';
 import NavigationMenu from '@/components/navigation/NavigationMenu.vue';
 import ThemeModeSwitcher from '@/components/navigation/ThemeModeSwitcher.vue';
@@ -65,29 +65,17 @@ const allMenuOptions = computed(() => [
 
 <template>
   <n-drawer v-model:show="show" :width="600" :auto-focus="false" style="max-width: 90%">
-    <n-drawer-content closable header-style="background-color: var(--accent-color-fade5);">
+    <n-drawer-content closable>
       <template #header>
-        <div class="header-buttons">
+        <n-flex justify="center">
           <quick-search-widget />
           <theme-mode-switcher />
           <locale-switcher />
           <help-nav-button />
-          <user-actions-button v-if="showUserActionsButton" />
-        </div>
+          <user-actions-button v-if="showUserActionsButton && !auth.loggedIn" />
+        </n-flex>
       </template>
       <navigation-menu mode="vertical" :options="allMenuOptions" />
     </n-drawer-content>
   </n-drawer>
 </template>
-
-<style scoped>
-.header-buttons {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  gap: 4px;
-  width: 60%;
-  max-width: 80vw;
-  margin: 0 auto;
-}
-</style>

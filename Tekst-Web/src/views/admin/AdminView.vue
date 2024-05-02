@@ -12,5 +12,3 @@ const { menuOptions } = useAdminMenuOptions();
   <navigation-menu v-if="!state.smallScreen" :options="menuOptions" embed center />
   <router-view></router-view>
 </template>
-
-<style scoped></style>

@@ -4,7 +4,7 @@ import { useAuthStore, useStateStore, useThemeStore, useUserMessagesStore } from
 import { type RouteLocationRaw, RouterLink } from 'vue-router';
 import { NBadge, NButton, NIcon, NDropdown } from 'naive-ui';
 import { $t } from '@/i18n';
-import { LogInIcon, LogOutIcon, UserIcon, AdminIcon, ResourceIcon, CommunityIcon } from '@/icons';
+import { LogInIcon, LogOutIcon, UserIcon, AdminIcon, CommunityIcon, ResourceIcon } from '@/icons';
 import { renderIcon } from '@/utils';
 import UserAvatar from '@/components/user/UserAvatar.vue';
 
@@ -37,13 +37,6 @@ const userOptions = computed(() => [
     icon: renderIcon(UserIcon),
   },
   {
-    label: renderLink(() => $t('community.heading'), {
-      name: 'community',
-    }),
-    key: 'community',
-    icon: renderIcon(CommunityIcon),
-  },
-  {
     label: renderLink(() => $t('resources.heading'), {
       name: 'resources',
       params: {
@@ -52,6 +45,13 @@ const userOptions = computed(() => [
     }),
     key: 'resources',
     icon: renderIcon(ResourceIcon),
+  },
+  {
+    label: renderLink(() => $t('community.heading'), {
+      name: 'community',
+    }),
+    key: 'community',
+    icon: renderIcon(CommunityIcon),
   },
   ...(auth.user?.isSuperuser
     ? [
@@ -101,7 +101,7 @@ function handleUserOptionSelect(key: string) {
 
 <template>
   <n-dropdown
-    v-if="auth.loggedIn"
+    v-if="auth.loggedIn && !state.smallScreen"
     :options="userOptions"
     :size="state.dropdownSize"
     to="#app-container"
@@ -117,7 +117,6 @@ function handleUserOptionSelect(key: string) {
       />
       <n-button
         v-else
-        :secondary="!auth.loggedIn"
         circle
         size="large"
         :title="tooltip"
@@ -133,7 +132,7 @@ function handleUserOptionSelect(key: string) {
 
   <n-button
     v-else
-    secondary
+    quaternary
     circle
     size="large"
     :title="tooltip"
@@ -149,10 +148,9 @@ function handleUserOptionSelect(key: string) {
 <style scoped>
 .avatar-btn {
   cursor: pointer;
-  border: 3px solid var(--accent-color);
   transition: filter 0.2s ease-in-out;
 }
 .avatar-btn:hover {
-  filter: brightness(1.2) saturate(1.1);
+  filter: brightness(1.1) saturate(1.1);
 }
 </style>

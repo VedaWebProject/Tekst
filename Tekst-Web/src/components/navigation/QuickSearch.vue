@@ -49,7 +49,7 @@ function gotoAdvancedSearch() {
 
 <template>
   <n-button
-    secondary
+    quaternary
     circle
     size="large"
     icon-placement="left"

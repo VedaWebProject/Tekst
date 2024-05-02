@@ -70,9 +70,7 @@ function handleSelect(key: string) {
     :size="state.dropdownSize"
   >
     <n-button
-      id="text-select-btn"
-      :quaternary="!disabled"
-      :text="disabled"
+      text
       icon-placement="right"
       :color="themeVars.baseColor"
       :focusable="false"
