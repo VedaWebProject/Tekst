@@ -303,7 +303,7 @@ async function handleImportClick(resource: AnyResourceRead) {
     });
     if (!error) {
       addTask(data);
-      message.info($t('contents.msgImportInfo'), undefined, 20);
+      message.info($t('contents.msgImportInfo'), undefined, 5);
       startTasksPolling();
     }
     actionsLoading.value = false;

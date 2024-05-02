@@ -19,7 +19,7 @@ def safe_name(
     if isinstance(string, bytes):
         string = string.decode()
 
-    string = remove_diacritics(string)
+    string = no_diacritics(string)
 
     # lowercase and delimit using underscores
     string = re.sub(r"[^a-z0-9]+", delim, string.lower()).strip(delim)
@@ -33,7 +33,7 @@ def safe_name(
     return string
 
 
-def remove_diacritics(string: str) -> str:
+def no_diacritics(string: str) -> str:
     """Removes diacritics from the input string and returns it NFC-normalized"""
     return "".join(
         ucdata.normalize("NFC", c)

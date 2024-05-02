@@ -35,7 +35,7 @@ class RichText(ResourceTypeABC):
         return {
             "html": {
                 "type": "text",
-                "analyzer": "standard_asciifolding",
+                "analyzer": "standard_no_diacritics",
                 "fields": {"strict": {"type": "text"}},
             },
         }

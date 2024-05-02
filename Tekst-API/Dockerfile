@@ -104,7 +104,7 @@ RUN groupadd -g 1337 tekst && \
     useradd -m -u 1337 -g tekst tekst
 
 # copy WSGI config
-COPY ./deploy/gunicorn_conf.py ./
+COPY ./deploy/gunicorn/gunicorn_conf.py ./
 COPY ./deploy/entrypoint.sh /
 
 USER tekst

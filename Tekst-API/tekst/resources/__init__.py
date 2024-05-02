@@ -150,7 +150,7 @@ class ResourceTypeABC(ABC):
         return dict(
             comment={
                 "type": "text",
-                "analyzer": "standard_asciifolding",
+                "analyzer": "standard_no_diacritics",
                 "fields": {"strict": {"type": "text"}},
             },
             **cls.rtype_index_doc_props(),

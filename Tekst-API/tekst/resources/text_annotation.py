@@ -203,7 +203,7 @@ class TextAnnotation(ResourceTypeABC):
                 "properties": {
                     "token": {
                         "type": "keyword",
-                        "normalizer": "asciifolding_normalizer",
+                        "normalizer": "no_diacritics_normalizer",
                         "fields": {"strict": {"type": "keyword"}},
                     }
                 },

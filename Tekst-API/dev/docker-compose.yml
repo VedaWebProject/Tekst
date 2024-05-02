@@ -45,7 +45,10 @@ services:
       - dev
 
   es:
-    image: elasticsearch:8.12.2
+    build:
+      context: ../deploy/elasticsearch
+      tags:
+        - "elasticsearch:tekst"
     deploy:
       resources:
         limits:

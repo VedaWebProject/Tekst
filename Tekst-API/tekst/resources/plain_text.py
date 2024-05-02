@@ -42,7 +42,7 @@ class PlainText(ResourceTypeABC):
         return {
             "text": {
                 "type": "text",
-                "analyzer": "standard_asciifolding",
+                "analyzer": "standard_no_diacritics",
                 "fields": {"strict": {"type": "text"}},
             },
         }

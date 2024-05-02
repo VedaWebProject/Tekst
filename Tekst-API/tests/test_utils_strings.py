@@ -21,5 +21,5 @@ def test_safe_name():
     assert strings.safe_name("foo bar", delim="+") == "foo+bar"
 
 
-def test_remove_diacritics():
-    assert strings.remove_diacritics("Hörglwàartŝ") == "Horglwaarts"
+def test_no_diacritics():
+    assert strings.no_diacritics("Hörglwàartŝ") == "Horglwaarts"

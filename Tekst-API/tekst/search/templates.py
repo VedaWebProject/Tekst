@@ -14,6 +14,29 @@ IDX_TEMPLATE_NAME_PATTERN = f"*_{IDX_NAME_CORE}_template"
 
 IDX_TEMPLATE = {
     "aliases": {IDX_ALIAS: {}},
+    "settings": {
+        "index": {"number_of_shards": 1, "number_of_replicas": 0},
+        "analysis": {
+            "analyzer": {
+                "standard_no_diacritics": {
+                    "tokenizer": "standard",
+                    "filter": ["no_diacritics", "lowercase"],
+                },
+            },
+            "filter": {
+                "no_diacritics": {
+                    "type": "icu_transform",
+                    "id": "NFD; [:Nonspacing Mark:] Remove; NFC",
+                }
+            },
+            "normalizer": {
+                "no_diacritics_normalizer": {
+                    "type": "custom",
+                    "filter": ["no_diacritics", "lowercase"],
+                },
+            },
+        },
+    },
     "mappings": {
         "dynamic": False,
         "properties": {
@@ -28,41 +51,12 @@ IDX_TEMPLATE = {
                     "path_match": "*.annotations.*",
                     "mapping": {
                         "type": "keyword",
-                        "normalizer": "asciifolding_normalizer",
+                        "normalizer": "no_diacritics_normalizer",
                         "fields": {"strict": {"type": "keyword"}},
                     },
                 }
             }
         ],
-    },
-    "settings": {
-        "index": {"number_of_shards": 1, "number_of_replicas": 0},
-        "analysis": {
-            "analyzer": {
-                "standard_asciifolding": {
-                    "tokenizer": "standard",
-                    "filter": ["asciifolding", "lowercase"],
-                },
-            },
-            "filter": {
-                "asciifolding_preserve": {
-                    "type": "asciifolding",
-                    "preserve_original": True,
-                }
-            },
-            "normalizer": {
-                "asciifolding_normalizer": {
-                    "type": "custom",
-                    "char_filter": [],
-                    "filter": ["asciifolding", "lowercase"],
-                },
-                "asciifolding_normalizer_preserve_case": {
-                    "type": "custom",
-                    "char_filter": [],
-                    "filter": ["asciifolding"],
-                },
-            },
-        },
     },
 }
 
