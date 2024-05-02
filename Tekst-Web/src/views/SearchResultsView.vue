@@ -12,7 +12,7 @@ import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
-import { createReusableTemplate } from '@vueuse/core';
+import { createReusableTemplate, useMagicKeys, whenever } from '@vueuse/core';
 import SearchResultsSortWidget from '@/components/search/SearchResultsSortWidget.vue';
 import { utcToLocalTime } from '@/utils';
 
@@ -24,6 +24,7 @@ const router = useRouter();
 const theme = useThemeStore();
 const { message } = useMessages();
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate();
+const { ArrowLeft, ArrowRight } = useMagicKeys();
 
 const searchReq = ref<SearchRequestBody>();
 const paginationDefaults = () => ({
@@ -130,6 +131,27 @@ watch(
   () => route.query.q,
   () => processQuery()
 );
+
+function turnPage(direction: 'previous' | 'next') {
+  if (!resultsData.value) return;
+  const currPage = pagination.value.page;
+  pagination.value.page =
+    direction === 'previous'
+      ? Math.max(1, pagination.value.page - 1)
+      : Math.min(
+          pagination.value.page + 1,
+          Math.floor(resultsData.value.totalHits / pagination.value.pageSize) + 1
+        );
+  currPage !== pagination.value.page && execSearch();
+}
+
+// react to keyboard for in-/decreasing page number
+whenever(ArrowRight, () => {
+  turnPage('next');
+});
+whenever(ArrowLeft, () => {
+  turnPage('previous');
+});
 
 onBeforeMount(() => processQuery());
 </script>
