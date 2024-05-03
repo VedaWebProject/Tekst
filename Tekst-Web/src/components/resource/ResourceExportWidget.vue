@@ -60,6 +60,12 @@ const formatOptions = computed(() =>
     supportedExportFormats[props.resource.resourceType].includes(o.value)
   )
 );
+const formatInfoTitle = computed(
+  () => allFormatOptions.find((o) => o.value === format.value)?.label
+);
+const formatInfoText = computed(() =>
+  $t(`browse.contents.widgets.exportWidget.info.${format.value}`)
+);
 
 const fromLocationPath = ref<LocationRead[]>([]);
 const toLocationPath = ref<LocationRead[]>([]);
@@ -168,6 +174,15 @@ function handleModalLeave() {
     <n-form-item :label="$t('browse.contents.widgets.exportWidget.format')">
       <n-select v-model:value="format" :options="formatOptions" />
     </n-form-item>
+
+    <n-alert
+      type="info"
+      :title="formatInfoTitle"
+      :closable="false"
+      style="margin-bottom: var(--layout-gap)"
+    >
+      <span class="text-small">{{ formatInfoText }}</span>
+    </n-alert>
 
     <n-collapse v-model:expanded-names="collapseExpandedModel">
       <n-collapse-item
