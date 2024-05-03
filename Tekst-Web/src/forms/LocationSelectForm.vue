@@ -69,7 +69,7 @@ function getEmptyModels(text: TextRead | undefined = state.text): LocationSelect
   );
 }
 
-async function updateSelectModels(fromLvl: number) {
+async function updateSelectModels(fromLvl: number = 0) {
   // abort if the highest enabled level was changed (nothing to do)
   if (fromLvl >= locationSelectModels.value.length - 1) {
     updateModel();

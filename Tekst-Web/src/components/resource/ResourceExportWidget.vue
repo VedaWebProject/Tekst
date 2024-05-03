@@ -101,6 +101,8 @@ const isLocationRangeValid = computed(
     fromLocation.value.position <= toLocation.value.position
 );
 
+const collapseExpandedModel = ref<string[]>([]);
+
 async function startExport() {
   loadingExport.value = true;
   const { data, error } = await GET('/resources/{id}/export', {
@@ -129,6 +131,7 @@ async function selectFullLocationRange() {
   if (!error) {
     fromLocationPath.value = data[0];
     toLocationPath.value = data[1];
+    collapseExpandedModel.value = [];
   }
 }
 
@@ -166,7 +169,7 @@ function handleModalLeave() {
       <n-select v-model:value="format" :options="formatOptions" />
     </n-form-item>
 
-    <n-collapse display-directive="show">
+    <n-collapse v-model:expanded-names="collapseExpandedModel">
       <n-collapse-item
         :title="fromLocationTitle"
         name="fromLocation"
@@ -203,7 +206,6 @@ function handleModalLeave() {
             !fromLocationPath.length ||
             !toLocationPath.length
           "
-          :title="$t('browse.contents.widgets.exportWidget.fullLocationRangeTip')"
           @click="selectFullLocationRange"
         >
           {{ $t('browse.contents.widgets.exportWidget.fullLocationRange') }}
