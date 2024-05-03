@@ -72,6 +72,8 @@ services:
       context: ./Tekst-API/deploy/elasticsearch
       tags:
         - "elasticsearch:tekst"
+      platforms:
+        - "linux/amd64"
     deploy:
       resources:
         limits:

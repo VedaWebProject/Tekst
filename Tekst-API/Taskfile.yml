@@ -111,6 +111,11 @@ tasks:
     cmds:
       - docker compose -f dev/docker-compose.yml --profile dev -p tekst-dev down --volumes
 
+  dev-stack-build:
+    desc: Build updated container images in the app stack
+    cmds:
+      - docker compose -f dev/docker-compose.yml --profile dev --profile test build
+
   test-stack-up:
     desc: Run test services stack
     cmds:

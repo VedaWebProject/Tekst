@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   caddy:
     image: "caddy:2.6-alpine"
@@ -46,9 +44,11 @@ services:
 
   es:
     build:
-      context: ../deploy/elasticsearch
+      context: ../deployment/elasticsearch
       tags:
         - "elasticsearch:tekst"
+      platforms:
+        - "linux/amd64"
     deploy:
       resources:
         limits:
