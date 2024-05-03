@@ -44,10 +44,7 @@ def setup_logging() -> None:
             from colorlog import ColoredFormatter, StreamHandler
 
             # easy on the eye, no timestamps. perfect for development.
-            dev_log_fmt = (
-                "{bold}{log_color}{levelname:8}{reset} {white}{message}{blue} "
-                "({name} - {process}:{threadName} - {filename}:{lineno})"
-            )
+            dev_log_fmt = "{log_color}{levelname:8}{reset} {message}"
             dev_log_formatter = ColoredFormatter(
                 dev_log_fmt,
                 datefmt=None,

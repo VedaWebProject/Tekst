@@ -8,7 +8,7 @@ from tekst.setup import app_setup
 
 
 """
-Command line interface to the main functionalities of Tekst server
+Command line interface to some utilities of Tekst-API
 """
 
 
@@ -17,7 +17,7 @@ _cfg: TekstConfig = get_config()
 
 @click.command()
 def setup():
-    asyncio.run(app_setup(_cfg))
+    asyncio.run(app_setup())
 
 
 @click.command()
@@ -80,16 +80,17 @@ def schema(to_file: bool, output_file: str, indent: int, sort_keys: bool, quiet:
 @click.option(
     "--host",
     "-h",
-    default=_cfg.dev_host,
+    default="127.0.0.1",
     help="Server host (dynamic default from environment)",
     show_default=True,
 )
 @click.option(
     "--port",
     "-p",
-    default=_cfg.dev_port,
+    default="8000",
     help="Server port (dynamic default from environment)",
     show_default=True,
+    type=click.INT,
 )
 @click.option(
     "--reload",
@@ -98,18 +99,15 @@ def schema(to_file: bool, output_file: str, indent: int, sort_keys: bool, quiet:
     help="Hot-reload on source changes (only if TEKST_DEV_MODE env var is true)",
     show_default=True,
 )
-def run(host: str, port: int, reload: bool):
+def dev(host: str, port: int, reload: bool):
     """Runs Tekst server via Uvicorn ASGI"""
-
-    _cfg.dev_host = host
-    _cfg.dev_port = port
 
     import uvicorn
 
     uvicorn.run(
         "tekst.app:app",
-        host=_cfg.dev_host,
-        port=_cfg.dev_port,
+        host=host,
+        port=port,
         reload=_cfg.dev_mode and reload,
         log_config=None,
     )
@@ -124,7 +122,7 @@ def cli():
 # add individual commands to CLI app
 cli.add_command(setup)
 cli.add_command(schema)
-cli.add_command(run)
+cli.add_command(dev)
 
 
 if __name__ == "__main__":

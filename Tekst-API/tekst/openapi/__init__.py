@@ -50,7 +50,10 @@ def process_openapi_schema(schema: dict[str, Any]) -> dict[str, Any]:
 
 
 async def generate_openapi_schema(
-    to_file: bool, output_file: str, indent: int, sort_keys: bool
+    to_file: bool = True,
+    output_file: str = "openapi.json",
+    indent: int = 2,
+    sort_keys: bool = False,
 ) -> str:  # pragma: no cover
     """
     Atomic operation for creating and processing the OpenAPI schema from outside of
@@ -65,12 +68,12 @@ async def generate_openapi_schema(
 
     async with LifespanManager(app):  # noqa: SIM117
         schema = app.openapi()
-        json_dump_args = {
+        json_dump_kwargs = {
             "skipkeys": True,
             "indent": indent or None,
             "sort_keys": sort_keys,
         }
         if to_file:
             with open(output_file, "w") as f:
-                json.dump(schema, f, **json_dump_args)
-        return json.dumps(schema, **json_dump_args)
+                json.dump(schema, f, **json_dump_kwargs)
+        return json.dumps(schema, **json_dump_kwargs)

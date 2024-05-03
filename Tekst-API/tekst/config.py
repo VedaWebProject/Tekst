@@ -90,8 +90,6 @@ class TekstConfig(BaseSettings):
 
     # development
     dev_mode: bool = False
-    dev_host: str = "127.0.0.1"
-    dev_port: int = 8000
     dev_use_xsrf_protection: bool = False
     dev_use_db: bool = True  # used internally for app init in different environments
     dev_use_es: bool = True  # used internally for app init in different environments

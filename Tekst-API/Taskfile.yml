@@ -57,14 +57,14 @@ tasks:
       TEKST_DEV_MODE: true
     cmds:
       - poetry run python3 -m tekst setup
-      - poetry run python3 -m tekst run --reload
+      - task: print-dev-uris
+      - poetry run python3 -m tekst dev --reload
 
   dev:
     desc: Run dev services stack and dev server, clean up afterwards
     cmds:
       - defer: { task: dev-stack-down }
       - task: dev-stack-up
-      - task: print-dev-uris
       - task: run-dev
 
   schema:
@@ -132,13 +132,13 @@ tasks:
     silent: true
     cmd: |
       printf "
-      +--------------------------------------------------+
-      | 🌐 Client        http://127.0.0.1                |
-      | 🐍 API           http://127.0.0.1/api            |
-      | 📖 API Docs      http://127.0.0.1/api/docs       |
-      | 📬 MailPit       http://127.0.0.1:8025           |
-      | 📂 MongoExpress  http://127.0.0.1:8081           |
-      +--------------------------------------------------+
+      ╭────────────────────────────────────────────╮
+      │ 🌐 Client        http://127.0.0.1          │
+      │ 🐍 API           http://127.0.0.1/api      │
+      │ 📖 API Docs      http://127.0.0.1/api/docs │
+      │ 📬 MailPit       http://127.0.0.1:8025     │
+      │ 📂 MongoExpress  http://127.0.0.1:8081     │
+      ╰────────────────────────────────────────────╯
 
       "
 
