@@ -1,3 +1,6 @@
+import csv
+
+from pathlib import Path
 from time import process_time
 from typing import Annotated, Any, Literal
 
@@ -12,6 +15,7 @@ from tekst.models.resource_configs import (
     FontConfigType,
     ResourceConfigBase,
 )
+from tekst.models.text import TextDocument
 from tekst.resources import ResourceBaseDocument, ResourceSearchQuery, ResourceTypeABC
 from tekst.utils import validators as val
 
@@ -231,12 +235,49 @@ class TextAnnotation(ResourceTypeABC):
         resource: ResourceBaseDocument,
         contents: list["TextAnnotationContent"],
         export_format: ResourceExportFormat,
-    ) -> str:
-        if export_format not in {"json"}:
+        file_path: Path,
+    ) -> None:
+        if export_format == "csv":
+            await cls._export_csv(resource, contents, file_path)
+        else:
             raise ValueError(
                 f"Unsupported export format '{export_format}' "
                 f"for resource type '{cls.get_key()}'"
             )
+
+    @classmethod
+    async def _export_csv(
+        cls,
+        resource: "TextAnnotationResource",
+        contents: list["TextAnnotationContent"],
+        file_path: Path,
+    ) -> None:
+        text = await TextDocument.get(resource.text_id)
+        # construct labels of all locations on the resource's level
+        full_location_labels = await text.full_location_labels(resource.level)
+        with open(file_path, "w", newline="") as csvfile:
+            csv_writer = csv.writer(csvfile, dialect="excel", quoting=csv.QUOTE_ALL)
+            anno_keys = sorted(list({agg.key for agg in resource.aggregations}))
+            csv_writer.writerow(
+                ["LOCATION", "TOKEN", "POSITION", *anno_keys, "COMMENT"]
+            )
+            for content in contents:
+                for i, token in enumerate(content.tokens):
+                    token_annos = {
+                        anno.key: anno.value for anno in token.annotations or []
+                    }
+                    csv_annos = [
+                        token_annos.get(anno_key, "") for anno_key in anno_keys
+                    ]
+                    csv_writer.writerow(
+                        [
+                            full_location_labels.get(str(content.location_id), ""),
+                            token.token,
+                            i,
+                            *csv_annos,
+                            content.comment,
+                        ]
+                    )
 
 
 class GeneralTextAnnotationResourceConfig(ModelBase):

@@ -19,6 +19,7 @@ from tekst.models.common import (
     TranslationBase,
     Translations,
 )
+from tekst.models.location import LocationDocument
 
 
 class TextSubtitleTranslation(TranslationBase):
@@ -211,6 +212,40 @@ class TextDocument(Text, DocumentBase):
                 TextDocument.is_active == True  # noqa: E712
             ).to_list()
         ]
+
+    async def full_location_labels(
+        self,
+        target_level: int,
+    ) -> dict[str, str]:
+        """
+        Returns a dict mapping the location ID of each location on the given level to
+        the full concatenated location labels for all locations on the
+        given target level of this text. Location label parts are delimited
+        by the text's location delimiter or ", " if no delimiter is set.
+        """
+        if target_level is None or target_level < 0 or target_level >= len(self.levels):
+            raise AttributeError(
+                f"Invalid target level ({target_level}) for this text."
+            )
+        loc_delim = self.loc_delim or ", "
+        location_labels = {}
+        for level in range(target_level + 1):
+            location_labels = {
+                str(loc.id): loc_delim.join(
+                    [
+                        lbl
+                        for lbl in [location_labels.get(str(loc.parent_id)), loc.label]
+                        if lbl
+                    ]
+                )
+                for loc in await LocationDocument.find(
+                    LocationDocument.text_id == self.id,
+                    LocationDocument.level == level,
+                )
+                .sort(+LocationDocument.position)
+                .to_list()
+            }
+        return location_labels
 
 
 TextCreate = Text.create_model()

@@ -266,7 +266,7 @@ export interface paths {
     /** Export resource contents */
     get: operations['exportResourceContents'];
   };
-  '/resources/{id}/export/download': {
+  '/resources/export/download': {
     /** Download resource export */
     get: operations['downloadResourceExport'];
   };

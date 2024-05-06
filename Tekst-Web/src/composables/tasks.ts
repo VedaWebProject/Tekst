@@ -44,7 +44,7 @@ const { resume, pause } = useTimeoutPoll(
           }
           // check if task is a completed export task, if so: download
           if (task.type === 'resource_export' && task.status === 'done') {
-            const { response, error } = await GET('/resources/{id}/export/download', {
+            const { response, error } = await GET('/resources/export/download', {
               params: {
                 query: {
                   pickupKey: task.pickupKey,

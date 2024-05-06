@@ -11,7 +11,6 @@ from tekst.models.common import (
     ModelBase,
     ModelFactoryMixin,
 )
-from tekst.models.text import TextDocument
 
 
 class Location(ModelBase, ModelFactoryMixin):
@@ -66,39 +65,6 @@ class LocationDocument(Location, DocumentBase):
             "level",
             "position",
         ]
-
-    @classmethod
-    async def full_location_labels(
-        cls,
-        text_id: PydanticObjectId,
-        for_level: int | None = None,
-    ) -> dict[str, str]:
-        """
-        Returns the full concatenated location labels for all locations on the
-        given level of the text wwith the given ID. Location label parts are delimited
-        by the text's location delimiter or ", " if no delimiter is set.
-        """
-        text = await TextDocument.get(text_id)
-        for_level = max(0, for_level) if for_level is not None else len(text.levels) - 1
-        loc_delim = text.loc_delim or ", "
-        location_labels = {}
-        for level in range(for_level + 1):
-            location_labels = {
-                str(n.id): loc_delim.join(
-                    [
-                        lbl
-                        for lbl in [location_labels.get(str(n.parent_id)), n.label]
-                        if lbl
-                    ]
-                )
-                for n in await LocationDocument.find(
-                    LocationDocument.text_id == text.id,
-                    LocationDocument.level == level,
-                )
-                .sort(+LocationDocument.position)
-                .to_list()
-            }
-        return location_labels
 
 
 LocationCreate = Location.create_model()

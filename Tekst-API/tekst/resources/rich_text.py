@@ -1,3 +1,6 @@
+import csv
+
+from pathlib import Path
 from typing import Annotated, Any, Literal
 
 from pydantic import Field, StringConstraints
@@ -10,6 +13,7 @@ from tekst.models.resource_configs import (
     FontConfigType,
     ResourceConfigBase,
 )
+from tekst.models.text import TextDocument
 from tekst.resources import ResourceBaseDocument, ResourceSearchQuery, ResourceTypeABC
 from tekst.utils import validators as val
 from tekst.utils.html import get_html_text
@@ -86,12 +90,37 @@ class RichText(ResourceTypeABC):
         resource: ResourceBaseDocument,
         contents: list["RichTextContent"],
         export_format: ResourceExportFormat,
-    ) -> str:
-        if export_format not in {"json"}:
+        file_path: Path,
+    ) -> None:
+        if export_format == "csv":
+            await cls._export_csv(resource, contents, file_path)
+        else:
             raise ValueError(
                 f"Unsupported export format '{export_format}' "
                 f"for resource type '{cls.get_key()}'"
             )
+
+    @classmethod
+    async def _export_csv(
+        cls,
+        resource: "RichTextResource",
+        contents: list["RichTextContent"],
+        file_path: Path,
+    ) -> None:
+        text = await TextDocument.get(resource.text_id)
+        # construct labels of all locations on the resource's level
+        full_location_labels = await text.full_location_labels(resource.level)
+        with open(file_path, "w", newline="") as csvfile:
+            csv_writer = csv.writer(csvfile, dialect="excel", quoting=csv.QUOTE_ALL)
+            csv_writer.writerow(["LOCATION", "HTML", "COMMENT"])
+            for content in contents:
+                csv_writer.writerow(
+                    [
+                        full_location_labels.get(str(content.location_id), ""),
+                        content.html,
+                        content.comment,
+                    ]
+                )
 
 
 class GeneralRichTextResourceConfig(ModelBase):

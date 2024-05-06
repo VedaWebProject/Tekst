@@ -37,9 +37,9 @@ const allFormatOptions = [
 ];
 
 const supportedExportFormats = {
-  plainText: ['json', 'tekst-json'],
-  richText: ['json', 'tekst-json'],
-  textAnnotation: ['json', 'tekst-json'],
+  plainText: ['json', 'tekst-json', 'csv'],
+  richText: ['json', 'tekst-json', 'csv'],
+  textAnnotation: ['json', 'tekst-json', 'csv'],
 };
 
 const props = defineProps<{

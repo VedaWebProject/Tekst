@@ -4253,7 +4253,7 @@
         }
       }
     },
-    "/resources/{id}/export/download": {
+    "/resources/export/download": {
       "get": {
         "tags": [
           "resources"

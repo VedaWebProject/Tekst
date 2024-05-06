@@ -17,6 +17,7 @@ from tekst.models.resource import (
     ResourceCoverage,
     ResourceCoverageDetails,
 )
+from tekst.models.text import TextDocument
 from tekst.resources import AnyContentReadBody
 
 
@@ -430,8 +431,9 @@ async def get_detailed_resource_coverage_data(
     )
 
     # get parent level location labels
-    parent_location_locations = await LocationDocument.full_location_labels(
-        text_id=resource_doc.text_id, for_level=resource_doc.level - 1
+    text_doc: TextDocument = await TextDocument.get(resource_doc.text_id)
+    parent_location_locations = await text_doc.full_location_labels(
+        resource_doc.level - 1
     )
 
     # group locations by parent

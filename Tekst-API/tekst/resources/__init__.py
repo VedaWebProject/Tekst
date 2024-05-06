@@ -18,7 +18,6 @@ from pydantic import Field, StringConstraints
 from tekst.logging import log
 from tekst.models.common import ModelBase, PydanticObjectId, ReadBase
 from tekst.models.content import ContentBase, ContentBaseDocument, ContentBaseUpdate
-from tekst.models.location import LocationDocument
 from tekst.models.resource import (
     ResourceBase,
     ResourceBaseDocument,
@@ -217,26 +216,29 @@ class ResourceTypeABC(ABC):
         *,
         resource: ResourceBaseDocument,
         contents: list[ContentBaseDocument],
-    ) -> str:
+        file_path: Path,
+    ) -> None:
         """
         Exports the given contents of the given resource as JSON, compatible for
         re-import in Tekst.
         """
-        return json.dumps(
-            {
-                "resourceId": str(resource.id),
-                "contents": [
-                    c.model_dump(
-                        by_alias=True,
-                        exclude_unset=True,
-                        exclude_none=True,
-                        exclude=cls._EXCLUDE_FROM_CONTENT_EXPORT_DATA,
-                    )
-                    for c in contents
-                ],
-            },
-            ensure_ascii=False,
-        )
+        with open(file_path, "w") as fp:
+            json.dump(
+                {
+                    "resourceId": str(resource.id),
+                    "contents": [
+                        c.model_dump(
+                            by_alias=True,
+                            exclude_unset=True,
+                            exclude_none=True,
+                            exclude=cls._EXCLUDE_FROM_CONTENT_EXPORT_DATA,
+                        )
+                        for c in contents
+                    ],
+                },
+                fp=fp,
+                ensure_ascii=False,
+            )
 
     @classmethod
     async def export_universal_json(
@@ -244,6 +246,7 @@ class ResourceTypeABC(ABC):
         *,
         resource: ResourceBaseDocument,
         contents: list[ContentBaseDocument],
+        file_path: Path,
     ) -> str:
         """
         Exports the given contents of the given resource as JSON, in a form that
@@ -291,19 +294,18 @@ class ResourceTypeABC(ABC):
             for c in contents
         ]
         # construct labels of all locations on the resource's level
-        full_location_labels = await LocationDocument.full_location_labels(
-            text_id=resource.text_id,
-            for_level=resource.level,
-        )
+        full_location_labels = await text.full_location_labels(resource.level)
         for content in contents:
             content["location"] = full_location_labels[content["locationId"]]
             del content["locationId"]
         res["contents"] = contents
 
-        return json.dumps(
-            res,
-            ensure_ascii=False,
-        )
+        with open(file_path, "w") as fp:
+            json.dump(
+                res,
+                fp=fp,
+                ensure_ascii=False,
+            )
 
     @classmethod
     async def contents_changed_hook(cls, resource_id: PydanticObjectId) -> None:
@@ -366,9 +368,10 @@ class ResourceTypeABC(ABC):
         resource: ResourceBaseDocument,
         contents: list[ContentBaseDocument],
         export_format: ResourceExportFormat,
-    ) -> str:
+        file_path: Path,
+    ) -> None:
         """
-        Prepares export data and returns a temporary file object.
+        Writes export data to the given path.
         Raises ValueError if the export format is not supported by this resource type.
         """
 

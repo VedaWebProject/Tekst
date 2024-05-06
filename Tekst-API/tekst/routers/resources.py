@@ -641,10 +641,7 @@ async def get_resource_template(
     template["__README"] = get_resource_template_readme()
 
     # construct labels of all locations on the resource's level
-    full_location_labels = await LocationDocument.full_location_labels(
-        text_id=text_doc.id,
-        for_level=resource_doc.level,
-    )
+    full_location_labels = await text_doc.full_location_labels(resource_doc.level)
 
     # fill in content templates with IDs and some informational fields
     template["contents"] = [
@@ -928,34 +925,33 @@ async def _export_resource_contents_task(
     contents.sort(key=lambda c: target_location_ids[c.location_id])
     target_location_ids = None
 
+    # construct temp file name and path
+    tempfile_name = str(uuid4())
+    tempfile_path: PathObj = cfg.temp_files_dir / tempfile_name
+
     # create export data
     if export_format == "tekst-json":
-        data = await target_resource_type.export_tekst_json(
+        await target_resource_type.export_tekst_json(
             resource=resource,
             contents=contents,
+            file_path=tempfile_path,
         )
     elif export_format == "json":
-        data = await target_resource_type.export_universal_json(
+        await target_resource_type.export_universal_json(
             resource=resource,
             contents=contents,
+            file_path=tempfile_path,
         )
     else:
         try:
-            data = (
-                await target_resource_type.export(
-                    resource=resource,
-                    contents=contents,
-                    export_format=export_format,
-                )
-                or ""
+            await target_resource_type.export(
+                resource=resource,
+                contents=contents,
+                export_format=export_format,
+                file_path=tempfile_path,
             )
         except ValueError:
             raise errors.E_400_UNSUPPORTED_EXPORT_FORMAT
-
-    # create and write temporary file
-    tempfile_name = str(uuid4())
-    tempfile_path: PathObj = cfg.temp_files_dir / tempfile_name
-    tempfile_path.write_text(data, encoding="utf-8")
 
     # prepare headers
     fmt = res_exp_fmt_info[export_format]
@@ -1021,7 +1017,7 @@ async def export_resource_contents(
 
 
 @router.get(
-    "/{id}/export/download",
+    "/export/download",
     status_code=status.HTTP_200_OK,
     responses=errors.responses(
         [
