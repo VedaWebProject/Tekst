@@ -294,6 +294,13 @@ export const contentFormRules: Record<string, Record<string, FormItemRule[]>> = 
       minMaxCharsRule(1, 64, 'blur'),
     ],
   },
+  audio: {
+    url: [
+      requiredRule(() => $t('resources.types.audio.contentFields.url'), 'blur'),
+      minMaxCharsRule(1, 2083, 'blur'),
+    ],
+    caption: [minMaxCharsRule(0, 8192, 'blur')],
+  },
 };
 
 export const searchFormRules: Record<string, Record<string, FormItemRule[]>> = {
@@ -313,6 +320,9 @@ export const searchFormRules: Record<string, Record<string, FormItemRule[]>> = {
       minMaxCharsRule(1, 32, 'blur'),
     ],
     annotationValue: [minMaxCharsRule(0, 64, 'blur')],
+  },
+  audio: {
+    caption: [minMaxCharsRule(0, 512, 'blur')],
   },
 };
 

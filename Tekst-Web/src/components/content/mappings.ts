@@ -6,6 +6,7 @@ const contentComponents: Record<string, Component> = {
   textAnnotation: defineAsyncComponent(
     () => import('@/components/content/TextAnnotationContent.vue')
   ),
+  audio: defineAsyncComponent(() => import('@/components/content/AudioContent.vue')),
 };
 
 export default contentComponents;

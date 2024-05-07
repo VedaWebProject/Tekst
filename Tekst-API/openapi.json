@@ -244,6 +244,9 @@
                   "items": {
                     "oneOf": [
                       {
+                        "$ref": "#/components/schemas/AudioContentRead"
+                      },
+                      {
                         "$ref": "#/components/schemas/PlainTextContentRead"
                       },
                       {
@@ -256,6 +259,7 @@
                     "discriminator": {
                       "propertyName": "resourceType",
                       "mapping": {
+                        "audio": "#/components/schemas/AudioContentRead",
                         "plainText": "#/components/schemas/PlainTextContentRead",
                         "richText": "#/components/schemas/RichTextContentRead",
                         "textAnnotation": "#/components/schemas/TextAnnotationContentRead"
@@ -744,6 +748,9 @@
               "schema": {
                 "oneOf": [
                   {
+                    "$ref": "#/components/schemas/AudioContentCreate"
+                  },
+                  {
                     "$ref": "#/components/schemas/PlainTextContentCreate"
                   },
                   {
@@ -756,6 +763,7 @@
                 "discriminator": {
                   "propertyName": "resourceType",
                   "mapping": {
+                    "audio": "#/components/schemas/AudioContentCreate",
                     "plainText": "#/components/schemas/PlainTextContentCreate",
                     "richText": "#/components/schemas/RichTextContentCreate",
                     "textAnnotation": "#/components/schemas/TextAnnotationContentCreate"
@@ -774,6 +782,9 @@
                 "schema": {
                   "oneOf": [
                     {
+                      "$ref": "#/components/schemas/AudioContentRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/PlainTextContentRead"
                     },
                     {
@@ -786,6 +797,7 @@
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
+                      "audio": "#/components/schemas/AudioContentRead",
                       "plainText": "#/components/schemas/PlainTextContentRead",
                       "richText": "#/components/schemas/RichTextContentRead",
                       "textAnnotation": "#/components/schemas/TextAnnotationContentRead"
@@ -899,6 +911,9 @@
                   "items": {
                     "oneOf": [
                       {
+                        "$ref": "#/components/schemas/AudioContentRead"
+                      },
+                      {
                         "$ref": "#/components/schemas/PlainTextContentRead"
                       },
                       {
@@ -911,6 +926,7 @@
                     "discriminator": {
                       "propertyName": "resourceType",
                       "mapping": {
+                        "audio": "#/components/schemas/AudioContentRead",
                         "plainText": "#/components/schemas/PlainTextContentRead",
                         "richText": "#/components/schemas/RichTextContentRead",
                         "textAnnotation": "#/components/schemas/TextAnnotationContentRead"
@@ -971,6 +987,9 @@
                 "schema": {
                   "oneOf": [
                     {
+                      "$ref": "#/components/schemas/AudioContentRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/PlainTextContentRead"
                     },
                     {
@@ -983,6 +1002,7 @@
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
+                      "audio": "#/components/schemas/AudioContentRead",
                       "plainText": "#/components/schemas/PlainTextContentRead",
                       "richText": "#/components/schemas/RichTextContentRead",
                       "textAnnotation": "#/components/schemas/TextAnnotationContentRead"
@@ -1048,6 +1068,9 @@
               "schema": {
                 "oneOf": [
                   {
+                    "$ref": "#/components/schemas/AudioContentUpdate"
+                  },
+                  {
                     "$ref": "#/components/schemas/PlainTextContentUpdate"
                   },
                   {
@@ -1060,6 +1083,7 @@
                 "discriminator": {
                   "propertyName": "resourceType",
                   "mapping": {
+                    "audio": "#/components/schemas/AudioContentUpdate",
                     "plainText": "#/components/schemas/PlainTextContentUpdate",
                     "richText": "#/components/schemas/RichTextContentUpdate",
                     "textAnnotation": "#/components/schemas/TextAnnotationContentUpdate"
@@ -1078,6 +1102,9 @@
                 "schema": {
                   "oneOf": [
                     {
+                      "$ref": "#/components/schemas/AudioContentRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/PlainTextContentRead"
                     },
                     {
@@ -1090,6 +1117,7 @@
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
+                      "audio": "#/components/schemas/AudioContentRead",
                       "plainText": "#/components/schemas/PlainTextContentRead",
                       "richText": "#/components/schemas/RichTextContentRead",
                       "textAnnotation": "#/components/schemas/TextAnnotationContentRead"
@@ -2909,6 +2937,9 @@
               "schema": {
                 "oneOf": [
                   {
+                    "$ref": "#/components/schemas/AudioResourceCreate"
+                  },
+                  {
                     "$ref": "#/components/schemas/PlainTextResourceCreate"
                   },
                   {
@@ -2921,6 +2952,7 @@
                 "discriminator": {
                   "propertyName": "resourceType",
                   "mapping": {
+                    "audio": "#/components/schemas/AudioResourceCreate",
                     "plainText": "#/components/schemas/PlainTextResourceCreate",
                     "richText": "#/components/schemas/RichTextResourceCreate",
                     "textAnnotation": "#/components/schemas/TextAnnotationResourceCreate"
@@ -2939,6 +2971,9 @@
                 "schema": {
                   "oneOf": [
                     {
+                      "$ref": "#/components/schemas/AudioResourceRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/PlainTextResourceRead"
                     },
                     {
@@ -2951,6 +2986,7 @@
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
+                      "audio": "#/components/schemas/AudioResourceRead",
                       "plainText": "#/components/schemas/PlainTextResourceRead",
                       "richText": "#/components/schemas/RichTextResourceRead",
                       "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
@@ -3076,6 +3112,9 @@
                   "items": {
                     "oneOf": [
                       {
+                        "$ref": "#/components/schemas/AudioResourceRead"
+                      },
+                      {
                         "$ref": "#/components/schemas/PlainTextResourceRead"
                       },
                       {
@@ -3088,6 +3127,7 @@
                     "discriminator": {
                       "propertyName": "resourceType",
                       "mapping": {
+                        "audio": "#/components/schemas/AudioResourceRead",
                         "plainText": "#/components/schemas/PlainTextResourceRead",
                         "richText": "#/components/schemas/RichTextResourceRead",
                         "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
@@ -3147,6 +3187,9 @@
                 "schema": {
                   "oneOf": [
                     {
+                      "$ref": "#/components/schemas/AudioResourceRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/PlainTextResourceRead"
                     },
                     {
@@ -3159,6 +3202,7 @@
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
+                      "audio": "#/components/schemas/AudioResourceRead",
                       "plainText": "#/components/schemas/PlainTextResourceRead",
                       "richText": "#/components/schemas/RichTextResourceRead",
                       "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
@@ -3246,6 +3290,9 @@
               "schema": {
                 "oneOf": [
                   {
+                    "$ref": "#/components/schemas/AudioResourceUpdate"
+                  },
+                  {
                     "$ref": "#/components/schemas/PlainTextResourceUpdate"
                   },
                   {
@@ -3258,6 +3305,7 @@
                 "discriminator": {
                   "propertyName": "resourceType",
                   "mapping": {
+                    "audio": "#/components/schemas/AudioResourceUpdate",
                     "plainText": "#/components/schemas/PlainTextResourceUpdate",
                     "richText": "#/components/schemas/RichTextResourceUpdate",
                     "textAnnotation": "#/components/schemas/TextAnnotationResourceUpdate"
@@ -3276,6 +3324,9 @@
                 "schema": {
                   "oneOf": [
                     {
+                      "$ref": "#/components/schemas/AudioResourceRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/PlainTextResourceRead"
                     },
                     {
@@ -3288,6 +3339,7 @@
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
+                      "audio": "#/components/schemas/AudioResourceRead",
                       "plainText": "#/components/schemas/PlainTextResourceRead",
                       "richText": "#/components/schemas/RichTextResourceRead",
                       "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
@@ -3364,6 +3416,9 @@
                 "schema": {
                   "oneOf": [
                     {
+                      "$ref": "#/components/schemas/AudioResourceRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/PlainTextResourceRead"
                     },
                     {
@@ -3376,6 +3431,7 @@
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
+                      "audio": "#/components/schemas/AudioResourceRead",
                       "plainText": "#/components/schemas/PlainTextResourceRead",
                       "richText": "#/components/schemas/RichTextResourceRead",
                       "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
@@ -3528,6 +3584,9 @@
                 "schema": {
                   "oneOf": [
                     {
+                      "$ref": "#/components/schemas/AudioResourceRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/PlainTextResourceRead"
                     },
                     {
@@ -3540,6 +3599,7 @@
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
+                      "audio": "#/components/schemas/AudioResourceRead",
                       "plainText": "#/components/schemas/PlainTextResourceRead",
                       "richText": "#/components/schemas/RichTextResourceRead",
                       "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
@@ -3638,6 +3698,9 @@
                 "schema": {
                   "oneOf": [
                     {
+                      "$ref": "#/components/schemas/AudioResourceRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/PlainTextResourceRead"
                     },
                     {
@@ -3650,6 +3713,7 @@
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
+                      "audio": "#/components/schemas/AudioResourceRead",
                       "plainText": "#/components/schemas/PlainTextResourceRead",
                       "richText": "#/components/schemas/RichTextResourceRead",
                       "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
@@ -3738,6 +3802,9 @@
                 "schema": {
                   "oneOf": [
                     {
+                      "$ref": "#/components/schemas/AudioResourceRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/PlainTextResourceRead"
                     },
                     {
@@ -3750,6 +3817,7 @@
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
+                      "audio": "#/components/schemas/AudioResourceRead",
                       "plainText": "#/components/schemas/PlainTextResourceRead",
                       "richText": "#/components/schemas/RichTextResourceRead",
                       "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
@@ -3828,6 +3896,9 @@
                 "schema": {
                   "oneOf": [
                     {
+                      "$ref": "#/components/schemas/AudioResourceRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/PlainTextResourceRead"
                     },
                     {
@@ -3840,6 +3911,7 @@
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
+                      "audio": "#/components/schemas/AudioResourceRead",
                       "plainText": "#/components/schemas/PlainTextResourceRead",
                       "richText": "#/components/schemas/RichTextResourceRead",
                       "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
@@ -3938,6 +4010,9 @@
                 "schema": {
                   "oneOf": [
                     {
+                      "$ref": "#/components/schemas/AudioResourceRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/PlainTextResourceRead"
                     },
                     {
@@ -3950,6 +4025,7 @@
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
+                      "audio": "#/components/schemas/AudioResourceRead",
                       "plainText": "#/components/schemas/PlainTextResourceRead",
                       "richText": "#/components/schemas/RichTextResourceRead",
                       "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
@@ -6493,6 +6569,840 @@
         ],
         "title": "AnnotationAggregationGroup"
       },
+      "AudioContentCreate": {
+        "properties": {
+          "resourceId": {
+            "type": "string",
+            "title": "Resourceid",
+            "description": "Resource ID",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "resourceType": {
+            "const": "audio",
+            "title": "Resourcetype"
+          },
+          "locationId": {
+            "type": "string",
+            "title": "Locationid",
+            "description": "Text location ID",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 50000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment",
+            "description": "Plain text, potentially multiline comment that will be displayed with the content"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes",
+            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
+          },
+          "files": {
+            "items": {
+              "$ref": "#/components/schemas/AudioFile"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "minItems": 1,
+            "title": "Files",
+            "description": "Text content of the plain text content object"
+          }
+        },
+        "type": "object",
+        "required": [
+          "resourceId",
+          "resourceType",
+          "locationId",
+          "files"
+        ],
+        "title": "AudioContentCreate"
+      },
+      "AudioContentRead": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "resourceId": {
+            "type": "string",
+            "title": "Resourceid",
+            "description": "Resource ID",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "resourceType": {
+            "const": "audio",
+            "title": "Resourcetype"
+          },
+          "locationId": {
+            "type": "string",
+            "title": "Locationid",
+            "description": "Text location ID",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 50000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment",
+            "description": "Plain text, potentially multiline comment that will be displayed with the content"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes",
+            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
+          },
+          "files": {
+            "items": {
+              "$ref": "#/components/schemas/AudioFile"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "minItems": 1,
+            "title": "Files",
+            "description": "Text content of the plain text content object"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "id",
+          "resourceId",
+          "resourceType",
+          "locationId",
+          "files"
+        ],
+        "title": "AudioContentRead"
+      },
+      "AudioContentUpdate": {
+        "properties": {
+          "resourceId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resourceid"
+          },
+          "resourceType": {
+            "const": "audio",
+            "title": "Resourcetype"
+          },
+          "locationId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Locationid"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 50000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment",
+            "description": "Plain text, potentially multiline comment that will be displayed with the content"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes",
+            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
+          },
+          "files": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/AudioFile"
+                },
+                "type": "array",
+                "maxItems": 100,
+                "minItems": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Files"
+          }
+        },
+        "type": "object",
+        "required": [
+          "resourceType"
+        ],
+        "title": "AudioContentUpdate"
+      },
+      "AudioFile": {
+        "properties": {
+          "url": {
+            "type": "string",
+            "maxLength": 2083,
+            "minLength": 1,
+            "title": "Url",
+            "description": "URL of the audio file"
+          },
+          "caption": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 8192
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Caption",
+            "description": "Caption of the audio file"
+          }
+        },
+        "type": "object",
+        "required": [
+          "url"
+        ],
+        "title": "AudioFile"
+      },
+      "AudioResourceConfig": {
+        "properties": {
+          "common": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CommonResourceConfig"
+              }
+            ],
+            "default": {
+              "sortOrder": 100,
+              "defaultActive": true,
+              "showOnParentLevel": false
+            }
+          },
+          "general": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GeneralAudioResourceConfig"
+              }
+            ],
+            "default": {
+              "defaultCollapsed": false
+            }
+          }
+        },
+        "type": "object",
+        "title": "AudioResourceConfig"
+      },
+      "AudioResourceCreate": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Title",
+            "description": "Title of this resource"
+          },
+          "description": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Description",
+            "description": "Short, concise description of this resource",
+            "default": []
+          },
+          "textId": {
+            "type": "string",
+            "title": "Textid",
+            "description": "ID of the text this resource belongs to",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "level": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Level",
+            "description": "Text level this resource belongs to"
+          },
+          "resourceType": {
+            "const": "audio",
+            "title": "Resourcetype"
+          },
+          "originalId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Originalid",
+            "description": "If this is a version of another resource, this ID references the original"
+          },
+          "ownerId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ownerid",
+            "description": "User owning this resource"
+          },
+          "sharedRead": {
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Sharedread",
+            "description": "Users with shared read access to this resource",
+            "default": []
+          },
+          "sharedWrite": {
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Sharedwrite",
+            "description": "Users with shared write access to this resource",
+            "default": []
+          },
+          "public": {
+            "type": "boolean",
+            "title": "Public",
+            "description": "Publication status of this resource",
+            "default": false
+          },
+          "proposed": {
+            "type": "boolean",
+            "title": "Proposed",
+            "description": "Whether this resource has been proposed for publication",
+            "default": false
+          },
+          "citation": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Citation",
+            "description": "Citation details for this resource"
+          },
+          "meta": {
+            "items": {
+              "$ref": "#/components/schemas/Metadate"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "minItems": 0,
+            "title": "Meta",
+            "description": "Arbitrary metadata",
+            "default": []
+          },
+          "comment": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceCommentTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Comment",
+            "description": "Plain text, potentially multiline comment on this resource",
+            "default": []
+          },
+          "config": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AudioResourceConfig"
+              }
+            ],
+            "default": {
+              "common": {
+                "defaultActive": true,
+                "showOnParentLevel": false,
+                "sortOrder": 100
+              },
+              "general": {
+                "defaultCollapsed": false
+              }
+            }
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "textId",
+          "level",
+          "resourceType"
+        ],
+        "title": "AudioResourceCreate"
+      },
+      "AudioResourceRead": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "writable": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Writable",
+            "description": "Whether this resource is writable for the requesting user"
+          },
+          "owner": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/UserReadPublic"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Public user data for user owning this resource"
+          },
+          "sharedReadUsers": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/UserReadPublic"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sharedreadusers",
+            "description": "Public user data for users allowed to read this resource"
+          },
+          "sharedWriteUsers": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/UserReadPublic"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sharedwriteusers",
+            "description": "Public user data for users allowed to write this resource"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Title",
+            "description": "Title of this resource"
+          },
+          "description": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Description",
+            "description": "Short, concise description of this resource",
+            "default": []
+          },
+          "textId": {
+            "type": "string",
+            "title": "Textid",
+            "description": "ID of the text this resource belongs to",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "level": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Level",
+            "description": "Text level this resource belongs to"
+          },
+          "resourceType": {
+            "const": "audio",
+            "title": "Resourcetype"
+          },
+          "originalId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Originalid",
+            "description": "If this is a version of another resource, this ID references the original"
+          },
+          "ownerId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ownerid",
+            "description": "User owning this resource"
+          },
+          "sharedRead": {
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Sharedread",
+            "description": "Users with shared read access to this resource",
+            "default": []
+          },
+          "sharedWrite": {
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Sharedwrite",
+            "description": "Users with shared write access to this resource",
+            "default": []
+          },
+          "public": {
+            "type": "boolean",
+            "title": "Public",
+            "description": "Publication status of this resource",
+            "default": false
+          },
+          "proposed": {
+            "type": "boolean",
+            "title": "Proposed",
+            "description": "Whether this resource has been proposed for publication",
+            "default": false
+          },
+          "citation": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Citation",
+            "description": "Citation details for this resource"
+          },
+          "meta": {
+            "items": {
+              "$ref": "#/components/schemas/Metadate"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "minItems": 0,
+            "title": "Meta",
+            "description": "Arbitrary metadata",
+            "default": []
+          },
+          "comment": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceCommentTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Comment",
+            "description": "Plain text, potentially multiline comment on this resource",
+            "default": []
+          },
+          "config": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AudioResourceConfig"
+              }
+            ],
+            "default": {
+              "common": {
+                "defaultActive": true,
+                "showOnParentLevel": false,
+                "sortOrder": 100
+              },
+              "general": {
+                "defaultCollapsed": false
+              }
+            }
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "textId",
+          "level",
+          "resourceType"
+        ],
+        "title": "AudioResourceRead"
+      },
+      "AudioResourceUpdate": {
+        "properties": {
+          "title": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 64,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          },
+          "description": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Description",
+            "description": "Short, concise description of this resource",
+            "default": []
+          },
+          "textId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Textid"
+          },
+          "level": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Level"
+          },
+          "resourceType": {
+            "const": "audio",
+            "title": "Resourcetype"
+          },
+          "originalId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Originalid",
+            "description": "If this is a version of another resource, this ID references the original"
+          },
+          "ownerId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ownerid",
+            "description": "User owning this resource"
+          },
+          "sharedRead": {
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Sharedread",
+            "description": "Users with shared read access to this resource",
+            "default": []
+          },
+          "sharedWrite": {
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Sharedwrite",
+            "description": "Users with shared write access to this resource",
+            "default": []
+          },
+          "public": {
+            "type": "boolean",
+            "title": "Public",
+            "description": "Publication status of this resource",
+            "default": false
+          },
+          "proposed": {
+            "type": "boolean",
+            "title": "Proposed",
+            "description": "Whether this resource has been proposed for publication",
+            "default": false
+          },
+          "citation": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Citation",
+            "description": "Citation details for this resource"
+          },
+          "meta": {
+            "items": {
+              "$ref": "#/components/schemas/Metadate"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "minItems": 0,
+            "title": "Meta",
+            "description": "Arbitrary metadata",
+            "default": []
+          },
+          "comment": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceCommentTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Comment",
+            "description": "Plain text, potentially multiline comment on this resource",
+            "default": []
+          },
+          "config": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AudioResourceConfig"
+              }
+            ],
+            "default": {
+              "common": {
+                "defaultActive": true,
+                "showOnParentLevel": false,
+                "sortOrder": 100
+              },
+              "general": {
+                "defaultCollapsed": false
+              }
+            }
+          }
+        },
+        "type": "object",
+        "required": [
+          "resourceType"
+        ],
+        "title": "AudioResourceUpdate"
+      },
+      "AudioSearchQuery": {
+        "properties": {
+          "type": {
+            "const": "audio",
+            "title": "Type",
+            "description": "Type of the resource to search in"
+          },
+          "caption": {
+            "type": "string",
+            "maxLength": 512,
+            "title": "Caption",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "title": "AudioSearchQuery"
+      },
       "BearerResponse": {
         "properties": {
           "access_token": {
@@ -7309,6 +8219,37 @@
         ],
         "title": "ErrorModel"
       },
+      "GeneralAudioResourceConfig": {
+        "properties": {
+          "defaultCollapsed": {
+            "type": "boolean",
+            "title": "Defaultcollapsed",
+            "description": "Whether contents of this resource should be collapsed by default",
+            "default": false
+          },
+          "font": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Name of the font to use for this resource."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Font"
+          }
+        },
+        "type": "object",
+        "title": "GeneralAudioResourceConfig"
+      },
       "GeneralPlainTextResourceConfig": {
         "properties": {
           "defaultCollapsed": {
@@ -7555,6 +8496,9 @@
           "contents": {
             "items": {
               "anyOf": [
+                {
+                  "$ref": "#/components/schemas/AudioContentRead"
+                },
                 {
                   "$ref": "#/components/schemas/PlainTextContentRead"
                 },
@@ -9434,6 +10378,9 @@
           "rts": {
             "oneOf": [
               {
+                "$ref": "#/components/schemas/AudioSearchQuery"
+              },
+              {
                 "$ref": "#/components/schemas/PlainTextSearchQuery"
               },
               {
@@ -9448,6 +10395,7 @@
             "discriminator": {
               "propertyName": "type",
               "mapping": {
+                "audio": "#/components/schemas/AudioSearchQuery",
                 "plainText": "#/components/schemas/PlainTextSearchQuery",
                 "richText": "#/components/schemas/RichTextSearchQuery",
                 "textAnnotation": "#/components/schemas/TextAnnotationSearchQuery"

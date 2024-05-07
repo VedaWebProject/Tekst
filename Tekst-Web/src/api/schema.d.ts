@@ -441,6 +441,445 @@ export interface components {
       /** Values */
       values?: string[] | null;
     };
+    /** AudioContentCreate */
+    AudioContentCreate: {
+      /**
+       * Resourceid
+       * @description Resource ID
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      resourceId: string;
+      /**
+       * Resourcetype
+       * @constant
+       */
+      resourceType: 'audio';
+      /**
+       * Locationid
+       * @description Text location ID
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      locationId: string;
+      /**
+       * Comment
+       * @description Plain text, potentially multiline comment that will be displayed with the content
+       */
+      comment?: string | null;
+      /**
+       * Notes
+       * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
+       */
+      notes?: string | null;
+      /**
+       * Files
+       * @description Text content of the plain text content object
+       */
+      files: components['schemas']['AudioFile'][];
+    };
+    /** AudioContentRead */
+    AudioContentRead: {
+      /**
+       * Id
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      id: string;
+      /**
+       * Resourceid
+       * @description Resource ID
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      resourceId: string;
+      /**
+       * Resourcetype
+       * @constant
+       */
+      resourceType: 'audio';
+      /**
+       * Locationid
+       * @description Text location ID
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      locationId: string;
+      /**
+       * Comment
+       * @description Plain text, potentially multiline comment that will be displayed with the content
+       */
+      comment?: string | null;
+      /**
+       * Notes
+       * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
+       */
+      notes?: string | null;
+      /**
+       * Files
+       * @description Text content of the plain text content object
+       */
+      files: components['schemas']['AudioFile'][];
+      [key: string]: unknown;
+    };
+    /** AudioContentUpdate */
+    AudioContentUpdate: {
+      /** Resourceid */
+      resourceId?: string | null;
+      /**
+       * Resourcetype
+       * @constant
+       */
+      resourceType: 'audio';
+      /** Locationid */
+      locationId?: string | null;
+      /**
+       * Comment
+       * @description Plain text, potentially multiline comment that will be displayed with the content
+       */
+      comment?: string | null;
+      /**
+       * Notes
+       * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
+       */
+      notes?: string | null;
+      /** Files */
+      files?: components['schemas']['AudioFile'][] | null;
+    };
+    /** AudioFile */
+    AudioFile: {
+      /**
+       * Url
+       * @description URL of the audio file
+       */
+      url: string;
+      /**
+       * Caption
+       * @description Caption of the audio file
+       */
+      caption?: string | null;
+    };
+    /** AudioResourceConfig */
+    AudioResourceConfig: {
+      /**
+       * @default {
+       *   "sortOrder": 100,
+       *   "defaultActive": true,
+       *   "showOnParentLevel": false
+       * }
+       */
+      common?: components['schemas']['CommonResourceConfig'];
+      /**
+       * @default {
+       *   "defaultCollapsed": false
+       * }
+       */
+      general?: components['schemas']['GeneralAudioResourceConfig'];
+    };
+    /** AudioResourceCreate */
+    AudioResourceCreate: {
+      /**
+       * Title
+       * @description Title of this resource
+       */
+      title: string;
+      /**
+       * Description
+       * @description Short, concise description of this resource
+       * @default []
+       */
+      description?: components['schemas']['ResourceDescriptionTranslation'][];
+      /**
+       * Textid
+       * @description ID of the text this resource belongs to
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      textId: string;
+      /**
+       * Level
+       * @description Text level this resource belongs to
+       */
+      level: number;
+      /**
+       * Resourcetype
+       * @constant
+       */
+      resourceType: 'audio';
+      /**
+       * Originalid
+       * @description If this is a version of another resource, this ID references the original
+       */
+      originalId?: string | null;
+      /**
+       * Ownerid
+       * @description User owning this resource
+       */
+      ownerId?: string | null;
+      /**
+       * Sharedread
+       * @description Users with shared read access to this resource
+       * @default []
+       */
+      sharedRead?: string[];
+      /**
+       * Sharedwrite
+       * @description Users with shared write access to this resource
+       * @default []
+       */
+      sharedWrite?: string[];
+      /**
+       * Public
+       * @description Publication status of this resource
+       * @default false
+       */
+      public?: boolean;
+      /**
+       * Proposed
+       * @description Whether this resource has been proposed for publication
+       * @default false
+       */
+      proposed?: boolean;
+      /**
+       * Citation
+       * @description Citation details for this resource
+       */
+      citation?: string | null;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       * @default []
+       */
+      meta?: components['schemas']['Metadate'][];
+      /**
+       * Comment
+       * @description Plain text, potentially multiline comment on this resource
+       * @default []
+       */
+      comment?: components['schemas']['ResourceCommentTranslation'][];
+      /**
+       * @default {
+       *   "common": {
+       *     "defaultActive": true,
+       *     "showOnParentLevel": false,
+       *     "sortOrder": 100
+       *   },
+       *   "general": {
+       *     "defaultCollapsed": false
+       *   }
+       * }
+       */
+      config?: components['schemas']['AudioResourceConfig'];
+    };
+    /** AudioResourceRead */
+    AudioResourceRead: {
+      /**
+       * Id
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      id: string;
+      /**
+       * Writable
+       * @description Whether this resource is writable for the requesting user
+       */
+      writable?: boolean | null;
+      /** @description Public user data for user owning this resource */
+      owner?: components['schemas']['UserReadPublic'] | null;
+      /**
+       * Sharedreadusers
+       * @description Public user data for users allowed to read this resource
+       */
+      sharedReadUsers?: components['schemas']['UserReadPublic'][] | null;
+      /**
+       * Sharedwriteusers
+       * @description Public user data for users allowed to write this resource
+       */
+      sharedWriteUsers?: components['schemas']['UserReadPublic'][] | null;
+      /**
+       * Title
+       * @description Title of this resource
+       */
+      title: string;
+      /**
+       * Description
+       * @description Short, concise description of this resource
+       * @default []
+       */
+      description?: components['schemas']['ResourceDescriptionTranslation'][];
+      /**
+       * Textid
+       * @description ID of the text this resource belongs to
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      textId: string;
+      /**
+       * Level
+       * @description Text level this resource belongs to
+       */
+      level: number;
+      /**
+       * Resourcetype
+       * @constant
+       */
+      resourceType: 'audio';
+      /**
+       * Originalid
+       * @description If this is a version of another resource, this ID references the original
+       */
+      originalId?: string | null;
+      /**
+       * Ownerid
+       * @description User owning this resource
+       */
+      ownerId?: string | null;
+      /**
+       * Sharedread
+       * @description Users with shared read access to this resource
+       * @default []
+       */
+      sharedRead?: string[];
+      /**
+       * Sharedwrite
+       * @description Users with shared write access to this resource
+       * @default []
+       */
+      sharedWrite?: string[];
+      /**
+       * Public
+       * @description Publication status of this resource
+       * @default false
+       */
+      public?: boolean;
+      /**
+       * Proposed
+       * @description Whether this resource has been proposed for publication
+       * @default false
+       */
+      proposed?: boolean;
+      /**
+       * Citation
+       * @description Citation details for this resource
+       */
+      citation?: string | null;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       * @default []
+       */
+      meta?: components['schemas']['Metadate'][];
+      /**
+       * Comment
+       * @description Plain text, potentially multiline comment on this resource
+       * @default []
+       */
+      comment?: components['schemas']['ResourceCommentTranslation'][];
+      /**
+       * @default {
+       *   "common": {
+       *     "defaultActive": true,
+       *     "showOnParentLevel": false,
+       *     "sortOrder": 100
+       *   },
+       *   "general": {
+       *     "defaultCollapsed": false
+       *   }
+       * }
+       */
+      config?: components['schemas']['AudioResourceConfig'];
+      [key: string]: unknown;
+    };
+    /** AudioResourceUpdate */
+    AudioResourceUpdate: {
+      /** Title */
+      title?: string | null;
+      /**
+       * Description
+       * @description Short, concise description of this resource
+       * @default []
+       */
+      description?: components['schemas']['ResourceDescriptionTranslation'][];
+      /** Textid */
+      textId?: string | null;
+      /** Level */
+      level?: number | null;
+      /**
+       * Resourcetype
+       * @constant
+       */
+      resourceType: 'audio';
+      /**
+       * Originalid
+       * @description If this is a version of another resource, this ID references the original
+       */
+      originalId?: string | null;
+      /**
+       * Ownerid
+       * @description User owning this resource
+       */
+      ownerId?: string | null;
+      /**
+       * Sharedread
+       * @description Users with shared read access to this resource
+       * @default []
+       */
+      sharedRead?: string[];
+      /**
+       * Sharedwrite
+       * @description Users with shared write access to this resource
+       * @default []
+       */
+      sharedWrite?: string[];
+      /**
+       * Public
+       * @description Publication status of this resource
+       * @default false
+       */
+      public?: boolean;
+      /**
+       * Proposed
+       * @description Whether this resource has been proposed for publication
+       * @default false
+       */
+      proposed?: boolean;
+      /**
+       * Citation
+       * @description Citation details for this resource
+       */
+      citation?: string | null;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       * @default []
+       */
+      meta?: components['schemas']['Metadate'][];
+      /**
+       * Comment
+       * @description Plain text, potentially multiline comment on this resource
+       * @default []
+       */
+      comment?: components['schemas']['ResourceCommentTranslation'][];
+      /**
+       * @default {
+       *   "common": {
+       *     "defaultActive": true,
+       *     "showOnParentLevel": false,
+       *     "sortOrder": 100
+       *   },
+       *   "general": {
+       *     "defaultCollapsed": false
+       *   }
+       * }
+       */
+      config?: components['schemas']['AudioResourceConfig'];
+    };
+    /** AudioSearchQuery */
+    AudioSearchQuery: {
+      /**
+       * Type
+       * @description Type of the resource to search in
+       * @constant
+       */
+      type: 'audio';
+      /**
+       * Caption
+       * @default
+       */
+      caption?: string;
+    };
     /** BearerResponse */
     BearerResponse: {
       /** Access Token */
@@ -862,6 +1301,17 @@ export interface components {
             [key: string]: string;
           };
     };
+    /** GeneralAudioResourceConfig */
+    GeneralAudioResourceConfig: {
+      /**
+       * Defaultcollapsed
+       * @description Whether contents of this resource should be collapsed by default
+       * @default false
+       */
+      defaultCollapsed?: boolean;
+      /** Font */
+      font?: (string | null) | null;
+    };
     /** GeneralPlainTextResourceConfig */
     GeneralPlainTextResourceConfig: {
       /**
@@ -981,6 +1431,7 @@ export interface components {
        * @default []
        */
       contents?: (
+        | components['schemas']['AudioContentRead']
         | components['schemas']['PlainTextContentRead']
         | components['schemas']['RichTextContentRead']
         | components['schemas']['TextAnnotationContentRead']
@@ -1958,6 +2409,7 @@ export interface components {
        * @description Resource type-specific search query data
        */
       rts:
+        | components['schemas']['AudioSearchQuery']
         | components['schemas']['PlainTextSearchQuery']
         | components['schemas']['RichTextSearchQuery']
         | components['schemas']['TextAnnotationSearchQuery'];
@@ -3666,6 +4118,7 @@ export interface operations {
       200: {
         content: {
           'application/json': (
+            | components['schemas']['AudioContentRead']
             | components['schemas']['PlainTextContentRead']
             | components['schemas']['RichTextContentRead']
             | components['schemas']['TextAnnotationContentRead']
@@ -3895,6 +4348,7 @@ export interface operations {
       200: {
         content: {
           'application/json': (
+            | components['schemas']['AudioContentRead']
             | components['schemas']['PlainTextContentRead']
             | components['schemas']['RichTextContentRead']
             | components['schemas']['TextAnnotationContentRead']
@@ -3914,6 +4368,7 @@ export interface operations {
     requestBody: {
       content: {
         'application/json':
+          | components['schemas']['AudioContentCreate']
           | components['schemas']['PlainTextContentCreate']
           | components['schemas']['RichTextContentCreate']
           | components['schemas']['TextAnnotationContentCreate'];
@@ -3924,6 +4379,7 @@ export interface operations {
       201: {
         content: {
           'application/json':
+            | components['schemas']['AudioContentRead']
             | components['schemas']['PlainTextContentRead']
             | components['schemas']['RichTextContentRead']
             | components['schemas']['TextAnnotationContentRead'];
@@ -3964,6 +4420,7 @@ export interface operations {
       200: {
         content: {
           'application/json':
+            | components['schemas']['AudioContentRead']
             | components['schemas']['PlainTextContentRead']
             | components['schemas']['RichTextContentRead']
             | components['schemas']['TextAnnotationContentRead'];
@@ -4025,6 +4482,7 @@ export interface operations {
     requestBody: {
       content: {
         'application/json':
+          | components['schemas']['AudioContentUpdate']
           | components['schemas']['PlainTextContentUpdate']
           | components['schemas']['RichTextContentUpdate']
           | components['schemas']['TextAnnotationContentUpdate'];
@@ -4035,6 +4493,7 @@ export interface operations {
       200: {
         content: {
           'application/json':
+            | components['schemas']['AudioContentRead']
             | components['schemas']['PlainTextContentRead']
             | components['schemas']['RichTextContentRead']
             | components['schemas']['TextAnnotationContentRead'];
@@ -4886,6 +5345,7 @@ export interface operations {
       200: {
         content: {
           'application/json': (
+            | components['schemas']['AudioResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
             | components['schemas']['TextAnnotationResourceRead']
@@ -4905,6 +5365,7 @@ export interface operations {
     requestBody: {
       content: {
         'application/json':
+          | components['schemas']['AudioResourceCreate']
           | components['schemas']['PlainTextResourceCreate']
           | components['schemas']['RichTextResourceCreate']
           | components['schemas']['TextAnnotationResourceCreate'];
@@ -4915,6 +5376,7 @@ export interface operations {
       201: {
         content: {
           'application/json':
+            | components['schemas']['AudioResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
             | components['schemas']['TextAnnotationResourceRead'];
@@ -4958,6 +5420,7 @@ export interface operations {
       201: {
         content: {
           'application/json':
+            | components['schemas']['AudioResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
             | components['schemas']['TextAnnotationResourceRead'];
@@ -5001,6 +5464,7 @@ export interface operations {
       200: {
         content: {
           'application/json':
+            | components['schemas']['AudioResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
             | components['schemas']['TextAnnotationResourceRead'];
@@ -5068,6 +5532,7 @@ export interface operations {
     requestBody: {
       content: {
         'application/json':
+          | components['schemas']['AudioResourceUpdate']
           | components['schemas']['PlainTextResourceUpdate']
           | components['schemas']['RichTextResourceUpdate']
           | components['schemas']['TextAnnotationResourceUpdate'];
@@ -5078,6 +5543,7 @@ export interface operations {
       200: {
         content: {
           'application/json':
+            | components['schemas']['AudioResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
             | components['schemas']['TextAnnotationResourceRead'];
@@ -5120,6 +5586,7 @@ export interface operations {
       200: {
         content: {
           'application/json':
+            | components['schemas']['AudioResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
             | components['schemas']['TextAnnotationResourceRead'];
@@ -5169,6 +5636,7 @@ export interface operations {
       200: {
         content: {
           'application/json':
+            | components['schemas']['AudioResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
             | components['schemas']['TextAnnotationResourceRead'];
@@ -5212,6 +5680,7 @@ export interface operations {
       200: {
         content: {
           'application/json':
+            | components['schemas']['AudioResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
             | components['schemas']['TextAnnotationResourceRead'];
@@ -5249,6 +5718,7 @@ export interface operations {
       200: {
         content: {
           'application/json':
+            | components['schemas']['AudioResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
             | components['schemas']['TextAnnotationResourceRead'];
@@ -5298,6 +5768,7 @@ export interface operations {
       200: {
         content: {
           'application/json':
+            | components['schemas']['AudioResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
             | components['schemas']['TextAnnotationResourceRead'];

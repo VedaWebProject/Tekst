@@ -59,6 +59,7 @@ init:
 errors:
   error: Error
   platformData: Could not load platform data.
+  audioLoadError: 'Error loading audio file: {url}'
   notFound: This resource could not be found.
   unexpected: An unexpected error occurred. This should not happen.
   conflict: There is a conflict with already existing data.
@@ -443,6 +444,13 @@ resources:
         annotationValue: Value
       config:
         displayTemplate: Display Template
+    audio:
+      label: Audio
+      parenthesis: audio playback
+      contentFields:
+        files: Audio Files
+        url: URL
+        caption: Caption
 
 contents:
   heading: Edit Resource Content

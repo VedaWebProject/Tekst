@@ -40,6 +40,7 @@ const supportedExportFormats = {
   plainText: ['json', 'tekst-json', 'csv'],
   richText: ['json', 'tekst-json', 'csv'],
   textAnnotation: ['json', 'tekst-json', 'csv'],
+  audio: ['json', 'tekst-json', 'csv'],
 };
 
 const props = defineProps<{

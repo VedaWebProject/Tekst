@@ -1,0 +1,124 @@
+<script setup lang="ts">
+import { useMessages } from '@/composables/messages';
+import { $t } from '@/i18n';
+import { PlayIcon, PauseIcon, ErrorIcon, DownloadIcon } from '@/icons';
+import { useMediaControls } from '@vueuse/core';
+import { NSlider, NFlex, NButton, NIcon } from 'naive-ui';
+import { watch } from 'vue';
+import { onMounted } from 'vue';
+import { ref, type CSSProperties, computed } from 'vue';
+
+const props = defineProps<{
+  src: string;
+  caption?: string;
+  instanceId?: string;
+  fontStyle?: CSSProperties;
+}>();
+defineExpose({ play, pause });
+const emit = defineEmits(['play', 'ended']);
+
+const { message } = useMessages();
+
+const audioRef = ref<HTMLAudioElement>();
+const error = ref(false);
+const { playing, waiting, currentTime, duration, ended, onSourceError } = useMediaControls(
+  audioRef,
+  {
+    src: props.src,
+  }
+);
+
+const secondsToTimeString = (seconds: number) => {
+  const m = Math.floor(seconds / 60);
+  const s = Math.floor(seconds % 60);
+  return m + ':' + `${s}`.padStart(2, '0');
+};
+
+const currentTimeString = computed(() => secondsToTimeString(currentTime.value || 0));
+const durationString = computed(() => secondsToTimeString(duration.value || 0));
+
+function playPause() {
+  !playing.value ? play() : pause();
+}
+
+function play(reset?: boolean) {
+  reset && (currentTime.value = 0);
+  playing.value = true;
+  emit('play', props.instanceId);
+}
+
+function pause() {
+  playing.value = false;
+}
+
+function download() {
+  window.open(props.src, '_blank', 'noopener noreferrer');
+}
+
+watch(ended, (after) => {
+  after && emit('ended', props.instanceId);
+});
+
+onMounted(() => {
+  onSourceError(() => {
+    playing.value = false;
+    error.value = true;
+    message.error($t('errors.audioLoadError', { url: props.src }));
+  });
+});
+</script>
+
+<template>
+  <n-flex vertical class="audio-player">
+    <audio ref="audioRef" preload="metadata"></audio>
+    <n-flex align="center" flex>
+      <n-button
+        :secondary="!playing"
+        :type="error ? 'error' : 'primary'"
+        :focusable="false"
+        :disabled="waiting || error"
+        :loading="waiting && !error"
+        @click="playPause"
+      >
+        <template #icon>
+          <n-icon v-if="error" :component="ErrorIcon" />
+          <n-icon v-else-if="playing" :component="PauseIcon" />
+          <n-icon v-else :component="PlayIcon" />
+        </template>
+      </n-button>
+      <div class="text-tiny">{{ currentTimeString }} / {{ durationString }}</div>
+      <n-flex align="center" :wrap="false" style="width: auto; flex-grow: 2; flex-basis: 200px">
+        <n-slider
+          v-model:value="currentTime"
+          :step="1"
+          :min="0"
+          :max="duration"
+          :format-tooltip="(seconds) => secondsToTimeString(seconds)"
+          :disabled="error"
+          style="width: auto; flex-grow: 2; flex-basis: 200px"
+        />
+        <n-button
+          quaternary
+          circle
+          size="small"
+          :focusable="false"
+          :disabled="error"
+          @click="download"
+        >
+          <template #icon>
+            <n-icon :component="DownloadIcon" />
+          </template>
+        </n-button>
+      </n-flex>
+    </n-flex>
+    <div v-if="caption" class="caption" :class="{ translucent: error }" :style="fontStyle">
+      {{ caption }}
+    </div>
+  </n-flex>
+</template>
+
+<style scoped>
+.audio-player {
+  padding: 8px 0;
+}
+</style>

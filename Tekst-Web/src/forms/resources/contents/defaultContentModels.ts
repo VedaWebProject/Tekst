@@ -21,4 +21,13 @@ export const defaultContentModels = {
       },
     ],
   },
+  audio: {
+    ...common,
+    files: [
+      {
+        url: undefined,
+        caption: undefined,
+      },
+    ],
+  },
 };

@@ -333,7 +333,11 @@ async def search_quick(
     target_resource_ids = await _get_target_resource_ids(
         user=user,
         text_ids=settings_quick.texts,  # constrain target texts
-        resource_types=["plainText", "richText"],  # contrain target resource types
+        resource_types=[
+            "plainText",
+            "richText",
+            "audio",
+        ],  # constrain target resource types
     )
 
     # compose a list of target index fields based on the resources to search:

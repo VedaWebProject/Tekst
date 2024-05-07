@@ -108,8 +108,12 @@ import SendFilled from '@vicons/material/SendFilled';
 import GroupsFilled from '@vicons/material/GroupsFilled';
 import WarningOutlined from '@vicons/material/WarningOutlined';
 import RefreshOutlined from '@vicons/material/RefreshOutlined';
+import PlayArrowFilled from '@vicons/material/PlayArrowFilled';
+import PauseFilled from '@vicons/material/PauseFilled';
 
 export {
+  PauseFilled as PauseIcon,
+  PlayArrowFilled as PlayIcon,
   WarningOutlined as WarningIcon,
   GroupsFilled as CommunityIcon,
   SendFilled as SendIcon,

@@ -23,7 +23,7 @@ const props = defineProps<{
   font?: string;
 }>();
 
-const model = defineModel<string>();
+const model = defineModel<string | null>();
 
 const { pfData } = usePlatformData();
 const state = useStateStore();

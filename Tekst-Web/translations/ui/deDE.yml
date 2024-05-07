@@ -62,6 +62,7 @@ init:
 errors:
   error: Fehler
   platformData: Plattform-Daten konnten nicht geladen werden.
+  audioLoadError: 'Fehler beim Laden der Audiodatei: {url}'
   notFound: Diese Ressource konnte nicht gefunden werden.
   unexpected: Ein unerwarteter Fehler ist aufgetreten. Das hätte nicht passieren dürfen.
   conflict: Es besteht ein Konflikt mit bereits vorhandenen Daten.
@@ -454,6 +455,13 @@ resources:
         annotationValue: Wert
       config:
         displayTemplate: Darstellungsvorlage
+    audio:
+      label: Audio
+      parenthesis: Audiowiedergabe
+      contentFields:
+        files: Audio-Dateien
+        url: URL
+        caption: Beschriftung
 
 contents:
   heading: Ressourcen-Inhalte bearbeiten
