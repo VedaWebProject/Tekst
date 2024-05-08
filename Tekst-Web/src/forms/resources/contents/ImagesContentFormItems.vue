@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import type { AudioContentCreate, AudioResourceRead } from '@/api';
+import type { ImagesContentCreate, ImagesResourceRead } from '@/api';
 import { NFlex, NFormItem, NInput, NDynamicInput } from 'naive-ui';
 import { contentFormRules } from '@/forms/formRules';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import NInputOsk from '@/components/NInputOsk.vue';
 
 defineProps<{
-  resource: AudioResourceRead;
+  resource: ImagesResourceRead;
 }>();
 
-const model = defineModel<AudioContentCreate>({ required: true });
+const model = defineModel<ImagesContentCreate>({ required: true });
 
 function handleUpdate(field: string, value: any) {
   model.value = {
@@ -21,7 +21,7 @@ function handleUpdate(field: string, value: any) {
 
 <template>
   <!-- FILES -->
-  <n-form-item :label="$t('resources.types.audio.contentFields.files')" path="files">
+  <n-form-item :label="$t('resources.types.images.contentFields.files')" path="files">
     <n-dynamic-input
       :value="model.files"
       :min="1"
@@ -34,23 +34,23 @@ function handleUpdate(field: string, value: any) {
           <!-- URL -->
           <n-form-item
             ignore-path-change
-            :label="$t('resources.types.audio.contentFields.url')"
+            :label="$t('resources.types.images.contentFields.url')"
             :path="`files[${index}].url`"
-            :rule="contentFormRules.audio.url"
+            :rule="contentFormRules.images.url"
             style="flex-grow: 2"
           >
             <n-input
               v-model:value="model.files[index].url"
-              :placeholder="$t('resources.types.audio.contentFields.url')"
+              :placeholder="$t('resources.types.images.contentFields.url')"
               @keydown.enter.prevent
             />
           </n-form-item>
           <!-- CAPTION -->
           <n-form-item
             ignore-path-change
-            :label="$t('resources.types.audio.contentFields.caption')"
+            :label="$t('resources.types.images.contentFields.caption')"
             :path="`files[${index}].caption`"
-            :rule="contentFormRules.audio.caption"
+            :rule="contentFormRules.images.caption"
             style="flex-grow: 2"
           >
             <n-input-osk
@@ -59,7 +59,7 @@ function handleUpdate(field: string, value: any) {
               :font="resource.config?.general?.font || undefined"
               :rows="2"
               :max-length="512"
-              :placeholder="$t('resources.types.audio.contentFields.caption')"
+              :placeholder="$t('resources.types.images.contentFields.caption')"
             />
           </n-form-item>
         </n-flex>

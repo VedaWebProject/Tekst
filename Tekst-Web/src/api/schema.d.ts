@@ -472,7 +472,7 @@ export interface components {
       notes?: string | null;
       /**
        * Files
-       * @description Text content of the plain text content object
+       * @description List of audio file objects
        */
       files: components['schemas']['AudioFile'][];
     };
@@ -512,7 +512,7 @@ export interface components {
       notes?: string | null;
       /**
        * Files
-       * @description Text content of the plain text content object
+       * @description List of audio file objects
        */
       files: components['schemas']['AudioFile'][];
       [key: string]: unknown;
@@ -1312,6 +1312,17 @@ export interface components {
       /** Font */
       font?: (string | null) | null;
     };
+    /** GeneralImagesResourceConfig */
+    GeneralImagesResourceConfig: {
+      /**
+       * Defaultcollapsed
+       * @description Whether contents of this resource should be collapsed by default
+       * @default true
+       */
+      defaultCollapsed?: boolean;
+      /** Font */
+      font?: (string | null) | null;
+    };
     /** GeneralPlainTextResourceConfig */
     GeneralPlainTextResourceConfig: {
       /**
@@ -1374,6 +1385,445 @@ export interface components {
       /** Detail */
       detail?: components['schemas']['ValidationError'][];
     };
+    /** ImageFile */
+    ImageFile: {
+      /**
+       * Url
+       * @description URL of the image file
+       */
+      url: string;
+      /**
+       * Caption
+       * @description Caption of the image
+       */
+      caption?: string | null;
+    };
+    /** ImagesContentCreate */
+    ImagesContentCreate: {
+      /**
+       * Resourceid
+       * @description Resource ID
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      resourceId: string;
+      /**
+       * Resourcetype
+       * @constant
+       */
+      resourceType: 'images';
+      /**
+       * Locationid
+       * @description Text location ID
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      locationId: string;
+      /**
+       * Comment
+       * @description Plain text, potentially multiline comment that will be displayed with the content
+       */
+      comment?: string | null;
+      /**
+       * Notes
+       * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
+       */
+      notes?: string | null;
+      /**
+       * Files
+       * @description List of image file objects
+       */
+      files: components['schemas']['ImageFile'][];
+    };
+    /** ImagesContentRead */
+    ImagesContentRead: {
+      /**
+       * Id
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      id: string;
+      /**
+       * Resourceid
+       * @description Resource ID
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      resourceId: string;
+      /**
+       * Resourcetype
+       * @constant
+       */
+      resourceType: 'images';
+      /**
+       * Locationid
+       * @description Text location ID
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      locationId: string;
+      /**
+       * Comment
+       * @description Plain text, potentially multiline comment that will be displayed with the content
+       */
+      comment?: string | null;
+      /**
+       * Notes
+       * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
+       */
+      notes?: string | null;
+      /**
+       * Files
+       * @description List of image file objects
+       */
+      files: components['schemas']['ImageFile'][];
+      [key: string]: unknown;
+    };
+    /** ImagesContentUpdate */
+    ImagesContentUpdate: {
+      /** Resourceid */
+      resourceId?: string | null;
+      /**
+       * Resourcetype
+       * @constant
+       */
+      resourceType: 'images';
+      /** Locationid */
+      locationId?: string | null;
+      /**
+       * Comment
+       * @description Plain text, potentially multiline comment that will be displayed with the content
+       */
+      comment?: string | null;
+      /**
+       * Notes
+       * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
+       */
+      notes?: string | null;
+      /** Files */
+      files?: components['schemas']['ImageFile'][] | null;
+    };
+    /** ImagesResourceConfig */
+    ImagesResourceConfig: {
+      /**
+       * @default {
+       *   "sortOrder": 100,
+       *   "defaultActive": true,
+       *   "showOnParentLevel": false
+       * }
+       */
+      common?: components['schemas']['CommonResourceConfig'];
+      /**
+       * @default {
+       *   "defaultCollapsed": true
+       * }
+       */
+      general?: components['schemas']['GeneralImagesResourceConfig'];
+    };
+    /** ImagesResourceCreate */
+    ImagesResourceCreate: {
+      /**
+       * Title
+       * @description Title of this resource
+       */
+      title: string;
+      /**
+       * Description
+       * @description Short, concise description of this resource
+       * @default []
+       */
+      description?: components['schemas']['ResourceDescriptionTranslation'][];
+      /**
+       * Textid
+       * @description ID of the text this resource belongs to
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      textId: string;
+      /**
+       * Level
+       * @description Text level this resource belongs to
+       */
+      level: number;
+      /**
+       * Resourcetype
+       * @constant
+       */
+      resourceType: 'images';
+      /**
+       * Originalid
+       * @description If this is a version of another resource, this ID references the original
+       */
+      originalId?: string | null;
+      /**
+       * Ownerid
+       * @description User owning this resource
+       */
+      ownerId?: string | null;
+      /**
+       * Sharedread
+       * @description Users with shared read access to this resource
+       * @default []
+       */
+      sharedRead?: string[];
+      /**
+       * Sharedwrite
+       * @description Users with shared write access to this resource
+       * @default []
+       */
+      sharedWrite?: string[];
+      /**
+       * Public
+       * @description Publication status of this resource
+       * @default false
+       */
+      public?: boolean;
+      /**
+       * Proposed
+       * @description Whether this resource has been proposed for publication
+       * @default false
+       */
+      proposed?: boolean;
+      /**
+       * Citation
+       * @description Citation details for this resource
+       */
+      citation?: string | null;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       * @default []
+       */
+      meta?: components['schemas']['Metadate'][];
+      /**
+       * Comment
+       * @description Plain text, potentially multiline comment on this resource
+       * @default []
+       */
+      comment?: components['schemas']['ResourceCommentTranslation'][];
+      /**
+       * @default {
+       *   "common": {
+       *     "defaultActive": true,
+       *     "showOnParentLevel": false,
+       *     "sortOrder": 100
+       *   },
+       *   "general": {
+       *     "defaultCollapsed": true
+       *   }
+       * }
+       */
+      config?: components['schemas']['ImagesResourceConfig'];
+    };
+    /** ImagesResourceRead */
+    ImagesResourceRead: {
+      /**
+       * Id
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      id: string;
+      /**
+       * Writable
+       * @description Whether this resource is writable for the requesting user
+       */
+      writable?: boolean | null;
+      /** @description Public user data for user owning this resource */
+      owner?: components['schemas']['UserReadPublic'] | null;
+      /**
+       * Sharedreadusers
+       * @description Public user data for users allowed to read this resource
+       */
+      sharedReadUsers?: components['schemas']['UserReadPublic'][] | null;
+      /**
+       * Sharedwriteusers
+       * @description Public user data for users allowed to write this resource
+       */
+      sharedWriteUsers?: components['schemas']['UserReadPublic'][] | null;
+      /**
+       * Title
+       * @description Title of this resource
+       */
+      title: string;
+      /**
+       * Description
+       * @description Short, concise description of this resource
+       * @default []
+       */
+      description?: components['schemas']['ResourceDescriptionTranslation'][];
+      /**
+       * Textid
+       * @description ID of the text this resource belongs to
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      textId: string;
+      /**
+       * Level
+       * @description Text level this resource belongs to
+       */
+      level: number;
+      /**
+       * Resourcetype
+       * @constant
+       */
+      resourceType: 'images';
+      /**
+       * Originalid
+       * @description If this is a version of another resource, this ID references the original
+       */
+      originalId?: string | null;
+      /**
+       * Ownerid
+       * @description User owning this resource
+       */
+      ownerId?: string | null;
+      /**
+       * Sharedread
+       * @description Users with shared read access to this resource
+       * @default []
+       */
+      sharedRead?: string[];
+      /**
+       * Sharedwrite
+       * @description Users with shared write access to this resource
+       * @default []
+       */
+      sharedWrite?: string[];
+      /**
+       * Public
+       * @description Publication status of this resource
+       * @default false
+       */
+      public?: boolean;
+      /**
+       * Proposed
+       * @description Whether this resource has been proposed for publication
+       * @default false
+       */
+      proposed?: boolean;
+      /**
+       * Citation
+       * @description Citation details for this resource
+       */
+      citation?: string | null;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       * @default []
+       */
+      meta?: components['schemas']['Metadate'][];
+      /**
+       * Comment
+       * @description Plain text, potentially multiline comment on this resource
+       * @default []
+       */
+      comment?: components['schemas']['ResourceCommentTranslation'][];
+      /**
+       * @default {
+       *   "common": {
+       *     "defaultActive": true,
+       *     "showOnParentLevel": false,
+       *     "sortOrder": 100
+       *   },
+       *   "general": {
+       *     "defaultCollapsed": true
+       *   }
+       * }
+       */
+      config?: components['schemas']['ImagesResourceConfig'];
+      [key: string]: unknown;
+    };
+    /** ImagesResourceUpdate */
+    ImagesResourceUpdate: {
+      /** Title */
+      title?: string | null;
+      /**
+       * Description
+       * @description Short, concise description of this resource
+       * @default []
+       */
+      description?: components['schemas']['ResourceDescriptionTranslation'][];
+      /** Textid */
+      textId?: string | null;
+      /** Level */
+      level?: number | null;
+      /**
+       * Resourcetype
+       * @constant
+       */
+      resourceType: 'images';
+      /**
+       * Originalid
+       * @description If this is a version of another resource, this ID references the original
+       */
+      originalId?: string | null;
+      /**
+       * Ownerid
+       * @description User owning this resource
+       */
+      ownerId?: string | null;
+      /**
+       * Sharedread
+       * @description Users with shared read access to this resource
+       * @default []
+       */
+      sharedRead?: string[];
+      /**
+       * Sharedwrite
+       * @description Users with shared write access to this resource
+       * @default []
+       */
+      sharedWrite?: string[];
+      /**
+       * Public
+       * @description Publication status of this resource
+       * @default false
+       */
+      public?: boolean;
+      /**
+       * Proposed
+       * @description Whether this resource has been proposed for publication
+       * @default false
+       */
+      proposed?: boolean;
+      /**
+       * Citation
+       * @description Citation details for this resource
+       */
+      citation?: string | null;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       * @default []
+       */
+      meta?: components['schemas']['Metadate'][];
+      /**
+       * Comment
+       * @description Plain text, potentially multiline comment on this resource
+       * @default []
+       */
+      comment?: components['schemas']['ResourceCommentTranslation'][];
+      /**
+       * @default {
+       *   "common": {
+       *     "defaultActive": true,
+       *     "showOnParentLevel": false,
+       *     "sortOrder": 100
+       *   },
+       *   "general": {
+       *     "defaultCollapsed": true
+       *   }
+       * }
+       */
+      config?: components['schemas']['ImagesResourceConfig'];
+    };
+    /** ImagesSearchQuery */
+    ImagesSearchQuery: {
+      /**
+       * Type
+       * @description Type of the resource to search in
+       * @constant
+       */
+      type: 'images';
+      /**
+       * Caption
+       * @default
+       */
+      caption?: string;
+    };
     /** IndexInfoResponse */
     IndexInfoResponse: {
       /** Documents */
@@ -1432,6 +1882,7 @@ export interface components {
        */
       contents?: (
         | components['schemas']['AudioContentRead']
+        | components['schemas']['ImagesContentRead']
         | components['schemas']['PlainTextContentRead']
         | components['schemas']['RichTextContentRead']
         | components['schemas']['TextAnnotationContentRead']
@@ -2410,6 +2861,7 @@ export interface components {
        */
       rts:
         | components['schemas']['AudioSearchQuery']
+        | components['schemas']['ImagesSearchQuery']
         | components['schemas']['PlainTextSearchQuery']
         | components['schemas']['RichTextSearchQuery']
         | components['schemas']['TextAnnotationSearchQuery'];
@@ -4119,6 +4571,7 @@ export interface operations {
         content: {
           'application/json': (
             | components['schemas']['AudioContentRead']
+            | components['schemas']['ImagesContentRead']
             | components['schemas']['PlainTextContentRead']
             | components['schemas']['RichTextContentRead']
             | components['schemas']['TextAnnotationContentRead']
@@ -4349,6 +4802,7 @@ export interface operations {
         content: {
           'application/json': (
             | components['schemas']['AudioContentRead']
+            | components['schemas']['ImagesContentRead']
             | components['schemas']['PlainTextContentRead']
             | components['schemas']['RichTextContentRead']
             | components['schemas']['TextAnnotationContentRead']
@@ -4369,6 +4823,7 @@ export interface operations {
       content: {
         'application/json':
           | components['schemas']['AudioContentCreate']
+          | components['schemas']['ImagesContentCreate']
           | components['schemas']['PlainTextContentCreate']
           | components['schemas']['RichTextContentCreate']
           | components['schemas']['TextAnnotationContentCreate'];
@@ -4380,6 +4835,7 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['AudioContentRead']
+            | components['schemas']['ImagesContentRead']
             | components['schemas']['PlainTextContentRead']
             | components['schemas']['RichTextContentRead']
             | components['schemas']['TextAnnotationContentRead'];
@@ -4421,6 +4877,7 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['AudioContentRead']
+            | components['schemas']['ImagesContentRead']
             | components['schemas']['PlainTextContentRead']
             | components['schemas']['RichTextContentRead']
             | components['schemas']['TextAnnotationContentRead'];
@@ -4483,6 +4940,7 @@ export interface operations {
       content: {
         'application/json':
           | components['schemas']['AudioContentUpdate']
+          | components['schemas']['ImagesContentUpdate']
           | components['schemas']['PlainTextContentUpdate']
           | components['schemas']['RichTextContentUpdate']
           | components['schemas']['TextAnnotationContentUpdate'];
@@ -4494,6 +4952,7 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['AudioContentRead']
+            | components['schemas']['ImagesContentRead']
             | components['schemas']['PlainTextContentRead']
             | components['schemas']['RichTextContentRead']
             | components['schemas']['TextAnnotationContentRead'];
@@ -5346,6 +5805,7 @@ export interface operations {
         content: {
           'application/json': (
             | components['schemas']['AudioResourceRead']
+            | components['schemas']['ImagesResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
             | components['schemas']['TextAnnotationResourceRead']
@@ -5366,6 +5826,7 @@ export interface operations {
       content: {
         'application/json':
           | components['schemas']['AudioResourceCreate']
+          | components['schemas']['ImagesResourceCreate']
           | components['schemas']['PlainTextResourceCreate']
           | components['schemas']['RichTextResourceCreate']
           | components['schemas']['TextAnnotationResourceCreate'];
@@ -5377,6 +5838,7 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['AudioResourceRead']
+            | components['schemas']['ImagesResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
             | components['schemas']['TextAnnotationResourceRead'];
@@ -5421,6 +5883,7 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['AudioResourceRead']
+            | components['schemas']['ImagesResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
             | components['schemas']['TextAnnotationResourceRead'];
@@ -5465,6 +5928,7 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['AudioResourceRead']
+            | components['schemas']['ImagesResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
             | components['schemas']['TextAnnotationResourceRead'];
@@ -5533,6 +5997,7 @@ export interface operations {
       content: {
         'application/json':
           | components['schemas']['AudioResourceUpdate']
+          | components['schemas']['ImagesResourceUpdate']
           | components['schemas']['PlainTextResourceUpdate']
           | components['schemas']['RichTextResourceUpdate']
           | components['schemas']['TextAnnotationResourceUpdate'];
@@ -5544,6 +6009,7 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['AudioResourceRead']
+            | components['schemas']['ImagesResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
             | components['schemas']['TextAnnotationResourceRead'];
@@ -5587,6 +6053,7 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['AudioResourceRead']
+            | components['schemas']['ImagesResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
             | components['schemas']['TextAnnotationResourceRead'];
@@ -5637,6 +6104,7 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['AudioResourceRead']
+            | components['schemas']['ImagesResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
             | components['schemas']['TextAnnotationResourceRead'];
@@ -5681,6 +6149,7 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['AudioResourceRead']
+            | components['schemas']['ImagesResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
             | components['schemas']['TextAnnotationResourceRead'];
@@ -5719,6 +6188,7 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['AudioResourceRead']
+            | components['schemas']['ImagesResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
             | components['schemas']['TextAnnotationResourceRead'];
@@ -5769,6 +6239,7 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['AudioResourceRead']
+            | components['schemas']['ImagesResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
             | components['schemas']['TextAnnotationResourceRead'];

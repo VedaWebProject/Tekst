@@ -451,6 +451,13 @@ resources:
         files: Audio Files
         url: URL
         caption: Caption
+    images:
+      label: Images
+      parenthesis: image gallery
+      contentFields:
+        files: Image Files
+        url: URL
+        caption: Caption
 
 contents:
   heading: Edit Resource Content

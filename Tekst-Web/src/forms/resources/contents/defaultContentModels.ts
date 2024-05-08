@@ -30,4 +30,13 @@ export const defaultContentModels = {
       },
     ],
   },
+  images: {
+    ...common,
+    files: [
+      {
+        url: undefined,
+        caption: undefined,
+      },
+    ],
+  },
 };

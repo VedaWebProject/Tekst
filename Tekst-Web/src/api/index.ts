@@ -110,7 +110,7 @@ export function saveDownload(blob: Blob, filename: string) {
 
 // export some common platform properties for use throughout codebase
 
-export const resourceTypes = ['plainText', 'richText', 'textAnnotation', 'audio'];
+export const resourceTypes = ['plainText', 'richText', 'textAnnotation', 'audio', 'images'];
 export const prioritizedMetadataKeys = ['author', 'year', 'language'];
 
 // export components types for use throughout codebase
@@ -224,6 +224,14 @@ export type AudioResourceRead = components['schemas']['AudioResourceRead'] &
     contents?: AudioContentRead[];
   };
 
+export type ImagesContentRead = components['schemas']['ImagesContentRead'];
+export type ImagesContentCreate = components['schemas']['ImagesContentCreate'];
+export type ImagesResourceCreate = components['schemas']['ImagesResourceCreate'];
+export type ImagesResourceRead = components['schemas']['ImagesResourceRead'] &
+  ResourceReadExtras & {
+    contents?: ImagesContentRead[];
+  };
+
 export type AnyContentCreate =
   paths['/contents']['post']['requestBody']['content']['application/json'];
 export type AnyContentRead =
@@ -267,6 +275,7 @@ export type PlainTextSearchQuery = components['schemas']['PlainTextSearchQuery']
 export type RichTextSearchQuery = components['schemas']['RichTextSearchQuery'];
 export type TextAnnotationSearchQuery = components['schemas']['TextAnnotationSearchQuery'];
 export type AudioSearchQuery = components['schemas']['AudioSearchQuery'];
+export type ImagesSearchQuery = components['schemas']['ImagesSearchQuery'];
 
 export type PublicUserSearchFilters = NonNullable<
   paths['/users/public']['get']['parameters']['query']

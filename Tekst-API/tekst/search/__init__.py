@@ -337,6 +337,7 @@ async def search_quick(
             "plainText",
             "richText",
             "audio",
+            "images",
         ],  # constrain target resource types
     )
 

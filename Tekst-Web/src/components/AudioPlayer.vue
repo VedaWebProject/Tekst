@@ -121,4 +121,7 @@ onMounted(() => {
 .audio-player {
   padding: 8px 0;
 }
+.caption {
+  white-space: pre-wrap;
+}
 </style>

@@ -85,7 +85,4 @@ onBeforeUpdate(() => {
   padding-top: var(--layout-gap);
   border-top: 1px solid var(--main-bg-color);
 }
-.audio-cation {
-  white-space: pre-wrap;
-}
 </style>

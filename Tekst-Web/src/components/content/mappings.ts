@@ -7,6 +7,7 @@ const contentComponents: Record<string, Component> = {
     () => import('@/components/content/TextAnnotationContent.vue')
   ),
   audio: defineAsyncComponent(() => import('@/components/content/AudioContent.vue')),
+  images: defineAsyncComponent(() => import('@/components/content/ImagesContent.vue')),
 };
 
 export default contentComponents;

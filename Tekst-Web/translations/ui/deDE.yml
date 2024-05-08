@@ -462,6 +462,13 @@ resources:
         files: Audio-Dateien
         url: URL
         caption: Beschriftung
+    images:
+      label: Bilder
+      parenthesis: Bildergalerie
+      contentFields:
+        files: Bild-Dateien
+        url: URL
+        caption: Beschriftung
 
 contents:
   heading: Ressourcen-Inhalte bearbeiten

@@ -22,20 +22,20 @@ from tekst.resources import ResourceSearchQuery, ResourceTypeABC
 from tekst.utils import validators as val
 
 
-class Audio(ResourceTypeABC):
-    """A resource type for audio files"""
+class Images(ResourceTypeABC):
+    """A resource type for image files"""
 
     @classmethod
-    def resource_model(cls) -> type["AudioResource"]:
-        return AudioResource
+    def resource_model(cls) -> type["ImagesResource"]:
+        return ImagesResource
 
     @classmethod
-    def content_model(cls) -> type["AudioContent"]:
-        return AudioContent
+    def content_model(cls) -> type["ImagesContent"]:
+        return ImagesContent
 
     @classmethod
-    def search_query_model(cls) -> type["AudioSearchQuery"]:
-        return AudioSearchQuery
+    def search_query_model(cls) -> type["ImagesSearchQuery"]:
+        return ImagesSearchQuery
 
     @classmethod
     def rtype_index_doc_props(cls) -> dict[str, Any]:
@@ -48,7 +48,7 @@ class Audio(ResourceTypeABC):
         }
 
     @classmethod
-    def rtype_index_doc_data(cls, content: "AudioContent") -> dict[str, Any]:
+    def rtype_index_doc_data(cls, content: "ImagesContent") -> dict[str, Any]:
         return {
             "caption": [
                 f.get("caption", "")
@@ -91,7 +91,7 @@ class Audio(ResourceTypeABC):
         cls,
         *,
         resource: ResourceBaseDocument,
-        contents: list["AudioContent"],
+        contents: list["ImagesContent"],
         export_format: ResourceExportFormat,
         file_path: Path,
     ) -> None:
@@ -106,8 +106,8 @@ class Audio(ResourceTypeABC):
     @classmethod
     async def _export_csv(
         cls,
-        resource: "AudioResource",
-        contents: list["AudioContent"],
+        resource: "ImagesResource",
+        contents: list["ImagesContent"],
         file_path: Path,
     ) -> None:
         text = await TextDocument.get(resource.text_id)
@@ -117,38 +117,38 @@ class Audio(ResourceTypeABC):
             csv_writer = csv.writer(csvfile, dialect="excel", quoting=csv.QUOTE_ALL)
             csv_writer.writerow(["LOCATION", "URL", "CAPTION", "COMMENT"])
             for content in contents:
-                for audio_file in content.files:
+                for image_file in content.files:
                     csv_writer.writerow(
                         [
                             full_location_labels.get(str(content.location_id), ""),
-                            audio_file.url,
-                            audio_file.caption,
+                            image_file.url,
+                            image_file.caption,
                             content.comment,
                         ]
                     )
 
 
-class GeneralAudioResourceConfig(ModelBase):
-    default_collapsed: DefaultCollapsedConfigType = False
+class GeneralImagesResourceConfig(ModelBase):
+    default_collapsed: DefaultCollapsedConfigType = True
     font: FontConfigType | None = None
 
 
-class AudioResourceConfig(ResourceConfigBase):
-    general: GeneralAudioResourceConfig = GeneralAudioResourceConfig()
+class ImagesResourceConfig(ResourceConfigBase):
+    general: GeneralImagesResourceConfig = GeneralImagesResourceConfig()
 
 
-class AudioResource(ResourceBase):
-    resource_type: Literal["audio"]  # camelCased resource type classname
-    config: AudioResourceConfig = AudioResourceConfig()
+class ImagesResource(ResourceBase):
+    resource_type: Literal["images"]  # camelCased resource type classname
+    config: ImagesResourceConfig = ImagesResourceConfig()
 
 
-class AudioFile(ModelBase):
+class ImageFile(ModelBase):
     url: Annotated[
         str,
         StringConstraints(min_length=1, max_length=2083, strip_whitespace=True),
         val.CleanupOneline,
         Field(
-            description="URL of the audio file",
+            description="URL of the image file",
         ),
     ]
     caption: Annotated[
@@ -156,28 +156,28 @@ class AudioFile(ModelBase):
         StringConstraints(max_length=8192, strip_whitespace=True),
         val.CleanupMultiline,
         Field(
-            description="Caption of the audio file",
+            description="Caption of the image",
         ),
     ] = None
 
 
-class AudioContent(ContentBase):
-    """A content of an audio resource"""
+class ImagesContent(ContentBase):
+    """A content of an images resource"""
 
-    resource_type: Literal["audio"]  # camelCased resource type classname
+    resource_type: Literal["images"]  # camelCased resource type classname
     files: Annotated[
-        list[AudioFile],
+        list[ImageFile],
         Field(
-            description="List of audio file objects",
+            description="List of image file objects",
             min_length=1,
             max_length=100,
         ),
     ]
 
 
-class AudioSearchQuery(ModelBase):
+class ImagesSearchQuery(ModelBase):
     resource_type: Annotated[
-        Literal["audio"],
+        Literal["images"],
         Field(
             alias="type",
             description="Type of the resource to search in",
