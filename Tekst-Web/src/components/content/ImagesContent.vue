@@ -27,7 +27,6 @@ const renderToolbar = ({ nodes }: ImageRenderToolbarProps) => {
     nodes.next,
     nodes.rotateCounterclockwise,
     nodes.rotateClockwise,
-    nodes.resizeToOriginalSize,
     nodes.zoomOut,
     nodes.zoomIn,
     nodes.close,

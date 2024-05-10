@@ -26,7 +26,13 @@ const browse = useBrowseStore();
 const route = useRoute();
 const position = computed<number>(() => parseInt(route.query.pos?.toString() || '0'));
 
+const toolbarRef = ref<HTMLElement | null>(null);
 const { ArrowLeft, ArrowRight } = useMagicKeys();
+
+const toolbarIsOverlapped = () => {
+  const rect = toolbarRef.value?.getBoundingClientRect();
+  return rect ? document.elementFromPoint(rect.x, rect.y) !== toolbarRef.value : false;
+};
 
 const showLocationSelectModal = ref(false);
 
@@ -55,16 +61,16 @@ function handleLocationSelect(locationPath: LocationRead[]) {
 
 // react to keyboard for in-/decreasing location
 whenever(ArrowRight, () => {
-  router.replace(getPrevNextRoute(1));
+  !toolbarIsOverlapped() && router.replace(getPrevNextRoute(1));
 });
 whenever(ArrowLeft, () => {
-  router.replace(getPrevNextRoute(-1));
+  !toolbarIsOverlapped() && router.replace(getPrevNextRoute(-1));
 });
 </script>
 
 <template>
   <!-- text location toolbar buttons -->
-  <div class="text-location">
+  <div ref="toolbarRef" class="text-location">
     <router-link
       v-slot="{
         // @ts-ignore
