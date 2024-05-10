@@ -3,6 +3,7 @@ import type { ImagesResourceRead } from '@/api';
 import { type CSSProperties } from 'vue';
 import { NFlex, NImage, NImageGroup } from 'naive-ui';
 import { useStateStore } from '@/stores';
+import { type ImageRenderToolbarProps } from 'naive-ui/es/image/src/public-types';
 
 const props = withDefaults(
   defineProps<{
@@ -19,6 +20,19 @@ const state = useStateStore();
 const fontStyle: CSSProperties = {
   fontFamily: props.resource.config?.general?.font || 'Tekst UI Font',
 };
+
+const renderToolbar = ({ nodes }: ImageRenderToolbarProps) => {
+  return [
+    nodes.prev,
+    nodes.next,
+    nodes.rotateCounterclockwise,
+    nodes.rotateClockwise,
+    nodes.resizeToOriginalSize,
+    nodes.zoomOut,
+    nodes.zoomIn,
+    nodes.close,
+  ];
+};
 </script>
 
 <template>
@@ -30,7 +44,7 @@ const fontStyle: CSSProperties = {
       :wrap="false"
       class="images-content"
     >
-      <n-image-group>
+      <n-image-group :render-toolbar="renderToolbar">
         <n-flex size="large">
           <div v-for="(image, index) in content.files" :key="index" class="image-container">
             <n-image
