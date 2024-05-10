@@ -45,6 +45,20 @@ function handleUpdate(field: string, value: any) {
               @keydown.enter.prevent
             />
           </n-form-item>
+          <!-- THUMBNAIL URL -->
+          <n-form-item
+            ignore-path-change
+            :label="$t('resources.types.images.contentFields.thumbUrl')"
+            :path="`files[${index}].url`"
+            :rule="contentFormRules.images.thumbUrl"
+            style="flex-grow: 2"
+          >
+            <n-input
+              v-model:value="model.files[index].thumbUrl"
+              :placeholder="$t('resources.types.images.contentFields.thumbUrl')"
+              @keydown.enter.prevent
+            />
+          </n-form-item>
           <!-- CAPTION -->
           <n-form-item
             ignore-path-change

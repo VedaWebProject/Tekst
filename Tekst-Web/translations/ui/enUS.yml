@@ -457,6 +457,7 @@ resources:
       contentFields:
         files: Image Files
         url: URL
+        thumbUrl: Thumbnail URL
         caption: Caption
 
 contents:

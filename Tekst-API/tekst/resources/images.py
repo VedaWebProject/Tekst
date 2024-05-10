@@ -115,13 +115,14 @@ class Images(ResourceTypeABC):
         full_location_labels = await text.full_location_labels(resource.level)
         with open(file_path, "w", newline="") as csvfile:
             csv_writer = csv.writer(csvfile, dialect="excel", quoting=csv.QUOTE_ALL)
-            csv_writer.writerow(["LOCATION", "URL", "CAPTION", "COMMENT"])
+            csv_writer.writerow(["LOCATION", "URL", "THUMB_URL", "CAPTION", "COMMENT"])
             for content in contents:
                 for image_file in content.files:
                     csv_writer.writerow(
                         [
                             full_location_labels.get(str(content.location_id), ""),
                             image_file.url,
+                            image_file.thumb_url,
                             image_file.caption,
                             content.comment,
                         ]
@@ -151,6 +152,14 @@ class ImageFile(ModelBase):
             description="URL of the image file",
         ),
     ]
+    thumb_url: Annotated[
+        str | None,
+        StringConstraints(max_length=2083, strip_whitespace=True),
+        val.CleanupOneline,
+        Field(
+            description="URL of the image file thumbnail",
+        ),
+    ] = None
     caption: Annotated[
         str | None,
         StringConstraints(max_length=8192, strip_whitespace=True),

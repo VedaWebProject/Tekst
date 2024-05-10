@@ -1393,6 +1393,11 @@ export interface components {
        */
       url: string;
       /**
+       * Thumburl
+       * @description URL of the image file thumbnail
+       */
+      thumbUrl?: string | null;
+      /**
        * Caption
        * @description Caption of the image
        */

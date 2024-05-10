@@ -8512,6 +8512,19 @@
             "title": "Url",
             "description": "URL of the image file"
           },
+          "thumbUrl": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 2083
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Thumburl",
+            "description": "URL of the image file thumbnail"
+          },
           "caption": {
             "anyOf": [
               {

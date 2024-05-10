@@ -48,7 +48,8 @@ const renderToolbar = ({ nodes }: ImageRenderToolbarProps) => {
           <div v-for="(image, index) in content.files" :key="index" class="image-container">
             <n-image
               lazy
-              :src="image.url"
+              :src="image.thumbUrl || image.url"
+              :preview-src="image.url"
               :alt="image.caption || undefined"
               :title="image.caption"
               :height="state.smallScreen ? '80px' : '140px'"

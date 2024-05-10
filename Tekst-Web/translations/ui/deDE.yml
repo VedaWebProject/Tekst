@@ -468,6 +468,7 @@ resources:
       contentFields:
         files: Bild-Dateien
         url: URL
+        thumbUrl: Miniatur-URL
         caption: Beschriftung
 
 contents:
