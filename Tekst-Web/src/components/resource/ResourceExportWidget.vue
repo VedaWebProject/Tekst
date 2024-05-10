@@ -13,7 +13,7 @@ import { useMessages } from '@/composables/messages';
 import { getFullLocationLabel } from '@/utils';
 import { useTasks } from '@/composables/tasks';
 
-const allFormatOptions = [
+const allFormatOptions: { label: string; value: ResourceExportFormat }[] = [
   {
     label: 'JSON',
     value: 'json',
@@ -36,11 +36,12 @@ const allFormatOptions = [
   },
 ];
 
-const supportedExportFormats = {
+const supportedExportFormats: Record<AnyResourceRead['resourceType'], ResourceExportFormat[]> = {
   plainText: ['json', 'tekst-json', 'csv'],
   richText: ['json', 'tekst-json', 'csv'],
   textAnnotation: ['json', 'tekst-json', 'csv'],
   audio: ['json', 'tekst-json', 'csv'],
+  images: ['json', 'tekst-json', 'csv'],
 };
 
 const props = defineProps<{
