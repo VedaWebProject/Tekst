@@ -45,7 +45,7 @@ const renderToolbar = ({ nodes }: ImageRenderToolbarProps) => {
       class="images-content"
     >
       <n-image-group :render-toolbar="renderToolbar">
-        <n-flex size="large">
+        <n-flex :size="[32, 22]">
           <div v-for="(image, index) in content.files" :key="index" class="image-container">
             <n-image
               lazy
