@@ -177,6 +177,7 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
   display: flex;
   align-items: center;
   gap: 8px;
+  font-size: var(--font-size-large);
   color: var(--accent-color);
   overflow: hidden;
   text-overflow: ellipsis;
