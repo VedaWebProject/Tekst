@@ -193,6 +193,10 @@ img {
   min-width: 0;
 }
 
+input.invalid-url {
+  color: var(--col-warning) !important;
+}
+
 /*
  * NUI overrides
  * Unfortunately, we need to override the default NUI styles in this hacky way

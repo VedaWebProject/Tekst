@@ -555,9 +555,3 @@ async function handleNearestChangeClick(mode: 'preceding' | 'subsequent') {
     @submit="handleJumpToSubmit"
   />
 </template>
-
-<style scoped>
-:deep(input.invalid-url) {
-  color: var(--col-warning);
-}
-</style>

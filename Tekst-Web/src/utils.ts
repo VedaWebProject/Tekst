@@ -54,9 +54,9 @@ export async function checkUrl(url?: string): Promise<boolean> {
   if (!url) return false;
   try {
     new URL(url);
+    const response = await fetch(url, { method: 'HEAD' });
+    return response.ok;
   } catch {
     return false;
   }
-  const response = await fetch(url, { method: 'HEAD' });
-  return response.ok;
 }

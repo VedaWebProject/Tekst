@@ -22,6 +22,7 @@ import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import UserAvatar from '@/components/user/UserAvatar.vue';
 import { ManageAccountIcon, NoImageIcon } from '@/icons';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
+import { checkUrl } from '@/utils';
 
 const dialog = useDialog();
 const auth = useAuthStore();
@@ -283,6 +284,16 @@ async function handleDeleteAccount() {
     },
   });
 }
+
+async function checkUrlInput(input: HTMLInputElement) {
+  const url = input.value;
+  if (!(await checkUrl(url))) {
+    message.warning($t('contents.warnUrlInvalid', { url }), undefined, 3);
+    input.classList.add('invalid-url');
+  } else {
+    input.classList.remove('invalid-url');
+  }
+}
 </script>
 
 <template>
@@ -303,6 +314,7 @@ async function handleDeleteAccount() {
       label-width="auto"
       require-mark-placement="right-hanging"
     >
+      <!-- USERNAME -->
       <n-form-item path="username" :label="$t('models.user.username')">
         <n-input
           v-model:value="userDataFormModel.username"
@@ -311,6 +323,7 @@ async function handleDeleteAccount() {
           @keydown.enter.prevent
         />
       </n-form-item>
+      <!-- NAME -->
       <n-form-item path="name" :label="$t('models.user.name')">
         <n-input
           v-model:value="userDataFormModel.name"
@@ -319,6 +332,7 @@ async function handleDeleteAccount() {
           @keydown.enter.prevent
         />
       </n-form-item>
+      <!-- AFFILIATION -->
       <n-form-item path="affiliation" :label="$t('models.user.affiliation')">
         <n-input
           v-model:value="userDataFormModel.affiliation"
@@ -326,19 +340,21 @@ async function handleDeleteAccount() {
           :placeholder="$t('models.user.affiliation')"
         />
       </n-form-item>
+      <!-- AVATAR URL -->
       <n-form-item path="avatarUrl" :label="$t('models.user.avatarUrl')">
         <n-input
           v-model:value="userDataFormModel.avatarUrl"
-          type="text"
           :placeholder="$t('models.user.avatarUrl')"
+          @input-blur="checkUrlInput($event.target as HTMLInputElement)"
         />
         <user-avatar
-          :avatar-url="auth.user?.avatarUrl || undefined"
+          :avatar-url="userDataFormModel.avatarUrl || undefined"
           :size="32"
           :fallback-icon="NoImageIcon"
           style="margin-left: var(--content-gap)"
         />
       </n-form-item>
+      <!-- BIO -->
       <n-form-item path="bio" :label="$t('models.user.bio')">
         <n-input
           v-model:value="userDataFormModel.bio"
