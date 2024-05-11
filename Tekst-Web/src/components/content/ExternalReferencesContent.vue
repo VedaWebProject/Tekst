@@ -20,16 +20,16 @@ const fontStyle: CSSProperties = {
 </script>
 
 <template>
-  <div v-if="!reduced">
+  <div>
     <n-flex
       v-for="content in resource.contents"
       :key="content.id"
-      vertical
+      :vertical="!reduced"
       :wrap="false"
       class="ext-ref-content text-medium"
     >
       <n-flex v-for="(link, index) in content.links" :key="index" align="center" :wrap="false">
-        <n-icon :component="LinkIcon" />
+        <n-icon v-if="!reduced" :component="LinkIcon" />
         <a
           :href="link.url"
           target="_blank"
@@ -38,13 +38,11 @@ const fontStyle: CSSProperties = {
           :style="fontStyle"
           rel="noopener noreferrer"
         >
-          {{ link.caption }}
+          <n-icon v-if="reduced" :component="LinkIcon" size="24" />
+          <template v-else>{{ link.caption }}</template>
         </a>
       </n-flex>
     </n-flex>
-  </div>
-  <div v-else class="translucent i ui-font">
-    {{ $t('contents.msgContentNoReducedView') }}
   </div>
 </template>
 

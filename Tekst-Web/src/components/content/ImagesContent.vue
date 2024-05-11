@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ImagesResourceRead } from '@/api';
-import { type CSSProperties } from 'vue';
+import { computed, type CSSProperties } from 'vue';
 import { NFlex, NImage, NImageGroup } from 'naive-ui';
 import { useStateStore } from '@/stores';
 import { type ImageRenderToolbarProps } from 'naive-ui/es/image/src/public-types';
@@ -17,6 +17,9 @@ const props = withDefaults(
 
 const state = useStateStore();
 
+const imageHeight = computed(() =>
+  state.smallScreen ? (props.reduced ? '60px' : '80px') : props.reduced ? '60px' : '140px'
+);
 const fontStyle: CSSProperties = {
   fontFamily: props.resource.config?.general?.font || 'Tekst UI Font',
 };
@@ -35,7 +38,7 @@ const renderToolbar = ({ nodes }: ImageRenderToolbarProps) => {
 </script>
 
 <template>
-  <div v-if="!reduced">
+  <div>
     <n-flex
       v-for="content in resource.contents"
       :key="content.id"
@@ -44,7 +47,7 @@ const renderToolbar = ({ nodes }: ImageRenderToolbarProps) => {
       class="images-content"
     >
       <n-image-group :render-toolbar="renderToolbar">
-        <n-flex :size="[32, 22]">
+        <n-flex :size="reduced ? [20, 10] : [32, 22]">
           <figure v-for="(image, index) in content.files" :key="index" class="image-container">
             <n-image
               lazy
@@ -52,18 +55,15 @@ const renderToolbar = ({ nodes }: ImageRenderToolbarProps) => {
               :preview-src="image.url"
               :alt="image.caption || undefined"
               :title="image.caption"
-              :height="state.smallScreen ? '80px' : '140px'"
+              :height="imageHeight"
             />
-            <figcaption class="caption text-small translucent" :style="fontStyle">
+            <figcaption v-if="!reduced" class="caption text-small translucent" :style="fontStyle">
               {{ image.caption }}
             </figcaption>
           </figure>
         </n-flex>
       </n-image-group>
     </n-flex>
-  </div>
-  <div v-else class="translucent i ui-font">
-    {{ $t('contents.msgContentNoReducedView') }}
   </div>
 </template>
 
