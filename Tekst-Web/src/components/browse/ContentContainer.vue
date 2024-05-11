@@ -120,6 +120,8 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
 
 <style scoped>
 .content-container {
+  padding-top: var(--content-gap);
+  padding-bottom: var(--content-gap);
   position: relative;
   font-size: var(--font-size);
 }
