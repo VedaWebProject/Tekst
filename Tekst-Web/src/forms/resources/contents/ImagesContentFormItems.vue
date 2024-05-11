@@ -4,18 +4,32 @@ import { NFlex, NFormItem, NInput, NDynamicInput } from 'naive-ui';
 import { contentFormRules } from '@/forms/formRules';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import NInputOsk from '@/components/NInputOsk.vue';
+import { useMessages } from '@/composables/messages';
+import { checkUrl } from '@/utils';
+import { $t } from '@/i18n';
 
 defineProps<{
   resource: ImagesResourceRead;
 }>();
 
 const model = defineModel<ImagesContentCreate>({ required: true });
+const { message } = useMessages();
 
 function handleUpdate(field: string, value: any) {
   model.value = {
     ...model.value,
     [field]: value,
   };
+}
+
+async function checkUrlInput(input: HTMLInputElement) {
+  const url = input.value;
+  if (!(await checkUrl(url))) {
+    message.warning($t('contents.warnUrlInvalid', { url }), undefined, 3);
+    input.classList.add('invalid-url');
+  } else {
+    input.classList.remove('invalid-url');
+  }
 }
 </script>
 
@@ -42,6 +56,7 @@ function handleUpdate(field: string, value: any) {
             <n-input
               v-model:value="model.files[index].url"
               :placeholder="$t('resources.types.images.contentFields.url')"
+              @input-blur="checkUrlInput($event.target as HTMLInputElement)"
               @keydown.enter.prevent
             />
           </n-form-item>
@@ -56,6 +71,7 @@ function handleUpdate(field: string, value: any) {
             <n-input
               v-model:value="model.files[index].thumbUrl"
               :placeholder="$t('resources.types.images.contentFields.thumbUrl')"
+              @input-blur="checkUrlInput($event.target as HTMLInputElement)"
               @keydown.enter.prevent
             />
           </n-form-item>

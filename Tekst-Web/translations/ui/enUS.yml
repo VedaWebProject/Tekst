@@ -483,6 +483,7 @@ contents:
     You are shown content from the original resource. You may copy it
     or make changes and save them as content of this resource version.
   msgContentNoReducedView: This content cannot be displayed in reduced reading view.
+  warnUrlInvalid: 'The URL seems to be invalid: {url}'
 
 account:
   account: Account

@@ -49,3 +49,14 @@ export function getFullLocationLabel(
     })
     .join(text?.locDelim || ', ');
 }
+
+export async function checkUrl(url?: string): Promise<boolean> {
+  if (!url) return false;
+  try {
+    new URL(url);
+  } catch {
+    return false;
+  }
+  const response = await fetch(url, { method: 'HEAD' });
+  return response.ok;
+}
