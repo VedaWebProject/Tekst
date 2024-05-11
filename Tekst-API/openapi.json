@@ -247,6 +247,9 @@
                         "$ref": "#/components/schemas/AudioContentRead"
                       },
                       {
+                        "$ref": "#/components/schemas/ExternalReferenceContentRead"
+                      },
+                      {
                         "$ref": "#/components/schemas/ImagesContentRead"
                       },
                       {
@@ -263,6 +266,7 @@
                       "propertyName": "resourceType",
                       "mapping": {
                         "audio": "#/components/schemas/AudioContentRead",
+                        "externalReference": "#/components/schemas/ExternalReferenceContentRead",
                         "images": "#/components/schemas/ImagesContentRead",
                         "plainText": "#/components/schemas/PlainTextContentRead",
                         "richText": "#/components/schemas/RichTextContentRead",
@@ -755,6 +759,9 @@
                     "$ref": "#/components/schemas/AudioContentCreate"
                   },
                   {
+                    "$ref": "#/components/schemas/ExternalReferenceContentCreate"
+                  },
+                  {
                     "$ref": "#/components/schemas/ImagesContentCreate"
                   },
                   {
@@ -771,6 +778,7 @@
                   "propertyName": "resourceType",
                   "mapping": {
                     "audio": "#/components/schemas/AudioContentCreate",
+                    "externalReference": "#/components/schemas/ExternalReferenceContentCreate",
                     "images": "#/components/schemas/ImagesContentCreate",
                     "plainText": "#/components/schemas/PlainTextContentCreate",
                     "richText": "#/components/schemas/RichTextContentCreate",
@@ -793,6 +801,9 @@
                       "$ref": "#/components/schemas/AudioContentRead"
                     },
                     {
+                      "$ref": "#/components/schemas/ExternalReferenceContentRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/ImagesContentRead"
                     },
                     {
@@ -809,6 +820,7 @@
                     "propertyName": "resourceType",
                     "mapping": {
                       "audio": "#/components/schemas/AudioContentRead",
+                      "externalReference": "#/components/schemas/ExternalReferenceContentRead",
                       "images": "#/components/schemas/ImagesContentRead",
                       "plainText": "#/components/schemas/PlainTextContentRead",
                       "richText": "#/components/schemas/RichTextContentRead",
@@ -926,6 +938,9 @@
                         "$ref": "#/components/schemas/AudioContentRead"
                       },
                       {
+                        "$ref": "#/components/schemas/ExternalReferenceContentRead"
+                      },
+                      {
                         "$ref": "#/components/schemas/ImagesContentRead"
                       },
                       {
@@ -942,6 +957,7 @@
                       "propertyName": "resourceType",
                       "mapping": {
                         "audio": "#/components/schemas/AudioContentRead",
+                        "externalReference": "#/components/schemas/ExternalReferenceContentRead",
                         "images": "#/components/schemas/ImagesContentRead",
                         "plainText": "#/components/schemas/PlainTextContentRead",
                         "richText": "#/components/schemas/RichTextContentRead",
@@ -1006,6 +1022,9 @@
                       "$ref": "#/components/schemas/AudioContentRead"
                     },
                     {
+                      "$ref": "#/components/schemas/ExternalReferenceContentRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/ImagesContentRead"
                     },
                     {
@@ -1022,6 +1041,7 @@
                     "propertyName": "resourceType",
                     "mapping": {
                       "audio": "#/components/schemas/AudioContentRead",
+                      "externalReference": "#/components/schemas/ExternalReferenceContentRead",
                       "images": "#/components/schemas/ImagesContentRead",
                       "plainText": "#/components/schemas/PlainTextContentRead",
                       "richText": "#/components/schemas/RichTextContentRead",
@@ -1091,6 +1111,9 @@
                     "$ref": "#/components/schemas/AudioContentUpdate"
                   },
                   {
+                    "$ref": "#/components/schemas/ExternalReferenceContentUpdate"
+                  },
+                  {
                     "$ref": "#/components/schemas/ImagesContentUpdate"
                   },
                   {
@@ -1107,6 +1130,7 @@
                   "propertyName": "resourceType",
                   "mapping": {
                     "audio": "#/components/schemas/AudioContentUpdate",
+                    "externalReference": "#/components/schemas/ExternalReferenceContentUpdate",
                     "images": "#/components/schemas/ImagesContentUpdate",
                     "plainText": "#/components/schemas/PlainTextContentUpdate",
                     "richText": "#/components/schemas/RichTextContentUpdate",
@@ -1129,6 +1153,9 @@
                       "$ref": "#/components/schemas/AudioContentRead"
                     },
                     {
+                      "$ref": "#/components/schemas/ExternalReferenceContentRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/ImagesContentRead"
                     },
                     {
@@ -1145,6 +1172,7 @@
                     "propertyName": "resourceType",
                     "mapping": {
                       "audio": "#/components/schemas/AudioContentRead",
+                      "externalReference": "#/components/schemas/ExternalReferenceContentRead",
                       "images": "#/components/schemas/ImagesContentRead",
                       "plainText": "#/components/schemas/PlainTextContentRead",
                       "richText": "#/components/schemas/RichTextContentRead",
@@ -2968,6 +2996,9 @@
                     "$ref": "#/components/schemas/AudioResourceCreate"
                   },
                   {
+                    "$ref": "#/components/schemas/ExternalReferenceResourceCreate"
+                  },
+                  {
                     "$ref": "#/components/schemas/ImagesResourceCreate"
                   },
                   {
@@ -2984,6 +3015,7 @@
                   "propertyName": "resourceType",
                   "mapping": {
                     "audio": "#/components/schemas/AudioResourceCreate",
+                    "externalReference": "#/components/schemas/ExternalReferenceResourceCreate",
                     "images": "#/components/schemas/ImagesResourceCreate",
                     "plainText": "#/components/schemas/PlainTextResourceCreate",
                     "richText": "#/components/schemas/RichTextResourceCreate",
@@ -3006,6 +3038,9 @@
                       "$ref": "#/components/schemas/AudioResourceRead"
                     },
                     {
+                      "$ref": "#/components/schemas/ExternalReferenceResourceRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/ImagesResourceRead"
                     },
                     {
@@ -3022,6 +3057,7 @@
                     "propertyName": "resourceType",
                     "mapping": {
                       "audio": "#/components/schemas/AudioResourceRead",
+                      "externalReference": "#/components/schemas/ExternalReferenceResourceRead",
                       "images": "#/components/schemas/ImagesResourceRead",
                       "plainText": "#/components/schemas/PlainTextResourceRead",
                       "richText": "#/components/schemas/RichTextResourceRead",
@@ -3151,6 +3187,9 @@
                         "$ref": "#/components/schemas/AudioResourceRead"
                       },
                       {
+                        "$ref": "#/components/schemas/ExternalReferenceResourceRead"
+                      },
+                      {
                         "$ref": "#/components/schemas/ImagesResourceRead"
                       },
                       {
@@ -3167,6 +3206,7 @@
                       "propertyName": "resourceType",
                       "mapping": {
                         "audio": "#/components/schemas/AudioResourceRead",
+                        "externalReference": "#/components/schemas/ExternalReferenceResourceRead",
                         "images": "#/components/schemas/ImagesResourceRead",
                         "plainText": "#/components/schemas/PlainTextResourceRead",
                         "richText": "#/components/schemas/RichTextResourceRead",
@@ -3230,6 +3270,9 @@
                       "$ref": "#/components/schemas/AudioResourceRead"
                     },
                     {
+                      "$ref": "#/components/schemas/ExternalReferenceResourceRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/ImagesResourceRead"
                     },
                     {
@@ -3246,6 +3289,7 @@
                     "propertyName": "resourceType",
                     "mapping": {
                       "audio": "#/components/schemas/AudioResourceRead",
+                      "externalReference": "#/components/schemas/ExternalReferenceResourceRead",
                       "images": "#/components/schemas/ImagesResourceRead",
                       "plainText": "#/components/schemas/PlainTextResourceRead",
                       "richText": "#/components/schemas/RichTextResourceRead",
@@ -3337,6 +3381,9 @@
                     "$ref": "#/components/schemas/AudioResourceUpdate"
                   },
                   {
+                    "$ref": "#/components/schemas/ExternalReferenceResourceUpdate"
+                  },
+                  {
                     "$ref": "#/components/schemas/ImagesResourceUpdate"
                   },
                   {
@@ -3353,6 +3400,7 @@
                   "propertyName": "resourceType",
                   "mapping": {
                     "audio": "#/components/schemas/AudioResourceUpdate",
+                    "externalReference": "#/components/schemas/ExternalReferenceResourceUpdate",
                     "images": "#/components/schemas/ImagesResourceUpdate",
                     "plainText": "#/components/schemas/PlainTextResourceUpdate",
                     "richText": "#/components/schemas/RichTextResourceUpdate",
@@ -3375,6 +3423,9 @@
                       "$ref": "#/components/schemas/AudioResourceRead"
                     },
                     {
+                      "$ref": "#/components/schemas/ExternalReferenceResourceRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/ImagesResourceRead"
                     },
                     {
@@ -3391,6 +3442,7 @@
                     "propertyName": "resourceType",
                     "mapping": {
                       "audio": "#/components/schemas/AudioResourceRead",
+                      "externalReference": "#/components/schemas/ExternalReferenceResourceRead",
                       "images": "#/components/schemas/ImagesResourceRead",
                       "plainText": "#/components/schemas/PlainTextResourceRead",
                       "richText": "#/components/schemas/RichTextResourceRead",
@@ -3471,6 +3523,9 @@
                       "$ref": "#/components/schemas/AudioResourceRead"
                     },
                     {
+                      "$ref": "#/components/schemas/ExternalReferenceResourceRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/ImagesResourceRead"
                     },
                     {
@@ -3487,6 +3542,7 @@
                     "propertyName": "resourceType",
                     "mapping": {
                       "audio": "#/components/schemas/AudioResourceRead",
+                      "externalReference": "#/components/schemas/ExternalReferenceResourceRead",
                       "images": "#/components/schemas/ImagesResourceRead",
                       "plainText": "#/components/schemas/PlainTextResourceRead",
                       "richText": "#/components/schemas/RichTextResourceRead",
@@ -3643,6 +3699,9 @@
                       "$ref": "#/components/schemas/AudioResourceRead"
                     },
                     {
+                      "$ref": "#/components/schemas/ExternalReferenceResourceRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/ImagesResourceRead"
                     },
                     {
@@ -3659,6 +3718,7 @@
                     "propertyName": "resourceType",
                     "mapping": {
                       "audio": "#/components/schemas/AudioResourceRead",
+                      "externalReference": "#/components/schemas/ExternalReferenceResourceRead",
                       "images": "#/components/schemas/ImagesResourceRead",
                       "plainText": "#/components/schemas/PlainTextResourceRead",
                       "richText": "#/components/schemas/RichTextResourceRead",
@@ -3761,6 +3821,9 @@
                       "$ref": "#/components/schemas/AudioResourceRead"
                     },
                     {
+                      "$ref": "#/components/schemas/ExternalReferenceResourceRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/ImagesResourceRead"
                     },
                     {
@@ -3777,6 +3840,7 @@
                     "propertyName": "resourceType",
                     "mapping": {
                       "audio": "#/components/schemas/AudioResourceRead",
+                      "externalReference": "#/components/schemas/ExternalReferenceResourceRead",
                       "images": "#/components/schemas/ImagesResourceRead",
                       "plainText": "#/components/schemas/PlainTextResourceRead",
                       "richText": "#/components/schemas/RichTextResourceRead",
@@ -3869,6 +3933,9 @@
                       "$ref": "#/components/schemas/AudioResourceRead"
                     },
                     {
+                      "$ref": "#/components/schemas/ExternalReferenceResourceRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/ImagesResourceRead"
                     },
                     {
@@ -3885,6 +3952,7 @@
                     "propertyName": "resourceType",
                     "mapping": {
                       "audio": "#/components/schemas/AudioResourceRead",
+                      "externalReference": "#/components/schemas/ExternalReferenceResourceRead",
                       "images": "#/components/schemas/ImagesResourceRead",
                       "plainText": "#/components/schemas/PlainTextResourceRead",
                       "richText": "#/components/schemas/RichTextResourceRead",
@@ -3967,6 +4035,9 @@
                       "$ref": "#/components/schemas/AudioResourceRead"
                     },
                     {
+                      "$ref": "#/components/schemas/ExternalReferenceResourceRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/ImagesResourceRead"
                     },
                     {
@@ -3983,6 +4054,7 @@
                     "propertyName": "resourceType",
                     "mapping": {
                       "audio": "#/components/schemas/AudioResourceRead",
+                      "externalReference": "#/components/schemas/ExternalReferenceResourceRead",
                       "images": "#/components/schemas/ImagesResourceRead",
                       "plainText": "#/components/schemas/PlainTextResourceRead",
                       "richText": "#/components/schemas/RichTextResourceRead",
@@ -4085,6 +4157,9 @@
                       "$ref": "#/components/schemas/AudioResourceRead"
                     },
                     {
+                      "$ref": "#/components/schemas/ExternalReferenceResourceRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/ImagesResourceRead"
                     },
                     {
@@ -4101,6 +4176,7 @@
                     "propertyName": "resourceType",
                     "mapping": {
                       "audio": "#/components/schemas/AudioResourceRead",
+                      "externalReference": "#/components/schemas/ExternalReferenceResourceRead",
                       "images": "#/components/schemas/ImagesResourceRead",
                       "plainText": "#/components/schemas/PlainTextResourceRead",
                       "richText": "#/components/schemas/RichTextResourceRead",
@@ -8295,6 +8371,832 @@
         ],
         "title": "ErrorModel"
       },
+      "ExternalReferenceContentCreate": {
+        "properties": {
+          "resourceId": {
+            "type": "string",
+            "title": "Resourceid",
+            "description": "Resource ID",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "resourceType": {
+            "const": "externalReference",
+            "title": "Resourcetype"
+          },
+          "locationId": {
+            "type": "string",
+            "title": "Locationid",
+            "description": "Text location ID",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 50000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment",
+            "description": "Plain text, potentially multiline comment that will be displayed with the content"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes",
+            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
+          },
+          "links": {
+            "items": {
+              "$ref": "#/components/schemas/ExternalReferenceLink"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "minItems": 1,
+            "title": "Links",
+            "description": "List of external reference link objects"
+          }
+        },
+        "type": "object",
+        "required": [
+          "resourceId",
+          "resourceType",
+          "locationId",
+          "links"
+        ],
+        "title": "ExternalReferenceContentCreate"
+      },
+      "ExternalReferenceContentRead": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "resourceId": {
+            "type": "string",
+            "title": "Resourceid",
+            "description": "Resource ID",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "resourceType": {
+            "const": "externalReference",
+            "title": "Resourcetype"
+          },
+          "locationId": {
+            "type": "string",
+            "title": "Locationid",
+            "description": "Text location ID",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 50000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment",
+            "description": "Plain text, potentially multiline comment that will be displayed with the content"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes",
+            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
+          },
+          "links": {
+            "items": {
+              "$ref": "#/components/schemas/ExternalReferenceLink"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "minItems": 1,
+            "title": "Links",
+            "description": "List of external reference link objects"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "id",
+          "resourceId",
+          "resourceType",
+          "locationId",
+          "links"
+        ],
+        "title": "ExternalReferenceContentRead"
+      },
+      "ExternalReferenceContentUpdate": {
+        "properties": {
+          "resourceId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resourceid"
+          },
+          "resourceType": {
+            "const": "externalReference",
+            "title": "Resourcetype"
+          },
+          "locationId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Locationid"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 50000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment",
+            "description": "Plain text, potentially multiline comment that will be displayed with the content"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes",
+            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
+          },
+          "links": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ExternalReferenceLink"
+                },
+                "type": "array",
+                "maxItems": 100,
+                "minItems": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Links"
+          }
+        },
+        "type": "object",
+        "required": [
+          "resourceType"
+        ],
+        "title": "ExternalReferenceContentUpdate"
+      },
+      "ExternalReferenceLink": {
+        "properties": {
+          "url": {
+            "type": "string",
+            "maxLength": 2083,
+            "minLength": 1,
+            "title": "Url",
+            "description": "URL of the link"
+          },
+          "caption": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 8192
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Caption",
+            "description": "Caption of the link"
+          }
+        },
+        "type": "object",
+        "required": [
+          "url"
+        ],
+        "title": "ExternalReferenceLink"
+      },
+      "ExternalReferenceResourceConfig": {
+        "properties": {
+          "common": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CommonResourceConfig"
+              }
+            ],
+            "default": {
+              "sortOrder": 100,
+              "defaultActive": true,
+              "showOnParentLevel": false
+            }
+          },
+          "general": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GeneralExternalReferenceResourceConfig"
+              }
+            ],
+            "default": {}
+          }
+        },
+        "type": "object",
+        "title": "ExternalReferenceResourceConfig"
+      },
+      "ExternalReferenceResourceCreate": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Title",
+            "description": "Title of this resource"
+          },
+          "description": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Description",
+            "description": "Short, concise description of this resource",
+            "default": []
+          },
+          "textId": {
+            "type": "string",
+            "title": "Textid",
+            "description": "ID of the text this resource belongs to",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "level": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Level",
+            "description": "Text level this resource belongs to"
+          },
+          "resourceType": {
+            "const": "externalReference",
+            "title": "Resourcetype"
+          },
+          "originalId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Originalid",
+            "description": "If this is a version of another resource, this ID references the original"
+          },
+          "ownerId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ownerid",
+            "description": "User owning this resource"
+          },
+          "sharedRead": {
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Sharedread",
+            "description": "Users with shared read access to this resource",
+            "default": []
+          },
+          "sharedWrite": {
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Sharedwrite",
+            "description": "Users with shared write access to this resource",
+            "default": []
+          },
+          "public": {
+            "type": "boolean",
+            "title": "Public",
+            "description": "Publication status of this resource",
+            "default": false
+          },
+          "proposed": {
+            "type": "boolean",
+            "title": "Proposed",
+            "description": "Whether this resource has been proposed for publication",
+            "default": false
+          },
+          "citation": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Citation",
+            "description": "Citation details for this resource"
+          },
+          "meta": {
+            "items": {
+              "$ref": "#/components/schemas/Metadate"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "minItems": 0,
+            "title": "Meta",
+            "description": "Arbitrary metadata",
+            "default": []
+          },
+          "comment": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceCommentTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Comment",
+            "description": "Plain text, potentially multiline comment on this resource",
+            "default": []
+          },
+          "config": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExternalReferenceResourceConfig"
+              }
+            ],
+            "default": {
+              "common": {
+                "defaultActive": true,
+                "showOnParentLevel": false,
+                "sortOrder": 100
+              },
+              "general": {}
+            }
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "textId",
+          "level",
+          "resourceType"
+        ],
+        "title": "ExternalReferenceResourceCreate"
+      },
+      "ExternalReferenceResourceRead": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "writable": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Writable",
+            "description": "Whether this resource is writable for the requesting user"
+          },
+          "owner": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/UserReadPublic"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Public user data for user owning this resource"
+          },
+          "sharedReadUsers": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/UserReadPublic"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sharedreadusers",
+            "description": "Public user data for users allowed to read this resource"
+          },
+          "sharedWriteUsers": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/UserReadPublic"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sharedwriteusers",
+            "description": "Public user data for users allowed to write this resource"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Title",
+            "description": "Title of this resource"
+          },
+          "description": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Description",
+            "description": "Short, concise description of this resource",
+            "default": []
+          },
+          "textId": {
+            "type": "string",
+            "title": "Textid",
+            "description": "ID of the text this resource belongs to",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "level": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Level",
+            "description": "Text level this resource belongs to"
+          },
+          "resourceType": {
+            "const": "externalReference",
+            "title": "Resourcetype"
+          },
+          "originalId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Originalid",
+            "description": "If this is a version of another resource, this ID references the original"
+          },
+          "ownerId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ownerid",
+            "description": "User owning this resource"
+          },
+          "sharedRead": {
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Sharedread",
+            "description": "Users with shared read access to this resource",
+            "default": []
+          },
+          "sharedWrite": {
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Sharedwrite",
+            "description": "Users with shared write access to this resource",
+            "default": []
+          },
+          "public": {
+            "type": "boolean",
+            "title": "Public",
+            "description": "Publication status of this resource",
+            "default": false
+          },
+          "proposed": {
+            "type": "boolean",
+            "title": "Proposed",
+            "description": "Whether this resource has been proposed for publication",
+            "default": false
+          },
+          "citation": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Citation",
+            "description": "Citation details for this resource"
+          },
+          "meta": {
+            "items": {
+              "$ref": "#/components/schemas/Metadate"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "minItems": 0,
+            "title": "Meta",
+            "description": "Arbitrary metadata",
+            "default": []
+          },
+          "comment": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceCommentTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Comment",
+            "description": "Plain text, potentially multiline comment on this resource",
+            "default": []
+          },
+          "config": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExternalReferenceResourceConfig"
+              }
+            ],
+            "default": {
+              "common": {
+                "defaultActive": true,
+                "showOnParentLevel": false,
+                "sortOrder": 100
+              },
+              "general": {}
+            }
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "textId",
+          "level",
+          "resourceType"
+        ],
+        "title": "ExternalReferenceResourceRead"
+      },
+      "ExternalReferenceResourceUpdate": {
+        "properties": {
+          "title": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 64,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          },
+          "description": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Description",
+            "description": "Short, concise description of this resource",
+            "default": []
+          },
+          "textId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Textid"
+          },
+          "level": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Level"
+          },
+          "resourceType": {
+            "const": "externalReference",
+            "title": "Resourcetype"
+          },
+          "originalId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Originalid",
+            "description": "If this is a version of another resource, this ID references the original"
+          },
+          "ownerId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ownerid",
+            "description": "User owning this resource"
+          },
+          "sharedRead": {
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Sharedread",
+            "description": "Users with shared read access to this resource",
+            "default": []
+          },
+          "sharedWrite": {
+            "items": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Sharedwrite",
+            "description": "Users with shared write access to this resource",
+            "default": []
+          },
+          "public": {
+            "type": "boolean",
+            "title": "Public",
+            "description": "Publication status of this resource",
+            "default": false
+          },
+          "proposed": {
+            "type": "boolean",
+            "title": "Proposed",
+            "description": "Whether this resource has been proposed for publication",
+            "default": false
+          },
+          "citation": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Citation",
+            "description": "Citation details for this resource"
+          },
+          "meta": {
+            "items": {
+              "$ref": "#/components/schemas/Metadate"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "minItems": 0,
+            "title": "Meta",
+            "description": "Arbitrary metadata",
+            "default": []
+          },
+          "comment": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceCommentTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Comment",
+            "description": "Plain text, potentially multiline comment on this resource",
+            "default": []
+          },
+          "config": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExternalReferenceResourceConfig"
+              }
+            ],
+            "default": {
+              "common": {
+                "defaultActive": true,
+                "showOnParentLevel": false,
+                "sortOrder": 100
+              },
+              "general": {}
+            }
+          }
+        },
+        "type": "object",
+        "required": [
+          "resourceType"
+        ],
+        "title": "ExternalReferenceResourceUpdate"
+      },
+      "ExternalReferenceSearchQuery": {
+        "properties": {
+          "type": {
+            "const": "externalReference",
+            "title": "Type",
+            "description": "Type of the resource to search in"
+          },
+          "caption": {
+            "type": "string",
+            "maxLength": 512,
+            "title": "Caption",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "title": "ExternalReferenceSearchQuery"
+      },
       "GeneralAudioResourceConfig": {
         "properties": {
           "defaultCollapsed": {
@@ -8306,25 +9208,36 @@
           "font": {
             "anyOf": [
               {
-                "anyOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "type": "null"
-                  }
-                ],
-                "description": "Name of the font to use for this resource."
+                "type": "string"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Font"
+            "title": "Font",
+            "description": "Name of the font to use for this resource."
           }
         },
         "type": "object",
         "title": "GeneralAudioResourceConfig"
+      },
+      "GeneralExternalReferenceResourceConfig": {
+        "properties": {
+          "font": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Font",
+            "description": "Name of the font to use for this resource."
+          }
+        },
+        "type": "object",
+        "title": "GeneralExternalReferenceResourceConfig"
       },
       "GeneralImagesResourceConfig": {
         "properties": {
@@ -8337,21 +9250,14 @@
           "font": {
             "anyOf": [
               {
-                "anyOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "type": "null"
-                  }
-                ],
-                "description": "Name of the font to use for this resource."
+                "type": "string"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Font"
+            "title": "Font",
+            "description": "Name of the font to use for this resource."
           }
         },
         "type": "object",
@@ -8374,21 +9280,14 @@
           "font": {
             "anyOf": [
               {
-                "anyOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "type": "null"
-                  }
-                ],
-                "description": "Name of the font to use for this resource."
+                "type": "string"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Font"
+            "title": "Font",
+            "description": "Name of the font to use for this resource."
           }
         },
         "type": "object",
@@ -8405,21 +9304,14 @@
           "font": {
             "anyOf": [
               {
-                "anyOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "type": "null"
-                  }
-                ],
-                "description": "Name of the font to use for this resource."
+                "type": "string"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Font"
+            "title": "Font",
+            "description": "Name of the font to use for this resource."
           }
         },
         "type": "object",
@@ -8470,21 +9362,14 @@
           "font": {
             "anyOf": [
               {
-                "anyOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "type": "null"
-                  }
-                ],
-                "description": "Name of the font to use for this resource."
+                "type": "string"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Font"
+            "title": "Font",
+            "description": "Name of the font to use for this resource."
           }
         },
         "type": "object",
@@ -9452,6 +10337,9 @@
               "anyOf": [
                 {
                   "$ref": "#/components/schemas/AudioContentRead"
+                },
+                {
+                  "$ref": "#/components/schemas/ExternalReferenceContentRead"
                 },
                 {
                   "$ref": "#/components/schemas/ImagesContentRead"
@@ -11338,6 +12226,9 @@
                 "$ref": "#/components/schemas/AudioSearchQuery"
               },
               {
+                "$ref": "#/components/schemas/ExternalReferenceSearchQuery"
+              },
+              {
                 "$ref": "#/components/schemas/ImagesSearchQuery"
               },
               {
@@ -11356,6 +12247,7 @@
               "propertyName": "type",
               "mapping": {
                 "audio": "#/components/schemas/AudioSearchQuery",
+                "externalReference": "#/components/schemas/ExternalReferenceSearchQuery",
                 "images": "#/components/schemas/ImagesSearchQuery",
                 "plainText": "#/components/schemas/PlainTextSearchQuery",
                 "richText": "#/components/schemas/RichTextSearchQuery",

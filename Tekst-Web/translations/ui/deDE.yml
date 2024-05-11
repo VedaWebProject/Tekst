@@ -470,6 +470,13 @@ resources:
         url: URL
         thumbUrl: Miniatur-URL
         caption: Beschriftung
+    externalReferences:
+      label: Externe Referenz
+      parenthesis: Links zu externen Ressourcen
+      contentFields:
+        links: Links
+        url: URL
+        caption: Beschriftung
 
 contents:
   heading: Ressourcen-Inhalte bearbeiten

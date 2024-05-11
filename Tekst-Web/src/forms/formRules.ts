@@ -308,6 +308,13 @@ export const contentFormRules: Record<string, Record<string, FormItemRule[]>> = 
     ],
     caption: [minMaxCharsRule(0, 8192, 'blur')],
   },
+  externalReferences: {
+    url: [
+      requiredRule(() => $t('resources.types.externalReferences.contentFields.url'), 'blur'),
+      minMaxCharsRule(1, 2083, 'blur'),
+    ],
+    caption: [minMaxCharsRule(0, 8192, 'blur')],
+  },
 };
 
 export const searchFormRules: Record<string, Record<string, FormItemRule[]>> = {
@@ -332,6 +339,9 @@ export const searchFormRules: Record<string, Record<string, FormItemRule[]>> = {
     caption: [minMaxCharsRule(0, 512, 'blur')],
   },
   images: {
+    caption: [minMaxCharsRule(0, 512, 'blur')],
+  },
+  externalReferences: {
     caption: [minMaxCharsRule(0, 512, 'blur')],
   },
 };

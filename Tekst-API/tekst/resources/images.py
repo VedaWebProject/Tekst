@@ -48,7 +48,10 @@ class Images(ResourceTypeABC):
         }
 
     @classmethod
-    def rtype_index_doc_data(cls, content: "ImagesContent") -> dict[str, Any]:
+    def rtype_index_doc_data(
+        cls,
+        content: "ImagesContent",
+    ) -> dict[str, Any]:
         return {
             "caption": [
                 f.get("caption", "")
@@ -58,7 +61,10 @@ class Images(ResourceTypeABC):
 
     @classmethod
     def rtype_es_queries(
-        cls, *, query: ResourceSearchQuery, strict: bool = False
+        cls,
+        *,
+        query: ResourceSearchQuery,
+        strict: bool = False,
     ) -> list[dict[str, Any]]:
         es_queries = []
         strict_suffix = ".strict" if strict else ""
@@ -131,7 +137,7 @@ class Images(ResourceTypeABC):
 
 class GeneralImagesResourceConfig(ModelBase):
     default_collapsed: DefaultCollapsedConfigType = True
-    font: FontConfigType | None = None
+    font: FontConfigType = None
 
 
 class ImagesResourceConfig(ResourceConfigBase):

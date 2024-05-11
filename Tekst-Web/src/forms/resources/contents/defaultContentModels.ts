@@ -35,6 +35,16 @@ export const defaultContentModels = {
     files: [
       {
         url: undefined,
+        thumbUrl: undefined,
+        caption: undefined,
+      },
+    ],
+  },
+  externalReferences: {
+    ...common,
+    links: [
+      {
+        url: undefined,
         caption: undefined,
       },
     ],

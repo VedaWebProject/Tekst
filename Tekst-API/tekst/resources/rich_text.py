@@ -45,14 +45,20 @@ class RichText(ResourceTypeABC):
         }
 
     @classmethod
-    def rtype_index_doc_data(cls, content: "RichTextContent") -> dict[str, Any]:
+    def rtype_index_doc_data(
+        cls,
+        content: "RichTextContent",
+    ) -> dict[str, Any]:
         return {
             "html": get_html_text(content.html),
         }
 
     @classmethod
     def rtype_es_queries(
-        cls, *, query: ResourceSearchQuery, strict: bool = False
+        cls,
+        *,
+        query: ResourceSearchQuery,
+        strict: bool = False,
     ) -> list[dict[str, Any]]:
         es_queries = []
         strict_suffix = ".strict" if strict else ""
@@ -125,7 +131,7 @@ class RichText(ResourceTypeABC):
 
 class GeneralRichTextResourceConfig(ModelBase):
     default_collapsed: DefaultCollapsedConfigType = True
-    font: FontConfigType | None = None
+    font: FontConfigType = None
 
 
 class RichTextResourceConfig(ResourceConfigBase):

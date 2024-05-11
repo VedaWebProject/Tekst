@@ -459,6 +459,13 @@ resources:
         url: URL
         thumbUrl: Thumbnail URL
         caption: Caption
+    externalReferences:
+      label: External Reference
+      parenthesis: links to external resources
+      contentFields:
+        links: Links
+        url: URL
+        caption: Caption
 
 contents:
   heading: Edit Resource Content

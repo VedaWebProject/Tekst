@@ -110,7 +110,14 @@ export function saveDownload(blob: Blob, filename: string) {
 
 // export some common platform properties for use throughout codebase
 
-export const resourceTypes = ['plainText', 'richText', 'textAnnotation', 'audio', 'images'];
+export const resourceTypes = [
+  'plainText',
+  'richText',
+  'textAnnotation',
+  'audio',
+  'images',
+  'externalReferences',
+];
 export const prioritizedMetadataKeys = ['author', 'year', 'language'];
 
 // export components types for use throughout codebase
@@ -232,6 +239,16 @@ export type ImagesResourceRead = components['schemas']['ImagesResourceRead'] &
     contents?: ImagesContentRead[];
   };
 
+export type ExternalReferencesContentRead = components['schemas']['ExternalReferencesContentRead'];
+export type ExternalReferencesContentCreate =
+  components['schemas']['ExternalReferencesContentCreate'];
+export type ExternalReferencesResourceCreate =
+  components['schemas']['ExternalReferencesResourceCreate'];
+export type ExternalReferencesResourceRead = components['schemas']['ExternalReferencesResourceRead'] &
+  ResourceReadExtras & {
+    contents?: ExternalReferencesContentRead[];
+  };
+
 export type AnyContentCreate =
   paths['/contents']['post']['requestBody']['content']['application/json'];
 export type AnyContentRead =
@@ -276,6 +293,7 @@ export type RichTextSearchQuery = components['schemas']['RichTextSearchQuery'];
 export type TextAnnotationSearchQuery = components['schemas']['TextAnnotationSearchQuery'];
 export type AudioSearchQuery = components['schemas']['AudioSearchQuery'];
 export type ImagesSearchQuery = components['schemas']['ImagesSearchQuery'];
+export type ExternalReferencesSearchQuery = components['schemas']['ExternalReferencesSearchQuery'];
 
 export type PublicUserSearchFilters = NonNullable<
   paths['/users/public']['get']['parameters']['query']

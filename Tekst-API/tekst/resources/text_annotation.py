@@ -36,7 +36,10 @@ class TextAnnotation(ResourceTypeABC):
         return TextAnnotationSearchQuery
 
     @classmethod
-    async def _update_aggregations(cls, resource_id: PydanticObjectId) -> None:
+    async def _update_aggregations(
+        cls,
+        resource_id: PydanticObjectId,
+    ) -> None:
         log.debug(f"Updating aggregations for resource {resource_id}...")
         start_time = process_time()
 
@@ -112,12 +115,18 @@ class TextAnnotation(ResourceTypeABC):
         )
 
     @classmethod
-    async def contents_changed_hook(cls, resource_id: PydanticObjectId) -> None:
+    async def contents_changed_hook(
+        cls,
+        resource_id: PydanticObjectId,
+    ) -> None:
         await cls._update_aggregations(resource_id)
 
     @classmethod
     def rtype_es_queries(
-        cls, *, query: ResourceSearchQuery, strict: bool = False
+        cls,
+        *,
+        query: ResourceSearchQuery,
+        strict: bool = False,
     ) -> list[dict[str, Any]]:
         es_queries = []
         strict_suffix = ".strict" if strict else ""
@@ -215,7 +224,10 @@ class TextAnnotation(ResourceTypeABC):
         }
 
     @classmethod
-    def rtype_index_doc_data(cls, content: "TextAnnotationContent") -> dict[str, Any]:
+    def rtype_index_doc_data(
+        cls,
+        content: "TextAnnotationContent",
+    ) -> dict[str, Any]:
         return {
             "tokens": [
                 {
@@ -282,7 +294,7 @@ class TextAnnotation(ResourceTypeABC):
 
 class GeneralTextAnnotationResourceConfig(ModelBase):
     default_collapsed: DefaultCollapsedConfigType = False
-    font: FontConfigType | None = None
+    font: FontConfigType = None
 
 
 class TextAnnotationResourceConfig(ResourceConfigBase):

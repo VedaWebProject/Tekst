@@ -8,6 +8,9 @@ const contentComponents: Record<string, Component> = {
   ),
   audio: defineAsyncComponent(() => import('@/components/content/AudioContent.vue')),
   images: defineAsyncComponent(() => import('@/components/content/ImagesContent.vue')),
+  externalReferences: defineAsyncComponent(
+    () => import('@/components/content/ExternalReferencesContent.vue')
+  ),
 };
 
 export default contentComponents;

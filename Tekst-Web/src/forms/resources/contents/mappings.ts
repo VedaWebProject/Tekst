@@ -4,6 +4,7 @@ import RichTextContentFormItems from '@/forms/resources/contents/RichTextContent
 import TextAnnotationContentFormItems from '@/forms/resources/contents/TextAnnotationContentFormItems.vue';
 import AudioContentFormItems from '@/forms/resources/contents/AudioContentFormItems.vue';
 import ImagesContentFormItems from '@/forms/resources/contents/ImagesContentFormItems.vue';
+import ExternalReferencesFormItems from '@/forms/resources/contents/ExternalReferencesFormItems.vue';
 
 const resourceContentFormItems: Record<string, Component> = {
   plainText: PlainTextContentFormItems,
@@ -11,6 +12,7 @@ const resourceContentFormItems: Record<string, Component> = {
   textAnnotation: TextAnnotationContentFormItems,
   audio: AudioContentFormItems,
   images: ImagesContentFormItems,
+  externalReferences: ExternalReferencesFormItems,
 };
 
 export default resourceContentFormItems;

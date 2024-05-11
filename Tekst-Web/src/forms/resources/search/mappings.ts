@@ -4,6 +4,7 @@ import RichTextSearchFormItems from './RichTextSearchFormItems.vue';
 import TextAnnotationSearchFormItems from './TextAnnotationSearchFormItems.vue';
 import AudioSearchFormItems from './AudioSearchFormItems.vue';
 import ImagesSearchFormItems from './ImagesSearchFormItems.vue';
+import ExternalReferencesSearchFormItems from './ExternalReferencesSearchFormItems.vue';
 
 export const resourceTypeSearchForms: Record<string, Component> = {
   plainText: PlainTextSearchFormItems,
@@ -11,4 +12,5 @@ export const resourceTypeSearchForms: Record<string, Component> = {
   textAnnotation: TextAnnotationSearchFormItems,
   audio: AudioSearchFormItems,
   images: ImagesSearchFormItems,
+  externalReferences: ExternalReferencesSearchFormItems,
 };

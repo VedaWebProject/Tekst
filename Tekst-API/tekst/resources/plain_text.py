@@ -50,12 +50,18 @@ class PlainText(ResourceTypeABC):
         }
 
     @classmethod
-    def rtype_index_doc_data(cls, content: "PlainTextContent") -> dict[str, Any]:
+    def rtype_index_doc_data(
+        cls,
+        content: "PlainTextContent",
+    ) -> dict[str, Any]:
         return content.model_dump(include={"text"})
 
     @classmethod
     def rtype_es_queries(
-        cls, *, query: ResourceSearchQuery, strict: bool = False
+        cls,
+        *,
+        query: ResourceSearchQuery,
+        strict: bool = False,
     ) -> list[dict[str, Any]]:
         es_queries = []
         strict_suffix = ".strict" if strict else ""
@@ -126,7 +132,7 @@ class PlainText(ResourceTypeABC):
 class GeneralPlainTextResourceConfig(ModelBase):
     default_collapsed: DefaultCollapsedConfigType = False
     reduced_view_oneline: ReducedViewOnelineConfigType = False
-    font: FontConfigType | None = None
+    font: FontConfigType = None
 
 
 class PlainTextResourceConfig(ResourceConfigBase):
