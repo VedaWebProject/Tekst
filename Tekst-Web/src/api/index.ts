@@ -244,10 +244,11 @@ export type ExternalReferencesContentCreate =
   components['schemas']['ExternalReferencesContentCreate'];
 export type ExternalReferencesResourceCreate =
   components['schemas']['ExternalReferencesResourceCreate'];
-export type ExternalReferencesResourceRead = components['schemas']['ExternalReferencesResourceRead'] &
-  ResourceReadExtras & {
-    contents?: ExternalReferencesContentRead[];
-  };
+export type ExternalReferencesResourceRead =
+  components['schemas']['ExternalReferencesResourceRead'] &
+    ResourceReadExtras & {
+      contents?: ExternalReferencesContentRead[];
+    };
 
 export type AnyContentCreate =
   paths['/contents']['post']['requestBody']['content']['application/json'];

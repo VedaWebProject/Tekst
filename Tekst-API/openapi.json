@@ -247,7 +247,7 @@
                         "$ref": "#/components/schemas/AudioContentRead"
                       },
                       {
-                        "$ref": "#/components/schemas/ExternalReferenceContentRead"
+                        "$ref": "#/components/schemas/ExternalReferencesContentRead"
                       },
                       {
                         "$ref": "#/components/schemas/ImagesContentRead"
@@ -266,7 +266,7 @@
                       "propertyName": "resourceType",
                       "mapping": {
                         "audio": "#/components/schemas/AudioContentRead",
-                        "externalReference": "#/components/schemas/ExternalReferenceContentRead",
+                        "externalReferences": "#/components/schemas/ExternalReferencesContentRead",
                         "images": "#/components/schemas/ImagesContentRead",
                         "plainText": "#/components/schemas/PlainTextContentRead",
                         "richText": "#/components/schemas/RichTextContentRead",
@@ -759,7 +759,7 @@
                     "$ref": "#/components/schemas/AudioContentCreate"
                   },
                   {
-                    "$ref": "#/components/schemas/ExternalReferenceContentCreate"
+                    "$ref": "#/components/schemas/ExternalReferencesContentCreate"
                   },
                   {
                     "$ref": "#/components/schemas/ImagesContentCreate"
@@ -778,7 +778,7 @@
                   "propertyName": "resourceType",
                   "mapping": {
                     "audio": "#/components/schemas/AudioContentCreate",
-                    "externalReference": "#/components/schemas/ExternalReferenceContentCreate",
+                    "externalReferences": "#/components/schemas/ExternalReferencesContentCreate",
                     "images": "#/components/schemas/ImagesContentCreate",
                     "plainText": "#/components/schemas/PlainTextContentCreate",
                     "richText": "#/components/schemas/RichTextContentCreate",
@@ -801,7 +801,7 @@
                       "$ref": "#/components/schemas/AudioContentRead"
                     },
                     {
-                      "$ref": "#/components/schemas/ExternalReferenceContentRead"
+                      "$ref": "#/components/schemas/ExternalReferencesContentRead"
                     },
                     {
                       "$ref": "#/components/schemas/ImagesContentRead"
@@ -820,7 +820,7 @@
                     "propertyName": "resourceType",
                     "mapping": {
                       "audio": "#/components/schemas/AudioContentRead",
-                      "externalReference": "#/components/schemas/ExternalReferenceContentRead",
+                      "externalReferences": "#/components/schemas/ExternalReferencesContentRead",
                       "images": "#/components/schemas/ImagesContentRead",
                       "plainText": "#/components/schemas/PlainTextContentRead",
                       "richText": "#/components/schemas/RichTextContentRead",
@@ -938,7 +938,7 @@
                         "$ref": "#/components/schemas/AudioContentRead"
                       },
                       {
-                        "$ref": "#/components/schemas/ExternalReferenceContentRead"
+                        "$ref": "#/components/schemas/ExternalReferencesContentRead"
                       },
                       {
                         "$ref": "#/components/schemas/ImagesContentRead"
@@ -957,7 +957,7 @@
                       "propertyName": "resourceType",
                       "mapping": {
                         "audio": "#/components/schemas/AudioContentRead",
-                        "externalReference": "#/components/schemas/ExternalReferenceContentRead",
+                        "externalReferences": "#/components/schemas/ExternalReferencesContentRead",
                         "images": "#/components/schemas/ImagesContentRead",
                         "plainText": "#/components/schemas/PlainTextContentRead",
                         "richText": "#/components/schemas/RichTextContentRead",
@@ -1022,7 +1022,7 @@
                       "$ref": "#/components/schemas/AudioContentRead"
                     },
                     {
-                      "$ref": "#/components/schemas/ExternalReferenceContentRead"
+                      "$ref": "#/components/schemas/ExternalReferencesContentRead"
                     },
                     {
                       "$ref": "#/components/schemas/ImagesContentRead"
@@ -1041,7 +1041,7 @@
                     "propertyName": "resourceType",
                     "mapping": {
                       "audio": "#/components/schemas/AudioContentRead",
-                      "externalReference": "#/components/schemas/ExternalReferenceContentRead",
+                      "externalReferences": "#/components/schemas/ExternalReferencesContentRead",
                       "images": "#/components/schemas/ImagesContentRead",
                       "plainText": "#/components/schemas/PlainTextContentRead",
                       "richText": "#/components/schemas/RichTextContentRead",
@@ -1111,7 +1111,7 @@
                     "$ref": "#/components/schemas/AudioContentUpdate"
                   },
                   {
-                    "$ref": "#/components/schemas/ExternalReferenceContentUpdate"
+                    "$ref": "#/components/schemas/ExternalReferencesContentUpdate"
                   },
                   {
                     "$ref": "#/components/schemas/ImagesContentUpdate"
@@ -1130,7 +1130,7 @@
                   "propertyName": "resourceType",
                   "mapping": {
                     "audio": "#/components/schemas/AudioContentUpdate",
-                    "externalReference": "#/components/schemas/ExternalReferenceContentUpdate",
+                    "externalReferences": "#/components/schemas/ExternalReferencesContentUpdate",
                     "images": "#/components/schemas/ImagesContentUpdate",
                     "plainText": "#/components/schemas/PlainTextContentUpdate",
                     "richText": "#/components/schemas/RichTextContentUpdate",
@@ -1153,7 +1153,7 @@
                       "$ref": "#/components/schemas/AudioContentRead"
                     },
                     {
-                      "$ref": "#/components/schemas/ExternalReferenceContentRead"
+                      "$ref": "#/components/schemas/ExternalReferencesContentRead"
                     },
                     {
                       "$ref": "#/components/schemas/ImagesContentRead"
@@ -1172,7 +1172,7 @@
                     "propertyName": "resourceType",
                     "mapping": {
                       "audio": "#/components/schemas/AudioContentRead",
-                      "externalReference": "#/components/schemas/ExternalReferenceContentRead",
+                      "externalReferences": "#/components/schemas/ExternalReferencesContentRead",
                       "images": "#/components/schemas/ImagesContentRead",
                       "plainText": "#/components/schemas/PlainTextContentRead",
                       "richText": "#/components/schemas/RichTextContentRead",
@@ -2996,7 +2996,7 @@
                     "$ref": "#/components/schemas/AudioResourceCreate"
                   },
                   {
-                    "$ref": "#/components/schemas/ExternalReferenceResourceCreate"
+                    "$ref": "#/components/schemas/ExternalReferencesResourceCreate"
                   },
                   {
                     "$ref": "#/components/schemas/ImagesResourceCreate"
@@ -3015,7 +3015,7 @@
                   "propertyName": "resourceType",
                   "mapping": {
                     "audio": "#/components/schemas/AudioResourceCreate",
-                    "externalReference": "#/components/schemas/ExternalReferenceResourceCreate",
+                    "externalReferences": "#/components/schemas/ExternalReferencesResourceCreate",
                     "images": "#/components/schemas/ImagesResourceCreate",
                     "plainText": "#/components/schemas/PlainTextResourceCreate",
                     "richText": "#/components/schemas/RichTextResourceCreate",
@@ -3038,7 +3038,7 @@
                       "$ref": "#/components/schemas/AudioResourceRead"
                     },
                     {
-                      "$ref": "#/components/schemas/ExternalReferenceResourceRead"
+                      "$ref": "#/components/schemas/ExternalReferencesResourceRead"
                     },
                     {
                       "$ref": "#/components/schemas/ImagesResourceRead"
@@ -3057,7 +3057,7 @@
                     "propertyName": "resourceType",
                     "mapping": {
                       "audio": "#/components/schemas/AudioResourceRead",
-                      "externalReference": "#/components/schemas/ExternalReferenceResourceRead",
+                      "externalReferences": "#/components/schemas/ExternalReferencesResourceRead",
                       "images": "#/components/schemas/ImagesResourceRead",
                       "plainText": "#/components/schemas/PlainTextResourceRead",
                       "richText": "#/components/schemas/RichTextResourceRead",
@@ -3187,7 +3187,7 @@
                         "$ref": "#/components/schemas/AudioResourceRead"
                       },
                       {
-                        "$ref": "#/components/schemas/ExternalReferenceResourceRead"
+                        "$ref": "#/components/schemas/ExternalReferencesResourceRead"
                       },
                       {
                         "$ref": "#/components/schemas/ImagesResourceRead"
@@ -3206,7 +3206,7 @@
                       "propertyName": "resourceType",
                       "mapping": {
                         "audio": "#/components/schemas/AudioResourceRead",
-                        "externalReference": "#/components/schemas/ExternalReferenceResourceRead",
+                        "externalReferences": "#/components/schemas/ExternalReferencesResourceRead",
                         "images": "#/components/schemas/ImagesResourceRead",
                         "plainText": "#/components/schemas/PlainTextResourceRead",
                         "richText": "#/components/schemas/RichTextResourceRead",
@@ -3270,7 +3270,7 @@
                       "$ref": "#/components/schemas/AudioResourceRead"
                     },
                     {
-                      "$ref": "#/components/schemas/ExternalReferenceResourceRead"
+                      "$ref": "#/components/schemas/ExternalReferencesResourceRead"
                     },
                     {
                       "$ref": "#/components/schemas/ImagesResourceRead"
@@ -3289,7 +3289,7 @@
                     "propertyName": "resourceType",
                     "mapping": {
                       "audio": "#/components/schemas/AudioResourceRead",
-                      "externalReference": "#/components/schemas/ExternalReferenceResourceRead",
+                      "externalReferences": "#/components/schemas/ExternalReferencesResourceRead",
                       "images": "#/components/schemas/ImagesResourceRead",
                       "plainText": "#/components/schemas/PlainTextResourceRead",
                       "richText": "#/components/schemas/RichTextResourceRead",
@@ -3381,7 +3381,7 @@
                     "$ref": "#/components/schemas/AudioResourceUpdate"
                   },
                   {
-                    "$ref": "#/components/schemas/ExternalReferenceResourceUpdate"
+                    "$ref": "#/components/schemas/ExternalReferencesResourceUpdate"
                   },
                   {
                     "$ref": "#/components/schemas/ImagesResourceUpdate"
@@ -3400,7 +3400,7 @@
                   "propertyName": "resourceType",
                   "mapping": {
                     "audio": "#/components/schemas/AudioResourceUpdate",
-                    "externalReference": "#/components/schemas/ExternalReferenceResourceUpdate",
+                    "externalReferences": "#/components/schemas/ExternalReferencesResourceUpdate",
                     "images": "#/components/schemas/ImagesResourceUpdate",
                     "plainText": "#/components/schemas/PlainTextResourceUpdate",
                     "richText": "#/components/schemas/RichTextResourceUpdate",
@@ -3423,7 +3423,7 @@
                       "$ref": "#/components/schemas/AudioResourceRead"
                     },
                     {
-                      "$ref": "#/components/schemas/ExternalReferenceResourceRead"
+                      "$ref": "#/components/schemas/ExternalReferencesResourceRead"
                     },
                     {
                       "$ref": "#/components/schemas/ImagesResourceRead"
@@ -3442,7 +3442,7 @@
                     "propertyName": "resourceType",
                     "mapping": {
                       "audio": "#/components/schemas/AudioResourceRead",
-                      "externalReference": "#/components/schemas/ExternalReferenceResourceRead",
+                      "externalReferences": "#/components/schemas/ExternalReferencesResourceRead",
                       "images": "#/components/schemas/ImagesResourceRead",
                       "plainText": "#/components/schemas/PlainTextResourceRead",
                       "richText": "#/components/schemas/RichTextResourceRead",
@@ -3523,7 +3523,7 @@
                       "$ref": "#/components/schemas/AudioResourceRead"
                     },
                     {
-                      "$ref": "#/components/schemas/ExternalReferenceResourceRead"
+                      "$ref": "#/components/schemas/ExternalReferencesResourceRead"
                     },
                     {
                       "$ref": "#/components/schemas/ImagesResourceRead"
@@ -3542,7 +3542,7 @@
                     "propertyName": "resourceType",
                     "mapping": {
                       "audio": "#/components/schemas/AudioResourceRead",
-                      "externalReference": "#/components/schemas/ExternalReferenceResourceRead",
+                      "externalReferences": "#/components/schemas/ExternalReferencesResourceRead",
                       "images": "#/components/schemas/ImagesResourceRead",
                       "plainText": "#/components/schemas/PlainTextResourceRead",
                       "richText": "#/components/schemas/RichTextResourceRead",
@@ -3699,7 +3699,7 @@
                       "$ref": "#/components/schemas/AudioResourceRead"
                     },
                     {
-                      "$ref": "#/components/schemas/ExternalReferenceResourceRead"
+                      "$ref": "#/components/schemas/ExternalReferencesResourceRead"
                     },
                     {
                       "$ref": "#/components/schemas/ImagesResourceRead"
@@ -3718,7 +3718,7 @@
                     "propertyName": "resourceType",
                     "mapping": {
                       "audio": "#/components/schemas/AudioResourceRead",
-                      "externalReference": "#/components/schemas/ExternalReferenceResourceRead",
+                      "externalReferences": "#/components/schemas/ExternalReferencesResourceRead",
                       "images": "#/components/schemas/ImagesResourceRead",
                       "plainText": "#/components/schemas/PlainTextResourceRead",
                       "richText": "#/components/schemas/RichTextResourceRead",
@@ -3821,7 +3821,7 @@
                       "$ref": "#/components/schemas/AudioResourceRead"
                     },
                     {
-                      "$ref": "#/components/schemas/ExternalReferenceResourceRead"
+                      "$ref": "#/components/schemas/ExternalReferencesResourceRead"
                     },
                     {
                       "$ref": "#/components/schemas/ImagesResourceRead"
@@ -3840,7 +3840,7 @@
                     "propertyName": "resourceType",
                     "mapping": {
                       "audio": "#/components/schemas/AudioResourceRead",
-                      "externalReference": "#/components/schemas/ExternalReferenceResourceRead",
+                      "externalReferences": "#/components/schemas/ExternalReferencesResourceRead",
                       "images": "#/components/schemas/ImagesResourceRead",
                       "plainText": "#/components/schemas/PlainTextResourceRead",
                       "richText": "#/components/schemas/RichTextResourceRead",
@@ -3933,7 +3933,7 @@
                       "$ref": "#/components/schemas/AudioResourceRead"
                     },
                     {
-                      "$ref": "#/components/schemas/ExternalReferenceResourceRead"
+                      "$ref": "#/components/schemas/ExternalReferencesResourceRead"
                     },
                     {
                       "$ref": "#/components/schemas/ImagesResourceRead"
@@ -3952,7 +3952,7 @@
                     "propertyName": "resourceType",
                     "mapping": {
                       "audio": "#/components/schemas/AudioResourceRead",
-                      "externalReference": "#/components/schemas/ExternalReferenceResourceRead",
+                      "externalReferences": "#/components/schemas/ExternalReferencesResourceRead",
                       "images": "#/components/schemas/ImagesResourceRead",
                       "plainText": "#/components/schemas/PlainTextResourceRead",
                       "richText": "#/components/schemas/RichTextResourceRead",
@@ -4035,7 +4035,7 @@
                       "$ref": "#/components/schemas/AudioResourceRead"
                     },
                     {
-                      "$ref": "#/components/schemas/ExternalReferenceResourceRead"
+                      "$ref": "#/components/schemas/ExternalReferencesResourceRead"
                     },
                     {
                       "$ref": "#/components/schemas/ImagesResourceRead"
@@ -4054,7 +4054,7 @@
                     "propertyName": "resourceType",
                     "mapping": {
                       "audio": "#/components/schemas/AudioResourceRead",
-                      "externalReference": "#/components/schemas/ExternalReferenceResourceRead",
+                      "externalReferences": "#/components/schemas/ExternalReferencesResourceRead",
                       "images": "#/components/schemas/ImagesResourceRead",
                       "plainText": "#/components/schemas/PlainTextResourceRead",
                       "richText": "#/components/schemas/RichTextResourceRead",
@@ -4157,7 +4157,7 @@
                       "$ref": "#/components/schemas/AudioResourceRead"
                     },
                     {
-                      "$ref": "#/components/schemas/ExternalReferenceResourceRead"
+                      "$ref": "#/components/schemas/ExternalReferencesResourceRead"
                     },
                     {
                       "$ref": "#/components/schemas/ImagesResourceRead"
@@ -4176,7 +4176,7 @@
                     "propertyName": "resourceType",
                     "mapping": {
                       "audio": "#/components/schemas/AudioResourceRead",
-                      "externalReference": "#/components/schemas/ExternalReferenceResourceRead",
+                      "externalReferences": "#/components/schemas/ExternalReferencesResourceRead",
                       "images": "#/components/schemas/ImagesResourceRead",
                       "plainText": "#/components/schemas/PlainTextResourceRead",
                       "richText": "#/components/schemas/RichTextResourceRead",
@@ -8371,7 +8371,7 @@
         ],
         "title": "ErrorModel"
       },
-      "ExternalReferenceContentCreate": {
+      "ExternalReferencesContentCreate": {
         "properties": {
           "resourceId": {
             "type": "string",
@@ -8380,7 +8380,7 @@
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "resourceType": {
-            "const": "externalReference",
+            "const": "externalReferences",
             "title": "Resourcetype"
           },
           "locationId": {
@@ -8417,7 +8417,7 @@
           },
           "links": {
             "items": {
-              "$ref": "#/components/schemas/ExternalReferenceLink"
+              "$ref": "#/components/schemas/ExternalReferencesLink"
             },
             "type": "array",
             "maxItems": 100,
@@ -8433,9 +8433,9 @@
           "locationId",
           "links"
         ],
-        "title": "ExternalReferenceContentCreate"
+        "title": "ExternalReferencesContentCreate"
       },
-      "ExternalReferenceContentRead": {
+      "ExternalReferencesContentRead": {
         "properties": {
           "id": {
             "type": "string",
@@ -8449,7 +8449,7 @@
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "resourceType": {
-            "const": "externalReference",
+            "const": "externalReferences",
             "title": "Resourcetype"
           },
           "locationId": {
@@ -8486,7 +8486,7 @@
           },
           "links": {
             "items": {
-              "$ref": "#/components/schemas/ExternalReferenceLink"
+              "$ref": "#/components/schemas/ExternalReferencesLink"
             },
             "type": "array",
             "maxItems": 100,
@@ -8504,9 +8504,9 @@
           "locationId",
           "links"
         ],
-        "title": "ExternalReferenceContentRead"
+        "title": "ExternalReferencesContentRead"
       },
-      "ExternalReferenceContentUpdate": {
+      "ExternalReferencesContentUpdate": {
         "properties": {
           "resourceId": {
             "anyOf": [
@@ -8521,7 +8521,7 @@
             "title": "Resourceid"
           },
           "resourceType": {
-            "const": "externalReference",
+            "const": "externalReferences",
             "title": "Resourcetype"
           },
           "locationId": {
@@ -8566,7 +8566,7 @@
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/ExternalReferenceLink"
+                  "$ref": "#/components/schemas/ExternalReferencesLink"
                 },
                 "type": "array",
                 "maxItems": 100,
@@ -8583,9 +8583,9 @@
         "required": [
           "resourceType"
         ],
-        "title": "ExternalReferenceContentUpdate"
+        "title": "ExternalReferencesContentUpdate"
       },
-      "ExternalReferenceLink": {
+      "ExternalReferencesLink": {
         "properties": {
           "url": {
             "type": "string",
@@ -8612,9 +8612,9 @@
         "required": [
           "url"
         ],
-        "title": "ExternalReferenceLink"
+        "title": "ExternalReferencesLink"
       },
-      "ExternalReferenceResourceConfig": {
+      "ExternalReferencesResourceConfig": {
         "properties": {
           "common": {
             "allOf": [
@@ -8631,16 +8631,18 @@
           "general": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/GeneralExternalReferenceResourceConfig"
+                "$ref": "#/components/schemas/GeneralExternalReferencesResourceConfig"
               }
             ],
-            "default": {}
+            "default": {
+              "defaultCollapsed": false
+            }
           }
         },
         "type": "object",
-        "title": "ExternalReferenceResourceConfig"
+        "title": "ExternalReferencesResourceConfig"
       },
-      "ExternalReferenceResourceCreate": {
+      "ExternalReferencesResourceCreate": {
         "properties": {
           "title": {
             "type": "string",
@@ -8672,7 +8674,7 @@
             "description": "Text level this resource belongs to"
           },
           "resourceType": {
-            "const": "externalReference",
+            "const": "externalReferences",
             "title": "Resourcetype"
           },
           "originalId": {
@@ -8772,7 +8774,7 @@
           "config": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExternalReferenceResourceConfig"
+                "$ref": "#/components/schemas/ExternalReferencesResourceConfig"
               }
             ],
             "default": {
@@ -8781,7 +8783,9 @@
                 "showOnParentLevel": false,
                 "sortOrder": 100
               },
-              "general": {}
+              "general": {
+                "defaultCollapsed": false
+              }
             }
           }
         },
@@ -8792,9 +8796,9 @@
           "level",
           "resourceType"
         ],
-        "title": "ExternalReferenceResourceCreate"
+        "title": "ExternalReferencesResourceCreate"
       },
-      "ExternalReferenceResourceRead": {
+      "ExternalReferencesResourceRead": {
         "properties": {
           "id": {
             "type": "string",
@@ -8884,7 +8888,7 @@
             "description": "Text level this resource belongs to"
           },
           "resourceType": {
-            "const": "externalReference",
+            "const": "externalReferences",
             "title": "Resourcetype"
           },
           "originalId": {
@@ -8984,7 +8988,7 @@
           "config": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExternalReferenceResourceConfig"
+                "$ref": "#/components/schemas/ExternalReferencesResourceConfig"
               }
             ],
             "default": {
@@ -8993,7 +8997,9 @@
                 "showOnParentLevel": false,
                 "sortOrder": 100
               },
-              "general": {}
+              "general": {
+                "defaultCollapsed": false
+              }
             }
           }
         },
@@ -9006,9 +9012,9 @@
           "level",
           "resourceType"
         ],
-        "title": "ExternalReferenceResourceRead"
+        "title": "ExternalReferencesResourceRead"
       },
-      "ExternalReferenceResourceUpdate": {
+      "ExternalReferencesResourceUpdate": {
         "properties": {
           "title": {
             "anyOf": [
@@ -9058,7 +9064,7 @@
             "title": "Level"
           },
           "resourceType": {
-            "const": "externalReference",
+            "const": "externalReferences",
             "title": "Resourcetype"
           },
           "originalId": {
@@ -9158,7 +9164,7 @@
           "config": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExternalReferenceResourceConfig"
+                "$ref": "#/components/schemas/ExternalReferencesResourceConfig"
               }
             ],
             "default": {
@@ -9167,7 +9173,9 @@
                 "showOnParentLevel": false,
                 "sortOrder": 100
               },
-              "general": {}
+              "general": {
+                "defaultCollapsed": false
+              }
             }
           }
         },
@@ -9175,12 +9183,12 @@
         "required": [
           "resourceType"
         ],
-        "title": "ExternalReferenceResourceUpdate"
+        "title": "ExternalReferencesResourceUpdate"
       },
-      "ExternalReferenceSearchQuery": {
+      "ExternalReferencesSearchQuery": {
         "properties": {
           "type": {
-            "const": "externalReference",
+            "const": "externalReferences",
             "title": "Type",
             "description": "Type of the resource to search in"
           },
@@ -9195,7 +9203,7 @@
         "required": [
           "type"
         ],
-        "title": "ExternalReferenceSearchQuery"
+        "title": "ExternalReferencesSearchQuery"
       },
       "GeneralAudioResourceConfig": {
         "properties": {
@@ -9221,8 +9229,14 @@
         "type": "object",
         "title": "GeneralAudioResourceConfig"
       },
-      "GeneralExternalReferenceResourceConfig": {
+      "GeneralExternalReferencesResourceConfig": {
         "properties": {
+          "defaultCollapsed": {
+            "type": "boolean",
+            "title": "Defaultcollapsed",
+            "description": "Whether contents of this resource should be collapsed by default",
+            "default": false
+          },
           "font": {
             "anyOf": [
               {
@@ -9237,7 +9251,7 @@
           }
         },
         "type": "object",
-        "title": "GeneralExternalReferenceResourceConfig"
+        "title": "GeneralExternalReferencesResourceConfig"
       },
       "GeneralImagesResourceConfig": {
         "properties": {
@@ -10339,7 +10353,7 @@
                   "$ref": "#/components/schemas/AudioContentRead"
                 },
                 {
-                  "$ref": "#/components/schemas/ExternalReferenceContentRead"
+                  "$ref": "#/components/schemas/ExternalReferencesContentRead"
                 },
                 {
                   "$ref": "#/components/schemas/ImagesContentRead"
@@ -12226,7 +12240,7 @@
                 "$ref": "#/components/schemas/AudioSearchQuery"
               },
               {
-                "$ref": "#/components/schemas/ExternalReferenceSearchQuery"
+                "$ref": "#/components/schemas/ExternalReferencesSearchQuery"
               },
               {
                 "$ref": "#/components/schemas/ImagesSearchQuery"
@@ -12247,7 +12261,7 @@
               "propertyName": "type",
               "mapping": {
                 "audio": "#/components/schemas/AudioSearchQuery",
-                "externalReference": "#/components/schemas/ExternalReferenceSearchQuery",
+                "externalReferences": "#/components/schemas/ExternalReferencesSearchQuery",
                 "images": "#/components/schemas/ImagesSearchQuery",
                 "plainText": "#/components/schemas/PlainTextSearchQuery",
                 "richText": "#/components/schemas/RichTextSearchQuery",

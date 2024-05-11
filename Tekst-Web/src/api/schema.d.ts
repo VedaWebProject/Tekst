@@ -1301,8 +1301,8 @@ export interface components {
             [key: string]: string;
           };
     };
-    /** ExternalReferenceContentCreate */
-    ExternalReferenceContentCreate: {
+    /** ExternalReferencesContentCreate */
+    ExternalReferencesContentCreate: {
       /**
        * Resourceid
        * @description Resource ID
@@ -1334,10 +1334,10 @@ export interface components {
        * Links
        * @description List of external reference link objects
        */
-      links: components['schemas']['ExternalReferenceLink'][];
+      links: components['schemas']['ExternalReferencesLink'][];
     };
-    /** ExternalReferenceContentRead */
-    ExternalReferenceContentRead: {
+    /** ExternalReferencesContentRead */
+    ExternalReferencesContentRead: {
       /**
        * Id
        * @example 5eb7cf5a86d9755df3a6c593
@@ -1374,11 +1374,11 @@ export interface components {
        * Links
        * @description List of external reference link objects
        */
-      links: components['schemas']['ExternalReferenceLink'][];
+      links: components['schemas']['ExternalReferencesLink'][];
       [key: string]: unknown;
     };
-    /** ExternalReferenceContentUpdate */
-    ExternalReferenceContentUpdate: {
+    /** ExternalReferencesContentUpdate */
+    ExternalReferencesContentUpdate: {
       /** Resourceid */
       resourceId?: string | null;
       /**
@@ -1399,10 +1399,10 @@ export interface components {
        */
       notes?: string | null;
       /** Links */
-      links?: components['schemas']['ExternalReferenceLink'][] | null;
+      links?: components['schemas']['ExternalReferencesLink'][] | null;
     };
-    /** ExternalReferenceLink */
-    ExternalReferenceLink: {
+    /** ExternalReferencesLink */
+    ExternalReferencesLink: {
       /**
        * Url
        * @description URL of the link
@@ -1414,8 +1414,8 @@ export interface components {
        */
       caption?: string | null;
     };
-    /** ExternalReferenceResourceConfig */
-    ExternalReferenceResourceConfig: {
+    /** ExternalReferencesResourceConfig */
+    ExternalReferencesResourceConfig: {
       /**
        * @default {
        *   "sortOrder": 100,
@@ -1424,11 +1424,15 @@ export interface components {
        * }
        */
       common?: components['schemas']['CommonResourceConfig'];
-      /** @default {} */
-      general?: components['schemas']['GeneralExternalReferenceResourceConfig'];
+      /**
+       * @default {
+       *   "defaultCollapsed": false
+       * }
+       */
+      general?: components['schemas']['GeneralExternalReferencesResourceConfig'];
     };
-    /** ExternalReferenceResourceCreate */
-    ExternalReferenceResourceCreate: {
+    /** ExternalReferencesResourceCreate */
+    ExternalReferencesResourceCreate: {
       /**
        * Title
        * @description Title of this resource
@@ -1514,13 +1518,15 @@ export interface components {
        *     "showOnParentLevel": false,
        *     "sortOrder": 100
        *   },
-       *   "general": {}
+       *   "general": {
+       *     "defaultCollapsed": false
+       *   }
        * }
        */
-      config?: components['schemas']['ExternalReferenceResourceConfig'];
+      config?: components['schemas']['ExternalReferencesResourceConfig'];
     };
-    /** ExternalReferenceResourceRead */
-    ExternalReferenceResourceRead: {
+    /** ExternalReferencesResourceRead */
+    ExternalReferencesResourceRead: {
       /**
        * Id
        * @example 5eb7cf5a86d9755df3a6c593
@@ -1628,14 +1634,16 @@ export interface components {
        *     "showOnParentLevel": false,
        *     "sortOrder": 100
        *   },
-       *   "general": {}
+       *   "general": {
+       *     "defaultCollapsed": false
+       *   }
        * }
        */
-      config?: components['schemas']['ExternalReferenceResourceConfig'];
+      config?: components['schemas']['ExternalReferencesResourceConfig'];
       [key: string]: unknown;
     };
-    /** ExternalReferenceResourceUpdate */
-    ExternalReferenceResourceUpdate: {
+    /** ExternalReferencesResourceUpdate */
+    ExternalReferencesResourceUpdate: {
       /** Title */
       title?: string | null;
       /**
@@ -1711,13 +1719,15 @@ export interface components {
        *     "showOnParentLevel": false,
        *     "sortOrder": 100
        *   },
-       *   "general": {}
+       *   "general": {
+       *     "defaultCollapsed": false
+       *   }
        * }
        */
-      config?: components['schemas']['ExternalReferenceResourceConfig'];
+      config?: components['schemas']['ExternalReferencesResourceConfig'];
     };
-    /** ExternalReferenceSearchQuery */
-    ExternalReferenceSearchQuery: {
+    /** ExternalReferencesSearchQuery */
+    ExternalReferencesSearchQuery: {
       /**
        * Type
        * @description Type of the resource to search in
@@ -1744,8 +1754,14 @@ export interface components {
        */
       font?: string | null;
     };
-    /** GeneralExternalReferenceResourceConfig */
-    GeneralExternalReferenceResourceConfig: {
+    /** GeneralExternalReferencesResourceConfig */
+    GeneralExternalReferencesResourceConfig: {
+      /**
+       * Defaultcollapsed
+       * @description Whether contents of this resource should be collapsed by default
+       * @default false
+       */
+      defaultCollapsed?: boolean;
       /**
        * Font
        * @description Name of the font to use for this resource.
@@ -2339,7 +2355,7 @@ export interface components {
        */
       contents?: (
         | components['schemas']['AudioContentRead']
-        | components['schemas']['ExternalReferenceContentRead']
+        | components['schemas']['ExternalReferencesContentRead']
         | components['schemas']['ImagesContentRead']
         | components['schemas']['PlainTextContentRead']
         | components['schemas']['RichTextContentRead']
@@ -3319,7 +3335,7 @@ export interface components {
        */
       rts:
         | components['schemas']['AudioSearchQuery']
-        | components['schemas']['ExternalReferenceSearchQuery']
+        | components['schemas']['ExternalReferencesSearchQuery']
         | components['schemas']['ImagesSearchQuery']
         | components['schemas']['PlainTextSearchQuery']
         | components['schemas']['RichTextSearchQuery']
@@ -5030,7 +5046,7 @@ export interface operations {
         content: {
           'application/json': (
             | components['schemas']['AudioContentRead']
-            | components['schemas']['ExternalReferenceContentRead']
+            | components['schemas']['ExternalReferencesContentRead']
             | components['schemas']['ImagesContentRead']
             | components['schemas']['PlainTextContentRead']
             | components['schemas']['RichTextContentRead']
@@ -5262,7 +5278,7 @@ export interface operations {
         content: {
           'application/json': (
             | components['schemas']['AudioContentRead']
-            | components['schemas']['ExternalReferenceContentRead']
+            | components['schemas']['ExternalReferencesContentRead']
             | components['schemas']['ImagesContentRead']
             | components['schemas']['PlainTextContentRead']
             | components['schemas']['RichTextContentRead']
@@ -5284,7 +5300,7 @@ export interface operations {
       content: {
         'application/json':
           | components['schemas']['AudioContentCreate']
-          | components['schemas']['ExternalReferenceContentCreate']
+          | components['schemas']['ExternalReferencesContentCreate']
           | components['schemas']['ImagesContentCreate']
           | components['schemas']['PlainTextContentCreate']
           | components['schemas']['RichTextContentCreate']
@@ -5297,7 +5313,7 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['AudioContentRead']
-            | components['schemas']['ExternalReferenceContentRead']
+            | components['schemas']['ExternalReferencesContentRead']
             | components['schemas']['ImagesContentRead']
             | components['schemas']['PlainTextContentRead']
             | components['schemas']['RichTextContentRead']
@@ -5340,7 +5356,7 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['AudioContentRead']
-            | components['schemas']['ExternalReferenceContentRead']
+            | components['schemas']['ExternalReferencesContentRead']
             | components['schemas']['ImagesContentRead']
             | components['schemas']['PlainTextContentRead']
             | components['schemas']['RichTextContentRead']
@@ -5404,7 +5420,7 @@ export interface operations {
       content: {
         'application/json':
           | components['schemas']['AudioContentUpdate']
-          | components['schemas']['ExternalReferenceContentUpdate']
+          | components['schemas']['ExternalReferencesContentUpdate']
           | components['schemas']['ImagesContentUpdate']
           | components['schemas']['PlainTextContentUpdate']
           | components['schemas']['RichTextContentUpdate']
@@ -5417,7 +5433,7 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['AudioContentRead']
-            | components['schemas']['ExternalReferenceContentRead']
+            | components['schemas']['ExternalReferencesContentRead']
             | components['schemas']['ImagesContentRead']
             | components['schemas']['PlainTextContentRead']
             | components['schemas']['RichTextContentRead']
@@ -6271,7 +6287,7 @@ export interface operations {
         content: {
           'application/json': (
             | components['schemas']['AudioResourceRead']
-            | components['schemas']['ExternalReferenceResourceRead']
+            | components['schemas']['ExternalReferencesResourceRead']
             | components['schemas']['ImagesResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
@@ -6293,7 +6309,7 @@ export interface operations {
       content: {
         'application/json':
           | components['schemas']['AudioResourceCreate']
-          | components['schemas']['ExternalReferenceResourceCreate']
+          | components['schemas']['ExternalReferencesResourceCreate']
           | components['schemas']['ImagesResourceCreate']
           | components['schemas']['PlainTextResourceCreate']
           | components['schemas']['RichTextResourceCreate']
@@ -6306,7 +6322,7 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['AudioResourceRead']
-            | components['schemas']['ExternalReferenceResourceRead']
+            | components['schemas']['ExternalReferencesResourceRead']
             | components['schemas']['ImagesResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
@@ -6352,7 +6368,7 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['AudioResourceRead']
-            | components['schemas']['ExternalReferenceResourceRead']
+            | components['schemas']['ExternalReferencesResourceRead']
             | components['schemas']['ImagesResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
@@ -6398,7 +6414,7 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['AudioResourceRead']
-            | components['schemas']['ExternalReferenceResourceRead']
+            | components['schemas']['ExternalReferencesResourceRead']
             | components['schemas']['ImagesResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
@@ -6468,7 +6484,7 @@ export interface operations {
       content: {
         'application/json':
           | components['schemas']['AudioResourceUpdate']
-          | components['schemas']['ExternalReferenceResourceUpdate']
+          | components['schemas']['ExternalReferencesResourceUpdate']
           | components['schemas']['ImagesResourceUpdate']
           | components['schemas']['PlainTextResourceUpdate']
           | components['schemas']['RichTextResourceUpdate']
@@ -6481,7 +6497,7 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['AudioResourceRead']
-            | components['schemas']['ExternalReferenceResourceRead']
+            | components['schemas']['ExternalReferencesResourceRead']
             | components['schemas']['ImagesResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
@@ -6526,7 +6542,7 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['AudioResourceRead']
-            | components['schemas']['ExternalReferenceResourceRead']
+            | components['schemas']['ExternalReferencesResourceRead']
             | components['schemas']['ImagesResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
@@ -6578,7 +6594,7 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['AudioResourceRead']
-            | components['schemas']['ExternalReferenceResourceRead']
+            | components['schemas']['ExternalReferencesResourceRead']
             | components['schemas']['ImagesResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
@@ -6624,7 +6640,7 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['AudioResourceRead']
-            | components['schemas']['ExternalReferenceResourceRead']
+            | components['schemas']['ExternalReferencesResourceRead']
             | components['schemas']['ImagesResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
@@ -6664,7 +6680,7 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['AudioResourceRead']
-            | components['schemas']['ExternalReferenceResourceRead']
+            | components['schemas']['ExternalReferencesResourceRead']
             | components['schemas']['ImagesResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
@@ -6716,7 +6732,7 @@ export interface operations {
         content: {
           'application/json':
             | components['schemas']['AudioResourceRead']
-            | components['schemas']['ExternalReferenceResourceRead']
+            | components['schemas']['ExternalReferencesResourceRead']
             | components['schemas']['ImagesResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']

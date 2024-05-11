@@ -13,6 +13,7 @@ from tekst.models.resource import (
     ResourceExportFormat,
 )
 from tekst.models.resource_configs import (
+    DefaultCollapsedConfigType,
     FontConfigType,
     ResourceConfigBase,
 )
@@ -134,6 +135,7 @@ class ExternalReferences(ResourceTypeABC):
 
 
 class GeneralExternalReferencesResourceConfig(ModelBase):
+    default_collapsed: DefaultCollapsedConfigType = False
     font: FontConfigType = None
 
 
