@@ -45,7 +45,7 @@ const renderToolbar = ({ nodes }: ImageRenderToolbarProps) => {
     >
       <n-image-group :render-toolbar="renderToolbar">
         <n-flex :size="[32, 22]">
-          <div v-for="(image, index) in content.files" :key="index" class="image-container">
+          <figure v-for="(image, index) in content.files" :key="index" class="image-container">
             <n-image
               lazy
               :src="image.thumbUrl || image.url"
@@ -54,8 +54,10 @@ const renderToolbar = ({ nodes }: ImageRenderToolbarProps) => {
               :title="image.caption"
               :height="state.smallScreen ? '80px' : '140px'"
             />
-            <div class="caption text-small translucent" :style="fontStyle">{{ image.caption }}</div>
-          </div>
+            <figcaption class="caption text-small translucent" :style="fontStyle">
+              {{ image.caption }}
+            </figcaption>
+          </figure>
         </n-flex>
       </n-image-group>
     </n-flex>
@@ -77,6 +79,7 @@ const renderToolbar = ({ nodes }: ImageRenderToolbarProps) => {
   border-top: 1px solid var(--main-bg-color);
 }
 .image-container {
+  margin: 0;
   max-width: 100%;
 }
 .caption {
