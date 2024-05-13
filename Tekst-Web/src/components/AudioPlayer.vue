@@ -13,6 +13,7 @@ const props = defineProps<{
   caption?: string;
   instanceId?: string;
   fontStyle?: CSSProperties;
+  compact?: boolean;
 }>();
 defineExpose({ play, pause });
 const emit = defineEmits(['play', 'ended']);
@@ -69,7 +70,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <n-flex vertical class="audio-player">
+  <n-flex vertical class="audio-player" :style="{ flexBasis: compact ? 'unset' : '100%' }">
     <audio ref="audioRef" preload="metadata"></audio>
     <n-flex align="center" flex>
       <n-button
@@ -78,6 +79,7 @@ onMounted(() => {
         :focusable="false"
         :disabled="waiting || error"
         :loading="waiting && !error"
+        :title="compact ? caption : undefined"
         @click="playPause"
       >
         <template #icon>
@@ -86,8 +88,13 @@ onMounted(() => {
           <n-icon v-else :component="PlayIcon" />
         </template>
       </n-button>
-      <div class="text-tiny">{{ currentTimeString }} / {{ durationString }}</div>
-      <n-flex align="center" :wrap="false" style="width: auto; flex-grow: 2; flex-basis: 200px">
+      <div v-if="!compact" class="text-tiny">{{ currentTimeString }} / {{ durationString }}</div>
+      <n-flex
+        v-if="!compact"
+        align="center"
+        :wrap="false"
+        style="width: auto; flex-grow: 2; flex-basis: 200px"
+      >
         <n-slider
           v-model:value="currentTime"
           :step="1"
@@ -112,7 +119,7 @@ onMounted(() => {
       </n-flex>
     </n-flex>
     <div
-      v-if="caption"
+      v-if="caption && !compact"
       class="caption text-small translucent"
       :class="{ translucent: error }"
       :style="fontStyle"

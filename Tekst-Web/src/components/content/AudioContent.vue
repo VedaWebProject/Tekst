@@ -42,14 +42,8 @@ onBeforeUpdate(() => {
 </script>
 
 <template>
-  <div v-if="!reduced">
-    <n-flex
-      v-for="content in resource.contents"
-      :key="content.id"
-      vertical
-      :wrap="false"
-      class="audio-content"
-    >
+  <div>
+    <n-flex v-for="content in resource.contents" :key="content.id" class="audio-content">
       <audio-player
         v-for="(file, fileIndex) in content.files"
         :ref="
@@ -62,15 +56,13 @@ onBeforeUpdate(() => {
         "
         :key="fileIndex"
         :src="file.url"
+        :compact="reduced"
         :caption="file.caption || undefined"
         :font-style="fontStyle"
         @play="() => handlePlay(`player-${content.id}-${fileIndex}`)"
         @ended="() => handleEnded(`player-${content.id}-${fileIndex}`)"
       />
     </n-flex>
-  </div>
-  <div v-else class="translucent i ui-font">
-    {{ $t('contents.msgContentNoReducedView') }}
   </div>
 </template>
 
