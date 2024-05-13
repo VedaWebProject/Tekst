@@ -82,6 +82,10 @@ async function updateSelectModels(fromLvl: number = 0) {
       lsm.loading = true;
     }
   });
+  // cancel if requested level has no selected location
+  if (!locationSelectModels.value[fromLvl].selected) {
+    return;
+  }
   // load location path options from location selected at lvl as root
   const { data: locations, error } = await GET('/browse/locations/{id}/path/options-by-root', {
     params: { path: { id: locationSelectModels.value[fromLvl].selected || '' } },
