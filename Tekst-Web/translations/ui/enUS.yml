@@ -460,7 +460,7 @@ resources:
         thumbUrl: Thumbnail URL
         caption: Caption
     externalReferences:
-      label: External Reference
+      label: External References
       parenthesis: links to external resources
       contentFields:
         links: Links
