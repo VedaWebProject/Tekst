@@ -111,7 +111,12 @@ onMounted(() => {
         </n-button>
       </n-flex>
     </n-flex>
-    <div v-if="caption" class="caption" :class="{ translucent: error }" :style="fontStyle">
+    <div
+      v-if="caption"
+      class="caption text-small translucent"
+      :class="{ translucent: error }"
+      :style="fontStyle"
+    >
       {{ caption }}
     </div>
   </n-flex>
