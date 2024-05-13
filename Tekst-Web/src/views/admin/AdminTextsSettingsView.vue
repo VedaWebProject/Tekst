@@ -282,12 +282,7 @@ async function handleDelete() {
           {{ $t('general.deleteAction') }}
         </n-button>
       </template>
-      <n-button
-        secondary
-        :loading="loading"
-        :disabled="loading || !modelChanged"
-        @click="resetForm"
-      >
+      <n-button secondary :disabled="loading || !modelChanged" @click="resetForm">
         {{ $t('general.resetAction') }}
       </n-button>
       <n-button
