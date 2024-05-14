@@ -86,9 +86,9 @@ class Text(ModelBase, ModelFactoryMixin):
             min_length=1,
             max_length=16,
             strip_whitespace=True,
+            pattern=r"^[a-z0-9]+$",
         ),
         Field(
-            pattern=r"^[a-z0-9]+$",
             description="A short identifier for use in URLs and internal operations",
         ),
     ]

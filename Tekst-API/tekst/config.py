@@ -1,4 +1,5 @@
 import os
+import re
 
 from functools import cache
 from pathlib import Path
@@ -21,7 +22,6 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 from tekst import package_metadata
 from tekst.models.common import CustomHttpUrl
 from tekst.utils import validators as val
-from tekst.utils.strings import safe_name
 
 
 _DEV_MODE: bool = bool(os.environ.get("TEKST_DEV_MODE", False))
@@ -205,10 +205,14 @@ class TekstConfig(BaseSettings):
             raise ValueError(f"Temporary directoy is not writable: {path}") from e
         return path
 
-    @field_validator("db_name", mode="after")
+    @field_validator("db_name")
     @classmethod
-    def generate_db_name(cls, v: str) -> str:
-        return safe_name(v)
+    def validate_db_name(cls, v: Any) -> str:
+        if not isinstance(v, str):
+            v = str(v)
+        if not re.match(r"^[a-zA-Z0-9_]+$", v):
+            raise ValueError(f"Invalid database name: {v} (only [a-zA-Z0-9_] allowed)")
+        return v
 
     @computed_field
     @property
