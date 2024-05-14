@@ -2,17 +2,26 @@ import { computed, ref } from 'vue';
 import { DELETE, GET, POST } from '@/api';
 import type { UserMessageCreate, UserMessageRead, UserMessageThread } from '@/api';
 import { useAuthStore } from '@/stores';
-import { watchEffect } from 'vue';
 import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
 import { defineStore } from 'pinia';
+import { useIntervalFn } from '@vueuse/core';
 
 export const useUserMessagesStore = defineStore('userMessages', () => {
   const auth = useAuthStore();
   const { message } = useMessages();
 
+  const { pause: stopThreadsPolling, resume: startThreadsPolling } = useIntervalFn(
+    async () => {
+      auth.user && (await loadThreads());
+      unreadCount.value &&
+        message.info($t('account.messages.msgUnreadCount', { count: unreadCount.value }));
+    },
+    30 * 1000, // 30 seconds
+    { immediate: false, immediateCallback: true }
+  );
+
   const threads = ref<UserMessageThread[]>([]);
-  const lastUserId = ref<string>();
   const loading = ref(false);
   const openThread = ref<UserMessageThread>();
   const showMessagingModal = ref(false);
@@ -36,7 +45,9 @@ export const useUserMessagesStore = defineStore('userMessages', () => {
     loading.value = false;
   }
 
-  async function loadMessages(threadId?: string | null): Promise<UserMessageRead[] | undefined> {
+  async function loadMessages(
+    threadId: string | null | undefined = openThread.value?.id
+  ): Promise<UserMessageRead[] | undefined> {
     threadId = threadId || null;
     loading.value = true;
     if (auth.user?.id) {
@@ -45,7 +56,10 @@ export const useUserMessagesStore = defineStore('userMessages', () => {
       });
       loading.value = false;
       if (!error) {
-        loadThreads();
+        const thread = threads.value.find((t) => t.id === threadId);
+        if (thread) {
+          thread.unread = 0;
+        }
         return data;
       }
     }
@@ -62,7 +76,7 @@ export const useUserMessagesStore = defineStore('userMessages', () => {
     if (!error) {
       return data;
     } else {
-      return undefined;
+      return null;
     }
   }
 
@@ -72,18 +86,11 @@ export const useUserMessagesStore = defineStore('userMessages', () => {
       params: { path: { id } },
     });
     if (!error) {
-      threads.value = threads.value.filter((t) => t.id !== id);
+      threads.value = threads.value.filter((t) => (id === 'system' ? !!t.id : t.id !== id));
       message.success($t('account.messages.deleteThreadSuccess'));
     }
     loading.value = false;
   }
-
-  watchEffect(() => {
-    if (auth.loggedIn && auth.user?.id !== lastUserId.value) {
-      lastUserId.value = auth.user?.id;
-      loadThreads();
-    }
-  });
 
   return {
     threads,
@@ -95,5 +102,7 @@ export const useUserMessagesStore = defineStore('userMessages', () => {
     loadMessages,
     send,
     deleteThread,
+    startThreadsPolling,
+    stopThreadsPolling,
   };
 });

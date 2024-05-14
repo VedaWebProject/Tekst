@@ -69,6 +69,7 @@ export const useAuthStore = defineStore('auth', () => {
   function _cleanupSession() {
     user.value = undefined;
     localStorage.removeItem('user');
+    userMessages.stopThreadsPolling();
     _unsetCookieExpiry();
     _stopSessionCheck();
   }
@@ -115,6 +116,7 @@ export const useAuthStore = defineStore('auth', () => {
     if (!error) {
       user.value = data;
       localStorage.setItem('user', JSON.stringify(user.value));
+      userMessages.startThreadsPolling();
       return user.value;
     } else {
       logout();
@@ -147,12 +149,10 @@ export const useAuthStore = defineStore('auth', () => {
           })
         );
       }
-      message.success(
-        $t('general.welcome', { name: userData.name }) +
-          (userMessages.unreadCount
-            ? ` ${$t('account.messages.msgUnreadCount', { count: userMessages.unreadCount })}!`
-            : '')
-      );
+      // initialize user messages polling
+      userMessages.startThreadsPolling();
+      // login complete!
+      message.success($t('general.welcome', { name: userData.name }));
       closeLoginModal();
       return true;
     } else {

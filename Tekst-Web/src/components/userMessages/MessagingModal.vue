@@ -2,11 +2,11 @@
 import { $t } from '@/i18n';
 import { MarkChatReadIcon, MarkChatUnreadIcon, SendIcon } from '@/icons';
 import { ref } from 'vue';
-import { NButton, NInput, NIcon, NTime, type InputInst } from 'naive-ui';
+import { NSpin, NButton, NInput, NIcon, NTime, type InputInst } from 'naive-ui';
 import { useAuthStore, useUserMessagesStore } from '@/stores';
 import UserDisplay from '@/components/user/UserDisplay.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
-import { useMagicKeys, whenever } from '@vueuse/core';
+import { useIntervalFn, useMagicKeys, whenever } from '@vueuse/core';
 import type { UserMessageRead } from '@/api';
 import { utcToLocalTime } from '@/utils';
 
@@ -19,6 +19,15 @@ const messages = ref<UserMessageRead[]>();
 const messageInput = ref<string>();
 const messageInputRef = ref<InputInst>();
 const loadingSend = ref(false);
+
+const { pause: stopMessagesPolling, resume: startMessagesPolling } = useIntervalFn(
+  async () => {
+    messages.value = await userMessages.loadMessages();
+    scrollDownMessageContainer(300);
+  },
+  10 * 1000, // 10 seconds
+  { immediate: false, immediateCallback: true }
+);
 
 async function handleSendMessage() {
   if (!messageInput.value || loadingSend.value) return;
@@ -35,13 +44,13 @@ async function handleSendMessage() {
   messageInputRef.value?.focus();
 }
 
-async function handleModalEnter() {
+function handleModalEnter() {
   messageInputRef.value?.focus();
-  messages.value = await userMessages.loadMessages(userMessages.openThread?.id);
-  scrollDownMessageContainer();
+  startMessagesPolling();
 }
 
 function handleModalLeave() {
+  stopMessagesPolling();
   userMessages.openThread = undefined;
   messages.value = undefined;
 }
@@ -108,6 +117,7 @@ whenever(ctrlEnter, () => {
           </div>
         </div>
       </div>
+      <n-spin v-else-if="userMessages.loading" class="centered-spinner" />
     </template>
 
     <template #footer>

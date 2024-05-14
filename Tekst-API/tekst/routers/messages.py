@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from typing import Annotated
+from typing import Annotated, Literal
 
 from beanie import PydanticObjectId
 from beanie.operators import LT, And, Eq, In, Or, Set
@@ -214,12 +214,15 @@ async def get_threads(
 )
 async def delete_thread(
     user: UserDep,
-    thread_id: Annotated[PydanticObjectId | None, Path(alias="id")],
+    thread_id: Annotated[PydanticObjectId | Literal["system"], Path(alias="id")],
 ) -> None:
     """
     Marks all received messages from the given user as deleted or actually deletes them,
     depending on the current deletion status
     """
+    thread_id = (
+        thread_id if thread_id != "system" else None
+    )  # system threads don't have a thread (sender) ID
     for msg in await UserMessageDocument.find(
         Or(
             And(

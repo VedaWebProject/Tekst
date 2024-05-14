@@ -34,19 +34,12 @@ onMounted(() => {
 
   <div v-if="userMessages.threads.length" class="content-block">
     <h2>{{ $t('account.messages.headingThreads') }}</h2>
-    <n-list
-      hoverable
-      clickable
-      style="background-color: transparent"
-      :style="{
-        opacity: userMessages.loading ? 0.5 : 1,
-        'pointer-events': userMessages.loading ? 'none' : 'auto',
-      }"
-    >
+    <n-list hoverable clickable style="background-color: transparent">
       <message-thread-list-item
         v-for="(thread, index) in userMessages.threads"
         :key="`thread-${index}-${thread.id}`"
         :thread="thread"
+        :disable-delete="userMessages.loading"
         @delete-thread="(id) => userMessages.deleteThread(id)"
         @click="handleThreadClick(thread)"
       />

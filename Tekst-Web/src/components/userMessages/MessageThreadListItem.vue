@@ -6,6 +6,7 @@ import UserDisplay from '@/components/user/UserDisplay.vue';
 
 const props = defineProps<{
   thread: UserMessageThread;
+  disableDelete?: boolean;
 }>();
 
 const emits = defineEmits(['deleteThread']);
@@ -13,7 +14,7 @@ const emits = defineEmits(['deleteThread']);
 function handleDeleteClick(e: UIEvent) {
   e.stopPropagation();
   e.preventDefault();
-  emits('deleteThread', props.thread.id);
+  emits('deleteThread', props.thread.id || 'system');
 }
 </script>
 
@@ -27,7 +28,12 @@ function handleDeleteClick(e: UIEvent) {
     </n-flex>
 
     <template #suffix>
-      <n-button secondary :title="$t('account.messages.deleteThread')" @click="handleDeleteClick">
+      <n-button
+        secondary
+        :title="$t('account.messages.deleteThread')"
+        :disabled="disableDelete"
+        @click="handleDeleteClick"
+      >
         <template #icon>
           <n-icon :component="DeleteIcon" />
         </template>
