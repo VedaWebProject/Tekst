@@ -2200,7 +2200,7 @@
                   "example": "5eb7cf5a86d9755df3a6c593"
                 },
                 {
-                  "type": "null"
+                  "const": "system"
                 }
               ],
               "title": "Id"
@@ -8594,23 +8594,31 @@
             "title": "Url",
             "description": "URL of the link"
           },
-          "caption": {
+          "title": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Title",
+            "description": "Title/text of the link"
+          },
+          "description": {
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 8192
+                "maxLength": 4096
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Caption",
-            "description": "Caption of the link"
+            "title": "Description",
+            "description": "Description of the link"
           }
         },
         "type": "object",
         "required": [
-          "url"
+          "url",
+          "title"
         ],
         "title": "ExternalReferencesLink"
       },
@@ -9192,10 +9200,11 @@
             "title": "Type",
             "description": "Type of the resource to search in"
           },
-          "caption": {
+          "text": {
             "type": "string",
             "maxLength": 512,
-            "title": "Caption",
+            "title": "Text",
+            "description": "Text to search for",
             "default": ""
           }
         },

@@ -476,7 +476,10 @@ resources:
       contentFields:
         links: Links
         url: URL
-        caption: Beschriftung
+        title: Titel / Text
+        description: Beschreibung
+      searchFields:
+        text: Titel / Beschreibung
 
 contents:
   heading: Ressourcen-Inhalte bearbeiten

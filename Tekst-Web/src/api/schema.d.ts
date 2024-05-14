@@ -1409,10 +1409,15 @@ export interface components {
        */
       url: string;
       /**
-       * Caption
-       * @description Caption of the link
+       * Title
+       * @description Title/text of the link
        */
-      caption?: string | null;
+      title: string;
+      /**
+       * Description
+       * @description Description of the link
+       */
+      description?: string | null;
     };
     /** ExternalReferencesResourceConfig */
     ExternalReferencesResourceConfig: {
@@ -1735,10 +1740,11 @@ export interface components {
        */
       type: 'externalReferences';
       /**
-       * Caption
+       * Text
+       * @description Text to search for
        * @default
        */
-      caption?: string;
+      text?: string;
     };
     /** GeneralAudioResourceConfig */
     GeneralAudioResourceConfig: {
@@ -5884,7 +5890,7 @@ export interface operations {
   deleteThread: {
     parameters: {
       path: {
-        id: string | null;
+        id: string | 'system';
       };
     };
     responses: {

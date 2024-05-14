@@ -117,7 +117,11 @@ class RichText(ResourceTypeABC):
         # construct labels of all locations on the resource's level
         full_location_labels = await text.full_location_labels(resource.level)
         with open(file_path, "w", newline="") as csvfile:
-            csv_writer = csv.writer(csvfile, dialect="excel", quoting=csv.QUOTE_ALL)
+            csv_writer = csv.writer(
+                csvfile,
+                dialect="excel",
+                quoting=csv.QUOTE_ALL,
+            )
             csv_writer.writerow(["LOCATION", "HTML", "COMMENT"])
             for content in contents:
                 csv_writer.writerow(
@@ -149,7 +153,10 @@ class RichTextContent(ContentBase):
     resource_type: Literal["richText"]  # camelCased resource type classname
     html: Annotated[
         str,
-        StringConstraints(max_length=102400, strip_whitespace=True),
+        StringConstraints(
+            max_length=102400,
+            strip_whitespace=True,
+        ),
         Field(
             description="HTML content of the rich text content object",
         ),
@@ -170,6 +177,9 @@ class RichTextSearchQuery(ModelBase):
     ]
     html: Annotated[
         str,
-        StringConstraints(max_length=512, strip_whitespace=True),
+        StringConstraints(
+            max_length=512,
+            strip_whitespace=True,
+        ),
         val.CleanupOneline,
     ] = ""

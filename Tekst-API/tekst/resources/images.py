@@ -120,7 +120,11 @@ class Images(ResourceTypeABC):
         # construct labels of all locations on the resource's level
         full_location_labels = await text.full_location_labels(resource.level)
         with open(file_path, "w", newline="") as csvfile:
-            csv_writer = csv.writer(csvfile, dialect="excel", quoting=csv.QUOTE_ALL)
+            csv_writer = csv.writer(
+                csvfile,
+                dialect="excel",
+                quoting=csv.QUOTE_ALL,
+            )
             csv_writer.writerow(["LOCATION", "URL", "THUMB_URL", "CAPTION", "COMMENT"])
             for content in contents:
                 for image_file in content.files:
@@ -152,7 +156,11 @@ class ImagesResource(ResourceBase):
 class ImageFile(ModelBase):
     url: Annotated[
         str,
-        StringConstraints(min_length=1, max_length=2083, strip_whitespace=True),
+        StringConstraints(
+            min_length=1,
+            max_length=2083,
+            strip_whitespace=True,
+        ),
         val.CleanupOneline,
         Field(
             description="URL of the image file",
@@ -160,7 +168,10 @@ class ImageFile(ModelBase):
     ]
     thumb_url: Annotated[
         str | None,
-        StringConstraints(max_length=2083, strip_whitespace=True),
+        StringConstraints(
+            max_length=2083,
+            strip_whitespace=True,
+        ),
         val.CleanupOneline,
         Field(
             description="URL of the image file thumbnail",
@@ -168,7 +179,10 @@ class ImageFile(ModelBase):
     ] = None
     caption: Annotated[
         str | None,
-        StringConstraints(max_length=8192, strip_whitespace=True),
+        StringConstraints(
+            max_length=8192,
+            strip_whitespace=True,
+        ),
         val.CleanupMultiline,
         Field(
             description="Caption of the image",
@@ -200,6 +214,9 @@ class ImagesSearchQuery(ModelBase):
     ]
     caption: Annotated[
         str,
-        StringConstraints(max_length=512, strip_whitespace=True),
+        StringConstraints(
+            max_length=512,
+            strip_whitespace=True,
+        ),
         val.CleanupOneline,
     ] = ""

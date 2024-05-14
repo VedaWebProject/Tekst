@@ -45,7 +45,8 @@ export const defaultContentModels = {
     links: [
       {
         url: undefined,
-        caption: undefined,
+        title: undefined,
+        description: undefined,
       },
     ],
   },

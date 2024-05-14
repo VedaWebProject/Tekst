@@ -465,7 +465,10 @@ resources:
       contentFields:
         links: Links
         url: URL
-        caption: Caption
+        title: Title / Text
+        description: Description
+      searchFields:
+        text: Title / Description
 
 contents:
   heading: Edit Resource Content

@@ -268,7 +268,11 @@ class TextAnnotation(ResourceTypeABC):
         # construct labels of all locations on the resource's level
         full_location_labels = await text.full_location_labels(resource.level)
         with open(file_path, "w", newline="") as csvfile:
-            csv_writer = csv.writer(csvfile, dialect="excel", quoting=csv.QUOTE_ALL)
+            csv_writer = csv.writer(
+                csvfile,
+                dialect="excel",
+                quoting=csv.QUOTE_ALL,
+            )
             anno_keys = sorted(list({agg.key for agg in resource.aggregations}))
             csv_writer.writerow(
                 ["LOCATION", "TOKEN", "POSITION", *anno_keys, "COMMENT"]

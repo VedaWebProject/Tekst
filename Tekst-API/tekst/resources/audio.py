@@ -120,7 +120,11 @@ class Audio(ResourceTypeABC):
         # construct labels of all locations on the resource's level
         full_location_labels = await text.full_location_labels(resource.level)
         with open(file_path, "w", newline="") as csvfile:
-            csv_writer = csv.writer(csvfile, dialect="excel", quoting=csv.QUOTE_ALL)
+            csv_writer = csv.writer(
+                csvfile,
+                dialect="excel",
+                quoting=csv.QUOTE_ALL,
+            )
             csv_writer.writerow(["LOCATION", "URL", "CAPTION", "COMMENT"])
             for content in contents:
                 for audio_file in content.files:
@@ -151,7 +155,11 @@ class AudioResource(ResourceBase):
 class AudioFile(ModelBase):
     url: Annotated[
         str,
-        StringConstraints(min_length=1, max_length=2083, strip_whitespace=True),
+        StringConstraints(
+            min_length=1,
+            max_length=2083,
+            strip_whitespace=True,
+        ),
         val.CleanupOneline,
         Field(
             description="URL of the audio file",
@@ -159,7 +167,10 @@ class AudioFile(ModelBase):
     ]
     caption: Annotated[
         str | None,
-        StringConstraints(max_length=8192, strip_whitespace=True),
+        StringConstraints(
+            max_length=8192,
+            strip_whitespace=True,
+        ),
         val.CleanupMultiline,
         Field(
             description="Caption of the audio file",
@@ -191,6 +202,9 @@ class AudioSearchQuery(ModelBase):
     ]
     caption: Annotated[
         str,
-        StringConstraints(max_length=512, strip_whitespace=True),
+        StringConstraints(
+            max_length=512,
+            strip_whitespace=True,
+        ),
         val.CleanupOneline,
     ] = ""

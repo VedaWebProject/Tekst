@@ -117,7 +117,11 @@ class PlainText(ResourceTypeABC):
         # construct labels of all locations on the resource's level
         full_location_labels = await text.full_location_labels(resource.level)
         with open(file_path, "w", newline="") as csvfile:
-            csv_writer = csv.writer(csvfile, dialect="excel", quoting=csv.QUOTE_ALL)
+            csv_writer = csv.writer(
+                csvfile,
+                dialect="excel",
+                quoting=csv.QUOTE_ALL,
+            )
             csv_writer.writerow(["LOCATION", "TEXT", "COMMENT"])
             for content in contents:
                 csv_writer.writerow(
@@ -151,7 +155,11 @@ class PlainTextContent(ContentBase):
     resource_type: Literal["plainText"]  # camelCased resource type classname
     text: Annotated[
         str,
-        StringConstraints(min_length=1, max_length=102400, strip_whitespace=True),
+        StringConstraints(
+            min_length=1,
+            max_length=102400,
+            strip_whitespace=True,
+        ),
         Field(
             description="Text content of the plain text content object",
         ),
@@ -168,6 +176,9 @@ class PlainTextSearchQuery(ModelBase):
     ]
     text: Annotated[
         str,
-        StringConstraints(max_length=512, strip_whitespace=True),
+        StringConstraints(
+            max_length=512,
+            strip_whitespace=True,
+        ),
         val.CleanupOneline,
     ] = ""

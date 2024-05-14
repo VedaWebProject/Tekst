@@ -40,7 +40,7 @@ class ExternalReferences(ResourceTypeABC):
     @classmethod
     def rtype_index_doc_props(cls) -> dict[str, Any]:
         return {
-            "caption": {
+            "text": {
                 "type": "text",
                 "analyzer": "standard_no_diacritics",
                 "fields": {"strict": {"type": "text"}},
@@ -53,8 +53,8 @@ class ExternalReferences(ResourceTypeABC):
         content: "ExternalReferencesContent",
     ) -> dict[str, Any]:
         return {
-            "caption": [
-                f.get("caption", "")
+            "text": [
+                f"{f.get('title', '')} – {f.get('description', '')}".strip()
                 for f in content.model_dump(include={"links"}).get("links", [])
             ]
         }
@@ -69,7 +69,7 @@ class ExternalReferences(ResourceTypeABC):
         es_queries = []
         strict_suffix = ".strict" if strict else ""
 
-        if not query.resource_type_specific.caption.strip("*"):
+        if not query.resource_type_specific.text.strip("*"):
             # handle empty/match-all query (query for existing target field)
             es_queries.append(
                 {
@@ -84,9 +84,9 @@ class ExternalReferences(ResourceTypeABC):
                 {
                     "simple_query_string": {
                         "fields": [
-                            f"resources.{query.common.resource_id}.caption{strict_suffix}"
+                            f"resources.{query.common.resource_id}.text{strict_suffix}"
                         ],
-                        "query": query.resource_type_specific.caption,
+                        "query": query.resource_type_specific.text,
                     }
                 }
             )
@@ -120,15 +120,20 @@ class ExternalReferences(ResourceTypeABC):
         # construct labels of all locations on the resource's level
         full_location_labels = await text.full_location_labels(resource.level)
         with open(file_path, "w", newline="") as csvfile:
-            csv_writer = csv.writer(csvfile, dialect="excel", quoting=csv.QUOTE_ALL)
-            csv_writer.writerow(["LOCATION", "URL", "CAPTION", "COMMENT"])
+            csv_writer = csv.writer(
+                csvfile,
+                dialect="excel",
+                quoting=csv.QUOTE_ALL,
+            )
+            csv_writer.writerow(["LOCATION", "URL", "TITLE", "DESCRIPTION", "COMMENT"])
             for content in contents:
                 for link in content.links:
                     csv_writer.writerow(
                         [
                             full_location_labels.get(str(content.location_id), ""),
                             link.url,
-                            link.caption,
+                            link.title,
+                            link.description,
                             content.comment,
                         ]
                     )
@@ -153,18 +158,37 @@ class ExternalReferencesResource(ResourceBase):
 class ExternalReferencesLink(ModelBase):
     url: Annotated[
         str,
-        StringConstraints(min_length=1, max_length=2083, strip_whitespace=True),
+        StringConstraints(
+            min_length=1,
+            max_length=2083,
+            strip_whitespace=True,
+        ),
         val.CleanupOneline,
         Field(
             description="URL of the link",
         ),
     ]
-    caption: Annotated[
+    title: Annotated[
+        str,
+        StringConstraints(
+            min_length=1,
+            max_length=128,
+            strip_whitespace=True,
+        ),
+        val.CleanupOneline,
+        Field(
+            description="Title/text of the link",
+        ),
+    ]
+    description: Annotated[
         str | None,
-        StringConstraints(max_length=8192, strip_whitespace=True),
+        StringConstraints(
+            max_length=4096,
+            strip_whitespace=True,
+        ),
         val.CleanupMultiline,
         Field(
-            description="Caption of the link",
+            description="Description of the link",
         ),
     ] = None
 
@@ -191,8 +215,14 @@ class ExternalReferencesSearchQuery(ModelBase):
             description="Type of the resource to search in",
         ),
     ]
-    caption: Annotated[
+    text: Annotated[
         str,
-        StringConstraints(max_length=512, strip_whitespace=True),
+        StringConstraints(
+            max_length=512,
+            strip_whitespace=True,
+        ),
+        Field(
+            description="Text to search for",
+        ),
         val.CleanupOneline,
     ] = ""

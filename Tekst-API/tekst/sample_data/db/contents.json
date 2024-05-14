@@ -358,15 +358,18 @@
     "links": [
       {
         "url": "https://upload.wikimedia.org/score/o/k/oki67jic10ff1lnlz2s8fve28mcf0q6/oki67jic.midi",
-        "caption": "Fuchs, du hast die Gans gestohlen, Melodie, MIDI"
+        "title": "Fuchs, du hast die Gans gestohlen",
+        "description": "Melodie, MIDI"
       },
       {
         "url": "https://archive.org/details/unserliederbuchd01merc/page/12/mode/1up",
-        "caption": "Unser Liederbuch: Die beliebtesten Kinderlieder, Merck, Friederike; Volbach, Fritz, 1861-1940; Zumbusch, Ludwig von"
+        "title": "Unser Liederbuch: Die beliebtesten Kinderlieder",
+        "description": "Merck, Friederike; Volbach, Fritz, 1861-1940; Zumbusch, Ludwig von"
       },
       {
         "url": "https://upload.wikimedia.org/wikipedia/commons/7/75/Fuchs_du_hast_die_Gans_gestohlen.jpg",
-        "caption": "Fuchs, du hast die Gans gestohlen, Sheet music, JPG; Wikimedia Commons user BiografieFuzzi, https://creativecommons.org/licenses/by-sa/3.0/"
+        "title": "Sheet music",
+        "description": "JPG; Wikimedia Commons user BiografieFuzzi, https://creativecommons.org/licenses/by-sa/3.0/"
       }
     ]
   },

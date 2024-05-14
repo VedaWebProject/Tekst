@@ -120,7 +120,7 @@ onMounted(() => {
     </n-flex>
     <div
       v-if="caption && !compact"
-      class="caption text-small translucent"
+      class="caption text-tiny translucent"
       :class="{ translucent: error }"
       :style="fontStyle"
     >

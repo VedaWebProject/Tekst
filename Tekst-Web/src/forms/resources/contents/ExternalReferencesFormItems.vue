@@ -27,7 +27,7 @@ function handleUpdate(field: string, value: any) {
       :value="model.links"
       :min="1"
       :max="100"
-      @create="() => ({ url: undefined, caption: undefined })"
+      @create="() => ({ url: undefined, title: undefined, description: undefined })"
       @update:value="(value) => handleUpdate('links', value)"
     >
       <template #default="{ index }">
@@ -46,21 +46,36 @@ function handleUpdate(field: string, value: any) {
               @keydown.enter.prevent
             />
           </n-form-item>
-          <!-- CAPTION -->
+          <!-- TITLE -->
           <n-form-item
             ignore-path-change
-            :label="$t('resources.types.externalReferences.contentFields.caption')"
-            :path="`links[${index}].caption`"
-            :rule="contentFormRules.externalReferences.caption"
+            :label="$t('resources.types.externalReferences.contentFields.title')"
+            :path="`links[${index}].title`"
+            :rule="contentFormRules.externalReferences.title"
             style="flex-grow: 2"
           >
             <n-input-osk
-              v-model="model.links[index].caption"
+              v-model="model.links[index].title"
+              :font="resource.config?.general?.font || undefined"
+              :max-length="128"
+              :placeholder="$t('resources.types.externalReferences.contentFields.title')"
+            />
+          </n-form-item>
+          <!-- DESCRIPTION -->
+          <n-form-item
+            ignore-path-change
+            :label="$t('resources.types.externalReferences.contentFields.description')"
+            :path="`links[${index}].description`"
+            :rule="contentFormRules.externalReferences.description"
+            style="flex-grow: 2"
+          >
+            <n-input-osk
+              v-model="model.links[index].description"
               type="textarea"
               :font="resource.config?.general?.font || undefined"
               :rows="2"
-              :max-length="512"
-              :placeholder="$t('resources.types.externalReferences.contentFields.caption')"
+              :max-length="4096"
+              :placeholder="$t('resources.types.externalReferences.contentFields.description')"
             />
           </n-form-item>
         </n-flex>

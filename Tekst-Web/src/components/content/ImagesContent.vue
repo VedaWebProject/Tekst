@@ -62,7 +62,7 @@ const renderToolbar = ({ nodes }: ImageRenderToolbarProps) => {
               :title="image.caption"
               :height="imageHeight"
             />
-            <figcaption v-if="!reduced" class="caption text-small translucent" :style="fontStyle">
+            <figcaption v-if="!reduced" class="caption text-tiny translucent" :style="fontStyle">
               {{ image.caption }}
             </figcaption>
           </figure>

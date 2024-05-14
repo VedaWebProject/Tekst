@@ -313,7 +313,11 @@ export const contentFormRules: Record<string, Record<string, FormItemRule[]>> = 
       requiredRule(() => $t('resources.types.externalReferences.contentFields.url'), 'blur'),
       minMaxCharsRule(1, 2083, 'blur'),
     ],
-    caption: [minMaxCharsRule(0, 8192, 'blur')],
+    title: [
+      requiredRule(() => $t('resources.types.externalReferences.contentFields.title'), 'blur'),
+      minMaxCharsRule(1, 128, 'blur'),
+    ],
+    description: [minMaxCharsRule(0, 4096, 'blur')],
   },
 };
 

@@ -26,21 +26,28 @@ const fontStyle: CSSProperties = {
       :key="content.id"
       :vertical="!reduced"
       :wrap="false"
-      class="ext-ref-content text-medium"
+      class="ext-ref-content"
+      style="margin-top: var(--layout-gap)"
     >
-      <n-flex v-for="(link, index) in content.links" :key="index" align="center" :wrap="false">
-        <n-icon v-if="!reduced" :component="LinkIcon" />
-        <a
-          :href="link.url"
-          target="_blank"
-          :title="link.caption || undefined"
-          style="line-height: 1.2"
-          :style="fontStyle"
-          rel="noopener noreferrer"
-        >
-          <n-icon v-if="reduced" :component="LinkIcon" size="24" />
-          <template v-else>{{ link.caption }}</template>
-        </a>
+      <n-flex v-for="(link, index) in content.links" :key="index" vertical size="small">
+        <n-flex align="center" :wrap="false">
+          <n-icon v-if="!reduced" :component="LinkIcon" />
+          <a
+            :href="link.url"
+            target="_blank"
+            :title="link.title + link.description ? ' – ' + link.description : '' || undefined"
+            style="line-height: 1.2"
+            :style="fontStyle"
+            rel="noopener noreferrer"
+          >
+            <n-icon v-if="reduced" :component="LinkIcon" size="24" />
+            <template v-else>{{ link.title }}</template>
+          </a>
+        </n-flex>
+        <n-flex v-if="!reduced && link.description" :wrap="false">
+          <n-icon />
+          <div class="text-tiny translucent ext-ref-description">{{ link.description }}</div>
+        </n-flex>
       </n-flex>
     </n-flex>
   </div>
@@ -56,5 +63,8 @@ const fontStyle: CSSProperties = {
 .ext-ref-content:not(:first-child) {
   padding-top: var(--layout-gap);
   border-top: 1px solid var(--main-bg-color);
+}
+.ext-ref-description {
+  white-space: pre-line;
 }
 </style>

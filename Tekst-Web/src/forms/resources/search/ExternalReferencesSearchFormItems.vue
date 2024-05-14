@@ -22,14 +22,14 @@ function handleUpdate(field: string, value: any) {
 <template>
   <n-form-item
     ignore-path-change
-    :label="$t('resources.types.externalReferences.contentFields.caption')"
-    :path="`queries[${queryIndex}].rts.caption`"
-    :rule="searchFormRules.externalReferences.caption"
+    :label="$t('resources.types.externalReferences.searchFields.text')"
+    :path="`queries[${queryIndex}].rts.text`"
+    :rule="searchFormRules.externalReferences.text"
   >
     <n-input-osk
-      :model-value="model.caption"
-      :placeholder="$t('resources.types.externalReferences.contentFields.caption')"
-      @update:model-value="(v) => handleUpdate('caption', v)"
+      :model-value="model.text"
+      :placeholder="$t('resources.types.externalReferences.searchFields.text')"
+      @update:model-value="(v) => handleUpdate('text', v)"
     />
   </n-form-item>
 </template>
