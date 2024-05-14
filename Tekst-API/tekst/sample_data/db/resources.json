@@ -4,17 +4,21 @@
       "$oid": "654b825533ee5737b297f8f3"
     },
     "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
-    "title": "Originalfassung",
+    "title": "Warnung (Anschütz)",
     "description": [
       {
         "locale": "deDE",
-        "translation": "Die deutschsprachige Originalfassung von 1824"
+        "translation": "Der deutschsprachige Originaltext von 1824"
+      },
+      {
+        "locale": "enUS",
+        "translation": "The original German-language text from 1824"
       }
     ],
     "text_id": {
       "$oid": "654b825533ee5737b297f8e3"
     },
-    "level": 1,
+    "level": 2,
     "resource_type": "plainText",
     "original_id": null,
     "owner_id": null,
@@ -54,7 +58,7 @@
     "config": {
       "common": {
         "category": "versions",
-        "sortOrder": 100,
+        "sortOrder": 80,
         "defaultActive": true,
         "showOnParentLevel": true
       },
@@ -66,7 +70,7 @@
       "deeplLinks": {
         "enabled": true,
         "sourceLanguage": "DE",
-        "languages": ["EN", "DE"]
+        "languages": ["EN", "ES", "FR", "IT", "PL", "RU", "TR", "UK", "JA"]
       }
     }
   },
@@ -219,6 +223,135 @@
         "enabled": false,
         "sourceLanguage": "BG",
         "languages": ["EN", "DE"]
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6641ce24affa6cb96bc85a55"
+    },
+    "_class_id": "ResourceBaseDocument.ImagesResourceDocument",
+    "title": "General Related Images",
+    "description": [
+      {
+        "locale": "enUS",
+        "translation": "Images related to the song and its historical context"
+      },
+      {
+        "locale": "deDE",
+        "translation": "Bilder zu dem Lied und seinem historischen Kontext"
+      }
+    ],
+    "text_id": {
+      "$oid": "654b825533ee5737b297f8e3"
+    },
+    "level": 0,
+    "resource_type": "images",
+    "original_id": null,
+    "owner_id": null,
+    "shared_read": [],
+    "shared_write": [],
+    "public": true,
+    "proposed": false,
+    "citation": null,
+    "meta": [],
+    "comment": [],
+    "config": {
+      "common": {
+        "category": "multimedia",
+        "sortOrder": 100,
+        "defaultActive": true,
+        "showOnParentLevel": false
+      },
+      "general": {
+        "defaultCollapsed": true,
+        "font": null
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6641d2bfaffa6cb96bc85a58"
+    },
+    "_class_id": "ResourceBaseDocument.ExternalReferencesResourceDocument",
+    "title": "Musical Resources",
+    "description": [
+      {
+        "locale": "enUS",
+        "translation": "Links to various musical resources"
+      },
+      {
+        "locale": "deDE",
+        "translation": "Links zu verschiedenen musikalischen Ressourcen"
+      }
+    ],
+    "text_id": {
+      "$oid": "654b825533ee5737b297f8e3"
+    },
+    "level": 0,
+    "resource_type": "externalReferences",
+    "original_id": null,
+    "owner_id": null,
+    "shared_read": [],
+    "shared_write": [],
+    "public": true,
+    "proposed": false,
+    "citation": null,
+    "meta": [],
+    "comment": [],
+    "config": {
+      "common": {
+        "category": "links",
+        "sortOrder": 100,
+        "defaultActive": true,
+        "showOnParentLevel": false
+      },
+      "general": {
+        "defaultCollapsed": false,
+        "font": null
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6641d510affa6cb96bc85a5b"
+    },
+    "_class_id": "ResourceBaseDocument.AudioResourceDocument",
+    "title": "Performances",
+    "description": [
+      {
+        "locale": "enUS",
+        "translation": "Audio recordings of performances of the song"
+      },
+      {
+        "locale": "deDE",
+        "translation": "Audioaufnahmen von Aufführungen des Liedes"
+      }
+    ],
+    "text_id": {
+      "$oid": "654b825533ee5737b297f8e3"
+    },
+    "level": 0,
+    "resource_type": "audio",
+    "original_id": null,
+    "owner_id": null,
+    "shared_read": [],
+    "shared_write": [],
+    "public": true,
+    "proposed": false,
+    "citation": null,
+    "meta": [],
+    "comment": [],
+    "config": {
+      "common": {
+        "category": "multimedia",
+        "sortOrder": 110,
+        "defaultActive": true,
+        "showOnParentLevel": false
+      },
+      "general": {
+        "defaultCollapsed": false,
+        "font": null
       }
     }
   }

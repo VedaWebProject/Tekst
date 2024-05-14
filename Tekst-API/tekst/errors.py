@@ -148,6 +148,12 @@ E_400_RESOURCE_VERSION_OF_VERSION = error_instance(
     msg="The resource is already a version of another resource",
 )
 
+E_400_INVALID_REQUEST_DATA = error_instance(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    key="invalidRequestData",
+    msg="The request data is invalid",
+)
+
 E_400_LOCATION_RANGE_INVALID = error_instance(
     status_code=status.HTTP_400_BAD_REQUEST,
     key="locationRangeInvalid",

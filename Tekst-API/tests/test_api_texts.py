@@ -198,7 +198,7 @@ async def test_insert_level(
     assert isinstance(resp.json(), list)
     assert len(resp.json()) > 0
     text = resp.json()[0]
-    assert len(text["levels"]) == 2
+    assert len(text["levels"]) == 3
 
     # prepare new level data
     level_data = [
@@ -213,7 +213,7 @@ async def test_insert_level(
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert "id" in resp.json()
-    assert len(resp.json()["levels"]) == 3
+    assert len(resp.json()["levels"]) == 4
 
     # insert new level 1
     resp = await test_client.post(
@@ -222,7 +222,7 @@ async def test_insert_level(
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert "id" in resp.json()
-    assert len(resp.json()["levels"]) == 4
+    assert len(resp.json()["levels"]) == 5
 
     # insert new level for wrong text ID
     resp = await test_client.post(

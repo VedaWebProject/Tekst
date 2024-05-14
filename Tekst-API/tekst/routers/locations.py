@@ -39,6 +39,7 @@ router = APIRouter(
         [
             errors.E_400_INVALID_TEXT,
             errors.E_400_INVALID_LEVEL,
+            errors.E_400_INVALID_REQUEST_DATA,
             errors.E_401_UNAUTHORIZED,
             errors.E_403_FORBIDDEN,
         ]
@@ -77,6 +78,8 @@ async def create_location(su: SuperuserDep, location: LocationCreate) -> Locatio
         # there is a parent, so we need to get the last child of the parent (if any)
         # or the one of the previous parent (and so on...) and use its position + 1
         parent = await LocationDocument.get(location.parent_id)
+        if not parent:
+            raise errors.E_400_INVALID_REQUEST_DATA
         while True:
             last_child = (
                 await LocationDocument.find(

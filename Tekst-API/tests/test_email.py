@@ -8,7 +8,7 @@ from tekst.notifications import send_test_email
 
 @pytest.mark.anyio
 async def test_sending_email():
-    send_test_email(
+    await send_test_email(
         UserRead(
             id="645b469846c001259ec09d63",
             username="testuser",

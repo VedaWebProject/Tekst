@@ -425,7 +425,7 @@ async def test_get_resources(
     text_id = (await insert_sample_data("texts", "locations", "resources"))["texts"][0]
     resp = await test_client.get(
         "/resources",
-        params={"txt": text_id, "lvl": 1, "type": "plainText"},
+        params={"txt": text_id, "lvl": 2, "type": "plainText"},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)

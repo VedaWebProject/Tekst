@@ -60,10 +60,10 @@ async def test_get_location_data(
 ):
     await insert_sample_data("texts", "locations", "resources", "contents")
     texts = get_sample_data("db/texts.json", for_http=True)
-    text_id = next((txt for txt in texts if len(txt["levels"]) == 2), {}).get("_id", "")
+    text_id = next((txt for txt in texts if txt["slug"] == "fdhdgg"), {}).get("_id", "")
     assert len(text_id) > 0
 
-    # get level 0 path
+    # get level 0 path and contents
     resp = await test_client.get(
         "/browse/location-data",
         params={"txt": text_id, "lvl": 0, "pos": 0},
@@ -71,12 +71,12 @@ async def test_get_location_data(
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), dict)
     assert len(resp.json()["locationPath"]) > 0
-    assert len(resp.json()["contents"]) == 0
+    assert len(resp.json()["contents"]) > 0
 
     # higher level
     resp = await test_client.get(
         "/browse/location-data",
-        params={"txt": text_id, "lvl": 1, "pos": 0},
+        params={"txt": text_id, "lvl": 2, "pos": 0},
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), dict)

@@ -19,6 +19,16 @@
       [
         {
           "locale": "enUS",
+          "translation": "Song"
+        },
+        {
+          "locale": "deDE",
+          "translation": "Lied"
+        }
+      ],
+      [
+        {
+          "locale": "enUS",
           "translation": "Stanza"
         },
         {
@@ -37,7 +47,7 @@
         }
       ]
     ],
-    "default_level": 1,
+    "default_level": 2,
     "loc_delim": " > ",
     "labeled_location": true,
     "accent_color": "#43895f",
@@ -53,6 +63,24 @@
           {
             "locale": "deDE",
             "translation": "Versionen"
+          }
+        ]
+      },
+      {
+        "key": "multimedia",
+        "translations": [
+          {
+            "locale": "*",
+            "translation": "Multimedia"
+          }
+        ]
+      },
+      {
+        "key": "links",
+        "translations": [
+          {
+            "locale": "*",
+            "translation": "Links"
           }
         ]
       }

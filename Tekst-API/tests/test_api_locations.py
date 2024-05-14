@@ -115,7 +115,12 @@ async def test_child_location_io(
     login,
 ):
     text_id = (await insert_sample_data("texts"))["texts"][0]
-    location = get_sample_data("db/locations.json", for_http=True)[0]
+    location = {
+        "text_id": text_id,
+        "level": 0,
+        "position": 0,
+        "label": "1",
+    }
     await login(is_superuser=True)
 
     # create parent
@@ -209,24 +214,24 @@ async def test_get_locations(
 
     # test results length limit
     resp = await test_client.get(
-        "/locations", params={"txt": text_id, "lvl": 0, "limit": 2}
+        "/locations", params={"txt": text_id, "lvl": 1, "limit": 2}
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 2
 
     # test empty results with status 200
-    resp = await test_client.get("/locations", params={"txt": wrong_id, "lvl": 0})
+    resp = await test_client.get("/locations", params={"txt": wrong_id, "lvl": 1})
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 0
 
-    # test results contain all locations of level 0
-    resp = await test_client.get("/locations", params={"txt": text_id, "lvl": 0})
+    # test results contain all locations of level 1
+    resp = await test_client.get("/locations", params={"txt": text_id, "lvl": 1})
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == len(
-        [n for n in locations if n["textId"] == text_id and n["level"] == 0]
+        [n for n in locations if n["textId"] == text_id and n["level"] == 1]
     )
 
     # test returned locations have IDs
@@ -236,7 +241,7 @@ async def test_get_locations(
 
     # test specific position
     resp = await test_client.get(
-        "/locations", params={"txt": text_id, "lvl": 0, "pos": 0}
+        "/locations", params={"txt": text_id, "lvl": 1, "pos": 0}
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
@@ -268,7 +273,7 @@ async def test_update_location(
     text_id = (await insert_sample_data("texts", "locations"))["texts"][0]
 
     # get location from db
-    resp = await test_client.get("/locations", params={"txt": text_id, "lvl": 0})
+    resp = await test_client.get("/locations", params={"txt": text_id, "lvl": 1})
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) > 0
