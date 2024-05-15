@@ -36,6 +36,7 @@ import { saveDownload } from '@/api';
 import { SearchIcon, UndoIcon, ResourceIcon, AddIcon } from '@/icons';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
 import { useTasks } from '@/composables/tasks';
+import { pickTranslation } from '@/utils';
 
 const state = useStateStore();
 const auth = useAuthStore();
@@ -72,7 +73,14 @@ function filterData(resourcesData: AnyResourceRead[]) {
   pagination.value.page = 1;
   return resourcesData.filter((r) => {
     const resourceStringContent = filters.value.search
-      ? [r.title, r.description, r.ownerId, r.comment, r.citation, JSON.stringify(r.meta)]
+      ? [
+          r.title.map((t) => t.translation).join(' '),
+          r.description?.map((d) => d.translation).join(' ') || '',
+          r.ownerId,
+          r.comment?.map((c) => c.translation).join(' ') || '',
+          r.citation,
+          JSON.stringify(r.meta),
+        ]
           .filter((prop) => prop)
           .join(' ')
       : '';
@@ -109,7 +117,10 @@ async function handleTransferResource(resource?: AnyResourceRead, user?: UserRea
   if (!error) {
     resources.replace(data);
     message.success(
-      $t('resources.msgTransferred', { title: resource.title, username: user.username })
+      $t('resources.msgTransferred', {
+        title: pickTranslation(resource.title, state.locale),
+        username: user.username,
+      })
     );
   }
   filters.value = initialFilters();
@@ -134,7 +145,9 @@ function handleProposeClick(resource: AnyResourceRead) {
       });
       if (!error) {
         resources.replace(data);
-        message.success($t('resources.msgProposed', { title: resource.title }));
+        message.success(
+          $t('resources.msgProposed', { title: pickTranslation(resource.title, state.locale) })
+        );
       }
       filters.value = initialFilters();
       actionsLoading.value = false;
@@ -158,7 +171,9 @@ function handleUnproposeClick(resource: AnyResourceRead) {
       });
       if (!error) {
         resources.replace(data);
-        message.success($t('resources.msgUnproposed', { title: resource.title }));
+        message.success(
+          $t('resources.msgUnproposed', { title: pickTranslation(resource.title, state.locale) })
+        );
       }
       filters.value = initialFilters();
       actionsLoading.value = false;
@@ -182,7 +197,9 @@ function handlePublishClick(resource: AnyResourceRead) {
       });
       if (!error) {
         resources.replace(data);
-        message.success($t('resources.msgPublished', { title: resource.title }));
+        message.success(
+          $t('resources.msgPublished', { title: pickTranslation(resource.title, state.locale) })
+        );
       }
       filters.value = initialFilters();
       actionsLoading.value = false;
@@ -206,7 +223,9 @@ function handleUnpublishClick(resource: AnyResourceRead) {
       });
       if (!error) {
         resources.replace(data);
-        message.success($t('resources.msgUnpublished', { title: resource.title }));
+        message.success(
+          $t('resources.msgUnpublished', { title: pickTranslation(resource.title, state.locale) })
+        );
       }
       filters.value = initialFilters();
       actionsLoading.value = false;
@@ -228,7 +247,9 @@ function handleContentsClick(resource: AnyResourceRead) {
 function handleCreateVersionClick(resource: AnyResourceRead) {
   dialog.warning({
     title: $t('general.info'),
-    content: $t('resources.infoCreateVersion', { title: resource.title }),
+    content: $t('resources.infoCreateVersion', {
+      title: pickTranslation(resource.title, state.locale),
+    }),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
     autoFocus: false,
@@ -241,7 +262,11 @@ function handleCreateVersionClick(resource: AnyResourceRead) {
       });
       if (!error) {
         resources.add(data);
-        message.success($t('resources.msgCreatedVersion', { title: resource.title }));
+        message.success(
+          $t('resources.msgCreatedVersion', {
+            title: pickTranslation(resource.title, state.locale),
+          })
+        );
       }
       actionsLoading.value = false;
     },
@@ -263,7 +288,9 @@ function handleDeleteClick(resource: AnyResourceRead) {
         params: { path: { id: resource.id } },
       });
       if (!error) {
-        message.success($t('resources.msgDeleted', { title: resource.title }));
+        message.success(
+          $t('resources.msgDeleted', { title: pickTranslation(resource.title, state.locale) })
+        );
       }
       await resources.load();
       actionsLoading.value = false;
@@ -278,7 +305,10 @@ async function handleDownloadTemplateClick(resource: AnyResourceRead) {
     parseAs: 'blob',
   });
   if (!error) {
-    const resSaveName = resource.title.substring(0, 32).trim().replace(/\W+/g, '_');
+    const resSaveName = pickTranslation(resource.title, state.locale)
+      .substring(0, 32)
+      .trim()
+      .replace(/\W+/g, '_');
     const filename = `${resSaveName}_${resource.id}_template.json`.toLowerCase();
     message.info($t('general.downloadSaved', { filename }));
     saveDownload(await response.blob(), filename);

@@ -157,15 +157,14 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
   <h3>{{ $t('resources.headingBasic') }}</h3>
 
   <!-- TITLE -->
-  <n-form-item path="title" :label="$t('models.resource.title')" required>
-    <n-input
-      :value="model.title"
-      type="text"
-      :placeholder="$t('models.resource.title')"
-      @update:value="(v) => handleUpdate('title', v)"
-      @keydown.enter.prevent
-    />
-  </n-form-item>
+  <translation-form-item
+    :model-value="model.title"
+    parent-form-path-prefix="title"
+    :main-form-label="$t('models.resource.title')"
+    :translation-form-label="$t('models.resource.title')"
+    :translation-form-rule="resourceSettingsFormRules.titleTranslation"
+    @update:model-value="(v) => handleUpdate('title', v)"
+  />
 
   <!-- DESCRIPTION -->
   <translation-form-item

@@ -25,6 +25,17 @@ from tekst.utils import validators as val
 from tekst.utils.strings import cleanup_spaces_multiline
 
 
+class ResourceTitleTranslation(TranslationBase):
+    translation: Annotated[
+        str,
+        StringConstraints(
+            min_length=1,
+            max_length=64,
+            strip_whitespace=True,
+        ),
+    ]
+
+
 class ResourceDescriptionTranslation(TranslationBase):
     translation: Annotated[
         str,
@@ -51,14 +62,10 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
     """A resource describing a set of data on a text"""
 
     title: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
-            max_length=64,
-            strip_whitespace=True,
-        ),
+        Translations[ResourceTitleTranslation],
         Field(
             description="Title of this resource",
+            min_length=1,
         ),
     ]
     description: Annotated[

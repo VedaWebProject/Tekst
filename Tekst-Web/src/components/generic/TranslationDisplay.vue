@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import type { Translation } from '@/api';
+import { useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
 import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
 
 const props = defineProps<{
   value?: Translation[];
 }>();
 
-const { locale } = useI18n();
-const translation = computed(() => pickTranslation(props.value, locale.value));
+const state = useStateStore();
+const translation = computed(() => pickTranslation(props.value, state.locale));
 </script>
 
 <template v-if="translation">

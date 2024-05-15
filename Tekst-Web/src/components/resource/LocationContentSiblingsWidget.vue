@@ -1,27 +1,31 @@
 <script setup lang="ts">
 import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { NButton, NSpin } from 'naive-ui';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import { GET, type AnyContentRead, type AnyResourceRead } from '@/api';
 import { $t } from '@/i18n';
 import contentComponents from '@/components/content/mappings';
 import LocationLabel from '@/components/LocationLabel.vue';
-import { useBrowseStore } from '@/stores';
+import { useBrowseStore, useStateStore } from '@/stores';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 
 import { MergeIcon, BookIcon, ResourceIcon } from '@/icons';
+import { pickTranslation } from '@/utils';
 
 const props = defineProps<{
   resource: AnyResourceRead;
 }>();
 
+const state = useStateStore();
 const browse = useBrowseStore();
 
 const showModal = ref(false);
 const loading = ref(false);
 const contents = ref<AnyContentRead[]>([]);
+
+const resourceTitle = computed(() => pickTranslation(props.resource.title, state.locale));
 
 async function handleClick() {
   showModal.value = true;
@@ -55,7 +59,7 @@ async function handleClick() {
   <generic-modal
     v-model:show="showModal"
     width="full"
-    :title="resource.title"
+    :title="resourceTitle"
     :icon="ResourceIcon"
     heading-level="2"
   >

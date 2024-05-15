@@ -7008,9 +7008,12 @@
       "AudioResourceCreate": {
         "properties": {
           "title": {
-            "type": "string",
-            "maxLength": 64,
-            "minLength": 1,
+            "items": {
+              "$ref": "#/components/schemas/ResourceTitleTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 1,
             "title": "Title",
             "description": "Title of this resource"
           },
@@ -7222,9 +7225,12 @@
             "description": "Public user data for users allowed to write this resource"
           },
           "title": {
-            "type": "string",
-            "maxLength": 64,
-            "minLength": 1,
+            "items": {
+              "$ref": "#/components/schemas/ResourceTitleTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 1,
             "title": "Title",
             "description": "Title of this resource"
           },
@@ -7382,9 +7388,12 @@
           "title": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 64,
-                "minLength": 1
+                "items": {
+                  "$ref": "#/components/schemas/ResourceTitleTranslation"
+                },
+                "type": "array",
+                "maxItems": 3,
+                "minItems": 1
               },
               {
                 "type": "null"
@@ -8666,9 +8675,12 @@
       "ExternalReferencesResourceCreate": {
         "properties": {
           "title": {
-            "type": "string",
-            "maxLength": 64,
-            "minLength": 1,
+            "items": {
+              "$ref": "#/components/schemas/ResourceTitleTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 1,
             "title": "Title",
             "description": "Title of this resource"
           },
@@ -8880,9 +8892,12 @@
             "description": "Public user data for users allowed to write this resource"
           },
           "title": {
-            "type": "string",
-            "maxLength": 64,
-            "minLength": 1,
+            "items": {
+              "$ref": "#/components/schemas/ResourceTitleTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 1,
             "title": "Title",
             "description": "Title of this resource"
           },
@@ -9040,9 +9055,12 @@
           "title": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 64,
-                "minLength": 1
+                "items": {
+                  "$ref": "#/components/schemas/ResourceTitleTranslation"
+                },
+                "type": "array",
+                "maxItems": 3,
+                "minItems": 1
               },
               {
                 "type": "null"
@@ -9724,9 +9742,12 @@
       "ImagesResourceCreate": {
         "properties": {
           "title": {
-            "type": "string",
-            "maxLength": 64,
-            "minLength": 1,
+            "items": {
+              "$ref": "#/components/schemas/ResourceTitleTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 1,
             "title": "Title",
             "description": "Title of this resource"
           },
@@ -9938,9 +9959,12 @@
             "description": "Public user data for users allowed to write this resource"
           },
           "title": {
-            "type": "string",
-            "maxLength": 64,
-            "minLength": 1,
+            "items": {
+              "$ref": "#/components/schemas/ResourceTitleTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 1,
             "title": "Title",
             "description": "Title of this resource"
           },
@@ -10098,9 +10122,12 @@
           "title": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 64,
-                "minLength": 1
+                "items": {
+                  "$ref": "#/components/schemas/ResourceTitleTranslation"
+                },
+                "type": "array",
+                "maxItems": 3,
+                "minItems": 1
               },
               {
                 "type": "null"
@@ -10911,9 +10938,12 @@
       "PlainTextResourceCreate": {
         "properties": {
           "title": {
-            "type": "string",
-            "maxLength": 64,
-            "minLength": 1,
+            "items": {
+              "$ref": "#/components/schemas/ResourceTitleTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 1,
             "title": "Title",
             "description": "Title of this resource"
           },
@@ -11134,9 +11164,12 @@
             "description": "Public user data for users allowed to write this resource"
           },
           "title": {
-            "type": "string",
-            "maxLength": 64,
-            "minLength": 1,
+            "items": {
+              "$ref": "#/components/schemas/ResourceTitleTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 1,
             "title": "Title",
             "description": "Title of this resource"
           },
@@ -11303,9 +11336,12 @@
           "title": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 64,
-                "minLength": 1
+                "items": {
+                  "$ref": "#/components/schemas/ResourceTitleTranslation"
+                },
+                "type": "array",
+                "maxItems": 3,
+                "minItems": 1
               },
               {
                 "type": "null"
@@ -12312,6 +12348,25 @@
         ],
         "title": "ResourceSearchQuery"
       },
+      "ResourceTitleTranslation": {
+        "properties": {
+          "locale": {
+            "$ref": "#/components/schemas/TranslationLocaleKey"
+          },
+          "translation": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Translation"
+          }
+        },
+        "type": "object",
+        "required": [
+          "locale",
+          "translation"
+        ],
+        "title": "ResourceTitleTranslation"
+      },
       "RichTextContentCreate": {
         "properties": {
           "resourceId": {
@@ -12575,9 +12630,12 @@
       "RichTextResourceCreate": {
         "properties": {
           "title": {
-            "type": "string",
-            "maxLength": 64,
-            "minLength": 1,
+            "items": {
+              "$ref": "#/components/schemas/ResourceTitleTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 1,
             "title": "Title",
             "description": "Title of this resource"
           },
@@ -12789,9 +12847,12 @@
             "description": "Public user data for users allowed to write this resource"
           },
           "title": {
-            "type": "string",
-            "maxLength": 64,
-            "minLength": 1,
+            "items": {
+              "$ref": "#/components/schemas/ResourceTitleTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 1,
             "title": "Title",
             "description": "Title of this resource"
           },
@@ -12949,9 +13010,12 @@
           "title": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 64,
-                "minLength": 1
+                "items": {
+                  "$ref": "#/components/schemas/ResourceTitleTranslation"
+                },
+                "type": "array",
+                "maxItems": 3,
+                "minItems": 1
               },
               {
                 "type": "null"
@@ -13717,9 +13781,12 @@
       "TextAnnotationResourceCreate": {
         "properties": {
           "title": {
-            "type": "string",
-            "maxLength": 64,
-            "minLength": 1,
+            "items": {
+              "$ref": "#/components/schemas/ResourceTitleTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 1,
             "title": "Title",
             "description": "Title of this resource"
           },
@@ -13946,9 +14013,12 @@
             "description": "Public user data for users allowed to write this resource"
           },
           "title": {
-            "type": "string",
-            "maxLength": 64,
-            "minLength": 1,
+            "items": {
+              "$ref": "#/components/schemas/ResourceTitleTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 1,
             "title": "Title",
             "description": "Title of this resource"
           },
@@ -14121,9 +14191,12 @@
           "title": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 64,
-                "minLength": 1
+                "items": {
+                  "$ref": "#/components/schemas/ResourceTitleTranslation"
+                },
+                "type": "array",
+                "maxItems": 3,
+                "minItems": 1
               },
               {
                 "type": "null"

@@ -10,7 +10,7 @@ import { DownloadIcon } from '@/icons';
 import LocationSelectForm from '@/forms/LocationSelectForm.vue';
 import { $t } from '@/i18n';
 import { useMessages } from '@/composables/messages';
-import { getFullLocationLabel } from '@/utils';
+import { getFullLocationLabel, pickTranslation } from '@/utils';
 import { useTasks } from '@/composables/tasks';
 
 const allFormatOptions: { label: string; value: ResourceExportFormat }[] = [
@@ -56,6 +56,7 @@ const { message } = useMessages();
 
 const showExportModal = ref(false);
 const loadingExport = ref(false);
+const resourceTitle = ref('');
 
 const format = ref<ResourceExportFormat>('json');
 const formatOptions = computed(() =>
@@ -158,18 +159,23 @@ function handleModalLeave() {
   fromLocationPath.value = [];
   toLocationPath.value = [];
 }
+
+function handleWidgetClick() {
+  resourceTitle.value = pickTranslation(props.resource.title, state.locale);
+  showExportModal.value = true;
+}
 </script>
 
 <template>
   <content-container-header-widget
     :title="$t('browse.contents.widgets.exportWidget.title')"
     :icon-component="DownloadIcon"
-    @click="showExportModal = true"
+    @click="handleWidgetClick"
   />
 
   <generic-modal
     v-model:show="showExportModal"
-    :title="`${$t('browse.contents.widgets.exportWidget.title')}: ${resource.title}`"
+    :title="`${$t('browse.contents.widgets.exportWidget.title')}: ${resourceTitle}`"
     :icon="DownloadIcon"
     @after-enter="handleModalEnter"
     @after-leave="handleModalLeave"

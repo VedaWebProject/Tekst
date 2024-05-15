@@ -23,9 +23,10 @@ import type { SelectMixedOption } from 'naive-ui/es/select/src/interface';
 import CommonSearchFormItems from '@/forms/resources/search/CommonSearchFormItems.vue';
 import { $t } from '@/i18n';
 import { useRouter } from 'vue-router';
-import { useResourcesStore, useSearchStore } from '@/stores';
+import { useResourcesStore, useSearchStore, useStateStore } from '@/stores';
 import GeneralSearchSettingsForm from '@/forms/search/GeneralSearchSettingsForm.vue';
 import { useMessages } from '@/composables/messages';
+import { pickTranslation } from '@/utils';
 
 type AdvancedSearchRequestQuery = AdvancedSearchRequestBody['q'][number];
 interface AdvancedSearchFormModelItem extends AdvancedSearchRequestQuery {
@@ -35,6 +36,7 @@ interface AdvancedSearchFormModel {
   queries: AdvancedSearchFormModelItem[];
 }
 
+const state = useStateStore();
 const search = useSearchStore();
 const resources = useResourcesStore();
 const router = useRouter();
@@ -46,7 +48,7 @@ const formRef = ref<FormInst | null>(null);
 
 const resourceOptions = computed(() =>
   resources.data.map((r) => ({
-    label: `${r.title} (${$t('resources.types.' + r.resourceType + '.label')})`,
+    label: `${pickTranslation(r.title, state.locale)} (${$t('resources.types.' + r.resourceType + '.label')})`,
     value: r.id,
     resourceType: r.resourceType,
   }))
