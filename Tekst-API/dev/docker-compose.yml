@@ -74,7 +74,7 @@ services:
       - dev
 
   mailpit:
-    image: axllent/mailpit:v1.16
+    image: axllent/mailpit:v1.18
     restart: always
     init: true
     volumes:
