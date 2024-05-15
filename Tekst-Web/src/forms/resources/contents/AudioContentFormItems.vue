@@ -60,6 +60,20 @@ async function checkUrlInput(input: HTMLInputElement) {
               @keydown.enter.prevent
             />
           </n-form-item>
+          <!-- SOURCE WEBSITE URL -->
+          <n-form-item
+            ignore-path-change
+            :label="$t('resources.types.audio.contentFields.sourceUrl')"
+            :path="`files[${index}].sourceUrl`"
+            :rule="contentFormRules.audio.optionalUrl"
+            style="flex-grow: 2"
+          >
+            <n-input
+              v-model:value="model.files[index].sourceUrl"
+              :placeholder="$t('resources.types.audio.contentFields.sourceUrl')"
+              @keydown.enter.prevent
+            />
+          </n-form-item>
           <!-- CAPTION -->
           <n-form-item
             ignore-path-change

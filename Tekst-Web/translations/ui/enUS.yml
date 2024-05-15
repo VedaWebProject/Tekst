@@ -450,6 +450,7 @@ resources:
       contentFields:
         files: Audio Files
         url: URL
+        sourceUrl: URL of source website
         caption: Caption
     images:
       label: Images
@@ -458,6 +459,7 @@ resources:
         files: Image Files
         url: URL
         thumbUrl: Thumbnail URL
+        sourceUrl: URL of source website
         caption: Caption
     externalReferences:
       label: External References

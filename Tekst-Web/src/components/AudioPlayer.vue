@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
-import { PlayIcon, PauseIcon, ErrorIcon, DownloadIcon } from '@/icons';
+import { PlayIcon, PauseIcon, ErrorIcon, DownloadIcon, LinkIcon } from '@/icons';
 import { useMediaControls } from '@vueuse/core';
 import { NSlider, NFlex, NButton, NIcon } from 'naive-ui';
 import { watch } from 'vue';
@@ -10,6 +10,7 @@ import { ref, type CSSProperties, computed } from 'vue';
 
 const props = defineProps<{
   src: string;
+  externalLink?: string;
   caption?: string;
   instanceId?: string;
   fontStyle?: CSSProperties;
@@ -104,6 +105,21 @@ onMounted(() => {
           :disabled="error"
           style="width: auto; flex-grow: 2; flex-basis: 200px"
         />
+        <n-button
+          v-if="externalLink"
+          quaternary
+          circle
+          size="small"
+          :focusable="false"
+          tag="a"
+          :href="externalLink"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <template #icon>
+            <n-icon :component="LinkIcon" />
+          </template>
+        </n-button>
         <n-button
           quaternary
           circle

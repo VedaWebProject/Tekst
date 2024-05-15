@@ -6944,6 +6944,19 @@
             "title": "Url",
             "description": "URL of the audio file"
           },
+          "sourceUrl": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 2083
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sourceurl",
+            "description": "URL of the source website of the image"
+          },
           "caption": {
             "anyOf": [
               {
@@ -9432,6 +9445,19 @@
             ],
             "title": "Thumburl",
             "description": "URL of the image file thumbnail"
+          },
+          "sourceUrl": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 2083
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sourceurl",
+            "description": "URL of the source website of the image"
           },
           "caption": {
             "anyOf": [

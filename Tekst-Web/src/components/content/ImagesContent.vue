@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import type { ImagesResourceRead } from '@/api';
 import { computed, type CSSProperties } from 'vue';
-import { NFlex, NImage, NImageGroup } from 'naive-ui';
+import { NIcon, NFlex, NImage, NImageGroup } from 'naive-ui';
 import { useStateStore } from '@/stores';
 import { type ImageRenderToolbarProps } from 'naive-ui/es/image/src/public-types';
+import { LinkIcon } from '@/icons';
 
 const props = withDefaults(
   defineProps<{
@@ -62,8 +63,18 @@ const renderToolbar = ({ nodes }: ImageRenderToolbarProps) => {
               :title="image.caption"
               :height="imageHeight"
             />
-            <figcaption v-if="!reduced" class="caption text-tiny translucent" :style="fontStyle">
-              {{ image.caption }}
+            <figcaption v-if="!reduced" class="caption" :style="fontStyle">
+              <span class="text-tiny translucent">{{ image.caption }}</span>
+              <a
+                v-if="image.sourceUrl"
+                :href="image.sourceUrl"
+                :title="image.sourceUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="source-link"
+              >
+                <n-icon :component="LinkIcon" />
+              </a>
             </figcaption>
           </figure>
         </n-flex>
@@ -92,5 +103,12 @@ const renderToolbar = ({ nodes }: ImageRenderToolbarProps) => {
 }
 .caption {
   white-space: pre-line;
+  line-height: 1.2;
+  vertical-align: middle;
+}
+.caption > .source-link {
+  display: inline-block;
+  vertical-align: -4px;
+  margin-left: 8px;
 }
 </style>

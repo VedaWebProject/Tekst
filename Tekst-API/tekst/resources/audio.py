@@ -165,6 +165,17 @@ class AudioFile(ModelBase):
             description="URL of the audio file",
         ),
     ]
+    source_url: Annotated[
+        str | None,
+        StringConstraints(
+            max_length=2083,
+            strip_whitespace=True,
+        ),
+        val.CleanupOneline,
+        Field(
+            description="URL of the source website of the image",
+        ),
+    ] = None
     caption: Annotated[
         str | None,
         StringConstraints(

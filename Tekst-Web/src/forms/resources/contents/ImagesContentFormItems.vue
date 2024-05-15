@@ -44,37 +44,50 @@ async function checkUrlInput(input: HTMLInputElement) {
       @update:value="(value) => handleUpdate('files', value)"
     >
       <template #default="{ index }">
-        <n-flex align="start" style="flex-grow: 2">
-          <!-- URL -->
-          <n-form-item
-            ignore-path-change
-            :label="$t('resources.types.images.contentFields.url')"
-            :path="`files[${index}].url`"
-            :rule="contentFormRules.images.url"
-            style="flex-grow: 2"
-          >
-            <n-input
-              v-model:value="model.files[index].url"
-              :placeholder="$t('resources.types.images.contentFields.url')"
-              @input-blur="checkUrlInput($event.target as HTMLInputElement)"
-              @keydown.enter.prevent
-            />
-          </n-form-item>
-          <!-- THUMBNAIL URL -->
-          <n-form-item
-            ignore-path-change
-            :label="$t('resources.types.images.contentFields.thumbUrl')"
-            :path="`files[${index}].url`"
-            :rule="contentFormRules.images.thumbUrl"
-            style="flex-grow: 2"
-          >
-            <n-input
-              v-model:value="model.files[index].thumbUrl"
-              :placeholder="$t('resources.types.images.contentFields.thumbUrl')"
-              @input-blur="checkUrlInput($event.target as HTMLInputElement)"
-              @keydown.enter.prevent
-            />
-          </n-form-item>
+        <n-flex align="stretch" style="flex-grow: 2">
+          <n-flex vertical style="flex-grow: 2">
+            <!-- URL -->
+            <n-form-item
+              ignore-path-change
+              :label="$t('resources.types.images.contentFields.url')"
+              :path="`files[${index}].url`"
+              :rule="contentFormRules.images.url"
+            >
+              <n-input
+                v-model:value="model.files[index].url"
+                :placeholder="$t('resources.types.images.contentFields.url')"
+                @input-blur="checkUrlInput($event.target as HTMLInputElement)"
+                @keydown.enter.prevent
+              />
+            </n-form-item>
+            <!-- THUMBNAIL URL -->
+            <n-form-item
+              ignore-path-change
+              :label="$t('resources.types.images.contentFields.thumbUrl')"
+              :path="`files[${index}].thumbUrl`"
+              :rule="contentFormRules.images.optionalUrl"
+            >
+              <n-input
+                v-model:value="model.files[index].thumbUrl"
+                :placeholder="$t('resources.types.images.contentFields.thumbUrl')"
+                @input-blur="checkUrlInput($event.target as HTMLInputElement)"
+                @keydown.enter.prevent
+              />
+            </n-form-item>
+            <!-- Source URL -->
+            <n-form-item
+              ignore-path-change
+              :label="$t('resources.types.images.contentFields.sourceUrl')"
+              :path="`files[${index}].sourceUrl`"
+              :rule="contentFormRules.images.optionalUrl"
+            >
+              <n-input
+                v-model:value="model.files[index].sourceUrl"
+                :placeholder="$t('resources.types.images.contentFields.sourceUrl')"
+                @keydown.enter.prevent
+              />
+            </n-form-item>
+          </n-flex>
           <!-- CAPTION -->
           <n-form-item
             ignore-path-change
@@ -86,8 +99,9 @@ async function checkUrlInput(input: HTMLInputElement) {
             <n-input-osk
               v-model="model.files[index].caption"
               type="textarea"
+              class="caption-textarea"
               :font="resource.config?.general?.font || undefined"
-              :rows="2"
+              style="height: 100%"
               :max-length="512"
               :placeholder="$t('resources.types.images.contentFields.caption')"
             />
@@ -111,3 +125,9 @@ async function checkUrlInput(input: HTMLInputElement) {
     </n-dynamic-input>
   </n-form-item>
 </template>
+
+<style scoped>
+:deep(.caption-textarea.n-input.n-input--textarea.n-input--resizable .n-input-wrapper) {
+  resize: none;
+}
+</style>

@@ -461,6 +461,7 @@ resources:
       contentFields:
         files: Audio-Dateien
         url: URL
+        sourceUrl: URL der Quellen-Website
         caption: Beschriftung
     images:
       label: Bilder
@@ -469,6 +470,7 @@ resources:
         files: Bild-Dateien
         url: URL
         thumbUrl: Miniatur-URL
+        sourceUrl: URL der Quellen-Website
         caption: Beschriftung
     externalReferences:
       label: Externe Referenzen

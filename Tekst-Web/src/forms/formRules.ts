@@ -299,6 +299,7 @@ export const contentFormRules: Record<string, Record<string, FormItemRule[]>> = 
       requiredRule(() => $t('resources.types.audio.contentFields.url'), 'blur'),
       minMaxCharsRule(1, 2083, 'blur'),
     ],
+    optionalUrl: [minMaxCharsRule(1, 2083, 'blur')],
     caption: [minMaxCharsRule(0, 8192, 'blur')],
   },
   images: {
@@ -306,6 +307,7 @@ export const contentFormRules: Record<string, Record<string, FormItemRule[]>> = 
       requiredRule(() => $t('resources.types.images.contentFields.url'), 'blur'),
       minMaxCharsRule(1, 2083, 'blur'),
     ],
+    optionalUrl: [minMaxCharsRule(1, 2083, 'blur')],
     caption: [minMaxCharsRule(0, 8192, 'blur')],
   },
   externalReferences: {

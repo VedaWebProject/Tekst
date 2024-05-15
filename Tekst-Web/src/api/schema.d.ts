@@ -549,6 +549,11 @@ export interface components {
        */
       url: string;
       /**
+       * Sourceurl
+       * @description URL of the source website of the image
+       */
+      sourceUrl?: string | null;
+      /**
        * Caption
        * @description Caption of the audio file
        */
@@ -1871,6 +1876,11 @@ export interface components {
        * @description URL of the image file thumbnail
        */
       thumbUrl?: string | null;
+      /**
+       * Sourceurl
+       * @description URL of the source website of the image
+       */
+      sourceUrl?: string | null;
       /**
        * Caption
        * @description Caption of the image

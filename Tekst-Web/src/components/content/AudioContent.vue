@@ -56,6 +56,7 @@ onBeforeUpdate(() => {
         "
         :key="fileIndex"
         :src="file.url"
+        :external-link="file.sourceUrl || undefined"
         :compact="reduced"
         :caption="file.caption || undefined"
         :font-style="fontStyle"
