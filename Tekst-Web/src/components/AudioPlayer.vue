@@ -57,6 +57,10 @@ function download() {
   window.open(props.src, '_blank', 'noopener noreferrer');
 }
 
+function openTab(url: string) {
+  window.open(url, '_blank', 'noopener noreferrer');
+}
+
 watch(ended, (after) => {
   after && emit('ended', props.instanceId);
 });
@@ -111,10 +115,7 @@ onMounted(() => {
           circle
           size="small"
           :focusable="false"
-          tag="a"
-          :href="externalLink"
-          target="_blank"
-          rel="noopener noreferrer"
+          @click="openTab(externalLink)"
         >
           <template #icon>
             <n-icon :component="LinkIcon" />
