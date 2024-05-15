@@ -27,7 +27,7 @@ const fontStyle: CSSProperties = {
       :vertical="!reduced"
       :wrap="false"
       class="ext-ref-content"
-      style="margin-top: var(--layout-gap)"
+      :style="!reduced ? { marginTop: 'var(--layout-gap)' } : undefined"
     >
       <n-flex v-for="(link, index) in content.links" :key="index" vertical size="small">
         <n-flex align="center" :wrap="false">
