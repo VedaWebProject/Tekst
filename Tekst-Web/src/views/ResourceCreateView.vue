@@ -33,7 +33,7 @@ const resources = useResourcesStore();
 const getInitialModel = () =>
   ({
     id: '',
-    title: '',
+    title: [{ locale: '*', translation: '' }],
     description: [],
     textId: state.text?.id || '',
     level: state.text?.defaultLevel || 0,

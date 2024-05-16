@@ -54,7 +54,7 @@ export const useSearchStore = defineStore('search', () => {
   }
 
   watch(
-    () => resources.ofTextHash,
+    () => resources.dataHash,
     () => {
       lastReq.value = undefined;
     }

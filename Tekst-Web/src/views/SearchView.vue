@@ -124,7 +124,7 @@ function renderResourceOptionLabel(option: SelectMixedOption) {
 }
 
 watch(
-  () => resources.ofTextHash,
+  () => resources.dataHash,
   () => {
     initQueries();
   },
