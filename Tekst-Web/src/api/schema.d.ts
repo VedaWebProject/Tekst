@@ -255,8 +255,8 @@ export interface paths {
     post: operations['unpublishResource'];
   };
   '/resources/{id}/template': {
-    /** Get resource template */
-    get: operations['getResourceTemplate'];
+    /** Download resource template */
+    get: operations['downloadResourceTemplate'];
   };
   '/resources/{id}/import': {
     /** Import resource contents */
@@ -6787,8 +6787,8 @@ export interface operations {
       };
     };
   };
-  /** Get resource template */
-  getResourceTemplate: {
+  /** Download resource template */
+  downloadResourceTemplate: {
     parameters: {
       path: {
         id: string;

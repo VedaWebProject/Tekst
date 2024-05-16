@@ -4236,8 +4236,8 @@
         "tags": [
           "resources"
         ],
-        "summary": "Get resource template",
-        "operationId": "getResourceTemplate",
+        "summary": "Download resource template",
+        "operationId": "downloadResourceTemplate",
         "security": [
           {
             "APIKeyCookie": []
