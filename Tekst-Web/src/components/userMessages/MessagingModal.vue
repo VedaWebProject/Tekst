@@ -23,7 +23,6 @@ const loadingSend = ref(false);
 const { pause: stopMessagesPolling, resume: startMessagesPolling } = useIntervalFn(
   async () => {
     messages.value = await userMessages.loadMessages();
-    scrollDownMessageContainer(300);
   },
   10 * 1000, // 10 seconds
   { immediate: false, immediateCallback: true }
