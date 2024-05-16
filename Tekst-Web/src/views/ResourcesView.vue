@@ -262,6 +262,7 @@ function handleCreateVersionClick(resource: AnyResourceRead) {
       });
       if (!error) {
         resources.add(data);
+        router.push({ name: 'resourceSettings', params: { text: state.text?.slug, id: data.id } });
         message.success(
           $t('resources.msgCreatedVersion', {
             title: pickTranslation(resource.title, state.locale),
