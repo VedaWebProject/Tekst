@@ -23,10 +23,11 @@ import type { SelectMixedOption } from 'naive-ui/es/select/src/interface';
 import CommonSearchFormItems from '@/forms/resources/search/CommonSearchFormItems.vue';
 import { $t } from '@/i18n';
 import { useRouter } from 'vue-router';
-import { useResourcesStore, useSearchStore, useStateStore } from '@/stores';
+import { useResourcesStore, useSearchStore, useStateStore, useThemeStore } from '@/stores';
 import GeneralSearchSettingsForm from '@/forms/search/GeneralSearchSettingsForm.vue';
 import { useMessages } from '@/composables/messages';
 import { pickTranslation } from '@/utils';
+import { usePlatformData } from '@/composables/platformData';
 
 type AdvancedSearchRequestQuery = AdvancedSearchRequestBody['q'][number];
 interface AdvancedSearchFormModelItem extends AdvancedSearchRequestQuery {
@@ -37,22 +38,67 @@ interface AdvancedSearchFormModel {
 }
 
 const state = useStateStore();
+const { pfData } = usePlatformData();
 const search = useSearchStore();
 const resources = useResourcesStore();
 const router = useRouter();
+const theme = useThemeStore();
 const themeVars = useThemeVars();
 const { message } = useMessages();
 
 const formModel = ref<AdvancedSearchFormModel>({ queries: [] });
 const formRef = ref<FormInst | null>(null);
 
-const resourceOptions = computed(() =>
-  resources.ofText.map((r) => ({
-    label: `${pickTranslation(r.title, state.locale)} (${$t('resources.types.' + r.resourceType + '.label')})`,
-    value: r.id,
-    resourceType: r.resourceType,
-  }))
-);
+const resourceOptions = computed(() => {
+  const textsData = Object.fromEntries(
+    pfData.value?.texts.map((t) => [t.id, { title: t.title, color: t.accentColor }]) || []
+  );
+  const textIds = [
+    ...(state.text?.id ? [state.text?.id] : []),
+    ...[...new Set(resources.all.map((r) => r.textId))].filter((tId) => tId !== state.text?.id),
+  ];
+  return textIds.map((tId) => ({
+    type: 'group',
+    render: () =>
+      h(
+        'div',
+        {
+          class: 'text-tiny b',
+          style: {
+            color: textsData[tId].color,
+            filter: theme.darkMode ? 'brightness(2)' : undefined,
+            padding: '8px',
+          },
+        },
+        textsData[tId].title
+      ),
+    key: tId,
+    children: resources.all
+      .filter((r) => r.textId === tId)
+      .sort((a, b) => {
+        const categories =
+          pfData.value?.texts
+            .find((t) => t.id === a.textId)
+            ?.resourceCategories?.map((c) => c.key) || [];
+        const catA = categories.includes(a.config?.common?.category || '')
+          ? categories.indexOf(a.config?.common?.category || '')
+          : 99;
+        const catB = categories.includes(b.config?.common?.category || '')
+          ? categories.indexOf(b.config?.common?.category || '')
+          : 99;
+        const soA = a.config?.common?.sortOrder || 99;
+        const soB = b.config?.common?.sortOrder || 99;
+        return catA * 100 + soA - (catB * 100 + soB);
+      })
+      .map((r) => ({
+        label: `${pickTranslation(r.title, state.locale)} – ${$t('resources.types.' + r.resourceType + '.label')}`,
+        value: r.id,
+        resourceType: r.resourceType,
+        textColor: textsData[tId].color,
+        textTitle: textsData[tId].title,
+      })),
+  }));
+});
 
 function handleResourceChange(resQueryIndex: number, resId: string, resType: ResourceType) {
   if (!formModel.value.queries[resQueryIndex]) return;
@@ -60,16 +106,20 @@ function handleResourceChange(resQueryIndex: number, resId: string, resType: Res
     formModel.value.queries[resQueryIndex] = {
       cmn: { res: resId, opt: true },
       rts: { type: resType },
-      resource: resources.ofText.find((r) => r.id === resId),
+      resource: resources.all.find((r) => r.id === resId),
     };
   }
 }
 
 function getNewSearchItem(): AdvancedSearchFormModelItem {
+  const resId =
+    resourceOptions.value.find((ro) => ro.key === state.text?.id)?.children[0]?.value ||
+    resources.ofText[0].id;
+  const resource = resources.all.find((r) => r.id === resId) || resources.ofText[0];
   return {
-    cmn: { res: resources.ofText[0].id, opt: true },
-    rts: { type: resources.ofText[0].resourceType },
-    resource: resources.ofText[0],
+    cmn: { res: resource.id, opt: true },
+    rts: { type: resource.resourceType },
+    resource: resource,
   };
 }
 
@@ -112,15 +162,11 @@ function initQueries() {
   if (search.lastReq?.type === 'advanced') {
     formModel.value.queries = search.lastReq.q.map((q) => ({
       ...q,
-      resource: resources.ofText.find((r) => r.id === q.cmn.res),
+      resource: resources.all.find((r) => r.id === q.cmn.res),
     }));
   } else {
-    formModel.value.queries = resources.ofText.length ? [getNewSearchItem()] : [];
+    formModel.value.queries = resources.all.length ? [getNewSearchItem()] : [];
   }
-}
-
-function renderResourceOptionLabel(option: SelectMixedOption) {
-  return h('span', { style: { color: 'var(--accent-color)' } }, { default: () => option.label });
 }
 
 watch(
@@ -147,7 +193,7 @@ watch(
   </n-collapse>
 
   <n-form
-    v-if="!!resources.ofText.length"
+    v-if="!!resources.all.length"
     ref="formRef"
     :model="formModel"
     label-placement="top"
@@ -167,10 +213,11 @@ watch(
         <div style="flex-grow: 2" class="search-item content-block">
           <n-form-item :show-label="false" style="flex-grow: 2">
             <n-select
+              class="search-resource-select"
               :value="query.cmn.res"
               :options="resourceOptions"
               :consistent-menu-width="false"
-              :render-label="renderResourceOptionLabel"
+              :menu-props="{ id: 'search-resource-select-menu' }"
               style="font-weight: var(--font-weight-bold)"
               @update:value="
                 (v, o: SelectMixedOption) =>
@@ -232,7 +279,7 @@ watch(
     :icon="NoContentIcon"
   />
 
-  <button-shelf v-if="!!resources.ofText.length" top-gap>
+  <button-shelf v-if="!!resources.all.length" top-gap>
     <n-button type="primary" :disabled="!formModel.queries.length" @click="handleSearch">
       {{ $t('search.searchAction') }}
     </n-button>
@@ -262,5 +309,16 @@ watch(
 }
 .search-item-action-button-wrapper {
   border-radius: 3px;
+}
+</style>
+
+<style>
+#search-resource-select-menu.n-base-select-menu
+  .n-base-select-option.n-base-select-option--selected,
+#search-resource-select-menu.n-base-select-menu
+  .n-base-select-option.n-base-select-option--selected
+  .n-base-select-option__check {
+  color: unset;
+  font-weight: var(--font-weight-bold);
 }
 </style>
